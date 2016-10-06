@@ -107,17 +107,20 @@ GeoTouchSensor::initialize ()
 }
 
 void
-GeoTouchSensor::set_over (const HitPtr & hit, const bool over)
+GeoTouchSensor::set_over (const bool over,
+                          const HitPtr & hit,
+                          const Matrix4d & modelViewMatrix,
+                          const Matrix4d & projectionMatrix,
+                          const Vector4i & viewport)
 {
 	try
 	{
-		X3DTouchSensorNode::set_over (hit, over);
+		X3DTouchSensorNode::set_over (over, hit, modelViewMatrix, projectionMatrix, viewport);
 
 		if (isOver ())
 		{
-			const auto &     intersection    = hit -> intersection;
-			const Matrix4d & modelViewMatrix = getMatrices () .at (hit -> layer) .modelViewMatrix;
-			const Vector3d   hitPoint        = intersection -> point * inverse (modelViewMatrix);
+			const auto &   intersection    = hit -> intersection;
+			const Vector3d hitPoint        = intersection -> point * inverse (modelViewMatrix);
 
 			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
 			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> normal));

@@ -67,11 +67,15 @@ X3DTouchSensorNode::X3DTouchSensorNode () :
 }
 
 void
-X3DTouchSensorNode::set_active (const HitPtr & hit, const bool value)
+X3DTouchSensorNode::set_active (const bool active,
+                                const HitPtr & hit,
+                                const Matrix4d & modelViewMatrix,
+                                const Matrix4d & projectionMatrix,
+                                const Vector4i & viewport)
 {
-	X3DPointingDeviceSensorNode::set_active (hit, value);
+	X3DPointingDeviceSensorNode::set_active (active, hit, modelViewMatrix, projectionMatrix, viewport);
 
-	if (enabled () and isOver () and not value)
+	if (enabled () and isOver () and not active)
 		touchTime () = chrono::now ();
 }
 

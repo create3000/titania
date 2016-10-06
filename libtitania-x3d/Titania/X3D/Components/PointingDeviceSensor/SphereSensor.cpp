@@ -112,15 +112,19 @@ SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, const
 }
 
 void
-SphereSensor::set_active (const HitPtr & hit, const bool active)
+SphereSensor::set_active (const bool active,
+                          const HitPtr & hit,
+                          const Matrix4d & modelViewMatrix,
+                          const Matrix4d & projectionMatrix,
+                          const Vector4i & viewport)
 {
-	X3DDragSensorNode::set_active (hit, active);
+	X3DDragSensorNode::set_active (active, hit, modelViewMatrix, projectionMatrix, viewport);
 
 	try
 	{
 		if (isActive ())
 		{
-			inverseModelViewMatrix = inverse (getMatrices () .at (hit -> layer) .modelViewMatrix);
+			inverseModelViewMatrix = inverse (modelViewMatrix);
 
 			const auto hitPoint = Vector3d (hit -> intersection -> point) * inverseModelViewMatrix;
 			const auto center   = Vector3d ();
@@ -147,7 +151,10 @@ SphereSensor::set_active (const HitPtr & hit, const bool active)
 }
 
 void
-SphereSensor::set_motion (const HitPtr & hit)
+SphereSensor::set_motion (const HitPtr & hit,
+                          const Matrix4d &,
+                          const Matrix4d &,
+                          const Vector4i &)
 {
 	try
 	{

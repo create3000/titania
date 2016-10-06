@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,58 +48,79 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_X3DDRAG_SENSOR_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_X3DDRAG_SENSOR_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_POINTING_DEVICE_SENSOR_CONTAINER_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_POINTING_DEVICE_SENSOR_CONTAINER_H__
 
-#include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
+#include "../../Base/X3DInput.h"
+#include "../../Components/PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
+#include "../../Types/Numbers.h"
+#include "Hit.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DDragSensorNode :
-	public X3DPointingDeviceSensorNode
+class PointingDeviceSensorContainer :
+	public X3DInput
 {
 public:
 
-	///  @name Fields
-
-	SFBool &
-	autoOffset ()
-	{ return *fields .autoOffset; }
-
-	const SFBool &
-	autoOffset () const
-	{ return *fields .autoOffset; }
-
-	SFVec3f &
-	trackPoint_changed ()
-	{ return *fields .trackPoint_changed; }
-
-	const SFVec3f &
-	trackPoint_changed () const
-	{ return *fields .trackPoint_changed; }
-
-
-protected:
-
 	///  @name Construction
 
-	X3DDragSensorNode ();
+	PointingDeviceSensorContainer (X3DPointingDeviceSensorNode* const node,
+	                               const Matrix4d & modelViewMatrix,
+	                               const Matrix4d & projectionMatrix,
+	                               const Vector4i & viewport) :
+		        X3DInput (),
+		            node (node),
+		 modelViewMatrix (modelViewMatrix),
+		projectionMatrix (projectionMatrix),
+		        viewport (viewport)
+	{
+		node -> disposed () .addInterest (this, &PointingDeviceSensorContainer::set_disposed);
+	}
+
+	///  @name Event handlers
+
+	void
+	set_over (const bool over, const HitPtr & hit)
+	{
+		if (node)
+			node -> set_over (over, hit, modelViewMatrix, projectionMatrix, viewport);
+	}
+
+	void
+	set_active (const bool active, const HitPtr & hit)
+	{
+		if (node)
+			node -> set_active (active, hit, modelViewMatrix, projectionMatrix, viewport);
+	}
+
+	virtual
+	void
+	set_motion (const HitPtr & hit)
+	{
+		if (node)
+			node -> set_motion (hit, modelViewMatrix, projectionMatrix, viewport);
+	}
+
+	///  @name Destruction
+
+	~PointingDeviceSensorContainer ()
+	{ }
 
 
 private:
 
-	///  @name Members
-
-	struct Fields
+	void
+	set_disposed ()
 	{
-		Fields ();
+		node = nullptr;
+	}
 
-		SFBool* const autoOffset;
-		SFVec3f* const trackPoint_changed;
-	};
-
-	Fields fields;
+	X3DPointingDeviceSensorNode* node;
+	const Matrix4d               modelViewMatrix;
+	const Matrix4d               projectionMatrix;
+	const Vector4i               viewport;
 
 };
 

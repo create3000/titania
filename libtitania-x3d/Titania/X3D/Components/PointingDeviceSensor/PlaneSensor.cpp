@@ -123,20 +123,22 @@ throw (std::domain_error)
 }
 
 void
-PlaneSensor::set_active (const HitPtr & hit, const bool active)
+PlaneSensor::set_active (const bool active,
+                         const HitPtr & hit,
+                         const Matrix4d & modelViewMatrix,
+                         const Matrix4d & projectionMatrix,
+                         const Vector4i & viewport)
 {
-	X3DDragSensorNode::set_active (hit, active);
+	X3DDragSensorNode::set_active (active, hit, modelViewMatrix, projectionMatrix, viewport);
 
 	try
 	{
 		if (isActive ())
 		{
-			const auto & matrices = getMatrices () .at (hit -> layer);
-
-			modelViewMatrix        = matrices .modelViewMatrix;
-			projectionMatrix       = matrices .projectionMatrix;
-			viewport               = matrices .viewport;
-			inverseModelViewMatrix = inverse (modelViewMatrix);
+			this -> modelViewMatrix        = modelViewMatrix;
+			this -> projectionMatrix       = projectionMatrix;
+			this -> viewport               = viewport;
+			this -> inverseModelViewMatrix = inverse (modelViewMatrix);
 
 			const auto hitRay   = hit -> hitRay * inverseModelViewMatrix;
 			const auto hitPoint = Vector3d (hit -> intersection -> point) * inverseModelViewMatrix;
@@ -209,7 +211,10 @@ PlaneSensor::trackStart (const Vector3d & trackPoint)
 }
 
 void
-PlaneSensor::set_motion (const HitPtr & hit)
+PlaneSensor::set_motion (const HitPtr & hit,
+                         const Matrix4d &,
+                         const Matrix4d &,
+                         const Vector4i &)
 {
 	try
 	{

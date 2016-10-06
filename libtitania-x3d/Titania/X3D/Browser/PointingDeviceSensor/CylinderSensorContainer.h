@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,58 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_X3DDRAG_SENSOR_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_POINTING_DEVICE_SENSOR_X3DDRAG_SENSOR_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_CYLINDER_SENSOR_CONTAINER_H__
+#define __TITANIA_X3D_BROWSER_POINTING_DEVICE_SENSOR_CYLINDER_SENSOR_CONTAINER_H__
 
-#include "../PointingDeviceSensor/X3DPointingDeviceSensorNode.h"
+#include "X3DDragSensorContainer.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DDragSensorNode :
-	public X3DPointingDeviceSensorNode
+class CylinderSensor;
+
+class CylinderSensorContainer :
+	public X3DDragSensorContainer
 {
 public:
 
-	///  @name Fields
+	///  @name Construction
 
-	SFBool &
-	autoOffset ()
-	{ return *fields .autoOffset; }
-
-	const SFBool &
-	autoOffset () const
-	{ return *fields .autoOffset; }
-
-	SFVec3f &
-	trackPoint_changed ()
-	{ return *fields .trackPoint_changed; }
-
-	const SFVec3f &
-	trackPoint_changed () const
-	{ return *fields .trackPoint_changed; }
+	CylinderSensorContainer (CylinderSensor* const node,
+	                         const Matrix4d & modelViewMatrix,
+	                         const Matrix4d & projectionMatrix,
+	                         const Vector4i & viewport) :
+		X3DDragSensorContainer (modelViewMatrix, projectionMatrix, viewport),
+		                  node (node)
+	{ }
 
 
 protected:
 
-	///  @name Construction
+	///  @name Member access
 
-	X3DDragSensorNode ();
+	virtual
+	CylinderSensor*
+	getNode () const final override
+	{ return node }
 
 
 private:
 
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const autoOffset;
-		SFVec3f* const trackPoint_changed;
-	};
-
-	Fields fields;
+	CylinderSensor* const node;
 
 };
 

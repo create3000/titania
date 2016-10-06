@@ -105,24 +105,27 @@ TouchSensor::getClosestPoint () const
 }
 
 void
-TouchSensor::set_over (const HitPtr & hit, const bool over)
+TouchSensor::set_over (const bool over,
+                       const HitPtr & hit,
+                       const Matrix4d & modelViewMatrix,
+                       const Matrix4d & projectionMatrix,
+                       const Vector4i & viewport)
 {
 	try
 	{
-		X3DTouchSensorNode::set_over (hit, over);
+		X3DTouchSensorNode::set_over (over, hit, modelViewMatrix, projectionMatrix, viewport);
 
 		if (isOver ())
 		{
-			intersection .reset (new Intersection (*hit -> intersection));
-
-			const Matrix4d & modelViewMatrix    = getMatrices () .at (hit -> layer) .modelViewMatrix;
-			const Matrix4d   invModelViewMatrix = inverse (modelViewMatrix);
+			const Matrix4d invModelViewMatrix = inverse (modelViewMatrix);
 
 			hitPoint = intersection -> point * inverse (hit -> modelViewMatrix);
 
 			hitTexCoord_changed () = Vector2f (intersection -> texCoord .x (), intersection -> texCoord .y ());
 			hitNormal_changed ()   = normalize (modelViewMatrix .mult_matrix_dir (intersection -> normal));
 			hitPoint_changed ()    = intersection -> point * invModelViewMatrix;
+
+			intersection .reset (new Intersection (*hit -> intersection));
 		}
 	}
 	catch (const std::exception &)

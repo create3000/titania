@@ -62,9 +62,10 @@
 namespace titania {
 namespace X3D {
 
-class X3DPointingDeviceSensorNode;
+class PointingDeviceSensorContainer;
 
-using PointingDeviceSensorSet = std::set <X3DPointingDeviceSensorNode*>;
+using PointingDeviceSensorContainerPtr = std::shared_ptr <PointingDeviceSensorContainer>;
+using PointingDeviceSensorContainerSet = std::set <PointingDeviceSensorContainerPtr>;
 
 class Hit
 {
@@ -74,22 +75,22 @@ public:
 	     const Matrix4d &,
 	     const Line3d &,
 	     const IntersectionPtr &,
-	     const PointingDeviceSensorSet &,
+	     const PointingDeviceSensorContainerSet &,
 	     const X3DPtr <X3DShapeNode>,
 	     const X3DPtr <X3DLayerNode>,
 	     const size_t,
 	     const bool,
 	     const double);
 
-	const Vector2d                 pointer;
-	const Matrix4d                 modelViewMatrix;
-	const Line3d                   hitRay;
-	const IntersectionPtr          intersection;                
-	const double                   distance;
-	const PointingDeviceSensorSet  sensors;
-	const X3DPtr <X3DShapeNode>    shape;
-	const X3DPtr <X3DLayerNode>    layer;
-	const size_t                   layerNumber;
+	const Vector2d                         pointer;
+	const Matrix4d                         modelViewMatrix;
+	const Line3d                           hitRay;
+	const IntersectionPtr                  intersection;                
+	const double                           distance;
+	const PointingDeviceSensorContainerSet sensors;
+	const X3DPtr <X3DShapeNode>            shape;
+	const X3DPtr <X3DLayerNode>            layer;
+	const size_t                           layerNumber;
 
 	~Hit ();
 

@@ -107,16 +107,31 @@ public:
 	rotation_changed () const
 	{ return *fields .rotation_changed; }
 
-	virtual
-	void
-	set_active (const HitPtr &, const bool) final override;
+
+protected:
+
+	///  @name Event handlers
 
 	virtual
 	void
-	set_motion (const HitPtr &) final override;
+	set_active (const bool active,
+	            const HitPtr & hit,
+	            const Matrix4d & modelViewMatrix,
+	            const Matrix4d & projectionMatrix,
+	            const Vector4i & viewport) final override;
+
+	virtual
+	void
+	set_motion (const HitPtr & hit,
+	            const Matrix4d & modelViewMatrix,
+	            const Matrix4d & projectionMatrix,
+	            const Vector4i & viewport) final override;
 
 
 private:
+
+
+	///  @name Operations
 
 	bool
 	getTrackPoint (const Line3d &, Vector3d &, const bool = false) const;

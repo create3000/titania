@@ -156,15 +156,19 @@ CylinderSensor::getAngle (const Rotation4d & rotation) const
 }
 
 void
-CylinderSensor::set_active (const HitPtr & hit, const bool active)
+CylinderSensor::set_active (const bool active,
+                            const HitPtr & hit,
+                            const Matrix4d & modelViewMatrix,
+                            const Matrix4d & projectionMatrix,
+                            const Vector4i & viewport)
 {
-	X3DDragSensorNode::set_active (hit, active);
+	X3DDragSensorNode::set_active (active, hit, modelViewMatrix, projectionMatrix, viewport);
 
 	try
 	{
 		if (isActive ())
 		{
-			inverseModelViewMatrix = inverse (getMatrices () .at (hit -> layer) .modelViewMatrix);
+			inverseModelViewMatrix = inverse (modelViewMatrix);
 
 			const auto hitRay   = hit -> hitRay * inverseModelViewMatrix;
 			const auto hitPoint = Vector3d (hit -> intersection -> point) * inverseModelViewMatrix;
@@ -214,7 +218,10 @@ CylinderSensor::set_active (const HitPtr & hit, const bool active)
 }
 
 void
-CylinderSensor::set_motion (const HitPtr & hit)
+CylinderSensor::set_motion (const HitPtr & hit,
+                            const Matrix4d &,
+                            const Matrix4d &,
+                            const Vector4i &)
 {
 	try
 	{

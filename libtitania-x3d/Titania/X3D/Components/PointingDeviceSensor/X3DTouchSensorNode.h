@@ -61,6 +61,8 @@ class X3DTouchSensorNode :
 {
 public:
 
+	///  @name Fields
+
 	SFTime &
 	touchTime ()
 	{ return *fields .touchTime; }
@@ -69,17 +71,27 @@ public:
 	touchTime () const
 	{ return *fields .touchTime; }
 
-	virtual
-	void
-	set_active (const HitPtr &, const bool) final override;
-
 
 protected:
 
+	///  @name Construction
+
 	X3DTouchSensorNode ();
+
+	///  @name Event handlers
+
+	virtual
+	void
+	set_active (const bool active,
+	            const HitPtr & hit,
+	            const Matrix4d & modelViewMatrix,
+	            const Matrix4d & projectionMatrix,
+	            const Vector4i & viewport) final override;
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{

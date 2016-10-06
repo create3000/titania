@@ -132,7 +132,7 @@ public:
 	bool
 	isPointerInRectangle (const Vector4i &) const;
 
-	std::vector <PointingDeviceSensorSet> &
+	std::vector <PointingDeviceSensorContainerSet> &
 	getSensors ()
 	{ return enabledSensors; }
 
@@ -202,20 +202,20 @@ private:
 
 	//  @name Members
 
-	SFBool                                    pickable;
-	Vector2d                                  pointer;
-	Line3d                                    hitRay;
-	HitArray                                  hits;
-	std::vector <PointingDeviceSensorSet>     enabledSensors;
-	X3DPtrArray <X3DPointingDeviceSensorNode> overSensors;
-	X3DPtrArray <X3DPointingDeviceSensorNode> activeSensors;
-	X3DPtr <X3DLayerNode>                     selectedLayer;
-	size_t                                    layerNumber;
-	time_type                                 pressTime;
-	bool                                      hasMoved;
-	SelectionType                             selectionType;
-	std::shared_ptr <FrameBuffer>             selectionBuffer;
-	std::shared_ptr <FrameBuffer>             depthBuffer;
+	SFBool                                         pickable;
+	Vector2d                                       pointer;
+	Line3d                                         hitRay;
+	HitArray                                       hits;
+	std::vector <PointingDeviceSensorContainerSet> enabledSensors;
+	std::vector <PointingDeviceSensorContainerPtr> overSensors;
+	std::vector <PointingDeviceSensorContainerPtr> activeSensors;
+	X3DPtr <X3DLayerNode>                          selectedLayer;
+	size_t                                         layerNumber;
+	time_type                                      pressTime;
+	bool                                           hasMoved;
+	SelectionType                                  selectionType;
+	std::shared_ptr <FrameBuffer>                  selectionBuffer;
+	std::shared_ptr <FrameBuffer>                  depthBuffer;
 
 };
 

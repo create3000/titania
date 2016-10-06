@@ -51,15 +51,17 @@
 #include "X3DPointingDeviceSensorContext.h"
 
 #include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Components/PointingDeviceSensor/X3DDragSensorNode.h"
-#include "../../Components/PointingDeviceSensor/X3DTouchSensorNode.h"
 #include "../../Components/Shape/X3DShapeNode.h"
 
 #include "../../Execution/World.h"
 #include "../../Rendering/ViewVolume.h"
+
 #include "../ContextLock.h"
 #include "../Selection.h"
 #include "../X3DBrowser.h"
+
+#include "PointingDeviceSensorContainer.h"
+
 
 namespace titania {
 namespace X3D {
@@ -72,7 +74,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	        pointer (),
 	         hitRay (),
 	           hits (),
-	 enabledSensors ({ PointingDeviceSensorSet () }),
+	 enabledSensors ({ PointingDeviceSensorContainerSet () }),
 	    overSensors (),
 	  activeSensors (),
 	  selectedLayer (),
@@ -84,8 +86,6 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	    depthBuffer ()
 {
 	addChildren (pickable,
-	             overSensors,
-	             activeSensors,
 	             selectedLayer);
 }
 
@@ -129,7 +129,7 @@ X3DPointingDeviceSensorContext::touch (const double x, const double y)
 
 	std::stable_sort (hits .begin (), hits .end (), HitComp { });
 
-	enabledSensors = { PointingDeviceSensorSet () };
+	enabledSensors = { PointingDeviceSensorContainerSet () };
 }
 
 bool
@@ -187,12 +187,12 @@ X3DPointingDeviceSensorContext::motion ()
 	const auto hitRay = selectedLayer ? this -> hitRay : Line3d (Vector3d (), Vector3d ());
 
 	const auto nearestHit = getHits () .empty ()
-	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, selectedLayer, 0, true, 0)
+	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorContainerSet (), nullptr, selectedLayer, 0, true, 0)
 	                        : getNearestHit ();
 
 	// Set isOver to FALSE for appropriate nodes
 
-	std::vector <X3DPointingDeviceSensorNode*> difference;
+	std::vector <PointingDeviceSensorContainerPtr> difference;
 
 	if (getHits () .empty ())
 		difference .assign (overSensors .begin (), overSensors .end ());
@@ -207,7 +207,7 @@ X3DPointingDeviceSensorContext::motion ()
 	}
 
 	for (const auto & pointingDeviceSensorNode : difference)
-		pointingDeviceSensorNode -> set_over (nearestHit, false);
+		pointingDeviceSensorNode -> set_over (false, nearestHit);
 
 	// Set isOver to TRUE for appropriate nodes
 
@@ -220,18 +220,13 @@ X3DPointingDeviceSensorContext::motion ()
 		                     nearestHit -> sensors .end ());
 
 		for (const auto & pointingDeviceSensorNode : overSensors)
-			pointingDeviceSensorNode -> set_over (nearestHit, true);
+			pointingDeviceSensorNode -> set_over (true, nearestHit);
 	}
 
 	// Forward motion event to active drag sensor nodes
 
 	for (const auto & pointingDeviceSensorNode : activeSensors)
-	{
-		const auto dragSensorNode = dynamic_cast <X3DDragSensorNode*> (pointingDeviceSensorNode .getValue ());
-
-		if (dragSensorNode)
-			dragSensorNode -> set_motion (nearestHit);
-	}
+		pointingDeviceSensorNode -> set_motion (nearestHit);
 }
 
 bool
@@ -254,7 +249,7 @@ X3DPointingDeviceSensorContext::setButtonPressEvent (const double x, const doubl
 	                       getNearestHit () -> sensors .end ());
 
 	for (const auto & pointingDeviceSensorNode : activeSensors)
-		pointingDeviceSensorNode -> set_active (getNearestHit (), true);
+		pointingDeviceSensorNode -> set_active (true, getNearestHit ());
 
 	return true;
 }
@@ -271,13 +266,13 @@ X3DPointingDeviceSensorContext::setButtonReleaseEvent ()
 	}
 
 	const auto nearestHit = getHits () .empty ()
-	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorSet (), nullptr, selectedLayer, 0, true, 0)
+	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorContainerSet (), nullptr, selectedLayer, 0, true, 0)
 	                        : getNearestHit ();
 
 	selectedLayer = nullptr;
 
 	for (const auto & pointingDeviceSensorNode : activeSensors)
-		pointingDeviceSensorNode -> set_active (nearestHit, false);
+		pointingDeviceSensorNode -> set_active (false, nearestHit);
 
 	activeSensors .clear ();
 	return true;

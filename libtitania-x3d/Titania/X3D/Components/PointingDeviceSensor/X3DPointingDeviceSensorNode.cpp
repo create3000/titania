@@ -50,6 +50,7 @@
 
 #include "X3DPointingDeviceSensorNode.h"
 
+#include "../../Browser/PointingDeviceSensor/PointingDeviceSensorContainer.h"
 #include "../../Browser/Notification.h"
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
@@ -68,7 +69,6 @@ X3DPointingDeviceSensorNode::Fields::Fields () :
 X3DPointingDeviceSensorNode::X3DPointingDeviceSensorNode () :
 	X3DSensorNode (),
 	       fields (),
-	     matrices (),
 	     disabled (false)
 {
 	addType (X3DConstants::X3DPointingDeviceSensorNode);
@@ -141,11 +141,11 @@ X3DPointingDeviceSensorNode::set_enabled ()
 }
 
 void
-X3DPointingDeviceSensorNode::set_over (const HitPtr &, const bool value)
+X3DPointingDeviceSensorNode::set_over (const bool over, const HitPtr &, const Matrix4d &, const Matrix4d &, const Vector4i &)
 {
-	if (value not_eq isOver ())
+	if (over not_eq isOver ())
 	{
-		isOver () = value;
+		isOver () = over;
 
 		if (isOver () and not description () .empty ())
 			getBrowser () -> getNotification () -> string () = description ();
@@ -153,10 +153,10 @@ X3DPointingDeviceSensorNode::set_over (const HitPtr &, const bool value)
 }
 
 void
-X3DPointingDeviceSensorNode::set_active (const HitPtr &, const bool value)
+X3DPointingDeviceSensorNode::set_active (const bool active, const HitPtr & hit, const Matrix4d &, const Matrix4d &, const Vector4i &)
 {
-	if (value not_eq isActive ())
-		isActive () = value;
+	if (active not_eq isActive ())
+		isActive () = active;
 }
 
 void
@@ -165,28 +165,13 @@ X3DPointingDeviceSensorNode::push (X3DRenderObject* const renderObject)
 	if (disabled)
 		return;
 
-	renderObject -> getBrowser () -> getSensors () .back () .emplace (this);
-	
-	// Create a matrix set for each layer if needed.
+	auto & sensors   = renderObject -> getBrowser () -> getSensors () .back ();
+	auto   container = std::make_shared <PointingDeviceSensorContainer> (this,
+	                                                                     renderObject -> getModelViewMatrix  () .get (),
+	                                                                     renderObject -> getProjectionMatrix () .get (),
+	                                                                     renderObject -> getViewVolumes () .back () .getViewport ());
 
-	auto iter = matrices .find (renderObject -> getLayer ());
-
-	if (iter == matrices .end ())
-	{
-		iter = matrices .emplace (renderObject -> getLayer (), Matrices { }) .first;
-
-		renderObject -> disposed () .addInterest (this, &X3DPointingDeviceSensorNode::eraseMatrices, renderObject -> getLayer ());
-	}
-
-	iter -> second = Matrices { renderObject -> getModelViewMatrix () .get (),
-	                            renderObject -> getProjectionMatrix () .get (),
-	                            renderObject -> getViewVolumes () .back () .getViewport () };
-}
-
-void
-X3DPointingDeviceSensorNode::eraseMatrices (X3DLayerNode* const layerNode)
-{
-	matrices .erase (layerNode);
+	sensors .emplace (std::move (container));
 }
 
 } // X3D

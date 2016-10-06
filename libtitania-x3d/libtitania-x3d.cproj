@@ -830,6 +830,8 @@
     <None Include="share\fonts\truetype\titania-fonts\DroidSerif-BoldItalic.ttf" />
     <None Include="share\fonts\truetype\titania-fonts\DroidSerif-Italic.ttf" />
     <None Include="share\fonts\truetype\titania-fonts\DroidSerif-Regular.ttf" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\CylinderSensorContainer.h" />
+    <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDeviceSensorContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

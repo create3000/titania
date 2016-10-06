@@ -88,16 +88,6 @@ public:
 	isOver () const
 	{ return *fields .isOver; }
 
-	///  @name Event handlers
-
-	virtual
-	void
-	set_over (const HitPtr &, const bool);
-
-	virtual
-	void
-	set_active (const HitPtr &, const bool);
-
 	///  @name Operations
 
 	void
@@ -106,14 +96,9 @@ public:
 
 protected:
 
-	struct Matrices
-	{
-		Matrix4d modelViewMatrix;
-		Matrix4d projectionMatrix;
-		Vector4i viewport;
-	};
+	///  @name Friends
 
-	using MatrixIndex = std::map <X3DLayerNode*, Matrices>;
+	friend class PointingDeviceSensorContainer;
 
 	///  @name Construction
 
@@ -123,11 +108,31 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Member access
+	///  @name Event handlers
 
-	const MatrixIndex &
-	getMatrices () const
-	{ return matrices; }
+	virtual
+	void
+	set_over (const bool over,
+	          const HitPtr & hit,
+	          const Matrix4d & modelViewMatrix,
+	          const Matrix4d & projectionMatrix,
+	          const Vector4i & viewport);
+
+	virtual
+	void
+	set_active (const bool active,
+	            const HitPtr & hit,
+	            const Matrix4d & modelViewMatrix,
+	            const Matrix4d & projectionMatrix,
+	            const Vector4i & viewport);
+
+	virtual
+	void
+	set_motion (const HitPtr & hit,
+	            const Matrix4d & modelViewMatrix,
+	            const Matrix4d & projectionMatrix,
+	            const Vector4i & viewport)
+	{ }
 
 
 private:
@@ -143,9 +148,6 @@ private:
 	void
 	set_enabled ();
 
-	void
-	eraseMatrices (X3DLayerNode* const layerNode);
-
 	///  @name Members
 
 	struct Fields
@@ -158,7 +160,6 @@ private:
 
 	Fields fields;
 
-	MatrixIndex matrices;
 	bool        disabled;
 
 };

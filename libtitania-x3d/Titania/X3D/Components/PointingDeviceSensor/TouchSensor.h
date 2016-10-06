@@ -124,11 +124,18 @@ public:
 	const Vector3d &
 	getClosestPoint () const;
 
+
+protected:
+
 	///  @name Event handlers
 
 	virtual
 	void
-	set_over (const HitPtr &, const bool) final override;
+	set_over (const bool over,
+	          const HitPtr & hit,
+	          const Matrix4d & modelViewMatrix,
+	          const Matrix4d & projectionMatrix,
+	          const Vector4i & viewport) final override;
 
 
 private:
