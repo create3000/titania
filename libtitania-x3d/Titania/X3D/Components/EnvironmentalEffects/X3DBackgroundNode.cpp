@@ -98,6 +98,9 @@ X3DBackgroundNode::X3DBackgroundNode () :
 	             rightTexture,
 	             topTexture,
 	             bottomTexture);
+	
+	skyAngle ()    .setUnit (UnitCategory::ANGLE);
+	groundAngle () .setUnit (UnitCategory::ANGLE);
 }
 
 void

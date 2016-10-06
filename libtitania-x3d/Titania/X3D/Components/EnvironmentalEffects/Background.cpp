@@ -106,9 +106,6 @@ Background::Background (X3DExecutionContext* const executionContext) :
 	             topTexture,
 	             bottomTexture,
 	             textureProperties);
-	
-	skyAngle ()    .setUnit (UnitCategory::ANGLE);
-	groundAngle () .setUnit (UnitCategory::ANGLE);
 }
 
 X3DBaseNode*
