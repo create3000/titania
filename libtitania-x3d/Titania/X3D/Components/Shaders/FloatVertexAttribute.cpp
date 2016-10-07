@@ -93,8 +93,7 @@ FloatVertexAttribute::addValue (std::vector <float> & array, const size_t index)
 
 	if (last <= value () .size ())
 	{
-		for (size_t i = first; i < last; ++ i)
-			array .emplace_back (value () [i]);
+		array .insert (array .end (), value () .begin () + first, value () .begin () + last);
 	}
 	else
 		array .resize (array .size () + size);

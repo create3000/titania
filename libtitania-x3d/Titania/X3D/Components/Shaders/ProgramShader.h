@@ -133,6 +133,30 @@ public:
 
 	virtual
 	void
+	enableFloatAttrib (const std::string &, const GLuint, const size_t) final override;
+	
+	virtual
+	void
+	disableFloatAttrib (const std::string &) final override;
+	
+	virtual
+	void
+	enableMatrix3Attrib (const std::string &, const GLuint) final override;
+	
+	virtual
+	void
+	disableMatrix3Attrib (const std::string &) final override;
+	
+	virtual
+	void
+	enableMatrix4Attrib (const std::string &, const GLuint) final override;
+	
+	virtual
+	void
+	disableMatrix4Attrib (const std::string &) final override;
+
+	virtual
+	void
 	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) final override;
 	
 	virtual
@@ -165,30 +189,6 @@ public:
 	virtual
 	void
 	disableVertexAttrib () final override;
-
-	virtual
-	void
-	enableFloatAttrib (const std::string &, const GLuint, const size_t) final override;
-	
-	virtual
-	void
-	disableFloatAttrib (const std::string &) final override;
-	
-	virtual
-	void
-	enableMatrix3Attrib (const std::string &, const GLuint) final override;
-	
-	virtual
-	void
-	disableMatrix3Attrib (const std::string &) final override;
-	
-	virtual
-	void
-	enableMatrix4Attrib (const std::string &, const GLuint) final override;
-	
-	virtual
-	void
-	disableMatrix4Attrib (const std::string &) final override;
 
 	///  @name Destruction
 

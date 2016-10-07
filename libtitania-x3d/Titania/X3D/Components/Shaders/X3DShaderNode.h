@@ -126,6 +126,30 @@ public:
 
 	virtual
 	void
+	enableFloatAttrib (const std::string &, const GLuint, const size_t) = 0;
+	
+	virtual
+	void
+	disableFloatAttrib (const std::string &) = 0;
+	
+	virtual
+	void
+	enableMatrix3Attrib (const std::string &, const GLuint) = 0;
+	
+	virtual
+	void
+	disableMatrix3Attrib (const std::string &) = 0;
+	
+	virtual
+	void
+	enableMatrix4Attrib (const std::string &, const GLuint) = 0;
+	
+	virtual
+	void
+	disableMatrix4Attrib (const std::string &) = 0;
+
+	virtual
+	void
 	enableColorAttrib (const GLuint buffer, const GLenum type, const GLsizei stride, const GLvoid* pointer) = 0;
 
 	virtual
@@ -158,30 +182,6 @@ public:
 	virtual
 	void
 	disableVertexAttrib () = 0;
-
-	virtual
-	void
-	enableFloatAttrib (const std::string &, const GLuint, const size_t) = 0;
-	
-	virtual
-	void
-	disableFloatAttrib (const std::string &) = 0;
-	
-	virtual
-	void
-	enableMatrix3Attrib (const std::string &, const GLuint) = 0;
-	
-	virtual
-	void
-	disableMatrix3Attrib (const std::string &) = 0;
-	
-	virtual
-	void
-	enableMatrix4Attrib (const std::string &, const GLuint) = 0;
-	
-	virtual
-	void
-	disableMatrix4Attrib (const std::string &) = 0;
 
 	virtual
 	void
