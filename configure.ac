@@ -31,10 +31,10 @@ AC_ARG_ENABLE(parallel,
 		[Use 'PARALLEL' Configuration [default=NO]]),
 		enable_parallel=yes, enable_parallel=no)
 
-AC_ARG_ENABLE(fixed-pipeline,
-	AC_HELP_STRING([--enable-fixed-pipeline],
-		[Use 'SHADER PIPELINE' Configuration [default=NO]]),
-		enable_fixed_pipeline=yes, enable_fixed_pipeline=no)
+dnl AC_ARG_ENABLE(fixed-pipeline,
+dnl 	AC_HELP_STRING([--enable-fixed-pipeline],
+dnl 		[Use 'FIXED PIPELINE' Configuration [default=YES]]),
+dnl 		enable_fixed_pipeline=yes, enable_fixed_pipeline=no)
 
 
 
@@ -54,9 +54,7 @@ if test "x$enable_parallel" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4"
 fi
 
-if test "x$enable_fixed_pipeline" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -DFIXED_PIPELINE"
-fi
+CXXFLAGS=$CXXFLAGS" -DFIXED_PIPELINE"
 
 if test "x$enable_debug" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG -Wno-deprecated-declarations"

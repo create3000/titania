@@ -1,14 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.h" Line="2" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/Matrix3VertexAttribute.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/Matrix4VertexAttribute.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/FloatVertexAttribute.cpp" Line="87" Column="5" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="696" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="11" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

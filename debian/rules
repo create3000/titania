@@ -24,7 +24,7 @@ binary-arch: build
 
 # Make and install binaries
 	#make distclean
-	./autogen.sh --enable-fixed-pipeline --enable-parallel --prefix=`pwd`/debian/$(PACKAGE)/usr/
+	./autogen.sh --enable-parallel --prefix=`pwd`/debian/$(PACKAGE)/usr/
 	make -j4
 	make install
 

@@ -835,7 +835,6 @@ enable_maintainer_mode
 enable_dependency_tracking
 enable_debug
 enable_parallel
-enable_fixed_pipeline
 enable_nls
 enable_shared
 enable_static
@@ -1521,7 +1520,6 @@ Optional Features:
                           speeds up one-time build
   --enable-debug          Use 'DEBUG' Configuration [default=NO]
   --enable-parallel       Use 'PARALLEL' Configuration [default=NO]
-  --enable-fixed-pipeline Use 'SHADER PIPELINE' Configuration [default=NO]
   --disable-nls           do not use Native Language Support
   --enable-shared[=PKGS]  build shared libraries [default=yes]
   --enable-static[=PKGS]  build static libraries [default=yes]
@@ -3893,13 +3891,6 @@ else
 fi
 
 
-# Check whether --enable-fixed-pipeline was given.
-if test "${enable_fixed_pipeline+set}" = set; then :
-  enableval=$enable_fixed_pipeline; enable_fixed_pipeline=yes
-else
-  enable_fixed_pipeline=no
-fi
-
 
 
 
@@ -3915,9 +3906,7 @@ if test "x$enable_parallel" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4"
 fi
 
-if test "x$enable_fixed_pipeline" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -DFIXED_PIPELINE"
-fi
+CXXFLAGS=$CXXFLAGS" -DFIXED_PIPELINE"
 
 if test "x$enable_debug" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG -Wno-deprecated-declarations"
