@@ -114,7 +114,7 @@ NodeIndex::initialize ()
 
 	set_executionContext ();
 
-	getTreeModelSort () -> set_sort_func (getNameColumn (), sigc::mem_fun (this, &NodeIndex::on_compare_name));
+	getTreeModelSort () -> set_sort_func (Columns::NAME, sigc::mem_fun (this, &NodeIndex::on_compare_name));
 
 	// Initialize SearchEntryCompletion:
 
