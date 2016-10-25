@@ -884,6 +884,9 @@ uninstall-am:
 .PRECIOUS: Makefile
 
 
+run:
+	$(builddir)/Titania/run.pl
+
 # Remove doc directory on uninstall
 #uninstall-local:
 #	-rm -r $(titaniadocdir)

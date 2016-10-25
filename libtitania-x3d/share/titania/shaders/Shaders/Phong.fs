@@ -242,11 +242,11 @@ getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in
 
 		for (int m = 0; m < 6; ++ m)
 		{
-			if (samples >= x3d_ShadowSamples)
-				break;
-
 			for (int i = 0; i < x3d_ShadowSamples; ++ i)
 			{
+				if (samples >= x3d_ShadowSamples)
+					return shadowIntensity * float (value) / float (x3d_ShadowSamples);
+
 				vec3  vertex      = closest_point (plane, v + random3 () * shadowDiffusion);
 				vec4  shadowCoord = rotationProjectionBias [m] * shadowMatrix * vec4 (vertex, 1.0);
 				float bias        = shadowBias / shadowCoord .w; // 0.005 / shadowCoord .w;
@@ -272,7 +272,7 @@ getShadowIntensity (in int index, in int lightType, in float shadowIntensity, in
 			}
 		}
 
-		return shadowIntensity * min (float (value), float (x3d_ShadowSamples)) / float (x3d_ShadowSamples);
+		return shadowIntensity * float (value) / float (x3d_ShadowSamples);
 	}
 
 	int value = 0;

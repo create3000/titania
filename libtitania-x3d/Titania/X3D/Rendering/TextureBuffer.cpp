@@ -107,10 +107,14 @@ TextureBuffer::setup ()
 	glBindTexture (GL_TEXTURE_2D, 0);
 
 	// Always check that our framebuffer is ok
-	if (glCheckFramebufferStatus (GL_FRAMEBUFFER) not_eq GL_FRAMEBUFFER_COMPLETE)
-		throw std::runtime_error ("Couldn't create frame buffer.");
+	const bool complete = glCheckFramebufferStatus (GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
 
 	glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
+
+	if (complete)
+		return;
+
+	throw std::runtime_error ("Couldn't create frame buffer.");
 }
 
 void

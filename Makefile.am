@@ -28,6 +28,8 @@ DISTCLEANFILES = intltool-extract \
 	intltool-merge \
 	intltool-update
 
+run:
+	$(builddir)/Titania/run.pl
 
 # Remove doc directory on uninstall
 #uninstall-local:
