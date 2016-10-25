@@ -23,16 +23,19 @@ sudo apt-get update
 sudo apt-get install titania
 ```
 
-If you want to compile Titania by yourself, first make sure that all dependencies listed in `debian/control` are installed. Then
+If you want to compile Titania from source, first make sure that all dependencies listed in `debian/control` are installed. Then
 type the following commands in a terminal:
 
 ```bash
 git clone https://github.com/create3000/titania.git
 cd titania
 ./autogen.sh
-make
+make -j4
 make run
 ```
+
+**Note:** `make -j4` compiles the project with four jobs at the same time, ie. it uses four processors. Adjust this value depending
+on the number of processors of your computer.  It can take 20 up to 45 minutes or longer to compile the whole project.
 
 
 Acknowledgments
