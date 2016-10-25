@@ -23,6 +23,17 @@ sudo apt-get update
 sudo apt-get install titania
 ```
 
+If you want to compile Titania by yourself, first make sure that all dependencies listed in `debian/control` are installed. Then
+type the following commands in a terminal.
+
+```bash
+cd Titania
+./autogen.sh
+make
+make run
+```
+
+
 Acknowledgments
 --------------------------------------
 
