@@ -97,6 +97,11 @@ public:
 	///  @name Layer handling
 
 	virtual
+	bool
+	isIndependent () const
+	{ return true; }
+
+	virtual
 	X3DLayerNode*
 	getLayer () const = 0;
 
@@ -184,6 +189,14 @@ public:
 	getLights ()
 	{ return lights; }
 
+	virtual
+	const std::shared_ptr <LightContainer> &
+	getLightContainer () const;
+
+	void
+	setLightIndex (const size_t value)
+	{ lightIndex = value; }
+
 	LayoutStack &
 	getLayouts ()
 	{ return layouts; }
@@ -191,14 +204,6 @@ public:
 	X3DLayoutNode*
 	getParentLayout ()
 	{ return layouts .empty () ? nullptr : layouts .back (); }
-
-	void
-	setRenderGeneratedCubeMapTextures (const bool value)
-	{ renderGeneratedCubeMapTextures = value; }
-
-	bool
-	getRenderGeneratedCubeMapTextures () const
-	{ return renderGeneratedCubeMapTextures; }
 
 	GeneratedCubeMapTextureSet &
 	getGeneratedCubeMapTextures ()
@@ -211,6 +216,17 @@ public:
 	CollisionArray &
 	getCollisions ()
 	{ return collisions; }
+
+	///  @name Shape handling
+
+	bool
+	addCollisionShape (X3DShapeNode* const shape);
+
+	bool
+	addDepthShape (X3DShapeNode* const shape);
+
+	bool
+	addDisplayShape (X3DShapeNode* const shape);
 
 	///  @name Observer
 
@@ -235,6 +251,7 @@ public:
 	Vector3d
 	constrainTranslation (const Vector3d & translation, const bool stepBack) const;
 
+	virtual
 	void
 	render (const TraverseType type, const TraverseFunction & traverse);
 
@@ -250,11 +267,6 @@ public:
 
 protected:
 
-	///  @name Friends
-
-	friend class ParticleSystem;
-	friend class Shape;
-
 	///  @name Construction
 
 	X3DRenderObject ();
@@ -262,17 +274,6 @@ protected:
 	virtual
 	void
 	initialize () override;
-
-	///  @name Member acess
-
-	bool
-	addCollisionShape (X3DShapeNode* const shape);
-
-	bool
-	addDepthShape (X3DShapeNode* const shape);
-
-	bool
-	addDisplayShape (X3DShapeNode* const shape);
 
 
 private:
@@ -311,8 +312,8 @@ private:
 	LocalFogStack              localFogs;
 	LightContainerArray        localLights;
 	LightContainerArray        lights;
+	size_t                     lightIndex;
 	LayoutStack                layouts;
-	bool                       renderGeneratedCubeMapTextures;
 	GeneratedCubeMapTextureSet generatedCubeMapTextures;
 	ShaderSet                  shaders;
 	CollisionArray             collisions;

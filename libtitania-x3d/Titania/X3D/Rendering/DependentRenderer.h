@@ -87,6 +87,11 @@ public:
 
 	///  @name Members access
 
+	virtual
+	bool
+	isIndependent () const final override
+	{ return false; }
+
 	void
 	setRenderer (X3DRenderObject* const value)
 	{ renderObject = value; }
@@ -123,6 +128,15 @@ public:
 	X3DFogObject*
 	getFog () const final override
 	{ return renderObject -> getFog (); }
+
+	virtual
+	const std::shared_ptr <LightContainer> &
+	getLightContainer () const final override
+	{ return renderObject -> getLightContainer (); }
+
+	virtual
+	void
+	render (const TraverseType type, const TraverseFunction & traverse) final override;
 
 	///  @name Destruction
 

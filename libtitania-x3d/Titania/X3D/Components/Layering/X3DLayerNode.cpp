@@ -120,8 +120,6 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* p_defaultViewpoint, X3DGroupingNod
 
 	defaultBackground -> isHidden (true);
 	defaultFog        -> isHidden (true);
-
-	setRenderGeneratedCubeMapTextures (true);
 }
 
 void

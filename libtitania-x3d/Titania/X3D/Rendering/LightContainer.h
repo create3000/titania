@@ -81,11 +81,11 @@ public:
 	getGroup () const
 	{ return group; }
 
-	void
-	setModelViewMatrix (const Matrix4d & value)
-	{ modelViewMatrix = value; }
+	std::vector <Matrix4d> &
+	getModelViewMatrix ()
+	{ return modelViewMatrix; }
 
-	const Matrix4d &
+	const std::vector <Matrix4d> &
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
 
@@ -129,7 +129,7 @@ private:
 	X3DBrowser* const               browser;
 	X3DLightNode* const             node;
 	X3DGroupingNode* const          group;
-	Matrix4d                        modelViewMatrix;
+	std::vector <Matrix4d>          modelViewMatrix;
 	Matrix4d                        shadowMatrix;
 	std::unique_ptr <TextureBuffer> shadowTextureBuffer;
 	size_t                          textureUnit;

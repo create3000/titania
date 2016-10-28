@@ -168,7 +168,7 @@ GeneratedCubeMapTexture::traverse (const TraverseType type, X3DRenderObject* con
 	if (size () <= 0)
 		return;
 
-	if (not renderObject -> getRenderGeneratedCubeMapTextures ())
+	if (not renderObject -> isIndependent ())
 		return;
 
 	renderObject -> getGeneratedCubeMapTextures () .emplace (this);
@@ -242,8 +242,11 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 
 			// Setup headlight if enabled.
 
-//			if (navigationInfo -> headlight ())
-//				browser -> getHeadlight () -> setModelViewMatrix (renderObject -> getCameraSpaceMatrix () .get () * renderer -> getModelViewMatrix () .get ());
+			if (navigationInfo -> headlight ())
+			{
+				browser -> getHeadlight () -> getModelViewMatrix () .emplace_back (renderer -> getInverseCameraSpaceMatrix () .get ());
+				browser -> getHeadlight () -> getModelViewMatrix () .back () .mult_left (renderObject -> getCameraSpaceMatrix () .get ());
+			}
 
 			// Render layer's children.
 
@@ -251,7 +254,8 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 
 			// Pop matrices.
 
-			browser -> getHeadlight () -> setModelViewMatrix (Matrix4d ());
+			if (navigationInfo -> headlight ())
+				browser -> getHeadlight () -> getModelViewMatrix () .pop_back ();
 
 			renderer -> getModelViewMatrix          () .pop ();
 			renderer -> getCameraSpaceMatrix        () .pop ();

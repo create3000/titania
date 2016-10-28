@@ -80,34 +80,34 @@ static constexpr auto   DEPTH_BUFFER_VIEWPORT = Vector4i (0, 0, DEPTH_BUFFER_WID
 static constexpr auto zAxis = Vector3d (0, 0, 1);
 
 X3DRenderObject::X3DRenderObject () :
-	                   X3DBaseNode (),
-	             cameraSpaceMatrix (),
-	          invCameraSpaceMatrix (),
-	              projectionMatrix (),
-	               modelViewMatrix (),
-	               viewVolumeStack (),
-	                  globalLights (),
-	                  localObjects (),
-	                    clipPlanes (),
-	                     localFogs (),
-	                   localLights (),
-	                        lights (),
-	                       layouts (),
-	renderGeneratedCubeMapTextures (false),
-	      generatedCubeMapTextures (),
-	                       shaders (),
-	                    collisions (),
-	                  opaqueShapes (),
-	             transparentShapes (),
-	               collisionShapes (),
-	              activeCollisions (),
-	                   depthShapes (),
-	                   depthBuffer (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)),
-	                         speed (),
-	               numOpaqueShapes (0),
-	          numTransparentShapes (0),
-	            numCollisionShapes (0),
-	                numDepthShapes (0)
+	             X3DBaseNode (),
+	       cameraSpaceMatrix (),
+	    invCameraSpaceMatrix (),
+	        projectionMatrix (),
+	         modelViewMatrix (),
+	         viewVolumeStack (),
+	            globalLights (),
+	            localObjects (),
+	              clipPlanes (),
+	               localFogs (),
+	             localLights (),
+	                  lights (),
+	              lightIndex (0),
+	                 layouts (),
+	generatedCubeMapTextures (),
+	                 shaders (),
+	              collisions (),
+	            opaqueShapes (),
+	       transparentShapes (),
+	         collisionShapes (),
+	        activeCollisions (),
+	             depthShapes (),
+	             depthBuffer (new FrameBuffer (getBrowser (), DEPTH_BUFFER_WIDTH, DEPTH_BUFFER_HEIGHT, 0, true)),
+	                   speed (),
+	         numOpaqueShapes (0),
+	    numTransparentShapes (0),
+	      numCollisionShapes (0),
+	          numDepthShapes (0)
 {
 	addType (X3DConstants::X3DRenderObject);
 }
@@ -273,6 +273,7 @@ X3DRenderObject::render (const TraverseType type, const TraverseFunction & trave
 		}
 		case TraverseType::DISPLAY:
 		{
+			lightIndex           = 0;
 			numOpaqueShapes      = 0;
 			numTransparentShapes = 0;
 
@@ -283,6 +284,12 @@ X3DRenderObject::render (const TraverseType type, const TraverseFunction & trave
 		default:
 			break;
 	}
+}
+
+const std::shared_ptr <LightContainer> &
+X3DRenderObject::getLightContainer () const
+{
+	return lights [const_cast <size_t &> (lightIndex) ++];
 }
 
 bool
@@ -582,15 +589,18 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 
 	// PREPARATIONS
 
-	// Render shadow maps.
-
-	for (const auto & object : getLights ())
-		object -> renderShadowMap (this);
-
-	// Render generated cube map textures.
-
-	for (const auto & generatedCubeMapTexture : getGeneratedCubeMapTextures ())
-		generatedCubeMapTexture -> renderTexture (this, traverse);
+	if (isIndependent ())
+	{
+		// Render shadow maps.
+	
+		for (const auto & object : getLights ())
+			object -> renderShadowMap (this);
+	
+		// Render generated cube map textures.
+	
+		for (const auto & generatedCubeMapTexture : getGeneratedCubeMapTextures ())
+			generatedCubeMapTexture -> renderTexture (this, traverse);
+	}
 
 	// BEGIN DRAW
 
@@ -695,6 +705,8 @@ X3DRenderObject::dispose ()
 	layouts                  .clear ();
 	shaders                  .clear ();
 	collisions               .clear ();
+
+	lightIndex = 0;
 
 	opaqueShapes      .clear ();
 	transparentShapes .clear ();

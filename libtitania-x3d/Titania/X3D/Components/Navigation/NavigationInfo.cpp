@@ -367,7 +367,6 @@ NavigationInfo::enable (X3DRenderObject* const renderObject)
 		const auto & lightContainer = renderObject -> getBrowser () -> getHeadlight ();
 
 		renderObject -> getGlobalLights () .emplace_back (lightContainer);
-		renderObject -> getLights ()       .emplace_back (lightContainer);
 	}
 }
 

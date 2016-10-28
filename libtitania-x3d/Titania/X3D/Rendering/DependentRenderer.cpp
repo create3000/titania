@@ -71,6 +71,37 @@ DependentRenderer::create (X3DExecutionContext* const executionContext) const
 	return new DependentRenderer (executionContext);
 }
 
+void
+DependentRenderer::render (const TraverseType type, const TraverseFunction & traverse)
+{
+	switch (type)
+	{
+		case TraverseType::COLLISION:
+		{
+			X3DRenderObject::render (type, traverse);
+			break;
+		}
+		case TraverseType::DEPTH:
+		{
+			X3DRenderObject::render (type, traverse);
+			break;
+		}
+		case TraverseType::DISPLAY:
+		{
+			renderObject -> setLightIndex (0);
+
+			X3DRenderObject::render (type, traverse);
+
+			for (const auto & light : renderObject -> getLights ())
+				light -> getModelViewMatrix () .pop_back ();
+
+			break;
+		}
+		default:
+			break;
+	}
+}
+
 DependentRenderer::~DependentRenderer ()
 { }
 

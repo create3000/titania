@@ -130,25 +130,47 @@ X3DLightNode::push (X3DRenderObject* const renderObject, X3DGroupingNode* const 
 {
 	if (on ())
 	{
-		if (global ())
+		if (renderObject -> isIndependent ())
 		{
-			const auto lightContainer = std::make_shared <LightContainer> (renderObject -> getBrowser (),
-			                                                               this,
-			                                                               renderObject -> getLayer () -> getGroup (),
-			                                                               renderObject -> getModelViewMatrix () .get ());
+			if (global ())
+			{
+				const auto lightContainer = std::make_shared <LightContainer> (renderObject -> getBrowser (),
+				                                                               this,
+				                                                               renderObject -> getLayer () -> getGroup (),
+				                                                               renderObject -> getModelViewMatrix () .get ());
 
-			renderObject -> getGlobalLights () .emplace_back (lightContainer);
-			renderObject -> getLights ()       .emplace_back (lightContainer);
+				renderObject -> getGlobalLights () .emplace_back (lightContainer);
+				renderObject -> getLights ()       .emplace_back (lightContainer);
+			}
+			else
+			{
+				const auto lightContainer = std::make_shared <LightContainer> (renderObject -> getBrowser (),
+				                                                               this,
+				                                                               group,
+				                                                               renderObject -> getModelViewMatrix () .get ());
+
+				renderObject -> getLocalLights () .emplace_back (lightContainer);
+				renderObject -> getLights ()      .emplace_back (lightContainer);
+			}
 		}
 		else
 		{
-			const auto lightContainer = std::make_shared <LightContainer> (renderObject -> getBrowser (),
-			                                                               this,
-			                                                               group,
-			                                                               renderObject -> getModelViewMatrix () .get ());
+			const auto & lightContainer = renderObject -> getLightContainer ();
 
-			renderObject -> getLocalLights () .emplace_back (lightContainer);
-			renderObject -> getLights ()      .emplace_back (lightContainer);
+			if (global ())
+			{
+				lightContainer -> getModelViewMatrix () .emplace_back (renderObject -> getModelViewMatrix () .get ());
+
+				renderObject -> getGlobalLights () .emplace_back (lightContainer);
+				renderObject -> getLights ()       .emplace_back (lightContainer);
+			}
+			else
+			{
+				lightContainer -> getModelViewMatrix () .emplace_back (renderObject -> getModelViewMatrix () .get ());
+
+				renderObject -> getLocalLights () .emplace_back (lightContainer);
+				renderObject -> getLights ()      .emplace_back (lightContainer);
+			}
 		}
 	}
 }
