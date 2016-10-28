@@ -25,17 +25,16 @@ sudo apt-get update
 sudo apt-get install titania
 ```
 
+### AUR package
+
 Since it is sometimes a bit tricky to compile titania successfully on other linux systems, there is a package available for AUR, the arch linux user
 repository which should simplify the process for you: [https://aur.archlinux.org/packages/titania-git/](https://aur.archlinux.org/packages/titania-git/).
 
 
-### AUR package
+### Install from Source
 
 If you want to compile Titania from source, first make sure that all dependencies listed in `debian/control` are installed. Then
 type the following commands in a terminal:
-
-
-### Install from Source
 
 ```bash
 git clone https://github.com/create3000/titania.git
