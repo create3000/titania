@@ -191,11 +191,11 @@ public:
 
 	virtual
 	void
-	push (const TraverseType type, X3DRenderObject* const renderObject, X3DGroupingNode* const);
+	push (X3DRenderObject* const renderObject, X3DGroupingNode* const);
 
 	virtual
 	void
-	pop (const TraverseType type, X3DRenderObject* const renderObject);
+	pop (X3DRenderObject* const renderObject);
 
 	virtual
 	void

@@ -52,9 +52,11 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/DependentRenderer.h"
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../EnvironmentalEffects/X3DBackgroundNode.h"
+#include "../Layering/X3DLayerNode.h"
 #include "../Lighting/DirectionalLight.h"
 #include "../Navigation/NavigationInfo.h"
 #include "../Navigation/X3DViewpointNode.h"
@@ -81,6 +83,7 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	                loadState (NOT_STARTED_STATE),
 	              transparent (false),
 	               updateType (UpdateType::NONE),
+	                 renderer (new DependentRenderer (executionContext)),
 	              frameBuffer (),
 	     transformationMatrix ()
 {
@@ -91,7 +94,7 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	addField (initializeOnly, "size",              size ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 
-	addChildren (loadState);
+	addChildren (loadState, renderer);
 }
 
 X3DBaseNode*
@@ -105,6 +108,8 @@ GeneratedCubeMapTexture::initialize ()
 {
 	X3DEnvironmentTextureNode::initialize ();
 
+	renderer -> setup ();
+
 	update () .addInterest (this, &GeneratedCubeMapTexture::set_update);
 	size   () .addInterest (this, &GeneratedCubeMapTexture::set_size);
 
@@ -117,6 +122,8 @@ GeneratedCubeMapTexture::setExecutionContext (X3DExecutionContext* const executi
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	renderer -> setExecutionContext (executionContext);
+
 	X3DEnvironmentTextureNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
@@ -161,9 +168,12 @@ GeneratedCubeMapTexture::traverse (const TraverseType type, X3DRenderObject* con
 	if (size () <= 0)
 		return;
 
-	transformationMatrix = renderObject -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
+	if (not renderObject -> getRenderGeneratedCubeMapTextures ())
+		return;
 
 	renderObject -> getGeneratedCubeMapTextures () .emplace (this);
+
+	transformationMatrix = renderObject -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
 }
 
 void
@@ -195,22 +205,25 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 			Vector3d ( 1,  1,  1), // bottom
 		};
 
-		renderObject -> getBrowser () -> getDisplayTools () .push (false);
+		renderer -> setRenderer (renderObject);
 
-		const auto   viewport           = Vector4i (0, 0, size (), size ());
-		const auto & background         = renderObject -> getBackground ();
-		const auto & navigationInfo     = renderObject -> getNavigationInfo ();
-		const auto & viewpoint          = renderObject -> getViewpoint ();
-		const auto   nearValue          = navigationInfo -> getNearValue ();
-		const auto   farValue           = navigationInfo -> getFarValue (viewpoint);
-		const auto   projectionMatrix   = camera <double>::perspective (radians (90.0), nearValue, farValue, 1, 1);
+		const auto & browser          = renderObject -> getBrowser ();
+		const auto & layer            = renderer -> getLayer ();
+		const auto   viewport         = Vector4i (0, 0, size (), size ());
+		const auto & background       = renderer -> getBackground ();
+		const auto & navigationInfo   = renderer -> getNavigationInfo ();
+		const auto & viewpoint        = renderer -> getViewpoint ();
+		const auto   nearValue        = navigationInfo -> getNearValue ();
+		const auto   farValue         = navigationInfo -> getFarValue (viewpoint);
+		const auto   projectionMatrix = camera <double>::perspective (radians (90.0), nearValue, farValue, 1, 1);
 
 		transparent = background -> isTransparent ();
 
+		browser     -> getDisplayTools () .push (false);
 		frameBuffer -> bind ();
 
-		renderObject -> getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
-		renderObject -> getProjectionMatrix () .push (projectionMatrix);
+		renderer -> getViewVolumes      () .emplace_back (projectionMatrix, viewport, viewport);
+		renderer -> getProjectionMatrix () .push (projectionMatrix);
 
 		for (size_t i = 0; i < 6; ++ i)
 		{
@@ -220,53 +233,49 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 
 			// Setup inverse texture space matrix.
 
-			renderObject -> getCameraSpaceMatrix        () .push (transformationMatrix);
-			renderObject -> getCameraSpaceMatrix        () .rotate (rotation);
-			renderObject -> getCameraSpaceMatrix        () .scale (scale [i]);
-			renderObject -> getInverseCameraSpaceMatrix () .push (inverse (renderObject -> getCameraSpaceMatrix () .get ()));
+			renderer -> getCameraSpaceMatrix        () .push (transformationMatrix);
+			renderer -> getCameraSpaceMatrix        () .rotate (rotation);
+			renderer -> getCameraSpaceMatrix        () .scale (scale [i]);
+			renderer -> getInverseCameraSpaceMatrix () .push (inverse (renderer -> getCameraSpaceMatrix () .get ()));
 
-			renderObject -> getModelViewMatrix () .push (renderObject -> getInverseCameraSpaceMatrix () .get ());
+			renderer -> getModelViewMatrix () .push (renderer -> getInverseCameraSpaceMatrix () .get ());
 
 			// Setup headlight if enabled.
 
-			if (navigationInfo -> headlight ())
-			{
-				renderObject -> getModelViewMatrix () .push ();
-				renderObject -> getModelViewMatrix () .mult_left (viewpoint -> getCameraSpaceMatrix ());
-				renderObject -> getBrowser () -> getHeadLight () -> push (TraverseType::DRAW, renderObject, nullptr);
-				renderObject -> getModelViewMatrix () .pop ();
-			}
+//			if (navigationInfo -> headlight ())
+//				browser -> getHeadlight () -> setModelViewMatrix (renderObject -> getCameraSpaceMatrix () .get () * renderer -> getModelViewMatrix () .get ());
 
 			// Render layer's children.
 
-			renderObject -> render (TraverseType::DRAW, traverse);
+			layer -> traverse (TraverseType::DISPLAY, renderer);
 
-			renderObject -> getModelViewMatrix          () .pop ();
-			renderObject -> getCameraSpaceMatrix        () .pop ();
-			renderObject -> getInverseCameraSpaceMatrix () .pop ();
+			// Pop matrices.
+
+			browser -> getHeadlight () -> setModelViewMatrix (Matrix4d ());
+
+			renderer -> getModelViewMatrix          () .pop ();
+			renderer -> getCameraSpaceMatrix        () .pop ();
+			renderer -> getInverseCameraSpaceMatrix () .pop ();
 
 			// Transfer image.
 
-			frameBuffer -> readPixels ();
-
-			setImage (getTargets () [i], GL_RGBA, GL_RGBA, frameBuffer -> getPixels () .data ());
+			setImage (getTargets () [i], GL_RGBA, GL_RGBA, frameBuffer -> readPixels () .data ());
 		}
 
-		renderObject -> getProjectionMatrix () .pop ();
-		renderObject -> getViewVolumes      () .pop_back ();
+		renderer -> getProjectionMatrix () .pop ();
+		renderer -> getViewVolumes      () .pop_back ();
 
 		frameBuffer -> unbind ();
+		browser     -> getDisplayTools () .pop ();
 
-		renderObject -> getBrowser () -> getDisplayTools () .pop ();
-
-		setLoadState (COMPLETE_STATE);
+		//setLoadState (COMPLETE_STATE);
 
 		if (updateType == UpdateType::NEXT_FRAME_ONLY)
 		   update () = "NONE";
 	}
 	catch (const std::domain_error &)
 	{
-		setLoadState (FAILED_STATE);
+		//setLoadState (FAILED_STATE);
 	}
 }
 

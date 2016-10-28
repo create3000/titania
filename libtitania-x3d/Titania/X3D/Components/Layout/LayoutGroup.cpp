@@ -174,7 +174,6 @@ LayoutGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 		case TraverseType::CAMERA:
 		case TraverseType::DEPTH:
 		case TraverseType::DISPLAY:
-		case TraverseType::DRAW:
 		{
 			if (viewportNode)
 				viewportNode -> push (renderObject);

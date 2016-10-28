@@ -54,6 +54,7 @@
 #include "../../Components/Lighting/DirectionalLight.h"
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/LightContainer.h"
 #include "../X3DBrowser.h"
 
 // First include X3DExecutionContext
@@ -64,7 +65,8 @@ namespace X3D {
 
 X3DNavigationContext::X3DNavigationContext () :
 	               X3DBaseNode (),
-	                 headLight (new DirectionalLight (getExecutionContext ())),
+	             headlightNode (new DirectionalLight (getExecutionContext ())),
+	        headlightContainer (std::make_shared <LightContainer> (getBrowser (), headlightNode, nullptr, Matrix4d ())),
 	               activeLayer (),
 	      activeNavigationInfo (nullptr),
 	activeNavigationInfoOutput (),
@@ -75,7 +77,7 @@ X3DNavigationContext::X3DNavigationContext () :
 	          activeCollisions (),
 	         straightenHorizon ()
 {
-	addChildren (headLight,
+	addChildren (headlightNode,
 	             activeLayer,
 	             activeNavigationInfoOutput,
 	             viewer,
@@ -88,7 +90,7 @@ X3DNavigationContext::X3DNavigationContext () :
 void
 X3DNavigationContext::initialize ()
 {
-	headLight -> setup ();
+	headlightNode -> setup ();
 
 	getBrowser () -> initialized () .addInterest (this, &X3DNavigationContext::set_initialized);
 }

@@ -151,7 +151,6 @@ ScreenGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 		{
 			case TraverseType::CAMERA:
 			case TraverseType::DEPTH:
-			case TraverseType::DRAW:
 				// No clone support for shadow and generated cube map texture
 				renderObject -> getModelViewMatrix () .mult_left (screenMatrix);
 				break;

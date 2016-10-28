@@ -184,7 +184,7 @@ FrameBuffer::unbind ()
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
 }
 
-void
+const std::vector <uint8_t> &
 FrameBuffer::readPixels ()
 {
 	pixels .resize (4 * width * height);
@@ -205,9 +205,11 @@ FrameBuffer::readPixels ()
 	}
 	else
 		glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
+
+	return pixels;
 }
 
-void
+const std::vector <float> &
 FrameBuffer::readDepth ()
 {
 	depth .resize (width * height);
@@ -228,6 +230,8 @@ FrameBuffer::readDepth ()
 	}
 	else
 		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
+
+	return depth;
 }
 
 FrameBuffer::~FrameBuffer ()

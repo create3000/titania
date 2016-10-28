@@ -88,14 +88,14 @@ public:
 	getPixels () const
 	{ return pixels; }
 
-	void
-	readPixels ();
-
 	const std::vector <float> &
 	getDepth () const
 	{ return depth; }
 
-	void
+	const std::vector <uint8_t> &
+	readPixels ();
+
+	const std::vector <float> &
 	readDepth ();
 
 	///  @name Operations

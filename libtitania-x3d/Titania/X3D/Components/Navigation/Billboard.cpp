@@ -147,7 +147,6 @@ Billboard::traverse (const TraverseType type, X3DRenderObject* const renderObjec
 		{
 			case TraverseType::CAMERA:
 			case TraverseType::DEPTH:
-			case TraverseType::DRAW:
 				// No clone support for shadow and generated cube map texture
 				renderObject -> getModelViewMatrix () .mult_left (matrix);
 				break;

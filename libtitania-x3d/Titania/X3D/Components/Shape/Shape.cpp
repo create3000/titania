@@ -164,13 +164,6 @@ Shape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 
 				break;
 			}
-			case TraverseType::DRAW:
-			{
-				if (renderObject -> addDrawShape (this))
-					getAppearance () -> traverse (type, renderObject);
-
-				break;
-			}
 		}
 	}
 }

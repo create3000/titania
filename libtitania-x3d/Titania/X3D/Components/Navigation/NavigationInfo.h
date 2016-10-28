@@ -228,7 +228,7 @@ public:
 	{ }
 
 	void
-	enable (const TraverseType type, X3DRenderObject* const renderObject);
+	enable (X3DRenderObject* const renderObject);
 
 	void
 	disable ();

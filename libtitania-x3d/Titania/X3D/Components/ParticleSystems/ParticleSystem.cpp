@@ -1314,13 +1314,6 @@ ParticleSystem::traverse (const TraverseType type, X3DRenderObject* const render
 
 			break;
 		}
-		case TraverseType::DRAW:
-		{
-			if (renderObject -> addDrawShape (this))
-				getAppearance () -> traverse (type, renderObject);
-
-			break;
-		}
 		default:
 			break;
 	}

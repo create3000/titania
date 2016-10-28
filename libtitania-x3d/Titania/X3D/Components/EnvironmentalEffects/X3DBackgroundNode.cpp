@@ -352,7 +352,6 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 			break;
 		}
 		case TraverseType::DISPLAY:
-		case TraverseType::DRAW:
 		{
 			if (isBound ())
 				modelViewMatrix .emplace_back (renderObject -> getModelViewMatrix () .get ());

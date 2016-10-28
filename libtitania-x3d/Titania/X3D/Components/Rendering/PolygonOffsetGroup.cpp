@@ -123,7 +123,6 @@ PolygonOffsetGroup::traverse (const TraverseType type, X3DRenderObject* const re
 	switch (type)
 	{
 		case TraverseType::DISPLAY:
-		case TraverseType::DRAW:
 		{
 			renderObject -> getLocalObjects () .emplace_back (new PolygonOffsetContainer (this));
 

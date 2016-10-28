@@ -77,7 +77,7 @@ public:
 
 	///  @name Construction
 
-	ShapeContainer (X3DRenderObject* const, const bool);
+	ShapeContainer (X3DRenderObject* const renderObject, const bool transparent);
 
 	///  @name Member access
 
@@ -86,7 +86,7 @@ public:
 
 	X3DRenderObject*
 	getRenderer () const
-	{ return renderer; }
+	{ return renderObject; }
 
 	bool
 	isTransparent () const
@@ -142,7 +142,7 @@ private:
 
 	///  @name Members
 
-	X3DRenderObject* const  renderer;
+	X3DRenderObject* const  renderObject;
 	bool                    transparent;
 	X3DFogObject*           fog;
 	LightContainerArray     localLights;

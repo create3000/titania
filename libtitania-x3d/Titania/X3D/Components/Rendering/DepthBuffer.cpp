@@ -137,7 +137,6 @@ DepthBuffer::traverse (const TraverseType type, X3DRenderObject* const renderObj
 	switch (type)
 	{
 		case TraverseType::DISPLAY:
-		case TraverseType::DRAW:
 		{
 			renderObject -> getLocalObjects () .emplace_back (new DepthTestContainer (this));
 

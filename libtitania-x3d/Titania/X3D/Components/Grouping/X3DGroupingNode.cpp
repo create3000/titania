@@ -379,7 +379,6 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 			return;
 		}
 		case TraverseType::DISPLAY:
-		case TraverseType::DRAW:
 		{
 			for (const auto & childNode : clipPlanes)
 				childNode -> push (renderObject);
@@ -388,13 +387,13 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 				childNode -> push (renderObject);
 
 			for (const auto & childNode : lights)
-				childNode -> push (type, renderObject, this);
+				childNode -> push (renderObject, this);
 
 			for (const auto & childNode : childNodes)
 				childNode -> traverse (type, renderObject);
 
 			for (const auto & childNode : basic::make_reverse_range (lights))
-				childNode -> pop (type, renderObject);
+				childNode -> pop (renderObject);
 
 			for (const auto & childNode : basic::make_reverse_range (localFogs))
 				childNode -> pop (renderObject);

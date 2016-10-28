@@ -831,6 +831,7 @@
     <None Include="share\fonts\truetype\titania-fonts\DroidSerif-Italic.ttf" />
     <None Include="share\fonts\truetype\titania-fonts\DroidSerif-Regular.ttf" />
     <None Include="Titania\X3D\Browser\PointingDeviceSensor\PointingDeviceSensorContainer.h" />
+    <None Include="Titania\X3D\Rendering\DependentRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1384,6 +1385,7 @@
     <Compile Include="Titania\X3D\Rendering\TextureBuffer.cpp" />
     <Compile Include="Titania\X3D\Rendering\X3DRenderObject.cpp" />
     <Compile Include="Titania\X3D\Rendering\X3DShapeContainer.cpp" />
+    <Compile Include="Titania\X3D\Rendering\DependentRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

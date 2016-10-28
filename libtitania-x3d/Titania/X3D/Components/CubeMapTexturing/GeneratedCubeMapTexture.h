@@ -56,6 +56,7 @@
 namespace titania {
 namespace X3D {
 
+class DependentRenderer;
 class FrameBuffer;
 
 class GeneratedCubeMapTexture :
@@ -216,6 +217,7 @@ private:
 	SFEnum <LoadState>            loadState;
 	bool                          transparent;
 	UpdateType                    updateType;
+	X3DPtr <DependentRenderer>    renderer;
 	std::unique_ptr <FrameBuffer> frameBuffer;
 	Matrix4d                      transformationMatrix;
 

@@ -65,7 +65,7 @@ LightContainer::LightContainer (X3DBrowser* const browser, X3DLightNode* const n
 	             browser (browser),
 	                node (node),
 	               group (group),
-	     modelViewMatrix ({ modelViewMatrix }),
+	     modelViewMatrix (modelViewMatrix),
 	        shadowMatrix (),
 	 shadowTextureBuffer (),
 	         textureUnit (0),
@@ -114,7 +114,7 @@ LightContainer::enable ()
 	
 			glEnable (lightId);
 	
-			glLoadMatrixd (modelViewMatrix .back () .data ());
+			glLoadMatrixd (modelViewMatrix .data ());
 	
 			node -> draw (lightId);
 		}
@@ -153,7 +153,7 @@ LightContainer::disable ()
 void
 LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
-	node -> setShaderUniforms (shaderObject, i, modelViewMatrix .back ());
+	node -> setShaderUniforms (shaderObject, i, modelViewMatrix);
 
 	if (textureUnit)
 	{

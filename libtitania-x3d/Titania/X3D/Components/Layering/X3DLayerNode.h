@@ -261,16 +261,16 @@ private:
 	set_viewport ();
 
 	void
-	pointer ();
+	pointer (const TraverseType type, X3DRenderObject* const renderObject);
 
 	void
-	camera ();
+	camera (const TraverseType type, X3DRenderObject* const renderObject);
 
 	void
-	collision ();
+	collision (const TraverseType type, X3DRenderObject* const renderObject);
 
 	void
-	display (const TraverseType);
+	display (const TraverseType type, X3DRenderObject* const renderObject);
 
 	void
 	collect (const TraverseType, X3DRenderObject* const renderObject);

@@ -205,7 +205,7 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 
 		renderObject -> getBrowser () -> getDisplayTools () .push (false);
 
-		const auto transformationMatrix = lightContainer -> getModelViewMatrix () .back () * renderObject -> getCameraSpaceMatrix () .get ();
+		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * renderObject -> getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
 
 		invLightSpaceMatrix .translate (location () .getValue ());

@@ -159,7 +159,7 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 
 		renderObject -> getBrowser () -> getDisplayTools () .push (false);
 	
-		const auto transformationMatrix = lightContainer -> getModelViewMatrix () .back () * renderObject -> getCameraSpaceMatrix () .get ();
+		const auto transformationMatrix = lightContainer -> getModelViewMatrix () * renderObject -> getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
 	
 		invLightSpaceMatrix .rotate (Rotation4d (Vector3d (0, 0, 1), negate (Vector3d (direction () .getValue ()))));
@@ -218,7 +218,7 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 			renderObject -> getInverseCameraSpaceMatrix () .pop ();
 			renderObject -> getCameraSpaceMatrix        () .pop ();
 		
-			frameBuffer .readDepth ();
+			zframeBuffer .readDepth ();
 			frameBuffer .unbind ();
 		
 			glDrawPixels (100, 100, GL_LUMINANCE, GL_FLOAT, frameBuffer .getDepth () .data ());

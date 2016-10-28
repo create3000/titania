@@ -58,13 +58,13 @@ namespace X3D {
 
 class X3DRenderObject;
 
-enum class TraverseType : uint8_t
+enum class TraverseType :
+	uint8_t
 {
 	POINTER,
 	CAMERA,
 	COLLISION,
 	DEPTH,
-	DRAW,
 	DISPLAY,
 
 };

@@ -59,9 +59,9 @@
 namespace titania {
 namespace X3D {
 
-ShapeContainer::ShapeContainer (X3DRenderObject* const renderer, const bool transparent) :
+ShapeContainer::ShapeContainer (X3DRenderObject* const renderObject, const bool transparent) :
 	X3DShapeContainer (),
-	         renderer (renderer),
+	     renderObject (renderObject),
 	      transparent (transparent),
 	              fog (nullptr),
 	      localLights (),
@@ -73,7 +73,7 @@ ShapeContainer::ShapeContainer (X3DRenderObject* const renderer, const bool tran
 X3DBrowser*
 ShapeContainer::getBrowser () const
 {
-	return renderer -> getBrowser ();
+	return renderObject -> getBrowser ();
 }
 
 void
@@ -95,7 +95,7 @@ ShapeContainer::display ()
 
 	glLoadMatrixd (getModelViewMatrix () .data ());
 
-	getFog () -> enable (renderer);
+	getFog () -> enable (renderObject);
 
 	getShape () -> display (this);
 

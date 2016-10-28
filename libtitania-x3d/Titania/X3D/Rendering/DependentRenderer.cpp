@@ -48,62 +48,31 @@
  *
  ******************************************************************************/
 
-#include "X3DShaderNode.h"
+#include "DependentRenderer.h"
 
-#include "../../Browser/X3DBrowser.h"
-#include "../../Rendering/X3DRenderObject.h"
+#include "../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-X3DShaderNode::Fields::Fields () :
-	  activate (new SFBool ()),
-	isSelected (new SFBool ()),
-	   isValid (new SFBool ()),
-	  language (new SFString ())
+const ComponentType DependentRenderer::component      = ComponentType::TITANIA;
+const std::string   DependentRenderer::typeName       = "DependentRenderer";
+const std::string   DependentRenderer::containerField = "renderer";
+
+DependentRenderer::DependentRenderer (X3DExecutionContext* const executionContext) :
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DRenderObject (),
+	   renderObject (nullptr)
 { }
 
-X3DShaderNode::X3DShaderNode () :
-	X3DAppearanceChildNode (),
-	                fields (),
-	              selected (0)
+X3DBaseNode*
+DependentRenderer::create (X3DExecutionContext* const executionContext) const
 {
-	addType (X3DConstants::X3DShaderNode);
+	return new DependentRenderer (executionContext);
 }
 
-void
-X3DShaderNode::select ()
-{
-	++ selected;
-
-	if (not isSelected ())
-		isSelected () = true;
-}
-
-void
-X3DShaderNode::deselect ()
-{
-	-- selected;
-	
-	if (not selected)
-	{
-		if (isSelected ())
-			isSelected () = false;	
-	}
-}
-
-void
-X3DShaderNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
-{
-	switch (type)
-	{
-		case TraverseType::DISPLAY:
-			renderObject -> getShaders () .emplace (this);
-			break;
-		default:
-			break;
-	}
-}
+DependentRenderer::~DependentRenderer ()
+{ }
 
 } // X3D
 } // titania

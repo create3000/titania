@@ -360,10 +360,15 @@ NavigationInfo::removeFromLayer (X3DLayerNode* const layer)
 }
 
 void
-NavigationInfo::enable (const TraverseType type, X3DRenderObject* const renderObject)
+NavigationInfo::enable (X3DRenderObject* const renderObject)
 {
 	if (headlight ())
-		renderObject -> getBrowser () -> getHeadLight () -> push (type, renderObject, nullptr);
+	{
+		const auto & lightContainer = renderObject -> getBrowser () -> getHeadlight ();
+
+		renderObject -> getGlobalLights () .emplace_back (lightContainer);
+		renderObject -> getLights ()       .emplace_back (lightContainer);
+	}
 }
 
 void

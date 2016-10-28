@@ -58,15 +58,16 @@ namespace titania {
 namespace X3D {
 
 class DirectionalLight;
+class LightContainer;
 
 class X3DNavigationContext :
 	virtual public X3DBaseNode
 {
 public:
 
-	const X3DPtr <DirectionalLight> &
-	getHeadLight () const
-	{ return headLight; }
+	const std::shared_ptr <LightContainer> &
+	getHeadlight () const
+	{ return headlightContainer; }
 
 	const X3DLayerNodePtr &
 	getActiveLayer () const
@@ -180,16 +181,17 @@ private:
 
 	///  @name Members
 
-	X3DPtr <DirectionalLight>       headLight;
-	X3DLayerNodePtr                 activeLayer;
-	NavigationInfo*                 activeNavigationInfo;
-	SFTime                          activeNavigationInfoOutput;
-	SFEnum <X3DConstants::NodeType> viewer;
-	SFEnum <X3DConstants::NodeType> privateViewer;
-	MFEnum <X3DConstants::NodeType> availableViewers;
-	SFTime                          activeViewpointOutput;
-	std::set <const X3DBaseNode*>   activeCollisions;
-	SFBool                          straightenHorizon;
+	X3DPtr <DirectionalLight>        headlightNode;
+	std::shared_ptr <LightContainer> headlightContainer;
+	X3DLayerNodePtr                  activeLayer;
+	NavigationInfo*                  activeNavigationInfo;
+	SFTime                           activeNavigationInfoOutput;
+	SFEnum <X3DConstants::NodeType>  viewer;
+	SFEnum <X3DConstants::NodeType>  privateViewer;
+	MFEnum <X3DConstants::NodeType>  availableViewers;
+	SFTime                           activeViewpointOutput;
+	std::set <const X3DBaseNode*>    activeCollisions;
+	SFBool                           straightenHorizon;
 
 };
 

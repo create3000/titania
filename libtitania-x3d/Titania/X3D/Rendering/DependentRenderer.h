@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,62 +48,109 @@
  *
  ******************************************************************************/
 
-#include "X3DShaderNode.h"
+#ifndef __TITANIA_X3D_RENDERING_DEPENDENT_RENDERER_H__
+#define __TITANIA_X3D_RENDERING_DEPENDENT_RENDERER_H__
 
-#include "../../Browser/X3DBrowser.h"
-#include "../../Rendering/X3DRenderObject.h"
+#include "../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
 
-X3DShaderNode::Fields::Fields () :
-	  activate (new SFBool ()),
-	isSelected (new SFBool ()),
-	   isValid (new SFBool ()),
-	  language (new SFString ())
-{ }
-
-X3DShaderNode::X3DShaderNode () :
-	X3DAppearanceChildNode (),
-	                fields (),
-	              selected (0)
+class DependentRenderer :
+	public X3DRenderObject
 {
-	addType (X3DConstants::X3DShaderNode);
-}
+public:
 
-void
-X3DShaderNode::select ()
-{
-	++ selected;
+	///  @name Construction
 
-	if (not isSelected ())
-		isSelected () = true;
-}
+	DependentRenderer (X3DExecutionContext* const executionContext);
 
-void
-X3DShaderNode::deselect ()
-{
-	-- selected;
-	
-	if (not selected)
-	{
-		if (isSelected ())
-			isSelected () = false;	
-	}
-}
+	///  @name Common members
 
-void
-X3DShaderNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
-{
-	switch (type)
-	{
-		case TraverseType::DISPLAY:
-			renderObject -> getShaders () .emplace (this);
-			break;
-		default:
-			break;
-	}
-}
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Members access
+
+	void
+	setRenderer (X3DRenderObject* const value)
+	{ renderObject = value; }
+
+	///  @name Layer handling
+
+	///  Returns a pointer to the browser this node belongs to.
+	virtual
+	X3DBrowser*
+	getBrowser () const final override
+	{ return renderObject -> getBrowser (); }
+
+	virtual
+	X3DLayerNode*
+	getLayer () const final override
+	{ return renderObject -> getLayer (); }
+
+	virtual
+	NavigationInfo*
+	getNavigationInfo () const final override
+	{ return renderObject -> getNavigationInfo (); }
+
+	virtual
+	X3DViewpointNode*
+	getViewpoint () const final override
+	{ return renderObject -> getViewpoint (); }
+
+	virtual
+	X3DBackgroundNode*
+	getBackground () const final override
+	{ return renderObject -> getBackground (); }
+
+	virtual
+	X3DFogObject*
+	getFog () const final override
+	{ return renderObject -> getFog (); }
+
+	///  @name Destruction
+
+	~DependentRenderer ();
+
+
+private:
+
+	///  @name Construction
+
+	///  Constructs a new node into @a executionContext.
+	virtual
+	X3DBaseNode*
+	create (X3DExecutionContext* const) const final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	X3DRenderObject* renderObject;
+
+};
 
 } // X3D
 } // titania
+
+#endif

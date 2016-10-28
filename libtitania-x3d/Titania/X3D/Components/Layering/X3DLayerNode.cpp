@@ -120,6 +120,8 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* p_defaultViewpoint, X3DGroupingNod
 
 	defaultBackground -> isHidden (true);
 	defaultFog        -> isHidden (true);
+
+	setRenderGeneratedCubeMapTextures (true);
 }
 
 void
@@ -294,38 +296,39 @@ X3DLayerNode::bind ()
 }
 
 void
-X3DLayerNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+X3DLayerNode::traverse (const TraverseType type, X3DRenderObject* const p_renderObject)
 {
+	const auto renderObject = p_renderObject ? p_renderObject : this;
+
 	getCameraSpaceMatrix        () .push (getViewpoint () -> getCameraSpaceMatrix ());
 	getInverseCameraSpaceMatrix () .push (getViewpoint () -> getInverseCameraSpaceMatrix ());
-	getProjectionMatrix         () .push (getViewpoint () -> getProjectionMatrix (this));
+	getProjectionMatrix         () .push (getViewpoint () -> getProjectionMatrix (renderObject));
 
 	switch (type)
 	{
 		case TraverseType::POINTER:
 		{
-			pointer ();
+			pointer (type, renderObject);
 			break;
 		}
 		case TraverseType::CAMERA:
 		{
-			camera ();
+			camera (type, renderObject);
 			break;
 		}
 		case TraverseType::COLLISION:
 		{
-			collision ();
+			collision (type, renderObject);
 			break;
 		}
 		case TraverseType::DEPTH:
 		{
-			display (type);
+			display (type, renderObject);
 			break;
 		}
 		case TraverseType::DISPLAY:
-		case TraverseType::DRAW:
 		{
-			display (type);
+			display (type, renderObject);
 			break;
 		}
 	}
@@ -336,7 +339,7 @@ X3DLayerNode::traverse (const TraverseType type, X3DRenderObject* const renderOb
 }
 
 void
-X3DLayerNode::pointer ()
+X3DLayerNode::pointer (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (isPickable ())
 	{
@@ -355,27 +358,27 @@ X3DLayerNode::pointer ()
 
 		getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
-		currentViewport -> push (this);
-		collect (TraverseType::POINTER, this);
-		currentViewport -> pop (this);
+		currentViewport -> push (renderObject);
+		collect (type, renderObject);
+		currentViewport -> pop (renderObject);
 
 		getModelViewMatrix () .pop ();
 	}
 }
 
 void
-X3DLayerNode::camera ()
+X3DLayerNode::camera (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	getModelViewMatrix () .push (Matrix4d ());
 
-	defaultNavigationInfo -> traverse (TraverseType::CAMERA, this);
-	defaultViewpoint      -> traverse (TraverseType::CAMERA, this);
-	defaultBackground     -> traverse (TraverseType::CAMERA, this);
-	defaultFog            -> traverse (TraverseType::CAMERA, this);
+	defaultNavigationInfo -> traverse (TraverseType::CAMERA, renderObject);
+	defaultViewpoint      -> traverse (TraverseType::CAMERA, renderObject);
+	defaultBackground     -> traverse (TraverseType::CAMERA, renderObject);
+	defaultFog            -> traverse (TraverseType::CAMERA, renderObject);
 
-	currentViewport -> push (this);
-	collect (TraverseType::CAMERA, this);
-	currentViewport -> pop (this);
+	currentViewport -> push (renderObject);
+	collect (type, renderObject);
+	currentViewport -> pop (renderObject);
 
 	navigationInfos -> update ();
 	viewpoints      -> update ();
@@ -386,7 +389,7 @@ X3DLayerNode::camera ()
 }
 
 void
-X3DLayerNode::collision ()
+X3DLayerNode::collision (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	using namespace std::placeholders;
 
@@ -399,25 +402,25 @@ X3DLayerNode::collision ()
 	getModelViewMatrix  () .push (getViewpoint () -> getInverseCameraSpaceMatrix ()); // !!! Must be from viewpoint.
 
 	// Render
-	currentViewport -> push (this);
-	render (TraverseType::COLLISION, std::bind (&X3DLayerNode::collect, this, _1, _2));
-	currentViewport -> pop (this);
+	currentViewport -> push (renderObject);
+	renderObject -> render (type, std::bind (&X3DLayerNode::collect, this, _1, _2));
+	currentViewport -> pop (renderObject);
 
 	getModelViewMatrix  () .pop ();
 	getProjectionMatrix () .pop ();
 }
 
 void
-X3DLayerNode::display (const TraverseType type)
+X3DLayerNode::display (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	using namespace std::placeholders;
 
-	getNavigationInfo () -> enable (type, this);
+	getNavigationInfo () -> enable (renderObject);
 	getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
-	currentViewport -> push (this);
-	render (type, std::bind (&X3DLayerNode::collect, this, _1, _2));
-	currentViewport -> pop (this);
+	currentViewport -> push (renderObject);
+	renderObject -> render (type, std::bind (&X3DLayerNode::collect, this, _1, _2));
+	currentViewport -> pop (renderObject);
 
 	getModelViewMatrix () .pop ();
 	getNavigationInfo () -> disable ();

@@ -80,7 +80,6 @@ using LocalFogStack              = std::vector <LocalFog*>;
 using LayoutStack                = std::vector <X3DLayoutNode*>;
 using GeneratedCubeMapTextureSet = std::set <GeneratedCubeMapTexture*>;
 using ShaderSet                  = std::set <X3DShaderNode*>;
-using ShaderSetStack             = std::vector <ShaderSet>;
 
 class X3DRenderObject :
 	virtual public X3DBaseNode
@@ -120,14 +119,6 @@ public:
 	///  @name Matrix stacks
 
 	Matrix4dStack &
-	getProjectionMatrix ()
-	{ return projectionMatrix; }
-
-	const Matrix4dStack &
-	getProjectionMatrix () const
-	{ return projectionMatrix; }
-
-	Matrix4dStack &
 	getCameraSpaceMatrix ()
 	{ return cameraSpaceMatrix; }
 
@@ -142,6 +133,14 @@ public:
 	const Matrix4dStack &
 	getInverseCameraSpaceMatrix () const
 	{ return invCameraSpaceMatrix; }
+
+	Matrix4dStack &
+	getProjectionMatrix ()
+	{ return projectionMatrix; }
+
+	const Matrix4dStack &
+	getProjectionMatrix () const
+	{ return projectionMatrix; }
 
 	Matrix4dStack &
 	getModelViewMatrix ()
@@ -193,13 +192,21 @@ public:
 	getParentLayout ()
 	{ return layouts .empty () ? nullptr : layouts .back (); }
 
+	void
+	setRenderGeneratedCubeMapTextures (const bool value)
+	{ renderGeneratedCubeMapTextures = value; }
+
+	bool
+	getRenderGeneratedCubeMapTextures () const
+	{ return renderGeneratedCubeMapTextures; }
+
 	GeneratedCubeMapTextureSet &
 	getGeneratedCubeMapTextures ()
 	{ return generatedCubeMapTextures; }
 
 	ShaderSet &
 	getShaders ()
-	{ return shaders .back (); }
+	{ return shaders; }
 
 	CollisionArray &
 	getCollisions ()
@@ -209,19 +216,19 @@ public:
 
 	size_t
 	getNumOpaqueShapes () const
-	{ return numOpaqueDisplayShapes; }
+	{ return numOpaqueShapes; }
 
 	const ShapeContainerArray &
 	getOpaqueShapes () const
-	{ return opaqueDisplayShapes; }
+	{ return opaqueShapes; }
 
 	size_t
 	getNumTransparentShapes () const
-	{ return numTransparentDisplayShapes; }
+	{ return numTransparentShapes; }
 
 	const ShapeContainerArray &
 	getTransparentShapes () const
-	{ return transparentDisplayShapes; }
+	{ return transparentShapes; }
 
 	///  @name Operations
 
@@ -247,7 +254,6 @@ protected:
 
 	friend class ParticleSystem;
 	friend class Shape;
-	friend class X3DLightNode;
 
 	///  @name Construction
 
@@ -259,17 +265,11 @@ protected:
 
 	///  @name Member acess
 
-	const std::shared_ptr <LightContainer> &
-	getLight () const;
-
 	bool
 	addCollisionShape (X3DShapeNode* const shape);
 
 	bool
 	addDepthShape (X3DShapeNode* const shape);
-
-	bool
-	addDrawShape (X3DShapeNode* const shape);
 
 	bool
 	addDisplayShape (X3DShapeNode* const shape);
@@ -278,13 +278,6 @@ protected:
 private:
 
 	///  @name Operations
-
-	bool
-	addShape (X3DShapeNode* const shape,
-	          ShapeContainerArray & opaqueShapes,
-	          size_t & numOpaqueShapes,
-	          ShapeContainerArray & transparentShapes,
-	          size_t & numTransparentShapes);
 
 	double
 	getDistance (const Vector3d &) const;
@@ -302,19 +295,13 @@ private:
 	depth (const CollisionContainerArray &, const size_t);
 
 	void
-	display (const TraverseFunction & traverse);
-
-	void
-	draw (ShapeContainerArray & opaqueShapes,
-	      size_t & numOpaqueShapes,
-	      ShapeContainerArray & transparentShapes,
-	      size_t & numTransparentShapes);
+	draw (const TraverseFunction & traverse);
 
 	///  @name Members
 
-	Matrix4dStack projectionMatrix;
 	Matrix4dStack cameraSpaceMatrix;
 	Matrix4dStack invCameraSpaceMatrix;
+	Matrix4dStack projectionMatrix;
 	Matrix4dStack modelViewMatrix;
 
 	ViewVolumeStack            viewVolumeStack;
@@ -324,16 +311,14 @@ private:
 	LocalFogStack              localFogs;
 	LightContainerArray        localLights;
 	LightContainerArray        lights;
-	size_t                     lightId;
 	LayoutStack                layouts;
+	bool                       renderGeneratedCubeMapTextures;
 	GeneratedCubeMapTextureSet generatedCubeMapTextures;
-	ShaderSetStack             shaders;
+	ShaderSet                  shaders;
 	CollisionArray             collisions;
 
-	ShapeContainerArray      opaqueDrawShapes;
-	ShapeContainerArray      transparentDrawShapes;
-	ShapeContainerArray      opaqueDisplayShapes;
-	ShapeContainerArray      transparentDisplayShapes;
+	ShapeContainerArray      opaqueShapes;
+	ShapeContainerArray      transparentShapes;
 	CollisionContainerArray  collisionShapes;
 	std::vector <Collision*> activeCollisions;
 	CollisionContainerArray  depthShapes;
@@ -341,10 +326,8 @@ private:
 	std::unique_ptr <FrameBuffer> depthBuffer;
 	double                        speed;
 
-	size_t numOpaqueDrawShapes;
-	size_t numTransparentDrawShapes;
-	size_t numOpaqueDisplayShapes;
-	size_t numTransparentDisplayShapes;
+	size_t numOpaqueShapes;
+	size_t numTransparentShapes;
 	size_t numCollisionShapes;
 	size_t numDepthShapes;
 
