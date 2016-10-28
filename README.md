@@ -15,6 +15,8 @@ For more information and documentation please visit our website at [http://titan
 Installation
 --------------------------------------
 
+### Ubuntu Package
+
 Titania is available for **Ubuntu** on Launchpad via ppa. You can install Titania by pasting the following lines into a terminal: 
 
 ```bash
@@ -23,8 +25,17 @@ sudo apt-get update
 sudo apt-get install titania
 ```
 
+Since it is sometimes a bit tricky to compile titania successfully on other linux systems, there is a package available for AUR, the arch linux user
+repository which should simplify the process for you: [https://aur.archlinux.org/packages/titania-git/](https://aur.archlinux.org/packages/titania-git/).
+
+
+### AUR package
+
 If you want to compile Titania from source, first make sure that all dependencies listed in `debian/control` are installed. Then
 type the following commands in a terminal:
+
+
+### Install from Source
 
 ```bash
 git clone https://github.com/create3000/titania.git
