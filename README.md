@@ -28,7 +28,9 @@ sudo apt-get install titania
 ### Arch Linux User Repository
 
 Since it is sometimes a bit tricky to compile titania successfully on other Linux systems than Ubuntu, there is a
-package available for AUR, the Arch Linux User Repository which should simplify the process for you: 
+package of the latest version of Titania available for AUR, the Arch Linux User Repository which should simplify the
+process for you:
+
 [https://aur.archlinux.org/packages/titania-git/](https://aur.archlinux.org/packages/titania-git/).
 
 They are specific for Arch Linux. AUR Packages are not precompiled, they are more or less simply a script that downloads
