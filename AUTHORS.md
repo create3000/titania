@@ -1,2 +1,6 @@
-Holger Seelig <holger.seelig@yahoo.de>
-naraesk (Arch Linux User Repository)
+
+AUTHORS
+==================================================
+
+* Holger Seelig <holger.seelig@yahoo.de>
+* naraesk (Arch Linux User Repository)
