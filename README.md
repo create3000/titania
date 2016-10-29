@@ -25,7 +25,7 @@ sudo apt-get update
 sudo apt-get install titania
 ```
 
-### AUR package
+### Arch Linux User Repository
 
 Since it is sometimes a bit tricky to compile titania successfully on other Linux systems than Ubuntu, there is a
 package available for AUR, the Arch Linux User Repository which should simplify the process for you: 
@@ -33,6 +33,7 @@ package available for AUR, the Arch Linux User Repository which should simplify 
 
 They are specific for Arch Linux. AUR Packages are not precompiled, they are more or less simply a script that downloads
 the source code, installs all dependencies and executes the commands to compile and install the software.
+
 
 ### Install from Source
 
@@ -49,6 +50,11 @@ make run
 
 **Note:** `make -j4` compiles the project with four jobs at the same time, ie. it uses four processors. Adjust this value depending
 on the number of processors of your computer.  It can take 20 up to 45 minutes or longer to compile the whole project.
+
+
+Authors
+--------------------------------------
+All authors contributed to this project can be found in the [list of authors](AUTHORS.md).
 
 
 Acknowledgments

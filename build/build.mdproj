@@ -22,9 +22,6 @@
     <None Include="..\autogen.sh">
       <Link>autogen.sh</Link>
     </None>
-    <None Include="..\AUTHORS">
-      <Link>AUTHORS</Link>
-    </None>
     <None Include="..\ChangeLog">
       <Link>ChangeLog</Link>
     </None>
@@ -85,9 +82,6 @@
     <None Include="..\Titania.usertasks">
       <Link>Titania.usertasks</Link>
     </None>
-    <None Include="..\README">
-      <Link>README</Link>
-    </None>
     <None Include="..\configure">
       <Link>configure</Link>
     </None>
@@ -112,6 +106,9 @@
     <None Include="snapcraft\snapcraft.yaml" />
     <None Include="snapcraft\setup\gui\icon.png" />
     <None Include="snapcraft\titania-wrapper" />
+    <None Include="..\AUTHORS.md">
+      <Link>AUTHORS.md</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />
