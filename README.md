@@ -31,10 +31,11 @@ Since it is sometimes a bit tricky to compile titania successfully on other Linu
 package of the latest version of Titania available for AUR, the Arch Linux User Repository which should simplify the
 process for you:
 
-[https://aur.archlinux.org/packages/titania-git/](https://aur.archlinux.org/packages/titania-git/).
+[https://aur.archlinux.org/packages/titania-git/](https://aur.archlinux.org/packages/titania-git/)
 
-They are specific for Arch Linux. AUR Packages are not precompiled, they are more or less simply a script that downloads
-the source code, installs all dependencies and executes the commands to compile and install the software.
+They are specific for [Arch Linux](https://www.archlinux.org/). AUR Packages are not precompiled, they are more or less 
+simply a script that downloads the source code, installs all dependencies and executes the commands to compile and 
+install the software.
 
 
 ### Install from Source
