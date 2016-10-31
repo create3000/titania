@@ -70,8 +70,6 @@ X3DFooterInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ConsoleBox", m_ConsoleBox);
 	m_builder -> get_widget ("ScriptEditorBox", m_ScriptEditorBox);
 	m_builder -> get_widget ("AnimationEditorBox", m_AnimationEditorBox);
-
-	// Connect object Gtk::Notebook with id 'Notebook'.
 	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DFooterInterface::on_switch_page));
 
 	// Call construct handler of base class.

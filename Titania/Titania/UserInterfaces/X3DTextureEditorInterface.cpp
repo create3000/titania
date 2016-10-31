@@ -288,8 +288,6 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);
 	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
 	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);
-
-	// Connect object Gtk::Button with id 'EditPaletteCancelButton'.
 	m_EditPaletteCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_edit_palette_cancel_clicked));
 	m_EditPaletteOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DTextureEditorInterface::on_edit_palette_ok_clicked));
 
