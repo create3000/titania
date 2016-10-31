@@ -219,7 +219,7 @@ addConstants (X3DBrowser* const browser, const std::string & source)
 	constants += "#define x3d_TextureType3D              3\n";
 	constants += "#define x3d_TextureTypeCubeMapTexture  4\n";
 
-	constants += "#define X3D_SHADOW\n";
+	constants += "#define X3D_SHADOWS\n";
 	constants += "#define x3d_MaxShadows     4\n";
 	constants += "#define x3d_ShadowSamples  8\n";
 

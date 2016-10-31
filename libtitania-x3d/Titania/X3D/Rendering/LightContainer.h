@@ -53,6 +53,7 @@
 
 #include "../Rendering/OpenGL.h"
 #include "../Rendering/X3DCollectableObject.h"
+#include "../Types/MatrixStack.h"
 
 #include <memory>
 
@@ -81,11 +82,11 @@ public:
 	getGroup () const
 	{ return group; }
 
-	std::vector <Matrix4d> &
+	Matrix4dStack &
 	getModelViewMatrix ()
 	{ return modelViewMatrix; }
 
-	const std::vector <Matrix4d> &
+	const Matrix4dStack &
 	getModelViewMatrix () const
 	{ return modelViewMatrix; }
 
@@ -129,7 +130,7 @@ private:
 	X3DBrowser* const               browser;
 	X3DLightNode* const             node;
 	X3DGroupingNode* const          group;
-	std::vector <Matrix4d>          modelViewMatrix;
+	Matrix4dStack                   modelViewMatrix;
 	Matrix4d                        shadowMatrix;
 	std::unique_ptr <TextureBuffer> shadowTextureBuffer;
 	size_t                          textureUnit;

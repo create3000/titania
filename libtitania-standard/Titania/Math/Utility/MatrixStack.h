@@ -76,6 +76,9 @@ public:
 	///  Value typedef.
 	using value_type = Type;
 
+	///  Container typedef.
+	using container_type = std::vector <value_type>;
+
 	///  Translation typedef.
 	using translation_type = typename value_type::translation_type;
 
@@ -91,6 +94,11 @@ public:
 	constexpr
 	matrix_stack () :
 		stack (1)
+	{ }
+
+	///  Constructs the underlying container with the contents of @a container.
+	matrix_stack (const container_type & container) :
+		stack (container)
 	{ }
 
 	///  Copy constructor.
@@ -138,7 +146,7 @@ public:
 	empty () const
 	{ return stack .empty (); }
 
-	typename std::vector <value_type>::size_type
+	typename container_type::size_type
 	size () const
 	{ return stack .size (); }
 
@@ -167,7 +175,7 @@ public:
 
 private:
 
-	std::vector <value_type> stack;
+	container_type stack;
 
 };
 

@@ -159,14 +159,14 @@ X3DLightNode::push (X3DRenderObject* const renderObject, X3DGroupingNode* const 
 
 			if (global ())
 			{
-				lightContainer -> getModelViewMatrix () .emplace_back (renderObject -> getModelViewMatrix () .get ());
+				lightContainer -> getModelViewMatrix () .push (renderObject -> getModelViewMatrix () .get ());
 
 				renderObject -> getGlobalLights () .emplace_back (lightContainer);
 				renderObject -> getLights ()       .emplace_back (lightContainer);
 			}
 			else
 			{
-				lightContainer -> getModelViewMatrix () .emplace_back (renderObject -> getModelViewMatrix () .get ());
+				lightContainer -> getModelViewMatrix () .push (renderObject -> getModelViewMatrix () .get ());
 
 				renderObject -> getLocalLights () .emplace_back (lightContainer);
 				renderObject -> getLights ()      .emplace_back (lightContainer);

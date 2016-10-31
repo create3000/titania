@@ -244,8 +244,8 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 
 			if (navigationInfo -> headlight ())
 			{
-				browser -> getHeadlight () -> getModelViewMatrix () .emplace_back (renderer -> getInverseCameraSpaceMatrix () .get ());
-				browser -> getHeadlight () -> getModelViewMatrix () .back () .mult_left (renderObject -> getCameraSpaceMatrix () .get ());
+				browser -> getHeadlight () -> getModelViewMatrix () .push (renderer -> getInverseCameraSpaceMatrix () .get ());
+				browser -> getHeadlight () -> getModelViewMatrix () .mult_left (renderObject -> getCameraSpaceMatrix () .get ());
 			}
 
 			// Render layer's children.
@@ -255,7 +255,7 @@ GeneratedCubeMapTexture::renderTexture (X3DRenderObject* const renderObject, con
 			// Pop matrices.
 
 			if (navigationInfo -> headlight ())
-				browser -> getHeadlight () -> getModelViewMatrix () .pop_back ();
+				browser -> getHeadlight () -> getModelViewMatrix () .pop ();
 
 			renderer -> getModelViewMatrix          () .pop ();
 			renderer -> getCameraSpaceMatrix        () .pop ();

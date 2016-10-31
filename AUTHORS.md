@@ -3,4 +3,4 @@ AUTHORS
 ==================================================
 
 * Holger Seelig <holger.seelig@yahoo.de>
-* naraesk (Arch Linux User Repository)
+* [naraesk](https://github.com/naraesk) (Arch Linux User Repository)

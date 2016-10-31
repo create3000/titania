@@ -70,7 +70,7 @@ uniform float x3d_LightRadius [x3d_MaxLights];
 uniform float x3d_LightBeamWidth [x3d_MaxLights];
 uniform float x3d_LightCutOffAngle [x3d_MaxLights];
 
-#ifdef X3D_SHADOW
+#ifdef X3D_SHADOWS
 uniform vec3      x3d_ShadowColor [x3d_MaxLights];
 uniform float     x3d_ShadowIntensity [x3d_MaxLights];
 uniform float     x3d_ShadowDiffusion [x3d_MaxLights];
@@ -156,7 +156,7 @@ getSpotFactor (in float cutOffAngle, in float beamWidth, in vec3 L, in vec3 d)
 	return (spotAngle - cutOffAngle) / (beamWidth - cutOffAngle);
 }
 
-#ifdef X3D_SHADOW
+#ifdef X3D_SHADOWS
 float
 unpack (in vec4 color)
 {
@@ -385,7 +385,7 @@ getMaterialColor ()
 				vec3  ambientColor                = x3d_LightAmbientIntensity [i] * ambientTerm;
 				vec3  ambientDiffuseSpecularColor = ambientColor + x3d_LightIntensity [i] * (diffuseTerm + specularTerm);
 
-				#ifdef X3D_SHADOW
+				#ifdef X3D_SHADOWS
 
 				if (x3d_ShadowIntensity [i] > 0.0 && lightAngle > 0.0)
 				{

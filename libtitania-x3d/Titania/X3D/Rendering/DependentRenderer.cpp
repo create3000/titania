@@ -76,16 +76,6 @@ DependentRenderer::render (const TraverseType type, const TraverseFunction & tra
 {
 	switch (type)
 	{
-		case TraverseType::COLLISION:
-		{
-			X3DRenderObject::render (type, traverse);
-			break;
-		}
-		case TraverseType::DEPTH:
-		{
-			X3DRenderObject::render (type, traverse);
-			break;
-		}
 		case TraverseType::DISPLAY:
 		{
 			renderObject -> setLightIndex (0);
@@ -93,12 +83,15 @@ DependentRenderer::render (const TraverseType type, const TraverseFunction & tra
 			X3DRenderObject::render (type, traverse);
 
 			for (const auto & light : renderObject -> getLights ())
-				light -> getModelViewMatrix () .pop_back ();
+				light -> getModelViewMatrix () .pop ();
 
 			break;
 		}
 		default:
+		{
+			X3DRenderObject::render (type, traverse);
 			break;
+		}
 	}
 }
 

@@ -114,7 +114,7 @@ LightContainer::enable ()
 	
 			glEnable (lightId);
 	
-			glLoadMatrixd (modelViewMatrix .back () .data ());
+			glLoadMatrixd (modelViewMatrix .get () .data ());
 	
 			node -> draw (lightId);
 		}
@@ -153,7 +153,7 @@ LightContainer::disable ()
 void
 LightContainer::setShaderUniforms (X3DRenderObject* const renderObject, X3DProgrammableShaderObject* const shaderObject, const size_t i)
 {
-	node -> setShaderUniforms (shaderObject, i, modelViewMatrix .back ());
+	node -> setShaderUniforms (shaderObject, i, modelViewMatrix .get ());
 
 	if (textureUnit)
 	{
