@@ -2547,6 +2547,7 @@
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DCollisionEditor.h" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Titania\GeneratedCubeMapTexture" />
     <None Include="titania" />
+    <None Include="share\titania\Library\Components\CubeMapTexturing\.Cobweb\GeneratedCubeMapTexture" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
