@@ -276,7 +276,7 @@ X3DRenderObject::render (const TraverseType type, const TraverseFunction & trave
 			lightIndex           = 0;
 			numOpaqueShapes      = 0;
 			numTransparentShapes = 0;
-	
+
 			traverse (type, this);
 			draw (traverse);
 			break;
