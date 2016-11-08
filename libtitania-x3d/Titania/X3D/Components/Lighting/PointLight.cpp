@@ -203,8 +203,6 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 			Vector3d ( 0, -1,  0), // top
 		};
 
-		renderObject -> getBrowser () -> getDisplayTools () .push (false);
-
 		const auto transformationMatrix = lightContainer -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
 
@@ -218,6 +216,7 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 		const auto   nearValue           = 0.125;
 		const auto   farValue            = 1'000.0;
 		const auto   projectionMatrix    = camera <double>::perspective (radians (120.0), nearValue, farValue, 1, 1);
+		const auto   invGroupMatrix      = inverse (groupNode -> getMatrix ());
 
 		// Render to frame buffer.
 
@@ -237,6 +236,8 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 //			std::clog << SFDouble (v) << ".0, ";
 //		std::clog << std::endl;
 //		std::clog << std::endl;
+
+		renderObject -> getBrowser () -> getDisplayTools () .push (false);
 
 		for (size_t y = 0; y < 2; ++ y)
 		{
@@ -259,7 +260,7 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 
 				renderObject -> getModelViewMatrix  () .push (Matrix4d (rotation));
 				renderObject -> getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
-				renderObject -> getModelViewMatrix  () .mult_left (inverse (groupNode -> getMatrix ()));
+				renderObject -> getModelViewMatrix  () .mult_left (invGroupMatrix);
 				
 				renderObject -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse,groupNode, _1, _2));
 	
@@ -285,7 +286,7 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 
 					renderObject -> getModelViewMatrix  () .push (Matrix4d (inverse (rotation)));
 					renderObject -> getModelViewMatrix  () .mult_left (invLightSpaceMatrix);
-					renderObject -> getModelViewMatrix  () .mult_left (inverse (groupNode -> getMatrix ()));
+					renderObject -> getModelViewMatrix  () .mult_left (invGroupMatrix);
 
 					renderObject -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2), TraverseType::DEPTH);
 	
@@ -302,6 +303,8 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 			}
 		}
 
+		renderObject -> getBrowser () -> getDisplayTools () .pop ();
+
 		#ifdef DEBUG_POINT_LIGHT_SHADOW_BUFFER
 		#ifdef TITANIA_DEBUG
 		frameBuffer .bind ();
@@ -317,11 +320,11 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 
 		lightContainer -> setShadowMatrix (invLightSpaceMatrix);
 
-		renderObject -> getBrowser () -> getDisplayTools () .pop ();
 		return true;
 	}
 	catch (const std::domain_error &)
 	{
+		__LOG__ << std::endl;
 		return false;
 	}
 }

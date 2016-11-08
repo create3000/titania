@@ -191,17 +191,26 @@ FrameBuffer::readPixels ()
 
 	if (samples)
 	{
-		FrameBuffer frameBuffer (browser, width, height, 0, colorBufferId);
+		try
+		{
+			FrameBuffer frameBuffer (browser, width, height, 0, withColorBuffer);
+	
+			frameBuffer .setup ();
+	
+			glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
+			glBindFramebuffer (GL_DRAW_FRAMEBUFFER, frameBuffer .id);
+			glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+			glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer .id);
+	
+			glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
+			glBindFramebuffer (GL_FRAMEBUFFER_EXT, id);
+		}
+		catch (const std::runtime_error & error)
+		{
+			__LOG__ << error .what () << std::endl;
 
-		frameBuffer .setup ();
-
-		glBindFramebuffer (GL_READ_FRAMEBUFFER, id);
-		glBindFramebuffer (GL_DRAW_FRAMEBUFFER, frameBuffer .id);
-		glBlitFramebuffer (0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-		glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer .id);
-
-		glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
-		glBindFramebuffer (GL_FRAMEBUFFER_EXT, id);
+			std::fill (pixels .begin (), pixels .end (), 0);
+		}
 	}
 	else
 		glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());

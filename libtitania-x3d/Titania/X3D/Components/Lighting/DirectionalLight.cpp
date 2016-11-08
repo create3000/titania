@@ -157,8 +157,6 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 	{
 		using namespace std::placeholders;
 
-		renderObject -> getBrowser () -> getDisplayTools () .push (false);
-	
 		const auto transformationMatrix = lightContainer -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
 	
@@ -171,7 +169,10 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 		const auto   lightBBox           = groupBBox * invLightSpaceMatrix;                                        // Group bbox from the perspective of the light.
 		const auto   viewport            = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
 		const auto   projectionMatrix    = camera <double>::ortho (lightBBox);
-	
+		const auto   invGroupMatrix      = inverse (groupNode -> getMatrix ());
+
+		renderObject -> getBrowser () -> getDisplayTools () .push (false);
+
 		shadowTextureBuffer -> bind ();
 
 		renderObject -> getCameraSpaceMatrix        () .push (renderObject -> getViewpoint () -> getCameraSpaceMatrix ());
@@ -179,7 +180,7 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 		renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
 		renderObject -> getProjectionMatrix         () .push (projectionMatrix);
 		renderObject -> getModelViewMatrix          () .push (invLightSpaceMatrix);
-		renderObject -> getModelViewMatrix          () .mult_left (inverse (groupNode -> getMatrix ()));
+		renderObject -> getModelViewMatrix          () .mult_left (invGroupMatrix);
 	
 		renderObject -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2));
 	
@@ -190,6 +191,8 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 		renderObject -> getCameraSpaceMatrix        () .pop ();
 	
 		shadowTextureBuffer -> unbind ();
+
+		renderObject -> getBrowser () -> getDisplayTools () .pop ();
 	
 		//#define DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_DIRECTIONAL_LIGHT_SHADOW_BUFFER
@@ -208,7 +211,7 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 			renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
 			renderObject -> getProjectionMatrix         () .push (projectionMatrix);
 			renderObject -> getModelViewMatrix          () .push (invLightSpaceMatrix);
-			renderObject -> getModelViewMatrix          () .mult_left (inverse (groupNode -> getMatrix ()));
+			renderObject -> getModelViewMatrix          () .mult_left (invGroupMatrix);
 		
 			renderObject -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2), TraverseType::DEPTH);
 
@@ -231,12 +234,11 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 	
 		lightContainer -> setShadowMatrix (invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
 
-		renderObject -> getBrowser () -> getDisplayTools () .pop ();
-
 		return true;
 	}
 	catch (const std::domain_error & error)
 	{
+		__LOG__ << std::endl;
 		return false;
 	}
 }

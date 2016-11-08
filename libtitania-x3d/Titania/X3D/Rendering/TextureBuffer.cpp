@@ -114,7 +114,7 @@ TextureBuffer::setup ()
 	if (complete)
 		return;
 
-	throw std::runtime_error ("Couldn't create frame buffer.");
+	throw std::runtime_error ("Couldn't create texture buffer.");
 }
 
 void

@@ -208,8 +208,6 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 	{
 		using namespace std::placeholders;
 
-		renderObject -> getBrowser () -> getDisplayTools () .push (false);
-
 		const auto transformationMatrix = lightContainer -> getModelViewMatrix () .get () * renderObject -> getCameraSpaceMatrix () .get ();
 		auto       invLightSpaceMatrix  = global () ? transformationMatrix : Matrix4d ();
 
@@ -225,9 +223,12 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 		const auto   farValue            = std::min <double> (getRadius (), -lightBBoxExtents .first .z ());
 		const auto   viewport            = Vector4i (0, 0, getShadowMapSize (), getShadowMapSize ());
 		const auto   projectionMatrix    = camera <double>::perspective (getCutOffAngle () * 2, 0.125, farValue, viewport [2], viewport [3]);
+		const auto   invGroupMatrix      = inverse (groupNode -> getMatrix ());
 
 		if (farValue < 0)
 			return false;
+
+		renderObject -> getBrowser () -> getDisplayTools () .push (false);
 
 		shadowTextureBuffer -> bind ();
 
@@ -236,7 +237,7 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 		renderObject -> getViewVolumes              () .emplace_back (projectionMatrix, viewport, viewport);
 		renderObject -> getProjectionMatrix         () .push (projectionMatrix);
 		renderObject -> getModelViewMatrix          () .push (invLightSpaceMatrix);
-		renderObject -> getModelViewMatrix          () .mult_left (inverse (groupNode -> getMatrix ()));
+		renderObject -> getModelViewMatrix          () .mult_left (invGroupMatrix);
 
 		renderObject -> render (TraverseType::DEPTH, std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2));
 
@@ -247,6 +248,8 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 		renderObject -> getCameraSpaceMatrix        () .pop ();
 
 		shadowTextureBuffer -> unbind ();
+	
+		renderObject -> getBrowser () -> getDisplayTools () .pop ();
 
 		//#define DEBUG_SPOT_LIGHT_SHADOW_BUFFER
 		#ifdef  DEBUG_SPOT_LIGHT_SHADOW_BUFFER
@@ -265,7 +268,7 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 			renderObject -> getCameraSpaceMatrix        () .push (renderObject -> getViewpoint () -> getCameraSpaceMatrix ());
 			renderObject -> getInverseCameraSpaceMatrix () .push (renderObject -> getViewpoint () -> getInverseCameraSpaceMatrix ());
 			renderObject -> getModelViewMatrix          () .push (invLightSpaceMatrix);
-			renderObject -> getModelViewMatrix          () .mult_left (inverse (groupNode -> getMatrix ()));
+			renderObject -> getModelViewMatrix          () .mult_left (invGroupMatrix);
 	
 			renderObject -> render (std::bind (&X3DGroupingNode::traverse, groupNode, _1, _2), TraverseType::DEPTH);
 	
@@ -287,12 +290,11 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 			invLightSpaceMatrix .mult_left (inverse (transformationMatrix));
 
 		lightContainer -> setShadowMatrix (invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
-	
-		renderObject -> getBrowser () -> getDisplayTools () .pop ();
 		return true;
 	}
 	catch (const std::domain_error & error)
 	{
+		__LOG__ << std::endl;
 		return false;
 	}
 }

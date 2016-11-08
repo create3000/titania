@@ -168,7 +168,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	
 		// Render to frame buffer.
 
-
 		FrameBuffer frameBuffer (getBrowser (), width, height, antialiasing);
 
 		frameBuffer .setup ();
