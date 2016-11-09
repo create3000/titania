@@ -177,6 +177,9 @@ GeneratedCubeMapTexture::traverse (const TraverseType type, X3DRenderObject* con
 	if (type != TraverseType::DISPLAY)
 		return;
 
+	if (updateType == UpdateType::NONE)
+		return;
+
 	if (size () <= 0)
 		return;
 
