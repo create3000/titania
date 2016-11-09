@@ -48,69 +48,47 @@
  *
  ******************************************************************************/
 
-#include "DependentRenderer.h"
-
-#include "../Execution/X3DExecutionContext.h"
+#include "X3DGeneratedCubeMapTextureEditor.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-const ComponentType DependentRenderer::component      = ComponentType::TITANIA;
-const std::string   DependentRenderer::typeName       = "DependentRenderer";
-const std::string   DependentRenderer::containerField = "renderer";
+X3DGeneratedCubeMapTextureEditor::X3DGeneratedCubeMapTextureEditor () :
+	         X3DBaseInterface (),
+	X3DTextureEditorInterface (),
+	                   update (this, getGeneratedCubeMapTextureUpdateComboBoxText (), "update"),
+	                     size (this, getGeneratedCubeMapTextureSizeAdjustment (), getGeneratedCubeMapTexturSizeSpinButton (), "size"),
+	  generatedCubeMapTexture ()
+{
+	addChildren (generatedCubeMapTexture);
+}
 
-DependentRenderer::DependentRenderer (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DRenderObject (),
-	   renderObject (nullptr)
+void
+X3DGeneratedCubeMapTextureEditor::setGeneratedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	generatedCubeMapTexture = value;
+
+	getGeneratedCubeMapTextureBox () .set_visible (generatedCubeMapTexture);
+
+	if (not generatedCubeMapTexture)
+		generatedCubeMapTexture = getCurrentContext () -> createNode <X3D::GeneratedCubeMapTexture> ();
+
+	X3D::MFNode nodes = { generatedCubeMapTexture };
+
+	update .setNodes (nodes);
+	size   .setNodes (nodes);
+}
+
+const X3D::X3DPtr <X3D::GeneratedCubeMapTexture> &
+X3DGeneratedCubeMapTextureEditor::getGeneratedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	getGeneratedCubeMapTextureBox () .set_visible (value);
+
+	return generatedCubeMapTexture;
+}
+
+X3DGeneratedCubeMapTextureEditor::~X3DGeneratedCubeMapTextureEditor ()
 { }
 
-X3DBaseNode*
-DependentRenderer::create (X3DExecutionContext* const executionContext) const
-{
-	return new DependentRenderer (executionContext);
-}
-
-void
-DependentRenderer::initialize ()
-{
-	X3DBaseNode::initialize ();
-	X3DRenderObject::initialize ();
-}
-
-void
-DependentRenderer::render (const TraverseType type, const TraverseFunction & traverse)
-{
-	switch (type)
-	{
-		case TraverseType::DISPLAY:
-		{
-			renderObject -> setLightIndex (0);
-
-			X3DRenderObject::render (type, traverse);
-
-			for (const auto & light : renderObject -> getLights ())
-				light -> getModelViewMatrix () .pop ();
-
-			break;
-		}
-		default:
-		{
-			X3DRenderObject::render (type, traverse);
-			break;
-		}
-	}
-}
-
-void
-DependentRenderer::dispose ()
-{
-	X3DRenderObject::dispose ();
-	X3DBaseNode::dispose ();
-}
-
-DependentRenderer::~DependentRenderer ()
-{ }
-
-} // X3D
+} // puck
 } // titania

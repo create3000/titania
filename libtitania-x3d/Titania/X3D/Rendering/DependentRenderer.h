@@ -140,6 +140,10 @@ public:
 
 	///  @name Destruction
 
+	virtual
+	void
+	dispose () final override;
+
 	~DependentRenderer ();
 
 
@@ -151,6 +155,10 @@ private:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
+
+	virtual
+	void
+	initialize () final override;
 
 	///  @name Static members
 

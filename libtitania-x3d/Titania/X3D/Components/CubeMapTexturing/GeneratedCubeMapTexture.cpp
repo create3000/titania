@@ -108,6 +108,8 @@ GeneratedCubeMapTexture::initialize ()
 {
 	X3DEnvironmentTextureNode::initialize ();
 
+	setLoadState (COMPLETE_STATE);
+
 	renderer -> setup ();
 
 	update () .addInterest (this, &GeneratedCubeMapTexture::set_update);
@@ -179,6 +181,9 @@ GeneratedCubeMapTexture::traverse (const TraverseType type, X3DRenderObject* con
 		return;
 
 	if (not frameBuffer)
+		return;
+
+	if (renderObject -> getBrowser () not_eq getBrowser ())
 		return;
 
 	if (not renderObject -> isIndependent ())

@@ -1,110 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkDialog" id="EditPaletteDialog">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Add Exported Node</property>
-    <property name="resizable">False</property>
-    <property name="modal">True</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <property name="transient_for">Window</property>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="dialog-vbox3">
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="dialog-action_area3">
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="EditPaletteCancelButton">
-                <property name="label">gtk-cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_edit_palette_cancel_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="EditPaletteOkButton">
-                <property name="label">gtk-ok</property>
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="has_default">True</property>
-                <property name="receives_default">True</property>
-                <property name="use_stock">True</property>
-                <property name="always_show_image">True</property>
-                <signal name="clicked" handler="on_edit_palette_ok_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkBox" id="box16">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="border_width">6</property>
-            <property name="spacing">16</property>
-            <child>
-              <object class="GtkLabel" id="label100">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Palette Name:</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="PaletteNameEntry">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="activates_default">True</property>
-                <signal name="changed" handler="on_palette_name_changed" swapped="no"/>
-                <signal name="delete-text" handler="on_palette_name_delete_text" after="yes" swapped="no"/>
-                <signal name="insert-text" handler="on_palette_name_insert_text" after="yes" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
+  <object class="GtkAdjustment" id="GeneratedCubeMapTextureSizeAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="MultiTextureAlphaAdjustment">
     <property name="upper">1</property>
@@ -220,70 +121,6 @@
         <col id="0">DEFAULT</col>
       </row>
     </data>
-  </object>
-  <object class="GtkMenu" id="PaletteMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="AddPaletteMenuItem">
-        <property name="label" translatable="yes">Add Palette</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image31</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_add_palette_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="RemovePaletteMenuItem">
-        <property name="label" translatable="yes">Remove Palette</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image32</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_remove_palette_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="EditPaletteMenuItem">
-        <property name="label" translatable="yes">Edit Palette</property>
-        <property name="can_focus">False</property>
-        <property name="image">image33</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_edit_palette_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="AddObjectToPaletteMenuItem">
-        <property name="label" translatable="yes">Add Texture</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image34</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_add_object_to_palette_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="RemoveObjectFromPaletteMenuItem">
-        <property name="label" translatable="yes">Remove Texture</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">image35</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_remove_object_from_palette_activate" swapped="no"/>
-      </object>
-    </child>
   </object>
   <object class="GtkAdjustment" id="TexturePropertiesAnisotropicDegreeAdjustment">
     <property name="lower">1</property>
@@ -637,6 +474,7 @@
                                   <item translatable="yes">ImageTexture3D</item>
                                   <item translatable="yes">PixelTexture3D</item>
                                   <item translatable="yes">ComposedCubeMapTexture</item>
+                                  <item translatable="yes">GeneratedCubeMapTexture</item>
                                   <item translatable="yes">ImageCubeMapTexture</item>
                                 </items>
                                 <signal name="changed" handler="on_texture_changed" swapped="no"/>
@@ -2913,6 +2751,91 @@
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkBox" id="GeneratedCubeMapTextureBox">
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkGrid">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="row_spacing">8</property>
+                                <property name="column_spacing">16</property>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Update:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Size:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="GeneratedCubeMapTexturSizeSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="adjustment">GeneratedCubeMapTextureSizeAdjustment</property>
+                                    <property name="numeric">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkComboBoxText" id="GeneratedCubeMapTextureUpdateComboBoxText">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="active">0</property>
+                                    <items>
+                                      <item translatable="yes">NONE</item>
+                                      <item translatable="yes">NEXT_FRAME_ONLY</item>
+                                      <item translatable="yes">ALWAYS</item>
+                                    </items>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">9</property>
+                          </packing>
+                        </child>
+                        <child type="tab">
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">GeneratedCubeMap</property>
+                          </object>
+                          <packing>
+                            <property name="position">9</property>
+                            <property name="tab_fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkGrid" id="ImageCubeMapTextureBox">
                             <property name="can_focus">False</property>
                             <property name="row_spacing">8</property>
@@ -3193,7 +3116,7 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="position">9</property>
+                            <property name="position">10</property>
                           </packing>
                         </child>
                         <child type="tab">
@@ -3203,7 +3126,7 @@
                             <property name="label" translatable="yes">ImageCubeMap</property>
                           </object>
                           <packing>
-                            <property name="position">9</property>
+                            <property name="position">10</property>
                             <property name="tab_fill">False</property>
                           </packing>
                         </child>
@@ -5262,6 +5185,214 @@
       </object>
     </child>
   </object>
+  <object class="GtkDialog" id="EditPaletteDialog">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Add Exported Node</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox3">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area3">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="EditPaletteCancelButton">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_edit_palette_cancel_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="EditPaletteOkButton">
+                <property name="label">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_edit_palette_ok_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box16">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="border_width">6</property>
+            <property name="spacing">16</property>
+            <child>
+              <object class="GtkLabel" id="label100">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Palette Name:</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="PaletteNameEntry">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="activates_default">True</property>
+                <signal name="changed" handler="on_palette_name_changed" swapped="no"/>
+                <signal name="delete-text" handler="on_palette_name_delete_text" after="yes" swapped="no"/>
+                <signal name="insert-text" handler="on_palette_name_insert_text" after="yes" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkDialog" id="EditPaletteDialog1">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Add Exported Node</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <property name="transient_for">Window</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox1">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="EditPaletteCancelButton1">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_edit_palette_cancel_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="EditPaletteOkButton1">
+                <property name="label">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_edit_palette_ok_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box19">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="border_width">6</property>
+            <property name="spacing">16</property>
+            <child>
+              <object class="GtkLabel" id="label101">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Palette Name:</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="PaletteNameEntry1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="activates_default">True</property>
+                <signal name="changed" handler="on_palette_name_changed" swapped="no"/>
+                <signal name="delete-text" handler="on_palette_name_delete_text" after="yes" swapped="no"/>
+                <signal name="insert-text" handler="on_palette_name_insert_text" after="yes" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkImage" id="image31">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -5286,5 +5417,133 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-remove</property>
+  </object>
+  <object class="GtkMenu" id="PaletteMenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="AddPaletteMenuItem">
+        <property name="label" translatable="yes">Add Palette</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image31</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_add_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="RemovePaletteMenuItem">
+        <property name="label" translatable="yes">Remove Palette</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image32</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_remove_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="EditPaletteMenuItem">
+        <property name="label" translatable="yes">Edit Palette</property>
+        <property name="can_focus">False</property>
+        <property name="image">image33</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_edit_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="AddObjectToPaletteMenuItem">
+        <property name="label" translatable="yes">Add Texture</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image34</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_add_object_to_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="RemoveObjectFromPaletteMenuItem">
+        <property name="label" translatable="yes">Remove Texture</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image35</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_remove_object_from_palette_activate" swapped="no"/>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMenu" id="PaletteMenu1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImageMenuItem" id="AddPaletteMenuItem1">
+        <property name="label" translatable="yes">Add Palette</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image31</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_add_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="RemovePaletteMenuItem1">
+        <property name="label" translatable="yes">Remove Palette</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image32</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_remove_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="EditPaletteMenuItem1">
+        <property name="label" translatable="yes">Edit Palette</property>
+        <property name="can_focus">False</property>
+        <property name="image">image33</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_edit_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separatormenuitem2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="AddObjectToPaletteMenuItem1">
+        <property name="label" translatable="yes">Add Texture</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image34</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_add_object_to_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="RemoveObjectFromPaletteMenuItem1">
+        <property name="label" translatable="yes">Remove Texture</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image35</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_remove_object_from_palette_activate" swapped="no"/>
+      </object>
+    </child>
   </object>
 </interface>

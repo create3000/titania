@@ -100,6 +100,10 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeneratedCubeMapTextureSizeAdjustment () const
+	{ return m_GeneratedCubeMapTextureSizeAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getMultiTextureAlphaAdjustment () const
 	{ return m_MultiTextureAlphaAdjustment; }
 
@@ -338,46 +342,6 @@ public:
 	const Glib::RefPtr <Gtk::CellRendererPixbuf> &
 	getImageTextureURLCellrendererPixbuf1 () const
 	{ return m_ImageTextureURLCellrendererPixbuf1; }
-
-	Gtk::Dialog &
-	getEditPaletteDialog () const
-	{ return *m_EditPaletteDialog; }
-
-	Gtk::Button &
-	getEditPaletteCancelButton () const
-	{ return *m_EditPaletteCancelButton; }
-
-	Gtk::Button &
-	getEditPaletteOkButton () const
-	{ return *m_EditPaletteOkButton; }
-
-	Gtk::Entry &
-	getPaletteNameEntry () const
-	{ return *m_PaletteNameEntry; }
-
-	Gtk::Menu &
-	getPaletteMenu () const
-	{ return *m_PaletteMenu; }
-
-	Gtk::ImageMenuItem &
-	getAddPaletteMenuItem () const
-	{ return *m_AddPaletteMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getRemovePaletteMenuItem () const
-	{ return *m_RemovePaletteMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getEditPaletteMenuItem () const
-	{ return *m_EditPaletteMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getAddObjectToPaletteMenuItem () const
-	{ return *m_AddObjectToPaletteMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getRemoveObjectFromPaletteMenuItem () const
-	{ return *m_RemoveObjectFromPaletteMenuItem; }
 
 	Gtk::Window &
 	getWindow () const
@@ -691,6 +655,18 @@ public:
 	getComposedCubeMapBottomTexturePreviewBox () const
 	{ return *m_ComposedCubeMapBottomTexturePreviewBox; }
 
+	Gtk::Box &
+	getGeneratedCubeMapTextureBox () const
+	{ return *m_GeneratedCubeMapTextureBox; }
+
+	Gtk::SpinButton &
+	getGeneratedCubeMapTexturSizeSpinButton () const
+	{ return *m_GeneratedCubeMapTexturSizeSpinButton; }
+
+	Gtk::ComboBoxText &
+	getGeneratedCubeMapTextureUpdateComboBoxText () const
+	{ return *m_GeneratedCubeMapTextureUpdateComboBoxText; }
+
 	Gtk::Grid &
 	getImageCubeMapTextureBox () const
 	{ return *m_ImageCubeMapTextureBox; }
@@ -999,47 +975,87 @@ public:
 	getPaletteNextButton () const
 	{ return *m_PaletteNextButton; }
 
+	Gtk::Dialog &
+	getEditPaletteDialog () const
+	{ return *m_EditPaletteDialog; }
+
+	Gtk::Button &
+	getEditPaletteCancelButton () const
+	{ return *m_EditPaletteCancelButton; }
+
+	Gtk::Button &
+	getEditPaletteOkButton () const
+	{ return *m_EditPaletteOkButton; }
+
+	Gtk::Entry &
+	getPaletteNameEntry () const
+	{ return *m_PaletteNameEntry; }
+
+	Gtk::Dialog &
+	getEditPaletteDialog1 () const
+	{ return *m_EditPaletteDialog1; }
+
+	Gtk::Button &
+	getEditPaletteCancelButton1 () const
+	{ return *m_EditPaletteCancelButton1; }
+
+	Gtk::Button &
+	getEditPaletteOkButton1 () const
+	{ return *m_EditPaletteOkButton1; }
+
+	Gtk::Entry &
+	getPaletteNameEntry1 () const
+	{ return *m_PaletteNameEntry1; }
+
+	Gtk::Menu &
+	getPaletteMenu () const
+	{ return *m_PaletteMenu; }
+
+	Gtk::ImageMenuItem &
+	getAddPaletteMenuItem () const
+	{ return *m_AddPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemovePaletteMenuItem () const
+	{ return *m_RemovePaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getEditPaletteMenuItem () const
+	{ return *m_EditPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getAddObjectToPaletteMenuItem () const
+	{ return *m_AddObjectToPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemoveObjectFromPaletteMenuItem () const
+	{ return *m_RemoveObjectFromPaletteMenuItem; }
+
+	Gtk::Menu &
+	getPaletteMenu1 () const
+	{ return *m_PaletteMenu1; }
+
+	Gtk::ImageMenuItem &
+	getAddPaletteMenuItem1 () const
+	{ return *m_AddPaletteMenuItem1; }
+
+	Gtk::ImageMenuItem &
+	getRemovePaletteMenuItem1 () const
+	{ return *m_RemovePaletteMenuItem1; }
+
+	Gtk::ImageMenuItem &
+	getEditPaletteMenuItem1 () const
+	{ return *m_EditPaletteMenuItem1; }
+
+	Gtk::ImageMenuItem &
+	getAddObjectToPaletteMenuItem1 () const
+	{ return *m_AddObjectToPaletteMenuItem1; }
+
+	Gtk::ImageMenuItem &
+	getRemoveObjectFromPaletteMenuItem1 () const
+	{ return *m_RemoveObjectFromPaletteMenuItem1; }
+
 	///  @name Signal handlers
-
-	virtual
-	void
-	on_edit_palette_cancel_clicked () = 0;
-
-	virtual
-	void
-	on_edit_palette_ok_clicked () = 0;
-
-	virtual
-	void
-	on_palette_name_changed () = 0;
-
-	virtual
-	void
-	on_palette_name_delete_text (int start_pos, int end_pos) = 0;
-
-	virtual
-	void
-	on_palette_name_insert_text (const Glib::ustring & text, int* position) = 0;
-
-	virtual
-	void
-	on_add_palette_activate () = 0;
-
-	virtual
-	void
-	on_remove_palette_activate () = 0;
-
-	virtual
-	void
-	on_edit_palette_activate () = 0;
-
-	virtual
-	void
-	on_add_object_to_palette_activate () = 0;
-
-	virtual
-	void
-	on_remove_object_from_palette_activate () = 0;
 
 	virtual
 	void
@@ -1109,6 +1125,46 @@ public:
 	void
 	on_palette_next_clicked () = 0;
 
+	virtual
+	void
+	on_edit_palette_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_edit_palette_ok_clicked () = 0;
+
+	virtual
+	void
+	on_palette_name_changed () = 0;
+
+	virtual
+	void
+	on_palette_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_palette_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_add_palette_activate () = 0;
+
+	virtual
+	void
+	on_remove_palette_activate () = 0;
+
+	virtual
+	void
+	on_edit_palette_activate () = 0;
+
+	virtual
+	void
+	on_add_object_to_palette_activate () = 0;
+
+	virtual
+	void
+	on_remove_object_from_palette_activate () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -1135,6 +1191,7 @@ private:
 
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::Adjustment>         m_GeneratedCubeMapTextureSizeAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_MultiTextureAlphaAdjustment;
 	Glib::RefPtr <Gtk::Adjustment>         m_MultiTextureColorAdjustment;
 	Glib::RefPtr <Gtk::ListStore>          m_MultiTextureFunctionListStore;
@@ -1195,16 +1252,6 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText>   m_ImageCubeMapTextureURLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_ImageCubeMapTextureURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTextureURLCellrendererPixbuf1;
-	Gtk::Dialog*                           m_EditPaletteDialog;
-	Gtk::Button*                           m_EditPaletteCancelButton;
-	Gtk::Button*                           m_EditPaletteOkButton;
-	Gtk::Entry*                            m_PaletteNameEntry;
-	Gtk::Menu*                             m_PaletteMenu;
-	Gtk::ImageMenuItem*                    m_AddPaletteMenuItem;
-	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem;
-	Gtk::ImageMenuItem*                    m_EditPaletteMenuItem;
-	Gtk::ImageMenuItem*                    m_AddObjectToPaletteMenuItem;
-	Gtk::ImageMenuItem*                    m_RemoveObjectFromPaletteMenuItem;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Notebook*                         m_TextureChildNotebook;
@@ -1283,6 +1330,9 @@ private:
 	Gtk::Label*                            m_ComposedCubeMapBottomTextureFormatLabel;
 	Gtk::Label*                            m_ComposedCubeMapBottomTextureLoadStateLabel;
 	Gtk::Box*                              m_ComposedCubeMapBottomTexturePreviewBox;
+	Gtk::Box*                              m_GeneratedCubeMapTextureBox;
+	Gtk::SpinButton*                       m_GeneratedCubeMapTexturSizeSpinButton;
+	Gtk::ComboBoxText*                     m_GeneratedCubeMapTextureUpdateComboBoxText;
 	Gtk::Grid*                             m_ImageCubeMapTextureBox;
 	Gtk::Label*                            m_ImageCubeMapTextureFormatLabel;
 	Gtk::Label*                            m_ImageCubeMapTextureLoadStateLabel;
@@ -1360,6 +1410,26 @@ private:
 	Gtk::ComboBoxText*                     m_PaletteComboBoxText;
 	Gtk::Button*                           m_PalettePreviousButton;
 	Gtk::Button*                           m_PaletteNextButton;
+	Gtk::Dialog*                           m_EditPaletteDialog;
+	Gtk::Button*                           m_EditPaletteCancelButton;
+	Gtk::Button*                           m_EditPaletteOkButton;
+	Gtk::Entry*                            m_PaletteNameEntry;
+	Gtk::Dialog*                           m_EditPaletteDialog1;
+	Gtk::Button*                           m_EditPaletteCancelButton1;
+	Gtk::Button*                           m_EditPaletteOkButton1;
+	Gtk::Entry*                            m_PaletteNameEntry1;
+	Gtk::Menu*                             m_PaletteMenu;
+	Gtk::ImageMenuItem*                    m_AddPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_EditPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_AddObjectToPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_RemoveObjectFromPaletteMenuItem;
+	Gtk::Menu*                             m_PaletteMenu1;
+	Gtk::ImageMenuItem*                    m_AddPaletteMenuItem1;
+	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem1;
+	Gtk::ImageMenuItem*                    m_EditPaletteMenuItem1;
+	Gtk::ImageMenuItem*                    m_AddObjectToPaletteMenuItem1;
+	Gtk::ImageMenuItem*                    m_RemoveObjectFromPaletteMenuItem1;
 
 };
 

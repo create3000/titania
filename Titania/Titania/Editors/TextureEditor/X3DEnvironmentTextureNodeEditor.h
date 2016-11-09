@@ -55,6 +55,7 @@
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
 
 #include "X3DComposedCubeMapTextureEditor.h"
+#include "X3DGeneratedCubeMapTextureEditor.h"
 #include "X3DImageCubeMapTextureEditor.h"
 
 #include <Titania/X3D/Components/CubeMapTexturing/X3DEnvironmentTextureNode.h>
@@ -65,6 +66,7 @@ namespace puck {
 class X3DEnvironmentTextureNodeEditor :
 	virtual public X3DTextureEditorInterface,
 	public X3DComposedCubeMapTextureEditor,
+	public X3DGeneratedCubeMapTextureEditor,
 	public X3DImageCubeMapTextureEditor
 {
 public:
@@ -90,6 +92,10 @@ protected:
 	virtual
 	const X3D::X3DPtr <X3D::ComposedCubeMapTexture> &
 	getComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
+
+	virtual
+	const X3D::X3DPtr <X3D::GeneratedCubeMapTexture> &
+	getGeneratedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &) final override;
 
 	virtual
 	const X3D::X3DPtr <X3D::ImageCubeMapTexture> &

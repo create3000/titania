@@ -109,6 +109,12 @@
     <None Include="..\AUTHORS.md">
       <Link>AUTHORS.md</Link>
     </None>
+    <None Include="..\AUTHORS">
+      <Link>AUTHORS</Link>
+    </None>
+    <None Include="..\README">
+      <Link>README</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="debian\" />

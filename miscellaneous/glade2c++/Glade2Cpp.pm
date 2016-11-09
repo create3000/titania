@@ -132,6 +132,7 @@ sub h_object_getters
 	my ($self, $expat, $name, %attributes) = @_;
 	my $file = $self -> {handle};
 	
+	return unless $attributes {id};
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 
@@ -147,6 +148,7 @@ sub h_widget_getters
 	my ($self, $expat, $name, %attributes) = @_;
 	my $file = $self -> {handle};
 	
+	return unless $attributes {id};
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 
@@ -165,6 +167,7 @@ sub h_objects
 	my ($self, $expat, $name, %attributes) = @_;
 	my $file = $self -> {handle};
 	
+	return unless $attributes {id};
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 
@@ -179,6 +182,7 @@ sub h_widgets
 	my ($self, $expat, $name, %attributes) = @_;
 	my $file = $self -> {handle};
 	
+	return unless $attributes {id};
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 	
@@ -235,6 +239,7 @@ sub cpp_get_objects
 	my ($self, $expat, $name, %attributes) = @_;
 	my $file = $self -> {handle};
 	
+	return unless $attributes {id};
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 	
@@ -249,6 +254,7 @@ sub cpp_get_widgets
 	my ($self, $expat, $name, %attributes) = @_;
 	my $file = $self -> {handle};
 	
+	return unless $attributes {id};
 	return if $name ne "object";
 	return if ucfirst $attributes {id} ne $attributes {id};
 	

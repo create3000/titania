@@ -124,6 +124,7 @@ titania_SOURCES =  \
 	Titania/Editors/TextureEditor/X3DComposedCubeMapTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DComposedTexture3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DEnvironmentTextureNodeEditor.cpp \
+	Titania/Editors/TextureEditor/X3DGeneratedCubeMapTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DImageCubeMapTextureEditor.cpp \
 	Titania/Editors/TextureEditor/X3DImageTexture3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DImageTextureEditor.cpp \

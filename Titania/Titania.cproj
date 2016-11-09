@@ -282,6 +282,7 @@
     <Compile Include="Titania\Dialogs\MessageDialog\MessageDialog.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DMessageDialogInterface.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DCollisionEditor.cpp" />
+    <Compile Include="Titania\Editors\TextureEditor\X3DGeneratedCubeMapTextureEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2548,6 +2549,8 @@
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Titania\GeneratedCubeMapTexture" />
     <None Include="titania" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Cobweb\GeneratedCubeMapTexture" />
+    <None Include="share\titania\Library\Components\CubeMapTexturing\.Cobweb\ImageCubeMapTexture" />
+    <None Include="Titania\Editors\TextureEditor\X3DGeneratedCubeMapTextureEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -168,10 +168,10 @@ TexturePreview::set_texture ()
 {
 	try
 	{
-		const X3D::X3DPtr <X3D::OrthoViewpoint> texture2DViewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
-		const X3D::X3DPtr <X3D::Viewpoint>      texture3DViewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture3DViewpoint"));
-		const X3D::X3DPtr <X3D::Viewpoint>      cubeMapViewpoint   (preview -> getExecutionContext () -> getNamedNode ("CubeMapViewpoint"));
-		const X3D::AppearancePtr                appearance         (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
+		const auto texture2DViewpoint = preview -> getExecutionContext () -> getNamedNode <X3D::OrthoViewpoint> ("Texture2DViewpoint");
+		const auto texture3DViewpoint = preview -> getExecutionContext () -> getNamedNode <X3D::Viewpoint>      ("Texture3DViewpoint");
+		const auto cubeMapViewpoint   = preview -> getExecutionContext () -> getNamedNode <X3D::Viewpoint>      ("CubeMapViewpoint");
+		const auto appearance         = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance>     ("Appearance");
 
 		texture2DViewpoint -> resetUserOffsets ();
 		texture3DViewpoint -> resetUserOffsets ();

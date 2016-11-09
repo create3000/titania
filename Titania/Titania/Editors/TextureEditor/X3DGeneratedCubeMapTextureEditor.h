@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,69 +48,57 @@
  *
  ******************************************************************************/
 
-#include "DependentRenderer.h"
+#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DGENERATED_CUBE_MAP_TEXTURE_EDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DGENERATED_CUBE_MAP_TEXTURE_EDITOR_H__
 
-#include "../Execution/X3DExecutionContext.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DTextureEditorInterface.h"
+
+#include <Titania/X3D/Components/CubeMapTexturing/GeneratedCubeMapTexture.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
+class MFStringURLWidget;
 
-const ComponentType DependentRenderer::component      = ComponentType::TITANIA;
-const std::string   DependentRenderer::typeName       = "DependentRenderer";
-const std::string   DependentRenderer::containerField = "renderer";
-
-DependentRenderer::DependentRenderer (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DRenderObject (),
-	   renderObject (nullptr)
-{ }
-
-X3DBaseNode*
-DependentRenderer::create (X3DExecutionContext* const executionContext) const
+class X3DGeneratedCubeMapTextureEditor :
+	virtual public X3DTextureEditorInterface
 {
-	return new DependentRenderer (executionContext);
-}
+public:
 
-void
-DependentRenderer::initialize ()
-{
-	X3DBaseNode::initialize ();
-	X3DRenderObject::initialize ();
-}
+	///  @name Destruction
 
-void
-DependentRenderer::render (const TraverseType type, const TraverseFunction & traverse)
-{
-	switch (type)
-	{
-		case TraverseType::DISPLAY:
-		{
-			renderObject -> setLightIndex (0);
+	virtual
+	~X3DGeneratedCubeMapTextureEditor ();
 
-			X3DRenderObject::render (type, traverse);
 
-			for (const auto & light : renderObject -> getLights ())
-				light -> getModelViewMatrix () .pop ();
+protected:
 
-			break;
-		}
-		default:
-		{
-			X3DRenderObject::render (type, traverse);
-			break;
-		}
-	}
-}
+	///  @name Construction
 
-void
-DependentRenderer::dispose ()
-{
-	X3DRenderObject::dispose ();
-	X3DBaseNode::dispose ();
-}
+	X3DGeneratedCubeMapTextureEditor ();
 
-DependentRenderer::~DependentRenderer ()
-{ }
+	///  @name Construction
 
-} // X3D
+	void
+	setGeneratedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+	virtual
+	const X3D::X3DPtr <X3D::GeneratedCubeMapTexture> &
+	getGeneratedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> &);
+
+
+private:
+
+	///  @name Members
+
+	SFStringComboBoxText              update;          
+	X3DFieldAdjustment <X3D::SFInt32> size;
+
+	X3D::X3DPtr <X3D::GeneratedCubeMapTexture> generatedCubeMapTexture;
+
+};
+
+} // puck
 } // titania
+
+#endif

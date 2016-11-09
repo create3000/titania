@@ -54,11 +54,12 @@ namespace titania {
 namespace puck {
 
 X3DEnvironmentTextureNodeEditor::X3DEnvironmentTextureNodeEditor () :
-	               X3DBaseInterface (),
-	      X3DTextureEditorInterface (),
-	X3DComposedCubeMapTextureEditor (),
-	   X3DImageCubeMapTextureEditor (),
-	         environmentTextureNode ()
+	                X3DBaseInterface (),
+	       X3DTextureEditorInterface (),
+	 X3DComposedCubeMapTextureEditor (),
+	X3DGeneratedCubeMapTextureEditor (),
+	    X3DImageCubeMapTextureEditor (),
+	          environmentTextureNode ()
 {
 	addChildren (environmentTextureNode);
 }
@@ -72,8 +73,9 @@ X3DEnvironmentTextureNodeEditor::configure ()
 void
 X3DEnvironmentTextureNodeEditor::setEnvironmentTextureNode (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
-	setComposedCubeMapTexture (value);
-	setImageCubeMapTexture    (value);
+	setComposedCubeMapTexture  (value);
+	setGeneratedCubeMapTexture (value);
+	setImageCubeMapTexture     (value);
 
 	setEnvironmentTextureNode (X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> (value), value);
 }
@@ -82,6 +84,16 @@ const X3D::X3DPtr <X3D::ComposedCubeMapTexture> &
 X3DEnvironmentTextureNodeEditor::getComposedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	const auto & texture = X3DComposedCubeMapTextureEditor::getComposedCubeMapTexture (value);
+
+	setEnvironmentTextureNode (X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> (texture), value);
+
+	return texture;
+}
+
+const X3D::X3DPtr <X3D::GeneratedCubeMapTexture> &
+X3DEnvironmentTextureNodeEditor::getGeneratedCubeMapTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
+{
+	const auto & texture = X3DGeneratedCubeMapTextureEditor::getGeneratedCubeMapTexture (value);
 
 	setEnvironmentTextureNode (X3D::X3DPtr <X3D::X3DEnvironmentTextureNode> (texture), value);
 
