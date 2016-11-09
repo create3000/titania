@@ -98,6 +98,7 @@ X3DTexturePropertiesEditor::set_selection (const X3D::MFNode & selection)
 	                                                            X3D::X3DConstants::ImageTexture3D,
 	                                                            X3D::X3DConstants::PixelTexture3D,
 	                                                            X3D::X3DConstants::ComposedCubeMapTexture,
+	                                                            X3D::X3DConstants::GeneratedCubeMapTexture,
 	                                                            X3D::X3DConstants::ImageCubeMapTexture
 																		      });
 
