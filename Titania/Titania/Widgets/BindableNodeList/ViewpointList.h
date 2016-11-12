@@ -62,11 +62,11 @@ using ViewpointList = X3DBindableNodeList <X3D::X3DViewpointNode>;
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::X3DViewpointNode>> &
-ViewpointList::getStack (const X3D::X3DLayerNodePtr &) const;
+ViewpointList::getStack (const X3D::X3DPtr <X3D::X3DLayerNode> &) const;
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::X3DViewpointNode>> &
-ViewpointList::getList (const X3D::X3DLayerNodePtr &) const;
+ViewpointList::getList (const X3D::X3DPtr <X3D::X3DLayerNode> &) const;
 
 template <>
 std::string

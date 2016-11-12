@@ -56,14 +56,22 @@ namespace titania {
 namespace X3D {
 
 BillboardTool::BillboardTool (Billboard* const node) :
-	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-	          Billboard (node -> getExecutionContext ()),
-	        X3DBaseTool (node),
-	X3DGroupingNodeTool (ToolColors::PINK)
+	                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	                     Billboard (node -> getExecutionContext ()),
+	                   X3DBaseTool (node),
+	           X3DGroupingNodeTool (ToolColors::PINK),
+	X3DTransformMatrix3DObjectTool ()
 {
 	addType (X3DConstants::BillboardTool);
 	
 	setDisplayCenter (true);
+}
+
+void
+BillboardTool::initialize ()
+{
+	X3DGroupingNodeTool::initialize ();
+	X3DTransformMatrix3DObjectTool::initialize ();
 }
 
 void
@@ -79,6 +87,13 @@ BillboardTool::realize ()
 	}
 	catch (const X3DError & error)
 	{ }
+}
+
+void
+BillboardTool::dispose ()
+{
+	X3DTransformMatrix3DObjectTool::dispose ();
+	X3DGroupingNodeTool::dispose ();
 }
 
 } // X3D

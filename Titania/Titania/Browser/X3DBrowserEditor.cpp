@@ -239,7 +239,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 	{
 		for (const auto & child : getSelection () -> getChildren ())
 		{
-			const X3D::X3DTransformNodePtr transform (child);
+			const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
 
 			if (transform)
 				undoMatrices [transform] = std::make_pair (transform -> getMatrix (), transform -> center () .getValue ());
@@ -255,7 +255,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 
 		for (const auto & child : getSelection () -> getChildren ())
 		{
-			const X3D::X3DTransformNodePtr transform (child);
+			const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
 
 			if (transform)
 			{

@@ -155,7 +155,7 @@ public:
 
 	virtual
 	void
-	removeImportedNodes (const X3DExecutionContextPtr &, const std::set <InlinePtr> &, const UndoStepPtr &) const;
+	removeImportedNodes (const X3DExecutionContextPtr &, const std::set <X3DPtr <Inline>> &, const UndoStepPtr &) const;
 
 	///  @name Named node handling
 
@@ -285,7 +285,7 @@ public:
 
 	virtual
 	void
-	setMatrix (const X3DTransformNodePtr &, const Matrix4d &, const UndoStepPtr &) const;
+	setMatrix (const X3DPtr <X3DTransformNode> &, const Matrix4d &, const UndoStepPtr &) const;
 
 	virtual
 	Matrix4d

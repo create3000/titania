@@ -289,14 +289,14 @@ private:
 
 	Fields fields;
 
-	GroupPtr  rootGroup;
-	InlinePtr rootInline;
-	InlinePtr child1Inline;
-	InlinePtr child2Inline;
-	InlinePtr child3Inline;
-	InlinePtr child4Inline;
-	bool      childrenLoaded;
-	bool      keepCurrentLevel;
+	X3DPtr <Group>  rootGroup;
+	X3DPtr <Inline> rootInline;
+	X3DPtr <Inline> child1Inline;
+	X3DPtr <Inline> child2Inline;
+	X3DPtr <Inline> child3Inline;
+	X3DPtr <Inline> child4Inline;
+	bool            childrenLoaded;
+	bool            keepCurrentLevel;
 
 };
 

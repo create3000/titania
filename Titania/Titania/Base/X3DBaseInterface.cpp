@@ -141,21 +141,21 @@ X3DBaseInterface::inPrototypeInstance () const
 	return getCurrentContext () -> isType (protoInstance);
 }
 
-X3D::WorldInfoPtr
+X3D::X3DPtr <X3D::WorldInfo>
 X3DBaseInterface::createWorldInfo ()
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
 	return getWorldInfo (true);
 }
 
-X3D::WorldInfoPtr
+X3D::X3DPtr <X3D::WorldInfo>
 X3DBaseInterface::getWorldInfo () const
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
 	return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (false);
 }
 
-X3D::WorldInfoPtr
+X3D::X3DPtr <X3D::WorldInfo>
 X3DBaseInterface::getWorldInfo (const bool create)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {

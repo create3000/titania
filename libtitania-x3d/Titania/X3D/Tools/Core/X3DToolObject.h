@@ -72,11 +72,11 @@ public:
 
 	///  @name Member access
 
-	InlinePtr &
+	X3DPtr <Inline> &
 	getInlineNode ()
 	{ return inlineNode; }
 
-	const InlinePtr &
+	const X3DPtr <Inline> &
 	getInlineNode () const
 	{ return inlineNode; }
 
@@ -129,8 +129,8 @@ private:
 
 	///  @name Members
 
-	InlinePtr inlineNode;
-	SFNode    toolNode;
+	X3DPtr <Inline> inlineNode;
+	SFNode          toolNode;
 
 };
 

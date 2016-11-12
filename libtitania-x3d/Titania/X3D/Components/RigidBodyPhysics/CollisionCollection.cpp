@@ -57,19 +57,19 @@ namespace X3D {
 
 const ComponentType CollisionCollection::component      = ComponentType::RIGID_BODY_PHYSICS;
 const std::string   CollisionCollection::typeName       = "CollisionCollection";
-const std::string   CollisionCollection::containerField = "collidables";
+const std::string   CollisionCollection::containerField = "collider";
 
 CollisionCollection::Fields::Fields () :
-	appliedParameters (new MFString ({ "BOUNCE" })),
-	bounce (new SFFloat ()),
-	collidables (new MFNode ()),
-	enabled (new SFBool ()),
-	frictionCoefficients (new SFVec2f ()),
-	minBounceSpeed (new SFFloat ()),
-	slipFactors (new SFVec2f ()),
+	       appliedParameters (new MFString ({ "BOUNCE" })),
+	                  bounce (new SFFloat ()),
+	             collidables (new MFNode ()),
+	                 enabled (new SFBool ()),
+	    frictionCoefficients (new SFVec2f ()),
+	          minBounceSpeed (new SFFloat ()),
+	             slipFactors (new SFVec2f ()),
 	softnessConstantForceMix (new SFFloat ()),
-	softnessErrorCorrection (new SFFloat ()),
-	surfaceSpeed (new SFVec2f ())
+	 softnessErrorCorrection (new SFFloat ()),
+	            surfaceSpeed (new SFVec2f ())
 { }
 
 CollisionCollection::CollisionCollection (X3DExecutionContext* const executionContext) :

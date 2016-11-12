@@ -62,11 +62,11 @@ using FogList = X3DBindableNodeList <X3D::Fog>;
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::Fog>> &
-FogList::getStack (const X3D::X3DLayerNodePtr &) const;
+FogList::getStack (const X3D::X3DPtr <X3D::X3DLayerNode> &) const;
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::Fog>> &
-FogList::getList (const X3D::X3DLayerNodePtr &) const;
+FogList::getList (const X3D::X3DPtr <X3D::X3DLayerNode> &) const;
 
 } // puck
 } // titania

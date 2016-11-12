@@ -508,7 +508,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 		// Adjust transformation like detach from group of copy
 
-		const X3D::X3DTransformNodePtr transform (toExport [0]);
+		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (toExport [0]);
 
 		if (transform)
 		{
@@ -516,7 +516,10 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
-			X3D::X3DTransformNodePtr (sourceNode) -> setMatrix (modelViewMatrix);
+			X3D::X3DPtr <X3D::X3DTransformNode> sourceTransform (sourceNode);
+
+			if (sourceTransform)
+				sourceTransform -> setMatrix (modelViewMatrix);
 		}
 	}
 
@@ -528,7 +531,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 		{
 			// Handle X3DTransformNode nodes.
 
-			const X3D::X3DTransformNodePtr childTransform (sourceNode);
+			const X3D::X3DPtr <X3D::X3DTransformNode> childTransform (sourceNode);
 
 			if (childTransform)
 			{
@@ -536,7 +539,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> getModelViewMatrix (treeView -> getCurrentContext (), destNode));
 
-				const X3D::X3DTransformMatrix3DNodePtr groupTransform (destNode);
+				const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> groupTransform (destNode);
 
 				if (groupTransform)
 					groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
@@ -740,7 +743,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 		// Adjust transformation like detach from group of copy
 
-		const X3D::X3DTransformNodePtr transform (toExport [0]);
+		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (toExport [0]);
 
 		if (transform)
 		{
@@ -748,7 +751,10 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
-			X3D::X3DTransformNodePtr (sourceNode) -> setMatrix (modelViewMatrix);
+			X3D::X3DPtr <X3D::X3DTransformNode> sourceTransfrom (sourceNode);
+
+			if (sourceTransfrom)
+				sourceTransfrom -> setMatrix (modelViewMatrix);
 		}
 	}
 
@@ -760,7 +766,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		{
 			// Handle X3DTransformNode nodes.
 
-			const X3D::X3DTransformNodePtr childTransform (sourceNode);
+			const X3D::X3DPtr <X3D::X3DTransformNode> childTransform (sourceNode);
 
 			if (childTransform)
 			{
@@ -768,7 +774,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> getModelViewMatrix (treeView -> getCurrentContext (), destNode));
 
-				const X3D::X3DTransformMatrix3DNodePtr groupTransform (destNode);
+				const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> groupTransform (destNode);
 
 				if (groupTransform)
 					groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
@@ -959,7 +965,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 		// Adjust transformation like detach from group of copy
 
-		const X3D::X3DTransformNodePtr transform (toExport [0]);
+		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (toExport [0]);
 
 		if (transform)
 		{
@@ -967,7 +973,10 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
-			X3D::X3DTransformNodePtr (sourceNode) -> setMatrix (modelViewMatrix);
+			X3D::X3DPtr <X3D::X3DTransformNode> sourceTransform (sourceNode);
+
+			if (sourceTransform)
+				sourceTransform -> setMatrix (modelViewMatrix);
 		}
 	}
 
@@ -983,7 +992,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	{
 		try
 		{
-			const X3D::X3DTransformNodePtr childTransform (sourceNode);
+			const X3D::X3DPtr <X3D::X3DTransformNode> childTransform (sourceNode);
 
 			if (childTransform)
 			{
@@ -991,7 +1000,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 				X3D::Matrix4d groupModelViewMatrix (getBrowserWindow () -> getModelViewMatrix (treeView -> getCurrentContext (), *destParent));
 
-				const X3D::X3DTransformMatrix3DNodePtr groupTransform (*destParent);
+				const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> groupTransform (*destParent);
 
 				if (groupTransform)
 					groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());

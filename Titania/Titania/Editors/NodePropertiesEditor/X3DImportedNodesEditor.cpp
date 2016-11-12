@@ -353,7 +353,7 @@ X3DImportedNodesEditor::connectImportedNodes (const X3D::SFTime & field)
 
 void
 X3DImportedNodesEditor::updateImportedNode (const X3D::X3DExecutionContextPtr & executionContext,
-                                            const X3D::InlinePtr & inlineNode,
+                                            const X3D::X3DPtr <X3D::Inline> & inlineNode,
                                             const std::string & exportedName,
                                             const std::string & importedName,
                                             const X3D::UndoStepPtr & undoStep)

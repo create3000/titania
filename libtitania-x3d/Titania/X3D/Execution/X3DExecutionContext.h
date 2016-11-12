@@ -163,10 +163,10 @@ public:
 	///  @name WorldInfo handling
 
 	void
-	setWorldInfo (const WorldInfoPtr & value)
+	setWorldInfo (const X3DPtr <WorldInfo> & value)
 	throw (Error <DISPOSED>);
 
-	WorldInfoPtr
+	X3DPtr <WorldInfo>
 	getWorldInfo () const
 	throw (Error <DISPOSED>);
 
@@ -263,7 +263,7 @@ public:
 	///  @name Imported nodes handling
 
 	const ImportedNodePtr &
-	addImportedNode (const InlinePtr &, const std::string &, std::string = "")
+	addImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <NODE_IN_USE>,
@@ -273,7 +273,7 @@ public:
 	       Error <DISPOSED>);
 
 	const ImportedNodePtr &
-	updateImportedNode (const InlinePtr &, const std::string &, std::string = "")
+	updateImportedNode (const X3DPtr <Inline> &, const std::string &, std::string = "")
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,

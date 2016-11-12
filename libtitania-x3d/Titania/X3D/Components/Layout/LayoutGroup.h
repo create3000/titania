@@ -53,6 +53,7 @@
 
 #include "../../Types/Pointer.h"
 #include "../Grouping/X3DGroupingNode.h"
+#include "../Grouping/X3DTransformMatrix3DObject.h"
 #include "../Layering/X3DViewportNode.h"
 #include "../Layout/X3DLayoutNode.h"
 
@@ -60,7 +61,8 @@ namespace titania {
 namespace X3D {
 
 class LayoutGroup :
-	virtual public X3DGroupingNode
+	virtual public X3DGroupingNode,
+	virtual public X3DTransformMatrix3DObject
 {
 public:
 
@@ -121,11 +123,13 @@ public:
 	getBBox () const override;
 
 	virtual
+	const Matrix4d &
+	getMatrix () const override
+	{ return X3DTransformMatrix3DObject::getMatrix (); }
+
+	virtual
 	Box3d
 	getRectangleBBox () const;
-
-	const Matrix4d &
-	getMatrix () const;
 
 	///  @name Operations
 
@@ -137,8 +141,16 @@ public:
 	void
 	addTool () override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
 
 protected:
+
+	///  @name Construction
 
 	virtual
 	void
@@ -173,11 +185,9 @@ private:
 
 	Fields fields;
 
-	X3DViewportNodePtr viewportNode;
-	X3DLayoutNodePtr   layoutNode;
-	Matrix4d           modelViewMatrix;
-	Matrix4d           screenMatrix;
-	Matrix4d           matrix;
+	X3DPtr <X3DViewportNode> viewportNode;
+	X3DPtr <X3DLayoutNode>   layoutNode;
+	Matrix4d                 modelViewMatrix;
 
 };
 

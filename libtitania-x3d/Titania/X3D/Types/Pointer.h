@@ -525,10 +525,7 @@ using NamedNodePtr               = X3DPtr <NamedNode>;
 using ImportedNodePtr            = X3DPtr <ImportedNode>;
 using RoutePtr                   = X3DPtr <Route>;
 using ExportedNodePtr            = X3DPtr <ExportedNode>;
-using WorldInfoPtr               = X3DPtr <WorldInfo>;
 
-using LayerSetPtr            = X3DPtr <LayerSet>;
-using X3DLayerNodePtr        = X3DPtr <X3DLayerNode>;
 using NavigationInfoStackPtr = X3DPtr <NavigationInfoStack>;
 using BackgroundStackPtr     = X3DPtr <BackgroundStack>;
 using FogStackPtr            = X3DPtr <FogStack>;
@@ -537,25 +534,6 @@ using NavigationInfoListPtr  = X3DPtr <NavigationInfoList>;
 using BackgroundListPtr      = X3DPtr <BackgroundList>;
 using FogListPtr             = X3DPtr <FogList>;
 using ViewpointListPtr       = X3DPtr <ViewpointList>;
-using NavigationInfoPtr      = X3DPtr <NavigationInfo>;
-using X3DBackgroundNodePtr   = X3DPtr <X3DBackgroundNode>;
-using FogPtr                 = X3DPtr <Fog>;
-using X3DViewpointNodePtr    = X3DPtr <X3DViewpointNode>;
-using X3DViewportNodePtr     = X3DPtr <X3DViewportNode>;
-using X3DLayoutNodePtr       = X3DPtr <X3DLayoutNode>;
-
-using X3DNodePtr                  = X3DPtr <X3DNode>;
-using GroupPtr                    = X3DPtr <Group>;
-using TransformPtr                = X3DPtr <Transform>;
-using X3DTransformNodePtr         = X3DPtr <X3DTransformNode>;
-using X3DTransformMatrix3DNodePtr = X3DPtr <X3DTransformMatrix3DNode>;
-using X3DGroupingNodePtr          = X3DPtr <X3DGroupingNode>;
-using InlinePtr                   = X3DPtr <Inline>;
-
-using AppearancePtr       = X3DPtr <Appearance>;
-using MaterialPtr         = X3DPtr <Material>;
-using TwoSidedMaterialPtr = X3DPtr <TwoSidedMaterial>;
-using X3DShapeNodePtr     = X3DPtr <X3DShapeNode>;
 
 class UndoStepContainer;
 

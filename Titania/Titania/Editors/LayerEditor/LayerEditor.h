@@ -100,7 +100,7 @@ private:
 	set_treeView ();
 
 	void
-	add_layer (const X3D::SFNode &, const X3D::X3DLayerNodePtr &, const int32_t);
+	add_layer (const X3D::SFNode &, const X3D::X3DPtr <X3D::X3DLayerNode> &, const int32_t);
 
 	void
 	connectPrivateActiveLayer ();
@@ -115,7 +115,7 @@ private:
 	connectLayers ();
 
 	void
-	connectIsPickable (const X3D::X3DLayerNodePtr &);
+	connectIsPickable (const X3D::X3DPtr <X3D::X3DLayerNode> &);
 
 	void
 	disconnectPrivateActiveLayer ();
@@ -130,7 +130,7 @@ private:
 	disconnectLayers ();
 
 	void
-	disconnectIsPickable (const X3D::X3DLayerNodePtr &);
+	disconnectIsPickable (const X3D::X3DPtr <X3D::X3DLayerNode> &);
 
 	virtual
 	void
@@ -196,7 +196,7 @@ private:
 	///  @name Members
 
 	X3D::WorldPtr                        world;
-	X3D::LayerSetPtr                     layerSet;
+	X3D::X3DPtr <X3D::LayerSet>          layerSet;
 	X3D::X3DPtrArray <X3D::X3DLayerNode> layers;
 };
 

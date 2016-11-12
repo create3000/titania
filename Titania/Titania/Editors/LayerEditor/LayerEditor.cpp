@@ -234,7 +234,7 @@ LayerEditor::set_treeView ()
 }
 
 void
-LayerEditor::add_layer (const X3D::SFNode & node, const X3D::X3DLayerNodePtr & layer, const int32_t index)
+LayerEditor::add_layer (const X3D::SFNode & node, const X3D::X3DPtr <X3D::X3DLayerNode> & layer, const int32_t index)
 {
 	const auto   row         = getLayerListStore () -> append ();
 	const auto & order       = layerSet -> order ();
@@ -291,7 +291,7 @@ LayerEditor::connectLayers ()
 }
 
 void
-LayerEditor::connectIsPickable (const X3D::X3DLayerNodePtr & layer)
+LayerEditor::connectIsPickable (const X3D::X3DPtr <X3D::X3DLayerNode> & layer)
 {
 	layer -> isPickable () .removeInterest (this, &LayerEditor::connectIsPickable);
 	layer -> isPickable () .addInterest (this, &LayerEditor::set_treeView);
@@ -326,7 +326,7 @@ LayerEditor::disconnectLayers ()
 }
 
 void
-LayerEditor::disconnectIsPickable (const X3D::X3DLayerNodePtr & layer)
+LayerEditor::disconnectIsPickable (const X3D::X3DPtr <X3D::X3DLayerNode> & layer)
 {
 	layer -> isPickable () .removeInterest (this, &LayerEditor::set_treeView);
 	layer -> isPickable () .addInterest (this, &LayerEditor::connectIsPickable, layer);

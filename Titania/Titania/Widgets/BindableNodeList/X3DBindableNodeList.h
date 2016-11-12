@@ -116,11 +116,11 @@ private:
 	///  @name Member acccess
 
 	const X3D::X3DPtr <X3D::X3DBindableNodeStack <Type>> &
-	getStack (const X3D::X3DLayerNodePtr &) const
+	getStack (const X3D::X3DPtr <X3D::X3DLayerNode> &) const
 	{ throw X3D::Error <X3D::NOT_SUPPORTED> ("Not supported"); }
 
 	const X3D::X3DPtr <X3D::X3DBindableNodeList <Type>> &
-	getList (const X3D::X3DLayerNodePtr &) const
+	getList (const X3D::X3DPtr <X3D::X3DLayerNode> &) const
 	{ throw X3D::Error <X3D::NOT_SUPPORTED> ("Not supported"); }
 
 	std::string
@@ -192,11 +192,11 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr         browser;
-	X3D::X3DLayerNodePtr    activeLayer;
-	X3D::X3DPtrArray <Type> nodes;
-	X3D::X3DPtr <Type>      selection;
-	bool                    editor;
+	X3D::BrowserPtr                 browser;
+	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
+	X3D::X3DPtrArray <Type>         nodes;
+	X3D::X3DPtr <Type>              selection;
+	bool                            editor;
 
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;

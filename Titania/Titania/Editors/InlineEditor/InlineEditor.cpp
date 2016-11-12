@@ -205,7 +205,7 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 	const auto        name             = X3D::get_name_from_uri (scene -> getWorldURL ());
 	const auto        importedRoutes   = getBrowserWindow () -> getImportedRoutes (getCurrentContext (), scene);
 
-	const X3D::GroupPtr groupNode (group);
+	const X3D::X3DPtr <X3D::Group> groupNode (group);
 
 	getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, group, undoStep);
 	getBrowserWindow () -> replaceNodes (getCurrentContext (), X3D::SFNode (inlineNode), group, undoStep);

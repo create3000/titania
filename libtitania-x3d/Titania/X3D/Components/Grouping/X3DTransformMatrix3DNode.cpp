@@ -50,37 +50,23 @@
 
 #include "X3DTransformMatrix3DNode.h"
 
-#include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
 
 X3DTransformMatrix3DNode::X3DTransformMatrix3DNode () :
-	X3DGroupingNode (),
-	         matrix ()
+	           X3DGroupingNode (),
+	X3DTransformMatrix3DObject ()
 {
 	addType (X3DConstants::X3DTransformMatrix3DNode);
 }
 
 void
-X3DTransformMatrix3DNode::setMatrix (const Matrix4d & value)
+X3DTransformMatrix3DNode::initialize ()
 {
-	matrix = value;
-
-	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
-}
-
-void
-X3DTransformMatrix3DNode::setMatrix (const Vector3d & t,
-                                     const Rotation4d & r,
-                                     const Vector3d & s,
-                                     const Rotation4d & so,
-                                     const Vector3d & c)
-{
-	matrix .set (t, r, s, so, c);
-
-	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
+	X3DGroupingNode::initialize ();
+	X3DTransformMatrix3DObject::initialize ()	;
 }
 
 Box3d
@@ -89,18 +75,25 @@ X3DTransformMatrix3DNode::getBBox () const
 	if (isHidden ())
 		return Box3d ();
 
-	return X3DGroupingNode::getBBox () * matrix;
+	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
 void
 X3DTransformMatrix3DNode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	renderObject -> getModelViewMatrix () .push ();
-	renderObject -> getModelViewMatrix () .mult_left (matrix);
+	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
 
 	X3DGroupingNode::traverse (type, renderObject);
 
 	renderObject -> getModelViewMatrix () .pop ();
+}
+
+void
+X3DTransformMatrix3DNode::dispose ()
+{
+	X3DTransformMatrix3DObject::dispose ();
+	X3DGroupingNode::dispose ();
 }
 
 } // X3D

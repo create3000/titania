@@ -52,12 +52,14 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_MATRIX4DNODE_H__
 
 #include "../Grouping/X3DGroupingNode.h"
+#include "../Grouping/X3DTransformMatrix3DObject.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DTransformMatrix3DNode :
-	virtual public X3DGroupingNode
+	virtual public X3DGroupingNode,
+	virtual public X3DTransformMatrix3DObject
 {
 public:
 
@@ -68,19 +70,21 @@ public:
 	getBBox () const override;
 
 	virtual
-	void
-	setMatrix (const Matrix4d &);
-
-	virtual
 	const Matrix4d &
 	getMatrix () const override
-	{ return matrix; }
+	{ return X3DTransformMatrix3DObject::getMatrix (); }
 
 	///  @name Operations
 
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
 
 
 protected:
@@ -89,21 +93,9 @@ protected:
 
 	X3DTransformMatrix3DNode ();
 
-	///  @name Member access
-
+	virtual
 	void
-	setMatrix (const Vector3d & t,
-	           const Rotation4d & r,
-	           const Vector3d & s,
-	           const Rotation4d & so,
-	           const Vector3d & c);
-
-
-private:
-
-	///  @name Members
-
-	Matrix4d matrix;
+	initialize () override;
 
 };
 

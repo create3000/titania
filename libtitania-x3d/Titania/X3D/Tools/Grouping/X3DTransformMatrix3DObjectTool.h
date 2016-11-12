@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra�e 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,30 +48,55 @@
  *
  ******************************************************************************/
 
-#include "FogList.h"
+#ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_MATRIX3DOBJECT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_MATRIX3DOBJECT_TOOL_H__
+
+#include "../../Components/Grouping/X3DTransformMatrix3DObject.h"
+#include "../Core/X3DBaseTool.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-template <>
-const std::string X3DBindableNodeList <X3D::Fog>::name = "Fogs";
-
-template <>
-const std::string X3DBindableNodeList <X3D::Fog>::description = _ ("Default Fog");
-
-template <>
-const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::Fog>> &
-FogList::getStack (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
+class X3DTransformMatrix3DObjectTool :
+	virtual public X3DTransformMatrix3DObject,
+	virtual public X3DBaseTool
 {
-	return layer -> getFogStack ();
-}
+public:
 
-template <>
-const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::Fog>> &
-FogList::getList (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
-{
-	return layer -> getFogs ();
-}
+	///  @name Operatations
 
-} // puck
+	virtual
+	const Matrix4d &
+	getMatrix () const override
+	{ return getNode <X3DTransformMatrix3DObject> () -> getMatrix (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+
+protected:
+
+	///  @name Construction
+
+	X3DTransformMatrix3DObjectTool () :
+		X3DTransformMatrix3DObject (),
+		               X3DBaseTool ()
+	{
+		addType (X3DConstants::X3DTransformMatrix3DObjectTool);
+	}
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+};
+
+} // X3D
 } // titania
+
+#endif

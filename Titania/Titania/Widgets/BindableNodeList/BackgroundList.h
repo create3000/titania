@@ -62,11 +62,11 @@ using BackgroundList = X3DBindableNodeList <X3D::X3DBackgroundNode>;
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::X3DBackgroundNode>> &
-BackgroundList::getStack (const X3D::X3DLayerNodePtr &) const;
+BackgroundList::getStack (const X3D::X3DPtr <X3D::X3DLayerNode> &) const;
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::X3DBackgroundNode>> &
-BackgroundList::getList (const X3D::X3DLayerNodePtr &) const;
+BackgroundList::getList (const X3D::X3DPtr <X3D::X3DLayerNode> &) const;
 
 } // puck
 } // titania

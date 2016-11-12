@@ -52,12 +52,14 @@
 #define __TITANIA_X3D_COMPONENTS_NAVIGATION_BILLBOARD_H__
 
 #include "../Grouping/X3DGroupingNode.h"
+#include "../Grouping/X3DTransformMatrix3DObject.h"
 
 namespace titania {
 namespace X3D {
 
 class Billboard :
-	virtual public X3DGroupingNode
+	virtual public X3DGroupingNode,
+	virtual public X3DTransformMatrix3DObject
 {
 public:
 
@@ -101,15 +103,18 @@ public:
 	axisOfRotation () const
 	{ return *fields .axisOfRotation; }
 
-	///  @name Operations
+	///  @name Member access
 
 	virtual
 	Box3d
 	getBBox () const override;
 
+	virtual
 	const Matrix4d &
-	getMatrix () const
-	{ return matrix; }
+	getMatrix () const override
+	{ return X3DTransformMatrix3DObject::getMatrix (); }
+
+	///  @name Operations
 
 	virtual
 	void
@@ -118,6 +123,21 @@ public:
 	virtual
 	void
 	addTool () override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
@@ -144,8 +164,6 @@ private:
 	};
 
 	Fields fields;
-	
-	Matrix4d matrix;
 
 };
 

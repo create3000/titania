@@ -111,7 +111,7 @@ private:
 	static
 	void
 	updateImportedNode (const X3D::X3DExecutionContextPtr &,
-                       const X3D::InlinePtr &,
+                       const X3D::X3DPtr <X3D::Inline> &,
                        const std::string &,
                        const std::string &,
                        const X3D::UndoStepPtr &);
@@ -124,7 +124,7 @@ private:
 
 	///  @name Members
 
-	X3D::InlinePtr inlineNode;
+	X3D::X3DPtr <X3D::Inline> inlineNode;
 
 };
 

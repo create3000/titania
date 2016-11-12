@@ -60,9 +60,9 @@ const std::string   CollisionSensor::typeName       = "CollisionSensor";
 const std::string   CollisionSensor::containerField = "children";
 
 CollisionSensor::Fields::Fields () :
-	collider (new SFNode ()),
+	     collider (new SFNode ()),
 	intersections (new MFNode ()),
-	contacts (new MFNode ())
+	     contacts (new MFNode ())
 { }
 
 CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
@@ -74,10 +74,12 @@ CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOutput, "enabled",       enabled ());
-	addField (outputOnly,  "isActive",      isActive ());
 	addField (inputOutput, "collider",      collider ());
+	addField (outputOnly,  "isActive",      isActive ());
 	addField (outputOnly,  "intersections", intersections ());
 	addField (outputOnly,  "contacts",      contacts ());
+
+	addField (VRML_V2_0, "collidables", "collider");
 }
 
 X3DBaseNode*

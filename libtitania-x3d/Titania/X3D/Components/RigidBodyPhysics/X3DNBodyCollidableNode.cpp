@@ -54,15 +54,16 @@ namespace titania {
 namespace X3D {
 
 X3DNBodyCollidableNode::Fields::Fields () :
-	enabled (new SFBool (true)),
-	rotation (new SFRotation ()),
-	translation (new SFVec3f ())
+	    enabled (new SFBool (true)),
+	translation (new SFVec3f ()),
+	   rotation (new SFRotation ())
 { }
 
 X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
-	    X3DChildNode (),
-	X3DBoundedObject (),
-	          fields ()
+	              X3DChildNode (),
+	X3DTransformMatrix3DObject (),
+	          X3DBoundedObject (),
+	                    fields ()
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);
 }
@@ -71,19 +72,15 @@ void
 X3DNBodyCollidableNode::initialize ()
 {
 	X3DChildNode::initialize ();
+	X3DTransformMatrix3DObject::initialize ();
 	X3DBoundedObject::initialize ();
-}
-
-Box3d
-X3DNBodyCollidableNode::getBBox () const
-{
-	return Box3d ();
 }
 
 void
 X3DNBodyCollidableNode::dispose ()
 {
 	X3DBoundedObject::dispose ();
+	X3DTransformMatrix3DObject::dispose ();
 	X3DChildNode::dispose ();
 }
 

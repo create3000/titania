@@ -62,11 +62,9 @@ const std::string   ScreenGroup::typeName       = "ScreenGroup";
 const std::string   ScreenGroup::containerField = "children";
 
 ScreenGroup::ScreenGroup (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),
-	modelViewMatrix (),
-	   screenMatrix (),
-	         matrix ()
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	           X3DGroupingNode (),
+	X3DTransformMatrix3DObject ()
 {
 	addType (X3DConstants::ScreenGroup);
 
@@ -84,27 +82,21 @@ ScreenGroup::create (X3DExecutionContext* const executionContext) const
 	return new ScreenGroup (executionContext);
 }
 
+void
+ScreenGroup::initialize ()
+{
+	X3DGroupingNode::initialize ();
+	X3DTransformMatrix3DObject::initialize ();
+}
+
 Box3d
 ScreenGroup::getBBox () const
 {
 	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
-const Matrix4d &
-ScreenGroup::getMatrix () const
-{
-	try
-	{
-		const_cast <ScreenGroup*> (this) -> matrix = screenMatrix * inverse (modelViewMatrix);
-	}
-	catch (const std::domain_error &)
-	{ }
-	
-	return matrix;
-}
-
 // Same as in Text
-const Matrix4d &
+Matrix4d
 ScreenGroup::scale (X3DRenderObject* const renderObject)
 throw (std::domain_error)
 {
@@ -113,12 +105,15 @@ throw (std::domain_error)
 	Vector3d   translation, scale;
 	Rotation4d rotation;
 
-	modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
+	const auto & modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
+
 	modelViewMatrix .get (translation, rotation, scale);
 
 	const auto & viewport         = renderObject -> getViewVolumes () .back () .getViewport ();
 	const auto & projectionMatrix = renderObject -> getProjectionMatrix () .get ();
 	const auto   screenScale      = renderObject -> getViewpoint () -> getScreenScale (translation, viewport);
+
+	Matrix4d screenMatrix;
 
 	screenMatrix .set (translation, rotation, Vector3d (screenScale .x () * (scale .x () < 0 ? -1 : 1),
 	                                                    screenScale .y () * (scale .y () < 0 ? -1 : 1),
@@ -137,7 +132,9 @@ throw (std::domain_error)
 	offset .z (0);
 	screenMatrix .translate (offset);
 
-	// Assign modelViewMatrix and relative matrix
+	// Assign relative matrix
+
+   setMatrix (screenMatrix * inverse (modelViewMatrix));
 
 	return screenMatrix;
 }
@@ -152,7 +149,8 @@ ScreenGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 			case TraverseType::CAMERA:
 			case TraverseType::DEPTH:
 				// No clone support for shadow and generated cube map texture
-				renderObject -> getModelViewMatrix () .mult_left (screenMatrix);
+				renderObject -> getModelViewMatrix () .push ();
+				renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
 				break;
 			default:
 				renderObject -> getModelViewMatrix () .push (scale (renderObject));
@@ -171,6 +169,13 @@ void
 ScreenGroup::addTool ()
 {
 	X3DGroupingNode::addTool (new ScreenGroupTool (this));
+}
+
+void
+ScreenGroup::dispose ()
+{
+	X3DTransformMatrix3DObject::dispose ();
+	X3DGroupingNode::dispose ();
 }
 
 } // X3D

@@ -106,7 +106,8 @@ World::initialize ()
 void
 World::set_rootNodes ()
 {
-	const LayerSetPtr oldLayerSet = layerSet;
+	const X3DPtr <LayerSet> oldLayerSet = layerSet;
+
 	layerSet = defaultLayerSet;
 
 	layer0 -> children () = getExecutionContext () -> getRootNodes ();

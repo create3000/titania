@@ -70,14 +70,13 @@ LayoutGroup::Fields::Fields () :
 { }
 
 LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),
-	         fields (),
-	   viewportNode (),
-	     layoutNode (),
-	modelViewMatrix (),
-	   screenMatrix (),
-	         matrix ()
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	           X3DGroupingNode (),
+	X3DTransformMatrix3DObject (),
+	                    fields (),
+	              viewportNode (),
+	                layoutNode (),
+	           modelViewMatrix ()
 {
 	addType (X3DConstants::LayoutGroup);
 
@@ -104,6 +103,7 @@ void
 LayoutGroup::initialize ()
 {
 	X3DGroupingNode::initialize ();
+	X3DTransformMatrix3DObject::initialize ();
 
 	viewport () .addInterest (this, &LayoutGroup::set_viewport);
 	layout ()   .addInterest (this, &LayoutGroup::set_layout);
@@ -137,22 +137,6 @@ LayoutGroup::getRectangleBBox () const
 	return Box3d ();
 }
 
-const Matrix4d &
-LayoutGroup::getMatrix () const
-{
-	try
-	{
-		if (layoutNode)
-			const_cast <LayoutGroup*> (this) -> matrix = screenMatrix * inverse (modelViewMatrix);
-		else
-			const_cast <LayoutGroup*> (this) -> matrix = Matrix4d ();
-	}
-	catch (const std::domain_error &)
-	{ }
-
-	return matrix;
-}
-
 void
 LayoutGroup::set_viewport ()
 {
@@ -180,8 +164,10 @@ LayoutGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 
 			if (layoutNode)
 			{
-				modelViewMatrix = renderObject -> getModelViewMatrix () .get ();
-				screenMatrix    = layoutNode -> transform (type, renderObject);
+				modelViewMatrix         = renderObject -> getModelViewMatrix () .get ();
+				const auto screenMatrix = layoutNode -> transform (type, renderObject);
+
+				setMatrix (screenMatrix * inverse (modelViewMatrix));
 
 				renderObject -> getModelViewMatrix () .push (screenMatrix);
 				renderObject -> getLayouts         () .emplace_back (layoutNode);
@@ -208,6 +194,13 @@ void
 LayoutGroup::addTool ()
 {
 	X3DGroupingNode::addTool (new LayoutGroupTool (this));
+}
+
+void
+LayoutGroup::dispose ()
+{
+	X3DTransformMatrix3DObject::dispose ();
+	X3DGroupingNode::dispose ();
 }
 
 } // X3D

@@ -61,14 +61,14 @@ const std::string X3DBindableNodeList <X3D::X3DBackgroundNode>::description = _ 
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::X3DBackgroundNode>> &
-BackgroundList::getStack (const X3D::X3DLayerNodePtr & layer) const
+BackgroundList::getStack (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
 {
 	return layer -> getBackgroundStack ();
 }
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::X3DBackgroundNode>> &
-BackgroundList::getList (const X3D::X3DLayerNodePtr & layer) const
+BackgroundList::getList (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
 {
 	return layer -> getBackgrounds ();
 }

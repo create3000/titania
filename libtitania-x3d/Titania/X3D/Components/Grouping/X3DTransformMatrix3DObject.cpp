@@ -48,30 +48,48 @@
  *
  ******************************************************************************/
 
-#include "FogList.h"
+#include "X3DTransformMatrix3DObject.h"
+
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-template <>
-const std::string X3DBindableNodeList <X3D::Fog>::name = "Fogs";
-
-template <>
-const std::string X3DBindableNodeList <X3D::Fog>::description = _ ("Default Fog");
-
-template <>
-const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::Fog>> &
-FogList::getStack (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
+X3DTransformMatrix3DObject::X3DTransformMatrix3DObject () :
+	X3DBaseNode (),
+	     matrix ()
 {
-	return layer -> getFogStack ();
+	addType (X3DConstants::X3DTransformMatrix3DObject);
 }
 
-template <>
-const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::Fog>> &
-FogList::getList (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
+void
+X3DTransformMatrix3DObject::setMatrix (const Matrix4d & value)
 {
-	return layer -> getFogs ();
+	matrix = value;
+
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
 
-} // puck
+void
+X3DTransformMatrix3DObject::setMatrix (const Vector3d & t,
+                                       const Rotation4d & r)
+{
+	matrix .set (t, r);
+
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
+}
+
+void
+X3DTransformMatrix3DObject::setMatrix (const Vector3d & t,
+                                       const Rotation4d & r,
+                                       const Vector3d & s,
+                                       const Rotation4d & so,
+                                       const Vector3d & c)
+{
+	matrix .set (t, r, s, so, c);
+
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
+}
+
+} // X3D
 } // titania

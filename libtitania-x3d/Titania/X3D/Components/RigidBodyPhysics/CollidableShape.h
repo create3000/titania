@@ -56,10 +56,14 @@
 namespace titania {
 namespace X3D {
 
+class Shape;
+
 class CollidableShape :
 	public X3DNBodyCollidableNode
 {
 public:
+
+	///  @name Construction
 
 	CollidableShape (X3DExecutionContext* const);
 
@@ -97,9 +101,46 @@ public:
 	shape () const
 	{ return *fields .shape; }
 
+	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const final override;
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~CollidableShape ();
+
 
 private:
+	
+	///  @name Construction
 
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_shape ();
+
+	void
+	set_geometry ();
+
+	void
+	eventsProcessed ();
 
 	///  @name Static members
 
@@ -117,6 +158,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DPtr <Shape> shapeNode;
 
 };
 

@@ -163,13 +163,13 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr                    preview;
-	X3D::X3DPtrArray <X3D::Appearance> appearances;
-	X3D::X3DPtr <X3D::X3DMaterialNode> materialNode;
-	X3D::SFTime                        materialNodeBuffer;
-	X3D::MaterialPtr                   material;
-	X3D::TwoSidedMaterialPtr           twoSidedMaterial;
-	bool                               isTwoSidedMaterial;
+	X3D::BrowserPtr                     preview;
+	X3D::X3DPtrArray <X3D::Appearance>  appearances;
+	X3D::X3DPtr <X3D::X3DMaterialNode>  materialNode;
+	X3D::SFTime                         materialNodeBuffer;
+	X3D::X3DPtr <X3D::Material>         material;
+	X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial;
+	bool                                isTwoSidedMaterial;
 
 	SFColorButton diffuseColor;
 	SFColorButton specularColor;

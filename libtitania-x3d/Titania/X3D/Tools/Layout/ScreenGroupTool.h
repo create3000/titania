@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_LAYOUT_SCREEN_GROUP_TOOL_H__
 
 #include "../Grouping/X3DGroupingNodeTool.h"
+#include "../Grouping/X3DTransformMatrix3DObjectTool.h"
 #include "../ToolColors.h"
 
 #include "../../Components/Layout/ScreenGroup.h"
@@ -61,17 +62,19 @@ namespace X3D {
 
 class ScreenGroupTool :
 	virtual public ScreenGroup,
-	public X3DGroupingNodeTool
+	public X3DGroupingNodeTool,
+	public X3DTransformMatrix3DObjectTool
 {
 public:
 
 	///  @name Construction
 
 	ScreenGroupTool (ScreenGroup* const node) :
-		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		        ScreenGroup (node -> getExecutionContext ()),
-		        X3DBaseTool (node),
-		X3DGroupingNodeTool (ToolColors::LIME)
+		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                   ScreenGroup (node -> getExecutionContext ()),
+		                   X3DBaseTool (node),
+		           X3DGroupingNodeTool (ToolColors::LIME),
+		X3DTransformMatrix3DObjectTool ()
 	{
 		addType (X3DConstants::ScreenGroupTool);
 	}
@@ -86,19 +89,42 @@ public:
 	virtual
 	const Matrix4d &
 	getMatrix () const final override
-	{ return getNode <ScreenGroup> () -> getMatrix (); }
+	{ return X3DTransformMatrix3DObjectTool::getMatrix (); }
 
 	///  @name Operations
 
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
-	{ return X3DGroupingNodeTool::traverse (type, renderObject); }
+	{ X3DGroupingNodeTool::traverse (type, renderObject); }
 
 	virtual
 	void
 	addTool () final override
 	{ X3DGroupingNodeTool::addTool (); }
+
+	///  @name Member access
+
+	virtual
+	void
+	dispose () final override
+	{
+		X3DTransformMatrix3DObjectTool::dispose ();
+		X3DGroupingNodeTool::dispose ();
+	}
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override
+	{
+		X3DGroupingNodeTool::initialize ();
+		X3DTransformMatrix3DObjectTool::initialize ();
+	}
 
 };
 

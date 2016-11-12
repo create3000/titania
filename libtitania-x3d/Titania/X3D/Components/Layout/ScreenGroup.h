@@ -52,12 +52,14 @@
 #define __TITANIA_X3D_COMPONENTS_LAYOUT_SCREEN_GROUP_H__
 
 #include "../Grouping/X3DGroupingNode.h"
+#include "../Grouping/X3DTransformMatrix3DObject.h"
 
 namespace titania {
 namespace X3D {
 
 class ScreenGroup :
-	virtual public X3DGroupingNode
+	virtual public X3DGroupingNode,
+	virtual public X3DTransformMatrix3DObject
 {
 public:
 
@@ -95,8 +97,10 @@ public:
 	Box3d
 	getBBox () const override;
 
+	virtual
 	const Matrix4d &
-	getMatrix () const;
+	getMatrix () const override
+	{ return X3DTransformMatrix3DObject::getMatrix (); }
 
 	///  @name Operations
 
@@ -108,12 +112,27 @@ public:
 	void
 	addTool () override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
+
 
 private:
 
 	///  @name Operations
 
-	const Matrix4d &
+	Matrix4d
 	scale (X3DRenderObject* const renderObject)
 	throw (std::domain_error);
 
@@ -122,10 +141,6 @@ private:
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
-
-	Matrix4d modelViewMatrix;
-	Matrix4d screenMatrix;
-	Matrix4d matrix;
 
 };
 

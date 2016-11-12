@@ -72,10 +72,10 @@ Billboard::Fields::Fields () :
 { }
 
 Billboard::Billboard (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGroupingNode (),
-	         fields (),
-	         matrix ()
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	           X3DGroupingNode (),
+	X3DTransformMatrix3DObject (),
+	                    fields ()
 {
 	addType (X3DConstants::Billboard);
 
@@ -94,10 +94,17 @@ Billboard::create (X3DExecutionContext* const executionContext) const
 	return new Billboard (executionContext);
 }
 
+void
+Billboard::initialize ()
+{
+	X3DGroupingNode::initialize ();
+	X3DTransformMatrix3DObject::initialize ();
+}
+
 Box3d
 Billboard::getBBox () const
 {
-	return X3DGroupingNode::getBBox () * matrix;
+	return X3DGroupingNode::getBBox () * getMatrix ();
 }
 
 const Matrix4d &
@@ -120,20 +127,20 @@ throw (std::domain_error)
 		x .normalize ();
 		y .normalize ();
 
-		matrix = Matrix4d (x [0], x [1], x [2], 0,
-		                   y [0], y [1], y [2], 0,
-		                   z [0], z [1], z [2], 0,
-		                   0,     0,     0,     1);
+		setMatrix (Matrix4d (x [0], x [1], x [2], 0,
+		                     y [0], y [1], y [2], 0,
+		                     z [0], z [1], z [2], 0,
+		                     0,     0,     0,     1));
 	}
 	else
 	{
 		const auto N1 = cross <double> (axisOfRotation () .getValue (), billboardToViewer); // Normal vector of plane as in specification
 		const auto N2 = cross <double> (axisOfRotation () .getValue (), zAxis);             // Normal vector of plane between axisOfRotation and zAxis
 
-		matrix = Matrix4d (Rotation4d (N2, N1));                                            // Rotate zAxis in plane
+		setMatrix (Matrix4d (Rotation4d (N2, N1)));                                            // Rotate zAxis in plane
 	}
 
-	return matrix;
+	return getMatrix ();
 }
 
 void
@@ -148,7 +155,7 @@ Billboard::traverse (const TraverseType type, X3DRenderObject* const renderObjec
 			case TraverseType::CAMERA:
 			case TraverseType::DEPTH:
 				// No clone support for shadow and generated cube map texture
-				renderObject -> getModelViewMatrix () .mult_left (matrix);
+				renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
 				break;
 			default:
 				renderObject -> getModelViewMatrix () .mult_left (rotate (renderObject));
@@ -167,6 +174,13 @@ void
 Billboard::addTool ()
 {
 	X3DGroupingNode::addTool (new BillboardTool (this));
+}
+
+void
+Billboard::dispose ()
+{
+	X3DTransformMatrix3DObject::dispose ();
+	X3DGroupingNode::dispose ();
 }
 
 } // X3D

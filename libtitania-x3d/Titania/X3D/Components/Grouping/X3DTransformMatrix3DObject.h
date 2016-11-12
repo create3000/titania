@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,30 +48,73 @@
  *
  ******************************************************************************/
 
-#include "FogList.h"
+#ifndef __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_MATRIX3DOBJECT_H__
+#define __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_MATRIX3DOBJECT_H__
+
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Types/Numbers.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-template <>
-const std::string X3DBindableNodeList <X3D::Fog>::name = "Fogs";
-
-template <>
-const std::string X3DBindableNodeList <X3D::Fog>::description = _ ("Default Fog");
-
-template <>
-const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::Fog>> &
-FogList::getStack (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
+class X3DTransformMatrix3DObject :
+	virtual public X3DBaseNode
 {
-	return layer -> getFogStack ();
-}
+public:
 
-template <>
-const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::Fog>> &
-FogList::getList (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
-{
-	return layer -> getFogs ();
-}
+	///  @name Member access
 
-} // puck
+	virtual
+	const Matrix4d &
+	getMatrix () const
+	{ return matrix; }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override
+	{ }
+
+
+protected:
+
+	///  @name Construction
+
+	X3DTransformMatrix3DObject ();
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+	///  @name Member access
+
+	virtual
+	void
+	setMatrix (const Matrix4d &);
+
+	void
+	setMatrix (const Vector3d & t,
+	           const Rotation4d & r);
+
+	void
+	setMatrix (const Vector3d & t,
+	           const Rotation4d & r,
+	           const Vector3d & s,
+	           const Rotation4d & so,
+	           const Vector3d & c);
+
+
+private:
+
+	///  @name Members
+
+	Matrix4d matrix;
+
+};
+
+} // X3D
 } // titania
+
+#endif

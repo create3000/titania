@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,8 @@
 #include "CollidableOffset.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
+#include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
 namespace X3D {
@@ -66,16 +68,17 @@ CollidableOffset::Fields::Fields () :
 CollidableOffset::CollidableOffset (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DNBodyCollidableNode (),
-	                fields ()
+	                fields (),
+	        collidableNode ()
 {
 	addType (X3DConstants::CollidableOffset);
 
 	addField (inputOutput,    "metadata",    metadata ());
+	addField (inputOutput,    "enabled",     enabled ());
+	addField (inputOutput,    "translation", translation ());
+	addField (inputOutput,    "rotation",    rotation ());
 	addField (initializeOnly, "bboxSize",    bboxSize ());
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
-	addField (inputOutput,    "enabled",     enabled ());
-	addField (inputOutput,    "rotation",    rotation ());
-	addField (inputOutput,    "translation", translation ());
 	addField (initializeOnly, "collidable",  collidable ());
 }
 
@@ -84,6 +87,63 @@ CollidableOffset::create (X3DExecutionContext* const executionContext) const
 {
 	return new CollidableOffset (executionContext);
 }
+
+void
+CollidableOffset::initialize ()
+{
+	X3DNBodyCollidableNode::initialize ();
+
+	collidable () .addInterest (this, &CollidableOffset::set_collidable);
+	addInterest (this, &CollidableOffset::eventsProcessed);
+
+	set_collidable ();
+	eventsProcessed ();
+}
+
+Box3d
+CollidableOffset::getBBox () const
+{
+	if (bboxSize () == Vector3f (-1, -1, -1))
+	{
+		const auto boundedObject = x3d_cast <X3DBoundedObject*> (collidableNode);
+
+		if (boundedObject)
+			return boundedObject -> getBBox () * getMatrix ();
+
+		return Box3d ();
+	}
+
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ()) * getMatrix ();
+}
+
+void
+CollidableOffset::set_collidable ()
+{
+	collidableNode .set (x3d_cast <X3DNBodyCollidableNode*> (collidable ()));
+}
+
+void
+CollidableOffset::eventsProcessed ()
+{
+	setMatrix (translation () .getValue (), rotation () .getValue ());
+}
+
+void
+CollidableOffset::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	if (collidableNode)
+	{
+		renderObject -> getModelViewMatrix () .push ();
+		renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+
+		collidableNode -> traverse (type, renderObject);
+	
+		renderObject -> getModelViewMatrix () .pop ();
+	}
+}
+
+CollidableOffset::~CollidableOffset ()
+{ }
 
 } // X3D
 } // titania

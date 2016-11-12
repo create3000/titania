@@ -721,11 +721,11 @@ X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & execu
 	for (const auto & node : nodes)
 		deleteRoutes (executionContext, node, undoStep);
 
-	std::set <InlinePtr> inlineNodes;
+	std::set <X3DPtr <Inline>> inlineNodes;
 
 	for (const auto & node : nodes)
 	{
-		InlinePtr inlineNode (node);
+		X3DPtr <Inline> inlineNode (node);
 
 		if (inlineNode and inlineNode -> load ())
 			inlineNodes .emplace (inlineNode);
@@ -886,7 +886,7 @@ X3DEditor::removeNamedNodes (const X3DExecutionContextPtr & executionContext, co
  *  Only pass inline nodes that are loaded and should be unloaded.
  */
 void
-X3DEditor::removeImportedNodes (const X3DExecutionContextPtr & executionContext, const std::set <InlinePtr> & inlineNodes, const UndoStepPtr & undoStep) const
+X3DEditor::removeImportedNodes (const X3DExecutionContextPtr & executionContext, const std::set <X3DPtr <Inline>> & inlineNodes, const UndoStepPtr & undoStep) const
 {
 	// Remove nodes imported from node
 
@@ -1768,8 +1768,8 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
 			continue;
 
 		// Adjust transformation
-		Matrix4d                  childModelViewMatrix = getModelViewMatrix (executionContext, child);
-		const X3DTransformNodePtr transform (child);
+		Matrix4d                        childModelViewMatrix = getModelViewMatrix (executionContext, child);
+		const X3DPtr <X3DTransformNode> transform (child);
 
 		if (transform)
 		{
@@ -1809,7 +1809,7 @@ X3DEditor::ungroupNodes (const X3DExecutionContextPtr & executionContext,
 	{
 		try
 		{
-			const X3DGroupingNodePtr group (node);
+			const X3DPtr <X3DGroupingNode> group (node);
 
 			if (not group)
 				continue;
@@ -1829,8 +1829,8 @@ X3DEditor::ungroupNodes (const X3DExecutionContextPtr & executionContext,
 
 				// Adjust transformation
 
-				Matrix4d                  childModelViewMatrix = getModelViewMatrix (executionContext, child);
-				const X3DTransformNodePtr transform (child);
+				Matrix4d                        childModelViewMatrix = getModelViewMatrix (executionContext, child);
+				const X3DPtr <X3DTransformNode> transform (child);
 
 				if (transform)
 				{
@@ -1894,7 +1894,7 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 			{
 				// Handle X3DTransformNode nodes.
 
-				const X3DTransformNodePtr childTransform (child);
+				const X3DPtr <X3DTransformNode> childTransform (child);
 
 				if (childTransform)
 				{
@@ -1902,7 +1902,7 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 
 					Matrix4d groupModelViewMatrix (getModelViewMatrix (executionContext, group));
 
-					const X3DTransformMatrix3DNodePtr groupTransform (group);
+					const X3DPtr <X3DTransformMatrix3DObject> groupTransform (group);
 
 					if (groupTransform)
 						groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
@@ -1971,7 +1971,7 @@ X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
 
 		// Adjust transformation
 
-		const X3DTransformNodePtr transform (child);
+		const X3DPtr <X3DTransformNode> transform (child);
 
 		if (transform)
 		{
@@ -2402,7 +2402,7 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord, const Matr
 void
 X3DEditor::storeMatrix (const SFNode & node, const UndoStepPtr & undoStep) const
 {
-	X3DTransformNodePtr transform (node);
+	X3DPtr <X3DTransformNode> transform (node);
 
 	if (transform)
 	{
@@ -2413,7 +2413,7 @@ X3DEditor::storeMatrix (const SFNode & node, const UndoStepPtr & undoStep) const
 }
 
 void
-X3DEditor::setMatrix (const X3DTransformNodePtr & transform, const Matrix4d & matrix, const UndoStepPtr & undoStep) const
+X3DEditor::setMatrix (const X3DPtr <X3DTransformNode> & transform, const Matrix4d & matrix, const UndoStepPtr & undoStep) const
 {
 	undoStep -> addUndoFunction (&X3DTransformNode::setMatrix,
 	                             transform,
@@ -2449,15 +2449,15 @@ X3DEditor::getModelViewMatrix (const X3DExecutionContextPtr & executionContext, 
 		{
 			switch (type)
 			{
-				case X3DConstants::X3DLayerNode                :
-				case X3DConstants::X3DProtoDeclarationNode     :
-				case X3DConstants::X3DScriptNode               :
-				case X3DConstants::X3DProgrammableShaderObject :
-				case X3DConstants::X3DBaseNode                 :
+				case X3DConstants::X3DLayerNode:
+				case X3DConstants::X3DProtoDeclarationNode:
+				case X3DConstants::X3DScriptNode:
+				case X3DConstants::X3DProgrammableShaderObject:
+				case X3DConstants::X3DBaseNode:
 					goto END;
-				case X3DConstants::X3DTransformMatrix3DNode:
+				case X3DConstants::X3DTransformMatrix3DObject:
 				{
-					const auto transform = dynamic_cast <X3DTransformMatrix3DNode*> (object);
+					const auto transform = dynamic_cast <X3DTransformMatrix3DObject*> (object);
 
 					modelViewMatrix .mult_right (transform -> getMatrix ());
 					break;

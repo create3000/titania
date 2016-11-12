@@ -259,7 +259,7 @@ private:
 	Fields fields;
 
 	X3DScenePtr          scene;
-	GroupPtr             group;
+	X3DPtr <Group>       group;
 	SFTime               buffer;
 	bool                 preventLoad;
 	X3DPtr <SceneLoader> future;

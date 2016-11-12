@@ -61,14 +61,14 @@ const std::string X3DBindableNodeList <X3D::X3DViewpointNode>::description = _ (
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::X3DViewpointNode>> &
-ViewpointList::getStack (const X3D::X3DLayerNodePtr & layer) const
+ViewpointList::getStack (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
 {
 	return layer -> getViewpointStack ();
 }
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::X3DViewpointNode>> &
-ViewpointList::getList (const X3D::X3DLayerNodePtr & layer) const
+ViewpointList::getList (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
 {
 	return layer -> getViewpoints ();
 }

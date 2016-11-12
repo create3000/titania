@@ -207,17 +207,17 @@ X3DExecutionContext::hasComponent (const ComponentType & component) const
 // Meta data handling
 
 void
-X3DExecutionContext::setWorldInfo (const WorldInfoPtr & value)
+X3DExecutionContext::setWorldInfo (const X3DPtr <WorldInfo> & value)
 throw (Error <DISPOSED>)
 {
 	worldInfo = value;
 }
 
-WorldInfoPtr
+X3DPtr <WorldInfo>
 X3DExecutionContext::getWorldInfo () const
 throw (Error <DISPOSED>)
 {
-	return WorldInfoPtr (worldInfo);
+	return X3DPtr <WorldInfo> (worldInfo);
 }
 
 // Node handling
@@ -418,7 +418,7 @@ X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext,
 // Imported nodes handling
 
 const ImportedNodePtr &
-X3DExecutionContext::addImportedNode (const InlinePtr & inlineNode, const std::string & exportedName, std::string importedName)
+X3DExecutionContext::addImportedNode (const X3DPtr <Inline> & inlineNode, const std::string & exportedName, std::string importedName)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <NODE_IN_USE>,
@@ -434,7 +434,7 @@ throw (Error <INVALID_NODE>,
 }
 
 const ImportedNodePtr &
-X3DExecutionContext::updateImportedNode (const InlinePtr & inlineNode, const std::string & exportedName, std::string importedName)
+X3DExecutionContext::updateImportedNode (const X3DPtr <Inline> & inlineNode, const std::string & exportedName, std::string importedName)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <URL_UNAVAILABLE>,

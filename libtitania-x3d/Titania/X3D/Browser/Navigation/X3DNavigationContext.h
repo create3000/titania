@@ -69,7 +69,7 @@ public:
 	getHeadlight () const
 	{ return headlightContainer; }
 
-	const X3DLayerNodePtr &
+	const X3DPtr <X3DLayerNode> &
 	getActiveLayer () const
 	{ return activeLayer; }
 
@@ -183,7 +183,7 @@ private:
 
 	X3DPtr <DirectionalLight>        headlightNode;
 	std::shared_ptr <LightContainer> headlightContainer;
-	X3DLayerNodePtr                  activeLayer;
+	X3DPtr <X3DLayerNode>            activeLayer;
 	NavigationInfo*                  activeNavigationInfo;
 	SFTime                           activeNavigationInfoOutput;
 	SFEnum <X3DConstants::NodeType>  viewer;

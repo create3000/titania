@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_LAYOUT_LAYOUT_GROUP_H__
 
 #include "../Grouping/X3DGroupingNodeTool.h"
+#include "../Grouping/X3DTransformMatrix3DObjectTool.h"
 #include "../ToolColors.h"
 
 #include "../../Components/Layout/LayoutGroup.h"
@@ -61,17 +62,19 @@ namespace X3D {
 
 class LayoutGroupTool :
 	virtual public LayoutGroup,
-	public X3DGroupingNodeTool
+	public X3DGroupingNodeTool,
+	public X3DTransformMatrix3DObjectTool
 {
 public:
 
 	///  @name Construction
 
 	LayoutGroupTool (LayoutGroup* const node) :
-		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		        LayoutGroup (node -> getExecutionContext ()),
-		        X3DBaseTool (node),
-		X3DGroupingNodeTool (ToolColors::DARK_GREEN)
+		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		                   LayoutGroup (node -> getExecutionContext ()),
+		                   X3DBaseTool (node),
+		           X3DGroupingNodeTool (ToolColors::DARK_GREEN),
+		X3DTransformMatrix3DObjectTool ()
 	{
 		addType (X3DConstants::LayoutGroupTool);
 	}
@@ -106,14 +109,14 @@ public:
 	{ return X3DGroupingNodeTool::getBBox (); }
 
 	virtual
+	const Matrix4d &
+	getMatrix () const final override
+	{ return X3DTransformMatrix3DObjectTool::getMatrix (); }
+
+	virtual
 	Box3d
 	getRectangleBBox () const final override
 	{ return getNode <LayoutGroup> () -> getRectangleBBox (); }
-
-	virtual
-	const Matrix4d &
-	getMatrix () const final override
-	{ return getNode <LayoutGroup> () -> getMatrix (); }
 
 	///  @name Operations
 
@@ -127,6 +130,16 @@ public:
 	addTool () final override
 	{ X3DGroupingNodeTool::addTool (); }
 
+	///  @name Construction
+
+	virtual
+	void
+	dispose () final override
+	{
+		X3DTransformMatrix3DObjectTool::dispose ();
+		X3DGroupingNodeTool::dispose ();
+	}
+
 
 protected:
 
@@ -135,7 +148,10 @@ protected:
 	virtual
 	void
 	initialize () final override
-	{ return X3DGroupingNodeTool::initialize (); }
+	{
+		X3DGroupingNodeTool::initialize ();
+		X3DTransformMatrix3DObjectTool::initialize ();
+	}
 
 
 private:

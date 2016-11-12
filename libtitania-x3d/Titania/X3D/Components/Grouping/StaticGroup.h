@@ -166,8 +166,8 @@ private:
 
 	Fields fields;
 
-	GroupPtr group;
-	Box3d    bbox;
+	X3DPtr <Group> group;
+	Box3d          bbox;
 
 };
 

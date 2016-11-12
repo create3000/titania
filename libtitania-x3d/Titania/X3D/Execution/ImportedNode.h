@@ -69,7 +69,7 @@ public:
 	///  @name Construction
 
 	ImportedNode (X3DExecutionContext* const,
-	              const InlinePtr &,
+	              const X3DPtr <Inline> &,
 	              const std::string &,
 	              const std::string &)
 	throw (Error <INVALID_NAME>,
@@ -112,7 +112,7 @@ public:
 
 	///  @name Member access
 
-	InlinePtr
+	X3DPtr <Inline>
 	getInlineNode () const
 	throw (Error <DISPOSED>);
 

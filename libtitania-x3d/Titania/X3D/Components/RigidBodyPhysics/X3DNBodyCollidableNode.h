@@ -53,14 +53,19 @@
 
 #include "../Core/X3DChildNode.h"
 #include "../Grouping/X3DBoundedObject.h"
+#include "../Grouping/X3DTransformMatrix3DObject.h"
 
 namespace titania {
 namespace X3D {
 
 class X3DNBodyCollidableNode :
-	virtual public X3DChildNode, public X3DBoundedObject
+	virtual public X3DChildNode,
+	public X3DTransformMatrix3DObject,
+	public X3DBoundedObject
 {
 public:
+
+	///  @name Fields
 
 	SFBool &
 	enabled ()
@@ -70,14 +75,6 @@ public:
 	enabled () const
 	{ return *fields .enabled; }
 
-	SFRotation &
-	rotation ()
-	{ return *fields .rotation; }
-
-	const SFRotation &
-	rotation () const
-	{ return *fields .rotation; }
-
 	SFVec3f &
 	translation ()
 	{ return *fields .translation; }
@@ -86,33 +83,43 @@ public:
 	translation () const
 	{ return *fields .translation; }
 
-	virtual
-	Box3d
-	getBBox () const final override;
+	SFRotation &
+	rotation ()
+	{ return *fields .rotation; }
+
+	const SFRotation &
+	rotation () const
+	{ return *fields .rotation; }
+
+	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
 
 
 protected:
+
+	///  @name Construction
 
 	X3DNBodyCollidableNode ();
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
 
 
 private:
+
+	///  @name Members
 
 	struct Fields
 	{
 		Fields ();
 
 		SFBool* const enabled;
-		SFRotation* const rotation;
 		SFVec3f* const translation;
+		SFRotation* const rotation;
 	};
 
 	Fields fields;

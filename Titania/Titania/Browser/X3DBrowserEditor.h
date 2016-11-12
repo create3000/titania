@@ -279,7 +279,7 @@ private:
 
 	///  @name Members
 
-	using UndoMatrixIndex = std::map <X3D::X3DTransformNodePtr, std::pair <X3D::Matrix4d, X3D::Vector3d>>;
+	using UndoMatrixIndex = std::map <X3D::X3DPtr <X3D::X3DTransformNode>, std::pair <X3D::Matrix4d, X3D::Vector3d>>;
 
 	X3D::SFBool                        enabled;
 	std::unique_ptr <BrowserSelection> selection;

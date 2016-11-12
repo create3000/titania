@@ -61,14 +61,14 @@ const std::string X3DBindableNodeList <X3D::NavigationInfo>::description = _ ("D
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::NavigationInfo>> &
-NavigationInfoList::getStack (const X3D::X3DLayerNodePtr & layer) const
+NavigationInfoList::getStack (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
 {
 	return layer -> getNavigationInfoStack ();
 }
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::NavigationInfo>> &
-NavigationInfoList::getList (const X3D::X3DLayerNodePtr & layer) const
+NavigationInfoList::getList (const X3D::X3DPtr <X3D::X3DLayerNode> & layer) const
 {
 	return layer -> getNavigationInfos ();
 }

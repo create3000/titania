@@ -292,10 +292,10 @@ private:
 	
 	bool layer0;
 
-	NavigationInfoPtr    defaultNavigationInfo;
-	X3DViewpointNodePtr  defaultViewpoint;
-	X3DBackgroundNodePtr defaultBackground;
-	FogPtr               defaultFog;
+	X3DPtr <NavigationInfo>    defaultNavigationInfo;
+	X3DPtr <X3DViewpointNode>  defaultViewpoint;
+	X3DPtr <X3DBackgroundNode> defaultBackground;
+	X3DPtr <Fog>               defaultFog;
 
 	X3DPtr <X3DViewportNode> currentViewport;
 

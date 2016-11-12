@@ -230,7 +230,7 @@ X3DMaterialEditor::set_preview ()
 
 	try
 	{
-		const X3D::AppearancePtr appearance (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
+		const X3D::X3DPtr <X3D::Appearance> appearance (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
 
 		if (appearance)
 		{
@@ -269,11 +269,11 @@ X3DMaterialEditor::set_preview ()
 				appearance -> material () -> addInterest (*preview, &X3D::Browser::addEvent);
 		}
 
-		const X3D::AppearancePtr backAppearance (preview -> getExecutionContext () -> getNamedNode ("BackAppearance"));
+		const X3D::X3DPtr <X3D::Appearance> backAppearance (preview -> getExecutionContext () -> getNamedNode ("BackAppearance"));
 
 		if (backAppearance)
 		{
-			X3D::MaterialPtr backMaterial (new X3D::Material (preview -> getExecutionContext ()));
+			X3D::X3DPtr <X3D::Material> backMaterial (new X3D::Material (preview -> getExecutionContext ()));
 
 			twoSidedMaterial -> backDiffuseColor ()  .addInterest (backMaterial -> diffuseColor ());
 			twoSidedMaterial -> backSpecularColor () .addInterest (backMaterial -> specularColor ());

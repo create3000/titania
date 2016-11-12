@@ -62,11 +62,11 @@ using NavigationInfoList = X3DBindableNodeList <X3D::NavigationInfo>;
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeStack <X3D::NavigationInfo>> &
-NavigationInfoList::getStack (const X3D::X3DLayerNodePtr &) const;
+NavigationInfoList::getStack (const X3D::X3DPtr <X3D::X3DLayerNode> &) const;
 
 template <>
 const X3D::X3DPtr <X3D::X3DBindableNodeList <X3D::NavigationInfo>> &
-NavigationInfoList::getList (const X3D::X3DLayerNodePtr &) const;
+NavigationInfoList::getList (const X3D::X3DPtr <X3D::X3DLayerNode> &) const;
 
 } // puck
 } // titania

@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class X3DNBodyCollidableNode;
+
 class CollidableOffset :
 	public X3DNBodyCollidableNode
 {
@@ -97,9 +99,39 @@ public:
 	collidable () const
 	{ return *fields .collidable; }
 
+	///  @name Member access
+
+	virtual
+	Box3d
+	getBBox () const final override;
+
+	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+
+	///  @name Destruction
+
+	virtual
+	~CollidableOffset ();
+
 
 private:
+	
+	///  @name Construction
 
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_collidable ();
+
+	void
+	eventsProcessed ();
 
 	///  @name Static members
 
@@ -117,6 +149,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DPtr <X3DNBodyCollidableNode> collidableNode;
 
 };
 

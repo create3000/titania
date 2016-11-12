@@ -50,7 +50,10 @@
 
 #include "CollidableShape.h"
 
+#include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
+#include "../Shape/Shape.h"
 
 namespace titania {
 namespace X3D {
@@ -64,18 +67,19 @@ CollidableShape::Fields::Fields () :
 { }
 
 CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DNBodyCollidableNode (),
-	                fields ()
+	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	    X3DNBodyCollidableNode (),
+	                    fields (),
+	                 shapeNode ()
 {
 	addType (X3DConstants::CollidableShape);
 
 	addField (inputOutput,    "metadata",    metadata ());
+	addField (inputOutput,    "enabled",     enabled ());
+	addField (inputOutput,    "translation", translation ());
+	addField (inputOutput,    "rotation",    rotation ());
 	addField (initializeOnly, "bboxSize",    bboxSize ());
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
-	addField (inputOutput,    "enabled",     enabled ());
-	addField (inputOutput,    "rotation",    rotation ());
-	addField (inputOutput,    "translation", translation ());
 	addField (initializeOnly, "shape",       shape ());
 }
 
@@ -84,6 +88,87 @@ CollidableShape::create (X3DExecutionContext* const executionContext) const
 {
 	return new CollidableShape (executionContext);
 }
+
+void
+CollidableShape::initialize ()
+{
+	X3DNBodyCollidableNode::initialize ();
+
+	shape () .addInterest (this, &CollidableShape::set_shape);
+	addInterest (this, &CollidableShape::eventsProcessed);
+
+	set_shape ();
+	eventsProcessed ();
+}
+
+Box3d
+CollidableShape::getBBox () const
+{
+	if (bboxSize () == Vector3f (-1, -1, -1))
+	{
+		const auto boundedObject = x3d_cast <X3DBoundedObject*> (shapeNode);
+
+		if (boundedObject)
+			return boundedObject -> getBBox () * getMatrix ();
+
+		return Box3d ();
+	}
+
+	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ()) * getMatrix ();
+}
+
+void
+CollidableShape::set_shape ()
+{
+	if (shapeNode)
+		shapeNode -> geometry () .removeInterest (this, &CollidableShape::set_geometry);
+
+	shapeNode .set (x3d_cast <Shape*> (shape ()));
+
+	if (shapeNode)
+		shapeNode -> geometry () .addInterest (this, &CollidableShape::set_geometry);
+
+	set_geometry ();
+}
+
+void
+CollidableShape::set_geometry ()
+{
+	if (shapeNode)
+	{
+
+		return;
+	}
+}
+
+void
+CollidableShape::eventsProcessed ()
+{
+	setMatrix (translation () .getValue (), rotation () .getValue ());
+}
+
+void
+CollidableShape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	if (shapeNode)
+	{
+		renderObject -> getModelViewMatrix () .push ();
+		renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+
+		shapeNode -> traverse (type, renderObject);
+	
+		renderObject -> getModelViewMatrix () .pop ();
+	}
+}
+
+void
+CollidableShape::dispose ()
+{
+	X3DNBodyCollidableNode::dispose ();
+}
+
+CollidableShape::~CollidableShape ()
+{ }
 
 } // X3D
 } // titania

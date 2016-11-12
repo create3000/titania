@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_MATRIX3DNODE_TOOL_H__
 
 #include "../Grouping/X3DGroupingNodeTool.h"
+#include "../Grouping/X3DTransformMatrix3DObjectTool.h"
 
 #include "../../Components/Grouping/X3DTransformMatrix3DNode.h"
 
@@ -60,7 +61,8 @@ namespace X3D {
 
 class X3DTransformMatrix3DNodeTool :
 	virtual public X3DTransformMatrix3DNode,
-	public X3DGroupingNodeTool
+	public X3DGroupingNodeTool,
+	public X3DTransformMatrix3DObjectTool
 {
 public:
 
@@ -72,14 +74,9 @@ public:
 	{ return X3DGroupingNodeTool::getBBox (); }
 
 	virtual
-	void
-	setMatrix (const Matrix4d & matrix) override
-	{ return getNode <X3DTransformMatrix3DNode> () -> setMatrix (matrix); }
-
-	virtual
 	const Matrix4d &
 	getMatrix () const final override
-	{ return getNode <X3DTransformMatrix3DNode> () -> getMatrix (); }
+	{ return X3DTransformMatrix3DObjectTool::getMatrix (); }
 
 	///  @name Operations
 
@@ -88,14 +85,23 @@ public:
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) override
 	{ X3DGroupingNodeTool::traverse (type, renderObject); }
 
+	virtual
+	void
+	dispose () override
+	{
+		X3DTransformMatrix3DObjectTool::dispose ();
+		X3DGroupingNodeTool::dispose ();
+	}
+
 
 protected:
 
 	///  @name Construction
 
 	X3DTransformMatrix3DNodeTool (const Color3f & color) :
-		X3DTransformMatrix3DNode (),
-		     X3DGroupingNodeTool (color)
+		      X3DTransformMatrix3DNode (),
+		           X3DGroupingNodeTool (color),
+		X3DTransformMatrix3DObjectTool ()
 	{
 		addType (X3DConstants::X3DTransformMatrix3DNodeTool);
 	}
@@ -103,7 +109,10 @@ protected:
 	virtual
 	void
 	initialize () override
-	{ X3DGroupingNodeTool::initialize (); }
+	{
+		X3DGroupingNodeTool::initialize ();
+		X3DTransformMatrix3DObjectTool::initialize ();
+	}
 
 };
 

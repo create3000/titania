@@ -450,6 +450,7 @@ JSPropertySpec X3DConstants::properties [ ] = {
 	{ "X3DTimeDependentNode",         JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTimeDependentNode,         nullptr },
 	{ "X3DTouchSensorNode",           JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTouchSensorNode,           nullptr },
 	{ "X3DTransformMatrix3DNode",     JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformMatrix3DNode,     nullptr },
+	{ "X3DTransformMatrix3DObject",   JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformMatrix3DObject,   nullptr },
 	{ "X3DTransformNode",             JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTransformNode,             nullptr },
 	{ "X3DTriggerNode",               JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DTriggerNode,               nullptr },
 	{ "X3DUrlObject",                 JS_X3D_BASE_NODE, JSPROP_ENUMERATE | JSPROP_READONLY | JSPROP_SHARED | JSPROP_PERMANENT, X3DUrlObject,                 nullptr },
@@ -2582,6 +2583,12 @@ JSBool
 X3DConstants::X3DTransformMatrix3DNode (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	return JS_NewNumberValue (cx, X3D::X3DConstants::X3DTransformMatrix3DNode, vp);
+}
+
+JSBool
+X3DConstants::X3DTransformMatrix3DObject (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+{
+	return JS_NewNumberValue (cx, X3D::X3DConstants::X3DTransformMatrix3DObject, vp);
 }
 
 JSBool

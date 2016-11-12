@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_TOOLS_NAVIGATION_BILLBOARD_TOOL_H__
 
 #include "../Grouping/X3DGroupingNodeTool.h"
+#include "../Grouping/X3DTransformMatrix3DObjectTool.h"
 
 #include "../../Components/Navigation/Billboard.h"
 
@@ -60,7 +61,8 @@ namespace X3D {
 
 class BillboardTool :
 	virtual public Billboard,
-	public X3DGroupingNodeTool
+	public X3DGroupingNodeTool,
+	public X3DTransformMatrix3DObjectTool
 {
 public:
 
@@ -90,7 +92,7 @@ public:
 	virtual
 	const Matrix4d &
 	getMatrix () const final override
-	{ return getNode <Billboard> () -> getMatrix (); }
+	{ return X3DTransformMatrix3DObjectTool::getMatrix (); }
 
 	///  @name Operations
 
@@ -104,10 +106,20 @@ public:
 	addTool () final override
 	{ X3DGroupingNodeTool::addTool (); }
 
+	///  @name Member access
+
+	virtual
+	void
+	dispose () final override;
+
 
 private:
 
-	///  @name Operations
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 	virtual
 	void
