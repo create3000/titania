@@ -60,20 +60,29 @@ const std::string   RigidBody::typeName       = "RigidBody";
 const std::string   RigidBody::containerField = "bodies";
 
 RigidBody::Fields::Fields () :
+	             enabled (new SFBool (true)),
+	               fixed (new SFBool ()),
+	            position (new SFVec3f ()),
+	         orientation (new SFRotation ()),
+	   useFiniteRotation (new SFBool ()),
+	  finiteRotationAxis (new SFVec3f ()),
+	      linearVelocity (new SFVec3f ()),
+	     angularVelocity (new SFVec3f ()),
+	            autoDamp (new SFBool ()),
+	 linearDampingFactor (new SFFloat (0.001)),
 	angularDampingFactor (new SFFloat (0.001)),
-	angularVelocity (new SFVec3f ()),
-	autoDamp (new SFBool ()),
-	autoDisable (new SFBool ()),
-	centerOfMass (new SFVec3f ()),
-	disableAngularSpeed (new SFFloat ()),
-	disableLinearSpeed (new SFFloat ()),
-	disableTime (new SFFloat ()),
-	enabled (new SFBool (true)),
-	finiteRotationAxis (new SFVec3f ()),
-	fixed (new SFBool ()),
-	forces (new MFVec3f ()),
-	geometry (new MFNode ()),
-	inertia (new SFMatrix3f ())
+	    useGlobalGravity (new SFBool (true)),
+	                mass (new SFFloat (1)),
+	        centerOfMass (new SFVec3f ()),
+	    massDensityModel (new SFNode ()),
+	              forces (new MFVec3f ()),
+	             torques (new MFVec3f ()),
+	             inertia (new SFMatrix3f ()),
+	         autoDisable (new SFBool ()),
+	         disableTime (new SFFloat ()),
+	  disableLinearSpeed (new SFFloat ()),
+	 disableAngularSpeed (new SFFloat ()),
+	            geometry (new MFNode ())
 { }
 
 RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
@@ -84,20 +93,37 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::RigidBody);
 
 	addField (inputOutput, "metadata",             metadata ());
-	addField (inputOutput, "angularDampingFactor", angularDampingFactor ());
-	addField (inputOutput, "angularVelocity",      angularVelocity ());
-	addField (inputOutput, "autoDamp",             autoDamp ());
-	addField (inputOutput, "autoDisable",          autoDisable ());
-	addField (inputOutput, "centerOfMass",         centerOfMass ());
-	addField (inputOutput, "disableAngularSpeed",  disableAngularSpeed ());
-	addField (inputOutput, "disableLinearSpeed",   disableLinearSpeed ());
-	addField (inputOutput, "disableTime",          disableTime ());
 	addField (inputOutput, "enabled",              enabled ());
-	addField (inputOutput, "finiteRotationAxis",   finiteRotationAxis ());
 	addField (inputOutput, "fixed",                fixed ());
+
+	addField (inputOutput, "position",             position ());
+	addField (inputOutput, "orientation",          orientation ());
+
+	addField (inputOutput, "useFiniteRotation",    useFiniteRotation ());
+	addField (inputOutput, "finiteRotationAxis",   finiteRotationAxis ());
+
+	addField (inputOutput, "linearVelocity",       linearVelocity ());
+	addField (inputOutput, "angularVelocity",      angularVelocity ());
+
+	addField (inputOutput, "autoDamp",             autoDamp ());
+	addField (inputOutput, "linearDampingFactor",  linearDampingFactor ());
+	addField (inputOutput, "angularDampingFactor", angularDampingFactor ());
+
+	addField (inputOutput, "useGlobalGravity",     useGlobalGravity ());
+	addField (inputOutput, "mass",                 mass ());
+	addField (inputOutput, "centerOfMass",         centerOfMass ());
+	addField (inputOutput, "massDensityModel",     massDensityModel ());
+
 	addField (inputOutput, "forces",               forces ());
-	addField (inputOutput, "geometry",             geometry ());
+	addField (inputOutput, "torques",              torques ());
 	addField (inputOutput, "inertia",              inertia ());
+
+	addField (inputOutput, "autoDisable",          autoDisable ());
+	addField (inputOutput, "disableTime",          disableTime ());
+	addField (inputOutput, "disableLinearSpeed",   disableLinearSpeed ());
+	addField (inputOutput, "disableAngularSpeed",  disableAngularSpeed ());
+
+	addField (inputOutput, "geometry",             geometry ());
 }
 
 X3DBaseNode*

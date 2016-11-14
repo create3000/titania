@@ -89,13 +89,61 @@ public:
 
 	///  @name Fields
 
-	SFFloat &
-	angularDampingFactor ()
-	{ return *fields .angularDampingFactor; }
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
 
-	const SFFloat &
-	angularDampingFactor () const
-	{ return *fields .angularDampingFactor; }
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
+	SFBool &
+	fixed ()
+	{ return *fields .fixed; }
+
+	const SFBool &
+	fixed () const
+	{ return *fields .fixed; }
+
+	SFVec3f &
+	position ()
+	{ return *fields .position; }
+
+	const SFVec3f &
+	position () const
+	{ return *fields .position; }
+
+	SFRotation &
+	orientation ()
+	{ return *fields .orientation; }
+
+	const SFRotation &
+	orientation () const
+	{ return *fields .orientation; }
+
+	SFBool &
+	useFiniteRotation ()
+	{ return *fields .useFiniteRotation; }
+
+	const SFBool &
+	useFiniteRotation () const
+	{ return *fields .useFiniteRotation; }
+
+	SFVec3f &
+	finiteRotationAxis ()
+	{ return *fields .finiteRotationAxis; }
+
+	const SFVec3f &
+	finiteRotationAxis () const
+	{ return *fields .finiteRotationAxis; }
+
+	SFVec3f &
+	linearVelocity ()
+	{ return *fields .linearVelocity; }
+
+	const SFVec3f &
+	linearVelocity () const
+	{ return *fields .linearVelocity; }
 
 	SFVec3f &
 	angularVelocity ()
@@ -113,13 +161,37 @@ public:
 	autoDamp () const
 	{ return *fields .autoDamp; }
 
+	SFFloat &
+	linearDampingFactor ()
+	{ return *fields .linearDampingFactor; }
+
+	const SFFloat &
+	linearDampingFactor () const
+	{ return *fields .linearDampingFactor; }
+
+	SFFloat &
+	angularDampingFactor ()
+	{ return *fields .angularDampingFactor; }
+
+	const SFFloat &
+	angularDampingFactor () const
+	{ return *fields .angularDampingFactor; }
+
 	SFBool &
-	autoDisable ()
-	{ return *fields .autoDisable; }
+	useGlobalGravity ()
+	{ return *fields .useGlobalGravity; }
 
 	const SFBool &
-	autoDisable () const
-	{ return *fields .autoDisable; }
+	useGlobalGravity () const
+	{ return *fields .useGlobalGravity; }
+
+	SFFloat &
+	mass ()
+	{ return *fields .mass; }
+
+	const SFFloat &
+	mass () const
+	{ return *fields .mass; }
 
 	SFVec3f &
 	centerOfMass ()
@@ -129,13 +201,53 @@ public:
 	centerOfMass () const
 	{ return *fields .centerOfMass; }
 
+	MFVec3f &
+	forces ()
+	{ return *fields .forces; }
+
+	const MFVec3f &
+	forces () const
+	{ return *fields .forces; }
+
+	MFVec3f &
+	torques ()
+	{ return *fields .torques; }
+
+	const MFVec3f &
+	torques () const
+	{ return *fields .torques; }
+
+	SFMatrix3f &
+	inertia ()
+	{ return *fields .inertia; }
+
+	const SFMatrix3f &
+	inertia () const
+	{ return *fields .inertia; }
+
+	SFNode &
+	massDensityModel ()
+	{ return *fields .massDensityModel; }
+
+	const SFNode &
+	massDensityModel () const
+	{ return *fields .massDensityModel; }
+
+	SFBool &
+	autoDisable ()
+	{ return *fields .autoDisable; }
+
+	const SFBool &
+	autoDisable () const
+	{ return *fields .autoDisable; }
+
 	SFFloat &
-	disableAngularSpeed ()
-	{ return *fields .disableAngularSpeed; }
+	disableTime ()
+	{ return *fields .disableTime; }
 
 	const SFFloat &
-	disableAngularSpeed () const
-	{ return *fields .disableAngularSpeed; }
+	disableTime () const
+	{ return *fields .disableTime; }
 
 	SFFloat &
 	disableLinearSpeed ()
@@ -146,44 +258,12 @@ public:
 	{ return *fields .disableLinearSpeed; }
 
 	SFFloat &
-	disableTime ()
-	{ return *fields .disableTime; }
+	disableAngularSpeed ()
+	{ return *fields .disableAngularSpeed; }
 
 	const SFFloat &
-	disableTime () const
-	{ return *fields .disableTime; }
-
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
-
-	SFVec3f &
-	finiteRotationAxis ()
-	{ return *fields .finiteRotationAxis; }
-
-	const SFVec3f &
-	finiteRotationAxis () const
-	{ return *fields .finiteRotationAxis; }
-
-	SFBool &
-	fixed ()
-	{ return *fields .fixed; }
-
-	const SFBool &
-	fixed () const
-	{ return *fields .fixed; }
-
-	MFVec3f &
-	forces ()
-	{ return *fields .forces; }
-
-	const MFVec3f &
-	forces () const
-	{ return *fields .forces; }
+	disableAngularSpeed () const
+	{ return *fields .disableAngularSpeed; }
 
 	MFNode &
 	geometry ()
@@ -193,17 +273,8 @@ public:
 	geometry () const
 	{ return *fields .geometry; }
 
-	SFMatrix3f &
-	inertia ()
-	{ return *fields .inertia; }
-
-	const SFMatrix3f &
-	inertia () const
-	{ return *fields .inertia; }
-
 
 private:
-
 
 	///  @name Static members
 
@@ -217,20 +288,29 @@ private:
 	{
 		Fields ();
 
-		SFFloat* const angularDampingFactor;
+		SFBool* const enabled;
+		SFBool* const fixed;
+		SFVec3f* const position;
+		SFRotation* const orientation;
+		SFBool* const useFiniteRotation;
+		SFVec3f* const finiteRotationAxis;
+		SFVec3f* const linearVelocity;
 		SFVec3f* const angularVelocity;
 		SFBool* const autoDamp;
-		SFBool* const autoDisable;
+		SFFloat* const linearDampingFactor;
+		SFFloat* const angularDampingFactor;
+		SFBool* const useGlobalGravity;
+		SFFloat* const mass;
 		SFVec3f* const centerOfMass;
-		SFFloat* const disableAngularSpeed;
-		SFFloat* const disableLinearSpeed;
-		SFFloat* const disableTime;
-		SFBool* const enabled;
-		SFVec3f* const finiteRotationAxis;
-		SFBool* const fixed;
+		SFNode* const massDensityModel;
 		MFVec3f* const forces;
-		MFNode* const geometry;
+		MFVec3f* const torques;
 		SFMatrix3f* const inertia;
+		SFBool* const autoDisable;
+		SFFloat* const disableTime;
+		SFFloat* const disableLinearSpeed;
+		SFFloat* const disableAngularSpeed;
+		MFNode* const geometry;
 	};
 
 	Fields fields;
