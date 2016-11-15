@@ -70,12 +70,12 @@ RigidBodyCollection::Fields::Fields () :
 	     maxCorrectionSpeed (new SFFloat (-1)),
 	contactSurfaceThickness (new SFFloat ()),
 	            autoDisable (new SFBool ()),
-	    disableAngularSpeed (new SFFloat ()),
-	     disableLinearSpeed (new SFFloat ()),
 	            disableTime (new SFFloat ()),
-	               collider (new SFNode ())
+	     disableLinearSpeed (new SFFloat ()),
+	    disableAngularSpeed (new SFFloat ()),
+	               collider (new SFNode ()),
 	                 joints (new MFNode ()),
-	                 bodies (new MFNode ()),
+	                 bodies (new MFNode ())
 { }
 
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :

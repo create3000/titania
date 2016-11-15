@@ -115,13 +115,17 @@ X3DComposedGeometryNode::set_attrib ()
 	for (const auto & node : attribNodes)
 		node -> removeInterest (this);
 
+	std::vector <X3DVertexAttributeNode*> value;
+
 	for (const auto & node : attrib ())
 	{
 		const auto attribNode = x3d_cast <X3DVertexAttributeNode*> (node);
 		
 		if (attribNode)
-			attribNodes .emplace_back (attribNode);
+			value .emplace_back (attribNode);
 	}
+
+	attribNodes .set (value .begin (), value .end ());
 
 	for (const auto & node : attribNodes)
 		node -> addInterest (this);

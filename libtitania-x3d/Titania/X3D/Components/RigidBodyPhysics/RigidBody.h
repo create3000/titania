@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class X3DNBodyCollidableNode;
+
 class RigidBody :
 	virtual public X3DNode
 {
@@ -276,7 +278,36 @@ public:
 	{ return *fields .geometry; }
 
 
+protected:
+
+	friend class RigidBodyCollection;
+
+	void
+	setGravity (const Vector3f & value)
+	{ gravity = value; }
+
+
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_live ();
+
+	void
+	set_forces ();
+
+	void
+	set_geometry ();
+
+	void
+	update ();
 
 	///  @name Static members
 
@@ -316,6 +347,10 @@ private:
 	};
 
 	Fields fields;
+
+	Vector3f                             gravity;
+	Vector3f                             force;
+	X3DPtrArray <X3DNBodyCollidableNode> geometryNodes;
 
 };
 

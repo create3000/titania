@@ -50,7 +50,10 @@
 
 #include "RigidBody.h"
 
+#include "../../Browser/Core/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
 namespace X3D {
@@ -86,9 +89,12 @@ RigidBody::Fields::Fields () :
 { }
 
 RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
-	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	    X3DNode (),
-	     fields ()
+	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      X3DNode (),
+	       fields (),
+	      gravity (0, -9.8, 0),
+	        force (),
+	geometryNodes ()
 {
 	addType (X3DConstants::RigidBody);
 
@@ -130,6 +136,73 @@ X3DBaseNode*
 RigidBody::create (X3DExecutionContext* const executionContext) const
 {
 	return new RigidBody (executionContext);
+}
+
+void
+RigidBody::initialize ()
+{
+	X3DNode::initialize ();
+
+	getExecutionContext () -> isLive () .addInterest (this, &RigidBody::set_live);
+	isLive () .addInterest (this, &RigidBody::set_live);
+
+	enabled ()  .addInterest (this, &RigidBody::set_live);
+	forces ()   .addInterest (this, &RigidBody::set_forces);
+	geometry () .addInterest (this, &RigidBody::set_geometry);
+
+	set_live ();
+	set_forces ();
+	set_geometry ();
+}
+
+void
+RigidBody::set_live ()
+{
+	if (getExecutionContext () -> isLive () and isLive () and enabled ())
+		getBrowser () -> sensors () .addInterest (this, &RigidBody::update);
+	else
+		getBrowser () -> sensors () .removeInterest (this, &RigidBody::update);
+}
+
+void
+RigidBody::set_forces ()
+{
+	force = Vector3f ();
+
+	for (const auto & value : forces ())
+		force += value .getValue ();
+}
+
+void
+RigidBody::set_geometry ()
+{
+	std::vector <X3DNBodyCollidableNode*> value;
+
+	for (const auto & node : geometry ())
+	{
+		const auto geometryNode = x3d_cast <X3DNBodyCollidableNode*> (node);
+		
+		if (geometryNode)
+			value .emplace_back (geometryNode);
+	}
+
+	geometryNodes .set (value .begin (), value .end ());
+}
+
+void
+RigidBody::update ()
+{
+	const float currentFrameRate = getBrowser () -> getCurrentFrameRate ();
+	auto        acceleration     = useGlobalGravity () ? gravity : Vector3f ();
+
+	if (mass ())
+		acceleration += force / mass () .getValue ();
+
+	linearVelocity () = linearVelocity () + acceleration / currentFrameRate;
+	position ()       = position () + linearVelocity () / currentFrameRate;
+
+	for (const auto & geometryNode : geometryNodes)
+		geometryNode -> translation () = position ();
 }
 
 } // X3D
