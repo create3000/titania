@@ -92,7 +92,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	      X3DNode (),
 	       fields (),
-	      gravity (0, -9.8, 0),
+	      gravity (0, -9.8, 0), // TODO: must be zero.
 	        force (),
 	geometryNodes ()
 {
@@ -167,10 +167,10 @@ RigidBody::set_live ()
 void
 RigidBody::set_forces ()
 {
-	force = Vector3f ();
-
-	for (const auto & value : forces ())
-		force += value .getValue ();
+	force = std::accumulate (forces () .begin (),
+	                         forces () .end (),
+	                         Vector3f (),
+	                         [ ] (const Vector3f & a, const Vector3f & b) { return a + b; });
 }
 
 void
@@ -192,14 +192,25 @@ RigidBody::set_geometry ()
 void
 RigidBody::update ()
 {
-	const float currentFrameRate = getBrowser () -> getCurrentFrameRate ();
-	auto        acceleration     = useGlobalGravity () ? gravity : Vector3f ();
+	const float currentFrameRate   = getBrowser () -> getCurrentFrameRate ();
+	auto        linearAcceleration = useGlobalGravity () ? gravity : Vector3f ();
 
 	if (mass ())
-		acceleration += force / mass () .getValue ();
+		linearAcceleration += force / mass () .getValue ();
 
-	linearVelocity () = linearVelocity () + acceleration / currentFrameRate;
-	position ()       = position () + linearVelocity () / currentFrameRate;
+	const auto linearDamping = linearVelocity () * linearDampingFactor () .getValue ();
+
+	linearVelocity () = linearVelocity () + linearAcceleration / currentFrameRate;
+
+	if (autoDamp ())
+		linearVelocity () -= linearDamping;
+
+	position () = position () + linearVelocity () / currentFrameRate;
+
+	// Update geometry nodes.
+
+	if (fixed ())
+		return;
 
 	for (const auto & geometryNode : geometryNodes)
 		geometryNode -> translation () = position ();
