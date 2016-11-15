@@ -60,22 +60,22 @@ const std::string   RigidBodyCollection::typeName       = "RigidBodyCollection";
 const std::string   RigidBodyCollection::containerField = "children";
 
 RigidBodyCollection::Fields::Fields () :
-	set_contacts (new MFNode ()),
-	autoDisable (new SFBool ()),
-	bodies (new MFNode ()),
-	constantForceMix (new SFFloat (0.0001)),
+	                enabled (new SFBool (true)),
+	           set_contacts (new MFNode ()),
+	                gravity (new SFVec3f (0, -9.8, 0)),
+	         preferAccuracy (new SFBool ()),
+	        errorCorrection (new SFFloat (0.8)),
+	             iterations (new SFInt32 (10)),
+	       constantForceMix (new SFFloat (0.0001)),
+	     maxCorrectionSpeed (new SFFloat (-1)),
 	contactSurfaceThickness (new SFFloat ()),
-	disableAngularSpeed (new SFFloat ()),
-	disableLinearSpeed (new SFFloat ()),
-	disableTime (new SFFloat ()),
-	enabled (new SFBool (true)),
-	errorCorrection (new SFFloat (0.8)),
-	gravity (new SFVec3f (0, -9.8, 0)),
-	iterations (new SFInt32 (10)),
-	joints (new MFNode ()),
-	maxCorrectionSpeed (new SFFloat (-1)),
-	preferAccuracy (new SFBool ()),
-	collider (new SFNode ())
+	            autoDisable (new SFBool ()),
+	    disableAngularSpeed (new SFFloat ()),
+	     disableLinearSpeed (new SFFloat ()),
+	            disableTime (new SFFloat ()),
+	               collider (new SFNode ())
+	                 joints (new MFNode ()),
+	                 bodies (new MFNode ()),
 { }
 
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :
@@ -86,22 +86,26 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	addType (X3DConstants::RigidBodyCollection);
 
 	addField (inputOutput,    "metadata",                metadata ());
-	addField (inputOnly,      "set_contacts",            set_contacts ());
-	addField (inputOutput,    "autoDisable",             autoDisable ());
-	addField (inputOutput,    "bodies",                  bodies ());
-	addField (inputOutput,    "constantForceMix",        constantForceMix ());
-	addField (inputOutput,    "contactSurfaceThickness", contactSurfaceThickness ());
-	addField (inputOutput,    "disableAngularSpeed",     disableAngularSpeed ());
-	addField (inputOutput,    "disableLinearSpeed",      disableLinearSpeed ());
-	addField (inputOutput,    "disableTime",             disableTime ());
 	addField (inputOutput,    "enabled",                 enabled ());
-	addField (inputOutput,    "errorCorrection",         errorCorrection ());
+	addField (inputOnly,      "set_contacts",            set_contacts ());
 	addField (inputOutput,    "gravity",                 gravity ());
-	addField (inputOutput,    "iterations",              iterations ());
-	addField (inputOutput,    "joints",                  joints ());
-	addField (inputOutput,    "maxCorrectionSpeed",      maxCorrectionSpeed ());
+
 	addField (inputOutput,    "preferAccuracy",          preferAccuracy ());
+	addField (inputOutput,    "errorCorrection",         errorCorrection ());
+	addField (inputOutput,    "iterations",              iterations ());
+
+	addField (inputOutput,    "constantForceMix",        constantForceMix ());
+	addField (inputOutput,    "maxCorrectionSpeed",      maxCorrectionSpeed ());
+	addField (inputOutput,    "contactSurfaceThickness", contactSurfaceThickness ());
+
+	addField (inputOutput,    "autoDisable",             autoDisable ());
+	addField (inputOutput,    "disableTime",             disableTime ());
+	addField (inputOutput,    "disableLinearSpeed",      disableLinearSpeed ());
+	addField (inputOutput,    "disableAngularSpeed",     disableAngularSpeed ());
+
 	addField (initializeOnly, "collider",                collider ());
+	addField (inputOutput,    "joints",                  joints ());
+	addField (inputOutput,    "bodies",                  bodies ());
 }
 
 X3DBaseNode*

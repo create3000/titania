@@ -111,12 +111,12 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "useGlobalGravity",     useGlobalGravity ());
 	addField (inputOutput, "mass",                 mass ());
+	addField (inputOutput, "inertia",              inertia ());
 	addField (inputOutput, "centerOfMass",         centerOfMass ());
 	addField (inputOutput, "massDensityModel",     massDensityModel ());
 
 	addField (inputOutput, "forces",               forces ());
 	addField (inputOutput, "torques",              torques ());
-	addField (inputOutput, "inertia",              inertia ());
 
 	addField (inputOutput, "autoDisable",          autoDisable ());
 	addField (inputOutput, "disableTime",          disableTime ());

@@ -63,6 +63,8 @@ class CollidableOffset :
 {
 public:
 
+	///  @name Construction
+
 	CollidableOffset (X3DExecutionContext* const);
 
 	virtual

@@ -61,6 +61,8 @@ class RigidBody :
 {
 public:
 
+	///  @name Construction
+
 	RigidBody (X3DExecutionContext* const);
 
 	virtual
