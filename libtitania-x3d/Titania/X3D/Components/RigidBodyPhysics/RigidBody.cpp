@@ -67,17 +67,17 @@ RigidBody::Fields::Fields () :
 	               fixed (new SFBool ()),
 	            position (new SFVec3f ()),
 	         orientation (new SFRotation ()),
-	   useFiniteRotation (new SFBool ()),
-	  finiteRotationAxis (new SFVec3f ()),
 	      linearVelocity (new SFVec3f ()),
 	     angularVelocity (new SFVec3f ()),
+	   useFiniteRotation (new SFBool ()),
+	  finiteRotationAxis (new SFVec3f ()),
 	            autoDamp (new SFBool ()),
 	 linearDampingFactor (new SFFloat (0.001)),
 	angularDampingFactor (new SFFloat (0.001)),
-	    useGlobalGravity (new SFBool (true)),
 	                mass (new SFFloat (1)),
 	        centerOfMass (new SFVec3f ()),
 	    massDensityModel (new SFNode ()),
+	    useGlobalGravity (new SFBool (true)),
 	              forces (new MFVec3f ()),
 	             torques (new MFVec3f ()),
 	             inertia (new SFMatrix3f ()),
@@ -92,7 +92,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	      X3DNode (),
 	       fields (),
-	      gravity (0, -9.8, 0), // TODO: must be zero.
+	      gravity (),
 	        force (),
 	geometryNodes ()
 {
@@ -105,22 +105,22 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "position",             position ());
 	addField (inputOutput, "orientation",          orientation ());
 
-	addField (inputOutput, "useFiniteRotation",    useFiniteRotation ());
-	addField (inputOutput, "finiteRotationAxis",   finiteRotationAxis ());
-
 	addField (inputOutput, "linearVelocity",       linearVelocity ());
 	addField (inputOutput, "angularVelocity",      angularVelocity ());
+
+	addField (inputOutput, "useFiniteRotation",    useFiniteRotation ());
+	addField (inputOutput, "finiteRotationAxis",   finiteRotationAxis ());
 
 	addField (inputOutput, "autoDamp",             autoDamp ());
 	addField (inputOutput, "linearDampingFactor",  linearDampingFactor ());
 	addField (inputOutput, "angularDampingFactor", angularDampingFactor ());
 
-	addField (inputOutput, "useGlobalGravity",     useGlobalGravity ());
 	addField (inputOutput, "mass",                 mass ());
 	addField (inputOutput, "inertia",              inertia ());
 	addField (inputOutput, "centerOfMass",         centerOfMass ());
 	addField (inputOutput, "massDensityModel",     massDensityModel ());
 
+	addField (inputOutput, "useGlobalGravity",     useGlobalGravity ());
 	addField (inputOutput, "forces",               forces ());
 	addField (inputOutput, "torques",              torques ());
 
@@ -130,6 +130,8 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "disableAngularSpeed",  disableAngularSpeed ());
 
 	addField (inputOutput, "geometry",             geometry ());
+
+	addChildren (geometryNodes);
 }
 
 X3DBaseNode*
@@ -187,18 +189,21 @@ RigidBody::set_geometry ()
 	}
 
 	geometryNodes .set (value .begin (), value .end ());
+
+	// Update geometry nodes translaton and rotation.
+
+	updateGeometries ();
 }
 
 void
 RigidBody::update ()
 {
 	const float currentFrameRate   = getBrowser () -> getCurrentFrameRate ();
+	const auto  linearDamping      = linearVelocity () * linearDampingFactor () .getValue ();
 	auto        linearAcceleration = useGlobalGravity () ? gravity : Vector3f ();
 
 	if (mass ())
 		linearAcceleration += force / mass () .getValue ();
-
-	const auto linearDamping = linearVelocity () * linearDampingFactor () .getValue ();
 
 	linearVelocity () = linearVelocity () + linearAcceleration / currentFrameRate;
 
@@ -207,8 +212,14 @@ RigidBody::update ()
 
 	position () = position () + linearVelocity () / currentFrameRate;
 
-	// Update geometry nodes.
+	// Update geometry nodes translaton and rotation.
 
+	updateGeometries ();
+}
+
+void
+RigidBody::updateGeometries ()
+{
 	if (fixed ())
 		return;
 

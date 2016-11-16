@@ -125,22 +125,6 @@ public:
 	orientation () const
 	{ return *fields .orientation; }
 
-	SFBool &
-	useFiniteRotation ()
-	{ return *fields .useFiniteRotation; }
-
-	const SFBool &
-	useFiniteRotation () const
-	{ return *fields .useFiniteRotation; }
-
-	SFVec3f &
-	finiteRotationAxis ()
-	{ return *fields .finiteRotationAxis; }
-
-	const SFVec3f &
-	finiteRotationAxis () const
-	{ return *fields .finiteRotationAxis; }
-
 	SFVec3f &
 	linearVelocity ()
 	{ return *fields .linearVelocity; }
@@ -156,6 +140,22 @@ public:
 	const SFVec3f &
 	angularVelocity () const
 	{ return *fields .angularVelocity; }
+
+	SFBool &
+	useFiniteRotation ()
+	{ return *fields .useFiniteRotation; }
+
+	const SFBool &
+	useFiniteRotation () const
+	{ return *fields .useFiniteRotation; }
+
+	SFVec3f &
+	finiteRotationAxis ()
+	{ return *fields .finiteRotationAxis; }
+
+	const SFVec3f &
+	finiteRotationAxis () const
+	{ return *fields .finiteRotationAxis; }
 
 	SFBool &
 	autoDamp ()
@@ -181,14 +181,6 @@ public:
 	angularDampingFactor () const
 	{ return *fields .angularDampingFactor; }
 
-	SFBool &
-	useGlobalGravity ()
-	{ return *fields .useGlobalGravity; }
-
-	const SFBool &
-	useGlobalGravity () const
-	{ return *fields .useGlobalGravity; }
-
 	SFFloat &
 	mass ()
 	{ return *fields .mass; }
@@ -204,6 +196,14 @@ public:
 	const SFVec3f &
 	centerOfMass () const
 	{ return *fields .centerOfMass; }
+
+	SFBool &
+	useGlobalGravity ()
+	{ return *fields .useGlobalGravity; }
+
+	const SFBool &
+	useGlobalGravity () const
+	{ return *fields .useGlobalGravity; }
 
 	MFVec3f &
 	forces ()
@@ -309,6 +309,9 @@ private:
 	void
 	update ();
 
+	void
+	updateGeometries ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -325,17 +328,17 @@ private:
 		SFBool* const fixed;
 		SFVec3f* const position;
 		SFRotation* const orientation;
-		SFBool* const useFiniteRotation;
-		SFVec3f* const finiteRotationAxis;
 		SFVec3f* const linearVelocity;
 		SFVec3f* const angularVelocity;
+		SFBool* const useFiniteRotation;
+		SFVec3f* const finiteRotationAxis;
 		SFBool* const autoDamp;
 		SFFloat* const linearDampingFactor;
 		SFFloat* const angularDampingFactor;
-		SFBool* const useGlobalGravity;
 		SFFloat* const mass;
 		SFVec3f* const centerOfMass;
 		SFNode* const massDensityModel;
+		SFBool* const useGlobalGravity;
 		MFVec3f* const forces;
 		MFVec3f* const torques;
 		SFMatrix3f* const inertia;

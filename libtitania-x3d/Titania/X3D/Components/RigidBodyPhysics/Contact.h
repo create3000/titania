@@ -89,37 +89,13 @@ public:
 
 	///  @name Fields
 
-	MFString &
-	appliedParameters ()
-	{ return *fields .appliedParameters; }
+	SFVec3f &
+	position ()
+	{ return *fields .position; }
 
-	const MFString &
-	appliedParameters () const
-	{ return *fields .appliedParameters; }
-
-	SFNode &
-	body1 ()
-	{ return *fields .body1; }
-
-	const SFNode &
-	body1 () const
-	{ return *fields .body1; }
-
-	SFNode &
-	body2 ()
-	{ return *fields .body2; }
-
-	const SFNode &
-	body2 () const
-	{ return *fields .body2; }
-
-	SFFloat &
-	bounce ()
-	{ return *fields .bounce; }
-
-	const SFFloat &
-	bounce () const
-	{ return *fields .bounce; }
+	const SFVec3f &
+	position () const
+	{ return *fields .position; }
 
 	SFVec3f &
 	contactNormal ()
@@ -137,13 +113,29 @@ public:
 	depth () const
 	{ return *fields .depth; }
 
-	SFVec2f &
-	frictionCoefficients ()
-	{ return *fields .frictionCoefficients; }
+	MFString &
+	appliedParameters ()
+	{ return *fields .appliedParameters; }
 
-	const SFVec2f &
-	frictionCoefficients () const
-	{ return *fields .frictionCoefficients; }
+	const MFString &
+	appliedParameters () const
+	{ return *fields .appliedParameters; }
+
+	SFFloat &
+	bounce ()
+	{ return *fields .bounce; }
+
+	const SFFloat &
+	bounce () const
+	{ return *fields .bounce; }
+
+	SFFloat &
+	minBounceSpeed ()
+	{ return *fields .minBounceSpeed; }
+
+	const SFFloat &
+	minBounceSpeed () const
+	{ return *fields .minBounceSpeed; }
 
 	SFVec3f &
 	frictionDirection ()
@@ -153,37 +145,21 @@ public:
 	frictionDirection () const
 	{ return *fields .frictionDirection; }
 
-	SFNode &
-	geometry1 ()
-	{ return *fields .geometry1; }
+	SFVec2f &
+	frictionCoefficients ()
+	{ return *fields .frictionCoefficients; }
 
-	const SFNode &
-	geometry1 () const
-	{ return *fields .geometry1; }
+	const SFVec2f &
+	frictionCoefficients () const
+	{ return *fields .frictionCoefficients; }
 
-	SFNode &
-	geometry2 ()
-	{ return *fields .geometry2; }
+	SFVec2f &
+	surfaceSpeed ()
+	{ return *fields .surfaceSpeed; }
 
-	const SFNode &
-	geometry2 () const
-	{ return *fields .geometry2; }
-
-	SFFloat &
-	minbounceSpeed ()
-	{ return *fields .minbounceSpeed; }
-
-	const SFFloat &
-	minbounceSpeed () const
-	{ return *fields .minbounceSpeed; }
-
-	SFVec3f &
-	position ()
-	{ return *fields .position; }
-
-	const SFVec3f &
-	position () const
-	{ return *fields .position; }
+	const SFVec2f &
+	surfaceSpeed () const
+	{ return *fields .surfaceSpeed; }
 
 	SFVec2f &
 	slipCoefficients ()
@@ -209,13 +185,37 @@ public:
 	softnessErrorCorrection () const
 	{ return *fields .softnessErrorCorrection; }
 
-	SFVec2f &
-	surfaceSpeed ()
-	{ return *fields .surfaceSpeed; }
+	SFNode &
+	geometry1 ()
+	{ return *fields .geometry1; }
 
-	const SFVec2f &
-	surfaceSpeed () const
-	{ return *fields .surfaceSpeed; }
+	const SFNode &
+	geometry1 () const
+	{ return *fields .geometry1; }
+
+	SFNode &
+	geometry2 ()
+	{ return *fields .geometry2; }
+
+	const SFNode &
+	geometry2 () const
+	{ return *fields .geometry2; }
+
+	SFNode &
+	body1 ()
+	{ return *fields .body1; }
+
+	const SFNode &
+	body1 () const
+	{ return *fields .body1; }
+
+	SFNode &
+	body2 ()
+	{ return *fields .body2; }
+
+	const SFNode &
+	body2 () const
+	{ return *fields .body2; }
 
 
 private:
@@ -233,22 +233,22 @@ private:
 	{
 		Fields ();
 
-		MFString* const appliedParameters;
-		SFNode* const body1;
-		SFNode* const body2;
-		SFFloat* const bounce;
+		SFVec3f* const position;
 		SFVec3f* const contactNormal;
 		SFFloat* const depth;
-		SFVec2f* const frictionCoefficients;
+		MFString* const appliedParameters;
+		SFFloat* const bounce;
+		SFFloat* const minBounceSpeed;
 		SFVec3f* const frictionDirection;
-		SFNode* const geometry1;
-		SFNode* const geometry2;
-		SFFloat* const minbounceSpeed;
-		SFVec3f* const position;
+		SFVec2f* const frictionCoefficients;
+		SFVec2f* const surfaceSpeed;
 		SFVec2f* const slipCoefficients;
 		SFFloat* const softnessConstantForceMix;
 		SFFloat* const softnessErrorCorrection;
-		SFVec2f* const surfaceSpeed;
+		SFNode* const geometry1;
+		SFNode* const geometry2;
+		SFNode* const body1;
+		SFNode* const body2;
 	};
 
 	Fields fields;

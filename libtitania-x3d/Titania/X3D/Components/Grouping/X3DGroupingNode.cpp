@@ -269,9 +269,11 @@ X3DGroupingNode::add (const MFNode & children)
 						}
 						case X3DConstants::BooleanFilter:
 						case X3DConstants::BooleanToggle:
+						case X3DConstants::CollisionSensor:
 						case X3DConstants::NurbsOrientationInterpolator:
 						case X3DConstants::NurbsPositionInterpolator:
 						case X3DConstants::NurbsSurfaceInterpolator:
+						case X3DConstants::RigidBodyCollection:
 						case X3DConstants::TimeSensor:
 						case X3DConstants::X3DFollowerNode:
 						case X3DConstants::X3DInfoNode:

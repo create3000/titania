@@ -220,22 +220,22 @@
 
 [CollidableOffset]
 	metadata = metadata;inputOutput;SFNode;NULL
+	enabled = enabled;inputOutput;SFBool;TRUE
+	translation = translation;inputOutput;SFVec3f;0 0 0
+	rotation = rotation;inputOutput;SFRotation;0 0 1 0
 	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
 	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
-	enabled = enabled;inputOutput;SFBool;TRUE
-	rotation = rotation;inputOutput;SFRotation;0 0 1 0
-	translation = translation;inputOutput;SFVec3f;0 0 0
 	collidable = collidable;initializeOnly;SFNode;NULL
 	containerField = children
 	componentName = RigidBodyPhysics
 
 [CollidableShape]
 	metadata = metadata;inputOutput;SFNode;NULL
+	enabled = enabled;inputOutput;SFBool;TRUE
+	translation = translation;inputOutput;SFVec3f;0 0 0
+	rotation = rotation;inputOutput;SFRotation;0 0 1 0
 	bboxSize = bboxSize;initializeOnly;SFVec3f;-1 -1 -1
 	bboxCenter = bboxCenter;initializeOnly;SFVec3f;0 0 0
-	enabled = enabled;inputOutput;SFBool;TRUE
-	rotation = rotation;inputOutput;SFRotation;0 0 1 0
-	translation = translation;inputOutput;SFVec3f;0 0 0
 	shape = shape;initializeOnly;SFNode;NULL
 	containerField = children
 	componentName = RigidBodyPhysics
@@ -266,14 +266,14 @@
 	softnessConstantForceMix = softnessConstantForceMix;inputOutput;SFFloat;0
 	softnessErrorCorrection = softnessErrorCorrection;inputOutput;SFFloat;0
 	surfaceSpeed = surfaceSpeed;inputOutput;SFVec2f;0 0
-	containerField = collidables
+	containerField = collider
 	componentName = RigidBodyPhysics
 
 [CollisionSensor]
 	metadata = metadata;inputOutput;SFNode;NULL
 	enabled = enabled;inputOutput;SFBool;TRUE
-	isActive = isActive;outputOnly;SFBool;
 	collider = collider;inputOutput;SFNode;NULL
+	isActive = isActive;outputOnly;SFBool;
 	intersections = intersections;outputOnly;MFNode;
 	contacts = contacts;outputOnly;MFNode;
 	containerField = children
@@ -544,7 +544,7 @@
 	shadowColor = shadowColor;inputOutput;SFColor;0 0 0
 	shadowIntensity = shadowIntensity;inputOutput;SFFloat;0
 	shadowDiffusion = shadowDiffusion;inputOutput;SFFloat;0
-	shadowMapSize = shadowMapSize;inputOutput;SFInt32;1024
+	shadowMapSize = shadowMapSize;initializeOnly;SFInt32;1024
 	containerField = children
 	componentName = Lighting
 
@@ -1815,7 +1815,7 @@
 	shadowColor = shadowColor;inputOutput;SFColor;0 0 0
 	shadowIntensity = shadowIntensity;inputOutput;SFFloat;0
 	shadowDiffusion = shadowDiffusion;inputOutput;SFFloat;0
-	shadowMapSize = shadowMapSize;inputOutput;SFInt32;1024
+	shadowMapSize = shadowMapSize;initializeOnly;SFInt32;1024
 	containerField = children
 	componentName = Lighting
 
@@ -2030,41 +2030,50 @@
 
 [RigidBody]
 	metadata = metadata;inputOutput;SFNode;NULL
-	angularDampingFactor = angularDampingFactor;inputOutput;SFFloat;0.001
+	enabled = enabled;inputOutput;SFBool;TRUE
+	fixed = fixed;inputOutput;SFBool;FALSE
+	position = position;inputOutput;SFVec3f;0 0 0
+	orientation = orientation;inputOutput;SFRotation;0 0 1 0
+	useFiniteRotation = useFiniteRotation;inputOutput;SFBool;FALSE
+	finiteRotationAxis = finiteRotationAxis;inputOutput;SFVec3f;0 0 0
+	linearVelocity = linearVelocity;inputOutput;SFVec3f;0 0 0
 	angularVelocity = angularVelocity;inputOutput;SFVec3f;0 0 0
 	autoDamp = autoDamp;inputOutput;SFBool;FALSE
-	autoDisable = autoDisable;inputOutput;SFBool;FALSE
-	centerOfMass = centerOfMass;inputOutput;SFVec3f;0 0 0
-	disableAngularSpeed = disableAngularSpeed;inputOutput;SFFloat;0
-	disableLinearSpeed = disableLinearSpeed;inputOutput;SFFloat;0
-	disableTime = disableTime;inputOutput;SFFloat;0
-	enabled = enabled;inputOutput;SFBool;TRUE
-	finiteRotationAxis = finiteRotationAxis;inputOutput;SFVec3f;0 0 0
-	fixed = fixed;inputOutput;SFBool;FALSE
-	forces = forces;inputOutput;MFVec3f;[ ]
-	geometry = geometry;inputOutput;MFNode;[ ]
+	linearDampingFactor = linearDampingFactor;inputOutput;SFFloat;0.001
+	angularDampingFactor = angularDampingFactor;inputOutput;SFFloat;0.001
+	useGlobalGravity = useGlobalGravity;inputOutput;SFBool;TRUE
+	mass = mass;inputOutput;SFFloat;1
 	inertia = inertia;inputOutput;SFMatrix3f;1 0 0 0 1 0 0 0 1
+	centerOfMass = centerOfMass;inputOutput;SFVec3f;0 0 0
+	massDensityModel = massDensityModel;inputOutput;SFNode;NULL
+	forces = forces;inputOutput;MFVec3f;[ ]
+	torques = torques;inputOutput;MFVec3f;[ ]
+	autoDisable = autoDisable;inputOutput;SFBool;FALSE
+	disableTime = disableTime;inputOutput;SFFloat;0
+	disableLinearSpeed = disableLinearSpeed;inputOutput;SFFloat;0
+	disableAngularSpeed = disableAngularSpeed;inputOutput;SFFloat;0
+	geometry = geometry;inputOutput;MFNode;[ ]
 	containerField = bodies
 	componentName = RigidBodyPhysics
 
 [RigidBodyCollection]
 	metadata = metadata;inputOutput;SFNode;NULL
-	set_contacts = set_contacts;inputOnly;MFNode;
-	autoDisable = autoDisable;inputOutput;SFBool;FALSE
-	bodies = bodies;inputOutput;MFNode;[ ]
-	constantForceMix = constantForceMix;inputOutput;SFFloat;0.0001
-	contactSurfaceThickness = contactSurfaceThickness;inputOutput;SFFloat;0
-	disableAngularSpeed = disableAngularSpeed;inputOutput;SFFloat;0
-	disableLinearSpeed = disableLinearSpeed;inputOutput;SFFloat;0
-	disableTime = disableTime;inputOutput;SFFloat;0
 	enabled = enabled;inputOutput;SFBool;TRUE
-	errorCorrection = errorCorrection;inputOutput;SFFloat;0.8
+	set_contacts = set_contacts;inputOnly;MFNode;
 	gravity = gravity;inputOutput;SFVec3f;0 -9.8 0
-	iterations = iterations;inputOutput;SFInt32;10
-	joints = joints;inputOutput;MFNode;[ ]
-	maxCorrectionSpeed = maxCorrectionSpeed;inputOutput;SFFloat;-1
 	preferAccuracy = preferAccuracy;inputOutput;SFBool;FALSE
+	errorCorrection = errorCorrection;inputOutput;SFFloat;0.8
+	iterations = iterations;inputOutput;SFInt32;10
+	constantForceMix = constantForceMix;inputOutput;SFFloat;0.0001
+	maxCorrectionSpeed = maxCorrectionSpeed;inputOutput;SFFloat;-1
+	contactSurfaceThickness = contactSurfaceThickness;inputOutput;SFFloat;0
+	autoDisable = autoDisable;inputOutput;SFBool;FALSE
+	disableTime = disableTime;inputOutput;SFFloat;0
+	disableLinearSpeed = disableLinearSpeed;inputOutput;SFFloat;0
+	disableAngularSpeed = disableAngularSpeed;inputOutput;SFFloat;0
 	collider = collider;initializeOnly;SFNode;NULL
+	joints = joints;inputOutput;MFNode;[ ]
+	bodies = bodies;inputOutput;MFNode;[ ]
 	containerField = children
 	componentName = RigidBodyPhysics
 
@@ -2311,7 +2320,7 @@
 	shadowColor = shadowColor;inputOutput;SFColor;0 0 0
 	shadowIntensity = shadowIntensity;inputOutput;SFFloat;0
 	shadowDiffusion = shadowDiffusion;inputOutput;SFFloat;0
-	shadowMapSize = shadowMapSize;inputOutput;SFInt32;1024
+	shadowMapSize = shadowMapSize;initializeOnly;SFInt32;1024
 	containerField = children
 	componentName = Lighting
 

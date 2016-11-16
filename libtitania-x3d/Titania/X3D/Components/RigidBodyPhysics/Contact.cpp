@@ -60,22 +60,22 @@ const std::string   Contact::typeName       = "Contact";
 const std::string   Contact::containerField = "children";
 
 Contact::Fields::Fields () :
-	appliedParameters (new MFString ({ "BOUNCE" })),
-	body1 (new SFNode ()),
-	body2 (new SFNode ()),
-	bounce (new SFFloat ()),
-	contactNormal (new SFVec3f (0, 1, 0)),
-	depth (new SFFloat ()),
-	frictionCoefficients (new SFVec2f ()),
-	frictionDirection (new SFVec3f (0, 1, 0)),
-	geometry1 (new SFNode ()),
-	geometry2 (new SFNode ()),
-	minbounceSpeed (new SFFloat ()),
-	position (new SFVec3f ()),
-	slipCoefficients (new SFVec2f ()),
+	                position (new SFVec3f ()),
+	           contactNormal (new SFVec3f (0, 1, 0)),
+	                   depth (new SFFloat ()),
+	       appliedParameters (new MFString ({ "BOUNCE" })),
+	                  bounce (new SFFloat ()),
+	          minBounceSpeed (new SFFloat ()),
+	       frictionDirection (new SFVec3f (0, 1, 0)),
+	    frictionCoefficients (new SFVec2f ()),
+	            surfaceSpeed (new SFVec2f ()),
+	        slipCoefficients (new SFVec2f ()),
 	softnessConstantForceMix (new SFFloat (0.0001)),
-	softnessErrorCorrection (new SFFloat (0.8)),
-	surfaceSpeed (new SFVec2f ())
+	 softnessErrorCorrection (new SFFloat (0.8)),
+	               geometry1 (new SFNode ()),
+	               geometry2 (new SFNode ()),
+	                   body1 (new SFNode ()),
+	                   body2 (new SFNode ())
 { }
 
 Contact::Contact (X3DExecutionContext* const executionContext) :
@@ -86,22 +86,26 @@ Contact::Contact (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::Contact);
 
 	addField (inputOutput, "metadata",                 metadata ());
-	addField (inputOutput, "appliedParameters",        appliedParameters ());
-	addField (inputOutput, "body1",                    body1 ());
-	addField (inputOutput, "body2",                    body2 ());
-	addField (inputOutput, "bounce",                   bounce ());
+	addField (inputOutput, "position",                 position ());
 	addField (inputOutput, "contactNormal",            contactNormal ());
 	addField (inputOutput, "depth",                    depth ());
-	addField (inputOutput, "frictionCoefficients",     frictionCoefficients ());
+
+	addField (inputOutput, "appliedParameters",        appliedParameters ());
+	
+	addField (inputOutput, "bounce",                   bounce ());
+	addField (inputOutput, "minBounceSpeed",           minBounceSpeed ());
 	addField (inputOutput, "frictionDirection",        frictionDirection ());
-	addField (inputOutput, "geometry1",                geometry1 ());
-	addField (inputOutput, "geometry2",                geometry2 ());
-	addField (inputOutput, "minbounceSpeed",           minbounceSpeed ());
-	addField (inputOutput, "position",                 position ());
+	addField (inputOutput, "frictionCoefficients",     frictionCoefficients ());
+	addField (inputOutput, "surfaceSpeed",             surfaceSpeed ());
+
 	addField (inputOutput, "slipCoefficients",         slipCoefficients ());
 	addField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix ());
 	addField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection ());
-	addField (inputOutput, "surfaceSpeed",             surfaceSpeed ());
+
+	addField (inputOutput, "geometry1",                geometry1 ());
+	addField (inputOutput, "geometry2",                geometry2 ());
+	addField (inputOutput, "body1",                    body1 ());
+	addField (inputOutput, "body2",                    body2 ());
 }
 
 X3DBaseNode*

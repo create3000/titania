@@ -50,7 +50,9 @@
 
 #include "RigidBodyCollection.h"
 
+#include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/RigidBody.h"
 
 namespace titania {
 namespace X3D {
@@ -81,7 +83,8 @@ RigidBodyCollection::Fields::Fields () :
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :
 	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DChildNode (),
-	      fields ()
+	      fields (),
+	   bodyNodes ()
 {
 	addType (X3DConstants::RigidBodyCollection);
 
@@ -106,12 +109,50 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	addField (initializeOnly, "collider",                collider ());
 	addField (inputOutput,    "joints",                  joints ());
 	addField (inputOutput,    "bodies",                  bodies ());
+
+	addChildren (bodyNodes);
 }
 
 X3DBaseNode*
 RigidBodyCollection::create (X3DExecutionContext* const executionContext) const
 {
 	return new RigidBodyCollection (executionContext);
+}
+
+void
+RigidBodyCollection::initialize ()
+{
+	X3DChildNode::initialize ();
+
+	gravity () .addInterest (this, &RigidBodyCollection::set_gravity);
+	bodies ()  .addInterest (this, &RigidBodyCollection::set_bodies);
+
+	set_bodies ();
+}
+
+void
+RigidBodyCollection::set_gravity ()
+{
+	for (const auto & bodyNode : bodyNodes)
+		bodyNode -> setGravity (gravity ());
+}
+
+void
+RigidBodyCollection::set_bodies ()
+{
+	std::vector <RigidBody*> value;
+
+	for (const auto & node : bodies ())
+	{
+		const auto bodyNode = x3d_cast <RigidBody*> (node);
+		
+		if (bodyNode)
+			value .emplace_back (bodyNode);
+	}
+
+	bodyNodes .set (value .begin (), value .end ());
+
+	set_gravity ();
 }
 
 } // X3D

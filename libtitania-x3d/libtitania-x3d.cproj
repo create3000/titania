@@ -1470,6 +1470,7 @@
     <Folder Include="share\fonts\" />
     <Folder Include="share\fonts\truetype\" />
     <Folder Include="share\fonts\truetype\titania-fonts\" />
+    <Folder Include="Titania\X3D\Bits\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

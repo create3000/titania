@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class RigidBody;
+
 class RigidBodyCollection :
 	virtual public X3DChildNode
 {
@@ -222,6 +224,20 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_gravity ();
+
+	void
+	set_bodies ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -253,6 +269,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DPtrArray <RigidBody> bodyNodes;
 
 };
 
