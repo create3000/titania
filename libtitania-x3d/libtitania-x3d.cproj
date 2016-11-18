@@ -834,6 +834,7 @@
     <None Include="Titania\X3D\Rendering\DependentRenderer.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DObject.h" />
     <None Include="Titania\X3D\Tools\Grouping\X3DTransformMatrix3DObjectTool.h" />
+    <None Include="Titania\X3D\Browser\RigidBodyPhysics\X3DRigidBodyPhysicsContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1389,6 +1390,7 @@
     <Compile Include="Titania\X3D\Rendering\X3DShapeContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\DependentRenderer.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DObject.cpp" />
+    <Compile Include="Titania\X3D\Browser\RigidBodyPhysics\X3DRigidBodyPhysicsContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1471,6 +1473,7 @@
     <Folder Include="share\fonts\truetype\" />
     <Folder Include="share\fonts\truetype\titania-fonts\" />
     <Folder Include="Titania\X3D\Bits\" />
+    <Folder Include="Titania\X3D\Browser\RigidBodyPhysics\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

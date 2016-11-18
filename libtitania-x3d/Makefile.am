@@ -78,6 +78,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
 	Titania/X3D/Browser/RenderingProperties.cpp \
+	Titania/X3D/Browser/RigidBodyPhysics/X3DRigidBodyPhysicsContext.cpp \
 	Titania/X3D/Browser/Scripting/X3DScriptingContext.cpp \
 	Titania/X3D/Browser/Selection.cpp \
 	Titania/X3D/Browser/Shaders/Shader.cpp \

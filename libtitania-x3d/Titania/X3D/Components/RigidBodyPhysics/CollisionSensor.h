@@ -113,9 +113,25 @@ public:
 	contacts () const
 	{ return *fields .contacts; }
 
+	///  @name Construction
+
+	virtual
+	void
+	dispose () final override;
+
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_live ();
 
 	///  @name Static members
 

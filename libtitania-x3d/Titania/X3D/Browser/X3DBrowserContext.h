@@ -65,6 +65,7 @@
 #include "../Browser/ParticleSystems/X3DParticleSystemsContext.h"
 #include "../Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.h"
 #include "../Browser/Rendering/X3DRenderingContext.h"
+#include "../Browser/RigidBodyPhysics/X3DRigidBodyPhysicsContext.h"
 #include "../Browser/Scripting/X3DScriptingContext.h"
 #include "../Browser/Shaders/X3DShadersContext.h"
 #include "../Browser/Shape/X3DShapeContext.h"
@@ -98,6 +99,7 @@ class X3DBrowserContext :
 	public X3DParticleSystemsContext,
 	public X3DPointingDeviceSensorContext,
 	public X3DRenderingContext,
+	public X3DRigidBodyPhysicsContext,
 	public X3DScriptingContext,
 	public X3DShapeContext,
 	public X3DTextContext,

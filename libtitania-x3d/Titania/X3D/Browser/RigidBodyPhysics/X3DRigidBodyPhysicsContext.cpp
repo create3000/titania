@@ -48,73 +48,18 @@
  *
  ******************************************************************************/
 
-#include "CollisionSensor.h"
-
-#include "../../Execution/X3DExecutionContext.h"
+#include "X3DRigidBodyPhysicsContext.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType CollisionSensor::component      = ComponentType::RIGID_BODY_PHYSICS;
-const std::string   CollisionSensor::typeName       = "CollisionSensor";
-const std::string   CollisionSensor::containerField = "children";
-
-CollisionSensor::Fields::Fields () :
-	     collider (new SFNode ()),
-	intersections (new MFNode ()),
-	     contacts (new MFNode ())
+X3DRigidBodyPhysicsContext::X3DRigidBodyPhysicsContext () :
+	     X3DBaseNode (),
+	collisionSensors ()
 { }
 
-CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DSensorNode (),
-	       fields ()
-{
-	addType (X3DConstants::CollisionSensor);
-
-	addField (inputOutput, "metadata",      metadata ());
-	addField (inputOutput, "enabled",       enabled ());
-	addField (inputOutput, "collider",      collider ());
-	addField (outputOnly,  "isActive",      isActive ());
-	addField (outputOnly,  "intersections", intersections ());
-	addField (outputOnly,  "contacts",      contacts ());
-
-	addField (VRML_V2_0, "collidables", "collider");
-}
-
-X3DBaseNode*
-CollisionSensor::create (X3DExecutionContext* const executionContext) const
-{
-	return new CollisionSensor (executionContext);
-}
-
-void
-CollisionSensor::initialize ()
-{
-	X3DSensorNode::initialize ();
-
-	getExecutionContext () -> isLive () .addInterest (this, &CollisionSensor::set_live);
-	isLive () .addInterest (this, &CollisionSensor::set_live);
-
-	set_live ();
-}
-
-void
-CollisionSensor::set_live ()
-{
-//	if (getExecutionContext () -> isLive () and isLive ())
-//		getBrowser () -> getCollisionSensors () .emplace (this);
-//	else
-//		getBrowser () -> getCollisionSensors () .erase (this);
-}
-
-void
-CollisionSensor::dispose ()
-{
-//	getBrowser () -> getCollisionSensors () .erase (this);
-
-	X3DSensorNode::dispose ();
-}
+X3DRigidBodyPhysicsContext::~X3DRigidBodyPhysicsContext ()
+{ }
 
 } // X3D
 } // titania

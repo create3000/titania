@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,73 +48,66 @@
  *
  ******************************************************************************/
 
-#include "CollisionSensor.h"
+#ifndef __TITANIA_X3D_BROWSER_RIGID_BODY_PHYSICS_X3DRIGID_BODY_PHYSICS_CONTEXT_H__
+#define __TITANIA_X3D_BROWSER_RIGID_BODY_PHYSICS_X3DRIGID_BODY_PHYSICS_CONTEXT_H__
 
-#include "../../Execution/X3DExecutionContext.h"
+#include "../../Basic/X3DBaseNode.h"
+#include "../../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType CollisionSensor::component      = ComponentType::RIGID_BODY_PHYSICS;
-const std::string   CollisionSensor::typeName       = "CollisionSensor";
-const std::string   CollisionSensor::containerField = "children";
+class CollisionSensor;
 
-CollisionSensor::Fields::Fields () :
-	     collider (new SFNode ()),
-	intersections (new MFNode ()),
-	     contacts (new MFNode ())
-{ }
+using CollisionSensorSet = std::set <CollisionSensor*>;
 
-CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
-	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DSensorNode (),
-	       fields ()
+class X3DRigidBodyPhysicsContext :
+	virtual public X3DBaseNode
 {
-	addType (X3DConstants::CollisionSensor);
+public:
 
-	addField (inputOutput, "metadata",      metadata ());
-	addField (inputOutput, "enabled",       enabled ());
-	addField (inputOutput, "collider",      collider ());
-	addField (outputOnly,  "isActive",      isActive ());
-	addField (outputOnly,  "intersections", intersections ());
-	addField (outputOnly,  "contacts",      contacts ());
+	///  @name Member access
 
-	addField (VRML_V2_0, "collidables", "collider");
-}
+	CollisionSensorSet &
+	getCollisionSensors ()
+	{ return collisionSensors; }
 
-X3DBaseNode*
-CollisionSensor::create (X3DExecutionContext* const executionContext) const
-{
-	return new CollisionSensor (executionContext);
-}
+	const CollisionSensorSet &
+	getCollisionSensors () const
+	{ return collisionSensors; }
 
-void
-CollisionSensor::initialize ()
-{
-	X3DSensorNode::initialize ();
+	///  @name Destruction
 
-	getExecutionContext () -> isLive () .addInterest (this, &CollisionSensor::set_live);
-	isLive () .addInterest (this, &CollisionSensor::set_live);
+	virtual
+	void
+	dispose () override
+	{ }
 
-	set_live ();
-}
+	virtual
+	~X3DRigidBodyPhysicsContext ();
 
-void
-CollisionSensor::set_live ()
-{
-//	if (getExecutionContext () -> isLive () and isLive ())
-//		getBrowser () -> getCollisionSensors () .emplace (this);
-//	else
-//		getBrowser () -> getCollisionSensors () .erase (this);
-}
 
-void
-CollisionSensor::dispose ()
-{
-//	getBrowser () -> getCollisionSensors () .erase (this);
+protected:
 
-	X3DSensorNode::dispose ();
-}
+	///  @name Construction
+
+	X3DRigidBodyPhysicsContext ();
+
+	virtual
+	void
+	initialize () override
+	{ }
+
+
+private:
+
+	///  @name Members
+
+	CollisionSensorSet collisionSensors;
+
+};
 
 } // X3D
 } // titania
+
+#endif
