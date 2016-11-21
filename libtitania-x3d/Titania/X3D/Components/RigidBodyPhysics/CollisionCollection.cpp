@@ -60,16 +60,16 @@ const std::string   CollisionCollection::typeName       = "CollisionCollection";
 const std::string   CollisionCollection::containerField = "collider";
 
 CollisionCollection::Fields::Fields () :
+	                 enabled (new SFBool ()),
 	       appliedParameters (new MFString ({ "BOUNCE" })),
 	                  bounce (new SFFloat ()),
-	             collidables (new MFNode ()),
-	                 enabled (new SFBool ()),
-	    frictionCoefficients (new SFVec2f ()),
 	          minBounceSpeed (new SFFloat ()),
+	    frictionCoefficients (new SFVec2f ()),
+	            surfaceSpeed (new SFVec2f ()),
 	             slipFactors (new SFVec2f ()),
 	softnessConstantForceMix (new SFFloat ()),
 	 softnessErrorCorrection (new SFFloat ()),
-	            surfaceSpeed (new SFVec2f ())
+	             collidables (new MFNode ())
 { }
 
 CollisionCollection::CollisionCollection (X3DExecutionContext* const executionContext) :
@@ -80,16 +80,19 @@ CollisionCollection::CollisionCollection (X3DExecutionContext* const executionCo
 	addType (X3DConstants::CollisionCollection);
 
 	addField (inputOutput, "metadata",                 metadata ());
-	addField (inputOutput, "appliedParameters",        appliedParameters ());
-	addField (inputOutput, "bounce",                   bounce ());
-	addField (inputOutput, "collidables",              collidables ());
 	addField (inputOutput, "enabled",                  enabled ());
-	addField (inputOutput, "frictionCoefficients",     frictionCoefficients ());
+
+	addField (inputOutput, "appliedParameters",        appliedParameters ());
+
+	addField (inputOutput, "bounce",                   bounce ());
 	addField (inputOutput, "minBounceSpeed",           minBounceSpeed ());
+	addField (inputOutput, "frictionCoefficients",     frictionCoefficients ());
+	addField (inputOutput, "surfaceSpeed",             surfaceSpeed ());
 	addField (inputOutput, "slipFactors",              slipFactors ());
 	addField (inputOutput, "softnessConstantForceMix", softnessConstantForceMix ());
 	addField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection ());
-	addField (inputOutput, "surfaceSpeed",             surfaceSpeed ());
+
+	addField (inputOutput, "collidables",              collidables ());
 }
 
 X3DBaseNode*

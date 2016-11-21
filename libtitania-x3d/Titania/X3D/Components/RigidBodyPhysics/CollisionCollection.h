@@ -61,6 +61,8 @@ class CollisionCollection :
 {
 public:
 
+	///  @name Construction
+
 	CollisionCollection (X3DExecutionContext* const);
 
 	virtual
@@ -89,6 +91,14 @@ public:
 
 	///  @name Fields
 
+	SFBool &
+	enabled ()
+	{ return *fields .enabled; }
+
+	const SFBool &
+	enabled () const
+	{ return *fields .enabled; }
+
 	MFString &
 	appliedParameters ()
 	{ return *fields .appliedParameters; }
@@ -105,21 +115,13 @@ public:
 	bounce () const
 	{ return *fields .bounce; }
 
-	MFNode &
-	collidables ()
-	{ return *fields .collidables; }
+	SFFloat &
+	minBounceSpeed ()
+	{ return *fields .minBounceSpeed; }
 
-	const MFNode &
-	collidables () const
-	{ return *fields .collidables; }
-
-	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
-
-	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
+	const SFFloat &
+	minBounceSpeed () const
+	{ return *fields .minBounceSpeed; }
 
 	SFVec2f &
 	frictionCoefficients ()
@@ -129,13 +131,13 @@ public:
 	frictionCoefficients () const
 	{ return *fields .frictionCoefficients; }
 
-	SFFloat &
-	minBounceSpeed ()
-	{ return *fields .minBounceSpeed; }
+	SFVec2f &
+	surfaceSpeed ()
+	{ return *fields .surfaceSpeed; }
 
-	const SFFloat &
-	minBounceSpeed () const
-	{ return *fields .minBounceSpeed; }
+	const SFVec2f &
+	surfaceSpeed () const
+	{ return *fields .surfaceSpeed; }
 
 	SFVec2f &
 	slipFactors ()
@@ -161,17 +163,16 @@ public:
 	softnessErrorCorrection () const
 	{ return *fields .softnessErrorCorrection; }
 
-	SFVec2f &
-	surfaceSpeed ()
-	{ return *fields .surfaceSpeed; }
+	MFNode &
+	collidables ()
+	{ return *fields .collidables; }
 
-	const SFVec2f &
-	surfaceSpeed () const
-	{ return *fields .surfaceSpeed; }
+	const MFNode &
+	collidables () const
+	{ return *fields .collidables; }
 
 
 private:
-
 
 	///  @name Static members
 
@@ -185,16 +186,16 @@ private:
 	{
 		Fields ();
 
+		SFBool* const enabled;
 		MFString* const appliedParameters;
 		SFFloat* const bounce;
-		MFNode* const collidables;
-		SFBool* const enabled;
-		SFVec2f* const frictionCoefficients;
 		SFFloat* const minBounceSpeed;
+		SFVec2f* const frictionCoefficients;
+		SFVec2f* const surfaceSpeed;
 		SFVec2f* const slipFactors;
 		SFFloat* const softnessConstantForceMix;
 		SFFloat* const softnessErrorCorrection;
-		SFVec2f* const surfaceSpeed;
+		MFNode* const collidables;
 	};
 
 	Fields fields;

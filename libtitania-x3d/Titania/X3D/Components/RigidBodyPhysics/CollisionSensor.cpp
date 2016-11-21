@@ -50,6 +50,7 @@
 
 #include "CollisionSensor.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -102,16 +103,16 @@ CollisionSensor::initialize ()
 void
 CollisionSensor::set_live ()
 {
-//	if (getExecutionContext () -> isLive () and isLive ())
-//		getBrowser () -> getCollisionSensors () .emplace (this);
-//	else
-//		getBrowser () -> getCollisionSensors () .erase (this);
+	if (getExecutionContext () -> isLive () and isLive ())
+		getBrowser () -> getCollisionSensors () .emplace (this);
+	else
+		getBrowser () -> getCollisionSensors () .erase (this);
 }
 
 void
 CollisionSensor::dispose ()
 {
-//	getBrowser () -> getCollisionSensors () .erase (this);
+	getBrowser () -> getCollisionSensors () .erase (this);
 
 	X3DSensorNode::dispose ();
 }
