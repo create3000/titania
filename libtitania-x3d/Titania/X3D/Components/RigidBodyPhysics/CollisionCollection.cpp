@@ -50,6 +50,7 @@
 
 #include "CollisionCollection.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -99,6 +100,48 @@ X3DBaseNode*
 CollisionCollection::create (X3DExecutionContext* const executionContext) const
 {
 	return new CollisionCollection (executionContext);
+}
+
+void
+CollisionCollection::initialize ()
+{
+	X3DChildNode::initialize ();
+
+	getBrowser () -> getCollisionCollections () .erase (this);
+
+	getExecutionContext () -> isLive () .addInterest (this, &CollisionCollection::set_live);
+	isLive () .addInterest (this, &CollisionCollection::set_live);
+
+	set_live ();
+}
+
+void
+CollisionCollection::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getCollisionCollections () .erase (this);
+
+	X3DChildNode::setExecutionContext (executionContext);
+
+	set_live ();
+}
+
+void
+CollisionCollection::set_live ()
+{
+	if (getExecutionContext () -> isLive () and isLive ())
+		getBrowser () -> getCollisionCollections () .emplace (this);
+	else
+		getBrowser () -> getCollisionCollections () .erase (this);
+}
+
+void
+CollisionCollection::dispose ()
+{
+	getBrowser () -> getCollisionCollections () .erase (this);
+
+	X3DChildNode::dispose ();
 }
 
 } // X3D

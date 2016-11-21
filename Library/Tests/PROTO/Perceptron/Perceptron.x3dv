@@ -9,7 +9,7 @@ EXTERNPROTO Button [
   eventIn      MFNode removeChildren
   exposedField MFNode children
 ]
-"/home/holger/Projekte/Titania/Library/Prototypes/Button/Button/Button.wrl"
+"/home/holger/Projekte/Library/Prototypes/0/Button/Button/Button.x3dv"
 
 EXTERNPROTO CheckButton [
   exposedField SFBool enabled
@@ -20,27 +20,27 @@ EXTERNPROTO CheckButton [
   eventIn      MFNode removeChildren
   exposedField MFNode children
 ]
-"/home/holger/Projekte/Titania/Library/Prototypes/Button/CheckButton/CheckButton.wrl"
+"/home/holger/Projekte/Library/Prototypes/0/Button/CheckButton/CheckButton.x3dv"
 
 EXTERNPROTO SFBool [
   eventIn SFTime set_triggerTime
   exposedField SFBool keyValue
   eventOut     SFBool value_changed
 ]
-"/home/holger/Projekte/Titania/Library/Prototypes/Fields/SFBool/SFBool.x3dv"
+"/home/holger/Projekte/Library/Prototypes/0/Fields/SFBool/SFBool.x3dv"
 
 EXTERNPROTO SFFloat [
   eventIn SFTime  set_triggerTime
   exposedField SFFloat keyValue
   eventOut     SFFloat value_changed
 ]
-"/home/holger/Projekte/Titania/Library/Prototypes/Fields/SFFloat/SFFloat.x3dv"
+"/home/holger/Projekte/Library/Prototypes/0/Fields/SFFloat/SFFloat.x3dv"
 
 EXTERNPROTO SFFloatConverter [
   eventOut     SFFloat value_changed
   exposedField MFNode  children
 ]
-"/home/holger/Projekte/Titania/Library/Prototypes/Converter/SFFloatConverter/SFFloatConverter.wrl"
+"/home/holger/Projekte/Library/Prototypes/0/Converter/SFFloatConverter/SFFloatConverter.wrl"
 
 PROTO Perceptron [
   eventIn      SFFloat set_value
@@ -65,6 +65,7 @@ PROTO Perceptron [
     eventIn      MFNode  set_children
     eventOut     SFFloat keyValue_changed IS keyValue_changed
     exposedField SFFloat learningFactor IS learningFactor
+    field        MFFloat weight [ ]
     field        MFNode  children [ ]
     field        SFNode  fields DEF Fields Fields {
       weight IS weight
@@ -100,10 +101,10 @@ function set_keyValue ()
 
 function set_weight (value)
 {
-	for (var i = fields .weight .length; i < fields .children .length; ++ i)
-		fields .weight [i] = 0;
-
-	fields .weight .length = fields .children .length;
+//	for (var i = fields .weight .length; i < fields .children .length; ++ i)
+//		fields .weight [i] = 0;
+//
+//	fields .weight .length = fields .children .length;
 }
 
 function set_children (value)

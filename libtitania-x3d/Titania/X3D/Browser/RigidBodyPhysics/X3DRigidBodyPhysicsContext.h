@@ -57,8 +57,10 @@
 namespace titania {
 namespace X3D {
 
+class CollisionCollection;
 class CollisionSensor;
 
+using CollisionCollectionSet = std::set <CollisionCollection*>;
 using CollisionSensorSet = std::set <CollisionSensor*>;
 
 class X3DRigidBodyPhysicsContext :
@@ -67,6 +69,14 @@ class X3DRigidBodyPhysicsContext :
 public:
 
 	///  @name Member access
+
+	CollisionCollectionSet &
+	getCollisionCollections ()
+	{ return collisionCollections; }
+
+	const CollisionCollectionSet &
+	getCollisionCollections () const
+	{ return collisionCollections; }
 
 	CollisionSensorSet &
 	getCollisionSensors ()
@@ -103,7 +113,8 @@ private:
 
 	///  @name Members
 
-	CollisionSensorSet collisionSensors;
+	CollisionSensorSet     collisionSensors;
+	CollisionCollectionSet collisionCollections;
 
 };
 

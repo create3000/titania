@@ -75,8 +75,8 @@ CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOutput, "enabled",       enabled ());
-	addField (inputOutput, "collider",      collider ());
 	addField (outputOnly,  "isActive",      isActive ());
+	addField (inputOutput, "collider",      collider ());
 	addField (outputOnly,  "intersections", intersections ());
 	addField (outputOnly,  "contacts",      contacts ());
 
@@ -96,6 +96,18 @@ CollisionSensor::initialize ()
 
 	getExecutionContext () -> isLive () .addInterest (this, &CollisionSensor::set_live);
 	isLive () .addInterest (this, &CollisionSensor::set_live);
+
+	set_live ();
+}
+
+void
+CollisionSensor::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getCollisionSensors () .erase (this);
+
+	X3DSensorNode::setExecutionContext (executionContext);
 
 	set_live ();
 }

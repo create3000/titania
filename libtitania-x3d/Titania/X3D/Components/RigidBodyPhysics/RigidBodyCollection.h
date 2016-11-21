@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class CollisionCollection;
+class CollisionSensor;
 class RigidBody;
 
 class RigidBodyCollection :
@@ -65,11 +67,17 @@ public:
 
 	///  @name Construction
 
-	RigidBodyCollection (X3DExecutionContext* const);
+	RigidBodyCollection (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
 
 	///  @name Common members
 
@@ -233,7 +241,13 @@ private:
 	///  @name Event handlers
 
 	void
+	set_contacts_ ();
+
+	void
 	set_gravity ();
+
+	void
+	set_collider ();
 
 	void
 	set_bodies ();
@@ -270,7 +284,9 @@ private:
 
 	Fields fields;
 
-	X3DPtrArray <RigidBody> bodyNodes;
+	X3DPtr <CollisionCollection> colliderNode;
+	X3DPtrArray <RigidBody>      bodyNodes;
+	X3DPtr <CollisionSensor>     collisionSensorNode;
 
 };
 

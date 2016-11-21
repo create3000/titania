@@ -69,6 +69,12 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Common members
 
 	virtual
@@ -171,8 +177,25 @@ public:
 	collidables () const
 	{ return *fields .collidables; }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
 
 private:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_live ();
 
 	///  @name Static members
 

@@ -52,6 +52,8 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/CollisionCollection.h"
+#include "../RigidBodyPhysics/CollisionSensor.h"
 #include "../RigidBodyPhysics/RigidBody.h"
 
 namespace titania {
@@ -81,10 +83,12 @@ RigidBodyCollection::Fields::Fields () :
 { }
 
 RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DChildNode (),
-	      fields (),
-	   bodyNodes ()
+	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       X3DChildNode (),
+	             fields (),
+	       colliderNode (),
+	          bodyNodes (),
+	collisionSensorNode (new CollisionSensor (getExecutionContext ()))
 {
 	addType (X3DConstants::RigidBodyCollection);
 
@@ -110,7 +114,7 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "joints",                  joints ());
 	addField (inputOutput,    "bodies",                  bodies ());
 
-	addChildren (bodyNodes);
+	addChildren (colliderNode, bodyNodes, collisionSensorNode);
 }
 
 X3DBaseNode*
@@ -124,10 +128,37 @@ RigidBodyCollection::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	gravity () .addInterest (this, &RigidBodyCollection::set_gravity);
-	bodies ()  .addInterest (this, &RigidBodyCollection::set_bodies);
+	set_contacts () .addInterest (this, &RigidBodyCollection::set_contacts_);
+	gravity ()      .addInterest (this, &RigidBodyCollection::set_gravity);
+	collider ()     .addInterest (this, &RigidBodyCollection::set_collider);
+	bodies ()       .addInterest (this, &RigidBodyCollection::set_bodies);
+
+	collisionSensorNode -> contacts () .addInterest (this, &RigidBodyCollection::set_contacts_);
+	collisionSensorNode -> setup ();
 
 	set_bodies ();
+}
+
+void
+RigidBodyCollection::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	if (colliderNode not_eq collider ())
+		colliderNode -> setExecutionContext (executionContext);
+
+	collisionSensorNode -> setExecutionContext (executionContext);
+
+	X3DChildNode::setExecutionContext (executionContext);
+}
+
+void
+RigidBodyCollection::set_contacts_ ()
+{
+	for (const auto & node : collisionSensorNode -> contacts ())
+	{
+		__LOG__ << node .getValue () << std::endl;
+	}
 }
 
 void
@@ -135,6 +166,22 @@ RigidBodyCollection::set_gravity ()
 {
 	for (const auto & bodyNode : bodyNodes)
 		bodyNode -> setGravity (gravity ());
+}
+
+void
+RigidBodyCollection::set_collider ()
+{
+	colliderNode = x3d_cast <CollisionCollection*> (collider ());
+
+	if (not colliderNode)
+	{
+		colliderNode = new CollisionCollection (getExecutionContext ());
+
+		for (const auto & bodyNode : bodyNodes)
+			colliderNode -> collidables () .emplace_back (bodyNode);
+
+		colliderNode -> setup ();
+	}
 }
 
 void

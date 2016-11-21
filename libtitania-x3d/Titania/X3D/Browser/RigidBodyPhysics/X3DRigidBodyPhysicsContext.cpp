@@ -54,8 +54,9 @@ namespace titania {
 namespace X3D {
 
 X3DRigidBodyPhysicsContext::X3DRigidBodyPhysicsContext () :
-	     X3DBaseNode (),
-	collisionSensors ()
+	         X3DBaseNode (),
+	    collisionSensors (),
+	collisionCollections ()
 { }
 
 X3DRigidBodyPhysicsContext::~X3DRigidBodyPhysicsContext ()

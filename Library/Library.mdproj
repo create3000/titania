@@ -355,7 +355,6 @@
     <None Include="Tests\PROTO\Particle\cone-pink.wrl" />
     <None Include="Tests\PROTO\Particle\index.wrl" />
     <None Include="Tests\PROTO\Particle\particleEmmiter.wrl" />
-    <None Include="Tests\PROTO\Perceptron\Peceptron.wrl" />
     <None Include="Tests\PROTO\Particle\MFNode.wrl" />
     <None Include="Tests\Navigation\Billboard010.wrl" />
     <None Include="Tests\Navigation\Billboard100.wrl" />
@@ -657,6 +656,7 @@
     <None Include="Tests\Shaders\Pipeline.x3d" />
     <None Include="Tests\Shaders\Matrix4VertexAttibute.x3dv" />
     <None Include="Tests\images\farbmanagement_test.jpg" />
+    <None Include="Tests\PROTO\Perceptron\Perceptron.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
