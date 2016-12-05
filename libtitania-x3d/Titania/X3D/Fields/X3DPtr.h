@@ -318,6 +318,9 @@ public:
 	   if (value)
 			return value;
 
+		//__LOG__ << "X3DPtr::operator -> ()\n\n" << std::endl;
+		//__LOG__ << backtrace_symbols () << std::endl;
+
 		throw Error <DISPOSED> ("X3DPtr::operator -> ()\n\n" + backtrace_symbols ());
 	}
 
@@ -330,7 +333,7 @@ public:
 	   if (value)
 			return *value;
 
-		throw Error <DISPOSED> ("X3DPtr::operator -> ()\n\n" + backtrace_symbols ());
+		throw Error <DISPOSED> ("X3DPtr::operator * ()\n\n" + backtrace_symbols ());
 	}
 
 	operator bool () const

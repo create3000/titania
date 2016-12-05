@@ -1683,7 +1683,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				ostream
 					<< "<![CDATA["
 					<< escape_cdata (value)
-					<< "]]> "
+					<< "]]>"
 					<< Generator::Break;
 			}
 		}

@@ -59,9 +59,11 @@ namespace X3D {
 
 class CollisionCollection;
 class CollisionSensor;
+class X3DNBodyCollidableNode;
 
 using CollisionCollectionSet = std::set <CollisionCollection*>;
-using CollisionSensorSet = std::set <CollisionSensor*>;
+using CollisionSensorSet     = std::set <CollisionSensor*>;
+using CollidableShapeSet     = std::set <X3DNBodyCollidableNode*>;
 
 class X3DRigidBodyPhysicsContext :
 	virtual public X3DBaseNode
@@ -70,21 +72,27 @@ public:
 
 	///  @name Member access
 
-	CollisionCollectionSet &
-	getCollisionCollections ()
-	{ return collisionCollections; }
+	void
+	addCollisionSensor (CollisionSensor* const collisionSensor);
 
-	const CollisionCollectionSet &
-	getCollisionCollections () const
-	{ return collisionCollections; }
+	void
+	removeCollisionSensor (CollisionSensor* const collisionSensor);
 
-	CollisionSensorSet &
-	getCollisionSensors ()
-	{ return collisionSensors; }
+	void
+	addCollisionCollection (CollisionCollection* const collisionCollection);
 
-	const CollisionSensorSet &
-	getCollisionSensors () const
-	{ return collisionSensors; }
+	void
+	removeCollisionCollection (CollisionCollection* const collisionCollection);
+
+	void
+	addCollidableShape (X3DNBodyCollidableNode* const collidableShape);
+
+	void
+	removeCollidableShape (X3DNBodyCollidableNode* const collidableShape);
+
+	const X3DPtr <CollisionCollection> &
+	getDefaultCollisionCollection () const
+	{ return defaultCollisionCollection; }
 
 	///  @name Destruction
 
@@ -105,16 +113,22 @@ protected:
 
 	virtual
 	void
-	initialize () override
-	{ }
+	initialize () override;
 
 
 private:
 
+	///  @name Event handlers
+
+	void
+	update ();
+
 	///  @name Members
 
-	CollisionSensorSet     collisionSensors;
-	CollisionCollectionSet collisionCollections;
+	CollisionSensorSet           collisionSensors;
+	CollisionCollectionSet       collisionCollections;
+	CollidableShapeSet           collidableShapes;
+	X3DPtr <CollisionCollection> defaultCollisionCollection;
 
 };
 

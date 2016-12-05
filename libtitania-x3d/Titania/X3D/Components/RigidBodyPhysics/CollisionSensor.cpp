@@ -105,7 +105,7 @@ CollisionSensor::setExecutionContext (X3DExecutionContext* const executionContex
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getCollisionSensors () .erase (this);
+	getBrowser () -> removeCollisionSensor (this);
 
 	X3DSensorNode::setExecutionContext (executionContext);
 
@@ -116,15 +116,15 @@ void
 CollisionSensor::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isLive ())
-		getBrowser () -> getCollisionSensors () .emplace (this);
+		getBrowser () -> addCollisionSensor (this);
 	else
-		getBrowser () -> getCollisionSensors () .erase (this);
+		getBrowser () -> removeCollisionSensor (this);
 }
 
 void
 CollisionSensor::dispose ()
 {
-	getBrowser () -> getCollisionSensors () .erase (this);
+	getBrowser () -> removeCollisionSensor (this);
 
 	X3DSensorNode::dispose ();
 }

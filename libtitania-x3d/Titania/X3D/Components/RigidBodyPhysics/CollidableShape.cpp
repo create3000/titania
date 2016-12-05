@@ -51,6 +51,7 @@
 #include "CollidableShape.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../Shape/Shape.h"
@@ -136,7 +137,6 @@ CollidableShape::set_geometry ()
 {
 	if (shapeNode)
 	{
-
 		return;
 	}
 }
@@ -156,15 +156,9 @@ CollidableShape::traverse (const TraverseType type, X3DRenderObject* const rende
 		renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
 
 		shapeNode -> traverse (type, renderObject);
-	
+
 		renderObject -> getModelViewMatrix () .pop ();
 	}
-}
-
-void
-CollidableShape::dispose ()
-{
-	X3DNBodyCollidableNode::dispose ();
 }
 
 CollidableShape::~CollidableShape ()

@@ -148,6 +148,8 @@ RigidBody::initialize ()
 	getExecutionContext () -> isLive () .addInterest (this, &RigidBody::set_live);
 	isLive () .addInterest (this, &RigidBody::set_live);
 
+	shutdown () .addInterest (this, &RigidBody::set_shutdown);
+
 	enabled ()  .addInterest (this, &RigidBody::set_live);
 	forces ()   .addInterest (this, &RigidBody::set_forces);
 	geometry () .addInterest (this, &RigidBody::set_geometry);
@@ -178,6 +180,9 @@ RigidBody::set_forces ()
 void
 RigidBody::set_geometry ()
 {
+	for (const auto & geometryNode : geometryNodes)
+		getBrowser () -> removeCollidableShape (geometryNode);
+
 	std::vector <X3DNBodyCollidableNode*> value;
 
 	for (const auto & node : geometry ())
@@ -189,6 +194,9 @@ RigidBody::set_geometry ()
 	}
 
 	geometryNodes .set (value .begin (), value .end ());
+
+	for (const auto & geometryNode : geometryNodes)
+		getBrowser () -> addCollidableShape (geometryNode);
 
 	// Update geometry nodes translaton and rotation.
 
@@ -225,6 +233,13 @@ RigidBody::updateGeometries ()
 
 	for (const auto & geometryNode : geometryNodes)
 		geometryNode -> translation () = position ();
+}
+
+void
+RigidBody::set_shutdown ()
+{
+	for (const auto & geometryNode : geometryNodes)
+		getBrowser () -> removeCollidableShape (geometryNode);
 }
 
 } // X3D

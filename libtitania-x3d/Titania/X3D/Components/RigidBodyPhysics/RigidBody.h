@@ -312,6 +312,9 @@ private:
 	void
 	updateGeometries ();
 
+	void
+	set_shutdown ();
+
 	///  @name Static members
 
 	static const ComponentType component;

@@ -116,10 +116,6 @@ public:
 	///  @name Destruction
 
 	virtual
-	void
-	dispose () final override;
-
-	virtual
 	~CollidableShape ();
 
 

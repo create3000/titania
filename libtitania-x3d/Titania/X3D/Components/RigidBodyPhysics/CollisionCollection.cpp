@@ -107,7 +107,7 @@ CollisionCollection::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	getBrowser () -> getCollisionCollections () .erase (this);
+	getBrowser () -> removeCollisionCollection (this);
 
 	getExecutionContext () -> isLive () .addInterest (this, &CollisionCollection::set_live);
 	isLive () .addInterest (this, &CollisionCollection::set_live);
@@ -120,7 +120,7 @@ CollisionCollection::setExecutionContext (X3DExecutionContext* const executionCo
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getCollisionCollections () .erase (this);
+	getBrowser () -> removeCollisionCollection (this);
 
 	X3DChildNode::setExecutionContext (executionContext);
 
@@ -131,15 +131,15 @@ void
 CollisionCollection::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isLive ())
-		getBrowser () -> getCollisionCollections () .emplace (this);
+		getBrowser () -> addCollisionCollection (this);
 	else
-		getBrowser () -> getCollisionCollections () .erase (this);
+		getBrowser () -> removeCollisionCollection (this);
 }
 
 void
 CollisionCollection::dispose ()
 {
-	getBrowser () -> getCollisionCollections () .erase (this);
+	getBrowser () -> removeCollisionCollection (this);
 
 	X3DChildNode::dispose ();
 }

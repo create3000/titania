@@ -50,14 +50,80 @@
 
 #include "X3DRigidBodyPhysicsContext.h"
 
+#include "../X3DBrowser.h"
+#include "../../Components/RigidBodyPhysics/CollisionCollection.h"
+#include "../../Components/RigidBodyPhysics/X3DNBodyCollidableNode.h"
+
 namespace titania {
 namespace X3D {
 
 X3DRigidBodyPhysicsContext::X3DRigidBodyPhysicsContext () :
-	         X3DBaseNode (),
-	    collisionSensors (),
-	collisionCollections ()
-{ }
+	               X3DBaseNode (),
+	          collisionSensors (),
+	      collisionCollections (),
+	          collidableShapes (),
+	defaultCollisionCollection (new CollisionCollection (getExecutionContext ()))
+{
+	addChildren (defaultCollisionCollection);
+}
+
+void
+X3DRigidBodyPhysicsContext::initialize ()
+{
+	defaultCollisionCollection -> setup ();
+}
+
+void
+X3DRigidBodyPhysicsContext::addCollisionSensor (CollisionSensor* const collisionSensor)
+{
+	collisionSensors .emplace (collisionSensor);
+
+	if (not collisionSensors .empty ())
+		getBrowser () -> finished () .addInterest (this, &X3DRigidBodyPhysicsContext::update);
+}
+
+void
+X3DRigidBodyPhysicsContext::removeCollisionSensor (CollisionSensor* const collisionSensor)
+{
+	collisionSensors .erase (collisionSensor);
+
+	if (collisionSensors .empty ())
+		getBrowser () -> finished () .removeInterest (this, &X3DRigidBodyPhysicsContext::update);
+}
+
+void
+X3DRigidBodyPhysicsContext::addCollisionCollection (CollisionCollection* const collisionCollection)
+{
+	collisionCollections .emplace (collisionCollection);
+}
+
+void
+X3DRigidBodyPhysicsContext::removeCollisionCollection (CollisionCollection* const collisionCollection)
+{
+	collisionCollections .erase (collisionCollection);
+}
+
+void
+X3DRigidBodyPhysicsContext::addCollidableShape (X3DNBodyCollidableNode* const collidableShape)
+{
+	collidableShapes .emplace (collidableShape);
+
+	defaultCollisionCollection -> collidables () .assign (collidableShapes .begin (), collidableShapes .end ());
+}
+
+void
+X3DRigidBodyPhysicsContext::removeCollidableShape (X3DNBodyCollidableNode* const collidableShape)
+{
+	collidableShapes .erase (collidableShape);
+
+	defaultCollisionCollection -> collidables () .assign (collidableShapes .begin (), collidableShapes .end ());
+}
+
+void
+X3DRigidBodyPhysicsContext::update ()
+{
+	__LOG__ << collisionSensors .size () << " : " << collisionCollections .size () << " : " << collidableShapes .size () << std::endl;
+}
 
 X3DRigidBodyPhysicsContext::~X3DRigidBodyPhysicsContext ()
 { }

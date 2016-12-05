@@ -431,10 +431,10 @@ Generator::XMLEncode (std::ostream & ostream, const std::string & string)
 		switch (c)
 		{
 			case '\t' :
-				{
-					ostream << "&#x9;";
-					break;
-				}
+			{
+				ostream << "&#x9;";
+				break;
+			}
 			case '\n':
 			{
 				ostream << "&#xA;";
@@ -445,9 +445,19 @@ Generator::XMLEncode (std::ostream & ostream, const std::string & string)
 				ostream << "&#xD;";
 				break;
 			}
+			case '#':
+			{
+				ostream << "&#35;";
+				break;
+			}
 			case '<':
 			{
 				ostream << "&lt;";
+				break;
+			}
+			case '>':
+			{
+				ostream << "&gt;";
 				break;
 			}
 			case '&':
