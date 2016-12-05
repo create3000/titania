@@ -103,9 +103,7 @@ private:
 
 	static JSBool getFieldDefinitions (JSContext*, uint32_t, jsval*);
 
-	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
-	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
-	static JSBool toString     (JSContext*, uint32_t, jsval*);
+	static JSBool toString (JSContext*, uint32_t, jsval*);
 
 	///  @name Static members
 

@@ -127,12 +127,15 @@ private:
 
 	///  @name Functions
 
-	static JSBool getName (JSContext*, uint32_t, jsval*);
+	static JSBool getName     (JSContext*, uint32_t, jsval*);
 	static JSBool getTypeName (JSContext*, uint32_t, jsval*);
-	static JSBool getType (JSContext*, uint32_t, jsval*);
-	static JSBool isReadable (JSContext*, uint32_t, jsval*);
-	static JSBool isWritable (JSContext*, uint32_t, jsval*);
-	static JSBool toString (JSContext*, uint32_t, jsval*);
+	static JSBool getType     (JSContext*, uint32_t, jsval*);
+	static JSBool isReadable  (JSContext*, uint32_t, jsval*);
+	static JSBool isWritable  (JSContext*, uint32_t, jsval*);
+
+	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
+	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
+	static JSBool toString     (JSContext*, uint32_t, jsval*);
 
 	///  @name Static members
 

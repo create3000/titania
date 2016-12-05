@@ -51,6 +51,7 @@
 #include "X3DField.h"
 
 #include "../../Basic/X3DField.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
@@ -70,7 +71,10 @@ JSFunctionSpec X3DField::functions [ ] = {
 	{ "getType",     getType,     0, 0 },
 	{ "isReadable",  isReadable,  0, 0 },
 	{ "isWritable",  isWritable,  0, 0 },
-	{ "toString",    toString,    0, 0 },
+
+	{ "toVRMLString", toVRMLString, 0, 0 },
+	{ "toXMLString",  toXMLString,  0, 0 },
+	{ "toString",     toString,     0, 0 },
 
 	{ 0 }
 
@@ -176,6 +180,55 @@ X3DField::isWritable (JSContext* cx, uint32_t argc, jsval* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException (cx, "%s .isWritable: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DField::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .toVRMLString: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto context = getContext (cx);
+		const auto lhs     = getThis <X3DField> (cx, vp);
+		const auto version = context -> getExecutionContext () -> getSpecificationVersion ();
+
+		Generator::SpecificationVersion (version);
+		Generator::NicestStyle ();
+
+		return JS_NewStringValue (cx, lhs -> toString (), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .toVRMLString: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DField::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .toXMLString: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto context = getContext (cx);
+		const auto lhs     = getThis <X3DField> (cx, vp);
+		auto       version = context -> getExecutionContext () -> getSpecificationVersion ();
+
+		if (version == VRML_V2_0)
+			version = LATEST_VERSION;
+
+		Generator::SpecificationVersion (version);
+		Generator::NicestStyle ();
+
+		return JS_NewStringValue (cx, lhs -> toXMLString (), &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .toXMLString: %s.", getClass () -> name, error .what ());
 	}
 }
 
