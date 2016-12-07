@@ -114,6 +114,9 @@ private:
 
 	static JSBool newInstance (JSContext*, uint32_t, jsval*);
 
+	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
+	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
+
 	///  @name Destruction
 
 	static
