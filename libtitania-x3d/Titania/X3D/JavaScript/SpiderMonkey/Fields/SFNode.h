@@ -98,8 +98,9 @@ private:
 
 	///  @name Functions
 
-	static JSBool getNodeName (JSContext*, uint32_t, jsval*);
-	static JSBool getNodeType (JSContext*, uint32_t, jsval*);
+	static JSBool getNodeTypeName (JSContext*, uint32_t, jsval*);
+	static JSBool getNodeName     (JSContext*, uint32_t, jsval*);
+	static JSBool getNodeType     (JSContext*, uint32_t, jsval*);
 
 	static JSBool getFieldDefinitions (JSContext*, uint32_t, jsval*);
 

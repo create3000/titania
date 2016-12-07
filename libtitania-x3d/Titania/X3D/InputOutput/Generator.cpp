@@ -185,12 +185,12 @@ Generator::NicestStyle ()
 }
 
 void
-Generator::PushExecutionContext (const X3DExecutionContext* const value)
+Generator::PushExecutionContext (const X3DExecutionContext* const executionContext)
 {
-	executionContextStack .emplace_back (value);
+	executionContextStack .emplace_back (executionContext);
 
-	exportedNodesIndex .emplace (value, NodeIdSet ());
-	importedNodesIndex .emplace (value, NodeIdSet ());
+	exportedNodesIndex .emplace (executionContext, NodeIdSet ());
+	importedNodesIndex .emplace (executionContext, NodeIdSet ());
 }
 
 void
@@ -472,12 +472,12 @@ Generator::XMLEncode (std::ostream & ostream, const std::string & string)
 			}
 			case '"':
 			{
-				ostream << "\\\"";
+				ostream << "&quot;";
 				break;
 			}
 			case '\\':
 			{
-				ostream << "\\\\";
+				ostream << "&#92;";
 				break;
 			}
 			default:

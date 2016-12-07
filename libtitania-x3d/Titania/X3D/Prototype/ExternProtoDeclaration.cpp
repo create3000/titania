@@ -557,11 +557,11 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 			<< "'"
 			<< Generator::Space
 			<< "type='"
-			<< field-> getTypeName ()
+			<< field -> getTypeName ()
 			<< "'"
 			<< Generator::Space
 			<< "name='"
-			<< XMLEncode (field-> getName ())
+			<< XMLEncode (field -> getName ())
 			<< "'"
 			<< "/>"
 			<< Generator::Break;

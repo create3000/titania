@@ -733,24 +733,7 @@ sub escape {
 		{
 			case "\\"
 			{
-				if ($value =~ /\G(.)/sgo)
-				{
-					switch ($1)
-					{
-						case "\""
-						{
-							$result .= "\\\"";
-						}
-						case "\\"
-						{
-							$result .= "\\\\";
-						}
-						else
-						{
-							$result .= $1;
-						}
-					}
-				}
+				$result .= "\\\\";
 			}
 			case "\""
 			{

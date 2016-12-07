@@ -76,6 +76,7 @@ JSClass SFNode::static_class = {
 };
 
 JSFunctionSpec SFNode::functions [ ] = {
+	{ "getNodeTypeName",     getNodeTypeName,     0, 0 },
 	{ "getNodeName",         getNodeName,         0, 0 },
 	{ "getNodeType",         getNodeType,         0, 0 },
 	{ "getFieldDefinitions", getFieldDefinitions, 0, 0 },
@@ -278,6 +279,24 @@ SFNode::setProperty (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval
 		const auto name = to_string (cx, id);
 
 		return ThrowException (cx, "%s .%s: %s.", getClass () -> name, name .c_str (), error .what ());
+	}
+}
+
+JSBool
+SFNode::getNodeTypeName (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 0)
+		return ThrowException (cx, "%s .getNodeTypeName: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto lhs = getThis <SFNode> (cx, vp);
+
+		return JS_NewStringValue (cx, *lhs ? lhs -> getValue () -> getTypeName () : "", &JS_RVAL (cx, vp));
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .getNodeTypeName: %s.", getClass () -> name, error .what ());
 	}
 }
 
