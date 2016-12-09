@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class X3DNBodyCollidableNode;
+
 class CollisionCollection :
 	virtual public X3DChildNode
 {
@@ -68,12 +70,6 @@ public:
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
 
 	///  @name Common members
 
@@ -177,11 +173,6 @@ public:
 	collidables () const
 	{ return *fields .collidables; }
 
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
 
 
 private:
@@ -195,7 +186,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_live ();
+	set_collidables ();
 
 	///  @name Static members
 
@@ -222,6 +213,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DPtrArray <X3DNBodyCollidableNode> collidableNodes;
 
 };
 

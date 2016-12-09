@@ -180,8 +180,7 @@ RigidBody::set_forces ()
 void
 RigidBody::set_geometry ()
 {
-	for (const auto & geometryNode : geometryNodes)
-		getBrowser () -> removeCollidableShape (geometryNode);
+	getBrowser () -> removeCollidableShapes (geometryNodes);
 
 	std::vector <X3DNBodyCollidableNode*> value;
 
@@ -195,8 +194,7 @@ RigidBody::set_geometry ()
 
 	geometryNodes .set (value .begin (), value .end ());
 
-	for (const auto & geometryNode : geometryNodes)
-		getBrowser () -> addCollidableShape (geometryNode);
+	getBrowser () -> addCollidableShapes (geometryNodes);
 
 	// Update geometry nodes translaton and rotation.
 
@@ -238,8 +236,7 @@ RigidBody::updateGeometries ()
 void
 RigidBody::set_shutdown ()
 {
-	for (const auto & geometryNode : geometryNodes)
-		getBrowser () -> removeCollidableShape (geometryNode);
+	getBrowser () -> removeCollidableShapes (geometryNodes);
 }
 
 } // X3D

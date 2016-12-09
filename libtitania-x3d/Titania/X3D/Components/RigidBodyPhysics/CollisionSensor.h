@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class CollisionCollection;
+
 class CollisionSensor :
 	public X3DSensorNode
 {
@@ -119,12 +121,6 @@ public:
 	contacts () const
 	{ return *fields .contacts; }
 
-	///  @name Construction
-
-	virtual
-	void
-	dispose () final override;
-
 
 private:
 
@@ -137,7 +133,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_live ();
+	set_collider ();
+
+	void
+	update ();
 
 	///  @name Static members
 
@@ -157,6 +156,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DPtr <CollisionCollection> colliderNode;
 
 };
 

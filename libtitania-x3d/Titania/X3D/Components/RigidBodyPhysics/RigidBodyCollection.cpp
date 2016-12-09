@@ -178,15 +178,20 @@ RigidBodyCollection::set_collider ()
 		colliderNode = new CollisionCollection (getExecutionContext ());
 
 		for (const auto & bodyNode : bodyNodes)
-			colliderNode -> collidables () .emplace_back (bodyNode);
+			colliderNode -> collidables () .append (bodyNode -> geometry ());
 
 		colliderNode -> setup ();
 	}
+
+	collisionSensorNode -> collider () = colliderNode;
 }
 
 void
 RigidBodyCollection::set_bodies ()
 {
+	for (const auto & bodyNode : bodyNodes)
+		bodyNode -> geometry () .removeInterest (this, &RigidBodyCollection::set_collider);
+
 	std::vector <RigidBody*> value;
 
 	for (const auto & node : bodies ())
@@ -199,7 +204,11 @@ RigidBodyCollection::set_bodies ()
 
 	bodyNodes .set (value .begin (), value .end ());
 
+	for (const auto & bodyNode : bodyNodes)
+		bodyNode -> geometry () .addInterest (this, &RigidBodyCollection::set_collider);
+
 	set_gravity ();
+	set_collider ();
 }
 
 } // X3D

@@ -52,18 +52,13 @@
 #define __TITANIA_X3D_BROWSER_RIGID_BODY_PHYSICS_X3DRIGID_BODY_PHYSICS_CONTEXT_H__
 
 #include "../../Basic/X3DBaseNode.h"
+#include "../../Fields/X3DPtrArray.h"
 #include "../../Types/Pointer.h"
 
 namespace titania {
 namespace X3D {
 
-class CollisionCollection;
-class CollisionSensor;
-class X3DNBodyCollidableNode;
-
-using CollisionCollectionSet = std::set <CollisionCollection*>;
-using CollisionSensorSet     = std::set <CollisionSensor*>;
-using CollidableShapeSet     = std::set <X3DNBodyCollidableNode*>;
+using CollidableShapeSet = std::set <X3DNBodyCollidableNode*>;
 
 class X3DRigidBodyPhysicsContext :
 	virtual public X3DBaseNode
@@ -73,22 +68,10 @@ public:
 	///  @name Member access
 
 	void
-	addCollisionSensor (CollisionSensor* const collisionSensor);
+	addCollidableShapes (const X3DPtrArray <X3DNBodyCollidableNode> & collidableShapes);
 
 	void
-	removeCollisionSensor (CollisionSensor* const collisionSensor);
-
-	void
-	addCollisionCollection (CollisionCollection* const collisionCollection);
-
-	void
-	removeCollisionCollection (CollisionCollection* const collisionCollection);
-
-	void
-	addCollidableShape (X3DNBodyCollidableNode* const collidableShape);
-
-	void
-	removeCollidableShape (X3DNBodyCollidableNode* const collidableShape);
+	removeCollidableShapes (const X3DPtrArray <X3DNBodyCollidableNode> & collidableShapes);
 
 	const X3DPtr <CollisionCollection> &
 	getDefaultCollisionCollection () const
@@ -118,15 +101,8 @@ protected:
 
 private:
 
-	///  @name Event handlers
-
-	void
-	update ();
-
 	///  @name Members
 
-	CollisionSensorSet           collisionSensors;
-	CollisionCollectionSet       collisionCollections;
 	CollidableShapeSet           collidableShapes;
 	X3DPtr <CollisionCollection> defaultCollisionCollection;
 

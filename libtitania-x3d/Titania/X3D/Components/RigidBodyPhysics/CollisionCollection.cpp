@@ -50,8 +50,10 @@
 
 #include "CollisionCollection.h"
 
+#include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
 namespace X3D {
@@ -74,9 +76,10 @@ CollisionCollection::Fields::Fields () :
 { }
 
 CollisionCollection::CollisionCollection (X3DExecutionContext* const executionContext) :
-	 X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DChildNode (),
-	      fields ()
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	   X3DChildNode (),
+	         fields (),
+	collidableNodes ()
 {
 	addType (X3DConstants::CollisionCollection);
 
@@ -94,6 +97,8 @@ CollisionCollection::CollisionCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput, "softnessErrorCorrection",  softnessErrorCorrection ());
 
 	addField (inputOutput, "collidables",              collidables ());
+
+	addChildren (collidableNodes);
 }
 
 X3DBaseNode*
@@ -107,41 +112,25 @@ CollisionCollection::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	getBrowser () -> removeCollisionCollection (this);
+	collidables () .addInterest (this, &CollisionCollection::set_collidables);
 
-	getExecutionContext () -> isLive () .addInterest (this, &CollisionCollection::set_live);
-	isLive () .addInterest (this, &CollisionCollection::set_live);
-
-	set_live ();
+	set_collidables ();
 }
 
 void
-CollisionCollection::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+CollisionCollection::set_collidables ()
 {
-	getBrowser () -> removeCollisionCollection (this);
+	std::vector <X3DNBodyCollidableNode*> value;
 
-	X3DChildNode::setExecutionContext (executionContext);
+	for (const auto & node : collidables ())
+	{
+		const auto collidable = x3d_cast <X3DNBodyCollidableNode*> (node);
+		
+		if (collidable)
+			value .emplace_back (collidable);
+	}
 
-	set_live ();
-}
-
-void
-CollisionCollection::set_live ()
-{
-	if (getExecutionContext () -> isLive () and isLive ())
-		getBrowser () -> addCollisionCollection (this);
-	else
-		getBrowser () -> removeCollisionCollection (this);
-}
-
-void
-CollisionCollection::dispose ()
-{
-	getBrowser () -> removeCollisionCollection (this);
-
-	X3DChildNode::dispose ();
+	collidableNodes .set (value .begin (), value .end ());
 }
 
 } // X3D

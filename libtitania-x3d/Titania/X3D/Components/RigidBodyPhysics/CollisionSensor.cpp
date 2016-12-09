@@ -50,8 +50,10 @@
 
 #include "CollisionSensor.h"
 
+#include "../../Browser/Core/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+#include "../RigidBodyPhysics/CollisionCollection.h"
 
 namespace titania {
 namespace X3D {
@@ -69,7 +71,8 @@ CollisionSensor::Fields::Fields () :
 CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DSensorNode (),
-	       fields ()
+	       fields (),
+	 colliderNode ()
 {
 	addType (X3DConstants::CollisionSensor);
 
@@ -81,6 +84,8 @@ CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "contacts",      contacts ());
 
 	addField (VRML_V2_0, "collidables", "collider");
+
+	addChildren (colliderNode);
 }
 
 X3DBaseNode*
@@ -94,10 +99,13 @@ CollisionSensor::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &CollisionSensor::set_live);
-	isLive () .addInterest (this, &CollisionSensor::set_live);
+	getBrowser () -> finished () .addInterest (this, &CollisionSensor::update);
 
-	set_live ();
+	collider () .addInterest (this, &CollisionSensor::set_collider);
+
+	set_collider ();
+
+	__LOG__ << this << std::endl;
 }
 
 void
@@ -105,28 +113,28 @@ CollisionSensor::setExecutionContext (X3DExecutionContext* const executionContex
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> removeCollisionSensor (this);
+	getBrowser () -> finished () .removeInterest (this, &CollisionSensor::update);
 
 	X3DSensorNode::setExecutionContext (executionContext);
 
-	set_live ();
+	getBrowser () -> finished () .addInterest (this, &CollisionSensor::update);
+
+	set_collider ();
 }
 
 void
-CollisionSensor::set_live ()
+CollisionSensor::set_collider ()
 {
-	if (getExecutionContext () -> isLive () and isLive ())
-		getBrowser () -> addCollisionSensor (this);
-	else
-		getBrowser () -> removeCollisionSensor (this);
+	colliderNode = x3d_cast <CollisionCollection*> (collider ());
+
+	if (not colliderNode)
+		colliderNode = getBrowser () -> getDefaultCollisionCollection ();
 }
 
 void
-CollisionSensor::dispose ()
+CollisionSensor::update ()
 {
-	getBrowser () -> removeCollisionSensor (this);
-
-	X3DSensorNode::dispose ();
+	__LOG__ << this << " : " << colliderNode .getValue () << std::endl;
 }
 
 } // X3D
