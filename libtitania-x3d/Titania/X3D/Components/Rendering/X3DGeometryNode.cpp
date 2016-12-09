@@ -506,10 +506,12 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 
 void
 X3DGeometryNode::triangulate (std::vector <Color4f> & colors_,
-	                          TexCoordArray & texCoords_,
-	                          std::vector <Vector3f> & normals_,
-	                          std::vector <Vector3d> & vertices_) const
+	                           TexCoordArray & texCoords_,
+	                           std::vector <Vector3f> & normals_,
+	                           std::vector <Vector3d> & vertices_) const
 {
+	texCoords_ .resize (texCoords .size ());
+
 	for (const auto & element : elements)
 	{
 		switch (element .vertexMode ())

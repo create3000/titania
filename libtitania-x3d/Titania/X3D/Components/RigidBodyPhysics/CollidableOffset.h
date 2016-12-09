@@ -107,6 +107,10 @@ public:
 	Box3d
 	getBBox () const final override;
 
+	virtual
+	const CollidableGeometry &
+	getCollidableGeometry () const;
+
 	///  @name Operations
 
 	virtual

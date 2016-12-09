@@ -118,10 +118,37 @@ CollidableOffset::getBBox () const
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ()) * getMatrix ();
 }
 
+const CollidableGeometry &
+CollidableOffset::getCollidableGeometry () const
+{
+	if (collidableNode)
+	{
+		const auto & collidableGeometry = collidableNode -> getCollidableGeometry ();
+	
+		collidableGeometry .matrix *= getMatrix ();
+	
+		return collidableGeometry;
+	}
+
+	throw Error <INVALID_NODE> ("CollidableShape::getCollidableGeometry");
+}
+
 void
 CollidableOffset::set_collidable ()
 {
+	if (collidableNode)
+		collidableNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
+
 	collidableNode .set (x3d_cast <X3DNBodyCollidableNode*> (collidable ()));
+
+	if (collidableNode)
+	{
+		collidableNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
+
+		setCameraObject (collidableNode -> isCameraObject ());
+	}
+	else
+		setCameraObject (false);
 }
 
 void

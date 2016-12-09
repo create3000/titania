@@ -55,6 +55,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../Shape/Shape.h"
+#include "../Rendering/X3DGeometryNode.h"
 
 namespace titania {
 namespace X3D {
@@ -71,7 +72,9 @@ CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	               X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DNBodyCollidableNode (),
 	                    fields (),
-	                 shapeNode ()
+	                 shapeNode (),
+	              geometryNode (),
+	        collidableGeometry ()
 {
 	addType (X3DConstants::CollidableShape);
 
@@ -83,7 +86,7 @@ CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
 	addField (initializeOnly, "shape",       shape ());
 
-	addChildren (shapeNode);
+	addChildren (shapeNode, geometryNode);
 }
 
 X3DBaseNode*
@@ -120,16 +123,34 @@ CollidableShape::getBBox () const
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ()) * getMatrix ();
 }
 
+const CollidableGeometry &
+CollidableShape::getCollidableGeometry () const
+{
+	collidableGeometry .matrix = getMatrix ();
+
+	return collidableGeometry;
+}
+
 void
 CollidableShape::set_shape ()
 {
 	if (shapeNode)
+	{
+		shapeNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
 		shapeNode -> geometry () .removeInterest (this, &CollidableShape::set_geometry);
+	}
 
 	shapeNode .set (x3d_cast <Shape*> (shape ()));
 
 	if (shapeNode)
+	{
+		shapeNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
 		shapeNode -> geometry () .addInterest (this, &CollidableShape::set_geometry);
+
+		setCameraObject (shapeNode -> isCameraObject ());
+	}
+	else
+		setCameraObject (false);
 
 	set_geometry ();
 }
@@ -137,9 +158,73 @@ CollidableShape::set_shape ()
 void
 CollidableShape::set_geometry ()
 {
+	if (geometryNode)
+		geometryNode -> removeInterest (this, &CollidableShape::set_collidableGeometry);
+
 	if (shapeNode)
+		geometryNode = shapeNode -> getGeometry ();
+
+	if (geometryNode)
+		geometryNode -> addInterest (this, &CollidableShape::set_collidableGeometry);
+
+	set_collidableGeometry ();
+}
+
+void
+CollidableShape::set_collidableGeometry ()
+{
+	collidableGeometry .points  .clear ();
+	collidableGeometry .edges   .clear ();
+	collidableGeometry .normals .clear ();
+
+	if (geometryNode)
 	{
-		return;
+		std::vector <Color4f>  colors;
+		TexCoordArray          texCoords;
+		std::vector <Vector3f> normals;
+		std::vector <Vector3d> vertices;
+
+		geometryNode -> triangulate (colors, texCoords, normals, vertices);
+
+		// BBox
+
+		collidableGeometry .bbox = geometryNode -> getBBox ();
+
+		// Points
+
+		auto & points = collidableGeometry .points;
+
+		points = vertices;
+
+		std::sort (points .begin (), points .end ());
+		points .erase (std::unique (points .begin (), points .end ()), points .end ());
+
+		// Edges
+
+		auto & edges = collidableGeometry .edges;
+
+		for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+		{
+			edges .emplace_back (vertices [i + 0] - vertices [i + 1]);
+			edges .emplace_back (vertices [i + 1] - vertices [i + 2]);
+			edges .emplace_back (vertices [i + 2] - vertices [i + 0]);
+		}
+
+		std::sort (edges .begin (), edges .end ());
+		edges .erase (std::unique (edges .begin (), edges .end ()), edges .end ());
+		
+		// Face normals
+
+		auto & faceNormals = collidableGeometry .normals;
+
+		for (size_t i = 0, size = vertices .size (); i < size; i += 3)
+		{
+			faceNormals .emplace_back (normal (vertices [i], vertices [i + 1], vertices [i + 2]));
+		}
+	}
+	else
+	{
+		collidableGeometry .bbox = Box3d ();
 	}
 }
 

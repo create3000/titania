@@ -58,6 +58,17 @@
 namespace titania {
 namespace X3D {
 
+class CollidableGeometry {
+public:
+
+	mutable Matrix4d       matrix;
+	Box3d                  bbox;
+	std::vector <Vector3d> points;
+	std::vector <Vector3d> edges;
+	std::vector <Vector3d> normals;
+
+};
+
 class X3DNBodyCollidableNode :
 	virtual public X3DChildNode,
 	public X3DTransformMatrix3DObject,
@@ -90,6 +101,12 @@ public:
 	const SFRotation &
 	rotation () const
 	{ return *fields .rotation; }
+
+	///  @name Member access
+
+	virtual
+	const CollidableGeometry &
+	getCollidableGeometry () const = 0;
 
 	///  @name Destruction
 

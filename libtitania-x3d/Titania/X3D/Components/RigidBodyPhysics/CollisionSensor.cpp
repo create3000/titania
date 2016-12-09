@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/CollisionCollection.h"
+#include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
 namespace X3D {
@@ -104,8 +105,6 @@ CollisionSensor::initialize ()
 	collider () .addInterest (this, &CollisionSensor::set_collider);
 
 	set_collider ();
-
-	__LOG__ << this << std::endl;
 }
 
 void
@@ -134,7 +133,36 @@ CollisionSensor::set_collider ()
 void
 CollisionSensor::update ()
 {
-	__LOG__ << this << " : " << colliderNode .getValue () << std::endl;
+	for (const auto & collidable1 : colliderNode -> getCollidables ())
+	{
+		try
+		{
+			const auto & collisionGeometry1 = collidable1 -> getCollidableGeometry ();
+			const auto   bbox1              = collisionGeometry1 .bbox * collisionGeometry1 .matrix;
+	
+			for (const auto & collidable2 : colliderNode -> getCollidables ())
+			{
+				try
+				{
+					if (collidable1 == collidable2)
+						continue;
+
+					const auto & collisionGeometry2 = collidable2 -> getCollidableGeometry ();
+					const auto   bbox2              = collisionGeometry2 .bbox * collisionGeometry2 .matrix;
+
+					if (bbox1 .intersects (bbox2))
+					{
+						__LOG__ << SFTime (chrono::now ()) << " : " << bbox1 << " : " << bbox2 << std::endl;
+					}
+				}
+				catch (const X3DError &)
+				{ }
+			}
+		}
+		catch (const X3DError &)
+		{ }
+	}
+
 }
 
 } // X3D

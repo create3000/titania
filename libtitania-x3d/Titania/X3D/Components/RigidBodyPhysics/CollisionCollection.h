@@ -173,6 +173,11 @@ public:
 	collidables () const
 	{ return *fields .collidables; }
 
+	///  @name Member access
+
+	const X3DPtrArray <X3DNBodyCollidableNode> &
+	getCollidables () const
+	{ return collidableNodes; }
 
 
 private:
