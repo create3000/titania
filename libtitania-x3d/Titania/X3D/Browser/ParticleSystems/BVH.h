@@ -51,8 +51,9 @@
 #ifndef __TITANIA_X3D_MISCELLANEOUS_BVH_H__
 #define __TITANIA_X3D_MISCELLANEOUS_BVH_H__
 
-#include "../../Types/Numbers.h"
-
+#include <Titania/Math/Geometry/Box3.h>
+#include <Titania/Math/Numbers/Vector3.h>
+#include <Titania/Math/Numbers/Matrix4.h>
 #include <Titania/Utility/Range.h>
 
 #include <memory>
@@ -64,6 +65,8 @@
 namespace titania {
 namespace X3D {
 
+using namespace math;
+
 /**
  *  BVH - class to represent a Bounded volume hierarchy.
  */
@@ -72,6 +75,13 @@ template <class Type>
 class BVH
 {
 public:
+
+	///  @name Static members
+
+	static constexpr int32_t NODE     = 0;
+	static constexpr int32_t TRIANGLE = 1;
+
+	///  @name Member types
 
 	struct ArrayValue
 	{
@@ -90,10 +100,26 @@ public:
 		int32_t        right;
 	};
 
+	///  @name Construction
+
 	BVH (std::vector <vector3 <Type>> &&);
+
+	///  @name Operations
+
+	bool
+	intersects (const box3 <Type> & bbox,
+	            const std::vector <vector3 <Type>> & points,
+	            const std::vector <vector3 <Type>> & edges,
+	            const std::vector <vector3 <Type>> & normals,
+	            const matrix4 <Type> & matrix,
+	            std::vector <vector3 <Type>> & triangles) const;
+
+	///  @name Input/Output
 
 	std::vector <ArrayValue>
 	toArray () const;
+
+	///  @name Destruction
 
 	virtual
 	~BVH ();
@@ -106,7 +132,7 @@ private:
 	class BVHNode;
 	class Triangle;
 	class Node;
-
+	
 	///  @name Members
 
 	std::vector <vector3 <Type>> vertices;
@@ -115,9 +141,6 @@ private:
 };
 
 // BVH - Bounded volume hierarchy
-
-static constexpr int32_t BVH_NODE     = 0;
-static constexpr int32_t BVH_TRIANGLE = 1;
 
 template <class Type>
 class BVH <Type>::SortComparator
@@ -197,6 +220,15 @@ public:
 	{ }
 
 	virtual
+	bool
+	intersects (const box3 <Type> & bbox,
+	            const std::vector <vector3 <Type>> & points,
+	            const std::vector <vector3 <Type>> & edges,
+	            const std::vector <vector3 <Type>> & normals,
+	            const matrix4 <Type> & matrix,
+	            std::vector <vector3 <Type>> & triangles) const = 0;
+
+	virtual
 	size_t
 	toArray (std::vector <ArrayValue> &) const = 0;
 
@@ -224,7 +256,55 @@ private:
 
 };
 
-// BVH::Triangle
+// 
+template <class Type>
+bool
+triangle_intersects (const std::vector <vector3 <Type>> & points1,
+	                  const std::vector <vector3 <Type>> & edges1,
+	                  const std::vector <vector3 <Type>> & normals1,
+                     const vector3 <Type> & a,
+                     const vector3 <Type> & b,
+                     const vector3 <Type> & c)
+{
+	// Test special cases.
+
+	// Get points.
+
+	const std::vector <vector3 <Type>> points2 = { a, b, c };
+
+	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
+
+	if (sat::separated (normals1, points1, points2))
+		return false;
+
+	// Test the normal of the triangle.
+
+	if (sat::separated ({ normal (a, b, c) }, points1, points2))
+		return false;
+
+	// Test the nine other planes spanned by the edges of the parallelepiped and the edges of the triangle.
+
+	const std::array <vector3 <Type>, 3> edges2 = {
+		a - b,
+		b - c,
+		c - a,
+	};
+
+	std::vector <vector3 <Type>> axes;
+
+	for (const auto & axis1 : edges1)
+	{
+		for (const auto & axis2 : edges2)
+			axes .emplace_back (cross (axis1, axis2));
+	}
+
+	if (sat::separated (axes, points1, points2))
+		return false;
+
+	// Box and triangle intersect.
+
+	return true;
+}
 
 template <class Type>
 class BVH <Type>::Triangle :
@@ -238,12 +318,37 @@ public:
 	{ }
 
 	virtual
+	bool
+	intersects (const box3 <Type> & bbox,
+	            const std::vector <vector3 <Type>> & points,
+	            const std::vector <vector3 <Type>> & edges,
+	            const std::vector <vector3 <Type>> & normals,
+	            const matrix4 <Type> & matrix,
+	            std::vector <vector3 <Type>> & triangles) const final override
+	{
+		const auto & a = this -> getVertex (triangle, 0);
+		const auto & b = this -> getVertex (triangle, 1);
+		const auto & c = this -> getVertex (triangle, 2);
+
+		if (triangle_intersects (points, edges, normals, a * matrix, b * matrix, c * matrix))
+		{
+			triangles .emplace_back (a);
+			triangles .emplace_back (b);
+			triangles .emplace_back (c);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	virtual
 	size_t
-	toArray (std::vector <ArrayValue> & array) const
+	toArray (std::vector <ArrayValue> & array) const final override
 	{
 		const size_t index = array .size ();
 
-		array .emplace_back (BVH_TRIANGLE, vector3 <Type> (), vector3 <Type> (), triangle, 0);
+		array .emplace_back (TRIANGLE, vector3 <Type> (), vector3 <Type> (), triangle * 3, 0);
 
 		return index;
 	}
@@ -265,8 +370,7 @@ public:
 
 	Node (BVH* const tree, std::vector <size_t> & triangles, size_t first, size_t size) :
 		BVHNode (tree),
-		    min (),
-		    max (),
+		   bbox (),
 		   left (),
 		  right ()
 	{
@@ -278,8 +382,8 @@ public:
 
 		// Calculate bbox
 
-		min = this -> getVertex (*begin, 0);
-		max = min;
+		auto min = this -> getVertex (*begin, 0);
+		auto max = min;
 
 		for (const auto & triangle : std::make_pair (begin, end))
 		{
@@ -290,6 +394,8 @@ public:
 				max = math::max (max, vertex);
 			}
 		}
+
+		bbox = box3 <Type> (min, max, extents_type ());
 
 		// Sort and split array
 
@@ -323,23 +429,45 @@ public:
 		if (leftSize > 1)
 			left  .reset (new Node (tree, triangles, first, leftSize));
 		else
-			left .reset (new Triangle (tree, triangles [first] * 3));
+			left .reset (new Triangle (tree, triangles [first]));
 
 		if (rightSize > 1)
 			right .reset (new Node (tree, triangles, first + leftSize, rightSize));
 		else
-			right .reset (new Triangle (tree, triangles [first + leftSize] * 3));
+			right .reset (new Triangle (tree, triangles [first + leftSize]));
+	}
+
+	virtual
+	bool
+	intersects (const box3 <Type> & bbox,
+	            const std::vector <vector3 <Type>> & points,
+	            const std::vector <vector3 <Type>> & edges,
+	            const std::vector <vector3 <Type>> & normals,
+	            const matrix4 <Type> & matrix,
+	            std::vector <vector3 <Type>> & triangles) const final override
+	{
+		if (this -> bbox .intersects (bbox))
+		{
+			bool intersects = left -> intersects (bbox, points, edges, normals, matrix, triangles);
+
+			intersects |= right -> intersects (bbox, points, edges, normals, matrix, triangles);
+
+			return intersects;
+		}
+
+		return false;
 	}
 
 	virtual
 	size_t
-	toArray (std::vector <ArrayValue> & array) const
+	toArray (std::vector <ArrayValue> & array) const final override
 	{
 		const size_t leftIndex  = left -> toArray (array);
 		const size_t rightIndex = right -> toArray (array);
 		const size_t index      = array .size ();
+		const auto   extents    = bbox .extents ();
 
-		array .emplace_back (BVH_NODE, min, max, leftIndex, rightIndex);
+		array .emplace_back (NODE, extents .first, extents .second, leftIndex, rightIndex);
 
 		return index;
 	}
@@ -369,8 +497,7 @@ private:
 
 	///  @name Members
 
-	vector3 <Type> min;
-	vector3 <Type> max;
+	box3 <Type> bbox;
 
 	std::unique_ptr <BVHNode> left;
 	std::unique_ptr <BVHNode> right;
@@ -404,6 +531,26 @@ BVH <Type>::BVH (std::vector <vector3 <Type>> && vertices_) :
 			break;
 		}
 	}
+}
+
+template <class Type>
+bool
+BVH <Type>::intersects (const box3 <Type> & bbox,
+	                     const std::vector <vector3 <Type>> & points,
+                        const std::vector <vector3 <Type>> & edges,
+                        const std::vector <vector3 <Type>> & normals,
+                        const matrix4 <Type> & matrix,
+                        std::vector <vector3 <Type>> & triangles) const
+{
+	try
+	{
+		if (root)
+			return root -> intersects (bbox * inverse (matrix), points, edges, normals, matrix, triangles);
+	}
+	catch (const std::domain_error &)
+	{ }
+
+	return false;
 }
 
 template <class Type>

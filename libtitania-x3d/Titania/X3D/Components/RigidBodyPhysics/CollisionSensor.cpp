@@ -51,6 +51,7 @@
 #include "CollisionSensor.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/ParticleSystems/BVH.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/CollisionCollection.h"
@@ -138,7 +139,7 @@ CollisionSensor::update ()
 		try
 		{
 			const auto & collisionGeometry1 = collidable1 -> getCollidableGeometry ();
-			const auto   bbox1              = collisionGeometry1 .bbox * collisionGeometry1 .matrix;
+			const auto & matrix1            = collisionGeometry1 .matrix;
 	
 			for (const auto & collidable2 : colliderNode -> getCollidables ())
 			{
@@ -147,22 +148,33 @@ CollisionSensor::update ()
 					if (collidable1 == collidable2)
 						continue;
 
-					const auto & collisionGeometry2 = collidable2 -> getCollidableGeometry ();
-					const auto   bbox2              = collisionGeometry2 .bbox * collisionGeometry2 .matrix;
+					std::vector <Vector3d> triangles;
 
-					if (bbox1 .intersects (bbox2))
+					const auto & collisionGeometry2 = collidable2 -> getCollidableGeometry ();
+					const auto & matrix2            = collisionGeometry2 .matrix;
+					const auto   matrix             = matrix1 * inverse (matrix2);
+
+					const bool intersects = collisionGeometry1 .bvh -> intersects (collisionGeometry2 .bbox,
+					                                                               collisionGeometry2 .points,
+					                                                               collisionGeometry2 .edges,
+					                                                               collisionGeometry2 .normals,
+					                                                               matrix,
+					                                                               triangles);
+
+					if (intersects)
 					{
-						__LOG__ << SFTime (chrono::now ()) << " : " << bbox1 << " : " << bbox2 << std::endl;
+						__LOG__ << SFTime (chrono::now ()) << " : " << triangles .size () << " : " << collisionGeometry1 .bbox << " : " << collisionGeometry2 .bbox << std::endl;
 					}
 				}
 				catch (const X3DError &)
+				{ }
+				catch (const std::domain_error &)
 				{ }
 			}
 		}
 		catch (const X3DError &)
 		{ }
 	}
-
 }
 
 } // X3D

@@ -182,18 +182,14 @@ CollidableShape::set_collidableGeometry ()
 {
 	if (geometryNode)
 	{
-		collidableGeometry .points  .clear ();
-		collidableGeometry .edges   .clear ();
-		collidableGeometry .normals .clear ();
-
 		// Triangulate geometry
 
-		std::vector <Color4f>  colors;
-		TexCoordArray          texCoords;
-		std::vector <Vector3f> normals;
+		std::vector <Color4f>  colors_;
+		TexCoordArray          texCoords_;
+		std::vector <Vector3f> normals_;
 		std::vector <Vector3d> vertices;
 
-		geometryNode -> triangulate (colors, texCoords, normals, vertices);
+		geometryNode -> triangulate (colors_, texCoords_, normals_, vertices);
 
 		// BBox
 
@@ -212,6 +208,8 @@ CollidableShape::set_collidableGeometry ()
 
 		auto & edges = collidableGeometry .edges;
 
+		edges .clear ();
+
 		for (size_t i = 0, size = vertices .size (); i < size; i += 3)
 		{
 			edges .emplace_back (vertices [i + 0] - vertices [i + 1]);
@@ -224,11 +222,13 @@ CollidableShape::set_collidableGeometry ()
 		
 		// Face normals
 
-		auto & faceNormals = collidableGeometry .normals;
+		auto & normals = collidableGeometry .normals;
+
+		normals .clear ();
 
 		for (size_t i = 0, size = vertices .size (); i < size; i += 3)
 		{
-			faceNormals .emplace_back (normal (vertices [i], vertices [i + 1], vertices [i + 2]));
+			normals .emplace_back (normal (vertices [i], vertices [i + 1], vertices [i + 2]));
 		}
 
 		// Create BVH
