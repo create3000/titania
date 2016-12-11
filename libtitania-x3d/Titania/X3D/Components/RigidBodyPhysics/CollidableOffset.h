@@ -109,7 +109,8 @@ public:
 
 	virtual
 	const CollidableGeometry &
-	getCollidableGeometry () const;
+	getCollidableGeometry () const
+	throw (Error <INVALID_NODE>);
 
 	///  @name Operations
 

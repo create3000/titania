@@ -51,6 +51,7 @@
 #include "CollidableShape.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/ParticleSystems/BVH.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
@@ -125,10 +126,16 @@ CollidableShape::getBBox () const
 
 const CollidableGeometry &
 CollidableShape::getCollidableGeometry () const
+throw (Error <INVALID_NODE>)
 {
-	collidableGeometry .matrix = getMatrix ();
+	if (geometryNode)
+	{
+		collidableGeometry .matrix = getMatrix ();
 
-	return collidableGeometry;
+		return collidableGeometry;
+	}
+
+	throw Error <INVALID_NODE> ("CollidableShape::getCollidableGeometry");
 }
 
 void
@@ -173,12 +180,14 @@ CollidableShape::set_geometry ()
 void
 CollidableShape::set_collidableGeometry ()
 {
-	collidableGeometry .points  .clear ();
-	collidableGeometry .edges   .clear ();
-	collidableGeometry .normals .clear ();
-
 	if (geometryNode)
 	{
+		collidableGeometry .points  .clear ();
+		collidableGeometry .edges   .clear ();
+		collidableGeometry .normals .clear ();
+
+		// Triangulate geometry
+
 		std::vector <Color4f>  colors;
 		TexCoordArray          texCoords;
 		std::vector <Vector3f> normals;
@@ -221,10 +230,10 @@ CollidableShape::set_collidableGeometry ()
 		{
 			faceNormals .emplace_back (normal (vertices [i], vertices [i + 1], vertices [i + 2]));
 		}
-	}
-	else
-	{
-		collidableGeometry .bbox = Box3d ();
+
+		// Create BVH
+
+		collidableGeometry .bvh .reset (new BVH <double> (std::move (vertices)));
 	}
 }
 

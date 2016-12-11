@@ -120,6 +120,7 @@ CollidableOffset::getBBox () const
 
 const CollidableGeometry &
 CollidableOffset::getCollidableGeometry () const
+throw (Error <INVALID_NODE>)
 {
 	if (collidableNode)
 	{
@@ -130,7 +131,7 @@ CollidableOffset::getCollidableGeometry () const
 		return collidableGeometry;
 	}
 
-	throw Error <INVALID_NODE> ("CollidableShape::getCollidableGeometry");
+	throw Error <INVALID_NODE> ("CollidableOffset::getCollidableGeometry");
 }
 
 void

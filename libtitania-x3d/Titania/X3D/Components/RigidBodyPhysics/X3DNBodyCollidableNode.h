@@ -58,14 +58,18 @@
 namespace titania {
 namespace X3D {
 
+template <class Type>
+class BVH;
+
 class CollidableGeometry {
 public:
 
-	mutable Matrix4d       matrix;
-	Box3d                  bbox;
-	std::vector <Vector3d> points;
-	std::vector <Vector3d> edges;
-	std::vector <Vector3d> normals;
+	mutable Matrix4d               matrix;
+	Box3d                          bbox;
+	std::vector <Vector3d>         points;
+	std::vector <Vector3d>         edges;
+	std::vector <Vector3d>         normals;
+	std::shared_ptr <BVH <double>> bvh;
 
 };
 
@@ -106,7 +110,8 @@ public:
 
 	virtual
 	const CollidableGeometry &
-	getCollidableGeometry () const = 0;
+	getCollidableGeometry () const
+	throw (Error <INVALID_NODE>) = 0;
 
 	///  @name Destruction
 

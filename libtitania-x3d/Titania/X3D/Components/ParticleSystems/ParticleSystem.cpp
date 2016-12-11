@@ -1041,11 +1041,11 @@ ParticleSystem::set_boundedPhysicsModel ()
 
 		// BVH
 
-		const BVH  tree (std::move (vertices));
+		const BVH <float> tree (std::move (vertices));
 		const auto treeArray = tree .toArray ();
 
 		glBindBuffer (GL_TEXTURE_BUFFER, boundedVolumeBufferId);
-		glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (BVH::ArrayValue), treeArray .empty () ? 0 : treeArray .data (), GL_STATIC_COPY);
+		glBufferData (GL_TEXTURE_BUFFER, treeArray .size () * sizeof (BVH <float>::ArrayValue), treeArray .empty () ? 0 : treeArray .data (), GL_STATIC_COPY);
 
 		// Update textures
 
@@ -1173,12 +1173,12 @@ ParticleSystem::set_transform_shader ()
 
 	// BHV
 
-	transformShader -> addUserDefinedField (inputOutput, "bvhStride",      new SFInt32 (sizeof (BVH::ArrayValue) / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "bvhTypeOffset",  new SFInt32 (offsetof (BVH::ArrayValue, type)  / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "bvhMinOffset",   new SFInt32 (offsetof (BVH::ArrayValue, min)   / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "bvhMaxOffset",   new SFInt32 (offsetof (BVH::ArrayValue, max)   / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "bvhLeftOffset",  new SFInt32 (offsetof (BVH::ArrayValue, left)  / sizeof (float)));
-	transformShader -> addUserDefinedField (inputOutput, "bvhRightOffset", new SFInt32 (offsetof (BVH::ArrayValue, right) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhStride",      new SFInt32 (sizeof (BVH <float>::ArrayValue) / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhTypeOffset",  new SFInt32 (offsetof (BVH <float>::ArrayValue, type)  / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhMinOffset",   new SFInt32 (offsetof (BVH <float>::ArrayValue, min)   / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhMaxOffset",   new SFInt32 (offsetof (BVH <float>::ArrayValue, max)   / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhLeftOffset",  new SFInt32 (offsetof (BVH <float>::ArrayValue, left)  / sizeof (float)));
+	transformShader -> addUserDefinedField (inputOutput, "bvhRightOffset", new SFInt32 (offsetof (BVH <float>::ArrayValue, right) / sizeof (float)));
 
 	// Sort algorithm
 
