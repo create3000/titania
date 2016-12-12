@@ -68,6 +68,7 @@ X3DRigidBodyPhysicsContext::X3DRigidBodyPhysicsContext () :
 void
 X3DRigidBodyPhysicsContext::initialize ()
 {
+	defaultCollisionCollection -> enabled () = true;
 	defaultCollisionCollection -> setup ();
 }
 

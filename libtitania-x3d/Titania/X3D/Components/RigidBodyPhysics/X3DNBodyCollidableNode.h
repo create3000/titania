@@ -61,6 +61,8 @@ namespace X3D {
 template <class Type>
 class BVH;
 
+class RigidBody;
+
 class CollidableGeometry {
 public:
 
@@ -108,6 +110,12 @@ public:
 
 	///  @name Member access
 
+	void
+	setBody (const X3DPtr <RigidBody> & value);
+
+	const X3DPtr <RigidBody> &
+	getBody () const;
+
 	virtual
 	const CollidableGeometry &
 	getCollidableGeometry () const
@@ -118,6 +126,8 @@ public:
 	virtual
 	void
 	dispose () override;
+
+	~X3DNBodyCollidableNode ();
 
 
 protected:
@@ -145,6 +155,8 @@ private:
 	};
 
 	Fields fields;
+
+	X3DPtr <RigidBody> body;
 
 };
 

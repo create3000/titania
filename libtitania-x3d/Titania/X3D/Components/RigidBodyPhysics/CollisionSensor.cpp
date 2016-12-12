@@ -55,6 +55,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/CollisionCollection.h"
+#include "../RigidBodyPhysics/Contact.h"
 #include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
@@ -134,36 +135,87 @@ CollisionSensor::set_collider ()
 void
 CollisionSensor::update ()
 {
-	for (const auto & collidable1 : colliderNode -> getCollidables ())
+	if (not colliderNode -> enabled ())
+		return;
+
+	std::vector <Vector3d>               triangles;
+	X3DPtrArray <Contact>                contactNodes;
+	X3DPtrArray <X3DNBodyCollidableNode> intersectionNodes;
+
+	for (const auto & collidableNode1 : colliderNode -> getCollidables ())
 	{
 		try
 		{
-			const auto & collisionGeometry1 = collidable1 -> getCollidableGeometry ();
-			const auto & matrix1            = collisionGeometry1 .matrix;
+			const auto & collidableGeometry1 = collidableNode1 -> getCollidableGeometry ();
+			const auto & matrix1             = collidableGeometry1 .matrix;
 	
-			for (const auto & collidable2 : colliderNode -> getCollidables ())
+			for (const auto & collidableNode2 : colliderNode -> getCollidables ())
 			{
 				try
 				{
-					if (collidable1 == collidable2)
+					if (collidableNode1 == collidableNode2)
 						continue;
 
-					std::vector <Vector3d> triangles;
+					triangles .clear ();
 
-					const auto & collisionGeometry2 = collidable2 -> getCollidableGeometry ();
-					const auto & matrix2            = collisionGeometry2 .matrix;
-					const auto   matrix             = matrix1 * inverse (matrix2);
+					const auto & collidableGeometry2 = collidableNode2 -> getCollidableGeometry ();
+					const auto & matrix2             = collidableGeometry2 .matrix;
+					const auto   matrix              = matrix1 * inverse (matrix2);
 
-					const bool intersects = collisionGeometry1 .bvh -> intersects (collisionGeometry2 .bbox,
-					                                                               collisionGeometry2 .points,
-					                                                               collisionGeometry2 .edges,
-					                                                               collisionGeometry2 .normals,
-					                                                               matrix,
-					                                                               triangles);
+					const bool intersects = collidableGeometry1 .bvh -> intersects (collidableGeometry2 .bbox,
+					                                                                collidableGeometry2 .points,
+					                                                                collidableGeometry2 .edges,
+					                                                                collidableGeometry2 .normals,
+					                                                                matrix,
+					                                                                triangles);
 
 					if (intersects)
 					{
-						__LOG__ << SFTime (chrono::now ()) << " : " << triangles .size () << " : " << collisionGeometry1 .bbox << " : " << collisionGeometry2 .bbox << std::endl;
+						//__LOG__ << SFTime (chrono::now ()) << " : " << triangles .size () << " : " << collidableGeometry1 .bbox << " : " << triangles [0] << " : " << triangles [1] << " : " << triangles [2] << std::endl;
+
+						Vector3d contactPosition;
+						Vector3d contactNormal;
+						double   contactDepth = 0;
+						Box3d    contactBox (triangles .begin (), triangles .end (), iterator_type ());
+
+						for (size_t i = 0, size = triangles .size (); i < size; i += 3)
+						{
+							contactPosition += triangles [i];
+							contactPosition += triangles [i + 1];
+							contactPosition += triangles [i + 2];
+
+							contactNormal += normal (triangles [i], triangles [i + 1], triangles [i + 2]);
+						}
+
+						contactPosition /= triangles .size ();
+						contactNormal   /= triangles .size () / 3;
+						contactDepth     = abs (contactBox .size ());
+
+						// Create Contact node.
+
+						X3DPtr <Contact> contactNode = new Contact (getExecutionContext ());
+
+						contactNode -> position ()                 = contactPosition;
+						contactNode -> contactNormal ()            = contactNormal;
+						contactNode -> depth ()                    = contactDepth;
+						contactNode -> appliedParameters ()        = colliderNode -> appliedParameters ();
+						contactNode -> bounce ()                   = colliderNode -> bounce ();
+						contactNode -> minBounceSpeed ()           = colliderNode -> minBounceSpeed ();
+						//contactNode -> frictionDirection ()        = ; // TODO
+						contactNode -> frictionCoefficients ()     = colliderNode -> frictionCoefficients ();
+						contactNode -> surfaceSpeed ()             = colliderNode -> surfaceSpeed ();
+						contactNode -> slipCoefficients ()         = colliderNode -> slipFactors ();              // XXX: coefficients <-> factors???
+						contactNode -> softnessConstantForceMix () = colliderNode -> softnessConstantForceMix ();
+						contactNode -> softnessErrorCorrection ()  = colliderNode -> softnessErrorCorrection ();
+						contactNode -> geometry1 ()                = collidableNode1;
+						contactNode -> geometry2 ()                = collidableNode2;
+						contactNode -> body1 ()                    = collidableNode1 -> getBody ();
+						contactNode -> body2 ()                    = collidableNode2 -> getBody ();
+
+						contactNode -> setup ();
+
+						contactNodes      .emplace_back (std::move (contactNode));
+						intersectionNodes .emplace_back (collidableNode1);
 					}
 				}
 				catch (const X3DError &)
@@ -175,6 +227,14 @@ CollisionSensor::update ()
 		catch (const X3DError &)
 		{ }
 	}
+
+	// Send events
+
+	if (not contactNodes .empty ())
+		contacts () = std::move (contactNodes);
+
+	if (not intersectionNodes .empty ())
+		intersections () = std::move (intersectionNodes);
 }
 
 } // X3D

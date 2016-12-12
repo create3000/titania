@@ -54,6 +54,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
+#include "../RigidBodyPhysics/X3DNBodyCollisionSpaceNode.h"
 
 namespace titania {
 namespace X3D {
@@ -124,10 +125,15 @@ CollisionCollection::set_collidables ()
 
 	for (const auto & node : collidables ())
 	{
-		const auto collidable = x3d_cast <X3DNBodyCollidableNode*> (node);
+		const auto collidableNode = x3d_cast <X3DNBodyCollidableNode*> (node);
 		
-		if (collidable)
-			value .emplace_back (collidable);
+		if (collidableNode)
+			value .emplace_back (collidableNode);
+
+		//const auto collisionSpaceNode = x3d_cast <X3DNBodyCollisionSpaceNode*> (node);
+		
+		//if (collisionSpaceNode)
+		//	value .emplace_back (collisionSpaceNode);
 	}
 
 	collidableNodes .set (value .begin (), value .end ());

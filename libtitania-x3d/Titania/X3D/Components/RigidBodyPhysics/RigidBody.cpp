@@ -180,7 +180,11 @@ RigidBody::set_forces ()
 void
 RigidBody::set_geometry ()
 {
+	// Remove collidable n-body nodes from global CollisionCollection.
+
 	getBrowser () -> removeCollidableShapes (geometryNodes);
+
+	// Sort out X3DNBodyCollidableNode nodes.
 
 	std::vector <X3DNBodyCollidableNode*> value;
 
@@ -193,6 +197,13 @@ RigidBody::set_geometry ()
 	}
 
 	geometryNodes .set (value .begin (), value .end ());
+
+	// Set body.
+
+	for (const auto & geometryNode : geometryNodes)
+		geometryNode -> setBody (this);
+
+	// Register collidable n-body nodes for global CollisionCollection.
 
 	getBrowser () -> addCollidableShapes (geometryNodes);
 

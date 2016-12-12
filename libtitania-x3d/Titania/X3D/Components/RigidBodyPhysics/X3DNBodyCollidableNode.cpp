@@ -50,6 +50,8 @@
 
 #include "X3DNBodyCollidableNode.h"
 
+#include "../RigidBodyPhysics/RigidBody.h"
+
 namespace titania {
 namespace X3D {
 
@@ -63,9 +65,12 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	              X3DChildNode (),
 	X3DTransformMatrix3DObject (),
 	          X3DBoundedObject (),
-	                    fields ()
+	                    fields (),
+	                      body ()
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);
+
+	addChildren (body);
 }
 
 void
@@ -77,12 +82,27 @@ X3DNBodyCollidableNode::initialize ()
 }
 
 void
+X3DNBodyCollidableNode::setBody (const X3DPtr <RigidBody> & value)
+{
+	body = value;
+}
+
+const X3DPtr <RigidBody> &
+X3DNBodyCollidableNode::getBody () const
+{
+	return body;
+}
+
+void
 X3DNBodyCollidableNode::dispose ()
 {
 	X3DBoundedObject::dispose ();
 	X3DTransformMatrix3DObject::dispose ();
 	X3DChildNode::dispose ();
 }
+
+X3DNBodyCollidableNode::~X3DNBodyCollidableNode ()
+{ }
 
 } // X3D
 } // titania
