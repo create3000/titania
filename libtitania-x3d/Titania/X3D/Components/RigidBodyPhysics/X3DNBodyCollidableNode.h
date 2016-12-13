@@ -156,7 +156,7 @@ private:
 
 	Fields fields;
 
-	X3DPtr <RigidBody> body;
+	X3DPtr <RigidBody> bodyNode;
 
 };
 

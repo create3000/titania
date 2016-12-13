@@ -81,8 +81,8 @@ CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "metadata",      metadata ());
 	addField (inputOutput, "enabled",       enabled ());
-	addField (outputOnly,  "isActive",      isActive ());
 	addField (inputOutput, "collider",      collider ());
+	addField (outputOnly,  "isActive",      isActive ());
 	addField (outputOnly,  "intersections", intersections ());
 	addField (outputOnly,  "contacts",      contacts ());
 
@@ -102,10 +102,13 @@ CollisionSensor::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	getBrowser () -> finished () .addInterest (this, &CollisionSensor::update);
+	getExecutionContext () -> isLive () .addInterest (this, &CollisionSensor::set_enabled);
+	isLive () .addInterest (this, &CollisionSensor::set_enabled);
 
+	enabled ()  .addInterest (this, &CollisionSensor::set_enabled);
 	collider () .addInterest (this, &CollisionSensor::set_collider);
 
+	set_enabled ();
 	set_collider ();
 }
 
@@ -114,13 +117,30 @@ CollisionSensor::setExecutionContext (X3DExecutionContext* const executionContex
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> finished () .removeInterest (this, &CollisionSensor::update);
+	if (isInitialized ())
+	{
+		getBrowser () -> finished () .removeInterest (this, &CollisionSensor::update);
+		getExecutionContext () -> isLive () .removeInterest (this, &CollisionSensor::set_enabled);
+	}
 
 	X3DSensorNode::setExecutionContext (executionContext);
 
-	getBrowser () -> finished () .addInterest (this, &CollisionSensor::update);
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &CollisionSensor::set_enabled);
+	
+		set_enabled ();
+		set_collider ();
+	}
+}
 
-	set_collider ();
+void
+CollisionSensor::set_enabled ()
+{
+	if (enabled () and isLive () and getExecutionContext () -> isLive ())
+		getBrowser () -> finished () .addInterest (this, &CollisionSensor::update);
+	else
+		getBrowser () -> finished () .removeInterest (this, &CollisionSensor::update);
 }
 
 void
@@ -129,7 +149,12 @@ CollisionSensor::set_collider ()
 	colliderNode = x3d_cast <CollisionCollection*> (collider ());
 
 	if (not colliderNode)
-		colliderNode = getBrowser () -> getDefaultCollisionCollection ();
+	{
+		colliderNode = new CollisionCollection (getExecutionContext ());
+
+		colliderNode -> enabled () = true;
+		colliderNode -> setup ();
+	}
 }
 
 void
@@ -138,25 +163,25 @@ CollisionSensor::update ()
 	if (not colliderNode -> enabled ())
 		return;
 
-	std::vector <Vector3d>               triangles;
+	std::vector <Vector3d>               triangles1;
 	X3DPtrArray <Contact>                contactNodes;
 	X3DPtrArray <X3DNBodyCollidableNode> intersectionNodes;
 
-	for (const auto & collidableNode1 : colliderNode -> getCollidables ())
+	for (const auto & collidableNode1 : (colliderNode == collider () ? colliderNode -> getCollidables () : getBrowser () -> getCollidableNodes ()))
 	{
 		try
 		{
 			const auto & collidableGeometry1 = collidableNode1 -> getCollidableGeometry ();
 			const auto & matrix1             = collidableGeometry1 .matrix;
 	
-			for (const auto & collidableNode2 : colliderNode -> getCollidables ())
+			for (const auto & collidableNode2 : (colliderNode == collider () ? colliderNode -> getCollidables () : getBrowser () -> getCollidableNodes ()))
 			{
 				try
 				{
 					if (collidableNode1 == collidableNode2)
 						continue;
 
-					triangles .clear ();
+					triangles1 .clear ();
 
 					const auto & collidableGeometry2 = collidableNode2 -> getCollidableGeometry ();
 					const auto & matrix2             = collidableGeometry2 .matrix;
@@ -167,29 +192,38 @@ CollisionSensor::update ()
 					                                                                collidableGeometry2 .edges,
 					                                                                collidableGeometry2 .normals,
 					                                                                matrix,
-					                                                                triangles);
-
+					                                                                triangles1);
 					if (intersects)
 					{
-						//__LOG__ << SFTime (chrono::now ()) << " : " << triangles .size () << " : " << collidableGeometry1 .bbox << " : " << triangles [0] << " : " << triangles [1] << " : " << triangles [2] << std::endl;
+						//__LOG__ << SFTime (chrono::now ()) << " : " << this << " : " << collidableNode1 -> getName () << " : " << triangles1 .size () << std::endl;
+
+						// Transform triangles.
+
+						std::for_each (triangles1 .begin (),
+						               triangles1 .end (),
+						               [&matrix1] (Vector3d & vertex1) { return vertex1 = vertex1 * matrix1; });
+
+						// Determine contact position, normal, and depth.
 
 						Vector3d contactPosition;
 						Vector3d contactNormal;
 						double   contactDepth = 0;
-						Box3d    contactBox (triangles .begin (), triangles .end (), iterator_type ());
+						Box3d    contactBox (triangles1 .begin (), triangles1 .end (), iterator_type ());
 
-						for (size_t i = 0, size = triangles .size (); i < size; i += 3)
+						for (size_t i = 0, size = triangles1 .size (); i < size; i += 3)
 						{
-							contactPosition += triangles [i];
-							contactPosition += triangles [i + 1];
-							contactPosition += triangles [i + 2];
+							contactPosition += triangles1 [i];
+							contactPosition += triangles1 [i + 1];
+							contactPosition += triangles1 [i + 2];
 
-							contactNormal += normal (triangles [i], triangles [i + 1], triangles [i + 2]);
+							contactNormal += normal (triangles1 [i], triangles1 [i + 1], triangles1 [i + 2]);
 						}
 
-						contactPosition /= triangles .size ();
-						contactNormal   /= triangles .size () / 3;
-						contactDepth     = abs (contactBox .size ());
+						contactPosition /= triangles1 .size ();
+						contactNormal   /= triangles1 .size () / 3;
+						contactDepth     = abs (contactBox .size ()) / 2;
+
+						contactNormal .normalize ();
 
 						// Create Contact node.
 
@@ -230,11 +264,14 @@ CollisionSensor::update ()
 
 	// Send events
 
-	if (not contactNodes .empty ())
-		contacts () = std::move (contactNodes);
+	if (isActive () != bool (contactNodes .size ()))
+		isActive () = contactNodes .size ();
 
 	if (not intersectionNodes .empty ())
 		intersections () = std::move (intersectionNodes);
+
+	if (not contactNodes .empty ())
+		contacts () = std::move (contactNodes);
 }
 
 } // X3D

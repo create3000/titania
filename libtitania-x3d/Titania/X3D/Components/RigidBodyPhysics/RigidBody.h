@@ -71,6 +71,12 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
 
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Common members
 
 	virtual
@@ -298,7 +304,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_live ();
+	set_fixed ();
 
 	void
 	set_forces ();

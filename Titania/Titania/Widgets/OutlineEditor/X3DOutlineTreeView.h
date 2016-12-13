@@ -80,6 +80,10 @@ public:
 	get_model () const
 	{ return model; }
 
+	Gtk::TreeViewColumn*
+	getColumn () const
+	{ return column; }
+
 	void
 	set_execution_context (const X3D::X3DExecutionContextPtr &);
 
@@ -321,6 +325,7 @@ private:
 
 	Glib::RefPtr <OutlineTreeModel>             model;
 	const std::unique_ptr <OutlineSelection>    selection;
+	Gtk::TreeViewColumn*                        column;
 	const std::unique_ptr <OutlineTreeObserver> treeObserver;
 	const std::unique_ptr <OutlineRouteGraph>   routeGraph;
 	OutlineCellRenderer* const                  cellrenderer;

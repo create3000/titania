@@ -77,10 +77,11 @@ CollisionCollection::Fields::Fields () :
 { }
 
 CollisionCollection::CollisionCollection (X3DExecutionContext* const executionContext) :
-	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	   X3DChildNode (),
-	         fields (),
-	collidableNodes ()
+	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      X3DChildNode (),
+	            fields (),
+	   collidableNodes (),
+	collidableNodesSet ()
 {
 	addType (X3DConstants::CollisionCollection);
 
@@ -137,6 +138,9 @@ CollisionCollection::set_collidables ()
 	}
 
 	collidableNodes .set (value .begin (), value .end ());
+
+	collidableNodesSet .clear ();
+	collidableNodesSet .insert (collidableNodes .begin (), collidableNodes .end ());
 }
 
 } // X3D

@@ -54,6 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/CollisionCollection.h"
 #include "../RigidBodyPhysics/CollisionSensor.h"
+#include "../RigidBodyPhysics/Contact.h"
 #include "../RigidBodyPhysics/RigidBody.h"
 
 namespace titania {
@@ -86,7 +87,6 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	       X3DChildNode (),
 	             fields (),
-	       colliderNode (),
 	          bodyNodes (),
 	collisionSensorNode (new CollisionSensor (getExecutionContext ()))
 {
@@ -114,7 +114,7 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "joints",                  joints ());
 	addField (inputOutput,    "bodies",                  bodies ());
 
-	addChildren (colliderNode, bodyNodes, collisionSensorNode);
+	addChildren (bodyNodes, collisionSensorNode);
 }
 
 X3DBaseNode*
@@ -136,6 +136,7 @@ RigidBodyCollection::initialize ()
 	collisionSensorNode -> contacts () .addInterest (this, &RigidBodyCollection::set_contacts_);
 	collisionSensorNode -> setup ();
 
+	set_collider ();
 	set_bodies ();
 }
 
@@ -144,9 +145,6 @@ RigidBodyCollection::setExecutionContext (X3DExecutionContext* const executionCo
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (colliderNode not_eq collider ())
-		colliderNode -> setExecutionContext (executionContext);
-
 	collisionSensorNode -> setExecutionContext (executionContext);
 
 	X3DChildNode::setExecutionContext (executionContext);
@@ -155,9 +153,51 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 RigidBodyCollection::set_contacts_ ()
 {
-	for (const auto & node : collisionSensorNode -> contacts ())
+	__LOG__ << set_contacts () .size () << std::endl;
+
+	std::multimap <RigidBody*, Contact*> contactIndex;
+
+	for (const auto & node : set_contacts ())
 	{
-		__LOG__ << node .getValue () << std::endl;
+		const auto contactNode = x3d_cast <Contact*> (node);
+
+		if (contactNode)
+		{
+			const auto bodyNode = x3d_cast <RigidBody*> (contactNode -> body1 ());
+
+			if (bodyNode)
+			{
+				contactIndex .emplace (bodyNode, contactNode);
+			}
+		}
+	}
+
+	for (const auto & bodyNode : bodyNodes)
+	{
+		if (not bodyNode -> enabled ())
+			continue;
+
+		const auto range = contactIndex .equal_range (bodyNode);
+
+		for (const auto & pair : range)
+		{
+			const auto & contactNode    = pair .second;
+			const auto & contactNormal  = contactNode -> contactNormal () .getValue ();
+			const auto & linearVelocity = bodyNode -> linearVelocity () .getValue ();
+
+			__LOG__ << contactNode -> geometry1 () -> getName () << " : " << bodyNode .getValue () << std::endl;
+			__LOG__ << contactNormal << std::endl;
+			__LOG__ << linearVelocity << std::endl;
+			__LOG__ << dot (normalize (linearVelocity), contactNormal) << std::endl;
+
+			if (dot (normalize (linearVelocity), contactNormal) < 0)
+				continue;
+
+			__LOG__ << reflect (negate (linearVelocity), contactNormal) << std::endl;
+			__LOG__ << reflect (linearVelocity, contactNormal) << std::endl;
+
+			bodyNode -> linearVelocity () = reflect (linearVelocity, contactNormal);
+		}
 	}
 }
 
@@ -171,27 +211,13 @@ RigidBodyCollection::set_gravity ()
 void
 RigidBodyCollection::set_collider ()
 {
-	colliderNode = x3d_cast <CollisionCollection*> (collider ());
-
-	if (not colliderNode)
-	{
-		colliderNode = new CollisionCollection (getExecutionContext ());
-
-		for (const auto & bodyNode : bodyNodes)
-			colliderNode -> collidables () .append (bodyNode -> geometry ());
-
-		colliderNode -> setup ();
-	}
-
-	collisionSensorNode -> collider () = colliderNode;
+	collisionSensorNode -> collider () = x3d_cast <CollisionCollection*> (collider ());
+	collisionSensorNode -> enabled ()  = collisionSensorNode -> collider ();
 }
 
 void
 RigidBodyCollection::set_bodies ()
 {
-	for (const auto & bodyNode : bodyNodes)
-		bodyNode -> geometry () .removeInterest (this, &RigidBodyCollection::set_collider);
-
 	std::vector <RigidBody*> value;
 
 	for (const auto & node : bodies ())
@@ -204,11 +230,7 @@ RigidBodyCollection::set_bodies ()
 
 	bodyNodes .set (value .begin (), value .end ());
 
-	for (const auto & bodyNode : bodyNodes)
-		bodyNode -> geometry () .addInterest (this, &RigidBodyCollection::set_collider);
-
 	set_gravity ();
-	set_collider ();
 }
 
 } // X3D

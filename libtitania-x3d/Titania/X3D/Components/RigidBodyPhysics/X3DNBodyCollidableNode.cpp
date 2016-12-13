@@ -66,11 +66,11 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 	X3DTransformMatrix3DObject (),
 	          X3DBoundedObject (),
 	                    fields (),
-	                      body ()
+	                  bodyNode ()
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);
 
-	addChildren (body);
+	addChildren (bodyNode);
 }
 
 void
@@ -84,13 +84,13 @@ X3DNBodyCollidableNode::initialize ()
 void
 X3DNBodyCollidableNode::setBody (const X3DPtr <RigidBody> & value)
 {
-	body = value;
+	bodyNode = value;
 }
 
 const X3DPtr <RigidBody> &
 X3DNBodyCollidableNode::getBody () const
 {
-	return body;
+	return bodyNode;
 }
 
 void

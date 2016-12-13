@@ -181,6 +181,9 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 	Gtk::TreeViewColumn* column = nullptr;
 	const auto path = get_path_at_position (x, y, column);
 
+	if (column != getColumn ())
+		return false;
+
 	if (path .size () < 3)
 		return false;
 
@@ -289,6 +292,9 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 
 	Gtk::TreeViewColumn*       column = nullptr;
 	const Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+
+	if (column != getColumn ())
+		return false;
 
 	// Clear over state
 
@@ -479,6 +485,9 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+
+	if (column != getColumn ())
+		return false;
 
 	if (path .size ())
 	{
@@ -687,6 +696,9 @@ OutlineTreeViewEditor::remove_route (const double x, const double y)
 	Gtk::TreeViewColumn* column = nullptr;
 	Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
 
+	if (column != getColumn ())
+		return false;
+
 	if (path .size ())
 	{
 		const auto iter = get_model () -> get_iter (path);
@@ -827,6 +839,9 @@ OutlineTreeViewEditor::select_route (const double x, const double y)
 {
 	Gtk::TreeViewColumn*       column = nullptr;
 	const Gtk::TreeModel::Path path   = get_path_at_position (x, y, column);
+
+	if (column != getColumn ())
+		return false;
 
 	if (path .size ())
 	{

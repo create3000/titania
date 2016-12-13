@@ -145,24 +145,48 @@ RigidBody::initialize ()
 {
 	X3DNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &RigidBody::set_live);
-	isLive () .addInterest (this, &RigidBody::set_live);
+	getExecutionContext () -> isLive () .addInterest (this, &RigidBody::set_fixed);
+	isLive () .addInterest (this, &RigidBody::set_fixed);
 
 	shutdown () .addInterest (this, &RigidBody::set_shutdown);
 
-	enabled ()  .addInterest (this, &RigidBody::set_live);
+	fixed ()    .addInterest (this, &RigidBody::set_fixed);
 	forces ()   .addInterest (this, &RigidBody::set_forces);
 	geometry () .addInterest (this, &RigidBody::set_geometry);
 
-	set_live ();
+	set_fixed ();
 	set_forces ();
 	set_geometry ();
 }
 
 void
-RigidBody::set_live ()
+RigidBody::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
-	if (getExecutionContext () -> isLive () and isLive () and enabled ())
+	if (isInitialized ())
+	{
+		getBrowser () -> removeCollidableNodes (geometryNodes);
+
+		getBrowser () -> sensors () .removeInterest (this, &RigidBody::update);
+		getExecutionContext () -> isLive () .removeInterest (this, &RigidBody::set_fixed);
+	}
+
+	X3DNode::setExecutionContext (executionContext);
+
+	if (isInitialized ())
+	{
+		getExecutionContext () -> isLive () .addInterest (this, &RigidBody::set_fixed);
+	
+		set_fixed ();
+		set_geometry ();
+	}
+}
+
+void
+RigidBody::set_fixed ()
+{
+	if (getExecutionContext () -> isLive () and isLive () and not fixed ())
 		getBrowser () -> sensors () .addInterest (this, &RigidBody::update);
 	else
 		getBrowser () -> sensors () .removeInterest (this, &RigidBody::update);
@@ -182,7 +206,7 @@ RigidBody::set_geometry ()
 {
 	// Remove collidable n-body nodes from global CollisionCollection.
 
-	getBrowser () -> removeCollidableShapes (geometryNodes);
+	getBrowser () -> removeCollidableNodes (geometryNodes);
 
 	// Sort out X3DNBodyCollidableNode nodes.
 
@@ -205,7 +229,7 @@ RigidBody::set_geometry ()
 
 	// Register collidable n-body nodes for global CollisionCollection.
 
-	getBrowser () -> addCollidableShapes (geometryNodes);
+	getBrowser () -> addCollidableNodes (geometryNodes);
 
 	// Update geometry nodes translaton and rotation.
 
@@ -237,9 +261,6 @@ RigidBody::update ()
 void
 RigidBody::updateGeometries ()
 {
-	if (fixed ())
-		return;
-
 	for (const auto & geometryNode : geometryNodes)
 		geometryNode -> translation () = position ();
 }
@@ -247,7 +268,7 @@ RigidBody::updateGeometries ()
 void
 RigidBody::set_shutdown ()
 {
-	getBrowser () -> removeCollidableShapes (geometryNodes);
+	getBrowser () -> removeCollidableNodes (geometryNodes);
 }
 
 } // X3D

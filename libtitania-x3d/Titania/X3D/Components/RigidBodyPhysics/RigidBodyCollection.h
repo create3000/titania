@@ -284,9 +284,8 @@ private:
 
 	Fields fields;
 
-	X3DPtr <CollisionCollection> colliderNode;
-	X3DPtrArray <RigidBody>      bodyNodes;
-	X3DPtr <CollisionSensor>     collisionSensorNode;
+	X3DPtrArray <RigidBody>  bodyNodes;
+	X3DPtr <CollisionSensor> collisionSensorNode;
 
 };
 

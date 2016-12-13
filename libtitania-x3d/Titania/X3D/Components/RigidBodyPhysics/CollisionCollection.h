@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RIGID_BODY_PHYSICS_COLLISION_COLLECTION_H__
 #define __TITANIA_X3D_COMPONENTS_RIGID_BODY_PHYSICS_COLLISION_COLLECTION_H__
 
+#include "../../Browser/RigidBodyPhysics/CollidableNodesSet.h"
 #include "../Core/X3DChildNode.h"
 
 namespace titania {
@@ -175,9 +176,9 @@ public:
 
 	///  @name Member access
 
-	const X3DPtrArray <X3DNBodyCollidableNode> &
+	const CollidableNodesSet &
 	getCollidables () const
-	{ return collidableNodes; }
+	{ return collidableNodesSet; }
 
 
 private:
@@ -220,6 +221,7 @@ private:
 	Fields fields;
 
 	X3DPtrArray <X3DNBodyCollidableNode> collidableNodes;
+	CollidableNodesSet                   collidableNodesSet;
 
 };
 

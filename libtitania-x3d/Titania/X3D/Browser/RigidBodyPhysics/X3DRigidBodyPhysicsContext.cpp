@@ -51,43 +51,36 @@
 #include "X3DRigidBodyPhysicsContext.h"
 
 #include "../X3DBrowser.h"
-#include "../../Components/RigidBodyPhysics/CollisionCollection.h"
 #include "../../Components/RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
 namespace X3D {
 
 X3DRigidBodyPhysicsContext::X3DRigidBodyPhysicsContext () :
-	               X3DBaseNode (),
-	          collidableShapes (),
-	defaultCollisionCollection (new CollisionCollection (getExecutionContext ()))
-{
-	addChildren (defaultCollisionCollection);
-}
+	          X3DBaseNode (),
+	      collidableNodes ()
+{ }
 
 void
 X3DRigidBodyPhysicsContext::initialize ()
+{ }
+
+void
+X3DRigidBodyPhysicsContext::addCollidableNodes (const X3DPtrArray <X3DNBodyCollidableNode> & value)
 {
-	defaultCollisionCollection -> enabled () = true;
-	defaultCollisionCollection -> setup ();
+	for (const auto & collidableNode : value)
+		collidableNodes .emplace (collidableNode);
+
+	__LOG__ << collidableNodes .size () << std::endl;
 }
 
 void
-X3DRigidBodyPhysicsContext::addCollidableShapes (const X3DPtrArray <X3DNBodyCollidableNode> & value)
+X3DRigidBodyPhysicsContext::removeCollidableNodes (const X3DPtrArray <X3DNBodyCollidableNode> & value)
 {
-	for (const auto & collidableShape : value)
-		collidableShapes .emplace (collidableShape);
+	for (const auto & collidableNode : value)
+		collidableNodes .erase (collidableNode);
 
-	defaultCollisionCollection -> collidables () .assign (collidableShapes .begin (), collidableShapes .end ());
-}
-
-void
-X3DRigidBodyPhysicsContext::removeCollidableShapes (const X3DPtrArray <X3DNBodyCollidableNode> & value)
-{
-	for (const auto & collidableShape : value)
-		collidableShapes .erase (collidableShape);
-
-	defaultCollisionCollection -> collidables () .assign (collidableShapes .begin (), collidableShapes .end ());
+	__LOG__ << collidableNodes .size () << std::endl;
 }
 
 X3DRigidBodyPhysicsContext::~X3DRigidBodyPhysicsContext ()

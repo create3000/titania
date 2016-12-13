@@ -625,7 +625,10 @@ X3DArrayField <ValueType>::operator = (X3DArrayField && other)
 	if (&other == this)
 		return *this;
 
-	clear (); // addEvent ();
+	if (empty () and not other .empty ())
+		addEvent ();
+
+	clear ();
 
 	std::swap (get (), other .get ());
 

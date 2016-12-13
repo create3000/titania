@@ -48,63 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_RIGID_BODY_PHYSICS_X3DRIGID_BODY_PHYSICS_CONTEXT_H__
-#define __TITANIA_X3D_BROWSER_RIGID_BODY_PHYSICS_X3DRIGID_BODY_PHYSICS_CONTEXT_H__
+#ifndef __TITANIA_X3D_BROWSER_RIGID_BODY_PHYSICS_COLLIDABLE_NODES_SET_H__
+#define __TITANIA_X3D_BROWSER_RIGID_BODY_PHYSICS_COLLIDABLE_NODES_SET_H__
 
-#include "../../Basic/X3DBaseNode.h"
-#include "../../Fields/X3DPtrArray.h"
-#include "../../Types/Pointer.h"
-#include "CollidableNodesSet.h"
+#include <set>
 
 namespace titania {
 namespace X3D {
 
-class X3DRigidBodyPhysicsContext :
-	virtual public X3DBaseNode
-{
-public:
+class X3DNBodyCollidableNode;
 
-	///  @name Member access
-
-	void
-	addCollidableNodes (const X3DPtrArray <X3DNBodyCollidableNode> & collidableNodes);
-
-	void
-	removeCollidableNodes (const X3DPtrArray <X3DNBodyCollidableNode> & collidableNodes);
-
-	const CollidableNodesSet &
-	getCollidableNodes () const
-	{ return collidableNodes; }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
-	{ }
-
-	virtual
-	~X3DRigidBodyPhysicsContext ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DRigidBodyPhysicsContext ();
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	///  @name Members
-
-	CollidableNodesSet collidableNodes;
-
-};
+using CollidableNodesSet = std::set <X3DNBodyCollidableNode*>;
 
 } // X3D
 } // titania

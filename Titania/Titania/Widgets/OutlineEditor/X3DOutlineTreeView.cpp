@@ -78,6 +78,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	           Gtk::TreeView (),
 	                   model (OutlineTreeModel::create (executionContext)),
 	               selection (new OutlineSelection (getBrowserWindow (), this)),
+	                  column (nullptr),
 	            treeObserver (new OutlineTreeObserver (this)),
 	              routeGraph (new OutlineRouteGraph (this)),
 	            cellrenderer (Gtk::manage (new OutlineCellRenderer (getCurrentBrowser (), this))),
@@ -111,6 +112,8 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "tree-data",           OutlineTreeModel::DATA_COLUMN);
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "foreground-set",      OutlineTreeModel::SELECTED_COLUMN);
 	treeviewcolumn_name -> add_attribute (*cellrenderer, "cell-background-set", OutlineTreeModel::SELECTED_COLUMN);
+
+	column = treeviewcolumn_name;
 
 	// Append column
 

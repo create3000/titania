@@ -407,10 +407,9 @@ template <class Up>
 X3DPtrArray <ValueType> &
 X3DPtrArray <ValueType>::operator = (X3DPtrArray <Up> && field)
 {
-	auto       first = field .begin ();
-	const auto last  = field .end ();
-
-	auto current = this -> begin ();
+	auto       first   = field .begin ();
+	const auto last    = field .end ();
+	auto       current = this -> begin ();
 
 	for (const auto end = this -> end (); first not_eq last && current not_eq end; ++ current, ++ first)
 		*current = std::move (*first);
@@ -437,6 +436,8 @@ X3DPtrArray <ValueType>::operator = (X3DPtrArray <Up> && field)
 
 			addChild (field);
 		}
+
+		this -> addEvent ();
 	}
 
 	field .clear ();

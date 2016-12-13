@@ -835,6 +835,7 @@
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DObject.h" />
     <None Include="Titania\X3D\Tools\Grouping\X3DTransformMatrix3DObjectTool.h" />
     <None Include="Titania\X3D\Browser\RigidBodyPhysics\X3DRigidBodyPhysicsContext.h" />
+    <None Include="Titania\X3D\Browser\RigidBodyPhysics\CollidableNodesSet.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

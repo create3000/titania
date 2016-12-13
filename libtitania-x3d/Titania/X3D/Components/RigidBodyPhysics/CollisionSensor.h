@@ -133,6 +133,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_enabled ();
+
+	void
 	set_collider ();
 
 	void
