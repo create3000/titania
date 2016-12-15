@@ -102,20 +102,6 @@ public:
 	
 	///  @name Member access
 
-	const X3DPtr <X3DAppearanceNode> &
-	getAppearance () const
-	{ return appearanceNode; }
-
-	const X3DPtr <X3DGeometryNode> &
-	getGeometry () const
-	{ return geometryNode; }
-
-	virtual
-	GeometryType
-	getGeometryType () const = 0;
-
-	///  @name Operations
-
 	virtual
 	void
 	isHidden (const bool);
@@ -128,6 +114,22 @@ public:
 	virtual
 	bool
 	isTransparent () const = 0;
+
+	virtual
+	const X3DPtr <X3DAppearanceNode> &
+	getAppearance () const
+	{ return appearanceNode; }
+
+	virtual
+	const X3DPtr <X3DGeometryNode> &
+	getGeometry () const
+	{ return geometryNode; }
+
+	virtual
+	GeometryType
+	getGeometryType () const = 0;
+
+	///  @name Operations
 	
 	virtual
 	bool

@@ -99,6 +99,11 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override
 	{ X3DChildNodeTool::setExecutionContext (executionContext); }
+
+	virtual
+	Box3d
+	getBBox () const override
+	{ return getNode <X3DShapeNode> () -> getBBox (); }
 	
 	virtual
 	void
@@ -110,15 +115,13 @@ public:
 	isHidden () const final override
 	{ return getNode <X3DShapeNode> () -> isHidden (); }
 
-	virtual
-	Box3d
-	getBBox () const override
-	{ return getNode <X3DShapeNode> () -> getBBox (); }
+	const X3DPtr <X3DAppearanceNode> &
+	getAppearance () const  final override
+	{ return getNode <X3DShapeNode> () -> getAppearance (); }
 
-	virtual
-	bool
-	isTransparent () const override
-	{ return getNode <X3DShapeNode> () -> isTransparent (); }
+	const X3DPtr <X3DGeometryNode> &
+	getGeometry () const final override
+	{ return getNode <X3DShapeNode> () -> getGeometry (); }
 
 	/// @name Operations
 

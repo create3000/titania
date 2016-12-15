@@ -151,6 +151,7 @@ RigidBody::initialize ()
 	shutdown () .addInterest (this, &RigidBody::set_shutdown);
 
 	fixed ()    .addInterest (this, &RigidBody::set_fixed);
+	position () .addInterest (this, &RigidBody::set_position);
 	forces ()   .addInterest (this, &RigidBody::set_forces);
 	geometry () .addInterest (this, &RigidBody::set_geometry);
 
@@ -190,6 +191,13 @@ RigidBody::set_fixed ()
 		getBrowser () -> sensors () .addInterest (this, &RigidBody::update);
 	else
 		getBrowser () -> sensors () .removeInterest (this, &RigidBody::update);
+}
+
+void
+RigidBody::set_position ()
+{
+	for (const auto & geometryNode : geometryNodes)
+		geometryNode -> translation () = position ();
 }
 
 void
@@ -233,7 +241,7 @@ RigidBody::set_geometry ()
 
 	// Update geometry nodes translaton and rotation.
 
-	updateGeometries ();
+	set_position ();
 }
 
 void
@@ -245,24 +253,13 @@ RigidBody::update ()
 
 	if (mass ())
 		linearAcceleration += force / mass () .getValue ();
-
+	
 	linearVelocity () = linearVelocity () + linearAcceleration / currentFrameRate;
-
+	
 	if (autoDamp ())
 		linearVelocity () -= linearDamping;
 
 	position () = position () + linearVelocity () / currentFrameRate;
-
-	// Update geometry nodes translaton and rotation.
-
-	updateGeometries ();
-}
-
-void
-RigidBody::updateGeometries ()
-{
-	for (const auto & geometryNode : geometryNodes)
-		geometryNode -> translation () = position ();
 }
 
 void

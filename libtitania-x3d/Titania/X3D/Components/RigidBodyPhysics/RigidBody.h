@@ -307,6 +307,9 @@ private:
 	set_fixed ();
 
 	void
+	set_position ();
+
+	void
 	set_forces ();
 
 	void

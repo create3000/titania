@@ -243,17 +243,19 @@ public:
 	physics () const
 	{ return *fields .physics; }
 
-	///  @name Tests
-
-	virtual
-	bool
-	isTransparent () const override;
-
 	///  @name Member access
 
 	virtual
 	Box3d
 	getBBox () const override;
+
+	virtual
+	bool
+	isTransparent () const override;
+
+	virtual
+	X3D::GeometryType
+	getGeometryType () const override;
 
 	///  @name Operations
 
@@ -310,12 +312,6 @@ private:
 		SPRITE,
 		GEOMETRY,
 	};
-
-	///  @name Tests
-
-	virtual
-	X3D::GeometryType
-	getGeometryType () const final override;
 
 	///  @name Event handlers
 

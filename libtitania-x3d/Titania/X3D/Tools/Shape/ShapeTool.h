@@ -86,7 +86,12 @@ public:
 	virtual
 	bool
 	isTransparent () const final override
-	{ return X3DShapeNodeTool::isTransparent (); }
+	{ return getNode <Shape> () -> isTransparent (); }
+
+	virtual
+	GeometryType
+	getGeometryType () const final override
+	{ return getNode <Shape> () -> getGeometryType (); }
 
 	/// @name Operations
 

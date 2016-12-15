@@ -90,14 +90,18 @@ public:
 	{ return containerField; }
 
 	///  @name Member access
-
-	virtual
-	bool
-	isTransparent () const override;
 	
 	virtual
 	Box3d
 	getBBox () const override;
+
+	virtual
+	bool
+	isTransparent () const override;
+
+	virtual
+	GeometryType
+	getGeometryType () const override;
 
 	///  @name Operations
 
@@ -123,10 +127,6 @@ public:
 private:
 
 	///  @name Operations
-
-	virtual
-	GeometryType
-	getGeometryType () const final override;
 
 	void
 	pointer (X3DRenderObject* const renderObject);

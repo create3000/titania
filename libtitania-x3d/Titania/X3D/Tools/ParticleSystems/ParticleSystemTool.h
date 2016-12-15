@@ -237,7 +237,12 @@ public:
 	virtual
 	bool
 	isTransparent () const final override
-	{ return X3DShapeNodeTool::isTransparent (); }
+	{ return getNode <ParticleSystem> () -> isTransparent (); }
+
+	virtual
+	X3D::GeometryType
+	getGeometryType () const final override
+	{ return getNode <ParticleSystem> () -> getGeometryType (); }
 
 	///  @name Operations
 
