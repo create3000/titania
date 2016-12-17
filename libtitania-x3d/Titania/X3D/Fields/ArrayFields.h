@@ -115,6 +115,10 @@ template <>
 void
 X3DArrayField <SFString>::toXMLStream (std::ostream &) const;
 
+template <>
+void
+X3DArrayField <SFString>::toJSONStream (std::ostream &) const;
+
 // Inhibit implicit instantiation for required instantiations.
 extern template class X3DArrayField <SFBool>;
 extern template class X3DArrayField <SFColor>;

@@ -124,5 +124,11 @@ NamedNode::toXMLStream (std::ostream & ostream) const
 	ostream << name;
 }
 
+void
+NamedNode::toJSONStream (std::ostream & ostream) const
+{
+	ostream << name;
+}
+
 } // X3D
 } // titania

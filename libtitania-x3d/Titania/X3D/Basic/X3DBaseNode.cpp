@@ -1700,6 +1700,14 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 }
 
 /***
+ *  Inserts this node into @a ostream in JSON output format.
+ */
+void
+X3DBaseNode::toJSONStream (std::ostream & ostream) const
+{
+}
+
+/***
  *  Disposes this node.  Note: it is normaly not needed to call this function directly.
  */
 void

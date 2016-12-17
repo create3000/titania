@@ -217,6 +217,12 @@ X3DArrayField <SFString>::toXMLStream (std::ostream & ostream) const
 	}
 }
 
+template <>
+void
+X3DArrayField <SFString>::toJSONStream (std::ostream & ostream) const
+{
+}
+
 // Explicit instantiation for required instantiations.
 template class X3DField <Array <SFBool>>;
 template class X3DField <Array <SFColor>>;

@@ -456,6 +456,18 @@ public:
 			ostream << "NULL";
 	}
 
+	///  Inserts this object into @a ostream in X3D XML Encoding style.
+	virtual
+	void
+	toJSONStream (std::ostream & ostream) const final override
+	{
+		if (getValue ())
+			getValue () -> toJSONStream (ostream);
+
+		else
+			ostream << "NULL";
+	}
+
 	///  @name Destruction
 
 	///  Destructs the owned object if no more X3DPtr link to it

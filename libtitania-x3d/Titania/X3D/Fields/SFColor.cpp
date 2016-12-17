@@ -186,5 +186,10 @@ SFColor::toXMLStream (std::ostream & ostream) const
 	toStream (ostream);
 }
 
+void
+SFColor::toJSONStream (std::ostream & ostream) const
+{
+}
+
 } // X3D
 } // titania

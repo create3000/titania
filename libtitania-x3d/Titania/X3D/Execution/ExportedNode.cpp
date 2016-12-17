@@ -199,5 +199,12 @@ ExportedNode::toXMLStream (std::ostream & ostream) const
 	ostream << "/>";
 }
 
+void
+ExportedNode::toJSONStream (std::ostream & ostream) const
+//throw (Error <INVALID_NODE>,
+//       Error <DISPOSED>)
+{
+}
+
 } // X3D
 } // titania

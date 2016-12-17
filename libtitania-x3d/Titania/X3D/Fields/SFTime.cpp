@@ -125,5 +125,10 @@ SFTime::toXMLStream (std::ostream & ostream) const
 	toStream (ostream);
 }
 
+void
+SFTime::toJSONStream (std::ostream & ostream) const
+{
+}
+
 } // X3D
 } // titania

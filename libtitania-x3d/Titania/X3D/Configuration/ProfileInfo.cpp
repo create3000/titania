@@ -80,5 +80,10 @@ ProfileInfo::toXMLStream (std::ostream & ostream) const
 	ostream << name;
 }
 
+void
+ProfileInfo::toJSONStream (std::ostream & ostream) const
+{
+}
+
 } // X3D
 } // titania

@@ -261,6 +261,11 @@ public:
 	void
 	toXMLStream (std::ostream &) const final override;
 
+	///  Inserts this object into @a ostream in X3D JSON Encoding style.
+	virtual
+	void
+	toJSONStream (std::ostream &) const final override;
+
 
 private:
 
@@ -542,6 +547,12 @@ X3DPtrArray <ValueType>::toXMLStream (std::ostream & ostream) const
 
 		Generator::LeaveScope ();
 	}
+}
+
+template <class ValueType>
+void
+X3DPtrArray <ValueType>::toJSONStream (std::ostream & ostream) const
+{
 }
 
 } // X3D

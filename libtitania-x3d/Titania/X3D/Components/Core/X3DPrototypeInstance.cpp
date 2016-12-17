@@ -674,6 +674,12 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 }
 
 void
+X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
+//throw (Error <DISPOSED>)
+{
+}
+
+void
 X3DPrototypeInstance::dispose ()
 {
 	try

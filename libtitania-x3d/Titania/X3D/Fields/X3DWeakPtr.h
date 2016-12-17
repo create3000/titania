@@ -191,6 +191,11 @@ public:
 	toXMLStream (std::ostream &) const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::toXMLStream: not supported!"); }
 
+	virtual
+	void
+	toJSONStream (std::ostream &) const final override
+	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::toJSONtream: not supported!"); }
+
 	///  @name Dispose
 
 	virtual

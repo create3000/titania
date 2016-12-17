@@ -298,6 +298,12 @@ SFImage::toXMLStream (std::ostream & ostream) const
 }
 
 void
+SFImage::toJSONStream (std::ostream & ostream) const
+{
+	toStream (ostream);
+}
+
+void
 SFImage::dispose ()
 {
 	X3DField <Image>::dispose ();

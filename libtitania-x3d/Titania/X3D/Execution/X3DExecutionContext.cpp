@@ -1576,6 +1576,11 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 }
 
 void
+X3DExecutionContext::toJSONStream (std::ostream & ostream) const
+{
+}
+
+void
 X3DExecutionContext::dispose ()
 {
 	namedNodes    .clear ();

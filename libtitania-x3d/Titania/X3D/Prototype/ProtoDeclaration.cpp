@@ -471,6 +471,11 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 }
 
 void
+ProtoDeclaration::toJSONStream (std::ostream & ostream) const
+{
+}
+
+void
 ProtoDeclaration::dispose ()
 {
 	X3DExecutionContext::dispose ();

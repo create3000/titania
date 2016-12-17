@@ -202,6 +202,10 @@ public:
 	void
 	toXMLStream (std::ostream &) const final override;
 
+	virtual
+	void
+	toJSONStream (std::ostream &) const final override;
+
 
 private:
 
@@ -451,6 +455,13 @@ void
 SFRotation4 <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	toStream (ostream);
+}
+
+template <class ValueType>
+inline
+void
+SFRotation4 <ValueType>::toJSONStream (std::ostream & ostream) const
+{
 }
 
 ///  @relates SFRotation4

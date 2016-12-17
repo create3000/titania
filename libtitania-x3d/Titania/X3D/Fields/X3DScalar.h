@@ -176,6 +176,11 @@ public:
 	toXMLStream (std::ostream &) const final override
 	{ }
 
+	virtual
+	void
+	toJSONStream (std::ostream &) const final override
+	{ }
+
 
 private:
 
@@ -556,6 +561,22 @@ X3DScalar <float>::toXMLStream (std::ostream &) const;
 template <>
 void
 X3DScalar <int32_t>::toXMLStream (std::ostream &) const;
+
+template <>
+void
+X3DScalar <bool>::toJSONStream (std::ostream &) const;
+
+template <>
+void
+X3DScalar <double>::toJSONStream (std::ostream &) const;
+
+template <>
+void
+X3DScalar <float>::toJSONStream (std::ostream &) const;
+
+template <>
+void
+X3DScalar <int32_t>::toJSONStream (std::ostream &) const;
 
 extern template class X3DScalar <bool>;
 extern template class X3DScalar <double>;

@@ -174,6 +174,12 @@ public:
 	toXMLStream (std::ostream &) const final override
 	{ }
 
+	///  Inserts this object into @a ostream in X3D XML Encoding style.
+	virtual
+	void
+	toJSONStream (std::ostream &) const final override
+	{ }
+
 	///  @name Destruction
 
 	virtual

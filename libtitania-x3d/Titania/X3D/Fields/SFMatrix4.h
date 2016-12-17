@@ -245,6 +245,10 @@ public:
 	void
 	toXMLStream (std::ostream &) const final override;
 
+	virtual
+	void
+	toJSONStream (std::ostream &) const final override;
+
 
 private:
 
@@ -599,6 +603,13 @@ void
 SFMatrix4 <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	toStream (ostream);
+}
+
+template <class ValueType>
+inline
+void
+SFMatrix4 <ValueType>::toJSONStream (std::ostream & ostream) const
+{
 }
 
 // SFMatrix4d and SFMatrix4f

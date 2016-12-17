@@ -242,6 +242,10 @@ public:
 	void
 	toXMLStream (std::ostream &) const final override;
 
+	virtual
+	void
+	toJSONStream (std::ostream &) const final override;
+
 
 private:
 
@@ -553,6 +557,13 @@ void
 SFVec3 <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	toStream (ostream);
+}
+
+template <class ValueType>
+inline
+void
+SFVec3 <ValueType>::toJSONStream (std::ostream & ostream) const
+{
 }
 
 ///  @relates SFVec3

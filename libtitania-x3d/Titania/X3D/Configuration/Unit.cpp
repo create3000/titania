@@ -118,5 +118,10 @@ Unit::toXMLStream (std::ostream & ostream) const
 		<< "/>";
 }
 
+void
+Unit::toJSONStream (std::ostream & ostream) const
+{
+}
+
 } // X3D
 } // titania

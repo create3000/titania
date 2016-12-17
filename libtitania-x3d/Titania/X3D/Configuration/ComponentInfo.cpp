@@ -97,5 +97,10 @@ ComponentInfo::toXMLStream (std::ostream & ostream) const
 		<< "/>";
 }
 
+void
+ComponentInfo::toJSONStream (std::ostream & ostream) const
+{
+}
+
 } // X3D
 } // titania

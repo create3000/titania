@@ -571,6 +571,10 @@ public:
 	void
 	toXMLStream (std::ostream &) const override;
 
+	virtual
+	void
+	toJSONStream (std::ostream &) const override;
+
 	///  @name Destruction
 
 	virtual

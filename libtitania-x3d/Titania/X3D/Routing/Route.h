@@ -152,6 +152,10 @@ public:
 	void
 	toXMLStream (std::ostream &) const final override;
 
+	virtual
+	void
+	toJSONStream (std::ostream &) const final override;
+
 	///  @name Desctuction
 
 	virtual

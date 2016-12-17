@@ -232,5 +232,12 @@ ImportedNode::toXMLStream (std::ostream & ostream) const
 		throw Error <INVALID_NODE> ("ImportedNode::toXMLStream: Inline node does not exist.");
 }
 
+void
+ImportedNode::toJSONStream (std::ostream & ostream) const
+//throw (Error <INVALID_NODE>,
+//       Error <DISPOSED>)
+{
+}
+
 } // X3D
 } // titania

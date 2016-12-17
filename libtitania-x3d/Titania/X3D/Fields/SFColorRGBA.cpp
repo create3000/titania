@@ -199,5 +199,10 @@ SFColorRGBA::toXMLStream (std::ostream & ostream) const
 	toStream (ostream);
 }
 
+void
+SFColorRGBA::toJSONStream (std::ostream & ostream) const
+{
+}
+
 } // X3D
 } // titania

@@ -574,6 +574,11 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 }
 
 void
+ExternProtoDeclaration::toJSONStream (std::ostream & ostream) const
+{
+}
+
+void
 ExternProtoDeclaration::dispose ()
 {
 	getScene () -> removeExternProtoLoadCount (this);

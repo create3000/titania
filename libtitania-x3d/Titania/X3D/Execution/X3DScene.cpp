@@ -735,6 +735,11 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 }
 
 void
+X3DScene::toJSONStream (std::ostream & ostream) const
+{
+}
+
+void
 X3DScene::dispose ()
 {
 	metadatas     .clear ();

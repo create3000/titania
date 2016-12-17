@@ -128,6 +128,18 @@ X3DObject::toXMLString () const
 	return ostringstream .str ();
 }
 
+std::string
+X3DObject::toJSONString () const
+{
+	std::ostringstream ostringstream;
+
+	ostringstream .imbue (std::locale::classic ());
+
+	toJSONStream (ostringstream);
+
+	return ostringstream .str ();
+}
+
 // Object
 
 void

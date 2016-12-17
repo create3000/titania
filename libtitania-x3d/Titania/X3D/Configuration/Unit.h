@@ -92,6 +92,9 @@ public:
 	void
 	toXMLStream (std::ostream & ostream) const;
 
+	void
+	toJSONStream (std::ostream & ostream) const;
+
 
 private:
 

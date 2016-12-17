@@ -158,6 +158,10 @@ public:
 	std::string
 	toXMLString () const;
 
+	///  Generates a string representation of this object in X3D JSON Encoding.
+	std::string
+	toJSONString () const;
+
 	///  @name Input/Output
 
 	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding style.
@@ -178,6 +182,11 @@ public:
 	virtual
 	void
 	toXMLStream (std::ostream &) const = 0;
+
+	///  Inserts this object into @a ostream in X3D XML Encoding style.
+	virtual
+	void
+	toJSONStream (std::ostream &) const = 0;
 
 	///  @name Destruction
 

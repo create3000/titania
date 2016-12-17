@@ -216,6 +216,30 @@ X3DScalar <int32_t>::toXMLStream (std::ostream & ostream) const
 	toStream (ostream);
 }
 
+template <>
+void
+X3DScalar <bool>::toJSONStream (std::ostream & ostream) const
+{
+}
+
+template <>
+void
+X3DScalar <double>::toJSONStream (std::ostream & ostream) const
+{
+}
+
+template <>
+void
+X3DScalar <float>::toJSONStream (std::ostream & ostream) const
+{
+}
+
+template <>
+void
+X3DScalar <int32_t>::toJSONStream (std::ostream & ostream) const
+{
+}
+
 template class X3DField <bool>;
 template class X3DField <double>;
 template class X3DField <float>;

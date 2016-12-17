@@ -558,6 +558,11 @@ public:
 	void
 	toXMLStream (std::ostream &) const override;
 
+	///  Inserts this object into @a ostream in X3D JSON Encoding style.
+	virtual
+	void
+	toJSONStream (std::ostream &) const override;
+
 	///  @name Destruction
 
 	///  Destructs the X3DArrayField.
@@ -1036,6 +1041,12 @@ X3DArrayField <ValueType>::toXMLStream (std::ostream & ostream) const
 
 		ostream << XMLEncode (back ());
 	}
+}
+
+template <class ValueType>
+void
+X3DArrayField <ValueType>::toJSONStream (std::ostream & ostream) const
+{
 }
 
 template <class ValueType>

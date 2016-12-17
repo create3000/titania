@@ -317,6 +317,13 @@ Route::toXMLStream (std::ostream & ostream) const
 }
 
 void
+Route::toJSONStream (std::ostream & ostream) const
+//throw (Error <INVALID_NODE>,
+//       Error <DISPOSED>)
+{
+}
+
+void
 Route::dispose ()
 {
 	disconnect ();

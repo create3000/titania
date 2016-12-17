@@ -475,6 +475,11 @@ public:
 	void
 	toXMLStream (std::ostream &) const override;
 
+	///  Inserts this object into @a ostream in X3D JSON Encoding.
+	virtual
+	void
+	toJSONStream (std::ostream &) const override;
+
 	///  @name Destruction
 
 	///  Disposes this node.  You normally do not need to call this function directly.

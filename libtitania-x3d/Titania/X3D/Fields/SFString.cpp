@@ -212,5 +212,10 @@ SFString::toXMLStream (std::ostream & ostream) const
 	Generator::XMLEncode (ostream, getValue () .raw ());
 }
 
+void
+SFString::toJSONStream (std::ostream & ostream) const
+{
+}
+
 } // X3D
 } // titania
