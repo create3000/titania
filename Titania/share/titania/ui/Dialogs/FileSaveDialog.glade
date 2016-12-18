@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkFileFilter" id="FileFilterAll">
@@ -22,22 +22,39 @@
       <mime-type>video/*</mime-type>
     </mime-types>
   </object>
-  <object class="GtkFileFilter" id="FileFilterX3D">
+  <object class="GtkFileFilter" id="FileFilterVrmlEncoding">
     <mime-types>
       <mime-type>x-world/x-vrml</mime-type>
       <mime-type>model/vrml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.wrl</pattern>
+      <pattern>*.wrz</pattern>
+      <pattern>*.wrl.gz</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterX3DClassicVRMLEncoding">
+    <mime-types>
       <mime-type>model/x3d+vrml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.x3dv</pattern>
+      <pattern>*.x3dvz</pattern>
+      <pattern>*.x3dv.gz</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterX3DJSONEncoding">
+    <patterns>
+      <pattern>*.json</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterX3DXMLEncoding">
+    <mime-types>
       <mime-type>model/x3d+xml</mime-type>
     </mime-types>
     <patterns>
       <pattern>*.x3d</pattern>
       <pattern>*.x3d.gz</pattern>
-      <pattern>*.x3dv</pattern>
-      <pattern>*.x3dvz</pattern>
-      <pattern>*.x3dv.gz</pattern>
-      <pattern>*.wrl</pattern>
-      <pattern>*.wrz</pattern>
-      <pattern>*.wrl.gz</pattern>
     </patterns>
   </object>
   <object class="GtkAdjustment" id="ImageAntialiasingAdjustment">

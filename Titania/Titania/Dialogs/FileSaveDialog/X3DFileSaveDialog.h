@@ -95,6 +95,22 @@ protected:
 
 private:
 
+	///  @name Operations
+
+	bool
+	saveRun ();
+
+	///  @name Filter handling
+
+	void
+	setX3DFilter (const std::string & name);
+
+	void
+	on_x3d_filter_changed ();
+
+	void
+	set_suffix (const std::string & suffix);
+
 	///  @name Export image
 
 	bool

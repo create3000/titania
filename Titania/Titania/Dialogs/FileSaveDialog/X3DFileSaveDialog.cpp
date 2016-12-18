@@ -60,15 +60,55 @@
 namespace titania {
 namespace puck {
 
+static constexpr auto IMAGES_FILTER = "Images";
+static constexpr auto AUDIO_FILTER  = "Audio";
+static constexpr auto VIDEOS_FILTER = "Videos";
+
+static constexpr auto X3D_XML_ENCODING_FILTER          = "X3D XML Encoding (*.x3d)";
+static constexpr auto X3D_CLASSIC_VRML_ENCODING_FILTER = "X3D Classic VRML Encoding (*.x3dv)";
+static constexpr auto VRML97_ENCODING_FILTER           = "VRML97 Encoding (*.wrl)";
+static constexpr auto X3D_JSON_ENCODING_FILTER         = "X3D JSON Encoding (*.json)";
+static constexpr auto ALL_FILES_FILTER                 = "All Files";
+
 X3DFileSaveDialog::X3DFileSaveDialog () :
 	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.glade"))
 {
-	getFileFilterX3D   () -> set_name (_ ("X3D"));
-	getFileFilterImage () -> set_name (_ ("Images"));
-	getFileFilterAudio () -> set_name (_ ("Audio"));
-	getFileFilterVideo () -> set_name (_ ("Videos"));
-	getFileFilterAll   () -> set_name (_ ("All Files"));
+	getFileFilterImage () -> set_name (_ (IMAGES_FILTER));
+	getFileFilterAudio () -> set_name (_ (AUDIO_FILTER));
+	getFileFilterVideo () -> set_name (_ (VIDEOS_FILTER));
 
+	getFileFilterX3DXMLEncoding         () -> set_name (_ (X3D_XML_ENCODING_FILTER));
+	getFileFilterX3DClassicVRMLEncoding () -> set_name (_ (X3D_CLASSIC_VRML_ENCODING_FILTER));
+	getFileFilterX3DJSONEncoding        () -> set_name (_ (X3D_JSON_ENCODING_FILTER));
+	getFileFilterVrmlEncoding           () -> set_name (_ (VRML97_ENCODING_FILTER));
+	getFileFilterAll                    () -> set_name (_ (ALL_FILES_FILTER));
+}
+
+basic::uri
+X3DFileSaveDialog::getURL () const
+{
+	return "file://" + getWindow () .get_file () -> get_path ();
+}
+
+bool
+X3DFileSaveDialog::run ()
+{
+	getCompressFileBox () .set_visible (true);
+	getCompressFileButton () .set_active (getCurrentScene () -> isCompressed ());
+
+	const auto responseId = getWindow () .run ();
+
+	quit ();
+
+	if (responseId == Gtk::RESPONSE_OK)
+		return true;
+
+	return false;
+}
+
+bool
+X3DFileSaveDialog::saveRun ()
+{
 	const auto & worldURL = getCurrentScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
@@ -84,37 +124,68 @@ X3DFileSaveDialog::X3DFileSaveDialog () :
 		else
 			getWindow () .set_current_name (worldURL .basename ());
 	}
-}
 
-basic::uri
-X3DFileSaveDialog::getURL () const
-{
-	return "file://" + getWindow () .get_file () -> get_path ();
-}
+	setX3DFilter (getConfig () -> getString ("filter"));
 
-bool
-X3DFileSaveDialog::run ()
-{
-	getCompressFileBox () .set_visible (true);
-	getCompressFileButton () .set_active (getCurrentScene () -> isCompressed ());
-	const auto responseId = getWindow () .run ();
+	const auto response = run ();
 
-	quit ();
+	if (getWindow () .get_filter ())
+		getConfig () -> setItem ("filter", getWindow () .get_filter () -> get_name ());
 
-	if (responseId == Gtk::RESPONSE_OK)
-		return true;
-
-	return false;
+	return response;
 }
 
 void
 X3DFileSaveDialog::saveScene (const bool copy)
 {
-	getWindow () .add_filter (getFileFilterX3D ());
-	getWindow () .set_filter (getFileFilterX3D ());
-
-	if (run ())
+	if (saveRun ())
 		getBrowserWindow () -> save (getURL (), getCompressFileButton () .get_active (), copy);
+}
+
+void
+X3DFileSaveDialog::setX3DFilter (const std::string & name)
+{
+	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DFileSaveDialog::on_x3d_filter_changed));
+
+	getWindow () .add_filter (getFileFilterX3DXMLEncoding ());
+	getWindow () .add_filter (getFileFilterX3DClassicVRMLEncoding ());
+	getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
+	getWindow () .add_filter (getFileFilterVrmlEncoding ());
+
+	if (name == _(X3D_XML_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterX3DXMLEncoding ());
+	else if (name == _(X3D_CLASSIC_VRML_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterX3DClassicVRMLEncoding ());
+	else if (name == _(VRML97_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterVrmlEncoding ());
+	else if (name == _(X3D_JSON_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterX3DJSONEncoding ());
+	else
+		getWindow () .set_filter (getFileFilterX3DXMLEncoding ());
+}
+
+void
+X3DFileSaveDialog::on_x3d_filter_changed ()
+{
+	if (getWindow () .get_filter () == getFileFilterX3DXMLEncoding ())
+		set_suffix (".x3d");
+
+	else if (getWindow () .get_filter () == getFileFilterX3DClassicVRMLEncoding ())
+		set_suffix (".x3dv");
+
+	else if (getWindow () .get_filter () == getFileFilterX3DJSONEncoding ())
+		set_suffix (".json");
+
+	else if (getWindow () .get_filter () == getFileFilterVrmlEncoding ())
+		set_suffix (".wrl");
+}
+
+void
+X3DFileSaveDialog::set_suffix (const std::string & suffix)
+{
+	basic::uri name (getWindow () .get_current_name ());
+
+	getWindow () .set_current_name (name .basename (false) + suffix);
 }
 
 // Export image
@@ -236,27 +307,19 @@ X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, cons
 	if (getConfig () -> hasItem ("exportFolder"))
 		getWindow () .set_current_folder_uri (getConfig () -> getString ("exportFolder"));
 
-	getWindow () .add_filter (getFileFilterX3D ());
-	getWindow () .set_filter (getFileFilterX3D ());
+	bool response = saveRun ();
 
-	getCompressFileBox ()    .set_visible (true);
-	getCompressFileButton () .set_active (getCurrentScene () -> isCompressed ());
-
-	auto responseId = getWindow () .run ();
-
-	if (responseId == Gtk::RESPONSE_OK)
+	if (response)
 	{
 		getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
 
 		if (not exportNodes (nodes, getURL (), getCompressFileButton () .get_active (), undoStep))
-			responseId = Gtk::RESPONSE_CANCEL;
+			response = false;
 
 		worldURL = getURL ();
 	}
 
-	quit ();
-
-	return responseId == Gtk::RESPONSE_OK;
+	return response;
 }
 
 bool

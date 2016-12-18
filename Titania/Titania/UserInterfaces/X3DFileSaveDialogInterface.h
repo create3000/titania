@@ -116,8 +116,20 @@ public:
 	{ return m_FileFilterVideo; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterX3D () const
-	{ return m_FileFilterX3D; }
+	getFileFilterVrmlEncoding () const
+	{ return m_FileFilterVrmlEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3DClassicVRMLEncoding () const
+	{ return m_FileFilterX3DClassicVRMLEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3DJSONEncoding () const
+	{ return m_FileFilterX3DJSONEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3DXMLEncoding () const
+	{ return m_FileFilterX3DXMLEncoding; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getImageAntialiasingAdjustment () const
@@ -195,7 +207,10 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3D;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVrmlEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DClassicVRMLEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DJSONEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DXMLEncoding;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageAntialiasingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageCompressionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageHeightAdjustment;
