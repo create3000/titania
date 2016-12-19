@@ -253,36 +253,6 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const X3DObject & obj
 	return ostream;
 }
 
-// XMLEncode
-
-struct XMLEncodeObjectType { const X3DObject* const object; };
-
-///  Function to insert a X3DObject into an output stream in X3D XML Encoding style.
-inline
-XMLEncodeObjectType
-XMLEncode (const X3DObject & object)
-{
-	return XMLEncodeObjectType { &object };
-}
-
-///  Function to insert a X3DObject into an output stream in X3D XML Encoding style.
-inline
-XMLEncodeObjectType
-XMLEncode (const X3DObject* const object)
-{
-	return XMLEncodeObjectType { object };
-}
-
-///  Insertion operator for X3DObject values in X3D XML Encoding style.
-template <typename CharT, typename Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeObjectType & value)
-{
-	value .object -> toXMLStream (ostream);
-	return ostream;
-}
-
 } // X3D
 } // titania
 

@@ -462,6 +462,26 @@ inline
 void
 SFRotation4 <ValueType>::toJSONStream (std::ostream & ostream) const
 {
+	value_type x, y, z, angle;
+
+	getValue () .get (x, y, z, angle);
+
+	ostream
+		<< X3DGenerator::Precision <value_type>
+		<< '['
+		<< X3DGenerator::TidySpace
+		<< x
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< y
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< z
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< angle
+		<< X3DGenerator::TidySpace
+		<< ']';
 }
 
 ///  @relates SFRotation4

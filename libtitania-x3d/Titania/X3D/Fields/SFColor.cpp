@@ -189,6 +189,19 @@ SFColor::toXMLStream (std::ostream & ostream) const
 void
 SFColor::toJSONStream (std::ostream & ostream) const
 {
+	ostream
+		<< X3DGenerator::Precision <value_type>
+		<< '['
+		<< X3DGenerator::TidySpace
+		<< getValue () .r ()
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () .g ()
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () .b ()
+		<< X3DGenerator::TidySpace
+		<< ']';
 }
 
 } // X3D

@@ -610,6 +610,58 @@ inline
 void
 SFMatrix4 <ValueType>::toJSONStream (std::ostream & ostream) const
 {
+	ostream
+		<< X3DGenerator::Precision <value_type>
+		<< '['
+		<< X3DGenerator::TidySpace
+		<< getValue () [0] [0]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [0] [1]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [0] [2]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [0] [3]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [1] [0]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [1] [1]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [1] [2]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [1] [3]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [2] [0]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [2] [1]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [2] [2]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [2] [3]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [3] [0]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [3] [1]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [3] [2]
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () [3] [3]
+		<< X3DGenerator::TidySpace
+		<< ']';
 }
 
 // SFMatrix4d and SFMatrix4f

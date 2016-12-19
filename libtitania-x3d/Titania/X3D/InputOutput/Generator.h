@@ -332,6 +332,36 @@ to_string (const AccessType accessType)
 
 // XMLEncode
 
+struct XMLEncodeObjectType { const X3DObject* const object; };
+
+///  Function to insert a X3DObject into an output stream in X3D XML Encoding style.
+inline
+XMLEncodeObjectType
+XMLEncode (const X3DObject & object)
+{
+	return XMLEncodeObjectType { &object };
+}
+
+///  Function to insert a X3DObject into an output stream in X3D XML Encoding style.
+inline
+XMLEncodeObjectType
+XMLEncode (const X3DObject* const object)
+{
+	return XMLEncodeObjectType { object };
+}
+
+///  Insertion operator for X3DObject values in X3D XML Encoding style.
+template <typename CharT, typename Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeObjectType & value)
+{
+	value .object -> toXMLStream (ostream);
+	return ostream;
+}
+
+// XMLEncode
+
 struct XMLEncodeStringType { const std::string & string; };
 
 inline
@@ -347,6 +377,36 @@ std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const XMLEncodeStringType & value)
 {
 	Generator::XMLEncode (ostream, value .string);
+	return ostream;
+}
+
+// JSONEncode
+
+struct JSONEncodeObjectType { const X3DObject* const object; };
+
+///  Function to insert a X3DObject into an output stream in X3D JSON Encoding style.
+inline
+JSONEncodeObjectType
+JSONEncode (const X3DObject & object)
+{
+	return JSONEncodeObjectType { &object };
+}
+
+///  Function to insert a X3DObject into an output stream in X3D JSON Encoding style.
+inline
+JSONEncodeObjectType
+JSONEncode (const X3DObject* const object)
+{
+	return JSONEncodeObjectType { object };
+}
+
+///  Insertion operator for X3DObject values in X3D JSON Encoding style.
+template <typename CharT, typename Traits>
+inline
+std::basic_ostream <CharT, Traits> &
+operator << (std::basic_ostream <CharT, Traits> & ostream, const JSONEncodeObjectType & value)
+{
+	value .object -> toJSONStream (ostream);
 	return ostream;
 }
 

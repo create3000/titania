@@ -215,6 +215,7 @@ SFString::toXMLStream (std::ostream & ostream) const
 void
 SFString::toJSONStream (std::ostream & ostream) const
 {
+	toStream (ostream);
 }
 
 } // X3D

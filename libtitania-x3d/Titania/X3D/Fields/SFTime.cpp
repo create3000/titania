@@ -128,6 +128,7 @@ SFTime::toXMLStream (std::ostream & ostream) const
 void
 SFTime::toJSONStream (std::ostream & ostream) const
 {
+	toStream (ostream);
 }
 
 } // X3D

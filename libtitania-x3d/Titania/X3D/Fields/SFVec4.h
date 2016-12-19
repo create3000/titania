@@ -579,7 +579,22 @@ inline
 void
 SFVec4 <ValueType>::toJSONStream (std::ostream & ostream) const
 {
-	toStream (ostream);
+	ostream
+		<< X3DGenerator::Precision <value_type>
+		<< '['
+		<< X3DGenerator::TidySpace
+		<< getValue () .x ()
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () .y ()
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () .z ()
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< getValue () .w ()
+		<< X3DGenerator::TidySpace
+		<< ']';
 }
 
 ///  @relates SFVec4

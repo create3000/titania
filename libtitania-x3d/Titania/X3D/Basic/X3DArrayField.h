@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BASIC_X3DARRAY_FIELD_H__
 
 #include "../Basic/X3DField.h"
+#include "../InputOutput/Generator.h"
 #include "../Types/Array.h"
 
 #include <Titania/Algorithm.h>

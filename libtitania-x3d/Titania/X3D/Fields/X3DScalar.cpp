@@ -220,24 +220,28 @@ template <>
 void
 X3DScalar <bool>::toJSONStream (std::ostream & ostream) const
 {
+	ostream << (getValue () ? "true" : "false");
 }
 
 template <>
 void
 X3DScalar <double>::toJSONStream (std::ostream & ostream) const
 {
+	toStream (ostream);
 }
 
 template <>
 void
 X3DScalar <float>::toJSONStream (std::ostream & ostream) const
 {
+	toStream (ostream);
 }
 
 template <>
 void
 X3DScalar <int32_t>::toJSONStream (std::ostream & ostream) const
 {
+	toStream (ostream);
 }
 
 template class X3DField <bool>;

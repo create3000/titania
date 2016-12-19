@@ -561,7 +561,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 
 	// Save
 
-	if (suffix == ".x3d" or suffix == ".xml")
+	if (suffix == ".x3d")
 	{
 		if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 		{
@@ -599,6 +599,53 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 				file
 					<< X3D::CompactStyle
 					<< X3D::XMLEncode (scene);
+				
+				if (copy)
+					undoStep -> undo ();
+
+				if (file)
+					return true;
+			}
+		}
+	}
+	else if (suffix == ".json")
+	{
+		if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
+		{
+			scene -> setEncoding ("X3D");
+			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
+		}
+
+		if (compress)
+		{
+			ogzstream file (worldURL .path ());
+
+			if (file)
+			{
+				setWorldURL (scene, worldURL, undoStep);
+
+				file
+					<< X3D::SmallestStyle
+					<< X3D::JSONEncode (scene);
+				
+				if (copy)
+					undoStep -> undo ();
+				
+				if (file)
+					return true;
+			}
+		}
+		else
+		{
+			std::ofstream file (worldURL .path ());
+
+			if (file)
+			{
+				setWorldURL (scene, worldURL, undoStep);
+
+				file
+					<< X3D::CompactStyle
+					<< X3D::JSONEncode (scene);
 				
 				if (copy)
 					undoStep -> undo ();

@@ -300,7 +300,71 @@ SFImage::toXMLStream (std::ostream & ostream) const
 void
 SFImage::toJSONStream (std::ostream & ostream) const
 {
-	toStream (ostream);
+	const Image & image = getValue ();
+
+	ostream
+		<< '['
+		<< X3DGenerator::TidySpace
+		<< image .width ()
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< image .height ()
+		<< ','
+		<< X3DGenerator::TidySpace
+		<< image .components ()
+		<< ',';
+
+	if (image .width () and image .height ())
+	{
+		ostream
+			<< std::hex
+			<< std::showbase
+			<< X3DGenerator::TidyBreak
+			<< X3DGenerator::IncIndent;
+
+		Image::size_type y = 0;
+
+		for (; y < image .height () - 1; ++ y)
+		{
+			ostream << X3DGenerator::Indent;
+
+			const Image::size_type s = y * image .width ();
+			Image::size_type       x = 0;
+
+			for (Image::size_type size = image .width () - 1; x < size; ++ x)
+			{
+				ostream
+					<< image .array () [x + s]
+					<< ','
+					<< X3DGenerator::TidySpace;
+			}
+
+			ostream
+				<< image .array () [x + s]
+				<< ','
+				<< X3DGenerator::TidyBreak;
+		}
+
+		ostream << X3DGenerator::Indent;
+
+		const Image::size_type s = y * image .width ();
+		Image::size_type       x = 0;
+
+		for (Image::size_type size = image .width () - 1; x < size; ++ x)
+		{
+			ostream
+				<< image .array () [x + s]
+				<< ','
+				<< X3DGenerator::TidySpace;
+		}
+
+		ostream
+			<< image .array () [x + s]
+			<< X3DGenerator::TidySpace
+			<< ']'
+			<< X3DGenerator::DecIndent
+			<< std::dec;
+	}
 }
 
 void
