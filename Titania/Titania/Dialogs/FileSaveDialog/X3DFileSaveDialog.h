@@ -109,6 +109,12 @@ private:
 	on_x3d_filter_changed ();
 
 	void
+	setImageFilter (const std::string & name);
+
+	void
+	on_image_filter_changed ();
+
+	void
 	set_suffix (const std::string & suffix);
 
 	///  @name Export image

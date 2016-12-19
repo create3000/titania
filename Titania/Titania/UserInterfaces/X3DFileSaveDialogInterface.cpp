@@ -63,12 +63,17 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 	// Get objects.
 	m_FileFilterAll                    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAll"));
 	m_FileFilterAudio                  = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
+	m_FileFilterBMP                    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterBMP"));
 	m_FileFilterImage                  = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
+	m_FileFilterJPEG                   = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterJPEG"));
+	m_FileFilterPNG                    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterPNG"));
+	m_FileFilterTIFF                   = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterTIFF"));
 	m_FileFilterVideo                  = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
 	m_FileFilterVrmlEncoding           = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVrmlEncoding"));
 	m_FileFilterX3DClassicVRMLEncoding = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3DClassicVRMLEncoding"));
 	m_FileFilterX3DJSONEncoding        = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3DJSONEncoding"));
 	m_FileFilterX3DXMLEncoding         = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterX3DXMLEncoding"));
+	m_FileFilterXCF                    = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterXCF"));
 	m_ImageAntialiasingAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageAntialiasingAdjustment"));
 	m_ImageCompressionAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageCompressionAdjustment"));
 	m_ImageHeightAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ImageHeightAdjustment"));

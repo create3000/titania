@@ -70,12 +70,24 @@ static constexpr auto VRML97_ENCODING_FILTER           = "VRML97 Encoding (*.wrl
 static constexpr auto X3D_JSON_ENCODING_FILTER         = "X3D JSON Encoding (*.json)";
 static constexpr auto ALL_FILES_FILTER                 = "All Files";
 
+static constexpr auto XCF_FILTER  = "Gimp XCF Image (*.xcf";
+static constexpr auto JPEG_FILTER = "JPEG Image (*.jpeg, *.jpg)";
+static constexpr auto PNG_FILTER  = "PNG Image (*.png)";
+static constexpr auto TIFF_FILTER = "TIFF Image (*.tiff, *.tif)";
+static constexpr auto BMP_FILTER  = "Windows BMP Image (*.bmp)";
+
 X3DFileSaveDialog::X3DFileSaveDialog () :
 	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.glade"))
 {
 	getFileFilterImage () -> set_name (_ (IMAGES_FILTER));
 	getFileFilterAudio () -> set_name (_ (AUDIO_FILTER));
 	getFileFilterVideo () -> set_name (_ (VIDEOS_FILTER));
+
+	getFileFilterXCF  () -> set_name (_ (XCF_FILTER));
+	getFileFilterJPEG () -> set_name (_ (JPEG_FILTER));
+	getFileFilterPNG  () -> set_name (_ (PNG_FILTER));
+	getFileFilterTIFF () -> set_name (_ (TIFF_FILTER));
+	getFileFilterBMP  () -> set_name (_ (BMP_FILTER));
 
 	getFileFilterX3DXMLEncoding         () -> set_name (_ (X3D_XML_ENCODING_FILTER));
 	getFileFilterX3DClassicVRMLEncoding () -> set_name (_ (X3D_CLASSIC_VRML_ENCODING_FILTER));
@@ -181,6 +193,50 @@ X3DFileSaveDialog::on_x3d_filter_changed ()
 }
 
 void
+X3DFileSaveDialog::setImageFilter (const std::string & name)
+{
+	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DFileSaveDialog::on_image_filter_changed));
+
+	//getWindow () .add_filter (getFileFilterXCF ());
+	getWindow () .add_filter (getFileFilterJPEG ());
+	getWindow () .add_filter (getFileFilterPNG ());
+	getWindow () .add_filter (getFileFilterTIFF ());
+	getWindow () .add_filter (getFileFilterBMP ());
+
+	if (name == _(XCF_FILTER))
+		getWindow () .set_filter (getFileFilterXCF ());
+	else if (name == _(JPEG_FILTER))
+		getWindow () .set_filter (getFileFilterJPEG ());
+	else if (name == _(PNG_FILTER))
+		getWindow () .set_filter (getFileFilterPNG ());
+	else if (name == _(TIFF_FILTER))
+		getWindow () .set_filter (getFileFilterTIFF ());
+	else if (name == _(BMP_FILTER))
+		getWindow () .set_filter (getFileFilterBMP ());
+	else
+		getWindow () .set_filter (getFileFilterPNG ());
+}
+
+void
+X3DFileSaveDialog::on_image_filter_changed ()
+{
+	if (getWindow () .get_filter () == getFileFilterXCF ())
+		set_suffix (".xcf");
+
+	else if (getWindow () .get_filter () == getFileFilterJPEG ())
+		set_suffix (".jpg");
+
+	else if (getWindow () .get_filter () == getFileFilterPNG ())
+		set_suffix (".png");
+
+	else if (getWindow () .get_filter () == getFileFilterTIFF ())
+		set_suffix (".tiff");
+
+	else if (getWindow () .get_filter () == getFileFilterBMP ())
+		set_suffix (".bmp");
+}
+
+void
 X3DFileSaveDialog::set_suffix (const std::string & suffix)
 {
 	basic::uri name (getWindow () .get_current_name ());
@@ -201,19 +257,22 @@ X3DFileSaveDialog::exportImage ()
 		getWindow () .set_current_folder (os::home ());
 
 	getWindow () .set_current_name (worldURL .basename (false) + ".png");
-	getWindow () .add_filter (getFileFilterImage ());
-	getWindow () .set_filter (getFileFilterImage ());
+
+	setImageFilter (getConfig () -> getString ("imageFilter"));
 
 	// Run dialog.
 
 	const auto responseId = getWindow () .run ();
 
 	getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
+
+	if (getWindow () .get_filter ())
+		getConfig () -> setItem ("imageFilter", getWindow () .get_filter () -> get_name ());
+
 	quit ();
 
 	if (responseId == Gtk::RESPONSE_OK)
 	{
-
 		// Run image options dialog.
 
 		if (imageOptions ())

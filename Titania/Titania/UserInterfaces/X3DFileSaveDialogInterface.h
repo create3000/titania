@@ -108,8 +108,24 @@ public:
 	{ return m_FileFilterAudio; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterBMP () const
+	{ return m_FileFilterBMP; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterImage () const
 	{ return m_FileFilterImage; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterJPEG () const
+	{ return m_FileFilterJPEG; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterPNG () const
+	{ return m_FileFilterPNG; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterTIFF () const
+	{ return m_FileFilterTIFF; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterVideo () const
@@ -130,6 +146,10 @@ public:
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterX3DXMLEncoding () const
 	{ return m_FileFilterX3DXMLEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterXCF () const
+	{ return m_FileFilterXCF; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getImageAntialiasingAdjustment () const
@@ -205,12 +225,17 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterBMP;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterJPEG;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterPNG;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterTIFF;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVrmlEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DClassicVRMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DJSONEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DXMLEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterXCF;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageAntialiasingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageCompressionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageHeightAdjustment;
