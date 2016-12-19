@@ -57,6 +57,9 @@
 namespace titania {
 namespace X3D {
 
+template <class ValueType>
+class X3DArrayField;
+
 extern template class X3DField <Color4f>;
 
 /**
@@ -178,6 +181,14 @@ public:
 	virtual
 	void
 	toJSONStream (std::ostream &) const final override;
+
+
+protected:
+
+	friend class X3DArrayField <SFColorRGBA>;
+
+	void
+	toJSONStreamValue (std::ostream &) const;
 
 
 private:

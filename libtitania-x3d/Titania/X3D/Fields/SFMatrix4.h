@@ -59,6 +59,9 @@
 namespace titania {
 namespace X3D {
 
+template <class ValueType>
+class X3DArrayField;
+
 extern template class X3DField <Matrix4d>;
 extern template class X3DField <Matrix4f>;
 
@@ -248,6 +251,14 @@ public:
 	virtual
 	void
 	toJSONStream (std::ostream &) const final override;
+
+
+protected:
+
+	friend class X3DArrayField <SFMatrix4>;
+
+	void
+	toJSONStreamValue (std::ostream &) const;
 
 
 private:
@@ -611,9 +622,23 @@ void
 SFMatrix4 <ValueType>::toJSONStream (std::ostream & ostream) const
 {
 	ostream
-		<< X3DGenerator::Precision <value_type>
 		<< '['
+		<< X3DGenerator::TidySpace;
+
+	toJSONStreamValue (ostream);
+
+	ostream
 		<< X3DGenerator::TidySpace
+		<< ']';
+}
+
+template <class ValueType>
+inline
+void
+SFMatrix4 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
+{
+	ostream
+		<< X3DGenerator::Precision <value_type>
 		<< getValue () [0] [0]
 		<< ','
 		<< X3DGenerator::TidySpace
@@ -659,9 +684,7 @@ SFMatrix4 <ValueType>::toJSONStream (std::ostream & ostream) const
 		<< getValue () [3] [2]
 		<< ','
 		<< X3DGenerator::TidySpace
-		<< getValue () [3] [3]
-		<< X3DGenerator::TidySpace
-		<< ']';
+		<< getValue () [3] [3];
 }
 
 // SFMatrix4d and SFMatrix4f

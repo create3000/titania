@@ -203,9 +203,21 @@ void
 SFColorRGBA::toJSONStream (std::ostream & ostream) const
 {
 	ostream
-		<< X3DGenerator::Precision <value_type>
 		<< '['
+		<< X3DGenerator::TidySpace;
+
+	toJSONStreamValue (ostream);
+
+	ostream
 		<< X3DGenerator::TidySpace
+		<< ']';
+}
+
+void
+SFColorRGBA::toJSONStreamValue (std::ostream & ostream) const
+{
+	ostream
+		<< X3DGenerator::Precision <value_type>
 		<< getValue () .r ()
 		<< ','
 		<< X3DGenerator::TidySpace
@@ -215,9 +227,7 @@ SFColorRGBA::toJSONStream (std::ostream & ostream) const
 		<< getValue () .b ()
 		<< ','
 		<< X3DGenerator::TidySpace
-		<< getValue () .a ()
-		<< X3DGenerator::TidySpace
-		<< ']';
+		<< getValue () .a ();
 }
 
 } // X3D

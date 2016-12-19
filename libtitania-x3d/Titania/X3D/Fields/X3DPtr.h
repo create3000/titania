@@ -58,6 +58,9 @@
 namespace titania {
 namespace X3D {
 
+template <class ValueType>
+class X3DArrayField;
+
 /**
  *  Base class for X3DPtr and X3DWeakPtr.
  */
@@ -465,7 +468,7 @@ public:
 			getValue () -> toJSONStream (ostream);
 
 		else
-			ostream << "NULL";
+			ostream << "null";
 	}
 
 	///  @name Destruction
@@ -484,6 +487,15 @@ public:
 	virtual
 	~X3DPtr ()
 	{ removeObject (getValue ()); }
+
+
+protected:
+
+	friend class X3DArrayField <X3DPtr <ValueType>>;
+
+	void
+	toJSONStreamValue (std::ostream &) const
+	{ }
 
 
 private:

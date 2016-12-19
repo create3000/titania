@@ -58,6 +58,9 @@
 namespace titania {
 namespace X3D {
 
+template <class ValueType>
+class X3DArrayField;
+
 /**
  *  Class to represent a X3D SFTime field.
  */
@@ -182,6 +185,15 @@ public:
 	virtual
 	void
 	toJSONStream (std::ostream &) const final override;
+
+
+protected:
+
+	friend class X3DArrayField <SFTime>;
+
+	void
+	toJSONStreamValue (std::ostream & ostream) const
+	{ toJSONStream (ostream); }
 
 
 private:

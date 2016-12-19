@@ -300,11 +300,23 @@ SFImage::toXMLStream (std::ostream & ostream) const
 void
 SFImage::toJSONStream (std::ostream & ostream) const
 {
+	ostream
+		<< '['
+		<< X3DGenerator::TidySpace;
+
+	toJSONStreamValue (ostream);
+
+	ostream
+		<< X3DGenerator::TidySpace
+		<< ']';
+}
+
+void
+SFImage::toJSONStreamValue (std::ostream & ostream) const
+{
 	const Image & image = getValue ();
 
 	ostream
-		<< '['
-		<< X3DGenerator::TidySpace
 		<< image .width ()
 		<< ','
 		<< X3DGenerator::TidySpace
@@ -360,8 +372,6 @@ SFImage::toJSONStream (std::ostream & ostream) const
 
 		ostream
 			<< image .array () [x + s]
-			<< X3DGenerator::TidySpace
-			<< ']'
 			<< X3DGenerator::DecIndent
 			<< std::dec;
 	}

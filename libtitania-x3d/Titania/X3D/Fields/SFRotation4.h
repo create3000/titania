@@ -58,6 +58,9 @@
 namespace titania {
 namespace X3D {
 
+template <class ValueType>
+class X3DArrayField;
+
 extern template class X3DField <Rotation4d>;
 extern template class X3DField <Rotation4f>;
 
@@ -205,6 +208,14 @@ public:
 	virtual
 	void
 	toJSONStream (std::ostream &) const final override;
+
+
+protected:
+
+	friend class X3DArrayField <SFRotation4>;
+
+	void
+	toJSONStreamValue (std::ostream &) const;
 
 
 private:
@@ -462,14 +473,28 @@ inline
 void
 SFRotation4 <ValueType>::toJSONStream (std::ostream & ostream) const
 {
+	ostream
+		<< '['
+		<< X3DGenerator::TidySpace;
+
+	toJSONStreamValue (ostream);
+
+	ostream
+		<< X3DGenerator::TidySpace
+		<< ']';
+}
+
+template <class ValueType>
+inline
+void
+SFRotation4 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
+{
 	value_type x, y, z, angle;
 
 	getValue () .get (x, y, z, angle);
 
 	ostream
 		<< X3DGenerator::Precision <value_type>
-		<< '['
-		<< X3DGenerator::TidySpace
 		<< x
 		<< ','
 		<< X3DGenerator::TidySpace
@@ -479,9 +504,7 @@ SFRotation4 <ValueType>::toJSONStream (std::ostream & ostream) const
 		<< z
 		<< ','
 		<< X3DGenerator::TidySpace
-		<< angle
-		<< X3DGenerator::TidySpace
-		<< ']';
+		<< angle;
 }
 
 ///  @relates SFRotation4

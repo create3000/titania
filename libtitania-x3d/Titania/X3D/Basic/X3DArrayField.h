@@ -1048,6 +1048,34 @@ template <class ValueType>
 void
 X3DArrayField <ValueType>::toJSONStream (std::ostream & ostream) const
 {
+	if (empty ())
+	{
+		ostream
+			<< '['
+			<< X3DGenerator::TidySpace
+			<< ']';
+	}
+	else
+	{
+		ostream
+			<< '['
+			<< X3DGenerator::TidySpace;
+
+		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
+		{
+			value .toJSONStreamValue (ostream);
+
+			ostream
+				<< ','
+				<< X3DGenerator::TidySpace;
+		}
+
+		back () .toJSONStreamValue (ostream);
+
+		ostream
+			<< X3DGenerator::TidySpace
+			<< ']';
+	}
 }
 
 template <class ValueType>

@@ -730,7 +730,18 @@ BrowserWindow::on_browser_drag_data_received (const Glib::RefPtr <Gdk::DragConte
                                               guint info,
                                               guint time)
 {
-	on_drag_data_received (context, selection_data, time, getBrowserAction () -> get_active ());
+
+	if (getBrowserAction () -> get_active ())
+		on_drag_data_received (context, selection_data, time, true);
+
+	else
+	{
+		if (y < getCurrentBrowser () -> get_height ())
+			on_drag_data_received (context, selection_data, time, false);
+
+		else
+			on_drag_data_received (context, selection_data, time, true);
+	}
 }
 
 void

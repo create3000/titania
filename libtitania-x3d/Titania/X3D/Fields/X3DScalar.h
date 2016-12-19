@@ -57,6 +57,9 @@
 namespace titania {
 namespace X3D {
 
+template <class ValueType>
+class X3DArrayField;
+
 extern template class X3DField <bool>;
 extern template class X3DField <double>;
 extern template class X3DField <float>;
@@ -180,6 +183,10 @@ public:
 	void
 	toJSONStream (std::ostream &) const final override
 	{ }
+
+	void
+	toJSONStreamValue (std::ostream & ostream) const
+	{ toJSONStream (ostream); }
 
 
 private:

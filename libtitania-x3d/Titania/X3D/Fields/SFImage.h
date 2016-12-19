@@ -57,6 +57,9 @@
 namespace titania {
 namespace X3D {
 
+template <class ValueType>
+class X3DArrayField;
+
 extern template class X3DField <Image>;
 
 /**
@@ -186,6 +189,14 @@ public:
 	virtual
 	void
 	dispose () final override;
+
+
+protected:
+
+	friend class X3DArrayField <SFImage>;
+
+	void
+	toJSONStreamValue (std::ostream &) const;
 
 
 private:

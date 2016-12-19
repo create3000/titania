@@ -57,6 +57,9 @@
 namespace titania {
 namespace X3D {
 
+template <class ValueType>
+class X3DArrayField;
+
 extern template class X3DField <Vector3d>;
 extern template class X3DField <Vector3f>;
 
@@ -245,6 +248,14 @@ public:
 	virtual
 	void
 	toJSONStream (std::ostream &) const final override;
+
+
+protected:
+
+	friend class X3DArrayField <SFVec3>;
+
+	void
+	toJSONStreamValue (std::ostream &) const;
 
 
 private:
@@ -565,18 +576,30 @@ void
 SFVec3 <ValueType>::toJSONStream (std::ostream & ostream) const
 {
 	ostream
-		<< X3DGenerator::Precision <value_type>
 		<< '['
+		<< X3DGenerator::TidySpace;
+
+	toJSONStreamValue (ostream);
+
+	ostream
 		<< X3DGenerator::TidySpace
+		<< ']';
+}
+
+template <class ValueType>
+inline
+void
+SFVec3 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
+{
+	ostream
+		<< X3DGenerator::Precision <value_type>
 		<< getValue () .x ()
 		<< ','
 		<< X3DGenerator::TidySpace
 		<< getValue () .y ()
 		<< ','
 		<< X3DGenerator::TidySpace
-		<< getValue () .z ()
-		<< X3DGenerator::TidySpace
-		<< ']';
+		<< getValue () .z ();
 }
 
 ///  @relates SFVec3
