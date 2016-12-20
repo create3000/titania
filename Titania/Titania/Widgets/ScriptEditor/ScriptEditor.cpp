@@ -183,9 +183,9 @@ ScriptEditor::isModified () const
 	if (modified)
 		return true;
 
-	const auto   cdata   = node -> getCDATA ();
-	const auto   text    = getTextBuffer () -> get_text ();
-	const auto & current = cdata -> get1Value (index);
+	const auto   sourceText = node -> getSourceText ();
+	const auto   text       = getTextBuffer () -> get_text ();
+	const auto & current    = sourceText -> get1Value (index);
 
 	if (text not_eq current)
 		return true;
@@ -218,11 +218,11 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		if (isModified ())
 			on_apply_clicked ();
 
-		const auto cdata = node -> getCDATA ();
+		const auto sourceText = node -> getSourceText ();
 
 		node  -> isLive () .removeInterest (this, &ScriptEditor::set_live);
-		cdata -> removeInterest (this, &ScriptEditor::set_cdata);
-		cdata -> removeInterest (this, &ScriptEditor::connectCDATA);
+		sourceText -> removeInterest (this, &ScriptEditor::set_sourceText);
+		sourceText -> removeInterest (this, &ScriptEditor::connectSourceText);
 
 		// Load state
 
@@ -243,12 +243,12 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 	if (node)
 	{
-		const auto cdata = node -> getCDATA ();
+		const auto sourceText = node -> getSourceText ();
 
 		node  -> isLive () .addInterest (this, &ScriptEditor::set_live);
-		cdata -> addInterest (this, &ScriptEditor::set_cdata);
+		sourceText -> addInterest (this, &ScriptEditor::set_sourceText);
 
-		set_cdata ();
+		set_sourceText ();
 
 		// Load state
 
@@ -364,17 +364,17 @@ ScriptEditor::on_apply_clicked ()
 void
 ScriptEditor::apply (const X3D::UndoStepPtr & undoStep)
 {
-	const auto cdata = node -> getCDATA ();
+	const auto sourceText = node -> getSourceText ();
 	const auto text  = getTextBuffer () -> get_text ();
 
-	cdata -> removeInterest (this, &ScriptEditor::set_cdata);
-	cdata -> addInterest (this, &ScriptEditor::connectCDATA);
+	sourceText -> removeInterest (this, &ScriptEditor::set_sourceText);
+	sourceText -> addInterest (this, &ScriptEditor::connectSourceText);
 
 	undoStep -> addObjects (node);
 
-	undoStep -> addUndoFunction (&X3D::MFString::setValue, cdata, *cdata);
-	cdata -> set1Value (index, text);
-	undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, *cdata);
+	undoStep -> addUndoFunction (&X3D::MFString::setValue, sourceText, *sourceText);
+	sourceText -> set1Value (index, text);
+	undoStep -> addRedoFunction (&X3D::MFString::setValue, sourceText, *sourceText);
 
 	getCurrentBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("%s »%s« is build."), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
 
@@ -415,11 +415,11 @@ ScriptEditor::on_can_redo_changed ()
 }
 
 void
-ScriptEditor::set_cdata ()
+ScriptEditor::set_sourceText ()
 {
 	getTextBuffer () -> begin_not_undoable_action ();
 
-	const auto cdata = node -> getCDATA ();
+	const auto sourceText = node -> getSourceText ();
 
 	for (const auto & type : basic::make_reverse_range (node -> getType ()))
 	{
@@ -429,10 +429,10 @@ ScriptEditor::set_cdata ()
 				{
 					getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "application/javascript"));
 
-					if (index >= cdata -> size () or cdata -> get1Value (index) .empty ())
+					if (index >= sourceText -> size () or sourceText -> get1Value (index) .empty ())
 						getTextBuffer () -> set_text ("ecmascript:\n");
 					else
-						getTextBuffer () -> set_text (cdata -> get1Value (index));
+						getTextBuffer () -> set_text (sourceText -> get1Value (index));
 
 					break;
 				}
@@ -441,10 +441,10 @@ ScriptEditor::set_cdata ()
 			{
 				getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "text/x-c"));
 
-				if (index >= cdata -> size () or cdata -> get1Value (index) .empty ())
+				if (index >= sourceText -> size () or sourceText -> get1Value (index) .empty ())
 					getTextBuffer () -> set_text ("data:text/plain,\n");
 				else
-					getTextBuffer () -> set_text (cdata -> get1Value (index));
+					getTextBuffer () -> set_text (sourceText -> get1Value (index));
 
 				break;
 			}
@@ -459,10 +459,10 @@ ScriptEditor::set_cdata ()
 }
 
 void
-ScriptEditor::connectCDATA (const X3D::MFString & field)
+ScriptEditor::connectSourceText (const X3D::MFString & field)
 {
-	field .removeInterest (this, &ScriptEditor::connectCDATA);
-	field .addInterest (this, &ScriptEditor::set_cdata);
+	field .removeInterest (this, &ScriptEditor::connectSourceText);
+	field .addInterest (this, &ScriptEditor::set_sourceText);
 }
 
 void

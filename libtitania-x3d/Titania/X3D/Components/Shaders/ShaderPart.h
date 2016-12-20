@@ -122,12 +122,12 @@ public:
 
 	virtual
 	MFString*
-	getCDATA () final override
+	getSourceText () final override
 	{	return &url (); }
 
 	virtual
 	const MFString*
-	getCDATA () const final override
+	getSourceText () const final override
 	{	return &url (); }
 
 	///  @name Operations

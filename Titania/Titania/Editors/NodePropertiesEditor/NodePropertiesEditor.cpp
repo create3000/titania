@@ -107,7 +107,7 @@ NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 		getComponentEntry ()      .set_text (node -> getBrowser () -> getSupportedComponents () .rfind (node -> getComponent ()) -> getName ());
 		getContainerFieldEntry () .set_text (node -> getContainerField ());
 
-		getCDATAFieldExpander () .set_visible (node -> getCDATA ());
+		getCDATAFieldExpander () .set_visible (node -> getSourceText ());
 	}
 	else
 	{

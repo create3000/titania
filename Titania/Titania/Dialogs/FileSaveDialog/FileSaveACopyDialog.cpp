@@ -61,14 +61,6 @@ FileSaveACopyDialog::FileSaveACopyDialog (X3DBrowserWindow* const browserWindow)
 {
 	setName ("FileSaveACopyDialog");
 
-	const auto & worldURL = getCurrentScene () -> getWorldURL ();
-
-	if (getConfig () -> hasItem ("currentFolder"))
-	{
-		getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
-		getWindow () .set_current_name (worldURL .basename ());
-	}
-
 	setup ();
 }
 

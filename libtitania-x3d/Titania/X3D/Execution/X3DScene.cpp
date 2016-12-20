@@ -737,6 +737,30 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 void
 X3DScene::toJSONStream (std::ostream & ostream) const
 {
+	// <Scene>
+
+	Generator::PushExecutionContext (this);
+	Generator::EnterScope ();
+	Generator::ExportedNodes (getExportedNodes ());
+
+	X3DExecutionContext::toJSONStream (ostream);
+
+//	for (const auto & exportedNode : getExportedNodes ())
+//	{
+//		try
+//		{
+//			ostream
+//				<< JSONEncode (exportedNode .second)
+//				<< Generator::Break;
+//		}
+//		catch (const X3DError &)
+//		{ }
+//	}
+
+	Generator::LeaveScope ();
+	Generator::PopExecutionContext ();
+
+	// </Scene>
 }
 
 void

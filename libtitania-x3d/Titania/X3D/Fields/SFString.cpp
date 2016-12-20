@@ -215,7 +215,37 @@ SFString::toXMLStream (std::ostream & ostream) const
 void
 SFString::toJSONStream (std::ostream & ostream) const
 {
-	toStream (ostream);
+	ostream << '"';
+
+	for (const auto & character : getValue () .raw ())
+	{
+		switch (character)
+		{
+			case '"':
+			case '\\':
+			{
+				ostream
+					<< '\\'
+					<< character;
+				break;
+			}
+			case '\r':
+				ostream << "\\r";
+				break;
+			case '\n':
+				ostream << "\\n";
+				break;
+			case '\t':
+				ostream << "\\t";
+				break;
+			default:
+				ostream << character;
+				break;
+		}
+
+	}
+
+	ostream << '"';
 }
 
 } // X3D

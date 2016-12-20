@@ -925,7 +925,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 void
 X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 {
-	X3D::MFString* const cdata          = node -> getCDATA ();
+	X3D::MFString* const cdata          = node -> getSourceText ();
 	std::string          filename       = "/tmp/titania-XXXXXX.js";
 	const int            fileDescriptor = mkstemps (&filename [0], 3);
 
@@ -1020,7 +1020,7 @@ X3DBrowserEditor::on_cdata_changed (const Glib::RefPtr <Gio::File> & file, const
 
 	// Set value.
 
-	X3D::MFString* const cdata = node -> getCDATA ();
+	X3D::MFString* const cdata = node -> getSourceText ();
 
 	if (string not_eq *cdata)
 	{

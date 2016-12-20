@@ -616,43 +616,24 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 		}
 
-		if (compress)
+		std::ofstream file (worldURL .path ());
+
+		if (file)
 		{
-			ogzstream file (worldURL .path ());
+			setWorldURL (scene, worldURL, undoStep);
+
+			if (compress)
+				file << X3D::SmallestStyle;
+			else
+				file << X3D::CompactStyle;
+
+			file << X3D::JSONEncode (scene);
+			
+			if (copy)
+				undoStep -> undo ();
 
 			if (file)
-			{
-				setWorldURL (scene, worldURL, undoStep);
-
-				file
-					<< X3D::SmallestStyle
-					<< X3D::JSONEncode (scene);
-				
-				if (copy)
-					undoStep -> undo ();
-				
-				if (file)
-					return true;
-			}
-		}
-		else
-		{
-			std::ofstream file (worldURL .path ());
-
-			if (file)
-			{
-				setWorldURL (scene, worldURL, undoStep);
-
-				file
-					<< X3D::CompactStyle
-					<< X3D::JSONEncode (scene);
-				
-				if (copy)
-					undoStep -> undo ();
-
-				if (file)
-					return true;
-			}
+				return true;
 		}
 	}
 	else

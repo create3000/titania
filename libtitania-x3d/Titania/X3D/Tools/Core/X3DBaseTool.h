@@ -249,14 +249,14 @@ public:
 	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
 	virtual
 	MFString*
-	getCDATA () final override
-	{ return node -> getCDATA (); }
+	getSourceText () final override
+	{ return node -> getSourceText (); }
 
 	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
 	virtual
 	const MFString*
-	getCDATA () const final override
-	{ return node -> getCDATA (); }
+	getSourceText () const final override
+	{ return node -> getSourceText (); }
 
 	///  @name Clone handling
 

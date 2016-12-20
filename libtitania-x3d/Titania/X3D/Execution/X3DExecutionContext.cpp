@@ -1578,6 +1578,13 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 void
 X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 {
+	if (not getRootNodes () .empty ())
+	{
+		ostream
+			<< JSONEncode (getRootNodes ())
+			<< ','
+			<< Generator::TidyBreak;
+	}
 }
 
 void

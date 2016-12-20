@@ -322,13 +322,13 @@ public:
 	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
 	virtual
 	MFString*
-	getCDATA ()
+	getSourceText ()
 	{ return nullptr; }
 
 	///  If the node has a XML CDATA field it is returned otherwise a null pointer.
 	virtual
 	const MFString*
-	getCDATA () const
+	getSourceText () const
 	{ return nullptr; }
 
 	///  @name Clone handling

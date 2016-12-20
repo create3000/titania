@@ -124,15 +124,27 @@ X3DFileSaveDialog::saveRun ()
 	const auto & worldURL = getCurrentScene () -> getWorldURL ();
 
 	if (not worldURL .empty () and worldURL .is_local ())
-		getWindow () .set_uri (worldURL .filename () .str ());
-
+	{
+		if (getConfig () -> hasItem ("currentFolder"))
+		{
+			getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
+			getWindow () .set_current_name (worldURL .basename ());
+		}
+		else
+		{
+			getWindow () .set_uri (worldURL .filename () .str ());
+			getWindow () .set_current_name (worldURL .basename ());
+		}
+	}
 	else
 	{
-		if (worldURL .basename () .empty ())
-		{
+		if (getConfig () -> hasItem ("currentFolder"))
+			getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
+		else
 			getWindow () .set_current_folder (os::home ());
+
+		if (worldURL .basename () .empty ())
 			getWindow () .set_current_name (_ ("scene.x3d"));
-		}
 		else
 			getWindow () .set_current_name (worldURL .basename ());
 	}

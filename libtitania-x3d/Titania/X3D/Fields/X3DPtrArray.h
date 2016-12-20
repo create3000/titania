@@ -553,6 +553,63 @@ template <class ValueType>
 void
 X3DPtrArray <ValueType>::toJSONStream (std::ostream & ostream) const
 {
+	if (empty ())
+	{
+		ostream
+			<< '['
+			<< Generator::TidySpace
+			<< ']';
+	}
+	else
+	{
+		Generator::EnterScope ();
+
+		ostream
+			<< '['
+			<< Generator::TidyBreak
+			<< Generator::IncIndent;
+
+		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
+		{
+			if (value)
+			{
+				ostream
+					<< Generator::Indent
+					<< JSONEncode (value)
+					<< ','
+					<< Generator::TidyBreak;
+			}
+			else
+			{
+				ostream
+					<< Generator::Indent
+					<< "null"
+					<< ','
+					<< Generator::TidyBreak;
+			}
+		}
+
+		if (back ())
+		{
+			ostream
+				<< Generator::Indent
+				<< JSONEncode (back ());
+		}
+		else
+		{
+			ostream
+				<< Generator::Indent
+				<< "null";
+		}
+
+		ostream
+			<< Generator::TidyBreak
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< ']';
+
+		Generator::LeaveScope ();
+	}
 }
 
 } // X3D

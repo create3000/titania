@@ -102,6 +102,16 @@ public:
 	///  @name Member access
 
 	virtual
+	MFString*
+	getSourceText () final override
+	{	return &url (); }
+
+	virtual
+	const MFString*
+	getSourceText () const final override
+	{	return &url (); }
+
+	virtual
 	GLuint
 	getProgramId () const final override
 	{ return programId; }

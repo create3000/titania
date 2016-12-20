@@ -190,10 +190,10 @@ private:
 	on_redo_clicked () final override;
 
 	void
-	set_cdata ();
+	set_sourceText ();
 
 	void
-	connectCDATA (const X3D::MFString &);
+	connectSourceText (const X3D::MFString &);
 
 	void
 	set_loadState (const X3D::LoadState);
