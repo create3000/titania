@@ -108,24 +108,44 @@ public:
 	{ return m_FileFilterAudio; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterBMP () const
-	{ return m_FileFilterBMP; }
+	getFileFilterCompressedVrmlEncoding () const
+	{ return m_FileFilterCompressedVrmlEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterCompressedX3DClassicVRMLEncoding () const
+	{ return m_FileFilterCompressedX3DClassicVRMLEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterCompressedX3DXMLEncoding () const
+	{ return m_FileFilterCompressedX3DXMLEncoding; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterImage () const
 	{ return m_FileFilterImage; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterJPEG () const
-	{ return m_FileFilterJPEG; }
+	getFileFilterImageBMP () const
+	{ return m_FileFilterImageBMP; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterPNG () const
-	{ return m_FileFilterPNG; }
+	getFileFilterImageJPEG () const
+	{ return m_FileFilterImageJPEG; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterTIFF () const
-	{ return m_FileFilterTIFF; }
+	getFileFilterImagePDF () const
+	{ return m_FileFilterImagePDF; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterImagePNG () const
+	{ return m_FileFilterImagePNG; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterImageTIFF () const
+	{ return m_FileFilterImageTIFF; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterImageXCF () const
+	{ return m_FileFilterImageXCF; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterVideo () const
@@ -146,10 +166,6 @@ public:
 	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterX3DXMLEncoding () const
 	{ return m_FileFilterX3DXMLEncoding; }
-
-	const Glib::RefPtr <Gtk::FileFilter> &
-	getFileFilterXCF () const
-	{ return m_FileFilterXCF; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getImageAntialiasingAdjustment () const
@@ -176,12 +192,12 @@ public:
 	{ return *m_Widget; }
 
 	Gtk::Box &
-	getCompressFileBox () const
-	{ return *m_CompressFileBox; }
+	getOutputStyleBox () const
+	{ return *m_OutputStyleBox; }
 
-	Gtk::Switch &
-	getCompressFileButton () const
-	{ return *m_CompressFileButton; }
+	Gtk::ComboBoxText &
+	getOutputStyleButton () const
+	{ return *m_OutputStyleButton; }
 
 	Gtk::Dialog &
 	getImageOptionsDialog () const
@@ -225,25 +241,29 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterBMP;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedVrmlEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedX3DClassicVRMLEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedX3DXMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterJPEG;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterPNG;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterTIFF;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImageBMP;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImageJPEG;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImagePDF;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImagePNG;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImageTIFF;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImageXCF;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVrmlEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DClassicVRMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DJSONEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DXMLEncoding;
-	Glib::RefPtr <Gtk::FileFilter> m_FileFilterXCF;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageAntialiasingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageCompressionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageWidthAdjustment;
 	Gtk::FileChooserDialog*        m_Window;
 	Gtk::Box*                      m_Widget;
-	Gtk::Box*                      m_CompressFileBox;
-	Gtk::Switch*                   m_CompressFileButton;
+	Gtk::Box*                      m_OutputStyleBox;
+	Gtk::ComboBoxText*             m_OutputStyleButton;
 	Gtk::Dialog*                   m_ImageOptionsDialog;
 	Gtk::Switch*                   m_ImageAlphaChannelSwitch;
 	Gtk::Box*                      m_ImageAntialiasingBox;
