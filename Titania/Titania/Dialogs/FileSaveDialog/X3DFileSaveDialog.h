@@ -118,6 +118,9 @@ private:
 	void
 	set_suffix (const std::string & suffix);
 
+	bool
+	getGimp () const;
+
 	///  @name Export image
 
 	bool

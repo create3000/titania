@@ -57,6 +57,8 @@
 #include <Titania/X3D/Basic/Traverse.h>
 #include <Titania/OS.h>
 
+#include <regex>
+
 namespace titania {
 namespace puck {
 
@@ -73,7 +75,7 @@ static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed 
 static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
 static constexpr auto ALL_FILES_FILTER                            = "All Files";
 
-static constexpr auto IMAGE_XCF_FILTER  = "Gimp XCF Image (*.xcf";
+static constexpr auto IMAGE_XCF_FILTER  = "Gimp XCF Image (*.xcf)";
 static constexpr auto IMAGE_JPEG_FILTER = "JPEG Image (*.jpeg, *.jpg)";
 static constexpr auto IMAGE_PDF_FILTER  = "PDF File (*.pdf)";
 static constexpr auto IMAGE_PNG_FILTER  = "PNG Image (*.png)";
@@ -264,7 +266,9 @@ X3DFileSaveDialog::setImageFilter (const std::string & name)
 {
 	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DFileSaveDialog::on_image_filter_changed));
 
-	//getWindow () .add_filter (getFileFilterXCF ());
+	if (getGimp ())
+		getWindow () .add_filter (getFileFilterImageXCF ());
+
 	getWindow () .add_filter (getFileFilterImageJPEG ());
 	getWindow () .add_filter (getFileFilterImagePDF ());
 	getWindow () .add_filter (getFileFilterImagePNG ());
@@ -330,6 +334,12 @@ X3DFileSaveDialog::set_suffix (const std::string & suffix)
 	getWindow () .set_current_name (name .basename (false) + suffix);
 }
 
+bool
+X3DFileSaveDialog::getGimp () const
+{
+	return os::system ("which", "gimp", ">", "/dev/null", "2>&1") == 0;
+}
+
 // Export image
 
 void
@@ -367,13 +377,38 @@ X3DFileSaveDialog::exportImage ()
 
 			try
 			{
+				auto filename = basic::uri (Glib::uri_unescape_string (getWindow () .get_filename ()));
+
 				const auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
 				                                                        getImageHeightAdjustment () -> get_value (),
 				                                                        getImageAlphaChannelSwitch () .get_active (),
 				                                                        getImageAntialiasingAdjustment () -> get_value ());
 
 				image -> quality (getImageCompressionAdjustment () -> get_value ());
-				image -> write (Glib::uri_unescape_string (getWindow () .get_filename ()));
+
+				if (filename .suffix () == ".xcf" and getGimp ())
+				{
+					std::string tmpFilename    = "/tmp/titania-XXXXXX.png";
+					const int   fileDescriptor = mkstemps (&tmpFilename [0], 4);
+
+					if (fileDescriptor not_eq -1)
+					{
+						static const std::regex quotes (R"/(")/");
+
+						filename = std::regex_replace (filename .str (), quotes, "\\\"");
+
+						image -> write (tmpFilename);
+
+						os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + tmpFilename + "\" \"" + tmpFilename + "\")))"
+						            "(drawable (car (gimp-image-get-active-layer image))))"
+						            "(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + filename + "\" \"" + filename + "\")"
+						            "(gimp-image-delete image) (gimp-quit 0))");
+
+						unlink (tmpFilename .c_str ());
+					}
+				}
+				else
+					image -> write (filename);
 			}
 			catch (const Magick::Exception & error)
 			{
