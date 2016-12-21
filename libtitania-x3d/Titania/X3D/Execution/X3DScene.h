@@ -275,16 +275,6 @@ public:
 
 	///  @name Input/Output
 
-	virtual
-	void
-	isCompressed (const bool value) final override
-	{ compressed = value; }
-
-	virtual
-	bool
-	isCompressed () const final override
-	{ return compressed; }
-
 	void
 	fromStream (const basic::uri &, std::istream & istream)
 	throw (Error <INVALID_X3D>,
@@ -369,7 +359,6 @@ private:
 	MetaDataIndex            metadatas;
 	ExportedNodeIndex        exportedNodes;
 	SFTime                   exportedNodesOutput;
-	bool                     compressed;
 
 };
 

@@ -146,14 +146,14 @@ X3DBrowserWindow::hasAccelerators (const bool value)
 }
 
 bool
-X3DBrowserWindow::save (const basic::uri & worldURL, const bool compressed, const bool copy)
+X3DBrowserWindow::save (const basic::uri & worldURL, const OutputStyleType outputStyle, const bool copy)
 {
 	const auto scriptEditor = footer -> getPage <ScriptEditor> ("ScriptEditor");
 
 	if (scriptEditor -> isModified ())
 		scriptEditor -> apply (std::make_shared <X3D::UndoStep> (""));
 
-	return X3DBrowserEditor::save (worldURL, compressed, copy);
+	return X3DBrowserEditor::save (worldURL, outputStyle, copy);
 }
 
 void

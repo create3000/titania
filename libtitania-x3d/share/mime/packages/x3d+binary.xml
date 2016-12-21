@@ -67,6 +67,5 @@
 		</magic>
 		<glob pattern="*.x3db"/>
 		<glob pattern="*.x3dbz"/>
-		<glob pattern="*.x3db.gz"/>
 	</mime-type>
 </mime-info>

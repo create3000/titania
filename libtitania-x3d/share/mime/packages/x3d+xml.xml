@@ -66,6 +66,6 @@
 			<match type="string" offset="0:255" value="!DOCTYPE X3D"/>
 		</magic>
 		<glob pattern="*.x3d"/>
-		<glob pattern="*.x3d.gz"/>
+		<glob pattern="*.x3dz"/>
 	</mime-type>
 </mime-info>

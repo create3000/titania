@@ -545,18 +545,17 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 }
 
 bool
-X3DBrowserWidget::save (const basic::uri & worldURL, const bool compress, const bool copy)
+X3DBrowserWidget::save (const basic::uri & worldURL, const OutputStyleType outputStyle, const bool copy)
 {
-	return save (getCurrentScene (), worldURL, compress, copy);
+	return save (getCurrentScene (), worldURL, outputStyle, copy);
 }
 
 bool
-X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const bool compress, const bool copy)
+X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const OutputStyleType outputStyle, const bool copy)
 {
 	const auto suffix   = worldURL .suffix ();
 	const auto undoStep = std::make_shared <X3D::UndoStep> ("");
 
-	scene -> isCompressed (compress);
 	scene -> addStandardMetaData ();
 
 	// Save
@@ -569,43 +568,46 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 		}
 
-		if (compress)
+		std::ofstream file (worldURL .path ());
+
+		if (file)
 		{
-			ogzstream file (worldURL .path ());
+			setWorldURL (scene, worldURL, undoStep);
+
+			setOutputStyle (scene, file, outputStyle);
+
+			file << X3D::XMLEncode (scene);
+
+			if (copy)
+				undoStep -> undo ();
 
 			if (file)
-			{
-				setWorldURL (scene, worldURL, undoStep);
-
-				file
-					<< X3D::SmallestStyle
-					<< X3D::XMLEncode (scene);
-				
-				if (copy)
-					undoStep -> undo ();
-				
-				if (file)
-					return true;
-			}
+				return true;
 		}
-		else
+	}
+	if (suffix == ".x3dz")
+	{
+		if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 		{
-			std::ofstream file (worldURL .path ());
+			scene -> setEncoding ("X3D");
+			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
+		}
 
+		ogzstream file (worldURL .path ());
+
+		if (file)
+		{
+			setWorldURL (scene, worldURL, undoStep);
+
+			setOutputStyle (scene, file, outputStyle);
+
+			file << X3D::XMLEncode (scene);
+
+			if (copy)
+				undoStep -> undo ();
+			
 			if (file)
-			{
-				setWorldURL (scene, worldURL, undoStep);
-
-				file
-					<< X3D::CompactStyle
-					<< X3D::XMLEncode (scene);
-				
-				if (copy)
-					undoStep -> undo ();
-
-				if (file)
-					return true;
-			}
+				return true;
 		}
 	}
 	else if (suffix == ".json")
@@ -622,10 +624,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 		{
 			setWorldURL (scene, worldURL, undoStep);
 
-			if (compress)
-				file << X3D::SmallestStyle;
-			else
-				file << X3D::CompactStyle;
+			setOutputStyle (scene, file, outputStyle);
 
 			file << X3D::JSONEncode (scene);
 			
@@ -638,7 +637,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 	}
 	else
 	{
-		if (suffix == ".wrl")
+		if (suffix == ".wrl" or suffix == "wrz")
 		{
 			if (scene -> getSpecificationVersion () not_eq X3D::VRML_V2_0)
 			{
@@ -646,7 +645,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 				scene -> setSpecificationVersion (X3D::VRML_V2_0);
 			}
 		}
-		else if (suffix == ".x3dv")
+		else if (suffix == ".x3dv" or suffix == ".x3dvz")
 		{
 			if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 			{
@@ -666,7 +665,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 			return false;
 		}
 
-		if (compress)
+		if (suffix == ".x3dvz" or suffix == ".wrz")
 		{
 			ogzstream file (worldURL .path ());
 
@@ -674,9 +673,9 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 			{
 				setWorldURL (scene, worldURL, undoStep);
 
-				file
-					<< X3D::SmallestStyle
-					<< scene;
+				setOutputStyle (scene, file, outputStyle);
+
+				file << scene;
 				
 				if (copy)
 					undoStep -> undo ();
@@ -693,9 +692,9 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 			{
 				setWorldURL (scene, worldURL, undoStep);
 
-				file
-					<< X3D::NicestStyle
-					<< scene;
+				setOutputStyle (scene, file, outputStyle);
+
+				file << scene;
 				
 				if (copy)
 					undoStep -> undo ();
@@ -714,6 +713,50 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 	dialog -> run ();
 
 	return false;
+}
+
+void
+X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream & file, const OutputStyleType outputStyle)
+{
+	switch (outputStyle)
+	{
+		case OutputStyleType::NICEST:
+			scene -> setMetaData ("outputStyle", "nicest");
+			file << X3D::NicestStyle;
+			break;
+		case OutputStyleType::COMPACT:
+			scene -> setMetaData ("outputStyle", "compact");
+			file << X3D::CompactStyle;
+			break;
+		case OutputStyleType::SMALL:
+			scene -> setMetaData ("outputStyle", "small");
+			file << X3D::SmallStyle;
+			break;
+		case OutputStyleType::SMALLEST:
+			scene -> setMetaData ("outputStyle", "smallest");
+			file << X3D::SmallestStyle;
+			break;
+	}
+}
+
+OutputStyleType
+X3DBrowserWidget::getOutputStyle (const X3D::X3DScenePtr & scene) const
+{
+	const auto & outputStyle = scene -> getMetaData ("outputStyle");
+
+	if (outputStyle == "nicest")
+		return OutputStyleType::NICEST;
+
+	if (outputStyle == "compact")
+		return OutputStyleType::COMPACT;
+
+	if (outputStyle == "small")
+		return OutputStyleType::SMALL;
+
+	if (outputStyle == "smallest")
+		return OutputStyleType::SMALLEST;
+
+	return OutputStyleType::NICEST;
 }
 
 void

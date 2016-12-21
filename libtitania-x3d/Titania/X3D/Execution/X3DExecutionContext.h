@@ -557,14 +557,6 @@ public:
 
 	virtual
 	void
-	isCompressed (const bool) = 0;
-
-	virtual
-	bool
-	isCompressed () const = 0;
-
-	virtual
-	void
 	toStream (std::ostream &) const override;
 
 	virtual

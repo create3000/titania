@@ -115,7 +115,6 @@ throw (Error <INVALID_X3D>,
 	}
 
 	scene -> isLive () = executionContext -> isLive ();
-	scene -> isCompressed (istream .is_compressed ());
 	scene -> setup ();
 
 	return scene;
@@ -198,8 +197,6 @@ throw (Error <INVALID_URL>,
 			loadStream (URL .str (), istream);
 
 			golden_gate (scene, worldURL, istream);
-
-			scene -> isCompressed (istream .is_compressed ());
 
 			istream .close ();
 			return;

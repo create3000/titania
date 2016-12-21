@@ -108,14 +108,15 @@ Generator::SmallestStyle ()
 	tidySpace = "";
 	endl      = " ";
 	tidyBreak = "";
-	listBreak = " ";
-	comma     = "";
+	listBreak = "";
+	comma     = " ";
 
 	indent     = "";
 	indentChar = "";
 
 	listSpace    = false;
 	hasListBreak = false;
+	hasBreak     = false;
 }
 
 void
@@ -130,14 +131,15 @@ Generator::SmallStyle ()
 	tidySpace = "";
 	endl      = "\n";
 	tidyBreak = "";
-	listBreak = " ";
-	comma     = "";
+	listBreak = "";
+	comma     = ",";
 
 	indent     = "";
 	indentChar = "";
 
 	listSpace    = false;
 	hasListBreak = false;
+	hasBreak     = true;
 }
 
 void
@@ -160,6 +162,7 @@ Generator::CompactStyle ()
 
 	listSpace    = true;
 	hasListBreak = false;
+	hasBreak     = true;
 }
 
 void
@@ -182,6 +185,7 @@ Generator::NicestStyle ()
 
 	listSpace    = true;
 	hasListBreak = true;
+	hasBreak     = true;
 }
 
 void

@@ -51,6 +51,7 @@
 #ifndef __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
 #define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
 
+#include "../Browser/OutputStyleType.h"
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
 #include "../Widgets/HistoryView/History.h"
 
@@ -137,6 +138,9 @@ public:
 	std::shared_ptr <UserData>
 	getUserData (const X3D::SFNode &);
 
+	OutputStyleType
+	getOutputStyle (const X3D::X3DScenePtr & scene) const;
+
 	///  @name Operations
 
 	virtual
@@ -161,10 +165,10 @@ public:
 
 	virtual
 	bool
-	save (const basic::uri &, const bool, const bool);
+	save (const basic::uri &, const OutputStyleType, const bool);
 
 	bool
-	save (const X3D::X3DScenePtr &, const basic::uri &, const bool, const bool);
+	save (const X3D::X3DScenePtr &, const basic::uri &, const OutputStyleType, const bool);
 
 	static
 	bool
@@ -273,6 +277,9 @@ private:
 
 	std::string
 	getTitle (const X3D::BrowserPtr &) const;
+
+	void
+	setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream & file, const OutputStyleType outputStyle);
 
 	void
 	setWorldURL (const X3D::X3DScenePtr &, const basic::uri &, const X3D::UndoStepPtr &);

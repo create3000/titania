@@ -669,7 +669,7 @@ X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & uris, const X
 }
 
 bool
-X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, const bool copy)
+X3DBrowserEditor::save (const basic::uri & worldURL, const OutputStyleType outputStyle, const bool copy)
 {
 	setMetaData ();
 
@@ -682,7 +682,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const bool compressed, cons
 	previous -> isPrivate (false);
 
 	// Save world
-	const bool saved = X3DBrowserWidget::save (worldURL, compressed, copy);
+	const bool saved = X3DBrowserWidget::save (worldURL, outputStyle, copy);
 
 	children -> isPrivate (true);
 	previous -> isPrivate (true);

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,85 +48,21 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
-#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
+#ifndef __TITANIA_BROWSER_OUTPUT_STYLE_TYPE_H__
+#define __TITANIA_BROWSER_OUTPUT_STYLE_TYPE_H__
 
-#include "../../UserInterfaces/X3DFileSaveDialogInterface.h"
-#include "../../Browser/OutputStyleType.h"
+#include <cstdint>
 
 namespace titania {
 namespace puck {
 
-class X3DFileSaveDialog :
-	public X3DFileSaveDialogInterface
+enum class OutputStyleType :
+	uint8_t
 {
-public:
-
-	///  @name Member access
-
-	basic::uri
-	getURL () const;
-
-	///  @name Operations
-
-	bool
-	run ();
-
-	void
-	saveScene (const bool copy);
-
-	void
-	exportImage ();
-
-	bool
-	exportNodes (X3D::MFNode &, basic::uri &, const X3D::UndoStepPtr &);
-
-	///  @name Destruction
-
-	virtual
-	~X3DFileSaveDialog ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DFileSaveDialog ();
-
-
-private:
-
-	///  @name Operations
-
-	bool
-	saveRun ();
-
-	///  @name Filter handling
-
-	void
-	setX3DFilter (const std::string & name);
-
-	void
-	on_x3d_filter_changed ();
-
-	void
-	setImageFilter (const std::string & name);
-
-	void
-	on_image_filter_changed ();
-
-	void
-	set_suffix (const std::string & suffix);
-
-	///  @name Export image
-
-	bool
-	imageOptions ();
-
-	///  @name Export nodes
-
-	bool
-	exportNodes (X3D::MFNode &, const basic::uri &, const OutputStyleType, const X3D::UndoStepPtr &);
+	NICEST,
+	COMPACT,
+	SMALL,
+	SMALLEST
 
 };
 

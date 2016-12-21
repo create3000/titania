@@ -245,9 +245,14 @@ SFImage::toStream (std::ostream & ostream) const
 	{
 		ostream
 			<< std::hex
-			<< std::showbase
-			<< X3DGenerator::ListBreak
-			<< X3DGenerator::IncIndent;
+			<< std::showbase;
+
+		if (X3DGenerator::HasListBreak ())
+			ostream << X3DGenerator::ListBreak;
+		else
+			ostream << X3DGenerator::Space;
+
+		ostream << X3DGenerator::IncIndent;
 
 		Image::size_type y = 0;
 
@@ -266,9 +271,12 @@ SFImage::toStream (std::ostream & ostream) const
 					<< X3DGenerator::Space;
 			}
 
-			ostream
-				<< image .array () [x + s]
-				<< X3DGenerator::ListBreak;
+			ostream << image .array () [x + s];
+
+			if (X3DGenerator::HasListBreak ())
+				ostream << X3DGenerator::ListBreak;
+			else
+				ostream << X3DGenerator::Space;
 		}
 
 		if (X3DGenerator::HasListBreak ())
@@ -330,15 +338,21 @@ SFImage::toJSONStreamValue (std::ostream & ostream) const
 	{
 		ostream
 			<< std::hex
-			<< std::showbase
-			<< X3DGenerator::TidyBreak
-			<< X3DGenerator::IncIndent;
+			<< std::showbase;
+
+		if (X3DGenerator::HasListBreak ())
+			ostream << X3DGenerator::ListBreak;
+		else
+			ostream << X3DGenerator::Space;
+
+		ostream << X3DGenerator::IncIndent;
 
 		Image::size_type y = 0;
 
 		for (; y < image .height () - 1; ++ y)
 		{
-			ostream << X3DGenerator::Indent;
+			if (X3DGenerator::HasListBreak ())
+				ostream << X3DGenerator::Indent;
 
 			const Image::size_type s = y * image .width ();
 			Image::size_type       x = 0;
@@ -353,11 +367,16 @@ SFImage::toJSONStreamValue (std::ostream & ostream) const
 
 			ostream
 				<< image .array () [x + s]
-				<< ','
-				<< X3DGenerator::TidyBreak;
+				<< ',';
+
+			if (X3DGenerator::HasListBreak ())
+				ostream << X3DGenerator::ListBreak;
+			else
+				ostream << X3DGenerator::Space;
 		}
 
-		ostream << X3DGenerator::Indent;
+		if (X3DGenerator::HasListBreak ())
+			ostream << X3DGenerator::Indent;
 
 		const Image::size_type s = y * image .width ();
 		Image::size_type       x = 0;

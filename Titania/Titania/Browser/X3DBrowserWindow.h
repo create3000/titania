@@ -126,7 +126,7 @@ public:
 
 	virtual
 	bool
-	save (const basic::uri &, const bool, const bool) final override;
+	save (const basic::uri &, const OutputStyleType, const bool) final override;
 
 	/// @name Clipboard handling
 

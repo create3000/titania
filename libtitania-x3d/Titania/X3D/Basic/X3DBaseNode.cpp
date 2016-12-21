@@ -2000,27 +2000,6 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 
 					switch (field -> getType ())
 					{
-						case X3DConstants::SFNode:
-						{
-							ostream
-								<< Generator::Indent
-								<< '"'
-								<< "-children"
-								<< '"'
-								<< ':'
-								<< Generator::TidySpace
-								<< '['
-								<< Generator::TidyBreak
-								<< Generator::IncIndent
-								<< JSONEncode (field)
-								<< Generator::TidyBreak
-								<< Generator::DecIndent
-								<< Generator::Indent
-								<< ']'
-								<< Generator::TidyBreak;
-
-							break;
-						}
 						case X3DConstants::MFNode:
 						{
 							ostream
@@ -2035,6 +2014,28 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 
 							break;
 						}
+						case X3DConstants::SFNode:
+						{
+							ostream
+								<< Generator::Indent
+								<< '"'
+								<< "-children"
+								<< '"'
+								<< ':'
+								<< Generator::TidySpace
+								<< '['
+								<< Generator::TidyBreak
+								<< Generator::IncIndent
+								<< Generator::Indent
+								<< JSONEncode (field)
+								<< Generator::TidyBreak
+								<< Generator::DecIndent
+								<< Generator::Indent
+								<< ']'
+								<< Generator::TidyBreak;
+
+							break;
+						}
 						default:
 						{
 							ostream
@@ -2045,7 +2046,6 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 								<< ':'
 								<< Generator::TidySpace
 								<< JSONEncode (field)
-								<< ','
 								<< Generator::TidyBreak;
 
 							break;

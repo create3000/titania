@@ -2551,6 +2551,7 @@
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Cobweb\GeneratedCubeMapTexture" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Cobweb\ImageCubeMapTexture" />
     <None Include="Titania\Editors\TextureEditor\X3DGeneratedCubeMapTextureEditor.h" />
+    <None Include="Titania\Browser\OutputStyleType.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

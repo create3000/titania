@@ -809,7 +809,9 @@ BrowserWindow::on_save_activated ()
 		on_save_as_activated ();
 
 	else
-		save (worldURL, getCurrentScene () -> isCompressed (), false);
+	{
+		save (worldURL, getOutputStyle (getCurrentScene ()), false);
+	}
 }
 
 void

@@ -230,16 +230,6 @@ public:
 
 	virtual
 	void
-	isCompressed (const bool value) final override
-	{ getExecutionContext () -> isCompressed (value); }
-
-	virtual
-	bool
-	isCompressed () const final override
-	{ return getExecutionContext () -> isCompressed (); }
-
-	virtual
-	void
 	toStream (std::ostream &) const final override;
 
 	virtual

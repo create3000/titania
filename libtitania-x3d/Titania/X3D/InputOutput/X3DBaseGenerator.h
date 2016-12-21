@@ -117,6 +117,11 @@ public:
 	{ return hasListBreak; }
 
 	static
+	bool
+	HasBreak ()
+	{ return hasBreak; }
+
+	static
 	std::basic_ostream <CharT, Traits> &
 	Indent (std::basic_ostream <CharT, Traits> & ostream)
 	{ return ostream << indent; }
@@ -179,6 +184,7 @@ protected:
 	static std::string comma;
 	static bool        listSpace;
 	static bool        hasListBreak;
+	static bool        hasBreak;
 
 	static std::string indent;
 	static std::string indentChar;
@@ -216,6 +222,8 @@ template <class CharT, class Traits>
 bool X3DBaseGenerator <CharT, Traits>::listSpace = true;
 template <class CharT, class Traits>
 bool X3DBaseGenerator <CharT, Traits>::hasListBreak = true;
+template <class CharT, class Traits>
+bool X3DBaseGenerator <CharT, Traits>::hasBreak = true;
 
 template <class CharT, class Traits>
 std::string X3DBaseGenerator <CharT, Traits>::indent = "";

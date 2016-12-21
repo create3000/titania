@@ -512,7 +512,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 			bool mustOutputValue = false;
 
-			if (Generator::ExecutionContext () and not Generator::IsSharedNode (this))
+			if (Generator::ExecutionContext ())
 			{
 				if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 				{
@@ -521,22 +521,15 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 					for (const auto & reference : field -> getReferences ())
 						initializableReference |= reference -> isInitializable ();
 
-					try
-					{
-						if (not initializableReference)
-							mustOutputValue = not isDefaultValue (field);
-					}
-					catch (const X3DError &)
-					{
-						mustOutputValue = false;
-					}
+					if (not initializableReference)
+						mustOutputValue = true;
 				}
 			}
 
 			// If we have no execution context we are not in a proto and must not generate IS references the same is true
 			// if the node is a shared node as the node does not belong to the execution context.
 
-			if ((field -> getReferences () .empty () or not Generator::ExecutionContext () or Generator::IsSharedNode (this)) or mustOutputValue)
+			if (field -> getReferences () .empty () or not Generator::ExecutionContext () or mustOutputValue)
 			{
 				if (mustOutputValue)
 					references .emplace_back (field);
@@ -677,6 +670,394 @@ void
 X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 //throw (Error <DISPOSED>)
 {
+	ostream .imbue (std::locale::classic ());
+
+	if (Generator::IsSharedNode (this))
+	{
+		ostream << "null";
+		return;
+	}
+
+	Generator::EnterScope ();
+
+	const std::string & name = Generator::Name (this);
+
+	// USE name
+
+	if (not name .empty ())
+	{
+		if (Generator::ExistsNode (this))
+		{
+			ostream
+				<< '{'
+				<< Generator::TidySpace
+				<< '"'
+				<< "ProtoInstance"
+				<< '"'
+				<< ':'
+				<< Generator::TidyBreak
+				<< Generator::IncIndent
+				<< Generator::Indent
+				<< '{'
+				<< Generator::TidyBreak
+				<< Generator::IncIndent
+				<< Generator::Indent
+				<< '"'
+				<< "@USE"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< JSONEncode (SFString (name))
+				<< Generator::TidyBreak
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< '}'
+				<< Generator::TidyBreak
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< '}';
+
+			Generator::LeaveScope ();
+			return;
+		}
+	}
+
+	bool lastProperty = false;
+
+	// Type name
+
+	ostream
+		<< '{'
+		<< Generator::TidySpace
+		<< '"'
+		<< getTypeName ()
+		<< '"'
+		<< ':'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent
+		<< Generator::Indent
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
+
+
+	// DEF name
+
+	if (not name .empty ())
+	{
+		Generator::AddNode (this);
+
+		ostream
+			<< Generator::Indent
+			<< '"'
+			<< "@DEF"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< JSONEncode (SFString (name));
+
+		lastProperty = true;
+	}
+
+
+	// Type name
+
+	if (lastProperty)
+	{
+		ostream
+			<< ','
+			<< Generator::TidyBreak;
+	}
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@name"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< SFString (getTypeName ());
+
+	lastProperty = true;
+
+
+	// Fields
+
+	const FieldDefinitionArray fields = getChangedFields ();
+
+	FieldDefinitionArray references;
+
+	if (not fields .empty ())
+	{
+		if (lastProperty)
+		{
+			ostream
+				<< ','
+				<< Generator::TidyBreak;
+		}
+
+		ostream
+			<< Generator::Indent
+			<< '"'
+			<< "fieldValue"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< '['
+			<< Generator::TidyBreak
+			<< Generator::IncIndent;
+
+		for (const auto & field : fields)
+		{
+			// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
+			// for this field.
+	
+			bool mustOutputValue = false;
+	
+			if (Generator::ExecutionContext ())
+			{
+				if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
+				{
+					bool initializableReference = false;
+	
+					for (const auto & reference : field -> getReferences ())
+						initializableReference |= reference -> isInitializable ();
+	
+					if (not initializableReference)
+						mustOutputValue = true;
+				}
+			}
+	
+			// If we have no execution context we are not in a proto and must not generate IS references the same is true
+			// if the node is a shared node as the node does not belong to the execution context.
+	
+			if (field -> getReferences () .empty () or not Generator::ExecutionContext () or mustOutputValue)
+			{
+				if (mustOutputValue)
+					references .emplace_back (field);
+	
+				switch (field -> getType ())
+				{
+					case X3DConstants::MFNode:
+					{
+						ostream
+							<< Generator::Indent
+							<< '{'
+							<< Generator::TidyBreak
+							<< Generator::IncIndent
+							<< Generator::Indent
+							<< '"'
+							<< "@name"
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< SFString (field -> getName ())
+							<< ','
+							<< Generator::TidyBreak
+							<< Generator::Indent
+							<< '"'
+							<< "-children"
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< JSONEncode (field)
+							<< Generator::TidyBreak
+							<< Generator::DecIndent
+							<< Generator::Indent
+							<< '}';
+	
+						break;
+					}
+					case X3DConstants::SFNode:
+					{
+						ostream
+							<< Generator::Indent
+							<< '{'
+							<< Generator::TidyBreak
+							<< Generator::IncIndent
+							<< Generator::Indent
+							<< '"'
+							<< "@name"
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< SFString (field -> getName ())
+							<< ','
+							<< Generator::TidyBreak
+							<< Generator::Indent
+							<< '"'
+							<< "-children"
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< '['
+							<< Generator::TidyBreak
+							<< Generator::IncIndent
+							<< Generator::Indent
+							<< JSONEncode (field)
+							<< Generator::TidyBreak
+							<< Generator::DecIndent
+							<< Generator::Indent
+							<< ']'
+							<< Generator::TidyBreak
+							<< Generator::DecIndent
+							<< Generator::Indent
+							<< '}';
+		
+						break;
+					}
+					default:
+					{
+						ostream
+							<< Generator::Indent
+							<< '{'
+							<< Generator::TidyBreak
+							<< Generator::IncIndent
+							<< Generator::Indent
+							<< '"'
+							<< "@name"
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< SFString (field -> getName ())
+							<< ','
+							<< Generator::TidyBreak
+							<< Generator::Indent
+							<< '"'
+							<< "@value"
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< JSONEncode (field)
+							<< Generator::TidyBreak
+							<< Generator::DecIndent
+							<< Generator::Indent
+							<< '}';
+	
+						break;
+					}
+				}
+
+				if (field not_eq fields .back ())
+				{
+					ostream
+						<< ','
+						<< Generator::TidyBreak;
+				}
+			}
+			else
+			{
+				references .emplace_back (field);
+			}
+		}
+
+		ostream
+			<< Generator::TidyBreak
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< ']';
+
+		lastProperty = true;
+	}
+
+
+	// IS references
+
+	if (not references .empty ())
+	{
+		if (lastProperty)
+		{
+			ostream
+				<< ','
+				<< Generator::TidyBreak;
+		}
+
+		ostream
+			<< Generator::Indent
+			<< '"'
+			<< "IS"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< '{'
+			<< Generator::TidyBreak
+			<< Generator::IncIndent;
+
+		for (const auto & field : references)
+		{
+			for (const auto & reference : field -> getReferences ())
+			{
+				ostream
+					<< Generator::Indent
+					<< '"'
+					<< "connect"
+					<< '"'
+					<< ':'
+					<< Generator::TidySpace
+					<< '['
+					<< Generator::TidyBreak
+					<< Generator::IncIndent
+					<< Generator::Indent
+					<< '{'
+					<< Generator::TidyBreak
+					<< Generator::IncIndent
+					<< Generator::Indent
+					<< '"'
+					<< "@nodeField"
+					<< '"'
+					<< ':'
+					<< Generator::TidySpace
+					<< SFString (field -> getName ())
+					<< ','
+					<< Generator::TidyBreak
+					<< Generator::Indent
+					<< '"'
+					<< "@protoField"
+					<< '"'
+					<< ':'
+					<< Generator::TidySpace
+					<< SFString (reference -> getName ())
+					<< Generator::TidyBreak
+					<< Generator::DecIndent
+					<< Generator::Indent
+					<< '}'
+					<< Generator::DecIndent
+					<< Generator::Indent
+					<< ']';
+
+				if (field not_eq references .back () and reference not_eq *field -> getReferences () .end ())
+				{
+					ostream
+						<< ','
+						<< Generator::TidyBreak;
+				}
+			}
+		}
+
+		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< '}';
+
+		lastProperty = true;
+	}
+
+
+	// End
+
+	if (lastProperty)
+		ostream << Generator::TidyBreak;
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}'
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}';
+
+	Generator::LeaveScope ();
 }
 
 void

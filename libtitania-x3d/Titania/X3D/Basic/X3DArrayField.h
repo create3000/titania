@@ -1059,22 +1059,34 @@ X3DArrayField <ValueType>::toJSONStream (std::ostream & ostream) const
 	{
 		ostream
 			<< '['
-			<< X3DGenerator::TidySpace;
+			<< X3DGenerator::ListBreak
+			<< X3DGenerator::IncIndent;
 
 		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 		{
+			if (X3DGenerator::HasListBreak ())
+				ostream << X3DGenerator::Indent;
+
 			value .toJSONStreamValue (ostream);
 
 			ostream
 				<< ','
-				<< X3DGenerator::TidySpace;
+				<< X3DGenerator::ListBreak;
 		}
+
+		if (X3DGenerator::HasListBreak ())
+			ostream << X3DGenerator::Indent;
 
 		back () .toJSONStreamValue (ostream);
 
 		ostream
-			<< X3DGenerator::TidySpace
-			<< ']';
+			<< X3DGenerator::ListBreak
+ 			<< X3DGenerator::DecIndent;
+
+		if (X3DGenerator::HasListBreak ())
+			ostream << X3DGenerator::Indent;
+
+		ostream << ']';
 	}
 }
 

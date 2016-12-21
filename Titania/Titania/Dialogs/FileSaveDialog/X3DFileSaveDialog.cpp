@@ -64,17 +64,21 @@ static constexpr auto IMAGES_FILTER = "Images";
 static constexpr auto AUDIO_FILTER  = "Audio";
 static constexpr auto VIDEOS_FILTER = "Videos";
 
-static constexpr auto X3D_XML_ENCODING_FILTER          = "X3D XML Encoding (*.x3d)";
-static constexpr auto X3D_CLASSIC_VRML_ENCODING_FILTER = "X3D Classic VRML Encoding (*.x3dv)";
-static constexpr auto VRML97_ENCODING_FILTER           = "VRML97 Encoding (*.wrl)";
-static constexpr auto X3D_JSON_ENCODING_FILTER         = "X3D JSON Encoding (*.json)";
-static constexpr auto ALL_FILES_FILTER                 = "All Files";
+static constexpr auto X3D_XML_ENCODING_FILTER                     = "X3D XML Encoding (*.x3d)";
+static constexpr auto X3D_CLASSIC_VRML_ENCODING_FILTER            = "X3D Classic VRML Encoding (*.x3dv)";
+static constexpr auto VRML97_ENCODING_FILTER                      = "VRML97 Encoding (*.wrl)";
+static constexpr auto X3D_JSON_ENCODING_FILTER                    = "X3D JSON Encoding (*.json)";
+static constexpr auto COMPRESSED_X3D_XML_ENCODING_FILTER          = "Compressed X3D XML Encoding (*.x3dz)";
+static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed X3D Classic VRML Encoding (*.x3dvz)";
+static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
+static constexpr auto ALL_FILES_FILTER                            = "All Files";
 
-static constexpr auto XCF_FILTER  = "Gimp XCF Image (*.xcf";
-static constexpr auto JPEG_FILTER = "JPEG Image (*.jpeg, *.jpg)";
-static constexpr auto PNG_FILTER  = "PNG Image (*.png)";
-static constexpr auto TIFF_FILTER = "TIFF Image (*.tiff, *.tif)";
-static constexpr auto BMP_FILTER  = "Windows BMP Image (*.bmp)";
+static constexpr auto IMAGE_XCF_FILTER  = "Gimp XCF Image (*.xcf";
+static constexpr auto IMAGE_JPEG_FILTER = "JPEG Image (*.jpeg, *.jpg)";
+static constexpr auto IMAGE_PDF_FILTER  = "PDF File (*.pdf)";
+static constexpr auto IMAGE_PNG_FILTER  = "PNG Image (*.png)";
+static constexpr auto IMAGE_TIFF_FILTER = "TIFF Image (*.tiff, *.tif)";
+static constexpr auto IMAGE_BMP_FILTER  = "Windows BMP Image (*.bmp)";
 
 X3DFileSaveDialog::X3DFileSaveDialog () :
 	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.glade"))
@@ -83,17 +87,23 @@ X3DFileSaveDialog::X3DFileSaveDialog () :
 	getFileFilterAudio () -> set_name (_ (AUDIO_FILTER));
 	getFileFilterVideo () -> set_name (_ (VIDEOS_FILTER));
 
-	getFileFilterXCF  () -> set_name (_ (XCF_FILTER));
-	getFileFilterJPEG () -> set_name (_ (JPEG_FILTER));
-	getFileFilterPNG  () -> set_name (_ (PNG_FILTER));
-	getFileFilterTIFF () -> set_name (_ (TIFF_FILTER));
-	getFileFilterBMP  () -> set_name (_ (BMP_FILTER));
+	getFileFilterImageXCF  () -> set_name (_ (IMAGE_XCF_FILTER));
+	getFileFilterImageJPEG () -> set_name (_ (IMAGE_JPEG_FILTER));
+	getFileFilterImagePDF  () -> set_name (_ (IMAGE_PDF_FILTER));
+	getFileFilterImagePNG  () -> set_name (_ (IMAGE_PNG_FILTER));
+	getFileFilterImageTIFF () -> set_name (_ (IMAGE_TIFF_FILTER));
+	getFileFilterImageBMP  () -> set_name (_ (IMAGE_BMP_FILTER));
 
 	getFileFilterX3DXMLEncoding         () -> set_name (_ (X3D_XML_ENCODING_FILTER));
 	getFileFilterX3DClassicVRMLEncoding () -> set_name (_ (X3D_CLASSIC_VRML_ENCODING_FILTER));
 	getFileFilterX3DJSONEncoding        () -> set_name (_ (X3D_JSON_ENCODING_FILTER));
 	getFileFilterVrmlEncoding           () -> set_name (_ (VRML97_ENCODING_FILTER));
-	getFileFilterAll                    () -> set_name (_ (ALL_FILES_FILTER));
+
+	getFileFilterCompressedX3DXMLEncoding         () -> set_name (_ (COMPRESSED_X3D_XML_ENCODING_FILTER));
+	getFileFilterCompressedX3DClassicVRMLEncoding () -> set_name (_ (COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER));
+	getFileFilterCompressedVrmlEncoding           () -> set_name (_ (COMPRESSED_VRML97_ENCODING_FILTER));
+
+	getFileFilterAll () -> set_name (_ (ALL_FILES_FILTER));
 }
 
 basic::uri
@@ -105,12 +115,14 @@ X3DFileSaveDialog::getURL () const
 bool
 X3DFileSaveDialog::run ()
 {
-	getCompressFileBox () .set_visible (true);
-	getCompressFileButton () .set_active (getCurrentScene () -> isCompressed ());
+	getOutputStyleBox () .set_visible (true);
+	getOutputStyleButton () .set_active (getConfig () -> getInteger ("outputStyle"));
 
 	const auto responseId = getWindow () .run ();
 
 	quit ();
+
+	getConfig () -> setItem ("outputStyle", getOutputStyleButton () .get_active_row_number ());
 
 	if (responseId == Gtk::RESPONSE_OK)
 		return true;
@@ -163,7 +175,7 @@ void
 X3DFileSaveDialog::saveScene (const bool copy)
 {
 	if (saveRun ())
-		getBrowserWindow () -> save (getURL (), getCompressFileButton () .get_active (), copy);
+		getBrowserWindow () -> save (getURL (), OutputStyleType (getOutputStyleButton () .get_active_row_number ()), copy);
 }
 
 void
@@ -176,14 +188,37 @@ X3DFileSaveDialog::setX3DFilter (const std::string & name)
 	getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
 	getWindow () .add_filter (getFileFilterVrmlEncoding ());
 
+	getWindow () .add_filter (getFileFilterCompressedX3DXMLEncoding ());
+	getWindow () .add_filter (getFileFilterCompressedX3DClassicVRMLEncoding ());
+	getWindow () .add_filter (getFileFilterCompressedVrmlEncoding ());
+
+	// X3D, VRML97
+
 	if (name == _(X3D_XML_ENCODING_FILTER))
 		getWindow () .set_filter (getFileFilterX3DXMLEncoding ());
+
 	else if (name == _(X3D_CLASSIC_VRML_ENCODING_FILTER))
 		getWindow () .set_filter (getFileFilterX3DClassicVRMLEncoding ());
-	else if (name == _(VRML97_ENCODING_FILTER))
-		getWindow () .set_filter (getFileFilterVrmlEncoding ());
+
 	else if (name == _(X3D_JSON_ENCODING_FILTER))
 		getWindow () .set_filter (getFileFilterX3DJSONEncoding ());
+
+	else if (name == _(VRML97_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterVrmlEncoding ());
+
+	// Compressed
+
+	else if (name == _(COMPRESSED_X3D_XML_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterCompressedX3DXMLEncoding ());
+
+	else if (name == _(COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterCompressedX3DClassicVRMLEncoding ());
+
+	else if (name == _(COMPRESSED_VRML97_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterCompressedVrmlEncoding ());
+
+	// Default
+
 	else
 		getWindow () .set_filter (getFileFilterX3DXMLEncoding ());
 }
@@ -191,6 +226,8 @@ X3DFileSaveDialog::setX3DFilter (const std::string & name)
 void
 X3DFileSaveDialog::on_x3d_filter_changed ()
 {
+	// X3D, VRML97
+
 	if (getWindow () .get_filter () == getFileFilterX3DXMLEncoding ())
 		set_suffix (".x3d");
 
@@ -202,6 +239,22 @@ X3DFileSaveDialog::on_x3d_filter_changed ()
 
 	else if (getWindow () .get_filter () == getFileFilterVrmlEncoding ())
 		set_suffix (".wrl");
+
+	// Compressed
+
+	else if (getWindow () .get_filter () == getFileFilterCompressedX3DXMLEncoding ())
+		set_suffix (".x3dz");
+
+	else if (getWindow () .get_filter () == getFileFilterCompressedX3DClassicVRMLEncoding ())
+		set_suffix (".x3dvz");
+
+	else if (getWindow () .get_filter () == getFileFilterCompressedVrmlEncoding ())
+		set_suffix (".wrz");
+
+	// Default
+
+	else
+		set_suffix (".x3d");
 }
 
 void
@@ -210,41 +263,53 @@ X3DFileSaveDialog::setImageFilter (const std::string & name)
 	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DFileSaveDialog::on_image_filter_changed));
 
 	//getWindow () .add_filter (getFileFilterXCF ());
-	getWindow () .add_filter (getFileFilterJPEG ());
-	getWindow () .add_filter (getFileFilterPNG ());
-	getWindow () .add_filter (getFileFilterTIFF ());
-	getWindow () .add_filter (getFileFilterBMP ());
+	getWindow () .add_filter (getFileFilterImageJPEG ());
+	getWindow () .add_filter (getFileFilterImagePDF ());
+	getWindow () .add_filter (getFileFilterImagePNG ());
+	getWindow () .add_filter (getFileFilterImageTIFF ());
+	getWindow () .add_filter (getFileFilterImageBMP ());
 
-	if (name == _(XCF_FILTER))
-		getWindow () .set_filter (getFileFilterXCF ());
-	else if (name == _(JPEG_FILTER))
-		getWindow () .set_filter (getFileFilterJPEG ());
-	else if (name == _(PNG_FILTER))
-		getWindow () .set_filter (getFileFilterPNG ());
-	else if (name == _(TIFF_FILTER))
-		getWindow () .set_filter (getFileFilterTIFF ());
-	else if (name == _(BMP_FILTER))
-		getWindow () .set_filter (getFileFilterBMP ());
+	if (name == _(IMAGE_XCF_FILTER))
+		getWindow () .set_filter (getFileFilterImageXCF ());
+
+	else if (name == _(IMAGE_JPEG_FILTER))
+		getWindow () .set_filter (getFileFilterImageJPEG ());
+
+	else if (name == _(IMAGE_PDF_FILTER))
+		getWindow () .set_filter (getFileFilterImagePDF ());
+
+	else if (name == _(IMAGE_PNG_FILTER))
+		getWindow () .set_filter (getFileFilterImagePNG ());
+
+	else if (name == _(IMAGE_TIFF_FILTER))
+		getWindow () .set_filter (getFileFilterImageTIFF ());
+
+	else if (name == _(IMAGE_BMP_FILTER))
+		getWindow () .set_filter (getFileFilterImageBMP ());
+
 	else
-		getWindow () .set_filter (getFileFilterPNG ());
+		getWindow () .set_filter (getFileFilterImagePNG ());
 }
 
 void
 X3DFileSaveDialog::on_image_filter_changed ()
 {
-	if (getWindow () .get_filter () == getFileFilterXCF ())
+	if (getWindow () .get_filter () == getFileFilterImageXCF ())
 		set_suffix (".xcf");
 
-	else if (getWindow () .get_filter () == getFileFilterJPEG ())
+	else if (getWindow () .get_filter () == getFileFilterImageJPEG ())
 		set_suffix (".jpg");
 
-	else if (getWindow () .get_filter () == getFileFilterPNG ())
+	else if (getWindow () .get_filter () == getFileFilterImagePDF ())
+		set_suffix (".pdf");
+
+	else if (getWindow () .get_filter () == getFileFilterImagePNG ())
 		set_suffix (".png");
 
-	else if (getWindow () .get_filter () == getFileFilterTIFF ())
+	else if (getWindow () .get_filter () == getFileFilterImageTIFF ())
 		set_suffix (".tiff");
 
-	else if (getWindow () .get_filter () == getFileFilterBMP ())
+	else if (getWindow () .get_filter () == getFileFilterImageBMP ())
 		set_suffix (".bmp");
 }
 
@@ -384,7 +449,7 @@ X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, cons
 	{
 		getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
 
-		if (not exportNodes (nodes, getURL (), getCompressFileButton () .get_active (), undoStep))
+		if (not exportNodes (nodes, getURL (), OutputStyleType (getOutputStyleButton () .get_active_row_number ()), undoStep))
 			response = false;
 
 		worldURL = getURL ();
@@ -394,7 +459,7 @@ X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, cons
 }
 
 bool
-X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, const bool compressed, const X3D::UndoStepPtr & undoStep)
+X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, const OutputStyleType outputStyle, const X3D::UndoStepPtr & undoStep)
 {
 	using namespace std::placeholders;
 
@@ -433,7 +498,7 @@ X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL
 
 	const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, stream);
 
-	return getBrowserWindow () -> save (scene, worldURL, compressed, false);
+	return getBrowserWindow () -> save (scene, worldURL, outputStyle, false);
 }
 
 X3DFileSaveDialog::~X3DFileSaveDialog ()

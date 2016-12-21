@@ -84,8 +84,7 @@ X3DScene::X3DScene () :
 	          components (),
 	           metadatas (),
 	       exportedNodes (),
-	 exportedNodesOutput (),
-	          compressed (false)
+	 exportedNodesOutput ()
 {
 	addType (X3DConstants::X3DScene);
 
