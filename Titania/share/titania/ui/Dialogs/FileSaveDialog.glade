@@ -83,6 +83,18 @@
       <pattern>*.png</pattern>
     </patterns>
   </object>
+  <object class="GtkFileFilter" id="FileFilterImagePSD">
+    <mime-types>
+      <mime-type>image/psd</mime-type>
+      <mime-type>application/psd</mime-type>
+      <mime-type>application/photoshop</mime-type>
+      <mime-type>application/x-photoshop</mime-type>
+      <mime-type>image/vnd.adobe.photoshop</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.psd</pattern>
+    </patterns>
+  </object>
   <object class="GtkFileFilter" id="FileFilterImageTIFF">
     <mime-types>
       <mime-type>image/tiff</mime-type>

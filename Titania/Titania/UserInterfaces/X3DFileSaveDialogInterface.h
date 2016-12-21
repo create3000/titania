@@ -140,6 +140,10 @@ public:
 	{ return m_FileFilterImagePNG; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterImagePSD () const
+	{ return m_FileFilterImagePSD; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterImageTIFF () const
 	{ return m_FileFilterImageTIFF; }
 
@@ -249,6 +253,7 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImageJPEG;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImagePDF;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImagePNG;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImagePSD;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImageTIFF;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImageXCF;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;

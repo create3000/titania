@@ -71,6 +71,7 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 	m_FileFilterImageJPEG                        = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImageJPEG"));
 	m_FileFilterImagePDF                         = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImagePDF"));
 	m_FileFilterImagePNG                         = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImagePNG"));
+	m_FileFilterImagePSD                         = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImagePSD"));
 	m_FileFilterImageTIFF                        = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImageTIFF"));
 	m_FileFilterImageXCF                         = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImageXCF"));
 	m_FileFilterVideo                            = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));

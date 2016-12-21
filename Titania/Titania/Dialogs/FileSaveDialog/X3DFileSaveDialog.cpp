@@ -77,6 +77,7 @@ static constexpr auto IMAGE_XCF_FILTER  = "Gimp XCF Image (*.xcf";
 static constexpr auto IMAGE_JPEG_FILTER = "JPEG Image (*.jpeg, *.jpg)";
 static constexpr auto IMAGE_PDF_FILTER  = "PDF File (*.pdf)";
 static constexpr auto IMAGE_PNG_FILTER  = "PNG Image (*.png)";
+static constexpr auto IMAGE_PSD_FILTER  = "Photoshop Image (*.psd)";
 static constexpr auto IMAGE_TIFF_FILTER = "TIFF Image (*.tiff, *.tif)";
 static constexpr auto IMAGE_BMP_FILTER  = "Windows BMP Image (*.bmp)";
 
@@ -91,6 +92,7 @@ X3DFileSaveDialog::X3DFileSaveDialog () :
 	getFileFilterImageJPEG () -> set_name (_ (IMAGE_JPEG_FILTER));
 	getFileFilterImagePDF  () -> set_name (_ (IMAGE_PDF_FILTER));
 	getFileFilterImagePNG  () -> set_name (_ (IMAGE_PNG_FILTER));
+	getFileFilterImagePSD  () -> set_name (_ (IMAGE_PSD_FILTER));
 	getFileFilterImageTIFF () -> set_name (_ (IMAGE_TIFF_FILTER));
 	getFileFilterImageBMP  () -> set_name (_ (IMAGE_BMP_FILTER));
 
@@ -266,6 +268,7 @@ X3DFileSaveDialog::setImageFilter (const std::string & name)
 	getWindow () .add_filter (getFileFilterImageJPEG ());
 	getWindow () .add_filter (getFileFilterImagePDF ());
 	getWindow () .add_filter (getFileFilterImagePNG ());
+	getWindow () .add_filter (getFileFilterImagePSD ());
 	getWindow () .add_filter (getFileFilterImageTIFF ());
 	getWindow () .add_filter (getFileFilterImageBMP ());
 
@@ -280,6 +283,9 @@ X3DFileSaveDialog::setImageFilter (const std::string & name)
 
 	else if (name == _(IMAGE_PNG_FILTER))
 		getWindow () .set_filter (getFileFilterImagePNG ());
+
+	else if (name == _(IMAGE_PSD_FILTER))
+		getWindow () .set_filter (getFileFilterImagePSD ());
 
 	else if (name == _(IMAGE_TIFF_FILTER))
 		getWindow () .set_filter (getFileFilterImageTIFF ());
@@ -305,6 +311,9 @@ X3DFileSaveDialog::on_image_filter_changed ()
 
 	else if (getWindow () .get_filter () == getFileFilterImagePNG ())
 		set_suffix (".png");
+
+	else if (getWindow () .get_filter () == getFileFilterImagePSD ())
+		set_suffix (".psd");
 
 	else if (getWindow () .get_filter () == getFileFilterImageTIFF ())
 		set_suffix (".tiff");
