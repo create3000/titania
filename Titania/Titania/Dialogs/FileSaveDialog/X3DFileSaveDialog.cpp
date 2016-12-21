@@ -402,7 +402,8 @@ X3DFileSaveDialog::exportImage ()
 						os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + tmpFilename + "\" \"" + tmpFilename + "\")))"
 						            "(drawable (car (gimp-image-get-active-layer image))))"
 						            "(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + filename + "\" \"" + filename + "\")"
-						            "(gimp-image-delete image) (gimp-quit 0))");
+						            "(gimp-image-delete image)"
+						            "(gimp-quit 0))");
 
 						unlink (tmpFilename .c_str ());
 					}
