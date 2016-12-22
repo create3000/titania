@@ -52,6 +52,7 @@
 #define __TITANIA_EDITORS_SCENE_PROPERTIES_EDITOR_SCENE_PROPERTIES_EDITOR_H__
 
 #include "../../UserInterfaces/X3DScenePropertiesEditorInterface.h"
+#include "X3DMetaDataEditor.h"
 #include "X3DUnitEditor.h"
 #include "X3DWorldInfoEditor.h"
 
@@ -60,6 +61,7 @@ namespace puck {
 
 class ScenePropertiesEditor :
 	virtual public X3DScenePropertiesEditorInterface,
+	public X3DMetaDataEditor,
 	public X3DUnitEditor,
 	public X3DWorldInfoEditor
 {

@@ -99,6 +99,10 @@ public:
 		return widget;
 	}
 
+	const Glib::RefPtr <Gtk::ListStore> &
+	getMetaDataListStore () const
+	{ return m_MetaDataListStore; }
+
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getUnitAngleAdjustment () const
 	{ return m_UnitAngleAdjustment; }
@@ -123,6 +127,22 @@ public:
 	getWorldInfoInfoTitleTextBuffer () const
 	{ return m_WorldInfoInfoTitleTextBuffer; }
 
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getMetaDataNameColumn () const
+	{ return m_MetaDataNameColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getCellRendererMetaDataName () const
+	{ return m_CellRendererMetaDataName; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getMetaDataContentColumn () const
+	{ return m_MetaDataContentColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getCellRendererMetaDataContent () const
+	{ return m_CellRendererMetaDataContent; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -134,6 +154,14 @@ public:
 	Gtk::Notebook &
 	getNotebook () const
 	{ return *m_Notebook; }
+
+	Gtk::Expander &
+	getMetaDataExpander () const
+	{ return *m_MetaDataExpander; }
+
+	Gtk::TreeView &
+	getMetaDataTreeView () const
+	{ return *m_MetaDataTreeView; }
 
 	Gtk::Expander &
 	getUnitsExpander () const
@@ -257,29 +285,36 @@ private:
 
 	///  @name Members
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_UnitAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_UnitForceAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_UnitLengthAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_UnitMassAdjustment;
-	Glib::RefPtr <Gtk::TextBuffer> m_WorldInfoInfoTextBuffer;
-	Glib::RefPtr <Gtk::TextBuffer> m_WorldInfoInfoTitleTextBuffer;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::Notebook*                 m_Notebook;
-	Gtk::Expander*                 m_UnitsExpander;
-	Gtk::ComboBoxText*             m_UnitMassCombo;
-	Gtk::Entry*                    m_UnitMassEntry;
-	Gtk::ComboBoxText*             m_UnitLengthCombo;
-	Gtk::Entry*                    m_UnitLengthEntry;
-	Gtk::ComboBoxText*             m_UnitForceCombo;
-	Gtk::Entry*                    m_UnitForceEntry;
-	Gtk::ComboBoxText*             m_UnitAngleCombo;
-	Gtk::Entry*                    m_UnitAngleEntry;
-	Gtk::Expander*                 m_WorldInfoExpander;
-	Gtk::TextView*                 m_WorldInfoTitleTextView;
-	Gtk::TextView*                 m_WorldInfoInfoTextView;
+	std::string                          filename;
+	Glib::RefPtr <Gtk::Builder>          m_builder;
+	Glib::RefPtr <Gtk::ListStore>        m_MetaDataListStore;
+	Glib::RefPtr <Gtk::Adjustment>       m_UnitAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_UnitForceAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_UnitLengthAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_UnitMassAdjustment;
+	Glib::RefPtr <Gtk::TextBuffer>       m_WorldInfoInfoTextBuffer;
+	Glib::RefPtr <Gtk::TextBuffer>       m_WorldInfoInfoTitleTextBuffer;
+	Glib::RefPtr <Gtk::TreeViewColumn>   m_MetaDataNameColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_CellRendererMetaDataName;
+	Glib::RefPtr <Gtk::TreeViewColumn>   m_MetaDataContentColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_CellRendererMetaDataContent;
+	Gtk::Window*                         m_Window;
+	Gtk::Box*                            m_Widget;
+	Gtk::Notebook*                       m_Notebook;
+	Gtk::Expander*                       m_MetaDataExpander;
+	Gtk::TreeView*                       m_MetaDataTreeView;
+	Gtk::Expander*                       m_UnitsExpander;
+	Gtk::ComboBoxText*                   m_UnitMassCombo;
+	Gtk::Entry*                          m_UnitMassEntry;
+	Gtk::ComboBoxText*                   m_UnitLengthCombo;
+	Gtk::Entry*                          m_UnitLengthEntry;
+	Gtk::ComboBoxText*                   m_UnitForceCombo;
+	Gtk::Entry*                          m_UnitForceEntry;
+	Gtk::ComboBoxText*                   m_UnitAngleCombo;
+	Gtk::Entry*                          m_UnitAngleEntry;
+	Gtk::Expander*                       m_WorldInfoExpander;
+	Gtk::TextView*                       m_WorldInfoTitleTextView;
+	Gtk::TextView*                       m_WorldInfoInfoTextView;
 
 };
 

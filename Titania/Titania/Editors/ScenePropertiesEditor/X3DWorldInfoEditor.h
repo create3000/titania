@@ -84,15 +84,17 @@ protected:
 	void
 	initialize () override;
 
-	void
-	set_current_scene ();
-
 	virtual
 	void
 	store () override;
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_current_scene ();
 
 	///  @name Members
 

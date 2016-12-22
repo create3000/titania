@@ -48,59 +48,58 @@
  *
  ******************************************************************************/
 
-#include "ScenePropertiesEditor.h"
+#include "X3DMetaDataEditor.h"
 
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
+#include <Titania/X3D/Components/Core/WorldInfo.h>
 
 namespace titania {
 namespace puck {
 
-ScenePropertiesEditor::ScenePropertiesEditor (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DScenePropertiesEditorInterface (get_ui ("Editors/ScenePropertiesEditor.glade")),
-	                X3DMetaDataEditor (),
-	                    X3DUnitEditor (),
-	               X3DWorldInfoEditor ()
+enum Columns
 {
-	setup ();
+	NAME,
+	CONTENT
+
+};
+
+X3DMetaDataEditor::X3DMetaDataEditor () :
+	X3DScenePropertiesEditorInterface ()
+{ }
+
+void
+X3DMetaDataEditor::configure ()
+{
+	getCurrentScene () .addInterest (this, &X3DMetaDataEditor::set_current_scene);
 }
 
 void
-ScenePropertiesEditor::configure ()
+X3DMetaDataEditor::initialize ()
 {
-	X3DScenePropertiesEditorInterface::configure ();
-	X3DMetaDataEditor::configure ();
-	X3DUnitEditor::configure ();
-	X3DWorldInfoEditor::configure ();
-
-	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	set_current_scene ();
 }
 
 void
-ScenePropertiesEditor::initialize ()
+X3DMetaDataEditor::set_current_scene ()
 {
-	X3DScenePropertiesEditorInterface::initialize ();
-	X3DMetaDataEditor::initialize ();
-	X3DUnitEditor::initialize ();
-	X3DWorldInfoEditor::initialize ();
+	getMetaDataListStore () -> clear ();
+
+	for (const auto & metaData : getCurrentScene () -> getMetaDatas ())
+	{
+		const auto iter = getMetaDataListStore () -> append ();
+
+		iter -> set_value (NAME,    metaData .first);
+		iter -> set_value (CONTENT, metaData .second);
+	}
 }
 
 void
-ScenePropertiesEditor::store ()
+X3DMetaDataEditor::store ()
 {
-	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
-
-	X3DWorldInfoEditor::store ();
-	X3DMetaDataEditor::store ();
-	X3DUnitEditor::store ();
-	X3DScenePropertiesEditorInterface::store ();
+	getCurrentScene () .removeInterest (this, &X3DMetaDataEditor::set_current_scene);
 }
 
-ScenePropertiesEditor::~ScenePropertiesEditor ()
-{
-	dispose ();
-}
+X3DMetaDataEditor::~X3DMetaDataEditor ()
+{ }
 
 } // puck
 } // titania

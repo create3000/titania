@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,59 +48,59 @@
  *
  ******************************************************************************/
 
-#include "ScenePropertiesEditor.h"
+#ifndef __TITANIA_EDITORS_SCENE_PROPERTIES_EDITOR_X3DMETA_DATA_EDITOR_H__
+#define __TITANIA_EDITORS_SCENE_PROPERTIES_EDITOR_X3DMETA_DATA_EDITOR_H__
 
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
+#include "../../UserInterfaces/X3DScenePropertiesEditorInterface.h"
+
+#include "../../ComposedWidgets/MFStringTextView.h"
+#include "../../ComposedWidgets/SFStringTextView.h"
 
 namespace titania {
 namespace puck {
 
-ScenePropertiesEditor::ScenePropertiesEditor (X3DBrowserWindow* const browserWindow) :
-	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DScenePropertiesEditorInterface (get_ui ("Editors/ScenePropertiesEditor.glade")),
-	                X3DMetaDataEditor (),
-	                    X3DUnitEditor (),
-	               X3DWorldInfoEditor ()
+class X3DMetaDataEditor :
+	virtual public X3DScenePropertiesEditorInterface
 {
-	setup ();
-}
+public:
 
-void
-ScenePropertiesEditor::configure ()
-{
-	X3DScenePropertiesEditorInterface::configure ();
-	X3DMetaDataEditor::configure ();
-	X3DUnitEditor::configure ();
-	X3DWorldInfoEditor::configure ();
+	///  @name Destruction
 
-	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-}
+	virtual
+	~X3DMetaDataEditor ();
 
-void
-ScenePropertiesEditor::initialize ()
-{
-	X3DScenePropertiesEditorInterface::initialize ();
-	X3DMetaDataEditor::initialize ();
-	X3DUnitEditor::initialize ();
-	X3DWorldInfoEditor::initialize ();
-}
 
-void
-ScenePropertiesEditor::store ()
-{
-	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
+protected:
 
-	X3DWorldInfoEditor::store ();
-	X3DMetaDataEditor::store ();
-	X3DUnitEditor::store ();
-	X3DScenePropertiesEditorInterface::store ();
-}
+	///  @name Construction
 
-ScenePropertiesEditor::~ScenePropertiesEditor ()
-{
-	dispose ();
-}
+	X3DMetaDataEditor ();
+
+	virtual
+	void
+	configure () override;
+
+	virtual
+	void
+	initialize () override;
+
+	virtual
+	void
+	store () override;
+
+
+private:
+
+	///  @name Event handlers
+
+	void
+	set_current_scene ();
+
+	///  @name Members
+
+};
 
 } // puck
 } // titania
+
+#endif
