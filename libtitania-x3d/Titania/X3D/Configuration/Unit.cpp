@@ -52,6 +52,7 @@
 
 #include "../Base/X3DObject.h"
 #include "../InputOutput/Generator.h"
+#include "../Fields/SFString.h"
 
 namespace titania {
 namespace X3D {
@@ -121,6 +122,50 @@ Unit::toXMLStream (std::ostream & ostream) const
 void
 Unit::toJSONStream (std::ostream & ostream) const
 {
+	ostream
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@category"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '"'
+		<< category
+		<< '"'
+		<< ','
+		<< Generator::TidyBreak;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@name"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< SFString (name)
+		<< ','
+		<< Generator::TidyBreak;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@conversionFactor"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< Generator::Precision <long double>
+		<< conversionFactor
+		<< Generator::TidyBreak;
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}';
 }
 
 } // X3D

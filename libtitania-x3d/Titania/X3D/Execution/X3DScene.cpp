@@ -839,108 +839,167 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 	// Head
 
-	ostream
-		<< Generator::Indent
-		<< '"'
-		<< "head"
-		<< '"'
-		<< ':'
-		<< Generator::TidySpace
-		<< '{'
-		<< Generator::TidyBreak
-		<< Generator::IncIndent;
-
-
-//	for (const auto & component : getComponents ())
-//	{
-//		ostream
-//			<< XMLEncode (component)
-//			<< Generator::Break;
-//	}
-//
-//	for (const auto & unit : getUnits ())
-//	{
-//		if (unit .getConversionFactor () not_eq 1)
-//		{
-//			ostream
-//				<< XMLEncode (unit)
-//				<< Generator::Break;
-//		}
-//	}
-
-	// Meta data begin
-
-	ostream
-		<< Generator::Indent
-		<< '"'
-		<< "meta"
-		<< '"'
-		<< ':'
-		<< Generator::TidySpace
-		<< '['
-		<< Generator::TidyBreak
-		<< Generator::IncIndent;
-
-
-	// Meta data
-
-	for (const auto & metaData : getMetaDatas ())
+	if (not getComponents () .empty () and not getUnits () .empty () and not getMetaDatas () .empty ())
 	{
+		bool headLastProperty = false;
+	
 		ostream
 			<< Generator::Indent
+			<< '"'
+			<< "head"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
 			<< '{'
 			<< Generator::TidyBreak
 			<< Generator::IncIndent;
+	
+	
+	//	for (const auto & component : getComponents ())
+	//	{
+	//		ostream
+	//			<< XMLEncode (component)
+	//			<< Generator::Break;
+	//	}
 
-		ostream
-			<< Generator::Indent
-			<< '"'
-			<< "@name"
-			<< '"'
-			<< ':'
-			<< Generator::TidySpace
-			<< SFString (metaData .first)
-			<< ','
-			<< Generator::TidyBreak;
+		if (not getUnits () .empty ())
+		{
+			if (headLastProperty)
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+	
 
-		ostream
-			<< Generator::Indent
-			<< '"'
-			<< "@content"
-			<< '"'
-			<< ':'
-			<< Generator::TidySpace
-			<< SFString (metaData .second)
-			<< Generator::TidyBreak;
+			// Units begin
+				
+			ostream
+				<< Generator::Indent
+				<< '"'
+				<< "unit"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< '['
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
 
+
+			// Units
+
+			for (const auto & unit : getUnits ())
+			{
+				if (unit .getConversionFactor () not_eq 1)
+				{
+					ostream << Generator::Indent;
+
+					unit .toJSONStream (ostream);
+
+					if (&unit not_eq &getUnits () .back ())
+						ostream << ',';
+			
+					ostream << Generator::TidyBreak;
+				}
+			}
+
+
+			// Unit end
+		
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< ']';
+
+			headLastProperty = true;
+		}	
+	
+		if (not getMetaDatas () .empty ())
+		{
+			if (headLastProperty)
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+	
+			// Meta data begin
+		
+			ostream
+				<< Generator::Indent
+				<< '"'
+				<< "meta"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< '['
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
+		
+		
+			// Meta data
+		
+			for (const auto & metaData : getMetaDatas ())
+			{
+				ostream
+					<< Generator::Indent
+					<< '{'
+					<< Generator::TidyBreak
+					<< Generator::IncIndent;
+		
+				ostream
+					<< Generator::Indent
+					<< '"'
+					<< "@name"
+					<< '"'
+					<< ':'
+					<< Generator::TidySpace
+					<< SFString (metaData .first)
+					<< ','
+					<< Generator::TidyBreak;
+		
+				ostream
+					<< Generator::Indent
+					<< '"'
+					<< "@content"
+					<< '"'
+					<< ':'
+					<< Generator::TidySpace
+					<< SFString (metaData .second)
+					<< Generator::TidyBreak;
+		
+				ostream
+					<< Generator::DecIndent
+					<< Generator::Indent
+					<< '}';
+		
+				if (&metaData not_eq &*--getMetaDatas () .end ())
+					ostream << ',';
+		
+				ostream << Generator::TidyBreak;
+			}
+		
+		
+			// Meta data end
+		
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< ']';
+
+			headLastProperty = true;
+		}
+	
+	
+		// Head end
+	
 		ostream
+			<< Generator::TidyBreak
 			<< Generator::DecIndent
 			<< Generator::Indent
-			<< '}';
-
-		if (&metaData not_eq &*--getMetaDatas () .end ())
-			ostream << ',';
-
-		ostream << Generator::TidyBreak;
+			<< '}'
+			<< Generator::TidyBreak;
 	}
-
-
-	// Meta data end
-
-	ostream
-		<< Generator::DecIndent
-		<< Generator::Indent
-		<< ']'
-		<< Generator::TidyBreak;
-
-
-	// Head end
-
-	ostream
-		<< Generator::DecIndent
-		<< Generator::Indent
-		<< '}'
-		<< Generator::TidyBreak;
 
 	// Scene
 
