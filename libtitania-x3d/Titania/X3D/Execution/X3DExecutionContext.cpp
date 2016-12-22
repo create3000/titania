@@ -1588,6 +1588,36 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 
 	bool lastProperty = false;
 
+
+	// Extern proto declarations
+
+	if (not getExternProtoDeclarations () .empty ())
+	{
+		if (lastProperty)
+		{
+			ostream
+				<< ','
+				<< Generator::TidyBreak;
+		}
+	
+		for (const auto & externProto : getExternProtoDeclarations ())
+		{
+			ostream
+				<< Generator::Indent
+				<< JSONEncode (externProto);
+	
+			if (&externProto not_eq &getExternProtoDeclarations () .back ())
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+		}
+	
+		lastProperty = true;
+	}
+
+
 	// Proto declarations
 
 	if (not getProtoDeclarations () .empty ())
@@ -1615,6 +1645,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 	
 		lastProperty = true;
 	}
+
 
 	// Root nodes
 
@@ -1656,6 +1687,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 
 		lastProperty = true;
 	}
+
 
 	Generator::LeaveScope ();
 	Generator::PopExecutionContext ();

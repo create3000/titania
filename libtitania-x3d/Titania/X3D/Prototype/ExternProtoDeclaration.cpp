@@ -576,6 +576,127 @@ ExternProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ExternProtoDeclaration::toJSONStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
+	ostream
+		<< '{'
+		<< Generator::TidySpace
+		<< '"'
+		<< "ExternProtoDeclare"
+		<< '"'
+		<< ':'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent
+		<< Generator::Indent
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent
+		<< Generator::Indent
+		<< '"'
+		<< "@name"
+		<< '"'
+		<< ':'
+		<< SFString (getName ())
+		<< ','
+		<< Generator::TidyBreak;
+
+
+	// Fields
+
+	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
+
+	if (not userDefinedFields .empty ())
+	{
+		ostream
+			<< Generator::Indent
+			<< '"'
+			<< "field"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< '['
+			<< Generator::TidyBreak
+			<< Generator::IncIndent;			
+
+		for (const auto & field : userDefinedFields)
+		{
+			ostream
+				<< Generator::Indent
+				<< '{'
+				<< Generator::TidyBreak
+				<< Generator::IncIndent			
+				<< Generator::Indent
+				<< '"'
+				<< "@accessType"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< '"'
+				<< field -> getAccessType ()
+				<< '"'
+				<< ','
+				<< Generator::TidyBreak
+				<< Generator::Indent
+				<< '"'
+				<< "@name"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< SFString (field -> getName ())
+				<< ','
+				<< Generator::TidyBreak
+				<< Generator::Indent
+				<< '"'
+				<< "@type"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< '"'
+				<< field -> getTypeName ()
+				<< '"'
+				<< Generator::TidyBreak
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< '}';
+
+			if (field not_eq userDefinedFields .back ())
+				ostream << ',';
+
+			ostream << Generator::TidyBreak;
+		}
+
+		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< ']'
+			<< ','
+			<< Generator::TidyBreak;
+	}
+
+
+	// URL
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@url"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< JSONEncode (url ())
+		<< Generator::TidyBreak;
+
+
+	// End
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}'
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}';
 }
 
 void

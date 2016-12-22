@@ -507,7 +507,7 @@ ProtoDeclaration::toJSONStream (std::ostream & ostream) const
 		<< Generator::IncIndent;
 
 
-	// ProtoInterface
+	// Fields
 
 	bool lastProperty = false;
 
@@ -666,10 +666,10 @@ ProtoDeclaration::toJSONStream (std::ostream & ostream) const
 		<< ','
 		<< Generator::TidyBreak;
 
+	Generator::LeaveScope ();
+
 
 	// ProtoBody
-
-	Generator::LeaveScope ();
 
 	ostream
 		<< Generator::Indent
@@ -699,12 +699,12 @@ ProtoDeclaration::toJSONStream (std::ostream & ostream) const
 		<< Generator::TidyBreak
 		<< Generator::DecIndent
 		<< Generator::Indent
-		<< ']';
+		<< ']'
+		<< Generator::TidyBreak;
 
 	// End
 
 	ostream
-		<< Generator::TidyBreak
 		<< Generator::DecIndent
 		<< Generator::Indent
 		<< '}'
