@@ -135,7 +135,7 @@ X3DUserDefinedFieldsEditor::setNode (const X3D::SFNode & value)
 	{
 	   isExternproto = node -> getType () .back () == X3D::X3DConstants::ExternProtoDeclaration;
 
-		getUserDefinedFieldsExpander () .set_visible (true);
+		getUserDefinedFieldsBox ()    .set_visible (true);
 		getUserDefinedFieldsWidget () .set_sensitive (true);
 
 		node -> fields_changed () .addInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
@@ -161,7 +161,7 @@ X3DUserDefinedFieldsEditor::setNode (const X3D::SFNode & value)
 	}
 	else
 	{
-		getUserDefinedFieldsExpander () .set_visible (false);
+		getUserDefinedFieldsBox ()    .set_visible (false);
 		getUserDefinedFieldsWidget () .set_sensitive (false);
 
 		getUserDefinedFieldsListStore () -> clear ();

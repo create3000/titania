@@ -403,6 +403,10 @@ public:
 	getContainerFieldEntry () const
 	{ return *m_ContainerFieldEntry; }
 
+	Gtk::Box &
+	getUserDefinedFieldsBox () const
+	{ return *m_UserDefinedFieldsBox; }
+
 	Gtk::Expander &
 	getUserDefinedFieldsExpander () const
 	{ return *m_UserDefinedFieldsExpander; }
@@ -427,6 +431,10 @@ public:
 	getRemoveUserDefinedFieldButton () const
 	{ return *m_RemoveUserDefinedFieldButton; }
 
+	Gtk::Box &
+	getCDATAFieldBox () const
+	{ return *m_CDATAFieldBox; }
+
 	Gtk::Expander &
 	getCDATAFieldExpander () const
 	{ return *m_CDATAFieldExpander; }
@@ -435,6 +443,10 @@ public:
 	getEditCDataButton () const
 	{ return *m_EditCDataButton; }
 
+	Gtk::Box &
+	getImportedNodesBox () const
+	{ return *m_ImportedNodesBox; }
+
 	Gtk::Expander &
 	getImportedNodesExpander () const
 	{ return *m_ImportedNodesExpander; }
@@ -442,6 +454,10 @@ public:
 	Gtk::TreeView &
 	getImportedNodesTreeView () const
 	{ return *m_ImportedNodesTreeView; }
+
+	Gtk::Box &
+	getExportedNodesBox () const
+	{ return *m_ExportedNodesBox; }
 
 	Gtk::Expander &
 	getExportedNodesExpander () const
@@ -699,16 +715,20 @@ private:
 	Gtk::Expander*                         m_CommonPropertiesExpander;
 	Gtk::Entry*                            m_ComponentEntry;
 	Gtk::Entry*                            m_ContainerFieldEntry;
+	Gtk::Box*                              m_UserDefinedFieldsBox;
 	Gtk::Expander*                         m_UserDefinedFieldsExpander;
 	Gtk::Box*                              m_UserDefinedFieldsWidget;
 	Gtk::TreeView*                         m_UserDefinedFieldsTreeView;
 	Gtk::ButtonBox*                        m_UserDefinedFieldsActionBox;
 	Gtk::Button*                           m_AddUserDefinedFieldButton;
 	Gtk::Button*                           m_RemoveUserDefinedFieldButton;
+	Gtk::Box*                              m_CDATAFieldBox;
 	Gtk::Expander*                         m_CDATAFieldExpander;
 	Gtk::Button*                           m_EditCDataButton;
+	Gtk::Box*                              m_ImportedNodesBox;
 	Gtk::Expander*                         m_ImportedNodesExpander;
 	Gtk::TreeView*                         m_ImportedNodesTreeView;
+	Gtk::Box*                              m_ExportedNodesBox;
 	Gtk::Expander*                         m_ExportedNodesExpander;
 	Gtk::TreeView*                         m_ExportedNodesTreeView;
 	Gtk::Button*                           m_AddExportedNodeButton;

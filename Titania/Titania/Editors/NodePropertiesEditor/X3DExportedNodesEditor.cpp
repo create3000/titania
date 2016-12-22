@@ -80,7 +80,7 @@ X3DExportedNodesEditor::setNode (const X3D::SFNode & value)
 	node  = value;
 	scene = node ? node -> getExecutionContext () : nullptr;
 
-	getExportedNodesExpander () .set_visible (scene);
+	getExportedNodesBox () .set_visible (scene);
 
 	if (scene)
 	{

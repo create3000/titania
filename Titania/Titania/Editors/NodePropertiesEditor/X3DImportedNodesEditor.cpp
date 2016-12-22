@@ -95,7 +95,7 @@ X3DImportedNodesEditor::setNode (const X3D::SFNode & value)
 	}
 	else
 	{
-		getImportedNodesExpander () .set_visible (false);
+		getImportedNodesBox () .set_visible (false);
 
 		getImportedNodesListStore () -> clear ();
 	}
@@ -280,11 +280,11 @@ X3DImportedNodesEditor::set_importedNodes ()
 {
 	if (inlineNode -> getExportedNodes () .empty ())
 	{
-		getImportedNodesExpander () .set_visible (false);
+		getImportedNodesBox () .set_visible (false);
 		return;
 	}
 
-	getImportedNodesExpander () .set_visible (true);
+	getImportedNodesBox () .set_visible (true);
 
 	getImportedNodesListStore () -> clear ();
 
@@ -340,7 +340,7 @@ X3DImportedNodesEditor::set_importedNodes ()
 	}
 	catch (...)
 	{
-		getImportedNodesExpander () .set_visible (false);
+		getImportedNodesBox () .set_visible (false);
 	}
 }
 

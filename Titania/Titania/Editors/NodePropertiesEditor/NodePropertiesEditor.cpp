@@ -107,7 +107,7 @@ NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 		getComponentEntry ()      .set_text (node -> getBrowser () -> getSupportedComponents () .rfind (node -> getComponent ()) -> getName ());
 		getContainerFieldEntry () .set_text (node -> getContainerField ());
 
-		getCDATAFieldExpander () .set_visible (node -> getSourceText ());
+		getCDATAFieldBox () .set_visible (node -> getSourceText ());
 	}
 	else
 	{
@@ -116,7 +116,7 @@ NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 		getComponentEntry ()      .set_text ("");
 		getContainerFieldEntry () .set_text ("");
 
-		getCDATAFieldExpander () .set_visible (false);
+		getCDATAFieldBox () .set_visible (false);
 	}
 
 	nodeName .setNode (node);
