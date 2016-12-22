@@ -237,6 +237,72 @@ ImportedNode::toJSONStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
+	if (Generator::ExistsNode (getInlineNode ()))
+	{
+		Generator::AddImportedNode (getExportedNode (), importedName);
+
+		ostream
+			<< '{'
+			<< Generator::TidySpace
+			<< '"'
+			<< "IMPORT"
+			<< '"'
+			<< ':'
+			<< Generator::TidyBreak
+			<< Generator::IncIndent
+			<< Generator::Indent
+			<< '{'
+			<< Generator::TidyBreak
+			<< Generator::IncIndent;
+	
+		ostream
+			<< Generator::Indent
+			<< '"'
+			<< "@inlineDEF"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< SFString (Generator::Name (getInlineNode ()))
+			<< ','
+			<< Generator::TidyBreak;
+	
+		ostream
+			<< Generator::Indent
+			<< '"'
+			<< "@importedDEF"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< SFString (exportedName);
+	
+		if (importedName not_eq exportedName)
+		{
+			ostream
+				<< ','
+				<< Generator::TidyBreak
+				<< Generator::Indent
+				<< '"'
+				<< "@AS"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< SFString (importedName)
+				<< Generator::TidyBreak;
+		}
+		else
+			ostream << Generator::TidyBreak;
+
+		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< '}'
+			<< Generator::TidyBreak
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< '}';
+	}
+	else
+		throw Error <INVALID_NODE> ("ImportedNode::toXMLStream: Inline node does not exist.");
 }
 
 } // X3D

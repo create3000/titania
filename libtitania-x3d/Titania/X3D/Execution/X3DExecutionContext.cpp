@@ -1689,6 +1689,55 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 	}
 
 
+	// Imported nodes
+
+	if (not getImportedNodes () .empty ())
+	{
+		std::vector <std::string> importedNodes;
+
+		for (const auto & importedNode : getImportedNodes ())
+		{
+			try
+			{
+				std::ostringstream osstream;
+	
+				osstream << JSONEncode (importedNode .second);
+	
+				importedNodes .emplace_back (osstream .str ());
+			}
+			catch (const X3DError &)
+			{ }
+		}
+
+		if (not importedNodes .empty ())
+		{
+			if (lastProperty)
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+	
+			for (const auto & importedNode : importedNodes)
+			{
+				ostream
+					<< Generator::Indent
+					<< importedNode;
+		
+				if (&importedNode not_eq &importedNodes .back ())
+				{
+					ostream
+						<< ','
+						<< Generator::TidyBreak;
+				}
+			}
+	
+			lastProperty = true;
+		}
+	}
+
+
+
 	// Routes
 
 	if (not getRoutes () .empty ())
