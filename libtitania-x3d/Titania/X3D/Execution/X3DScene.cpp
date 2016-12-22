@@ -837,6 +837,111 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 		<< Generator::TidyBreak;
 
 
+	// Head
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "head"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
+
+
+//	for (const auto & component : getComponents ())
+//	{
+//		ostream
+//			<< XMLEncode (component)
+//			<< Generator::Break;
+//	}
+//
+//	for (const auto & unit : getUnits ())
+//	{
+//		if (unit .getConversionFactor () not_eq 1)
+//		{
+//			ostream
+//				<< XMLEncode (unit)
+//				<< Generator::Break;
+//		}
+//	}
+
+	// Meta data begin
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "meta"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '['
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
+
+
+	// Meta data
+
+	for (const auto & metaData : getMetaDatas ())
+	{
+		ostream
+			<< Generator::Indent
+			<< '{'
+			<< Generator::TidyBreak
+			<< Generator::IncIndent;
+
+		ostream
+			<< Generator::Indent
+			<< '"'
+			<< "@name"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< SFString (metaData .first)
+			<< ','
+			<< Generator::TidyBreak;
+
+		ostream
+			<< Generator::Indent
+			<< '"'
+			<< "@content"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< SFString (metaData .second)
+			<< Generator::TidyBreak;
+
+		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< '}';
+
+		if (&metaData not_eq &*--getMetaDatas () .end ())
+			ostream << ',';
+
+		ostream << Generator::TidyBreak;
+	}
+
+
+	// Meta data end
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< ']'
+		<< Generator::TidyBreak;
+
+
+	// Head end
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}'
+		<< Generator::TidyBreak;
+
 	// Scene
 
 	ostream

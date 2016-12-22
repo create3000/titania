@@ -495,7 +495,9 @@ ProtoDeclaration::toJSONStream (std::ostream & ostream) const
 		<< ':'
 		<< SFString (getName ())
 		<< ','
-		<< Generator::TidyBreak
+		<< Generator::TidyBreak;
+
+	ostream
 		<< Generator::Indent
 		<< '"'
 		<< "ProtoInterface"
@@ -541,7 +543,9 @@ ProtoDeclaration::toJSONStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< '{'
 				<< Generator::TidyBreak
-				<< Generator::IncIndent			
+				<< Generator::IncIndent;
+
+			ostream
 				<< Generator::Indent
 				<< '"'
 				<< "@accessType"
@@ -552,16 +556,9 @@ ProtoDeclaration::toJSONStream (std::ostream & ostream) const
 				<< field -> getAccessType ()
 				<< '"'
 				<< ','
-				<< Generator::TidyBreak
-				<< Generator::Indent
-				<< '"'
-				<< "@name"
-				<< '"'
-				<< ':'
-				<< Generator::TidySpace
-				<< SFString (field -> getName ())
-				<< ','
-				<< Generator::TidyBreak
+				<< Generator::TidyBreak;
+
+			ostream
 				<< Generator::Indent
 				<< '"'
 				<< "@type"
@@ -570,7 +567,18 @@ ProtoDeclaration::toJSONStream (std::ostream & ostream) const
 				<< Generator::TidySpace
 				<< '"'
 				<< field -> getTypeName ()
-				<< '"';
+				<< '"'
+				<< ','
+				<< Generator::TidyBreak;
+
+			ostream
+				<< Generator::Indent
+				<< '"'
+				<< "@name"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< SFString (field -> getName ());
 
 			if (field -> isDefaultValue ())
 			{

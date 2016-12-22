@@ -1000,7 +1000,9 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 					<< Generator::Indent
 					<< '{'
 					<< Generator::TidyBreak
-					<< Generator::IncIndent
+					<< Generator::IncIndent;
+
+				ostream
 					<< Generator::Indent
 					<< '"'
 					<< "@nodeField"
@@ -1009,7 +1011,9 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 					<< Generator::TidySpace
 					<< SFString (field -> getName ())
 					<< ','
-					<< Generator::TidyBreak
+					<< Generator::TidyBreak;
+
+				ostream
 					<< Generator::Indent
 					<< '"'
 					<< "@protoField"
@@ -1017,7 +1021,9 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 					<< ':'
 					<< Generator::TidySpace
 					<< SFString (reference -> getName ())
-					<< Generator::TidyBreak
+					<< Generator::TidyBreak;
+
+				ostream
 					<< Generator::DecIndent
 					<< Generator::Indent
 					<< '}'
@@ -1026,17 +1032,16 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 					<< Generator::Indent
 					<< ']';
 
-				if (field not_eq references .back () and reference not_eq *field -> getReferences () .end ())
+				if (field not_eq references .back () and reference not_eq *--field -> getReferences () .end ())
 				{
-					ostream
-						<< ','
-						<< Generator::TidyBreak;
+					ostream << ',';
 				}
+
+				ostream << Generator::TidyBreak;
 			}
 		}
 
 		ostream
-			<< Generator::TidyBreak
 			<< Generator::DecIndent
 			<< Generator::Indent
 			<< '}';
