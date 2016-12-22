@@ -96,7 +96,23 @@ private:
 	void
 	set_current_scene ();
 
+	void
+	set_metaData ();
+	
+	virtual
+	void
+	on_metaData_name_edited (const Glib::ustring & path, const Glib::ustring & new_text) final override;
+
+	virtual
+	void
+	on_metaData_content_edited (const Glib::ustring & path, const Glib::ustring & new_text) final override;
+	
+	void
+	connectMetaData (const X3D::SFTime & field);
+
 	///  @name Members
+
+	X3D::X3DScenePtr scene;
 
 };
 

@@ -63,8 +63,11 @@ enum Columns
 };
 
 X3DMetaDataEditor::X3DMetaDataEditor () :
-	X3DScenePropertiesEditorInterface ()
-{ }
+	X3DScenePropertiesEditorInterface (),
+	                            scene ()
+{
+	addChildren (scene);
+}
 
 void
 X3DMetaDataEditor::configure ()
@@ -81,15 +84,73 @@ X3DMetaDataEditor::initialize ()
 void
 X3DMetaDataEditor::set_current_scene ()
 {
+	if (scene)
+		scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_metaData);
+
+	scene = getCurrentScene ();
+
+	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::set_metaData);
+
+	set_metaData ();
+}
+
+void
+X3DMetaDataEditor::set_metaData ()
+{
 	getMetaDataListStore () -> clear ();
 
-	for (const auto & metaData : getCurrentScene () -> getMetaDatas ())
+	for (const auto & metaData : scene -> getMetaDatas ())
 	{
 		const auto iter = getMetaDataListStore () -> append ();
 
 		iter -> set_value (NAME,    metaData .first);
 		iter -> set_value (CONTENT, metaData .second);
 	}
+}
+
+void
+X3DMetaDataEditor::on_metaData_name_edited (const Glib::ustring & path, const Glib::ustring & new_text)
+{
+	if (new_text .empty ())
+		return;
+
+	std::string name;
+	std::string content;
+
+	const auto iter = getMetaDataListStore () -> get_iter (path);
+
+	iter -> get_value (NAME,    name);
+	iter -> get_value (CONTENT, content);
+	iter -> set_value (NAME,    new_text);
+
+	scene -> removeMetaData (name);
+	scene -> setMetaData (new_text, content);
+
+	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_metaData);
+	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
+}
+
+void
+X3DMetaDataEditor::on_metaData_content_edited (const Glib::ustring & path, const Glib::ustring & new_text)
+{
+	std::string name;
+
+	const auto iter = getMetaDataListStore () -> get_iter (path);
+
+	iter -> get_value (NAME,    name);
+	iter -> set_value (CONTENT, new_text);
+
+	scene -> setMetaData (name, new_text);
+
+	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_metaData);
+	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
+}
+
+void
+X3DMetaDataEditor::connectMetaData (const X3D::SFTime & field)
+{
+	field .removeInterest (this, &X3DMetaDataEditor::connectMetaData);
+	field .addInterest (this, &X3DMetaDataEditor::set_metaData);
 }
 
 void

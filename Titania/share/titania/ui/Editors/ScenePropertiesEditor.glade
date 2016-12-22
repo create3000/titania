@@ -168,6 +168,7 @@
                                 <child>
                                   <object class="GtkCellRendererText" id="CellRendererMetaDataName">
                                     <property name="editable">True</property>
+                                    <signal name="edited" handler="on_metaData_name_edited" swapped="no"/>
                                   </object>
                                   <attributes>
                                     <attribute name="text">0</attribute>
@@ -181,6 +182,7 @@
                                 <child>
                                   <object class="GtkCellRendererText" id="CellRendererMetaDataContent">
                                     <property name="editable">True</property>
+                                    <signal name="edited" handler="on_metaData_content_edited" swapped="no"/>
                                   </object>
                                   <attributes>
                                     <attribute name="text">1</attribute>

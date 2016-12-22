@@ -83,12 +83,13 @@ X3DScene::X3DScene () :
 	             profile (),
 	          components (),
 	           metadatas (),
+	      metaDataOutput (),
 	       exportedNodes (),
 	 exportedNodesOutput ()
 {
 	addType (X3DConstants::X3DScene);
 
-	addChildren (getRootNodes (), exportedNodesOutput);
+	addChildren (getRootNodes (), metaDataOutput, exportedNodesOutput);
 }
 
 void
@@ -197,7 +198,12 @@ X3DScene::addMetaData (const std::string & key, const std::string & value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (key .empty ())
+		return;
+
 	metadatas .emplace (key, value);
+
+	metaDataOutput = getCurrentTime ();
 }
 
 void
@@ -206,6 +212,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	metadatas .erase (key);
+
+	metaDataOutput = getCurrentTime ();
 }
 
 void
@@ -213,8 +221,13 @@ X3DScene::setMetaData (const std::string & key, const std::string & value)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (key .empty ())
+		return;
+
 	metadatas .erase (key);
 	addMetaData (key, value);
+
+	metaDataOutput = getCurrentTime ();
 }
 
 const std::string &

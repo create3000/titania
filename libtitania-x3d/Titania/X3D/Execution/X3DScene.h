@@ -217,6 +217,10 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
+	const SFTime &
+	metaData_changed () const
+	{ return metaDataOutput; }
+
 	///  @name Exported nodes handling
 
 	const ExportedNodePtr &
@@ -357,6 +361,7 @@ private:
 	ProfileInfoPtr           profile;
 	ComponentInfoArray       components;
 	MetaDataIndex            metadatas;
+	SFTime                   metaDataOutput;
 	ExportedNodeIndex        exportedNodes;
 	SFTime                   exportedNodesOutput;
 
