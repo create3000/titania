@@ -1737,7 +1737,6 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 	}
 
 
-
 	// Routes
 
 	if (not getRoutes () .empty ())

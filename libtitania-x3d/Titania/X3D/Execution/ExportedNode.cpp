@@ -204,6 +204,56 @@ ExportedNode::toJSONStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
+	const std::string & localName = Generator::LocalName (getLocalNode ());
+
+	ostream
+		<< '{'
+		<< Generator::TidySpace
+		<< '"'
+		<< "EXPORT"
+		<< '"'
+		<< ':'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent
+		<< Generator::Indent
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@localDEF"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< SFString (localName);
+
+	if (exportedName not_eq localName)
+	{
+		ostream
+			<< ','
+			<< Generator::TidyBreak
+			<< Generator::Indent
+			<< '"'
+			<< "@AS"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< SFString (exportedName)
+			<< Generator::TidyBreak;
+	}
+	else
+		ostream << Generator::TidyBreak;
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}'
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}';
 }
 
 } // X3D

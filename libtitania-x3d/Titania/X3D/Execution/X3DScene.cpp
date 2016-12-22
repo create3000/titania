@@ -736,6 +736,8 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 void
 X3DScene::toJSONStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
 	Generator::SpecificationVersion (LATEST_VERSION);
 	Generator::PushExecutionContext (this);
 	Generator::EnterScope ();
@@ -1076,17 +1078,60 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 	X3DExecutionContext::toJSONStream (ostream);
 
-//	for (const auto & exportedNode : getExportedNodes ())
-//	{
-//		try
-//		{
-//			ostream
-//				<< JSONEncode (exportedNode .second)
-//				<< Generator::Break;
-//		}
-//		catch (const X3DError &)
-//		{ }
-//	}
+	bool lastProperty = false;
+
+	lastProperty |= not getExternProtoDeclarations () .empty ();
+	lastProperty |= not getProtoDeclarations ()       .empty ();
+	lastProperty |= not getRootNodes ()               .empty ();
+	lastProperty |= not getImportedNodes ()           .empty ();
+	lastProperty |= not getRoutes ()                  .empty ();
+
+	// Exported nodes
+
+	if (not getExportedNodes () .empty ())
+	{
+		std::vector <std::string> exportedNodes;
+
+		for (const auto & exportedNode : getExportedNodes ())
+		{
+			try
+			{
+				std::ostringstream osstream;
+	
+				osstream << JSONEncode (exportedNode .second);
+	
+				exportedNodes .emplace_back (osstream .str ());
+			}
+			catch (const X3DError &)
+			{ }
+		}
+
+		if (not exportedNodes .empty ())
+		{
+			if (lastProperty)
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+	
+			for (const auto & exportedNode : exportedNodes)
+			{
+				ostream
+					<< Generator::Indent
+					<< exportedNode;
+		
+				if (&exportedNode not_eq &exportedNodes .back ())
+				{
+					ostream
+						<< ','
+						<< Generator::TidyBreak;
+				}
+			}
+	
+			lastProperty = true;
+		}
+	}
 
 
 	// Scene end
