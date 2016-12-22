@@ -100,6 +100,38 @@ ComponentInfo::toXMLStream (std::ostream & ostream) const
 void
 ComponentInfo::toJSONStream (std::ostream & ostream) const
 {
+	ostream
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@name"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '"'
+		<< name
+		<< '"'
+		<< ','
+		<< Generator::TidyBreak;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@level"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< level
+		<< Generator::TidyBreak;
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}';
 }
 
 } // X3D

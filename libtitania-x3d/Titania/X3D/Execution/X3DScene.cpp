@@ -736,6 +736,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 void
 X3DScene::toJSONStream (std::ostream & ostream) const
 {
+	Generator::SpecificationVersion (LATEST_VERSION);
 	Generator::PushExecutionContext (this);
 	Generator::EnterScope ();
 	Generator::ExportedNodes (getExportedNodes ());
@@ -853,14 +854,61 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 			<< '{'
 			<< Generator::TidyBreak
 			<< Generator::IncIndent;
+
+
+		// Components
+
+		if (not getComponents () .empty ())
+		{
+			if (headLastProperty)
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
 	
-	
-	//	for (const auto & component : getComponents ())
-	//	{
-	//		ostream
-	//			<< XMLEncode (component)
-	//			<< Generator::Break;
-	//	}
+
+			// Components begin
+				
+			ostream
+				<< Generator::Indent
+				<< '"'
+				<< "component"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< '['
+				<< Generator::TidyBreak
+				<< Generator::IncIndent;
+
+
+			// Components
+
+			for (const auto & component : getComponents ())
+			{
+				ostream << Generator::Indent;
+
+				component -> toJSONStream (ostream);
+
+				if (component not_eq getComponents () .back ())
+					ostream << ',';
+		
+				ostream << Generator::TidyBreak;
+			}
+
+
+			// Components end
+		
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< ']';
+
+			headLastProperty = true;
+		}
+
+
+		// Units
 
 		if (not getUnits () .empty ())
 		{
@@ -913,7 +961,10 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 
 			headLastProperty = true;
 		}	
-	
+
+
+		// Meta data
+
 		if (not getMetaDatas () .empty ())
 		{
 			if (headLastProperty)

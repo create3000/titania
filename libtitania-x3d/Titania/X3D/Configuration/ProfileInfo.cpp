@@ -83,7 +83,10 @@ ProfileInfo::toXMLStream (std::ostream & ostream) const
 void
 ProfileInfo::toJSONStream (std::ostream & ostream) const
 {
-	ostream << name;
+	ostream
+		<< '"'
+		<< name
+		<< '"';
 }
 
 } // X3D

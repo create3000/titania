@@ -1606,7 +1606,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< JSONEncode (externProto);
 	
-			if (&externProto not_eq &getExternProtoDeclarations () .back ())
+			if (externProto not_eq getExternProtoDeclarations () .back ())
 			{
 				ostream
 					<< ','
@@ -1635,7 +1635,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< JSONEncode (proto);
 	
-			if (&proto not_eq &getProtoDeclarations () .back ())
+			if (proto not_eq getProtoDeclarations () .back ())
 			{
 				ostream
 					<< ','
@@ -1686,6 +1686,54 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 		Generator::LeaveScope ();
 
 		lastProperty = true;
+	}
+
+
+	// Routes
+
+	if (not getRoutes () .empty ())
+	{
+		std::vector <std::string> routes;
+
+		for (const auto & route : getRoutes ())
+		{
+			try
+			{
+				std::ostringstream osstream;
+	
+				osstream << JSONEncode (route);
+	
+				routes .emplace_back (osstream .str ());
+			}
+			catch (const X3DError &)
+			{ }
+		}
+
+		if (not routes .empty ())
+		{
+			if (lastProperty)
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+	
+			for (const auto & route : routes)
+			{
+				ostream
+					<< Generator::Indent
+					<< route;
+		
+				if (&route not_eq &routes .back ())
+				{
+					ostream
+						<< ','
+						<< Generator::TidyBreak;
+				}
+			}
+	
+			lastProperty = true;
+		}
 	}
 
 

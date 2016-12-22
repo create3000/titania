@@ -321,6 +321,74 @@ Route::toJSONStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
+	const std::string & sourceNodeName      = Generator::LocalName (getSourceNode ());
+	const std::string & destinationNodeName = Generator::LocalName (getDestinationNode ());
+
+	ostream
+		<< '{'
+		<< Generator::TidySpace
+		<< '"'
+		<< "ROUTE"
+		<< '"'
+		<< ':'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent
+		<< Generator::Indent
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@fromNode"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< SFString (sourceNodeName)
+		<< ','
+		<< Generator::TidyBreak;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@fromField"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< SFString (sourceField -> getName ())
+		<< ','
+		<< Generator::TidyBreak;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@toNode"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< SFString (destinationNodeName)
+		<< ','
+		<< Generator::TidyBreak;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@toField"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< SFString (destinationField -> getName ())
+		<< Generator::TidyBreak;
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}'
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}';
 }
 
 void
