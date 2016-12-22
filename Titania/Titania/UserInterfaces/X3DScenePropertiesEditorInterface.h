@@ -179,6 +179,10 @@ public:
 	getRemoveMetaDataButton () const
 	{ return *m_RemoveMetaDataButton; }
 
+	Gtk::Switch &
+	getAddStandardMetaDataButton () const
+	{ return *m_AddStandardMetaDataButton; }
+
 	Gtk::Expander &
 	getUnitsExpander () const
 	{ return *m_UnitsExpander; }
@@ -375,6 +379,7 @@ private:
 	Gtk::ButtonBox*                      m_UserDefinedFieldsActionBox;
 	Gtk::Button*                         m_AddMetaDataButton;
 	Gtk::Button*                         m_RemoveMetaDataButton;
+	Gtk::Switch*                         m_AddStandardMetaDataButton;
 	Gtk::Expander*                       m_UnitsExpander;
 	Gtk::ComboBoxText*                   m_UnitMassCombo;
 	Gtk::Entry*                          m_UnitMassEntry;

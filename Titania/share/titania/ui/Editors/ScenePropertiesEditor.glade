@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gtk+" version="3.20"/>
   <object class="GtkListStore" id="MetaDataListStore">
     <columns>
       <!-- column-name Name -->
@@ -153,52 +153,111 @@
                         <property name="can_focus">False</property>
                         <property name="vexpand">True</property>
                         <property name="orientation">vertical</property>
-                        <property name="spacing">2</property>
+                        <property name="spacing">8</property>
                         <child>
-                          <object class="GtkScrolledWindow">
+                          <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="vexpand">True</property>
-                            <property name="shadow_type">in</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">2</property>
                             <child>
-                              <object class="GtkTreeView" id="MetaDataTreeView">
+                              <object class="GtkScrolledWindow">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="model">MetaDataListStore</property>
-                                <child internal-child="selection">
-                                  <object class="GtkTreeSelection" id="MetaDataTreeSelection">
-                                    <signal name="changed" handler="on_meta_data_changed" swapped="no"/>
-                                  </object>
-                                </child>
+                                <property name="vexpand">True</property>
+                                <property name="shadow_type">in</property>
                                 <child>
-                                  <object class="GtkTreeViewColumn" id="MetaDataNameColumn">
-                                    <property name="title" translatable="yes">Name</property>
-                                    <child>
-                                      <object class="GtkCellRendererText" id="CellRendererMetaDataName">
-                                        <property name="editable">True</property>
-                                        <signal name="edited" handler="on_meta_data_name_edited" swapped="no"/>
+                                  <object class="GtkTreeView" id="MetaDataTreeView">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="model">MetaDataListStore</property>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="MetaDataTreeSelection">
+                                        <signal name="changed" handler="on_meta_data_changed" swapped="no"/>
                                       </object>
-                                      <attributes>
-                                        <attribute name="text">0</attribute>
-                                      </attributes>
                                     </child>
-                                  </object>
-                                </child>
-                                <child>
-                                  <object class="GtkTreeViewColumn" id="MetaDataContentColumn">
-                                    <property name="title" translatable="yes">Content</property>
                                     <child>
-                                      <object class="GtkCellRendererText" id="CellRendererMetaDataContent">
-                                        <property name="editable">True</property>
-                                        <signal name="edited" handler="on_meta_data_content_edited" swapped="no"/>
+                                      <object class="GtkTreeViewColumn" id="MetaDataNameColumn">
+                                        <property name="title" translatable="yes">Name</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="CellRendererMetaDataName">
+                                            <property name="editable">True</property>
+                                            <signal name="edited" handler="on_meta_data_name_edited" swapped="no"/>
+                                          </object>
+                                          <attributes>
+                                            <attribute name="text">0</attribute>
+                                          </attributes>
+                                        </child>
                                       </object>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn" id="MetaDataContentColumn">
+                                        <property name="title" translatable="yes">Content</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="CellRendererMetaDataContent">
+                                            <property name="editable">True</property>
+                                            <signal name="edited" handler="on_meta_data_content_edited" swapped="no"/>
+                                          </object>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
                                     </child>
                                   </object>
                                 </child>
                               </object>
+                              <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButtonBox" id="UserDefinedFieldsActionBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="spacing">2</property>
+                                <property name="layout_style">start</property>
+                                <child>
+                                  <object class="GtkButton" id="AddMetaDataButton">
+                                    <property name="label">gtk-add</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="use_stock">True</property>
+                                    <property name="always_show_image">True</property>
+                                    <signal name="clicked" handler="on_add_meta_data_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="RemoveMetaDataButton">
+                                    <property name="label">gtk-remove</property>
+                                    <property name="visible">True</property>
+                                    <property name="sensitive">False</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="use_stock">True</property>
+                                    <property name="always_show_image">True</property>
+                                    <signal name="clicked" handler="on_remove_meta_data_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -208,42 +267,30 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButtonBox" id="UserDefinedFieldsActionBox">
+                          <object class="GtkGrid">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="spacing">2</property>
-                            <property name="layout_style">start</property>
+                            <property name="row_spacing">8</property>
+                            <property name="column_spacing">16</property>
                             <child>
-                              <object class="GtkButton" id="AddMetaDataButton">
-                                <property name="label">gtk-add</property>
+                              <object class="GtkLabel">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="use_stock">True</property>
-                                <property name="always_show_image">True</property>
-                                <signal name="clicked" handler="on_add_meta_data_clicked" swapped="no"/>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Add Standard Meta Data:</property>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
+                                <property name="left_attach">0</property>
+                                <property name="top_attach">0</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="RemoveMetaDataButton">
-                                <property name="label">gtk-remove</property>
+                              <object class="GtkSwitch" id="AddStandardMetaDataButton">
                                 <property name="visible">True</property>
-                                <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="use_stock">True</property>
-                                <property name="always_show_image">True</property>
-                                <signal name="clicked" handler="on_remove_meta_data_clicked" swapped="no"/>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">0</property>
                               </packing>
                             </child>
                           </object>

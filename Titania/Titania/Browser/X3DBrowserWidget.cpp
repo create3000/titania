@@ -174,6 +174,13 @@ X3DBrowserWidget::configure ()
 
 	// Restore Menu Configuration from Config
 
+
+	// Meta data
+
+	if (not getConfig () -> hasItem ("addStandardMetaData"))
+		getConfig () -> setItem ("addStandardMetaData", true);
+
+
 	// ToolBar
 
 	if (not getConfig () -> hasItem ("menubar"))
@@ -556,7 +563,8 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 	const auto suffix   = worldURL .suffix ();
 	const auto undoStep = std::make_shared <X3D::UndoStep> ("");
 
-	scene -> addStandardMetaData ();
+	if (getConfig () -> getBoolean ("addStandardMetaData"))
+		scene -> addStandardMetaData ();
 
 	// Save
 

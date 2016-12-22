@@ -875,3 +875,7 @@ EventBox::motion_notify_event
   virtual bool on_motion_notify_event(GdkEventMotion* event);
 SpinButton::focus_in_event
   virtual bool on_focus_in_event(GdkEventFocus* focus_event);
+Switch::state_set
+  virtual bool on_state_set(bool state);
+Switch::activate
+  virtual void on_activate();

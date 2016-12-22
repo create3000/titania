@@ -83,6 +83,7 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UserDefinedFieldsActionBox", m_UserDefinedFieldsActionBox);
 	m_builder -> get_widget ("AddMetaDataButton", m_AddMetaDataButton);
 	m_builder -> get_widget ("RemoveMetaDataButton", m_RemoveMetaDataButton);
+	m_builder -> get_widget ("AddStandardMetaDataButton", m_AddStandardMetaDataButton);
 	m_builder -> get_widget ("UnitsExpander", m_UnitsExpander);
 	m_builder -> get_widget ("UnitMassCombo", m_UnitMassCombo);
 	m_builder -> get_widget ("UnitMassEntry", m_UnitMassEntry);

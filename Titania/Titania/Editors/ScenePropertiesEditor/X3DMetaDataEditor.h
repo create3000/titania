@@ -134,6 +134,9 @@ private:
 	void
 	connectMetaData (const X3D::SFTime & field);
 
+	void
+	on_add_standard_meta_data_activated ();
+
 	///  @name Members
 
 	X3D::X3DScenePtr scene;
