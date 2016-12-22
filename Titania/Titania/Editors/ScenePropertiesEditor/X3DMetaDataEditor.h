@@ -97,15 +97,39 @@ private:
 	set_current_scene ();
 
 	void
-	set_metaData ();
-	
-	virtual
-	void
-	on_metaData_name_edited (const Glib::ustring & path, const Glib::ustring & new_text) final override;
+	set_meta_data ();
 
 	virtual
 	void
-	on_metaData_content_edited (const Glib::ustring & path, const Glib::ustring & new_text) final override;
+	on_meta_data_changed () final override;
+
+	virtual
+	void
+	on_add_meta_data_clicked () final override;
+	
+	virtual
+	void
+	on_meta_data_name_changed () final override;
+	
+	virtual
+	void
+	on_add_meta_data_ok_clicked () final override;
+	
+	virtual
+	void
+	on_add_meta_data_cancel_clicked () final override;
+
+	virtual
+	void
+	on_remove_meta_data_clicked () final override;
+
+	virtual
+	void
+	on_meta_data_name_edited (const Glib::ustring & path, const Glib::ustring & new_text) final override;
+
+	virtual
+	void
+	on_meta_data_content_edited (const Glib::ustring & path, const Glib::ustring & new_text) final override;
 	
 	void
 	connectMetaData (const X3D::SFTime & field);

@@ -127,6 +127,10 @@ public:
 	getWorldInfoInfoTitleTextBuffer () const
 	{ return m_WorldInfoInfoTitleTextBuffer; }
 
+	const Glib::RefPtr <Gtk::TreeSelection> &
+	getMetaDataTreeSelection () const
+	{ return m_MetaDataTreeSelection; }
+
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getMetaDataNameColumn () const
 	{ return m_MetaDataNameColumn; }
@@ -162,6 +166,18 @@ public:
 	Gtk::TreeView &
 	getMetaDataTreeView () const
 	{ return *m_MetaDataTreeView; }
+
+	Gtk::ButtonBox &
+	getUserDefinedFieldsActionBox () const
+	{ return *m_UserDefinedFieldsActionBox; }
+
+	Gtk::Button &
+	getAddMetaDataButton () const
+	{ return *m_AddMetaDataButton; }
+
+	Gtk::Button &
+	getRemoveMetaDataButton () const
+	{ return *m_RemoveMetaDataButton; }
 
 	Gtk::Expander &
 	getUnitsExpander () const
@@ -211,6 +227,26 @@ public:
 	getWorldInfoInfoTextView () const
 	{ return *m_WorldInfoInfoTextView; }
 
+	Gtk::Dialog &
+	getMetaDataDialog () const
+	{ return *m_MetaDataDialog; }
+
+	Gtk::Button &
+	getMetaDataCancelButton () const
+	{ return *m_MetaDataCancelButton; }
+
+	Gtk::Button &
+	getMetaDataOkButton () const
+	{ return *m_MetaDataOkButton; }
+
+	Gtk::Entry &
+	getMetaDataNameEntry () const
+	{ return *m_MetaDataNameEntry; }
+
+	Gtk::Entry &
+	getMetaDataContentEntry () const
+	{ return *m_MetaDataContentEntry; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -231,11 +267,23 @@ public:
 
 	virtual
 	void
-	on_metaData_name_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+	on_meta_data_changed () = 0;
 
 	virtual
 	void
-	on_metaData_content_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+	on_meta_data_name_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+
+	virtual
+	void
+	on_meta_data_content_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+
+	virtual
+	void
+	on_add_meta_data_clicked () = 0;
+
+	virtual
+	void
+	on_remove_meta_data_clicked () = 0;
 
 	virtual
 	void
@@ -268,6 +316,18 @@ public:
 	virtual
 	void
 	on_unit_angle_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_add_meta_data_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_add_meta_data_ok_clicked () = 0;
+
+	virtual
+	void
+	on_meta_data_name_changed () = 0;
 
 	///  @name Destruction
 
@@ -302,6 +362,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment>       m_UnitMassAdjustment;
 	Glib::RefPtr <Gtk::TextBuffer>       m_WorldInfoInfoTextBuffer;
 	Glib::RefPtr <Gtk::TextBuffer>       m_WorldInfoInfoTitleTextBuffer;
+	Glib::RefPtr <Gtk::TreeSelection>    m_MetaDataTreeSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn>   m_MetaDataNameColumn;
 	Glib::RefPtr <Gtk::CellRendererText> m_CellRendererMetaDataName;
 	Glib::RefPtr <Gtk::TreeViewColumn>   m_MetaDataContentColumn;
@@ -311,6 +372,9 @@ private:
 	Gtk::Notebook*                       m_Notebook;
 	Gtk::Expander*                       m_MetaDataExpander;
 	Gtk::TreeView*                       m_MetaDataTreeView;
+	Gtk::ButtonBox*                      m_UserDefinedFieldsActionBox;
+	Gtk::Button*                         m_AddMetaDataButton;
+	Gtk::Button*                         m_RemoveMetaDataButton;
 	Gtk::Expander*                       m_UnitsExpander;
 	Gtk::ComboBoxText*                   m_UnitMassCombo;
 	Gtk::Entry*                          m_UnitMassEntry;
@@ -323,6 +387,11 @@ private:
 	Gtk::Expander*                       m_WorldInfoExpander;
 	Gtk::TextView*                       m_WorldInfoTitleTextView;
 	Gtk::TextView*                       m_WorldInfoInfoTextView;
+	Gtk::Dialog*                         m_MetaDataDialog;
+	Gtk::Button*                         m_MetaDataCancelButton;
+	Gtk::Button*                         m_MetaDataOkButton;
+	Gtk::Entry*                          m_MetaDataNameEntry;
+	Gtk::Entry*                          m_MetaDataContentEntry;
 
 };
 

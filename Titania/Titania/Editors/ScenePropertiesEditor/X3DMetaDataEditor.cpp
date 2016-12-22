@@ -85,17 +85,17 @@ void
 X3DMetaDataEditor::set_current_scene ()
 {
 	if (scene)
-		scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_metaData);
+		scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
 
 	scene = getCurrentScene ();
 
-	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::set_metaData);
+	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::set_meta_data);
 
-	set_metaData ();
+	set_meta_data ();
 }
 
 void
-X3DMetaDataEditor::set_metaData ()
+X3DMetaDataEditor::set_meta_data ()
 {
 	getMetaDataListStore () -> clear ();
 
@@ -109,7 +109,67 @@ X3DMetaDataEditor::set_metaData ()
 }
 
 void
-X3DMetaDataEditor::on_metaData_name_edited (const Glib::ustring & path, const Glib::ustring & new_text)
+X3DMetaDataEditor::on_meta_data_changed ()
+{
+	getRemoveMetaDataButton () .set_sensitive (not getMetaDataTreeView () .get_selection () -> get_selected_rows () .empty ());
+}
+
+void
+X3DMetaDataEditor::on_add_meta_data_clicked ()
+{
+	getMetaDataNameEntry ()    .set_text ("");
+	getMetaDataContentEntry () .set_text ("");
+
+	getMetaDataDialog () .present ();
+}
+
+void
+X3DMetaDataEditor::on_meta_data_name_changed ()
+{
+	getMetaDataOkButton () .set_sensitive (not getMetaDataNameEntry () .get_text () .empty ());
+}
+
+void
+X3DMetaDataEditor::on_add_meta_data_ok_clicked ()
+{
+	getMetaDataDialog () .hide ();
+
+	const auto iter = getMetaDataListStore () -> append ();
+
+	iter -> set_value (NAME,    getMetaDataNameEntry ()    .get_text ());
+	iter -> set_value (CONTENT, getMetaDataContentEntry () .get_text ());
+
+	scene -> setMetaData (getMetaDataNameEntry () .get_text (), getMetaDataContentEntry () .get_text ());
+
+	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
+	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
+}
+
+void
+X3DMetaDataEditor::on_add_meta_data_cancel_clicked ()
+{
+	getMetaDataDialog () .hide ();
+}
+
+void
+X3DMetaDataEditor::on_remove_meta_data_clicked ()
+{
+	const auto selected = getMetaDataTreeView () .get_selection () -> get_selected ();
+
+	std::string name;
+
+	selected -> get_value (NAME, name);
+
+	getMetaDataListStore () -> erase (selected);
+
+	scene -> removeMetaData (name);
+
+	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
+	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
+}
+
+void
+X3DMetaDataEditor::on_meta_data_name_edited (const Glib::ustring & path, const Glib::ustring & new_text)
 {
 	if (new_text .empty ())
 		return;
@@ -126,12 +186,12 @@ X3DMetaDataEditor::on_metaData_name_edited (const Glib::ustring & path, const Gl
 	scene -> removeMetaData (name);
 	scene -> setMetaData (new_text, content);
 
-	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_metaData);
+	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
 	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
 }
 
 void
-X3DMetaDataEditor::on_metaData_content_edited (const Glib::ustring & path, const Glib::ustring & new_text)
+X3DMetaDataEditor::on_meta_data_content_edited (const Glib::ustring & path, const Glib::ustring & new_text)
 {
 	std::string name;
 
@@ -142,7 +202,7 @@ X3DMetaDataEditor::on_metaData_content_edited (const Glib::ustring & path, const
 
 	scene -> setMetaData (name, new_text);
 
-	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_metaData);
+	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
 	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
 }
 
@@ -150,7 +210,7 @@ void
 X3DMetaDataEditor::connectMetaData (const X3D::SFTime & field)
 {
 	field .removeInterest (this, &X3DMetaDataEditor::connectMetaData);
-	field .addInterest (this, &X3DMetaDataEditor::set_metaData);
+	field .addInterest (this, &X3DMetaDataEditor::set_meta_data);
 }
 
 void
