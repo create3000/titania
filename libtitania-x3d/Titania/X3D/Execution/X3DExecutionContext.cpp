@@ -1578,13 +1578,87 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 void
 X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
+	const auto specificationVersion = getSpecificationVersion ();
+
+	Generator::PushExecutionContext (this);
+	Generator::EnterScope ();
+	Generator::ImportedNodes (getImportedNodes ());
+
+	bool lastProperty = false;
+
+	// Proto declarations
+
+	if (not getProtoDeclarations () .empty ())
+	{
+		if (lastProperty)
+		{
+			ostream
+				<< ','
+				<< Generator::TidyBreak;
+		}
+	
+		for (const auto & proto : getProtoDeclarations ())
+		{
+			ostream
+				<< Generator::Indent
+				<< JSONEncode (proto);
+	
+			if (&proto not_eq &getProtoDeclarations () .back ())
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+		}
+	
+		lastProperty = true;
+	}
+
+	// Root nodes
+
 	if (not getRootNodes () .empty ())
 	{
-		ostream
-			<< JSONEncode (getRootNodes ())
-			<< ','
-			<< Generator::TidyBreak;
+		if (lastProperty)
+		{
+			ostream
+				<< ','
+				<< Generator::TidyBreak;
+		}
+
+		Generator::EnterScope ();
+
+		for (const auto & value : std::make_pair (getRootNodes () .begin (), getRootNodes () .end ()))
+		{
+			if (value)
+			{
+				ostream
+					<< Generator::Indent
+					<< JSONEncode (value);
+			}
+			else
+			{
+				ostream
+					<< Generator::Indent
+					<< "null";
+			}
+
+			if (&value not_eq &getRootNodes () .back ())
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+			}
+		}
+
+		Generator::LeaveScope ();
+
+		lastProperty = true;
 	}
+
+	Generator::LeaveScope ();
+	Generator::PopExecutionContext ();
 }
 
 void

@@ -742,19 +742,24 @@ X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream &
 OutputStyleType
 X3DBrowserWidget::getOutputStyle (const X3D::X3DScenePtr & scene) const
 {
-	const auto & outputStyle = scene -> getMetaData ("outputStyle");
-
-	if (outputStyle == "nicest")
-		return OutputStyleType::NICEST;
-
-	if (outputStyle == "compact")
-		return OutputStyleType::COMPACT;
-
-	if (outputStyle == "small")
-		return OutputStyleType::SMALL;
-
-	if (outputStyle == "smallest")
-		return OutputStyleType::SMALLEST;
+	try
+	{
+		const auto & outputStyle = scene -> getMetaData ("outputStyle");
+	
+		if (outputStyle == "nicest")
+			return OutputStyleType::NICEST;
+	
+		if (outputStyle == "compact")
+			return OutputStyleType::COMPACT;
+	
+		if (outputStyle == "small")
+			return OutputStyleType::SMALL;
+	
+		if (outputStyle == "smallest")
+			return OutputStyleType::SMALLEST;
+	}
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	{ }
 
 	return OutputStyleType::NICEST;
 }

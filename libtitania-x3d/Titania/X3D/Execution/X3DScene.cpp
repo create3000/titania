@@ -736,11 +736,128 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 void
 X3DScene::toJSONStream (std::ostream & ostream) const
 {
-	// <Scene>
-
 	Generator::PushExecutionContext (this);
 	Generator::EnterScope ();
 	Generator::ExportedNodes (getExportedNodes ());
+
+
+	// X3D
+
+	ostream
+		<< '{'
+		<< Generator::TidySpace
+		<< '"'
+		<< "X3D"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent
+		<< Generator::IncIndent;
+
+
+	// Encoding
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "encoding"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '"'
+		<< "UTF-8"
+		<< '"'
+		<< ','
+		<< Generator::TidyBreak;
+
+
+	// Profile
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@profile"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '"'
+		<< getProfile () -> getName ()
+		<< '"'
+		<< ','
+		<< Generator::TidyBreak;
+
+
+	// Version
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@version"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '"'
+		<< "3.3"
+		<< '"'
+		<< ','
+		<< Generator::TidyBreak;
+
+
+	// XSD noNamespaceSchemaLocation
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "@xsd:noNamespaceSchemaLocation"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '"'
+		<< "http://www.web3d.org/specifications/x3d-3.3.xsd"
+		<< '"'
+		<< ','
+		<< Generator::TidyBreak;
+
+
+	// JSON schema
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "JSON schema"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '"'
+		<< "http://www.web3d.org/specifications/x3d-3.3-JSONSchema.json"
+		<< '"'
+		<< ','
+		<< Generator::TidyBreak;
+
+
+	// Scene
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "Scene"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent
+		<< Generator::Indent
+		<< '"'
+		<< "-children"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '['
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
 
 	X3DExecutionContext::toJSONStream (ostream);
 
@@ -756,10 +873,35 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 //		{ }
 //	}
 
+
+	// Scene end
+
+	ostream
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< ']'
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}';
+
+
+	// X3D end
+
+	ostream
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}'
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}'
+		<< Generator::TidyBreak;
+
 	Generator::LeaveScope ();
 	Generator::PopExecutionContext ();
-
-	// </Scene>
 }
 
 void

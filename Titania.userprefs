@@ -1,63 +1,16 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Configuration/ProfileInfo.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionSensor.h" Line="67" Column="14" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionSensor.cpp" Line="89" Column="48" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionCollection.h" Line="70" Column="56" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/CollisionCollection.cpp" Line="141" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/RigidBodyPhysics/X3DRigidBodyPhysicsContext.h" Line="117" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/RigidBodyPhysics/X3DRigidBodyPhysicsContext.cpp" Line="105" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.h" Line="317" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/RigidBodyPhysics/RigidBody.cpp" Line="149" Column="46" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="546" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="2200" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="1004" Column="26" />
+      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ProtoDeclaration.cpp" Line="574" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="1590" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="786" Column="1" />
+      <File FileName="../../Schreibtisch/toXMLString.json" Line="13" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Configuration/ProfileInfo.cpp" Line="82" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Titania" expanded="True">
-            <Node name="miscellaneous" expanded="True" />
-            <Node name="Library" expanded="True">
-              <Node name="Tests" expanded="True">
-                <Node name="PROTO" expanded="True">
-                  <Node name="Perceptron" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="libtitania-x3d" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="X3D" expanded="True">
-                  <Node name="Base" expanded="True" />
-                  <Node name="Basic" expanded="True" />
-                  <Node name="Browser" expanded="True">
-                    <Node name="ParticleSystems" expanded="True" />
-                    <Node name="RigidBodyPhysics" expanded="True" />
-                  </Node>
-                  <Node name="Components" expanded="True">
-                    <Node name="Geometry3D" expanded="True" />
-                    <Node name="Grouping" expanded="True" />
-                    <Node name="RigidBodyPhysics" expanded="True">
-                      <Node name="RigidBody.cpp" selected="True" />
-                    </Node>
-                  </Node>
-                  <Node name="Execution" expanded="True" />
-                  <Node name="Parser" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="share" expanded="True">
-                <Node name="titania" expanded="True">
-                  <Node name="ui" expanded="True" />
-                </Node>
-              </Node>
-              <Node name="Titania" expanded="True">
-                <Node name="Browser" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>

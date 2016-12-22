@@ -473,6 +473,249 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 void
 ProtoDeclaration::toJSONStream (std::ostream & ostream) const
 {
+	ostream .imbue (std::locale::classic ());
+
+	ostream
+		<< '{'
+		<< Generator::TidySpace
+		<< '"'
+		<< "ProtoDeclare"
+		<< '"'
+		<< ':'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent
+		<< Generator::Indent
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent
+		<< Generator::Indent
+		<< '"'
+		<< "@name"
+		<< '"'
+		<< ':'
+		<< SFString (getName ())
+		<< ','
+		<< Generator::TidyBreak
+		<< Generator::Indent
+		<< '"'
+		<< "ProtoInterface"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
+
+
+	// ProtoInterface
+
+	bool lastProperty = false;
+
+	Generator::EnterScope ();
+
+	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
+
+	if (not userDefinedFields .empty ())
+	{
+		if (lastProperty)
+		{
+			ostream
+				<< ','
+				<< Generator::TidyBreak;
+		}
+
+		ostream
+			<< Generator::Indent
+			<< '"'
+			<< "field"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< '['
+			<< Generator::TidyBreak
+			<< Generator::IncIndent;			
+
+		for (const auto & field : userDefinedFields)
+		{
+			ostream
+				<< Generator::Indent
+				<< '{'
+				<< Generator::TidyBreak
+				<< Generator::IncIndent			
+				<< Generator::Indent
+				<< '"'
+				<< "@accessType"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< '"'
+				<< field -> getAccessType ()
+				<< '"'
+				<< ','
+				<< Generator::TidyBreak
+				<< Generator::Indent
+				<< '"'
+				<< "@name"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< SFString (field -> getName ())
+				<< ','
+				<< Generator::TidyBreak
+				<< Generator::Indent
+				<< '"'
+				<< "@type"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< '"'
+				<< field -> getTypeName ()
+				<< '"';
+
+			if (field -> isDefaultValue ())
+			{
+				ostream << Generator::TidyBreak;
+			}
+			else
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
+
+				// Output value
+	
+				switch (field -> getType ())
+				{
+					case X3DConstants::MFNode:
+					{
+						ostream
+							<< Generator::Indent
+							<< '"'
+							<< "-children"
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< JSONEncode (field)
+							<< Generator::TidyBreak;
+	
+						break;
+					}
+					case X3DConstants::SFNode:
+					{
+						ostream
+							<< Generator::Indent
+							<< '"'
+							<< "-children"
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< '['
+							<< Generator::TidyBreak
+							<< Generator::IncIndent
+							<< Generator::Indent
+							<< JSONEncode (field)
+							<< Generator::TidyBreak
+							<< Generator::DecIndent
+							<< Generator::Indent
+							<< ']'
+							<< Generator::TidyBreak;
+	
+						break;
+					}
+					default:
+					{
+						ostream
+							<< Generator::Indent
+							<< '"'
+							<< "@value"
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< JSONEncode (field)
+							<< Generator::TidyBreak;
+	
+						break;
+					}
+				}
+			}
+
+			ostream
+				<< Generator::DecIndent
+				<< Generator::Indent
+				<< '}';
+
+			if (field not_eq userDefinedFields .back ())
+				ostream << ',';
+
+			ostream << Generator::TidyBreak;
+		}
+
+		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< ']';
+
+		lastProperty = true;
+	}
+
+	ostream
+		<< Generator::DecIndent
+		<< Generator::TidyBreak
+		<< Generator::Indent
+		<< '}'
+		<< ','
+		<< Generator::TidyBreak;
+
+
+	// ProtoBody
+
+	Generator::LeaveScope ();
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "ProtoBody"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '{'
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
+
+	ostream
+		<< Generator::Indent
+		<< '"'
+		<< "-children"
+		<< '"'
+		<< ':'
+		<< Generator::TidySpace
+		<< '['
+		<< Generator::TidyBreak
+		<< Generator::IncIndent;
+
+	X3DExecutionContext::toJSONStream (ostream);
+
+	ostream
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< ']';
+
+	// End
+
+	ostream
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}'
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}'
+		<< Generator::TidyBreak
+		<< Generator::DecIndent
+		<< Generator::Indent
+		<< '}';
 }
 
 void

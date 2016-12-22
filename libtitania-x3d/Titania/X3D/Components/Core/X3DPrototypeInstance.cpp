@@ -1021,6 +1021,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 					<< Generator::DecIndent
 					<< Generator::Indent
 					<< '}'
+					<< Generator::TidyBreak
 					<< Generator::DecIndent
 					<< Generator::Indent
 					<< ']';
@@ -1035,6 +1036,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 		}
 
 		ostream
+			<< Generator::TidyBreak
 			<< Generator::DecIndent
 			<< Generator::Indent
 			<< '}';
