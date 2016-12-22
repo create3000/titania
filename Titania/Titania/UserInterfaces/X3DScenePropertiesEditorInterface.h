@@ -231,6 +231,14 @@ public:
 
 	virtual
 	void
+	on_metaData_name_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+
+	virtual
+	void
+	on_metaData_content_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+
+	virtual
+	void
 	on_unit_mass_delete_text (int start_pos, int end_pos) = 0;
 
 	virtual

@@ -98,6 +98,10 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_UnitLengthAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_changed));
 	m_UnitMassAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed));
 
+	// Connect object Gtk::CellRendererText with id 'CellRendererMetaDataName'.
+	m_CellRendererMetaDataName -> signal_edited () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_metaData_name_edited));
+	m_CellRendererMetaDataContent -> signal_edited () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_metaData_content_edited));
+
 	// Connect object Gtk::Entry with id 'UnitMassEntry'.
 	m_UnitMassEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed));
 	m_UnitMassEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_delete_text), false);
