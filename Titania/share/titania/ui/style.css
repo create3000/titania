@@ -2,14 +2,6 @@
  * Titania Styles CSS
  */
 
-/*
-
-* {
-	-GtkTreeView-expander-size: 5;
-}
-
-*/
-
 .titania-console {
 	font: monospace;
 }
@@ -43,12 +35,12 @@
 	font-style: italic;
 }
 
-GtkExpander {
+expander {
 	padding-top: 4px;
 	padding-bottom: 2px;
 }
 
-GtkExpander > GtkLabel {
+expander > title > label {
 	font-weight: bold;
 	font-size: 114%;
 }
@@ -79,8 +71,6 @@ GtkExpander > GtkLabel {
 }
 
 #OutlineTreeViewEditor {
-	-GtkWidget-focus-line-width: 0;
-	-GtkWidget-focus-padding: 0;
 	-GtkTreeView-horizontal-separator: 0;
 }
 
@@ -97,43 +87,3 @@ GtkExpander > GtkLabel {
 	padding: 0px;
 	border-radius: 0;
 }
-
-/*
-GtkNotebook GtkGrid {
-	padding: 4px;
-}
-*/
-
-/*
-
-GtkComboBox
-{
-	padding: 0px;
-}
-
-GtkComboBox .button,
-GtkComboBox .combobox-entry .button
-{
-	padding: 1px;
-	-GtkComboBox-arrow-size: 0;
-}
-
-.spinbutton
-{
-	padding: 2px;
-}
-
-.spinbutton .button
-{
-	padding: 0px 0px 0px 2px;
-}
-
-.spinbutton .button .arrow:nth-child(first)
-{
-}
-
-.spinbutton .button .arrow:nth-child(last)
-{
-}
-
-*/
