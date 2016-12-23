@@ -328,7 +328,6 @@
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
             <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
             <child>
               <object class="GtkGrid" id="LightBox">
                 <property name="visible">True</property>
@@ -616,8 +615,7 @@
             <property name="name">DirectionalLightExpander</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
-            <child>
+             <child>
               <object class="GtkGrid" id="grid2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -758,8 +756,7 @@
             <property name="name">PointLightExpander</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
-            <child>
+             <child>
               <object class="GtkGrid" id="grid3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -966,7 +963,6 @@
             <property name="name">SpotLightExpander</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
             <child>
               <object class="GtkGrid" id="grid4">
                 <property name="visible">True</property>
@@ -1345,7 +1341,6 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
             <child>
               <object class="GtkGrid" id="LightBox1">
                 <property name="visible">True</property>

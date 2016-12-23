@@ -35,12 +35,9 @@
 	font-style: italic;
 }
 
-expander {
-	padding-top: 4px;
-	padding-bottom: 2px;
-}
-
 expander > title > label {
+	padding-top: 4px;
+	padding-bottom: 4px;
 	font-weight: bold;
 	font-size: 114%;
 }

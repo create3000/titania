@@ -265,7 +265,6 @@
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <property name="spacing">8</property>
-                    <property name="resize_toplevel">True</property>
                     <child>
                       <object class="GtkGrid" id="SoundBox">
                         <property name="visible">True</property>
@@ -911,7 +910,6 @@
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <property name="spacing">8</property>
-                    <property name="resize_toplevel">True</property>
                     <child>
                       <object class="GtkBox" id="box8">
                         <property name="visible">True</property>

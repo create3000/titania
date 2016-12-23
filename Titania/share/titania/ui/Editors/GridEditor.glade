@@ -317,7 +317,6 @@
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <property name="spacing">8</property>
-                    <property name="resize_toplevel">True</property>
                     <child>
                       <object class="GtkBox" id="box1">
                         <property name="visible">True</property>
@@ -683,7 +682,6 @@
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <property name="spacing">8</property>
-                    <property name="resize_toplevel">True</property>
                     <child>
                       <object class="GtkGrid" id="GridMajorLinesBox">
                         <property name="visible">True</property>
@@ -952,7 +950,6 @@
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <property name="spacing">8</property>
-                    <property name="resize_toplevel">True</property>
                     <child>
                       <object class="GtkGrid" id="GridColorsBox">
                         <property name="visible">True</property>
@@ -1158,7 +1155,6 @@
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <property name="spacing">8</property>
-                    <property name="resize_toplevel">True</property>
                     <child>
                       <object class="GtkBox" id="box5">
                         <property name="visible">True</property>
@@ -1524,7 +1520,6 @@
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <property name="spacing">8</property>
-                    <property name="resize_toplevel">True</property>
                     <child>
                       <object class="GtkGrid" id="AngleMajorLinesBox">
                         <property name="visible">True</property>
@@ -1795,7 +1790,6 @@
                     <property name="can_focus">True</property>
                     <property name="expanded">True</property>
                     <property name="spacing">8</property>
-                    <property name="resize_toplevel">True</property>
                     <child>
                       <object class="GtkGrid" id="AngleColorsBox">
                         <property name="visible">True</property>

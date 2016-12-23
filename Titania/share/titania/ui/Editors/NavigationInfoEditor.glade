@@ -209,7 +209,6 @@
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
             <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
             <child>
               <object class="GtkGrid" id="NavigationInfoBox">
                 <property name="visible">True</property>

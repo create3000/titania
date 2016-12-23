@@ -408,7 +408,6 @@
             <property name="can_focus">True</property>
             <property name="expanded">True</property>
             <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
             <child>
               <object class="GtkGrid" id="ViewpointBox">
                 <property name="visible">True</property>
@@ -627,7 +626,6 @@
             <property name="name">PerspectiveViewpointExpander</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
             <child>
               <object class="GtkGrid" id="PerspectiveViewpointBox">
                 <property name="visible">True</property>
@@ -1053,7 +1051,6 @@
             <property name="name">OrthoViewpointExpander</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
             <child>
               <object class="GtkGrid" id="OrthoViewpointBox">
                 <property name="visible">True</property>
@@ -1509,7 +1506,6 @@
             <property name="name">GeoViewpointExpander</property>
             <property name="can_focus">True</property>
             <property name="spacing">8</property>
-            <property name="resize_toplevel">True</property>
             <child>
               <object class="GtkGrid" id="GeoViewpointBox">
                 <property name="visible">True</property>
