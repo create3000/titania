@@ -167,12 +167,22 @@ X3DMetaDataEditor::on_add_meta_data_ok_clicked ()
 {
 	getMetaDataDialog () .hide ();
 
+	const auto name    = getMetaDataNameEntry ()    .get_text ();
+	const auto content = getMetaDataContentEntry () .get_text ();
+
 	const auto iter = getMetaDataListStore () -> append ();
 
-	iter -> set_value (NAME,    getMetaDataNameEntry ()    .get_text ());
-	iter -> set_value (CONTENT, getMetaDataContentEntry () .get_text ());
+	iter -> set_value (NAME,    name);
+	iter -> set_value (CONTENT, content);
 
-	scene -> setMetaData (getMetaDataNameEntry () .get_text (), getMetaDataContentEntry () .get_text ());
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Add Meta Data »%s«"), name .c_str ()));
+
+	undoStep -> addUndoFunction (&X3D::X3DScene::removeMetaData, scene, name);
+	undoStep -> addRedoFunction (&X3D::X3DScene::setMetaData, scene, name, content);
+
+	addUndoStep (undoStep);
+
+	scene -> setMetaData (name, content);
 
 	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
 	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
@@ -190,10 +200,19 @@ X3DMetaDataEditor::on_remove_meta_data_clicked ()
 	const auto selected = getMetaDataTreeView () .get_selection () -> get_selected ();
 
 	std::string name;
+	std::string content;
 
 	selected -> get_value (NAME, name);
+	selected -> get_value (CONTENT, content);
 
 	getMetaDataListStore () -> erase (selected);
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Meta Data »%s«"), name .c_str ()));
+
+	undoStep -> addUndoFunction (&X3D::X3DScene::setMetaData, scene, name, content);
+	undoStep -> addRedoFunction (&X3D::X3DScene::removeMetaData, scene, name);
+
+	addUndoStep (undoStep);
 
 	scene -> removeMetaData (name);
 
@@ -216,6 +235,15 @@ X3DMetaDataEditor::on_meta_data_name_edited (const Glib::ustring & path, const G
 	iter -> get_value (CONTENT, content);
 	iter -> set_value (NAME,    new_text);
 
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Meta Data »%s«"), name .c_str ()));
+
+	undoStep -> addUndoFunction (&X3D::X3DScene::setMetaData, scene, name, content);
+	undoStep -> addUndoFunction (&X3D::X3DScene::removeMetaData, scene, new_text);
+	undoStep -> addRedoFunction (&X3D::X3DScene::removeMetaData, scene, name);
+	undoStep -> addRedoFunction (&X3D::X3DScene::setMetaData, scene, new_text, content);
+
+	addUndoStep (undoStep);
+
 	scene -> removeMetaData (name);
 	scene -> setMetaData (new_text, content);
 
@@ -227,11 +255,20 @@ void
 X3DMetaDataEditor::on_meta_data_content_edited (const Glib::ustring & path, const Glib::ustring & new_text)
 {
 	std::string name;
+	std::string content;
 
 	const auto iter = getMetaDataListStore () -> get_iter (path);
 
 	iter -> get_value (NAME,    name);
+	iter -> get_value (CONTENT, content);
 	iter -> set_value (CONTENT, new_text);
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Change Meta Data »%s«"), name .c_str ()));
+
+	undoStep -> addUndoFunction (&X3D::X3DScene::setMetaData, scene, name, content);
+	undoStep -> addRedoFunction (&X3D::X3DScene::setMetaData, scene, name, new_text);
+
+	addUndoStep (undoStep);
 
 	scene -> setMetaData (name, new_text);
 
