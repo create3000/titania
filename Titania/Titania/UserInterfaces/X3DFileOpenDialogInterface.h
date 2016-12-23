@@ -108,6 +108,10 @@ public:
 	{ return m_FileFilterAudio; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterAutodesk3DSMax () const
+	{ return m_FileFilterAutodesk3DSMax; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterCompressedVrmlEncoding () const
 	{ return m_FileFilterCompressedVrmlEncoding; }
 
@@ -201,6 +205,7 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAutodesk3DSMax;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedVrmlEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedX3DClassicVRMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedX3DXMLEncoding;

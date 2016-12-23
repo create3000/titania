@@ -498,6 +498,26 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DScene.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_atmosphere.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_background.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_camera.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_chunk.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_chunktable.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_file.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_io.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_light.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_material.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_math.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_matrix.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_mesh.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_node.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_quat.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_shadow.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_track.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_util.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_vector.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_viewport.c \
+	Titania/X3D/Parser/Autodesk/Parser.cpp \
 	Titania/X3D/Parser/Filter.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/Parser.cpp \

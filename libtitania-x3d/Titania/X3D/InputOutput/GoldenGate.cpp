@@ -53,6 +53,7 @@
 #include "../Fields.h"
 #include "../Browser/Sound/MediaStream.h"
 #include "../Parser/Filter.h"
+#include "../Parser/Autodesk/Parser.h"
 #include "../Parser/Wavefront/Parser.h"
 
 #include <Titania/OS.h>
@@ -147,6 +148,13 @@ golden_x3d (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestrea
 	basic::ifilestream goldenstream (golden_pipe (x3d2vrml, basic::to_string (istream)));
 
 	scene -> fromStream (uri, goldenstream);
+}
+
+static
+void
+golden_3ds (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
+{
+	Autodesk::Parser (scene, uri, istream) .parseIntoScene ();
 }
 
 static
@@ -256,14 +264,16 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 	using GoldenFunction = std::function <void (const X3DScenePtr &, const basic::uri &, basic::ifilestream &)>;
 
 	static const std::map <std::string, GoldenFunction> contentTypes = {
-		std::make_pair ("model/vrml",      &golden_x3dv),
-		std::make_pair ("x-world/x-vrml",  &golden_x3dv),
-		std::make_pair ("model/x3d+vrml",  &golden_x3dv),
-		std::make_pair ("model/x3d+xml",   &golden_x3d),
-		std::make_pair ("application/xml", &golden_x3d),
+		std::make_pair ("model/vrml",                       &golden_x3dv),
+		std::make_pair ("x-world/x-vrml",                   &golden_x3dv),
+		std::make_pair ("model/x3d+vrml",                   &golden_x3dv),
+		std::make_pair ("model/x3d+xml",                    &golden_x3d),
+		std::make_pair ("application/xml",                  &golden_x3d),
 		std::make_pair ("application/vnd.hzn-3d-crossword", &golden_x3d),
-		std::make_pair ("application/ogg", &golden_video),
-		std::make_pair ("text/plain",      &golden_text)
+		std::make_pair ("application/ogg",                  &golden_video),
+		std::make_pair ("application/x-3ds",                &golden_3ds),
+		std::make_pair ("image/x-3ds",                      &golden_3ds),
+		std::make_pair ("text/plain",                       &golden_text)
 	};
 
 	static const std::map <std::string, GoldenFunction> suffixes = {
@@ -280,6 +290,8 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 		std::make_pair (".x3d",      &golden_x3d),
 		std::make_pair (".x3d.gz",   &golden_x3d), /// Todo: does not work with URI::suffix
 		std::make_pair (".xml",      &golden_x3d),
+		// Autodesk 3DS Max
+		std::make_pair (".3ds",      &golden_3ds),
 		// Wavefront OBJ
 		std::make_pair (".obj",      &golden_obj)
 	};

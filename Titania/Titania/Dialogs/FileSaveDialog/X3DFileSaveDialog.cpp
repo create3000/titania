@@ -414,6 +414,7 @@ X3DFileSaveDialog::exportImage ()
 						            "(gimp-quit 0))");
 
 						unlink (tmpFilename .c_str ());
+						close (fileDescriptor);
 					}
 				}
 				else

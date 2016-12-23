@@ -12,6 +12,15 @@
       <mime-type>audio/*</mime-type>
     </mime-types>
   </object>
+  <object class="GtkFileFilter" id="FileFilterAutodesk3DSMax">
+    <mime-types>
+      <mime-type>application/x-3ds</mime-type>
+      <mime-type>image/x-3ds</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.3ds</pattern>
+    </patterns>
+  </object>
   <object class="GtkFileFilter" id="FileFilterCompressedVrmlEncoding">
     <mime-types>
       <mime-type>x-world/x-vrml</mime-type>
@@ -82,6 +91,8 @@
       <mime-type>model/vrml</mime-type>
       <mime-type>model/x3d+vrml</mime-type>
       <mime-type>model/x3d+xml</mime-type>
+      <mime-type>application/x-3ds</mime-type>
+      <mime-type>image/x-3ds</mime-type>
     </mime-types>
     <patterns>
       <pattern>*.x3d</pattern>
@@ -96,6 +107,7 @@
       <pattern>*.vrm</pattern>
       <pattern>*.vrml</pattern>
       <pattern>*.obj</pattern>
+      <pattern>*.3ds</pattern>
     </patterns>
   </object>
   <object class="GtkFileFilter" id="FileFilterX3DClassicVRMLEncoding">

@@ -238,6 +238,8 @@
     <None Include="Convex Hull 3D – Quickhull Algorithm – Thomas Diewald-Dateien\wp-emoji-release.js" />
     <None Include="moeller_triangle.pdf" />
     <None Include="GDC01_Shadows.pdf" />
+    <None Include="[2008 Featherstone] Rigid Body Dynamics Algorithms.pdf" />
+    <None Include="FeatherstoneSlides.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

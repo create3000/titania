@@ -657,6 +657,23 @@
     <None Include="Tests\Shaders\Matrix4VertexAttibute.x3dv" />
     <None Include="Tests\images\farbmanagement_test.jpg" />
     <None Include="Tests\PROTO\Perceptron\Perceptron.x3dv" />
+    <None Include="Tests\3rd Party\Autodesk\balista.3ds" />
+    <None Include="Tests\3rd Party\Autodesk\furniture.3ds" />
+    <None Include="Tests\3rd Party\Autodesk\hearse.3ds" />
+    <None Include="Tests\3rd Party\Autodesk\hearse.jpg" />
+    <None Include="Tests\3rd Party\Autodesk\stealth.3ds" />
+    <None Include="Tests\3rd Party\Autodesk\stealth.jpg" />
+    <None Include="Tests\3rd Party\Autodesk\stealth.w3d" />
+    <None Include="Tests\3rd Party\Autodesk\warrior.3ds" />
+    <None Include="Tests\3rd Party\Autodesk\warrior.jpg" />
+    <None Include="Tests\3rd Party\Autodesk\warrior.w3d" />
+    <None Include="Tests\3rd Party\Autodesk\zeb.3ds" />
+    <None Include="Tests\3rd Party\Autodesk\zeb.jpg" />
+    <None Include="Tests\3rd Party\Autodesk\zeb.max" />
+    <None Include="Tests\3rd Party\Autodesk\man_free.3ds" />
+    <None Include="Tests\3rd Party\Autodesk\solarsail.3ds" />
+    <None Include="Tests\3rd Party\Autodesk\ssail.jpg" />
+    <None Include="Tests\3rd Party\Autodesk\watertower.3ds" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
@@ -707,6 +724,7 @@
     <Folder Include="Tests\Scripting\pb\" />
     <Folder Include="Tests\PROTO\solaris\" />
     <Folder Include="Examples\" />
+    <Folder Include="Tests\3rd Party\Autodesk\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Tests\Navigation\Rotor.wrl" />

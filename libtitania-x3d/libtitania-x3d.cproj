@@ -836,6 +836,10 @@
     <None Include="Titania\X3D\Tools\Grouping\X3DTransformMatrix3DObjectTool.h" />
     <None Include="Titania\X3D\Browser\RigidBodyPhysics\X3DRigidBodyPhysicsContext.h" />
     <None Include="Titania\X3D\Browser\RigidBodyPhysics\CollidableNodesSet.h" />
+    <None Include="Titania\X3D\Parser\Autodesk\Parser.h" />
+    <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds.h" />
+    <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds.rc" />
+    <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_impl.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1392,6 +1396,26 @@
     <Compile Include="Titania\X3D\Rendering\DependentRenderer.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DObject.cpp" />
     <Compile Include="Titania\X3D\Browser\RigidBodyPhysics\X3DRigidBodyPhysicsContext.cpp" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\Parser.cpp" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_atmosphere.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_background.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_camera.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_chunk.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_chunktable.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_file.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_io.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_light.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_material.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_math.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_matrix.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_mesh.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_node.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_quat.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_shadow.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_track.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_util.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_vector.c" />
+    <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_viewport.c" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1475,6 +1499,8 @@
     <Folder Include="share\fonts\truetype\titania-fonts\" />
     <Folder Include="Titania\X3D\Bits\" />
     <Folder Include="Titania\X3D\Browser\RigidBodyPhysics\" />
+    <Folder Include="Titania\X3D\Parser\Autodesk\" />
+    <Folder Include="Titania\X3D\Parser\Autodesk\lib3ds\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

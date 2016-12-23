@@ -73,7 +73,8 @@ static constexpr auto COMPRESSED_X3D_XML_ENCODING_FILTER          = "Compressed 
 static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed X3D Classic VRML Encoding (*.x3dvz)";
 static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
 
-static constexpr auto WAVEFRONT_OBJ_FILE_FILTER = "Wavefront OBJ File (*.obj)";
+static constexpr auto AUTODESK_3DS_MAX_FILE_FILTER = "Autodesk 3DS Max File (*.3ds)";
+static constexpr auto WAVEFRONT_OBJ_FILE_FILTER    = "Wavefront OBJ File (*.obj)";
 
 FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
@@ -95,7 +96,8 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	getFileFilterCompressedX3DClassicVRMLEncoding () -> set_name (_ (COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER));
 	getFileFilterCompressedVrmlEncoding           () -> set_name (_ (COMPRESSED_VRML97_ENCODING_FILTER));
 
-	getFileFilterWavefrontOBJ () -> set_name (_ (WAVEFRONT_OBJ_FILE_FILTER));
+	getFileFilterAutodesk3DSMax ()  -> set_name (_ (AUTODESK_3DS_MAX_FILE_FILTER));
+	getFileFilterWavefrontOBJ ()    -> set_name (_ (WAVEFRONT_OBJ_FILE_FILTER));
 
 	const auto worldURL = getCurrentScene () -> getWorldURL ();
 
@@ -124,13 +126,14 @@ FileOpenDialog::setMode (Mode mode)
 
 			getWindow () .add_filter (getFileFilterX3DXMLEncoding ());
 			getWindow () .add_filter (getFileFilterX3DClassicVRMLEncoding ());
-			getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
+			//getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
 			getWindow () .add_filter (getFileFilterVrmlEncoding ());
-		
+
 			getWindow () .add_filter (getFileFilterCompressedX3DXMLEncoding ());
 			getWindow () .add_filter (getFileFilterCompressedX3DClassicVRMLEncoding ());
 			getWindow () .add_filter (getFileFilterCompressedVrmlEncoding ());
-		
+
+			getWindow () .add_filter (getFileFilterAutodesk3DSMax ());
 			getWindow () .add_filter (getFileFilterWavefrontOBJ ());
 
 			setFilter (getConfig () -> getString ("filter"));
@@ -189,6 +192,9 @@ FileOpenDialog::setFilter (const std::string & name)
 		getWindow () .set_filter (getFileFilterCompressedVrmlEncoding ());
 
 	// Other
+
+	else if (name == _(AUTODESK_3DS_MAX_FILE_FILTER))
+		getWindow () .set_filter (getFileFilterAutodesk3DSMax ());
 
 	else if (name == _(WAVEFRONT_OBJ_FILE_FILTER))
 		getWindow () .set_filter (getFileFilterWavefrontOBJ ());

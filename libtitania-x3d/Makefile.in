@@ -619,6 +619,26 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DScene.lo \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.lo \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_atmosphere.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_background.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_camera.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_chunk.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_chunktable.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_file.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_io.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_light.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_material.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_math.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_matrix.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_mesh.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_node.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_quat.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_shadow.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_track.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_util.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_vector.lo \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_viewport.lo \
+	Titania/X3D/Parser/Autodesk/Parser.lo \
 	Titania/X3D/Parser/Filter.lo Titania/X3D/Parser/Grammar.lo \
 	Titania/X3D/Parser/Parser.lo \
 	Titania/X3D/Parser/Wavefront/Parser.lo \
@@ -699,6 +719,24 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_@AM_V@)
+am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
+am__v_CC_0 = @echo "  CC      " $@;
+am__v_CC_1 = 
+CCLD = $(CC)
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_@AM_V@)
+am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
+am__v_CCLD_0 = @echo "  CCLD    " $@;
+am__v_CCLD_1 = 
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
@@ -1415,6 +1453,26 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/JavaScript/SpiderMonkey/X3DScene.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptContext.cpp \
 	Titania/X3D/JavaScript/X3DJavaScriptEngine.cpp \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_atmosphere.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_background.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_camera.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_chunk.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_chunktable.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_file.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_io.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_light.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_material.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_math.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_matrix.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_mesh.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_node.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_quat.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_shadow.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_track.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_util.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_vector.c \
+	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_viewport.c \
+	Titania/X3D/Parser/Autodesk/Parser.cpp \
 	Titania/X3D/Parser/Filter.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/Parser.cpp \
@@ -1504,7 +1562,7 @@ AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cpp .lo .o .obj
+.SUFFIXES: .c .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -3440,6 +3498,78 @@ Titania/X3D/JavaScript/X3DJavaScriptContext.lo:  \
 Titania/X3D/JavaScript/X3DJavaScriptEngine.lo:  \
 	Titania/X3D/JavaScript/$(am__dirstamp) \
 	Titania/X3D/JavaScript/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Parser/Autodesk/lib3ds
+	@: > Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)
+	@: > Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_atmosphere.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_background.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_camera.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_chunk.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_chunktable.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_file.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_io.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_light.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_material.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_math.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_matrix.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_mesh.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_node.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_quat.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_shadow.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_track.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_util.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_vector.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_viewport.lo:  \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Parser/Autodesk
+	@: > Titania/X3D/Parser/Autodesk/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Parser/Autodesk/$(DEPDIR)
+	@: > Titania/X3D/Parser/Autodesk/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Autodesk/Parser.lo:  \
+	Titania/X3D/Parser/Autodesk/$(am__dirstamp) \
+	Titania/X3D/Parser/Autodesk/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Parser/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Parser
 	@: > Titania/X3D/Parser/$(am__dirstamp)
@@ -3875,6 +4005,10 @@ mostlyclean-compile:
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/*.lo
 	-rm -f Titania/X3D/Parser/*.$(OBJEXT)
 	-rm -f Titania/X3D/Parser/*.lo
+	-rm -f Titania/X3D/Parser/Autodesk/*.$(OBJEXT)
+	-rm -f Titania/X3D/Parser/Autodesk/*.lo
+	-rm -f Titania/X3D/Parser/Autodesk/lib3ds/*.$(OBJEXT)
+	-rm -f Titania/X3D/Parser/Autodesk/lib3ds/*.lo
 	-rm -f Titania/X3D/Parser/Wavefront/*.$(OBJEXT)
 	-rm -f Titania/X3D/Parser/Wavefront/*.lo
 	-rm -f Titania/X3D/Prototype/*.$(OBJEXT)
@@ -4410,6 +4544,26 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Grammar.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/X3DParser.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/$(DEPDIR)/Parser.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_atmosphere.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_background.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_camera.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_chunk.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_chunktable.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_file.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_io.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_light.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_material.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_math.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_matrix.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_mesh.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_node.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_quat.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_shadow.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_track.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_util.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_vector.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/lib3ds_viewport.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Wavefront/$(DEPDIR)/Parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/ExternProtoArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Prototype/$(DEPDIR)/ExternProtoDeclaration.Plo@am__quote@
@@ -4467,6 +4621,30 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/X3DNormalNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Sound/$(DEPDIR)/SoundTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Types/$(DEPDIR)/Image.Plo@am__quote@
+
+.c.o:
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ $<
+
+.c.obj:
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+.c.lo:
+@am__fastdepCC_TRUE@	$(AM_V_CC)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.lo$$||'`;\
+@am__fastdepCC_TRUE@	$(LTCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCC_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -4570,6 +4748,8 @@ clean-libtool:
 	-rm -rf Titania/X3D/JavaScript/SpiderMonkey/.libs Titania/X3D/JavaScript/SpiderMonkey/_libs
 	-rm -rf Titania/X3D/JavaScript/SpiderMonkey/Fields/.libs Titania/X3D/JavaScript/SpiderMonkey/Fields/_libs
 	-rm -rf Titania/X3D/Parser/.libs Titania/X3D/Parser/_libs
+	-rm -rf Titania/X3D/Parser/Autodesk/.libs Titania/X3D/Parser/Autodesk/_libs
+	-rm -rf Titania/X3D/Parser/Autodesk/lib3ds/.libs Titania/X3D/Parser/Autodesk/lib3ds/_libs
 	-rm -rf Titania/X3D/Parser/Wavefront/.libs Titania/X3D/Parser/Wavefront/_libs
 	-rm -rf Titania/X3D/Prototype/.libs Titania/X3D/Prototype/_libs
 	-rm -rf Titania/X3D/Rendering/.libs Titania/X3D/Rendering/_libs
@@ -4849,6 +5029,10 @@ distclean-generic:
 	-rm -f Titania/X3D/JavaScript/SpiderMonkey/Fields/$(am__dirstamp)
 	-rm -f Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Parser/$(am__dirstamp)
+	-rm -f Titania/X3D/Parser/Autodesk/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Parser/Autodesk/$(am__dirstamp)
+	-rm -f Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Parser/Autodesk/lib3ds/$(am__dirstamp)
 	-rm -f Titania/X3D/Parser/Wavefront/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Parser/Wavefront/$(am__dirstamp)
 	-rm -f Titania/X3D/Prototype/$(DEPDIR)/$(am__dirstamp)
@@ -4893,7 +5077,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Autodesk/$(DEPDIR) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -4940,7 +5124,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Autodesk/$(DEPDIR) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

@@ -63,6 +63,7 @@ X3DFileOpenDialogInterface::create (const std::string & filename)
 	// Get objects.
 	m_FileFilterAll                              = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAll"));
 	m_FileFilterAudio                            = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAudio"));
+	m_FileFilterAutodesk3DSMax                   = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterAutodesk3DSMax"));
 	m_FileFilterCompressedVrmlEncoding           = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterCompressedVrmlEncoding"));
 	m_FileFilterCompressedX3DClassicVRMLEncoding = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterCompressedX3DClassicVRMLEncoding"));
 	m_FileFilterCompressedX3DXMLEncoding         = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterCompressedX3DXMLEncoding"));
