@@ -12,6 +12,34 @@
       <mime-type>audio/*</mime-type>
     </mime-types>
   </object>
+  <object class="GtkFileFilter" id="FileFilterCompressedVrmlEncoding">
+    <mime-types>
+      <mime-type>x-world/x-vrml</mime-type>
+      <mime-type>model/vrml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.wrz</pattern>
+      <pattern>*.wrl.gz</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterCompressedX3DClassicVRMLEncoding">
+    <mime-types>
+      <mime-type>model/x3d+vrml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.x3dvz</pattern>
+      <pattern>*.x3dv.gz</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterCompressedX3DXMLEncoding">
+    <mime-types>
+      <mime-type>model/x3d+xml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.x3d.gz</pattern>
+      <pattern>*.x3dz</pattern>
+    </patterns>
+  </object>
   <object class="GtkFileFilter" id="FileFilterFonts">
     <mime-types>
       <mime-type>application/x-font-truetype</mime-type>
@@ -31,6 +59,22 @@
     <mime-types>
       <mime-type>video/*</mime-type>
     </mime-types>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterVrmlEncoding">
+    <mime-types>
+      <mime-type>x-world/x-vrml</mime-type>
+      <mime-type>model/vrml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.wrl</pattern>
+      <pattern>*.vrm</pattern>
+      <pattern>*.vrml</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterWavefrontOBJ">
+    <patterns>
+      <pattern>*.obj</pattern>
+    </patterns>
   </object>
   <object class="GtkFileFilter" id="FileFilterX3D">
     <mime-types>
@@ -52,6 +96,30 @@
       <pattern>*.vrm</pattern>
       <pattern>*.vrml</pattern>
       <pattern>*.obj</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterX3DClassicVRMLEncoding">
+    <mime-types>
+      <mime-type>model/x3d+vrml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.x3dv</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterX3DJSONEncoding">
+    <mime-types>
+      <mime-type>application/json</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.json</pattern>
+    </patterns>
+  </object>
+  <object class="GtkFileFilter" id="FileFilterX3DXMLEncoding">
+    <mime-types>
+      <mime-type>model/x3d+xml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.x3d</pattern>
     </patterns>
   </object>
   <object class="GtkFileChooserDialog" id="Window">

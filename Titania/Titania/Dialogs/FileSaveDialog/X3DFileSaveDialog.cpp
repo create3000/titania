@@ -62,9 +62,10 @@
 namespace titania {
 namespace puck {
 
-static constexpr auto IMAGES_FILTER = "Images";
-static constexpr auto AUDIO_FILTER  = "Audio";
-static constexpr auto VIDEOS_FILTER = "Videos";
+static constexpr auto ALL_FILES_FILTER = "All Files";
+static constexpr auto IMAGES_FILTER    = "All Images";
+static constexpr auto AUDIO_FILTER     = "All Audio";
+static constexpr auto VIDEOS_FILTER    = "All Videos";
 
 static constexpr auto X3D_XML_ENCODING_FILTER                     = "X3D XML Encoding (*.x3d)";
 static constexpr auto X3D_CLASSIC_VRML_ENCODING_FILTER            = "X3D Classic VRML Encoding (*.x3dv)";
@@ -73,7 +74,6 @@ static constexpr auto X3D_JSON_ENCODING_FILTER                    = "X3D JSON En
 static constexpr auto COMPRESSED_X3D_XML_ENCODING_FILTER          = "Compressed X3D XML Encoding (*.x3dz)";
 static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed X3D Classic VRML Encoding (*.x3dvz)";
 static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
-static constexpr auto ALL_FILES_FILTER                            = "All Files";
 
 static constexpr auto IMAGE_XCF_FILTER  = "Gimp XCF Image (*.xcf)";
 static constexpr auto IMAGE_JPEG_FILTER = "JPEG Image (*.jpeg, *.jpg)";

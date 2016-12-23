@@ -1,15 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Configuration/ProfileInfo.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.h" Line="546" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DBaseNode.cpp" Line="2200" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DPrototypeInstance.cpp" Line="1004" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Prototype/ProtoDeclaration.cpp" Line="574" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DExecutionContext.cpp" Line="1590" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.cpp" Line="786" Column="1" />
-      <File FileName="../../Schreibtisch/toXMLString.json" Line="13" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/Configuration/ProfileInfo.cpp" Line="82" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.h" Line="364" Column="41" />
+      <File FileName="../Cobweb/cobweb.js/tests/Components/Scripting/toXMLString.json" Line="41" Column="38" />
+      <File FileName="../../Schreibtisch/scene.x3d" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileSaveDialog/X3DFileSaveDialog.cpp" Line="206" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp" Line="132" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -19,6 +16,9 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Execution/X3DScene.h" line="364" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/ScenePropertiesEditor/X3DMetaDataEditor.cpp" line="131" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/ScenePropertiesEditor/X3DMetaDataEditor.cpp" line="131" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

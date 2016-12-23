@@ -286,7 +286,7 @@ X3DMetaDataEditor::connectMetaData (const X3D::SFTime & field)
 void
 X3DMetaDataEditor::on_add_standard_meta_data_activated ()
 {
-	getBrowserWindow () -> getConfig () -> setItem ("addStandardMetaData", getAddStandardMetaDataButton () .property_active () .get_value ());
+	getBrowserWindow () -> getConfig () -> setItem ("addStandardMetaData", getAddStandardMetaDataButton () .get_active ());
 }
 
 void

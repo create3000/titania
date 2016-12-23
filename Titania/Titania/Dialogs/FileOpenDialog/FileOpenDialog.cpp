@@ -58,16 +58,44 @@
 namespace titania {
 namespace puck {
 
+static constexpr auto ALL_FILES_FILTER = "All Files";
+static constexpr auto X3D_FILTER       = "All X3D Files";
+static constexpr auto IMAGES_FILTER    = "All Images";
+static constexpr auto AUDIO_FILTER     = "All Audio";
+static constexpr auto VIDEOS_FILTER    = "All Videos";
+static constexpr auto FONTS_FILTER     = "All Fonts";
+
+static constexpr auto X3D_XML_ENCODING_FILTER                     = "X3D XML Encoding (*.x3d)";
+static constexpr auto X3D_CLASSIC_VRML_ENCODING_FILTER            = "X3D Classic VRML Encoding (*.x3dv)";
+static constexpr auto VRML97_ENCODING_FILTER                      = "VRML97 Encoding (*.wrl)";
+static constexpr auto X3D_JSON_ENCODING_FILTER                    = "X3D JSON Encoding (*.json)";
+static constexpr auto COMPRESSED_X3D_XML_ENCODING_FILTER          = "Compressed X3D XML Encoding (*.x3dz)";
+static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed X3D Classic VRML Encoding (*.x3dvz)";
+static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
+
+static constexpr auto WAVEFRONT_OBJ_FILE_FILTER = "Wavefront OBJ File (*.obj)";
+
 FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileOpenDialogInterface (get_ui ("Dialogs/FileOpenDialog.glade"))
 {
-	getFileFilterX3D   () -> set_name (_ ("X3D"));
-	getFileFilterImage () -> set_name (_ ("Images"));
-	getFileFilterAudio () -> set_name (_ ("Audio"));
-	getFileFilterVideo () -> set_name (_ ("Videos"));
-	getFileFilterFonts () -> set_name (_ ("Fonts"));
-	getFileFilterAll   () -> set_name (_ ("All Files"));
+	getFileFilterAll   () -> set_name (_ (ALL_FILES_FILTER));
+	getFileFilterX3D   () -> set_name (_ (X3D_FILTER));
+	getFileFilterImage () -> set_name (_ (IMAGES_FILTER));
+	getFileFilterAudio () -> set_name (_ (AUDIO_FILTER));
+	getFileFilterVideo () -> set_name (_ (VIDEOS_FILTER));
+	getFileFilterFonts () -> set_name (_ (FONTS_FILTER));
+
+	getFileFilterX3DXMLEncoding         () -> set_name (_ (X3D_XML_ENCODING_FILTER));
+	getFileFilterX3DClassicVRMLEncoding () -> set_name (_ (X3D_CLASSIC_VRML_ENCODING_FILTER));
+	getFileFilterX3DJSONEncoding        () -> set_name (_ (X3D_JSON_ENCODING_FILTER));
+	getFileFilterVrmlEncoding           () -> set_name (_ (VRML97_ENCODING_FILTER));
+
+	getFileFilterCompressedX3DXMLEncoding         () -> set_name (_ (COMPRESSED_X3D_XML_ENCODING_FILTER));
+	getFileFilterCompressedX3DClassicVRMLEncoding () -> set_name (_ (COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER));
+	getFileFilterCompressedVrmlEncoding           () -> set_name (_ (COMPRESSED_VRML97_ENCODING_FILTER));
+
+	getFileFilterWavefrontOBJ () -> set_name (_ (WAVEFRONT_OBJ_FILE_FILTER));
 
 	const auto worldURL = getCurrentScene () -> getWorldURL ();
 
@@ -88,16 +116,32 @@ FileOpenDialog::setMode (Mode mode)
 	switch (mode)
 	{
 	   case Mode::X3D:
+		{
 			getWindow () .add_filter (getFileFilterX3D ());
 			getWindow () .add_filter (getFileFilterImage ());
 			getWindow () .add_filter (getFileFilterAudio ());
 			getWindow () .add_filter (getFileFilterVideo ());
+
+			getWindow () .add_filter (getFileFilterX3DXMLEncoding ());
+			getWindow () .add_filter (getFileFilterX3DClassicVRMLEncoding ());
+			getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
+			getWindow () .add_filter (getFileFilterVrmlEncoding ());
+		
+			getWindow () .add_filter (getFileFilterCompressedX3DXMLEncoding ());
+			getWindow () .add_filter (getFileFilterCompressedX3DClassicVRMLEncoding ());
+			getWindow () .add_filter (getFileFilterCompressedVrmlEncoding ());
+		
+			getWindow () .add_filter (getFileFilterWavefrontOBJ ());
+
 			setFilter (getConfig () -> getString ("filter"));
 	      break;
+		}
 	   case Mode::FONTS:
+		{
 			getWindow () .add_filter (getFileFilterFonts ());
 			getWindow () .set_filter (getFileFilterFonts ());
 			break;
+		}
 	}
 
 }
@@ -105,12 +149,52 @@ FileOpenDialog::setMode (Mode mode)
 void
 FileOpenDialog::setFilter (const std::string & name)
 {
-	if (name == _("Images"))
+	// Media filter
+
+	if (name == _(X3D_FILTER))
+		getWindow () .set_filter (getFileFilterX3D ());
+
+	else if (name == _(IMAGES_FILTER))
 		getWindow () .set_filter (getFileFilterImage ());
-	else if (name == _("Audio"))
+
+	else if (name == _(AUDIO_FILTER))
 		getWindow () .set_filter (getFileFilterAudio ());
-	else if (name == _("Videos"))
+
+	else if (name == _(VIDEOS_FILTER))
 		getWindow () .set_filter (getFileFilterVideo ());
+
+	// X3D
+
+	else if (name == _(X3D_XML_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterX3DXMLEncoding ());
+
+	else if (name == _(X3D_CLASSIC_VRML_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterX3DClassicVRMLEncoding ());
+
+	else if (name == _(X3D_JSON_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterX3DJSONEncoding ());
+
+	else if (name == _(VRML97_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterVrmlEncoding ());
+
+	// Compressed
+
+	else if (name == _(COMPRESSED_X3D_XML_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterCompressedX3DXMLEncoding ());
+
+	else if (name == _(COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterCompressedX3DClassicVRMLEncoding ());
+
+	else if (name == _(COMPRESSED_VRML97_ENCODING_FILTER))
+		getWindow () .set_filter (getFileFilterCompressedVrmlEncoding ());
+
+	// Other
+
+	else if (name == _(WAVEFRONT_OBJ_FILE_FILTER))
+		getWindow () .set_filter (getFileFilterWavefrontOBJ ());
+
+	// All X3D
+
 	else
 		getWindow () .set_filter (getFileFilterX3D ());
 }

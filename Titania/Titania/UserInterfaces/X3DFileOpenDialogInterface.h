@@ -108,6 +108,18 @@ public:
 	{ return m_FileFilterAudio; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterCompressedVrmlEncoding () const
+	{ return m_FileFilterCompressedVrmlEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterCompressedX3DClassicVRMLEncoding () const
+	{ return m_FileFilterCompressedX3DClassicVRMLEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterCompressedX3DXMLEncoding () const
+	{ return m_FileFilterCompressedX3DXMLEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterFonts () const
 	{ return m_FileFilterFonts; }
 
@@ -120,8 +132,28 @@ public:
 	{ return m_FileFilterVideo; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterVrmlEncoding () const
+	{ return m_FileFilterVrmlEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterWavefrontOBJ () const
+	{ return m_FileFilterWavefrontOBJ; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterX3D () const
 	{ return m_FileFilterX3D; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3DClassicVRMLEncoding () const
+	{ return m_FileFilterX3DClassicVRMLEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3DJSONEncoding () const
+	{ return m_FileFilterX3DJSONEncoding; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterX3DXMLEncoding () const
+	{ return m_FileFilterX3DXMLEncoding; }
 
 	Gtk::FileChooserDialog &
 	getWindow () const
@@ -169,10 +201,18 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedVrmlEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedX3DClassicVRMLEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedX3DXMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterFonts;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVrmlEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterWavefrontOBJ;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3D;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DClassicVRMLEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DJSONEncoding;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DXMLEncoding;
 	Gtk::FileChooserDialog*        m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Box*                      m_RelativePathBox;
