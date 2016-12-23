@@ -751,7 +751,12 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	Generator::SpecificationVersion (LATEST_VERSION);
+	auto specificationVersion = getSpecificationVersion ();
+
+	if (specificationVersion == VRML_V2_0)
+		specificationVersion = LATEST_VERSION;
+
+	Generator::SpecificationVersion (specificationVersion);
 	Generator::PushExecutionContext (this);
 	Generator::EnterScope ();
 	Generator::ExportedNodes (getExportedNodes ());
@@ -815,7 +820,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 		<< ':'
 		<< Generator::TidySpace
 		<< '"'
-		<< "3.3"
+		<< XMLEncode (specificationVersion)
 		<< '"'
 		<< ','
 		<< Generator::TidyBreak;

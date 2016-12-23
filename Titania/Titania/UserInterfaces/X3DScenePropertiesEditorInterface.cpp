@@ -108,6 +108,9 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_UnitLengthAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_changed));
 	m_UnitMassAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed));
 
+	// Connect object Gtk::TreeView with id 'MetaDataTreeView'.
+	m_MetaDataTreeView -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_key_release_event));
+
 	// Connect object Gtk::TreeSelection with id 'MetaDataTreeSelection'.
 	m_MetaDataTreeSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_changed));
 

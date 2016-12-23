@@ -879,3 +879,5 @@ Switch::state_set
   virtual bool on_state_set(bool state);
 Switch::activate
   virtual void on_activate();
+TreeView::key_release_event
+  virtual bool on_key_release_event(GdkEventKey* key_event);

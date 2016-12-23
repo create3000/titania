@@ -112,6 +112,17 @@ X3DMetaDataEditor::set_meta_data ()
 	}
 }
 
+bool
+X3DMetaDataEditor::on_meta_data_key_release_event (GdkEventKey* event)
+{
+	if (getMetaDataTreeView () .get_selection () -> get_selected_rows () .empty ())
+		return false;
+
+	on_remove_meta_data_clicked ();
+
+	return true;
+}
+
 void
 X3DMetaDataEditor::on_meta_data_changed ()
 {

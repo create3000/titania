@@ -175,6 +175,8 @@ public:
 	template <class Type, class ... Args>
 	X3DPtr <Type>
 	createNode (Args && ... args)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
 	{
 		const X3DPtr <Type> node = new Type (this, std::forward <Args> (args) ...);
 

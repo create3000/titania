@@ -729,21 +729,37 @@ X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream &
 	switch (outputStyle)
 	{
 		case OutputStyleType::NICEST:
-			scene -> setMetaData ("outputStyle", "nicest");
+		{
+			if (getConfig () -> getBoolean ("addStandardMetaData"))
+				scene -> setMetaData ("outputStyle", "nicest");
+
 			file << X3D::NicestStyle;
 			break;
+		}
 		case OutputStyleType::COMPACT:
-			scene -> setMetaData ("outputStyle", "compact");
+		{
+			if (getConfig () -> getBoolean ("addStandardMetaData"))
+				scene -> setMetaData ("outputStyle", "compact");
+
 			file << X3D::CompactStyle;
 			break;
+		}
 		case OutputStyleType::SMALL:
-			scene -> setMetaData ("outputStyle", "small");
+		{
+			if (getConfig () -> getBoolean ("addStandardMetaData"))
+				scene -> setMetaData ("outputStyle", "small");
+
 			file << X3D::SmallStyle;
 			break;
+		}
 		case OutputStyleType::SMALLEST:
-			scene -> setMetaData ("outputStyle", "smallest");
+		{
+			if (getConfig () -> getBoolean ("addStandardMetaData"))
+				scene -> setMetaData ("outputStyle", "smallest");
+
 			file << X3D::SmallestStyle;
 			break;
+		}
 	}
 }
 
@@ -753,6 +769,8 @@ X3DBrowserWidget::getOutputStyle (const X3D::X3DScenePtr & scene) const
 	try
 	{
 		const auto & outputStyle = scene -> getMetaData ("outputStyle");
+
+		//scene -> getWorldInfo () -> getMetaData <MFString> ("/Titania/Configuration/outputStyle") .at (0);
 	
 		if (outputStyle == "nicest")
 			return OutputStyleType::NICEST;

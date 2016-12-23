@@ -121,11 +121,11 @@ public:
 	inPrototypeInstance () const;
 
 	X3D::X3DPtr <X3D::WorldInfo>
-	createWorldInfo ()
+	createCurrentWorldInfo ()
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
 	X3D::X3DPtr <X3D::WorldInfo>
-	getWorldInfo () const
+	getCurrentWorldInfo () const
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
 	X3D::X3DPtr <X3D::MetadataSet>
@@ -211,7 +211,7 @@ private:
 	set_browser (const X3D::BrowserPtr &);
 
 	X3D::X3DPtr <X3D::WorldInfo>
-	getWorldInfo (const bool)
+	getCurrentWorldInfo (const bool)
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
 	/// @name Static members

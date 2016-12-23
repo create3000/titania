@@ -119,8 +119,16 @@ X3DFileSaveDialog::getURL () const
 bool
 X3DFileSaveDialog::run ()
 {
-	getOutputStyleBox () .set_visible (true);
-	getOutputStyleButton () .set_active (getConfig () -> getInteger ("outputStyle"));
+	if (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"))
+	{
+		getOutputStyleBox ()    .set_visible (true);
+		getOutputStyleButton () .set_active (getConfig () -> getInteger ("outputStyle"));
+	}
+	else
+	{
+		getOutputStyleBox ()    .set_visible (false);
+		getOutputStyleButton () .set_active (0);
+	}
 
 	const auto responseId = getWindow () .run ();
 

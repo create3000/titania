@@ -76,7 +76,7 @@ X3DWorldInfoEditor::initialize ()
 void
 X3DWorldInfoEditor::set_current_scene ()
 {
-	const auto worldInfo = X3D::MFNode ({ createWorldInfo () });
+	const auto worldInfo = X3D::MFNode ({ createCurrentWorldInfo () });
 
 	title .setNodes (worldInfo);
 	info  .setNodes (worldInfo);

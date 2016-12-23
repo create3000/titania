@@ -100,6 +100,10 @@ private:
 	set_meta_data ();
 
 	virtual
+	bool
+	on_meta_data_key_release_event (GdkEventKey* event) final override;
+
+	virtual
 	void
 	on_meta_data_changed () final override;
 

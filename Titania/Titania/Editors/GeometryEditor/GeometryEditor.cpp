@@ -341,7 +341,7 @@ GeometryEditor::set_executionContext ()
 {
 	try
 	{
-		const auto worldInfo   = getWorldInfo ();
+		const auto worldInfo   = getCurrentWorldInfo ();
 		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
 		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("previous");
 
@@ -817,7 +817,7 @@ GeometryEditor::on_edit_toggled ()
 
 	if (true)
 	{
-		const auto worldInfo = createWorldInfo ();
+		const auto worldInfo = createCurrentWorldInfo ();
 
 		if (getEditToggleButton () .get_active ())
 		{

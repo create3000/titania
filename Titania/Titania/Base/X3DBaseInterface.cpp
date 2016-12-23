@@ -68,14 +68,7 @@ namespace puck {
 
 const std::string X3DBaseInterface::typeName = "X3DBaseInterface";
 
-X3DBaseInterface::X3DBaseInterface () :
-	     sigc::trackable (),
-	X3D::X3DParentObject (nullptr),
-	       browserWindow (nullptr)
-{
-	assert (false);
-}
-
+///  Constructor.
 X3DBaseInterface::X3DBaseInterface (X3DBrowserWindow* const browserWindow, X3D::Browser* const browser) :
 	     sigc::trackable (),
 	X3D::X3DParentObject (browser),
@@ -84,6 +77,16 @@ X3DBaseInterface::X3DBaseInterface (X3DBrowserWindow* const browserWindow, X3D::
 	assert (browserWindow);
 }
 
+///  Dummy constructor.
+X3DBaseInterface::X3DBaseInterface () :
+	     sigc::trackable (),
+	X3D::X3DParentObject (nullptr),
+	       browserWindow (nullptr)
+{
+	assert (false);
+}
+
+///  Setups this object.
 void
 X3DBaseInterface::setup ()
 {
@@ -92,47 +95,56 @@ X3DBaseInterface::setup ()
 	browserWindow -> getCurrentBrowser () .addInterest (this, &X3DBaseInterface::set_browser);
 }
 
+///  Return the master browser.
 const X3D::BrowserPtr &
 X3DBaseInterface::getMasterBrowser () const
 {
 	return browserWindow -> getMasterBrowser ();
 }
 
+///  Return the current browser.
 const X3D::BrowserPtr &
 X3DBaseInterface::getCurrentBrowser () const
 {
 	return browserWindow -> getCurrentBrowser ();
 }
 
+///  Return the current world.
 const X3D::WorldPtr &
 X3DBaseInterface::getCurrentWorld () const
 {
 	return getCurrentBrowser () -> getWorld ();
 }
 
+///  Return the current scene.
 const X3D::X3DScenePtr &
 X3DBaseInterface::getCurrentScene () const
 {
 	return browserWindow -> getCurrentScene ();
 }
+
+///  Sets the current execution context.
 void
 X3DBaseInterface::setCurrentContext (const X3D::X3DExecutionContextPtr & executionContext)
 {
 	return browserWindow -> setCurrentContext (executionContext);
 }
 
+///  Return the current execution context.
 const X3D::X3DExecutionContextPtr &
 X3DBaseInterface::getCurrentContext () const
 {
 	return browserWindow -> getCurrentContext ();
 }
 
+///  Return true if the current execution context is a prototype.
 bool
 X3DBaseInterface::inProtoDeclaration () const
 {
 	return getCurrentContext () -> isProtoDeclaration ();
 }
 
+///  Return true if the current execution context is a prototype instance.
 bool
 X3DBaseInterface::inPrototypeInstance () const
 {
@@ -141,22 +153,26 @@ X3DBaseInterface::inPrototypeInstance () const
 	return getCurrentContext () -> isType (protoInstance);
 }
 
+///  Return the WorldInfo node from the current scene. The node is created if needed.
 X3D::X3DPtr <X3D::WorldInfo>
-X3DBaseInterface::createWorldInfo ()
+X3DBaseInterface::createCurrentWorldInfo ()
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	return getWorldInfo (true);
+	return getCurrentWorldInfo (true);
 }
 
+///  Return the WorldInfo node from the current scene, otherwise it throws an exception.
 X3D::X3DPtr <X3D::WorldInfo>
-X3DBaseInterface::getWorldInfo () const
+X3DBaseInterface::getCurrentWorldInfo () const
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (false);
+	return const_cast <X3DBaseInterface*> (this) -> getCurrentWorldInfo (false);
 }
 
+///  Return the WorldInfo node from the current scene. If @a create is true, the node is created if needed, otherwise it
+///  throws an exception.
 X3D::X3DPtr <X3D::WorldInfo>
-X3DBaseInterface::getWorldInfo (const bool create)
+X3DBaseInterface::getCurrentWorldInfo (const bool create)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
 	auto worldInfo = getCurrentScene () -> getWorldInfo ();
@@ -164,7 +180,7 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 	if (not worldInfo)
 	{
 		if (not create)
-			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBaseInterface::getWorldInfo: not supported.");
+			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBaseInterface::getCurrentWorldInfo: not supported.");
 	
 		worldInfo = getCurrentScene () -> createNode <X3D::WorldInfo> ();
 		worldInfo -> title () = getCurrentScene () -> getWorldURL () .basename (false);
@@ -176,6 +192,7 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 	return worldInfo;
 }
 
+///  If needed, this function creates a MetaDataSet from the active layer or if no active layer from the current WorldInfo node.
 X3D::X3DPtr <X3D::MetadataSet>
 X3DBaseInterface::createMetaData (const std::string & key)
 {
@@ -184,9 +201,10 @@ X3DBaseInterface::createMetaData (const std::string & key)
 	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 		return layerSet -> getActiveLayer () -> createMetaData <X3D::MetadataSet> (key);
 
-	return createWorldInfo () -> createMetaData <X3D::MetadataSet> (key);
+	return createCurrentWorldInfo () -> createMetaData <X3D::MetadataSet> (key);
 }
 
+///  Returns a MetaDataSet from the active layer or if no active layer from the current WorldInfo node.
 X3D::X3DPtr <X3D::MetadataSet>
 X3DBaseInterface::getMetaData (const std::string & key) const
 {
@@ -195,33 +213,38 @@ X3DBaseInterface::getMetaData (const std::string & key) const
 	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 		return layerSet -> getActiveLayer () -> getMetaData <X3D::MetadataSet> (key);
 	
-	return getWorldInfo () -> getMetaData <X3D::MetadataSet> (key);
+	return getCurrentWorldInfo () -> getMetaData <X3D::MetadataSet> (key);
 }
 
+///  Adds @a undoStep to the current browser.
 void
 X3DBaseInterface::addUndoStep (const X3D::UndoStepPtr & undoStep)
 {
 	browserWindow -> addUndoStep (undoStep);
 }
 
+///  Removes the last undo step from the current browser.
 void
 X3DBaseInterface::removeUndoStep ()
 {
 	browserWindow -> removeUndoStep ();
 }
 
+///  Returns the last undo step from the current browser.
 const X3D::UndoStepPtr &
 X3DBaseInterface::getUndoStep () const
 {
 	return browserWindow -> getUndoStep ();
 }
 
+///  Sets the current browser to the underlying X3DParentObject.
 void
 X3DBaseInterface::set_browser (const X3D::BrowserPtr & value)
 {
 	setBrowser (value);
 }
 
+///  Disposed this on_show_all_objects_activated.
 void
 X3DBaseInterface::dispose ()
 {
@@ -230,6 +253,7 @@ X3DBaseInterface::dispose ()
 	X3D::X3DParentObject::dispose ();
 }
 
+/// Destructor
 X3DBaseInterface::~X3DBaseInterface ()
 { }
 

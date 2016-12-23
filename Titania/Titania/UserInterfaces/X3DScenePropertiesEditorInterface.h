@@ -270,6 +270,10 @@ public:
 	on_unit_mass_changed () = 0;
 
 	virtual
+	bool
+	on_meta_data_key_release_event (GdkEventKey* key_event) = 0;
+
+	virtual
 	void
 	on_meta_data_changed () = 0;
 

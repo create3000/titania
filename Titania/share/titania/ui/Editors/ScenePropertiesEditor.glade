@@ -171,6 +171,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="model">MetaDataListStore</property>
+                                    <signal name="key-release-event" handler="on_meta_data_key_release_event" swapped="no"/>
                                     <child internal-child="selection">
                                       <object class="GtkTreeSelection" id="MetaDataTreeSelection">
                                         <signal name="changed" handler="on_meta_data_changed" swapped="no"/>
