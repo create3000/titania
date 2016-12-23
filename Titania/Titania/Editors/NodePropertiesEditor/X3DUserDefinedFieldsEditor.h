@@ -87,6 +87,10 @@ protected:
 	initialize () override
 	{ }
 
+	virtual
+	void
+	store ();
+
 
 private:
 
@@ -113,6 +117,18 @@ private:
 	using FieldToFieldIndex = std::map <X3D::X3DFieldDefinition*, X3D::X3DFieldDefinition*>;
 
 	///  @name Event handlers
+
+	virtual
+	bool
+	on_user_defined_field_focus_in_event (GdkEventFocus* event) final override;
+
+	virtual
+	bool
+	on_user_defined_field_focus_out_event (GdkEventFocus* event) final override;
+
+	virtual
+	bool
+	on_user_defined_field_key_press_event (GdkEventKey* event) final override;
 
 	virtual
 	void

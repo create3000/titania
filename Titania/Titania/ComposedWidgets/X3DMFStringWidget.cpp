@@ -81,6 +81,9 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 
 	treeView .set_reorderable (true);
 
+	treeView .signal_focus_in_event ()              .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_focus_in_event));
+	treeView .signal_focus_out_event ()             .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_focus_out_event));
+	treeView .signal_key_press_event ()             .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_key_press_event), false);
 	treeView .signal_drag_data_received ()          .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_drag_data_received));
 	treeView .get_selection () -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_selection_changed));
 	cellRenderer -> signal_edited ()                .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_edited));
@@ -165,6 +168,35 @@ X3DMFStringWidget::append (const Glib::ustring & value)
 	string .emplace_back (value == displayValue ? defaultValue : value);
 
 	on_string_changed ();
+}
+
+bool
+X3DMFStringWidget::on_focus_in_event (GdkEventFocus* event)
+{
+	getBrowserWindow () -> hasAccelerators (false);
+	return false;
+}
+
+bool
+X3DMFStringWidget::on_focus_out_event (GdkEventFocus* event)
+{
+	getBrowserWindow () -> hasAccelerators (true);
+	return false;
+}
+
+bool
+X3DMFStringWidget::on_key_press_event (GdkEventKey* event)
+{
+	if (event -> keyval == GDK_KEY_BackSpace or event -> keyval == GDK_KEY_Delete)
+	{
+		if (treeView .get_selection () -> get_selected_rows () .empty ())
+			return false;
+
+		on_remove_clicked ();
+		return true;
+	}
+
+	return false;
 }
 
 void
@@ -335,6 +367,14 @@ X3DMFStringWidget::connect (const X3D::MFString & field)
 {
 	field .removeInterest (this, &X3DMFStringWidget::connect);
 	field .addInterest (this, &X3DMFStringWidget::set_field);
+}
+
+X3DMFStringWidget::~X3DMFStringWidget ()
+{
+	if (treeView .has_focus ())
+		getCurrentBrowser () -> grab_focus ();
+
+	dispose ();
 }
 
 } // puck

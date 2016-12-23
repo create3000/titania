@@ -80,8 +80,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DMFStringWidget ()
-	{ dispose (); }
+	~X3DMFStringWidget ();
 
 
 protected:
@@ -158,6 +157,15 @@ private:
 	};
 
 	///  @name Event handlers
+
+	bool
+	on_focus_in_event (GdkEventFocus* event);
+
+	bool
+	on_focus_out_event (GdkEventFocus* event);
+
+	bool
+	on_key_press_event (GdkEventKey* event);
 
 	void
 	on_selection_changed ();

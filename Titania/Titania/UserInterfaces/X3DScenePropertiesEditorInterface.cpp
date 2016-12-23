@@ -78,12 +78,6 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("MetaDataExpander", m_MetaDataExpander);
-	m_builder -> get_widget ("MetaDataTreeView", m_MetaDataTreeView);
-	m_builder -> get_widget ("UserDefinedFieldsActionBox", m_UserDefinedFieldsActionBox);
-	m_builder -> get_widget ("AddMetaDataButton", m_AddMetaDataButton);
-	m_builder -> get_widget ("RemoveMetaDataButton", m_RemoveMetaDataButton);
-	m_builder -> get_widget ("AddStandardMetaDataButton", m_AddStandardMetaDataButton);
 	m_builder -> get_widget ("UnitsExpander", m_UnitsExpander);
 	m_builder -> get_widget ("UnitMassCombo", m_UnitMassCombo);
 	m_builder -> get_widget ("UnitMassEntry", m_UnitMassEntry);
@@ -93,6 +87,12 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UnitForceEntry", m_UnitForceEntry);
 	m_builder -> get_widget ("UnitAngleCombo", m_UnitAngleCombo);
 	m_builder -> get_widget ("UnitAngleEntry", m_UnitAngleEntry);
+	m_builder -> get_widget ("MetaDataExpander", m_MetaDataExpander);
+	m_builder -> get_widget ("MetaDataTreeView", m_MetaDataTreeView);
+	m_builder -> get_widget ("UserDefinedFieldsActionBox", m_UserDefinedFieldsActionBox);
+	m_builder -> get_widget ("AddMetaDataButton", m_AddMetaDataButton);
+	m_builder -> get_widget ("RemoveMetaDataButton", m_RemoveMetaDataButton);
+	m_builder -> get_widget ("AddStandardMetaDataButton", m_AddStandardMetaDataButton);
 	m_builder -> get_widget ("WorldInfoExpander", m_WorldInfoExpander);
 	m_builder -> get_widget ("WorldInfoTitleTextView", m_WorldInfoTitleTextView);
 	m_builder -> get_widget ("WorldInfoInfoTextView", m_WorldInfoInfoTextView);
@@ -108,20 +108,6 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_UnitLengthAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_length_changed));
 	m_UnitMassAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed));
 
-	// Connect object Gtk::TreeView with id 'MetaDataTreeView'.
-	m_MetaDataTreeView -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_key_release_event));
-
-	// Connect object Gtk::TreeSelection with id 'MetaDataTreeSelection'.
-	m_MetaDataTreeSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_changed));
-
-	// Connect object Gtk::CellRendererText with id 'CellRendererMetaDataName'.
-	m_CellRendererMetaDataName -> signal_edited () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_name_edited));
-	m_CellRendererMetaDataContent -> signal_edited () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_content_edited));
-
-	// Connect object Gtk::Button with id 'AddMetaDataButton'.
-	m_AddMetaDataButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_add_meta_data_clicked));
-	m_RemoveMetaDataButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_remove_meta_data_clicked));
-
 	// Connect object Gtk::Entry with id 'UnitMassEntry'.
 	m_UnitMassEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_changed));
 	m_UnitMassEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_mass_delete_text), false);
@@ -136,7 +122,21 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_UnitAngleEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_delete_text), false);
 	m_UnitAngleEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unit_angle_insert_text), false);
 
-	// Connect object Gtk::Button with id 'MetaDataCancelButton'.
+	// Connect object Gtk::TreeView with id 'MetaDataTreeView'.
+	m_MetaDataTreeView -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_focus_in_event));
+	m_MetaDataTreeView -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_focus_out_event));
+	m_MetaDataTreeView -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_key_press_event), false);
+
+	// Connect object Gtk::TreeSelection with id 'MetaDataTreeSelection'.
+	m_MetaDataTreeSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_changed));
+
+	// Connect object Gtk::CellRendererText with id 'CellRendererMetaDataName'.
+	m_CellRendererMetaDataName -> signal_edited () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_name_edited));
+	m_CellRendererMetaDataContent -> signal_edited () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_meta_data_content_edited));
+
+	// Connect object Gtk::Button with id 'AddMetaDataButton'.
+	m_AddMetaDataButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_add_meta_data_clicked));
+	m_RemoveMetaDataButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_remove_meta_data_clicked));
 	m_MetaDataCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_add_meta_data_cancel_clicked));
 	m_MetaDataOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_add_meta_data_ok_clicked));
 

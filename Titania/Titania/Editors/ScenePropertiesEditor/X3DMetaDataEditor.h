@@ -101,7 +101,15 @@ private:
 
 	virtual
 	bool
-	on_meta_data_key_release_event (GdkEventKey* event) final override;
+	on_meta_data_focus_in_event (GdkEventFocus* event) final override;
+
+	virtual
+	bool
+	on_meta_data_focus_out_event (GdkEventFocus* event) final override;
+
+	virtual
+	bool
+	on_meta_data_key_press_event (GdkEventKey* event) final override;
 
 	virtual
 	void

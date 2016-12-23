@@ -143,6 +143,7 @@ NodePropertiesEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getNodeChildNotebook () .get_current_page ());
 
+	X3DUserDefinedFieldsEditor::store ();
 	X3DNodePropertiesEditorInterface::store ();
 }
 

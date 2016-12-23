@@ -168,6 +168,35 @@ X3DUserDefinedFieldsEditor::setNode (const X3D::SFNode & value)
 	}
 }
 
+bool
+X3DUserDefinedFieldsEditor::on_user_defined_field_focus_in_event (GdkEventFocus* event)
+{
+	getBrowserWindow () -> hasAccelerators (false);
+	return false;
+}
+
+bool
+X3DUserDefinedFieldsEditor::on_user_defined_field_focus_out_event (GdkEventFocus* event)
+{
+	getBrowserWindow () -> hasAccelerators (true);
+	return false;
+}
+
+bool
+X3DUserDefinedFieldsEditor::on_user_defined_field_key_press_event (GdkEventKey* event)
+{
+	if (event -> keyval == GDK_KEY_BackSpace or event -> keyval == GDK_KEY_Delete)
+	{
+		if (getUserDefinedFieldsTreeView () .get_selection () -> get_selected_rows () .empty ())
+			return false;
+
+		on_remove_user_defined_field_clicked ();
+		return true;
+	}
+
+	return false;
+}
+
 void
 X3DUserDefinedFieldsEditor::on_user_defined_field_changed ()
 {
@@ -500,8 +529,16 @@ X3DUserDefinedFieldsEditor::connectFields (const X3D::SFTime & field)
 	field .addInterest (this, &X3DUserDefinedFieldsEditor::set_fields);
 }
 
+void
+X3DUserDefinedFieldsEditor::store ()
+{
+	if (getUserDefinedFieldsTreeView () .has_focus ())
+		getCurrentBrowser () -> grab_focus ();
+}
+
 X3DUserDefinedFieldsEditor::~X3DUserDefinedFieldsEditor ()
-{ }
+{
+}
 
 } // puck
 } // titania

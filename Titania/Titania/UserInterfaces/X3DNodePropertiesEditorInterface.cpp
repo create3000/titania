@@ -172,6 +172,9 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::TreeView with id 'UserDefinedFieldsTreeView'.
 	m_UserDefinedFieldsTreeView -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_drag_data_received));
+	m_UserDefinedFieldsTreeView -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_user_defined_field_focus_in_event));
+	m_UserDefinedFieldsTreeView -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_user_defined_field_focus_out_event));
+	m_UserDefinedFieldsTreeView -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_user_defined_field_key_press_event), false);
 	m_UserDefinedFieldsTreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodePropertiesEditorInterface::on_user_defined_field_activated));
 
 	// Connect object Gtk::TreeSelection with id 'UserDefinedFieldsTreeSelection'.

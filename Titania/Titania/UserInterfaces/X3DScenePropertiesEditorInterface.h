@@ -160,30 +160,6 @@ public:
 	{ return *m_Notebook; }
 
 	Gtk::Expander &
-	getMetaDataExpander () const
-	{ return *m_MetaDataExpander; }
-
-	Gtk::TreeView &
-	getMetaDataTreeView () const
-	{ return *m_MetaDataTreeView; }
-
-	Gtk::ButtonBox &
-	getUserDefinedFieldsActionBox () const
-	{ return *m_UserDefinedFieldsActionBox; }
-
-	Gtk::Button &
-	getAddMetaDataButton () const
-	{ return *m_AddMetaDataButton; }
-
-	Gtk::Button &
-	getRemoveMetaDataButton () const
-	{ return *m_RemoveMetaDataButton; }
-
-	Gtk::Switch &
-	getAddStandardMetaDataButton () const
-	{ return *m_AddStandardMetaDataButton; }
-
-	Gtk::Expander &
 	getUnitsExpander () const
 	{ return *m_UnitsExpander; }
 
@@ -218,6 +194,30 @@ public:
 	Gtk::Entry &
 	getUnitAngleEntry () const
 	{ return *m_UnitAngleEntry; }
+
+	Gtk::Expander &
+	getMetaDataExpander () const
+	{ return *m_MetaDataExpander; }
+
+	Gtk::TreeView &
+	getMetaDataTreeView () const
+	{ return *m_MetaDataTreeView; }
+
+	Gtk::ButtonBox &
+	getUserDefinedFieldsActionBox () const
+	{ return *m_UserDefinedFieldsActionBox; }
+
+	Gtk::Button &
+	getAddMetaDataButton () const
+	{ return *m_AddMetaDataButton; }
+
+	Gtk::Button &
+	getRemoveMetaDataButton () const
+	{ return *m_RemoveMetaDataButton; }
+
+	Gtk::Switch &
+	getAddStandardMetaDataButton () const
+	{ return *m_AddStandardMetaDataButton; }
 
 	Gtk::Expander &
 	getWorldInfoExpander () const
@@ -270,30 +270,6 @@ public:
 	on_unit_mass_changed () = 0;
 
 	virtual
-	bool
-	on_meta_data_key_release_event (GdkEventKey* key_event) = 0;
-
-	virtual
-	void
-	on_meta_data_changed () = 0;
-
-	virtual
-	void
-	on_meta_data_name_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
-
-	virtual
-	void
-	on_meta_data_content_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
-
-	virtual
-	void
-	on_add_meta_data_clicked () = 0;
-
-	virtual
-	void
-	on_remove_meta_data_clicked () = 0;
-
-	virtual
 	void
 	on_unit_mass_delete_text (int start_pos, int end_pos) = 0;
 
@@ -324,6 +300,38 @@ public:
 	virtual
 	void
 	on_unit_angle_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	bool
+	on_meta_data_focus_in_event (GdkEventFocus* focus_event) = 0;
+
+	virtual
+	bool
+	on_meta_data_focus_out_event (GdkEventFocus* gdk_event) = 0;
+
+	virtual
+	bool
+	on_meta_data_key_press_event (GdkEventKey* key_event) = 0;
+
+	virtual
+	void
+	on_meta_data_changed () = 0;
+
+	virtual
+	void
+	on_meta_data_name_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+
+	virtual
+	void
+	on_meta_data_content_edited (const Glib::ustring & path, const Glib::ustring & new_text) = 0;
+
+	virtual
+	void
+	on_add_meta_data_clicked () = 0;
+
+	virtual
+	void
+	on_remove_meta_data_clicked () = 0;
 
 	virtual
 	void
@@ -378,12 +386,6 @@ private:
 	Gtk::Window*                         m_Window;
 	Gtk::Box*                            m_Widget;
 	Gtk::Notebook*                       m_Notebook;
-	Gtk::Expander*                       m_MetaDataExpander;
-	Gtk::TreeView*                       m_MetaDataTreeView;
-	Gtk::ButtonBox*                      m_UserDefinedFieldsActionBox;
-	Gtk::Button*                         m_AddMetaDataButton;
-	Gtk::Button*                         m_RemoveMetaDataButton;
-	Gtk::Switch*                         m_AddStandardMetaDataButton;
 	Gtk::Expander*                       m_UnitsExpander;
 	Gtk::ComboBoxText*                   m_UnitMassCombo;
 	Gtk::Entry*                          m_UnitMassEntry;
@@ -393,6 +395,12 @@ private:
 	Gtk::Entry*                          m_UnitForceEntry;
 	Gtk::ComboBoxText*                   m_UnitAngleCombo;
 	Gtk::Entry*                          m_UnitAngleEntry;
+	Gtk::Expander*                       m_MetaDataExpander;
+	Gtk::TreeView*                       m_MetaDataTreeView;
+	Gtk::ButtonBox*                      m_UserDefinedFieldsActionBox;
+	Gtk::Button*                         m_AddMetaDataButton;
+	Gtk::Button*                         m_RemoveMetaDataButton;
+	Gtk::Switch*                         m_AddStandardMetaDataButton;
 	Gtk::Expander*                       m_WorldInfoExpander;
 	Gtk::TextView*                       m_WorldInfoTitleTextView;
 	Gtk::TextView*                       m_WorldInfoInfoTextView;

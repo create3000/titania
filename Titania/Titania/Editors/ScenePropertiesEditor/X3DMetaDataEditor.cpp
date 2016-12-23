@@ -113,14 +113,32 @@ X3DMetaDataEditor::set_meta_data ()
 }
 
 bool
-X3DMetaDataEditor::on_meta_data_key_release_event (GdkEventKey* event)
+X3DMetaDataEditor::on_meta_data_focus_in_event (GdkEventFocus* event)
 {
-	if (getMetaDataTreeView () .get_selection () -> get_selected_rows () .empty ())
-		return false;
+	getBrowserWindow () -> hasAccelerators (false);
+	return false;
+}
 
-	on_remove_meta_data_clicked ();
+bool
+X3DMetaDataEditor::on_meta_data_focus_out_event (GdkEventFocus* event)
+{
+	getBrowserWindow () -> hasAccelerators (true);
+	return false;
+}
 
-	return true;
+bool
+X3DMetaDataEditor::on_meta_data_key_press_event (GdkEventKey* event)
+{
+	if (event -> keyval == GDK_KEY_BackSpace or event -> keyval == GDK_KEY_Delete)
+	{
+		if (getMetaDataTreeView () .get_selection () -> get_selected_rows () .empty ())
+			return false;
+
+		on_remove_meta_data_clicked ();
+		return true;
+	}
+
+	return false;
 }
 
 void
@@ -238,6 +256,9 @@ void
 X3DMetaDataEditor::store ()
 {
 	getCurrentScene () .removeInterest (this, &X3DMetaDataEditor::set_current_scene);
+
+	if (getMetaDataTreeView () .has_focus ())
+		getCurrentBrowser () -> grab_focus ();
 }
 
 X3DMetaDataEditor::~X3DMetaDataEditor ()

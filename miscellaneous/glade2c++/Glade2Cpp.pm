@@ -881,3 +881,9 @@ Switch::activate
   virtual void on_activate();
 TreeView::key_release_event
   virtual bool on_key_release_event(GdkEventKey* key_event);
+TreeView::focus_in_event
+  virtual bool on_focus_in_event(GdkEventFocus* focus_event);
+TreeView::focus_out_event
+  virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
+TreeView::key_press_event
+  virtual bool on_key_press_event(GdkEventKey* key_event);
