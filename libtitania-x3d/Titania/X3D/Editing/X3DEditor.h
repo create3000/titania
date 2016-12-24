@@ -416,16 +416,16 @@ private:
 	///  @name transformToZero
 
 	void
-	transformToZero (const MFNode &, Matrix4dStack &, const UndoStepPtr &) const;
+	transformToZero (const MFNode &, Matrix4dStack &, std::set <X3DBaseNode*> &, const UndoStepPtr &) const;
 
 	void
-	transformToZero (const SFNode &, Matrix4dStack &, const UndoStepPtr &) const;
+	transformToZero (const SFNode &, Matrix4dStack &, std::set <X3DBaseNode*> &, const UndoStepPtr &) const;
 
 	void
-	transformToZero (const X3DPtr <X3DGeometryNode> &, const Matrix4d &, const UndoStepPtr &) const;
+	transformToZero (const X3DPtr <X3DGeometryNode> &, const Matrix4d &, std::set <X3DBaseNode*> &, const UndoStepPtr &) const;
 
 	void
-	transformToZero (const X3DPtr <X3DCoordinateNode> &, const Matrix4d &, const UndoStepPtr &) const;
+	transformToZero (const X3DPtr <X3DCoordinateNode> &, const Matrix4d &, std::set <X3DBaseNode*> &, const UndoStepPtr &) const;
 
 	///  @name X3DComposedGeometryNode
 	

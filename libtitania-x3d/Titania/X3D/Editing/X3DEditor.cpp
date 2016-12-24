@@ -2258,23 +2258,30 @@ throw (Error <INVALID_NODE>)
 void
 X3DEditor::transformToZero (const MFNode & children, const UndoStepPtr & undoStep) const
 {
-	Matrix4dStack modelViewMatrix;
+	Matrix4dStack           modelViewMatrix;
+	std::set <X3DBaseNode*> coords;
 
-	transformToZero (children, modelViewMatrix, undoStep);
+	transformToZero (children, modelViewMatrix, coords, undoStep);
 }
 
 void
-X3DEditor::transformToZero (const MFNode & children, Matrix4dStack & modelViewMatrix, const UndoStepPtr & undoStep) const
+X3DEditor::transformToZero (const MFNode & children,
+                            Matrix4dStack & modelViewMatrix,
+                            std::set <X3DBaseNode*> & coords,
+                            const UndoStepPtr & undoStep) const
 {
 	for (const auto & child : children)
 	{
 		if (child)
-			transformToZero (child, modelViewMatrix, undoStep);
+			transformToZero (child, modelViewMatrix, coords, undoStep);
 	}
 }
 
 void
-X3DEditor::transformToZero (const SFNode & child, Matrix4dStack & modelViewMatrix, const UndoStepPtr & undoStep) const
+X3DEditor::transformToZero (const SFNode & child,
+                            Matrix4dStack & modelViewMatrix,
+                            std::set <X3DBaseNode*> & coords,
+                            const UndoStepPtr & undoStep) const
 {
 	for (const auto & type : basic::make_reverse_range (child -> getType ()))
 	{
@@ -2301,14 +2308,14 @@ X3DEditor::transformToZero (const SFNode & child, Matrix4dStack & modelViewMatri
 				modelViewMatrix .push ();
 				modelViewMatrix .mult_left (matrix);
 
-				transformToZero (transform -> children (), modelViewMatrix, undoStep);
+				transformToZero (transform -> children (), modelViewMatrix, coords, undoStep);
 
 				modelViewMatrix .pop ();
 				return;
 			}
 			case X3DConstants::X3DGroupingNode:
 			{
-				transformToZero (child -> getField <MFNode> ("children"), modelViewMatrix, undoStep);
+				transformToZero (child -> getField <MFNode> ("children"), modelViewMatrix, coords, undoStep);
 				return;
 			}
 			case X3DConstants::X3DShapeNode:
@@ -2317,7 +2324,7 @@ X3DEditor::transformToZero (const SFNode & child, Matrix4dStack & modelViewMatri
 				X3DPtr <X3DGeometryNode> geometry (shape -> geometry ());
 
 				if (geometry)
-					transformToZero (geometry, modelViewMatrix .get (), undoStep);
+					transformToZero (geometry, modelViewMatrix .get (), coords, undoStep);
 
 				return;
 			}
@@ -2328,7 +2335,10 @@ X3DEditor::transformToZero (const SFNode & child, Matrix4dStack & modelViewMatri
 }
 
 void
-X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry, const Matrix4d & matrix, const UndoStepPtr & undoStep) const
+X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry,
+                            const Matrix4d & matrix,
+                            std::set <X3DBaseNode*> & coords,
+                            const UndoStepPtr & undoStep) const
 {
 	for (const auto & type : basic::make_reverse_range (geometry -> getType ()))
 	{
@@ -2340,7 +2350,7 @@ X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry, const Mat
 				X3DPtr <X3DCoordinateNode> coord (indexedFaceSet -> coord ());
 
 				if (coord)
-					transformToZero (coord, matrix, undoStep);
+					transformToZero (coord, matrix, coords, undoStep);
 
 				return;
 			}
@@ -2351,8 +2361,14 @@ X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry, const Mat
 }
 
 void
-X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord, const Matrix4d & matrix, const UndoStepPtr & undoStep) const
+X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord,
+                            const Matrix4d & matrix,
+                            std::set <X3DBaseNode*> & coords,
+                            const UndoStepPtr & undoStep) const
 {
+	if (not coords .emplace (coord) .second)
+		return;
+
 	switch (coord -> getType () .back ())
 	{
 		case X3DConstants::Coordinate:
