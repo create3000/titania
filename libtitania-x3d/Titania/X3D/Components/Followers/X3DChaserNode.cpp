@@ -96,7 +96,7 @@ X3DChaserNode::stepResponse (const time_type & t) const
 	if (t >= duration ())
 		return 1;
 
-	return 0.5 - 0.5 * std::cos ((t / duration ()) * PI <double>);
+	return 0.5 - 0.5 * std::cos ((t / duration ()) * pi <double>);
 }
 
 void

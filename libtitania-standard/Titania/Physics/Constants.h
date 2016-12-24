@@ -55,7 +55,7 @@ namespace titania {
 namespace math {
 
 template <class T>
-static constexpr T GN = T (9.80665);
+static constexpr T gn = T (9.80665);
 
 } // math
 } // titania

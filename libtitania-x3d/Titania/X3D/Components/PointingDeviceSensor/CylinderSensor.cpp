@@ -132,8 +132,8 @@ CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, con
 
 	// Use asin on the cylinder and outside linear angle.
 	const auto sinp  = interval (distance, -1.0, 1.0);
-	const auto phi   = section == 0 ? std::asin (sinp) : sinp * PI1_2 <double>;
-	const auto angle = phi + section * PI <double>;
+	const auto phi   = section == 0 ? std::asin (sinp) : sinp * pi1_2 <double>;
+	const auto angle = phi + section * pi <double>;
 
 	const Rotation4d rotation (cylinder .axis () .direction (), angle);
 
@@ -248,7 +248,7 @@ CylinderSensor::set_motion (const HitPtr & hit,
 			const auto trackPoint_ = trackPoint * inverse (inverseModelViewMatrix);
 
 			if (trackPoint_ .z () > 0)
-				rotation *= Rotation4d (yPlane .normal (), PI <double>);
+				rotation *= Rotation4d (yPlane .normal (), pi <double>);
 		}
 		else
 		{
@@ -263,9 +263,9 @@ CylinderSensor::set_motion (const HitPtr & hit,
 
 		else
 		{
-			const auto angle = interval <double> (getAngle (rotation), -PI <double>, PI <double>);
-			const auto min   = interval <double> (minAngle (), -PI <double>, PI <double>);
-			const auto max   = interval <double> (maxAngle (), -PI <double>, PI <double>);
+			const auto angle = interval <double> (getAngle (rotation), -pi <double>, pi <double>);
+			const auto min   = interval <double> (minAngle (), -pi <double>, pi <double>);
+			const auto max   = interval <double> (maxAngle (), -pi <double>, pi <double>);
 
 			if (angle < min)
 				rotation = Rotation4d (cylinder .axis () .direction (), min);

@@ -156,12 +156,12 @@ Cylinder::build ()
 		for (int32_t i = 0; i < xDimension; ++ i)
 		{
 			const double u1     = i / xDimension;
-			const double theta1 = 2 * PI <double> * u1;
+			const double theta1 = 2 * pi <double> * u1;
 			const auto   n1     = std::polar <double> (-1, theta1);
 			const auto   p1     = n1 * double (radius () .getValue ());
 
 			const double u2     = (i + 1) / xDimension;
-			const double theta2 = 2 * PI <double> * u2;
+			const double theta2 = 2 * pi <double> * u2;
 			const auto   n2     = std::polar <double> (-1, theta2);
 			const auto   p2     = n2 * double (radius () .getValue ());
 
@@ -198,7 +198,7 @@ Cylinder::build ()
 		for (int32_t i = 0; i < xDimension; ++ i)
 		{
 			const double u     = i / xDimension;
-			const double theta = 2 * PI <double> * u;
+			const double theta = 2 * pi <double> * u;
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
 
@@ -215,7 +215,7 @@ Cylinder::build ()
 		for (int32_t i = xDimension - 1; i > -1; -- i)
 		{
 			const double u     = i / xDimension;
-			const double theta = 2 * PI <double> * u;
+			const double theta = 2 * pi <double> * u;
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
 
@@ -256,7 +256,7 @@ throw (Error <NOT_SUPPORTED>,
 		for (int32_t i = 0; i < xDimension; ++ i)
 		{
 			const double u     = i / xDimension;
-			const double theta = 2 * PI <double> * u;
+			const double theta = 2 * pi <double> * u;
 			const auto  t     = std::polar <double> (-1, theta);
 			const auto  p     = t * double (radius () .getValue ());
 
@@ -272,7 +272,7 @@ throw (Error <NOT_SUPPORTED>,
 		for (int32_t i = 0; i < xDimension; ++ i)
 		{
 			const double u     = i / xDimension;
-			const double theta = 2 * PI <double> * u;
+			const double theta = 2 * pi <double> * u;
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (radius () .getValue ());
 

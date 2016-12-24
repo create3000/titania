@@ -206,8 +206,8 @@ PlaneViewer::constrainFieldOfViewScale () const
 
 		if (viewpoint)
 		{
-			if (viewpoint -> fieldOfView () * viewpoint -> fieldOfViewScale () >= PI <double>)
-				viewpoint -> fieldOfViewScale () = (PI <double> - 0.001) / viewpoint -> fieldOfView ();
+			if (viewpoint -> fieldOfView () * viewpoint -> fieldOfViewScale () >= pi <double>)
+				viewpoint -> fieldOfViewScale () = (pi <double> - 0.001) / viewpoint -> fieldOfView ();
 		}
 		else
 		{
@@ -215,8 +215,8 @@ PlaneViewer::constrainFieldOfViewScale () const
 
 			if (geoViewpoint)
 			{
-				if (geoViewpoint -> fieldOfView () * geoViewpoint -> fieldOfViewScale () >= PI <double>)
-					geoViewpoint -> fieldOfViewScale () = (PI <double> - 0.001) / geoViewpoint -> fieldOfView ();
+				if (geoViewpoint -> fieldOfView () * geoViewpoint -> fieldOfViewScale () >= pi <double>)
+					geoViewpoint -> fieldOfViewScale () = (pi <double> - 0.001) / geoViewpoint -> fieldOfView ();
 			}
 		}
 	}

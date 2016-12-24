@@ -144,13 +144,13 @@ SpotLight::getBeamWidth () const
 	if (beamWidth () > cutOffAngle)
 		return cutOffAngle;
 
-	return math::clamp <float> (beamWidth (), 0, math::PI <float> / 2);
+	return math::clamp <float> (beamWidth (), 0, pi <float> / 2);
 }
 
 float
 SpotLight::getCutOffAngle () const
 {
-	return math::clamp <float> (cutOffAngle (), 0, math::PI <float> / 2);
+	return math::clamp <float> (cutOffAngle (), 0, pi <float> / 2);
 }
 
 void

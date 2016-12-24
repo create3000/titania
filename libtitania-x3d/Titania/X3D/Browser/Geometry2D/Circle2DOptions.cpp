@@ -83,7 +83,7 @@ Circle2DOptions::build ()
 {
 	getVertices () .reserve (dimension () - 1);
 
-	const double angle = PI2 <double> / (dimension () - 1);
+	const double angle = pi2 <double> / (dimension () - 1);
 
 	for (int32_t n = 0, size = dimension () - 1; n < size; ++ n)
 	{

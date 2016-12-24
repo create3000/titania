@@ -58,7 +58,7 @@
 namespace titania {
 namespace puck {
 
-using math::PI;
+using math::pi;
 
 X3DViewpointEditor::X3DViewpointEditor () :
 	X3DViewpointEditorInterface (),
@@ -87,7 +87,7 @@ X3DViewpointEditor::X3DViewpointEditor () :
 	                             getPerspectiveViewpointFieldOfViewBox (),
 	                             "fieldOfView")
 {
-	getPerspectiveViewpointFieldOfViewAdjustment () -> set_upper (PI <double>); // getCurrentContext () -> fromRadiant (PI <double>);
+	getPerspectiveViewpointFieldOfViewAdjustment () -> set_upper (pi <double>); // getCurrentContext () -> fromRadiant (pi <double>);
 }
 
 void

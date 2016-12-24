@@ -71,7 +71,7 @@ static constexpr time_type ROTATION_SPEED_FACTOR  = 1.4;
 static constexpr int32_t   ROTATION_LIMIT         = 40;
 static constexpr time_type PAN_SPEED_FACTOR       = SPEED_FACTOR;
 static constexpr time_type PAN_SHIFT_SPEED_FACTOR = 1.4 * PAN_SPEED_FACTOR;
-static constexpr double    ROLL_ANGLE             = PI <double> / 32;
+static constexpr double    ROLL_ANGLE             = pi <double> / 32;
 static constexpr time_type ROLL_TIME              = 0.2;
 static constexpr time_type FRAME_RATE             = 60;
 
@@ -307,7 +307,7 @@ X3DFlyViewer::fly ()
 
 		// Position offset
 
-		double speedFactor = 1 - rubberBandRotation .angle () / PI1_2 <double>;
+		double speedFactor = 1 - rubberBandRotation .angle () / pi1_2 <double>;
 
 		speedFactor *= getNavigationInfo () -> speed ();
 		speedFactor *= viewpoint -> getSpeedFactor ();

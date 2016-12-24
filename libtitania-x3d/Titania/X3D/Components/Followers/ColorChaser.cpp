@@ -170,7 +170,7 @@ ColorChaser::prepareEvents ()
 		const float t = stepResponse ((i + fraction) * getStepTime ());
 	
 		hsv_lerp (ho, so, vo,
-		          interval (ho + h - h1, 0.0f, 2 * PI <float>),
+		          interval (ho + h - h1, 0.0f, 2 * pi <float>),
 		          so + s - s1,
 		          vo + v - v1,
 		          t,

@@ -57,7 +57,7 @@
 namespace titania {
 namespace puck {
 
-using math::PI;
+using math::pi;
 
 X3DSpotLightEditor::X3DSpotLightEditor () :
 	X3DLightEditorInterface (),
@@ -86,8 +86,8 @@ X3DSpotLightEditor::X3DSpotLightEditor () :
 {
 	direction .setNormalize (true);
 
-	getSpotLightBeamWidthAdjustment ()   -> set_upper (PI <double> / 2); // getCurrentContext () -> fromRadiant (PI <double>);
-	getSpotLightCutOffAngleAdjustment () -> set_upper (PI <double> / 2); // getCurrentContext () -> fromRadiant (PI <double>);
+	getSpotLightBeamWidthAdjustment ()   -> set_upper (pi <double> / 2); // getCurrentContext () -> fromRadiant (pi <double>);
+	getSpotLightCutOffAngleAdjustment () -> set_upper (pi <double> / 2); // getCurrentContext () -> fromRadiant (pi <double>);
 }
 
 void

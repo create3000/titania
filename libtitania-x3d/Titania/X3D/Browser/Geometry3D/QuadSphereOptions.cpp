@@ -192,11 +192,11 @@ QuadSphereOptions::createPoints () const
 	// sphere segments
 	for (int32_t v = 1; v < yDimension () - 1; ++ v)
 	{
-		const auto zPlane = std::polar <double> (1, -PI <double> * (v / double (yDimension () - 1)));
+		const auto zPlane = std::polar <double> (1, -pi <double> * (v / double (yDimension () - 1)));
 
 		for (int32_t u = 0; u < xDimension () - 1; ++ u)
 		{
-			const auto yPlane = std::polar <double> (zPlane .imag (), 2 * PI <double> * (u / double (xDimension () - 1)));
+			const auto yPlane = std::polar <double> (zPlane .imag (), 2 * pi <double> * (u / double (xDimension () - 1)));
 
 			points .emplace_back (yPlane .imag (), zPlane .real (), yPlane .real ());
 		}
@@ -249,7 +249,7 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coord    = executionContext -> createNode <Coordinate> ();
 	const auto geometry = executionContext -> createNode <IndexedFaceSet> ();
 
-	geometry -> creaseAngle () = PI <float>;
+	geometry -> creaseAngle () = pi <float>;
 	geometry -> texCoord ()    = texCoord;
 	geometry -> coord ()       = coord;
 

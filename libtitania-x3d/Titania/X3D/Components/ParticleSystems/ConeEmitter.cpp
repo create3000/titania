@@ -111,7 +111,7 @@ ConeEmitter::addShaderFields (const X3DPtr <ComposedShader> & shader) const
 
 	shader -> addUserDefinedField (inputOutput, "position",  new SFVec3f (position ()));
 	shader -> addUserDefinedField (inputOutput, "direction", new SFVec3f (normalize (direction () .getValue ())));
-	shader -> addUserDefinedField (inputOutput, "angle",     new SFFloat (clamp <float> (angle (), 0, PI <float>)));
+	shader -> addUserDefinedField (inputOutput, "angle",     new SFFloat (clamp <float> (angle (), 0, pi <float>)));
 }
 
 void
@@ -123,7 +123,7 @@ ConeEmitter::setShaderFields (const X3DPtr <ComposedShader> & shader) const
 
 		shader -> setField <SFVec3f> ("position",  position (), true);
 		shader -> setField <SFVec3f> ("direction", normalize (direction () .getValue ()), true);
-		shader -> setField <SFFloat> ("angle",     clamp <float> (angle (), 0, PI <float>), true);
+		shader -> setField <SFFloat> ("angle",     clamp <float> (angle (), 0, pi <float>), true);
 	}
 	catch (const X3DError & error)
 	{

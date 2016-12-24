@@ -87,7 +87,7 @@ random1 (const float min, const float max)
 Vector3f
 random_normal ()
 {
-	const float theta = random1 () * PI <float>;
+	const float theta = random1 () * pi <float>;
 	const float cphi  = random1 ();
 	const float phi   = std::acos (cphi);
 	const float r     = std::sin (phi);

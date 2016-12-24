@@ -58,11 +58,11 @@
 namespace titania {
 namespace puck {
 
-using math::PI;
+using math::pi;
 
-static const auto X_PLANE_ROTATION = X3D::Rotation4d (0, 0, -1, PI <double> / 2) * X3D::Rotation4d (1, 0, 0, PI <double> / 2);
+static const auto X_PLANE_ROTATION = X3D::Rotation4d (0, 0, -1, pi <double> / 2) * X3D::Rotation4d (1, 0, 0, pi <double> / 2);
 static const auto Y_PLANE_ROTATION = X3D::Rotation4d ();
-static const auto Z_PLANE_ROTATION = X3D::Rotation4d (1, 0, 0, PI <double> / 2);
+static const auto Z_PLANE_ROTATION = X3D::Rotation4d (1, 0, 0, pi <double> / 2);
 
 static constexpr int INDICES = 3;
 

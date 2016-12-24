@@ -76,7 +76,7 @@ namespace titania {
 namespace X3D {
 namespace Autodesk {
 
-static const auto rotation = Rotation4f (-1, 0, 0, math::PI <float> / 2);
+static const auto rotation = Rotation4f (-1, 0, 0, math::pi <float> / 2);
 
 Parser::Parser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	               scene (scene),
@@ -297,7 +297,7 @@ Parser::mesh (Lib3dsMesh* const mesh)
 				shapeNode -> geometry () = geometryNode;
 				geometryNode -> coord () = coordNode;
 
-				geometryNode -> creaseAngle () = (shading == LIB3DS_SHADING_FLAT ? 0.0f : math::PI <float>);
+				geometryNode -> creaseAngle () = (shading == LIB3DS_SHADING_FLAT ? 0.0f : math::pi <float>);
 
 				for (const auto & faceIndex : facesIndices .second)
 				{

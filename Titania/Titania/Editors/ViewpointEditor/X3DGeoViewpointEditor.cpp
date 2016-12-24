@@ -59,7 +59,7 @@
 namespace titania {
 namespace puck {
 
-using math::PI;
+using math::pi;
 
 X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 	X3DViewpointEditorInterface (),
@@ -126,7 +126,7 @@ X3DGeoViewpointEditor::X3DGeoViewpointEditor () :
 	getGeoViewpointCenterOfRotationYSpinButton () .property_climb_rate () = 1e-6;
 	getGeoViewpointCenterOfRotationZSpinButton () .property_climb_rate () = 1e-1;
 
-	getGeoViewpointFieldOfViewAdjustment () -> set_upper (PI <double>); // getCurrentContext () -> fromRadiant (PI <double>);
+	getGeoViewpointFieldOfViewAdjustment () -> set_upper (pi <double>); // getCurrentContext () -> fromRadiant (pi <double>);
 }
 
 void

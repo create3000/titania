@@ -144,23 +144,23 @@ Cone::build ()
 
 	const double y1 = height () / 2;
 	const double y2 = -y1;
-	const auto   nz = std::polar <double> (1, -PI <double> / 2 + std::atan (bottomRadius () / height ()));
+	const auto   nz = std::polar <double> (1, -pi <double> / 2 + std::atan (bottomRadius () / height ()));
 
 	if (side ())
 	{
 		for (int32_t i = 0; i < xDimension; ++ i)
 		{
 			const double u1     = (i + 0.5f) / xDimension;
-			const double theta1 = 2 * PI <double> * u1;
+			const double theta1 = 2 * pi <double> * u1;
 			const auto   n1     = std::polar <double> (nz .imag (), theta1);
 
 			const double u2     = i / xDimension;
-			const double theta2 = 2 * PI <double> * u2;
+			const double theta2 = 2 * pi <double> * u2;
 			const auto   p2     = std::polar <double> (-bottomRadius (), theta2);
 			const auto   n2     = std::polar <double> (nz .imag (), theta2);
 
 			const double u3     = (i + 1) / xDimension;
-			const double theta3 = 2 * PI <double> * u3;
+			const double theta3 = 2 * pi <double> * u3;
 			const auto   p3     = std::polar <double> (-bottomRadius (), theta3);
 			const auto   n3     = std::polar <double> (nz .imag (), theta3);
 
@@ -194,7 +194,7 @@ Cone::build ()
 		for (int32_t i = xDimension - 1; i > -1; -- i)
 		{
 			const double u     = i / xDimension;
-			const double theta = 2 * PI <double> * u;
+			const double theta = 2 * pi <double> * u;
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (bottomRadius () .getValue ());
 
@@ -251,7 +251,7 @@ throw (Error <NOT_SUPPORTED>,
 		for (int32_t i = 0; i < xDimension; ++ i)
 		{
 			const double u     = i / xDimension;
-			const double theta = 2 * PI <double> * u;
+			const double theta = 2 * pi <double> * u;
 			const auto   t     = std::polar <double> (-1, theta);
 			const auto   p     = t * double (bottomRadius () .getValue ());
 

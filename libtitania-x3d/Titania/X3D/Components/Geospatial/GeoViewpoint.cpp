@@ -226,7 +226,7 @@ GeoViewpoint::getFieldOfView () const
 {
 	const double fov = fieldOfView () * fieldOfViewScale ();
 
-	return fov > 0 and fov < PI <double> ? fov : PI <double> / 4;
+	return fov > 0 and fov < pi <double> ? fov : pi <double> / 4;
 }
 
 Vector3d

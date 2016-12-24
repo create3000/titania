@@ -137,9 +137,9 @@ AngleTool::getSnapPosition (const Vector3d & position, const bool snapY)
 
 	const std::complex <double> complex (translation .x (), translation .z ());
 
-	constexpr double offset = PI <double> / 2;
+	constexpr double offset = pi <double> / 2;
 
-	const auto phi        = 2 * PI <double> / dimension () [1];
+	const auto phi        = 2 * pi <double> / dimension () [1];
 	const auto radius     = std::abs (complex);
 	const auto angle      = std::arg (complex);
 	auto       snapRadius = std::round (radius);

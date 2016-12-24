@@ -56,7 +56,7 @@
 namespace titania {
 namespace puck {
 
-using math::PI;
+using math::pi;
 
 X3DTextureTransformEditor::X3DTextureTransformEditor () :
 	         X3DBaseInterface (),
@@ -134,7 +134,7 @@ X3DTextureTransformEditor::getTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 			const auto r = X3D::Rotation4d (X3D::Vector3d (1, 0, 0), proj);
 
 			textureTransform -> translation () = X3D::Vector2f (last -> translation () .getX (), last -> translation () .getY ());
-			textureTransform -> rotation ()    = r .axis () .z () > 0 ? r .angle () : PI <double> * 2 - r .angle ();
+			textureTransform -> rotation ()    = r .axis () .z () > 0 ? r .angle () : pi <double> * 2 - r .angle ();
 			textureTransform -> scale ()       = X3D::Vector2f (last -> scale ()  .getX (), last -> scale ()  .getY ());
 			textureTransform -> center ()      = X3D::Vector2f (last -> center () .getX (), last -> center () .getY ());
 			break;
@@ -161,7 +161,7 @@ X3DTextureTransformEditor::getTextureTransform (const X3D::X3DPtr <X3D::X3DTextu
 				const auto r = X3D::Rotation4d (X3D::Vector3d (1, 0, 0), proj);
 	
 				textureTransform -> translation () = X3D::Vector2f (translation .x (), translation .y ());
-				textureTransform -> rotation ()    = r .axis () .z () > 0 ? r .angle () : PI <double> * 2 - r .angle ();
+				textureTransform -> rotation ()    = r .axis () .z () > 0 ? r .angle () : pi <double> * 2 - r .angle ();
 				textureTransform -> scale ()       = X3D::Vector2f (scale .x (), scale .y ());
 			}
 			catch (const std::domain_error &)

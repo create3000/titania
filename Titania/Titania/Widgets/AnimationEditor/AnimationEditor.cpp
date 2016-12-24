@@ -71,7 +71,7 @@
 namespace titania {
 namespace puck {
 
-using math::PHI;
+using math::phi;
 
 static constexpr int32_t FRAME_SIZE          = 7;            // in pixel
 static constexpr double  DEFAULT_TRANSLATION = 8;            // in pixel
@@ -1130,7 +1130,7 @@ AnimationEditor::on_current_frame_changed ()
 			const int32_t width = getDrawingArea () .get_width ();
 
 			if (x < 0 or x > width)
-				setTranslation (width * (2 - PHI <double>) - frame * getScale ());
+				setTranslation (width * (2 - phi <double>) - frame * getScale ());
 		}
 		else
 		{
@@ -2828,7 +2828,7 @@ AnimationEditor::on_draw (const Cairo::RefPtr <Cairo::Context> & context)
 		const int32_t x0       = minFrame * getScale () + getTranslation ();
 		const int32_t x1       = maxFrame * getScale () + getTranslation ();
 
-		context -> set_source_rgba (sb .get_red (), sb .get_green (), sb .get_blue (), sb .get_alpha () * (2 - PHI <double>));
+		context -> set_source_rgba (sb .get_red (), sb .get_green (), sb .get_blue (), sb .get_alpha () * (2 - phi <double>));
 		context -> rectangle (std::min (x0, x1) - 1, 0, std::abs (x1 - x0) + 3, height);
 		context -> fill ();
 	}

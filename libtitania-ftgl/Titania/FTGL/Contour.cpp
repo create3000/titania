@@ -34,7 +34,7 @@
 namespace titania {
 namespace FTGL {
 
-using math::PI;
+using math::pi;
 
 Contour::Contour (FT_Vector* const contour, char* const tags, const size_t n, const size_t bezierSteps)
 {
@@ -63,11 +63,11 @@ Contour::Contour (FT_Vector* const contour, char* const tags, const size_t n, co
 		// Compute our path's new direction.
 		double t = dir - olddir;
 
-		if (t < -PI <double>)
-			t += 2 * PI <double>;
+		if (t < -pi <double>)
+			t += 2 * pi <double>;
 
-		if (t > PI <double>)
-			t -= 2 * PI <double>;
+		if (t > pi <double>)
+			t -= 2 * pi <double>;
 
 		angle += t;
 

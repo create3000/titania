@@ -191,7 +191,7 @@ X3DBackgroundNode::build (const float radius, const std::vector <float> & vAngle
 	std::complex <float> y;
 	Vector3f             p;
 	
-	const auto    vAngleMax   = bottom ? PI1_2 <float> : PI <float>;
+	const auto    vAngleMax   = bottom ? pi1_2 <float> : pi <float>;
 	const int32_t V_DIMENSION = vAngle .size () - 1;
 
 	numIndices += 4 * U_DIMENSION * V_DIMENSION;
@@ -203,8 +203,8 @@ X3DBackgroundNode::build (const float radius, const std::vector <float> & vAngle
 
 		if (bottom)
 		{
-			theta1 = PI <float> - theta1;
-			theta2 = PI <float> - theta2;
+			theta1 = pi <float> - theta1;
+			theta2 = pi <float> - theta2;
 		}
 
 		const auto z1 = std::polar (radius, theta1);
@@ -219,7 +219,7 @@ X3DBackgroundNode::build (const float radius, const std::vector <float> & vAngle
 			const size_t u1 = u < U_DIMENSION - 1 ? u + 1 : 0;
 
 			// p1
-			phi = PI2 <float> * (u / U_DIMENSION);
+			phi = pi2 <float> * (u / U_DIMENSION);
 			y   = std::polar (-z1 .imag (), phi);
 
 			glColors .emplace_back (c1 .r (), c1 .g (), c1 .b (), opacity);
@@ -232,7 +232,7 @@ X3DBackgroundNode::build (const float radius, const std::vector <float> & vAngle
 			glPoints .emplace_back (y .imag (), z2 .real (), y .real ());
 
 			// p3
-			phi = PI2 <float> * (u1 / U_DIMENSION);
+			phi = pi2 <float> * (u1 / U_DIMENSION);
 			y   = std::polar (-z2 .imag (), phi);
 
 			glColors .emplace_back (c2 .r (), c2 .g (), c2 .b (), opacity);
@@ -318,7 +318,7 @@ X3DBackgroundNode::build ()
 			if (vAngle .empty () or vAngle .front () > 0)
 				vAngle .insert (vAngle .begin (), 0);
 
-			const auto vAngleMax = groundColor () .size () > groundAngle () .size () ? PI1_2 <float> : PI <float>;
+			const auto vAngleMax = groundColor () .size () > groundAngle () .size () ? pi1_2 <float> : pi <float>;
 
 			if (vAngle .back () < vAngleMax)
 				vAngle .emplace_back (vAngleMax);
@@ -330,8 +330,8 @@ X3DBackgroundNode::build ()
 		{
 			std::vector <float> vAngle (groundAngle () .rbegin (), groundAngle () .rend ());
 
-			if (vAngle .empty () or vAngle .front () < PI1_2 <float>)
-				vAngle .insert (vAngle .begin (), PI1_2 <float>);
+			if (vAngle .empty () or vAngle .front () < pi1_2 <float>)
+				vAngle .insert (vAngle .begin (), pi1_2 <float>);
 
 			if (vAngle .back () > 0)
 				vAngle .emplace_back (0);

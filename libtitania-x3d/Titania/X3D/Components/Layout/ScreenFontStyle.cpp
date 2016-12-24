@@ -536,7 +536,7 @@ ScreenFontStyle::getSize () const
 		const double height   = Gdk::Screen::get_default () -> get_height ();             // Screen height in pixel
 		const double height_m = Gdk::Screen::get_default () -> get_height_mm () / 1000.0; // Screen height in meter
 
-		return POINT <double> * pointSize () * height / height_m;
+		return point <double> * pointSize () * height / height_m;
 	}
 
 	return 0;

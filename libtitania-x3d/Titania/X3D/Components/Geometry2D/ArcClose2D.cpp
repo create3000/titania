@@ -126,16 +126,16 @@ throw (Error <INVALID_OPERATION_TIMING>,
 double
 ArcClose2D::getAngle ()
 {
-	const double start = math::interval <double> (startAngle (), 0, PI2 <double>);
-	const double end   = math::interval <double> (endAngle (),   0, PI2 <double>);
+	const double start = math::interval <double> (startAngle (), 0, pi2 <double>);
+	const double end   = math::interval <double> (endAngle (),   0, pi2 <double>);
 
 	if (start == end)
-		return PI2 <double>;
+		return pi2 <double>;
 
 	const double difference = std::abs (end - start);
 
 	if (start > end)
-		return PI2 <double> - difference;
+		return pi2 <double> - difference;
 
 	if (not std::isnan (difference))
 		return difference;
@@ -163,7 +163,7 @@ ArcClose2D::build ()
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
 
-	if (difference < PI2 <double>)
+	if (difference < pi2 <double>)
 	{
 		// If it is a arc, add a center point otherwise it is a circle.
 
