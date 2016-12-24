@@ -164,7 +164,7 @@ Parser::material (Lib3dsMaterial* const material)
 
 	// Set material name
 
-	scene -> updateNamedNode (std::string (material -> name) + "Material", X3D::SFNode (materialNode));
+	scene -> updateNamedNode (get_name_from_string (material -> name) + "Material", X3D::SFNode (materialNode));
 
 	// Create material
 
@@ -222,7 +222,7 @@ Parser::mesh (Lib3dsMesh* const mesh)
 
 	// Set name
 
-	scene -> updateNamedNode (mesh -> name, X3D::SFNode (transformNode));
+	scene -> updateNamedNode (get_name_from_string (mesh -> name), X3D::SFNode (transformNode));
 
 	// Set transformation matrix
 

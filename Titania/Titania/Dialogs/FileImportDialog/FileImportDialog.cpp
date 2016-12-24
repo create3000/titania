@@ -70,10 +70,29 @@ static constexpr int INLINE        = 3;
 
 }
 
+static constexpr auto ALL_FILES_FILTER = "All Files";
+static constexpr auto X3D_FILTER       = "All X3D Files";
+static constexpr auto IMAGES_FILTER    = "All Images";
+static constexpr auto AUDIO_FILTER     = "All Audio";
+static constexpr auto VIDEOS_FILTER    = "All Videos";
+
+static constexpr auto X3D_XML_ENCODING_FILTER                     = "X3D XML Encoding (*.x3d)";
+static constexpr auto X3D_CLASSIC_VRML_ENCODING_FILTER            = "X3D Classic VRML Encoding (*.x3dv)";
+static constexpr auto VRML97_ENCODING_FILTER                      = "VRML97 Encoding (*.wrl)";
+static constexpr auto X3D_JSON_ENCODING_FILTER                    = "X3D JSON Encoding (*.json)";
+static constexpr auto COMPRESSED_X3D_XML_ENCODING_FILTER          = "Compressed X3D XML Encoding (*.x3dz)";
+static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed X3D Classic VRML Encoding (*.x3dvz)";
+static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
+
+static constexpr auto AUTODESK_3DS_MAX_FILE_FILTER = "Autodesk 3DS Max File (*.3ds)";
+static constexpr auto WAVEFRONT_OBJ_FILE_FILTER    = "Wavefront OBJ File (*.obj)";
+
 FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileImportDialogInterface (get_ui ("Dialogs/FileImportDialog.glade"))
 {
+	// Config
+
 	if (getConfig () -> hasItem ("importType"))
 	{
 		switch (getConfig () -> getInteger ("importType"))
@@ -93,17 +112,46 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 		}
 	}
 
-	getFileFilterX3D   () -> set_name (_ ("X3D"));
-	getFileFilterImage () -> set_name (_ ("Images"));
-	getFileFilterAudio () -> set_name (_ ("Audio"));
-	getFileFilterVideo () -> set_name (_ ("Videos"));
-	getFileFilterAll   () -> set_name (_ ("All Files"));
+	// Set filter name
+
+	getFileFilterAll   () -> set_name (_ (ALL_FILES_FILTER));
+	getFileFilterX3D   () -> set_name (_ (X3D_FILTER));
+	getFileFilterImage () -> set_name (_ (IMAGES_FILTER));
+	getFileFilterAudio () -> set_name (_ (AUDIO_FILTER));
+	getFileFilterVideo () -> set_name (_ (VIDEOS_FILTER));
+
+	getFileFilterX3DXMLEncoding         () -> set_name (_ (X3D_XML_ENCODING_FILTER));
+	getFileFilterX3DClassicVRMLEncoding () -> set_name (_ (X3D_CLASSIC_VRML_ENCODING_FILTER));
+	getFileFilterX3DJSONEncoding        () -> set_name (_ (X3D_JSON_ENCODING_FILTER));
+	getFileFilterVrmlEncoding           () -> set_name (_ (VRML97_ENCODING_FILTER));
+
+	getFileFilterCompressedX3DXMLEncoding         () -> set_name (_ (COMPRESSED_X3D_XML_ENCODING_FILTER));
+	getFileFilterCompressedX3DClassicVRMLEncoding () -> set_name (_ (COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER));
+	getFileFilterCompressedVrmlEncoding           () -> set_name (_ (COMPRESSED_VRML97_ENCODING_FILTER));
+
+	getFileFilterAutodesk3DSMax ()  -> set_name (_ (AUTODESK_3DS_MAX_FILE_FILTER));
+	getFileFilterWavefrontOBJ ()    -> set_name (_ (WAVEFRONT_OBJ_FILE_FILTER));
+
+	// Add filter
 
 	getWindow () .add_filter (getFileFilterX3D ());
 	getWindow () .add_filter (getFileFilterImage ());
 	getWindow () .add_filter (getFileFilterAudio ());
 	getWindow () .add_filter (getFileFilterVideo ());
-	getWindow () .set_filter (getFileFilterX3D ());
+
+	getWindow () .add_filter (getFileFilterX3DXMLEncoding ());
+	getWindow () .add_filter (getFileFilterX3DClassicVRMLEncoding ());
+	//getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
+	getWindow () .add_filter (getFileFilterVrmlEncoding ());
+
+	getWindow () .add_filter (getFileFilterCompressedX3DXMLEncoding ());
+	getWindow () .add_filter (getFileFilterCompressedX3DClassicVRMLEncoding ());
+	getWindow () .add_filter (getFileFilterCompressedVrmlEncoding ());
+
+	getWindow () .add_filter (getFileFilterAutodesk3DSMax ());
+	getWindow () .add_filter (getFileFilterWavefrontOBJ ());
+
+	// Set uri
 
 	const auto worldURL = getCurrentScene () -> getWorldURL ();
 
