@@ -261,75 +261,90 @@ golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 void
 golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
-	using GoldenFunction = std::function <void (const X3DScenePtr &, const basic::uri &, basic::ifilestream &)>;
-
-	static const std::map <std::string, GoldenFunction> contentTypes = {
-		std::make_pair ("model/vrml",                       &golden_x3dv),
-		std::make_pair ("x-world/x-vrml",                   &golden_x3dv),
-		std::make_pair ("model/x3d+vrml",                   &golden_x3dv),
-		std::make_pair ("model/x3d+xml",                    &golden_x3d),
-		std::make_pair ("application/xml",                  &golden_x3d),
-		std::make_pair ("application/vnd.hzn-3d-crossword", &golden_x3d),
-		std::make_pair ("application/ogg",                  &golden_video),
-		std::make_pair ("application/x-3ds",                &golden_3ds),
-		std::make_pair ("image/x-3ds",                      &golden_3ds),
-		std::make_pair ("text/plain",                       &golden_text)
-	};
-
-	static const std::map <std::string, GoldenFunction> suffixes = {
-		// VRML
-		std::make_pair (".wrl",      &golden_x3dv),
-		std::make_pair (".wrl.gz",   &golden_x3dv), /// Todo: does not work with URI::suffix
-		std::make_pair (".vrml",     &golden_x3dv),
-		std::make_pair (".vrm",      &golden_x3dv),
-		// X3D Vrml Classic Encoding 
-		std::make_pair (".x3dvz",    &golden_x3dv),
-		std::make_pair (".x3dv.gz",  &golden_x3dv), /// Todo: does not work with URI::suffix
-		std::make_pair (".x3dv",     &golden_x3dv),
-		// X3D XML Encoding 
-		std::make_pair (".x3d",      &golden_x3d),
-		std::make_pair (".x3dz",     &golden_x3d),
-		std::make_pair (".x3d.gz",   &golden_x3d), /// Todo: does not work with URI::suffix
-		std::make_pair (".xml",      &golden_x3d),
-		// Autodesk 3DS Max
-		std::make_pair (".3ds",      &golden_3ds),
-		// Wavefront OBJ
-		std::make_pair (".obj",      &golden_obj)
-	};
-
 	try
 	{
-		const std::string contentType = istream .response_headers () .at ("Content-Type");
+		using GoldenFunction = std::function <void (const X3DScenePtr &, const basic::uri &, basic::ifilestream &)>;
 	
-		//__LOG__ << contentType << " : " << uri << std::endl;
-
+		static const std::map <std::string, GoldenFunction> contentTypes = {
+			std::make_pair ("model/vrml",                       &golden_x3dv),
+			std::make_pair ("x-world/x-vrml",                   &golden_x3dv),
+			std::make_pair ("model/x3d+vrml",                   &golden_x3dv),
+			std::make_pair ("model/x3d+xml",                    &golden_x3d),
+			std::make_pair ("application/xml",                  &golden_x3d),
+			std::make_pair ("application/vnd.hzn-3d-crossword", &golden_x3d),
+			std::make_pair ("application/ogg",                  &golden_video),
+			std::make_pair ("application/x-3ds",                &golden_3ds),
+			std::make_pair ("image/x-3ds",                      &golden_3ds),
+			std::make_pair ("text/plain",                       &golden_text)
+		};
+	
+		static const std::map <std::string, GoldenFunction> suffixes = {
+			// VRML
+			std::make_pair (".wrl",      &golden_x3dv),
+			std::make_pair (".wrl.gz",   &golden_x3dv), /// Todo: does not work with URI::suffix
+			std::make_pair (".vrml",     &golden_x3dv),
+			std::make_pair (".vrm",      &golden_x3dv),
+			// X3D Vrml Classic Encoding 
+			std::make_pair (".x3dvz",    &golden_x3dv),
+			std::make_pair (".x3dv.gz",  &golden_x3dv), /// Todo: does not work with URI::suffix
+			std::make_pair (".x3dv",     &golden_x3dv),
+			// X3D XML Encoding 
+			std::make_pair (".x3d",      &golden_x3d),
+			std::make_pair (".x3dz",     &golden_x3d),
+			std::make_pair (".x3d.gz",   &golden_x3d), /// Todo: does not work with URI::suffix
+			std::make_pair (".xml",      &golden_x3d),
+			// Autodesk 3DS Max
+			std::make_pair (".3ds",      &golden_3ds),
+			// Wavefront OBJ
+			std::make_pair (".obj",      &golden_obj)
+		};
+	
 		try
 		{
-			return contentTypes .at (contentType) (scene, uri, istream);
-		}
-		catch (const std::out_of_range &)
-		{
+			const std::string contentType = istream .response_headers () .at ("Content-Type");
+		
+			//__LOG__ << contentType << " : " << uri << std::endl;
+	
 			try
 			{
-				return suffixes .at (uri .suffix ()) (scene, uri, istream);
+				return contentTypes .at (contentType) (scene, uri, istream);
 			}
 			catch (const std::out_of_range &)
 			{
-				if (Gio::content_type_is_a (contentType, "image/*"))
-					return golden_image (scene, uri, istream);
-
-				if (Gio::content_type_is_a (contentType, "audio/*"))
-					return golden_audio (scene, uri, istream);
-
-				if (Gio::content_type_is_a (contentType, "video/*"))
-					return golden_video (scene, uri, istream);
+				try
+				{
+					return suffixes .at (uri .suffix ()) (scene, uri, istream);
+				}
+				catch (const std::out_of_range &)
+				{
+					if (Gio::content_type_is_a (contentType, "image/*"))
+						return golden_image (scene, uri, istream);
+	
+					if (Gio::content_type_is_a (contentType, "audio/*"))
+						return golden_audio (scene, uri, istream);
+	
+					if (Gio::content_type_is_a (contentType, "video/*"))
+						return golden_video (scene, uri, istream);
+				}
 			}
 		}
+		catch (const std::out_of_range &)
+		{ }
+	
+		golden_text (scene, uri, istream);
 	}
-	catch (const std::out_of_range &)
-	{ }
-
-	golden_text (scene, uri, istream);
+	catch (const X3DError &)
+	{
+		throw;
+	}
+	catch (const std::exception & error)
+	{
+		throw Error <INVALID_X3D> (error .what ());
+	}
+	catch (...)
+	{
+		throw Error <INVALID_X3D> ("Unkown error while loading '" + uri .str () + "'.");
+	}
 }
 
 } // X3D
