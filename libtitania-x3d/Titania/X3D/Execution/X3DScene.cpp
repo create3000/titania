@@ -804,7 +804,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 		<< ':'
 		<< Generator::TidySpace
 		<< '"'
-		<< getProfile () -> getName ()
+		<< (getProfile () ? getProfile () -> getName () : "Full")
 		<< '"'
 		<< ','
 		<< Generator::TidyBreak;

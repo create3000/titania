@@ -647,7 +647,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 	}
 	else
 	{
-		if (suffix == ".wrl" or suffix == ".vrml" or suffix == ".vrm" or suffix == "wrz")
+		if (suffix == ".wrl" or suffix == ".vrml" or suffix == ".vrm" or suffix == ".wrz")
 		{
 			if (scene -> getSpecificationVersion () not_eq X3D::VRML_V2_0)
 			{

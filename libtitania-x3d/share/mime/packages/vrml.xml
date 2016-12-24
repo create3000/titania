@@ -66,6 +66,7 @@
 			<match type="string" offset="0" value="#VRML"/>
 		</magic>
 		<glob pattern="*.wrl"/>
+		<glob pattern="*.wrz"/>
 		<glob pattern="*.vrml"/>
 		<glob pattern="*.vrm"/>
 	</mime-type>
