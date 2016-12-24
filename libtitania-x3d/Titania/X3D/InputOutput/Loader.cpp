@@ -201,9 +201,13 @@ throw (Error <INVALID_URL>,
 			istream .close ();
 			return;
 		}
-		catch (const X3DError & error)
+		catch (const std::exception & error)
 		{
 			urlError .emplace_back (error .what ());
+		}
+		catch (...)
+		{
+			urlError .emplace_back ("Unkown error while loading '" + URL .str () + "'.");
 		}
 	}
 
