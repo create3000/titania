@@ -560,6 +560,8 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const OutputStyleType outpu
 bool
 X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const OutputStyleType outputStyle, const bool copy)
 {
+	// Known file type must be also added to BrowserWindow::on_save_activated.
+
 	const auto suffix   = worldURL .suffix ();
 	const auto undoStep = std::make_shared <X3D::UndoStep> ("");
 
@@ -645,7 +647,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 	}
 	else
 	{
-		if (suffix == ".wrl" or suffix == "wrz")
+		if (suffix == ".wrl" or suffix == ".vrml" or suffix == ".vrm" or suffix == "wrz")
 		{
 			if (scene -> getSpecificationVersion () not_eq X3D::VRML_V2_0)
 			{

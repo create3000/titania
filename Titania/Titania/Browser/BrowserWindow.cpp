@@ -803,11 +803,21 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 void
 BrowserWindow::on_save_activated ()
 {
-	const basic::uri worldURL = getCurrentScene () -> getWorldURL ();
+	static const std::set <std::string> knowFileTypes = {
+		".wrl",
+		".vrml",
+		".vrm",
+		".x3dvz",
+		".x3dv",
+		".x3d"
+	};
 
-	if (worldURL .empty () or worldURL .is_network ())
+	const auto & worldURL = getCurrentScene () -> getWorldURL ();
+
+	if (worldURL .empty () or worldURL .is_network () or not knowFileTypes .count (worldURL .suffix ()))
+	{
 		on_save_as_activated ();
-
+	}
 	else
 	{
 		save (worldURL, getOutputStyle (getCurrentScene ()), false);

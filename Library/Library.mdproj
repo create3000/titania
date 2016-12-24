@@ -680,6 +680,11 @@
     <None Include="Tests\3rd Party\Wavefront\turbosonic obj\plate1.jpg" />
     <None Include="Tests\3rd Party\Wavefront\turbosonic obj\turbosonic.mtl" />
     <None Include="Tests\3rd Party\Wavefront\turbosonic obj\turbosonic.obj" />
+    <None Include="Tests\3rd Party\Wavefront\EmpireState_lp.obj\EmpireState_d.png" />
+    <None Include="Tests\3rd Party\Wavefront\EmpireState_lp.obj\EmpireState_lp.mtl" />
+    <None Include="Tests\3rd Party\Wavefront\EmpireState_lp.obj\EmpireState_lp.obj" />
+    <None Include="Tests\3rd Party\Autodesk\EmpireState_lp.max\EmpireState_d.png" />
+    <None Include="Tests\3rd Party\Autodesk\EmpireState_lp.max\EmpireState_lp.max" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

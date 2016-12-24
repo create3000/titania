@@ -288,6 +288,7 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 		std::make_pair (".x3dv",     &golden_x3dv),
 		// X3D XML Encoding 
 		std::make_pair (".x3d",      &golden_x3d),
+		std::make_pair (".x3dz",     &golden_x3d),
 		std::make_pair (".x3d.gz",   &golden_x3d), /// Todo: does not work with URI::suffix
 		std::make_pair (".xml",      &golden_x3d),
 		// Autodesk 3DS Max

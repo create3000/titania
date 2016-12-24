@@ -246,12 +246,10 @@ MaterialParser::MaterialParser (const X3DScenePtr & scene, std::istream & istrea
 	whiteSpaceCharacters (),
 	   commentCharacters (),
 	           materials (),
-	            material (scene -> createNode ("Material")),
+	            material (scene -> createNode <Material> ()),
 	                name (),
 	            textures ()
-{
-	scene -> addUninitializedNode (material);
-}
+{ }
 
 void
 MaterialParser::parse ()
