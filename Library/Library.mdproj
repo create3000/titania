@@ -674,6 +674,12 @@
     <None Include="Tests\3rd Party\Autodesk\solarsail.3ds" />
     <None Include="Tests\3rd Party\Autodesk\ssail.jpg" />
     <None Include="Tests\3rd Party\Autodesk\watertower.3ds" />
+    <None Include="Tests\3rd Party\Wavefront\turbosonic obj\Body.jpg" />
+    <None Include="Tests\3rd Party\Wavefront\turbosonic obj\Body.png" />
+    <None Include="Tests\3rd Party\Wavefront\turbosonic obj\plate.jpg" />
+    <None Include="Tests\3rd Party\Wavefront\turbosonic obj\plate1.jpg" />
+    <None Include="Tests\3rd Party\Wavefront\turbosonic obj\turbosonic.mtl" />
+    <None Include="Tests\3rd Party\Wavefront\turbosonic obj\turbosonic.obj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

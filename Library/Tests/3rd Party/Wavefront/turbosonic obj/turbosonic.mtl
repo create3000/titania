@@ -1,0 +1,167 @@
+# 
+# Wavefront material file
+# Converted by the DEEP Exploration  Deep Exploration 6.0 x64 6.0.2.6083 Release
+# Right Hemisphere, LTD
+# http://www.righthemisphere.com/
+# 
+
+newmtl blue
+Ka 0 0 0.8
+Kd 0 0 0.8
+Ks 0.498039 0.498039 0.498039
+illum 2
+Ns 2.46229
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl white
+Ka 0.694118 0.694118 0.694118
+Kd 0.694118 0.694118 0.694118
+Ks 0.498039 0.498039 0.498039
+illum 2
+Ns 2.46229
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl red
+Ka 0.8 0 0
+Kd 0.8 0 0
+Ks 0.498039 0.498039 0.498039
+illum 2
+Ns 2.46229
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl interior
+Ka 0.207843 0.207843 0.207843
+Kd 0.207843 0.207843 0.207843
+Ks 0.498039 0.498039 0.498039
+illum 2
+Ns 2.46229
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl body
+Ka 0.8 0.8 0.8
+Kd 1 1 1
+Ks 0.498039 0.498039 0.498039
+illum 2
+Ns 2.46229
+map_Kd Body.png
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl black
+Ka 0 0 0
+Kd 0 0 0
+Ks 0 0 0
+illum 2
+Ns 2.46229
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl chrome
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.498039 0.498039 0.498039
+illum 2
+Ns 2.46229
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl glass
+Ka 0.317647 0.388235 0.317647
+Kd 0.317647 0.388235 0.317647
+Ks 0.498039 0.498039 0.498039
+illum 2
+Ns 2.46229
+d 0.38
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl gum
+Ka 0.0627451 0.0627451 0.0627451
+Kd 0.0627451 0.0627451 0.0627451
+Ks 0.498039 0.498039 0.498039
+illum 2
+Ns 2.46229
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl silver
+Ka 0.313726 0.4 0.4
+Kd 0.313726 0.4 0.4
+Ks 0.498039 0.498039 0.498039
+illum 2
+Ns 2.46229
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
