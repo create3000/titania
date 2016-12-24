@@ -51,9 +51,9 @@
 #include "Parser.h"
 
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Grouping/Group.h" //
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Components/Rendering/Normal.h" //
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/Material.h"
@@ -197,8 +197,8 @@ Parser::material (Lib3dsMaterial* const material)
 	materialNode -> transparency () = material -> transparency;
 
 	// TODO:
-	// int   self_illum_flag; /* bool */
-	// float self_illum;
+	// int   material -> self_illum_flag; /* bool */
+	// float material -> self_illum;
 }
 
 void
@@ -264,25 +264,50 @@ Parser::mesh (Lib3dsMesh* const mesh)
 			const auto   shapeNode      = scene -> createNode <X3D::Shape> ();
 			const auto   appearanceNode = scene -> createNode <X3D::Appearance> ();
 			const auto & materialNode   = materialNodes [i];
-			const auto   geometryNode   = scene -> createNode <X3D::IndexedFaceSet> ();
+			const auto & shading        = file -> materials [i] -> shading;
 	
 			transformNode -> children () .emplace_back (shapeNode);
 	
 			shapeNode -> appearance ()    = appearanceNode;
-			shapeNode -> geometry ()      = geometryNode;
 			appearanceNode -> material () = materialNode;
-			geometryNode -> coord ()      = coordNode;
-	
-			geometryNode -> creaseAngle () = math::PI <float>;
-	
-			for (const auto & faceIndex : facesIndices .second)
+
+			if (shading == LIB3DS_SHADING_WIRE_FRAME)
 			{
-				const auto & face = mesh -> faces [faceIndex];
-		
-				geometryNode -> coordIndex () .emplace_back (face .index [0]);
-				geometryNode -> coordIndex () .emplace_back (face .index [1]);
-				geometryNode -> coordIndex () .emplace_back (face .index [2]);
-				geometryNode -> coordIndex () .emplace_back (-1);
+				const auto geometryNode = scene -> createNode <X3D::IndexedLineSet> ();
+
+				shapeNode -> geometry ()         = geometryNode;
+				geometryNode -> coord ()         = coordNode;
+				materialNode -> emissiveColor () = materialNode -> diffuseColor ();
+
+				for (const auto & faceIndex : facesIndices .second)
+				{
+					const auto & face = mesh -> faces [faceIndex];
+
+					geometryNode -> coordIndex () .emplace_back (face .index [0]);
+					geometryNode -> coordIndex () .emplace_back (face .index [1]);
+					geometryNode -> coordIndex () .emplace_back (face .index [2]);
+					geometryNode -> coordIndex () .emplace_back (face .index [0]);
+					geometryNode -> coordIndex () .emplace_back (-1);
+				}
+			}
+			else
+			{
+				const auto geometryNode = scene -> createNode <X3D::IndexedFaceSet> ();
+
+				shapeNode -> geometry () = geometryNode;
+				geometryNode -> coord () = coordNode;
+
+				geometryNode -> creaseAngle () = (shading == LIB3DS_SHADING_FLAT ? 0.0f : math::PI <float>);
+
+				for (const auto & faceIndex : facesIndices .second)
+				{
+					const auto & face = mesh -> faces [faceIndex];
+
+					geometryNode -> coordIndex () .emplace_back (face .index [0]);
+					geometryNode -> coordIndex () .emplace_back (face .index [1]);
+					geometryNode -> coordIndex () .emplace_back (face .index [2]);
+					geometryNode -> coordIndex () .emplace_back (-1);
+				}
 			}
 		}
 	}
