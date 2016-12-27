@@ -240,12 +240,7 @@ Parser::texture (const Lib3dsTextureMap & textureMap)
 
 		URL = uri .transform (basename);
 		
-		if (not os::file_exists (URL .path ()))
-		{
-			textureTransformNodes .emplace_back ();
-			textureNodes          .emplace_back ();
-			return;
-		}
+		// We do not check further if the file does exists, the user can then check and refine the model.
 	}
 
 	const auto relativePath = uri .relative_path (URL);
