@@ -59,7 +59,7 @@
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
 #include "../../Components/Texturing/ImageTexture.h" //
-#include "../../Components/Texturing/TextureCoordinate.h" //
+#include "../../Components/Texturing/TextureCoordinate.h"
 
 #include "../Filter.h"
 
@@ -216,9 +216,13 @@ Parser::mesh (Lib3dsMesh* const mesh)
 	// Create geometry nodes
 
 	const auto transformNode = scene -> createNode <X3D::Transform> ();
+	auto       texCoordNode  = X3D::X3DPtr <X3D::TextureCoordinate> ();
 	const auto coordNode     = scene -> createNode <X3D::Coordinate> ();
 
 	groupNode -> children () .emplace_back (transformNode);
+
+	if (mesh -> texcos)
+		texCoordNode  = scene -> createNode <X3D::TextureCoordinate> ();
 
 	// Set name
 
@@ -294,8 +298,11 @@ Parser::mesh (Lib3dsMesh* const mesh)
 			{
 				const auto geometryNode = scene -> createNode <X3D::IndexedFaceSet> ();
 
-				shapeNode -> geometry () = geometryNode;
-				geometryNode -> coord () = coordNode;
+				shapeNode -> geometry ()    = geometryNode;
+				geometryNode -> coord ()    = coordNode;
+
+				if (mesh -> texcos)
+					geometryNode -> texCoord () = texCoordNode;
 
 				geometryNode -> creaseAngle () = (shading == LIB3DS_SHADING_FLAT ? 0.0f : math::pi <float>);
 
@@ -312,13 +319,24 @@ Parser::mesh (Lib3dsMesh* const mesh)
 		}
 	}
 
+
 	// Set coord point
+
+	if (mesh -> texcos)
+	{
+		for (size_t i = 0, size = mesh -> nvertices; i < size; ++ i)
+		{
+			const auto & texCoord = mesh -> texcos [i];
+
+			texCoordNode -> point () .emplace_back (texCoord [0], texCoord [1]);
+		}
+	}
 
 	for (size_t i = 0, size = mesh -> nvertices; i < size; ++ i)
 	{
-		const auto & vertex = mesh -> vertices [i];
+		const auto & vertex   = mesh -> vertices [i];
 
-		coordNode -> point () .emplace_back (Vector3f (vertex [0], vertex [1], vertex [2]) * rotation);
+		coordNode    -> point () .emplace_back (Vector3f (vertex [0], vertex [1], vertex [2]) * rotation);
 	}
 }
 
