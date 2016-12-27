@@ -154,6 +154,8 @@ Parser::statements (const std::string & filename)
 void
 Parser::materials ()
 {
+	defaultMaterial = scene -> createNode <X3D::Material> ();
+
 	for (size_t i = 0, size = file -> nmaterials; i < size; ++ i)
 	{
 		material (file -> materials [i]);
@@ -318,7 +320,7 @@ Parser::mesh (Lib3dsMesh* const mesh)
 
 	// Each face can have a different material, thus we create a index for the faces.
 
-	std::vector <std::vector <size_t>> materialFacesIndex (file -> nmaterials);
+	std::map <int, std::vector <size_t>> materialFacesIndex;
 
 	for (size_t i = 0, size = mesh -> nfaces; i < size; ++ i)
 	{
@@ -329,9 +331,10 @@ Parser::mesh (Lib3dsMesh* const mesh)
 
 	// Create Shape and geometry nodes
 
-	for (size_t i = 0, size = materialFacesIndex .size (); i < size; ++ i)
+	for (const auto & pair : materialFacesIndex)
 	{
-		const auto facesIndices = materialFacesIndex [i];
+		const auto & index        = pair .first;
+		const auto & facesIndices = pair .second;
 
 		std::map <unsigned, std::vector <size_t>> smoothingGroupFacesIndex;
 
@@ -344,19 +347,21 @@ Parser::mesh (Lib3dsMesh* const mesh)
 
 		for (const auto & facesIndices : smoothingGroupFacesIndex)
 		{
-			const auto   shapeNode            = scene -> createNode <X3D::Shape> ();
-			const auto   appearanceNode       = scene -> createNode <X3D::Appearance> ();
-			const auto & materialNode         = materialNodes [i];
-			const auto & textureTransformNode = textureTransformNodes [i];
-			const auto & textureNode          = textureNodes [i];
-			const auto & shading              = file -> materials [i] -> shading;
+			const auto   shapeNode      = scene -> createNode <X3D::Shape> ();
+			const auto   appearanceNode = scene -> createNode <X3D::Appearance> ();
+			const auto & materialNode   = index < 0 ? defaultMaterial : materialNodes [index];
+			const auto & shading        = index < 0 ? LIB3DS_SHADING_GOURAUD : file -> materials [index] -> shading;
 
 			transformNode -> children () .emplace_back (shapeNode);
 
-			shapeNode -> appearance ()            = appearanceNode;
-			appearanceNode -> material ()         = materialNode;
-			appearanceNode -> textureTransform () = textureTransformNode;
-			appearanceNode -> texture ()          = textureNode;
+			shapeNode -> appearance ()    = appearanceNode;
+			appearanceNode -> material () = materialNode;
+
+			if (index >= 0)
+			{
+				appearanceNode -> textureTransform () = textureTransformNodes [index];
+				appearanceNode -> texture ()          = textureNodes [index];
+			}
 
 			if (shading == LIB3DS_SHADING_WIRE_FRAME)
 			{
@@ -421,7 +426,7 @@ Parser::mesh (Lib3dsMesh* const mesh)
 
 	for (size_t i = 0, size = mesh -> nvertices; i < size; ++ i)
 	{
-		const auto & vertex   = mesh -> vertices [i];
+		const auto & vertex = mesh -> vertices [i];
 
 		coordNode -> point () .emplace_back (Vector3f (vertex [0], vertex [1], vertex [2]) * rotation);
 	}

@@ -121,6 +121,7 @@ private:
 	Lib3dsFile*       file;
 
 	X3D::X3DPtr <X3D::Transform>             groupNode;
+	X3D::X3DPtr      <X3D::Material>         defaultMaterial;
 	X3D::X3DPtrArray <X3D::Material>         materialNodes;
 	X3D::X3DPtrArray <X3D::TextureTransform> textureTransformNodes;
 	X3D::X3DPtrArray <X3D::ImageTexture>     textureNodes;
