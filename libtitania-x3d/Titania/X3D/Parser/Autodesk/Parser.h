@@ -57,6 +57,7 @@
 struct Lib3dsFile;
 struct Lib3dsMaterial;
 struct Lib3dsMesh;
+struct Lib3dsTextureMap;
 
 namespace titania {
 namespace X3D {
@@ -101,6 +102,12 @@ private:
 	material (Lib3dsMaterial* const material);
 
 	void
+	texture (const Lib3dsTextureMap & textureMap);
+
+	void
+	textureTransform (const Lib3dsTextureMap & textureMap);
+
+	void
 	meshes ();
 	
 	void
@@ -113,8 +120,10 @@ private:
 	std::istream &    istream;
 	Lib3dsFile*       file;
 
-	X3D::X3DPtr <X3D::Transform>     groupNode;
-	X3D::X3DPtrArray <X3D::Material> materialNodes;
+	X3D::X3DPtr <X3D::Transform>             groupNode;
+	X3D::X3DPtrArray <X3D::Material>         materialNodes;
+	X3D::X3DPtrArray <X3D::TextureTransform> textureTransformNodes;
+	X3D::X3DPtrArray <X3D::ImageTexture>     textureNodes;
 
 };
 

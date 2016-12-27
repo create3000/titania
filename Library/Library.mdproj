@@ -669,7 +669,6 @@
     <None Include="Tests\3rd Party\Autodesk\warrior.w3d" />
     <None Include="Tests\3rd Party\Autodesk\zeb.3ds" />
     <None Include="Tests\3rd Party\Autodesk\zeb.jpg" />
-    <None Include="Tests\3rd Party\Autodesk\zeb.max" />
     <None Include="Tests\3rd Party\Autodesk\man_free.3ds" />
     <None Include="Tests\3rd Party\Autodesk\solarsail.3ds" />
     <None Include="Tests\3rd Party\Autodesk\ssail.jpg" />

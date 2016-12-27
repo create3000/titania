@@ -58,8 +58,9 @@
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
-#include "../../Components/Texturing/ImageTexture.h" //
+#include "../../Components/Texturing/ImageTexture.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
+#include "../../Components/Texturing/TextureTransform.h"
 
 #include "../Filter.h"
 
@@ -68,6 +69,8 @@ extern "C" {
 #include "lib3ds/lib3ds.h"
 
 }
+
+#include <Titania/OS/file_exists.h>
 
 #include <fstream>
 #include <unistd.h>
@@ -79,12 +82,14 @@ namespace Autodesk {
 static const auto rotation = Rotation4f (-1, 0, 0, math::pi <float> / 2);
 
 Parser::Parser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
-	               scene (scene),
-	                 uri (uri),
-	             istream (istream),
-	                file (nullptr),
-	           groupNode (),
-	       materialNodes ()
+	                scene (scene),
+	                  uri (uri),
+	              istream (istream),
+	                 file (nullptr),
+	            groupNode (),
+	        materialNodes (),
+	textureTransformNodes (),
+	         textureNodes ()
 { }
 
 void
@@ -158,6 +163,14 @@ Parser::materials ()
 void
 Parser::material (Lib3dsMaterial* const material)
 {
+	if (not material)
+	{
+		materialNodes         .emplace_back ();
+		textureTransformNodes .emplace_back ();
+		textureNodes          .emplace_back ();
+		return;
+	}
+
 	const auto materialNode = scene -> createNode <X3D::Material> ();
 
 	materialNodes .emplace_back (materialNode);
@@ -199,6 +212,77 @@ Parser::material (Lib3dsMaterial* const material)
 	// TODO:
 	// int   material -> self_illum_flag; /* bool */
 	// float material -> self_illum;
+
+	// Texture 1
+
+	texture (material -> texture1_map);
+}
+
+void
+Parser::texture (const Lib3dsTextureMap & textureMap)
+{
+	// Determit texture path.
+
+	std::string basename = textureMap .name;
+
+	if (basename .empty ())
+	{
+		textureTransformNodes .emplace_back ();
+		textureNodes          .emplace_back ();
+		return;
+	}
+
+	auto URL = uri .transform (basename);
+
+	if (not os::file_exists (URL .path ()))
+	{
+		std::transform (basename .begin (), basename .end (), basename .begin (), [ ] (const char c) { return std::tolower (c); });
+
+		URL = uri .transform (basename);
+		
+		if (not os::file_exists (URL .path ()))
+		{
+			textureTransformNodes .emplace_back ();
+			textureNodes          .emplace_back ();
+			return;
+		}
+	}
+
+	const auto relativePath = uri .relative_path (URL);
+
+	// Create ImageTexture node.
+
+	const auto textureNode = scene -> createNode <X3D::ImageTexture> ();
+
+	textureNode -> url () = { relativePath .str (), URL .str () };
+
+	textureNodes .emplace_back (textureNode);
+
+	// Create TextureTransform node if needed.
+
+	textureTransform (textureMap);
+}
+
+void
+Parser::textureTransform (const Lib3dsTextureMap & textureMap)
+{
+	const Vector2f translation (textureMap .offset [0], textureMap .offset [1]);
+	const float    rotation = textureMap .rotation;
+	const Vector2f scale (textureMap .scale [0], textureMap .scale [1]);
+
+	if (translation == Vector2f () and rotation == 0 and scale == Vector2f (1, 1))
+	{
+		textureTransformNodes .emplace_back ();
+		return;
+	}
+
+	const auto textureTransformNode = scene -> createNode <X3D::TextureTransform> ();
+
+	textureTransformNode -> translation () = translation;
+	textureTransformNode -> rotation ()    = rotation;
+	textureTransformNode -> scale ()       = scale;
+
+	textureTransformNodes .emplace_back (textureTransformNode);
 }
 
 void
@@ -265,18 +349,24 @@ Parser::mesh (Lib3dsMesh* const mesh)
 
 		for (const auto & facesIndices : smoothingGroupFacesIndex)
 		{
-			const auto   shapeNode      = scene -> createNode <X3D::Shape> ();
-			const auto   appearanceNode = scene -> createNode <X3D::Appearance> ();
-			const auto & materialNode   = materialNodes [i];
-			const auto & shading        = file -> materials [i] -> shading;
-	
+			const auto   shapeNode            = scene -> createNode <X3D::Shape> ();
+			const auto   appearanceNode       = scene -> createNode <X3D::Appearance> ();
+			const auto & materialNode         = materialNodes [i];
+			const auto & textureTransformNode = textureTransformNodes [i];
+			const auto & textureNode          = textureNodes [i];
+			const auto & shading              = file -> materials [i] -> shading;
+
 			transformNode -> children () .emplace_back (shapeNode);
-	
-			shapeNode -> appearance ()    = appearanceNode;
-			appearanceNode -> material () = materialNode;
+
+			shapeNode -> appearance ()            = appearanceNode;
+			appearanceNode -> material ()         = materialNode;
+			appearanceNode -> textureTransform () = textureTransformNode;
+			appearanceNode -> texture ()          = textureNode;
 
 			if (shading == LIB3DS_SHADING_WIRE_FRAME)
 			{
+				// IndexedLineSet???
+
 				const auto geometryNode = scene -> createNode <X3D::IndexedLineSet> ();
 
 				shapeNode -> geometry ()         = geometryNode;
@@ -296,6 +386,8 @@ Parser::mesh (Lib3dsMesh* const mesh)
 			}
 			else
 			{
+				// IndexedFaceSet???
+
 				const auto geometryNode = scene -> createNode <X3D::IndexedFaceSet> ();
 
 				shapeNode -> geometry ()    = geometryNode;
@@ -336,7 +428,7 @@ Parser::mesh (Lib3dsMesh* const mesh)
 	{
 		const auto & vertex   = mesh -> vertices [i];
 
-		coordNode    -> point () .emplace_back (Vector3f (vertex [0], vertex [1], vertex [2]) * rotation);
+		coordNode -> point () .emplace_back (Vector3f (vertex [0], vertex [1], vertex [2]) * rotation);
 	}
 }
 
