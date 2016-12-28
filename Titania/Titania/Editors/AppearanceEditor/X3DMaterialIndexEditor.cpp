@@ -71,8 +71,9 @@ X3DMaterialIndexEditor::initialize ()
 	nodeIndex -> reparent (getMaterialIndexBox (), getWindow ());
 	nodeIndex -> setWidget (true);
 	nodeIndex -> setSelect (false);
-	nodeIndex -> setTypes ({ X3D::X3DConstants::Material,
-	                         X3D::X3DConstants::TwoSidedMaterial });
+	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DMaterialNode });
+
+	nodeIndex -> getCustomImageColumn () -> set_visible (true);
 }
 
 void
@@ -91,7 +92,9 @@ X3DMaterialIndexEditor::set_node (const X3D::SFNode & value)
 		const auto appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 		for (const auto & appearance : appearances)
-			appearance -> material () = value;
+			getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), appearance -> material (), value, undoStep);
+
+		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError &)
 	{ }
