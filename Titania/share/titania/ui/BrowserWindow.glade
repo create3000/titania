@@ -182,6 +182,8 @@
       <source stock-id="gtk-fullscreen" filename="icons/Faenza/16/gtk-fullscreen.png"/>
       <source stock-id="ExternProto" filename="icons/Node/ExternProto.96.svg"/>
       <source stock-id="Normal" filename="icons/Normal.svg"/>
+      <source stock-id="Sphere" filename="icons/Sphere.svg"/>
+      <source stock-id="Dragon" filename="icons/Dragon.svg"/>
     </sources>
   </object>
   <object class="GtkToggleAction" id="AngleLayoutToolAction">
