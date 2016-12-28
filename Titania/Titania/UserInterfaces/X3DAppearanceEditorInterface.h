@@ -231,6 +231,18 @@ public:
 	getMaterialUnlinkButton () const
 	{ return *m_MaterialUnlinkButton; }
 
+	Gtk::Box &
+	getMaterialNameBox () const
+	{ return *m_MaterialNameBox; }
+
+	Gtk::Entry &
+	getMaterialNameEntry () const
+	{ return *m_MaterialNameEntry; }
+
+	Gtk::Button &
+	getMaterialRenameButton () const
+	{ return *m_MaterialRenameButton; }
+
 	Gtk::Expander &
 	getFrontExpander () const
 	{ return *m_FrontExpander; }
@@ -656,6 +668,9 @@ private:
 	Gtk::Box*                      m_SelectMaterialBox;
 	Gtk::ComboBoxText*             m_MaterialComboBoxText;
 	Gtk::Button*                   m_MaterialUnlinkButton;
+	Gtk::Box*                      m_MaterialNameBox;
+	Gtk::Entry*                    m_MaterialNameEntry;
+	Gtk::Button*                   m_MaterialRenameButton;
 	Gtk::Expander*                 m_FrontExpander;
 	Gtk::Grid*                     m_FrontBox;
 	Gtk::Box*                      m_AmbientIntensityBox;

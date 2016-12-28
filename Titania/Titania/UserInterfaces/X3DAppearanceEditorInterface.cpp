@@ -96,6 +96,9 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SelectMaterialBox", m_SelectMaterialBox);
 	m_builder -> get_widget ("MaterialComboBoxText", m_MaterialComboBoxText);
 	m_builder -> get_widget ("MaterialUnlinkButton", m_MaterialUnlinkButton);
+	m_builder -> get_widget ("MaterialNameBox", m_MaterialNameBox);
+	m_builder -> get_widget ("MaterialNameEntry", m_MaterialNameEntry);
+	m_builder -> get_widget ("MaterialRenameButton", m_MaterialRenameButton);
 	m_builder -> get_widget ("FrontExpander", m_FrontExpander);
 	m_builder -> get_widget ("FrontBox", m_FrontBox);
 	m_builder -> get_widget ("AmbientIntensityBox", m_AmbientIntensityBox);

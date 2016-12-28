@@ -70,6 +70,7 @@ X3DMaterialEditor::X3DMaterialEditor () :
 	                    material (),
 	            twoSidedMaterial (),
 	          isTwoSidedMaterial (false),
+	                    nodeName (this, getMaterialNameEntry (), getMaterialRenameButton ()),
 	                diffuseColor (this, getDiffuseColorButton (), getDiffuseColorAdjustment (), getDiffuseColorBox (), "diffuseColor"),
 	               specularColor (this, getSpecularColorButton (), getSpecularColorAdjustment (), getSpecularColorBox (), "specularColor"),
 	               emissiveColor (this, getEmissiveColorButton (), getEmissiveColorAdjustment (), getEmissiveColorBox (), "emissiveColor"),
@@ -541,23 +542,27 @@ X3DMaterialEditor::set_node ()
 void
 X3DMaterialEditor::set_widgets ()
 {
-	diffuseColor . setNodes ({ materialNode });
-	specularColor .setNodes ({ materialNode });
-	emissiveColor .setNodes ({ materialNode });
+	const X3D::MFNode nodes = { materialNode };
 
-	ambientIntensity .setNodes ({ materialNode });
-	shininess        .setNodes ({ materialNode });
-	transparency     .setNodes ({ materialNode });
+	nodeName .setNode (nodes .back ());
 
-	separateBackColor .setNodes ({ materialNode });
+	diffuseColor . setNodes (nodes);
+	specularColor .setNodes (nodes);
+	emissiveColor .setNodes (nodes);
 
-	backDiffuseColor . setNodes ({ materialNode });
-	backSpecularColor .setNodes ({ materialNode });
-	backEmissiveColor .setNodes ({ materialNode });
+	ambientIntensity .setNodes (nodes);
+	shininess        .setNodes (nodes);
+	transparency     .setNodes (nodes);
 
-	backAmbientIntensity .setNodes ({ materialNode });
-	backShininess        .setNodes ({ materialNode });
-	backTransparency     .setNodes ({ materialNode });
+	separateBackColor .setNodes (nodes);
+
+	backDiffuseColor . setNodes (nodes);
+	backSpecularColor .setNodes (nodes);
+	backEmissiveColor .setNodes (nodes);
+
+	backAmbientIntensity .setNodes (nodes);
+	backShininess        .setNodes (nodes);
+	backTransparency     .setNodes (nodes);
 }
 
 void

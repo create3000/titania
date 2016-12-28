@@ -171,6 +171,8 @@ private:
 	X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial;
 	bool                                isTwoSidedMaterial;
 
+	NameEntry nodeName;
+
 	SFColorButton diffuseColor;
 	SFColorButton specularColor;
 	SFColorButton emissiveColor;
