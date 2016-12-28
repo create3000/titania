@@ -1765,6 +1765,32 @@
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkBox" id="MaterialIndexBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="border_width">8</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                    <child type="tab">
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_bottom">1</property>
+                        <property name="label" translatable="yes">Index</property>
+                      </object>
+                      <packing>
+                        <property name="position">3</property>
+                        <property name="tab_fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkBox" id="PaletteBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -1878,7 +1904,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="position">3</property>
+                        <property name="position">4</property>
                       </packing>
                     </child>
                     <child type="tab">
@@ -1888,7 +1914,7 @@
                         <property name="label" translatable="yes">Palette</property>
                       </object>
                       <packing>
-                        <property name="position">3</property>
+                        <property name="position">4</property>
                         <property name="tab_fill">False</property>
                       </packing>
                     </child>

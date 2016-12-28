@@ -147,6 +147,7 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LinePropertiesFilledCheckButton", m_LinePropertiesFilledCheckButton);
 	m_builder -> get_widget ("LinePropertiesLinetypeSpinButton", m_LinePropertiesLinetypeSpinButton);
 	m_builder -> get_widget ("LinePropertiesLinewidthScaleFactorSpinButton", m_LinePropertiesLinewidthScaleFactorSpinButton);
+	m_builder -> get_widget ("MaterialIndexBox", m_MaterialIndexBox);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PaletteFaceCombo", m_PaletteFaceCombo);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);

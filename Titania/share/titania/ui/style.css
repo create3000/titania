@@ -77,10 +77,10 @@ expander > title > label {
 }
 
 #OutlineTreeViewEditor .titania-textview-editable,
-#OutlineTreeViewEditor .titania-textview-editable GtkTextView,
-#OutlineTreeViewEditor .cell
+#OutlineTreeViewEditor .titania-textview-editable *
 {
 	margin: 0px;
 	padding: 0px;
-	border-radius: 0;
+	border-radius: 0px;
+	min-height: 1px;
 }

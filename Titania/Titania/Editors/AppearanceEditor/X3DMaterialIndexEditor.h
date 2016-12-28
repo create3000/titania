@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,98 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
-#define __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DMATERIAL_INDEX_EDITOR_H__
+#define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DMATERIAL_INDEX_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
-#include "X3DMaterialEditor.h"
-#include "X3DFillPropertiesEditor.h"
-#include "X3DLinePropertiesEditor.h"
-#include "X3DMaterialIndexEditor.h"
-#include "X3DMaterialPaletteEditor.h"
+#include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-class AppearanceEditor :
-	virtual public X3DAppearanceEditorInterface,
-	public X3DMaterialEditor,
-	public X3DFillPropertiesEditor,
-	public X3DLinePropertiesEditor,
-	public X3DMaterialIndexEditor,
-	public X3DMaterialPaletteEditor
+class NodeIndex;
+
+class X3DMaterialIndexEditor :
+	virtual public X3DAppearanceEditorInterface
 {
 public:
-
-	///  @name Construction
-
-	AppearanceEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~AppearanceEditor ();
+	~X3DMaterialIndexEditor ();
+
+
+protected:
+
+	///  @name Construction
+
+	X3DMaterialIndexEditor ();
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
-	///  @name Construction
-
-	virtual
-	void
-	configure () final override;
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode &) final override;
-
-	///  @name Member access
-
-	virtual
-	const X3D::BrowserPtr &
-	getPreview () const final override
-	{ return X3DMaterialEditor::getPreview (); }
-
-	virtual
-	const X3D::X3DPtr <X3D::X3DMaterialNode> &
-	getMaterial () const
-	{ return X3DMaterialEditor::getMaterial (); }
-
 	///  @name Event handlers
 
-	virtual
 	void
-	on_appearance_unlink_clicked () final override;
-
-	virtual
-	void
-	on_appearance_toggled () final override;
-
-	void
-	set_appearance ();
-
-	void
-	set_node ();
-
-	void
-	connectAppearance (const X3D::SFNode &);
-
-	virtual
-	void
-	store () final override;
-
+	set_node (const X3D::SFNode & value);
+	
 	///  @name Members
 
-	X3D::MFNode                          selection;
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
-	X3D::X3DPtr <X3D::X3DAppearanceNode> appearanceNode;
-	X3D::SFTime                          appearanceBuffer;
-	X3D::UndoStepPtr                     undoStep;
-	bool                                 changing;
+	std::unique_ptr <NodeIndex> nodeIndex;
 
 };
 

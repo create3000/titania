@@ -72,6 +72,9 @@ public:
 	///  @name Operations
 
 	void
+	setWidget (const bool value);
+
+	void
 	setSelect (const bool value)
 	{ select = value; }
 
@@ -164,6 +167,7 @@ private:
 	X3D::MFNode                                         nodes;
 	X3D::SFNode                                         node;
 	IndexType                                           index;
+	bool                                                widget;
 	bool                                                select;
 	std::set <X3D::X3DConstants::NodeType>              types;
 	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;

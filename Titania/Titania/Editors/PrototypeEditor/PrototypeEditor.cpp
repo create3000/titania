@@ -100,10 +100,8 @@ PrototypeEditor::initialize ()
 
 	// Node index
 
-	nodeIndex -> getHeaderBox () .set_visible (false);
-	nodeIndex -> getFooterBox () .set_visible (false);
-	nodeIndex -> getScrolledWindow () .set_size_request (0, 0);
 	nodeIndex -> reparent (getInstancesBox (), getWindow ());
+	nodeIndex -> setWidget (true);
 
 	// 
 

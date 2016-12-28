@@ -284,6 +284,7 @@
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DCollisionEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DGeneratedCubeMapTextureEditor.cpp" />
     <Compile Include="Titania\Editors\ScenePropertiesEditor\X3DMetaDataEditor.cpp" />
+    <Compile Include="Titania\Editors\AppearanceEditor\X3DMaterialIndexEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2554,6 +2555,7 @@
     <None Include="Titania\Editors\TextureEditor\X3DGeneratedCubeMapTextureEditor.h" />
     <None Include="Titania\Browser\OutputStyleType.h" />
     <None Include="Titania\Editors\ScenePropertiesEditor\X3DMetaDataEditor.h" />
+    <None Include="Titania\Editors\AppearanceEditor\X3DMaterialIndexEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

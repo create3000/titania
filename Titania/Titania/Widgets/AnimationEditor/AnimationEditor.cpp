@@ -182,10 +182,8 @@ AnimationEditor::initialize ()
 	getCurrentContext ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
 
 	nodeIndex -> getNode () .addInterest (this, &AnimationEditor::set_animation);
-	nodeIndex -> getHeaderBox () .set_visible (false);
-	nodeIndex -> getFooterBox () .set_visible (false);
-	nodeIndex -> getScrolledWindow () .set_size_request (0, 0);
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
+	nodeIndex -> setWidget (true);
 	nodeIndex -> setAnimations ();
 
 	set_animation (nullptr);

@@ -153,11 +153,8 @@ ScriptEditor::initialize ()
 	// Node index
 
 	nodeIndex -> getNode () .addInterest (this, &ScriptEditor::set_node);
-	nodeIndex -> getHeaderBox () .set_visible (false);
-	nodeIndex -> getFooterBox () .set_visible (false);
-	nodeIndex -> getScrolledWindow () .set_size_request (0, 0);
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
-
+	nodeIndex -> setWidget (true);
 	nodeIndex -> setTypes ({ X3D::X3DConstants::Script,
 	                         X3D::X3DConstants::ShaderPart,
 	                         X3D::X3DConstants::ShaderProgram });

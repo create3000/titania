@@ -91,6 +91,7 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	                nodes (),
 	                 node (),
 	                index (NAMED_NODES_INDEX),
+	               widget (false),
 	               select (true),
 	                types (),
 	            nodeTypes (),
@@ -199,6 +200,23 @@ NodeIndex::refresh ()
 			setNodes (std::move (nodes));
 			break;
 		}
+	}
+}
+
+void
+NodeIndex::setWidget (const bool value)
+{
+	widget = value;
+
+	if (widget)
+	{
+		getHeaderBox () .set_visible (false);
+		getFooterBox () .set_visible (false);
+		getScrolledWindow () .set_size_request (0, 0);
+	}
+	else
+	{
+
 	}
 }
 

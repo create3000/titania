@@ -48,102 +48,57 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
-#define __TITANIA_EDITORS_APPEARANCE_EDITOR_APPEARANCE_EDITOR_H__
-
-#include "../../ComposedWidgets.h"
-#include "X3DMaterialEditor.h"
-#include "X3DFillPropertiesEditor.h"
-#include "X3DLinePropertiesEditor.h"
 #include "X3DMaterialIndexEditor.h"
-#include "X3DMaterialPaletteEditor.h"
+
+#include "../../Dialogs/NodeIndex/NodeIndex.h"
+
+#include <Titania/X3D/Components/Shape/Appearance.h>
 
 namespace titania {
 namespace puck {
 
-class AppearanceEditor :
-	virtual public X3DAppearanceEditorInterface,
-	public X3DMaterialEditor,
-	public X3DFillPropertiesEditor,
-	public X3DLinePropertiesEditor,
-	public X3DMaterialIndexEditor,
-	public X3DMaterialPaletteEditor
+X3DMaterialIndexEditor::X3DMaterialIndexEditor () :
+	X3DAppearanceEditorInterface (),
+	                   nodeIndex (new NodeIndex (getBrowserWindow ()))
+{ }
+
+void
+X3DMaterialIndexEditor::initialize ()
 {
-public:
+	// Node index
 
-	///  @name Construction
+	nodeIndex -> getNode () .addInterest (this, &X3DMaterialIndexEditor::set_node);
+	nodeIndex -> reparent (getMaterialIndexBox (), getWindow ());
+	nodeIndex -> setWidget (true);
+	nodeIndex -> setSelect (false);
+	nodeIndex -> setTypes ({ X3D::X3DConstants::Material,
+	                         X3D::X3DConstants::TwoSidedMaterial });
+}
 
-	AppearanceEditor (X3DBrowserWindow* const);
+void
+X3DMaterialIndexEditor::set_node (const X3D::SFNode & value)
+{
+	try
+	{
+		// Apply selected material to selection.
 
-	///  @name Destruction
+		const auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
-	virtual
-	~AppearanceEditor ();
+		if (selection .empty ())
+			return;
 
+		const auto undoStep    = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Material Index"));
+		const auto appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
-private:
+		for (const auto & appearance : appearances)
+			appearance -> material () = value;
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
 
-	///  @name Construction
-
-	virtual
-	void
-	configure () final override;
-
-	virtual
-	void
-	initialize () final override;
-
-	virtual
-	void
-	set_selection (const X3D::MFNode &) final override;
-
-	///  @name Member access
-
-	virtual
-	const X3D::BrowserPtr &
-	getPreview () const final override
-	{ return X3DMaterialEditor::getPreview (); }
-
-	virtual
-	const X3D::X3DPtr <X3D::X3DMaterialNode> &
-	getMaterial () const
-	{ return X3DMaterialEditor::getMaterial (); }
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_appearance_unlink_clicked () final override;
-
-	virtual
-	void
-	on_appearance_toggled () final override;
-
-	void
-	set_appearance ();
-
-	void
-	set_node ();
-
-	void
-	connectAppearance (const X3D::SFNode &);
-
-	virtual
-	void
-	store () final override;
-
-	///  @name Members
-
-	X3D::MFNode                          selection;
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
-	X3D::X3DPtr <X3D::X3DAppearanceNode> appearanceNode;
-	X3D::SFTime                          appearanceBuffer;
-	X3D::UndoStepPtr                     undoStep;
-	bool                                 changing;
-
-};
+X3DMaterialIndexEditor::~X3DMaterialIndexEditor ()
+{ }
 
 } // puck
 } // titania
-
-#endif
