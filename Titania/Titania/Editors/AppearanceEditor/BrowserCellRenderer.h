@@ -84,11 +84,11 @@ public:
 	property_transparent () const
 	{ return transparent_property; }
 
-	Glib::Property <std::function <void ()>> &
+	Glib::Property <std::function <X3D::Browser* ()>> &
 	property_callback ()
 	{ return callback_property; }
 
-	const Glib::Property <std::function <void ()>> &
+	const Glib::Property <std::function <X3D::Browser* ()>> &
 	property_callback () const
 	{ return callback_property; }
 
@@ -127,11 +127,10 @@ private:
 
 	///  @name Members
 
-	X3D::Browser* const                      browser;
-	int                                      cellHeight;
-	Glib::Property <uint32_t>                index_property;
-	Glib::Property <bool>                    transparent_property;
-	Glib::Property <std::function <void ()>> callback_property;
+	int                                               cellHeight;
+	Glib::Property <uint32_t>                         index_property;
+	Glib::Property <bool>                             transparent_property;
+	Glib::Property <std::function <X3D::Browser* ()>> callback_property;
 
 };
 

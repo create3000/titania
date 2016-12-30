@@ -58,11 +58,10 @@ static constexpr int MIN_BROWSER_SIZE = 12;
 BrowserCellRenderer::BrowserCellRenderer (X3D::Browser* const browser) :
 	    Glib::ObjectBase (typeid (BrowserCellRenderer)),
 	   Gtk::CellRenderer (),
-	             browser (browser),
 	          cellHeight (0),
 	      index_property (*this, "index", 0),
 	transparent_property (*this, "transparent", false),
-	   callback_property (*this, "callback", std::function <void ()> ())
+	   callback_property (*this, "callback", std::function <X3D::Browser* ()> ())
 { }
 
 void
@@ -115,8 +114,13 @@ BrowserCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 		// Process callback.
 
-		if (callback)
-			callback ();
+		if (not callback)
+			return;
+
+		const auto browser = callback ();
+
+		if (not browser)
+			return;
 
 		// Get snapshot image.
 

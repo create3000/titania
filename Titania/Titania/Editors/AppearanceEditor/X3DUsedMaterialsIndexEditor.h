@@ -93,7 +93,7 @@ private:
 
 	///  @name Event handlers
 
-	void
+	X3D::Browser*
 	on_render_material ();
 
 	void

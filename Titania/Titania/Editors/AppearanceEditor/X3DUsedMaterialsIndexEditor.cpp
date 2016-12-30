@@ -104,7 +104,7 @@ X3DUsedMaterialsIndexEditor::initialize ()
 	nodeIndex -> getCustomImageColumn () -> add_attribute (*cellrenderer, "index", nodeIndex -> getIndexColumn ());
 }
 
-void
+X3D::Browser*
 X3DUsedMaterialsIndexEditor::on_render_material ()
 {
 	try
@@ -116,7 +116,7 @@ X3DUsedMaterialsIndexEditor::on_render_material ()
 		const X3D::X3DPtr <X3D::Appearance>       appearance (browser -> getExecutionContext () -> getNamedNode ("Appearance"));
 
 		if (not (material or twoSidedMaterial) or not appearance)
-			return;
+			return browser;
 
 		if (material)
 			appearance -> material () = material;
@@ -145,6 +145,8 @@ X3DUsedMaterialsIndexEditor::on_render_material ()
 	{ 
 		__LOG__ << error .what () << std::endl;
 	}
+
+	return browser;
 }
 
 void
