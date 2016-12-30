@@ -298,6 +298,27 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DBrowserWidget::set_selection (selection);
 
+	if (true)
+	{
+		const auto worldInfo = createCurrentWorldInfo ();
+
+		if (getSelection () -> getChildren () .empty ())
+			worldInfo -> removeMetaData ("/Titania/Selection/children");
+
+		else
+		{
+			const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
+			const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
+			const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
+
+			previous -> isPrivate (true);
+			previous -> value () = children -> value ();
+
+			children -> isPrivate (true);
+			children -> value () = getSelection () -> getChildren ();
+		}
+	}
+
 	if (selection .empty ())
 		return;
 
@@ -394,23 +415,6 @@ X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser) const
 void
 X3DBrowserEditor::setMetaData ()
 {
-	if (true)
-	{
-		const auto worldInfo = createCurrentWorldInfo ();
-
-		if (getSelection () -> getChildren () .empty ())
-			worldInfo -> removeMetaData ("/Titania/Selection/children");
-
-		else
-		{
-			const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
-			const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
-
-			children -> isPrivate (true);
-			children -> value () = getSelection () -> getChildren ();
-		}
-	}
-
 	if (true)
 	{
 		const auto   worldInfo = createCurrentWorldInfo ();

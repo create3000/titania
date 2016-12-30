@@ -815,30 +815,13 @@ GeometryEditor::on_edit_toggled ()
 	if (changing)
 		return;
 
-	if (true)
-	{
-		const auto worldInfo = createCurrentWorldInfo ();
-
-		if (getEditToggleButton () .get_active ())
-		{
-			const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
-			const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
-
-			children -> isPrivate (true);
-			children -> value () = previousSelection;
-		}
-		else
-		{
-			worldInfo -> removeMetaData ("/Titania/Selection/previous");
-			getCutPolygonsButton () .set_active (false);
-		}
-	}
+	if (not getEditToggleButton () .get_active ())
+		getCutPolygonsButton () .set_active (false);
 
 	if (getEditToggleButton () .get_active ())
 		getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
 	else
 		getBrowserWindow () -> getSelection () -> setChildren (previousSelection);
-	
 }
 
 void

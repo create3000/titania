@@ -323,7 +323,9 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 	                  {
 	                     if (types .count (type))
 	                     {
-	                        nodes .emplace_back (node);
+	                        if (node -> isLive ())
+										nodes .emplace_back (node);
+
 	                        break;
 								}
 							}
