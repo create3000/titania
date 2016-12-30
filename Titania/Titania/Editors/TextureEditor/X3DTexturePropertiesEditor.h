@@ -111,6 +111,8 @@ private:
 	X3D::UndoStepPtr                       undoStep;
 	bool                                   changing;
 
+	NameEntry nodeName;
+
 	SFColorRGBAButton                  borderColor;
 	X3DFieldAdjustment <X3D::SFInt32>  borderWidth;
 	X3DFieldAdjustment <X3D::SFFloat>  anisotropicDegree;

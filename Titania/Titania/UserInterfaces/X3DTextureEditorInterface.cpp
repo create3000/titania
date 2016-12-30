@@ -132,6 +132,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SelectTextureBox", m_SelectTextureBox);
 	m_builder -> get_widget ("TextureComboBoxText", m_TextureComboBoxText);
 	m_builder -> get_widget ("TextureUnlinkButton", m_TextureUnlinkButton);
+	m_builder -> get_widget ("TextureNameGrid", m_TextureNameGrid);
 	m_builder -> get_widget ("TextureNameBox", m_TextureNameBox);
 	m_builder -> get_widget ("TextureNameEntry", m_TextureNameEntry);
 	m_builder -> get_widget ("TextureRenameButton", m_TextureRenameButton);
@@ -243,11 +244,18 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TexturePropertiesBorderColorBox", m_TexturePropertiesBorderColorBox);
 	m_builder -> get_widget ("TexturePropertiesBorderColorButton", m_TexturePropertiesBorderColorButton);
 	m_builder -> get_widget ("TexturePropertiesBorderColorScale", m_TexturePropertiesBorderColorScale);
+	m_builder -> get_widget ("TexturePropertiesNameBox", m_TexturePropertiesNameBox);
+	m_builder -> get_widget ("TexturePropertiesNameEntry", m_TexturePropertiesNameEntry);
+	m_builder -> get_widget ("TexturePropertiesRenameButton", m_TexturePropertiesRenameButton);
 	m_builder -> get_widget ("TextureTransformExpander", m_TextureTransformExpander);
 	m_builder -> get_widget ("TextureTransformNodeBox", m_TextureTransformNodeBox);
 	m_builder -> get_widget ("SelectTextureTransformBox", m_SelectTextureTransformBox);
 	m_builder -> get_widget ("TextureTransformComboBoxText", m_TextureTransformComboBoxText);
 	m_builder -> get_widget ("TextureTransformUnlinkButton", m_TextureTransformUnlinkButton);
+	m_builder -> get_widget ("TextureTransformNameGrid", m_TextureTransformNameGrid);
+	m_builder -> get_widget ("TextureTransformNameBox", m_TextureTransformNameBox);
+	m_builder -> get_widget ("TextureTransformNameEntry", m_TextureTransformNameEntry);
+	m_builder -> get_widget ("TextureTransformRenameButton", m_TextureTransformRenameButton);
 	m_builder -> get_widget ("TextureTransformNotebook", m_TextureTransformNotebook);
 	m_builder -> get_widget ("TextureTransformLabel", m_TextureTransformLabel);
 	m_builder -> get_widget ("TextureTransformBox", m_TextureTransformBox);
@@ -280,6 +288,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureCoordinateGeneratorUnlinkButton", m_TextureCoordinateGeneratorUnlinkButton);
 	m_builder -> get_widget ("TextureCoordinateGeneratorBox", m_TextureCoordinateGeneratorBox);
 	m_builder -> get_widget ("TextureCoordinateGeneratorModeComboBoxText", m_TextureCoordinateGeneratorModeComboBoxText);
+	m_builder -> get_widget ("TextureCoordinateGeneratorNameBox", m_TextureCoordinateGeneratorNameBox);
+	m_builder -> get_widget ("TextureCoordinateGeneratorNameEntry", m_TextureCoordinateGeneratorNameEntry);
+	m_builder -> get_widget ("TextureCoordinateGeneratorRenameButton", m_TextureCoordinateGeneratorRenameButton);
 	m_builder -> get_widget ("UsedTexturesBox", m_UsedTexturesBox);
 	m_builder -> get_widget ("UsedTexturesBrowserBox", m_UsedTexturesBrowserBox);
 	m_builder -> get_widget ("UsedTexturesIndexBox", m_UsedTexturesIndexBox);

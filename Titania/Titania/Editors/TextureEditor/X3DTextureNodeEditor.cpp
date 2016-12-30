@@ -202,6 +202,10 @@ X3DTextureNodeEditor::on_texture_changed ()
 	setEnvironmentTextureNode (textureNode);
 	X3DTexturePropertiesEditor::set_selection (X3D::MFNode (appearances));
 
+	getTextureNameGrid () .set_sensitive (textureNode);
+
+	nodeName .setNode (X3D::SFNode (textureNode));
+
 	preview -> setTexture (getTextureComboBoxText () .get_active_row_number () > 0 ? textureNode : nullptr);
 }
 
@@ -241,6 +245,8 @@ X3DTextureNodeEditor::set_node ()
 	setTexture2DNode          (textureNode);
 	setTexture3DNode          (textureNode);
 	setEnvironmentTextureNode (textureNode);
+
+	getTextureNameGrid () .set_sensitive (textureNode);
 
 	nodeName .setNode (X3D::SFNode (textureNode));
 

@@ -60,6 +60,7 @@ X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 	        textureProperties (),
 	                 undoStep (),
 	                 changing (false),
+	                 nodeName (this, getTexturePropertiesNameEntry (), getTexturePropertiesRenameButton ()),
 	              borderColor (this, getTexturePropertiesBorderColorButton (), getTexturePropertiesBorderColorAdjustment (), getTexturePropertiesBorderColorBox (), "borderColor"),
 	              borderWidth (this, getTexturePropertiesBorderWidthAdjustment (), getTexturePropertiesBorderWidthSpinButton (), "borderWidth"),
 	        anisotropicDegree (this, getTexturePropertiesAnisotropicDegreeAdjustment (), getTexturePropertiesAnisotropicDegreeSpinButton (), "anisotropicDegree"),
@@ -196,17 +197,22 @@ X3DTexturePropertiesEditor::set_node ()
 
 	changing = false;
 
-	borderColor         .setNodes ({ textureProperties });
-	borderWidth         .setNodes ({ textureProperties });
-	anisotropicDegree   .setNodes ({ textureProperties });
-	generateMipMaps     .setNodes ({ textureProperties });
-	minificationFilter  .setNodes ({ textureProperties });
-	magnificationFilter .setNodes ({ textureProperties });
-	boundaryModeS       .setNodes ({ textureProperties });
-	boundaryModeT       .setNodes ({ textureProperties });
-	boundaryModeR       .setNodes ({ textureProperties });
-	textureCompression  .setNodes ({ textureProperties });
-	texturePriority     .setNodes ({ textureProperties });
+	
+	const X3D::MFNode nodes = { textureProperties };
+
+	nodeName .setNode (nodes .back ());
+
+	borderColor         .setNodes (nodes);
+	borderWidth         .setNodes (nodes);
+	anisotropicDegree   .setNodes (nodes);
+	generateMipMaps     .setNodes (nodes);
+	minificationFilter  .setNodes (nodes);
+	magnificationFilter .setNodes (nodes);
+	boundaryModeS       .setNodes (nodes);
+	boundaryModeT       .setNodes (nodes);
+	boundaryModeR       .setNodes (nodes);
+	textureCompression  .setNodes (nodes);
+	texturePriority     .setNodes (nodes);
 }
 
 void

@@ -231,6 +231,10 @@ public:
 	getMaterialUnlinkButton () const
 	{ return *m_MaterialUnlinkButton; }
 
+	Gtk::Grid &
+	getMaterialNameGrid () const
+	{ return *m_MaterialNameGrid; }
+
 	Gtk::Box &
 	getMaterialNameBox () const
 	{ return *m_MaterialNameBox; }
@@ -403,6 +407,18 @@ public:
 	getFillPropertiesHatchStyleSpinButton () const
 	{ return *m_FillPropertiesHatchStyleSpinButton; }
 
+	Gtk::Box &
+	getFillPropertiesNameBox () const
+	{ return *m_FillPropertiesNameBox; }
+
+	Gtk::Entry &
+	getFillPropertiesNameEntry () const
+	{ return *m_FillPropertiesNameEntry; }
+
+	Gtk::Button &
+	getFillPropertiesRenameButton () const
+	{ return *m_FillPropertiesRenameButton; }
+
 	Gtk::Expander &
 	getLinePropertiesExpander () const
 	{ return *m_LinePropertiesExpander; }
@@ -434,6 +450,18 @@ public:
 	Gtk::SpinButton &
 	getLinePropertiesLinewidthScaleFactorSpinButton () const
 	{ return *m_LinePropertiesLinewidthScaleFactorSpinButton; }
+
+	Gtk::Box &
+	getLinePropertiesNameBox () const
+	{ return *m_LinePropertiesNameBox; }
+
+	Gtk::Entry &
+	getLinePropertiesNameEntry () const
+	{ return *m_LinePropertiesNameEntry; }
+
+	Gtk::Button &
+	getLinePropertiesRenameButton () const
+	{ return *m_LinePropertiesRenameButton; }
 
 	Gtk::Box &
 	getUsedMaterialsBox () const
@@ -680,6 +708,7 @@ private:
 	Gtk::Box*                      m_SelectMaterialBox;
 	Gtk::ComboBoxText*             m_MaterialComboBoxText;
 	Gtk::Button*                   m_MaterialUnlinkButton;
+	Gtk::Grid*                     m_MaterialNameGrid;
 	Gtk::Box*                      m_MaterialNameBox;
 	Gtk::Entry*                    m_MaterialNameEntry;
 	Gtk::Button*                   m_MaterialRenameButton;
@@ -723,6 +752,9 @@ private:
 	Gtk::Box*                      m_FillPropertiesHatchColorBox;
 	Gtk::Button*                   m_FillPropertiesHatchColorButton;
 	Gtk::SpinButton*               m_FillPropertiesHatchStyleSpinButton;
+	Gtk::Box*                      m_FillPropertiesNameBox;
+	Gtk::Entry*                    m_FillPropertiesNameEntry;
+	Gtk::Button*                   m_FillPropertiesRenameButton;
 	Gtk::Expander*                 m_LinePropertiesExpander;
 	Gtk::Box*                      m_LinePropertiesMainBox;
 	Gtk::CheckButton*              m_LinePropertiesCheckButton;
@@ -731,6 +763,9 @@ private:
 	Gtk::CheckButton*              m_LinePropertiesFilledCheckButton;
 	Gtk::SpinButton*               m_LinePropertiesLinetypeSpinButton;
 	Gtk::SpinButton*               m_LinePropertiesLinewidthScaleFactorSpinButton;
+	Gtk::Box*                      m_LinePropertiesNameBox;
+	Gtk::Entry*                    m_LinePropertiesNameEntry;
+	Gtk::Button*                   m_LinePropertiesRenameButton;
 	Gtk::Box*                      m_UsedMaterialsBox;
 	Gtk::Box*                      m_UsedMaterialsBrowserBox;
 	Gtk::Box*                      m_UsedMaterialsIndexBox;

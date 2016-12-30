@@ -96,6 +96,7 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SelectMaterialBox", m_SelectMaterialBox);
 	m_builder -> get_widget ("MaterialComboBoxText", m_MaterialComboBoxText);
 	m_builder -> get_widget ("MaterialUnlinkButton", m_MaterialUnlinkButton);
+	m_builder -> get_widget ("MaterialNameGrid", m_MaterialNameGrid);
 	m_builder -> get_widget ("MaterialNameBox", m_MaterialNameBox);
 	m_builder -> get_widget ("MaterialNameEntry", m_MaterialNameEntry);
 	m_builder -> get_widget ("MaterialRenameButton", m_MaterialRenameButton);
@@ -139,6 +140,9 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FillPropertiesHatchColorBox", m_FillPropertiesHatchColorBox);
 	m_builder -> get_widget ("FillPropertiesHatchColorButton", m_FillPropertiesHatchColorButton);
 	m_builder -> get_widget ("FillPropertiesHatchStyleSpinButton", m_FillPropertiesHatchStyleSpinButton);
+	m_builder -> get_widget ("FillPropertiesNameBox", m_FillPropertiesNameBox);
+	m_builder -> get_widget ("FillPropertiesNameEntry", m_FillPropertiesNameEntry);
+	m_builder -> get_widget ("FillPropertiesRenameButton", m_FillPropertiesRenameButton);
 	m_builder -> get_widget ("LinePropertiesExpander", m_LinePropertiesExpander);
 	m_builder -> get_widget ("LinePropertiesMainBox", m_LinePropertiesMainBox);
 	m_builder -> get_widget ("LinePropertiesCheckButton", m_LinePropertiesCheckButton);
@@ -147,6 +151,9 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LinePropertiesFilledCheckButton", m_LinePropertiesFilledCheckButton);
 	m_builder -> get_widget ("LinePropertiesLinetypeSpinButton", m_LinePropertiesLinetypeSpinButton);
 	m_builder -> get_widget ("LinePropertiesLinewidthScaleFactorSpinButton", m_LinePropertiesLinewidthScaleFactorSpinButton);
+	m_builder -> get_widget ("LinePropertiesNameBox", m_LinePropertiesNameBox);
+	m_builder -> get_widget ("LinePropertiesNameEntry", m_LinePropertiesNameEntry);
+	m_builder -> get_widget ("LinePropertiesRenameButton", m_LinePropertiesRenameButton);
 	m_builder -> get_widget ("UsedMaterialsBox", m_UsedMaterialsBox);
 	m_builder -> get_widget ("UsedMaterialsBrowserBox", m_UsedMaterialsBrowserBox);
 	m_builder -> get_widget ("UsedMaterialsIndexBox", m_UsedMaterialsIndexBox);

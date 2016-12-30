@@ -118,6 +118,8 @@ private:
 	X3D::X3DPtr <X3D::LineProperties>  lineProperties;
 	X3D::SFTime                        linePropertiesBuffer;
 
+	NameEntry nodeName;
+
 	X3DFieldToggleButton <X3D::SFBool> applied;
 	X3DFieldAdjustment <X3D::SFInt32>  linetype;
 	X3DFieldAdjustment <X3D::SFFloat>  linewidthScaleFactor;

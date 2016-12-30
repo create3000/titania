@@ -113,6 +113,8 @@ private:
 	X3D::UndoStepPtr                              undoStep;
 	bool                                          changing;
 
+	NameEntry nodeName;
+
 	SFStringComboBoxText mode;
 
 };

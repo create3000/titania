@@ -61,6 +61,7 @@ X3DTextureTransformNodeEditor::X3DTextureTransformNodeEditor () :
 	        X3DTextureTransformEditor (),
 	      X3DTextureTransform3DEditor (),
 	X3DTextureTransformMatrix3DEditor (),
+	                         nodeName (this, getTextureTransformNameEntry (), getTextureTransformRenameButton ()),
 	                      appearances (),
 	           textureTransformBuffer (),
 	             textureTransformNode (),
@@ -182,6 +183,10 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 	addRedoFunction <X3D::SFNode> (appearances, "textureTransform", undoStep);
 
 	getTextureTransformUnlinkButton () .set_sensitive (getTextureTransformComboBoxText () .get_active_row_number () > 0 and textureTransformNode -> getCloneCount () > 1);
+
+	getTextureTransformNameGrid () .set_sensitive (textureTransformNode);
+
+	nodeName .setNode (X3D::SFNode (textureTransformNode));
 }
 
 void
@@ -205,6 +210,10 @@ X3DTextureTransformNodeEditor::set_node ()
 	setTextureTransform         (textureTransformNode);
 	setTextureTransform3D       (textureTransformNode);
 	setTextureTransformMatrix3D (textureTransformNode);
+
+	getTextureTransformNameGrid () .set_sensitive (textureTransformNode);
+
+	nodeName .setNode (X3D::SFNode (textureTransformNode));
 
 	if (not textureTransformNode)
 		textureTransformNode = getTextureTransform (textureTransformNode);

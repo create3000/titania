@@ -58,6 +58,7 @@ X3DLinePropertiesEditor::X3DLinePropertiesEditor () :
 	                 appearances (),
 	              lineProperties (),
 	        linePropertiesBuffer (),
+	                    nodeName (this, getLinePropertiesNameEntry (), getLinePropertiesRenameButton ()),
 	                     applied (this, getLinePropertiesFilledCheckButton (), "applied"),
 	                    linetype (this,
 	                              getLinePropertiesLinetypeAdjustment (),
@@ -201,6 +202,8 @@ X3DLinePropertiesEditor::set_node ()
 		changing = false;
 
 		const X3D::MFNode nodes = { lineProperties };
+
+		nodeName .setNode (nodes .back ());
 
 		applied              .setNodes (nodes);
 		linetype             .setNodes (nodes);

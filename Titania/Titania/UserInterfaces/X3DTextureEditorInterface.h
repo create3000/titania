@@ -375,6 +375,10 @@ public:
 	getTextureUnlinkButton () const
 	{ return *m_TextureUnlinkButton; }
 
+	Gtk::Grid &
+	getTextureNameGrid () const
+	{ return *m_TextureNameGrid; }
+
 	Gtk::Box &
 	getTextureNameBox () const
 	{ return *m_TextureNameBox; }
@@ -819,6 +823,18 @@ public:
 	getTexturePropertiesBorderColorScale () const
 	{ return *m_TexturePropertiesBorderColorScale; }
 
+	Gtk::Box &
+	getTexturePropertiesNameBox () const
+	{ return *m_TexturePropertiesNameBox; }
+
+	Gtk::Entry &
+	getTexturePropertiesNameEntry () const
+	{ return *m_TexturePropertiesNameEntry; }
+
+	Gtk::Button &
+	getTexturePropertiesRenameButton () const
+	{ return *m_TexturePropertiesRenameButton; }
+
 	Gtk::Expander &
 	getTextureTransformExpander () const
 	{ return *m_TextureTransformExpander; }
@@ -838,6 +854,22 @@ public:
 	Gtk::Button &
 	getTextureTransformUnlinkButton () const
 	{ return *m_TextureTransformUnlinkButton; }
+
+	Gtk::Grid &
+	getTextureTransformNameGrid () const
+	{ return *m_TextureTransformNameGrid; }
+
+	Gtk::Box &
+	getTextureTransformNameBox () const
+	{ return *m_TextureTransformNameBox; }
+
+	Gtk::Entry &
+	getTextureTransformNameEntry () const
+	{ return *m_TextureTransformNameEntry; }
+
+	Gtk::Button &
+	getTextureTransformRenameButton () const
+	{ return *m_TextureTransformRenameButton; }
 
 	Gtk::Notebook &
 	getTextureTransformNotebook () const
@@ -966,6 +998,18 @@ public:
 	Gtk::ComboBoxText &
 	getTextureCoordinateGeneratorModeComboBoxText () const
 	{ return *m_TextureCoordinateGeneratorModeComboBoxText; }
+
+	Gtk::Box &
+	getTextureCoordinateGeneratorNameBox () const
+	{ return *m_TextureCoordinateGeneratorNameBox; }
+
+	Gtk::Entry &
+	getTextureCoordinateGeneratorNameEntry () const
+	{ return *m_TextureCoordinateGeneratorNameEntry; }
+
+	Gtk::Button &
+	getTextureCoordinateGeneratorRenameButton () const
+	{ return *m_TextureCoordinateGeneratorRenameButton; }
 
 	Gtk::Box &
 	getUsedTexturesBox () const
@@ -1244,6 +1288,7 @@ private:
 	Gtk::Box*                              m_SelectTextureBox;
 	Gtk::ComboBoxText*                     m_TextureComboBoxText;
 	Gtk::Button*                           m_TextureUnlinkButton;
+	Gtk::Grid*                             m_TextureNameGrid;
 	Gtk::Box*                              m_TextureNameBox;
 	Gtk::Entry*                            m_TextureNameEntry;
 	Gtk::Button*                           m_TextureRenameButton;
@@ -1355,11 +1400,18 @@ private:
 	Gtk::Box*                              m_TexturePropertiesBorderColorBox;
 	Gtk::Button*                           m_TexturePropertiesBorderColorButton;
 	Gtk::Scale*                            m_TexturePropertiesBorderColorScale;
+	Gtk::Box*                              m_TexturePropertiesNameBox;
+	Gtk::Entry*                            m_TexturePropertiesNameEntry;
+	Gtk::Button*                           m_TexturePropertiesRenameButton;
 	Gtk::Expander*                         m_TextureTransformExpander;
 	Gtk::Box*                              m_TextureTransformNodeBox;
 	Gtk::Box*                              m_SelectTextureTransformBox;
 	Gtk::ComboBoxText*                     m_TextureTransformComboBoxText;
 	Gtk::Button*                           m_TextureTransformUnlinkButton;
+	Gtk::Grid*                             m_TextureTransformNameGrid;
+	Gtk::Box*                              m_TextureTransformNameBox;
+	Gtk::Entry*                            m_TextureTransformNameEntry;
+	Gtk::Button*                           m_TextureTransformRenameButton;
 	Gtk::Notebook*                         m_TextureTransformNotebook;
 	Gtk::Label*                            m_TextureTransformLabel;
 	Gtk::Grid*                             m_TextureTransformBox;
@@ -1392,6 +1444,9 @@ private:
 	Gtk::Button*                           m_TextureCoordinateGeneratorUnlinkButton;
 	Gtk::Grid*                             m_TextureCoordinateGeneratorBox;
 	Gtk::ComboBoxText*                     m_TextureCoordinateGeneratorModeComboBoxText;
+	Gtk::Box*                              m_TextureCoordinateGeneratorNameBox;
+	Gtk::Entry*                            m_TextureCoordinateGeneratorNameEntry;
+	Gtk::Button*                           m_TextureCoordinateGeneratorRenameButton;
 	Gtk::Box*                              m_UsedTexturesBox;
 	Gtk::Box*                              m_UsedTexturesBrowserBox;
 	Gtk::Box*                              m_UsedTexturesIndexBox;

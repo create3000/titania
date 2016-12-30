@@ -121,6 +121,8 @@ private:
 
 	///  @name Members
 
+	NameEntry nodeName;
+
 	X3D::X3DPtrArray <X3D::Appearance>         appearances;
 	X3D::SFTime                                textureTransformBuffer;
 	X3D::X3DPtr <X3D::X3DTextureTransformNode> textureTransformNode;

@@ -347,8 +347,9 @@ X3DMaterialEditor::on_material_unlink_clicked ()
 void
 X3DMaterialEditor::on_material_changed ()
 {
-	getFrontBox () .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 0);
-	getBackBox ()  .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 1);
+	getMaterialNameGrid () .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 0);
+	getFrontBox ()         .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 0);
+	getBackBox ()          .set_sensitive (getMaterialComboBoxText () .get_active_row_number () > 1);
 
 	//	if (getMaterialComboBoxText () .get_active_row_number () < 1)
 	//	{
@@ -484,8 +485,6 @@ X3DMaterialEditor::set_node ()
 	twoSidedMaterial   = materialNode;
 	isTwoSidedMaterial = twoSidedMaterial;
 
-	nodeName .setNode (X3D::SFNode (materialNode));
-
 	if (not material)
 	{
 		material = new X3D::Material (getCurrentContext ());
@@ -545,6 +544,8 @@ void
 X3DMaterialEditor::set_widgets ()
 {
 	const X3D::MFNode nodes = { materialNode };
+
+	nodeName .setNode (X3D::SFNode (materialNode));
 
 	diffuseColor . setNodes (nodes);
 	specularColor .setNodes (nodes);

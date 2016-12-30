@@ -60,6 +60,7 @@ X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
 	      textureCoordinateGenerator (),
 	                        undoStep (),
 	                        changing (false),
+	                        nodeName (this, getTextureCoordinateGeneratorNameEntry (), getTextureCoordinateGeneratorRenameButton ()),
 	                            mode (this, getTextureCoordinateGeneratorModeComboBoxText (), "mode")
 {
 	addChildren (geometryNodes, textureCoordinateGeneratorBuffer, textureCoordinateGenerator);
@@ -181,7 +182,11 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 
 	changing = false;
 
-	mode .setNodes ({ textureCoordinateGenerator });
+	const X3D::MFNode nodes = { textureCoordinateGenerator };
+
+	nodeName .setNode (nodes .back ());
+
+	mode .setNodes (nodes);
 }
 
 void

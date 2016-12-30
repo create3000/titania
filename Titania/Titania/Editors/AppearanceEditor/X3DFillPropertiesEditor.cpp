@@ -58,6 +58,7 @@ X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 	                 appearances (),
 	              fillProperties (),
 	        fillPropertiesBuffer (),
+	                    nodeName (this, getFillPropertiesNameEntry (), getFillPropertiesRenameButton ()),
 	                      filled (this, getFillPropertiesFilledCheckButton (), "filled"),
 	                     hatched (this, getFillPropertiesHatchedCheckButton (), "hatched"),
 	                  hatchStyle (this,
@@ -202,6 +203,8 @@ X3DFillPropertiesEditor::set_node ()
 		changing = false;
 
 		const X3D::MFNode nodes = { fillProperties };
+
+		nodeName .setNode (nodes .back ());
 
 		filled     .setNodes (nodes);
 		hatched    .setNodes (nodes);
