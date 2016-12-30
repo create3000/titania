@@ -226,7 +226,7 @@ X3DMaterialEditor::set_clipboard (const X3D::SFString & string)
 void
 X3DMaterialEditor::set_preview ()
 {
-	if (not material or not twoSidedMaterial)
+	if (not (material or twoSidedMaterial))
 		return;
 
 	try

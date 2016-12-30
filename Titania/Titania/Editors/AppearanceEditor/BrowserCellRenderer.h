@@ -48,66 +48,94 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DMATERIAL_INDEX_EDITOR_H__
-#define __TITANIA_EDITORS_APPEARANCE_EDITOR_X3DMATERIAL_INDEX_EDITOR_H__
+#ifndef __TITANIA_EDITORS_APPEARANCE_EDITOR_BROWSER_CELL_RENDERER_H__
+#define __TITANIA_EDITORS_APPEARANCE_EDITOR_BROWSER_CELL_RENDERER_H__
 
-#include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
+#include <gtkmm.h>
+#include <Titania/X3D/Browser/Browser.h>
 
 namespace titania {
 namespace X3D {
 
-class BrowserCellRenderer;
-
-} // X3D
-} // titania
-
-namespace titania {
-namespace puck {
-
-class BrowserCellRenderer;
-class NodeIndex;
-
-class X3DMaterialIndexEditor :
-	virtual public X3DAppearanceEditorInterface
+class BrowserCellRenderer :
+	public Gtk::CellRenderer
 {
 public:
+
+	///  @name Construction
+
+	BrowserCellRenderer (X3D::Browser* const browser);
+	
+	///  @name Properties
+
+	Glib::Property <uint32_t> &
+	property_index ()
+	{ return index_property; }
+
+	const Glib::Property <uint32_t> &
+	property_index () const
+	{ return index_property; }
+
+	Glib::Property <bool> &
+	property_transparent ()
+	{ return transparent_property; }
+
+	const Glib::Property <bool> &
+	property_transparent () const
+	{ return transparent_property; }
+
+	Glib::Property <std::function <void ()>> &
+	property_callback ()
+	{ return callback_property; }
+
+	const Glib::Property <std::function <void ()>> &
+	property_callback () const
+	{ return callback_property; }
 
 	///  @name Destruction
 
 	virtual
-	~X3DMaterialIndexEditor ();
-
-
-protected:
-
-	///  @name Construction
-
-	X3DMaterialIndexEditor ();
-
-	virtual
-	void
-	initialize () override;
+	~BrowserCellRenderer ()
+	{ }
 
 
 private:
 
-	///  @name Event handlers
-
+	virtual
 	void
-	on_render_material ();
+	get_preferred_width_vfunc (Gtk::Widget & widget, int & minimum_width, int & natural_width) const final override;
 
+	virtual
 	void
-	set_node (const X3D::SFNode & value);
-	
+	get_preferred_height_for_width_vfunc (Gtk::Widget & widget, int width, int & minimum_height, int & natural_height) const final override;
+
+	virtual
+	void
+	get_preferred_height_vfunc (Gtk::Widget & widget, int & minimum_height, int & natural_height) const final override;
+
+	virtual
+	void
+	get_preferred_width_for_height_vfunc (Gtk::Widget & widget, int height, int & minimum_width, int & natural_width) const final override;
+
+	virtual
+	void
+	render_vfunc (const Cairo::RefPtr <Cairo::Context> & context,
+	              Gtk::Widget & widget,
+	              const Gdk::Rectangle & background_area,
+	              const Gdk::Rectangle & cell_area,
+	              Gtk::CellRendererState flags) final override;
+
 	///  @name Members
 
-	X3D::BrowserPtr                 browser;
-	std::unique_ptr <NodeIndex>     nodeIndex;
-	X3D::BrowserCellRenderer* const cellrenderer;
+	X3D::Browser* const                      browser;
+	int                                      cellHeight;
+	Glib::Property <uint32_t>                index_property;
+	Glib::Property <bool>                    transparent_property;
+	Glib::Property <std::function <void ()>> callback_property;
 
 };
 
-} // puck
+} // X3D
 } // titania
 
 #endif

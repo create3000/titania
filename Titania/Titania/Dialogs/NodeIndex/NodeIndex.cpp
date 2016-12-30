@@ -76,10 +76,11 @@ static constexpr int TYPE_NAME = 0;
 
 namespace Columns {
 
-static constexpr int TYPE_NAME      = 0;
-static constexpr int NAME           = 1;
-static constexpr int IMPORTED_NODES = 2;
-static constexpr int EXPORTED_NODES = 3;
+static constexpr int INDEX          = 0;
+static constexpr int TYPE_NAME      = 1;
+static constexpr int NAME           = 2;
+static constexpr int IMPORTED_NODES = 3;
+static constexpr int EXPORTED_NODES = 4;
 
 };
 
@@ -136,6 +137,12 @@ NodeIndex::initialize ()
 }
 
 int
+NodeIndex::getIndexColumn () const
+{
+	return Columns::INDEX;
+}
+
+int
 NodeIndex::on_compare_name (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs)
 {
 	std::string lhsString;
@@ -157,19 +164,19 @@ NodeIndex::refresh ()
 	{
 		case NAMED_NODES_INDEX:
 		{
-			setNodes (getNodes ());
+			setNodes (getCurrentNodes ());
 			break;
 		}
 		case TYPE_INDEX:
 		{
-			setNodes (getNodes (types));
+			setNodes (getCurrentNodes (types));
 			break;
 		}
 		case ANIMATION_INDEX:
 		{
 			X3D::MFNode animations;
 
-			for (const auto & basenode : getNodes ({ X3D::X3DConstants::Group }))
+			for (const auto & basenode : getCurrentNodes ({ X3D::X3DConstants::Group }))
 			{
 				try
 				{
@@ -226,7 +233,7 @@ NodeIndex::setNamedNodes ()
 	executionContext -> sceneGraph_changed () .removeInterest (this, &NodeIndex::refresh);
 
 	index = NAMED_NODES_INDEX;
-	setNodes (getNodes ());
+	setNodes (getCurrentNodes ());
 }
 
 void
@@ -236,7 +243,7 @@ NodeIndex::setTypes (const std::set <X3D::X3DConstants::NodeType> & value)
 
 	index = TYPE_INDEX;
 	types = value;
-	setNodes (getNodes (types));
+	setNodes (getCurrentNodes (types));
 }
 
 void
@@ -276,10 +283,12 @@ NodeIndex::setNodes (X3D::MFNode && value)
 
 	const auto importingInlines = getImportingInlines ();
 	const auto exportedNodes    = getExportedNodes ();
+	size_t     index            = 0;
 
 	for (const auto & node : nodes)
 	{
 		const auto row = getListStore () -> append ();
+		row -> set_value (Columns::INDEX,          index ++);
 		row -> set_value (Columns::TYPE_NAME,      node -> getTypeName ());
 		row -> set_value (Columns::NAME,           node -> getName ());
 		row -> set_value (Columns::IMPORTED_NODES, importingInlines .count (node) ? document_import : empty_string);
@@ -294,7 +303,7 @@ NodeIndex::setNodes (X3D::MFNode && value)
  *  Returns a list of all nodes where type is @a types.
  */
 X3D::MFNode
-NodeIndex::getNodes (const std::set <X3D::X3DConstants::NodeType> & types)
+NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types)
 {
 	// Find nodes
 
@@ -327,7 +336,7 @@ NodeIndex::getNodes (const std::set <X3D::X3DConstants::NodeType> & types)
  *  Returns a list of all named nodes.
  */
 X3D::MFNode
-NodeIndex::getNodes ()
+NodeIndex::getCurrentNodes ()
 {
 	// Find nodes
 

@@ -71,6 +71,9 @@ public:
 
 	///  @name Operations
 
+	int
+	getIndexColumn () const;
+
 	void
 	setWidget (const bool value);
 
@@ -89,6 +92,10 @@ public:
 
 	void
 	setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> &);
+
+	const X3D::MFNode &
+	getNodes () const
+	{ return nodes; }
 
 	const X3D::SFNode &
 	getNode () const
@@ -128,10 +135,10 @@ private:
 	setNodes (X3D::MFNode &&);
 
 	X3D::MFNode
-	getNodes (const std::set <X3D::X3DConstants::NodeType> &);
+	getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> &);
 
 	X3D::MFNode
-	getNodes ();
+	getCurrentNodes ();
 
 	std::set <X3D::SFNode>
 	getImportingInlines () const;
