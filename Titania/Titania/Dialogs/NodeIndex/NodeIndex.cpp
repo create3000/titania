@@ -114,9 +114,13 @@ NodeIndex::initialize ()
 
 	getCurrentContext () .addInterest (this, &NodeIndex::set_executionContext);
 
+	// Initialize tree view:
+
 	set_executionContext ();
 
 	getTreeModelSort () -> set_sort_func (Columns::NAME, sigc::mem_fun (this, &NodeIndex::on_compare_name));
+
+	getNameColumn () -> clicked ();
 
 	// Initialize SearchEntryCompletion:
 

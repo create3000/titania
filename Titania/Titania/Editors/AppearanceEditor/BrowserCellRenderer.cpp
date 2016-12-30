@@ -102,6 +102,8 @@ BrowserCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 {
 	try
 	{
+		// Get variables.
+
 		const auto x        = cell_area .get_x ();
 		const auto y        = cell_area .get_y ();
 		const auto width    = cell_area .get_width ();
@@ -109,24 +111,38 @@ BrowserCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		const auto stride   = cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32, width);
 		const auto callback = property_callback () .get_value ();
 
+		// Process callback.
+
 		if (callback)
 			callback ();
 
+		// Get snapshot image.
+
 		const auto image = browser -> getSnapshot (width, height, property_transparent () .get_value (), 8);
 
-		if (cellHeight not_eq height)
-		{
-			cellHeight = height;
+		// Determine height and update tree view if needed.
 
+		if (cellHeight not_eq height)
 			widget .queue_draw ();
 
-			__LOG__ << std::endl;
-		}
+		cellHeight = height;
+
+		// Setup image.
 
 		image -> interlaceType (Magick::NoInterlace);
 		image -> endian (Magick::LSBEndian);
 		image -> depth (8);
 		image -> magick ("RGBA");
+
+		// Swap red and blue layers.
+
+		const auto redChannel  = image -> separate (Magick::RedChannel);
+		const auto blueChannel = image -> separate (Magick::BlueChannel);
+
+		image -> composite (blueChannel, 0, 0, Magick::CopyRedCompositeOp);
+		image -> composite (redChannel,  0, 0, Magick::CopyBlueCompositeOp);
+
+		// Create Cairo Surface.
 
 		Magick::Blob blob;
 
@@ -134,7 +150,10 @@ BrowserCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 		const auto surface = Cairo::ImageSurface::create ((uint8_t*) blob .data (), Cairo::FORMAT_ARGB32, width, height, stride);
 
+		// Draw Surface to Context.
+
 		context -> translate (x, y);
+		context -> set_operator (Cairo::Operator::OPERATOR_SOURCE);
 		context -> set_source (surface, 0, 0);
 		context -> paint ();
 	}
