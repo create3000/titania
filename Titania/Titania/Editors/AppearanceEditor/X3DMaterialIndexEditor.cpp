@@ -90,7 +90,7 @@ X3DMaterialIndexEditor::initialize ()
 
 	nodeIndex -> getNode () .addInterest (this, &X3DMaterialIndexEditor::set_node);
 	nodeIndex -> reparent (getMaterialNodeIndexBox (), getWindow ());
-	nodeIndex -> setWidget (true);
+	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setSelect (false);
 	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DMaterialNode });
 

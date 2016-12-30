@@ -154,7 +154,7 @@ ScriptEditor::initialize ()
 
 	nodeIndex -> getNode () .addInterest (this, &ScriptEditor::set_node);
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
-	nodeIndex -> setWidget (true);
+	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setTypes ({ X3D::X3DConstants::Script,
 	                         X3D::X3DConstants::ShaderPart,
 	                         X3D::X3DConstants::ShaderProgram });

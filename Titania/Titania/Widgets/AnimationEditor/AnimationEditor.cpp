@@ -183,7 +183,7 @@ AnimationEditor::initialize ()
 
 	nodeIndex -> getNode () .addInterest (this, &AnimationEditor::set_animation);
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
-	nodeIndex -> setWidget (true);
+	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setAnimations ();
 
 	set_animation (nullptr);

@@ -75,7 +75,7 @@ public:
 	getIndexColumn () const;
 
 	void
-	setWidget (const bool value);
+	setShowWidget (const bool value);
 
 	void
 	setSelect (const bool value)

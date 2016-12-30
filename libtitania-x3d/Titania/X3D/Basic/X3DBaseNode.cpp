@@ -543,6 +543,19 @@ throw (Error <INVALID_NAME>,
 		fieldDefinitions .emplace_back (&field);
 
 	fields .emplace (name, &field);
+
+	// Handle sceneGraph_changed event.
+
+	// Works, but the assumption that the scene graph changes when the clone count changeds is not fully correct as shared node are not handled.
+	switch (field .getType ())
+	{
+		case X3DConstants::SFNode:
+		case X3DConstants::MFNode:
+			field .addInterest (const_cast <SFTime &> (executionContext -> sceneGraph_changed ()), &SFTime::setValue, std::bind (&X3DBaseNode::getCurrentTime, this));
+			break;
+		default:
+			break;
+	}
 }
 
 /***
@@ -885,10 +898,6 @@ X3DBaseNode::addClones (const size_t count)
 		return;
 
 	cloneCount += count;
-
-	// Works, but the assumption that the scene graph changes when the clone count changeds is not fully correct as shared node are not handled.
-	if (executionContext not_eq this)
-		const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = getCurrentTime ();
 }
 
 /***
@@ -901,10 +910,6 @@ X3DBaseNode::removeClones (const size_t count)
 		return;
 
 	cloneCount -= count;
-
-	// Works, but the assumption that the scene graph changes when the clone count changeds is not fully correct as shared node are not handled.
-	if (executionContext not_eq this)
-		const_cast <SFTime &> (executionContext -> sceneGraph_changed ()) = getCurrentTime ();
 }
 
 /***

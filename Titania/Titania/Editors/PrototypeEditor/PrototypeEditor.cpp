@@ -101,7 +101,7 @@ PrototypeEditor::initialize ()
 	// Node index
 
 	nodeIndex -> reparent (getInstancesBox (), getWindow ());
-	nodeIndex -> setWidget (true);
+	nodeIndex -> setShowWidget (true);
 
 	// 
 

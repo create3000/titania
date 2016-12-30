@@ -211,7 +211,7 @@ NodeIndex::refresh ()
 }
 
 void
-NodeIndex::setWidget (const bool value)
+NodeIndex::setShowWidget (const bool value)
 {
 	widget = value;
 
@@ -223,7 +223,9 @@ NodeIndex::setWidget (const bool value)
 	}
 	else
 	{
-
+		getHeaderBox () .set_visible (true);
+		getFooterBox () .set_visible (true);
+		getScrolledWindow () .set_size_request (0, 0); // ???
 	}
 }
 
