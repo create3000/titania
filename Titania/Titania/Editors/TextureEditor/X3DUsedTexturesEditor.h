@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,71 +48,68 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TEXTURE_EDITOR_TEXTURE_EDITOR_H__
-#define __TITANIA_TEXTURE_EDITOR_TEXTURE_EDITOR_H__
+#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DUSED_TEXTURES_EDITOR_H__
+#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DUSED_TEXTURES_EDITOR_H__
 
 #include "../../UserInterfaces/X3DTextureEditorInterface.h"
-#include "X3DTextureTransformNodeEditor.h"
-#include "X3DTextureNodeEditor.h"
-#include "X3DTextureCoordinateGeneratorEditor.h"
-#include "X3DTexturePaletteEditor.h"
-#include "X3DUsedTexturesEditor.h"
+
+namespace titania {
+namespace X3D {
+
+class BrowserCellRenderer;
+
+} // X3D
+} // titania
 
 namespace titania {
 namespace puck {
 
-class X3DBrowserWidget;
+class BrowserCellRenderer;
+class NodeIndex;
 
-class TextureEditor :
-	virtual public X3DTextureEditorInterface,
-	public X3DTextureNodeEditor,
-	public X3DTextureTransformNodeEditor,
-	public X3DTextureCoordinateGeneratorEditor,
-	public X3DTexturePaletteEditor,
-	public X3DUsedTexturesEditor
+class X3DUsedTexturesEditor :
+	virtual public X3DTextureEditorInterface
 {
 public:
-
-	///  @name Construction
-
-	TextureEditor (X3DBrowserWindow* const);
 
 	///  @name Destruction
 
 	virtual
-	~TextureEditor ();
+	~X3DUsedTexturesEditor ();
 
 
 protected:
 
-	///  @name Member access
+	///  @name Construction
+
+	X3DUsedTexturesEditor ();
 
 	virtual
-	const X3D::X3DPtr <X3D::X3DTextureNode> &
-	getTexture () const
-	{ return X3DTextureNodeEditor::getTexture (); }
+	void
+	initialize () override;
 
 
 private:
 
-	///  @name Construction
+	///  @name Event handlers
 
-	virtual
+	X3D::Browser*
+	on_render_node ();
+
 	void
-	configure () final override;
+	set_camera ();
 
-	virtual
 	void
-	initialize () final override;
+	set_camera (double width, double height);
 
-	virtual
 	void
-	set_selection (const X3D::MFNode &) final override;
+	set_node (const X3D::SFNode & value);
 
-	virtual
-	void
-	store () final override;
+	///  @name Members
 
+	X3D::BrowserPtr                 preview;
+	std::unique_ptr <NodeIndex>     nodeIndex;
+	X3D::BrowserCellRenderer* const cellrenderer;
 
 };
 

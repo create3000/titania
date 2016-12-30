@@ -484,6 +484,8 @@ X3DMaterialEditor::set_node ()
 	twoSidedMaterial   = materialNode;
 	isTwoSidedMaterial = twoSidedMaterial;
 
+	nodeName .setNode (X3D::SFNode (materialNode));
+
 	if (not material)
 	{
 		material = new X3D::Material (getCurrentContext ());
@@ -543,8 +545,6 @@ void
 X3DMaterialEditor::set_widgets ()
 {
 	const X3D::MFNode nodes = { materialNode };
-
-	nodeName .setNode (nodes .back ());
 
 	diffuseColor . setNodes (nodes);
 	specularColor .setNodes (nodes);

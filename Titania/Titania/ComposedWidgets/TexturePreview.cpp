@@ -177,26 +177,23 @@ TexturePreview::set_texture ()
 		texture3DViewpoint -> resetUserOffsets ();
 		cubeMapViewpoint   -> resetUserOffsets ();
 
-		if (appearance)
+		const X3D::X3DPtr <X3D::MultiTexture> multiTexture (textureNode);
+
+		if (multiTexture)
 		{
-			const X3D::X3DPtr <X3D::MultiTexture> multiTexture (textureNode);
+			const X3D::X3DPtr <X3D::MultiTexture> localTexture (textureNode -> copy (appearance -> getExecutionContext (), X3D::FLAT_COPY));
 
-			if (multiTexture)
-			{
-				const X3D::X3DPtr <X3D::MultiTexture> localTexture (textureNode -> copy (appearance -> getExecutionContext (), X3D::FLAT_COPY));
+			multiTexture -> color ()    .addInterest (localTexture -> color ());
+			multiTexture -> alpha ()    .addInterest (localTexture -> alpha ());
+			multiTexture -> mode ()     .addInterest (localTexture -> mode ());
+			multiTexture -> source ()   .addInterest (localTexture -> source ());
+			multiTexture -> function () .addInterest (localTexture -> function ());
+			multiTexture -> texture ()  .addInterest (localTexture -> texture ());
 
-				multiTexture -> color ()    .addInterest (localTexture -> color ());
-				multiTexture -> alpha ()    .addInterest (localTexture -> alpha ());
-				multiTexture -> mode ()     .addInterest (localTexture -> mode ());
-				multiTexture -> source ()   .addInterest (localTexture -> source ());
-				multiTexture -> function () .addInterest (localTexture -> function ());
-				multiTexture -> texture ()  .addInterest (localTexture -> texture ());
-
-				appearance -> texture () = localTexture;
-			}
-			else
-				appearance -> texture () = textureNode;
+			appearance -> texture () = localTexture;
 		}
+		else
+			appearance -> texture () = textureNode;
 	}
 	catch (const X3D::X3DError & error)
 	{

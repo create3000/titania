@@ -48,32 +48,33 @@
  *
  ******************************************************************************/
 
-#include "X3DUsedMaterialsEditor.h"
+#include "X3DUsedTexturesEditor.h"
 
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Browser/BrowserCellRenderer.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
-#include <Titania/X3D/Components/Navigation/Viewpoint.h>
+#include <Titania/X3D/Components/Grouping/Transform.h>
+#include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
-#include <Titania/X3D/Components/Shape/Material.h>
+#include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
 
 namespace titania {
 namespace puck {
 
-X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
-	X3DAppearanceEditorInterface (),
-	                     preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
-	                   nodeIndex (new NodeIndex (getBrowserWindow ())),
-	                cellrenderer (Gtk::manage (new X3D::BrowserCellRenderer ()))
+X3DUsedTexturesEditor::X3DUsedTexturesEditor () :
+	X3DTextureEditorInterface (),
+	                  preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }, { })),
+	                nodeIndex (new NodeIndex (getBrowserWindow ())),
+	             cellrenderer (Gtk::manage (new X3D::BrowserCellRenderer ()))
 {
 	addChildren (preview);
 }
 
 void
-X3DUsedMaterialsEditor::initialize ()
+X3DUsedTexturesEditor::initialize ()
 {
 	#ifdef FIXED_PIPELINE
 	preview -> setFixedPipeline (false);
@@ -83,20 +84,20 @@ X3DUsedMaterialsEditor::initialize ()
 	preview -> set_opacity (0);
 	preview -> show ();
 
-	getUsedMaterialsBrowserBox () .pack_start (*preview, true, true);
+	getUsedTexturesBrowserBox () .pack_start (*preview, true, true);
 
 	// Node index
 
-	nodeIndex -> getNode () .addInterest (this, &X3DUsedMaterialsEditor::set_node);
-	nodeIndex -> reparent (getUsedMaterialsIndexBox (), getWindow ());
+	nodeIndex -> getNode () .addInterest (this, &X3DUsedTexturesEditor::set_node);
+	nodeIndex -> reparent (getUsedTexturesIndexBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setSelect (false);
 	nodeIndex -> setObserveNodes (true);
-	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DMaterialNode });
+	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DTextureNode });
 
 	// Tree view column
 
-	cellrenderer -> property_callback () .set_value (std::bind (&X3DUsedMaterialsEditor::on_render_node, this));
+	cellrenderer -> property_callback () .set_value (std::bind (&X3DUsedTexturesEditor::on_render_node, this));
 
 	nodeIndex -> getCustomImageColumn () -> set_visible (true);
 	nodeIndex -> getCustomImageColumn () -> pack_start (*cellrenderer, false);
@@ -104,52 +105,67 @@ X3DUsedMaterialsEditor::initialize ()
 }
 
 X3D::Browser*
-X3DUsedMaterialsEditor::on_render_node ()
+X3DUsedTexturesEditor::on_render_node ()
 {
 	try
 	{
-		const auto index = cellrenderer -> property_index () .get_value ();
+		const auto index      = cellrenderer -> property_index () .get_value ();
+		const auto appearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 
-		const X3D::X3DPtr <X3D::Material>         material (nodeIndex -> getNodes () .at (index));
-		const X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial (nodeIndex -> getNodes () .at (index));
-		const X3D::X3DPtr <X3D::Appearance>       appearance (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
+		appearance -> texture () = nodeIndex -> getNodes () .at (index);
 
-		if (not (material or twoSidedMaterial) or not appearance)
-			return preview;
-
-		if (material)
-			appearance -> material () = material;
-	
-		else if (twoSidedMaterial)
-			appearance -> material () = twoSidedMaterial;
-
-		const X3D::X3DPtr <X3D::Material> backMaterial (preview -> getExecutionContext () -> getNamedNode ("BackMaterial"));
-
-		if (backMaterial and twoSidedMaterial)
-		{
-			backMaterial -> ambientIntensity () = twoSidedMaterial -> backAmbientIntensity ();
-			backMaterial -> diffuseColor ()     = twoSidedMaterial -> backDiffuseColor ();
-			backMaterial -> specularColor ()    = twoSidedMaterial -> backSpecularColor ();
-			backMaterial -> emissiveColor ()    = twoSidedMaterial -> backEmissiveColor ();
-			backMaterial -> shininess ()        = twoSidedMaterial -> backShininess ();
-			backMaterial -> transparency ()     = twoSidedMaterial -> backTransparency ();
-		}
-
-		const X3D::X3DPtr <X3D::Switch> sphere (preview -> getExecutionContext () -> getNamedNode ("Sphere"));
-
-		if (sphere)
-			sphere -> whichChoice () = twoSidedMaterial;
+		set_camera ();
 	}
-	catch (const std::exception & error)
-	{ 
-		__LOG__ << error .what () << std::endl;
+	catch (const X3D::X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
 	}
 
 	return preview;
 }
 
 void
-X3DUsedMaterialsEditor::set_node (const X3D::SFNode & node)
+X3DUsedTexturesEditor::set_camera ()
+{
+	const auto index = cellrenderer -> property_index () .get_value ();
+
+	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (nodeIndex -> getNodes () .at (index));
+
+	if (texture2DNode)
+		set_camera (texture2DNode -> getImageWidth (), texture2DNode -> getImageHeight ());
+
+	else
+		set_camera (512, 512);
+}
+
+void
+X3DUsedTexturesEditor::set_camera (double width, double height)
+{
+	try
+	{
+		const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
+		const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
+
+		if (viewpoint and transform)
+		{
+			if (not width or not height)
+			{
+				width  = 1;
+				height = 1;
+			}
+
+			viewpoint -> fieldOfView () = { -width, -height, width, height };
+			transform -> scale ()       = X3D::Vector3f (width, height, 1);
+		}
+	}
+	catch (const X3D::X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DUsedTexturesEditor::set_node (const X3D::SFNode & node)
 {
 	try
 	{
@@ -160,11 +176,11 @@ X3DUsedMaterialsEditor::set_node (const X3D::SFNode & node)
 		if (selection .empty ())
 			return;
 
-		const auto undoStep    = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Used Materials Index"));
+		const auto undoStep    = std::make_shared <X3D::UndoStep> (_ ("Apply Texture From Used Textures Index"));
 		const auto appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 		for (const auto & appearance : appearances)
-			getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), appearance -> material (), node, undoStep);
+			getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), appearance -> texture (), node, undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
@@ -172,7 +188,7 @@ X3DUsedMaterialsEditor::set_node (const X3D::SFNode & node)
 	{ }
 }
 
-X3DUsedMaterialsEditor::~X3DUsedMaterialsEditor ()
+X3DUsedTexturesEditor::~X3DUsedTexturesEditor ()
 { }
 
 } // puck

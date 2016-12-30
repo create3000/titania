@@ -127,6 +127,8 @@ private:
 
 	///  @name Members
 
+	NameEntry nodeName;
+
 	std::unique_ptr <TexturePreview>   preview;
 	X3D::X3DPtrArray <X3D::Appearance> appearances;
 	X3D::SFTime                        textureBuffer;

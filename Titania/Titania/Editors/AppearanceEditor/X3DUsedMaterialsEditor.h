@@ -94,14 +94,14 @@ private:
 	///  @name Event handlers
 
 	X3D::Browser*
-	on_render_material ();
+	on_render_node ();
 
 	void
 	set_node (const X3D::SFNode & value);
 	
 	///  @name Members
 
-	X3D::BrowserPtr                 browser;
+	X3D::BrowserPtr                 preview;
 	std::unique_ptr <NodeIndex>     nodeIndex;
 	X3D::BrowserCellRenderer* const cellrenderer;
 

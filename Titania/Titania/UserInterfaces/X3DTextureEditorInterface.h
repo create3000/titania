@@ -375,6 +375,18 @@ public:
 	getTextureUnlinkButton () const
 	{ return *m_TextureUnlinkButton; }
 
+	Gtk::Box &
+	getTextureNameBox () const
+	{ return *m_TextureNameBox; }
+
+	Gtk::Entry &
+	getTextureNameEntry () const
+	{ return *m_TextureNameEntry; }
+
+	Gtk::Button &
+	getTextureRenameButton () const
+	{ return *m_TextureRenameButton; }
+
 	Gtk::Label &
 	getTextureFormatLabel () const
 	{ return *m_TextureFormatLabel; }
@@ -964,8 +976,8 @@ public:
 	{ return *m_UsedTexturesBrowserBox; }
 
 	Gtk::Box &
-	getUsedTextureIndexBox () const
-	{ return *m_UsedTextureIndexBox; }
+	getUsedTexturesIndexBox () const
+	{ return *m_UsedTexturesIndexBox; }
 
 	Gtk::Box &
 	getPaletteBox () const
@@ -1232,6 +1244,9 @@ private:
 	Gtk::Box*                              m_SelectTextureBox;
 	Gtk::ComboBoxText*                     m_TextureComboBoxText;
 	Gtk::Button*                           m_TextureUnlinkButton;
+	Gtk::Box*                              m_TextureNameBox;
+	Gtk::Entry*                            m_TextureNameEntry;
+	Gtk::Button*                           m_TextureRenameButton;
 	Gtk::Label*                            m_TextureFormatLabel;
 	Gtk::Label*                            m_TextureLoadStateLabel;
 	Gtk::Box*                              m_PreviewBox;
@@ -1379,7 +1394,7 @@ private:
 	Gtk::ComboBoxText*                     m_TextureCoordinateGeneratorModeComboBoxText;
 	Gtk::Box*                              m_UsedTexturesBox;
 	Gtk::Box*                              m_UsedTexturesBrowserBox;
-	Gtk::Box*                              m_UsedTextureIndexBox;
+	Gtk::Box*                              m_UsedTexturesIndexBox;
 	Gtk::Box*                              m_PaletteBox;
 	Gtk::Box*                              m_PalettePreviewBox;
 	Gtk::ComboBoxText*                     m_PaletteComboBoxText;

@@ -132,6 +132,9 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SelectTextureBox", m_SelectTextureBox);
 	m_builder -> get_widget ("TextureComboBoxText", m_TextureComboBoxText);
 	m_builder -> get_widget ("TextureUnlinkButton", m_TextureUnlinkButton);
+	m_builder -> get_widget ("TextureNameBox", m_TextureNameBox);
+	m_builder -> get_widget ("TextureNameEntry", m_TextureNameEntry);
+	m_builder -> get_widget ("TextureRenameButton", m_TextureRenameButton);
 	m_builder -> get_widget ("TextureFormatLabel", m_TextureFormatLabel);
 	m_builder -> get_widget ("TextureLoadStateLabel", m_TextureLoadStateLabel);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
@@ -279,7 +282,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TextureCoordinateGeneratorModeComboBoxText", m_TextureCoordinateGeneratorModeComboBoxText);
 	m_builder -> get_widget ("UsedTexturesBox", m_UsedTexturesBox);
 	m_builder -> get_widget ("UsedTexturesBrowserBox", m_UsedTexturesBrowserBox);
-	m_builder -> get_widget ("UsedTextureIndexBox", m_UsedTextureIndexBox);
+	m_builder -> get_widget ("UsedTexturesIndexBox", m_UsedTexturesIndexBox);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
 	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);

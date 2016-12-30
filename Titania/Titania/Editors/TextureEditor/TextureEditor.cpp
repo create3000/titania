@@ -64,7 +64,8 @@ TextureEditor::TextureEditor (X3DBrowserWindow* const browserWindow) :
 	               X3DTextureNodeEditor (),
 	      X3DTextureTransformNodeEditor (),
 	X3DTextureCoordinateGeneratorEditor (),
-	            X3DTexturePaletteEditor ()
+	            X3DTexturePaletteEditor (),
+	              X3DUsedTexturesEditor ()
 {
 	setup ();
 }
@@ -87,6 +88,7 @@ TextureEditor::initialize ()
 	X3DTextureTransformNodeEditor::initialize ();
 	X3DTextureCoordinateGeneratorEditor::initialize ();
 	X3DTexturePaletteEditor::initialize ();
+	X3DUsedTexturesEditor::initialize ();
 }
 
 void

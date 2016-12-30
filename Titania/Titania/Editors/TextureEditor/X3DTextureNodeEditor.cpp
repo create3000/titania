@@ -65,6 +65,7 @@ X3DTextureNodeEditor::X3DTextureNodeEditor () :
 	         X3DTexture3DNodeEditor (),
 	X3DEnvironmentTextureNodeEditor (),
 	     X3DTexturePropertiesEditor (),
+	                       nodeName (this, getTextureNameEntry (), getTextureRenameButton ()),
 	                        preview (new TexturePreview (this,
                                     getPreviewBox (),
                                     getTextureFormatLabel (),
@@ -240,6 +241,8 @@ X3DTextureNodeEditor::set_node ()
 	setTexture2DNode          (textureNode);
 	setTexture3DNode          (textureNode);
 	setEnvironmentTextureNode (textureNode);
+
+	nodeName .setNode (X3D::SFNode (textureNode));
 
 	if (not textureNode)
 		textureNode = getImageTexture (textureNode);
