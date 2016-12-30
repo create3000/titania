@@ -406,6 +406,8 @@
                     <property name="can_focus">True</property>
                     <property name="border_width">0</property>
                     <property name="tab_pos">bottom</property>
+                    <property name="scrollable">True</property>
+                    <property name="enable_popup">True</property>
                     <child>
                       <object class="GtkBox" id="MaterialBox">
                         <property name="width_request">240</property>
@@ -1765,13 +1767,13 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkBox" id="UsedMaterialsIndexBox">
+                      <object class="GtkBox" id="UsedMaterialsBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="border_width">8</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkBox" id="UsedMaterialsIndexBrowserBox">
+                          <object class="GtkBox" id="UsedMaterialsBrowserBox">
                             <property name="width_request">0</property>
                             <property name="height_request">0</property>
                             <property name="visible">True</property>
@@ -1790,7 +1792,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="UsedMaterialsNodeIndexBox">
+                          <object class="GtkBox" id="UsedMaterialsIndexBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>

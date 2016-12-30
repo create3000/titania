@@ -436,16 +436,16 @@ public:
 	{ return *m_LinePropertiesLinewidthScaleFactorSpinButton; }
 
 	Gtk::Box &
+	getUsedMaterialsBox () const
+	{ return *m_UsedMaterialsBox; }
+
+	Gtk::Box &
+	getUsedMaterialsBrowserBox () const
+	{ return *m_UsedMaterialsBrowserBox; }
+
+	Gtk::Box &
 	getUsedMaterialsIndexBox () const
 	{ return *m_UsedMaterialsIndexBox; }
-
-	Gtk::Box &
-	getUsedMaterialsIndexBrowserBox () const
-	{ return *m_UsedMaterialsIndexBrowserBox; }
-
-	Gtk::Box &
-	getUsedMaterialsNodeIndexBox () const
-	{ return *m_UsedMaterialsNodeIndexBox; }
 
 	Gtk::Box &
 	getPaletteBox () const
@@ -731,9 +731,9 @@ private:
 	Gtk::CheckButton*              m_LinePropertiesFilledCheckButton;
 	Gtk::SpinButton*               m_LinePropertiesLinetypeSpinButton;
 	Gtk::SpinButton*               m_LinePropertiesLinewidthScaleFactorSpinButton;
+	Gtk::Box*                      m_UsedMaterialsBox;
+	Gtk::Box*                      m_UsedMaterialsBrowserBox;
 	Gtk::Box*                      m_UsedMaterialsIndexBox;
-	Gtk::Box*                      m_UsedMaterialsIndexBrowserBox;
-	Gtk::Box*                      m_UsedMaterialsNodeIndexBox;
 	Gtk::Box*                      m_PaletteBox;
 	Gtk::ComboBoxText*             m_PaletteFaceCombo;
 	Gtk::Box*                      m_PalettePreviewBox;

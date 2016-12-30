@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "X3DUsedMaterialsIndexEditor.h"
+#include "X3DUsedMaterialsEditor.h"
 
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../Configuration/config.h"
@@ -64,7 +64,7 @@
 namespace titania {
 namespace puck {
 
-X3DUsedMaterialsIndexEditor::X3DUsedMaterialsIndexEditor () :
+X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 	X3DAppearanceEditorInterface (),
 	                     browser (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
 	                   nodeIndex (new NodeIndex (getBrowserWindow ())),
@@ -74,7 +74,7 @@ X3DUsedMaterialsIndexEditor::X3DUsedMaterialsIndexEditor () :
 }
 
 void
-X3DUsedMaterialsIndexEditor::initialize ()
+X3DUsedMaterialsEditor::initialize ()
 {
 	#ifdef FIXED_PIPELINE
 	browser -> setFixedPipeline (false);
@@ -84,12 +84,12 @@ X3DUsedMaterialsIndexEditor::initialize ()
 	browser -> set_opacity (0);
 	browser -> show ();
 
-	getUsedMaterialsIndexBrowserBox () .pack_start (*browser, true, true);
+	getUsedMaterialsBrowserBox () .pack_start (*browser, true, true);
 
 	// Node index
 
-	nodeIndex -> getNode () .addInterest (this, &X3DUsedMaterialsIndexEditor::set_node);
-	nodeIndex -> reparent (getUsedMaterialsNodeIndexBox (), getWindow ());
+	nodeIndex -> getNode () .addInterest (this, &X3DUsedMaterialsEditor::set_node);
+	nodeIndex -> reparent (getUsedMaterialsIndexBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setSelect (false);
 	nodeIndex -> setObserveNodes (true);
@@ -97,7 +97,7 @@ X3DUsedMaterialsIndexEditor::initialize ()
 
 	// Tree view column
 
-	cellrenderer -> property_callback () .set_value (std::bind (&X3DUsedMaterialsIndexEditor::on_render_material, this));
+	cellrenderer -> property_callback () .set_value (std::bind (&X3DUsedMaterialsEditor::on_render_material, this));
 
 	nodeIndex -> getCustomImageColumn () -> set_visible (true);
 	nodeIndex -> getCustomImageColumn () -> pack_start (*cellrenderer, false);
@@ -105,7 +105,7 @@ X3DUsedMaterialsIndexEditor::initialize ()
 }
 
 X3D::Browser*
-X3DUsedMaterialsIndexEditor::on_render_material ()
+X3DUsedMaterialsEditor::on_render_material ()
 {
 	try
 	{
@@ -150,7 +150,7 @@ X3DUsedMaterialsIndexEditor::on_render_material ()
 }
 
 void
-X3DUsedMaterialsIndexEditor::set_node (const X3D::SFNode & value)
+X3DUsedMaterialsEditor::set_node (const X3D::SFNode & value)
 {
 	try
 	{
@@ -173,7 +173,7 @@ X3DUsedMaterialsIndexEditor::set_node (const X3D::SFNode & value)
 	{ }
 }
 
-X3DUsedMaterialsIndexEditor::~X3DUsedMaterialsIndexEditor ()
+X3DUsedMaterialsEditor::~X3DUsedMaterialsEditor ()
 { }
 
 } // puck

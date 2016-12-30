@@ -65,7 +65,7 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DMaterialEditor (),
 	     X3DFillPropertiesEditor (),
 	     X3DLinePropertiesEditor (),
-	 X3DUsedMaterialsIndexEditor (),
+	 X3DUsedMaterialsEditor (),
 	    X3DMaterialPaletteEditor (),
                       selection (),
 	                  shapeNodes (),
@@ -99,7 +99,7 @@ AppearanceEditor::initialize ()
 	X3DMaterialEditor::initialize ();
 	X3DFillPropertiesEditor::initialize ();
 	X3DLinePropertiesEditor::initialize ();
-	X3DUsedMaterialsIndexEditor::initialize ();
+	X3DUsedMaterialsEditor::initialize ();
 	X3DMaterialPaletteEditor::initialize ();
 }
 

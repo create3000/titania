@@ -104,6 +104,8 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tab_pos">bottom</property>
+            <property name="scrollable">True</property>
+            <property name="enable_popup">True</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
@@ -374,9 +376,6 @@
                   </packing>
                 </child>
               </object>
-              <packing>
-                <property name="tab_expand">True</property>
-              </packing>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="label21">
@@ -1045,7 +1044,6 @@
               </object>
               <packing>
                 <property name="position">1</property>
-                <property name="tab_expand">True</property>
               </packing>
             </child>
             <child type="tab">

@@ -956,6 +956,18 @@ public:
 	{ return *m_TextureCoordinateGeneratorModeComboBoxText; }
 
 	Gtk::Box &
+	getUsedTexturesBox () const
+	{ return *m_UsedTexturesBox; }
+
+	Gtk::Box &
+	getUsedTexturesBrowserBox () const
+	{ return *m_UsedTexturesBrowserBox; }
+
+	Gtk::Box &
+	getUsedTextureIndexBox () const
+	{ return *m_UsedTextureIndexBox; }
+
+	Gtk::Box &
 	getPaletteBox () const
 	{ return *m_PaletteBox; }
 
@@ -991,22 +1003,6 @@ public:
 	getPaletteNameEntry () const
 	{ return *m_PaletteNameEntry; }
 
-	Gtk::Dialog &
-	getEditPaletteDialog1 () const
-	{ return *m_EditPaletteDialog1; }
-
-	Gtk::Button &
-	getEditPaletteCancelButton1 () const
-	{ return *m_EditPaletteCancelButton1; }
-
-	Gtk::Button &
-	getEditPaletteOkButton1 () const
-	{ return *m_EditPaletteOkButton1; }
-
-	Gtk::Entry &
-	getPaletteNameEntry1 () const
-	{ return *m_PaletteNameEntry1; }
-
 	Gtk::Menu &
 	getPaletteMenu () const
 	{ return *m_PaletteMenu; }
@@ -1030,30 +1026,6 @@ public:
 	Gtk::ImageMenuItem &
 	getRemoveObjectFromPaletteMenuItem () const
 	{ return *m_RemoveObjectFromPaletteMenuItem; }
-
-	Gtk::Menu &
-	getPaletteMenu1 () const
-	{ return *m_PaletteMenu1; }
-
-	Gtk::ImageMenuItem &
-	getAddPaletteMenuItem1 () const
-	{ return *m_AddPaletteMenuItem1; }
-
-	Gtk::ImageMenuItem &
-	getRemovePaletteMenuItem1 () const
-	{ return *m_RemovePaletteMenuItem1; }
-
-	Gtk::ImageMenuItem &
-	getEditPaletteMenuItem1 () const
-	{ return *m_EditPaletteMenuItem1; }
-
-	Gtk::ImageMenuItem &
-	getAddObjectToPaletteMenuItem1 () const
-	{ return *m_AddObjectToPaletteMenuItem1; }
-
-	Gtk::ImageMenuItem &
-	getRemoveObjectFromPaletteMenuItem1 () const
-	{ return *m_RemoveObjectFromPaletteMenuItem1; }
 
 	///  @name Signal handlers
 
@@ -1405,6 +1377,9 @@ private:
 	Gtk::Button*                           m_TextureCoordinateGeneratorUnlinkButton;
 	Gtk::Grid*                             m_TextureCoordinateGeneratorBox;
 	Gtk::ComboBoxText*                     m_TextureCoordinateGeneratorModeComboBoxText;
+	Gtk::Box*                              m_UsedTexturesBox;
+	Gtk::Box*                              m_UsedTexturesBrowserBox;
+	Gtk::Box*                              m_UsedTextureIndexBox;
 	Gtk::Box*                              m_PaletteBox;
 	Gtk::Box*                              m_PalettePreviewBox;
 	Gtk::ComboBoxText*                     m_PaletteComboBoxText;
@@ -1414,22 +1389,12 @@ private:
 	Gtk::Button*                           m_EditPaletteCancelButton;
 	Gtk::Button*                           m_EditPaletteOkButton;
 	Gtk::Entry*                            m_PaletteNameEntry;
-	Gtk::Dialog*                           m_EditPaletteDialog1;
-	Gtk::Button*                           m_EditPaletteCancelButton1;
-	Gtk::Button*                           m_EditPaletteOkButton1;
-	Gtk::Entry*                            m_PaletteNameEntry1;
 	Gtk::Menu*                             m_PaletteMenu;
 	Gtk::ImageMenuItem*                    m_AddPaletteMenuItem;
 	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem;
 	Gtk::ImageMenuItem*                    m_EditPaletteMenuItem;
 	Gtk::ImageMenuItem*                    m_AddObjectToPaletteMenuItem;
 	Gtk::ImageMenuItem*                    m_RemoveObjectFromPaletteMenuItem;
-	Gtk::Menu*                             m_PaletteMenu1;
-	Gtk::ImageMenuItem*                    m_AddPaletteMenuItem1;
-	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem1;
-	Gtk::ImageMenuItem*                    m_EditPaletteMenuItem1;
-	Gtk::ImageMenuItem*                    m_AddObjectToPaletteMenuItem1;
-	Gtk::ImageMenuItem*                    m_RemoveObjectFromPaletteMenuItem1;
 
 };
 
