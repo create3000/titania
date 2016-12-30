@@ -78,6 +78,10 @@ public:
 	setShowWidget (const bool value);
 
 	void
+	setObserveNodes (const bool value)
+	{ observeNodes = value; }
+
+	void
 	setSelect (const bool value)
 	{ select = value; }
 
@@ -151,6 +155,9 @@ private:
 	void
 	set_executionContext ();
 
+	void
+	on_row_changed (const size_t index);
+
 	virtual
 	bool
 	on_search_entry_key_press_event (GdkEventKey*) final override;
@@ -174,7 +181,8 @@ private:
 	X3D::MFNode                                         nodes;
 	X3D::SFNode                                         node;
 	IndexType                                           index;
-	bool                                                widget;
+	bool                                                showWidget;
+	bool                                                observeNodes;
 	bool                                                select;
 	std::set <X3D::X3DConstants::NodeType>              types;
 	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;

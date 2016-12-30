@@ -92,7 +92,8 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	                nodes (),
 	                 node (),
 	                index (NAMED_NODES_INDEX),
-	               widget (false),
+	           showWidget (false),
+	         observeNodes (false),
 	               select (true),
 	                types (),
 	            nodeTypes (),
@@ -121,6 +122,7 @@ NodeIndex::initialize ()
 	getTreeModelSort () -> set_sort_func (Columns::NAME, sigc::mem_fun (this, &NodeIndex::on_compare_name));
 
 	getNameColumn () -> clicked ();
+	getTypeNameColumn () -> clicked ();
 
 	// Initialize SearchEntryCompletion:
 
@@ -217,9 +219,9 @@ NodeIndex::refresh ()
 void
 NodeIndex::setShowWidget (const bool value)
 {
-	widget = value;
+	showWidget = value;
 
-	if (widget)
+	if (showWidget)
 	{
 		getHeaderBox () .set_visible (false);
 		getFooterBox () .set_visible (false);
@@ -279,6 +281,9 @@ NodeIndex::setNodes (X3D::MFNode && value)
 	static const std::string document_import ("document-import");
 	static const std::string document_export ("document-export");
 
+	for (const auto & node : nodes)
+		node -> removeInterest (this, &NodeIndex::on_row_changed);
+
 	nodes = std::move (value);
 
 	hadjustment -> preserve (getTreeView () .get_hadjustment ());
@@ -294,11 +299,16 @@ NodeIndex::setNodes (X3D::MFNode && value)
 	for (const auto & node : nodes)
 	{
 		const auto row = getListStore () -> append ();
-		row -> set_value (Columns::INDEX,          index ++);
+		row -> set_value (Columns::INDEX,          index);
 		row -> set_value (Columns::TYPE_NAME,      node -> getTypeName ());
 		row -> set_value (Columns::NAME,           node -> getName ());
 		row -> set_value (Columns::IMPORTED_NODES, importingInlines .count (node) ? document_import : empty_string);
 		row -> set_value (Columns::EXPORTED_NODES, exportedNodes .count (node)    ? document_export : empty_string);
+
+		if (observeNodes)
+			node -> addInterest (this, &NodeIndex::on_row_changed, index);
+
+		++ index;
 	}
 
 	getTreeView () .set_model (getTreeModelSort ());
@@ -435,6 +445,18 @@ NodeIndex::set_executionContext ()
 		scene -> exportedNodes_changed () .addInterest (this, &NodeIndex::refresh);
 
 	refresh ();
+}
+
+void
+NodeIndex::on_row_changed (const size_t index)
+{
+	Gtk::TreePath path;
+
+	path .push_back (index);
+
+	const auto iter = getListStore () -> get_iter (path);
+
+	getListStore () -> row_changed (path, iter);
 }
 
 bool

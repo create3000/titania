@@ -120,6 +120,10 @@ public:
 	{ return m_CustomImageColumn; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getTypeNameColumn () const
+	{ return m_TypeNameColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getNameColumn () const
 	{ return m_NameColumn; }
 
@@ -196,6 +200,7 @@ private:
 	Glib::RefPtr <Gtk::ListStore>       m_SearchListStore;
 	Glib::RefPtr <Gtk::EntryCompletion> m_SearchEntryCompletion;
 	Glib::RefPtr <Gtk::TreeViewColumn>  m_CustomImageColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn>  m_TypeNameColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn>  m_NameColumn;
 	Gtk::Window*                        m_Window;
 	Gtk::Box*                           m_Widget;

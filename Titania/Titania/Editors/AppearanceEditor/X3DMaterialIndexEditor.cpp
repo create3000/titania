@@ -92,6 +92,7 @@ X3DMaterialIndexEditor::initialize ()
 	nodeIndex -> reparent (getMaterialNodeIndexBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setSelect (false);
+	nodeIndex -> setObserveNodes (true);
 	nodeIndex -> setTypes ({ X3D::X3DConstants::X3DMaterialNode });
 
 	// Tree view column
@@ -106,8 +107,6 @@ X3DMaterialIndexEditor::initialize ()
 void
 X3DMaterialIndexEditor::on_render_material ()
 {
-	__LOG__ << cellrenderer -> property_index () .get_value () << std::endl;
-
 	try
 	{
 		const auto index = cellrenderer -> property_index () .get_value ();

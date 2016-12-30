@@ -106,8 +106,10 @@ BrowserCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 		const auto x        = cell_area .get_x ();
 		const auto y        = cell_area .get_y ();
-		const auto width    = cell_area .get_width ();
-		const auto height   = cell_area .get_height ();
+		const auto w        = cell_area .get_width ();
+		const auto h        = cell_area .get_height ();
+		const auto width    = std::min (w, h);
+		const auto height   = std::min (w, h);
 		const auto stride   = cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32, width);
 		const auto callback = property_callback () .get_value ();
 
@@ -152,7 +154,7 @@ BrowserCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 		// Draw Surface to Context.
 
-		context -> translate (x, y);
+		context -> translate ((w - width) / 2.0 + x, (h - height) / 2.0 + y);
 		context -> set_operator (Cairo::Operator::OPERATOR_SOURCE);
 		context -> set_source (surface, 0, 0);
 		context -> paint ();
