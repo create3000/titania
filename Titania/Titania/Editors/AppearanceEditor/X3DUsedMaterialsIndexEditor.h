@@ -67,7 +67,7 @@ namespace puck {
 class BrowserCellRenderer;
 class NodeIndex;
 
-class X3DMaterialIndexEditor :
+class X3DUsedMaterialsIndexEditor :
 	virtual public X3DAppearanceEditorInterface
 {
 public:
@@ -75,14 +75,14 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DMaterialIndexEditor ();
+	~X3DUsedMaterialsIndexEditor ();
 
 
 protected:
 
 	///  @name Construction
 
-	X3DMaterialIndexEditor ();
+	X3DUsedMaterialsIndexEditor ();
 
 	virtual
 	void

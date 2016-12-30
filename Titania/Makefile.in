@@ -154,8 +154,8 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/AppearanceEditor/X3DFillPropertiesEditor.$(OBJEXT) \
 	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.$(OBJEXT) \
 	Titania/Editors/AppearanceEditor/X3DMaterialEditor.$(OBJEXT) \
-	Titania/Editors/AppearanceEditor/X3DMaterialIndexEditor.$(OBJEXT) \
 	Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.$(OBJEXT) \
+	Titania/Editors/AppearanceEditor/X3DUsedMaterialsIndexEditor.$(OBJEXT) \
 	Titania/Editors/BackgroundEditor/BackgroundEditor.$(OBJEXT) \
 	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.$(OBJEXT) \
 	Titania/Editors/BindableNodeEditor/BindableNodeEditor.$(OBJEXT) \
@@ -623,8 +623,8 @@ titania_SOURCES = \
 	Titania/Editors/AppearanceEditor/X3DFillPropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp \
-	Titania/Editors/AppearanceEditor/X3DMaterialIndexEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp \
+	Titania/Editors/AppearanceEditor/X3DUsedMaterialsIndexEditor.cpp \
 	Titania/Editors/BackgroundEditor/BackgroundEditor.cpp \
 	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \
 	Titania/Editors/BindableNodeEditor/BindableNodeEditor.cpp \
@@ -1126,10 +1126,10 @@ Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.$(OBJEXT):  \
 Titania/Editors/AppearanceEditor/X3DMaterialEditor.$(OBJEXT):  \
 	Titania/Editors/AppearanceEditor/$(am__dirstamp) \
 	Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp)
-Titania/Editors/AppearanceEditor/X3DMaterialIndexEditor.$(OBJEXT):  \
+Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.$(OBJEXT):  \
 	Titania/Editors/AppearanceEditor/$(am__dirstamp) \
 	Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp)
-Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.$(OBJEXT):  \
+Titania/Editors/AppearanceEditor/X3DUsedMaterialsIndexEditor.$(OBJEXT):  \
 	Titania/Editors/AppearanceEditor/$(am__dirstamp) \
 	Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/BackgroundEditor/$(am__dirstamp):
@@ -1947,8 +1947,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DFillPropertiesEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DLinePropertiesEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialEditor.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialIndexEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialPaletteEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DUsedMaterialsIndexEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/BackgroundEditor/$(DEPDIR)/BackgroundEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/BackgroundEditor/$(DEPDIR)/X3DBackgroundEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/BindableNodeEditor/$(DEPDIR)/BindableNodeEditor.Po@am__quote@

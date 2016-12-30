@@ -57,8 +57,8 @@ titania_SOURCES =  \
 	Titania/Editors/AppearanceEditor/X3DFillPropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp \
-	Titania/Editors/AppearanceEditor/X3DMaterialIndexEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialPaletteEditor.cpp \
+	Titania/Editors/AppearanceEditor/X3DUsedMaterialsIndexEditor.cpp \
 	Titania/Editors/BackgroundEditor/BackgroundEditor.cpp \
 	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \
 	Titania/Editors/BindableNodeEditor/BindableNodeEditor.cpp \

@@ -55,7 +55,7 @@
 #include "X3DMaterialEditor.h"
 #include "X3DFillPropertiesEditor.h"
 #include "X3DLinePropertiesEditor.h"
-#include "X3DMaterialIndexEditor.h"
+#include "X3DUsedMaterialsIndexEditor.h"
 #include "X3DMaterialPaletteEditor.h"
 
 namespace titania {
@@ -66,7 +66,7 @@ class AppearanceEditor :
 	public X3DMaterialEditor,
 	public X3DFillPropertiesEditor,
 	public X3DLinePropertiesEditor,
-	public X3DMaterialIndexEditor,
+	public X3DUsedMaterialsIndexEditor,
 	public X3DMaterialPaletteEditor
 {
 public:

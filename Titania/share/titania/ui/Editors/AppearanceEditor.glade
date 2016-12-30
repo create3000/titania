@@ -1765,13 +1765,13 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkBox" id="MaterialIndexBox">
+                      <object class="GtkBox" id="UsedMaterialsIndexBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="border_width">8</property>
                         <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkBox" id="MaterialIndexBrowserBox">
+                          <object class="GtkBox" id="UsedMaterialsIndexBrowserBox">
                             <property name="width_request">0</property>
                             <property name="height_request">0</property>
                             <property name="visible">True</property>
@@ -1790,7 +1790,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkBox" id="MaterialNodeIndexBox">
+                          <object class="GtkBox" id="UsedMaterialsNodeIndexBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="orientation">vertical</property>
