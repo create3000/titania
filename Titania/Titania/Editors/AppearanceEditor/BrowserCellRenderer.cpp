@@ -55,13 +55,13 @@ namespace X3D {
 
 static constexpr int MIN_BROWSER_SIZE = 12;
 
-BrowserCellRenderer::BrowserCellRenderer (X3D::Browser* const browser) :
+BrowserCellRenderer::BrowserCellRenderer () :
 	    Glib::ObjectBase (typeid (BrowserCellRenderer)),
 	   Gtk::CellRenderer (),
 	          cellHeight (0),
 	      index_property (*this, "index", 0),
 	transparent_property (*this, "transparent", false),
-	   callback_property (*this, "callback", std::function <X3D::Browser* ()> ())
+	   callback_property (*this, "callback", std::function <Browser* ()> ())
 { }
 
 void

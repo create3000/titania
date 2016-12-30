@@ -160,6 +160,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>,
        std::runtime_error)
 {
+	// Update browser.
+
+	getBrowser () -> update ();
+
+	// Make snapshot.
+
 	ContextLock lock (getBrowser ());
 
 	if (getWorld ())
@@ -168,10 +174,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		const bool   backgroundHidden = layer0 -> getBackground () -> isHidden ();
 		const auto   viewport         = getBrowser () -> getViewport ();
 	
-		// Update browser.
-
-		getBrowser () -> update ();
-
 		// Render to frame buffer.
 
 		FrameBuffer frameBuffer (getBrowser (), width, height, antialiasing);

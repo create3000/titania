@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	BrowserCellRenderer (X3D::Browser* const browser);
+	BrowserCellRenderer ();
 	
 	///  @name Properties
 
@@ -84,11 +84,11 @@ public:
 	property_transparent () const
 	{ return transparent_property; }
 
-	Glib::Property <std::function <X3D::Browser* ()>> &
+	Glib::Property <std::function <Browser* ()>> &
 	property_callback ()
 	{ return callback_property; }
 
-	const Glib::Property <std::function <X3D::Browser* ()>> &
+	const Glib::Property <std::function <Browser* ()>> &
 	property_callback () const
 	{ return callback_property; }
 
@@ -127,10 +127,10 @@ private:
 
 	///  @name Members
 
-	int                                               cellHeight;
-	Glib::Property <uint32_t>                         index_property;
-	Glib::Property <bool>                             transparent_property;
-	Glib::Property <std::function <X3D::Browser* ()>> callback_property;
+	int                                          cellHeight;
+	Glib::Property <uint32_t>                    index_property;
+	Glib::Property <bool>                        transparent_property;
+	Glib::Property <std::function <Browser* ()>> callback_property;
 
 };
 

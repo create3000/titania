@@ -68,7 +68,7 @@ X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 	X3DAppearanceEditorInterface (),
 	                     browser (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
 	                   nodeIndex (new NodeIndex (getBrowserWindow ())),
-	                cellrenderer (Gtk::manage (new X3D::BrowserCellRenderer (browser)))
+	                cellrenderer (Gtk::manage (new X3D::BrowserCellRenderer ()))
 {
 	addChildren (browser);
 }
