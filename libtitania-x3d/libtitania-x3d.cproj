@@ -840,6 +840,7 @@
     <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds.h" />
     <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds.rc" />
     <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_impl.h" />
+    <None Include="Titania\X3D\Browser\BrowserCellRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1416,6 +1417,7 @@
     <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_util.c" />
     <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_vector.c" />
     <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_viewport.c" />
+    <Compile Include="Titania\X3D\Browser\BrowserCellRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

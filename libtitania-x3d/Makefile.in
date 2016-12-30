@@ -156,6 +156,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Basic/X3DBaseNode.lo \
 	Titania/X3D/Basic/X3DFieldDefinition.lo \
 	Titania/X3D/Browser/Browser.lo \
+	Titania/X3D/Browser/BrowserCellRenderer.lo \
 	Titania/X3D/Browser/BrowserOptions.lo \
 	Titania/X3D/Browser/BrowserProperties.lo \
 	Titania/X3D/Browser/Console.lo \
@@ -983,6 +984,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
 	Titania/X3D/Browser/Browser.cpp \
+	Titania/X3D/Browser/BrowserCellRenderer.cpp \
 	Titania/X3D/Browser/BrowserOptions.cpp \
 	Titania/X3D/Browser/BrowserProperties.cpp \
 	Titania/X3D/Browser/Console.cpp \
@@ -1701,6 +1703,9 @@ Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Browser/$(DEPDIR)
 	@: > Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Browser.lo: Titania/X3D/Browser/$(am__dirstamp) \
+	Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/BrowserCellRenderer.lo:  \
+	Titania/X3D/Browser/$(am__dirstamp) \
 	Titania/X3D/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/BrowserOptions.lo:  \
 	Titania/X3D/Browser/$(am__dirstamp) \
@@ -4070,6 +4075,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/X3DBaseNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/X3DFieldDefinition.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/Browser.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/BrowserCellRenderer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/BrowserOptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/BrowserProperties.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/$(DEPDIR)/Console.Plo@am__quote@

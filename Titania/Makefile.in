@@ -150,7 +150,6 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Dialogs/NodeIndex/NodeIndex.$(OBJEXT) \
 	Titania/Dialogs/OpenLocationDialog/OpenLocationDialog.$(OBJEXT) \
 	Titania/Editors/AppearanceEditor/AppearanceEditor.$(OBJEXT) \
-	Titania/Editors/AppearanceEditor/BrowserCellRenderer.$(OBJEXT) \
 	Titania/Editors/AppearanceEditor/X3DFillPropertiesEditor.$(OBJEXT) \
 	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.$(OBJEXT) \
 	Titania/Editors/AppearanceEditor/X3DMaterialEditor.$(OBJEXT) \
@@ -619,7 +618,6 @@ titania_SOURCES = \
 	Titania/Dialogs/NodeIndex/NodeIndex.cpp \
 	Titania/Dialogs/OpenLocationDialog/OpenLocationDialog.cpp \
 	Titania/Editors/AppearanceEditor/AppearanceEditor.cpp \
-	Titania/Editors/AppearanceEditor/BrowserCellRenderer.cpp \
 	Titania/Editors/AppearanceEditor/X3DFillPropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp \
@@ -1112,9 +1110,6 @@ Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Editors/AppearanceEditor/$(DEPDIR)
 	@: > Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/AppearanceEditor/AppearanceEditor.$(OBJEXT):  \
-	Titania/Editors/AppearanceEditor/$(am__dirstamp) \
-	Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp)
-Titania/Editors/AppearanceEditor/BrowserCellRenderer.$(OBJEXT):  \
 	Titania/Editors/AppearanceEditor/$(am__dirstamp) \
 	Titania/Editors/AppearanceEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/AppearanceEditor/X3DFillPropertiesEditor.$(OBJEXT):  \
@@ -1943,7 +1938,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/NodeIndex/$(DEPDIR)/NodeIndex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/OpenLocationDialog/$(DEPDIR)/OpenLocationDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/AppearanceEditor.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/BrowserCellRenderer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DFillPropertiesEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DLinePropertiesEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/AppearanceEditor/$(DEPDIR)/X3DMaterialEditor.Po@am__quote@

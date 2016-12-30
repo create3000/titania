@@ -53,13 +53,12 @@
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Browser/BrowserCellRenderer.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Material.h>
 #include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
-
-#include "BrowserCellRenderer.h"
 
 namespace titania {
 namespace puck {

@@ -28,6 +28,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
 	Titania/X3D/Browser/Browser.cpp \
+	Titania/X3D/Browser/BrowserCellRenderer.cpp \
 	Titania/X3D/Browser/BrowserOptions.cpp \
 	Titania/X3D/Browser/BrowserProperties.cpp \
 	Titania/X3D/Browser/Console.cpp \
