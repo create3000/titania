@@ -159,7 +159,6 @@ BrowserCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		// Draw Surface to Context.
 
 		context -> translate ((w - width) / 2.0 + x, (h - height) / 2.0 + y);
-		context -> set_operator (Cairo::Operator::OPERATOR_SOURCE);
 		context -> set_source (surface, 0, 0);
 		context -> paint ();
 	}
