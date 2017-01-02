@@ -1,12 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/JSONParser.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/X3DScene.h" Line="364" Column="41" />
-      <File FileName="../Cobweb/cobweb.js/tests/Components/Scripting/toXMLString.json" Line="41" Column="38" />
-      <File FileName="../../Schreibtisch/scene.x3d" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileSaveDialog/X3DFileSaveDialog.cpp" Line="206" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp" Line="132" Column="4" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="154" Column="7" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/JSONParser.h" Line="75" Column="13" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/JSONParser.cpp" Line="73" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -19,6 +17,13 @@
       <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Execution/X3DScene.h" line="364" column="1" />
       <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/ScenePropertiesEditor/X3DMetaDataEditor.cpp" line="131" column="1" />
       <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/ScenePropertiesEditor/X3DMetaDataEditor.cpp" line="131" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/AppearanceEditor/BrowserCellRenderer.cpp" line="110" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/AppearanceEditor/BrowserCellRenderer.cpp" line="110" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Browser/BrowserCellRenderer.cpp" line="173" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Browser/BrowserCellRenderer.cpp" line="173" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Browser/BrowserCellRenderer.cpp" line="173" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Browser/BrowserCellRenderer.cpp" line="168" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Browser/BrowserCellRenderer.cpp" line="173" column="3" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

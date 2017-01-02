@@ -91,6 +91,7 @@
       <mime-type>model/vrml</mime-type>
       <mime-type>model/x3d+vrml</mime-type>
       <mime-type>model/x3d+xml</mime-type>
+      <mime-type>application/json</mime-type>
       <mime-type>application/x-3ds</mime-type>
       <mime-type>image/x-3ds</mime-type>
     </mime-types>
@@ -101,6 +102,7 @@
       <pattern>*.x3dv</pattern>
       <pattern>*.x3dvz</pattern>
       <pattern>*.x3dv.gz</pattern>
+      <pattern>*.json</pattern>
       <pattern>*.wrl</pattern>
       <pattern>*.wrz</pattern>
       <pattern>*.wrl.gz</pattern>

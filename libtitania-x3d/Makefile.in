@@ -641,7 +641,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_viewport.lo \
 	Titania/X3D/Parser/Autodesk/Parser.lo \
 	Titania/X3D/Parser/Filter.lo Titania/X3D/Parser/Grammar.lo \
-	Titania/X3D/Parser/Parser.lo \
+	Titania/X3D/Parser/JSONParser.lo Titania/X3D/Parser/Parser.lo \
 	Titania/X3D/Parser/Wavefront/Parser.lo \
 	Titania/X3D/Parser/X3DParser.lo \
 	Titania/X3D/Prototype/ExternProtoArray.lo \
@@ -1477,6 +1477,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Parser/Autodesk/Parser.cpp \
 	Titania/X3D/Parser/Filter.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
+	Titania/X3D/Parser/JSONParser.cpp \
 	Titania/X3D/Parser/Parser.cpp \
 	Titania/X3D/Parser/Wavefront/Parser.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \
@@ -3585,6 +3586,8 @@ Titania/X3D/Parser/Filter.lo: Titania/X3D/Parser/$(am__dirstamp) \
 	Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Parser/Grammar.lo: Titania/X3D/Parser/$(am__dirstamp) \
 	Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/JSONParser.lo: Titania/X3D/Parser/$(am__dirstamp) \
+	Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Parser/Parser.lo: Titania/X3D/Parser/$(am__dirstamp) \
 	Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Parser/Wavefront/$(am__dirstamp):
@@ -4548,6 +4551,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec4.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Filter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Grammar.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/JSONParser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Parser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/X3DParser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/Autodesk/$(DEPDIR)/Parser.Plo@am__quote@

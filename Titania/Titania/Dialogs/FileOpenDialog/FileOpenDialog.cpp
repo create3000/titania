@@ -126,7 +126,7 @@ FileOpenDialog::setMode (Mode mode)
 
 			getWindow () .add_filter (getFileFilterX3DXMLEncoding ());
 			getWindow () .add_filter (getFileFilterX3DClassicVRMLEncoding ());
-			//getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
+			getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
 			getWindow () .add_filter (getFileFilterVrmlEncoding ());
 
 			getWindow () .add_filter (getFileFilterCompressedX3DXMLEncoding ());

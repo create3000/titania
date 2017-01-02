@@ -17694,6 +17694,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+json-c
 ImageMagick++
 libgtop-2.0\""; } >&5
   ($PKG_CONFIG --exists --print-errors "glibmm-2.4
@@ -17701,6 +17702,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+json-c
 ImageMagick++
 libgtop-2.0") 2>&5
   ac_status=$?
@@ -17711,6 +17713,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+json-c
 ImageMagick++
 libgtop-2.0" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
@@ -17729,6 +17732,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+json-c
 ImageMagick++
 libgtop-2.0\""; } >&5
   ($PKG_CONFIG --exists --print-errors "glibmm-2.4
@@ -17736,6 +17740,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+json-c
 ImageMagick++
 libgtop-2.0") 2>&5
   ac_status=$?
@@ -17746,6 +17751,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+json-c
 ImageMagick++
 libgtop-2.0" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
@@ -17773,6 +17779,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+json-c
 ImageMagick++
 libgtop-2.0" 2>&1`
         else
@@ -17781,6 +17788,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+json-c
 ImageMagick++
 libgtop-2.0" 2>&1`
         fi
@@ -17792,6 +17800,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+json-c
 ImageMagick++
 libgtop-2.0) were not met:
 
