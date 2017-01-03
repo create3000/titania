@@ -50,6 +50,8 @@
 
 #include "JSONParser.h"
 
+#include "../Browser/X3DBrowser.h"
+
 extern "C" {
 
 #include <json-c/json.h>
@@ -123,7 +125,147 @@ JSONParser::x3dObject (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
+	std::string encodingCharacters;
+	std::string profileCharacters;
+	std::string specificationVersionCharacters;
+
+	if (encodingString (json_object_object_get (jobj, "encoding"), encodingCharacters))
+	{
+		// TODO
+	}
+
+	if (profileString (json_object_object_get (jobj, "@profile"), profileCharacters))
+	{
+		scene -> setProfile (getBrowser () -> getProfile (profileCharacters));
+	}
+
+	if (versionString (json_object_object_get (jobj, "@version"), specificationVersionCharacters))
+	{
+		scene -> setSpecificationVersion (specificationVersionCharacters);
+	}
+
+	headObject (json_object_object_get (jobj, "head"));
+
 	sceneObject (json_object_object_get (jobj, "Scene"));
+}
+
+bool
+JSONParser::encodingString (json_object* const jobj, std::string & encodingCharacters)
+{
+	return stringValue (jobj, encodingCharacters);
+}
+
+bool
+JSONParser::profileString (json_object* const jobj, std::string & profileCharacters)
+{
+	return stringValue (jobj, profileCharacters);
+}
+
+bool
+JSONParser::versionString (json_object* const jobj, std::string & specificationVersionCharacters)
+{
+	return stringValue (jobj, specificationVersionCharacters);
+}
+
+void
+JSONParser::headObject (json_object* const jobj)
+{
+	__LOG__ << this << " " << jobj << std::endl;
+
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	componentArray (json_object_object_get (jobj, "component"));
+	unitArray      (json_object_object_get (jobj, "unit"));
+	metaArray      (json_object_object_get (jobj, "meta"));
+}
+
+void
+JSONParser::componentArray (json_object* const jobj)
+{
+	__LOG__ << this << " " << jobj << std::endl;
+
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	const int size = json_object_array_length (jobj);
+
+	for (int i = 0; i < size; ++ i)
+		componentObject (json_object_array_get_idx (jobj, i));
+}
+
+void
+JSONParser::componentObject (json_object* const jobj)
+{
+	__LOG__ << this << " " << jobj << std::endl;
+
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	std::string componentNameCharacters;
+
+	if (componentNameString (json_object_object_get (jobj, "@name"), componentNameCharacters))
+	{
+		int32_t componentLevel = 0;
+
+		if (componentLevelNumber (json_object_object_get (jobj, "@level"), componentLevel))
+		{
+			
+
+			return;
+		}
+
+		//throw Error <INVALID_X3D> ("Expected a component support level.");
+	}	
+
+	//throw Error <INVALID_X3D> ("Expected a component name.");
+}
+
+bool
+JSONParser::componentNameString (json_object* const jobj, std::string & componentNameCharacters)
+{
+	return stringValue (jobj, componentNameCharacters);
+}
+
+bool
+JSONParser::componentLevelNumber (json_object* const jobj, int32_t & componentLevelNumber)
+{
+	return integerValue (jobj, componentLevelNumber);
+}
+
+void
+JSONParser::unitArray (json_object* const jobj)
+{
+	__LOG__ << this << " " << jobj << std::endl;
+
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+}
+
+void
+JSONParser::metaArray (json_object* const jobj)
+{
+	__LOG__ << this << " " << jobj << std::endl;
+
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
 }
 
 void
@@ -137,6 +279,34 @@ JSONParser::sceneObject (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
+}
+
+bool
+JSONParser::integerValue (json_object* const jobj, int32_t & value)
+{
+	if (not jobj)
+		return false;
+
+	if (json_object_get_type (jobj) not_eq json_type_int)
+		return false;
+
+	value = json_object_get_int (jobj);
+
+	return true;
+}
+
+bool
+JSONParser::stringValue (json_object* const jobj, std::string & value)
+{
+	if (not jobj)
+		return false;
+
+	if (json_object_get_type (jobj) not_eq json_type_string)
+		return false;
+
+	value = json_object_get_string (jobj);
+
+	return true;
 }
 
 JSONParser::~JSONParser ()

@@ -81,14 +81,54 @@ private:
 
 	///  @name Operations
 
+	X3DBrowser*
+	getBrowser () const
+	{ return scene -> getBrowser (); }
+
 	void
 	jsonObject (json_object* const jobj);
 
 	void
 	x3dObject (json_object* const jobj);
 
+	bool
+	encodingString (json_object* const jobj, std::string & encodingCharacters);
+	
+	bool
+	profileString (json_object* const jobj, std::string & profileCharacters);
+
+	bool
+	versionString (json_object* const jobj, std::string & specificationVersionCharacters);
+
+	void
+	headObject (json_object* const jobj);
+
+	void
+	componentArray (json_object* const jobj);
+
+	void
+	componentObject (json_object* const jobj);
+
+	bool
+	componentNameString (json_object* const jobj, std::string & componentNameCharacters);
+
+	bool
+	componentLevelNumber (json_object* const jobj, int32_t & componentLevelNumber);
+
+	void
+	unitArray (json_object* const jobj);
+	
+	void
+	metaArray (json_object* const jobj);
+
 	void
 	sceneObject (json_object* const jobj);
+
+	bool
+	integerValue (json_object* const jobj, int32_t & value);
+
+	bool
+	stringValue (json_object* const jobj, std::string & value);
 
 	///  @name Members
 
