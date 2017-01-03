@@ -1069,6 +1069,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 			<< Generator::DecIndent
 			<< Generator::Indent
 			<< '}'
+			<< ','
 			<< Generator::TidyBreak;
 	}
 

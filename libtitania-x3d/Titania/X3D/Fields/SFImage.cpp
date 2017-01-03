@@ -336,10 +336,6 @@ SFImage::toJSONStreamValue (std::ostream & ostream) const
 
 	if (image .width () and image .height ())
 	{
-		ostream
-			<< std::hex
-			<< std::showbase;
-
 		if (X3DGenerator::HasListBreak ())
 			ostream << X3DGenerator::ListBreak;
 		else

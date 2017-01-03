@@ -2152,6 +2152,15 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 			<< Generator::TidySpace
 			<< '{'
 			<< Generator::TidyBreak
+			<< Generator::IncIndent
+			<< Generator::Indent
+			<< '"'
+			<< "connect"
+			<< '"'
+			<< ':'
+			<< Generator::TidySpace
+			<< '['
+			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
 		for (const auto & field : references)
@@ -2159,15 +2168,6 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 			for (const auto & reference : field -> getReferences ())
 			{
 				ostream
-					<< Generator::Indent
-					<< '"'
-					<< "connect"
-					<< '"'
-					<< ':'
-					<< Generator::TidySpace
-					<< '['
-					<< Generator::TidyBreak
-					<< Generator::IncIndent
 					<< Generator::Indent
 					<< '{'
 					<< Generator::TidyBreak
@@ -2197,13 +2197,11 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 				ostream
 					<< Generator::DecIndent
 					<< Generator::Indent
-					<< '}'
-					<< Generator::TidyBreak
-					<< Generator::DecIndent
-					<< Generator::Indent
-					<< ']';
+					<< '}';
 
-				if (field not_eq references .back () and reference not_eq *--field -> getReferences () .end ())
+				if (field == references .back () and reference == *--field -> getReferences () .end ())
+					;
+				else
 				{
 					ostream << ',';
 				}
@@ -2213,6 +2211,10 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 		}
 
 		ostream
+			<< Generator::DecIndent
+			<< Generator::Indent
+			<< ']'
+			<< Generator::TidyBreak
 			<< Generator::DecIndent
 			<< Generator::Indent
 			<< '}';
