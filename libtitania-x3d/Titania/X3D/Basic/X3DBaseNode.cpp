@@ -1808,10 +1808,10 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 
 	if (sourceText)
 	{
+		static const std::regex ECMAScript (R"/(^\s*(?:vrmlscript|javascript|ecmascript)\:)/");
+	
 		if (sourceText -> size () not_eq 1)
 			sourceText = nullptr;
-	
-		static const std::regex ECMAScript (R"/(^\s*(?:vrmlscript|javascript|ecmascript)\:)/");
 	
 		if (sourceText and not std::regex_search (sourceText -> front () .str (), ECMAScript))
 			sourceText = nullptr;
@@ -1822,6 +1822,8 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 
 	if (not fields .empty ())
 	{
+		FieldDefinitionArray outputFields;
+	
 		for (const auto & field : fields)
 		{
 			// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
@@ -1851,64 +1853,67 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 				if (mustOutputValue)
 					references .emplace_back (field);
 	
-				if (field -> isInitializable ())
-				{
-					switch (field -> getType ())
-					{
-						case X3DConstants::SFNode:
-						case X3DConstants::MFNode:
-						{
-							if (lastProperty)
-							{
-								ostream
-									<< ','
-									<< Generator::TidyBreak;
-							}
-
-							ostream
-								<< Generator::Indent
-								<< '"'
-								<< '-'
-								<< getFieldName (field -> getName (), Generator::SpecificationVersion ())
-								<< '"'
-								<< ':'
-								<< Generator::TidySpace
-								<< JSONEncode (field);
-
-							lastProperty = true;
-							break;
-						}
-						default:
-						{
-							if (field == sourceText)
-								break;
-		
-							if (lastProperty)
-							{
-								ostream
-									<< ','
-									<< Generator::TidyBreak;
-							}
-
-							ostream
-								<< Generator::Indent
-								<< '"'
-								<< '@'
-								<< getFieldName (field -> getName (), Generator::SpecificationVersion ())
-								<< '"'
-								<< ':'
-								<< Generator::TidySpace
-								<< JSONEncode (field);
-
-							lastProperty = true;
-							break;
-						}
-					}
-				}
+				if (field not_eq sourceText)
+					outputFields .emplace_back (field);
 			}
 			else
 			{
 				references .emplace_back (field);
+			}
+		}
+
+		for (const auto & field : outputFields)
+		{
+			if (field -> isInitializable ())
+			{
+				switch (field -> getType ())
+				{
+					case X3DConstants::SFNode:
+					case X3DConstants::MFNode:
+					{
+						if (lastProperty)
+						{
+							ostream
+								<< ','
+								<< Generator::TidyBreak;
+						}
+
+						ostream
+							<< Generator::Indent
+							<< '"'
+							<< '-'
+							<< getFieldName (field -> getName (), Generator::SpecificationVersion ())
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< JSONEncode (field);
+
+						lastProperty = true;
+						break;
+					}
+					default:
+					{
+						if (lastProperty)
+						{
+							ostream
+								<< ','
+								<< Generator::TidyBreak;
+						}
+
+						ostream
+							<< Generator::Indent
+							<< '"'
+							<< '@'
+							<< getFieldName (field -> getName (), Generator::SpecificationVersion ())
+							<< '"'
+							<< ':'
+							<< Generator::TidySpace
+							<< JSONEncode (field);
+
+						lastProperty = true;
+						break;
+					}
+				}
 			}
 		}
 	}

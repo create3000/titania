@@ -807,6 +807,8 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
+		FieldDefinitionArray outputFields;
+
 		for (const auto & field : fields)
 		{
 			// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
@@ -835,119 +837,124 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 			{
 				if (mustOutputValue)
 					references .emplace_back (field);
-	
-				switch (field -> getType ())
-				{
-					case X3DConstants::MFNode:
-					{
-						ostream
-							<< Generator::Indent
-							<< '{'
-							<< Generator::TidyBreak
-							<< Generator::IncIndent
-							<< Generator::Indent
-							<< '"'
-							<< "@name"
-							<< '"'
-							<< ':'
-							<< Generator::TidySpace
-							<< SFString (field -> getName ())
-							<< ','
-							<< Generator::TidyBreak
-							<< Generator::Indent
-							<< '"'
-							<< "-children"
-							<< '"'
-							<< ':'
-							<< Generator::TidySpace
-							<< JSONEncode (field)
-							<< Generator::TidyBreak
-							<< Generator::DecIndent
-							<< Generator::Indent
-							<< '}';
-	
-						break;
-					}
-					case X3DConstants::SFNode:
-					{
-						ostream
-							<< Generator::Indent
-							<< '{'
-							<< Generator::TidyBreak
-							<< Generator::IncIndent
-							<< Generator::Indent
-							<< '"'
-							<< "@name"
-							<< '"'
-							<< ':'
-							<< Generator::TidySpace
-							<< SFString (field -> getName ())
-							<< ','
-							<< Generator::TidyBreak
-							<< Generator::Indent
-							<< '"'
-							<< "-children"
-							<< '"'
-							<< ':'
-							<< Generator::TidySpace
-							<< '['
-							<< Generator::TidyBreak
-							<< Generator::IncIndent
-							<< Generator::Indent
-							<< JSONEncode (field)
-							<< Generator::TidyBreak
-							<< Generator::DecIndent
-							<< Generator::Indent
-							<< ']'
-							<< Generator::TidyBreak
-							<< Generator::DecIndent
-							<< Generator::Indent
-							<< '}';
-		
-						break;
-					}
-					default:
-					{
-						ostream
-							<< Generator::Indent
-							<< '{'
-							<< Generator::TidyBreak
-							<< Generator::IncIndent
-							<< Generator::Indent
-							<< '"'
-							<< "@name"
-							<< '"'
-							<< ':'
-							<< Generator::TidySpace
-							<< SFString (field -> getName ())
-							<< ','
-							<< Generator::TidyBreak
-							<< Generator::Indent
-							<< '"'
-							<< "@value"
-							<< '"'
-							<< ':'
-							<< Generator::TidySpace
-							<< JSONEncode (field)
-							<< Generator::TidyBreak
-							<< Generator::DecIndent
-							<< Generator::Indent
-							<< '}';
-	
-						break;
-					}
-				}
 
-				if (field not_eq fields .back ())
-				{
-					ostream
-						<< ','
-						<< Generator::TidyBreak;
-				}
+				outputFields .emplace_back (field);
 			}
 			else
 			{
 				references .emplace_back (field);
+			}
+		}
+
+		for (const auto & field : outputFields)
+		{
+			switch (field -> getType ())
+			{
+				case X3DConstants::MFNode:
+				{
+					ostream
+						<< Generator::Indent
+						<< '{'
+						<< Generator::TidyBreak
+						<< Generator::IncIndent
+						<< Generator::Indent
+						<< '"'
+						<< "@name"
+						<< '"'
+						<< ':'
+						<< Generator::TidySpace
+						<< SFString (field -> getName ())
+						<< ','
+						<< Generator::TidyBreak
+						<< Generator::Indent
+						<< '"'
+						<< "-children"
+						<< '"'
+						<< ':'
+						<< Generator::TidySpace
+						<< JSONEncode (field)
+						<< Generator::TidyBreak
+						<< Generator::DecIndent
+						<< Generator::Indent
+						<< '}';
+
+					break;
+				}
+				case X3DConstants::SFNode:
+				{
+					ostream
+						<< Generator::Indent
+						<< '{'
+						<< Generator::TidyBreak
+						<< Generator::IncIndent
+						<< Generator::Indent
+						<< '"'
+						<< "@name"
+						<< '"'
+						<< ':'
+						<< Generator::TidySpace
+						<< SFString (field -> getName ())
+						<< ','
+						<< Generator::TidyBreak
+						<< Generator::Indent
+						<< '"'
+						<< "-children"
+						<< '"'
+						<< ':'
+						<< Generator::TidySpace
+						<< '['
+						<< Generator::TidyBreak
+						<< Generator::IncIndent
+						<< Generator::Indent
+						<< JSONEncode (field)
+						<< Generator::TidyBreak
+						<< Generator::DecIndent
+						<< Generator::Indent
+						<< ']'
+						<< Generator::TidyBreak
+						<< Generator::DecIndent
+						<< Generator::Indent
+						<< '}';
+	
+					break;
+				}
+				default:
+				{
+					ostream
+						<< Generator::Indent
+						<< '{'
+						<< Generator::TidyBreak
+						<< Generator::IncIndent
+						<< Generator::Indent
+						<< '"'
+						<< "@name"
+						<< '"'
+						<< ':'
+						<< Generator::TidySpace
+						<< SFString (field -> getName ())
+						<< ','
+						<< Generator::TidyBreak
+						<< Generator::Indent
+						<< '"'
+						<< "@value"
+						<< '"'
+						<< ':'
+						<< Generator::TidySpace
+						<< JSONEncode (field)
+						<< Generator::TidyBreak
+						<< Generator::DecIndent
+						<< Generator::Indent
+						<< '}';
+
+					break;
+				}
+			}
+
+			if (field not_eq outputFields .back ())
+			{
+				ostream
+					<< ','
+					<< Generator::TidyBreak;
 			}
 		}
 
