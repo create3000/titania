@@ -684,17 +684,17 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 		case X3DConstants::SFInt32:
 			return sfint32Value (jobj, static_cast <SFInt32*> (field));
 
-//		case X3DConstants::SFMatrix3d:
-//			return sfmatrix3dValue (static_cast <SFMatrix3d*> (field));
-//
-//		case X3DConstants::SFMatrix3f:
-//			return sfmatrix3fValue (static_cast <SFMatrix3f*> (field));
-//
-//		case X3DConstants::SFMatrix4d:
-//			return sfmatrix4dValue (static_cast <SFMatrix4d*> (field));
-//
-//		case X3DConstants::SFMatrix4f:
-//			return sfmatrix4fValue (static_cast <SFMatrix4f*> (field));
+		case X3DConstants::SFMatrix3d:
+			return sfmatrix3dValue (jobj, static_cast <SFMatrix3d*> (field));
+
+		case X3DConstants::SFMatrix3f:
+			return sfmatrix3fValue (jobj, static_cast <SFMatrix3f*> (field));
+
+		case X3DConstants::SFMatrix4d:
+			return sfmatrix4dValue (jobj, static_cast <SFMatrix4d*> (field));
+
+		case X3DConstants::SFMatrix4f:
+			return sfmatrix4fValue (jobj, static_cast <SFMatrix4f*> (field));
 
 		case X3DConstants::SFNode:
 			return sfnodeValue (jobj, static_cast <SFNode*> (field));
@@ -747,17 +747,17 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 		case X3DConstants::MFInt32:
 			return mfint32Value (jobj, static_cast <MFInt32*> (field));
 
-//		case X3DConstants::MFMatrix3d:
-//			return mfmatrix3dValue (static_cast <MFMatrix3d*> (field));
-//
-//		case X3DConstants::MFMatrix3f:
-//			return mfmatrix3fValue (static_cast <MFMatrix3f*> (field));
-//
-//		case X3DConstants::MFMatrix4d:
-//			return mfmatrix4dValue (static_cast <MFMatrix4d*> (field));
-//
-//		case X3DConstants::MFMatrix4f:
-//			return mfmatrix4fValue (static_cast <MFMatrix4f*> (field));
+		case X3DConstants::MFMatrix3d:
+			return mfmatrix3dValue (jobj, static_cast <MFMatrix3d*> (field));
+
+		case X3DConstants::MFMatrix3f:
+			return mfmatrix3fValue (jobj, static_cast <MFMatrix3f*> (field));
+
+		case X3DConstants::MFMatrix4d:
+			return mfmatrix4dValue (jobj, static_cast <MFMatrix4d*> (field));
+
+		case X3DConstants::MFMatrix4f:
+			return mfmatrix4fValue (jobj, static_cast <MFMatrix4f*> (field));
 
 		case X3DConstants::MFNode:
 			return mfnodeValue (jobj, static_cast <MFNode*> (field));
@@ -1138,6 +1138,404 @@ JSONParser::mfint32Value (json_object* const jobj, MFInt32* const field)
 		else
 			field -> emplace_back ();
 	}
+}
+
+void
+JSONParser::sfmatrix3dValue (json_object* const jobj, SFMatrix3d* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Matrix3d value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 9)
+		{
+			if (matrix3dValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Matrix3d ());
+}
+
+void
+JSONParser::mfmatrix3dValue (json_object* const jobj, MFMatrix3d* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Matrix3d value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 9;
+
+	for (int i = 0; i < size; i += 9)
+	{
+		if (matrix3dValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::matrix3dValue (json_object* const jobj, const int i, Matrix3d & value)
+{
+	double e11, e12, e13, e21, e22, e23, e31, e32, e33;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), e11))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), e12))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), e13))
+			{
+				if (doubleValue (json_object_array_get_idx (jobj, i + 3), e21))
+				{
+					if (doubleValue (json_object_array_get_idx (jobj, i + 4), e22))
+					{
+						if (doubleValue (json_object_array_get_idx (jobj, i + 5), e23))
+						{
+							if (doubleValue (json_object_array_get_idx (jobj, i + 6), e31))
+							{
+								if (doubleValue (json_object_array_get_idx (jobj, i + 7), e32))
+								{
+									if (doubleValue (json_object_array_get_idx (jobj, i + 8), e33))
+									{
+										value = Matrix3d (e11, e12, e13, e21, e22, e23, e31, e32, e33);
+										return true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+void
+JSONParser::sfmatrix3fValue (json_object* const jobj, SFMatrix3f* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Matrix3f value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 9)
+		{
+			if (matrix3fValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Matrix3f ());
+}
+
+void
+JSONParser::mfmatrix3fValue (json_object* const jobj, MFMatrix3f* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Matrix3f value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 9;
+
+	for (int i = 0; i < size; i += 9)
+	{
+		if (matrix3fValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::matrix3fValue (json_object* const jobj, const int i, Matrix3f & value)
+{
+	double e11, e12, e13, e21, e22, e23, e31, e32, e33;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), e11))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), e12))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), e13))
+			{
+				if (doubleValue (json_object_array_get_idx (jobj, i + 3), e21))
+				{
+					if (doubleValue (json_object_array_get_idx (jobj, i + 4), e22))
+					{
+						if (doubleValue (json_object_array_get_idx (jobj, i + 5), e23))
+						{
+							if (doubleValue (json_object_array_get_idx (jobj, i + 6), e31))
+							{
+								if (doubleValue (json_object_array_get_idx (jobj, i + 7), e32))
+								{
+									if (doubleValue (json_object_array_get_idx (jobj, i + 8), e33))
+									{
+										value = Matrix3f (e11, e12, e13, e21, e22, e23, e31, e32, e33);
+										return true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+void
+JSONParser::sfmatrix4dValue (json_object* const jobj, SFMatrix4d* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Matrix4d value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 16)
+		{
+			if (matrix4dValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Matrix4d ());
+}
+
+void
+JSONParser::mfmatrix4dValue (json_object* const jobj, MFMatrix4d* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Matrix4d value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 16;
+
+	for (int i = 0; i < size; i += 16)
+	{
+		if (matrix4dValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::matrix4dValue (json_object* const jobj, const int i, Matrix4d & value)
+{
+	double e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), e11))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), e12))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), e13))
+			{
+				if (doubleValue (json_object_array_get_idx (jobj, i + 3), e14))
+				{
+					if (doubleValue (json_object_array_get_idx (jobj, i + 4), e21))
+					{
+						if (doubleValue (json_object_array_get_idx (jobj, i + 5), e22))
+						{
+							if (doubleValue (json_object_array_get_idx (jobj, i + 6), e23))
+							{
+								if (doubleValue (json_object_array_get_idx (jobj, i + 7), e24))
+								{
+									if (doubleValue (json_object_array_get_idx (jobj, i + 8), e31))
+									{
+										if (doubleValue (json_object_array_get_idx (jobj, i + 9), e32))
+										{
+											if (doubleValue (json_object_array_get_idx (jobj, i + 10), e33))
+											{
+												if (doubleValue (json_object_array_get_idx (jobj, i + 11), e34))
+												{
+													if (doubleValue (json_object_array_get_idx (jobj, i + 12), e41))
+													{
+														if (doubleValue (json_object_array_get_idx (jobj, i + 13), e42))
+														{
+															if (doubleValue (json_object_array_get_idx (jobj, i + 14), e43))
+															{
+																if (doubleValue (json_object_array_get_idx (jobj, i + 15), e44))
+																{
+																	value = Matrix4d (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44);
+																	return true;
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+void
+JSONParser::sfmatrix4fValue (json_object* const jobj, SFMatrix4f* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Matrix4f value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 16)
+		{
+			if (matrix4fValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Matrix4f ());
+}
+
+void
+JSONParser::mfmatrix4fValue (json_object* const jobj, MFMatrix4f* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Matrix4f value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 16;
+
+	for (int i = 0; i < size; i += 16)
+	{
+		if (matrix4fValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::matrix4fValue (json_object* const jobj, const int i, Matrix4f & value)
+{
+	double e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), e11))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), e12))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), e13))
+			{
+				if (doubleValue (json_object_array_get_idx (jobj, i + 3), e14))
+				{
+					if (doubleValue (json_object_array_get_idx (jobj, i + 4), e21))
+					{
+						if (doubleValue (json_object_array_get_idx (jobj, i + 5), e22))
+						{
+							if (doubleValue (json_object_array_get_idx (jobj, i + 6), e23))
+							{
+								if (doubleValue (json_object_array_get_idx (jobj, i + 7), e24))
+								{
+									if (doubleValue (json_object_array_get_idx (jobj, i + 8), e31))
+									{
+										if (doubleValue (json_object_array_get_idx (jobj, i + 9), e32))
+										{
+											if (doubleValue (json_object_array_get_idx (jobj, i + 10), e33))
+											{
+												if (doubleValue (json_object_array_get_idx (jobj, i + 11), e34))
+												{
+													if (doubleValue (json_object_array_get_idx (jobj, i + 12), e41))
+													{
+														if (doubleValue (json_object_array_get_idx (jobj, i + 13), e42))
+														{
+															if (doubleValue (json_object_array_get_idx (jobj, i + 14), e43))
+															{
+																if (doubleValue (json_object_array_get_idx (jobj, i + 15), e44))
+																{
+																	value = Matrix4f (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44);
+																	return true;
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return false;
 }
 
 void

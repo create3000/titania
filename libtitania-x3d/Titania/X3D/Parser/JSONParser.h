@@ -254,6 +254,42 @@ private:
 	mfint32Value (json_object* const jobj, MFInt32* const field);
 
 	void
+	sfmatrix3dValue (json_object* const jobj, SFMatrix3d* const field);
+
+	void
+	mfmatrix3dValue (json_object* const jobj, MFMatrix3d* const field);
+	
+	bool
+	matrix3dValue (json_object* const jobj, const int i, Matrix3d & value);
+
+	void
+	sfmatrix3fValue (json_object* const jobj, SFMatrix3f* const field);
+
+	void
+	mfmatrix3fValue (json_object* const jobj, MFMatrix3f* const field);
+	
+	bool
+	matrix3fValue (json_object* const jobj, const int i, Matrix3f & value);
+
+	void
+	sfmatrix4dValue (json_object* const jobj, SFMatrix4d* const field);
+	
+	void
+	mfmatrix4dValue (json_object* const jobj, MFMatrix4d* const field);
+	
+	bool
+	matrix4dValue (json_object* const jobj, const int i, Matrix4d & value);
+
+	void
+	sfmatrix4fValue (json_object* const jobj, SFMatrix4f* const field);
+	
+	void
+	mfmatrix4fValue (json_object* const jobj, MFMatrix4f* const field);
+	
+	bool
+	matrix4fValue (json_object* const jobj, const int i, Matrix4f & value);
+
+	void
 	sfnodeValue (json_object* const jobj, SFNode* const field);
 
 	void
