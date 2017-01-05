@@ -666,11 +666,11 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 		case X3DConstants::SFBool:
 			return sfboolValue (jobj, static_cast <SFBool*> (field));
 
-//		case X3DConstants::SFColor:
-//			return sfcolorValue (static_cast <SFColor*> (field));
-//
-//		case X3DConstants::SFColorRGBA:
-//			return sfcolorRGBAValue (static_cast <SFColorRGBA*> (field));
+		case X3DConstants::SFColor:
+			return sfcolorValue (jobj, static_cast <SFColor*> (field));
+
+		case X3DConstants::SFColorRGBA:
+			return sfcolorRGBAValue (jobj, static_cast <SFColorRGBA*> (field));
 
 		case X3DConstants::SFDouble:
 			return sfdoubleValue (jobj, static_cast <SFDouble*> (field));
@@ -729,11 +729,11 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 		case X3DConstants::MFBool:
 			return mfboolValue (jobj, static_cast <MFBool*> (field));
 
-//		case X3DConstants::MFColor:
-//			return mfcolorValue (static_cast <MFColor*> (field));
-//
-//		case X3DConstants::MFColorRGBA:
-//			return mfcolorRGBAValue (static_cast <MFColorRGBA*> (field));
+		case X3DConstants::MFColor:
+			return mfcolorValue (jobj, static_cast <MFColor*> (field));
+
+		case X3DConstants::MFColorRGBA:
+			return mfcolorRGBAValue (jobj, static_cast <MFColorRGBA*> (field));
 
 		case X3DConstants::MFDouble:
 			return mfdoubleValue (jobj, static_cast <MFDouble*> (field));
@@ -819,9 +819,11 @@ JSONParser::doubleValue (json_object* const jobj, double & value)
 		case json_type_int:
 			value = json_object_get_int (jobj);
 			return true;
+
 		case json_type_double:
 			value = json_object_get_double (jobj);
 			return true;
+
 		default:
 			break;
 	}
@@ -889,6 +891,151 @@ JSONParser::mfboolValue (json_object* const jobj, MFBool* const field)
 		else
 			field -> emplace_back ();
 	}
+}
+
+void
+JSONParser::sfcolorValue (json_object* const jobj, SFColor* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Color3f value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 3)
+		{
+			if (color3fValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Color3f ());
+}
+
+void
+JSONParser::mfcolorValue (json_object* const jobj, MFColor* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Color3f value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 3;
+
+	for (int i = 0; i < size; i += 3)
+	{
+		if (color3fValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::color3fValue (json_object* const jobj, const int i, Color3f & value)
+{
+	double r, g, b;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), r))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), g))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), b))
+			{
+				value = Color3f (r, g, b);
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void
+JSONParser::sfcolorRGBAValue (json_object* const jobj, SFColorRGBA* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Color4f value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 4)
+		{
+			if (color4fValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Color4f ());
+}
+
+void
+JSONParser::mfcolorRGBAValue (json_object* const jobj, MFColorRGBA* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Color4f value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 4;
+
+	for (int i = 0; i < size; i += 4)
+	{
+		if (color4fValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::color4fValue (json_object* const jobj, const int i, Color4f & value)
+{
+	double r, g, b, a;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), r))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), g))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), b))
+			{
+				if (doubleValue (json_object_array_get_idx (jobj, i + 3), a))
+				{
+					value = Color4f (r, g, b, a);
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
 }
 
 void
@@ -1024,7 +1171,7 @@ JSONParser::sfrotationValue (json_object* const jobj, SFRotation* const field)
 
 		if (size == 4)
 		{
-			if (rot4dValue (jobj, 0, value))
+			if (rotation4dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
 				return;
@@ -1054,7 +1201,7 @@ JSONParser::mfrotationValue (json_object* const jobj, MFRotation* const field)
 
 	for (int i = 0; i < size; i += 4)
 	{
-		if (rot4dValue (jobj, i, value))
+		if (rotation4dValue (jobj, i, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -1062,7 +1209,7 @@ JSONParser::mfrotationValue (json_object* const jobj, MFRotation* const field)
 }
 
 bool
-JSONParser::rot4dValue (json_object* const jobj, const int i, Rotation4d & value)
+JSONParser::rotation4dValue (json_object* const jobj, const int i, Rotation4d & value)
 {
 	double x, y, z, angle;
 
@@ -1166,7 +1313,7 @@ JSONParser::sfvec2dValue (json_object* const jobj, SFVec2d* const field)
 
 		if (size == 2)
 		{
-			if (vec2dValue (jobj, 0, value))
+			if (vector2dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
 				return;
@@ -1196,7 +1343,7 @@ JSONParser::mfvec2dValue (json_object* const jobj, MFVec2d* const field)
 
 	for (int i = 0; i < size; i += 2)
 	{
-		if (vec2dValue (jobj, i, value))
+		if (vector2dValue (jobj, i, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -1204,7 +1351,7 @@ JSONParser::mfvec2dValue (json_object* const jobj, MFVec2d* const field)
 }
 
 bool
-JSONParser::vec2dValue (json_object* const jobj, const int i, Vector2d & value)
+JSONParser::vector2dValue (json_object* const jobj, const int i, Vector2d & value)
 {
 	double x, y;
 
@@ -1234,7 +1381,7 @@ JSONParser::sfvec2fValue (json_object* const jobj, SFVec2f* const field)
 
 		if (size == 2)
 		{
-			if (vec2fValue (jobj, 0, value))
+			if (vector2fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
 				return;
@@ -1264,7 +1411,7 @@ JSONParser::mfvec2fValue (json_object* const jobj, MFVec2f* const field)
 
 	for (int i = 0; i < size; i += 2)
 	{
-		if (vec2fValue (jobj, i, value))
+		if (vector2fValue (jobj, i, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -1272,7 +1419,7 @@ JSONParser::mfvec2fValue (json_object* const jobj, MFVec2f* const field)
 }
 
 bool
-JSONParser::vec2fValue (json_object* const jobj, const int i, Vector2f & value)
+JSONParser::vector2fValue (json_object* const jobj, const int i, Vector2f & value)
 {
 	double x, y;
 
@@ -1302,7 +1449,7 @@ JSONParser::sfvec3dValue (json_object* const jobj, SFVec3d* const field)
 
 		if (size == 3)
 		{
-			if (vec3dValue (jobj, 0, value))
+			if (vector3dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
 				return;
@@ -1332,7 +1479,7 @@ JSONParser::mfvec3dValue (json_object* const jobj, MFVec3d* const field)
 
 	for (int i = 0; i < size; i += 3)
 	{
-		if (vec3dValue (jobj, i, value))
+		if (vector3dValue (jobj, i, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -1340,7 +1487,7 @@ JSONParser::mfvec3dValue (json_object* const jobj, MFVec3d* const field)
 }
 
 bool
-JSONParser::vec3dValue (json_object* const jobj, const int i, Vector3d & value)
+JSONParser::vector3dValue (json_object* const jobj, const int i, Vector3d & value)
 {
 	double x, y, z;
 
@@ -1373,7 +1520,7 @@ JSONParser::sfvec3fValue (json_object* const jobj, SFVec3f* const field)
 
 		if (size == 3)
 		{
-			if (vec3fValue (jobj, 0, value))
+			if (vector3fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
 				return;
@@ -1403,7 +1550,7 @@ JSONParser::mfvec3fValue (json_object* const jobj, MFVec3f* const field)
 
 	for (int i = 0; i < size; i += 3)
 	{
-		if (vec3fValue (jobj, i, value))
+		if (vector3fValue (jobj, i, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -1411,7 +1558,7 @@ JSONParser::mfvec3fValue (json_object* const jobj, MFVec3f* const field)
 }
 
 bool
-JSONParser::vec3fValue (json_object* const jobj, const int i, Vector3f & value)
+JSONParser::vector3fValue (json_object* const jobj, const int i, Vector3f & value)
 {
 	double x, y, z;
 
@@ -1444,7 +1591,7 @@ JSONParser::sfvec4dValue (json_object* const jobj, SFVec4d* const field)
 
 		if (size == 4)
 		{
-			if (vec4dValue (jobj, 0, value))
+			if (vector4dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
 				return;
@@ -1474,7 +1621,7 @@ JSONParser::mfvec4dValue (json_object* const jobj, MFVec4d* const field)
 
 	for (int i = 0; i < size; i += 4)
 	{
-		if (vec4dValue (jobj, i, value))
+		if (vector4dValue (jobj, i, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -1482,7 +1629,7 @@ JSONParser::mfvec4dValue (json_object* const jobj, MFVec4d* const field)
 }
 
 bool
-JSONParser::vec4dValue (json_object* const jobj, const int i, Vector4d & value)
+JSONParser::vector4dValue (json_object* const jobj, const int i, Vector4d & value)
 {
 	double x, y, z, w;
 
@@ -1518,7 +1665,7 @@ JSONParser::sfvec4fValue (json_object* const jobj, SFVec4f* const field)
 
 		if (size == 4)
 		{
-			if (vec4fValue (jobj, 0, value))
+			if (vector4fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
 				return;
@@ -1548,7 +1695,7 @@ JSONParser::mfvec4fValue (json_object* const jobj, MFVec4f* const field)
 
 	for (int i = 0; i < size; i += 4)
 	{
-		if (vec4fValue (jobj, i, value))
+		if (vector4fValue (jobj, i, value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
@@ -1556,7 +1703,7 @@ JSONParser::mfvec4fValue (json_object* const jobj, MFVec4f* const field)
 }
 
 bool
-JSONParser::vec4fValue (json_object* const jobj, const int i, Vector4f & value)
+JSONParser::vector4fValue (json_object* const jobj, const int i, Vector4f & value)
 {
 	double x, y, z, w;
 
