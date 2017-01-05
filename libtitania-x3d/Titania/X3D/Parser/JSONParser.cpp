@@ -360,7 +360,7 @@ JSONParser::sceneObject (json_object* const jobj)
 }
 
 void
-JSONParser::childrenArray (json_object* const jobj, MFNode & nodes)
+JSONParser::childrenArray (json_object* const jobj, MFNode & field)
 {
 	__LOG__ << this << " " << jobj << std::endl;
 
@@ -378,7 +378,7 @@ JSONParser::childrenArray (json_object* const jobj, MFNode & nodes)
 	{
 		if (childObject (json_object_array_get_idx (jobj, i), node))
 		{
-			nodes .emplace_back (std::move (node));
+			field .emplace_back (std::move (node));
 		}
 	}	
 }
@@ -536,6 +536,8 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 
 	// Node object
 
+	bool prototypeInstance = false;
+
 	try
 	{
 		node = getExecutionContext () -> createNode (nodeType);
@@ -547,6 +549,8 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 		try
 		{
 			node = getExecutionContext () -> createPrototypeInstance (nodeType) .getValue ();
+
+			prototypeInstance = true;
 		}
 		catch (const X3DError & error2)
 		{
@@ -556,8 +560,6 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 	}
 
 	// Node name
-
-	//__LOG__ << this << " " << _nodeTypeId << " " << (void*) _node << std::endl;
 
 	std::string nodeNameCharacters;
 
@@ -580,9 +582,216 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 
 	// Fields
 
+	if (prototypeInstance)
+	{
+		// metadata
+		fieldValueArray (json_object_object_get (jobj, "fieldValue"), node);
+	}
+	else
+		// Predefined fields
+		nodeFieldsObject (jobj, node);
+
+	if (node -> canUserDefinedFields ())
+		fieldArray (json_object_object_get (jobj, "field"), node);
+
+	isObject (json_object_object_get (jobj, "IS"), node);
+
+	// After fields are parsed add node to execution context for initialisation.
+
 	getExecutionContext () -> addUninitializedNode (node);
 
 	return true;
+}
+
+void
+JSONParser::nodeFieldsObject (json_object* const jobj, const SFNode & node)
+{
+	for (const auto & field : node -> getPreDefinedFields ())
+	{
+		switch (field -> getType ())
+		{
+			case X3DConstants::SFNode:
+			case X3DConstants::MFNode:
+				fieldTypeObject (json_object_object_get (jobj, ("-" + field -> getName ()) .c_str ()), field);
+				break;
+
+			default:
+				fieldTypeObject (json_object_object_get (jobj, ("@" + field -> getName ()) .c_str ()), field);
+				break;
+		}
+	}
+}
+
+void
+JSONParser::fieldValueArray (json_object* const jobj, const SFNode & node)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+}
+
+void
+JSONParser::fieldArray (json_object* const jobj, const SFNode & node)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+}
+
+void
+JSONParser::isObject (json_object* const jobj, const SFNode & node)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+}
+
+void
+JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const field)
+{
+	if (not jobj)
+		return;
+
+	switch (field -> getType ())
+	{
+//		case X3DConstants::SFBool:
+//			return sfboolValue (static_cast <SFBool*> (field));
+//
+//		case X3DConstants::SFColor:
+//			return sfcolorValue (static_cast <SFColor*> (field));
+//
+//		case X3DConstants::SFColorRGBA:
+//			return sfcolorRGBAValue (static_cast <SFColorRGBA*> (field));
+//
+//		case X3DConstants::SFDouble:
+//			return sfdoubleValue (static_cast <SFDouble*> (field));
+//
+//		case X3DConstants::SFFloat:
+//			return sffloatValue (static_cast <SFFloat*> (field));
+//
+//		case X3DConstants::SFImage:
+//			return sfimageValue (static_cast <SFImage*> (field));
+//
+//		case X3DConstants::SFInt32:
+//			return sfint32Value (static_cast <SFInt32*> (field));
+//
+//		case X3DConstants::SFMatrix3d:
+//			return sfmatrix3dValue (static_cast <SFMatrix3d*> (field));
+//
+//		case X3DConstants::SFMatrix3f:
+//			return sfmatrix3fValue (static_cast <SFMatrix3f*> (field));
+//
+//		case X3DConstants::SFMatrix4d:
+//			return sfmatrix4dValue (static_cast <SFMatrix4d*> (field));
+//
+//		case X3DConstants::SFMatrix4f:
+//			return sfmatrix4fValue (static_cast <SFMatrix4f*> (field));
+
+		case X3DConstants::SFNode:
+			return sfnodeValue (jobj, static_cast <SFNode*> (field));
+
+//		case X3DConstants::SFRotation:
+//			return sfrotationValue (static_cast <SFRotation*> (field));
+//
+//		case X3DConstants::SFString:
+//			return sfstringValue (static_cast <SFString*> (field));
+//
+//		case X3DConstants::SFTime:
+//			return sftimeValue (static_cast <SFTime*> (field));
+//
+//		case X3DConstants::SFVec2d:
+//			return sfvec2dValue (static_cast <SFVec2d*> (field));
+//
+//		case X3DConstants::SFVec2f:
+//			return sfvec2fValue (static_cast <SFVec2f*> (field));
+//
+//		case X3DConstants::SFVec3d:
+//			return sfvec3dValue (static_cast <SFVec3d*> (field));
+//
+//		case X3DConstants::SFVec3f:
+//			return sfvec3fValue (static_cast <SFVec3f*> (field));
+//
+//		case X3DConstants::SFVec4d:
+//			return sfvec4dValue (static_cast <SFVec4d*> (field));
+//
+//		case X3DConstants::SFVec4f:
+//			return sfvec4fValue (static_cast <SFVec4f*> (field));
+//
+//		case X3DConstants::MFBool:
+//			return mfboolValue (static_cast <MFBool*> (field));
+//
+//		case X3DConstants::MFColor:
+//			return mfcolorValue (static_cast <MFColor*> (field));
+//
+//		case X3DConstants::MFColorRGBA:
+//			return mfcolorRGBAValue (static_cast <MFColorRGBA*> (field));
+//
+//		case X3DConstants::MFDouble:
+//			return mfdoubleValue (static_cast <MFDouble*> (field));
+//
+//		case X3DConstants::MFFloat:
+//			return mffloatValue (static_cast <MFFloat*> (field));
+//
+//		case X3DConstants::MFImage:
+//			return mfimageValue (static_cast <MFImage*> (field));
+//
+//		case X3DConstants::MFInt32:
+//			return mfint32Value (static_cast <MFInt32*> (field));
+//
+//		case X3DConstants::MFMatrix3d:
+//			return mfmatrix3dValue (static_cast <MFMatrix3d*> (field));
+//
+//		case X3DConstants::MFMatrix3f:
+//			return mfmatrix3fValue (static_cast <MFMatrix3f*> (field));
+//
+//		case X3DConstants::MFMatrix4d:
+//			return mfmatrix4dValue (static_cast <MFMatrix4d*> (field));
+//
+//		case X3DConstants::MFMatrix4f:
+//			return mfmatrix4fValue (static_cast <MFMatrix4f*> (field));
+
+		case X3DConstants::MFNode:
+			return mfnodeValue (jobj, static_cast <MFNode*> (field));
+
+//		case X3DConstants::MFRotation:
+//			return mfrotationValue (static_cast <MFRotation*> (field));
+//
+//		case X3DConstants::MFString:
+//			return mfstringValue (static_cast <MFString*> (field));
+//
+//		case X3DConstants::MFTime:
+//			return mftimeValue (static_cast <MFTime*> (field));
+//
+//		case X3DConstants::MFVec2d:
+//			return mfvec2dValue (static_cast <MFVec2d*> (field));
+//
+//		case X3DConstants::MFVec2f:
+//			return mfvec2fValue (static_cast <MFVec2f*> (field));
+//
+//		case X3DConstants::MFVec3d:
+//			return mfvec3dValue (static_cast <MFVec3d*> (field));
+//
+//		case X3DConstants::MFVec3f:
+//			return mfvec3fValue (static_cast <MFVec3f*> (field));
+//
+//		case X3DConstants::MFVec4d:
+//			return mfvec4dValue (static_cast <MFVec4d*> (field));
+//
+//		case X3DConstants::MFVec4f:
+//			return mfvec4fValue (static_cast <MFVec4f*> (field));
+
+		default:
+			break;
+	}
 }
 
 bool
@@ -625,6 +834,21 @@ JSONParser::stringValue (json_object* const jobj, std::string & value)
 	value = json_object_get_string (jobj);
 
 	return true;
+}
+
+void
+JSONParser::sfnodeValue (json_object* const jobj, SFNode* const field)
+{
+	if (childObject (jobj, *field))
+		return;
+
+	*field = nullptr;
+}
+
+void
+JSONParser::mfnodeValue (json_object* const jobj, MFNode* const field)
+{
+	childrenArray (jobj, *field);
 }
 
 void

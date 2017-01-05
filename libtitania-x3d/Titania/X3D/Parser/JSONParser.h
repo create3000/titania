@@ -176,9 +176,26 @@ private:
 	bool
 	nodeObject (const std::string & key, json_object* const jobj, SFNode & node);
 
+	void
+	nodeFieldsObject (json_object* const jobj, const SFNode & node);
+
+	void
+	fieldValueArray (json_object* const jobj, const SFNode & node);
+	
+	void
+	fieldArray (json_object* const jobj, const SFNode & node);
+	
+	void
+	isObject (json_object* const jobj, const SFNode & node);
+
 	bool
 	nodeNameString (json_object* const jobj, std::string & value)
 	{ return stringValue (jobj, value); }
+
+	void
+	fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const field);
+
+	///  @name Value handling
 
 	bool
 	doubleValue (json_object* const jobj, double & value);
@@ -188,6 +205,14 @@ private:
 
 	bool
 	stringValue (json_object* const jobj, std::string & value);
+
+	///  @name Field value handling
+
+	void
+	sfnodeValue (json_object* const jobj, SFNode* const field);
+
+	void
+	mfnodeValue (json_object* const jobj, MFNode* const field);
 
 	///  @name Execution context handling
 
