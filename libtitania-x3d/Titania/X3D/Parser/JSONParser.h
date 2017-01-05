@@ -159,6 +159,24 @@ private:
 	childObject (json_object* const jobj);
 
 	bool
+	externProtoDeclareObject (const std::string & key, json_object* const jobj);
+
+	bool
+	protoDeclareObject (const std::string & key, json_object* const jobj);
+
+	bool
+	importObject (const std::string & key, json_object* const jobj);
+
+	bool
+	routeObject (const std::string & key, json_object* const jobj);
+
+	bool
+	exportObject (const std::string & key, json_object* const jobj);
+
+	bool
+	nodeObject (const std::string & key, json_object* const jobj);
+
+	bool
 	doubleValue (json_object* const jobj, double & value);
 
 	bool

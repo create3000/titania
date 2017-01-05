@@ -380,30 +380,120 @@ JSONParser::childObject (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
-/*
-	enum json_type type;
-	json_object_object_foreach (jobj, key, val)
-	{
-		printf ("type: ", type);
-		type = json_object_get_type (val);
+	// Parse child nodes.
 
-		switch (type)
-		{
-			case json_type_boolean:
-			case json_type_double:
-			case json_type_int:
-			case json_type_string: print_json_value (val);
-				break;
-			case json_type_object: printf ("json_type_objectn");
-				jobj = json_object_object_get (jobj, key);
-				json_parse (jobj);
-				break;
-			case json_type_array: printf ("type: json_type_array, ");
-				json_parse_array (jobj, key);
-				break;
-		}
+	json_object_object_foreach (jobj, k, value)
+	{
+		if (json_object_get_type (value) not_eq json_type_object)
+			continue;
+
+		const std::string key = k;
+
+		__LOG__ << key << std::endl;
+
+		if (externProtoDeclareObject (key, value))
+			continue;
+
+		if (protoDeclareObject (key, value))
+			continue;
+
+		if (importObject (key, value))
+			continue;
+
+		if (routeObject (key, value))
+			continue;
+
+		if (exportObject (key, value))
+			continue;
+
+		if (nodeObject (key, value))
+			continue;
 	}
-*/
+}
+
+bool
+JSONParser::externProtoDeclareObject (const std::string & key, json_object* const jobj)
+{
+	static const std::string ExternProtoDeclare = "ExternProtoDeclare";
+
+	if (key not_eq ExternProtoDeclare)
+		return false;
+
+	__LOG__ << this << " " << jobj << std::endl;
+
+
+
+	return true;
+}
+
+bool
+JSONParser::protoDeclareObject (const std::string & key, json_object* const jobj)
+{
+	static const std::string ProtoDeclare = "ProtoDeclare";
+
+	if (key not_eq ProtoDeclare)
+		return false;
+
+	__LOG__ << this << " " << jobj << std::endl;
+
+
+
+	return true;
+}
+
+bool
+JSONParser::importObject (const std::string & key, json_object* const jobj)
+{
+	static const std::string IMPORT = "IMPORT";
+
+	if (key not_eq IMPORT)
+		return false;
+
+	__LOG__ << this << " " << jobj << std::endl;
+
+
+
+	return true;
+}
+
+bool
+JSONParser::routeObject (const std::string & key, json_object* const jobj)
+{
+	static const std::string ROUTE = "ROUTE";
+
+	if (key not_eq ROUTE)
+		return false;
+
+	__LOG__ << this << " " << jobj << std::endl;
+
+
+
+	return true;
+}
+
+bool
+JSONParser::exportObject (const std::string & key, json_object* const jobj)
+{
+	static const std::string EXPORT = "EXPORT";
+
+	if (key not_eq EXPORT)
+		return false;
+
+	__LOG__ << this << " " << jobj << std::endl;
+
+
+
+	return true;
+}
+
+bool
+JSONParser::nodeObject (const std::string & key, json_object* const jobj)
+{
+	__LOG__ << this << " " << jobj << " " << key << std::endl;
+
+
+
+	return true;
 }
 
 bool
