@@ -248,6 +248,15 @@ private:
 	mffloatValue (json_object* const jobj, MFFloat* const field);
 
 	void
+	sfimageValue (json_object* const jobj, SFImage* const field);
+	
+	void
+	mfimageValue (json_object* const jobj, MFImage* const field);
+	
+	void
+	imageValue (json_object* const jobj, const int32_t index, const int32_t width, const int32_t height, MFInt32 & array);
+
+	void
 	sfint32Value (json_object* const jobj, SFInt32* const field);
 
 	void

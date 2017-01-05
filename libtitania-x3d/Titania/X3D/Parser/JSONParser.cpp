@@ -201,9 +201,9 @@ JSONParser::componentArray (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
-	const int size = json_object_array_length (jobj);
+	const int32_t size = json_object_array_length (jobj);
 
-	for (int i = 0; i < size; ++ i)
+	for (int32_t i = 0; i < size; ++ i)
 		componentObject (json_object_array_get_idx (jobj, i));
 }
 
@@ -249,9 +249,9 @@ JSONParser::unitArray (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
-	const int size = json_object_array_length (jobj);
+	const int32_t size = json_object_array_length (jobj);
 
-	for (int i = 0; i < size; ++ i)
+	for (int32_t i = 0; i < size; ++ i)
 		unitObject (json_object_array_get_idx (jobj, i));
 }
 
@@ -310,9 +310,9 @@ JSONParser::metaArray (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
-	const int size = json_object_array_length (jobj);
+	const int32_t size = json_object_array_length (jobj);
 
-	for (int i = 0; i < size; ++ i)
+	for (int32_t i = 0; i < size; ++ i)
 		metaObject (json_object_array_get_idx (jobj, i));
 }
 
@@ -372,9 +372,9 @@ JSONParser::childrenArray (json_object* const jobj, MFNode & field)
 
 	SFNode node;
 
-	const int size = json_object_array_length (jobj);
+	const int32_t size = json_object_array_length (jobj);
 
-	for (int i = 0; i < size; ++ i)
+	for (int32_t i = 0; i < size; ++ i)
 	{
 		if (childObject (json_object_array_get_idx (jobj, i), node))
 		{
@@ -678,8 +678,8 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 		case X3DConstants::SFFloat:
 			return sffloatValue (jobj, static_cast <SFFloat*> (field));
 
-//		case X3DConstants::SFImage:
-//			return sfimageValue (static_cast <SFImage*> (field));
+		case X3DConstants::SFImage:
+			return sfimageValue (jobj, static_cast <SFImage*> (field));
 
 		case X3DConstants::SFInt32:
 			return sfint32Value (jobj, static_cast <SFInt32*> (field));
@@ -741,8 +741,8 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 		case X3DConstants::MFFloat:
 			return mffloatValue (jobj, static_cast <MFFloat*> (field));
 
-//		case X3DConstants::MFImage:
-//			return mfimageValue (static_cast <MFImage*> (field));
+		case X3DConstants::MFImage:
+			return mfimageValue (jobj, static_cast <MFImage*> (field));
 
 		case X3DConstants::MFInt32:
 			return mfint32Value (jobj, static_cast <MFInt32*> (field));
@@ -882,9 +882,9 @@ JSONParser::mfboolValue (json_object* const jobj, MFBool* const field)
 
 	bool value = false;
 
-	const int size = json_object_array_length (jobj);
+	const int32_t size = json_object_array_length (jobj);
 
-	for (int i = 0; i < size; ++ i)
+	for (int32_t i = 0; i < size; ++ i)
 	{
 		if (booleanValue (json_object_array_get_idx (jobj, i), value))
 			field -> emplace_back (value);
@@ -901,12 +901,12 @@ JSONParser::sfcolorValue (json_object* const jobj, SFColor* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Color3f value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 3)
 		{
+			Color3f value;
+	
 			if (color3fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -931,11 +931,11 @@ JSONParser::mfcolorValue (json_object* const jobj, MFColor* const field)
 
 	Color3f value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 3;
 
-	for (int i = 0; i < size; i += 3)
+	for (int32_t i = 0; i < size; i += 3)
 	{
 		if (color3fValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -945,7 +945,7 @@ JSONParser::mfcolorValue (json_object* const jobj, MFColor* const field)
 }
 
 bool
-JSONParser::color3fValue (json_object* const jobj, const int i, Color3f & value)
+JSONParser::color3fValue (json_object* const jobj, const int32_t i, Color3f & value)
 {
 	double r, g, b;
 
@@ -972,12 +972,12 @@ JSONParser::sfcolorRGBAValue (json_object* const jobj, SFColorRGBA* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Color4f value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 4)
 		{
+			Color4f value;
+	
 			if (color4fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1002,11 +1002,11 @@ JSONParser::mfcolorRGBAValue (json_object* const jobj, MFColorRGBA* const field)
 
 	Color4f value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 4;
 
-	for (int i = 0; i < size; i += 4)
+	for (int32_t i = 0; i < size; i += 4)
 	{
 		if (color4fValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -1016,7 +1016,7 @@ JSONParser::mfcolorRGBAValue (json_object* const jobj, MFColorRGBA* const field)
 }
 
 bool
-JSONParser::color4fValue (json_object* const jobj, const int i, Color4f & value)
+JSONParser::color4fValue (json_object* const jobj, const int32_t i, Color4f & value)
 {
 	double r, g, b, a;
 
@@ -1061,9 +1061,9 @@ JSONParser::mfdoubleValue (json_object* const jobj, MFDouble* const field)
 
 	double value = 0;
 
-	const int size = json_object_array_length (jobj);
+	const int32_t size = json_object_array_length (jobj);
 
-	for (int i = 0; i < size; ++ i)
+	for (int32_t i = 0; i < size; ++ i)
 	{
 		if (doubleValue (json_object_array_get_idx (jobj, i), value))
 			field -> emplace_back (value);
@@ -1095,14 +1095,113 @@ JSONParser::mffloatValue (json_object* const jobj, MFFloat* const field)
 
 	double value = 0;
 
-	const int size = json_object_array_length (jobj);
+	const int32_t size = json_object_array_length (jobj);
 
-	for (int i = 0; i < size; ++ i)
+	for (int32_t i = 0; i < size; ++ i)
 	{
 		if (doubleValue (json_object_array_get_idx (jobj, i), value))
 			field -> emplace_back (value);
 		else
 			field -> emplace_back ();
+	}
+}
+
+void
+JSONParser::sfimageValue (json_object* const jobj, SFImage* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		const int32_t size = json_object_array_length (jobj);
+
+		if (size >= 3)
+		{
+			int32_t width, height, components;
+
+			if (integerValue (json_object_array_get_idx (jobj, 0), width))
+			{
+				if (integerValue (json_object_array_get_idx (jobj, 1), height))
+				{
+					if (integerValue (json_object_array_get_idx (jobj, 2), components))
+					{
+						field -> setWidth (width);
+						field -> setHeight (height);
+						field -> setComponents (components);
+
+						imageValue (jobj, 3, width, height, field -> getArray ());
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	field -> setWidth (0);
+	field -> setHeight (0);
+	field -> setComponents (0);
+}
+
+void
+JSONParser::mfimageValue (json_object* const jobj, MFImage* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; )
+	{
+		if (i + 3 < size)
+		{
+			field -> emplace_back ();
+
+			int32_t width, height, components;
+	
+			if (integerValue (json_object_array_get_idx (jobj, i + 0), width))
+			{
+				if (integerValue (json_object_array_get_idx (jobj, i + 1), height))
+				{
+					if (integerValue (json_object_array_get_idx (jobj, i + 2), components))
+					{
+						auto & value = field -> back ();
+
+						value .setWidth (width);
+						value .setHeight (height);
+						value .setComponents (components);
+
+						imageValue (jobj, i + 3, width, height, value .getArray ());
+
+						i += 3 + width * height;
+						continue;
+					}
+				}
+			}
+		}
+
+		break;
+	}
+}
+
+void
+JSONParser::imageValue (json_object* const jobj, const int32_t index, const int32_t width, const int32_t height, MFInt32 & array)
+{
+	int32_t value;
+
+	const int32_t size = std::min (json_object_array_length (jobj), index + width * height);
+
+	for (int32_t i = index, a = 0; i < size; ++ i, ++ a)
+	{
+		if (integerValue (json_object_array_get_idx (jobj, i), value))
+			array [a] = value;
+		else
+			array [a] = 0;
 	}
 }
 
@@ -1129,9 +1228,9 @@ JSONParser::mfint32Value (json_object* const jobj, MFInt32* const field)
 
 	int32_t value = 0;
 
-	const int size = json_object_array_length (jobj);
+	const int32_t size = json_object_array_length (jobj);
 
-	for (int i = 0; i < size; ++ i)
+	for (int32_t i = 0; i < size; ++ i)
 	{
 		if (integerValue (json_object_array_get_idx (jobj, i), value))
 			field -> emplace_back (value);
@@ -1148,12 +1247,12 @@ JSONParser::sfmatrix3dValue (json_object* const jobj, SFMatrix3d* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Matrix3d value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 9)
 		{
+			Matrix3d value;
+	
 			if (matrix3dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1178,11 +1277,11 @@ JSONParser::mfmatrix3dValue (json_object* const jobj, MFMatrix3d* const field)
 
 	Matrix3d value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 9;
 
-	for (int i = 0; i < size; i += 9)
+	for (int32_t i = 0; i < size; i += 9)
 	{
 		if (matrix3dValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -1192,7 +1291,7 @@ JSONParser::mfmatrix3dValue (json_object* const jobj, MFMatrix3d* const field)
 }
 
 bool
-JSONParser::matrix3dValue (json_object* const jobj, const int i, Matrix3d & value)
+JSONParser::matrix3dValue (json_object* const jobj, const int32_t i, Matrix3d & value)
 {
 	double e11, e12, e13, e21, e22, e23, e31, e32, e33;
 
@@ -1237,12 +1336,12 @@ JSONParser::sfmatrix3fValue (json_object* const jobj, SFMatrix3f* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Matrix3f value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 9)
 		{
+			Matrix3f value;
+	
 			if (matrix3fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1267,11 +1366,11 @@ JSONParser::mfmatrix3fValue (json_object* const jobj, MFMatrix3f* const field)
 
 	Matrix3f value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 9;
 
-	for (int i = 0; i < size; i += 9)
+	for (int32_t i = 0; i < size; i += 9)
 	{
 		if (matrix3fValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -1281,7 +1380,7 @@ JSONParser::mfmatrix3fValue (json_object* const jobj, MFMatrix3f* const field)
 }
 
 bool
-JSONParser::matrix3fValue (json_object* const jobj, const int i, Matrix3f & value)
+JSONParser::matrix3fValue (json_object* const jobj, const int32_t i, Matrix3f & value)
 {
 	double e11, e12, e13, e21, e22, e23, e31, e32, e33;
 
@@ -1326,12 +1425,12 @@ JSONParser::sfmatrix4dValue (json_object* const jobj, SFMatrix4d* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Matrix4d value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 16)
 		{
+			Matrix4d value;
+	
 			if (matrix4dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1356,11 +1455,11 @@ JSONParser::mfmatrix4dValue (json_object* const jobj, MFMatrix4d* const field)
 
 	Matrix4d value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 16;
 
-	for (int i = 0; i < size; i += 16)
+	for (int32_t i = 0; i < size; i += 16)
 	{
 		if (matrix4dValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -1370,7 +1469,7 @@ JSONParser::mfmatrix4dValue (json_object* const jobj, MFMatrix4d* const field)
 }
 
 bool
-JSONParser::matrix4dValue (json_object* const jobj, const int i, Matrix4d & value)
+JSONParser::matrix4dValue (json_object* const jobj, const int32_t i, Matrix4d & value)
 {
 	double e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
 
@@ -1436,12 +1535,12 @@ JSONParser::sfmatrix4fValue (json_object* const jobj, SFMatrix4f* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Matrix4f value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 16)
 		{
+			Matrix4f value;
+	
 			if (matrix4fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1466,11 +1565,11 @@ JSONParser::mfmatrix4fValue (json_object* const jobj, MFMatrix4f* const field)
 
 	Matrix4f value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 16;
 
-	for (int i = 0; i < size; i += 16)
+	for (int32_t i = 0; i < size; i += 16)
 	{
 		if (matrix4fValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -1480,7 +1579,7 @@ JSONParser::mfmatrix4fValue (json_object* const jobj, MFMatrix4f* const field)
 }
 
 bool
-JSONParser::matrix4fValue (json_object* const jobj, const int i, Matrix4f & value)
+JSONParser::matrix4fValue (json_object* const jobj, const int32_t i, Matrix4f & value)
 {
 	double e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44;
 
@@ -1563,12 +1662,12 @@ JSONParser::sfrotationValue (json_object* const jobj, SFRotation* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Rotation4d value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 4)
 		{
+			Rotation4d value;
+	
 			if (rotation4dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1593,11 +1692,11 @@ JSONParser::mfrotationValue (json_object* const jobj, MFRotation* const field)
 
 	Rotation4d value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 4;
 
-	for (int i = 0; i < size; i += 4)
+	for (int32_t i = 0; i < size; i += 4)
 	{
 		if (rotation4dValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -1607,7 +1706,7 @@ JSONParser::mfrotationValue (json_object* const jobj, MFRotation* const field)
 }
 
 bool
-JSONParser::rotation4dValue (json_object* const jobj, const int i, Rotation4d & value)
+JSONParser::rotation4dValue (json_object* const jobj, const int32_t i, Rotation4d & value)
 {
 	double x, y, z, angle;
 
@@ -1652,9 +1751,9 @@ JSONParser::mfstringValue (json_object* const jobj, MFString* const field)
 
 	std::string value;
 
-	const int size = json_object_array_length (jobj);
+	const int32_t size = json_object_array_length (jobj);
 
-	for (int i = 0; i < size; ++ i)
+	for (int32_t i = 0; i < size; ++ i)
 	{
 		if (stringValue (json_object_array_get_idx (jobj, i), value))
 			field -> emplace_back (std::move (value));
@@ -1686,9 +1785,9 @@ JSONParser::mftimeValue (json_object* const jobj, MFTime* const field)
 
 	double value = 0;
 
-	const int size = json_object_array_length (jobj);
+	const int32_t size = json_object_array_length (jobj);
 
-	for (int i = 0; i < size; ++ i)
+	for (int32_t i = 0; i < size; ++ i)
 	{
 		if (doubleValue (json_object_array_get_idx (jobj, i), value))
 			field -> emplace_back (value);
@@ -1705,12 +1804,12 @@ JSONParser::sfvec2dValue (json_object* const jobj, SFVec2d* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Vector2d value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 2)
 		{
+			Vector2d value;
+	
 			if (vector2dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1735,11 +1834,11 @@ JSONParser::mfvec2dValue (json_object* const jobj, MFVec2d* const field)
 
 	Vector2d value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 2;
 
-	for (int i = 0; i < size; i += 2)
+	for (int32_t i = 0; i < size; i += 2)
 	{
 		if (vector2dValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -1749,7 +1848,7 @@ JSONParser::mfvec2dValue (json_object* const jobj, MFVec2d* const field)
 }
 
 bool
-JSONParser::vector2dValue (json_object* const jobj, const int i, Vector2d & value)
+JSONParser::vector2dValue (json_object* const jobj, const int32_t i, Vector2d & value)
 {
 	double x, y;
 
@@ -1773,12 +1872,12 @@ JSONParser::sfvec2fValue (json_object* const jobj, SFVec2f* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Vector2f value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 2)
 		{
+			Vector2f value;
+	
 			if (vector2fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1803,11 +1902,11 @@ JSONParser::mfvec2fValue (json_object* const jobj, MFVec2f* const field)
 
 	Vector2f value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 2;
 
-	for (int i = 0; i < size; i += 2)
+	for (int32_t i = 0; i < size; i += 2)
 	{
 		if (vector2fValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -1817,7 +1916,7 @@ JSONParser::mfvec2fValue (json_object* const jobj, MFVec2f* const field)
 }
 
 bool
-JSONParser::vector2fValue (json_object* const jobj, const int i, Vector2f & value)
+JSONParser::vector2fValue (json_object* const jobj, const int32_t i, Vector2f & value)
 {
 	double x, y;
 
@@ -1841,12 +1940,12 @@ JSONParser::sfvec3dValue (json_object* const jobj, SFVec3d* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Vector3d value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 3)
 		{
+			Vector3d value;
+	
 			if (vector3dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1871,11 +1970,11 @@ JSONParser::mfvec3dValue (json_object* const jobj, MFVec3d* const field)
 
 	Vector3d value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 3;
 
-	for (int i = 0; i < size; i += 3)
+	for (int32_t i = 0; i < size; i += 3)
 	{
 		if (vector3dValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -1885,7 +1984,7 @@ JSONParser::mfvec3dValue (json_object* const jobj, MFVec3d* const field)
 }
 
 bool
-JSONParser::vector3dValue (json_object* const jobj, const int i, Vector3d & value)
+JSONParser::vector3dValue (json_object* const jobj, const int32_t i, Vector3d & value)
 {
 	double x, y, z;
 
@@ -1912,12 +2011,12 @@ JSONParser::sfvec3fValue (json_object* const jobj, SFVec3f* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Vector3f value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 3)
 		{
+			Vector3f value;
+	
 			if (vector3fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -1942,11 +2041,11 @@ JSONParser::mfvec3fValue (json_object* const jobj, MFVec3f* const field)
 
 	Vector3f value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 3;
 
-	for (int i = 0; i < size; i += 3)
+	for (int32_t i = 0; i < size; i += 3)
 	{
 		if (vector3fValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -1956,7 +2055,7 @@ JSONParser::mfvec3fValue (json_object* const jobj, MFVec3f* const field)
 }
 
 bool
-JSONParser::vector3fValue (json_object* const jobj, const int i, Vector3f & value)
+JSONParser::vector3fValue (json_object* const jobj, const int32_t i, Vector3f & value)
 {
 	double x, y, z;
 
@@ -1983,12 +2082,12 @@ JSONParser::sfvec4dValue (json_object* const jobj, SFVec4d* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Vector4d value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 4)
 		{
+			Vector4d value;
+	
 			if (vector4dValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -2013,11 +2112,11 @@ JSONParser::mfvec4dValue (json_object* const jobj, MFVec4d* const field)
 
 	Vector4d value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 4;
 
-	for (int i = 0; i < size; i += 4)
+	for (int32_t i = 0; i < size; i += 4)
 	{
 		if (vector4dValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -2027,7 +2126,7 @@ JSONParser::mfvec4dValue (json_object* const jobj, MFVec4d* const field)
 }
 
 bool
-JSONParser::vector4dValue (json_object* const jobj, const int i, Vector4d & value)
+JSONParser::vector4dValue (json_object* const jobj, const int32_t i, Vector4d & value)
 {
 	double x, y, z, w;
 
@@ -2057,12 +2156,12 @@ JSONParser::sfvec4fValue (json_object* const jobj, SFVec4f* const field)
 
 	if (json_object_get_type (jobj) == json_type_array)
 	{
-		Vector4f value;
-
-		const int size = json_object_array_length (jobj);
+		const int32_t size = json_object_array_length (jobj);
 
 		if (size == 4)
 		{
+			Vector4f value;
+	
 			if (vector4fValue (jobj, 0, value))
 			{
 				field -> setValue (value);
@@ -2087,11 +2186,11 @@ JSONParser::mfvec4fValue (json_object* const jobj, MFVec4f* const field)
 
 	Vector4f value;
 
-	int size = json_object_array_length (jobj);
+	int32_t size = json_object_array_length (jobj);
 
 	size -= size % 4;
 
-	for (int i = 0; i < size; i += 4)
+	for (int32_t i = 0; i < size; i += 4)
 	{
 		if (vector4fValue (jobj, i, value))
 			field -> emplace_back (value);
@@ -2101,7 +2200,7 @@ JSONParser::mfvec4fValue (json_object* const jobj, MFVec4f* const field)
 }
 
 bool
-JSONParser::vector4fValue (json_object* const jobj, const int i, Vector4f & value)
+JSONParser::vector4fValue (json_object* const jobj, const int32_t i, Vector4f & value)
 {
 	double x, y, z, w;
 
