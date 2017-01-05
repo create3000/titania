@@ -699,32 +699,32 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 		case X3DConstants::SFNode:
 			return sfnodeValue (jobj, static_cast <SFNode*> (field));
 
-//		case X3DConstants::SFRotation:
-//			return sfrotationValue (static_cast <SFRotation*> (field));
+		case X3DConstants::SFRotation:
+			return sfrotationValue (jobj, static_cast <SFRotation*> (field));
 
 		case X3DConstants::SFString:
 			return sfstringValue (jobj, static_cast <SFString*> (field));
 
-//		case X3DConstants::SFTime:
-//			return sftimeValue (static_cast <SFTime*> (field));
-//
-//		case X3DConstants::SFVec2d:
-//			return sfvec2dValue (static_cast <SFVec2d*> (field));
-//
-//		case X3DConstants::SFVec2f:
-//			return sfvec2fValue (static_cast <SFVec2f*> (field));
-//
-//		case X3DConstants::SFVec3d:
-//			return sfvec3dValue (static_cast <SFVec3d*> (field));
-//
-//		case X3DConstants::SFVec3f:
-//			return sfvec3fValue (static_cast <SFVec3f*> (field));
-//
-//		case X3DConstants::SFVec4d:
-//			return sfvec4dValue (static_cast <SFVec4d*> (field));
-//
-//		case X3DConstants::SFVec4f:
-//			return sfvec4fValue (static_cast <SFVec4f*> (field));
+		case X3DConstants::SFTime:
+			return sftimeValue (jobj, static_cast <SFTime*> (field));
+
+		case X3DConstants::SFVec2d:
+			return sfvec2dValue (jobj, static_cast <SFVec2d*> (field));
+
+		case X3DConstants::SFVec2f:
+			return sfvec2fValue (jobj, static_cast <SFVec2f*> (field));
+
+		case X3DConstants::SFVec3d:
+			return sfvec3dValue (jobj, static_cast <SFVec3d*> (field));
+
+		case X3DConstants::SFVec3f:
+			return sfvec3fValue (jobj, static_cast <SFVec3f*> (field));
+
+		case X3DConstants::SFVec4d:
+			return sfvec4dValue (jobj, static_cast <SFVec4d*> (field));
+
+		case X3DConstants::SFVec4f:
+			return sfvec4fValue (jobj, static_cast <SFVec4f*> (field));
 
 		case X3DConstants::MFBool:
 			return mfboolValue (jobj, static_cast <MFBool*> (field));
@@ -762,32 +762,32 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 		case X3DConstants::MFNode:
 			return mfnodeValue (jobj, static_cast <MFNode*> (field));
 
-//		case X3DConstants::MFRotation:
-//			return mfrotationValue (static_cast <MFRotation*> (field));
+		case X3DConstants::MFRotation:
+			return mfrotationValue (jobj, static_cast <MFRotation*> (field));
 
 		case X3DConstants::MFString:
 			return mfstringValue (jobj, static_cast <MFString*> (field));
 
-//		case X3DConstants::MFTime:
-//			return mftimeValue (static_cast <MFTime*> (field));
-//
-//		case X3DConstants::MFVec2d:
-//			return mfvec2dValue (static_cast <MFVec2d*> (field));
-//
-//		case X3DConstants::MFVec2f:
-//			return mfvec2fValue (static_cast <MFVec2f*> (field));
-//
-//		case X3DConstants::MFVec3d:
-//			return mfvec3dValue (static_cast <MFVec3d*> (field));
-//
-//		case X3DConstants::MFVec3f:
-//			return mfvec3fValue (static_cast <MFVec3f*> (field));
-//
-//		case X3DConstants::MFVec4d:
-//			return mfvec4dValue (static_cast <MFVec4d*> (field));
-//
-//		case X3DConstants::MFVec4f:
-//			return mfvec4fValue (static_cast <MFVec4f*> (field));
+		case X3DConstants::MFTime:
+			return mftimeValue (jobj, static_cast <MFTime*> (field));
+
+		case X3DConstants::MFVec2d:
+			return mfvec2dValue (jobj, static_cast <MFVec2d*> (field));
+
+		case X3DConstants::MFVec2f:
+			return mfvec2fValue (jobj, static_cast <MFVec2f*> (field));
+
+		case X3DConstants::MFVec3d:
+			return mfvec3dValue (jobj, static_cast <MFVec3d*> (field));
+
+		case X3DConstants::MFVec3f:
+			return mfvec3fValue (jobj, static_cast <MFVec3f*> (field));
+
+		case X3DConstants::MFVec4d:
+			return mfvec4dValue (jobj, static_cast <MFVec4d*> (field));
+
+		case X3DConstants::MFVec4f:
+			return mfvec4fValue (jobj, static_cast <MFVec4f*> (field));
 
 		default:
 			break;
@@ -814,12 +814,19 @@ JSONParser::doubleValue (json_object* const jobj, double & value)
 	if (not jobj)
 		return false;
 
-	if (json_object_get_type (jobj) not_eq json_type_double)
-		return false;
+	switch (json_object_get_type (jobj))
+	{
+		case json_type_int:
+			value = json_object_get_int (jobj);
+			return true;
+		case json_type_double:
+			value = json_object_get_double (jobj);
+			return true;
+		default:
+			break;
+	}
 
-	value = json_object_get_double (jobj);
-
-	return true;
+	return false;
 }
 
 bool
@@ -1004,6 +1011,80 @@ JSONParser::mfnodeValue (json_object* const jobj, MFNode* const field)
 }
 
 void
+JSONParser::sfrotationValue (json_object* const jobj, SFRotation* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Rotation4d value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 4)
+		{
+			if (rot4dValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Rotation4d ());
+}
+
+void
+JSONParser::mfrotationValue (json_object* const jobj, MFRotation* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Rotation4d value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 4;
+
+	for (int i = 0; i < size; i += 4)
+	{
+		if (rot4dValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::rot4dValue (json_object* const jobj, const int i, Rotation4d & value)
+{
+	double x, y, z, angle;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), x))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), y))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), z))
+			{
+				if (doubleValue (json_object_array_get_idx (jobj, i + 3), angle))
+				{
+					value = Rotation4d (x, y, z, angle);
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+void
 JSONParser::sfstringValue (json_object* const jobj, SFString* const field)
 {
 	std::string stringCharacters;
@@ -1035,6 +1116,466 @@ JSONParser::mfstringValue (json_object* const jobj, MFString* const field)
 		else
 			field -> emplace_back ();
 	}
+}
+
+void
+JSONParser::sftimeValue (json_object* const jobj, SFTime* const field)
+{
+	double value = 0;
+
+	doubleValue (jobj, value);
+
+	*field = value;
+}
+
+void
+JSONParser::mftimeValue (json_object* const jobj, MFTime* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	double value = 0;
+
+	const int size = json_object_array_length (jobj);
+
+	for (int i = 0; i < size; ++ i)
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i), value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+void
+JSONParser::sfvec2dValue (json_object* const jobj, SFVec2d* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Vector2d value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 2)
+		{
+			if (vec2dValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Vector2d ());
+}
+
+void
+JSONParser::mfvec2dValue (json_object* const jobj, MFVec2d* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Vector2d value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 2;
+
+	for (int i = 0; i < size; i += 2)
+	{
+		if (vec2dValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::vec2dValue (json_object* const jobj, const int i, Vector2d & value)
+{
+	double x, y;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), x))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), y))
+		{
+			value = Vector2d (x, y);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void
+JSONParser::sfvec2fValue (json_object* const jobj, SFVec2f* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Vector2f value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 2)
+		{
+			if (vec2fValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Vector2f ());
+}
+
+void
+JSONParser::mfvec2fValue (json_object* const jobj, MFVec2f* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Vector2f value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 2;
+
+	for (int i = 0; i < size; i += 2)
+	{
+		if (vec2fValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::vec2fValue (json_object* const jobj, const int i, Vector2f & value)
+{
+	double x, y;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), x))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), y))
+		{
+			value = Vector2f (x, y);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void
+JSONParser::sfvec3dValue (json_object* const jobj, SFVec3d* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Vector3d value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 3)
+		{
+			if (vec3dValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Vector3d ());
+}
+
+void
+JSONParser::mfvec3dValue (json_object* const jobj, MFVec3d* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Vector3d value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 3;
+
+	for (int i = 0; i < size; i += 3)
+	{
+		if (vec3dValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::vec3dValue (json_object* const jobj, const int i, Vector3d & value)
+{
+	double x, y, z;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), x))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), y))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), z))
+			{
+				value = Vector3d (x, y, z);
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void
+JSONParser::sfvec3fValue (json_object* const jobj, SFVec3f* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Vector3f value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 3)
+		{
+			if (vec3fValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Vector3f ());
+}
+
+void
+JSONParser::mfvec3fValue (json_object* const jobj, MFVec3f* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Vector3f value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 3;
+
+	for (int i = 0; i < size; i += 3)
+	{
+		if (vec3fValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::vec3fValue (json_object* const jobj, const int i, Vector3f & value)
+{
+	double x, y, z;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), x))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), y))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), z))
+			{
+				value = Vector3f (x, y, z);
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+void
+JSONParser::sfvec4dValue (json_object* const jobj, SFVec4d* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Vector4d value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 4)
+		{
+			if (vec4dValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Vector4d ());
+}
+
+void
+JSONParser::mfvec4dValue (json_object* const jobj, MFVec4d* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Vector4d value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 4;
+
+	for (int i = 0; i < size; i += 4)
+	{
+		if (vec4dValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::vec4dValue (json_object* const jobj, const int i, Vector4d & value)
+{
+	double x, y, z, w;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), x))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), y))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), z))
+			{
+				if (doubleValue (json_object_array_get_idx (jobj, i + 3), w))
+				{
+					value = Vector4d (x, y, z, w);
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+void
+JSONParser::sfvec4fValue (json_object* const jobj, SFVec4f* const field)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) == json_type_array)
+	{
+		Vector4f value;
+
+		const int size = json_object_array_length (jobj);
+
+		if (size == 4)
+		{
+			if (vec4fValue (jobj, 0, value))
+			{
+				field -> setValue (value);
+				return;
+			}
+		}
+	}
+
+	field -> setValue (Vector4f ());
+}
+
+void
+JSONParser::mfvec4fValue (json_object* const jobj, MFVec4f* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	Vector4f value;
+
+	int size = json_object_array_length (jobj);
+
+	size -= size % 4;
+
+	for (int i = 0; i < size; i += 4)
+	{
+		if (vec4fValue (jobj, i, value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+bool
+JSONParser::vec4fValue (json_object* const jobj, const int i, Vector4f & value)
+{
+	double x, y, z, w;
+
+	if (doubleValue (json_object_array_get_idx (jobj, i + 0), x))
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i + 1), y))
+		{
+			if (doubleValue (json_object_array_get_idx (jobj, i + 2), z))
+			{
+				if (doubleValue (json_object_array_get_idx (jobj, i + 3), w))
+				{
+					value = Vector4f (x, y, z, w);
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
 }
 
 void
