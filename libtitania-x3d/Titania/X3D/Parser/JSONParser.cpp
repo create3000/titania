@@ -663,27 +663,27 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 
 	switch (field -> getType ())
 	{
-//		case X3DConstants::SFBool:
-//			return sfboolValue (static_cast <SFBool*> (field));
-//
+		case X3DConstants::SFBool:
+			return sfboolValue (jobj, static_cast <SFBool*> (field));
+
 //		case X3DConstants::SFColor:
 //			return sfcolorValue (static_cast <SFColor*> (field));
 //
 //		case X3DConstants::SFColorRGBA:
 //			return sfcolorRGBAValue (static_cast <SFColorRGBA*> (field));
-//
-//		case X3DConstants::SFDouble:
-//			return sfdoubleValue (static_cast <SFDouble*> (field));
-//
-//		case X3DConstants::SFFloat:
-//			return sffloatValue (static_cast <SFFloat*> (field));
-//
+
+		case X3DConstants::SFDouble:
+			return sfdoubleValue (jobj, static_cast <SFDouble*> (field));
+
+		case X3DConstants::SFFloat:
+			return sffloatValue (jobj, static_cast <SFFloat*> (field));
+
 //		case X3DConstants::SFImage:
 //			return sfimageValue (static_cast <SFImage*> (field));
-//
-//		case X3DConstants::SFInt32:
-//			return sfint32Value (static_cast <SFInt32*> (field));
-//
+
+		case X3DConstants::SFInt32:
+			return sfint32Value (jobj, static_cast <SFInt32*> (field));
+
 //		case X3DConstants::SFMatrix3d:
 //			return sfmatrix3dValue (static_cast <SFMatrix3d*> (field));
 //
@@ -701,10 +701,10 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 
 //		case X3DConstants::SFRotation:
 //			return sfrotationValue (static_cast <SFRotation*> (field));
-//
-//		case X3DConstants::SFString:
-//			return sfstringValue (static_cast <SFString*> (field));
-//
+
+		case X3DConstants::SFString:
+			return sfstringValue (jobj, static_cast <SFString*> (field));
+
 //		case X3DConstants::SFTime:
 //			return sftimeValue (static_cast <SFTime*> (field));
 //
@@ -725,28 +725,28 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 //
 //		case X3DConstants::SFVec4f:
 //			return sfvec4fValue (static_cast <SFVec4f*> (field));
-//
-//		case X3DConstants::MFBool:
-//			return mfboolValue (static_cast <MFBool*> (field));
-//
+
+		case X3DConstants::MFBool:
+			return mfboolValue (jobj, static_cast <MFBool*> (field));
+
 //		case X3DConstants::MFColor:
 //			return mfcolorValue (static_cast <MFColor*> (field));
 //
 //		case X3DConstants::MFColorRGBA:
 //			return mfcolorRGBAValue (static_cast <MFColorRGBA*> (field));
-//
-//		case X3DConstants::MFDouble:
-//			return mfdoubleValue (static_cast <MFDouble*> (field));
-//
-//		case X3DConstants::MFFloat:
-//			return mffloatValue (static_cast <MFFloat*> (field));
-//
+
+		case X3DConstants::MFDouble:
+			return mfdoubleValue (jobj, static_cast <MFDouble*> (field));
+
+		case X3DConstants::MFFloat:
+			return mffloatValue (jobj, static_cast <MFFloat*> (field));
+
 //		case X3DConstants::MFImage:
 //			return mfimageValue (static_cast <MFImage*> (field));
-//
-//		case X3DConstants::MFInt32:
-//			return mfint32Value (static_cast <MFInt32*> (field));
-//
+
+		case X3DConstants::MFInt32:
+			return mfint32Value (jobj, static_cast <MFInt32*> (field));
+
 //		case X3DConstants::MFMatrix3d:
 //			return mfmatrix3dValue (static_cast <MFMatrix3d*> (field));
 //
@@ -764,10 +764,10 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 
 //		case X3DConstants::MFRotation:
 //			return mfrotationValue (static_cast <MFRotation*> (field));
-//
-//		case X3DConstants::MFString:
-//			return mfstringValue (static_cast <MFString*> (field));
-//
+
+		case X3DConstants::MFString:
+			return mfstringValue (jobj, static_cast <MFString*> (field));
+
 //		case X3DConstants::MFTime:
 //			return mftimeValue (static_cast <MFTime*> (field));
 //
@@ -792,6 +792,20 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 		default:
 			break;
 	}
+}
+
+bool
+JSONParser::booleanValue (json_object* const jobj, bool & value)
+{
+	if (not jobj)
+		return false;
+
+	if (json_object_get_type (jobj) not_eq json_type_boolean)
+		return false;
+
+	value = json_object_get_boolean (jobj);
+
+	return true;
 }
 
 bool
@@ -837,6 +851,142 @@ JSONParser::stringValue (json_object* const jobj, std::string & value)
 }
 
 void
+JSONParser::sfboolValue (json_object* const jobj, SFBool* const field)
+{
+	bool value = false;
+
+	booleanValue (jobj, value);
+
+	*field = value;
+}
+
+void
+JSONParser::mfboolValue (json_object* const jobj, MFBool* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	bool value = false;
+
+	const int size = json_object_array_length (jobj);
+
+	for (int i = 0; i < size; ++ i)
+	{
+		if (booleanValue (json_object_array_get_idx (jobj, i), value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+void
+JSONParser::sfdoubleValue (json_object* const jobj, SFDouble* const field)
+{
+	double value = 0;
+
+	doubleValue (jobj, value);
+
+	*field = value;
+}
+
+void
+JSONParser::mfdoubleValue (json_object* const jobj, MFDouble* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	double value = 0;
+
+	const int size = json_object_array_length (jobj);
+
+	for (int i = 0; i < size; ++ i)
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i), value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+void
+JSONParser::sffloatValue (json_object* const jobj, SFFloat* const field)
+{
+	double value = 0;
+
+	doubleValue (jobj, value);
+
+	*field = value;
+}
+
+void
+JSONParser::mffloatValue (json_object* const jobj, MFFloat* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	double value = 0;
+
+	const int size = json_object_array_length (jobj);
+
+	for (int i = 0; i < size; ++ i)
+	{
+		if (doubleValue (json_object_array_get_idx (jobj, i), value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+void
+JSONParser::sfint32Value (json_object* const jobj, SFInt32* const field)
+{
+	int32_t value = 0;
+
+	integerValue (jobj, value);
+
+	*field = value;
+}
+
+void
+JSONParser::mfint32Value (json_object* const jobj, MFInt32* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	int32_t value = 0;
+
+	const int size = json_object_array_length (jobj);
+
+	for (int i = 0; i < size; ++ i)
+	{
+		if (integerValue (json_object_array_get_idx (jobj, i), value))
+			field -> emplace_back (value);
+		else
+			field -> emplace_back ();
+	}
+}
+
+void
 JSONParser::sfnodeValue (json_object* const jobj, SFNode* const field)
 {
 	if (childObject (jobj, *field))
@@ -848,7 +998,43 @@ JSONParser::sfnodeValue (json_object* const jobj, SFNode* const field)
 void
 JSONParser::mfnodeValue (json_object* const jobj, MFNode* const field)
 {
+	field -> clear ();
+
 	childrenArray (jobj, *field);
+}
+
+void
+JSONParser::sfstringValue (json_object* const jobj, SFString* const field)
+{
+	std::string stringCharacters;
+
+	stringValue (jobj, stringCharacters);
+
+	*field = stringCharacters;
+}
+
+void
+JSONParser::mfstringValue (json_object* const jobj, MFString* const field)
+{
+	if (not jobj)
+		return;
+
+	field -> clear ();
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	std::string value;
+
+	const int size = json_object_array_length (jobj);
+
+	for (int i = 0; i < size; ++ i)
+	{
+		if (stringValue (json_object_array_get_idx (jobj, i), value))
+			field -> emplace_back (std::move (value));
+		else
+			field -> emplace_back ();
+	}
 }
 
 void

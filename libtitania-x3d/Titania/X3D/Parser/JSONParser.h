@@ -198,6 +198,9 @@ private:
 	///  @name Value handling
 
 	bool
+	booleanValue (json_object* const jobj, bool & value);
+
+	bool
 	doubleValue (json_object* const jobj, double & value);
 
 	bool
@@ -207,12 +210,42 @@ private:
 	stringValue (json_object* const jobj, std::string & value);
 
 	///  @name Field value handling
+	
+	void
+	sfboolValue (json_object* const jobj, SFBool* const field);
+	
+	void
+	mfboolValue (json_object* const jobj, MFBool* const field);
+
+	void
+	sfdoubleValue (json_object* const jobj, SFDouble* const field);
+
+	void
+	mfdoubleValue (json_object* const jobj, MFDouble* const field);
+
+	void
+	sffloatValue (json_object* const jobj, SFFloat* const field);
+
+	void
+	mffloatValue (json_object* const jobj, MFFloat* const field);
+
+	void
+	sfint32Value (json_object* const jobj, SFInt32* const field);
+
+	void
+	mfint32Value (json_object* const jobj, MFInt32* const field);
 
 	void
 	sfnodeValue (json_object* const jobj, SFNode* const field);
 
 	void
 	mfnodeValue (json_object* const jobj, MFNode* const field);
+
+	void
+	sfstringValue (json_object* const jobj, SFString* const field);
+	
+	void
+	mfstringValue (json_object* const jobj, MFString* const field);
 
 	///  @name Execution context handling
 
