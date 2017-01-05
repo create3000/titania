@@ -153,10 +153,10 @@ private:
 	sceneObject (json_object* const jobj);
 
 	void
-	childrenArray (json_object* const jobj);
+	childrenArray (json_object* const jobj, MFNode & nodes);
 
-	void
-	childObject (json_object* const jobj);
+	bool
+	childObject (json_object* const jobj, SFNode & node);
 
 	bool
 	externProtoDeclareObject (const std::string & key, json_object* const jobj);
@@ -174,7 +174,11 @@ private:
 	exportObject (const std::string & key, json_object* const jobj);
 
 	bool
-	nodeObject (const std::string & key, json_object* const jobj);
+	nodeObject (const std::string & key, json_object* const jobj, SFNode & node);
+
+	bool
+	nodeNameString (json_object* const jobj, std::string & value)
+	{ return stringValue (jobj, value); }
 
 	bool
 	doubleValue (json_object* const jobj, double & value);
@@ -185,11 +189,31 @@ private:
 	bool
 	stringValue (json_object* const jobj, std::string & value);
 
+	///  @name Execution context handling
+
+	void
+	pushExecutionContext (X3DExecutionContext* const executionContext);
+	
+	void
+	popExecutionContext ();
+	
+	X3DExecutionContext*
+	getExecutionContext () const;
+	
+	bool
+	isInsideProtoDefinition () const;
+
+	///  @name Member types
+
+	typedef std::vector <X3DExecutionContext*> ExecutionContextStack;
+
 	///  @name Members
 
 	const X3DScenePtr scene;
 	const basic::uri  uri;
 	std::istream &    istream;
+
+	ExecutionContextStack executionContextStack;
 
 };
 

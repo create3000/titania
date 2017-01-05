@@ -51,6 +51,8 @@
 #include "JSONParser.h"
 
 #include "../Browser/X3DBrowser.h"
+#include "../Components/Core/X3DPrototypeInstance.h"
+#include "../Parser/Filter.h"
 
 extern "C" {
 
@@ -62,9 +64,10 @@ namespace titania {
 namespace X3D {
 
 JSONParser::JSONParser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
-	  scene (scene),
-	    uri (uri),
-	istream (istream)
+	                scene (scene),
+	                  uri (uri),
+	              istream (istream),
+	executionContextStack ()
 { }
 
 void
@@ -125,6 +128,8 @@ JSONParser::x3dObject (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
+	pushExecutionContext (scene);
+
 	std::string encodingCharacters;
 	std::string profileCharacters;
 	std::string specificationVersionCharacters;
@@ -147,6 +152,8 @@ JSONParser::x3dObject (json_object* const jobj)
 	headObject (json_object_object_get (jobj, "head"));
 
 	sceneObject (json_object_object_get (jobj, "Scene"));
+
+	popExecutionContext ();
 }
 
 bool
@@ -349,11 +356,11 @@ JSONParser::sceneObject (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
-	childrenArray (json_object_object_get (jobj, "-children"));
+	childrenArray (json_object_object_get (jobj, "-children"), scene -> getRootNodes ());
 }
 
 void
-JSONParser::childrenArray (json_object* const jobj)
+JSONParser::childrenArray (json_object* const jobj, MFNode & nodes)
 {
 	__LOG__ << this << " " << jobj << std::endl;
 
@@ -363,52 +370,67 @@ JSONParser::childrenArray (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
+	SFNode node;
+
 	const int size = json_object_array_length (jobj);
 
 	for (int i = 0; i < size; ++ i)
-		childObject (json_object_array_get_idx (jobj, i));
+	{
+		if (childObject (json_object_array_get_idx (jobj, i), node))
+		{
+			nodes .emplace_back (std::move (node));
+		}
+	}	
 }
 
-void
-JSONParser::childObject (json_object* const jobj)
+bool
+JSONParser::childObject (json_object* const jobj, SFNode & node)
 {
 	__LOG__ << this << " " << jobj << std::endl;
 
 	if (not jobj)
-		return;
+		return false;
 
 	if (json_object_get_type (jobj) not_eq json_type_object)
-		return;
+		return false;
 
 	// Parse child nodes.
 
 	json_object_object_foreach (jobj, k, value)
 	{
+		if (json_object_get_type (value) == json_type_null)
+		{
+			node = nullptr;
+			return true;
+		}
+
 		if (json_object_get_type (value) not_eq json_type_object)
-			continue;
+			return false;
 
 		const std::string key = k;
 
 		__LOG__ << key << std::endl;
 
 		if (externProtoDeclareObject (key, value))
-			continue;
+			return false;
 
 		if (protoDeclareObject (key, value))
-			continue;
+			return false;
 
 		if (importObject (key, value))
-			continue;
+			return false;
 
 		if (routeObject (key, value))
-			continue;
+			return false;
 
 		if (exportObject (key, value))
-			continue;
+			return false;
 
-		if (nodeObject (key, value))
-			continue;
+		if (nodeObject (key, value, node))
+			return true;
 	}
+
+	return false;
 }
 
 bool
@@ -487,11 +509,78 @@ JSONParser::exportObject (const std::string & key, json_object* const jobj)
 }
 
 bool
-JSONParser::nodeObject (const std::string & key, json_object* const jobj)
+JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, SFNode & node)
 {
-	__LOG__ << this << " " << jobj << " " << key << std::endl;
+	__LOG__ << this << " " << jobj << " " << nodeType << std::endl;
 
+	// USE property
 
+	try
+	{
+		std::string nodeNameCharacters;
+	
+		if (nodeNameString (json_object_object_get (jobj, "@USE"), nodeNameCharacters))
+		{
+			filter_bad_utf8_characters (nodeNameCharacters);
+	
+			node = getExecutionContext () -> getNamedNode (nodeNameCharacters);
+	
+			return true;
+		}
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println (error .what ());
+		return false;
+	}
+
+	// Node object
+
+	try
+	{
+		node = getExecutionContext () -> createNode (nodeType);
+	}
+	catch (const X3DError & error1)
+	{
+		// //__LOG__ << this << " " << error .what () << std::endl;
+
+		try
+		{
+			node = getExecutionContext () -> createPrototypeInstance (nodeType) .getValue ();
+		}
+		catch (const X3DError & error2)
+		{
+			getBrowser () -> println (error1 .what () + std::string ("\n") + error2 .what ());
+			return false;
+		}
+	}
+
+	// Node name
+
+	//__LOG__ << this << " " << _nodeTypeId << " " << (void*) _node << std::endl;
+
+	std::string nodeNameCharacters;
+
+	if (nodeNameString (json_object_object_get (jobj, "@DEF"), nodeNameCharacters))
+	{
+		if (not nodeNameCharacters .empty ())
+		{
+			try
+			{
+				const SFNode namedNode = getExecutionContext () -> getNamedNode (nodeNameCharacters); // Create copy!
+
+				getExecutionContext () -> updateNamedNode (getExecutionContext () -> getUniqueName (nodeNameCharacters), namedNode);
+			}
+			catch (const X3DError &)
+			{ }
+
+			getExecutionContext () -> updateNamedNode (nodeNameCharacters, node);
+		}
+	}
+
+	// Fields
+
+	getExecutionContext () -> addUninitializedNode (node);
 
 	return true;
 }
@@ -536,6 +625,38 @@ JSONParser::stringValue (json_object* const jobj, std::string & value)
 	value = json_object_get_string (jobj);
 
 	return true;
+}
+
+void
+JSONParser::pushExecutionContext (X3DExecutionContext* const executionContext)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	executionContextStack .emplace_back (executionContext);
+}
+
+void
+JSONParser::popExecutionContext ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	executionContextStack .pop_back ();
+}
+
+X3DExecutionContext*
+JSONParser::getExecutionContext () const
+{
+	//__LOG__ << this << " " << std::endl;
+
+	return executionContextStack .back ();
+}
+
+bool
+JSONParser::isInsideProtoDefinition () const
+{
+	//__LOG__ << this << " " << std::endl;
+
+	return executionContextStack .size () > 1;
 }
 
 JSONParser::~JSONParser ()

@@ -1402,8 +1402,6 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 			}
 		}
 
-		X3DBaseNode* _baseNode = _node .getValue ();
-
 		//__LOG__ << this << " " << _nodeTypeId << " " << (void*) _node << std::endl;
 
 		if (not _nodeNameId .empty ())
@@ -1424,6 +1422,8 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 
 		if (Grammar::OpenBrace (istream))
 		{
+			X3DBaseNode* _baseNode = _node .getValue ();
+
 			_baseNode -> addComments (getComments ());
 
 			if (_baseNode -> canUserDefinedFields ())
