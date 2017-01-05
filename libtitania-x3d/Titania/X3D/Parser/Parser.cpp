@@ -524,6 +524,7 @@ Parser::unitStatement ()
 					catch (const X3DError & error)
 					{
 					   getBrowser () -> println (error .what ());
+						return true;
 					}
 				}
 

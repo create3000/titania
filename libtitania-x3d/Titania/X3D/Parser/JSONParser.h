@@ -110,19 +110,56 @@ private:
 	componentObject (json_object* const jobj);
 
 	bool
-	componentNameString (json_object* const jobj, std::string & componentNameCharacters);
-
+	componentNameString (json_object* const jobj, std::string & componentNameCharacters)
+	{ return stringValue (jobj, componentNameCharacters); }
+	
 	bool
-	componentLevelNumber (json_object* const jobj, int32_t & componentLevelNumber);
+	componentSupportLevelNumber (json_object* const jobj, int32_t & componentSupportLevel)
+	{ return integerValue (jobj, componentSupportLevel); }
 
 	void
 	unitArray (json_object* const jobj);
-	
+
+	bool
+	categoryNameString (json_object* const jobj, std::string & value)
+	{ return stringValue (jobj, value); }
+
+	bool
+	unitNameString (json_object* const jobj, std::string & value)
+	{ return stringValue (jobj, value); }
+
+	bool
+	unitConversionFactorNumber (json_object* const jobj, double & value)
+	{ return doubleValue (jobj, value); }
+
+	void
+	unitObject (json_object* const jobj);
+
 	void
 	metaArray (json_object* const jobj);
 
 	void
+	metaObject (json_object* const jobj);
+
+	bool
+	metakey (json_object* const jobj, std::string & value)
+	{ return stringValue (jobj, value); }
+
+	bool
+	metavalue (json_object* const jobj, std::string & value)
+	{ return stringValue (jobj, value); }
+
+	void
 	sceneObject (json_object* const jobj);
+
+	void
+	childrenArray (json_object* const jobj);
+
+	void
+	childObject (json_object* const jobj);
+
+	bool
+	doubleValue (json_object* const jobj, double & value);
 
 	bool
 	integerValue (json_object* const jobj, int32_t & value);

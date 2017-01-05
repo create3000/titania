@@ -215,31 +215,20 @@ JSONParser::componentObject (json_object* const jobj)
 
 	if (componentNameString (json_object_object_get (jobj, "@name"), componentNameCharacters))
 	{
-		int32_t componentLevel = 0;
+		int32_t componentSupportLevel = 0;
 
-		if (componentLevelNumber (json_object_object_get (jobj, "@level"), componentLevel))
+		if (componentSupportLevelNumber (json_object_object_get (jobj, "@level"), componentSupportLevel))
 		{
-			
+			const auto component = getBrowser () -> getComponent (componentNameCharacters, componentSupportLevel);
 
+			scene -> updateComponent (component);
 			return;
 		}
 
-		//throw Error <INVALID_X3D> ("Expected a component support level.");
-	}	
+		getBrowser () -> println ("Expected a component support level.");
+	}
 
-	//throw Error <INVALID_X3D> ("Expected a component name.");
-}
-
-bool
-JSONParser::componentNameString (json_object* const jobj, std::string & componentNameCharacters)
-{
-	return stringValue (jobj, componentNameCharacters);
-}
-
-bool
-JSONParser::componentLevelNumber (json_object* const jobj, int32_t & componentLevelNumber)
-{
-	return integerValue (jobj, componentLevelNumber);
+	getBrowser () -> println ("Expected a component name.");
 }
 
 void
@@ -253,6 +242,54 @@ JSONParser::unitArray (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
+	const int size = json_object_array_length (jobj);
+
+	for (int i = 0; i < size; ++ i)
+		unitObject (json_object_array_get_idx (jobj, i));
+}
+
+void
+JSONParser::unitObject (json_object* const jobj)
+{
+	__LOG__ << this << " " << jobj << std::endl;
+
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	std::string categoryNameCharacters;
+
+	if (categoryNameString (json_object_object_get (jobj, "@category"), categoryNameCharacters))
+	{
+		std::string unitNameCharacters;
+
+		if (unitNameString (json_object_object_get (jobj, "@name"), unitNameCharacters))
+		{
+			double unitConversionFactor;
+
+			if (unitConversionFactorNumber (json_object_object_get (jobj, "@conversionFactor"), unitConversionFactor))
+			{
+				try
+				{
+					scene -> updateUnit (categoryNameCharacters, unitNameCharacters, unitConversionFactor);
+					return;
+				}
+				catch (const X3DError & error)
+				{
+					getBrowser () -> println (error .what ());
+					return;
+				}
+			}
+
+			getBrowser () -> println ("Expected unit conversion factor.");
+		}
+
+		getBrowser () -> println ("Expected unit name identificator.");
+	}
+
+	getBrowser () -> println ("Expected category name identificator after UNIT statement.");
 }
 
 void
@@ -266,6 +303,39 @@ JSONParser::metaArray (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
+	const int size = json_object_array_length (jobj);
+
+	for (int i = 0; i < size; ++ i)
+		metaObject (json_object_array_get_idx (jobj, i));
+}
+
+void
+JSONParser::metaObject (json_object* const jobj)
+{
+	__LOG__ << this << " " << jobj << std::endl;
+
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	std::string metakeyCharacters;
+
+	if (metakey (json_object_object_get (jobj, "@name"), metakeyCharacters))
+	{
+		std::string metavalueCharacters;
+
+		if (metavalue (json_object_object_get (jobj, "@content"), metavalueCharacters))
+		{
+			scene -> addMetaData (metakeyCharacters, metavalueCharacters);
+			return;
+		}
+
+		getBrowser () -> println ("Expected metadata value.");
+	}
+
+	getBrowser () -> println ("Expected metadata key.");
 }
 
 void
@@ -279,6 +349,75 @@ JSONParser::sceneObject (json_object* const jobj)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
+	childrenArray (json_object_object_get (jobj, "-children"));
+}
+
+void
+JSONParser::childrenArray (json_object* const jobj)
+{
+	__LOG__ << this << " " << jobj << std::endl;
+
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	const int size = json_object_array_length (jobj);
+
+	for (int i = 0; i < size; ++ i)
+		childObject (json_object_array_get_idx (jobj, i));
+}
+
+void
+JSONParser::childObject (json_object* const jobj)
+{
+	__LOG__ << this << " " << jobj << std::endl;
+
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+/*
+	enum json_type type;
+	json_object_object_foreach (jobj, key, val)
+	{
+		printf ("type: ", type);
+		type = json_object_get_type (val);
+
+		switch (type)
+		{
+			case json_type_boolean:
+			case json_type_double:
+			case json_type_int:
+			case json_type_string: print_json_value (val);
+				break;
+			case json_type_object: printf ("json_type_objectn");
+				jobj = json_object_object_get (jobj, key);
+				json_parse (jobj);
+				break;
+			case json_type_array: printf ("type: json_type_array, ");
+				json_parse_array (jobj, key);
+				break;
+		}
+	}
+*/
+}
+
+bool
+JSONParser::doubleValue (json_object* const jobj, double & value)
+{
+	if (not jobj)
+		return false;
+
+	if (json_object_get_type (jobj) not_eq json_type_double)
+		return false;
+
+	value = json_object_get_double (jobj);
+
+	return true;
 }
 
 bool
