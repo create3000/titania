@@ -429,9 +429,50 @@ JSONParser::protoDeclareObject (const std::string & key, json_object* const jobj
 	if (key not_eq ProtoDeclare)
 		return false;
 
+	std::string nameCharacters;
 
+	if (stringValue (json_object_object_get (jobj, "@name"), nameCharacters))
+	{
+		const auto proto = getExecutionContext () -> createProtoDeclaration (nameCharacters, { });
+
+		protoInterfaceObject (json_object_object_get (jobj, "ProtoInterface"), proto);
+
+		pushExecutionContext (proto);
+
+		protoBodyObject (json_object_object_get (jobj, "ProtoBody"), proto);
+
+		popExecutionContext ();
+
+		getExecutionContext () -> updateProtoDeclaration (nameCharacters, proto);
+	}
 
 	return true;
+}
+
+void
+JSONParser::protoInterfaceObject (json_object* const jobj, const ProtoDeclarationPtr & proto)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	fieldArray (json_object_object_get (jobj, "field"), proto);
+}
+
+void
+JSONParser::protoBodyObject (json_object* const jobj, const ProtoDeclarationPtr & proto)
+{
+	FieldDefinitionArray interfaceDeclarations;
+
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	childrenArray (json_object_object_get (jobj, "-children"), proto -> getRootNodes ());
 }
 
 bool
@@ -557,7 +598,8 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 
 	sourceTextArray (json_object_object_get (jobj, "#sourceText"), node);
 
-	isObject (json_object_object_get (jobj, "IS"), node);
+	if (isInsideProtoDefinition ())
+		isObject (json_object_object_get (jobj, "IS"), node);
 
 	// After fields are parsed add node to execution context for initialisation.
 
@@ -597,7 +639,7 @@ JSONParser::fieldValueArray (json_object* const jobj, const SFNode & node)
 }
 
 void
-JSONParser::fieldArray (json_object* const jobj, const SFNode & node)
+JSONParser::fieldArray (json_object* const jobj, X3DBaseNode* const baseNode)
 {
 	if (not jobj)
 		return;
@@ -609,12 +651,12 @@ JSONParser::fieldArray (json_object* const jobj, const SFNode & node)
 
 	for (int32_t i = 0; i < size; ++ i)
 	{
-		fieldObject (json_object_array_get_idx (jobj, i), node);
+		fieldObject (json_object_array_get_idx (jobj, i), baseNode);
 	}	
 }
 
 void
-JSONParser::fieldObject (json_object* const jobj, const SFNode & node)
+JSONParser::fieldObject (json_object* const jobj, X3DBaseNode* const baseNode)
 {
 	if (not jobj)
 		return;
@@ -644,7 +686,7 @@ JSONParser::fieldObject (json_object* const jobj, const SFNode & node)
 					{
 						const auto field = supportedField -> create ();
 
-						node -> addUserDefinedField (accessType, nameCharacters, field);
+						baseNode -> addUserDefinedField (accessType, nameCharacters, field);
 
 						if (field -> isInitializable ())
 						{
@@ -699,8 +741,6 @@ JSONParser::sourceTextArray (json_object* const jobj, const SFNode & node)
 	if (not sourceText)
 		return;
 
-	sourceText -> clear ();
-
 	std::string string;
 	std::string value;
 
@@ -715,7 +755,8 @@ JSONParser::sourceTextArray (json_object* const jobj, const SFNode & node)
 		string += '\n';
 	}
 
-	sourceText -> emplace_back (string);
+	sourceText -> clear ();
+	sourceText -> emplace_back (std::move (string));
 }
 
 void
@@ -727,6 +768,64 @@ JSONParser::isObject (json_object* const jobj, const SFNode & node)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
+	connectArray (json_object_object_get (jobj, "connect"), node);
+}
+
+void
+JSONParser::connectArray (json_object* const jobj, const SFNode & node)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+		connectObject (json_object_array_get_idx (jobj, i), node);
+}
+
+void
+JSONParser::connectObject (json_object* const jobj, const SFNode & node)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	std::string nodeFieldCharacters;
+
+	if (stringValue (json_object_object_get (jobj, "@nodeField"), nodeFieldCharacters))
+	{
+		std::string protoFieldCharacters;
+	
+		if (stringValue (json_object_object_get (jobj, "@protoField"), protoFieldCharacters))
+		{
+			try
+			{
+				const auto nodeField  = node -> getField (nodeFieldCharacters);
+				const auto protoField = node -> getField (protoFieldCharacters);
+
+				if (nodeField -> getType () == protoField -> getType ())
+				{
+					if (protoField -> isReference (nodeField -> getAccessType ()))
+					{
+						nodeField -> addReference (protoField);
+					}
+					else
+						getBrowser () -> println ("Field '" + nodeField -> getName () + "' and '" + protoField -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " are incompatible as an IS mapping.");
+				}
+				else
+					getBrowser () -> println ("Field '" + nodeField -> getName () + "' and '" + protoField -> getName () + "' in PROTO " + getExecutionContext () -> getName () + " have different types.");
+			}
+			catch (const X3DError & error)
+			{
+				getBrowser () -> println (error .what ());
+			}
+		}
+	}
 }
 
 bool

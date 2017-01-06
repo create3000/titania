@@ -842,7 +842,7 @@ Parser::proto ()
 			{
 				auto _comments = std::move (getComments ());
 
-				FieldDefinitionArray _interfaceDeclarations = std::move (interfaceDeclarations ());
+				FieldDefinitionArray _interfaceDeclarations = interfaceDeclarations ();
 
 				comments ();
 

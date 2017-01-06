@@ -164,6 +164,12 @@ private:
 	bool
 	protoDeclareObject (const std::string & key, json_object* const jobj);
 
+	void
+	protoInterfaceObject (json_object* const jobj, const ProtoDeclarationPtr & proto);
+
+	void
+	protoBodyObject (json_object* const jobj, const ProtoDeclarationPtr & proto);
+
 	bool
 	importObject (const std::string & key, json_object* const jobj);
 
@@ -183,16 +189,22 @@ private:
 	fieldValueArray (json_object* const jobj, const SFNode & node);
 	
 	void
-	fieldArray (json_object* const jobj, const SFNode & node);
+	fieldArray (json_object* const jobj, X3DBaseNode* const node);
 	
 	void
-	fieldObject (json_object* const jobj, const SFNode & node);
+	fieldObject (json_object* const jobj, X3DBaseNode* const node);
 
 	void
 	sourceTextArray (json_object* const jobj, const SFNode & node);
 
 	void
 	isObject (json_object* const jobj, const SFNode & node);
+
+	void
+	connectArray (json_object* const jobj, const SFNode & node);
+
+	void
+	connectObject (json_object* const jobj, const SFNode & node);
 
 	bool
 	nodeNameString (json_object* const jobj, std::string & value)
