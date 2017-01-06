@@ -186,13 +186,16 @@ private:
 	fieldArray (json_object* const jobj, const SFNode & node);
 	
 	void
+	fieldObject (json_object* const jobj, const SFNode & node);
+
+	void
 	isObject (json_object* const jobj, const SFNode & node);
 
 	bool
 	nodeNameString (json_object* const jobj, std::string & value)
 	{ return stringValue (jobj, value); }
 
-	void
+	bool
 	fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const field);
 
 	///  @name Value handling
@@ -211,169 +214,169 @@ private:
 
 	///  @name Field value handling
 	
-	void
+	bool
 	sfboolValue (json_object* const jobj, SFBool* const field);
 	
-	void
+	bool
 	mfboolValue (json_object* const jobj, MFBool* const field);
 
-	void
+	bool
 	sfcolorValue (json_object* const jobj, SFColor* const field);
 	
-	void
+	bool
 	mfcolorValue (json_object* const jobj, MFColor* const field);
 	
 	bool
 	color3fValue (json_object* const jobj, const int i, Color3f & value);
 
-	void
+	bool
 	sfcolorRGBAValue (json_object* const jobj, SFColorRGBA* const field);
 	
-	void
+	bool
 	mfcolorRGBAValue (json_object* const jobj, MFColorRGBA* const field);
 	
 	bool
 	color4fValue (json_object* const jobj, const int i, Color4f & value);
 
-	void
+	bool
 	sfdoubleValue (json_object* const jobj, SFDouble* const field);
 
-	void
+	bool
 	mfdoubleValue (json_object* const jobj, MFDouble* const field);
 
-	void
+	bool
 	sffloatValue (json_object* const jobj, SFFloat* const field);
 
-	void
+	bool
 	mffloatValue (json_object* const jobj, MFFloat* const field);
 
-	void
+	bool
 	sfimageValue (json_object* const jobj, SFImage* const field);
 	
-	void
+	bool
 	mfimageValue (json_object* const jobj, MFImage* const field);
 	
 	void
 	imageValue (json_object* const jobj, const int32_t index, const int32_t width, const int32_t height, MFInt32 & array);
 
-	void
+	bool
 	sfint32Value (json_object* const jobj, SFInt32* const field);
 
-	void
+	bool
 	mfint32Value (json_object* const jobj, MFInt32* const field);
 
-	void
+	bool
 	sfmatrix3dValue (json_object* const jobj, SFMatrix3d* const field);
 
-	void
+	bool
 	mfmatrix3dValue (json_object* const jobj, MFMatrix3d* const field);
 	
 	bool
 	matrix3dValue (json_object* const jobj, const int i, Matrix3d & value);
 
-	void
+	bool
 	sfmatrix3fValue (json_object* const jobj, SFMatrix3f* const field);
 
-	void
+	bool
 	mfmatrix3fValue (json_object* const jobj, MFMatrix3f* const field);
 	
 	bool
 	matrix3fValue (json_object* const jobj, const int i, Matrix3f & value);
 
-	void
+	bool
 	sfmatrix4dValue (json_object* const jobj, SFMatrix4d* const field);
 	
-	void
+	bool
 	mfmatrix4dValue (json_object* const jobj, MFMatrix4d* const field);
 	
 	bool
 	matrix4dValue (json_object* const jobj, const int i, Matrix4d & value);
 
-	void
+	bool
 	sfmatrix4fValue (json_object* const jobj, SFMatrix4f* const field);
 	
-	void
+	bool
 	mfmatrix4fValue (json_object* const jobj, MFMatrix4f* const field);
 	
 	bool
 	matrix4fValue (json_object* const jobj, const int i, Matrix4f & value);
 
-	void
+	bool
 	sfnodeValue (json_object* const jobj, SFNode* const field);
 
-	void
+	bool
 	mfnodeValue (json_object* const jobj, MFNode* const field);
 
-	void
+	bool
 	sfrotationValue (json_object* const jobj, SFRotation* const field);
 
-	void
+	bool
 	mfrotationValue (json_object* const jobj, MFRotation* const field);
 
 	bool
 	rotation4dValue (json_object* const jobj, const int i, Rotation4d & value);
 
-	void
+	bool
 	sfstringValue (json_object* const jobj, SFString* const field);
 	
-	void
+	bool
 	mfstringValue (json_object* const jobj, MFString* const field);
 
-	void
+	bool
 	sftimeValue (json_object* const jobj, SFTime* const field);
 
-	void
+	bool
 	mftimeValue (json_object* const jobj, MFTime* const field);
 
-	void
+	bool
 	sfvec2dValue (json_object* const jobj, SFVec2d* const field);
 
-	void
+	bool
 	mfvec2dValue (json_object* const jobj, MFVec2d* const field);
 
 	bool
 	vector2dValue (json_object* const jobj, const int i, Vector2d & value);
 
-	void
+	bool
 	sfvec2fValue (json_object* const jobj, SFVec2f* const field);
 
-	void
+	bool
 	mfvec2fValue (json_object* const jobj, MFVec2f* const field);
 
 	bool
 	vector2fValue (json_object* const jobj, const int i, Vector2f & value);
 
-	void
+	bool
 	sfvec3dValue (json_object* const jobj, SFVec3d* const field);
 
-	void
+	bool
 	mfvec3dValue (json_object* const jobj, MFVec3d* const field);
 
 	bool
 	vector3dValue (json_object* const jobj, const int i, Vector3d & value);
 
-	void
+	bool
 	sfvec3fValue (json_object* const jobj, SFVec3f* const field);
 
-	void
+	bool
 	mfvec3fValue (json_object* const jobj, MFVec3f* const field);
 
 	bool
 	vector3fValue (json_object* const jobj, const int i, Vector3f & value);
 
-	void
+	bool
 	sfvec4dValue (json_object* const jobj, SFVec4d* const field);
 
-	void
+	bool
 	mfvec4dValue (json_object* const jobj, MFVec4d* const field);
 
 	bool
 	vector4dValue (json_object* const jobj, const int i, Vector4d & value);
 
-	void
+	bool
 	sfvec4fValue (json_object* const jobj, SFVec4f* const field);
 
-	void
+	bool
 	mfvec4fValue (json_object* const jobj, MFVec4f* const field);
 
 	bool

@@ -69,7 +69,9 @@ class Browser;
 class Parser :
 	public X3DParser
 {
-private:
+public:
+
+	///  @name Member types
 
 	class AccessTypes :
 		public std::map <std::string, AccessType>
@@ -80,17 +82,7 @@ private:
 
 	};
 
-	class FieldTypes :
-		public std::map <std::string, const X3DFieldDefinition*>
-	{
-	public:
-
-		FieldTypes ();
-
-	};
-
-
-public:
+	///  @name Construction
 
 	Parser (std::istream & istream, X3DScene*);
 
@@ -120,8 +112,10 @@ public:
 	parseIntoScene ()
 	throw (Error <INVALID_X3D>);
 
-	static AccessTypes accessTypes;
-
+	static
+	const AccessTypes &
+	getAccessTypes ()
+	{ return accessTypes; }
 
 private:
 
@@ -553,6 +547,8 @@ private:
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
+
+	static AccessTypes accessTypes;
 
 	///  @name Members
 
