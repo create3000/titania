@@ -189,6 +189,9 @@ private:
 	fieldObject (json_object* const jobj, const SFNode & node);
 
 	void
+	sourceTextArray (json_object* const jobj, const SFNode & node);
+
+	void
 	isObject (json_object* const jobj, const SFNode & node);
 
 	bool

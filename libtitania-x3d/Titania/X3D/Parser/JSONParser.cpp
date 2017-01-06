@@ -555,6 +555,8 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 	if (node -> canUserDefinedFields ())
 		fieldArray (json_object_object_get (jobj, "field"), node);
 
+	sourceTextArray (json_object_object_get (jobj, "#sourceText"), node);
+
 	isObject (json_object_object_get (jobj, "IS"), node);
 
 	// After fields are parsed add node to execution context for initialisation.
@@ -620,13 +622,6 @@ JSONParser::fieldObject (json_object* const jobj, const SFNode & node)
 	if (json_object_get_type (jobj) not_eq json_type_object)
 		return;
 
-//              {
-//                "@accessType": "initializeOnly",
-//                "@type": "SFBool",
-//                "@name": "SFBoolValue",
-//                "@value": true
-//              },
-
 	std::string accessTypeCharacters;
 
 	if (stringValue (json_object_object_get (jobj, "@accessType"), accessTypeCharacters))
@@ -688,6 +683,39 @@ JSONParser::fieldObject (json_object* const jobj, const SFNode & node)
 			getBrowser () -> println (error .what ());
 		}
 	}
+}
+
+void
+JSONParser::sourceTextArray (json_object* const jobj, const SFNode & node)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_array)
+		return;
+
+	const auto sourceText = node -> getSourceText ();
+
+	if (not sourceText)
+		return;
+
+	sourceText -> clear ();
+
+	std::string string;
+	std::string value;
+
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		if (not stringValue (json_object_array_get_idx (jobj, i), value))
+			value .clear ();
+
+		string += value;
+		string += '\n';
+	}
+
+	sourceText -> emplace_back (string);
 }
 
 void
