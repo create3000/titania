@@ -433,6 +433,9 @@ sub protoInstance {
 				$self -> is ($child);
 				next;
 			}
+
+			$self -> node ($child)
+				if $child -> nodeType () == XML_ELEMENT_NODE and $child -> getName () =~ /^(MetadataBoolean|MetadataDouble|MetadataFloat|MetadataInteger|MetadataSet|MetadataString)$/sgo;
 		}
 
 		shift @{$self -> {parents}};
@@ -619,8 +622,9 @@ sub addNode {
 			unless (exists $fieldIndex -> {$containerField})
 			{
 				my $field = {
-					name  => $containerField,
-					value => [ ]
+					fieldValue => $parent -> {userDefined},
+					name       => $containerField,
+					value      => [ ]
 				};
 
 				push @{$parent -> {fields}}, $field;

@@ -104,6 +104,16 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return protoNode -> getProtoDeclaration (); }
 
+	///  @name Fields
+
+	virtual
+	SFNode &
+	metadata ();
+
+	virtual
+	const SFNode &
+	metadata () const;
+
 	///  @name Member access
 
 	virtual

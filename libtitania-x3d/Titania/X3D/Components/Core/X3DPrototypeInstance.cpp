@@ -112,6 +112,32 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	getRootNodes () .setAccessType (initializeOnly);
 }
 
+SFNode &
+X3DPrototypeInstance::metadata ()
+{
+	try
+	{
+		return getField <SFNode> ("metadata");
+	}
+	catch (const X3DError &)
+	{
+		return X3DNode::metadata ();
+	}
+}
+
+const SFNode &
+X3DPrototypeInstance::metadata () const
+{
+	try
+	{
+		return getField <SFNode> ("metadata");
+	}
+	catch (const X3DError &)
+	{
+		return X3DNode::metadata ();
+	}
+}
+
 X3DPrototypeInstance*
 X3DPrototypeInstance::create (X3DExecutionContext* const executionContext) const
 {
@@ -141,7 +167,8 @@ X3DPrototypeInstance::construct ()
 
 		ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
 
-		metadata () = proto -> metadata ();
+		if (not metadata () .isSet ())
+			metadata () = proto -> metadata ();
 
 		const auto & fieldDefinitions = proto -> getFieldDefinitions ();
 
@@ -490,9 +517,18 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 		}
 	}
 
-	const FieldDefinitionArray fields = getChangedFields ();
+	const auto &         metadata = this -> metadata ();
+	FieldDefinitionArray fields   = getChangedFields ();
 
-	if (fields .empty ())
+	if (&metadata == &X3DNode::metadata ())
+	{
+		fields .erase (std::remove_if (fields .begin (),
+		                               fields .end (),
+		                               [&] (X3DFieldDefinition* const field) { return field == &X3DNode::metadata (); }),
+		               fields .end ());
+	}
+
+	if (fields .empty () and (&metadata == &X3DNode::metadata () ? not metadata : true))
 	{
 		ostream << "/>";
 	}
@@ -503,76 +539,102 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			<< Generator::Break
 			<< Generator::IncIndent;
 
-		FieldDefinitionArray references;
-
-		for (const auto & field : fields)
+		if (not fields .empty ())
 		{
-			// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
-			// for this field.
-
-			bool mustOutputValue = false;
-
-			if (Generator::ExecutionContext ())
+			FieldDefinitionArray references;
+	
+			for (const auto & field : fields)
 			{
-				if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
+				// If the field is a inputOutput and we have as reference only inputOnly or outputOnly we must output the value
+				// for this field.
+	
+				bool mustOutputValue = false;
+	
+				if (Generator::ExecutionContext ())
 				{
-					bool initializableReference = false;
-
-					for (const auto & reference : field -> getReferences ())
-						initializableReference |= reference -> isInitializable ();
-
-					if (not initializableReference)
-						mustOutputValue = true;
-				}
-			}
-
-			// If we have no execution context we are not in a proto and must not generate IS references the same is true
-			// if the node is a shared node as the node does not belong to the execution context.
-
-			if (field -> getReferences () .empty () or not Generator::ExecutionContext () or mustOutputValue)
-			{
-				if (mustOutputValue)
-					references .emplace_back (field);
-
-				switch (field -> getType ())
-				{
-					case X3DConstants::MFNode:
+					if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 					{
-						ostream
-							<< Generator::Indent
-							<< "<fieldValue"
-							<< Generator::Space
-							<< "name='"
-							<< XMLEncode (field -> getName ())
-							<< "'";
-
-						if (static_cast <MFNode*> (field) -> empty ())
-						{
-							ostream
-								<< "/>"
-								<< Generator::Break;
-						}
-						else
-						{
-							ostream
-								<< ">"
-								<< Generator::Break
-								<< Generator::IncIndent
-								<< XMLEncode (field)
-								<< Generator::Break
-								<< Generator::DecIndent
-								<< Generator::Indent
-								<< "</fieldValue>"
-								<< Generator::Break;
-						}
-
-						break;
+						bool initializableReference = false;
+	
+						for (const auto & reference : field -> getReferences ())
+							initializableReference |= reference -> isInitializable ();
+	
+						if (not initializableReference)
+							mustOutputValue = true;
 					}
-					case X3DConstants::SFNode:
+				}
+	
+				// If we have no execution context we are not in a proto and must not generate IS references the same is true
+				// if the node is a shared node as the node does not belong to the execution context.
+	
+				if (field -> getReferences () .empty () or not Generator::ExecutionContext () or mustOutputValue)
+				{
+					if (mustOutputValue)
+						references .emplace_back (field);
+	
+					switch (field -> getType ())
 					{
-						static const SFNode null_;
-
-						if (*field not_eq null_)
+						case X3DConstants::MFNode:
+						{
+							ostream
+								<< Generator::Indent
+								<< "<fieldValue"
+								<< Generator::Space
+								<< "name='"
+								<< XMLEncode (field -> getName ())
+								<< "'";
+	
+							if (static_cast <MFNode*> (field) -> empty ())
+							{
+								ostream
+									<< "/>"
+									<< Generator::Break;
+							}
+							else
+							{
+								ostream
+									<< ">"
+									<< Generator::Break
+									<< Generator::IncIndent
+									<< XMLEncode (field)
+									<< Generator::Break
+									<< Generator::DecIndent
+									<< Generator::Indent
+									<< "</fieldValue>"
+									<< Generator::Break;
+							}
+	
+							break;
+						}
+						case X3DConstants::SFNode:
+						{
+							static const SFNode null_;
+	
+							if (*field not_eq null_)
+							{
+								ostream
+									<< Generator::Indent
+									<< "<fieldValue"
+									<< Generator::Space
+									<< "name='"
+									<< XMLEncode (field -> getName ())
+									<< "'"
+									<< ">"
+									<< Generator::Break
+									<< Generator::IncIndent
+									<< XMLEncode (field)
+									<< Generator::Break
+									<< Generator::DecIndent
+									<< Generator::Indent
+									<< "</fieldValue>"
+									<< Generator::Break;
+	
+								break;
+							}
+	
+							// Proceed with next case.
+						}
+						default:
 						{
 							ostream
 								<< Generator::Indent
@@ -581,80 +643,67 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 								<< "name='"
 								<< XMLEncode (field -> getName ())
 								<< "'"
-								<< ">"
-								<< Generator::Break
-								<< Generator::IncIndent
+								<< Generator::Space
+								<< "value='"
 								<< XMLEncode (field)
-								<< Generator::Break
-								<< Generator::DecIndent
-								<< Generator::Indent
-								<< "</fieldValue>"
+								<< "'"
+								<< "/>"
 								<< Generator::Break;
-
+	
 							break;
 						}
-
-						// Proceed with next case.
 					}
-					default:
+				}
+				else
+				{
+					references .emplace_back (field);
+				}
+			}
+	
+			if (not references .empty ())
+			{
+				ostream
+					<< Generator::Indent
+					<< "<IS>"
+					<< Generator::Break
+					<< Generator::IncIndent;
+	
+				for (const auto & field : references)
+				{
+					for (const auto & reference : field -> getReferences ())
 					{
 						ostream
 							<< Generator::Indent
-							<< "<fieldValue"
+							<< "<connect"
 							<< Generator::Space
-							<< "name='"
+							<< "nodeField='"
 							<< XMLEncode (field -> getName ())
 							<< "'"
 							<< Generator::Space
-							<< "value='"
-							<< XMLEncode (field)
+							<< "protoField='"
+							<< XMLEncode (reference -> getName ())
 							<< "'"
 							<< "/>"
 							<< Generator::Break;
-
-						break;
 					}
 				}
-			}
-			else
-			{
-				references .emplace_back (field);
+	
+				ostream
+					<< Generator::DecIndent
+					<< Generator::Indent
+					<< "</IS>"
+					<< Generator::Break;
 			}
 		}
 
-		if (not references .empty ())
+		if (&metadata == &X3DNode::metadata ())
 		{
-			ostream
-				<< Generator::Indent
-				<< "<IS>"
-				<< Generator::Break
-				<< Generator::IncIndent;
-
-			for (const auto & field : references)
+			if (metadata)
 			{
-				for (const auto & reference : field -> getReferences ())
-				{
-					ostream
-						<< Generator::Indent
-						<< "<connect"
-						<< Generator::Space
-						<< "nodeField='"
-						<< XMLEncode (field -> getName ())
-						<< "'"
-						<< Generator::Space
-						<< "protoField='"
-						<< XMLEncode (reference -> getName ())
-						<< "'"
-						<< "/>"
-						<< Generator::Break;
-				}
+				ostream
+					<< XMLEncode (metadata)
+					<< Generator::Break;
 			}
-
-			ostream
-				<< Generator::DecIndent
-				<< Generator::Indent
-				<< "</IS>"
-				<< Generator::Break;
 		}
 
 		ostream
