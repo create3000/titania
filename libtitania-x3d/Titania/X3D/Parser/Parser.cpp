@@ -594,8 +594,7 @@ Parser::importStatement ()
 
 		if (inlineNodeNameId (_inlineNodeNameId))
 		{
-			const SFNode          _namedNode  = getExecutionContext () -> getNamedNode (_inlineNodeNameId);
-			const X3DPtr <Inline> _inlineNode = x3d_cast <Inline*> (_namedNode);
+			const auto _inlineNode = getExecutionContext () -> getNamedNode <Inline> (_inlineNodeNameId);
 
 			if (_inlineNode)
 			{

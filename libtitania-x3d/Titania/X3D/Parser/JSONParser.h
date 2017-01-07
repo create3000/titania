@@ -248,7 +248,7 @@ private:
 	mfcolorValue (json_object* const jobj, MFColor* const field);
 	
 	bool
-	color3fValue (json_object* const jobj, const int i, Color3f & value);
+	color3fValue (json_object* const jobj, const int32_t i, Color3f & value);
 
 	bool
 	sfcolorRGBAValue (json_object* const jobj, SFColorRGBA* const field);
@@ -257,7 +257,7 @@ private:
 	mfcolorRGBAValue (json_object* const jobj, MFColorRGBA* const field);
 	
 	bool
-	color4fValue (json_object* const jobj, const int i, Color4f & value);
+	color4fValue (json_object* const jobj, const int32_t i, Color4f & value);
 
 	bool
 	sfdoubleValue (json_object* const jobj, SFDouble* const field);
@@ -293,7 +293,7 @@ private:
 	mfmatrix3dValue (json_object* const jobj, MFMatrix3d* const field);
 	
 	bool
-	matrix3dValue (json_object* const jobj, const int i, Matrix3d & value);
+	matrix3dValue (json_object* const jobj, const int32_t i, Matrix3d & value);
 
 	bool
 	sfmatrix3fValue (json_object* const jobj, SFMatrix3f* const field);
@@ -302,7 +302,7 @@ private:
 	mfmatrix3fValue (json_object* const jobj, MFMatrix3f* const field);
 	
 	bool
-	matrix3fValue (json_object* const jobj, const int i, Matrix3f & value);
+	matrix3fValue (json_object* const jobj, const int32_t i, Matrix3f & value);
 
 	bool
 	sfmatrix4dValue (json_object* const jobj, SFMatrix4d* const field);
@@ -311,7 +311,7 @@ private:
 	mfmatrix4dValue (json_object* const jobj, MFMatrix4d* const field);
 	
 	bool
-	matrix4dValue (json_object* const jobj, const int i, Matrix4d & value);
+	matrix4dValue (json_object* const jobj, const int32_t i, Matrix4d & value);
 
 	bool
 	sfmatrix4fValue (json_object* const jobj, SFMatrix4f* const field);
@@ -320,7 +320,7 @@ private:
 	mfmatrix4fValue (json_object* const jobj, MFMatrix4f* const field);
 	
 	bool
-	matrix4fValue (json_object* const jobj, const int i, Matrix4f & value);
+	matrix4fValue (json_object* const jobj, const int32_t i, Matrix4f & value);
 
 	bool
 	sfnodeValue (json_object* const jobj, SFNode* const field);
@@ -335,7 +335,7 @@ private:
 	mfrotationValue (json_object* const jobj, MFRotation* const field);
 
 	bool
-	rotation4dValue (json_object* const jobj, const int i, Rotation4d & value);
+	rotation4dValue (json_object* const jobj, const int32_t i, Rotation4d & value);
 
 	bool
 	sfstringValue (json_object* const jobj, SFString* const field);
@@ -356,7 +356,7 @@ private:
 	mfvec2dValue (json_object* const jobj, MFVec2d* const field);
 
 	bool
-	vector2dValue (json_object* const jobj, const int i, Vector2d & value);
+	vector2dValue (json_object* const jobj, const int32_t i, Vector2d & value);
 
 	bool
 	sfvec2fValue (json_object* const jobj, SFVec2f* const field);
@@ -365,7 +365,7 @@ private:
 	mfvec2fValue (json_object* const jobj, MFVec2f* const field);
 
 	bool
-	vector2fValue (json_object* const jobj, const int i, Vector2f & value);
+	vector2fValue (json_object* const jobj, const int32_t i, Vector2f & value);
 
 	bool
 	sfvec3dValue (json_object* const jobj, SFVec3d* const field);
@@ -374,7 +374,7 @@ private:
 	mfvec3dValue (json_object* const jobj, MFVec3d* const field);
 
 	bool
-	vector3dValue (json_object* const jobj, const int i, Vector3d & value);
+	vector3dValue (json_object* const jobj, const int32_t i, Vector3d & value);
 
 	bool
 	sfvec3fValue (json_object* const jobj, SFVec3f* const field);
@@ -383,7 +383,7 @@ private:
 	mfvec3fValue (json_object* const jobj, MFVec3f* const field);
 
 	bool
-	vector3fValue (json_object* const jobj, const int i, Vector3f & value);
+	vector3fValue (json_object* const jobj, const int32_t i, Vector3f & value);
 
 	bool
 	sfvec4dValue (json_object* const jobj, SFVec4d* const field);
@@ -392,7 +392,7 @@ private:
 	mfvec4dValue (json_object* const jobj, MFVec4d* const field);
 
 	bool
-	vector4dValue (json_object* const jobj, const int i, Vector4d & value);
+	vector4dValue (json_object* const jobj, const int32_t i, Vector4d & value);
 
 	bool
 	sfvec4fValue (json_object* const jobj, SFVec4f* const field);
@@ -401,7 +401,7 @@ private:
 	mfvec4fValue (json_object* const jobj, MFVec4f* const field);
 
 	bool
-	vector4fValue (json_object* const jobj, const int i, Vector4f & value);
+	vector4fValue (json_object* const jobj, const int32_t i, Vector4f & value);
 
 	///  @name Execution context handling
 

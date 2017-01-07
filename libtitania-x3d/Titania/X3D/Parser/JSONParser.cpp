@@ -52,6 +52,7 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
+#include "../Components/Networking/Inline.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Parser.h"
 #include "../Prototype/ProtoDeclaration.h"
@@ -499,7 +500,29 @@ JSONParser::importObject (const std::string & key, json_object* const jobj)
 	if (key not_eq IMPORT)
 		return false;
 
+	std::string inlineDEFCharacters;
 
+	if (stringValue (json_object_object_get (jobj, "@inlineDEF"), inlineDEFCharacters))
+	{
+		std::string importedDEFCharacters;
+	
+		if (stringValue (json_object_object_get (jobj, "@importedDEF"), importedDEFCharacters))
+		{
+			std::string ASCharacters;
+		
+			stringValue (json_object_object_get (jobj, "@AS"), ASCharacters);
+
+			try
+			{
+				const auto   inlineNode   = getExecutionContext () -> getNamedNode <Inline> (inlineDEFCharacters);
+				/*const auto & importedNode =*/ getExecutionContext () -> updateImportedNode (inlineNode, importedDEFCharacters, ASCharacters);
+			}
+			catch (const X3DError & error)
+			{
+				getBrowser () -> println (error .what ());
+			}
+		}
+	}
 
 	return true;
 }
@@ -512,7 +535,37 @@ JSONParser::routeObject (const std::string & key, json_object* const jobj)
 	if (key not_eq ROUTE)
 		return false;
 
+	std::string fromNodeCharacters;
 
+	if (stringValue (json_object_object_get (jobj, "@fromNode"), fromNodeCharacters))
+	{
+		std::string fromFieldCharacters;
+	
+		if (stringValue (json_object_object_get (jobj, "@fromField"), fromFieldCharacters))
+		{
+			std::string toNodeCharacters;
+		
+			if (stringValue (json_object_object_get (jobj, "@toNode"), toNodeCharacters))
+			{
+				std::string toFieldCharacters;
+			
+				if (stringValue (json_object_object_get (jobj, "@toField"), toFieldCharacters))
+				{
+					try
+					{
+						const auto fromNode = getExecutionContext () -> getLocalNode (fromNodeCharacters);
+						const auto toNode   = getExecutionContext () -> getLocalNode (toNodeCharacters);
+
+						getExecutionContext () -> addRoute (fromNode, fromFieldCharacters, toNode, toFieldCharacters);
+					}
+					catch (const X3DError & error)
+					{
+						getBrowser () -> println (error .what ());
+					}
+				}
+			}
+		}
+	}
 
 	return true;
 }
@@ -525,7 +578,27 @@ JSONParser::exportObject (const std::string & key, json_object* const jobj)
 	if (key not_eq EXPORT)
 		return false;
 
+	std::string localDEFCharacters;
 
+	if (stringValue (json_object_object_get (jobj, "@localDEF"), localDEFCharacters))
+	{
+		std::string ASCharacters;
+	
+		stringValue (json_object_object_get (jobj, "@AS"), ASCharacters);
+
+		if (ASCharacters .empty ())
+			ASCharacters = localDEFCharacters;
+
+		try
+		{
+			const auto   node         = scene -> getLocalNode (localDEFCharacters);
+			/*const auto & exportedNode =*/ scene -> updateExportedNode (ASCharacters, node);
+		}
+		catch (const X3DError & error)
+		{
+			getBrowser () -> println (error .what ());
+		}
+	}
 
 	return true;
 }
