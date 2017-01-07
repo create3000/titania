@@ -434,8 +434,7 @@ sub protoInstance {
 				next;
 			}
 
-			$self -> node ($child)
-				if $child -> nodeType () == XML_ELEMENT_NODE and $child -> getName () =~ /^(MetadataBoolean|MetadataDouble|MetadataFloat|MetadataInteger|MetadataSet|MetadataString)$/sgo;
+			$self -> statement ($child);
 		}
 
 		shift @{$self -> {parents}};
