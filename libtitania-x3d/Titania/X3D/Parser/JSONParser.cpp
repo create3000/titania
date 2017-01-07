@@ -606,6 +606,8 @@ JSONParser::exportObject (const std::string & key, json_object* const jobj)
 bool
 JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, SFNode & node)
 {
+	static const std::string ProtoInstance = "ProtoInstance";
+
 	// USE property
 
 	try
@@ -633,21 +635,29 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 
 	try
 	{
-		node = getExecutionContext () -> createNode (nodeType);
-	}
-	catch (const X3DError & error1)
-	{
-		try
+		if (nodeType == ProtoInstance)
 		{
-			node = getExecutionContext () -> createPrototypeInstance (nodeType) .getValue ();
+			std::string nameCharacters;
+		
+			if (stringValue (json_object_object_get (jobj, "@name"), nameCharacters))
+			{
+				node = getExecutionContext () -> createPrototypeInstance (nameCharacters) .getValue ();
 
-			prototypeInstance = true;
+				prototypeInstance = true;
+			}
+			else
+			{
+				getBrowser () -> println ("Couldn't create proto instance, no name given.");
+				return false;
+			}
 		}
-		catch (const X3DError & error2)
-		{
-			getBrowser () -> println (error1 .what () + std::string ("\n") + error2 .what ());
-			return false;
-		}
+		else
+			node = getExecutionContext () -> createNode (nodeType);
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println (error .what ());
+		return false;
 	}
 
 	// Node name
@@ -954,7 +964,7 @@ JSONParser::connectObject (json_object* const jobj, const SFNode & node)
 			try
 			{
 				const auto nodeField  = node -> getField (nodeFieldCharacters);
-				const auto protoField = node -> getField (protoFieldCharacters);
+				const auto protoField = getExecutionContext () -> getField (protoFieldCharacters);
 
 				if (nodeField -> getType () == protoField -> getType ())
 				{

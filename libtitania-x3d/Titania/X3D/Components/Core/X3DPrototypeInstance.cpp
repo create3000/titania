@@ -750,6 +750,19 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 				<< '{'
 				<< Generator::TidyBreak
 				<< Generator::IncIndent
+
+				<< Generator::Indent
+				<< '"'
+				<< "@name"
+				<< '"'
+				<< ':'
+				<< Generator::TidySpace
+				<< '"'
+				<< getTypeName ()
+				<< '"'
+				<< ','
+				<< Generator::TidyBreak
+
 				<< Generator::Indent
 				<< '"'
 				<< "@USE"
@@ -758,6 +771,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 				<< Generator::TidySpace
 				<< JSONEncode (SFString (name))
 				<< Generator::TidyBreak
+
 				<< Generator::DecIndent
 				<< Generator::Indent
 				<< '}'
@@ -779,7 +793,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 		<< '{'
 		<< Generator::TidySpace
 		<< '"'
-		<< getTypeName ()
+		<< "ProtoInstance"
 		<< '"'
 		<< ':'
 		<< Generator::TidyBreak
