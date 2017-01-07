@@ -54,6 +54,8 @@
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Parser.h"
+#include "../Prototype/ProtoDeclaration.h"
+#include "../Prototype/ExternProtoDeclaration.h"
 
 extern "C" {
 
@@ -416,7 +418,21 @@ JSONParser::externProtoDeclareObject (const std::string & key, json_object* cons
 	if (key not_eq ExternProtoDeclare)
 		return false;
 
+	std::string nameCharacters;
 
+	if (stringValue (json_object_object_get (jobj, "@name"), nameCharacters))
+	{
+		MFString URLList;
+
+		if (mfstringValue (json_object_object_get (jobj, "@url"), &URLList))
+		{
+			const auto externproto = getExecutionContext () -> createExternProtoDeclaration (nameCharacters, { }, URLList);
+	
+			fieldArray (json_object_object_get (jobj, "field"), externproto);
+	
+			getExecutionContext () -> updateExternProtoDeclaration (nameCharacters, externproto);
+		}
+	}
 
 	return true;
 }
@@ -586,7 +602,11 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 
 	if (prototypeInstance)
 	{
-		fieldTypeObject (json_object_object_get (jobj, "-metadata"), node -> getField ("metadata"));
+		const auto metadata = node -> getField ("metadata");
+
+		if (metadata -> getType () == X3DConstants::SFNode)
+			fieldTypeObject (json_object_object_get (jobj, "-metadata"), metadata);
+
 		fieldValueArray (json_object_object_get (jobj, "fieldValue"), node);
 	}
 	else
@@ -636,6 +656,61 @@ JSONParser::fieldValueArray (json_object* const jobj, const SFNode & node)
 	if (json_object_get_type (jobj) not_eq json_type_array)
 		return;
 
+	const int32_t size = json_object_array_length (jobj);
+
+	for (int32_t i = 0; i < size; ++ i)
+	{
+		fieldValueObject (json_object_array_get_idx (jobj, i), node);
+	}	
+}
+
+void
+JSONParser::fieldValueObject (json_object* const jobj, const SFNode & node)
+{
+	if (not jobj)
+		return;
+
+	if (json_object_get_type (jobj) not_eq json_type_object)
+		return;
+
+	std::string nameCharacters;
+
+	if (stringValue (json_object_object_get (jobj, "@name"), nameCharacters))
+	{
+		try
+		{
+			const auto field = node -> getField (nameCharacters);
+
+			if (field -> isInitializable ())
+			{
+				switch (field -> getType ())
+				{
+					case X3DConstants::SFNode:
+					{
+						MFNode value;
+	
+						if (fieldTypeObject (json_object_object_get (jobj, "-children"), &value))
+						{
+							if (not value .empty ())
+								*static_cast <SFNode*> (field) = value [0];
+						}
+	
+						break;
+					}
+					case X3DConstants::MFNode:
+						fieldTypeObject (json_object_object_get (jobj, "-children"), field);
+						break;
+					default:
+						fieldTypeObject (json_object_object_get (jobj, "@value"), field);
+						break;
+				}
+			}
+		}
+		catch (const X3DError & error)
+		{
+			getBrowser () -> println (error .what ());
+		}
+	}
 }
 
 void
@@ -830,6 +905,18 @@ JSONParser::connectObject (json_object* const jobj, const SFNode & node)
 
 bool
 JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const field)
+{
+	if (fieldTypeObjectSwitch (jobj, field))
+	{
+		field -> isSet (true);
+		return true;
+	}
+
+	return false;
+}
+
+bool
+JSONParser::fieldTypeObjectSwitch (json_object* const jobj, X3DFieldDefinition* const field)
 {
 	switch (field -> getType ())
 	{

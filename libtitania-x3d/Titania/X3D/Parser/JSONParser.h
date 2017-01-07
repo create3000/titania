@@ -187,6 +187,9 @@ private:
 
 	void
 	fieldValueArray (json_object* const jobj, const SFNode & node);
+
+	void
+	fieldValueObject (json_object* const jobj, const SFNode & node);
 	
 	void
 	fieldArray (json_object* const jobj, X3DBaseNode* const node);
@@ -212,6 +215,9 @@ private:
 
 	bool
 	fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const field);
+
+	bool
+	fieldTypeObjectSwitch (json_object* const jobj, X3DFieldDefinition* const field);
 
 	///  @name Value handling
 

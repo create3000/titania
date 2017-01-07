@@ -58,6 +58,7 @@
 #include "../Execution/ImportedNode.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Grammar.h"
+#include "../Prototype/ProtoDeclaration.h"
 #include "../Prototype/ExternProtoDeclaration.h"
 
 namespace titania {
