@@ -74,7 +74,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~FileImportDialog ();
+	~FileImportDialog () final override;
 
 private:
 

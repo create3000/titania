@@ -176,7 +176,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DNodeEditorInterface ();
+	~X3DNodeEditorInterface () override;
 
 
 private:

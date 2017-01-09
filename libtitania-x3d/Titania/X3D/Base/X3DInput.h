@@ -90,7 +90,7 @@ public:
 
 	///  Destructs this object.
 	virtual
-	~X3DInput ();
+	~X3DInput () override;
 
 
 protected:

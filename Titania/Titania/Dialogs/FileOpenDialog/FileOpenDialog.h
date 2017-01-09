@@ -88,7 +88,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~FileOpenDialog ();
+	~FileOpenDialog () final override;
 
 private:
 

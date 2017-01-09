@@ -146,7 +146,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~Context ();
+	~Context () final override;
 
 
 private:

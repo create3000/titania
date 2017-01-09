@@ -82,7 +82,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~SFColorRGBAButton ();
+	~SFColorRGBAButton () final override;
 
 
 private:

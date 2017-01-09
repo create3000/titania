@@ -71,7 +71,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~OpenLocationDialog ();
+	~OpenLocationDialog () final override;
 
 
 private:

@@ -144,7 +144,8 @@ public:
 	void
 	dispose () final override;
 
-	~DependentRenderer ();
+	virtual
+	~DependentRenderer () final override;
 
 
 private:

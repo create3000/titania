@@ -143,7 +143,8 @@ public:
 
 	///  @name Destruction
 
-	~OutlineTreeData ();
+	virtual
+	~OutlineTreeData () final override;
 
 
 private:

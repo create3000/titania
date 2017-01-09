@@ -240,7 +240,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~NavigationInfo ();
+	~NavigationInfo () final override;
 
 
 private:

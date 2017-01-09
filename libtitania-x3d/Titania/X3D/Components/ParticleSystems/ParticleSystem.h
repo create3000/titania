@@ -284,7 +284,7 @@ public:
 	dispose () override;
 
 	virtual
-	~ParticleSystem ();
+	~ParticleSystem () override;
 
 
 protected:

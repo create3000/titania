@@ -187,7 +187,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DBaseInterface ();
+	~X3DBaseInterface () override;
 
 
 protected:

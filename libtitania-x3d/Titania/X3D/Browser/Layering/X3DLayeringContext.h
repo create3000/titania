@@ -81,7 +81,7 @@ public:
 	{ }
 
 	virtual
-	~X3DLayeringContext ();
+	~X3DLayeringContext () override;
 
 
 protected:

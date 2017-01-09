@@ -75,7 +75,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~FogEditor ();
+	~FogEditor () final override;
 
 
 private:

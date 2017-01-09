@@ -69,7 +69,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DMovieTextureEditor ();
+	~X3DMovieTextureEditor () override;
 
 
 protected:

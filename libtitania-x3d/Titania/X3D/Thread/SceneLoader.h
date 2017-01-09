@@ -126,7 +126,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~SceneLoader ();
+	~SceneLoader () final override;
 
 
 private:

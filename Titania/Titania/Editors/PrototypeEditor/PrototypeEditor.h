@@ -72,7 +72,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~PrototypeEditor ();
+	~PrototypeEditor () final override;
 
 private:
 

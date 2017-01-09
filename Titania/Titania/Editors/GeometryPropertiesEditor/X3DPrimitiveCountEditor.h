@@ -64,7 +64,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DPrimitiveCountEditor ();
+	~X3DPrimitiveCountEditor () override;
 
 
 protected:

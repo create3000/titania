@@ -72,7 +72,7 @@ public:
 
 	///  @name Construction
 
-	Parser (const X3DScenePtr &, const basic::uri &, std::istream &);
+	Parser (const X3D::X3DScenePtr &, const basic::uri &, std::istream &);
 
 	///  @name Operations
 
@@ -163,9 +163,10 @@ private:
 
 	///  @name Members
 
-	const X3DScenePtr         scene;
-	const basic::uri          uri;
-	std::istream &            istream;
+	const X3D::X3DScenePtr scene;
+	const basic::uri       uri;
+	std::istream &         istream;
+
 	size_t                    lineNumber;
 	std::string               whiteSpaceCharacters;
 	std::string               commentCharacters;

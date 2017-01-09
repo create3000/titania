@@ -79,7 +79,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~ViewpointEditor ();
+	~ViewpointEditor () final override;
 
 protected:
 

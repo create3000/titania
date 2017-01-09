@@ -67,7 +67,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DLayoutEditor ();
+	~X3DLayoutEditor () override;
 
 
 protected:

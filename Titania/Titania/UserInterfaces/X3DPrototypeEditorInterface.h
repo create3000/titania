@@ -252,7 +252,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DPrototypeEditorInterface ();
+	~X3DPrototypeEditorInterface () override;
 
 
 private:

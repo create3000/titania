@@ -73,7 +73,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DUserDefinedFieldsEditor ();
+	~X3DUserDefinedFieldsEditor () override;
 
 
 protected:

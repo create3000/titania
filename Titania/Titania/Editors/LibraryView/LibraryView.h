@@ -74,7 +74,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~LibraryView ();
+	~LibraryView () final override;
 
 
 private:

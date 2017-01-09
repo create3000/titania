@@ -121,7 +121,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~CollidableOffset ();
+	~CollidableOffset () final override;
 
 
 private:

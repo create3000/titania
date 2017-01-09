@@ -100,7 +100,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DUnitContext ();
+	~X3DUnitContext () override;
 
 
 protected:

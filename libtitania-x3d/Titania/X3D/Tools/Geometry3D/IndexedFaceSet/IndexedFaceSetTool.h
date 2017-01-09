@@ -87,7 +87,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~IndexedFaceSetTool ();
+	~IndexedFaceSetTool () final override;
 
 
 protected:

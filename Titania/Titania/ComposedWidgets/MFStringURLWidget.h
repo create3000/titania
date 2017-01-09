@@ -76,7 +76,7 @@ public:
 	                   const std::string &);
 
 	virtual
-	~MFStringURLWidget ();
+	~MFStringURLWidget () final override;
 
 
 private:

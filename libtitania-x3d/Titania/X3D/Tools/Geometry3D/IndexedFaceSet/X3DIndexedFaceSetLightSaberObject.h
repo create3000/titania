@@ -68,7 +68,8 @@ public:
 	dispose ()
 	{ }
 
-	~X3DIndexedFaceSetLightSaberObject ();
+	virtual
+	~X3DIndexedFaceSetLightSaberObject () override;
 
 
 protected:

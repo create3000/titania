@@ -122,7 +122,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~CollidableShape ();
+	~CollidableShape () final override;
 
 
 private:

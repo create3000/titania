@@ -200,7 +200,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DBrowserContext ();
+	~X3DBrowserContext () override;
 
 
 protected:

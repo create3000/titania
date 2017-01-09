@@ -464,7 +464,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DAnimationEditorInterface ();
+	~X3DAnimationEditorInterface () override;
 
 
 private:

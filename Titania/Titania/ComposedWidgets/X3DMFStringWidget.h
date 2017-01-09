@@ -80,7 +80,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DMFStringWidget ();
+	~X3DMFStringWidget () override;
 
 
 protected:

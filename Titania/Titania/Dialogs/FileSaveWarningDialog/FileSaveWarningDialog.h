@@ -71,7 +71,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~FileSaveWarningDialog ();
+	~FileSaveWarningDialog () final override;
 
 };
 

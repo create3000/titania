@@ -69,7 +69,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DBackgroundEditor ();
+	~X3DBackgroundEditor () override;
 
 
 protected:

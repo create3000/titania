@@ -68,7 +68,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DFillPropertiesEditor ();
+	~X3DFillPropertiesEditor () override;
 
 
 protected:

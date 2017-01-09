@@ -73,7 +73,7 @@ public:
 	TextEditor (X3DBrowserWindow* const);
 	
 	virtual
-	~TextEditor ();
+	~TextEditor () final override;
 
 
 private:

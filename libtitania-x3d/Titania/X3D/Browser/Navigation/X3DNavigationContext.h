@@ -134,7 +134,7 @@ public:
 	{ }
 
 	virtual
-	~X3DNavigationContext ();
+	~X3DNavigationContext () override;
 
 
 protected:

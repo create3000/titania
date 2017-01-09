@@ -225,7 +225,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DLayerNode ();
+	~X3DLayerNode () override;
 
 
 protected:

@@ -272,7 +272,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DViewpointNode ();
+	~X3DViewpointNode () override;
 
 
 protected:

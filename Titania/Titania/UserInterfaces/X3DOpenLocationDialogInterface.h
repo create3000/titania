@@ -128,7 +128,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DOpenLocationDialogInterface ();
+	~X3DOpenLocationDialogInterface () override;
 
 
 private:

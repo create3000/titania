@@ -78,7 +78,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~AppearanceEditor ();
+	~AppearanceEditor () final override;
 
 
 private:

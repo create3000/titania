@@ -78,7 +78,7 @@ public:
 	/// @name Destruction
 
 	virtual
-	~BrowserWindow ();
+	~BrowserWindow () final override;
 
 
 private:

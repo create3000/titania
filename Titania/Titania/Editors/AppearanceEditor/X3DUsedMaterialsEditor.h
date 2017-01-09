@@ -75,7 +75,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DUsedMaterialsEditor ();
+	~X3DUsedMaterialsEditor () override;
 
 
 protected:

@@ -130,7 +130,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~ImageTexture3D ();
+	~ImageTexture3D () final override;
 
 
 private:

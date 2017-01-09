@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,58 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_PALETTE_EDITOR_H__
-#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_PALETTE_EDITOR_H__
+#ifndef __TITANIA_X3D_PARSER_SVG_PARSER_H__
+#define __TITANIA_X3D_PARSER_SVG_PARSER_H__
 
-#include "../../UserInterfaces/X3DTextureEditorInterface.h"
-#include "../PaletteEditor/X3DPaletteEditor.h"
+#include "../../Execution/X3DScene.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
+namespace SVG {
 
-class X3DTexturePaletteEditor :
-	public X3DPaletteEditor <X3DTextureEditorInterface>
+class Parser
 {
 public:
+
+	///  @name Construction
+
+	Parser (const X3D::X3DScenePtr &, const basic::uri &, std::istream &);
+
+	///  @name Operations
+
+	void
+	parseIntoScene ();
 
 	///  @name Destruction
 
 	virtual
-	~X3DTexturePaletteEditor () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DTexturePaletteEditor ();
-
-	///  @name Member access
-
-	virtual
-	const X3D::X3DPtr <X3D::X3DTextureNode> &
-	getTexture () const = 0;
+	~Parser ();
 
 
 private:
 
-	///  @name Operations
+	///  @name Members
 
-	virtual
-	void
-	addObject (const std::string &) final override;
-
-	virtual
-	void
-	setTouchTime (const std::string &) final override;
-
-	virtual
-	bool
-	createScene (const X3D::X3DScenePtr &) final override;
+	const X3D::X3DScenePtr scene;
+	const basic::uri       uri;
+	std::istream &         istream;
 
 };
 
-} // puck
+} // SVG
+} // X3D
 } // titania
 
 #endif

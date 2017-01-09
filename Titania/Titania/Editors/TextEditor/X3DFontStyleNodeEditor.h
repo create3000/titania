@@ -71,7 +71,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DFontStyleNodeEditor ();
+	~X3DFontStyleNodeEditor () override;
 
 
 protected:

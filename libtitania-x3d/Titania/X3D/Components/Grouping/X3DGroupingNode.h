@@ -126,7 +126,7 @@ public:
 	///  @name Construction
 
 	virtual
-	~X3DGroupingNode ();
+	~X3DGroupingNode () override;
 
 
 protected:

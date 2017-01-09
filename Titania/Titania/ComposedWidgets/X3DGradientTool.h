@@ -99,7 +99,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DGradientTool ();
+	~X3DGradientTool () override;
 
 
 protected:

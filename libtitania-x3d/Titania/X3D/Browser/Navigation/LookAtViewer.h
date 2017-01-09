@@ -98,7 +98,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~LookAtViewer ();
+	~LookAtViewer () final override;
 
 
 private:

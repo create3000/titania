@@ -70,7 +70,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~Sidebar ();
+	~Sidebar () final override;
 
 
 private:

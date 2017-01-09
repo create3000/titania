@@ -244,7 +244,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DInlineEditorInterface ();
+	~X3DInlineEditorInterface () override;
 
 
 private:

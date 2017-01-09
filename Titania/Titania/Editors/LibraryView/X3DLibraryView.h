@@ -76,7 +76,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DLibraryView ();
+	~X3DLibraryView () override;
 
 
 protected:

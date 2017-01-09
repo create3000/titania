@@ -67,7 +67,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DMetaDataEditor ();
+	~X3DMetaDataEditor () override;
 
 
 protected:

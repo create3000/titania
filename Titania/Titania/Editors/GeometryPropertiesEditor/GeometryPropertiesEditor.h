@@ -97,7 +97,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~GeometryPropertiesEditor ();
+	~GeometryPropertiesEditor () final override;
 
 
 private:

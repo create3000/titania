@@ -85,7 +85,8 @@ public:
 	dispose ()
 	{ }
 
-	~X3DIndexedFaceSetKnifeObject ();
+	virtual
+	~X3DIndexedFaceSetKnifeObject () override;
 
 
 protected:

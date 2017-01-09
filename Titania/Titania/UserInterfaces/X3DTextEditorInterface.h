@@ -328,7 +328,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DTextEditorInterface ();
+	~X3DTextEditorInterface () override;
 
 
 private:

@@ -82,7 +82,8 @@ public:
 	dispose () override
 	{ }
 
-	~X3DTextContext ();
+	virtual
+	~X3DTextContext () override;
 
 
 protected:

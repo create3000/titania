@@ -95,7 +95,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~ScriptEditor ();
+	~ScriptEditor () final override;
 
 protected:
 

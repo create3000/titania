@@ -80,7 +80,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~MagicImport ();
+	~MagicImport () final override;
 
 
 private:

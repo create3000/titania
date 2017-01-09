@@ -80,7 +80,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~NormalTool ();
+	~NormalTool () final override;
 
 
 private:

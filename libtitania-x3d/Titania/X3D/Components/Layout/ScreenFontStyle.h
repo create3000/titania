@@ -127,7 +127,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~ScreenText ();
+	~ScreenText () final override;
 
 private:
 

@@ -93,7 +93,8 @@ public:
 
 	///  @name Destruction
 
-	~PlaneViewer ();
+	virtual
+	~PlaneViewer () final override;
 
 
 private:

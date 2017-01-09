@@ -132,7 +132,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DUserInterface ();
+	~X3DUserInterface () override;
 
 
 protected:

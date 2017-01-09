@@ -70,7 +70,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DImageCubeMapTextureEditor ();
+	~X3DImageCubeMapTextureEditor () override;
 
 
 protected:

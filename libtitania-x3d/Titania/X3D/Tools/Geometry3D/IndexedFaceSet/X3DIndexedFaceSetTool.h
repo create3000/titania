@@ -195,7 +195,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DIndexedFaceSetTool ();
+	~X3DIndexedFaceSetTool () override;
 
 
 protected:

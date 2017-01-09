@@ -80,7 +80,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~MessageDialog ();
+	~MessageDialog () final override;
 
 };
 

@@ -260,7 +260,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DNavigationInfoEditorInterface ();
+	~X3DNavigationInfoEditorInterface () override;
 
 
 private:

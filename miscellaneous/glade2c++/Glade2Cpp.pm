@@ -487,7 +487,9 @@ sub generate
 
 	# Destructor
 	say OUT "  virtual";
-	say OUT "  ~$self->{class_name} ();";
+	print OUT "  ~$self->{class_name} ()";
+	print OUT " override" if $base_class_name;
+	say OUT ";";
 	say OUT "";
 
 #	say OUT "protected:";

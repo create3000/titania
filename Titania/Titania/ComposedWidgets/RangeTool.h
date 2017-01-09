@@ -72,7 +72,7 @@ public:
 	setNodes (const X3D::MFNode &) final override;
 
 	virtual
-	~RangeTool ();
+	~RangeTool () final override;
 
 
 private:

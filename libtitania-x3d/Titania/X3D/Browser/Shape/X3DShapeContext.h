@@ -104,7 +104,8 @@ public:
 	dispose () override
 	{ }
 
-	~X3DShapeContext ();
+	virtual
+	~X3DShapeContext () override;
 
 
 protected:

@@ -71,7 +71,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DDialogInterface ();
+	~X3DDialogInterface () override;
 
 
 protected:

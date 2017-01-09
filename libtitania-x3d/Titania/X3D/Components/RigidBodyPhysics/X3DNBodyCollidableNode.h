@@ -127,7 +127,8 @@ public:
 	void
 	dispose () override;
 
-	~X3DNBodyCollidableNode ();
+	virtual
+	~X3DNBodyCollidableNode () override;
 
 
 protected:

@@ -92,7 +92,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~Scene ();
+	~Scene () final override;
 
 
 private:

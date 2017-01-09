@@ -92,7 +92,7 @@ public:
 	       Error <DISPOSED>) = 0;
 
 	virtual
-	~X3DTextGeometry ();
+	~X3DTextGeometry () override;
 
 
 protected:

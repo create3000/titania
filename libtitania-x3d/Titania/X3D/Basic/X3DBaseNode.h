@@ -489,7 +489,7 @@ public:
 
 	///  Destructs this node.
 	virtual
-	~X3DBaseNode ();
+	~X3DBaseNode () override;
 
 
 protected:

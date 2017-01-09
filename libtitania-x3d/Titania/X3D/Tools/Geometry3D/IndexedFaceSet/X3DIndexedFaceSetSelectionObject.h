@@ -252,7 +252,8 @@ public:
 	dispose ()
 	{ }
 
-	~X3DIndexedFaceSetSelectionObject ();
+	virtual
+	~X3DIndexedFaceSetSelectionObject () override;
 
 
 protected:

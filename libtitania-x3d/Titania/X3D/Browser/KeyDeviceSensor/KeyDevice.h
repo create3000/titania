@@ -99,7 +99,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~KeyDevice ();
+	~KeyDevice () final override;
 
 
 private:

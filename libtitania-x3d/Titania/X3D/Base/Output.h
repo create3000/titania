@@ -68,7 +68,7 @@ public:
 
 	///  Destructs this object.
 	virtual
-	~Output ();
+	~Output () final override;
 
 };
 

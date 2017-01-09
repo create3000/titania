@@ -108,7 +108,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~NodeIndex ();
+	~NodeIndex () final  override;
 
 
 private:

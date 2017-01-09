@@ -81,12 +81,14 @@ public:
 
 	///  @name Operations
 
+	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject);
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	///  @name Destruction
 
-	~X3DGeometricPropertyNodeTool ();
+	virtual
+	~X3DGeometricPropertyNodeTool () override;
 
 
 protected:

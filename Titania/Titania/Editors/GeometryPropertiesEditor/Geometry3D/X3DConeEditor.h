@@ -65,7 +65,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DConeEditor ();
+	~X3DConeEditor () override;
 
 
 protected:

@@ -48,58 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_PALETTE_EDITOR_H__
-#define __TITANIA_EDITORS_TEXTURE_EDITOR_X3DTEXTURE_PALETTE_EDITOR_H__
-
-#include "../../UserInterfaces/X3DTextureEditorInterface.h"
-#include "../PaletteEditor/X3DPaletteEditor.h"
+#include "Parser.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
+namespace SVG {
 
-class X3DTexturePaletteEditor :
-	public X3DPaletteEditor <X3DTextureEditorInterface>
+Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
+	  scene (scene),
+	    uri (uri),
+	istream (istream)
+{ }
+
+void
+Parser::parseIntoScene ()
 {
-public:
+	//__LOG__ << this << " " << std::endl;
 
-	///  @name Destruction
+	scene -> setWorldURL (uri);
 
-	virtual
-	~X3DTexturePaletteEditor () override;
+	istream .imbue (std::locale::classic ());
 
+	try
+	{
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		throw;
+	}
+}
 
-protected:
+Parser::~Parser ()
+{ }
 
-	///  @name Construction
-
-	X3DTexturePaletteEditor ();
-
-	///  @name Member access
-
-	virtual
-	const X3D::X3DPtr <X3D::X3DTextureNode> &
-	getTexture () const = 0;
-
-
-private:
-
-	///  @name Operations
-
-	virtual
-	void
-	addObject (const std::string &) final override;
-
-	virtual
-	void
-	setTouchTime (const std::string &) final override;
-
-	virtual
-	bool
-	createScene (const X3D::X3DScenePtr &) final override;
-
-};
-
-} // puck
+} // SVG
+} // X3D
 } // titania
-
-#endif

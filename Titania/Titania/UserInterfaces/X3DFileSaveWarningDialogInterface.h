@@ -128,7 +128,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DFileSaveWarningDialogInterface ();
+	~X3DFileSaveWarningDialogInterface () override;
 
 
 private:

@@ -63,7 +63,8 @@ public:
 
 	///  @name Destruction
 
-	~X3DCoordinateNodeTool ();
+	virtual
+	~X3DCoordinateNodeTool () override;
 
 
 protected:

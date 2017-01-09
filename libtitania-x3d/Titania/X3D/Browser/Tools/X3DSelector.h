@@ -68,7 +68,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DSelector ();
+	~X3DSelector () override;
 
 
 protected:

@@ -72,7 +72,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~BackgroundTool ();
+	~BackgroundTool () final override;
 
 
 private:

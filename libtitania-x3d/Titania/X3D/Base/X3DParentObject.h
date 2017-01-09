@@ -127,7 +127,7 @@ public:
 
 	///  Destructs this object.
 	virtual
-	~X3DParentObject ();
+	~X3DParentObject () override;
 
 
 protected:

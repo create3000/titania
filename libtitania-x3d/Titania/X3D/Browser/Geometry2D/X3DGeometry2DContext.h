@@ -98,7 +98,7 @@ public:
 	{ }
 
 	virtual
-	~X3DGeometry2DContext ();
+	~X3DGeometry2DContext () override;
 
 
 protected:

@@ -71,7 +71,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~HistoryView ();
+	~HistoryView () final override;
 
 
 private:

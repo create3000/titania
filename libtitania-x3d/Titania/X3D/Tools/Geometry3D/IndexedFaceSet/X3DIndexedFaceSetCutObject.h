@@ -73,7 +73,8 @@ public:
 
 	///  @name Destruction
 
-	~X3DIndexedFaceSetCutObject ();
+	virtual
+	~X3DIndexedFaceSetCutObject () override;
 
 
 protected:

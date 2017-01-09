@@ -644,7 +644,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DGridEditorInterface ();
+	~X3DGridEditorInterface () override;
 
 
 private:

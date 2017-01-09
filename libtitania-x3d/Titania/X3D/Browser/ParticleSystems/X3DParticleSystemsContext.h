@@ -78,7 +78,7 @@ public:
 	{ }
 
 	virtual
-	~X3DParticleSystemsContext ();
+	~X3DParticleSystemsContext () override;
 
 
 protected:

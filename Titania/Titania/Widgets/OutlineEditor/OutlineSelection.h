@@ -87,7 +87,7 @@ public:
 	update (const X3D::SFNode &, X3D::X3DFieldDefinition* const);
 
 	virtual
-	~OutlineSelection ();
+	~OutlineSelection () final override;
 
 
 private:

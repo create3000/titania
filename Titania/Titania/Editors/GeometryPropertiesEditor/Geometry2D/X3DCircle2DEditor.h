@@ -65,7 +65,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DCircle2DEditor ();
+	~X3DCircle2DEditor () override;
 
 
 protected:

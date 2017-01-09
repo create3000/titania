@@ -172,7 +172,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DNodeIndexInterface ();
+	~X3DNodeIndexInterface () override;
 
 
 private:

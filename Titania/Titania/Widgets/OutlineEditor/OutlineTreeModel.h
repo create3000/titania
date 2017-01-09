@@ -188,7 +188,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~OutlineTreeModel ();
+	~OutlineTreeModel () final override;
 
 
 private:

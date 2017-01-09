@@ -144,7 +144,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DSidebarInterface ();
+	~X3DSidebarInterface () override;
 
 
 private:

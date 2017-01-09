@@ -209,7 +209,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DOutlineTreeView ();
+	~X3DOutlineTreeView () override;
 
 
 protected:

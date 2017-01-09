@@ -64,7 +64,8 @@ class X3DScriptEditorPreferences :
 {
 public:
 
-	~X3DScriptEditorPreferences ();
+	virtual
+	~X3DScriptEditorPreferences () override;
 
 
 protected:

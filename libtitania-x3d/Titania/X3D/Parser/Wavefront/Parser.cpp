@@ -142,15 +142,15 @@ public:
 
 	///  @name Construction
 
-	MaterialParser (const X3DScenePtr &, std::istream &);
+	MaterialParser (const X3D::X3DScenePtr &, std::istream &);
 
 	///  @name Member access
 
-	const std::map <std::string, X3DPtr <Material>> &
+	const std::map <std::string, X3D::X3DPtr <Material>> &
 	getMaterials () const
 	{ return materials; }
 
-	const std::map <std::string, X3DPtr <ImageTexture>> &
+	const std::map <std::string, X3D::X3DPtr <ImageTexture>> &
 	getTextures () const
 	{ return textures; }
 
@@ -226,20 +226,20 @@ private:
 
 	///  @name Members
 
-	const X3DScenePtr scene;
-	std::istream &    istream;
-	size_t            lineNumber;
-	std::string       whiteSpaceCharacters;
-	std::string       commentCharacters;
+	const X3D::X3DScenePtr scene;
+	std::istream &         istream;
+	size_t                 lineNumber;
+	std::string            whiteSpaceCharacters;
+	std::string            commentCharacters;
 
-	std::map <std::string, X3DPtr <Material>>      materials;
-	X3DPtr <Material>                              material;
-	std::string                                    name;
-	std::map <std::string, X3DPtr <ImageTexture>>  textures;
+	std::map <std::string, X3D::X3DPtr <X3D::Material>>     materials;
+	X3D::X3DPtr <X3D::Material>                             material;
+	std::string                                             name;
+	std::map <std::string, X3D::X3DPtr <X3D::ImageTexture>> textures;
 
 };
 
-MaterialParser::MaterialParser (const X3DScenePtr & scene, std::istream & istream) :
+MaterialParser::MaterialParser (const X3D::X3DScenePtr & scene, std::istream & istream) :
 	               scene (scene),
 	             istream (istream),
 	          lineNumber (0),
@@ -652,7 +652,7 @@ MaterialParser::Color (Color3f & value)
 
 }        // anon namespace
 
-Parser::Parser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
+Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	               scene (scene),
 	                 uri (uri),
 	             istream (istream),

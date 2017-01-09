@@ -67,7 +67,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DGeometrySelectionEditor ();
+	~X3DGeometrySelectionEditor () override;
 
 
 protected:

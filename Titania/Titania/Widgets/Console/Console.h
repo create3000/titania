@@ -75,7 +75,7 @@ public:
 	///  @name Destruction
 	
 	virtual
-	~Console ();
+	~Console () final override;
 
 
 private:

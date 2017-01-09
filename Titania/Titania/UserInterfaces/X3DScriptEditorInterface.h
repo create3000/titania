@@ -548,7 +548,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DScriptEditorInterface ();
+	~X3DScriptEditorInterface () override;
 
 
 private:

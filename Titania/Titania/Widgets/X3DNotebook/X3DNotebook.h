@@ -96,7 +96,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DNotebook ();
+	~X3DNotebook () override;
 
 
 protected:

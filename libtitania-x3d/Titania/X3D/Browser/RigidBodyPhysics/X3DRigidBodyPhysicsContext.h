@@ -84,7 +84,7 @@ public:
 	{ }
 
 	virtual
-	~X3DRigidBodyPhysicsContext ();
+	~X3DRigidBodyPhysicsContext () override;
 
 
 protected:

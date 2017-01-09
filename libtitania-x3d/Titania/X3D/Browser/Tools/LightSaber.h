@@ -96,7 +96,7 @@ public:
 	dispose () override;
 
 	virtual
-	~LightSaber ();
+	~LightSaber () final override;
 
 
 protected:

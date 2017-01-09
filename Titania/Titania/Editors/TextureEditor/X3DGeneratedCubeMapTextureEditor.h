@@ -68,7 +68,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DGeneratedCubeMapTextureEditor ();
+	~X3DGeneratedCubeMapTextureEditor () override;
 
 
 protected:

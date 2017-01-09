@@ -140,7 +140,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DBindableNodeEditorInterface ();
+	~X3DBindableNodeEditorInterface () override;
 
 
 private:

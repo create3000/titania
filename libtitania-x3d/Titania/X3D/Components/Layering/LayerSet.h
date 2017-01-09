@@ -159,7 +159,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~LayerSet ();
+	~LayerSet () final override;
 
 
 private:

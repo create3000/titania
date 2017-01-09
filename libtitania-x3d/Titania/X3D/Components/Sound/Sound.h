@@ -208,7 +208,7 @@ public:
 	///  @name Construction
 
 	virtual
-	~Sound ();
+	~Sound () override;
 
 
 protected:

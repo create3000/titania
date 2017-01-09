@@ -142,7 +142,7 @@ public:
 	dispose () override;
 	
 	virtual
-	~Anchor ();
+	~Anchor () override;
 
 
 protected:

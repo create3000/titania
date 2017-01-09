@@ -67,7 +67,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DGeoLocationEditor ();
+	~X3DGeoLocationEditor () override;
 
 
 protected:

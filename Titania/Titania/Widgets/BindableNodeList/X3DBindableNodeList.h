@@ -102,7 +102,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DBindableNodeList ();
+	~X3DBindableNodeList () override;
 
 
 private:

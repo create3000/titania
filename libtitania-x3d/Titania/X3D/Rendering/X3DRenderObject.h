@@ -262,7 +262,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DRenderObject ();
+	~X3DRenderObject () override;
 
 
 protected:

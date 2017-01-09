@@ -164,7 +164,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DSculpToolEditorInterface ();
+	~X3DSculpToolEditorInterface () override;
 
 
 private:

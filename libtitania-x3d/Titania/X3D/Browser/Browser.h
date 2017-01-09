@@ -119,7 +119,7 @@ public:
 	dispose () final override;
 	
 	virtual
-	~Browser ();
+	~Browser () final override;
 
 
 protected:

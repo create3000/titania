@@ -576,7 +576,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DBackgroundEditorInterface ();
+	~X3DBackgroundEditorInterface () override;
 
 
 private:

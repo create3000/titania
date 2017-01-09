@@ -128,7 +128,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DMotionBlurEditorInterface ();
+	~X3DMotionBlurEditorInterface () override;
 
 
 private:

@@ -71,7 +71,8 @@ class X3DEnvironmentTextureNodeEditor :
 {
 public:
 
-	~X3DEnvironmentTextureNodeEditor ();
+	virtual
+	~X3DEnvironmentTextureNodeEditor () override;
 
 
 protected:

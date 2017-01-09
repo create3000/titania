@@ -195,7 +195,7 @@ public:
 	dispose () override;
 
 	virtual
-	~Inline ();
+	~Inline () override;
 
 
 protected:

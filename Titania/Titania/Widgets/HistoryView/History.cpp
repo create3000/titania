@@ -60,10 +60,10 @@ namespace titania {
 namespace puck {
 
 History::History () :
-	X3D::Output (),
-	   filename (config_dir ("history.db")),
-	   database (),
-	fileMonitor ()
+	X3D::X3DOutput (),
+	      filename (config_dir ("history.db")),
+	      database (),
+	   fileMonitor ()
 {
 	try
 	{

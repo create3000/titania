@@ -70,7 +70,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DLODEditor ();
+	~X3DLODEditor () override;
 
 
 protected:

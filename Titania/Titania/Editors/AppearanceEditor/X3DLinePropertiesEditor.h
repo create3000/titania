@@ -68,7 +68,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DLinePropertiesEditor ();
+	~X3DLinePropertiesEditor () override;
 
 
 protected:

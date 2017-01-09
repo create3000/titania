@@ -67,7 +67,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DWorldInfoEditor ();
+	~X3DWorldInfoEditor () override;
 
 
 protected:

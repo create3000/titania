@@ -148,7 +148,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DConsoleInterface ();
+	~X3DConsoleInterface () override;
 
 
 private:

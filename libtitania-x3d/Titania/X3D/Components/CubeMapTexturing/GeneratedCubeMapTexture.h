@@ -159,7 +159,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~GeneratedCubeMapTexture ();
+	~GeneratedCubeMapTexture () final override;
 
 
 private:

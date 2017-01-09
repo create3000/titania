@@ -72,7 +72,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DSoundSourceNodeEditor ();
+	~X3DSoundSourceNodeEditor () override;
 
 
 protected:

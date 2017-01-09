@@ -74,7 +74,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~SoundEditor ();
+	~SoundEditor () final override;
 
 
 private:

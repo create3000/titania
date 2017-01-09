@@ -65,7 +65,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DGeometryTool ();
+	~X3DGeometryTool () override;
 
 
 protected:

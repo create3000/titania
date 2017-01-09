@@ -70,7 +70,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DGeoViewpointEditor ();
+	~X3DGeoViewpointEditor () override;
 
 
 protected:

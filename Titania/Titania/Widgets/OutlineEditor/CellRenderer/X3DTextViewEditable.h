@@ -100,7 +100,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DTextViewEditable ();
+	~X3DTextViewEditable () override;
 
 
 protected:

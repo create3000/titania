@@ -77,7 +77,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DFlyViewer ();
+	~X3DFlyViewer () override;
 
 
 protected:

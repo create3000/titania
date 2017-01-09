@@ -73,7 +73,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DAngleEditor ();
+	~X3DAngleEditor () override;
 
 
 protected:

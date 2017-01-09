@@ -2140,7 +2140,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DBrowserWindowInterface ();
+	~X3DBrowserWindowInterface () override;
 
 
 private:

@@ -67,7 +67,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DTextureTransformEditor ();
+	~X3DTextureTransformEditor () override;
 
 
 protected:

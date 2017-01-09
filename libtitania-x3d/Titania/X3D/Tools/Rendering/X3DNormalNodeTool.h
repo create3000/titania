@@ -63,7 +63,8 @@ public:
 
 	///  @name Destruction
 
-	~X3DNormalNodeTool ();
+	virtual
+	~X3DNormalNodeTool () override;
 
 
 protected:

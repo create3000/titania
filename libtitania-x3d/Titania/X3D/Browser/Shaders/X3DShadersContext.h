@@ -132,7 +132,7 @@ public:
 	{ }
 
 	virtual
-	~X3DShadersContext ();
+	~X3DShadersContext () override;
 
 
 protected:

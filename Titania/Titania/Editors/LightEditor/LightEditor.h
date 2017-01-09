@@ -76,7 +76,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~LightEditor ();
+	~LightEditor () final override;
 
 
 private:

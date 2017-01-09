@@ -66,7 +66,8 @@ class X3DScriptEditorSearch :
 {
 public:
 
-	~X3DScriptEditorSearch ();
+	virtual
+	~X3DScriptEditorSearch () override;
 
 
 protected:

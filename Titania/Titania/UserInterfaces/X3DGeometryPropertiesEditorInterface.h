@@ -736,7 +736,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DGeometryPropertiesEditorInterface ();
+	~X3DGeometryPropertiesEditorInterface () override;
 
 
 private:

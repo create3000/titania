@@ -140,7 +140,7 @@ public:
 	dispose () final override;
 	
 	virtual
-	~ImageTexture ();
+	~ImageTexture () final override;
 
 
 private:

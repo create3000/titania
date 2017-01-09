@@ -117,7 +117,7 @@ public:
 	///  @name Detruction
 
 	virtual
-	~World ();
+	~World () final override;
 
 
 private:

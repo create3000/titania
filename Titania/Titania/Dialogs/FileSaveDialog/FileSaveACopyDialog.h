@@ -67,7 +67,8 @@ public:
 
 	///  @name Destruction
 
-	~FileSaveACopyDialog ();
+	virtual
+	~FileSaveACopyDialog () final override;
 
 };
 

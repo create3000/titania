@@ -136,7 +136,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DMessageDialogInterface ();
+	~X3DMessageDialogInterface () override;
 
 
 private:

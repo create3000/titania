@@ -64,7 +64,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DImportedNodesEditor ();
+	~X3DImportedNodesEditor () override;
 
 
 protected:

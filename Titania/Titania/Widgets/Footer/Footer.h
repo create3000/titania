@@ -70,7 +70,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~Footer ();
+	~Footer () final override;
 
 
 private:

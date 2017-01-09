@@ -1080,7 +1080,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DPrecisionPlacementPanelInterface ();
+	~X3DPrecisionPlacementPanelInterface () override;
 
 
 private:

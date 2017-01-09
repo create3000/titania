@@ -79,7 +79,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~RotationTool ();
+	~RotationTool () final override;
 
 
 private:

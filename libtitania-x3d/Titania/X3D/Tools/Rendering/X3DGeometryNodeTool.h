@@ -217,7 +217,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DGeometryNodeTool ();
+	~X3DGeometryNodeTool () override;
 
 
 protected:

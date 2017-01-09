@@ -65,7 +65,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DArc2DEditor ();
+	~X3DArc2DEditor () override;
 
 
 protected:

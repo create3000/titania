@@ -73,7 +73,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~GridEditor ();
+	~GridEditor () final override;
 
 
 private:

@@ -73,7 +73,8 @@ class X3DTextureNodeEditor :
 {
 public:
 
-	~X3DTextureNodeEditor ();
+	virtual
+	~X3DTextureNodeEditor () override;
 
 
 protected:

@@ -264,7 +264,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DLayerEditorInterface ();
+	~X3DLayerEditorInterface () override;
 
 
 private:

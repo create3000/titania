@@ -75,7 +75,8 @@ public:
 
 	///  @name Destruction
 
-	~OutlineEditor ();
+	virtual
+	~OutlineEditor () final override;
 
 
 private:

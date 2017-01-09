@@ -71,7 +71,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~MotionBlurEditor ();
+	~MotionBlurEditor () final override;
 
 
 private:

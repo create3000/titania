@@ -126,7 +126,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~MFColorButton ();
+	~MFColorButton () final override;
 
 
 private:

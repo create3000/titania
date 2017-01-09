@@ -65,7 +65,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DRectangle2DEditor ();
+	~X3DRectangle2DEditor () override;
 
 
 protected:

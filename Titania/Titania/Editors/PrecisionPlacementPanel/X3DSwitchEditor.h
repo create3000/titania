@@ -65,7 +65,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DSwitchEditor ();
+	~X3DSwitchEditor () override;
 
 
 protected:

@@ -76,7 +76,7 @@ public:
 
 
 	virtual
-	~MFStringFamilyWidget ();
+	~MFStringFamilyWidget () final override;
 
 private:
 

@@ -65,7 +65,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DCylinderEditor ();
+	~X3DCylinderEditor () override;
 
 
 protected:

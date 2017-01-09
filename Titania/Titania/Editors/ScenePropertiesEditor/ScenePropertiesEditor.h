@@ -74,7 +74,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~ScenePropertiesEditor ();
+	~ScenePropertiesEditor () final override;
 
 
 private:

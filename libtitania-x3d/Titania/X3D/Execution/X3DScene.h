@@ -313,7 +313,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DScene ();
+	~X3DScene () override;
 
 
 protected:

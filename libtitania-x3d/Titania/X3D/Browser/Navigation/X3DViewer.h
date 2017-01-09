@@ -94,7 +94,7 @@ public:
 	///  @name Constructors
 
 	virtual
-	~X3DViewer ();
+	~X3DViewer () override;
 
 
 protected:

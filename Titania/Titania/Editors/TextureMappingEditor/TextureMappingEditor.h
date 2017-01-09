@@ -84,7 +84,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~TextureMappingEditor ();
+	~TextureMappingEditor () final override;
 
 
 private:

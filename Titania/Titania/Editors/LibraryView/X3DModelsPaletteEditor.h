@@ -65,7 +65,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DModelsPaletteEditor ();
+	~X3DModelsPaletteEditor () override;
 
 
 protected:

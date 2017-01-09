@@ -88,7 +88,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~RecentView ();
+	~RecentView () final override;
 
 
 private:

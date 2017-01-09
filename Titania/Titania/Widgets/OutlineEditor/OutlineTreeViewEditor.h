@@ -67,7 +67,8 @@ public:
 
 	OutlineTreeViewEditor (X3DBrowserWindow* const, const X3D::X3DExecutionContextPtr &);
 
-	~OutlineTreeViewEditor ();
+	virtual
+	~OutlineTreeViewEditor () final override;
 
 
 private:

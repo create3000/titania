@@ -652,7 +652,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DAppearanceEditorInterface ();
+	~X3DAppearanceEditorInterface () override;
 
 
 private:

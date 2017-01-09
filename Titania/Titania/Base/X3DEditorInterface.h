@@ -76,7 +76,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DEditorInterface ();
+	~X3DEditorInterface () override;
 
 
 protected:

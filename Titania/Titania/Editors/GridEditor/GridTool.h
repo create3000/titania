@@ -78,7 +78,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~GridTool ();
+	~GridTool () final override;
 
 
 private:

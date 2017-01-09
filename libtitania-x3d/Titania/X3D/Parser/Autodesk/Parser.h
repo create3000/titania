@@ -72,7 +72,7 @@ public:
 
 	///  @name Construction
 
-	Parser (const X3DScenePtr &, const basic::uri &, std::istream &);
+	Parser (const X3D::X3DScenePtr &, const basic::uri &, std::istream &);
 
 	///  @name Operations
 
@@ -115,10 +115,11 @@ private:
 
 	///  @name Members
 
-	const X3DScenePtr scene;
-	const basic::uri  uri;
-	std::istream &    istream;
-	Lib3dsFile*       file;
+	const X3D::X3DScenePtr scene;
+	const basic::uri       uri;
+	std::istream &         istream;
+
+	Lib3dsFile* file;
 
 	X3D::X3DPtr <X3D::Transform>             groupNode;
 	X3D::X3DPtr      <X3D::Material>         defaultMaterial;

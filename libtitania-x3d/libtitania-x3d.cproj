@@ -844,6 +844,7 @@
     <None Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_impl.h" />
     <None Include="Titania\X3D\Browser\BrowserCellRenderer.h" />
     <None Include="Titania\X3D\Parser\JSONParser.h" />
+    <None Include="Titania\X3D\Parser\SVG\Parser.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1422,6 +1423,7 @@
     <Compile Include="Titania\X3D\Parser\Autodesk\lib3ds\lib3ds_viewport.c" />
     <Compile Include="Titania\X3D\Browser\BrowserCellRenderer.cpp" />
     <Compile Include="Titania\X3D\Parser\JSONParser.cpp" />
+    <Compile Include="Titania\X3D\Parser\SVG\Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1507,6 +1509,7 @@
     <Folder Include="Titania\X3D\Browser\RigidBodyPhysics\" />
     <Folder Include="Titania\X3D\Parser\Autodesk\" />
     <Folder Include="Titania\X3D\Parser\Autodesk\lib3ds\" />
+    <Folder Include="Titania\X3D\Parser\SVG\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

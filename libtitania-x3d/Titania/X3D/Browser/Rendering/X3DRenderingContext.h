@@ -108,7 +108,8 @@ public:
 	dispose () override
 	{ }
 
-	~X3DRenderingContext ();
+	virtual
+	~X3DRenderingContext () override;
 
 
 protected:

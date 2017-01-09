@@ -69,7 +69,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~SculpToolEditor ();
+	~SculpToolEditor () final override;
 
 
 private:

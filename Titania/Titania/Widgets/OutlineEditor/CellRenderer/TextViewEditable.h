@@ -85,7 +85,7 @@ public:
 	{ return path; }
 
 	virtual
-	~TextViewEditable ();
+	~TextViewEditable () final override;
 
 
 private:

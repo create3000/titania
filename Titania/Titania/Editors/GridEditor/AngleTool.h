@@ -78,7 +78,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~AngleTool ();
+	~AngleTool () final override;
 
 
 private:

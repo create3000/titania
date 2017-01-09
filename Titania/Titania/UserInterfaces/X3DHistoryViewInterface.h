@@ -208,7 +208,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DHistoryViewInterface ();
+	~X3DHistoryViewInterface () override;
 
 
 private:

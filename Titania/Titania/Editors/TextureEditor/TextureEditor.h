@@ -80,7 +80,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~TextureEditor ();
+	~TextureEditor () final override;
 
 
 protected:

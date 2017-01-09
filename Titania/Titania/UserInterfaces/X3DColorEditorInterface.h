@@ -316,7 +316,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DColorEditorInterface ();
+	~X3DColorEditorInterface () override;
 
 
 private:

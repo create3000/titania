@@ -73,7 +73,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DGridEditor ();
+	~X3DGridEditor () override;
 
 
 protected:

@@ -89,7 +89,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~PrecisionPlacementPanel ();
+	~PrecisionPlacementPanel () final override;
 
 
 private:

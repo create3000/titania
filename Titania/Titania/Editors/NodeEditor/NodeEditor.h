@@ -70,7 +70,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~NodeEditor ();
+	~NodeEditor () final override;
 
 
 private:

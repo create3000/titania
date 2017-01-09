@@ -98,7 +98,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DToolContext ();
+	~X3DToolContext () override;
 
 
 protected:

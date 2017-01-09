@@ -476,7 +476,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DSoundEditorInterface ();
+	~X3DSoundEditorInterface () override;
 
 
 private:

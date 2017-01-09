@@ -175,7 +175,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~ExternProtoDeclaration ();
+	~ExternProtoDeclaration () final override;
 
 
 private:

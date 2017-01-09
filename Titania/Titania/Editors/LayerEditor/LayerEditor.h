@@ -71,7 +71,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~LayerEditor ();
+	~LayerEditor () final override;
 
 
 private:

@@ -261,7 +261,7 @@ public:
 
 	///  Destructs this object.
 	virtual
-	~X3DFieldDefinition ();
+	~X3DFieldDefinition () override;
 
 
 protected:

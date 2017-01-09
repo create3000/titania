@@ -136,7 +136,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DFooterInterface ();
+	~X3DFooterInterface () override;
 
 
 private:

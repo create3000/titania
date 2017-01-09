@@ -167,7 +167,8 @@ public:
 	dispose ()
 	{ }
 
-	~X3DIndexedFaceSetOperationsObject ();
+	virtual
+	~X3DIndexedFaceSetOperationsObject () override;
 
 
 protected:

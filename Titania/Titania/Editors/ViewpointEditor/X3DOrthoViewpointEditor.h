@@ -69,7 +69,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DOrthoViewpointEditor ();
+	~X3DOrthoViewpointEditor () override;
 
 
 protected:

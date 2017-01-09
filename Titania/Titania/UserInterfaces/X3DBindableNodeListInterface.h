@@ -196,7 +196,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DBindableNodeListInterface ();
+	~X3DBindableNodeListInterface () override;
 
 
 private:

@@ -88,7 +88,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~AnimationEditor ();
+	~AnimationEditor () final override;
 
 
 private:

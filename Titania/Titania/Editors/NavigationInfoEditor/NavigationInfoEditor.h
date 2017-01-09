@@ -75,7 +75,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~NavigationInfoEditor ();
+	~NavigationInfoEditor () final override;
 
 
 private:

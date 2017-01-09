@@ -524,7 +524,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DViewpointEditorInterface ();
+	~X3DViewpointEditorInterface () override;
 
 
 private:

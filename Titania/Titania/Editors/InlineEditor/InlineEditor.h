@@ -71,7 +71,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~InlineEditor ();
+	~InlineEditor () final override;
 
 
 private:

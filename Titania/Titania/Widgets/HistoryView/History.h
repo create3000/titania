@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 class History :
-	public X3D::Output
+	public X3D::X3DOutput
 {
 public:
 

@@ -488,7 +488,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DOutlineEditorInterface ();
+	~X3DOutlineEditorInterface () override;
 
 
 private:

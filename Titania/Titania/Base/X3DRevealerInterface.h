@@ -70,7 +70,7 @@ public:
 	/// @name Destruction
 
 	virtual
-	~X3DRevealerInterface ();
+	~X3DRevealerInterface () override;
 
 
 protected:

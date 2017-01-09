@@ -168,7 +168,7 @@ public:
 	{ }
 
 	virtual
-	~X3DPointingDeviceSensorContext ();
+	~X3DPointingDeviceSensorContext () override;
 
 
 protected:

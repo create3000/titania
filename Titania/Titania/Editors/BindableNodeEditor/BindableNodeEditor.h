@@ -70,7 +70,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~BindableNodeEditor ();
+	~BindableNodeEditor () final override;
 
 
 private:

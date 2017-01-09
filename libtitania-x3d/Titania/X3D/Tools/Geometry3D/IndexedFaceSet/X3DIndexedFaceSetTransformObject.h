@@ -111,7 +111,8 @@ public:
 	dispose ()
 	{ }
 
-	~X3DIndexedFaceSetTransformObject ();
+	virtual
+	~X3DIndexedFaceSetTransformObject () override;
 
 
 protected:

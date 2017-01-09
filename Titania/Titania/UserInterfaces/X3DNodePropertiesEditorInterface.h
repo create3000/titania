@@ -628,7 +628,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DNodePropertiesEditorInterface ();
+	~X3DNodePropertiesEditorInterface () override;
 
 
 private:

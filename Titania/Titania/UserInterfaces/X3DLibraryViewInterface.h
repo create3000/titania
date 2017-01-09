@@ -288,7 +288,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DLibraryViewInterface ();
+	~X3DLibraryViewInterface () override;
 
 
 private:

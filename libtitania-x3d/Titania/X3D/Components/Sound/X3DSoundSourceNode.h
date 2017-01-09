@@ -134,7 +134,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DSoundSourceNode ();
+	~X3DSoundSourceNode () override;
 
 
 protected:

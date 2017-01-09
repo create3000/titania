@@ -301,7 +301,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DBrowser ();
+	~X3DBrowser () override;
 
 
 protected:

@@ -112,7 +112,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~Texture3DLoader ();
+	~Texture3DLoader () final override;
 
 
 private:

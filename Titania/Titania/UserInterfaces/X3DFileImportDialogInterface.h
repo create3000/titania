@@ -196,7 +196,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DFileImportDialogInterface ();
+	~X3DFileImportDialogInterface () override;
 
 
 private:

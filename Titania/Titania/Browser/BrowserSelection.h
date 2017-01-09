@@ -144,7 +144,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~BrowserSelection ();
+	~BrowserSelection () final override;
 
 
 private:

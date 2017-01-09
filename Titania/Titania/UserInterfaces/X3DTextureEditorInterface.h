@@ -1196,7 +1196,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DTextureEditorInterface ();
+	~X3DTextureEditorInterface () override;
 
 
 private:

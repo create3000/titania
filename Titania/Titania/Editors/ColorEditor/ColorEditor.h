@@ -82,7 +82,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~ColorEditor ();
+	~ColorEditor () final override;
 
 
 private:

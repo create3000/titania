@@ -75,7 +75,7 @@ public:
 	{ }
 
 	virtual
-	~X3DScriptingContext ();
+	~X3DScriptingContext () override;
 
 
 protected:

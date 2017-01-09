@@ -197,7 +197,7 @@ public:
 
 	///  Destructs this object.
 	virtual
-	~X3DObject ();
+	~X3DObject () override;
 
 
 protected:

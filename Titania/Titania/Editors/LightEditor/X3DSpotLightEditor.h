@@ -69,7 +69,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DSpotLightEditor ();
+	~X3DSpotLightEditor () override;
 
 
 protected:

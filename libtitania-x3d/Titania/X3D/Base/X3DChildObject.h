@@ -159,7 +159,7 @@ public:
 
 	///  Destructs this object.
 	virtual
-	~X3DChildObject ();
+	~X3DChildObject () override;
 
 
 protected:

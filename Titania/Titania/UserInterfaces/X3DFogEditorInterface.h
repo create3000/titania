@@ -184,7 +184,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DFogEditorInterface ();
+	~X3DFogEditorInterface () override;
 
 
 private:

@@ -94,7 +94,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DLineGeometryNode ();
+	~X3DLineGeometryNode () override;
 
 
 protected:

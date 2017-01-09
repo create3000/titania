@@ -576,7 +576,7 @@ public:
 	dispose () override;
 
 	virtual
-	~X3DExecutionContext ();
+	~X3DExecutionContext () override;
 
 
 protected:

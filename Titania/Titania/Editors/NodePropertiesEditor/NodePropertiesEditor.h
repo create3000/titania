@@ -73,7 +73,7 @@ public:
 	NodePropertiesEditor (X3DBrowserWindow* const);
 
 	virtual
-	~NodePropertiesEditor ();
+	~NodePropertiesEditor () final override;
 
 
 private:

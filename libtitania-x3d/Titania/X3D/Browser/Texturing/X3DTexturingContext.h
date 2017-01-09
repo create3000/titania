@@ -151,7 +151,7 @@ public:
 	{ }
 
 	virtual
-	~X3DTexturingContext ();
+	~X3DTexturingContext () override;
 
 
 protected:

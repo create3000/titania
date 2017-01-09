@@ -81,7 +81,7 @@ public:
 	{ }
 
 	virtual
-	~X3DCubeMapTexturingContext ();
+	~X3DCubeMapTexturingContext () override;
 
 
 protected:

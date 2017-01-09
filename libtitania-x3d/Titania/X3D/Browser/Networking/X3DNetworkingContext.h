@@ -122,7 +122,7 @@ public:
 	dispose () override;
 	
 	virtual
-	~X3DNetworkingContext ();
+	~X3DNetworkingContext () override;
 
 
 protected:

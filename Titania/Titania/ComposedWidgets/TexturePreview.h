@@ -74,7 +74,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~TexturePreview ();
+	~TexturePreview () final override;
 
 
 private:

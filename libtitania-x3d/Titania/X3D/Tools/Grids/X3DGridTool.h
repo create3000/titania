@@ -179,7 +179,7 @@ public:
 
 	///  @name Destruction
 
-	~X3DGridTool ();
+	~X3DGridTool () override;
 
 protected:
 

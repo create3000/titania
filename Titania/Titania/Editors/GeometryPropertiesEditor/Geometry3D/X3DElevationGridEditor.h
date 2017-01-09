@@ -65,7 +65,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DElevationGridEditor ();
+	~X3DElevationGridEditor () override;
 
 
 protected:
