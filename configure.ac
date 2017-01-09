@@ -120,6 +120,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0)

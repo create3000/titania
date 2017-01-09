@@ -17694,6 +17694,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0\""; } >&5
@@ -17702,6 +17703,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0") 2>&5
@@ -17713,6 +17715,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0" 2>/dev/null`
@@ -17732,6 +17735,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0\""; } >&5
@@ -17740,6 +17744,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0") 2>&5
@@ -17751,6 +17756,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0" 2>/dev/null`
@@ -17779,6 +17785,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0" 2>&1`
@@ -17788,6 +17795,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0" 2>&1`
@@ -17800,6 +17808,7 @@ gstreamermm-1.0
 fontconfig
 glu
 mozjs185
+libxml++-2.6
 json-c
 ImageMagick++
 libgtop-2.0) were not met:
