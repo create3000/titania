@@ -48,107 +48,78 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_SVG_PARSER_H__
-#define __TITANIA_X3D_PARSER_SVG_PARSER_H__
+#ifndef __TITANIA_INPUT_OUTPUT_HEX_H__
+#define __TITANIA_INPUT_OUTPUT_HEX_H__
 
-#include "../../Execution/X3DScene.h"
-#include "../../Parser/X3DParser.h"
+#include <istream>
+#include <string>
 
-#include <memory>
-
-namespace xmlpp {
-
-class Attribute;
-class DomParser;
-class Element;
-class Node;
-
-}
+#include "../LOG.h"
 
 namespace titania {
-namespace X3D {
-namespace SVG {
+namespace io {
 
-class Parser :
-	public X3D::X3DParser
+/**
+ *  Template to represent a number match agains a std::basic_istream.
+ *
+ *  Extern instantiations for char and wchar are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  CharT   Type of characters.
+ *  @param  Traits  Character traits
+ */
+template <class Type, class CharT, class Traits = std::char_traits <CharT>> 
+class basic_hex
 {
 public:
 
 	///  @name Construction
 
-	Parser (const X3D::X3DScenePtr &, const basic::uri &, std::istream &);
+	///  Constructs the io::basic_hex.  A std::basic_istream can then be tested against the number type.
+	constexpr
+	basic_hex ();
 
 	///  @name Operations
 
-	virtual
-	void
-	parseIntoScene () final override;
-
-	///  @name Destruction
-
-	virtual
-	~Parser ();
-
-
-private:
-
-	struct Style {
-
-		std::string  display;
-		X3D::Color3f fill;
-		double       opacity;
-
-	};
-
-	///  @name Operations
-
-	void
-	svgElement (xmlpp::Element* const xmlElement);
-
-	void
-	elements (xmlpp::Element* const xmlElement);
-
-	void
-	element (xmlpp::Element* const xmlElement);
-
-	void
-	groupElement (xmlpp::Element* const xmlElement);
-
-	void
-	rectangleElement (xmlpp::Element* const xmlElement);
-
-	void
-	ellipseElement (xmlpp::Element* const xmlElement);
-
-	void
-	pathElement (xmlpp::Element* const xmlElement);
-
+	///  Test whether the next characters in @a istream are a number. Returns true on success and changes
+	///  @a istreams position to the next character after the matched characters otherwise it returns false and doesn't
+	///  changes the streams current position.
 	bool
-	viewBoxAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Vector4d & value);
-
-	bool
-	transformAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Matrix3d & matrix);
-
-	bool
-	lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
-
-	bool
-	styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & value);
-
-	///  @name Members
-
-	const X3D::X3DScenePtr scene;
-	const basic::uri       uri;
-	std::istream &         istream;
-
-	std::unique_ptr <xmlpp::DomParser> xmlParser;
-
-	X3D::X3DPtrArray <X3D::Transform> groups;
+	operator () (std::basic_istream <CharT, Traits> & istream, Type & value) const;
 
 };
 
-} // SVG
-} // X3D
+template <class Type, class CharT, class Traits>
+inline
+constexpr
+basic_hex <Type, CharT, Traits>::basic_hex ()
+{ }
+
+template <class Type, class CharT, class Traits>
+bool
+basic_hex <Type, CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, Type & value) const
+{
+	const auto state = istream .rdstate ();
+	const auto pos   = istream .tellg ();
+
+	if (istream >> std::hex >> value)
+		return true;
+
+	istream .clear (state);
+
+	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+		istream .unget ();
+
+	return false;
+}
+
+template <class Type>
+using hex = basic_hex <Type, char>;
+
+template <class Type>
+using whex = basic_hex <Type, wchar_t>;
+
+} // io
 } // titania
 
 #endif

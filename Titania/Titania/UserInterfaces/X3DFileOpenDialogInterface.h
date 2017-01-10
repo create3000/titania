@@ -132,6 +132,10 @@ public:
 	{ return m_FileFilterImage; }
 
 	const Glib::RefPtr <Gtk::FileFilter> &
+	getFileFilterSVG () const
+	{ return m_FileFilterSVG; }
+
+	const Glib::RefPtr <Gtk::FileFilter> &
 	getFileFilterVideo () const
 	{ return m_FileFilterVideo; }
 
@@ -211,6 +215,7 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedX3DXMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterFonts;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterImage;
+	Glib::RefPtr <Gtk::FileFilter> m_FileFilterSVG;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVideo;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterVrmlEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterWavefrontOBJ;

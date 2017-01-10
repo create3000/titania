@@ -399,7 +399,13 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	const auto x = std::polar <double> (-1, 1);
+	std::istringstream isstream ("123.456mm");
+
+	isstream .imbue (std::locale::classic ());
+
+	double x = 0;
+
+	isstream >> x;
 
 	__LOG__ << x << std::endl;
 

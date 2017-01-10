@@ -72,10 +72,13 @@ template <class T>
 static constexpr T phi = T (1.6180339887498948482045868343656381177203091798057628);
 
 template <class T>
-static constexpr T inch = T (0.0254);
+static constexpr T inch = T (0.0254); // One inch in meter.
 
 template <class T>
-static constexpr T point = inch <T> / 72;
+static constexpr T point = inch <T> / 72; // One point in meter.
+
+template <class T>
+static constexpr T pixel = inch <T> / 90; // One pixel in meter.
 
 } // math
 } // titania

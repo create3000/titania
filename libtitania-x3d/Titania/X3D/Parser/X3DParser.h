@@ -51,25 +51,22 @@
 #ifndef __TITANIA_X3D_PARSER_X3DPARSER_H__
 #define __TITANIA_X3D_PARSER_X3DPARSER_H__
 
-#include "../Basic/X3DBaseNode.h"
-#include "../Fields/SFNode.h"
-
 namespace titania {
 namespace X3D {
 
-class X3DParser :
-	virtual public X3DBaseNode
+class X3DParser
 {
-protected:
-
-	X3DParser ();
-
-
-private:
+public:
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	void
+	parseIntoScene () = 0;
+
+
+protected:
+
+	X3DParser ()
+	{ }
 
 };
 

@@ -684,6 +684,7 @@
     <None Include="Tests\3rd Party\Wavefront\EmpireState_lp.obj\EmpireState_lp.obj" />
     <None Include="Tests\3rd Party\Autodesk\EmpireState_lp.max\EmpireState_d.png" />
     <None Include="Tests\3rd Party\Autodesk\EmpireState_lp.max\EmpireState_lp.max" />
+    <None Include="Tests\3rd Party\SVG\Test.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

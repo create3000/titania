@@ -879,7 +879,6 @@
     <Compile Include="Titania\X3D\Fields\X3DScalar.cpp" />
     <Compile Include="Titania\X3D\InputOutput\Generator.cpp" />
     <Compile Include="Titania\X3D\Parser\Parser.cpp" />
-    <Compile Include="Titania\X3D\Parser\X3DParser.cpp" />
     <Compile Include="Titania\X3D\Prototype\ExternProtoArray.cpp" />
     <Compile Include="Titania\X3D\Prototype\ProtoArray.cpp" />
     <Compile Include="Titania\X3D\Rendering\ViewVolume.cpp" />

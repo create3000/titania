@@ -653,6 +653,7 @@ MaterialParser::Color (Color3f & value)
 }        // anon namespace
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
+	      X3D::X3DParser (),
 	               scene (scene),
 	                 uri (uri),
 	             istream (istream),
@@ -660,28 +661,21 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	whiteSpaceCharacters (),
 	   commentCharacters (),
 	     currentComments (),
-	     defaultMaterial (scene -> createNode ("Material")),
+	     defaultMaterial (scene -> createNode <X3D::Material> ()),
 	            material (defaultMaterial),
 	             texture (),
-	            texCoord (scene -> createNode ("TextureCoordinate")),
-	              normal (scene -> createNode ("Normal")),
-	               coord (scene -> createNode ("Coordinate")),
+	            texCoord (scene -> createNode <X3D::TextureCoordinate> ()),
+	              normal (scene -> createNode <X3D::Normal> ()),
+	               coord (scene -> createNode <X3D::Coordinate> ()),
 	            geometry (),
 	               shape (),
-	               group (scene -> createNode ("Transform")),
-	              object (scene -> createNode ("Transform")),
+	               group (scene -> createNode <X3D::Transform> ()),
+	              object (scene -> createNode <X3D::Transform> ()),
 	      smoothingGroup (0),
 	     smoothingGroups (),
 	           materials (),
 	            textures ()
 {
-	scene -> addUninitializedNode (defaultMaterial);
-	scene -> addUninitializedNode (texCoord);
-	scene -> addUninitializedNode (normal);
-	scene -> addUninitializedNode (coord);
-	scene -> addUninitializedNode (group);
-	scene -> addUninitializedNode (object);
-
 	object -> children () .emplace_back (group);
 	scene -> getRootNodes () .emplace_back (object);
 }

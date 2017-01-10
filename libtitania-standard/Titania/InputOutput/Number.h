@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,22 +48,78 @@
  *
  ******************************************************************************/
 
-#include "X3DParser.h"
+#ifndef __TITANIA_INPUT_OUTPUT_NUMBER_H__
+#define __TITANIA_INPUT_OUTPUT_NUMBER_H__
+
+#include <istream>
+#include <string>
+
+#include "../LOG.h"
 
 namespace titania {
-namespace X3D {
+namespace io {
 
-X3DParser::X3DParser () :
-	X3DBaseNode ()
+/**
+ *  Template to represent a number match agains a std::basic_istream.
+ *
+ *  Extern instantiations for char and wchar are part of the
+ *  library.  Results with any other type are not guaranteed.
+ *
+ *  @param  CharT   Type of characters.
+ *  @param  Traits  Character traits
+ */
+template <class Type, class CharT, class Traits = std::char_traits <CharT>> 
+class basic_number
 {
-	addType (X3DConstants::X3DParser);
+public:
+
+	///  @name Construction
+
+	///  Constructs the io::basic_number.  A std::basic_istream can then be tested against the number type.
+	constexpr
+	basic_number ();
+
+	///  @name Operations
+
+	///  Test whether the next characters in @a istream are a number. Returns true on success and changes
+	///  @a istreams position to the next character after the matched characters otherwise it returns false and doesn't
+	///  changes the streams current position.
+	bool
+	operator () (std::basic_istream <CharT, Traits> & istream, Type & value) const;
+
+};
+
+template <class Type, class CharT, class Traits>
+inline
+constexpr
+basic_number <Type, CharT, Traits>::basic_number ()
+{ }
+
+template <class Type, class CharT, class Traits>
+bool
+basic_number <Type, CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & istream, Type & value) const
+{
+	const auto state = istream .rdstate ();
+	const auto pos   = istream .tellg ();
+
+	if (istream >> value)
+		return true;
+
+	istream .clear (state);
+
+	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+		istream .unget ();
+
+	return false;
 }
 
-X3DBaseNode*
-X3DParser::create (X3DExecutionContext* const) const
-{
-	throw Error <NOT_SUPPORTED> ("X3DParser::create: not supported.");
-}
+template <class Type>
+using number = basic_number <Type, char>;
 
-} // X3D
+template <class Type>
+using wnumber = basic_number <Type, wchar_t>;
+
+} // io
 } // titania
+
+#endif

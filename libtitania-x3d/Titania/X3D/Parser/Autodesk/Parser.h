@@ -53,6 +53,7 @@
 
 #include "../../Execution/X3DScene.h"
 #include "../../Fields/X3DPtrArray.h"
+#include "../../Parser/X3DParser.h"
 
 struct Lib3dsFile;
 struct Lib3dsMaterial;
@@ -66,7 +67,8 @@ class Material;
 
 namespace Autodesk {
 
-class Parser
+class Parser :
+	public X3D::X3DParser
 {
 public:
 
@@ -76,8 +78,9 @@ public:
 
 	///  @name Operations
 
+	virtual
 	void
-	parseIntoScene ();
+	parseIntoScene () final override;
 
 	///  @name Destruction
 

@@ -64,10 +64,6 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType Parser::component      = ComponentType::TITANIA;
-const std::string   Parser::typeName       = "Parser";
-const std::string   Parser::containerField = "parser";
-
 Parser::AccessTypes::AccessTypes ()
 {
 	(*this) ["field"]        = initializeOnly;
@@ -84,7 +80,6 @@ Parser::AccessTypes::AccessTypes ()
 Parser::AccessTypes Parser::accessTypes;
 
 Parser::Parser (std::istream & istream, X3DScene* scene) :
-	          X3DBaseNode (scene -> getBrowser (), scene),
 	            X3DParser (),
 	              istream (istream),
 	                scene (scene),
@@ -93,9 +88,7 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 	          whiteSpaces (),
 	      currentComments (),
 	    commentCharacters ()
-{
-	addType (X3DConstants::Parser);
-}
+{ }
 
 void
 Parser::parseIntoScene ()
@@ -1607,7 +1600,7 @@ Parser::scriptBodyElement (X3DBaseNode* const _baseNode)
 
 						_field -> dispose ();
 
-						addDisposedObject (_field);
+						_field -> addDisposedObject (_field);
 
 						return true;
 					}

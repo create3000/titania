@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_PARSER_WAVEFRONT_PARSER_H__
 
 #include "../../Execution/X3DScene.h"
+#include "../../Parser/X3DParser.h"
 
 namespace titania {
 namespace X3D {
@@ -66,7 +67,8 @@ class ImageTexture;
 
 namespace Wavefront {
 
-class Parser
+class Parser :
+	public X3D::X3DParser
 {
 public:
 
@@ -76,8 +78,9 @@ public:
 
 	///  @name Operations
 
+	virtual
 	void
-	parseIntoScene ();
+	parseIntoScene () final override;
 
 	///  @name Destruction
 

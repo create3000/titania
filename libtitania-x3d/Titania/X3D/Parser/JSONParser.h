@@ -52,13 +52,15 @@
 #define __TITANIA_X3D_PARSER_JSON_PARSER_H__
 
 #include "../Execution/X3DScene.h"
+#include "../Parser/X3DParser.h"
 
 struct json_object;
 
 namespace titania {
 namespace X3D {
 
-class JSONParser
+class JSONParser :
+	public X3DParser
 {
 public:
 
@@ -68,8 +70,9 @@ public:
 
 	///  @name Operations
 
+	virtual
 	void
-	parseIntoScene ();
+	parseIntoScene () final override;
 
 	///  @name Destruction
 

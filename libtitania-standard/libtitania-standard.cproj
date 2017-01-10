@@ -559,6 +559,8 @@
     <None Include="Titania\RegEx\regex_escape.h" />
     <None Include="Titania\Math\Mesh\Tessellator.h" />
     <None Include="Titania\Math\Mesh\Combine.h" />
+    <None Include="Titania\InputOutput\Number.h" />
+    <None Include="Titania\InputOutput\Hex.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

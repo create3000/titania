@@ -82,6 +82,7 @@ namespace Autodesk {
 static const auto rotation = Rotation4f (-1, 0, 0, math::pi <float> / 2);
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
+	       X3D::X3DParser (),
 	                scene (scene),
 	                  uri (uri),
 	              istream (istream),

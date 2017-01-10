@@ -68,6 +68,7 @@ namespace titania {
 namespace X3D {
 
 JSONParser::JSONParser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
+	            X3DParser (),
 	                scene (scene),
 	                  uri (uri),
 	              istream (istream),

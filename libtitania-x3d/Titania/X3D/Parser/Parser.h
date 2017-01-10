@@ -86,31 +86,12 @@ public:
 
 	Parser (std::istream & istream, X3DScene*);
 
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
 	///  @name Operations
 
+	virtual
 	void
 	parseIntoScene ()
-	throw (Error <INVALID_X3D>);
+	throw (Error <INVALID_X3D>) final override;
 
 	static
 	const AccessTypes &
@@ -120,6 +101,10 @@ public:
 private:
 
 	typedef std::vector <X3DExecutionContext*> ExecutionContextStack;
+
+	X3DBrowser*
+	getBrowser () const
+	{ return scene -> getBrowser (); }
 
 	std::string
 	getMessageFromError (const X3DError &);
@@ -543,10 +528,6 @@ private:
 	createField (const std::type_info &);
 
 	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
 
 	static AccessTypes accessTypes;
 

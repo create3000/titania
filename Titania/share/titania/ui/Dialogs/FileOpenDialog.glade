@@ -64,6 +64,15 @@
       <mime-type>image/*</mime-type>
     </mime-types>
   </object>
+  <object class="GtkFileFilter" id="FileFilterSVG">
+    <mime-types>
+      <mime-type>image/svg+xml</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.svg</pattern>
+      <pattern>*.svgz</pattern>
+    </patterns>
+  </object>
   <object class="GtkFileFilter" id="FileFilterVideo">
     <mime-types>
       <mime-type>video/*</mime-type>
@@ -94,6 +103,7 @@
       <mime-type>application/json</mime-type>
       <mime-type>application/x-3ds</mime-type>
       <mime-type>image/x-3ds</mime-type>
+      <mime-type>image/svg+xml</mime-type>
     </mime-types>
     <patterns>
       <pattern>*.x3d</pattern>
@@ -110,6 +120,8 @@
       <pattern>*.vrml</pattern>
       <pattern>*.obj</pattern>
       <pattern>*.3ds</pattern>
+      <pattern>*.svg</pattern>
+      <pattern>*.svgz</pattern>
     </patterns>
   </object>
   <object class="GtkFileFilter" id="FileFilterX3DClassicVRMLEncoding">
