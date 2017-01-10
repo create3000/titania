@@ -126,6 +126,30 @@ public:
 	///  @name Operations
 
 	virtual
+	bool
+	intersects (Line3d line,
+	            const ClipPlaneContainerArray & clipPlanes,
+	            Matrix4d modelViewMatrix,
+	            std::vector <IntersectionPtr> & intersections) const final override;
+
+	virtual
+	bool
+	intersects (Box3d box,
+	            const ClipPlaneContainerArray & clipPlanes,
+	            Matrix4d modelViewMatrix) const final override;
+
+	virtual
+	std::vector <Vector3d>
+	intersects (X3DRenderObject* const renderObject,
+	            const std::shared_ptr <FrameBuffer> & frameBuffer,
+	            const std::shared_ptr <FrameBuffer> & depthBuffer,
+	            std::vector <IntersectionPtr> & intersections) final override;
+
+	virtual
+	void
+	depth (const X3DShapeContainer* const context) final override;
+
+	virtual
 	void
 	draw (ShapeContainer* const) final override;
 

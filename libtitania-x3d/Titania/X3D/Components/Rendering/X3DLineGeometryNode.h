@@ -68,24 +68,24 @@ public:
 	intersects (Line3d line,
 	            const ClipPlaneContainerArray & clipPlanes,
 	            Matrix4d modelViewMatrix,
-	            std::vector <IntersectionPtr> & intersections) const final override;
+	            std::vector <IntersectionPtr> & intersections) const override;
 
 	virtual
 	bool
 	intersects (Box3d box,
 	            const ClipPlaneContainerArray & clipPlanes,
-	            Matrix4d modelViewMatrix) const final override;
+	            Matrix4d modelViewMatrix) const override;
 
 	virtual
 	std::vector <Vector3d>
 	intersects (X3DRenderObject* const renderObject,
 	            const std::shared_ptr <FrameBuffer> & frameBuffer,
 	            const std::shared_ptr <FrameBuffer> & depthBuffer,
-	            std::vector <IntersectionPtr> & intersections) final override;
+	            std::vector <IntersectionPtr> & intersections) override;
 
 	virtual
 	void
-	depth (const X3DShapeContainer* const context) final override;
+	depth (const X3DShapeContainer* const context) override;
 
 	virtual
 	void

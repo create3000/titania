@@ -150,6 +150,14 @@ private:
 
 	bool
 	colorValue (std::istream & istream, X3D::Color3f & color);
+	
+	X3D::X3DPtr <X3D::Transform>
+	getTransform (xmlpp::Element* const xmlElement,
+	              const X3D::Vector2d & translation = X3D::Vector2d (),
+	              const X3D::Vector2d & scale = X3D::Vector2d (1, 1));
+
+	X3D::X3DPtr <X3D::Appearance>
+	getFillAppearance ();
 
 	bool
 	getFillSet () const;

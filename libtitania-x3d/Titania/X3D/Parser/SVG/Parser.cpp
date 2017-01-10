@@ -233,19 +233,7 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 
 	// Determine matrix.	
 
-	Matrix3d matrix;
-
-	transformAttribute (xmlElement -> get_attribute ("transform"), matrix);
-
-
-	// Create nodes.
-
-	const auto transform = scene -> createNode <X3D::Transform> ();
-
-	transform -> setMatrix (X3D::Matrix4d (matrix [0] [0], matrix [0] [1], 0, 0,
-	                                       matrix [1] [0], matrix [1] [1], 0, 0,
-	                                       0, 0, 1, 0,
-	                                       matrix [2] [0], -matrix [2] [1], 0, 1));
+	const auto transform = getTransform (xmlElement);
 
 	groups .back () -> children () .emplace_back (transform);
 
@@ -274,45 +262,30 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 
 	// Determine matrix.	
 
-	X3D::Matrix3d matrix;
-
 	double x      = 0;
 	double y      = 0;
 	double width  = 0;
 	double height = 0;
-
-	transformAttribute (xmlElement -> get_attribute ("transform"), matrix);
 
 	lengthAttribute (xmlElement -> get_attribute ("x"),      x);
 	lengthAttribute (xmlElement -> get_attribute ("y"),      y);
 	lengthAttribute (xmlElement -> get_attribute ("width"),  width);
 	lengthAttribute (xmlElement -> get_attribute ("height"), height);
 
-	matrix .translate (X3D::Vector2d (x + width / 2, y + height / 2));
+	const auto transform = getTransform (xmlElement, X3D::Vector2d (x + width / 2, y + height / 2));
 
-	const auto transform  = scene -> createNode <X3D::Transform> ();
-
-	transform -> setMatrix (X3D::Matrix4d (matrix [0] [0], matrix [0] [1], 0, 0,
-	                                       matrix [1] [0], matrix [1] [1], 0, 0,
-	                                       0, 0, 1, 0,
-	                                       matrix [2] [0], -matrix [2] [1], 0, 1));
 	// Create nodes.
 
 	if (getFillSet ())
 	{
-		const auto shape      = scene -> createNode <X3D::Shape> ();
-		const auto appearance = scene -> createNode <X3D::Appearance> ();
-		const auto material   = scene -> createNode <X3D::Material> ();
-		const auto rectangle  = scene -> createNode <X3D::Rectangle2D> ();
-	
+		const auto shape     = scene -> createNode <X3D::Shape> ();
+		const auto rectangle = scene -> createNode <X3D::Rectangle2D> ();
+
 		transform -> children () .emplace_back (shape);
 
-		shape -> appearance ()      = appearance;
-		shape -> geometry ()        = rectangle;
-		appearance -> material ()   = material;
-		material -> diffuseColor () = getFill ();
-		material -> transparency () = 1 - getFillOpacity ();
-		rectangle -> size ()        = X3D::Vector2f (width, height);
+		shape -> appearance () = getFillAppearance ();
+		shape -> geometry ()   = rectangle;
+		rectangle -> size ()   = X3D::Vector2f (width, height);
 	}
 
 	if (not transform -> children () .empty ())
@@ -337,44 +310,28 @@ Parser::circleElement (xmlpp::Element* const xmlElement)
 
 	// Determine matrix.	
 
-	X3D::Matrix3d matrix;
-
 	double cx = 0;
 	double cy = 0;
 	double r  = 0;
-
-	transformAttribute (xmlElement -> get_attribute ("transform"), matrix);
 
 	lengthAttribute (xmlElement -> get_attribute ("cx"), cx);
 	lengthAttribute (xmlElement -> get_attribute ("cy"), cy);
 	lengthAttribute (xmlElement -> get_attribute ("r"),  r);
 
-	matrix .translate (X3D::Vector2d (cx, cy));
-
-	const auto transform = scene -> createNode <X3D::Transform> ();
-
-	transform -> setMatrix (X3D::Matrix4d (matrix [0] [0], matrix [0] [1], 0, 0,
-	                                       matrix [1] [0], matrix [1] [1], 0, 0,
-	                                       0, 0, 1, 0,
-	                                       matrix [2] [0], -matrix [2] [1], 0, 1));
+	const auto transform = getTransform (xmlElement, X3D::Vector2d (cx, cy));
 
 	// Create nodes.
 
 	if (getFillSet ())
 	{
-		const auto shape      = scene -> createNode <X3D::Shape> ();
-		const auto appearance = scene -> createNode <X3D::Appearance> ();
-		const auto material   = scene -> createNode <X3D::Material> ();
-		const auto disk       = scene -> createNode <X3D::Disk2D> ();
-	
+		const auto shape = scene -> createNode <X3D::Shape> ();
+		const auto disk  = scene -> createNode <X3D::Disk2D> ();
+
 		transform -> children () .emplace_back (shape);
 
-		shape -> appearance ()      = appearance;
-		shape -> geometry ()        = disk;
-		appearance -> material ()   = material;
-		material -> diffuseColor () = getFill ();
-		material -> transparency () = 1 - getFillOpacity ();
-		disk -> outerRadius ()      = r;
+		shape -> appearance () = getFillAppearance ();
+		shape -> geometry ()   = disk;
+		disk -> outerRadius () = r;
 	}
 
 	if (not transform -> children () .empty ())
@@ -386,7 +343,51 @@ Parser::circleElement (xmlpp::Element* const xmlElement)
 void
 Parser::ellipseElement (xmlpp::Element* const xmlElement)
 {
-	__LOG__ << xmlElement -> get_name () << std::endl;
+	// Determine style.
+
+	Style style;
+
+	styleAttribute (xmlElement -> get_attribute ("style"), style);
+
+	if (style .display == "none")
+		return;
+
+	styles .emplace_back (style);
+
+	// Determine matrix.	
+
+	double cx = 0;
+	double cy = 0;
+	double rx = 0;
+	double ry = 0;
+
+	lengthAttribute (xmlElement -> get_attribute ("cx"), cx);
+	lengthAttribute (xmlElement -> get_attribute ("cy"), cy);
+	lengthAttribute (xmlElement -> get_attribute ("rx"), rx);
+	lengthAttribute (xmlElement -> get_attribute ("ry"), ry);
+
+	const auto rmin = std::min (rx, ry);
+
+	const auto transform = getTransform (xmlElement, X3D::Vector2d (cx, cy), X3D::Vector2d (rx / rmin, ry / rmin));
+
+	// Create nodes.
+
+	if (getFillSet ())
+	{
+		const auto shape = scene -> createNode <X3D::Shape> ();
+		const auto disk  = scene -> createNode <X3D::Disk2D> ();
+
+		transform -> children () .emplace_back (shape);
+
+		shape -> appearance () = getFillAppearance ();
+		shape -> geometry ()   = disk;
+		disk -> outerRadius () = rmin;
+	}
+
+	if (not transform -> children () .empty ())
+		groups .back () -> children () .emplace_back (transform);
+
+	styles .pop_back ();
 }
 
 void
@@ -603,6 +604,39 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 	}
 
 	return false;
+}
+
+X3D::X3DPtr <X3D::Transform>
+Parser::getTransform (xmlpp::Element* const xmlElement, const X3D::Vector2d & translation, const X3D::Vector2d & scale)
+{
+	X3D::Matrix3d matrix;
+
+	transformAttribute (xmlElement -> get_attribute ("transform"), matrix);
+
+	matrix .translate (translation);
+	matrix .scale (scale);
+
+	const auto transform = scene -> createNode <X3D::Transform> ();
+
+	transform -> setMatrix (X3D::Matrix4d (matrix [0] [0], matrix [0] [1], 0, 0,
+	                                       matrix [1] [0], matrix [1] [1], 0, 0,
+	                                       0, 0, 1, 0,
+	                                       matrix [2] [0], -matrix [2] [1], 0, 1));
+
+	return transform;
+}
+
+X3D::X3DPtr <X3D::Appearance>
+Parser::getFillAppearance ()
+{
+	const auto appearance = scene -> createNode <X3D::Appearance> ();
+	const auto material   = scene -> createNode <X3D::Material> ();
+
+	appearance -> material ()   = material;
+	material -> diffuseColor () = getFill ();
+	material -> transparency () = 1 - getFillOpacity ();
+
+	return appearance;
 }
 
 bool

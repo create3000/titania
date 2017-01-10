@@ -195,7 +195,7 @@ Disk2D::build ()
 				getVertices () .emplace_back (vertex * radius);
 		}
 
-		addElements (options -> getVertexMode (), getVertices () .size ());
+		addElements (GL_POLYGON, getVertices () .size ());
 		setGeometryType (GeometryType::GEOMETRY_2D);
 		setSolid (solid ());
 		addMirrorVertices (options -> getVertexMode (), true);
@@ -260,6 +260,45 @@ Disk2D::build ()
 	setSolid (solid ());
 	addMirrorVertices (GL_QUADS, true);
 }
+
+bool
+Disk2D::intersects (Line3d line,
+                    const ClipPlaneContainerArray & clipPlanes,
+                    Matrix4d modelViewMatrix,
+                    std::vector <IntersectionPtr> & intersections) const
+{
+	if (innerRadius () == outerRadius ())
+		return X3DLineGeometryNode::intersects (line, clipPlanes, modelViewMatrix, intersections);
+
+	return X3DGeometryNode::intersects (line, clipPlanes, modelViewMatrix, intersections);
+}
+
+bool
+Disk2D::intersects (Box3d box,
+                    const ClipPlaneContainerArray & clipPlanes,
+                    Matrix4d modelViewMatrix) const
+{
+	if (innerRadius () == outerRadius ())
+		return X3DLineGeometryNode::intersects (box, clipPlanes, modelViewMatrix);
+
+	return X3DGeometryNode::intersects (box, clipPlanes, modelViewMatrix);
+}
+
+std::vector <Vector3d>
+Disk2D::intersects (X3DRenderObject* const renderObject,
+                    const std::shared_ptr <FrameBuffer> & frameBuffer,
+                    const std::shared_ptr <FrameBuffer> & depthBuffer,
+                    std::vector <IntersectionPtr> & intersections)
+{
+	if (innerRadius () == outerRadius ())
+		return X3DLineGeometryNode::intersects (renderObject, frameBuffer, depthBuffer, intersections);
+
+	return X3DGeometryNode::intersects (renderObject, frameBuffer, depthBuffer, intersections);
+}
+
+void
+Disk2D::depth (const X3DShapeContainer* const context)
+{ }
 
 void
 Disk2D::draw (ShapeContainer* const context)
