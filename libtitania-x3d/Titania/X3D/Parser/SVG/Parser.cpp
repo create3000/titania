@@ -52,6 +52,7 @@
 
 #include <libxml++/libxml++.h>
 
+#include "../../Components/Geometry2D/Disk2D.h"
 #include "../../Components/Geometry2D/Rectangle2D.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Shape/Appearance.h"
@@ -120,6 +121,7 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	           uri (uri),
 	       istream (istream),
 	     xmlParser (new xmlpp::DomParser ()),
+	        styles (),
 	        groups ({ scene -> createNode <X3D::Transform> () })
 {
 	xmlParser -> set_throw_messages (true);
@@ -171,10 +173,6 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 	lengthAttribute  (xmlElement -> get_attribute ("width"),   width);
 	lengthAttribute  (xmlElement -> get_attribute ("height"),  height);
 
-	__LOG__ << viewBox << std::endl;
-	__LOG__ << width << std::endl;
-	__LOG__ << height << std::endl;
-
 	const auto transform   = groups .front ();
 	const auto translation = X3D::Vector3d (-viewBox .x (), viewBox .y (), 0);
 	const auto scale       = X3D::Vector3d (math::pixel <double> * width / viewBox [2], math::pixel <double> * height / viewBox [3], 1);
@@ -203,6 +201,7 @@ Parser::element (xmlpp::Element* const xmlElement)
 	static const std::map <std::string, ElementsFunction> elementsIndex = {
 		std::make_pair ("g",       std::mem_fn (&Parser::groupElement)),
 		std::make_pair ("rect",    std::mem_fn (&Parser::rectangleElement)),
+		std::make_pair ("circle",  std::mem_fn (&Parser::circleElement)),
 		std::make_pair ("ellipse", std::mem_fn (&Parser::ellipseElement)),
 		std::make_pair ("path",    std::mem_fn (&Parser::pathElement)),
 	};
@@ -221,13 +220,25 @@ Parser::element (xmlpp::Element* const xmlElement)
 void
 Parser::groupElement (xmlpp::Element* const xmlElement)
 {
-	__LOG__ << xmlElement -> get_name () << std::endl;
+	// Determine style.
+
+	Style style;
+
+	styleAttribute (xmlElement -> get_attribute ("style"), style);
+
+	if (style .display == "none")
+		return;
+
+	styles .emplace_back (style);
+
+	// Determine matrix.	
 
 	Matrix3d matrix;
 
 	transformAttribute (xmlElement -> get_attribute ("transform"), matrix);
 
-	__LOG__ << matrix << std::endl;
+
+	// Create nodes.
 
 	const auto transform = scene -> createNode <X3D::Transform> ();
 
@@ -243,12 +254,23 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 	elements (xmlElement);
 
 	groups .pop_back ();
+
+	styles .pop_back ();
 }
 
 void
 Parser::rectangleElement (xmlpp::Element* const xmlElement)
 {
-	__LOG__ << xmlElement -> get_name () << std::endl;
+	// Determine style.
+
+	Style style;
+
+	styleAttribute (xmlElement -> get_attribute ("style"), style);
+
+	if (style .display == "none")
+		return;
+
+	styles .emplace_back (style);
 
 	// Determine matrix.	
 
@@ -268,35 +290,97 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 
 	matrix .translate (X3D::Vector2d (x + width / 2, y + height / 2));
 
-	// Determine material.
+	const auto transform  = scene -> createNode <X3D::Transform> ();
+
+	transform -> setMatrix (X3D::Matrix4d (matrix [0] [0], matrix [0] [1], 0, 0,
+	                                       matrix [1] [0], matrix [1] [1], 0, 0,
+	                                       0, 0, 1, 0,
+	                                       matrix [2] [0], -matrix [2] [1], 0, 1));
+	// Create nodes.
+
+	if (getFillSet ())
+	{
+		const auto shape      = scene -> createNode <X3D::Shape> ();
+		const auto appearance = scene -> createNode <X3D::Appearance> ();
+		const auto material   = scene -> createNode <X3D::Material> ();
+		const auto rectangle  = scene -> createNode <X3D::Rectangle2D> ();
+	
+		transform -> children () .emplace_back (shape);
+
+		shape -> appearance ()      = appearance;
+		shape -> geometry ()        = rectangle;
+		appearance -> material ()   = material;
+		material -> diffuseColor () = getFill ();
+		material -> transparency () = 1 - getFillOpacity ();
+		rectangle -> size ()        = X3D::Vector2f (width, height);
+	}
+
+	if (not transform -> children () .empty ())
+		groups .back () -> children () .emplace_back (transform);
+
+	styles .pop_back ();
+}
+
+void
+Parser::circleElement (xmlpp::Element* const xmlElement)
+{
+	// Determine style.
 
 	Style style;
 
 	styleAttribute (xmlElement -> get_attribute ("style"), style);
 
-	__LOG__ << style .fill << std::endl;
+	if (style .display == "none")
+		return;
 
-	// Create nodes.
+	styles .emplace_back (style);
 
-	const auto transform  = scene -> createNode <X3D::Transform> ();
-	const auto shape      = scene -> createNode <X3D::Shape> ();
-	const auto appearance = scene -> createNode <X3D::Appearance> ();
-	const auto material   = scene -> createNode <X3D::Material> ();
-	const auto rectangle  = scene -> createNode <X3D::Rectangle2D> ();
+	// Determine matrix.	
+
+	X3D::Matrix3d matrix;
+
+	double cx = 0;
+	double cy = 0;
+	double r  = 0;
+
+	transformAttribute (xmlElement -> get_attribute ("transform"), matrix);
+
+	lengthAttribute (xmlElement -> get_attribute ("cx"), cx);
+	lengthAttribute (xmlElement -> get_attribute ("cy"), cy);
+	lengthAttribute (xmlElement -> get_attribute ("r"),  r);
+
+	matrix .translate (X3D::Vector2d (cx, cy));
+
+	const auto transform = scene -> createNode <X3D::Transform> ();
 
 	transform -> setMatrix (X3D::Matrix4d (matrix [0] [0], matrix [0] [1], 0, 0,
 	                                       matrix [1] [0], matrix [1] [1], 0, 0,
 	                                       0, 0, 1, 0,
 	                                       matrix [2] [0], -matrix [2] [1], 0, 1));
 
-	transform -> children ()    = { shape };
-	shape -> appearance ()      = appearance;
-	shape -> geometry ()        = rectangle;
-	appearance -> material ()   = material;
-	material -> diffuseColor () = style .fill;
-	rectangle -> size ()        = X3D::Vector2f (width, height);
+	// Create nodes.
 
-	groups .back () -> children () .emplace_back (transform);
+	if (getFillSet ())
+	{
+		const auto shape      = scene -> createNode <X3D::Shape> ();
+		const auto appearance = scene -> createNode <X3D::Appearance> ();
+		const auto material   = scene -> createNode <X3D::Material> ();
+		const auto disk       = scene -> createNode <X3D::Disk2D> ();
+	
+		transform -> children () .emplace_back (shape);
+
+		shape -> appearance ()      = appearance;
+		shape -> geometry ()        = disk;
+		appearance -> material ()   = material;
+		material -> diffuseColor () = getFill ();
+		material -> transparency () = 1 - getFillOpacity ();
+		disk -> outerRadius ()      = r;
+	}
+
+	if (not transform -> children () .empty ())
+		groups .back () -> children () .emplace_back (transform);
+
+	styles .pop_back ();
 }
 
 void
@@ -459,29 +543,106 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 		basic::trim (pair [0]);
 		basic::trim (pair [1]);
 
-		if (pair [0] == "fill")
+		std::istringstream vstream (pair [1]);
+
+		vstream .imbue (std::locale::classic ());
+
+		if (pair [0] == "display")
 		{
-			std::istringstream isstream (pair [1]);
+			styleObject .display = pair [1];
+		}
+		else if (pair [0] == "fill")
+		{
+			X3D::Color3f color;
 
-			isstream .imbue (std::locale::classic ());
-
-			if (Grammar::NumberSign (isstream))
+			if (colorValue (vstream, color))
 			{
-				int32_t color;
+				styleObject .fillSet = true;
+				styleObject .fill    = color;
+			}
+		}
+		else if (pair [0] == "fill-opacity")
+		{
+			double fillOpacity;
 
-				if (Grammar::HexValue (isstream, color))
-				{
-					float b = (color & 255) / 255.0f;
-					float g = ((color >>= 8) & 255) / 255.0f;
-					float r = ((color >>= 8) & 255) / 255.0f;
+			if (Grammar::DoubleValue (vstream, fillOpacity))
+			{
+				styleObject .fillOpacity = fillOpacity;
+			}
+		}
+		else if (pair [0] == "opacity")
+		{
+			double opacity;
 
-					styleObject .fill = Color3f (r, g, b);
-				}
+			if (Grammar::DoubleValue (vstream, opacity))
+			{
+				styleObject .opacity = opacity;
 			}
 		}
 	}
 
 	return true;
+}
+
+bool
+Parser::colorValue (std::istream & istream, X3D::Color3f & color)
+{
+	if (Grammar::NumberSign (istream))
+	{
+		int32_t number;
+
+		if (Grammar::HexValue (istream, number))
+		{
+			float b = (number & 255) / 255.0f;
+			float g = ((number >>= 8) & 255) / 255.0f;
+			float r = ((number >>= 8) & 255) / 255.0f;
+
+			color = X3D::Color3f (r, g, b);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool
+Parser::getFillSet () const
+{
+	for (const auto & style : styles)
+	{
+		if (style .fillSet)
+			return true;
+	}
+
+	return false;
+}
+
+X3D::Color3f
+Parser::getFill () const
+{
+	for (const auto & style : styles)
+	{
+		if (style .fillSet)
+			return style .fill;
+	}
+
+	return X3D::Color3f ();
+}
+
+double
+Parser::getFillOpacity () const
+{
+	double opacity = 1;
+
+	for (const auto & style : styles)
+	{
+		opacity *= style .opacity;
+
+		if (style .fillSet)
+			return style .fillOpacity * opacity;
+	}
+
+	return 0;
 }
 
 Parser::~Parser ()

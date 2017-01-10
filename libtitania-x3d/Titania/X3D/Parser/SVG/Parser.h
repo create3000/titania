@@ -94,8 +94,18 @@ private:
 
 	struct Style {
 
+		Style () :
+			    display ("inline"),
+			    fillSet (false),
+			       fill (),
+			fillOpacity (1),
+			    opacity (1)
+			{ }
+
 		std::string  display;
+		bool         fillSet;
 		X3D::Color3f fill;
+		double       fillOpacity;
 		double       opacity;
 
 	};
@@ -118,6 +128,9 @@ private:
 	rectangleElement (xmlpp::Element* const xmlElement);
 
 	void
+	circleElement (xmlpp::Element* const xmlElement);
+
+	void
 	ellipseElement (xmlpp::Element* const xmlElement);
 
 	void
@@ -135,6 +148,18 @@ private:
 	bool
 	styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & value);
 
+	bool
+	colorValue (std::istream & istream, X3D::Color3f & color);
+
+	bool
+	getFillSet () const;
+
+	X3D::Color3f
+	getFill () const;
+	
+	double
+	getFillOpacity () const;
+
 	///  @name Members
 
 	const X3D::X3DScenePtr scene;
@@ -143,6 +168,7 @@ private:
 
 	std::unique_ptr <xmlpp::DomParser> xmlParser;
 
+	std::vector <Style>               styles;
 	X3D::X3DPtrArray <X3D::Transform> groups;
 
 };
