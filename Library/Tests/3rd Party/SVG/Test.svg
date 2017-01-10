@@ -173,5 +173,10 @@
        d="M 123.74369,619.25928,190.03495,734.16413,50.8233,731.95442 Z"
        id="path3349"
        inkscape:connector-curvature="0" />
+    <path
+       id="path3349-5-3"
+       style="display:inline;fill:#c46eb3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 336.17045,615.16169 93.88218,65.59318 -108.68411,49.29201 z m -43.55878,0 28.75685,90.60616 -88.11346,-26.39936 z"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>

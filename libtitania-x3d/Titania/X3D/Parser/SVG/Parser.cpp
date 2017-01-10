@@ -663,6 +663,8 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, std::vector <std::vect
 	std::vector <X3D::Vector2d> path;
 	std::string                 whiteSpaces;
 
+	double ax, ay;
+
 	while (isstream)
 	{
 		Grammar::CommaWhiteSpaces (isstream, whiteSpaces);
@@ -671,17 +673,15 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, std::vector <std::vect
 		{
 			while (isstream)
 			{
-				double x, y;
-	
 				if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
 				{
-					if (Grammar::DoubleValue (isstream, x))
+					if (Grammar::DoubleValue (isstream, ax))
 					{
 						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
 						{
-							if (Grammar::DoubleValue (isstream, y))
+							if (Grammar::DoubleValue (isstream, ay))
 							{
-								path .emplace_back (x, y);
+								path .emplace_back (ax, ay);
 								continue;
 							}
 						}
@@ -695,11 +695,44 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, std::vector <std::vect
 		}
 		else if (Grammar::m (isstream))
 		{
+			while (isstream)
+			{
+				double x, y;
+	
+				if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+				{
+					if (Grammar::DoubleValue (isstream, x))
+					{
+						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+						{
+							if (Grammar::DoubleValue (isstream, y))
+							{
+								ax += x;
+								ay += y;
 
+								path .emplace_back (ax, ay);
+								continue;
+							}
+						}
+					}
+				}
+
+				break;
+			}
+
+			continue;
 		}
 		else if (Grammar::Z (isstream) or Grammar::z (isstream))
 		{
-			paths .emplace_back (std::move (path));
+			if (not path .empty ())
+			{
+				ax = path .front () .x ();
+				ay = path .front () .y ();
+
+				paths .emplace_back (std::move (path));
+			}
+
+			continue;
 		}
 
 		break;
