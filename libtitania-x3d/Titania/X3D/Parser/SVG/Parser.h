@@ -134,6 +134,9 @@ private:
 	ellipseElement (xmlpp::Element* const xmlElement);
 
 	void
+	polygonElement (xmlpp::Element* const xmlElement);
+
+	void
 	pathElement (xmlpp::Element* const xmlElement);
 
 	bool
@@ -144,6 +147,9 @@ private:
 
 	bool
 	lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
+
+	bool
+	dAttribute (xmlpp::Attribute* const xmlAttribute, std::vector <std::vector <X3D::Vector2d>> & paths);
 
 	bool
 	styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & value);

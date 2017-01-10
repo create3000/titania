@@ -54,12 +54,15 @@
 
 #include "../../Components/Geometry2D/Disk2D.h"
 #include "../../Components/Geometry2D/Rectangle2D.h"
+#include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Grouping/Transform.h"
+#include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
 #include "../Filter.h"
 
+#include <Titania/Math/Mesh/Tessellator.h>
 #include <Titania/InputOutput.h>
 #include <Titania/InputOutput/Hex.h>
 #include <Titania/InputOutput/Number.h>
@@ -74,12 +77,20 @@ class Grammar
 {
 public:
 
+	static const io::sequence WhiteSpaces;
+	static const io::sequence CommaWhiteSpaces;
+
 	static const io::string matrix;
 
 	static const io::character OpenParenthesis;
 	static const io::character CloseParenthesis;
 	static const io::character Comma;
 	static const io::character NumberSign;
+
+	static const io::character M;
+	static const io::character m;
+	static const io::character Z;
+	static const io::character z;
 
 	static const io::string em;
 	static const io::string ex;
@@ -95,12 +106,20 @@ public:
 	static const io::hex <int32_t>   HexValue;
 };
 
+const io::sequence Grammar::WhiteSpaces ("\r\n \t");
+const io::sequence Grammar::CommaWhiteSpaces ("\r\n \t,");
+
 const io::string Grammar::matrix ("matrix");
 
 const io::character Grammar::OpenParenthesis ('(');
 const io::character Grammar::CloseParenthesis (')');
 const io::character Grammar::Comma (',');
 const io::character Grammar::NumberSign ('#');
+
+const io::character Grammar::M ('M');
+const io::character Grammar::m ('m');
+const io::character Grammar::Z ('Z');
+const io::character Grammar::z ('z');
 
 const io::string    Grammar::em ("em");
 const io::string    Grammar::ex ("ex");
@@ -203,6 +222,7 @@ Parser::element (xmlpp::Element* const xmlElement)
 		std::make_pair ("rect",    std::mem_fn (&Parser::rectangleElement)),
 		std::make_pair ("circle",  std::mem_fn (&Parser::circleElement)),
 		std::make_pair ("ellipse", std::mem_fn (&Parser::ellipseElement)),
+		std::make_pair ("polygon", std::mem_fn (&Parser::polygonElement)),
 		std::make_pair ("path",    std::mem_fn (&Parser::pathElement)),
 	};
 
@@ -285,6 +305,7 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 
 		shape -> appearance () = getFillAppearance ();
 		shape -> geometry ()   = rectangle;
+		rectangle -> solid ()  = false;
 		rectangle -> size ()   = X3D::Vector2f (width, height);
 	}
 
@@ -331,6 +352,7 @@ Parser::circleElement (xmlpp::Element* const xmlElement)
 
 		shape -> appearance () = getFillAppearance ();
 		shape -> geometry ()   = disk;
+		disk -> solid ()       = false;
 		disk -> outerRadius () = r;
 	}
 
@@ -366,8 +388,7 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 	lengthAttribute (xmlElement -> get_attribute ("rx"), rx);
 	lengthAttribute (xmlElement -> get_attribute ("ry"), ry);
 
-	const auto rmin = std::min (rx, ry);
-
+	const auto rmin      = std::min (rx, ry);
 	const auto transform = getTransform (xmlElement, X3D::Vector2d (cx, cy), X3D::Vector2d (rx / rmin, ry / rmin));
 
 	// Create nodes.
@@ -381,6 +402,7 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 
 		shape -> appearance () = getFillAppearance ();
 		shape -> geometry ()   = disk;
+		disk -> solid ()       = false;
 		disk -> outerRadius () = rmin;
 	}
 
@@ -391,9 +413,117 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 }
 
 void
+Parser::polygonElement (xmlpp::Element* const xmlElement)
+{
+	//__LOG__ << xmlElement -> get_name () << std::endl;
+}
+
+void
 Parser::pathElement (xmlpp::Element* const xmlElement)
 {
-	__LOG__ << xmlElement -> get_name () << std::endl;
+	using Tesselator = math::tessellator <double, size_t>;
+
+	// Get path points.
+
+	std::vector <std::vector <X3D::Vector2d>> paths;
+
+	if (not dAttribute (xmlElement -> get_attribute ("d"), paths))
+		return;
+
+	{
+		__LOG__ << "path" << std::endl;
+	
+		for (const auto & path : paths)
+		{
+			__LOG__ << std::endl;
+	
+			for (const auto & p : path)
+				__LOG__ << p << std::endl;
+		}
+	
+		__LOG__ << std::endl;
+	}
+
+	// Determine style.
+
+	Style style;
+
+	styleAttribute (xmlElement -> get_attribute ("style"), style);
+
+	if (style .display == "none")
+		return;
+
+	styles .emplace_back (style);
+
+	// Determine matrix.	
+
+	const auto transform = getTransform (xmlElement);
+
+	// Create nodes.
+
+	if (getFillSet ())
+	{
+		// Tesselate paths
+
+		Tesselator tessellator;
+
+		tessellator .property (GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
+
+		tessellator .property (GLU_TESS_TOLERANCE, 0);
+		tessellator .normal (Vector3d (0, 0, 1));
+		tessellator .begin_polygon ();
+
+		size_t index = 0;
+
+		for (const auto & path : paths)
+		{
+			tessellator .begin_contour ();
+
+			for (const auto & point : path)
+			{
+				tessellator .add_vertex (X3D::Vector3d (point .x (), point .y (), 0), index ++);
+			}
+
+			tessellator .end_contour ();
+		}
+
+		tessellator .end_polygon ();
+
+		// Create geometry.
+
+		const auto shape      = scene -> createNode <X3D::Shape> ();
+		const auto geometry   = scene -> createNode <X3D::IndexedFaceSet> ();
+		const auto coordinate = scene -> createNode <X3D::Coordinate> ();
+
+		shape -> appearance () = getFillAppearance ();
+		shape -> geometry ()   = geometry;
+		geometry -> solid ()   = false;
+		geometry -> coord ()   = coordinate;
+
+		const auto triangles = tessellator .triangles ();
+
+		for (size_t i = 0, size = triangles .size (); i < size; i += 3)
+		{
+			geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
+			geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
+			geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
+			geometry -> coordIndex () .emplace_back (-1);
+		}
+
+		for (const auto & path : paths)
+		{
+			for (const auto & point : path)
+				coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+		}
+
+		//if (we have triangles)
+			transform -> children () .emplace_back (shape);
+	}
+
+	if (not transform -> children () .empty ())
+		groups .back () -> children () .emplace_back (transform);
+
+	styles .pop_back ();
 }
 
 bool
@@ -518,6 +648,64 @@ Parser::lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
 	}
 
 	return false;
+}
+
+bool
+Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, std::vector <std::vector <X3D::Vector2d>> & paths)
+{
+	if (not xmlAttribute)
+		return false;
+
+	std::istringstream isstream (xmlAttribute -> get_value ());
+
+	isstream .imbue (std::locale::classic ());
+
+	std::vector <X3D::Vector2d> path;
+	std::string                 whiteSpaces;
+
+	while (isstream)
+	{
+		Grammar::CommaWhiteSpaces (isstream, whiteSpaces);
+
+		if (Grammar::M (isstream))
+		{
+			while (isstream)
+			{
+				double x, y;
+	
+				if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+				{
+					if (Grammar::DoubleValue (isstream, x))
+					{
+						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+						{
+							if (Grammar::DoubleValue (isstream, y))
+							{
+								path .emplace_back (x, y);
+								continue;
+							}
+						}
+					}
+				}
+
+				break;
+			}
+
+			continue;
+		}
+		else if (Grammar::m (isstream))
+		{
+
+		}
+		else if (Grammar::Z (isstream) or Grammar::z (isstream))
+		{
+			paths .emplace_back (std::move (path));
+		}
+
+		break;
+	}
+
+	return true;
 }
 
 bool
