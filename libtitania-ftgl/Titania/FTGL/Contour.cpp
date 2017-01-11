@@ -27,6 +27,7 @@
 
 #include "Contour.h"
 
+#include <Titania/Math/Algorithms/Bezier.h>
 #include <Titania/Math/Constants.h>
 
 #include <cmath>
@@ -95,16 +96,17 @@ Contour::Contour (FT_Vector* const contour, char* const tags, const size_t n, co
 				next2 = (cur + next) * 0.5;
 			}
 
-			evaluateQuadraticCurve (prev2, cur, next2, bezierSteps);
+			math::bezier::quadratic_curve (prev2, cur, next2, bezierSteps, pointList);
 		}
 		else if (FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_Cubic
 		         and FT_CURVE_TAG (tags [(i + 1) % n]) == FT_Curve_Tag_Cubic)
 		{
 			const size_t i2 = (i + 2) % n;
 
-			evaluateCubicCurve (prev, cur, next,
-			                    Vector3d (contour [i2] .x, contour [i2] .y, 0),
-			                    bezierSteps);
+			math::bezier::cubic_curve (prev, cur, next,
+			                           Vector3d (contour [i2] .x, contour [i2] .y, 0),
+			                           bezierSteps,
+			                           pointList);
 		}
 	}
 
@@ -139,38 +141,6 @@ void
 Contour::addBackPoint (const Vector3d & point)
 {
 	backPointList .emplace_back (point);
-}
-
-void
-Contour::evaluateQuadraticCurve (const Vector3d & A, const Vector3d & B, const Vector3d & C, const size_t bezierSteps)
-{
-	for (size_t i = 1; i < bezierSteps; i ++)
-	{
-		const auto t = static_cast <double> (i) / bezierSteps;
-
-		const auto U = (1 - t) * A + t * B;
-		const auto V = (1 - t) * B + t * C;
-
-		addPoint ((1 - t) * U + t * V);
-	}
-}
-
-void
-Contour::evaluateCubicCurve (const Vector3d & A, const Vector3d & B, const Vector3d & C, const Vector3d & D, const size_t bezierSteps)
-{
-	for (size_t i = 0; i < bezierSteps; i ++)
-	{
-		const double t = static_cast <double> (i) / bezierSteps;
-
-		const auto U = (1 - t) * A + t * B;
-		const auto V = (1 - t) * B + t * C;
-		const auto W = (1 - t) * C + t * D;
-
-		const auto M = (1 - t) * U + t * V;
-		const auto N = (1 - t) * V + t * W;
-
-		addPoint ((1 - t) * M + t * N);
-	}
 }
 
 // This function is a bit tricky. Given a path ABC, it returns the

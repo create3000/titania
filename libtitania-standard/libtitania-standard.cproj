@@ -561,6 +561,7 @@
     <None Include="Titania\Math\Mesh\Combine.h" />
     <None Include="Titania\InputOutput\Number.h" />
     <None Include="Titania\InputOutput\Hex.h" />
+    <None Include="Titania\Math\Algorithms\Bezier.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

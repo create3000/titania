@@ -62,6 +62,7 @@
 #include "../../Components/Shape/Shape.h"
 #include "../Filter.h"
 
+#include <Titania/Math/Algorithms/Bezier.h>
 #include <Titania/Math/Mesh/Tessellator.h>
 #include <Titania/InputOutput.h>
 #include <Titania/InputOutput/Hex.h>
@@ -658,41 +659,6 @@ Parser::lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
 	return false;
 }
 
-class bezier
-{
-public:
-
-	template <class Type, class Container>
-	static
-	void
-	cubic_curve (const Type & A, const Type & B, const Type & C, const Type & D, const size_t bezier_steps, Container & points);
-
-};
-
-template <class Type, class Container>
-void
-bezier::cubic_curve (const Type & A, const Type & B, const Type & C, const Type & D, const size_t bezier_steps, Container & points)
-{
-	for (size_t i = 0; i < bezier_steps; i ++)
-	{
-		const auto t = static_cast <typename Type::value_type> (i) / bezier_steps;
-
-		const auto U = (1 - t) * A + t * B;
-		const auto V = (1 - t) * B + t * C;
-		const auto W = (1 - t) * C + t * D;
-
-		const auto M = (1 - t) * U + t * V;
-		const auto N = (1 - t) * V + t * W;
-
-		const auto P = (1 - t) * M + t * N;
-
-		if (points .empty () or (P not_eq points .back () and P not_eq points .front ()))
-		{
-			points .emplace_back (P);
-		}
-	}
-}
-
 bool
 Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 {
@@ -970,7 +936,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 														{
 															if (Grammar::DoubleValue (isstream, y))
 															{
-																bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), 9, contour);
+																math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), 9, contour);
 
 																ax = x;
 																ay = y;
@@ -1034,7 +1000,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 																x  += ax;
 																y  += ay;
 
-																bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), 9, contour);
+																math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), 9, contour);
 
 																ax = x;
 																ay = y;

@@ -185,22 +185,6 @@ private:
 	addBackPoint (const Vector3d & point);
 
 	/**
-	 * De Casteljau (bezier) algorithm contributed by Jed Soane
-	 * Evaluates a quadratic or conic (second degree) curve
-	 */
-	inline
-	void
-	evaluateQuadraticCurve (const Vector3d &, const Vector3d &, const Vector3d &, const size_t bezierSteps);
-
-	/**
-	 * De Casteljau (bezier) algorithm contributed by Jed Soane
-	 * Evaluates a cubic (third degree) curve
-	 */
-	inline
-	void
-	evaluateCubicCurve (const Vector3d &, const Vector3d &, const Vector3d &, const Vector3d &, const size_t bezierSteps);
-
-	/**
 	 * Compute the vector norm
 	 */
 	inline
