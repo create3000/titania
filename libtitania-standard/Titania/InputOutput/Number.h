@@ -102,8 +102,13 @@ basic_number <Type, CharT, Traits>::operator () (std::basic_istream <CharT, Trai
 	const auto state = istream .rdstate ();
 	const auto pos   = istream .tellg ();
 
-	if (istream >> value)
+	Type v;
+
+	if (istream >> std::dec >> v)
+	{
+		value = v;
 		return true;
+	}
 
 	istream .clear (state);
 

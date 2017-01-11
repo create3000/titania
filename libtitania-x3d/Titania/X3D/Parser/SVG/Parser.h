@@ -92,6 +92,9 @@ public:
 
 private:
 
+	using Contour  = std::vector <X3D::Vector2d>;
+	using Contours = std::vector <Contour>;
+
 	struct Style {
 
 		Style () :
@@ -149,7 +152,7 @@ private:
 	lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
 
 	bool
-	dAttribute (xmlpp::Attribute* const xmlAttribute, std::vector <std::vector <X3D::Vector2d>> & paths);
+	dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours);
 
 	bool
 	styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & value);

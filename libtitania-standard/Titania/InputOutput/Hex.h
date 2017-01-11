@@ -102,8 +102,13 @@ basic_hex <Type, CharT, Traits>::operator () (std::basic_istream <CharT, Traits>
 	const auto state = istream .rdstate ();
 	const auto pos   = istream .tellg ();
 
-	if (istream >> std::hex >> value)
+	Type v;
+
+	if (istream >> std::hex >> v)
+	{
+		value = v;
 		return true;
+	}
 
 	istream .clear (state);
 
