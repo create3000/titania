@@ -100,17 +100,25 @@ private:
 	struct Style {
 
 		Style () :
-			    display ("inline"),
-			    fillSet (false),
-			       fill (),
-			fillOpacity (1),
-			    opacity (1)
+			      display ("inline"),
+			      fillSet (false),
+			         fill (),
+			  fillOpacity (1),
+			    strokeSet (false),
+			       stroke (),
+			strokeOpacity (1),
+			  strokeWidth (1),
+			      opacity (1)
 			{ }
 
 		std::string  display;
 		bool         fillSet;
 		X3D::Color3f fill;
 		double       fillOpacity;
+		bool         strokeSet;
+		X3D::Color3f stroke;
+		double       strokeOpacity;
+		double       strokeWidth;
 		double       opacity;
 
 	};
@@ -119,6 +127,12 @@ private:
 
 	void
 	svgElement (xmlpp::Element* const xmlElement);
+
+	bool
+	whiteSpaces (std::istream & istream);
+
+	bool
+	commaWhiteSpaces (std::istream & istream);
 
 	void
 	elements (xmlpp::Element* const xmlElement);
@@ -182,6 +196,21 @@ private:
 	double
 	getFillOpacity () const;
 
+	X3D::X3DPtr <X3D::Appearance>
+	getStrokeAppearance ();
+
+	bool
+	getStrokeSet () const;
+
+	X3D::Color3f
+	getStroke () const;
+	
+	double
+	getStrokeOpacity () const;
+	
+	double
+	getStrokeWidth () const;
+
 	///  @name Members
 
 	const X3D::X3DScenePtr scene;
@@ -193,7 +222,8 @@ private:
 	std::vector <Style>               styles;
 	X3D::X3DPtrArray <X3D::Transform> groups;
 
-	Colors namedColors;
+	Colors      namedColors;
+	std::string whiteSpaceCharacters;
 
 };
 

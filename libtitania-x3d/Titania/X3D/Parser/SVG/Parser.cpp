@@ -57,6 +57,7 @@
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Rendering/Coordinate.h"
+#include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
@@ -79,9 +80,13 @@ class Grammar
 public:
 
 	static const io::sequence WhiteSpaces;
-	static const io::sequence CommaWhiteSpaces;
 
 	static const io::string matrix;
+	static const io::string translate;
+	static const io::string rotate;
+	static const io::string scale;
+	static const io::string skewX;
+	static const io::string skewY;
 	static const io::string rgb;
 
 	static const io::character OpenParenthesis;
@@ -106,9 +111,13 @@ public:
 };
 
 const io::sequence Grammar::WhiteSpaces ("\r\n \t");
-const io::sequence Grammar::CommaWhiteSpaces ("\r\n \t,");
 
 const io::string Grammar::matrix ("matrix");
+const io::string Grammar::translate ("translate");
+const io::string Grammar::rotate ("rotate");
+const io::string Grammar::scale ("scale");
+const io::string Grammar::skewX ("skewX");
+const io::string Grammar::skewY ("skewY");
 const io::string Grammar::rgb ("rgb", io::CASE_INSENSITIVE);
 
 const io::character Grammar::OpenParenthesis ('(');
@@ -136,14 +145,15 @@ const io::sequence         Grammar::NamedColor ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcde
 static constexpr size_t BEZIER_STEPS = 9;
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
-	X3D::X3DParser (),
-	         scene (scene),
-	           uri (uri),
-	       istream (istream),
-	     xmlParser (new xmlpp::DomParser ()),
-	        styles (),
-	        groups ({ scene -> createNode <X3D::Transform> () }),
-	   namedColors ()
+	      X3D::X3DParser (),
+	               scene (scene),
+	                 uri (uri),
+	             istream (istream),
+	           xmlParser (new xmlpp::DomParser ()),
+	              styles (),
+	              groups ({ scene -> createNode <X3D::Transform> () }),
+	         namedColors (),
+	whiteSpaceCharacters ()
 {
 	xmlParser -> set_throw_messages (true);
 	xmlParser -> set_validate (false);
@@ -202,6 +212,24 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 	scene -> getRootNodes () .emplace_back (transform);
 
 	elements (xmlElement);
+}
+
+bool
+Parser::whiteSpaces (std::istream & istream)
+{
+	return Grammar::WhiteSpaces (istream, whiteSpaceCharacters);
+}
+
+bool
+Parser::commaWhiteSpaces (std::istream & istream)
+{
+	bool result = false;
+
+	result |= Grammar::WhiteSpaces (istream, whiteSpaceCharacters);
+	result |= Grammar::Comma (istream);
+	result |= Grammar::WhiteSpaces (istream, whiteSpaceCharacters);
+
+	return result;
 }
 
 void
@@ -456,6 +484,14 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 	// Create nodes.
 
+	const auto coordinate = scene -> createNode <X3D::Coordinate> ();
+
+	for (const auto & contour : contours)
+	{
+		for (const auto & point : contour)
+			coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+	}
+
 	if (getFillSet ())
 	{
 		// Tesselate contours
@@ -490,9 +526,8 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		{
 			// Create geometry.
 	
-			const auto shape      = scene -> createNode <X3D::Shape> ();
-			const auto geometry   = scene -> createNode <X3D::IndexedFaceSet> ();
-			const auto coordinate = scene -> createNode <X3D::Coordinate> ();
+			const auto shape    = scene -> createNode <X3D::Shape> ();
+			const auto geometry = scene -> createNode <X3D::IndexedFaceSet> ();
 	
 			transform -> children () .emplace_back (shape);
 	
@@ -517,6 +552,39 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		}
 	}
 
+	if (getStrokeSet ())
+	{
+		// Create geometry.
+
+		const auto shape    = scene -> createNode <X3D::Shape> ();
+		const auto geometry = scene -> createNode <X3D::IndexedLineSet> ();
+
+		shape -> appearance () = getStrokeAppearance ();
+		shape -> geometry ()   = geometry;
+		geometry -> coord ()   = coordinate;
+
+		size_t index = 0;
+
+		for (const auto & contour : contours)
+		{
+			if (contour .size () > 1)
+			{
+				const auto first = index;
+	
+				for (const auto & point : contour)
+					geometry -> coordIndex () .emplace_back (index ++);
+
+				if (getFillSet () and not contour .empty ())
+					geometry -> coordIndex () .emplace_back (first);
+	
+				geometry -> coordIndex () .emplace_back (-1);
+			}
+		}
+
+		if (not geometry -> coordIndex () .empty ())
+			transform -> children () .emplace_back (shape);
+	}
+
 	if (not transform -> children () .empty ())
 		groups .back () -> children () .emplace_back (transform);
 
@@ -529,19 +597,19 @@ Parser::viewBoxAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Vector4d & 
 	if (not xmlAttribute)
 		return false;
 
-	std::istringstream isstream (xmlAttribute -> get_value ());
+	std::istringstream vstream (xmlAttribute -> get_value ());
 
-	isstream .imbue (std::locale::classic ());
+	vstream .imbue (std::locale::classic ());
 
 	double x, y, width, height;
 
-	if (Grammar::DoubleValue (isstream, x))
+	if (Grammar::DoubleValue (vstream, x))
 	{
-		if (Grammar::DoubleValue (isstream, y))
+		if (Grammar::DoubleValue (vstream, y))
 		{
-			if (Grammar::DoubleValue (isstream, width))
+			if (Grammar::DoubleValue (vstream, width))
 			{
-				if (Grammar::DoubleValue (isstream, height))
+				if (Grammar::DoubleValue (vstream, height))
 				{
 					value = X3D::Vector4d (x, y, width, height);
 					return true;
@@ -566,39 +634,43 @@ Parser::transformAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Matrix3d 
 
 	for (const auto & value : values)
 	{
-		std::istringstream isstream (value);
+		std::istringstream vstream (value);
 
-		isstream .imbue (std::locale::classic ());
+		vstream .imbue (std::locale::classic ());
 
-		if (Grammar::matrix (isstream))
+		if (Grammar::matrix (vstream))
 		{
 			double a, b, c, d, e, f;
 
-			if (Grammar::OpenParenthesis (isstream))
+			if (Grammar::OpenParenthesis (vstream))
 			{
-				if (Grammar::DoubleValue (isstream, a))
+				whiteSpaces (vstream);
+
+				if (Grammar::DoubleValue (vstream, a))
 				{
-					if (Grammar::Comma (isstream))
+					if (commaWhiteSpaces (vstream))
 					{
-						if (Grammar::DoubleValue (isstream, b))
+						if (Grammar::DoubleValue (vstream, b))
 						{
-							if (Grammar::Comma (isstream))
+							if (commaWhiteSpaces (vstream))
 							{
-								if (Grammar::DoubleValue (isstream, c))
+								if (Grammar::DoubleValue (vstream, c))
 								{
-									if (Grammar::Comma (isstream))
+									if (commaWhiteSpaces (vstream))
 									{
-										if (Grammar::DoubleValue (isstream, d))
+										if (Grammar::DoubleValue (vstream, d))
 										{
-											if (Grammar::Comma (isstream))
+											if (commaWhiteSpaces (vstream))
 											{
-												if (Grammar::DoubleValue (isstream, e))
+												if (Grammar::DoubleValue (vstream, e))
 												{
-													if (Grammar::Comma (isstream))
+													if (commaWhiteSpaces (vstream))
 													{
-														if (Grammar::DoubleValue (isstream, f))
+														if (Grammar::DoubleValue (vstream, f))
 														{
-															if (Grammar::CloseParenthesis (isstream))
+															whiteSpaces (vstream);
+
+															if (Grammar::CloseParenthesis (vstream))
 															{
 																matrix = X3D::Matrix3d (a, b, 0,  c, d, 0,  e, f, 1);
 															}
@@ -615,7 +687,44 @@ Parser::transformAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Matrix3d 
 				}
 			}
 		}
-		else if (false)
+		else if (Grammar::translate (vstream))
+		{
+			double tx, ty;
+
+			if (Grammar::OpenParenthesis (vstream))
+			{
+				whiteSpaces (vstream);
+
+				if (Grammar::DoubleValue (vstream, tx))
+				{
+					if (commaWhiteSpaces (vstream))
+					{
+						if (Grammar::DoubleValue (vstream, ty))
+						{
+							whiteSpaces (vstream);
+
+							if (Grammar::CloseParenthesis (vstream))
+							{
+								matrix .translate (X3D::Vector2d (tx, ty));
+							}
+						}
+					}
+				}
+			}
+		}
+		else if (Grammar::rotate (vstream))
+		{
+
+		}
+		else if (Grammar::scale (vstream))
+		{
+
+		}
+		else if (Grammar::skewX (vstream))
+		{
+
+		}
+		else if (Grammar::skewY (vstream))
 		{
 
 		}
@@ -630,15 +739,15 @@ Parser::lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
 	if (not xmlAttribute)
 		return false;
 
-	std::istringstream isstream (xmlAttribute -> get_value ());
+	std::istringstream vstream (xmlAttribute -> get_value ());
 
-	isstream .imbue (std::locale::classic ());
+	vstream .imbue (std::locale::classic ());
 
-	if (Grammar::DoubleValue (isstream, value))
+	if (Grammar::DoubleValue (vstream, value))
 	{
 		// Parse unit
 
-		if (Grammar::mm (isstream))
+		if (Grammar::mm (vstream))
 			value = value / (1000 * math::pixel <double>);
 
 		return true;
@@ -653,20 +762,23 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 	if (not xmlAttribute)
 		return false;
 
-	std::istringstream isstream (xmlAttribute -> get_value ());
+	std::istringstream vstream (xmlAttribute -> get_value ());
 
-	isstream .imbue (std::locale::classic ());
+	vstream .imbue (std::locale::classic ());
 
 	Contour     contour;
-	std::string whiteSpaces;
 
 	double ax = 0, ay = 0, px = 0, py = 0;
 
-	while (isstream)
-	{
-		Grammar::CommaWhiteSpaces (isstream, whiteSpaces);
+	std::istringstream::int_type peek = -1, previous = -1;
 
-		const auto peek     = isstream .peek ();
+	while (vstream)
+	{
+		commaWhiteSpaces (vstream);
+
+		previous = peek;
+		peek     = vstream .peek ();
+
 		const auto relative = std::islower ((char) peek, std::locale::classic ());
 
 		switch (peek)
@@ -674,26 +786,26 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			case 'M':
 			case 'm':
 			{
-				isstream .get ();
+				vstream .get ();
 
 				if (not contour .empty ())
 					contours .emplace_back (std::move (contour));
 	
 				bool first = true;
 	
-				while (isstream)
+				while (vstream)
 				{
 					double x, y;
 		
-					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					if (first or commaWhiteSpaces (vstream))
 					{
 						first = false;
 	
-						if (Grammar::DoubleValue (isstream, x))
+						if (Grammar::DoubleValue (vstream, x))
 						{
-							if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+							if (commaWhiteSpaces (vstream))
 							{
-								if (Grammar::DoubleValue (isstream, y))
+								if (Grammar::DoubleValue (vstream, y))
 								{
 									if (relative)
 									{
@@ -705,8 +817,6 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 	
 									ax = x;
 									ay = y;
-									px = ax;
-									py = ay;
 									continue;
 								}
 							}
@@ -721,23 +831,23 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			case 'L':
 			case 'l':
 			{
-				isstream .get ();
+				vstream .get ();
 
 				bool first = true;
 	
-				while (isstream)
+				while (vstream)
 				{
 					double x, y;
 		
-					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					if (first or commaWhiteSpaces (vstream))
 					{
 						first = false;
 	
-						if (Grammar::DoubleValue (isstream, x))
+						if (Grammar::DoubleValue (vstream, x))
 						{
-							if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+							if (commaWhiteSpaces (vstream))
 							{
-								if (Grammar::DoubleValue (isstream, y))
+								if (Grammar::DoubleValue (vstream, y))
 								{
 									if (relative)
 									{
@@ -749,8 +859,6 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 	
 									ax = x;
 									ay = y;
-									px = ax;
-									py = ay;
 									continue;
 								}
 							}
@@ -765,19 +873,19 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			case 'H':
 			case 'h':
 			{
-				isstream .get ();
+				vstream .get ();
 
 				bool first = true;
 	
-				while (isstream)
+				while (vstream)
 				{
 					double x;
 		
-					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					if (first or commaWhiteSpaces (vstream))
 					{
 						first = false;
 	
-						if (Grammar::DoubleValue (isstream, x))
+						if (Grammar::DoubleValue (vstream, x))
 						{
 							if (relative)
 								x += ax;
@@ -785,7 +893,6 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 							contour .emplace_back (x, ay);
 	
 							ax = x;
-							px = ax;
 							continue;
 						}
 					}
@@ -798,19 +905,19 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			case 'V':
 			case 'v':
 			{
-				isstream .get ();
+				vstream .get ();
 
 				bool first = true;
 	
-				while (isstream)
+				while (vstream)
 				{
 					double y;
 		
-					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					if (first or commaWhiteSpaces (vstream))
 					{
 						first = false;
 	
-						if (Grammar::DoubleValue (isstream, y))
+						if (Grammar::DoubleValue (vstream, y))
 						{
 							if (relative)
 								y += ay;
@@ -818,8 +925,123 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 							contour .emplace_back (ax, y);
 	
 							ay = y;
-							py = ay;
 							continue;
+						}
+					}
+	
+					break;
+				}
+	
+				continue;
+			}
+			case 'Q':
+			case 'q':
+			{
+				vstream .get ();
+
+				bool first = true;
+	
+				while (vstream)
+				{
+					double x1, y1, x, y;
+		
+					if (first or commaWhiteSpaces (vstream))
+					{
+						first = false;
+	
+						if (Grammar::DoubleValue (vstream, x1))
+						{
+							if (commaWhiteSpaces (vstream))
+							{
+								if (Grammar::DoubleValue (vstream, y1))
+								{
+									if (commaWhiteSpaces (vstream))
+									{
+										if (Grammar::DoubleValue (vstream, x))
+										{
+											if (commaWhiteSpaces (vstream))
+											{
+												if (Grammar::DoubleValue (vstream, y))
+												{
+													if (relative)
+													{
+														x1 += ax;
+														y1 += ay;
+														x  += ax;
+														y  += ay;
+													}
+
+													math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+													ax = x;
+													ay = y;
+													px = x1;
+													py = y1;
+													continue;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+	
+					break;
+				}
+	
+				continue;
+			}
+			case 'T':
+			case 't':
+			{
+				vstream .get ();
+
+				bool first = true;
+	
+				while (vstream)
+				{
+					double x, y;
+		
+					if (first or commaWhiteSpaces (vstream))
+					{
+						first = false;
+	
+						if (Grammar::DoubleValue (vstream, x))
+						{
+							if (commaWhiteSpaces (vstream))
+							{
+								if (Grammar::DoubleValue (vstream, y))
+								{
+									if (relative)
+									{
+										x += ax;
+										y += ay;
+									}
+
+									switch (previous)
+									{
+										case 'Q':
+										case 'q':
+										case 'T':
+										case 't':
+											break;
+
+										default:
+										{
+											px = ax;
+											py = ay;
+											break;
+										}
+									}
+
+									math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (px, py), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+									ax = x;
+									ay = y;
+									continue;
+								}
+							}
 						}
 					}
 	
@@ -831,39 +1053,39 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			case 'C':
 			case 'c':
 			{
-				isstream .get ();
+				vstream .get ();
 
 				bool first = true;
 	
-				while (isstream)
+				while (vstream)
 				{
 					double x1, y1, x2, y2, x, y;
 		
-					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					if (first or commaWhiteSpaces (vstream))
 					{
 						first = false;
 	
-						if (Grammar::DoubleValue (isstream, x1))
+						if (Grammar::DoubleValue (vstream, x1))
 						{
-							if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+							if (commaWhiteSpaces (vstream))
 							{
-								if (Grammar::DoubleValue (isstream, y1))
+								if (Grammar::DoubleValue (vstream, y1))
 								{
-									if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+									if (commaWhiteSpaces (vstream))
 									{
-										if (Grammar::DoubleValue (isstream, x2))
+										if (Grammar::DoubleValue (vstream, x2))
 										{
-											if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+											if (commaWhiteSpaces (vstream))
 											{
-												if (Grammar::DoubleValue (isstream, y2))
+												if (Grammar::DoubleValue (vstream, y2))
 												{
-													if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+													if (commaWhiteSpaces (vstream))
 													{
-														if (Grammar::DoubleValue (isstream, x))
+														if (Grammar::DoubleValue (vstream, x))
 														{
-															if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+															if (commaWhiteSpaces (vstream))
 															{
-																if (Grammar::DoubleValue (isstream, y))
+																if (Grammar::DoubleValue (vstream, y))
 																{
 																	if (relative)
 																	{
@@ -903,31 +1125,31 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			case 'S':
 			case 's':
 			{
-				isstream .get ();
+				vstream .get ();
 
 				bool first = true;
 	
-				while (isstream)
+				while (vstream)
 				{
 					double x2, y2, x, y;
 		
-					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					if (first or commaWhiteSpaces (vstream))
 					{
 						first = false;
 	
-						if (Grammar::DoubleValue (isstream, x2))
+						if (Grammar::DoubleValue (vstream, x2))
 						{
-							if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+							if (commaWhiteSpaces (vstream))
 							{
-								if (Grammar::DoubleValue (isstream, y2))
+								if (Grammar::DoubleValue (vstream, y2))
 								{
-									if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+									if (commaWhiteSpaces (vstream))
 									{
-										if (Grammar::DoubleValue (isstream, x))
+										if (Grammar::DoubleValue (vstream, x))
 										{
-											if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+											if (commaWhiteSpaces (vstream))
 											{
-												if (Grammar::DoubleValue (isstream, y))
+												if (Grammar::DoubleValue (vstream, y))
 												{
 													if (relative)
 													{
@@ -936,7 +1158,23 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 														x  += ax;
 														y  += ay;
 													}
-	
+
+													switch (previous)
+													{
+														case 'C':
+														case 'c':
+														case 'S':
+														case 's':
+															break;
+
+														default:
+														{
+															px = ax;
+															py = ay;
+															break;
+														}
+													}
+
 													math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (px, py), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
 	
 													ax = x;
@@ -961,7 +1199,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			case 'Z':
 			case 'z':
 			{
-				isstream .get ();
+				vstream .get ();
 
 				if (not contour .empty ())
 				{
@@ -973,6 +1211,8 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 	
 				continue;
 			}
+			default:
+				break;
 		}
 
 		break;
@@ -1045,6 +1285,51 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 			{
 			}
 		}
+		else if (pair [0] == "stroke")
+		{
+			X3D::Color3f color;
+
+			if (colorValue (vstream, color))
+			{
+				styleObject .strokeSet = true;
+				styleObject .stroke    = color;
+			}
+			else if (pair [1] == "inherit")
+			{
+			}
+		}
+		else if (pair [0] == "stroke-opacity")
+		{
+			double strokeOpacity;
+
+			if (Grammar::DoubleValue (vstream, strokeOpacity))
+			{
+				styleObject .strokeOpacity = strokeOpacity;
+			}
+			else if (pair [1] == "transparent")
+			{
+				styleObject .strokeOpacity = 0;
+			}
+			else if (pair [1] == "inherit")
+			{
+			}
+		}
+		else if (pair [0] == "stroke-width")
+		{
+			double strokeWidth;
+
+			if (Grammar::DoubleValue (vstream, strokeWidth))
+			{
+				styleObject .strokeWidth = strokeWidth;
+			}
+			else if (pair [1] == "none")
+			{
+				styleObject .strokeWidth = 0;
+			}
+			else if (pair [1] == "inherit")
+			{
+			}
+		}
 		else if (pair [0] == "opacity")
 		{
 			double opacity;
@@ -1090,43 +1375,33 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 	{
 		int32_t r, g, b;
 
-		std::string whiteSpaces;
-
 		if (Grammar::OpenParenthesis (istream))
 		{
-			Grammar::WhiteSpaces (istream, whiteSpaces);
+			whiteSpaces (istream);
 
 			if (Grammar::IntegerValue (istream, r))
 			{
-				Grammar::WhiteSpaces (istream, whiteSpaces);
+				whiteSpaces (istream);
 
 				bool rp = Grammar::PercentSign (istream);
 				
-				Grammar::WhiteSpaces (istream, whiteSpaces);
-
-				if (Grammar::Comma (istream))
+				if (commaWhiteSpaces (istream))
 				{
-					Grammar::WhiteSpaces (istream, whiteSpaces);
-		
 					if (Grammar::IntegerValue (istream, g))
 					{
-						Grammar::WhiteSpaces (istream, whiteSpaces);
+						whiteSpaces (istream);
 
 						bool gp = Grammar::PercentSign (istream);
 						
-						Grammar::WhiteSpaces (istream, whiteSpaces);
-
-						if (Grammar::Comma (istream))
+						if (commaWhiteSpaces (istream))
 						{
-							Grammar::WhiteSpaces (istream, whiteSpaces);
-				
 							if (Grammar::IntegerValue (istream, b))
 							{
-								Grammar::WhiteSpaces (istream, whiteSpaces);
+								whiteSpaces (istream);
 
 								bool bp = Grammar::PercentSign (istream);
 								
-								Grammar::WhiteSpaces (istream, whiteSpaces);
+								whiteSpaces (istream);
 
 								if (Grammar::CloseParenthesis (istream))
 								{
@@ -1235,6 +1510,71 @@ Parser::getFillOpacity () const
 	}
 
 	return 0;
+}
+
+X3D::X3DPtr <X3D::Appearance>
+Parser::getStrokeAppearance ()
+{
+	const auto appearance = scene -> createNode <X3D::Appearance> ();
+	const auto material   = scene -> createNode <X3D::Material> ();
+
+	appearance -> material ()    = material;
+	material -> emissiveColor () = getStroke ();
+	material -> transparency ()  = 1 - getStrokeOpacity ();
+
+	return appearance;
+}
+
+bool
+Parser::getStrokeSet () const
+{
+	for (const auto & style : styles)
+	{
+		if (style .strokeSet)
+			return true;
+	}
+
+	return false;
+}
+
+X3D::Color3f
+Parser::getStroke () const
+{
+	for (const auto & style : styles)
+	{
+		if (style .strokeSet)
+			return style .stroke;
+	}
+
+	return X3D::Color3f ();
+}
+
+double
+Parser::getStrokeOpacity () const
+{
+	double opacity = 1;
+
+	for (const auto & style : styles)
+	{
+		opacity *= style .opacity;
+
+		if (style .strokeSet)
+			return style .strokeOpacity * opacity;
+	}
+
+	return 0;
+}
+
+double
+Parser::getStrokeWidth () const
+{
+	for (const auto & style : styles)
+	{
+		if (style .strokeSet)
+			return style .strokeWidth;
+	}
+
+	return 1;
 }
 
 Parser::~Parser ()
