@@ -31,9 +31,9 @@
      inkscape:window-height="480"
      id="namedview3357"
      showgrid="false"
-     inkscape:zoom="0.90509668"
-     inkscape:cx="480.64366"
-     inkscape:cy="846.42474"
+     inkscape:zoom="1.28"
+     inkscape:cx="160.06657"
+     inkscape:cy="413.66333"
      inkscape:current-layer="layer1"
      units="mm"
      inkscape:snap-page="true"
@@ -67,12 +67,12 @@
        y="0.00026699269" />
     <g
        id="g3324"
-       style="opacity:0.723">
+       style="opacity:0.723;stroke:#000000;stroke-opacity:1">
       <g
-         style="opacity:0.733;fill:#5f0e0e;fill-opacity:0.77948719"
+         style="opacity:0.733;fill:#5f0e0e;fill-opacity:0.77948719;stroke:#000000;stroke-opacity:1"
          id="g3321">
         <rect
-           style="opacity:0.811;fill:#5f0e0e;fill-opacity:0.77948719;stroke:none;stroke-width:1.29999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           style="opacity:0.811;fill:#5f0e0e;fill-opacity:0.77948719;stroke:#000000;stroke-width:1.29999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
            id="rect3220"
            width="110.87387"
            height="82.6856"
@@ -81,7 +81,7 @@
       </g>
     </g>
     <ellipse
-       style="opacity:1;fill:#25931e;fill-opacity:1;stroke:none;stroke-width:1.29999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#25931e;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path3222"
        cx="357.1684"
        cy="309.74051"
@@ -89,7 +89,7 @@
        ry="28.188272" />
     <path
        sodipodi:type="star"
-       style="opacity:1;fill:#1e7493;fill-opacity:1;stroke:none;stroke-width:1.29999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#1e7493;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path3224"
        sodipodi:sides="23"
        sodipodi:cx="495.30058"
@@ -117,14 +117,14 @@
        sodipodi:t0="0"
        d="m 78.083099,489.49164 c 0.117914,0.16213 -0.301326,0.2714 -0.371003,0.26982 -0.867241,-0.0197 -0.98176,-1.21501 -0.754113,-1.81685 0.707757,-1.87115 3.21287,-1.91305 4.691659,-1.04682 3.190787,1.86905 3.080681,6.33523 1.125037,9.04476 -3.500795,4.85033 -10.611872,4.49096 -14.906989,0.97849 -6.860714,-5.61057 -6.147497,-16.06325 -0.6006,-22.30139 8.205392,-9.22794 22.705167,-8.05286 31.246535,0.0134 11.956105,11.29106 10.209045,30.55058 -0.867283,41.75801 -14.872412,15.04844 -39.610501,12.61778 -53.849267,-1.9641 -18.507639,-18.95361 -15.28058,-49.89452 3.306449,-67.53218 23.538312,-22.33605 61.411156,-18.19881 82.817366,4.89659 26.53579,28.62977 21.37374,74.16806 -6.73652,99.71444" />
     <circle
-       style="opacity:0.7229996;fill:#5f0e0e;fill-opacity:0.77948722;stroke:none;stroke-width:9.60000038;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:0.7229996;fill:#5f0e0e;fill-opacity:0.77948722;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path3328"
        cx="234.75024"
        cy="309.93832"
        r="49.718445" />
     <path
        sodipodi:type="star"
-       style="display:inline;opacity:1;fill:#ccca2a;fill-opacity:1;stroke:none;stroke-width:1.29999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="display:inline;opacity:1;fill:#ccca2a;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="path3224-6"
        sodipodi:sides="3"
        sodipodi:cx="650.54987"
@@ -151,13 +151,13 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="csc" />
     <path
-       style="fill:#8147af;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       style="fill:#8147af;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
        d="M 123.74369,619.25928,190.03495,734.16413,50.8233,731.95442 Z"
        id="path3349"
        inkscape:connector-curvature="0" />
     <path
        id="path3349-5-3"
-       style="display:inline;fill:#c46eb3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="display:inline;fill:#c46eb3;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 284.79472,578.14907 95.53946,148.45726 -178.84236,-24.18081 z m 7.81695,37.01262 28.75685,90.60616 -88.11346,-26.39936 z"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccc" />
@@ -225,11 +225,21 @@
          x="710.41486"
          y="162.00664"
          style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:90px;line-height:129.99999523%;font-family:BlairMdITCTTMedium;-inkscape-font-specification:'BlairMdITCTTMedium, Medium';text-align:end;letter-spacing:10.22991657px;writing-mode:lr-tb;text-anchor:end">Titania</tspan></text>
-    <g transform="translate(50, 800)">
-		<path d="M10 80 Q 52.5 10, 95 80 T 180 80" style="stroke: red; fill: transparent;"/>
+    <g
+       transform="translate(50, 800)"
+       id="g3501">
+      <path
+         d="M10 80 Q 52.5 10, 95 80 T 180 80"
+         style="stroke: red; fill: transparent;"
+         id="path3503" />
     </g>
-   <g transform="translate(300, 800)">
-      <path d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80" style="stroke: teal; fill: transparent;"/>
-   </g>
+    <g
+       transform="matrix(1,0, 0,1, 300, 800) matrix(1,0, 0,1, 100, 0)"
+       id="g3505">
+      <path
+         d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80"
+         style="stroke: teal; fill: transparent;"
+         id="path3507" />
+    </g>
   </g>
 </svg>

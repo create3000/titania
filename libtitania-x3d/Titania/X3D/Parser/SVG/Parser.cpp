@@ -52,8 +52,10 @@
 
 #include <libxml++/libxml++.h>
 
+#include "../../Components/Geometry2D/Circle2D.h"
 #include "../../Components/Geometry2D/Disk2D.h"
 #include "../../Components/Geometry2D/Rectangle2D.h"
+#include "../../Components/Geometry2D/Polyline2D.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Rendering/Coordinate.h"
@@ -341,6 +343,25 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 		rectangle -> size ()   = X3D::Vector2f (width, height);
 	}
 
+	if (getStrokeSet ())
+	{
+		const auto shape     = scene -> createNode <X3D::Shape> ();
+		const auto polyline  = scene -> createNode <X3D::Polyline2D> ();
+		const auto width1_2  = width / 2;
+		const auto height1_2 = height / 2;
+
+		transform -> children () .emplace_back (shape);
+
+		shape -> appearance () = getStrokeAppearance ();
+		shape -> geometry ()   = polyline;
+
+		polyline -> lineSegments () .emplace_back ( width1_2,  height1_2);
+		polyline -> lineSegments () .emplace_back (-width1_2,  height1_2);
+		polyline -> lineSegments () .emplace_back (-width1_2, -height1_2);
+		polyline -> lineSegments () .emplace_back ( width1_2, -height1_2);
+		polyline -> lineSegments () .emplace_back ( width1_2,  height1_2);
+	}
+
 	if (not transform -> children () .empty ())
 		groups .back () -> children () .emplace_back (transform);
 
@@ -386,6 +407,18 @@ Parser::circleElement (xmlpp::Element* const xmlElement)
 		shape -> geometry ()   = disk;
 		disk -> solid ()       = false;
 		disk -> outerRadius () = r;
+	}
+
+	if (getStrokeSet ())
+	{
+		const auto shape  = scene -> createNode <X3D::Shape> ();
+		const auto circle = scene -> createNode <X3D::Circle2D> ();
+
+		transform -> children () .emplace_back (shape);
+
+		shape -> appearance () = getStrokeAppearance ();
+		shape -> geometry ()   = circle;
+		circle -> radius ()    = r;
 	}
 
 	if (not transform -> children () .empty ())
@@ -436,6 +469,18 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 		shape -> geometry ()   = disk;
 		disk -> solid ()       = false;
 		disk -> outerRadius () = rmin;
+	}
+
+	if (getStrokeSet ())
+	{
+		const auto shape  = scene -> createNode <X3D::Shape> ();
+		const auto circle = scene -> createNode <X3D::Circle2D> ();
+
+		transform -> children () .emplace_back (shape);
+
+		shape -> appearance () = getStrokeAppearance ();
+		shape -> geometry ()   = circle;
+		circle -> radius ()    = rmin;
 	}
 
 	if (not transform -> children () .empty ())
@@ -572,7 +617,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 			{
 				const auto first = index;
 	
-				for (const auto & point : contour)
+				for (size_t i = 0, size = contour .size (); i < size; ++ i)
 					geometry -> coordIndex () .emplace_back (index ++);
 
 				if (getFillSet () and not contour .empty ())
@@ -670,7 +715,7 @@ Parser::transformAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Matrix3d 
 
 															if (Grammar::CloseParenthesis (vstream))
 															{
-																matrix = X3D::Matrix3d (a, b, 0,  c, d, 0,  e, f, 1);
+																matrix .mult_left (X3D::Matrix3d (a, b, 0,  c, d, 0,  e, f, 1));
 																continue;
 															}
 														}
