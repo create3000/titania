@@ -239,7 +239,7 @@ Parser::texture (const Lib3dsTextureMap & textureMap)
 
 	if (not os::file_exists (URL .path ()))
 	{
-		std::transform (basename .begin (), basename .end (), basename .begin (), [ ] (const char c) { return std::tolower (c); });
+		std::transform (basename .begin (), basename .end (), basename .begin (), [ ] (const char c) { return std::tolower (c, std::locale::classic () ); });
 
 		URL = uri .transform (basename);
 		

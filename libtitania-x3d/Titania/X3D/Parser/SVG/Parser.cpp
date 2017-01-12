@@ -89,21 +89,6 @@ public:
 	static const io::character Comma;
 	static const io::character NumberSign;
 
-	static const io::character M;
-	static const io::character m;
-	static const io::character L;
-	static const io::character l;
-	static const io::character H;
-	static const io::character h;
-	static const io::character V;
-	static const io::character v;
-	static const io::character C;
-	static const io::character c;
-	static const io::character S;
-	static const io::character s;
-	static const io::character Z;
-	static const io::character z;
-
 	static const io::string em;
 	static const io::string ex;
 	static const io::string px;
@@ -130,21 +115,6 @@ const io::character Grammar::OpenParenthesis ('(');
 const io::character Grammar::CloseParenthesis (')');
 const io::character Grammar::Comma (',');
 const io::character Grammar::NumberSign ('#');
-
-const io::character Grammar::M ('M');
-const io::character Grammar::m ('m');
-const io::character Grammar::L ('L');
-const io::character Grammar::l ('l');
-const io::character Grammar::H ('H');
-const io::character Grammar::h ('h');
-const io::character Grammar::V ('V');
-const io::character Grammar::v ('v');
-const io::character Grammar::C ('C');
-const io::character Grammar::c ('c');
-const io::character Grammar::S ('S');
-const io::character Grammar::s ('s');
-const io::character Grammar::Z ('Z');
-const io::character Grammar::z ('z');
 
 const io::string    Grammar::em ("em");
 const io::string    Grammar::ex ("ex");
@@ -696,291 +666,223 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 	{
 		Grammar::CommaWhiteSpaces (isstream, whiteSpaces);
 
-		if (Grammar::M (isstream))
+		const auto peek     = isstream .peek ();
+		const auto relative = std::islower ((char) peek, std::locale::classic ());
+
+		switch (peek)
 		{
-			if (not contour .empty ())
-				contours .emplace_back (std::move (contour));
-
-			bool first = true;
-
-			while (isstream)
+			case 'M':
+			case 'm':
 			{
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-				{
-					first = false;
+				isstream .get ();
 
-					if (Grammar::DoubleValue (isstream, ax))
-					{
-						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-						{
-							if (Grammar::DoubleValue (isstream, ay))
-							{
-								contour .emplace_back (ax, ay);
-
-								px = ax;
-								py = ay;
-								continue;
-							}
-						}
-					}
-				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::m (isstream))
-		{
-			if (not contour .empty ())
-				contours .emplace_back (std::move (contour));
-
-			bool first = true;
-
-			while (isstream)
-			{
-				double x, y;
+				if (not contour .empty ())
+					contours .emplace_back (std::move (contour));
 	
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, x))
-					{
-						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-						{
-							if (Grammar::DoubleValue (isstream, y))
-							{
-								ax += x;
-								ay += y;
-
-								contour .emplace_back (ax, ay);
-
-								px = ax;
-								py = ay;
-								continue;
-							}
-						}
-					}
-				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::L (isstream))
-		{
-			bool first = true;
-
-			while (isstream)
-			{
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, ax))
-					{
-						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-						{
-							if (Grammar::DoubleValue (isstream, ay))
-							{
-								contour .emplace_back (ax, ay);
-
-								px = ax;
-								py = ay;
-								continue;
-							}
-						}
-					}
-				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::l (isstream))
-		{
-			bool first = true;
-
-			while (isstream)
-			{
-				double x, y;
+				bool first = true;
 	
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+				while (isstream)
 				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, x))
+					double x, y;
+		
+					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
 					{
-						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+						first = false;
+	
+						if (Grammar::DoubleValue (isstream, x))
 						{
-							if (Grammar::DoubleValue (isstream, y))
+							if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
 							{
-								ax += x;
-								ay += y;
-
-								contour .emplace_back (ax, ay);
-
-								px = ax;
-								py = ay;
-								continue;
-							}
-						}
-					}
-				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::H (isstream))
-		{
-			bool first = true;
-
-			while (isstream)
-			{
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, ax))
-					{
-						contour .emplace_back (ax, ay);
-
-						px = ax;
-						continue;
-					}
-				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::h (isstream))
-		{
-			bool first = true;
-
-			while (isstream)
-			{
-				double x;
-	
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, x))
-					{
-						ax += x;
-
-						contour .emplace_back (ax, ay);
-
-						px = ax;
-						continue;
-					}
-				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::V (isstream))
-		{
-			bool first = true;
-
-			while (isstream)
-			{
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, ay))
-					{
-						contour .emplace_back (ax, ay);
-
-						py = ay;
-						continue;
-					}
-				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::v (isstream))
-		{
-			bool first = true;
-
-			while (isstream)
-			{
-				double y;
-	
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, y))
-					{
-						ay += y;
-
-						contour .emplace_back (ax, ay);
-
-						py = ay;
-						continue;
-					}
-				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::C (isstream))
-		{
-			bool first = true;
-
-			while (isstream)
-			{
-				double x1, y1, x2, y2, x, y;
-	
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, x1))
-					{
-						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-						{
-							if (Grammar::DoubleValue (isstream, y1))
-							{
-								if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+								if (Grammar::DoubleValue (isstream, y))
 								{
-									if (Grammar::DoubleValue (isstream, x2))
+									if (relative)
 									{
-										if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-										{
-											if (Grammar::DoubleValue (isstream, y2))
-											{
-												if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-												{
-													if (Grammar::DoubleValue (isstream, x))
-													{
-														if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-														{
-															if (Grammar::DoubleValue (isstream, y))
-															{
-																math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+										x += ax;
+										y += ay;
+									}
+	
+									contour .emplace_back (x, y);
+	
+									ax = x;
+									ay = y;
+									px = ax;
+									py = ay;
+									continue;
+								}
+							}
+						}
+					}
+	
+					break;
+				}
+	
+				continue;
+			}
+			case 'L':
+			case 'l':
+			{
+				isstream .get ();
 
-																ax = x;
-																ay = y;
-																px = x2;
-																py = y2;
-																continue;
+				bool first = true;
+	
+				while (isstream)
+				{
+					double x, y;
+		
+					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					{
+						first = false;
+	
+						if (Grammar::DoubleValue (isstream, x))
+						{
+							if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+							{
+								if (Grammar::DoubleValue (isstream, y))
+								{
+									if (relative)
+									{
+										x += ax;
+										y += ay;
+									}
+	
+									contour .emplace_back (x, y);
+	
+									ax = x;
+									ay = y;
+									px = ax;
+									py = ay;
+									continue;
+								}
+							}
+						}
+					}
+	
+					break;
+				}
+	
+				continue;
+			}
+			case 'H':
+			case 'h':
+			{
+				isstream .get ();
+
+				bool first = true;
+	
+				while (isstream)
+				{
+					double x;
+		
+					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					{
+						first = false;
+	
+						if (Grammar::DoubleValue (isstream, x))
+						{
+							if (relative)
+								x += ax;
+	
+							contour .emplace_back (x, ay);
+	
+							ax = x;
+							px = ax;
+							continue;
+						}
+					}
+	
+					break;
+				}
+	
+				continue;
+			}
+			case 'V':
+			case 'v':
+			{
+				isstream .get ();
+
+				bool first = true;
+	
+				while (isstream)
+				{
+					double y;
+		
+					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					{
+						first = false;
+	
+						if (Grammar::DoubleValue (isstream, y))
+						{
+							if (relative)
+								y += ay;
+	
+							contour .emplace_back (ax, y);
+	
+							ay = y;
+							py = ay;
+							continue;
+						}
+					}
+	
+					break;
+				}
+	
+				continue;
+			}
+			case 'C':
+			case 'c':
+			{
+				isstream .get ();
+
+				bool first = true;
+	
+				while (isstream)
+				{
+					double x1, y1, x2, y2, x, y;
+		
+					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					{
+						first = false;
+	
+						if (Grammar::DoubleValue (isstream, x1))
+						{
+							if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+							{
+								if (Grammar::DoubleValue (isstream, y1))
+								{
+									if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+									{
+										if (Grammar::DoubleValue (isstream, x2))
+										{
+											if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+											{
+												if (Grammar::DoubleValue (isstream, y2))
+												{
+													if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+													{
+														if (Grammar::DoubleValue (isstream, x))
+														{
+															if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+															{
+																if (Grammar::DoubleValue (isstream, y))
+																{
+																	if (relative)
+																	{
+																		x1 += ax;
+																		y1 += ay;
+																		x2 += ax;
+																		y2 += ay;
+																		x  += ax;
+																		y  += ay;
+																	}
+	
+																	math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+	
+																	ax = x;
+																	ay = y;
+																	px = x2;
+																	py = y2;
+																	continue;
+																}
 															}
 														}
 													}
@@ -992,64 +894,56 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 							}
 						}
 					}
-				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::c (isstream))
-		{
-			bool first = true;
-
-			while (isstream)
-			{
-				double x1, y1, x2, y2, x, y;
 	
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+					break;
+				}
+	
+				continue;
+			}
+			case 'S':
+			case 's':
+			{
+				isstream .get ();
+
+				bool first = true;
+	
+				while (isstream)
 				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, x1))
+					double x2, y2, x, y;
+		
+					if (first or Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
 					{
-						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+						first = false;
+	
+						if (Grammar::DoubleValue (isstream, x2))
 						{
-							if (Grammar::DoubleValue (isstream, y1))
+							if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
 							{
-								if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+								if (Grammar::DoubleValue (isstream, y2))
 								{
-									if (Grammar::DoubleValue (isstream, x2))
+									if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
 									{
-										if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+										if (Grammar::DoubleValue (isstream, x))
 										{
-											if (Grammar::DoubleValue (isstream, y2))
+											if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
 											{
-												if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+												if (Grammar::DoubleValue (isstream, y))
 												{
-													if (Grammar::DoubleValue (isstream, x))
+													if (relative)
 													{
-														if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-														{
-															if (Grammar::DoubleValue (isstream, y))
-															{
-																x1 += ax;
-																y1 += ay;
-																x2 += ax;
-																y2 += ay;
-																x  += ax;
-																y  += ay;
-
-																math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-
-																ax = x;
-																ay = y;
-																px = x2;
-																py = y2;
-																continue;
-															}
-														}
+														x2 += ax;
+														y2 += ay;
+														x  += ax;
+														y  += ay;
 													}
+	
+													math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (px, py), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+	
+													ax = x;
+													ay = y;
+													px = x2;
+													py = y2;
+													continue;
 												}
 											}
 										}
@@ -1058,123 +952,27 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 							}
 						}
 					}
-				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::S (isstream))
-		{
-			bool first = true;
-
-			while (isstream)
-			{
-				double x2, y2, x, y;
 	
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, x2))
-					{
-						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-						{
-							if (Grammar::DoubleValue (isstream, y2))
-							{
-								if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-								{
-									if (Grammar::DoubleValue (isstream, x))
-									{
-										if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-										{
-											if (Grammar::DoubleValue (isstream, y))
-											{
-												math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (px, py), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-
-												ax = x;
-												ay = y;
-												px = x2;
-												py = y2;
-												continue;
-											}
-										}
-									}
-								}
-							}
-						}
-					}
+					break;
 				}
-
-				break;
-			}
-
-			continue;
-		}
-		else if (Grammar::s (isstream))
-		{
-			bool first = true;
-
-			while (isstream)
-			{
-				double x2, y2, x, y;
 	
-				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-				{
-					first = false;
-
-					if (Grammar::DoubleValue (isstream, x2))
-					{
-						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-						{
-							if (Grammar::DoubleValue (isstream, y2))
-							{
-								if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-								{
-									if (Grammar::DoubleValue (isstream, x))
-									{
-										if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
-										{
-											if (Grammar::DoubleValue (isstream, y))
-											{
-												x2 += ax;
-												y2 += ay;
-												x  += ax;
-												y  += ay;
-
-												math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (px, py), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-
-												ax = x;
-												ay = y;
-												px = x2;
-												py = y2;
-												continue;
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-
-				break;
+				continue;
 			}
-
-			continue;
-		}
-		else if (Grammar::Z (isstream) or Grammar::z (isstream))
-		{
-			if (not contour .empty ())
+			case 'Z':
+			case 'z':
 			{
-				ax = contour .front () .x ();
-				ay = contour .front () .y ();
+				isstream .get ();
 
-				contours .emplace_back (std::move (contour));
+				if (not contour .empty ())
+				{
+					ax = contour .front () .x ();
+					ay = contour .front () .y ();
+	
+					contours .emplace_back (std::move (contour));
+				}
+	
+				continue;
 			}
-
-			continue;
 		}
 
 		break;
@@ -1354,7 +1152,7 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 	{
 		try
 		{
-			std::transform (colorName .begin (), colorName .end (), colorName .begin (), [ ] (const char c) { return std::tolower (c); });
+			std::transform (colorName .begin (), colorName .end (), colorName .begin (), [ ] (const char c) { return std::tolower (c, std::locale::classic ()); });
 
 			color = namedColors .at (colorName);
 			return true;
