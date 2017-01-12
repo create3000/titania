@@ -85,9 +85,11 @@ template <class Vector, class Container>
 void
 bezier::quadratic_curve (const Vector & A, const Vector & B, const Vector & C, const size_t bezier_steps, Container & points)
 {
+	const auto bezier_steps_1 = bezier_steps - 1;
+
 	for (size_t i = 1; i < bezier_steps; ++ i)
 	{
-		const auto t = static_cast <typename Vector::value_type> (i) / bezier_steps;
+		const auto t = static_cast <typename Vector::value_type> (i) / bezier_steps_1;
 
 		const auto U = (1 - t) * A + t * B;
 		const auto V = (1 - t) * B + t * C;
@@ -105,9 +107,11 @@ template <class Vector, class Container>
 void
 bezier::cubic_curve (const Vector & A, const Vector & B, const Vector & C, const Vector & D, const size_t bezier_steps, Container & points)
 {
+	const auto bezier_steps_1 = bezier_steps - 1;
+
 	for (size_t i = 0; i < bezier_steps; ++ i)
 	{
-		const auto t = static_cast <typename Vector::value_type> (i) / bezier_steps;
+		const auto t = static_cast <typename Vector::value_type> (i) / bezier_steps_1;
 
 		const auto U = (1 - t) * A + t * B;
 		const auto V = (1 - t) * B + t * C;
