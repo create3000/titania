@@ -845,6 +845,7 @@
     <None Include="Titania\X3D\Browser\BrowserCellRenderer.h" />
     <None Include="Titania\X3D\Parser\JSONParser.h" />
     <None Include="Titania\X3D\Parser\SVG\Parser.h" />
+    <None Include="Titania\X3D\Parser\SVG\Colors.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

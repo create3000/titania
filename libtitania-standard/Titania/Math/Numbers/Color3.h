@@ -293,6 +293,14 @@ color3 <Type>::get_hsv (Type & h, Type & s, Type & v) const
 ///  @relates color3
 ///  @name Utility functions
 
+///  Construct a color from rgb.
+template <typename Type>	
+color3 <Type>
+make_rgb (const uint8_t & r, const uint8_t & g, const uint8_t & b)
+{
+	return color3 <Type> (r / Type (255), g / Type (255), b / Type (255));
+}
+
 ///  Construct a color from hsv.
 template <typename Type>	
 color3 <Type>

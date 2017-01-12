@@ -82,6 +82,7 @@ public:
 	static const io::sequence CommaWhiteSpaces;
 
 	static const io::string matrix;
+	static const io::string rgb;
 
 	static const io::character OpenParenthesis;
 	static const io::character CloseParenthesis;
@@ -113,14 +114,17 @@ public:
 	static const io::string pc;
 	static const io::character Percent;
 
-	static const io::number <double> DoubleValue;
-	static const io::hex <int32_t>   HexValue;
+	static const io::number <double>  DoubleValue;
+	static const io::number <int32_t> IntegerValue;
+	static const io::hex <int32_t>    HexValue;
+	static const io::sequence         NamedColor;
 };
 
 const io::sequence Grammar::WhiteSpaces ("\r\n \t");
 const io::sequence Grammar::CommaWhiteSpaces ("\r\n \t,");
 
 const io::string Grammar::matrix ("matrix");
+const io::string Grammar::rgb ("rgb");
 
 const io::character Grammar::OpenParenthesis ('(');
 const io::character Grammar::CloseParenthesis (')');
@@ -152,8 +156,10 @@ const io::string    Grammar::pt ("pt");
 const io::string    Grammar::pc ("pc");
 const io::character Grammar::Percent ('%');
 
-const io::number <double> Grammar::DoubleValue;
-const io::hex <int32_t>   Grammar::HexValue;
+const io::number <double>  Grammar::DoubleValue;
+const io::number <int32_t> Grammar::IntegerValue;
+const io::hex <int32_t>    Grammar::HexValue;
+const io::sequence         Grammar::NamedColor ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	X3D::X3DParser (),
@@ -162,14 +168,12 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	       istream (istream),
 	     xmlParser (new xmlpp::DomParser ()),
 	        styles (),
-	        groups ({ scene -> createNode <X3D::Transform> () })
+	        groups ({ scene -> createNode <X3D::Transform> () }),
+	   namedColors ()
 {
 	xmlParser -> set_throw_messages (true);
 	//xmlParser -> set_validate (true);
 	xmlParser -> set_include_default_attributes (true);
-
-	scene -> updateNamedNode (get_name_from_uri (uri), X3D::SFNode (groups .back ()));
-	scene -> getRootNodes () .emplace_back (groups .back ());
 }
 
 void
@@ -220,6 +224,9 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 	transform -> translation () = translation * scale;
 	transform -> scale ()       = scale;
 
+	scene -> updateNamedNode (get_name_from_uri (uri), X3D::SFNode (transform));
+	scene -> getRootNodes () .emplace_back (transform);
+
 	elements (xmlElement);
 }
 
@@ -244,6 +251,7 @@ Parser::element (xmlpp::Element* const xmlElement)
 		std::make_pair ("circle",  std::mem_fn (&Parser::circleElement)),
 		std::make_pair ("ellipse", std::mem_fn (&Parser::ellipseElement)),
 		std::make_pair ("polygon", std::mem_fn (&Parser::polygonElement)),
+		std::make_pair ("text",    std::mem_fn (&Parser::textElement)),
 		std::make_pair ("path",    std::mem_fn (&Parser::pathElement)),
 	};
 
@@ -435,6 +443,12 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 
 void
 Parser::polygonElement (xmlpp::Element* const xmlElement)
+{
+	//__LOG__ << xmlElement -> get_name () << std::endl;
+}
+
+void
+Parser::textElement (xmlpp::Element* const xmlElement)
 {
 	//__LOG__ << xmlElement -> get_name () << std::endl;
 }
@@ -1081,7 +1095,10 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 		{
 			X3D::Color3f color;
 
-			if (colorValue (vstream, color))
+			if (pair [1] == "transparent")
+				;
+
+			else if (colorValue (vstream, color))
 			{
 				styleObject .fillSet = true;
 				styleObject .fill    = color;
@@ -1091,7 +1108,11 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 		{
 			double fillOpacity;
 
-			if (Grammar::DoubleValue (vstream, fillOpacity))
+			if (pair [1] == "transparent")
+			{
+				styleObject .fillOpacity = 0;
+			}
+			else if (Grammar::DoubleValue (vstream, fillOpacity))
 			{
 				styleObject .fillOpacity = fillOpacity;
 			}
@@ -1100,7 +1121,11 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 		{
 			double opacity;
 
-			if (Grammar::DoubleValue (vstream, opacity))
+			if (pair [1] == "transparent")
+			{
+				styleObject .opacity = 0;
+			}
+			else if (Grammar::DoubleValue (vstream, opacity))
 			{
 				styleObject .opacity = opacity;
 			}
@@ -1126,6 +1151,68 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 			color = X3D::Color3f (r, g, b);
 			return true;
 		}
+
+		return false;
+	}
+
+	if (Grammar::rgb (istream))
+	{
+		int32_t r, g, b;
+
+		std::string whiteSpaces;
+
+		if (Grammar::OpenParenthesis (istream))
+		{
+			Grammar::WhiteSpaces (istream, whiteSpaces);
+
+			if (Grammar::IntegerValue (istream, r))
+			{
+				Grammar::WhiteSpaces (istream, whiteSpaces);
+				
+				if (Grammar::Comma (istream))
+				{
+					Grammar::WhiteSpaces (istream, whiteSpaces);
+		
+					if (Grammar::IntegerValue (istream, g))
+					{
+						Grammar::WhiteSpaces (istream, whiteSpaces);
+						
+						if (Grammar::Comma (istream))
+						{
+							Grammar::WhiteSpaces (istream, whiteSpaces);
+				
+							if (Grammar::IntegerValue (istream, b))
+							{
+								Grammar::WhiteSpaces (istream, whiteSpaces);
+								
+								if (Grammar::CloseParenthesis (istream))
+								{
+									color = make_rgb <float> (r, g, b);
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	std::string colorName;
+
+	if (Grammar::NamedColor (istream, colorName))
+	{
+		try
+		{
+			std::transform (colorName .begin (), colorName .end (), colorName .begin (), [ ] (const char c) { return std::tolower (c); });
+
+			color = namedColors .at (colorName);
+			return true;
+		}
+		catch (const std::out_of_range &)
+		{ }
 	}
 
 	return false;

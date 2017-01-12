@@ -54,6 +54,8 @@
 #include "../../Execution/X3DScene.h"
 #include "../../Parser/X3DParser.h"
 
+#include "Colors.h"
+
 #include <memory>
 
 namespace xmlpp {
@@ -140,6 +142,9 @@ private:
 	polygonElement (xmlpp::Element* const xmlElement);
 
 	void
+	textElement (xmlpp::Element* const xmlElement);
+
+	void
 	pathElement (xmlpp::Element* const xmlElement);
 
 	bool
@@ -187,6 +192,8 @@ private:
 
 	std::vector <Style>               styles;
 	X3D::X3DPtrArray <X3D::Transform> groups;
+
+	Colors namedColors;
 
 };
 
