@@ -59,6 +59,8 @@
 namespace titania {
 namespace io {
 
+static constexpr uint32_t CASE_INSENSITIVE = 0b0001;
+
 /**
  *  Template to represent a string match agains a std::basic_istream.
  *
@@ -76,7 +78,7 @@ public:
 	///  @name Construction
 
 	///  Constructs the io::basic_string from @a string.  A std::basic_istream can then be tested against the string.
-	basic_string (const std::basic_string <CharT> & string);
+	basic_string (const std::basic_string <CharT> & string, const uint32_t flags = 0);
 
 	///  @name Member access
 
@@ -109,14 +111,16 @@ private:
 
 	const std::basic_string <CharT> value;
 	const size_t                    size;
+	const uint32_t                  flags;
 
 };
 
 template <class CharT, class Traits>
 inline
-basic_string <CharT, Traits>::basic_string (const std::basic_string <CharT> & value) :
+basic_string <CharT, Traits>::basic_string (const std::basic_string <CharT> & value, const uint32_t flags) :
 	value (value),
-	 size (value .size ())
+	 size (value .size ()),
+	flags (flags)
 { }
 
 template <class CharT, class Traits>
@@ -127,7 +131,19 @@ basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & 
 
 	for (size_t count = 0; count < size; ++ count)
 	{
-		if (istream .peek () not_eq (int_type) value [count])
+		auto peek      = istream .peek ();
+		auto character = (int_type) value [count];
+
+		if (flags & CASE_INSENSITIVE)
+		{
+			peek      = std::tolower (peek);
+			character = std::tolower (character);
+		}
+
+		if (peek == character)
+			istream .get ();
+
+		else
 		{
 			if (count)
 			{
@@ -139,8 +155,6 @@ basic_string <CharT, Traits>::operator () (std::basic_istream <CharT, Traits> & 
 	
 			return false;
 		}
-		else
-			istream .get ();
 	}
 
 	return true;

@@ -112,7 +112,7 @@ public:
 	static const io::string mm;
 	static const io::string pt;
 	static const io::string pc;
-	static const io::character Percent;
+	static const io::character PercentSign;
 
 	static const io::number <double>  DoubleValue;
 	static const io::number <int32_t> IntegerValue;
@@ -124,7 +124,7 @@ const io::sequence Grammar::WhiteSpaces ("\r\n \t");
 const io::sequence Grammar::CommaWhiteSpaces ("\r\n \t,");
 
 const io::string Grammar::matrix ("matrix");
-const io::string Grammar::rgb ("rgb");
+const io::string Grammar::rgb ("rgb", io::CASE_INSENSITIVE);
 
 const io::character Grammar::OpenParenthesis ('(');
 const io::character Grammar::CloseParenthesis (')');
@@ -154,12 +154,16 @@ const io::string    Grammar::cm ("cm");
 const io::string    Grammar::mm ("mm");
 const io::string    Grammar::pt ("pt");
 const io::string    Grammar::pc ("pc");
-const io::character Grammar::Percent ('%');
+const io::character Grammar::PercentSign ('%');
 
 const io::number <double>  Grammar::DoubleValue;
 const io::number <int32_t> Grammar::IntegerValue;
 const io::hex <int32_t>    Grammar::HexValue;
 const io::sequence         Grammar::NamedColor ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+
+// Parser
+
+static constexpr size_t BEZIER_STEPS = 9;
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	X3D::X3DParser (),
@@ -172,7 +176,7 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	   namedColors ()
 {
 	xmlParser -> set_throw_messages (true);
-	//xmlParser -> set_validate (true);
+	xmlParser -> set_validate (false);
 	xmlParser -> set_include_default_attributes (true);
 }
 
@@ -686,7 +690,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 	Contour     contour;
 	std::string whiteSpaces;
 
-	double ax = 0, ay = 0;
+	double ax = 0, ay = 0, px = 0, py = 0;
 
 	while (isstream)
 	{
@@ -712,6 +716,9 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 							if (Grammar::DoubleValue (isstream, ay))
 							{
 								contour .emplace_back (ax, ay);
+
+								px = ax;
+								py = ay;
 								continue;
 							}
 						}
@@ -748,6 +755,9 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 								ay += y;
 
 								contour .emplace_back (ax, ay);
+
+								px = ax;
+								py = ay;
 								continue;
 							}
 						}
@@ -776,6 +786,9 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 							if (Grammar::DoubleValue (isstream, ay))
 							{
 								contour .emplace_back (ax, ay);
+
+								px = ax;
+								py = ay;
 								continue;
 							}
 						}
@@ -809,6 +822,9 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 								ay += y;
 
 								contour .emplace_back (ax, ay);
+
+								px = ax;
+								py = ay;
 								continue;
 							}
 						}
@@ -833,6 +849,8 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 					if (Grammar::DoubleValue (isstream, ax))
 					{
 						contour .emplace_back (ax, ay);
+
+						px = ax;
 						continue;
 					}
 				}
@@ -859,6 +877,8 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 						ax += x;
 
 						contour .emplace_back (ax, ay);
+
+						px = ax;
 						continue;
 					}
 				}
@@ -881,6 +901,8 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 					if (Grammar::DoubleValue (isstream, ay))
 					{
 						contour .emplace_back (ax, ay);
+
+						py = ay;
 						continue;
 					}
 				}
@@ -907,6 +929,8 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 						ay += y;
 
 						contour .emplace_back (ax, ay);
+
+						py = ay;
 						continue;
 					}
 				}
@@ -950,10 +974,12 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 														{
 															if (Grammar::DoubleValue (isstream, y))
 															{
-																math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), 9, contour);
+																math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
 
 																ax = x;
 																ay = y;
+																px = x2;
+																py = y2;
 																continue;
 															}
 														}
@@ -1014,15 +1040,116 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 																x  += ax;
 																y  += ay;
 
-																math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), 9, contour);
+																math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
 
 																ax = x;
 																ay = y;
+																px = x2;
+																py = y2;
 																continue;
 															}
 														}
 													}
 												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				break;
+			}
+
+			continue;
+		}
+		else if (Grammar::S (isstream))
+		{
+			bool first = true;
+
+			while (isstream)
+			{
+				double x2, y2, x, y;
+	
+				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+				{
+					first = false;
+
+					if (Grammar::DoubleValue (isstream, x2))
+					{
+						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+						{
+							if (Grammar::DoubleValue (isstream, y2))
+							{
+								if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+								{
+									if (Grammar::DoubleValue (isstream, x))
+									{
+										if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+										{
+											if (Grammar::DoubleValue (isstream, y))
+											{
+												math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (px, py), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+												ax = x;
+												ay = y;
+												px = x2;
+												py = y2;
+												continue;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				break;
+			}
+
+			continue;
+		}
+		else if (Grammar::s (isstream))
+		{
+			bool first = true;
+
+			while (isstream)
+			{
+				double x2, y2, x, y;
+	
+				if (first || Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+				{
+					first = false;
+
+					if (Grammar::DoubleValue (isstream, x2))
+					{
+						if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+						{
+							if (Grammar::DoubleValue (isstream, y2))
+							{
+								if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+								{
+									if (Grammar::DoubleValue (isstream, x))
+									{
+										if (Grammar::CommaWhiteSpaces (isstream, whiteSpaces))
+										{
+											if (Grammar::DoubleValue (isstream, y))
+											{
+												x2 += ax;
+												y2 += ay;
+												x  += ax;
+												y  += ay;
+
+												math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (px, py), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+												ax = x;
+												ay = y;
+												px = x2;
+												py = y2;
+												continue;
 											}
 										}
 									}
@@ -1095,39 +1222,45 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 		{
 			X3D::Color3f color;
 
-			if (pair [1] == "transparent")
-				;
-
-			else if (colorValue (vstream, color))
+			if (colorValue (vstream, color))
 			{
 				styleObject .fillSet = true;
 				styleObject .fill    = color;
+			}
+			else if (pair [1] == "inherit")
+			{
 			}
 		}
 		else if (pair [0] == "fill-opacity")
 		{
 			double fillOpacity;
 
-			if (pair [1] == "transparent")
+			if (Grammar::DoubleValue (vstream, fillOpacity))
+			{
+				styleObject .fillOpacity = fillOpacity;
+			}
+			else if (pair [1] == "transparent")
 			{
 				styleObject .fillOpacity = 0;
 			}
-			else if (Grammar::DoubleValue (vstream, fillOpacity))
+			else if (pair [1] == "inherit")
 			{
-				styleObject .fillOpacity = fillOpacity;
 			}
 		}
 		else if (pair [0] == "opacity")
 		{
 			double opacity;
 
-			if (pair [1] == "transparent")
+			if (Grammar::DoubleValue (vstream, opacity))
+			{
+				styleObject .opacity = opacity;
+			}
+			else if (pair [1] == "transparent")
 			{
 				styleObject .opacity = 0;
 			}
-			else if (Grammar::DoubleValue (vstream, opacity))
+			else if (pair [1] == "inherit")
 			{
-				styleObject .opacity = opacity;
 			}
 		}
 	}
@@ -1168,7 +1301,11 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 			if (Grammar::IntegerValue (istream, r))
 			{
 				Grammar::WhiteSpaces (istream, whiteSpaces);
+
+				bool rp = Grammar::PercentSign (istream);
 				
+				Grammar::WhiteSpaces (istream, whiteSpaces);
+
 				if (Grammar::Comma (istream))
 				{
 					Grammar::WhiteSpaces (istream, whiteSpaces);
@@ -1176,7 +1313,11 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 					if (Grammar::IntegerValue (istream, g))
 					{
 						Grammar::WhiteSpaces (istream, whiteSpaces);
+
+						bool gp = Grammar::PercentSign (istream);
 						
+						Grammar::WhiteSpaces (istream, whiteSpaces);
+
 						if (Grammar::Comma (istream))
 						{
 							Grammar::WhiteSpaces (istream, whiteSpaces);
@@ -1184,10 +1325,17 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 							if (Grammar::IntegerValue (istream, b))
 							{
 								Grammar::WhiteSpaces (istream, whiteSpaces);
+
+								bool bp = Grammar::PercentSign (istream);
 								
+								Grammar::WhiteSpaces (istream, whiteSpaces);
+
 								if (Grammar::CloseParenthesis (istream))
 								{
-									color = make_rgb <float> (r, g, b);
+									color = make_rgb <float> (rp ? r / 100.0 * 255.0 : r,
+									                          gp ? g / 100.0 * 255.0 : g,
+									                          bp ? b / 100.0 * 255.0 : b);
+
 									return true;
 								}
 							}

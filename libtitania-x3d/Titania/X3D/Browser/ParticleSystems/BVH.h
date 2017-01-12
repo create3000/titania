@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_MISCELLANEOUS_BVH_H__
 
 #include <Titania/Math/Geometry/Box3.h>
+#include <Titania/Math/Geometry/Triangle3.h>
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Matrix4.h>
 #include <Titania/Utility/Range.h>
@@ -255,56 +256,6 @@ private:
 	BVH* const tree;
 
 };
-
-// 
-template <class Type>
-bool
-triangle_intersects (const std::vector <vector3 <Type>> & points1,
-	                  const std::vector <vector3 <Type>> & edges1,
-	                  const std::vector <vector3 <Type>> & normals1,
-                     const vector3 <Type> & a,
-                     const vector3 <Type> & b,
-                     const vector3 <Type> & c)
-{
-	// Test special cases.
-
-	// Get points.
-
-	const std::vector <vector3 <Type>> points2 = { a, b, c };
-
-	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
-
-	if (sat::separated (normals1, points1, points2))
-		return false;
-
-	// Test the normal of the triangle.
-
-	if (sat::separated ({ normal (a, b, c) }, points1, points2))
-		return false;
-
-	// Test the nine other planes spanned by the edges of the parallelepiped and the edges of the triangle.
-
-	const std::array <vector3 <Type>, 3> edges2 = {
-		a - b,
-		b - c,
-		c - a,
-	};
-
-	std::vector <vector3 <Type>> axes;
-
-	for (const auto & axis1 : edges1)
-	{
-		for (const auto & axis2 : edges2)
-			axes .emplace_back (cross (axis1, axis2));
-	}
-
-	if (sat::separated (axes, points1, points2))
-		return false;
-
-	// Box and triangle intersect.
-
-	return true;
-}
 
 template <class Type>
 class BVH <Type>::Triangle :
@@ -572,7 +523,7 @@ BVH <Type>::~BVH ()
 //
 extern template class BVH <float>;
 extern template class BVH <double>;
-extern template class BVH <long double>;
+//extern template class BVH <long double>;
 
 } // X3D
 } // titania

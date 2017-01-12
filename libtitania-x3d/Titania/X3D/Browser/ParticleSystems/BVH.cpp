@@ -55,7 +55,7 @@ namespace X3D {
 
 template class BVH <float>;
 template class BVH <double>;
-template class BVH <long double>;
+//template class BVH <long double>;
 
 } // X3D
 } // titania/
