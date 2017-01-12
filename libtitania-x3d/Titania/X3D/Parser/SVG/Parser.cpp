@@ -628,16 +628,13 @@ Parser::transformAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Matrix3d 
 	if (not xmlAttribute)
 		return false;
 
-	const std::string transform = xmlAttribute -> get_value ();
-	auto              values    = std::vector <std::string> ();
+	std::istringstream vstream (xmlAttribute -> get_value ());
 
-	basic::split (std::back_inserter (values), transform, ";");
+	vstream .imbue (std::locale::classic ());
 
-	for (const auto & value : values)
+	while (vstream)
 	{
-		std::istringstream vstream (value);
-
-		vstream .imbue (std::locale::classic ());
+		whiteSpaces (vstream);
 
 		if (Grammar::matrix (vstream))
 		{
@@ -674,6 +671,7 @@ Parser::transformAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Matrix3d 
 															if (Grammar::CloseParenthesis (vstream))
 															{
 																matrix = X3D::Matrix3d (a, b, 0,  c, d, 0,  e, f, 1);
+																continue;
 															}
 														}
 													}
@@ -687,6 +685,8 @@ Parser::transformAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Matrix3d 
 					}
 				}
 			}
+
+			break;
 		}
 		else if (Grammar::translate (vstream))
 		{
@@ -707,28 +707,142 @@ Parser::transformAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Matrix3d 
 							if (Grammar::CloseParenthesis (vstream))
 							{
 								matrix .translate (X3D::Vector2d (tx, ty));
+								continue;
 							}
 						}
 					}
 				}
 			}
+
+			break;
 		}
 		else if (Grammar::rotate (vstream))
 		{
+			double angle;
 
+			if (Grammar::OpenParenthesis (vstream))
+			{
+				whiteSpaces (vstream);
+
+				if (Grammar::DoubleValue (vstream, angle))
+				{
+					bool cwsp = false;
+
+					cwsp |= whiteSpaces (vstream);
+
+					if (Grammar::CloseParenthesis (vstream))
+					{
+						matrix .rotate (angle);
+						continue;
+					}
+					else
+					{
+						double cx, cy;
+
+						cwsp |= Grammar::Comma (vstream);
+						cwsp |= whiteSpaces (vstream);
+
+						if (cwsp)
+						{
+							if (Grammar::DoubleValue (vstream, cx))
+							{
+								if (commaWhiteSpaces (vstream))
+								{
+									if (Grammar::DoubleValue (vstream, cy))
+									{
+										whiteSpaces (vstream);
+			
+										if (Grammar::CloseParenthesis (vstream))
+										{
+											matrix .translate (X3D::Vector2d (cx, cy));
+											matrix .rotate (angle);
+											matrix .translate(X3D::Vector2d (-cx, -cy));
+											continue;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			break;
 		}
 		else if (Grammar::scale (vstream))
 		{
+			double sx, sy;
 
+			if (Grammar::OpenParenthesis (vstream))
+			{
+				whiteSpaces (vstream);
+
+				if (Grammar::DoubleValue (vstream, sx))
+				{
+					if (commaWhiteSpaces (vstream))
+					{
+						if (Grammar::DoubleValue (vstream, sy))
+						{
+							whiteSpaces (vstream);
+
+							if (Grammar::CloseParenthesis (vstream))
+							{
+								matrix .scale (X3D::Vector2d (sx, sy));
+								continue;
+							}
+						}
+					}
+				}
+			}
+
+			break;
 		}
 		else if (Grammar::skewX (vstream))
 		{
+			double angle;
 
+			if (Grammar::OpenParenthesis (vstream))
+			{
+				whiteSpaces (vstream);
+
+				if (Grammar::DoubleValue (vstream, angle))
+				{
+					whiteSpaces (vstream);
+
+					if (Grammar::CloseParenthesis (vstream))
+					{
+						matrix .mult_left (X3D::Matrix3d (1, std::tan (angle), 0, 0, 1, 0, 0, 0, 1));
+						continue;
+					}
+				}
+			}
+
+			break;
 		}
 		else if (Grammar::skewY (vstream))
 		{
+			double angle;
 
+			if (Grammar::OpenParenthesis (vstream))
+			{
+				whiteSpaces (vstream);
+
+				if (Grammar::DoubleValue (vstream, angle))
+				{
+					whiteSpaces (vstream);
+
+					if (Grammar::CloseParenthesis (vstream))
+					{
+						matrix .mult_left (X3D::Matrix3d (1, 0, 0, std::tan (angle), 1, 0, 0, 0, 1));
+						continue;
+					}
+				}
+			}
+
+			break;
 		}
+
+		break;
 	}
 
 	return true;
