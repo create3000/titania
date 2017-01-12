@@ -286,8 +286,6 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 
 	const auto transform = getTransform (xmlElement);
 
-	groups .back () -> children () .emplace_back (transform);
-
 	groups .emplace_back (transform);
 
 	elements (xmlElement);
@@ -295,6 +293,9 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 	groups .pop_back ();
 
 	styles .pop_back ();
+
+	if (not transform -> children () .empty ())
+		groups .back () -> children () .emplace_back (transform);
 }
 
 void
@@ -1001,7 +1002,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 	
 				while (vstream)
 				{
-					double x, y;
+					double x1, y1, x, y;
 		
 					if (first or commaWhiteSpaces (vstream))
 					{
@@ -1025,17 +1026,20 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 										case 'q':
 										case 'T':
 										case 't':
+										{
+											x1 = ax + (ax - px);
+											y1 = ay + (ay - py);
 											break;
-
+										}
 										default:
 										{
-											px = ax;
-											py = ay;
+											x1 = ax;
+											y1 = ay;
 											break;
 										}
 									}
 
-									math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (px, py), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+									math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
 
 									ax = x;
 									ay = y;
@@ -1131,7 +1135,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 	
 				while (vstream)
 				{
-					double x2, y2, x, y;
+					double x1, y1, x2, y2, x, y;
 		
 					if (first or commaWhiteSpaces (vstream))
 					{
@@ -1165,17 +1169,20 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 														case 'c':
 														case 'S':
 														case 's':
+														{
+															x1 = ax + (ax - px);
+															y1 = ay + (ay - py);
 															break;
-
+														}
 														default:
 														{
-															px = ax;
-															py = ay;
+															x1 = ax;
+															y1 = ay;
 															break;
 														}
 													}
 
-													math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (px, py), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+													math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
 	
 													ax = x;
 													ay = y;
@@ -1245,8 +1252,8 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 		if (pair .size () not_eq 2)
 			continue;
 
-		basic::trim (pair [0]);
-		basic::trim (pair [1]);
+		pair [0] = basic::trim (pair [0]);
+		pair [1] = basic::trim (pair [1]);
 
 		std::istringstream vstream (pair [1]);
 
@@ -1442,12 +1449,16 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 X3D::X3DPtr <X3D::Transform>
 Parser::getTransform (xmlpp::Element* const xmlElement, const X3D::Vector2d & translation, const X3D::Vector2d & scale)
 {
+	// Determine matrix.
+
 	X3D::Matrix3d matrix;
 
 	transformAttribute (xmlElement -> get_attribute ("transform"), matrix);
 
 	matrix .translate (translation);
 	matrix .scale (scale);
+
+	// Create node.
 
 	const auto transform = scene -> createNode <X3D::Transform> ();
 

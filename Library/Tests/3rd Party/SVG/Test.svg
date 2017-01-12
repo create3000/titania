@@ -226,7 +226,10 @@
          y="162.00664"
          style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:90px;line-height:129.99999523%;font-family:BlairMdITCTTMedium;-inkscape-font-specification:'BlairMdITCTTMedium, Medium';text-align:end;letter-spacing:10.22991657px;writing-mode:lr-tb;text-anchor:end">Titania</tspan></text>
     <g transform="translate(50, 800)">
-		<path d="M10 80 Q 52.5 10, 95 80 T 180 80" style="stroke:black;fill:transparent;"/>
+		<path d="M10 80 Q 52.5 10, 95 80 T 180 80" style="stroke: red; fill: transparent;"/>
     </g>
+   <g transform="translate(300, 800)">
+      <path d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80" style="stroke: teal; fill: transparent;"/>
+   </g>
   </g>
 </svg>
