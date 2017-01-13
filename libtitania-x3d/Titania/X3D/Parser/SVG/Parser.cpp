@@ -170,7 +170,7 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 void
 Parser::parseIntoScene ()
 {
-	__LOG__ << this << " " << std::endl;
+	//__LOG__ << this << " " << std::endl;
 
 	try
 	{
@@ -390,7 +390,7 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 
 	Style style;
 
-	styleAttribute (xmlElement -> get_attribute ("style"), style);
+	styleAttributes (xmlElement, style);
 
 	if (style .display == "none")
 		return;
@@ -423,7 +423,7 @@ Parser::switchElement (xmlpp::Element* const xmlElement)
 
 	Style style;
 
-	styleAttribute (xmlElement -> get_attribute ("style"), style);
+	styleAttributes (xmlElement, style);
 
 	if (style .display == "none")
 		return;
@@ -466,7 +466,7 @@ Parser::aElement (xmlpp::Element* const xmlElement)
 
 	Style style;
 
-	styleAttribute (xmlElement -> get_attribute ("style"), style);
+	styleAttributes (xmlElement, style);
 
 	if (style .display == "none")
 		return;
@@ -523,7 +523,7 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 
 	Style style;
 
-	styleAttribute (xmlElement -> get_attribute ("style"), style);
+	styleAttributes (xmlElement, style);
 
 	if (style .display == "none")
 		return;
@@ -591,7 +591,7 @@ Parser::circleElement (xmlpp::Element* const xmlElement)
 
 	Style style;
 
-	styleAttribute (xmlElement -> get_attribute ("style"), style);
+	styleAttributes (xmlElement, style);
 
 	if (style .display == "none")
 		return;
@@ -650,7 +650,7 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 
 	Style style;
 
-	styleAttribute (xmlElement -> get_attribute ("style"), style);
+	styleAttributes (xmlElement, style);
 
 	if (style .display == "none")
 		return;
@@ -774,7 +774,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 
 	Style style;
 
-	styleAttribute (xmlElement -> get_attribute ("style"), style);
+	styleAttributes (xmlElement, style);
 
 	if (style .display == "none")
 		return;
@@ -890,7 +890,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 
 	Style style;
 
-	styleAttribute (xmlElement -> get_attribute ("style"), style);
+	styleAttributes (xmlElement, style);
 
 	if (style .display == "none")
 		return;
@@ -1003,7 +1003,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 	Style style;
 
-	styleAttribute (xmlElement -> get_attribute ("style"), style);
+	styleAttributes (xmlElement, style);
 
 	if (style .display == "none")
 		return;
@@ -1910,11 +1910,56 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 		contours .emplace_back (std::move (contour));
 
 	return true;
+
+}
+
+void
+Parser::styleAttributes (xmlpp::Element* const xmlElement, Style & styleObject)
+{
+	using StyleFunction = std::function <void (Parser*, const std::string &, Style &)>;
+
+	static const std::map <std::string, StyleFunction> stylesIndex =
+	{
+		std::make_pair ("display",        std::mem_fn (&Parser::displayAttribute)),
+		std::make_pair ("fill",           std::mem_fn (&Parser::fillAttribute)),
+		std::make_pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityAttribute)),
+		std::make_pair ("stroke",         std::mem_fn (&Parser::strokeAttribute)),
+		std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityAttribute)),
+		std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthAttribute)),
+		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityAttribute)),
+	};
+
+	for (const auto & attribute : xmlElement -> get_attributes ())
+	{
+		try
+		{
+			stylesIndex .at (attribute -> get_name ()) (this, attribute -> get_value (), styleObject);
+		}
+		catch (const std::out_of_range &)
+		{ }
+	}
+
+	// Style attribute has higher precedence.
+
+	styleAttribute (xmlElement -> get_attribute ("style"), styleObject);
 }
 
 bool
 Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObject)
 {
+	using StyleFunction = std::function <void (Parser*, const std::string &, Style &)>;
+
+	static const std::map <std::string, StyleFunction> stylesIndex =
+	{
+		std::make_pair ("display",        std::mem_fn (&Parser::displayAttribute)),
+		std::make_pair ("fill",           std::mem_fn (&Parser::fillAttribute)),
+		std::make_pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityAttribute)),
+		std::make_pair ("stroke",         std::mem_fn (&Parser::strokeAttribute)),
+		std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityAttribute)),
+		std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthAttribute)),
+		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityAttribute)),
+	};
+
 	if (not xmlAttribute)
 		return false;
 
@@ -1936,107 +1981,147 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 		pair [0] = basic::trim (pair [0]);
 		pair [1] = basic::trim (pair [1]);
 
-		std::istringstream vstream (pair [1]);
-
-		vstream .imbue (std::locale::classic ());
-
-		if (pair [0] == "display")
+		try
 		{
-			styleObject .display = pair [1];
+			stylesIndex .at (pair [0]) (this, pair [1], styleObject);
 		}
-		else if (pair [0] == "fill")
-		{
-			X3D::Color3f color;
-
-			if (colorValue (vstream, color))
-			{
-				styleObject .fillSet = true;
-				styleObject .fill    = color;
-			}
-			else if (pair [1] == "inherit")
-			{
-			}
-		}
-		else if (pair [0] == "fill-opacity")
-		{
-			double fillOpacity;
-
-			if (Grammar::DoubleValue (vstream, fillOpacity))
-			{
-				styleObject .fillOpacity = fillOpacity;
-			}
-			else if (pair [1] == "transparent")
-			{
-				styleObject .fillOpacity = 0;
-			}
-			else if (pair [1] == "inherit")
-			{
-			}
-		}
-		else if (pair [0] == "stroke")
-		{
-			X3D::Color3f color;
-
-			if (colorValue (vstream, color))
-			{
-				styleObject .strokeSet = true;
-				styleObject .stroke    = color;
-			}
-			else if (pair [1] == "inherit")
-			{
-			}
-		}
-		else if (pair [0] == "stroke-opacity")
-		{
-			double strokeOpacity;
-
-			if (Grammar::DoubleValue (vstream, strokeOpacity))
-			{
-				styleObject .strokeOpacity = strokeOpacity;
-			}
-			else if (pair [1] == "transparent")
-			{
-				styleObject .strokeOpacity = 0;
-			}
-			else if (pair [1] == "inherit")
-			{
-			}
-		}
-		else if (pair [0] == "stroke-width")
-		{
-			double strokeWidth;
-
-			if (Grammar::DoubleValue (vstream, strokeWidth))
-			{
-				styleObject .strokeWidth = strokeWidth;
-			}
-			else if (pair [1] == "none")
-			{
-				styleObject .strokeWidth = 0;
-			}
-			else if (pair [1] == "inherit")
-			{
-			}
-		}
-		else if (pair [0] == "opacity")
-		{
-			double opacity;
-
-			if (Grammar::DoubleValue (vstream, opacity))
-			{
-				styleObject .opacity = opacity;
-			}
-			else if (pair [1] == "transparent")
-			{
-				styleObject .opacity = 0;
-			}
-			else if (pair [1] == "inherit")
-			{
-			}
-		}
+		catch (const std::out_of_range &)
+		{ }
 	}
 
 	return true;
+}
+
+void
+Parser::displayAttribute (const std::string & value, Style & styleObject)
+{
+	styleObject .display = value;
+}
+
+void
+Parser::fillAttribute (const std::string & value, Style & styleObject)
+{
+	std::istringstream vstream (value);
+
+	vstream .imbue (std::locale::classic ());
+
+	X3D::Color3f color;
+
+	if (colorValue (vstream, color))
+	{
+		styleObject .fillSet = true;
+		styleObject .fill    = color;
+	}
+	else if (value == "inherit")
+	{
+	}
+}
+
+void
+Parser::fillOpacityAttribute (const std::string & value, Style & styleObject)
+{
+	std::istringstream vstream (value);
+
+	vstream .imbue (std::locale::classic ());
+
+	double fillOpacity;
+
+	if (Grammar::DoubleValue (vstream, fillOpacity))
+	{
+		styleObject .fillOpacity = fillOpacity;
+	}
+	else if (value == "transparent")
+	{
+		styleObject .fillOpacity = 0;
+	}
+	else if (value == "inherit")
+	{
+	}
+}
+
+void
+Parser::strokeAttribute (const std::string & value, Style & styleObject)
+{
+	std::istringstream vstream (value);
+
+	vstream .imbue (std::locale::classic ());
+
+	X3D::Color3f color;
+
+	if (colorValue (vstream, color))
+	{
+		styleObject .strokeSet = true;
+		styleObject .stroke    = color;
+	}
+	else if (value == "inherit")
+	{
+	}
+}
+
+void
+Parser::strokeOpacityAttribute (const std::string & value, Style & styleObject)
+{
+	std::istringstream vstream (value);
+
+	vstream .imbue (std::locale::classic ());
+
+	double strokeOpacity;
+
+	if (Grammar::DoubleValue (vstream, strokeOpacity))
+	{
+		styleObject .strokeOpacity = strokeOpacity;
+	}
+	else if (value == "transparent")
+	{
+		styleObject .strokeOpacity = 0;
+	}
+	else if (value == "inherit")
+	{
+	}
+}
+
+void
+Parser::strokeWidthAttribute (const std::string & value, Style & styleObject)
+{
+	std::istringstream vstream (value);
+
+	vstream .imbue (std::locale::classic ());
+
+	double strokeWidth;
+
+	if (Grammar::DoubleValue (vstream, strokeWidth))
+	{
+		styleObject .strokeWidth = strokeWidth;
+	}
+	else if (value == "none")
+	{
+		styleObject .strokeWidth = 0;
+	}
+	else if (value == "inherit")
+	{
+	}
+}
+
+void
+Parser::opacityAttribute (const std::string & value, Style & styleObject)
+{
+	std::istringstream vstream (value);
+
+	vstream .imbue (std::locale::classic ());
+
+	double opacity;
+
+	if (Grammar::DoubleValue (vstream, opacity))
+	{
+		styleObject .opacity = opacity;
+	}
+	else if (value == "transparent")
+	{
+		styleObject .opacity = 0;
+	}
+	else if (value == "inherit")
+	{
+	}
 }
 
 bool

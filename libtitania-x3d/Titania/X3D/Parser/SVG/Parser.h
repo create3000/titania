@@ -200,8 +200,32 @@ private:
 	bool
 	dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours);
 
+	void
+	styleAttributes (xmlpp::Element* const xmlAttribute, Style & styleObject);
+
 	bool
 	styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & value);
+
+	void
+	displayAttribute (const std::string & value, Style & styleObject);
+	
+	void
+	fillAttribute (const std::string & value, Style & styleObject);
+	
+	void
+	fillOpacityAttribute (const std::string & value, Style & styleObject);
+	
+	void
+	strokeAttribute (const std::string & value, Style & styleObject);
+	
+	void
+	strokeOpacityAttribute (const std::string & value, Style & styleObject);
+	
+	void
+	strokeWidthAttribute (const std::string & value, Style & styleObject);
+	
+	void
+	opacityAttribute (const std::string & value, Style & styleObject);
 
 	bool
 	colorValue (std::istream & istream, X3D::Color3f & color);
