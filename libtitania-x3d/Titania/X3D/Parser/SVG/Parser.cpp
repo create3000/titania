@@ -706,12 +706,6 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 }
 
 void
-Parser::polygonElement (xmlpp::Element* const xmlElement)
-{
-	//__LOG__ << xmlElement -> get_name () << std::endl;
-}
-
-void
 Parser::textElement (xmlpp::Element* const xmlElement)
 {
 	//__LOG__ << xmlElement -> get_name () << std::endl;
@@ -737,8 +731,10 @@ Parser::imageElement (xmlpp::Element* const xmlElement)
 	// Get href.
 
 	std::string href;
+	std::string abshref;
 
-	stringAttribute (xmlElement -> get_attribute ("href", "xlink"), href);
+	stringAttribute (xmlElement -> get_attribute ("href",   "xlink"),    href);
+	stringAttribute (xmlElement -> get_attribute ("absref", "sodipodi"), abshref);
 
 	// Create nodes.
 
@@ -756,6 +752,9 @@ Parser::imageElement (xmlpp::Element* const xmlElement)
 	rectangle -> solid ()    = false;
 	rectangle -> size ()     = X3D::Vector2f (width, height);
 
+	if (not abshref .empty ())
+		texture -> url () .emplace_back (abshref);
+
 	groups .back () -> children () .emplace_back (transform);
 }
 
@@ -770,6 +769,122 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 
 	if (not pointsAttribute (xmlElement -> get_attribute ("points"), points))
 		return;
+
+	// Determine style.
+
+	Style style;
+
+	styleAttribute (xmlElement -> get_attribute ("style"), style);
+
+	if (style .display == "none")
+		return;
+
+	styles .emplace_back (style);
+
+	// Get transform.	
+
+	const auto transform = getTransform (xmlElement);
+
+	// Create nodes.
+
+	const auto coordinate = scene -> createNode <X3D::Coordinate> ();
+
+	for (const auto & point : points)
+		coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+
+	if (getFillSet ())
+	{
+		// Tesselate contours
+
+		Tesselator tessellator;
+
+		tessellator .property (GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
+
+		tessellator .property (GLU_TESS_TOLERANCE, 0);
+		tessellator .normal (Vector3d (0, 0, 1));
+		tessellator .begin_polygon ();
+		tessellator .begin_contour ();
+
+		size_t index = 0;
+
+		for (const auto & point : points)
+		{
+			tessellator .add_vertex (X3D::Vector3d (point .x (), point .y (), 0), index ++);
+		}
+
+		tessellator .end_contour ();
+		tessellator .end_polygon ();
+
+		const auto triangles = tessellator .triangles ();
+
+		if (triangles .size () >= 3)
+		{
+			// Create geometry.
+	
+			const auto shape    = scene -> createNode <X3D::Shape> ();
+			const auto geometry = scene -> createNode <X3D::IndexedFaceSet> ();
+	
+			transform -> children () .emplace_back (shape);
+	
+			shape -> appearance () = getFillAppearance ();
+			shape -> geometry ()   = geometry;
+			geometry -> solid ()   = false;
+			geometry -> coord ()   = coordinate;
+	
+			for (size_t i = 0, size = triangles .size (); i < size; i += 3)
+			{
+				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
+				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
+				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
+				geometry -> coordIndex () .emplace_back (-1);
+			}
+
+			for (const auto & point : points)
+				coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+		}
+	}
+
+	if (getStrokeSet () and points .size () > 1)
+	{
+		// Create geometry.
+
+		const auto shape    = scene -> createNode <X3D::Shape> ();
+		const auto geometry = scene -> createNode <X3D::IndexedLineSet> ();
+
+		shape -> appearance () = getStrokeAppearance ();
+		shape -> geometry ()   = geometry;
+		geometry -> coord ()   = coordinate;
+
+		size_t index = 0;
+
+		for (size_t i = 0, size = points .size (); i < size; ++ i)
+			geometry -> coordIndex () .emplace_back (index ++);
+
+		geometry -> coordIndex () .emplace_back (-1);
+
+		transform -> children () .emplace_back (shape);
+	}
+
+	if (not transform -> children () .empty ())
+		groups .back () -> children () .emplace_back (transform);
+
+	styles .pop_back ();
+}
+
+void
+Parser::polygonElement (xmlpp::Element* const xmlElement)
+{
+	using Tesselator = math::tessellator <double, size_t>;
+
+	// Get path points.
+
+	std::vector <X3D::Vector2d> points;
+
+	if (not pointsAttribute (xmlElement -> get_attribute ("points"), points))
+		return;
+
+	if (not points .empty ())
+		points .emplace_back (points .front ());
 
 	// Determine style.
 

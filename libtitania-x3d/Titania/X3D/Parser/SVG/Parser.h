@@ -165,9 +165,6 @@ private:
 	ellipseElement (xmlpp::Element* const xmlElement);
 
 	void
-	polygonElement (xmlpp::Element* const xmlElement);
-
-	void
 	textElement (xmlpp::Element* const xmlElement);
 
 	void
@@ -175,6 +172,9 @@ private:
 
 	void
 	polylineElement (xmlpp::Element* const xmlElement);
+
+	void
+	polygonElement (xmlpp::Element* const xmlElement);
 
 	void
 	pathElement (xmlpp::Element* const xmlElement);
