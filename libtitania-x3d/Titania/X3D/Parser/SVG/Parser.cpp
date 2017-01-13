@@ -280,15 +280,16 @@ Parser::element (xmlpp::Element* const xmlElement)
 	using ElementsFunction = std::function <void (Parser*, xmlpp::Element* const)>;
 
 	static const std::map <std::string, ElementsFunction> elementsIndex = {
-		std::make_pair ("g",       std::mem_fn (&Parser::groupElement)),
-		std::make_pair ("a",       std::mem_fn (&Parser::aElement)),
-		std::make_pair ("rect",    std::mem_fn (&Parser::rectangleElement)),
-		std::make_pair ("circle",  std::mem_fn (&Parser::circleElement)),
-		std::make_pair ("ellipse", std::mem_fn (&Parser::ellipseElement)),
-		std::make_pair ("polygon", std::mem_fn (&Parser::polygonElement)),
-		std::make_pair ("text",    std::mem_fn (&Parser::textElement)),
-		std::make_pair ("image",   std::mem_fn (&Parser::imageElement)),
-		std::make_pair ("path",    std::mem_fn (&Parser::pathElement)),
+		std::make_pair ("g",        std::mem_fn (&Parser::groupElement)),
+		std::make_pair ("a",        std::mem_fn (&Parser::aElement)),
+		std::make_pair ("rect",     std::mem_fn (&Parser::rectangleElement)),
+		std::make_pair ("circle",   std::mem_fn (&Parser::circleElement)),
+		std::make_pair ("ellipse",  std::mem_fn (&Parser::ellipseElement)),
+		std::make_pair ("polygon",  std::mem_fn (&Parser::polygonElement)),
+		std::make_pair ("text",     std::mem_fn (&Parser::textElement)),
+		std::make_pair ("image",    std::mem_fn (&Parser::imageElement)),
+		std::make_pair ("polyline", std::mem_fn (&Parser::polylineElement)),
+		std::make_pair ("path",     std::mem_fn (&Parser::pathElement)),
 	};
 
 	try
@@ -582,6 +583,119 @@ Parser::imageElement (xmlpp::Element* const xmlElement)
 }
 
 void
+Parser::polylineElement (xmlpp::Element* const xmlElement)
+{
+	using Tesselator = math::tessellator <double, size_t>;
+
+	// Get path points.
+
+	std::vector <X3D::Vector2d> points;
+
+	if (not pointsAttribute (xmlElement -> get_attribute ("points"), points))
+		return;
+
+	// Determine style.
+
+	Style style;
+
+	styleAttribute (xmlElement -> get_attribute ("style"), style);
+
+	if (style .display == "none")
+		return;
+
+	styles .emplace_back (style);
+
+	// Get transform.	
+
+	const auto transform = getTransform (xmlElement);
+
+	// Create nodes.
+
+	const auto coordinate = scene -> createNode <X3D::Coordinate> ();
+
+	for (const auto & point : points)
+		coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+
+	if (getFillSet ())
+	{
+		// Tesselate contours
+
+		Tesselator tessellator;
+
+		tessellator .property (GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
+
+		tessellator .property (GLU_TESS_TOLERANCE, 0);
+		tessellator .normal (Vector3d (0, 0, 1));
+		tessellator .begin_polygon ();
+		tessellator .begin_contour ();
+
+		size_t index = 0;
+
+		for (const auto & point : points)
+		{
+			tessellator .add_vertex (X3D::Vector3d (point .x (), point .y (), 0), index ++);
+		}
+
+		tessellator .end_contour ();
+		tessellator .end_polygon ();
+
+		const auto triangles = tessellator .triangles ();
+
+		if (triangles .size () >= 3)
+		{
+			// Create geometry.
+	
+			const auto shape    = scene -> createNode <X3D::Shape> ();
+			const auto geometry = scene -> createNode <X3D::IndexedFaceSet> ();
+	
+			transform -> children () .emplace_back (shape);
+	
+			shape -> appearance () = getFillAppearance ();
+			shape -> geometry ()   = geometry;
+			geometry -> solid ()   = false;
+			geometry -> coord ()   = coordinate;
+	
+			for (size_t i = 0, size = triangles .size (); i < size; i += 3)
+			{
+				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
+				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
+				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
+				geometry -> coordIndex () .emplace_back (-1);
+			}
+
+			for (const auto & point : points)
+				coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+		}
+	}
+
+	if (getStrokeSet () and points .size () > 1)
+	{
+		// Create geometry.
+
+		const auto shape    = scene -> createNode <X3D::Shape> ();
+		const auto geometry = scene -> createNode <X3D::IndexedLineSet> ();
+
+		shape -> appearance () = getStrokeAppearance ();
+		shape -> geometry ()   = geometry;
+		geometry -> coord ()   = coordinate;
+
+		size_t index = 0;
+
+		for (size_t i = 0, size = points .size (); i < size; ++ i)
+			geometry -> coordIndex () .emplace_back (index ++);
+
+		geometry -> coordIndex () .emplace_back (-1);
+
+		transform -> children () .emplace_back (shape);
+	}
+
+	if (not transform -> children () .empty ())
+		groups .back () -> children () .emplace_back (transform);
+
+	styles .pop_back ();
+}
+
+void
 Parser::pathElement (xmlpp::Element* const xmlElement)
 {
 	using Tesselator = math::tessellator <double, size_t>;
@@ -695,13 +809,8 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		{
 			if (contour .size () > 1)
 			{
-				const auto first = index;
-	
 				for (size_t i = 0, size = contour .size (); i < size; ++ i)
 					geometry -> coordIndex () .emplace_back (index ++);
-
-				if (getFillSet () and not contour .empty ())
-					geometry -> coordIndex () .emplace_back (first);
 	
 				geometry -> coordIndex () .emplace_back (-1);
 			}
@@ -1018,7 +1127,43 @@ Parser::stringAttribute (xmlpp::Attribute* const xmlAttribute, std::string & val
 
 	value = xmlAttribute -> get_value ();
 
-	return false;
+	return true;
+}
+
+bool
+Parser::pointsAttribute (xmlpp::Attribute* const xmlAttribute, std::vector <X3D::Vector2d> & points)
+{
+	if (not xmlAttribute)
+		return false;
+
+	std::istringstream vstream (xmlAttribute -> get_value ());
+
+	vstream .imbue (std::locale::classic ());
+
+	whiteSpaces (vstream);
+
+	while (vstream)
+	{
+		double x, y;
+
+		if (Grammar::DoubleValue (vstream, x))
+		{
+			if (commaWhiteSpaces (vstream))
+			{
+				if (Grammar::DoubleValue (vstream, y))
+				{
+					points .emplace_back (x, y);
+
+					if (commaWhiteSpaces (vstream))
+						continue;
+				}
+			}
+		}
+
+		break;
+	}
+
+	return true;
 }
 
 bool
@@ -1031,16 +1176,16 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 
 	vstream .imbue (std::locale::classic ());
 
-	Contour     contour;
+	Contour contour;
 
 	double ax = 0, ay = 0, px = 0, py = 0;
 
 	std::istringstream::int_type peek = -1, previous = -1;
 
+	whiteSpaces (vstream);
+
 	while (vstream)
 	{
-		commaWhiteSpaces (vstream);
-
 		previous = peek;
 		peek     = vstream .peek ();
 
@@ -1055,35 +1200,32 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 
 				if (not contour .empty ())
 					contours .emplace_back (std::move (contour));
-	
-				bool first = true;
+
+				whiteSpaces (vstream);
 	
 				while (vstream)
 				{
 					double x, y;
 		
-					if (first or commaWhiteSpaces (vstream))
+					if (Grammar::DoubleValue (vstream, x))
 					{
-						first = false;
-	
-						if (Grammar::DoubleValue (vstream, x))
+						if (commaWhiteSpaces (vstream))
 						{
-							if (commaWhiteSpaces (vstream))
+							if (Grammar::DoubleValue (vstream, y))
 							{
-								if (Grammar::DoubleValue (vstream, y))
+								if (relative)
 								{
-									if (relative)
-									{
-										x += ax;
-										y += ay;
-									}
-	
-									contour .emplace_back (x, y);
-	
-									ax = x;
-									ay = y;
-									continue;
+									x += ax;
+									y += ay;
 								}
+
+								contour .emplace_back (x, y);
+
+								ax = x;
+								ay = y;
+
+								if (commaWhiteSpaces (vstream))
+									continue;
 							}
 						}
 					}
@@ -1098,34 +1240,31 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			{
 				vstream .get ();
 
-				bool first = true;
+				whiteSpaces (vstream);
 	
 				while (vstream)
 				{
 					double x, y;
 		
-					if (first or commaWhiteSpaces (vstream))
+					if (Grammar::DoubleValue (vstream, x))
 					{
-						first = false;
-	
-						if (Grammar::DoubleValue (vstream, x))
+						if (commaWhiteSpaces (vstream))
 						{
-							if (commaWhiteSpaces (vstream))
+							if (Grammar::DoubleValue (vstream, y))
 							{
-								if (Grammar::DoubleValue (vstream, y))
+								if (relative)
 								{
-									if (relative)
-									{
-										x += ax;
-										y += ay;
-									}
-	
-									contour .emplace_back (x, y);
-	
-									ax = x;
-									ay = y;
-									continue;
+									x += ax;
+									y += ay;
 								}
+
+								contour .emplace_back (x, y);
+
+								ax = x;
+								ay = y;
+
+								if (commaWhiteSpaces (vstream))
+									continue;
 							}
 						}
 					}
@@ -1140,26 +1279,23 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			{
 				vstream .get ();
 
-				bool first = true;
+				whiteSpaces (vstream);
 	
 				while (vstream)
 				{
 					double x;
 		
-					if (first or commaWhiteSpaces (vstream))
+					if (Grammar::DoubleValue (vstream, x))
 					{
-						first = false;
-	
-						if (Grammar::DoubleValue (vstream, x))
-						{
-							if (relative)
-								x += ax;
-	
-							contour .emplace_back (x, ay);
-	
-							ax = x;
+						if (relative)
+							x += ax;
+
+						contour .emplace_back (x, ay);
+
+						ax = x;
+
+						if (commaWhiteSpaces (vstream))
 							continue;
-						}
 					}
 	
 					break;
@@ -1172,26 +1308,23 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			{
 				vstream .get ();
 
-				bool first = true;
+				whiteSpaces (vstream);
 	
 				while (vstream)
 				{
 					double y;
 		
-					if (first or commaWhiteSpaces (vstream))
+					if (Grammar::DoubleValue (vstream, y))
 					{
-						first = false;
-	
-						if (Grammar::DoubleValue (vstream, y))
-						{
-							if (relative)
-								y += ay;
-	
-							contour .emplace_back (ax, y);
-	
-							ay = y;
+						if (relative)
+							y += ay;
+
+						contour .emplace_back (ax, y);
+
+						ay = y;
+
+						if (commaWhiteSpaces (vstream))
 							continue;
-						}
 					}
 	
 					break;
@@ -1204,46 +1337,43 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			{
 				vstream .get ();
 
-				bool first = true;
+				whiteSpaces (vstream);
 	
 				while (vstream)
 				{
 					double x1, y1, x, y;
 		
-					if (first or commaWhiteSpaces (vstream))
+					if (Grammar::DoubleValue (vstream, x1))
 					{
-						first = false;
-	
-						if (Grammar::DoubleValue (vstream, x1))
+						if (commaWhiteSpaces (vstream))
 						{
-							if (commaWhiteSpaces (vstream))
+							if (Grammar::DoubleValue (vstream, y1))
 							{
-								if (Grammar::DoubleValue (vstream, y1))
+								if (commaWhiteSpaces (vstream))
 								{
-									if (commaWhiteSpaces (vstream))
+									if (Grammar::DoubleValue (vstream, x))
 									{
-										if (Grammar::DoubleValue (vstream, x))
+										if (commaWhiteSpaces (vstream))
 										{
-											if (commaWhiteSpaces (vstream))
+											if (Grammar::DoubleValue (vstream, y))
 											{
-												if (Grammar::DoubleValue (vstream, y))
+												if (relative)
 												{
-													if (relative)
-													{
-														x1 += ax;
-														y1 += ay;
-														x  += ax;
-														y  += ay;
-													}
-
-													math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-
-													ax = x;
-													ay = y;
-													px = x1;
-													py = y1;
-													continue;
+													x1 += ax;
+													y1 += ay;
+													x  += ax;
+													y  += ay;
 												}
+
+												math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+												ax = x;
+												ay = y;
+												px = x1;
+												py = y1;
+
+												if (commaWhiteSpaces (vstream))
+													continue;
 											}
 										}
 									}
@@ -1262,53 +1392,50 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			{
 				vstream .get ();
 
-				bool first = true;
+				whiteSpaces (vstream);
 	
 				while (vstream)
 				{
 					double x1, y1, x, y;
 		
-					if (first or commaWhiteSpaces (vstream))
+					if (Grammar::DoubleValue (vstream, x))
 					{
-						first = false;
-	
-						if (Grammar::DoubleValue (vstream, x))
+						if (commaWhiteSpaces (vstream))
 						{
-							if (commaWhiteSpaces (vstream))
+							if (Grammar::DoubleValue (vstream, y))
 							{
-								if (Grammar::DoubleValue (vstream, y))
+								if (relative)
 								{
-									if (relative)
-									{
-										x += ax;
-										y += ay;
-									}
-
-									switch (previous)
-									{
-										case 'Q':
-										case 'q':
-										case 'T':
-										case 't':
-										{
-											x1 = ax + (ax - px);
-											y1 = ay + (ay - py);
-											break;
-										}
-										default:
-										{
-											x1 = ax;
-											y1 = ay;
-											break;
-										}
-									}
-
-									math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-
-									ax = x;
-									ay = y;
-									continue;
+									x += ax;
+									y += ay;
 								}
+
+								switch (previous)
+								{
+									case 'Q':
+									case 'q':
+									case 'T':
+									case 't':
+									{
+										x1 = ax + (ax - px);
+										y1 = ay + (ay - py);
+										break;
+									}
+									default:
+									{
+										x1 = ax;
+										y1 = ay;
+										break;
+									}
+								}
+
+								math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+								ax = x;
+								ay = y;
+
+								if (commaWhiteSpaces (vstream))
+									continue;
 							}
 						}
 					}
@@ -1323,56 +1450,53 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			{
 				vstream .get ();
 
-				bool first = true;
+				whiteSpaces (vstream);
 	
 				while (vstream)
 				{
 					double x1, y1, x2, y2, x, y;
 		
-					if (first or commaWhiteSpaces (vstream))
+					if (Grammar::DoubleValue (vstream, x1))
 					{
-						first = false;
-	
-						if (Grammar::DoubleValue (vstream, x1))
+						if (commaWhiteSpaces (vstream))
 						{
-							if (commaWhiteSpaces (vstream))
+							if (Grammar::DoubleValue (vstream, y1))
 							{
-								if (Grammar::DoubleValue (vstream, y1))
+								if (commaWhiteSpaces (vstream))
 								{
-									if (commaWhiteSpaces (vstream))
+									if (Grammar::DoubleValue (vstream, x2))
 									{
-										if (Grammar::DoubleValue (vstream, x2))
+										if (commaWhiteSpaces (vstream))
 										{
-											if (commaWhiteSpaces (vstream))
+											if (Grammar::DoubleValue (vstream, y2))
 											{
-												if (Grammar::DoubleValue (vstream, y2))
+												if (commaWhiteSpaces (vstream))
 												{
-													if (commaWhiteSpaces (vstream))
+													if (Grammar::DoubleValue (vstream, x))
 													{
-														if (Grammar::DoubleValue (vstream, x))
+														if (commaWhiteSpaces (vstream))
 														{
-															if (commaWhiteSpaces (vstream))
+															if (Grammar::DoubleValue (vstream, y))
 															{
-																if (Grammar::DoubleValue (vstream, y))
+																if (relative)
 																{
-																	if (relative)
-																	{
-																		x1 += ax;
-																		y1 += ay;
-																		x2 += ax;
-																		y2 += ay;
-																		x  += ax;
-																		y  += ay;
-																	}
-	
-																	math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-	
-																	ax = x;
-																	ay = y;
-																	px = x2;
-																	py = y2;
-																	continue;
+																	x1 += ax;
+																	y1 += ay;
+																	x2 += ax;
+																	y2 += ay;
+																	x  += ax;
+																	y  += ay;
 																}
+
+																math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+																ax = x;
+																ay = y;
+																px = x2;
+																py = y2;
+
+																if (commaWhiteSpaces (vstream))
+																	continue;
 															}
 														}
 													}
@@ -1395,65 +1519,62 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 			{
 				vstream .get ();
 
-				bool first = true;
+				whiteSpaces (vstream);
 	
 				while (vstream)
 				{
 					double x1, y1, x2, y2, x, y;
 		
-					if (first or commaWhiteSpaces (vstream))
+					if (Grammar::DoubleValue (vstream, x2))
 					{
-						first = false;
-	
-						if (Grammar::DoubleValue (vstream, x2))
+						if (commaWhiteSpaces (vstream))
 						{
-							if (commaWhiteSpaces (vstream))
+							if (Grammar::DoubleValue (vstream, y2))
 							{
-								if (Grammar::DoubleValue (vstream, y2))
+								if (commaWhiteSpaces (vstream))
 								{
-									if (commaWhiteSpaces (vstream))
+									if (Grammar::DoubleValue (vstream, x))
 									{
-										if (Grammar::DoubleValue (vstream, x))
+										if (commaWhiteSpaces (vstream))
 										{
-											if (commaWhiteSpaces (vstream))
+											if (Grammar::DoubleValue (vstream, y))
 											{
-												if (Grammar::DoubleValue (vstream, y))
+												if (relative)
 												{
-													if (relative)
-													{
-														x2 += ax;
-														y2 += ay;
-														x  += ax;
-														y  += ay;
-													}
-
-													switch (previous)
-													{
-														case 'C':
-														case 'c':
-														case 'S':
-														case 's':
-														{
-															x1 = ax + (ax - px);
-															y1 = ay + (ay - py);
-															break;
-														}
-														default:
-														{
-															x1 = ax;
-															y1 = ay;
-															break;
-														}
-													}
-
-													math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-	
-													ax = x;
-													ay = y;
-													px = x2;
-													py = y2;
-													continue;
+													x2 += ax;
+													y2 += ay;
+													x  += ax;
+													y  += ay;
 												}
+
+												switch (previous)
+												{
+													case 'C':
+													case 'c':
+													case 'S':
+													case 's':
+													{
+														x1 = ax + (ax - px);
+														y1 = ay + (ay - py);
+														break;
+													}
+													default:
+													{
+														x1 = ax;
+														y1 = ay;
+														break;
+													}
+												}
+
+												math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+												ax = x;
+												ay = y;
+												px = x2;
+												py = y2;
+
+												if (commaWhiteSpaces (vstream))
+													continue;
 											}
 										}
 									}
@@ -1474,13 +1595,17 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 
 				if (not contour .empty ())
 				{
-					ax = contour .front () .x ();
-					ay = contour .front () .y ();
-	
+					if (contour .front () not_eq contour .back ())
+						contour .emplace_back (contour .front ());
+
+					ax = contour .back () .x ();
+					ay = contour .back () .y ();
+
 					contours .emplace_back (std::move (contour));
 				}
-	
-				continue;
+
+				if (commaWhiteSpaces (vstream))
+					continue;
 			}
 			default:
 				break;

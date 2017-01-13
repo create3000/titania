@@ -165,6 +165,9 @@ private:
 	imageElement (xmlpp::Element* const xmlElement);
 
 	void
+	polylineElement (xmlpp::Element* const xmlElement);
+
+	void
 	pathElement (xmlpp::Element* const xmlElement);
 
 	void
@@ -181,6 +184,9 @@ private:
 
 	bool
 	stringAttribute (xmlpp::Attribute* const xmlAttribute, std::string & value);
+
+	bool
+	pointsAttribute (xmlpp::Attribute* const xmlAttribute, std::vector <X3D::Vector2d> & points);
 
 	bool
 	dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours);
