@@ -293,11 +293,11 @@
        y="758.81226" />
 
 <g transform="translate(200,930) scale(0.2,0.2)">
-  <polygon fill="red" stroke="blue" stroke-width="10" 
+  <polygon fill=" red " stroke=" blue " stroke-width="10" 
             points="350,75  379,161 469,161 397,215
                     423,301 350,250 277,301 303,215
                     231,161 321,161" />
-  <polygon fill="lime" stroke="blue" stroke-width="10" 
+  <polygon fill=" lime " stroke=" blue " stroke-width="10" 
             points="850,75  958,137.5 958,262.5
                     850,325 742,262.6 742,137.5" />
 </g>

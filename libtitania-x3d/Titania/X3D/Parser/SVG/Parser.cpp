@@ -1933,7 +1933,7 @@ Parser::styleAttributes (xmlpp::Element* const xmlElement, Style & styleObject)
 	{
 		try
 		{
-			stylesIndex .at (attribute -> get_name ()) (this, attribute -> get_value (), styleObject);
+			stylesIndex .at (attribute -> get_name ()) (this, basic::trim (attribute -> get_value ()), styleObject);
 		}
 		catch (const std::out_of_range &)
 		{ }
