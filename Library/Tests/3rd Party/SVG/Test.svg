@@ -32,9 +32,9 @@
      inkscape:window-height="480"
      id="namedview3357"
      showgrid="false"
-     inkscape:zoom="0.64000001"
-     inkscape:cx="-195.96793"
-     inkscape:cy="159.89028"
+     inkscape:zoom="0.45254835"
+     inkscape:cx="364.73798"
+     inkscape:cy="406.16928"
      inkscape:current-layer="layer1"
      units="mm"
      inkscape:snap-page="true"
@@ -251,6 +251,14 @@
          id="polyline3567"
          style="fill:#c23636;stroke:#0000ff;stroke-width:8.04418251;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1" />
     </g>
+    <use
+       x="0"
+       y="0"
+       xlink:href="#image3528"
+       id="use3570"
+       transform="translate(36.980267,-25.726623)"
+       width="100%"
+       height="100%" />
     <image
        y="722.03888"
        x="506.44717"
@@ -260,5 +268,13 @@
        preserveAspectRatio="none"
        height="68.821396"
        width="68.821396" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#image3528"
+       id="use3572"
+       transform="translate(36.980267,43.094773)"
+       width="100%"
+       height="100%" />
   </g>
 </svg>

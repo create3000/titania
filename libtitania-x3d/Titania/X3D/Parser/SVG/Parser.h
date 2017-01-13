@@ -141,6 +141,12 @@ private:
 	element (xmlpp::Element* const xmlElement);
 
 	void
+	useElement (xmlpp::Element* const xmlElement);
+
+	bool
+	isUsed (xmlpp::Element* const xmlElement);
+
+	void
 	groupElement (xmlpp::Element* const xmlElement);
 
 	void

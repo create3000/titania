@@ -280,6 +280,7 @@ Parser::element (xmlpp::Element* const xmlElement)
 	using ElementsFunction = std::function <void (Parser*, xmlpp::Element* const)>;
 
 	static const std::map <std::string, ElementsFunction> elementsIndex = {
+		std::make_pair ("use",      std::mem_fn (&Parser::useElement)),
 		std::make_pair ("g",        std::mem_fn (&Parser::groupElement)),
 		std::make_pair ("a",        std::mem_fn (&Parser::aElement)),
 		std::make_pair ("rect",     std::mem_fn (&Parser::rectangleElement)),
@@ -297,10 +298,86 @@ Parser::element (xmlpp::Element* const xmlElement)
 		if (not xmlElement)
 			return;
 
+		if (isUsed (xmlElement))
+			return;
+
 		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
 	}
 	catch (const std::out_of_range &)
 	{ }
+}
+
+void
+Parser::useElement (xmlpp::Element* const xmlElement)
+{
+	// Get href.
+
+	std::string href;
+
+	stringAttribute (xmlElement -> get_attribute ("href", "xlink"), href);
+
+	// Get transform.	
+
+	double x      = 0;
+	double y      = 0;
+	double width  = 0;
+	double height = 0;
+
+	lengthAttribute (xmlElement -> get_attribute ("x"),      x);
+	lengthAttribute (xmlElement -> get_attribute ("y"),      y);
+	lengthAttribute (xmlElement -> get_attribute ("width"),  width);
+	lengthAttribute (xmlElement -> get_attribute ("height"), height);
+
+	const auto transform = getTransform (xmlElement, X3D::Vector2d (x, y));
+
+	groups .emplace_back (transform);
+
+	try
+	{
+		// Get named node.
+	
+		const auto node = scene -> getNamedNode (get_name_from_string (href));
+
+		transform -> children () .emplace_back (node);
+	}
+	catch (const X3D::X3DError &)
+	{
+		const auto xpath    = "//*[@id='" + get_name_from_string (href) + "']";
+		const auto xmlNodes = xmlParser -> get_document () -> get_root_node () -> find (xpath);
+
+		for (const auto & xmlNode : xmlNodes)
+			element (dynamic_cast <xmlpp::Element*> (xmlNode));
+	}
+
+	groups .pop_back ();
+
+	if (not transform -> children () .empty ())
+		groups .back () -> children () .emplace_back (transform);
+}
+
+bool
+Parser::isUsed (xmlpp::Element* const xmlElement)
+{
+	try
+	{
+		// Get href.
+	
+		std::string id;
+
+		stringAttribute (xmlElement -> get_attribute ("id"), id);
+
+		// Get named node.
+	
+		const auto node = scene -> getNamedNode (get_name_from_string (id));
+
+		groups .back () -> children () .emplace_back (node);
+
+		return true;
+	}
+	catch (const X3D::X3DError &)
+	{
+		return false;
+	}
 }
 
 void
