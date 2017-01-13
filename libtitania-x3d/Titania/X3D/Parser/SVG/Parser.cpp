@@ -57,8 +57,10 @@
 #include "../../Components/Geometry2D/Rectangle2D.h"
 #include "../../Components/Geometry2D/Polyline2D.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../Components/Grouping/Switch.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Navigation/OrthoViewpoint.h"
+#include "../../Components/Networking/Anchor.h"
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Components/Shape/Appearance.h"
@@ -155,7 +157,8 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	             istream (istream),
 	           xmlParser (new xmlpp::DomParser ()),
 	              styles (),
-	              groups ({ scene -> createNode <X3D::Transform> () }),
+	       rootTransform (scene -> createNode <X3D::Transform> ()),
+	              groups ({ rootTransform }),
 	         namedColors (),
 	whiteSpaceCharacters ()
 {
@@ -231,15 +234,14 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 
 	// Create root Transform.
 
-	const auto transform   = groups .front ();
 	const auto translation = X3D::Vector3d (-viewBox .x (), viewBox .y (), 0);
 	const auto scale       = X3D::Vector3d (math::pixel <double> * width / viewBox [2], math::pixel <double> * height / viewBox [3], 1);
 
-	transform -> translation () = translation * scale;
-	transform -> scale ()       = scale;
+	rootTransform -> translation () = translation * scale;
+	rootTransform -> scale ()       = scale;
 
-	scene -> updateNamedNode (get_name_from_uri (uri), X3D::SFNode (transform));
-	scene -> getRootNodes () .emplace_back (transform);
+	scene -> updateNamedNode (get_name_from_uri (uri), X3D::SFNode (rootTransform));
+	scene -> getRootNodes () .emplace_back (rootTransform);
 
 	// Parse elements.
 
@@ -282,6 +284,7 @@ Parser::element (xmlpp::Element* const xmlElement)
 	static const std::map <std::string, ElementsFunction> elementsIndex = {
 		std::make_pair ("use",      std::mem_fn (&Parser::useElement)),
 		std::make_pair ("g",        std::mem_fn (&Parser::groupElement)),
+		std::make_pair ("switch",   std::mem_fn (&Parser::switchElement)),
 		std::make_pair ("a",        std::mem_fn (&Parser::aElement)),
 		std::make_pair ("rect",     std::mem_fn (&Parser::rectangleElement)),
 		std::make_pair ("circle",   std::mem_fn (&Parser::circleElement)),
@@ -360,7 +363,7 @@ Parser::isUsed (xmlpp::Element* const xmlElement)
 {
 	try
 	{
-		// Get href.
+		// Get id.
 	
 		std::string id;
 
@@ -398,22 +401,119 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 
 	const auto transform = getTransform (xmlElement);
 
+	// Get child elements.
+
 	groups .emplace_back (transform);
 
 	elements (xmlElement);
 
 	groups .pop_back ();
-
 	styles .pop_back ();
+
+	// Add node.
 
 	if (not transform -> children () .empty ())
 		groups .back () -> children () .emplace_back (transform);
 }
 
 void
+Parser::switchElement (xmlpp::Element* const xmlElement)
+{
+	// Determine style.
+
+	Style style;
+
+	styleAttribute (xmlElement -> get_attribute ("style"), style);
+
+	if (style .display == "none")
+		return;
+
+	styles .emplace_back (style);
+
+	// Create node.
+
+	const auto transform  = getTransform (xmlElement);
+	const auto switchNode = scene -> createNode <X3D::Switch> ();
+
+	transform -> children () .emplace_back (switchNode);
+
+	switchNode -> whichChoice () = 0;
+
+	// Get child elements.
+
+	groups .emplace_back (switchNode);
+
+	elements (xmlElement);
+
+	groups .pop_back ();
+	styles .pop_back ();
+
+	// Add node.
+
+	if (not switchNode -> children () .empty ())
+	{
+		if (transform -> getMatrix () == X3D::Matrix4d ())
+			groups .back () -> children () .emplace_back (switchNode);
+		else
+			groups .back () -> children () .emplace_back (transform);
+	}
+}
+
+void
 Parser::aElement (xmlpp::Element* const xmlElement)
 {
-	groupElement (xmlElement);
+	// Determine style.
+
+	Style style;
+
+	styleAttribute (xmlElement -> get_attribute ("style"), style);
+
+	if (style .display == "none")
+		return;
+
+	styles .emplace_back (style);
+
+	// Get attributes.
+
+	std::string href;
+	std::string title;
+	std::string target;
+
+	stringAttribute (xmlElement -> get_attribute ("href",  "xlink"), href);
+	stringAttribute (xmlElement -> get_attribute ("title", "xlink"), title);
+	stringAttribute (xmlElement -> get_attribute ("target"),         target);
+
+	// Create node.
+
+	const auto transform = getTransform (xmlElement);
+	const auto anchor    = scene -> createNode <X3D::Anchor> ();
+
+	transform -> children () .emplace_back (anchor);
+
+	anchor -> description () = title;
+	anchor -> url ()         = { href };
+
+	if (not target .empty ())
+		anchor -> parameter () = { "target=" + target };
+
+	// Get child elements.
+
+	groups .emplace_back (anchor);
+
+	elements (xmlElement);
+
+	groups .pop_back ();
+	styles .pop_back ();
+
+	// Add node.
+
+	if (not anchor -> children () .empty ())
+	{
+		if (transform -> getMatrix () == X3D::Matrix4d ())
+			groups .back () -> children () .emplace_back (anchor);
+		else
+			groups .back () -> children () .emplace_back (transform);
+	}
 }
 
 void

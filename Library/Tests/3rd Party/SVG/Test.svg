@@ -33,8 +33,8 @@
      id="namedview3357"
      showgrid="false"
      inkscape:zoom="0.45254835"
-     inkscape:cx="364.73798"
-     inkscape:cy="406.16928"
+     inkscape:cx="380.20595"
+     inkscape:cy="510.02558"
      inkscape:current-layer="layer1"
      units="mm"
      inkscape:snap-page="true"
@@ -235,22 +235,28 @@
          id="path3503" />
     </g>
     <g
-       transform="matrix(1,0, 0,1, 300, 800) matrix(1,0, 0,1, 100, 0)"
+       transform="matrix(1,0, 0,1, 300, 800) matrix(1,0, 0,1, -50, 0)"
        id="g3505">
       <path
          d="M10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80"
          style="stroke: teal; fill: transparent;"
          id="path3507" />
     </g>
-    <g
-       transform="matrix(0.12431344,0,0,0.12431344,53.356934,955.75016)"
-       id="g3565"
-       style="stroke-width:8.04418251;stroke-miterlimit:4;stroke-dasharray:none;fill:#c23636;fill-opacity:1">
-      <polyline
-         points="50,375                     150,375 150,325 250,325 250,375                     350,375 350,250 450,250 450,375                     550,375 550,175 650,175 650,375                     750,375 750,100 850,100 850,375                     950,375 950,25 1050,25 1050,375                     1150,375"
-         id="polyline3567"
-         style="fill:#c23636;stroke:#0000ff;stroke-width:8.04418251;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1" />
-    </g>
+    <a
+       id="a3652"
+       xlink:href="http://example.com"
+       xlink:title="Example link"
+       target="target">
+      <g
+         style="stroke-width:8.04418251;stroke-miterlimit:4;stroke-dasharray:none;fill:#c23636;fill-opacity:1"
+         id="g3565"
+         transform="matrix(0.12431344,0,0,0.12431344,53.356934,955.75016)">
+        <polyline
+           style="fill:#c23636;stroke:#0000ff;stroke-width:8.04418251;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
+           id="polyline3567"
+           points="50,375                     150,375 150,325 250,325 250,375                     350,375 350,250 450,250 450,375                     550,375 550,175 650,175 650,375                     750,375 750,100 850,100 850,375                     950,375 950,25 1050,25 1050,375                     1150,375" />
+      </g>
+    </a>
     <use
        x="0"
        y="0"

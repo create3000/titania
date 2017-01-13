@@ -150,6 +150,9 @@ private:
 	groupElement (xmlpp::Element* const xmlElement);
 
 	void
+	switchElement (xmlpp::Element* const xmlElement);
+
+	void
 	aElement (xmlpp::Element* const xmlElement);
 
 	void
@@ -243,8 +246,9 @@ private:
 
 	std::unique_ptr <xmlpp::DomParser> xmlParser;
 
-	std::vector <Style>               styles;
-	X3D::X3DPtrArray <X3D::Transform> groups;
+	std::vector <Style>                     styles;
+	X3D::X3DPtr <X3D::Transform>            rootTransform;
+	X3D::X3DPtrArray <X3D::X3DGroupingNode> groups;
 
 	Colors      namedColors;
 	std::string whiteSpaceCharacters;
