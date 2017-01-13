@@ -58,11 +58,13 @@
 #include "../../Components/Geometry2D/Polyline2D.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Grouping/Transform.h"
+#include "../../Components/Navigation/OrthoViewpoint.h"
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Components/Shape/Appearance.h"
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
+#include "../../Components/Texturing/ImageTexture.h"
 #include "../Filter.h"
 
 #include <Titania/Math/Algorithms/Bezier.h>
@@ -195,13 +197,39 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 	if (not xmlElement)
 		return;
 
-	X3D::Vector4d viewBox;
+	// Get attributes of svg element.
+
 	double        width  = 0;
 	double        height = 0;
+	X3D::Vector4d viewBox;
 
-	viewBoxAttribute (xmlElement -> get_attribute ("viewBox"), viewBox);
-	lengthAttribute  (xmlElement -> get_attribute ("width"),   width);
-	lengthAttribute  (xmlElement -> get_attribute ("height"),  height);
+	if (not lengthAttribute  (xmlElement -> get_attribute ("width"), width))
+		width = 100;
+
+	if (not lengthAttribute  (xmlElement -> get_attribute ("height"), height))
+		height = 100;
+
+	if (not viewBoxAttribute (xmlElement -> get_attribute ("viewBox"), viewBox))
+		viewBox = X3D::Vector4d (0, 0, width, height);
+
+	// Create viewpoint.
+
+	const auto viewpoint = scene -> createNode <X3D::OrthoViewpoint> ();
+
+	viewpoint -> description ()      = uri .basename ();
+	viewpoint -> position ()         = X3D::Vector3f ((viewBox .x () + width / 2) * math::pixel <double>, -(viewBox .y () + height / 2) * math::pixel <double>, 10);
+	viewpoint -> centerOfRotation () = X3D::Vector3f ((viewBox .x () + width / 2) * math::pixel <double>, -(viewBox .y () + height / 2) * math::pixel <double>, 0);
+
+	viewpoint -> fieldOfView () = {
+		-width  / 2 * math::pixel <double>,
+		-height / 2 * math::pixel <double>,
+		 width  / 2 * math::pixel <double>,
+		 height / 2 * math::pixel <double>,
+	};
+
+	scene -> getRootNodes () .emplace_back (viewpoint);
+
+	// Create root Transform.
 
 	const auto transform   = groups .front ();
 	const auto translation = X3D::Vector3d (-viewBox .x (), viewBox .y (), 0);
@@ -212,6 +240,8 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 
 	scene -> updateNamedNode (get_name_from_uri (uri), X3D::SFNode (transform));
 	scene -> getRootNodes () .emplace_back (transform);
+
+	// Parse elements.
 
 	elements (xmlElement);
 }
@@ -251,19 +281,21 @@ Parser::element (xmlpp::Element* const xmlElement)
 
 	static const std::map <std::string, ElementsFunction> elementsIndex = {
 		std::make_pair ("g",       std::mem_fn (&Parser::groupElement)),
+		std::make_pair ("a",       std::mem_fn (&Parser::aElement)),
 		std::make_pair ("rect",    std::mem_fn (&Parser::rectangleElement)),
 		std::make_pair ("circle",  std::mem_fn (&Parser::circleElement)),
 		std::make_pair ("ellipse", std::mem_fn (&Parser::ellipseElement)),
 		std::make_pair ("polygon", std::mem_fn (&Parser::polygonElement)),
 		std::make_pair ("text",    std::mem_fn (&Parser::textElement)),
+		std::make_pair ("image",   std::mem_fn (&Parser::imageElement)),
 		std::make_pair ("path",    std::mem_fn (&Parser::pathElement)),
 	};
 
-	if (not xmlElement)
-		return;
-
 	try
 	{
+		if (not xmlElement)
+			return;
+
 		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
 	}
 	catch (const std::out_of_range &)
@@ -284,7 +316,7 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 
 	styles .emplace_back (style);
 
-	// Determine matrix.	
+	// Get transform.	
 
 	const auto transform = getTransform (xmlElement);
 
@@ -301,6 +333,12 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 }
 
 void
+Parser::aElement (xmlpp::Element* const xmlElement)
+{
+	groupElement (xmlElement);
+}
+
+void
 Parser::rectangleElement (xmlpp::Element* const xmlElement)
 {
 	// Determine style.
@@ -314,7 +352,7 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 
 	styles .emplace_back (style);
 
-	// Determine matrix.	
+	// Get transform.	
 
 	double x      = 0;
 	double y      = 0;
@@ -382,7 +420,7 @@ Parser::circleElement (xmlpp::Element* const xmlElement)
 
 	styles .emplace_back (style);
 
-	// Determine matrix.	
+	// Get transform.	
 
 	double cx = 0;
 	double cy = 0;
@@ -441,7 +479,7 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 
 	styles .emplace_back (style);
 
-	// Determine matrix.	
+	// Get transform.	
 
 	double cx = 0;
 	double cy = 0;
@@ -502,6 +540,48 @@ Parser::textElement (xmlpp::Element* const xmlElement)
 }
 
 void
+Parser::imageElement (xmlpp::Element* const xmlElement)
+{
+	// Get transform.	
+
+	double x      = 0;
+	double y      = 0;
+	double width  = 0;
+	double height = 0;
+
+	lengthAttribute (xmlElement -> get_attribute ("x"),      x);
+	lengthAttribute (xmlElement -> get_attribute ("y"),      y);
+	lengthAttribute (xmlElement -> get_attribute ("width"),  width);
+	lengthAttribute (xmlElement -> get_attribute ("height"), height);
+
+	const auto transform = getTransform (xmlElement, X3D::Vector2d (x + width / 2, y + height / 2));
+
+	// Get href.
+
+	std::string href;
+
+	stringAttribute (xmlElement -> get_attribute ("href", "xlink"), href);
+
+	// Create nodes.
+
+	const auto shape      = scene -> createNode <X3D::Shape> ();
+	const auto appearance = scene -> createNode <X3D::Appearance> ();
+	const auto texture    = scene -> createNode <X3D::ImageTexture> ();
+	const auto rectangle  = scene -> createNode <X3D::Rectangle2D> ();
+
+	transform -> children () .emplace_back (shape);
+
+	shape -> appearance ()   = appearance;
+	shape -> geometry ()     = rectangle;
+	appearance -> texture () = texture;
+	texture -> url ()        = { href };
+	rectangle -> solid ()    = false;
+	rectangle -> size ()     = X3D::Vector2f (width, height);
+
+	groups .back () -> children () .emplace_back (transform);
+}
+
+void
 Parser::pathElement (xmlpp::Element* const xmlElement)
 {
 	using Tesselator = math::tessellator <double, size_t>;
@@ -524,7 +604,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 	styles .emplace_back (style);
 
-	// Determine matrix.	
+	// Get transform.	
 
 	const auto transform = getTransform (xmlElement);
 
@@ -635,6 +715,20 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		groups .back () -> children () .emplace_back (transform);
 
 	styles .pop_back ();
+}
+
+void
+Parser::idAttribute (xmlpp::Attribute* const attribute, const X3D::SFNode & node)
+{
+	try
+	{
+		if (not attribute)
+			return;
+
+		scene -> updateNamedNode (get_name_from_string (attribute -> get_value ()), node);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 bool
@@ -912,6 +1006,17 @@ Parser::lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
 
 		return true;
 	}
+
+	return false;
+}
+
+bool
+Parser::stringAttribute (xmlpp::Attribute* const xmlAttribute, std::string & value)
+{
+	if (not xmlAttribute)
+		return false;
+
+	value = xmlAttribute -> get_value ();
 
 	return false;
 }
@@ -1625,6 +1730,10 @@ Parser::getTransform (xmlpp::Element* const xmlElement, const X3D::Vector2d & tr
 	                                       matrix [1] [0], matrix [1] [1], 0, 0,
 	                                       0, 0, 1, 0,
 	                                       matrix [2] [0], -matrix [2] [1], 0, 1));
+
+	// Set name.
+
+	idAttribute (xmlElement -> get_attribute ("id"), X3D::SFNode (transform));
 
 	return transform;
 }

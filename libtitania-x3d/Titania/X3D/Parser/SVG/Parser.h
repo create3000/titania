@@ -144,6 +144,9 @@ private:
 	groupElement (xmlpp::Element* const xmlElement);
 
 	void
+	aElement (xmlpp::Element* const xmlElement);
+
+	void
 	rectangleElement (xmlpp::Element* const xmlElement);
 
 	void
@@ -159,7 +162,13 @@ private:
 	textElement (xmlpp::Element* const xmlElement);
 
 	void
+	imageElement (xmlpp::Element* const xmlElement);
+
+	void
 	pathElement (xmlpp::Element* const xmlElement);
+
+	void
+	idAttribute (xmlpp::Attribute* const attribute, const X3D::SFNode & node);
 
 	bool
 	viewBoxAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Vector4d & value);
@@ -169,6 +178,9 @@ private:
 
 	bool
 	lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
+
+	bool
+	stringAttribute (xmlpp::Attribute* const xmlAttribute, std::string & value);
 
 	bool
 	dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours);
