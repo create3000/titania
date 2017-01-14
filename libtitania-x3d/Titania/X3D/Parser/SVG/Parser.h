@@ -97,26 +97,37 @@ private:
 	using Contour  = std::vector <X3D::Vector2d>;
 	using Contours = std::vector <Contour>;
 
+	enum class ColorType
+	{
+		NONE,
+		COLOR,
+		URL,
+	};
+
 	struct Style {
 
 		Style () :
 			      display ("inline"),
-			      fillSet (false),
-			         fill (),
+			     fillType (ColorType::NONE),
+			    fillColor (),
+			      fillURL (),
 			  fillOpacity (1),
-			    strokeSet (false),
-			       stroke (),
+			   strokeType (ColorType::NONE),
+			  strokeColor (),
+			    strokeURL (),
 			strokeOpacity (1),
 			  strokeWidth (1),
 			      opacity (1)
 			{ }
 
 		std::string  display;
-		bool         fillSet;
-		X3D::Color3f fill;
+		ColorType    fillType;
+		X3D::Color3f fillColor;
+		basic::uri   fillURL;
 		double       fillOpacity;
-		bool         strokeSet;
-		X3D::Color3f stroke;
+		ColorType    strokeType;
+		X3D::Color3f strokeColor;
+		basic::uri   strokeURL;
 		double       strokeOpacity;
 		double       strokeWidth;
 		double       opacity;
@@ -195,6 +206,9 @@ private:
 	stringAttribute (xmlpp::Attribute* const xmlAttribute, std::string & value);
 
 	bool
+	urlAttribute (xmlpp::Attribute* const xmlAttribute, basic::uri & value);
+
+	bool
 	pointsAttribute (xmlpp::Attribute* const xmlAttribute, std::vector <X3D::Vector2d> & points);
 
 	bool
@@ -229,7 +243,10 @@ private:
 
 	bool
 	colorValue (std::istream & istream, X3D::Color3f & color);
-	
+
+	bool
+	urlValue (std::istream & istream, basic::uri & url);
+
 	X3D::X3DPtr <X3D::Transform>
 	getTransform (xmlpp::Element* const xmlElement,
 	              const X3D::Vector2d & translation = X3D::Vector2d (),
@@ -238,11 +255,11 @@ private:
 	X3D::X3DPtr <X3D::Appearance>
 	getFillAppearance ();
 
-	bool
-	getFillSet () const;
+	ColorType
+	getFillType () const;
 
 	X3D::Color3f
-	getFill () const;
+	getFillColor () const;
 	
 	double
 	getFillOpacity () const;
@@ -250,11 +267,11 @@ private:
 	X3D::X3DPtr <X3D::Appearance>
 	getStrokeAppearance ();
 
-	bool
-	getStrokeSet () const;
+	ColorType
+	getStrokeType () const;
 
 	X3D::Color3f
-	getStroke () const;
+	getStrokeColor () const;
 	
 	double
 	getStrokeOpacity () const;

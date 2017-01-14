@@ -152,6 +152,7 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/Geospatial/Geodetic.lo \
 	Titania/Geospatial/UniversalTransverseMercator.lo \
 	Titania/InputOutput/Character.lo \
+	Titania/InputOutput/InverseCharacter.lo \
 	Titania/InputOutput/InverseSequence.lo \
 	Titania/InputOutput/InverseString.lo \
 	Titania/InputOutput/MultiLineComment.lo \
@@ -459,6 +460,7 @@ libtitania_standard_la_SOURCES = \
 	Titania/Geospatial/Geodetic.cpp \
 	Titania/Geospatial/UniversalTransverseMercator.cpp \
 	Titania/InputOutput/Character.cpp \
+	Titania/InputOutput/InverseCharacter.cpp \
 	Titania/InputOutput/InverseSequence.cpp \
 	Titania/InputOutput/InverseString.cpp \
 	Titania/InputOutput/MultiLineComment.cpp \
@@ -706,6 +708,9 @@ Titania/InputOutput/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/InputOutput/$(DEPDIR)
 	@: > Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
 Titania/InputOutput/Character.lo: Titania/InputOutput/$(am__dirstamp) \
+	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
+Titania/InputOutput/InverseCharacter.lo:  \
+	Titania/InputOutput/$(am__dirstamp) \
 	Titania/InputOutput/$(DEPDIR)/$(am__dirstamp)
 Titania/InputOutput/InverseSequence.lo:  \
 	Titania/InputOutput/$(am__dirstamp) \
@@ -957,6 +962,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/Geodetic.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Geospatial/$(DEPDIR)/UniversalTransverseMercator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/Character.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/InverseCharacter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/InverseSequence.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/InverseString.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/MultiLineComment.Plo@am__quote@

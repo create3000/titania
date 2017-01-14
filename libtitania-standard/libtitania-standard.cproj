@@ -562,6 +562,7 @@
     <None Include="Titania\InputOutput\Number.h" />
     <None Include="Titania\InputOutput\Hex.h" />
     <None Include="Titania\Math\Algorithms\Bezier.h" />
+    <None Include="Titania\InputOutput\InverseCharacter.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -642,6 +643,7 @@
     <Compile Include="Titania\Math\Geometry\LineSegment2.cpp" />
     <Compile Include="Titania\RegEx\regex_escape.cpp" />
     <Compile Include="Titania\Math\Mesh\Combine.cpp" />
+    <Compile Include="Titania\InputOutput\InverseCharacter.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
