@@ -163,7 +163,7 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	           xmlParser (new xmlpp::DomParser ()),
 	              styles (),
 	       rootTransform (scene -> createNode <X3D::Transform> ()),
-	              groups ({ rootTransform }),
+	          groupNodes ({ rootTransform }),
 	         namedColors (),
 	whiteSpaceCharacters ()
 {
@@ -336,9 +336,9 @@ Parser::useElement (xmlpp::Element* const xmlElement)
 	lengthAttribute (xmlElement -> get_attribute ("width"),  width);
 	lengthAttribute (xmlElement -> get_attribute ("height"), height);
 
-	const auto transform = getTransform (xmlElement, X3D::Vector2d (x, y));
+	const auto transformNode = getTransform (xmlElement, X3D::Vector2d (x, y));
 
-	groups .emplace_back (transform);
+	groupNodes .emplace_back (transformNode);
 
 	try
 	{
@@ -346,7 +346,7 @@ Parser::useElement (xmlpp::Element* const xmlElement)
 	
 		const auto node = scene -> getNamedNode (get_name_from_string (href .fragment ()));
 
-		transform -> children () .emplace_back (node);
+		transformNode -> children () .emplace_back (node);
 	}
 	catch (const X3D::X3DError &)
 	{
@@ -357,10 +357,10 @@ Parser::useElement (xmlpp::Element* const xmlElement)
 			element (dynamic_cast <xmlpp::Element*> (xmlNode));
 	}
 
-	groups .pop_back ();
+	groupNodes .pop_back ();
 
-	if (not transform -> children () .empty ())
-		groups .back () -> children () .emplace_back (transform);
+	if (not transformNode -> children () .empty ())
+		groupNodes .back () -> children () .emplace_back (transformNode);
 }
 
 bool
@@ -378,7 +378,7 @@ Parser::isUsed (xmlpp::Element* const xmlElement)
 	
 		const auto node = scene -> getNamedNode (get_name_from_string (id));
 
-		groups .back () -> children () .emplace_back (node);
+		groupNodes .back () -> children () .emplace_back (node);
 
 		return true;
 	}
@@ -404,21 +404,21 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 
 	// Get transform.	
 
-	const auto transform = getTransform (xmlElement);
+	const auto transformNode = getTransform (xmlElement);
 
 	// Get child elements.
 
-	groups .emplace_back (transform);
+	groupNodes .emplace_back (transformNode);
 
 	elements (xmlElement);
 
-	groups .pop_back ();
+	groupNodes .pop_back ();
 	styles .pop_back ();
 
 	// Add node.
 
-	if (not transform -> children () .empty ())
-		groups .back () -> children () .emplace_back (transform);
+	if (not transformNode -> children () .empty ())
+		groupNodes .back () -> children () .emplace_back (transformNode);
 }
 
 void
@@ -437,30 +437,30 @@ Parser::switchElement (xmlpp::Element* const xmlElement)
 
 	// Create node.
 
-	const auto transform  = getTransform (xmlElement);
-	const auto switchNode = scene -> createNode <X3D::Switch> ();
+	const auto transformNode = getTransform (xmlElement);
+	const auto switchNode    = scene -> createNode <X3D::Switch> ();
 
-	transform -> children () .emplace_back (switchNode);
+	transformNode -> children () .emplace_back (switchNode);
 
 	switchNode -> whichChoice () = 0;
 
 	// Get child elements.
 
-	groups .emplace_back (switchNode);
+	groupNodes .emplace_back (switchNode);
 
 	elements (xmlElement);
 
-	groups .pop_back ();
+	groupNodes .pop_back ();
 	styles .pop_back ();
 
 	// Add node.
 
 	if (not switchNode -> children () .empty ())
 	{
-		if (transform -> getMatrix () == X3D::Matrix4d ())
-			groups .back () -> children () .emplace_back (switchNode);
+		if (transformNode -> getMatrix () == X3D::Matrix4d ())
+			groupNodes .back () -> children () .emplace_back (switchNode);
 		else
-			groups .back () -> children () .emplace_back (transform);
+			groupNodes .back () -> children () .emplace_back (transformNode);
 	}
 }
 
@@ -490,34 +490,34 @@ Parser::aElement (xmlpp::Element* const xmlElement)
 
 	// Create node.
 
-	const auto transform = getTransform (xmlElement);
-	const auto anchor    = scene -> createNode <X3D::Anchor> ();
+	const auto transformNode = getTransform (xmlElement);
+	const auto anchorNode    = scene -> createNode <X3D::Anchor> ();
 
-	transform -> children () .emplace_back (anchor);
+	transformNode -> children () .emplace_back (anchorNode);
 
-	anchor -> description () = title;
-	anchor -> url ()         = { href .str () };
+	anchorNode -> description () = title;
+	anchorNode -> url ()         = { href .str () };
 
 	if (not target .empty ())
-		anchor -> parameter () = { "target=" + target };
+		anchorNode -> parameter () = { "target=" + target };
 
 	// Get child elements.
 
-	groups .emplace_back (anchor);
+	groupNodes .emplace_back (anchorNode);
 
 	elements (xmlElement);
 
-	groups .pop_back ();
+	groupNodes .pop_back ();
 	styles .pop_back ();
 
 	// Add node.
 
-	if (not anchor -> children () .empty ())
+	if (not anchorNode -> children () .empty ())
 	{
-		if (transform -> getMatrix () == X3D::Matrix4d ())
-			groups .back () -> children () .emplace_back (anchor);
+		if (transformNode -> getMatrix () == X3D::Matrix4d ())
+			groupNodes .back () -> children () .emplace_back (anchorNode);
 		else
-			groups .back () -> children () .emplace_back (transform);
+			groupNodes .back () -> children () .emplace_back (transformNode);
 	}
 }
 
@@ -547,44 +547,44 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 	lengthAttribute (xmlElement -> get_attribute ("width"),  width);
 	lengthAttribute (xmlElement -> get_attribute ("height"), height);
 
-	const auto transform = getTransform (xmlElement, X3D::Vector2d (x + width / 2, y + height / 2));
+	const auto transformNode = getTransform (xmlElement, X3D::Vector2d (x + width / 2, y + height / 2));
 
 	// Create nodes.
 
 	if (getFillType () not_eq ColorType::NONE)
 	{
-		const auto shape     = scene -> createNode <X3D::Shape> ();
-		const auto rectangle = scene -> createNode <X3D::Rectangle2D> ();
+		const auto shapeNode     = scene -> createNode <X3D::Shape> ();
+		const auto rectangleNode = scene -> createNode <X3D::Rectangle2D> ();
 
-		transform -> children () .emplace_back (shape);
+		transformNode -> children () .emplace_back (shapeNode);
 
-		shape -> appearance () = getFillAppearance ();
-		shape -> geometry ()   = rectangle;
-		rectangle -> solid ()  = false;
-		rectangle -> size ()   = X3D::Vector2f (width, height);
+		shapeNode -> appearance () = getFillAppearance ();
+		shapeNode -> geometry ()   = rectangleNode;
+		rectangleNode -> solid ()  = false;
+		rectangleNode -> size ()   = X3D::Vector2f (width, height);
 	}
 
 	if (getStrokeType () not_eq ColorType::NONE)
 	{
-		const auto shape     = scene -> createNode <X3D::Shape> ();
-		const auto polyline  = scene -> createNode <X3D::Polyline2D> ();
-		const auto width1_2  = width / 2;
-		const auto height1_2 = height / 2;
+		const auto shapeNode     = scene -> createNode <X3D::Shape> ();
+		const auto polylineNode  = scene -> createNode <X3D::Polyline2D> ();
+		const auto width1_2      = width / 2;
+		const auto height1_2     = height / 2;
 
-		transform -> children () .emplace_back (shape);
+		transformNode -> children () .emplace_back (shapeNode);
 
-		shape -> appearance () = getStrokeAppearance ();
-		shape -> geometry ()   = polyline;
+		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> geometry ()   = polylineNode;
 
-		polyline -> lineSegments () .emplace_back ( width1_2,  height1_2);
-		polyline -> lineSegments () .emplace_back (-width1_2,  height1_2);
-		polyline -> lineSegments () .emplace_back (-width1_2, -height1_2);
-		polyline -> lineSegments () .emplace_back ( width1_2, -height1_2);
-		polyline -> lineSegments () .emplace_back ( width1_2,  height1_2);
+		polylineNode -> lineSegments () .emplace_back ( width1_2,  height1_2);
+		polylineNode -> lineSegments () .emplace_back (-width1_2,  height1_2);
+		polylineNode -> lineSegments () .emplace_back (-width1_2, -height1_2);
+		polylineNode -> lineSegments () .emplace_back ( width1_2, -height1_2);
+		polylineNode -> lineSegments () .emplace_back ( width1_2,  height1_2);
 	}
 
-	if (not transform -> children () .empty ())
-		groups .back () -> children () .emplace_back (transform);
+	if (not transformNode -> children () .empty ())
+		groupNodes .back () -> children () .emplace_back (transformNode);
 
 	styles .pop_back ();
 }
@@ -613,37 +613,37 @@ Parser::circleElement (xmlpp::Element* const xmlElement)
 	lengthAttribute (xmlElement -> get_attribute ("cy"), cy);
 	lengthAttribute (xmlElement -> get_attribute ("r"),  r);
 
-	const auto transform = getTransform (xmlElement, X3D::Vector2d (cx, cy));
+	const auto transformNode = getTransform (xmlElement, X3D::Vector2d (cx, cy));
 
 	// Create nodes.
 
 	if (getFillType () not_eq ColorType::NONE)
 	{
-		const auto shape = scene -> createNode <X3D::Shape> ();
-		const auto disk  = scene -> createNode <X3D::Disk2D> ();
+		const auto shapeNode = scene -> createNode <X3D::Shape> ();
+		const auto diskNode  = scene -> createNode <X3D::Disk2D> ();
 
-		transform -> children () .emplace_back (shape);
+		transformNode -> children () .emplace_back (shapeNode);
 
-		shape -> appearance () = getFillAppearance ();
-		shape -> geometry ()   = disk;
-		disk -> solid ()       = false;
-		disk -> outerRadius () = r;
+		shapeNode -> appearance () = getFillAppearance ();
+		shapeNode -> geometry ()   = diskNode;
+		diskNode -> solid ()       = false;
+		diskNode -> outerRadius () = r;
 	}
 
 	if (getStrokeType () not_eq ColorType::NONE)
 	{
-		const auto shape  = scene -> createNode <X3D::Shape> ();
-		const auto circle = scene -> createNode <X3D::Circle2D> ();
+		const auto shapeNode  = scene -> createNode <X3D::Shape> ();
+		const auto circleNode = scene -> createNode <X3D::Circle2D> ();
 
-		transform -> children () .emplace_back (shape);
+		transformNode -> children () .emplace_back (shapeNode);
 
-		shape -> appearance () = getStrokeAppearance ();
-		shape -> geometry ()   = circle;
-		circle -> radius ()    = r;
+		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> geometry ()   = circleNode;
+		circleNode -> radius ()    = r;
 	}
 
-	if (not transform -> children () .empty ())
-		groups .back () -> children () .emplace_back (transform);
+	if (not transformNode -> children () .empty ())
+		groupNodes .back () -> children () .emplace_back (transformNode);
 
 	styles .pop_back ();
 }
@@ -674,38 +674,38 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 	lengthAttribute (xmlElement -> get_attribute ("rx"), rx);
 	lengthAttribute (xmlElement -> get_attribute ("ry"), ry);
 
-	const auto rmin      = std::min (rx, ry);
-	const auto transform = getTransform (xmlElement, X3D::Vector2d (cx, cy), X3D::Vector2d (rx / rmin, ry / rmin));
+	const auto rmin          = std::min (rx, ry);
+	const auto transformNode = getTransform (xmlElement, X3D::Vector2d (cx, cy), X3D::Vector2d (rx / rmin, ry / rmin));
 
 	// Create nodes.
 
 	if (getFillType () not_eq ColorType::NONE)
 	{
-		const auto shape = scene -> createNode <X3D::Shape> ();
-		const auto disk  = scene -> createNode <X3D::Disk2D> ();
+		const auto shapeNode = scene -> createNode <X3D::Shape> ();
+		const auto diskNode  = scene -> createNode <X3D::Disk2D> ();
 
-		transform -> children () .emplace_back (shape);
+		transformNode -> children () .emplace_back (shapeNode);
 
-		shape -> appearance () = getFillAppearance ();
-		shape -> geometry ()   = disk;
-		disk -> solid ()       = false;
-		disk -> outerRadius () = rmin;
+		shapeNode -> appearance () = getFillAppearance ();
+		shapeNode -> geometry ()   = diskNode;
+		diskNode -> solid ()       = false;
+		diskNode -> outerRadius () = rmin;
 	}
 
 	if (getStrokeType () not_eq ColorType::NONE)
 	{
-		const auto shape  = scene -> createNode <X3D::Shape> ();
-		const auto circle = scene -> createNode <X3D::Circle2D> ();
+		const auto shapeNode  = scene -> createNode <X3D::Shape> ();
+		const auto circleNode = scene -> createNode <X3D::Circle2D> ();
 
-		transform -> children () .emplace_back (shape);
+		transformNode -> children () .emplace_back (shapeNode);
 
-		shape -> appearance () = getStrokeAppearance ();
-		shape -> geometry ()   = circle;
-		circle -> radius ()    = rmin;
+		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> geometry ()   = circleNode;
+		circleNode -> radius ()    = rmin;
 	}
 
-	if (not transform -> children () .empty ())
-		groups .back () -> children () .emplace_back (transform);
+	if (not transformNode -> children () .empty ())
+		groupNodes .back () -> children () .emplace_back (transformNode);
 
 	styles .pop_back ();
 }
@@ -731,7 +731,7 @@ Parser::imageElement (xmlpp::Element* const xmlElement)
 	lengthAttribute (xmlElement -> get_attribute ("width"),  width);
 	lengthAttribute (xmlElement -> get_attribute ("height"), height);
 
-	const auto transform = getTransform (xmlElement, X3D::Vector2d (x + width / 2, y + height / 2));
+	const auto transformNode = getTransform (xmlElement, X3D::Vector2d (x + width / 2, y + height / 2));
 
 	// Get href.
 
@@ -743,24 +743,24 @@ Parser::imageElement (xmlpp::Element* const xmlElement)
 
 	// Create nodes.
 
-	const auto shape      = scene -> createNode <X3D::Shape> ();
-	const auto appearance = scene -> createNode <X3D::Appearance> ();
-	const auto texture    = scene -> createNode <X3D::ImageTexture> ();
-	const auto rectangle  = scene -> createNode <X3D::Rectangle2D> ();
+	const auto shapeNode      = scene -> createNode <X3D::Shape> ();
+	const auto appearanceNode = scene -> createNode <X3D::Appearance> ();
+	const auto textureNode    = scene -> createNode <X3D::ImageTexture> ();
+	const auto rectangleNode  = scene -> createNode <X3D::Rectangle2D> ();
 
-	transform -> children () .emplace_back (shape);
+	transformNode -> children () .emplace_back (shapeNode);
 
-	shape -> appearance ()   = appearance;
-	shape -> geometry ()     = rectangle;
-	appearance -> texture () = texture;
-	texture -> url ()        = { href .str () };
-	rectangle -> solid ()    = false;
-	rectangle -> size ()     = X3D::Vector2f (width, height);
+	shapeNode -> appearance ()   = appearanceNode;
+	shapeNode -> geometry ()     = rectangleNode;
+	appearanceNode -> texture () = textureNode;
+	textureNode -> url ()        = { href .str () };
+	rectangleNode -> solid ()    = false;
+	rectangleNode -> size ()     = X3D::Vector2f (width, height);
 
 	if (not abshref .empty ())
-		texture -> url () .emplace_back (abshref .str ());
+		textureNode -> url () .emplace_back (abshref .str ());
 
-	groups .back () -> children () .emplace_back (transform);
+	groupNodes .back () -> children () .emplace_back (transformNode);
 }
 
 void
@@ -788,14 +788,14 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 
 	// Get transform.	
 
-	const auto transform = getTransform (xmlElement);
+	const auto transformNode = getTransform (xmlElement);
 
 	// Create nodes.
 
-	const auto coordinate = scene -> createNode <X3D::Coordinate> ();
+	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
 
 	for (const auto & point : points)
-		coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+		coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
 
 	if (getFillType () not_eq ColorType::NONE)
 	{
@@ -826,26 +826,26 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 		{
 			// Create geometry.
 	
-			const auto shape    = scene -> createNode <X3D::Shape> ();
-			const auto geometry = scene -> createNode <X3D::IndexedFaceSet> ();
+			const auto shapeNode    = scene -> createNode <X3D::Shape> ();
+			const auto geometryNode = scene -> createNode <X3D::IndexedFaceSet> ();
 	
-			transform -> children () .emplace_back (shape);
+			transformNode -> children () .emplace_back (shapeNode);
 	
-			shape -> appearance () = getFillAppearance ();
-			shape -> geometry ()   = geometry;
-			geometry -> solid ()   = false;
-			geometry -> coord ()   = coordinate;
+			shapeNode -> appearance () = getFillAppearance ();
+			shapeNode -> geometry ()   = geometryNode;
+			geometryNode -> solid ()   = false;
+			geometryNode -> coord ()   = coordinateNode;
 	
 			for (size_t i = 0, size = triangles .size (); i < size; i += 3)
 			{
-				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
-				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
-				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
-				geometry -> coordIndex () .emplace_back (-1);
+				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
+				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
+				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
+				geometryNode -> coordIndex () .emplace_back (-1);
 			}
 
 			for (const auto & point : points)
-				coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+				coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
 		}
 	}
 
@@ -853,25 +853,25 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 	{
 		// Create geometry.
 
-		const auto shape    = scene -> createNode <X3D::Shape> ();
-		const auto geometry = scene -> createNode <X3D::IndexedLineSet> ();
+		const auto shapeNode    = scene -> createNode <X3D::Shape> ();
+		const auto geometryNode = scene -> createNode <X3D::IndexedLineSet> ();
 
-		shape -> appearance () = getStrokeAppearance ();
-		shape -> geometry ()   = geometry;
-		geometry -> coord ()   = coordinate;
+		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> geometry ()   = geometryNode;
+		geometryNode -> coord ()   = coordinateNode;
 
 		size_t index = 0;
 
 		for (size_t i = 0, size = points .size (); i < size; ++ i)
-			geometry -> coordIndex () .emplace_back (index ++);
+			geometryNode -> coordIndex () .emplace_back (index ++);
 
-		geometry -> coordIndex () .emplace_back (-1);
+		geometryNode -> coordIndex () .emplace_back (-1);
 
-		transform -> children () .emplace_back (shape);
+		transformNode -> children () .emplace_back (shapeNode);
 	}
 
-	if (not transform -> children () .empty ())
-		groups .back () -> children () .emplace_back (transform);
+	if (not transformNode -> children () .empty ())
+		groupNodes .back () -> children () .emplace_back (transformNode);
 
 	styles .pop_back ();
 }
@@ -904,14 +904,14 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 
 	// Get transform.	
 
-	const auto transform = getTransform (xmlElement);
+	const auto transformNode = getTransform (xmlElement);
 
 	// Create nodes.
 
-	const auto coordinate = scene -> createNode <X3D::Coordinate> ();
+	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
 
 	for (const auto & point : points)
-		coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+		coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
 
 	if (getFillType () not_eq ColorType::NONE)
 	{
@@ -942,26 +942,26 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 		{
 			// Create geometry.
 	
-			const auto shape    = scene -> createNode <X3D::Shape> ();
-			const auto geometry = scene -> createNode <X3D::IndexedFaceSet> ();
+			const auto shapeNode    = scene -> createNode <X3D::Shape> ();
+			const auto geometryNode = scene -> createNode <X3D::IndexedFaceSet> ();
 	
-			transform -> children () .emplace_back (shape);
+			transformNode -> children () .emplace_back (shapeNode);
 	
-			shape -> appearance () = getFillAppearance ();
-			shape -> geometry ()   = geometry;
-			geometry -> solid ()   = false;
-			geometry -> coord ()   = coordinate;
+			shapeNode -> appearance () = getFillAppearance ();
+			shapeNode -> geometry ()   = geometryNode;
+			geometryNode -> solid ()   = false;
+			geometryNode -> coord ()   = coordinateNode;
 	
 			for (size_t i = 0, size = triangles .size (); i < size; i += 3)
 			{
-				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
-				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
-				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
-				geometry -> coordIndex () .emplace_back (-1);
+				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
+				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
+				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
+				geometryNode -> coordIndex () .emplace_back (-1);
 			}
 
 			for (const auto & point : points)
-				coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+				coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
 		}
 	}
 
@@ -969,25 +969,25 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 	{
 		// Create geometry.
 
-		const auto shape    = scene -> createNode <X3D::Shape> ();
-		const auto geometry = scene -> createNode <X3D::IndexedLineSet> ();
+		const auto shapeNode    = scene -> createNode <X3D::Shape> ();
+		const auto geometryNode = scene -> createNode <X3D::IndexedLineSet> ();
 
-		shape -> appearance () = getStrokeAppearance ();
-		shape -> geometry ()   = geometry;
-		geometry -> coord ()   = coordinate;
+		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> geometry ()   = geometryNode;
+		geometryNode -> coord ()   = coordinateNode;
 
 		size_t index = 0;
 
 		for (size_t i = 0, size = points .size (); i < size; ++ i)
-			geometry -> coordIndex () .emplace_back (index ++);
+			geometryNode -> coordIndex () .emplace_back (index ++);
 
-		geometry -> coordIndex () .emplace_back (-1);
+		geometryNode -> coordIndex () .emplace_back (-1);
 
-		transform -> children () .emplace_back (shape);
+		transformNode -> children () .emplace_back (shapeNode);
 	}
 
-	if (not transform -> children () .empty ())
-		groups .back () -> children () .emplace_back (transform);
+	if (not transformNode -> children () .empty ())
+		groupNodes .back () -> children () .emplace_back (transformNode);
 
 	styles .pop_back ();
 }
@@ -1017,16 +1017,16 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 	// Get transform.	
 
-	const auto transform = getTransform (xmlElement);
+	const auto transformNode = getTransform (xmlElement);
 
 	// Create nodes.
 
-	const auto coordinate = scene -> createNode <X3D::Coordinate> ();
+	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
 
 	for (const auto & contour : contours)
 	{
 		for (const auto & point : contour)
-			coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+			coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
 	}
 
 	if (getFillType () not_eq ColorType::NONE)
@@ -1063,28 +1063,28 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		{
 			// Create geometry.
 	
-			const auto shape    = scene -> createNode <X3D::Shape> ();
-			const auto geometry = scene -> createNode <X3D::IndexedFaceSet> ();
+			const auto shapeNode    = scene -> createNode <X3D::Shape> ();
+			const auto geometryNode = scene -> createNode <X3D::IndexedFaceSet> ();
 	
-			transform -> children () .emplace_back (shape);
+			transformNode -> children () .emplace_back (shapeNode);
 	
-			shape -> appearance () = getFillAppearance ();
-			shape -> geometry ()   = geometry;
-			geometry -> solid ()   = false;
-			geometry -> coord ()   = coordinate;
+			shapeNode -> appearance () = getFillAppearance ();
+			shapeNode -> geometry ()   = geometryNode;
+			geometryNode -> solid ()   = false;
+			geometryNode -> coord ()   = coordinateNode;
 	
 			for (size_t i = 0, size = triangles .size (); i < size; i += 3)
 			{
-				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
-				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
-				geometry -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
-				geometry -> coordIndex () .emplace_back (-1);
+				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 0] .data ()));
+				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
+				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
+				geometryNode -> coordIndex () .emplace_back (-1);
 			}
 
 			for (const auto & contour : contours)
 			{
 				for (const auto & point : contour)
-					coordinate -> point () .emplace_back (point .x (), -point .y (), 0);
+					coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
 			}
 		}
 	}
@@ -1093,12 +1093,12 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 	{
 		// Create geometry.
 
-		const auto shape    = scene -> createNode <X3D::Shape> ();
-		const auto geometry = scene -> createNode <X3D::IndexedLineSet> ();
+		const auto shapeNode    = scene -> createNode <X3D::Shape> ();
+		const auto geometryNode = scene -> createNode <X3D::IndexedLineSet> ();
 
-		shape -> appearance () = getStrokeAppearance ();
-		shape -> geometry ()   = geometry;
-		geometry -> coord ()   = coordinate;
+		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> geometry ()   = geometryNode;
+		geometryNode -> coord ()   = coordinateNode;
 
 		size_t index = 0;
 
@@ -1107,18 +1107,18 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 			if (contour .size () > 1)
 			{
 				for (size_t i = 0, size = contour .size (); i < size; ++ i)
-					geometry -> coordIndex () .emplace_back (index ++);
+					geometryNode -> coordIndex () .emplace_back (index ++);
 	
-				geometry -> coordIndex () .emplace_back (-1);
+				geometryNode -> coordIndex () .emplace_back (-1);
 			}
 		}
 
-		if (not geometry -> coordIndex () .empty ())
-			transform -> children () .emplace_back (shape);
+		if (not geometryNode -> coordIndex () .empty ())
+			transformNode -> children () .emplace_back (shapeNode);
 	}
 
-	if (not transform -> children () .empty ())
-		groups .back () -> children () .emplace_back (transform);
+	if (not transformNode -> children () .empty ())
+		groupNodes .back () -> children () .emplace_back (transformNode);
 
 	styles .pop_back ();
 }
@@ -2203,17 +2203,17 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 
 				static const auto sc = [ ] (const uint32_t c) { return c << 4 | c; };
 
-				float b = sc ((number >>= 0) & 0xf) / float (0xff);
-				float g = sc ((number >>= 4) & 0xf) / float (0xff);
-				float r = sc ((number >>= 4) & 0xf) / float (0xff);
+				const float b = sc ((number >>= 0) & 0xf) / float (0xff);
+				const float g = sc ((number >>= 4) & 0xf) / float (0xff);
+				const float r = sc ((number >>= 4) & 0xf) / float (0xff);
 	
 				color = X3D::Color3f (r, g, b);
 				return true;
 			}
 
-			float b = ((number >>= 0) & 0xff) / float (0xff);
-			float g = ((number >>= 8) & 0xff) / float (0xff);
-			float r = ((number >>= 8) & 0xff) / float (0xff);
+			const float b = ((number >>= 0) & 0xff) / float (0xff);
+			const float g = ((number >>= 8) & 0xff) / float (0xff);
+			const float r = ((number >>= 8) & 0xff) / float (0xff);
 
 			color = X3D::Color3f (r, g, b);
 			return true;
@@ -2329,24 +2329,24 @@ Parser::getTransform (xmlpp::Element* const xmlElement, const X3D::Vector2d & tr
 
 	// Create node.
 
-	const auto transform = scene -> createNode <X3D::Transform> ();
+	const auto transformNode = scene -> createNode <X3D::Transform> ();
 
-	transform -> setMatrix (X3D::Matrix4d (matrix [0] [0], matrix [0] [1], 0, 0,
-	                                       matrix [1] [0], matrix [1] [1], 0, 0,
-	                                       0, 0, 1, 0,
-	                                       matrix [2] [0], -matrix [2] [1], 0, 1));
+	transformNode -> setMatrix (X3D::Matrix4d (matrix [0] [0], matrix [0] [1], 0, 0,
+	                                           matrix [1] [0], matrix [1] [1], 0, 0,
+	                                           0, 0, 1, 0,
+	                                           matrix [2] [0], -matrix [2] [1], 0, 1));
 
 	// Set name.
 
-	idAttribute (xmlElement -> get_attribute ("id"), X3D::SFNode (transform));
+	idAttribute (xmlElement -> get_attribute ("id"), X3D::SFNode (transformNode));
 
-	return transform;
+	return transformNode;
 }
 
 X3D::X3DPtr <X3D::Appearance>
 Parser::getFillAppearance ()
 {
-	const auto appearance = scene -> createNode <X3D::Appearance> ();
+	const auto appearanceNode = scene -> createNode <X3D::Appearance> ();
 
 	switch (getFillType ())
 	{
@@ -2355,11 +2355,11 @@ Parser::getFillAppearance ()
 
 		case ColorType::COLOR:
 		{
-			const auto material = scene -> createNode <X3D::Material> ();
+			const auto materialNode = scene -> createNode <X3D::Material> ();
 		
-			appearance -> material ()   = material;
-			material -> diffuseColor () = getFillColor ();
-			material -> transparency () = 1 - getFillOpacity ();
+			appearanceNode -> material ()   = materialNode;
+			materialNode -> diffuseColor () = getFillColor ();
+			materialNode -> transparency () = 1 - getFillOpacity ();
 
 			break;
 		}
@@ -2369,7 +2369,7 @@ Parser::getFillAppearance ()
 		}
 	}
 
-	return appearance;
+	return appearanceNode;
 }
 
 Parser::ColorType
@@ -2415,14 +2415,14 @@ Parser::getFillOpacity () const
 X3D::X3DPtr <X3D::Appearance>
 Parser::getStrokeAppearance ()
 {
-	const auto appearance = scene -> createNode <X3D::Appearance> ();
-	const auto material   = scene -> createNode <X3D::Material> ();
+	const auto appearanceNode = scene -> createNode <X3D::Appearance> ();
+	const auto materialNode   = scene -> createNode <X3D::Material> ();
 
-	appearance -> material ()    = material;
-	material -> emissiveColor () = getStrokeColor ();
-	material -> transparency ()  = 1 - getStrokeOpacity ();
+	appearanceNode -> material ()    = materialNode;
+	materialNode -> emissiveColor () = getStrokeColor ();
+	materialNode -> transparency ()  = 1 - getStrokeOpacity ();
 
-	return appearance;
+	return appearanceNode;
 }
 
 Parser::ColorType

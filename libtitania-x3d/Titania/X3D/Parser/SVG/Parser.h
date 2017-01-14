@@ -289,7 +289,7 @@ private:
 
 	std::vector <Style>                     styles;
 	X3D::X3DPtr <X3D::Transform>            rootTransform;
-	X3D::X3DPtrArray <X3D::X3DGroupingNode> groups;
+	X3D::X3DPtrArray <X3D::X3DGroupingNode> groupNodes;
 
 	Colors      namedColors;
 	std::string whiteSpaceCharacters;
