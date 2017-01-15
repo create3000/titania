@@ -303,7 +303,7 @@ private:
 	              const X3D::Vector2d & scale = X3D::Vector2d (1, 1));
 
 	X3D::X3DPtr <X3D::Appearance>
-	getFillAppearance (const Style & fillStyle, const X3D::Box2d & bbox = X3D::Box2d ());
+	getFillAppearance (const Style & fillStyle, const X3D::Box2d & bbox);
 
 	X3D::X3DPtr <X3D::Appearance>
 	getStrokeAppearance (const Style & strokeStyle);

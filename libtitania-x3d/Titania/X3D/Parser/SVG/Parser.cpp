@@ -561,6 +561,7 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 
 	const auto size          = X3D::Vector2d (width, height);
 	const auto center        = X3D::Vector2d (x + width / 2, y + height / 2);
+	const auto bbox          = X3D::Box2d (size, center);
 	const auto transformNode = getTransform (xmlElement, center);
 
 	// Create nodes.
@@ -572,7 +573,7 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 
 		transformNode -> children () .emplace_back (shapeNode);
 
-		shapeNode -> appearance () = getFillAppearance (style, X3D::Box2d (size, center));
+		shapeNode -> appearance () = getFillAppearance (style, bbox);
 		shapeNode -> geometry ()   = rectangleNode;
 		rectangleNode -> solid ()  = false;
 		rectangleNode -> size ()   = X3D::Vector2f (size);
@@ -627,8 +628,8 @@ Parser::circleElement (xmlpp::Element* const xmlElement)
 	lengthAttribute (xmlElement -> get_attribute ("cy"), cy);
 	lengthAttribute (xmlElement -> get_attribute ("r"),  r);
 
+	const auto bbox          = X3D::Box2d (X3D::Vector2d (r * 2, r * 2), X3D::Vector2d (cx, cy));
 	const auto transformNode = getTransform (xmlElement, X3D::Vector2d (cx, cy));
-
 	// Create nodes.
 
 	if (style .fillType not_eq ColorType::NONE)
@@ -638,7 +639,7 @@ Parser::circleElement (xmlpp::Element* const xmlElement)
 
 		transformNode -> children () .emplace_back (shapeNode);
 
-		shapeNode -> appearance () = getFillAppearance (style);
+		shapeNode -> appearance () = getFillAppearance (style, bbox);
 		shapeNode -> geometry ()   = diskNode;
 		diskNode -> solid ()       = false;
 		diskNode -> outerRadius () = r;
@@ -689,6 +690,7 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 	lengthAttribute (xmlElement -> get_attribute ("ry"), ry);
 
 	const auto rmin          = std::min (rx, ry);
+	const auto bbox          = X3D::Box2d (X3D::Vector2d (rmin * 2, rmin * 2), X3D::Vector2d (cx, cy));
 	const auto transformNode = getTransform (xmlElement, X3D::Vector2d (cx, cy), X3D::Vector2d (rx / rmin, ry / rmin));
 
 	// Create nodes.
@@ -700,7 +702,7 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 
 		transformNode -> children () .emplace_back (shapeNode);
 
-		shapeNode -> appearance () = getFillAppearance (style);
+		shapeNode -> appearance () = getFillAppearance (style, bbox);
 		shapeNode -> geometry ()   = diskNode;
 		diskNode -> solid ()       = false;
 		diskNode -> outerRadius () = rmin;
@@ -802,6 +804,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 
 	// Get transform.	
 
+	const auto bbox          = X3D::Box2d (points .begin (), points .end (), math::iterator_type ());
 	const auto transformNode = getTransform (xmlElement);
 
 	// Create nodes.
@@ -845,7 +848,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 	
 			transformNode -> children () .emplace_back (shapeNode);
 	
-			shapeNode -> appearance () = getFillAppearance (style);
+			shapeNode -> appearance () = getFillAppearance (style, bbox);
 			shapeNode -> geometry ()   = geometryNode;
 			geometryNode -> solid ()   = false;
 			geometryNode -> coord ()   = coordinateNode;
@@ -918,6 +921,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 
 	// Get transform.	
 
+	const auto bbox          = X3D::Box2d (points .begin (), points .end (), math::iterator_type ());
 	const auto transformNode = getTransform (xmlElement);
 
 	// Create nodes.
@@ -961,7 +965,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 	
 			transformNode -> children () .emplace_back (shapeNode);
 	
-			shapeNode -> appearance () = getFillAppearance (style);
+			shapeNode -> appearance () = getFillAppearance (style, bbox);
 			shapeNode -> geometry ()   = geometryNode;
 			geometryNode -> solid ()   = false;
 			geometryNode -> coord ()   = coordinateNode;
@@ -1029,7 +1033,12 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 	styles .emplace_back (style);
 
-	// Get transform.	
+	// Get transform.
+
+	auto bbox = X3D::Box2d ();
+
+	for (const auto & contour : contours)
+		bbox += X3D::Box2d (contour .begin (), contour .end (), math::iterator_type ());
 
 	const auto transformNode = getTransform (xmlElement);
 
@@ -1082,7 +1091,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 	
 			transformNode -> children () .emplace_back (shapeNode);
 	
-			shapeNode -> appearance () = getFillAppearance (style);
+			shapeNode -> appearance () = getFillAppearance (style, bbox);
 			shapeNode -> geometry ()   = geometryNode;
 			geometryNode -> solid ()   = false;
 			geometryNode -> coord ()   = coordinateNode;
