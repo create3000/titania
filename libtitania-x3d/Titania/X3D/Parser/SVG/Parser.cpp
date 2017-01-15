@@ -60,6 +60,7 @@
 #include "../../Components/Grouping/Switch.h"
 #include "../../Components/Grouping/Transform.h"
 #include "../../Components/Navigation/OrthoViewpoint.h"
+#include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Components/Networking/Anchor.h"
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
@@ -154,7 +155,9 @@ const io::sequence          Grammar::NamedColor ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcd
 
 // Parser
 
-static constexpr size_t BEZIER_STEPS = 9;
+static constexpr size_t BEZIER_STEPS    = 9;
+static constexpr size_t GRADIENT_WIDTH  = 512;
+static constexpr size_t GRADIENT_HEIGHT = 512;
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	      X3D::X3DParser (),
@@ -220,6 +223,14 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 
 	if (not viewBoxAttribute (xmlElement -> get_attribute ("viewBox"), viewBox))
 		viewBox = X3D::Vector4d (0, 0, width, height);
+
+	// Create navigation info.
+
+	const auto navigationInfo = scene -> createNode <X3D::NavigationInfo> ();
+
+	navigationInfo -> type () = { "PLANE_create3000.de", "EXAMINE", "ANY" };
+
+	scene -> getRootNodes () .emplace_back (navigationInfo);
 
 	// Create viewpoint.
 
@@ -1129,10 +1140,113 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 bool
 Parser::paintURL (const basic::uri & url, const X3D::Box2d & bbox, const Cairo::RefPtr <Cairo::Context> & context)
 {
-	__LOG__ << url << std::endl;
-	__LOG__ << bbox << std::endl;
+	using ElementsFunction = std::function <void (Parser*, xmlpp::Element* const, const X3D::Box2d &, const Cairo::RefPtr <Cairo::Context> &)>;
 
-	return false;
+	static const std::map <std::string, ElementsFunction> elementsIndex = {
+		std::make_pair ("linearGradient", std::mem_fn (&Parser::paintLinearGradientElement)),
+	};
+
+	try
+	{
+		const auto xpath    = "//*[@id='" + url .fragment () + "']";
+		const auto xmlNodes = xmlParser -> get_document () -> get_root_node () -> find (xpath);
+
+		if (xmlNodes .empty ())
+			return false;
+
+		const auto xmlElement = dynamic_cast <xmlpp::Element*> (xmlNodes .back ());
+
+		if (not xmlElement)
+			return false;
+
+		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement, bbox, context);
+		return true;
+	}
+	catch (const std::out_of_range &)
+	{
+		return false;
+	}
+}
+
+void
+Parser::paintLinearGradientElement (xmlpp::Element* const xmlElement, const X3D::Box2d & bbox, const Cairo::RefPtr <Cairo::Context> & context)
+{
+	Gradient gradient;
+
+	linearGradientElement (xmlElement, gradient);
+
+	const auto bboxExtents = bbox .extents ();
+	const auto bboxSize    = bbox .size ();
+	const auto p1          = X3D::Vector2d (gradient .x1, gradient .y1) * gradient .gradientTransform - bboxExtents .first;
+	const auto p2          = X3D::Vector2d (gradient .x2, gradient .y2) * gradient .gradientTransform - bboxExtents .first;
+
+	const auto linearGradient = Cairo::LinearGradient::create (p1 .x () * GRADIENT_WIDTH  / bboxSize .x (),
+	                                                           p1 .y () * GRADIENT_HEIGHT / bboxSize .y (),
+	                                                           p2 .x () * GRADIENT_WIDTH  / bboxSize .x (),
+	                                                           p2 .y () * GRADIENT_HEIGHT / bboxSize .y ());
+
+	for (const auto & stop : gradient .stops)
+		linearGradient -> add_color_stop_rgba (stop .first, stop .second .r (), stop .second .g (), stop .second .b (), stop .second .a ());
+
+	context -> set_source (linearGradient);
+	context -> rectangle (0, 0, GRADIENT_WIDTH, GRADIENT_HEIGHT);
+	context -> fill ();
+}
+
+void
+Parser::linearGradientElement (xmlpp::Element* const xmlElement, Gradient & gradient)
+{
+	if (not xmlElement)
+		return;
+
+	// xlink::href attribute
+
+	basic::uri href;
+
+	if (urlAttribute (xmlElement -> get_attribute ("href", "xlink"), href))
+	{
+		const auto xpath    = "//*[@id='" + href .fragment () + "']";
+		const auto xmlNodes = xmlParser -> get_document () -> get_root_node () -> find (xpath);
+
+		for (const auto & xmlNode : xmlNodes)
+			linearGradientElement (dynamic_cast <xmlpp::Element*> (xmlNode), gradient);
+	}
+
+	// Attributes
+
+	lengthAttribute    (xmlElement -> get_attribute ("x1"),                gradient .x1);
+	lengthAttribute    (xmlElement -> get_attribute ("y1"),                gradient .y1);
+	lengthAttribute    (xmlElement -> get_attribute ("x2"),                gradient .x2);
+	lengthAttribute    (xmlElement -> get_attribute ("y2"),                gradient .y2);
+	stringAttribute    (xmlElement -> get_attribute ("gradientUnits"),     gradient .gradientUnits);
+	transformAttribute (xmlElement -> get_attribute ("gradientTransform"), gradient .gradientTransform);
+
+	// Stops
+
+	for (const auto & xmlNode : xmlElement -> get_children ())
+		gradientChild (dynamic_cast <xmlpp::Element*> (xmlNode), gradient);
+}
+
+void
+Parser::gradientChild (xmlpp::Element* const xmlElement, Gradient & gradient)
+{
+	if (not xmlElement)
+		return;
+
+	if (xmlElement -> get_name () == "stop")
+		return stopElement (xmlElement, gradient);
+}
+
+void
+Parser::stopElement (xmlpp::Element* const xmlElement, Gradient & gradient)
+{
+	double offset = 0;
+	Style  style;
+
+	percentAttribute (xmlElement -> get_attribute ("offset"), offset);
+	styleAttributes  (xmlElement, style);
+
+	gradient .stops .emplace (offset, Color4f (style .stopColor .r (), style .stopColor .g (), style .stopColor .b (), style .stopOpacity));
 }
 
 void
@@ -1420,8 +1534,32 @@ Parser::lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
 		// Parse unit
 
 		if (Grammar::mm (vstream))
-			value = value / (1000 * math::pixel <double>);
+			value /= 1000 * math::pixel <double>;
 
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::percentAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
+{
+	if (not xmlAttribute)
+		return false;
+
+	std::istringstream vstream (xmlAttribute -> get_value ());
+
+	vstream .imbue (std::locale::classic ());
+
+	if (Grammar::DoubleValue (vstream, value))
+	{
+		// Parse unit
+
+		if (Grammar::PercentSign (vstream))
+			value /= 100;
+
+		value = math::clamp (value, 0.0, 1.0);
 		return true;
 	}
 
@@ -1955,6 +2093,8 @@ Parser::styleAttributes (xmlpp::Element* const xmlElement, Style & style)
 		std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityAttribute)),
 		std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthAttribute)),
 		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityAttribute)),
+		std::make_pair ("stop-color",     std::mem_fn (&Parser::stopColorAttribute)),
+		std::make_pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityAttribute)),
 	};
 
 	for (const auto & pair : stylesIndex)
@@ -1987,6 +2127,8 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & style)
 		std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityAttribute)),
 		std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthAttribute)),
 		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityAttribute)),
+		std::make_pair ("stop-color",     std::mem_fn (&Parser::stopColorAttribute)),
+		std::make_pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityAttribute)),
 	};
 
 	if (not xmlAttribute)
@@ -2089,7 +2231,7 @@ Parser::fillOpacityAttribute (const std::string & value, Style & style)
 
 	if (Grammar::DoubleValue (vstream, fillOpacity))
 	{
-		style .fillOpacity = fillOpacity;
+		style .fillOpacity = math::clamp (fillOpacity, 0.0, 1.0);
 		return;
 	}
 
@@ -2159,7 +2301,7 @@ Parser::strokeOpacityAttribute (const std::string & value, Style & style)
 
 	if (Grammar::DoubleValue (vstream, strokeOpacity))
 	{
-		style .strokeOpacity = strokeOpacity;
+		style .strokeOpacity = math::clamp (strokeOpacity, 0.0, 1.0);
 		return;
 	}
 
@@ -2211,13 +2353,51 @@ Parser::opacityAttribute (const std::string & value, Style & style)
 
 	if (Grammar::DoubleValue (vstream, opacity))
 	{
-		style .opacity = opacity * styles .back () .opacity;
+		style .opacity = math::clamp (opacity, 0.0, 1.0) * styles .back () .opacity;
 		return;
 	}
 
 	if (value == "transparent")
 	{
 		style .opacity = 0;
+		return;
+	}
+}
+
+void
+Parser::stopColorAttribute (const std::string & value, Style & style)
+{
+	std::istringstream vstream (value);
+
+	vstream .imbue (std::locale::classic ());
+
+	X3D::Color3f color;
+
+	if (colorValue (vstream, color))
+	{
+		style .stopColor = color;
+		return;
+	}
+}
+
+void
+Parser::stopOpacityAttribute (const std::string & value, Style & style)
+{
+	std::istringstream vstream (value);
+
+	vstream .imbue (std::locale::classic ());
+
+	double stopOpacity;
+
+	if (Grammar::DoubleValue (vstream, stopOpacity))
+	{
+		style .stopOpacity = math::clamp (stopOpacity, 0.0, 1.0);
+		return;
+	}
+
+	if (value == "transparent")
+	{
+		style .stopOpacity = 0;
 		return;
 	}
 }
@@ -2405,7 +2585,7 @@ Parser::getFillAppearance (const Style & style, const X3D::Box2d & bbox)
 		{
 			// Create context
 		
-			const auto surface     = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, 512, 512);
+			const auto surface     = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, GRADIENT_WIDTH, GRADIENT_HEIGHT);
 			const auto context     = Cairo::Context::create (surface);
 			const auto textureNode = scene -> createNode <X3D::PixelTexture> ();
 
@@ -2419,24 +2599,32 @@ Parser::getFillAppearance (const Style & style, const X3D::Box2d & bbox)
 				auto & image = textureNode -> image ();
 				auto & array = image .getArray ();
 
-				image .setWidth (surface -> get_width ());
-				image .setHeight (surface -> get_height ());
+				const auto width  = surface -> get_width ();
+				const auto height = surface -> get_height ();
+
+				image .setWidth (width);
+				image .setHeight (height);
 				image .setComponents (4);
 
 				uint8_t* first = surface -> get_data ();
-				uint8_t* last  = first + 4 * surface -> get_width () * surface -> get_height ();
+				uint8_t* last  = first + 4 * width * height;
 				size_t   index = 0;
 
 				while (first not_eq last)
 				{
 					uint32_t pixel = 0;
 
-					pixel |= (*first ++) << 24;
-					pixel |= (*first ++) << 16;
 					pixel |= (*first ++) << 8;
+					pixel |= (*first ++) << 16;
+					pixel |= (*first ++) << 24;
 					pixel |= (*first ++) << 0;
 
-					array [index ++] = pixel;
+					const auto column = index % width;
+					const auto row    = index / width;
+
+					array [(height - 1 - row) * width + column] = pixel;
+
+					++ index;
 				}
 			}
 

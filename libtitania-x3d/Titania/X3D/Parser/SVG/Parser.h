@@ -98,6 +98,27 @@ private:
 	using Contour  = std::vector <X3D::Vector2d>;
 	using Contours = std::vector <Contour>;
 
+	struct Gradient
+	{
+		Gradient () :
+			               x1 (0),
+			               y1 (0),
+			               x2 (0),
+			               y2 (0),
+			    gradientUnits (),
+			gradientTransform (),
+			            stops ()
+			{ }
+
+		double                          x1;
+		double                          y1;
+		double                          x2;
+		double                          y2;
+		std::string                     gradientUnits;
+		X3D::Matrix3d                   gradientTransform;
+		std::map <double, X3D::Color4f> stops;
+	};
+
 	enum class ColorType
 	{
 		NONE,
@@ -118,7 +139,9 @@ private:
 			    strokeURL (),
 			strokeOpacity (1),
 			  strokeWidth (1),
-			      opacity (1)
+			      opacity (1),
+			    stopColor (),
+			  stopOpacity (1)
 			{ }
 
 		std::string  display;
@@ -132,6 +155,8 @@ private:
 		double       strokeOpacity;
 		double       strokeWidth;
 		double       opacity;
+		Color3f      stopColor;
+		double       stopOpacity;
 
 	};
 
@@ -195,6 +220,18 @@ private:
 	paintURL (const basic::uri & url, const X3D::Box2d & bbox, const Cairo::RefPtr <Cairo::Context> & context);
 
 	void
+	paintLinearGradientElement (xmlpp::Element* const xmlElement, const X3D::Box2d & bbox, const Cairo::RefPtr <Cairo::Context> & context);
+
+	void
+	linearGradientElement (xmlpp::Element* const xmlElement, Gradient & linearGradient);
+
+	void
+	gradientChild (xmlpp::Element* const xmlElement, Gradient & gradient);
+	
+	void
+	stopElement (xmlpp::Element* const xmlElement, Gradient & gradient);
+
+	void
 	idAttribute (xmlpp::Attribute* const attribute, const X3D::SFNode & node);
 
 	bool
@@ -205,6 +242,9 @@ private:
 
 	bool
 	lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
+
+	bool
+	percentAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
 
 	bool
 	stringAttribute (xmlpp::Attribute* const xmlAttribute, std::string & value);
@@ -219,31 +259,37 @@ private:
 	dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours);
 
 	void
-	styleAttributes (xmlpp::Element* const xmlAttribute, Style & styleObject);
+	styleAttributes (xmlpp::Element* const xmlElement, Style & style);
 
 	bool
 	styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & value);
 
 	void
-	displayAttribute (const std::string & value, Style & styleObject);
+	displayAttribute (const std::string & value, Style & style);
 	
 	void
-	fillAttribute (const std::string & value, Style & styleObject);
+	fillAttribute (const std::string & value, Style & style);
 	
 	void
-	fillOpacityAttribute (const std::string & value, Style & styleObject);
+	fillOpacityAttribute (const std::string & value, Style & style);
 	
 	void
-	strokeAttribute (const std::string & value, Style & styleObject);
+	strokeAttribute (const std::string & value, Style & style);
 	
 	void
-	strokeOpacityAttribute (const std::string & value, Style & styleObject);
+	strokeOpacityAttribute (const std::string & value, Style & style);
 	
 	void
-	strokeWidthAttribute (const std::string & value, Style & styleObject);
+	strokeWidthAttribute (const std::string & value, Style & style);
 	
 	void
-	opacityAttribute (const std::string & value, Style & styleObject);
+	opacityAttribute (const std::string & value, Style & style);
+	
+	void
+	stopColorAttribute (const std::string & value, Style & style);
+	
+	void
+	stopOpacityAttribute (const std::string & value, Style & style);
 
 	bool
 	colorValue (std::istream & istream, X3D::Color3f & color);
