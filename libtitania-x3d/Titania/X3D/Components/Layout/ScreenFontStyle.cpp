@@ -185,11 +185,11 @@ ScreenText::build ()
 
 	// Create context
 
-	auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32,
-	                                            getText () -> textBounds () .getX (),
-	                                            getText () -> textBounds () .getY ());
+	const auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32,
+	                                                  getText () -> textBounds () .getX (),
+	                                                  getText () -> textBounds () .getY ());
 
-	auto context = Cairo::Context::create (surface);
+	const auto context = Cairo::Context::create (surface);
 
 	configure (context);
 	context -> set_source_rgb (1, 1, 1);
@@ -320,8 +320,8 @@ ScreenText::build ()
 	// Set RGB to white, but leave alpha channel for better antialiasing results.
 
 	{
-		unsigned char* first = surface -> get_data ();
-		unsigned char* last  = first + 4 * surface -> get_width () * surface -> get_height ();
+		uint8_t* first = surface -> get_data ();
+		uint8_t* last  = first + 4 * surface -> get_width () * surface -> get_height ();
 
 		while (first not_eq last)
 		{

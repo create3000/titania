@@ -2,6 +2,7 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -19,6 +20,14 @@
    sodipodi:docname="Test.svg">
   <defs
      id="defs3359">
+    <linearGradient
+       id="linearGradient3380"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#73874b;stop-opacity:1;"
+         offset="0"
+         id="stop3382" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient10480">
@@ -69,10 +78,10 @@
      inkscape:window-height="480"
      id="namedview3357"
      showgrid="false"
-     inkscape:zoom="0.64000001"
-     inkscape:cx="484.04871"
-     inkscape:cy="508.17033"
-     inkscape:current-layer="layer1"
+     inkscape:zoom="2.5600001"
+     inkscape:cx="108.56677"
+     inkscape:cy="690.41764"
+     inkscape:current-layer="g3321"
      units="mm"
      inkscape:snap-page="true"
      inkscape:snap-bbox="true"
@@ -107,10 +116,10 @@
        id="g3324"
        style="opacity:0.723;stroke:#000000;stroke-opacity:1">
       <g
-         style="opacity:0.733;fill:#5f0e0e;fill-opacity:0.77948719;stroke:#000000;stroke-opacity:1"
+         style="opacity:0.733;fill:#00ffff;fill-opacity:0.77948719;stroke:#000000;stroke-opacity:1"
          id="g3321">
         <rect
-           style="opacity:0.811;fill:#5f0e0e;fill-opacity:0.77948719;stroke:#000000;stroke-width:1.29999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           style="opacity:0.811;fill-opacity:0.77948719;stroke:#000000;stroke-width:1.29999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
            id="rect3220"
            width="110.87387"
            height="82.6856"
@@ -297,12 +306,12 @@
     <image
        sodipodi:absref="/home/holger/Projekte/Titania/Library/Tests/3rd Party/SVG/tree24.jpg"
        xlink:href="tree24.jpg"
-       width="106.87502"
-       height="71.250015"
-       preserveAspectRatio="none"
-       id="image7546"
+       y="758.81226"
        x="377.24881"
-       y="758.81226" />
+       id="image7546"
+       preserveAspectRatio="none"
+       height="71.250015"
+       width="106.87502" />
     <g
        transform="translate(200,930) scale(0.2,0.2)"
        id="g7919">

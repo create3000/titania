@@ -67,6 +67,7 @@
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
 #include "../../Components/Texturing/ImageTexture.h"
+#include "../../Components/Texturing/PixelTexture.h"
 #include "../Filter.h"
 
 #include <Titania/Math/Algorithms/Bezier.h>
@@ -161,7 +162,7 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	                 uri (uri),
 	             istream (istream),
 	           xmlParser (new xmlpp::DomParser ()),
-	              styles (),
+	              styles (1),
 	       rootTransform (scene -> createNode <X3D::Transform> ()),
 	          groupNodes ({ rootTransform }),
 	         namedColors (),
@@ -547,24 +548,26 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 	lengthAttribute (xmlElement -> get_attribute ("width"),  width);
 	lengthAttribute (xmlElement -> get_attribute ("height"), height);
 
-	const auto transformNode = getTransform (xmlElement, X3D::Vector2d (x + width / 2, y + height / 2));
+	const auto size          = X3D::Vector2d (width, height);
+	const auto center        = X3D::Vector2d (x + width / 2, y + height / 2);
+	const auto transformNode = getTransform (xmlElement, center);
 
 	// Create nodes.
 
-	if (getFillType () not_eq ColorType::NONE)
+	if (style .fillType not_eq ColorType::NONE)
 	{
 		const auto shapeNode     = scene -> createNode <X3D::Shape> ();
 		const auto rectangleNode = scene -> createNode <X3D::Rectangle2D> ();
 
 		transformNode -> children () .emplace_back (shapeNode);
 
-		shapeNode -> appearance () = getFillAppearance ();
+		shapeNode -> appearance () = getFillAppearance (style, X3D::Box2d (size, center));
 		shapeNode -> geometry ()   = rectangleNode;
 		rectangleNode -> solid ()  = false;
-		rectangleNode -> size ()   = X3D::Vector2f (width, height);
+		rectangleNode -> size ()   = X3D::Vector2f (size);
 	}
 
-	if (getStrokeType () not_eq ColorType::NONE)
+	if (style .strokeType not_eq ColorType::NONE)
 	{
 		const auto shapeNode     = scene -> createNode <X3D::Shape> ();
 		const auto polylineNode  = scene -> createNode <X3D::Polyline2D> ();
@@ -573,7 +576,7 @@ Parser::rectangleElement (xmlpp::Element* const xmlElement)
 
 		transformNode -> children () .emplace_back (shapeNode);
 
-		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> appearance () = getStrokeAppearance (style);
 		shapeNode -> geometry ()   = polylineNode;
 
 		polylineNode -> lineSegments () .emplace_back ( width1_2,  height1_2);
@@ -617,27 +620,27 @@ Parser::circleElement (xmlpp::Element* const xmlElement)
 
 	// Create nodes.
 
-	if (getFillType () not_eq ColorType::NONE)
+	if (style .fillType not_eq ColorType::NONE)
 	{
 		const auto shapeNode = scene -> createNode <X3D::Shape> ();
 		const auto diskNode  = scene -> createNode <X3D::Disk2D> ();
 
 		transformNode -> children () .emplace_back (shapeNode);
 
-		shapeNode -> appearance () = getFillAppearance ();
+		shapeNode -> appearance () = getFillAppearance (style);
 		shapeNode -> geometry ()   = diskNode;
 		diskNode -> solid ()       = false;
 		diskNode -> outerRadius () = r;
 	}
 
-	if (getStrokeType () not_eq ColorType::NONE)
+	if (style .strokeType not_eq ColorType::NONE)
 	{
 		const auto shapeNode  = scene -> createNode <X3D::Shape> ();
 		const auto circleNode = scene -> createNode <X3D::Circle2D> ();
 
 		transformNode -> children () .emplace_back (shapeNode);
 
-		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> appearance () = getStrokeAppearance (style);
 		shapeNode -> geometry ()   = circleNode;
 		circleNode -> radius ()    = r;
 	}
@@ -679,27 +682,27 @@ Parser::ellipseElement (xmlpp::Element* const xmlElement)
 
 	// Create nodes.
 
-	if (getFillType () not_eq ColorType::NONE)
+	if (style .fillType not_eq ColorType::NONE)
 	{
 		const auto shapeNode = scene -> createNode <X3D::Shape> ();
 		const auto diskNode  = scene -> createNode <X3D::Disk2D> ();
 
 		transformNode -> children () .emplace_back (shapeNode);
 
-		shapeNode -> appearance () = getFillAppearance ();
+		shapeNode -> appearance () = getFillAppearance (style);
 		shapeNode -> geometry ()   = diskNode;
 		diskNode -> solid ()       = false;
 		diskNode -> outerRadius () = rmin;
 	}
 
-	if (getStrokeType () not_eq ColorType::NONE)
+	if (style .strokeType not_eq ColorType::NONE)
 	{
 		const auto shapeNode  = scene -> createNode <X3D::Shape> ();
 		const auto circleNode = scene -> createNode <X3D::Circle2D> ();
 
 		transformNode -> children () .emplace_back (shapeNode);
 
-		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> appearance () = getStrokeAppearance (style);
 		shapeNode -> geometry ()   = circleNode;
 		circleNode -> radius ()    = rmin;
 	}
@@ -797,7 +800,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 	for (const auto & point : points)
 		coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
 
-	if (getFillType () not_eq ColorType::NONE)
+	if (style .fillType not_eq ColorType::NONE)
 	{
 		// Tesselate contours
 
@@ -831,7 +834,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 	
 			transformNode -> children () .emplace_back (shapeNode);
 	
-			shapeNode -> appearance () = getFillAppearance ();
+			shapeNode -> appearance () = getFillAppearance (style);
 			shapeNode -> geometry ()   = geometryNode;
 			geometryNode -> solid ()   = false;
 			geometryNode -> coord ()   = coordinateNode;
@@ -849,14 +852,14 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 		}
 	}
 
-	if (getStrokeType () not_eq ColorType::NONE and points .size () > 1)
+	if (style .strokeType not_eq ColorType::NONE and points .size () > 1)
 	{
 		// Create geometry.
 
 		const auto shapeNode    = scene -> createNode <X3D::Shape> ();
 		const auto geometryNode = scene -> createNode <X3D::IndexedLineSet> ();
 
-		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> appearance () = getStrokeAppearance (style);
 		shapeNode -> geometry ()   = geometryNode;
 		geometryNode -> coord ()   = coordinateNode;
 
@@ -913,7 +916,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 	for (const auto & point : points)
 		coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
 
-	if (getFillType () not_eq ColorType::NONE)
+	if (style .fillType not_eq ColorType::NONE)
 	{
 		// Tesselate contours
 
@@ -947,7 +950,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 	
 			transformNode -> children () .emplace_back (shapeNode);
 	
-			shapeNode -> appearance () = getFillAppearance ();
+			shapeNode -> appearance () = getFillAppearance (style);
 			shapeNode -> geometry ()   = geometryNode;
 			geometryNode -> solid ()   = false;
 			geometryNode -> coord ()   = coordinateNode;
@@ -965,14 +968,14 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 		}
 	}
 
-	if (getStrokeType () not_eq ColorType::NONE and points .size () > 1)
+	if (style .strokeType not_eq ColorType::NONE and points .size () > 1)
 	{
 		// Create geometry.
 
 		const auto shapeNode    = scene -> createNode <X3D::Shape> ();
 		const auto geometryNode = scene -> createNode <X3D::IndexedLineSet> ();
 
-		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> appearance () = getStrokeAppearance (style);
 		shapeNode -> geometry ()   = geometryNode;
 		geometryNode -> coord ()   = coordinateNode;
 
@@ -1029,7 +1032,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 			coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
 	}
 
-	if (getFillType () not_eq ColorType::NONE)
+	if (style .fillType not_eq ColorType::NONE)
 	{
 		// Tesselate contours
 
@@ -1068,7 +1071,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 	
 			transformNode -> children () .emplace_back (shapeNode);
 	
-			shapeNode -> appearance () = getFillAppearance ();
+			shapeNode -> appearance () = getFillAppearance (style);
 			shapeNode -> geometry ()   = geometryNode;
 			geometryNode -> solid ()   = false;
 			geometryNode -> coord ()   = coordinateNode;
@@ -1089,14 +1092,14 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		}
 	}
 
-	if (getStrokeType () not_eq ColorType::NONE)
+	if (style .strokeType not_eq ColorType::NONE)
 	{
 		// Create geometry.
 
 		const auto shapeNode    = scene -> createNode <X3D::Shape> ();
 		const auto geometryNode = scene -> createNode <X3D::IndexedLineSet> ();
 
-		shapeNode -> appearance () = getStrokeAppearance ();
+		shapeNode -> appearance () = getStrokeAppearance (style);
 		shapeNode -> geometry ()   = geometryNode;
 		geometryNode -> coord ()   = coordinateNode;
 
@@ -1121,6 +1124,15 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		groupNodes .back () -> children () .emplace_back (transformNode);
 
 	styles .pop_back ();
+}
+
+bool
+Parser::paintURL (const basic::uri & url, const X3D::Box2d & bbox, const Cairo::RefPtr <Cairo::Context> & context)
+{
+	__LOG__ << url << std::endl;
+	__LOG__ << bbox << std::endl;
+
+	return false;
 }
 
 void
@@ -1930,7 +1942,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 }
 
 void
-Parser::styleAttributes (xmlpp::Element* const xmlElement, Style & styleObject)
+Parser::styleAttributes (xmlpp::Element* const xmlElement, Style & style)
 {
 	using StyleFunction = std::function <void (Parser*, const std::string &, Style &)>;
 
@@ -1945,23 +1957,24 @@ Parser::styleAttributes (xmlpp::Element* const xmlElement, Style & styleObject)
 		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityAttribute)),
 	};
 
-	for (const auto & attribute : xmlElement -> get_attributes ())
+	for (const auto & pair : stylesIndex)
 	{
-		try
-		{
-			stylesIndex .at (attribute -> get_name ()) (this, basic::trim (attribute -> get_value ()), styleObject);
-		}
-		catch (const std::out_of_range &)
-		{ }
+		const auto attribute = xmlElement -> get_attribute (pair .first);
+
+		if (attribute)
+			pair .second (this, basic::trim (attribute -> get_value ()), style);
+
+		else
+			pair .second (this, "default", style);
 	}
 
 	// Style attribute has higher precedence.
 
-	styleAttribute (xmlElement -> get_attribute ("style"), styleObject);
+	styleAttribute (xmlElement -> get_attribute ("style"), style);
 }
 
 bool
-Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObject)
+Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & style)
 {
 	using StyleFunction = std::function <void (Parser*, const std::string &, Style &)>;
 
@@ -1979,11 +1992,9 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 	if (not xmlAttribute)
 		return false;
 
-	const std::string styles = xmlAttribute -> get_value ();
-
 	auto values = std::vector <std::string> ();
 
-	basic::split (std::back_inserter (values), styles, ";");
+	basic::split (std::back_inserter (values), xmlAttribute -> get_value (), ";");
 
 	for (const auto & value : values)
 	{
@@ -1999,7 +2010,7 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 
 		try
 		{
-			stylesIndex .at (pair [0]) (this, pair [1], styleObject);
+			stylesIndex .at (pair [0]) (this, pair [1], style);
 		}
 		catch (const std::out_of_range &)
 		{ }
@@ -2009,13 +2020,22 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & styleObjec
 }
 
 void
-Parser::displayAttribute (const std::string & value, Style & styleObject)
+Parser::displayAttribute (const std::string & value, Style & style)
 {
-	styleObject .display = value;
+	if (value == "default")
+		return;
+
+	if (value == "inherit")
+	{
+		style .display = styles .back () .display;
+		return;
+	}
+
+	style .display = value;
 }
 
 void
-Parser::fillAttribute (const std::string & value, Style & styleObject)
+Parser::fillAttribute (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2025,8 +2045,8 @@ Parser::fillAttribute (const std::string & value, Style & styleObject)
 
 	if (colorValue (vstream, color))
 	{
-		styleObject .fillType  = ColorType::COLOR;
-		styleObject .fillColor = color;
+		style .fillType  = ColorType::COLOR;
+		style .fillColor = color;
 		return;
 	}
 
@@ -2034,19 +2054,32 @@ Parser::fillAttribute (const std::string & value, Style & styleObject)
 
 	if (urlValue (vstream, url))
 	{
-		styleObject .fillType = ColorType::URL;
-		styleObject .fillURL  = url;
+		style .fillType = ColorType::URL;
+		style .fillURL  = url;
 		return;
 	}
 
-	if (value == "inherit")
+	if (value == "transparent")
 	{
+		style .fillType = ColorType::NONE;
 		return;
 	}
+
+	if (value == "none")
+	{
+		style .fillType = ColorType::NONE;
+		return;
+	}
+
+	// inherit
+
+	style .fillType  = styles .back () .fillType;
+	style .fillColor = styles .back () .fillColor;
+	style .fillURL   = styles .back () .fillURL;
 }
 
 void
-Parser::fillOpacityAttribute (const std::string & value, Style & styleObject)
+Parser::fillOpacityAttribute (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2056,24 +2089,23 @@ Parser::fillOpacityAttribute (const std::string & value, Style & styleObject)
 
 	if (Grammar::DoubleValue (vstream, fillOpacity))
 	{
-		styleObject .fillOpacity = fillOpacity;
+		style .fillOpacity = fillOpacity;
 		return;
 	}
 
 	if (value == "transparent")
 	{
-		styleObject .fillOpacity = 0;
+		style .fillOpacity = 0;
 		return;
 	}
 
-	if (value == "inherit")
-	{
-		return;
-	}
+	// inherit
+
+	style .fillOpacity = styles .back () .fillOpacity;
 }
 
 void
-Parser::strokeAttribute (const std::string & value, Style & styleObject)
+Parser::strokeAttribute (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2083,8 +2115,8 @@ Parser::strokeAttribute (const std::string & value, Style & styleObject)
 
 	if (colorValue (vstream, color))
 	{
-		styleObject .strokeType  = ColorType::COLOR;
-		styleObject .strokeColor = color;
+		style .strokeType  = ColorType::COLOR;
+		style .strokeColor = color;
 		return;
 	}
 
@@ -2092,19 +2124,32 @@ Parser::strokeAttribute (const std::string & value, Style & styleObject)
 
 	if (urlValue (vstream, url))
 	{
-		styleObject .strokeType = ColorType::URL;
-		styleObject .strokeURL  = url;
+		style .strokeType = ColorType::URL;
+		style .strokeURL  = url;
 		return;
 	}
 
-	if (value == "inherit")
+	if (value == "transparent")
 	{
+		style .strokeType = ColorType::NONE;
 		return;
 	}
+
+	if (value == "none")
+	{
+		style .strokeType = ColorType::NONE;
+		return;
+	}
+
+	// inherit
+
+	style .strokeType  = styles .back () .strokeType;
+	style .strokeColor = styles .back () .strokeColor;
+	style .strokeURL   = styles .back () .strokeURL;
 }
 
 void
-Parser::strokeOpacityAttribute (const std::string & value, Style & styleObject)
+Parser::strokeOpacityAttribute (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2114,24 +2159,23 @@ Parser::strokeOpacityAttribute (const std::string & value, Style & styleObject)
 
 	if (Grammar::DoubleValue (vstream, strokeOpacity))
 	{
-		styleObject .strokeOpacity = strokeOpacity;
+		style .strokeOpacity = strokeOpacity;
 		return;
 	}
 
 	if (value == "transparent")
 	{
-		styleObject .strokeOpacity = 0;
+		style .strokeOpacity = 0;
 		return;
 	}
 
-	if (value == "inherit")
-	{
-		return;
-	}
+	// inherit
+
+	style .strokeOpacity = styles .back () .strokeOpacity;
 }
 
 void
-Parser::strokeWidthAttribute (const std::string & value, Style & styleObject)
+Parser::strokeWidthAttribute (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2141,24 +2185,23 @@ Parser::strokeWidthAttribute (const std::string & value, Style & styleObject)
 
 	if (Grammar::DoubleValue (vstream, strokeWidth))
 	{
-		styleObject .strokeWidth = strokeWidth;
+		style .strokeWidth = strokeWidth;
 		return;
 	}
 
 	if (value == "none")
 	{
-		styleObject .strokeWidth = 0;
+		style .strokeWidth = 0;
 		return;
 	}
 
-	if (value == "inherit")
-	{
-		return;
-	}
+	// inherit
+
+	style .strokeWidth = styles .back () .strokeWidth;
 }
 
 void
-Parser::opacityAttribute (const std::string & value, Style & styleObject)
+Parser::opacityAttribute (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2168,18 +2211,13 @@ Parser::opacityAttribute (const std::string & value, Style & styleObject)
 
 	if (Grammar::DoubleValue (vstream, opacity))
 	{
-		styleObject .opacity = opacity;
+		style .opacity = opacity * styles .back () .opacity;
 		return;
 	}
 
 	if (value == "transparent")
 	{
-		styleObject .opacity = 0;
-		return;
-	}
-
-	if (value == "inherit")
-	{
+		style .opacity = 0;
 		return;
 	}
 }
@@ -2344,11 +2382,11 @@ Parser::getTransform (xmlpp::Element* const xmlElement, const X3D::Vector2d & tr
 }
 
 X3D::X3DPtr <X3D::Appearance>
-Parser::getFillAppearance ()
+Parser::getFillAppearance (const Style & style, const X3D::Box2d & bbox)
 {
 	const auto appearanceNode = scene -> createNode <X3D::Appearance> ();
 
-	switch (getFillType ())
+	switch (style .fillType)
 	{
 		case ColorType::NONE:
 			return nullptr;
@@ -2358,13 +2396,51 @@ Parser::getFillAppearance ()
 			const auto materialNode = scene -> createNode <X3D::Material> ();
 		
 			appearanceNode -> material ()   = materialNode;
-			materialNode -> diffuseColor () = getFillColor ();
-			materialNode -> transparency () = 1 - getFillOpacity ();
+			materialNode -> diffuseColor () = style .fillColor;
+			materialNode -> transparency () = 1 - style .fillOpacity * style .opacity;
 
 			break;
 		}
 		case ColorType::URL:
 		{
+			// Create context
+		
+			const auto surface     = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, 512, 512);
+			const auto context     = Cairo::Context::create (surface);
+			const auto textureNode = scene -> createNode <X3D::PixelTexture> ();
+
+			// Get image from url.
+
+			if (not paintURL (style .fillURL, bbox, context))
+				return nullptr;
+
+			// Copy pixels
+			{
+				auto & image = textureNode -> image ();
+				auto & array = image .getArray ();
+
+				image .setWidth (surface -> get_width ());
+				image .setHeight (surface -> get_height ());
+				image .setComponents (4);
+
+				uint8_t* first = surface -> get_data ();
+				uint8_t* last  = first + 4 * surface -> get_width () * surface -> get_height ();
+				size_t   index = 0;
+
+				while (first not_eq last)
+				{
+					uint32_t pixel = 0;
+
+					pixel |= (*first ++) << 24;
+					pixel |= (*first ++) << 16;
+					pixel |= (*first ++) << 8;
+					pixel |= (*first ++) << 0;
+
+					array [index ++] = pixel;
+				}
+			}
+
+			appearanceNode -> texture () = textureNode;
 			break;
 		}
 	}
@@ -2372,109 +2448,17 @@ Parser::getFillAppearance ()
 	return appearanceNode;
 }
 
-Parser::ColorType
-Parser::getFillType () const
-{
-	for (const auto & style : styles)
-	{
-		if (style .fillType not_eq ColorType::NONE)
-			return style .fillType;
-	}
-
-	return ColorType::NONE;
-}
-
-X3D::Color3f
-Parser::getFillColor () const
-{
-	for (const auto & style : styles)
-	{
-		if (style .fillType not_eq ColorType::NONE)
-			return style .fillColor;
-	}
-
-	return X3D::Color3f ();
-}
-
-double
-Parser::getFillOpacity () const
-{
-	double opacity = 1;
-
-	for (const auto & style : styles)
-	{
-		opacity *= style .opacity;
-
-		if (style .fillType not_eq ColorType::NONE)
-			return style .fillOpacity * opacity;
-	}
-
-	return 0;
-}
-
 X3D::X3DPtr <X3D::Appearance>
-Parser::getStrokeAppearance ()
+Parser::getStrokeAppearance (const Style & style)
 {
 	const auto appearanceNode = scene -> createNode <X3D::Appearance> ();
 	const auto materialNode   = scene -> createNode <X3D::Material> ();
 
 	appearanceNode -> material ()    = materialNode;
-	materialNode -> emissiveColor () = getStrokeColor ();
-	materialNode -> transparency ()  = 1 - getStrokeOpacity ();
+	materialNode -> emissiveColor () = style .strokeColor;
+	materialNode -> transparency ()  = 1 - style .strokeOpacity * style .opacity;
 
 	return appearanceNode;
-}
-
-Parser::ColorType
-Parser::getStrokeType () const
-{
-	for (const auto & style : styles)
-	{
-		if (style .strokeType not_eq ColorType::NONE)
-			return style .strokeType;
-	}
-
-	return ColorType::NONE;
-}
-
-X3D::Color3f
-Parser::getStrokeColor () const
-{
-	for (const auto & style : styles)
-	{
-		if (style .strokeType not_eq ColorType::NONE)
-			return style .strokeColor;
-	}
-
-	return X3D::Color3f ();
-}
-
-double
-Parser::getStrokeOpacity () const
-{
-	double opacity = 1;
-
-	for (const auto & style : styles)
-	{
-		opacity *= style .opacity;
-
-		if (style .strokeType not_eq ColorType::NONE)
-			return style .strokeOpacity * opacity;
-	}
-
-	return 0;
-}
-
-double
-Parser::getStrokeWidth () const
-{
-	for (const auto & style : styles)
-	{
-		if (style .strokeType not_eq ColorType::NONE)
-			return style .strokeWidth;
-	}
-
-	return 1;
 }
 
 Parser::~Parser ()

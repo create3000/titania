@@ -53,10 +53,11 @@
 
 #include "../../Execution/X3DScene.h"
 #include "../../Parser/X3DParser.h"
+#include "../../Types/Geometry.h"
 
 #include "Colors.h"
 
-#include <memory>
+#include <cairomm/cairomm.h>
 
 namespace xmlpp {
 
@@ -108,11 +109,11 @@ private:
 
 		Style () :
 			      display ("inline"),
-			     fillType (ColorType::NONE),
+			     fillType (ColorType::COLOR),
 			    fillColor (),
 			      fillURL (),
 			  fillOpacity (1),
-			   strokeType (ColorType::NONE),
+			   strokeType (ColorType::COLOR),
 			  strokeColor (),
 			    strokeURL (),
 			strokeOpacity (1),
@@ -189,6 +190,9 @@ private:
 
 	void
 	pathElement (xmlpp::Element* const xmlElement);
+	
+	bool
+	paintURL (const basic::uri & url, const X3D::Box2d & bbox, const Cairo::RefPtr <Cairo::Context> & context);
 
 	void
 	idAttribute (xmlpp::Attribute* const attribute, const X3D::SFNode & node);
@@ -253,31 +257,10 @@ private:
 	              const X3D::Vector2d & scale = X3D::Vector2d (1, 1));
 
 	X3D::X3DPtr <X3D::Appearance>
-	getFillAppearance ();
-
-	ColorType
-	getFillType () const;
-
-	X3D::Color3f
-	getFillColor () const;
-	
-	double
-	getFillOpacity () const;
+	getFillAppearance (const Style & fillStyle, const X3D::Box2d & bbox = X3D::Box2d ());
 
 	X3D::X3DPtr <X3D::Appearance>
-	getStrokeAppearance ();
-
-	ColorType
-	getStrokeType () const;
-
-	X3D::Color3f
-	getStrokeColor () const;
-	
-	double
-	getStrokeOpacity () const;
-	
-	double
-	getStrokeWidth () const;
+	getStrokeAppearance (const Style & strokeStyle);
 
 	///  @name Members
 
