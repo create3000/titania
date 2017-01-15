@@ -53,6 +53,8 @@
 
 #include "../Texturing/X3DTexture2DNode.h"
 
+#include <cairomm/cairomm.h>
+
 namespace titania {
 namespace X3D {
 
@@ -118,6 +120,11 @@ public:
 	setImage (const X3D::X3DPtr <X3D::X3DTexture2DNode> &)
 	throw (Error <INVALID_NODE>,
           Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
+	void
+	setImage (const Cairo::RefPtr <Cairo::ImageSurface> &)
+	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 

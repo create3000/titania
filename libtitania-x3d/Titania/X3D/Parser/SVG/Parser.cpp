@@ -2594,39 +2594,7 @@ Parser::getFillAppearance (const Style & style, const X3D::Box2d & bbox)
 			if (not paintURL (style .fillURL, bbox, context))
 				return nullptr;
 
-			// Copy pixels
-			{
-				auto & image = textureNode -> image ();
-				auto & array = image .getArray ();
-
-				const auto width  = surface -> get_width ();
-				const auto height = surface -> get_height ();
-
-				image .setWidth (width);
-				image .setHeight (height);
-				image .setComponents (4);
-
-				uint8_t* first = surface -> get_data ();
-				uint8_t* last  = first + 4 * width * height;
-				size_t   index = 0;
-
-				while (first not_eq last)
-				{
-					uint32_t pixel = 0;
-
-					pixel |= (*first ++) << 8;
-					pixel |= (*first ++) << 16;
-					pixel |= (*first ++) << 24;
-					pixel |= (*first ++) << 0;
-
-					const auto column = index % width;
-					const auto row    = index / width;
-
-					array [(height - 1 - row) * width + column] = pixel;
-
-					++ index;
-				}
-			}
+			textureNode -> setImage (surface);
 
 			appearanceNode -> texture () = textureNode;
 			break;

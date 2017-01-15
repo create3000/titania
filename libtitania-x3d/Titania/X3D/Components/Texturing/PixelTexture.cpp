@@ -398,5 +398,50 @@ throw (Error <INVALID_NODE>,
 	image () = SFImage (width, height, components, std::move (array));
 }
 
+void
+PixelTexture::setImage (const Cairo::RefPtr <Cairo::ImageSurface> & surface)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	auto & array = image () .getArray ();
+
+	const auto width  = surface -> get_width ();
+	const auto height = surface -> get_height ();
+
+	image () .setWidth (width);
+	image () .setHeight (height);
+	image () .setComponents (4);
+
+	uint8_t* first = surface -> get_data ();
+	uint8_t* last  = first + 4 * width * height;
+	size_t   index = 0;
+
+	while (first not_eq last)
+	{
+		auto r = (*first ++) / 255.0;
+		auto g = (*first ++) / 255.0;
+		auto b = (*first ++) / 255.0;
+		auto a = (*first ++) / 255.0;
+
+		r /= a;
+		g /= a;
+		b /= a;
+
+		uint32_t pixel = 0;
+
+		pixel |= uint32_t (r * 255) << 8;
+		pixel |= uint32_t (g * 255) << 16;
+		pixel |= uint32_t (b * 255) << 24;
+		pixel |= uint32_t (a * 255) << 0;
+
+		const auto column = index % width;
+		const auto row    = index / width;
+
+		array [(height - 1 - row) * width + column] = pixel;
+
+		++ index;
+	}
+}
+
 } // X3D
 } // titania

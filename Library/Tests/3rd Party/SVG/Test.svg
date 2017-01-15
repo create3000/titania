@@ -78,9 +78,9 @@
      inkscape:window-height="480"
      id="namedview3357"
      showgrid="false"
-     inkscape:zoom="0.64000003"
-     inkscape:cx="474.47901"
-     inkscape:cy="135.44951"
+     inkscape:zoom="2.5600001"
+     inkscape:cx="545.24854"
+     inkscape:cy="136.84024"
      inkscape:current-layer="layer1"
      units="mm"
      inkscape:snap-page="true"
@@ -306,12 +306,12 @@
     <image
        sodipodi:absref="/home/holger/Projekte/Titania/Library/Tests/3rd Party/SVG/tree24.jpg"
        xlink:href="tree24.jpg"
-       width="106.87502"
-       height="71.250015"
-       preserveAspectRatio="none"
-       id="image7546"
+       y="758.81226"
        x="377.24881"
-       y="758.81226" />
+       id="image7546"
+       preserveAspectRatio="none"
+       height="71.250015"
+       width="106.87502" />
     <g
        transform="translate(200,930) scale(0.2,0.2)"
        id="g7919">
