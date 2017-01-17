@@ -268,7 +268,13 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 	rootTransform -> translation () = translation * scale;
 	rootTransform -> scale ()       = scale;
 
-	scene -> updateNamedNode (get_name_from_uri (uri), X3D::SFNode (rootTransform));
+	try
+	{
+		scene -> updateNamedNode (get_name_from_uri (uri), X3D::SFNode (rootTransform));
+	}
+	catch (const X3D::X3DError &)
+	{ }
+
 	scene -> getRootNodes () .emplace_back (rootTransform);
 
 	// Parse elements.
@@ -1244,6 +1250,7 @@ Parser::paintURL (const basic::uri & url,
 
 	static const std::map <std::string, ElementsFunction> elementsIndex = {
 		std::make_pair ("linearGradient", std::mem_fn (&Parser::paintLinearGradientElement)),
+		std::make_pair ("radialGradient", std::mem_fn (&Parser::paintRadialGradientElement)),
 	};
 
 	try
@@ -1299,11 +1306,29 @@ Parser::paintLinearGradientElement (xmlpp::Element* const xmlElement,
 }
 
 void
+Parser::gradientElement (xmlpp::Element* const xmlElement, Gradient & gradient)
+{
+	using ElementsFunction = std::function <void (Parser*, xmlpp::Element* const, Gradient &)>;
+
+	static const std::map <std::string, ElementsFunction> elementsIndex = {
+		std::make_pair ("linearGradient", std::mem_fn (&Parser::linearGradientElement)),
+		std::make_pair ("radialGradient", std::mem_fn (&Parser::radialGradientElement)),
+	};
+
+	try
+	{
+		if (not xmlElement)
+			return;
+
+		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement, gradient);
+	}
+	catch (const std::out_of_range &)
+	{ }
+}
+
+void
 Parser::linearGradientElement (xmlpp::Element* const xmlElement, Gradient & gradient)
 {
-	if (not xmlElement)
-		return;
-
 	// xlink::href attribute
 
 	basic::uri href;
@@ -1314,7 +1339,7 @@ Parser::linearGradientElement (xmlpp::Element* const xmlElement, Gradient & grad
 		const auto xmlNodes = xmlParser -> get_document () -> get_root_node () -> find (xpath);
 
 		for (const auto & xmlNode : xmlNodes)
-			linearGradientElement (dynamic_cast <xmlpp::Element*> (xmlNode), gradient);
+			gradientElement (dynamic_cast <xmlpp::Element*> (xmlNode), gradient);
 	}
 
 	// Attributes
@@ -1325,6 +1350,71 @@ Parser::linearGradientElement (xmlpp::Element* const xmlElement, Gradient & grad
 	lengthAttribute    (xmlElement -> get_attribute ("y2"),                gradient .y2);
 	stringAttribute    (xmlElement -> get_attribute ("gradientUnits"),     gradient .gradientUnits);
 	transformAttribute (xmlElement -> get_attribute ("gradientTransform"), gradient .gradientTransform);
+
+	// Stops
+
+	for (const auto & xmlNode : xmlElement -> get_children ())
+		gradientChild (dynamic_cast <xmlpp::Element*> (xmlNode), gradient);
+}
+
+void
+Parser::paintRadialGradientElement (xmlpp::Element* const xmlElement,
+                                    const X3D::Box2d & bbox,
+                                    const Cairo::RefPtr <Cairo::Context> & context)
+{
+	Gradient gradient;
+
+	radialGradientElement (xmlElement, gradient);
+
+	const auto radialGradient = Cairo::RadialGradient::create (gradient .fx, gradient .fy, 0, gradient .cx, gradient .cy, gradient .r);
+
+	for (const auto & stop : gradient .stops)
+		radialGradient -> add_color_stop_rgba (stop .first, stop .second .r (), stop .second .g (), stop .second .b (), stop .second .a ());
+
+	X3D::Matrix3d m;
+
+	m .scale     (X3D::Vector2d (GRADIENT_WIDTH / 2.0, GRADIENT_HEIGHT / 2.0));
+	m .translate (X3D::Vector2d (1, 1));
+	m .mult_left (inverse (bbox .matrix ()));
+	m .mult_left (gradient .gradientTransform);
+
+	const auto matrix = Cairo::Matrix (m [0] [0], m [1] [0], m [0] [1], m [1] [1], m [2] [0], m [2] [1]);
+
+	context -> set_matrix (matrix);
+	context -> set_source (radialGradient);
+	context -> set_identity_matrix ();
+	context -> rectangle (0, 0, GRADIENT_WIDTH, GRADIENT_HEIGHT);
+	context -> fill ();
+}
+
+void
+Parser::radialGradientElement (xmlpp::Element* const xmlElement, Gradient & gradient)
+{
+	// xlink::href attribute
+
+	basic::uri href;
+
+	if (urlAttribute (xmlElement -> get_attribute ("href", "xlink"), href))
+	{
+		const auto xpath    = "//*[@id='" + href .fragment () + "']";
+		const auto xmlNodes = xmlParser -> get_document () -> get_root_node () -> find (xpath);
+
+		for (const auto & xmlNode : xmlNodes)
+			gradientElement (dynamic_cast <xmlpp::Element*> (xmlNode), gradient);
+	}
+
+	// Attributes
+
+	lengthAttribute    (xmlElement -> get_attribute ("cx"),                gradient .cx);
+	lengthAttribute    (xmlElement -> get_attribute ("cy"),                gradient .cy);
+	lengthAttribute    (xmlElement -> get_attribute ("x2"),                gradient .x2);
+	lengthAttribute    (xmlElement -> get_attribute ("y2"),                gradient .y2);
+	lengthAttribute    (xmlElement -> get_attribute ("r"),                 gradient .r);
+	lengthAttribute    (xmlElement -> get_attribute ("fx"),                gradient .fx);
+	lengthAttribute    (xmlElement -> get_attribute ("fy"),                gradient .fy);
+	stringAttribute    (xmlElement -> get_attribute ("gradientUnits"),     gradient .gradientUnits);
+	transformAttribute (xmlElement -> get_attribute ("gradientTransform"), gradient .gradientTransform);
+	stringAttribute    (xmlElement -> get_attribute ("spreadMethod"),      gradient .spreadMethod);
 
 	// Stops
 
@@ -2725,6 +2815,13 @@ Parser::getFillAppearance (const Style & style, X3D::Box2d bbox)
 
 			textureNode -> setImage (surface);
 	      textureNode -> textureProperties () = texturePropertiesNode;
+
+			try
+			{
+				scene -> updateNamedNode (get_name_from_string (style .fillURL), X3D::SFNode (textureNode));
+			}
+			catch (const X3D::X3DError &)
+			{ }
 
 			appearanceNode -> texture () = textureNode;
 			break;

@@ -105,17 +105,31 @@ private:
 			               y1 (0),
 			               x2 (0),
 			               y2 (0),
+		                  cx (0),
+		                  cy (0),
+		                   r (0),
+		                  fx (0),
+		                  fy (0),
 			    gradientUnits (),
 			gradientTransform (),
+		        spreadMethod (),
 			            stops ()
 			{ }
 
-		double                          x1;
-		double                          y1;
-		double                          x2;
-		double                          y2;
+		double x1;
+		double y1;
+		double x2;
+		double y2;
+
+		double cx;
+		double cy;
+		double r;
+		double fx;
+		double fy;
+
 		std::string                     gradientUnits;
 		X3D::Matrix3d                   gradientTransform;
+		std::string                     spreadMethod;
 		std::map <double, X3D::Color4f> stops;
 	};
 
@@ -227,7 +241,18 @@ private:
 	                            const Cairo::RefPtr <Cairo::Context> & context);
 
 	void
-	linearGradientElement (xmlpp::Element* const xmlElement, Gradient & linearGradient);
+	gradientElement (xmlpp::Element* const xmlElement, Gradient & gradient);
+
+	void
+	linearGradientElement (xmlpp::Element* const xmlElement, Gradient & gradient);
+
+	void
+	paintRadialGradientElement (xmlpp::Element* const xmlElement,
+	                            const X3D::Box2d & bbox,
+	                            const Cairo::RefPtr <Cairo::Context> & context);
+
+	void
+	radialGradientElement (xmlpp::Element* const xmlElement, Gradient & gradient);
 
 	void
 	gradientChild (xmlpp::Element* const xmlElement, Gradient & gradient);
