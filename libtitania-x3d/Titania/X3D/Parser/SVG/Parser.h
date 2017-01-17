@@ -217,10 +217,14 @@ private:
 	pathElement (xmlpp::Element* const xmlElement);
 	
 	bool
-	paintURL (const basic::uri & url, const X3D::Box2d & bbox, const Cairo::RefPtr <Cairo::Context> & context);
+	paintURL (const basic::uri & url,
+	          const X3D::Box2d & bbox,
+	          const Cairo::RefPtr <Cairo::Context> & context);
 
 	void
-	paintLinearGradientElement (xmlpp::Element* const xmlElement, const X3D::Box2d & bbox, const Cairo::RefPtr <Cairo::Context> & context);
+	paintLinearGradientElement (xmlpp::Element* const xmlElement,
+	                            const X3D::Box2d & bbox,
+	                            const Cairo::RefPtr <Cairo::Context> & context);
 
 	void
 	linearGradientElement (xmlpp::Element* const xmlElement, Gradient & linearGradient);
@@ -303,10 +307,13 @@ private:
 	              const X3D::Vector2d & scale = X3D::Vector2d (1, 1));
 
 	X3D::X3DPtr <X3D::Appearance>
-	getFillAppearance (const Style & fillStyle, const X3D::Box2d & bbox);
+	getFillAppearance (const Style & fillStyle, X3D::Box2d bbox);
 
 	X3D::X3DPtr <X3D::Appearance>
 	getStrokeAppearance (const Style & strokeStyle);
+
+//	Matrix3d
+//	getTransformationMatrix () const;
 
 	///  @name Members
 

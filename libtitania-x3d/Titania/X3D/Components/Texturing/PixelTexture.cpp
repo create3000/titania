@@ -418,10 +418,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	while (first not_eq last)
 	{
-		auto r = (*first ++) / 255.0;
-		auto g = (*first ++) / 255.0;
-		auto b = (*first ++) / 255.0;
-		auto a = (*first ++) / 255.0;
+		auto r = (*first ++) / 255.0f;
+		auto g = (*first ++) / 255.0f;
+		auto b = (*first ++) / 255.0f;
+		auto a = (*first ++) / 255.0f;
 
 		r /= a;
 		g /= a;
