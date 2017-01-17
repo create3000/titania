@@ -412,9 +412,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	image () .setHeight (height);
 	image () .setComponents (4);
 
-	uint8_t* first = surface -> get_data ();
-	uint8_t* last  = first + 4 * width * height;
-	size_t   index = 0;
+	bool     transparent = false;
+	uint8_t* first       = surface -> get_data ();
+	uint8_t* last        = first + 4 * width * height;
+	size_t   index       = 0;
 
 	while (first not_eq last)
 	{
@@ -426,6 +427,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		r /= a;
 		g /= a;
 		b /= a;
+		
+		transparent |= a not_eq 1;
 
 		uint32_t pixel = 0;
 
@@ -440,6 +443,14 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		array [(height - 1 - row) * width + column] = pixel;
 
 		++ index;
+	}
+
+	if (not transparent)
+	{
+		image () .setComponents (3);
+
+		for (auto & pixel : array)
+			pixel = pixel .getValue () >> 8;
 	}
 }
 

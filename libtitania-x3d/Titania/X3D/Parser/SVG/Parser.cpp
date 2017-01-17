@@ -70,6 +70,7 @@
 #include "../../Components/Texturing/ImageTexture.h"
 #include "../../Components/Texturing/PixelTexture.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
+#include "../../Components/Texturing/TextureProperties.h"
 #include "../Filter.h"
 
 #include <Titania/Math/Algorithms/Bezier.h>
@@ -161,20 +162,29 @@ static constexpr size_t GRADIENT_WIDTH  = 256;
 static constexpr size_t GRADIENT_HEIGHT = 256;
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
-	      X3D::X3DParser (),
-	               scene (scene),
-	                 uri (uri),
-	             istream (istream),
-	           xmlParser (new xmlpp::DomParser ()),
-	              styles (1),
-	       rootTransform (scene -> createNode <X3D::Transform> ()),
-	          groupNodes ({ rootTransform }),
-	         namedColors (),
-	whiteSpaceCharacters ()
+	       X3D::X3DParser (),
+	                scene (scene),
+	                  uri (uri),
+	              istream (istream),
+	            xmlParser (new xmlpp::DomParser ()),
+	               styles (1),
+	        rootTransform (scene -> createNode <X3D::Transform> ()),
+	           groupNodes ({ rootTransform }),
+	texturePropertiesNode (scene -> createNode <X3D::TextureProperties> ()),
+	          namedColors (),
+	 whiteSpaceCharacters ()
 {
 	xmlParser -> set_throw_messages (true);
 	xmlParser -> set_validate (false);
 	xmlParser -> set_include_default_attributes (true);
+
+	texturePropertiesNode -> generateMipMaps ()     = true;
+	texturePropertiesNode -> minificationFilter ()  = "DEFAULT";
+	texturePropertiesNode -> magnificationFilter () = "DEFAULT";
+	texturePropertiesNode -> boundaryModeS ()       = "CLAMP_TO_EDGE";
+	texturePropertiesNode -> boundaryModeT ()       = "CLAMP_TO_EDGE";
+	texturePropertiesNode -> boundaryModeR ()       = "CLAMP_TO_EDGE";
+	texturePropertiesNode -> textureCompression ()  = "DEFAULT";
 }
 
 void
@@ -777,14 +787,15 @@ Parser::imageElement (xmlpp::Element* const xmlElement)
 	const auto textureNode    = scene -> createNode <X3D::ImageTexture> ();
 	const auto rectangleNode  = scene -> createNode <X3D::Rectangle2D> ();
 
-	shapeNode -> appearance ()   = appearanceNode;
-	shapeNode -> geometry ()     = rectangleNode;
-	appearanceNode -> texture () = textureNode;
-	textureNode -> url ()        = { href .str () };
-	textureNode -> repeatS ()    = false;
-	textureNode -> repeatT ()    = false;
-	rectangleNode -> solid ()    = false;
-	rectangleNode -> size ()     = X3D::Vector2f (width, height);
+	shapeNode -> appearance ()          = appearanceNode;
+	shapeNode -> geometry ()            = rectangleNode;
+	appearanceNode -> texture ()        = textureNode;
+	textureNode -> url ()               = { href .str () };
+	textureNode -> repeatS ()           = false;
+	textureNode -> repeatT ()           = false;
+	textureNode -> textureProperties () = texturePropertiesNode;
+	rectangleNode -> solid ()           = false;
+	rectangleNode -> size ()            = X3D::Vector2f (width, height);
 
 	if (not abshref .empty ())
 		textureNode -> url () .emplace_back (abshref .str ());
@@ -2702,9 +2713,10 @@ Parser::getFillAppearance (const Style & style, X3D::Box2d bbox)
 			const auto context     = Cairo::Context::create (surface);
 			const auto textureNode = scene -> createNode <X3D::PixelTexture> ();
 
-			// Get image from url.
 			try
 			{
+				// Get image from url.
+
 				if (not paintURL (style .fillURL, bbox, context))
 					return nullptr;
 			}
@@ -2714,8 +2726,9 @@ Parser::getFillAppearance (const Style & style, X3D::Box2d bbox)
 			}
 
 			textureNode -> setImage (surface);
-			textureNode -> repeatS () = false;
-			textureNode -> repeatT () = false;
+			textureNode -> repeatS ()           = false;
+			textureNode -> repeatT ()           = false;
+	      textureNode -> textureProperties () = texturePropertiesNode;
 
 			appearanceNode -> texture () = textureNode;
 			break;

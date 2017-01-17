@@ -326,6 +326,7 @@ private:
 	std::vector <Style>                     styles;
 	X3D::X3DPtr <X3D::Transform>            rootTransform;
 	X3D::X3DPtrArray <X3D::X3DGroupingNode> groupNodes;
+	X3D::X3DPtr <X3D::TextureProperties>    texturePropertiesNode;
 
 	Colors      namedColors;
 	std::string whiteSpaceCharacters;
