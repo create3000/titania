@@ -791,8 +791,6 @@ Parser::imageElement (xmlpp::Element* const xmlElement)
 	shapeNode -> geometry ()            = rectangleNode;
 	appearanceNode -> texture ()        = textureNode;
 	textureNode -> url ()               = { href .str () };
-	textureNode -> repeatS ()           = false;
-	textureNode -> repeatT ()           = false;
 	textureNode -> textureProperties () = texturePropertiesNode;
 	rectangleNode -> solid ()           = false;
 	rectangleNode -> size ()            = X3D::Vector2f (width, height);
@@ -2726,8 +2724,6 @@ Parser::getFillAppearance (const Style & style, X3D::Box2d bbox)
 			}
 
 			textureNode -> setImage (surface);
-			textureNode -> repeatS ()           = false;
-			textureNode -> repeatT ()           = false;
 	      textureNode -> textureProperties () = texturePropertiesNode;
 
 			appearanceNode -> texture () = textureNode;
