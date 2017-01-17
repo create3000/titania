@@ -563,6 +563,7 @@
     <None Include="Titania\InputOutput\Hex.h" />
     <None Include="Titania\Math\Algorithms\Bezier.h" />
     <None Include="Titania\InputOutput\InverseCharacter.h" />
+    <None Include="Titania\String\tolower.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

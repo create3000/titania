@@ -48,11 +48,22 @@
  *
  ******************************************************************************/
 
-#include "String/join.h"
-#include "String/split.h"
-#include "String/trim.h"
-#include "String/strfsize.h"
-#include "String/sprintf.h"
-#include "String/naturally_compare.h"
-#include "String/to_string.h"
-#include "String/tolower.h"
+#ifndef __TITANIA_STRING_TOLOWER_H__
+#define __TITANIA_STRING_TOLOWER_H__
+
+namespace titania {
+namespace basic {
+
+template <class CharT, class Traits = std::char_traits <CharT>> 
+std::basic_string <CharT> &
+tolower (std::basic_string <CharT> & string, const std::locale & locale)
+{
+	std::transform (string .begin (), string .end (), string .begin (), [&locale] (const char c) { return std::tolower (c, locale); });
+
+	return string;
+}
+
+} // basic
+} // titania
+
+#endif

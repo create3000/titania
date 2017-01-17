@@ -50,6 +50,8 @@
 
 #include "SFColor.h"
 
+#include <Titania/String/tolower.h>
+
 namespace titania {
 namespace X3D {
 
@@ -221,9 +223,7 @@ throw (Error <INVALID_X3D>,
 		{
 			try
 			{
-				std::transform (colorName .begin (), colorName .end (), colorName .begin (), [ ] (const char c) { return std::tolower (c, std::locale::classic ()); });
-	
-				setValue (Grammar::NamedColors () .at (colorName));
+				setValue (Grammar::NamedColors () .at (basic::tolower (colorName, std::locale::classic ())));
 				return;
 			}
 			catch (const std::out_of_range &)

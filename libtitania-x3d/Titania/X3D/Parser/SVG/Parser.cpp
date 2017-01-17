@@ -2700,9 +2700,7 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 	{
 		try
 		{
-			std::transform (colorName .begin (), colorName .end (), colorName .begin (), [ ] (const char c) { return std::tolower (c, std::locale::classic ()); });
-
-			color = namedColors .at (colorName);
+			color = namedColors .at (basic::tolower (colorName, std::locale::classic ()));
 			return true;
 		}
 		catch (const std::out_of_range &)

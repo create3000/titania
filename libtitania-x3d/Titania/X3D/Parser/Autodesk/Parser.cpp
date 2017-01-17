@@ -71,6 +71,7 @@ extern "C" {
 }
 
 #include <Titania/OS/file_exists.h>
+#include <Titania/String/tolower.h>
 
 #include <fstream>
 #include <unistd.h>
@@ -239,9 +240,7 @@ Parser::texture (const Lib3dsTextureMap & textureMap)
 
 	if (not os::file_exists (URL .path ()))
 	{
-		std::transform (basename .begin (), basename .end (), basename .begin (), [ ] (const char c) { return std::tolower (c, std::locale::classic () ); });
-
-		URL = uri .transform (basename);
+		URL = uri .transform (basic::tolower (basename, std::locale::classic ()));
 		
 		// We do not check further if the file does exists, the user can then check and refine the model.
 	}
