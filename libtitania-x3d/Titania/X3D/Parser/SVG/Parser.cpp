@@ -76,9 +76,6 @@
 #include <Titania/Math/Algorithms/Bezier.h>
 #include <Titania/Math/Mesh/Tessellator.h>
 #include <Titania/InputOutput.h>
-#include <Titania/InputOutput/Hex.h>
-#include <Titania/InputOutput/InverseCharacter.h>
-#include <Titania/InputOutput/Number.h>
 #include <Titania/Math/Constants.h>
 #include <Titania/String.h>
 

@@ -148,63 +148,104 @@ throw (Error <INVALID_X3D>,
 
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-	uint32_t value;
-
-	if (Grammar::Hex (istream, value))
 	{
-		const value_type r = (value >> 24 & 0xff) / 255.0f;
-		const value_type g = (value >> 16 & 0xff) / 255.0f;
-		const value_type b = (value >> 8 & 0xff) / 255.0f;
-		const value_type a = (value & 0xff) / 255.0f;
+		uint32_t value;
 
-		setValue (Color4f (r, g, b, a));
-		return;
-	}
-
-	value_type r, g, b, a;
-
-	if (Grammar::Number <value_type> (istream, r))
-	{
-		Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-		if (Grammar::Number <value_type> (istream, g))
+		if (Grammar::Hex (istream, value))
 		{
-			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-			if (Grammar::Number <value_type> (istream, b))
-			{
-				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-				if (Grammar::Number <value_type> (istream, a))
-				{
-					setValue (internal_type (r, g, b, a));
-					return;
-				}
-			}
-	   }
-
-		return;
-	}
-
-	istream .clear ();
-
-	std::string colorName;
-
-	if (Grammar::NamedColor (istream, colorName))
-	{
-		try
-		{
-			std::transform (colorName .begin (), colorName .end (), colorName .begin (), [ ] (const char c) { return std::tolower (c, std::locale::classic ()); });
-
-			const auto & color = Grammar::NamedColors () .at (colorName);
-
-			setValue (internal_type (color .r (), color .g (), color .b (), 1));
+			const value_type r = (value >> 24 & 0xff) / value_type (0xff);
+			const value_type g = (value >> 16 & 0xff) / value_type (0xff);
+			const value_type b = (value >> 8  & 0xff) / value_type (0xff);
+			const value_type a = (value >> 0  & 0xff) / value_type (0xff);
+	
+			setValue (internal_type (r, g, b, a));
 			return;
 		}
-		catch (const std::out_of_range &)
+	}
+
+	{
+		value_type r, g, b, a;
+	
+		if (Grammar::Number <value_type> (istream, r))
 		{
-			for (size_t i = 0, size = colorName .size (); i < size; ++ i)
-				istream .unget ();
+			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+	
+			if (Grammar::Number <value_type> (istream, g))
+			{
+				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+	
+				if (Grammar::Number <value_type> (istream, b))
+				{
+					Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
+	
+					if (Grammar::Number <value_type> (istream, a))
+					{
+						setValue (internal_type (r, g, b, a));
+						return;
+					}
+				}
+		   }
+	
+			return;
+		}
+	
+		istream .clear ();
+	}
+
+	if (Grammar::NumberSign (istream))
+	{
+		const auto pos = istream .tellg ();
+
+		int32_t number;
+
+		if (Grammar::HexValue (istream, number))
+		{
+			istream .clear ();
+
+			if (istream .tellg () - pos == 3)
+			{
+				// Shorthand hex color
+
+				static const auto sc = [ ] (const uint32_t c) { return c << 4 | c; };
+
+				const auto b = sc ((number >>= 0) & 0xf) / value_type (0xff);
+				const auto g = sc ((number >>= 4) & 0xf) / value_type (0xff);
+				const auto r = sc ((number >>= 4) & 0xf) / value_type (0xff);
+
+				setValue (internal_type (r, g, b, 1));
+				return;
+			}
+
+			const auto b = ((number >>= 0) & 0xff) / value_type (0xff);
+			const auto g = ((number >>= 8) & 0xff) / value_type (0xff);
+			const auto r = ((number >>= 8) & 0xff) / value_type (0xff);
+
+			setValue (internal_type (r, g, b, 1));
+			return;
+		}
+
+		return;
+	}
+
+	{
+		std::string colorName;
+	
+		if (Grammar::NamedColor (istream, colorName))
+		{
+			try
+			{
+				std::transform (colorName .begin (), colorName .end (), colorName .begin (), [ ] (const char c) { return std::tolower (c, std::locale::classic ()); });
+	
+				const auto & color = Grammar::NamedColors () .at (colorName);
+	
+				setValue (internal_type (color .r (), color .g (), color .b (), 1));
+				return;
+			}
+			catch (const std::out_of_range &)
+			{
+				for (size_t i = 0, size = colorName .size (); i < size; ++ i)
+					istream .unget ();
+			}
 		}
 	}
 

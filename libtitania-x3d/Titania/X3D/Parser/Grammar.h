@@ -138,6 +138,7 @@ public:
 	static const io::character CloseBracket;
 	static const io::character Period;
 	static const io::character Colon;
+	static const io::character NumberSign;
 
 	static const io::quoted_string String;
 	static const io::sequence      ComponentName;
@@ -155,6 +156,7 @@ public:
 
 	static const io::sequence NamedColor;
 
+	static const io::hex <int32_t> HexValue;
 
 private:
 

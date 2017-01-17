@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -54,3 +54,6 @@
 #include "InputOutput/String.h"
 #include "InputOutput/Sequence.h"
 #include "InputOutput/InverseString.h"
+#include "InputOutput/Hex.h"
+#include "InputOutput/InverseCharacter.h"
+#include "InputOutput/Number.h"

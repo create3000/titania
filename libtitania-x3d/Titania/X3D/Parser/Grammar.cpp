@@ -100,6 +100,7 @@ const io::character Grammar::OpenBracket ('[');
 const io::character Grammar::CloseBracket (']');
 const io::character Grammar::Period ('.');
 const io::character Grammar::Colon (':');
+const io::character Grammar::NumberSign ('#');
 
 // Misc
 const io::quoted_string Grammar::String ('\"');
@@ -115,6 +116,8 @@ const io::string Grammar::HEX ("0X");
 
 const io::sequence Grammar::NamedColor ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 const Colors       Grammar::namedColors;
+
+const io::hex <int32_t> Grammar::HexValue;
 
 // Locale
 
