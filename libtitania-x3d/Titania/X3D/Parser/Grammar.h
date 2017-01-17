@@ -51,7 +51,10 @@
 #ifndef __TITANIA_X3D_PARSER_GRAMMAR_H__
 #define __TITANIA_X3D_PARSER_GRAMMAR_H__
 
+#include "../Parser/Colors.h"
+
 #include <Titania/InputOutput.h>
+
 #include <set>
 
 namespace titania {
@@ -145,6 +148,13 @@ public:
 	bool
 	WhiteSpacesNoComma (std::istream &, std::string &);
 
+	static
+	const Colors &
+	NamedColors ()
+	{ return namedColors; }
+
+	static const io::sequence NamedColor;
+
 
 private:
 
@@ -159,6 +169,8 @@ private:
 	static const io::string neg_nan;
 	static const io::string hex;
 	static const io::string HEX;
+
+	static const Colors namedColors;
 
 	static const io::sequence WhiteSpacesNoCommaSequence;
 

@@ -51,13 +51,12 @@
 #ifndef __TITANIA_X3D_PARSER_SVG_COLORS_H__
 #define __TITANIA_X3D_PARSER_SVG_COLORS_H__
 
-#include "../../Types/Numbers.h"
+#include "../Types/Numbers.h"
 
 #include <map>
 
 namespace titania {
 namespace X3D {
-namespace SVG {
 
 class Colors
 {
@@ -232,7 +231,6 @@ Colors::Colors () :
 	namedColors .emplace ("yellowgreen",          make_rgb <float> (154, 205, 50));
 }
 
-} // SVG
 } // X3D
 } // titania
 

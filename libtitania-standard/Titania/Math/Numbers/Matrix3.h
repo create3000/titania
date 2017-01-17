@@ -403,6 +403,14 @@ public:
 	void
 	scale (const vector2 <Type> &);
 
+	///  Returns this matrix transformed by @a skewAngle.
+	void
+	skew_x (const Type &);
+
+	///  Returns this matrix transformed by @a skewAngle.
+	void
+	skew_y (const Type &);
+
 
 private:
 
@@ -460,12 +468,17 @@ matrix3 <Type>::rotation (const Type & rotation)
 	const Type sinAngle = std::sin (rotation);
 	const Type cosAngle = std::cos (rotation);
 
-	*this = Identity;
-
 	array [0] = cosAngle;
 	array [1] = sinAngle;
+	array [2] = 0;
+
 	array [3] = -sinAngle;
 	array [4] = cosAngle;
+	array [5] = 0;
+
+	array [6] = 0;
+	array [7] = 0;
+	array [8] = 1;
 }
 
 template <class Type>
@@ -952,6 +965,20 @@ matrix3 <Type>::scale (const vector2 <Type> & scaleFactor)
 
 	value [0] [1] *= scaleFactor .x ();
 	value [1] [1] *= scaleFactor .y ();
+}
+
+template <class Type>
+void
+matrix3 <Type>::skew_x (const Type & skewAngle)
+{
+	mult_left (matrix3 (1, std::tan (skewAngle), 0, 0, 1, 0, 0, 0, 1));
+}
+
+template <class Type>
+void
+matrix3 <Type>::skew_y (const Type & skewAngle)
+{
+	mult_left (matrix3 (1, 0, 0, std::tan (skewAngle), 1, 0, 0, 0, 1));
 }
 
 ///  @relates matrix3

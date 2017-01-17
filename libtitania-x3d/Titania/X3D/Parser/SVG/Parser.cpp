@@ -1409,7 +1409,7 @@ Parser::radialGradientElement (xmlpp::Element* const xmlElement, Gradient & grad
 	lengthAttribute    (xmlElement -> get_attribute ("cy"),                gradient .cy);
 	lengthAttribute    (xmlElement -> get_attribute ("x2"),                gradient .x2);
 	lengthAttribute    (xmlElement -> get_attribute ("y2"),                gradient .y2);
-	lengthAttribute    (xmlElement -> get_attribute ("r"),                 gradient .r);
+	lengthAttribute    (xmlElement -> get_attribute ("r"),                 gradient .r); // default 50%
 	lengthAttribute    (xmlElement -> get_attribute ("fx"),                gradient .fx);
 	lengthAttribute    (xmlElement -> get_attribute ("fy"),                gradient .fy);
 	stringAttribute    (xmlElement -> get_attribute ("gradientUnits"),     gradient .gradientUnits);
@@ -1687,7 +1687,7 @@ Parser::transformAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Matrix3d 
 
 					if (Grammar::CloseParenthesis (vstream))
 					{
-						matrix .mult_left (X3D::Matrix3d (1, std::tan (radians (angle)), 0, 0, 1, 0, 0, 0, 1));
+						matrix .skew_x (radians (angle));
 						continue;
 					}
 				}
@@ -1711,7 +1711,7 @@ Parser::transformAttribute (xmlpp::Attribute* const xmlAttribute, X3D::Matrix3d 
 
 					if (Grammar::CloseParenthesis (vstream))
 					{
-						matrix .mult_left (X3D::Matrix3d (1, 0, 0, std::tan (radians (angle)), 1, 0, 0, 0, 1));
+						matrix .skew_y (radians (angle));
 						continue;
 					}
 				}

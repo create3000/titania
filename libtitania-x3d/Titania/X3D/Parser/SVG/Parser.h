@@ -52,10 +52,10 @@
 #define __TITANIA_X3D_PARSER_SVG_PARSER_H__
 
 #include "../../Execution/X3DScene.h"
+#include "../../Parser/Colors.h"
 #include "../../Parser/X3DParser.h"
 #include "../../Types/Geometry.h"
 
-#include "Colors.h"
 
 #include <cairomm/cairomm.h>
 
@@ -353,7 +353,7 @@ private:
 	X3D::X3DPtrArray <X3D::X3DGroupingNode> groupNodes;
 	X3D::X3DPtr <X3D::TextureProperties>    texturePropertiesNode;
 
-	Colors      namedColors;
+	X3D::Colors namedColors;
 	std::string whiteSpaceCharacters;
 
 };

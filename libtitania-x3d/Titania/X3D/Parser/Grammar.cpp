@@ -113,6 +113,9 @@ const io::string Grammar::neg_nan ("-nan");
 const io::string Grammar::hex ("0x");
 const io::string Grammar::HEX ("0X");
 
+const io::sequence Grammar::NamedColor ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+const Colors       Grammar::namedColors;
+
 // Locale
 
 const io::sequence Grammar::WhiteSpacesNoCommaSequence ("\r\n \t");

@@ -158,33 +158,57 @@ throw (Error <INVALID_X3D>,
 		const value_type a = (value & 0xff) / 255.0f;
 
 		setValue (Color4f (r, g, b, a));
+		return;
 	}
-	else
-	{
-		std::string whiteSpaces;
 
-		value_type r, g, b, a;
-		
+	value_type r, g, b, a;
+
+	if (Grammar::Number <value_type> (istream, r))
+	{
 		Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-		if (Grammar::Number <value_type> (istream, r))
+		if (Grammar::Number <value_type> (istream, g))
 		{
 			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-			if (Grammar::Number <value_type> (istream, g))
+			if (Grammar::Number <value_type> (istream, b))
 			{
 				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
-				if (Grammar::Number <value_type> (istream, b))
+				if (Grammar::Number <value_type> (istream, a))
 				{
-					Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
-
-					if (Grammar::Number <value_type> (istream, a))
-						setValue (internal_type (r, g, b, a));
+					setValue (internal_type (r, g, b, a));
+					return;
 				}
-		   }
+			}
+	   }
+
+		return;
+	}
+
+	istream .clear ();
+
+	std::string colorName;
+
+	if (Grammar::NamedColor (istream, colorName))
+	{
+		try
+		{
+			std::transform (colorName .begin (), colorName .end (), colorName .begin (), [ ] (const char c) { return std::tolower (c, std::locale::classic ()); });
+
+			const auto & color = Grammar::NamedColors () .at (colorName);
+
+			setValue (internal_type (color .r (), color .g (), color .b (), 1));
+			return;
+		}
+		catch (const std::out_of_range &)
+		{
+			for (size_t i = 0, size = colorName .size (); i < size; ++ i)
+				istream .unget ();
 		}
 	}
+
+	istream .setstate (std::ios::failbit);
 }
 
 void
