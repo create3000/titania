@@ -55,10 +55,9 @@
 namespace titania {
 namespace puck {
 
-static constexpr int32_t VALUES_MAX = 64;
-
-static constexpr X3D::Image::size_type WIDTH_MAX  = 16;
-static constexpr X3D::Image::size_type HEIGHT_MAX = 16;
+static constexpr int32_t VALUES_MAX       = 64;
+static constexpr size_t  IMAGE_WIDTH_MAX  = 64;
+static constexpr size_t  IMAGE_HEIGHT_MAX = 32;
 
 static
 std::string
@@ -75,7 +74,7 @@ get_field_value (const X3D::X3DScene* const,
 	{
 		const X3D::Image & image = field .getValue ();
 
-		if (image .width () > WIDTH_MAX or image .height () > HEIGHT_MAX)
+		if (image .width () > IMAGE_WIDTH_MAX or image .height () > IMAGE_HEIGHT_MAX)
 		{
 			std::ostringstream ostream;
 
@@ -84,9 +83,58 @@ get_field_value (const X3D::X3DScene* const,
 				<< X3D::Generator::Space
 				<< image .height ()
 				<< X3D::Generator::Space
-				<< image .components ()
-				<< X3D::Generator::ForceBreak
-				<< "…";
+				<< image .components ();
+
+			if (image .width () and image .height ())
+			{
+				ostream
+					<< X3D::X3DGenerator::ForceBreak
+					<< X3D::X3DGenerator::IncIndent;
+		
+				X3D::Image::size_type y = 0;
+
+				for (; y < std::min (IMAGE_HEIGHT_MAX, image .height ()); ++ y)
+				{
+					const size_t s = y * image .width ();
+					size_t       x = 0;
+
+					std::ostringstream rostream;					
+
+					rostream
+						<< std::hex
+						<< std::showbase
+						<< X3D::X3DGenerator::Indent;
+		
+					for (size_t size = image .width () - 1; x < size; ++ x)
+					{
+						rostream
+							<< image .array () [x + s]
+							<< X3D::X3DGenerator::Space;
+					}
+		
+					rostream << image .array () [x + s];
+
+					// Copy row to stream
+
+					const auto rstring = rostream .str ();
+
+					ostream << rstring .substr (0, std::min (IMAGE_WIDTH_MAX, rstring .size ()));
+
+					// 
+
+					if (rstring .size () > IMAGE_WIDTH_MAX)
+						ostream << "…";
+		
+					ostream << X3D::X3DGenerator::ForceBreak;
+				}
+
+				ostream
+					<< X3D::X3DGenerator::DecIndent
+					<< std::dec;
+			}
+
+			if (image .height () > IMAGE_HEIGHT_MAX)
+				ostream << "…";
 
 			return ostream .str ();
 		}
