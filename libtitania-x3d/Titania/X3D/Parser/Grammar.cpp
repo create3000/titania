@@ -115,7 +115,6 @@ const io::string Grammar::hex ("0x");
 const io::string Grammar::HEX ("0X");
 
 const io::sequence Grammar::NamedColor ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
-const Colors       Grammar::namedColors;
 
 const io::hex <int32_t> Grammar::HexValue;
 

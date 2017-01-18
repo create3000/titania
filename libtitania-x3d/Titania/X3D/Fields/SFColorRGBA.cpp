@@ -50,6 +50,8 @@
 
 #include "SFColorRGBA.h"
 
+#include "../Parser/Colors.h"
+
 #include <Titania/String/tolower.h>
 
 namespace titania {
@@ -150,6 +152,8 @@ throw (Error <INVALID_X3D>,
 
 	Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
+	// Parse C hex colors.
+
 	{
 		uint32_t value;
 
@@ -164,6 +168,8 @@ throw (Error <INVALID_X3D>,
 			return;
 		}
 	}
+
+	// Parse X3D colors.
 
 	{
 		value_type r, g, b, a;
@@ -193,6 +199,8 @@ throw (Error <INVALID_X3D>,
 	
 		istream .clear ();
 	}
+
+	// Parse HTML hex colors and shorthand hex colors.
 
 	if (Grammar::NumberSign (istream))
 	{
@@ -229,6 +237,8 @@ throw (Error <INVALID_X3D>,
 		return;
 	}
 
+	// Parse named colors.
+
 	{
 		std::string colorName;
 	
@@ -236,7 +246,7 @@ throw (Error <INVALID_X3D>,
 		{
 			try
 			{
-				const auto & color = Grammar::NamedColors () .at (basic::tolower (colorName, std::locale::classic ()));
+				const auto & color = Colors::get (basic::tolower (colorName, std::locale::classic ()));
 
 				setValue (internal_type (color .r (), color .g (), color .b (), 1));
 				return;

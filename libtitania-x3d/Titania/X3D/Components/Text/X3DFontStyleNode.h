@@ -83,7 +83,12 @@ public:
 
 	virtual
 	void
-	draw (ShapeContainer* const);
+	traverse (const TraverseType type, X3DRenderObject* const renderObject)
+	{ }
+
+	virtual
+	void
+	draw (ShapeContainer* const shapeContainer);
 
 	virtual
 	SFNode

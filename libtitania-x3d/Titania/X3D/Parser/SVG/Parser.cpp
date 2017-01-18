@@ -71,7 +71,8 @@
 #include "../../Components/Texturing/PixelTexture.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing/TextureProperties.h"
-#include "../Filter.h"
+#include "../../Parser/Colors.h"
+#include "../../Parser/Filter.h"
 
 #include <Titania/Math/Algorithms/Bezier.h>
 #include <Titania/Math/Mesh/Tessellator.h>
@@ -168,7 +169,6 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	        rootTransform (scene -> createNode <X3D::Transform> ()),
 	           groupNodes ({ rootTransform }),
 	texturePropertiesNode (scene -> createNode <X3D::TextureProperties> ()),
-	          namedColors (),
 	 whiteSpaceCharacters ()
 {
 	xmlParser -> set_throw_messages (true);
@@ -2700,7 +2700,7 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 	{
 		try
 		{
-			color = namedColors .at (basic::tolower (colorName, std::locale::classic ()));
+			color = X3D::Colors::get (basic::tolower (colorName, std::locale::classic ()));
 			return true;
 		}
 		catch (const std::out_of_range &)

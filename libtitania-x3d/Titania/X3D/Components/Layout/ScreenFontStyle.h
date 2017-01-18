@@ -116,7 +116,11 @@ public:
 
 	virtual
 	void
-	draw (ShapeContainer* const) final override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+
+	virtual
+	void
+	draw (ShapeContainer* const shapeContainer) final override;
 
 	virtual
 	SFNode
@@ -147,9 +151,8 @@ private:
 	void
 	build () final override;
 
-	const Matrix4d &
-	transform (ShapeContainer* const context)
-	throw (std::domain_error);
+	void
+	transform (X3DRenderObject* const renderObject);
 
 	///  @name Static members
 

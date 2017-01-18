@@ -220,14 +220,14 @@ X3DGeometryNode::intersects (Line3d line,
 {
 	try
 	{
+		if (not getBBox () .intersects (line))
+			return false;
+
 		const auto & matrix = getMatrix ();  // Get the current matrix from screen nodes.
 
 		modelViewMatrix .mult_left (matrix); // This matrix is for clipping only.
 
 		line *= inverse (matrix);
-
-		if (not getBBox () .intersects (line))
-			return false;
 
 		bool intersected = false;
 

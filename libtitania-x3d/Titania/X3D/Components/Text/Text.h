@@ -189,6 +189,10 @@ public:
 
 	virtual
 	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+
+	virtual
+	void
 	draw (ShapeContainer* const) final override;
 
 	virtual

@@ -1024,8 +1024,11 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 					<< "@name"
 					<< '"'
 					<< ':'
-					<< Generator::TidySpace
-					<< SFString (metaData .first)
+					<< Generator::TidySpace;
+
+				SFString (metaData .first) .toJSONStream (ostream);
+
+				ostream
 					<< ','
 					<< Generator::TidyBreak;
 		
@@ -1035,8 +1038,11 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 					<< "@content"
 					<< '"'
 					<< ':'
-					<< Generator::TidySpace
-					<< SFString (metaData .second)
+					<< Generator::TidySpace;
+
+				SFString (metaData .second) .toJSONStream (ostream);
+
+				ostream
 					<< Generator::TidyBreak;
 		
 				ostream

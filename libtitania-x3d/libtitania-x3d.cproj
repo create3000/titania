@@ -1424,6 +1424,7 @@
     <Compile Include="Titania\X3D\Browser\BrowserCellRenderer.cpp" />
     <Compile Include="Titania\X3D\Parser\JSONParser.cpp" />
     <Compile Include="Titania\X3D\Parser\SVG\Parser.cpp" />
+    <Compile Include="Titania\X3D\Parser\Colors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

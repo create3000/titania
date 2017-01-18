@@ -2121,7 +2121,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 
 		for (const auto & line : sourceTextLines)
 		{
-			ostream << SFString (line);
+			SFString (line) .toJSONStream (ostream);
 
 			if (&line not_eq &sourceTextLines .back ())
 				ostream << ',';

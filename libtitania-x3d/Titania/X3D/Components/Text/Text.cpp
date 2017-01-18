@@ -198,6 +198,21 @@ Text::build ()
 }
 
 void
+Text::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	try
+	{
+		textGeometry -> traverse (type, renderObject);
+
+		X3DGeometryNode::traverse (type, renderObject);
+	}
+	catch (const std::exception &)
+	{
+		// Bad alloc.
+	}
+}
+
+void
 Text::draw (ShapeContainer* const context)
 {
 	try

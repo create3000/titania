@@ -100,6 +100,8 @@ get_field_value (const X3D::X3DScene* const,
 
 					std::ostringstream rostream;					
 
+					rostream .imbue (std::locale::classic ());
+
 					rostream
 						<< std::hex
 						<< std::showbase

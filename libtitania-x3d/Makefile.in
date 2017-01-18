@@ -640,9 +640,9 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_vector.lo \
 	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_viewport.lo \
 	Titania/X3D/Parser/Autodesk/Parser.lo \
-	Titania/X3D/Parser/Filter.lo Titania/X3D/Parser/Grammar.lo \
-	Titania/X3D/Parser/JSONParser.lo Titania/X3D/Parser/Parser.lo \
-	Titania/X3D/Parser/SVG/Parser.lo \
+	Titania/X3D/Parser/Colors.lo Titania/X3D/Parser/Filter.lo \
+	Titania/X3D/Parser/Grammar.lo Titania/X3D/Parser/JSONParser.lo \
+	Titania/X3D/Parser/Parser.lo Titania/X3D/Parser/SVG/Parser.lo \
 	Titania/X3D/Parser/Wavefront/Parser.lo \
 	Titania/X3D/Prototype/ExternProtoArray.lo \
 	Titania/X3D/Prototype/ExternProtoDeclaration.lo \
@@ -1475,6 +1475,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_vector.c \
 	Titania/X3D/Parser/Autodesk/lib3ds/lib3ds_viewport.c \
 	Titania/X3D/Parser/Autodesk/Parser.cpp \
+	Titania/X3D/Parser/Colors.cpp \
 	Titania/X3D/Parser/Filter.cpp \
 	Titania/X3D/Parser/Grammar.cpp \
 	Titania/X3D/Parser/JSONParser.cpp \
@@ -3582,6 +3583,8 @@ Titania/X3D/Parser/$(am__dirstamp):
 Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Parser/$(DEPDIR)
 	@: > Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/Colors.lo: Titania/X3D/Parser/$(am__dirstamp) \
+	Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Parser/Filter.lo: Titania/X3D/Parser/$(am__dirstamp) \
 	Titania/X3D/Parser/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Parser/Grammar.lo: Titania/X3D/Parser/$(am__dirstamp) \
@@ -4558,6 +4561,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR)/SFVec4.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Colors.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Filter.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/Grammar.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/$(DEPDIR)/JSONParser.Plo@am__quote@
