@@ -55,7 +55,6 @@
 #include "../../Parser/X3DParser.h"
 #include "../../Types/Geometry.h"
 
-
 #include <cairomm/cairomm.h>
 
 namespace xmlpp {
@@ -345,7 +344,7 @@ private:
 	const basic::uri       uri;
 	std::istream &         istream;
 
-	std::unique_ptr <xmlpp::DomParser> xmlParser;
+	const std::unique_ptr <xmlpp::DomParser> xmlParser;
 
 	std::vector <Style>                     styles;
 	X3D::X3DPtr <X3D::Transform>            rootTransform;

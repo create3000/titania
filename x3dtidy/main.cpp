@@ -75,12 +75,37 @@ main (int argc, char** argv)
 	options .addUsage ("DESCRIPTION");
 	options .addUsage ("       Format and convert FILE to standard output or to OUTFILE.");
 	options .addUsage ("");
-	options .addUsage ("VRML2 field names and access types are printed when the encoding is VRML,");
-	options .addUsage ("otherwise X3D field names and access types are printed.");
-	options .addUsage ("When VRML2 field names are printed then this changes:");
-	options .addUsage ("Collision .enabled to Collision .collide, LOD .children to LOD .level and");
-	options .addUsage ("Switch .children to Switch .level");
+	options .addUsage ("x3dtidy reads an X3D file and writes an indented, reformatted file.");
+	options .addUsage ("When no output file is specified the output is printed to stdout.");
+	options .addUsage ("Use the --style option to specify the desired output style.");
 	options .addUsage ("");
+	options .addUsage ("");
+	options .addUsage ("KNOWN FILE FORMATS");
+	options .addUsage ("");
+	options .addUsage ("Accepted input file formats are:");
+	options .addUsage ("");
+	options .addUsage ("       .x3d         X3D XML Encoding");
+	options .addUsage ("       .x3dz        X3D XML Encoding");
+	options .addUsage ("       .x3dv        X3D Classic VRML Encoding");
+	options .addUsage ("       .x3dvz       X3D Classic VRML Encoding");
+	options .addUsage ("       .json        X3D JSON Encoding");
+	options .addUsage ("       .wrl         VRML Encoding");
+	options .addUsage ("       .wrz         VRML Encoding");
+	options .addUsage ("       .obj         Alias Wavefront OBJ File Format");
+	options .addUsage ("       .3ds         Autodesk 3DS File Format");
+	options .addUsage ("       .svg         Scalable Vector Grafics");
+	options .addUsage ("       .svgz        Scalable Vector Grafics");
+	options .addUsage ("");
+	options .addUsage ("Accepted output file formats are:");
+	options .addUsage ("");
+	options .addUsage ("       .x3d         X3D XML Encoding");
+	//options .addUsage ("       .x3dz        X3D XML Encoding");
+	options .addUsage ("       .x3dv        X3D Classic VRML Encoding");
+	//options .addUsage ("       .x3dvz       X3D Classic VRML Encoding");
+	options .addUsage ("       .json        X3D JSON Encoding");
+	options .addUsage ("");
+	options .addUsage ("");
+	options .addUsage ("OPTIONS");
 	options .addUsage ("");
 	options .addUsage ("       -c, --compact");
 	options .addUsage ("              output in compact style");
@@ -93,13 +118,18 @@ main (int argc, char** argv)
 	options .addUsage ("              nicest is the default mode");
 	options .addUsage ("");
 	options .addUsage ("EXAMPLES");
-	options .addUsage ("       x3dtidy -s=compact file.wrl");
-	options .addUsage ("              Formats file.wrl's contents in compact style mode to standard");
-	options .addUsage ("              output.");
 	options .addUsage ("");
-	options .addUsage ("       x3dtidy file.x3dv beautified.x3dv");
-	options .addUsage ("              Formats file.x3dv's contents and saves the output in");
+	options .addUsage ("       x3dtidy --style=compact input.x3d");
+	options .addUsage ("              Formats input.x3d's contents in compact style mode to");
+	options .addUsage ("              standard output.");
+	options .addUsage ("");
+	options .addUsage ("       x3dtidy input.x3dv beautified.x3dv");
+	options .addUsage ("              Formats input.x3dv's contents and saves the output in");
 	options .addUsage ("              beautified.x3dv.");
+	options .addUsage ("");
+	options .addUsage ("       x3dtidy input.3ds output.json");
+	options .addUsage ("              Converts input.3ds's contents and saves the output in");
+	options .addUsage ("              output.json.");
 	options .addUsage ("");
 	options .addUsage ("COPYRIGHT");
 	options .addUsage ("       Copyright \xc2\xa9 2010 Holger Seelig.  License GPLv3+:");
@@ -158,6 +188,9 @@ main (int argc, char** argv)
 					if (out .suffix () == ".x3d")
 						file << X3D::XMLEncode (browser -> createX3DFromURL ({ uri .str () }));
 
+					else if (out .suffix () == ".json")
+						file << X3D::JSONEncode (browser -> createX3DFromURL ({ uri .str () }));
+
 					else
 						file << browser -> createX3DFromURL ({ uri .str () });
 
@@ -175,6 +208,9 @@ main (int argc, char** argv)
 			{
 				if (uri .suffix () == ".x3d")
 					std::cout << X3D::XMLEncode (browser -> createX3DFromURL ({ uri .str () }));
+
+				else if (uri .suffix () == ".json")
+					std::cout << X3D::JSONEncode (browser -> createX3DFromURL ({ uri .str () }));
 
 				else
 					std::cout << browser -> createX3DFromURL ({ uri .str () });

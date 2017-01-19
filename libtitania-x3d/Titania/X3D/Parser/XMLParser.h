@@ -54,6 +54,15 @@
 #include "../Execution/X3DScene.h"
 #include "../Parser/X3DParser.h"
 
+namespace xmlpp {
+
+class Attribute;
+class DomParser;
+class Element;
+class Node;
+
+}
+
 namespace titania {
 namespace X3D {
 
@@ -86,11 +95,16 @@ private:
 	getBrowser () const
 	{ return scene -> getBrowser (); }
 
+	void
+	x3dElement (xmlpp::Element* const xmlElement);
+
 	///  @name Members
 
 	const X3DScenePtr scene;
 	const basic::uri  uri;
 	std::istream &    istream;
+
+	const std::unique_ptr <xmlpp::DomParser> xmlParser;
 
 };
 

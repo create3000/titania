@@ -2700,5 +2700,4 @@ JSONParser::~JSONParser ()
 { }
 
 } // X3D
-
 } // titania

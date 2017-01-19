@@ -50,6 +50,8 @@
 
 #include "XMLParser.h"
 
+#include <libxml++/libxml++.h>
+
 namespace titania {
 namespace X3D {
 
@@ -57,16 +59,49 @@ XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::is
 	X3DParser (),
 	    scene (scene),
 	      uri (uri),
-	  istream (istream)
-{ }
+	  istream (istream),
+	xmlParser (new xmlpp::DomParser ())
+{
+	xmlParser -> set_throw_messages (true);
+	xmlParser -> set_validate (false);
+	xmlParser -> set_include_default_attributes (true);
+
+
+}
 
 void
 XMLParser::parseIntoScene ()
 {
-	__LOG__ << this << " " << std::endl;
+	//__LOG__ << this << " " << std::endl;
 
-	scene -> setWorldURL (uri);
-	scene -> setEncoding (EncodingType::XML);
+	try
+	{
+		scene -> setWorldURL (uri);
+		scene -> setEncoding (EncodingType::XML);
+
+		xmlParser -> parse_stream (istream);
+
+		const auto xmlDocument = xmlParser -> get_document ();
+
+		if (xmlDocument)
+			x3dElement (xmlDocument -> get_root_node ());
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		throw;
+	}
+	catch (const std::exception & error)
+	{
+		throw Error <X3D::INVALID_X3D> (error .what ()); 
+	}
+}
+
+void
+XMLParser::x3dElement (xmlpp::Element* const xmlElement)
+{
+	if (not xmlElement)
+		return;
 
 }
 
@@ -74,5 +109,4 @@ XMLParser::~XMLParser ()
 { }
 
 } // X3D
-
 } // titania

@@ -1,6 +1,6 @@
 ." Manpage for x3dtidy.
 ." Contact holger.seelig@yahoo.de to correct errors or typos.
-.TH man 1 "15 April 2015" "Version 1.0" "x3dtidy man page"
+.TH man 1 "19 January 2017" "Version 2.0" "x3dtidy man page"
 .SH NAME
        x3dtidy - X3D/VRML beautifier and converter
 
@@ -10,13 +10,11 @@
 .SH DESCRIPTION
        Format or convert FILE to standard output or to OUTFILE.
 
-       VRML2 field names and access types are printed when the encoding is VRML,
-       otherwise X3D field names and access types are printed.
-       When VRML2 field names are printed then this changes:
-       Collision .enabled to Collision .collide, LOD .children to LOD .level and
-       Switch .children to Switch .level
+       x3dtidy reads an X3D file and writes an indented, reformatted file.
+       When no output file is specified the output is printed to stdout.
+       Use the --style option to specify the desired output style.
 
-
+.SH OPTIONS
        -c, --compact
               output in compact style
 
@@ -27,14 +25,39 @@
               mode can be 'smallest', 'small ', 'compact', or 'nicest'
               nicest is the default mode
 
-.SH EXAMPLES
-       x3dtidy -s=compact file.wrl
-              Formats file.wrl's contents in compact style mode to standard
-              output.
+.SH KNOWN FILE FORMATS
+Accepted input file formats are:
 
-       x3dtidy file.x3dv beautified.x3dv
-              Formats file.x3dv's contents and saves the output in
+       .x3d         X3D XML Encoding
+       .x3dz        X3D XML Encoding
+       .x3dv        X3D Classic VRML Encoding
+       .x3dvz       X3D Classic VRML Encoding"
+       .json        X3D JSON Encoding
+       .wrl         VRML Encoding
+       .wrz         VRML Encoding
+       .obj         Alias Wavefront OBJ File Format
+       .3ds         Autodesk 3DS File Format
+       .svg         Scalable Vector Grafics
+       .svgz        Scalable Vector Grafics
+
+Accepted output file formats are:
+
+       .x3d         X3D XML Encoding
+       .x3dv        X3D Classic VRML Encoding
+       .json        X3D JSON Encoding
+
+.SH EXAMPLES
+       x3dtidy --style=compact input.x3d
+              Formats input.x3d's contents in compact style mode to
+              standard output.
+
+       x3dtidy input.x3dv beautified.x3dv
+              Formats input.x3dv's contents and saves the output in
               beautified.x3dv.
+
+       x3dtidy input.3ds output.json
+              Converts input.3ds's contents and saves the output in
+              output.json.
 
 .SH COPYRIGHT
        Copyright © 2010 Holger Seelig.  License GPLv3+:
