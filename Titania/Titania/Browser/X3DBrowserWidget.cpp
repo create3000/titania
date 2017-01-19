@@ -574,7 +574,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 	{
 		if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 		{
-			scene -> setEncoding ("X3D");
+			scene -> setEncoding (X3D::EncodingType::XML);
 			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 		}
 
@@ -599,7 +599,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 	{
 		if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 		{
-			scene -> setEncoding ("X3D");
+			scene -> setEncoding (X3D::EncodingType::XML);
 			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 		}
 
@@ -624,7 +624,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 	{
 		if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 		{
-			scene -> setEncoding ("X3D");
+			scene -> setEncoding (X3D::EncodingType::JSON);
 			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 		}
 
@@ -651,7 +651,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 		{
 			if (scene -> getSpecificationVersion () not_eq X3D::VRML_V2_0)
 			{
-				scene -> setEncoding ("VRML");
+				scene -> setEncoding (X3D::EncodingType::VRML);
 				scene -> setSpecificationVersion (X3D::VRML_V2_0);
 			}
 		}
@@ -659,7 +659,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 		{
 			if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 			{
-				scene -> setEncoding ("X3D");
+				scene -> setEncoding (X3D::EncodingType::VRML);
 				scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 			}
 		}

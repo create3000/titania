@@ -686,6 +686,7 @@ Parser::parseIntoScene ()
 	//__LOG__ << this << " " << std::endl;
 
 	scene -> setWorldURL (uri);
+	scene -> setEncoding (EncodingType::XML);
 
 	istream .imbue (std::locale::classic ());
 

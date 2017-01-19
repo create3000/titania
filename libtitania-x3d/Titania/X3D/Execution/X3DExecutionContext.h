@@ -54,6 +54,7 @@
 #include "../Basic/X3DBaseNode.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Configuration/SupportedComponents.h"
+#include "../Execution/EncodingType.h"
 #include "../Execution/ImportedNodeIndex.h"
 #include "../Execution/NamedNodeIndex.h"
 #include "../Fields.h"
@@ -114,7 +115,7 @@ public:
 	       Error <DISPOSED>) = 0;
 
 	virtual
-	const std::string &
+	EncodingType
 	getEncoding () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) = 0;

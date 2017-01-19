@@ -100,6 +100,7 @@ Parser::parseIntoScene ()
 	//__LOG__ << this << " " << std::endl;
 
 	scene -> setWorldURL (uri);
+	scene -> setEncoding (EncodingType::XML);
 
 	groupNode = scene -> createNode <X3D::Transform> ();
 

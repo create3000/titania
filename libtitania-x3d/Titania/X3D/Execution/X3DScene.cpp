@@ -76,7 +76,7 @@ X3DScene::X3DScene () :
 	 X3DExecutionContext (),
 	      X3DUnitContext (),
 	            worldURL (),
-	            encoding ("X3D"),
+	            encoding (EncodingType::SCRIPTED),
 	specificationVersion (LATEST_VERSION),
 	   characterEncoding ("utf8"),
 	             comment ("Titania"),

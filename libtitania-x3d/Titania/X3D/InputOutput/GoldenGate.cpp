@@ -158,6 +158,7 @@ golden_x3d (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestrea
 	basic::ifilestream goldenstream (golden_pipe (x3d2vrml, basic::to_string (istream)));
 
 	scene -> fromStream (uri, goldenstream);
+	scene -> setEncoding (EncodingType::XML);
 }
 
 static

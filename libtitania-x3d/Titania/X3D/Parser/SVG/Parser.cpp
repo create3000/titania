@@ -187,11 +187,12 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 void
 Parser::parseIntoScene ()
 {
-	__LOG__ << this << " " << std::endl;
+	//__LOG__ << this << " " << std::endl;
 
 	try
 	{
 		scene -> setWorldURL (uri);
+		scene -> setEncoding (EncodingType::XML);
 
 		xmlParser -> parse_stream (istream);
 
@@ -2609,6 +2610,8 @@ Parser::stopOpacityAttribute (const std::string & value, Style & style)
 bool
 Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 {
+	// Parse HTML hex colors and shorthand hex colors.
+
 	if (Grammar::NumberSign (istream))
 	{
 		const auto pos = istream .tellg ();
@@ -2643,6 +2646,8 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 
 		return false;
 	}
+
+	// Parse RGB colors.
 
 	if (Grammar::rgb (istream))
 	{
@@ -2694,19 +2699,23 @@ Parser::colorValue (std::istream & istream, X3D::Color3f & color)
 		return false;
 	}
 
-	std::string colorName;
+	// Parse named colors.
 
-	if (Grammar::NamedColor (istream, colorName))
 	{
-		try
+		std::string colorName;
+	
+		if (Grammar::NamedColor (istream, colorName))
 		{
-			color = X3D::Colors::get (basic::tolower (colorName, std::locale::classic ()));
-			return true;
-		}
-		catch (const std::out_of_range &)
-		{
-			for (size_t i = 0, size = colorName .size (); i < size; ++ i)
-				istream .unget ();
+			try
+			{
+				color = X3D::Colors::get (basic::tolower (colorName, std::locale::classic ()));
+				return true;
+			}
+			catch (const std::out_of_range &)
+			{
+				for (size_t i = 0, size = colorName .size (); i < size; ++ i)
+					istream .unget ();
+			}
 		}
 	}
 

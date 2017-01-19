@@ -81,6 +81,7 @@ JSONParser::parseIntoScene ()
 	__LOG__ << this << " " << std::endl;
 
 	scene -> setWorldURL (uri);
+	scene -> setEncoding (EncodingType::JSON);
 
 	std::ostringstream osstream;
 

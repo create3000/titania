@@ -130,7 +130,7 @@ public:
 	{ return protoNode -> getProtoDeclaration () -> getWorldURL (); }
 
 	virtual
-	const std::string &
+	EncodingType
 	getEncoding () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override

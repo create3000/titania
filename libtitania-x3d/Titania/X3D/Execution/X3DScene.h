@@ -100,13 +100,13 @@ public:
 	{ return worldURL; }
 
 	void
-	setEncoding (const std::string & value)
+	setEncoding (const EncodingType & value)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{ encoding = value; }
 
 	virtual
-	const std::string &
+	EncodingType
 	getEncoding () const
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
@@ -354,7 +354,7 @@ private:
 	///  @name Members
 
 	basic::uri               worldURL;
-	std::string              encoding;
+	EncodingType             encoding;
 	SpecificationVersionType specificationVersion;
 	std::string              characterEncoding;
 	std::string              comment;

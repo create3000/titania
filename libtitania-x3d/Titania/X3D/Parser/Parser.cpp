@@ -98,6 +98,8 @@ throw (Error <INVALID_X3D>)
 
 	try
 	{
+		scene -> setEncoding (EncodingType::VRML);
+
 		x3dScene ();
 	}
 	catch (const X3DError & error)
@@ -303,7 +305,6 @@ Parser::x3dScene ()
 
 	if (headerStatement (encoding, specificationVersion, characterEncoding, comment))
 	{
-		scene -> setEncoding (encoding);
 		scene -> setSpecificationVersion (specificationVersion);
 		scene -> setCharacterEncoding (characterEncoding);
 		scene -> setComment (comment);

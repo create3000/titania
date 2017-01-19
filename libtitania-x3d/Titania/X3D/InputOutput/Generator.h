@@ -321,7 +321,7 @@ operator << (std::ostream & ostream, const AccessType accessType)
 
 inline
 std::string
-to_string (const AccessType accessType)
+to_string (const AccessType & accessType)
 {
 	std::ostringstream osstream;
 

@@ -220,7 +220,7 @@ X3DBrowserEditor::set_scene ()
 	if (getCurrentScene () -> getWorldURL () == get_page ("about/new.wrl"))
 	{
 	   getCurrentScene () -> setWorldURL ("");
-		getCurrentScene () -> setEncoding ("X3D");
+		getCurrentScene () -> setEncoding (X3D::EncodingType::XML);
 		getCurrentScene () -> setSpecificationVersion (X3D::LATEST_VERSION);
 	}
 }

@@ -177,7 +177,7 @@ X3DExecutionContext::encoding (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 	{
 		const auto executionContext = getThis <X3DExecutionContext> (cx, obj);
 
-		return JS_NewStringValue (cx, executionContext -> getEncoding (), vp);
+		return JS_NewStringValue (cx, to_string (executionContext -> getEncoding ()), vp);
 	}
 	catch (const std::exception & error)
 	{
