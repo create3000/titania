@@ -77,7 +77,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~JSONParser ();
+	~JSONParser () final override;
 
 
 private:
@@ -422,7 +422,7 @@ private:
 
 	///  @name Member types
 
-	typedef std::vector <X3DExecutionContext*> ExecutionContextStack;
+	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
 
 	///  @name Members
 

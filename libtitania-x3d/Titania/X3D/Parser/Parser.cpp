@@ -3483,5 +3483,8 @@ Parser::sfvec4fValues (MFVec4f* _field)
 		_field -> emplace_back (value);
 }
 
+Parser::~Parser ()
+{ }
+
 } // X3D
 } // titania

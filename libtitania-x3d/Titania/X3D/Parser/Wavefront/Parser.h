@@ -85,7 +85,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~Parser ();
+	~Parser () final override;
 
 
 private:

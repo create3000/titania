@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,33 +48,31 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_X3DPARSER_H__
-#define __TITANIA_X3D_PARSER_X3DPARSER_H__
+#include "XMLParser.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DParser
+XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
+	X3DParser (),
+	    scene (scene),
+	      uri (uri),
+	  istream (istream)
+{ }
+
+void
+XMLParser::parseIntoScene ()
 {
-public:
+	__LOG__ << this << " " << std::endl;
 
-	virtual
-	void
-	parseIntoScene () = 0;
+	scene -> setWorldURL (uri);
+	scene -> setEncoding (EncodingType::XML);
 
-	virtual
-	~X3DParser ()
-	{ }
+}
 
-
-protected:
-
-	X3DParser ()
-	{ }
-
-};
+XMLParser::~XMLParser ()
+{ }
 
 } // X3D
-} // titania
 
-#endif
+} // titania

@@ -78,7 +78,7 @@ JSONParser::JSONParser (const X3DScenePtr & scene, const basic::uri & uri, std::
 void
 JSONParser::parseIntoScene ()
 {
-	__LOG__ << this << " " << std::endl;
+	//__LOG__ << this << " " << std::endl;
 
 	scene -> setWorldURL (uri);
 	scene -> setEncoding (EncodingType::JSON);

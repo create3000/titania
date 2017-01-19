@@ -98,9 +98,13 @@ public:
 	getAccessTypes ()
 	{ return accessTypes; }
 
+	virtual
+	~Parser () final override;
+
+
 private:
 
-	typedef std::vector <X3DExecutionContext*> ExecutionContextStack;
+	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
 
 	X3DBrowser*
 	getBrowser () const

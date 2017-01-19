@@ -848,6 +848,7 @@
     <None Include="Titania\X3D\Parser\Colors.h" />
     <None Include="Titania\X3D\Execution\EncodingType.h" />
     <None Include="Titania\X3D\SAI.h" />
+    <None Include="Titania\X3D\Parser\XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1427,6 +1428,7 @@
     <Compile Include="Titania\X3D\Parser\JSONParser.cpp" />
     <Compile Include="Titania\X3D\Parser\SVG\Parser.cpp" />
     <Compile Include="Titania\X3D\Parser\Colors.cpp" />
+    <Compile Include="Titania\X3D\Parser\XMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
