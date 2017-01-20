@@ -653,13 +653,13 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		<< "xsd:noNamespaceSchemaLocation='http://www.web3d.org/specifications/x3d-"
 		<< versionString
 		<< ".xsd'>"
-		<< Generator::Break;
+		<< Generator::TidyBreak;
 
 	ostream
 		<< Generator::IncIndent
 		<< Generator::Indent
 		<< "<head>"
-		<< Generator::Break
+		<< Generator::TidyBreak
 		<< Generator::IncIndent;
 
 	// <head>
@@ -668,7 +668,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 	{
 		ostream
 			<< XMLEncode (component)
-			<< Generator::Break;
+			<< Generator::TidyBreak;
 	}
 
 	for (const auto & unit : getUnits ())
@@ -677,7 +677,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		{
 			ostream
 				<< XMLEncode (unit)
-				<< Generator::Break;
+				<< Generator::TidyBreak;
 		}
 	}
 
@@ -695,7 +695,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 			<< XMLEncode (metaData .second)
 			<< "'"
 			<< "/>"
-			<< Generator::Break;
+			<< Generator::TidyBreak;
 	}
 
 	// </head>
@@ -704,10 +704,10 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::Indent
 		<< "</head>"
-		<< Generator::Break
+		<< Generator::TidyBreak
 		<< Generator::Indent
 		<< "<Scene>"
-		<< Generator::Break
+		<< Generator::TidyBreak
 		<< Generator::IncIndent;
 
 	// <Scene>
@@ -724,7 +724,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		{
 			ostream
 				<< XMLEncode (exportedNode .second)
-				<< Generator::Break;
+				<< Generator::TidyBreak;
 		}
 		catch (const X3DError &)
 		{ }
@@ -739,10 +739,10 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::Indent
 		<< "</Scene>"
-		<< Generator::Break
+		<< Generator::TidyBreak
 		<< Generator::DecIndent
 		<< "</X3D>"
-		<< Generator::Break
+		<< Generator::TidyBreak
 		<< std::flush;
 }
 
@@ -1024,11 +1024,8 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 					<< "@name"
 					<< '"'
 					<< ':'
-					<< Generator::TidySpace;
-
-				SFString (metaData .first) .toJSONStream (ostream);
-
-				ostream
+					<< Generator::TidySpace
+					<< JSONEncode (SFString (metaData .first))
 					<< ','
 					<< Generator::TidyBreak;
 		
@@ -1038,11 +1035,8 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 					<< "@content"
 					<< '"'
 					<< ':'
-					<< Generator::TidySpace;
-
-				SFString (metaData .second) .toJSONStream (ostream);
-
-				ostream
+					<< Generator::TidySpace
+					<< JSONEncode (SFString (metaData .second))
 					<< Generator::TidyBreak;
 		
 				ostream

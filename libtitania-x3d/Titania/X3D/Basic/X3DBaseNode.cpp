@@ -1526,7 +1526,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 	{
 		ostream
 			<< ">"
-			<< Generator::Break
+			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
 		if (canUserDefinedFields ())
@@ -1574,7 +1574,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 					{
 						ostream
 							<< "/>"
-							<< Generator::Break;
+							<< Generator::TidyBreak;
 					}
 					else
 					{
@@ -1589,14 +1589,14 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 								ostream
 									<< ">"
-									<< Generator::Break
+									<< Generator::TidyBreak
 									<< Generator::IncIndent
 									<< XMLEncode (field)
-									<< Generator::Break
+									<< Generator::TidyBreak
 									<< Generator::DecIndent
 									<< Generator::Indent
 									<< "</field>"
-									<< Generator::Break;
+									<< Generator::TidyBreak;
 
 								Generator::PopContainerField ();
 
@@ -1610,7 +1610,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 									<< XMLEncode (field)
 									<< "'"
 									<< "/>"
-									<< Generator::Break;
+									<< Generator::TidyBreak;
 
 								break;
 							}
@@ -1624,7 +1624,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 					ostream
 						<< "/>"
-						<< Generator::Break;
+						<< Generator::TidyBreak;
 				}
 			}
 		}
@@ -1634,7 +1634,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			ostream
 				<< Generator::Indent
 				<< "<IS>"
-				<< Generator::Break
+				<< Generator::TidyBreak
 				<< Generator::IncIndent;
 
 			for (const auto & field : references)
@@ -1653,7 +1653,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 						<< XMLEncode (reference -> getName ())
 						<< "'"
 						<< "/>"
-						<< Generator::Break;
+						<< Generator::TidyBreak;
 				}
 			}
 
@@ -1661,7 +1661,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				<< Generator::DecIndent
 				<< Generator::Indent
 				<< "</IS>"
-				<< Generator::Break;
+				<< Generator::TidyBreak;
 		}
 
 		for (const auto & field : childNodes)
@@ -1670,7 +1670,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 			ostream
 				<< XMLEncode (field)
-				<< Generator::Break;
+				<< Generator::TidyBreak;
 
 			Generator::PopContainerField ();
 		}
@@ -1683,7 +1683,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 					<< "<![CDATA["
 					<< escape_cdata (value)
 					<< "]]>"
-					<< Generator::Break;
+					<< Generator::TidyBreak;
 			}
 		}
 

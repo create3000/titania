@@ -536,7 +536,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 	{
 		ostream
 			<< ">"
-			<< Generator::Break
+			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
 		if (not fields .empty ())
@@ -588,20 +588,20 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 							{
 								ostream
 									<< "/>"
-									<< Generator::Break;
+									<< Generator::TidyBreak;
 							}
 							else
 							{
 								ostream
 									<< ">"
-									<< Generator::Break
+									<< Generator::TidyBreak
 									<< Generator::IncIndent
 									<< XMLEncode (field)
-									<< Generator::Break
+									<< Generator::TidyBreak
 									<< Generator::DecIndent
 									<< Generator::Indent
 									<< "</fieldValue>"
-									<< Generator::Break;
+									<< Generator::TidyBreak;
 							}
 	
 							break;
@@ -620,14 +620,14 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 									<< XMLEncode (field -> getName ())
 									<< "'"
 									<< ">"
-									<< Generator::Break
+									<< Generator::TidyBreak
 									<< Generator::IncIndent
 									<< XMLEncode (field)
-									<< Generator::Break
+									<< Generator::TidyBreak
 									<< Generator::DecIndent
 									<< Generator::Indent
 									<< "</fieldValue>"
-									<< Generator::Break;
+									<< Generator::TidyBreak;
 	
 								break;
 							}
@@ -648,7 +648,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 								<< XMLEncode (field)
 								<< "'"
 								<< "/>"
-								<< Generator::Break;
+								<< Generator::TidyBreak;
 	
 							break;
 						}
@@ -665,7 +665,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				ostream
 					<< Generator::Indent
 					<< "<IS>"
-					<< Generator::Break
+					<< Generator::TidyBreak
 					<< Generator::IncIndent;
 	
 				for (const auto & field : references)
@@ -684,7 +684,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 							<< XMLEncode (reference -> getName ())
 							<< "'"
 							<< "/>"
-							<< Generator::Break;
+							<< Generator::TidyBreak;
 					}
 				}
 	
@@ -692,7 +692,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 					<< Generator::DecIndent
 					<< Generator::Indent
 					<< "</IS>"
-					<< Generator::Break;
+					<< Generator::TidyBreak;
 			}
 		}
 
@@ -702,7 +702,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			{
 				ostream
 					<< XMLEncode (metadata)
-					<< Generator::Break;
+					<< Generator::TidyBreak;
 			}
 		}
 

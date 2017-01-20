@@ -1030,18 +1030,18 @@ template <class ValueType>
 void
 X3DArrayField <ValueType>::toXMLStream (std::ostream & ostream) const
 {
-	if (not empty ())
-	{
-		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
-		{
-			ostream
-				<< XMLEncode (value)
-				<< X3DGenerator::Comma
-				<< X3DGenerator::Space;
-		}
+	if (empty ())
+		return;
 
-		ostream << XMLEncode (back ());
+	for (const auto & value : std::make_pair (cbegin (), cend () - 1))
+	{
+		ostream
+			<< XMLEncode (value)
+			<< X3DGenerator::Comma
+			<< X3DGenerator::TidySpace;
 	}
+
+	ostream << XMLEncode (back ());
 }
 
 template <class ValueType>

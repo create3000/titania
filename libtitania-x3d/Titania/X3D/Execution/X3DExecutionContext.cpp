@@ -1525,21 +1525,21 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 	{
 		ostream
 			<< XMLEncode (externProto)
-			<< Generator::Break;
+			<< Generator::TidyBreak;
 	}
 
 	for (const auto & proto : getProtoDeclarations ())
 	{
 		ostream
 			<< XMLEncode (proto)
-			<< Generator::Break;
+			<< Generator::TidyBreak;
 	}
 
 	if (not getRootNodes () .empty ())
 	{
 		ostream
 			<< XMLEncode (getRootNodes ())
-			<< Generator::Break;
+			<< Generator::TidyBreak;
 	}
 
 	for (const auto & importedNode : getImportedNodes ())
@@ -1548,7 +1548,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		{
 			ostream
 				<< XMLEncode (importedNode .second)
-				<< Generator::Break;
+				<< Generator::TidyBreak;
 		}
 		catch (const X3DError &)
 		{ }
@@ -1560,7 +1560,7 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		{
 			ostream
 				<< XMLEncode (route)
-				<< Generator::Break;
+				<< Generator::TidyBreak;
 		}
 		catch (const X3DError &)
 		{ }

@@ -352,7 +352,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 		<< XMLEncode (getName ())
 		<< "'"
 		<< ">"
-		<< Generator::Break;
+		<< Generator::TidyBreak;
 
 	// <ProtoInterface>
 
@@ -366,7 +366,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 			<< Generator::IncIndent
 			<< Generator::Indent
 			<< "<ProtoInterface>"
-			<< Generator::Break
+			<< Generator::TidyBreak
 			<< Generator::IncIndent;
 
 		for (const auto & field : userDefinedFields)
@@ -391,7 +391,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 			{
 				ostream
 					<< "/>"
-					<< Generator::Break;
+					<< Generator::TidyBreak;
 			}
 			else
 			{
@@ -404,14 +404,14 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 
 						ostream
 							<< ">"
-							<< Generator::Break
+							<< Generator::TidyBreak
 							<< Generator::IncIndent
 							<< XMLEncode (field)
-							<< Generator::Break
+							<< Generator::TidyBreak
 							<< Generator::DecIndent
 							<< Generator::Indent
 							<< "</field>"
-							<< Generator::Break;
+							<< Generator::TidyBreak;
 
 						Generator::PopContainerField ();
 
@@ -425,7 +425,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 							<< XMLEncode (field)
 							<< "'"
 							<< "/>"
-							<< Generator::Break;
+							<< Generator::TidyBreak;
 
 						break;
 					}
@@ -437,7 +437,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 			<< Generator::DecIndent
 			<< Generator::Indent
 			<< "</ProtoInterface>"
-			<< Generator::Break
+			<< Generator::TidyBreak
 			<< Generator::DecIndent;
 	}
 
@@ -451,7 +451,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 		<< Generator::IncIndent
 		<< Generator::Indent
 		<< "<ProtoBody>"
-		<< Generator::Break
+		<< Generator::TidyBreak
 		<< Generator::IncIndent;
 
 	X3DExecutionContext::toXMLStream (ostream);
@@ -460,7 +460,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 		<< Generator::DecIndent
 		<< Generator::Indent
 		<< "</ProtoBody>"
-		<< Generator::Break
+		<< Generator::TidyBreak
 		<< Generator::DecIndent;
 
 	// </ProtoBody>

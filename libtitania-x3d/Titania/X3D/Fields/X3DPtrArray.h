@@ -524,14 +524,14 @@ X3DPtrArray <ValueType>::toXMLStream (std::ostream & ostream) const
 			{
 				ostream
 					<< XMLEncode (value)
-					<< Generator::Break;
+					<< Generator::TidyBreak;
 			}
 			else
 			{
 				ostream
 					<< Generator::Indent
 					<< "<!-- NULL -->"
-					<< Generator::Break;
+					<< Generator::TidyBreak;
 			}
 		}
 

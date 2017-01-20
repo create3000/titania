@@ -130,7 +130,7 @@ Generator::SmallStyle ()
 	space     = " ";
 	tidySpace = "";
 	endl      = "\n";
-	tidyBreak = "";
+	tidyBreak = "\n";
 	listBreak = "";
 	comma     = ",";
 
