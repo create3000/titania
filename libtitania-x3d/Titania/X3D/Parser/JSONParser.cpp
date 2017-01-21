@@ -87,26 +87,27 @@ JSONParser::parseIntoScene ()
 
 	osstream << istream .rdbuf ();
 
+	const auto string = osstream .str ();
+
 	// Parse JSON.
 
-	enum json_tokener_error jerror;
+	const auto jtokener = json_tokener_new_ex (10000);
+	const auto jobj     = json_tokener_parse_ex (jtokener, string .c_str (), string .size ());
+	const auto jerror   = json_tokener_get_error (jtokener);
 
-	json_object* const jobj = json_tokener_parse_verbose (osstream .str () .c_str (), &jerror);
+	const std::string jerrorString = json_tokener_error_desc (jerror);
 
-	if (jerror not_eq json_tokener_success)
-	{
-		const std::string jerrorString = json_tokener_error_desc (jerror);
-
-		throw Error <INVALID_X3D> ("Invalid X3D: " + jerrorString);
-	}
-
-	//
+	// Parse scene.
 
 	jsonObject (jobj);
 
-	// Delete the JSON object.
+	// Delete the JSON object and tokener.
 
 	json_object_put (jobj);
+	json_tokener_free (jtokener);
+
+	if (jerror not_eq json_tokener_success)
+		throw Error <INVALID_X3D> ("Invalid X3D: " + jerrorString);
 }
 
 void
