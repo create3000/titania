@@ -175,6 +175,9 @@ private:
 	///  @name Operations
 
 	void
+	xmlElement (xmlpp::Element* const xmlElement);
+
+	void
 	svgElement (xmlpp::Element* const xmlElement);
 
 	bool
@@ -334,9 +337,6 @@ private:
 
 	X3D::X3DPtr <X3D::Appearance>
 	getStrokeAppearance (const Style & strokeStyle);
-
-//	Matrix3d
-//	getTransformationMatrix () const;
 
 	///  @name Members
 

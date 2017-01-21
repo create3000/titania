@@ -91,7 +91,7 @@ JSONParser::parseIntoScene ()
 
 	// Parse JSON.
 
-	const auto jtokener = json_tokener_new_ex (10000);
+	const auto jtokener = json_tokener_new_ex (100'000);
 	const auto jobj     = json_tokener_parse_ex (jtokener, string .c_str (), string .size ());
 	const auto jerror   = json_tokener_get_error (jtokener);
 
@@ -144,12 +144,24 @@ JSONParser::x3dObject (json_object* const jobj)
 
 	if (profileString (json_object_object_get (jobj, "@profile"), profileCharacters))
 	{
-		scene -> setProfile (getBrowser () -> getProfile (profileCharacters));
+		try
+		{
+			scene -> setProfile (getBrowser () -> getProfile (profileCharacters));
+		}
+		catch (const X3D::X3DError & error)
+		{
+			getBrowser () -> println (error .what ());
+		}
 	}
 
 	if (versionString (json_object_object_get (jobj, "@version"), specificationVersionCharacters))
 	{
-		scene -> setSpecificationVersion (specificationVersionCharacters);
+		try
+		{
+			scene -> setSpecificationVersion (specificationVersionCharacters);
+		}
+		catch (const X3D::X3DError &)
+		{ }
 	}
 
 	headObject (json_object_object_get (jobj, "head"));
@@ -223,16 +235,24 @@ JSONParser::componentObject (json_object* const jobj)
 
 		if (componentSupportLevelNumber (json_object_object_get (jobj, "@level"), componentSupportLevel))
 		{
-			const auto component = getBrowser () -> getComponent (componentNameCharacters, componentSupportLevel);
+			try
+			{
+				const auto component = getBrowser () -> getComponent (componentNameCharacters, componentSupportLevel);
 
-			scene -> updateComponent (component);
-			return;
+				scene -> updateComponent (component);
+				return;
+			}
+			catch (const X3D::X3DError & error)
+			{
+				getBrowser () -> println (error .what ());
+				return;
+			}
 		}
-
-		getBrowser () -> println ("Expected a component support level.");
+		else
+			getBrowser () -> println ("Expected a component support level.");
 	}
-
-	getBrowser () -> println ("Expected a component name.");
+	else
+		getBrowser () -> println ("Expected a component name.");
 }
 
 void
@@ -282,14 +302,14 @@ JSONParser::unitObject (json_object* const jobj)
 					return;
 				}
 			}
-
-			getBrowser () -> println ("Expected unit conversion factor.");
+			else
+				getBrowser () -> println ("Expected unit conversion factor.");
 		}
-
-		getBrowser () -> println ("Expected unit name identificator.");
+		else
+			getBrowser () -> println ("Expected unit name identificator.");
 	}
-
-	getBrowser () -> println ("Expected category name identificator after UNIT statement.");
+	else
+		getBrowser () -> println ("Expected category name identificator after UNIT statement.");
 }
 
 void
@@ -327,11 +347,11 @@ JSONParser::metaObject (json_object* const jobj)
 			scene -> addMetaData (metakeyCharacters, metavalueCharacters);
 			return;
 		}
-
-		getBrowser () -> println ("Expected metadata value.");
+		else
+			getBrowser () -> println ("Expected metadata value.");
 	}
-
-	getBrowser () -> println ("Expected metadata key.");
+	else
+		getBrowser () -> println ("Expected metadata key.");
 }
 
 void

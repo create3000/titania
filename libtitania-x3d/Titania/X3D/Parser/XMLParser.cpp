@@ -52,8 +52,22 @@
 
 #include <libxml++/libxml++.h>
 
+#include "../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
+
+class XMLGrammar
+{
+public:
+
+	static const io::number <double>  DoubleValue;
+	static const io::number <int32_t> IntegerValue;
+
+};
+
+const io::number <double>  XMLGrammar::DoubleValue;
+const io::number <int32_t> XMLGrammar::IntegerValue;
 
 XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	X3DParser (),
@@ -65,8 +79,6 @@ XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::is
 	xmlParser -> set_throw_messages (true);
 	xmlParser -> set_validate (false);
 	xmlParser -> set_include_default_attributes (true);
-
-
 }
 
 void
@@ -84,7 +96,7 @@ XMLParser::parseIntoScene ()
 		const auto xmlDocument = xmlParser -> get_document ();
 
 		if (xmlDocument)
-			x3dElement (xmlDocument -> get_root_node ());
+			xmlElement (xmlDocument -> get_root_node ());
 	}
 	catch (const X3DError & error)
 	{
@@ -98,11 +110,244 @@ XMLParser::parseIntoScene ()
 }
 
 void
+XMLParser::xmlElement (xmlpp::Element* const xmlElement)
+{
+	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
+
+	static const std::map <std::string, ElementsFunction> elementsIndex = {
+		std::make_pair ("X3D", std::mem_fn (&XMLParser::x3dElement)),
+	};
+
+	try
+	{
+		if (not xmlElement)
+			return;
+
+		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
+	}
+	catch (const std::out_of_range &)
+	{ }
+}
+
+void
 XMLParser::x3dElement (xmlpp::Element* const xmlElement)
 {
-	if (not xmlElement)
-		return;
+	std::string profileCharacters;
+	std::string specificationVersionCharacters;
 
+	if (stringAttribute (xmlElement -> get_attribute ("profile"), profileCharacters))
+	{
+		try
+		{
+			scene -> setProfile (getBrowser () -> getProfile (profileCharacters));
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	if (stringAttribute (xmlElement -> get_attribute ("version"), specificationVersionCharacters))
+	{
+		try
+		{
+			scene -> setSpecificationVersion (specificationVersionCharacters);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	// Parse children.
+
+	for (const auto & xmlNode : xmlElement -> get_children ())
+		x3dChild (dynamic_cast <xmlpp::Element*> (xmlNode));
+}
+
+void
+XMLParser::x3dChild (xmlpp::Element* const xmlElement)
+{
+	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
+
+	static const std::map <std::string, ElementsFunction> elementsIndex = {
+		std::make_pair ("head",  std::mem_fn (&XMLParser::headElement)),
+		std::make_pair ("Scene", std::mem_fn (&XMLParser::sceneElement)),
+	};
+
+	try
+	{
+		if (not xmlElement)
+			return;
+
+		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
+	}
+	catch (const std::out_of_range &)
+	{ }
+}
+
+void
+XMLParser::headElement (xmlpp::Element* const xmlElement)
+{
+	for (const auto & xmlNode : xmlElement -> get_children ())
+		headChild (dynamic_cast <xmlpp::Element*> (xmlNode));
+}
+
+void
+XMLParser::headChild (xmlpp::Element* const xmlElement)
+{
+	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
+
+	static const std::map <std::string, ElementsFunction> elementsIndex = {
+		std::make_pair ("component", std::mem_fn (&XMLParser::componentElement)),
+		std::make_pair ("unit",      std::mem_fn (&XMLParser::unitElement)),
+		std::make_pair ("meta",      std::mem_fn (&XMLParser::metaElement)),
+	};
+
+	try
+	{
+		if (not xmlElement)
+			return;
+
+		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
+	}
+	catch (const std::out_of_range &)
+	{ }
+}
+
+void
+XMLParser::componentElement (xmlpp::Element* const xmlElement)
+{
+	std::string componentNameCharacters;
+
+	if (stringAttribute (xmlElement -> get_attribute ("name"), componentNameCharacters))
+	{
+		int32_t componentSupportLevel;
+
+		if (integerAttribute (xmlElement -> get_attribute ("level"), componentSupportLevel))
+		{
+			try
+			{
+				const auto component = getBrowser () -> getComponent (componentNameCharacters, componentSupportLevel);
+
+				scene -> updateComponent (component);
+				return;
+			}
+			catch (const X3D::X3DError & error)
+			{
+				getBrowser () -> println (error .what ());
+				return;
+			}
+		}
+		else
+			getBrowser () -> println ("Expected a component support level.");
+	}
+	else
+		getBrowser () -> println ("Expected a component name.");
+}
+
+void
+XMLParser::unitElement (xmlpp::Element* const xmlElement)
+{
+	std::string categoryNameCharacters;
+
+	if (stringAttribute (xmlElement -> get_attribute ("category"), categoryNameCharacters))
+	{
+		std::string unitNameCharacters;
+
+		if (stringAttribute (xmlElement -> get_attribute ("name"), unitNameCharacters))
+		{
+			double unitConversionFactor;
+
+			if (floatAttribute (xmlElement -> get_attribute ("conversionFactor"), unitConversionFactor))
+			{
+				try
+				{
+					scene -> updateUnit (categoryNameCharacters, unitNameCharacters, unitConversionFactor);
+					return;
+				}
+				catch (const X3DError & error)
+				{
+					getBrowser () -> println (error .what ());
+					return;
+				}
+			}
+			else
+				getBrowser () -> println ("Expected unit conversion factor.");
+		}
+		else
+			getBrowser () -> println ("Expected unit name identificator.");
+	}
+	else
+		getBrowser () -> println ("Expected category name identificator after UNIT statement.");
+}
+
+void
+XMLParser::metaElement (xmlpp::Element* const xmlElement)
+{
+	std::string metakeyCharacters;
+
+	if (stringAttribute (xmlElement -> get_attribute ("name"), metakeyCharacters))
+	{
+		std::string metavalueCharacters;
+
+		if (stringAttribute (xmlElement -> get_attribute ("content"), metavalueCharacters))
+		{
+__LOG__ << metakeyCharacters << std::endl;
+__LOG__ << metavalueCharacters << std::endl;
+			scene -> addMetaData (metakeyCharacters, metavalueCharacters);
+			return;
+		}
+		else
+			getBrowser () -> println ("Expected metadata value.");
+	}
+	else
+		getBrowser () -> println ("Expected metadata key.");
+}
+
+void
+XMLParser::sceneElement (xmlpp::Element* const xmlElement)
+{
+
+}
+
+bool
+XMLParser::floatAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
+{
+	if (not xmlAttribute)
+		return false;
+
+	// TODO: Trim and check for count?
+
+	std::istringstream istream (xmlAttribute -> get_value ());
+
+	istream .imbue (std::locale::classic ());
+
+	return XMLGrammar::DoubleValue (istream, value);
+}
+
+bool
+XMLParser::integerAttribute (xmlpp::Attribute* const xmlAttribute, int32_t & value)
+{
+	if (not xmlAttribute)
+		return false;
+
+	// TODO: Trim and check for count?
+
+	std::istringstream istream (xmlAttribute -> get_value ());
+
+	istream .imbue (std::locale::classic ());
+
+	return XMLGrammar::IntegerValue (istream, value);
+}
+
+bool
+XMLParser::stringAttribute (xmlpp::Attribute* const xmlAttribute, std::string & value)
+{
+	if (not xmlAttribute)
+		return false;
+
+	// TODO: Trim? but not meta!
+
+	value = xmlAttribute -> get_value ();
+
+	return true;
 }
 
 XMLParser::~XMLParser ()

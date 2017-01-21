@@ -53,6 +53,7 @@
 #include "../Fields.h"
 #include "../Browser/Sound/MediaStream.h"
 #include "../Parser/JSONParser.h"
+#include "../Parser/XMLParser.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Autodesk/Parser.h"
 #include "../Parser/SVG/Parser.h"
@@ -266,9 +267,9 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 			std::make_pair ("model/vrml",                       &golden_x3dv),
 			std::make_pair ("x-world/x-vrml",                   &golden_x3dv),
 			std::make_pair ("model/x3d+vrml",                   &golden_x3dv),
-			std::make_pair ("model/x3d+xml",                    &golden_x3d),
-			std::make_pair ("application/xml",                  &golden_x3d),
-			std::make_pair ("application/vnd.hzn-3d-crossword", &golden_x3d),
+			std::make_pair ("model/x3d+xml",                    &golden_parser <XMLParser>),
+			std::make_pair ("application/xml",                  &golden_parser <XMLParser>),
+			std::make_pair ("application/vnd.hzn-3d-crossword", &golden_parser <XMLParser>),
 			std::make_pair ("application/json",                 &golden_parser <JSONParser>),
 			std::make_pair ("application/ogg",                  &golden_video),
 			std::make_pair ("application/x-3ds",                &golden_parser <Autodesk::Parser>),
@@ -288,10 +289,10 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 			std::make_pair (".x3dv.gz",  &golden_x3dv), /// Todo: does not work with URI::suffix
 			std::make_pair (".x3dv",     &golden_x3dv),
 			// X3D XML Encoding 
-			std::make_pair (".x3d",      &golden_x3d),
-			std::make_pair (".x3dz",     &golden_x3d),
-			std::make_pair (".x3d.gz",   &golden_x3d), /// Todo: does not work with URI::suffix
-			std::make_pair (".xml",      &golden_x3d),
+			std::make_pair (".x3d",      &golden_parser <XMLParser>),
+			std::make_pair (".x3dz",     &golden_parser <XMLParser>),
+			std::make_pair (".x3d.gz",   &golden_parser <XMLParser>), /// Todo: does not work with URI::suffix
+			std::make_pair (".xml",      &golden_parser <XMLParser>),
 			// X3D XML Encoding 
 			std::make_pair (".json",     &golden_parser <JSONParser>),
 			// Autodesk 3DS Max

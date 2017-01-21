@@ -199,7 +199,7 @@ Parser::parseIntoScene ()
 		const auto xmlDocument = xmlParser -> get_document ();
 
 		if (xmlDocument)
-			svgElement (xmlDocument -> get_root_node ());
+			xmlElement (xmlDocument -> get_root_node ());
 	}
 	catch (const X3DError & error)
 	{
@@ -213,11 +213,28 @@ Parser::parseIntoScene ()
 }
 
 void
+Parser::xmlElement (xmlpp::Element* const xmlElement)
+{
+	using ElementsFunction = std::function <void (Parser*, xmlpp::Element* const)>;
+
+	static const std::map <std::string, ElementsFunction> elementsIndex = {
+		std::make_pair ("svg", std::mem_fn (&Parser::svgElement)),
+	};
+
+	try
+	{
+		if (not xmlElement)
+			return;
+
+		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
+	}
+	catch (const std::out_of_range &)
+	{ }
+}
+
+void
 Parser::svgElement (xmlpp::Element* const xmlElement)
 {
-	if (not xmlElement)
-		return;
-
 	// Get attributes of svg element.
 
 	double        width  = 0;
@@ -2847,24 +2864,6 @@ Parser::getStrokeAppearance (const Style & style)
 
 	return appearanceNode;
 }
-
-//Matrix3d
-//Parser::getTransformationMatrix () const
-//{
-//	X3D::Matrix4d m;
-//	X3D::Vector2d t, s;
-//	double        r, so;
-//
-//	for (const auto & groupNode : basic::make_reverse_range (std::make_pair (groupNodes .begin () + 1, groupNodes .end ())))
-//		m *= groupNode -> getMatrix ();
-//
-//	Matrix3d matrix (m [0] [0], m [0] [1], 0, m [1] [0], m [1] [1], 0, m [3] [0], m [3] [1], 1);
-//
-//	matrix .get (t, r, s, so);
-//	matrix .set (X3D::Vector2d (t .x (), -t .y ()), -r, s, -so);
-//
-//	return matrix;
-//}
 
 Parser::~Parser ()
 { }

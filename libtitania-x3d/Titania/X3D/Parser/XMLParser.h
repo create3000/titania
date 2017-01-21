@@ -96,7 +96,40 @@ private:
 	{ return scene -> getBrowser (); }
 
 	void
+	xmlElement (xmlpp::Element* const xmlElement);
+
+	void
 	x3dElement (xmlpp::Element* const xmlElement);
+
+	void
+	x3dChild (xmlpp::Element* const xmlElement);
+
+	void
+	headElement (xmlpp::Element* const xmlElement);
+	
+	void
+	headChild (xmlpp::Element* const xmlElement);
+	
+	void
+	componentElement (xmlpp::Element* const xmlElement);
+	
+	void
+	unitElement (xmlpp::Element* const xmlElement);
+	
+	void
+	metaElement (xmlpp::Element* const xmlElement);
+
+	void
+	sceneElement (xmlpp::Element* const xmlElement);
+
+	bool
+	floatAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
+
+	bool
+	integerAttribute (xmlpp::Attribute* const xmlAttribute, int32_t & value);
+
+	bool
+	stringAttribute (xmlpp::Attribute* const xmlAttribute, std::string & value);
 
 	///  @name Members
 
