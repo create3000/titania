@@ -289,8 +289,6 @@ XMLParser::metaElement (xmlpp::Element* const xmlElement)
 
 		if (stringAttribute (xmlElement -> get_attribute ("content"), metavalueCharacters))
 		{
-__LOG__ << metakeyCharacters << std::endl;
-__LOG__ << metavalueCharacters << std::endl;
 			scene -> addMetaData (metakeyCharacters, metavalueCharacters);
 			return;
 		}
