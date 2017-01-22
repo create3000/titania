@@ -711,7 +711,7 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 		const auto metadata = node -> getField ("metadata");
 
 		if (metadata -> getType () == X3DConstants::SFNode)
-			fieldTypeObject (json_object_object_get (jobj, "-metadata"), metadata);
+			fieldValueValue (json_object_object_get (jobj, "-metadata"), metadata);
 
 		fieldValueArray (json_object_object_get (jobj, "fieldValue"), node);
 	}
@@ -743,11 +743,11 @@ JSONParser::nodeFieldsObject (json_object* const jobj, const SFNode & node)
 		{
 			case X3DConstants::SFNode:
 			case X3DConstants::MFNode:
-				fieldTypeObject (json_object_object_get (jobj, ("-" + field -> getName ()) .c_str ()), field);
+				fieldValueValue (json_object_object_get (jobj, ("-" + field -> getName ()) .c_str ()), field);
 				break;
 
 			default:
-				fieldTypeObject (json_object_object_get (jobj, ("@" + field -> getName ()) .c_str ()), field);
+				fieldValueValue (json_object_object_get (jobj, ("@" + field -> getName ()) .c_str ()), field);
 				break;
 		}
 	}
@@ -795,7 +795,7 @@ JSONParser::fieldValueObject (json_object* const jobj, const SFNode & node)
 					{
 						MFNode value;
 	
-						if (fieldTypeObject (json_object_object_get (jobj, "-children"), &value))
+						if (fieldValueValue (json_object_object_get (jobj, "-children"), &value))
 						{
 							if (not value .empty ())
 								*static_cast <SFNode*> (field) = value [0];
@@ -804,10 +804,10 @@ JSONParser::fieldValueObject (json_object* const jobj, const SFNode & node)
 						break;
 					}
 					case X3DConstants::MFNode:
-						fieldTypeObject (json_object_object_get (jobj, "-children"), field);
+						fieldValueValue (json_object_object_get (jobj, "-children"), field);
 						break;
 					default:
-						fieldTypeObject (json_object_object_get (jobj, "@value"), field);
+						fieldValueValue (json_object_object_get (jobj, "@value"), field);
 						break;
 				}
 			}
@@ -877,7 +877,7 @@ JSONParser::fieldObject (json_object* const jobj, X3DBaseNode* const baseNode)
 								{
 									MFNode value;
 
-									if (fieldTypeObject (json_object_object_get (jobj, "-children"), &value))
+									if (fieldValueValue (json_object_object_get (jobj, "-children"), &value))
 									{
 										if (not value .empty ())
 											*static_cast <SFNode*> (field) = value [0];
@@ -886,10 +886,10 @@ JSONParser::fieldObject (json_object* const jobj, X3DBaseNode* const baseNode)
 									break;
 								}
 								case X3DConstants::MFNode:
-									fieldTypeObject (json_object_object_get (jobj, "-children"), field);
+									fieldValueValue (json_object_object_get (jobj, "-children"), field);
 									break;
 								default:
-									fieldTypeObject (json_object_object_get (jobj, "@value"), field);
+									fieldValueValue (json_object_object_get (jobj, "@value"), field);
 									break;
 							}
 						}
@@ -1010,9 +1010,9 @@ JSONParser::connectObject (json_object* const jobj, const SFNode & node)
 }
 
 bool
-JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const field)
+JSONParser::fieldValueValue (json_object* const jobj, X3DFieldDefinition* const field)
 {
-	if (fieldTypeObjectSwitch (jobj, field))
+	if (fieldValueValueSwitch (jobj, field))
 	{
 		field -> isSet (true);
 		return true;
@@ -1022,7 +1022,7 @@ JSONParser::fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const 
 }
 
 bool
-JSONParser::fieldTypeObjectSwitch (json_object* const jobj, X3DFieldDefinition* const field)
+JSONParser::fieldValueValueSwitch (json_object* const jobj, X3DFieldDefinition* const field)
 {
 	switch (field -> getType ())
 	{

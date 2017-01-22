@@ -122,6 +122,33 @@ private:
 	void
 	sceneElement (xmlpp::Element* const xmlElement);
 
+	void
+	childrenElements (xmlpp::Element* const xmlElement);
+	
+	void
+	childElement (xmlpp::Element* const xmlElement);
+	
+	void
+	externProtoDeclareElement (xmlpp::Element* const xmlElement);
+	
+	void
+	protoDeclareElement (xmlpp::Element* const xmlElement);
+	
+	void
+	protoInstanceElement (xmlpp::Element* const xmlElement);
+
+	void
+	nodeElement (xmlpp::Element* const xmlElement);
+
+	void
+	routeElement (xmlpp::Element* const xmlElement);
+	
+	void
+	importElement (xmlpp::Element* const xmlElement);
+	
+	void
+	exportElement (xmlpp::Element* const xmlElement);
+
 	bool
 	floatAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
 
@@ -130,6 +157,39 @@ private:
 
 	bool
 	stringAttribute (xmlpp::Attribute* const xmlAttribute, std::string & value);
+	
+	bool
+	useAttribute (xmlpp::Element* const xmlElement);
+	
+	void
+	defAttribute (xmlpp::Element* const xmlElement, const SFNode & node);
+
+	void
+	fieldAttributes (xmlpp::Element* const xmlElement, const SFNode & node);
+
+	void
+	fieldAttribute (xmlpp::Attribute* const xmlAttribute, const SFNode & node);
+
+	void
+	fieldValue (X3DFieldDefinition* const field, const std::string & value);
+
+	void
+	addNode (xmlpp::Element* const xmlElement, const SFNode & node);
+
+	///  @name Execution context handling
+
+	void
+	pushExecutionContext (X3DExecutionContext* const executionContext);
+	
+	void
+	popExecutionContext ();
+	
+	X3DExecutionContext*
+	getExecutionContext () const;
+
+	///  @name Member types
+
+	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
 
 	///  @name Members
 
@@ -138,6 +198,9 @@ private:
 	std::istream &    istream;
 
 	const std::unique_ptr <xmlpp::DomParser> xmlParser;
+
+	ExecutionContextStack         executionContextStack;
+	std::vector <X3DChildObject*> parents;
 
 };
 

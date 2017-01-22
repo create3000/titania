@@ -104,7 +104,11 @@ public:
 
 private:
 
-	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
+	///  @name Friends
+
+	friend class XMLParser;
+
+	///  @name Operations
 
 	X3DBrowser*
 	getBrowser () const
@@ -530,6 +534,10 @@ private:
 
 	X3DFieldDefinition*
 	createField (const std::type_info &);
+
+	///  @name Member types
+
+	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
 
 	///  @name Static members
 

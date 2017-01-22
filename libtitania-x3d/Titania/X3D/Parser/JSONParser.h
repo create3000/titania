@@ -217,10 +217,10 @@ private:
 	{ return stringValue (jobj, value); }
 
 	bool
-	fieldTypeObject (json_object* const jobj, X3DFieldDefinition* const field);
+	fieldValueValue (json_object* const jobj, X3DFieldDefinition* const field);
 
 	bool
-	fieldTypeObjectSwitch (json_object* const jobj, X3DFieldDefinition* const field);
+	fieldValueValueSwitch (json_object* const jobj, X3DFieldDefinition* const field);
 
 	///  @name Value handling
 

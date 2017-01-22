@@ -53,6 +53,8 @@
 #include <libxml++/libxml++.h>
 
 #include "../Browser/X3DBrowser.h"
+#include "../Parser/Filter.h"
+#include "../Parser/Parser.h"
 
 namespace titania {
 namespace X3D {
@@ -70,11 +72,13 @@ const io::number <double>  XMLGrammar::DoubleValue;
 const io::number <int32_t> XMLGrammar::IntegerValue;
 
 XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
-	X3DParser (),
-	    scene (scene),
-	      uri (uri),
-	  istream (istream),
-	xmlParser (new xmlpp::DomParser ())
+	            X3DParser (),
+	                scene (scene),
+	                  uri (uri),
+	              istream (istream),
+	            xmlParser (new xmlpp::DomParser ()),
+	executionContextStack (),
+	              parents ()
 {
 	xmlParser -> set_throw_messages (true);
 	xmlParser -> set_validate (false);
@@ -132,6 +136,8 @@ XMLParser::xmlElement (xmlpp::Element* const xmlElement)
 void
 XMLParser::x3dElement (xmlpp::Element* const xmlElement)
 {
+	pushExecutionContext (scene);
+
 	std::string profileCharacters;
 	std::string specificationVersionCharacters;
 
@@ -159,6 +165,8 @@ XMLParser::x3dElement (xmlpp::Element* const xmlElement)
 
 	for (const auto & xmlNode : xmlElement -> get_children ())
 		x3dChild (dynamic_cast <xmlpp::Element*> (xmlNode));
+
+	popExecutionContext ();
 }
 
 void
@@ -299,10 +307,136 @@ XMLParser::metaElement (xmlpp::Element* const xmlElement)
 		getBrowser () -> println ("Expected metadata key.");
 }
 
+//                   .;;;.   .;;;.
+//                .;;;.  `:::'  .;;;.
+//              .;',:.`;.`;;;'.;'.:.`;.
+//            .;' .:|:. `;;.;;' .:|:. `;.
+//           .;'  `:|:'  .;;;.  `:|:'  `;.
+//           ;;    `:' .;;o o;;. `:'    ;;
+//           `;;     .;;'_.-._`;;.     ;;'
+//             `;;..;':. '.-.' .:`;..;;'
+//                `'   `:.   .:'   `'
+//            MJP        `;";'
+//                 .;;;..;: :;..;;;.
+//               .;'               `;.
+//              .;'  .;.       .;.  `;.
+//   .;`;.     .;'  .;' `;   ;' `;.  `;.     .;';.
+//   ;  ;`;. .;' .;'    .;   ;.    `;. `;. .;';  ;
+//    `'`; `;..;'       ;;   ;;       `;..;' ;'`'
+//     .;'   `;         ;;. .;;         ;'   `;.
+//   .;' ;'.; `;.       ;;;;;;;       .;' ;.`; `;.
+//  ;' .-.   `. `;     .;;' ';;.     ;' .'   .-. `;
+//  `:_).'    ( :'    ;;;'   `:::    `: )    `.(_:'
+//                    `;;     ;;'
+//                     (;     ;)
+//                     ;;.    ;;
+//                     ;;;   ;;;
+//                     ;;'   `;;
+//                     ;'     `;
+//               _____.;       ;._____
+//               )_.-' /       \ `-._(
+//                 ).-'         `-.(
+
 void
 XMLParser::sceneElement (xmlpp::Element* const xmlElement)
 {
+	childrenElements (xmlElement);
+}
 
+void
+XMLParser::childrenElements (xmlpp::Element* const xmlElement)
+{
+	for (const auto & xmlNode : xmlElement -> get_children ())
+		childElement (dynamic_cast <xmlpp::Element*> (xmlNode));
+}
+
+void
+XMLParser::childElement (xmlpp::Element* const xmlElement)
+{
+	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
+
+	static const std::map <std::string, ElementsFunction> elementsIndex = {
+		std::make_pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
+		std::make_pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
+		std::make_pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
+		std::make_pair ("ROUTE",              std::mem_fn (&XMLParser::routeElement)),
+		std::make_pair ("IMPORT",             std::mem_fn (&XMLParser::importElement)),
+		std::make_pair ("EXPORT",             std::mem_fn (&XMLParser::exportElement)),
+	};
+
+	if (not xmlElement)
+		return;
+
+	const auto iter = elementsIndex .find (xmlElement -> get_name ());
+
+	if (iter == elementsIndex .end ())
+		nodeElement (xmlElement);
+	else
+		iter -> second (this, xmlElement);
+}
+
+void
+XMLParser::externProtoDeclareElement (xmlpp::Element* const xmlElement)
+{
+}
+
+void
+XMLParser::protoDeclareElement (xmlpp::Element* const xmlElement)
+{
+}
+
+void
+XMLParser::protoInstanceElement (xmlpp::Element* const xmlElement)
+{
+}
+
+void
+XMLParser::nodeElement (xmlpp::Element* const xmlElement)
+{
+	// USE property
+
+	if (useAttribute (xmlElement))
+		return;
+
+	// Node object
+
+	try
+	{
+		const auto node = scene -> createNode (xmlElement -> get_name ());
+
+		defAttribute (xmlElement, node);
+
+		addNode (xmlElement, node);
+
+		parents .emplace_back (node);
+
+		fieldAttributes (xmlElement, node);
+
+		childrenElements (xmlElement);
+
+		getExecutionContext () -> addUninitializedNode (node);
+
+		parents .pop_back ();
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println (error .what ());
+	}
+}
+
+void
+XMLParser::routeElement (xmlpp::Element* const xmlElement)
+{
+}
+
+void
+XMLParser::importElement (xmlpp::Element* const xmlElement)
+{
+}
+
+void
+XMLParser::exportElement (xmlpp::Element* const xmlElement)
+{
 }
 
 bool
@@ -346,6 +480,333 @@ XMLParser::stringAttribute (xmlpp::Attribute* const xmlAttribute, std::string & 
 	value = xmlAttribute -> get_value ();
 
 	return true;
+}
+
+bool
+XMLParser::useAttribute (xmlpp::Element* const xmlElement)
+{
+	try
+	{
+		std::string nodeNameCharacters;
+	
+		if (stringAttribute (xmlElement -> get_attribute ("USE"), nodeNameCharacters))
+		{
+			filter_bad_utf8_characters (nodeNameCharacters);
+
+			addNode (xmlElement, getExecutionContext () -> getNamedNode (nodeNameCharacters));
+			return true;
+		}
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println ("Invalid USE name: " + std::string (error .what ()));
+	}
+
+	return false;
+}	
+	
+void
+XMLParser::defAttribute (xmlpp::Element* const xmlElement, const SFNode & node)
+{
+	try
+	{
+		std::string nodeNameCharacters;
+	
+		if (stringAttribute (xmlElement -> get_attribute ("DEF"), nodeNameCharacters))
+		{
+			try
+			{
+				filter_bad_utf8_characters (nodeNameCharacters);
+
+				const auto namedNode = getExecutionContext () -> getNamedNode (nodeNameCharacters);
+
+				getExecutionContext () -> updateNamedNode (getExecutionContext () -> getUniqueName (nodeNameCharacters), namedNode);
+			}
+			catch (const X3DError & error)
+			{ }
+
+			getExecutionContext () -> updateNamedNode (nodeNameCharacters, node);
+		}
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println ("Invalid DEF name: " + std::string (error .what ()));
+	}
+}
+
+void
+XMLParser::fieldAttributes (xmlpp::Element* const xmlElement, const SFNode & node)
+{
+	for (const auto & xmlAttribute : xmlElement -> get_attributes ())
+		fieldAttribute (xmlAttribute, node);
+}
+
+void
+XMLParser::fieldAttribute (xmlpp::Attribute* const xmlAttribute, const SFNode & node)
+{
+	try
+	{
+		const auto field = node -> getField (xmlAttribute -> get_name ());
+
+		fieldValue (field, xmlAttribute -> get_value ());
+	}
+	catch (const X3DError & error)
+	{
+		//getBrowser () -> println (error .what ());
+	}
+}
+
+void
+XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & value)
+{
+	field -> isSet (true);
+
+	std::istringstream istream (value);
+
+	istream .imbue (std::locale::classic ());
+
+	Parser parser (istream, scene);
+
+	switch (field -> getType ())
+	{
+		case X3DConstants::SFBool:
+			parser .sfboolValue (static_cast <SFBool*> (field));
+			return;
+
+		case X3DConstants::SFColor:
+			parser .sfcolorValue (static_cast <SFColor*> (field));
+			return;
+
+		case X3DConstants::SFColorRGBA:
+			parser .sfcolorRGBAValue (static_cast <SFColorRGBA*> (field));
+			return;
+
+		case X3DConstants::SFDouble:
+			parser .sfdoubleValue (static_cast <SFDouble*> (field));
+			return;
+
+		case X3DConstants::SFFloat:
+			parser .sffloatValue (static_cast <SFFloat*> (field));
+			return;
+
+		case X3DConstants::SFImage:
+			parser .sfimageValue (static_cast <SFImage*> (field));
+			return;
+
+		case X3DConstants::SFInt32:
+			parser .sfint32Value (static_cast <SFInt32*> (field));
+			return;
+
+		case X3DConstants::SFMatrix3d:
+			parser .sfmatrix3dValue (static_cast <SFMatrix3d*> (field));
+			return;
+
+		case X3DConstants::SFMatrix3f:
+			parser .sfmatrix3fValue (static_cast <SFMatrix3f*> (field));
+			return;
+
+		case X3DConstants::SFMatrix4d:
+			parser .sfmatrix4dValue (static_cast <SFMatrix4d*> (field));
+			return;
+
+		case X3DConstants::SFMatrix4f:
+			parser .sfmatrix4fValue (static_cast <SFMatrix4f*> (field));
+			return;
+
+		case X3DConstants::SFNode:
+			static_cast <SFNode*> (field) -> setValue (nullptr);
+			return;
+
+		case X3DConstants::SFRotation:
+			parser .sfrotationValue (static_cast <SFRotation*> (field));
+			return;
+
+		case X3DConstants::SFString:
+			static_cast <SFString*> (field) -> setValue (value);
+			return;
+
+		case X3DConstants::SFTime:
+			parser .sftimeValue (static_cast <SFTime*> (field));
+			return;
+
+		case X3DConstants::SFVec2d:
+			parser .sfvec2dValue (static_cast <SFVec2d*> (field));
+			return;
+
+		case X3DConstants::SFVec2f:
+			parser .sfvec2fValue (static_cast <SFVec2f*> (field));
+			return;
+
+		case X3DConstants::SFVec3d:
+			parser .sfvec3dValue (static_cast <SFVec3d*> (field));
+			return;
+
+		case X3DConstants::SFVec3f:
+			parser .sfvec3fValue (static_cast <SFVec3f*> (field));
+			return;
+
+		case X3DConstants::SFVec4d:
+			parser .sfvec4dValue (static_cast <SFVec4d*> (field));
+			return;
+
+		case X3DConstants::SFVec4f:
+			parser .sfvec4fValue (static_cast <SFVec4f*> (field));
+			return;
+
+		case X3DConstants::MFBool:
+			parser .sfboolValues (static_cast <MFBool*> (field));
+			return;
+
+		case X3DConstants::MFColor:
+			parser .sfcolorValues (static_cast <MFColor*> (field));
+			return;
+
+		case X3DConstants::MFColorRGBA:
+			parser .sfcolorRGBAValues (static_cast <MFColorRGBA*> (field));
+			return;
+
+		case X3DConstants::MFDouble:
+			parser .sfdoubleValues (static_cast <MFDouble*> (field));
+			return;
+
+		case X3DConstants::MFFloat:
+			parser .sffloatValues (static_cast <MFFloat*> (field));
+			return;
+
+		case X3DConstants::MFImage:
+			parser .sfimageValues (static_cast <MFImage*> (field));
+			return;
+
+		case X3DConstants::MFInt32:
+			parser .sfint32Values (static_cast <MFInt32*> (field));
+			return;
+
+		case X3DConstants::MFMatrix3d:
+			parser .sfmatrix3dValues (static_cast <MFMatrix3d*> (field));
+			return;
+
+		case X3DConstants::MFMatrix3f:
+			parser .sfmatrix3fValues (static_cast <MFMatrix3f*> (field));
+			return;
+
+		case X3DConstants::MFMatrix4d:
+			parser .sfmatrix4dValues (static_cast <MFMatrix4d*> (field));
+			return;
+
+		case X3DConstants::MFMatrix4f:
+			parser .sfmatrix4fValues (static_cast <MFMatrix4f*> (field));
+			return;
+
+		case X3DConstants::MFNode:
+			return;
+
+		case X3DConstants::MFRotation:
+			parser .sfrotationValues (static_cast <MFRotation*> (field));
+			return;
+
+		case X3DConstants::MFString:
+			parser .sfstringValues (static_cast <MFString*> (field));
+			return;
+
+		case X3DConstants::MFTime:
+			parser .sftimeValues (static_cast <MFTime*> (field));
+			return;
+
+		case X3DConstants::MFVec2d:
+			parser .sfvec2dValues (static_cast <MFVec2d*> (field));
+			return;
+
+		case X3DConstants::MFVec2f:
+			parser .sfvec2fValues (static_cast <MFVec2f*> (field));
+			return;
+
+		case X3DConstants::MFVec3d:
+			parser .sfvec3dValues (static_cast <MFVec3d*> (field));
+			return;
+
+		case X3DConstants::MFVec3f:
+			parser .sfvec3fValues (static_cast <MFVec3f*> (field));
+			return;
+
+		case X3DConstants::MFVec4d:
+			parser .sfvec4dValues (static_cast <MFVec4d*> (field));
+			return;
+
+		case X3DConstants::MFVec4f:
+			parser .sfvec4fValues (static_cast <MFVec4f*> (field));
+			return;
+	}
+}
+
+void
+XMLParser::addNode (xmlpp::Element* const xmlElement, const SFNode & node)
+{
+	if (parents .empty ())
+	{
+		scene -> getRootNodes () .emplace_back (node);
+		return;
+	}
+
+	const auto baseNode = dynamic_cast <X3DBaseNode*> (parents .back ());
+
+	if (baseNode)
+	{
+		try
+		{
+			std::string containerFieldCharacters;
+		
+			stringAttribute (xmlElement -> get_attribute ("containerField"), containerFieldCharacters);
+
+			if (containerFieldCharacters .empty ())
+				containerFieldCharacters = node -> getContainerField ();
+
+			const auto field = baseNode -> getField (containerFieldCharacters);
+
+			switch (field -> getType ())
+			{
+				case X3DConstants::SFNode:
+				{
+					const auto sfnode = static_cast <SFNode*> (field);
+
+					sfnode -> setValue (node);
+					sfnode -> isSet (true);
+					return;
+				}
+				case X3DConstants::MFNode:
+				{
+					const auto mfnode = static_cast <MFNode*> (field);
+
+					mfnode -> emplace_back (node);
+					mfnode -> isSet (true);
+					return;
+				}
+				default:
+					return;
+			}
+		}
+		catch (const X3DError &)
+		{ }
+
+		return;
+	}
+}
+
+void
+XMLParser::pushExecutionContext (X3DExecutionContext* const executionContext)
+{
+	executionContextStack .emplace_back (executionContext);
+}
+
+void
+XMLParser::popExecutionContext ()
+{
+	executionContextStack .pop_back ();
+}
+
+X3DExecutionContext*
+XMLParser::getExecutionContext () const
+{
+	return executionContextStack .back ();
 }
 
 XMLParser::~XMLParser ()
