@@ -150,7 +150,7 @@ private:
 	exportElement (xmlpp::Element* const xmlElement);
 
 	bool
-	floatAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
+	doubleAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
 
 	bool
 	integerAttribute (xmlpp::Attribute* const xmlAttribute, int32_t & value);
@@ -165,13 +165,19 @@ private:
 	defAttribute (xmlpp::Element* const xmlElement, const SFNode & node);
 
 	void
-	fieldAttributes (xmlpp::Element* const xmlElement, const SFNode & node);
+	nodeAttributes (xmlpp::Element* const xmlElement, const SFNode & node);
 
 	void
-	fieldAttribute (xmlpp::Attribute* const xmlAttribute, const SFNode & node);
+	nodeAttribute (xmlpp::Attribute* const xmlAttribute, const SFNode & node);
 
 	void
 	fieldValue (X3DFieldDefinition* const field, const std::string & value);
+
+	bool
+	sfboolValue (std::istream & istream, SFBool* field);
+
+	void
+	sfboolValues (std::istream & istream, MFBool* field);
 
 	void
 	addNode (xmlpp::Element* const xmlElement, const SFNode & node);

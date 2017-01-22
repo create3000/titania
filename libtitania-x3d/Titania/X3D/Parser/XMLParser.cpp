@@ -63,10 +63,20 @@ class XMLGrammar
 {
 public:
 
+	static const io::sequence WhiteSpaces;
+
+	static const io::string falseValue;
+	static const io::string trueValue;
+
 	static const io::number <double>  DoubleValue;
 	static const io::number <int32_t> IntegerValue;
 
 };
+
+const io::sequence XMLGrammar::WhiteSpaces ("\r\n \t,");
+
+const io::string XMLGrammar::falseValue ("false");
+const io::string XMLGrammar::trueValue ("true");
 
 const io::number <double>  XMLGrammar::DoubleValue;
 const io::number <int32_t> XMLGrammar::IntegerValue;
@@ -263,7 +273,7 @@ XMLParser::unitElement (xmlpp::Element* const xmlElement)
 		{
 			double unitConversionFactor;
 
-			if (floatAttribute (xmlElement -> get_attribute ("conversionFactor"), unitConversionFactor))
+			if (doubleAttribute (xmlElement -> get_attribute ("conversionFactor"), unitConversionFactor))
 			{
 				try
 				{
@@ -410,7 +420,7 @@ XMLParser::nodeElement (xmlpp::Element* const xmlElement)
 
 		parents .emplace_back (node);
 
-		fieldAttributes (xmlElement, node);
+		nodeAttributes (xmlElement, node);
 
 		childrenElements (xmlElement);
 
@@ -427,6 +437,42 @@ XMLParser::nodeElement (xmlpp::Element* const xmlElement)
 void
 XMLParser::routeElement (xmlpp::Element* const xmlElement)
 {
+	try
+	{
+		std::string sourceNodeName;
+		std::string sourceField;
+		std::string destinationNodeName;
+		std::string destinationField;
+
+		if (stringAttribute (xmlElement -> get_attribute ("fromNode"), sourceNodeName))
+		{
+			if (stringAttribute (xmlElement -> get_attribute ("fromField"), sourceField))
+			{
+				if (stringAttribute (xmlElement -> get_attribute ("toNode"), destinationNodeName))
+				{
+					if (stringAttribute (xmlElement -> get_attribute ("toField"), destinationField))
+					{
+						const auto sourceNode       = getExecutionContext () -> getLocalNode (sourceNodeName);
+						const auto destinationNode  = getExecutionContext () -> getLocalNode (destinationNodeName);
+
+						getExecutionContext () -> addRoute (sourceNode, sourceField, destinationNode, destinationField);
+					}
+					else
+						getBrowser () -> println ("Bad ROUTE statement: Expected toField attribute.");
+				}
+				else
+					getBrowser () -> println ("Bad ROUTE statement: Expected toNode attribute.");
+			}
+			else
+				getBrowser () -> println ("Bad ROUTE statement: Expected fromField attribute.");
+		}
+		else
+			getBrowser () -> println ("Bad ROUTE statement: Expected fromNode attribute.");
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println ("XML Parser Error: " + std::string (error .what ()));
+	}
 }
 
 void
@@ -440,7 +486,7 @@ XMLParser::exportElement (xmlpp::Element* const xmlElement)
 }
 
 bool
-XMLParser::floatAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
+XMLParser::doubleAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
 {
 	if (not xmlAttribute)
 		return false;
@@ -535,14 +581,14 @@ XMLParser::defAttribute (xmlpp::Element* const xmlElement, const SFNode & node)
 }
 
 void
-XMLParser::fieldAttributes (xmlpp::Element* const xmlElement, const SFNode & node)
+XMLParser::nodeAttributes (xmlpp::Element* const xmlElement, const SFNode & node)
 {
 	for (const auto & xmlAttribute : xmlElement -> get_attributes ())
-		fieldAttribute (xmlAttribute, node);
+		nodeAttribute (xmlAttribute, node);
 }
 
 void
-XMLParser::fieldAttribute (xmlpp::Attribute* const xmlAttribute, const SFNode & node)
+XMLParser::nodeAttribute (xmlpp::Attribute* const xmlAttribute, const SFNode & node)
 {
 	try
 	{
@@ -570,7 +616,7 @@ XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & valu
 	switch (field -> getType ())
 	{
 		case X3DConstants::SFBool:
-			parser .sfboolValue (static_cast <SFBool*> (field));
+			sfboolValue (istream, static_cast <SFBool*> (field));
 			return;
 
 		case X3DConstants::SFColor:
@@ -654,7 +700,7 @@ XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & valu
 			return;
 
 		case X3DConstants::MFBool:
-			parser .sfboolValues (static_cast <MFBool*> (field));
+			sfboolValues (istream, static_cast <MFBool*> (field));
 			return;
 
 		case X3DConstants::MFColor:
@@ -736,6 +782,37 @@ XMLParser::fieldValue (X3DFieldDefinition* const field, const std::string & valu
 			parser .sfvec4fValues (static_cast <MFVec4f*> (field));
 			return;
 	}
+}
+
+bool
+XMLParser::sfboolValue (std::istream & istream, SFBool* field)
+{
+	std::string whiteSpaces;
+
+	XMLGrammar::WhiteSpaces (istream, whiteSpaces);
+
+	if (XMLGrammar::trueValue (istream))
+	{
+		field -> setValue (true);
+		return true;
+	}
+
+	if (XMLGrammar::falseValue (istream))
+	{
+		field -> setValue (false);
+		return true;
+	}
+
+	return false;
+}
+
+void
+XMLParser::sfboolValues (std::istream & istream, MFBool* field)
+{
+	SFBool value;
+
+	while (sfboolValue (istream, &value))
+		field -> emplace_back (value);
 }
 
 void
