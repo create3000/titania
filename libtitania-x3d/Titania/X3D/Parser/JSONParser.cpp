@@ -615,8 +615,9 @@ JSONParser::exportObject (const std::string & key, json_object* const jobj)
 
 		try
 		{
-			const auto   node         = scene -> getLocalNode (localDEFCharacters);
-			/*const auto & exportedNode =*/ scene -> updateExportedNode (ASCharacters, node);
+			const auto node = scene -> getLocalNode (localDEFCharacters);
+
+			scene -> updateExportedNode (ASCharacters, node);
 		}
 		catch (const X3DError & error)
 		{

@@ -54,6 +54,7 @@
 
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
+#include "../Components/Networking/Inline.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Parser.h"
 #include "../Prototype/ProtoDeclaration.h"
@@ -186,13 +187,13 @@ XMLParser::x3dElement (xmlpp::Element* const xmlElement)
 	// Parse children.
 
 	for (const auto & xmlNode : xmlElement -> get_children ())
-		x3dChild (dynamic_cast <xmlpp::Element*> (xmlNode));
+		x3dElementChild (dynamic_cast <xmlpp::Element*> (xmlNode));
 
 	popExecutionContext ();
 }
 
 void
-XMLParser::x3dChild (xmlpp::Element* const xmlElement)
+XMLParser::x3dElementChild (xmlpp::Element* const xmlElement)
 {
 	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
 
@@ -216,11 +217,11 @@ void
 XMLParser::headElement (xmlpp::Element* const xmlElement)
 {
 	for (const auto & xmlNode : xmlElement -> get_children ())
-		headChild (dynamic_cast <xmlpp::Element*> (xmlNode));
+		headElementChild (dynamic_cast <xmlpp::Element*> (xmlNode));
 }
 
 void
-XMLParser::headChild (xmlpp::Element* const xmlElement)
+XMLParser::headElementChild (xmlpp::Element* const xmlElement)
 {
 	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
 
@@ -369,10 +370,16 @@ void
 XMLParser::childrenElements (xmlpp::Element* const xmlElement)
 {
 	for (const auto & xmlNode : xmlElement -> get_children ())
-		childElement (dynamic_cast <xmlpp::Element*> (xmlNode));
+	{
+		if (childElement (dynamic_cast <xmlpp::Element*> (xmlNode)))
+			continue;
+
+		if (cdataNode (dynamic_cast <xmlpp::CdataNode*> (xmlNode)))
+			continue;
+	}
 }
 
-void
+bool
 XMLParser::childElement (xmlpp::Element* const xmlElement)
 {
 	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
@@ -380,15 +387,17 @@ XMLParser::childElement (xmlpp::Element* const xmlElement)
 	static const std::map <std::string, ElementsFunction> elementsIndex = {
 		std::make_pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
 		std::make_pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
+		std::make_pair ("IS",                 std::mem_fn (&XMLParser::isElement)),
 		std::make_pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
 		std::make_pair ("fieldValue",         std::mem_fn (&XMLParser::fieldValueElement)),
+		std::make_pair ("field",              std::mem_fn (&XMLParser::fieldElement)),
 		std::make_pair ("ROUTE",              std::mem_fn (&XMLParser::routeElement)),
 		std::make_pair ("IMPORT",             std::mem_fn (&XMLParser::importElement)),
 		std::make_pair ("EXPORT",             std::mem_fn (&XMLParser::exportElement)),
 	};
 
 	if (not xmlElement)
-		return;
+		return false;
 
 	const auto iter = elementsIndex .find (xmlElement -> get_name ());
 
@@ -396,6 +405,8 @@ XMLParser::childElement (xmlpp::Element* const xmlElement)
 		nodeElement (xmlElement);
 	else
 		iter -> second (this, xmlElement);
+
+	return true;
 }
 
 void
@@ -507,9 +518,15 @@ XMLParser::fieldElement (xmlpp::Element* const xmlElement)
 	if (not xmlElement)
 		return;
 
-	const auto node = dynamic_cast <X3DBaseNode*> (parents .back ());
+	if (parents .empty ())
+		return;
 
-	if (not node -> canUserDefinedFields ())
+	const auto baseNode = dynamic_cast <X3DBaseNode*> (parents .back ());
+
+	if (not baseNode)
+		return;
+
+	if (not baseNode -> canUserDefinedFields ())
 		return;
 
 	std::string accessTypeCharacters;
@@ -564,13 +581,79 @@ XMLParser::fieldElement (xmlpp::Element* const xmlElement)
 		parents .pop_back ();
 	}
 
-	node -> addUserDefinedField (accessType, nameCharacters, field);
+	baseNode -> addUserDefinedField (accessType, nameCharacters, field);
 }
 
 void
 XMLParser::protoBodyElement (xmlpp::Element* const xmlElement)
 {
 	childrenElements (xmlElement);
+}
+
+void
+XMLParser::isElement (xmlpp::Element* const xmlElement)
+{
+	if (dynamic_cast <ProtoDeclaration*> (getExecutionContext ()))
+	{
+		for (const auto & xmlNode : xmlElement -> get_children ())
+			isElementChild (dynamic_cast <xmlpp::Element*> (xmlNode));
+	}
+}
+
+void
+XMLParser::isElementChild (xmlpp::Element* const xmlElement)
+{
+	if (not xmlElement)
+		return;
+
+	if (xmlElement -> get_name () == "connect")
+		connectElement (xmlElement);
+}
+
+void
+XMLParser::connectElement (xmlpp::Element* const xmlElement)
+{
+	try
+	{
+		if (parents .empty ())
+			return;
+
+		const auto baseNode = dynamic_cast <X3DBaseNode*> (parents .back ());
+
+		if (baseNode)
+		{
+			std::string nodeFieldCharacters;
+	
+			if (stringAttribute (xmlElement -> get_attribute ("nodeField"), nodeFieldCharacters))
+			{
+				std::string protoFieldCharacters;
+		
+				if (stringAttribute (xmlElement -> get_attribute ("protoField"), protoFieldCharacters))
+				{
+					const auto nodeField  = baseNode -> getField (nodeFieldCharacters);
+					const auto protoField = getExecutionContext () -> getField (protoFieldCharacters);
+
+					if (nodeField -> getType () == protoField -> getType ())
+					{
+						if (protoField -> isReference (nodeField -> getAccessType ()))
+							nodeField -> addReference (protoField);
+						else
+							getBrowser () -> println ("Field '", nodeField -> getName (), "' and '", protoField -> getName (), "' in PROTO ", getExecutionContext () -> getName (), " are incompatible as an IS mapping.");
+					}
+					else
+						getBrowser () -> println ("Field '", nodeField -> getName (), "' and '", protoField -> getName (), "' in PROTO ", getExecutionContext () -> getName (), " have different types.");
+				}
+				else
+					getBrowser () -> println ("XML Parser Error: Bad connect statement: Expected protoField attribute.");
+			}
+			else
+				getBrowser () -> println ("XML Parser Error: Bad connect statement: Expected nodeField attribute.");
+		}
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println ("XML Parser Error: Couldn't create IS reference: ", error .what ());
+	}
 }
 
 void
@@ -664,7 +747,7 @@ XMLParser::nodeElement (xmlpp::Element* const xmlElement)
 	
 		// Node object
 	
-		const auto node = scene -> createNode (xmlElement -> get_name ());
+		const auto node = getExecutionContext () -> createNode (xmlElement -> get_name ());
 
 		defAttribute (xmlElement, node);
 
@@ -733,11 +816,94 @@ XMLParser::routeElement (xmlpp::Element* const xmlElement)
 void
 XMLParser::importElement (xmlpp::Element* const xmlElement)
 {
+	try
+	{
+		std::string inlineDEFCharacters;
+
+		if (stringAttribute (xmlElement -> get_attribute ("inlineDEF"), inlineDEFCharacters))
+		{
+			std::string exportedDEFCharacters;
+	
+			if (stringAttribute (xmlElement -> get_attribute ("exportedDEF"), exportedDEFCharacters))
+			{
+				std::string ASCharacters;
+		
+				stringAttribute (xmlElement -> get_attribute ("AS"), ASCharacters);
+	
+				if (ASCharacters .empty ())
+					ASCharacters = exportedDEFCharacters;
+
+				const auto inlineNode = getExecutionContext () -> getNamedNode <Inline> (inlineDEFCharacters);
+
+				getExecutionContext () -> updateImportedNode (inlineNode, exportedDEFCharacters, ASCharacters);
+			}
+			else
+				getBrowser () -> println ("XML Parser Error: Bad IMPORT statement, expected exportedDEF attribute.");
+		}
+		else
+			getBrowser () -> println ("XML Parser Error: Bad IMPORT statement, expected exportedDEF attribute.");
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println ("XML Parser Error: ",+ error .what ());
+	}
 }
 
 void
 XMLParser::exportElement (xmlpp::Element* const xmlElement)
 {
+	try
+	{
+		if (scene not_eq getExecutionContext ())
+			return;
+
+		std::string localDEFCharacters;
+
+		if (stringAttribute (xmlElement -> get_attribute ("localDEF"), localDEFCharacters))
+		{
+			std::string ASCharacters;
+	
+			stringAttribute (xmlElement -> get_attribute ("AS"), ASCharacters);
+
+			if (ASCharacters .empty ())
+				ASCharacters = localDEFCharacters;
+
+			const auto localNode = getExecutionContext () -> getLocalNode (localDEFCharacters);
+	
+			scene -> updateExportedNode (ASCharacters, localNode);
+		}
+		else
+			getBrowser () -> println ("XML Parser Error: Bad EXPORT statement, expected localDEF attribute.");
+	}
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println ("XML Parser Error: ", error .what ());
+	}
+}
+
+bool
+XMLParser::cdataNode (xmlpp::CdataNode* const cdataNode)
+{
+	if (not cdataNode)
+		return false;
+
+	if (parents .empty ())
+		return true;
+
+	const auto baseNode = dynamic_cast <X3DBaseNode*> (parents .back ());
+
+	if (baseNode)
+	{
+		const auto field = baseNode -> getSourceText ();
+
+		if (field)
+		{
+			field -> emplace_back (cdataNode -> get_content ());
+			field -> isSet (true);
+		}
+	}
+
+	return true;
 }
 
 bool

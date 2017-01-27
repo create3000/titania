@@ -57,6 +57,7 @@
 namespace xmlpp {
 
 class Attribute;
+class CdataNode;
 class DomParser;
 class Element;
 class Node;
@@ -102,13 +103,13 @@ private:
 	x3dElement (xmlpp::Element* const xmlElement);
 
 	void
-	x3dChild (xmlpp::Element* const xmlElement);
+	x3dElementChild (xmlpp::Element* const xmlElement);
 
 	void
 	headElement (xmlpp::Element* const xmlElement);
 	
 	void
-	headChild (xmlpp::Element* const xmlElement);
+	headElementChild (xmlpp::Element* const xmlElement);
 	
 	void
 	componentElement (xmlpp::Element* const xmlElement);
@@ -125,9 +126,9 @@ private:
 	void
 	childrenElements (xmlpp::Element* const xmlElement);
 	
-	void
+	bool
 	childElement (xmlpp::Element* const xmlElement);
-	
+
 	void
 	externProtoDeclareElement (xmlpp::Element* const xmlElement);
 	
@@ -142,6 +143,15 @@ private:
 
 	void
 	protoBodyElement (xmlpp::Element* const xmlElement);
+
+	void
+	isElement (xmlpp::Element* const xmlElement);
+
+	void
+	isElementChild (xmlpp::Element* const xmlElement);
+
+	void
+	connectElement (xmlpp::Element* const xmlElement);
 
 	void
 	protoInstanceElement (xmlpp::Element* const xmlElement);
@@ -160,6 +170,9 @@ private:
 	
 	void
 	exportElement (xmlpp::Element* const xmlElement);
+
+	bool
+	cdataNode (xmlpp::CdataNode* const cdataNode);
 
 	bool
 	doubleAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
