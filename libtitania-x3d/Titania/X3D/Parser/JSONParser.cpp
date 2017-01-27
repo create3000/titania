@@ -391,6 +391,16 @@ JSONParser::childrenArray (json_object* const jobj, MFNode & field)
 bool
 JSONParser::childObject (json_object* const jobj, SFNode & node)
 {
+	using ElementsFunction = std::function <void (JSONParser*, json_object* const)>;
+
+	static const std::map <std::string, ElementsFunction> objectsIndex = {
+		std::make_pair ("ExternProtoDeclare", std::mem_fn (&JSONParser::externProtoDeclareObject)),
+		std::make_pair ("ProtoDeclare",       std::mem_fn (&JSONParser::protoDeclareObject)),
+		std::make_pair ("ROUTE",              std::mem_fn (&JSONParser::routeObject)),
+		std::make_pair ("IMPORT",             std::mem_fn (&JSONParser::importObject)),
+		std::make_pair ("EXPORT",             std::mem_fn (&JSONParser::exportObject)),
+	};
+
 	if (not jobj)
 		return false;
 
@@ -399,7 +409,7 @@ JSONParser::childObject (json_object* const jobj, SFNode & node)
 
 	// Parse child nodes.
 
-	json_object_object_foreach (jobj, k, value)
+	json_object_object_foreach (jobj, keyChar, value)
 	{
 		if (json_object_get_type (value) == json_type_null)
 		{
@@ -410,38 +420,21 @@ JSONParser::childObject (json_object* const jobj, SFNode & node)
 		if (json_object_get_type (value) not_eq json_type_object)
 			return false;
 
-		const std::string key = k;
+		const std::string key  = keyChar;
+		const auto        iter = objectsIndex .find (key);
 
-		if (externProtoDeclareObject (key, value))
-			return false;
-
-		if (protoDeclareObject (key, value))
-			return false;
-
-		if (importObject (key, value))
-			return false;
-
-		if (routeObject (key, value))
-			return false;
-
-		if (exportObject (key, value))
-			return false;
-
-		if (nodeObject (key, value, node))
-			return true;
+		if (iter == objectsIndex .end ())
+			nodeObject (value, key, node);
+		else
+			iter -> second (this, value);
 	}
 
 	return false;
 }
 
-bool
-JSONParser::externProtoDeclareObject (const std::string & key, json_object* const jobj)
+void
+JSONParser::externProtoDeclareObject (json_object* const jobj)
 {
-	static const std::string ExternProtoDeclare = "ExternProtoDeclare";
-
-	if (key not_eq ExternProtoDeclare)
-		return false;
-
 	std::string nameCharacters;
 
 	if (stringValue (json_object_object_get (jobj, "@name"), nameCharacters))
@@ -457,18 +450,11 @@ JSONParser::externProtoDeclareObject (const std::string & key, json_object* cons
 			getExecutionContext () -> updateExternProtoDeclaration (nameCharacters, externproto);
 		}
 	}
-
-	return true;
 }
 
-bool
-JSONParser::protoDeclareObject (const std::string & key, json_object* const jobj)
+void
+JSONParser::protoDeclareObject (json_object* const jobj)
 {
-	static const std::string ProtoDeclare = "ProtoDeclare";
-
-	if (key not_eq ProtoDeclare)
-		return false;
-
 	std::string nameCharacters;
 
 	if (stringValue (json_object_object_get (jobj, "@name"), nameCharacters))
@@ -485,8 +471,6 @@ JSONParser::protoDeclareObject (const std::string & key, json_object* const jobj
 
 		getExecutionContext () -> updateProtoDeclaration (nameCharacters, proto);
 	}
-
-	return true;
 }
 
 void
@@ -515,50 +499,9 @@ JSONParser::protoBodyObject (json_object* const jobj, const ProtoDeclarationPtr 
 	childrenArray (json_object_object_get (jobj, "-children"), proto -> getRootNodes ());
 }
 
-bool
-JSONParser::importObject (const std::string & key, json_object* const jobj)
+void
+JSONParser::routeObject (json_object* const jobj)
 {
-	static const std::string IMPORT = "IMPORT";
-
-	if (key not_eq IMPORT)
-		return false;
-
-	std::string inlineDEFCharacters;
-
-	if (stringValue (json_object_object_get (jobj, "@inlineDEF"), inlineDEFCharacters))
-	{
-		std::string importedDEFCharacters;
-	
-		if (stringValue (json_object_object_get (jobj, "@importedDEF"), importedDEFCharacters))
-		{
-			std::string ASCharacters;
-		
-			stringValue (json_object_object_get (jobj, "@AS"), ASCharacters);
-
-			try
-			{
-				const auto inlineNode = getExecutionContext () -> getNamedNode <Inline> (inlineDEFCharacters);
-
-				getExecutionContext () -> updateImportedNode (inlineNode, importedDEFCharacters, ASCharacters);
-			}
-			catch (const X3DError & error)
-			{
-				getBrowser () -> println (error .what ());
-			}
-		}
-	}
-
-	return true;
-}
-
-bool
-JSONParser::routeObject (const std::string & key, json_object* const jobj)
-{
-	static const std::string ROUTE = "ROUTE";
-
-	if (key not_eq ROUTE)
-		return false;
-
 	std::string fromNodeCharacters;
 
 	if (stringValue (json_object_object_get (jobj, "@fromNode"), fromNodeCharacters))
@@ -590,18 +533,40 @@ JSONParser::routeObject (const std::string & key, json_object* const jobj)
 			}
 		}
 	}
-
-	return true;
 }
 
-bool
-JSONParser::exportObject (const std::string & key, json_object* const jobj)
+void
+JSONParser::importObject (json_object* const jobj)
 {
-	static const std::string EXPORT = "EXPORT";
+	std::string inlineDEFCharacters;
 
-	if (key not_eq EXPORT)
-		return false;
+	if (stringValue (json_object_object_get (jobj, "@inlineDEF"), inlineDEFCharacters))
+	{
+		std::string importedDEFCharacters;
+	
+		if (stringValue (json_object_object_get (jobj, "@importedDEF"), importedDEFCharacters))
+		{
+			std::string ASCharacters;
+		
+			stringValue (json_object_object_get (jobj, "@AS"), ASCharacters);
 
+			try
+			{
+				const auto inlineNode = getExecutionContext () -> getNamedNode <Inline> (inlineDEFCharacters);
+
+				getExecutionContext () -> updateImportedNode (inlineNode, importedDEFCharacters, ASCharacters);
+			}
+			catch (const X3DError & error)
+			{
+				getBrowser () -> println (error .what ());
+			}
+		}
+	}
+}
+
+void
+JSONParser::exportObject (json_object* const jobj)
+{
 	std::string localDEFCharacters;
 
 	if (stringValue (json_object_object_get (jobj, "@localDEF"), localDEFCharacters))
@@ -624,12 +589,10 @@ JSONParser::exportObject (const std::string & key, json_object* const jobj)
 			getBrowser () -> println (error .what ());
 		}
 	}
-
-	return true;
 }
 
-bool
-JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, SFNode & node)
+void
+JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, SFNode & node)
 {
 	static const std::string ProtoInstance = "ProtoInstance";
 
@@ -645,13 +608,13 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 	
 			node = getExecutionContext () -> getNamedNode (nodeNameCharacters);
 	
-			return true;
+			return;
 		}
 	}
 	catch (const X3DError & error)
 	{
 		getBrowser () -> println (error .what ());
-		return false;
+		return;
 	}
 
 	// Node object
@@ -673,7 +636,7 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 			else
 			{
 				getBrowser () -> println ("Couldn't create proto instance, no name given.");
-				return false;
+				return;
 			}
 		}
 		else
@@ -682,7 +645,7 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 	catch (const X3DError & error)
 	{
 		getBrowser () -> println (error .what ());
-		return false;
+		return;
 	}
 
 	// Node name
@@ -733,7 +696,7 @@ JSONParser::nodeObject (const std::string & nodeType, json_object* const jobj, S
 
 	getExecutionContext () -> addUninitializedNode (node);
 
-	return true;
+	return;
 }
 
 void

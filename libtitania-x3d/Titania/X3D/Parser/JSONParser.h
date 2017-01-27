@@ -161,11 +161,11 @@ private:
 	bool
 	childObject (json_object* const jobj, SFNode & node);
 
-	bool
-	externProtoDeclareObject (const std::string & key, json_object* const jobj);
+	void
+	externProtoDeclareObject (json_object* const jobj);
 
-	bool
-	protoDeclareObject (const std::string & key, json_object* const jobj);
+	void
+	protoDeclareObject (json_object* const jobj);
 
 	void
 	protoInterfaceObject (json_object* const jobj, const ProtoDeclarationPtr & proto);
@@ -173,17 +173,17 @@ private:
 	void
 	protoBodyObject (json_object* const jobj, const ProtoDeclarationPtr & proto);
 
-	bool
-	importObject (const std::string & key, json_object* const jobj);
+	void
+	importObject (json_object* const jobj);
 
-	bool
-	routeObject (const std::string & key, json_object* const jobj);
+	void
+	routeObject (json_object* const jobj);
 
-	bool
-	exportObject (const std::string & key, json_object* const jobj);
+	void
+	exportObject (json_object* const jobj);
 
-	bool
-	nodeObject (const std::string & key, json_object* const jobj, SFNode & node);
+	void
+	nodeObject (json_object* const jobj, const std::string & nodeType, SFNode & node);
 
 	void
 	nodeFieldsObject (json_object* const jobj, const SFNode & node);
