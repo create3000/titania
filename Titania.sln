@@ -46,8 +46,6 @@ Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-standard", "libt
 EndProject
 Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "build", "build\build.mdproj", "{ADFD852E-EC3F-463B-B5F9-30812AB9890B}"
 EndProject
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "x3d2vrml", "x3d2vrml\x3d2vrml.mdproj", "{9F720446-7CC1-4B8B-AD37-4029FB79949D}"
-EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-peaseblossom", "libtitania-peaseblossom\libtitania-peaseblossom.cproj", "{A40FEE98-4147-4F4C-A682-FB0027303173}"
 EndProject
 Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "po", "po\po.mdproj", "{2CFC1124-FDC1-4F5D-BF5E-0516B8A85D7A}"
@@ -154,14 +152,6 @@ Global
 		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
 		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Debug|Any CPU.ActiveCfg = Default|Any CPU
-		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Debug|Any CPU.Build.0 = Default|Any CPU
-		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Default|Any CPU.ActiveCfg = Default|Any CPU
-		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Default|Any CPU.Build.0 = Default|Any CPU
-		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Parallel|Any CPU.ActiveCfg = Default|Any CPU
-		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Parallel|Any CPU.Build.0 = Default|Any CPU
-		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Release|Any CPU.ActiveCfg = Default|Any CPU
-		{9F720446-7CC1-4B8B-AD37-4029FB79949D}.Release|Any CPU.Build.0 = Default|Any CPU
 		{A40FEE98-4147-4F4C-A682-FB0027303173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A40FEE98-4147-4F4C-A682-FB0027303173}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A40FEE98-4147-4F4C-A682-FB0027303173}.Default|Any CPU.ActiveCfg = Debug|Any CPU
