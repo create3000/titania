@@ -240,6 +240,7 @@
     <None Include="GDC01_Shadows.pdf" />
     <None Include="[2008 Featherstone] Rigid Body Dynamics Algorithms.pdf" />
     <None Include="FeatherstoneSlides.pdf" />
+    <None Include="pipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
