@@ -720,15 +720,13 @@ XMLParser::fieldValueElement (xmlpp::Element* const xmlElement)
 					std::string valueCharacters;
 
 					if (stringAttribute (xmlElement -> get_attribute ("value"), valueCharacters))
-					{
 						fieldValue (field, valueCharacters);
 
-						parents .emplace_back (field);
+					parents .emplace_back (field);
 
-						childrenElements (xmlElement);
+					childrenElements (xmlElement);
 
-						parents .pop_back ();
-					}
+					parents .pop_back ();
 				}
 			}
 		}
@@ -1245,27 +1243,68 @@ XMLParser::sfboolValues (std::istream & istream, MFBool* field)
 void
 XMLParser::addNode (xmlpp::Element* const xmlElement, X3DBaseNode* const childNode)
 {
+	// ExecutionContext
+
 	if (parents .empty () or dynamic_cast <ProtoDeclaration*> (parents .back ()))
 	{
 		getExecutionContext () -> getRootNodes () .emplace_back (childNode);
 		return;
 	}
 
-	const auto baseNode = dynamic_cast <X3DBaseNode*> (parents .back ());
+	// Node
 
-	if (baseNode)
 	{
-		try
+		const auto baseNode = dynamic_cast <X3DBaseNode*> (parents .back ());
+	
+		if (baseNode)
 		{
-			std::string containerFieldCharacters;
-		
-			stringAttribute (xmlElement -> get_attribute ("containerField"), containerFieldCharacters);
+			try
+			{
+				std::string containerFieldCharacters;
+			
+				stringAttribute (xmlElement -> get_attribute ("containerField"), containerFieldCharacters);
+	
+				if (containerFieldCharacters .empty ())
+					containerFieldCharacters = childNode -> getContainerField ();
+	
+				const auto field = baseNode -> getField (containerFieldCharacters);
+	
+				switch (field -> getType ())
+				{
+					case X3DConstants::SFNode:
+					{
+						const auto sfnode = static_cast <SFNode*> (field);
+	
+						sfnode -> setValue (childNode);
+						sfnode -> isSet (true);
+						return;
+					}
+					case X3DConstants::MFNode:
+					{
+						const auto mfnode = static_cast <MFNode*> (field);
+	
+						mfnode -> emplace_back (childNode);
+						mfnode -> isSet (true);
+						return;
+					}
+					default:
+						return;
+				}
+			}
+			catch (const X3DError &)
+			{ }
+	
+			return;
+		}
+	}
 
-			if (containerFieldCharacters .empty ())
-				containerFieldCharacters = childNode -> getContainerField ();
+	// Field
 
-			const auto field = baseNode -> getField (containerFieldCharacters);
-
+	{
+		const auto field = dynamic_cast <X3DFieldDefinition*> (parents .back ());
+	
+		if (field)
+		{
 			switch (field -> getType ())
 			{
 				case X3DConstants::SFNode:
@@ -1287,37 +1326,8 @@ XMLParser::addNode (xmlpp::Element* const xmlElement, X3DBaseNode* const childNo
 				default:
 					return;
 			}
-		}
-		catch (const X3DError &)
-		{ }
 
-		return;
-	}
-
-	const auto field = dynamic_cast <X3DFieldDefinition*> (parents .back ());
-
-	if (field)
-	{
-		switch (field -> getType ())
-		{
-			case X3DConstants::SFNode:
-			{
-				const auto sfnode = static_cast <SFNode*> (field);
-
-				sfnode -> setValue (childNode);
-				sfnode -> isSet (true);
-				return;
-			}
-			case X3DConstants::MFNode:
-			{
-				const auto mfnode = static_cast <MFNode*> (field);
-
-				mfnode -> emplace_back (childNode);
-				mfnode -> isSet (true);
-				return;
-			}
-			default:
-				return;
+			return;
 		}
 	}
 }
