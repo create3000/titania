@@ -142,18 +142,22 @@ XMLParser::xmlElement (xmlpp::Element* const xmlElement)
 	using ElementsFunction = std::function <void (XMLParser*, xmlpp::Element* const)>;
 
 	static const std::map <std::string, ElementsFunction> elementsIndex = {
-		std::make_pair ("X3D", std::mem_fn (&XMLParser::x3dElement)),
+		std::make_pair ("X3D",                std::mem_fn (&XMLParser::x3dElement)),
+		std::make_pair ("Scene",              std::mem_fn (&XMLParser::sceneElement)),
+		std::make_pair ("ExternProtoDeclare", std::mem_fn (&XMLParser::externProtoDeclareElement)),
+		std::make_pair ("ProtoDeclare",       std::mem_fn (&XMLParser::protoDeclareElement)),
+		std::make_pair ("ProtoInstance",      std::mem_fn (&XMLParser::protoInstanceElement)),
 	};
 
-	try
-	{
-		if (not xmlElement)
-			return;
+	if (not xmlElement)
+		return;
 
-		elementsIndex .at (xmlElement -> get_name ()) (this, xmlElement);
-	}
-	catch (const std::out_of_range &)
-	{ }
+	const auto iter = elementsIndex .find (xmlElement -> get_name ());
+
+	if (iter == elementsIndex .end ())
+		nodeElement (xmlElement);
+	else
+		iter -> second (this, xmlElement);
 }
 
 void
