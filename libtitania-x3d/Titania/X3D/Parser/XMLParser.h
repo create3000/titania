@@ -178,6 +178,9 @@ private:
 	doubleAttribute (xmlpp::Attribute* const xmlAttribute, double & value);
 
 	bool
+	longDoubleAttribute (xmlpp::Attribute* const xmlAttribute, long double & value);
+
+	bool
 	integerAttribute (xmlpp::Attribute* const xmlAttribute, int32_t & value);
 
 	bool

@@ -74,8 +74,9 @@ public:
 	static const io::string falseValue;
 	static const io::string trueValue;
 
-	static const io::number <double>  DoubleValue;
-	static const io::number <int32_t> IntegerValue;
+	static const io::number <double>      DoubleValue;
+	static const io::number <long double> LongDoubleValue;
+	static const io::number <int32_t>     IntegerValue;
 
 };
 
@@ -91,8 +92,9 @@ const std::map <std::string, AccessType> XMLGrammar::AccessTypes = {
 const io::string XMLGrammar::falseValue ("false");
 const io::string XMLGrammar::trueValue ("true");
 
-const io::number <double>  XMLGrammar::DoubleValue;
-const io::number <int32_t> XMLGrammar::IntegerValue;
+const io::number <double>      XMLGrammar::DoubleValue;
+const io::number <long double> XMLGrammar::LongDoubleValue;
+const io::number <int32_t>     XMLGrammar::IntegerValue;
 
 XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
 	            X3DParser (),
@@ -288,9 +290,9 @@ XMLParser::unitElement (xmlpp::Element* const xmlElement)
 
 		if (stringAttribute (xmlElement -> get_attribute ("name"), unitNameCharacters))
 		{
-			double unitConversionFactor;
+			long double unitConversionFactor;
 
-			if (doubleAttribute (xmlElement -> get_attribute ("conversionFactor"), unitConversionFactor))
+			if (longDoubleAttribute (xmlElement -> get_attribute ("conversionFactor"), unitConversionFactor))
 			{
 				try
 				{
@@ -921,6 +923,21 @@ XMLParser::doubleAttribute (xmlpp::Attribute* const xmlAttribute, double & value
 	istream .imbue (std::locale::classic ());
 
 	return XMLGrammar::DoubleValue (istream, value);
+}
+
+bool
+XMLParser::longDoubleAttribute (xmlpp::Attribute* const xmlAttribute, long double & value)
+{
+	if (not xmlAttribute)
+		return false;
+
+	// TODO: Trim and check for count?
+
+	std::istringstream istream (xmlAttribute -> get_value ());
+
+	istream .imbue (std::locale::classic ());
+
+	return XMLGrammar::LongDoubleValue (istream, value);
 }
 
 bool
