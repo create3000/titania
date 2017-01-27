@@ -289,8 +289,7 @@ throw (Error <INVALID_NAME>,
 
 	// Add exported node.
 
-	auto & exportedNode = exportedNodes [exportedName];
-	exportedNode = new ExportedNode (this, exportedName, node);
+	auto & exportedNode = exportedNodes .emplace (exportedName, new ExportedNode (this, exportedName, node)) .first -> second;
 
 	exportedNode .isTainted (true);
 	exportedNode .addParent (this);

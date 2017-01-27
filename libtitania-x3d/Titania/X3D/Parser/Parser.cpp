@@ -2104,6 +2104,8 @@ Parser::sfboolValues (MFBool* _field)
 
 	SFBool value;
 
+	_field -> clear ();
+
 	while (sfboolValue (&value))
 		_field -> emplace_back (value);
 }
@@ -2168,6 +2170,8 @@ Parser::sfcolorValues (MFColor* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFColor value;
+
+	_field -> clear ();
 
 	while (sfcolorValue (&value))
 		_field -> emplace_back (value);
@@ -2237,6 +2241,8 @@ Parser::sfcolorRGBAValues (MFColorRGBA* _field)
 
 	SFColorRGBA value;
 
+	_field -> clear ();
+
 	while (sfcolorRGBAValue (&value))
 		_field -> emplace_back (value);
 }
@@ -2295,6 +2301,8 @@ Parser::sfdoubleValues (MFDouble* _field)
 
 	SFDouble value;
 
+	_field -> clear ();
+
 	while (sfdoubleValue (&value))
 		_field -> emplace_back (value);
 }
@@ -2351,6 +2359,8 @@ Parser::sffloatValues (MFFloat* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFFloat value;
+
+	_field -> clear ();
 
 	while (sffloatValue (&value))
 		_field -> emplace_back (value);
@@ -2429,6 +2439,8 @@ Parser::sfimageValues (MFImage* _field)
 
 	SFImage value;
 
+	_field -> clear ();
+
 	while (sfimageValue (&value))
 		_field -> emplace_back (std::move (value));
 }
@@ -2485,6 +2497,8 @@ Parser::sfint32Values (MFInt32* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFInt32 value;
+
+	_field -> clear ();
 
 	while (sfint32Value (&value))
 		_field -> emplace_back (value);
@@ -2569,6 +2583,8 @@ Parser::sfmatrix3dValues (MFMatrix3d* _field)
 
 	SFMatrix3d value;
 
+	_field -> clear ();
+
 	while (sfmatrix3dValue (&value))
 		_field -> emplace_back (value);
 }
@@ -2651,6 +2667,8 @@ Parser::sfmatrix3fValues (MFMatrix3f* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFMatrix3f value;
+
+	_field -> clear ();
 
 	while (sfmatrix3fValue (&value))
 		_field -> emplace_back (value);
@@ -2756,6 +2774,8 @@ Parser::sfmatrix4dValues (MFMatrix4d* _field)
 
 	SFMatrix4d value;
 
+	_field -> clear ();
+
 	while (sfmatrix4dValue (&value))
 		_field -> emplace_back (value);
 }
@@ -2859,6 +2879,8 @@ Parser::sfmatrix4fValues (MFMatrix4f* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFMatrix4f value;
+
+	_field -> clear ();
 
 	while (sfmatrix4fValue (&value))
 		_field -> emplace_back (value);
@@ -2975,6 +2997,8 @@ Parser::sfrotationValues (MFRotation* _field)
 
 	SFRotation value;
 
+	_field -> clear ();
+
 	while (sfrotationValue (&value))
 		_field -> emplace_back (value);
 }
@@ -3032,6 +3056,8 @@ Parser::sfstringValues (MFString* _field)
 
 	SFString value;
 
+	_field -> clear ();
+
 	while (sfstringValue (&value))
 		_field -> emplace_back (value);
 }
@@ -3088,6 +3114,8 @@ Parser::sftimeValues (MFTime* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFTime value;
+
+	_field -> clear ();
 
 	while (sftimeValue (&value))
 		_field -> emplace_back (value);
@@ -3151,6 +3179,8 @@ Parser::sfvec2dValues (MFVec2d* _field)
 
 	SFVec2d value;
 
+	_field -> clear ();
+
 	while (sfvec2dValue (&value))
 		_field -> emplace_back (value);
 }
@@ -3212,6 +3242,8 @@ Parser::sfvec2fValues (MFVec2f* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFVec2f value;
+
+	_field -> clear ();
 
 	while (sfvec2fValue (&value))
 		_field -> emplace_back (value);
@@ -3278,6 +3310,8 @@ Parser::sfvec3dValues (MFVec3d* _field)
 
 	SFVec3d value;
 
+	_field -> clear ();
+
 	while (sfvec3dValue (&value))
 		_field -> emplace_back (value);
 }
@@ -3342,6 +3376,8 @@ Parser::sfvec3fValues (MFVec3f* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFVec3f value;
+
+	_field -> clear ();
 
 	while (sfvec3fValue (&value))
 		_field -> emplace_back (value);
@@ -3411,6 +3447,8 @@ Parser::sfvec4dValues (MFVec4d* _field)
 
 	SFVec4d value;
 
+	_field -> clear ();
+
 	while (sfvec4dValue (&value))
 		_field -> emplace_back (value);
 }
@@ -3478,6 +3516,8 @@ Parser::sfvec4fValues (MFVec4f* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	SFVec4f value;
+
+	_field -> clear ();
 
 	while (sfvec4fValue (&value))
 		_field -> emplace_back (value);

@@ -221,13 +221,15 @@ throw (Error <NODE_NOT_AVAILABLE>,
 {
 	if (load ())
 	{
+		if (checkLoadState () == COMPLETE_STATE)
+			return scene;
+
 		if (isInitialized ())
 		{
 			if (X3D_PARALLEL and checkLoadState () == IN_PROGRESS_STATE)
 				future -> wait ();
 
-			if (checkLoadState () == COMPLETE_STATE)
-				return scene;
+			return scene;
 		}
 		else
 		{
@@ -235,12 +237,11 @@ throw (Error <NODE_NOT_AVAILABLE>,
 
 			try
 			{
-				if (not scene)
-				{
-					const_cast <Inline*> (this) -> scene .set (getBrowser () -> createScene ());
+				const_cast <Inline*> (this) -> scene .set (getBrowser () -> createScene ());
 
-					Loader (getExecutionContext ()) .parseIntoScene (scene, url ());
-				}
+				Loader (getExecutionContext ()) .parseIntoScene (scene, url ());
+
+				const_cast <Inline*> (this) -> setLoadState (COMPLETE_STATE);
 
 				return scene;
 			}

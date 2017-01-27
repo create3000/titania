@@ -142,6 +142,15 @@ public:
 	void
 	toJSONStream (std::ostream &) const final override;
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~ImportedNode () final override;
+
 
 private:
 

@@ -537,8 +537,9 @@ JSONParser::importObject (const std::string & key, json_object* const jobj)
 
 			try
 			{
-				const auto   inlineNode   = getExecutionContext () -> getNamedNode <Inline> (inlineDEFCharacters);
-				/*const auto & importedNode =*/ getExecutionContext () -> updateImportedNode (inlineNode, importedDEFCharacters, ASCharacters);
+				const auto inlineNode = getExecutionContext () -> getNamedNode <Inline> (inlineDEFCharacters);
+
+				getExecutionContext () -> updateImportedNode (inlineNode, importedDEFCharacters, ASCharacters);
 			}
 			catch (const X3DError & error)
 			{

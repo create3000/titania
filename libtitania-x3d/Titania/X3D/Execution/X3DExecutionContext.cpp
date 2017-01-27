@@ -298,8 +298,7 @@ throw (Error <IMPORTED_NODE>,
 
 	node -> setName (name);
 
-	auto & namedNode = namedNodes [name];
-	namedNode = new NamedNode (this, node);
+	auto & namedNode = namedNodes .emplace (name, new NamedNode (this, node)) .first -> second;
 
 	namedNode .isTainted (true);
 	namedNode .addParent (this);
@@ -462,8 +461,7 @@ throw (Error <INVALID_NODE>,
 
 	// Update imported node.
 
-	auto & importedNode = importedNodes [importedName];
-	importedNode = new ImportedNode (this, inlineNode, exportedName, importedName);
+	auto & importedNode = importedNodes .emplace (importedName, new ImportedNode (this, inlineNode, exportedName, importedName)) .first -> second;
 
 	importedNode .isTainted (true);
 	importedNode .addParent (this);

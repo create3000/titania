@@ -135,7 +135,19 @@ private:
 	protoDeclareElement (xmlpp::Element* const xmlElement);
 	
 	void
+	protoInterfaceElement (xmlpp::Element* const xmlElement);
+
+	void
+	fieldElement (xmlpp::Element* const xmlElement);
+
+	void
+	protoBodyElement (xmlpp::Element* const xmlElement);
+
+	void
 	protoInstanceElement (xmlpp::Element* const xmlElement);
+
+	void
+	fieldValueElement (xmlpp::Element* const xmlElement);
 
 	void
 	nodeElement (xmlpp::Element* const xmlElement);
@@ -162,7 +174,7 @@ private:
 	useAttribute (xmlpp::Element* const xmlElement);
 	
 	void
-	defAttribute (xmlpp::Element* const xmlElement, const SFNode & node);
+	defAttribute (xmlpp::Element* const xmlElement, X3DBaseNode* const node);
 
 	void
 	nodeAttributes (xmlpp::Element* const xmlElement, const SFNode & node);
@@ -180,7 +192,7 @@ private:
 	sfboolValues (std::istream & istream, MFBool* field);
 
 	void
-	addNode (xmlpp::Element* const xmlElement, const SFNode & node);
+	addNode (xmlpp::Element* const xmlElement, X3DBaseNode* const node);
 
 	///  @name Execution context handling
 
