@@ -195,13 +195,25 @@ X3DField::equals (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <X3DField> (cx, vp);
-		const auto rhs  = getArgument <X3DField> (cx, argv, 0);
 
-		if (lhs -> getType () not_eq rhs -> getType ())
-			return ThrowException (cx, "%s .equals: both arguments must be of same type.");
+		try
+		{
+			const auto rhs = getArgument <X3DField> (cx, argv, 0);
+	
+			if (lhs -> getType () not_eq rhs -> getType ())
+				return ThrowException (cx, "%s .equals: both arguments must be of same type.");
+	
+			JS_SET_RVAL (cx, vp, *lhs == *rhs ? JSVAL_TRUE : JSVAL_FALSE);
+			return true;
+		}
+		catch (const std::exception & error)
+		{
+			if (lhs -> getType () != X3D::X3DConstants::SFNode)
+				throw;
 
-		JS_SET_RVAL (cx, vp, *lhs == *rhs ? JSVAL_TRUE : JSVAL_FALSE);
-		return true;
+			JS_SET_RVAL (cx, vp, static_cast <X3D::SFNode*> (lhs) -> getValue () == nullptr ? JSVAL_TRUE : JSVAL_FALSE);
+			return true;
+		}
 	}
 	catch (const std::exception & error)
 	{
