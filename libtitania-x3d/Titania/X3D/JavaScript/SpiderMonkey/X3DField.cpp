@@ -72,6 +72,8 @@ JSFunctionSpec X3DField::functions [ ] = {
 	{ "isReadable",  isReadable,  0, 0 },
 	{ "isWritable",  isWritable,  0, 0 },
 
+	{ "equals",       equals, 1, 0 },
+
 	{ "toVRMLString", toVRMLString, 0, 0 },
 	{ "toXMLString",  toXMLString,  0, 0 },
 	{ "toString",     toString,     0, 0 },
@@ -180,6 +182,30 @@ X3DField::isWritable (JSContext* cx, uint32_t argc, jsval* vp)
 	catch (const std::exception & error)
 	{
 		return ThrowException (cx, "%s .isWritable: %s.", getClass () -> name, error .what ());
+	}
+}
+
+JSBool
+X3DField::equals (JSContext* cx, uint32_t argc, jsval* vp)
+{
+	if (argc not_eq 1)
+		return ThrowException (cx, "%s .equals: wrong number of arguments.", getClass () -> name);
+
+	try
+	{
+		const auto argv = JS_ARGV (cx, vp);
+		const auto lhs  = getThis <X3DField> (cx, vp);
+		const auto rhs  = getArgument <X3DField> (cx, argv, 0);
+
+		if (lhs -> getType () not_eq rhs -> getType ())
+			return ThrowException (cx, "%s .equals: both arguments must be of same type.");
+
+		JS_SET_RVAL (cx, vp, *lhs == *rhs ? JSVAL_TRUE : JSVAL_FALSE);
+		return true;
+	}
+	catch (const std::exception & error)
+	{
+		return ThrowException (cx, "%s .equals: %s.", getClass () -> name, error .what ());
 	}
 }
 

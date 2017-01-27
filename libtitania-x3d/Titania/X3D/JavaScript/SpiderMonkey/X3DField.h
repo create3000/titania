@@ -127,15 +127,17 @@ private:
 
 	///  @name Functions
 
-	static JSBool getName     (JSContext*, uint32_t, jsval*);
-	static JSBool getTypeName (JSContext*, uint32_t, jsval*);
-	static JSBool getType     (JSContext*, uint32_t, jsval*);
-	static JSBool isReadable  (JSContext*, uint32_t, jsval*);
-	static JSBool isWritable  (JSContext*, uint32_t, jsval*);
+	static JSBool getName     (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool getTypeName (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool getType     (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool isReadable  (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool isWritable  (JSContext* cx, uint32_t argc, jsval* vp);
 
-	static JSBool toVRMLString (JSContext*, uint32_t, jsval*);
-	static JSBool toXMLString  (JSContext*, uint32_t, jsval*);
-	static JSBool toString     (JSContext*, uint32_t, jsval*);
+	static JSBool equals (JSContext* cx, uint32_t argc, jsval* vp);
+
+	static JSBool toVRMLString (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool toXMLString  (JSContext* cx, uint32_t argc, jsval* vp);
+	static JSBool toString     (JSContext* cx, uint32_t argc, jsval* vp);
 
 	///  @name Static members
 
