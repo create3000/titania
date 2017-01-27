@@ -424,7 +424,10 @@ JSONParser::childObject (json_object* const jobj, SFNode & node)
 		const auto        iter = objectsIndex .find (key);
 
 		if (iter == objectsIndex .end ())
+		{
 			nodeObject (value, key, node);
+			return true;
+		}
 		else
 			iter -> second (this, value);
 	}
@@ -567,6 +570,9 @@ JSONParser::importObject (json_object* const jobj)
 void
 JSONParser::exportObject (json_object* const jobj)
 {
+	if (scene not_eq getExecutionContext ())
+		return;
+
 	std::string localDEFCharacters;
 
 	if (stringValue (json_object_object_get (jobj, "@localDEF"), localDEFCharacters))
@@ -594,6 +600,8 @@ JSONParser::exportObject (json_object* const jobj)
 void
 JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, SFNode & node)
 {
+	__LOG__ << nodeType << std::endl;
+
 	static const std::string ProtoInstance = "ProtoInstance";
 
 	// USE property
@@ -607,7 +615,6 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 			filter_bad_utf8_characters (nodeNameCharacters);
 	
 			node = getExecutionContext () -> getNamedNode (nodeNameCharacters);
-	
 			return;
 		}
 	}
@@ -695,8 +702,6 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 	// After fields are parsed add node to execution context for initialisation.
 
 	getExecutionContext () -> addUninitializedNode (node);
-
-	return;
 }
 
 void
