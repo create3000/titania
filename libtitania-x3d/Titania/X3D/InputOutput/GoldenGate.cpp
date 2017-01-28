@@ -77,6 +77,8 @@ static const std::regex Width       ("__WIDTH__");
 static const std::regex Height      ("__HEIGHT__");
 static const std::regex URL         ("__URL__");
 
+//inkscape file.pdf --export-plain-svg=file.svg
+
 template <class Type>
 static
 void

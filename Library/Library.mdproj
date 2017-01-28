@@ -686,6 +686,8 @@
     <None Include="Tests\3rd Party\Autodesk\EmpireState_lp.max\EmpireState_lp.max" />
     <None Include="Tests\3rd Party\SVG\Test.svg" />
     <None Include="Tests\3rd Party\SVG\tree24.jpg" />
+    <None Include="Tests\3rd Party\SVG\Vase.svg" />
+    <None Include="Tests\3rd Party\SVG\Vase.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
