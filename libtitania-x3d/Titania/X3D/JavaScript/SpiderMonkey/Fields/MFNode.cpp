@@ -140,21 +140,24 @@ template <>
 JSBool
 MFNode::unshift (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc not_eq 1)
+	if (argc == 0)
 		return ThrowException (cx, "%s .unshift: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
 		const auto argv  = JS_ARGV (cx, vp);
 		const auto array = getThis <MFNode> (cx, vp);
-		
-		try
+
+		for (ssize_t i = argc - 1; i >= 0; -- i)
 		{
-			array -> emplace_front (getArgument <SFNode> (cx, argv, 0));
-		}
-		catch (const std::domain_error &)
-		{
-			array -> emplace_front (nullptr);
+			try
+			{
+				array -> emplace_front (getArgument <SFNode> (cx, argv, i));
+			}
+			catch (const std::domain_error &)
+			{
+				array -> emplace_front (nullptr);
+			}
 		}
 
 		return JS_NewNumberValue (cx, array -> size (), vp);
@@ -169,21 +172,24 @@ template <>
 JSBool
 MFNode::push (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc not_eq 1)
+	if (argc == 0)
 		return ThrowException (cx, "%s .push: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
 		const auto argv  = JS_ARGV (cx, vp);
 		const auto array = getThis <MFNode> (cx, vp);
-		
-		try
+
+		for (uint32_t i = 0; i < argc; ++ i)
 		{
-			array -> emplace_back (getArgument <SFNode> (cx, argv, 0));
-		}
-		catch (const std::domain_error &)
-		{
-			array -> emplace_back (nullptr);
+			try
+			{
+				array -> emplace_back (getArgument <SFNode> (cx, argv, i));
+			}
+			catch (const std::domain_error &)
+			{
+				array -> emplace_back (nullptr);
+			}
 		}
 
 		return JS_NewNumberValue (cx, array -> size (), vp);

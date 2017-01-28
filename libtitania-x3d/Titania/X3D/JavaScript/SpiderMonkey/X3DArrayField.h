@@ -341,7 +341,7 @@ template <class Type, class InternalType>
 JSBool
 X3DArrayField <Type, InternalType>::unshift (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc not_eq 1)
+	if (argc == 0)
 		return ThrowException (cx, "%s .unshift: wrong number of arguments.", getClass () -> name);
 
 	try
@@ -349,7 +349,8 @@ X3DArrayField <Type, InternalType>::unshift (JSContext* cx, uint32_t argc, jsval
 		const auto argv  = JS_ARGV (cx, vp);
 		const auto array = getThis <X3DArrayField> (cx, vp);
 
-		array -> emplace_front (getArgument <Type> (cx, argv, 0));
+		for (ssize_t i = argc - 1; i >= 0; -- i)
+			array -> emplace_front (getArgument <Type> (cx, argv, i));
 
 		return JS_NewNumberValue (cx, array -> size (), vp);
 	}
@@ -363,7 +364,7 @@ template <class Type, class InternalType>
 JSBool
 X3DArrayField <Type, InternalType>::push (JSContext* cx, uint32_t argc, jsval* vp)
 {
-	if (argc not_eq 1)
+	if (argc == 0)
 		return ThrowException (cx, "%s .push: wrong number of arguments.", getClass () -> name);
 
 	try
@@ -371,7 +372,8 @@ X3DArrayField <Type, InternalType>::push (JSContext* cx, uint32_t argc, jsval* v
 		const auto argv  = JS_ARGV (cx, vp);
 		const auto array = getThis <X3DArrayField> (cx, vp);
 
-		array -> emplace_back (getArgument <Type> (cx, argv, 0));
+		for (uint32_t i = 0; i < argc; ++ i)
+			array -> emplace_back (getArgument <Type> (cx, argv, i));
 
 		return JS_NewNumberValue (cx, array -> size (), vp);
 	}
