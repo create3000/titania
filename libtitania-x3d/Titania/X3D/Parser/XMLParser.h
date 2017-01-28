@@ -137,7 +137,10 @@ private:
 	
 	void
 	protoInterfaceElement (xmlpp::Element* const xmlElement);
-
+	
+	void
+	protoInterfaceElementChild (xmlpp::Element* const xmlElement);
+	
 	void
 	fieldElement (xmlpp::Element* const xmlElement);
 

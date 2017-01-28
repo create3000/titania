@@ -505,17 +505,24 @@ XMLParser::protoDeclareElement (xmlpp::Element* const xmlElement)
 		getExecutionContext () -> updateProtoDeclaration (nameCharacters, proto);
 	}
 	else
-		getBrowser () -> println ("XML Parser Error: Bad ProtoDeclare statement: Expected name attribute.");
+		getBrowser () -> println ("XML Parser Error: Bad ProtoDeclare statement, expected name attribute.");
 }
 
 void
 XMLParser::protoInterfaceElement (xmlpp::Element* const xmlElement)
 {
 	for (const auto & child : xmlElement -> get_children ())
-	{
-		if (child -> get_name () == "field")
-			fieldElement (dynamic_cast <xmlpp::Element*> (child));
-	}
+		protoInterfaceElementChild (dynamic_cast <xmlpp::Element*> (child));
+}
+
+void
+XMLParser::protoInterfaceElementChild (xmlpp::Element* const xmlElement)
+{
+	if (not xmlElement)
+		return;
+
+	if (xmlElement -> get_name () == "field")
+		fieldElement (xmlElement);
 }
 
 void
@@ -563,31 +570,38 @@ XMLParser::fieldElement (xmlpp::Element* const xmlElement)
 		return;
 	}
 
-	std::string nameCharacters;
-
-	stringAttribute (xmlElement -> get_attribute ("name"), nameCharacters);
-
-	if (nameCharacters .empty ())
-		return;
-
-	const auto field = type -> create ();
-
-	if (accessType & initializeOnly)
+	try
 	{
-		std::string valueCharacters;
+		std::string nameCharacters;
 
-		stringAttribute (xmlElement -> get_attribute ("value"), valueCharacters);
+		stringAttribute (xmlElement -> get_attribute ("name"), nameCharacters);
 
-		fieldValue (field, valueCharacters);
+		if (nameCharacters .empty ())
+			return;
 
-		parents .emplace_back (field);
+		const auto field = type -> create ();
 
-		childrenElements (xmlElement);
+		if (accessType & initializeOnly)
+		{
+			std::string valueCharacters;
 
-		parents .pop_back ();
+			stringAttribute (xmlElement -> get_attribute ("value"), valueCharacters);
+
+			fieldValue (field, valueCharacters);
+
+			parents .emplace_back (field);
+
+			childrenElements (xmlElement);
+
+			parents .pop_back ();
+		}
+
+		baseNode -> addUserDefinedField (accessType, nameCharacters, field);
 	}
-
-	baseNode -> addUserDefinedField (accessType, nameCharacters, field);
+	catch (const X3DError & error)
+	{
+		getBrowser () -> println ("XML Parser Error: Couldn't add user-defined field. ", error .what ());
+	}
 }
 
 void
