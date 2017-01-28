@@ -157,16 +157,16 @@ X3DPointingDeviceSensorContext::setHitRay (const Matrix4d & projectionMatrix, co
 void
 X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
 {
-	hits .emplace_front (new Hit (pointer,
-	                              transformationMatrix,
-	                              hitRay,
-	                              intersection,
-	                              enabledSensors .back (),
-	                              shape,
-	                              layer,
-	                              layerNumber,
-	                              getBrowser () -> getDepthTest ()   .top (),
-	                              getBrowser () -> getDepthOffset () .top ()));
+	hits .emplace_back (new Hit (pointer,
+	                             transformationMatrix,
+	                             hitRay,
+	                             intersection,
+	                             enabledSensors .back (),
+	                             shape,
+	                             layer,
+	                             layerNumber,
+	                             getBrowser () -> getDepthTest ()   .top (),
+	                             getBrowser () -> getDepthOffset () .top ()));
 }
 
 bool

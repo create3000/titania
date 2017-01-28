@@ -600,8 +600,6 @@ JSONParser::exportObject (json_object* const jobj)
 void
 JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, SFNode & node)
 {
-	__LOG__ << nodeType << std::endl;
-
 	static const std::string ProtoInstance = "ProtoInstance";
 
 	// USE property
