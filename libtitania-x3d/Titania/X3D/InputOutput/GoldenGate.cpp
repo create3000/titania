@@ -56,6 +56,7 @@
 #include "../Parser/XMLParser.h"
 #include "../Parser/Filter.h"
 #include "../Parser/Autodesk/Parser.h"
+#include "../Parser/PDF/Parser.h"
 #include "../Parser/SVG/Parser.h"
 #include "../Parser/Wavefront/Parser.h"
 
@@ -76,8 +77,6 @@ static const std::regex Description ("__DESCRIPTION__");
 static const std::regex Width       ("__WIDTH__");
 static const std::regex Height      ("__HEIGHT__");
 static const std::regex URL         ("__URL__");
-
-//inkscape file.pdf --export-plain-svg=file.svg
 
 template <class Type>
 static
@@ -206,6 +205,9 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 			std::make_pair ("application/ogg",                  &golden_video),
 			std::make_pair ("application/x-3ds",                &golden_parser <Autodesk::Parser>),
 			std::make_pair ("image/x-3ds",                      &golden_parser <Autodesk::Parser>),
+			std::make_pair ("application/pdf",                  &golden_parser <PDF::Parser>),
+			std::make_pair ("application/x-pdf",                &golden_parser <PDF::Parser>),
+			std::make_pair ("application/x-gzpdf",              &golden_parser <PDF::Parser>),
 			std::make_pair ("image/svg+xml",                    &golden_parser <SVG::Parser>),
 			std::make_pair ("text/plain",                       &golden_text),
 		};
@@ -231,6 +233,8 @@ golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 			std::make_pair (".3ds",      &golden_parser <Autodesk::Parser>),
 			// Wavefront OBJ
 			std::make_pair (".obj",      &golden_parser <Wavefront::Parser>),
+			// PDF
+			std::make_pair (".pdf",      &golden_parser <PDF::Parser>),
 			// SVG
 			std::make_pair (".svg",      &golden_parser <SVG::Parser>),
 			std::make_pair (".svgz",     &golden_parser <SVG::Parser>),

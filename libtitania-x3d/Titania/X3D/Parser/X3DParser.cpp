@@ -48,40 +48,35 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_X3DPARSER_H__
-#define __TITANIA_X3D_PARSER_X3DPARSER_H__
+#include "X3DParser.h"
 
-#include "../Base/Error.h"
-
-#include <fstream>
-#include <string>
+#include <Titania/OS/mkstemps.h>
 
 namespace titania {
 namespace X3D {
 
-class X3DParser
+X3DParser::X3DParser ()
+{ }
+
+std::string
+X3DParser::save (std::istream & istream, const std::string & suffix)
+throw (Error <INVALID_X3D>)
 {
-public:
+	// Create temp file
 
-	virtual
-	void
-	parseIntoScene () = 0;
+	std::string filename = "/tmp/titania-XXXXXX" + suffix;
+	auto        ofstream = os::mkstemps (filename, suffix .size ());
 
-	virtual
-	~X3DParser ();
+	if (not ofstream)
+		throw Error <INVALID_X3D> ("Couldn't create temp file.");
 
+	ofstream << istream .rdbuf ();
 
-protected:
+	return filename;
+}
 
-	X3DParser ();
-
-	std::string
-	save (std::istream & istream, const std::string & suffix)
-	throw (Error <INVALID_X3D>);
-
-};
+X3DParser::~X3DParser ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

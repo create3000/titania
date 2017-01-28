@@ -48,40 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_X3DPARSER_H__
-#define __TITANIA_X3D_PARSER_X3DPARSER_H__
+#include "Parser.h"
 
-#include "../Base/Error.h"
+#include "../SVG/Parser.h"
+
+#include <Titania/OS/mkstemps.h>
+#include <Titania/OS/system.h>
+#include <Titania/OS/unlink.h>
 
 #include <fstream>
-#include <string>
 
 namespace titania {
 namespace X3D {
+namespace PDF {
 
-class X3DParser
+Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
+	X3D::X3DParser (),
+	         scene (scene),
+	           uri (uri),
+	       istream (istream)
+{ }
+
+void
+Parser::parseIntoScene ()
 {
-public:
+	const auto  pdfFilename = save (istream, ".pdf");
+	std::string svgFilename = "/tmp/titania-XXXXXX.svg";
 
-	virtual
-	void
-	parseIntoScene () = 0;
+	auto ofstream = os::mkstemps (svgFilename, 4);
 
-	virtual
-	~X3DParser ();
+	os::system ("inkscape", pdfFilename, "--export-plain-svg=" + svgFilename);
 
+	std::ifstream ifstream (svgFilename);
 
-protected:
+	SVG::Parser (scene, uri, ifstream) .parseIntoScene ();
 
-	X3DParser ();
+	os::unlink (pdfFilename);
+	os::unlink (svgFilename);
+}
 
-	std::string
-	save (std::istream & istream, const std::string & suffix)
-	throw (Error <INVALID_X3D>);
+Parser::~Parser ()
+{ }
 
-};
-
+} // PDF
 } // X3D
 } // titania
-
-#endif

@@ -18478,7 +18478,7 @@ $as_echo "yes" >&6; }
 fi
 
 
-ac_config_files="$ac_config_files libtitania-standard/Makefile libtitania-sqlite/Makefile libtitania-stream/Makefile libtitania-anyoptions/Makefile libtitania-gzstream/Makefile libtitania-opengl-surface/Makefile libtitania-peaseblossom/Makefile libtitania-ftgl/Makefile libtitania-x3d/Makefile Titania/Makefile titania-info/Makefile x3dtidy/Makefile x3d2vrml/Makefile experimental/Makefile po/Makefile.in Makefile"
+ac_config_files="$ac_config_files libtitania-standard/Makefile libtitania-sqlite/Makefile libtitania-stream/Makefile libtitania-anyoptions/Makefile libtitania-gzstream/Makefile libtitania-opengl-surface/Makefile libtitania-peaseblossom/Makefile libtitania-ftgl/Makefile libtitania-x3d/Makefile Titania/Makefile titania-info/Makefile x3dtidy/Makefile experimental/Makefile po/Makefile.in Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -19619,7 +19619,6 @@ do
     "Titania/Makefile") CONFIG_FILES="$CONFIG_FILES Titania/Makefile" ;;
     "titania-info/Makefile") CONFIG_FILES="$CONFIG_FILES titania-info/Makefile" ;;
     "x3dtidy/Makefile") CONFIG_FILES="$CONFIG_FILES x3dtidy/Makefile" ;;
-    "x3d2vrml/Makefile") CONFIG_FILES="$CONFIG_FILES x3d2vrml/Makefile" ;;
     "experimental/Makefile") CONFIG_FILES="$CONFIG_FILES experimental/Makefile" ;;
     "po/Makefile.in") CONFIG_FILES="$CONFIG_FILES po/Makefile.in" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;

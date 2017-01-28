@@ -71,10 +71,8 @@ extern "C" {
 }
 
 #include <Titania/OS/file_exists.h>
+#include <Titania/OS/unlink.h>
 #include <Titania/String/tolower.h>
-
-#include <fstream>
-#include <unistd.h>
 
 namespace titania {
 namespace X3D {
@@ -107,29 +105,7 @@ Parser::parseIntoScene ()
 	scene -> updateNamedNode (get_name_from_uri (uri), X3D::SFNode (groupNode));
 	scene -> getRootNodes () .emplace_back (groupNode);
 
-	statements (save ());
-}
-
-std::string
-Parser::save ()
-{
-	// Create temp file
-
-	std::string filename       = "/tmp/titania-XXXXXX.3ds";
-	const int   fileDescriptor = mkstemps (&filename [0], 4);
-
-	if (fileDescriptor == -1)
-		throw Error <INVALID_X3D> ("Couldn't create temp file for 3ds stream.");
-
-	std::ofstream ofstream (filename);
-
-	ofstream << istream .rdbuf ();
-
-	ofstream .close ();
-
-	close (fileDescriptor);
-
-	return filename;
+	statements (save (istream, ".3ds"));
 }
 
 void
@@ -151,7 +127,7 @@ Parser::statements (const std::string & filename)
 
 	// Unlink temp file
 
-	unlink (filename .c_str ());
+	os::unlink (filename);
 }
 
 void

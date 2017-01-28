@@ -564,6 +564,8 @@
     <None Include="Titania\Math\Algorithms\Bezier.h" />
     <None Include="Titania\InputOutput\InverseCharacter.h" />
     <None Include="Titania\String\tolower.h" />
+    <None Include="Titania\OS\mkstemps.h" />
+    <None Include="Titania\OS\unlink.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -645,6 +647,8 @@
     <Compile Include="Titania\RegEx\regex_escape.cpp" />
     <Compile Include="Titania\Math\Mesh\Combine.cpp" />
     <Compile Include="Titania\InputOutput\InverseCharacter.cpp" />
+    <Compile Include="Titania\OS\mkstemps.cpp" />
+    <Compile Include="Titania\OS\unlink.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

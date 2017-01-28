@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,39 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_X3DPARSER_H__
-#define __TITANIA_X3D_PARSER_X3DPARSER_H__
+#ifndef __TITANIA_X3D_PARSER_PDF_PARSER_H__
+#define __TITANIA_X3D_PARSER_PDF_PARSER_H__
 
-#include "../Base/Error.h"
-
-#include <fstream>
-#include <string>
+#include "../../Execution/X3DScene.h"
+#include "../../Parser/X3DParser.h"
 
 namespace titania {
 namespace X3D {
+namespace PDF {
 
-class X3DParser
+class Parser :
+	public X3D::X3DParser
 {
 public:
 
+	///  @name Construction
+
+	Parser (const X3D::X3DScenePtr &, const basic::uri &, std::istream &);
+
+	///  @name Operations
+
 	virtual
 	void
-	parseIntoScene () = 0;
+	parseIntoScene () final override;
+
+	///  @name Destruction
 
 	virtual
-	~X3DParser ();
+	~Parser () final override;
 
 
-protected:
+private:
 
-	X3DParser ();
+	///  @name Members
 
-	std::string
-	save (std::istream & istream, const std::string & suffix)
-	throw (Error <INVALID_X3D>);
+	const X3D::X3DScenePtr scene;
+	const basic::uri       uri;
+	std::istream &         istream;
 
 };
 
+} // PDF
 } // X3D
 } // titania
 

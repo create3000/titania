@@ -75,9 +75,11 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/is_file.cpp \
 	Titania/OS/load_file.cpp \
 	Titania/OS/mkdir.cpp \
+	Titania/OS/mkstemps.cpp \
 	Titania/OS/popen2.cpp \
 	Titania/OS/realpath.cpp \
 	Titania/OS/system.cpp \
+	Titania/OS/unlink.cpp \
 	Titania/RegEx/regex_escape.cpp \
 	Titania/String/dtoa.cpp \
 	Titania/String/naturally_compare.cpp \

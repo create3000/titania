@@ -92,9 +92,6 @@ private:
 
 	///  @name Operations
 
-	std::string
-	save ();
-
 	void
 	statements (const std::string & filename);
 

@@ -48,40 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_X3DPARSER_H__
-#define __TITANIA_X3D_PARSER_X3DPARSER_H__
+#include "mkstemps.h"
 
-#include "../Base/Error.h"
-
-#include <fstream>
-#include <string>
+#include <unistd.h>
 
 namespace titania {
-namespace X3D {
+namespace os {
 
-class X3DParser
+int
+unlink (const std::string & filename)
 {
-public:
+	return ::unlink (filename .c_str ());
+}
 
-	virtual
-	void
-	parseIntoScene () = 0;
-
-	virtual
-	~X3DParser ();
-
-
-protected:
-
-	X3DParser ();
-
-	std::string
-	save (std::istream & istream, const std::string & suffix)
-	throw (Error <INVALID_X3D>);
-
-};
-
-} // X3D
+} // os
 } // titania
-
-#endif

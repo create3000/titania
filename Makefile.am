@@ -13,8 +13,7 @@ SUBDIRS =  \
 	libtitania-x3d \
 	Titania \
 	titania-info \
-	x3dtidy \
-	x3d2vrml
+	x3dtidy
 
 
 INTLTOOL_FILES = intltool-extract.in \

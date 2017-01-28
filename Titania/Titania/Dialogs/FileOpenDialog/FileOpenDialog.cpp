@@ -75,6 +75,7 @@ static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed 
 
 static constexpr auto AUTODESK_3DS_MAX_FILE_FILTER = "Autodesk 3DS Max File (*.3ds)";
 static constexpr auto WAVEFRONT_OBJ_FILE_FILTER    = "Wavefront OBJ File (*.obj)";
+static constexpr auto PDF_FILE_FILTER              = "Portable Document Format (*.pdf)";
 static constexpr auto SVG_FILE_FILTER              = "SVG File (*.svg, *.svgz)";
 
 FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
@@ -99,6 +100,7 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 
 	getFileFilterAutodesk3DSMax ()  -> set_name (_ (AUTODESK_3DS_MAX_FILE_FILTER));
 	getFileFilterWavefrontOBJ ()    -> set_name (_ (WAVEFRONT_OBJ_FILE_FILTER));
+	getFileFilterPDF ()             -> set_name (_ (PDF_FILE_FILTER));
 	getFileFilterSVG ()             -> set_name (_ (SVG_FILE_FILTER));
 
 	const auto worldURL = getCurrentScene () -> getWorldURL ();
@@ -137,6 +139,7 @@ FileOpenDialog::setMode (Mode mode)
 
 			getWindow () .add_filter (getFileFilterAutodesk3DSMax ());
 			getWindow () .add_filter (getFileFilterWavefrontOBJ ());
+			getWindow () .add_filter (getFileFilterPDF ());
 			getWindow () .add_filter (getFileFilterSVG ());
 
 			setFilter (getConfig () -> getString ("filter"));
@@ -201,6 +204,9 @@ FileOpenDialog::setFilter (const std::string & name)
 
 	else if (name == _(WAVEFRONT_OBJ_FILE_FILTER))
 		getWindow () .set_filter (getFileFilterWavefrontOBJ ());
+
+	else if (name == _(PDF_FILE_FILTER))
+		getWindow () .set_filter (getFileFilterPDF ());
 
 	else if (name == _(SVG_FILE_FILTER))
 		getWindow () .set_filter (getFileFilterSVG ());

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,40 +48,19 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_X3DPARSER_H__
-#define __TITANIA_X3D_PARSER_X3DPARSER_H__
-
-#include "../Base/Error.h"
+#ifndef __TITANIA_OS_MKSTEMPS_H__
+#define __TITANIA_OS_MKSTEMPS_H__
 
 #include <fstream>
 #include <string>
 
 namespace titania {
-namespace X3D {
+namespace os {
 
-class X3DParser
-{
-public:
+std::ofstream
+mkstemps (std::string & filename, size_t count);
 
-	virtual
-	void
-	parseIntoScene () = 0;
-
-	virtual
-	~X3DParser ();
-
-
-protected:
-
-	X3DParser ();
-
-	std::string
-	save (std::istream & istream, const std::string & suffix)
-	throw (Error <INVALID_X3D>);
-
-};
-
-} // X3D
+} // os
 } // titania
 
 #endif

@@ -1,69 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Library/Tests/3rd Party/SVG/Gradient.svg" Line="26" Column="28" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/SVG/Parser.h" Line="355" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/SVG/Parser.cpp" Line="351" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.h" Line="155" Column="48" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layout/ScreenFontStyle.cpp" Line="403" Column="2" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shape/Shape.cpp" Line="167" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Layering/X3DLayerNode.cpp" Line="1" Column="1" />
+      <File FileName="Library/Tests/3rd Party/SVG/Vase.svg" Line="10423" Column="189" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/PDF/Parser.cpp" Line="79" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Titania" expanded="True">
-            <Node name="Library" expanded="True">
-              <Node name="Tests" expanded="True">
-                <Node name="3rd Party" expanded="True">
-                  <Node name="SVG" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="libtitania-standard" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="String" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="libtitania-x3d" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="X3D" expanded="True">
-                  <Node name="Components" expanded="True">
-                    <Node name="Layering" expanded="True" />
-                    <Node name="Layout" expanded="True">
-                      <Node name="ScreenFontStyle.cpp" selected="True" />
-                    </Node>
-                    <Node name="Navigation" expanded="True" />
-                    <Node name="Rendering" expanded="True" />
-                    <Node name="Shape" expanded="True" />
-                    <Node name="Text" expanded="True" />
-                  </Node>
-                  <Node name="Fields" expanded="True" />
-                  <Node name="Parser" expanded="True">
-                    <Node name="Autodesk" expanded="True" />
-                    <Node name="SVG" expanded="True" />
-                  </Node>
-                  <Node name="Types" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="Titania" expanded="True">
-                <Node name="Dialogs" expanded="True">
-                  <Node name="FileOpenDialog" expanded="True" />
-                </Node>
-                <Node name="Widgets" expanded="True">
-                  <Node name="OutlineEditor" expanded="True">
-                    <Node name="CellRenderer" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
@@ -72,9 +13,7 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Parser/SVG/Parser.cpp" line="1919" column="1" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Parser/SVG/Parser.cpp" line="2217" column="2" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Parser/SVG/Parser.cpp" line="1371" column="16" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Arguments.h" line="118" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

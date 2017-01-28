@@ -64,6 +64,16 @@
       <mime-type>image/*</mime-type>
     </mime-types>
   </object>
+  <object class="GtkFileFilter" id="FileFilterPDF">
+    <mime-types>
+      <mime-type>application/pdf</mime-type>
+      <mime-type>application/x-pdf</mime-type>
+      <mime-type>application/x-gzpdf</mime-type>
+    </mime-types>
+    <patterns>
+      <pattern>*.pdf</pattern>
+    </patterns>
+  </object>
   <object class="GtkFileFilter" id="FileFilterSVG">
     <mime-types>
       <mime-type>image/svg+xml</mime-type>
@@ -103,6 +113,9 @@
       <mime-type>application/json</mime-type>
       <mime-type>application/x-3ds</mime-type>
       <mime-type>image/x-3ds</mime-type>
+      <mime-type>application/pdf</mime-type>
+      <mime-type>application/x-pdf</mime-type>
+      <mime-type>application/x-gzpdf</mime-type>
       <mime-type>image/svg+xml</mime-type>
     </mime-types>
     <patterns>
@@ -120,6 +133,7 @@
       <pattern>*.vrml</pattern>
       <pattern>*.obj</pattern>
       <pattern>*.3ds</pattern>
+      <pattern>*.pdf</pattern>
       <pattern>*.svg</pattern>
       <pattern>*.svgz</pattern>
     </patterns>

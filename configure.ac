@@ -166,7 +166,6 @@ libtitania-x3d/Makefile
 Titania/Makefile
 titania-info/Makefile
 x3dtidy/Makefile
-x3d2vrml/Makefile
 experimental/Makefile
 po/Makefile.in
 Makefile

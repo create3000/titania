@@ -69,6 +69,7 @@ X3DFileOpenDialogInterface::create (const std::string & filename)
 	m_FileFilterCompressedX3DXMLEncoding         = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterCompressedX3DXMLEncoding"));
 	m_FileFilterFonts                            = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterFonts"));
 	m_FileFilterImage                            = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterImage"));
+	m_FileFilterPDF                              = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterPDF"));
 	m_FileFilterSVG                              = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterSVG"));
 	m_FileFilterVideo                            = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVideo"));
 	m_FileFilterVrmlEncoding                     = Glib::RefPtr <Gtk::FileFilter>::cast_dynamic (m_builder -> get_object ("FileFilterVrmlEncoding"));
