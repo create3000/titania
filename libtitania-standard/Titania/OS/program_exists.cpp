@@ -48,28 +48,17 @@
  *
  ******************************************************************************/
 
-#include "mkstemps.h"
+#include "program_exists.h"
 
-#include <unistd.h>
+#include "system.h"
 
 namespace titania {
 namespace os {
 
-std::ofstream
-mkstemps (std::string & filename, size_t count)
+bool
+program_exists (const std::string & program_name)
 {
-	// Create temp file
-
-	const int fileDescriptor = ::mkstemps (&filename [0], count);
-
-	std::ofstream ofstream (filename);
-
-	if (fileDescriptor == -1)
-		ofstream .setstate (std::ios::failbit);
-
-	::close (fileDescriptor);
-
-	return ofstream;
+	return os::system ("which", program_name, ">", "/dev/null", "2>&1") == 0;
 }
 
 } // os

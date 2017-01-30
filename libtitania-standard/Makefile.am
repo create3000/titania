@@ -77,6 +77,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/mkdir.cpp \
 	Titania/OS/mkstemps.cpp \
 	Titania/OS/popen2.cpp \
+	Titania/OS/program_exists.cpp \
 	Titania/OS/realpath.cpp \
 	Titania/OS/system.cpp \
 	Titania/OS/unlink.cpp \

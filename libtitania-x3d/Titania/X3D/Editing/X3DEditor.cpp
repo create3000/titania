@@ -2340,24 +2340,15 @@ X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry,
                             std::set <X3DBaseNode*> & coords,
                             const UndoStepPtr & undoStep) const
 {
-	for (const auto & type : basic::make_reverse_range (geometry -> getType ()))
+	try
 	{
-		switch (type)
-		{
-			case X3DConstants::IndexedFaceSet:
-			{
-				X3DPtr <IndexedFaceSet>    indexedFaceSet (geometry);
-				X3DPtr <X3DCoordinateNode> coord (indexedFaceSet -> coord ());
+		X3DPtr <X3DCoordinateNode> coord (geometry -> getField <SFNode> ("coord"));
 
-				if (coord)
-					transformToZero (coord, matrix, coords, undoStep);
-
-				return;
-			}
-			default:
-				continue;
-		}
+		if (coord)
+			transformToZero (coord, matrix, coords, undoStep);
 	}
+	catch (const X3DError &)
+	{ }
 }
 
 void

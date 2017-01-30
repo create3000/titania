@@ -566,6 +566,7 @@
     <None Include="Titania\String\tolower.h" />
     <None Include="Titania\OS\mkstemps.h" />
     <None Include="Titania\OS\unlink.h" />
+    <None Include="Titania\OS\program_exists.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -649,6 +650,7 @@
     <Compile Include="Titania\InputOutput\InverseCharacter.cpp" />
     <Compile Include="Titania\OS\mkstemps.cpp" />
     <Compile Include="Titania\OS\unlink.cpp" />
+    <Compile Include="Titania\OS\program_exists.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

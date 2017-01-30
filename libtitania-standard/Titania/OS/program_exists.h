@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,29 +48,18 @@
  *
  ******************************************************************************/
 
-#include "mkstemps.h"
+#ifndef __TITANIA_OS_PROGRAM_EXISTS_H__
+#define __TITANIA_OS_PROGRAM_EXISTS_H__
 
-#include <unistd.h>
+#include <string>
 
 namespace titania {
 namespace os {
 
-std::ofstream
-mkstemps (std::string & filename, size_t count)
-{
-	// Create temp file
-
-	const int fileDescriptor = ::mkstemps (&filename [0], count);
-
-	std::ofstream ofstream (filename);
-
-	if (fileDescriptor == -1)
-		ofstream .setstate (std::ios::failbit);
-
-	::close (fileDescriptor);
-
-	return ofstream;
-}
+bool
+program_exists (const std::string & program_name);
 
 } // os
 } // titania
+
+#endif

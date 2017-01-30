@@ -278,7 +278,7 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 	// Create root Transform.
 
 	const auto translation = X3D::Vector3d (-viewBox .x (), viewBox .y (), 0);
-	const auto scale       = X3D::Vector3d (math::pixel <double> * width / viewBox [2], math::pixel <double> * height / viewBox [3], 1);
+	const auto scale       = X3D::Vector3d (math::pixel <double> * width / viewBox [2], -math::pixel <double> * height / viewBox [3], 1);
 
 	rootTransform -> translation () = translation * scale;
 	rootTransform -> scale ()       = scale;
@@ -789,7 +789,7 @@ Parser::imageElement (xmlpp::Element* const xmlElement)
 	lengthAttribute (xmlElement -> get_attribute ("width"),  width);
 	lengthAttribute (xmlElement -> get_attribute ("height"), height);
 
-	const auto transformNode = getTransform (xmlElement, X3D::Vector2d (x + width / 2, y + height / 2));
+	const auto transformNode = getTransform (xmlElement, X3D::Vector2d (x + width / 2, y + height / 2), X3D::Vector2d (1, -1));
 
 	groupNodes .emplace_back (transformNode);
 
@@ -861,7 +861,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
 
 	for (const auto & point : points)
-		coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
+		coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 
 	if (style .fillType not_eq ColorType::NONE)
 	{
@@ -901,11 +901,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 				const auto invBBoxMatrix = inverse (bbox .matrix ());
 
 				for (const auto & point : points)
-				{
-					const auto t = (point * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0;
-	
-					texCoordNode -> point () .emplace_back (t .x (), 1 - t .y ());
-				}
+					texCoordNode -> point () .emplace_back ((point * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
 
 				geometryNode -> texCoord () = texCoordNode;
 			}
@@ -926,7 +922,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 			}
 
 			for (const auto & point : points)
-				coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
+				coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 	
 			transformNode -> children () .emplace_back (shapeNode);
 		}
@@ -998,7 +994,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 	const auto coordinateNode = scene -> createNode <X3D::Coordinate> ();
 
 	for (const auto & point : points)
-		coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
+		coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 
 	if (style .fillType not_eq ColorType::NONE)
 	{
@@ -1038,11 +1034,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 				const auto invBBoxMatrix = inverse (bbox .matrix ());
 	
 				for (const auto & point : points)
-				{
-					const auto t = (point * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0;
-	
-					texCoordNode -> point () .emplace_back (t .x (), 1 - t .y ());
-				}
+					texCoordNode -> point () .emplace_back ((point * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
 
 				geometryNode -> texCoord () = texCoordNode;
 			}
@@ -1063,7 +1055,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 			}
 
 			for (const auto & point : points)
-				coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
+				coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 
 			transformNode -> children () .emplace_back (shapeNode);
 		}
@@ -1138,7 +1130,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 	for (const auto & contour : contours)
 	{
 		for (const auto & point : contour)
-			coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
+			coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 	}
 
 	if (style .fillType not_eq ColorType::NONE)
@@ -1186,11 +1178,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 				for (const auto & contour : contours)
 				{
 					for (const auto & point : contour)
-					{
-						const auto t = (point * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0;
-	
-						texCoordNode -> point () .emplace_back (t .x (), 1 - t .y ());
-					}
+						texCoordNode -> point () .emplace_back ((point * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
 				}
 
 				geometryNode -> texCoord () = texCoordNode;
@@ -1214,7 +1202,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 			for (const auto & contour : contours)
 			{
 				for (const auto & point : contour)
-					coordinateNode -> point () .emplace_back (point .x (), -point .y (), 0);
+					coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 			}
 
 			transformNode -> children () .emplace_back (shapeNode);
@@ -1291,6 +1279,38 @@ Parser::paintURL (const basic::uri & url,
 }
 
 void
+Parser::paintGradient (const Cairo::RefPtr <Cairo::Gradient> & cairoGradient,
+                       const Gradient & gradient,
+                       const X3D::Box2d & bbox,
+                       const Cairo::RefPtr <Cairo::Context> & context)
+{
+	// Determine gradient transform.
+
+	X3D::Matrix3d m;
+
+	m .scale     (X3D::Vector2d (GRADIENT_WIDTH / 2.0, GRADIENT_HEIGHT / 2.0));
+	m .translate (X3D::Vector2d (1, 1));
+	m .scale     (X3D::Vector2d (1, -1));
+	m .mult_left (inverse (bbox .matrix ()));
+	m .mult_left (gradient .gradientTransform);
+
+	const auto gradientTransform = Cairo::Matrix (m [0] [0], m [1] [0], m [0] [1], m [1] [1], m [2] [0], m [2] [1]);
+
+	// Add colors.
+
+	for (const auto & stop : gradient .stops)
+		cairoGradient -> add_color_stop_rgba (stop .first, stop .second .r (), stop .second .g (), stop .second .b (), stop .second .a ());
+
+	// Paint.
+
+	context -> set_matrix (gradientTransform);
+	context -> set_source (cairoGradient);
+	context -> set_identity_matrix ();
+	context -> rectangle (0, 0, GRADIENT_WIDTH, GRADIENT_HEIGHT);
+	context -> fill ();
+}
+
+void
 Parser::paintLinearGradientElement (xmlpp::Element* const xmlElement,
                                     const X3D::Box2d & bbox,
                                     const Cairo::RefPtr <Cairo::Context> & context)
@@ -1301,23 +1321,7 @@ Parser::paintLinearGradientElement (xmlpp::Element* const xmlElement,
 
 	const auto linearGradient = Cairo::LinearGradient::create (gradient .x1, gradient .y1, gradient .x2, gradient .y2);
 
-	for (const auto & stop : gradient .stops)
-		linearGradient -> add_color_stop_rgba (stop .first, stop .second .r (), stop .second .g (), stop .second .b (), stop .second .a ());
-
-	X3D::Matrix3d m;
-
-	m .scale     (X3D::Vector2d (GRADIENT_WIDTH / 2.0, GRADIENT_HEIGHT / 2.0));
-	m .translate (X3D::Vector2d (1, 1));
-	m .mult_left (inverse (bbox .matrix ()));
-	m .mult_left (gradient .gradientTransform);
-
-	const auto matrix = Cairo::Matrix (m [0] [0], m [1] [0], m [0] [1], m [1] [1], m [2] [0], m [2] [1]);
-
-	context -> set_matrix (matrix);
-	context -> set_source (linearGradient);
-	context -> set_identity_matrix ();
-	context -> rectangle (0, 0, GRADIENT_WIDTH, GRADIENT_HEIGHT);
-	context -> fill ();
+	paintGradient (linearGradient, gradient, bbox, context);
 }
 
 void
@@ -1383,23 +1387,7 @@ Parser::paintRadialGradientElement (xmlpp::Element* const xmlElement,
 
 	const auto radialGradient = Cairo::RadialGradient::create (gradient .fx, gradient .fy, 0, gradient .cx, gradient .cy, gradient .r);
 
-	for (const auto & stop : gradient .stops)
-		radialGradient -> add_color_stop_rgba (stop .first, stop .second .r (), stop .second .g (), stop .second .b (), stop .second .a ());
-
-	X3D::Matrix3d m;
-
-	m .scale     (X3D::Vector2d (GRADIENT_WIDTH / 2.0, GRADIENT_HEIGHT / 2.0));
-	m .translate (X3D::Vector2d (1, 1));
-	m .mult_left (inverse (bbox .matrix ()));
-	m .mult_left (gradient .gradientTransform);
-
-	const auto matrix = Cairo::Matrix (m [0] [0], m [1] [0], m [0] [1], m [1] [1], m [2] [0], m [2] [1]);
-
-	context -> set_matrix (matrix);
-	context -> set_source (radialGradient);
-	context -> set_identity_matrix ();
-	context -> rectangle (0, 0, GRADIENT_WIDTH, GRADIENT_HEIGHT);
-	context -> fill ();
+	paintGradient (radialGradient, gradient, bbox, context);
 }
 
 void
@@ -2767,16 +2755,11 @@ Parser::getTransform (xmlpp::Element* const xmlElement, const X3D::Vector2d & tr
 	// Determine matrix.
 
 	X3D::Matrix3d matrix;
-	X3D::Vector2d t, s;
-	double        r, so;
 
 	transformAttribute (xmlElement -> get_attribute ("transform"), matrix);
 
 	matrix .translate (translation);
 	matrix .scale (scale);
-
-	matrix .get (t, r, s, so);
-	matrix .set (X3D::Vector2d (t .x (), -t .y ()), -r, s, -so);
 
 	// Create node.
 

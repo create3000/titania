@@ -62,8 +62,11 @@
 #include "OS/is_file.h"
 #include "OS/load_file.h"
 #include "OS/mkdir.h"
+#include "OS/mkstemps.h"
 #include "OS/popen2.h"
+#include "OS/program_exists.h"
 #include "OS/realpath.h"
 #include "OS/system.h"
+#include "OS/unlink.h"
 
 #endif

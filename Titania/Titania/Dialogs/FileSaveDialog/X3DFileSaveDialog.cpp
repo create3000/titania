@@ -274,7 +274,7 @@ X3DFileSaveDialog::setImageFilter (const std::string & name)
 {
 	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DFileSaveDialog::on_image_filter_changed));
 
-	if (getGimp ())
+	if (os::program_exists ("gimp"))
 		getWindow () .add_filter (getFileFilterImageXCF ());
 
 	getWindow () .add_filter (getFileFilterImageJPEG ());
@@ -342,12 +342,6 @@ X3DFileSaveDialog::set_suffix (const std::string & suffix)
 	getWindow () .set_current_name (name .basename (false) + suffix);
 }
 
-bool
-X3DFileSaveDialog::getGimp () const
-{
-	return os::system ("which", "gimp", ">", "/dev/null", "2>&1") == 0;
-}
-
 // Export image
 
 void
@@ -394,28 +388,28 @@ X3DFileSaveDialog::exportImage ()
 
 				image -> quality (getImageCompressionAdjustment () -> get_value ());
 
-				if (filename .suffix () == ".xcf" and getGimp ())
+				if (filename .suffix () == ".xcf" and os::program_exists ("gimp"))
 				{
-					std::string tmpFilename    = "/tmp/titania-XXXXXX.png";
-					const int   fileDescriptor = mkstemps (&tmpFilename [0], 4);
+					std::string pngFilename = "/tmp/titania-XXXXXX.png";
+					auto ofstream           = os::mkstemps (pngFilename, 4);
 
-					if (fileDescriptor not_eq -1)
+					if (ofstream)
 					{
 						static const std::regex quotes (R"/(")/");
 
 						filename = std::regex_replace (filename .str (), quotes, "\\\"");
 
-						image -> write (tmpFilename);
+						image -> write (pngFilename);
 
-						os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + tmpFilename + "\" \"" + tmpFilename + "\")))"
+						os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + pngFilename + "\" \"" + pngFilename + "\")))"
 						            "(drawable (car (gimp-image-get-active-layer image))))"
 						            "(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + filename + "\" \"" + filename + "\")"
 						            "(gimp-image-delete image)"
 						            "(gimp-quit 0))");
 
-						unlink (tmpFilename .c_str ());
-						close (fileDescriptor);
 					}
+
+					os::unlink (pngFilename);
 				}
 				else
 					image -> write (filename);

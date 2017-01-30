@@ -237,6 +237,12 @@ private:
 	          const Cairo::RefPtr <Cairo::Context> & context);
 
 	void
+	paintGradient (const Cairo::RefPtr <Cairo::Gradient> & cairoGradient,
+	               const Gradient & gradient,
+	               const X3D::Box2d & bbox,
+	               const Cairo::RefPtr <Cairo::Context> & context);
+
+	void
 	paintLinearGradientElement (xmlpp::Element* const xmlElement,
 	                            const X3D::Box2d & bbox,
 	                            const Cairo::RefPtr <Cairo::Context> & context);

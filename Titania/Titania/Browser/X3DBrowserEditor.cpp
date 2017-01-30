@@ -929,16 +929,14 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 void
 X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 {
-	X3D::MFString* const cdata          = node -> getSourceText ();
-	std::string          filename       = "/tmp/titania-XXXXXX.js";
-	const int            fileDescriptor = mkstemps (&filename [0], 3);
+	const auto  cdata    = node -> getSourceText ();
+	std::string filename = "/tmp/titania-XXXXXX.js";
+	auto        ostream  = os::mkstemps (filename, 3);
 
-	if (not cdata or fileDescriptor == -1)
+	if (not cdata or not ostream)
 		return;
 
 	// Output file.
-
-	std::ofstream ostream (filename);
 
 	for (const auto & string : *cdata)
 	{
@@ -981,8 +979,6 @@ X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 	}
 	catch (...)
 	{ }
-
-	::close (fileDescriptor);
 }
 
 void
