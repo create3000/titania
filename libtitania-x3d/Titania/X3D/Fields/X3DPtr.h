@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_FIELDS_X3DPTR_H__
 
 #include "../Basic/X3DField.h"
+#include "../Fields/X3DPtrBase.h"
 
 #include <Titania/Backtrace.h>
 
@@ -60,45 +61,6 @@ namespace X3D {
 
 template <class ValueType>
 class X3DArrayField;
-
-/**
- *  Base class for X3DPtr and X3DWeakPtr.
- */
-class X3DPtrBase :
-	virtual public X3DBase
-{
-public:
-
-	///  @name Destruction
-
-	virtual
-	~X3DPtrBase ()
-	{ }
-
-
-protected:
-
-	///  @name Fiends
-
-	template <class Up>
-	friend class X3DPtr;
-
-	template <class Up>
-	friend class X3DWeakPtr;
-
-	///  @name Construction
-
-	X3DPtrBase () :
-		X3DBase ()
-	{ }
-
-	///  @name Operations
-
-	virtual
-	X3DChildObject*
-	getObject () const = 0;
-
-};
 
 /**
  *  Template to represent a pointer that can handle circular references and that does
@@ -111,7 +73,8 @@ protected:
  */
 template <class ValueType>
 class X3DPtr :
-	public X3DField <ValueType*>, public X3DPtrBase
+	public X3DField <ValueType*>,
+	public X3DPtrBase
 {
 public:
 
@@ -485,7 +448,7 @@ public:
 
 	///  Destructs the owned object if no more X3DPtr link to it
 	virtual
-	~X3DPtr ()
+	~X3DPtr () final override
 	{ removeObject (getValue ()); }
 
 

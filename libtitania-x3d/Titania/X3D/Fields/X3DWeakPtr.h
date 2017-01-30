@@ -51,14 +51,16 @@
 #ifndef __TITANIA_X3D_FIELDS_X3DWEAK_SFNODE_H__
 #define __TITANIA_X3D_FIELDS_X3DWEAK_SFNODE_H__
 
-#include "X3DPtr.h"
+#include "../Basic/X3DField.h"
+#include "../Fields/X3DPtrBase.h"
 
 namespace titania {
 namespace X3D {
 
 template <class ValueType>
 class X3DWeakPtr :
-	public X3DField <ValueType*>, public X3DPtrBase
+	public X3DField <ValueType*>,
+	public X3DPtrBase
 {
 public:
 
@@ -208,7 +210,7 @@ public:
 	}
 
 	virtual
-	~X3DWeakPtr ()
+	~X3DWeakPtr () final override
 	{ removeObject (getValue ()); }
 
 
