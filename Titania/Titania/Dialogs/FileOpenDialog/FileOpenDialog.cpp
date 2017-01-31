@@ -139,7 +139,10 @@ FileOpenDialog::setMode (Mode mode)
 
 			getWindow () .add_filter (getFileFilterAutodesk3DSMax ());
 			getWindow () .add_filter (getFileFilterWavefrontOBJ ());
-			getWindow () .add_filter (getFileFilterPDF ());
+
+			if (os::program_exists ("inkscape"))
+				getWindow () .add_filter (getFileFilterPDF ());
+
 			getWindow () .add_filter (getFileFilterSVG ());
 
 			setFilter (getConfig () -> getString ("filter"));

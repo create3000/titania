@@ -56,7 +56,8 @@ Depends: ${misc:Depends},
 Recommends: gstreamer1.0-plugins-base,
             gstreamer1.0-plugins-good,
             gstreamer1.0-plugins-bad,
-            gstreamer1.0-plugins-ugly
+            gstreamer1.0-plugins-ugly,
+            inkscape
 Conflicts:
 Replaces:
 Provides: titania

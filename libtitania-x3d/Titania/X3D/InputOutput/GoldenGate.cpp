@@ -187,59 +187,92 @@ golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 	scene -> fromStream (uri, goldenstream);
 }
 
+using GoldenFunction = std::function <void (const X3DScenePtr &, const basic::uri &, basic::ifilestream &)>;
+
+static
+std::map <std::string, GoldenFunction>
+get_content_types ()
+{
+	std::map <std::string, GoldenFunction> contentTypes;
+
+	contentTypes .emplace ("model/vrml",                       &golden_x3dv);
+	contentTypes .emplace ("x-world/x-vrml",                   &golden_x3dv);
+	contentTypes .emplace ("model/x3d+vrml",                   &golden_x3dv);
+	contentTypes .emplace ("model/x3d+xml",                    &golden_parser <XMLParser>);
+	contentTypes .emplace ("application/xml",                  &golden_parser <XMLParser>);
+	contentTypes .emplace ("application/vnd.hzn-3d-crossword", &golden_parser <XMLParser>);
+	contentTypes .emplace ("application/json",                 &golden_parser <JSONParser>);
+	contentTypes .emplace ("application/ogg",                  &golden_video);
+	contentTypes .emplace ("application/x-3ds",                &golden_parser <Autodesk::Parser>);
+	contentTypes .emplace ("image/x-3ds",                      &golden_parser <Autodesk::Parser>);
+
+	if (os::program_exists ("inkscape"))
+	{
+		contentTypes .emplace ("application/pdf",                  &golden_parser <PDF::Parser>);
+		contentTypes .emplace ("application/x-pdf",                &golden_parser <PDF::Parser>);
+		contentTypes .emplace ("application/x-gzpdf",              &golden_parser <PDF::Parser>);
+	}
+
+	contentTypes .emplace ("image/svg+xml", &golden_parser <SVG::Parser>);
+	contentTypes .emplace ("text/plain",    &golden_text);
+
+	return contentTypes;
+}
+
+static
+std::map <std::string, GoldenFunction>
+get_suffixes ()
+{
+	std::map <std::string, GoldenFunction> suffixes;
+
+	// VRML
+	suffixes .emplace (".wrl",    &golden_x3dv);
+	suffixes .emplace (".wrz",    &golden_x3dv);
+	suffixes .emplace (".wrl.gz", &golden_x3dv); /// Todo: does not work with URI::suffix
+	suffixes .emplace (".vrml",   &golden_x3dv);
+	suffixes .emplace (".vrm",    &golden_x3dv);
+
+	// X3D Vrml Classic Encoding 
+	suffixes .emplace (".x3dv",    &golden_x3dv);
+	suffixes .emplace (".x3dvz",   &golden_x3dv);
+	suffixes .emplace (".x3dv.gz", &golden_x3dv); /// Todo: does not work with URI::suffix
+
+	// X3D XML Encoding 
+	suffixes .emplace (".x3d",    &golden_parser <XMLParser>);
+	suffixes .emplace (".x3dz",   &golden_parser <XMLParser>);
+	suffixes .emplace (".x3d.gz", &golden_parser <XMLParser>); /// Todo: does not work with URI::suffix
+	suffixes .emplace (".xml",    &golden_parser <XMLParser>);
+
+	// X3D XML Encoding 
+	suffixes .emplace (".json", &golden_parser <JSONParser>);
+
+	// Autodesk 3DS Max
+	suffixes .emplace (".3ds", &golden_parser <Autodesk::Parser>);
+
+	// Wavefront OBJ
+	suffixes .emplace (".obj", &golden_parser <Wavefront::Parser>);
+
+	if (os::program_exists ("inkscape"))
+	{
+		// PDF
+		suffixes .emplace (".pdf", &golden_parser <PDF::Parser>);
+	}
+
+	// SVG
+	suffixes .emplace (".svg",  &golden_parser <SVG::Parser>);
+	suffixes .emplace (".svgz", &golden_parser <SVG::Parser>);
+
+	return suffixes;
+}
+
 void
 golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	try
 	{
-		using GoldenFunction = std::function <void (const X3DScenePtr &, const basic::uri &, basic::ifilestream &)>;
-	
-		static const std::map <std::string, GoldenFunction> contentTypes = {
-			std::make_pair ("model/vrml",                       &golden_x3dv),
-			std::make_pair ("x-world/x-vrml",                   &golden_x3dv),
-			std::make_pair ("model/x3d+vrml",                   &golden_x3dv),
-			std::make_pair ("model/x3d+xml",                    &golden_parser <XMLParser>),
-			std::make_pair ("application/xml",                  &golden_parser <XMLParser>),
-			std::make_pair ("application/vnd.hzn-3d-crossword", &golden_parser <XMLParser>),
-			std::make_pair ("application/json",                 &golden_parser <JSONParser>),
-			std::make_pair ("application/ogg",                  &golden_video),
-			std::make_pair ("application/x-3ds",                &golden_parser <Autodesk::Parser>),
-			std::make_pair ("image/x-3ds",                      &golden_parser <Autodesk::Parser>),
-			std::make_pair ("application/pdf",                  &golden_parser <PDF::Parser>),
-			std::make_pair ("application/x-pdf",                &golden_parser <PDF::Parser>),
-			std::make_pair ("application/x-gzpdf",              &golden_parser <PDF::Parser>),
-			std::make_pair ("image/svg+xml",                    &golden_parser <SVG::Parser>),
-			std::make_pair ("text/plain",                       &golden_text),
-		};
-	
-		static const std::map <std::string, GoldenFunction> suffixes = {
-			// VRML
-			std::make_pair (".wrl",      &golden_x3dv),
-			std::make_pair (".wrl.gz",   &golden_x3dv), /// Todo: does not work with URI::suffix
-			std::make_pair (".vrml",     &golden_x3dv),
-			std::make_pair (".vrm",      &golden_x3dv),
-			// X3D Vrml Classic Encoding 
-			std::make_pair (".x3dvz",    &golden_x3dv),
-			std::make_pair (".x3dv.gz",  &golden_x3dv), /// Todo: does not work with URI::suffix
-			std::make_pair (".x3dv",     &golden_x3dv),
-			// X3D XML Encoding 
-			std::make_pair (".x3d",      &golden_parser <XMLParser>),
-			std::make_pair (".x3dz",     &golden_parser <XMLParser>),
-			std::make_pair (".x3d.gz",   &golden_parser <XMLParser>), /// Todo: does not work with URI::suffix
-			std::make_pair (".xml",      &golden_parser <XMLParser>),
-			// X3D XML Encoding 
-			std::make_pair (".json",     &golden_parser <JSONParser>),
-			// Autodesk 3DS Max
-			std::make_pair (".3ds",      &golden_parser <Autodesk::Parser>),
-			// Wavefront OBJ
-			std::make_pair (".obj",      &golden_parser <Wavefront::Parser>),
-			// PDF
-			std::make_pair (".pdf",      &golden_parser <PDF::Parser>),
-			// SVG
-			std::make_pair (".svg",      &golden_parser <SVG::Parser>),
-			std::make_pair (".svgz",     &golden_parser <SVG::Parser>),
-		};
-	
+		static const auto contentTypes = get_content_types ();
+		static const auto suffixes     = get_suffixes ();
+
 		try
 		{
 			const std::string contentType = istream .response_headers () .at ("Content-Type");

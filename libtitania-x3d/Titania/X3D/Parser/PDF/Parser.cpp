@@ -77,14 +77,19 @@ Parser::parseIntoScene ()
 
 	auto ofstream = os::mkstemps (svgFilename, 4);
 
-	os::system ("inkscape", pdfFilename, "--export-plain-svg=" + svgFilename);
+	if (ofstream)
+	{
+		if (os::system ("inkscape", pdfFilename, "--export-plain-svg=" + svgFilename) == 0)
+		{
+			std::ifstream ifstream (svgFilename);
+	
+			SVG::Parser (scene, uri, ifstream) .parseIntoScene ();
+		}
 
-	std::ifstream ifstream (svgFilename);
-
-	SVG::Parser (scene, uri, ifstream) .parseIntoScene ();
+		os::unlink (svgFilename);
+	}
 
 	os::unlink (pdfFilename);
-	os::unlink (svgFilename);
 }
 
 Parser::~Parser ()
