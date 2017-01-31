@@ -79,6 +79,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/OS/popen2.cpp \
 	Titania/OS/program_exists.cpp \
 	Titania/OS/realpath.cpp \
+	Titania/OS/rename.cpp \
 	Titania/OS/system.cpp \
 	Titania/OS/unlink.cpp \
 	Titania/RegEx/regex_escape.cpp \

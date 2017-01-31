@@ -48,26 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OS_H__
-#define __TITANIA_OS_H__
+#include "mkstemps.h"
 
-#include "OS/cwd.h"
-#include "OS/env.h"
-#include "OS/file_exists.h"
-#include "OS/file_size.h"
-#include "OS/find_data_file.h"
-#include "OS/getfullname.h"
-#include "OS/home.h"
-#include "OS/is_directory.h"
-#include "OS/is_file.h"
-#include "OS/load_file.h"
-#include "OS/mkdir.h"
-#include "OS/mkstemps.h"
-#include "OS/popen2.h"
-#include "OS/program_exists.h"
-#include "OS/realpath.h"
-#include "OS/rename.h"
-#include "OS/system.h"
-#include "OS/unlink.h"
+#include <unistd.h>
 
-#endif
+namespace titania {
+namespace os {
+
+int
+rename (const std::string & sourceFilename, const std::string & destinationFilename)
+{
+	return ::rename (sourceFilename .c_str (), destinationFilename .c_str ());
+}
+
+} // os
+} // titania

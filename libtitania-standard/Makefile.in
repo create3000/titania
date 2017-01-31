@@ -188,7 +188,7 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/OS/load_file.lo Titania/OS/mkdir.lo \
 	Titania/OS/mkstemps.lo Titania/OS/popen2.lo \
 	Titania/OS/program_exists.lo Titania/OS/realpath.lo \
-	Titania/OS/system.lo Titania/OS/unlink.lo \
+	Titania/OS/rename.lo Titania/OS/system.lo Titania/OS/unlink.lo \
 	Titania/RegEx/regex_escape.lo Titania/String/dtoa.lo \
 	Titania/String/naturally_compare.lo Titania/String/sprintf.lo \
 	Titania/String/strfsize.lo Titania/String/trim.lo
@@ -510,6 +510,7 @@ libtitania_standard_la_SOURCES = \
 	Titania/OS/popen2.cpp \
 	Titania/OS/program_exists.cpp \
 	Titania/OS/realpath.cpp \
+	Titania/OS/rename.cpp \
 	Titania/OS/system.cpp \
 	Titania/OS/unlink.cpp \
 	Titania/RegEx/regex_escape.cpp \
@@ -871,6 +872,8 @@ Titania/OS/program_exists.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/realpath.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
+Titania/OS/rename.lo: Titania/OS/$(am__dirstamp) \
+	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/system.lo: Titania/OS/$(am__dirstamp) \
 	Titania/OS/$(DEPDIR)/$(am__dirstamp)
 Titania/OS/unlink.lo: Titania/OS/$(am__dirstamp) \
@@ -1021,6 +1024,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/popen2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/program_exists.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/realpath.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/rename.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/system.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OS/$(DEPDIR)/unlink.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/RegEx/$(DEPDIR)/regex_escape.Plo@am__quote@

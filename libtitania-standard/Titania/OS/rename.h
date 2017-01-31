@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,26 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OS_H__
-#define __TITANIA_OS_H__
+#ifndef __TITANIA_OS_RENAME_H__
+#define __TITANIA_OS_RENAME_H__
 
-#include "OS/cwd.h"
-#include "OS/env.h"
-#include "OS/file_exists.h"
-#include "OS/file_size.h"
-#include "OS/find_data_file.h"
-#include "OS/getfullname.h"
-#include "OS/home.h"
-#include "OS/is_directory.h"
-#include "OS/is_file.h"
-#include "OS/load_file.h"
-#include "OS/mkdir.h"
-#include "OS/mkstemps.h"
-#include "OS/popen2.h"
-#include "OS/program_exists.h"
-#include "OS/realpath.h"
-#include "OS/rename.h"
-#include "OS/system.h"
-#include "OS/unlink.h"
+#include <string>
+
+namespace titania {
+namespace os {
+
+int
+rename (const std::string & sourceFilename, const std::string & destinationFilename);
+
+} // os
+} // titania
 
 #endif

@@ -57,7 +57,6 @@
 #include <Titania/gzstream.h>
 
 #include <iostream>
-#include <unistd.h>
 
 namespace titania {
 namespace puck {
@@ -76,15 +75,14 @@ public:
 
 		X3D::Generator::Style (options .exportStyle);
 
-		auto browser = X3D::getBrowser ();
-
 		basic::uri inputFilename (options .filenames .front ());
 		basic::uri outputFilename (options .exportFilename);
 
 		if (inputFilename .is_relative ())
 			inputFilename = basic::uri (os::cwd ()) .transform (inputFilename);
 
-		const auto scene = browser -> createX3DFromURL ({ inputFilename .str () });
+		const auto browser = X3D::getBrowser ();
+		const auto scene   = browser -> createX3DFromURL ({ inputFilename .str () });
 
 		if (outputFilename == "-" or outputFilename == outputFilename .suffix ())
 		{
@@ -143,9 +141,10 @@ public:
 
 					file << scene;
 				}
-				// Replace original
 
-				rename (tmpFilename .c_str (), outputFilename .path () .c_str ());
+				// Replace original file.
+
+				os::rename (tmpFilename, outputFilename .path ());
 			}
 			catch (...)
 			{
