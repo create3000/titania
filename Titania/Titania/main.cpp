@@ -48,10 +48,10 @@
  *
  ******************************************************************************/
 
+#include "Application/ApplicationOptions.h"
+#include "Application/Info.h"
+#include "Application/Tidy.h"
 #include "Browser/BrowserApplication.h"
-#include "ApplicationOptions.h"
-#include "Tidy.h"
-#include "Info.h"
 
 int
 main (int argc, char** argv)
@@ -84,6 +84,11 @@ main (int argc, char** argv)
 	catch (const std::exception & error)
 	{
 		std::cerr << error .what () << std::endl;
+		return 1;
+	}
+	catch (...)
+	{
+		std::cerr << "A strange error occured." << std::endl;
 		return 1;
 	}
 }

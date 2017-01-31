@@ -968,7 +968,6 @@
     <None Include="share\titania\ui\icons\Circle.svg" />
     <None Include="share\titania\ui\icons\Geometry.svg" />
     <None Include="Titania\UserInterfaces\X3DTextEditorInterface.h" />
-    <None Include="Titania\ComposedWidgets.h" />
     <None Include="Titania\ComposedWidgets\X3DFieldToggleButton.h" />
     <None Include="Titania\ComposedWidgets\X3DFieldAdjustment.h" />
     <None Include="Titania\ComposedWidgets\X3DFieldAdjustment2.h" />
@@ -2559,10 +2558,11 @@
     <None Include="Titania\Editors\AppearanceEditor\X3DUsedMaterialsEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DUsedTexturesEditor.h" />
     <None Include="Titania\Browser\BrowserApplication.h" />
-    <None Include="Titania\ApplicationOptions.h" />
-    <None Include="Titania\Info.h" />
-    <None Include="Titania\Tidy.h" />
     <None Include="share\man\man1\titania.1" />
+    <None Include="Titania\Application\ApplicationOptions.h" />
+    <None Include="Titania\Application\Info.h" />
+    <None Include="Titania\Application\Tidy.h" />
+    <None Include="Titania\ComposedWidgets.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2665,6 +2665,7 @@
     <Folder Include="Titania\Dialogs\MessageDialog\" />
     <Folder Include="share\titania\ui\icons\Faenza\64\" />
     <Folder Include="share\man\" />
+    <Folder Include="Titania\Application\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
