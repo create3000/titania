@@ -103,7 +103,7 @@ X3DMultiTextureEditor::setMultiTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	if (not multiTexture)
 		multiTexture = getCurrentContext () -> createNode <X3D::MultiTexture> ();
 
-	X3D::MFNode nodes = { multiTexture };
+	const X3D::MFNode nodes = { multiTexture };
 
 	color .setNodes (nodes);
 	alpha .setNodes (nodes);

@@ -50,7 +50,6 @@
 
 #include "QuadSet.h"
 
-#include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/X3DCoordinateNode.h"
 

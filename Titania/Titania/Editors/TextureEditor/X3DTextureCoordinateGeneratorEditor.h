@@ -65,8 +65,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DTextureCoordinateGeneratorEditor ()
-	{ }
+	~X3DTextureCoordinateGeneratorEditor () override;
 
 
 protected:

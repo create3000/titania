@@ -141,8 +141,8 @@ X3DAngleEditor::configure ()
 void
 X3DAngleEditor::initialize ()
 {
-	const auto & angleTool  = getBrowserWindow () -> getAngleTool () -> getTool ();
-	X3D::MFNode  angleTools = { angleTool };
+	const auto &      angleTool  = getBrowserWindow () -> getAngleTool () -> getTool ();
+	const X3D::MFNode angleTools = { angleTool };
 
 	enabled          .setNodes (angleTools);
 	translation      .setNodes (angleTools);

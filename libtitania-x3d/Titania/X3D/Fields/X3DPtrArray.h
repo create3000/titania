@@ -100,16 +100,16 @@ public:
 	{ }
 
 	///  Constructs new X3DPtrArray.
-	X3DPtrArray (X3DPtrArray && field) :
-		ArrayField (std::move (field)),
+	X3DPtrArray (X3DPtrArray && other) :
+		ArrayField (std::move (other)),
 		cloneCount (0)
 	{ }
 
 	///  Constructs new X3DPtrArray.
 	template <class Up>
 	explicit
-	X3DPtrArray (const X3DPtrArray <Up> & field) :
-		ArrayField (field .begin (), field .end ()),
+	X3DPtrArray (const X3DPtrArray <Up> & other) :
+		ArrayField (other .begin (), other .end ()),
 		cloneCount (0)
 	{ }
 
@@ -119,7 +119,7 @@ public:
 	X3DPtrArray (X3DPtrArray <Up> &&);
 
 	///  Constructs new X3DPtrArray.
-	X3DPtrArray (std::initializer_list <X3DPtr <ValueType>>  initializer_list) :
+	X3DPtrArray (std::initializer_list <X3DPtr <ValueType>> initializer_list) :
 		ArrayField (initializer_list),
 		cloneCount (0)
 	{ }

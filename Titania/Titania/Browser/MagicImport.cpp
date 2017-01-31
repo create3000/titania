@@ -447,7 +447,7 @@ MagicImport::importProtoDeclaration (const X3D::X3DExecutionContextPtr & executi
 			}
 		}
 
-		const auto protoNode = prototypeInstance -> getProtoNode () -> copy (executionContext, X3D::COPY_OR_CLONE);
+		const X3D::SFNode protoNode (prototypeInstance -> getProtoNode () -> copy (executionContext, X3D::COPY_OR_CLONE));
 
 		if (isExternProto)
 		{

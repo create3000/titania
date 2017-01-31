@@ -52,10 +52,14 @@
 
 #include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Rendering/Normal.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
+#include "../Geometry3D/IndexedFaceSet.h"
+#include "../Rendering/Coordinate.h"
+#include "../Rendering/Normal.h"
+#include "../Rendering/X3DColorNode.h"
+#include "../Shaders/X3DVertexAttributeNode.h"
+#include "../Texturing/TextureCoordinate.h"
+#include "../Texturing/TextureCoordinateGenerator.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -546,6 +550,9 @@ throw (Error <NOT_SUPPORTED>,
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
 }
+
+ElevationGrid::~ElevationGrid ()
+{ }
 
 } // X3D
 } // titania

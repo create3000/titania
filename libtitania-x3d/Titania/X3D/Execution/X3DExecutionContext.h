@@ -179,7 +179,7 @@ public:
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>)
 	{
-		const X3DPtr <Type> node = new Type (this, std::forward <Args> (args) ...);
+		const X3DPtr <Type> node (new Type (this, std::forward <Args> (args) ...));
 
 		addUninitializedNode (node);
 

@@ -78,7 +78,7 @@ X3DExportedNodesEditor::setNode (const X3D::SFNode & value)
 		scene -> exportedNodes_changed () .removeInterest (this, &X3DExportedNodesEditor::set_exportedNodes);
 
 	node  = value;
-	scene = node ? node -> getExecutionContext () : nullptr;
+	scene = X3D::X3DScenePtr (node ? node -> getExecutionContext () : nullptr);
 
 	getExportedNodesBox () .set_visible (scene);
 

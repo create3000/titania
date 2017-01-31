@@ -153,7 +153,7 @@ X3DBrowserEditor::setBrowser (const X3D::BrowserPtr & value)
 void
 X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 {
-	const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (getCurrentBrowser ());
+	const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (getCurrentBrowser ()));
 
 	browserOptions -> assign (getCurrentBrowser () -> getBrowserOptions ());
 

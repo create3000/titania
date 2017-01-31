@@ -89,6 +89,10 @@ SFString::SFString (String && value) :
 	value .clear ();
 }
 
+SFString::SFString (const std::string & value) :
+	X3DField <String> (value)
+{ }
+
 SFString::SFString (const char_type* const value) :
 	X3DField <String> (value)
 { }
@@ -107,6 +111,13 @@ SFString::operator = (String && value)
 	get () .swap (value);
 	value .clear ();
 	addEvent ();
+	return *this;
+}
+
+SFString &
+SFString::operator = (const std::string & value)
+{
+	setValue (value);
 	return *this;
 }
 

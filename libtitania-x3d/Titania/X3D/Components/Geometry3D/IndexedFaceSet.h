@@ -52,7 +52,8 @@
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_INDEXED_FACE_SET_H__
 
 #include "../Rendering/X3DComposedGeometryNode.h"
-#include <array>
+
+#include <Titania/Math/Mesh/Tessellator.h>
 
 namespace titania {
 namespace opengl {
@@ -219,6 +220,11 @@ public:
 	virtual
 	void
 	addTool () override;
+
+	///  @name Destruction
+
+	virtual
+	~IndexedFaceSet () override;
 
 
 protected:

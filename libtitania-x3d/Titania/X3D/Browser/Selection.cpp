@@ -58,6 +58,7 @@
 #include "../Components/Layering/LayerSet.h"
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Shape/X3DShapeNode.h"
+#include "../Components/Rendering/X3DGeometryNode.h"
 #include "../Execution/X3DExecutionContext.h"
 
 namespace titania {

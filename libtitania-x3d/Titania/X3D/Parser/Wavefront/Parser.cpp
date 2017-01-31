@@ -375,7 +375,7 @@ MaterialParser::newmtl ()
 
 		if (Grammar::string (istream, name))
 		{
-			material = scene -> createNode ("Material");
+			material = scene -> createNode <X3D::Material> ();
 
 			scene -> addUninitializedNode (material);
 
@@ -587,7 +587,7 @@ MaterialParser::map_Kd ()
 				
 				if (not url .empty ())
 				{
-					const X3DPtr <ImageTexture> texture (scene -> createNode ("ImageTexture"));
+					const auto texture = scene -> createNode <X3D::ImageTexture> ();
 
 					scene -> addUninitializedNode (texture);
 
@@ -906,8 +906,8 @@ Parser::Parser::o ()
 
 			if (not group -> children () .empty ())
 			{
-				object = scene -> createNode ("Transform");
-				group  = scene -> createNode ("Transform");
+				object = scene -> createNode <X3D::Transform> ();
+				group  = scene -> createNode <X3D::Transform> ();
 
 				scene -> addUninitializedNode (object);
 				scene -> addUninitializedNode (group);
@@ -952,7 +952,7 @@ Parser::g ()
 			{
 				if (not group -> children () .empty ())
 				{
-					group = scene -> createNode ("Transform");
+					group = scene -> createNode <X3D::Transform> ();
 
 					scene -> addUninitializedNode (group);
 
@@ -1134,14 +1134,14 @@ Parser::fs ()
 		try
 		{
 			shape    = smoothingGroups .at (group -> getName ()) .at (smoothingGroup);
-			geometry = shape -> geometry ();
+			geometry = X3DPtr <IndexedFaceSet> (shape -> geometry ());
 		}
 		catch (const std::out_of_range &)
 		{
-			const auto appearance = X3DPtr <Appearance> (scene -> createNode ("Appearance"));
+			const auto appearance = scene -> createNode <X3D::Appearance> ();
 
-			geometry = scene -> createNode ("IndexedFaceSet");
-			shape    = scene -> createNode ("Shape");
+			geometry = scene -> createNode <X3D::IndexedFaceSet> ();
+			shape    = scene -> createNode <X3D::Shape> ();
 
 			scene -> addUninitializedNode (appearance);
 			scene -> addUninitializedNode (geometry);

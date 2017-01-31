@@ -91,7 +91,7 @@ X3DFieldDefinition::hasRootedObjects (ChildObjectSet & seen)
 
 	for (auto & parent : getParents ())
 	{
-		if (parent -> hasRootedObjects (seen))
+		if (X3DChildObject::hasRootedObjects (parent, seen))
 			return true;
 	}
 

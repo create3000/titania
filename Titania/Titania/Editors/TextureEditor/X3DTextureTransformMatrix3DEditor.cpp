@@ -154,7 +154,7 @@ X3DTextureTransformMatrix3DEditor::setTextureTransformMatrix3D (const X3D::X3DPt
 	if (not textureTransform)
 		textureTransform = getCurrentContext () -> createNode <X3D::TextureTransformMatrix3D> ();
 
-	X3D::MFNode nodes = { textureTransform };
+	const X3D::MFNode nodes = { textureTransform };
 
 	value00 .setNodes (nodes);
 	value01 .setNodes (nodes);

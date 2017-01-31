@@ -242,7 +242,7 @@ Browser::replaceWorld (JSContext* cx, uint32_t argc, jsval* vp)
 
 		else
 		{
-			const X3D::X3DScenePtr scene = getArgument <X3DScene> (cx, argv, 0);
+			const X3D::X3DScenePtr scene (getArgument <X3DScene> (cx, argv, 0));
 
 			script -> getBrowser () -> replaceWorld (scene);
 		}

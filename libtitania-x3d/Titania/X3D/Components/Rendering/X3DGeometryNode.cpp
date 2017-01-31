@@ -58,6 +58,8 @@
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
 #include "../Shaders/X3DShaderNode.h"
+#include "../Shaders/X3DVertexAttributeNode.h"
+#include "../Texturing/TextureCoordinateGenerator.h"
 
 namespace titania {
 namespace X3D {
@@ -1059,6 +1061,9 @@ X3DGeometryNode::dispose ()
 
 	X3DNode::dispose ();
 }
+
+X3DGeometryNode::~X3DGeometryNode ()
+{ }
 
 } // X3D
 } // titania

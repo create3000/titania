@@ -73,7 +73,7 @@ X3DGeneratedCubeMapTextureEditor::setGeneratedCubeMapTexture (const X3D::X3DPtr 
 	if (not generatedCubeMapTexture)
 		generatedCubeMapTexture = getCurrentContext () -> createNode <X3D::GeneratedCubeMapTexture> ();
 
-	X3D::MFNode nodes = { generatedCubeMapTexture };
+	const X3D::MFNode nodes = { generatedCubeMapTexture };
 
 	update .setNodes (nodes);
 	size   .setNodes (nodes);

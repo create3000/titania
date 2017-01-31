@@ -128,7 +128,7 @@ X3DImportedNodesEditor::on_imported_toggled (const Glib::ustring & path)
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::connectImportedNodes);
 
-		removeImportedNode (inlineNode -> getExecutionContext (), importedName, undoStep);
+		removeImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), importedName, undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -149,7 +149,7 @@ X3DImportedNodesEditor::on_imported_toggled (const Glib::ustring & path)
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
 		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::connectImportedNodes);
 
-		updateImportedNode (inlineNode -> getExecutionContext (), inlineNode, exportedName, importedName, undoStep);
+		updateImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), inlineNode, exportedName, importedName, undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -200,9 +200,9 @@ X3DImportedNodesEditor::on_imported_name_edited (const Glib::ustring & path, con
 	inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::connectImportedNodes);
 
 	if (imported)
-		removeImportedNode (inlineNode -> getExecutionContext (), importedName, undoStep);
+		removeImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), importedName, undoStep);
 
-	updateImportedNode (inlineNode -> getExecutionContext (), inlineNode, exportedName, newImportedName, undoStep);
+	updateImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), inlineNode, exportedName, newImportedName, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 

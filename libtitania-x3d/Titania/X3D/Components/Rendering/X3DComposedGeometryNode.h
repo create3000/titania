@@ -51,12 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_RENDERING_X3DCOMPOSED_GEOMETRY_NODE_H__
 #define __TITANIA_X3D_COMPONENTS_RENDERING_X3DCOMPOSED_GEOMETRY_NODE_H__
 
-#include "../EnvironmentalEffects/FogCoordinate.h"
-#include "../Rendering/X3DColorNode.h"
-#include "../Rendering/X3DCoordinateNode.h"
 #include "../Rendering/X3DGeometryNode.h"
-#include "../Rendering/X3DNormalNode.h"
-#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -205,6 +200,11 @@ public:
 	virtual
 	void
 	addNormals () = 0;
+
+	///  @name Destruction
+
+	virtual
+	~X3DComposedGeometryNode () override;
 
 
 protected:

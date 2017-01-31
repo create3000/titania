@@ -56,6 +56,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../RigidBodyPhysics/CollisionCollection.h"
 #include "../RigidBodyPhysics/Contact.h"
+#include "../RigidBodyPhysics/RigidBody.h"
 #include "../RigidBodyPhysics/X3DNBodyCollidableNode.h"
 
 namespace titania {
@@ -227,7 +228,7 @@ CollisionSensor::update ()
 
 						// Create Contact node.
 
-						X3DPtr <Contact> contactNode = new Contact (getExecutionContext ());
+						X3DPtr <Contact> contactNode (new Contact (getExecutionContext ()));
 
 						contactNode -> position ()                 = contactPosition;
 						contactNode -> contactNormal ()            = contactNormal;

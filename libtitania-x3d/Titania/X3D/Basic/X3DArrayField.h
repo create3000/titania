@@ -125,32 +125,6 @@ public:
 		other .addEvent ();
 	}
 
-	///  Construct new X3DArrayField from basic type @a value.
-	explicit
-	X3DArrayField (const internal_type & value) :
-		X3DArrayField <ValueType> (const_iterator (value .begin ()), const_iterator (value .end ()))
-	{ }
-
-	//	///  Moves elements from basic type @a value.
-	//	explicit
-	//	X3DArrayField (internal_type && value) :
-	//		X3DField <internal_type> (value)
-	                          //	{
-	             //		addChildren (get () .begin (), get () .end ());
-	                          //	}
-
-	///  Construct new X3DArrayField.
-	template <const size_t Size>
-	X3DArrayField (const ValueType (&value) [Size]) :
-		X3DArrayField <ValueType> (value, value + Size)
-	{ }
-
-	///  Construct new X3DArrayField.
-	template <const size_t Size>
-	X3DArrayField (const typename ValueType::internal_type (&value) [Size]) :
-		X3DArrayField <ValueType> (value, value + Size)
-	{ }
-
 	///  Construct new X3DArrayField.
 	X3DArrayField (std::initializer_list <ValueType> list) :
 		X3DArrayField <ValueType> (list .begin (), list .end ())
@@ -199,25 +173,7 @@ public:
 
 	/// Assigns values to the array.
 	X3DArrayField &
-	operator = (X3DArrayField &&);
-
-	/// Assigns values to the array.
-	template <const size_t Size>
-	X3DArrayField &
-	operator = (const ValueType (&value) [Size])
-	{
-		assign (value, value + Size);
-		return *this;
-	}
-
-	/// Assigns values to the array.
-	template <const size_t Size>
-	X3DArrayField &
-	operator = (const typename ValueType::internal_type (&value) [Size])
-	{
-		assign (value, value + Size);
-		return *this;
-	}
+	operator = (X3DArrayField && other);
 
 	/// Assigns values to the array.
 	X3DArrayField &

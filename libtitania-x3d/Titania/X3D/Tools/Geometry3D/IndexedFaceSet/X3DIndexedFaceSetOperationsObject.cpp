@@ -53,7 +53,10 @@
 #include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/NURBS/CoordinateDouble.h"
+#include "../../../Components/Rendering/X3DColorNode.h"
+#include "../../../Components/Rendering/X3DNormalNode.h"
 #include "../../../Components/Shape/Shape.h"
+#include "../../../Components/Texturing/X3DTextureCoordinateNode.h"
 #include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Editing/Combine.h"
 #include "../../../Editing/Editor.h"
@@ -115,7 +118,7 @@ X3DIndexedFaceSetOperationsObject::set_cutSelectedFaces ()
 void
 X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 {
-	const auto transformationMatrix = Editor () .getModelViewMatrix (getMasterScene (), this);
+	const auto transformationMatrix = Editor () .getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this));
 	const auto geometry             = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
 
 	geometry -> solid ()           = solid ();
@@ -336,7 +339,7 @@ X3DIndexedFaceSetOperationsObject::set_pasteFaces ()
 		const auto undoStep     = std::make_shared <X3D::UndoStep> (_ ("Paste Faces"));
 		const auto scene        = getBrowser () -> createX3DFromString (pasteFaces ());
 		auto       geometries   = Editor () .getNodes <IndexedFaceSet> (scene -> getRootNodes (), { X3DConstants::IndexedFaceSet });
-		const auto targetMatrix = inverse (Editor () .getModelViewMatrix (getMasterScene (), this));
+		const auto targetMatrix = inverse (Editor () .getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this)));
 
 		undoRestoreSelection (undoStep);
 		undoSetColorIndex    (undoStep);
@@ -348,7 +351,7 @@ X3DIndexedFaceSetOperationsObject::set_pasteFaces ()
 		undoSetNormalVector  (undoStep);
 		undoSetCoordPoint    (undoStep);
 
-		const auto selection = Combine () .combine (getExecutionContext (), geometries, this, getCoord (), targetMatrix);
+		const auto selection = Combine () .combine (X3DExecutionContextPtr (getExecutionContext ()), geometries, X3DPtr <IndexedFaceSet> (this), getCoord (), targetMatrix);
 
 		redoSetCoordPoint    (undoStep);
 		redoSetNormalVector  (undoStep);

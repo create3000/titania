@@ -53,8 +53,12 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geometry3D/IndexedFaceSet.h"
-#include "../Shaders/X3DVertexAttributeNode.h"
 #include "../Rendering/Normal.h"
+#include "../Rendering/X3DColorNode.h"
+#include "../Rendering/X3DCoordinateNode.h"
+#include "../Rendering/X3DNormalNode.h"
+#include "../Shaders/X3DVertexAttributeNode.h"
+#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -383,6 +387,9 @@ X3DComposedGeometryNode::toPrimitive (const size_t vertexCount, size_t size) con
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
 }
+
+X3DComposedGeometryNode::~X3DComposedGeometryNode ()
+{ }
 
 } // X3D
 } // titania

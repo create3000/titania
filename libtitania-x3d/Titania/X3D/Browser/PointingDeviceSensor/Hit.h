@@ -76,8 +76,8 @@ public:
 	     const Line3d &,
 	     const IntersectionPtr &,
 	     const PointingDeviceSensorContainerSet &,
-	     const X3DPtr <X3DShapeNode>,
-	     const X3DPtr <X3DLayerNode>,
+	     const X3DPtr <X3DShapeNode> &,
+	     const X3DPtr <X3DLayerNode> &,
 	     const size_t,
 	     const bool,
 	     const double);

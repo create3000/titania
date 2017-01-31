@@ -507,7 +507,6 @@ using BrowserPtr             = X3DPtr <Browser>;
 using RenderingPropertiesPtr = X3DPtr <RenderingProperties>;
 using BrowserPropertiesPtr   = X3DPtr <BrowserProperties>;
 using BrowserOptionsPtr      = X3DPtr <BrowserOptions>;
-using X3DJavaScriptEnginePtr = X3DPtr <X3DJavaScriptEngine>;
 using SelectionPtr           = X3DPtr <Selection>;
 using NotificationPtr        = X3DPtr <Notification>;
 using ConsolePtr             = X3DPtr <Console>;

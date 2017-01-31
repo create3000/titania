@@ -59,8 +59,8 @@ namespace X3D {
 X3DScriptingContext::X3DScriptingContext () :
 	X3DBaseNode (),
 	javaScriptEngines ({
-	                      std::make_pair ("javascript",   new SpiderMonkey (getExecutionContext ())),
-	                      std::make_pair ("peaseblossom", new PeaseBlossom (getExecutionContext ())),
+	                      std::make_pair ("javascript",   X3DPtr <X3DJavaScriptEngine> (new SpiderMonkey (getExecutionContext ()))),
+	                      std::make_pair ("peaseblossom", X3DPtr <X3DJavaScriptEngine> (new PeaseBlossom (getExecutionContext ()))),
 							 })
 {
 	for (auto & javaScriptEngine : javaScriptEngines)
@@ -74,7 +74,7 @@ X3DScriptingContext::initialize ()
 		javaScriptEngine .second -> setup ();
 }
 
-const X3DJavaScriptEnginePtr &
+const X3DPtr <X3DJavaScriptEngine> &
 X3DScriptingContext::getJavaScriptEngine (const std::string & scheme) const
 {
 	const auto iter = javaScriptEngines .find (scheme);

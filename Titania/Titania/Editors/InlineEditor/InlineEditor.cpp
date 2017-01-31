@@ -199,11 +199,11 @@ InlineEditor::on_update_bounding_box_fields_activate ()
 void
 InlineEditor::on_fold_back_into_scene_clicked ()
 {
-	const auto        undoStep         = std::make_shared <X3D::UndoStep> (_ ("Fold Inline Back Into Scene"));
-	const auto        scene            = inlineNode -> getInternalScene ();
-	const X3D::SFNode group            = new X3D::Group (getCurrentContext ());
-	const auto        name             = X3D::get_name_from_uri (scene -> getWorldURL ());
-	const auto        importedRoutes   = getBrowserWindow () -> getImportedRoutes (getCurrentContext (), scene);
+	const auto undoStep       = std::make_shared <X3D::UndoStep> (_ ("Fold Inline Back Into Scene"));
+	const auto scene          = inlineNode -> getInternalScene ();
+	const auto group          = X3D::SFNode (new X3D::Group (getCurrentContext ()));
+	const auto name           = X3D::get_name_from_uri (scene -> getWorldURL ());
+	const auto importedRoutes = getBrowserWindow () -> getImportedRoutes (getCurrentContext (), scene);
 
 	const X3D::X3DPtr <X3D::Group> groupNode (group);
 
@@ -231,7 +231,7 @@ InlineEditor::on_load_clicked ()
 
 	// Inline is loaded and should be unloaded.  Now create undo step for imported nodes.
 	if (loadState and load .getOwnUndoStep ())
-		getBrowserWindow () -> removeImportedNodes (inlineNode -> getExecutionContext (), { inlineNode }, load .getOwnUndoStep ());				
+		getBrowserWindow () -> removeImportedNodes (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), { inlineNode }, load .getOwnUndoStep ());				
 
 	loadState = inlineNode -> load ();
 }

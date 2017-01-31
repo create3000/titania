@@ -108,10 +108,10 @@ X3DParentObject::setBrowser (X3DBrowser* const value)
 
 	// Replace browser.
 
+	value -> addParent (this);
 	browser -> removeParent (this);
 
 	browser = value;
-	browser -> addParent (this);
 
 	// Add events.
 	

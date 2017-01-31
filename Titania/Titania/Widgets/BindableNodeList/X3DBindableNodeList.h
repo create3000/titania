@@ -328,7 +328,7 @@ X3DBindableNodeList <Type>::set_activeLayer (const X3D::X3DPtr <X3D::X3DLayerNod
 
 		set_list ();
 
-		setSelection (getStack (activeLayer) -> top ());
+		setSelection (X3D::X3DPtr <Type> (getStack (activeLayer) -> top ()));
 	}
 	else
 	{
@@ -367,7 +367,7 @@ X3DBindableNodeList <Type>::set_list ()
 		{
 			for (size_t i = 0, size = list -> size (); i < size; ++ i)
 			{
-			   X3D::X3DPtr <Type> node = list -> at (i);
+			   X3D::X3DPtr <Type> node (list -> at (i));
 
 				if (not editor and getDescription (node) .empty ())
 				   continue;
@@ -407,7 +407,7 @@ X3DBindableNodeList <Type>::set_stack ()
 
 	for (size_t i = 0, size = list -> size (); i < size; ++ i)
 	{
-	   const X3D::X3DPtr <Type> node = list -> at (i);
+	   const X3D::X3DPtr <Type> node (list -> at (i));
 
 		if (not editor and getDescription (node) .empty ())
 		   continue;
@@ -447,7 +447,7 @@ X3DBindableNodeList <Type>::on_row_activated (const Gtk::TreeModel::Path & path,
 
 	getListStore () -> get_iter (path) -> get_value (Columns::INDEX, index);
 
-	const auto & node = getList (activeLayer) -> at (index);
+	const X3D::X3DPtr <Type> node (getList (activeLayer) -> at (index));
 
 	if (not editor)
 	{

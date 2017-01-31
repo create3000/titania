@@ -96,11 +96,6 @@ public:
 	getParents () const
 	{ return parents; }
 
-	///  Returns true if this object has root objects and collects in @a seen all objects seen.
-	virtual
-	bool
-	hasRootedObjects (ChildObjectSet &);
-
 	///  @name Clone handling
 
 	///  Virtual function that must be implemented in a derived class or it returns the number of parents.
@@ -219,6 +214,17 @@ protected:
 	void
 	processShutdown ()
 	{ }
+
+	///  Returns true if this object has root objects and collects in @a seen all objects seen.
+	virtual
+	bool
+	hasRootedObjects (X3DChildObject* object, ChildObjectSet & seen)
+	{ return object -> hasRootedObjects (seen); }
+
+	///  Returns true if this object has root objects and collects in @a seen all objects seen.
+	virtual
+	bool
+	hasRootedObjects (ChildObjectSet &);
 
 
 private:

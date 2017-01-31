@@ -121,7 +121,7 @@ X3DToolObject::set_loadState (const LoadState loadState)
 
 			try
 			{
-				toolNode -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (this));
+				toolNode -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (SFNode (this)));
 			}
 			catch (const X3DError &)
 			{ }

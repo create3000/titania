@@ -130,6 +130,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		if (node == this)
 			continue;
 
+		if (node -> getExecutionContext () not_eq this)
+			continue;
+
 		// Reset executionContext to set browser.
 		node -> setExecutionContext (this);
 	}
@@ -234,7 +237,7 @@ throw (Error <INVALID_NAME>,
 	const X3DBaseNode* const declaration = getBrowser () -> getSupportedNode (name);
 
 	//if (hasComponent (declaration -> getComponent ()))
-		return declaration -> create (this);
+		return SFNode (declaration -> create (this));
 
 	throw Error <INVALID_NAME> ("Node type '" + name + "' not supported by profile or component specification.");
 }
@@ -249,7 +252,7 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return findProtoDeclaration (name, AvailableType { }) -> createInstance (this);
+	return X3DPrototypeInstancePtr (findProtoDeclaration (name, AvailableType { }) -> createInstance (this));
 }
 
 // Named node handling
@@ -637,7 +640,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (name .empty ())
 		throw Error <INVALID_NAME> ("Couldn't create proto declaration: proto name is empty.");
 
-	const ProtoDeclarationPtr prototype = new ProtoDeclaration (this);
+	const ProtoDeclarationPtr prototype (new ProtoDeclaration (this));
 
 	prototype -> setName (name);
 
@@ -779,7 +782,7 @@ X3DExecutionContext::createExternProtoDeclaration (const std::string & name, con
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const ExternProtoDeclarationPtr externProto = new ExternProtoDeclaration (this);
+	const ExternProtoDeclarationPtr externProto (new ExternProtoDeclaration (this));
 
 	externProto -> setName (name);
 
@@ -1131,7 +1134,7 @@ throw (Error <INVALID_NODE>,
 	if (value -> getExecutionContext () not_eq this)
 		throw Error <INVALID_NODE> ("Bad ROUTE specification: route does not belong to this execution context.");
 
-	routes .push_back (value -> getKey (), value);
+	routes .push_back (value -> getKey (), RoutePtr (value));
 
 	auto & route = routes .back ();
 
@@ -1336,6 +1339,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 			continue;
 
 		if (node == executionContext)
+			continue;
+
+		if (node -> getExecutionContext () not_eq executionContext)
 			continue;
 
 		node -> setExecutionContext (this);

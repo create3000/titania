@@ -272,7 +272,7 @@ X3DBrowser::createScene () const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DScenePtr scene = new Scene (const_cast <X3DBrowser*> (this));
+	const X3DScenePtr scene (new Scene (const_cast <X3DBrowser*> (this)));
 
 	scene -> isLive () = false;
 
@@ -363,7 +363,7 @@ throw (Error <INVALID_SCENE>,
 		// Replace world.
 
 		setDescription ("");
-		const X3D::BrowserOptionsPtr browserOptions = new X3D::BrowserOptions (this);
+		const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (this));
 		browserOptions -> assign (browserOptions, true);
 
 		executionContext = value ? value : X3DExecutionContextPtr (createScene ());

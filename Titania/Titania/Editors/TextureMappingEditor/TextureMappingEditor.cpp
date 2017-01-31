@@ -1470,7 +1470,7 @@ TextureMappingEditor::set_geometry (const X3D::SFNode & value)
 		if (geometry)
 		{
 			coord           = geometry -> coord ();
-			previewGeometry = geometry -> copy (rightShape -> getExecutionContext (), X3D::FLAT_COPY);
+			previewGeometry = X3D::X3DPtr <X3D::IndexedFaceSet> (geometry -> copy (rightShape -> getExecutionContext (), X3D::FLAT_COPY));
 
 			previewGeometry -> isPrivate (true);
 			previewGeometry -> texCoordIndex () .addInterest (this, &TextureMappingEditor::set_left_selected_faces);

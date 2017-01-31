@@ -60,6 +60,9 @@ namespace titania {
 namespace X3D {
 
 template <class ValueType>
+class X3DWeakPtr;
+
+template <class ValueType>
 class X3DArrayField;
 
 /**
@@ -80,8 +83,8 @@ public:
 
 	///  @name Member types
 
-	typedef ValueType* internal_type;
-	typedef ValueType* value_type;
+	using internal_type = ValueType*;
+	using value_type    = ValueType;
 
 	using X3DField <ValueType*>::addEvent;
 	using X3DField <ValueType*>::operator =;
@@ -98,30 +101,43 @@ public:
 	{ }
 
 	///  Constructs new X3DPtr.
-	X3DPtr (const X3DPtr & field) :
-		X3DPtr (field .getValue ())
-	{ }
-
-	///  Constructs new X3DPtr.
-	explicit
-	X3DPtr (const X3DPtrBase & field) :
-		X3DPtr (dynamic_cast <ValueType*> (field .getObject ()))
-	{ }
-
-	///  Constructs new X3DPtr.
-	X3DPtr (X3DPtr && field) :
+	X3DPtr (std::nullptr_t) :
 		X3DPtr ()
-	{ moveObject (field); }
+	{ }
+
+	///  Constructs new X3DPtr.
+	X3DPtr (const X3DPtr & other) :
+		X3DPtr (other .getValue ())
+	{ }
 
 	///  Constructs new X3DPtr.
 	template <class Up>
 	explicit
-	X3DPtr (X3DPtr <Up> && field) :
-		X3DPtr ()
-	{ moveObject (field); }
+	X3DPtr (const X3DPtr <Up> & other) :
+		X3DPtr (dynamic_cast <ValueType*> (other .getValue ()))
+	{ }
 
 	///  Constructs new X3DPtr.
-	//explicit
+	template <class Up>
+	explicit
+	X3DPtr (const X3DWeakPtr <Up> & other) :
+		X3DPtr (other .getValue ())
+	{ }
+
+	///  Constructs new X3DPtr.
+	X3DPtr (X3DPtr && other) :
+		X3DPtr ()
+	{ moveObject (other); }
+
+	///  Constructs new X3DPtr.
+	template <class Up>
+	explicit
+	X3DPtr (X3DPtr <Up> && other) :
+		X3DPtr ()
+	{ moveObject (other); }
+
+	///  Constructs new X3DPtr.
+	explicit
 	X3DPtr (ValueType* const value) :
 		X3DField <ValueType*> (value),
 		           cloneCount (0)
@@ -163,7 +179,7 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
 	{
-		X3DPtr* const field = new X3DPtr ();
+		const auto field = new X3DPtr ();
 
 		copy (executionContext, field, type);
 
@@ -177,7 +193,7 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override
 	{
-		X3DPtr* const field = static_cast <X3DPtr*> (fieldDefinition);
+		const auto field = static_cast <X3DPtr*> (fieldDefinition);
 
 		if (type == FLAT_COPY)
 		{
@@ -197,17 +213,18 @@ public:
 
 	///  Assigns the X3DPtr and propagates an event.
 	X3DPtr &
-	operator = (const X3DPtr & field)
+	operator = (const X3DPtr & other)
 	{
-		setValue (field);
+		setValue (other);
 		return *this;
 	}
 
 	///  Assigns the X3DPtr and propagates an event.
+	template <class Up>
 	X3DPtr &
-	operator = (const X3DPtrBase & field)
+	operator = (const X3DPtr <Up> & other)
 	{
-		setValue (dynamic_cast <ValueType*> (field .getObject ()));
+		setValue (dynamic_cast <ValueType*> (other .getValue ()));
 		return *this;
 	}
 
@@ -238,15 +255,6 @@ public:
 		return *this;
 	}
 
-	///  Assigns the X3DPtr and propagates an event.
-	template <class Up>
-	X3DPtr &
-	operator = (Up* const value)
-	{
-		setValue (dynamic_cast <ValueType*> (value));
-		return *this;
-	}
-
 	///  @name Modifiers
 
 	///  Assigns the X3DPtr without propagating an event.
@@ -266,9 +274,9 @@ public:
 	///  Assigns the X3DPtr without propagating an event.
 	virtual
 	void
-	set (const X3DChildObject & field) final override
+	set (const X3DChildObject & other) final override
 	{
-		X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
+		X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (other) .getObject ();
 
 		set (dynamic_cast <internal_type> (object));
 	}

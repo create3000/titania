@@ -59,6 +59,9 @@
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../../Components/PointingDeviceSensor/PlaneSensor.h"
 #include "../../../Components/NURBS/CoordinateDouble.h"
+#include "../../../Components/Rendering/X3DColorNode.h"
+#include "../../../Components/Rendering/X3DNormalNode.h"
+#include "../../../Components/Texturing/X3DTextureCoordinateNode.h"
 #include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Rendering/ViewVolume.h"
 

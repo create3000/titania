@@ -100,7 +100,7 @@ public:
 	getPhongShader () const
 	{ return phongShader; }
 
-	const X3DPtr <X3DShaderNode> &
+	const X3DPtr <ComposedShader> &
 	getDefaultShader () const
 	{ return defaultShader; }
 
@@ -171,7 +171,7 @@ private:
 	X3DPtr <ComposedShader> wireframeShader;
 	X3DPtr <ComposedShader> gouraudShader;
 	X3DPtr <ComposedShader> phongShader;
-	X3DPtr <X3DShaderNode>  defaultShader;
+	X3DPtr <ComposedShader> defaultShader;
 	X3DShaderNode*          shaderNode;
 
 

@@ -60,6 +60,7 @@
 #include "../Rendering/Color.h"
 #include "../Rendering/ColorRGBA.h"
 #include "../Rendering/Normal.h"
+#include "../Shaders/X3DVertexAttributeNode.h"
 #include "../Texturing/TextureCoordinate.h"
 #include "../Texturing/MultiTextureCoordinate.h"
 #include "../Texturing3D/TextureCoordinate3D.h"
@@ -1248,6 +1249,9 @@ IndexedFaceSet::addTool ()
 {
 	X3DComposedGeometryNode::addTool (new IndexedFaceSetTool (this));
 }
+
+IndexedFaceSet::~IndexedFaceSet ()
+{ }
 
 } // X3D
 } // titania

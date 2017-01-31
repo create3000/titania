@@ -51,11 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_ELEVATION_GRID_H__
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_ELEVATION_GRID_H__
 
-#include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DGeometryNode.h"
-#include "../Rendering/X3DNormalNode.h"
-#include "../Texturing/TextureCoordinateGenerator.h"
-#include "../Texturing/X3DTextureCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
@@ -232,6 +228,11 @@ public:
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override;
+
+	///  @name Destruction
+
+	virtual
+	~ElevationGrid () final override;
 
 
 private:

@@ -91,7 +91,7 @@ throw (Error <INVALID_NAME>,
 	{
 		case CLONE:
 		{
-			executionContext -> updateProtoDeclaration (this -> getName (), const_cast <ProtoDeclaration*> (this));
+			executionContext -> updateProtoDeclaration (this -> getName (), ProtoDeclarationPtr (const_cast <ProtoDeclaration*> (this)));
 
 			return const_cast <ProtoDeclaration*> (this);
 		}
@@ -147,7 +147,7 @@ ProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
 //       Error <INVALID_OPERATION_TIMING>,
 //       Error <DISPOSED>)
 {
-	return new X3DPrototypeInstance (executionContext, this);
+	return new X3DPrototypeInstance (executionContext, X3DProtoDeclarationNodePtr (this));
 }
 
 void

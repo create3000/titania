@@ -90,7 +90,7 @@ WorldInfo::initialize ()
 	X3DInfoNode::initialize ();
 
 	if (not isPrivate ())
-		getExecutionContext () -> setWorldInfo (this);
+		getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> (this));
 
 //	if (not title () .empty ())
 //		getBrowser () -> getNotification () -> string () = title ();
@@ -103,8 +103,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (getExecutionContext () -> getWorldInfo () == this)
 	{
-		getExecutionContext () -> setWorldInfo (nullptr);
-		executionContext -> setWorldInfo (this);
+		getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> ());
+		executionContext -> setWorldInfo (X3DPtr <WorldInfo> (this));
 	}
 
 	X3DInfoNode::setExecutionContext (executionContext);
@@ -118,10 +118,10 @@ WorldInfo::isPrivate (const bool value)
 	if (value)
 	{
 		if (getExecutionContext () -> getWorldInfo () == this)
-			getExecutionContext () -> setWorldInfo (nullptr);
+			getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> ());
 	}
 	else
-		getExecutionContext () -> setWorldInfo (this);
+		getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> (this));
 }
 
 } // X3D

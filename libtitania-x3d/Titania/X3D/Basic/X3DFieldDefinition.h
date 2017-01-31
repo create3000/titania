@@ -240,17 +240,12 @@ public:
 	void
 	processEvent (const EventPtr &) override;
 
-	
 	///  @name Misc
 
 	virtual
 	bool
 	isArray () const
 	{ return false; }
-
-	virtual
-	bool
-	hasRootedObjects (ChildObjectSet &) override;
 
 	///  @name Destruction
 
@@ -270,6 +265,12 @@ protected:
 
 	///  Constructs new X3DFieldDefinition.
 	X3DFieldDefinition ();
+
+	///  @name X3DChildObject
+
+	virtual
+	bool
+	hasRootedObjects (ChildObjectSet &) override;
 
 
 private:

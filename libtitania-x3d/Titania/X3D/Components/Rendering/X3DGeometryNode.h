@@ -58,8 +58,6 @@
 #include "../../Rendering/ClipPlaneContainer.h"
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
-#include "../Shaders/X3DVertexAttributeNode.h"
-#include "../Texturing/TextureCoordinateGenerator.h"
 
 #include <map>
 
@@ -236,6 +234,9 @@ public:
 	void
 	dispose () override;
 
+	virtual
+	~X3DGeometryNode () override;
+
 
 protected:
 
@@ -252,7 +253,7 @@ protected:
 	void
 	setAttribs (const X3DPtrArray <X3DVertexAttributeNode> &, const std::vector <std::vector <float>> &);
 
-	const std::vector <X3DVertexAttributeNode*> &
+	const X3DPtrArray <X3DVertexAttributeNode> &
 	getAttribs () const
 	{ return attribNodes; }
 
@@ -399,19 +400,19 @@ private:
 
 	///  @name Members
 
-	SFBool                                cameraObject;
-	Box3d                                 bbox;
-	std::vector <X3DVertexAttributeNode*> attribNodes;
-	std::vector <Color4f>                 colors;
-	X3DPtr <X3DTextureCoordinateNode>     texCoordNode;
-	TexCoordArray                         texCoords;
-	std::vector <Vector3f>                normals;
-	std::vector <Vector3f>                faceNormals;
-	std::vector <Vector3d>                vertices;
-	GeometryType                          geometryType;
-	bool                                  solid;
-	GLenum                                frontFace;
-	std::vector <Element>                 elements;
+	SFBool                               cameraObject;
+	Box3d                                bbox;
+	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
+	std::vector <Color4f>                colors;
+	X3DPtr <X3DTextureCoordinateNode>    texCoordNode;
+	TexCoordArray                        texCoords;
+	std::vector <Vector3f>               normals;
+	std::vector <Vector3f>               faceNormals;
+	std::vector <Vector3d>               vertices;
+	GeometryType                         geometryType;
+	bool                                 solid;
+	GLenum                               frontFace;
+	std::vector <Element>                elements;
 
 	std::vector <GLuint> attribBufferIds;
 	GLuint               colorBufferId;

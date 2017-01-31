@@ -58,14 +58,17 @@ namespace titania {
 namespace X3D {
 
 template <class ValueType>
+class X3DPtr;
+
+template <class ValueType>
 class X3DWeakPtr :
 	public X3DField <ValueType*>,
 	public X3DPtrBase
 {
 public:
 
-	typedef ValueType* internal_type;
-	typedef ValueType* value_type;
+	using internal_type = ValueType*;
+	using value_type    = ValueType;
 
 	using X3DField <ValueType*>::getParents;
 	using X3DField <ValueType*>::addEvent;
@@ -78,27 +81,109 @@ public:
 		X3DField <ValueType*> ()
 	{ }
 
-	X3DWeakPtr (const X3DWeakPtr & field) :
-		X3DWeakPtr (field .getValue ())
+	X3DWeakPtr (const X3DWeakPtr & other) :
+		X3DWeakPtr (other .getValue ())
 	{ }
-
-	explicit
-	X3DWeakPtr (const X3DPtrBase & field) :
-		X3DWeakPtr (dynamic_cast <ValueType*> (field .getObject ()))
-	{ }
-
-	//explicit
-	X3DWeakPtr (ValueType* const value) :
-		X3DField <ValueType*> (value)
-	{ addObject (value); }
 
 	template <class Up>
-	explicit
-	X3DWeakPtr (Up* const value) :
-		X3DWeakPtr (dynamic_cast <ValueType*> (value))
+	X3DWeakPtr (const X3DPtr <Up> & other) :
+		X3DWeakPtr (other .getValue ())
 	{ }
 
 	///  @name Construction
+
+	///  Assigns the X3DPtr and propagates an event.
+	X3DWeakPtr &
+	operator = (const X3DPtrBase & other)
+	{
+		setValue (dynamic_cast <ValueType*> (other .getObject ()));
+		return *this;
+	}
+
+	///  @name Field services
+
+	virtual
+	X3DConstants::FieldType
+	getType () const final override
+	{ return X3DConstants::SFNode; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	///  @name Boolean operator
+
+	operator bool () const
+	{ return getValue () and getValue () -> getReferenceCount (); }
+
+	///  @name Observers
+
+	X3DPtr <ValueType>
+	getLock () const
+	{ return X3DPtr <ValueType> (getValue ()); }
+
+	///  @name 6.7.7 Add field interest.
+
+	template <class Class>
+	void
+	addInterest (Class* const object, void (Class::* memberFunction) (const X3DWeakPtr &)) const
+	{ addInterest (object, memberFunction, std::cref (*this)); }
+
+	template <class Class>
+	void
+	addInterest (Class & object, void (Class::* memberFunction) (const X3DWeakPtr &)) const
+	{ addInterest (object, memberFunction, std::cref (*this)); }
+
+	///  @name Dispose
+
+	virtual
+	void
+	dispose () final override
+	{
+		removeObject (getValue ());
+
+		X3DField <ValueType*>::dispose ();
+	}
+
+	virtual
+	~X3DWeakPtr () final override
+	{ removeObject (getValue ()); }
+
+
+protected:
+
+	///  @name X3DChildObject
+
+	virtual
+	bool
+	hasRootedObjects (ChildObjectSet &) final override
+	{
+		// Weak pointers are no roots.
+		return false;
+	}
+
+
+private:
+
+	template <class Up>
+	friend class X3DPtr;
+
+	template <class Up>
+	friend class X3DWeakPtr;
+
+	using X3DField <ValueType*>::getValue;
+	using X3DField <ValueType*>::operator const internal_type &;
+	using X3DField <ValueType*>::operator ==;
+	using X3DField <ValueType*>::operator not_eq;
+
+	///  @name Construction
+
+	explicit
+	X3DWeakPtr (ValueType* const value) :
+		X3DField <ValueType*> (value)
+	{ addObject (value); }
 
 	virtual
 	X3DWeakPtr*
@@ -126,54 +211,8 @@ public:
 	       Error <NOT_SUPPORTED>) final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::copy: not supported!"); }
 
-	///  Assigns the X3DPtr and propagates an event.
-	X3DWeakPtr &
-	operator = (const X3DPtrBase & field)
-	{
-		setValue (dynamic_cast <ValueType*> (field .getObject ()));
-		return *this;
-	}
-
-	///  @name Field services
-
-	virtual
-	X3DConstants::FieldType
-	getType () const final override
-	{ return X3DConstants::SFNode; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	///  @name X3DChildObject
-	virtual
-	bool
-	hasRootedObjects (ChildObjectSet &) final override
-	{
-		// Weak pointers are no roots.
-		return false;
-	}
-
-	///  @name Boolean operator
-
-	operator bool () const
-	{ return getValue () and getValue () -> getReferenceCount (); }
-
-	///  @name 6.7.7 Add field interest.
-
-	template <class Class>
-	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const X3DWeakPtr &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
-	template <class Class>
-	void
-	addInterest (Class & object, void (Class::* memberFunction) (const X3DWeakPtr &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
-
 	///  @name Input/Output
+
 	virtual
 	void
 	fromStream (std::istream &)
@@ -198,31 +237,6 @@ public:
 	toJSONStream (std::ostream &) const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::toJSONtream: not supported!"); }
 
-	///  @name Dispose
-
-	virtual
-	void
-	dispose () final override
-	{
-		removeObject (getValue ());
-
-		X3DField <ValueType*>::dispose ();
-	}
-
-	virtual
-	~X3DWeakPtr () final override
-	{ removeObject (getValue ()); }
-
-
-private:
-
-	template <class Up>
-	friend class X3DWeakPtr;
-
-	using X3DField <ValueType*>::getValue;
-	using X3DField <ValueType*>::operator const value_type &;
-	using X3DField <ValueType*>::operator ==;
-	using X3DField <ValueType*>::operator not_eq;
 
 	///  @name Set value services
 

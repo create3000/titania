@@ -1061,7 +1061,7 @@ X3DEditor::deleteRoutes (const X3DExecutionContextPtr & executionContext, const 
 					if (route -> getExecutionContext () not_eq executionContext)
 						continue;
 
-					deleteRoute (route -> getExecutionContext (),
+					deleteRoute (X3DExecutionContextPtr (route -> getExecutionContext ()),
 					             route -> getSourceNode (),
 					             route -> getSourceField (),
 					             route -> getDestinationNode (),
@@ -1082,7 +1082,7 @@ X3DEditor::deleteRoutes (const X3DExecutionContextPtr & executionContext, const 
 					if (route -> getExecutionContext () not_eq executionContext)
 						continue;
 
-					deleteRoute (route -> getExecutionContext (),
+					deleteRoute (X3DExecutionContextPtr (route -> getExecutionContext ()),
 					             route -> getSourceNode (),
 					             route -> getSourceField (),
 					             route -> getDestinationNode (),
@@ -1364,7 +1364,7 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 				addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
 				                                    this,
-				                                    node -> getExecutionContext (),
+				                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
 				                                    route -> getSourceNode (),
 				                                    selfConnection ? newField -> getName () : route -> getSourceField (),
 				                                    node,
@@ -1381,7 +1381,7 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 				addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
 				                                    this,
-				                                    node -> getExecutionContext (),
+				                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
 				                                    node,
 				                                    newField -> getName (),
 				                                    route -> getDestinationNode (),
@@ -1495,7 +1495,7 @@ X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & un
 
 	for (const auto & route : RouteSet (field -> getInputRoutes ()))
 	{
-		deleteRoute (route -> getExecutionContext (),
+		deleteRoute (X3DExecutionContextPtr (route -> getExecutionContext ()),
 		             route -> getSourceNode (),
 		             route -> getSourceField (),
 		             route -> getDestinationNode (),
@@ -1505,7 +1505,7 @@ X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & un
 
 	for (const auto & route : RouteSet (field -> getOutputRoutes ()))
 	{
-		deleteRoute (route -> getExecutionContext (),
+		deleteRoute (X3DExecutionContextPtr (route -> getExecutionContext ()),
 		             route -> getSourceNode (),
 		             route -> getSourceField (),
 		             route -> getDestinationNode (),
@@ -1522,7 +1522,7 @@ X3DEditor::replaceReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinit
 	undoStep -> addObjects (proto);
 
 	if (proto)
-		traverse (proto, std::bind (&X3DEditor::replaceReferencesCallback, this, _1, oldField, newField, undoStep));
+		traverse (proto .getValue (), std::bind (&X3DEditor::replaceReferencesCallback, this, _1, oldField, newField, undoStep));
 }
 
 bool
@@ -1552,7 +1552,7 @@ X3DEditor::removeReferences (const ProtoDeclarationPtr & proto, X3DFieldDefiniti
 	undoStep -> addObjects (proto);
 
 	if (proto)
-		traverse (proto, std::bind (&X3DEditor::removeReferencesCallback, this, _1, field, undoStep));
+		traverse (proto .getValue (), std::bind (&X3DEditor::removeReferencesCallback, this, _1, field, undoStep));
 }
 
 bool
@@ -1670,7 +1670,7 @@ X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext, const M
 									       {
 									          if (not first)
 									          {
-									             const SFNode copy = (*sfnode) -> copy (FLAT_COPY);
+									             const SFNode copy ((*sfnode) -> copy (FLAT_COPY));
 
 									             replaceNode (executionContext, parent, *sfnode, copy, undoStep);
 
@@ -1733,7 +1733,7 @@ X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext,
 		{
 			if (not first)
 			{
-				const SFNode copy = mfnode [index] -> copy (FLAT_COPY);
+				const SFNode copy (mfnode [index] -> copy (FLAT_COPY));
 
 				replaceNode (executionContext, parent, mfnode, index, copy, undoStep);
 
@@ -2108,7 +2108,7 @@ X3DEditor::addNodesToActiveLayer (const WorldPtr & world, const MFNode & nodes, 
 
 	const auto removeUndoStep = std::make_shared <X3D::UndoStep> ("");
 
-	removeNodesFromScene (world -> getExecutionContext (), nodes, true, removeUndoStep);
+	removeNodesFromScene (X3DExecutionContextPtr (world -> getExecutionContext ()), nodes, true, removeUndoStep);
 	undoStep -> addUndoFunction (&UndoStep::redo, removeUndoStep);
 	removeUndoStep -> undo ();
 	undoStep -> addRedoFunction (&UndoStep::undo, removeUndoStep);

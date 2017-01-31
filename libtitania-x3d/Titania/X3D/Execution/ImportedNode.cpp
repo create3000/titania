@@ -50,7 +50,6 @@
 
 #include "ImportedNode.h"
 
-#include "../Browser/Core/Cast.h"
 #include "../Components/Networking/Inline.h"
 #include "../Execution/X3DExecutionContext.h"
 
@@ -96,10 +95,9 @@ throw (Error <INVALID_NAME>,
 
 	try
 	{
-		const auto namedNode       = executionContext -> getNamedNode (getInlineNode () -> getName ());
-		const auto localInlineNode = x3d_cast <Inline*> (namedNode);
+		const auto inlineNode = executionContext -> getNamedNode <Inline> (getInlineNode () -> getName ());
 
-		return executionContext -> addImportedNode (localInlineNode, exportedName, importedName) .getValue ();
+		return executionContext -> addImportedNode (inlineNode, exportedName, importedName) .getValue ();
 	}
 	catch (const X3DError & error)
 	{

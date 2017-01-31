@@ -55,6 +55,7 @@
 #include "../../Rendering/ShapeContainer.h"
 #include "../Shaders/ComposedShader.h"
 #include "../Shaders/X3DShaderNode.h"
+#include "../Shaders/X3DVertexAttributeNode.h"
 
 namespace titania {
 namespace X3D {

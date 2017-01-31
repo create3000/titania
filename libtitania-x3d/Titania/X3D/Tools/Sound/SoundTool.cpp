@@ -124,7 +124,7 @@ SoundTool::addTool ()
 {
 	try
 	{
-		getToolNode () -> setField <SFBool> ("selected", getBrowser () -> getSelection () -> isSelected (this));
+		getToolNode () -> setField <SFBool> ("selected", getBrowser () -> getSelection () -> isSelected (SFNode (this)));
 	}
 	catch (const X3DError &)
 	{ }

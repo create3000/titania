@@ -724,7 +724,7 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 		if (geometry)
 		{
 			coord           = geometry -> coord ();
-			previewGeometry = geometry -> copy (previewShape -> getExecutionContext (), X3D::FLAT_COPY);
+			previewGeometry = X3D::X3DPtr <X3D::IndexedFaceSet> (geometry -> copy (previewShape -> getExecutionContext (), X3D::FLAT_COPY));
 			previewGeometry -> isPrivate (true);
 
 			geometry -> solid ()           .addInterest (previewGeometry -> solid ());

@@ -50,6 +50,8 @@
 
 #include "X3DTextureCoordinateGeneratorEditor.h"
 
+#include <Titania/X3D/Components/Texturing/TextureCoordinateGenerator.h>
+
 namespace titania {
 namespace puck {
 
@@ -195,6 +197,9 @@ X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator (const X3
 	field .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator);
 	field .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator);
 }
+
+X3DTextureCoordinateGeneratorEditor::~X3DTextureCoordinateGeneratorEditor ()
+{ }
 
 } // puck
 } // titania

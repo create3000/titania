@@ -209,7 +209,8 @@ X3DExternProtoDeclaration::newInstance (JSContext* cx, uint32_t argc, jsval* vp)
 	try
 	{
 		const auto & externproto = *getThis <X3DExternProtoDeclaration> (cx, vp);
-		X3D::SFNode  instance    = externproto -> createInstance ();
+
+		X3D::SFNode instance (externproto -> createInstance ());
 
 		instance -> setup ();
 

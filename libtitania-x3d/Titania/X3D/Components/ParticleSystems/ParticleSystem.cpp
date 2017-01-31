@@ -1132,7 +1132,7 @@ ParticleSystem::set_vertex_buffer ()
 void
 ParticleSystem::set_transform_shader ()
 {
-	X3DPtr <ShaderPart> vertexPart = new ShaderPart (getExecutionContext ());
+	X3DPtr <ShaderPart> vertexPart (new ShaderPart (getExecutionContext ()));
 	vertexPart -> url () = emitterNode -> getShaderUrl ();
 	vertexPart -> setup ();
 
@@ -1238,7 +1238,7 @@ ParticleSystem::set_particle_map ()
 void
 ParticleSystem::set_geometry_shader ()
 {
-	X3DPtr <ShaderPart> vertexPart = new ShaderPart (getExecutionContext ());
+	X3DPtr <ShaderPart> vertexPart (new ShaderPart (getExecutionContext ()));
 	vertexPart -> url () = { get_shader ("ParticleSystems/Primitive.vs") .str () };
 	vertexPart -> setup ();
 

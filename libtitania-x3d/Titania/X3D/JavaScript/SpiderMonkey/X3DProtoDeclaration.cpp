@@ -175,8 +175,9 @@ X3DProtoDeclaration::newInstance (JSContext* cx, uint32_t argc, jsval* vp)
 
 	try
 	{
-		const auto & proto    = *getThis <X3DProtoDeclaration> (cx, vp);
-		X3D::SFNode  instance = proto -> createInstance ();
+		const auto & proto = *getThis <X3DProtoDeclaration> (cx, vp);
+
+		X3D::SFNode instance (proto -> createInstance ());
 
 		instance -> setup ();
 

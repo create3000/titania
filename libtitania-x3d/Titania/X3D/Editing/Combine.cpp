@@ -231,7 +231,7 @@ throw (Error <INVALID_NODE>,
 		const auto & masterShape    = front ? shapes .front () : shapes .back ();
 		const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 		const auto   targetCoord    = executionContext -> createNode <Coordinate> ();
-		const auto   targetMatrix   = inverse (Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape)));
+		const auto   targetMatrix   = inverse (Editor () .getModelViewMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), SFNode (masterShape)));
 	
 		targetGeometry -> coord () = targetCoord;
 	
@@ -259,7 +259,7 @@ throw (Error <INVALID_NODE>,
 
 			// Generate mesh.
 
-			const auto matrix = Editor () .getModelViewMatrix (geometryNode -> getMasterScene (), SFNode (geometryNode)) * targetMatrix;
+			const auto matrix = Editor () .getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), SFNode (geometryNode)) * targetMatrix;
 		
 			meshes .emplace_back (toMesh (geometryNode, coordNode, matrix));
 		}
@@ -294,7 +294,7 @@ throw (Error <INVALID_NODE>,
 
 		// Replace node.
 
-		Editor () .replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
+		Editor () .replaceNode (X3DExecutionContextPtr (masterShape -> getExecutionContext ()), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
 
 		return true;
 	}
@@ -327,7 +327,7 @@ throw (Error <INVALID_NODE>,
 	const auto & masterShape    = shapes .back ();
 	const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 	const auto   targetCoord    = X3DPtr <X3DCoordinateNode> (executionContext -> createNode <Coordinate> ());
-	const auto   targetMatrix   = inverse (Editor () .getModelViewMatrix (executionContext -> getMasterScene (), SFNode (masterShape)));
+	const auto   targetMatrix   = inverse (Editor () .getModelViewMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), SFNode (masterShape)));
 
 	targetGeometry -> coord () = targetCoord;
 
@@ -367,7 +367,7 @@ throw (Error <INVALID_NODE>,
 
 	// Replace node
 
-	Editor () .replaceNode (masterShape -> getExecutionContext (), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
+	Editor () .replaceNode (X3DExecutionContextPtr (masterShape -> getExecutionContext ()), SFNode (masterShape), masterShape -> geometry (), SFNode (targetGeometry), undoStep);
 
 	return true;
 }
@@ -568,7 +568,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			coordArray .emplace (index, coordArray .size ());
 		}
 
-		const auto matrix = Editor () .getModelViewMatrix (geometryNode -> getMasterScene (), SFNode (geometryNode)) * targetMatrix;
+		const auto matrix = Editor () .getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), SFNode (geometryNode)) * targetMatrix;
 
 		face              = 0;
 		size_t first      = 0;

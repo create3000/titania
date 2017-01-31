@@ -372,7 +372,7 @@ X3DGridTool::set_snapToCenter ()
 void
 X3DGridTool::set_active ()
 {
-	X3D::MFNode tool = { getTool () };
+	const X3D::MFNode tool = { getTool () };
 
 	if (getTool () -> isActive ())
 	{

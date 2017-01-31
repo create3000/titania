@@ -144,8 +144,8 @@ X3DGridEditor::configure ()
 void
 X3DGridEditor::initialize ()
 {
-	const auto & gridTool  = getBrowserWindow () -> getGridTool () -> getTool ();
-	X3D::MFNode  gridTools = { gridTool };
+	const auto &      gridTool  = getBrowserWindow () -> getGridTool () -> getTool ();
+	const X3D::MFNode gridTools = { gridTool };
 
 	enabled          .setNodes (gridTools);
 	translation      .setNodes (gridTools);

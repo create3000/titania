@@ -106,7 +106,7 @@ X3DTextureTransform3DEditor::setTextureTransform3D (const X3D::X3DPtr <X3D::X3DT
 	if (not textureTransform)
 		textureTransform = getCurrentContext () -> createNode <X3D::TextureTransform3D> ();
 
-	X3D::MFNode nodes = { textureTransform };
+	const X3D::MFNode nodes = { textureTransform };
 
 	translation .setNodes (nodes);
 	rotation    .setNodes (nodes);

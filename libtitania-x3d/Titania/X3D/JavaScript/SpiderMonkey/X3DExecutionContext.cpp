@@ -498,7 +498,7 @@ X3DExecutionContext::addImportedNode (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto argv             = JS_ARGV (cx, vp);
 		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 		const auto node             = getArgument <SFNode> (cx, argv, 0);
-		const auto inlineNode       = x3d_cast <X3D::Inline*> (*node);
+		const auto inlineNode       = X3D::X3DPtr <X3D::Inline> (*node);
 		const auto exportedName     = getArgument <std::string> (cx, argv, 1);
 
 		if (argc == 3)
@@ -550,7 +550,7 @@ X3DExecutionContext::updateImportedNode (JSContext* cx, uint32_t argc, jsval* vp
 		const auto argv             = JS_ARGV (cx, vp);
 		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 		const auto node             = getArgument <SFNode> (cx, argv, 0);
-		const auto inlineNode       = x3d_cast <X3D::Inline*> (*node);
+		const auto inlineNode       = X3D::X3DPtr <X3D::Inline> (*node);
 		const auto exportedName     = getArgument <std::string> (cx, argv, 1);
 
 		if (argc == 3)

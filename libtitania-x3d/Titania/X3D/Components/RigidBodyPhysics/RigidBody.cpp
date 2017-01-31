@@ -233,7 +233,7 @@ RigidBody::set_geometry ()
 	// Set body.
 
 	for (const auto & geometryNode : geometryNodes)
-		geometryNode -> setBody (this);
+		geometryNode -> setBody (X3DPtr <RigidBody> (this));
 
 	// Register collidable n-body nodes for global CollisionCollection.
 

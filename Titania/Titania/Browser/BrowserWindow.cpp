@@ -2808,7 +2808,7 @@ BrowserWindow::getChildren (const X3D::SFNode & parent, const bool sharedNodes) 
 				{
 					std::set <X3D::SFNode> seen;
 
-					const auto nodes = getChildrenInProtoinstance (instance -> getRootNode (), childIndex, seen);
+					const auto nodes = getChildrenInProtoinstance (X3D::SFNode (instance -> getRootNode ()), childIndex, seen);
 
 					children .insert (children .end (), nodes .begin (), nodes .end ());
 				}

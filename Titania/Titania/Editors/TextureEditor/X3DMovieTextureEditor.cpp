@@ -83,7 +83,7 @@ X3DMovieTextureEditor::setMovieTexture (const X3D::X3DPtr <X3D::X3DTextureNode> 
 	if (not movieTexture)
 		movieTexture = getCurrentContext () -> createNode <X3D::MovieTexture> ();
 
-	X3D::MFNode nodes = { movieTexture };
+	const X3D::MFNode nodes = { movieTexture };
 
 	enabled .setNodes (nodes);
 	loop    .setNodes (nodes);

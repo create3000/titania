@@ -115,7 +115,7 @@ ViewpointObserver::set_active (const bool value)
 {
 	try
 	{
-		const X3D::X3DPtr <X3D::X3DViewpointNode> activeViewpoint = getCurrentBrowser () -> getActiveLayer () -> getViewpoint ();
+		const X3D::X3DPtr <X3D::X3DViewpointNode> activeViewpoint (getCurrentBrowser () -> getActiveLayer () -> getViewpoint ());
 	
 		if (value)
 		{
@@ -148,7 +148,7 @@ ViewpointObserver::set_scrollTime ()
 {
 	try
 	{
-		const X3D::X3DPtr <X3D::X3DViewpointNode> activeViewpoint = getCurrentBrowser () -> getActiveLayer () -> getViewpoint ();
+		const X3D::X3DPtr <X3D::X3DViewpointNode> activeViewpoint (getCurrentBrowser () -> getActiveLayer () -> getViewpoint ());
 	
 		if (getUndoStep () != undoStep or not undoStep)
 		{
@@ -191,7 +191,7 @@ ViewpointObserver::set_offsets ()
 {
 	try
 	{
-		const X3D::X3DPtr <X3D::X3DViewpointNode> activeViewpoint = getCurrentBrowser () -> getActiveLayer () -> getViewpoint ();
+		const X3D::X3DPtr <X3D::X3DViewpointNode> activeViewpoint (getCurrentBrowser () -> getActiveLayer () -> getViewpoint ());
 	
 		positionOffset         = activeViewpoint -> positionOffset ();
 		orientationOffset      = activeViewpoint -> orientationOffset ();

@@ -1025,7 +1025,7 @@ XMLParser::defAttribute (xmlpp::Element* const xmlElement, X3DBaseNode* const ba
 			catch (const X3DError & error)
 			{ }
 
-			getExecutionContext () -> updateNamedNode (nodeNameCharacters, baseNode);
+			getExecutionContext () -> updateNamedNode (nodeNameCharacters, SFNode (baseNode));
 		}
 	}
 	catch (const X3DError & error)

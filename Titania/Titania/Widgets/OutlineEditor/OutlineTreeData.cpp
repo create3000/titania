@@ -89,7 +89,7 @@ OutlineTreeData::OutlineTreeData (const OutlineIterType type_, X3D::X3DChildObje
 		case OutlineIterType::ExportedNode:
 		case OutlineIterType::Separator:
 		{
-			parent = object;
+			parent = X3D::SFNode (object);
 			object = &parent;
 			break;
 		}

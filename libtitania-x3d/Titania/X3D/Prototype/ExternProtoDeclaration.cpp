@@ -99,7 +99,7 @@ throw (Error <INVALID_NAME>,
 	{
 		case CLONE:
 		{
-			executionContext -> updateExternProtoDeclaration (this -> getName (), const_cast <ExternProtoDeclaration*> (this));
+			executionContext -> updateExternProtoDeclaration (this -> getName (), ExternProtoDeclarationPtr (const_cast <ExternProtoDeclaration*> (this)));
 
 			return const_cast <ExternProtoDeclaration*> (this);
 		}
@@ -149,7 +149,7 @@ ExternProtoDeclaration::createInstance (X3DExecutionContext* const executionCont
 //       Error <INVALID_OPERATION_TIMING>,
 //       Error <DISPOSED>)
 {
-	return new X3DPrototypeInstance (executionContext, this);
+	return new X3DPrototypeInstance (executionContext, X3DProtoDeclarationNodePtr (this));
 }
 
 void

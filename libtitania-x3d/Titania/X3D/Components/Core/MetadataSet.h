@@ -108,7 +108,7 @@ public:
 	createValue (const std::string & name)
 	throw (Error <INVALID_NAME>,
 	       Error <DISPOSED>)
-	{ return getValue <Type> (name, false); }
+	{ return X3DPtr <Type> (getValue <Type> (name, false)); }
 
 	///  Return the metadata with where name is @a name if it exists otherwise throw an exception.
 	template <class Type>
@@ -117,7 +117,7 @@ public:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>)
-	{ return getValue <Type> (name, true); }
+	{ return X3DPtr <Type> (getValue <Type> (name, true)); }
 
 	void
 	removeValue (const std::string &)

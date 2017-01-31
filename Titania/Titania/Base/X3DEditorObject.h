@@ -421,8 +421,9 @@ X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const s
 	{
 		if (not first)
 		{
-			auto &            field = node -> template getField <X3D::SFNode> (fieldName);
-			const X3D::SFNode copy  = field -> copy (X3D::FLAT_COPY);
+			auto & field = node -> template getField <X3D::SFNode> (fieldName);
+
+			const X3D::SFNode copy (field -> copy (X3D::FLAT_COPY));
 
 			getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (node), field, copy, undoStep);
 		}

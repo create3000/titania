@@ -50,6 +50,7 @@
 
 #include "X3DIndexedFaceSetLightSaberObject.h"
 
+#include "../../../Components/Rendering/X3DCoordinateNode.h"
 #include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Rendering/ViewVolume.h"
 

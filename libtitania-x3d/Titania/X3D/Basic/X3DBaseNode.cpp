@@ -222,7 +222,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext) const
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	const SFNode copy = create (executionContext); // Never try to optimize this.
+	const SFNode copy (create (executionContext)); // Never try to optimize this.
 
 	if (not getName () .empty ())
 		executionContext -> updateNamedNode (getName (), copy);
@@ -320,7 +320,7 @@ X3DBaseNode::copy (X3DExecutionContext* const executionContext, const FlatCopyTy
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
-	const SFNode copy = create (executionContext);
+	const SFNode copy (create (executionContext));
 
 	if (not getName () .empty ())
 		executionContext -> updateNamedNode (executionContext -> getUniqueName (getName ()), copy);
@@ -420,10 +420,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (value not_eq executionContext)
 	{
+		value -> addParent (this);
 		executionContext -> removeParent (this);
 
 		executionContext = value;
-		executionContext -> addParent (this);
 	}
 
 	// Replace browser as last step!

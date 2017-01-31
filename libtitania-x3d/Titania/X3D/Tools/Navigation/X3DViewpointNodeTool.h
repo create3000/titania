@@ -234,7 +234,7 @@ X3DViewpointNodeTool::addTool ()
 {
 	try
 	{
-		getToolNode () -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (this));
+		getToolNode () -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (SFNode (this)));
 	}
 	catch (const X3DError &)
 	{ }

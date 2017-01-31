@@ -162,8 +162,8 @@ X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, c
 	                             hitRay,
 	                             intersection,
 	                             enabledSensors .back (),
-	                             shape,
-	                             layer,
+	                             X3DPtr <X3DShapeNode> (shape),
+	                             X3DPtr <X3DLayerNode> (layer),
 	                             layerNumber,
 	                             getBrowser () -> getDepthTest ()   .top (),
 	                             getBrowser () -> getDepthOffset () .top ()));

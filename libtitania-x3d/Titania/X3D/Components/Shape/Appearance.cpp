@@ -55,8 +55,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../Shaders/X3DProgrammableShaderObject.h"
-#include "../Shaders/X3DShaderNode.h"
+#include "../Shaders/ComposedShader.h"
 #include "../Shape/FillProperties.h"
 #include "../Shape/LineProperties.h"
 #include "../Shape/X3DMaterialNode.h"
@@ -307,7 +306,11 @@ Appearance::draw (X3DRenderObject* const renderObject)
 	browser -> setMaterial (materialNode);
 	browser -> setTexture (textureNode);
 	browser -> setTextureTransform (textureTransformNode);
-	browser -> setShader (shaderNode ? shaderNode : renderObject -> getBrowser () -> getDefaultShader ());
+
+	if (shaderNode)
+		browser -> setShader (shaderNode);
+	else
+		browser -> setShader (renderObject -> getBrowser () -> getDefaultShader ());
 }
 
 } // X3D

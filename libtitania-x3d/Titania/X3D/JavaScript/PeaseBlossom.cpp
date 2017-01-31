@@ -88,7 +88,7 @@ PeaseBlossom::initialize ()
 X3DPtr <X3DJavaScriptContext>
 PeaseBlossom::createContext (Script* script, const std::string & ecmascript, const basic::uri & uri)
 {
-	return new peaseblossom::Context (script, ecmascript, uri);
+	return X3DPtr <X3DJavaScriptContext> (new peaseblossom::Context (script, ecmascript, uri));
 }
 
 void
