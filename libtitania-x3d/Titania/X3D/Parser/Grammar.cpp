@@ -50,7 +50,7 @@
 
 #include "Grammar.h"
 
-#include "../../X3D.h"
+#include "../Configuration/SupportedFields.h"
 
 #include <regex>
 
@@ -286,9 +286,11 @@ Grammar::Hex (std::istream & istream, uint32_t & value)
 std::set <std::string>
 Grammar::getSupportedFields ()
 {
+	X3D::SupportedFields X3DSupportedFields;
+
 	std::set <std::string> supportedFields;
 
-	for (const auto & field : getBrowser () -> getSupportedFields ())
+	for (const auto & field : X3DSupportedFields .get ())
 		supportedFields .emplace (field -> getTypeName ());
 
 	return supportedFields;

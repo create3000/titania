@@ -28,6 +28,8 @@
 namespace titania {
 namespace FTGL {
 
+Library Library::instance;
+
 Library::Library () :
 	library (),
 	  error (0)
@@ -38,9 +40,7 @@ Library::Library () :
 const Library &
 Library::getInstance ()
 {
-	static Library ftlib;
-
-	return ftlib;
+	return instance;
 }
 
 bool

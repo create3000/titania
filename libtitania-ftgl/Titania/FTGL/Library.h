@@ -124,6 +124,11 @@ private:
 	initialise ();
 
 	/**
+	 * Freetype library instance.
+	 */
+	static Library instance;
+
+	/**
 	 * Freetype library handle.
 	 */
 	std::unique_ptr <FT_Library> library;
