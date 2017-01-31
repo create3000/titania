@@ -157,15 +157,12 @@ AC_OUTPUT([
 libtitania-standard/Makefile
 libtitania-sqlite/Makefile
 libtitania-stream/Makefile
-libtitania-anyoptions/Makefile
 libtitania-gzstream/Makefile
 libtitania-opengl-surface/Makefile
 libtitania-peaseblossom/Makefile
 libtitania-ftgl/Makefile
 libtitania-x3d/Makefile
 Titania/Makefile
-titania-info/Makefile
-x3dtidy/Makefile
 experimental/Makefile
 po/Makefile.in
 Makefile

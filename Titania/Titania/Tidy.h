@@ -48,42 +48,97 @@
  *
  ******************************************************************************/
 
-#include "Browser/BrowserApplication.h"
-#include "ApplicationOptions.h"
-#include "Tidy.h"
-#include "Info.h"
+#ifndef __TITANIA_TIDY_H__
+#define __TITANIA_TIDY_H__
 
-int
-main (int argc, char** argv)
+#include <Titania/OS/cwd.h>
+#include <Titania/String/to_string.h>
+#include <Titania/X3D.h>
+
+#include <iostream>
+#include <unistd.h>
+
+namespace titania {
+namespace puck {
+
+///  It never hurts to be tidy.
+class Tidy
 {
-	using namespace titania::puck;
+public:
 
-	try
+	static
+	int
+	main (const ApplicationOptions & options)
 	{
-		ApplicationOptions options (argc, argv);
-
-		if (not options .exportFilename .empty ())
-			return Tidy::main (options);
-
-		if (not options .list .empty ())
-			return Info::main (options);
-
-		if (options .help)
+		try
 		{
-			std::cout << options .get_help () << std::endl;
-			return 0;
+			X3D::Generator::Style (options .exportStyle);
+
+			auto browser = X3D::getBrowser ();
+
+			basic::uri uri (options .filename);
+
+			if (uri .is_relative ())
+				uri = basic::uri (os::cwd ()) .transform (uri);
+
+			if (options .exportFilename == "-")
+			{
+				if (uri .suffix () == ".x3d")
+					std::cout << X3D::XMLEncode (browser -> createX3DFromURL ({ uri .str () }));
+
+				else if (uri .suffix () == ".json")
+					std::cout << X3D::JSONEncode (browser -> createX3DFromURL ({ uri .str () }));
+
+				else
+					std::cout << browser -> createX3DFromURL ({ uri .str () });
+			}
+			else
+			{
+				basic::uri out (options .exportFilename);
+
+				if (out .is_relative ())
+					out = basic::uri (os::cwd ()) .transform (out);
+
+				std::string tmpFilename = "/tmp/x3dtidy." + basic::to_string (getpid (), std::locale::classic ()) + out .suffix ();
+
+				try
+				{
+					std::ofstream file (tmpFilename);
+
+					// Create temp file
+
+					if (out .suffix () == ".x3d")
+						file << X3D::XMLEncode (browser -> createX3DFromURL ({ uri .str () }));
+
+					else if (out .suffix () == ".json")
+						file << X3D::JSONEncode (browser -> createX3DFromURL ({ uri .str () }));
+
+					else
+						file << browser -> createX3DFromURL ({ uri .str () });
+
+					// Replace original
+
+					rename (tmpFilename .c_str (), out .path () .c_str ());
+				}
+				catch (...)
+				{
+					unlink (tmpFilename .c_str ());
+					throw;
+				}
+			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			std::cerr << error .what () << std::endl;
+			return 1;
 		}
 
-		return BrowserApplication::main (argc, argv);
+		return 0;
 	}
-	catch (const Glib::Exception & error)
-	{
-		std::cerr << error .what () << std::endl;
-		return 1;
-	}
-	catch (const std::exception & error)
-	{
-		std::cerr << error .what () << std::endl;
-		return 1;
-	}
-}
+
+};
+
+} // puck
+} // titania
+
+#endif

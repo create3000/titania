@@ -2559,6 +2559,10 @@
     <None Include="Titania\Editors\AppearanceEditor\X3DUsedMaterialsEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DUsedTexturesEditor.h" />
     <None Include="Titania\Browser\BrowserApplication.h" />
+    <None Include="Titania\ApplicationOptions.h" />
+    <None Include="Titania\Info.h" />
+    <None Include="Titania\Tidy.h" />
+    <None Include="share\man\man1\titania.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2660,6 +2664,7 @@
     <Folder Include="Titania\Editors\LibraryView\" />
     <Folder Include="Titania\Dialogs\MessageDialog\" />
     <Folder Include="share\titania\ui\icons\Faenza\64\" />
+    <Folder Include="share\man\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

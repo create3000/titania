@@ -11,7 +11,7 @@ specification for VRML 2.0 and already most parts of the X3D specification.
 It can be used as a simple 3D viewer for .x3dv/.x3d files, as high quality 3D animation rendering engine, for advanced 
 science simulations, live data visualization, or as easy to use gaming engine.
 
-Furthermore this package includes x3dtidy, an easy to use X3D/VRML beautifier and converter.
+Furthermore Titania can also be used as an easy to use X3D/VRML beautifier and converter.
 
 For more information and documentation please visit our website at [http://titania.create3000.de](http://titania.create3000.de).
 

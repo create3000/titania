@@ -86,36 +86,27 @@ public:
 	int
 	main (int argc, char** argv)
 	{
-		try
+		#ifdef TITANIA_DEBUG
+		std::clog
+			<< std::boolalpha
+			<< "Titania started ..." << std::endl
+			<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
+			<< std::endl;
+		#endif
+
 		{
-			#ifdef TITANIA_DEBUG
-			std::clog
-				<< std::boolalpha
-				<< "Titania started ..." << std::endl
-				<< " Compiled at " << __DATE__ << " " << __TIME__ << std::endl
-				<< std::endl;
-			#endif
+			BrowserApplication browserApplication (argc, argv);
 
-			{
-				BrowserApplication browserApplication (argc, argv);
-
-				browserApplication .run ();
-			}
-
-			#ifdef TITANIA_DEBUG
-			std::clog
-				<< std::endl
-				<< "Titania finished." << std::endl;
-			#endif
-
-			return 0;
+			browserApplication .run ();
 		}
-		catch (const std::exception & error)
-		{
-			std::clog << error .what () << std::endl;
 
-			return 1;
-		}
+		#ifdef TITANIA_DEBUG
+		std::clog
+			<< std::endl
+			<< "Titania finished." << std::endl;
+		#endif
+
+		return 0;
 	}
 
 private:

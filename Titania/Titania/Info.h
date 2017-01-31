@@ -1,0 +1,160 @@
+// /* -*- Mode: C++; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*- */
+// /*************************************************************************
+//  *
+//  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+//  *
+//  * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
+//  *
+//  * Titania - a multi-platform office productivity suite
+//  *
+//  * This file is part of the Titania Project.
+//  *
+//  * Titania is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU Lesser General Public License version 3
+//  * only, as published by the Free Software Foundation.
+//  *
+//  * Titania is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  * GNU Lesser General Public License version 3 for more details
+//  * (a copy is included in the LICENSE file that accompanied this code).
+//  *
+//  * You should have received a copy of the GNU Lesser General Public License
+//  * version 3 along with Titania.  If not, see
+//  * <http://www.gnu.org/licenses/lgpl.html>
+//  * for a copy of the LGPLv3 License.
+//  *
+//  ************************************************************************/
+
+#ifndef __TITANIA_INFO_H__
+#define __TITANIA_INFO_H__
+
+#include "ApplicationOptions.h"
+
+#include <Titania/X3D.h>
+
+#include <iostream>
+
+namespace titania {
+namespace puck {
+
+class Info
+{
+public:
+
+	static
+	int
+	main (const ApplicationOptions & options)
+	{
+		if (options .list == "profiles")
+			return componentIndex ();
+
+		if (options .list == "components")
+			return componentIndex ();
+
+		if (options .list == "nodes")
+			return nodeIndex ();
+
+		if (options .list == "fields")
+			return fields ();
+
+		return 1;
+	}
+
+private:
+
+	static
+	int
+	componentIndex ()
+	{
+		auto browser = X3D::getBrowser ();
+
+		const X3D::ComponentInfoArray & components = browser -> getSupportedComponents ();
+
+		std::cout .imbue (std::locale::classic ());
+
+		for (const auto & component : components)
+		{
+			std::cout << component -> getName () << std::endl;
+		}
+
+		return 0;
+	}
+
+	static
+	int
+	nodeIndex ()
+	{
+		X3D::Generator::Style ("compact");
+
+		std::cout .imbue (std::locale::classic ());
+
+		for (const auto & node : X3D::getBrowser () -> getSupportedNodes ())
+		{
+			std::cout << '[' << node -> getTypeName () << ']' << std::endl;
+
+			const X3D::FieldDefinitionArray & fieldDefinitions = node -> getFieldDefinitions ();
+
+			for (const auto & fieldDefinition : fieldDefinitions)
+			{
+				const X3D::X3DFieldDefinition* field = node -> getField (fieldDefinition -> getName ());
+
+				std::cout
+					<< '\t'
+					<< field -> getName () << " = "
+					<< field -> getName () << ";"
+					<< X3D::to_string (field -> getAccessType ()) << ";"
+					<< field -> getTypeName () << ";";
+
+				if (field -> isInitializable ())
+					std::cout << field -> toString ();
+
+				std::cout << std::endl;
+			}
+
+			std::cout
+				<< '\t'
+				<< "containerField = "
+				<< node -> getContainerField ()
+				<< std::endl;
+
+			std::cout
+				<< '\t'
+				<< "componentName = "
+				<< X3D::getBrowser () -> getSupportedComponents () .rfind (node -> getComponent ()) -> getName ()
+				<< std::endl;
+
+			std::cout << std::endl;
+		}
+
+		return 0;
+	}
+
+	static
+	int
+	fields ()
+	{
+		X3D::Generator::Style ("compact");
+
+		std::cout .imbue (std::locale::classic ());
+
+		for (const auto & field : X3D::getBrowser () -> getSupportedFields ())
+		{
+			std::cout
+				<< '[' << field -> getTypeName () << ']' << std::endl
+				<< '\t'
+				<< "value" << " = "
+				<< *field
+				<< std::endl
+				<< std::endl;
+		}
+
+		return 0;
+	}
+
+};
+
+} // puck
+} // titania
+
+#endif

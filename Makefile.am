@@ -5,15 +5,12 @@ SUBDIRS =  \
 	libtitania-standard \
 	libtitania-sqlite \
 	libtitania-stream \
-	libtitania-anyoptions \
 	libtitania-gzstream \
 	libtitania-opengl-surface \
 	libtitania-peaseblossom \
 	libtitania-ftgl \
 	libtitania-x3d \
-	Titania \
-	titania-info \
-	x3dtidy
+	Titania
 
 
 INTLTOOL_FILES = intltool-extract.in \

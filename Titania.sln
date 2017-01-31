@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-anyoptions", "libtitania-anyoptions\libtitania-anyoptions.cproj", "{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}"
-EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-gzstream", "libtitania-gzstream\libtitania-gzstream.cproj", "{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}"
 EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "Titania", "Titania\Titania.cproj", "{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}"
-EndProject
-Project("{2857B73E-F847-4B02-9238-064979017E93}") = "x3dtidy", "x3dtidy\x3dtidy.cproj", "{8B48B982-A07F-4063-B9B9-A3E8C0A9E4B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "miscellaneous", "miscellaneous", "{0A83A471-2425-4FE8-B816-A75033B4D27C}"
 	ProjectSection(MonoDevelopProperties) = preProject
@@ -27,8 +23,6 @@ EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-x3d", "libtitania-x3d\libtitania-x3d.cproj", "{DFCBA660-2306-4B2B-A18F-7CA89FDD83A3}"
 EndProject
 Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Library", "Library\Library.mdproj", "{4E14CF17-2479-463F-BF86-128B9B5C5FAD}"
-EndProject
-Project("{2857B73E-F847-4B02-9238-064979017E93}") = "titania-info", "titania-info\titania-info.cproj", "{8DD96774-C8E5-4420-9D28-D4C96646EBE6}"
 EndProject
 Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Papers", "Papers\Papers.mdproj", "{E29E81C4-20D1-4FF3-A932-202A4D23FACE}"
 EndProject
@@ -140,18 +134,6 @@ Global
 		{87A8855F-BF45-4B19-911D-7DD1A427FA8A}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
 		{87A8855F-BF45-4B19-911D-7DD1A427FA8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87A8855F-BF45-4B19-911D-7DD1A427FA8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8B48B982-A07F-4063-B9B9-A3E8C0A9E4B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B48B982-A07F-4063-B9B9-A3E8C0A9E4B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B48B982-A07F-4063-B9B9-A3E8C0A9E4B3}.Parallel|Any CPU.ActiveCfg = Parallel|Any CPU
-		{8B48B982-A07F-4063-B9B9-A3E8C0A9E4B3}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
-		{8B48B982-A07F-4063-B9B9-A3E8C0A9E4B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B48B982-A07F-4063-B9B9-A3E8C0A9E4B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Parallel|Any CPU.ActiveCfg = Parallel|Any CPU
-		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
-		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8DD96774-C8E5-4420-9D28-D4C96646EBE6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A40FEE98-4147-4F4C-A682-FB0027303173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A40FEE98-4147-4F4C-A682-FB0027303173}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A40FEE98-4147-4F4C-A682-FB0027303173}.Default|Any CPU.ActiveCfg = Debug|Any CPU
@@ -188,14 +170,6 @@ Global
 		{BD471A40-76AE-4035-B56B-E29658A0ACB3}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
 		{BD471A40-76AE-4035-B56B-E29658A0ACB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD471A40-76AE-4035-B56B-E29658A0ACB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Default|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Default|Any CPU.Build.0 = Debug|Any CPU
-		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Parallel|Any CPU.ActiveCfg = Parallel|Any CPU
-		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
-		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9C7696B-8393-42CC-A26E-F2ED2ADC799F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFCBA660-2306-4B2B-A18F-7CA89FDD83A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DFCBA660-2306-4B2B-A18F-7CA89FDD83A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFCBA660-2306-4B2B-A18F-7CA89FDD83A3}.Default|Any CPU.ActiveCfg = Debug|Any CPU

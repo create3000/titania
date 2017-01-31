@@ -15,12 +15,8 @@
 
 ./Titania/titania
 ./experimental/experimental
-./test/test
-./titania-info/titania-info
-./x3dtidy/x3dtidy
 ./debian/titania
 ./experimental/titania-experimental
-./test/titania-test
 
 ./Documentation/Titania/html
 

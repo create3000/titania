@@ -11,15 +11,6 @@ apps:
   titania-bin:
     command: bin/titania
     plugs: [network, network-bind, home, x11, unity7, gsettings]
-  titania-info:
-    command: bin/titania-info
-    plugs: [network, network-bind, home, x11, unity7, gsettings]
-  titania-x3d2vrml:
-    command: bin/titania-x3d2vrml
-    plugs: [network, network-bind, home, x11, unity7, gsettings]
-  x3dtidy:
-    command: bin/x3dtidy
-    plugs: [network, network-bind, home, x11, unity7, gsettings]
 
 parts:
   titania:
