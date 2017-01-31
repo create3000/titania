@@ -2558,6 +2558,7 @@
     <None Include="Titania\Editors\ScenePropertiesEditor\X3DMetaDataEditor.h" />
     <None Include="Titania\Editors\AppearanceEditor\X3DUsedMaterialsEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DUsedTexturesEditor.h" />
+    <None Include="Titania\Browser\BrowserApplication.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
