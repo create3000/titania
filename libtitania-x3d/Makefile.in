@@ -146,7 +146,6 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Base/X3DOutput.lo \
 	Titania/X3D/Base/X3DParentObject.lo \
 	Titania/X3D/Base/X3DReferenceObject.lo \
-	Titania/X3D/Basic/BaseNodeArray.lo \
 	Titania/X3D/Basic/FieldDefinitionArray.lo \
 	Titania/X3D/Basic/FieldDefinitionSet.lo \
 	Titania/X3D/Basic/FieldSet.lo Titania/X3D/Basic/NodeSet.lo \
@@ -523,6 +522,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Components/Texturing3D/X3DTexture3DNode.lo \
 	Titania/X3D/Components/Time/TimeSensor.lo \
 	Titania/X3D/Components/Time/X3DTimeDependentNode.lo \
+	Titania/X3D/Configuration/BaseNodeArray.lo \
 	Titania/X3D/Configuration/ComponentInfo.lo \
 	Titania/X3D/Configuration/ComponentInfoArray.lo \
 	Titania/X3D/Configuration/ProfileInfo.lo \
@@ -973,7 +973,6 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Base/X3DOutput.cpp \
 	Titania/X3D/Base/X3DParentObject.cpp \
 	Titania/X3D/Base/X3DReferenceObject.cpp \
-	Titania/X3D/Basic/BaseNodeArray.cpp \
 	Titania/X3D/Basic/FieldDefinitionArray.cpp \
 	Titania/X3D/Basic/FieldDefinitionSet.cpp \
 	Titania/X3D/Basic/FieldSet.cpp \
@@ -1352,6 +1351,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Components/Texturing3D/X3DTexture3DNode.cpp \
 	Titania/X3D/Components/Time/TimeSensor.cpp \
 	Titania/X3D/Components/Time/X3DTimeDependentNode.cpp \
+	Titania/X3D/Configuration/BaseNodeArray.cpp \
 	Titania/X3D/Configuration/ComponentInfo.cpp \
 	Titania/X3D/Configuration/ComponentInfoArray.cpp \
 	Titania/X3D/Configuration/ProfileInfo.cpp \
@@ -1676,8 +1676,6 @@ Titania/X3D/Basic/$(am__dirstamp):
 Titania/X3D/Basic/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Basic/$(DEPDIR)
 	@: > Titania/X3D/Basic/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Basic/BaseNodeArray.lo: Titania/X3D/Basic/$(am__dirstamp) \
-	Titania/X3D/Basic/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Basic/FieldDefinitionArray.lo:  \
 	Titania/X3D/Basic/$(am__dirstamp) \
 	Titania/X3D/Basic/$(DEPDIR)/$(am__dirstamp)
@@ -3151,6 +3149,9 @@ Titania/X3D/Configuration/$(am__dirstamp):
 Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Configuration/$(DEPDIR)
 	@: > Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Configuration/BaseNodeArray.lo:  \
+	Titania/X3D/Configuration/$(am__dirstamp) \
+	Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Configuration/ComponentInfo.lo:  \
 	Titania/X3D/Configuration/$(am__dirstamp) \
 	Titania/X3D/Configuration/$(DEPDIR)/$(am__dirstamp)
@@ -4095,7 +4096,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DOutput.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DParentObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Base/$(DEPDIR)/X3DReferenceObject.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/BaseNodeArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/FieldDefinitionArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/FieldDefinitionSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Basic/$(DEPDIR)/FieldSet.Plo@am__quote@
@@ -4474,6 +4474,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Texturing3D/$(DEPDIR)/X3DTexture3DNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Time/$(DEPDIR)/TimeSensor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Components/Time/$(DEPDIR)/X3DTimeDependentNode.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/BaseNodeArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/ComponentInfo.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/ComponentInfoArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Configuration/$(DEPDIR)/ProfileInfo.Plo@am__quote@
