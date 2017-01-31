@@ -54,7 +54,7 @@
 #include <Titania/OS.h>
 #include <Titania/String/to_string.h>
 #include <Titania/X3D.h>
-#include <Titania/gzstream.h>
+#include <Titania/Stream/GZStream.h>
 
 #include <iostream>
 
@@ -119,7 +119,7 @@ public:
 				// Create temp file
 
 				if (outputFilename .suffix () == ".x3dz")
-					ogzstream (tmpFilename) << X3D::XMLEncode (scene);
+					basic::ogzstream (tmpFilename) << X3D::XMLEncode (scene);
 
 				else if (outputFilename .suffix () == ".x3d")
 					file << X3D::XMLEncode (scene);
@@ -132,7 +132,7 @@ public:
 					if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 						scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 
-					ogzstream (tmpFilename) << scene;
+					basic::ogzstream (tmpFilename) << scene;
 				}
 				else
 				{

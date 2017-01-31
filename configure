@@ -634,8 +634,6 @@ LTLIBOBJS
 LIBOBJS
 TITANIA_STANDARD_LIBS
 TITANIA_STANDARD_CFLAGS
-TITANIA_GZSTREAM_LIBS
-TITANIA_GZSTREAM_CFLAGS
 TITANIA_OPENGL_SURFACE_LIBS
 TITANIA_OPENGL_SURFACE_CFLAGS
 TITANIA_SQLITE_LIBS
@@ -876,8 +874,6 @@ TITANIA_SQLITE_CFLAGS
 TITANIA_SQLITE_LIBS
 TITANIA_OPENGL_SURFACE_CFLAGS
 TITANIA_OPENGL_SURFACE_LIBS
-TITANIA_GZSTREAM_CFLAGS
-TITANIA_GZSTREAM_LIBS
 TITANIA_STANDARD_CFLAGS
 TITANIA_STANDARD_LIBS'
 
@@ -1585,10 +1581,6 @@ Some influential environment variables:
               pkg-config
   TITANIA_OPENGL_SURFACE_LIBS
               linker flags for TITANIA_OPENGL_SURFACE, overriding pkg-config
-  TITANIA_GZSTREAM_CFLAGS
-              C compiler flags for TITANIA_GZSTREAM, overriding pkg-config
-  TITANIA_GZSTREAM_LIBS
-              linker flags for TITANIA_GZSTREAM, overriding pkg-config
   TITANIA_STANDARD_CFLAGS
               C compiler flags for TITANIA_STANDARD, overriding pkg-config
   TITANIA_STANDARD_LIBS
@@ -18268,98 +18260,6 @@ fi
 
 
 pkg_failed=no
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for TITANIA_GZSTREAM" >&5
-$as_echo_n "checking for TITANIA_GZSTREAM... " >&6; }
-
-if test -n "$TITANIA_GZSTREAM_CFLAGS"; then
-    pkg_cv_TITANIA_GZSTREAM_CFLAGS="$TITANIA_GZSTREAM_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"zlib\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "zlib") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; then
-  pkg_cv_TITANIA_GZSTREAM_CFLAGS=`$PKG_CONFIG --cflags "zlib" 2>/dev/null`
-		      test "x$?" != "x0" && pkg_failed=yes
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-if test -n "$TITANIA_GZSTREAM_LIBS"; then
-    pkg_cv_TITANIA_GZSTREAM_LIBS="$TITANIA_GZSTREAM_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"zlib\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "zlib") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; then
-  pkg_cv_TITANIA_GZSTREAM_LIBS=`$PKG_CONFIG --libs "zlib" 2>/dev/null`
-		      test "x$?" != "x0" && pkg_failed=yes
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        TITANIA_GZSTREAM_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "zlib" 2>&1`
-        else
-	        TITANIA_GZSTREAM_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "zlib" 2>&1`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$TITANIA_GZSTREAM_PKG_ERRORS" >&5
-
-	as_fn_error $? "Package requirements (zlib) were not met:
-
-$TITANIA_GZSTREAM_PKG_ERRORS
-
-Consider adjusting the PKG_CONFIG_PATH environment variable if you
-installed software in a non-standard prefix.
-
-Alternatively, you may set the environment variables TITANIA_GZSTREAM_CFLAGS
-and TITANIA_GZSTREAM_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details." "$LINENO" 5
-elif test $pkg_failed = untried; then
-     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
-is in your PATH or set the PKG_CONFIG environment variable to the full
-path to pkg-config.
-
-Alternatively, you may set the environment variables TITANIA_GZSTREAM_CFLAGS
-and TITANIA_GZSTREAM_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-
-To get pkg-config, see <http://pkg-config.freedesktop.org/>.
-See \`config.log' for more details" "$LINENO" 5; }
-else
-	TITANIA_GZSTREAM_CFLAGS=$pkg_cv_TITANIA_GZSTREAM_CFLAGS
-	TITANIA_GZSTREAM_LIBS=$pkg_cv_TITANIA_GZSTREAM_LIBS
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-
-fi
-
-
-pkg_failed=no
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for TITANIA_STANDARD" >&5
 $as_echo_n "checking for TITANIA_STANDARD... " >&6; }
 
@@ -18370,18 +18270,21 @@ if test -n "$TITANIA_STANDARD_CFLAGS"; then
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"giomm-2.4
 glibmm-2.4
 gl
-glu\""; } >&5
+glu
+zlib\""; } >&5
   ($PKG_CONFIG --exists --print-errors "giomm-2.4
 glibmm-2.4
 gl
-glu") 2>&5
+glu
+zlib") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
   pkg_cv_TITANIA_STANDARD_CFLAGS=`$PKG_CONFIG --cflags "giomm-2.4
 glibmm-2.4
 gl
-glu" 2>/dev/null`
+glu
+zlib" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -18396,18 +18299,21 @@ if test -n "$TITANIA_STANDARD_LIBS"; then
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"giomm-2.4
 glibmm-2.4
 gl
-glu\""; } >&5
+glu
+zlib\""; } >&5
   ($PKG_CONFIG --exists --print-errors "giomm-2.4
 glibmm-2.4
 gl
-glu") 2>&5
+glu
+zlib") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
   pkg_cv_TITANIA_STANDARD_LIBS=`$PKG_CONFIG --libs "giomm-2.4
 glibmm-2.4
 gl
-glu" 2>/dev/null`
+glu
+zlib" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
   pkg_failed=yes
@@ -18431,12 +18337,14 @@ fi
 	        TITANIA_STANDARD_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "giomm-2.4
 glibmm-2.4
 gl
-glu" 2>&1`
+glu
+zlib" 2>&1`
         else
 	        TITANIA_STANDARD_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "giomm-2.4
 glibmm-2.4
 gl
-glu" 2>&1`
+glu
+zlib" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$TITANIA_STANDARD_PKG_ERRORS" >&5
@@ -18444,7 +18352,8 @@ glu" 2>&1`
 	as_fn_error $? "Package requirements (giomm-2.4
 glibmm-2.4
 gl
-glu) were not met:
+glu
+zlib) were not met:
 
 $TITANIA_STANDARD_PKG_ERRORS
 
@@ -18478,7 +18387,7 @@ $as_echo "yes" >&6; }
 fi
 
 
-ac_config_files="$ac_config_files libtitania-standard/Makefile libtitania-sqlite/Makefile libtitania-stream/Makefile libtitania-gzstream/Makefile libtitania-opengl-surface/Makefile libtitania-peaseblossom/Makefile libtitania-ftgl/Makefile libtitania-x3d/Makefile Titania/Makefile experimental/Makefile po/Makefile.in Makefile"
+ac_config_files="$ac_config_files libtitania-standard/Makefile libtitania-sqlite/Makefile libtitania-stream/Makefile libtitania-opengl-surface/Makefile libtitania-peaseblossom/Makefile libtitania-ftgl/Makefile libtitania-x3d/Makefile Titania/Makefile experimental/Makefile po/Makefile.in Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -19610,7 +19519,6 @@ do
     "libtitania-standard/Makefile") CONFIG_FILES="$CONFIG_FILES libtitania-standard/Makefile" ;;
     "libtitania-sqlite/Makefile") CONFIG_FILES="$CONFIG_FILES libtitania-sqlite/Makefile" ;;
     "libtitania-stream/Makefile") CONFIG_FILES="$CONFIG_FILES libtitania-stream/Makefile" ;;
-    "libtitania-gzstream/Makefile") CONFIG_FILES="$CONFIG_FILES libtitania-gzstream/Makefile" ;;
     "libtitania-opengl-surface/Makefile") CONFIG_FILES="$CONFIG_FILES libtitania-opengl-surface/Makefile" ;;
     "libtitania-peaseblossom/Makefile") CONFIG_FILES="$CONFIG_FILES libtitania-peaseblossom/Makefile" ;;
     "libtitania-ftgl/Makefile") CONFIG_FILES="$CONFIG_FILES libtitania-ftgl/Makefile" ;;

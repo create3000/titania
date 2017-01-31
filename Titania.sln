@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{2857B73E-F847-4B02-9238-064979017E93}") = "libtitania-gzstream", "libtitania-gzstream\libtitania-gzstream.cproj", "{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}"
-EndProject
 Project("{2857B73E-F847-4B02-9238-064979017E93}") = "Titania", "Titania\Titania.cproj", "{B8162BFF-FE10-4AE2-83EF-35F6DA9300B1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "miscellaneous", "miscellaneous", "{0A83A471-2425-4FE8-B816-A75033B4D27C}"
@@ -142,14 +140,6 @@ Global
 		{A40FEE98-4147-4F4C-A682-FB0027303173}.Parallel|Any CPU.Build.0 = Debug|Any CPU
 		{A40FEE98-4147-4F4C-A682-FB0027303173}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A40FEE98-4147-4F4C-A682-FB0027303173}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Default|Any CPU.ActiveCfg = Debug|Any CPU
-		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Default|Any CPU.Build.0 = Debug|Any CPU
-		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Parallel|Any CPU.ActiveCfg = Parallel|Any CPU
-		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Parallel|Any CPU.Build.0 = Parallel|Any CPU
-		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A85C33CB-A43E-4501-BBCC-029E5BEFB98C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Debug|Any CPU.ActiveCfg = Default|Any CPU
 		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Debug|Any CPU.Build.0 = Default|Any CPU
 		{ADFD852E-EC3F-463B-B5F9-30812AB9890B}.Default|Any CPU.ActiveCfg = Default|Any CPU

@@ -17,7 +17,6 @@
         <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="True" />
         <Package file="/home/holger/Projekte/Titania/libtitania-stream/libtitania-stream.md.pc" name="libtitania-stream" IsProject="True" />
         <Package file="/home/holger/Projekte/Titania/libtitania-sqlite/libtitania-sqlite.md.pc" name="libtitania-sqlite" IsProject="True" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.md.pc" name="libtitania-gzstream" IsProject="True" />
       </Packages>
     </Packages>
   </PropertyGroup>

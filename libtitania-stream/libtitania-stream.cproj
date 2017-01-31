@@ -50,10 +50,17 @@
     <None Include="Makefile.in" />
     <None Include="libtitania-stream.cproj" />
     <None Include="libtitania-stream.pidb" />
+    <None Include="Titania\Stream\GZStream.h" />
+    <None Include="Titania\Stream\GZStream\COPYING.LIB" />
+    <None Include="Titania\Stream\GZStream\index.html" />
+    <None Include="Titania\Stream\GZStream\logo.gif" />
+    <None Include="Titania\Stream\GZStream\README" />
+    <None Include="Titania\Stream\GZStream\version" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
     <Folder Include="Titania\Stream\" />
+    <Folder Include="Titania\Stream\GZStream\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Stream\InputFileStream.cpp" />
@@ -61,6 +68,7 @@
     <Compile Include="Titania\Stream\UrlStreamBuf.cpp" />
     <Compile Include="Titania\Stream\GZFilterBuf.cpp" />
     <Compile Include="Titania\Stream\Base64.cpp" />
+    <Compile Include="Titania\Stream\GZStream.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

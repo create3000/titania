@@ -65,7 +65,7 @@
 
 #include <Titania/OS/cwd.h>
 #include <Titania/String.h>
-#include <Titania/gzstream.h>
+#include <Titania/Stream/GZStream.h>
 #include <fstream>
 
 // DEBUG rooted objects
@@ -603,7 +603,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 		}
 
-		ogzstream file (worldURL .path ());
+		basic::ogzstream file (worldURL .path ());
 
 		if (file)
 		{
@@ -677,7 +677,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 
 		if (suffix == ".x3dvz" or suffix == ".wrz")
 		{
-			ogzstream file (worldURL .path ());
+			basic::ogzstream file (worldURL .path ());
 
 			if (file)
 			{

@@ -592,7 +592,6 @@ libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
 	$(TITANIA_STANDARD_LIBS) \
 	$(TITANIA_STREAM_LIBS) \
 	$(top_builddir)/libtitania-ftgl/libtitania-ftgl.la \
-	$(top_builddir)/libtitania-gzstream/libtitania-gzstream.la \
 	$(top_builddir)/libtitania-opengl-surface/libtitania-opengl-surface.la \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la \
 	$(top_builddir)/libtitania-stream/libtitania-stream.la \
@@ -604,7 +603,6 @@ AM_CPPFLAGS = $(TITANIA_X3D_CFLAGS) \
 	$(TITANIA_STANDARD_CFLAGS) \
 	$(TITANIA_STREAM_CFLAGS) \
 	-I$(top_builddir)/libtitania-ftgl \
-	-I$(top_builddir)/libtitania-gzstream \
 	-I$(top_builddir)/libtitania-opengl-surface \
 	-I$(top_builddir)/libtitania-standard \
 	-I$(top_builddir)/libtitania-stream \

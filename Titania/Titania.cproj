@@ -21,7 +21,6 @@
         <Package file="/home/holger/Projekte/Titania/libtitania-standard/libtitania-standard.md.pc" name="libtitania-standard" IsProject="True" />
         <Package file="/home/holger/Projekte/Titania/libtitania-opengl-surface/libtitania-opengl-surface.md.pc" name="libtitania-opengl-surface" IsProject="True" />
         <Package file="/home/holger/Projekte/Titania/libtitania-sqlite/libtitania-sqlite.md.pc" name="libtitania-sqlite" IsProject="True" />
-        <Package file="/home/holger/Projekte/Titania/libtitania-gzstream/libtitania-gzstream.md.pc" name="libtitania-gzstream" IsProject="True" />
         <Package file="/home/holger/Projekte/Titania/libtitania-x3d/libtitania-x3d.md.pc" name="libtitania-x3d" IsProject="True" />
       </Packages>
     </Packages>

@@ -26,11 +26,13 @@
 // Standard C++ Library".
 // ============================================================================
 
-#include "gzstream.h"
+#include "GZStream.h"
+
 #include <cstring>  // for memcpy
 #include <iostream>
 
 namespace titania {
+namespace basic {
 
 // ----------------------------------------------------------------------------
 // Internal classes to implement gzstream. See header file for user classes.
@@ -197,4 +199,5 @@ gzstreambase::close ()
 
 }
 
+} // basic
 } // titania

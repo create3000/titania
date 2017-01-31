@@ -143,21 +143,18 @@ gtkmm-3.0
 glew
 gl)
 
-PKG_CHECK_MODULES(TITANIA_GZSTREAM,
-zlib)
-
 PKG_CHECK_MODULES(TITANIA_STANDARD,
 giomm-2.4
 glibmm-2.4
 gl
-glu)
+glu
+zlib)
 
 
 AC_OUTPUT([
 libtitania-standard/Makefile
 libtitania-sqlite/Makefile
 libtitania-stream/Makefile
-libtitania-gzstream/Makefile
 libtitania-opengl-surface/Makefile
 libtitania-peaseblossom/Makefile
 libtitania-ftgl/Makefile

@@ -5,7 +5,6 @@ SUBDIRS =  \
 	libtitania-standard \
 	libtitania-sqlite \
 	libtitania-stream \
-	libtitania-gzstream \
 	libtitania-opengl-surface \
 	libtitania-peaseblossom \
 	libtitania-ftgl \

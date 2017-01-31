@@ -132,7 +132,7 @@ libtitania_stream_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(top_builddir)/libtitania-standard/libtitania-standard.la
 am__dirstamp = $(am__leading_dot)dirstamp
 am_libtitania_stream_la_OBJECTS = Titania/Stream/Base64.lo \
-	Titania/Stream/GZFilterBuf.lo \
+	Titania/Stream/GZFilterBuf.lo Titania/Stream/GZStream.lo \
 	Titania/Stream/InputFileStream.lo \
 	Titania/Stream/InputUrlStream.lo \
 	Titania/Stream/UrlStreamBuf.lo
@@ -304,8 +304,6 @@ STRIP = @STRIP@
 TITANIA_CFLAGS = @TITANIA_CFLAGS@
 TITANIA_FTGL_CFLAGS = @TITANIA_FTGL_CFLAGS@
 TITANIA_FTGL_LIBS = @TITANIA_FTGL_LIBS@
-TITANIA_GZSTREAM_CFLAGS = @TITANIA_GZSTREAM_CFLAGS@
-TITANIA_GZSTREAM_LIBS = @TITANIA_GZSTREAM_LIBS@
 TITANIA_LIBS = @TITANIA_LIBS@
 TITANIA_OPENGL_SURFACE_CFLAGS = @TITANIA_OPENGL_SURFACE_CFLAGS@
 TITANIA_OPENGL_SURFACE_LIBS = @TITANIA_OPENGL_SURFACE_LIBS@
@@ -382,6 +380,7 @@ lib_LTLIBRARIES = \
 libtitania_stream_la_SOURCES = \
 	Titania/Stream/Base64.cpp \
 	Titania/Stream/GZFilterBuf.cpp \
+	Titania/Stream/GZStream.cpp \
 	Titania/Stream/InputFileStream.cpp \
 	Titania/Stream/InputUrlStream.cpp \
 	Titania/Stream/UrlStreamBuf.cpp
@@ -470,6 +469,8 @@ Titania/Stream/Base64.lo: Titania/Stream/$(am__dirstamp) \
 	Titania/Stream/$(DEPDIR)/$(am__dirstamp)
 Titania/Stream/GZFilterBuf.lo: Titania/Stream/$(am__dirstamp) \
 	Titania/Stream/$(DEPDIR)/$(am__dirstamp)
+Titania/Stream/GZStream.lo: Titania/Stream/$(am__dirstamp) \
+	Titania/Stream/$(DEPDIR)/$(am__dirstamp)
 Titania/Stream/InputFileStream.lo: Titania/Stream/$(am__dirstamp) \
 	Titania/Stream/$(DEPDIR)/$(am__dirstamp)
 Titania/Stream/InputUrlStream.lo: Titania/Stream/$(am__dirstamp) \
@@ -490,6 +491,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/Base64.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/GZFilterBuf.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/GZStream.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/InputFileStream.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/InputUrlStream.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Stream/$(DEPDIR)/UrlStreamBuf.Plo@am__quote@

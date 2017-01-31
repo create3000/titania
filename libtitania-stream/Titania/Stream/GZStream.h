@@ -35,6 +35,7 @@
 #include <zlib.h>
 
 namespace titania {
+namespace basic {
 
 // ----------------------------------------------------------------------------
 // Internal classes to implement gzstream. See below for user classes.
@@ -168,6 +169,7 @@ public:
 
 };
 
+} // basic
 } // titania
 
 #endif
