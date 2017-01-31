@@ -126,9 +126,10 @@ NodeIndex::initialize ()
 
 	// Initialize SearchEntryCompletion:
 
-	for (const auto & node : getCurrentBrowser () -> getSupportedNodes ())
+	for (const auto & pair : getCurrentBrowser () -> getSupportedNodes ())
 	{
-		const auto row = getSearchListStore () -> append ();
+		const auto node = pair .second;
+		const auto row  = getSearchListStore () -> append ();
 
 		row -> set_value (Search::TYPE_NAME, node -> getTypeName ());
 
@@ -231,7 +232,7 @@ NodeIndex::setShowWidget (const bool value)
 	{
 		getHeaderBox () .set_visible (true);
 		getFooterBox () .set_visible (true);
-		getScrolledWindow () .set_size_request (0, 0); // ???
+		getScrolledWindow () .set_size_request (-1, 240);
 	}
 }
 

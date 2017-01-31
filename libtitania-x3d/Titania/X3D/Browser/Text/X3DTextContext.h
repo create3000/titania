@@ -72,8 +72,7 @@ public:
 	{ return fontStyleOptions; }
 
 	const X3DPtr <X3DFontStyleNode> &
-	getDefaultFontStyle () const
-	{ return defaultFontStyle; }
+	getDefaultFontStyle () const;
 
 	///  @name Destruction
 

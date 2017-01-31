@@ -105,11 +105,12 @@ private:
 
 		std::cout .imbue (std::locale::classic ());
 
-		for (const auto & node : X3D::getBrowser () -> getSupportedNodes ())
+		for (const auto & pair : X3D::getBrowser () -> getSupportedNodes ())
 		{
-			std::cout << '[' << node -> getTypeName () << ']' << std::endl;
-
+			const auto & node             = pair .second;
 			const auto & fieldDefinitions = node -> getFieldDefinitions ();
+
+			std::cout << '[' << node -> getTypeName () << ']' << std::endl;
 
 			for (const auto & field : fieldDefinitions)
 			{

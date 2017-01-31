@@ -51,8 +51,10 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_H__
 #define __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_H__
 
-#include "../Basic/BaseNodeArray.h"
 #include "../Base/Error.h"
+#include "../Configuration/BaseNodeArray.h"
+
+#include <functional>
 
 namespace titania {
 namespace X3D {
@@ -61,17 +63,27 @@ class SupportedNodes
 {
 public:
 
+	///  @name Member types
+
+	using Function = std::function <X3DBaseNode* (X3DExecutionContext* const)>;
+
+	///  @name Construction
+
 	SupportedNodes (X3DExecutionContext* const);
 
+	///  @name Operations
+
 	void
-	add (const std::string &, X3DBaseNode* const);
+	add (const std::string & typeName, const Function & function);
 
 	const X3DBaseNode*
-	get (const std::string &) const
+	get (const std::string & typeName) const
 	throw (Error <INVALID_NAME>);
 
 	const BaseNodeArray &
 	get () const;
+
+	///  @name Destructions
 
 	void
 	dispose ();
@@ -82,7 +94,11 @@ public:
 
 private:
 
-	BaseNodeArray nodes;
+	///  @name Members
+
+	X3DExecutionContext* const       executionContext;
+	std::map <std::string, Function> functions;
+	BaseNodeArray                    nodes;
 
 };
 

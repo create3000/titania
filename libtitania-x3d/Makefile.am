@@ -17,7 +17,6 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Base/X3DOutput.cpp \
 	Titania/X3D/Base/X3DParentObject.cpp \
 	Titania/X3D/Base/X3DReferenceObject.cpp \
-	Titania/X3D/Basic/BaseNodeArray.cpp \
 	Titania/X3D/Basic/FieldDefinitionArray.cpp \
 	Titania/X3D/Basic/FieldDefinitionSet.cpp \
 	Titania/X3D/Basic/FieldSet.cpp \
@@ -396,6 +395,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Texturing3D/X3DTexture3DNode.cpp \
 	Titania/X3D/Components/Time/TimeSensor.cpp \
 	Titania/X3D/Components/Time/X3DTimeDependentNode.cpp \
+	Titania/X3D/Configuration/BaseNodeArray.cpp \
 	Titania/X3D/Configuration/ComponentInfo.cpp \
 	Titania/X3D/Configuration/ComponentInfoArray.cpp \
 	Titania/X3D/Configuration/ProfileInfo.cpp \

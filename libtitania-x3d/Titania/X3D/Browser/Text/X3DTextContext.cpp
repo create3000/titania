@@ -68,7 +68,17 @@ void
 X3DTextContext::initialize ()
 {
 	fontStyleOptions -> setup ();
-	defaultFontStyle -> setup ();
+}
+
+const X3DPtr <X3DFontStyleNode> &
+X3DTextContext::getDefaultFontStyle () const
+{
+	// Defer setup in case of lot of fonts.
+
+	if (not defaultFontStyle -> isInitialized ())
+		defaultFontStyle -> setup ();
+
+	return defaultFontStyle;
 }
 
 X3DTextContext::~X3DTextContext ()

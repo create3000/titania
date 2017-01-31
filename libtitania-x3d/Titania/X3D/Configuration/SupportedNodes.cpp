@@ -55,284 +55,305 @@
 namespace titania {
 namespace X3D {
 
-SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext)
+SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
+	executionContext (executionContext),
+	       functions (),
+	           nodes ()
 {
 	//std::clog << "Creating node index:" << std::endl;
 	
 	// Specification version 3.2
 	
-	add ("MetadataBool", new MetadataBoolean (executionContext));
+	add ("MetadataBool",                 [ ] (X3DExecutionContext* const executionContext) { return new MetadataBoolean              (executionContext); });
 
 	// Specification version 3.3
 	
-	add ("Anchor",                       new Anchor                       (executionContext));
-	add ("Appearance",                   new Appearance                   (executionContext));
-	add ("Arc2D",                        new Arc2D                        (executionContext));
-	add ("ArcClose2D",                   new ArcClose2D                   (executionContext));
-	add ("AudioClip",                    new AudioClip                    (executionContext));
-	add ("Background",                   new Background                   (executionContext));
-	add ("BallJoint",                    new BallJoint                    (executionContext));
-	add ("Billboard",                    new Billboard                    (executionContext));
-	add ("BooleanFilter",                new BooleanFilter                (executionContext));
-	add ("BooleanSequencer",             new BooleanSequencer             (executionContext));
-	add ("BooleanToggle",                new BooleanToggle                (executionContext));
-	add ("BooleanTrigger",               new BooleanTrigger               (executionContext));
-	add ("BoundedPhysicsModel",          new BoundedPhysicsModel          (executionContext));
-	add ("Box",                          new Box                          (executionContext));
-	add ("CADAssembly",                  new CADAssembly                  (executionContext));
-	add ("CADFace",                      new CADFace                      (executionContext));
-	add ("CADLayer",                     new CADLayer                     (executionContext));
-	add ("CADPart",                      new CADPart                      (executionContext));
-	add ("Circle2D",                     new Circle2D                     (executionContext));
-	add ("ClipPlane",                    new ClipPlane                    (executionContext));
-	add ("CollidableOffset",             new CollidableOffset             (executionContext));
-	add ("CollidableShape",              new CollidableShape              (executionContext));
-	add ("Collision",                    new Collision                    (executionContext));
-	add ("CollisionCollection",          new CollisionCollection          (executionContext));
-	add ("CollisionSensor",              new CollisionSensor              (executionContext));
-	add ("CollisionSpace",               new CollisionSpace               (executionContext));
-	add ("Color",                        new Color                        (executionContext));
-	add ("ColorChaser",                  new ColorChaser                  (executionContext));
-	add ("ColorDamper",                  new ColorDamper                  (executionContext));
-	add ("ColorInterpolator",            new ColorInterpolator            (executionContext));
-	add ("ColorRGBA",                    new ColorRGBA                    (executionContext));
-	add ("ComposedCubeMapTexture",       new ComposedCubeMapTexture       (executionContext));
-	add ("ComposedShader",               new ComposedShader               (executionContext));
-	add ("ComposedTexture3D",            new ComposedTexture3D            (executionContext));
-	add ("Cone",                         new Cone                         (executionContext));
-	add ("ConeEmitter",                  new ConeEmitter                  (executionContext));
-	add ("Contact",                      new Contact                      (executionContext));
-	add ("Contour2D",                    new Contour2D                    (executionContext));
-	add ("ContourPolyline2D",            new ContourPolyline2D            (executionContext));
-	add ("Coordinate",                   new Coordinate                   (executionContext));
-	add ("CoordinateChaser",             new CoordinateChaser             (executionContext));
-	add ("CoordinateDamper",             new CoordinateDamper             (executionContext));
-	add ("CoordinateDouble",             new CoordinateDouble             (executionContext));
-	add ("CoordinateInterpolator",       new CoordinateInterpolator       (executionContext));
-	add ("CoordinateInterpolator2D",     new CoordinateInterpolator2D     (executionContext));
-	add ("Cylinder",                     new Cylinder                     (executionContext));
-	add ("CylinderSensor",               new CylinderSensor               (executionContext));
-	add ("DISEntityManager",             new DISEntityManager             (executionContext));
-	add ("DISEntityTypeMapping",         new DISEntityTypeMapping         (executionContext));
-	add ("DirectionalLight",             new DirectionalLight             (executionContext));
-	add ("Disk2D",                       new Disk2D                       (executionContext));
-	add ("DoubleAxisHingeJoint",         new DoubleAxisHingeJoint         (executionContext));
-	add ("EaseInEaseOut",                new EaseInEaseOut                (executionContext));
-	add ("ElevationGrid",                new ElevationGrid                (executionContext));
-	add ("EspduTransform",               new EspduTransform               (executionContext));
-	add ("ExplosionEmitter",             new ExplosionEmitter             (executionContext));
-	add ("Extrusion",                    new Extrusion                    (executionContext));
-	add ("FillProperties",               new FillProperties               (executionContext));
-	add ("FloatVertexAttribute",         new FloatVertexAttribute         (executionContext));
-	add ("Fog",                          new Fog                          (executionContext));
-	add ("FogCoordinate",                new FogCoordinate                (executionContext));
-	add ("FontStyle",                    new FontStyle                    (executionContext));
-	add ("GeneratedCubeMapTexture",      new GeneratedCubeMapTexture      (executionContext));
-	add ("GeoCoordinate",                new GeoCoordinate                (executionContext));
-	add ("GeoElevationGrid",             new GeoElevationGrid             (executionContext));
-	add ("GeoLOD",                       new GeoLOD                       (executionContext));
-	add ("GeoLocation",                  new GeoLocation                  (executionContext));
-	add ("GeoMetadata",                  new GeoMetadata                  (executionContext));
-	add ("GeoOrigin",                    new GeoOrigin                    (executionContext)); // GeoOrigin node is not allowed in X3D scenes having version 3.3 or higher.
-	add ("GeoPositionInterpolator",      new GeoPositionInterpolator      (executionContext));
-	add ("GeoProximitySensor",           new GeoProximitySensor           (executionContext));
-	add ("GeoTouchSensor",               new GeoTouchSensor               (executionContext));
-	add ("GeoTransform",                 new GeoTransform                 (executionContext));
-	add ("GeoViewpoint",                 new GeoViewpoint                 (executionContext));
-	add ("ForcePhysicsModel",            new ForcePhysicsModel            (executionContext));
-	add ("Group",                        new Group                        (executionContext));
-	add ("HAnimDisplacer",               new HAnimDisplacer               (executionContext));
-	add ("HAnimHumanoid",                new HAnimHumanoid                (executionContext));
-	add ("HAnimJoint",                   new HAnimJoint                   (executionContext));
-	add ("HAnimSegment",                 new HAnimSegment                 (executionContext));
-	add ("HAnimSite",                    new HAnimSite                    (executionContext));
-	add ("ImageCubeMapTexture",          new ImageCubeMapTexture          (executionContext));
-	add ("ImageTexture",                 new ImageTexture                 (executionContext));
-	add ("ImageTexture3D",               new ImageTexture3D               (executionContext));
-	add ("IndexedFaceSet",               new IndexedFaceSet               (executionContext));
-	add ("IndexedLineSet",               new IndexedLineSet               (executionContext));
-	add ("IndexedQuadSet",               new IndexedQuadSet               (executionContext));
-	add ("IndexedTriangleFanSet",        new IndexedTriangleFanSet        (executionContext));
-	add ("IndexedTriangleSet",           new IndexedTriangleSet           (executionContext));
-	add ("IndexedTriangleStripSet",      new IndexedTriangleStripSet      (executionContext));
-	add ("Inline",                       new Inline                       (executionContext));
-	add ("IntegerSequencer",             new IntegerSequencer             (executionContext));
-	add ("IntegerTrigger",               new IntegerTrigger               (executionContext));
-	add ("KeySensor",                    new KeySensor                    (executionContext));
-	add ("LOD",                          new LOD                          (executionContext));
-	add ("Layer",                        new Layer                        (executionContext));
-	add ("LayerSet",                     new LayerSet                     (executionContext));
-	add ("Layout",                       new Layout                       (executionContext));
-	add ("LayoutGroup",                  new LayoutGroup                  (executionContext));
-	add ("LayoutLayer",                  new LayoutLayer                  (executionContext));
-	add ("LinePickSensor",               new LinePickSensor               (executionContext));
-	add ("LineProperties",               new LineProperties               (executionContext));
-	add ("LineSet",                      new LineSet                      (executionContext));
-	add ("LoadSensor",                   new LoadSensor                   (executionContext));
-	add ("LocalFog",                     new LocalFog                     (executionContext));
-	add ("Material",                     new Material                     (executionContext));
-	add ("Matrix3VertexAttribute",       new Matrix3VertexAttribute       (executionContext));
-	add ("Matrix4VertexAttribute",       new Matrix4VertexAttribute       (executionContext));
-	add ("MetadataBoolean",              new MetadataBoolean              (executionContext));
-	add ("MetadataDouble",               new MetadataDouble               (executionContext));
-	add ("MetadataFloat",                new MetadataFloat                (executionContext));
-	add ("MetadataInteger",              new MetadataInteger              (executionContext));
-	add ("MetadataSet",                  new MetadataSet                  (executionContext));
-	add ("MetadataString",               new MetadataString               (executionContext));
-	add ("MotorJoint",                   new MotorJoint                   (executionContext));
-	add ("MovieTexture",                 new MovieTexture                 (executionContext));
-	add ("MultiTexture",                 new MultiTexture                 (executionContext));
-	add ("MultiTextureCoordinate",       new MultiTextureCoordinate       (executionContext));
-	add ("MultiTextureTransform",        new MultiTextureTransform        (executionContext));
-	add ("NavigationInfo",               new NavigationInfo               (executionContext));
-	add ("Normal",                       new Normal                       (executionContext));
-	add ("NormalInterpolator",           new NormalInterpolator           (executionContext));
-	add ("NurbsCurve",                   new NurbsCurve                   (executionContext));
-	add ("NurbsCurve2D",                 new NurbsCurve2D                 (executionContext));
-	add ("NurbsOrientationInterpolator", new NurbsOrientationInterpolator (executionContext));
-	add ("NurbsPatchSurface",            new NurbsPatchSurface            (executionContext));
-	add ("NurbsPositionInterpolator",    new NurbsPositionInterpolator    (executionContext));
-	add ("NurbsSet",                     new NurbsSet                     (executionContext));
-	add ("NurbsSurfaceInterpolator",     new NurbsSurfaceInterpolator     (executionContext));
-	add ("NurbsSweptSurface",            new NurbsSweptSurface            (executionContext));
-	add ("NurbsSwungSurface",            new NurbsSwungSurface            (executionContext));
-	add ("NurbsTextureCoordinate",       new NurbsTextureCoordinate       (executionContext));
-	add ("NurbsTrimmedSurface",          new NurbsTrimmedSurface          (executionContext));
-	add ("OrientationChaser",            new OrientationChaser            (executionContext));
-	add ("OrientationDamper",            new OrientationDamper            (executionContext));
-	add ("OrientationInterpolator",      new OrientationInterpolator      (executionContext));
-	add ("OrthoViewpoint",               new OrthoViewpoint               (executionContext));
-	add ("PackagedShader",               new PackagedShader               (executionContext));
-	add ("ParticleSystem",               new ParticleSystem               (executionContext));
-	add ("PickableGroup",                new PickableGroup                (executionContext));
-	add ("PixelTexture",                 new PixelTexture                 (executionContext));
-	add ("PixelTexture3D",               new PixelTexture3D               (executionContext));
-	add ("PlaneSensor",                  new PlaneSensor                  (executionContext));
-	add ("PointEmitter",                 new PointEmitter                 (executionContext));
-	add ("PointLight",                   new PointLight                   (executionContext));
-	add ("PointPickSensor",              new PointPickSensor              (executionContext));
-	add ("PointSet",                     new PointSet                     (executionContext));
-	add ("Polyline2D",                   new Polyline2D                   (executionContext));
-	add ("PolylineEmitter",              new PolylineEmitter              (executionContext));
-	add ("Polypoint2D",                  new Polypoint2D                  (executionContext));
-	add ("PositionChaser",               new PositionChaser               (executionContext));
-	add ("PositionChaser2D",             new PositionChaser2D             (executionContext));
-	add ("PositionDamper",               new PositionDamper               (executionContext));
-	add ("PositionDamper2D",             new PositionDamper2D             (executionContext));
-	add ("PositionInterpolator",         new PositionInterpolator         (executionContext));
-	add ("PositionInterpolator2D",       new PositionInterpolator2D       (executionContext));
-	add ("PrimitivePickSensor",          new PrimitivePickSensor          (executionContext));
-	add ("ProgramShader",                new ProgramShader                (executionContext));
-	add ("ProximitySensor",              new ProximitySensor              (executionContext));
-	add ("QuadSet",                      new QuadSet                      (executionContext));
-	add ("ReceiverPdu",                  new ReceiverPdu                  (executionContext));
-	add ("Rectangle2D",                  new Rectangle2D                  (executionContext));
-	add ("RigidBody",                    new RigidBody                    (executionContext));
-	add ("RigidBodyCollection",          new RigidBodyCollection          (executionContext));
-	add ("ScalarChaser",                 new ScalarChaser                 (executionContext));
-	add ("ScalarDamper",                 new ScalarDamper                 (executionContext));
-	add ("ScalarInterpolator",           new ScalarInterpolator           (executionContext));
-	add ("ScreenFontStyle",              new ScreenFontStyle              (executionContext));
-	add ("ScreenGroup",                  new ScreenGroup                  (executionContext));
-	add ("Script",                       new Script                       (executionContext));
-	add ("ShaderPart",                   new ShaderPart                   (executionContext));
-	add ("ShaderProgram",                new ShaderProgram                (executionContext));
-	add ("Shape",                        new Shape                        (executionContext));
-	add ("SignalPdu",                    new SignalPdu                    (executionContext));
-	add ("SingleAxisHingeJoint",         new SingleAxisHingeJoint         (executionContext));
-	add ("SliderJoint",                  new SliderJoint                  (executionContext));
-	add ("Sound",                        new Sound                        (executionContext));
-	add ("Sphere",                       new Sphere                       (executionContext));
-	add ("SphereSensor",                 new SphereSensor                 (executionContext));
-	add ("SplinePositionInterpolator",   new SplinePositionInterpolator   (executionContext));
-	add ("SplinePositionInterpolator2D", new SplinePositionInterpolator2D (executionContext));
-	add ("SplineScalarInterpolator",     new SplineScalarInterpolator     (executionContext));
-	add ("SpotLight",                    new SpotLight                    (executionContext));
-	add ("SquadOrientationInterpolator", new SquadOrientationInterpolator (executionContext));
-	add ("StaticGroup",                  new StaticGroup                  (executionContext));
-	add ("StringSensor",                 new StringSensor                 (executionContext));
-	add ("SurfaceEmitter",               new SurfaceEmitter               (executionContext));
-	add ("Switch",                       new Switch                       (executionContext));
-	add ("TexCoordChaser2D",             new TexCoordChaser2D             (executionContext));
-	add ("TexCoordDamper2D",             new TexCoordDamper2D             (executionContext));
-	add ("Text",                         new Text                         (executionContext));
-	add ("TextureBackground",            new TextureBackground            (executionContext));
-	add ("TextureCoordinate",            new TextureCoordinate            (executionContext));
-	add ("TextureCoordinate3D",          new TextureCoordinate3D          (executionContext));
-	add ("TextureCoordinate4D",          new TextureCoordinate4D          (executionContext));
-	add ("TextureCoordinateGenerator",   new TextureCoordinateGenerator   (executionContext));
-	add ("TextureProperties",            new TextureProperties            (executionContext));
-	add ("TextureTransform",             new TextureTransform             (executionContext));
-	add ("TextureTransform3D",           new TextureTransform3D           (executionContext));
-	add ("TextureTransformMatrix3D",     new TextureTransformMatrix3D     (executionContext));
-	add ("TimeSensor",                   new TimeSensor                   (executionContext));
-	add ("TimeTrigger",                  new TimeTrigger                  (executionContext));
-	add ("TouchSensor",                  new TouchSensor                  (executionContext));
-	add ("Transform",                    new Transform                    (executionContext));
-	add ("TransformSensor",              new TransformSensor              (executionContext));
-	add ("TransmitterPdu",               new TransmitterPdu               (executionContext));
-	add ("TriangleFanSet",               new TriangleFanSet               (executionContext));
-	add ("TriangleSet",                  new TriangleSet                  (executionContext));
-	add ("TriangleSet2D",                new TriangleSet2D                (executionContext));
-	add ("TriangleStripSet",             new TriangleStripSet             (executionContext));
-	add ("TwoSidedMaterial",             new TwoSidedMaterial             (executionContext));
-	add ("UniversalJoint",               new UniversalJoint               (executionContext));
-	add ("Viewpoint",                    new Viewpoint                    (executionContext));
-	add ("ViewpointGroup",               new ViewpointGroup               (executionContext));
-	add ("Viewport",                     new Viewport                     (executionContext));
-	add ("VisibilitySensor",             new VisibilitySensor             (executionContext));
-	add ("VolumeEmitter",                new VolumeEmitter                (executionContext));
-	add ("VolumePickSensor",             new VolumePickSensor             (executionContext));
-	add ("WindPhysicsModel",             new WindPhysicsModel             (executionContext));
-	add ("WorldInfo",                    new WorldInfo                    (executionContext));
+	add ("Anchor",                       [ ] (X3DExecutionContext* const executionContext) { return new Anchor                       (executionContext); });
+	add ("Appearance",                   [ ] (X3DExecutionContext* const executionContext) { return new Appearance                   (executionContext); });
+	add ("Arc2D",                        [ ] (X3DExecutionContext* const executionContext) { return new Arc2D                        (executionContext); });
+	add ("ArcClose2D",                   [ ] (X3DExecutionContext* const executionContext) { return new ArcClose2D                   (executionContext); });
+	add ("AudioClip",                    [ ] (X3DExecutionContext* const executionContext) { return new AudioClip                    (executionContext); });
+	add ("Background",                   [ ] (X3DExecutionContext* const executionContext) { return new Background                   (executionContext); });
+	add ("BallJoint",                    [ ] (X3DExecutionContext* const executionContext) { return new BallJoint                    (executionContext); });
+	add ("Billboard",                    [ ] (X3DExecutionContext* const executionContext) { return new Billboard                    (executionContext); });
+	add ("BooleanFilter",                [ ] (X3DExecutionContext* const executionContext) { return new BooleanFilter                (executionContext); });
+	add ("BooleanSequencer",             [ ] (X3DExecutionContext* const executionContext) { return new BooleanSequencer             (executionContext); });
+	add ("BooleanToggle",                [ ] (X3DExecutionContext* const executionContext) { return new BooleanToggle                (executionContext); });
+	add ("BooleanTrigger",               [ ] (X3DExecutionContext* const executionContext) { return new BooleanTrigger               (executionContext); });
+	add ("BoundedPhysicsModel",          [ ] (X3DExecutionContext* const executionContext) { return new BoundedPhysicsModel          (executionContext); });
+	add ("Box",                          [ ] (X3DExecutionContext* const executionContext) { return new Box                          (executionContext); });
+	add ("CADAssembly",                  [ ] (X3DExecutionContext* const executionContext) { return new CADAssembly                  (executionContext); });
+	add ("CADFace",                      [ ] (X3DExecutionContext* const executionContext) { return new CADFace                      (executionContext); });
+	add ("CADLayer",                     [ ] (X3DExecutionContext* const executionContext) { return new CADLayer                     (executionContext); });
+	add ("CADPart",                      [ ] (X3DExecutionContext* const executionContext) { return new CADPart                      (executionContext); });
+	add ("Circle2D",                     [ ] (X3DExecutionContext* const executionContext) { return new Circle2D                     (executionContext); });
+	add ("ClipPlane",                    [ ] (X3DExecutionContext* const executionContext) { return new ClipPlane                    (executionContext); });
+	add ("CollidableOffset",             [ ] (X3DExecutionContext* const executionContext) { return new CollidableOffset             (executionContext); });
+	add ("CollidableShape",              [ ] (X3DExecutionContext* const executionContext) { return new CollidableShape              (executionContext); });
+	add ("Collision",                    [ ] (X3DExecutionContext* const executionContext) { return new Collision                    (executionContext); });
+	add ("CollisionCollection",          [ ] (X3DExecutionContext* const executionContext) { return new CollisionCollection          (executionContext); });
+	add ("CollisionSensor",              [ ] (X3DExecutionContext* const executionContext) { return new CollisionSensor              (executionContext); });
+	add ("CollisionSpace",               [ ] (X3DExecutionContext* const executionContext) { return new CollisionSpace               (executionContext); });
+	add ("Color",                        [ ] (X3DExecutionContext* const executionContext) { return new Color                        (executionContext); });
+	add ("ColorChaser",                  [ ] (X3DExecutionContext* const executionContext) { return new ColorChaser                  (executionContext); });
+	add ("ColorDamper",                  [ ] (X3DExecutionContext* const executionContext) { return new ColorDamper                  (executionContext); });
+	add ("ColorInterpolator",            [ ] (X3DExecutionContext* const executionContext) { return new ColorInterpolator            (executionContext); });
+	add ("ColorRGBA",                    [ ] (X3DExecutionContext* const executionContext) { return new ColorRGBA                    (executionContext); });
+	add ("ComposedCubeMapTexture",       [ ] (X3DExecutionContext* const executionContext) { return new ComposedCubeMapTexture       (executionContext); });
+	add ("ComposedShader",               [ ] (X3DExecutionContext* const executionContext) { return new ComposedShader               (executionContext); });
+	add ("ComposedTexture3D",            [ ] (X3DExecutionContext* const executionContext) { return new ComposedTexture3D            (executionContext); });
+	add ("Cone",                         [ ] (X3DExecutionContext* const executionContext) { return new Cone                         (executionContext); });
+	add ("ConeEmitter",                  [ ] (X3DExecutionContext* const executionContext) { return new ConeEmitter                  (executionContext); });
+	add ("Contact",                      [ ] (X3DExecutionContext* const executionContext) { return new Contact                      (executionContext); });
+	add ("Contour2D",                    [ ] (X3DExecutionContext* const executionContext) { return new Contour2D                    (executionContext); });
+	add ("ContourPolyline2D",            [ ] (X3DExecutionContext* const executionContext) { return new ContourPolyline2D            (executionContext); });
+	add ("Coordinate",                   [ ] (X3DExecutionContext* const executionContext) { return new Coordinate                   (executionContext); });
+	add ("CoordinateChaser",             [ ] (X3DExecutionContext* const executionContext) { return new CoordinateChaser             (executionContext); });
+	add ("CoordinateDamper",             [ ] (X3DExecutionContext* const executionContext) { return new CoordinateDamper             (executionContext); });
+	add ("CoordinateDouble",             [ ] (X3DExecutionContext* const executionContext) { return new CoordinateDouble             (executionContext); });
+	add ("CoordinateInterpolator",       [ ] (X3DExecutionContext* const executionContext) { return new CoordinateInterpolator       (executionContext); });
+	add ("CoordinateInterpolator2D",     [ ] (X3DExecutionContext* const executionContext) { return new CoordinateInterpolator2D     (executionContext); });
+	add ("Cylinder",                     [ ] (X3DExecutionContext* const executionContext) { return new Cylinder                     (executionContext); });
+	add ("CylinderSensor",               [ ] (X3DExecutionContext* const executionContext) { return new CylinderSensor               (executionContext); });
+	add ("DISEntityManager",             [ ] (X3DExecutionContext* const executionContext) { return new DISEntityManager             (executionContext); });
+	add ("DISEntityTypeMapping",         [ ] (X3DExecutionContext* const executionContext) { return new DISEntityTypeMapping         (executionContext); });
+	add ("DirectionalLight",             [ ] (X3DExecutionContext* const executionContext) { return new DirectionalLight             (executionContext); });
+	add ("Disk2D",                       [ ] (X3DExecutionContext* const executionContext) { return new Disk2D                       (executionContext); });
+	add ("DoubleAxisHingeJoint",         [ ] (X3DExecutionContext* const executionContext) { return new DoubleAxisHingeJoint         (executionContext); });
+	add ("EaseInEaseOut",                [ ] (X3DExecutionContext* const executionContext) { return new EaseInEaseOut                (executionContext); });
+	add ("ElevationGrid",                [ ] (X3DExecutionContext* const executionContext) { return new ElevationGrid                (executionContext); });
+	add ("EspduTransform",               [ ] (X3DExecutionContext* const executionContext) { return new EspduTransform               (executionContext); });
+	add ("ExplosionEmitter",             [ ] (X3DExecutionContext* const executionContext) { return new ExplosionEmitter             (executionContext); });
+	add ("Extrusion",                    [ ] (X3DExecutionContext* const executionContext) { return new Extrusion                    (executionContext); });
+	add ("FillProperties",               [ ] (X3DExecutionContext* const executionContext) { return new FillProperties               (executionContext); });
+	add ("FloatVertexAttribute",         [ ] (X3DExecutionContext* const executionContext) { return new FloatVertexAttribute         (executionContext); });
+	add ("Fog",                          [ ] (X3DExecutionContext* const executionContext) { return new Fog                          (executionContext); });
+	add ("FogCoordinate",                [ ] (X3DExecutionContext* const executionContext) { return new FogCoordinate                (executionContext); });
+	add ("FontStyle",                    [ ] (X3DExecutionContext* const executionContext) { return new FontStyle                    (executionContext); });
+	add ("GeneratedCubeMapTexture",      [ ] (X3DExecutionContext* const executionContext) { return new GeneratedCubeMapTexture      (executionContext); });
+	add ("GeoCoordinate",                [ ] (X3DExecutionContext* const executionContext) { return new GeoCoordinate                (executionContext); });
+	add ("GeoElevationGrid",             [ ] (X3DExecutionContext* const executionContext) { return new GeoElevationGrid             (executionContext); });
+	add ("GeoLOD",                       [ ] (X3DExecutionContext* const executionContext) { return new GeoLOD                       (executionContext); });
+	add ("GeoLocation",                  [ ] (X3DExecutionContext* const executionContext) { return new GeoLocation                  (executionContext); });
+	add ("GeoMetadata",                  [ ] (X3DExecutionContext* const executionContext) { return new GeoMetadata                  (executionContext); });
+	add ("GeoOrigin",                    [ ] (X3DExecutionContext* const executionContext) { return new GeoOrigin                    (executionContext); }); // GeoOrigin node is not allowed in X3D scenes having version 3.3 or higher.
+	add ("GeoPositionInterpolator",      [ ] (X3DExecutionContext* const executionContext) { return new GeoPositionInterpolator      (executionContext); });
+	add ("GeoProximitySensor",           [ ] (X3DExecutionContext* const executionContext) { return new GeoProximitySensor           (executionContext); });
+	add ("GeoTouchSensor",               [ ] (X3DExecutionContext* const executionContext) { return new GeoTouchSensor               (executionContext); });
+	add ("GeoTransform",                 [ ] (X3DExecutionContext* const executionContext) { return new GeoTransform                 (executionContext); });
+	add ("GeoViewpoint",                 [ ] (X3DExecutionContext* const executionContext) { return new GeoViewpoint                 (executionContext); });
+	add ("ForcePhysicsModel",            [ ] (X3DExecutionContext* const executionContext) { return new ForcePhysicsModel            (executionContext); });
+	add ("Group",                        [ ] (X3DExecutionContext* const executionContext) { return new Group                        (executionContext); });
+	add ("HAnimDisplacer",               [ ] (X3DExecutionContext* const executionContext) { return new HAnimDisplacer               (executionContext); });
+	add ("HAnimHumanoid",                [ ] (X3DExecutionContext* const executionContext) { return new HAnimHumanoid                (executionContext); });
+	add ("HAnimJoint",                   [ ] (X3DExecutionContext* const executionContext) { return new HAnimJoint                   (executionContext); });
+	add ("HAnimSegment",                 [ ] (X3DExecutionContext* const executionContext) { return new HAnimSegment                 (executionContext); });
+	add ("HAnimSite",                    [ ] (X3DExecutionContext* const executionContext) { return new HAnimSite                    (executionContext); });
+	add ("ImageCubeMapTexture",          [ ] (X3DExecutionContext* const executionContext) { return new ImageCubeMapTexture          (executionContext); });
+	add ("ImageTexture",                 [ ] (X3DExecutionContext* const executionContext) { return new ImageTexture                 (executionContext); });
+	add ("ImageTexture3D",               [ ] (X3DExecutionContext* const executionContext) { return new ImageTexture3D               (executionContext); });
+	add ("IndexedFaceSet",               [ ] (X3DExecutionContext* const executionContext) { return new IndexedFaceSet               (executionContext); });
+	add ("IndexedLineSet",               [ ] (X3DExecutionContext* const executionContext) { return new IndexedLineSet               (executionContext); });
+	add ("IndexedQuadSet",               [ ] (X3DExecutionContext* const executionContext) { return new IndexedQuadSet               (executionContext); });
+	add ("IndexedTriangleFanSet",        [ ] (X3DExecutionContext* const executionContext) { return new IndexedTriangleFanSet        (executionContext); });
+	add ("IndexedTriangleSet",           [ ] (X3DExecutionContext* const executionContext) { return new IndexedTriangleSet           (executionContext); });
+	add ("IndexedTriangleStripSet",      [ ] (X3DExecutionContext* const executionContext) { return new IndexedTriangleStripSet      (executionContext); });
+	add ("Inline",                       [ ] (X3DExecutionContext* const executionContext) { return new Inline                       (executionContext); });
+	add ("IntegerSequencer",             [ ] (X3DExecutionContext* const executionContext) { return new IntegerSequencer             (executionContext); });
+	add ("IntegerTrigger",               [ ] (X3DExecutionContext* const executionContext) { return new IntegerTrigger               (executionContext); });
+	add ("KeySensor",                    [ ] (X3DExecutionContext* const executionContext) { return new KeySensor                    (executionContext); });
+	add ("LOD",                          [ ] (X3DExecutionContext* const executionContext) { return new LOD                          (executionContext); });
+	add ("Layer",                        [ ] (X3DExecutionContext* const executionContext) { return new Layer                        (executionContext); });
+	add ("LayerSet",                     [ ] (X3DExecutionContext* const executionContext) { return new LayerSet                     (executionContext); });
+	add ("Layout",                       [ ] (X3DExecutionContext* const executionContext) { return new Layout                       (executionContext); });
+	add ("LayoutGroup",                  [ ] (X3DExecutionContext* const executionContext) { return new LayoutGroup                  (executionContext); });
+	add ("LayoutLayer",                  [ ] (X3DExecutionContext* const executionContext) { return new LayoutLayer                  (executionContext); });
+	add ("LinePickSensor",               [ ] (X3DExecutionContext* const executionContext) { return new LinePickSensor               (executionContext); });
+	add ("LineProperties",               [ ] (X3DExecutionContext* const executionContext) { return new LineProperties               (executionContext); });
+	add ("LineSet",                      [ ] (X3DExecutionContext* const executionContext) { return new LineSet                      (executionContext); });
+	add ("LoadSensor",                   [ ] (X3DExecutionContext* const executionContext) { return new LoadSensor                   (executionContext); });
+	add ("LocalFog",                     [ ] (X3DExecutionContext* const executionContext) { return new LocalFog                     (executionContext); });
+	add ("Material",                     [ ] (X3DExecutionContext* const executionContext) { return new Material                     (executionContext); });
+	add ("Matrix3VertexAttribute",       [ ] (X3DExecutionContext* const executionContext) { return new Matrix3VertexAttribute       (executionContext); });
+	add ("Matrix4VertexAttribute",       [ ] (X3DExecutionContext* const executionContext) { return new Matrix4VertexAttribute       (executionContext); });
+	add ("MetadataBoolean",              [ ] (X3DExecutionContext* const executionContext) { return new MetadataBoolean              (executionContext); });
+	add ("MetadataDouble",               [ ] (X3DExecutionContext* const executionContext) { return new MetadataDouble               (executionContext); });
+	add ("MetadataFloat",                [ ] (X3DExecutionContext* const executionContext) { return new MetadataFloat                (executionContext); });
+	add ("MetadataInteger",              [ ] (X3DExecutionContext* const executionContext) { return new MetadataInteger              (executionContext); });
+	add ("MetadataSet",                  [ ] (X3DExecutionContext* const executionContext) { return new MetadataSet                  (executionContext); });
+	add ("MetadataString",               [ ] (X3DExecutionContext* const executionContext) { return new MetadataString               (executionContext); });
+	add ("MotorJoint",                   [ ] (X3DExecutionContext* const executionContext) { return new MotorJoint                   (executionContext); });
+	add ("MovieTexture",                 [ ] (X3DExecutionContext* const executionContext) { return new MovieTexture                 (executionContext); });
+	add ("MultiTexture",                 [ ] (X3DExecutionContext* const executionContext) { return new MultiTexture                 (executionContext); });
+	add ("MultiTextureCoordinate",       [ ] (X3DExecutionContext* const executionContext) { return new MultiTextureCoordinate       (executionContext); });
+	add ("MultiTextureTransform",        [ ] (X3DExecutionContext* const executionContext) { return new MultiTextureTransform        (executionContext); });
+	add ("NavigationInfo",               [ ] (X3DExecutionContext* const executionContext) { return new NavigationInfo               (executionContext); });
+	add ("Normal",                       [ ] (X3DExecutionContext* const executionContext) { return new Normal                       (executionContext); });
+	add ("NormalInterpolator",           [ ] (X3DExecutionContext* const executionContext) { return new NormalInterpolator           (executionContext); });
+	add ("NurbsCurve",                   [ ] (X3DExecutionContext* const executionContext) { return new NurbsCurve                   (executionContext); });
+	add ("NurbsCurve2D",                 [ ] (X3DExecutionContext* const executionContext) { return new NurbsCurve2D                 (executionContext); });
+	add ("NurbsOrientationInterpolator", [ ] (X3DExecutionContext* const executionContext) { return new NurbsOrientationInterpolator (executionContext); });
+	add ("NurbsPatchSurface",            [ ] (X3DExecutionContext* const executionContext) { return new NurbsPatchSurface            (executionContext); });
+	add ("NurbsPositionInterpolator",    [ ] (X3DExecutionContext* const executionContext) { return new NurbsPositionInterpolator    (executionContext); });
+	add ("NurbsSet",                     [ ] (X3DExecutionContext* const executionContext) { return new NurbsSet                     (executionContext); });
+	add ("NurbsSurfaceInterpolator",     [ ] (X3DExecutionContext* const executionContext) { return new NurbsSurfaceInterpolator     (executionContext); });
+	add ("NurbsSweptSurface",            [ ] (X3DExecutionContext* const executionContext) { return new NurbsSweptSurface            (executionContext); });
+	add ("NurbsSwungSurface",            [ ] (X3DExecutionContext* const executionContext) { return new NurbsSwungSurface            (executionContext); });
+	add ("NurbsTextureCoordinate",       [ ] (X3DExecutionContext* const executionContext) { return new NurbsTextureCoordinate       (executionContext); });
+	add ("NurbsTrimmedSurface",          [ ] (X3DExecutionContext* const executionContext) { return new NurbsTrimmedSurface          (executionContext); });
+	add ("OrientationChaser",            [ ] (X3DExecutionContext* const executionContext) { return new OrientationChaser            (executionContext); });
+	add ("OrientationDamper",            [ ] (X3DExecutionContext* const executionContext) { return new OrientationDamper            (executionContext); });
+	add ("OrientationInterpolator",      [ ] (X3DExecutionContext* const executionContext) { return new OrientationInterpolator      (executionContext); });
+	add ("OrthoViewpoint",               [ ] (X3DExecutionContext* const executionContext) { return new OrthoViewpoint               (executionContext); });
+	add ("PackagedShader",               [ ] (X3DExecutionContext* const executionContext) { return new PackagedShader               (executionContext); });
+	add ("ParticleSystem",               [ ] (X3DExecutionContext* const executionContext) { return new ParticleSystem               (executionContext); });
+	add ("PickableGroup",                [ ] (X3DExecutionContext* const executionContext) { return new PickableGroup                (executionContext); });
+	add ("PixelTexture",                 [ ] (X3DExecutionContext* const executionContext) { return new PixelTexture                 (executionContext); });
+	add ("PixelTexture3D",               [ ] (X3DExecutionContext* const executionContext) { return new PixelTexture3D               (executionContext); });
+	add ("PlaneSensor",                  [ ] (X3DExecutionContext* const executionContext) { return new PlaneSensor                  (executionContext); });
+	add ("PointEmitter",                 [ ] (X3DExecutionContext* const executionContext) { return new PointEmitter                 (executionContext); });
+	add ("PointLight",                   [ ] (X3DExecutionContext* const executionContext) { return new PointLight                   (executionContext); });
+	add ("PointPickSensor",              [ ] (X3DExecutionContext* const executionContext) { return new PointPickSensor              (executionContext); });
+	add ("PointSet",                     [ ] (X3DExecutionContext* const executionContext) { return new PointSet                     (executionContext); });
+	add ("Polyline2D",                   [ ] (X3DExecutionContext* const executionContext) { return new Polyline2D                   (executionContext); });
+	add ("PolylineEmitter",              [ ] (X3DExecutionContext* const executionContext) { return new PolylineEmitter              (executionContext); });
+	add ("Polypoint2D",                  [ ] (X3DExecutionContext* const executionContext) { return new Polypoint2D                  (executionContext); });
+	add ("PositionChaser",               [ ] (X3DExecutionContext* const executionContext) { return new PositionChaser               (executionContext); });
+	add ("PositionChaser2D",             [ ] (X3DExecutionContext* const executionContext) { return new PositionChaser2D             (executionContext); });
+	add ("PositionDamper",               [ ] (X3DExecutionContext* const executionContext) { return new PositionDamper               (executionContext); });
+	add ("PositionDamper2D",             [ ] (X3DExecutionContext* const executionContext) { return new PositionDamper2D             (executionContext); });
+	add ("PositionInterpolator",         [ ] (X3DExecutionContext* const executionContext) { return new PositionInterpolator         (executionContext); });
+	add ("PositionInterpolator2D",       [ ] (X3DExecutionContext* const executionContext) { return new PositionInterpolator2D       (executionContext); });
+	add ("PrimitivePickSensor",          [ ] (X3DExecutionContext* const executionContext) { return new PrimitivePickSensor          (executionContext); });
+	add ("ProgramShader",                [ ] (X3DExecutionContext* const executionContext) { return new ProgramShader                (executionContext); });
+	add ("ProximitySensor",              [ ] (X3DExecutionContext* const executionContext) { return new ProximitySensor              (executionContext); });
+	add ("QuadSet",                      [ ] (X3DExecutionContext* const executionContext) { return new QuadSet                      (executionContext); });
+	add ("ReceiverPdu",                  [ ] (X3DExecutionContext* const executionContext) { return new ReceiverPdu                  (executionContext); });
+	add ("Rectangle2D",                  [ ] (X3DExecutionContext* const executionContext) { return new Rectangle2D                  (executionContext); });
+	add ("RigidBody",                    [ ] (X3DExecutionContext* const executionContext) { return new RigidBody                    (executionContext); });
+	add ("RigidBodyCollection",          [ ] (X3DExecutionContext* const executionContext) { return new RigidBodyCollection          (executionContext); });
+	add ("ScalarChaser",                 [ ] (X3DExecutionContext* const executionContext) { return new ScalarChaser                 (executionContext); });
+	add ("ScalarDamper",                 [ ] (X3DExecutionContext* const executionContext) { return new ScalarDamper                 (executionContext); });
+	add ("ScalarInterpolator",           [ ] (X3DExecutionContext* const executionContext) { return new ScalarInterpolator           (executionContext); });
+	add ("ScreenFontStyle",              [ ] (X3DExecutionContext* const executionContext) { return new ScreenFontStyle              (executionContext); });
+	add ("ScreenGroup",                  [ ] (X3DExecutionContext* const executionContext) { return new ScreenGroup                  (executionContext); });
+	add ("Script",                       [ ] (X3DExecutionContext* const executionContext) { return new Script                       (executionContext); });
+	add ("ShaderPart",                   [ ] (X3DExecutionContext* const executionContext) { return new ShaderPart                   (executionContext); });
+	add ("ShaderProgram",                [ ] (X3DExecutionContext* const executionContext) { return new ShaderProgram                (executionContext); });
+	add ("Shape",                        [ ] (X3DExecutionContext* const executionContext) { return new Shape                        (executionContext); });
+	add ("SignalPdu",                    [ ] (X3DExecutionContext* const executionContext) { return new SignalPdu                    (executionContext); });
+	add ("SingleAxisHingeJoint",         [ ] (X3DExecutionContext* const executionContext) { return new SingleAxisHingeJoint         (executionContext); });
+	add ("SliderJoint",                  [ ] (X3DExecutionContext* const executionContext) { return new SliderJoint                  (executionContext); });
+	add ("Sound",                        [ ] (X3DExecutionContext* const executionContext) { return new Sound                        (executionContext); });
+	add ("Sphere",                       [ ] (X3DExecutionContext* const executionContext) { return new Sphere                       (executionContext); });
+	add ("SphereSensor",                 [ ] (X3DExecutionContext* const executionContext) { return new SphereSensor                 (executionContext); });
+	add ("SplinePositionInterpolator",   [ ] (X3DExecutionContext* const executionContext) { return new SplinePositionInterpolator   (executionContext); });
+	add ("SplinePositionInterpolator2D", [ ] (X3DExecutionContext* const executionContext) { return new SplinePositionInterpolator2D (executionContext); });
+	add ("SplineScalarInterpolator",     [ ] (X3DExecutionContext* const executionContext) { return new SplineScalarInterpolator     (executionContext); });
+	add ("SpotLight",                    [ ] (X3DExecutionContext* const executionContext) { return new SpotLight                    (executionContext); });
+	add ("SquadOrientationInterpolator", [ ] (X3DExecutionContext* const executionContext) { return new SquadOrientationInterpolator (executionContext); });
+	add ("StaticGroup",                  [ ] (X3DExecutionContext* const executionContext) { return new StaticGroup                  (executionContext); });
+	add ("StringSensor",                 [ ] (X3DExecutionContext* const executionContext) { return new StringSensor                 (executionContext); });
+	add ("SurfaceEmitter",               [ ] (X3DExecutionContext* const executionContext) { return new SurfaceEmitter               (executionContext); });
+	add ("Switch",                       [ ] (X3DExecutionContext* const executionContext) { return new Switch                       (executionContext); });
+	add ("TexCoordChaser2D",             [ ] (X3DExecutionContext* const executionContext) { return new TexCoordChaser2D             (executionContext); });
+	add ("TexCoordDamper2D",             [ ] (X3DExecutionContext* const executionContext) { return new TexCoordDamper2D             (executionContext); });
+	add ("Text",                         [ ] (X3DExecutionContext* const executionContext) { return new Text                         (executionContext); });
+	add ("TextureBackground",            [ ] (X3DExecutionContext* const executionContext) { return new TextureBackground            (executionContext); });
+	add ("TextureCoordinate",            [ ] (X3DExecutionContext* const executionContext) { return new TextureCoordinate            (executionContext); });
+	add ("TextureCoordinate3D",          [ ] (X3DExecutionContext* const executionContext) { return new TextureCoordinate3D          (executionContext); });
+	add ("TextureCoordinate4D",          [ ] (X3DExecutionContext* const executionContext) { return new TextureCoordinate4D          (executionContext); });
+	add ("TextureCoordinateGenerator",   [ ] (X3DExecutionContext* const executionContext) { return new TextureCoordinateGenerator   (executionContext); });
+	add ("TextureProperties",            [ ] (X3DExecutionContext* const executionContext) { return new TextureProperties            (executionContext); });
+	add ("TextureTransform",             [ ] (X3DExecutionContext* const executionContext) { return new TextureTransform             (executionContext); });
+	add ("TextureTransform3D",           [ ] (X3DExecutionContext* const executionContext) { return new TextureTransform3D           (executionContext); });
+	add ("TextureTransformMatrix3D",     [ ] (X3DExecutionContext* const executionContext) { return new TextureTransformMatrix3D     (executionContext); });
+	add ("TimeSensor",                   [ ] (X3DExecutionContext* const executionContext) { return new TimeSensor                   (executionContext); });
+	add ("TimeTrigger",                  [ ] (X3DExecutionContext* const executionContext) { return new TimeTrigger                  (executionContext); });
+	add ("TouchSensor",                  [ ] (X3DExecutionContext* const executionContext) { return new TouchSensor                  (executionContext); });
+	add ("Transform",                    [ ] (X3DExecutionContext* const executionContext) { return new Transform                    (executionContext); });
+	add ("TransformSensor",              [ ] (X3DExecutionContext* const executionContext) { return new TransformSensor              (executionContext); });
+	add ("TransmitterPdu",               [ ] (X3DExecutionContext* const executionContext) { return new TransmitterPdu               (executionContext); });
+	add ("TriangleFanSet",               [ ] (X3DExecutionContext* const executionContext) { return new TriangleFanSet               (executionContext); });
+	add ("TriangleSet",                  [ ] (X3DExecutionContext* const executionContext) { return new TriangleSet                  (executionContext); });
+	add ("TriangleSet2D",                [ ] (X3DExecutionContext* const executionContext) { return new TriangleSet2D                (executionContext); });
+	add ("TriangleStripSet",             [ ] (X3DExecutionContext* const executionContext) { return new TriangleStripSet             (executionContext); });
+	add ("TwoSidedMaterial",             [ ] (X3DExecutionContext* const executionContext) { return new TwoSidedMaterial             (executionContext); });
+	add ("UniversalJoint",               [ ] (X3DExecutionContext* const executionContext) { return new UniversalJoint               (executionContext); });
+	add ("Viewpoint",                    [ ] (X3DExecutionContext* const executionContext) { return new Viewpoint                    (executionContext); });
+	add ("ViewpointGroup",               [ ] (X3DExecutionContext* const executionContext) { return new ViewpointGroup               (executionContext); });
+	add ("Viewport",                     [ ] (X3DExecutionContext* const executionContext) { return new Viewport                     (executionContext); });
+	add ("VisibilitySensor",             [ ] (X3DExecutionContext* const executionContext) { return new VisibilitySensor             (executionContext); });
+	add ("VolumeEmitter",                [ ] (X3DExecutionContext* const executionContext) { return new VolumeEmitter                (executionContext); });
+	add ("VolumePickSensor",             [ ] (X3DExecutionContext* const executionContext) { return new VolumePickSensor             (executionContext); });
+	add ("WindPhysicsModel",             [ ] (X3DExecutionContext* const executionContext) { return new WindPhysicsModel             (executionContext); });
+	add ("WorldInfo",                    [ ] (X3DExecutionContext* const executionContext) { return new WorldInfo                    (executionContext); });
 
 	//  Non standard: Component »Titania«
 
-	add ("TransformMatrix3D",            new TransformMatrix3D            (executionContext));
-	add ("TouchGroup",                   new TouchGroup                   (executionContext));
-	add ("PolygonOffsetGroup",           new PolygonOffsetGroup           (executionContext));
-	add ("DepthBuffer",                  new DepthBuffer                  (executionContext));
+	add ("TransformMatrix3D",            [ ] (X3DExecutionContext* const executionContext) { return new TransformMatrix3D            (executionContext); });
+	add ("TouchGroup",                   [ ] (X3DExecutionContext* const executionContext) { return new TouchGroup                   (executionContext); });
+	add ("PolygonOffsetGroup",           [ ] (X3DExecutionContext* const executionContext) { return new PolygonOffsetGroup           (executionContext); });
+	add ("DepthBuffer",                  [ ] (X3DExecutionContext* const executionContext) { return new DepthBuffer                  (executionContext); });
 
 	//std::clog << "\tDone creating node index." << std::endl;
 }
 
 void
-SupportedNodes::add (const std::string & name, X3DBaseNode* const node)
+SupportedNodes::add (const std::string & typeName, const Function & function)
 {
 	//std::clog << "\tAdding node type " << name << ": " << std::flush;
 
-	node -> setName (name);
-
-	nodes .push_back (name, node);
+	functions .emplace (typeName, function);
 
 	//std::clog << "Done." << std::endl;
 }
 
 const X3DBaseNode*
-SupportedNodes::get (const std::string & name) const
+SupportedNodes::get (const std::string & typeName) const
 throw (Error <INVALID_NAME>)
 {
 	try
 	{
-		return nodes .rfind (name);
+		return nodes .at (typeName);
 	}
 	catch (const std::out_of_range &)
 	{
-		throw Error <INVALID_NAME> ("Unknown node type '" + name + "'.");
+		try
+		{
+			const auto function = functions .at (typeName);
+			const auto node     = function (executionContext);
+
+			const_cast <SupportedNodes*> (this) -> nodes .emplace (typeName, node);
+
+			return node;
+		}
+		catch (const std::out_of_range &)
+		{
+			throw Error <INVALID_NAME> ("Unknown node type '" + typeName + "'.");
+		}
 	}
 }
 
 const BaseNodeArray &
 SupportedNodes::get () const
 {
+	for (const auto & pair : functions)
+	{
+		auto & node = const_cast <SupportedNodes*> (this) -> nodes [pair .first];
+
+		if (not node)
+			node = pair .second (executionContext);
+	}
+
 	return nodes;
 }
 
 void
 SupportedNodes::dispose ()
 {
-	for (const auto & node : nodes)
-		delete node;
+	for (const auto & pair : nodes)
+		delete pair .second;
 
 	nodes .clear ();
 }

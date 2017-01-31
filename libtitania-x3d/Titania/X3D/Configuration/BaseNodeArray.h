@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,22 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BASIC_BASE_NODE_ARRAY_H__
-#define __TITANIA_X3D_BASIC_BASE_NODE_ARRAY_H__
+#ifndef __TITANIA_X3D_CONFIGURATION_BASE_NODE_ARRAY_H__
+#define __TITANIA_X3D_CONFIGURATION_BASE_NODE_ARRAY_H__
 
 #include "../Basic/X3DBaseNode.h"
-#include <Titania/Basic/IndexedMultiMap.h>
+
+#include <map>
 #include <string>
 
 namespace titania {
 namespace X3D {
 
-typedef basic::indexed_multimap <std::string, const X3DBaseNode*> BaseNodeArray;
+typedef std::map <std::string, const X3DBaseNode*> BaseNodeArray;
 
 } // X3D
-
-extern template class basic::indexed_multimap <std::string, const X3D::X3DBaseNode*>;
-
 } // titania
+
+extern template class std::map <std::string, const titania::X3D::X3DBaseNode*>;
 
 #endif
