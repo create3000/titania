@@ -16,7 +16,7 @@
         For now, Titania fully supports the Moving Worlds specification for
         VRML 2.0 and already many parts of the X3D specification.
 
-        It can be used as a simple 3D viewer for .wrl files, as high quality
+        It can be used as a simple 3D viewer for .x3d files, as high quality
         3D animation rendering engine, for advanced science simulations,
         live data visualization, or as easy to use gaming engine.
 
@@ -43,16 +43,16 @@ Export Options
         -e FILENAME, --export=FILENAME
                export filename
 
-        -s mode, --style=mode
-               mode can be 'smallest', 'small ', 'compact', or 'nicest'
+        -s MODE, --style=MODE
+               MODE can be 'smallest', 'small ', 'compact', or 'nicest'
                nicest is the default mode
 
 List Options
 
-        -l, --list=[profiles|components|nodes|fields]
+        -l LIST, --list=profiles|components|nodes|fields
                Get a list of all supported profiles, components, nodes or fields.
 
-.SH KNOWN FILE FORMATS
+.SH KNOWN EXPORT FILE FORMATS
 
 Accepted input file formats are:
 
@@ -65,8 +65,11 @@ Accepted input file formats are:
         .wrz         VRML Encoding
         .obj         Alias Wavefront OBJ File Format
         .3ds         Autodesk 3DS File Format
+        .pdf         Portable Document Format (optional)
         .svg         Scalable Vector Grafics
         .svgz        Scalable Vector Grafics
+
+        PDF file format is optional and is available if Inkscape is installed. 
 
 Accepted output file formats are:
 
@@ -76,15 +79,22 @@ Accepted output file formats are:
 
 .SH EXAMPLES
 
-        titania --style=compact --input=input.x3d -export=-
+General Examples
+
+        titania scene.x3d
+                Open scene.x3d in browser.
+
+Export Examples
+
+        titania --style=compact --input=input.x3d --export=-
                 Formats input.x3d's contents in compact style mode to
                 standard output.
 
-        x3dtidy --input=input.x3dv -export=beautified.x3dv
+        titania --input=input.x3dv --export=beautified.x3dv
                 Formats input.x3dv's contents and saves the output in
                 beautified.x3dv.
 
-        x3dtidy --input=input.3ds -export=output.json
+        titania --input=input.3ds --export=output.json
                 Converts input.3ds's contents and saves the output in
                 output.json.
 
