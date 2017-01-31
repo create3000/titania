@@ -1,66 +1,96 @@
-." Manpage for x3dtidy.
+." Manpage for titania.
 ." Contact holger.seelig@yahoo.de to correct errors or typos.
 .TH man 1 "19 January 2017" "Version 2.0" "x3dtidy man page"
 .SH NAME
-       x3dtidy - X3D/VRML beautifier and converter
+
+        titania - Titania X3D Browser
 
 .SH SYNOPSIS
-       x3dtidy [OPTIONS] FILE [OUTFILE]
+
+        titania [OPTIONS] [FILE]
 
 .SH DESCRIPTION
-       Format or convert FILE to standard output or to OUTFILE.
 
-       x3dtidy reads an X3D file and writes an indented, reformatted file.
-       When no output file is specified the output is printed to stdout.
-       Use the --style option to specify the desired output style.
+        Titania is a X3D/VRML editor and browser for Ubuntu. The goal is
+        a full standard compliant X3D browser for future releases of Ubuntu.
+        For now, Titania fully supports the Moving Worlds specification for
+        VRML 2.0 and already many parts of the X3D specification.
+
+        It can be used as a simple 3D viewer for .wrl files, as high quality
+        3D animation rendering engine, for advanced science simulations,
+        live data visualization, or as easy to use gaming engine.
+
+        Furthermore Titania can be used as converter and beautifier for
+        various file formats from the command line. It can format or convert
+        a file to standard output or to your hard disk.
+
+        Titania reads an X3D file and writes an indented, reformatted file.
+        When no output file is specified the output is printed to stdout.
+        Use the --style option to specify the desired output style.
 
 .SH OPTIONS
-       -c, --compact
-              output in compact style
 
-       -h, --help
-              prints usage
+General Options
 
-       -s=mode, --style=mode
-              mode can be 'smallest', 'small ', 'compact', or 'nicest'
-              nicest is the default mode
+        -h, --help
+               prints usage
+
+Export Options
+
+        -i FILENAME, --input=FILENAME
+               input filename
+
+        -e FILENAME, --export=FILENAME
+               export filename
+
+        -s mode, --style=mode
+               mode can be 'smallest', 'small ', 'compact', or 'nicest'
+               nicest is the default mode
+
+List Options
+
+        -l, --list=[profiles|components|nodes|fields]
+               Get a list of all supported profiles, components, nodes or fields.
 
 .SH KNOWN FILE FORMATS
+
 Accepted input file formats are:
 
-       .x3d         X3D XML Encoding
-       .x3dz        X3D XML Encoding
-       .x3dv        X3D Classic VRML Encoding
-       .x3dvz       X3D Classic VRML Encoding"
-       .json        X3D JSON Encoding
-       .wrl         VRML Encoding
-       .wrz         VRML Encoding
-       .obj         Alias Wavefront OBJ File Format
-       .3ds         Autodesk 3DS File Format
-       .svg         Scalable Vector Grafics
-       .svgz        Scalable Vector Grafics
+        .x3d         X3D XML Encoding
+        .x3dz        X3D XML Encoding
+        .x3dv        X3D Classic VRML Encoding
+        .x3dvz       X3D Classic VRML Encoding"
+        .json        X3D JSON Encoding
+        .wrl         VRML Encoding
+        .wrz         VRML Encoding
+        .obj         Alias Wavefront OBJ File Format
+        .3ds         Autodesk 3DS File Format
+        .svg         Scalable Vector Grafics
+        .svgz        Scalable Vector Grafics
 
 Accepted output file formats are:
 
-       .x3d         X3D XML Encoding
-       .x3dv        X3D Classic VRML Encoding
-       .json        X3D JSON Encoding
+        .x3d         X3D XML Encoding
+        .x3dv        X3D Classic VRML Encoding
+        .json        X3D JSON Encoding
 
 .SH EXAMPLES
-       x3dtidy --style=compact input.x3d
-              Formats input.x3d's contents in compact style mode to
-              standard output.
 
-       x3dtidy input.x3dv beautified.x3dv
-              Formats input.x3dv's contents and saves the output in
-              beautified.x3dv.
+        titania --style=compact --input=input.x3d -export=-
+                Formats input.x3d's contents in compact style mode to
+                standard output.
 
-       x3dtidy input.3ds output.json
-              Converts input.3ds's contents and saves the output in
-              output.json.
+        x3dtidy --input=input.x3dv -export=beautified.x3dv
+                Formats input.x3dv's contents and saves the output in
+                beautified.x3dv.
+
+        x3dtidy --input=input.3ds -export=output.json
+                Converts input.3ds's contents and saves the output in
+                output.json.
 
 .SH COPYRIGHT
-       Copyright © 2010 Holger Seelig.  License GPLv3+:
-       GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
-       This is free software: you are free to change and redistribute it.
-       There is NO WARRANTY, to the extent permitted by law.
+
+        Copyright © 2010 Holger Seelig.  License GPLv3+:
+        GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+        This is free software: you are free to change and redistribute it.
+        There is NO WARRANTY, to the extent permitted by law.
