@@ -1,6 +1,6 @@
 ." Manpage for titania.
 ." Contact holger.seelig@yahoo.de to correct errors or typos.
-.TH man 1 "31 January 2017" "Version 2.0" "x3dtidy man page"
+.TH man 1 "31 January 2017" "Version 2.0.1" "x3dtidy man page"
 .SH NAME
 
         titania - Titania X3D Browser
@@ -11,22 +11,25 @@
 
 .SH DESCRIPTION
 
-        Titania is a X3D/VRML editor and browser for Ubuntu. The goal is
-        a full standard compliant X3D browser for future releases of Ubuntu.
-        For now, Titania fully supports the Moving Worlds specification for
-        VRML 2.0 and already many parts of the X3D specification.
+        Titania is a X3D/VRML editor and browser for Ubuntu. The goal
+        is a full standard compliant X3D browser for future releases
+        of Ubuntu. For now, Titania fully supports the Moving Worlds
+        specification for VRML 2.0 and already many parts of the X3D
+        specification.
 
-        It can be used as a simple 3D viewer for .x3d files, as high quality
-        3D animation rendering engine, for advanced science simulations,
-        live data visualization, or as easy to use gaming engine.
+        It can be used as a simple 3D viewer for .x3d files, as high
+        quality 3D animation rendering engine, for advanced science
+        simulations, live data visualization, or as easy to use
+        gaming engine.
 
-        Furthermore Titania can be used as converter and beautifier for
-        various file formats from the command line. It can format or convert
-        a file to standard output or to your hard disk.
+        Furthermore Titania can be used as converter and beautifier
+        for various file formats from the command line. It can format
+        or convert a file to standard output or to your hard disk.
 
-        Titania reads an X3D file and writes an indented, reformatted file.
-        When no output file is specified the output is printed to stdout.
-        Use the --style option to specify the desired output style.
+        Titania reads an X3D file and writes an indented, reformatted
+        file. When no output file is specified the output is printed
+        to stdout. Use the --style option to specify the desired
+        output style.
 
 .SH OPTIONS
 
@@ -38,18 +41,19 @@ General Options
 Export Options
 
         -e FILENAME, --export=FILENAME
-               The output is saved TO FILENAME. If '-' or only a suffix like '.x3d'
-               is given the output goes to STDOUT.
+               The output is saved TO FILENAME. If '-' or only a suffix
+               like '.x3d' is given the output goes to STDOUT.
 
         -s MODE, --style=MODE
-               MODE can be 'smallest', 'small ', 'compact', or 'nicest'
+               MODE can be 'smallest', 'small ', 'compact', or 'nicest',
                nicest is the default mode.
 
 List Options
 
         -l LIST, --list=profiles|components|nodes|fields
-               Get a list of all supported profiles, components, nodes or fields.
-               The nodes list and the fields list are provided in key file format.
+               Get a list of all supported profiles, components, nodes
+               or fields. The nodes list and the fields list are
+               provided in key file format.
 
 .SH KNOWN EXPORT FILE FORMATS
 
@@ -68,7 +72,8 @@ Accepted input file formats are:
         .svg         Scalable Vector Grafics
         .svgz        Scalable Vector Grafics
 
-        PDF file format is optional and available if Inkscape is installed. 
+        PDF file format is optional and available if Inkscape is
+        installed. 
 
 Accepted output file formats are:
 
@@ -107,5 +112,5 @@ Export Examples
 
         License GPLv3+:
         GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
-        This is free software: you are free to change and redistribute it.
-        There is NO WARRANTY, to the extent permitted by law.
+        This is free software: you are free to change and redistribute
+        it. There is NO WARRANTY, to the extent permitted by law.
