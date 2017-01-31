@@ -47,13 +47,13 @@ public:
 	main (const ApplicationOptions & options)
 	{
 		if (options .list == "profiles")
-			return componentIndex ();
+			return profiles ();
 
 		if (options .list == "components")
-			return componentIndex ();
+			return components ();
 
 		if (options .list == "nodes")
-			return nodeIndex ();
+			return nodes ();
 
 		if (options .list == "fields")
 			return fields ();
@@ -65,11 +65,27 @@ private:
 
 	static
 	int
-	componentIndex ()
+	profiles ()
 	{
-		auto browser = X3D::getBrowser ();
+		const auto   browser = X3D::getBrowser ();
+		const auto & profiles = browser -> getSupportedProfiles ();
 
-		const X3D::ComponentInfoArray & components = browser -> getSupportedComponents ();
+		std::cout .imbue (std::locale::classic ());
+
+		for (const auto & profile : profiles)
+		{
+			std::cout << profile -> getName () << std::endl;
+		}
+
+		return 0;
+	}
+
+	static
+	int
+	components ()
+	{
+		const auto   browser = X3D::getBrowser ();
+		const auto & components = browser -> getSupportedComponents ();
 
 		std::cout .imbue (std::locale::classic ());
 
@@ -83,7 +99,7 @@ private:
 
 	static
 	int
-	nodeIndex ()
+	nodes ()
 	{
 		X3D::Generator::Style ("compact");
 
@@ -93,12 +109,10 @@ private:
 		{
 			std::cout << '[' << node -> getTypeName () << ']' << std::endl;
 
-			const X3D::FieldDefinitionArray & fieldDefinitions = node -> getFieldDefinitions ();
+			const auto & fieldDefinitions = node -> getFieldDefinitions ();
 
-			for (const auto & fieldDefinition : fieldDefinitions)
+			for (const auto & field : fieldDefinitions)
 			{
-				const X3D::X3DFieldDefinition* field = node -> getField (fieldDefinition -> getName ());
-
 				std::cout
 					<< '\t'
 					<< field -> getName () << " = "

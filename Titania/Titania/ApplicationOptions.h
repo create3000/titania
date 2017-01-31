@@ -98,7 +98,7 @@ public:
 		optionList .set_description ("Get a list of all supported profiles, components, nodes or fields.");
 		//optionList .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG);
 
-		set_description ("Copyright 2010 Holger Seelig. License GPLv3+");
+		set_description ("Copyright 2010 Holger Seelig <holger.seelig@yahoo.de>. License GPLv3+");
 
 		mainGroup   .add_entry (optionHelp,           help);
 		exportGroup .add_entry (optionExportFilename, exportFilename);
