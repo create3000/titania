@@ -58,7 +58,12 @@ namespace os {
 std::string
 cwd ()
 {
-	return env ("PWD");
+	const auto pwd = env ("PWD");
+
+	if (pwd .empty () or pwd .back () == '/')
+		return pwd;
+
+	return pwd + "/";
 }
 
 } // os

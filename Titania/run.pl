@@ -28,8 +28,9 @@ $ENV {PATH}             = "$SOLUTION_DIR/x3d2vrml:$SOLUTION_DIR/x3ddidy:$SOLUTIO
 $ENV {XDG_DATA_DIRS}    = "$SOLUTION_DIR/x3d2vrml/share:$SOLUTION_DIR/Titania/share:$SOLUTION_DIR/libtitania-x3d/share:$SOLUTION_DIR/x3d2vrml/share:$ENV{XDG_DATA_DIRS}";
 #$ENV {LANG} = "C";
 
-chdir dirname $0;
-system "./titania", @ARGV;
+my $dirname = dirname $0;
+
+system "$dirname/titania", @ARGV;
 
 if (-d "$HOME/.config/Titania.O")
 {

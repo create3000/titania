@@ -33,19 +33,17 @@
 General Options
 
         -h, --help
-               prints usage
+               Prints help options.
 
 Export Options
 
-        -i FILENAME, --input=FILENAME
-               input filename
-
         -e FILENAME, --export=FILENAME
-               export filename
+               The output is saved TO FILENAME. If '-' or only a suffix like '.x3d'
+               is given the output goes to STDOUT.
 
         -s MODE, --style=MODE
                MODE can be 'smallest', 'small ', 'compact', or 'nicest'
-               nicest is the default mode
+               nicest is the default mode.
 
 List Options
 
@@ -74,8 +72,12 @@ Accepted input file formats are:
 Accepted output file formats are:
 
         .x3d         X3D XML Encoding
+        .x3dz        X3D XML Encoding (Gzip)
         .x3dv        X3D Classic VRML Encoding
+        .x3dvz       X3D Classic VRML Encoding (Gzip)
         .json        X3D JSON Encoding
+
+        Gzip encoding is available if exported to file. 
 
 .SH EXAMPLES
 
@@ -86,15 +88,15 @@ General Examples
 
 Export Examples
 
-        titania --style=compact --input=input.x3d --export=-
+        titania --style=compact input.x3d --export=-
                 Formats input.x3d's contents in compact style mode to
                 standard output.
 
-        titania --input=input.x3dv --export=beautified.x3dv
+        titania input.x3dv --export=beautified.x3dv
                 Formats input.x3dv's contents and saves the output in
                 beautified.x3dv.
 
-        titania --input=input.3ds --export=output.json
+        titania input.3ds --export=output.json
                 Converts input.3ds's contents and saves the output in
                 output.json.
 

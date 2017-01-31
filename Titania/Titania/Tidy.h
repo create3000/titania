@@ -51,9 +51,10 @@
 #ifndef __TITANIA_TIDY_H__
 #define __TITANIA_TIDY_H__
 
-#include <Titania/OS/cwd.h>
+#include <Titania/OS.h>
 #include <Titania/String/to_string.h>
 #include <Titania/X3D.h>
+#include <Titania/gzstream.h>
 
 #include <iostream>
 #include <unistd.h>
@@ -70,67 +71,87 @@ public:
 	int
 	main (const ApplicationOptions & options)
 	{
-		try
+		if (options .filenames .empty ())
+			throw std::runtime_error ("Expected a filename.");
+
+		X3D::Generator::Style (options .exportStyle);
+
+		auto browser = X3D::getBrowser ();
+
+		basic::uri inputFilename (options .filenames .front ());
+		basic::uri outputFilename (options .exportFilename);
+
+		if (inputFilename .is_relative ())
+			inputFilename = basic::uri (os::cwd ()) .transform (inputFilename);
+
+		const auto scene = browser -> createX3DFromURL ({ inputFilename .str () });
+
+		if (outputFilename == "-" or outputFilename == outputFilename .suffix ())
 		{
-			X3D::Generator::Style (options .exportStyle);
+			const auto suffix = outputFilename == "-" ? inputFilename .suffix () : outputFilename .suffix ();
 
-			auto browser = X3D::getBrowser ();
+			if (suffix == ".x3d")
+				std::cout << X3D::XMLEncode (scene);
 
-			basic::uri uri (options .filename);
+			else if (suffix == ".json")
+				std::cout << X3D::JSONEncode (scene);
 
-			if (uri .is_relative ())
-				uri = basic::uri (os::cwd ()) .transform (uri);
-
-			if (options .exportFilename == "-")
-			{
-				if (uri .suffix () == ".x3d")
-					std::cout << X3D::XMLEncode (browser -> createX3DFromURL ({ uri .str () }));
-
-				else if (uri .suffix () == ".json")
-					std::cout << X3D::JSONEncode (browser -> createX3DFromURL ({ uri .str () }));
-
-				else
-					std::cout << browser -> createX3DFromURL ({ uri .str () });
-			}
 			else
 			{
-				basic::uri out (options .exportFilename);
+				if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
+					scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 
-				if (out .is_relative ())
-					out = basic::uri (os::cwd ()) .transform (out);
-
-				std::string tmpFilename = "/tmp/x3dtidy." + basic::to_string (getpid (), std::locale::classic ()) + out .suffix ();
-
-				try
-				{
-					std::ofstream file (tmpFilename);
-
-					// Create temp file
-
-					if (out .suffix () == ".x3d")
-						file << X3D::XMLEncode (browser -> createX3DFromURL ({ uri .str () }));
-
-					else if (out .suffix () == ".json")
-						file << X3D::JSONEncode (browser -> createX3DFromURL ({ uri .str () }));
-
-					else
-						file << browser -> createX3DFromURL ({ uri .str () });
-
-					// Replace original
-
-					rename (tmpFilename .c_str (), out .path () .c_str ());
-				}
-				catch (...)
-				{
-					unlink (tmpFilename .c_str ());
-					throw;
-				}
+				std::cout << scene;
 			}
 		}
-		catch (const X3D::X3DError & error)
+		else
 		{
-			std::cerr << error .what () << std::endl;
-			return 1;
+			if (outputFilename .is_relative ())
+				outputFilename = basic::uri (os::cwd ()) .transform (outputFilename);
+
+			std::string tmpFilename = "/tmp/titania-XXXXXX" + outputFilename .suffix ();
+
+			try
+			{
+				auto file = os::mkstemps (tmpFilename, outputFilename .suffix () .size ());
+
+				if (not file)
+					throw std::runtime_error ("Couldn't save file.");
+
+				// Create temp file
+
+				if (outputFilename .suffix () == ".x3dz")
+					ogzstream (tmpFilename) << X3D::XMLEncode (scene);
+
+				else if (outputFilename .suffix () == ".x3d")
+					file << X3D::XMLEncode (scene);
+
+				else if (outputFilename .suffix () == ".json")
+					file << X3D::JSONEncode (scene);
+
+				else if (outputFilename .suffix () == ".x3dvz")
+				{
+					if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
+						scene -> setSpecificationVersion (X3D::LATEST_VERSION);
+
+					ogzstream (tmpFilename) << scene;
+				}
+				else
+				{
+					if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
+						scene -> setSpecificationVersion (X3D::LATEST_VERSION);
+
+					file << scene;
+				}
+				// Replace original
+
+				rename (tmpFilename .c_str (), outputFilename .path () .c_str ());
+			}
+			catch (...)
+			{
+				os::unlink (tmpFilename);
+				throw;
+			}
 		}
 
 		return 0;

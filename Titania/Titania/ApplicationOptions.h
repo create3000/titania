@@ -51,6 +51,7 @@
 #ifndef __TITANIA_APPLICATION_OPTIONS_H__
 #define __TITANIA_APPLICATION_OPTIONS_H__
 
+#include <vector>
 #include <glibmm.h>
 
 namespace titania {
@@ -61,14 +62,13 @@ class ApplicationOptions :
 {
 public:
 
-	ApplicationOptions (int argc, char** argv) :
+	ApplicationOptions (int & argc, char** & argv) :
 		Glib::OptionContext ("- Titania X3D Browser"),
-		           filename (),
+		          filenames (),
 		     exportFilename (),
 		               list (),
 		               help (false)
 	{
-		Glib::OptionEntry optionFilename;
 		Glib::OptionEntry optionExportFilename;
 		Glib::OptionEntry optionExportStyle;
 		Glib::OptionEntry optionList;
@@ -80,34 +80,27 @@ public:
 		Glib::OptionGroup exportGroup ("export", "Export options", "Export options");
 		Glib::OptionGroup listGroup ("list", "Listings options", "Listings options");
 
-		optionFilename .set_short_name ('i');
-		optionFilename .set_long_name ("input");
-		optionFilename .set_arg_description ("FILENAME");
-		optionFilename .set_description ("Set input filename.");
-		optionFilename .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG | Glib::OptionEntry::FLAG_FILENAME);
-
 		optionExportFilename .set_short_name ('e');
 		optionExportFilename .set_long_name ("export");
 		optionExportFilename .set_arg_description ("FILENAME");
 		optionExportFilename .set_description ("Set export filename, if '-' is given the output goes to STDOUT.");
-		optionExportFilename .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG | Glib::OptionEntry::FLAG_FILENAME);
+		//optionExportFilename .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG | Glib::OptionEntry::FLAG_FILENAME);
 
 		optionExportStyle .set_short_name ('s');
 		optionExportStyle .set_long_name ("style");
 		optionExportStyle .set_arg_description ("nicest|compact|small|smallest");
 		optionExportStyle .set_description ("Set output style for export.");
-		optionExportStyle .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG);
+		//optionExportStyle .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG);
 
 		optionList .set_short_name ('l');
 		optionList .set_long_name ("list");
 		optionList .set_arg_description ("profiles|components|nodes|fields");
 		optionList .set_description ("Get a list of all supported profiles, components, nodes or fields.");
-		optionList .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG);
+		//optionList .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG);
 
 		set_description ("Copyright 2010 Holger Seelig. License GPLv3+");
 
 		mainGroup   .add_entry (optionHelp,           help);
-		exportGroup .add_entry (optionFilename,       filename);
 		exportGroup .add_entry (optionExportFilename, exportFilename);
 		exportGroup .add_entry (optionExportStyle,    exportStyle);
 		listGroup   .add_entry (optionList,           list);
@@ -117,13 +110,16 @@ public:
 		add_group (listGroup);
 
 		parse (argc, argv);
+
+		for (int i = 1; i < argc; ++ i) 
+			filenames .emplace_back (argv [i]);
 	}
 
-	Glib::ustring filename;
-	Glib::ustring exportFilename;
-	Glib::ustring exportStyle;
-	Glib::ustring list;
-	bool          help;
+	std::vector <Glib::ustring> filenames;
+	Glib::ustring               exportFilename;
+	Glib::ustring               exportStyle;
+	Glib::ustring               list;
+	bool                        help;
 
 };
 
