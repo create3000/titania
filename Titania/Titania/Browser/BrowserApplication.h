@@ -70,15 +70,6 @@ public:
 		Gtk::Application (argc, argv, "de.create3000.titania", Gio::APPLICATION_HANDLES_OPEN),
 		   browserWindow ()
 	{
-		// Replace the C++ global locale as well as the C locale with the user-preferred locale.
-		std::locale::global (std::locale (""));
-
-		// XXX: This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
-		os::env ("UBUNTU_MENUPROXY",      "0");  // Disable global menu.
-		//os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars. // Can be done one each ScrolledWindow
-		//os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars. // Can be done one each ScrolledWindow
-		//os::env ("GDK_SYNCHRONIZE",       "1");  // Synchrone catch X errors.
-
 		Glib::set_application_name ("Titania");
 	}
 

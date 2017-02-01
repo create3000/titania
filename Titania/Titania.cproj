@@ -2562,6 +2562,9 @@
     <None Include="Titania\Application\Info.h" />
     <None Include="Titania\Application\Tidy.h" />
     <None Include="Titania\ComposedWidgets.h" />
+    <None Include="share\titania\Library\Models\Vehicles\MURCIELAGO640.x3dv" />
+    <None Include="share\titania\Library\Models\Plants\DeathTree.x3dv" />
+    <None Include="share\titania\Library\Models\Plants\ThreeTrees.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
