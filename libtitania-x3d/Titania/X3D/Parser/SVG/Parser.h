@@ -174,6 +174,10 @@ private:
 
 	///  @name Operations
 
+	X3DBrowser*
+	getBrowser () const
+	{ return scene -> getBrowser (); }
+
 	void
 	xmlElement (xmlpp::Element* const xmlElement);
 

@@ -293,7 +293,7 @@ public:
 			return value;
 
 		//__LOG__ << "X3DPtr::operator -> ()\n\n" << std::endl;
-		//__LOG__ << backtrace_symbols () << std::endl;
+		//backtrace ();
 
 		throw Error <DISPOSED> ("X3DPtr::operator -> ()\n\n" + backtrace_symbols ());
 	}

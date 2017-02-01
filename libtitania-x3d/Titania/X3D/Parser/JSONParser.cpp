@@ -82,6 +82,7 @@ JSONParser::parseIntoScene ()
 
 	scene -> setWorldURL (uri);
 	scene -> setEncoding (EncodingType::JSON);
+	scene -> setProfile (getBrowser () -> getProfile ("Full"));
 
 	std::ostringstream osstream;
 

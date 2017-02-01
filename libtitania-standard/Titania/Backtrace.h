@@ -56,11 +56,14 @@
 
 namespace titania {
 
-std::string
-backtrace_symbols (size_t = 30);
+void
+install_backtrace ();
 
 void
-backtrace ();
+backtrace (size_t = 30);
+
+std::string
+backtrace_symbols (size_t = 30);
 
 } // titania
 

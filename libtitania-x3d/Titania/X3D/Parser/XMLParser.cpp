@@ -119,6 +119,7 @@ XMLParser::parseIntoScene ()
 	{
 		scene -> setWorldURL (uri);
 		scene -> setEncoding (EncodingType::XML);
+		scene -> setProfile (getBrowser () -> getProfile ("Full"));
 
 		xmlParser -> parse_stream (istream);
 
@@ -176,8 +177,10 @@ XMLParser::x3dElement (xmlpp::Element* const xmlElement)
 		{
 			scene -> setProfile (getBrowser () -> getProfile (profileCharacters));
 		}
-		catch (const X3D::X3DError &)
-		{ }
+		catch (const X3D::X3DError & error)
+		{
+			getBrowser () -> println (error .what ());
+		}
 	}
 
 	if (stringAttribute (xmlElement -> get_attribute ("version"), specificationVersionCharacters))

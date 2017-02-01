@@ -96,7 +96,7 @@ X3DBrowser::X3DBrowser (const MFString & url, const MFString & parameter) :
 	         inShutdown (0),
 	             future ()
 {
-	backtrace ();
+	install_backtrace ();
 
 	setName ("Titania");
 	addType (X3DConstants::X3DBrowser);

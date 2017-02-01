@@ -687,6 +687,7 @@ Parser::parseIntoScene ()
 
 	scene -> setWorldURL (uri);
 	scene -> setEncoding (EncodingType::XML);
+	scene -> setProfile (getBrowser () -> getProfile ("Full"));
 
 	istream .imbue (std::locale::classic ());
 

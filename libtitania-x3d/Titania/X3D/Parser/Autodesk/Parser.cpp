@@ -99,6 +99,7 @@ Parser::parseIntoScene ()
 
 	scene -> setWorldURL (uri);
 	scene -> setEncoding (EncodingType::XML);
+	scene -> setProfile (getBrowser () -> getProfile ("Full"));
 
 	groupNode = scene -> createNode <X3D::Transform> ();
 

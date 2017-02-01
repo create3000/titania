@@ -92,6 +92,10 @@ private:
 
 	///  @name Operations
 
+	X3DBrowser*
+	getBrowser () const
+	{ return scene -> getBrowser (); }
+
 	void
 	statements (const std::string & filename);
 

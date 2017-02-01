@@ -99,6 +99,7 @@ throw (Error <INVALID_X3D>)
 	try
 	{
 		scene -> setEncoding (EncodingType::VRML);
+		scene -> setProfile (getBrowser () -> getProfile ("Full"));
 
 		x3dScene ();
 	}
@@ -401,9 +402,20 @@ Parser::profileStatement ()
 
 		if (profileNameId (_profileNameId))
 		{
-			scene -> addComments (getComments ());
-			scene -> setProfile (getBrowser () -> getProfile (_profileNameId));
-			return;
+			try
+			{
+				scene -> addComments (getComments ());
+				scene -> setProfile (getBrowser () -> getProfile (_profileNameId));
+				return;
+			}
+			catch (const X3DError & error)
+			{
+				if (getBrowser () -> isStrict ())
+					throw;
+
+				getBrowser () -> println (error .what ());
+				return;
+			}
 		}
 
 		throw Error <INVALID_X3D> ("Expected a profile name.");

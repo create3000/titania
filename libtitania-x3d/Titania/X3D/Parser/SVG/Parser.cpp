@@ -193,6 +193,7 @@ Parser::parseIntoScene ()
 	{
 		scene -> setWorldURL (uri);
 		scene -> setEncoding (EncodingType::XML);
+		scene -> setProfile (getBrowser () -> getProfile ("Full"));
 
 		xmlParser -> parse_stream (istream);
 
