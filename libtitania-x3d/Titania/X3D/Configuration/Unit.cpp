@@ -91,7 +91,7 @@ Unit::toStream (std::ostream & ostream) const
 		<< Generator::Space
 		<< name
 		<< Generator::Space
-		<< Generator::Precision <long double>
+		<< Generator::SetPrecision <long double>
 		<< conversionFactor;
 }
 
@@ -113,7 +113,7 @@ Unit::toXMLStream (std::ostream & ostream) const
 		<< "'"
 		<< Generator::Space
 		<< "conversionFactor='"
-		<< Generator::Precision <long double>
+		<< Generator::SetPrecision <long double>
 		<< conversionFactor
 		<< "'"
 		<< "/>";
@@ -158,7 +158,7 @@ Unit::toJSONStream (std::ostream & ostream) const
 		<< '"'
 		<< ':'
 		<< Generator::TidySpace
-		<< Generator::Precision <long double>
+		<< Generator::SetPrecision <long double>
 		<< conversionFactor
 		<< Generator::TidyBreak;
 

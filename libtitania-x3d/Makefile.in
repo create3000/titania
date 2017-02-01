@@ -565,7 +565,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/InputOutput/Generator.lo \
 	Titania/X3D/InputOutput/GoldenGate.lo \
 	Titania/X3D/InputOutput/Loader.lo \
-	Titania/X3D/InputOutput/X3DBaseGenerator.lo \
+	Titania/X3D/InputOutput/X3DGenerator.lo \
 	Titania/X3D/JavaScript/PeaseBlossom.lo \
 	Titania/X3D/JavaScript/PeaseBlossom/Browser.lo \
 	Titania/X3D/JavaScript/PeaseBlossom/Context.lo \
@@ -1401,7 +1401,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/InputOutput/Generator.cpp \
 	Titania/X3D/InputOutput/GoldenGate.cpp \
 	Titania/X3D/InputOutput/Loader.cpp \
-	Titania/X3D/InputOutput/X3DBaseGenerator.cpp \
+	Titania/X3D/InputOutput/X3DGenerator.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Browser.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Context.cpp \
@@ -3315,7 +3315,7 @@ Titania/X3D/InputOutput/GoldenGate.lo:  \
 Titania/X3D/InputOutput/Loader.lo:  \
 	Titania/X3D/InputOutput/$(am__dirstamp) \
 	Titania/X3D/InputOutput/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/InputOutput/X3DBaseGenerator.lo:  \
+Titania/X3D/InputOutput/X3DGenerator.lo:  \
 	Titania/X3D/InputOutput/$(am__dirstamp) \
 	Titania/X3D/InputOutput/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/JavaScript/$(am__dirstamp):
@@ -4524,7 +4524,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/Generator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/GoldenGate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/Loader.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/X3DBaseGenerator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/X3DGenerator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/$(DEPDIR)/PeaseBlossom.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/$(DEPDIR)/SpiderMonkey.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/JavaScript/$(DEPDIR)/X3DJavaScriptContext.Plo@am__quote@

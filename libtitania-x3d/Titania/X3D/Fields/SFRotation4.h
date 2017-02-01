@@ -457,7 +457,7 @@ inline
 void
 SFRotation4 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << X3DGenerator::Precision <value_type> << getValue ();
+	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
 }
 
 template <class ValueType>
@@ -494,7 +494,7 @@ SFRotation4 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
 	getValue () .get (x, y, z, angle);
 
 	ostream
-		<< X3DGenerator::Precision <value_type>
+		<< X3DGenerator::SetPrecision <value_type>
 		<< x
 		<< ','
 		<< X3DGenerator::TidySpace

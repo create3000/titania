@@ -461,7 +461,7 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	const auto specificationVersion = getSpecificationVersion ();
 
-	Generator::SpecificationVersion (specificationVersion);
+	Generator::SpecificationVersion (ostream, specificationVersion);
 
 	ostream
 		<< '#'
@@ -562,9 +562,9 @@ X3DScene::toStream (std::ostream & ostream) const
 
 	// Scene
 
-	Generator::PushExecutionContext (this);
-	Generator::EnterScope ();
-	Generator::ExportedNodes (getExportedNodes ());
+	Generator::PushExecutionContext (ostream, this);
+	Generator::EnterScope (ostream);
+	Generator::ExportedNodes (ostream, getExportedNodes ());
 
 	X3DExecutionContext::toStream (ostream);
 
@@ -588,8 +588,8 @@ X3DScene::toStream (std::ostream & ostream) const
 		}
 	}
 
-	Generator::LeaveScope ();
-	Generator::PopExecutionContext ();
+	Generator::LeaveScope (ostream);
+	Generator::PopExecutionContext (ostream);
 
 	// ~Scene
 
@@ -622,7 +622,7 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 
 	const std::string versionString = XMLEncode (specificationVersion);
 
-	Generator::SpecificationVersion (specificationVersion);
+	Generator::SpecificationVersion (ostream, specificationVersion);
 
 	ostream
 		<< "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -711,9 +711,9 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 
 	// <Scene>
 
-	Generator::PushExecutionContext (this);
-	Generator::EnterScope ();
-	Generator::ExportedNodes (getExportedNodes ());
+	Generator::PushExecutionContext (ostream, this);
+	Generator::EnterScope (ostream);
+	Generator::ExportedNodes (ostream, getExportedNodes ());
 
 	X3DExecutionContext::toXMLStream (ostream);
 
@@ -729,8 +729,8 @@ X3DScene::toXMLStream (std::ostream & ostream) const
 		{ }
 	}
 
-	Generator::LeaveScope ();
-	Generator::PopExecutionContext ();
+	Generator::LeaveScope (ostream);
+	Generator::PopExecutionContext (ostream);
 
 	// </Scene>
 
@@ -755,10 +755,10 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 	if (specificationVersion == VRML_V2_0)
 		specificationVersion = LATEST_VERSION;
 
-	Generator::SpecificationVersion (specificationVersion);
-	Generator::PushExecutionContext (this);
-	Generator::EnterScope ();
-	Generator::ExportedNodes (getExportedNodes ());
+	Generator::SpecificationVersion (ostream, specificationVersion);
+	Generator::PushExecutionContext (ostream, this);
+	Generator::EnterScope (ostream);
+	Generator::ExportedNodes (ostream, getExportedNodes ());
 
 
 	// X3D
@@ -1178,8 +1178,8 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 		<< '}'
 		<< Generator::TidyBreak;
 
-	Generator::LeaveScope ();
-	Generator::PopExecutionContext ();
+	Generator::LeaveScope (ostream);
+	Generator::PopExecutionContext (ostream);
 }
 
 void

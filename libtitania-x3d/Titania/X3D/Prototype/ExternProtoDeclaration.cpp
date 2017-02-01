@@ -433,10 +433,10 @@ ExternProtoDeclaration::toStream (std::ostream & ostream) const
 	}
 	else
 	{
-		switch (Generator::Style ())
+		switch (Generator::Style (ostream))
 		{
-			case Generator::SMALLEST:
-			case Generator::SMALL:
+			case Generator::StyleType::SMALLEST:
+			case Generator::StyleType::SMALL:
 			{
 				break;
 			}

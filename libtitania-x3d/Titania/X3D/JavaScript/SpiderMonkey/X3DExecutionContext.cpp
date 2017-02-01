@@ -648,7 +648,7 @@ X3DExecutionContext::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp)
 
 		std::ostringstream ostream;
 
-		Generator::NicestStyle ();
+		Generator::NicestStyle (ostream);
 
 		executionContext -> X3D::X3DExecutionContext::toStream (ostream);
 
@@ -672,7 +672,7 @@ X3DExecutionContext::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
 
 		std::ostringstream ostream;
 
-		Generator::NicestStyle ();
+		Generator::NicestStyle (ostream);
 
 		executionContext -> X3D::X3DExecutionContext::toXMLStream (ostream);
 

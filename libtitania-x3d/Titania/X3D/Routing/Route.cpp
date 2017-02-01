@@ -230,8 +230,8 @@ Route::toStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & sourceNodeName      = Generator::LocalName (getSourceNode ());
-	const std::string & destinationNodeName = Generator::LocalName (getDestinationNode ());
+	const std::string & sourceNodeName      = Generator::LocalName (ostream, getSourceNode ());
+	const std::string & destinationNodeName = Generator::LocalName (ostream, getDestinationNode ());
 
 	if (not getComments () .empty ())
 	{
@@ -281,8 +281,8 @@ Route::toXMLStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & sourceNodeName      = Generator::LocalName (getSourceNode ());
-	const std::string & destinationNodeName = Generator::LocalName (getDestinationNode ());
+	const std::string & sourceNodeName      = Generator::LocalName (ostream, getSourceNode ());
+	const std::string & destinationNodeName = Generator::LocalName (ostream, getDestinationNode ());
 
 	ostream
 		<< Generator::Indent
@@ -321,8 +321,8 @@ Route::toJSONStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & sourceNodeName      = Generator::LocalName (getSourceNode ());
-	const std::string & destinationNodeName = Generator::LocalName (getDestinationNode ());
+	const std::string & sourceNodeName      = Generator::LocalName (ostream, getSourceNode ());
+	const std::string & destinationNodeName = Generator::LocalName (ostream, getDestinationNode ());
 
 	ostream
 		<< '{'

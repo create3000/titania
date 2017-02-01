@@ -138,7 +138,7 @@ ExportedNode::toStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & localName = Generator::LocalName (getLocalNode ());
+	const std::string & localName = Generator::LocalName (ostream, getLocalNode ());
 
 	if (not getComments () .empty ())
 	{
@@ -177,7 +177,7 @@ ExportedNode::toXMLStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & localName = Generator::LocalName (getLocalNode ());
+	const std::string & localName = Generator::LocalName (ostream, getLocalNode ());
 
 	ostream
 		<< Generator::Indent
@@ -204,7 +204,7 @@ ExportedNode::toJSONStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	const std::string & localName = Generator::LocalName (getLocalNode ());
+	const std::string & localName = Generator::LocalName (ostream, getLocalNode ());
 
 	ostream
 		<< '{'

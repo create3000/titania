@@ -116,7 +116,7 @@ throw (Error <INVALID_X3D>,
 void
 SFTime::toStream (std::ostream & ostream) const
 {
-	ostream << X3DGenerator::Precision <value_type> << getValue ();
+	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
 }
 
 void

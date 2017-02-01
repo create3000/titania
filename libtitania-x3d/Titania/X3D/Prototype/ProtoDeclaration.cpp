@@ -205,7 +205,7 @@ ProtoDeclaration::toStream (std::ostream & ostream) const
 		<< Generator::TidySpace
 		<< '[';
 
-	Generator::EnterScope ();
+	Generator::EnterScope (ostream);
 
 	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
 
@@ -243,10 +243,10 @@ ProtoDeclaration::toStream (std::ostream & ostream) const
 		size_t typeLength       = 0;
 		size_t accessTypeLength = 0;
 
-		switch (Generator::Style ())
+		switch (Generator::Style (ostream))
 		{
-			case Generator::SMALLEST:
-			case Generator::SMALL:
+			case Generator::StyleType::SMALLEST:
+			case Generator::StyleType::SMALL:
 			{
 				break;
 			}
@@ -288,7 +288,7 @@ ProtoDeclaration::toStream (std::ostream & ostream) const
 
 	ostream << ']';
 
-	Generator::LeaveScope ();
+	Generator::LeaveScope (ostream);
 
 	ostream << Generator::TidyBreak;
 
@@ -356,7 +356,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 
 	// <ProtoInterface>
 
-	Generator::EnterScope ();
+	Generator::EnterScope (ostream);
 
 	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
 
@@ -400,7 +400,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 					case X3DConstants::SFNode:
 					case X3DConstants::MFNode:
 					{
-						Generator::PushContainerField (nullptr);
+						Generator::PushContainerField (ostream, nullptr);
 
 						ostream
 							<< ">"
@@ -413,7 +413,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 							<< "</field>"
 							<< Generator::TidyBreak;
 
-						Generator::PopContainerField ();
+						Generator::PopContainerField (ostream);
 
 						break;
 					}
@@ -441,7 +441,7 @@ ProtoDeclaration::toXMLStream (std::ostream & ostream) const
 			<< Generator::DecIndent;
 	}
 
-	Generator::LeaveScope ();
+	Generator::LeaveScope (ostream);
 
 	// </ProtoInterface>
 
@@ -513,7 +513,7 @@ ProtoDeclaration::toJSONStream (std::ostream & ostream) const
 
 	bool lastProperty = false;
 
-	Generator::EnterScope ();
+	Generator::EnterScope (ostream);
 
 	const FieldDefinitionArray userDefinedFields = getUserDefinedFields ();
 
@@ -674,7 +674,7 @@ ProtoDeclaration::toJSONStream (std::ostream & ostream) const
 		<< ','
 		<< Generator::TidyBreak;
 
-	Generator::LeaveScope ();
+	Generator::LeaveScope (ostream);
 
 
 	// ProtoBody

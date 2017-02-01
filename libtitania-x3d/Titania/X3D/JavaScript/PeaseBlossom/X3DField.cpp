@@ -119,7 +119,13 @@ X3DField::toString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 {
 	try
 	{
-		return getThis <X3DField> (ec, object) -> toString ();
+		std::ostringstream osstream;
+
+		Generator::NicestStyle (osstream);
+
+		getThis <X3DField> (ec, object) -> toStream (osstream);
+
+		return osstream .str ();
 	}
 	catch (const std::invalid_argument &)
 	{

@@ -445,7 +445,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/InputOutput/Generator.cpp \
 	Titania/X3D/InputOutput/GoldenGate.cpp \
 	Titania/X3D/InputOutput/Loader.cpp \
-	Titania/X3D/InputOutput/X3DBaseGenerator.cpp \
+	Titania/X3D/InputOutput/X3DGenerator.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Browser.cpp \
 	Titania/X3D/JavaScript/PeaseBlossom/Context.cpp \

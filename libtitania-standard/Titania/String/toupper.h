@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,12 +48,22 @@
  *
  ******************************************************************************/
 
-#include "X3DBaseGenerator.h"
+#ifndef __TITANIA_STRING_TOUPPER_H__
+#define __TITANIA_STRING_TOUPPER_H__
 
 namespace titania {
-namespace X3D {
+namespace basic {
 
-template class X3DBaseGenerator <char>;
+template <class CharT, class Traits = std::char_traits <CharT>> 
+std::basic_string <CharT> &
+toupper (std::basic_string <CharT> & string, const std::locale & locale)
+{
+	std::transform (string .begin (), string .end (), string .begin (), [&locale] (const char c) { return std::toupper (c, locale); });
+
+	return string;
+}
 
 } // basic
 } // titania
+
+#endif

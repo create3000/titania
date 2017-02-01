@@ -553,7 +553,7 @@ inline
 void
 SFMatrix3 <ValueType>::toStream (std::ostream & ostream) const
 {
-	ostream << X3DGenerator::Precision <value_type> << getValue ();
+	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
 }
 
 template <class ValueType>
@@ -586,7 +586,7 @@ void
 SFMatrix3 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
 {
 	ostream
-		<< X3DGenerator::Precision <value_type>
+		<< X3DGenerator::SetPrecision <value_type>
 		<< getValue () [0] [0]
 		<< ','
 		<< X3DGenerator::TidySpace

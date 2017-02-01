@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_INPUT_OUTPUT_GENERATOR_H__
 
 #include "../Basic/X3DConstants.h"
-#include "../InputOutput/X3DBaseGenerator.h"
+#include "../InputOutput/X3DGenerator.h"
 #include "../Execution/ExportedNodeIndex.h"
 #include "../Execution/ImportedNodeIndex.h"
 
@@ -74,138 +74,131 @@ class Generator :
 {
 public:
 
-	enum StyleType :
-		uint8_t
-	{
-		SMALLEST,
-		SMALL,
-		COMPACT,
-		NICEST
-	};
-
-	struct X3DAccessType { const AccessType accessType; };
-	
-	struct VrmlAccessType { const AccessType accessType; };
-
-	///  @name Member access
-
 	static
 	void
-	Style (const std::string &);
-
-	static
-	StyleType
-	Style ()
-	{ return style; }
-
-	static
-	void
-	SmallestStyle ();
-
-	static
-	void
-	SmallStyle ();
-
-	static
-	void
-	CompactStyle ();
-
-	static
-	void
-	NicestStyle ();
-
-	static
-	void
-	SpecificationVersion (const SpecificationVersionType value)
-	{ specificationVersion = value; }
+	SpecificationVersion (std::ostream & ostream, const SpecificationVersionType value)
+	{ get (ostream) -> specificationVersion = value; }
 
 	static
 	SpecificationVersionType
-	SpecificationVersion ()
-	{ return specificationVersion; }
+	SpecificationVersion (std::ostream & ostream)
+	{ return get (ostream) -> specificationVersion; }
 
 	static
 	void
-	PushExecutionContext (const X3DExecutionContext* const);
+	PushExecutionContext (std::ostream & ostream, const X3DExecutionContext* const);
 
 	static
 	void
-	PopExecutionContext ();
+	PopExecutionContext (std::ostream & ostream);
 
 	static
 	const X3DExecutionContext*
-	ExecutionContext ()
-	{ return executionContextStack .back (); }
+	ExecutionContext (std::ostream & ostream)
+	{ return get (ostream) -> executionContextStack .back (); }
 
 	static
 	void
-	EnterScope ();
+	EnterScope (std::ostream & ostream);
 
 	static
 	void
-	LeaveScope ();
+	LeaveScope (std::ostream & ostream);
 	
 	static
 	void
-	ExportedNodes (const ExportedNodeIndex &);
+	ExportedNodes (std::ostream & ostream, const ExportedNodeIndex &);
 
 	static
 	void
-	ImportedNodes (const ImportedNodeIndex &);
+	ImportedNodes (std::ostream & ostream, const ImportedNodeIndex &);
 
 	bool
 	static
-	IsSharedNode (const X3DBaseNode* const);
+	IsSharedNode (std::ostream & ostream, const X3DBaseNode* const);
 
 	static
 	bool
-	ExistsNode (const X3DBaseNode* const);
+	ExistsNode (std::ostream & ostream, const X3DBaseNode* const);
 
 	static
 	void
-	AddNode (const X3DBaseNode* const);
+	AddNode (std::ostream & ostream, const X3DBaseNode* const);
 
 	static
 	const std::string &
-	Name (const X3DBaseNode* const);
+	Name (std::ostream & ostream, const X3DBaseNode* const);
 
 	static
 	void
-	AddImportedNode (const X3DBaseNode* const, const std::string &);
+	AddImportedNode (std::ostream & ostream, const X3DBaseNode* const, const std::string &);
 
 	static
 	const std::string &
-	LocalName (const X3DBaseNode* const);
+	LocalName (std::ostream & ostream, const X3DBaseNode* const);
 
 	static
 	void
-	PushContainerField (const X3DFieldDefinition* const field)
-	{ containerFieldStack .emplace_back (field); }
+	PushContainerField (std::ostream & ostream, const X3DFieldDefinition* const field)
+	{ get (ostream) -> containerFieldStack .emplace_back (field); }
 
 	static
 	void
-	PopContainerField ()
-	{ containerFieldStack .pop_back (); }
+	PopContainerField (std::ostream & ostream)
+	{ get (ostream) -> containerFieldStack .pop_back (); }
 
 	static
 	const X3DFieldDefinition*
-	ContainerField ()
-	{ return containerFieldStack .back (); }
+	ContainerField (std::ostream & ostream)
+	{ return get (ostream) -> containerFieldStack .back (); }
 
 	static
 	void
-	XMLEncode (std::ostream &, const std::string &);
+	XMLEncode (std::ostream & ostream, const std::string & string);
+
+	///  @name Destruction
+
+	virtual
+	~Generator () final override;
+
+
+protected:
+
+	///  @name Friends
+
+	friend class X3DGenerator;
+
+	///  @name Construction
+
+	static
+	Generator*
+	get (std::ostream & ostream);
 
 
 private:
 
-	static
-	bool
-	needsName (const X3DBaseNode* const);
+	///  @name Construction
 
-	static
+	Generator (std::ostream & ostream);
+
+	///  @name Operations
+
+	const std::string &
+	Name (const X3DBaseNode* const baseNode);
+
+	bool
+	needsName (const X3DBaseNode* const baseNode);
+
 	std::string
 	getUniqueName ();
+
+	///  @name Destruction
+
+	static
+	void
+	dispose (std::ios_base::event event, std::ios_base & stream, int index);
+
+	///  @name Member types
 
 	using ExecutionContextStack = std::vector <const X3DExecutionContext*>;
 	using NodeIdSet             = std::set <size_t>;
@@ -215,57 +208,28 @@ private:
 	using ImportedNamesIndex    = std::map <size_t, std::string>;
 	using FieldStack            = std::vector <const X3DFieldDefinition*>;
 
-	static StyleType                style;
-	static SpecificationVersionType specificationVersion;
+	///  @name Static members
 
-	static ExecutionContextStack executionContextStack;
-	static size_t                level;
-	static LocalNodeSet          exportedNodesIndex;
-	static LocalNodeSet          importedNodesIndex;
-	static NodeIdSet             nodes;
-	static NameIndex             names;
-	static NameIndexByNode       namesByNode;
-	static size_t                newName;
-	static ImportedNamesIndex    importedNames;
-	static FieldStack            containerFieldStack;
+	static const int index;
+
+	///  @name Members
+
+	SpecificationVersionType specificationVersion;
+
+	ExecutionContextStack executionContextStack;
+	size_t                level;
+	LocalNodeSet          exportedNodesIndex;
+	LocalNodeSet          importedNodesIndex;
+	NodeIdSet             nodes;
+	NameIndex             names;
+	NameIndexByNode       namesByNode;
+	size_t                newName;
+	ImportedNamesIndex    importedNames;
+	FieldStack            containerFieldStack;
+
+	const std::string emptyName;
 
 };
-
-template <class CharT, class Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-SmallestStyle (std::basic_ostream <CharT, Traits> & ostream)
-{
-	Generator::SmallestStyle ();
-	return ostream;
-}
-
-template <class CharT, class Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-SmallStyle (std::basic_ostream <CharT, Traits> & ostream)
-{
-	Generator::SmallStyle ();
-	return ostream;
-}
-
-template <class CharT, class Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-CompactStyle (std::basic_ostream <CharT, Traits> & ostream)
-{
-	Generator::CompactStyle ();
-	return ostream;
-}
-
-template <class CharT, class Traits>
-inline
-std::basic_ostream <CharT, Traits> &
-NicestStyle (std::basic_ostream <CharT, Traits> & ostream)
-{
-	Generator::NicestStyle ();
-	return ostream;
-}
 
 /// Access type
 
@@ -313,7 +277,7 @@ inline
 std::ostream &
 operator << (std::ostream & ostream, const AccessType accessType)
 {
-	if (Generator::SpecificationVersion () == VRML_V2_0)
+	if (Generator::SpecificationVersion (ostream) == VRML_V2_0)
 		return ostream << Generator::VrmlAccessType { accessType };
 
 	return ostream << Generator::X3DAccessType { accessType };

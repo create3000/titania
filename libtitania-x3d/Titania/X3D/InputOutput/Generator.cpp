@@ -61,181 +61,86 @@
 namespace titania {
 namespace X3D {
 
-Generator::StyleType     Generator::style                = NICEST;
-SpecificationVersionType Generator::specificationVersion = LATEST_VERSION;
+const int Generator::index = std::ostream::xalloc ();
 
-Generator::ExecutionContextStack Generator::executionContextStack (1);
-size_t                           Generator::level = 0;
-Generator::LocalNodeSet          Generator::exportedNodesIndex;
-Generator::LocalNodeSet          Generator::importedNodesIndex;
-Generator::NodeIdSet             Generator::nodes;
-Generator::NameIndex             Generator::names;
-Generator::NameIndexByNode       Generator::namesByNode;
-size_t                           Generator::newName = 0;
-Generator::ImportedNamesIndex    Generator::importedNames;
-Generator::FieldStack            Generator::containerFieldStack (1);
-static const std::string         emptyName;
-
-void
-Generator::Style (const std::string & value)
+Generator::Generator (std::ostream & ostream) :
+	         X3DGenerator (ostream),
+	 specificationVersion (LATEST_VERSION),
+	executionContextStack (1),
+	                level (0),
+	   exportedNodesIndex (),
+	   importedNodesIndex (),
+	                nodes (),
+	                names (),
+	          namesByNode (),
+	              newName (0),
+	        importedNames (),
+	  containerFieldStack (1),
+	            emptyName ()
 {
-	std::string style = value;
+	ostream .pword (index) = this;
+	ostream .register_callback (dispose, index);
+}
 
-	std::transform (style .begin (), style .end (), style .begin (), ::toupper);
+Generator*
+Generator::get (std::ostream & ostream)
+{
+	const auto generator = static_cast <Generator*> (ostream .pword (index));
 
-	if (style == "SMALLEST")
-		SmallestStyle ();
+	if (generator)
+		return generator;
 
-	else if (style == "SMALL")
-		SmallStyle ();
-
-	else if (style == "COMPACT")
-		CompactStyle ();
-
-	else
-		NicestStyle ();
+	return new Generator (ostream);
 }
 
 void
-Generator::SmallestStyle ()
+Generator::PushExecutionContext (std::ostream & ostream, const X3DExecutionContext* const executionContext)
 {
-	if (style == SMALLEST)
+	get (ostream) -> executionContextStack .emplace_back (executionContext);
+
+	get (ostream) -> exportedNodesIndex .emplace (executionContext, NodeIdSet ());
+	get (ostream) -> importedNodesIndex .emplace (executionContext, NodeIdSet ());
+}
+
+void
+Generator::PopExecutionContext (std::ostream & ostream)
+{
+	get (ostream) -> executionContextStack .pop_back ();
+
+	if (get (ostream) -> executionContextStack .back ())
 		return;
 
-	style = SMALLEST;
-
-	space     = " ";
-	tidySpace = "";
-	endl      = " ";
-	tidyBreak = "";
-	listBreak = "";
-	comma     = " ";
-
-	indent     = "";
-	indentChar = "";
-
-	listSpace    = false;
-	hasListBreak = false;
-	hasBreak     = false;
+	get (ostream) -> exportedNodesIndex .clear ();
+	get (ostream) -> importedNodesIndex .clear ();
 }
 
 void
-Generator::SmallStyle ()
+Generator::EnterScope (std::ostream & ostream)
 {
-	if (style == SMALL)
-		return;
+	if (get (ostream) -> level == 0)
+		get (ostream) -> newName = 0;
 
-	style = SMALL;
-
-	space     = " ";
-	tidySpace = "";
-	endl      = "\n";
-	tidyBreak = "\n";
-	listBreak = "";
-	comma     = ",";
-
-	indent     = "";
-	indentChar = "";
-
-	listSpace    = false;
-	hasListBreak = false;
-	hasBreak     = true;
+	++ get (ostream) -> level;
 }
 
 void
-Generator::CompactStyle ()
+Generator::LeaveScope (std::ostream & ostream)
 {
-	if (style == COMPACT)
-		return;
+	-- get (ostream) -> level;
 
-	style = COMPACT;
-
-	space     = " ";
-	tidySpace = " ";
-	endl      = "\n";
-	tidyBreak = "\n";
-	listBreak = " ";
-	comma     = ",";
-
-	indent     = "";
-	indentChar = "  ";
-
-	listSpace    = true;
-	hasListBreak = false;
-	hasBreak     = true;
-}
-
-void
-Generator::NicestStyle ()
-{
-	if (style == NICEST)
-		return;
-
-	style = NICEST;
-
-	space     = " ";
-	tidySpace = " ";
-	endl      = "\n";
-	tidyBreak = "\n";
-	listBreak = "\n";
-	comma     = ",";
-
-	indent     = "";
-	indentChar = "  ";
-
-	listSpace    = true;
-	hasListBreak = true;
-	hasBreak     = true;
-}
-
-void
-Generator::PushExecutionContext (const X3DExecutionContext* const executionContext)
-{
-	executionContextStack .emplace_back (executionContext);
-
-	exportedNodesIndex .emplace (executionContext, NodeIdSet ());
-	importedNodesIndex .emplace (executionContext, NodeIdSet ());
-}
-
-void
-Generator::PopExecutionContext ()
-{
-	executionContextStack .pop_back ();
-
-	if (executionContextStack .back ())
-		return;
-
-	exportedNodesIndex .clear ();
-	importedNodesIndex .clear ();
-}
-
-void
-Generator::EnterScope ()
-{
-	if (level == 0)
-		newName = 0;
-
-	++ level;
-}
-
-void
-Generator::LeaveScope ()
-{
-	-- level;
-
-	if (level == 0)
+	if (get (ostream) -> level == 0)
 	{
-		nodes         .clear ();
-		names         .clear ();
-		namesByNode   .clear ();
-		importedNames .clear ();
+		get (ostream) -> nodes         .clear ();
+		get (ostream) -> names         .clear ();
+		get (ostream) -> namesByNode   .clear ();
+		get (ostream) -> importedNames .clear ();
 	}
 }
 
 void
-Generator::ExportedNodes (const ExportedNodeIndex & exportedNodes)
+Generator::ExportedNodes (std::ostream & ostream, const ExportedNodeIndex & exportedNodes)
 {
-	auto & index = exportedNodesIndex .at (executionContextStack .back ());
+	auto & index = get (ostream) -> exportedNodesIndex .at (get (ostream) -> executionContextStack .back ());
 
 	for (const auto & exportedNode : exportedNodes)
 	{
@@ -249,9 +154,9 @@ Generator::ExportedNodes (const ExportedNodeIndex & exportedNodes)
 }
 
 void
-Generator::ImportedNodes (const ImportedNodeIndex & importedNodes)
+Generator::ImportedNodes (std::ostream & ostream, const ImportedNodeIndex & importedNodes)
 {
-	auto & index = importedNodesIndex .at (executionContextStack .back ());
+	auto & index = get (ostream) -> importedNodesIndex .at (get (ostream) -> executionContextStack .back ());
 
 	for (const auto & importedNode : importedNodes)
 	{
@@ -265,24 +170,30 @@ Generator::ImportedNodes (const ImportedNodeIndex & importedNodes)
 }
 
 bool
-Generator::IsSharedNode (const X3DBaseNode* const baseNode)
+Generator::IsSharedNode (std::ostream & ostream, const X3DBaseNode* const baseNode)
 {
-	if (executionContextStack .back ())
-		return executionContextStack .back () not_eq baseNode -> getExecutionContext ();
+	if (get (ostream) -> executionContextStack .back ())
+		return get (ostream) -> executionContextStack .back () not_eq baseNode -> getExecutionContext ();
 
 	return false;
 }
 
 bool
-Generator::ExistsNode (const X3DBaseNode* const baseNode)
+Generator::ExistsNode (std::ostream & ostream, const X3DBaseNode* const baseNode)
 {
-	return nodes .count (baseNode -> getId ());
+	return get (ostream) -> nodes .count (baseNode -> getId ());
 }
 
 void
-Generator::AddNode (const X3DBaseNode* const baseNode)
+Generator::AddNode (std::ostream & ostream, const X3DBaseNode* const baseNode)
 {
-	nodes .emplace (baseNode -> getId ());
+	get (ostream) -> nodes .emplace (baseNode -> getId ());
+}
+
+const std::string &
+Generator::Name (std::ostream & ostream, const X3DBaseNode* const baseNode)
+{
+	return get (ostream) -> Name (baseNode);
 }
 
 const std::string &
@@ -406,22 +317,22 @@ Generator::getUniqueName ()
 }
 
 void
-Generator::AddImportedNode (const X3DBaseNode* const exportedNode, const std::string & importedName)
+Generator::AddImportedNode (std::ostream & ostream, const X3DBaseNode* const exportedNode, const std::string & importedName)
 {
-	importedNames [exportedNode -> getId ()] = importedName;
+	get (ostream) -> importedNames [exportedNode -> getId ()] = importedName;
 }
 
 const std::string &
-Generator::LocalName (const X3DBaseNode* baseNode)
+Generator::LocalName (std::ostream & ostream, const X3DBaseNode* baseNode)
 {
 	try
 	{
-		return importedNames .at (baseNode -> getId ());
+		return get (ostream) -> importedNames .at (baseNode -> getId ());
 	}
 	catch (...)
 	{
-		if (ExistsNode (baseNode))
-			return Name (baseNode);
+		if (ExistsNode (ostream, baseNode))
+			return Name (ostream, baseNode);
 	}
 
 	throw Error <INVALID_NODE> ("Couldn't get local name for node '" + baseNode -> getTypeName () + "'.");
@@ -492,6 +403,24 @@ Generator::XMLEncode (std::ostream & ostream, const std::string & string)
 		}
 	}
 }
+
+void
+Generator::dispose (std::ios_base::event event, std::ios_base & stream, int index)
+{
+	if (event == std::ios_base::erase_event)
+	{
+		const auto generator = static_cast <Generator*> (stream .pword (index));
+
+		if (generator)
+		{
+			delete generator;
+			stream .pword (index) = nullptr;
+		}
+	}
+}
+
+Generator::~Generator ()
+{ }
 
 } // X3D
 } // titania

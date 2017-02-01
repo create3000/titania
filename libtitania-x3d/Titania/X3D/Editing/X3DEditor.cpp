@@ -212,8 +212,8 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::os
 			<< std::endl;
 	}
 
-	Generator::CompactStyle ();
-	Generator::EnterScope ();
+	Generator::CompactStyle (ostream);
+	Generator::EnterScope (ostream);
 
 	if (not protoNodes .empty ())
 	{
@@ -234,7 +234,7 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::os
 			ostream << *route << std::endl;
 	}
 
-	Generator::LeaveScope ();
+	Generator::LeaveScope (ostream);
 }
 
 std::vector <X3DProtoDeclarationNodePtr>

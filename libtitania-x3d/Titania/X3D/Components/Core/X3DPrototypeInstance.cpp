@@ -433,7 +433,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	if (Generator::IsSharedNode (this))
+	if (Generator::IsSharedNode (ostream, this))
 	{
 		ostream
 			<< Generator::Indent
@@ -442,13 +442,13 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 		return;
 	}
 
-	Generator::EnterScope ();
+	Generator::EnterScope (ostream);
 
-	const std::string & name = Generator::Name (this);
+	const std::string & name = Generator::Name (ostream, this);
 
 	if (not name .empty ())
 	{
-		if (Generator::ExistsNode (this))
+		if (Generator::ExistsNode (ostream, this))
 		{
 			ostream
 				<< Generator::Indent
@@ -462,7 +462,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				<< XMLEncode (name)
 				<< "'";
 
-			const auto containerField = Generator::ContainerField ();
+			const auto containerField = Generator::ContainerField (ostream);
 
 			if (containerField)
 			{
@@ -478,7 +478,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 			ostream << "/>";
 
-			Generator::LeaveScope ();
+			Generator::LeaveScope (ostream);
 
 			return;
 		}
@@ -494,7 +494,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 
 	if (not name .empty ())
 	{
-		Generator::AddNode (this);
+		Generator::AddNode (ostream, this);
 
 		ostream
 			<< Generator::Space
@@ -503,7 +503,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			<< "'";
 	}
 
-	const auto containerField = Generator::ContainerField ();
+	const auto containerField = Generator::ContainerField (ostream);
 
 	if (containerField)
 	{
@@ -550,7 +550,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 	
 				bool mustOutputValue = false;
 	
-				if (Generator::ExecutionContext ())
+				if (Generator::ExecutionContext (ostream))
 				{
 					if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 					{
@@ -567,7 +567,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 				// If we have no execution context we are not in a proto and must not generate IS references the same is true
 				// if the node is a shared node as the node does not belong to the execution context.
 	
-				if (field -> getReferences () .empty () or not Generator::ExecutionContext () or mustOutputValue)
+				if (field -> getReferences () .empty () or not Generator::ExecutionContext (ostream) or mustOutputValue)
 				{
 					if (mustOutputValue)
 						references .emplace_back (field);
@@ -712,7 +712,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 			<< "</ProtoInstance>";
 	}
 
-	Generator::LeaveScope ();
+	Generator::LeaveScope (ostream);
 }
 
 void
@@ -721,21 +721,21 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	if (Generator::IsSharedNode (this))
+	if (Generator::IsSharedNode (ostream, this))
 	{
 		ostream << "null";
 		return;
 	}
 
-	Generator::EnterScope ();
+	Generator::EnterScope (ostream);
 
-	const std::string & name = Generator::Name (this);
+	const std::string & name = Generator::Name (ostream, this);
 
 	// USE name
 
 	if (not name .empty ())
 	{
-		if (Generator::ExistsNode (this))
+		if (Generator::ExistsNode (ostream, this))
 		{
 			ostream
 				<< '{'
@@ -780,7 +780,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< '}';
 
-			Generator::LeaveScope ();
+			Generator::LeaveScope (ostream);
 			return;
 		}
 	}
@@ -808,7 +808,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 
 	if (not name .empty ())
 	{
-		Generator::AddNode (this);
+		Generator::AddNode (ostream, this);
 
 		ostream
 			<< Generator::Indent
@@ -893,7 +893,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 		
 				bool mustOutputValue = false;
 		
-				if (Generator::ExecutionContext ())
+				if (Generator::ExecutionContext (ostream))
 				{
 					if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 					{
@@ -910,7 +910,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 				// If we have no execution context we are not in a proto and must not generate IS references the same is true
 				// if the node is a shared node as the node does not belong to the execution context.
 		
-				if (field -> getReferences () .empty () or not Generator::ExecutionContext () or mustOutputValue)
+				if (field -> getReferences () .empty () or not Generator::ExecutionContext (ostream) or mustOutputValue)
 				{
 					if (mustOutputValue)
 						references .emplace_back (field);
@@ -1173,7 +1173,7 @@ X3DPrototypeInstance::toJSONStream (std::ostream & ostream) const
 		<< Generator::Indent
 		<< '}';
 
-	Generator::LeaveScope ();
+	Generator::LeaveScope (ostream);
 }
 
 void

@@ -806,8 +806,6 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 bool
 OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field, const std::string & string, const bool)
 {
-	X3D::Generator::SmallestStyle ();
-
 	if (field -> getType () == X3D::X3DConstants::SFString)
 	{
 		const auto        sfstring     = static_cast <X3D::SFString*> (field);

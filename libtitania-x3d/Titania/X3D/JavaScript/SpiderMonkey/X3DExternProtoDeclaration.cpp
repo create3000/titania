@@ -255,10 +255,14 @@ X3DExternProtoDeclaration::toVRMLString (JSContext* cx, uint32_t argc, jsval* vp
 		const auto lhs     = getThis <X3DExternProtoDeclaration> (cx, vp);
 		const auto version = context -> getExecutionContext () -> getSpecificationVersion ();
 
-		Generator::SpecificationVersion (version);
-		Generator::NicestStyle ();
+		std::ostringstream osstream;
 
-		return JS_NewStringValue (cx, lhs -> toString (), &JS_RVAL (cx, vp));
+		Generator::SpecificationVersion (osstream, version);
+		Generator::NicestStyle (osstream);
+
+		lhs -> toStream (osstream);
+
+		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -278,13 +282,17 @@ X3DExternProtoDeclaration::toXMLString (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs     = getThis <X3DExternProtoDeclaration> (cx, vp);
 		auto       version = context -> getExecutionContext () -> getSpecificationVersion ();
 
+		std::ostringstream osstream;
+
 		if (version == VRML_V2_0)
 			version = LATEST_VERSION;
 
-		Generator::SpecificationVersion (version);
-		Generator::NicestStyle ();
+		Generator::SpecificationVersion (osstream, version);
+		Generator::NicestStyle (osstream);
 
-		return JS_NewStringValue (cx, lhs -> toXMLString (), &JS_RVAL (cx, vp));
+		lhs -> toXMLStream (osstream);
+
+		return JS_NewStringValue (cx, osstream .str (), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

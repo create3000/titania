@@ -245,8 +245,6 @@ get_field_value (const X3D::X3DScene* const scene,
 	              const bool ellipsize,
 	              const bool useLocale)
 {
-	X3D::Generator::NicestStyle ();
-
 	switch (fieldDefinition -> getType ())
 	{
 		case X3D::X3DConstants::SFNode:
@@ -329,7 +327,7 @@ get_field_value (const X3D::X3DScene* const scene,
 				osstream .imbue (std::locale::classic ());
 
 			osstream
-				<< X3D::Generator::Precision <X3D::SFDouble::value_type>
+				<< X3D::Generator::SetPrecision <X3D::SFDouble::value_type>
 				<< scene -> toUnit (parent -> getUnit (), *static_cast <const X3D::SFDouble*> (fieldDefinition));
 
 			return osstream .str ();
@@ -343,7 +341,7 @@ get_field_value (const X3D::X3DScene* const scene,
 				osstream .imbue (std::locale::classic ());
 
 			osstream
-				<< X3D::Generator::Precision <X3D::SFFloat::value_type>
+				<< X3D::Generator::SetPrecision <X3D::SFFloat::value_type>
 				<< scene -> toUnit (parent -> getUnit (), *static_cast <const X3D::SFFloat*> (fieldDefinition));
 
 			return osstream .str ();
@@ -361,7 +359,7 @@ get_field_value (const X3D::X3DScene* const scene,
 				osstream .imbue (std::locale::classic ());
 
 			osstream
-				<< X3D::Generator::Precision <X3D::SFRotation::value_type>
+				<< X3D::Generator::SetPrecision <X3D::SFRotation::value_type>
 				<< x
 				<< " "
 				<< y
@@ -384,7 +382,7 @@ get_field_value (const X3D::X3DScene* const scene,
 				osstream .imbue (std::locale::classic ());
 
 			osstream
-				<< X3D::Generator::Precision <X3D::SFVec2d::value_type>
+				<< X3D::Generator::SetPrecision <X3D::SFVec2d::value_type>
 				<< scene -> toUnit (unit, field .getX ())
 				<< " "
 				<< scene -> toUnit (unit, field .getY ());
@@ -403,7 +401,7 @@ get_field_value (const X3D::X3DScene* const scene,
 				osstream .imbue (std::locale::classic ());
 
 			osstream
-				<< X3D::Generator::Precision <X3D::SFVec2f::value_type>
+				<< X3D::Generator::SetPrecision <X3D::SFVec2f::value_type>
 				<< scene -> toUnit (unit, field .getX ())
 				<< " "
 				<< scene -> toUnit (unit, field .getY ());
@@ -423,7 +421,7 @@ get_field_value (const X3D::X3DScene* const scene,
 				osstream .imbue (std::locale::classic ());
 
 			osstream
-				<< X3D::Generator::Precision <X3D::SFVec3d::value_type>
+				<< X3D::Generator::SetPrecision <X3D::SFVec3d::value_type>
 				<< (geo ? field .getX () : scene -> toUnit (unit, field .getX ()))
 				<< " "
 				<< (geo ? field .getY () : scene -> toUnit (unit, field .getY ()))
@@ -444,7 +442,7 @@ get_field_value (const X3D::X3DScene* const scene,
 				osstream .imbue (std::locale::classic ());
 
 			osstream
-				<< X3D::Generator::Precision <X3D::SFVec3f::value_type>
+				<< X3D::Generator::SetPrecision <X3D::SFVec3f::value_type>
 				<< scene -> toUnit (unit, field .getX ())
 				<< " "
 				<< scene -> toUnit (unit, field .getY ())
@@ -465,7 +463,7 @@ get_field_value (const X3D::X3DScene* const scene,
 				osstream .imbue (std::locale::classic ());
 
 			osstream
-				<< X3D::Generator::Precision <X3D::SFVec4d::value_type>
+				<< X3D::Generator::SetPrecision <X3D::SFVec4d::value_type>
 				<< scene -> toUnit (unit, field .getX ())
 				<< " "
 				<< scene -> toUnit (unit, field .getY ())
@@ -488,7 +486,7 @@ get_field_value (const X3D::X3DScene* const scene,
 				osstream .imbue (std::locale::classic ());
 
 			osstream
-				<< X3D::Generator::Precision <X3D::SFVec4f::value_type>
+				<< X3D::Generator::SetPrecision <X3D::SFVec4f::value_type>
 				<< scene -> toUnit (unit, field .getX ())
 				<< " "
 				<< scene -> toUnit (unit, field .getY ())

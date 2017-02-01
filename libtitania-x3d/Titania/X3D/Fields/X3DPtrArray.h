@@ -472,15 +472,15 @@ X3DPtrArray <ValueType>::toStream (std::ostream & ostream) const
 		}
 		case 1:
 		{
-			Generator::EnterScope ();
+			Generator::EnterScope (ostream);
 			ostream << front ();
-			Generator::LeaveScope ();
+			Generator::LeaveScope (ostream);
 
 			return;
 		}
 		default:
 		{
-			Generator::EnterScope ();
+			Generator::EnterScope (ostream);
 
 			ostream
 				<< '['
@@ -503,7 +503,7 @@ X3DPtrArray <ValueType>::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< ']';
 
-			Generator::LeaveScope ();
+			Generator::LeaveScope (ostream);
 
 			return;
 		}
@@ -516,7 +516,7 @@ X3DPtrArray <ValueType>::toXMLStream (std::ostream & ostream) const
 {
 	if (not empty ())
 	{
-		Generator::EnterScope ();
+		Generator::EnterScope (ostream);
 
 		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 		{
@@ -545,7 +545,7 @@ X3DPtrArray <ValueType>::toXMLStream (std::ostream & ostream) const
 				<< "<!-- NULL -->";
 		}
 
-		Generator::LeaveScope ();
+		Generator::LeaveScope (ostream);
 	}
 }
 
@@ -562,7 +562,7 @@ X3DPtrArray <ValueType>::toJSONStream (std::ostream & ostream) const
 	}
 	else
 	{
-		Generator::EnterScope ();
+		Generator::EnterScope (ostream);
 
 		ostream
 			<< '['
@@ -608,7 +608,7 @@ X3DPtrArray <ValueType>::toJSONStream (std::ostream & ostream) const
 			<< Generator::Indent
 			<< ']';
 
-		Generator::LeaveScope ();
+		Generator::LeaveScope (ostream);
 	}
 }
 

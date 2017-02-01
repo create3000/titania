@@ -652,7 +652,7 @@ X3DPaletteEditor <Type>::on_add_object_to_palette_activate ()
 	
 		std::ostringstream osstream;
 	
-		osstream << X3D::NicestStyle << scene << std::endl;
+		osstream << X3D::Generator::NicestStyle << scene << std::endl;
 	
 		// Create file.
 	

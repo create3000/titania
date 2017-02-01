@@ -969,7 +969,7 @@ X3DArrayField <ValueType>::toStream (std::ostream & ostream) const
 					<< X3DGenerator::Comma
 					<< X3DGenerator::ListBreak;
 
-				if (X3DGenerator::HasListBreak ())
+				if (X3DGenerator::HasListBreak (ostream))
 					ostream << X3DGenerator::Indent;
 			}
 
@@ -1020,7 +1020,7 @@ X3DArrayField <ValueType>::toJSONStream (std::ostream & ostream) const
 
 		for (const auto & value : std::make_pair (cbegin (), cend () - 1))
 		{
-			if (X3DGenerator::HasListBreak ())
+			if (X3DGenerator::HasListBreak (ostream))
 				ostream << X3DGenerator::Indent;
 
 			value .toJSONStreamValue (ostream);
@@ -1030,7 +1030,7 @@ X3DArrayField <ValueType>::toJSONStream (std::ostream & ostream) const
 				<< X3DGenerator::ListBreak;
 		}
 
-		if (X3DGenerator::HasListBreak ())
+		if (X3DGenerator::HasListBreak (ostream))
 			ostream << X3DGenerator::Indent;
 
 		back () .toJSONStreamValue (ostream);
@@ -1039,7 +1039,7 @@ X3DArrayField <ValueType>::toJSONStream (std::ostream & ostream) const
 			<< X3DGenerator::ListBreak
  			<< X3DGenerator::DecIndent;
 
-		if (X3DGenerator::HasListBreak ())
+		if (X3DGenerator::HasListBreak (ostream))
 			ostream << X3DGenerator::Indent;
 
 		ostream << ']';

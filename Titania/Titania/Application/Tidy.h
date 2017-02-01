@@ -73,8 +73,6 @@ public:
 		if (options .filenames .empty ())
 			throw std::runtime_error ("Expected a filename.");
 
-		X3D::Generator::Style (options .exportStyle);
-
 		basic::uri inputFilename (options .filenames .front ());
 		basic::uri outputFilename (options .exportFilename);
 
@@ -88,6 +86,8 @@ public:
 		{
 			const auto suffix = outputFilename == "-" ? inputFilename .suffix () : outputFilename .suffix ();
 
+			X3D::Generator::Style (std::cout, options .exportStyle);
+	
 			if (suffix == ".x3d")
 				std::cout << X3D::XMLEncode (scene);
 
@@ -111,35 +111,46 @@ public:
 
 			try
 			{
-				auto file = os::mkstemps (tmpFilename, outputFilename .suffix () .size ());
+				auto ofstream = os::mkstemps (tmpFilename, outputFilename .suffix () .size ());
 
-				if (not file)
+				X3D::Generator::Style (ofstream, options .exportStyle);
+	
+				if (not ofstream)
 					throw std::runtime_error ("Couldn't save file.");
 
 				// Create temp file
 
 				if (outputFilename .suffix () == ".x3dz")
-					basic::ogzstream (tmpFilename) << X3D::XMLEncode (scene);
+				{
+					basic::ogzstream ogzstream (tmpFilename);
 
+					X3D::Generator::Style (ogzstream, options .exportStyle);
+	
+					ogzstream << X3D::XMLEncode (scene);
+				}
 				else if (outputFilename .suffix () == ".x3d")
-					file << X3D::XMLEncode (scene);
+					ofstream << X3D::XMLEncode (scene);
 
 				else if (outputFilename .suffix () == ".json")
-					file << X3D::JSONEncode (scene);
+					ofstream << X3D::JSONEncode (scene);
 
 				else if (outputFilename .suffix () == ".x3dvz")
 				{
 					if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 						scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 
-					basic::ogzstream (tmpFilename) << scene;
+					basic::ogzstream ogzstream (tmpFilename);
+
+					X3D::Generator::Style (ogzstream, options .exportStyle);
+	
+					ogzstream << scene;
 				}
 				else
 				{
 					if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
 						scene -> setSpecificationVersion (X3D::LATEST_VERSION);
 
-					file << scene;
+					ofstream << scene;
 				}
 
 				// Replace original file.

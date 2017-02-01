@@ -735,7 +735,7 @@ X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream &
 			if (getConfig () -> getBoolean ("addStandardMetaData"))
 				scene -> setMetaData ("outputStyle", "nicest");
 
-			file << X3D::NicestStyle;
+			file << X3D::Generator::NicestStyle;
 			break;
 		}
 		case OutputStyleType::COMPACT:
@@ -743,7 +743,7 @@ X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream &
 			if (getConfig () -> getBoolean ("addStandardMetaData"))
 				scene -> setMetaData ("outputStyle", "compact");
 
-			file << X3D::CompactStyle;
+			file << X3D::Generator::CompactStyle;
 			break;
 		}
 		case OutputStyleType::SMALL:
@@ -751,7 +751,7 @@ X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream &
 			if (getConfig () -> getBoolean ("addStandardMetaData"))
 				scene -> setMetaData ("outputStyle", "small");
 
-			file << X3D::SmallStyle;
+			file << X3D::Generator::SmallStyle;
 			break;
 		}
 		case OutputStyleType::SMALLEST:
@@ -759,7 +759,7 @@ X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream &
 			if (getConfig () -> getBoolean ("addStandardMetaData"))
 				scene -> setMetaData ("outputStyle", "smallest");
 
-			file << X3D::SmallestStyle;
+			file << X3D::Generator::SmallestStyle;
 			break;
 		}
 	}

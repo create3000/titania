@@ -247,7 +247,7 @@ SFImage::toStream (std::ostream & ostream) const
 			<< std::hex
 			<< std::showbase;
 
-		if (X3DGenerator::HasListBreak ())
+		if (X3DGenerator::HasListBreak (ostream))
 			ostream << X3DGenerator::ListBreak;
 		else
 			ostream << X3DGenerator::Space;
@@ -258,7 +258,7 @@ SFImage::toStream (std::ostream & ostream) const
 
 		for (; y < image .height () - 1; ++ y)
 		{
-			if (X3DGenerator::HasListBreak ())
+			if (X3DGenerator::HasListBreak (ostream))
 				ostream << X3DGenerator::Indent;
 
 			const Image::size_type s = y * image .width ();
@@ -273,13 +273,13 @@ SFImage::toStream (std::ostream & ostream) const
 
 			ostream << image .array () [x + s];
 
-			if (X3DGenerator::HasListBreak ())
+			if (X3DGenerator::HasListBreak (ostream))
 				ostream << X3DGenerator::ListBreak;
 			else
 				ostream << X3DGenerator::Space;
 		}
 
-		if (X3DGenerator::HasListBreak ())
+		if (X3DGenerator::HasListBreak (ostream))
 			ostream << X3DGenerator::Indent;
 
 		const Image::size_type s = y * image .width ();
@@ -336,7 +336,7 @@ SFImage::toJSONStreamValue (std::ostream & ostream) const
 
 	if (image .width () and image .height ())
 	{
-		if (X3DGenerator::HasListBreak ())
+		if (X3DGenerator::HasListBreak (ostream))
 			ostream << X3DGenerator::ListBreak;
 		else
 			ostream << X3DGenerator::Space;
@@ -347,7 +347,7 @@ SFImage::toJSONStreamValue (std::ostream & ostream) const
 
 		for (; y < image .height () - 1; ++ y)
 		{
-			if (X3DGenerator::HasListBreak ())
+			if (X3DGenerator::HasListBreak (ostream))
 				ostream << X3DGenerator::Indent;
 
 			const Image::size_type s = y * image .width ();
@@ -365,13 +365,13 @@ SFImage::toJSONStreamValue (std::ostream & ostream) const
 				<< image .array () [x + s]
 				<< ',';
 
-			if (X3DGenerator::HasListBreak ())
+			if (X3DGenerator::HasListBreak (ostream))
 				ostream << X3DGenerator::ListBreak;
 			else
 				ostream << X3DGenerator::Space;
 		}
 
-		if (X3DGenerator::HasListBreak ())
+		if (X3DGenerator::HasListBreak (ostream))
 			ostream << X3DGenerator::Indent;
 
 		const Image::size_type s = y * image .width ();

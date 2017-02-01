@@ -151,9 +151,9 @@ ImportedNode::toStream (std::ostream & ostream) const
 {
 	try
 	{
-		if (Generator::ExistsNode (getInlineNode ()))
+		if (Generator::ExistsNode (ostream, getInlineNode ()))
 		{
-			Generator::AddImportedNode (getExportedNode (), importedName);
+			Generator::AddImportedNode (ostream, getExportedNode (), importedName);
 
 			if (not getComments () .empty ())
 			{
@@ -175,7 +175,7 @@ ImportedNode::toStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< "IMPORT"
 				<< Generator::Space
-				<< Generator::Name (getInlineNode ())
+				<< Generator::Name (ostream, getInlineNode ())
 				<< '.'
 				<< exportedName;
 
@@ -198,16 +198,16 @@ ImportedNode::toXMLStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	if (Generator::ExistsNode (getInlineNode ()))
+	if (Generator::ExistsNode (ostream, getInlineNode ()))
 	{
-		Generator::AddImportedNode (getExportedNode (), importedName);
+		Generator::AddImportedNode (ostream, getExportedNode (), importedName);
 
 		ostream
 			<< Generator::Indent
 			<< "<IMPORT"
 			<< Generator::Space
 			<< "inlineDEF='"
-			<< XMLEncode (Generator::Name (getInlineNode ()))
+			<< XMLEncode (Generator::Name (ostream, getInlineNode ()))
 			<< "'"
 			<< Generator::Space
 			<< "exportedDEF='"
@@ -235,9 +235,9 @@ ImportedNode::toJSONStream (std::ostream & ostream) const
 //throw (Error <INVALID_NODE>,
 //       Error <DISPOSED>)
 {
-	if (Generator::ExistsNode (getInlineNode ()))
+	if (Generator::ExistsNode (ostream, getInlineNode ()))
 	{
-		Generator::AddImportedNode (getExportedNode (), importedName);
+		Generator::AddImportedNode (ostream, getExportedNode (), importedName);
 
 		ostream
 			<< '{'
@@ -260,7 +260,7 @@ ImportedNode::toJSONStream (std::ostream & ostream) const
 			<< '"'
 			<< ':'
 			<< Generator::TidySpace
-			<< SFString (Generator::Name (getInlineNode ()))
+			<< SFString (Generator::Name (ostream, getInlineNode ()))
 			<< ','
 			<< Generator::TidyBreak;
 	
@@ -306,8 +306,6 @@ ImportedNode::toJSONStream (std::ostream & ostream) const
 void
 ImportedNode::dispose ()
 {
-	__LOG__ << std::endl;
-
 	X3DBaseNode::dispose ();
 }
 

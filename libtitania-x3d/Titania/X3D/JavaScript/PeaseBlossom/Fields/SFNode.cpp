@@ -56,6 +56,8 @@
 #include "../../../InputOutput/Loader.h"
 #include "../value.h"
 
+#include <sstream>
+
 namespace titania {
 namespace X3D {
 namespace peaseblossom {
@@ -309,10 +311,14 @@ SFNode::toVRMLString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var
 		const auto lhs     = getThis <SFNode> (ec, object);
 		auto       version = context -> getExecutionContext () -> getSpecificationVersion ();
 
-		Generator::SpecificationVersion (version);
-		Generator::NicestStyle ();
+		std::ostringstream osstream;
 
-		return lhs -> toString ();
+		Generator::SpecificationVersion (osstream, version);
+		Generator::NicestStyle (osstream);
+
+		lhs -> toStream (osstream);
+
+		return osstream .str ();
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -332,13 +338,17 @@ SFNode::toXMLString (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 		const auto lhs     = getThis <SFNode> (ec, object);
 		auto       version = context -> getExecutionContext () -> getSpecificationVersion ();
 
+		std::ostringstream osstream;
+
 		if (version == VRML_V2_0)
 			version = LATEST_VERSION;
 
-		Generator::SpecificationVersion (version);
-		Generator::NicestStyle ();
+		Generator::SpecificationVersion (osstream, version);
+		Generator::NicestStyle (osstream);
 
-		return lhs -> toXMLString ();
+		lhs -> toXMLStream (osstream);
+
+		return osstream .str ();
 	}
 	catch (const std::invalid_argument &)
 	{

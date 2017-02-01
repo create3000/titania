@@ -1427,9 +1427,9 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	Generator::PushExecutionContext (this);
-	Generator::EnterScope ();
-	Generator::ImportedNodes (getImportedNodes ());
+	Generator::PushExecutionContext (ostream, this);
+	Generator::EnterScope (ostream);
+	Generator::ImportedNodes (ostream, getImportedNodes ());
 
 	for (const auto & externProto : getExternProtoDeclarations ())
 	{
@@ -1512,8 +1512,8 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		}
 	}
 
-	Generator::LeaveScope ();
-	Generator::PopExecutionContext ();
+	Generator::LeaveScope (ostream);
+	Generator::PopExecutionContext (ostream);
 }
 
 void
@@ -1521,9 +1521,9 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	Generator::PushExecutionContext (this);
-	Generator::EnterScope ();
-	Generator::ImportedNodes (getImportedNodes ());
+	Generator::PushExecutionContext (ostream, this);
+	Generator::EnterScope (ostream);
+	Generator::ImportedNodes (ostream, getImportedNodes ());
 
 	for (const auto & externProto : getExternProtoDeclarations ())
 	{
@@ -1570,8 +1570,8 @@ X3DExecutionContext::toXMLStream (std::ostream & ostream) const
 		{ }
 	}
 
-	Generator::LeaveScope ();
-	Generator::PopExecutionContext ();
+	Generator::LeaveScope (ostream);
+	Generator::PopExecutionContext (ostream);
 }
 
 void
@@ -1579,9 +1579,9 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	Generator::PushExecutionContext (this);
-	Generator::EnterScope ();
-	Generator::ImportedNodes (getImportedNodes ());
+	Generator::PushExecutionContext (ostream, this);
+	Generator::EnterScope (ostream);
+	Generator::ImportedNodes (ostream, getImportedNodes ());
 
 	bool lastProperty = false;
 
@@ -1655,8 +1655,6 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 				<< Generator::TidyBreak;
 		}
 
-		Generator::EnterScope ();
-
 		for (const auto & value : std::make_pair (getRootNodes () .begin (), getRootNodes () .end ()))
 		{
 			if (value)
@@ -1679,8 +1677,6 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 					<< Generator::TidyBreak;
 			}
 		}
-
-		Generator::LeaveScope ();
 
 		lastProperty = true;
 	}
@@ -1782,8 +1778,8 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 	}
 
 
-	Generator::LeaveScope ();
-	Generator::PopExecutionContext ();
+	Generator::LeaveScope (ostream);
+	Generator::PopExecutionContext (ostream);
 }
 
 void

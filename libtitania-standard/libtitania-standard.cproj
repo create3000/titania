@@ -568,6 +568,7 @@
     <None Include="Titania\OS\unlink.h" />
     <None Include="Titania\OS\program_exists.h" />
     <None Include="Titania\OS\rename.h" />
+    <None Include="Titania\String\toupper.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

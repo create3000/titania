@@ -101,7 +101,7 @@ private:
 	int
 	nodes ()
 	{
-		X3D::Generator::Style ("compact");
+		X3D::Generator::Style (std::cout, "compact");
 
 		std::cout .imbue (std::locale::classic ());
 
@@ -149,9 +149,9 @@ private:
 	int
 	fields ()
 	{
-		X3D::Generator::Style ("compact");
-
 		std::cout .imbue (std::locale::classic ());
+
+		X3D::Generator::Style (std::cout, "compact");
 
 		for (const auto & field : X3D::getBrowser () -> getSupportedFields ())
 		{

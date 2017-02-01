@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_BASIC_X3DFIELD_H__
 
 #include "../Basic/X3DFieldDefinition.h"
-#include "../InputOutput/X3DBaseGenerator.h"
+#include "../InputOutput/X3DGenerator.h"
 #include "../Parser/Grammar.h"
 
 namespace titania {
@@ -64,7 +64,7 @@ class X3DField :
 {
 public:
 
-	typedef ValueType internal_type;
+	using internal_type = ValueType;
 
 	using X3DFieldDefinition::addEvent;
 	using X3DFieldDefinition::addInterest;

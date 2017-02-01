@@ -991,26 +991,26 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	if (Generator::IsSharedNode (this))
+	if (Generator::IsSharedNode (ostream, this))
 	{
 		ostream << "NULL";
 		return;
 	}
 
-	Generator::EnterScope ();
+	Generator::EnterScope (ostream);
 
-	const std::string & name = Generator::Name (this);
+	const std::string & name = Generator::Name (ostream, this);
 
 	if (not name .empty ())
 	{
-		if (Generator::ExistsNode (this))
+		if (Generator::ExistsNode (ostream, this))
 		{
 			ostream
 				<< "USE"
 				<< Generator::Space
 				<< name;
 
-			Generator::LeaveScope ();
+			Generator::LeaveScope (ostream);
 
 			return;
 		}
@@ -1037,7 +1037,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 	if (not name .empty ())
 	{
-		Generator::AddNode (this);
+		Generator::AddNode (ostream, this);
 
 		ostream
 			<< "DEF"
@@ -1058,10 +1058,10 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 	if (canUserDefinedFields ())
 	{
-		switch (Generator::Style ())
+		switch (Generator::Style (ostream))
 		{
-			case Generator::SMALLEST:
-			case Generator::SMALL:
+			case Generator::StyleType::SMALLEST:
+			case Generator::StyleType::SMALL:
 			{
 				break;
 			}
@@ -1150,7 +1150,7 @@ X3DBaseNode::toStream (std::ostream & ostream) const
 
 	ostream << '}';
 
-	Generator::LeaveScope ();
+	Generator::LeaveScope (ostream);
 }
 
 /***
@@ -1168,7 +1168,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 			<< Generator::ForceBreak;
 	}
 
-	if (field -> getReferences () .empty () or not Generator::ExecutionContext ())
+	if (field -> getReferences () .empty () or not Generator::ExecutionContext (ostream))
 	{
 		if (field -> isInitializable ())
 		{
@@ -1176,7 +1176,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 	
 			ostream << Generator::Indent;
 	
-			ostream << getFieldName (field -> getName (), Generator::SpecificationVersion ());
+			ostream << getFieldName (field -> getName (), Generator::SpecificationVersion (ostream));
 	
 			ostream
 				<< Generator::Space
@@ -1196,7 +1196,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 
 			ostream << Generator::Indent;
 
-			ostream << getFieldName (field -> getName (), Generator::SpecificationVersion ());
+			ostream << getFieldName (field -> getName (), Generator::SpecificationVersion (ostream));
 
 			ostream
 				<< Generator::Space
@@ -1223,7 +1223,7 @@ X3DBaseNode::toStreamField (std::ostream & ostream, X3DFieldDefinition* const fi
 					<< Generator::Break
 					<< Generator::Indent;
 
-				ostream << getFieldName (field -> getName (), Generator::SpecificationVersion ());
+				ostream << getFieldName (field -> getName (), Generator::SpecificationVersion (ostream));
 
 				ostream
 					<< Generator::Space
@@ -1256,7 +1256,7 @@ X3DBaseNode::toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinitio
 	// If we have no execution context we are not in a proto and must not generate IS references the same is true
 	// if the node is a shared node as the node does not belong to the execution context.
 
-	if (field -> getReferences () .empty () or not Generator::ExecutionContext ())
+	if (field -> getReferences () .empty () or not Generator::ExecutionContext (ostream))
 	{
 		// Output user defined field
 
@@ -1358,7 +1358,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	if (Generator::IsSharedNode (this))
+	if (Generator::IsSharedNode (ostream, this))
 	{
 		ostream
 			<< Generator::Indent
@@ -1367,13 +1367,13 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		return;
 	}
 
-	Generator::EnterScope ();
+	Generator::EnterScope (ostream);
 
-	const std::string & name = Generator::Name (this);
+	const std::string & name = Generator::Name (ostream, this);
 
 	if (not name .empty ())
 	{
-		if (Generator::ExistsNode (this))
+		if (Generator::ExistsNode (ostream, this))
 		{
 			ostream
 				<< Generator::Indent
@@ -1384,7 +1384,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				<< XMLEncode (name)
 				<< "'";
 
-			const auto containerField = Generator::ContainerField ();
+			const auto containerField = Generator::ContainerField (ostream);
 
 			if (containerField)
 			{
@@ -1400,7 +1400,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 			ostream << "/>";
 
-			Generator::LeaveScope ();
+			Generator::LeaveScope (ostream);
 
 			return;
 		}
@@ -1413,7 +1413,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 	if (not name .empty ())
 	{
-		Generator::AddNode (this);
+		Generator::AddNode (ostream, this);
 
 		ostream
 			<< Generator::Space
@@ -1422,7 +1422,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			<< "'";
 	}
 
-	const auto containerField = Generator::ContainerField ();
+	const auto containerField = Generator::ContainerField (ostream);
 
 	if (containerField)
 	{
@@ -1458,7 +1458,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 		bool mustOutputValue = false;
 
-		if (Generator::ExecutionContext ())
+		if (Generator::ExecutionContext (ostream))
 		{
 			if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 			{
@@ -1475,7 +1475,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 		// If we have no execution context we are not in a proto and must not generate IS references the same is true
 		// if the node is a shared node as the node does not belong to the execution context.
 
-		if ((field -> getReferences () .empty () or not Generator::ExecutionContext ()) or mustOutputValue)
+		if ((field -> getReferences () .empty () or not Generator::ExecutionContext (ostream)) or mustOutputValue)
 		{
 			if (mustOutputValue)
 				references .emplace_back (field);
@@ -1498,7 +1498,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 						ostream
 							<< Generator::Break
 							<< Generator::Indent
-							<< getFieldName (field -> getName (), Generator::SpecificationVersion ())
+							<< getFieldName (field -> getName (), Generator::SpecificationVersion (ostream))
 							<< "='"
 							<< XMLEncode (field)
 							<< "'";
@@ -1565,9 +1565,9 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 						mustOutputValue = not field -> isDefaultValue ();
 				}
 
-				if ((field -> getReferences () .empty () or not Generator::ExecutionContext ()) or mustOutputValue)
+				if ((field -> getReferences () .empty () or not Generator::ExecutionContext (ostream)) or mustOutputValue)
 				{
-					if (mustOutputValue and Generator::ExecutionContext ())
+					if (mustOutputValue and Generator::ExecutionContext (ostream))
 						references .emplace_back (field);
 
 					if (not field -> isInitializable () or field -> isDefaultValue ())
@@ -1585,7 +1585,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 							case X3DConstants::SFNode:
 							case X3DConstants::MFNode:
 							{
-								Generator::PushContainerField (nullptr);
+								Generator::PushContainerField (ostream, nullptr);
 
 								ostream
 									<< ">"
@@ -1598,7 +1598,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 									<< "</field>"
 									<< Generator::TidyBreak;
 
-								Generator::PopContainerField ();
+								Generator::PopContainerField (ostream);
 
 								break;
 							}
@@ -1619,7 +1619,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 				}
 				else
 				{
-					if (Generator::ExecutionContext ())
+					if (Generator::ExecutionContext (ostream))
 						references .emplace_back (field);
 
 					ostream
@@ -1666,13 +1666,13 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 
 		for (const auto & field : childNodes)
 		{
-			Generator::PushContainerField (field);
+			Generator::PushContainerField (ostream, field);
 
 			ostream
 				<< XMLEncode (field)
 				<< Generator::TidyBreak;
 
-			Generator::PopContainerField ();
+			Generator::PopContainerField (ostream);
 		}
 
 		if (cdata)
@@ -1695,7 +1695,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			<< ">";
 	}
 
-	Generator::LeaveScope ();
+	Generator::LeaveScope (ostream);
 }
 
 /***
@@ -1706,21 +1706,21 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 {
 	ostream .imbue (std::locale::classic ());
 
-	if (Generator::IsSharedNode (this))
+	if (Generator::IsSharedNode (ostream, this))
 	{
 		ostream << "null";
 		return;
 	}
 
-	Generator::EnterScope ();
+	Generator::EnterScope (ostream);
 
-	const std::string & name = Generator::Name (this);
+	const std::string & name = Generator::Name (ostream, this);
 
 	// USE name
 
 	if (not name .empty ())
 	{
-		if (Generator::ExistsNode (this))
+		if (Generator::ExistsNode (ostream, this))
 		{
 			ostream
 				<< '{'
@@ -1751,7 +1751,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 				<< Generator::Indent
 				<< '}';
 
-			Generator::LeaveScope ();
+			Generator::LeaveScope (ostream);
 			return;
 		}
 	}
@@ -1779,7 +1779,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 
 	if (not name .empty ())
 	{
-		Generator::AddNode (this);
+		Generator::AddNode (ostream, this);
 
 		ostream
 			<< Generator::Indent
@@ -1831,7 +1831,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 	
 			bool mustOutputValue = false;
 	
-			if (Generator::ExecutionContext ())
+			if (Generator::ExecutionContext (ostream))
 			{
 				if (field -> getAccessType () == inputOutput and not field -> getReferences () .empty ())
 				{
@@ -1848,7 +1848,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 			// If we have no execution context we are not in a proto and must not generate IS references the same is true
 			// if the node is a shared node as the node does not belong to the execution context.
 	
-			if (field -> getReferences () .empty () or not Generator::ExecutionContext () or mustOutputValue)
+			if (field -> getReferences () .empty () or not Generator::ExecutionContext (ostream) or mustOutputValue)
 			{
 				if (mustOutputValue)
 					references .emplace_back (field);
@@ -1882,7 +1882,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 							<< Generator::Indent
 							<< '"'
 							<< '-'
-							<< getFieldName (field -> getName (), Generator::SpecificationVersion ())
+							<< getFieldName (field -> getName (), Generator::SpecificationVersion (ostream))
 							<< '"'
 							<< ':'
 							<< Generator::TidySpace
@@ -1904,7 +1904,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 							<< Generator::Indent
 							<< '"'
 							<< '@'
-							<< getFieldName (field -> getName (), Generator::SpecificationVersion ())
+							<< getFieldName (field -> getName (), Generator::SpecificationVersion (ostream))
 							<< '"'
 							<< ':'
 							<< Generator::TidySpace
@@ -2003,9 +2003,9 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 					mustOutputValue = not field -> isDefaultValue ();
 			}
 
-			if ((field -> getReferences () .empty () or not Generator::ExecutionContext ()) or mustOutputValue)
+			if ((field -> getReferences () .empty () or not Generator::ExecutionContext (ostream)) or mustOutputValue)
 			{
-				if (mustOutputValue and Generator::ExecutionContext ())
+				if (mustOutputValue and Generator::ExecutionContext (ostream))
 					references .emplace_back (field);
 
 				if (not field -> isInitializable () or field -> isDefaultValue ())
@@ -2071,7 +2071,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 			}
 			else
 			{
-				if (Generator::ExecutionContext ())
+				if (Generator::ExecutionContext (ostream))
 					references .emplace_back (field);
 			}
 
@@ -2242,7 +2242,7 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 		<< Generator::Indent
 		<< '}';
 
-	Generator::LeaveScope ();
+	Generator::LeaveScope (ostream);
 }
 
 /***
