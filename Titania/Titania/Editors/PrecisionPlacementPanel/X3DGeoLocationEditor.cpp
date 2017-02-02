@@ -101,7 +101,7 @@ X3DGeoLocationEditor::set_selection (const X3D::MFNode & selection)
 
 	getGeoLocationExpander () .set_visible (geoLocation);
 
-	geoSystem -> setNode (X3D::SFNode (geoLocation));
+	geoSystem -> setNode (geoLocation);
 	geoCoords .setNodes (geoLocations);
 }
 

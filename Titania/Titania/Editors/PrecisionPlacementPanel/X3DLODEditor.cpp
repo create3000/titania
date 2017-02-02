@@ -91,7 +91,7 @@ X3DLODEditor::set_selection (const X3D::MFNode & selection)
 	const auto lod  = X3D::X3DPtr <X3D::LOD> (selection .empty () ? nullptr : selection .back ());
 	const auto lods = lod ? X3D::MFNode ({ lod }) : X3D::MFNode ();
 
-	nodeName         .setNode  (X3D::SFNode (lod));
+	nodeName         .setNode  (lod);
 	forceTransitions .setNodes (lods);
 	center           .setNodes (lods);
 	range            .setNodes (lods);

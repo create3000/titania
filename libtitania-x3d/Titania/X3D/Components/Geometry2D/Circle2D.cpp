@@ -125,7 +125,7 @@ Circle2D::createBBox () const
 void
 Circle2D::build ()
 {
-	const Circle2DOptions* const options = getBrowser () -> getCircle2DOptions ();
+	const auto & options = getBrowser () -> getCircle2DOptions ();
 
 	if (std::abs (radius ()) == 1.0f)
 		getVertices () = options -> getVertices ();

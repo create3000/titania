@@ -70,8 +70,8 @@ class SFColorRGBA :
 {
 public:
 
-	typedef Color3f::value_type value_type;
-	typedef size_t              size_type;
+	using value_type = Color3f::value_type;
+	using size_type  = size_t;
 
 	using X3DField <Color4f>::addInterest;
 	using X3DField <Color4f>::setValue;

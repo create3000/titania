@@ -72,8 +72,8 @@ public:
 
 	///  @name Member types
 
-	typedef Image::array_type::value_type value_type;
-	typedef Image::size_type              size_type;
+	using value_type = Image::array_type::value_type;
+	using size_type  = Image::size_type;
 
 	using X3DField <Image>::addInterest;
 	using X3DField <Image>::setValue;

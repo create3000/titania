@@ -147,7 +147,7 @@ ArcClose2D::getAngle ()
 void
 ArcClose2D::build ()
 {
-	const ArcClose2DOptions* const options = getBrowser () -> getArcClose2DOptions ();
+	const auto & options = getBrowser () -> getArcClose2DOptions ();
 
 	const double difference = getAngle ();
 	size_t       segments   = std::ceil (difference / options -> minAngle ());

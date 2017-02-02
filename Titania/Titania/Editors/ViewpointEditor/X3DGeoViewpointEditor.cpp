@@ -139,7 +139,7 @@ X3DGeoViewpointEditor::setGeoViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode
 
 	const auto geoViewpoints = geoViewpoint ? X3D::MFNode ({ geoViewpoint }) : X3D::MFNode ();
 
-	geoSystem -> setNode (X3D::SFNode (geoViewpoint));
+	geoSystem -> setNode (geoViewpoint);
 
 	position         .setNodes (geoViewpoints);
 	orientation      .setNodes (geoViewpoints);

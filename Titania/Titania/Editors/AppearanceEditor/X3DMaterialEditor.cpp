@@ -427,17 +427,17 @@ X3DMaterialEditor::on_material_changed ()
 			{
 				case 0:
 				{
-					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
 					break;
 				}
 				case 1:
 				{
-					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (material), undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, material, undoStep);
 					break;
 				}
 				case 2:
 				{
-					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (twoSidedMaterial), undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, twoSidedMaterial, undoStep);
 					break;
 				}
 				default:
@@ -545,7 +545,7 @@ X3DMaterialEditor::set_widgets ()
 {
 	const X3D::MFNode nodes = { materialNode };
 
-	nodeName .setNode (X3D::SFNode (materialNode));
+	nodeName .setNode (materialNode);
 
 	diffuseColor . setNodes (nodes);
 	specularColor .setNodes (nodes);

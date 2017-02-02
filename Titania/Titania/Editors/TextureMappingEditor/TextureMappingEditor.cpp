@@ -1167,7 +1167,7 @@ TextureMappingEditor::on_remove_clicked ()
 	undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (geometry -> texCoordIndex ()));
 	geometry -> texCoordIndex () .clear ();
 
-	getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (), undoStep);
+	getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, geometry -> texCoord (), nullptr, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -1198,7 +1198,7 @@ TextureMappingEditor::on_apply_clicked ()
 
 	// Replace texCoord or multiTexCoord.
 
-	const auto texCoordNode = texCoord -> copy (geometry -> getExecutionContext (), X3D::FLAT_COPY);
+	const X3D::SFNode texCoordNode (texCoord -> copy (geometry -> getExecutionContext (), X3D::FLAT_COPY));
 	const X3D::X3DPtr <X3D::MultiTextureCoordinate> multiTextureCoordinate (geometry -> texCoord ());
 
 	if (multiTextureCoordinate)
@@ -1221,10 +1221,10 @@ TextureMappingEditor::on_apply_clicked ()
 		//
 		//		getBrowserWindow () -> replaceNodes (getCurrentContext (), X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), texCoords, undoStep);
 
-		getBrowserWindow () -> replaceNodes (getCurrentContext (), X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), { texCoordNode }, undoStep);
+		getBrowserWindow () -> replaceNodes (getCurrentContext (), multiTextureCoordinate, multiTextureCoordinate -> texCoord (), { texCoordNode }, undoStep);
 	}
 	else
-		getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (geometry), geometry -> texCoord (), X3D::SFNode (texCoordNode), undoStep);
+		getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, geometry -> texCoord (), texCoordNode, undoStep);
 
 	geometry -> getExecutionContext () -> realize ();
 
@@ -1249,7 +1249,7 @@ void
 TextureMappingEditor::connectMultiTexCoord ()
 {
 	multiTexCoord -> removeInterest (this, &TextureMappingEditor::connectMultiTexCoord);
-	multiTexCoord -> addInterest (this, &TextureMappingEditor::set_texCoord, X3D::SFNode (multiTexCoord));
+	multiTexCoord -> addInterest (this, &TextureMappingEditor::set_texCoord, multiTexCoord);
 }
 
 void
@@ -1288,7 +1288,7 @@ TextureMappingEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 		if (shape)
 		{
 			const auto transform       = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-			const auto modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (getCurrentContext (), X3D::SFNode (shape));
+			const auto modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (getCurrentContext (), shape);
 
 			transform -> setMatrix (modelViewMatrix);
 

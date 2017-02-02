@@ -152,38 +152,118 @@ using ConvexHull2d = math::convex_hull2 <double>;
 using ConvexHull3d = math::convex_hull3 <double>;
 
 
-template <class Type>
-class X3DPtr
+template <class ValueType>
+class X3DField
 {
 public:
 
-	using value_type = Type;
-
-	X3DPtr () :
+	X3DField () :
 		value (nullptr)
 	{
 		__LOG__ << std::endl;
 	}
 
+	X3DField (const X3DField & other) :
+		value (other .getValue ())
+	{
+		__LOG__ << std::endl;
+	}
+
+	explicit
+	X3DField (const ValueType & value) :
+		value (value)
+	{
+		__LOG__ << std::endl;
+	}
+
+	operator const ValueType & () const
+	{ return value; }
+
+	void
+	setValue (const ValueType & v)
+	{ value = v; }
+
+	const ValueType &
+	getValue () const
+	{ return value; }
+
+
+private:
+
+	ValueType value;
+
+
+};
+
+template <class ValueType>
+class X3DPtr :
+	public X3DField <ValueType*>
+{
+public:
+
+	using value_type    = ValueType;
+	using internal_type = ValueType*;
+
+	X3DPtr () :
+		X3DField <internal_type> (nullptr)
+	{
+		__LOG__ << std::endl;
+	}
+
 	X3DPtr (const X3DPtr & other) :
-		value (other .getValue ())
+		X3DField <internal_type> (other .getValue ())
 	{
 		__LOG__ << std::endl;
 	}
 
-	template <class Up, std::enable_if_t <std::is_base_of <Type, Up>::value, bool> = false>
+	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
 	X3DPtr (const X3DPtr <Up> & other) :
-		value (other .getValue ())
+		X3DField <internal_type> (other .getValue ())
 	{
 		__LOG__ << std::endl;
 	}
 
-	template <class Up, std::enable_if_t <not std::is_base_of <Type, Up>::value, bool> = true>
+	template <class Up, std::enable_if_t <not std::is_base_of <ValueType, Up>::value, bool> = true>
 	explicit
 	X3DPtr (const X3DPtr <Up> & other) :
-		value (dynamic_cast <Type*> (other .getValue ()))
+		X3DField <internal_type> (dynamic_cast <ValueType*> (other .getValue ()))
 	{
 		__LOG__ << std::endl;
+	}
+
+	explicit
+	X3DPtr (ValueType* const value) :
+		X3DField <internal_type> (value)
+	{
+		__LOG__ << std::endl;
+	}
+
+	template <class Up>
+	explicit
+	X3DPtr (Up* const value) :
+		X3DField <internal_type> (value)
+	{ }
+
+	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	X3DPtr &
+	operator = (const X3DPtr <Up> & other)
+	{
+		__LOG__ << std::endl;
+
+		this -> setValue (other .getValue ());
+
+		return *this;
+	}
+
+	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	X3DPtr &
+	operator = (X3DPtr <Up> && other)
+	{
+		__LOG__ << std::endl;
+
+		this -> setValue (other .getValue ());
+
+		return *this;
 	}
 
 	X3DPtr &
@@ -191,54 +271,88 @@ public:
 	{
 		__LOG__ << std::endl;
 
-		value = other .getValue ();
+		this -> setValue (other .getValue ());
 
 		return *this;
 	}
-
-	template <class Up, std::enable_if_t <std::is_base_of <Type, Up>::value, bool> = false>
-	X3DPtr &
-	operator = (const X3DPtr <Up> & other)
-	{
-		__LOG__ << std::endl;
-
-		value = other .getValue ();
-
-		return *this;
-	}
-
-	template <class Up, std::enable_if_t <std::is_base_of <Type, Up>::value, bool> = false>
-	X3DPtr &
-	operator = (X3DPtr <Up> && other)
-	{
-		__LOG__ << std::endl;
-
-		value = other .getValue ();
-
-		return *this;
-	}
-
-	explicit
-	X3DPtr (Type* const value) :
-		value (value)
-	{
-		__LOG__ << std::endl;
-	}
-
-	Type*
-	getValue () const
-	{ return value; }
-
-private:
-
-	Type* value;
 
 };
 
 
+template <class ValueType>
+class X3DPtrArray
+{
+public:
+
+	X3DPtrArray ()
+	{
+		__LOG__ << std::endl;
+	}
+
+	X3DPtrArray (const X3DPtrArray & other)
+	{
+		__LOG__ << std::endl;
+	}
+
+	///  Constructs new X3DPtrArray.
+	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	X3DPtrArray (const X3DPtrArray <Up> & other)
+	{
+		__LOG__ << std::endl;
+	}
+
+	///  Constructs new X3DPtrArray.
+	template <class Up, std::enable_if_t <not std::is_base_of <ValueType, Up>::value, bool> = true>
+	explicit
+	X3DPtrArray (const X3DPtrArray <Up> & other)
+	{
+		__LOG__ << std::endl;
+	}
+
+	///  Constructs new X3DPtrArray.
+	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	X3DPtrArray (X3DPtrArray <Up> &&)
+	{
+		__LOG__ << std::endl;
+	}
+
+	///  Constructs new X3DPtrArray.
+	template <class Up, std::enable_if_t <not std::is_base_of <ValueType, Up>::value, bool> = true>
+	explicit
+	X3DPtrArray (X3DPtrArray <Up> &&)
+	{
+		__LOG__ << std::endl;
+	}
+
+//	///  Constructs new X3DPtrArray.
+//	X3DPtrArray (std::initializer_list <X3DPtr <ValueType>> initializer_list) 
+//	{
+//		__LOG__ << std::endl;
+//	}
+
+	///  Constructs new X3DPtrArray.
+	X3DPtrArray (std::initializer_list <const typename X3DPtr <ValueType>::internal_type> initializer_list)
+	{
+		__LOG__ << std::endl;
+	}
+
+	///  Constructs new X3DPtrArray.
+	template <class InputIterator>
+	X3DPtrArray (InputIterator first, InputIterator last)
+	{
+		__LOG__ << std::endl;
+	}
+
+
+};
+
 class A { public: virtual ~A () { } };
 class B : public A { public: };
 class C : public A { public: };
+
+void
+fa (A*)
+{ }
 
 int
 main (int argc, char** argv)
@@ -269,9 +383,19 @@ main (int argc, char** argv)
 	ac = c;
 	ca = X3DPtr <C> (ac);
 
+	//fa (a);
+
 	__LOG__ << "ab: " << ab .getValue () << std::endl;
 	__LOG__ << "ac: " << ac .getValue () << std::endl;
 	__LOG__ << "ca: " << ca .getValue () << std::endl;
+
+	__LOG__ << std::endl;
+
+	X3DPtrArray <A> va = { new A () };
+	X3DPtrArray <A> vb = { new B () };
+	X3DPtrArray <A> vx = { a, b, c };
+
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

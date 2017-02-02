@@ -162,7 +162,7 @@ BackgroundEditor::set_background (const X3D::X3DPtr <X3D::X3DBackgroundNode> & v
 	getRemoveBackgroundButton () .set_sensitive (inScene and backgroundNode);
 	getBackgroundBox ()          .set_sensitive (inScene);
 	
-	nodeName .setNode (X3D::SFNode (backgroundNode));
+	nodeName .setNode (backgroundNode);
 	sky          .setNodes (nodes);
 	skyColor     .setNodes (nodes);
 	skyAngle     .setNodes (nodes);

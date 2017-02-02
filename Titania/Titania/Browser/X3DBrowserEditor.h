@@ -114,7 +114,7 @@ public:
 
 	virtual
 	bool
-	save (const basic::uri &, const OutputStyleType, const bool) override;
+	save (const basic::uri &, const std::string &, const bool) override;
 
 	virtual
 	void

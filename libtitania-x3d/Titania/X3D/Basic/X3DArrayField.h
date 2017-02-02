@@ -79,23 +79,23 @@ public:
 
 	///  @name Member types
 
-	typedef ValueType         value_type;
-	typedef Array <ValueType> internal_type;
+	using value_type    = ValueType;
+	using internal_type = Array <ValueType>;
 
-	typedef typename internal_type::allocator_type  allocator_type;
-	typedef typename internal_type::size_type       size_type;
-	typedef typename internal_type::difference_type difference_type;
+	using allocator_type  = typename internal_type::allocator_type;
+	using size_type       = typename internal_type::size_type;
+	using difference_type = typename internal_type::difference_type;
 
-	typedef value_type &       reference;
-	typedef const value_type & const_reference;
+	using reference       = value_type &;
+	using const_reference = const value_type &;
 
-	typedef value_type*       pointer;
-	typedef const value_type* const_pointer;
+	using pointer       = value_type*;
+	using const_pointer = const value_type*;
 
-	typedef basic::reference_iterator <typename internal_type::iterator, ValueType>                     iterator;
-	typedef basic::reference_iterator <typename internal_type::reverse_iterator, ValueType>             reverse_iterator;
-	typedef basic::reference_iterator <typename internal_type::const_iterator, const ValueType>         const_iterator;
-	typedef basic::reference_iterator <typename internal_type::const_reverse_iterator, const ValueType> const_reverse_iterator;
+	using iterator               = basic::reference_iterator <typename internal_type::iterator, ValueType>;
+	using reverse_iterator       = basic::reference_iterator <typename internal_type::reverse_iterator, ValueType>;
+	using const_iterator         = basic::reference_iterator <typename internal_type::const_iterator, const ValueType>;
+	using const_reverse_iterator = basic::reference_iterator <typename internal_type::const_reverse_iterator, const ValueType>;
 
 	using X3DField <internal_type>::addInterest;
 	using X3DField <internal_type>::addEvent;
@@ -175,13 +175,13 @@ public:
 	X3DArrayField &
 	operator = (X3DArrayField && other);
 
-	/// Assigns values to the array.
-	X3DArrayField &
-	operator = (std::initializer_list <ValueType> list)
-	{
-		assign (list .begin (), list .end ());
-		return *this;
-	}
+//	/// Assigns values to the array.
+//	X3DArrayField &
+//	operator = (std::initializer_list <ValueType> list)
+//	{
+//		assign (list .begin (), list .end ());
+//		return *this;
+//	}
 
 	/// Assigns values to the array.
 	X3DArrayField &

@@ -146,7 +146,7 @@ X3DBrowserWindow::hasAccelerators (const bool value)
 }
 
 bool
-X3DBrowserWindow::save (const basic::uri & worldURL, const OutputStyleType outputStyle, const bool copy)
+X3DBrowserWindow::save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy)
 {
 	const auto scriptEditor = footer -> getPage <ScriptEditor> ("ScriptEditor");
 
@@ -196,7 +196,7 @@ X3DBrowserWindow::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 		undoStep -> addObjects (getCurrentContext (), activeLayer);
 
 		const auto importedNodes = importScene (executionContext,
-		                                        X3D::SFNode (executionContext),
+		                                        executionContext,
 		                                        executionContext == getCurrentContext ()
 		                                        ? children
 															 : executionContext -> getRootNodes (),

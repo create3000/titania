@@ -99,7 +99,7 @@ LightEditor::set_selection (const X3D::MFNode & selection)
 
 	const auto lightNodes = lightNode ? X3D::MFNode ({ lightNode }) : X3D::MFNode ();
 
-	nodeName         .setNode  (X3D::SFNode (lightNode));
+	nodeName         .setNode  (lightNode);
 	global           .setNodes (lightNodes);
 	on               .setNodes (lightNodes);
 	color            .setNodes (lightNodes);

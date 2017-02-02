@@ -196,7 +196,7 @@ GeometryPropertiesEditor::set_buffer ()
 	const bool    hasField  = (active not_eq -2);
 
 	geometryNode = std::move (std::get <0> (tuple));
-	nodes        = getNodes <X3D::X3DBaseNode> (X3D::MFNode (getShapes ()), { X3D::X3DConstants::X3DGeometryNode });
+	nodes        = getNodes <X3D::X3DBaseNode> (getShapes (), { X3D::X3DConstants::X3DGeometryNode });
 
 	if (nodes .empty () and geometryNode)
 		nodes = { geometryNode };
@@ -286,7 +286,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 				field .removeInterest (this, &GeometryPropertiesEditor::set_geometry);
 				field .addInterest (this, &GeometryPropertiesEditor::connectGeometry);
 
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (shapeNode), field, node, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), shapeNode, field, node, undoStep);
 			}
 
 			getBrowserWindow () -> addUndoStep (undoStep);
@@ -309,7 +309,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			field .removeInterest (this, &GeometryPropertiesEditor::set_geometry);
 			field .addInterest (this, &GeometryPropertiesEditor::connectGeometry);
 
-			getBrowserWindow () -> removeNode (getCurrentContext (), X3D::SFNode (shapeNode), field, undoStep);
+			getBrowserWindow () -> removeNode (getCurrentContext (), shapeNode, field, undoStep);
 		}
 
 		getBrowserWindow () -> addUndoStep (undoStep);

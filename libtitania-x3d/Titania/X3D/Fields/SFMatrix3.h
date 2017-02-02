@@ -78,9 +78,9 @@ class SFMatrix3 :
 {
 public:
 
-	typedef typename ValueType::value_type          value_type;
-	typedef SFVec2 <typename ValueType::point_type> vector2_type;
-	typedef typename ValueType::size_type           size_type;
+	using value_type   = typename ValueType::value_type;
+	using vector2_type = SFVec2 <typename ValueType::point_type>;
+	using size_type    = typename ValueType::size_type;
 
 	using X3DField <ValueType>::addInterest;
 	using X3DField <ValueType>::addEvent;

@@ -69,6 +69,8 @@ X3DParentObject::X3DParentObject (X3DBrowser* const browser) :
 	          initialized (false)
 {
 	assert (browser);
+
+	isTainted (true);
 }
 
 /***
@@ -81,6 +83,8 @@ X3DParentObject::setup ()
 
 	for (const auto & child : children)
 		child -> isTainted (false);
+
+	isTainted (false);
 
 	initialized = true;
 }

@@ -492,7 +492,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 		const auto scene         = treeView -> getBrowser () -> createX3DFromStream (currentContext -> getWorldURL (), text);
 		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
 		const auto importedNodes = getBrowserWindow () -> importScene (currentContext,
-                                                                     X3D::SFNode (currentContext),
+                                                                     currentContext,
                                                                      currentContext -> getRootNodes (),
                                                                      scene,
                                                                      undoStep);
@@ -727,7 +727,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		const auto scene         = treeView -> getBrowser () -> createX3DFromStream (currentContext -> getWorldURL (), text);
 		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
 		const auto importedNodes = getBrowserWindow () -> importScene (currentContext,
-                                                                     X3D::SFNode (currentContext),
+                                                                     currentContext,
                                                                      currentContext -> getRootNodes (),
                                                                      scene,
                                                                      undoStep);
@@ -949,7 +949,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 		const auto scene         = treeView -> getBrowser () -> createX3DFromStream (currentContext -> getWorldURL (), text);
 		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
 		const auto importedNodes = getBrowserWindow () -> importScene (currentContext,
-                                                                     X3D::SFNode (currentContext),
+                                                                     currentContext,
                                                                      currentContext -> getRootNodes (),
                                                                      scene,
                                                                      undoStep);

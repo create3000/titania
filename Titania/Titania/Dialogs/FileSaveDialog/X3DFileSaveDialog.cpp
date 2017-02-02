@@ -187,7 +187,7 @@ void
 X3DFileSaveDialog::saveScene (const bool copy)
 {
 	if (saveRun ())
-		getBrowserWindow () -> save (getURL (), OutputStyleType (getOutputStyleButton () .get_active_row_number ()), copy);
+		getBrowserWindow () -> save (getURL (), getOutputStyleButton () .get_active_text (), copy);
 }
 
 void
@@ -497,7 +497,7 @@ X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, cons
 	{
 		getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
 
-		if (not exportNodes (nodes, getURL (), OutputStyleType (getOutputStyleButton () .get_active_row_number ()), undoStep))
+		if (not exportNodes (nodes, getURL (), getOutputStyleButton () .get_active_text (), undoStep))
 			response = false;
 
 		worldURL = getURL ();
@@ -507,7 +507,7 @@ X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, cons
 }
 
 bool
-X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, const OutputStyleType outputStyle, const X3D::UndoStepPtr & undoStep)
+X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, const std::string & outputStyle, const X3D::UndoStepPtr & undoStep)
 {
 	using namespace std::placeholders;
 

@@ -111,7 +111,13 @@ public:
 	{ }
 
 	///  Constructs new X3DPtr.
-	template <class Up>
+	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	X3DPtr (const X3DPtr <Up> & other) :
+		X3DPtr (other .getValue ())
+	{ }
+
+	///  Constructs new X3DPtr.
+	template <class Up, std::enable_if_t <not std::is_base_of <ValueType, Up>::value, bool> = true>
 	explicit
 	X3DPtr (const X3DPtr <Up> & other) :
 		X3DPtr (dynamic_cast <ValueType*> (other .getValue ()))
@@ -130,7 +136,13 @@ public:
 	{ moveObject (other); }
 
 	///  Constructs new X3DPtr.
-	template <class Up>
+	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	X3DPtr (X3DPtr <Up> && other) :
+		X3DPtr ()
+	{ moveObject (other); }
+
+	///  Constructs new X3DPtr.
+	template <class Up, std::enable_if_t <not std::is_base_of <ValueType, Up>::value, bool> = true>
 	explicit
 	X3DPtr (X3DPtr <Up> && other) :
 		X3DPtr ()
@@ -215,7 +227,7 @@ public:
 	X3DPtr &
 	operator = (const X3DPtr & other)
 	{
-		setValue (other);
+		setValue (other .getValue ());
 		return *this;
 	}
 

@@ -118,7 +118,7 @@ NavigationInfoEditor::set_navigationInfo (const X3D::X3DPtr <X3D::NavigationInfo
 	getRemoveNavigationInfoButton () .set_sensitive (inScene and navigationInfoNode);
 	getNavigationInfoBox ()          .set_sensitive (inScene);
 
-	nodeName .setNode  (X3D::SFNode (navigationInfoNode));
+	nodeName .setNode  (navigationInfoNode);
 	type ->           setNodes (nodes);
 	avatarSize0      .setNodes (nodes);
 	avatarSize1      .setNodes (nodes);

@@ -130,12 +130,12 @@ X3DLinePropertiesEditor::on_lineProperties_toggled ()
 
 				if (getLinePropertiesCheckButton () .get_active ())
 				{
-					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (lineProperties), undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, lineProperties, undoStep);
 					previewAppearance -> lineProperties () = lineProperties;
 				}
 				else
 				{
-					getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+					getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
 					previewAppearance -> lineProperties () = nullptr;
 				}
 			}

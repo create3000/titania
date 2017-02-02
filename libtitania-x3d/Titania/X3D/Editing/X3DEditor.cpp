@@ -445,7 +445,7 @@ X3DEditor::addPrototypeInstance (const X3DExecutionContextPtr & executionContext
 	executionContext -> addUninitializedNode (instance);
 	executionContext -> realize ();
 
-	pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), instance, undoStep);
+	pushBackIntoArray (executionContext, executionContext -> getRootNodes (), instance, undoStep);
 
 	return instance;
 }
@@ -466,7 +466,7 @@ X3DEditor::addPrototypeInstance (const X3DExecutionContextPtr & executionContext
 void
 X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode & node, const SFNode & newValue, const UndoStepPtr & undoStep) const
 {
-	replaceNodes (executionContext, SFNode (executionContext), executionContext -> getRootNodes (), node, newValue, undoStep);
+	replaceNodes (executionContext, executionContext, executionContext -> getRootNodes (), node, newValue, undoStep);
 
 	traverse (executionContext -> getRootNodes (), [&] (SFNode & parent)
 	          {
@@ -1639,7 +1639,7 @@ X3DEditor::createClone (const X3DExecutionContextPtr & executionContext, const S
 					 },
 		          true, TRAVERSE_PROTOTYPE_INSTANCES);
 
-		replaceNodes (executionContext, SFNode (executionContext), executionContext -> getRootNodes (), node, clone, undoStep);
+		replaceNodes (executionContext, executionContext, executionContext -> getRootNodes (), node, clone, undoStep);
 	}
 }
 
@@ -1704,7 +1704,7 @@ X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext, const M
 
 		// Unlink in rootNodes array.
 
-		unlinkClone (executionContext, SFNode (executionContext), executionContext -> getRootNodes (), clone, nodes, first, undoStep);
+		unlinkClone (executionContext, executionContext, executionContext -> getRootNodes (), clone, nodes, first, undoStep);
 	}
 
 	// Setup new nodes.
@@ -1989,7 +1989,7 @@ X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
 		// Add to layers
 
 		if (detachToLayer0)
-			pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), child, undoStep);
+			pushBackIntoArray (executionContext, executionContext -> getRootNodes (), child, undoStep);
 
 		else
 		   addToLayers (executionContext, layers, child, undoStep);
@@ -2054,7 +2054,7 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 		             return true;
 					 });
 	
-		createParentGroup (executionContext, group, executionContext -> getRootNodes (), leader, SFNode (executionContext), undoStep);
+		createParentGroup (executionContext, group, executionContext -> getRootNodes (), leader, executionContext, undoStep);
 	
 		MFNode tail (children .begin (), children .end () - 1);
 	
@@ -2088,7 +2088,7 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 		using set1Value = void (MFNode::*) (const MFNode::size_type, const SFNode &);
 
 		undoStep -> addUndoFunction ((set1Value) & MFNode::set1Value, std::ref (children), index, child);
-		undoStep -> addRedoFunction ((set1Value) & MFNode::set1Value, std::ref (children), index, SFNode (group));
+		undoStep -> addRedoFunction ((set1Value) & MFNode::set1Value, std::ref (children), index, group);
 
 		children [index] = group;
 	}
@@ -2127,13 +2127,13 @@ X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const s
 
 		added = true;
 
-		undoStep -> addObjects (SFNode (layer));
+		undoStep -> addObjects (layer);
 
 		pushBackIntoArray (SFNode (layer), layer -> children (), node, undoStep);
 	}
 
 	if (not added)
-		pushBackIntoArray (SFNode (executionContext), executionContext -> getRootNodes (), node, undoStep);
+		pushBackIntoArray (executionContext, executionContext -> getRootNodes (), node, undoStep);
 }
 
 /***

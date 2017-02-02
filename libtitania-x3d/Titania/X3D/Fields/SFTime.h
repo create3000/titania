@@ -69,7 +69,7 @@ class SFTime :
 {
 public:
 
-	typedef time_type value_type;
+	using value_type = time_type;
 
 	using X3DField <time_type>::addInterest;
 	using X3DField <time_type>::operator =;

@@ -1012,7 +1012,7 @@ BrowserWindow::on_group_selected_nodes_activated ()
 	getSelection () -> setChildren ({ group }, undoStep);
 	addUndoStep (undoStep);
 
-	expandNodes (X3D::MFNode ({ group }));
+	expandNodes ({ group });
 }
 
 void

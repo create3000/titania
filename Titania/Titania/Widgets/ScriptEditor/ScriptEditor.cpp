@@ -510,7 +510,7 @@ ScriptEditor::set_executionContext ()
 	}
    
    // Fallback if the node has no name or was not found.
-	set_node (X3D::SFNode ());
+	set_node (nullptr);
 }
 
 void

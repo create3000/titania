@@ -770,9 +770,9 @@ GeometryEditor::on_hammer_clicked ()
 							basic::ifilestream text (getBrowserWindow () -> exportNodes (getCurrentContext (), exports, true));
 
 							const auto scene = getCurrentBrowser () -> createX3DFromStream (getCurrentContext () -> getWorldURL (), text);
-							const auto nodes = getBrowserWindow () -> importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep);
+							const auto nodes = getBrowserWindow () -> importScene (getCurrentContext (), getCurrentContext (), getCurrentContext () -> getRootNodes (), scene, undoStep);
 
-							getBrowserWindow () -> addToGroup (getCurrentContext (), X3D::SFNode (shape), nodes, undoStep);
+							getBrowserWindow () -> addToGroup (getCurrentContext (), shape, nodes, undoStep);
 						}
 					}
 					catch (const X3D::X3DError &)
@@ -786,7 +786,7 @@ GeometryEditor::on_hammer_clicked ()
 					{
 						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
 
-						getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (shape), shape -> geometry (), geometry -> toPrimitive (), undoStep);
+						getBrowserWindow () -> replaceNode (getCurrentContext (), shape, shape -> geometry (), geometry -> toPrimitive (), undoStep);
 					}
 					catch (const X3D::X3DError &)
 					{ }

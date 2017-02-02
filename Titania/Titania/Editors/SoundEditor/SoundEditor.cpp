@@ -117,7 +117,7 @@ SoundEditor::set_selection (const X3D::MFNode & selection)
 
 	getSoundBox () .set_sensitive (soundNode);
 
-	nodeName   .setNode (X3D::SFNode (soundNode));
+	nodeName   .setNode (soundNode);
 	intensity  .setNodes (nodes);
 	spatialize .setNodes (nodes);
 	location   .setNodes (nodes);

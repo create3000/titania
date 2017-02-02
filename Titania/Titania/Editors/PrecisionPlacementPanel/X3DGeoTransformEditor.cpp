@@ -132,7 +132,7 @@ X3DGeoTransformEditor::set_selection (const X3D::MFNode & selection)
 
 	getGeoTransformExpander () .set_visible (transform);
 
-	geoSystem -> setNode (X3D::SFNode (transform));
+	geoSystem -> setNode (transform);
 	translation      .setNodes (transforms);
 	rotation         .setNodes (transforms);
 	scale            .setNodes (transforms);

@@ -119,7 +119,7 @@ X3DLayoutEditor::on_layout_toggled ()
 			field .addInterest (this, &X3DLayoutEditor::connectLayout);
 
 			if (getLayoutCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, X3D::SFNode (layout), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, layout, undoStep);
 			else
 				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, nullptr, undoStep);
 		}
@@ -193,7 +193,7 @@ X3DLayoutEditor::set_node ()
 	getLayoutExpander () .set_visible (layout);
 	getCreateLayoutBox () .set_visible (not nodes .empty ());
 
-	const X3D::MFNode layouts (layout ? X3D::MFNode ({ layout }) : X3D::MFNode ());
+	const auto layouts = layout ? X3D::MFNode ({ layout }) : X3D::MFNode ();
 
 	alignX       .setNodes (layouts);
 	alignY       .setNodes (layouts);

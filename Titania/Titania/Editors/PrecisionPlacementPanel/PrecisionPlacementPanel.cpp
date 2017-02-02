@@ -139,7 +139,7 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 
 	const X3D::MFNode boundedObjects = boundedObject ? X3D::MFNode ({ boundedObject }) : X3D::MFNode ();
 
-	nodeName   .setNode  (X3D::SFNode (boundedObject));
+	nodeName   .setNode  (boundedObject);
 	bboxSize   .setNodes (boundedObjects);
 	bboxCenter .setNodes (boundedObjects);
 

@@ -118,7 +118,7 @@ ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & valu
 	getViewpointBox ()          .set_sensitive (inScene);
 	getLockToCameraButton ()    .set_active (viewpointNode ? viewpointNode -> isLockedToCamera () : false);
 
-	nodeName          .setNode  (X3D::SFNode (viewpointNode));
+	nodeName          .setNode  (viewpointNode);
 	description       .setNodes (viewpointNodes);
 	retainUserOffsets .setNodes (viewpointNodes);
 	jump              .setNodes (viewpointNodes);

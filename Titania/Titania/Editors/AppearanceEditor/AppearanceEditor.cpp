@@ -146,9 +146,9 @@ AppearanceEditor::on_appearance_toggled ()
 			field .addInterest (this, &AppearanceEditor::connectAppearance);
 
 			if (getAppearanceCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (shapeNode), field, X3D::SFNode (appearanceNode), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), shapeNode, field, appearanceNode, undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (shapeNode), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), shapeNode, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

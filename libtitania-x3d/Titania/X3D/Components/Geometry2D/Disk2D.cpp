@@ -132,7 +132,7 @@ Disk2D::createBBox () const
 void
 Disk2D::build ()
 {
-	const Disk2DOptions* const options = getBrowser () -> getDisk2DOptions ();
+	const auto & options = getBrowser () -> getDisk2DOptions ();
 
 	if (innerRadius () == outerRadius ())
 	{

@@ -75,7 +75,7 @@ X3DScriptEditor::set_node (const X3D::SFNode & value)
 	getDirectOutputToggleButton () .set_visible (scriptNode);
 	getMustEvaluateToggleButton () .set_visible (scriptNode);
 
-	const X3D::MFNode nodes = scriptNode ? X3D::MFNode ({ scriptNode }) : X3D::MFNode ();
+	const auto nodes = scriptNode ? X3D::MFNode ({ scriptNode }) : X3D::MFNode ();
 
 	directOutput .setNodes (nodes);
 	mustEvaluate .setNodes (nodes);

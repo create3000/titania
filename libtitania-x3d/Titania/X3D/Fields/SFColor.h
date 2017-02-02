@@ -70,8 +70,8 @@ class SFColor :
 {
 public:
 
-	typedef Color3f::value_type value_type;
-	typedef Color3f::size_type  size_type;
+	using value_type = Color3f::value_type;
+	using size_type  = Color3f::size_type;
 
 	using X3DField <Color3f>::addInterest;
 	using X3DField <Color3f>::setValue;

@@ -120,7 +120,7 @@ X3DViewportEditor::on_viewport_toggled ()
 			field .addInterest (this, &X3DViewportEditor::connectViewport);
 
 			if (getViewportCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, X3D::SFNode (viewport), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, viewport, undoStep);
 			else
 				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, nullptr, undoStep);
 		}
@@ -194,7 +194,7 @@ X3DViewportEditor::set_node ()
 	getViewportExpander () .set_visible (viewport);
 	getCreateViewportBox () .set_visible (not nodes .empty ());
 
-	const X3D::MFNode viewports (viewport ? X3D::MFNode ({ viewport }) : X3D::MFNode ());
+	const auto viewports = viewport ? X3D::MFNode ({ viewport }) : X3D::MFNode ();
 
 	if (viewport)
 	{

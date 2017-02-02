@@ -208,7 +208,7 @@ PrototypeEditor::set_prototype (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode>
 
 	getNameEntry () .set_text (protoNode -> getName ());
 
-	nodePropertiesEditor -> X3DUserDefinedFieldsEditor::setNode (X3D::SFNode (protoNode));
+	nodePropertiesEditor -> X3DUserDefinedFieldsEditor::setNode (protoNode);
 
 	// URL
 

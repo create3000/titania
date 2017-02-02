@@ -474,7 +474,7 @@ OutlineTreeViewEditor::get_node (OutlineTreeData* const nodeData) const
 			break;
 	}
 
-	return X3D::SFNode ();
+	return nullptr;
 }
 
 bool

@@ -52,7 +52,6 @@
 #define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
 
 #include "../../UserInterfaces/X3DFileSaveDialogInterface.h"
-#include "../../Browser/OutputStyleType.h"
 
 namespace titania {
 namespace puck {
@@ -126,7 +125,7 @@ private:
 	///  @name Export nodes
 
 	bool
-	exportNodes (X3D::MFNode &, const basic::uri &, const OutputStyleType, const X3D::UndoStepPtr &);
+	exportNodes (X3D::MFNode &, const basic::uri &, const std::string &, const X3D::UndoStepPtr &);
 
 };
 

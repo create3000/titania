@@ -184,9 +184,9 @@ X3DTextureNodeEditor::on_texture_changed ()
 			field .addInterest (this, &X3DTextureNodeEditor::connectTexture);
 
 			if (getTextureComboBoxText () .get_active_row_number () > 0)
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (textureNode), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, textureNode, undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -200,11 +200,11 @@ X3DTextureNodeEditor::on_texture_changed ()
 	setTexture2DNode          (textureNode);
 	setTexture3DNode          (textureNode);
 	setEnvironmentTextureNode (textureNode);
-	X3DTexturePropertiesEditor::set_selection (X3D::MFNode (appearances));
+	X3DTexturePropertiesEditor::set_selection (appearances);
 
 	getTextureNameGrid () .set_sensitive (textureNode);
 
-	nodeName .setNode (X3D::SFNode (textureNode));
+	nodeName .setNode (textureNode);
 
 	preview -> setTexture (getTextureComboBoxText () .get_active_row_number () > 0 ? textureNode : nullptr);
 }
@@ -248,7 +248,7 @@ X3DTextureNodeEditor::set_node ()
 
 	getTextureNameGrid () .set_sensitive (textureNode);
 
-	nodeName .setNode (X3D::SFNode (textureNode));
+	nodeName .setNode (textureNode);
 
 	if (not textureNode)
 		textureNode = getImageTexture (textureNode);

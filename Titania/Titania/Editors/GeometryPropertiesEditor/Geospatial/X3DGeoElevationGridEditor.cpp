@@ -101,7 +101,7 @@ X3DGeoElevationGridEditor::set_geometry ()
 
 	getGeoElevationGridExpander () .set_visible (node);
 
-	geoSystem -> setNode (X3D::SFNode (node));
+	geoSystem -> setNode (node);
 
 	xDimension .setNodes (nodes);
 	zDimension .setNodes (nodes);

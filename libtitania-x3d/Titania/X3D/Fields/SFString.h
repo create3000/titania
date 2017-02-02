@@ -70,9 +70,9 @@ class SFString :
 {
 public:
 
-	typedef std::string::value_type   char_type;
-	typedef internal_type::value_type value_type;
-	typedef internal_type::size_type  size_type;
+	using char_type  = std::string::value_type;
+	using value_type = internal_type::value_type;
+	using size_type  = internal_type::size_type;
 
 	using X3DField <String>::addInterest;
 	using X3DField <String>::operator =;

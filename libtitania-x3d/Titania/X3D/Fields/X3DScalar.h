@@ -79,7 +79,7 @@ class X3DScalar :
 {
 public:
 
-	typedef ValueType value_type;
+	using value_type = ValueType;
 
 	using X3DField <ValueType>::addInterest;
 	using X3DField <ValueType>::addEvent;

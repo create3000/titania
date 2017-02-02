@@ -2552,7 +2552,6 @@
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Cobweb\GeneratedCubeMapTexture" />
     <None Include="share\titania\Library\Components\CubeMapTexturing\.Cobweb\ImageCubeMapTexture" />
     <None Include="Titania\Editors\TextureEditor\X3DGeneratedCubeMapTextureEditor.h" />
-    <None Include="Titania\Browser\OutputStyleType.h" />
     <None Include="Titania\Editors\ScenePropertiesEditor\X3DMetaDataEditor.h" />
     <None Include="Titania\Editors\AppearanceEditor\X3DUsedMaterialsEditor.h" />
     <None Include="Titania\Editors\TextureEditor\X3DUsedTexturesEditor.h" />

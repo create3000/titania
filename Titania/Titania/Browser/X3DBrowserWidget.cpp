@@ -552,13 +552,13 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 }
 
 bool
-X3DBrowserWidget::save (const basic::uri & worldURL, const OutputStyleType outputStyle, const bool copy)
+X3DBrowserWidget::save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy)
 {
 	return save (getCurrentScene (), worldURL, outputStyle, copy);
 }
 
 bool
-X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const OutputStyleType outputStyle, const bool copy)
+X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const std::string & outputStyle, const bool copy)
 {
 	// Known file type must be also added to BrowserWindow::on_save_activated.
 
@@ -726,70 +726,25 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 }
 
 void
-X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream & file, const OutputStyleType outputStyle)
+X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream & file, const std::string & outputStyle)
 {
-	switch (outputStyle)
-	{
-		case OutputStyleType::NICEST:
-		{
-			if (getConfig () -> getBoolean ("addStandardMetaData"))
-				scene -> setMetaData ("outputStyle", "nicest");
+	if (getConfig () -> getBoolean ("addStandardMetaData"))
+		scene -> setMetaData ("outputStyle", outputStyle);
 
-			file << X3D::Generator::NicestStyle;
-			break;
-		}
-		case OutputStyleType::COMPACT:
-		{
-			if (getConfig () -> getBoolean ("addStandardMetaData"))
-				scene -> setMetaData ("outputStyle", "compact");
-
-			file << X3D::Generator::CompactStyle;
-			break;
-		}
-		case OutputStyleType::SMALL:
-		{
-			if (getConfig () -> getBoolean ("addStandardMetaData"))
-				scene -> setMetaData ("outputStyle", "small");
-
-			file << X3D::Generator::SmallStyle;
-			break;
-		}
-		case OutputStyleType::SMALLEST:
-		{
-			if (getConfig () -> getBoolean ("addStandardMetaData"))
-				scene -> setMetaData ("outputStyle", "smallest");
-
-			file << X3D::Generator::SmallestStyle;
-			break;
-		}
-	}
+	X3D::Generator::Style (file, outputStyle);
 }
 
-OutputStyleType
+std::string
 X3DBrowserWidget::getOutputStyle (const X3D::X3DScenePtr & scene) const
 {
 	try
 	{
-		const auto & outputStyle = scene -> getMetaData ("outputStyle");
-
-		//scene -> getWorldInfo () -> getMetaData <MFString> ("/Titania/Configuration/outputStyle") .at (0);
-	
-		if (outputStyle == "nicest")
-			return OutputStyleType::NICEST;
-	
-		if (outputStyle == "compact")
-			return OutputStyleType::COMPACT;
-	
-		if (outputStyle == "small")
-			return OutputStyleType::SMALL;
-	
-		if (outputStyle == "smallest")
-			return OutputStyleType::SMALLEST;
+		return scene -> getMetaData ("outputStyle");
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{ }
-
-	return OutputStyleType::NICEST;
+	{
+		return "nicest";
+	}
 }
 
 void

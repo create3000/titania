@@ -99,7 +99,7 @@ FogEditor::set_fog (const X3D::X3DPtr <X3D::Fog> & value)
 	getRemoveFogButton () .set_sensitive (inScene and fogNode);
 	getFogBox ()          .set_sensitive (inScene);
 
-	nodeName        .setNode  (X3D::SFNode (fogNode));
+	nodeName        .setNode  (fogNode);
 	color           .setNodes (nodes);
 	fogType         .setNodes (nodes);
 	visibilityRange .setNodes (nodes);

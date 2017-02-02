@@ -66,17 +66,18 @@ class X3DPtrArray :
 {
 private:
 
-	typedef X3DArrayField <X3DPtr <ValueType>>  ArrayField;
+	using ArrayField = X3DArrayField <X3DPtr <ValueType>>;
 
 
 public:
 
 	///  @name Member types
 
-	typedef typename ArrayField::value_type value_type;
+	using value_type = typename ArrayField::value_type;
 
 	using X3DArrayField <X3DPtr <ValueType>> ::operator =;
 	using X3DArrayField <X3DPtr <ValueType>> ::getValue;
+	using X3DArrayField <X3DPtr <ValueType>> ::assign;
 	using X3DArrayField <X3DPtr <ValueType>> ::front;
 	using X3DArrayField <X3DPtr <ValueType>> ::back;
 	using X3DArrayField <X3DPtr <ValueType>> ::cbegin;
@@ -94,8 +95,8 @@ public:
 	{ }
 
 	///  Constructs new X3DPtrArray.
-	X3DPtrArray (const X3DPtrArray & field) :
-		ArrayField (field),
+	X3DPtrArray (const X3DPtrArray & other) :
+		ArrayField (other),
 		cloneCount (0)
 	{ }
 
@@ -106,7 +107,14 @@ public:
 	{ }
 
 	///  Constructs new X3DPtrArray.
-	template <class Up>
+	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	X3DPtrArray (const X3DPtrArray <Up> & other) :
+		ArrayField (other .begin (), other .end ()),
+		cloneCount (0)
+	{ }
+
+	///  Constructs new X3DPtrArray.
+	template <class Up, std::enable_if_t <not std::is_base_of <ValueType, Up>::value, bool> = true>
 	explicit
 	X3DPtrArray (const X3DPtrArray <Up> & other) :
 		ArrayField (other .begin (), other .end ()),
@@ -114,15 +122,25 @@ public:
 	{ }
 
 	///  Constructs new X3DPtrArray.
-	template <class Up>
-	explicit
-	X3DPtrArray (X3DPtrArray <Up> &&);
+	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	X3DPtrArray (X3DPtrArray <Up> && other) :
+		ArrayField (),
+		cloneCount (0)
+	{ *this = std::move (other); }
 
 	///  Constructs new X3DPtrArray.
-	X3DPtrArray (std::initializer_list <X3DPtr <ValueType>> initializer_list) :
-		ArrayField (initializer_list),
+	template <class Up, std::enable_if_t <not std::is_base_of <ValueType, Up>::value, bool> = true>
+	explicit
+	X3DPtrArray (X3DPtrArray <Up> && other) :
+		ArrayField (),
 		cloneCount (0)
-	{ }
+	{ *this = std::move (other); }
+
+//	///  Constructs new X3DPtrArray.
+//	X3DPtrArray (std::initializer_list <X3DPtr <ValueType>> initializer_list) :
+//		ArrayField (initializer_list),
+//		cloneCount (0)
+//	{ }
 
 	///  Constructs new X3DPtrArray.
 	X3DPtrArray (std::initializer_list <const typename X3DPtr <ValueType>::internal_type> initializer_list) :
@@ -179,6 +197,15 @@ public:
 	operator = (X3DPtrArray && field)
 	{
 		ArrayField::operator = (std::move (field));
+		return *this;
+	}
+
+	///  Assigns the X3DPtrArray and propagates an event.
+	template <class Up>
+	X3DPtrArray &
+	operator = (const X3DPtrArray <Up> & other)
+	{
+		assign (other .begin (), other .end ());
 		return *this;
 	}
 
@@ -325,29 +352,6 @@ template <class ValueType>
 const std::string X3DPtrArray <ValueType>::typeName ("MFNode");
 
 template <class ValueType>
-template <class Up>
-X3DPtrArray <ValueType>::X3DPtrArray (X3DPtrArray <Up> && field) :
-	ArrayField (),
-	cloneCount (0)
-{
-	auto       first = field .begin ();
-	const auto last  = field .end ();
-
-	// Insert at end
-
-	for (; first not_eq last; ++ first)
-	{
-		const auto field = new X3DPtr <ValueType> (std::move (*first));
-
-		get () .emplace_back (field);
-
-		addChild (field);
-	}
-
-	field .clear ();
-}
-
-template <class ValueType>
 X3DPtrArray <ValueType>*
 X3DPtrArray <ValueType>::copy (const CopyType type) const
 throw (Error <INVALID_NAME>,
@@ -410,10 +414,10 @@ throw (Error <INVALID_NAME>,
 template <class ValueType>
 template <class Up>
 X3DPtrArray <ValueType> &
-X3DPtrArray <ValueType>::operator = (X3DPtrArray <Up> && field)
+X3DPtrArray <ValueType>::operator = (X3DPtrArray <Up> && other)
 {
-	auto       first   = field .begin ();
-	const auto last    = field .end ();
+	auto       first   = other .begin ();
+	const auto last    = other .end ();
 	auto       current = this -> begin ();
 
 	for (const auto end = this -> end (); first not_eq last && current not_eq end; ++ current, ++ first)
@@ -445,7 +449,7 @@ X3DPtrArray <ValueType>::operator = (X3DPtrArray <Up> && field)
 		this -> addEvent ();
 	}
 
-	field .clear ();
+	other .clear ();
 
 	return *this;
 }

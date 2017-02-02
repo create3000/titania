@@ -617,7 +617,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 			if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 			{
 				importedNodes = importScene (getCurrentContext (),
-				                             X3D::SFNode (layerSet -> getActiveLayer ()),
+				                             layerSet -> getActiveLayer (),
 				                             layerSet -> getActiveLayer () -> children (),
 				                             scene,
 				                             undoStep);
@@ -625,7 +625,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 			else
 			{
 				importedNodes = importScene (getCurrentContext (),
-				                             X3D::SFNode (getCurrentContext ()),
+				                             getCurrentContext (),
 				                             getCurrentContext () -> getRootNodes (),
 				                             scene,
 				                             undoStep);
@@ -666,14 +666,14 @@ X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & uris, const X
 
 		const auto scene = getCurrentBrowser () -> createX3DFromString (string);
 
-		return importScene (getCurrentContext (), X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), scene, undoStep);
+		return importScene (getCurrentContext (), getCurrentContext (), getCurrentContext () -> getRootNodes (), scene, undoStep);
 	}
 
 	return X3D::MFNode ();
 }
 
 bool
-X3DBrowserEditor::save (const basic::uri & worldURL, const OutputStyleType outputStyle, const bool copy)
+X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy)
 {
 	setMetaData ();
 

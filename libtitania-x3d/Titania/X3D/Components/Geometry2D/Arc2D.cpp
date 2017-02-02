@@ -144,7 +144,7 @@ Arc2D::getAngle ()
 void
 Arc2D::build ()
 {
-	const Arc2DOptions* const options = getBrowser () -> getArc2DOptions ();
+	const auto & options = getBrowser () -> getArc2DOptions ();
 
 	const double difference = getAngle ();
 	size_t       segments   = std::ceil (difference / options -> minAngle ());

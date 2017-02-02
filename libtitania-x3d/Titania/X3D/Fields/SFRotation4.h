@@ -78,9 +78,9 @@ class SFRotation4 :
 {
 public:
 
-	typedef typename ValueType::value_type            value_type;
-	typedef SFVec3 <typename ValueType::vector3_type> vector3_type;
-	typedef typename ValueType::size_type             size_type;
+	using value_type   = typename ValueType::value_type;
+	using vector3_type = SFVec3 <typename ValueType::vector3_type>;
+	using size_type    = typename ValueType::size_type;
 
 	using X3DField <ValueType>::addInterest;
 	using X3DField <ValueType>::addEvent;

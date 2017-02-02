@@ -193,9 +193,9 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 			field .addInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);
 
 			if (getFontStyleComboBoxText () .get_active_row_number () > 0)
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (text), field, X3D::SFNode (fontStyleNode), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), text, field, fontStyleNode, undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (text), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), text, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

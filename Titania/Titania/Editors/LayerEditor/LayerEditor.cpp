@@ -217,7 +217,7 @@ LayerEditor::set_treeView ()
 
 	// Layer0
 
-	add_layer (X3D::SFNode (layerSet -> getLayer0 ()), layerSet -> getLayer0 (), 0);
+	add_layer (layerSet -> getLayer0 (), layerSet -> getLayer0 (), 0);
 
 	// Layers
 
@@ -604,7 +604,7 @@ LayerEditor::on_new_layer_set_button_clicked ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New LayerSet"));
 	const X3D::SFNode node (getCurrentContext () -> createNode <X3D::LayerSet> ());
 
-	getBrowserWindow () -> pushBackIntoArray (X3D::SFNode (getCurrentContext ()), getCurrentContext () -> getRootNodes (), node, undoStep);
+	getBrowserWindow () -> pushBackIntoArray (getCurrentContext (), getCurrentContext () -> getRootNodes (), node, undoStep);
 	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -628,7 +628,7 @@ LayerEditor::on_new_layer_activated ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Layer"));
 	const X3D::SFNode node (getCurrentContext () -> createNode <X3D::Layer> ());
 
-	getBrowserWindow () -> pushBackIntoArray (X3D::SFNode (layerSet), layerSet -> layers (), node, undoStep);
+	getBrowserWindow () -> pushBackIntoArray (layerSet, layerSet -> layers (), node, undoStep);
 	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -649,7 +649,7 @@ LayerEditor::on_new_layout_layer_activated ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New LayoutLayer"));
 	const X3D::SFNode node (getCurrentContext () -> createNode <X3D::LayoutLayer> ());
 
-	getBrowserWindow () -> pushBackIntoArray (X3D::SFNode (layerSet), layerSet -> layers (), node, undoStep);
+	getBrowserWindow () -> pushBackIntoArray (layerSet, layerSet -> layers (), node, undoStep);
 	getBrowserWindow () -> getSelection () -> setChildren ({ node }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -694,7 +694,7 @@ LayerEditor::on_remove_layer_button_clicked ()
 	disconnectLayers ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Layer"));
-	getBrowserWindow () -> removeNode (getCurrentContext (), X3D::SFNode (layerSet), layerSet -> layers (), selectedIndex, undoStep);
+	getBrowserWindow () -> removeNode (getCurrentContext (), layerSet, layerSet -> layers (), selectedIndex, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -737,7 +737,7 @@ LayerEditor::on_top_clicked ()
 		{
 			-- selectedIndex;
 
-			getBrowserWindow () -> moveValueWithinArray (X3D::SFNode (layerSet), layerSet -> layers (), selectedIndex, 0, undoStep);
+			getBrowserWindow () -> moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, 0, undoStep);
 		}
 	}
 
@@ -792,7 +792,7 @@ LayerEditor::on_up_clicked ()
 		{
 			-- selectedIndex;
 
-			getBrowserWindow () -> moveValueWithinArray (X3D::SFNode (layerSet), layerSet -> layers (), selectedIndex, selectedIndex - 1, undoStep);
+			getBrowserWindow () -> moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, selectedIndex - 1, undoStep);
 		}
 	}
 
@@ -849,7 +849,7 @@ LayerEditor::on_down_clicked ()
 		{
 			-- selectedIndex;
 
-			getBrowserWindow () -> moveValueWithinArray (X3D::SFNode (layerSet), layerSet -> layers (), selectedIndex, selectedIndex + 2, undoStep);
+			getBrowserWindow () -> moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, selectedIndex + 2, undoStep);
 		}
 	}
 
@@ -893,7 +893,7 @@ LayerEditor::on_bottom_clicked ()
 		{
 			-- selectedIndex;
 
-			getBrowserWindow () -> moveValueWithinArray (X3D::SFNode (layerSet), layerSet -> layers (), selectedIndex, layerSet -> layers () .size (), undoStep);
+			getBrowserWindow () -> moveValueWithinArray (layerSet, layerSet -> layers (), selectedIndex, layerSet -> layers () .size (), undoStep);
 		}
 	}
 

@@ -172,9 +172,9 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 			field .addInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);
 
 			if (getTextureTransformComboBoxText () .get_active_row_number () > 0)
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, X3D::SFNode (textureTransformNode), undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, textureTransformNode, undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getCurrentContext (), X3D::SFNode (appearance), field, nullptr, undoStep);
+				getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -186,7 +186,7 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 
 	getTextureTransformNameGrid () .set_sensitive (textureTransformNode);
 
-	nodeName .setNode (X3D::SFNode (textureTransformNode));
+	nodeName .setNode (textureTransformNode);
 }
 
 void
@@ -213,7 +213,7 @@ X3DTextureTransformNodeEditor::set_node ()
 
 	getTextureTransformNameGrid () .set_sensitive (textureTransformNode);
 
-	nodeName .setNode (X3D::SFNode (textureTransformNode));
+	nodeName .setNode (textureTransformNode);
 
 	if (not textureTransformNode)
 		textureTransformNode = getTextureTransform (textureTransformNode);
