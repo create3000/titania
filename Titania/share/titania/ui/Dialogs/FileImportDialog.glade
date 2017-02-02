@@ -287,37 +287,16 @@
             <property name="orientation">vertical</property>
             <property name="spacing">8</property>
             <child>
-              <object class="GtkBox" id="box3">
+              <object class="GtkHeaderBar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="spacing">8</property>
+                <property name="title">Import File</property>
                 <child>
                   <object class="GtkImage" id="image4">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="stock">document-import</property>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label7">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Import File</property>
-                    <property name="xalign">0</property>
-                    <style>
-                      <class name="titania-header"/>
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </object>
               <packing>

@@ -120,7 +120,7 @@ BackgroundEditor::initialize ()
 
 	backgroundList -> isEditor (true);
 	backgroundList -> getHeaderNotebook () .set_current_page (1);
-	backgroundList -> getHeaderBox () .set_visible (false);
+	backgroundList -> getHeaderBar () .set_visible (false);
 	backgroundList -> getTreeView () .set_headers_visible (true);
 	backgroundList -> reparent (getBackgroundListBox (), getWindow ());
 

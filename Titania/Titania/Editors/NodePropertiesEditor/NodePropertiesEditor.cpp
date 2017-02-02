@@ -111,7 +111,7 @@ NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 	}
 	else
 	{
-		getHeaderLabel ()         .set_text (_ ("Select a node to display its properties."));
+		getHeaderBar ()           .set_subtitle (_ ("Select a node to display its properties."));
 		getTypeNameEntry ()       .set_text ("");
 		getComponentEntry ()      .set_text ("");
 		getContainerFieldEntry () .set_text ("");
@@ -129,7 +129,7 @@ NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 void
 NodePropertiesEditor::set_name ()
 {
-	getHeaderLabel () .set_text (node -> getTypeName () + " »" + node -> getName () + "«");
+	getHeaderBar () .set_subtitle (node -> getTypeName () + " »" + node -> getName () + "«");
 }
 
 void

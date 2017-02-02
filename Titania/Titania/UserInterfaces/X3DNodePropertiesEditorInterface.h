@@ -355,9 +355,9 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::Label &
-	getHeaderLabel () const
-	{ return *m_HeaderLabel; }
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
 
 	Gtk::Notebook &
 	getNodeChildNotebook () const
@@ -715,7 +715,7 @@ private:
 	Gtk::MenuItem*                         m_MFVec4fMenuItem;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
-	Gtk::Label*                            m_HeaderLabel;
+	Gtk::HeaderBar*                        m_HeaderBar;
 	Gtk::Notebook*                         m_NodeChildNotebook;
 	Gtk::Expander*                         m_NodePropertiesExpander;
 	Gtk::Label*                            m_TypeNameLabel;

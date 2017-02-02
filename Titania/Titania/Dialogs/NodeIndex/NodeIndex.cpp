@@ -224,13 +224,13 @@ NodeIndex::setShowWidget (const bool value)
 
 	if (showWidget)
 	{
-		getHeaderBox () .set_visible (false);
+		getHeaderBar () .set_visible (false);
 		getFooterBox () .set_visible (false);
 		getScrolledWindow () .set_size_request (0, 0);
 	}
 	else
 	{
-		getHeaderBox () .set_visible (true);
+		getHeaderBar () .set_visible (true);
 		getFooterBox () .set_visible (true);
 		getScrolledWindow () .set_size_request (-1, 240);
 	}

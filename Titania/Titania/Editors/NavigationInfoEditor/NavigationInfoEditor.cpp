@@ -98,7 +98,7 @@ NavigationInfoEditor::initialize ()
 
 	navigationInfoList -> isEditor (true);
 	navigationInfoList -> getHeaderNotebook () .set_current_page (1);
-	navigationInfoList -> getHeaderBox () .set_visible (false);
+	navigationInfoList -> getHeaderBar () .set_visible (false);
 	navigationInfoList -> getTreeView () .set_headers_visible (true);
 	navigationInfoList -> reparent (getNavigationInfoListBox (), getWindow ());
 

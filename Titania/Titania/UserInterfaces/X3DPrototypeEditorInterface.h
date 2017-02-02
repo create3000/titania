@@ -135,17 +135,13 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Image &
 	getEditPrototypeImage () const
 	{ return *m_EditPrototypeImage; }
-
-	Gtk::Label &
-	getEditLabel () const
-	{ return *m_EditLabel; }
-
-	Gtk::Label &
-	getHeaderLabel () const
-	{ return *m_HeaderLabel; }
 
 	Gtk::Button &
 	getCreateInstanceButton () const
@@ -284,9 +280,8 @@ private:
 	Gtk::ImageMenuItem*                    m_CreateExternProtoMenuItem;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
+	Gtk::HeaderBar*                        m_HeaderBar;
 	Gtk::Image*                            m_EditPrototypeImage;
-	Gtk::Label*                            m_EditLabel;
-	Gtk::Label*                            m_HeaderLabel;
 	Gtk::Button*                           m_CreateInstanceButton;
 	Gtk::MenuButton*                       m_MenuButton;
 	Gtk::Image*                            m_PrototypeImage;

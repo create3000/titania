@@ -47,37 +47,16 @@
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
         <child>
-          <object class="GtkBox" id="HeaderBox">
+          <object class="GtkHeaderBar" id="HeaderBar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="spacing">8</property>
+            <property name="title">Node Index</property>
             <child>
               <object class="GtkImage" id="image1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="stock">Index</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Node Index</property>
-                <property name="xalign">0</property>
-                <style>
-                  <class name="titania-header"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
             <child>
               <object class="GtkSearchEntry" id="SearchEntry">
@@ -86,6 +65,8 @@
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
                 <property name="is_focus">True</property>
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
                 <property name="primary_icon_name">edit-find-symbolic</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="primary_icon_sensitive">False</property>
@@ -94,9 +75,8 @@
                 <signal name="key-press-event" handler="on_search_entry_key_press_event" after="yes" swapped="no"/>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>

@@ -151,21 +151,17 @@ public:
 	getHeaderNotebook () const
 	{ return *m_HeaderNotebook; }
 
-	Gtk::Box &
-	getHeaderBox () const
-	{ return *m_HeaderBox; }
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
 
 	Gtk::Image &
 	getImage () const
 	{ return *m_Image; }
 
 	Gtk::Label &
-	getLabel0 () const
-	{ return *m_Label0; }
-
-	Gtk::Label &
-	getLabel1 () const
-	{ return *m_Label1; }
+	getLabel () const
+	{ return *m_Label; }
 
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
@@ -232,10 +228,9 @@ private:
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::Notebook*                         m_HeaderNotebook;
-	Gtk::Box*                              m_HeaderBox;
+	Gtk::HeaderBar*                        m_HeaderBar;
 	Gtk::Image*                            m_Image;
-	Gtk::Label*                            m_Label0;
-	Gtk::Label*                            m_Label1;
+	Gtk::Label*                            m_Label;
 	Gtk::ScrolledWindow*                   m_ScrolledWindow;
 	Gtk::TreeView*                         m_TreeView;
 

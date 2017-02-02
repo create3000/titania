@@ -234,9 +234,9 @@ X3DBindableNodeList <Type>::initialize ()
 {
 	X3DBindableNodeListInterface::initialize ();
 
-	getImage ()  .set (Gtk::StockID (name), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
-	getLabel0 () .set_text (_ (name));
-	getLabel1 () .set_text (_ (name));
+	getImage ()     .set (Gtk::StockID (name), Gtk::IconSize (Gtk::ICON_SIZE_BUTTON));
+	getHeaderBar () .set_title (_ (name));
+	getLabel ()     .set_text (_ (name));
 
 	getNameCellRenderer ()        -> property_weight_set () = true;
 	getDescriptionCellRenderer () -> property_weight_set () = true;

@@ -127,7 +127,7 @@ PrototypeEditor::set_executionContext ()
 	// Setup widgets
 
 	//getEditLabel ()   .set_text (_ ("Edit Protoype Properties"));
-	getHeaderLabel () .set_text (_ ("Select a prototype to display its properties."));
+	getHeaderBar () .set_subtitle (_ ("Select a prototype to display its properties."));
 
 	getCreateInstanceButton ()  .set_sensitive (false);
 	getNameBox ()               .set_sensitive (false);
@@ -147,7 +147,7 @@ void
 PrototypeEditor::on_create_prototype_menu ()
 {
 	getEditPrototypeImage () .set_sensitive (false);
-	getEditPrototypeImage () .set (Gtk::StockID ("Prototype"), Gtk::ICON_SIZE_DIALOG);
+	getEditPrototypeImage () .set (Gtk::StockID ("Prototype"), Gtk::ICON_SIZE_BUTTON);
 
 	getPrototypeImage () .set_sensitive (false);
 	getPrototypeImage () .set (Gtk::StockID ("Prototype"), Gtk::ICON_SIZE_BUTTON);
@@ -184,13 +184,13 @@ PrototypeEditor::set_prototype (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode>
 	// Header
 
 	getEditPrototypeImage () .set_sensitive (true);
-	getEditPrototypeImage () .set (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_DIALOG);
+	getEditPrototypeImage () .set (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_BUTTON);
 
 	//const auto editText   = protoNode -> isExternproto () ? _ ("Edit Extern Protoype Properties") : _ ("Edit Protoype Properties");
 	const auto headerText = protoNode -> isExternproto () ? _ ("Extern Prototype »%s«") : _ ("Prototype »%s«");
 
 	//getEditLabel ()   .set_text (editText);
-	getHeaderLabel () .set_text (basic::sprintf (headerText, protoNode -> getName () .c_str ()));
+	getHeaderBar () .set_subtitle (basic::sprintf (headerText, protoNode -> getName () .c_str ()));
 
 	// Create instance button
 

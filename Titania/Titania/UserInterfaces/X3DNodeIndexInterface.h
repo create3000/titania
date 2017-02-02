@@ -135,9 +135,9 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::Box &
-	getHeaderBox () const
-	{ return *m_HeaderBox; }
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
 
 	Gtk::SearchEntry &
 	getSearchEntry () const
@@ -204,7 +204,7 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn>  m_NameColumn;
 	Gtk::Window*                        m_Window;
 	Gtk::Box*                           m_Widget;
-	Gtk::Box*                           m_HeaderBox;
+	Gtk::HeaderBar*                     m_HeaderBar;
 	Gtk::SearchEntry*                   m_SearchEntry;
 	Gtk::ScrolledWindow*                m_ScrolledWindow;
 	Gtk::TreeView*                      m_TreeView;

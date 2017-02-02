@@ -89,7 +89,7 @@ ViewpointEditor::initialize ()
 
 	viewpointList -> isEditor (true);
 	viewpointList -> getHeaderNotebook () .set_current_page (1);
-	viewpointList -> getHeaderBox () .set_visible (false);
+	viewpointList -> getHeaderBar () .set_visible (false);
 	viewpointList -> getTreeView () .set_headers_visible (true);
 	viewpointList -> reparent (getViewpointListBox (), getWindow ());
 }
