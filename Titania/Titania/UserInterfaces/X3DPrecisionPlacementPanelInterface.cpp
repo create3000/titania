@@ -155,6 +155,7 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
+	m_builder -> get_widget ("Stack", m_Stack);
 	m_builder -> get_widget ("TransformExpander", m_TransformExpander);
 	m_builder -> get_widget ("TransformBox", m_TransformBox);
 	m_builder -> get_widget ("TransformTranslationBox", m_TransformTranslationBox);

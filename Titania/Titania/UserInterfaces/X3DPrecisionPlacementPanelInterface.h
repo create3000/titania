@@ -467,6 +467,10 @@ public:
 	getRenameButton () const
 	{ return *m_RenameButton; }
 
+	Gtk::Stack &
+	getStack () const
+	{ return *m_Stack; }
+
 	Gtk::Expander &
 	getTransformExpander () const
 	{ return *m_TransformExpander; }
@@ -1195,6 +1199,7 @@ private:
 	Gtk::Box*                      m_NameBox;
 	Gtk::Entry*                    m_NameEntry;
 	Gtk::Button*                   m_RenameButton;
+	Gtk::Stack*                    m_Stack;
 	Gtk::Expander*                 m_TransformExpander;
 	Gtk::Grid*                     m_TransformBox;
 	Gtk::Box*                      m_TransformTranslationBox;
