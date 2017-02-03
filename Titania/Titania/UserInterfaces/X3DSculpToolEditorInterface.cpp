@@ -61,13 +61,33 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_HardnessAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("HardnessAdjustment"));
-	m_HeightAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("HeightAdjustment"));
-	m_RadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("RadiusAdjustment"));
-	m_SharpnessAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SharpnessAdjustment"));
-	m_WarpAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("WarpAdjustment"));
+	m_BrushHardnessAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushHardnessAdjustment"));
+	m_BrushHeightAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushHeightAdjustment"));
+	m_BrushRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushRadiusAdjustment"));
+	m_BrushSharpnessAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushSharpnessAdjustment"));
+	m_BrushWarpAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushWarpAdjustment"));
 
 	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
+	m_builder -> get_widget ("PullButton", m_PullButton);
+	m_builder -> get_widget ("PushButton", m_PushButton);
+	m_builder -> get_widget ("Notebook", m_Notebook);
+	m_builder -> get_widget ("BrushExpander", m_BrushExpander);
+	m_builder -> get_widget ("BrushBox", m_BrushBox);
+	m_builder -> get_widget ("BrushHeightScale", m_BrushHeightScale);
+	m_builder -> get_widget ("BrushWarpScale", m_BrushWarpScale);
+	m_builder -> get_widget ("BrushSharpnessScale", m_BrushSharpnessScale);
+	m_builder -> get_widget ("BrushHardnessScale", m_BrushHardnessScale);
+	m_builder -> get_widget ("BrushRadiusScale", m_BrushRadiusScale);
+	m_builder -> get_widget ("BrushTypeButton", m_BrushTypeButton);
+	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
+	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
+	m_builder -> get_widget ("ChangePaletteBox", m_ChangePaletteBox);
+	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);
+	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
+	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);
 	m_builder -> get_widget ("EditPaletteDialog", m_EditPaletteDialog);
 	m_builder -> get_widget ("EditPaletteCancelButton", m_EditPaletteCancelButton);
 	m_builder -> get_widget ("EditPaletteOkButton", m_EditPaletteOkButton);
@@ -78,27 +98,16 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("EditPaletteMenuItem", m_EditPaletteMenuItem);
 	m_builder -> get_widget ("AddObjectToPaletteMenuItem", m_AddObjectToPaletteMenuItem);
 	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
-	m_builder -> get_widget ("Window", m_Window);
-	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
-	m_builder -> get_widget ("PullButton", m_PullButton);
-	m_builder -> get_widget ("PushButton", m_PushButton);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("BrushExpander", m_BrushExpander);
-	m_builder -> get_widget ("BrushBox", m_BrushBox);
-	m_builder -> get_widget ("HeightScale", m_HeightScale);
-	m_builder -> get_widget ("WarpScale", m_WarpScale);
-	m_builder -> get_widget ("SharpnessScale", m_SharpnessScale);
-	m_builder -> get_widget ("HardnessScale", m_HardnessScale);
-	m_builder -> get_widget ("RadiusScale", m_RadiusScale);
-	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
-	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
-	m_builder -> get_widget ("ChangePaletteBox", m_ChangePaletteBox);
-	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);
-	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
-	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);
 
-	// Connect object Gtk::Button with id 'EditPaletteCancelButton'.
+	// Connect object Gtk::Box with id 'PalettePreviewBox'.
+	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_button_press_event));
+
+	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
+	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_changed));
+
+	// Connect object Gtk::Button with id 'PalettePreviousButton'.
+	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_previous_clicked));
+	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_next_clicked));
 	m_EditPaletteCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_edit_palette_cancel_clicked));
 	m_EditPaletteOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_edit_palette_ok_clicked));
 
@@ -114,24 +123,14 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_add_object_to_palette_activate));
 	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_remove_object_from_palette_activate));
 
-	// Connect object Gtk::Box with id 'PalettePreviewBox'.
-	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_button_press_event));
-
-	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
-	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_changed));
-
-	// Connect object Gtk::Button with id 'PalettePreviousButton'.
-	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_previous_clicked));
-	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_next_clicked));
-
 	// Call construct handler of base class.
 	construct ();
 }
 
 X3DSculpToolEditorInterface::~X3DSculpToolEditorInterface ()
 {
-	delete m_EditPaletteDialog;
 	delete m_Window;
+	delete m_EditPaletteDialog;
 }
 
 } // puck

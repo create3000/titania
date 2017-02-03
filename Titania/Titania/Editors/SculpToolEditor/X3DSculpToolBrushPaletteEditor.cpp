@@ -100,7 +100,7 @@ X3DSculpToolBrushPaletteEditor::addObject (const std::string & URL)
 
 void
 X3DSculpToolBrushPaletteEditor::set_loadState (X3D::Inline* const inlineNode,
-                                       X3D::Transform* const transform)
+                                               X3D::Transform* const transform)
 {
 	switch (inlineNode -> checkLoadState ())
 	{
@@ -124,7 +124,7 @@ X3DSculpToolBrushPaletteEditor::set_loadState (X3D::Inline* const inlineNode,
 
 void
 X3DSculpToolBrushPaletteEditor::set_bbox (X3D::Inline* const inlineNode,
-                                  X3D::Transform* const transform)
+                                          X3D::Transform* const transform)
 {
 	// Center and scale Inline depending on bbox in palette.
 
@@ -142,11 +142,15 @@ X3DSculpToolBrushPaletteEditor::setTouchTime (const std::string & URL)
 {
 	try
 	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import Model From Library"));
-		const auto nodes    = getBrowserWindow () -> import ({ URL }, undoStep);
+		const auto scene = getMasterBrowser () -> createX3DFromURL ({ URL });
+		const auto model = scene -> getNamedNode ("Brush");
+		const auto brush = getBrush ();
 
-		getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
-		getBrowserWindow () -> addUndoStep (undoStep);
+		brush -> setField <X3D::SFString> ("type",      model -> getField <X3D::SFString> ("type"));
+		brush -> setField <X3D::SFDouble> ("height",    model -> getField <X3D::SFDouble> ("height"));
+		brush -> setField <X3D::SFDouble> ("warp",      model -> getField <X3D::SFDouble> ("warp"));
+		brush -> setField <X3D::SFDouble> ("sharpness", model -> getField <X3D::SFDouble> ("sharpness"));
+		brush -> setField <X3D::SFDouble> ("hardness",  model -> getField <X3D::SFDouble> ("hardness"));
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -157,45 +161,28 @@ X3DSculpToolBrushPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 {
 	using namespace std::placeholders;
 
-	auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
+	try
+	{
+		// Export brush to stream
 
-	if (selection .empty ())
+		auto brush = X3D::MFNode ({ getBrush () });
+
+		// Export brush to stream
+
+		std::stringstream sstream;
+	
+		getBrowserWindow () -> exportNodes (X3D::X3DExecutionContextPtr (brush [0] -> getExecutionContext ()), sstream, brush, true);
+	
+		// Parse exported nodes into scene.
+	
+		scene -> fromStream (sstream);
+
+		return true;
+	}
+	catch (const X3D::X3DError &)
+	{
 		return false;
-
-	// Temporarily change url's in protos
-
-	const auto undoStep = std::make_shared <X3D::UndoStep> ("Traverse");
-
-	X3D::traverse (getCurrentContext (),
-	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), scene -> getWorldURL (), undoStep, _1),
-	               true,
-	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATIONS);
-
-	// Change url's in nodes
-
-	X3D::traverse (selection,
-	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), scene -> getWorldURL (), undoStep, _1),
-	               true,
-	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATIONS |
-	               X3D::TRAVERSE_ROOT_NODES);
-
-	// Export nodes to stream
-
-	std::stringstream sstream;
-
-	getBrowserWindow () -> exportNodes (getCurrentContext (), sstream, selection, false);
-
-	// Undo url change in protos and selection
-
-	undoStep -> undo ();
-
-	// Parse exported nodes into scene.
-
-	scene -> fromStream (sstream);
-
-	return true;
+	}
 }
 
 X3DSculpToolBrushPaletteEditor::~X3DSculpToolBrushPaletteEditor ()

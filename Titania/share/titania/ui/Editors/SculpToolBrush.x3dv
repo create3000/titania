@@ -7,11 +7,12 @@ META "created" "Fri, 03 Feb 2017 09:50:02 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/SculpToolBrush.x3dv"
-META "modified" "Fri, 03 Feb 2017 09:57:58 GMT"
+META "modified" "Fri, 03 Feb 2017 12:58:02 GMT"
 META "outputStyle" "Nicest"
 
 PROTO SculpToolBrush [
   inputOutput SFString type "CIRCULAR"
+  inputOutput SFDouble radius 0
   inputOutput SFDouble height 0
   inputOutput SFDouble warp 0
   inputOutput SFDouble sharpness 0

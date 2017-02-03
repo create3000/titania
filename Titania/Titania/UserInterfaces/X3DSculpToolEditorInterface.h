@@ -100,24 +100,104 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getHardnessAdjustment () const
-	{ return m_HardnessAdjustment; }
+	getBrushHardnessAdjustment () const
+	{ return m_BrushHardnessAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getHeightAdjustment () const
-	{ return m_HeightAdjustment; }
+	getBrushHeightAdjustment () const
+	{ return m_BrushHeightAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getRadiusAdjustment () const
-	{ return m_RadiusAdjustment; }
+	getBrushRadiusAdjustment () const
+	{ return m_BrushRadiusAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getSharpnessAdjustment () const
-	{ return m_SharpnessAdjustment; }
+	getBrushSharpnessAdjustment () const
+	{ return m_BrushSharpnessAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getWarpAdjustment () const
-	{ return m_WarpAdjustment; }
+	getBrushWarpAdjustment () const
+	{ return m_BrushWarpAdjustment; }
+
+	Gtk::Window &
+	getWindow () const
+	{ return *m_Window; }
+
+	Gtk::Box &
+	getWidget () const
+	{ return *m_Widget; }
+
+	Gtk::Box &
+	getPreviewBox () const
+	{ return *m_PreviewBox; }
+
+	Gtk::RadioToolButton &
+	getPullButton () const
+	{ return *m_PullButton; }
+
+	Gtk::RadioToolButton &
+	getPushButton () const
+	{ return *m_PushButton; }
+
+	Gtk::Notebook &
+	getNotebook () const
+	{ return *m_Notebook; }
+
+	Gtk::Expander &
+	getBrushExpander () const
+	{ return *m_BrushExpander; }
+
+	Gtk::Grid &
+	getBrushBox () const
+	{ return *m_BrushBox; }
+
+	Gtk::Scale &
+	getBrushHeightScale () const
+	{ return *m_BrushHeightScale; }
+
+	Gtk::Scale &
+	getBrushWarpScale () const
+	{ return *m_BrushWarpScale; }
+
+	Gtk::Scale &
+	getBrushSharpnessScale () const
+	{ return *m_BrushSharpnessScale; }
+
+	Gtk::Scale &
+	getBrushHardnessScale () const
+	{ return *m_BrushHardnessScale; }
+
+	Gtk::Scale &
+	getBrushRadiusScale () const
+	{ return *m_BrushRadiusScale; }
+
+	Gtk::ComboBoxText &
+	getBrushTypeButton () const
+	{ return *m_BrushTypeButton; }
+
+	Gtk::Box &
+	getPaletteBox () const
+	{ return *m_PaletteBox; }
+
+	Gtk::Box &
+	getPalettePreviewBox () const
+	{ return *m_PalettePreviewBox; }
+
+	Gtk::Box &
+	getChangePaletteBox () const
+	{ return *m_ChangePaletteBox; }
+
+	Gtk::ComboBoxText &
+	getPaletteComboBoxText () const
+	{ return *m_PaletteComboBoxText; }
+
+	Gtk::Button &
+	getPalettePreviousButton () const
+	{ return *m_PalettePreviousButton; }
+
+	Gtk::Button &
+	getPaletteNextButton () const
+	{ return *m_PaletteNextButton; }
 
 	Gtk::Dialog &
 	getEditPaletteDialog () const
@@ -159,83 +239,23 @@ public:
 	getRemoveObjectFromPaletteMenuItem () const
 	{ return *m_RemoveObjectFromPaletteMenuItem; }
 
-	Gtk::Window &
-	getWindow () const
-	{ return *m_Window; }
-
-	Gtk::Box &
-	getWidget () const
-	{ return *m_Widget; }
-
-	Gtk::Box &
-	getPreviewBox () const
-	{ return *m_PreviewBox; }
-
-	Gtk::RadioToolButton &
-	getPullButton () const
-	{ return *m_PullButton; }
-
-	Gtk::RadioToolButton &
-	getPushButton () const
-	{ return *m_PushButton; }
-
-	Gtk::Notebook &
-	getNotebook () const
-	{ return *m_Notebook; }
-
-	Gtk::Expander &
-	getBrushExpander () const
-	{ return *m_BrushExpander; }
-
-	Gtk::Grid &
-	getBrushBox () const
-	{ return *m_BrushBox; }
-
-	Gtk::Scale &
-	getHeightScale () const
-	{ return *m_HeightScale; }
-
-	Gtk::Scale &
-	getWarpScale () const
-	{ return *m_WarpScale; }
-
-	Gtk::Scale &
-	getSharpnessScale () const
-	{ return *m_SharpnessScale; }
-
-	Gtk::Scale &
-	getHardnessScale () const
-	{ return *m_HardnessScale; }
-
-	Gtk::Scale &
-	getRadiusScale () const
-	{ return *m_RadiusScale; }
-
-	Gtk::Box &
-	getPaletteBox () const
-	{ return *m_PaletteBox; }
-
-	Gtk::Box &
-	getPalettePreviewBox () const
-	{ return *m_PalettePreviewBox; }
-
-	Gtk::Box &
-	getChangePaletteBox () const
-	{ return *m_ChangePaletteBox; }
-
-	Gtk::ComboBoxText &
-	getPaletteComboBoxText () const
-	{ return *m_PaletteComboBoxText; }
-
-	Gtk::Button &
-	getPalettePreviousButton () const
-	{ return *m_PalettePreviousButton; }
-
-	Gtk::Button &
-	getPaletteNextButton () const
-	{ return *m_PaletteNextButton; }
-
 	///  @name Signal handlers
+
+	virtual
+	bool
+	on_palette_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_palette_changed () = 0;
+
+	virtual
+	void
+	on_palette_previous_clicked () = 0;
+
+	virtual
+	void
+	on_palette_next_clicked () = 0;
 
 	virtual
 	void
@@ -277,22 +297,6 @@ public:
 	void
 	on_remove_object_from_palette_activate () = 0;
 
-	virtual
-	bool
-	on_palette_button_press_event (GdkEventButton* event) = 0;
-
-	virtual
-	void
-	on_palette_changed () = 0;
-
-	virtual
-	void
-	on_palette_previous_clicked () = 0;
-
-	virtual
-	void
-	on_palette_next_clicked () = 0;
-
 	///  @name Destruction
 
 	virtual
@@ -319,11 +323,31 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_HardnessAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_HeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_RadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SharpnessAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_WarpAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BrushHardnessAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BrushHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BrushRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BrushSharpnessAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BrushWarpAdjustment;
+	Gtk::Window*                   m_Window;
+	Gtk::Box*                      m_Widget;
+	Gtk::Box*                      m_PreviewBox;
+	Gtk::RadioToolButton*          m_PullButton;
+	Gtk::RadioToolButton*          m_PushButton;
+	Gtk::Notebook*                 m_Notebook;
+	Gtk::Expander*                 m_BrushExpander;
+	Gtk::Grid*                     m_BrushBox;
+	Gtk::Scale*                    m_BrushHeightScale;
+	Gtk::Scale*                    m_BrushWarpScale;
+	Gtk::Scale*                    m_BrushSharpnessScale;
+	Gtk::Scale*                    m_BrushHardnessScale;
+	Gtk::Scale*                    m_BrushRadiusScale;
+	Gtk::ComboBoxText*             m_BrushTypeButton;
+	Gtk::Box*                      m_PaletteBox;
+	Gtk::Box*                      m_PalettePreviewBox;
+	Gtk::Box*                      m_ChangePaletteBox;
+	Gtk::ComboBoxText*             m_PaletteComboBoxText;
+	Gtk::Button*                   m_PalettePreviousButton;
+	Gtk::Button*                   m_PaletteNextButton;
 	Gtk::Dialog*                   m_EditPaletteDialog;
 	Gtk::Button*                   m_EditPaletteCancelButton;
 	Gtk::Button*                   m_EditPaletteOkButton;
@@ -334,25 +358,6 @@ private:
 	Gtk::ImageMenuItem*            m_EditPaletteMenuItem;
 	Gtk::ImageMenuItem*            m_AddObjectToPaletteMenuItem;
 	Gtk::ImageMenuItem*            m_RemoveObjectFromPaletteMenuItem;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::Box*                      m_PreviewBox;
-	Gtk::RadioToolButton*          m_PullButton;
-	Gtk::RadioToolButton*          m_PushButton;
-	Gtk::Notebook*                 m_Notebook;
-	Gtk::Expander*                 m_BrushExpander;
-	Gtk::Grid*                     m_BrushBox;
-	Gtk::Scale*                    m_HeightScale;
-	Gtk::Scale*                    m_WarpScale;
-	Gtk::Scale*                    m_SharpnessScale;
-	Gtk::Scale*                    m_HardnessScale;
-	Gtk::Scale*                    m_RadiusScale;
-	Gtk::Box*                      m_PaletteBox;
-	Gtk::Box*                      m_PalettePreviewBox;
-	Gtk::Box*                      m_ChangePaletteBox;
-	Gtk::ComboBoxText*             m_PaletteComboBoxText;
-	Gtk::Button*                   m_PalettePreviousButton;
-	Gtk::Button*                   m_PaletteNextButton;
 
 };
 

@@ -57,10 +57,10 @@ namespace puck {
 
 X3DSculpToolBrushEditor::X3DSculpToolBrushEditor () :
 	X3DSculpToolEditorInterface (),
-	                     height (this, getHeightAdjustment (), getHeightScale (), "height"),
-	                       warp (this, getWarpAdjustment (), getWarpScale (), "warp"),
-	                  sharpness (this, getSharpnessAdjustment (), getSharpnessScale (), "sharpness"),
-	                   hardness (this, getHardnessAdjustment (), getHardnessScale (), "hardness"),
+	                     height (this, getBrushHeightAdjustment (), getBrushHeightScale (), "height"),
+	                       warp (this, getBrushWarpAdjustment (), getBrushWarpScale (), "warp"),
+	                  sharpness (this, getBrushSharpnessAdjustment (), getBrushSharpnessScale (), "sharpness"),
+	                   hardness (this, getBrushHardnessAdjustment (), getBrushHardnessScale (), "hardness"),
 	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrushPreview.x3dv") }))
 {
 	addChildren (preview);
