@@ -93,6 +93,9 @@ private:
 	void
 	setTouchTime (const std::string &) final override;
 
+	void
+	set_model (X3D::X3DScenePtr && scene);
+
 	virtual
 	bool
 	createScene (const X3D::X3DScenePtr &) final override;
@@ -102,6 +105,10 @@ private:
 
 	void
 	set_bbox (X3D::Inline* const, X3D::Transform* const);
+
+	///  @name Member types
+
+	X3D::SceneLoaderPtr future;
 
 };
 

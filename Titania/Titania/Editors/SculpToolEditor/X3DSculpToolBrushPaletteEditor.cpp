@@ -59,12 +59,14 @@
 #include <Titania/X3D/Components/Shape/Material.h>
 #include <Titania/X3D/Components/Shape/Shape.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
+#include <Titania/X3D/Thread/SceneLoader.h>
 
 namespace titania {
 namespace puck {
 
 X3DSculpToolBrushPaletteEditor::X3DSculpToolBrushPaletteEditor () :
-	X3DPaletteEditor <X3DSculpToolEditorInterface> ("SculpTool")
+	X3DPaletteEditor <X3DSculpToolEditorInterface> ("SculpTool"),
+	                                        future ()
 { }
 
 void
@@ -142,9 +144,23 @@ X3DSculpToolBrushPaletteEditor::setTouchTime (const std::string & URL)
 {
 	try
 	{
-		const auto scene = getMasterBrowser () -> createX3DFromURL ({ URL });
+		using namespace std::placeholders;
+
+		future = getMasterBrowser () -> createX3DFromURL ({ URL }, std::bind (&X3DSculpToolBrushPaletteEditor::set_model, this, _1));
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+X3DSculpToolBrushPaletteEditor::set_model (X3D::X3DScenePtr && scene)
+{
+	try
+	{
 		const auto model = scene -> getNamedNode ("Brush");
 		const auto brush = getBrush ();
+
+__LOG__ << model -> getField <X3D::SFString> ("type") << std::endl;
 
 		brush -> setField <X3D::SFString> ("type",      model -> getField <X3D::SFString> ("type"));
 		brush -> setField <X3D::SFDouble> ("height",    model -> getField <X3D::SFDouble> ("height"));

@@ -521,6 +521,17 @@ throw (Error <INVALID_URL>,
 	return loader .createX3DFromURL (url);
 }
 
+SceneLoaderPtr
+X3DBrowser::createX3DFromURL (const MFString & url, const SceneLoaderCallback & callback)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>,
+       Error <INVALID_OPERATION_TIMING>)
+{
+	using namespace std::placeholders;
+
+	return SceneLoaderPtr (new SceneLoader (getExecutionContext (), url, [callback] (X3DScenePtr && scene) { scene -> setup (); callback (std::move (scene)); }));
+}
+
 void
 X3DBrowser::firstViewpoint ()
 throw (Error <INVALID_OPERATION_TIMING>,

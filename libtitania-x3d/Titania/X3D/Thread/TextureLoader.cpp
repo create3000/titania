@@ -112,10 +112,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 bool
-TextureLoader::ready ()
+TextureLoader::isReady ()
 {
 	if (not future .valid ())
-		return true;
+		return false;
 
 	const auto status = future .wait_for (std::chrono::milliseconds (0));
 

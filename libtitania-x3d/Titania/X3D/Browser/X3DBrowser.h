@@ -211,6 +211,12 @@ public:
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
+	SceneLoaderPtr
+	createX3DFromURL (const MFString & url, const SceneLoaderCallback & callback)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>,
+	       Error <INVALID_OPERATION_TIMING>);
+
 	/// @name Browser properties service
 
 	const RenderingPropertiesPtr &

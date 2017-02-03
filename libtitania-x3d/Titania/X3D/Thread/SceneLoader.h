@@ -72,11 +72,9 @@ class SceneLoader :
 {
 public:
 
-	typedef std::function <void (X3DScenePtr &&)> Callback;
-
 	///  @name Construction
 
-	SceneLoader (X3DExecutionContext* const, const MFString &, const Callback &);
+	SceneLoader (X3DExecutionContext* const, const MFString &, const SceneLoaderCallback &);
 
 	///  @name Member access
 
@@ -108,18 +106,20 @@ public:
 
 	///  @name Member access
 
+	virtual
+	bool
+	isReady () final override;
+
 	const MFString &
 	getUrlError () const
 	{ return urlError; }
 
-	///  @name Destruction
-
-	virtual
-	bool
-	ready () final override;
+	///  @name Operations
 
 	void
 	wait ();
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -155,7 +155,7 @@ private:
 
 	///  @name Members
 
-	Callback                  callback;
+	SceneLoaderCallback       callback;
 	Loader                    loader;
 	X3DScenePtr               scene;
 	MFString                  urlError;

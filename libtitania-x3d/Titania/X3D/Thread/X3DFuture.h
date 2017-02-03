@@ -67,7 +67,7 @@ public:
 
 	virtual
 	bool
-	ready () = 0;
+	isReady () = 0;
 
 
 protected:

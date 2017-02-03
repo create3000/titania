@@ -93,7 +93,7 @@ const ComponentType SceneLoader::component      = ComponentType::TITANIA;
 const std::string   SceneLoader::typeName       = "SceneLoader";
 const std::string   SceneLoader::containerField = "future";
 
-SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const Callback & callback) :
+SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const SceneLoaderCallback & callback) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DFuture (),
 	  callback (callback),
@@ -138,10 +138,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 bool
-SceneLoader::ready ()
+SceneLoader::isReady ()
 {
 	if (not future .valid ())
-		return true;
+		return false;
 
 	const auto status = future .wait_for (std::chrono::milliseconds (0));
 
@@ -165,6 +165,8 @@ SceneLoader::wait ()
 			scene -> requestImmediateLoadOfExternProtos ();
 
 			callback (std::move (scene));
+
+			scene = nullptr;
 		}
 		catch (const FutureUrlErrorException & error)
 		{
@@ -271,6 +273,8 @@ SceneLoader::set_loadCount (const int32_t loadCount)
 	scene -> getExternProtosLoadCount () .removeInterest (this, &SceneLoader::set_loadCount);
 
 	callback (std::move (scene));
+
+	scene = nullptr;
 }
 
 void
