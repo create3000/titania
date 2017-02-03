@@ -4083,30 +4083,6 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="label60">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Selected Faces:</property>
-                            <property name="xalign">0</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">7</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label61">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Selected Holes:</property>
-                            <property name="xalign">0</property>
-                          </object>
-                          <packing>
-                            <property name="left_attach">0</property>
-                            <property name="top_attach">6</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkBox" id="box30">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -4157,6 +4133,17 @@
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkSeparator" id="separator1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">3</property>
+                            <property name="width">2</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkBox" id="box36">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
@@ -4178,7 +4165,19 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">6</property>
+                            <property name="top_attach">7</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label61">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Selected Holes:</property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">7</property>
                           </packing>
                         </child>
                         <child>
@@ -4203,18 +4202,19 @@
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
-                            <property name="top_attach">7</property>
+                            <property name="top_attach">6</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkSeparator" id="separator1">
+                          <object class="GtkLabel" id="label60">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Selected Faces:</property>
+                            <property name="xalign">0</property>
                           </object>
                           <packing>
                             <property name="left_attach">0</property>
-                            <property name="top_attach">3</property>
-                            <property name="width">2</property>
+                            <property name="top_attach">6</property>
                           </packing>
                         </child>
                       </object>
