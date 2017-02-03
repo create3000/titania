@@ -48,50 +48,62 @@
  *
  ******************************************************************************/
 
-#include "SculpToolEditor.h"
+#ifndef __TITANIA_EDITORS_SCULP_TOOL_EDITOR_X3DSCULP_TOOL_BRUSH_EDITOR_H__
+#define __TITANIA_EDITORS_SCULP_TOOL_EDITOR_X3DSCULP_TOOL_BRUSH_EDITOR_H__
 
-#include "../../Configuration/config.h"
+#include "../../ComposedWidgets.h"
+#include "../../UserInterfaces/X3DSculpToolEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-SculpToolEditor::SculpToolEditor (X3DBrowserWindow* const browserWindow) :
-	              X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	   X3DSculpToolEditorInterface (get_ui ("Editors/SculpToolEditor.glade")),
-	       X3DSculpToolBrushEditor (),
-	X3DSculpToolBrushPaletteEditor ()
+class X3DSculpToolBrushEditor :
+	virtual public X3DSculpToolEditorInterface
 {
-	setup ();
-}
+public:
 
-void
-SculpToolEditor::configure ()
-{
-	X3DSculpToolEditorInterface::configure ();
+	///  @name Destruction
 
-	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-}
+	virtual
+	~X3DSculpToolBrushEditor () override;
 
-void
-SculpToolEditor::initialize ()
-{
-	X3DSculpToolEditorInterface::initialize ();
-	X3DSculpToolBrushEditor::initialize ();
-	X3DSculpToolBrushPaletteEditor::initialize ();
-}
 
-void
-SculpToolEditor::store ()
-{
-	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
+protected:
 
-	X3DSculpToolEditorInterface::store ();
-}
+	///  @name Construction
 
-SculpToolEditor::~SculpToolEditor ()
-{
-	dispose ();
-}
+	X3DSculpToolBrushEditor ();
+
+	virtual
+	void
+	initialize () override;
+
+	///  @name Member access
+
+	virtual
+	X3D::SFNode
+	getBrush () const;
+
+
+private:
+
+	///  @name Construction
+
+	void
+	set_initalized ();
+
+	///  @name Members
+
+	X3DFieldAdjustment <X3D::SFDouble> height;
+	X3DFieldAdjustment <X3D::SFDouble> warp;
+	X3DFieldAdjustment <X3D::SFDouble> sharpness;
+	X3DFieldAdjustment <X3D::SFDouble> hardness;
+
+	X3D::BrowserPtr preview;
+
+};
 
 } // puck
 } // titania
+
+#endif

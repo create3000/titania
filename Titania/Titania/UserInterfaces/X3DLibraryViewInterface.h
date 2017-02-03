@@ -171,6 +171,10 @@ public:
 	getPalettePreviewBox () const
 	{ return *m_PalettePreviewBox; }
 
+	Gtk::Box &
+	getChangePaletteBox () const
+	{ return *m_ChangePaletteBox; }
+
 	Gtk::ComboBoxText &
 	getPaletteComboBoxText () const
 	{ return *m_PaletteComboBoxText; }
@@ -329,6 +333,7 @@ private:
 	Gtk::TreeView*                         m_TreeView;
 	Gtk::Box*                              m_PaletteBox;
 	Gtk::Box*                              m_PalettePreviewBox;
+	Gtk::Box*                              m_ChangePaletteBox;
 	Gtk::ComboBoxText*                     m_PaletteComboBoxText;
 	Gtk::Button*                           m_PalettePreviousButton;
 	Gtk::Button*                           m_PaletteNextButton;

@@ -285,6 +285,8 @@
     <Compile Include="Titania\Editors\ScenePropertiesEditor\X3DMetaDataEditor.cpp" />
     <Compile Include="Titania\Editors\AppearanceEditor\X3DUsedMaterialsEditor.cpp" />
     <Compile Include="Titania\Editors\TextureEditor\X3DUsedTexturesEditor.cpp" />
+    <Compile Include="Titania\Editors\SculpToolEditor\X3DSculpToolBrushEditor.cpp" />
+    <Compile Include="Titania\Editors\SculpToolEditor\X3DSculpToolBrushPaletteEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2567,6 +2569,8 @@
     <None Include="share\titania\ui\icons\Pull.svg" />
     <None Include="share\titania\ui\icons\Push.svg" />
     <None Include="share\titania\ui\Editors\SculpToolBrushPreview.x3dv" />
+    <None Include="Titania\Editors\SculpToolEditor\X3DSculpToolBrushEditor.h" />
+    <None Include="Titania\Editors\SculpToolEditor\X3DSculpToolBrushPaletteEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2670,6 +2674,7 @@
     <Folder Include="share\titania\ui\icons\Faenza\64\" />
     <Folder Include="share\man\" />
     <Folder Include="Titania\Application\" />
+    <Folder Include="share\titania\Library\SculpTool\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

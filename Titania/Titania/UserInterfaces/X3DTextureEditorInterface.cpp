@@ -296,6 +296,7 @@ X3DTextureEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UsedTexturesIndexBox", m_UsedTexturesIndexBox);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
+	m_builder -> get_widget ("ChangePaletteBox", m_ChangePaletteBox);
 	m_builder -> get_widget ("PaletteComboBoxText", m_PaletteComboBoxText);
 	m_builder -> get_widget ("PalettePreviousButton", m_PalettePreviousButton);
 	m_builder -> get_widget ("PaletteNextButton", m_PaletteNextButton);

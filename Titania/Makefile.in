@@ -215,6 +215,8 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.$(OBJEXT) \
 	Titania/Editors/ScenePropertiesEditor/X3DWorldInfoEditor.$(OBJEXT) \
 	Titania/Editors/SculpToolEditor/SculpToolEditor.$(OBJEXT) \
+	Titania/Editors/SculpToolEditor/X3DSculpToolBrushEditor.$(OBJEXT) \
+	Titania/Editors/SculpToolEditor/X3DSculpToolBrushPaletteEditor.$(OBJEXT) \
 	Titania/Editors/SoundEditor/SoundEditor.$(OBJEXT) \
 	Titania/Editors/SoundEditor/X3DSoundSourceNodeEditor.$(OBJEXT) \
 	Titania/Editors/TextEditor/TextEditor.$(OBJEXT) \
@@ -681,6 +683,8 @@ titania_SOURCES = \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DWorldInfoEditor.cpp \
 	Titania/Editors/SculpToolEditor/SculpToolEditor.cpp \
+	Titania/Editors/SculpToolEditor/X3DSculpToolBrushEditor.cpp \
+	Titania/Editors/SculpToolEditor/X3DSculpToolBrushPaletteEditor.cpp \
 	Titania/Editors/SoundEditor/SoundEditor.cpp \
 	Titania/Editors/SoundEditor/X3DSoundSourceNodeEditor.cpp \
 	Titania/Editors/TextEditor/TextEditor.cpp \
@@ -1424,6 +1428,12 @@ Titania/Editors/SculpToolEditor/$(DEPDIR)/$(am__dirstamp):
 Titania/Editors/SculpToolEditor/SculpToolEditor.$(OBJEXT):  \
 	Titania/Editors/SculpToolEditor/$(am__dirstamp) \
 	Titania/Editors/SculpToolEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/SculpToolEditor/X3DSculpToolBrushEditor.$(OBJEXT):  \
+	Titania/Editors/SculpToolEditor/$(am__dirstamp) \
+	Titania/Editors/SculpToolEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Editors/SculpToolEditor/X3DSculpToolBrushPaletteEditor.$(OBJEXT):  \
+	Titania/Editors/SculpToolEditor/$(am__dirstamp) \
+	Titania/Editors/SculpToolEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Editors/SoundEditor/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Editors/SoundEditor
 	@: > Titania/Editors/SoundEditor/$(am__dirstamp)
@@ -2003,6 +2013,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DUnitEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/ScenePropertiesEditor/$(DEPDIR)/X3DWorldInfoEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/SculpToolEditor/$(DEPDIR)/SculpToolEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/SculpToolEditor/$(DEPDIR)/X3DSculpToolBrushEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/SculpToolEditor/$(DEPDIR)/X3DSculpToolBrushPaletteEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/SoundEditor/$(DEPDIR)/SoundEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/SoundEditor/$(DEPDIR)/X3DSoundSourceNodeEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Editors/TextEditor/$(DEPDIR)/TextEditor.Po@am__quote@

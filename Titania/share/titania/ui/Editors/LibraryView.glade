@@ -181,7 +181,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="box14">
+                  <object class="GtkBox" id="ChangePaletteBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">4</property>

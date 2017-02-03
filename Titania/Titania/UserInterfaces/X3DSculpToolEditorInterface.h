@@ -119,6 +119,46 @@ public:
 	getWarpAdjustment () const
 	{ return m_WarpAdjustment; }
 
+	Gtk::Dialog &
+	getEditPaletteDialog () const
+	{ return *m_EditPaletteDialog; }
+
+	Gtk::Button &
+	getEditPaletteCancelButton () const
+	{ return *m_EditPaletteCancelButton; }
+
+	Gtk::Button &
+	getEditPaletteOkButton () const
+	{ return *m_EditPaletteOkButton; }
+
+	Gtk::Entry &
+	getPaletteNameEntry () const
+	{ return *m_PaletteNameEntry; }
+
+	Gtk::Menu &
+	getPaletteMenu () const
+	{ return *m_PaletteMenu; }
+
+	Gtk::ImageMenuItem &
+	getAddPaletteMenuItem () const
+	{ return *m_AddPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemovePaletteMenuItem () const
+	{ return *m_RemovePaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getEditPaletteMenuItem () const
+	{ return *m_EditPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getAddObjectToPaletteMenuItem () const
+	{ return *m_AddObjectToPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getRemoveObjectFromPaletteMenuItem () const
+	{ return *m_RemoveObjectFromPaletteMenuItem; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -130,6 +170,18 @@ public:
 	Gtk::Box &
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
+
+	Gtk::RadioToolButton &
+	getPullButton () const
+	{ return *m_PullButton; }
+
+	Gtk::RadioToolButton &
+	getPushButton () const
+	{ return *m_PushButton; }
+
+	Gtk::Notebook &
+	getNotebook () const
+	{ return *m_Notebook; }
 
 	Gtk::Expander &
 	getBrushExpander () const
@@ -159,7 +211,87 @@ public:
 	getRadiusScale () const
 	{ return *m_RadiusScale; }
 
+	Gtk::Box &
+	getPaletteBox () const
+	{ return *m_PaletteBox; }
+
+	Gtk::Box &
+	getPalettePreviewBox () const
+	{ return *m_PalettePreviewBox; }
+
+	Gtk::Box &
+	getChangePaletteBox () const
+	{ return *m_ChangePaletteBox; }
+
+	Gtk::ComboBoxText &
+	getPaletteComboBoxText () const
+	{ return *m_PaletteComboBoxText; }
+
+	Gtk::Button &
+	getPalettePreviousButton () const
+	{ return *m_PalettePreviousButton; }
+
+	Gtk::Button &
+	getPaletteNextButton () const
+	{ return *m_PaletteNextButton; }
+
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_edit_palette_cancel_clicked () = 0;
+
+	virtual
+	void
+	on_edit_palette_ok_clicked () = 0;
+
+	virtual
+	void
+	on_palette_name_changed () = 0;
+
+	virtual
+	void
+	on_palette_name_delete_text (int start_pos, int end_pos) = 0;
+
+	virtual
+	void
+	on_palette_name_insert_text (const Glib::ustring & text, int* position) = 0;
+
+	virtual
+	void
+	on_add_palette_activate () = 0;
+
+	virtual
+	void
+	on_remove_palette_activate () = 0;
+
+	virtual
+	void
+	on_edit_palette_activate () = 0;
+
+	virtual
+	void
+	on_add_object_to_palette_activate () = 0;
+
+	virtual
+	void
+	on_remove_object_from_palette_activate () = 0;
+
+	virtual
+	bool
+	on_palette_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
+	void
+	on_palette_changed () = 0;
+
+	virtual
+	void
+	on_palette_previous_clicked () = 0;
+
+	virtual
+	void
+	on_palette_next_clicked () = 0;
 
 	///  @name Destruction
 
@@ -192,9 +324,22 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_RadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SharpnessAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_WarpAdjustment;
+	Gtk::Dialog*                   m_EditPaletteDialog;
+	Gtk::Button*                   m_EditPaletteCancelButton;
+	Gtk::Button*                   m_EditPaletteOkButton;
+	Gtk::Entry*                    m_PaletteNameEntry;
+	Gtk::Menu*                     m_PaletteMenu;
+	Gtk::ImageMenuItem*            m_AddPaletteMenuItem;
+	Gtk::ImageMenuItem*            m_RemovePaletteMenuItem;
+	Gtk::ImageMenuItem*            m_EditPaletteMenuItem;
+	Gtk::ImageMenuItem*            m_AddObjectToPaletteMenuItem;
+	Gtk::ImageMenuItem*            m_RemoveObjectFromPaletteMenuItem;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Box*                      m_PreviewBox;
+	Gtk::RadioToolButton*          m_PullButton;
+	Gtk::RadioToolButton*          m_PushButton;
+	Gtk::Notebook*                 m_Notebook;
 	Gtk::Expander*                 m_BrushExpander;
 	Gtk::Grid*                     m_BrushBox;
 	Gtk::Scale*                    m_HeightScale;
@@ -202,6 +347,12 @@ private:
 	Gtk::Scale*                    m_SharpnessScale;
 	Gtk::Scale*                    m_HardnessScale;
 	Gtk::Scale*                    m_RadiusScale;
+	Gtk::Box*                      m_PaletteBox;
+	Gtk::Box*                      m_PalettePreviewBox;
+	Gtk::Box*                      m_ChangePaletteBox;
+	Gtk::ComboBoxText*             m_PaletteComboBoxText;
+	Gtk::Button*                   m_PalettePreviousButton;
+	Gtk::Button*                   m_PaletteNextButton;
 
 };
 

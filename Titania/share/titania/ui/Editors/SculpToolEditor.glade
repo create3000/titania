@@ -28,6 +28,7 @@
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_edit_palette_cancel_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -46,6 +47,7 @@
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_edit_palette_ok_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -84,6 +86,9 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="activates_default">True</property>
+                <signal name="changed" handler="on_palette_name_changed" swapped="no"/>
+                <signal name="delete-text" handler="on_palette_name_delete_text" after="yes" swapped="no"/>
+                <signal name="insert-text" handler="on_palette_name_insert_text" after="yes" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -123,6 +128,7 @@
         <property name="image">image9</property>
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_add_palette_activate" swapped="no"/>
       </object>
     </child>
     <child>
@@ -133,6 +139,7 @@
         <property name="image">image10</property>
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_remove_palette_activate" swapped="no"/>
       </object>
     </child>
     <child>
@@ -142,6 +149,7 @@
         <property name="image">image12</property>
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_edit_palette_activate" swapped="no"/>
       </object>
     </child>
     <child>
@@ -158,6 +166,7 @@
         <property name="image">image14</property>
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_add_object_to_palette_activate" swapped="no"/>
       </object>
     </child>
     <child>
@@ -168,6 +177,7 @@
         <property name="image">image13</property>
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_remove_object_from_palette_activate" swapped="no"/>
       </object>
     </child>
   </object>
@@ -277,7 +287,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook">
+          <object class="GtkNotebook" id="Notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tab_pos">bottom</property>
@@ -476,6 +486,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="orientation">vertical</property>
+                        <signal name="button-press-event" handler="on_palette_button_press_event" swapped="no"/>
                         <child>
                           <placeholder/>
                         </child>
@@ -489,7 +500,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="box14">
+                  <object class="GtkBox" id="ChangePaletteBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="spacing">4</property>
@@ -498,6 +509,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="valign">start</property>
+                        <signal name="changed" handler="on_palette_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -510,6 +522,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="on_palette_previous_clicked" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="image6">
                             <property name="visible">True</property>
@@ -530,6 +543,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="on_palette_next_clicked" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="image7">
                             <property name="visible">True</property>

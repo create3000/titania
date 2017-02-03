@@ -118,6 +118,8 @@ titania_SOURCES =  \
 	Titania/Editors/ScenePropertiesEditor/X3DUnitEditor.cpp \
 	Titania/Editors/ScenePropertiesEditor/X3DWorldInfoEditor.cpp \
 	Titania/Editors/SculpToolEditor/SculpToolEditor.cpp \
+	Titania/Editors/SculpToolEditor/X3DSculpToolBrushEditor.cpp \
+	Titania/Editors/SculpToolEditor/X3DSculpToolBrushPaletteEditor.cpp \
 	Titania/Editors/SoundEditor/SoundEditor.cpp \
 	Titania/Editors/SoundEditor/X3DSoundSourceNodeEditor.cpp \
 	Titania/Editors/TextEditor/TextEditor.cpp \

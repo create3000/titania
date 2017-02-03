@@ -51,14 +51,17 @@
 #ifndef __TITANIA_EDITORS_SCULP_TOOL_EDITOR_SCULP_TOOL_EDITOR_H__
 #define __TITANIA_EDITORS_SCULP_TOOL_EDITOR_SCULP_TOOL_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DSculpToolEditorInterface.h"
+#include "X3DSculpToolBrushEditor.h"
+#include "X3DSculpToolBrushPaletteEditor.h"
 
 namespace titania {
 namespace puck {
 
 class SculpToolEditor :
-	virtual public X3DSculpToolEditorInterface
+	virtual public X3DSculpToolEditorInterface,
+	public X3DSculpToolBrushEditor,
+	public X3DSculpToolBrushPaletteEditor
 {
 public:
 
@@ -72,25 +75,29 @@ public:
 	~SculpToolEditor () final override;
 
 
+protected:
+
+	virtual
+	X3D::SFNode
+	getBrush () const
+	{ return X3DSculpToolBrushEditor::getBrush (); }
+
+
 private:
 
 	///  @name Construction
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	initialize () final override;
 
+	virtual
 	void
-	set_initalized ();
-
-	///  @name Members
-
-	X3DFieldAdjustment <X3D::SFDouble> height;
-	X3DFieldAdjustment <X3D::SFDouble> warp;
-	X3DFieldAdjustment <X3D::SFDouble> sharpness;
-	X3DFieldAdjustment <X3D::SFDouble> hardness;
-
-	X3D::BrowserPtr preview;
+	store () final override;
 
 };
 

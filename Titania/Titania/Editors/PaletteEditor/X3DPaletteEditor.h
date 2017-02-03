@@ -150,9 +150,6 @@ private:
 	void
 	enable ();
 
-	void
-	disable ();
-
 	///  @name Event handlers
 
 	void
@@ -295,7 +292,7 @@ X3DPaletteEditor <Type>::set_browser ()
 	}
 	catch (const X3D::X3DError &)
 	{
-		disable ();
+		this -> getPaletteBox () .set_sensitive (false);
 	}
 }
 
@@ -310,28 +307,19 @@ template <class Type>
 void
 X3DPaletteEditor <Type>::refreshPalette ()
 {
-	try
-	{
-		// Find materials in folders.
-	
-		folders .clear ();
-		this -> getPaletteComboBoxText () .remove_all ();
+	// Find materials in folders.
 
-		addLibrary (find_data_file ("Library/" + libraryFolder), false);
+	folders .clear ();
 
-		numDefaultPalettes = folders .size ();
+	this -> getPaletteComboBoxText () .remove_all ();
 
-		addLibrary (config_dir (libraryFolder), true);
-	
-		if (folders .empty ())
-			disable ();
-		else
-			enable ();
-	}
-	catch (...)
-	{
-		disable ();
-	}
+	addLibrary (find_data_file ("Library/" + libraryFolder), false);
+
+	numDefaultPalettes = folders .size ();
+
+	addLibrary (config_dir (libraryFolder), true);
+
+	enable ();
 }
 
 template <class Type>
@@ -390,11 +378,11 @@ X3DPaletteEditor <Type>::setCurrentFolder (const size_t paletteIndex)
 
 			break;
 		}
+
+		enable ();
 	}
 	catch (...)
-	{
-		disable ();
-	}
+	{ }
 }
 
 template <class Type>
@@ -447,14 +435,7 @@ template <class Type>
 void
 X3DPaletteEditor <Type>::enable ()
 {
-	this -> getPaletteBox () .set_sensitive (true);
-}
-
-template <class Type>
-void
-X3DPaletteEditor <Type>::disable ()
-{
-	this -> getPaletteBox () .set_sensitive (false);
+	this -> getChangePaletteBox () .set_sensitive (folders .size ());
 }
 
 template <class Type>
@@ -514,13 +495,13 @@ X3DPaletteEditor <Type>::on_palette_button_press_event (GdkEventButton* event)
 	// Display menu.
 
 	const size_t paletteIndex  = this -> getPaletteComboBoxText () .get_active_row_number ();
-	const bool   customPalette = paletteIndex >= numDefaultPalettes;
+	const bool   customPalette = paletteIndex >= numDefaultPalettes and folders .size ();
 
 	this -> getRemovePaletteMenuItem () .set_sensitive (customPalette);
 	this -> getEditPaletteMenuItem ()   .set_sensitive (customPalette);
 
 	this -> getAddObjectToPaletteMenuItem ()      .set_sensitive (customPalette and files .size () < PAGE_SIZE and checkSelection ());
-	this -> getRemoveObjectFromPaletteMenuItem () .set_sensitive (customPalette and selectedIndex < PAGE_SIZE);
+	this -> getRemoveObjectFromPaletteMenuItem () .set_sensitive (customPalette and selectedIndex < PAGE_SIZE and files .size ());
 
 	this -> getPaletteMenu () .popup (event -> button, event -> time);
 	return true;

@@ -48,50 +48,64 @@
  *
  ******************************************************************************/
 
-#include "SculpToolEditor.h"
+#ifndef __TITANIA_EDITORS_SCULP_TOOL_EDITOR_X3DSCULP_TOOL_BRUSH_PALETTE_EDITOR_H__
+#define __TITANIA_EDITORS_SCULP_TOOL_EDITOR_X3DSCULP_TOOL_BRUSH_PALETTE_EDITOR_H__
 
-#include "../../Configuration/config.h"
+#include "../../Editors/PaletteEditor/X3DPaletteEditor.h"
+#include "../../UserInterfaces/X3DSculpToolEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-SculpToolEditor::SculpToolEditor (X3DBrowserWindow* const browserWindow) :
-	              X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	   X3DSculpToolEditorInterface (get_ui ("Editors/SculpToolEditor.glade")),
-	       X3DSculpToolBrushEditor (),
-	X3DSculpToolBrushPaletteEditor ()
+class X3DSculpToolBrushPaletteEditor :
+	public X3DPaletteEditor <X3DSculpToolEditorInterface>
 {
-	setup ();
-}
+public:
 
-void
-SculpToolEditor::configure ()
-{
-	X3DSculpToolEditorInterface::configure ();
+	///  @name Destruction
 
-	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-}
+	virtual
+	~X3DSculpToolBrushPaletteEditor () override;
 
-void
-SculpToolEditor::initialize ()
-{
-	X3DSculpToolEditorInterface::initialize ();
-	X3DSculpToolBrushEditor::initialize ();
-	X3DSculpToolBrushPaletteEditor::initialize ();
-}
 
-void
-SculpToolEditor::store ()
-{
-	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
+protected:
 
-	X3DSculpToolEditorInterface::store ();
-}
+	///  @name Construction
 
-SculpToolEditor::~SculpToolEditor ()
-{
-	dispose ();
-}
+	X3DSculpToolBrushPaletteEditor ();
+
+	///  @name Member access
+
+	virtual
+	X3D::SFNode
+	getBrush () const = 0;
+
+
+private:
+
+	///  @name Operations
+
+	virtual
+	void
+	addObject (const std::string &) final override;
+
+	virtual
+	void
+	setTouchTime (const std::string &) final override;
+
+	virtual
+	bool
+	createScene (const X3D::X3DScenePtr &) final override;
+
+	void
+	set_loadState (X3D::Inline* const, X3D::Transform* const);
+
+	void
+	set_bbox (X3D::Inline* const, X3D::Transform* const);
+
+};
 
 } // puck
 } // titania
+
+#endif

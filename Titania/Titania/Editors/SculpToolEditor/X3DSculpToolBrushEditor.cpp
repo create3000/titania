@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,50 +48,62 @@
  *
  ******************************************************************************/
 
-#include "SculpToolEditor.h"
+#include "X3DSculpToolBrushEditor.h"
 
 #include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-SculpToolEditor::SculpToolEditor (X3DBrowserWindow* const browserWindow) :
-	              X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	   X3DSculpToolEditorInterface (get_ui ("Editors/SculpToolEditor.glade")),
-	       X3DSculpToolBrushEditor (),
-	X3DSculpToolBrushPaletteEditor ()
+X3DSculpToolBrushEditor::X3DSculpToolBrushEditor () :
+	X3DSculpToolEditorInterface (),
+	                     height (this, getHeightAdjustment (), getHeightScale (), "height"),
+	                       warp (this, getWarpAdjustment (), getWarpScale (), "warp"),
+	                  sharpness (this, getSharpnessAdjustment (), getSharpnessScale (), "sharpness"),
+	                   hardness (this, getHardnessAdjustment (), getHardnessScale (), "hardness"),
+	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrushPreview.x3dv") }))
 {
-	setup ();
+	addChildren (preview);
 }
 
 void
-SculpToolEditor::configure ()
+X3DSculpToolBrushEditor::initialize ()
 {
-	X3DSculpToolEditorInterface::configure ();
+	preview -> initialized () .addInterest (this, &X3DSculpToolBrushEditor::set_initalized);
+	preview -> setAntialiasing (4);
+	preview -> set_opacity (0);
+	preview -> show ();
 
-	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getPreviewBox () .pack_start (*preview, true, true, 0);
 }
 
 void
-SculpToolEditor::initialize ()
+X3DSculpToolBrushEditor::set_initalized ()
 {
-	X3DSculpToolEditorInterface::initialize ();
-	X3DSculpToolBrushEditor::initialize ();
-	X3DSculpToolBrushPaletteEditor::initialize ();
+	try
+	{
+		preview -> set_opacity (1);
+
+		const auto brush = getBrush ();
+		const auto nodes = X3D::MFNode ({ brush });
+
+		height    .setNodes (nodes);
+		warp      .setNodes (nodes);
+		sharpness .setNodes (nodes);
+		hardness  .setNodes (nodes);
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
-void
-SculpToolEditor::store ()
+X3D::SFNode
+X3DSculpToolBrushEditor::getBrush () const
 {
-	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
-
-	X3DSculpToolEditorInterface::store ();
+	return preview -> getExecutionContext () -> getScene () -> getExportedNode ("Brush");
 }
 
-SculpToolEditor::~SculpToolEditor ()
-{
-	dispose ();
-}
+X3DSculpToolBrushEditor::~X3DSculpToolBrushEditor ()
+{ }
 
 } // puck
 } // titania
