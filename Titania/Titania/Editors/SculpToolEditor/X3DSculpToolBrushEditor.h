@@ -76,7 +76,15 @@ protected:
 
 	virtual
 	void
+	configure () override;
+
+	virtual
+	void
 	initialize () override;
+
+	virtual
+	void
+	store () override;
 
 	///  @name Member access
 
@@ -94,6 +102,8 @@ private:
 
 	///  @name Members
 
+	SFStringComboBoxText               type;
+	X3DFieldAdjustment <X3D::SFDouble> radius;
 	X3DFieldAdjustment <X3D::SFDouble> height;
 	X3DFieldAdjustment <X3D::SFDouble> warp;
 	X3DFieldAdjustment <X3D::SFDouble> sharpness;

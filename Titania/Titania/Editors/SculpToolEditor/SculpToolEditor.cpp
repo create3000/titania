@@ -68,6 +68,7 @@ void
 SculpToolEditor::configure ()
 {
 	X3DSculpToolEditorInterface::configure ();
+	X3DSculpToolBrushEditor::configure ();
 
 	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
@@ -85,6 +86,7 @@ SculpToolEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
 
+	X3DSculpToolBrushEditor::store ();
 	X3DSculpToolEditorInterface::store ();
 }
 

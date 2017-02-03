@@ -57,6 +57,8 @@ namespace puck {
 
 X3DSculpToolBrushEditor::X3DSculpToolBrushEditor () :
 	X3DSculpToolEditorInterface (),
+	                       type (this, getBrushTypeButton (), "type"),
+	                     radius (this, getBrushRadiusAdjustment (), getBrushRadiusScale (), "radius"),
 	                     height (this, getBrushHeightAdjustment (), getBrushHeightScale (), "height"),
 	                       warp (this, getBrushWarpAdjustment (), getBrushWarpScale (), "warp"),
 	                  sharpness (this, getBrushSharpnessAdjustment (), getBrushSharpnessScale (), "sharpness"),
@@ -64,6 +66,24 @@ X3DSculpToolBrushEditor::X3DSculpToolBrushEditor () :
 	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrushPreview.x3dv") }))
 {
 	addChildren (preview);
+}
+
+void
+X3DSculpToolBrushEditor::configure ()
+{
+	try
+	{
+		const auto brush = getBrush ();
+
+		brush -> getField ("type")      -> fromString (getConfig () -> getString ("brushType"));
+		brush -> getField ("radius")    -> fromString (getConfig () -> getString ("brushRadius"));
+		brush -> getField ("height")    -> fromString (getConfig () -> getString ("brushHeight"));
+		brush -> getField ("warp")      -> fromString (getConfig () -> getString ("brushWarp"));
+		brush -> getField ("sharpness") -> fromString (getConfig () -> getString ("brushSharpness"));
+		brush -> getField ("hardness")  -> fromString (getConfig () -> getString ("brushHardness"));
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 void
@@ -87,10 +107,14 @@ X3DSculpToolBrushEditor::set_initalized ()
 		const auto brush = getBrush ();
 		const auto nodes = X3D::MFNode ({ brush });
 
+		type      .setNodes (nodes);
+		radius    .setNodes (nodes);
 		height    .setNodes (nodes);
 		warp      .setNodes (nodes);
 		sharpness .setNodes (nodes);
 		hardness  .setNodes (nodes);
+
+		X3DSculpToolBrushEditor::configure ();
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -100,6 +124,24 @@ X3D::SFNode
 X3DSculpToolBrushEditor::getBrush () const
 {
 	return preview -> getExecutionContext () -> getScene () -> getExportedNode ("Brush");
+}
+
+void
+X3DSculpToolBrushEditor::store ()
+{
+	try
+	{
+		const auto brush = getBrush ();
+	
+		getConfig () -> setItem ("brushType",      brush -> getField ("type")      -> toString ());
+		getConfig () -> setItem ("brushRadius",    brush -> getField ("radius")    -> toString ());
+		getConfig () -> setItem ("brushHeight",    brush -> getField ("height")    -> toString ());
+		getConfig () -> setItem ("brushWarp",      brush -> getField ("warp")      -> toString ());
+		getConfig () -> setItem ("brushSharpness", brush -> getField ("sharpness") -> toString ());
+		getConfig () -> setItem ("brushHardness",  brush -> getField ("hardness")  -> toString ());
+	}
+	catch (const X3D::X3DError &)
+	{ }
 }
 
 X3DSculpToolBrushEditor::~X3DSculpToolBrushEditor ()

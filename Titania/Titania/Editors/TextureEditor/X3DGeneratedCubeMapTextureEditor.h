@@ -58,6 +58,7 @@
 
 namespace titania {
 namespace puck {
+
 class MFStringURLWidget;
 
 class X3DGeneratedCubeMapTextureEditor :
