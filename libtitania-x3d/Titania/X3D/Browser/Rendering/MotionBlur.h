@@ -140,6 +140,8 @@ private:
 
 	Fields fields;
 
+	size_t load;
+
 };
 
 } // X3D

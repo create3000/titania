@@ -67,7 +67,8 @@ const std::string   MotionBlur::containerField = "motionBlur";
 
 MotionBlur::MotionBlur (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	     fields ()
+	     fields (),
+	       load (0)
 {
 	addType (X3DConstants::MotionBlur);
 
@@ -94,8 +95,6 @@ MotionBlur::initialize ()
 void
 MotionBlur::set_enabled ()
 {
-	clear ();
-
 	if (enabled ())
 	{
 		getBrowser () -> getViewport () .addInterest (this, &MotionBlur::clear);
@@ -106,25 +105,33 @@ MotionBlur::set_enabled ()
 		getBrowser () -> getViewport () .removeInterest (this, &MotionBlur::clear);
 		getBrowser () -> displayed ()   .removeInterest (this, &MotionBlur::display);
 	}
+
+	clear ();
 }
 
 void
 MotionBlur::clear ()
 {
-	glClearAccum (0, 0, 0, 1);
+	// Do two times load to prevent rendering artifacts.
 
-	glClear (GL_ACCUM_BUFFER_BIT);
+	load = 2;
 }
 
 void
 MotionBlur::display ()
 {
-	if (enabled ())
+	if (load)
+	{
+		-- load;
+
+		glAccum (GL_LOAD, 1);
+	}
+	else
 	{
 		glAccum (GL_MULT, intensity ());
-
+	
 		glAccum (GL_ACCUM, 1 - intensity ());
-
+	
 		glAccum (GL_RETURN, 1);
 	}
 }
