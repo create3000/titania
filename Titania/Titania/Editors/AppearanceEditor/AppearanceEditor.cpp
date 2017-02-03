@@ -89,6 +89,9 @@ AppearanceEditor::configure ()
 	X3DAppearanceEditorInterface::configure ();
 	X3DMaterialPaletteEditor::configure ();
 
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+
 	getAppearanceChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
@@ -206,6 +209,7 @@ AppearanceEditor::connectAppearance (const X3D::SFNode & field)
 void
 AppearanceEditor::store ()
 {
+	getConfig () -> setItem ("paned",       getPaned () .get_position ());
 	getConfig () -> setItem ("currentPage", getAppearanceChildNotebook () .get_current_page ());
 
 	X3DMaterialPaletteEditor::store ();

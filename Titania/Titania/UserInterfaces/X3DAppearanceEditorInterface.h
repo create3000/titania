@@ -179,6 +179,10 @@ public:
 	getPasteMenuItem () const
 	{ return *m_PasteMenuItem; }
 
+	Gtk::Paned &
+	getPaned () const
+	{ return *m_Paned; }
+
 	Gtk::Box &
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
@@ -699,6 +703,7 @@ private:
 	Gtk::Box*                      m_Widget;
 	Gtk::ImageMenuItem*            m_CopyMenuItem;
 	Gtk::ImageMenuItem*            m_PasteMenuItem;
+	Gtk::Paned*                    m_Paned;
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::Button*                   m_CopyButton;
 	Gtk::Button*                   m_PasteButton;

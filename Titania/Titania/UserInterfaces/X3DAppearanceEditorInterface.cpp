@@ -83,6 +83,7 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("CopyMenuItem", m_CopyMenuItem);
 	m_builder -> get_widget ("PasteMenuItem", m_PasteMenuItem);
+	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
 	m_builder -> get_widget ("CopyButton", m_CopyButton);
 	m_builder -> get_widget ("PasteButton", m_PasteButton);

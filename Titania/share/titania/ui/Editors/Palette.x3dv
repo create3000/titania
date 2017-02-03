@@ -1,11 +1,14 @@
-#X3D V3.3 utf8 Titania V1.4.8
+#X3D V3.3 utf8 Titania V2.0.1
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Tue, 16 Sep 2014 13:16:50 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.4.8, http://titania.create3000.de"
+META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/Palette.x3dv"
-META "modified" "Sun, 07 Aug 2016 02:19:15 GMT"
+META "modified" "Fri, 03 Feb 2017 15:16:40 GMT"
+META "outputStyle" "nicest"
 META "titania magic" "Material"
 
 WorldInfo {
@@ -102,10 +105,25 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value DEF previous MetadataSet {
-          name "previous"
-          reference "http://titania.create3000.de"
-        }
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF PhongShadingScript Script {
+              url "ecmascript:
+
+function initialize ()
+{
+	Browser .setBrowserOption (\"Shading\", \"PHONG\");
+}
+"
+            }
+          }
+        ]
       }
       DEF NavigationInfo MetadataSet {
         name "NavigationInfo"
@@ -264,7 +282,7 @@ DEF SelectionSwitch Switch {
           lineProperties LineProperties {
             linewidthScaleFactor 2
           }
-          material DEF _2 Material {
+          material Material {
             emissiveColor 1 0 0
           }
         }
@@ -291,6 +309,8 @@ function initialize ()
 "
   directOutput TRUE
 }
+
+USE PhongShadingScript
 
 EXPORT Items
 EXPORT SelectionRectangle

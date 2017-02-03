@@ -104,11 +104,8 @@ X3DMaterialEditor::initialize ()
 {
 	materialNodeBuffer .addInterest (this, &X3DMaterialEditor::set_node);
 
-	#ifdef FIXED_PIPELINE
-	preview -> setFixedPipeline (false);
-	#endif
-
 	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_browser);
+	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
 	preview -> set_opacity (0);
 	preview -> show ();

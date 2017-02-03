@@ -12,6 +12,8 @@ DEF PhongShadingScript Script {
 
 function initialize ()
 {
+	// Phong shading can be enabled if »Cobweb Compatibility« mode is enabled.
+
 	Browser .setBrowserOption (\"Shading\", \"PHONG\");
 }
 "

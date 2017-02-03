@@ -127,6 +127,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::Paned &
+	getPaned () const
+	{ return *m_Paned; }
+
 	Gtk::Box &
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
@@ -330,6 +334,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BrushWarpAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::Paned*                    m_Paned;
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::RadioToolButton*          m_PullButton;
 	Gtk::RadioToolButton*          m_PushButton;

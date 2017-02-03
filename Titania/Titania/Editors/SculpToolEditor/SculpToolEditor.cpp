@@ -70,6 +70,9 @@ SculpToolEditor::configure ()
 	X3DSculpToolEditorInterface::configure ();
 	X3DSculpToolBrushEditor::configure ();
 
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+
 	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
@@ -84,6 +87,7 @@ SculpToolEditor::initialize ()
 void
 SculpToolEditor::store ()
 {
+	getConfig () -> setItem ("paned",       getPaned () .get_position ());
 	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
 
 	X3DSculpToolBrushEditor::store ();
