@@ -62,7 +62,7 @@ SculpToolEditor::SculpToolEditor (X3DBrowserWindow* const browserWindow) :
 	                       warp (this, getWarpAdjustment (), getWarpScale (), "warp"),
 	                  sharpness (this, getSharpnessAdjustment (), getSharpnessScale (), "sharpness"),
 	                   hardness (this, getHardnessAdjustment (), getHardnessScale (), "hardness"),
-	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrush.x3dv") }))
+	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrushPreview.x3dv") }))
 {
 	addChildren (preview);
 

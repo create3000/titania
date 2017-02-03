@@ -182,6 +182,7 @@ FrameBuffer::unbind ()
 {
 	glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer);
 	glViewport (viewport [0], viewport [1], viewport [2], viewport [3]);
+	glScissor  (viewport [0], viewport [1], viewport [2], viewport [3]);
 }
 
 const std::vector <uint8_t> &

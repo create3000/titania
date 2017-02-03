@@ -117,14 +117,15 @@ X3DSelector::on_1button1_release_event (GdkEventButton* event)
 		getBrowser () -> getDepthBuffer () -> unbind ();
 
 		// Selection buffer
-	
+
+		const auto selectionType = getBrowser () -> getSelectionType ();
+
 		getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0));
 		getBrowser () -> getSelectionBuffer () -> setup ();
 		getBrowser () -> getSelectionBuffer () -> bind ();
 
 		draw ();
 
-		const auto selectionType = getBrowser () -> getSelectionType ();
 		getBrowser () -> setSelectionType (SelectionType::LASSO);
 		getBrowser () -> getSelectionBuffer () -> readPixels ();
 		getBrowser () -> touch (points [0] .x (), points [0] .y ());

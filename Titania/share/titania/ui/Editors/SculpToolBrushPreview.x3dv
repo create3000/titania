@@ -1,0 +1,549 @@
+#X3D V3.3 utf8 Titania V2.0.1
+
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Mon, 25 Jul 2016 18:09:12 GMT"
+META "creator" "holger"
+META "generator" "Titania V2.0.1, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/SculpToolBrushPreview.x3dv"
+META "modified" "Fri, 03 Feb 2017 09:55:26 GMT"
+META "outputStyle" "Nicest"
+
+EXTERNPROTO SculpToolBrush [
+  inputOutput SFString type
+  inputOutput SFDouble height
+  inputOutput SFDouble warp
+  inputOutput SFDouble sharpness
+  inputOutput SFDouble hardness
+]
+[
+  "SculpToolBrush.x3dv#SculpToolBrush",
+  "file:///usr/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush"
+]
+
+PROTO Grid [
+  inputOutput    SFVec3f    translation 0 0 0
+  inputOutput    SFRotation rotation 0 0 1 0
+  inputOutput    SFVec3f    scale 1 1 1
+  inputOutput    MFInt32    dimension [
+    10,
+    10,
+    10
+  ]
+  inputOutput    MFInt32    majorLineEvery [
+    5,
+    5,
+    5
+  ]
+  inputOutput    MFInt32    majorLineOffset [
+    0,
+    0,
+    0
+  ]
+  inputOutput    SFColor    color 0.5 0.5 0.5
+  inputOutput    SFFloat    transparency 0.61803
+  inputOutput    SFColor    lineColor 1 0.7 0.7
+  inputOutput    SFFloat    lineTransparency 0.8
+  inputOutput    SFColor    majorLineColor 1 0.7 0.7
+  inputOutput    SFFloat    majorLineTransparency 0.6
+  initializeOnly SFBool     solid TRUE
+]
+{
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    scale IS scale
+    children [
+      DEF Plane Transform {
+        rotation -3.09087122910219e-08 0.70710528118436 0.707108281185553 3.14159
+        scale 10 10 1
+        children Shape {
+          appearance Appearance {
+            material DEF Material2 Material {
+              diffuseColor 0 0 0
+              emissiveColor IS color
+              transparency IS transparency
+            }
+          }
+          geometry Rectangle2D {
+            size 1 1
+            solid IS solid
+          }
+        }
+      }
+      DEF MajorGrid Shape {
+        appearance Appearance {
+          material DEF MajorMaterial Material {
+            emissiveColor IS majorLineColor
+            transparency IS majorLineTransparency
+          }
+        }
+        geometry DEF MajorGrid_1 IndexedLineSet {
+          coordIndex [
+            0,
+            1,
+            -1,
+            2,
+            3,
+            -1,
+            4,
+            5,
+            -1,
+            6,
+            7,
+            -1,
+            8,
+            9,
+            -1,
+            10,
+            11,
+            -1
+          ]
+          coord Coordinate {
+            point [
+              -5 0 -5.25,
+              -5 0 5.25,
+              0 0 -5.25,
+              0 0 5.25,
+              5 0 -5.25,
+              5 0 5.25,
+              -5.25 0 -5,
+              5.25 0 -5,
+              -5.25 0 0,
+              5.25 0 0,
+              -5.25 0 5,
+              5.25 0 5
+            ]
+          }
+        }
+      }
+      DEF MinorGrid Shape {
+        appearance Appearance {
+          material DEF MinorMaterial Material {
+            emissiveColor IS lineColor
+            transparency IS lineTransparency
+          }
+        }
+        geometry DEF MinorGrid_1 IndexedLineSet {
+          coordIndex [
+            0,
+            1,
+            -1,
+            2,
+            3,
+            -1,
+            4,
+            5,
+            -1,
+            6,
+            7,
+            -1,
+            8,
+            9,
+            -1,
+            10,
+            11,
+            -1,
+            12,
+            13,
+            -1,
+            14,
+            15,
+            -1,
+            16,
+            17,
+            -1,
+            18,
+            19,
+            -1,
+            20,
+            21,
+            -1,
+            22,
+            23,
+            -1,
+            24,
+            25,
+            -1,
+            26,
+            27,
+            -1,
+            28,
+            29,
+            -1,
+            30,
+            31,
+            -1
+          ]
+          coord Coordinate {
+            point [
+              -4 0 -5,
+              -4 0 5,
+              -3 0 -5,
+              -3 0 5,
+              -2 0 -5,
+              -2 0 5,
+              -1 0 -5,
+              -1 0 5,
+              1 0 -5,
+              1 0 5,
+              2 0 -5,
+              2 0 5,
+              3 0 -5,
+              3 0 5,
+              4 0 -5,
+              4 0 5,
+              -5 0 -4,
+              5 0 -4,
+              -5 0 -3,
+              5 0 -3,
+              -5 0 -2,
+              5 0 -2,
+              -5 0 -1,
+              5 0 -1,
+              -5 0 1,
+              5 0 1,
+              -5 0 2,
+              5 0 2,
+              -5 0 3,
+              5 0 3,
+              -5 0 4,
+              5 0 4
+            ]
+          }
+        }
+      }
+      DEF MajorPoints Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 6
+          }
+          material USE MajorMaterial
+        }
+        geometry DEF MajorPoints_1 PointSet {
+          coord Coordinate {
+            point [
+              0 -5 0,
+              0 0 0,
+              0 5 0
+            ]
+          }
+        }
+      }
+      DEF MinorPoints Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 4
+          }
+          material USE MinorMaterial
+        }
+        geometry DEF MinorPoints_1 PointSet {
+          coord Coordinate {
+            point [
+              0 -4 0,
+              0 -3 0,
+              0 -2 0,
+              0 -1 0,
+              0 1 0,
+              0 2 0,
+              0 3 0,
+              0 4 0
+            ]
+          }
+        }
+      }
+    ]
+  }
+
+  DEF GridScript Script {
+    inputOutput    MFInt32 dimension IS dimension
+    inputOutput    MFInt32 majorLineEvery IS majorLineEvery
+    inputOutput    MFInt32 majorLineOffset IS majorLineOffset
+    initializeOnly SFNode  plane USE Plane
+    initializeOnly SFNode  majorGrid USE MajorGrid_1
+    initializeOnly SFNode  minorGrid USE MinorGrid_1
+    initializeOnly SFNode  majorPoints USE MajorPoints_1
+    initializeOnly SFNode  minorPoints USE MinorPoints_1
+
+    url "peaseblossom:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	// Plane
+
+	plane .scale = new SFVec3f (dimension [0], dimension [2], 1);
+
+	// Grid
+
+	generateGrid (true, majorGrid);
+	generateGrid (false, minorGrid);
+
+	// Points
+
+	generatePoints (true,  majorPoints .coord .point);
+	generatePoints (false, minorPoints .coord .point);
+}
+
+function generateGrid (major, grid)
+{
+	var point       = grid .coord .point;
+	var coordIndex  = new MFInt32 ();
+	var scaleX1_2   = dimension [0] / 2;
+	var scaleZ1_2   = dimension [2] / 2;
+	var majorAdd    = major / 4;
+	var p           = 0;
+
+	for (var i = 0, size = dimension [0] + 1; i < size; ++ i)
+	{
+		if (major - isMajorLine (i, 0))
+			continue;
+
+		var x = -scaleX1_2 + i;
+
+		point [p]     = new SFVec3f (x, 0, -scaleZ1_2 - majorAdd);
+		point [p + 1] = new SFVec3f (x, 0,  scaleZ1_2 + majorAdd);
+		coordIndex [coordIndex .length] = p;
+		coordIndex [coordIndex .length] = p + 1;
+		coordIndex [coordIndex .length] = -1;
+			
+		p += 2;
+	}
+
+	for (var i = 0, size = dimension [2] + 1; i < size; ++ i)
+	{
+		if (major - isMajorLine (i, 2))
+			continue;
+
+		var z = -scaleZ1_2 + i;
+
+		point [p]     = new SFVec3f (-scaleX1_2 - majorAdd, 0, z);
+		point [p + 1] = new SFVec3f ( scaleX1_2 + majorAdd, 0, z);
+		coordIndex [coordIndex .length] = p;
+		coordIndex [coordIndex .length] = p + 1;
+		coordIndex [coordIndex .length] = -1;
+		
+		p += 2;
+	}
+
+	point .length = p;
+
+	grid .set_coordIndex = coordIndex;
+}
+
+function generatePoints (major, point)
+{
+	var scaleY1_2 = -dimension [1] / 2;
+	var p         = 0;
+
+	for (var i = 0, size = dimension [1] + 1; i < size; ++ i)
+	{
+		if (major - isMajorLine (i, 1))
+			continue;
+
+		point [p] = new SFVec3f (0, scaleY1_2 + i, 0);
+		++ p;
+	}
+
+	point .length = p;
+}
+
+function isMajorLine (i, index)
+{
+	for (var d = index; d < majorLineEvery .length; d += 3)
+	{
+		if (isMajor (i, dimension [index], majorLineEvery [d], majorLineOffset [d]))
+			return true;
+	}
+
+	return false;
+}
+
+function isMajor (i, dimension, majorLineEvery, majorLineOffset)
+{
+	if (majorLineEvery)
+	{
+		var index = Math .floor (i - dimension / 2 - majorLineOffset);
+
+		return !(index % majorLineEvery);
+	}
+
+	return false;
+}
+"
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value [
+          DEF enabled_1 MetadataBoolean {
+            name "enabled"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF scale MetadataFloat {
+            name "scale"
+            reference "http://titania.create3000.de"
+            value [
+              0.1,
+              0.1,
+              0.1
+            ]
+          }
+          DEF dimension MetadataInteger {
+            name "dimension"
+            reference "http://titania.create3000.de"
+            value [
+              20,
+              10,
+              20
+            ]
+          }
+          DEF translation MetadataFloat {
+            name "translation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              -0.01,
+              0
+            ]
+          }
+          DEF lineColor MetadataFloat {
+            name "lineColor"
+            reference "http://titania.create3000.de"
+            value [
+              0.367233,
+              0.905856,
+              1,
+              0.2
+            ]
+          }
+          DEF majorLineColor MetadataFloat {
+            name "majorLineColor"
+            reference "http://titania.create3000.de"
+            value [
+              0.541029,
+              0.698087,
+              1,
+              0.4
+            ]
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              -1.74683105945587,
+              1.18355250358582,
+              0.507735669612885
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.292434554038069,
+              -0.93254172036886,
+              -0.211773396289626,
+              1.32056662503878
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.0292998719960451,
+              0.281714498996735,
+              -0.0561513602733612
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+          }
+          DEF children MetadataSet {
+            name "children"
+            reference "http://titania.create3000.de"
+            value DEF _1 SculpToolBrush { }
+          }
+        ]
+      }
+    ]
+  }
+}
+
+NavigationInfo {
+  type "NONE"
+}
+
+DEF Gray Background {
+  skyColor 0.2 0.2 0.2
+}
+
+Viewpoint {
+  position -1.74683 1.18355 0.507736
+  orientation -0.292434554038069 -0.93254172036886 -0.211773396289626 1.32056662503878
+  centerOfRotation -0.0292999 0.281714 -0.0561514
+}
+
+Switch {
+  children Grid {
+    translation 0 -0.01 0
+    scale 0.1 0.1 0.1
+    dimension [
+      20,
+      20,
+      20
+    ]
+    transparency 0.8
+    lineColor 0.367233 0.905856 1
+    majorLineColor 0.541029 0.698087 1
+  }
+}
+
+USE _1
+
+EXPORT _1 AS Brush
