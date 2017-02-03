@@ -104,6 +104,8 @@ BrowserOptions::Fields::Fields (X3DExecutionContext* const executionContext) :
 	      PrimitiveQuality (new SFString ("MEDIUM")),
 	     QualityWhenMoving (new SFString ("MEDIUM")),
 	               Shading (new SFString ("GOURAUD")),
+	            MotionBlur (new SFBool ()),
+	   MotionBlurIntensity (new SFFloat (0.7)),
 	     AnimateStairWalks (new SFBool ()),
 	               Gravity (new SFFloat (gn <float>))
 { }
@@ -147,39 +149,19 @@ BrowserOptions::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	Antialiased ()      .addInterest (this, &BrowserOptions::set_Antialiased);
-	TextureQuality ()   .addInterest (this, &BrowserOptions::set_TextureQuality);
-	PrimitiveQuality () .addInterest (this, &BrowserOptions::set_PrimitiveQuality);
-	Shading ()          .addInterest (this, &BrowserOptions::set_Shading);
+	Antialiased ()         .addInterest (this, &BrowserOptions::set_Antialiased);
+	TextureQuality ()      .addInterest (this, &BrowserOptions::set_TextureQuality);
+	PrimitiveQuality ()    .addInterest (this, &BrowserOptions::set_PrimitiveQuality);
+	Shading ()             .addInterest (this, &BrowserOptions::set_Shading);
+	MotionBlur ()          .addInterest (this, &BrowserOptions::set_MotionBlur);
+	MotionBlurIntensity () .addInterest (this, &BrowserOptions::set_MotionBlurIntensity);
 
 	set_Antialiased ();
 	set_TextureQuality ();
 	set_PrimitiveQuality ();
 	set_Shading ();
-}
-
-SFBool &
-BrowserOptions::MotionBlur ()
-{
-	return getBrowser () -> getMotionBlur () -> enabled ();
-}
-
-const SFBool &
-BrowserOptions::MotionBlur () const
-{
-	return getBrowser () -> getMotionBlur () -> enabled ();
-}
-
-SFFloat &
-BrowserOptions::MotionBlurIntensity ()
-{
-	return getBrowser () -> getMotionBlur () -> intensity ();
-}
-
-const SFFloat &
-BrowserOptions::MotionBlurIntensity () const
-{
-	return getBrowser () -> getMotionBlur () -> intensity ();
+	set_MotionBlur ();
+	set_MotionBlurIntensity ();
 }
 
 void
@@ -381,6 +363,18 @@ BrowserOptions::set_Shading ()
 			break;
 		}
 	}
+}
+
+void
+BrowserOptions::set_MotionBlur ()
+{
+	getBrowser () -> getMotionBlur () -> enabled () = MotionBlur ();
+}
+
+void
+BrowserOptions::set_MotionBlurIntensity ()
+{
+	getBrowser () -> getMotionBlur () -> intensity () = MotionBlurIntensity ();
 }
 
 }       // X3D

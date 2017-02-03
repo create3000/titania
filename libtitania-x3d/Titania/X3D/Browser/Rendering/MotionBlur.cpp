@@ -58,7 +58,7 @@ namespace X3D {
 
 MotionBlur::Fields::Fields () :
 	  enabled (new SFBool ()),
-	intensity (new SFFloat (0.64))
+	intensity (new SFFloat (0.7))
 { }
 
 const ComponentType MotionBlur::component      = ComponentType::TITANIA;

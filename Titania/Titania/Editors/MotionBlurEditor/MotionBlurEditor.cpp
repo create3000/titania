@@ -67,9 +67,6 @@ MotionBlurEditor::MotionBlurEditor (X3DBrowserWindow* const browserWindow) :
 	                              getIntensityBox (),
 	                              "intensity")
 {
-	enabled   .setUndo (false);
-	intensity .setUndo (false);
-
 	setup ();
 }
 

@@ -183,16 +183,20 @@ public:
 	{ return *fields .Shading; }
 
 	SFBool &
-	MotionBlur ();
+	MotionBlur ()
+	{ return *fields .MotionBlur; }
 
 	const SFBool &
-	MotionBlur () const;
+	MotionBlur () const
+	{ return *fields .MotionBlur; }
 
 	SFFloat &
-	MotionBlurIntensity ();
+	MotionBlurIntensity ()
+	{ return *fields .MotionBlurIntensity; }
 
 	const SFFloat &
-	MotionBlurIntensity () const;
+	MotionBlurIntensity () const
+	{ return *fields .MotionBlurIntensity; }
 
 	const SFBool &
 	AnimateStairWalks () const
@@ -239,6 +243,12 @@ private:
 	void
 	set_Shading ();
 
+	void
+	set_MotionBlur ();
+
+	void
+	set_MotionBlurIntensity ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -260,6 +270,8 @@ private:
 		SFString* const PrimitiveQuality;
 		SFString* const QualityWhenMoving;
 		SFString* const Shading;
+		SFBool* const MotionBlur;
+		SFFloat* const MotionBlurIntensity;
 		SFBool* const AnimateStairWalks;
 		SFFloat* const Gravity;
 	};

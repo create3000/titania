@@ -62,14 +62,11 @@ X3DRenderingContext::X3DRenderingContext () :
 	            viewport ({ 0, 0, 0, 0 }),
 	       maxClipPlanes (0),
 	          clipPlanes (),
-	           depthTest (),
-	         depthOffset (),
+	           depthTest ({ true }),
+	         depthOffset ({ 0 }),
 	          motionBlur (new MotionBlur (getExecutionContext ()))
 {
 	addChildren (viewport, motionBlur);
-
-	depthTest   .push (true);
-	depthOffset .push (0);
 }
 
 void
