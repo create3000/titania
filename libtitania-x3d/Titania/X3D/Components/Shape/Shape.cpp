@@ -134,8 +134,6 @@ Shape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	if (getGeometry ())
 	{
-		getGeometry () -> traverse (type, renderObject);
-
 		switch (type)
 		{
 			case TraverseType::POINTER:
@@ -165,6 +163,8 @@ Shape::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 				break;
 			}
 		}
+
+		getGeometry () -> traverse (type, renderObject);
 	}
 }
 
