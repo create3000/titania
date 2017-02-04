@@ -201,6 +201,8 @@ Browser::set_viewer ()
 
 	setCursor ("default");
 
+	viewer .addEvent ();
+
 	if (type not_eq viewer -> getType () .back ())
 	{
 		switch (type)

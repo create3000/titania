@@ -80,14 +80,6 @@ public:
 	///  @name Hidden fields
 
 	SFBool &
-	select ()
-	{ return *fields .select; }
-
-	const SFBool &
-	select () const
-	{ return *fields .select; }
-
-	SFBool &
 	paintSelection ()
 	{ return *fields .paintSelection; }
 
@@ -416,7 +408,7 @@ private:
 	set_loadState ();
 
 	void
-	set_select ();
+	set_toolType ();
 
 	void
 	set_selectionType ();
@@ -590,7 +582,6 @@ private:
 	{
 		Fields ();
 
-		SFBool* const select;
 		SFBool* const paintSelection;
 		SFBool* const selectLineLoop;
 		SFString* const selectionType;
@@ -613,6 +604,7 @@ private:
 
 	Fields fields;
 
+	X3DPtr <Switch>            toolSwitch;
 	X3DPtr <TouchSensor>       touchSensor;
 	X3DPtr <PlaneSensor>       planeSensor;
 	X3DPtr <Switch>            hotSwitch;

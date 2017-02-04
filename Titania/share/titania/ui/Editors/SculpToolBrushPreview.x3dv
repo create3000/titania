@@ -7,7 +7,7 @@ META "created" "Mon, 25 Jul 2016 18:09:12 GMT"
 META "creator" "holger"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/SculpToolBrushPreview.x3dv"
-META "modified" "Fri, 03 Feb 2017 14:50:07 GMT"
+META "modified" "Sat, 04 Feb 2017 12:55:20 GMT"
 META "outputStyle" "Nicest"
 
 EXTERNPROTO SculpToolBrush [
@@ -17,6 +17,7 @@ EXTERNPROTO SculpToolBrush [
   inputOutput SFDouble warp
   inputOutput SFDouble sharpness
   inputOutput SFDouble hardness
+  inputOutput SFDouble spacing
 ]
 [
   "SculpToolBrush.x3dv#SculpToolBrush",
@@ -504,7 +505,6 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
-            value DEF Brush SculpToolBrush { }
           }
           DEF children MetadataSet {
             name "children"
@@ -554,7 +554,7 @@ Switch {
   }
 }
 
-USE Brush
+DEF Brush SculpToolBrush { }
 
 USE PhongShadingScript
 

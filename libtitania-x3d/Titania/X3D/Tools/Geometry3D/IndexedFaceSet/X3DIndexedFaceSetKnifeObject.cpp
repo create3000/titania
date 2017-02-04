@@ -67,18 +67,13 @@ namespace X3D {
 
 static constexpr double SELECTION_DISTANCE = 8; // in pixel
 
-X3DIndexedFaceSetKnifeObject::Fields::Fields () :
-	 cutPolygons (new SFBool ())
-{ }
-
 X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 	            IndexedFaceSet (getExecutionContext ()),
 	X3DIndexedFaceSetCutObject (),
-	                    fields (),
+	                toolSwitch (),
+	              planeSensors (),
 	       knifeSelectionGroup (),
 	          knifeTouchSensor (),
-	              planeSensors (),
-	               knifeSwitch (),
 	     knifeStartPointSwitch (),
 	           knifeStartPoint (),
 	             knifeEndPoint (),
@@ -100,10 +95,10 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 {
 	addType (X3DConstants::X3DIndexedFaceSetKnifeObject);
 
-	addChildObjects (knifeSelectionGroup,
-	                 knifeTouchSensor,
+	addChildObjects (toolSwitch,
 	                 planeSensors,
-	                 knifeSwitch,
+	                 knifeSelectionGroup,
+	                 knifeTouchSensor,
 	                 knifeStartPointSwitch,
 	                 knifeStartPoint,
 	                 knifeEndPoint,
@@ -119,7 +114,7 @@ X3DIndexedFaceSetKnifeObject::initialize ()
 {
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_loadState);
 
-	cutPolygons () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_cutPolygons);
+	toolType () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_toolType);
 }
 
 void
@@ -130,9 +125,9 @@ X3DIndexedFaceSetKnifeObject::set_loadState ()
 		const auto & inlineNode         = getCoordinateTool () -> getInlineNode ();
 		const auto   activeFaceGeometry = inlineNode -> getExportedNode <IndexedFaceSet> ("ActiveFaceGeometry");
 
+		toolSwitch            = inlineNode -> getExportedNode <Switch>           ("ToolSwitch");
 		knifeSelectionGroup   = inlineNode -> getExportedNode <Group>            ("KnifeSelectionGroup");
 		knifeTouchSensor      = inlineNode -> getExportedNode <TouchSensor>      ("KnifeTouchSensor");
-		knifeSwitch           = inlineNode -> getExportedNode <Switch>           ("KnifeSwitch");
 		knifeStartPointSwitch = inlineNode -> getExportedNode <Switch>           ("KnifeStartPointSwitch");
 		knifeStartPoint       = inlineNode -> getExportedNode <Transform>        ("KnifeStartPoint");
 		knifeEndPoint         = inlineNode -> getExportedNode <Transform>        ("KnifeEndPoint");
@@ -146,7 +141,7 @@ X3DIndexedFaceSetKnifeObject::set_loadState ()
 		knifeTouchSensor -> isOver ()           .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_touch_sensor_over);
 		knifeTouchSensor -> isActive ()         .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_touch_sensor_active);
 
-		set_cutPolygons ();
+		set_toolType ();
 	}
 	catch (const X3DError & error)
 	{
@@ -155,13 +150,14 @@ X3DIndexedFaceSetKnifeObject::set_loadState ()
 }
 
 void
-X3DIndexedFaceSetKnifeObject::set_cutPolygons ()
+X3DIndexedFaceSetKnifeObject::set_toolType ()
 {
 	try
 	{
-		if (cutPolygons ())
+		if (toolType () == "CUT")
 		{
-			select () = false;
+			toolSwitch -> whichChoice () = 2;
+
 			getHotSwitch () -> whichChoice () = true;
 
 			setHotPoints ({ });
@@ -169,10 +165,6 @@ X3DIndexedFaceSetKnifeObject::set_cutPolygons ()
 			setHotFaces ({ });
 			updateMagicSelection ();
 		}
-		else
-			select () = true;
-
-		knifeSwitch -> whichChoice () = cutPolygons ();
 	}
 	catch (const X3DError & error)
 	{

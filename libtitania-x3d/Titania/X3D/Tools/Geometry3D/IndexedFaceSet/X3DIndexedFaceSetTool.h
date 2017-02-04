@@ -128,6 +128,14 @@ public:
 
 	///  @name Hidden fields
 
+	SFString &
+	toolType ()
+	{ return *fields .toolType; }
+
+	const SFString &
+	toolType () const
+	{ return *fields .toolType; }
+
 	SFBool &
 	isActive ()
 	{ return *fields .isActive; }
@@ -211,6 +219,11 @@ protected:
 	void
 	set_loadState ();
 
+	///  @name Event handlers
+
+	void
+	set_toolType ();
+
 	///  @name Operations
 
 	void
@@ -249,6 +262,7 @@ private:
 	{
 		Fields ();
 
+		SFString* const toolType;
 		SFBool* const isActive;
 		SFTime* const touchTime;
 		UndoStepContainerPtr* const undo_changed;

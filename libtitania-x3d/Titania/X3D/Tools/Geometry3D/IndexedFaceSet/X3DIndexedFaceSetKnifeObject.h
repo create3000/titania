@@ -68,16 +68,6 @@ class X3DIndexedFaceSetKnifeObject :
 {
 public:
 
-	///  @name Hidden fields
-
-	SFBool &
-	cutPolygons ()
-	{ return *fields .cutPolygons; }
-
-	const SFBool &
-	cutPolygons () const
-	{ return *fields .cutPolygons; }
-
 	///  @name Destruction
 
 	virtual
@@ -108,7 +98,7 @@ private:
 	set_loadState ();
 
 	void
-	set_cutPolygons ();
+	set_toolType ();
 
 	void
 	set_touch_sensor_hitPoint ();
@@ -146,19 +136,10 @@ private:
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const cutPolygons;
-	};
-
-	Fields fields;
-
+	X3DPtr <Switch>           toolSwitch;
+	X3DPtrArray <PlaneSensor> planeSensors;
 	X3DPtr <Group>            knifeSelectionGroup;
 	X3DPtr <TouchSensor>      knifeTouchSensor;
-	X3DPtrArray <PlaneSensor> planeSensors;
-	X3DPtr <Switch>           knifeSwitch;
 	X3DPtr <Switch>           knifeStartPointSwitch;
 	X3DPtr <Transform>        knifeStartPoint;
 	X3DPtr <Transform>        knifeEndPoint;

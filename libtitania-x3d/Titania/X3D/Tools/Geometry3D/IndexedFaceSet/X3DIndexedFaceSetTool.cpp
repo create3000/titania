@@ -50,6 +50,7 @@
 
 #include "X3DIndexedFaceSetTool.h"
 
+#include "../../../Components/Grouping/Switch.h"
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../Rendering/CoordinateTool.h"
 
@@ -57,6 +58,7 @@ namespace titania {
 namespace X3D {
 
 X3DIndexedFaceSetTool::Fields::Fields () :
+	    toolType (new SFString ("NONE")),
 	    isActive (new SFBool ()),
 	   touchTime (new SFTime ()),
 	undo_changed (new UndoStepContainerPtr ())
@@ -76,6 +78,9 @@ X3DIndexedFaceSetTool::initialize ()
 	X3DComposedGeometryNodeTool::initialize ();
 
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetTool::set_loadState);
+	toolType () .addInterest (this, &X3DIndexedFaceSetTool::set_toolType);
+
+	set_toolType ();
 }
 
 void
@@ -88,6 +93,27 @@ X3DIndexedFaceSetTool::set_loadState ()
 
 		touchSensor -> isActive ()  .addInterest (isActive ());
 		touchSensor -> touchTime () .addInterest (touchTime ());
+
+		set_toolType ();
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DIndexedFaceSetTool::set_toolType ()
+{
+	try
+	{
+		if (toolType () == "NONE")
+		{
+			const auto & inlineNode = getCoordinateTool () -> getInlineNode ();
+			const auto   toolSwich  = inlineNode -> getExportedNode <Switch> ("ToolSwitch");
+
+			toolSwich -> whichChoice () = 0;
+		}
 	}
 	catch (const X3DError & error)
 	{

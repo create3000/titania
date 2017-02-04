@@ -116,6 +116,10 @@ public:
 	{ return m_BrushSharpnessAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getBrushSpacingAdjustment () const
+	{ return m_BrushSpacingAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getBrushWarpAdjustment () const
 	{ return m_BrushWarpAdjustment; }
 
@@ -182,6 +186,10 @@ public:
 	Gtk::ComboBoxText &
 	getBrushTypeButton () const
 	{ return *m_BrushTypeButton; }
+
+	Gtk::Scale &
+	getBrushSpacingScale () const
+	{ return *m_BrushSpacingScale; }
 
 	Gtk::Box &
 	getPaletteBox () const
@@ -335,6 +343,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BrushHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BrushRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BrushSharpnessAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BrushSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BrushWarpAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
@@ -352,6 +361,7 @@ private:
 	Gtk::Scale*                    m_BrushHardnessScale;
 	Gtk::Scale*                    m_BrushRadiusScale;
 	Gtk::ComboBoxText*             m_BrushTypeButton;
+	Gtk::Scale*                    m_BrushSpacingScale;
 	Gtk::Box*                      m_PaletteBox;
 	Gtk::Box*                      m_PalettePreviewBox;
 	Gtk::Box*                      m_ChangePaletteBox;

@@ -271,7 +271,7 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 	
 					planeSensorNormal -> enabled () = false;
 	
-					planeSensor -> enabled ()      = select () and not paintSelection ();
+					planeSensor -> enabled ()      = toolType () == "SELECT" and not paintSelection ();
 					planeSensor -> axisRotation () = axisRotation;
 					planeSensor -> offset ()       = Vector3d ();
 					planeSensor -> maxPosition ()  = Vector2d (-1, -1);
@@ -292,7 +292,7 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 
 				planeSensorNormal -> enabled () = false;
 
-				planeSensor -> enabled ()      = select () and not paintSelection ();
+				planeSensor -> enabled ()      = toolType () == "SELECT" and not paintSelection ();
 				planeSensor -> axisRotation () = axisRotation;
 				planeSensor -> offset ()       = Vector3d ();
 				planeSensor -> maxPosition ()  = Vector2d (-1, 0);
@@ -304,14 +304,14 @@ X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint ()
 
 				// Translate along face normal
 
-				planeSensorNormal -> enabled ()      = select () and not paintSelection ();
+				planeSensorNormal -> enabled ()      = toolType () == "SELECT" and not paintSelection ();
 				planeSensorNormal -> axisRotation () = Rotation4d (Vector3d (1, 0, 0), Vector3d (normal));
 				planeSensorNormal -> offset ()       = Vector3d ();
 				planeSensorNormal -> maxPosition ()  = Vector2d (-1, 0);
 
 				// Translate along plane
 
-				planeSensor -> enabled ()      = select () and not paintSelection ();
+				planeSensor -> enabled ()      = toolType () == "SELECT" and not paintSelection ();
 				planeSensor -> axisRotation () = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
 				planeSensor -> offset ()       = Vector3d ();
 				planeSensor -> maxPosition ()  = Vector2d (-1, -1);

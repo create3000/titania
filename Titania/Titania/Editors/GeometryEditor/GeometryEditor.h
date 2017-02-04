@@ -171,6 +171,12 @@ private:
 
 	///  @name Geometry handling
 
+	void
+	on_hand_toggled ();
+
+	void
+	on_arrow_toggled ();
+
 	virtual
 	void
 	on_hammer_clicked () final override;
@@ -292,9 +298,7 @@ private:
 
 	///  @name Members
 
-	X3DFieldToggleButton <X3D::SFBool>                       normalEnabled;
-	X3DFieldToggleButton <X3D::SFBool, Gtk::RadioToolButton> select;
-	X3DFieldToggleButton <X3D::SFBool>                       cutPolygons;
+	X3DFieldToggleButton <X3D::SFBool> normalEnabled;
 
 	X3D::SFNode     normalEditor;
 	X3D::SFNode     coordEditor;

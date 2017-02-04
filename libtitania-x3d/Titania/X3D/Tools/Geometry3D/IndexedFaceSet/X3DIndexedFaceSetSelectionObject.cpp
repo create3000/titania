@@ -70,7 +70,6 @@ namespace X3D {
 static constexpr double SELECTION_DISTANCE = 6; // in pixel
 
 X3DIndexedFaceSetSelectionObject::Fields::Fields () :
-	                select (new SFBool (true)),
 	        paintSelection (new SFBool ()),
 	        selectLineLoop (new SFBool ()),
 	         selectionType (new SFString ("POINTS")),
@@ -95,6 +94,7 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	             IndexedFaceSet (getExecutionContext ()),
 	      X3DIndexedFaceSetTool (),
 	                     fields (),
+	                 toolSwitch (),
 	                touchSensor (),
 	                planeSensor (),
 	                  hotSwitch (),
@@ -126,7 +126,8 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 {
 	addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
 
-	addChildObjects (touchSensor,
+	addChildObjects (toolSwitch,
+	                 touchSensor,
 	                 planeSensor,
 	                 hotSwitch,
 	                 hotPointCoord,
@@ -140,7 +141,6 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 	                 selectedFacesGeometry,
 	                 coordNode,
 	                 selection);
-	            
 }
 
 void
@@ -148,7 +148,7 @@ X3DIndexedFaceSetSelectionObject::initialize ()
 {
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_loadState);
 
-	select ()               .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_select);
+	toolType ()             .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_toolType);
 	selectionType ()        .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_selectionType);
 	getCoord ()             .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_coord);
 	selectAll ()            .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_selectAll_);
@@ -199,6 +199,7 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 	{
 		const auto & inlineNode = getCoordinateTool () -> getInlineNode ();
 
+		toolSwitch            = inlineNode -> getExportedNode <Switch>           ("ToolSwitch");
 		touchSensor           = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
 		planeSensor           = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
 		hotSwitch             = inlineNode -> getExportedNode <Switch>           ("HotSwitch");
@@ -227,7 +228,7 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 		activeFacesGeometry   -> convex () = convex ();
 		selectedFacesGeometry -> convex () = convex ();
 
-		set_select ();
+		set_toolType ();
 		set_coord_point ();
 	}
 	catch (const X3DError & error)
@@ -237,12 +238,17 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 }
 
 void
-X3DIndexedFaceSetSelectionObject::set_select ()
+X3DIndexedFaceSetSelectionObject::set_toolType ()
 {
 	try
 	{
-		if (select ())
-			hotSwitch -> whichChoice () = false;
+__LOG__ << toolType () << std::endl;
+
+		if (toolType () == "SELECT")
+		{
+			toolSwitch -> whichChoice () = 1;
+			hotSwitch  -> whichChoice () = false;
+		}
 	}
 	catch (const X3DError &)
 	{ }
@@ -265,8 +271,6 @@ X3DIndexedFaceSetSelectionObject::set_selectionType ()
 	{
 	   type = SelectionType::POINTS;
 	}
-
-	//select ({ }, true);
 }
 
 void
@@ -404,7 +408,7 @@ X3DIndexedFaceSetSelectionObject::set_coord_point ()
 void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint ()
 {
-	if (not select () and not paintSelection ())
+	if (toolType () not_eq "SELECT" and not paintSelection ())
 	   return;
 
 	if (getTranslate ())
@@ -441,7 +445,7 @@ X3DIndexedFaceSetSelectionObject::set_touch_sensor_active (const bool active)
 void
 X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime ()
 {
-	if (not select () and not paintSelection ())
+	if (toolType () not_eq "SELECT" and not paintSelection ())
 	   return;
 
 	if (abs (translation))
@@ -503,7 +507,7 @@ X3DIndexedFaceSetSelectionObject::set_selection (const MFVec3d & hitPoints, cons
 void
 X3DIndexedFaceSetSelectionObject::set_plane_sensor_active ()
 {
-	if (not select ())
+	if (toolType () not_eq "SELECT")
 	   return;
 
 	hotSwitch -> whichChoice () = planeSensor -> isActive ();

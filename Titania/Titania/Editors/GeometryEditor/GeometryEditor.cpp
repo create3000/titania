@@ -71,8 +71,6 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DGeometryEditorInterface (get_ui ("Revealer/GeometryEditor.glade")),
 	             normalEnabled (this, getNormalEnabledButton (), "load"),
-	                    select (this, browserWindow -> getArrowButton (), "select"),
-	               cutPolygons (this, getCutPolygonsButton (), "cutPolygons"),
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
 	             geometryNodes (),
@@ -94,15 +92,13 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	                 browser);
 
 	normalEnabled .setUndo (false);
-	select        .setUndo (false);
-	cutPolygons   .setUndo (false);
 
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "load",   new X3D::SFBool ());
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "color",  new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 	normalEditor -> addUserDefinedField (X3D::inputOutput, "length", new X3D::SFFloat (1));
 
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "selectionType",          new X3D::SFString ("POINTS"));
-	coordEditor -> addUserDefinedField (X3D::inputOutput, "select",                 new X3D::SFBool (true));
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "toolType",               new X3D::SFString ("NONE"));
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "pickable",               new X3D::SFBool (true));
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "paintSelection",         new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "selectLineLoop",         new X3D::SFBool ());
@@ -116,9 +112,12 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "chipOfSelectedFaces",    new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "deleteSelectedFaces",    new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "flipVertexOrdering",     new X3D::SFTime ());
-	coordEditor -> addUserDefinedField (X3D::inputOutput, "cutPolygons",            new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "cutSnapping",            new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",                  new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
+
+	getBrowserWindow () -> getViewerButton () .signal_clicked () .connect (sigc::mem_fun (this, &GeometryEditor::on_hand_toggled));
+	getBrowserWindow () -> getHandButton ()   .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_hand_toggled));
+	getBrowserWindow () -> getArrowButton ()  .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_arrow_toggled));
 
 	setup ();
 }
@@ -173,9 +172,7 @@ GeometryEditor::initialize ()
 	normalEditor -> setup ();
 	coordEditor  -> setup ();
 
-	select         .setNodes ({ coordEditor });
-	cutPolygons    .setNodes ({ coordEditor });
-	normalEnabled  .setNodes ({ normalEditor });
+	normalEnabled .setNodes ({ normalEditor });
 }
 
 void
@@ -268,7 +265,7 @@ GeometryEditor::connect ()
 						// Coord
 
 						coordEditor -> getField <X3D::SFBool>      ("pickable")                .addInterest (node -> getField <X3D::SFBool>   ("pickable"));
-						coordEditor -> getField <X3D::SFBool>      ("select")                  .addInterest (node -> getField <X3D::SFBool>   ("select"));
+						coordEditor -> getField <X3D::SFString>      ("toolType")              .addInterest (node -> getField <X3D::SFString>   ("toolType"));
 						coordEditor -> getField <X3D::SFString>    ("selectionType")           .addInterest (node -> getField <X3D::SFString> ("selectionType"));
 						coordEditor -> getField <X3D::SFBool>      ("paintSelection")          .addInterest (node -> getField <X3D::SFBool>   ("paintSelection"));
 						coordEditor -> getField <X3D::SFBool>      ("selectLineLoop")          .addInterest (node -> getField <X3D::SFBool>   ("selectLineLoop"));
@@ -282,7 +279,6 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFTime>      ("chipOfSelectedFaces")     .addInterest (node -> getField <X3D::SFTime>   ("chipOfSelectedFaces"));
 						coordEditor -> getField <X3D::SFTime>      ("flipVertexOrdering")      .addInterest (node -> getField <X3D::SFTime>   ("flipVertexOrdering"));
 						coordEditor -> getField <X3D::SFTime>      ("deleteSelectedFaces")     .addInterest (node -> getField <X3D::SFTime>   ("deleteSelectedFaces"));
-						coordEditor -> getField <X3D::SFBool>      ("cutPolygons")             .addInterest (node -> getField <X3D::SFBool>   ("cutPolygons"));
 						coordEditor -> getField <X3D::SFBool>      ("cutSnapping")             .addInterest (node -> getField <X3D::SFBool>   ("cutSnapping"));
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")                   .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
 
@@ -294,13 +290,12 @@ GeometryEditor::connect ()
 						node -> getField <X3D::SFString>             ("clipboard_changed")      .addInterest (this, &GeometryEditor::set_clipboard);
 
 						node -> setField <X3D::SFBool>   ("pickable",               coordEditor -> getField <X3D::SFBool>   ("pickable"),               true);
-						node -> setField <X3D::SFBool>   ("select",                 coordEditor -> getField <X3D::SFBool>   ("select"),                 true);
+						node -> setField <X3D::SFString> ("toolType",               coordEditor -> getField <X3D::SFString> ("toolType"),               true);
 						node -> setField <X3D::SFString> ("selectionType",          coordEditor -> getField <X3D::SFString> ("selectionType"),          true);
 						node -> setField <X3D::SFBool>   ("paintSelection",         coordEditor -> getField <X3D::SFBool>   ("paintSelection"),         true);
 						node -> setField <X3D::SFBool>   ("selectLineLoop",         coordEditor -> getField <X3D::SFBool>   ("selectLineLoop"),         true);
 						node -> setField <X3D::SFBool>   ("transform",              coordEditor -> getField <X3D::SFBool>   ("transform"),              true);
 						node -> setField <X3D::SFBool>   ("axisAlignedBoundingBox", coordEditor -> getField <X3D::SFBool>   ("axisAlignedBoundingBox"), true);
-						node -> setField <X3D::SFBool>   ("cutPolygons",            coordEditor -> getField <X3D::SFBool>   ("cutPolygons"),            true);
 						node -> setField <X3D::SFBool>   ("cutSnapping",            coordEditor -> getField <X3D::SFBool>   ("cutSnapping"),            true);
 
 						coordTool -> setField <X3D::SFBool>      ("load",  true,                                                 true);
@@ -363,6 +358,8 @@ GeometryEditor::set_executionContext ()
 void
 GeometryEditor::set_viewer ()
 {
+__LOG__ << std::endl;
+
 	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
 		return;
 
@@ -377,13 +374,16 @@ GeometryEditor::set_viewer ()
 		{
 			// If active viewer button was clicked:
 
-			if (getPaintSelectionButton () .get_active ())
-			{
-				if (selector == SelectorType::RECTANGLE or selector == SelectorType::LASSO)
-					getBrowserWindow () -> getArrowButton () .set_active (true);
-			}
+			if (getBrowserWindow () -> getHandButton () .get_active ())
+				coordEditor -> setField <X3D::SFString> ("toolType", "NONE");
 
-			if (getCutPolygonsButton () .get_active ())
+			else if (getBrowserWindow () -> getArrowButton () .get_active ())
+				coordEditor -> setField <X3D::SFString> ("toolType", "SELECT");
+
+			else if (getPaintSelectionButton () .get_active ())
+				getBrowserWindow () -> getArrowButton () .set_active (true);
+
+			else if (getCutPolygonsButton () .get_active ())
 				getBrowserWindow () -> getArrowButton () .set_active (true);
 
 			privateViewer = browser-> getPrivateViewer ();
@@ -395,8 +395,8 @@ GeometryEditor::set_viewer ()
 void
 GeometryEditor::connectViewer ()
 {
-	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
-	getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
+	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::connectViewer);
+	getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::set_viewer);
 }
 
 bool
@@ -744,6 +744,20 @@ GeometryEditor::set_selectedFaces ()
 }
 
 void
+GeometryEditor::on_hand_toggled ()
+{
+	if (getBrowserWindow () -> getHandButton () .get_active ())
+		coordEditor -> setField <X3D::SFString> ("toolType", "NONE");
+}
+
+void
+GeometryEditor::on_arrow_toggled ()
+{
+	if (getBrowserWindow () -> getArrowButton () .get_active ())
+		coordEditor -> setField <X3D::SFString> ("toolType", "SELECT");
+}
+
+void
 GeometryEditor::on_hammer_clicked ()
 {
 	const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Smash Selection"));
@@ -836,6 +850,8 @@ GeometryEditor::on_paint_selection_toggled ()
 	if (changing)
 		return;
 
+	coordEditor -> setField <X3D::SFString> ("toolType", "SELECT");
+
 	switch (selector)
 	{
 		case SelectorType::BRUSH:
@@ -909,6 +925,8 @@ void
 GeometryEditor::set_selector (const SelectorType & type)
 {
 	selector = type;
+
+	coordEditor -> setField <X3D::SFString> ("toolType", "SELECT");
 
 	switch (selector)
 	{
@@ -1045,7 +1063,11 @@ void
 GeometryEditor::set_cut_polygons ()
 {
 	if (getCutPolygonsButton () .get_active ())
+	{
+		coordEditor -> setField <X3D::SFString> ("toolType", "CUT");
+
 		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LightSaber);
+	}
 	else
 		getCurrentBrowser () -> setPrivateViewer (privateViewer);
 }

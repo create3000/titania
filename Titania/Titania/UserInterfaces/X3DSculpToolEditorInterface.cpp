@@ -65,6 +65,7 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_BrushHeightAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushHeightAdjustment"));
 	m_BrushRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushRadiusAdjustment"));
 	m_BrushSharpnessAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushSharpnessAdjustment"));
+	m_BrushSpacingAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushSpacingAdjustment"));
 	m_BrushWarpAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushWarpAdjustment"));
 
 	// Get widgets.
@@ -84,6 +85,7 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrushHardnessScale", m_BrushHardnessScale);
 	m_builder -> get_widget ("BrushRadiusScale", m_BrushRadiusScale);
 	m_builder -> get_widget ("BrushTypeButton", m_BrushTypeButton);
+	m_builder -> get_widget ("BrushSpacingScale", m_BrushSpacingScale);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
 	m_builder -> get_widget ("ChangePaletteBox", m_ChangePaletteBox);

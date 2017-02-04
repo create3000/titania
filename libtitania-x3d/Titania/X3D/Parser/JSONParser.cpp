@@ -202,6 +202,13 @@ JSONParser::headObject (json_object* const jobj)
 	componentArray (json_object_object_get (jobj, "component"));
 	unitArray      (json_object_object_get (jobj, "unit"));
 	metaArray      (json_object_object_get (jobj, "meta"));
+
+	try
+	{
+		scene -> setWorldURL (scene -> getMetaData ("titania-identifier"));
+	}
+	catch (const X3DError &)
+	{ }
 }
 
 void

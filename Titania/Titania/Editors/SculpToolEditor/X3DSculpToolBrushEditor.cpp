@@ -63,6 +63,7 @@ X3DSculpToolBrushEditor::X3DSculpToolBrushEditor () :
 	                       warp (this, getBrushWarpAdjustment (), getBrushWarpScale (), "warp"),
 	                  sharpness (this, getBrushSharpnessAdjustment (), getBrushSharpnessScale (), "sharpness"),
 	                   hardness (this, getBrushHardnessAdjustment (), getBrushHardnessScale (), "hardness"),
+	                    spacing (this, getBrushSpacingAdjustment (), getBrushSpacingScale (), "spacing"),
 	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrushPreview.x3dv") }))
 {
 	addChildObjects (preview);
@@ -81,6 +82,7 @@ X3DSculpToolBrushEditor::configure ()
 		brush -> setField <X3D::SFDouble> ("warp",      getConfig () -> get <X3D::SFDouble> ("brushWarp"));
 		brush -> setField <X3D::SFDouble> ("sharpness", getConfig () -> get <X3D::SFDouble> ("brushSharpness"));
 		brush -> setField <X3D::SFDouble> ("hardness",  getConfig () -> get <X3D::SFDouble> ("brushHardness"));
+		brush -> setField <X3D::SFDouble> ("spacing" ,  getConfig () -> get <X3D::SFDouble> ("brushSpacing"));
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -114,6 +116,7 @@ X3DSculpToolBrushEditor::set_initalized ()
 		warp      .setNodes (nodes);
 		sharpness .setNodes (nodes);
 		hardness  .setNodes (nodes);
+		spacing   .setNodes (nodes);
 
 		X3DSculpToolBrushEditor::configure ();
 	}
@@ -140,8 +143,9 @@ X3DSculpToolBrushEditor::store ()
 		getConfig () -> set <X3D::SFDouble> ("brushWarp",      brush -> getField <X3D::SFDouble> ("warp"));
 		getConfig () -> set <X3D::SFDouble> ("brushSharpness", brush -> getField <X3D::SFDouble> ("sharpness"));
 		getConfig () -> set <X3D::SFDouble> ("brushHardness",  brush -> getField <X3D::SFDouble> ("hardness"));
+		getConfig () -> set <X3D::SFDouble> ("brushSpacing",   brush -> getField <X3D::SFDouble> ("spacing"));
 	}
-	catch (const X3D::X3DError &)
+	catch (const X3D::X3DError & error)
 	{ }
 }
 

@@ -227,6 +227,13 @@ XMLParser::headElement (xmlpp::Element* const xmlElement)
 {
 	for (const auto & xmlNode : xmlElement -> get_children ())
 		headElementChild (dynamic_cast <xmlpp::Element*> (xmlNode));
+
+	try
+	{
+		scene -> setWorldURL (scene -> getMetaData ("titania-identifier"));
+	}
+	catch (const X3DError &)
+	{ }
 }
 
 void

@@ -66,8 +66,8 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
+	addField (inputOutput, "toolType",               toolType ());
 	addField (inputOutput, "pickable",               pickable ());
-	addField (inputOutput, "select",                 select ());
 	addField (inputOutput, "paintSelection",         paintSelection ());
 	addField (inputOutput, "selectLineLoop",         selectLineLoop ());
 	addField (inputOutput, "transform",              transform ());
@@ -95,7 +95,6 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (inputOutput, "chipOfSelectedFaces",    chipOfSelectedFaces ());
 	addField (inputOutput, "flipVertexOrdering",     flipVertexOrdering ());
 	addField (inputOutput, "deleteSelectedFaces",    deleteSelectedFaces ());
-	addField (inputOutput, "cutPolygons",            cutPolygons ());
 	addField (inputOutput, "cutSnapping",            cutSnapping ());
 	addField (outputOnly,  "isActive",               isActive ());
 	addField (outputOnly,  "touchTime",              touchTime ());
