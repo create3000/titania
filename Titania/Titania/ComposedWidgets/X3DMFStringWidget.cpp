@@ -75,7 +75,7 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 	         undoStep (),
 	           buffer ()
 {
-	addChildren (nodes, string, buffer);
+	addChildObjects (nodes, string, buffer);
 
 	buffer .addInterest (this, &X3DMFStringWidget::set_buffer);
 

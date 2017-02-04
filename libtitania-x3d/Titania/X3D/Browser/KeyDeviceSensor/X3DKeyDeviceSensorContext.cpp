@@ -67,7 +67,7 @@ X3DKeyDeviceSensorContext::X3DKeyDeviceSensorContext () :
 	           internalAltKey (false),
 	             externalKeys ()
 {
-	addChildren (keyDeviceSensorNodeOutput, controlKey, shiftKey, altKey);
+	addChildObjects (keyDeviceSensorNodeOutput, controlKey, shiftKey, altKey);
 }
 
 void

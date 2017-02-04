@@ -92,8 +92,7 @@ ComposedCubeMapTexture::ComposedCubeMapTexture (X3DExecutionContext* const execu
 	addField (inputOutput, "top",      top ());
 	addField (inputOutput, "bottom",   bottom ());
 
-	addChildren (textureProperties ());
-	addChildren (nodes, loadState);
+	addChildObjects (textureProperties (), nodes, loadState);
 }
 
 X3DBaseNode*
@@ -293,7 +292,7 @@ ComposedCubeMapTexture::setTexture (const GLenum target, const SFNode & node)
 void
 ComposedCubeMapTexture::dispose ()
 {
-	removeChildren (textureProperties ());
+	removeChildObjects (textureProperties ());
 
 	X3DEnvironmentTextureNode::dispose ();
 }

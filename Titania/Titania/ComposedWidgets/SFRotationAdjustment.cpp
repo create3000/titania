@@ -74,7 +74,7 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 	            lower (0),
 	            upper (0)
 {
-	addChildren (scene, nodes, buffer);
+	addChildObjects (scene, nodes, buffer);
 	            
 	setup ();
 

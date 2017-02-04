@@ -62,7 +62,7 @@ X3DPixelTextureEditor::X3DPixelTextureEditor () :
 	X3DTextureEditorInterface (),
 	             pixelTexture ()
 {
-	addChildren (pixelTexture);
+	addChildObjects (pixelTexture);
 }
 
 void

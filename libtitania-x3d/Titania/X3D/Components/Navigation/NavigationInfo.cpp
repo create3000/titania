@@ -102,9 +102,9 @@ NavigationInfo::NavigationInfo (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "isBound",            isBound ());
 	addField (outputOnly,  "bindTime",           bindTime ());
 
-	addChildren (transitionStart (),
-	             viewer,
-	             availableViewers);
+	addChildObjects (transitionStart (),
+	                 viewer,
+	                 availableViewers);
 
 	avatarSize ()      .setUnit (UnitCategory::LENGTH);
 	speed ()           .setUnit (UnitCategory::SPEED);

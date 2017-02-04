@@ -80,7 +80,7 @@ CADFace::CADFace (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxCenter", bboxCenter ());
 	addField (inputOutput,    "shape",      shape ());
 
-	addChildren (shapeNode);
+	addChildObjects (shapeNode);
 }
 
 X3DBaseNode*

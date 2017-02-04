@@ -97,21 +97,21 @@ X3DLayerNode::X3DLayerNode (X3DViewpointNode* p_defaultViewpoint, X3DGroupingNod
 {
 	addType (X3DConstants::X3DLayerNode);
 
-	X3DParentObject::addChildren (defaultNavigationInfo,
-	                              defaultViewpoint,
-	                              defaultBackground,
-	                              defaultFog,
-	                              currentViewport,
-	                              navigationInfoStack,
-	                              viewpointStack,
-	                              backgroundStack,
-	                              fogStack,
-	                              navigationInfos,
-	                              viewpoints,
-	                              backgrounds,
-	                              fogs,
-	                              groupNode,
-	                              friendsNode);
+	addChildObjects (defaultNavigationInfo,
+	                 defaultViewpoint,
+	                 defaultBackground,
+	                 defaultFog,
+	                 currentViewport,
+	                 navigationInfoStack,
+	                 viewpointStack,
+	                 backgroundStack,
+	                 fogStack,
+	                 navigationInfos,
+	                 viewpoints,
+	                 backgrounds,
+	                 fogs,
+	                 groupNode,
+	                 friendsNode);
 
 	defaultNavigationInfo -> isBound () = true;
 	defaultViewpoint      -> isBound () = true;

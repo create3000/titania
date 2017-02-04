@@ -69,7 +69,7 @@ X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 	                   nodeIndex (new NodeIndex (getBrowserWindow ())),
 	                cellrenderer (Gtk::manage (new X3D::BrowserCellRenderer ()))
 {
-	addChildren (preview);
+	addChildObjects (preview);
 }
 
 void

@@ -70,7 +70,7 @@ ExportedNode::ExportedNode (X3DScene* const scene,
 {
 	addType (X3DConstants::ExportedNode);
 
-	addChildren (node);
+	addChildObjects (node);
 }
 
 X3DBaseNode*

@@ -58,7 +58,7 @@ X3DComposedTexture3DEditor::X3DComposedTexture3DEditor () :
 	X3DTextureEditorInterface (),
 	          composedTexture ()
 {
-	addChildren (composedTexture);
+	addChildObjects (composedTexture);
 }
 
 void

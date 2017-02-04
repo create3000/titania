@@ -80,7 +80,7 @@ X3DGeospatialObject::X3DGeospatialObject () :
 {
 	addType (X3DConstants::X3DGeospatialObject);
 
-	addChildren (geoOriginNode);
+	addChildObjects (geoOriginNode);
 }
 
 void

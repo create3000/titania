@@ -80,7 +80,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 	addField (inputOutput, "metadata", metadata ());
 
-	addChildren (getRootNodes (), protoNode, live);
+	addChildObjects (getRootNodes (), protoNode, live);
 
 	protoNode -> addInstance (this);
 
@@ -1189,7 +1189,7 @@ X3DPrototypeInstance::dispose ()
 	X3DExecutionContext::dispose ();
 	X3DNode::dispose ();
 
-	removeChildren (getRootNodes ());
+	removeChildObjects (getRootNodes ());
 }
 
 } // X3D

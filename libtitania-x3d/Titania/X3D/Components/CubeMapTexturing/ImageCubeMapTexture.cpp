@@ -72,7 +72,7 @@ ImageCubeMapTexture::ImageCubeMapTexture (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "url",               url ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 
-	addChildren (textureNode);
+	addChildObjects (textureNode);
 }
 
 X3DBaseNode*

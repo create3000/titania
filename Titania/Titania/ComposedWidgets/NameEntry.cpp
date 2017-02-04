@@ -62,7 +62,7 @@ NameEntry::NameEntry (X3DBaseInterface* const editor,
 	           button (button),
 	             node ()
 {
-	addChildren (node);
+	addChildObjects (node);
 
 	entry  .signal_insert_text ()     .connect (sigc::mem_fun (*this, &NameEntry::on_insert_text), false);
 	entry  .signal_delete_text ()     .connect (sigc::mem_fun (*this, &NameEntry::on_delete_text), false);

@@ -95,7 +95,7 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 	         styleUndoStep (),
 	              changing (false)
 {
-	addChildren (texts, fontStyleNodeBuffer, fontStyleNode, fontStyle, screenFontStyle);
+	addChildObjects (texts, fontStyleNodeBuffer, fontStyleNode, fontStyle, screenFontStyle);
 
 	fontStyleNodeBuffer .addInterest (this, &X3DFontStyleNodeEditor::set_node);
 	

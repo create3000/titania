@@ -102,11 +102,11 @@ X3DBrowserContext::X3DBrowserContext () :
 
 	addType (X3DConstants::X3DBrowserContext);
 
-	addChildren (initialized (),
-	             world,
-	             selection,
-	             notification,
-	             console);
+	addChildObjects (initialized (),
+	                 world,
+	                 selection,
+	                 notification,
+	                 console);
 }
 
 void

@@ -84,8 +84,8 @@ FaceSelection::FaceSelection (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "geometry", geometry ());
 
-	addChildren (geometryNode,
-                coordNode);
+	addChildObjects (geometryNode,
+                    coordNode);
 }
 
 FaceSelection*

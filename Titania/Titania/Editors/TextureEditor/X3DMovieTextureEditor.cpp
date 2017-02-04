@@ -70,7 +70,7 @@ X3DMovieTextureEditor::X3DMovieTextureEditor () :
 	                          "url")),
 	             movieTexture ()
 {
-	addChildren (movieTexture);
+	addChildObjects (movieTexture);
 }
 
 void

@@ -65,7 +65,7 @@ X3DSculpToolBrushEditor::X3DSculpToolBrushEditor () :
 	                   hardness (this, getBrushHardnessAdjustment (), getBrushHardnessScale (), "hardness"),
 	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrushPreview.x3dv") }))
 {
-	addChildren (preview);
+	addChildObjects (preview);
 }
 
 void
@@ -75,12 +75,12 @@ X3DSculpToolBrushEditor::configure ()
 	{
 		const auto brush = getBrush ();
 
-		brush -> getField ("type")      -> fromString (getConfig () -> getString ("brushType"));
-		brush -> getField ("radius")    -> fromString (getConfig () -> getString ("brushRadius"));
-		brush -> getField ("height")    -> fromString (getConfig () -> getString ("brushHeight"));
-		brush -> getField ("warp")      -> fromString (getConfig () -> getString ("brushWarp"));
-		brush -> getField ("sharpness") -> fromString (getConfig () -> getString ("brushSharpness"));
-		brush -> getField ("hardness")  -> fromString (getConfig () -> getString ("brushHardness"));
+		brush -> setField <X3D::SFString> ("type",      getConfig () -> get <X3D::SFString> ("brushType"));
+		brush -> setField <X3D::SFDouble> ("radius",    getConfig () -> get <X3D::SFDouble> ("brushRadius"));
+		brush -> setField <X3D::SFDouble> ("height",    getConfig () -> get <X3D::SFDouble> ("brushHeight"));
+		brush -> setField <X3D::SFDouble> ("warp",      getConfig () -> get <X3D::SFDouble> ("brushWarp"));
+		brush -> setField <X3D::SFDouble> ("sharpness", getConfig () -> get <X3D::SFDouble> ("brushSharpness"));
+		brush -> setField <X3D::SFDouble> ("hardness",  getConfig () -> get <X3D::SFDouble> ("brushHardness"));
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -134,12 +134,12 @@ X3DSculpToolBrushEditor::store ()
 	{
 		const auto brush = getBrush ();
 	
-		getConfig () -> setItem ("brushType",      brush -> getField ("type")      -> toString ());
-		getConfig () -> setItem ("brushRadius",    brush -> getField ("radius")    -> toString ());
-		getConfig () -> setItem ("brushHeight",    brush -> getField ("height")    -> toString ());
-		getConfig () -> setItem ("brushWarp",      brush -> getField ("warp")      -> toString ());
-		getConfig () -> setItem ("brushSharpness", brush -> getField ("sharpness") -> toString ());
-		getConfig () -> setItem ("brushHardness",  brush -> getField ("hardness")  -> toString ());
+		getConfig () -> set <X3D::SFString> ("brushType",      brush -> getField <X3D::SFString> ("type"));
+		getConfig () -> set <X3D::SFDouble> ("brushRadius",    brush -> getField <X3D::SFDouble> ("radius"));
+		getConfig () -> set <X3D::SFDouble> ("brushHeight",    brush -> getField <X3D::SFDouble> ("height"));
+		getConfig () -> set <X3D::SFDouble> ("brushWarp",      brush -> getField <X3D::SFDouble> ("warp"));
+		getConfig () -> set <X3D::SFDouble> ("brushSharpness", brush -> getField <X3D::SFDouble> ("sharpness"));
+		getConfig () -> set <X3D::SFDouble> ("brushHardness",  brush -> getField <X3D::SFDouble> ("hardness"));
 	}
 	catch (const X3D::X3DError &)
 	{ }

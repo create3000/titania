@@ -75,7 +75,7 @@ X3DFogObject::X3DFogObject () :
 {
 	addType (X3DConstants::X3DFogObject);
 
-	addChildren (transparency ());
+	addChildObjects (transparency ());
 
 	visibilityRange () .setUnit (UnitCategory::LENGTH);
 }

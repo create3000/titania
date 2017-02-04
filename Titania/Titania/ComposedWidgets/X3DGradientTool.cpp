@@ -76,7 +76,7 @@ X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
 {
 	// Buffer
 
-	addChildren (browser, nodes, value, buffer);
+	addChildObjects (browser, nodes, value, buffer);
 
 	value  .addInterest (this, &X3DGradientTool::set_value);
 	buffer .addInterest (this, &X3DGradientTool::set_buffer);

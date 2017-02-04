@@ -71,9 +71,9 @@ X3DLinePropertiesEditor::X3DLinePropertiesEditor () :
 	                    undoStep (),
 	                    changing (false)
 {
-	addChildren (appearances,
-	             lineProperties,
-	             linePropertiesBuffer);
+	addChildObjects (appearances,
+	                 lineProperties,
+	                 linePropertiesBuffer);
 }
 
 void

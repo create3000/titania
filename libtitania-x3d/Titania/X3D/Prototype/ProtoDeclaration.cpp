@@ -73,7 +73,7 @@ ProtoDeclaration::ProtoDeclaration (X3DExecutionContext* const executionContext)
 
 	addField (inputOutput, "metadata", metadata ());
 
-	addChildren (getRootNodes (), loadState);
+	addChildObjects (getRootNodes (), loadState);
 }
 
 ProtoDeclaration*
@@ -731,7 +731,8 @@ ProtoDeclaration::dispose ()
 {
 	X3DExecutionContext::dispose ();
 	X3DProtoDeclarationNode::dispose ();
-	removeChildren (getRootNodes ());
+
+	removeChildObjects (getRootNodes ());
 }
 
 } // X3D

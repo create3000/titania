@@ -95,14 +95,14 @@ X3DIndexedFaceSetTransformObject::X3DIndexedFaceSetTransformObject () :
 {
 	addType (X3DConstants::X3DIndexedFaceSetTransformObject);
 
-	addChildren (touchSensor,
-	             planeSensor,
-	             planeSensorNormal,
-	             transformToolSwitch,
-	             transformNode,
-	             transformTool,
-	             selectionTransform,
-	             selectionCoord);
+	addChildObjects (touchSensor,
+	                 planeSensor,
+	                 planeSensorNormal,
+	                 transformToolSwitch,
+	                 transformNode,
+	                 transformTool,
+	                 selectionTransform,
+	                 selectionCoord);
 }
 
 void

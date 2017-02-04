@@ -65,9 +65,9 @@ X3DShapeContext::X3DShapeContext () :
 	       lineProperties (nullptr),
 	             material (nullptr)
 {
-	addChildren (defaultLineProperties,
-	             defaultFillProperties,
-	             defaultAppearance);
+	addChildObjects (defaultLineProperties,
+	                 defaultFillProperties,
+	                 defaultAppearance);
 }
 
 void

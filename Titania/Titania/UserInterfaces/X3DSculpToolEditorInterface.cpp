@@ -72,6 +72,7 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
+	m_builder -> get_widget ("Toolbar", m_Toolbar);
 	m_builder -> get_widget ("PullButton", m_PullButton);
 	m_builder -> get_widget ("PushButton", m_PushButton);
 	m_builder -> get_widget ("Notebook", m_Notebook);

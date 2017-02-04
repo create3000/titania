@@ -87,11 +87,11 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	                  copyTime (0),
 	                  changing (false)
 {
-	addChildren (normalEditor,
-	             coordEditor,
-	             geometryNodes,
-	             previousSelection,
-	             browser);
+	addChildObjects (normalEditor,
+	                 coordEditor,
+	                 geometryNodes,
+	                 previousSelection,
+	                 browser);
 
 	normalEnabled .setUndo (false);
 	select        .setUndo (false);

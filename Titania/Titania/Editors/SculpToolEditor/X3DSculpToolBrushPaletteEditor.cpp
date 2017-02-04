@@ -65,7 +65,7 @@ namespace titania {
 namespace puck {
 
 X3DSculpToolBrushPaletteEditor::X3DSculpToolBrushPaletteEditor () :
-	X3DPaletteEditor <X3DSculpToolEditorInterface> ("SculpTool"),
+	X3DPaletteEditor <X3DSculpToolEditorInterface> ("SculpToolBrushes"),
 	                                        future ()
 { }
 
@@ -157,6 +157,9 @@ X3DSculpToolBrushPaletteEditor::set_model (X3D::X3DScenePtr && scene)
 {
 	try
 	{
+		if (not scene)
+			return;
+
 		const auto model = scene -> getNamedNode ("Brush");
 		const auto brush = getBrush ();
 

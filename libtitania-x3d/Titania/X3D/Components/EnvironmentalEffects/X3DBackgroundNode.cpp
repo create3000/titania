@@ -92,12 +92,12 @@ X3DBackgroundNode::X3DBackgroundNode () :
 {
 	addType (X3DConstants::X3DBackgroundNode);
 
-	addChildren (frontTexture,
-	             backTexture,
-	             leftTexture,
-	             rightTexture,
-	             topTexture,
-	             bottomTexture);
+	addChildObjects (frontTexture,
+	                 backTexture,
+	                 leftTexture,
+	                 rightTexture,
+	                 topTexture,
+	                 bottomTexture);
 	
 	skyAngle ()    .setUnit (UnitCategory::ANGLE);
 	groundAngle () .setUnit (UnitCategory::ANGLE);

@@ -62,7 +62,7 @@ X3DActiveLayerTool::X3DActiveLayerTool () :
 {
 	addType (X3DConstants::X3DActiveLayerTool);
 
-	addChildren (tool, activeLayer);
+	addChildObjects (tool, activeLayer);
 }
 
 void

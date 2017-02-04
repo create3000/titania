@@ -96,9 +96,9 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "color",          color ());
 	addField (inputOutput,    "coord",          coord ());
 
-	addChildren (attribNodes,
-	             colorNode,
-	             coordNode);
+	addChildObjects (attribNodes,
+	                 colorNode,
+	                 coordNode);
 
 	setGeometryType (GeometryType::GEOMETRY_LINES);
 }

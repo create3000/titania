@@ -94,16 +94,16 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 	              selection (new X3D::FaceSelection (getMasterBrowser ())),
 	            undoHistory ()
 {
-	addChildren (preview,
-	             shape,
-	             appearance,
-	             texture,
-	             textureTransform,
-	             geometry,
-	             coord,
-	             previewGeometry,
-	             previewColor,
-	             selection);
+	addChildObjects (preview,
+	                 shape,
+	                 appearance,
+	                 texture,
+	                 textureTransform,
+	                 geometry,
+	                 coord,
+	                 previewGeometry,
+	                 previewColor,
+	                 selection);
 
 	preview -> setAntialiasing (4);
 

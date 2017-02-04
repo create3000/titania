@@ -95,15 +95,15 @@ X3DExecutionContext::X3DExecutionContext () :
 {
 	addType (X3DConstants::X3DExecutionContext);
 
-	addChildren (worldInfo,
-	             namedNodesOutput,
-	             importedNodesOutput,
-	             prototypesOutput,
-	             externProtosLoadCount,
-	             externProtosOutput,
-	             sceneGraphOutput,
-	             bboxOutput,
-	             uninitializedNodes);
+	addChildObjects (worldInfo,
+	                 namedNodesOutput,
+	                 importedNodesOutput,
+	                 prototypesOutput,
+	                 externProtosLoadCount,
+	                 externProtosOutput,
+	                 sceneGraphOutput,
+	                 bboxOutput,
+	                 uninitializedNodes);
 
 	// Root nodes must be added and removed as/from child in the node that derives from X3DExecutionContext.
 	getRootNodes () .setName ("rootNodes");

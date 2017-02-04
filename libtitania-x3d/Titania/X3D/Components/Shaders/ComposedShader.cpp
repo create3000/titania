@@ -85,7 +85,7 @@ ComposedShader::ComposedShader (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "language",   language ());
 	addField (inputOutput,    "parts",      parts ());
 	
-	addChildren (loadSensor);
+	addChildObjects (loadSensor);
 }
 
 X3DBaseNode*

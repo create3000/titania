@@ -75,7 +75,7 @@ Notification::Notification (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "string", string ());
 	
-	addChildren (world);
+	addChildObjects (world);
 }
 
 X3DBaseNode*

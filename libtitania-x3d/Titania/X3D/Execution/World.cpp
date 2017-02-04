@@ -72,7 +72,7 @@ World::World (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::World);
 
-	addChildren (layerSet, defaultLayerSet, layer0, activeLayer);
+	addChildObjects (layerSet, defaultLayerSet, layer0, activeLayer);
 }
 
 World*

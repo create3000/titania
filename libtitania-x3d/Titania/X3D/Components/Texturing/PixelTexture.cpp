@@ -79,7 +79,7 @@ PixelTexture::PixelTexture (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 	
-	addChildren (loadState);
+	addChildObjects (loadState);
 }
 
 X3DBaseNode*
@@ -450,7 +450,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		image () .setComponents (3);
 
 		for (auto & pixel : array)
-			pixel = pixel .getValue () >> 8;
+			pixel >>= 8;
 	}
 }
 

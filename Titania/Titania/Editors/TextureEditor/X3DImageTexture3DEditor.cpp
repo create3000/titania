@@ -70,7 +70,7 @@ X3DImageTexture3DEditor::X3DImageTexture3DEditor () :
 	                           "url")),
 	             imageTexture ()
 {
-	addChildren (imageTexture);
+	addChildObjects (imageTexture);
 }
 
 void

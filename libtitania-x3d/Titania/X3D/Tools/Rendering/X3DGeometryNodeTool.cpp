@@ -86,9 +86,9 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	normalTool () .set (normalToolNode);
 	coordTool  () .set (coordToolNode);
 
-	addChildren (selection,
-	             normalToolNode,
-	             coordToolNode);
+	addChildObjects (selection,
+	                 normalToolNode,
+	                 coordToolNode);
 
 	setCameraObject (true);
 }

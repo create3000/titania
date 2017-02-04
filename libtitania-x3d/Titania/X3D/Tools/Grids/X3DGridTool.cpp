@@ -81,7 +81,7 @@ X3DGridTool::X3DGridTool () :
 {
 	addType (X3DConstants::X3DGridTool);
 
-	addChildren (selection, children);
+	addChildObjects (selection, children);
 
 	translation ()  .setUnit (UnitCategory::LENGTH);
 	snapDistance () .setUnit (UnitCategory::LENGTH);

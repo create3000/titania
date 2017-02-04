@@ -72,7 +72,7 @@ X3DImportedNodesEditor::X3DImportedNodesEditor () :
 	X3DNodePropertiesEditorInterface (),
 	                      inlineNode ()
 {
-	addChildren (inlineNode);
+	addChildObjects (inlineNode);
 }
 
 void

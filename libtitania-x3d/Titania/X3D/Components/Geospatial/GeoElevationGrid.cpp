@@ -125,9 +125,9 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 
 	geoGridOrigin () .isGeospatial (true);
 
-	addChildren (colorNode,
-	             texCoordNode,
-	             normalNode);
+	addChildObjects (colorNode,
+	                 texCoordNode,
+	                 normalNode);
 }
 
 X3DBaseNode*

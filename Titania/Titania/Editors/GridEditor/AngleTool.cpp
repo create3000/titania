@@ -73,7 +73,7 @@ AngleTool::AngleTool (X3DBrowserWindow* const browserWindow) :
 {
 	setName ("AngleGrid");
 
-	addChildren (tool);
+	addChildObjects (tool);
 
 	setup ();
 }

@@ -81,7 +81,7 @@ ComposedTexture3D::ComposedTexture3D (X3DExecutionContext* const executionContex
 	addField (initializeOnly, "textureProperties", textureProperties ());
 	addField (inputOutput,    "texture",           texture ());
 	
-	addChildren (loadState, textureNodes);
+	addChildObjects (loadState, textureNodes);
 }
 
 X3DBaseNode*

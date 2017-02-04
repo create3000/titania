@@ -89,7 +89,7 @@ X3DTimeDependentNode::X3DTimeDependentNode () :
 {
 	addType (X3DConstants::X3DTimeDependentNode);
 
-	addChildren (initialized, evenLive);
+	addChildObjects (initialized, evenLive);
 }
 
 void

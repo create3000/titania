@@ -88,7 +88,7 @@ ProgramShader::ProgramShader (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "language",   language ());
 	addField (inputOutput,    "programs",   programs ());
 
-	addChildren (programNodes, loadSensor);
+	addChildObjects (programNodes, loadSensor);
 }
 
 X3DBaseNode*

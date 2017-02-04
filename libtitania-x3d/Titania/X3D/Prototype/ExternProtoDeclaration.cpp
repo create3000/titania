@@ -81,7 +81,7 @@ ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const execu
 	addField (inputOutput, "metadata", metadata ());
 	url () .setName ("url");
 
-	addChildren (url (), scene, proto, future);
+	addChildObjects (url (), scene, proto, future);
 }
 
 ExternProtoDeclaration*
@@ -712,7 +712,7 @@ ExternProtoDeclaration::dispose ()
 {
 	getScene () -> removeExternProtoLoadCount (this);
 
-	removeChildren (url ());
+	removeChildObjects (url ());
 
 	X3DUrlObject::dispose ();
 	X3DProtoDeclarationNode::dispose ();

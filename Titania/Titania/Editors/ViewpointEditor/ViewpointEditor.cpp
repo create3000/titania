@@ -72,7 +72,7 @@ ViewpointEditor::ViewpointEditor (X3DBrowserWindow* const browserWindow) :
 	          retainUserOffsets (this, getViewpointRetainUserOffsetsCheckButton (), "retainUserOffsets"),
 	              viewpointNode ()
 {
-	addChildren (browser, viewpointNode);
+	addChildObjects (browser, viewpointNode);
 
 	setup ();
 }

@@ -89,7 +89,7 @@ Anchor::Anchor (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
 	
-	X3DChildNode::addChildren (touchSensorNode);
+	addChildObjects (touchSensorNode);
 }
 
 X3DBaseNode*

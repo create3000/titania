@@ -79,7 +79,7 @@ PrototypeEditor::PrototypeEditor (X3DBrowserWindow* const browserWindow) :
 	                  protoNode (),
 							  urlNode (new X3D::FieldSet (getMasterBrowser ()))
 {
-	addChildren (executionContext, protoNode, urlNode);
+	addChildObjects (executionContext, protoNode, urlNode);
 
 	urlNode -> hasEvents (false);
 	urlNode -> setup ();

@@ -89,14 +89,17 @@ public:
 	///  @name Construction
 
 	X3DScalar () :
-		X3DField <ValueType> () { }
+		X3DField <ValueType> ()
+	{ }
 
 	X3DScalar (const X3DScalar & field) :
-		X3DField <ValueType> (field) { }
+		X3DField <ValueType> (field)
+	{ }
 
 	explicit
 	X3DScalar (const ValueType & value) :
-		X3DField <ValueType> (value) { }
+		X3DField <ValueType> (value)
+	{ }
 
 	virtual
 	X3DScalar*
@@ -133,6 +136,54 @@ public:
 	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
 
 	///  @name Arithmetic operations
+
+	template <class T = ValueType>
+	std::enable_if_t <
+		std::is_integral <T>::value,
+		X3DScalar &
+	>
+	operator <<= (const X3DScalar & field)
+	{
+		get () <<= field .getValue ();
+		addEvent ();
+		return *this;
+	}
+
+	template <class T = ValueType>
+	std::enable_if_t <
+		std::is_integral <T>::value,
+		X3DScalar &
+	>
+	operator <<= (const ValueType & value)
+	{
+		get () <<= value;
+		addEvent ();
+		return *this;
+	}
+
+	template <class T = ValueType>
+	std::enable_if_t <
+		std::is_integral <T>::value,
+		X3DScalar &
+	>
+	operator >>= (const X3DScalar & field)
+	{
+		get () >>= field .getValue ();
+		addEvent ();
+		return *this;
+	}
+
+	template <class T = ValueType>
+	std::enable_if_t <
+		std::is_integral <T>::value,
+		X3DScalar &
+	>
+	operator >>= (const ValueType & value)
+	{
+		get () >>= value;
+		addEvent ();
+		return *this;
+	}
 
 	X3DScalar &
 	operator += (const X3DScalar &);
@@ -198,9 +249,9 @@ private:
 template <class ValueType>
 inline
 X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator += (const X3DScalar & value)
+X3DScalar <ValueType>::operator += (const X3DScalar & field)
 {
-	get () += value .getValue ();
+	get () += field .getValue ();
 	addEvent ();
 	return *this;
 }
@@ -218,9 +269,9 @@ X3DScalar <ValueType>::operator += (const ValueType & value)
 template <class ValueType>
 inline
 X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator -= (const X3DScalar & value)
+X3DScalar <ValueType>::operator -= (const X3DScalar & field)
 {
-	get () -= value .getValue ();
+	get () -= field .getValue ();
 	addEvent ();
 	return *this;
 }
@@ -238,9 +289,9 @@ X3DScalar <ValueType>::operator -= (const ValueType & value)
 template <class ValueType>
 inline
 X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator *= (const X3DScalar & value)
+X3DScalar <ValueType>::operator *= (const X3DScalar & field)
 {
-	get () *= value .getValue ();
+	get () *= field .getValue ();
 	addEvent ();
 	return *this;
 }
@@ -258,9 +309,9 @@ X3DScalar <ValueType>::operator *= (const ValueType & value)
 template <class ValueType>
 inline
 X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator /= (const X3DScalar & value)
+X3DScalar <ValueType>::operator /= (const X3DScalar & field)
 {
-	get () /= value .getValue ();
+	get () /= field .getValue ();
 	addEvent ();
 	return *this;
 }
@@ -400,6 +451,54 @@ operator >= (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
 
 ///  @relates X3DScalar
 ///  @name Aritmetic operators.
+
+template <class ValueType>
+inline
+std::enable_if_t <std::is_integral <ValueType>::value, ValueType>
+operator << (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs .getValue () << rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+std::enable_if_t <std::is_integral <ValueType>::value, ValueType>
+operator << (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () << rhs;
+}
+
+template <class ValueType>
+inline
+std::enable_if_t <std::is_integral <ValueType>::value, ValueType>
+operator << (const ValueType & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs << rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+std::enable_if_t <std::is_integral <ValueType>::value, ValueType>
+operator >> (const X3DScalar <ValueType> & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs .getValue () >> rhs .getValue ();
+}
+
+template <class ValueType>
+inline
+std::enable_if_t <std::is_integral <ValueType>::value, ValueType>
+operator >> (const X3DScalar <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () >> rhs;
+}
+
+template <class ValueType>
+inline
+std::enable_if_t <std::is_integral <ValueType>::value, ValueType>
+operator >> (const ValueType & lhs, const X3DScalar <ValueType> & rhs)
+{
+	return lhs >> rhs .getValue ();
+}
 
 template <class ValueType>
 inline

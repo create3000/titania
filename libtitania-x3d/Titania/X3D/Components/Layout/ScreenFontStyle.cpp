@@ -80,7 +80,7 @@ ScreenText::ScreenText (Text* const text, const ScreenFontStyle* const fontStyle
 	         matrix (),
 	    textureNode (new PixelTexture (text -> getExecutionContext ()))
 {
-	addChildren (textureNode);
+	addChildObjects (textureNode);
 
 	textureNode -> setup ();
 

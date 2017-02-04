@@ -131,7 +131,7 @@ X3DFieldToggleButton <Type, ToggleButtonType>::X3DFieldToggleButton (X3DBaseInte
 	         changing (false),
 	           buffer ()
 {
-	addChildren (nodes, buffer);
+	addChildObjects (nodes, buffer);
 
 	buffer .addInterest (this, &X3DFieldToggleButton::set_buffer);
 

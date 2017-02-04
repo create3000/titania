@@ -74,7 +74,7 @@ X3DSoundSourceNode::X3DSoundSourceNode () :
 {
 	addType (X3DConstants::X3DSoundSourceNode);
 
-	addChildren (end);
+	addChildObjects (end);
 }
 
 void

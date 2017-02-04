@@ -147,7 +147,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 {
 	assert (executionContext);
 
-	addChildren (nameOutput, fieldsOutput, live);
+	addChildObjects (nameOutput, fieldsOutput, live);
 }
 
 /***

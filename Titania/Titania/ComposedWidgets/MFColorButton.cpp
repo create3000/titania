@@ -90,7 +90,7 @@ MFColorButton::MFColorButton (X3DBaseInterface* const editor,
 	        colorsBorder (2, 2, 2, 2),
 	           clipboard (new X3D::Clipboard (getMasterBrowser () -> getExecutionContext ()))
 {
-	addChildren (node, nodes, buffer, clipboard);
+	addChildObjects (node, nodes, buffer, clipboard);
 
 	// Buffer
 

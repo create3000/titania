@@ -78,7 +78,7 @@ StaticGroup::StaticGroup (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxCenter", bboxCenter ());
 	addField (initializeOnly, "children",   children ());
 
-	addChildren (group);
+	addChildObjects (group);
 }
 
 X3DBaseNode*

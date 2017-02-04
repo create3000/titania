@@ -131,7 +131,7 @@ RigidBody::RigidBody (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "geometry",             geometry ());
 
-	addChildren (geometryNodes);
+	addChildObjects (geometryNodes);
 }
 
 X3DBaseNode*

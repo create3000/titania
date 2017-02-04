@@ -61,7 +61,7 @@ X3DToolContext::X3DToolContext () :
 	transformToolOptions (new TransformToolOptions (getExecutionContext ())),
 	             cutLine ()
 {
-	addChildren (transformToolOptions);
+	addChildObjects (transformToolOptions);
 }
 
 void

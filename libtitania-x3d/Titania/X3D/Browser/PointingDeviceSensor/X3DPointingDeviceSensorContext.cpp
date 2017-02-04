@@ -85,8 +85,8 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	selectionBuffer (),
 	    depthBuffer ()
 {
-	addChildren (pickable,
-	             selectedLayer);
+	addChildObjects (pickable,
+	                 selectedLayer);
 }
 
 void

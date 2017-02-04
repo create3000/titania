@@ -69,7 +69,7 @@ ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow) :
 	centerOfRotationOffset (),
 	      fieldOfViewScale ()
 {
-	addChildren (browser, viewerNode);
+	addChildObjects (browser, viewerNode);
 
 //	getCurrentBrowser () .addInterest (this, &ViewpointObserver::set_browser);
 

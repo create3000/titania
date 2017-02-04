@@ -123,10 +123,10 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	creaseAngle () .setUnit (UnitCategory::ANGLE);
 	height ()      .setUnit (UnitCategory::LENGTH);
 
-	addChildren (attribNodes,
-	             colorNode,
-	             texCoordNode,
-	             normalNode);
+	addChildObjects (attribNodes,
+	                 colorNode,
+	                 texCoordNode,
+	                 normalNode);
 }
 
 X3DBaseNode*

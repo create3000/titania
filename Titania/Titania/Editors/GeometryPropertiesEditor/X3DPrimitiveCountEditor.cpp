@@ -72,7 +72,7 @@ X3DPrimitiveCountEditor::X3DPrimitiveCountEditor () :
 			                         lines (0),
 			                        points (0)
 {
-	addChildren (browser, executionContext);
+	addChildObjects (browser, executionContext);
 }
 
 void

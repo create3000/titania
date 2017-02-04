@@ -89,7 +89,7 @@ CollisionSensor::CollisionSensor (X3DExecutionContext* const executionContext) :
 
 	addField (VRML_V2_0, "collidables", "collider");
 
-	addChildren (colliderNode);
+	addChildObjects (colliderNode);
 }
 
 X3DBaseNode*

@@ -341,15 +341,15 @@ ParticleSystem::ParticleSystem (X3DExecutionContext* const executionContext) :
 
 	particleSize () .setUnit (UnitCategory::LENGTH);
 
-	addChildren (transformShader,
-	             geometryShader,
-	             emitterNode,
-	             colorRampNode,
-	             texCoordRampNode,
-	             geometryNode,
-	             shaderNode,
-	             physicsModelNodes,
-	             boundedPhysicsModelNodes);
+	addChildObjects (transformShader,
+	                 geometryShader,
+	                 emitterNode,
+	                 colorRampNode,
+	                 texCoordRampNode,
+	                 geometryNode,
+	                 shaderNode,
+	                 physicsModelNodes,
+	                 boundedPhysicsModelNodes);
 }
 
 X3DBaseNode*

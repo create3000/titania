@@ -88,11 +88,11 @@ X3DComposedGeometryNode::X3DComposedGeometryNode () :
 {
 	addType (X3DConstants::X3DComposedGeometryNode);
 
-	addChildren (attribNodes,
-	             colorNode,
-	             texCoordNode,
-	             normalNode,
-	             coordNode);
+	addChildObjects (attribNodes,
+	                 colorNode,
+	                 texCoordNode,
+	                 normalNode,
+	                 coordNode);
 }
 
 void

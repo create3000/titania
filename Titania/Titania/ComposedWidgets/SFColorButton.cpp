@@ -77,7 +77,7 @@ SFColorButton::SFColorButton (X3DBaseInterface* const editor,
 	              hsv (),
 	        clipboard (new X3D::Clipboard (getMasterBrowser () -> getExecutionContext ()))
 {
-	addChildren (nodes, buffer, clipboard);
+	addChildObjects (nodes, buffer, clipboard);
 
 	// Buffer
 

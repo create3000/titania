@@ -150,7 +150,7 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 	                   changing (false),
 	                       keys ()
 {
-	addChildren (animation, timeSensor);
+	addChildObjects (animation, timeSensor);
 
 	getTranslationAdjustment () -> set_lower (-DEFAULT_TRANSLATION);
 	getTranslationAdjustment () -> set_upper (-DEFAULT_TRANSLATION);

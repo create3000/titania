@@ -89,7 +89,9 @@ X3DScene::X3DScene () :
 {
 	addType (X3DConstants::X3DScene);
 
-	addChildren (getRootNodes (), metaDataOutput, exportedNodesOutput);
+	addChildObjects (getRootNodes (),
+	                 metaDataOutput,
+	                 exportedNodesOutput);
 }
 
 void
@@ -1192,7 +1194,7 @@ X3DScene::dispose ()
 	X3DExecutionContext::dispose ();
 	X3DBaseNode::dispose ();
 
-	removeChildren (getRootNodes ());
+	removeChildObjects (getRootNodes ());
 }
 
 X3DScene::~X3DScene ()

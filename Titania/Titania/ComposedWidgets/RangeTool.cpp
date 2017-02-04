@@ -61,7 +61,7 @@ RangeTool::RangeTool (X3DBaseInterface* const editor,
 	         auxNode (),
 	  positionFactor (1)
 {
-	addChildren (auxNode);
+	addChildObjects (auxNode);
 
 	setup ();
 }

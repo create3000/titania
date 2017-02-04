@@ -76,7 +76,7 @@ BoundedPhysicsModel::BoundedPhysicsModel (X3DExecutionContext* const executionCo
 	addField (inputOutput, "enabled",  enabled ());
 	addField (inputOutput, "geometry", geometry ());
 	
-	addChildren (geometryNode);
+	addChildObjects (geometryNode);
 }
 
 X3DBaseNode*

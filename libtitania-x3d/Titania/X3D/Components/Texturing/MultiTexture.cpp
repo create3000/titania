@@ -96,7 +96,7 @@ MultiTexture::MultiTexture (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "function", function ());
 	addField (inputOutput, "texture",  texture ());
 
-	addChildren (textureNodes);
+	addChildObjects (textureNodes);
 }
 
 X3DBaseNode*

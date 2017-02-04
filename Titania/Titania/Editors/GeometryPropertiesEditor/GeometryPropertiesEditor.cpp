@@ -91,7 +91,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                          nodesBuffer (),
 	                            changing (false)
 {
-	addChildren (geometryNode, nodes, shapes, nodesBuffer);
+	addChildObjects (geometryNode, nodes, shapes, nodesBuffer);
 
 	nodesBuffer .addInterest (this, &GeometryPropertiesEditor::set_buffer);
 

@@ -65,10 +65,10 @@ X3DGeometry3DContext::X3DGeometry3DContext () :
 	cylinderOptions (new CylinderOptions (getExecutionContext ())),
 	  sphereOptions (new QuadSphereOptions (getExecutionContext ()))
 {
-	addChildren (boxOptions,
-	             coneOptions,
-	             cylinderOptions,
-	             sphereOptions);
+	addChildObjects (boxOptions,
+	                 coneOptions,
+	                 cylinderOptions,
+	                 sphereOptions);
 }
 
 void

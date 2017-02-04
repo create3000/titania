@@ -81,7 +81,7 @@ CollidableOffset::CollidableOffset (X3DExecutionContext* const executionContext)
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
 	addField (initializeOnly, "collidable",  collidable ());
 
-	addChildren (collidableNode);
+	addChildObjects (collidableNode);
 }
 
 X3DBaseNode*

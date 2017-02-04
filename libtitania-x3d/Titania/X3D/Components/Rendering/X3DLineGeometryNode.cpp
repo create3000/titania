@@ -66,7 +66,7 @@ X3DLineGeometryNode::X3DLineGeometryNode () :
 {
 	//addType (X3DConstants::X3DLineGeometryNode);
 
-	addChildren (shaderNode);
+	addChildObjects (shaderNode);
 }
 
 void

@@ -64,7 +64,7 @@ X3DEditorObject::X3DEditorObject () :
 	    currentField (),
 	          fields (new X3D::FieldSet (getCurrentBrowser ()))
 {
-	addChildren (fields);
+	addChildObjects (fields);
 
 	fields -> hasEvents (false);
 	fields -> setup ();

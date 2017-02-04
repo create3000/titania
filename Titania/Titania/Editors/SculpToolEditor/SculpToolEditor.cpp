@@ -51,6 +51,7 @@
 #include "SculpToolEditor.h"
 
 #include "../../Configuration/config.h"
+#include "../GeometryEditor/GeometryEditor.h"
 
 namespace titania {
 namespace puck {
@@ -59,8 +60,11 @@ SculpToolEditor::SculpToolEditor (X3DBrowserWindow* const browserWindow) :
 	              X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	   X3DSculpToolEditorInterface (get_ui ("Editors/SculpToolEditor.glade")),
 	       X3DSculpToolBrushEditor (),
-	X3DSculpToolBrushPaletteEditor ()
+	X3DSculpToolBrushPaletteEditor (),
+	                         tools ()
 {
+	addChildObjects (tools);
+
 	setup ();
 }
 
@@ -74,6 +78,12 @@ SculpToolEditor::configure ()
 		getPaned () .set_position (getConfig () -> getInteger ("paned"));
 
 	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+
+	// IndexedFaceSetTool detection
+
+	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (this, &SculpToolEditor::set_geometry_nodes);
+
+	set_geometry_nodes (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ());
 }
 
 void
@@ -85,10 +95,26 @@ SculpToolEditor::initialize ()
 }
 
 void
+SculpToolEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
+{
+	tools .clear ();
+
+	for (const auto & node : geometryNodes)
+	{
+		if (node -> isType ({ X3D::X3DConstants::IndexedFaceSetTool }))
+			tools .emplace_back (node);
+	}
+
+	getToolbar () .set_sensitive (not tools .empty ());
+}
+
+void
 SculpToolEditor::store ()
 {
 	getConfig () -> setItem ("paned",       getPaned () .get_position ());
 	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
+
+	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (this, &SculpToolEditor::set_geometry_nodes);
 
 	X3DSculpToolBrushEditor::store ();
 	X3DSculpToolEditorInterface::store ();

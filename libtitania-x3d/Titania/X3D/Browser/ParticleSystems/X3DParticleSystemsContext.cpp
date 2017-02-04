@@ -59,7 +59,7 @@ X3DParticleSystemsContext::X3DParticleSystemsContext () :
 	   X3DBaseNode (),
 	defaultEmitter (new PointEmitter (getExecutionContext ()))
 {
-	addChildren (defaultEmitter);
+	addChildObjects (defaultEmitter);
 }
 
 void

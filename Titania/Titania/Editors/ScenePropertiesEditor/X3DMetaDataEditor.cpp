@@ -66,7 +66,7 @@ X3DMetaDataEditor::X3DMetaDataEditor () :
 	X3DScenePropertiesEditorInterface (),
 	                            scene ()
 {
-	addChildren (scene);
+	addChildObjects (scene);
 
 	getAddStandardMetaDataButton () .property_active () .signal_changed () .connect (sigc::mem_fun (this, &X3DMetaDataEditor::on_add_standard_meta_data_activated));
 }

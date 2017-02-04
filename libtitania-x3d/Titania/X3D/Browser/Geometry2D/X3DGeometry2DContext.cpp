@@ -67,11 +67,11 @@ X3DGeometry2DContext::X3DGeometry2DContext () :
 	     disk2DOptions (new Disk2DOptions (getExecutionContext ())),
 	rectangle2DOptions (new Rectangle2DOptions (getExecutionContext ()))
 {
-	addChildren (arc2DOptions,
-	             arcClose2DOptions,
-	             circle2DOptions,
-	             disk2DOptions,
-	             rectangle2DOptions);
+	addChildObjects (arc2DOptions,
+	                 arcClose2DOptions,
+	                 circle2DOptions,
+	                 disk2DOptions,
+	                 rectangle2DOptions);
 }
 
 void

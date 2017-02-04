@@ -76,7 +76,7 @@ throw (Error <INVALID_NAME>,
 {
 	addType (X3DConstants::ImportedNode);
 
-	addChildren (inlineNode, exportedNode);
+	addChildObjects (inlineNode, exportedNode);
 }
 
 X3DBaseNode*

@@ -66,7 +66,7 @@ X3DComposedCubeMapTextureEditor::X3DComposedCubeMapTextureEditor () :
 	            bottomPreview (new TexturePreview (this, getComposedCubeMapBottomTexturePreviewBox (), getComposedCubeMapBottomTextureFormatLabel (), getComposedCubeMapBottomTextureLoadStateLabel ())),
 	           cubeMapTexture ()
 {
-	addChildren (cubeMapTexture);
+	addChildObjects (cubeMapTexture);
 }
 
 void

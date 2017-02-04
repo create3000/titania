@@ -69,7 +69,7 @@ FogEditor::FogEditor (X3DBrowserWindow* const browserWindow) :
 	      visibilityRange (this, getVisibilityRangeAdjustment (), getVisibilityRangeSpinButton (), "visibilityRange"),
                  fogNode ()
 {
-	addChildren (fogNode);
+	addChildObjects (fogNode);
 
 	setup ();
 }

@@ -100,10 +100,10 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	          hadjustment (new AdjustmentObject ()),
 	          vadjustment (new AdjustmentObject ())
 {
-	addChildren (executionContext,
-	             protoNode,
-	             nodes,
-	             node);
+	addChildObjects (executionContext,
+	                 protoNode,
+	                 nodes,
+	                 node);
 
 	setup ();
 }

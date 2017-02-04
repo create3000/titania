@@ -68,7 +68,7 @@ X3DExportedNodesEditor::X3DExportedNodesEditor () :
 	                    selectedPath (),
 	                         editing (false)
 {
-	addChildren (scene, node);
+	addChildObjects (scene, node);
 }
 
 void

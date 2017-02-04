@@ -98,7 +98,7 @@ LOD::LOD (X3DExecutionContext* const executionContext) :
 
 	addField (VRML_V2_0, "level", "children");
 
-	X3DBaseNode::addChildren (childNode);
+	addChildObjects (childNode);
 
 	center () .setUnit (UnitCategory::LENGTH);
 	range ()  .setUnit (UnitCategory::LENGTH);

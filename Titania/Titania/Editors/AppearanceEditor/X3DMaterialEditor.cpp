@@ -88,13 +88,13 @@ X3DMaterialEditor::X3DMaterialEditor () :
 	                    undoStep (),
 	                    changing (false)
 {
-	addChildren (preview,
-	             appearances,
-	             materialNode,
-	             materialNodeBuffer,
-	             material,
-	             twoSidedMaterial,
-                clipboard);
+	addChildObjects (preview,
+	                 appearances,
+	                 materialNode,
+	                 materialNodeBuffer,
+	                 material,
+	                 twoSidedMaterial,
+                    clipboard);
 
 	clipboard -> target () = "model/x3d+vrml+material";
 }

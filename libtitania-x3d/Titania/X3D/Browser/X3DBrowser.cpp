@@ -101,15 +101,15 @@ X3DBrowser::X3DBrowser (const MFString & url, const MFString & parameter) :
 	setName ("Titania");
 	addType (X3DConstants::X3DBrowser);
 
-	addChildren (description,
-	             browserOptions,
-	             browserProperties,
-	             renderingProperties,
-	             executionContext,
-	             loadState,
-	             urlError,
-	             getRootNodes (),
-	             future);
+	addChildObjects (description,
+	                 browserOptions,
+	                 browserProperties,
+	                 renderingProperties,
+	                 executionContext,
+	                 loadState,
+	                 urlError,
+	                 getRootNodes (),
+	                 future);
 }
 
 void
@@ -681,7 +681,7 @@ X3DBrowser::dispose ()
 	supportedFields .dispose ();
 	supportedNodes  .dispose ();
 
-	removeChildren (getRootNodes ());
+	removeChildObjects (getRootNodes ());
 
 	__LOG__ << std::endl;
 }

@@ -82,7 +82,7 @@ Script::Script (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "directOutput", directOutput ());
 	addField (initializeOnly, "mustEvaluate", mustEvaluate ());
 
-	addChildren (javaScript);
+	addChildObjects (javaScript);
 
 	setExtendedEventHandling (false);
 }

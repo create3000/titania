@@ -91,7 +91,7 @@ SurfaceEmitter::SurfaceEmitter (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "surfaceArea", surfaceArea ());
 	addField (initializeOnly, "surface",     surface ());
 
-	addChildren (surfaceNode);
+	addChildObjects (surfaceNode);
 }
 
 X3DBaseNode*

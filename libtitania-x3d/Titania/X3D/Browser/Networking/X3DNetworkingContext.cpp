@@ -78,7 +78,7 @@ X3DNetworkingContext::X3DNetworkingContext () :
 	         loadCount (),
 	      notifyOnLoad (false)
 {
-	addChildren (loaded, privateScene, loadSensor, loadCount);
+	addChildObjects (loaded, privateScene, loadSensor, loadCount);
 }
 
 void

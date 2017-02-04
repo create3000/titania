@@ -89,8 +89,8 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
 
-	X3DParentObject::addChildren (viewportNode,
-	                              layoutNode);
+	addChildObjects (viewportNode,
+	                 layoutNode);
 }
 
 X3DBaseNode*

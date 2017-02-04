@@ -112,7 +112,7 @@ GeoLOD::GeoLOD (X3DExecutionContext* const executionContext) :
 		
 	center () .isGeospatial (true);
 
-	addChildren (rootGroup, rootInline, child1Inline, child2Inline, child3Inline, child4Inline);
+	addChildObjects (rootGroup, rootInline, child1Inline, child2Inline, child3Inline, child4Inline);
 }
 
 X3DBaseNode*

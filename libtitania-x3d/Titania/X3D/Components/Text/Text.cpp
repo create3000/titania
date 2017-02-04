@@ -98,7 +98,7 @@ Text::Text (X3DExecutionContext* const executionContext) :
 	textBounds () .setUnit (UnitCategory::LENGTH);
 	lineBounds () .setUnit (UnitCategory::LENGTH);
 
-	addChildren (fontStyleNode, textGeometry);
+	addChildObjects (fontStyleNode, textGeometry);
 }
 
 X3DBaseNode*

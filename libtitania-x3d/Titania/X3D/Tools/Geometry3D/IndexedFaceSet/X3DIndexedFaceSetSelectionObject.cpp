@@ -126,20 +126,20 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 {
 	addType (X3DConstants::X3DIndexedFaceSetSelectionObject);
 
-	addChildren (touchSensor,
-	             planeSensor,
-	             hotSwitch,
-	             hotPointCoord,
-	             hotEdgesGeometry,
-	             hotFacesGeometry,
-	             activePointCoord,
-	             activeEdgesGeometry,
-	             activeFacesGeometry,
-	             selectionCoord,
-	             selectedEdgesGeometry,
-	             selectedFacesGeometry,
-	             coordNode,
-	             selection);
+	addChildObjects (touchSensor,
+	                 planeSensor,
+	                 hotSwitch,
+	                 hotPointCoord,
+	                 hotEdgesGeometry,
+	                 hotFacesGeometry,
+	                 activePointCoord,
+	                 activeEdgesGeometry,
+	                 activeFacesGeometry,
+	                 selectionCoord,
+	                 selectedEdgesGeometry,
+	                 selectedFacesGeometry,
+	                 coordNode,
+	                 selection);
 	            
 }
 

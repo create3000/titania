@@ -84,7 +84,7 @@ NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindo
 	                  transitionTime (this, getTransitionTimeAdjustment (), getTransitionTimeSpinButton (), "transitionTime"),
                  navigationInfoNode ()
 {
-	addChildren (navigationInfoNode);
+	addChildObjects (navigationInfoNode);
 
 	setup ();
 }

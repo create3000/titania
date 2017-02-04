@@ -100,18 +100,18 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 {
 	addType (X3DConstants::X3DIndexedFaceSetKnifeObject);
 
-	addChildren (knifeSelectionGroup,
-	             knifeTouchSensor,
-	             planeSensors,
-	             knifeSwitch,
-	             knifeStartPointSwitch,
-	             knifeStartPoint,
-	             knifeEndPoint,
-	             knifeLineSwitch,
-	             knifeLineCoordinate,
-	             knifeArcSwitch,
-	             knifeArc,
-	             knifeArcGeometry);
+	addChildObjects (knifeSelectionGroup,
+	                 knifeTouchSensor,
+	                 planeSensors,
+	                 knifeSwitch,
+	                 knifeStartPointSwitch,
+	                 knifeStartPoint,
+	                 knifeEndPoint,
+	                 knifeLineSwitch,
+	                 knifeLineCoordinate,
+	                 knifeArcSwitch,
+	                 knifeArc,
+	                 knifeArcGeometry);
 }
 
 void

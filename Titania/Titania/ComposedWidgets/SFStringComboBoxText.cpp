@@ -65,7 +65,7 @@ SFStringComboBoxText::SFStringComboBoxText (X3DBaseInterface* const editor,
 	         changing (false),
 	           buffer ()
 {
-	addChildren (nodes, buffer);
+	addChildObjects (nodes, buffer);
 
 	buffer .addInterest (this, &SFStringComboBoxText::set_buffer);
 

@@ -76,7 +76,7 @@ X3DLODEditor::X3DLODEditor () :
 	                                     "level_changed"),
 	                                lod ()
 {
-	addChildren (lod);	                                	                               
+	addChildObjects (lod);	                                	                               
 }
 
 void

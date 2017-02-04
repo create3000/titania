@@ -90,7 +90,7 @@ X3DGeometryNode::X3DGeometryNode () :
 {
 	addType (X3DConstants::X3DGeometryNode);
 
-	addChildren (cameraObject, texCoordNode);
+	addChildObjects (cameraObject, texCoordNode);
 }
 
 void

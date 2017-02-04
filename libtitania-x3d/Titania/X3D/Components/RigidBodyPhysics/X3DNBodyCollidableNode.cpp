@@ -70,7 +70,7 @@ X3DNBodyCollidableNode::X3DNBodyCollidableNode () :
 {
 	addType (X3DConstants::X3DNBodyCollidableNode);
 
-	addChildren (bodyNode);
+	addChildObjects (bodyNode);
 }
 
 void

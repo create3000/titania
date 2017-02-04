@@ -60,7 +60,7 @@ X3DLayeringContext::X3DLayeringContext () :
 	    X3DBaseNode (),
    defaultViewport (new Viewport (getExecutionContext ()))
 {
-	addChildren (defaultViewport);
+	addChildObjects (defaultViewport);
 }
 
 void

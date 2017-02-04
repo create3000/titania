@@ -135,7 +135,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
-	addChildren (shading);
+	addChildObjects (shading);
 }
 
 BrowserOptions*

@@ -82,7 +82,7 @@ MFStringGeoSystem::MFStringGeoSystem (X3DBaseInterface* const editor,
 	            input (-1),
 	         changing (false)
 {
-	addChildren (node);
+	addChildObjects (node);
 
 	coordinateSystem .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 0));
 	ellipsoid        .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 1));

@@ -153,7 +153,7 @@ public:
 		X3DBoundedObject::dispose ();
 		X3DSensorNodeTool::dispose ();
 
-		X3DParentObject::removeChildren (bboxSize (), bboxCenter ());
+		removeChildObjects (bboxSize (), bboxCenter ());
 	}
 
 
@@ -169,7 +169,7 @@ protected:
 	{
 		addType (X3DConstants::X3DEnvironmentalSensorNodeTool);
 
-		X3DParentObject::addChildren (bboxSize (), bboxCenter ());
+		addChildObjects (bboxSize (), bboxCenter ());
 	}
 
 	virtual

@@ -245,7 +245,7 @@ X3DPaletteEditor <Type>::X3DPaletteEditor (const std::string & libraryFolder) :
 	         overIndex (-1),
 	     selectedIndex (-1)
 {
-	this -> addChildren (preview, group, selectionSwitch, selectionRectangle);
+	this -> addChildObjects (preview, group, selectionSwitch, selectionRectangle);
 }
 
 template <class Type>

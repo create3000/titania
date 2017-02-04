@@ -75,7 +75,7 @@ X3DUnitContext::X3DUnitContext () :
 	      units (standardUnits),
 	unitsOutput ()
 {
-	addChildren (unitsOutput);
+	addChildObjects (unitsOutput);
 }
 
 void

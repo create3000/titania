@@ -114,7 +114,7 @@ RigidBodyCollection::RigidBodyCollection (X3DExecutionContext* const executionCo
 	addField (inputOutput,    "joints",                  joints ());
 	addField (inputOutput,    "bodies",                  bodies ());
 
-	addChildren (bodyNodes, collisionSensorNode);
+	addChildObjects (bodyNodes, collisionSensorNode);
 }
 
 X3DBaseNode*

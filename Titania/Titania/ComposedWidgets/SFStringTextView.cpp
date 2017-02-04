@@ -65,7 +65,7 @@ SFStringTextView::SFStringTextView (X3DBaseInterface* const editor,
 	         changing (false),
 	           buffer ()
 {
-	addChildren (nodes, buffer);
+	addChildObjects (nodes, buffer);
 
 	buffer .addInterest (this, &SFStringTextView::set_buffer);
 

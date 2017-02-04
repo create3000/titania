@@ -99,13 +99,13 @@ Background::Background (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "isBound",      isBound ());
 	addField (outputOnly,  "bindTime",     bindTime ());
 
-	addChildren (frontTexture,
-	             backTexture,
-	             leftTexture,
-	             rightTexture,
-	             topTexture,
-	             bottomTexture,
-	             textureProperties);
+	addChildObjects (frontTexture,
+	                 backTexture,
+	                 leftTexture,
+	                 rightTexture,
+	                 topTexture,
+	                 bottomTexture,
+	                 textureProperties);
 }
 
 X3DBaseNode*

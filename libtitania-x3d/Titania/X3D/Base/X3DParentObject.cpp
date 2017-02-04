@@ -132,7 +132,7 @@ X3DParentObject::setBrowser (X3DBrowser* const value)
  *  Adds this object as parent of @a child. After setup @a child is eventable.
  */
 void
-X3DParentObject::addChild (X3DChildObject & child)
+X3DParentObject::addChildObject (X3DChildObject & child)
 {
 	child .isTainted (true);
 
@@ -146,7 +146,7 @@ X3DParentObject::addChild (X3DChildObject & child)
  *  to zero @a child will be disposed and garbage collected.
  */
 void
-X3DParentObject::removeChild (X3DChildObject & child)
+X3DParentObject::removeChildObject (X3DChildObject & child)
 {
 	children .erase (&child);
 

@@ -118,7 +118,7 @@ X3DSoundSourceNodeEditor::X3DSoundSourceNodeEditor () :
 	       stopTimeUndoStep (),
 	               changing (false)
 {
-	addChildren (sounds, soundSourceNodeBuffer, soundSourceNode, audioClip, movieTexture);
+	addChildObjects (sounds, soundSourceNodeBuffer, soundSourceNode, audioClip, movieTexture);
 }
 
 void

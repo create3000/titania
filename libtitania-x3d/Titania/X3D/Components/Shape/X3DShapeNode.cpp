@@ -77,8 +77,8 @@ X3DShapeNode::X3DShapeNode () :
 {
 	addType (X3DConstants::X3DShapeNode);
 	
-	addChildren (appearanceNode,
-	             geometryNode);
+	addChildObjects (appearanceNode,
+	                 geometryNode);
 }
 
 void

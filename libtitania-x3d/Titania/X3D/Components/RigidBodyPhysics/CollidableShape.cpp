@@ -87,7 +87,7 @@ CollidableShape::CollidableShape (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxCenter",  bboxCenter ());
 	addField (initializeOnly, "shape",       shape ());
 
-	addChildren (shapeNode, geometryNode);
+	addChildObjects (shapeNode, geometryNode);
 }
 
 X3DBaseNode*

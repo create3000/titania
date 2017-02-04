@@ -65,7 +65,7 @@ X3DGeometricPropertyNodeTool::X3DGeometricPropertyNodeTool () :
 {
 	addType (X3DConstants::X3DGeometricPropertyNodeTool);
 
-	addChildren (tool);
+	addChildObjects (tool);
 }
 
 void

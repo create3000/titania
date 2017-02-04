@@ -77,7 +77,7 @@ ImageTexture::ImageTexture (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "repeatT",           repeatT ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 
-	addChildren (future);
+	addChildObjects (future);
 }
 
 X3DBaseNode*

@@ -86,7 +86,7 @@ PixelTexture3D::PixelTexture3D (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "image",             image ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 	
-	addChildren (loadState);
+	addChildObjects (loadState);
 }
 
 X3DBaseNode*

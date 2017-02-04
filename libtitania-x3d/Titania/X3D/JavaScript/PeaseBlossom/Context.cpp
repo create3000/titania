@@ -85,7 +85,7 @@ throw (std::exception) :
 
 	try
 	{
-		addChildren (future);
+		addChildObjects (future);
 
 		addClasses ();
 		addUserDefinedFields ();

@@ -207,7 +207,7 @@ X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBaseInterface* const editor,
 	            upper (),
                empty ()
 {
-	addChildren (scene, nodes, buffer);
+	addChildObjects (scene, nodes, buffer);
 
 	setup ();
 

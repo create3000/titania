@@ -94,7 +94,7 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 	              backgroundNode (),
 	                    changing (false)
 {
-	addChildren (backgroundNode);
+	addChildObjects (backgroundNode);
 
 	setup ();
 }

@@ -90,7 +90,7 @@ PolylineEmitter::PolylineEmitter (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "coordIndex",     coordIndex ());
 	addField (inputOutput,    "coord",          coord ());
 
-	addChildren (polylineNode);
+	addChildObjects (polylineNode);
 }
 
 X3DBaseNode*

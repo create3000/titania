@@ -100,7 +100,7 @@ CollisionCollection::CollisionCollection (X3DExecutionContext* const executionCo
 
 	addField (inputOutput, "collidables",              collidables ());
 
-	addChildren (collidableNodes);
+	addChildObjects (collidableNodes);
 }
 
 X3DBaseNode*

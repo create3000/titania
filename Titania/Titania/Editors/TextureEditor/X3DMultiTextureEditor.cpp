@@ -87,7 +87,7 @@ X3DMultiTextureEditor::X3DMultiTextureEditor () :
                               "DEFAULT")),
 	             multiTexture ()
 {
-	addChildren (multiTexture);
+	addChildObjects (multiTexture);
 
 	source   -> setDefaultValue ("DEFAULT", "");
 	function -> setDefaultValue ("DEFAULT", "");

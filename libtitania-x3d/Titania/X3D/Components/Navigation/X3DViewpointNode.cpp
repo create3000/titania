@@ -97,19 +97,19 @@ X3DViewpointNode::X3DViewpointNode () :
 {
 	addType (X3DConstants::X3DViewpointNode);
 
-	addChildren (positionOffset (),
-	             orientationOffset (),
-	             scaleOffset (),
-	             scaleOrientationOffset (),
-	             centerOfRotationOffset (),
-	             fieldOfViewScale (),
-	             timeSensor,
-	             easeInEaseOut,
-	             positionInterpolator,
-	             orientationInterpolator,
-	             scaleInterpolator,
-	             scaleOrientationInterpolator,
-	             lockToCamera);
+	addChildObjects (positionOffset (),
+	                 orientationOffset (),
+	                 scaleOffset (),
+	                 scaleOrientationOffset (),
+	                 centerOfRotationOffset (),
+	                 fieldOfViewScale (),
+	                 timeSensor,
+	                 easeInEaseOut,
+	                 positionInterpolator,
+	                 orientationInterpolator,
+	                 scaleInterpolator,
+	                 scaleOrientationInterpolator,
+	                 lockToCamera);
 }
 
 void

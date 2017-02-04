@@ -85,7 +85,7 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	             keys (),
 	     accelerators (true)
 {
-	addChildren (clipboard);
+	addChildObjects (clipboard);
 
 	clipboard -> target () = "model/x3d+vrml";
 }

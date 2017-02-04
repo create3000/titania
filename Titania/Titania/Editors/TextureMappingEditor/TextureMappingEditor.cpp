@@ -121,19 +121,19 @@ TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindo
 	                     undoHistory (),
 	                        undoStep ()
 {
-	addChildren (left,
-	             right,
-	             shape,
-	             appearance,
-	             material,
-	             texture,
-	             textureTransform,
-	             geometry,
-	             multiTexCoord,
-	             coord,
-	             previewGeometry,
-	             texCoord,
-                rightSelection);
+	addChildObjects (left,
+	                 right,
+	                 shape,
+	                 appearance,
+	                 material,
+	                 texture,
+	                 textureTransform,
+	                 geometry,
+	                 multiTexCoord,
+	                 coord,
+	                 previewGeometry,
+	                 texCoord,
+                    rightSelection);
 
 	setup ();
 }

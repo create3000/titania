@@ -98,7 +98,7 @@ VolumeEmitter::VolumeEmitter (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "coordIndex",     coordIndex ());
 	addField (inputOutput,    "coord",          coord ());
 
-	addChildren (surfaceNode);
+	addChildObjects (surfaceNode);
 }
 
 X3DBaseNode*

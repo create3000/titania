@@ -66,7 +66,7 @@ X3DRenderingContext::X3DRenderingContext () :
 	         depthOffset ({ 0 }),
 	          motionBlur (new MotionBlur (getExecutionContext ()))
 {
-	addChildren (viewport, motionBlur);
+	addChildObjects (viewport, motionBlur);
 }
 
 void

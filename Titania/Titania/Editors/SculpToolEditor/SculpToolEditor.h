@@ -95,9 +95,16 @@ private:
 	void
 	initialize () final override;
 
+	void
+	set_geometry_nodes (const X3D::MFNode & geometryNodes);
+
 	virtual
 	void
 	store () final override;
+
+	///  @name Members
+
+	X3D::MFNode tools;
 
 };
 

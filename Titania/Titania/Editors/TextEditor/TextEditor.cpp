@@ -73,7 +73,7 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 	        lengthUndoStep (),
 	              changing (false)
 {
-	addChildren (shapeNodes, geometryNodeBuffer, text, measure);
+	addChildObjects (shapeNodes, geometryNodeBuffer, text, measure);
 
 	geometryNodeBuffer .addInterest (this, &TextEditor::set_node);
 

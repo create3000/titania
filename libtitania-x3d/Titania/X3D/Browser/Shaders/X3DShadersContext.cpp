@@ -78,12 +78,12 @@ X3DShadersContext::X3DShadersContext () :
 	            defaultShader (),
 	               shaderNode (nullptr)
 {
-	addChildren (fixedPipeline,
-                pointShader,
-	             wireframeShader,
-	             gouraudShader,
-	             phongShader,
-	             defaultShader);
+	addChildObjects (fixedPipeline,
+                    pointShader,
+	                 wireframeShader,
+	                 gouraudShader,
+	                 phongShader,
+	                 defaultShader);
 }
 
 void

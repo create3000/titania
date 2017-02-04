@@ -92,10 +92,10 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 {
 	addType (X3DConstants::Browser);
 
-	addChildren (viewer,
-	             keyDevice,
-	             pointingDevice,
-	             cursor);
+	addChildObjects (viewer,
+	                 keyDevice,
+	                 pointingDevice,
+	                 cursor);
 }
 
 Browser::Browser (const Browser & other, const MFString & url, const MFString & parameter) :
@@ -109,10 +109,10 @@ Browser::Browser (const Browser & other, const MFString & url, const MFString & 
 {
 	addType (X3DConstants::Browser);
 
-	addChildren (viewer,
-	             keyDevice,
-	             pointingDevice,
-	             cursor);
+	addChildObjects (viewer,
+	                 keyDevice,
+	                 pointingDevice,
+	                 cursor);
 }
 
 Browser*

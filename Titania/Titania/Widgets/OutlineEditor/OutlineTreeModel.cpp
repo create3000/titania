@@ -72,7 +72,7 @@ OutlineTreeModel::OutlineTreeModel (const X3D::X3DExecutionContextPtr & executio
 	    show_all_routes (false)
 {
 	//__LOG__ << std::endl;
-	//addChildren (executionContext);
+	//addChildObjects (executionContext);
 }
 
 Glib::RefPtr <OutlineTreeModel>

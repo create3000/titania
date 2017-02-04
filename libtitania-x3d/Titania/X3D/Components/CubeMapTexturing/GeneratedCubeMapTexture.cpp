@@ -94,7 +94,7 @@ GeneratedCubeMapTexture::GeneratedCubeMapTexture (X3DExecutionContext* const exe
 	addField (initializeOnly, "size",              size ());
 	addField (initializeOnly, "textureProperties", textureProperties ());
 
-	addChildren (loadState, renderer);
+	addChildObjects (loadState, renderer);
 }
 
 X3DBaseNode*

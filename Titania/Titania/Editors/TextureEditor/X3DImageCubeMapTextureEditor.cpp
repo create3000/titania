@@ -75,7 +75,7 @@ X3DImageCubeMapTextureEditor::X3DImageCubeMapTextureEditor () :
 	                           "url")),
 	           cubeMapTexture ()
 {
-	addChildren (cubeMapTexture);
+	addChildObjects (cubeMapTexture);
 }
 
 void

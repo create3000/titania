@@ -74,7 +74,7 @@ X3DTexture2DNode::X3DTexture2DNode () :
 {
 	addType (X3DConstants::X3DTexture2DNode);
 
-	addChildren (texturePropertiesNode);
+	addChildObjects (texturePropertiesNode);
 }
 
 void

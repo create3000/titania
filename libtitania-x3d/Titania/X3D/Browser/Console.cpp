@@ -68,7 +68,7 @@ Console::Console (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::Console);
 
-	addChildren (string_changed);
+	addChildObjects (string_changed);
 }
 
 X3DBaseNode*

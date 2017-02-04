@@ -59,7 +59,7 @@ X3DShaderPartEditor::X3DShaderPartEditor () :
 	     X3DScriptEditorInterface (),
 	               shaderPartNode ()
 {
-	addChildren (shaderPartNode);
+	addChildObjects (shaderPartNode);
 
 	getShaderTypeMenuButton () .set_menu (getShaderTypeMenu ());
 }

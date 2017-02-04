@@ -87,7 +87,7 @@ LayerSet::LayerSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "order",       order ());
 	addField (inputOutput, "layers",      layers ());
 
-	addChildren (fields .privateActiveLayer, layerNodes, layerNode0, activeLayerNode);
+	addChildObjects (fields .privateActiveLayer, layerNodes, layerNode0, activeLayerNode);
 }
 
 X3DBaseNode*

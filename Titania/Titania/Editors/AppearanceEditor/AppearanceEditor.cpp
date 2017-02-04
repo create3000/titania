@@ -74,10 +74,10 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	                    undoStep (),
 	                    changing (false)
 {
-	addChildren (selection,
-	             shapeNodes,
-	             appearanceNode,
-	             appearanceBuffer);
+	addChildObjects (selection,
+	                 shapeNodes,
+	                 appearanceNode,
+	                 appearanceBuffer);
 
 	appearanceBuffer .addInterest (this, &AppearanceEditor::set_node);
 	setup ();

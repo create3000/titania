@@ -77,14 +77,14 @@ X3DNavigationContext::X3DNavigationContext () :
 	          activeCollisions (),
 	         straightenHorizon ()
 {
-	addChildren (headlightNode,
-	             activeLayer,
-	             activeNavigationInfoOutput,
-	             viewer,
-	             privateViewer,
-	             availableViewers,
-	             activeViewpointOutput,
-	             straightenHorizon);
+	addChildObjects (headlightNode,
+	                 activeLayer,
+	                 activeNavigationInfoOutput,
+	                 viewer,
+	                 privateViewer,
+	                 availableViewers,
+	                 activeViewpointOutput,
+	                 straightenHorizon);
 }
 
 void

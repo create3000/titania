@@ -117,7 +117,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
-	addChildren (Enabled (), CycleInterval (), shading, world);
+	addChildObjects (Enabled (), CycleInterval (), shading, world);
 }
 
 RenderingProperties*

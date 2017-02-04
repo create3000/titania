@@ -61,7 +61,7 @@ X3DTextContext::X3DTextContext () :
 	fontStyleOptions (new FontStyleOptions (getExecutionContext ())),
 	defaultFontStyle (new FontStyle (getExecutionContext ()))
 {
-	addChildren (fontStyleOptions, defaultFontStyle);
+	addChildObjects (fontStyleOptions, defaultFontStyle);
 }
 
 void

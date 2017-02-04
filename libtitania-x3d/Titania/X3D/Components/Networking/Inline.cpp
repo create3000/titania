@@ -88,7 +88,7 @@ Inline::Inline (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());
 
-	addChildren (scene, group, buffer, future);
+	addChildObjects (scene, group, buffer, future);
 }
 
 X3DBaseNode*

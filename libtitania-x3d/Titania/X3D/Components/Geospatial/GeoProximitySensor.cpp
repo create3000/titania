@@ -89,7 +89,7 @@ GeoProximitySensor::GeoProximitySensor (X3DExecutionContext* const executionCont
 	addField (outputOnly,     "orientation_changed",      orientation_changed ());
 	addField (outputOnly,     "centerOfRotation_changed", centerOfRotation_changed ());
 
-	addChildren (proximitySensor);
+	addChildObjects (proximitySensor);
 
 	geoCoord_changed ()         .setUnit (UnitCategory::LENGTH);
 	position_changed ()         .setUnit (UnitCategory::LENGTH);

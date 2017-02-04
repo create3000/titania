@@ -67,7 +67,7 @@ X3DToolObject::X3DToolObject () :
 {
 	addType (X3DConstants::X3DToolObject);
 
-	addChildren (inlineNode, toolNode);
+	addChildObjects (inlineNode, toolNode);
 
 	inlineNode -> load () = false;
 }

@@ -73,9 +73,9 @@ X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 	                    undoStep (),
 	                    changing (false)
 {
-	addChildren (appearances,
-	             fillProperties,
-	             fillPropertiesBuffer);
+	addChildObjects (appearances,
+	                 fillProperties,
+	                 fillPropertiesBuffer);
 }
 
 void

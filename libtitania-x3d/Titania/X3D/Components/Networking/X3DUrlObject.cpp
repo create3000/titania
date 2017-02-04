@@ -67,7 +67,7 @@ X3DUrlObject::X3DUrlObject () :
 {
 	addType (X3DConstants::X3DUrlObject);
 
-	addChildren (loadState);
+	addChildObjects (loadState);
 }
 
 X3DUrlObject*

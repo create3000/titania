@@ -68,7 +68,7 @@ X3DTextureTransformNodeEditor::X3DTextureTransformNodeEditor () :
 	                         undoStep (),
 	                        changing (false)
 {
-	addChildren (appearances, textureTransformBuffer, textureTransformNode);
+	addChildObjects (appearances, textureTransformBuffer, textureTransformNode);
 
 	textureTransformBuffer .addInterest (this, &X3DTextureTransformNodeEditor::set_node);
 }

@@ -122,7 +122,7 @@ GeoViewpoint::GeoViewpoint (X3DExecutionContext* const executionContext) :
 
 	position () .isGeospatial (true);
 
-	addChildren (navigationInfoNode);
+	addChildObjects (navigationInfoNode);
 }
 
 X3DBaseNode*

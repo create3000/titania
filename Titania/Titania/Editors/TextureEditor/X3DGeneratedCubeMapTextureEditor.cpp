@@ -60,7 +60,7 @@ X3DGeneratedCubeMapTextureEditor::X3DGeneratedCubeMapTextureEditor () :
 	                     size (this, getGeneratedCubeMapTextureSizeAdjustment (), getGeneratedCubeMapTexturSizeSpinButton (), "size"),
 	  generatedCubeMapTexture ()
 {
-	addChildren (generatedCubeMapTexture);
+	addChildObjects (generatedCubeMapTexture);
 }
 
 void

@@ -67,7 +67,7 @@ X3DJavaScriptContext::X3DJavaScriptContext (Script* const script_, const std::st
 {
 	addType (X3DConstants::X3DJavaScriptContext);
 
-	addChildren (const_cast <X3DPtr <Script> &> (script));
+	addChildObjects (const_cast <X3DPtr <Script> &> (script));
 }
 
 SFBool &

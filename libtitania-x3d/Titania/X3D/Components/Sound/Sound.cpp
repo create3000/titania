@@ -105,7 +105,7 @@ Sound::Sound (X3DExecutionContext* const executionContext) :
 	maxBack ()  .setUnit (UnitCategory::LENGTH);
 	maxFront () .setUnit (UnitCategory::LENGTH);
 
-	addChildren (sourceNode);
+	addChildObjects (sourceNode);
 }
 
 X3DBaseNode*

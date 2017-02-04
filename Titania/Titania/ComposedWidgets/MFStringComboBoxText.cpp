@@ -69,7 +69,7 @@ MFStringComboBoxText::MFStringComboBoxText (X3DBaseInterface* const editor,
 	         changing (false),
 	           buffer ()
 {
-	addChildren (nodes, buffer);
+	addChildObjects (nodes, buffer);
 
 	buffer .addInterest (this, &MFStringComboBoxText::set_buffer);
 

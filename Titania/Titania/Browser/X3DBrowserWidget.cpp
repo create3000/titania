@@ -88,12 +88,12 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 {
 	// Allways added fields, otherwise there is a Xlib error on destruction.
 
-	addChildren (masterBrowser,
-	             browser,
-	             browsers,
-	             recentBrowsers,
-	             scene,
-	             executionContext);
+	addChildObjects (masterBrowser,
+	                 browser,
+	                 browsers,
+	                 recentBrowsers,
+	                 scene,
+	                 executionContext);
 }
 
 void

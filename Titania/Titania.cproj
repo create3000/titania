@@ -2674,7 +2674,7 @@
     <Folder Include="share\titania\ui\icons\Faenza\64\" />
     <Folder Include="share\man\" />
     <Folder Include="Titania\Application\" />
-    <Folder Include="share\titania\Library\SculpTool\" />
+    <Folder Include="share\titania\Library\SculpToolBrushes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

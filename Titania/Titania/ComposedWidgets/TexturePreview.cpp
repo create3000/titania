@@ -77,7 +77,7 @@ TexturePreview::TexturePreview (X3DBaseInterface* const editor,
 	      textureNode (),
 	     textureNodes ()
 {
-	addChildren (preview, textureNode, textureNodes);
+	addChildObjects (preview, textureNode, textureNodes);
 
 	// Browser
 

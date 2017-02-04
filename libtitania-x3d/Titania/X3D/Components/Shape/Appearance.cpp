@@ -100,13 +100,13 @@ Appearance::Appearance (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "textureTransform", textureTransform ());
 	addField (inputOutput, "shaders",          shaders ());
 
-	addChildren (fillPropertiesNode,
-	             linePropertiesNode,
-	             materialNode,
-	             textureNode,
-	             textureTransformNode,
-	             shaderNodes,
-	             shaderNode);
+	addChildObjects (fillPropertiesNode,
+	                 linePropertiesNode,
+	                 materialNode,
+	                 textureNode,
+	                 textureTransformNode,
+	                 shaderNodes,
+	                 shaderNode);
 }
 
 X3DBaseNode*

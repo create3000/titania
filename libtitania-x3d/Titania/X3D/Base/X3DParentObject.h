@@ -146,24 +146,24 @@ protected:
 	///  Add this node as parent to all @a children.  See addChild.
 	template <typename ... Args>
 	void
-	addChildren (Args & ... children)
-	{ basic::pass ((addChild (children), 1) ...); }
+	addChildObjects (Args & ... children)
+	{ basic::pass ((addChildObject (children), 1) ...); }
 
 	///  Adds a private child object to this object.  The child object is then able to paricipate on event routing.
 	virtual
 	void
-	addChild (X3DChildObject &);
+	addChildObject (X3DChildObject &);
 
 	///  Remove this node as parent from all @a children.  See removeChild.
 	template <typename ... Args>
 	void
-	removeChildren (Args & ... children)
-	{ basic::pass ((removeChild (children), 1) ...); }
+	removeChildObjects (Args & ... children)
+	{ basic::pass ((removeChildObject (children), 1) ...); }
 
 	///  Removes a private field from this object.  If the reference count of @a object becomes 0 the child will be disposed.
 	virtual
 	void
-	removeChild (X3DChildObject &);
+	removeChildObject (X3DChildObject &);
 
 	///  @name Event handling
 

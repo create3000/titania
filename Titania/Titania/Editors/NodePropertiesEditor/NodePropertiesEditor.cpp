@@ -66,7 +66,7 @@ NodePropertiesEditor::NodePropertiesEditor (X3DBrowserWindow* const browserWindo
 	                        nodeName (this, getNameEntry (), getRenameButton ())
 
 {
-	addChildren (node);
+	addChildObjects (node);
 
 	setup ();
 }

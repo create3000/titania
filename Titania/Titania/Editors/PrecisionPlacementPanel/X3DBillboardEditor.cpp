@@ -68,7 +68,7 @@ X3DBillboardEditor::X3DBillboardEditor () :
 	                           undoStep (),
 	                           changing (false)
 {
-	addChildren (billboard);
+	addChildObjects (billboard);
 
 	axisOfRotation .setNormalize (true);
 }

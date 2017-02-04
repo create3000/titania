@@ -88,7 +88,7 @@ ViewpointGroup::ViewpointGroup (X3DExecutionContext* const executionContext) :
 	size ()   .setUnit (UnitCategory::LENGTH);
 	center () .setUnit (UnitCategory::LENGTH);
 
-	addChildren (proximitySensor);
+	addChildObjects (proximitySensor);
 
 	setCameraObject (true);
 }

@@ -76,7 +76,7 @@ Route::Route (X3DExecutionContext* const executionContext,
 {
 	addType (X3DConstants::Route);
 
-	addChildren (sourceNode, destinationNode);
+	addChildObjects (sourceNode, destinationNode);
 }
 
 Route*

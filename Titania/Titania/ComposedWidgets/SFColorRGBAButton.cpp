@@ -77,7 +77,7 @@ SFColorRGBAButton::SFColorRGBAButton (X3DBaseInterface* const editor,
 	             hsva (),
 	        clipboard (new X3D::Clipboard (getMasterBrowser () -> getExecutionContext ()))
 {
-	addChildren (nodes, buffer, clipboard);
+	addChildObjects (nodes, buffer, clipboard);
 
 	// Buffer
 

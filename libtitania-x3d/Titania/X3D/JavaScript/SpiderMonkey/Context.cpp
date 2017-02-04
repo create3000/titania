@@ -125,7 +125,7 @@ Context::Context (X3D::Script* const script, const std::string & ecmascript, con
 	              future (),
 	               frame (0)
 {
-	addChildren (future);
+	addChildObjects (future);
 
 	rt = JS_NewRuntime (64 * 1024 * 1024); // 64 MB runtime memory
 

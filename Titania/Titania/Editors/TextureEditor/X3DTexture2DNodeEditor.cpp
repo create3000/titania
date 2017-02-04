@@ -63,7 +63,7 @@ X3DTexture2DNodeEditor::X3DTexture2DNodeEditor () :
 	                  repeatS (this, getTexture2DNodeRepeatSCheckButton (), "repeatS"),
 	                  repeatT (this, getTexture2DNodeRepeatTCheckButton (), "repeatT")
 {
-	addChildren (texture2DNode);
+	addChildObjects (texture2DNode);
 }
 
 void

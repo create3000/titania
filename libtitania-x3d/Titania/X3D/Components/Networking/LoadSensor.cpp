@@ -90,7 +90,7 @@ LoadSensor::LoadSensor (X3DExecutionContext* const executionContext) :
 	addField (outputOnly,  "loadTime",  loadTime ());
 	addField (inputOutput, "watchList", watchList ());
 
-	addChildren (urlObjects);
+	addChildObjects (urlObjects);
 }
 
 X3DBaseNode*

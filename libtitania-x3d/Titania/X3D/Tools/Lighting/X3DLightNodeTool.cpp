@@ -64,7 +64,7 @@ X3DLightNodeTool::X3DLightNodeTool () :
 {
 	addType (X3DConstants::X3DLightNodeTool);
 
-	X3DParentObject::addChildren (bboxSize (), bboxCenter ());
+	addChildObjects (bboxSize (), bboxCenter ());
 }
 
 void
@@ -140,7 +140,7 @@ X3DLightNodeTool::dispose ()
 	X3DBoundedObject::dispose ();
 	X3DChildNodeTool::dispose ();
 	
-	X3DParentObject::removeChildren (bboxSize (), bboxCenter ());
+	removeChildObjects (bboxSize (), bboxCenter ());
 }
 
 } // X3D

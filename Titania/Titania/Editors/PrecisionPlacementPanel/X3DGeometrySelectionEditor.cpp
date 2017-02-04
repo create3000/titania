@@ -88,13 +88,15 @@ X3DGeometrySelectionEditor::X3DGeometrySelectionEditor () :
 	                         lastMatrix (),
 	                           undoStep ()
 {
-	addChildren (transformNode, tool);
+	addChildObjects (transformNode, tool);
 }
 
 void
 X3DGeometrySelectionEditor::configure ()
 {
 	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getBoolean ("geometrySelectionUniformScale"));
+
+	// IndexedFaceSetTool detection
 
 	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (this, &X3DGeometrySelectionEditor::set_geometry_nodes);
 
@@ -120,7 +122,7 @@ X3DGeometrySelectionEditor::set_geometry_nodes (const X3D::MFNode & geometryNode
 {
 	for (const auto & node : geometryNodes)
 	{
-		const auto tool = X3D::X3DPtr <X3D::IndexedFaceSetTool> (node);
+		const X3D::X3DPtr <X3D::IndexedFaceSetTool> tool (node);
 
 		if (tool)
 			tool -> touchTime () .addInterest (this, &X3DGeometrySelectionEditor::set_touchTime);
