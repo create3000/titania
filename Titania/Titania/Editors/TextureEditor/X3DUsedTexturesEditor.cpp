@@ -88,7 +88,7 @@ X3DUsedTexturesEditor::initialize ()
 
 	// Node index
 
-	nodeIndex -> getNode () .addInterest (this, &X3DUsedTexturesEditor::set_node);
+	nodeIndex -> getNode () .addInterest (&X3DUsedTexturesEditor::set_node, this);
 	nodeIndex -> reparent (getUsedTexturesIndexBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setSelect (false);

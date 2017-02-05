@@ -124,19 +124,19 @@ X3DSoundSourceNodeEditor::X3DSoundSourceNodeEditor () :
 void
 X3DSoundSourceNodeEditor::initialize ()
 {
-	soundSourceNodeBuffer .addInterest (this, &X3DSoundSourceNodeEditor::set_node);
+	soundSourceNodeBuffer .addInterest (&X3DSoundSourceNodeEditor::set_node, this);
 }
 
 void
 X3DSoundSourceNodeEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & sound : sounds)
-		sound -> source () .removeInterest (this, &X3DSoundSourceNodeEditor::set_source);
+		sound -> source () .removeInterest (&X3DSoundSourceNodeEditor::set_source, this);
 
 	sounds = getNodes <X3D::Sound> (selection, { X3D::X3DConstants::Sound });
 
 	for (const auto & sound : sounds)
-		sound -> source () .addInterest (this, &X3DSoundSourceNodeEditor::set_source);
+		sound -> source () .addInterest (&X3DSoundSourceNodeEditor::set_source, this);
 
 	set_source ();
 }
@@ -197,8 +197,8 @@ X3DSoundSourceNodeEditor::on_sound_source_changed ()
 		{
 			auto & field = sound -> source ();
 
-			field .removeInterest (this, &X3DSoundSourceNodeEditor::set_source);
-			field .addInterest (this, &X3DSoundSourceNodeEditor::connectSource);
+			field .removeInterest (&X3DSoundSourceNodeEditor::set_source, this);
+			field .addInterest (&X3DSoundSourceNodeEditor::connectSource, this);
 
 			if (getSoundSourceComboBoxText () .get_active_row_number () > 0)
 				getBrowserWindow () -> replaceNode (getCurrentContext (), sound, field, soundSourceNode, undoStep);
@@ -225,8 +225,8 @@ X3DSoundSourceNodeEditor::set_source ()
 void
 X3DSoundSourceNodeEditor::connectSource (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DSoundSourceNodeEditor::connectSource);
-	field .addInterest (this, &X3DSoundSourceNodeEditor::set_source);
+	field .removeInterest (&X3DSoundSourceNodeEditor::connectSource, this);
+	field .addInterest (&X3DSoundSourceNodeEditor::set_source, this);
 }
 
 void
@@ -236,8 +236,8 @@ X3DSoundSourceNodeEditor::set_node ()
 	{
 		soundSourceNode -> isEvenLive (false);
 
-		soundSourceNode -> isPaused () .removeInterest (this, &X3DSoundSourceNodeEditor::set_playing);
-		soundSourceNode -> isActive () .removeInterest (this, &X3DSoundSourceNodeEditor::set_playing);
+		soundSourceNode -> isPaused () .removeInterest (&X3DSoundSourceNodeEditor::set_playing, this);
+		soundSourceNode -> isActive () .removeInterest (&X3DSoundSourceNodeEditor::set_playing, this);
 	}
 
 	undoStep           .reset ();
@@ -266,8 +266,8 @@ X3DSoundSourceNodeEditor::set_node ()
 		soundSourceNode = audioClip;
 
 	soundSourceNode -> isEvenLive (true);
-	soundSourceNode -> isPaused () .addInterest (this, &X3DSoundSourceNodeEditor::set_playing);
-	soundSourceNode -> isActive () .addInterest (this, &X3DSoundSourceNodeEditor::set_playing);
+	soundSourceNode -> isPaused () .addInterest (&X3DSoundSourceNodeEditor::set_playing, this);
+	soundSourceNode -> isActive () .addInterest (&X3DSoundSourceNodeEditor::set_playing, this);
 
 	changing = true;
 

@@ -103,7 +103,7 @@ Cone::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getConeOptions () .addInterest (this, &Cone::update);
+	getBrowser () -> getConeOptions () .addInterest (&Cone::update, this);
 }
 
 void
@@ -111,12 +111,12 @@ Cone::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getConeOptions () .removeInterest (this, &Cone::update);
+	getBrowser () -> getConeOptions () .removeInterest (&Cone::update, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getConeOptions () .addInterest (this, &Cone::update);
+		getBrowser () -> getConeOptions () .addInterest (&Cone::update, this);
 }
 
 Box3d

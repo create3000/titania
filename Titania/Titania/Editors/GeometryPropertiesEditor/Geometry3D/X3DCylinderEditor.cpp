@@ -71,7 +71,7 @@ void
 X3DCylinderEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DCylinderEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DCylinderEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -80,7 +80,7 @@ void
 X3DCylinderEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DCylinderEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DCylinderEditor::set_geometry, this);
 }
 
 void

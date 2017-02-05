@@ -124,8 +124,8 @@ SurfaceEmitter::initialize ()
 
 	// Setup
 
-	surface () .addInterest (this, &SurfaceEmitter::set_surface);
-	surface () .addInterest (this, &SurfaceEmitter::set_geometry);
+	surface () .addInterest (&SurfaceEmitter::set_surface, this);
+	surface () .addInterest (&SurfaceEmitter::set_geometry, this);
 
 	set_surface ();
 	set_geometry ();
@@ -183,12 +183,12 @@ void
 SurfaceEmitter::set_surface ()
 {
 	if (surfaceNode)
-		surfaceNode -> removeInterest (this, &SurfaceEmitter::set_geometry);
+		surfaceNode -> removeInterest (&SurfaceEmitter::set_geometry, this);
 
 	surfaceNode .set (x3d_cast <X3DGeometryNode*> (surface ()));
 
 	if (surfaceNode)
-		surfaceNode -> addInterest (this, &SurfaceEmitter::set_geometry);
+		surfaceNode -> addInterest (&SurfaceEmitter::set_geometry, this);
 }
 
 void

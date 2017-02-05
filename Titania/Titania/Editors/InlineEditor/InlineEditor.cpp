@@ -101,7 +101,7 @@ InlineEditor::set_selection (const X3D::MFNode & selection)
 	getConvertMasterSelectionButton () .set_sensitive (not selection .empty ());
 
 	if (inlineNode)
-		inlineNode -> checkLoadState () .removeInterest (this, &InlineEditor::set_loadState);
+		inlineNode -> checkLoadState () .removeInterest (&InlineEditor::set_loadState, this);
 
 	if (selection .empty ())
 		inlineNode = nullptr;
@@ -110,7 +110,7 @@ InlineEditor::set_selection (const X3D::MFNode & selection)
 
 	if (inlineNode)
 	{
-		inlineNode -> checkLoadState () .addInterest (this, &InlineEditor::set_loadState);
+		inlineNode -> checkLoadState () .addInterest (&InlineEditor::set_loadState, this);
 	
 		loadState = inlineNode -> load ();
 

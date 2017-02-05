@@ -71,11 +71,11 @@ RotationTool::RotationTool (X3DBaseInterface* const editor,
 
 	// Buffer
 
-	buffer .addInterest (this, &RotationTool::set_buffer);
+	buffer .addInterest (&RotationTool::set_buffer, this);
 
 	// Browser
 
-	browser -> initialized () .addInterest (this, &RotationTool::set_initialized);
+	browser -> initialized () .addInterest (&RotationTool::set_initialized, this);
 	browser -> setAntialiasing (4);
 	browser -> show ();
 
@@ -89,13 +89,13 @@ RotationTool::RotationTool (X3DBaseInterface* const editor,
 void
 RotationTool::set_initialized ()
 {
-	browser -> initialized () .removeInterest (this, &RotationTool::set_initialized);
+	browser -> initialized () .removeInterest (&RotationTool::set_initialized, this);
 
 	try
 	{
 		const auto tool = browser -> getExecutionContext () -> getNamedNode ("Tool");
 
-		tool -> getField <X3D::SFRotation> ("outputRotation") .addInterest (this, &RotationTool::set_rotation);
+		tool -> getField <X3D::SFRotation> ("outputRotation") .addInterest (&RotationTool::set_rotation, this);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -110,7 +110,7 @@ RotationTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFRotation> (name) .removeInterest (this, &RotationTool::set_field);
+			node -> getField <X3D::SFRotation> (name) .removeInterest (&RotationTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -122,7 +122,7 @@ RotationTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFRotation> (name) .addInterest (this, &RotationTool::set_field);
+			node -> getField <X3D::SFRotation> (name) .addInterest (&RotationTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -145,8 +145,8 @@ RotationTool::set_rotation (const X3D::SFRotation & value)
 		{
 			auto & field = node -> getField <X3D::SFRotation> (name);
 
-			field .removeInterest (this, &RotationTool::set_field);
-			field .addInterest (this, &RotationTool::connect);
+			field .removeInterest (&RotationTool::set_field, this);
+			field .addInterest (&RotationTool::connect, this);
 
 			field = value;
 		}
@@ -207,8 +207,8 @@ RotationTool::set_value (const X3D::SFRotation & value)
 void
 RotationTool::connect (const X3D::SFRotation & field)
 {
-	field .removeInterest (this, &RotationTool::connect);
-	field .addInterest (this, &RotationTool::set_field);
+	field .removeInterest (&RotationTool::connect, this);
+	field .addInterest (&RotationTool::set_field, this);
 }
 
 RotationTool::~RotationTool ()

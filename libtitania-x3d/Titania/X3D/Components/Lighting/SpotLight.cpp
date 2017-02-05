@@ -123,7 +123,7 @@ SpotLight::initialize ()
 {
 	X3DLightNode::initialize ();
 
-	addInterest (this, &SpotLight::eventsProcessed);
+	addInterest (&SpotLight::eventsProcessed, this);
 
 	eventsProcessed ();
 }

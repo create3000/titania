@@ -133,7 +133,7 @@ X3DFieldToggleButton <Type, ToggleButtonType>::X3DFieldToggleButton (X3DBaseInte
 {
 	addChildObjects (nodes, buffer);
 
-	buffer .addInterest (this, &X3DFieldToggleButton::set_buffer);
+	buffer .addInterest (&X3DFieldToggleButton::set_buffer, this);
 
 	toggleButton .signal_toggled () .connect (sigc::mem_fun (*this, &X3DFieldToggleButton::on_toggled));
 
@@ -148,7 +148,7 @@ X3DFieldToggleButton <Type, ToggleButtonType>::setNodes (const X3D::MFNode & val
 	{
 		try
 		{
-			node -> getField <Type> (name) .removeInterest (this, &X3DFieldToggleButton::set_field);
+			node -> getField <Type> (name) .removeInterest (&X3DFieldToggleButton::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -160,7 +160,7 @@ X3DFieldToggleButton <Type, ToggleButtonType>::setNodes (const X3D::MFNode & val
 	{
 		try
 		{
-			node -> getField <Type> (name) .addInterest (this, &X3DFieldToggleButton::set_field);
+			node -> getField <Type> (name) .addInterest (&X3DFieldToggleButton::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -189,8 +189,8 @@ X3DFieldToggleButton <Type, ToggleButtonType>::on_toggled ()
 		{
 			auto & field = node -> getField <Type> (name);
 
-			field .removeInterest (this, &X3DFieldToggleButton::set_field);
-			field .addInterest (this, &X3DFieldToggleButton::connect);
+			field .removeInterest (&X3DFieldToggleButton::set_field, this);
+			field .addInterest (&X3DFieldToggleButton::connect, this);
 
 			field = toggleButton .get_active ();
 		}
@@ -230,8 +230,8 @@ template <class Type, class ToggleButtonType>
 void
 X3DFieldToggleButton <Type, ToggleButtonType>::connect (const Type & field)
 {
-	field .removeInterest (this, &X3DFieldToggleButton::connect);
-	field .addInterest (this, &X3DFieldToggleButton::set_field);
+	field .removeInterest (&X3DFieldToggleButton::connect, this);
+	field .addInterest (&X3DFieldToggleButton::set_field, this);
 }
 
 template <class Type, class ToggleButtonType>

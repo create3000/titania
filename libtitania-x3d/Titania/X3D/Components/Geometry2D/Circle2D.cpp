@@ -93,7 +93,7 @@ Circle2D::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	getBrowser () -> getCircle2DOptions () .addInterest (this, &Circle2D::update);
+	getBrowser () -> getCircle2DOptions () .addInterest (&Circle2D::update, this);
 
 	setShader (getBrowser () -> getWireframeShader ());
 }
@@ -104,12 +104,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (isInitialized ())
-		getBrowser () -> getCircle2DOptions () .removeInterest (this, &Circle2D::update);
+		getBrowser () -> getCircle2DOptions () .removeInterest (&Circle2D::update, this);
 
 	X3DLineGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getCircle2DOptions () .addInterest (this, &Circle2D::update);
+		getBrowser () -> getCircle2DOptions () .addInterest (&Circle2D::update, this);
 
 	setShader (getBrowser () -> getWireframeShader ());
 }

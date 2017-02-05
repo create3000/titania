@@ -96,7 +96,7 @@ SquadOrientationInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue () .addInterest (this, &SquadOrientationInterpolator::set_keyValue);
+	keyValue () .addInterest (&SquadOrientationInterpolator::set_keyValue, this);
 }
 
 void

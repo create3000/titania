@@ -91,7 +91,7 @@ BooleanFilter::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	set_boolean () .addInterest (this, &BooleanFilter::set_boolean_);
+	set_boolean () .addInterest (&BooleanFilter::set_boolean_, this);
 }
 
 void

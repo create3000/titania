@@ -101,7 +101,7 @@ X3DFlyViewer::initialize ()
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_motion_notify_event),  false);
 	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_scroll_event));
 
-	getBrowser () -> getControlKey () .addInterest (this, &X3DFlyViewer::disconnect);
+	getBrowser () -> getControlKey () .addInterest (&X3DFlyViewer::disconnect, this);
 
 	//getActiveViewpoint () -> straighten (true); // Do this only with Walk Viewer, wenn ¨¹berhaupt.
 }
@@ -140,7 +140,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 					fromVector = toVector = Vector3d (event -> x, 0, event -> y);
 
 					if (getBrowser () -> getBrowserOptions () -> RubberBand ())
-						getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display, MoveType::MOVE);
+						getBrowser () -> displayed () .addInterest (&X3DFlyViewer::display, this, MoveType::MOVE);
 				}
 
 				isActive () = true;
@@ -163,7 +163,7 @@ X3DFlyViewer::on_button_press_event (GdkEventButton* event)
 				fromVector = toVector = Vector3d (event -> x, -event -> y, 0);
 
 				if (getBrowser () -> getBrowserOptions () -> RubberBand ())
-					getBrowser () -> displayed () .addInterest (this, &X3DFlyViewer::display, MoveType::PAN);
+					getBrowser () -> displayed () .addInterest (&X3DFlyViewer::display, this, MoveType::PAN);
 
 				isActive () = true;
 				return false;
@@ -433,7 +433,7 @@ void
 X3DFlyViewer::disconnect ()
 {
 	getBrowser () -> addEvent ();
-	getBrowser () -> displayed () .removeInterest (this, &X3DFlyViewer::display);
+	getBrowser () -> displayed () .removeInterest (&X3DFlyViewer::display, this);
 
 	fly_id  .disconnect ();
 	pan_id  .disconnect ();

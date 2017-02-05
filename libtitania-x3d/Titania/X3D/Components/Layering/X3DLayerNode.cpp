@@ -150,7 +150,7 @@ X3DLayerNode::initialize ()
 	friendsNode -> isPrivate (true);
 	friendsNode -> setup ();
 
-	viewport ()       .addInterest (this, &X3DLayerNode::set_viewport);
+	viewport ()       .addInterest (&X3DLayerNode::set_viewport, this);
 	addChildren ()    .addInterest (groupNode -> addChildren ());
 	removeChildren () .addInterest (groupNode -> removeChildren ());
 	children ()       .addInterest (groupNode -> children ());

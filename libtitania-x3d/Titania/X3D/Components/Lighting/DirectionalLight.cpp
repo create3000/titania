@@ -108,7 +108,7 @@ DirectionalLight::initialize ()
 {
 	X3DLightNode::initialize ();
 
-	addInterest (this, &DirectionalLight::eventsProcessed);
+	addInterest (&DirectionalLight::eventsProcessed, this);
 
 	eventsProcessed ();
 }

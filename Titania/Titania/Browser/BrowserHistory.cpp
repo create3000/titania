@@ -66,14 +66,14 @@ BrowserHistory::BrowserHistory (X3D::X3DBrowser* const browser) :
 	           list (),
 	          index (-1)
 {
-	browser -> initialized () .addInterest (this, &BrowserHistory::set_splashScreen);
+	browser -> initialized () .addInterest (&BrowserHistory::set_splashScreen, this);
 }
 
 void
 BrowserHistory::set_splashScreen ()
 {
-	browser -> initialized () .removeInterest (this, &BrowserHistory::set_splashScreen);
-	browser -> initialized () .addInterest (this, &BrowserHistory::set_initialized);
+	browser -> initialized () .removeInterest (&BrowserHistory::set_splashScreen, this);
+	browser -> initialized () .addInterest (&BrowserHistory::set_initialized, this);
 }
 
 void
@@ -97,8 +97,8 @@ BrowserHistory::set_initialized ()
 void
 BrowserHistory::connect (const X3D::SFTime & initialized)
 {
-	initialized .removeInterest (this, &BrowserHistory::connect);
-	initialized .addInterest (this, &BrowserHistory::set_initialized);
+	initialized .removeInterest (&BrowserHistory::connect, this);
+	initialized .addInterest (&BrowserHistory::set_initialized, this);
 
 	processInterests ();
 }
@@ -131,8 +131,8 @@ BrowserHistory::setIndex (const int value)
 
 	index = value;
 
-	browser -> initialized () .removeInterest (this, &BrowserHistory::set_initialized);
-	browser -> initialized () .addInterest (this, &BrowserHistory::connect);
+	browser -> initialized () .removeInterest (&BrowserHistory::set_initialized, this);
+	browser -> initialized () .addInterest (&BrowserHistory::connect, this);
 
 	browser -> loadURL ({ list [index] .second .str () }, { });
 }

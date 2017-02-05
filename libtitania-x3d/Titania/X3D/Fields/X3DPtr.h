@@ -397,14 +397,14 @@ public:
 	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const X3DPtr &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	addInterest (void (Class::* memberFunction) (const X3DPtr &), Class* const object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
 	void
-	addInterest (Class & object, void (Class::* memberFunction) (const X3DPtr &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	addInterest (void (Class::* memberFunction) (const X3DPtr &), Class & object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  @name Input/Output
 
@@ -499,7 +499,7 @@ private:
 		{
 			value -> addParent (this);
 			value -> addClones (cloneCount);
-			value -> X3DInput::disposed () .addInterest (this, &X3DPtr::set_disposed);
+			value -> X3DInput::disposed () .addInterest (&X3DPtr::set_disposed, this);
 		}
 	}
 
@@ -520,8 +520,8 @@ private:
 			value -> replaceParent (&other, this);
 			value -> addClones (cloneCount);
 			value -> removeClones (other .cloneCount);
-			value -> X3DInput::disposed () .removeInterest (other, &X3DPtr::set_disposed);
-			value -> X3DInput::disposed () .addInterest (this, &X3DPtr::set_disposed);
+			value -> X3DInput::disposed () .removeInterest (&X3DPtr::set_disposed, other);
+			value -> X3DInput::disposed () .addInterest (&X3DPtr::set_disposed, this);
 			other .setObject (nullptr);
 			other .addEvent ();
 		}
@@ -549,8 +549,8 @@ private:
 			value -> replaceParent (&other, this);
 			value -> addClones (cloneCount);
 			value -> removeClones (other .cloneCount);
-			value -> X3DInput::disposed () .removeInterest (other, &X3DPtr <Up>::set_disposed);
-			value -> X3DInput::disposed () .addInterest (this, &X3DPtr::set_disposed);
+			value -> X3DInput::disposed () .removeInterest (&X3DPtr <Up>::set_disposed, other);
+			value -> X3DInput::disposed () .addInterest (&X3DPtr::set_disposed, this);
 			other .setObject (nullptr);
 			other .addEvent ();
 		}
@@ -569,7 +569,7 @@ private:
 		{
 			setObject (nullptr);
 
-			value -> X3DInput::disposed () .removeInterest (this, &X3DPtr::set_disposed);
+			value -> X3DInput::disposed () .removeInterest (&X3DPtr::set_disposed, this);
 			value -> removeClones (cloneCount);
 			value -> removeParent (this);
 		}

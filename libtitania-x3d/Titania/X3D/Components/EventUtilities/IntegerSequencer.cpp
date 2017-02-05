@@ -91,7 +91,7 @@ IntegerSequencer::initialize ()
 {
 	X3DSequencerNode::initialize ();
 
-	keyValue () .addInterest (this, &IntegerSequencer::set_index);
+	keyValue () .addInterest (&IntegerSequencer::set_index, this);
 }
 
 int32_t

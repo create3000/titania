@@ -258,14 +258,14 @@ public:
 	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const X3DPtrArray &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	addInterest (void (Class::* memberFunction) (const X3DPtrArray &), Class* const object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
 	void
-	addInterest (Class & object, void (Class::* memberFunction) (const X3DPtrArray &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	addInterest (void (Class::* memberFunction) (const X3DPtrArray &), Class & object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  @name Input/Output
 

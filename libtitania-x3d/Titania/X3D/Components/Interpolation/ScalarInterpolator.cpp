@@ -89,7 +89,7 @@ ScalarInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue () .addInterest (this, &ScalarInterpolator::set_keyValue);
+	keyValue () .addInterest (&ScalarInterpolator::set_keyValue, this);
 }
 
 void

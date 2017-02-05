@@ -105,13 +105,13 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const SFColorRGBA &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	addInterest (void (Class::* memberFunction) (const SFColorRGBA &), Class* const object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	template <class Class>
 	void
-	addInterest (Class & object, void (Class::* memberFunction) (const SFColorRGBA &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	addInterest (void (Class::* memberFunction) (const SFColorRGBA &), Class & object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  @name Member access
 

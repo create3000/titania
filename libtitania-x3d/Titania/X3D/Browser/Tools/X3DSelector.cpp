@@ -85,7 +85,7 @@ bool
 X3DSelector::on_1button1_press_event (GdkEventButton* event)
 {
 	getBrowser () -> addEvent ();
-	getBrowser () -> displayed () .addInterest (this, &X3DSelector::display);
+	getBrowser () -> displayed () .addInterest (&X3DSelector::display, this);
 
 	clear ();
 	addPoint (event -> x, event -> y);
@@ -103,7 +103,7 @@ X3DSelector::on_1button1_release_event (GdkEventButton* event)
 		ContextLock lock (getBrowser ());
 	
 		getBrowser () -> addEvent ();
-		getBrowser () -> displayed () .removeInterest (this, &X3DSelector::display);
+		getBrowser () -> displayed () .removeInterest (&X3DSelector::display, this);
 	
 		// Depth buffer
 	

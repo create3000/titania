@@ -98,8 +98,8 @@ Script::initialize ()
 {
 	X3DScriptNode::initialize ();
 
-	metadata () .addInterest (this, &Script::catchEventsProcessed);
-	url ()      .addInterest (this, &Script::set_url);
+	metadata () .addInterest (&Script::catchEventsProcessed, this);
+	url ()      .addInterest (&Script::set_url, this);
 
 	requestImmediateLoad ();
 }

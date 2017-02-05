@@ -98,23 +98,23 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const SFTime &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	addInterest (void (Class::* memberFunction) (const SFTime &), Class* const object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	template <class Class>
 	void
-	addInterest (Class & object, void (Class::* memberFunction) (const SFTime &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	addInterest (void (Class::* memberFunction) (const SFTime &), Class & object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (time_type)) const
-	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
+	addInterest (void (Class::* memberFunction) (const time_type), Class* const object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	template <class Class>
 	void
-	addInterest (Class & object, void (Class::* memberFunction) (time_type)) const
-	{ addInterest (object, memberFunction, std::cref (this -> getValue ())); }
+	addInterest (void (Class::* memberFunction) (const time_type), Class & object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  @name Common members
 

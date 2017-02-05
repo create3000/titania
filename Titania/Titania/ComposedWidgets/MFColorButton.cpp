@@ -94,7 +94,7 @@ MFColorButton::MFColorButton (X3DBaseInterface* const editor,
 
 	// Buffer
 
-	buffer .addInterest (this, &MFColorButton::set_buffer);
+	buffer .addInterest (&MFColorButton::set_buffer, this);
 
 	// Button
 
@@ -156,7 +156,7 @@ MFColorButton::MFColorButton (X3DBaseInterface* const editor,
 	menu .append (*pasteMenuItem);
 	menu .show_all ();
 
-	clipboard -> string_changed () .addInterest (pasteMenuItem, &Gtk::ImageMenuItem::set_sensitive, true);
+	clipboard -> string_changed () .addInterest (&Gtk::ImageMenuItem::set_sensitive, pasteMenuItem, true);
 	clipboard -> target () = "model/x3d+vrml+color";
 	clipboard -> setup ();
 
@@ -182,7 +182,7 @@ MFColorButton::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFColor> (name) .removeInterest (this, &MFColorButton::set_field);
+			node -> getField <X3D::MFColor> (name) .removeInterest (&MFColorButton::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -194,7 +194,7 @@ MFColorButton::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFColor> (name) .addInterest (this, &MFColorButton::set_field);
+			node -> getField <X3D::MFColor> (name) .addInterest (&MFColorButton::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -264,8 +264,8 @@ MFColorButton::set_color (const int id, const X3D::Color3f & color)
 		{
 			auto & field = node -> getField <X3D::MFColor> (name);
 
-			field .removeInterest (this, &MFColorButton::set_field);
-			field .addInterest (this, &MFColorButton::connect);
+			field .removeInterest (&MFColorButton::set_field, this);
+			field .addInterest (&MFColorButton::connect, this);
 
 			field .set1Value (index, color);
 		}
@@ -347,8 +347,8 @@ MFColorButton::set_buffer ()
 void
 MFColorButton::connect (const X3D::MFColor & field)
 {
-	field .removeInterest (this, &MFColorButton::connect);
-	field .addInterest (this, &MFColorButton::set_field);
+	field .removeInterest (&MFColorButton::connect, this);
+	field .addInterest (&MFColorButton::set_field, this);
 }
 
 bool

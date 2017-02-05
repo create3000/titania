@@ -100,7 +100,7 @@ GeoOrigin::initialize ()
 {
 	X3DNode::initialize ();
 
-	geoSystem () .addInterest (this, &GeoOrigin::set_geoSystem);
+	geoSystem () .addInterest (&GeoOrigin::set_geoSystem, this);
 
 	set_geoSystem ();
 }

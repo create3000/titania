@@ -80,7 +80,7 @@ X3DSculpToolBrushEditor::configure ()
 void
 X3DSculpToolBrushEditor::initialize ()
 {
-	preview -> initialized () .addInterest (this, &X3DSculpToolBrushEditor::set_initalized);
+	preview -> initialized () .addInterest (&X3DSculpToolBrushEditor::set_initalized, this);
 	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
 	preview -> set_opacity (0);
@@ -121,6 +121,7 @@ X3DSculpToolBrushEditor::set_initalized ()
 			}
 		}
 
+		brush -> addInterest (&X3D::Browser::addEvent, preview .getValue ());
 		preview -> getExecutionContext () -> getScene () -> getExportedNode <X3D::Group> ("BrushGroup") -> children () = { brush };
 
 		// Setup widgets

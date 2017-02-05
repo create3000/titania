@@ -211,8 +211,8 @@ X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBaseInterface* const editor,
 
 	setup ();
 
-	buffer               .addInterest (this, &X3DFieldAdjustment3::set_buffer);
-	getCurrentContext () .addInterest (this, &X3DFieldAdjustment3::set_field);
+	buffer               .addInterest (&X3DFieldAdjustment3::set_buffer, this);
+	getCurrentContext () .addInterest (&X3DFieldAdjustment3::set_field, this);
 
 	adjustments [0] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment3::on_value_changed), 0));
 	adjustments [1] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment3::on_value_changed), 1));
@@ -226,11 +226,11 @@ X3DFieldAdjustment3 <Type>::setNodes (const X3D::MFNode & value)
 	// Connect units.
 
 	if (scene)
-		scene -> units_changed () .removeInterest (this, &X3DFieldAdjustment3::set_field);
+		scene -> units_changed () .removeInterest (&X3DFieldAdjustment3::set_field, this);
 
 	scene = getCurrentScene ();
 
-	scene -> units_changed () .addInterest (this, &X3DFieldAdjustment3::set_field);
+	scene -> units_changed () .addInterest (&X3DFieldAdjustment3::set_field, this);
 
 	// Connect field.
 
@@ -238,7 +238,7 @@ X3DFieldAdjustment3 <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <Type> (name) .removeInterest (this, &X3DFieldAdjustment3::set_field);
+			node -> getField <Type> (name) .removeInterest (&X3DFieldAdjustment3::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -250,7 +250,7 @@ X3DFieldAdjustment3 <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <Type> (name) .addInterest (this, &X3DFieldAdjustment3::set_field);
+			node -> getField <Type> (name) .addInterest (&X3DFieldAdjustment3::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -283,8 +283,8 @@ X3DFieldAdjustment3 <Type>::on_value_changed (const int index0)
 			auto &     field = node -> getField <Type> (name);
 			const auto geo   = field .isGeospatial ();
 
-			field .removeInterest (this, &X3DFieldAdjustment3::set_field);
-			field .addInterest (this, &X3DFieldAdjustment3::connect);
+			field .removeInterest (&X3DFieldAdjustment3::set_field, this);
+			field .addInterest (&X3DFieldAdjustment3::connect, this);
 
 			X3D::Vector3d vector (geo ? adjustments [0] -> get_value () : getCurrentScene () -> fromUnit (unit, adjustments [0] -> get_value ()),
 			                      geo ? adjustments [1] -> get_value () : getCurrentScene () -> fromUnit (unit, adjustments [1] -> get_value ()),
@@ -461,8 +461,8 @@ template <class Type>
 void
 X3DFieldAdjustment3 <Type>::connect (const Type & field)
 {
-	field .removeInterest (this, &X3DFieldAdjustment3::connect);
-	field .addInterest (this, &X3DFieldAdjustment3::set_field);
+	field .removeInterest (&X3DFieldAdjustment3::connect, this);
+	field .addInterest (&X3DFieldAdjustment3::set_field, this);
 }
 
 } // puck

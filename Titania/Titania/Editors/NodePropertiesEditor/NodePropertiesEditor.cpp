@@ -94,13 +94,13 @@ NodePropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DNodePropertiesEditorInterface::set_selection (selection);
 
 	if (node)
-		node -> name_changed () .removeInterest (this, &NodePropertiesEditor::set_name);
+		node -> name_changed () .removeInterest (&NodePropertiesEditor::set_name, this);
 
 	node = selection .empty () ? nullptr : selection .back ();
 
 	if (node)
 	{
-		node -> name_changed () .addInterest (this, &NodePropertiesEditor::set_name);
+		node -> name_changed () .addInterest (&NodePropertiesEditor::set_name, this);
 
 		set_name ();
 		getTypeNameEntry ()       .set_text (node -> getTypeName ());

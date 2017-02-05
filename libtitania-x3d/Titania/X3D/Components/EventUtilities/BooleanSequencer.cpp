@@ -91,7 +91,7 @@ BooleanSequencer::initialize ()
 {
 	X3DSequencerNode::initialize ();
 
-	keyValue () .addInterest (this, &BooleanSequencer::set_index);
+	keyValue () .addInterest (&BooleanSequencer::set_index, this);
 }
 
 int32_t

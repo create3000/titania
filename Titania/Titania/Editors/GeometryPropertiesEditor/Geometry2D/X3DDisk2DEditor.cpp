@@ -68,7 +68,7 @@ void
 X3DDisk2DEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DDisk2DEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DDisk2DEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -77,7 +77,7 @@ void
 X3DDisk2DEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DDisk2DEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DDisk2DEditor::set_geometry, this);
 }
 
 void

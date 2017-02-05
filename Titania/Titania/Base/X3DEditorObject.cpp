@@ -73,7 +73,7 @@ X3DEditorObject::X3DEditorObject () :
 void
 X3DEditorObject::setup ()
 {
-	getCurrentBrowser () .addInterest (this, &X3DEditorObject::set_browser);
+	getCurrentBrowser () .addInterest (&X3DEditorObject::set_browser, this);
 }
 
 void

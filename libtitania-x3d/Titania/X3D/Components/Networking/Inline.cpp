@@ -104,12 +104,12 @@ Inline::initialize ()
 	X3DBoundedObject::initialize ();
 	X3DUrlObject::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &Inline::set_live);
-	isLive () .addInterest (this, &Inline::set_live);
+	getExecutionContext () -> isLive () .addInterest (&Inline::set_live, this);
+	isLive () .addInterest (&Inline::set_live, this);
 
-	load () .addInterest (this, &Inline::set_load);
-	url ()  .addInterest (this, &Inline::set_url);
-	buffer  .addInterest (this, &Inline::set_buffer);
+	load () .addInterest (&Inline::set_load, this);
+	url ()  .addInterest (&Inline::set_url, this);
+	buffer  .addInterest (&Inline::set_buffer, this);
 
 	if (scene)
 	{
@@ -135,7 +135,7 @@ Inline::initialize ()
 		}
 	}
 
-	group -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &Inline::setCameraObject);
+	group -> isCameraObject () .addInterest (&Inline::setCameraObject, static_cast <X3DChildNode*> (this));
 
 	group -> isPrivate (true);
 	group -> setup ();
@@ -146,7 +146,7 @@ Inline::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getExecutionContext () -> isLive () .removeInterest (this, &Inline::set_live);
+	getExecutionContext () -> isLive () .removeInterest (&Inline::set_live, this);
 
 	if (scene == getExecutionContext () -> getBrowser () -> getPrivateScene ())
 		scene = executionContext -> getBrowser () -> getPrivateScene ();
@@ -163,7 +163,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 	{
-		getExecutionContext () -> isLive () .addInterest (this, &Inline::set_live);
+		getExecutionContext () -> isLive () .addInterest (&Inline::set_live, this);
 
 		set_live ();
 	}

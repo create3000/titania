@@ -109,7 +109,7 @@ GeoPositionInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue () .addInterest (this, &GeoPositionInterpolator::set_keyValue);
+	keyValue () .addInterest (&GeoPositionInterpolator::set_keyValue, this);
 }
 
 void

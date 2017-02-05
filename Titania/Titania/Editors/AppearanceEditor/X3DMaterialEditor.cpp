@@ -102,9 +102,9 @@ X3DMaterialEditor::X3DMaterialEditor () :
 void
 X3DMaterialEditor::initialize ()
 {
-	materialNodeBuffer .addInterest (this, &X3DMaterialEditor::set_node);
+	materialNodeBuffer .addInterest (&X3DMaterialEditor::set_node, this);
 
-	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_browser);
+	preview -> initialized () .addInterest (&X3DMaterialEditor::set_browser, this);
 	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
 	preview -> set_opacity (0);
@@ -112,14 +112,14 @@ X3DMaterialEditor::initialize ()
 
 	getPreviewBox () .pack_start (*preview, true, true, 0);
 
-	clipboard -> string_changed () .addInterest (this, &X3DMaterialEditor::set_clipboard);
+	clipboard -> string_changed () .addInterest (&X3DMaterialEditor::set_clipboard, this);
 }
 
 void
 X3DMaterialEditor::set_browser ()
 {
-	preview -> initialized () .removeInterest (this, &X3DMaterialEditor::set_browser);
-	preview -> initialized () .addInterest (this, &X3DMaterialEditor::set_initialized);
+	preview -> initialized () .removeInterest (&X3DMaterialEditor::set_browser, this);
+	preview -> initialized () .addInterest (&X3DMaterialEditor::set_initialized, this);
 
 	try
 	{
@@ -132,7 +132,7 @@ X3DMaterialEditor::set_browser ()
 void
 X3DMaterialEditor::set_initialized ()
 {
-	preview -> initialized () .removeInterest (this, &X3DMaterialEditor::set_initialized);
+	preview -> initialized () .removeInterest (&X3DMaterialEditor::set_initialized, this);
 	preview -> set_opacity (1);
 
 	try
@@ -150,12 +150,12 @@ void
 X3DMaterialEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & appearance : appearances)
-		appearance -> material () .removeInterest (this, &X3DMaterialEditor::set_material);
+		appearance -> material () .removeInterest (&X3DMaterialEditor::set_material, this);
 
 	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
-		appearance -> material () .addInterest (this, &X3DMaterialEditor::set_material);
+		appearance -> material () .addInterest (&X3DMaterialEditor::set_material, this);
 
 	set_material ();
 }
@@ -233,7 +233,7 @@ X3DMaterialEditor::set_preview ()
 		if (appearance)
 		{
 			if (appearance -> material ())
-				appearance -> material () -> removeInterest (*preview, &X3D::Browser::addEvent);
+				appearance -> material () -> removeInterest (&X3D::Browser::addEvent, *preview);
 
 			switch (getMaterialComboBoxText () .get_active_row_number ())
 			{
@@ -264,7 +264,7 @@ X3DMaterialEditor::set_preview ()
 			}
 
 			if (appearance -> material ())
-				appearance -> material () -> addInterest (*preview, &X3D::Browser::addEvent);
+				appearance -> material () -> addInterest (&X3D::Browser::addEvent, *preview);
 		}
 
 		const X3D::X3DPtr <X3D::Appearance> backAppearance (preview -> getExecutionContext () -> getNamedNode ("BackAppearance"));
@@ -417,8 +417,8 @@ X3DMaterialEditor::on_material_changed ()
 		{
 			auto & field = appearance -> material ();
 
-			field .removeInterest (this, &X3DMaterialEditor::set_material);
-			field .addInterest (this, &X3DMaterialEditor::connectMaterial);
+			field .removeInterest (&X3DMaterialEditor::set_material, this);
+			field .addInterest (&X3DMaterialEditor::connectMaterial, this);
 
 			switch (getMaterialComboBoxText () .get_active_row_number ())
 			{
@@ -566,8 +566,8 @@ X3DMaterialEditor::set_widgets ()
 void
 X3DMaterialEditor::connectMaterial (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DMaterialEditor::connectMaterial);
-	field .addInterest (this, &X3DMaterialEditor::set_material);
+	field .removeInterest (&X3DMaterialEditor::connectMaterial, this);
+	field .addInterest (&X3DMaterialEditor::set_material, this);
 }
 
 X3DMaterialEditor::~X3DMaterialEditor ()

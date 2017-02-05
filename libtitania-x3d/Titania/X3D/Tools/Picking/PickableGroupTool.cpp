@@ -70,7 +70,7 @@ PickableGroupTool::realize ()
 {
 	X3DGroupingNodeTool::realize ();
 
-	getNode <PickableGroup> () -> pickable () .addInterest (this, &PickableGroupTool::set_pickable);
+	getNode <PickableGroup> () -> pickable () .addInterest (&PickableGroupTool::set_pickable, this);
 
 	set_pickable (getNode <PickableGroup> () -> pickable ());
 }

@@ -70,7 +70,7 @@ Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
 	    loader (nullptr, executionContext -> getWorldURL ()),
 	    future (getFuture (url, minTextureSize, maxTextureSize))
 {
-	getBrowser () -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
+	getBrowser () -> prepareEvents () .addInterest (&Texture3DLoader::prepareEvents, this);
 	getBrowser () -> addEvent ();
 }
 
@@ -97,15 +97,15 @@ Texture3DLoader::setExecutionContext (X3DExecutionContext* const executionContex
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (this, &Texture3DLoader::prepareEvents);
+	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (&Texture3DLoader::prepareEvents, this);
 
-	getBrowser () -> prepareEvents () .removeInterest (this, &Texture3DLoader::prepareEvents);
+	getBrowser () -> prepareEvents () .removeInterest (&Texture3DLoader::prepareEvents, this);
 
 	X3DFuture::setExecutionContext (executionContext);
 
 	if (prepareEvents)
 	{
-		getBrowser () -> prepareEvents () .addInterest (this, &Texture3DLoader::prepareEvents);
+		getBrowser () -> prepareEvents () .addInterest (&Texture3DLoader::prepareEvents, this);
 
 		getBrowser () -> addEvent ();
 	}
@@ -192,7 +192,7 @@ Texture3DLoader::prepareEvents ()
 	if (status not_eq std::future_status::ready)
 	   return;
 
-	getBrowser () -> prepareEvents () .removeInterest (this, &Texture3DLoader::prepareEvents);
+	getBrowser () -> prepareEvents () .removeInterest (&Texture3DLoader::prepareEvents, this);
 
 	try
 	{

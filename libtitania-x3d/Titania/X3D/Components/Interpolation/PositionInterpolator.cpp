@@ -89,7 +89,7 @@ PositionInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue () .addInterest (this, &PositionInterpolator::set_keyValue);
+	keyValue () .addInterest (&PositionInterpolator::set_keyValue, this);
 }
 
 void

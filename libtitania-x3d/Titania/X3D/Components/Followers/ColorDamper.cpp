@@ -99,9 +99,9 @@ ColorDamper::initialize ()
 {
 	X3DDamperNode::initialize ();
 
-	set_value ()       .addInterest (this, &ColorDamper::set_value_);
-	set_destination () .addInterest (this, &ColorDamper::set_destination_);
-	order ()           .addInterest (this, &ColorDamper::set_order);
+	set_value ()       .addInterest (&ColorDamper::set_value_, this);
+	set_destination () .addInterest (&ColorDamper::set_destination_, this);
+	order ()           .addInterest (&ColorDamper::set_order, this);
 
 	buffer .resize (getOrder () + 1, initialValue ());
 

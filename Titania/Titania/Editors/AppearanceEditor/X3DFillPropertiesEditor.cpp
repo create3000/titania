@@ -81,21 +81,21 @@ X3DFillPropertiesEditor::X3DFillPropertiesEditor () :
 void
 X3DFillPropertiesEditor::initialize ()
 {
-	getPreview () -> initialized () .addInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
+	getPreview () -> initialized () .addInterest (&X3DFillPropertiesEditor::set_fillProperties, this);
 
-	fillPropertiesBuffer .addInterest (this, &X3DFillPropertiesEditor::set_node);
+	fillPropertiesBuffer .addInterest (&X3DFillPropertiesEditor::set_node, this);
 }
 
 void
 X3DFillPropertiesEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & appearance : appearances)
-		appearance -> fillProperties () .removeInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
+		appearance -> fillProperties () .removeInterest (&X3DFillPropertiesEditor::set_fillProperties, this);
 
 	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
-		appearance -> fillProperties () .addInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
+		appearance -> fillProperties () .addInterest (&X3DFillPropertiesEditor::set_fillProperties, this);
 
 	set_fillProperties ();
 }
@@ -127,8 +127,8 @@ X3DFillPropertiesEditor::on_fillProperties_toggled ()
 			{
 				auto & field = appearance -> getField <X3D::SFNode> ("fillProperties");
 
-				field .removeInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
-				field .addInterest (this, &X3DFillPropertiesEditor::connectFillProperties);
+				field .removeInterest (&X3DFillPropertiesEditor::set_fillProperties, this);
+				field .addInterest (&X3DFillPropertiesEditor::connectFillProperties, this);
 
 				if (getFillPropertiesCheckButton () .get_active ())
 				{
@@ -167,7 +167,7 @@ X3DFillPropertiesEditor::set_node ()
 		const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 
 		if (fillProperties)
-			fillProperties -> removeInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+			fillProperties -> removeInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
 
 		undoStep .reset ();
 
@@ -181,12 +181,12 @@ X3DFillPropertiesEditor::set_node ()
 		previewAppearance -> fillProperties () = fillProperties;
 
 		if (fillProperties)
-			fillProperties -> addInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+			fillProperties -> addInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
 
 		else
 		{
 			fillProperties = new X3D::FillProperties (getCurrentContext ());
-			fillProperties -> addInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+			fillProperties -> addInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
 			fillProperties -> setup ();
 		}
 
@@ -218,8 +218,8 @@ X3DFillPropertiesEditor::set_node ()
 void
 X3DFillPropertiesEditor::connectFillProperties (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DFillPropertiesEditor::connectFillProperties);
-	field .addInterest (this, &X3DFillPropertiesEditor::set_fillProperties);
+	field .removeInterest (&X3DFillPropertiesEditor::connectFillProperties, this);
+	field .addInterest (&X3DFillPropertiesEditor::set_fillProperties, this);
 }
 
 X3DFillPropertiesEditor::~X3DFillPropertiesEditor ()

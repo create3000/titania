@@ -87,7 +87,7 @@ MotionBlur::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	enabled () .addInterest (this, &MotionBlur::set_enabled);
+	enabled () .addInterest (&MotionBlur::set_enabled, this);
 
 	set_enabled ();
 }
@@ -97,13 +97,13 @@ MotionBlur::set_enabled ()
 {
 	if (enabled ())
 	{
-		getBrowser () -> getViewport () .addInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed ()   .addInterest (this, &MotionBlur::display);
+		getBrowser () -> getViewport () .addInterest (&MotionBlur::clear, this);
+		getBrowser () -> displayed ()   .addInterest (&MotionBlur::display, this);
 	}
 	else
 	{
-		getBrowser () -> getViewport () .removeInterest (this, &MotionBlur::clear);
-		getBrowser () -> displayed ()   .removeInterest (this, &MotionBlur::display);
+		getBrowser () -> getViewport () .removeInterest (&MotionBlur::clear, this);
+		getBrowser () -> displayed ()   .removeInterest (&MotionBlur::display, this);
 	}
 
 	clear ();

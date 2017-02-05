@@ -91,7 +91,7 @@ Box::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	//getBrowser () -> getBoxOptions () .addInterest (this, &Box::update);
+	//getBrowser () -> getBoxOptions () .addInterest (&Box::update, this);
 }
 
 //void
@@ -99,12 +99,12 @@ Box::initialize ()
 //throw (Error <INVALID_OPERATION_TIMING>,
 //       Error <DISPOSED>)
 //{
-//	getBrowser () -> getBoxOptions () .removeInterest (this, &Box::update);
+//	getBrowser () -> getBoxOptions () .removeInterest (&Box::update, this);
 //
 //	X3DGeometryNode::setExecutionContext (executionContext);
 //
 //	if (isInitialized ())
-//		getBrowser () -> getBoxOptions () .addInterest (this, &Box::update);
+//		getBrowser () -> getBoxOptions () .addInterest (&Box::update, this);
 //}
 
 Box3d

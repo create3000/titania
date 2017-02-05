@@ -97,9 +97,9 @@ ComposedTexture3D::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		texture () .addInterest (this, &ComposedTexture3D::set_texture);
+		texture () .addInterest (&ComposedTexture3D::set_texture, this);
 
-		textureNodes .addInterest (this, &ComposedTexture3D::update);
+		textureNodes .addInterest (&ComposedTexture3D::update, this);
 
 		set_texture ();
 	}

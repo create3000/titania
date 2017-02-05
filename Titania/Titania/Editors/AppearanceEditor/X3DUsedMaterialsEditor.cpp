@@ -87,7 +87,7 @@ X3DUsedMaterialsEditor::initialize ()
 
 	// Node index
 
-	nodeIndex -> getNode () .addInterest (this, &X3DUsedMaterialsEditor::set_node);
+	nodeIndex -> getNode () .addInterest (&X3DUsedMaterialsEditor::set_node, this);
 	nodeIndex -> reparent (getUsedMaterialsIndexBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setSelect (false);

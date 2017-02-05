@@ -99,13 +99,13 @@ void
 MFStringGeoSystem::setNode (const X3D::SFNode & value)
 {
 	if (node)
-		node -> geoSystem () .removeInterest (this, &MFStringGeoSystem::set_field);
+		node -> geoSystem () .removeInterest (&MFStringGeoSystem::set_field, this);
 
 	node = value;
 
 	if (node)
 	{
-		node -> geoSystem () .addInterest (this, &MFStringGeoSystem::set_field);
+		node -> geoSystem () .addInterest (&MFStringGeoSystem::set_field, this);
 		set_field ();
 	}
 	else
@@ -144,8 +144,8 @@ MFStringGeoSystem::on_changed (const int id)
 
 	addUndoFunction (node, node -> geoSystem (), undoStep);
 
-	node -> geoSystem () .removeInterest (this, &MFStringGeoSystem::set_field);
-	node -> geoSystem () .addInterest (this, &MFStringGeoSystem::connect);
+	node -> geoSystem () .removeInterest (&MFStringGeoSystem::set_field, this);
+	node -> geoSystem () .addInterest (&MFStringGeoSystem::connect, this);
 
 	node -> geoSystem () .clear ();
 
@@ -251,8 +251,8 @@ MFStringGeoSystem::set_field ()
 void
 MFStringGeoSystem::connect (const X3D::MFString & field)
 {
-	field .removeInterest (this, &MFStringGeoSystem::connect);
-	field .addInterest (this, &MFStringGeoSystem::set_field);
+	field .removeInterest (&MFStringGeoSystem::connect, this);
+	field .addInterest (&MFStringGeoSystem::set_field, this);
 }
 
 } // puck

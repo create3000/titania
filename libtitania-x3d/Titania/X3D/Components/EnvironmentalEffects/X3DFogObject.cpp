@@ -83,10 +83,10 @@ X3DFogObject::X3DFogObject () :
 void
 X3DFogObject::initialize ()
 {
-	color ()           .addInterest (this, &X3DFogObject::set_color);
-	fogType ()         .addInterest (this, &X3DFogObject::set_fogType);
-	visibilityRange () .addInterest (this, &X3DFogObject::set_fogType);
-	transparency ()    .addInterest (this, &X3DFogObject::set_transparency);
+	color ()           .addInterest (&X3DFogObject::set_color, this);
+	fogType ()         .addInterest (&X3DFogObject::set_fogType, this);
+	visibilityRange () .addInterest (&X3DFogObject::set_fogType, this);
+	transparency ()    .addInterest (&X3DFogObject::set_transparency, this);
 
 	set_color        ();
 	set_transparency ();

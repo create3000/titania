@@ -144,8 +144,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 X3DExecutionContext::initialize ()
 {
-	sceneGraphOutput .addInterest (this, &X3DExecutionContext::set_sceneGraph);
-	bboxOutput       .addInterest (this, &X3DExecutionContext::set_bbox);
+	sceneGraphOutput .addInterest (&X3DExecutionContext::set_sceneGraph, this);
+	bboxOutput       .addInterest (&X3DExecutionContext::set_bbox, this);
 
 	uninitializedNodes .isTainted (true); // !!! Prevent generating events when protos add nodes.
 
@@ -158,7 +158,7 @@ X3DExecutionContext::realize ()
 {
 	try
 	{
-		getBrowser () -> prepareEvents () .removeInterest (this, &X3DExecutionContext::realize);
+		getBrowser () -> prepareEvents () .removeInterest (&X3DExecutionContext::realize, this);
 
 		requestImmediateLoadOfExternProtos ();
 
@@ -183,7 +183,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 	{
-		getBrowser () -> prepareEvents () .addInterest (this, &X3DExecutionContext::realize);
+		getBrowser () -> prepareEvents () .addInterest (&X3DExecutionContext::realize, this);
 		getBrowser () -> addEvent ();
 	}
 }
@@ -488,8 +488,7 @@ throw (Error <INVALID_NODE>,
 
 	const auto exportedNode = importedNode -> getExportedNode ();
 
-	importedNode -> shutdown () .addInterest (this,
-	                                          &X3DExecutionContext::removeImportedName,
+	importedNode -> shutdown () .addInterest (&X3DExecutionContext::removeImportedName, this,
 	                                          importedNames .emplace (exportedNode -> getId (), importedName));
 
 	importedNodesOutput = getCurrentTime ();

@@ -93,7 +93,7 @@ PixelTexture::initialize ()
 {
 	X3DTexture2DNode::initialize ();
 
-	image () .addInterest (this, &PixelTexture::update);
+	image () .addInterest (&PixelTexture::update, this);
 
 	update ();
 }

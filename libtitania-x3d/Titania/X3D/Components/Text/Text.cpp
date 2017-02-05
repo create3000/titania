@@ -112,7 +112,7 @@ Text::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	fontStyle () .addInterest (this, &Text::set_fontStyle);
+	fontStyle () .addInterest (&Text::set_fontStyle, this);
 
 	set_fontStyle ();
 }

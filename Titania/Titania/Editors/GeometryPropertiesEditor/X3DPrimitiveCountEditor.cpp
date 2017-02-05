@@ -90,18 +90,18 @@ X3DPrimitiveCountEditor::on_map_primitive_count ()
 void
 X3DPrimitiveCountEditor::on_unmap_primitive_count ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (this, &X3DPrimitiveCountEditor::update);
+	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (&X3DPrimitiveCountEditor::update, this);
 
-	getCurrentBrowser () .removeInterest (this, &X3DPrimitiveCountEditor::update);
-	getCurrentBrowser () .removeInterest (this, &X3DPrimitiveCountEditor::set_browser);
-	getCurrentContext () .removeInterest (this, &X3DPrimitiveCountEditor::update);
-	getCurrentContext () .removeInterest (this, &X3DPrimitiveCountEditor::set_executionContext);
+	getCurrentBrowser () .removeInterest (&X3DPrimitiveCountEditor::update, this);
+	getCurrentBrowser () .removeInterest (&X3DPrimitiveCountEditor::set_browser, this);
+	getCurrentContext () .removeInterest (&X3DPrimitiveCountEditor::update, this);
+	getCurrentContext () .removeInterest (&X3DPrimitiveCountEditor::set_executionContext, this);
 
 	if (browser)
-		browser -> displayed () .removeInterest (this, &X3DPrimitiveCountEditor::update);
+		browser -> displayed () .removeInterest (&X3DPrimitiveCountEditor::update, this);
 
 	if (executionContext)
-		executionContext -> sceneGraph_changed () .removeInterest (this, &X3DPrimitiveCountEditor::update);
+		executionContext -> sceneGraph_changed () .removeInterest (&X3DPrimitiveCountEditor::update, this);
 
 	browser          = nullptr;
 	executionContext = nullptr;
@@ -119,16 +119,16 @@ X3DPrimitiveCountEditor::on_primitive_count_count_changed ()
 {
 	on_unmap_primitive_count ();
 
-	getCurrentBrowser () .addInterest (this, &X3DPrimitiveCountEditor::set_browser);
-	getCurrentContext () .addInterest (this, &X3DPrimitiveCountEditor::set_executionContext);
-	getCurrentContext () .addInterest (this, &X3DPrimitiveCountEditor::update);
+	getCurrentBrowser () .addInterest (&X3DPrimitiveCountEditor::set_browser, this);
+	getCurrentContext () .addInterest (&X3DPrimitiveCountEditor::set_executionContext, this);
+	getCurrentContext () .addInterest (&X3DPrimitiveCountEditor::update, this);
 
 	switch (getPrimitiveCountCountButton () .get_active_row_number ())
 	{
 		case 0:
 		{
 			// Entire scene
-			getCurrentBrowser () .addInterest (this, &X3DPrimitiveCountEditor::update);
+			getCurrentBrowser () .addInterest (&X3DPrimitiveCountEditor::update, this);
 			break;
 		}
 		case 1:
@@ -139,7 +139,7 @@ X3DPrimitiveCountEditor::on_primitive_count_count_changed ()
 		case 2:
 		{
 			// Selected objects
-			getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &X3DPrimitiveCountEditor::update);
+			getBrowserWindow () -> getSelection () -> getChildren () .addInterest (&X3DPrimitiveCountEditor::update, this);
 			break;
 		}
 	}
@@ -335,21 +335,21 @@ void
 X3DPrimitiveCountEditor::set_browser ()
 {
 	if (browser)
-		browser -> displayed () .removeInterest (this, &X3DPrimitiveCountEditor::update);
+		browser -> displayed () .removeInterest (&X3DPrimitiveCountEditor::update, this);
 
 	browser = getCurrentBrowser ();
 
-	browser -> displayed () .addInterest (this, &X3DPrimitiveCountEditor::update);
+	browser -> displayed () .addInterest (&X3DPrimitiveCountEditor::update, this);
 }
 
 void
 X3DPrimitiveCountEditor::set_executionContext ()
 {
 	if (executionContext)
-		executionContext -> sceneGraph_changed () .removeInterest (this, &X3DPrimitiveCountEditor::update);
+		executionContext -> sceneGraph_changed () .removeInterest (&X3DPrimitiveCountEditor::update, this);
 
 	executionContext = getCurrentContext ();
-	executionContext -> sceneGraph_changed () .addInterest (this, &X3DPrimitiveCountEditor::update);
+	executionContext -> sceneGraph_changed () .addInterest (&X3DPrimitiveCountEditor::update, this);
 }
 
 void

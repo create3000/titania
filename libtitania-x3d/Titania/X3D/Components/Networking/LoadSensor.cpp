@@ -104,9 +104,9 @@ LoadSensor::initialize ()
 {
 	X3DNetworkSensorNode::initialize ();
 
-	enabled ()   .addInterest (this, &LoadSensor::set_enabled);
-	timeOut ()   .addInterest (this, &LoadSensor::set_timeOut);
-	watchList () .addInterest (this, &LoadSensor::set_watchList);
+	enabled ()   .addInterest (&LoadSensor::set_enabled, this);
+	timeOut ()   .addInterest (&LoadSensor::set_timeOut, this);
+	watchList () .addInterest (&LoadSensor::set_watchList, this);
 
 	watchList () .addEvent ();
 }
@@ -238,7 +238,7 @@ LoadSensor::reset ()
 			{
 				urlObjects .emplace_back (urlObject);
 
-				urlObject -> checkLoadState () .addInterest (this, &LoadSensor::set_loadState, urlObject);
+				urlObject -> checkLoadState () .addInterest (&LoadSensor::set_loadState, this, urlObject);
 			}
 		}
 
@@ -255,7 +255,7 @@ LoadSensor::remove ()
 	{
 		const auto urlObject = x3d_cast <X3DUrlObject*> (node);
 
-		urlObject -> checkLoadState () .removeInterest (this, &LoadSensor::set_loadState);
+		urlObject -> checkLoadState () .removeInterest (&LoadSensor::set_loadState, this);
 	}
 
 	urlObjects .clear ();

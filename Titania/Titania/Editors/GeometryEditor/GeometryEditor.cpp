@@ -162,7 +162,7 @@ GeometryEditor::initialize ()
 {
 	X3DGeometryEditorInterface::initialize ();
 
-	getCurrentContext () .addInterest (this, &GeometryEditor::set_executionContext);
+	getCurrentContext () .addInterest (&GeometryEditor::set_executionContext, this);
 
 	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
 
@@ -178,7 +178,7 @@ GeometryEditor::initialize ()
 void
 GeometryEditor::on_map ()
 {
-	getCurrentBrowser () .addInterest (this, &GeometryEditor::set_browser);
+	getCurrentBrowser () .addInterest (&GeometryEditor::set_browser, this);
 
 	set_browser (getCurrentBrowser ());
 }
@@ -186,9 +186,9 @@ GeometryEditor::on_map ()
 void
 GeometryEditor::on_unmap ()
 {
-	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
-	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::connectViewer);
-	getCurrentBrowser () .removeInterest (this, &GeometryEditor::set_browser);
+	getCurrentBrowser () -> getViewer () .removeInterest (&GeometryEditor::set_viewer, this);
+	getCurrentBrowser () -> getViewer () .removeInterest (&GeometryEditor::connectViewer, this);
+	getCurrentBrowser () .removeInterest (&GeometryEditor::set_browser, this);
 
 	browser = getMasterBrowser ();
 }
@@ -282,12 +282,12 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFBool>      ("cutSnapping")             .addInterest (node -> getField <X3D::SFBool>   ("cutSnapping"));
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")                   .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
 
-						node -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (this, &GeometryEditor::set_selectedPoints);
-						node -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (this, &GeometryEditor::set_selectedEdges);
-						node -> getField <X3D::SFInt32>              ("selectedHoles_changed")  .addInterest (this, &GeometryEditor::set_selectedHoles);
-						node -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (this, &GeometryEditor::set_selectedFaces);
-						node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (this, &GeometryEditor::set_undo);
-						node -> getField <X3D::SFString>             ("clipboard_changed")      .addInterest (this, &GeometryEditor::set_clipboard);
+						node -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (&GeometryEditor::set_selectedPoints, this);
+						node -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (&GeometryEditor::set_selectedEdges, this);
+						node -> getField <X3D::SFInt32>              ("selectedHoles_changed")  .addInterest (&GeometryEditor::set_selectedHoles, this);
+						node -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (&GeometryEditor::set_selectedFaces, this);
+						node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (&GeometryEditor::set_undo, this);
+						node -> getField <X3D::SFString>             ("clipboard_changed")      .addInterest (&GeometryEditor::set_clipboard, this);
 
 						node -> setField <X3D::SFBool>   ("pickable",               coordEditor -> getField <X3D::SFBool>   ("pickable"),               true);
 						node -> setField <X3D::SFString> ("toolType",               coordEditor -> getField <X3D::SFString> ("toolType"),               true);
@@ -324,11 +324,11 @@ GeometryEditor::connect ()
 void
 GeometryEditor::set_browser (const X3D::BrowserPtr & value)
 {
-	browser -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
+	browser -> getViewer () .removeInterest (&GeometryEditor::set_viewer, this);
 
 	browser = value;
 
-	browser -> getViewer () .addInterest (this, &GeometryEditor::set_viewer);
+	browser -> getViewer () .addInterest (&GeometryEditor::set_viewer, this);
 }
 
 void
@@ -393,8 +393,8 @@ GeometryEditor::set_viewer ()
 void
 GeometryEditor::connectViewer ()
 {
-	getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::connectViewer);
-	getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::set_viewer);
+	getCurrentBrowser () -> getViewer () .removeInterest (&GeometryEditor::connectViewer, this);
+	getCurrentBrowser () -> getViewer () .addInterest (&GeometryEditor::set_viewer, this);
 }
 
 bool
@@ -856,8 +856,8 @@ GeometryEditor::on_paint_selection_toggled ()
 		{
 			if (getPaintSelectionButton () .get_active ())
 			{
-				getCurrentBrowser () -> getViewer () .removeInterest (this, &GeometryEditor::set_viewer);
-				getCurrentBrowser () -> getViewer () .addInterest (this, &GeometryEditor::connectViewer);
+				getCurrentBrowser () -> getViewer () .removeInterest (&GeometryEditor::set_viewer, this);
+				getCurrentBrowser () -> getViewer () .addInterest (&GeometryEditor::connectViewer, this);
 
 				getCurrentBrowser () -> setPrivateViewer (privateViewer);
 			}

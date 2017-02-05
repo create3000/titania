@@ -129,9 +129,9 @@ X3DGridTool::realize ()
 
 		getToolNode () -> getField <SFBool> ("isActive") .addInterest (isActive ());
 
-		color ()          .addInterest (this, &X3DGridTool::set_color);
-		lineColor ()      .addInterest (this, &X3DGridTool::set_lineColor);
-		majorLineColor () .addInterest (this, &X3DGridTool::set_majorLineColor);
+		color ()          .addInterest (&X3DGridTool::set_color, this);
+		lineColor ()      .addInterest (&X3DGridTool::set_lineColor, this);
+		majorLineColor () .addInterest (&X3DGridTool::set_majorLineColor, this);
 
 		set_color ();
 		set_lineColor ();
@@ -197,10 +197,10 @@ void
 X3DGridTool::set_selection (const SelectionPtr & value)
 {
 	if (selection)
-		selection -> getChildren () .removeInterest (this, &X3DGridTool::set_children);
+		selection -> getChildren () .removeInterest (&X3DGridTool::set_children, this);
 
 	selection = value;
-	selection -> getChildren () .addInterest (this, &X3DGridTool::set_children);
+	selection -> getChildren () .addInterest (&X3DGridTool::set_children, this);
 
 	set_children (selection -> getChildren ());
 }
@@ -214,9 +214,9 @@ X3DGridTool::set_children (const MFNode & value)
 
 		if (transform)
 		{
-			transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
-			transform -> rotation ()    .removeInterest (this, &X3DGridTool::set_rotation);
-			transform -> scale ()       .removeInterest (this, &X3DGridTool::set_scale);
+			transform -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+			transform -> rotation ()    .removeInterest (&X3DGridTool::set_rotation, this);
+			transform -> scale ()       .removeInterest (&X3DGridTool::set_scale, this);
 		}
 	}
 
@@ -228,9 +228,9 @@ X3DGridTool::set_children (const MFNode & value)
 
 		if (transform)
 		{
-			transform -> translation () .addInterest (this, &X3DGridTool::set_translation, transform);
-			transform -> rotation ()    .addInterest (this, &X3DGridTool::set_rotation,    transform);
-			transform -> scale ()       .addInterest (this, &X3DGridTool::set_scale,       transform);
+			transform -> translation () .addInterest (&X3DGridTool::set_translation, this, transform);
+			transform -> rotation ()    .addInterest (&X3DGridTool::set_rotation, this,    transform);
+			transform -> scale ()       .addInterest (&X3DGridTool::set_scale, this,       transform);
 		}
 	}
 }
@@ -286,8 +286,8 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 
 		//getBrowser () -> setDescription (master -> getDescription ());
 
-		master -> translation () .removeInterest (this, &X3DGridTool::set_translation);
-		master -> translation () .addInterest (this, &X3DGridTool::connectTranslation, master);
+		master -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+		master -> translation () .addInterest (&X3DGridTool::connectTranslation, this, master);
 	
 		// Apply translation to translation group.
 	
@@ -308,8 +308,8 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 	
 					if (transform -> translation () .isTainted ())
 					{
-						transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
-						transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
+						transform -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+						transform -> translation () .addInterest (&X3DGridTool::connectTranslation, this, transform);
 					}
 				}
 			}
@@ -410,8 +410,8 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 
 		//getBrowser () -> setDescription (master -> getDescription ());
 	
-		master -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
-		master -> rotation () .addInterest (this, &X3DGridTool::connectRotation, master);
+		master -> rotation () .removeInterest (&X3DGridTool::set_rotation, this);
+		master -> rotation () .addInterest (&X3DGridTool::connectRotation, this, master);
 	
 		// Apply translation to translation group.
 	
@@ -432,8 +432,8 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 	
 					if (transform -> translation () .isTainted ())
 					{
-						transform -> translation () .removeInterest (this, &X3DGridTool::set_translation);
-						transform -> translation () .addInterest (this, &X3DGridTool::connectTranslation, transform);
+						transform -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+						transform -> translation () .addInterest (&X3DGridTool::connectTranslation, this, transform);
 					}
 				}
 			}
@@ -473,8 +473,8 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 
 		//getBrowser () -> setDescription (master -> getDescription ());
 	
-		master -> scale () .removeInterest (this, &X3DGridTool::set_scale);
-		master -> scale () .addInterest (this, &X3DGridTool::connectScale, master);
+		master -> scale () .removeInterest (&X3DGridTool::set_scale, this);
+		master -> scale () .addInterest (&X3DGridTool::connectScale, this, master);
 	
 		// Apply translation to translation group.
 	
@@ -495,8 +495,8 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	
 					if (transform -> scale () .isTainted ())
 					{
-						transform -> scale () .removeInterest (this, &X3DGridTool::set_scale);
-						transform -> scale () .addInterest (this, &X3DGridTool::connectScale, transform);
+						transform -> scale () .removeInterest (&X3DGridTool::set_scale, this);
+						transform -> scale () .addInterest (&X3DGridTool::connectScale, this, transform);
 					}
 				}
 			}
@@ -670,22 +670,22 @@ X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const V
 void
 X3DGridTool::connectTranslation (const X3DPtr <X3DTransformNode> & transform)
 {
-	transform -> translation () .removeInterest (this, &X3DGridTool::connectTranslation);
-	transform -> translation () .addInterest (this, &X3DGridTool::set_translation, transform);
+	transform -> translation () .removeInterest (&X3DGridTool::connectTranslation, this);
+	transform -> translation () .addInterest (&X3DGridTool::set_translation, this, transform);
 }
 
 void
 X3DGridTool::connectRotation (const X3DPtr <X3DTransformNode> & transform)
 {
-	transform -> rotation () .removeInterest (this, &X3DGridTool::connectRotation);
-	transform -> rotation () .addInterest (this, &X3DGridTool::set_rotation, transform);
+	transform -> rotation () .removeInterest (&X3DGridTool::connectRotation, this);
+	transform -> rotation () .addInterest (&X3DGridTool::set_rotation, this, transform);
 }
 
 void
 X3DGridTool::connectScale (const X3DPtr <X3DTransformNode> & transform)
 {
-	transform -> scale () .removeInterest (this, &X3DGridTool::connectScale);
-	transform -> scale () .addInterest (this, &X3DGridTool::set_scale, transform);
+	transform -> scale () .removeInterest (&X3DGridTool::connectScale, this);
+	transform -> scale () .addInterest (&X3DGridTool::set_scale, this, transform);
 }
 
 X3DGridTool::~X3DGridTool ()

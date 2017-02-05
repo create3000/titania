@@ -152,7 +152,7 @@ ColorEditor::initialize ()
 {
 	X3DColorEditorInterface::initialize ();
 
-	preview -> initialized () .addInterest (this, &ColorEditor::set_initialized);
+	preview -> initialized () .addInterest (&ColorEditor::set_initialized, this);
 	preview -> set_opacity (0);
 	preview -> show ();
 
@@ -160,13 +160,13 @@ ColorEditor::initialize ()
 
 	selection -> setup ();
 
-	undoHistory .addInterest (this, &ColorEditor::set_undoHistory);
+	undoHistory .addInterest (&ColorEditor::set_undoHistory, this);
 }
 
 void
 ColorEditor::set_initialized ()
 {
-	preview -> initialized () .removeInterest (this, &ColorEditor::set_initialized);
+	preview -> initialized () .removeInterest (&ColorEditor::set_initialized, this);
 	preview -> set_opacity (1);
 
 	try
@@ -178,10 +178,10 @@ ColorEditor::set_initialized ()
 
 		appearance -> isPrivate (true);
 
-		transform -> addInterest (this, &ColorEditor::set_viewer);
-		shape -> geometry ()               .addInterest (this, &ColorEditor::set_viewer);
-		touchSensor -> hitPoint_changed () .addInterest (this, &ColorEditor::set_hitPoint);
-		touchSensor -> touchTime ()        .addInterest (this, &ColorEditor::set_touchTime);
+		transform -> addInterest (&ColorEditor::set_viewer, this);
+		shape -> geometry ()               .addInterest (&ColorEditor::set_viewer, this);
+		touchSensor -> hitPoint_changed () .addInterest (&ColorEditor::set_hitPoint, this);
+		touchSensor -> touchTime ()        .addInterest (&ColorEditor::set_touchTime, this);
 
 		configure ();
 		set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
@@ -481,10 +481,10 @@ ColorEditor::on_remove_clicked ()
 void
 ColorEditor::on_apply_clicked ()
 {
-	geometry -> colorIndex () .removeInterest (this, &ColorEditor::set_colorIndex);
-	geometry -> colorIndex () .addInterest (this, &ColorEditor::connectColorIndex);
-	geometry -> color ()      .removeInterest (this, &ColorEditor::set_colorIndex);
-	geometry -> color ()      .addInterest (this, &ColorEditor::connectColor);
+	geometry -> colorIndex () .removeInterest (&ColorEditor::set_colorIndex, this);
+	geometry -> colorIndex () .addInterest (&ColorEditor::connectColorIndex, this);
+	geometry -> color ()      .removeInterest (&ColorEditor::set_colorIndex, this);
+	geometry -> color ()      .addInterest (&ColorEditor::connectColor, this);
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Polygon Colors"));
 
@@ -524,15 +524,15 @@ ColorEditor::on_apply_clicked ()
 void
 ColorEditor::connectColorIndex ()
 {
-	geometry -> colorIndex () .removeInterest (this, &ColorEditor::connectColorIndex);
-	geometry -> colorIndex () .addInterest (this, &ColorEditor::set_colorIndex);
+	geometry -> colorIndex () .removeInterest (&ColorEditor::connectColorIndex, this);
+	geometry -> colorIndex () .addInterest (&ColorEditor::set_colorIndex, this);
 }
 
 void
 ColorEditor::connectColor ()
 {
-	geometry -> color () .removeInterest (this, &ColorEditor::connectColorIndex);
-	geometry -> color () .addInterest (this, &ColorEditor::set_colorIndex);
+	geometry -> color () .removeInterest (&ColorEditor::connectColorIndex, this);
+	geometry -> color () .addInterest (&ColorEditor::set_colorIndex, this);
 }
 
 void
@@ -552,8 +552,8 @@ ColorEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 	{
 		if (shape)
 		{
-			shape -> appearance () .removeInterest (this, &ColorEditor::set_appearance);
-			shape -> geometry ()   .removeInterest (this, &ColorEditor::set_geometry);
+			shape -> appearance () .removeInterest (&ColorEditor::set_appearance, this);
+			shape -> geometry ()   .removeInterest (&ColorEditor::set_geometry, this);
 		}
 
 		shape = value;
@@ -565,8 +565,8 @@ ColorEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 
 			transform -> setMatrix (modelViewMatrix);
 
-			shape -> appearance () .addInterest (this, &ColorEditor::set_appearance);
-			shape -> geometry ()   .addInterest (this, &ColorEditor::set_geometry);
+			shape -> appearance () .addInterest (&ColorEditor::set_appearance, this);
+			shape -> geometry ()   .addInterest (&ColorEditor::set_geometry, this);
 
 			set_appearance (shape -> appearance ());
 			set_geometry (shape -> geometry ());
@@ -586,8 +586,8 @@ ColorEditor::set_appearance (const X3D::SFNode & value)
 {
 	if (appearance)
 	{
-		appearance -> texture ()          .removeInterest (this, &ColorEditor::set_texture);
-		appearance -> textureTransform () .removeInterest (this, &ColorEditor::set_textureTransform);
+		appearance -> texture ()          .removeInterest (&ColorEditor::set_texture, this);
+		appearance -> textureTransform () .removeInterest (&ColorEditor::set_textureTransform, this);
 		setTexture (false);
 	}
 
@@ -595,8 +595,8 @@ ColorEditor::set_appearance (const X3D::SFNode & value)
 
 	if (appearance)
 	{
-		appearance -> texture ()          .addInterest (this, &ColorEditor::set_texture);
-		appearance -> textureTransform () .addInterest (this, &ColorEditor::set_textureTransform);
+		appearance -> texture ()          .addInterest (&ColorEditor::set_texture, this);
+		appearance -> textureTransform () .addInterest (&ColorEditor::set_textureTransform, this);
 
 		set_texture (appearance -> texture ());
 		set_textureTransform (appearance -> textureTransform ());
@@ -613,12 +613,12 @@ void
 ColorEditor::set_texture (const X3D::SFNode & value)
 {
 	if (texture)
-		texture -> removeInterest (*preview, &X3D::Browser::addEvent);
+		texture -> removeInterest (&X3D::Browser::addEvent, *preview);
 
 	texture = value;
 
 	if (texture)
-		texture -> addInterest (*preview, &X3D::Browser::addEvent);
+		texture -> addInterest (&X3D::Browser::addEvent, *preview);
 
 	preview -> addEvent ();
 }
@@ -627,12 +627,12 @@ void
 ColorEditor::set_textureTransform (const X3D::SFNode & value)
 {
 	if (textureTransform)
-		textureTransform -> removeInterest (*preview, &X3D::Browser::addEvent);
+		textureTransform -> removeInterest (&X3D::Browser::addEvent, *preview);
 
 	textureTransform = value;
 
 	if (textureTransform)
-		textureTransform -> addInterest (*preview, &X3D::Browser::addEvent);
+		textureTransform -> addInterest (&X3D::Browser::addEvent, *preview);
 
 	preview -> addEvent ();
 }
@@ -644,8 +644,8 @@ ColorEditor::setTexture (const bool value)
 	{
 		if (value and appearance)
 		{
-			appearance -> texture ()          .addInterest (this, &ColorEditor::set_multi_texture);
-			appearance -> textureTransform () .addInterest (this, &ColorEditor::set_multi_textureTransform);
+			appearance -> texture ()          .addInterest (&ColorEditor::set_multi_texture, this);
+			appearance -> textureTransform () .addInterest (&ColorEditor::set_multi_textureTransform, this);
 
 			set_multi_texture ();
 			set_multi_textureTransform ();
@@ -654,8 +654,8 @@ ColorEditor::setTexture (const bool value)
 		{
 			if (appearance)
 			{
-				appearance -> texture ()          .removeInterest (this, &ColorEditor::set_multi_texture);
-				appearance -> textureTransform () .removeInterest (this, &ColorEditor::set_multi_textureTransform);
+				appearance -> texture ()          .removeInterest (&ColorEditor::set_multi_texture, this);
+				appearance -> textureTransform () .removeInterest (&ColorEditor::set_multi_textureTransform, this);
 			}
 
 			const auto previewAppearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
@@ -713,10 +713,10 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 
 		if (geometry)
 		{
-			geometry -> colorIndex () .removeInterest (this, &ColorEditor::set_colorIndex);
-			geometry -> coordIndex () .removeInterest (this, &ColorEditor::set_coordIndex);
-			geometry -> color ()      .removeInterest (this, &ColorEditor::set_colorIndex);
-			geometry -> coord ()      .removeInterest (this, &ColorEditor::set_coord);
+			geometry -> colorIndex () .removeInterest (&ColorEditor::set_colorIndex, this);
+			geometry -> coordIndex () .removeInterest (&ColorEditor::set_coordIndex, this);
+			geometry -> color ()      .removeInterest (&ColorEditor::set_colorIndex, this);
+			geometry -> coord ()      .removeInterest (&ColorEditor::set_coord, this);
 		}
 
 		geometry = value;
@@ -739,10 +739,10 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 			geometry -> texCoord ()        .addInterest (previewGeometry -> texCoord ());
 			geometry -> coord ()           .addInterest (previewGeometry -> coord ());
 
-			geometry -> colorIndex () .addInterest (this, &ColorEditor::set_colorIndex);
-			geometry -> coordIndex () .addInterest (this, &ColorEditor::set_coordIndex);
-			geometry -> color ()      .addInterest (this, &ColorEditor::set_colorIndex);
-			geometry -> coord ()      .addInterest (this, &ColorEditor::set_coord);
+			geometry -> colorIndex () .addInterest (&ColorEditor::set_colorIndex, this);
+			geometry -> coordIndex () .addInterest (&ColorEditor::set_coordIndex, this);
+			geometry -> color ()      .addInterest (&ColorEditor::set_colorIndex, this);
+			geometry -> coord ()      .addInterest (&ColorEditor::set_coord, this);
 
 			previewShape -> geometry () = previewGeometry;
 			selection    -> geometry () = previewGeometry;

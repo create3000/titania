@@ -119,7 +119,7 @@ Sound::initialize ()
 {
 	X3DSoundNode::initialize ();
 
-	source () .addInterest (this, &Sound::set_source);
+	source () .addInterest (&Sound::set_source, this);
 
 	set_source ();
 }

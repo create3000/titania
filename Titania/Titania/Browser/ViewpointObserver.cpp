@@ -71,7 +71,7 @@ ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow) :
 {
 	addChildObjects (browser, viewerNode);
 
-//	getCurrentBrowser () .addInterest (this, &ViewpointObserver::set_browser);
+//	getCurrentBrowser () .addInterest (&ViewpointObserver::set_browser, this);
 
 	setup ();
 }
@@ -79,13 +79,13 @@ ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow) :
 void
 ViewpointObserver::set_browser (const X3D::BrowserPtr & value)
 {
-	browser -> getActiveViewpointEvent () .removeInterest (this, &ViewpointObserver::set_offsets);
-	browser -> getViewer ()               .removeInterest (this, &ViewpointObserver::set_viewer);
+	browser -> getActiveViewpointEvent () .removeInterest (&ViewpointObserver::set_offsets, this);
+	browser -> getViewer ()               .removeInterest (&ViewpointObserver::set_viewer, this);
 
 	browser = value;
 
-	browser -> getActiveViewpointEvent () .addInterest (this, &ViewpointObserver::set_offsets);
-	browser -> getViewer ()               .addInterest (this, &ViewpointObserver::set_viewer);
+	browser -> getActiveViewpointEvent () .addInterest (&ViewpointObserver::set_offsets, this);
+	browser -> getViewer ()               .addInterest (&ViewpointObserver::set_viewer, this);
 
 	set_viewer (value -> getViewer ());
 }
@@ -95,16 +95,16 @@ ViewpointObserver::set_viewer (const X3D::X3DPtr <X3D::X3DViewer> & value)
 {
 	if (viewerNode)
 	{
-		viewerNode -> isActive ()   .removeInterest (this, &ViewpointObserver::set_active);
-		viewerNode -> scrollTime () .removeInterest (this, &ViewpointObserver::set_scrollTime);
+		viewerNode -> isActive ()   .removeInterest (&ViewpointObserver::set_active, this);
+		viewerNode -> scrollTime () .removeInterest (&ViewpointObserver::set_scrollTime, this);
 	}
 
 	viewerNode = value;
 
 	if (viewerNode)
 	{
-		viewerNode -> isActive ()   .addInterest (this, &ViewpointObserver::set_active);
-		viewerNode -> scrollTime () .addInterest (this, &ViewpointObserver::set_scrollTime);
+		viewerNode -> isActive ()   .addInterest (&ViewpointObserver::set_active, this);
+		viewerNode -> scrollTime () .addInterest (&ViewpointObserver::set_scrollTime, this);
 	}
 
 	set_offsets ();

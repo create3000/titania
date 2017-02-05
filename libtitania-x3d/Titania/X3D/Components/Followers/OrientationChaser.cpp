@@ -98,8 +98,8 @@ OrientationChaser::initialize ()
 {
 	X3DChaserNode::initialize ();
 
-	set_value ()       .addInterest (this, &OrientationChaser::set_value_);
-	set_destination () .addInterest (this, &OrientationChaser::set_destination_);
+	set_value ()       .addInterest (&OrientationChaser::set_value_, this);
+	set_destination () .addInterest (&OrientationChaser::set_destination_, this);
 
 	bufferEndTime = getCurrentTime ();
 	previousValue = initialValue ();

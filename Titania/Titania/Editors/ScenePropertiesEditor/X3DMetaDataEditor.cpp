@@ -74,7 +74,7 @@ X3DMetaDataEditor::X3DMetaDataEditor () :
 void
 X3DMetaDataEditor::configure ()
 {
-	getCurrentScene () .addInterest (this, &X3DMetaDataEditor::set_current_scene);
+	getCurrentScene () .addInterest (&X3DMetaDataEditor::set_current_scene, this);
 
 	getAddStandardMetaDataButton () .set_state (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"));
 }
@@ -89,11 +89,11 @@ void
 X3DMetaDataEditor::set_current_scene ()
 {
 	if (scene)
-		scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
+		scene -> metaData_changed () .removeInterest (&X3DMetaDataEditor::set_meta_data, this);
 
 	scene = getCurrentScene ();
 
-	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::set_meta_data);
+	scene -> metaData_changed () .addInterest (&X3DMetaDataEditor::set_meta_data, this);
 
 	set_meta_data ();
 }
@@ -184,8 +184,8 @@ X3DMetaDataEditor::on_add_meta_data_ok_clicked ()
 
 	scene -> setMetaData (name, content);
 
-	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
-	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
+	scene -> metaData_changed () .removeInterest (&X3DMetaDataEditor::set_meta_data, this);
+	scene -> metaData_changed () .addInterest (&X3DMetaDataEditor::connectMetaData, this);
 }
 
 void
@@ -216,8 +216,8 @@ X3DMetaDataEditor::on_remove_meta_data_clicked ()
 
 	scene -> removeMetaData (name);
 
-	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
-	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
+	scene -> metaData_changed () .removeInterest (&X3DMetaDataEditor::set_meta_data, this);
+	scene -> metaData_changed () .addInterest (&X3DMetaDataEditor::connectMetaData, this);
 }
 
 void
@@ -247,8 +247,8 @@ X3DMetaDataEditor::on_meta_data_name_edited (const Glib::ustring & path, const G
 	scene -> removeMetaData (name);
 	scene -> setMetaData (new_text, content);
 
-	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
-	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
+	scene -> metaData_changed () .removeInterest (&X3DMetaDataEditor::set_meta_data, this);
+	scene -> metaData_changed () .addInterest (&X3DMetaDataEditor::connectMetaData, this);
 }
 
 void
@@ -272,15 +272,15 @@ X3DMetaDataEditor::on_meta_data_content_edited (const Glib::ustring & path, cons
 
 	scene -> setMetaData (name, new_text);
 
-	scene -> metaData_changed () .removeInterest (this, &X3DMetaDataEditor::set_meta_data);
-	scene -> metaData_changed () .addInterest (this, &X3DMetaDataEditor::connectMetaData);
+	scene -> metaData_changed () .removeInterest (&X3DMetaDataEditor::set_meta_data, this);
+	scene -> metaData_changed () .addInterest (&X3DMetaDataEditor::connectMetaData, this);
 }
 
 void
 X3DMetaDataEditor::connectMetaData (const X3D::SFTime & field)
 {
-	field .removeInterest (this, &X3DMetaDataEditor::connectMetaData);
-	field .addInterest (this, &X3DMetaDataEditor::set_meta_data);
+	field .removeInterest (&X3DMetaDataEditor::connectMetaData, this);
+	field .addInterest (&X3DMetaDataEditor::set_meta_data, this);
 }
 
 void
@@ -292,7 +292,7 @@ X3DMetaDataEditor::on_add_standard_meta_data_activated ()
 void
 X3DMetaDataEditor::store ()
 {
-	getCurrentScene () .removeInterest (this, &X3DMetaDataEditor::set_current_scene);
+	getCurrentScene () .removeInterest (&X3DMetaDataEditor::set_current_scene, this);
 
 	if (getMetaDataTreeView () .has_focus ())
 		getCurrentBrowser () -> grab_focus ();

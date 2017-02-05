@@ -76,7 +76,7 @@ public:
 		projectionMatrix (projectionMatrix),
 		        viewport (viewport)
 	{
-		node -> disposed () .addInterest (this, &PointingDeviceSensorContainer::set_disposed);
+		node -> disposed () .addInterest (&PointingDeviceSensorContainer::set_disposed, this);
 	}
 
 	///  @name Event handlers

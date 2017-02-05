@@ -424,27 +424,27 @@ ParticleSystem::initialize ()
 
 	// Setup
 	
-	getExecutionContext () -> isLive () .addInterest (this, &ParticleSystem::set_live);
-	isLive () .addInterest (this, &ParticleSystem::set_live);
+	getExecutionContext () -> isLive () .addInterest (&ParticleSystem::set_live, this);
+	isLive () .addInterest (&ParticleSystem::set_live, this);
 
-	getBrowser () -> getDefaultShader () .addInterest (this, &ParticleSystem::set_shader);
-	getBrowser () -> getFixedPipeline () .addInterest (this, &ParticleSystem::set_shader);
+	getBrowser () -> getDefaultShader () .addInterest (&ParticleSystem::set_shader, this);
+	getBrowser () -> getFixedPipeline () .addInterest (&ParticleSystem::set_shader, this);
 
-	enabled ()           .addInterest (this, &ParticleSystem::set_enabled);
-	geometryType ()      .addInterest (this, &ParticleSystem::set_geometryType);
-	createParticles ()   .addInterest (this, &ParticleSystem::set_createParticles);
-	maxParticles ()      .addInterest (this, &ParticleSystem::set_enabled);
-	lifetimeVariation () .addInterest (this, &ParticleSystem::set_particle_buffers);
-	particleSize ()      .addInterest (this, &ParticleSystem::set_geometryType);
-	colorKey ()          .addInterest (this, &ParticleSystem::set_colorKey);
-	texCoordKey ()       .addInterest (this, &ParticleSystem::set_texCoordKey);
-	emitter ()           .addInterest (this, &ParticleSystem::set_emitter);
-	colorRamp ()         .addInterest (this, &ParticleSystem::set_colorRamp);
-	texCoordRamp ()      .addInterest (this, &ParticleSystem::set_texCoordRamp);
-	physics ()           .addInterest (this, &ParticleSystem::set_physics);
-	geometry ()          .addInterest (this, &ParticleSystem::set_geometry);
+	enabled ()           .addInterest (&ParticleSystem::set_enabled, this);
+	geometryType ()      .addInterest (&ParticleSystem::set_geometryType, this);
+	createParticles ()   .addInterest (&ParticleSystem::set_createParticles, this);
+	maxParticles ()      .addInterest (&ParticleSystem::set_enabled, this);
+	lifetimeVariation () .addInterest (&ParticleSystem::set_particle_buffers, this);
+	particleSize ()      .addInterest (&ParticleSystem::set_geometryType, this);
+	colorKey ()          .addInterest (&ParticleSystem::set_colorKey, this);
+	texCoordKey ()       .addInterest (&ParticleSystem::set_texCoordKey, this);
+	emitter ()           .addInterest (&ParticleSystem::set_emitter, this);
+	colorRamp ()         .addInterest (&ParticleSystem::set_colorRamp, this);
+	texCoordRamp ()      .addInterest (&ParticleSystem::set_texCoordRamp, this);
+	physics ()           .addInterest (&ParticleSystem::set_physics, this);
+	geometry ()          .addInterest (&ParticleSystem::set_geometry, this);
 
-	boundedPhysicsModelNodes .addInterest (this, &ParticleSystem::set_boundedPhysicsModel);
+	boundedPhysicsModelNodes .addInterest (&ParticleSystem::set_boundedPhysicsModel, this);
 
 	set_emitter ();
 	set_geometry_shader ();
@@ -463,22 +463,22 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> getBrowserOptions () -> Shading () .removeInterest (this, &ParticleSystem::set_shader);
-		getBrowser () -> getFixedPipeline ()                .removeInterest (this, &ParticleSystem::set_shader);
+		getBrowser () -> getBrowserOptions () -> Shading () .removeInterest (&ParticleSystem::set_shader, this);
+		getBrowser () -> getFixedPipeline ()                .removeInterest (&ParticleSystem::set_shader, this);
 
-		getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::animateParticles);
-		getBrowser () -> sensors ()         .removeInterest (this, &ParticleSystem::updateParticles);
-		getExecutionContext () -> isLive () .removeInterest (this, &ParticleSystem::set_live);
+		getBrowser () -> sensors ()         .removeInterest (&ParticleSystem::animateParticles, this);
+		getBrowser () -> sensors ()         .removeInterest (&ParticleSystem::updateParticles, this);
+		getExecutionContext () -> isLive () .removeInterest (&ParticleSystem::set_live, this);
 	}
 
 	X3DShapeNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
 	{
-		getBrowser () -> getBrowserOptions () -> Shading () .addInterest (this, &ParticleSystem::set_shader);
-		getBrowser () -> getFixedPipeline ()                .addInterest (this, &ParticleSystem::set_shader);
+		getBrowser () -> getBrowserOptions () -> Shading () .addInterest (&ParticleSystem::set_shader, this);
+		getBrowser () -> getFixedPipeline ()                .addInterest (&ParticleSystem::set_shader, this);
 
-		getExecutionContext () -> isLive () .addInterest (this, &ParticleSystem::set_live);
+		getExecutionContext () -> isLive () .addInterest (&ParticleSystem::set_live, this);
 
 		set_live ();
 		set_emitter ();
@@ -535,8 +535,8 @@ ParticleSystem::set_live ()
 	{
 		if (isActive () and maxParticles ())
 		{
-			getBrowser () -> sensors () .addInterest (this, &ParticleSystem::animateParticles);
-			getBrowser () -> sensors () .addInterest (this, &ParticleSystem::updateParticles);
+			getBrowser () -> sensors () .addInterest (&ParticleSystem::animateParticles, this);
+			getBrowser () -> sensors () .addInterest (&ParticleSystem::updateParticles, this);
 
 			if (pauseTime)
 			{
@@ -549,8 +549,8 @@ ParticleSystem::set_live ()
 	{
 		if (isActive () and maxParticles ())
 		{
-			getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::animateParticles);
-			getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::updateParticles);
+			getBrowser () -> sensors () .removeInterest (&ParticleSystem::animateParticles, this);
+			getBrowser () -> sensors () .removeInterest (&ParticleSystem::updateParticles, this);
 
 			if (pauseTime == 0)
 				pauseTime = chrono::now ();
@@ -567,8 +567,8 @@ ParticleSystem::set_enabled ()
 		{
 			if (isLive () and getExecutionContext () -> isLive ())
 			{
-				getBrowser () -> sensors () .addInterest (this, &ParticleSystem::animateParticles);
-				getBrowser () -> sensors () .addInterest (this, &ParticleSystem::updateParticles);
+				getBrowser () -> sensors () .addInterest (&ParticleSystem::animateParticles, this);
+				getBrowser () -> sensors () .addInterest (&ParticleSystem::updateParticles, this);
 				pauseTime = 0;
 			}
 			else
@@ -583,8 +583,8 @@ ParticleSystem::set_enabled ()
 		{
 			if (isLive () and getExecutionContext () -> isLive ())
 			{
-				getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::animateParticles);
-				getBrowser () -> sensors () .removeInterest (this, &ParticleSystem::updateParticles);
+				getBrowser () -> sensors () .removeInterest (&ParticleSystem::animateParticles, this);
+				getBrowser () -> sensors () .removeInterest (&ParticleSystem::updateParticles, this);
 			}
 
 			isActive () = false;
@@ -800,12 +800,12 @@ void
 ParticleSystem::set_colorRamp ()
 {
 	if (colorRampNode)
-		colorRampNode -> removeInterest (this, &ParticleSystem::set_color);
+		colorRampNode -> removeInterest (&ParticleSystem::set_color, this);
 
 	colorRampNode .set (x3d_cast <X3DColorNode*> (colorRamp ()));
 
 	if (colorRampNode)
-		colorRampNode -> addInterest (this, &ParticleSystem::set_color);
+		colorRampNode -> addInterest (&ParticleSystem::set_color, this);
 
 	set_color ();
 }
@@ -879,12 +879,12 @@ void
 ParticleSystem::set_texCoordRamp ()
 {
 	if (texCoordRampNode)
-		texCoordRampNode -> removeInterest (this, &ParticleSystem::set_texCoord);
+		texCoordRampNode -> removeInterest (&ParticleSystem::set_texCoord, this);
 
 	texCoordRampNode .set (x3d_cast <X3DTextureCoordinateNode*> (texCoordRamp ()));
 
 	if (texCoordRampNode)
-		texCoordRampNode -> addInterest (this, &ParticleSystem::set_texCoord);
+		texCoordRampNode -> addInterest (&ParticleSystem::set_texCoord, this);
 
 	set_texCoord ();
 }
@@ -1198,7 +1198,7 @@ ParticleSystem::set_transform_shader ()
 	                                                    "To.distance"
 																	 });
 
-	transformShader -> isValid () .addInterest (this, &ParticleSystem::set_transform_shader_texture_buffers);
+	transformShader -> isValid () .addInterest (&ParticleSystem::set_transform_shader_texture_buffers, this);
 	transformShader -> setup ();
 }
 
@@ -1255,7 +1255,7 @@ ParticleSystem::set_geometry_shader ()
 	                                                   "To.position", "To.color", "To.texCoord"
 																	});
 
-	geometryShader -> isValid () .addInterest (this, &ParticleSystem::set_geometry_shader_texture_buffers);
+	geometryShader -> isValid () .addInterest (&ParticleSystem::set_geometry_shader_texture_buffers, this);
 	geometryShader -> setup ();
 }
 

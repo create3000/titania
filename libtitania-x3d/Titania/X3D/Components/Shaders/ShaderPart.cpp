@@ -95,8 +95,8 @@ ShaderPart::initialize ()
 	X3DNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	type () .addInterest (this, &ShaderPart::set_url);
-	url ()  .addInterest (this, &ShaderPart::set_url);
+	type () .addInterest (&ShaderPart::set_url, this);
+	url ()  .addInterest (&ShaderPart::set_url, this);
 
 	if (glXGetCurrentContext ())
 		requestImmediateLoad ();

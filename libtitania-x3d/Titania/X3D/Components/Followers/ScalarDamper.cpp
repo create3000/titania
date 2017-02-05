@@ -99,9 +99,9 @@ ScalarDamper::initialize ()
 {
 	X3DDamperNode::initialize ();
 
-	set_value ()       .addInterest (this, &ScalarDamper::set_value_);
-	set_destination () .addInterest (this, &ScalarDamper::set_destination_);
-	order ()           .addInterest (this, &ScalarDamper::set_order);
+	set_value ()       .addInterest (&ScalarDamper::set_value_, this);
+	set_destination () .addInterest (&ScalarDamper::set_destination_, this);
+	order ()           .addInterest (&ScalarDamper::set_order, this);
 
 	buffer .resize (getOrder () + 1, initialValue ());
 

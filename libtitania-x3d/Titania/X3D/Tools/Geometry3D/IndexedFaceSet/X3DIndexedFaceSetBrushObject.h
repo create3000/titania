@@ -92,6 +92,12 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
+	virtual
+	int32_t
+	getToolNumber () const = 0;
+
 
 private:
 

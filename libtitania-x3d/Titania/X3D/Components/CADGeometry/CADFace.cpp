@@ -95,7 +95,7 @@ CADFace::initialize ()
 	X3DProductStructureChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
-	shape () .addInterest (this, &CADFace::set_shape);
+	shape () .addInterest (&CADFace::set_shape, this);
 
 	set_shape ();
 }
@@ -106,7 +106,7 @@ CADFace::set_shape ()
 	try
 	{
 		if (shapeNode)
-			shapeNode -> isCameraObject () .removeInterest (static_cast <X3DChildNode*> (this), &CADFace::setCameraObject);
+			shapeNode -> isCameraObject () .removeInterest (&CADFace::setCameraObject, static_cast <X3DChildNode*> (this));
 
 		shapeNode = nullptr;
 
@@ -122,7 +122,7 @@ CADFace::set_shape ()
 				{
 					shapeNode = dynamic_cast <X3DChildNode*> (innerNode);
 
-					shapeNode -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &CADFace::setCameraObject);
+					shapeNode -> isCameraObject () .addInterest (&CADFace::setCameraObject, static_cast <X3DChildNode*> (this));
 					break;
 				}
 				default:

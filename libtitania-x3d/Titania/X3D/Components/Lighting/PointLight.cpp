@@ -114,7 +114,7 @@ PointLight::initialize ()
 {
 	X3DLightNode::initialize ();
 
-	addInterest (this, &PointLight::eventsProcessed);
+	addInterest (&PointLight::eventsProcessed, this);
 
 	eventsProcessed ();
 }

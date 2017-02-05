@@ -254,7 +254,7 @@ X3DPaletteEditor <Type>::initialize ()
 {
 	// Show browser.
 
-	preview -> initialized () .addInterest (this, &X3DPaletteEditor::set_browser);
+	preview -> initialized () .addInterest (&X3DPaletteEditor::set_browser, this);
 	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
 	preview -> set_opacity (0);
@@ -271,7 +271,7 @@ X3DPaletteEditor <Type>::set_browser ()
 	{
 		// Disconnect.
 
-		preview -> initialized () .removeInterest (this, &X3DPaletteEditor::set_browser);
+		preview -> initialized () .removeInterest (&X3DPaletteEditor::set_browser, this);
 		preview -> set_opacity (1);
 	
 		// Get exported nodes.
@@ -396,8 +396,8 @@ X3DPaletteEditor <Type>::addObject (const std::string & uri, const X3D::X3DPtr <
 
 	const auto touchSensor = preview -> getExecutionContext () -> createNode <X3D::TouchSensor> ();
 
-	touchSensor -> isOver ()    .addInterest (this, &X3DPaletteEditor::set_over, std::cref (touchSensor -> isOver ()), i);
-	touchSensor -> touchTime () .addInterest (this, &X3DPaletteEditor::set_touchTime, i);
+	touchSensor -> isOver ()    .addInterest (&X3DPaletteEditor::set_over, this, std::cref (touchSensor -> isOver ()), i);
+	touchSensor -> touchTime () .addInterest (&X3DPaletteEditor::set_touchTime, this, i);
 
 	transform -> translation () = getPosition (i);
 
@@ -683,11 +683,11 @@ X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 	
 			transform -> getField <X3D::SFVec3f> ("translation") = getPosition (i);
 
-			touchSensor -> getField <X3D::SFBool> ("isOver")    .removeInterest (this, &X3DPaletteEditor::set_over);
-			touchSensor -> getField <X3D::SFTime> ("touchTime") .removeInterest (this, &X3DPaletteEditor::set_touchTime);
+			touchSensor -> getField <X3D::SFBool> ("isOver")    .removeInterest (&X3DPaletteEditor::set_over, this);
+			touchSensor -> getField <X3D::SFTime> ("touchTime") .removeInterest (&X3DPaletteEditor::set_touchTime, this);
 
-			touchSensor -> getField <X3D::SFBool> ("isOver")    .addInterest (this, &X3DPaletteEditor::set_over, std::cref (touchSensor -> getField <X3D::SFBool> ("isOver")), i);
-			touchSensor -> getField <X3D::SFTime> ("touchTime") .addInterest (this, &X3DPaletteEditor::set_touchTime, i);
+			touchSensor -> getField <X3D::SFBool> ("isOver")    .addInterest (&X3DPaletteEditor::set_over, this, std::cref (touchSensor -> getField <X3D::SFBool> ("isOver")), i);
+			touchSensor -> getField <X3D::SFTime> ("touchTime") .addInterest (&X3DPaletteEditor::set_touchTime, this, i);
 		}
 
 		// Handle selection

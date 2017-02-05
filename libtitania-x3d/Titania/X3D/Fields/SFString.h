@@ -113,13 +113,13 @@ public:
 
 	template <class Class>
 	void
-	addInterest (Class* const object, void (Class::* memberFunction) (const SFString &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	addInterest (void (Class::* memberFunction) (const SFString &), Class* const object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	template <class Class>
 	void
-	addInterest (Class & object, void (Class::* memberFunction) (const SFString &)) const
-	{ addInterest (object, memberFunction, std::cref (*this)); }
+	addInterest (void (Class::* memberFunction) (const SFString &), Class & object) const
+	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  @name Assignment operators
 

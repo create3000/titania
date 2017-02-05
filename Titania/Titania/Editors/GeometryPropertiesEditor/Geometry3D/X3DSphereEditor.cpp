@@ -68,7 +68,7 @@ void
 X3DSphereEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DSphereEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DSphereEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -77,7 +77,7 @@ void
 X3DSphereEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DSphereEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DSphereEditor::set_geometry, this);
 }
 
 void

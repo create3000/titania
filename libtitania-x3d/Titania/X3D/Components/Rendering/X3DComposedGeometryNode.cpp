@@ -100,11 +100,11 @@ X3DComposedGeometryNode::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	attrib ()   .addInterest (this, &X3DComposedGeometryNode::set_attrib);
-	color ()    .addInterest (this, &X3DComposedGeometryNode::set_color);
-	texCoord () .addInterest (this, &X3DComposedGeometryNode::set_texCoord);
-	normal ()   .addInterest (this, &X3DComposedGeometryNode::set_normal);
-	coord ()    .addInterest (this, &X3DComposedGeometryNode::set_coord);
+	attrib ()   .addInterest (&X3DComposedGeometryNode::set_attrib, this);
+	color ()    .addInterest (&X3DComposedGeometryNode::set_color, this);
+	texCoord () .addInterest (&X3DComposedGeometryNode::set_texCoord, this);
+	normal ()   .addInterest (&X3DComposedGeometryNode::set_normal, this);
+	coord ()    .addInterest (&X3DComposedGeometryNode::set_coord, this);
 
 	set_attrib ();
 	set_color ();
@@ -141,7 +141,7 @@ X3DComposedGeometryNode::set_color ()
 	if (colorNode)
 	{
 		colorNode -> removeInterest (this);
-		colorNode -> removeInterest (this, &X3DComposedGeometryNode::set_transparency);
+		colorNode -> removeInterest (&X3DComposedGeometryNode::set_transparency, this);
 	}
 
 	colorNode = x3d_cast <X3DColorNode*> (color ());
@@ -149,7 +149,7 @@ X3DComposedGeometryNode::set_color ()
 	if (colorNode)
 	{
 		colorNode -> addInterest (this);
-		colorNode -> addInterest (this, &X3DComposedGeometryNode::set_transparency);
+		colorNode -> addInterest (&X3DComposedGeometryNode::set_transparency, this);
 		
 		set_transparency ();
 	}

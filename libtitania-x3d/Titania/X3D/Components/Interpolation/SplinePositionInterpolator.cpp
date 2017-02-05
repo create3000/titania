@@ -98,8 +98,8 @@ SplinePositionInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue ()    .addInterest (this, &SplinePositionInterpolator::set_keyValue);
-	keyVelocity () .addInterest (this, &SplinePositionInterpolator::set_keyVelocity);
+	keyValue ()    .addInterest (&SplinePositionInterpolator::set_keyValue, this);
+	keyVelocity () .addInterest (&SplinePositionInterpolator::set_keyVelocity, this);
 }
 
 void

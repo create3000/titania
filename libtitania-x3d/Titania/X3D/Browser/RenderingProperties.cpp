@@ -150,18 +150,18 @@ RenderingProperties::initialize ()
 		MaxLights ()      = getBrowser () -> getMaxLights ();
 		ColorDepth ()     = glRedBits + glGreen + glBlueBits + glAlphaBits;
 
-		Enabled () .addInterest (this, &RenderingProperties::set_Enabled);
-		Shading () .addInterest (this, &RenderingProperties::set_Shading);
+		Enabled () .addInterest (&RenderingProperties::set_Enabled, this);
+		Shading () .addInterest (&RenderingProperties::set_Shading, this);
 
-		getBrowser () -> initialized () .addInterest (this, &RenderingProperties::set_Enabled);
-		getBrowser () -> getViewport () .addInterest (this, &RenderingProperties::build);
+		getBrowser () -> initialized () .addInterest (&RenderingProperties::set_Enabled, this);
+		getBrowser () -> getViewport () .addInterest (&RenderingProperties::build, this);
 	}
 }
 
 void
 RenderingProperties::set_Enabled ()
 {
-	getBrowser () -> initialized () .removeInterest (this, &RenderingProperties::set_Enabled);
+	getBrowser () -> initialized () .removeInterest (&RenderingProperties::set_Enabled, this);
 
 	if (Enabled ())
 	{
@@ -186,17 +186,17 @@ RenderingProperties::set_Enabled ()
 			world -> setup ();
 		}
 
-		getBrowser () -> initialized ()   .addInterest (this, &RenderingProperties::reset);
-		getBrowser () -> prepareEvents () .addInterest (this, &RenderingProperties::prepare);
-		getBrowser () -> displayed ()     .addInterest (this, &RenderingProperties::display);
+		getBrowser () -> initialized ()   .addInterest (&RenderingProperties::reset, this);
+		getBrowser () -> prepareEvents () .addInterest (&RenderingProperties::prepare, this);
+		getBrowser () -> displayed ()     .addInterest (&RenderingProperties::display, this);
 
 		reset ();
 	}
 	else
 	{
-		getBrowser () -> initialized ()   .removeInterest (this, &RenderingProperties::reset);
-		getBrowser () -> prepareEvents () .removeInterest (this, &RenderingProperties::prepare);
-		getBrowser () -> displayed ()     .removeInterest (this, &RenderingProperties::display);
+		getBrowser () -> initialized ()   .removeInterest (&RenderingProperties::reset, this);
+		getBrowser () -> prepareEvents () .removeInterest (&RenderingProperties::prepare, this);
+		getBrowser () -> displayed ()     .removeInterest (&RenderingProperties::display, this);
 	}
 }
 

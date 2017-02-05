@@ -76,7 +76,7 @@ void
 X3DBoxEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DBoxEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DBoxEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -85,7 +85,7 @@ void
 X3DBoxEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DBoxEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DBoxEditor::set_geometry, this);
 }
 
 void

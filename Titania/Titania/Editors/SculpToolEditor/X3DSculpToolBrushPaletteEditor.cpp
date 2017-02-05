@@ -83,7 +83,7 @@ X3DSculpToolBrushPaletteEditor::addObject (const std::string & URL)
 		const auto material   = getPreview () -> getExecutionContext () -> createNode <X3D::Material> ();
 		const auto box        = getPreview () -> getExecutionContext () -> createNode <X3D::Box> ();
 
-		inlineNode -> checkLoadState () .addInterest (this, &X3DSculpToolBrushPaletteEditor::set_loadState, inlineNode .getValue (), group .getValue ());
+		inlineNode -> checkLoadState () .addInterest (&X3DSculpToolBrushPaletteEditor::set_loadState, this, inlineNode .getValue (), group .getValue ());
 
 		inlineNode -> url () = { URL };
 		group -> children () = { inlineNode };
@@ -110,14 +110,14 @@ X3DSculpToolBrushPaletteEditor::set_loadState (X3D::Inline* const inlineNode,
 		{	
 			// Observe bbox changes of internal scene.
 
-			inlineNode -> getInternalScene () -> bbox_changed () .addInterest (this, &X3DSculpToolBrushPaletteEditor::set_bbox, inlineNode, transform);
+			inlineNode -> getInternalScene () -> bbox_changed () .addInterest (&X3DSculpToolBrushPaletteEditor::set_bbox, this, inlineNode, transform);
 
 			set_bbox (inlineNode, transform);
 
 			// Proceed with next case:
 		}
 		case X3D::FAILED_STATE:
-			inlineNode -> checkLoadState () .removeInterest (this, &X3DSculpToolBrushPaletteEditor::set_loadState);
+			inlineNode -> checkLoadState () .removeInterest (&X3DSculpToolBrushPaletteEditor::set_loadState, this);
 			break;
 		default:
 			break;

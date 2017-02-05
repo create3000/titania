@@ -251,7 +251,7 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::on_map ()
 {
-	getCurrentBrowser () .addInterest (this, &X3DBindableNodeList::set_browser);
+	getCurrentBrowser () .addInterest (&X3DBindableNodeList::set_browser, this);
 
 	set_browser (getCurrentBrowser ());
 }
@@ -260,7 +260,7 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::on_unmap ()
 {
-	getCurrentBrowser () .removeInterest (this, &X3DBindableNodeList::set_browser);
+	getCurrentBrowser () .removeInterest (&X3DBindableNodeList::set_browser, this);
 
 	set_browser (nullptr);
 }
@@ -295,13 +295,13 @@ void
 X3DBindableNodeList <Type>::set_browser (const X3D::BrowserPtr & value)
 {
 	if (browser)
-		browser -> getActiveLayer () .removeInterest (this, &X3DBindableNodeList::set_activeLayer);
+		browser -> getActiveLayer () .removeInterest (&X3DBindableNodeList::set_activeLayer, this);
 
 	browser = value;
 
 	if (browser)
 	{
-		browser -> getActiveLayer () .addInterest (this, &X3DBindableNodeList::set_activeLayer);
+		browser -> getActiveLayer () .addInterest (&X3DBindableNodeList::set_activeLayer, this);
 
 		set_activeLayer (browser -> getActiveLayer ());
 	}
@@ -315,16 +315,16 @@ X3DBindableNodeList <Type>::set_activeLayer (const X3D::X3DPtr <X3D::X3DLayerNod
 {
 	if (activeLayer)
 	{
-		getList  (activeLayer) -> removeInterest (this, &X3DBindableNodeList::set_list);
-		getStack (activeLayer) -> removeInterest (this, &X3DBindableNodeList::set_stack);
+		getList  (activeLayer) -> removeInterest (&X3DBindableNodeList::set_list, this);
+		getStack (activeLayer) -> removeInterest (&X3DBindableNodeList::set_stack, this);
 	}
 
 	activeLayer = value;
 
 	if (activeLayer)
 	{
-		getList  (activeLayer) -> addInterest (this, &X3DBindableNodeList::set_list);
-		getStack (activeLayer) -> addInterest (this, &X3DBindableNodeList::set_stack);
+		getList  (activeLayer) -> addInterest (&X3DBindableNodeList::set_list, this);
+		getStack (activeLayer) -> addInterest (&X3DBindableNodeList::set_stack, this);
 
 		set_list ();
 
@@ -344,7 +344,7 @@ X3DBindableNodeList <Type>::set_list ()
 	if (editor)
 	{
 		for (const auto & node : nodes)
-		   node -> name_changed () .removeInterest (this, &X3DBindableNodeList::set_stack);
+		   node -> name_changed () .removeInterest (&X3DBindableNodeList::set_stack, this);
 	 
 		nodes .clear ();
 	}
@@ -376,7 +376,7 @@ X3DBindableNodeList <Type>::set_list ()
 
 				if (editor)
 				{
-					node -> name_changed () .addInterest (this, &X3DBindableNodeList::set_stack);
+					node -> name_changed () .addInterest (&X3DBindableNodeList::set_stack, this);
 					nodes .emplace_back (std::move (node));
 				}
 			}

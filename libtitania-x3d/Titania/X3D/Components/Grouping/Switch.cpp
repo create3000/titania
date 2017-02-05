@@ -98,7 +98,7 @@ Switch::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	whichChoice () .addInterest (this, &Switch::setWhichChoice, -1);
+	whichChoice () .addInterest (&Switch::setWhichChoice, this, -1);
 }
 
 Box3d

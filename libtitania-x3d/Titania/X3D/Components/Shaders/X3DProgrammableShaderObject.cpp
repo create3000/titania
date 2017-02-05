@@ -277,7 +277,7 @@ X3DProgrammableShaderObject::addShaderFields ()
 {
 	for (const auto & field : getUserDefinedFields ())
 	{
-		field -> addInterest (this, &X3DProgrammableShaderObject::set_field, field);
+		field -> addInterest (&X3DProgrammableShaderObject::set_field, this, field);
 
 		set_field (field);
 	}
@@ -293,7 +293,7 @@ throw (Error <INVALID_NAME>,
 
 	if (isInitialized ())
 	{
-		field -> addInterest (this, &X3DProgrammableShaderObject::set_field, field);
+		field -> addInterest (&X3DProgrammableShaderObject::set_field, this, field);
 
 		set_field (field);
 	}
@@ -305,7 +305,7 @@ throw (Error <DISPOSED>)
 {
 	try
 	{
-		getField (name) -> removeInterest (this, &X3DProgrammableShaderObject::set_field);
+		getField (name) -> removeInterest (&X3DProgrammableShaderObject::set_field, this);
 	}
 	catch (const X3DError &)
 	{ }

@@ -85,7 +85,7 @@ ViewpointEditor::initialize ()
 	X3DOrthoViewpointEditor::initialize ();
 	X3DGeoViewpointEditor::initialize ();
 
-	viewpointList -> getSelection () .addInterest (this, &ViewpointEditor::set_viewpoint);
+	viewpointList -> getSelection () .addInterest (&ViewpointEditor::set_viewpoint, this);
 
 	viewpointList -> isEditor (true);
 	viewpointList -> getHeaderNotebook () .set_current_page (1);
@@ -98,12 +98,12 @@ void
 ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & value)
 {
 	if (viewpointNode)
-		viewpointNode -> isLockedToCamera () .removeInterest (this, &ViewpointEditor::set_lock_to_camera);
+		viewpointNode -> isLockedToCamera () .removeInterest (&ViewpointEditor::set_lock_to_camera, this);
 
 	viewpointNode = value;
 
 	if (viewpointNode)
-		viewpointNode -> isLockedToCamera () .addInterest (this, &ViewpointEditor::set_lock_to_camera);
+		viewpointNode -> isLockedToCamera () .addInterest (&ViewpointEditor::set_lock_to_camera, this);
 
 	const bool inScene = (viewpointNode and viewpointNode -> getExecutionContext () == getCurrentContext () and not inPrototypeInstance ());
 

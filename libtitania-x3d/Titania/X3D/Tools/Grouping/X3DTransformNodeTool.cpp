@@ -86,7 +86,7 @@ X3DTransformNodeTool::initialize ()
 void
 X3DTransformNodeTool::realize ()
 {
-	getNode <X3DTransformNode> () -> addInterest (this, &X3DTransformNodeTool::eventsProcessed);
+	getNode <X3DTransformNode> () -> addInterest (&X3DTransformNodeTool::eventsProcessed, this);
 
 	try
 	{

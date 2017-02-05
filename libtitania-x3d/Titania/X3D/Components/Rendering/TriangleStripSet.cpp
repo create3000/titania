@@ -100,7 +100,7 @@ TriangleStripSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
 
-	stripCount () .addInterest (this, &TriangleStripSet::set_stripCount);
+	stripCount () .addInterest (&TriangleStripSet::set_stripCount, this);
 
 	set_stripCount ();
 }

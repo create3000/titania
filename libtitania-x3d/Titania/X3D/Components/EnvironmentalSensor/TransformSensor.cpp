@@ -103,9 +103,9 @@ TransformSensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
-	enabled ()      .addInterest (this, &TransformSensor::set_enabled);
-	size ()         .addInterest (this, &TransformSensor::set_enabled);
-	targetObject () .addInterest (this, &TransformSensor::set_targetObject);
+	enabled ()      .addInterest (&TransformSensor::set_enabled, this);
+	size ()         .addInterest (&TransformSensor::set_enabled, this);
+	targetObject () .addInterest (&TransformSensor::set_targetObject, this);
 
 	set_targetObject ();
 }
@@ -115,11 +115,11 @@ TransformSensor::set_enabled ()
 {
 	if (enabled () and size () not_eq Vector3f () and targetObjectNode and isLive () and getExecutionContext () -> isLive ())
 	{
-		getBrowser () -> sensors () .addInterest (this, &TransformSensor::update);
+		getBrowser () -> sensors () .addInterest (&TransformSensor::update, this);
 	}
 	else
 	{
-		getBrowser () -> sensors () .removeInterest (this, &TransformSensor::update);
+		getBrowser () -> sensors () .removeInterest (&TransformSensor::update, this);
 			
 		if (isActive ())
 		{

@@ -100,7 +100,7 @@ Console::set_browser (const X3D::BrowserPtr & browser)
 	if (browser == getBrowserWindow () -> getMasterBrowser ())
 	   return;
 	
-	browser -> getConsole () -> getString () .addInterest (this, &Console::set_string);	
+	browser -> getConsole () -> getString () .addInterest (&Console::set_string, this);	
 }
 
 void
@@ -108,16 +108,16 @@ Console::set_enabled ()
 {
 	if (isEnabled ())
 	{
-		getCurrentBrowser () .addInterest (this, &Console::set_browser);
+		getCurrentBrowser () .addInterest (&Console::set_browser, this);
 
 		set_browser (getCurrentBrowser ());
 	}
 	else
 	{
-		getCurrentBrowser () .removeInterest (this, &Console::set_browser);
+		getCurrentBrowser () .removeInterest (&Console::set_browser, this);
 
 		for (const auto & browser : getBrowserWindow () -> getBrowsers ())
-			browser -> getConsole () -> getString () .removeInterest (this, &Console::set_string);
+			browser -> getConsole () -> getString () .removeInterest (&Console::set_string, this);
 	}
 }
 

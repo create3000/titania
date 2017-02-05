@@ -80,16 +80,16 @@ X3DImportedNodesEditor::setNode (const X3D::SFNode & value)
 {
 	if (inlineNode)
 	{
-		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
-		inlineNode -> checkLoadState () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
+		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (&X3DImportedNodesEditor::set_importedNodes, this);
+		inlineNode -> checkLoadState () .removeInterest (&X3DImportedNodesEditor::set_importedNodes, this);
 	}
 
 	inlineNode = value;
 
 	if (inlineNode)
 	{
-		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::set_importedNodes);
-		inlineNode -> checkLoadState () .addInterest (this, &X3DImportedNodesEditor::set_importedNodes);
+		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (&X3DImportedNodesEditor::set_importedNodes, this);
+		inlineNode -> checkLoadState () .addInterest (&X3DImportedNodesEditor::set_importedNodes, this);
 
 		set_importedNodes ();
 	}
@@ -125,8 +125,8 @@ X3DImportedNodesEditor::on_imported_toggled (const Glib::ustring & path)
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Imported Node »%s«"), importedName .c_str ()));
 
-		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
-		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::connectImportedNodes);
+		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (&X3DImportedNodesEditor::set_importedNodes, this);
+		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (&X3DImportedNodesEditor::connectImportedNodes, this);
 
 		removeImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), importedName, undoStep);
 
@@ -146,8 +146,8 @@ X3DImportedNodesEditor::on_imported_toggled (const Glib::ustring & path)
 	
 		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Update Imported Node »%s«"), importedName .c_str ()));
 
-		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
-		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::connectImportedNodes);
+		inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (&X3DImportedNodesEditor::set_importedNodes, this);
+		inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (&X3DImportedNodesEditor::connectImportedNodes, this);
 
 		updateImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), inlineNode, exportedName, importedName, undoStep);
 
@@ -196,8 +196,8 @@ X3DImportedNodesEditor::on_imported_name_edited (const Glib::ustring & path, con
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Update Imported Node »%s«"), importedName .c_str ()));
 
-	inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (this, &X3DImportedNodesEditor::set_importedNodes);
-	inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (this, &X3DImportedNodesEditor::connectImportedNodes);
+	inlineNode -> getExecutionContext () -> importedNodes_changed () .removeInterest (&X3DImportedNodesEditor::set_importedNodes, this);
+	inlineNode -> getExecutionContext () -> importedNodes_changed () .addInterest (&X3DImportedNodesEditor::connectImportedNodes, this);
 
 	if (imported)
 		removeImportedNode (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), importedName, undoStep);
@@ -347,8 +347,8 @@ X3DImportedNodesEditor::set_importedNodes ()
 void
 X3DImportedNodesEditor::connectImportedNodes (const X3D::SFTime & field)
 {
-	field .removeInterest (this, &X3DImportedNodesEditor::connectImportedNodes);
-	field .addInterest (this, &X3DImportedNodesEditor::set_importedNodes);
+	field .removeInterest (&X3DImportedNodesEditor::connectImportedNodes, this);
+	field .addInterest (&X3DImportedNodesEditor::set_importedNodes, this);
 }
 
 void

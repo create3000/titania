@@ -90,7 +90,7 @@ Clipboard::initialize ()
 
 	Gtk::Clipboard::get () -> signal_owner_change () .connect (sigc::mem_fun (*this, &Clipboard::on_owner_change));
 
-	set_string () .addInterest (this, &Clipboard::set_string_);
+	set_string () .addInterest (&Clipboard::set_string_, this);
 
 	update ();
 }

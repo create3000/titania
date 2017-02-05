@@ -120,14 +120,14 @@ Appearance::initialize ()
 {
 	X3DAppearanceNode::initialize ();
 
-	fillProperties ()   .addInterest (this, &Appearance::set_fillProperties);
-	lineProperties ()   .addInterest (this, &Appearance::set_lineProperties);
-	material ()         .addInterest (this, &Appearance::set_material);
-	texture ()          .addInterest (this, &Appearance::set_texture);
-	textureTransform () .addInterest (this, &Appearance::set_textureTransform);
-	shaders ()          .addInterest (this, &Appearance::set_shaders);
+	fillProperties ()   .addInterest (&Appearance::set_fillProperties, this);
+	lineProperties ()   .addInterest (&Appearance::set_lineProperties, this);
+	material ()         .addInterest (&Appearance::set_material, this);
+	texture ()          .addInterest (&Appearance::set_texture, this);
+	textureTransform () .addInterest (&Appearance::set_textureTransform, this);
+	shaders ()          .addInterest (&Appearance::set_shaders, this);
 
-	shaderNodes .addInterest (this, &Appearance::set_shader);
+	shaderNodes .addInterest (&Appearance::set_shader, this);
 
 	set_lineProperties ();
 	set_fillProperties ();
@@ -215,7 +215,7 @@ Appearance::set_shaders ()
 	using addEvent = void (X3DPtrArray <X3DShaderNode>::*) ();
 
 	for (const auto & shaderNode : shaderNodes)
-		shaderNode -> isValid () .removeInterest (shaderNodes, (addEvent) & X3DPtrArray <X3DShaderNode>::addEvent);
+		shaderNode -> isValid () .removeInterest ((addEvent) &X3DPtrArray <X3DShaderNode>::addEvent, shaderNodes);
 
 	shaderNodes .clear ();
 
@@ -226,7 +226,7 @@ Appearance::set_shaders ()
 		if (shaderNode)
 		{
 			shaderNodes .emplace_back (shaderNode);
-			shaderNode -> isValid () .addInterest (shaderNodes, (addEvent) & X3DPtrArray <X3DShaderNode>::addEvent);
+			shaderNode -> isValid () .addInterest ((addEvent) &X3DPtrArray <X3DShaderNode>::addEvent, shaderNodes);
 		}
 	}
 }

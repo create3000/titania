@@ -90,7 +90,7 @@ NormalTool::initialize ()
 {
 	X3DNormalNodeTool::initialize ();
 
-	getInlineNode () -> checkLoadState () .addInterest (this, &NormalTool::realize);
+	getInlineNode () -> checkLoadState () .addInterest (&NormalTool::realize, this);
 
 	getInlineNode () -> url () = { get_tool ("NormalTool.x3dv") .str () };
 }
@@ -103,7 +103,7 @@ NormalTool::realize ()
 		if (getInlineNode () -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
 
-		color ()  .addInterest (this, &NormalTool::set_color);
+		color ()  .addInterest (&NormalTool::set_color, this);
 
 		set_color ();
 	}

@@ -106,7 +106,7 @@ ProximitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
-	enabled () .addInterest (this, &ProximitySensor::set_enabled_);
+	enabled () .addInterest (&ProximitySensor::set_enabled_, this);
 }
 
 void

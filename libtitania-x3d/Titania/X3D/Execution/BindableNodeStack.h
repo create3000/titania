@@ -75,7 +75,7 @@ public:
 		X3DBaseNode (executionContext -> getBrowser (), executionContext),
 		stack ({ node })
 	{
-		node -> shutdown () .addInterest (this, &X3DBindableNodeStack::erase, node);
+		node -> shutdown () .addInterest (&X3DBindableNodeStack::erase, this, node);
 	}
 
 	virtual
@@ -147,7 +147,7 @@ public:
 			}
 
 			if (stack .push (node))
-				node -> shutdown () .addInterest (this, &X3DBindableNodeStack::erase, node);
+				node -> shutdown () .addInterest (&X3DBindableNodeStack::erase, this, node);
 
 			addEvent ();
 		}
@@ -164,7 +164,7 @@ public:
 			if (node -> isBound ())
 				node -> isBound () = false;
 
-			node -> shutdown () .removeInterest (this, &X3DBindableNodeStack::erase);
+			node -> shutdown () .removeInterest (&X3DBindableNodeStack::erase, this);
 
 			stack .pop ();
 

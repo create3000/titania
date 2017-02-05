@@ -109,7 +109,7 @@ MovieTexture::initialize ()
 	getStream () -> signal_loaded ()         .connect (sigc::mem_fun (this, &MovieTexture::on_loaded));
 	getStream () -> signal_buffer_changed () .connect (sigc::mem_fun (this, &MovieTexture::on_buffer_changed));
 
-	url () .addInterest (this, &MovieTexture::update);
+	url () .addInterest (&MovieTexture::update, this);
 
 	requestImmediateLoad ();
 }

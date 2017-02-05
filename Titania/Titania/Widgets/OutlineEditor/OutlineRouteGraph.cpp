@@ -109,8 +109,8 @@ OutlineRouteGraph::expand_node (const Gtk::TreeModel::iterator & parent)
 		const auto data  = treeView -> get_model () -> get_data (iter);
 		const auto field = static_cast <X3D::X3DFieldDefinition*> (data -> get_object ());
 
-		field -> getInputRoutes ()  .addInterest (this, &OutlineRouteGraph::add_routes_for_path, path);
-		field -> getOutputRoutes () .addInterest (this, &OutlineRouteGraph::add_routes_for_path, path);
+		field -> getInputRoutes ()  .addInterest (&OutlineRouteGraph::add_routes_for_path, this, path);
+		field -> getOutputRoutes () .addInterest (&OutlineRouteGraph::add_routes_for_path, this, path);
 
 		add_routes (path, data, field);
 	}
@@ -270,8 +270,8 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 
 			// Register disconnected interest
 
-			route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
-			route -> disconnected () .addInterest    (this, &OutlineRouteGraph::disconnect_route, sourcePath, destinationPath);
+			route -> disconnected () .removeInterest (&OutlineRouteGraph::disconnect_route, this);
+			route -> disconnected () .addInterest (&OutlineRouteGraph::disconnect_route, this, sourcePath, destinationPath);
 
 			// Add route
 
@@ -348,8 +348,8 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 
 			// Register disconnected interest
 
-			route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
-			route -> disconnected () .addInterest    (this, &OutlineRouteGraph::disconnect_route, sourcePath, destinationPath);
+			route -> disconnected () .removeInterest (&OutlineRouteGraph::disconnect_route, this);
+			route -> disconnected () .addInterest (&OutlineRouteGraph::disconnect_route, this, sourcePath, destinationPath);
 
 			// Add route
 
@@ -495,8 +495,8 @@ OutlineRouteGraph::collapse_field (const Gtk::TreeModel::iterator & iter, const 
 
 	else
 	{
-		field -> getInputRoutes ()  .removeInterest (this, &OutlineRouteGraph::add_routes_for_path);
-		field -> getOutputRoutes () .removeInterest (this, &OutlineRouteGraph::add_routes_for_path);
+		field -> getInputRoutes ()  .removeInterest (&OutlineRouteGraph::add_routes_for_path, this);
+		field -> getOutputRoutes () .removeInterest (&OutlineRouteGraph::add_routes_for_path, this);
 
 		if (not userData -> full_expanded)
 		{
@@ -521,7 +521,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 
 		// Remove disconnected interest
 
-		route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
+		route -> disconnected () .removeInterest (&OutlineRouteGraph::disconnect_route, this);
 
 		const auto sourceNode     = route -> getSourceNode ();
 		const auto sourceField    = sourceNode -> getField (route -> getSourceField ());
@@ -599,7 +599,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 
 		// Remove disconnected interest
 
-		route -> disconnected () .removeInterest (this, &OutlineRouteGraph::disconnect_route);
+		route -> disconnected () .removeInterest (&OutlineRouteGraph::disconnect_route, this);
 
 		const auto destinationNode     = route -> getDestinationNode ();
 		const auto destinationField    = destinationNode -> getField (route -> getDestinationField ());

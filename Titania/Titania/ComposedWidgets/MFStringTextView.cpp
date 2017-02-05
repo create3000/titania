@@ -67,7 +67,7 @@ MFStringTextView::MFStringTextView (X3DBaseInterface* const editor,
 {
 	addChildObjects (nodes, buffer);
 
-	buffer .addInterest (this, &MFStringTextView::set_buffer);
+	buffer .addInterest (&MFStringTextView::set_buffer, this);
 
 	textView .get_buffer () -> signal_changed () .connect (sigc::mem_fun (*this, &MFStringTextView::on_changed));
 	setup ();
@@ -80,7 +80,7 @@ MFStringTextView::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFString> (name) .removeInterest (this, &MFStringTextView::set_field);
+			node -> getField <X3D::MFString> (name) .removeInterest (&MFStringTextView::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -92,7 +92,7 @@ MFStringTextView::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFString> (name) .addInterest (this, &MFStringTextView::set_field);
+			node -> getField <X3D::MFString> (name) .addInterest (&MFStringTextView::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -122,8 +122,8 @@ MFStringTextView::on_changed ()
 		{
 			auto & field = node -> getField <X3D::MFString> (name);
 
-			field .removeInterest (this, &MFStringTextView::set_field);
-			field .addInterest (this, &MFStringTextView::connect);
+			field .removeInterest (&MFStringTextView::set_field, this);
+			field .addInterest (&MFStringTextView::connect, this);
 
 			field .assign (string .begin (), string .end ());
 		}
@@ -186,8 +186,8 @@ MFStringTextView::set_buffer ()
 void
 MFStringTextView::connect (const X3D::MFString & field)
 {
-	field .removeInterest (this, &MFStringTextView::connect);
-	field .addInterest (this, &MFStringTextView::set_field);
+	field .removeInterest (&MFStringTextView::connect, this);
+	field .addInterest (&MFStringTextView::set_field, this);
 }
 
 } // puck

@@ -98,7 +98,7 @@ X3DGeometrySelectionEditor::configure ()
 
 	// IndexedFaceSetTool detection
 
-	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (this, &X3DGeometrySelectionEditor::set_geometry_nodes);
+	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (&X3DGeometrySelectionEditor::set_geometry_nodes, this);
 
 	set_geometry_nodes (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ());
 }
@@ -125,7 +125,7 @@ X3DGeometrySelectionEditor::set_geometry_nodes (const X3D::MFNode & geometryNode
 		const X3D::X3DPtr <X3D::IndexedFaceSetTool> tool (node);
 
 		if (tool)
-			tool -> touchTime () .addInterest (this, &X3DGeometrySelectionEditor::set_touchTime);
+			tool -> touchTime () .addInterest (&X3DGeometrySelectionEditor::set_touchTime, this);
 	}
 
 	set_touchTime ();
@@ -136,12 +136,12 @@ X3DGeometrySelectionEditor::set_touchTime ()
 {
 	if (tool)
 	{
-		tool -> selectedPoints_changed () .removeInterest (this, &X3DGeometrySelectionEditor::set_selectedPoints);
-		tool -> selectedEdges_changed ()  .removeInterest (this, &X3DGeometrySelectionEditor::set_selectedEdges);
-		tool -> selectedHoles_changed ()  .removeInterest (this, &X3DGeometrySelectionEditor::set_selectedHoles);
-		tool -> selectedFaces_changed ()  .removeInterest (this, &X3DGeometrySelectionEditor::set_selectedFaces);
+		tool -> selectedPoints_changed () .removeInterest (&X3DGeometrySelectionEditor::set_selectedPoints, this);
+		tool -> selectedEdges_changed ()  .removeInterest (&X3DGeometrySelectionEditor::set_selectedEdges, this);
+		tool -> selectedHoles_changed ()  .removeInterest (&X3DGeometrySelectionEditor::set_selectedHoles, this);
+		tool -> selectedFaces_changed ()  .removeInterest (&X3DGeometrySelectionEditor::set_selectedFaces, this);
 
-		tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+		tool -> getSelectionTransform () -> removeInterest (&X3DGeometrySelectionEditor::set_tool_matrix, this);
 	}
 
 	transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
@@ -166,13 +166,13 @@ X3DGeometrySelectionEditor::set_touchTime ()
 	{
 		const auto & selectionTransform = tool -> getSelectionTransform ();
 
-		tool -> selectedPoints_changed () .addInterest (this, &X3DGeometrySelectionEditor::set_selectedPoints);
-		tool -> selectedEdges_changed ()  .addInterest (this, &X3DGeometrySelectionEditor::set_selectedEdges);
-		tool -> selectedHoles_changed ()  .addInterest (this, &X3DGeometrySelectionEditor::set_selectedHoles);
-		tool -> selectedFaces_changed ()  .addInterest (this, &X3DGeometrySelectionEditor::set_selectedFaces);
+		tool -> selectedPoints_changed () .addInterest (&X3DGeometrySelectionEditor::set_selectedPoints, this);
+		tool -> selectedEdges_changed ()  .addInterest (&X3DGeometrySelectionEditor::set_selectedEdges, this);
+		tool -> selectedHoles_changed ()  .addInterest (&X3DGeometrySelectionEditor::set_selectedHoles, this);
+		tool -> selectedFaces_changed ()  .addInterest (&X3DGeometrySelectionEditor::set_selectedFaces, this);
 
-		transformNode      -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
-		selectionTransform -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+		transformNode      -> addInterest (&X3DGeometrySelectionEditor::set_matrix, this);
+		selectionTransform -> addInterest (&X3DGeometrySelectionEditor::set_tool_matrix, this);
 
 		set_selectedPoints ();
 		set_selectedEdges ();
@@ -212,8 +212,8 @@ X3DGeometrySelectionEditor::set_matrix ()
 {
 	try
 	{
-		tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
-		tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
+		tool -> getSelectionTransform () -> removeInterest (&X3DGeometrySelectionEditor::set_tool_matrix, this);
+		tool -> getSelectionTransform () -> addInterest (&X3DGeometrySelectionEditor::connectToolMatrix, this);
 
 		const auto & coordinateNode         = tool -> getCoord ();
 		const auto   relativeTransformation = inverse (lastMatrix) * transformNode -> getMatrix ();
@@ -264,8 +264,8 @@ X3DGeometrySelectionEditor::set_tool_matrix ()
 void
 X3DGeometrySelectionEditor::setMatrix ()
 {
-	transformNode -> removeInterest (this, &X3DGeometrySelectionEditor::set_matrix);
-	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::connectMatrix);
+	transformNode -> removeInterest (&X3DGeometrySelectionEditor::set_matrix, this);
+	transformNode -> addInterest (&X3DGeometrySelectionEditor::connectMatrix, this);
 	
 	const auto   bbox                = tool -> getSelectionTransform () -> getBBox () .matrix ();
 	const auto & axisRotation        = tool -> getAxisRotation ();
@@ -279,15 +279,15 @@ X3DGeometrySelectionEditor::setMatrix ()
 void
 X3DGeometrySelectionEditor::connectMatrix ()
 {
-	transformNode -> removeInterest (this, &X3DGeometrySelectionEditor::connectMatrix);
-	transformNode -> addInterest (this, &X3DGeometrySelectionEditor::set_matrix);
+	transformNode -> removeInterest (&X3DGeometrySelectionEditor::connectMatrix, this);
+	transformNode -> addInterest (&X3DGeometrySelectionEditor::set_matrix, this);
 }
 
 void
 X3DGeometrySelectionEditor::connectToolMatrix ()
 {
-	tool -> getSelectionTransform () -> removeInterest (this, &X3DGeometrySelectionEditor::connectToolMatrix);
-	tool -> getSelectionTransform () -> addInterest (this, &X3DGeometrySelectionEditor::set_tool_matrix);
+	tool -> getSelectionTransform () -> removeInterest (&X3DGeometrySelectionEditor::connectToolMatrix, this);
+	tool -> getSelectionTransform () -> addInterest (&X3DGeometrySelectionEditor::set_tool_matrix, this);
 
 	setMatrix ();
 }
@@ -338,7 +338,7 @@ X3DGeometrySelectionEditor::store ()
 {
 	getConfig () -> setItem ("geometrySelectionUniformScale", getGeometrySelectionUniformScaleButton () .get_active ());
 
-	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (this, &X3DGeometrySelectionEditor::set_geometry_nodes);
+	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (&X3DGeometrySelectionEditor::set_geometry_nodes, this);
 }
 
 X3DGeometrySelectionEditor::~X3DGeometrySelectionEditor ()

@@ -77,7 +77,7 @@ X3DLayoutEditor::X3DLayoutEditor () :
 {
 	addChildObjects (nodes, layoutBuffer, layout);
 
-	layoutBuffer .addInterest (this, &X3DLayoutEditor::set_node);
+	layoutBuffer .addInterest (&X3DLayoutEditor::set_node, this);
 
 	offsetX .setIndex (0);
 	offsetY .setIndex (1);
@@ -115,8 +115,8 @@ X3DLayoutEditor::on_layout_toggled ()
 		{
 			auto & field = node -> getField <X3D::SFNode> ("layout");
 
-			field .removeInterest (this, &X3DLayoutEditor::set_layout);
-			field .addInterest (this, &X3DLayoutEditor::connectLayout);
+			field .removeInterest (&X3DLayoutEditor::set_layout, this);
+			field .addInterest (&X3DLayoutEditor::connectLayout, this);
 
 			if (getLayoutCheckButton () .get_active ())
 				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, layout, undoStep);
@@ -147,7 +147,7 @@ X3DLayoutEditor::set_node ()
 	{
 		try
 		{
-			node -> getField <X3D::SFNode> ("layout") .removeInterest (this, &X3DLayoutEditor::set_layout);
+			node -> getField <X3D::SFNode> ("layout") .removeInterest (&X3DLayoutEditor::set_layout, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -167,7 +167,7 @@ X3DLayoutEditor::set_node ()
 		{
 			auto & field = selection .back () -> getField <X3D::SFNode> ("layout");
 			
-			field .addInterest (this, &X3DLayoutEditor::set_layout);
+			field .addInterest (&X3DLayoutEditor::set_layout, this);
 
 			nodes  = { selection .back () };
 			layout = field;
@@ -212,8 +212,8 @@ X3DLayoutEditor::set_node ()
 void
 X3DLayoutEditor::connectLayout (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DLayoutEditor::connectLayout);
-	field .addInterest (this, &X3DLayoutEditor::set_layout);
+	field .removeInterest (&X3DLayoutEditor::connectLayout, this);
+	field .addInterest (&X3DLayoutEditor::set_layout, this);
 }
 
 X3DLayoutEditor::~X3DLayoutEditor ()

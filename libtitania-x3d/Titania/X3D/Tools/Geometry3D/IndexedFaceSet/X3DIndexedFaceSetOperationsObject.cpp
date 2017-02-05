@@ -91,17 +91,17 @@ X3DIndexedFaceSetOperationsObject::X3DIndexedFaceSetOperationsObject () :
 void
 X3DIndexedFaceSetOperationsObject::initialize ()
 {
-	cutSelectedFaces ()     .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_cutSelectedFaces);
-	copySelectedFaces ()    .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_copySelectedFaces);
-	pasteFaces ()           .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_pasteFaces);
-	mergePoints ()          .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_mergePoints);
-	splitPoints ()          .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_splitPoints);
-	formNewFace ()          .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_formNewFace);
-	extrudeSelectedEdges () .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges);
-	extrudeSelectedFaces () .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces);
-	chipOfSelectedFaces ()  .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces);
-	flipVertexOrdering ()   .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering);
-	deleteSelectedFaces ()  .addInterest (this, &X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces);
+	cutSelectedFaces ()     .addInterest (&X3DIndexedFaceSetOperationsObject::set_cutSelectedFaces, this);
+	copySelectedFaces ()    .addInterest (&X3DIndexedFaceSetOperationsObject::set_copySelectedFaces, this);
+	pasteFaces ()           .addInterest (&X3DIndexedFaceSetOperationsObject::set_pasteFaces, this);
+	mergePoints ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_mergePoints, this);
+	splitPoints ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_splitPoints, this);
+	formNewFace ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_formNewFace, this);
+	extrudeSelectedEdges () .addInterest (&X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges, this);
+	extrudeSelectedFaces () .addInterest (&X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces, this);
+	chipOfSelectedFaces ()  .addInterest (&X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces, this);
+	flipVertexOrdering ()   .addInterest (&X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering, this);
+	deleteSelectedFaces ()  .addInterest (&X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces, this);
 }
 
 void

@@ -92,7 +92,7 @@ X3DNavigationContext::initialize ()
 {
 	headlightNode -> setup ();
 
-	getBrowser () -> initialized () .addInterest (this, &X3DNavigationContext::set_initialized);
+	getBrowser () -> initialized () .addInterest (&X3DNavigationContext::set_initialized, this);
 }
 
 X3D::X3DConstants::NodeType
@@ -107,7 +107,7 @@ X3DNavigationContext::getCurrentViewer () const
 void
 X3DNavigationContext::set_initialized ()
 {
-	getWorld () -> getActiveLayer () .addInterest (this, &X3DNavigationContext::set_activeLayer);
+	getWorld () -> getActiveLayer () .addInterest (&X3DNavigationContext::set_activeLayer, this);
 
 	set_activeLayer ();
 }
@@ -119,16 +119,16 @@ X3DNavigationContext::set_activeLayer ()
 	{
 		if (activeLayer)
 		{
-			activeLayer -> getNavigationInfoStack () -> removeInterest (this, &X3DNavigationContext::set_navigationInfo);
-			activeLayer -> getViewpointStack ()      -> removeInterest (this, &X3DNavigationContext::set_viewpoint);
+			activeLayer -> getNavigationInfoStack () -> removeInterest (&X3DNavigationContext::set_navigationInfo, this);
+			activeLayer -> getViewpointStack ()      -> removeInterest (&X3DNavigationContext::set_viewpoint, this);
 		}
 
 		activeLayer = getWorld () -> getActiveLayer ();
 
 		if (activeLayer)
 		{
-			activeLayer -> getNavigationInfoStack () -> addInterest (this, &X3DNavigationContext::set_navigationInfo);
-			activeLayer -> getViewpointStack ()      -> addInterest (this, &X3DNavigationContext::set_viewpoint);
+			activeLayer -> getNavigationInfoStack () -> addInterest (&X3DNavigationContext::set_navigationInfo, this);
+			activeLayer -> getViewpointStack ()      -> addInterest (&X3DNavigationContext::set_viewpoint, this);
 		}
 
 		set_navigationInfo ();
@@ -141,7 +141,7 @@ X3DNavigationContext::set_navigationInfo ()
 {
 	if (activeNavigationInfo)
 	{
-		activeNavigationInfo -> disposed ()            .removeInterest (this, &X3DNavigationContext::remove_navigationInfo);
+		activeNavigationInfo -> disposed ()            .removeInterest (&X3DNavigationContext::remove_navigationInfo, this);
 		activeNavigationInfo -> getViewer ()           .removeInterest (viewer);
 		activeNavigationInfo -> getAvailableViewers () .removeInterest (availableViewers);
 	}
@@ -151,7 +151,7 @@ X3DNavigationContext::set_navigationInfo ()
 
 	if (activeNavigationInfo)
 	{
-		activeNavigationInfo -> disposed ()            .addInterest (this, &X3DNavigationContext::remove_navigationInfo);
+		activeNavigationInfo -> disposed ()            .addInterest (&X3DNavigationContext::remove_navigationInfo, this);
 		activeNavigationInfo -> getViewer ()           .addInterest (viewer);
 		activeNavigationInfo -> getAvailableViewers () .addInterest (availableViewers);
 

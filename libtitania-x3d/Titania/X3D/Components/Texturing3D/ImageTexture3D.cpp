@@ -92,7 +92,7 @@ ImageTexture3D::initialize ()
 	X3DTexture3DNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	url () .addInterest (this, &ImageTexture3D::update);
+	url () .addInterest (&ImageTexture3D::update, this);
 
 	requestAsyncLoad ();
 }

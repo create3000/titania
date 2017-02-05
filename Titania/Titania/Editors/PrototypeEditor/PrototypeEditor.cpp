@@ -105,7 +105,7 @@ PrototypeEditor::initialize ()
 
 	// 
 
-	getCurrentContext () .addInterest (this, &PrototypeEditor::set_executionContext);
+	getCurrentContext () .addInterest (&PrototypeEditor::set_executionContext, this);
 
 	set_executionContext ();
 }
@@ -115,14 +115,14 @@ PrototypeEditor::set_executionContext ()
 {
 	if (executionContext)
 	{
-		executionContext -> prototypes_changed ()   .removeInterest (this, &PrototypeEditor::on_create_prototype_menu);
-		executionContext -> externProtos_changed () .removeInterest (this, &PrototypeEditor::on_create_prototype_menu);
+		executionContext -> prototypes_changed ()   .removeInterest (&PrototypeEditor::on_create_prototype_menu, this);
+		executionContext -> externProtos_changed () .removeInterest (&PrototypeEditor::on_create_prototype_menu, this);
 	}
 
 	executionContext = getCurrentContext ();
 
-	executionContext -> prototypes_changed ()   .addInterest (this, &PrototypeEditor::on_create_prototype_menu);
-	executionContext -> externProtos_changed () .addInterest (this, &PrototypeEditor::on_create_prototype_menu);
+	executionContext -> prototypes_changed ()   .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
+	executionContext -> externProtos_changed () .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
 
 	// Setup widgets
 

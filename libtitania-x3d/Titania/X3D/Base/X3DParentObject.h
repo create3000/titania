@@ -111,12 +111,12 @@ public:
 	///  of the function effectivly calls addEvent on @a requester.
 	void
 	addInterest (X3DParentObject* const requester) const
-	{ addInterest (requester, (void (X3DParentObject::*)()) & X3DParentObject::addEvent); }
+	{ addInterest ((void (X3DParentObject::*)()) &X3DParentObject::addEvent, requester); }
 
 	///  Removes an interest from this object.  The @a requester will not further notified about a change of this object.
 	void
 	removeInterest (X3DParentObject* const requester) const
-	{ removeInterest (requester, (void (X3DParentObject::*)()) & X3DParentObject::addEvent); }
+	{ removeInterest ((void (X3DParentObject::*)()) &X3DParentObject::addEvent, requester); }
 
 	///  @name Destruction
 

@@ -132,10 +132,10 @@ Browser::initialize ()
 	keyDevice      -> setup ();
 	pointingDevice -> setup ();
 
-	getCursor ()        .addInterest (this, &Browser::set_cursor);
-	getViewerType ()    .addInterest (this, &Browser::set_viewer);
-	getPrivateViewer () .addInterest (this, &Browser::set_viewer);
-	changed ()          .addInterest (this, &Gtk::Widget::queue_draw);
+	getCursor ()        .addInterest (&Browser::set_cursor, this);
+	getViewerType ()    .addInterest (&Browser::set_viewer, this);
+	getPrivateViewer () .addInterest (&Browser::set_viewer, this);
+	changed ()          .addInterest (&Gtk::Widget::queue_draw, this);
 
 	add_events (Gdk::BUTTON_PRESS_MASK |
 	            Gdk::POINTER_MOTION_MASK |

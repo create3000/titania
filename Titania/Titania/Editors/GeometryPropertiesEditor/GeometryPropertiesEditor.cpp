@@ -93,7 +93,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 {
 	addChildObjects (geometryNode, nodes, shapes, nodesBuffer);
 
-	nodesBuffer .addInterest (this, &GeometryPropertiesEditor::set_buffer);
+	nodesBuffer .addInterest (&GeometryPropertiesEditor::set_buffer, this);
 
 	getCreaseAngleAdjustment () -> set_upper (pi <double>);
 
@@ -126,7 +126,7 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DGeometryPropertiesEditorInterface::set_selection (selection);
 
 	for (const auto & shape : shapes)
-		shape -> geometry () .removeInterest (this, &GeometryPropertiesEditor::set_geometry);
+		shape -> geometry () .removeInterest (&GeometryPropertiesEditor::set_geometry, this);
 
 	X3DArc2DEditor::removeShapes ();
 	X3DArcClose2DEditor::removeShapes ();
@@ -144,7 +144,7 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	shapes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
 	for (const auto & shape : shapes)
-		shape -> geometry () .addInterest (this, &GeometryPropertiesEditor::set_geometry);
+		shape -> geometry () .addInterest (&GeometryPropertiesEditor::set_geometry, this);
 
 	X3DArc2DEditor::addShapes ();
 	X3DArcClose2DEditor::addShapes ();
@@ -171,8 +171,8 @@ GeometryPropertiesEditor::set_geometry ()
 void
 GeometryPropertiesEditor::connectGeometry (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &GeometryPropertiesEditor::connectGeometry);
-	field .addInterest (this, &GeometryPropertiesEditor::set_geometry);
+	field .removeInterest (&GeometryPropertiesEditor::connectGeometry, this);
+	field .addInterest (&GeometryPropertiesEditor::set_geometry, this);
 }
 
 void
@@ -184,7 +184,7 @@ GeometryPropertiesEditor::set_buffer ()
 	{
 		try
 		{
-			node -> getField <X3D::SFNode> ("normal") .removeInterest (this, &GeometryPropertiesEditor::set_normal);
+			node -> getField <X3D::SFNode> ("normal") .removeInterest (&GeometryPropertiesEditor::set_normal, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -227,7 +227,7 @@ GeometryPropertiesEditor::set_buffer ()
 	{
 		try
 		{
-			node -> getField <X3D::SFNode> ("normal") .addInterest (this, &GeometryPropertiesEditor::set_normal);
+			node -> getField <X3D::SFNode> ("normal") .addInterest (&GeometryPropertiesEditor::set_normal, this);
 
 			getNormalsBox () .set_sensitive (true);
 		}
@@ -280,8 +280,8 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			{
 				auto & field = shapeNode -> geometry ();
 
-				field .removeInterest (this, &GeometryPropertiesEditor::set_geometry);
-				field .addInterest (this, &GeometryPropertiesEditor::connectGeometry);
+				field .removeInterest (&GeometryPropertiesEditor::set_geometry, this);
+				field .addInterest (&GeometryPropertiesEditor::connectGeometry, this);
 
 				getBrowserWindow () -> replaceNode (getCurrentContext (), shapeNode, field, node, undoStep);
 			}
@@ -303,8 +303,8 @@ GeometryPropertiesEditor::on_geometry_changed ()
 		{
 			auto & field = shapeNode -> geometry ();
 
-			field .removeInterest (this, &GeometryPropertiesEditor::set_geometry);
-			field .addInterest (this, &GeometryPropertiesEditor::connectGeometry);
+			field .removeInterest (&GeometryPropertiesEditor::set_geometry, this);
+			field .addInterest (&GeometryPropertiesEditor::connectGeometry, this);
 
 			getBrowserWindow () -> removeNode (getCurrentContext (), shapeNode, field, undoStep);
 		}

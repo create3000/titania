@@ -78,12 +78,12 @@ X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
 
 	addChildObjects (browser, nodes, value, buffer);
 
-	value  .addInterest (this, &X3DGradientTool::set_value);
-	buffer .addInterest (this, &X3DGradientTool::set_buffer);
+	value  .addInterest (&X3DGradientTool::set_value, this);
+	buffer .addInterest (&X3DGradientTool::set_buffer, this);
 
 	// Browser
 
-	browser -> initialized () .addInterest (this, &X3DGradientTool::set_initialized);
+	browser -> initialized () .addInterest (&X3DGradientTool::set_initialized, this);
 	browser -> setAntialiasing (4);
 	browser -> show ();
 
@@ -93,18 +93,18 @@ X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
 void
 X3DGradientTool::set_initialized ()
 {
-	browser -> initialized () .removeInterest (this, &X3DGradientTool::set_initialized);
+	browser -> initialized () .removeInterest (&X3DGradientTool::set_initialized, this);
 
 	try
 	{
 		const auto tool = getTool ();
 
-		tool -> getField <X3D::SFTime>  ("outputAddTime")     .addInterest (this, &X3DGradientTool::set_addTime);
-		tool -> getField <X3D::SFTime>  ("outputRemoveTime")  .addInterest (this, &X3DGradientTool::set_removeTime);
-		tool -> getField <X3D::SFBool>  ("isActive")          .addInterest (this, &X3DGradientTool::set_active);
-		tool -> getField <X3D::MFFloat> ("outputPosition")    .addInterest (this, &X3DGradientTool::set_position);
-		tool -> getField <X3D::MFColor> ("outputColor")       .addInterest (this, &X3DGradientTool::set_color);
-		tool -> getField <X3D::SFInt32> ("outputWhichChoice") .addInterest (this, &X3DGradientTool::set_whichChoice);
+		tool -> getField <X3D::SFTime>  ("outputAddTime")     .addInterest (&X3DGradientTool::set_addTime, this);
+		tool -> getField <X3D::SFTime>  ("outputRemoveTime")  .addInterest (&X3DGradientTool::set_removeTime, this);
+		tool -> getField <X3D::SFBool>  ("isActive")          .addInterest (&X3DGradientTool::set_active, this);
+		tool -> getField <X3D::MFFloat> ("outputPosition")    .addInterest (&X3DGradientTool::set_position, this);
+		tool -> getField <X3D::MFColor> ("outputColor")       .addInterest (&X3DGradientTool::set_color, this);
+		tool -> getField <X3D::SFInt32> ("outputWhichChoice") .addInterest (&X3DGradientTool::set_whichChoice, this);
 	}
 	catch (const X3D::X3DError & error)
 	{
@@ -139,7 +139,7 @@ X3DGradientTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFFloat> (positionName) .removeInterest (this, &X3DGradientTool::set_field);
+			node -> getField <X3D::MFFloat> (positionName) .removeInterest (&X3DGradientTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -149,7 +149,7 @@ X3DGradientTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFColor> (colorName) .removeInterest (this, &X3DGradientTool::set_field);
+			node -> getField <X3D::MFColor> (colorName) .removeInterest (&X3DGradientTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -161,7 +161,7 @@ X3DGradientTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFFloat> (positionName) .addInterest (this, &X3DGradientTool::set_field);
+			node -> getField <X3D::MFFloat> (positionName) .addInterest (&X3DGradientTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -171,7 +171,7 @@ X3DGradientTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFColor> (colorName) .addInterest (this, &X3DGradientTool::set_field);
+			node -> getField <X3D::MFColor> (colorName) .addInterest (&X3DGradientTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -218,8 +218,8 @@ X3DGradientTool::set_value (const X3D::time_type &)
 			{
 				auto & field = node -> getField <X3D::MFFloat> (positionName);
 
-				field .removeInterest (this, &X3DGradientTool::set_field);
-				field .addInterest (this, &X3DGradientTool::connectPosition);
+				field .removeInterest (&X3DGradientTool::set_field, this);
+				field .addInterest (&X3DGradientTool::connectPosition, this);
 
 				field = get_position (value);
 			}
@@ -247,8 +247,8 @@ X3DGradientTool::set_value (const X3D::time_type &)
 			{
 				auto & field = node -> getField <X3D::MFColor> (colorName);
 
-				field .removeInterest (this, &X3DGradientTool::set_field);
-				field .addInterest (this, &X3DGradientTool::connectColor);
+				field .removeInterest (&X3DGradientTool::set_field, this);
+				field .addInterest (&X3DGradientTool::connectColor, this);
 
 				field = get_color (value);
 			}
@@ -404,15 +404,15 @@ X3DGradientTool::get_tool_values (const X3D::MFFloat & positionValue, const X3D:
 void
 X3DGradientTool::connectPosition (const X3D::MFFloat & field)
 {
-	field .removeInterest (this, &X3DGradientTool::connectPosition);
-	field .addInterest (this, &X3DGradientTool::set_field);
+	field .removeInterest (&X3DGradientTool::connectPosition, this);
+	field .addInterest (&X3DGradientTool::set_field, this);
 }
 
 void
 X3DGradientTool::connectColor (const X3D::MFColor & field)
 {
-	field .removeInterest (this, &X3DGradientTool::connectColor);
-	field .addInterest (this, &X3DGradientTool::set_field);
+	field .removeInterest (&X3DGradientTool::connectColor, this);
+	field .addInterest (&X3DGradientTool::set_field, this);
 }
 
 X3DGradientTool::~X3DGradientTool ()

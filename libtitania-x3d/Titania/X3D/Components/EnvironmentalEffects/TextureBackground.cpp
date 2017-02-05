@@ -104,12 +104,12 @@ TextureBackground::initialize ()
 {
 	X3DBackgroundNode::initialize ();
 
-	frontTexture ()  .addInterest (this, &TextureBackground::set_frontTexture);
-	backTexture ()   .addInterest (this, &TextureBackground::set_backTexture);
-	leftTexture ()   .addInterest (this, &TextureBackground::set_leftTexture);
-	rightTexture ()  .addInterest (this, &TextureBackground::set_rightTexture);
-	topTexture ()    .addInterest (this, &TextureBackground::set_topTexture);
-	bottomTexture () .addInterest (this, &TextureBackground::set_bottomTexture);
+	frontTexture ()  .addInterest (&TextureBackground::set_frontTexture, this);
+	backTexture ()   .addInterest (&TextureBackground::set_backTexture, this);
+	leftTexture ()   .addInterest (&TextureBackground::set_leftTexture, this);
+	rightTexture ()  .addInterest (&TextureBackground::set_rightTexture, this);
+	topTexture ()    .addInterest (&TextureBackground::set_topTexture, this);
+	bottomTexture () .addInterest (&TextureBackground::set_bottomTexture, this);
 
 	set_frontTexture ();
 	set_backTexture ();

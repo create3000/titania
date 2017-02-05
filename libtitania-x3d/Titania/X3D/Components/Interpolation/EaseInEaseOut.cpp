@@ -89,7 +89,7 @@ EaseInEaseOut::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	easeInEaseOut () .addInterest (this, &EaseInEaseOut::set_keyValue);
+	easeInEaseOut () .addInterest (&EaseInEaseOut::set_keyValue, this);
 }
 
 void

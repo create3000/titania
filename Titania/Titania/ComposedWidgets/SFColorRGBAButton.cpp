@@ -81,7 +81,7 @@ SFColorRGBAButton::SFColorRGBAButton (X3DBaseInterface* const editor,
 
 	// Buffer
 
-	buffer .addInterest (this, &SFColorRGBAButton::set_buffer);
+	buffer .addInterest (&SFColorRGBAButton::set_buffer, this);
 
 	// Button
 
@@ -124,7 +124,7 @@ SFColorRGBAButton::SFColorRGBAButton (X3DBaseInterface* const editor,
 	menu .append (*pasteMenuItem);
 	menu .show_all ();
 
-	clipboard -> string_changed () .addInterest (pasteMenuItem, &Gtk::ImageMenuItem::set_sensitive, true);
+	clipboard -> string_changed () .addInterest (&Gtk::ImageMenuItem::set_sensitive, pasteMenuItem, true);
 	clipboard -> target () = "model/x3d+vrml+color";
 	clipboard -> setup ();
 
@@ -140,7 +140,7 @@ SFColorRGBAButton::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFColorRGBA> (name) .removeInterest (this, &SFColorRGBAButton::set_field);
+			node -> getField <X3D::SFColorRGBA> (name) .removeInterest (&SFColorRGBAButton::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -152,7 +152,7 @@ SFColorRGBAButton::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFColorRGBA> (name) .addInterest (this, &SFColorRGBAButton::set_field);
+			node -> getField <X3D::SFColorRGBA> (name) .addInterest (&SFColorRGBAButton::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -222,8 +222,8 @@ SFColorRGBAButton::set_color (const int id, const X3D::Color4f & color)
 		{
 			auto & field = node -> getField <X3D::SFColorRGBA> (name);
 
-			field .removeInterest (this, &SFColorRGBAButton::set_field);
-			field .addInterest (this, &SFColorRGBAButton::connect);
+			field .removeInterest (&SFColorRGBAButton::set_field, this);
+			field .addInterest (&SFColorRGBAButton::connect, this);
 
 			field = color;
 		}
@@ -286,8 +286,8 @@ SFColorRGBAButton::set_buffer ()
 void
 SFColorRGBAButton::connect (const X3D::SFColorRGBA & field)
 {
-	field .removeInterest (this, &SFColorRGBAButton::connect);
-	field .addInterest (this, &SFColorRGBAButton::set_field);
+	field .removeInterest (&SFColorRGBAButton::connect, this);
+	field .addInterest (&SFColorRGBAButton::set_field, this);
 }
 
 bool

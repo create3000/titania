@@ -98,8 +98,8 @@ PositionChaser2D::initialize ()
 {
 	X3DChaserNode::initialize ();
 
-	set_value ()       .addInterest (this, &PositionChaser2D::set_value_);
-	set_destination () .addInterest (this, &PositionChaser2D::set_destination_);
+	set_value ()       .addInterest (&PositionChaser2D::set_value_, this);
+	set_destination () .addInterest (&PositionChaser2D::set_destination_, this);
 
 	bufferEndTime = getCurrentTime ();
 	previousValue = initialValue ();

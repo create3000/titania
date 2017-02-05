@@ -70,7 +70,7 @@ void
 X3DArcClose2DEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DArcClose2DEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DArcClose2DEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -79,7 +79,7 @@ void
 X3DArcClose2DEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DArcClose2DEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DArcClose2DEditor::set_geometry, this);
 }
 
 void

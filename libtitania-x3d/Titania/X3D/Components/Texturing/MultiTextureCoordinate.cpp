@@ -93,7 +93,7 @@ MultiTextureCoordinate::initialize ()
 {
 	X3DTextureCoordinateNode::initialize ();
 
-	texCoord () .addInterest (this, &MultiTextureCoordinate::set_texCoord);
+	texCoord () .addInterest (&MultiTextureCoordinate::set_texCoord, this);
 	
 	set_texCoord ();
 }

@@ -100,12 +100,12 @@ ComposedShader::initialize ()
 	X3DShaderNode::initialize ();
 	X3DProgrammableShaderObject::initialize ();
 
-	activate () .addInterest (this, &ComposedShader::set_activate);
+	activate () .addInterest (&ComposedShader::set_activate, this);
 	parts ()    .addInterest (loadSensor -> watchList ());
 
 	loadSensor -> isPrivate (true);
 	loadSensor -> watchList () = parts ();
-	loadSensor -> isLoaded () .addInterest (this, &ComposedShader::set_loaded);
+	loadSensor -> isLoaded () .addInterest (&ComposedShader::set_loaded, this);
 	loadSensor -> setup ();
 }
 

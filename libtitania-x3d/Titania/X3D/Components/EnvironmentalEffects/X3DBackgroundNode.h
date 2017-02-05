@@ -216,10 +216,10 @@ private:
 	getColor (const float, const MFColor &, const MFFloat &);
 
 	void
-	build ();
+	buildHalfSphere (const float, const std::vector <float> &, const MFFloat &, const MFColor &, const float, const bool);
 
 	void
-	build (const float, const std::vector <float> &, const MFFloat &, const MFColor &, const float, const bool);
+	build ();
 
 	void
 	drawSphere (X3DRenderObject* const renderObject);

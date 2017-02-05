@@ -142,9 +142,9 @@ GeoElevationGrid::initialize ()
 	X3DGeometryNode::initialize ();
 	X3DGeospatialObject::initialize ();
 
-	color ()    .addInterest (this, &GeoElevationGrid::set_color);
-	texCoord () .addInterest (this, &GeoElevationGrid::set_texCoord);
-	normal ()   .addInterest (this, &GeoElevationGrid::set_normal);
+	color ()    .addInterest (&GeoElevationGrid::set_color, this);
+	texCoord () .addInterest (&GeoElevationGrid::set_texCoord, this);
+	normal ()   .addInterest (&GeoElevationGrid::set_normal, this);
 
 	set_color ();
 	set_texCoord ();

@@ -104,7 +104,7 @@ Anchor::initialize ()
 	X3DGroupingNode::initialize ();
 	X3DUrlObject::initialize ();
 	
-	touchSensorNode -> touchTime () .addInterest (this, &Anchor::requestImmediateLoad);
+	touchSensorNode -> touchTime () .addInterest (&Anchor::requestImmediateLoad, this);
 	
 	description () .addInterest (touchSensorNode -> description ());
 

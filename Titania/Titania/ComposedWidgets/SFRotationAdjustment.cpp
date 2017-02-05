@@ -78,7 +78,7 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 	            
 	setup ();
 
-	buffer .addInterest (this, &SFRotationAdjustment::set_buffer);
+	buffer .addInterest (&SFRotationAdjustment::set_buffer, this);
 
 	adjustments [0] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &SFRotationAdjustment::on_value_changed), 0));
 	adjustments [1] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &SFRotationAdjustment::on_value_changed), 1));
@@ -95,11 +95,11 @@ SFRotationAdjustment::setNodes (const X3D::MFNode & value)
 	// Connect units.
 
 	if (scene)
-		scene -> units_changed () .removeInterest (this, &SFRotationAdjustment::set_field);
+		scene -> units_changed () .removeInterest (&SFRotationAdjustment::set_field, this);
 
 	scene = getCurrentScene ();
 
-	scene -> units_changed () .addInterest (this, &SFRotationAdjustment::set_field);
+	scene -> units_changed () .addInterest (&SFRotationAdjustment::set_field, this);
 
 	// Connect field.
 
@@ -107,7 +107,7 @@ SFRotationAdjustment::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFRotation> (name) .removeInterest (this, &SFRotationAdjustment::set_field);
+			node -> getField <X3D::SFRotation> (name) .removeInterest (&SFRotationAdjustment::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -119,7 +119,7 @@ SFRotationAdjustment::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFRotation> (name) .addInterest (this, &SFRotationAdjustment::set_field);
+			node -> getField <X3D::SFRotation> (name) .addInterest (&SFRotationAdjustment::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -150,8 +150,8 @@ SFRotationAdjustment::on_value_changed (const int id)
 		{
 			auto & field = node -> getField <X3D::SFRotation> (name);
 
-			field .removeInterest (this, &SFRotationAdjustment::set_field);
-			field .addInterest (this, &SFRotationAdjustment::connect);
+			field .removeInterest (&SFRotationAdjustment::set_field, this);
+			field .addInterest (&SFRotationAdjustment::connect, this);
 
 			X3D::Rotation4d rotation (adjustments [0] -> get_value (),
 			                          adjustments [1] -> get_value (),
@@ -229,8 +229,8 @@ SFRotationAdjustment::set_bounds ()
 void
 SFRotationAdjustment::connect (const X3D::SFRotation & field)
 {
-	field .removeInterest (this, &SFRotationAdjustment::connect);
-	field .addInterest (this, &SFRotationAdjustment::set_field);
+	field .removeInterest (&SFRotationAdjustment::connect, this);
+	field .addInterest (&SFRotationAdjustment::set_field, this);
 }
 
 } // puck

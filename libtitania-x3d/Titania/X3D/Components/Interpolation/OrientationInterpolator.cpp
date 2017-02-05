@@ -89,7 +89,7 @@ OrientationInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue () .addInterest (this, &OrientationInterpolator::set_keyValue);
+	keyValue () .addInterest (&OrientationInterpolator::set_keyValue, this);
 }
 
 void

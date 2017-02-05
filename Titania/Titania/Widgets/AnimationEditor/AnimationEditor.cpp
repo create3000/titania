@@ -178,10 +178,10 @@ AnimationEditor::initialize ()
 	if (getConfig () -> hasItem ("hPaned"))
 		getAnimationBox () .set_position (getConfig () -> getInteger ("hPaned"));
 
-	getCurrentBrowser ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
-	getCurrentContext ()  .addInterest (this, &AnimationEditor::set_animation, nullptr);
+	getCurrentBrowser ()  .addInterest (&AnimationEditor::set_animation, this, nullptr);
+	getCurrentContext ()  .addInterest (&AnimationEditor::set_animation, this, nullptr);
 
-	nodeIndex -> getNode () .addInterest (this, &AnimationEditor::set_animation);
+	nodeIndex -> getNode () .addInterest (&AnimationEditor::set_animation, this);
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setAnimations ();
@@ -201,7 +201,7 @@ AnimationEditor::setScale (const double value)
 void
 AnimationEditor::on_map ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &AnimationEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (&AnimationEditor::set_selection, this);
 
 	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
 }
@@ -209,7 +209,7 @@ AnimationEditor::on_map ()
 void
 AnimationEditor::on_unmap ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (this, &AnimationEditor::set_selection);
+	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (&AnimationEditor::set_selection, this);
 }
 
 void
@@ -325,8 +325,8 @@ AnimationEditor::on_new ()
 	animation -> setMetaData <int32_t> ("/Animation/duration",        getDurationAdjustment () -> get_value ());
 	animation -> setMetaData <int32_t> ("/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
 
-	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration", false)        .addInterest (this, &AnimationEditor::set_duration);
-	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond", false) .addInterest (this, &AnimationEditor::set_frames_per_second);
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration", false)        .addInterest (&AnimationEditor::set_duration, this);
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond", false) .addInterest (&AnimationEditor::set_frames_per_second, this);
 	
 	timeSensor -> loop ()     = getLoopSwitch () .get_active ();
 	timeSensor -> stopTime () = 1;
@@ -378,16 +378,16 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	
 	if (animation)
 	{
-		animation -> isLive ()   .removeInterest (this, &AnimationEditor::set_animation_live);
-		animation -> children () .removeInterest (this, &AnimationEditor::set_interpolators);
+		animation -> isLive ()   .removeInterest (&AnimationEditor::set_animation_live, this);
+		animation -> children () .removeInterest (&AnimationEditor::set_interpolators, this);
 	}
 
 	if (timeSensor)
 	{
-		timeSensor -> isLive ()           .removeInterest (this, &AnimationEditor::set_animation_live);
-		timeSensor -> isPaused ()         .removeInterest (this, &AnimationEditor::set_active);
-		timeSensor -> isActive ()         .removeInterest (this, &AnimationEditor::set_active);
-		timeSensor -> fraction_changed () .removeInterest (this, &AnimationEditor::set_fraction);
+		timeSensor -> isLive ()           .removeInterest (&AnimationEditor::set_animation_live, this);
+		timeSensor -> isPaused ()         .removeInterest (&AnimationEditor::set_active, this);
+		timeSensor -> isActive ()         .removeInterest (&AnimationEditor::set_active, this);
+		timeSensor -> fraction_changed () .removeInterest (&AnimationEditor::set_fraction, this);
 
 		timeSensor -> isEvenLive (false);
 		timeSensor -> range () = { 0, 0, 1 };
@@ -443,8 +443,8 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 
 	if (animation)
 	{
-		animation -> isLive ()   .addInterest (this, &AnimationEditor::set_animation_live);
-		animation -> children () .addInterest (this, &AnimationEditor::set_interpolators);
+		animation -> isLive ()   .addInterest (&AnimationEditor::set_animation_live, this);
+		animation -> children () .addInterest (&AnimationEditor::set_interpolators, this);
 
 		const auto timeSensors = getNodes <X3D::TimeSensor> ({ animation }, { X3D::X3DConstants::TimeSensor });
 
@@ -459,10 +459,10 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		else
 			timeSensor = timeSensors .back ();
 
-		timeSensor -> isLive ()           .addInterest (this, &AnimationEditor::set_animation_live);
-		timeSensor -> isPaused ()         .addInterest (this, &AnimationEditor::set_active);
-		timeSensor -> isActive ()         .addInterest (this, &AnimationEditor::set_active);
-		timeSensor -> fraction_changed () .addInterest (this, &AnimationEditor::set_fraction);
+		timeSensor -> isLive ()           .addInterest (&AnimationEditor::set_animation_live, this);
+		timeSensor -> isPaused ()         .addInterest (&AnimationEditor::set_active, this);
+		timeSensor -> isActive ()         .addInterest (&AnimationEditor::set_active, this);
+		timeSensor -> fraction_changed () .addInterest (&AnimationEditor::set_fraction, this);
 
 		timeSensor -> cycleInterval () = getDuration () / (double) getFramesPerSecond ();
 		timeSensor -> isEvenLive (true);
@@ -525,7 +525,7 @@ AnimationEditor::set_interpolators ()
 					foundNodes .emplace (node -> getId (), node);
 					interpolatorIndex .emplace (field, interpolator);
 					interpolators .emplace (interpolator);
-					interpolator -> getField ("value_changed") -> addInterest (this, &AnimationEditor::set_value);
+					interpolator -> getField ("value_changed") -> addInterest (&AnimationEditor::set_value, this);
 				}
 				catch (const X3D::X3DError &)
 				{ }
@@ -571,7 +571,7 @@ void
 AnimationEditor::removeInterpolators ()
 {
 	for (const auto & interpolator : interpolators)
-		interpolator -> getField ("value_changed") -> removeInterest (this, &AnimationEditor::set_value);
+		interpolator -> getField ("value_changed") -> removeInterest (&AnimationEditor::set_value, this);
 
 	interpolatorIndex .clear ();
 	interpolators     .clear ();
@@ -740,9 +740,9 @@ AnimationEditor::addNode (const X3D::SFNode & node)
 
 	getTreeView () .expand_row (Gtk::TreePath ("0"), false);
 
-	node -> name_changed ()   .addInterest (this, &AnimationEditor::set_name,                node -> getId (), getTreeStore () -> get_path (parent));
-	node -> fields_changed () .addInterest (this, &AnimationEditor::set_user_defined_fields, node -> getId (), getTreeStore () -> get_path (parent));
-	node -> isLive ()         .addInterest (this, &AnimationEditor::set_live,                node -> getId (), getTreeStore () -> get_path (parent));
+	node -> name_changed ()   .addInterest (&AnimationEditor::set_name, this,                node -> getId (), getTreeStore () -> get_path (parent));
+	node -> fields_changed () .addInterest (&AnimationEditor::set_user_defined_fields, this, node -> getId (), getTreeStore () -> get_path (parent));
+	node -> isLive ()         .addInterest (&AnimationEditor::set_live, this,                node -> getId (), getTreeStore () -> get_path (parent));
 
 	addFields (node, parent);
 }
@@ -750,12 +750,12 @@ AnimationEditor::addNode (const X3D::SFNode & node)
 void
 AnimationEditor::removeNode (const X3D::SFNode & node)
 {
-	node -> name_changed ()   .removeInterest (this, &AnimationEditor::set_name);
-	node -> fields_changed () .removeInterest (this, &AnimationEditor::set_user_defined_fields);
-	node -> isLive ()         .removeInterest (this, &AnimationEditor::set_animation_live);
+	node -> name_changed ()   .removeInterest (&AnimationEditor::set_name, this);
+	node -> fields_changed () .removeInterest (&AnimationEditor::set_user_defined_fields, this);
+	node -> isLive ()         .removeInterest (&AnimationEditor::set_animation_live, this);
 
 	for (const auto & field : node -> getFieldDefinitions ())
-		field -> removeInterest (this, &AnimationEditor::set_tainted);
+		field -> removeInterest (&AnimationEditor::set_tainted, this);
 }
 
 void
@@ -788,7 +788,7 @@ AnimationEditor::addFields (const X3D::SFNode & node, Gtk::TreeIter & parent)
 		(*child) [columns .tainted] = false;
 		(*child) [columns .visible] = true;
 
-		field -> addInterest (this, &AnimationEditor::set_tainted, getTreeStore () -> get_path (child));
+		field -> addInterest (&AnimationEditor::set_tainted, this, getTreeStore () -> get_path (child));
 	}
 }
 
@@ -1199,12 +1199,12 @@ AnimationEditor::on_time ()
 	undoStep -> addUndoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/duration", getDuration ());
 	undoStep -> addRedoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/duration", getDurationAdjustment () -> get_value ());
 	animation -> setMetaData <int32_t> ("/Animation/duration", getDurationAdjustment () -> get_value ());
-	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration", true) .addInterest (this, &AnimationEditor::set_duration);
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/duration", true) .addInterest (&AnimationEditor::set_duration, this);
 
 	undoStep -> addUndoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/framesPerSecond", getFramesPerSecond ());
 	undoStep -> addRedoFunction ((setMetaData) &X3D::X3DNode::setMetaData, animation, "/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
 	animation -> setMetaData <int32_t> ("/Animation/framesPerSecond", getFPSAdjustment () -> get_value ());
-	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond", true) .addInterest (this, &AnimationEditor::set_frames_per_second);
+	animation -> getMetaData <X3D::MFInt32> ("/Animation/framesPerSecond", true) .addInterest (&AnimationEditor::set_frames_per_second, this);
 
 	// Adjust TimeSensor
 
@@ -2289,7 +2289,7 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 		const auto interpolator = getCurrentContext () -> createNode (typeName);
 		const auto name         = getInterpolatorName (node, field);
 		
-		interpolator -> getField ("value_changed") -> addInterest (this, &AnimationEditor::set_value);
+		interpolator -> getField ("value_changed") -> addInterest (&AnimationEditor::set_value, this);
 
 		const X3D::X3DPtr <X3D::X3DNode> interpolatorNode (interpolator);
 		interpolatorIndex .emplace (field, interpolatorNode);

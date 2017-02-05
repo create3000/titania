@@ -62,7 +62,7 @@ X3DOptionNode::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	addInterest (this, &X3DOptionNode::eventsProcessed);
+	addInterest (&X3DOptionNode::eventsProcessed, this);
 }
 
 void

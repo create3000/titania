@@ -75,7 +75,7 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 {
 	addChildObjects (shapeNodes, geometryNodeBuffer, text, measure);
 
-	geometryNodeBuffer .addInterest (this, &TextEditor::set_node);
+	geometryNodeBuffer .addInterest (&TextEditor::set_node, this);
 
 	getTextCharSpacingAdjustment () -> set_step_increment (1e-3);
 	getTextMaxExtentAdjustment ()   -> set_step_increment (1e-3);
@@ -108,12 +108,12 @@ TextEditor::set_selection (const X3D::MFNode & selection)
 	X3DFontStyleNodeEditor::set_selection (selection);
 
 	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .removeInterest (this, &TextEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&TextEditor::set_geometry, this);
 
 	shapeNodes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
 	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> geometry () .addInterest (this, &TextEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&TextEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -149,8 +149,8 @@ TextEditor::on_text_toggled ()
 		{
 			auto & field = shapeNode -> geometry ();
 
-			field .removeInterest (this, &TextEditor::set_geometry);
-			field .addInterest (this, &TextEditor::connectGeometry);
+			field .removeInterest (&TextEditor::set_geometry, this);
+			field .addInterest (&TextEditor::connectGeometry, this);
 
 			if (getTextCheckButton () .get_active ())
 				getBrowserWindow () -> replaceNode (getCurrentContext (), shapeNode, field, text, undoStep);
@@ -177,8 +177,8 @@ TextEditor::set_geometry ()
 void
 TextEditor::connectGeometry (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &TextEditor::connectGeometry);
-	field .addInterest (this, &TextEditor::set_geometry);
+	field .removeInterest (&TextEditor::connectGeometry, this);
+	field .addInterest (&TextEditor::set_geometry, this);
 }
 
 void
@@ -196,9 +196,9 @@ TextEditor::set_node ()
 	if (text)
 	{
 		measure = getCurrentContext () -> createNode <X3D::Text> ();
-		measure -> lineBounds () .addInterest (this, &TextEditor::set_lineBounds);
+		measure -> lineBounds () .addInterest (&TextEditor::set_lineBounds, this);
 
-		text -> length ()    .addInterest (this, &TextEditor::set_length);
+		text -> length ()    .addInterest (&TextEditor::set_length, this);
 		text -> string ()    .addInterest (measure -> string ());
 		text -> fontStyle () .addInterest (measure -> fontStyle ());
 
@@ -265,8 +265,8 @@ TextEditor::set_char_spacing (const double kerning)
 
 	// Set text length
 
-	text -> length () .removeInterest (this, &TextEditor::set_length);
-	text -> length () .addInterest (this, &TextEditor::connectLength);
+	text -> length () .removeInterest (&TextEditor::set_length, this);
+	text -> length () .addInterest (&TextEditor::connectLength, this);
 	text -> length () .addEvent ();
 
 	if (kerning)
@@ -316,8 +316,8 @@ TextEditor::set_length ()
 void
 TextEditor::connectLength (const X3D::MFFloat & field)
 {
-	field .removeInterest (this, &TextEditor::connectLength);
-	field .addInterest (this, &TextEditor::set_length);
+	field .removeInterest (&TextEditor::connectLength, this);
+	field .addInterest (&TextEditor::set_length, this);
 }
 
 void

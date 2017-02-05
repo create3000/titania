@@ -109,7 +109,7 @@ HistoryView::configure ()
 void
 HistoryView::on_map ()
 {
-	getBrowserWindow () -> getHistory () -> addInterest (this, &HistoryView::set_history);
+	getBrowserWindow () -> getHistory () -> addInterest (&HistoryView::set_history, this);
 
 	set_history ();
 }
@@ -117,7 +117,7 @@ HistoryView::on_map ()
 void
 HistoryView::on_unmap ()
 {
-	getBrowserWindow () -> getHistory () -> removeInterest (this, &HistoryView::set_history);
+	getBrowserWindow () -> getHistory () -> removeInterest (&HistoryView::set_history, this);
 }
 
 void

@@ -109,9 +109,9 @@ ExportedNode::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	node .addInterest (this, &ExportedNode::set_node);
+	node .addInterest (&ExportedNode::set_node, this);
 
-	shutdown () .addInterest (node, &X3DWeakPtr <X3DBaseNode>::dispose);
+	shutdown () .addInterest (&X3DWeakPtr <X3DBaseNode>::dispose, node);
 
 	set_node ();
 }

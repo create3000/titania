@@ -539,11 +539,11 @@ X3DFontStyleNode::initialize ()
 {
 	X3DNode::initialize ();
 
-	style ()       .addInterest (this, &X3DFontStyleNode::set_style);
-	horizontal ()  .addInterest (this, &X3DFontStyleNode::set_justify);
-	leftToRight () .addInterest (this, &X3DFontStyleNode::set_justify);
-	topToBottom () .addInterest (this, &X3DFontStyleNode::set_justify);
-	justify ()     .addInterest (this, &X3DFontStyleNode::set_justify);
+	style ()       .addInterest (&X3DFontStyleNode::set_style, this);
+	horizontal ()  .addInterest (&X3DFontStyleNode::set_justify, this);
+	leftToRight () .addInterest (&X3DFontStyleNode::set_justify, this);
+	topToBottom () .addInterest (&X3DFontStyleNode::set_justify, this);
+	justify ()     .addInterest (&X3DFontStyleNode::set_justify, this);
 
 	set_style ();
 	set_justify ();

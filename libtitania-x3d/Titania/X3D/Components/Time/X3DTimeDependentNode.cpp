@@ -97,17 +97,17 @@ X3DTimeDependentNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &X3DTimeDependentNode::set_live);
-	isEvenLive () .addInterest (this, &X3DTimeDependentNode::set_live);
-	isLive ()     .addInterest (this, &X3DTimeDependentNode::set_live);
+	getExecutionContext () -> isLive () .addInterest (&X3DTimeDependentNode::set_live, this);
+	isEvenLive () .addInterest (&X3DTimeDependentNode::set_live, this);
+	isLive ()     .addInterest (&X3DTimeDependentNode::set_live, this);
 
-	initialized   .addInterest (this, &X3DTimeDependentNode::set_loop);
-	enabled ()    .addInterest (this, &X3DTimeDependentNode::set_enabled);
-	loop ()       .addInterest (this, &X3DTimeDependentNode::set_loop);
-	startTime ()  .addInterest (this, &X3DTimeDependentNode::set_startTime);
-	resumeTime () .addInterest (this, &X3DTimeDependentNode::set_resumeTime);
-	pauseTime ()  .addInterest (this, &X3DTimeDependentNode::set_pauseTime);
-	stopTime ()   .addInterest (this, &X3DTimeDependentNode::set_stopTime);
+	initialized   .addInterest (&X3DTimeDependentNode::set_loop, this);
+	enabled ()    .addInterest (&X3DTimeDependentNode::set_enabled, this);
+	loop ()       .addInterest (&X3DTimeDependentNode::set_loop, this);
+	startTime ()  .addInterest (&X3DTimeDependentNode::set_startTime, this);
+	resumeTime () .addInterest (&X3DTimeDependentNode::set_resumeTime, this);
+	pauseTime ()  .addInterest (&X3DTimeDependentNode::set_pauseTime, this);
+	stopTime ()   .addInterest (&X3DTimeDependentNode::set_stopTime, this);
 
 	startTimeValue  = startTime ();
 	resumeTimeValue = resumeTime ();
@@ -124,15 +124,15 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> prepareEvents ()   .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
-		getExecutionContext () -> isLive () .removeInterest (this, &X3DTimeDependentNode::set_live);
+		getBrowser () -> prepareEvents ()   .removeInterest (&X3DTimeDependentNode::prepareEvents, this);
+		getExecutionContext () -> isLive () .removeInterest (&X3DTimeDependentNode::set_live, this);
 	}
 
 	X3DChildNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
 	{
-		getExecutionContext () -> isLive () .addInterest (this, &X3DTimeDependentNode::set_live);
+		getExecutionContext () -> isLive () .addInterest (&X3DTimeDependentNode::set_live, this);
 
 		set_live ();
 	}
@@ -297,7 +297,7 @@ X3DTimeDependentNode::do_start ()
 
 		if (getLive ())
 		{
-			getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
+			getBrowser () -> prepareEvents () .addInterest (&X3DTimeDependentNode::prepareEvents, this);
 		}
 		else if (not disabled)
 		{
@@ -334,7 +334,7 @@ X3DTimeDependentNode::real_resume ()
 
 	set_resume (interval);
 
-	getBrowser () -> prepareEvents () .addInterest (this, &X3DTimeDependentNode::prepareEvents);
+	getBrowser () -> prepareEvents () .addInterest (&X3DTimeDependentNode::prepareEvents, this);
 	getBrowser () -> addEvent ();
 }
 
@@ -360,7 +360,7 @@ X3DTimeDependentNode::real_pause ()
 
 	set_pause ();
 
-	getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
+	getBrowser () -> prepareEvents () .removeInterest (&X3DTimeDependentNode::prepareEvents, this);
 }
 
 void
@@ -386,7 +386,7 @@ X3DTimeDependentNode::stop ()
 		isActive () = false;
 
 		if (getLive ())
-			getBrowser () -> prepareEvents () .removeInterest (this, &X3DTimeDependentNode::prepareEvents);
+			getBrowser () -> prepareEvents () .removeInterest (&X3DTimeDependentNode::prepareEvents, this);
 	}
 }
 

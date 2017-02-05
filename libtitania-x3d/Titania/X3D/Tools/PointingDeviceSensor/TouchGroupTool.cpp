@@ -71,7 +71,7 @@ TouchGroupTool::realize ()
 {
 	X3DGroupingNodeTool::realize ();
 	
-	getNode <TouchGroup> () -> enabled () .addInterest (this, &TouchGroupTool::set_enabled);
+	getNode <TouchGroup> () -> enabled () .addInterest (&TouchGroupTool::set_enabled, this);
 
 	set_enabled (getNode <TouchGroup> () -> enabled ());
 }

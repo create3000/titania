@@ -99,9 +99,9 @@ CoordinateDamper::initialize ()
 {
 	X3DDamperNode::initialize ();
 
-	set_value ()       .addInterest (this, &CoordinateDamper::set_value_);
-	set_destination () .addInterest (this, &CoordinateDamper::set_destination_);
-	order ()           .addInterest (this, &CoordinateDamper::set_order);
+	set_value ()       .addInterest (&CoordinateDamper::set_value_, this);
+	set_destination () .addInterest (&CoordinateDamper::set_destination_, this);
+	order ()           .addInterest (&CoordinateDamper::set_order, this);
 
 	buffer .resize (getOrder () + 1);
 

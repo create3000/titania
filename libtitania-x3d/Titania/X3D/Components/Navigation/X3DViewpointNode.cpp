@@ -142,12 +142,12 @@ X3DViewpointNode::initialize ()
 	easeInEaseOut -> modifiedFraction_changed () .addInterest (scaleInterpolator            -> set_fraction ());
 	easeInEaseOut -> modifiedFraction_changed () .addInterest (scaleOrientationInterpolator -> set_fraction ());
 
-	positionInterpolator         -> value_changed () .addInterest (this, &X3DViewpointNode::set_positionOffset);
+	positionInterpolator         -> value_changed () .addInterest (&X3DViewpointNode::set_positionOffset, this);
 	orientationInterpolator      -> value_changed () .addInterest (orientationOffset ());
-	scaleInterpolator            -> value_changed () .addInterest (this, &X3DViewpointNode::set_scaleOffset);
+	scaleInterpolator            -> value_changed () .addInterest (&X3DViewpointNode::set_scaleOffset, this);
 	scaleOrientationInterpolator -> value_changed () .addInterest (scaleOrientationOffset ());
 
-	isBound () .addInterest (this, &X3DViewpointNode::set_bind_);
+	isBound () .addInterest (&X3DViewpointNode::set_bind_, this);
 }
 
 void
@@ -285,10 +285,10 @@ X3DViewpointNode::isLockedToCamera (const bool value)
 	lockToCamera = value;
 
 	if (lockToCamera)
-		addInterest (this, &X3DViewpointNode::applyUserOffsets);
+		addInterest (&X3DViewpointNode::applyUserOffsets, this);
 
 	else
-		removeInterest (this, &X3DViewpointNode::applyUserOffsets);
+		removeInterest (&X3DViewpointNode::applyUserOffsets, this);
 }
 
 void
@@ -336,7 +336,7 @@ X3DViewpointNode::straighten (const bool horizon)
 	timeSensor -> cycleInterval () = 0.4;
 	timeSensor -> stopTime ()      = getCurrentTime ();
 	timeSensor -> startTime ()     = getCurrentTime ();
-	timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);
+	timeSensor -> isActive () .addInterest (&X3DViewpointNode::set_isActive, this);
 
 	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 
@@ -430,7 +430,7 @@ X3DViewpointNode::lookAt (const Vector3d & point, const double distance, const d
 	timeSensor -> cycleInterval () = 0.2;
 	timeSensor -> stopTime ()      = getCurrentTime ();
 	timeSensor -> startTime ()     = getCurrentTime ();
-	timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);
+	timeSensor -> isActive () .addInterest (&X3DViewpointNode::set_isActive, this);
 
 	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
 
@@ -501,7 +501,7 @@ X3DViewpointNode::transitionStart (X3DViewpointNode* const fromViewpoint)
 			timeSensor -> cycleInterval () = transitionTime;
 			timeSensor -> stopTime ()      = getCurrentTime ();
 			timeSensor -> startTime ()     = getCurrentTime ();
-			timeSensor -> isActive () .addInterest (this, &X3DViewpointNode::set_isActive);
+			timeSensor -> isActive () .addInterest (&X3DViewpointNode::set_isActive, this);
 
 			Vector3d   relativePosition, relativeScale;
 			Rotation4d relativeOrientation, relativeScaleOrientation;
@@ -551,7 +551,7 @@ void
 X3DViewpointNode::transitionStop ()
 {
 	timeSensor -> stopTime () = getCurrentTime ();
-	timeSensor -> isActive () .removeInterest (this, &X3DViewpointNode::set_isActive);
+	timeSensor -> isActive () .removeInterest (&X3DViewpointNode::set_isActive, this);
 }
 
 // Notify NavigationInfos when transitions are complete.

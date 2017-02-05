@@ -114,7 +114,7 @@ CollisionCollection::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	collidables () .addInterest (this, &CollisionCollection::set_collidables);
+	collidables () .addInterest (&CollisionCollection::set_collidables, this);
 
 	set_collidables ();
 }

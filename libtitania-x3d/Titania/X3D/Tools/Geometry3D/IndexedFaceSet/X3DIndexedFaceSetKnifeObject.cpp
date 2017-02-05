@@ -112,9 +112,9 @@ X3DIndexedFaceSetKnifeObject::X3DIndexedFaceSetKnifeObject () :
 void
 X3DIndexedFaceSetKnifeObject::initialize ()
 {
-	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_loadState);
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetKnifeObject::set_loadState, this);
 
-	toolType () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_toolType);
+	toolType () .addInterest (&X3DIndexedFaceSetKnifeObject::set_toolType, this);
 }
 
 void
@@ -137,9 +137,9 @@ X3DIndexedFaceSetKnifeObject::set_loadState ()
 		knifeArc              = inlineNode -> getExportedNode <Transform>        ("KnifeArc");
 		knifeArcGeometry      = inlineNode -> getExportedNode <Arc2D>            ("KnifeArcGeometry");
 
-		knifeTouchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint);
-		knifeTouchSensor -> isOver ()           .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_touch_sensor_over);
-		knifeTouchSensor -> isActive ()         .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_touch_sensor_active);
+		knifeTouchSensor -> hitPoint_changed () .addInterest (&X3DIndexedFaceSetKnifeObject::set_touch_sensor_hitPoint, this);
+		knifeTouchSensor -> isOver ()           .addInterest (&X3DIndexedFaceSetKnifeObject::set_touch_sensor_over, this);
+		knifeTouchSensor -> isActive ()         .addInterest (&X3DIndexedFaceSetKnifeObject::set_touch_sensor_active, this);
 
 		set_toolType ();
 	}
@@ -156,7 +156,7 @@ X3DIndexedFaceSetKnifeObject::set_toolType ()
 	{
 		if (toolType () == "CUT")
 		{
-			toolSwitch -> whichChoice () = 2;
+			toolSwitch -> whichChoice () = ToolNumber::CUT;
 
 			getHotSwitch () -> whichChoice () = true;
 
@@ -299,7 +299,7 @@ X3DIndexedFaceSetKnifeObject::set_plane_sensor (const X3DPtr <PlaneSensor> & pla
 	const auto normal       = getPolygonNormal (getFaceSelection () -> getFaceVertices (cutFace));		               
 	const auto axisRotation = Rotation4d (Vector3d (0, 0, 1), Vector3d (normal));
 
-	planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation, planeSensor .getValue ());
+	planeSensor -> translation_changed () .addInterest (&X3DIndexedFaceSetKnifeObject::set_plane_sensor_translation, this, planeSensor .getValue ());
 
 	planeSensor -> enabled ()      = true;
 	planeSensor -> axisRotation () = axisRotation;

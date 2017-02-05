@@ -162,8 +162,8 @@ X3DAngleEditor::initialize ()
 	snapDistance     .setNodes (angleTools);
 	snapToCenter     .setNodes (angleTools);
 
-	angleTool -> rotation () .addInterest (this, &X3DAngleEditor::set_rotation);
-	getCurrentScene ()       .addInterest (this, &X3DAngleEditor::set_majorLineEvery);
+	angleTool -> rotation () .addInterest (&X3DAngleEditor::set_rotation, this);
+	getCurrentScene ()       .addInterest (&X3DAngleEditor::set_majorLineEvery, this);
 
 	on_grid_toggled ();
 	set_rotation ();
@@ -190,8 +190,8 @@ X3DAngleEditor::on_angle_plane_changed ()
 
 	addUndoFunction <X3D::SFRotation> (nodes, "rotation", undoStep);
 
-	grid -> rotation () .removeInterest (this, &X3DAngleEditor::set_rotation);
-	grid -> rotation () .addInterest (this, &X3DAngleEditor::connectRotation);
+	grid -> rotation () .removeInterest (&X3DAngleEditor::set_rotation, this);
+	grid -> rotation () .addInterest (&X3DAngleEditor::connectRotation, this);
 
 	switch (getAnglePlaneComboBoxText () .get_active_row_number ())
 	{
@@ -237,8 +237,8 @@ X3DAngleEditor::set_rotation ()
 void
 X3DAngleEditor::connectRotation (const X3D::SFRotation & field)
 {
-	field .removeInterest (this, &X3DAngleEditor::connectRotation);
-	field .addInterest (this, &X3DAngleEditor::set_rotation);
+	field .removeInterest (&X3DAngleEditor::connectRotation, this);
+	field .addInterest (&X3DAngleEditor::set_rotation, this);
 }
 
 void

@@ -101,8 +101,8 @@ CollidableShape::initialize ()
 {
 	X3DNBodyCollidableNode::initialize ();
 
-	shape () .addInterest (this, &CollidableShape::set_shape);
-	addInterest (this, &CollidableShape::eventsProcessed);
+	shape () .addInterest (&CollidableShape::set_shape, this);
+	addInterest (&CollidableShape::eventsProcessed, this);
 
 	set_shape ();
 	eventsProcessed ();
@@ -144,7 +144,7 @@ CollidableShape::set_shape ()
 	if (shapeNode)
 	{
 		shapeNode -> isCameraObject () .removeInterest (const_cast <SFBool &> (isCameraObject ()));
-		shapeNode -> geometry () .removeInterest (this, &CollidableShape::set_geometry);
+		shapeNode -> geometry () .removeInterest (&CollidableShape::set_geometry, this);
 	}
 
 	shapeNode .set (x3d_cast <Shape*> (shape ()));
@@ -152,7 +152,7 @@ CollidableShape::set_shape ()
 	if (shapeNode)
 	{
 		shapeNode -> isCameraObject () .addInterest (const_cast <SFBool &> (isCameraObject ()));
-		shapeNode -> geometry () .addInterest (this, &CollidableShape::set_geometry);
+		shapeNode -> geometry () .addInterest (&CollidableShape::set_geometry, this);
 
 		setCameraObject (shapeNode -> isCameraObject ());
 	}
@@ -166,13 +166,13 @@ void
 CollidableShape::set_geometry ()
 {
 	if (geometryNode)
-		geometryNode -> removeInterest (this, &CollidableShape::set_collidableGeometry);
+		geometryNode -> removeInterest (&CollidableShape::set_collidableGeometry, this);
 
 	if (shapeNode)
 		geometryNode = shapeNode -> getGeometry ();
 
 	if (geometryNode)
-		geometryNode -> addInterest (this, &CollidableShape::set_collidableGeometry);
+		geometryNode -> addInterest (&CollidableShape::set_collidableGeometry, this);
 
 	set_collidableGeometry ();
 }

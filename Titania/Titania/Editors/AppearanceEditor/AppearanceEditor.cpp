@@ -79,7 +79,7 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	                 appearanceNode,
 	                 appearanceBuffer);
 
-	appearanceBuffer .addInterest (this, &AppearanceEditor::set_node);
+	appearanceBuffer .addInterest (&AppearanceEditor::set_node, this);
 	setup ();
 }
 
@@ -112,13 +112,13 @@ AppearanceEditor::set_selection (const X3D::MFNode & selection_)
 	X3DAppearanceEditorInterface::set_selection (selection_);
 
 	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> appearance () .removeInterest (this, &AppearanceEditor::set_appearance);
+		shapeNode -> appearance () .removeInterest (&AppearanceEditor::set_appearance, this);
 
 	selection  = selection_;
 	shapeNodes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
 	for (const auto & shapeNode : shapeNodes)
-		shapeNode -> appearance () .addInterest (this, &AppearanceEditor::set_appearance);
+		shapeNode -> appearance () .addInterest (&AppearanceEditor::set_appearance, this);
 
 	set_appearance ();
 }
@@ -145,8 +145,8 @@ AppearanceEditor::on_appearance_toggled ()
 		{
 			auto & field = shapeNode -> getField <X3D::SFNode> ("appearance");
 
-			field .removeInterest (this, &AppearanceEditor::set_appearance);
-			field .addInterest (this, &AppearanceEditor::connectAppearance);
+			field .removeInterest (&AppearanceEditor::set_appearance, this);
+			field .addInterest (&AppearanceEditor::connectAppearance, this);
 
 			if (getAppearanceCheckButton () .get_active ())
 				getBrowserWindow () -> replaceNode (getCurrentContext (), shapeNode, field, appearanceNode, undoStep);
@@ -202,8 +202,8 @@ AppearanceEditor::set_node ()
 void
 AppearanceEditor::connectAppearance (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &AppearanceEditor::connectAppearance);
-	field .addInterest (this, &AppearanceEditor::set_appearance);
+	field .removeInterest (&AppearanceEditor::connectAppearance, this);
+	field .addInterest (&AppearanceEditor::set_appearance, this);
 }
 
 void

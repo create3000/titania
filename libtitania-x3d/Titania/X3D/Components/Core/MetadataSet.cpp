@@ -98,7 +98,7 @@ MetadataSet::initialize ()
 	X3DNode::initialize ();
 	X3DMetadataObject::initialize ();
 
-	value () .addInterest (this, &MetadataSet::set_value);
+	value () .addInterest (&MetadataSet::set_value, this);
 
 	set_value ();
 }

@@ -158,10 +158,10 @@ ExternProtoDeclaration::initialize ()
 	X3DProtoDeclarationNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
-	isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
+	getExecutionContext () -> isLive () .addInterest (&ExternProtoDeclaration::set_live, this);
+	isLive () .addInterest (&ExternProtoDeclaration::set_live, this);
 
-	url () .addInterest (this, &ExternProtoDeclaration::set_url);
+	url () .addInterest (&ExternProtoDeclaration::set_url, this);
 }
 
 void
@@ -169,7 +169,7 @@ ExternProtoDeclaration::setExecutionContext (X3DExecutionContext* const executio
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getExecutionContext () -> isLive () .removeInterest (this, &ExternProtoDeclaration::set_live);
+	getExecutionContext () -> isLive () .removeInterest (&ExternProtoDeclaration::set_live, this);
 
 	if (scene == getExecutionContext () -> getBrowser () -> getPrivateScene ())
 		scene = executionContext -> getBrowser () -> getPrivateScene ();
@@ -184,7 +184,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 	{
-		getExecutionContext () -> isLive () .addInterest (this, &ExternProtoDeclaration::set_live);
+		getExecutionContext () -> isLive () .addInterest (&ExternProtoDeclaration::set_live, this);
 
 		set_live ();
 	}

@@ -67,7 +67,7 @@ SFStringEntry::SFStringEntry (X3DBaseInterface* const editor,
 {
 	addChildObjects (nodes, buffer);
 
-	buffer .addInterest (this, &SFStringEntry::set_buffer);
+	buffer .addInterest (&SFStringEntry::set_buffer, this);
 
 	entry .signal_changed () .connect (sigc::mem_fun (*this, &SFStringEntry::on_changed));
 	setup ();
@@ -80,7 +80,7 @@ SFStringEntry::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFString> (name) .removeInterest (this, &SFStringEntry::set_field);
+			node -> getField <X3D::SFString> (name) .removeInterest (&SFStringEntry::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -92,7 +92,7 @@ SFStringEntry::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFString> (name) .addInterest (this, &SFStringEntry::set_field);
+			node -> getField <X3D::SFString> (name) .addInterest (&SFStringEntry::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -118,8 +118,8 @@ SFStringEntry::on_changed ()
 		{
 			auto & field = node -> getField <X3D::SFString> (name);
 
-			field .removeInterest (this, &SFStringEntry::set_field);
-			field .addInterest (this, &SFStringEntry::connect);
+			field .removeInterest (&SFStringEntry::set_field, this);
+			field .addInterest (&SFStringEntry::connect, this);
 
 			field = entry .get_text ();
 		}
@@ -163,8 +163,8 @@ SFStringEntry::set_buffer ()
 void
 SFStringEntry::connect (const X3D::SFString & field)
 {
-	field .removeInterest (this, &SFStringEntry::connect);
-	field .addInterest (this, &SFStringEntry::set_field);
+	field .removeInterest (&SFStringEntry::connect, this);
+	field .addInterest (&SFStringEntry::set_field, this);
 }
 
 } // puck

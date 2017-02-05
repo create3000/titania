@@ -165,8 +165,8 @@ X3DGridEditor::initialize ()
 	snapDistance     .setNodes (gridTools);
 	snapToCenter     .setNodes (gridTools);
 
-	gridTool -> rotation () .addInterest (this, &X3DGridEditor::set_rotation);
-	getCurrentScene ()      .addInterest (this, &X3DGridEditor::set_majorLineEvery);
+	gridTool -> rotation () .addInterest (&X3DGridEditor::set_rotation, this);
+	getCurrentScene ()      .addInterest (&X3DGridEditor::set_majorLineEvery, this);
 
 	on_grid_toggled ();
 	set_rotation ();
@@ -193,8 +193,8 @@ X3DGridEditor::on_grid_plane_changed ()
 
 	addUndoFunction <X3D::SFRotation> (nodes, "rotation", undoStep);
 
-	grid -> rotation () .removeInterest (this, &X3DGridEditor::set_rotation);
-	grid -> rotation () .addInterest (this, &X3DGridEditor::connectRotation);
+	grid -> rotation () .removeInterest (&X3DGridEditor::set_rotation, this);
+	grid -> rotation () .addInterest (&X3DGridEditor::connectRotation, this);
 
 	switch (getGridPlaneComboBoxText () .get_active_row_number ())
 	{
@@ -240,8 +240,8 @@ X3DGridEditor::set_rotation ()
 void
 X3DGridEditor::connectRotation (const X3D::SFRotation & field)
 {
-	field .removeInterest (this, &X3DGridEditor::connectRotation);
-	field .addInterest (this, &X3DGridEditor::set_rotation);
+	field .removeInterest (&X3DGridEditor::connectRotation, this);
+	field .addInterest (&X3DGridEditor::set_rotation, this);
 }
 
 void

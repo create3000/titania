@@ -85,7 +85,7 @@ TextureTransformMatrix3D::initialize ()
 {
 	X3DTextureTransformNode::initialize ();
 
-	addInterest (this, &TextureTransformMatrix3D::eventsProcessed);
+	addInterest (&TextureTransformMatrix3D::eventsProcessed, this);
 
 	eventsProcessed ();
 }

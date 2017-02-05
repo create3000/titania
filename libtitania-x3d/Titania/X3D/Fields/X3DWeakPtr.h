@@ -268,7 +268,7 @@ private:
 		if (value)
 		{
 			value -> addWeakParent (this);
-			value -> X3DInput::disposed () .addInterest (this, &X3DWeakPtr::set_disposed);
+			value -> X3DInput::disposed () .addInterest (&X3DWeakPtr::set_disposed, this);
 		}
 	}
 
@@ -279,7 +279,7 @@ private:
 		{
 			setObject (nullptr);
 
-			value -> X3DInput::disposed () .removeInterest (this, &X3DWeakPtr::set_disposed);
+			value -> X3DInput::disposed () .removeInterest (&X3DWeakPtr::set_disposed, this);
 			value -> removeWeakParent (this);
 		}
 	}

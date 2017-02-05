@@ -109,9 +109,9 @@ PointSet::initialize ()
 
 	setShader (getBrowser () -> getPointShader ());
 
-	attrib () .addInterest (this, &PointSet::set_attrib);
-	color ()  .addInterest (this, &PointSet::set_color);
-	coord ()  .addInterest (this, &PointSet::set_coord);
+	attrib () .addInterest (&PointSet::set_attrib, this);
+	color ()  .addInterest (&PointSet::set_color, this);
+	coord ()  .addInterest (&PointSet::set_coord, this);
 
 	set_attrib ();
 	set_color ();
@@ -169,7 +169,7 @@ PointSet::set_color ()
 	if (colorNode)
 	{
 		colorNode -> removeInterest (this);
-		colorNode -> removeInterest (this, &PointSet::set_transparency);
+		colorNode -> removeInterest (&PointSet::set_transparency, this);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
@@ -177,7 +177,7 @@ PointSet::set_color ()
 	if (colorNode)
 	{
 		colorNode -> addInterest (this);
-		colorNode -> addInterest (this, &PointSet::set_transparency);
+		colorNode -> addInterest (&PointSet::set_transparency, this);
 		
 		set_transparency ();
 	}

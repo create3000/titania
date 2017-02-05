@@ -70,7 +70,7 @@ X3DGridTool::X3DGridTool () :
 {
 	addChildObjects (browser);
 
-	getBrowserWindow () -> isEditor () .addInterest (this, &X3DGridTool::update);
+	getBrowserWindow () -> isEditor () .addInterest (&X3DGridTool::update, this);
 }
 
 void
@@ -100,55 +100,55 @@ void
 X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 {
 	if (browser)
-		browser -> getActiveLayer () .removeInterest (this, &X3DGridTool::update);
+		browser -> getActiveLayer () .removeInterest (&X3DGridTool::update, this);
 
 	browser = value;
 
 	getTool () -> setExecutionContext (browser -> getPrivateScene ());
 
-	browser -> getActiveLayer () .addInterest (this, &X3DGridTool::update);
+	browser -> getActiveLayer () .addInterest (&X3DGridTool::update, this);
 
 	try
 	{
 		const auto metadataSet = getMetaData ("/Titania/" + getName ());
 
-		getTool () -> enabled () .removeInterest (this, &X3DGridTool::set_enabled);
-		getTool () -> enabled () .addInterest (this, &X3DGridTool::connectEnabled);
+		getTool () -> enabled () .removeInterest (&X3DGridTool::set_enabled, this);
+		getTool () -> enabled () .addInterest (&X3DGridTool::connectEnabled, this);
 
-		getTool () -> translation () .removeInterest (this, &X3DGridTool::set_translation);
-		getTool () -> translation () .addInterest (this, &X3DGridTool::connectTranslation);
+		getTool () -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+		getTool () -> translation () .addInterest (&X3DGridTool::connectTranslation, this);
 
-		getTool () -> rotation () .removeInterest (this, &X3DGridTool::set_rotation);
-		getTool () -> rotation () .addInterest (this, &X3DGridTool::connectRotation);
+		getTool () -> rotation () .removeInterest (&X3DGridTool::set_rotation, this);
+		getTool () -> rotation () .addInterest (&X3DGridTool::connectRotation, this);
 
-		getTool () -> scale () .removeInterest (this, &X3DGridTool::set_scale);
-		getTool () -> scale () .addInterest (this, &X3DGridTool::connectScale);
+		getTool () -> scale () .removeInterest (&X3DGridTool::set_scale, this);
+		getTool () -> scale () .addInterest (&X3DGridTool::connectScale, this);
 
-		getTool () -> dimension () .removeInterest (this, &X3DGridTool::set_dimension);
-		getTool () -> dimension () .addInterest (this, &X3DGridTool::connectDimension);
+		getTool () -> dimension () .removeInterest (&X3DGridTool::set_dimension, this);
+		getTool () -> dimension () .addInterest (&X3DGridTool::connectDimension, this);
 
-		getTool () -> majorLineEvery () .removeInterest (this, &X3DGridTool::set_majorLineEvery);
-		getTool () -> majorLineEvery () .addInterest (this, &X3DGridTool::connectMajorLineEvery);
+		getTool () -> majorLineEvery () .removeInterest (&X3DGridTool::set_majorLineEvery, this);
+		getTool () -> majorLineEvery () .addInterest (&X3DGridTool::connectMajorLineEvery, this);
 
-		getTool () -> majorLineOffset () .removeInterest (this, &X3DGridTool::set_majorLineOffset);
-		getTool () -> majorLineOffset () .addInterest (this, &X3DGridTool::connectMajorLineOffset);
+		getTool () -> majorLineOffset () .removeInterest (&X3DGridTool::set_majorLineOffset, this);
+		getTool () -> majorLineOffset () .addInterest (&X3DGridTool::connectMajorLineOffset, this);
 
-		getTool () -> color () .removeInterest (this, &X3DGridTool::set_color);
-		getTool () -> color () .addInterest (this, &X3DGridTool::connectColor);
+		getTool () -> color () .removeInterest (&X3DGridTool::set_color, this);
+		getTool () -> color () .addInterest (&X3DGridTool::connectColor, this);
 
-		getTool () -> lineColor () .removeInterest (this, &X3DGridTool::set_lineColor);
-		getTool () -> lineColor () .addInterest (this, &X3DGridTool::connectLineColor);
+		getTool () -> lineColor () .removeInterest (&X3DGridTool::set_lineColor, this);
+		getTool () -> lineColor () .addInterest (&X3DGridTool::connectLineColor, this);
 
-		getTool () -> majorLineColor () .removeInterest (this, &X3DGridTool::set_majorLineColor);
-		getTool () -> majorLineColor () .addInterest (this, &X3DGridTool::connectMajorLineColor);
+		getTool () -> majorLineColor () .removeInterest (&X3DGridTool::set_majorLineColor, this);
+		getTool () -> majorLineColor () .addInterest (&X3DGridTool::connectMajorLineColor, this);
 
-		getTool () -> snapDistance () .removeInterest (this, &X3DGridTool::set_snapDistance);
-		getTool () -> snapDistance () .addInterest (this, &X3DGridTool::connectSnapDistance);
+		getTool () -> snapDistance () .removeInterest (&X3DGridTool::set_snapDistance, this);
+		getTool () -> snapDistance () .addInterest (&X3DGridTool::connectSnapDistance, this);
 
-		getTool () -> snapToCenter () .removeInterest (this, &X3DGridTool::set_snapToCenter);
-		getTool () -> snapToCenter () .addInterest (this, &X3DGridTool::connectSnapToCenter);
+		getTool () -> snapToCenter () .removeInterest (&X3DGridTool::set_snapToCenter, this);
+		getTool () -> snapToCenter () .addInterest (&X3DGridTool::connectSnapToCenter, this);
 
-		getTool () -> isActive () .addInterest (this, &X3DGridTool::set_active);
+		getTool () -> isActive () .addInterest (&X3DGridTool::set_active, this);
 
 		try
 		{
@@ -203,8 +203,8 @@ X3DGridTool::update ()
 void
 X3DGridTool::enable ()
 {
-	getCurrentBrowser () .addInterest (this, &X3DGridTool::set_browser);
-	getCurrentBrowser () -> getActiveLayer () .addInterest (this, &X3DGridTool::update);
+	getCurrentBrowser () .addInterest (&X3DGridTool::set_browser, this);
+	getCurrentBrowser () -> getActiveLayer () .addInterest (&X3DGridTool::update, this);
 
 	set_browser (getCurrentBrowser ());
 }
@@ -214,8 +214,8 @@ X3DGridTool::disable ()
 {
 	if (browser)
 	{
-		getCurrentBrowser () .removeInterest (this, &X3DGridTool::set_browser);
-		getCurrentBrowser () -> getActiveLayer () .removeInterest (this, &X3DGridTool::update);
+		getCurrentBrowser () .removeInterest (&X3DGridTool::set_browser, this);
+		getCurrentBrowser () -> getActiveLayer () .removeInterest (&X3DGridTool::update, this);
 
 		set_browser (getMasterBrowser ());
 	}
@@ -398,85 +398,85 @@ X3DGridTool::set_active ()
 void
 X3DGridTool::connectEnabled (const X3D::SFBool & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectEnabled);
-	field .addInterest (this, &X3DGridTool::set_enabled);
+	field .removeInterest (&X3DGridTool::connectEnabled, this);
+	field .addInterest (&X3DGridTool::set_enabled, this);
 }
 
 void
 X3DGridTool::connectTranslation (const X3D::SFVec3f & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectTranslation);
-	field .addInterest (this, &X3DGridTool::set_translation);
+	field .removeInterest (&X3DGridTool::connectTranslation, this);
+	field .addInterest (&X3DGridTool::set_translation, this);
 }
 
 void
 X3DGridTool::connectRotation (const X3D::SFRotation & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectRotation);
-	field .addInterest (this, &X3DGridTool::set_rotation);
+	field .removeInterest (&X3DGridTool::connectRotation, this);
+	field .addInterest (&X3DGridTool::set_rotation, this);
 }
 
 void
 X3DGridTool::connectScale (const X3D::SFVec3f & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectScale);
-	field .addInterest (this, &X3DGridTool::set_scale);
+	field .removeInterest (&X3DGridTool::connectScale, this);
+	field .addInterest (&X3DGridTool::set_scale, this);
 }
 
 void
 X3DGridTool::connectDimension (const X3D::MFInt32 & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectDimension);
-	field .addInterest (this, &X3DGridTool::set_dimension);
+	field .removeInterest (&X3DGridTool::connectDimension, this);
+	field .addInterest (&X3DGridTool::set_dimension, this);
 }
 
 void
 X3DGridTool::connectMajorLineEvery (const X3D::MFInt32 & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectMajorLineEvery);
-	field .addInterest (this, &X3DGridTool::set_majorLineEvery);
+	field .removeInterest (&X3DGridTool::connectMajorLineEvery, this);
+	field .addInterest (&X3DGridTool::set_majorLineEvery, this);
 }
 
 void
 X3DGridTool::connectMajorLineOffset (const X3D::MFInt32 & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectMajorLineOffset);
-	field .addInterest (this, &X3DGridTool::set_majorLineOffset);
+	field .removeInterest (&X3DGridTool::connectMajorLineOffset, this);
+	field .addInterest (&X3DGridTool::set_majorLineOffset, this);
 }
 
 void
 X3DGridTool::connectColor (const X3D::SFColorRGBA & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectColor);
-	field .addInterest (this, &X3DGridTool::set_color);
+	field .removeInterest (&X3DGridTool::connectColor, this);
+	field .addInterest (&X3DGridTool::set_color, this);
 }
 
 void
 X3DGridTool::connectLineColor (const X3D::SFColorRGBA & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectLineColor);
-	field .addInterest (this, &X3DGridTool::set_lineColor);
+	field .removeInterest (&X3DGridTool::connectLineColor, this);
+	field .addInterest (&X3DGridTool::set_lineColor, this);
 }
 
 void
 X3DGridTool::connectMajorLineColor (const X3D::SFColorRGBA & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectMajorLineColor);
-	field .addInterest (this, &X3DGridTool::set_majorLineColor);
+	field .removeInterest (&X3DGridTool::connectMajorLineColor, this);
+	field .addInterest (&X3DGridTool::set_majorLineColor, this);
 }
 
 void
 X3DGridTool::connectSnapDistance (const X3D::SFDouble & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectSnapDistance);
-	field .addInterest (this, &X3DGridTool::set_snapDistance);
+	field .removeInterest (&X3DGridTool::connectSnapDistance, this);
+	field .addInterest (&X3DGridTool::set_snapDistance, this);
 }
 
 void
 X3DGridTool::connectSnapToCenter (const X3D::SFBool & field)
 {
-	field .removeInterest (this, &X3DGridTool::connectSnapToCenter);
-	field .addInterest (this, &X3DGridTool::set_snapToCenter);
+	field .removeInterest (&X3DGridTool::connectSnapToCenter, this);
+	field .addInterest (&X3DGridTool::set_snapToCenter, this);
 }
 
 X3DGridTool::~X3DGridTool ()

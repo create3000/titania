@@ -78,7 +78,7 @@ X3DTextureNodeEditor::X3DTextureNodeEditor () :
 {
 	addChildObjects (appearances, textureBuffer, textureNode);
 
-	textureBuffer .addInterest (this, &X3DTextureNodeEditor::set_node);
+	textureBuffer .addInterest (&X3DTextureNodeEditor::set_node, this);
 }
 
 void
@@ -93,12 +93,12 @@ X3DTextureNodeEditor::set_selection (const X3D::MFNode & selection)
 	X3DTexturePropertiesEditor::set_selection (selection);
 
 	for (const auto & appearance : appearances)
-		appearance -> texture () .removeInterest (this, &X3DTextureNodeEditor::set_texture);
+		appearance -> texture () .removeInterest (&X3DTextureNodeEditor::set_texture, this);
 
 	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
-		appearance -> texture () .addInterest (this, &X3DTextureNodeEditor::set_texture);
+		appearance -> texture () .addInterest (&X3DTextureNodeEditor::set_texture, this);
 
 	set_texture ();
 }
@@ -180,8 +180,8 @@ X3DTextureNodeEditor::on_texture_changed ()
 		{
 			auto & field = appearance -> texture ();
 
-			field .removeInterest (this, &X3DTextureNodeEditor::set_texture);
-			field .addInterest (this, &X3DTextureNodeEditor::connectTexture);
+			field .removeInterest (&X3DTextureNodeEditor::set_texture, this);
+			field .addInterest (&X3DTextureNodeEditor::connectTexture, this);
 
 			if (getTextureComboBoxText () .get_active_row_number () > 0)
 				getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, textureNode, undoStep);
@@ -320,8 +320,8 @@ X3DTextureNodeEditor::set_node ()
 void
 X3DTextureNodeEditor::connectTexture (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DTextureNodeEditor::connectTexture);
-	field .addInterest (this, &X3DTextureNodeEditor::set_texture);
+	field .removeInterest (&X3DTextureNodeEditor::connectTexture, this);
+	field .addInterest (&X3DTextureNodeEditor::set_texture, this);
 }
 
 void

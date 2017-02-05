@@ -110,10 +110,10 @@ MultiTexture::initialize ()
 {
 	X3DTextureNode::initialize ();
 
-	mode ()     .addInterest (this, &MultiTexture::set_mode);
-	source ()   .addInterest (this, &MultiTexture::set_source);
-	function () .addInterest (this, &MultiTexture::set_function);
-	texture ()  .addInterest (this, &MultiTexture::set_texture);
+	mode ()     .addInterest (&MultiTexture::set_mode, this);
+	source ()   .addInterest (&MultiTexture::set_source, this);
+	function () .addInterest (&MultiTexture::set_function, this);
+	texture ()  .addInterest (&MultiTexture::set_texture, this);
 
 	set_mode ();
 	set_source ();

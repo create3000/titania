@@ -72,8 +72,8 @@ X3DActiveLayerTool::initialize ()
 
 	tool -> setup ();
 
-	getInlineNode () -> checkLoadState () .addInterest (this, &X3DActiveLayerTool::set_loadState);
-	getBrowser () -> getActiveLayer ()    .addInterest (this, &X3DActiveLayerTool::set_activeLayer);
+	getInlineNode () -> checkLoadState () .addInterest (&X3DActiveLayerTool::set_loadState, this);
+	getBrowser () -> getActiveLayer ()    .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
 
 	set_activeLayer ();
 }
@@ -84,7 +84,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 
 {
-	getBrowser () -> getActiveLayer () .removeInterest (this, &X3DActiveLayerTool::set_activeLayer);
+	getBrowser () -> getActiveLayer () .removeInterest (&X3DActiveLayerTool::set_activeLayer, this);
 
 	tool -> setExecutionContext (value -> getBrowser ());
 
@@ -92,7 +92,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 	{
-		getBrowser () -> getActiveLayer () .addInterest (this, &X3DActiveLayerTool::set_activeLayer);
+		getBrowser () -> getActiveLayer () .addInterest (&X3DActiveLayerTool::set_activeLayer, this);
 
 		set_activeLayer ();
 	}

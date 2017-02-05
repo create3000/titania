@@ -106,10 +106,10 @@ X3DGeometryNode::setup ()
 		glGenBuffers (1, &normalBufferId);
 		glGenBuffers (1, &vertexBufferId);
 
-		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (this, &X3DGeometryNode::set_shading);
-		getBrowser () -> getFixedPipeline () .addInterest (this, &X3DGeometryNode::set_fixedPipeline);
+		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (&X3DGeometryNode::set_shading, this);
+		getBrowser () -> getFixedPipeline () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
 
-		addInterest (this, &X3DGeometryNode::update);
+		addInterest (&X3DGeometryNode::update, this);
 
 		update ();
 	}
@@ -122,8 +122,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> getRenderingProperties () -> getShading () .removeInterest (this, &X3DGeometryNode::set_shading);
-		getBrowser () -> getFixedPipeline () .removeInterest (this, &X3DGeometryNode::set_fixedPipeline);
+		getBrowser () -> getRenderingProperties () -> getShading () .removeInterest (&X3DGeometryNode::set_shading, this);
+		getBrowser () -> getFixedPipeline () .removeInterest (&X3DGeometryNode::set_fixedPipeline, this);
 
 		if (texCoordNode == getBrowser () -> getDefaultTexCoord ())
 			texCoordNode .set (executionContext -> getBrowser () -> getDefaultTexCoord ());
@@ -133,8 +133,8 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 	{
-		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (this, &X3DGeometryNode::set_shading);
-		getBrowser () -> getFixedPipeline () .addInterest (this, &X3DGeometryNode::set_fixedPipeline);
+		getBrowser () -> getRenderingProperties () -> getShading () .addInterest (&X3DGeometryNode::set_shading, this);
+		getBrowser () -> getFixedPipeline () .addInterest (&X3DGeometryNode::set_fixedPipeline, this);
 	}
 }
 

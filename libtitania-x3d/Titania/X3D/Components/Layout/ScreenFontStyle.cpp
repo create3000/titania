@@ -530,8 +530,8 @@ ScreenFontStyle::initialize ()
 {
 	X3DFontStyleNode::initialize ();
 
-	family () .addInterest (this, &ScreenFontStyle::set_font);
-	style  () .addInterest (this, &ScreenFontStyle::set_font);
+	family () .addInterest (&ScreenFontStyle::set_font, this);
+	style  () .addInterest (&ScreenFontStyle::set_font, this);
 
 	set_font ();
 }

@@ -146,22 +146,22 @@ X3DIndexedFaceSetSelectionObject::X3DIndexedFaceSetSelectionObject () :
 void
 X3DIndexedFaceSetSelectionObject::initialize ()
 {
-	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_loadState);
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetSelectionObject::set_loadState, this);
 
-	toolType ()             .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_toolType);
-	selectionType ()        .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_selectionType);
-	getCoord ()             .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_coord);
-	selectAll ()            .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_selectAll_);
-	deselectAll ()          .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_deselectAll_);
-	replaceSelection ()     .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_replaceSelection_);
-	addSelection ()         .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_addSelection_);
-	removeSelection ()      .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_removeSelection_);
-	replaceSelectedEdges () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_replaceSelectedEdges_);
-	addSelectedEdges ()     .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_addSelectedEdges_);
-	removeSelectedEdges ()  .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_removeSelectedEdges_);
-	replaceSelectedFaces () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_replaceSelectedFaces_);
-	addSelectedFaces ()     .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_addSelectedFaces_);
-	removeSelectedFaces ()  .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_removeSelectedFaces_);
+	toolType ()             .addInterest (&X3DIndexedFaceSetSelectionObject::set_toolType, this);
+	selectionType ()        .addInterest (&X3DIndexedFaceSetSelectionObject::set_selectionType, this);
+	getCoord ()             .addInterest (&X3DIndexedFaceSetSelectionObject::set_coord, this);
+	selectAll ()            .addInterest (&X3DIndexedFaceSetSelectionObject::set_selectAll_, this);
+	deselectAll ()          .addInterest (&X3DIndexedFaceSetSelectionObject::set_deselectAll_, this);
+	replaceSelection ()     .addInterest (&X3DIndexedFaceSetSelectionObject::set_replaceSelection_, this);
+	addSelection ()         .addInterest (&X3DIndexedFaceSetSelectionObject::set_addSelection_, this);
+	removeSelection ()      .addInterest (&X3DIndexedFaceSetSelectionObject::set_removeSelection_, this);
+	replaceSelectedEdges () .addInterest (&X3DIndexedFaceSetSelectionObject::set_replaceSelectedEdges_, this);
+	addSelectedEdges ()     .addInterest (&X3DIndexedFaceSetSelectionObject::set_addSelectedEdges_, this);
+	removeSelectedEdges ()  .addInterest (&X3DIndexedFaceSetSelectionObject::set_removeSelectedEdges_, this);
+	replaceSelectedFaces () .addInterest (&X3DIndexedFaceSetSelectionObject::set_replaceSelectedFaces_, this);
+	addSelectedFaces ()     .addInterest (&X3DIndexedFaceSetSelectionObject::set_addSelectedFaces_, this);
+	removeSelectedFaces ()  .addInterest (&X3DIndexedFaceSetSelectionObject::set_removeSelectedFaces_, this);
 
 	selection -> geometry () = getNode <IndexedFaceSet> ();
 	selection -> setup ();
@@ -213,12 +213,12 @@ X3DIndexedFaceSetSelectionObject::set_loadState ()
 		selectedEdgesGeometry = inlineNode -> getExportedNode <IndexedLineSet>   ("SelectedEdgesGeometry");
 		selectedFacesGeometry = inlineNode -> getExportedNode <IndexedFaceSet>   ("SelectedFacesGeometry");
 
-		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint);
-		touchSensor -> isOver ()           .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_over);
-		touchSensor -> isActive ()         .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_active);
-		touchSensor -> touchTime ()        .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime);
+		touchSensor -> hitPoint_changed () .addInterest (&X3DIndexedFaceSetSelectionObject::set_touch_sensor_hitPoint, this);
+		touchSensor -> isOver ()           .addInterest (&X3DIndexedFaceSetSelectionObject::set_touch_sensor_over, this);
+		touchSensor -> isActive ()         .addInterest (&X3DIndexedFaceSetSelectionObject::set_touch_sensor_active, this);
+		touchSensor -> touchTime ()        .addInterest (&X3DIndexedFaceSetSelectionObject::set_touch_sensor_touchTime, this);
 
-		planeSensor -> isActive () .addInterest (this, &X3DIndexedFaceSetSelectionObject::set_plane_sensor_active);
+		planeSensor -> isActive () .addInterest (&X3DIndexedFaceSetSelectionObject::set_plane_sensor_active, this);
 
 		convex () .addInterest (hotFacesGeometry      -> convex ());
 		convex () .addInterest (activeFacesGeometry   -> convex ());
@@ -246,7 +246,7 @@ __LOG__ << toolType () << std::endl;
 
 		if (toolType () == "SELECT")
 		{
-			toolSwitch -> whichChoice () = 1;
+			toolSwitch -> whichChoice () = ToolNumber::SELECT;
 			hotSwitch  -> whichChoice () = false;
 		}
 	}
@@ -377,12 +377,12 @@ void
 X3DIndexedFaceSetSelectionObject::set_coord ()
 {
 	if (coordNode)
-		coordNode -> removeInterest (this, &X3DIndexedFaceSetSelectionObject::set_coord_point);
+		coordNode -> removeInterest (&X3DIndexedFaceSetSelectionObject::set_coord_point, this);
 
 	coordNode = getCoord ();
 
 	if (coordNode)
-		coordNode -> addInterest (this, &X3DIndexedFaceSetSelectionObject::set_coord_point);
+		coordNode -> addInterest (&X3DIndexedFaceSetSelectionObject::set_coord_point, this);
 
 	set_coord_point ();
 }

@@ -110,11 +110,11 @@ ImportedNode::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	inlineNode   .addInterest (this, &ImportedNode::set_node);
-	exportedNode .addInterest (this, &ImportedNode::set_node);
+	inlineNode   .addInterest (&ImportedNode::set_node, this);
+	exportedNode .addInterest (&ImportedNode::set_node, this);
 
-	shutdown () .addInterest (inlineNode,   &X3DWeakPtr <Inline>::dispose);
-	shutdown () .addInterest (exportedNode, &X3DWeakPtr <X3DBaseNode>::dispose);
+	shutdown () .addInterest (&X3DWeakPtr <Inline>::dispose, inlineNode);
+	shutdown () .addInterest (&X3DWeakPtr <X3DBaseNode>::dispose, exportedNode);
 
 	set_node ();
 }

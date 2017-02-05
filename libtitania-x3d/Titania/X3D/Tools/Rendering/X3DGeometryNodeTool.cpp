@@ -109,16 +109,16 @@ X3DGeometryNodeTool::initialize ()
 {
 	X3DNodeTool::initialize ();
 
-	pickable () .addInterest (this, &X3DGeometryNodeTool::set_pickable);
-	getBrowser () -> getSelection () -> isEnabled () .addInterest (this, &X3DGeometryNodeTool::set_pickable);
+	pickable () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
+	getBrowser () -> getSelection () -> isEnabled () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
 
-	selection .addInterest (this, &X3DGeometryNodeTool::set_selection);
+	selection .addInterest (&X3DGeometryNodeTool::set_selection, this);
 
-	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::set_loadState);
-	normalToolNode -> length () .addInterest (this, &X3DGeometryNodeTool::eventProcessed);
-	getNode <X3DGeometryNode> () -> addInterest (this, &X3DGeometryNodeTool::eventProcessed);
+	normalToolNode -> getInlineNode () -> checkLoadState () .addInterest (&X3DGeometryNodeTool::set_loadState, this);
+	normalToolNode -> length () .addInterest (&X3DGeometryNodeTool::eventProcessed, this);
+	getNode <X3DGeometryNode> () -> addInterest (&X3DGeometryNodeTool::eventProcessed, this);
 
-	coordToolNode -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DGeometryNodeTool::set_loadState);
+	coordToolNode -> getInlineNode () -> checkLoadState () .addInterest (&X3DGeometryNodeTool::set_loadState, this);
 
 	normalToolNode -> setup ();
 	coordToolNode  -> setup ();

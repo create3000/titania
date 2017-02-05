@@ -128,9 +128,9 @@ X3DBrowserEditor::initialize ()
 {
 	X3DBrowserWidget::initialize ();
 
-	getCurrentScene ()   .addInterest (this, &X3DBrowserEditor::set_scene);
-	getCurrentContext () .addInterest (this, &X3DBrowserEditor::set_executionContext);
-	getBrowserWindow () -> getSelection () -> isActive () .addInterest (this, &X3DBrowserEditor::set_selection_active);
+	getCurrentScene ()   .addInterest (&X3DBrowserEditor::set_scene, this);
+	getCurrentContext () .addInterest (&X3DBrowserEditor::set_executionContext, this);
+	getBrowserWindow () -> getSelection () -> isActive () .addInterest (&X3DBrowserEditor::set_selection_active, this);
 }
 
 void
@@ -139,13 +139,13 @@ X3DBrowserEditor::setBrowser (const X3D::BrowserPtr & value)
 	if (isEditor () and getCurrentBrowser () -> isInitialized ())
 		setMetaData ();
 
-	getCurrentBrowser () -> shutdown ()   .removeInterest (this, &X3DBrowserEditor::set_shutdown);
-	getUndoHistory (getCurrentBrowser ()) .removeInterest (this, &X3DBrowserEditor::set_undoHistory);
+	getCurrentBrowser () -> shutdown ()   .removeInterest (&X3DBrowserEditor::set_shutdown, this);
+	getUndoHistory (getCurrentBrowser ()) .removeInterest (&X3DBrowserEditor::set_undoHistory, this);
 
 	X3DBrowserWidget::setBrowser (value);
 
-	getCurrentBrowser () -> shutdown ()   .addInterest (this, &X3DBrowserEditor::set_shutdown);
-	getUndoHistory (getCurrentBrowser ()) .addInterest (this, &X3DBrowserEditor::set_undoHistory);
+	getCurrentBrowser () -> shutdown ()   .addInterest (&X3DBrowserEditor::set_shutdown, this);
+	getUndoHistory (getCurrentBrowser ()) .addInterest (&X3DBrowserEditor::set_undoHistory, this);
 
 	set_undoHistory ();
 }
@@ -165,8 +165,8 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 	if (scene == getCurrentScene ())
 	{
 		// Shutdown is immediately processed.
-		getCurrentBrowser () -> shutdown () .removeInterest (this, &X3DBrowserEditor::set_shutdown);
-		getCurrentBrowser () -> shutdown () .addInterest (this, &X3DBrowserEditor::connectShutdown);
+		getCurrentBrowser () -> shutdown () .removeInterest (&X3DBrowserEditor::set_shutdown, this);
+		getCurrentBrowser () -> shutdown () .addInterest (&X3DBrowserEditor::connectShutdown, this);
 
 		X3DBrowserWidget::setCurrentContext (value);
 	}
@@ -175,8 +175,8 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 		if (isSaved (getCurrentBrowser ()))
 		{
 			// Shutdown is immediately processed.
-			getCurrentBrowser () -> shutdown () .removeInterest (this, &X3DBrowserEditor::set_shutdown);
-			getCurrentBrowser () -> shutdown () .addInterest (this, &X3DBrowserEditor::connectShutdown);
+			getCurrentBrowser () -> shutdown () .removeInterest (&X3DBrowserEditor::set_shutdown, this);
+			getCurrentBrowser () -> shutdown () .addInterest (&X3DBrowserEditor::connectShutdown, this);
 
 			getUserData (getCurrentBrowser ()) -> dispose ();
 			isModified (getCurrentBrowser (), false);
@@ -210,8 +210,8 @@ X3DBrowserEditor::set_shutdown ()
 void
 X3DBrowserEditor::connectShutdown ()
 {
-	getCurrentBrowser () -> shutdown () .removeInterest (this, &X3DBrowserEditor::connectShutdown);
-	getCurrentBrowser () -> shutdown () .addInterest (this, &X3DBrowserEditor::set_shutdown);
+	getCurrentBrowser () -> shutdown () .removeInterest (&X3DBrowserEditor::connectShutdown, this);
+	getCurrentBrowser () -> shutdown () .addInterest (&X3DBrowserEditor::set_shutdown, this);
 }
 
 void

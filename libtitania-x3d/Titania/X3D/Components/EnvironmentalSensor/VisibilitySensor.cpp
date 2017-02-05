@@ -89,7 +89,7 @@ VisibilitySensor::initialize ()
 {
 	X3DEnvironmentalSensorNode::initialize ();
 
-	enabled () .addInterest (this, &VisibilitySensor::set_enabled_);
+	enabled () .addInterest (&VisibilitySensor::set_enabled_, this);
 }
 
 void

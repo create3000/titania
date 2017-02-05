@@ -69,7 +69,7 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 {
 	addChildObjects (over, active, touchTime, children, browser);
 
-	getCurrentBrowser () .addInterest (this, &BrowserSelection::set_browser);
+	getCurrentBrowser () .addInterest (&BrowserSelection::set_browser, this);
 
 	setup ();
 }

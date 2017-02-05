@@ -551,7 +551,7 @@ throw (Error <INVALID_NAME>,
 	{
 		case X3DConstants::SFNode:
 		case X3DConstants::MFNode:
-			field .addInterest (const_cast <SFTime &> (executionContext -> sceneGraph_changed ()), &SFTime::setValue, std::bind (&X3DBaseNode::getCurrentTime, this));
+			field .addInterest (&SFTime::setValue, const_cast <SFTime &> (executionContext -> sceneGraph_changed ()), std::bind (&X3DBaseNode::getCurrentTime, this));
 			break;
 		default:
 			break;
@@ -608,7 +608,7 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 		else
 		{
 			//  If field is a pre defined field, we defer dispose.
-			X3DParentObject::disposed () .addInterest (field -> second, &X3DFieldDefinition::removeParent, this);
+			X3DParentObject::disposed () .addInterest (&X3DFieldDefinition::removeParent, field -> second, this);
 		}
 	
 		if (not private_)

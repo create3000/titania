@@ -75,7 +75,7 @@ void
 X3DExportedNodesEditor::setNode (const X3D::SFNode & value)
 {
 	if (scene)
-		scene -> exportedNodes_changed () .removeInterest (this, &X3DExportedNodesEditor::set_exportedNodes);
+		scene -> exportedNodes_changed () .removeInterest (&X3DExportedNodesEditor::set_exportedNodes, this);
 
 	node  = value;
 	scene = X3D::X3DScenePtr (node ? node -> getExecutionContext () : nullptr);
@@ -84,7 +84,7 @@ X3DExportedNodesEditor::setNode (const X3D::SFNode & value)
 
 	if (scene)
 	{
-		scene -> exportedNodes_changed () .addInterest (this, &X3DExportedNodesEditor::set_exportedNodes);
+		scene -> exportedNodes_changed () .addInterest (&X3DExportedNodesEditor::set_exportedNodes, this);
 
 		set_exportedNodes ();
 	}
@@ -146,8 +146,8 @@ X3DExportedNodesEditor::on_remove_exported_node ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Exported Node »%s«"), exportedName .c_str ()));
 
-	scene -> exportedNodes_changed () .removeInterest (this, &X3DExportedNodesEditor::set_exportedNodes);
-	scene -> exportedNodes_changed () .addInterest (this, &X3DExportedNodesEditor::connectExportedNodes);
+	scene -> exportedNodes_changed () .removeInterest (&X3DExportedNodesEditor::set_exportedNodes, this);
+	scene -> exportedNodes_changed () .addInterest (&X3DExportedNodesEditor::connectExportedNodes, this);
 
 	removeExportedNode (scene, exportedName, undoStep);
 
@@ -182,8 +182,8 @@ X3DExportedNodesEditor::on_exported_node_ok_clicked ()
 	const std::string exportedName = getExportedNameEntry () .get_text ();
 	const auto        undoStep     = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Update Exported Node »%s«"), exportedName .c_str ()));
 
-	scene -> exportedNodes_changed () .removeInterest (this, &X3DExportedNodesEditor::set_exportedNodes);
-	scene -> exportedNodes_changed () .addInterest (this, &X3DExportedNodesEditor::connectExportedNodes);
+	scene -> exportedNodes_changed () .removeInterest (&X3DExportedNodesEditor::set_exportedNodes, this);
+	scene -> exportedNodes_changed () .addInterest (&X3DExportedNodesEditor::connectExportedNodes, this);
 
 	if (editing)
 	{
@@ -252,8 +252,8 @@ X3DExportedNodesEditor::set_exportedNodes ()
 void
 X3DExportedNodesEditor::connectExportedNodes (const X3D::SFTime & field)
 {
-	field .removeInterest (this, &X3DExportedNodesEditor::connectExportedNodes);
-	field .addInterest (this, &X3DExportedNodesEditor::set_exportedNodes);
+	field .removeInterest (&X3DExportedNodesEditor::connectExportedNodes, this);
+	field .addInterest (&X3DExportedNodesEditor::set_exportedNodes, this);
 }
 
 void

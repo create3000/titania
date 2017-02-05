@@ -82,7 +82,7 @@ Console::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	getBrowser () -> prepareEvents () .addInterest (this, &Console::prepareEvents);
+	getBrowser () -> prepareEvents () .addInterest (&Console::prepareEvents, this);
 }
 
 /// Adds a string to the console.  This function is thread save.

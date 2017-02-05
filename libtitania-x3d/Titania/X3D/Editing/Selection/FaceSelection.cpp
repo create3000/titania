@@ -99,7 +99,7 @@ FaceSelection::initialize ()
 {
 	X3DFaceSelection::initialize ();
 
-	geometry () .addInterest (this, &FaceSelection::set_geometry);
+	geometry () .addInterest (&FaceSelection::set_geometry, this);
 
 	set_geometry (geometry ());
 }
@@ -109,16 +109,16 @@ FaceSelection::set_geometry (const SFNode & value)
 {
 	if (geometryNode)
 	{
-		geometryNode -> coordIndex () .removeInterest (this, &FaceSelection::set_coordIndex);
-		geometryNode -> getCoord ()   .removeInterest (this, &FaceSelection::set_coord);
+		geometryNode -> coordIndex () .removeInterest (&FaceSelection::set_coordIndex, this);
+		geometryNode -> getCoord ()   .removeInterest (&FaceSelection::set_coord, this);
 	}
 
 	geometryNode = value;
 
 	if (geometryNode)
 	{
-		geometryNode -> coordIndex () .addInterest (this, &FaceSelection::set_coordIndex);
-		geometryNode -> getCoord ()   .addInterest (this, &FaceSelection::set_coord);
+		geometryNode -> coordIndex () .addInterest (&FaceSelection::set_coordIndex, this);
+		geometryNode -> getCoord ()   .addInterest (&FaceSelection::set_coord, this);
 
 		set_coordIndex (geometryNode -> coordIndex ());
 		set_coord (geometryNode -> getCoord ());
@@ -165,12 +165,12 @@ void
 FaceSelection::set_coord (const X3DPtr <X3DCoordinateNode> & value)
 {
 	if (coordNode)
-		coordNode -> removeInterest (this, &FaceSelection::set_point);
+		coordNode -> removeInterest (&FaceSelection::set_point, this);
 
 	coordNode = value;
 	
 	if (coordNode)
-		coordNode -> addInterest (this, &FaceSelection::set_point);
+		coordNode -> addInterest (&FaceSelection::set_point, this);
 
 	set_point ();
 }

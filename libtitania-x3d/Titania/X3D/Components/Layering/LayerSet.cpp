@@ -104,10 +104,10 @@ LayerSet::initialize ()
 	layerNode0 -> isPrivate (true);
 	layerNode0 -> setup ();
 
-	privateActiveLayer () .addInterest (this, &LayerSet::set_activeLayer);
-	activeLayer ()        .addInterest (this, &LayerSet::set_activeLayer);
-	order ()              .addInterest (this, &LayerSet::set_layers);
-	layers ()             .addInterest (this, &LayerSet::set_layers);
+	privateActiveLayer () .addInterest (&LayerSet::set_activeLayer, this);
+	activeLayer ()        .addInterest (&LayerSet::set_activeLayer, this);
+	order ()              .addInterest (&LayerSet::set_layers, this);
+	layers ()             .addInterest (&LayerSet::set_layers, this);
 
 	set_layers ();
 }

@@ -65,7 +65,7 @@ OutlineSelection::OutlineSelection (X3DBrowserWindow* const browserWindow, X3DOu
 {
 	addChildObjects (children);
 
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (this, &OutlineSelection::set_children);
+	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (&OutlineSelection::set_children, this);
 
 	set_children (getBrowserWindow () -> getSelection () -> getChildren ());
 

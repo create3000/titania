@@ -137,8 +137,8 @@ GeoViewpoint::initialize ()
 	X3DViewpointNode::initialize ();
 	X3DGeospatialObject::initialize ();
 
-	position ()       .addInterest (this, &GeoViewpoint::set_position);
-	positionOffset () .addInterest (this, &GeoViewpoint::set_position);
+	position ()       .addInterest (&GeoViewpoint::set_position, this);
+	positionOffset () .addInterest (&GeoViewpoint::set_position, this);
 	navType ()        .addInterest (navigationInfoNode -> type ());
 	headlight ()      .addInterest (navigationInfoNode -> headlight ());
 

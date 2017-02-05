@@ -91,7 +91,7 @@ Sphere::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getSphereOptions () .addInterest (this, &Sphere::update);
+	getBrowser () -> getSphereOptions () .addInterest (&Sphere::update, this);
 }
 
 void
@@ -100,12 +100,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (isInitialized ())
-		getBrowser () -> getSphereOptions () .removeInterest (this, &Sphere::update);
+		getBrowser () -> getSphereOptions () .removeInterest (&Sphere::update, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getSphereOptions () .addInterest (this, &Sphere::update);
+		getBrowser () -> getSphereOptions () .addInterest (&Sphere::update, this);
 }
 
 Box3d

@@ -69,7 +69,7 @@ X3DViewportEditor::X3DViewportEditor () :
 {
 	addChildObjects (nodes, viewportBuffer, viewport);
 
-	viewportBuffer .addInterest (this, &X3DViewportEditor::set_node);
+	viewportBuffer .addInterest (&X3DViewportEditor::set_node, this);
 
 	getViewportClipBoundaryLeftAdjustment ()   -> set_step_increment (1e-4);
 	getViewportClipBoundaryRightAdjustment ()  -> set_step_increment (1e-4);
@@ -116,8 +116,8 @@ X3DViewportEditor::on_viewport_toggled ()
 		{
 			auto & field = node -> getField <X3D::SFNode> ("viewport");
 
-			field .removeInterest (this, &X3DViewportEditor::set_viewport);
-			field .addInterest (this, &X3DViewportEditor::connectViewport);
+			field .removeInterest (&X3DViewportEditor::set_viewport, this);
+			field .addInterest (&X3DViewportEditor::connectViewport, this);
 
 			if (getViewportCheckButton () .get_active ())
 				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, viewport, undoStep);
@@ -148,7 +148,7 @@ X3DViewportEditor::set_node ()
 	{
 		try
 		{
-			node -> getField <X3D::SFNode> ("viewport") .removeInterest (this, &X3DViewportEditor::set_viewport);
+			node -> getField <X3D::SFNode> ("viewport") .removeInterest (&X3DViewportEditor::set_viewport, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -168,7 +168,7 @@ X3DViewportEditor::set_node ()
 		{
 			auto & field = selection .back () -> getField <X3D::SFNode> ("viewport");
 
-			field .addInterest (this, &X3DViewportEditor::set_viewport);
+			field .addInterest (&X3DViewportEditor::set_viewport, this);
 
 			nodes    = { selection .back () };
 			viewport = field;
@@ -215,8 +215,8 @@ X3DViewportEditor::set_node ()
 void
 X3DViewportEditor::connectViewport (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DViewportEditor::connectViewport);
-	field .addInterest (this, &X3DViewportEditor::set_viewport);
+	field .removeInterest (&X3DViewportEditor::connectViewport, this);
+	field .addInterest (&X3DViewportEditor::set_viewport, this);
 }
 
 X3DViewportEditor::~X3DViewportEditor ()

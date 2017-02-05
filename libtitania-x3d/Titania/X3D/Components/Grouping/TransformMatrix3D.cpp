@@ -93,7 +93,7 @@ TransformMatrix3D::initialize ()
 {
 	X3DTransformMatrix3DNode::initialize ();
 
-	addInterest (this, &TransformMatrix3D::eventsProcessed);
+	addInterest (&TransformMatrix3D::eventsProcessed, this);
 
 	eventsProcessed ();
 }

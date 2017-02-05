@@ -112,9 +112,9 @@ LineSet::initialize ()
 
 	setShader (getBrowser () -> getWireframeShader ());
 
-	attrib () .addInterest (this, &LineSet::set_attrib);
-	color ()  .addInterest (this, &LineSet::set_color);
-	coord ()  .addInterest (this, &LineSet::set_coord);
+	attrib () .addInterest (&LineSet::set_attrib, this);
+	color ()  .addInterest (&LineSet::set_color, this);
+	coord ()  .addInterest (&LineSet::set_coord, this);
 
 	set_attrib ();
 	set_color ();
@@ -159,7 +159,7 @@ LineSet::set_color ()
 	if (colorNode)
 	{
 		colorNode -> removeInterest (this);
-		colorNode -> removeInterest (this, &LineSet::set_transparency);
+		colorNode -> removeInterest (&LineSet::set_transparency, this);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
@@ -167,7 +167,7 @@ LineSet::set_color ()
 	if (colorNode)
 	{
 		colorNode -> addInterest (this);
-		colorNode -> addInterest (this, &LineSet::set_transparency);
+		colorNode -> addInterest (&LineSet::set_transparency, this);
 		
 		set_transparency ();
 	}

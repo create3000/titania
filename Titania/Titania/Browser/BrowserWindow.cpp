@@ -194,9 +194,9 @@ BrowserWindow::initialize ()
 	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
 	// Browser events
-	getBrowsers ()       .addInterest (this, &BrowserWindow::set_browsers);
-	getCurrentScene ()   .addInterest (this, &BrowserWindow::set_scene);
-	getCurrentContext () .addInterest (this, &BrowserWindow::set_executionContext);
+	getBrowsers ()       .addInterest (&BrowserWindow::set_browsers, this);
+	getCurrentScene ()   .addInterest (&BrowserWindow::set_scene, this);
+	getCurrentContext () .addInterest (&BrowserWindow::set_executionContext, this);
 
 	getViewerButton () .set_menu (getViewerTypeMenu ());
 
@@ -228,17 +228,17 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
 	// Disconnect
 
-	getCurrentBrowser () -> getViewer ()           .removeInterest (this, &BrowserWindow::set_viewer);
-	getCurrentBrowser () -> getActiveLayer ()      .removeInterest (this, &BrowserWindow::set_activeLayer);
-	getCurrentBrowser () -> getViewerType ()       .removeInterest (this, &BrowserWindow::set_viewer);
-	getCurrentBrowser () -> getPrivateViewer ()    .removeInterest (this, &BrowserWindow::set_viewer);
-	getCurrentBrowser () -> getAvailableViewers () .removeInterest (this, &BrowserWindow::set_available_viewers);
+	getCurrentBrowser () -> getViewer ()           .removeInterest (&BrowserWindow::set_viewer, this);
+	getCurrentBrowser () -> getActiveLayer ()      .removeInterest (&BrowserWindow::set_activeLayer, this);
+	getCurrentBrowser () -> getViewerType ()       .removeInterest (&BrowserWindow::set_viewer, this);
+	getCurrentBrowser () -> getPrivateViewer ()    .removeInterest (&BrowserWindow::set_viewer, this);
+	getCurrentBrowser () -> getAvailableViewers () .removeInterest (&BrowserWindow::set_available_viewers, this);
 
-	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (this, &BrowserWindow::set_dashboard);
-	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (this, &BrowserWindow::set_shading);
-	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
+	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (&BrowserWindow::set_dashboard, this);
+	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (&BrowserWindow::set_shading, this);
+	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
 
-	getUserData (getCurrentBrowser ()) -> browserHistory .removeInterest (this, &BrowserWindow::set_browserHistory);
+	getUserData (getCurrentBrowser ()) -> browserHistory .removeInterest (&BrowserWindow::set_browserHistory, this);
 
 	// Set browser
 
@@ -246,16 +246,16 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	// Connect
 
-	getCurrentBrowser () -> getActiveLayer ()      .addInterest (this, &BrowserWindow::set_activeLayer);
-	getCurrentBrowser () -> getViewerType ()       .addInterest (this, &BrowserWindow::set_viewer);
-	getCurrentBrowser () -> getPrivateViewer ()    .addInterest (this, &BrowserWindow::set_viewer);
-	getCurrentBrowser () -> getAvailableViewers () .addInterest (this, &BrowserWindow::set_available_viewers);
+	getCurrentBrowser () -> getActiveLayer ()      .addInterest (&BrowserWindow::set_activeLayer, this);
+	getCurrentBrowser () -> getViewerType ()       .addInterest (&BrowserWindow::set_viewer, this);
+	getCurrentBrowser () -> getPrivateViewer ()    .addInterest (&BrowserWindow::set_viewer, this);
+	getCurrentBrowser () -> getAvailableViewers () .addInterest (&BrowserWindow::set_available_viewers, this);
 
-	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (this, &BrowserWindow::set_dashboard);
-	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (this, &BrowserWindow::set_shading);
-	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (this, &BrowserWindow::set_primitiveQuality);
+	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard, this);
+	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (&BrowserWindow::set_shading, this);
+	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::set_primitiveQuality, this);
 
-	getUserData (getCurrentBrowser ()) -> browserHistory .addInterest (this, &BrowserWindow::set_browserHistory);
+	getUserData (getCurrentBrowser ()) -> browserHistory .addInterest (&BrowserWindow::set_browserHistory, this);
 
 	// Initialize
 
@@ -1436,8 +1436,8 @@ BrowserWindow::on_shading_changed (const std::string & value)
 	if (changing)
 		return;
 
-	getCurrentBrowser () -> getBrowserOptions () -> Shading () .removeInterest (this, &BrowserWindow::set_shading);
-	getCurrentBrowser () -> getBrowserOptions () -> Shading () .addInterest (this, &BrowserWindow::connectShading);
+	getCurrentBrowser () -> getBrowserOptions () -> Shading () .removeInterest (&BrowserWindow::set_shading, this);
+	getCurrentBrowser () -> getBrowserOptions () -> Shading () .addInterest (&BrowserWindow::connectShading, this);
 
 	getCurrentBrowser () -> getBrowserOptions () -> Shading () = value;
 }
@@ -1468,8 +1468,8 @@ BrowserWindow::set_shading (const X3D::SFString & value)
 void
 BrowserWindow::connectShading (const X3D::SFString & field)
 {
-	field .removeInterest (this, &BrowserWindow::connectShading);
-	field .addInterest (this, &BrowserWindow::set_shading);
+	field .removeInterest (&BrowserWindow::connectShading, this);
+	field .addInterest (&BrowserWindow::set_shading, this);
 }
 
 // Primitive Quality
@@ -1513,8 +1513,8 @@ BrowserWindow::on_primitive_quality_changed (const std::string & value)
 	if (changing)
 		return;
 
-	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (this, &BrowserWindow::set_primitiveQuality);
-	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (this, &BrowserWindow::connectPrimitiveQuality);
+	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
+	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::connectPrimitiveQuality, this);
 
 	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () = value;
 }
@@ -1539,8 +1539,8 @@ BrowserWindow::set_primitiveQuality (const X3D::SFString & value)
 void
 BrowserWindow::connectPrimitiveQuality (const X3D::SFString & field)
 {
-	field .removeInterest (this, &BrowserWindow::connectPrimitiveQuality);
-	field .addInterest (this, &BrowserWindow::set_primitiveQuality);
+	field .removeInterest (&BrowserWindow::connectPrimitiveQuality, this);
+	field .addInterest (&BrowserWindow::set_primitiveQuality, this);
 }
 
 // Texture Quality
@@ -1584,8 +1584,8 @@ BrowserWindow::on_texture_quality_changed (const std::string & value)
 	if (changing)
 		return;
 
-	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () .removeInterest (this, &BrowserWindow::set_textureQuality);
-	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () .addInterest (this, &BrowserWindow::connectTextureQuality);
+	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () .removeInterest (&BrowserWindow::set_textureQuality, this);
+	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () .addInterest (&BrowserWindow::connectTextureQuality, this);
 
 	getCurrentBrowser () -> getBrowserOptions () -> TextureQuality () = value;
 }
@@ -1610,8 +1610,8 @@ BrowserWindow::set_textureQuality (const X3D::SFString & value)
 void
 BrowserWindow::connectTextureQuality (const X3D::SFString & field)
 {
-	field .removeInterest (this, &BrowserWindow::connectPrimitiveQuality);
-	field .addInterest (this, &BrowserWindow::set_primitiveQuality);
+	field .removeInterest (&BrowserWindow::connectPrimitiveQuality, this);
+	field .addInterest (&BrowserWindow::set_primitiveQuality, this);
 }
 
 // Object Icons
@@ -2045,10 +2045,10 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 	getConfig () -> setItem ("followPrimarySelection", getFollowPrimarySelectionAction () -> get_active ());
 
 	if (getFollowPrimarySelectionAction () -> get_active ())
-		getSelection () -> getPickedTime () .addInterest (this, &BrowserWindow::set_touchTime);
+		getSelection () -> getPickedTime () .addInterest (&BrowserWindow::set_touchTime, this);
 
 	else
-		getSelection () -> getPickedTime () .removeInterest (this, &BrowserWindow::set_touchTime);
+		getSelection () -> getPickedTime () .removeInterest (&BrowserWindow::set_touchTime, this);
 }
 
 void

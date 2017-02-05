@@ -116,7 +116,7 @@ GeoProximitySensor::initialize ()
 	size ()    .addInterest (proximitySensor -> size ());
 	center ()  .addInterest (proximitySensor -> center ());
 
-	proximitySensor -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &GeoProximitySensor::setCameraObject);
+	proximitySensor -> isCameraObject () .addInterest (&GeoProximitySensor::setCameraObject, static_cast <X3DChildNode*> (this));
 
 	proximitySensor -> isActive ()                 .addInterest (isActive ());
 	proximitySensor -> enterTime ()                .addInterest (enterTime ());
@@ -125,7 +125,7 @@ GeoProximitySensor::initialize ()
 	proximitySensor -> orientation_changed ()      .addInterest (orientation_changed ());
 	proximitySensor -> centerOfRotation_changed () .addInterest (centerOfRotation_changed ());
 
-	proximitySensor -> position_changed () .addInterest (this, &GeoProximitySensor::set_position);
+	proximitySensor -> position_changed () .addInterest (&GeoProximitySensor::set_position, this);
 
 	proximitySensor -> enabled () = enabled ();
 	proximitySensor -> size ()    = size ();

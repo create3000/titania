@@ -208,6 +208,16 @@ public:
 
 protected:
 
+	///  @name Member types
+
+	struct ToolNumber
+	{
+		static const int32_t NONE;
+		static const int32_t SELECT ;
+		static const int32_t CUT;
+		static const int32_t SCULP;
+	};
+
 	///  @name Construction
 
 	X3DIndexedFaceSetTool ();

@@ -103,11 +103,11 @@ Collision::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &Collision::set_live);
-	isLive () .addInterest (this, &Collision::set_live);
+	getExecutionContext () -> isLive () .addInterest (&Collision::set_live, this);
+	isLive () .addInterest (&Collision::set_live, this);
 
-	enabled () .addInterest (this, &Collision::set_live);
-	proxy ()   .addInterest (this, &Collision::set_proxy);
+	enabled () .addInterest (&Collision::set_live, this);
+	proxy ()   .addInterest (&Collision::set_proxy, this);
 
 	set_live ();
 	set_proxy ();

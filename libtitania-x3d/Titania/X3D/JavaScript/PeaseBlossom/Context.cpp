@@ -386,7 +386,7 @@ Context::initialize ()
 
 	X3DJavaScriptContext::initialize ();
 
-	shutdown () .addInterest (this, &Context::set_shutdown);
+	shutdown () .addInterest (&Context::set_shutdown, this);
 
 	set_live ();
 
@@ -419,12 +419,12 @@ void
 Context::set_live ()
 {
 	if (program -> hasFunctionDeclaration ("prepareEvents"))
-		getBrowser () -> prepareEvents () .addInterest (this, &Context::prepareEvents);
+		getBrowser () -> prepareEvents () .addInterest (&Context::prepareEvents, this);
 
 	if (program -> hasFunctionDeclaration ("eventsProcessed"))
-		getScriptNode () -> addInterest (this, &Context::eventsProcessed);
+		getScriptNode () -> addInterest (&Context::eventsProcessed, this);
 
-	getScriptNode () -> addInterest (this, &Context::finish);
+	getScriptNode () -> addInterest (&Context::finish, this);
 
 	for (const auto & field : getScriptNode () -> getUserDefinedFields ())
 	{
@@ -435,7 +435,7 @@ Context::set_live ()
 				const pb::Identifier identifier (field -> getName ());
 
 				if (program -> hasFunctionDeclaration (identifier))
-					field -> addInterest (this, &Context::set_field, field, identifier);
+					field -> addInterest (&Context::set_field, this, field, identifier);
 
 				break;
 			}
@@ -444,7 +444,7 @@ Context::set_live ()
 				const pb::Identifier identifier ("set_" + field -> getName ());
 
 				if (program -> hasFunctionDeclaration (identifier))
-					field -> addInterest (this, &Context::set_field, field, identifier);
+					field -> addInterest (&Context::set_field, this, field, identifier);
 
 				break;
 			}
@@ -537,8 +537,8 @@ Context::catchEventsProcessed ()
 	{
 		if (program -> hasFunctionDeclaration ("eventsProcessed"))
 		{
-			getScriptNode () -> removeInterest (this, &Context::eventsProcessed);
-			getScriptNode () -> addInterest (this, &Context::connectEventsProcessed);
+			getScriptNode () -> removeInterest (&Context::eventsProcessed, this);
+			getScriptNode () -> addInterest (&Context::connectEventsProcessed, this);
 		}
 	}
 }
@@ -546,8 +546,8 @@ Context::catchEventsProcessed ()
 void
 Context::connectEventsProcessed ()
 {
-	getScriptNode () -> removeInterest (this, &Context::connectEventsProcessed);
-	getScriptNode () -> addInterest (this, &Context::eventsProcessed);
+	getScriptNode () -> removeInterest (&Context::connectEventsProcessed, this);
+	getScriptNode () -> addInterest (&Context::eventsProcessed, this);
 }
 
 void

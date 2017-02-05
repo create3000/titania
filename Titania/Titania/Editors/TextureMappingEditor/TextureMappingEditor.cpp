@@ -149,8 +149,8 @@ TextureMappingEditor::initialize ()
 {
 	X3DTextureMappingEditorInterface::initialize ();
 
-	left  -> initialized () .addInterest (this, &TextureMappingEditor::set_left_initialized);
-	right -> initialized () .addInterest (this, &TextureMappingEditor::set_right_initialized);
+	left  -> initialized () .addInterest (&TextureMappingEditor::set_left_initialized, this);
+	right -> initialized () .addInterest (&TextureMappingEditor::set_right_initialized, this);
 
 	left  -> setAntialiasing (4);
 	right -> setAntialiasing (4);
@@ -164,13 +164,13 @@ TextureMappingEditor::initialize ()
 
 	rightSelection -> setup ();
 
-	undoHistory .addInterest (this, &TextureMappingEditor::set_undoHistory);
+	undoHistory .addInterest (&TextureMappingEditor::set_undoHistory, this);
 }
 
 void
 TextureMappingEditor::set_left_initialized ()
 {
-	left -> initialized () .removeInterest (this, &TextureMappingEditor::set_left_initialized);
+	left -> initialized () .removeInterest (&TextureMappingEditor::set_left_initialized, this);
 	left -> set_opacity (1);
 	++ initialized;
 	set_initialized ();
@@ -179,7 +179,7 @@ TextureMappingEditor::set_left_initialized ()
 void
 TextureMappingEditor::set_right_initialized ()
 {
-	right -> initialized () .removeInterest (this, &TextureMappingEditor::set_left_initialized);
+	right -> initialized () .removeInterest (&TextureMappingEditor::set_left_initialized, this);
 	right -> set_opacity (1);
 	++ initialized;
 	set_initialized ();
@@ -198,11 +198,11 @@ TextureMappingEditor::set_initialized ()
 		const auto selectedGeometry = left -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
 		const auto centerSensor     = left -> getExecutionContext () -> getNamedNode <X3D::PlaneSensor> ("CenterSensor");
 
-		touchSensor -> isActive ()             .addInterest (this, &TextureMappingEditor::set_left_active);
-		touchSensor -> touchTime ()            .addInterest (this, &TextureMappingEditor::set_left_touchTime);
-		touchSensor -> hitPoint_changed ()     .addInterest (this, &TextureMappingEditor::set_left_hitPoint);
-		selectedGeometry ->                     addInterest (this, &TextureMappingEditor::set_left_image);
-		centerSensor -> translation_changed () .addInterest (this, &TextureMappingEditor::set_left_center);
+		touchSensor -> isActive ()             .addInterest (&TextureMappingEditor::set_left_active, this);
+		touchSensor -> touchTime ()            .addInterest (&TextureMappingEditor::set_left_touchTime, this);
+		touchSensor -> hitPoint_changed ()     .addInterest (&TextureMappingEditor::set_left_hitPoint, this);
+		selectedGeometry ->                     addInterest (&TextureMappingEditor::set_left_image, this);
+		centerSensor -> translation_changed () .addInterest (&TextureMappingEditor::set_left_center, this);
 
 		appearance -> isPrivate (true);
 	}
@@ -218,11 +218,11 @@ TextureMappingEditor::set_initialized ()
 		const auto selectedGeometry  = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectedGeometry");
 		const auto selectionGeometry = right -> getExecutionContext () -> getNamedNode <X3D::IndexedLineSet> ("SelectionGeometry");
 
-		transform -> addInterest (this, &TextureMappingEditor::set_right_viewer);
-		shape -> geometry ()               .addInterest (this, &TextureMappingEditor::set_right_viewer);
-		touchSensor -> isActive ()         .addInterest (this, &TextureMappingEditor::set_right_active);
-		touchSensor -> touchTime ()        .addInterest (this, &TextureMappingEditor::set_right_touchTime);
-		touchSensor -> hitPoint_changed () .addInterest (this, &TextureMappingEditor::set_right_hitPoint);
+		transform -> addInterest (&TextureMappingEditor::set_right_viewer, this);
+		shape -> geometry ()               .addInterest (&TextureMappingEditor::set_right_viewer, this);
+		touchSensor -> isActive ()         .addInterest (&TextureMappingEditor::set_right_active, this);
+		touchSensor -> touchTime ()        .addInterest (&TextureMappingEditor::set_right_touchTime, this);
+		touchSensor -> hitPoint_changed () .addInterest (&TextureMappingEditor::set_right_hitPoint, this);
 
 		appearance        -> isPrivate (true);
 		selectedGeometry  -> isPrivate (true);
@@ -1174,18 +1174,18 @@ TextureMappingEditor::on_remove_clicked ()
 void
 TextureMappingEditor::on_apply_clicked ()
 {
-	geometry -> texCoordIndex () .removeInterest (this, &TextureMappingEditor::set_texCoordIndex);
-	geometry -> texCoordIndex () .addInterest (this, &TextureMappingEditor::connectTexCoordIndex);
+	geometry -> texCoordIndex () .removeInterest (&TextureMappingEditor::set_texCoordIndex, this);
+	geometry -> texCoordIndex () .addInterest (&TextureMappingEditor::connectTexCoordIndex, this);
 
 	if (multiTexCoord)
 	{
-		multiTexCoord -> removeInterest (this, &TextureMappingEditor::set_texCoord);
-		multiTexCoord -> addInterest (this, &TextureMappingEditor::connectMultiTexCoord);
+		multiTexCoord -> removeInterest (&TextureMappingEditor::set_texCoord, this);
+		multiTexCoord -> addInterest (&TextureMappingEditor::connectMultiTexCoord, this);
 	}
 	else
 	{
-		geometry -> texCoord () .removeInterest (this, &TextureMappingEditor::set_texCoord);
-		geometry -> texCoord () .addInterest (this, &TextureMappingEditor::connectTexCoord);
+		geometry -> texCoord () .removeInterest (&TextureMappingEditor::set_texCoord, this);
+		geometry -> texCoord () .addInterest (&TextureMappingEditor::connectTexCoord, this);
 	}
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Texture Coordinates"));
@@ -1234,22 +1234,22 @@ TextureMappingEditor::on_apply_clicked ()
 void
 TextureMappingEditor::connectTexCoordIndex ()
 {
-	geometry -> texCoordIndex () .removeInterest (this, &TextureMappingEditor::connectTexCoordIndex);
-	geometry -> texCoordIndex () .addInterest (this, &TextureMappingEditor::set_texCoordIndex);
+	geometry -> texCoordIndex () .removeInterest (&TextureMappingEditor::connectTexCoordIndex, this);
+	geometry -> texCoordIndex () .addInterest (&TextureMappingEditor::set_texCoordIndex, this);
 }
 
 void
 TextureMappingEditor::connectTexCoord ()
 {
-	geometry -> texCoord () .removeInterest (this, &TextureMappingEditor::connectTexCoord);
-	geometry -> texCoord () .addInterest (this, &TextureMappingEditor::set_texCoord);
+	geometry -> texCoord () .removeInterest (&TextureMappingEditor::connectTexCoord, this);
+	geometry -> texCoord () .addInterest (&TextureMappingEditor::set_texCoord, this);
 }
 
 void
 TextureMappingEditor::connectMultiTexCoord ()
 {
-	multiTexCoord -> removeInterest (this, &TextureMappingEditor::connectMultiTexCoord);
-	multiTexCoord -> addInterest (this, &TextureMappingEditor::set_texCoord, multiTexCoord);
+	multiTexCoord -> removeInterest (&TextureMappingEditor::connectMultiTexCoord, this);
+	multiTexCoord -> addInterest (&TextureMappingEditor::set_texCoord, this, multiTexCoord);
 }
 
 void
@@ -1279,8 +1279,8 @@ TextureMappingEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 	{
 		if (shape)
 		{
-			shape -> appearance () .removeInterest (this, &TextureMappingEditor::set_appearance);
-			shape -> geometry ()   .removeInterest (this, &TextureMappingEditor::set_geometry);
+			shape -> appearance () .removeInterest (&TextureMappingEditor::set_appearance, this);
+			shape -> geometry ()   .removeInterest (&TextureMappingEditor::set_geometry, this);
 		}
 
 		shape = value;
@@ -1292,8 +1292,8 @@ TextureMappingEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 
 			transform -> setMatrix (modelViewMatrix);
 
-			shape -> appearance () .addInterest (this, &TextureMappingEditor::set_appearance);
-			shape -> geometry ()   .addInterest (this, &TextureMappingEditor::set_geometry);
+			shape -> appearance () .addInterest (&TextureMappingEditor::set_appearance, this);
+			shape -> geometry ()   .addInterest (&TextureMappingEditor::set_geometry, this);
 
 			set_appearance (shape -> appearance ());
 			set_geometry (shape -> geometry ());
@@ -1313,18 +1313,18 @@ TextureMappingEditor::set_appearance (const X3D::SFNode & value)
 {
 	if (appearance)
 	{
-		appearance -> material ()         .removeInterest (this, &TextureMappingEditor::set_material);
-		appearance -> texture ()          .removeInterest (this, &TextureMappingEditor::set_texture_stage);
-		appearance -> textureTransform () .removeInterest (this, &TextureMappingEditor::set_textureTransform);
+		appearance -> material ()         .removeInterest (&TextureMappingEditor::set_material, this);
+		appearance -> texture ()          .removeInterest (&TextureMappingEditor::set_texture_stage, this);
+		appearance -> textureTransform () .removeInterest (&TextureMappingEditor::set_textureTransform, this);
 	}
 
 	appearance = value;
 
 	if (appearance)
 	{
-		appearance -> material ()         .addInterest (this, &TextureMappingEditor::set_material);
-		appearance -> texture ()          .addInterest (this, &TextureMappingEditor::set_texture_stage);
-		appearance -> textureTransform () .addInterest (this, &TextureMappingEditor::set_textureTransform);
+		appearance -> material ()         .addInterest (&TextureMappingEditor::set_material, this);
+		appearance -> texture ()          .addInterest (&TextureMappingEditor::set_texture_stage, this);
+		appearance -> textureTransform () .addInterest (&TextureMappingEditor::set_textureTransform, this);
 
 		set_material (appearance -> material ());
 		set_texture_stage (appearance -> texture ());
@@ -1342,12 +1342,12 @@ void
 TextureMappingEditor::set_material (const X3D::SFNode & value)
 {
 	if (material)
-		material -> removeInterest (*right, &X3D::Browser::addEvent);
+		material -> removeInterest (&X3D::Browser::addEvent, *right);
 
 	material = value;
 
 	if (material)
-		material -> addInterest (*right,  &X3D::Browser::addEvent);
+		material -> addInterest (&X3D::Browser::addEvent, *right);
 
 	right -> addEvent ();
 }
@@ -1370,8 +1370,8 @@ TextureMappingEditor::set_texture (const X3D::SFNode & value)
 {
 	if (texture)
 	{
-		texture -> removeInterest (*left,  &X3D::Browser::addEvent);
-		texture -> removeInterest (*right, &X3D::Browser::addEvent);
+		texture -> removeInterest (&X3D::Browser::addEvent, *left);
+		texture -> removeInterest (&X3D::Browser::addEvent, *right);
 	}
 
 	const X3D::X3DPtr <X3D::MultiTexture> multiTexture (value);
@@ -1401,8 +1401,8 @@ TextureMappingEditor::set_texture (const X3D::SFNode & value)
 
 	if (texture)
 	{
-		texture -> addInterest (*left,  &X3D::Browser::addEvent);
-		texture -> addInterest (*right, &X3D::Browser::addEvent);
+		texture -> addInterest (&X3D::Browser::addEvent, *left);
+		texture -> addInterest (&X3D::Browser::addEvent, *right);
 	}
 }
 
@@ -1411,8 +1411,8 @@ TextureMappingEditor::set_textureTransform (const X3D::SFNode & value)
 {
 	if (textureTransform)
 	{
-		textureTransform -> removeInterest (*left,  &X3D::Browser::addEvent);
-		textureTransform -> removeInterest (*right, &X3D::Browser::addEvent);
+		textureTransform -> removeInterest (&X3D::Browser::addEvent, *left);
+		textureTransform -> removeInterest (&X3D::Browser::addEvent, *right);
 	}
 
 	const X3D::X3DPtr <X3D::MultiTextureTransform> multiTextureTransform (value);
@@ -1440,8 +1440,8 @@ TextureMappingEditor::set_textureTransform (const X3D::SFNode & value)
 
 	if (textureTransform)
 	{
-		textureTransform -> addInterest (*left,  &X3D::Browser::addEvent);
-		textureTransform -> addInterest (*right, &X3D::Browser::addEvent);
+		textureTransform -> addInterest (&X3D::Browser::addEvent, *left);
+		textureTransform -> addInterest (&X3D::Browser::addEvent, *right);
 	}
 
 	left  -> addEvent ();
@@ -1459,10 +1459,10 @@ TextureMappingEditor::set_geometry (const X3D::SFNode & value)
 
 		if (geometry)
 		{
-			geometry -> texCoordIndex () .removeInterest (this, &TextureMappingEditor::set_texCoordIndex);
-			geometry -> coordIndex ()    .removeInterest (this, &TextureMappingEditor::set_coordIndex);
-			geometry -> texCoord ()      .removeInterest (this, &TextureMappingEditor::set_texCoord);
-			geometry -> coord ()         .removeInterest (this, &TextureMappingEditor::set_coord);
+			geometry -> texCoordIndex () .removeInterest (&TextureMappingEditor::set_texCoordIndex, this);
+			geometry -> coordIndex ()    .removeInterest (&TextureMappingEditor::set_coordIndex, this);
+			geometry -> texCoord ()      .removeInterest (&TextureMappingEditor::set_texCoord, this);
+			geometry -> coord ()         .removeInterest (&TextureMappingEditor::set_coord, this);
 		}
 
 		geometry = value;
@@ -1473,7 +1473,7 @@ TextureMappingEditor::set_geometry (const X3D::SFNode & value)
 			previewGeometry = X3D::X3DPtr <X3D::IndexedFaceSet> (geometry -> copy (rightShape -> getExecutionContext (), X3D::FLAT_COPY));
 
 			previewGeometry -> isPrivate (true);
-			previewGeometry -> texCoordIndex () .addInterest (this, &TextureMappingEditor::set_left_selected_faces);
+			previewGeometry -> texCoordIndex () .addInterest (&TextureMappingEditor::set_left_selected_faces, this);
 
 			geometry -> solid ()           .addInterest (previewGeometry -> solid ());
 			geometry -> convex ()          .addInterest (previewGeometry -> convex ());
@@ -1487,10 +1487,10 @@ TextureMappingEditor::set_geometry (const X3D::SFNode & value)
 			geometry -> normal ()          .addInterest (previewGeometry -> normal ());
 			geometry -> coord ()           .addInterest (previewGeometry -> coord ());
 
-			geometry -> texCoordIndex () .addInterest (this, &TextureMappingEditor::set_texCoordIndex);
-			geometry -> coordIndex ()    .addInterest (this, &TextureMappingEditor::set_coordIndex);
-			geometry -> texCoord ()      .addInterest (this, &TextureMappingEditor::set_texCoord);
-			geometry -> coord ()         .addInterest (this, &TextureMappingEditor::set_coord);
+			geometry -> texCoordIndex () .addInterest (&TextureMappingEditor::set_texCoordIndex, this);
+			geometry -> coordIndex ()    .addInterest (&TextureMappingEditor::set_coordIndex, this);
+			geometry -> texCoord ()      .addInterest (&TextureMappingEditor::set_texCoord, this);
+			geometry -> coord ()         .addInterest (&TextureMappingEditor::set_coord, this);
 
 			rightShape -> geometry () = previewGeometry;
 			rightShape -> getExecutionContext () -> realize ();
@@ -1566,7 +1566,7 @@ TextureMappingEditor::set_texCoord (const X3D::SFNode & value)
 	undoHistory .clear ();
 
 	if (multiTexCoord)
-		multiTexCoord -> removeInterest (this, &TextureMappingEditor::set_texCoord);
+		multiTexCoord -> removeInterest (&TextureMappingEditor::set_texCoord, this);
 
 	// Determine texCoord.
 
@@ -1576,7 +1576,7 @@ TextureMappingEditor::set_texCoord (const X3D::SFNode & value)
 
 	if (multiTexCoord)
 	{
-		multiTexCoord -> addInterest (this, &TextureMappingEditor::set_texCoord, value);
+		multiTexCoord -> addInterest (&TextureMappingEditor::set_texCoord, this, value);
 
 		if (multiTexCoord -> getTexCoord () .empty ())
 			texCoordNode = nullptr;
@@ -1609,7 +1609,7 @@ TextureMappingEditor::set_texCoord (const X3D::SFNode & value)
 		texCoord = previewGeometry -> texCoord ();
 	}
 
-	texCoord -> point () .addInterest (this, &TextureMappingEditor::set_left_coord);
+	texCoord -> point () .addInterest (&TextureMappingEditor::set_left_coord, this);
 
 	clear ();
 	set_left_coord ();

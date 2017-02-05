@@ -99,9 +99,9 @@ TexCoordDamper2D::initialize ()
 {
 	X3DDamperNode::initialize ();
 
-	set_value ()       .addInterest (this, &TexCoordDamper2D::set_value_);
-	set_destination () .addInterest (this, &TexCoordDamper2D::set_destination_);
-	order ()           .addInterest (this, &TexCoordDamper2D::set_order);
+	set_value ()       .addInterest (&TexCoordDamper2D::set_value_, this);
+	set_destination () .addInterest (&TexCoordDamper2D::set_destination_, this);
+	order ()           .addInterest (&TexCoordDamper2D::set_order, this);
 
 	buffer .resize (getOrder () + 1);
 

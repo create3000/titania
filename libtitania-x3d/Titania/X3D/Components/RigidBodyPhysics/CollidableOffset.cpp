@@ -95,8 +95,8 @@ CollidableOffset::initialize ()
 {
 	X3DNBodyCollidableNode::initialize ();
 
-	collidable () .addInterest (this, &CollidableOffset::set_collidable);
-	addInterest (this, &CollidableOffset::eventsProcessed);
+	collidable () .addInterest (&CollidableOffset::set_collidable, this);
+	addInterest (&CollidableOffset::eventsProcessed, this);
 
 	set_collidable ();
 	eventsProcessed ();

@@ -102,7 +102,7 @@ Selection::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	getBrowser () -> initialized () .addInterest (this, &Selection::clear);
+	getBrowser () -> initialized () .addInterest (&Selection::clear, this);
 }
 
 bool

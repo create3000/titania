@@ -98,8 +98,8 @@ ShaderProgram::initialize ()
 	X3DUrlObject::initialize ();
 	X3DProgrammableShaderObject::initialize ();
 
-	type () .addInterest (this, &ShaderProgram::set_url);
-	url ()  .addInterest (this, &ShaderProgram::set_url);
+	type () .addInterest (&ShaderProgram::set_url, this);
+	url ()  .addInterest (&ShaderProgram::set_url, this);
 
 	if (glXGetCurrentContext ())
 		requestImmediateLoad ();

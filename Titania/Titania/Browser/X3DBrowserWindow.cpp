@@ -101,7 +101,7 @@ X3DBrowserWindow::initialize ()
 	sidebar        -> reparent (getSidebarBox (),     getWindow ());
 	footer         -> reparent (getFooterBox (),      getWindow ());
 
-	clipboard -> string_changed () .addInterest (this, &X3DBrowserWindow::set_clipboard);
+	clipboard -> string_changed () .addInterest (&X3DBrowserWindow::set_clipboard, this);
 }
 
 void
@@ -162,7 +162,7 @@ X3DBrowserWindow::expandNodes (const X3D::MFNode & nodes)
 	if (getConfig () -> getBoolean ("followPrimarySelection"))
 	{
 		getCurrentBrowser () -> addEvent ();
-		getCurrentBrowser () -> finished () .addInterest (this, &X3DBrowserWindow::expandNodesImpl, nodes);
+		getCurrentBrowser () -> finished () .addInterest (&X3DBrowserWindow::expandNodesImpl, this, nodes);
 	}
 }
 
@@ -232,7 +232,7 @@ X3DBrowserWindow::on_geometry_editor_reveal_child_changed ()
 void
 X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 {
-	getCurrentBrowser () -> finished () .removeInterest (this, &X3DBrowserWindow::expandNodesImpl);
+	getCurrentBrowser () -> finished () .removeInterest (&X3DBrowserWindow::expandNodesImpl, this);
 
 	const auto &                outlineTreeView = getOutlineTreeView ();
 	std::vector <Gtk::TreePath> paths;

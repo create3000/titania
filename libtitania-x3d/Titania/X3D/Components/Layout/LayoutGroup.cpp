@@ -105,8 +105,8 @@ LayoutGroup::initialize ()
 	X3DGroupingNode::initialize ();
 	X3DTransformMatrix3DObject::initialize ();
 
-	viewport () .addInterest (this, &LayoutGroup::set_viewport);
-	layout ()   .addInterest (this, &LayoutGroup::set_layout);
+	viewport () .addInterest (&LayoutGroup::set_viewport, this);
+	layout ()   .addInterest (&LayoutGroup::set_layout, this);
 
 	set_viewport ();
 	set_layout ();

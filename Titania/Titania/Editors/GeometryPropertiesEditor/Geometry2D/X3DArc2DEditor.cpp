@@ -69,7 +69,7 @@ void
 X3DArc2DEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DArc2DEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DArc2DEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -78,7 +78,7 @@ void
 X3DArc2DEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DArc2DEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DArc2DEditor::set_geometry, this);
 }
 
 void

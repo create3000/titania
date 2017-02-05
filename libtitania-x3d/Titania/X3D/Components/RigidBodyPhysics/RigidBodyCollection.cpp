@@ -128,12 +128,12 @@ RigidBodyCollection::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	set_contacts () .addInterest (this, &RigidBodyCollection::set_contacts_);
-	gravity ()      .addInterest (this, &RigidBodyCollection::set_gravity);
-	collider ()     .addInterest (this, &RigidBodyCollection::set_collider);
-	bodies ()       .addInterest (this, &RigidBodyCollection::set_bodies);
+	set_contacts () .addInterest (&RigidBodyCollection::set_contacts_, this);
+	gravity ()      .addInterest (&RigidBodyCollection::set_gravity, this);
+	collider ()     .addInterest (&RigidBodyCollection::set_collider, this);
+	bodies ()       .addInterest (&RigidBodyCollection::set_bodies, this);
 
-	collisionSensorNode -> contacts () .addInterest (this, &RigidBodyCollection::set_contacts_);
+	collisionSensorNode -> contacts () .addInterest (&RigidBodyCollection::set_contacts_, this);
 	collisionSensorNode -> setup ();
 
 	set_collider ();

@@ -108,7 +108,7 @@ X3DBackgroundNode::initialize ()
 {
 	X3DBindableNode::initialize ();
 
-	addInterest (this, &X3DBackgroundNode::build);
+	addInterest (&X3DBackgroundNode::build, this);
 
 	build ();
 }
@@ -179,7 +179,7 @@ X3DBackgroundNode::getColor (const float theta, const MFColor & color, const MFF
 }
 
 void
-X3DBackgroundNode::build (const float radius, const std::vector <float> & vAngle, const MFFloat & angle, const MFColor & color, const float opacity, const bool bottom)
+X3DBackgroundNode::buildHalfSphere (const float radius, const std::vector <float> & vAngle, const MFFloat & angle, const MFColor & color, const float opacity, const bool bottom)
 {
 	// p1 --- p4
 	//  |     |
@@ -323,7 +323,7 @@ X3DBackgroundNode::build ()
 			if (vAngle .back () < vAngleMax)
 				vAngle .emplace_back (vAngleMax);
 
-			build (RADIUS, vAngle, skyAngle (), skyColor (), opacity, false);
+			buildHalfSphere (RADIUS, vAngle, skyAngle (), skyColor (), opacity, false);
 		}
 
 		if (groundColor () .size () > groundAngle () .size ())
@@ -336,7 +336,7 @@ X3DBackgroundNode::build ()
 			if (vAngle .back () > 0)
 				vAngle .emplace_back (0);
 
-			build (RADIUS, vAngle, groundAngle (), groundColor (), opacity, true);
+			buildHalfSphere (RADIUS, vAngle, groundAngle (), groundColor (), opacity, true);
 		}
 	}
 }

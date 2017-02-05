@@ -152,7 +152,7 @@ ScriptEditor::initialize ()
 
 	// Node index
 
-	nodeIndex -> getNode () .addInterest (this, &ScriptEditor::set_node);
+	nodeIndex -> getNode () .addInterest (&ScriptEditor::set_node, this);
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setTypes ({ X3D::X3DConstants::Script,
@@ -193,7 +193,7 @@ ScriptEditor::isModified () const
 void
 ScriptEditor::on_map ()
 {
-	getCurrentContext () .addInterest (this, &ScriptEditor::set_executionContext);
+	getCurrentContext () .addInterest (&ScriptEditor::set_executionContext, this);
 
 	set_executionContext ();
 }
@@ -201,7 +201,7 @@ ScriptEditor::on_map ()
 void
 ScriptEditor::on_unmap ()
 {
-	getCurrentContext () .removeInterest (this, &ScriptEditor::set_executionContext);
+	getCurrentContext () .removeInterest (&ScriptEditor::set_executionContext, this);
 }
 
 void
@@ -217,16 +217,16 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 		const auto sourceText = node -> getSourceText ();
 
-		node  -> isLive () .removeInterest (this, &ScriptEditor::set_live);
-		sourceText -> removeInterest (this, &ScriptEditor::set_sourceText);
-		sourceText -> removeInterest (this, &ScriptEditor::connectSourceText);
+		node  -> isLive () .removeInterest (&ScriptEditor::set_live, this);
+		sourceText -> removeInterest (&ScriptEditor::set_sourceText, this);
+		sourceText -> removeInterest (&ScriptEditor::connectSourceText, this);
 
 		// Load state
 
 		X3D::X3DPtr <X3D::X3DUrlObject> urlObject (node);
 
 		if (urlObject)
-			urlObject -> checkLoadState () .removeInterest (this, &ScriptEditor::set_loadState);
+			urlObject -> checkLoadState () .removeInterest (&ScriptEditor::set_loadState, this);
 
 		store ();
 	}
@@ -242,8 +242,8 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 	{
 		const auto sourceText = node -> getSourceText ();
 
-		node  -> isLive () .addInterest (this, &ScriptEditor::set_live);
-		sourceText -> addInterest (this, &ScriptEditor::set_sourceText);
+		node  -> isLive () .addInterest (&ScriptEditor::set_live, this);
+		sourceText -> addInterest (&ScriptEditor::set_sourceText, this);
 
 		set_sourceText ();
 
@@ -253,7 +253,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 		if (urlObject)
 		{
-			urlObject -> checkLoadState () .addInterest (this, &ScriptEditor::set_loadState);
+			urlObject -> checkLoadState () .addInterest (&ScriptEditor::set_loadState, this);
 			set_loadState (urlObject -> checkLoadState ());
 		}
 
@@ -364,8 +364,8 @@ ScriptEditor::apply (const X3D::UndoStepPtr & undoStep)
 	const auto sourceText = node -> getSourceText ();
 	const auto text  = getTextBuffer () -> get_text ();
 
-	sourceText -> removeInterest (this, &ScriptEditor::set_sourceText);
-	sourceText -> addInterest (this, &ScriptEditor::connectSourceText);
+	sourceText -> removeInterest (&ScriptEditor::set_sourceText, this);
+	sourceText -> addInterest (&ScriptEditor::connectSourceText, this);
 
 	undoStep -> addObjects (node);
 
@@ -458,8 +458,8 @@ ScriptEditor::set_sourceText ()
 void
 ScriptEditor::connectSourceText (const X3D::MFString & field)
 {
-	field .removeInterest (this, &ScriptEditor::connectSourceText);
-	field .addInterest (this, &ScriptEditor::set_sourceText);
+	field .removeInterest (&ScriptEditor::connectSourceText, this);
+	field .addInterest (&ScriptEditor::set_sourceText, this);
 }
 
 void

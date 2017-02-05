@@ -123,7 +123,7 @@ NavigationInfo::initialize ()
 {
 	X3DBindableNode::initialize ();
 
-	type () .addInterest (this, &NavigationInfo::set_type);
+	type () .addInterest (&NavigationInfo::set_type, this);
 
 	set_type ();
 }

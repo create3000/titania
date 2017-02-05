@@ -99,9 +99,9 @@ PositionDamper::initialize ()
 {
 	X3DDamperNode::initialize ();
 
-	set_value ()       .addInterest (this, &PositionDamper::set_value_);
-	set_destination () .addInterest (this, &PositionDamper::set_destination_);
-	order ()           .addInterest (this, &PositionDamper::set_order);
+	set_value ()       .addInterest (&PositionDamper::set_value_, this);
+	set_destination () .addInterest (&PositionDamper::set_destination_, this);
+	order ()           .addInterest (&PositionDamper::set_order, this);
 
 	buffer .resize (getOrder () + 1, initialValue ());
 

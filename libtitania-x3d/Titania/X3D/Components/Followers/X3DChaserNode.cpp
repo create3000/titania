@@ -70,7 +70,7 @@ X3DChaserNode::initialize ()
 {
 	X3DFollowerNode::initialize ();
 
-	duration () .addInterest (this, &X3DChaserNode::set_duration);
+	duration () .addInterest (&X3DChaserNode::set_duration, this);
 
 	set_duration ();
 }

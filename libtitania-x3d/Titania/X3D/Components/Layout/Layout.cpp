@@ -116,12 +116,12 @@ Layout::initialize ()
 {
 	X3DLayoutNode::initialize ();
 
-	align ()       .addInterest (this, &Layout::set_align);
-	offsetUnits () .addInterest (this, &Layout::set_offsetUnits);
-	offset ()      .addInterest (this, &Layout::set_offset);
-	sizeUnits ()   .addInterest (this, &Layout::set_sizeUnits);
-	size ()        .addInterest (this, &Layout::set_size);
-	scaleMode ()   .addInterest (this, &Layout::set_scaleMode);
+	align ()       .addInterest (&Layout::set_align, this);
+	offsetUnits () .addInterest (&Layout::set_offsetUnits, this);
+	offset ()      .addInterest (&Layout::set_offset, this);
+	sizeUnits ()   .addInterest (&Layout::set_sizeUnits, this);
+	size ()        .addInterest (&Layout::set_size, this);
+	scaleMode ()   .addInterest (&Layout::set_scaleMode, this);
 
 	set_align ();
 	set_offsetUnits ();

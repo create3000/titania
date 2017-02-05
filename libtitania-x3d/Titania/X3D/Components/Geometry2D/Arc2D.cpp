@@ -99,7 +99,7 @@ Arc2D::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	getBrowser () -> getArc2DOptions () .addInterest (this, &Arc2D::update);
+	getBrowser () -> getArc2DOptions () .addInterest (&Arc2D::update, this);
 
 	setShader (getBrowser () -> getWireframeShader ());
 }
@@ -110,12 +110,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (isInitialized ())
-		getBrowser () -> getArc2DOptions () .removeInterest (this, &Arc2D::update);
+		getBrowser () -> getArc2DOptions () .removeInterest (&Arc2D::update, this);
 
 	X3DLineGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getArc2DOptions () .addInterest (this, &Arc2D::update);
+		getBrowser () -> getArc2DOptions () .addInterest (&Arc2D::update, this);
 
 	setShader (getBrowser () -> getWireframeShader ());
 }

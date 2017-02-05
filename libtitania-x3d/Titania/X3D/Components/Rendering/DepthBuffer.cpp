@@ -99,7 +99,7 @@ DepthBuffer::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	depthFunction () .addInterest (this, &DepthBuffer::set_depthFunction);
+	depthFunction () .addInterest (&DepthBuffer::set_depthFunction, this);
 
 	set_depthFunction ();
 }

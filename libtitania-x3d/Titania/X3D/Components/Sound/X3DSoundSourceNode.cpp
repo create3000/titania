@@ -84,9 +84,9 @@ X3DSoundSourceNode::initialize ()
 
 	mediaStream .reset (new MediaStream ());
 
-	speed () .addInterest (this, &X3DSoundSourceNode::set_speed);
-	pitch () .addInterest (this, &X3DSoundSourceNode::set_pitch);
-	end      .addInterest (this, &X3DSoundSourceNode::set_end);
+	speed () .addInterest (&X3DSoundSourceNode::set_speed, this);
+	pitch () .addInterest (&X3DSoundSourceNode::set_pitch, this);
+	end      .addInterest (&X3DSoundSourceNode::set_end, this);
 
 	mediaStream -> signal_end ()              .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_end));
 	mediaStream -> signal_duration_changed () .connect (sigc::mem_fun (this, &X3DSoundSourceNode::on_duration_changed));

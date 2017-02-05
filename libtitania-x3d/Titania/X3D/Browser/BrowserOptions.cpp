@@ -149,12 +149,12 @@ BrowserOptions::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	Antialiased ()         .addInterest (this, &BrowserOptions::set_Antialiased);
-	TextureQuality ()      .addInterest (this, &BrowserOptions::set_TextureQuality);
-	PrimitiveQuality ()    .addInterest (this, &BrowserOptions::set_PrimitiveQuality);
-	Shading ()             .addInterest (this, &BrowserOptions::set_Shading);
-	MotionBlur ()          .addInterest (this, &BrowserOptions::set_MotionBlur);
-	MotionBlurIntensity () .addInterest (this, &BrowserOptions::set_MotionBlurIntensity);
+	Antialiased ()         .addInterest (&BrowserOptions::set_Antialiased, this);
+	TextureQuality ()      .addInterest (&BrowserOptions::set_TextureQuality, this);
+	PrimitiveQuality ()    .addInterest (&BrowserOptions::set_PrimitiveQuality, this);
+	Shading ()             .addInterest (&BrowserOptions::set_Shading, this);
+	MotionBlur ()          .addInterest (&BrowserOptions::set_MotionBlur, this);
+	MotionBlurIntensity () .addInterest (&BrowserOptions::set_MotionBlurIntensity, this);
 
 	set_Antialiased ();
 	set_TextureQuality ();

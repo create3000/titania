@@ -110,9 +110,9 @@ X3DGroupingNode::initialize ()
 	lights                .isTainted (true);
 	childNodes            .isTainted (true);
 
-	addChildren ()    .addInterest (this, &X3DGroupingNode::set_addChildren);
-	removeChildren () .addInterest (this, &X3DGroupingNode::set_removeChildren);
-	children ()       .addInterest (this, &X3DGroupingNode::set_children);
+	addChildren ()    .addInterest (&X3DGroupingNode::set_addChildren, this);
+	removeChildren () .addInterest (&X3DGroupingNode::set_removeChildren, this);
+	children ()       .addInterest (&X3DGroupingNode::set_children, this);
 
 	set_children ();
 }
@@ -155,8 +155,8 @@ X3DGroupingNode::set_addChildren ()
 
 	if (not children () .isTainted ())
 	{
-		children () .removeInterest (this, &X3DGroupingNode::set_children);
-		children () .addInterest (this, &X3DGroupingNode::connectChildren);
+		children () .removeInterest (&X3DGroupingNode::set_children, this);
+		children () .addInterest (&X3DGroupingNode::connectChildren, this);
 	}
 
 	children () .insert (children () .end (), addChildren () .begin (), addChildren () .end ());
@@ -177,8 +177,8 @@ X3DGroupingNode::set_removeChildren ()
 
 	if (not children () .isTainted ())
 	{
-		children () .removeInterest (this, &X3DGroupingNode::set_children);
-		children () .addInterest (this, &X3DGroupingNode::connectChildren);
+		children () .removeInterest (&X3DGroupingNode::set_children, this);
+		children () .addInterest (&X3DGroupingNode::connectChildren, this);
 	}
 
 	std::set <size_t> set;
@@ -205,8 +205,8 @@ X3DGroupingNode::set_children ()
 void
 X3DGroupingNode::connectChildren ()
 {
-	children () .removeInterest (this, &X3DGroupingNode::connectChildren);
-	children () .addInterest (this, &X3DGroupingNode::set_children);
+	children () .removeInterest (&X3DGroupingNode::connectChildren, this);
+	children () .addInterest (&X3DGroupingNode::set_children, this);
 }
 
 void
@@ -248,7 +248,7 @@ X3DGroupingNode::add (const MFNode & children)
 						{
 							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
 
-							childNode -> isCameraObject () .addInterest (this, &X3DGroupingNode::set_cameraObjects);
+							childNode -> isCameraObject () .addInterest (&X3DGroupingNode::set_cameraObjects, this);
 
 							childNodes .emplace_back (childNode);
 							// Procceed with next step.
@@ -262,7 +262,7 @@ X3DGroupingNode::add (const MFNode & children)
 						{
 							const auto childNode = dynamic_cast <X3DChildNode*> (innerNode);
 
-							childNode -> isCameraObject () .addInterest (this, &X3DGroupingNode::set_cameraObjects);
+							childNode -> isCameraObject () .addInterest (&X3DGroupingNode::set_cameraObjects, this);
 
 							childNodes .emplace_back (childNode);
 							break;
@@ -306,7 +306,7 @@ void
 X3DGroupingNode::clear ()
 {
 	for (const auto & childNode : childNodes)
-		childNode -> isCameraObject () .removeInterest (this, &X3DGroupingNode::set_cameraObjects);
+		childNode -> isCameraObject () .removeInterest (&X3DGroupingNode::set_cameraObjects, this);
 	
 	pointingDeviceSensors .clear ();
 	cameraObjects .clear ();

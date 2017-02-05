@@ -104,9 +104,9 @@ NurbsTrimmedSurface::initialize ()
 {
 	X3DNurbsSurfaceGeometryNode::initialize ();
 
-	addTrimmingContour ()    .addInterest (this, &NurbsTrimmedSurface::set_addTrimmingContour);
-	removeTrimmingContour () .addInterest (this, &NurbsTrimmedSurface::set_removeTrimmingContour);
-	trimmingContour ()       .addInterest (this, &NurbsTrimmedSurface::set_trimmingContour);
+	addTrimmingContour ()    .addInterest (&NurbsTrimmedSurface::set_addTrimmingContour, this);
+	removeTrimmingContour () .addInterest (&NurbsTrimmedSurface::set_removeTrimmingContour, this);
+	trimmingContour ()       .addInterest (&NurbsTrimmedSurface::set_trimmingContour, this);
 
 	set_trimmingContour ();
 }

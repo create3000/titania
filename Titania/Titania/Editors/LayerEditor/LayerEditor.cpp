@@ -101,7 +101,7 @@ LayerEditor::initialize ()
 {
 	X3DLayerEditorInterface::initialize ();
 
-	getCurrentContext () .addInterest (this, &LayerEditor::set_executionContext);
+	getCurrentContext () .addInterest (&LayerEditor::set_executionContext, this);
 
 	set_executionContext ();
 }
@@ -115,13 +115,13 @@ void
 LayerEditor::set_executionContext ()
 {
 	if (world)
-	   world -> getLayerSet () .removeInterest (this, &LayerEditor::set_layersSet);
+	   world -> getLayerSet () .removeInterest (&LayerEditor::set_layersSet, this);
 
 	world = getCurrentWorld ();
 
 	if (world)
 	{
-		world -> getLayerSet () .addInterest (this, &LayerEditor::set_layersSet);
+		world -> getLayerSet () .addInterest (&LayerEditor::set_layersSet, this);
 
 		set_layersSet ();
 	}
@@ -132,20 +132,20 @@ LayerEditor::set_layersSet ()
 {
 	if (layerSet)
 	{
-		layerSet -> privateActiveLayer () .removeInterest (this, &LayerEditor::set_treeView);
-		layerSet -> activeLayer ()        .removeInterest (this, &LayerEditor::set_treeView);
-		layerSet -> order ()              .removeInterest (this, &LayerEditor::set_treeView);
-		layerSet -> layers ()             .removeInterest (this, &LayerEditor::set_layers);
+		layerSet -> privateActiveLayer () .removeInterest (&LayerEditor::set_treeView, this);
+		layerSet -> activeLayer ()        .removeInterest (&LayerEditor::set_treeView, this);
+		layerSet -> order ()              .removeInterest (&LayerEditor::set_treeView, this);
+		layerSet -> layers ()             .removeInterest (&LayerEditor::set_layers, this);
 	}
 
 	layerSet = world -> getLayerSet ();
 
 	if (layerSet)
 	{
-		layerSet -> privateActiveLayer () .addInterest (this, &LayerEditor::set_treeView);
-		layerSet -> activeLayer ()        .addInterest (this, &LayerEditor::set_treeView);
-		layerSet -> order ()              .addInterest (this, &LayerEditor::set_treeView);
-		layerSet -> layers ()             .addInterest (this, &LayerEditor::set_layers);
+		layerSet -> privateActiveLayer () .addInterest (&LayerEditor::set_treeView, this);
+		layerSet -> activeLayer ()        .addInterest (&LayerEditor::set_treeView, this);
+		layerSet -> order ()              .addInterest (&LayerEditor::set_treeView, this);
+		layerSet -> layers ()             .addInterest (&LayerEditor::set_layers, this);
 
 		set_layers ();
 
@@ -195,7 +195,7 @@ LayerEditor::set_layers ()
 	for (const auto & layer : layers)
 	{
 	   if (layer)
-	      layer -> isPickable () .removeInterest (this, &LayerEditor::set_treeView);
+	      layer -> isPickable () .removeInterest (&LayerEditor::set_treeView, this);
 	}
 
 	layers .assign (layerSet -> layers () .begin (), layerSet -> layers () .end ());
@@ -203,7 +203,7 @@ LayerEditor::set_layers ()
 	for (const auto & layer : layers)
 	{
 	   if (layer)
-	      layer -> isPickable () .addInterest (this, &LayerEditor::set_treeView);
+	      layer -> isPickable () .addInterest (&LayerEditor::set_treeView, this);
 	}
 
 	set_treeView ();
@@ -265,71 +265,71 @@ LayerEditor::add_layer (const X3D::SFNode & node, const X3D::X3DPtr <X3D::X3DLay
 void
 LayerEditor::connectPrivateActiveLayer ()
 {
-	layerSet -> privateActiveLayer () .removeInterest (this, &LayerEditor::connectPrivateActiveLayer);
-	layerSet -> privateActiveLayer () .addInterest (this, &LayerEditor::set_treeView);
+	layerSet -> privateActiveLayer () .removeInterest (&LayerEditor::connectPrivateActiveLayer, this);
+	layerSet -> privateActiveLayer () .addInterest (&LayerEditor::set_treeView, this);
 }
 
 void
 LayerEditor::connectActiveLayer ()
 {
-	layerSet -> activeLayer () .removeInterest (this, &LayerEditor::connectActiveLayer);
-	layerSet -> activeLayer () .addInterest (this, &LayerEditor::set_treeView);
+	layerSet -> activeLayer () .removeInterest (&LayerEditor::connectActiveLayer, this);
+	layerSet -> activeLayer () .addInterest (&LayerEditor::set_treeView, this);
 }
 
 void
 LayerEditor::connectOrder ()
 {
-	layerSet -> order () .removeInterest (this, &LayerEditor::connectOrder);
-	layerSet -> order () .addInterest (this, &LayerEditor::set_treeView);
+	layerSet -> order () .removeInterest (&LayerEditor::connectOrder, this);
+	layerSet -> order () .addInterest (&LayerEditor::set_treeView, this);
 }
 
 void
 LayerEditor::connectLayers ()
 {
-	layerSet -> layers () .removeInterest (this, &LayerEditor::connectLayers);
-	layerSet -> layers () .addInterest (this, &LayerEditor::set_layers);
+	layerSet -> layers () .removeInterest (&LayerEditor::connectLayers, this);
+	layerSet -> layers () .addInterest (&LayerEditor::set_layers, this);
 }
 
 void
 LayerEditor::connectIsPickable (const X3D::X3DPtr <X3D::X3DLayerNode> & layer)
 {
-	layer -> isPickable () .removeInterest (this, &LayerEditor::connectIsPickable);
-	layer -> isPickable () .addInterest (this, &LayerEditor::set_treeView);
+	layer -> isPickable () .removeInterest (&LayerEditor::connectIsPickable, this);
+	layer -> isPickable () .addInterest (&LayerEditor::set_treeView, this);
 }
 
 void
 LayerEditor::disconnectPrivateActiveLayer ()
 {
-	layerSet -> privateActiveLayer () .removeInterest (this, &LayerEditor::set_treeView);
-	layerSet -> privateActiveLayer () .addInterest (this, &LayerEditor::connectPrivateActiveLayer);
+	layerSet -> privateActiveLayer () .removeInterest (&LayerEditor::set_treeView, this);
+	layerSet -> privateActiveLayer () .addInterest (&LayerEditor::connectPrivateActiveLayer, this);
 }
 
 void
 LayerEditor::disconnectActiveLayer ()
 {
-	layerSet -> activeLayer () .removeInterest (this, &LayerEditor::set_treeView);
-	layerSet -> activeLayer () .addInterest (this, &LayerEditor::connectActiveLayer);
+	layerSet -> activeLayer () .removeInterest (&LayerEditor::set_treeView, this);
+	layerSet -> activeLayer () .addInterest (&LayerEditor::connectActiveLayer, this);
 }
 
 void
 LayerEditor::disconnectOrder ()
 {
-	layerSet -> order () .removeInterest (this, &LayerEditor::set_treeView);
-	layerSet -> order () .addInterest (this, &LayerEditor::connectOrder);
+	layerSet -> order () .removeInterest (&LayerEditor::set_treeView, this);
+	layerSet -> order () .addInterest (&LayerEditor::connectOrder, this);
 }
 
 void
 LayerEditor::disconnectLayers ()
 {
-	layerSet -> layers () .removeInterest (this, &LayerEditor::set_layers);
-	layerSet -> layers () .addInterest (this, &LayerEditor::connectLayers);
+	layerSet -> layers () .removeInterest (&LayerEditor::set_layers, this);
+	layerSet -> layers () .addInterest (&LayerEditor::connectLayers, this);
 }
 
 void
 LayerEditor::disconnectIsPickable (const X3D::X3DPtr <X3D::X3DLayerNode> & layer)
 {
-	layer -> isPickable () .removeInterest (this, &LayerEditor::set_treeView);
-	layer -> isPickable () .addInterest (this, &LayerEditor::connectIsPickable, layer);
+	layer -> isPickable () .removeInterest (&LayerEditor::set_treeView, this);
+	layer -> isPickable () .addInterest (&LayerEditor::connectIsPickable, this, layer);
 }
 
 bool

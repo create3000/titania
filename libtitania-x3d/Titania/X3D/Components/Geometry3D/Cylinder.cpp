@@ -105,7 +105,7 @@ Cylinder::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getCylinderOptions () .addInterest (this, &Cylinder::update);
+	getBrowser () -> getCylinderOptions () .addInterest (&Cylinder::update, this);
 }
 
 void
@@ -114,12 +114,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (isInitialized ())
-		getBrowser () -> getCylinderOptions () .removeInterest (this, &Cylinder::update);
+		getBrowser () -> getCylinderOptions () .removeInterest (&Cylinder::update, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getCylinderOptions () .addInterest (this, &Cylinder::update);
+		getBrowser () -> getCylinderOptions () .addInterest (&Cylinder::update, this);
 }
 
 Box3d

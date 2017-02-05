@@ -68,7 +68,7 @@ void
 X3DElevationGridEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DElevationGridEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DElevationGridEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -77,7 +77,7 @@ void
 X3DElevationGridEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DElevationGridEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DElevationGridEditor::set_geometry, this);
 }
 
 void

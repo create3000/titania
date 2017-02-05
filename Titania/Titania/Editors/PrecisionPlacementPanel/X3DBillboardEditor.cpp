@@ -83,7 +83,7 @@ X3DBillboardEditor::set_selection (const X3D::MFNode & selection)
 	// Dissconnect.
 
 	if (billboard)
-		billboard -> axisOfRotation () .removeInterest (this, &X3DBillboardEditor::set_axisOfRotation);
+		billboard -> axisOfRotation () .removeInterest (&X3DBillboardEditor::set_axisOfRotation, this);
 
 	// Get Billboard
 
@@ -100,7 +100,7 @@ X3DBillboardEditor::set_selection (const X3D::MFNode & selection)
 	
 	if (billboard)
 	{
-		billboard -> axisOfRotation () .addInterest (this, &X3DBillboardEditor::set_axisOfRotation);
+		billboard -> axisOfRotation () .addInterest (&X3DBillboardEditor::set_axisOfRotation, this);
 
 		set_axisOfRotation ();
 	}
@@ -114,8 +114,8 @@ X3DBillboardEditor::on_axisOfRotation_changed ()
 
 	addUndoFunction (billboard, billboard -> axisOfRotation (), undoStep);
 
-	billboard -> axisOfRotation () .removeInterest (this, &X3DBillboardEditor::set_axisOfRotation);
-	billboard -> axisOfRotation () .addInterest (this, &X3DBillboardEditor::connectAxisOfRotation);
+	billboard -> axisOfRotation () .removeInterest (&X3DBillboardEditor::set_axisOfRotation, this);
+	billboard -> axisOfRotation () .addInterest (&X3DBillboardEditor::connectAxisOfRotation, this);
 
 	switch (getBillboardAxisOfRotationComboBoxText () .get_active_row_number ())
 	{
@@ -176,8 +176,8 @@ X3DBillboardEditor::set_axisOfRotation ()
 void
 X3DBillboardEditor::connectAxisOfRotation (const X3D::SFVec3f & field)
 {
-	field .removeInterest (this, &X3DBillboardEditor::connectAxisOfRotation);
-	field .addInterest (this, &X3DBillboardEditor::set_axisOfRotation);
+	field .removeInterest (&X3DBillboardEditor::connectAxisOfRotation, this);
+	field .addInterest (&X3DBillboardEditor::set_axisOfRotation, this);
 }
 
 X3DBillboardEditor::~X3DBillboardEditor ()

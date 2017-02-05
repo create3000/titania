@@ -67,7 +67,7 @@ X3DGeometricOptionNode::initialize ()
 {
 	X3DOptionNode::initialize ();
 
-	addInterest (this, &X3DGeometricOptionNode::update);
+	addInterest (&X3DGeometricOptionNode::update, this);
 
 	update ();
 }

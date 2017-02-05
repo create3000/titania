@@ -96,7 +96,7 @@ GeoCoordinate::initialize ()
 	X3DCoordinateNode::initialize ();
 	X3DGeospatialObject::initialize ();
 
-	addInterest (this, &GeoCoordinate::eventsProcessed);
+	addInterest (&GeoCoordinate::eventsProcessed, this);
 
 	eventsProcessed ();
 }

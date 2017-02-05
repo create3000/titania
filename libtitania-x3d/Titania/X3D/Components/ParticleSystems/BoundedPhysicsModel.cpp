@@ -90,7 +90,7 @@ BoundedPhysicsModel::initialize ()
 {
 	X3DParticlePhysicsModelNode::initialize ();
 
-	geometry () .addInterest (this, &BoundedPhysicsModel::set_geometry);
+	geometry () .addInterest (&BoundedPhysicsModel::set_geometry, this);
 
 	set_geometry ();
 }

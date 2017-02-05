@@ -101,7 +101,7 @@ TriangleFanSet::initialize ()
 {
 	X3DComposedGeometryNode::initialize ();
 
-	fanCount () .addInterest (this, &TriangleFanSet::set_fanCount);
+	fanCount () .addInterest (&TriangleFanSet::set_fanCount, this);
 
 	set_fanCount ();
 }

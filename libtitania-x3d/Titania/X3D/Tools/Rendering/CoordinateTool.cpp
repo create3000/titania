@@ -88,7 +88,7 @@ CoordinateTool::initialize ()
 {
 	X3DCoordinateNodeTool::initialize ();
 
-	getInlineNode () -> checkLoadState () .addInterest (this, &CoordinateTool::realize);
+	getInlineNode () -> checkLoadState () .addInterest (&CoordinateTool::realize, this);
 
 	getInlineNode () -> url () = { get_tool ("CoordinateTool.x3dv") .str () };
 }
@@ -115,7 +115,7 @@ CoordinateTool::realize ()
 		selectedEdgesGeometry -> isPrivate (true);
 		selectedFacesGeometry -> isPrivate (true);
 
-		color () .addInterest (this, &CoordinateTool::set_color);
+		color () .addInterest (&CoordinateTool::set_color, this);
 
 		set_color ();
 	}

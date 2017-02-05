@@ -81,7 +81,7 @@ X3DBindableNode::initialize ()
 {
 	X3DChildNode::initialize ();
 
-	isLive () .addInterest (this, &X3DBindableNode::set_live);
+	isLive () .addInterest (&X3DBindableNode::set_live, this);
 
 	set_live ();
 }
@@ -91,7 +91,7 @@ X3DBindableNode::addLayer (X3DLayerNode* const layer)
 {
 	layers .emplace_back (layer);
 	
-	layer -> disposed () .addInterest (this, &X3DBindableNode::removeLayer, layer);
+	layer -> disposed () .addInterest (&X3DBindableNode::removeLayer, this, layer);
 }
 
 void 
@@ -113,7 +113,7 @@ X3DBindableNode::set_live ()
 
 	if (live)
 	{
-		set_bind () .addInterest (this, &X3DBindableNode::set_bind_);
+		set_bind () .addInterest (&X3DBindableNode::set_bind_, this);
 
 		if (wasBound)
 		{
@@ -123,7 +123,7 @@ X3DBindableNode::set_live ()
 	}
 	else
 	{
-		set_bind () .removeInterest (this, &X3DBindableNode::set_bind_);
+		set_bind () .removeInterest (&X3DBindableNode::set_bind_, this);
 
 		wasBound = isBound ();
 
@@ -140,12 +140,12 @@ X3DBindableNode::set_bind_ ()
 		// Save layers
 
 		for (const auto & layer : layers)
-			layer -> disposed () .removeInterest (this, &X3DBindableNode::removeLayer);
+			layer -> disposed () .removeInterest (&X3DBindableNode::removeLayer, this);
 
 		layers = getLayers ();
 
 		for (const auto & layer : layers)
-			layer -> disposed () .addInterest (this, &X3DBindableNode::removeLayer, layer);
+			layer -> disposed () .addInterest (&X3DBindableNode::removeLayer, this, layer);
 
 		// Bind
 

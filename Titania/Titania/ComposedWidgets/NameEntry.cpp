@@ -79,13 +79,13 @@ void
 NameEntry::setNode (const X3D::SFNode & value)
 {
 	if (node)
-		node -> name_changed () .removeInterest (this, &NameEntry::set_name);
+		node -> name_changed () .removeInterest (&NameEntry::set_name, this);
 
 	node = value;
 
 	if (node)
 	{
-		node -> name_changed () .addInterest (this, &NameEntry::set_name);
+		node -> name_changed () .addInterest (&NameEntry::set_name, this);
 		set_name ();
 	}
 	else

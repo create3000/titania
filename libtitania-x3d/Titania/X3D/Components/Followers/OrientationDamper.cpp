@@ -99,9 +99,9 @@ OrientationDamper::initialize ()
 {
 	X3DDamperNode::initialize ();
 
-	set_value ()       .addInterest (this, &OrientationDamper::set_value_);
-	set_destination () .addInterest (this, &OrientationDamper::set_destination_);
-	order ()           .addInterest (this, &OrientationDamper::set_order);
+	set_value ()       .addInterest (&OrientationDamper::set_value_, this);
+	set_destination () .addInterest (&OrientationDamper::set_destination_, this);
+	order ()           .addInterest (&OrientationDamper::set_order, this);
 
 	buffer .resize (getOrder () + 1, initialValue ());
 

@@ -88,7 +88,7 @@ TextureCoordinateGenerator::initialize ()
 {
 	X3DTextureCoordinateNode::initialize ();
 
-	mode () .addInterest (this, &TextureCoordinateGenerator::set_mode);
+	mode () .addInterest (&TextureCoordinateGenerator::set_mode, this);
 
 	set_mode ();
 }

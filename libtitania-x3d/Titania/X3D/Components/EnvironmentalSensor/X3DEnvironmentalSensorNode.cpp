@@ -79,14 +79,14 @@ X3DEnvironmentalSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
-	isLive () .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+	getExecutionContext () -> isLive () .addInterest (&X3DEnvironmentalSensorNode::set_enabled, this);
+	isLive () .addInterest (&X3DEnvironmentalSensorNode::set_enabled, this);
 
 	if (isCameraObject ())
 	{
-		enabled ()        .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
-		size ()           .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
-		isCameraObject () .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+		enabled ()        .addInterest (&X3DEnvironmentalSensorNode::set_enabled, this);
+		size ()           .addInterest (&X3DEnvironmentalSensorNode::set_enabled, this);
+		isCameraObject () .addInterest (&X3DEnvironmentalSensorNode::set_enabled, this);
 
 		set_enabled ();
 	}
@@ -99,15 +99,15 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> sensors ()         .removeInterest (this, &X3DEnvironmentalSensorNode::update);
-		getExecutionContext () -> isLive () .removeInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+		getBrowser () -> sensors ()         .removeInterest (&X3DEnvironmentalSensorNode::update, this);
+		getExecutionContext () -> isLive () .removeInterest (&X3DEnvironmentalSensorNode::set_enabled, this);
 	}
 
 	X3DSensorNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
 	{
-		getExecutionContext () -> isLive () .addInterest (this, &X3DEnvironmentalSensorNode::set_enabled);
+		getExecutionContext () -> isLive () .addInterest (&X3DEnvironmentalSensorNode::set_enabled, this);
 
 		set_enabled ();
 	}
@@ -129,11 +129,11 @@ X3DEnvironmentalSensorNode::set_enabled ()
 {
 	if (isCameraObject () and enabled () and size () not_eq Vector3f () and isLive () and getExecutionContext () -> isLive ())
 	{
-		getBrowser () -> sensors () .addInterest (this, &X3DEnvironmentalSensorNode::update);
+		getBrowser () -> sensors () .addInterest (&X3DEnvironmentalSensorNode::update, this);
 	}
 	else
 	{
-		getBrowser () -> sensors () .removeInterest (this, &X3DEnvironmentalSensorNode::update);
+		getBrowser () -> sensors () .removeInterest (&X3DEnvironmentalSensorNode::update, this);
 
 		if (isActive ())
 		{

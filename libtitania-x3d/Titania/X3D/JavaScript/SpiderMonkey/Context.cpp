@@ -147,7 +147,7 @@ Context::Context (X3D::Script* const script, const std::string & ecmascript, con
 	JS_SetOptions (cx, JSOPTION_ATLINE | JSOPTION_VAROBJFIX | JSOPTION_JIT | JSOPTION_METHODJIT);
 	JS_SetErrorReporter (cx, error);
 
-	shutdown () .addInterest (this, &Context::set_shutdown);
+	shutdown () .addInterest (&Context::set_shutdown, this);
 
 	addClasses ();
 	addUserDefinedFields ();
@@ -547,12 +547,12 @@ void
 Context::set_live ()
 {
 	if (not JSVAL_IS_VOID (prepareEventsFn))
-		getBrowser () -> prepareEvents () .addInterest (this, &Context::prepareEvents);
+		getBrowser () -> prepareEvents () .addInterest (&Context::prepareEvents, this);
 
 	if (not JSVAL_IS_VOID (eventsProcessedFn))
-		getScriptNode () -> addInterest (this, &Context::eventsProcessed);
+		getScriptNode () -> addInterest (&Context::eventsProcessed, this);
 
-	getScriptNode () -> addInterest (this, &Context::finish);
+	getScriptNode () -> addInterest (&Context::finish, this);
 
 	for (const auto & field: getScriptNode () -> getUserDefinedFields ())
 	{
@@ -562,7 +562,7 @@ Context::set_live ()
 			case inputOutput:
 			{
 				if (functions .count (field))
-					field -> addInterest (this, &Context::set_field, field, std::ref (functions [field]));
+					field -> addInterest (&Context::set_field, this, field, std::ref (functions [field]));
 
 				break;
 			}
@@ -682,8 +682,8 @@ Context::catchEventsProcessed ()
 	{
 		if (not JSVAL_IS_VOID (eventsProcessedFn))
 		{
-			getScriptNode () -> removeInterest (this, &Context::eventsProcessed);
-			getScriptNode () -> addInterest (this, &Context::connectEventsProcessed);
+			getScriptNode () -> removeInterest (&Context::eventsProcessed, this);
+			getScriptNode () -> addInterest (&Context::connectEventsProcessed, this);
 		}
 	}
 }
@@ -691,8 +691,8 @@ Context::catchEventsProcessed ()
 void
 Context::connectEventsProcessed ()
 {
-	getScriptNode () -> removeInterest (this, &Context::connectEventsProcessed);
-	getScriptNode () -> addInterest (this, &Context::eventsProcessed);
+	getScriptNode () -> removeInterest (&Context::connectEventsProcessed, this);
+	getScriptNode () -> addInterest (&Context::eventsProcessed, this);
 }
 
 void

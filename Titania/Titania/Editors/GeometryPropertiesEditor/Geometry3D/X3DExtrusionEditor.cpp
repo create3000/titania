@@ -66,7 +66,7 @@ void
 X3DExtrusionEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DExtrusionEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DExtrusionEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -75,7 +75,7 @@ void
 X3DExtrusionEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DExtrusionEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DExtrusionEditor::set_geometry, this);
 }
 
 void

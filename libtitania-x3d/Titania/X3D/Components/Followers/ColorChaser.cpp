@@ -98,8 +98,8 @@ ColorChaser::initialize ()
 {
 	X3DChaserNode::initialize ();
 
-	set_value ()       .addInterest (this, &ColorChaser::set_value_);
-	set_destination () .addInterest (this, &ColorChaser::set_destination_);
+	set_value ()       .addInterest (&ColorChaser::set_value_, this);
+	set_destination () .addInterest (&ColorChaser::set_destination_, this);
 
 	bufferEndTime = getCurrentTime ();
 	previousValue = initialValue ();

@@ -82,7 +82,7 @@ PeaseBlossom::initialize ()
 {
 	X3DJavaScriptEngine::initialize ();
 	
-	getBrowser () -> finished () .addInterest (this, &PeaseBlossom::finished);
+	getBrowser () -> finished () .addInterest (&PeaseBlossom::finished, this);
 }
 
 X3DPtr <X3DJavaScriptContext>

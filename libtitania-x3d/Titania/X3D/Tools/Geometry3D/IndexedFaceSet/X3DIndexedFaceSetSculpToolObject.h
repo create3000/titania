@@ -82,6 +82,13 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
+	virtual
+	int32_t
+	getToolNumber () const final override
+	{ return ToolNumber::SCULP; }
+
 
 private:
 

@@ -70,7 +70,7 @@ void
 X3DConeEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DConeEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DConeEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -79,7 +79,7 @@ void
 X3DConeEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DConeEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DConeEditor::set_geometry, this);
 }
 
 void

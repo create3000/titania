@@ -66,8 +66,8 @@ X3DKeyDeviceSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &X3DKeyDeviceSensorNode::set_live);
-	isLive () .addInterest (this, &X3DKeyDeviceSensorNode::set_live);
+	getExecutionContext () -> isLive () .addInterest (&X3DKeyDeviceSensorNode::set_live, this);
+	isLive () .addInterest (&X3DKeyDeviceSensorNode::set_live, this);
 
 	set_live ();
 }
@@ -79,7 +79,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getExecutionContext () -> isLive () .removeInterest (this, &X3DKeyDeviceSensorNode::set_live);
+		getExecutionContext () -> isLive () .removeInterest (&X3DKeyDeviceSensorNode::set_live, this);
 	
 		if (executionContext -> getBrowser () not_eq getBrowser ())
 		{
@@ -95,7 +95,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 	{
-		getExecutionContext () -> isLive () .addInterest (this, &X3DKeyDeviceSensorNode::set_live);
+		getExecutionContext () -> isLive () .addInterest (&X3DKeyDeviceSensorNode::set_live, this);
 
 		set_live ();
 	}
@@ -137,14 +137,14 @@ X3DKeyDeviceSensorNode::set_live ()
 {
 	if (getExecutionContext () -> isLive () and isLive ())
 	{
-		enabled () .addInterest (this, &X3DKeyDeviceSensorNode::set_enabled);
+		enabled () .addInterest (&X3DKeyDeviceSensorNode::set_enabled, this);
 
 		if (enabled ())
 			enable ();
 	}
 	else
 	{
-		enabled () .removeInterest (this, &X3DKeyDeviceSensorNode::set_enabled);
+		enabled () .removeInterest (&X3DKeyDeviceSensorNode::set_enabled, this);
 
 		if (enabled ())
 			disable ();

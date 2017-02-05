@@ -72,7 +72,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (isInitialized ())
-		getBrowser () -> prepareEvents () .removeInterest (this, &X3DFollowerNode::prepareEvents);
+		getBrowser () -> prepareEvents () .removeInterest (&X3DFollowerNode::prepareEvents, this);
 
 	X3DChildNode::setExecutionContext (executionContext);
 
@@ -80,7 +80,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		if (isActive ())
 		{
-			getBrowser () -> prepareEvents () .addInterest (this, &X3DFollowerNode::prepareEvents);
+			getBrowser () -> prepareEvents () .addInterest (&X3DFollowerNode::prepareEvents, this);
 			getBrowser () -> addEvent ();
 		}
 	}
@@ -95,11 +95,11 @@ X3DFollowerNode::set_active (bool value)
 
 		if (isActive ())
 		{
-			getBrowser () -> prepareEvents () .addInterest (this, &X3DFollowerNode::prepareEvents);
+			getBrowser () -> prepareEvents () .addInterest (&X3DFollowerNode::prepareEvents, this);
 			getBrowser () -> addEvent ();
 		}
 		else
-			getBrowser () -> prepareEvents () .removeInterest (this, &X3DFollowerNode::prepareEvents);
+			getBrowser () -> prepareEvents () .removeInterest (&X3DFollowerNode::prepareEvents, this);
 	}
 }
 

@@ -84,7 +84,7 @@ OutlineEditor::OutlineEditor (X3DBrowserWindow* const browserWindow) :
 void
 OutlineEditor::on_map ()
 {
-	getBrowserWindow () -> worldURL_changed () .addInterest (this, &OutlineEditor::set_scenes_menu);
+	getBrowserWindow () -> worldURL_changed () .addInterest (&OutlineEditor::set_scenes_menu, this);
 
 	set_scenes_menu ();
 	treeView -> queue_draw ();
@@ -93,7 +93,7 @@ OutlineEditor::on_map ()
 void
 OutlineEditor::on_unmap ()
 {
-	getBrowserWindow () -> worldURL_changed () .removeInterest (this, &OutlineEditor::set_scenes_menu);
+	getBrowserWindow () -> worldURL_changed () .removeInterest (&OutlineEditor::set_scenes_menu, this);
 }
 
 void
@@ -115,8 +115,8 @@ OutlineEditor::initialize ()
 	if (getConfig () -> hasItem ("useLocale"))
 	 getUseLocaleMenuItem () .set_active (getConfig () -> getBoolean ("useLocale"));
 
-	getCurrentScene ()   .addInterest (this, &OutlineEditor::set_scene);
-	getCurrentContext () .addInterest (this, &OutlineEditor::set_executionContext);
+	getCurrentScene ()   .addInterest (&OutlineEditor::set_scene, this);
+	getCurrentContext () .addInterest (&OutlineEditor::set_executionContext, this);
 
 	set_scene ();
 	set_executionContext ();

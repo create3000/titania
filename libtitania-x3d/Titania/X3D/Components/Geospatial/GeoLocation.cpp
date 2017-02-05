@@ -97,7 +97,7 @@ GeoLocation::initialize ()
 	X3DTransformMatrix3DNode::initialize ();
 	X3DGeospatialObject::initialize ();
 
-	addInterest (this, &GeoLocation::eventsProcessed);
+	addInterest (&GeoLocation::eventsProcessed, this);
 
 	eventsProcessed ();
 }

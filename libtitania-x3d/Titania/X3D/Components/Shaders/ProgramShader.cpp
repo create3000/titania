@@ -102,13 +102,13 @@ ProgramShader::initialize ()
 {
 	X3DShaderNode::initialize ();
 
-	activate () .addInterest (this, &ProgramShader::set_activate);
-	programs () .addInterest (this, &ProgramShader::set_programs);
+	activate () .addInterest (&ProgramShader::set_activate, this);
+	programs () .addInterest (&ProgramShader::set_programs, this);
 	programs () .addInterest (loadSensor -> watchList ());
 
 	loadSensor -> isPrivate (true);
 	loadSensor -> watchList () = programs ();
-	loadSensor -> isActive () .addInterest (this, &ProgramShader::requestExplicitRelink);
+	loadSensor -> isActive () .addInterest (&ProgramShader::requestExplicitRelink, this);
 	loadSensor -> setup ();
 
 	set_programs ();

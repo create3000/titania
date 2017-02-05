@@ -82,9 +82,9 @@ X3DTexture2DNode::initialize ()
 {
 	X3DTextureNode::initialize ();
 
-	repeatS ()           .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
-	repeatT ()           .addInterest (this, &X3DTexture2DNode::updateTextureProperties);
-	textureProperties () .addInterest (this, &X3DTexture2DNode::set_textureProperties);
+	repeatS ()           .addInterest (&X3DTexture2DNode::updateTextureProperties, this);
+	repeatT ()           .addInterest (&X3DTexture2DNode::updateTextureProperties, this);
+	textureProperties () .addInterest (&X3DTexture2DNode::set_textureProperties, this);
 
 	set_textureProperties ();
 
@@ -106,14 +106,14 @@ void
 X3DTexture2DNode::set_textureProperties ()
 {
 	if (texturePropertiesNode)
-		texturePropertiesNode -> removeInterest (this, &X3DTexture2DNode::updateTextureProperties);
+		texturePropertiesNode -> removeInterest (&X3DTexture2DNode::updateTextureProperties, this);
 
 	texturePropertiesNode .set (x3d_cast <TextureProperties*> (textureProperties ()));
 
 	if (not texturePropertiesNode)
 		texturePropertiesNode .set (x3d_cast <TextureProperties*> (getBrowser () -> getDefaultTextureProperties ()));
 
-	texturePropertiesNode -> addInterest (this, &X3DTexture2DNode::updateTextureProperties);
+	texturePropertiesNode -> addInterest (&X3DTexture2DNode::updateTextureProperties, this);
 
 	updateTextureProperties ();
 }

@@ -71,7 +71,7 @@ CollisionTool::realize ()
 {
 	X3DGroupingNodeTool::realize ();
 	
-	getNode <Collision> () -> enabled () .addInterest (this, &CollisionTool::set_enabled);
+	getNode <Collision> () -> enabled () .addInterest (&CollisionTool::set_enabled, this);
 
 	set_enabled (getNode <Collision> () -> enabled ());
 }

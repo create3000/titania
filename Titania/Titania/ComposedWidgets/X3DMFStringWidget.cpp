@@ -77,7 +77,7 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 {
 	addChildObjects (nodes, string, buffer);
 
-	buffer .addInterest (this, &X3DMFStringWidget::set_buffer);
+	buffer .addInterest (&X3DMFStringWidget::set_buffer, this);
 
 	treeView .set_reorderable (true);
 
@@ -109,7 +109,7 @@ X3DMFStringWidget::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFString> (name) .removeInterest (this, &X3DMFStringWidget::set_field);
+			node -> getField <X3D::MFString> (name) .removeInterest (&X3DMFStringWidget::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -121,7 +121,7 @@ X3DMFStringWidget::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFString> (name) .addInterest (this, &X3DMFStringWidget::set_field);
+			node -> getField <X3D::MFString> (name) .addInterest (&X3DMFStringWidget::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -316,8 +316,8 @@ X3DMFStringWidget::on_string_changed ()
 		{
 			auto & field = node -> getField <X3D::MFString> (name);
 
-			field .removeInterest (this, &X3DMFStringWidget::set_field);
-			field .addInterest (this, &X3DMFStringWidget::connect);
+			field .removeInterest (&X3DMFStringWidget::set_field, this);
+			field .addInterest (&X3DMFStringWidget::connect, this);
 
 			field = string;
 		}
@@ -365,8 +365,8 @@ X3DMFStringWidget::set_buffer ()
 void
 X3DMFStringWidget::connect (const X3D::MFString & field)
 {
-	field .removeInterest (this, &X3DMFStringWidget::connect);
-	field .addInterest (this, &X3DMFStringWidget::set_field);
+	field .removeInterest (&X3DMFStringWidget::connect, this);
+	field .addInterest (&X3DMFStringWidget::set_field, this);
 }
 
 X3DMFStringWidget::~X3DMFStringWidget ()

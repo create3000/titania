@@ -75,7 +75,7 @@ void
 X3DRectangle2DEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DRectangle2DEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DRectangle2DEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -84,7 +84,7 @@ void
 X3DRectangle2DEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DRectangle2DEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DRectangle2DEditor::set_geometry, this);
 }
 
 void

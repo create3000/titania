@@ -203,8 +203,8 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
 
 	setup ();
 
-	buffer               .addInterest (this, &X3DFieldAdjustment::set_buffer);
-	getCurrentContext () .addInterest (this, &X3DFieldAdjustment::set_field);
+	buffer               .addInterest (&X3DFieldAdjustment::set_buffer, this);
+	getCurrentContext () .addInterest (&X3DFieldAdjustment::set_field, this);
 	   
 	adjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment::on_value_changed));
 }
@@ -216,11 +216,11 @@ X3DFieldAdjustment <Type>::setNodes (const X3D::MFNode & value)
 	// Connect units.
 
 	if (scene)
-		scene -> units_changed () .removeInterest (this, &X3DFieldAdjustment::set_field);
+		scene -> units_changed () .removeInterest (&X3DFieldAdjustment::set_field, this);
 
 	scene = getCurrentScene ();
 
-	scene -> units_changed () .addInterest (this, &X3DFieldAdjustment::set_field);
+	scene -> units_changed () .addInterest (&X3DFieldAdjustment::set_field, this);
 
 	// Connect field.
 
@@ -228,7 +228,7 @@ X3DFieldAdjustment <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <Type> (name) .removeInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getField <Type> (name) .removeInterest (&X3DFieldAdjustment::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -240,7 +240,7 @@ X3DFieldAdjustment <Type>::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <Type> (name) .addInterest (this, &X3DFieldAdjustment::set_field);
+			node -> getField <Type> (name) .addInterest (&X3DFieldAdjustment::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -267,8 +267,8 @@ X3DFieldAdjustment <Type>::on_value_changed ()
 		{
 			auto & field = node -> getField <Type> (name);
 
-			field .removeInterest (this, &X3DFieldAdjustment::set_field);
-			field .addInterest (this, &X3DFieldAdjustment::connect);
+			field .removeInterest (&X3DFieldAdjustment::set_field, this);
+			field .addInterest (&X3DFieldAdjustment::connect, this);
 
 			set_value (field, getCurrentScene () -> fromUnit (unit, adjustment -> get_value ()));
 		}
@@ -373,8 +373,8 @@ template <class Type>
 void
 X3DFieldAdjustment <Type>::connect (const Type & field)
 {
-	field .removeInterest (this, &X3DFieldAdjustment::connect);
-	field .addInterest (this, &X3DFieldAdjustment::set_field);
+	field .removeInterest (&X3DFieldAdjustment::connect, this);
+	field .addInterest (&X3DFieldAdjustment::set_field, this);
 }
 
 } // puck

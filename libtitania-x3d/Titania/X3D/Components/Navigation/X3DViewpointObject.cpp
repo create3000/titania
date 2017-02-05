@@ -68,7 +68,7 @@ X3DViewpointObject::X3DViewpointObject () :
 void
 X3DViewpointObject::initialize ()
 {
-	description () .addInterest (this, &X3DViewpointObject::set_description);
+	description () .addInterest (&X3DViewpointObject::set_description, this);
 }
 
 void

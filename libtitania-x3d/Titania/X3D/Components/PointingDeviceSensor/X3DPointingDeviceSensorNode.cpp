@@ -79,11 +79,11 @@ X3DPointingDeviceSensorNode::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	enabled ()                          .addInterest (this, &X3DPointingDeviceSensorNode::set_live);
-	getExecutionContext () -> isLive () .addInterest (this, &X3DPointingDeviceSensorNode::set_live);
-	isLive ()                           .addInterest (this, &X3DPointingDeviceSensorNode::set_live);
+	enabled ()                          .addInterest (&X3DPointingDeviceSensorNode::set_live, this);
+	getExecutionContext () -> isLive () .addInterest (&X3DPointingDeviceSensorNode::set_live, this);
+	isLive ()                           .addInterest (&X3DPointingDeviceSensorNode::set_live, this);
 
-	enabled () .addInterest (this, &X3DPointingDeviceSensorNode::set_enabled);
+	enabled () .addInterest (&X3DPointingDeviceSensorNode::set_enabled, this);
 
 	set_live ();
 }
@@ -94,13 +94,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (isInitialized ())
-		getExecutionContext () -> isLive () .removeInterest (this, &X3DPointingDeviceSensorNode::set_live);
+		getExecutionContext () -> isLive () .removeInterest (&X3DPointingDeviceSensorNode::set_live, this);
 
 	X3DSensorNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
 	{
-		getExecutionContext () -> isLive () .addInterest (this, &X3DPointingDeviceSensorNode::set_live);
+		getExecutionContext () -> isLive () .addInterest (&X3DPointingDeviceSensorNode::set_live, this);
 
 		set_live ();
 	}
@@ -111,12 +111,12 @@ X3DPointingDeviceSensorNode::set_live ()
 {
 	if (enabled () and getExecutionContext () -> isLive () and isLive ())
 	{
-		getBrowser () -> getSelection () -> isEnabled () .addInterest (this, &X3DPointingDeviceSensorNode::set_disabled);
+		getBrowser () -> getSelection () -> isEnabled () .addInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
 		set_disabled ();
 	}
 	else
 	{
-		getBrowser () -> getSelection () -> isEnabled () .removeInterest (this, &X3DPointingDeviceSensorNode::set_disabled);
+		getBrowser () -> getSelection () -> isEnabled () .removeInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
 		disabled = true;
 	}
 }

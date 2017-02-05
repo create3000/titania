@@ -57,6 +57,11 @@
 namespace titania {
 namespace X3D {
 
+const int32_t X3DIndexedFaceSetTool::ToolNumber::NONE   = 0;
+const int32_t X3DIndexedFaceSetTool::ToolNumber::SELECT = 1;
+const int32_t X3DIndexedFaceSetTool::ToolNumber::CUT    = 2;
+const int32_t X3DIndexedFaceSetTool::ToolNumber::SCULP  = 3;
+
 X3DIndexedFaceSetTool::Fields::Fields () :
 	    toolType (new SFString ("NONE")),
 	    isActive (new SFBool ()),
@@ -77,8 +82,8 @@ X3DIndexedFaceSetTool::initialize ()
 {
 	X3DComposedGeometryNodeTool::initialize ();
 
-	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetTool::set_loadState);
-	toolType () .addInterest (this, &X3DIndexedFaceSetTool::set_toolType);
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetTool::set_loadState, this);
+	toolType () .addInterest (&X3DIndexedFaceSetTool::set_toolType, this);
 
 	set_toolType ();
 }

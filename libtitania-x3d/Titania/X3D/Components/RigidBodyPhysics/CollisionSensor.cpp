@@ -103,11 +103,11 @@ CollisionSensor::initialize ()
 {
 	X3DSensorNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &CollisionSensor::set_enabled);
-	isLive () .addInterest (this, &CollisionSensor::set_enabled);
+	getExecutionContext () -> isLive () .addInterest (&CollisionSensor::set_enabled, this);
+	isLive () .addInterest (&CollisionSensor::set_enabled, this);
 
-	enabled ()  .addInterest (this, &CollisionSensor::set_enabled);
-	collider () .addInterest (this, &CollisionSensor::set_collider);
+	enabled ()  .addInterest (&CollisionSensor::set_enabled, this);
+	collider () .addInterest (&CollisionSensor::set_collider, this);
 
 	set_enabled ();
 	set_collider ();
@@ -120,15 +120,15 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> finished () .removeInterest (this, &CollisionSensor::update);
-		getExecutionContext () -> isLive () .removeInterest (this, &CollisionSensor::set_enabled);
+		getBrowser () -> finished () .removeInterest (&CollisionSensor::update, this);
+		getExecutionContext () -> isLive () .removeInterest (&CollisionSensor::set_enabled, this);
 	}
 
 	X3DSensorNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
 	{
-		getExecutionContext () -> isLive () .addInterest (this, &CollisionSensor::set_enabled);
+		getExecutionContext () -> isLive () .addInterest (&CollisionSensor::set_enabled, this);
 	
 		set_enabled ();
 		set_collider ();
@@ -139,9 +139,9 @@ void
 CollisionSensor::set_enabled ()
 {
 	if (enabled () and isLive () and getExecutionContext () -> isLive ())
-		getBrowser () -> finished () .addInterest (this, &CollisionSensor::update);
+		getBrowser () -> finished () .addInterest (&CollisionSensor::update, this);
 	else
-		getBrowser () -> finished () .removeInterest (this, &CollisionSensor::update);
+		getBrowser () -> finished () .removeInterest (&CollisionSensor::update, this);
 }
 
 void

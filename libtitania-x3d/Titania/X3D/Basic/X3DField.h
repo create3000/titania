@@ -187,13 +187,13 @@ public:
 	///  6.7.7 Add field interest.
 	template <class Class>
 	void
-	addInterest (Class* object, void (Class::* memberFunction) (const ValueType &)) const
-	{ addInterest (object, memberFunction, std::cref (value)); }
+	addInterest (void (Class::* memberFunction) (const ValueType &), Class* object) const
+	{ addInterest (memberFunction, object, std::cref (value)); }
 
 	template <class Class>
 	void
-	addInterest (Class & object, void (Class::* memberFunction) (const ValueType &)) const
-	{ addInterest (object, memberFunction, std::cref (value)); }
+	addInterest (void (Class::* memberFunction) (const ValueType &), Class & object) const
+	{ addInterest (memberFunction, object, std::cref (value)); }
 
 	///  @name Destruction
 

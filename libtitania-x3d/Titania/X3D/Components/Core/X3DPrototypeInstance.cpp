@@ -161,7 +161,7 @@ X3DPrototypeInstance::construct ()
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
 
-		protoNode -> checkLoadState () .removeInterest (this, &X3DPrototypeInstance::construct);
+		protoNode -> checkLoadState () .removeInterest (&X3DPrototypeInstance::construct, this);
 
 		// Interface
 
@@ -281,7 +281,7 @@ X3DPrototypeInstance::initialize ()
 				protoNode -> requestAsyncLoad ();
 				// Procceed with next case:
 			case IN_PROGRESS_STATE:
-				protoNode -> checkLoadState () .addInterest (this, &X3DPrototypeInstance::construct);
+				protoNode -> checkLoadState () .addInterest (&X3DPrototypeInstance::construct, this);
 				break;
 
 			case COMPLETE_STATE:
@@ -299,8 +299,8 @@ X3DPrototypeInstance::initialize ()
 				break;
 		}
 
-		getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
-		X3DBaseNode::isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
+		getExecutionContext () -> isLive () .addInterest (&X3DPrototypeInstance::set_live, this);
+		X3DBaseNode::isLive () .addInterest (&X3DPrototypeInstance::set_live, this);
 
 		set_live ();
 
@@ -318,13 +318,13 @@ X3DPrototypeInstance::setExecutionContext (X3DExecutionContext* const executionC
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getExecutionContext () -> isLive () .removeInterest (this, &X3DPrototypeInstance::set_live);
+	getExecutionContext () -> isLive () .removeInterest (&X3DPrototypeInstance::set_live, this);
 
 	X3DExecutionContext::setExecutionContext (executionContext);
 
 	if (isInitialized ())
 	{
-		getExecutionContext () -> isLive () .addInterest (this, &X3DPrototypeInstance::set_live);
+		getExecutionContext () -> isLive () .addInterest (&X3DPrototypeInstance::set_live, this);
 
 		set_live ();
 	}

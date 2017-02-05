@@ -69,11 +69,11 @@ NormalTool::NormalTool (X3DBaseInterface* const editor,
 
 	// Buffer
 
-	buffer .addInterest (this, &NormalTool::set_buffer);
+	buffer .addInterest (&NormalTool::set_buffer, this);
 
 	// Browser
 
-	browser -> initialized () .addInterest (this, &NormalTool::set_initialized);
+	browser -> initialized () .addInterest (&NormalTool::set_initialized, this);
 	browser -> setAntialiasing (4);
 	browser -> show ();
 
@@ -87,13 +87,13 @@ NormalTool::NormalTool (X3DBaseInterface* const editor,
 void
 NormalTool::set_initialized ()
 {
-	browser -> initialized () .removeInterest (this, &NormalTool::set_initialized);
+	browser -> initialized () .removeInterest (&NormalTool::set_initialized, this);
 
 	try
 	{
 		const auto tool = browser -> getExecutionContext () -> getNamedNode ("Tool");
 
-		tool -> getField <X3D::SFRotation> ("outputRotation") .addInterest (this, &NormalTool::set_rotation);
+		tool -> getField <X3D::SFRotation> ("outputRotation") .addInterest (&NormalTool::set_rotation, this);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -108,7 +108,7 @@ NormalTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFVec3f> (name) .removeInterest (this, &NormalTool::set_field);
+			node -> getField <X3D::SFVec3f> (name) .removeInterest (&NormalTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -120,7 +120,7 @@ NormalTool::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFVec3f> (name) .addInterest (this, &NormalTool::set_field);
+			node -> getField <X3D::SFVec3f> (name) .addInterest (&NormalTool::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -145,8 +145,8 @@ NormalTool::set_rotation (const X3D::SFRotation & value)
 		{
 			auto & field = node -> getField <X3D::SFVec3f> (name);
 
-			field .removeInterest (this, &NormalTool::set_field);
-			field .addInterest (this, &NormalTool::connect);
+			field .removeInterest (&NormalTool::set_field, this);
+			field .addInterest (&NormalTool::connect, this);
 
 			field = normal;
 		}
@@ -207,8 +207,8 @@ NormalTool::set_value (const X3D::SFVec3f & value)
 void
 NormalTool::connect (const X3D::SFVec3f & field)
 {
-	field .removeInterest (this, &NormalTool::connect);
-	field .addInterest (this, &NormalTool::set_field);
+	field .removeInterest (&NormalTool::connect, this);
+	field .addInterest (&NormalTool::set_field, this);
 }
 
 NormalTool::~NormalTool ()

@@ -81,7 +81,7 @@ SFColorButton::SFColorButton (X3DBaseInterface* const editor,
 
 	// Buffer
 
-	buffer .addInterest (this, &SFColorButton::set_buffer);
+	buffer .addInterest (&SFColorButton::set_buffer, this);
 
 	// Button
 
@@ -124,7 +124,7 @@ SFColorButton::SFColorButton (X3DBaseInterface* const editor,
 	menu .append (*pasteMenuItem);
 	menu .show_all ();
 
-	clipboard -> string_changed () .addInterest (pasteMenuItem, &Gtk::ImageMenuItem::set_sensitive, true);
+	clipboard -> string_changed () .addInterest (&Gtk::ImageMenuItem::set_sensitive, pasteMenuItem, true);
 	clipboard -> target () = "model/x3d+vrml+color";
 	clipboard -> setup ();
 
@@ -140,7 +140,7 @@ SFColorButton::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFColor> (name) .removeInterest (this, &SFColorButton::set_field);
+			node -> getField <X3D::SFColor> (name) .removeInterest (&SFColorButton::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -152,7 +152,7 @@ SFColorButton::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::SFColor> (name) .addInterest (this, &SFColorButton::set_field);
+			node -> getField <X3D::SFColor> (name) .addInterest (&SFColorButton::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -220,8 +220,8 @@ SFColorButton::set_color (const int id, const X3D::Color3f & color)
 		{
 			auto & field = node -> getField <X3D::SFColor> (name);
 
-			field .removeInterest (this, &SFColorButton::set_field);
-			field .addInterest (this, &SFColorButton::connect);
+			field .removeInterest (&SFColorButton::set_field, this);
+			field .addInterest (&SFColorButton::connect, this);
 
 			field = color;
 		}
@@ -283,8 +283,8 @@ SFColorButton::set_buffer ()
 void
 SFColorButton::connect (const X3D::SFColor & field)
 {
-	field .removeInterest (this, &SFColorButton::connect);
-	field .addInterest (this, &SFColorButton::set_field);
+	field .removeInterest (&SFColorButton::connect, this);
+	field .addInterest (&SFColorButton::set_field, this);
 }
 
 bool

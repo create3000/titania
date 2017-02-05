@@ -87,7 +87,7 @@ TimeTrigger::initialize ()
 {
 	X3DTriggerNode::initialize ();
 
-	set_boolean () .addInterest (this, &TimeTrigger::set_boolean_);
+	set_boolean () .addInterest (&TimeTrigger::set_boolean_, this);
 }
 
 void

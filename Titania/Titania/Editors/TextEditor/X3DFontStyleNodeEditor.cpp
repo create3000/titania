@@ -97,7 +97,7 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 {
 	addChildObjects (texts, fontStyleNodeBuffer, fontStyleNode, fontStyle, screenFontStyle);
 
-	fontStyleNodeBuffer .addInterest (this, &X3DFontStyleNodeEditor::set_node);
+	fontStyleNodeBuffer .addInterest (&X3DFontStyleNodeEditor::set_node, this);
 	
 	getFontStyleSizeSpinButton ()      .property_sensitive () .signal_changed () .connect (sigc::mem_fun (*this, &X3DFontStyleNodeEditor::on_size_sensitive_changed));
 	getFontStylePointSizeSpinButton () .property_sensitive () .signal_changed () .connect (sigc::mem_fun (*this, &X3DFontStyleNodeEditor::on_point_size_sensitive_changed));
@@ -111,12 +111,12 @@ void
 X3DFontStyleNodeEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & text : texts)
-		text -> fontStyle () .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
+		text -> fontStyle () .removeInterest (&X3DFontStyleNodeEditor::set_fontStyle, this);
 
 	texts = getNodes <X3D::Text> (selection, { X3D::X3DConstants::Text });
 
 	for (const auto & text : texts)
-		text -> fontStyle () .addInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
+		text -> fontStyle () .addInterest (&X3DFontStyleNodeEditor::set_fontStyle, this);
 
 	set_fontStyle ();
 }
@@ -189,8 +189,8 @@ X3DFontStyleNodeEditor::on_fontStyle_changed ()
 		{
 			auto & field = text -> fontStyle ();
 
-			field .removeInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
-			field .addInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);
+			field .removeInterest (&X3DFontStyleNodeEditor::set_fontStyle, this);
+			field .addInterest (&X3DFontStyleNodeEditor::connectFontStyle, this);
 
 			if (getFontStyleComboBoxText () .get_active_row_number () > 0)
 				getBrowserWindow () -> replaceNode (getCurrentContext (), text, field, fontStyleNode, undoStep);
@@ -217,8 +217,8 @@ X3DFontStyleNodeEditor::set_fontStyle ()
 void
 X3DFontStyleNodeEditor::connectFontStyle (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DFontStyleNodeEditor::connectFontStyle);
-	field .addInterest (this, &X3DFontStyleNodeEditor::set_fontStyle);
+	field .removeInterest (&X3DFontStyleNodeEditor::connectFontStyle, this);
+	field .addInterest (&X3DFontStyleNodeEditor::set_fontStyle, this);
 }
 
 void
@@ -227,7 +227,7 @@ X3DFontStyleNodeEditor::set_node ()
 	undoStep .reset ();
 
 	if (fontStyleNode)
-		fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
+		fontStyleNode -> style () .removeInterest (&X3DFontStyleNodeEditor::set_style, this);
 
 	auto  tuple             = getSelection <X3D::X3DFontStyleNode> (texts, "fontStyle");
 	const int32_t active    = std::get <1> (tuple);
@@ -287,7 +287,7 @@ X3DFontStyleNodeEditor::set_node ()
 
 	changing = false;
 
-	fontStyleNode -> style () .addInterest (this, &X3DFontStyleNodeEditor::set_style);
+	fontStyleNode -> style () .addInterest (&X3DFontStyleNodeEditor::set_style, this);
 
 	set_style ();
 	set_widgets ();
@@ -326,8 +326,8 @@ X3DFontStyleNodeEditor::on_style_toggled ()
 	styleUndoStep .reset ();
 	addUndoFunction (fontStyleNode, fontStyleNode -> style (), styleUndoStep);
 
-	fontStyleNode -> style () .removeInterest (this, &X3DFontStyleNodeEditor::set_style);
-	fontStyleNode -> style () .addInterest (this, &X3DFontStyleNodeEditor::connectStyle);
+	fontStyleNode -> style () .removeInterest (&X3DFontStyleNodeEditor::set_style, this);
+	fontStyleNode -> style () .addInterest (&X3DFontStyleNodeEditor::connectStyle, this);
 
 	switch ((getFontStyleBoldToggleButton () .get_active () << 1) | getFontStyleItalicToggleButton () .get_active ())
 	{
@@ -372,8 +372,8 @@ X3DFontStyleNodeEditor::set_style ()
 void
 X3DFontStyleNodeEditor::connectStyle (const X3D::SFString & field)
 {
-	field .removeInterest (this, &X3DFontStyleNodeEditor::connectStyle);
-	field .addInterest (this, &X3DFontStyleNodeEditor::set_style);
+	field .removeInterest (&X3DFontStyleNodeEditor::connectStyle, this);
+	field .addInterest (&X3DFontStyleNodeEditor::set_style, this);
 }
 
 /***********************************************************************************************************************

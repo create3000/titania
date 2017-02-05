@@ -81,7 +81,7 @@ SculpToolEditor::configure ()
 
 	// IndexedFaceSetTool detection
 
-	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (this, &SculpToolEditor::set_geometry_nodes);
+	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (&SculpToolEditor::set_geometry_nodes, this);
 
 	set_geometry_nodes (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ());
 }
@@ -98,7 +98,7 @@ SculpToolEditor::initialize ()
 	getPullButton () .set_group (selectionGroup);
 	getPushButton () .set_group (selectionGroup);
 
-	getBrush () .addInterest (this, &SculpToolEditor::set_brush);
+	getBrush () .addInterest (&SculpToolEditor::set_brush, this);
 }
 
 void
@@ -148,7 +148,7 @@ SculpToolEditor::store ()
 	getConfig () -> setItem ("paned",       getPaned () .get_position ());
 	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
 
-	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (this, &SculpToolEditor::set_geometry_nodes);
+	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (&SculpToolEditor::set_geometry_nodes, this);
 
 	X3DSculpToolBrushEditor::store ();
 	X3DSculpToolEditorInterface::store ();

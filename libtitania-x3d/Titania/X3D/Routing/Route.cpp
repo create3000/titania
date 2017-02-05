@@ -111,8 +111,8 @@ Route::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	sourceNode      .addInterest (this, &Route::set_node);
-	destinationNode .addInterest (this, &Route::set_node);
+	sourceNode      .addInterest (&Route::set_node, this);
+	destinationNode .addInterest (&Route::set_node, this);
 
 	connect ();
 

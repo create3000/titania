@@ -110,7 +110,7 @@ X3DIndexedFaceSetTransformObject::initialize ()
 {
 	selectionTransform -> setup ();
 
-	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_loadState);
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetTransformObject::set_loadState, this);
 
 	set_loadState ();
 }
@@ -138,14 +138,14 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		transformTool       = inlineNode -> getExportedNode <Transform>        ("TransformTool");
 		selectionCoord      = inlineNode -> getExportedNode <CoordinateDouble> ("SelectionCoord");
 
-		transform ()              .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
-		axisAlignedBoundingBox () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform);
+		transform ()              .addInterest (&X3DIndexedFaceSetTransformObject::set_transform, this);
+		axisAlignedBoundingBox () .addInterest (&X3DIndexedFaceSetTransformObject::set_transform, this);
 
-		getBrowser () -> getControlKey ()  .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
-		touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint);
+		getBrowser () -> getControlKey ()  .addInterest (&X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint, this);
+		touchSensor -> hitPoint_changed () .addInterest (&X3DIndexedFaceSetTransformObject::set_touch_sensor_hitPoint, this);
 
-		planeSensor -> isActive ()            .addInterest (this, &X3DIndexedFaceSetTransformObject::set_plane_sensor_active);
-		planeSensor -> translation_changed () .addInterest (this, &X3DIndexedFaceSetTransformObject::set_plane_sensor_translation);
+		planeSensor -> isActive ()            .addInterest (&X3DIndexedFaceSetTransformObject::set_plane_sensor_active, this);
+		planeSensor -> translation_changed () .addInterest (&X3DIndexedFaceSetTransformObject::set_plane_sensor_translation, this);
 
 		// Transform Tool
 
@@ -161,14 +161,14 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		transformTool -> scaleOrientation () .addInterest (selectionTransform -> scaleOrientation ());
 		transformTool -> center ()           .addInterest (selectionTransform -> center ());
 
-		transformTool -> addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix);
+		transformTool -> addInterest (&X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix, this);
 		transformTool -> addTool ();
-		transformTool -> getField <SFBool> ("isActive")  .addInterest (this, &X3DIndexedFaceSetTransformObject::set_transform_active);
+		transformTool -> getField <SFBool> ("isActive")  .addInterest (&X3DIndexedFaceSetTransformObject::set_transform_active, this);
 		transformTool -> getField <SFBool> ("isActive")  .addInterest (isActive ());
 		transformTool -> getField <SFTime> ("touchTime") .addInterest (touchTime ());
 		transformTool -> setField <SFBool> ("bbox", false);
 
-		selectionCoord -> getField <MFVec3d> ("point") .addInterest (this, &X3DIndexedFaceSetTransformObject::set_selection);
+		selectionCoord -> getField <MFVec3d> ("point") .addInterest (&X3DIndexedFaceSetTransformObject::set_selection, this);
 
 		set_transform ();
 	}

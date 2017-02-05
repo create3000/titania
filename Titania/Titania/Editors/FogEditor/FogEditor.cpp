@@ -79,7 +79,7 @@ FogEditor::initialize ()
 {
 	X3DFogEditorInterface::initialize ();
 
-	fogList -> getSelection () .addInterest (this, &FogEditor::set_fog);
+	fogList -> getSelection () .addInterest (&FogEditor::set_fog, this);
 
 	fogList -> isEditor (true);
 	fogList -> getHeaderNotebook () .set_current_page (1);

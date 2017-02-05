@@ -112,8 +112,8 @@ GeneratedCubeMapTexture::initialize ()
 
 	renderer -> setup ();
 
-	update () .addInterest (this, &GeneratedCubeMapTexture::set_update);
-	size   () .addInterest (this, &GeneratedCubeMapTexture::set_size);
+	update () .addInterest (&GeneratedCubeMapTexture::set_update, this);
+	size   () .addInterest (&GeneratedCubeMapTexture::set_size, this);
 
 	set_update ();
 	set_size ();

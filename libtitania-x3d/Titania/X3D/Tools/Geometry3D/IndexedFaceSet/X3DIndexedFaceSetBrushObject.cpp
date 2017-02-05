@@ -85,10 +85,10 @@ X3DIndexedFaceSetBrushObject::X3DIndexedFaceSetBrushObject () :
 void
 X3DIndexedFaceSetBrushObject::initialize ()
 {
-	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (this, &X3DIndexedFaceSetBrushObject::set_loadState);
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetBrushObject::set_loadState, this);
 
-	toolType () .addInterest (this, &X3DIndexedFaceSetBrushObject::set_toolType);
-	brush ()    .addInterest (this, &X3DIndexedFaceSetBrushObject::set_brush);
+	toolType () .addInterest (&X3DIndexedFaceSetBrushObject::set_toolType, this);
+	brush ()    .addInterest (&X3DIndexedFaceSetBrushObject::set_brush, this);
 
 	set_loadState ();
 	set_brush ();
@@ -124,15 +124,15 @@ X3DIndexedFaceSetBrushObject::set_toolType ()
 
 		if (brushes .count (toolType ()))
 		{
-			toolSwitch -> whichChoice () = 3;
+			toolSwitch -> whichChoice () = getToolNumber ();
 
-			touchSensor -> isOver ()           .addInterest (this, &X3DIndexedFaceSetBrushObject::set_touch_sensor_over);
-			touchSensor -> hitPoint_changed () .addInterest (this, &X3DIndexedFaceSetBrushObject::set_touch_sensor_hitPoint);
+			touchSensor -> isOver ()           .addInterest (&X3DIndexedFaceSetBrushObject::set_touch_sensor_over, this);
+			touchSensor -> hitPoint_changed () .addInterest (&X3DIndexedFaceSetBrushObject::set_touch_sensor_hitPoint, this);
 		}
 		else
 		{
-			touchSensor -> isOver ()           .removeInterest (this, &X3DIndexedFaceSetBrushObject::set_touch_sensor_over);
-			touchSensor -> hitPoint_changed () .removeInterest (this, &X3DIndexedFaceSetBrushObject::set_touch_sensor_hitPoint);
+			touchSensor -> isOver ()           .removeInterest (&X3DIndexedFaceSetBrushObject::set_touch_sensor_over, this);
+			touchSensor -> hitPoint_changed () .removeInterest (&X3DIndexedFaceSetBrushObject::set_touch_sensor_hitPoint, this);
 		}	
 	}
 	catch (const X3DError & error)
@@ -147,7 +147,7 @@ X3DIndexedFaceSetBrushObject::set_brush ()
 	try
 	{
 		if (brushNode)
-			brushNode -> getField <SFDouble> ("radius") .removeInterest (this, &X3DIndexedFaceSetBrushObject::set_brush_radius);
+			brushNode -> getField <SFDouble> ("radius") .removeInterest (&X3DIndexedFaceSetBrushObject::set_brush_radius, this);
 	}
 	catch (const X3DError & error)
 	{ }
@@ -157,7 +157,7 @@ X3DIndexedFaceSetBrushObject::set_brush ()
 	try
 	{
 		if (brushNode)
-			brushNode -> getField <SFDouble> ("radius") .addInterest (this, &X3DIndexedFaceSetBrushObject::set_brush_radius);
+			brushNode -> getField <SFDouble> ("radius") .addInterest (&X3DIndexedFaceSetBrushObject::set_brush_radius, this);
 
 		set_brush_radius ();
 	}

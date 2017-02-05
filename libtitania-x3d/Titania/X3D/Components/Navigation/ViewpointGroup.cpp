@@ -113,9 +113,9 @@ ViewpointGroup::initialize ()
 	proximitySensor -> size ()   = size ();
 	proximitySensor -> center () = center ();
 
-	displayed () .addInterest (this, &ViewpointGroup::set_displayed);
-	size ()      .addInterest (this, &ViewpointGroup::set_displayed);
-	children ()  .addInterest (this, &ViewpointGroup::set_children);
+	displayed () .addInterest (&ViewpointGroup::set_displayed, this);
+	size ()      .addInterest (&ViewpointGroup::set_displayed, this);
+	children ()  .addInterest (&ViewpointGroup::set_children, this);
 
 	set_displayed ();
 	set_children ();
@@ -144,12 +144,12 @@ ViewpointGroup::set_displayed ()
 
 	if (proximitySensor -> enabled ())
 	{
-		proximitySensor -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &ViewpointGroup::setCameraObject);
+		proximitySensor -> isCameraObject () .addInterest (&ViewpointGroup::setCameraObject, static_cast <X3DChildNode*> (this));
 		setCameraObject (proximitySensor -> isCameraObject ());
 	}
 	else
 	{
-		proximitySensor -> isCameraObject () .removeInterest (static_cast <X3DChildNode*> (this), &ViewpointGroup::setCameraObject);
+		proximitySensor -> isCameraObject () .removeInterest (&ViewpointGroup::setCameraObject, static_cast <X3DChildNode*> (this));
 		setCameraObject (true);
 	}
 }

@@ -116,7 +116,7 @@ BackgroundEditor::initialize ()
 
 	// Background List
 
-	backgroundList -> getSelection () .addInterest (this, &BackgroundEditor::set_background);
+	backgroundList -> getSelection () .addInterest (&BackgroundEditor::set_background, this);
 
 	backgroundList -> isEditor (true);
 	backgroundList -> getHeaderNotebook () .set_current_page (1);
@@ -144,12 +144,12 @@ BackgroundEditor::set_background (const X3D::X3DPtr <X3D::X3DBackgroundNode> & v
 {
 	if (backgroundNode)
 	{
-		backgroundNode -> getFrontTexture ()  .removeInterest (this, &BackgroundEditor::set_texture);
-		backgroundNode -> getBackTexture ()   .removeInterest (this, &BackgroundEditor::set_texture);
-		backgroundNode -> getLeftTexture ()   .removeInterest (this, &BackgroundEditor::set_texture);
-		backgroundNode -> getRightTexture ()  .removeInterest (this, &BackgroundEditor::set_texture);
-		backgroundNode -> getTopTexture ()    .removeInterest (this, &BackgroundEditor::set_texture);
-		backgroundNode -> getBottomTexture () .removeInterest (this, &BackgroundEditor::set_texture);
+		backgroundNode -> getFrontTexture ()  .removeInterest (&BackgroundEditor::set_texture, this);
+		backgroundNode -> getBackTexture ()   .removeInterest (&BackgroundEditor::set_texture, this);
+		backgroundNode -> getLeftTexture ()   .removeInterest (&BackgroundEditor::set_texture, this);
+		backgroundNode -> getRightTexture ()  .removeInterest (&BackgroundEditor::set_texture, this);
+		backgroundNode -> getTopTexture ()    .removeInterest (&BackgroundEditor::set_texture, this);
+		backgroundNode -> getBottomTexture () .removeInterest (&BackgroundEditor::set_texture, this);
 	}
 
 	backgroundNode = value;
@@ -176,12 +176,12 @@ BackgroundEditor::set_background (const X3D::X3DPtr <X3D::X3DBackgroundNode> & v
 
 	if (backgroundNode)
 	{
-		backgroundNode -> getFrontTexture ()  .addInterest (this, &BackgroundEditor::set_texture, frontPreview,  std::cref (backgroundNode -> getFrontTexture ()));
-		backgroundNode -> getBackTexture ()   .addInterest (this, &BackgroundEditor::set_texture, backPreview,   std::cref (backgroundNode -> getBackTexture ()));
-		backgroundNode -> getLeftTexture ()   .addInterest (this, &BackgroundEditor::set_texture, leftPreview,   std::cref (backgroundNode -> getLeftTexture ()));
-		backgroundNode -> getRightTexture ()  .addInterest (this, &BackgroundEditor::set_texture, rightPreview,  std::cref (backgroundNode -> getRightTexture ()));
-		backgroundNode -> getTopTexture ()    .addInterest (this, &BackgroundEditor::set_texture, topPreview,    std::cref (backgroundNode -> getTopTexture ()));
-		backgroundNode -> getBottomTexture () .addInterest (this, &BackgroundEditor::set_texture, bottomPreview, std::cref (backgroundNode -> getBottomTexture ()));
+		backgroundNode -> getFrontTexture ()  .addInterest (&BackgroundEditor::set_texture, this, frontPreview,  std::cref (backgroundNode -> getFrontTexture ()));
+		backgroundNode -> getBackTexture ()   .addInterest (&BackgroundEditor::set_texture, this, backPreview,   std::cref (backgroundNode -> getBackTexture ()));
+		backgroundNode -> getLeftTexture ()   .addInterest (&BackgroundEditor::set_texture, this, leftPreview,   std::cref (backgroundNode -> getLeftTexture ()));
+		backgroundNode -> getRightTexture ()  .addInterest (&BackgroundEditor::set_texture, this, rightPreview,  std::cref (backgroundNode -> getRightTexture ()));
+		backgroundNode -> getTopTexture ()    .addInterest (&BackgroundEditor::set_texture, this, topPreview,    std::cref (backgroundNode -> getTopTexture ()));
+		backgroundNode -> getBottomTexture () .addInterest (&BackgroundEditor::set_texture, this, bottomPreview, std::cref (backgroundNode -> getBottomTexture ()));
 
 		set_texture (frontPreview,  backgroundNode -> getFrontTexture ());
 		set_texture (backPreview,   backgroundNode -> getBackTexture ());

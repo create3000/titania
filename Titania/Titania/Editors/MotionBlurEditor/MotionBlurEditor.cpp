@@ -75,7 +75,7 @@ MotionBlurEditor::initialize ()
 {
 	X3DMotionBlurEditorInterface::initialize ();
 
-	getCurrentBrowser () .addInterest (this, &MotionBlurEditor::set_browser);
+	getCurrentBrowser () .addInterest (&MotionBlurEditor::set_browser, this);
 
 	set_browser (getCurrentBrowser ());
 }

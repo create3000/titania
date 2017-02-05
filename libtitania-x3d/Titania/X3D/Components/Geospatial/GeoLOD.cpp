@@ -134,11 +134,11 @@ GeoLOD::initialize ()
 	rootGroup -> children () = rootNode ();
 	rootGroup -> setup ();
 
-	rootInline   -> checkLoadState () .addInterest (this, &GeoLOD::set_rootLoadState);
-	child1Inline -> checkLoadState () .addInterest (this, &GeoLOD::set_childLoadState);
-	child2Inline -> checkLoadState () .addInterest (this, &GeoLOD::set_childLoadState);
-	child3Inline -> checkLoadState () .addInterest (this, &GeoLOD::set_childLoadState);
-	child4Inline -> checkLoadState () .addInterest (this, &GeoLOD::set_childLoadState);
+	rootInline   -> checkLoadState () .addInterest (&GeoLOD::set_rootLoadState, this);
+	child1Inline -> checkLoadState () .addInterest (&GeoLOD::set_childLoadState, this);
+	child2Inline -> checkLoadState () .addInterest (&GeoLOD::set_childLoadState, this);
+	child3Inline -> checkLoadState () .addInterest (&GeoLOD::set_childLoadState, this);
+	child4Inline -> checkLoadState () .addInterest (&GeoLOD::set_childLoadState, this);
 
 	rootUrl ()   .addInterest (rootInline -> url ());
 	child1Url () .addInterest (child1Inline -> url ());

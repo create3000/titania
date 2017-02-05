@@ -98,7 +98,7 @@ AudioClip::initialize ()
 	X3DSoundSourceNode::initialize ();
 	X3DUrlObject::initialize ();
 
-	url () .addInterest (this, &AudioClip::set_url);
+	url () .addInterest (&AudioClip::set_url, this);
 
 	requestImmediateLoad ();
 }

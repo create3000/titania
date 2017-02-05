@@ -91,7 +91,7 @@ MultiTextureTransform::initialize ()
 {
 	X3DTextureTransformNode::initialize ();
 	
-	textureTransform () .addInterest (this, &MultiTextureTransform::set_textureTransform);
+	textureTransform () .addInterest (&MultiTextureTransform::set_textureTransform, this);
 }
 
 void

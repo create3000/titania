@@ -215,6 +215,8 @@ X3DOutput::clear ()
 
 		for (const auto & input : temp -> inputs)
 			input .first -> X3DInput::disposed () .removeDeleter (this, input .first, input .second);
+
+		data .reset ();
 	}
 }
 

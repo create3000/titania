@@ -102,7 +102,7 @@ Material::initialize ()
 {
 	X3DMaterialNode::initialize ();
 
-	addInterest (this, &Material::eventsProcessed);
+	addInterest (&Material::eventsProcessed, this);
 
 	eventsProcessed ();
 }

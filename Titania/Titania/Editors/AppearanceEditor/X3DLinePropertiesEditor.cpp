@@ -79,21 +79,21 @@ X3DLinePropertiesEditor::X3DLinePropertiesEditor () :
 void
 X3DLinePropertiesEditor::initialize ()
 {
-	getPreview () -> initialized () .addInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
+	getPreview () -> initialized () .addInterest (&X3DLinePropertiesEditor::set_lineProperties, this);
 
-	linePropertiesBuffer .addInterest (this, &X3DLinePropertiesEditor::set_node);
+	linePropertiesBuffer .addInterest (&X3DLinePropertiesEditor::set_node, this);
 }
 
 void
 X3DLinePropertiesEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & appearance : appearances)
-		appearance -> lineProperties () .removeInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
+		appearance -> lineProperties () .removeInterest (&X3DLinePropertiesEditor::set_lineProperties, this);
 
 	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
-		appearance -> lineProperties () .addInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
+		appearance -> lineProperties () .addInterest (&X3DLinePropertiesEditor::set_lineProperties, this);
 
 	set_lineProperties ();
 }
@@ -125,8 +125,8 @@ X3DLinePropertiesEditor::on_lineProperties_toggled ()
 			{
 				auto & field = appearance -> getField <X3D::SFNode> ("lineProperties");
 
-				field .removeInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
-				field .addInterest (this, &X3DLinePropertiesEditor::connectLineProperties);
+				field .removeInterest (&X3DLinePropertiesEditor::set_lineProperties, this);
+				field .addInterest (&X3DLinePropertiesEditor::connectLineProperties, this);
 
 				if (getLinePropertiesCheckButton () .get_active ())
 				{
@@ -165,7 +165,7 @@ X3DLinePropertiesEditor::set_node ()
 		const auto previewAppearance = getPreview () -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("LineAppearance");
 
 		if (lineProperties)
-			lineProperties -> removeInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+			lineProperties -> removeInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
 
 		undoStep .reset ();
 
@@ -179,12 +179,12 @@ X3DLinePropertiesEditor::set_node ()
 		previewAppearance -> lineProperties () = lineProperties;
 
 		if (lineProperties)
-			lineProperties -> addInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+			lineProperties -> addInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
 		
 		else
 		{
 			lineProperties = new X3D::LineProperties (getCurrentContext ());
-			lineProperties -> addInterest (*getPreview (), &X3D::X3DBrowser::addEvent);
+			lineProperties -> addInterest (&X3D::X3DBrowser::addEvent, *getPreview ());
 			lineProperties -> linewidthScaleFactor () = 1;
 			lineProperties -> setup ();
 		}
@@ -216,8 +216,8 @@ X3DLinePropertiesEditor::set_node ()
 void
 X3DLinePropertiesEditor::connectLineProperties (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DLinePropertiesEditor::connectLineProperties);
-	field .addInterest (this, &X3DLinePropertiesEditor::set_lineProperties);
+	field .removeInterest (&X3DLinePropertiesEditor::connectLineProperties, this);
+	field .addInterest (&X3DLinePropertiesEditor::set_lineProperties, this);
 }
 
 X3DLinePropertiesEditor::~X3DLinePropertiesEditor ()

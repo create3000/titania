@@ -83,7 +83,7 @@ RecentView::RecentView (X3DBrowserWindow* const browserWindow) :
 void
 RecentView::initialize ()
 {
-	getCurrentScene () .addInterest (this, &RecentView::set_scene);
+	getCurrentScene () .addInterest (&RecentView::set_scene, this);
 }
 
 basic::uri
@@ -144,9 +144,9 @@ RecentView::set_scene ()
 		const auto & previousPage_changed = previousPage -> getField <X3D::SFInt32> ("value_changed");
 		const auto & nextPage_changed     = nextPage -> getField <X3D::SFInt32> ("value_changed");
 
-		beginTime            .addInterest (this, &RecentView::set_page, scene .getValue (), X3D::SFInt32 (0));
-		previousPage_changed .addInterest (this, &RecentView::set_page, scene .getValue (), std::cref (previousPage_changed));
-		nextPage_changed     .addInterest (this, &RecentView::set_page, scene .getValue (), std::cref (nextPage_changed));
+		beginTime            .addInterest (&RecentView::set_page, this, scene .getValue (), X3D::SFInt32 (0));
+		previousPage_changed .addInterest (&RecentView::set_page, this, scene .getValue (), std::cref (previousPage_changed));
+		nextPage_changed     .addInterest (&RecentView::set_page, this, scene .getValue (), std::cref (nextPage_changed));
 
 		set_page (scene, X3D::SFInt32 (getConfig () -> getInteger ("currentPage")));
 	}
@@ -196,7 +196,7 @@ RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 
 			text -> string ()                            = { item .at ("title") };
 			touchSensor -> description ()                = item .at ("worldURL");
 			URL -> getField <X3D::SFString> ("keyValue") = item .at ("worldURL");
-			URL -> getField <X3D::SFString> ("value_changed") .addInterest (this, &RecentView::set_url);
+			URL -> getField <X3D::SFString> ("value_changed") .addInterest (&RecentView::set_url, this);
 
 			++ i;
 		}
@@ -236,7 +236,7 @@ RecentView::set_url (const X3D::SFString & url)
 		const X3D::BrowserPtr recentBrowser = getCurrentBrowser ();
 
 		// Closing this browser must be deferred, as this browser is currently processing events.
-		recentBrowser -> finished () .addInterest (getBrowserWindow (), &X3DBrowserWidget::close, recentBrowser);
+		recentBrowser -> finished () .addInterest (&X3DBrowserWidget::close, getBrowserWindow (), recentBrowser);
 		recentBrowser -> addEvent ();
 
 		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());

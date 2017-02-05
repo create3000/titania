@@ -89,7 +89,7 @@ bool
 LightSaber::on_1button1_press_event (GdkEventButton* event)
 {
 	getBrowser () -> addEvent ();
-	getBrowser () -> displayed () .addInterest (this, &LightSaber::display);
+	getBrowser () -> displayed () .addInterest (&LightSaber::display, this);
 
 	points [0] = points [1] = getPoint (event -> x, event -> y);
 	return false;
@@ -101,7 +101,7 @@ LightSaber::on_1button1_release_event (GdkEventButton* event)
 	try
 	{
 		getBrowser () -> addEvent ();
-		getBrowser () -> displayed () .removeInterest (this, &LightSaber::display);
+		getBrowser () -> displayed () .removeInterest (&LightSaber::display, this);
 
 		if (points [0] not_eq points [1])
 		{

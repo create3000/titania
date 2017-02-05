@@ -93,9 +93,9 @@ Contour2D::initialize ()
 {
 	X3DNode::initialize ();
 
-	addChildren ()    .addInterest (this, &Contour2D::set_addChildren);
-	removeChildren () .addInterest (this, &Contour2D::set_removeChildren);
-	children ()       .addInterest (this, &Contour2D::set_children);
+	addChildren ()    .addInterest (&Contour2D::set_addChildren, this);
+	removeChildren () .addInterest (&Contour2D::set_removeChildren, this);
+	children ()       .addInterest (&Contour2D::set_children, this);
 
 	set_children ();
 }

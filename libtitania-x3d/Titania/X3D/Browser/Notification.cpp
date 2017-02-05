@@ -89,13 +89,13 @@ Notification::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	string () .addInterest (this, &Notification::set_string);
+	string () .addInterest (&Notification::set_string, this);
 }
 
 void
 Notification::set_string ()
 {
-	string () .removeInterest (this, &Notification::set_string);
+	string () .removeInterest (&Notification::set_string, this);
 
 	if (not world)
 	{
@@ -111,7 +111,7 @@ Notification::set_string ()
 
 			SFBool & isActive = notification -> getField <SFBool> ("isActive");
 
-			isActive .addInterest (this, &Notification::set_active);
+			isActive .addInterest (&Notification::set_active, this);
 
 			// string
 			
@@ -138,11 +138,11 @@ Notification::set_active (const bool & value)
 {
 	if (value)
 	{
-		getBrowser () -> displayed () .addInterest (this, &Notification::display);
+		getBrowser () -> displayed () .addInterest (&Notification::display, this);
 	}
 	else
 	{
-		getBrowser () -> displayed () .removeInterest (this, &Notification::display);
+		getBrowser () -> displayed () .removeInterest (&Notification::display, this);
 	}
 }
 

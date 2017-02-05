@@ -89,9 +89,9 @@ World::initialize ()
 	layerSet -> isPrivate (true);
 	layerSet -> setup ();
 	layerSet -> setLayer0 (layer0);
-	layerSet -> getActiveLayer () .addInterest (this, &World::set_activeLayer);
+	layerSet -> getActiveLayer () .addInterest (&World::set_activeLayer, this);
 
-	getExecutionContext () -> getRootNodes () .addInterest (this, &World::set_rootNodes);
+	getExecutionContext () -> getRootNodes () .addInterest (&World::set_rootNodes, this);
 
 	set_rootNodes (); // This can happen twice when rootNodes is tainted
 
@@ -125,8 +125,8 @@ World::set_rootNodes ()
 
 	if (layerSet not_eq oldLayerSet)
 	{
-		oldLayerSet -> getActiveLayer () .removeInterest (this, &World::set_activeLayer);
-		layerSet    -> getActiveLayer () .addInterest    (this, &World::set_activeLayer);
+		oldLayerSet -> getActiveLayer () .removeInterest (&World::set_activeLayer, this);
+		layerSet    -> getActiveLayer () .addInterest (&World::set_activeLayer, this);
 
 		set_activeLayer ();
 	}

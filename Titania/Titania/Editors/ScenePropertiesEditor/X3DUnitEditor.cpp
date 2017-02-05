@@ -64,7 +64,7 @@ X3DUnitEditor::X3DUnitEditor () :
 void
 X3DUnitEditor::initialize ()
 {
-	getCurrentContext () .addInterest (this, &X3DUnitEditor::set_execution_context);
+	getCurrentContext () .addInterest (&X3DUnitEditor::set_execution_context, this);
 
 	keyfile .load_from_file (find_data_file ("units/units.ini"));
 

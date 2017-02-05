@@ -93,7 +93,7 @@ CADLayer::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	visible () .addInterest (static_cast <X3DGroupingNode*> (this), &CADLayer::set_children);
+	visible () .addInterest (&CADLayer::set_children, static_cast <X3DGroupingNode*> (this));
 }
 
 void

@@ -108,7 +108,7 @@ GeoTransform::initialize ()
 	X3DTransformMatrix3DNode::initialize ();
 	X3DGeospatialObject::initialize ();
 
-	addInterest (this, &GeoTransform::eventsProcessed);
+	addInterest (&GeoTransform::eventsProcessed, this);
 
 	eventsProcessed ();
 }

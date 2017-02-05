@@ -98,8 +98,8 @@ SplineScalarInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue ()    .addInterest (this, &SplineScalarInterpolator::set_keyValue);
-	keyVelocity () .addInterest (this, &SplineScalarInterpolator::set_keyVelocity);
+	keyValue ()    .addInterest (&SplineScalarInterpolator::set_keyValue, this);
+	keyVelocity () .addInterest (&SplineScalarInterpolator::set_keyVelocity, this);
 }
 
 void

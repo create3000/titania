@@ -85,7 +85,7 @@ X3DEnvironmentTextureNode::initialize ()
 {
 	X3DTextureNode::initialize ();
 
-	textureProperties () .addInterest (this, &X3DEnvironmentTextureNode::set_textureProperties);
+	textureProperties () .addInterest (&X3DEnvironmentTextureNode::set_textureProperties, this);
 
 	set_textureProperties ();
 }
@@ -105,14 +105,14 @@ void
 X3DEnvironmentTextureNode::set_textureProperties ()
 {
 	if (texturePropertiesNode)
-		texturePropertiesNode -> removeInterest (this, &X3DEnvironmentTextureNode::updateTextureProperties);
+		texturePropertiesNode -> removeInterest (&X3DEnvironmentTextureNode::updateTextureProperties, this);
 
 	texturePropertiesNode .set (x3d_cast <TextureProperties*> (textureProperties ()));
 
 	if (not texturePropertiesNode)
 		texturePropertiesNode .set (x3d_cast <TextureProperties*> (getBrowser () -> getDefaultCubeMapTextureProperties ()));
 
-	texturePropertiesNode -> addInterest (this, &X3DEnvironmentTextureNode::updateTextureProperties);
+	texturePropertiesNode -> addInterest (&X3DEnvironmentTextureNode::updateTextureProperties, this);
 
 	updateTextureProperties ();
 }

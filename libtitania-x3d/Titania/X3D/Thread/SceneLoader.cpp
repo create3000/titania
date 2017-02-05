@@ -102,7 +102,7 @@ SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFS
 	  urlError (),
 	    future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
 {
-	getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::set_scene, true);
+	getBrowser () -> prepareEvents () .addInterest (&SceneLoader::set_scene, this, true);
 	getBrowser () -> addEvent ();
 }
 
@@ -123,15 +123,15 @@ SceneLoader::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (this, &SceneLoader::set_scene);
+	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (&SceneLoader::set_scene, this);
 
-	getBrowser () -> prepareEvents () .removeInterest (this, &SceneLoader::set_scene);
+	getBrowser () -> prepareEvents () .removeInterest (&SceneLoader::set_scene, this);
 
 	X3DFuture::setExecutionContext (executionContext);
 
 	if (prepareEvents)
 	{
-		getBrowser () -> prepareEvents () .addInterest (this, &SceneLoader::set_scene, true);
+		getBrowser () -> prepareEvents () .addInterest (&SceneLoader::set_scene, this, true);
 
 		getBrowser () -> addEvent ();
 	}
@@ -239,13 +239,13 @@ SceneLoader::set_scene (const bool addEvent)
 	if (status not_eq std::future_status::ready)
 		return;
 
-	getBrowser () -> prepareEvents () .removeInterest (this, &SceneLoader::set_scene);
+	getBrowser () -> prepareEvents () .removeInterest (&SceneLoader::set_scene, this);
 
 	try
 	{
 		scene = future .get ();
 
-		scene -> getExternProtosLoadCount () .addInterest (this, &SceneLoader::set_loadCount);
+		scene -> getExternProtosLoadCount () .addInterest (&SceneLoader::set_loadCount, this);
 
 		scene -> requestAsyncLoadOfExternProtos ();
 	}
@@ -270,7 +270,7 @@ SceneLoader::set_loadCount (const int32_t loadCount)
 	if (loadCount)
 	   return;
 
-	scene -> getExternProtosLoadCount () .removeInterest (this, &SceneLoader::set_loadCount);
+	scene -> getExternProtosLoadCount () .removeInterest (&SceneLoader::set_loadCount, this);
 
 	callback (std::move (scene));
 

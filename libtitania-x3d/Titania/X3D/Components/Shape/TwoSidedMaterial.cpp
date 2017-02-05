@@ -123,7 +123,7 @@ TwoSidedMaterial::initialize ()
 {
 	X3DMaterialNode::initialize ();
 
-	addInterest (this, &TwoSidedMaterial::eventsProcessed);
+	addInterest (&TwoSidedMaterial::eventsProcessed, this);
 
 	eventsProcessed ();
 }

@@ -128,7 +128,7 @@ PolylineEmitter::initialize ()
 	polylineNode -> coord ()      = coord ();
 
 	polylineNode -> setup ();
-	polylineNode -> addInterest (this, &PolylineEmitter::set_polyline);
+	polylineNode -> addInterest (&PolylineEmitter::set_polyline, this);
 
 	set_polyline ();
 }

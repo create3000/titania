@@ -67,7 +67,7 @@ X3DTextureCoordinateGeneratorEditor::X3DTextureCoordinateGeneratorEditor () :
 {
 	addChildObjects (geometryNodes, textureCoordinateGeneratorBuffer, textureCoordinateGenerator);
 
-	textureCoordinateGeneratorBuffer .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_node);
+	textureCoordinateGeneratorBuffer .addInterest (&X3DTextureCoordinateGeneratorEditor::set_node, this);
 }
 
 void
@@ -81,7 +81,7 @@ X3DTextureCoordinateGeneratorEditor::set_selection (const X3D::MFNode & selectio
 	{
 		try
 		{
-			geometry -> getField <X3D::SFFloat> ("texCoord") .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator);
+			geometry -> getField <X3D::SFFloat> ("texCoord") .removeInterest (&X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -93,7 +93,7 @@ X3DTextureCoordinateGeneratorEditor::set_selection (const X3D::MFNode & selectio
 	{
 		try
 		{
-			geometry -> getField <X3D::SFFloat> ("texCoord") .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator);
+			geometry -> getField <X3D::SFFloat> ("texCoord") .addInterest (&X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -131,8 +131,8 @@ X3DTextureCoordinateGeneratorEditor::on_textureCoordinateGenerator_toggled ()
 		{
 			auto & field = geometry -> getField <X3D::SFNode> ("texCoord");
 
-			field .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator);
-			field .addInterest (this, &X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator);
+			field .removeInterest (&X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator, this);
+			field .addInterest (&X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator, this);
 
 			if (getTextureCoordinateGeneratorCheckButton () .get_active ())
 				getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, field, textureCoordinateGenerator, undoStep);
@@ -194,8 +194,8 @@ X3DTextureCoordinateGeneratorEditor::set_node ()
 void
 X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator);
-	field .addInterest (this, &X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator);
+	field .removeInterest (&X3DTextureCoordinateGeneratorEditor::connectTextureCoordinateGenerator, this);
+	field .addInterest (&X3DTextureCoordinateGeneratorEditor::set_textureCoordinateGenerator, this);
 }
 
 X3DTextureCoordinateGeneratorEditor::~X3DTextureCoordinateGeneratorEditor ()

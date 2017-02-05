@@ -84,8 +84,8 @@ PointingDevice::initialize ()
 {
 	X3DBrowserObject::initialize ();
 
-	getBrowser () -> initialized () .addInterest (this, &PointingDevice::set_initialized);
-	getBrowser () -> isPickable ()  .addInterest (this, &PointingDevice::set_pickable);
+	getBrowser () -> initialized () .addInterest (&PointingDevice::set_initialized, this);
+	getBrowser () -> isPickable ()  .addInterest (&PointingDevice::set_pickable, this);
 
 	set_pickable ();
 }
@@ -162,7 +162,7 @@ PointingDevice::set_verify_motion (const double x, const double y)
 	// and the new child has a sensor node inside. This sensor node must be update to
 	// reflect the correct isOver state.
 
-	getBrowser () -> finished () .removeInterest (this, &PointingDevice::set_verify_motion);
+	getBrowser () -> finished () .removeInterest (&PointingDevice::set_verify_motion, this);
 
 	set_motion (x, y);
 }
@@ -186,7 +186,7 @@ PointingDevice::on_button_press_event (GdkEventButton* event)
 		if (getBrowser () -> setButtonPressEvent (event -> x, getBrowser () -> get_height () - event -> y))
 		{
 			getBrowser () -> setCursor ("grabbing");
-			getBrowser () -> finished () .addInterest (this, &PointingDevice::set_verify_motion, event -> x, event -> y);
+			getBrowser () -> finished () .addInterest (&PointingDevice::set_verify_motion, this, event -> x, event -> y);
 			return true;
 		}
 	}
@@ -205,7 +205,7 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 	else
 		getBrowser () -> setCursor ("default");
 
-	getBrowser () -> finished () .addInterest (this, &PointingDevice::set_verify_motion, event -> x, event -> y);
+	getBrowser () -> finished () .addInterest (&PointingDevice::set_verify_motion, this, event -> x, event -> y);
 	getBrowser () -> addEvent ();
 
 	button = 0;

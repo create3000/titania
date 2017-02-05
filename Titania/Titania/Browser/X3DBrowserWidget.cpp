@@ -103,7 +103,7 @@ X3DBrowserWidget::initialize ()
 
 	// Master browser
 
-	getMasterBrowser () -> initialized () .addInterest (this, &X3DBrowserWidget::set_initialized);
+	getMasterBrowser () -> initialized () .addInterest (&X3DBrowserWidget::set_initialized, this);
 	getMasterBrowser () -> setAntialiasing (4);
 	getMasterBrowser () -> show ();
 	getLogoBox () .pack_start (*getMasterBrowser (), true, true, 0);
@@ -114,7 +114,7 @@ X3DBrowserWidget::initialize ()
 void
 X3DBrowserWidget::set_initialized ()
 {
-	getMasterBrowser () -> initialized () .removeInterest (this, &X3DBrowserWidget::set_initialized);
+	getMasterBrowser () -> initialized () .removeInterest (&X3DBrowserWidget::set_initialized, this);
 
 	recentView -> initialize ();
 
@@ -160,9 +160,9 @@ X3DBrowserWidget::set_initialized ()
 
 	// 
 
-	getCurrentScene ()  .addInterest (this, &X3DBrowserWidget::set_scene);
-	getCurrentScene ()  .addInterest (this, &X3DBrowserWidget::set_history);
-	worldURL_changed () .addInterest (this, &X3DBrowserWidget::set_history);
+	getCurrentScene ()  .addInterest (&X3DBrowserWidget::set_scene, this);
+	getCurrentScene ()  .addInterest (&X3DBrowserWidget::set_history, this);
+	worldURL_changed () .addInterest (&X3DBrowserWidget::set_history, this);
 
 	getBrowserNotebook () .set_visible (true);
 }
@@ -294,8 +294,8 @@ X3DBrowserWidget::store ()
 void
 X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 {
-	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_executionContext);
-	browser -> getUrlError () .removeInterest (this, &X3DBrowserWidget::set_urlError);
+	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_executionContext, this);
+	browser -> getUrlError () .removeInterest (&X3DBrowserWidget::set_urlError, this);
 
 	X3DBrowserWindowInterface::setBrowser (value);
 
@@ -303,8 +303,8 @@ X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 	scene            = browser -> getExecutionContext () -> getMasterScene ();
 	executionContext = browser -> getExecutionContext ();
 	
-	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_executionContext);
-	browser -> getUrlError () .addInterest (this, &X3DBrowserWidget::set_urlError);
+	browser -> initialized () .addInterest (&X3DBrowserWidget::set_executionContext, this);
+	browser -> getUrlError () .addInterest (&X3DBrowserWidget::set_urlError, this);
 
 	browser -> setStraightenHorizon (getStraightenHorizonButton () .get_active ());
 
@@ -472,7 +472,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	browsers .emplace_back (browser);
 
 	if (not URL .empty ())
-		browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_browser, browser, URL);
+		browser -> initialized () .addInterest (&X3DBrowserWidget::set_browser, this, browser, URL);
 
 	browser -> setAntialiasing (4);
 	browser -> setNotifyOnLoad (true);
@@ -524,15 +524,15 @@ X3DBrowserWidget::getShowTabs () const
 void
 X3DBrowserWidget::set_browser (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_browser);
-	browser -> initialized () .addInterest (this, &X3DBrowserWidget::set_url, browser, URL);
+	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_browser, this);
+	browser -> initialized () .addInterest (&X3DBrowserWidget::set_url, this, browser, URL);
 	browser -> loadURL ({ get_page ("about/splash.x3dv") .str () }, { });
 }
 
 void
 X3DBrowserWidget::set_url (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_url);
+	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_url, this);
 
 	load (browser, URL);
 }
@@ -860,8 +860,8 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 	// Remove browser copletely.
 
 	// Important here to remove the interests, because the notebook could make it visible on remove_page.
-	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_browser);
-	browser -> initialized () .removeInterest (this, &X3DBrowserWidget::set_url);
+	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_browser, this);
+	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_url, this);
 
 	getUserData (browser) -> dispose ();
 

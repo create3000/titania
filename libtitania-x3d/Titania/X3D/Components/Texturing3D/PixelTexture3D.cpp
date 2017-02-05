@@ -100,7 +100,7 @@ PixelTexture3D::initialize ()
 {
 	X3DTexture3DNode::initialize ();
 
-	image () .addInterest (this, &PixelTexture3D::update);
+	image () .addInterest (&PixelTexture3D::update, this);
 
 	update ();
 }

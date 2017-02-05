@@ -82,7 +82,7 @@ TexturePreview::TexturePreview (X3DBaseInterface* const editor,
 	// Browser
 
 	preview -> signal_configure_event () .connect (sigc::mem_fun (this, &TexturePreview::on_configure_event));
-	preview -> initialized () .addInterest (this, &TexturePreview::set_initialized);
+	preview -> initialized () .addInterest (&TexturePreview::set_initialized, this);
 	preview -> setAntialiasing (4);
 	preview -> show ();
 
@@ -98,12 +98,12 @@ TexturePreview::setTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 {
 	if (textureNode)
 	{
-		textureNode -> removeInterest (*preview, &X3D::Browser::addEvent);
-		textureNode -> checkLoadState () .removeInterest (this, &TexturePreview::set_loadState);
+		textureNode -> removeInterest (&X3D::Browser::addEvent, *preview);
+		textureNode -> checkLoadState () .removeInterest (&TexturePreview::set_loadState, this);
 
 		try
 		{
-			textureNode -> getField <X3D::MFNode> ("texture") .removeInterest (this, &TexturePreview::set_textures);
+			textureNode -> getField <X3D::MFNode> ("texture") .removeInterest (&TexturePreview::set_textures, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -115,14 +115,14 @@ TexturePreview::setTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
 
 	if (textureNode)
 	{
-		textureNode -> addInterest (*preview, &X3D::Browser::addEvent);
-		textureNode -> checkLoadState () .addInterest (this, &TexturePreview::set_loadState);
+		textureNode -> addInterest (&X3D::Browser::addEvent, *preview);
+		textureNode -> checkLoadState () .addInterest (&TexturePreview::set_loadState, this);
 
 		try
 		{
 			const auto & texture = textureNode -> getField <X3D::MFNode> ("texture");
 
-			texture .addInterest (this, &TexturePreview::set_textures);
+			texture .addInterest (&TexturePreview::set_textures, this);
 
 			set_textures (texture);
 		}
@@ -137,12 +137,12 @@ void
 TexturePreview::set_textures (const X3D::MFNode & value)
 {
 	for (const auto & node : textureNodes)
-		node -> removeInterest (*preview, &X3D::Browser::addEvent);
+		node -> removeInterest (&X3D::Browser::addEvent, *preview);
 
 	textureNodes = value;
 
 	for (const auto & node : textureNodes)
-		node -> addInterest (*preview, &X3D::Browser::addEvent);
+		node -> addInterest (&X3D::Browser::addEvent, *preview);
 }
 
 void
@@ -150,7 +150,7 @@ TexturePreview::set_initialized ()
 {
 	try
 	{
-		preview -> initialized () .removeInterest (this, &TexturePreview::set_initialized);
+		preview -> initialized () .removeInterest (&TexturePreview::set_initialized, this);
 		preview -> set_opacity (1);
 		preview -> getExecutionContext () -> getNamedNode ("Appearance")    -> isPrivate (true);
 		preview -> getExecutionContext () -> getNamedNode ("TextureScript") -> isPrivate (true);

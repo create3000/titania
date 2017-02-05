@@ -99,7 +99,7 @@ PolygonOffsetGroup::initialize ()
 {
 	X3DGroupingNode::initialize ();
 
-	type () .addInterest (this, &PolygonOffsetGroup::set_type);
+	type () .addInterest (&PolygonOffsetGroup::set_type, this);
 
 	set_type ();
 }

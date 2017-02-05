@@ -126,10 +126,10 @@ X3DBrowser::initialize ()
 
 	// Add necessary routes.
 
-	prepareEvents () .addInterest (this, &X3DBrowser::set_prepareEvents);
-	executionContext .addInterest (this, &X3DBrowser::set_executionContext);
+	prepareEvents () .addInterest (&X3DBrowser::set_prepareEvents, this);
+	executionContext .addInterest (&X3DBrowser::set_executionContext, this);
 
-	getLoadSensor () -> isLoaded () .addInterest (this, &X3DBrowser::set_loaded);
+	getLoadSensor () -> isLoaded () .addInterest (&X3DBrowser::set_loaded, this);
 
 	replaceWorld (executionContext);
 }
@@ -144,7 +144,7 @@ X3DBrowser::set_loaded (const bool loaded)
 	if (not loaded)
 		print ("*** Info: Cobweb compatibility mode not possible!");
 
-	getLoadSensor () -> isLoaded () .removeInterest (this, &X3DBrowser::set_loaded);
+	getLoadSensor () -> isLoaded () .removeInterest (&X3DBrowser::set_loaded, this);
 
 	getLoadSensor () -> enabled () = false;
 
@@ -310,7 +310,7 @@ throw (Error <INVALID_SCENE>,
 		future -> stop ();
 	}
 
-	finished () .removeInterest (this, &X3DBrowser::set_scene);
+	finished () .removeInterest (&X3DBrowser::set_scene, this);
 
 	// Process shutdown.
 
@@ -410,7 +410,7 @@ throw (Error <INVALID_URL>,
 
 	using namespace std::placeholders;
 
-	finished () .removeInterest (this, &X3DBrowser::set_scene);
+	finished () .removeInterest (&X3DBrowser::set_scene, this);
 
 	setLoadState (IN_PROGRESS_STATE);
 
@@ -429,7 +429,7 @@ X3DBrowser::set_scene_async (X3DScenePtr && scene)
 	// This function is called from the future. Ensure here that the future is not accidentally deleted when calling replaceWorld.
 	// Use finished to get better currentTime on start up of world.
 
-	finished () .addInterest (this, &X3DBrowser::set_scene, std::move (scene));
+	finished () .addInterest (&X3DBrowser::set_scene, this, std::move (scene));
 
 	addEvent ();
 }
@@ -437,7 +437,7 @@ X3DBrowser::set_scene_async (X3DScenePtr && scene)
 void
 X3DBrowser::set_scene (const X3DScenePtr & scene)
 {
-	finished () .removeInterest (this, &X3DBrowser::set_scene);
+	finished () .removeInterest (&X3DBrowser::set_scene, this);
 
 	removeLoadCount (future .getValue ());
 

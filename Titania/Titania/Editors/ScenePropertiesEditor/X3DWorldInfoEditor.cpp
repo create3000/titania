@@ -64,7 +64,7 @@ X3DWorldInfoEditor::X3DWorldInfoEditor () :
 void
 X3DWorldInfoEditor::configure ()
 {
-	getCurrentScene () .addInterest (this, &X3DWorldInfoEditor::set_current_scene);
+	getCurrentScene () .addInterest (&X3DWorldInfoEditor::set_current_scene, this);
 }
 
 void
@@ -85,7 +85,7 @@ X3DWorldInfoEditor::set_current_scene ()
 void
 X3DWorldInfoEditor::store ()
 {
-	getCurrentScene () .removeInterest (this, &X3DWorldInfoEditor::set_current_scene);
+	getCurrentScene () .removeInterest (&X3DWorldInfoEditor::set_current_scene, this);
 }
 
 X3DWorldInfoEditor::~X3DWorldInfoEditor ()

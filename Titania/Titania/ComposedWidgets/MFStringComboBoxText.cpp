@@ -71,7 +71,7 @@ MFStringComboBoxText::MFStringComboBoxText (X3DBaseInterface* const editor,
 {
 	addChildObjects (nodes, buffer);
 
-	buffer .addInterest (this, &MFStringComboBoxText::set_buffer);
+	buffer .addInterest (&MFStringComboBoxText::set_buffer, this);
 
 	comboBoxText .signal_changed () .connect (sigc::mem_fun (*this, &MFStringComboBoxText::on_changed));
 	setup ();
@@ -84,7 +84,7 @@ MFStringComboBoxText::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFString> (name) .removeInterest (this, &MFStringComboBoxText::set_field);
+			node -> getField <X3D::MFString> (name) .removeInterest (&MFStringComboBoxText::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -96,7 +96,7 @@ MFStringComboBoxText::setNodes (const X3D::MFNode & value)
 	{
 		try
 		{
-			node -> getField <X3D::MFString> (name) .addInterest (this, &MFStringComboBoxText::set_field);
+			node -> getField <X3D::MFString> (name) .addInterest (&MFStringComboBoxText::set_field, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -122,8 +122,8 @@ MFStringComboBoxText::on_changed ()
 		{
 			auto & field = node -> getField <X3D::MFString> (name);
 
-			field .removeInterest (this, &MFStringComboBoxText::set_field);
-			field .addInterest (this, &MFStringComboBoxText::connect);
+			field .removeInterest (&MFStringComboBoxText::set_field, this);
+			field .addInterest (&MFStringComboBoxText::connect, this);
 
 			field .set1Value (index, comboBoxText .get_active_text ());
 		}
@@ -169,8 +169,8 @@ MFStringComboBoxText::set_buffer ()
 void
 MFStringComboBoxText::connect (const X3D::MFString & field)
 {
-	field .removeInterest (this, &MFStringComboBoxText::connect);
-	field .addInterest (this, &MFStringComboBoxText::set_field);
+	field .removeInterest (&MFStringComboBoxText::connect, this);
+	field .addInterest (&MFStringComboBoxText::set_field, this);
 }
 
 } // puck

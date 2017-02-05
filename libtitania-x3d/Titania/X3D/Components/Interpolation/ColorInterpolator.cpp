@@ -89,7 +89,7 @@ ColorInterpolator::initialize ()
 {
 	X3DInterpolatorNode::initialize ();
 
-	keyValue () .addInterest (this, &ColorInterpolator::set_keyValue);
+	keyValue () .addInterest (&ColorInterpolator::set_keyValue, this);
 }
 
 void

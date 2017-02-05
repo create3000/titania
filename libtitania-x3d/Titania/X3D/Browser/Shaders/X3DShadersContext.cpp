@@ -112,7 +112,7 @@ X3DShadersContext::initialize ()
 
 		// Shading
 
-		getBrowser () -> getBrowserOptions () -> getShading () .addInterest (this, &X3DShadersContext::set_shading);
+		getBrowser () -> getBrowserOptions () -> getShading () .addInterest (&X3DShadersContext::set_shading, this);
 
 		set_shading (getBrowser () -> getBrowserOptions () -> getShading ());
 	}

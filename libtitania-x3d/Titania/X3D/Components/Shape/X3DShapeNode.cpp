@@ -92,8 +92,8 @@ X3DShapeNode::initialize ()
 	else
 		glBindProgramPipeline = [ ] (GLuint) { };
 
-	appearance () .addInterest (this, &X3DShapeNode::set_appearance);
-	geometry ()   .addInterest (this, &X3DShapeNode::set_geometry);
+	appearance () .addInterest (&X3DShapeNode::set_appearance, this);
+	geometry ()   .addInterest (&X3DShapeNode::set_geometry, this);
 
 	set_appearance ();
 	set_geometry ();
@@ -136,12 +136,12 @@ void
 X3DShapeNode::set_geometry ()
 {
 	if (geometryNode)
-	   geometryNode -> isCameraObject () .removeInterest (static_cast <X3DChildNode*> (this), &X3DShapeNode::setCameraObject);
+	   geometryNode -> isCameraObject () .removeInterest (&X3DShapeNode::setCameraObject, static_cast <X3DChildNode*> (this));
 
 	geometryNode .set (hidden ? nullptr : x3d_cast <X3DGeometryNode*> (geometry ()));
 
 	if (geometryNode)
-	   geometryNode -> isCameraObject () .addInterest (static_cast <X3DChildNode*> (this), &X3DShapeNode::setCameraObject);
+	   geometryNode -> isCameraObject () .addInterest (&X3DShapeNode::setCameraObject, static_cast <X3DChildNode*> (this));
 
 	setCameraObject (geometryNode and geometryNode -> isCameraObject ());
 }

@@ -100,7 +100,7 @@ Disk2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getDisk2DOptions () .addInterest (this, &Disk2D::update);
+	getBrowser () -> getDisk2DOptions () .addInterest (&Disk2D::update, this);
 
 	setShader (getBrowser () -> getWireframeShader ());
 }
@@ -111,12 +111,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (isInitialized ())
-		getBrowser () -> getDisk2DOptions () .removeInterest (this, &Disk2D::update);
+		getBrowser () -> getDisk2DOptions () .removeInterest (&Disk2D::update, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getDisk2DOptions () .addInterest (this, &Disk2D::update);
+		getBrowser () -> getDisk2DOptions () .addInterest (&Disk2D::update, this);
 
 	setShader (getBrowser () -> getWireframeShader ());
 }

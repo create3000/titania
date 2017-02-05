@@ -75,7 +75,7 @@ X3DTexturePropertiesEditor::X3DTexturePropertiesEditor () :
 {
 	addChildObjects (textureNodes, texturePropertiesBuffer, textureProperties);
 
-	texturePropertiesBuffer .addInterest (this, &X3DTexturePropertiesEditor::set_node);
+	texturePropertiesBuffer .addInterest (&X3DTexturePropertiesEditor::set_node, this);
 }
 
 void
@@ -85,7 +85,7 @@ X3DTexturePropertiesEditor::set_selection (const X3D::MFNode & selection)
 	{
 		try
 		{
-			textureNode -> getField <X3D::SFNode> ("textureProperties") .removeInterest (this, &X3DTexturePropertiesEditor::set_textureProperties);
+			textureNode -> getField <X3D::SFNode> ("textureProperties") .removeInterest (&X3DTexturePropertiesEditor::set_textureProperties, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -107,7 +107,7 @@ X3DTexturePropertiesEditor::set_selection (const X3D::MFNode & selection)
 	{
 		try
 		{
-			textureNode -> getField <X3D::SFNode> ("textureProperties") .addInterest (this, &X3DTexturePropertiesEditor::set_textureProperties);
+			textureNode -> getField <X3D::SFNode> ("textureProperties") .addInterest (&X3DTexturePropertiesEditor::set_textureProperties, this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -147,8 +147,8 @@ X3DTexturePropertiesEditor::on_textureProperties_toggled ()
 		{
 			auto & field = textureNode -> getField <X3D::SFNode> ("textureProperties");
 
-			field .removeInterest (this, &X3DTexturePropertiesEditor::set_textureProperties);
-			field .addInterest (this, &X3DTexturePropertiesEditor::connectTextureProperties);
+			field .removeInterest (&X3DTexturePropertiesEditor::set_textureProperties, this);
+			field .addInterest (&X3DTexturePropertiesEditor::connectTextureProperties, this);
 
 			if (getTexturePropertiesCheckButton () .get_active ())
 				getBrowserWindow () -> replaceNode (getCurrentContext (), textureNode, field, textureProperties, undoStep);
@@ -218,8 +218,8 @@ X3DTexturePropertiesEditor::set_node ()
 void
 X3DTexturePropertiesEditor::connectTextureProperties (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DTexturePropertiesEditor::connectTextureProperties);
-	field .addInterest (this, &X3DTexturePropertiesEditor::set_textureProperties);
+	field .removeInterest (&X3DTexturePropertiesEditor::connectTextureProperties, this);
+	field .addInterest (&X3DTexturePropertiesEditor::set_textureProperties, this);
 }
 
 } // puck

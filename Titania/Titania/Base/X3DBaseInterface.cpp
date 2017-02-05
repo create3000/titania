@@ -92,7 +92,7 @@ X3DBaseInterface::setup ()
 {
 	X3D::X3DParentObject::setup ();
 
-	browserWindow -> getCurrentBrowser () .addInterest (this, &X3DBaseInterface::set_browser);
+	browserWindow -> getCurrentBrowser () .addInterest (&X3DBaseInterface::set_browser, this);
 }
 
 ///  Return the master browser.

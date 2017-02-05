@@ -92,7 +92,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 void
 X3DPointingDeviceSensorContext::initialize ()
 {
-	getBrowser () -> shutdown () .addInterest (this, &X3DPointingDeviceSensorContext::set_shutdown);
+	getBrowser () -> shutdown () .addInterest (&X3DPointingDeviceSensorContext::set_shutdown, this);
 }
 
 void

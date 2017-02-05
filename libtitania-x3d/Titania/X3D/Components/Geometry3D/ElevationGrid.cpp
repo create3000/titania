@@ -140,10 +140,10 @@ ElevationGrid::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	attrib ()   .addInterest (this, &ElevationGrid::set_attrib);
-	color ()    .addInterest (this, &ElevationGrid::set_color);
-	texCoord () .addInterest (this, &ElevationGrid::set_texCoord);
-	normal ()   .addInterest (this, &ElevationGrid::set_normal);
+	attrib ()   .addInterest (&ElevationGrid::set_attrib, this);
+	color ()    .addInterest (&ElevationGrid::set_color, this);
+	texCoord () .addInterest (&ElevationGrid::set_texCoord, this);
+	normal ()   .addInterest (&ElevationGrid::set_normal, this);
 
 	set_attrib ();
 	set_color ();
@@ -179,7 +179,7 @@ ElevationGrid::set_color ()
 	if (colorNode)
 	{
 		colorNode -> removeInterest (this);
-		colorNode -> removeInterest (this, &ElevationGrid::set_transparency);
+		colorNode -> removeInterest (&ElevationGrid::set_transparency, this);
 	}
 
 	colorNode .set (x3d_cast <X3DColorNode*> (color ()));
@@ -187,7 +187,7 @@ ElevationGrid::set_color ()
 	if (colorNode)
 	{
 		colorNode -> addInterest (this);
-		colorNode -> addInterest (this, &ElevationGrid::set_transparency);
+		colorNode -> addInterest (&ElevationGrid::set_transparency, this);
 		
 		set_transparency ();
 	}

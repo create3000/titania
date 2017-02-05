@@ -145,15 +145,15 @@ RigidBody::initialize ()
 {
 	X3DNode::initialize ();
 
-	getExecutionContext () -> isLive () .addInterest (this, &RigidBody::set_fixed);
-	isLive () .addInterest (this, &RigidBody::set_fixed);
+	getExecutionContext () -> isLive () .addInterest (&RigidBody::set_fixed, this);
+	isLive () .addInterest (&RigidBody::set_fixed, this);
 
-	shutdown () .addInterest (this, &RigidBody::set_shutdown);
+	shutdown () .addInterest (&RigidBody::set_shutdown, this);
 
-	fixed ()    .addInterest (this, &RigidBody::set_fixed);
-	position () .addInterest (this, &RigidBody::set_position);
-	forces ()   .addInterest (this, &RigidBody::set_forces);
-	geometry () .addInterest (this, &RigidBody::set_geometry);
+	fixed ()    .addInterest (&RigidBody::set_fixed, this);
+	position () .addInterest (&RigidBody::set_position, this);
+	forces ()   .addInterest (&RigidBody::set_forces, this);
+	geometry () .addInterest (&RigidBody::set_geometry, this);
 
 	set_fixed ();
 	set_forces ();
@@ -169,15 +169,15 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		getBrowser () -> removeCollidableNodes (geometryNodes);
 
-		getBrowser () -> sensors () .removeInterest (this, &RigidBody::update);
-		getExecutionContext () -> isLive () .removeInterest (this, &RigidBody::set_fixed);
+		getBrowser () -> sensors () .removeInterest (&RigidBody::update, this);
+		getExecutionContext () -> isLive () .removeInterest (&RigidBody::set_fixed, this);
 	}
 
 	X3DNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
 	{
-		getExecutionContext () -> isLive () .addInterest (this, &RigidBody::set_fixed);
+		getExecutionContext () -> isLive () .addInterest (&RigidBody::set_fixed, this);
 	
 		set_fixed ();
 		set_geometry ();
@@ -188,9 +188,9 @@ void
 RigidBody::set_fixed ()
 {
 	if (getExecutionContext () -> isLive () and isLive () and not fixed ())
-		getBrowser () -> sensors () .addInterest (this, &RigidBody::update);
+		getBrowser () -> sensors () .addInterest (&RigidBody::update, this);
 	else
-		getBrowser () -> sensors () .removeInterest (this, &RigidBody::update);
+		getBrowser () -> sensors () .removeInterest (&RigidBody::update, this);
 }
 
 void

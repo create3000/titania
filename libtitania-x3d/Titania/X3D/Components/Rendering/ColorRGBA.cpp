@@ -106,13 +106,13 @@ ColorRGBA::setDynamicTransparency (const bool value)
 	
 	if (dynamicTransparency)
 	{
-		color () .addInterest (this, &ColorRGBA::set_color);
+		color () .addInterest (&ColorRGBA::set_color, this);
 
 		set_color ();
 	}
 	else
 	{
-		color () .removeInterest (this, &ColorRGBA::set_color);
+		color () .removeInterest (&ColorRGBA::set_color, this);
 
 		transparent = true;
 	}

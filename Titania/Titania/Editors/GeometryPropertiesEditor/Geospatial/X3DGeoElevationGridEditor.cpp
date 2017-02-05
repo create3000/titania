@@ -81,7 +81,7 @@ void
 X3DGeoElevationGridEditor::addShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (this, &X3DGeoElevationGridEditor::set_geometry);
+		shapeNode -> geometry () .addInterest (&X3DGeoElevationGridEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -90,7 +90,7 @@ void
 X3DGeoElevationGridEditor::removeShapes ()
 {
 	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (this, &X3DGeoElevationGridEditor::set_geometry);
+		shapeNode -> geometry () .removeInterest (&X3DGeoElevationGridEditor::set_geometry, this);
 }
 
 void

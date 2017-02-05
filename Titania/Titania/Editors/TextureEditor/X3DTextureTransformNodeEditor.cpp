@@ -70,7 +70,7 @@ X3DTextureTransformNodeEditor::X3DTextureTransformNodeEditor () :
 {
 	addChildObjects (appearances, textureTransformBuffer, textureTransformNode);
 
-	textureTransformBuffer .addInterest (this, &X3DTextureTransformNodeEditor::set_node);
+	textureTransformBuffer .addInterest (&X3DTextureTransformNodeEditor::set_node, this);
 }
 
 void
@@ -85,12 +85,12 @@ void
 X3DTextureTransformNodeEditor::set_selection (const X3D::MFNode & selection)
 {
 	for (const auto & appearance : appearances)
-		appearance -> textureTransform () .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
+		appearance -> textureTransform () .removeInterest (&X3DTextureTransformNodeEditor::set_textureTransform, this);
 
 	appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 	for (const auto & appearance : appearances)
-		appearance -> textureTransform () .addInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
+		appearance -> textureTransform () .addInterest (&X3DTextureTransformNodeEditor::set_textureTransform, this);
 
 	set_textureTransform ();
 }
@@ -168,8 +168,8 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 		{
 			auto & field = appearance -> textureTransform ();
 
-			field .removeInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
-			field .addInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);
+			field .removeInterest (&X3DTextureTransformNodeEditor::set_textureTransform, this);
+			field .addInterest (&X3DTextureTransformNodeEditor::connectTextureTransform, this);
 
 			if (getTextureTransformComboBoxText () .get_active_row_number () > 0)
 				getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, textureTransformNode, undoStep);
@@ -253,8 +253,8 @@ X3DTextureTransformNodeEditor::set_node ()
 void
 X3DTextureTransformNodeEditor::connectTextureTransform (const X3D::SFNode & field)
 {
-	field .removeInterest (this, &X3DTextureTransformNodeEditor::connectTextureTransform);
-	field .addInterest (this, &X3DTextureTransformNodeEditor::set_textureTransform);
+	field .removeInterest (&X3DTextureTransformNodeEditor::connectTextureTransform, this);
+	field .addInterest (&X3DTextureTransformNodeEditor::set_textureTransform, this);
 }
 
 void

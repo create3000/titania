@@ -94,7 +94,7 @@ NavigationInfoEditor::initialize ()
 {
 	X3DNavigationInfoEditorInterface::initialize ();
 
-	navigationInfoList -> getSelection () .addInterest (this, &NavigationInfoEditor::set_navigationInfo);
+	navigationInfoList -> getSelection () .addInterest (&NavigationInfoEditor::set_navigationInfo, this);
 
 	navigationInfoList -> isEditor (true);
 	navigationInfoList -> getHeaderNotebook () .set_current_page (1);

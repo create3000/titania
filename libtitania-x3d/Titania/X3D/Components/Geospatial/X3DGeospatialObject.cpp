@@ -86,8 +86,8 @@ X3DGeospatialObject::X3DGeospatialObject () :
 void
 X3DGeospatialObject::initialize ()
 {
-	geoSystem () .addInterest (this, &X3DGeospatialObject::set_geoSystem);
-	geoOrigin () .addInterest (this, &X3DGeospatialObject::set_geoOrigin);
+	geoSystem () .addInterest (&X3DGeospatialObject::set_geoSystem, this);
+	geoOrigin () .addInterest (&X3DGeospatialObject::set_geoOrigin, this);
 
 	set_geoSystem ();
 	set_geoOrigin ();
@@ -107,7 +107,7 @@ X3DGeospatialObject::set_geoOrigin ()
 {
 	if (geoOriginNode)
 	{
-		geoOriginNode -> removeInterest (this, &X3DGeospatialObject::set_origin);
+		geoOriginNode -> removeInterest (&X3DGeospatialObject::set_origin, this);
 		geoOriginNode -> removeInterest (this);
 	}
 
@@ -115,7 +115,7 @@ X3DGeospatialObject::set_geoOrigin ()
 
 	if (geoOriginNode)
 	{
-		geoOriginNode -> addInterest (this, &X3DGeospatialObject::set_origin);
+		geoOriginNode -> addInterest (&X3DGeospatialObject::set_origin, this);
 		geoOriginNode -> addInterest (this);
 	}
 

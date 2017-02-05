@@ -75,7 +75,7 @@ X3DToolObject::X3DToolObject () :
 void
 X3DToolObject::initialize ()
 {
-	inlineNode -> checkLoadState () .addInterest (this, &X3DToolObject::set_loadState);
+	inlineNode -> checkLoadState () .addInterest (&X3DToolObject::set_loadState, this);
 	inlineNode -> setup ();
 }
 
