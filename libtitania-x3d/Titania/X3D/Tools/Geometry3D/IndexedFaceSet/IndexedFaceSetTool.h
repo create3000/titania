@@ -56,6 +56,7 @@
 #include "X3DIndexedFaceSetKnifeObject.h"
 #include "X3DIndexedFaceSetLightSaberObject.h"
 #include "X3DIndexedFaceSetTransformObject.h"
+#include "X3DIndexedFaceSetSculpToolObject.h"
 
 namespace titania {
 namespace X3D {
@@ -63,10 +64,12 @@ namespace X3D {
 class IndexedFaceSetTool :
 	virtual public X3DIndexedFaceSetTool,
 	virtual public X3DIndexedFaceSetSelectionObject,
+	virtual public X3DIndexedFaceSetBrushObject,
 	public X3DIndexedFaceSetTransformObject,
 	public X3DIndexedFaceSetOperationsObject,
 	public X3DIndexedFaceSetKnifeObject,
-	public X3DIndexedFaceSetLightSaberObject
+	public X3DIndexedFaceSetLightSaberObject,
+	public X3DIndexedFaceSetSculpToolObject
 {
 public:
 

@@ -89,8 +89,9 @@ protected:
 	///  @name Member access
 
 	virtual
-	X3D::SFNode
-	getBrush () const;
+	const X3D::SFNode &
+	getBrush () const
+	{ return brush; }
 
 
 private:
@@ -111,6 +112,7 @@ private:
 	X3DFieldAdjustment <X3D::SFDouble> spacing;
 
 	X3D::BrowserPtr preview;
+	X3D::SFNode     brush;
 
 };
 

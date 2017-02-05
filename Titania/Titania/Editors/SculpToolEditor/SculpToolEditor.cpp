@@ -92,6 +92,11 @@ SculpToolEditor::initialize ()
 	X3DSculpToolEditorInterface::initialize ();
 	X3DSculpToolBrushEditor::initialize ();
 	X3DSculpToolBrushPaletteEditor::initialize ();
+
+	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
+
+	getPullButton () .set_group (selectionGroup);
+	getPushButton () .set_group (selectionGroup);
 }
 
 void
@@ -105,7 +110,34 @@ SculpToolEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
 			tools .emplace_back (node);
 	}
 
+	set_brush ();
+
 	getToolbar () .set_sensitive (not tools .empty ());
+}
+
+void
+SculpToolEditor::on_pull_toggled ()
+{
+	if (getPullButton () .get_active ())
+	{
+		for (const auto & tool : tools)
+			tool -> setField <X3D::SFString> ("toolType", "SCULP");
+	}
+}
+
+void
+SculpToolEditor::on_push_toggled ()
+{
+
+}
+
+void
+SculpToolEditor::set_brush ()
+{
+	const auto brush = getBrush ();
+
+	for (const auto & tool : tools)
+		tool -> setField <X3D::SFNode> ("brush", brush);
 }
 
 void

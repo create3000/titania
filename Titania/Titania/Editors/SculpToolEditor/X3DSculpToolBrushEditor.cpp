@@ -58,35 +58,21 @@ namespace puck {
 X3DSculpToolBrushEditor::X3DSculpToolBrushEditor () :
 	X3DSculpToolEditorInterface (),
 	                       type (this, getBrushTypeButton (), "type"),
-	                     radius (this, getBrushRadiusAdjustment (), getBrushRadiusScale (), "radius"),
+	                     radius (this, getBrushRadiusAdjustment (), getBrushRadiusButton (), "radius"),
 	                     height (this, getBrushHeightAdjustment (), getBrushHeightScale (), "height"),
 	                       warp (this, getBrushWarpAdjustment (), getBrushWarpScale (), "warp"),
 	                  sharpness (this, getBrushSharpnessAdjustment (), getBrushSharpnessScale (), "sharpness"),
 	                   hardness (this, getBrushHardnessAdjustment (), getBrushHardnessScale (), "hardness"),
 	                    spacing (this, getBrushSpacingAdjustment (), getBrushSpacingScale (), "spacing"),
-	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrushPreview.x3dv") }))
+	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrushPreview.x3dv") })),
+	                      brush ()
 {
-	addChildObjects (preview);
+	addChildObjects (preview, brush);
 }
 
 void
 X3DSculpToolBrushEditor::configure ()
-{
-	try
-	{
-		const auto brush = getBrush ();
-
-		brush -> setField <X3D::SFString> ("type",      getConfig () -> get <X3D::SFString> ("brushType"));
-		brush -> setField <X3D::SFDouble> ("radius",    getConfig () -> get <X3D::SFDouble> ("brushRadius"));
-		brush -> setField <X3D::SFDouble> ("height",    getConfig () -> get <X3D::SFDouble> ("brushHeight"));
-		brush -> setField <X3D::SFDouble> ("warp",      getConfig () -> get <X3D::SFDouble> ("brushWarp"));
-		brush -> setField <X3D::SFDouble> ("sharpness", getConfig () -> get <X3D::SFDouble> ("brushSharpness"));
-		brush -> setField <X3D::SFDouble> ("hardness",  getConfig () -> get <X3D::SFDouble> ("brushHardness"));
-		brush -> setField <X3D::SFDouble> ("spacing" ,  getConfig () -> get <X3D::SFDouble> ("brushSpacing"));
-	}
-	catch (const X3D::X3DError &)
-	{ }
-}
+{ }
 
 void
 X3DSculpToolBrushEditor::initialize ()
@@ -107,7 +93,16 @@ X3DSculpToolBrushEditor::set_initalized ()
 	{
 		preview -> set_opacity (1);
 
-		const auto brush = getBrush ();
+	   brush = preview -> getExecutionContext () -> getScene () -> getExportedNode ("Brush");
+
+		brush -> setField <X3D::SFString> ("type",      getConfig () -> get <X3D::SFString> ("brushType"));
+		brush -> setField <X3D::SFDouble> ("radius",    getConfig () -> get <X3D::SFDouble> ("brushRadius"));
+		brush -> setField <X3D::SFDouble> ("height",    getConfig () -> get <X3D::SFDouble> ("brushHeight"));
+		brush -> setField <X3D::SFDouble> ("warp",      getConfig () -> get <X3D::SFDouble> ("brushWarp"));
+		brush -> setField <X3D::SFDouble> ("sharpness", getConfig () -> get <X3D::SFDouble> ("brushSharpness"));
+		brush -> setField <X3D::SFDouble> ("hardness",  getConfig () -> get <X3D::SFDouble> ("brushHardness"));
+		brush -> setField <X3D::SFDouble> ("spacing" ,  getConfig () -> get <X3D::SFDouble> ("brushSpacing"));
+
 		const auto nodes = X3D::MFNode ({ brush });
 
 		type      .setNodes (nodes);
@@ -124,19 +119,11 @@ X3DSculpToolBrushEditor::set_initalized ()
 	{ }
 }
 
-X3D::SFNode
-X3DSculpToolBrushEditor::getBrush () const
-{
-	return preview -> getExecutionContext () -> getScene () -> getExportedNode ("Brush");
-}
-
 void
 X3DSculpToolBrushEditor::store ()
 {
 	try
 	{
-		const auto brush = getBrush ();
-	
 		getConfig () -> set <X3D::SFString> ("brushType",      brush -> getField <X3D::SFString> ("type"));
 		getConfig () -> set <X3D::SFDouble> ("brushRadius",    brush -> getField <X3D::SFDouble> ("radius"));
 		getConfig () -> set <X3D::SFDouble> ("brushHeight",    brush -> getField <X3D::SFDouble> ("height"));

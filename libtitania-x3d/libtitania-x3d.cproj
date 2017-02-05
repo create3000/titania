@@ -851,6 +851,8 @@
     <None Include="Titania\X3D\Fields\X3DPtrBase.h" />
     <None Include="Titania\X3D\Configuration\BaseNodeArray.h" />
     <None Include="Titania\X3D\InputOutput\X3DGenerator.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetBrushObject.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetSculpToolObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1433,6 +1435,8 @@
     <Compile Include="Titania\X3D\Parser\X3DParser.cpp" />
     <Compile Include="Titania\X3D\Configuration\BaseNodeArray.cpp" />
     <Compile Include="Titania\X3D\InputOutput\X3DGenerator.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetBrushObject.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetSculpToolObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

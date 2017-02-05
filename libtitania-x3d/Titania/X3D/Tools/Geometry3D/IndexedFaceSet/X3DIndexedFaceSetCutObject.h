@@ -74,6 +74,11 @@ public:
 	///  @name Destruction
 
 	virtual
+	void
+	dispose ()
+	{ }
+
+	virtual
 	~X3DIndexedFaceSetCutObject () override;
 
 

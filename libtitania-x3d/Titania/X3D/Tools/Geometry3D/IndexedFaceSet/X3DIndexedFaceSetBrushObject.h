@@ -48,71 +48,95 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_SCULP_TOOL_EDITOR_X3DSCULP_TOOL_BRUSH_PALETTE_EDITOR_H__
-#define __TITANIA_EDITORS_SCULP_TOOL_EDITOR_X3DSCULP_TOOL_BRUSH_PALETTE_EDITOR_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_BRUSH_OBJECT_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_BRUSH_OBJECT_H__
 
-#include "../../Editors/PaletteEditor/X3DPaletteEditor.h"
-#include "../../UserInterfaces/X3DSculpToolEditorInterface.h"
+#include "X3DIndexedFaceSetSelectionObject.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-class X3DSculpToolBrushPaletteEditor :
-	public X3DPaletteEditor <X3DSculpToolEditorInterface>
+class X3DIndexedFaceSetBrushObject :
+	virtual public X3DIndexedFaceSetSelectionObject
 {
 public:
+
+	///  @name Hidden fields
+
+	SFNode &
+	brush ()
+	{ return *fields .brush; }
+
+	const SFNode &
+	brush () const
+	{ return *fields .brush; }
 
 	///  @name Destruction
 
 	virtual
-	~X3DSculpToolBrushPaletteEditor () override;
+	void
+	dispose ()
+	{ }
+
+	virtual
+	~X3DIndexedFaceSetBrushObject () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DSculpToolBrushPaletteEditor ();
-
-	///  @name Member access
+	X3DIndexedFaceSetBrushObject ();
 
 	virtual
-	const X3D::SFNode &
-	getBrush () const = 0;
+	void
+	initialize () override;
 
 
 private:
 
-	///  @name Operations
-
-	virtual
-	void
-	addObject (const std::string &) final override;
-
-	virtual
-	void
-	setTouchTime (const std::string &) final override;
+	///  @name Event handlers
 
 	void
-	set_model (X3D::X3DScenePtr && scene);
-
-	virtual
-	bool
-	createScene (const X3D::X3DScenePtr &) final override;
+	set_loadState ();
 
 	void
-	set_loadState (X3D::Inline* const, X3D::Transform* const);
+	set_toolType ();
 
 	void
-	set_bbox (X3D::Inline* const, X3D::Transform* const);
+	set_brush ();
+	
+	void
+	set_brush_radius ();
 
-	///  @name Member types
+	void
+	set_touch_sensor_over ();
 
-	X3D::SceneLoaderPtr future;
+	void
+	set_touch_sensor_hitPoint ();
+
+	///  @name Fields
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode* const brush;
+	};
+
+	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <Switch>      toolSwitch;
+	X3DPtr <TouchSensor> touchSensor;
+	X3DPtr <Switch>      brushSwitch;
+	X3DPtr <Transform>   brushTransform;
+	SFNode               brushNode;
 
 };
 
-} // puck
+} // X3D
 } // titania
 
 #endif

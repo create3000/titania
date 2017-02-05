@@ -48,71 +48,51 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_SCULP_TOOL_EDITOR_X3DSCULP_TOOL_BRUSH_PALETTE_EDITOR_H__
-#define __TITANIA_EDITORS_SCULP_TOOL_EDITOR_X3DSCULP_TOOL_BRUSH_PALETTE_EDITOR_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_SCULP_TOOL_OBJECT_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_SCULP_TOOL_OBJECT_H__
 
-#include "../../Editors/PaletteEditor/X3DPaletteEditor.h"
-#include "../../UserInterfaces/X3DSculpToolEditorInterface.h"
+#include "X3DIndexedFaceSetBrushObject.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-class X3DSculpToolBrushPaletteEditor :
-	public X3DPaletteEditor <X3DSculpToolEditorInterface>
+class X3DIndexedFaceSetSculpToolObject :
+	virtual public X3DIndexedFaceSetBrushObject
 {
 public:
 
 	///  @name Destruction
 
 	virtual
-	~X3DSculpToolBrushPaletteEditor () override;
+	void
+	dispose ()
+	{ }
+
+	virtual
+	~X3DIndexedFaceSetSculpToolObject () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DSculpToolBrushPaletteEditor ();
-
-	///  @name Member access
+	X3DIndexedFaceSetSculpToolObject ();
 
 	virtual
-	const X3D::SFNode &
-	getBrush () const = 0;
+	void
+	initialize () override;
 
 
 private:
 
-	///  @name Operations
-
-	virtual
-	void
-	addObject (const std::string &) final override;
-
-	virtual
-	void
-	setTouchTime (const std::string &) final override;
+	///  @name Event handlers
 
 	void
-	set_model (X3D::X3DScenePtr && scene);
-
-	virtual
-	bool
-	createScene (const X3D::X3DScenePtr &) final override;
-
-	void
-	set_loadState (X3D::Inline* const, X3D::Transform* const);
-
-	void
-	set_bbox (X3D::Inline* const, X3D::Transform* const);
-
-	///  @name Member types
-
-	X3D::SceneLoaderPtr future;
+	set_touch_sensor_hitPoint ();
 
 };
 
-} // puck
+} // X3D
 } // titania
 
 #endif

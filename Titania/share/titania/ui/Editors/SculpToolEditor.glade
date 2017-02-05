@@ -14,7 +14,8 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="BrushRadiusAdjustment">
-    <property name="upper">2</property>
+    <property name="upper">1000000000</property>
+    <property name="value">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
@@ -110,10 +111,11 @@
                       <object class="GtkRadioToolButton" id="PullButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Pull Polygons</property>
+                        <property name="tooltip_text" translatable="yes">Pull or push polygons.</property>
                         <property name="label" translatable="yes">Pull</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">Pull</property>
+                        <signal name="toggled" handler="on_pull_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -122,13 +124,13 @@
                     </child>
                     <child>
                       <object class="GtkRadioToolButton" id="PushButton">
-                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Push Polygons</property>
                         <property name="label" translatable="yes">Push</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">Push</property>
                         <property name="active">True</property>
+                        <signal name="toggled" handler="on_push_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -285,20 +287,6 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkScale" id="BrushRadiusScale">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="hexpand">True</property>
-                                    <property name="adjustment">BrushRadiusAdjustment</property>
-                                    <property name="round_digits">3</property>
-                                    <property name="digits">3</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">1</property>
-                                  </packing>
-                                </child>
-                                <child>
                                   <object class="GtkLabel" id="label1">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
@@ -350,6 +338,22 @@
                                   <packing>
                                     <property name="left_attach">1</property>
                                     <property name="top_attach">6</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="BrushRadiusButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="adjustment">BrushRadiusAdjustment</property>
+                                    <property name="climb_rate">0.01</property>
+                                    <property name="digits">3</property>
+                                    <property name="value">1</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
                                   </packing>
                                 </child>
                               </object>

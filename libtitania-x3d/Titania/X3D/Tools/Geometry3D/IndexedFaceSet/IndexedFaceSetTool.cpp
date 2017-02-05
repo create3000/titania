@@ -59,10 +59,12 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	                      X3DBaseTool (node),
 	            X3DIndexedFaceSetTool (),
 	 X3DIndexedFaceSetSelectionObject (),
+	     X3DIndexedFaceSetBrushObject (),
 	 X3DIndexedFaceSetTransformObject (),
 	X3DIndexedFaceSetOperationsObject (),
 	     X3DIndexedFaceSetKnifeObject (),
-	X3DIndexedFaceSetLightSaberObject ()
+	X3DIndexedFaceSetLightSaberObject (),
+	 X3DIndexedFaceSetSculpToolObject ()
 {
 	addType (X3DConstants::IndexedFaceSetTool);
 
@@ -104,6 +106,7 @@ IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
 	addField (outputOnly,  "selectedFaces_changed",  selectedFaces_changed ());
 	addField (outputOnly , "undo_changed",           undo_changed ());
 	addField (outputOnly,  "clipboard_changed",      clipboard_changed ());
+	addField (inputOutput, "brush",                  brush ());
 	addField (inputOutput, "normalTool",             normalTool ());
 	addField (inputOutput, "coordTool",              coordTool ());
 }
@@ -113,10 +116,13 @@ IndexedFaceSetTool::initialize ()
 {
 	X3DIndexedFaceSetTool::initialize ();
 	X3DIndexedFaceSetSelectionObject::initialize ();
+	X3DIndexedFaceSetBrushObject::initialize ();
+
 	X3DIndexedFaceSetTransformObject::initialize ();
 	X3DIndexedFaceSetOperationsObject::initialize ();
 	X3DIndexedFaceSetKnifeObject::initialize ();
 	X3DIndexedFaceSetLightSaberObject::initialize ();
+	X3DIndexedFaceSetSculpToolObject::initialize ();
 }
 
 void
@@ -132,10 +138,13 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 IndexedFaceSetTool::dispose ()
 {
+	X3DIndexedFaceSetSculpToolObject::dispose ();
 	X3DIndexedFaceSetLightSaberObject::dispose ();
 	X3DIndexedFaceSetKnifeObject::dispose ();
 	X3DIndexedFaceSetOperationsObject::dispose ();
 	X3DIndexedFaceSetTransformObject::dispose ();
+
+	X3DIndexedFaceSetBrushObject::dispose ();
 	X3DIndexedFaceSetSelectionObject::dispose ();
 	X3DIndexedFaceSetTool::dispose ();
 }

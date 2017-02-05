@@ -179,10 +179,6 @@ public:
 	getBrushHardnessScale () const
 	{ return *m_BrushHardnessScale; }
 
-	Gtk::Scale &
-	getBrushRadiusScale () const
-	{ return *m_BrushRadiusScale; }
-
 	Gtk::ComboBoxText &
 	getBrushTypeButton () const
 	{ return *m_BrushTypeButton; }
@@ -190,6 +186,10 @@ public:
 	Gtk::Scale &
 	getBrushSpacingScale () const
 	{ return *m_BrushSpacingScale; }
+
+	Gtk::SpinButton &
+	getBrushRadiusButton () const
+	{ return *m_BrushRadiusButton; }
 
 	Gtk::Box &
 	getPaletteBox () const
@@ -256,6 +256,14 @@ public:
 	{ return *m_RemoveObjectFromPaletteMenuItem; }
 
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_pull_toggled () = 0;
+
+	virtual
+	void
+	on_push_toggled () = 0;
 
 	virtual
 	bool
@@ -359,9 +367,9 @@ private:
 	Gtk::Scale*                    m_BrushWarpScale;
 	Gtk::Scale*                    m_BrushSharpnessScale;
 	Gtk::Scale*                    m_BrushHardnessScale;
-	Gtk::Scale*                    m_BrushRadiusScale;
 	Gtk::ComboBoxText*             m_BrushTypeButton;
 	Gtk::Scale*                    m_BrushSpacingScale;
+	Gtk::SpinButton*               m_BrushRadiusButton;
 	Gtk::Box*                      m_PaletteBox;
 	Gtk::Box*                      m_PalettePreviewBox;
 	Gtk::Box*                      m_ChangePaletteBox;

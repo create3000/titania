@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,71 +48,30 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_SCULP_TOOL_EDITOR_X3DSCULP_TOOL_BRUSH_PALETTE_EDITOR_H__
-#define __TITANIA_EDITORS_SCULP_TOOL_EDITOR_X3DSCULP_TOOL_BRUSH_PALETTE_EDITOR_H__
-
-#include "../../Editors/PaletteEditor/X3DPaletteEditor.h"
-#include "../../UserInterfaces/X3DSculpToolEditorInterface.h"
+#include "X3DIndexedFaceSetSculpToolObject.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-class X3DSculpToolBrushPaletteEditor :
-	public X3DPaletteEditor <X3DSculpToolEditorInterface>
+X3DIndexedFaceSetSculpToolObject::X3DIndexedFaceSetSculpToolObject () :
+	              IndexedFaceSet (getExecutionContext ()),
+	X3DIndexedFaceSetBrushObject ()
 {
-public:
+	//addType (X3DConstants::X3DIndexedFaceSetSculpToolObject);
+}
 
-	///  @name Destruction
+void
+X3DIndexedFaceSetSculpToolObject::initialize ()
+{ }
 
-	virtual
-	~X3DSculpToolBrushPaletteEditor () override;
+void
+X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
+{
+	//__LOG__ << touchSensor -> getHitPoint () << std::endl;
+}
 
+X3DIndexedFaceSetSculpToolObject::~X3DIndexedFaceSetSculpToolObject ()
+{ }
 
-protected:
-
-	///  @name Construction
-
-	X3DSculpToolBrushPaletteEditor ();
-
-	///  @name Member access
-
-	virtual
-	const X3D::SFNode &
-	getBrush () const = 0;
-
-
-private:
-
-	///  @name Operations
-
-	virtual
-	void
-	addObject (const std::string &) final override;
-
-	virtual
-	void
-	setTouchTime (const std::string &) final override;
-
-	void
-	set_model (X3D::X3DScenePtr && scene);
-
-	virtual
-	bool
-	createScene (const X3D::X3DScenePtr &) final override;
-
-	void
-	set_loadState (X3D::Inline* const, X3D::Transform* const);
-
-	void
-	set_bbox (X3D::Inline* const, X3D::Transform* const);
-
-	///  @name Member types
-
-	X3D::SceneLoaderPtr future;
-
-};
-
-} // puck
+} // X3D
 } // titania
-
-#endif

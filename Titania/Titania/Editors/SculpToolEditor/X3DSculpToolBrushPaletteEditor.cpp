@@ -160,8 +160,8 @@ X3DSculpToolBrushPaletteEditor::set_model (X3D::X3DScenePtr && scene)
 		if (not scene)
 			return;
 
-		const auto model = scene -> getNamedNode ("Brush");
-		const auto brush = getBrush ();
+		const auto   model = scene -> getNamedNode ("Brush");
+		const auto & brush = getBrush ();
 
 		brush -> setField <X3D::SFString> ("type",      model -> getField <X3D::SFString> ("type"));
 		brush -> setField <X3D::SFDouble> ("height",    model -> getField <X3D::SFDouble> ("height"));

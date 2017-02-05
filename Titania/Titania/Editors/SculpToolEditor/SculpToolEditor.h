@@ -78,7 +78,7 @@ public:
 protected:
 
 	virtual
-	X3D::SFNode
+	const X3D::SFNode &
 	getBrush () const
 	{ return X3DSculpToolBrushEditor::getBrush (); }
 
@@ -97,6 +97,17 @@ private:
 
 	void
 	set_geometry_nodes (const X3D::MFNode & geometryNodes);
+
+	virtual
+	void
+	on_pull_toggled () final override;
+
+	virtual
+	void
+	on_push_toggled () final override;
+
+	void
+	set_brush ();
 
 	virtual
 	void

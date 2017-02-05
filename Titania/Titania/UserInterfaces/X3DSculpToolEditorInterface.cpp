@@ -83,9 +83,9 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrushWarpScale", m_BrushWarpScale);
 	m_builder -> get_widget ("BrushSharpnessScale", m_BrushSharpnessScale);
 	m_builder -> get_widget ("BrushHardnessScale", m_BrushHardnessScale);
-	m_builder -> get_widget ("BrushRadiusScale", m_BrushRadiusScale);
 	m_builder -> get_widget ("BrushTypeButton", m_BrushTypeButton);
 	m_builder -> get_widget ("BrushSpacingScale", m_BrushSpacingScale);
+	m_builder -> get_widget ("BrushRadiusButton", m_BrushRadiusButton);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
 	m_builder -> get_widget ("ChangePaletteBox", m_ChangePaletteBox);
@@ -102,6 +102,10 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("EditPaletteMenuItem", m_EditPaletteMenuItem);
 	m_builder -> get_widget ("AddObjectToPaletteMenuItem", m_AddObjectToPaletteMenuItem);
 	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
+
+	// Connect object Gtk::RadioToolButton with id 'PullButton'.
+	m_PullButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_pull_toggled));
+	m_PushButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_push_toggled));
 
 	// Connect object Gtk::Box with id 'PalettePreviewBox'.
 	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_button_press_event));
