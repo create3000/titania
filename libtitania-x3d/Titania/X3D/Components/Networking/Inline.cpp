@@ -237,7 +237,7 @@ throw (Error <NODE_NOT_AVAILABLE>,
 
 			try
 			{
-				const_cast <Inline*> (this) -> scene .set (getBrowser () -> createScene ());
+				const_cast <Inline*> (this) -> scene .set (getBrowser () -> createScene (false));
 
 				Loader (getExecutionContext ()) .parseIntoScene (scene, url ());
 

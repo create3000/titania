@@ -78,7 +78,7 @@ public:
 	exportImage ();
 
 	bool
-	exportNodes (X3D::MFNode &, basic::uri &, const X3D::UndoStepPtr &);
+	exportNodes (const X3D::MFNode &, basic::uri &, const X3D::UndoStepPtr &);
 
 	///  @name Destruction
 
@@ -125,7 +125,7 @@ private:
 	///  @name Export nodes
 
 	bool
-	exportNodes (X3D::MFNode &, const basic::uri &, const std::string &, const X3D::UndoStepPtr &);
+	exportNodes (const X3D::MFNode &, const basic::uri &, const std::string &, const X3D::UndoStepPtr &);
 
 };
 

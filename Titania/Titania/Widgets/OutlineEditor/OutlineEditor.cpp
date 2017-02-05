@@ -815,16 +815,13 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 	{
 		// Root node
 
-		const auto &      executionContext = treeView -> get_execution_context ();
-		const X3D::SFNode parent (executionContext);
-		auto &            rootNodes = executionContext -> getRootNodes ();
-		const auto        index     = treeView -> get_index (iter);
-		const auto        child     = rootNodes [index];
-		const auto        group     = executionContext -> createNode (typeName);
-		auto &            children  = group -> getField <X3D::MFNode> (fieldName);
-
-		executionContext -> addUninitializedNode (group);
-		executionContext -> realize ();
+		const auto & executionContext = treeView -> get_execution_context ();
+		const auto   parent           = X3D::SFNode (executionContext);
+		auto &       rootNodes        = executionContext -> getRootNodes ();
+		const auto   index            = treeView -> get_index (iter);
+		const auto   child            = rootNodes [index];
+		const auto   group            = executionContext -> createNode (typeName);
+		auto &       children         = group -> getField <X3D::MFNode> (fieldName);
 
 		getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 		getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, rootNodes, index, group, undoStep);
@@ -869,9 +866,6 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 			   const auto group    = executionContext -> createNode (typeName);
 				auto &     children = group -> getField <X3D::MFNode> (fieldName);
 
-				executionContext -> addUninitializedNode (group);
-				executionContext -> realize ();
-
 				getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 				getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, child, group, undoStep);
 				//getBrowserWindow () -> getSelection () -> setChildren ({ group });
@@ -885,9 +879,6 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 				const auto & child    = mfnode [index];
 				const auto   group    = executionContext -> createNode (typeName);
 				auto &       children = group -> getField <X3D::MFNode> (fieldName);
-
-				executionContext -> addUninitializedNode (group);
-				executionContext -> realize ();
 
 				getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
 				getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, mfnode, index, group, undoStep);

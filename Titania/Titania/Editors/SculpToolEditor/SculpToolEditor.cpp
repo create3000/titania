@@ -97,6 +97,8 @@ SculpToolEditor::initialize ()
 
 	getPullButton () .set_group (selectionGroup);
 	getPushButton () .set_group (selectionGroup);
+
+	getBrush () .addInterest (this, &SculpToolEditor::set_brush);
 }
 
 void

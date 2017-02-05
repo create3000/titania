@@ -273,9 +273,6 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			const auto shapeNodes = getShapes ();
 		   auto       node       = getCurrentContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
 
-			getCurrentContext () -> addUninitializedNode (node);
-			getCurrentContext () -> realize ();
-
 		   if (geometryNode and geometryNode -> getType () .back () == node -> getType () .back ())
 				node = geometryNode;
 

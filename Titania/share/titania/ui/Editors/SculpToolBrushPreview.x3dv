@@ -7,7 +7,7 @@ META "created" "Mon, 25 Jul 2016 18:09:12 GMT"
 META "creator" "holger"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/SculpToolBrushPreview.x3dv"
-META "modified" "Sat, 04 Feb 2017 12:55:20 GMT"
+META "modified" "Sun, 05 Feb 2017 07:07:29 GMT"
 META "outputStyle" "Nicest"
 
 EXTERNPROTO SculpToolBrush [
@@ -505,19 +505,14 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
+            value DEF BrushGroup Group {
+              children DEF Brush SculpToolBrush { }
+            }
           }
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF PhongShadingScript Script {
-              url "ecmascript:
-
-function initialize ()
-{
-	Browser .setBrowserOption (\"Shading\", \"PHONG\");
-}
-"
-            }
+            value USE Brush
           }
         ]
       }
@@ -554,8 +549,16 @@ Switch {
   }
 }
 
-DEF Brush SculpToolBrush { }
+USE BrushGroup
 
-USE PhongShadingScript
+DEF PhongShadingScript Script {
+  url "ecmascript:
 
-EXPORT Brush
+function initialize ()
+{
+	Browser .setBrowserOption (\"Shading\", \"PHONG\");
+}
+"
+}
+
+EXPORT BrushGroup

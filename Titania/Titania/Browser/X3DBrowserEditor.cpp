@@ -838,10 +838,8 @@ X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepP
 {
 	const auto node = getCurrentContext () -> createNode (typeName);
 
-	getCurrentContext () -> addUninitializedNode (node);
-	getCurrentContext () -> realize ();
-
 	addNodesToActiveLayer (getCurrentWorld (), { node }, undoStep);
+
 	getSelection () -> setChildren ({ node }, undoStep);
 
 	return node;

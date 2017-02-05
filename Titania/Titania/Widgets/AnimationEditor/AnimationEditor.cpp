@@ -2291,9 +2291,6 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 		
 		interpolator -> getField ("value_changed") -> addInterest (this, &AnimationEditor::set_value);
 
-		getCurrentContext () -> addUninitializedNode (interpolator);
-		getCurrentContext () -> realize ();
-
 		const X3D::X3DPtr <X3D::X3DNode> interpolatorNode (interpolator);
 		interpolatorIndex .emplace (field, interpolatorNode);
 		interpolators .emplace (interpolatorNode);
@@ -2303,6 +2300,7 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 		getBrowserWindow () -> addRoute (getCurrentContext (), timeSensor, "fraction_changed", interpolator, "set_fraction", undoStep);
 		getBrowserWindow () -> addRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
 		getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, interpolator, undoStep);
+
 		return interpolatorNode;
 	}
 }

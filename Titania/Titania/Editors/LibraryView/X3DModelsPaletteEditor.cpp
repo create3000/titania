@@ -157,7 +157,7 @@ X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 {
 	using namespace std::placeholders;
 
-	auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
+	const auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
 
 	if (selection .empty ())
 		return false;
@@ -174,7 +174,7 @@ X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 
 	// Change url's in nodes
 
-	X3D::traverse (selection,
+	X3D::traverse (const_cast <X3D::MFNode &> (selection),
 	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), scene -> getWorldURL (), undoStep, _1),
 	               true,
 	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |

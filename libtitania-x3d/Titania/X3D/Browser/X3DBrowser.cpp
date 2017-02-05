@@ -90,7 +90,7 @@ X3DBrowser::X3DBrowser (const MFString & url, const MFString & parameter) :
 	     browserOptions (new BrowserOptions (this)),
 	  browserProperties (new BrowserProperties (this)),
 	renderingProperties (new RenderingProperties (this)),
-	   executionContext (createScene ()),
+	   executionContext (createScene (false)),
 	          loadState (NOT_STARTED_STATE),
 	           urlError (),
 	         inShutdown (0),
@@ -268,7 +268,7 @@ throw (Error <NOT_SUPPORTED>)
 }
 
 X3DScenePtr
-X3DBrowser::createScene () const
+X3DBrowser::createScene (const bool setup) const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
@@ -276,15 +276,18 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	scene -> isLive () = false;
 
+	if (setup)
+		scene -> setup ();
+
 	return scene;
 }
 
 X3DScenePtr
-X3DBrowser::createScene (const ProfileInfoPtr & profile, const ComponentInfoArray & components) const
+X3DBrowser::createScene (const ProfileInfoPtr & profile, const ComponentInfoArray & components, const bool setup) const
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DScenePtr scene = createScene ();
+	const X3DScenePtr scene = createScene (setup);
 
 	scene -> setProfile (profile);
 
@@ -292,22 +295,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		scene -> updateComponent (component);
 
 	return scene;
-}
-
-void
-X3DBrowser::replaceWorld (const std::nullptr_t)
-throw (Error <INVALID_SCENE>,
-       Error <INVALID_OPERATION_TIMING>)
-{
-	replaceWorld (X3DExecutionContextPtr ());
-}
-
-void
-X3DBrowser::replaceWorld (const X3DScenePtr & value)
-throw (Error <INVALID_SCENE>,
-       Error <INVALID_OPERATION_TIMING>)
-{
-	replaceWorld (X3DExecutionContextPtr (value));
 }
 
 void
@@ -366,7 +353,7 @@ throw (Error <INVALID_SCENE>,
 		const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (this));
 		browserOptions -> assign (browserOptions, true);
 
-		executionContext = value ? value : X3DExecutionContextPtr (createScene ());
+		executionContext = value ? value : X3DExecutionContextPtr (createScene (false));
 
 		print ("*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n");
 		isLive () .addInterest (executionContext -> isLive ());

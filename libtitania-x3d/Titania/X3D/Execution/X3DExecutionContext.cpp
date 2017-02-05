@@ -229,21 +229,26 @@ throw (Error <DISPOSED>)
 // Node handling
 
 SFNode
-X3DExecutionContext::createNode (const std::string & name)
+X3DExecutionContext::createNode (const std::string & typeName, const bool setup)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DBaseNode* const declaration = getBrowser () -> getSupportedNode (name);
+	const X3DBaseNode* const declaration = getBrowser () -> getSupportedNode (typeName);
 
-	//if (hasComponent (declaration -> getComponent ()))
-		return SFNode (declaration -> create (this));
+	//if (not hasComponent (declaration -> getComponent ()))
+	//throw Error <INVALID_NAME> ("Node type '" + typeName + "' not supported by profile or component specification.");
 
-	throw Error <INVALID_NAME> ("Node type '" + name + "' not supported by profile or component specification.");
+	SFNode node (declaration -> create (this));
+
+	if (setup)
+		addUninitializedNode (node);
+
+	return node;
 }
 
 X3DPrototypeInstancePtr
-X3DExecutionContext::createPrototypeInstance (const std::string & name)
+X3DExecutionContext::createProto (const std::string & typeName, const bool setup)
 throw (Error <INVALID_NAME>,
        Error <INVALID_X3D>,
        Error <INVALID_FIELD>,
@@ -252,7 +257,12 @@ throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	return X3DPrototypeInstancePtr (findProtoDeclaration (name, AvailableType { }) -> createInstance (this));
+	X3DPrototypeInstancePtr node (findProtoDeclaration (typeName, AvailableType { }) -> createInstance (this));
+
+	if (setup)
+		addUninitializedNode (node);
+
+	return node;
 }
 
 // Named node handling
@@ -979,44 +989,44 @@ X3DExecutionContext::removeExternProtoLoadCount (const ExternProtoDeclaration* c
 // ProtoObject handling
 
 X3DProtoDeclarationNode*
-X3DExecutionContext::findProtoDeclaration (const std::string & name, const AvailableType & available) const
+X3DExecutionContext::findProtoDeclaration (const std::string & typeName, const AvailableType & available) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	try
 	{
-		return prototypes .rfind (name) .getValue ();
+		return prototypes .rfind (typeName) .getValue ();
 	}
 	catch (const std::out_of_range &)
 	{
 		try
 		{
-			return externProtos .rfind (name) .getValue ();
+			return externProtos .rfind (typeName) .getValue ();
 		}
 		catch (const std::out_of_range &)
 		{
 			if (not isScene ())
-				return getExecutionContext () -> findProtoDeclaration (name, available);
+				return getExecutionContext () -> findProtoDeclaration (typeName, available);
 
-			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
+			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + typeName + "'.");
 		}
 	}
 }
 
 X3DProtoDeclarationNode*
-X3DExecutionContext::findProtoDeclaration (const std::string & name) const
+X3DExecutionContext::findProtoDeclaration (const std::string & typeName) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	const auto protoNodes = findProtoDeclarations ();
-	const auto iter       = protoNodes .find (name);
+	const auto iter       = protoNodes .find (typeName);
 
 	if (iter not_eq protoNodes .end ())
 		return iter -> second;
 
-	throw Error <INVALID_NAME> ("Unknown proto object '" + name + "'.");
+	throw Error <INVALID_NAME> ("Unknown proto object '" + typeName + "'.");
 }
 
 std::map <std::string, X3DProtoDeclarationNode*>

@@ -187,13 +187,13 @@ public:
 	}
 
 	SFNode
-	createNode (const std::string &)
+	createNode (const std::string & typeName, const bool setup = true)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	X3DPrototypeInstancePtr
-	createPrototypeInstance (const std::string &)
+	createProto (const std::string & typeName, const bool setup = true)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_X3D>,
 	       Error <INVALID_FIELD>,

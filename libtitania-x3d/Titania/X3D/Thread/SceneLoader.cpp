@@ -196,7 +196,7 @@ SceneLoader::loadAsync (const MFString & url)
 
 	checkForInterrupt ();
 
-	auto scene = getBrowser () -> createScene ();
+	const auto scene = getBrowser () -> createScene (false);
 
 	checkForInterrupt ();
 

@@ -1392,7 +1392,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 
 		try
 		{
-			_node = getExecutionContext () -> createNode (_nodeTypeId);
+			_node = getExecutionContext () -> createNode (_nodeTypeId, false);
 		}
 		catch (const X3DError & error1)
 		{
@@ -1400,7 +1400,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 
 			try
 			{
-				_node = getExecutionContext () -> createPrototypeInstance (_nodeTypeId) .getValue ();
+				_node = getExecutionContext () -> createProto (_nodeTypeId, false);
 			}
 			catch (const X3DError & error2)
 			{

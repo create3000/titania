@@ -149,7 +149,7 @@ X3DIndexedFaceSetBrushObject::set_brush ()
 		if (brushNode)
 			brushNode -> getField <SFDouble> ("radius") .removeInterest (this, &X3DIndexedFaceSetBrushObject::set_brush_radius);
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 
 	brushNode = brush ();
@@ -161,7 +161,7 @@ X3DIndexedFaceSetBrushObject::set_brush ()
 
 		set_brush_radius ();
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{ }
 }
 
@@ -175,9 +175,7 @@ X3DIndexedFaceSetBrushObject::set_brush_radius ()
 		brushTransform -> scale () = Vector3f (radius, radius, radius);
 	}
 	catch (const X3DError & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-	}
+	{ }
 }
 
 void

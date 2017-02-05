@@ -642,7 +642,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 		
 			if (stringValue (json_object_object_get (jobj, "@name"), nameCharacters))
 			{
-				node = getExecutionContext () -> createPrototypeInstance (nameCharacters) .getValue ();
+				node = getExecutionContext () -> createProto (nameCharacters, false) .getValue ();
 
 				prototypeInstance = true;
 			}
@@ -653,7 +653,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 			}
 		}
 		else
-			node = getExecutionContext () -> createNode (nodeType);
+			node = getExecutionContext () -> createNode (nodeType, false);
 	}
 	catch (const X3DError & error)
 	{

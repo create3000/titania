@@ -180,7 +180,6 @@ RenderingProperties::set_Enabled ()
 				std::clog << error .what () << std::endl;
 
 				scene = getBrowser () -> createScene ();
-				scene -> setup ();
 			}
 
 			world = new World (scene);

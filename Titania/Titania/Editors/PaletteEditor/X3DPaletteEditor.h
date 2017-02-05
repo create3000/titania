@@ -629,7 +629,6 @@ X3DPaletteEditor <Type>::on_add_object_to_palette_activate ()
 		if (not createScene (scene))
 			return;
 
-		scene -> setup ();
 		scene -> addStandardMetaData ();
 	
 		// Print scene.

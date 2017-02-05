@@ -486,7 +486,7 @@ X3DFileSaveDialog::imageOptions ()
 // Export nodes
 
 bool
-X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, const X3D::UndoStepPtr & undoStep)
+X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, basic::uri & worldURL, const X3D::UndoStepPtr & undoStep)
 {
 	if (getConfig () -> hasItem ("exportFolder"))
 		getWindow () .set_current_folder_uri (getConfig () -> getString ("exportFolder"));
@@ -507,7 +507,7 @@ X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, basic::uri & worldURL, cons
 }
 
 bool
-X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL, const std::string & outputStyle, const X3D::UndoStepPtr & undoStep)
+X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & worldURL, const std::string & outputStyle, const X3D::UndoStepPtr & undoStep)
 {
 	using namespace std::placeholders;
 
@@ -523,7 +523,7 @@ X3DFileSaveDialog::exportNodes (X3D::MFNode & nodes, const basic::uri & worldURL
 
 	// Change url's in nodes
 
-	X3D::traverse (nodes,
+	X3D::traverse (const_cast <X3D::MFNode &> (nodes),
 	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), worldURL, undoStep, _1),
 	               true,
 	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |

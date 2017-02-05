@@ -104,7 +104,7 @@ throw (Error <INVALID_X3D>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const X3DScenePtr scene = executionContext -> getBrowser () -> createScene ();
+	const X3DScenePtr scene = executionContext -> getBrowser () -> createScene (false);
 
 	golden_gate (scene, worldURL, istream);
 
@@ -125,7 +125,7 @@ Loader::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
-	const X3DScenePtr scene = executionContext -> getBrowser () -> createScene ();
+	const X3DScenePtr scene = executionContext -> getBrowser () -> createScene (false);
 
 	parseIntoScene (scene, url);
 

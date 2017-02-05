@@ -136,10 +136,8 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const S
 }
 
 std::string
-X3DEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes_, const UndoStepPtr & undoStep) const
+X3DEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const UndoStepPtr & undoStep) const
 {
-	MFNode nodes = nodes_;
-
 	// Detach from group
 
 	detachFromGroup (executionContext, nodes, true, undoStep);
@@ -156,10 +154,8 @@ X3DEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNo
 }
 
 std::string
-X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes_) const
+X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes) const
 {
-	MFNode nodes = nodes_;
-
 	// Detach from group
 
 	const auto undoDetachFromGroup = std::make_shared <UndoStep> ();
@@ -178,7 +174,7 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 }
 
 std::string
-X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, MFNode & nodes, const bool identifier) const
+X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier) const
 {
 	std::ostringstream osstream;
 
@@ -188,7 +184,7 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, MFNode 
 }
 
 void
-X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::ostream & ostream, MFNode & nodes, const bool identifier) const
+X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::ostream & ostream, const MFNode & nodes, const bool identifier) const
 {
 	// Find proto declarations
 
@@ -238,11 +234,11 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::os
 }
 
 std::vector <X3DProtoDeclarationNodePtr>
-X3DEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, MFNode & nodes) const
+X3DEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes) const
 {
 	std::map <X3DProtoDeclarationNodePtr, size_t> protoIndex;
 
-	traverse (nodes, [&] (SFNode & node)
+	traverse (const_cast <MFNode &> (nodes), [&] (SFNode & node)
 	          {
 	             const X3DPrototypeInstancePtr protoInstance (node);
 
@@ -286,13 +282,13 @@ X3DEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, M
 }
 
 std::vector <Route*>
-X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, MFNode & nodes) const
+X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes) const
 {
 	// Create node index
 
 	std::set <SFNode> nodeIndex;
 
-	traverse (nodes, [&nodeIndex] (SFNode & node)
+	traverse (const_cast <MFNode &> (nodes), [&nodeIndex] (SFNode & node)
 	          {
 	             nodeIndex .emplace (node);
 	             return true;
@@ -302,7 +298,7 @@ X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, 
 
 	std::vector <Route*> routes;
 
-	traverse (nodes, [&] (SFNode & node)
+	traverse (const_cast <MFNode &> (nodes), [&] (SFNode & node)
 	          {
 	             for (const auto & field: node -> getFieldDefinitions ())
 	             {
@@ -440,10 +436,7 @@ X3DEditor::removeUsedPrototypes (const X3DExecutionContextPtr & executionContext
 SFNode
 X3DEditor::addPrototypeInstance (const X3DExecutionContextPtr & executionContext, const std::string & name, const UndoStepPtr & undoStep) const
 {
-	const SFNode instance (executionContext -> createPrototypeInstance (name));
-
-	executionContext -> addUninitializedNode (instance);
-	executionContext -> realize ();
+	const SFNode instance (executionContext -> createProto (name));
 
 	pushBackIntoArray (executionContext, executionContext -> getRootNodes (), instance, undoStep);
 
@@ -1707,9 +1700,6 @@ X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext, const M
 		unlinkClone (executionContext, executionContext, executionContext -> getRootNodes (), clone, nodes, first, undoStep);
 	}
 
-	// Setup new nodes.
-	executionContext -> realize ();
-
 	return nodes;
 }
 
@@ -1786,8 +1776,6 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
 
 		pushBackIntoArray (groupNode, group -> children (), child, undoStep);
 	}
-
-	group -> setup ();
 
 	// Add to layer
 
@@ -2005,11 +1993,10 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 {
 	// Add node to group
 
-	const SFNode group (executionContext -> createNode (typeName));
+	const SFNode group = executionContext -> createNode (typeName);
 
 	if (not children .empty ())
 	{
-		executionContext -> addUninitializedNode (group);
 		undoStep -> addObjects (group);
 	
 		const auto & leader = children .back ();
@@ -2062,7 +2049,6 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 		pushBackIntoArray (group, group -> getField <MFNode> (fieldName), leader, undoStep);
 	}
 
-	executionContext -> realize ();
 	return group;
 }
 

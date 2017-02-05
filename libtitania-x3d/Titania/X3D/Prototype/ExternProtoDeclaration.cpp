@@ -260,7 +260,7 @@ ExternProtoDeclaration::requestImmediateLoad ()
 
 	try
 	{
-		scene = getBrowser () -> createScene ();
+		scene = getBrowser () -> createScene (false);
 
 		loader .parseIntoScene (scene, url ());
 

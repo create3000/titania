@@ -702,7 +702,7 @@ XMLParser::protoInstanceElement (xmlpp::Element* const xmlElement)
 
 		if (stringAttribute (xmlElement -> get_attribute ("name"), nameCharacters))
 		{
-			const auto node = getExecutionContext () -> createPrototypeInstance (nameCharacters);
+			const auto node = getExecutionContext () -> createProto (nameCharacters, false);
 
 			defAttribute (xmlElement, node);
 
@@ -775,7 +775,7 @@ XMLParser::nodeElement (xmlpp::Element* const xmlElement)
 	
 		// Node object
 	
-		const auto node = getExecutionContext () -> createNode (xmlElement -> get_name ());
+		const auto node = getExecutionContext () -> createNode (xmlElement -> get_name (), false);
 
 		defAttribute (xmlElement, node);
 

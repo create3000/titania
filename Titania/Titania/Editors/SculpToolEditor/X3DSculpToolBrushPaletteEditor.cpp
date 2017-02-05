@@ -183,7 +183,7 @@ X3DSculpToolBrushPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 	{
 		// Export brush to stream
 
-		auto brush = X3D::MFNode ({ getBrush () });
+		const auto brush = X3D::MFNode ({ getBrush () });
 
 		// Export brush to stream
 

@@ -52,6 +52,9 @@
 
 #include "../../Configuration/config.h"
 
+#include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
+#include <Titania/X3D/Components/Grouping/Group.h>
+
 namespace titania {
 namespace puck {
 
@@ -93,15 +96,34 @@ X3DSculpToolBrushEditor::set_initalized ()
 	{
 		preview -> set_opacity (1);
 
-	   brush = preview -> getExecutionContext () -> getScene () -> getExportedNode ("Brush");
+		// Create or get brush
 
-		brush -> setField <X3D::SFString> ("type",      getConfig () -> get <X3D::SFString> ("brushType"));
-		brush -> setField <X3D::SFDouble> ("radius",    getConfig () -> get <X3D::SFDouble> ("brushRadius"));
-		brush -> setField <X3D::SFDouble> ("height",    getConfig () -> get <X3D::SFDouble> ("brushHeight"));
-		brush -> setField <X3D::SFDouble> ("warp",      getConfig () -> get <X3D::SFDouble> ("brushWarp"));
-		brush -> setField <X3D::SFDouble> ("sharpness", getConfig () -> get <X3D::SFDouble> ("brushSharpness"));
-		brush -> setField <X3D::SFDouble> ("hardness",  getConfig () -> get <X3D::SFDouble> ("brushHardness"));
-		brush -> setField <X3D::SFDouble> ("spacing" ,  getConfig () -> get <X3D::SFDouble> ("brushSpacing"));
+		try
+		{
+	      brush = getMasterBrowser () -> getExecutionContext () -> getNamedNode ("SculpToolBrush");
+		}
+		catch (const X3D::X3DError &)
+		{
+			brush = getMasterBrowser () -> getExecutionContext () -> createProto ("SculpToolBrush");
+
+			getMasterBrowser () -> getExecutionContext () -> updateNamedNode ("SculpToolBrush", brush);
+			getMasterBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (brush);
+
+			if (getConfig () -> hasItem ("brushType"))
+			{
+				brush -> setField <X3D::SFString> ("type",      getConfig () -> get <X3D::SFString> ("brushType"));
+				brush -> setField <X3D::SFDouble> ("radius",    getConfig () -> get <X3D::SFDouble> ("brushRadius"));
+				brush -> setField <X3D::SFDouble> ("height",    getConfig () -> get <X3D::SFDouble> ("brushHeight"));
+				brush -> setField <X3D::SFDouble> ("warp",      getConfig () -> get <X3D::SFDouble> ("brushWarp"));
+				brush -> setField <X3D::SFDouble> ("sharpness", getConfig () -> get <X3D::SFDouble> ("brushSharpness"));
+				brush -> setField <X3D::SFDouble> ("hardness",  getConfig () -> get <X3D::SFDouble> ("brushHardness"));
+				brush -> setField <X3D::SFDouble> ("spacing" ,  getConfig () -> get <X3D::SFDouble> ("brushSpacing"));
+			}
+		}
+
+		preview -> getExecutionContext () -> getScene () -> getExportedNode <X3D::Group> ("BrushGroup") -> children () = { brush };
+
+		// Setup widgets
 
 		const auto nodes = X3D::MFNode ({ brush });
 
@@ -112,8 +134,6 @@ X3DSculpToolBrushEditor::set_initalized ()
 		sharpness .setNodes (nodes);
 		hardness  .setNodes (nodes);
 		spacing   .setNodes (nodes);
-
-		X3DSculpToolBrushEditor::configure ();
 	}
 	catch (const X3D::X3DError &)
 	{ }

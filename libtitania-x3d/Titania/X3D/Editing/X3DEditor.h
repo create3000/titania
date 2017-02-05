@@ -89,11 +89,11 @@ public:
 
 	virtual
 	std::string
-	exportNodes (const X3DExecutionContextPtr &, MFNode &, const bool) const;
+	exportNodes (const X3DExecutionContextPtr &, const MFNode &, const bool) const;
 
 	virtual
 	void
-	exportNodes (const X3DExecutionContextPtr &, std::ostream &, MFNode &, const bool) const;
+	exportNodes (const X3DExecutionContextPtr &, std::ostream &, const MFNode &, const bool) const;
 
 	///  @name Prototype handling
 
@@ -355,10 +355,10 @@ private:
 	///  @name Clipboard handling
 
 	std::vector <X3DProtoDeclarationNodePtr>
-	getUsedPrototypes (const X3DExecutionContextPtr &, MFNode &) const;
+	getUsedPrototypes (const X3DExecutionContextPtr &, const MFNode &) const;
 
 	std::vector <Route*>
-	getConnectedRoutes (const X3DExecutionContextPtr &, MFNode &) const;
+	getConnectedRoutes (const X3DExecutionContextPtr &, const MFNode &) const;
 
 	///  @name Prototype handling
 
