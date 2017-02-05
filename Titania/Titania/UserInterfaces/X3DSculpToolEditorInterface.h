@@ -164,10 +164,6 @@ public:
 	{ return *m_BrushBox; }
 
 	Gtk::Scale &
-	getBrushHeightScale () const
-	{ return *m_BrushHeightScale; }
-
-	Gtk::Scale &
 	getBrushWarpScale () const
 	{ return *m_BrushWarpScale; }
 
@@ -183,13 +179,17 @@ public:
 	getBrushTypeButton () const
 	{ return *m_BrushTypeButton; }
 
-	Gtk::Scale &
-	getBrushSpacingScale () const
-	{ return *m_BrushSpacingScale; }
-
 	Gtk::SpinButton &
 	getBrushRadiusButton () const
 	{ return *m_BrushRadiusButton; }
+
+	Gtk::SpinButton &
+	getBrushSpacingButton () const
+	{ return *m_BrushSpacingButton; }
+
+	Gtk::SpinButton &
+	getBrushHeightButton () const
+	{ return *m_BrushHeightButton; }
 
 	Gtk::Box &
 	getPaletteBox () const
@@ -363,13 +363,13 @@ private:
 	Gtk::Notebook*                 m_Notebook;
 	Gtk::Expander*                 m_BrushExpander;
 	Gtk::Grid*                     m_BrushBox;
-	Gtk::Scale*                    m_BrushHeightScale;
 	Gtk::Scale*                    m_BrushWarpScale;
 	Gtk::Scale*                    m_BrushSharpnessScale;
 	Gtk::Scale*                    m_BrushHardnessScale;
 	Gtk::ComboBoxText*             m_BrushTypeButton;
-	Gtk::Scale*                    m_BrushSpacingScale;
 	Gtk::SpinButton*               m_BrushRadiusButton;
+	Gtk::SpinButton*               m_BrushSpacingButton;
+	Gtk::SpinButton*               m_BrushHeightButton;
 	Gtk::Box*                      m_PaletteBox;
 	Gtk::Box*                      m_PalettePreviewBox;
 	Gtk::Box*                      m_ChangePaletteBox;

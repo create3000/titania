@@ -159,6 +159,8 @@ X3DParentObject::removeChildObject (X3DChildObject & child)
 void
 X3DParentObject::addEvent (X3DChildObject* const object)
 {
+	object -> isSet (true);
+
 	if (object -> isTainted ())
 		return;
 

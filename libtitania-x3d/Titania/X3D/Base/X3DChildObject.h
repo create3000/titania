@@ -79,17 +79,17 @@ public:
 	///  Add a parent to this object.
 	virtual
 	void
-	addParent (X3DChildObject* const);
+	addParent (X3DChildObject* const parent);
 
 	///  Fast replaces @a parentToRemove with @a parentToAdd.
 	virtual
 	void
-	replaceParent (X3DChildObject* const, X3DChildObject* const);
+	replaceParent (X3DChildObject* const parentToRemove, X3DChildObject* const parentToAdd);
 
 	///  Remove a parent from this object.
 	virtual
 	void
-	removeParent (X3DChildObject* const);
+	removeParent (X3DChildObject* const parent);
 
 	///  Returns a set of all parents of this object.
 	const ChildObjectSet &
@@ -107,31 +107,45 @@ public:
 	///  Handler that should be called when the clount count should be incremented @a count.
 	virtual
 	void
-	addClones (const size_t)
+	addClones (const size_t count)
 	{ }
 
 	///  Handler that should be called when the clount count should be decremented by @a count.
 	virtual
 	void
-	removeClones (const size_t)
+	removeClones (const size_t count)
 	{ }
 
 	///  @name Event Handling
 
 	///  Sets the tainted state.  See isTainted ().
+	virtual
 	void
 	isTainted (const bool value)
 	{ tainted = value; }
 
 	///  Returns true if this objects has unprocessed events otherwise false.
+	virtual
 	bool
 	isTainted () const
 	{ return tainted; }
 
+	/// Set is set state.
+	virtual
+	void
+	isSet (const bool value)
+	{ }
+
+	/// Returns true if object was set otherwise false.
+	virtual
+	bool
+	isSet () const
+	{ return false; }
+
 	///  Set the value of this object without adding an event.  @a object must be of the same type as this object.
 	virtual
 	void
-	set (const X3DChildObject &)
+	set (const X3DChildObject & object)
 	{ }
 
 	///  Notify object about a change and add an event.
@@ -169,12 +183,12 @@ protected:
 	///  Add a weak parent to this object.
 	virtual
 	void
-	addWeakParent (X3DChildObject* const);
+	addWeakParent (X3DChildObject* const parent);
 
 	///  Remove a weak parent from this object.
 	virtual
 	void
-	removeWeakParent (X3DChildObject* const);
+	removeWeakParent (X3DChildObject* const parent);
 
 	///  Handler that is called when the reference count should be incremented.
 	virtual
@@ -199,13 +213,13 @@ protected:
 	///  Handler that is called when a child of this object should be marked tainted.
 	virtual
 	void
-	addEvent (X3DChildObject* const)
+	addEvent (X3DChildObject* const object)
 	{ addEvent (); }
 
 	///  Handler that is called when a child (field) of this node should be added to the event queue.
 	virtual
 	void
-	addEvent (X3DChildObject* const, const EventPtr &);
+	addEvent (X3DChildObject* const object, const EventPtr & event);
 
 	///  @name Destruction
 

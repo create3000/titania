@@ -70,6 +70,7 @@ class X3DFieldDefinition :
 {
 public:
 
+	using X3DChildObject::isTainted;
 	using X3DChildObject::addInterest;
 	using X3DChildObject::removeInterest;
 
@@ -87,32 +88,32 @@ public:
 
 	virtual
 	X3DFieldDefinition*
-	copy (X3DExecutionContext* const, const CopyType type) const
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>)
 	{ return copy (type); }
 
 	virtual
 	void
-	copy (X3DExecutionContext* const, X3DFieldDefinition* const, const CopyType) const
+	copy (X3DExecutionContext* const executionContext, X3DFieldDefinition* const fieldDefinition, const CopyType) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) = 0;
 
 	/// Assigns @a field to this X3DFieldDefinition. Both fields must be of the same type.
 	X3DFieldDefinition &
-	operator = (const X3DFieldDefinition &);
+	operator = (const X3DFieldDefinition & fieldDefinition);
 
 	///  @name Comparators
 
 	/// Compares this X3DFieldDefinition with @a field. Both fields must be of the same type.
 	virtual
 	bool
-	operator == (const X3DFieldDefinition &) const = 0;
+	operator == (const X3DFieldDefinition & fieldDefinition) const = 0;
 
 	/// Compares this X3DFieldDefinition with @a field. Both fields must be of the same type.
 	virtual
 	bool
-	operator not_eq (const X3DFieldDefinition &) const = 0;
+	operator not_eq (const X3DFieldDefinition & fieldDefinition) const = 0;
 
 	///  @name Member access
 
@@ -121,7 +122,7 @@ public:
 	getType () const = 0;
 
 	void
-	setAccessType (const AccessType);
+	setAccessType (const AccessType accessType);
 
 	AccessType
 	getAccessType () const;
@@ -145,26 +146,28 @@ public:
 	isDefaultValue () const = 0;
 
 	void
-	setUnit (const UnitCategory);
+	setUnit (const UnitCategory value);
 
 	UnitCategory
 	getUnit () const;
 
 	void
-	isGeospatial (const bool);
+	isGeospatial (const bool value);
 
 	bool
 	isGeospatial () const;
 
 	/// Returns true if is set during parse otherwise false;
+	virtual
 	void
-	isSet (const bool);
+	isSet (const bool value) final override;
 
+	virtual
 	bool
-	isSet () const;
+	isSet () const final override;
 
 	void
-	isHidden (const bool);
+	isHidden (const bool value);
 
 	bool
 	isHidden () const;
@@ -173,13 +176,13 @@ public:
 
 	///  Returns true if this field is a reference for @a accesType, otherwise false.
 	bool
-	isReference (const AccessType) const;
+	isReference (const AccessType accessType) const;
 
 	void
-	addReference (X3DFieldDefinition* const);
+	addReference (X3DFieldDefinition* const fieldDefintion);
 
 	void
-	removeReference (X3DFieldDefinition* const);
+	removeReference (X3DFieldDefinition* const fieldDefintion);
 
 	void
 	updateReferences ();
@@ -217,14 +220,14 @@ public:
 	///  @name Interest handling
 
 	void
-	addInterest (X3DFieldDefinition* const) const;
+	addInterest (X3DFieldDefinition* const fieldDefintion) const;
 
 	void
 	addInterest (X3DFieldDefinition & fieldDefinition) const
 	{ addInterest (&fieldDefinition); }
 
 	void
-	removeInterest (X3DFieldDefinition* const) const;
+	removeInterest (X3DFieldDefinition* const fieldDefintion) const;
 
 	void
 	removeInterest (X3DFieldDefinition & fieldDefinition) const
@@ -238,7 +241,7 @@ public:
 
 	virtual
 	void
-	processEvent (const EventPtr &) override;
+	processEvent (const EventPtr & event) override;
 
 	///  @name Misc
 
@@ -270,7 +273,7 @@ protected:
 
 	virtual
 	bool
-	hasRootedObjects (ChildObjectSet &) override;
+	hasRootedObjects (ChildObjectSet & seen) override;
 
 
 private:
@@ -283,15 +286,15 @@ private:
 	///  @name Reference handling
 
 	void
-	updateIsReference (X3DFieldDefinition* const);
+	updateIsReference (X3DFieldDefinition* const fieldDefintion);
 
 	///  @name Interest handling
 
 	void
-	addInputInterest (const X3DFieldDefinition* const) const;
+	addInputInterest (const X3DFieldDefinition* const fieldDefintion) const;
 
 	void
-	removeInputInterest (const X3DFieldDefinition* const) const;
+	removeInputInterest (const X3DFieldDefinition* const fieldDefintion) const;
 
 
 	///  @name Static Members

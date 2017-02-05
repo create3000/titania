@@ -326,7 +326,6 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 		return;
 
 	isTainted (false);
-	isSet (true);
 
 	if (event -> object not_eq this)
 		set (*event -> object);
@@ -340,6 +339,8 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 
 	if (io)
 	{
+		//event -> object = this; // TODO: This must be done probably.
+
 		bool first = true;
 
 		for (const auto & fieldDefinition : outputInterests)
@@ -347,6 +348,7 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 			if (first)
 			{
 				first = false;
+
 				fieldDefinition -> addEvent (fieldDefinition, event);
 			}
 			else

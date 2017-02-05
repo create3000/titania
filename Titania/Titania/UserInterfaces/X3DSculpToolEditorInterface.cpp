@@ -79,13 +79,13 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("BrushExpander", m_BrushExpander);
 	m_builder -> get_widget ("BrushBox", m_BrushBox);
-	m_builder -> get_widget ("BrushHeightScale", m_BrushHeightScale);
 	m_builder -> get_widget ("BrushWarpScale", m_BrushWarpScale);
 	m_builder -> get_widget ("BrushSharpnessScale", m_BrushSharpnessScale);
 	m_builder -> get_widget ("BrushHardnessScale", m_BrushHardnessScale);
 	m_builder -> get_widget ("BrushTypeButton", m_BrushTypeButton);
-	m_builder -> get_widget ("BrushSpacingScale", m_BrushSpacingScale);
 	m_builder -> get_widget ("BrushRadiusButton", m_BrushRadiusButton);
+	m_builder -> get_widget ("BrushSpacingButton", m_BrushSpacingButton);
+	m_builder -> get_widget ("BrushHeightButton", m_BrushHeightButton);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
 	m_builder -> get_widget ("ChangePaletteBox", m_ChangePaletteBox);

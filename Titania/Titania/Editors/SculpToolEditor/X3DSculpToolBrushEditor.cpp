@@ -62,11 +62,11 @@ X3DSculpToolBrushEditor::X3DSculpToolBrushEditor () :
 	X3DSculpToolEditorInterface (),
 	                       type (this, getBrushTypeButton (), "type"),
 	                     radius (this, getBrushRadiusAdjustment (), getBrushRadiusButton (), "radius"),
-	                     height (this, getBrushHeightAdjustment (), getBrushHeightScale (), "height"),
+	                     height (this, getBrushHeightAdjustment (), getBrushHeightButton (), "height"),
 	                       warp (this, getBrushWarpAdjustment (), getBrushWarpScale (), "warp"),
 	                  sharpness (this, getBrushSharpnessAdjustment (), getBrushSharpnessScale (), "sharpness"),
 	                   hardness (this, getBrushHardnessAdjustment (), getBrushHardnessScale (), "hardness"),
-	                    spacing (this, getBrushSpacingAdjustment (), getBrushSpacingScale (), "spacing"),
+	                    spacing (this, getBrushSpacingAdjustment (), getBrushSpacingButton (), "spacing"),
 	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrushPreview.x3dv") })),
 	                      brush ()
 {

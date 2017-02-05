@@ -358,8 +358,6 @@ GeometryEditor::set_executionContext ()
 void
 GeometryEditor::set_viewer ()
 {
-__LOG__ << std::endl;
-
 	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
 		return;
 
