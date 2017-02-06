@@ -117,6 +117,7 @@ private:
 	X3DPtr <TouchSensor> touchSensor;
 	Vector3d             lastHitPoint;
 	double               pointerDistance;
+	UndoStepPtr          undoStep;
 
 };
 

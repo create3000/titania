@@ -107,7 +107,7 @@ X3DIndexedFaceSetOperationsObject::initialize ()
 void
 X3DIndexedFaceSetOperationsObject::set_cutSelectedFaces ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Selected Faces"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Cut Selected Faces"));
 
 	set_copySelectedFaces ();
 	deleteSelectedFaces (undoStep);
@@ -336,7 +336,7 @@ X3DIndexedFaceSetOperationsObject::set_pasteFaces ()
 {
 	try
 	{
-		const auto undoStep     = std::make_shared <X3D::UndoStep> (_ ("Paste Faces"));
+		const auto undoStep     = std::make_shared <UndoStep> (_ ("Paste Faces"));
 		const auto scene        = getBrowser () -> createX3DFromString (pasteFaces ());
 		auto       geometries   = Editor () .getNodes <IndexedFaceSet> (scene -> getRootNodes (), { X3DConstants::IndexedFaceSet });
 		const auto targetMatrix = inverse (Editor () .getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this)));
@@ -379,7 +379,7 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 	if (masterPoint < 0)
 	   return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Merge Points"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Merge Points"));
 
 	undoRestoreSelection (undoStep);
 	undoSetColorIndex    (undoStep);
@@ -462,7 +462,7 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 void
 X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Split Points"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Split Points"));
 
 	undoRestoreSelection (undoStep);
 	undoSetCoordIndex    (undoStep);
@@ -491,7 +491,7 @@ X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 void
 X3DIndexedFaceSetOperationsObject::set_formNewFace ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Form New Face From Selected Holes"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Form New Face From Selected Holes"));
 
 	undoRestoreSelection (undoStep);
 	if (colorIndex    () .size ()) undoSetColorIndex    (undoStep);
@@ -515,7 +515,7 @@ X3DIndexedFaceSetOperationsObject::set_formNewFace ()
 void
 X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Extrude Selected Edges"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Extrude Selected Edges"));
 	undoRestoreSelection (undoStep);
 	if (colorIndex    () .size ()) undoSetColorIndex    (undoStep);
 	if (texCoordIndex () .size ()) undoSetTexCoordIndex (undoStep);
@@ -562,7 +562,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 void
 X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Extrude Selected Faces"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Extrude Selected Faces"));
 
 	undoRestoreSelection (undoStep);
 	if (colorIndex    () .size ()) undoSetColorIndex    (undoStep);
@@ -634,7 +634,7 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 void
 X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Chip Of Selected Faces"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Chip Of Selected Faces"));
 
 	undoRestoreSelection (undoStep);
 	undoSetCoordIndex    (undoStep);
@@ -671,7 +671,7 @@ X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 void
 X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Flip Vertex Ordering"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Flip Vertex Ordering"));
 
 	undoRestoreSelection (undoStep);
 	undoSetColorIndex    (undoStep);
@@ -706,7 +706,7 @@ X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering ()
 void
 X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 {
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Selected Faces"));
+	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Selected Faces"));
 
 	deleteSelectedFaces (undoStep);
 

@@ -72,7 +72,8 @@ X3DIndexedFaceSetSculpToolObject::X3DIndexedFaceSetSculpToolObject () :
 	X3DIndexedFaceSetBrushObject (),
 	                 touchSensor (),
 	                lastHitPoint (),
-	             pointerDistance (0)
+	             pointerDistance (0),
+	                    undoStep ()
 {
 	//addType (X3DConstants::X3DIndexedFaceSetSculpToolObject);
 
@@ -108,11 +109,26 @@ X3DIndexedFaceSetSculpToolObject::set_loadState ()
 void
 X3DIndexedFaceSetSculpToolObject::set_touch_sensor_active ()
 {
-	if (touchSensor -> isActive ())
+	try
 	{
-		lastHitPoint    = touchSensor -> getHitPoint ();
-		pointerDistance = std::numeric_limits <double>::infinity ();
+		if (touchSensor -> isActive ())
+		{
+			lastHitPoint    = touchSensor -> getHitPoint ();
+			pointerDistance = std::numeric_limits <double>::infinity ();
+
+			undoStep = std::make_shared <UndoStep> (_ (brush () -> getField <SFDouble> ("height") >= 0.0 ? "Pull Polygons" : "Push Polygons"));
+	
+			undoSetCoordPoint (undoStep);
+		}
+		else
+		{
+			redoSetCoordPoint (undoStep);
+	
+			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+		}
 	}
+	catch (const X3DError & error)
+	{ }
 }
 
 void
@@ -162,7 +178,7 @@ X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const V
 {
 	try
 	{
-		const auto h = brush () -> getField <SFDouble> ("height") ;
+		const auto h = brush () -> getField <SFDouble> ("height");
 		const auto w = 1 + std::pow (brush () -> getField <SFDouble> ("warp") , 8) * 9999;
 		const auto s = 2 + brush () -> getField <SFDouble> ("sharpness")  * 98;
 		const auto e = std::pow (brush () -> getField <SFDouble> ("hardness") , 4) * 100;
