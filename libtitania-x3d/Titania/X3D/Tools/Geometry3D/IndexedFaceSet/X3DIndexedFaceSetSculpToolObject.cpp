@@ -201,13 +201,34 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 			}
 			else if (toolType () == "SCULP_SMOOTH")
 			{
+				// Calculate average point within radius.
+
+				size_t   averagePoints = 0;
+				Vector3d averagePoint;
+
 				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
 				{
 					const auto point    = getCoord () -> get1Point (i);
 					const auto distance = math::distance (hitPoint, point);
 
 					if (distance < radius)
-						getCoord () -> set1Point (i, point + getSmoothHeight (hitNormal, hitPoint, point));
+					{
+						++ averagePoints;
+						averagePoint += point;
+					}
+				}
+
+				averagePoint /= averagePoints;
+
+				// Apply smooth vector.
+
+				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+				{
+					const auto point    = getCoord () -> get1Point (i);
+					const auto distance = math::distance (hitPoint, point);
+
+					if (distance < radius)
+						getCoord () -> set1Point (i, point + getSmoothHeight (hitNormal, averagePoint, point));
 				}
 			}
 			else if (toolType () == "SCULP_UNDO")
