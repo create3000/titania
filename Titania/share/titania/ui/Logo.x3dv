@@ -30,8 +30,9 @@ EXTERNPROTO SculpToolBrush [
   inputOutput SFDouble spacing
 ]
 [
-  "Editors/SculpToolBrush.x3dv#SculpToolBrush",
-  "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush"
+  "../../../../libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv#SculpToolBrush",
+  "../tools/SculpToolBrush.x3dv#SculpToolBrush",
+  "file:///usr/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush"
 ]
 
 PROTO EnterWorld [

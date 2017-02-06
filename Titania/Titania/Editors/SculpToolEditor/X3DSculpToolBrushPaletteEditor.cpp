@@ -128,15 +128,26 @@ void
 X3DSculpToolBrushPaletteEditor::set_bbox (X3D::Inline* const inlineNode,
                                           X3D::Transform* const transform)
 {
-	// Center and scale Inline depending on bbox in palette.
+	try
+	{
+		// Center and scale Inline depending on bbox in palette.
 
-	const auto bbox   = inlineNode -> getBBox ();
-	const auto size   = bbox .size ();
-	const auto center = bbox .center ();
-	const auto scale  = X3D::Vector3d (1.8, 1.8, 1.8) / std::max ({ size .x (), size .y (), size .z () });
+		const auto bbox     = inlineNode -> getBBox ();
+		const auto brush    = inlineNode -> getInternalScene () -> getNamedNode ("SculpToolBrush");
+		const auto diameter = brush -> getField <X3D::SFDouble> ("radius") .getValue () * 2;
+		const auto pressure = brush -> getField <X3D::SFDouble> ("pressure") .getValue ();
+		const auto display  = X3D::Vector3d (diameter, pressure, diameter);
+		const auto size     = bbox .size () / display;
+		const auto center   = bbox .center ();
+		const auto scale    = X3D::Vector3d (1.8, 1.8, 1.8) / display / maximum_norm (size);
 
-	transform -> translation () = -center * scale;
-	transform -> scale ()       = scale;
+		transform -> translation () = -center * scale;
+		transform -> scale ()       = scale;
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -169,6 +180,7 @@ X3DSculpToolBrushPaletteEditor::set_model (X3D::X3DScenePtr && scene)
 		brush -> setField <X3D::SFDouble> ("sharpness", model -> getField <X3D::SFDouble> ("sharpness"));
 		brush -> setField <X3D::SFDouble> ("hardness",  model -> getField <X3D::SFDouble> ("hardness"));
 		brush -> setField <X3D::SFDouble> ("pressure",  model -> getField <X3D::SFDouble> ("pressure"));
+		brush -> setField <X3D::SFDouble> ("spacing",   model -> getField <X3D::SFDouble> ("spacing"));
 	}
 	catch (const X3D::X3DError & error)
 	{

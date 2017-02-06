@@ -10247,10 +10247,13 @@ PROTO SculpToolBrush [
 
   DEF NormalDistributionScript Script {
     inputOutput    SFString type IS type
+    inputOutput    SFDouble radius IS radius
     inputOutput    SFDouble height IS height
     inputOutput    SFDouble warp IS warp
     inputOutput    SFDouble sharpness IS sharpness
     inputOutput    SFDouble hardness IS hardness
+    inputOutput    SFDouble pressure IS pressure
+    initializeOnly SFNode   transform USE ElevationGrid
     initializeOnly SFNode   geometry USE _1
 
     url "ecmascript:
@@ -10269,7 +10272,11 @@ function eventsProcessed ()
 		e          = Math .pow (hardness, 4) * 100,
 		xDimension = geometry .xDimension,
 		zDimension = geometry .zDimension;
-		
+
+	transform .scale .x = radius * 2;
+	transform .scale .y = pressure;
+	transform .scale .z = radius * 2;
+
 	switch (type)
 	{
 		case \"SQUARED\":
