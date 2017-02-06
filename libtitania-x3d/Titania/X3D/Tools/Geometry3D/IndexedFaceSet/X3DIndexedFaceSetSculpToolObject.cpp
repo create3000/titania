@@ -188,16 +188,25 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 			const auto radius      = brush () -> getField <SFDouble> ("radius") .getValue () * scale;
 			const auto height      = brush () -> getField <SFDouble> ("height") .getValue ();
 
+			// Determin affected points.
+
+			std::vector <std::pair <size_t, Vector3d>> points;
+
+			for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+			{
+				const auto point    = getCoord () -> get1Point (i);
+				const auto distance = math::distance (hitPoint, point);
+		
+				if (distance < radius)
+					points .emplace_back (i, point);
+			}
+
+			// Select tool.
+
 			if (toolType () == "SCULP")
 			{
-				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
-				{
-					const auto point    = getCoord () -> get1Point (i);
-					const auto distance = math::distance (hitPoint, point);
-			
-					if (distance < radius)
-						getCoord () -> set1Point (i, point + (getHeight (hitNormal, hitPoint, point) * height));
-				}
+				for (const auto & pair : points)
+					getCoord () -> set1Point (pair .first, pair .second + (getHeight (hitNormal, hitPoint, pair .second) * height));
 			}
 			else if (toolType () == "SCULP_SMOOTH")
 			{
@@ -206,41 +215,23 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 				size_t   averagePoints = 0;
 				Vector3d averagePoint;
 
-				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+				for (const auto & pair : points)
 				{
-					const auto point    = getCoord () -> get1Point (i);
-					const auto distance = math::distance (hitPoint, point);
-
-					if (distance < radius)
-					{
-						++ averagePoints;
-						averagePoint += point;
-					}
+					++ averagePoints;
+					averagePoint += pair .second;
 				}
 
 				averagePoint /= averagePoints;
 
 				// Apply smooth vector.
 
-				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
-				{
-					const auto point    = getCoord () -> get1Point (i);
-					const auto distance = math::distance (hitPoint, point);
-
-					if (distance < radius)
-						getCoord () -> set1Point (i, point + getSmoothHeight (hitNormal, averagePoint, point));
-				}
+				for (const auto & pair : points)
+					getCoord () -> set1Point (pair .first, pair .second + getSmoothHeight (hitNormal, averagePoint, pair .second));
 			}
 			else if (toolType () == "SCULP_UNDO")
 			{
-				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
-				{
-					const auto point    = getCoord () -> get1Point (i);
-					const auto distance = math::distance (hitPoint, point);
-
-					if (distance < radius)
-						getCoord () -> set1Point (i, point + getUndoHeight (hitNormal, hitPoint, point, undoPoints .at (i)));
-				}
+				for (const auto & pair : points)
+					getCoord () -> set1Point (pair .first, pair .second + getUndoHeight (hitNormal, hitPoint, pair .second, undoPoints .at (pair .first)));
 			}
 
 			pointerDistance = 0;
