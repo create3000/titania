@@ -85,7 +85,7 @@ X3DIndexedFaceSetTool::initialize ()
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetTool::set_loadState, this);
 	toolType () .addInterest (&X3DIndexedFaceSetTool::set_toolType, this);
 
-	set_toolType ();
+	set_loadState ();
 }
 
 void

@@ -95,7 +95,14 @@ private:
 	///  @name Event handlers
 
 	void
+	set_loadState ();
+
+	void
 	set_touch_sensor_hitPoint ();
+
+	///  @name Members
+
+	X3DPtr <TouchSensor> touchSensor;
 
 };
 

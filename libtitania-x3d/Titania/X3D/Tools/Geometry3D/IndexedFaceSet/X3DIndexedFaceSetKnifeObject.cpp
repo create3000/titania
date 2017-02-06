@@ -115,6 +115,8 @@ X3DIndexedFaceSetKnifeObject::initialize ()
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetKnifeObject::set_loadState, this);
 
 	toolType () .addInterest (&X3DIndexedFaceSetKnifeObject::set_toolType, this);
+
+	set_loadState ();
 }
 
 void

@@ -54,6 +54,7 @@
 
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Grouping/Group.h>
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 
 namespace titania {
 namespace puck {
@@ -96,11 +97,17 @@ X3DSculpToolBrushEditor::set_initalized ()
 	{
 		preview -> set_opacity (1);
 
+		// Event handlers
+
+		getMasterBrowser () -> getExecutionContext () -> bbox_changed () .addInterest (&X3DSculpToolBrushEditor::set_bbox, this);
+
+		set_bbox ();
+
 		// Create or get brush
 
 		try
 		{
-	      brush = getMasterBrowser () -> getExecutionContext () -> getNamedNode ("SculpToolBrush");
+			brush = getMasterBrowser () -> getExecutionContext () -> getNamedNode ("SculpToolBrush");
 		}
 		catch (const X3D::X3DError &)
 		{
@@ -138,6 +145,13 @@ X3DSculpToolBrushEditor::set_initalized ()
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+void
+X3DSculpToolBrushEditor::set_bbox ()
+{
+	if (preview -> getActiveLayer ())
+		preview -> getActiveLayer () -> lookAt ();
 }
 
 void

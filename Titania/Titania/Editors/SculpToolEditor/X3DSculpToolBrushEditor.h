@@ -101,6 +101,11 @@ private:
 	void
 	set_initalized ();
 
+	///  @name Event handlers
+
+	void
+	set_bbox ();
+
 	///  @name Members
 
 	SFStringComboBoxText               type;

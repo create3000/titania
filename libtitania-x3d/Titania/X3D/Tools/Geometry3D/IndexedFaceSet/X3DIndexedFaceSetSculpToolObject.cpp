@@ -50,24 +50,55 @@
 
 #include "X3DIndexedFaceSetSculpToolObject.h"
 
+#include "../../Rendering/CoordinateTool.h"
+
+#include "../../../Components/PointingDeviceSensor/TouchSensor.h"
+
 namespace titania {
 namespace X3D {
 
 X3DIndexedFaceSetSculpToolObject::X3DIndexedFaceSetSculpToolObject () :
 	              IndexedFaceSet (getExecutionContext ()),
-	X3DIndexedFaceSetBrushObject ()
+	X3DIndexedFaceSetBrushObject (),
+	                 touchSensor ()
 {
 	//addType (X3DConstants::X3DIndexedFaceSetSculpToolObject);
+
+	addChildObjects (touchSensor);
 }
 
 void
 X3DIndexedFaceSetSculpToolObject::initialize ()
-{ }
+{
+	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetSculpToolObject::set_loadState, this);
+
+	set_loadState ();
+}
+
+void
+X3DIndexedFaceSetSculpToolObject::set_loadState ()
+{
+	try
+	{
+		const auto & inlineNode = getCoordinateTool () -> getInlineNode ();
+
+		touchSensor = inlineNode -> getExportedNode <TouchSensor> ("SculpBrushTouchSensor");
+
+		touchSensor -> hitPoint_changed () .addInterest (&X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint, this);
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
 
 void
 X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 {
-	//__LOG__ << touchSensor -> getHitPoint () << std::endl;
+	if (not touchSensor -> isActive ())
+		return;
+
+	__LOG__ << touchSensor -> getHitPoint () << std::endl;
 }
 
 X3DIndexedFaceSetSculpToolObject::~X3DIndexedFaceSetSculpToolObject ()

@@ -7,7 +7,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Sun, 05 Feb 2017 06:01:57 GMT"
+META "modified" "Sun, 05 Feb 2017 14:23:03 GMT"
 META "outputStyle" "nicest"
 
 WorldInfo {
@@ -65,50 +65,12 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
-            value DEF BrushCircle Transform {
-              children [
-                DepthBuffer {
-                  enabled FALSE
-                  depthOffset 1000
-                  children Shape {
-                    appearance Appearance {
-                      lineProperties LineProperties {
-                        linewidthScaleFactor 3
-                      }
-                      material Material {
-                        diffuseColor 0 0 0
-                      }
-                    }
-                    geometry DEF _1 Circle2D { }
-                  }
-                }
-                DepthBuffer {
-                  enabled FALSE
-                  depthOffset 2000
-                  children Shape {
-                    appearance Appearance {
-                      material Material {
-                        diffuseColor 0 0 0
-                        emissiveColor 1 1 1
-                      }
-                    }
-                    geometry USE _1
-                  }
-                }
-              ]
-            }
+            value DEF BrushTouchSensor TouchSensor { }
           }
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF Brush Transform {
-              children DEF BrushSwitch Switch {
-                children [
-                  Group { }
-                  USE BrushCircle
-                ]
-              }
-            }
+            value DEF SculpBrushTouchSensor TouchSensor { }
           }
         ]
       }
@@ -138,7 +100,7 @@ WorldInfo {
 Collision {
   enabled FALSE
   children [
-    DEF _2 ProximitySensor {
+    DEF _1 ProximitySensor {
       size -1 -1 -1
     }
     DEF SelectionSwitch Switch {
@@ -179,7 +141,8 @@ Collision {
         DEF BrushSelectionGroup Group {
           children [
             USE SelectionShape
-            DEF BrushTouchSensor TouchSensor { }
+            USE BrushTouchSensor
+            USE SculpBrushTouchSensor
           ]
         }
       ]
@@ -212,7 +175,7 @@ Collision {
         }
         DEF SelectedEdges Shape {
           appearance Appearance {
-            lineProperties DEF _3 LineProperties {
+            lineProperties DEF _2 LineProperties {
               linewidthScaleFactor 2
             }
             material DEF SelectedMaterial Material {
@@ -224,7 +187,7 @@ Collision {
         }
         DEF SelectedPoints Shape {
           appearance Appearance {
-            lineProperties DEF _4 LineProperties {
+            lineProperties DEF _3 LineProperties {
               linewidthScaleFactor 8
             }
             material USE SelectedMaterial
@@ -270,7 +233,7 @@ Collision {
               children [
                 DEF ActiveEdges Shape {
                   appearance Appearance {
-                    lineProperties USE _3
+                    lineProperties USE _2
                     material DEF ActiveMaterial Material {
                       diffuseColor 0 0 0
                       emissiveColor 0.5 0.0792565 0
@@ -299,7 +262,7 @@ Collision {
               children [
                 DEF ActivePoints Shape {
                   appearance Appearance {
-                    lineProperties USE _4
+                    lineProperties USE _3
                     material USE ActiveMaterial
                   }
                   geometry PointSet {
@@ -308,7 +271,7 @@ Collision {
                 }
                 DEF HotPoints Shape {
                   appearance Appearance {
-                    lineProperties USE _4
+                    lineProperties USE _3
                     material USE HotMaterial_1
                   }
                   geometry PointSet {
@@ -348,7 +311,7 @@ Collision {
                 DEF KnifeStartPoint Transform {
                   rotation -0.779918307187823 0.610519875063569 0.137814789720281 0.563467253419261
                   scaleOrientation 0.412108811709141 -0.0127672818505738 0.911045182099015 3.81250701786387
-                  children DEF _5 ScreenGroup {
+                  children DEF _4 ScreenGroup {
                     children [
                       DepthBuffer {
                         enabled FALSE
@@ -363,7 +326,7 @@ Collision {
                               diffuseColor 0 0 0
                             }
                           }
-                          geometry DEF _6 Circle2D {
+                          geometry DEF _5 Circle2D {
                             radius 3
                           }
                         }
@@ -378,7 +341,7 @@ Collision {
                               emissiveColor 1 1 1
                             }
                           }
-                          geometry USE _6
+                          geometry USE _5
                         }
                       }
                     ]
@@ -393,22 +356,22 @@ Collision {
                   children [
                     DEF KnifeEndPoint Transform {
                       rotation -0.779918307187823 0.610519875063569 0.137814789720281 0.563467253419261
-                      children USE _5
+                      children USE _4
                     }
                     DepthBuffer {
                       enabled FALSE
                       depthOffset 1000
                       children Shape {
                         appearance Appearance {
-                          lineProperties DEF _7 LineProperties {
+                          lineProperties DEF _6 LineProperties {
                             linetype 2
                             linewidthScaleFactor 3
                           }
-                          material DEF _8 Material {
+                          material DEF _7 Material {
                             diffuseColor 0 0 0
                           }
                         }
-                        geometry DEF _9 LineSet {
+                        geometry DEF _8 LineSet {
                           vertexCount 2
                           coord DEF KnifeLineCoordinate CoordinateDouble {
                             point [
@@ -424,7 +387,7 @@ Collision {
                       depthOffset 2000
                       children Shape {
                         appearance Appearance {
-                          lineProperties DEF _10 LineProperties {
+                          lineProperties DEF _9 LineProperties {
                             linetype 2
                             linewidthScaleFactor 1
                           }
@@ -433,7 +396,7 @@ Collision {
                             emissiveColor 1 1 1
                           }
                         }
-                        geometry USE _9
+                        geometry USE _8
                       }
                     }
                   ]
@@ -455,7 +418,7 @@ Collision {
                             lineProperties LineProperties {
                               linewidthScaleFactor 3
                             }
-                            material USE _8
+                            material USE _7
                           }
                           geometry DEF KnifeArcGeometry Arc2D {
                             radius 10
@@ -482,7 +445,45 @@ Collision {
             }
           ]
         }
-        USE Brush
+        DEF Brush Transform {
+          children DEF BrushSwitch Switch {
+            children [
+              Group { }
+              DEF BrushCircle Transform {
+                children [
+                  DepthBuffer {
+                    enabled FALSE
+                    depthOffset 1000
+                    children Shape {
+                      appearance Appearance {
+                        lineProperties LineProperties {
+                          linewidthScaleFactor 3
+                        }
+                        material Material {
+                          diffuseColor 0 0 0
+                        }
+                      }
+                      geometry DEF _10 Circle2D { }
+                    }
+                  }
+                  DepthBuffer {
+                    enabled FALSE
+                    depthOffset 2000
+                    children Shape {
+                      appearance Appearance {
+                        material Material {
+                          diffuseColor 0 0 0
+                          emissiveColor 1 1 1
+                        }
+                      }
+                      geometry USE _10
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
       ]
     }
   ]
@@ -499,11 +500,11 @@ ROUTE ActvieFaceMaterial.emissiveColor_changed TO ActiveMaterial.set_emissiveCol
 ROUTE HotMaterial_1.emissiveColor_changed TO HotMaterial.set_emissiveColor
 ROUTE HotMaterial.emissiveColor_changed TO HotMaterial_1.set_emissiveColor
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedEdgesGeometry.set_coord
-ROUTE _7.linetype_changed TO _10.set_linetype
-ROUTE _10.linetype_changed TO _7.set_linetype
-ROUTE _2.orientation_changed TO KnifeStartPoint.set_rotation
-ROUTE _2.orientation_changed TO KnifeEndPoint.set_rotation
-ROUTE _2.orientation_changed TO KnifeArc.set_rotation
+ROUTE _6.linetype_changed TO _9.set_linetype
+ROUTE _9.linetype_changed TO _6.set_linetype
+ROUTE _1.orientation_changed TO KnifeStartPoint.set_rotation
+ROUTE _1.orientation_changed TO KnifeEndPoint.set_rotation
+ROUTE _1.orientation_changed TO KnifeArc.set_rotation
 ROUTE ToolSwitch.whichChoice_changed TO SelectionSwitch.set_whichChoice
 
 EXPORT ActiveEdgesGeometry
@@ -531,6 +532,7 @@ EXPORT KnifeStartPointSwitch
 EXPORT KnifeTouchSensor
 EXPORT PlaneSensor
 EXPORT PlaneSensorNormal
+EXPORT SculpBrushTouchSensor
 EXPORT SelectedEdgesGeometry
 EXPORT SelectedFacesGeometry
 EXPORT SelectionCoord

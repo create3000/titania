@@ -106,6 +106,9 @@ X3DIndexedFaceSetBrushObject::set_loadState ()
 		brushSwitch    = inlineNode -> getExportedNode <Switch> ("BrushSwitch");
 		brushTransform = inlineNode -> getExportedNode <Transform> ("Brush");
 
+		touchSensor -> isOver ()           .addInterest (&X3DIndexedFaceSetBrushObject::set_touch_sensor_over, this);
+		touchSensor -> hitPoint_changed () .addInterest (&X3DIndexedFaceSetBrushObject::set_touch_sensor_hitPoint, this);
+
 		set_toolType ();
 		set_brush_radius ();
 	}
@@ -123,17 +126,7 @@ X3DIndexedFaceSetBrushObject::set_toolType ()
 		static const std::set <std::string> brushes = { "SCULP" };
 
 		if (brushes .count (toolType ()))
-		{
 			toolSwitch -> whichChoice () = getToolNumber ();
-
-			touchSensor -> isOver ()           .addInterest (&X3DIndexedFaceSetBrushObject::set_touch_sensor_over, this);
-			touchSensor -> hitPoint_changed () .addInterest (&X3DIndexedFaceSetBrushObject::set_touch_sensor_hitPoint, this);
-		}
-		else
-		{
-			touchSensor -> isOver ()           .removeInterest (&X3DIndexedFaceSetBrushObject::set_touch_sensor_over, this);
-			touchSensor -> hitPoint_changed () .removeInterest (&X3DIndexedFaceSetBrushObject::set_touch_sensor_hitPoint, this);
-		}	
 	}
 	catch (const X3DError & error)
 	{
