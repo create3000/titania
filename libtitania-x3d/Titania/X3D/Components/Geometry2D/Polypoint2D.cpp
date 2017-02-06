@@ -92,18 +92,12 @@ void
 Polypoint2D::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
-
-	setShader (getBrowser () -> getPointShader ());
 }
 
-void
-Polypoint2D::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+const X3DPtr <ComposedShader> &
+Polypoint2D::getShaderNode (X3DBrowser* const browser)
 {
-	X3DLineGeometryNode::setExecutionContext (executionContext);
-
-	setShader (getBrowser () -> getPointShader ());
+	return browser -> getWireframeShader ();
 }
 
 void

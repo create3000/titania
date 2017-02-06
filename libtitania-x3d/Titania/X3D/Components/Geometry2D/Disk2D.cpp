@@ -101,8 +101,6 @@ Disk2D::initialize ()
 	X3DGeometryNode::initialize ();
 
 	getBrowser () -> getDisk2DOptions () .addInterest (&Disk2D::update, this);
-
-	setShader (getBrowser () -> getWireframeShader ());
 }
 
 void
@@ -117,8 +115,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 		getBrowser () -> getDisk2DOptions () .addInterest (&Disk2D::update, this);
+}
 
-	setShader (getBrowser () -> getWireframeShader ());
+const X3DPtr <ComposedShader> &
+Disk2D::getShaderNode (X3DBrowser* const browser)
+{
+	return browser -> getWireframeShader ();
 }
 
 Box3d

@@ -69,12 +69,6 @@ public:
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
 
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
-
 	///  @name Common members
 
 	virtual
@@ -179,6 +173,10 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	virtual
+	const X3DPtr <ComposedShader> &
+	getShaderNode (X3DBrowser* const browser) final override;
 
 	///  @name Event handler
 

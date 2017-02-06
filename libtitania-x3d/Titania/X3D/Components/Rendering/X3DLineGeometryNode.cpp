@@ -61,18 +61,9 @@ namespace titania {
 namespace X3D {
 
 X3DLineGeometryNode::X3DLineGeometryNode () :
-	X3DGeometryNode (),
-	     shaderNode ()
+	X3DGeometryNode ()
 {
 	//addType (X3DConstants::X3DLineGeometryNode);
-
-	addChildObjects (shaderNode);
-}
-
-void
-X3DLineGeometryNode::setShader (const X3DPtr <ComposedShader> & value)
-{
-	shaderNode .set (value);
 }
 
 bool
@@ -126,7 +117,7 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 		#endif
 	
 		if (shaderNode == browser -> getDefaultShader ())
-			shaderNode = this -> shaderNode;
+			shaderNode = getShaderNode (browser);
 	
 		// Setup shader.
 	
@@ -163,8 +154,10 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 	
 		glBindBuffer (GL_ARRAY_BUFFER, 0);
 	}
-	catch (const std::exception &)
-	{ }
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 X3DLineGeometryNode::~X3DLineGeometryNode ()

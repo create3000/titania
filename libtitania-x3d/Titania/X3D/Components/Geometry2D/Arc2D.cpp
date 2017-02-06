@@ -100,8 +100,6 @@ Arc2D::initialize ()
 	X3DLineGeometryNode::initialize ();
 
 	getBrowser () -> getArc2DOptions () .addInterest (&Arc2D::update, this);
-
-	setShader (getBrowser () -> getWireframeShader ());
 }
 
 void
@@ -116,8 +114,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	if (isInitialized ())
 		getBrowser () -> getArc2DOptions () .addInterest (&Arc2D::update, this);
+}
 
-	setShader (getBrowser () -> getWireframeShader ());
+const X3DPtr <ComposedShader> &
+Arc2D::getShaderNode (X3DBrowser* const browser)
+{
+	return browser -> getWireframeShader ();
 }
 
 double

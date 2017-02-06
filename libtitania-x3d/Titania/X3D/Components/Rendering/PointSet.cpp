@@ -107,8 +107,6 @@ PointSet::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	setShader (getBrowser () -> getPointShader ());
-
 	attrib () .addInterest (&PointSet::set_attrib, this);
 	color ()  .addInterest (&PointSet::set_color, this);
 	coord ()  .addInterest (&PointSet::set_coord, this);
@@ -118,14 +116,10 @@ PointSet::initialize ()
 	set_coord ();
 }
 
-void
-PointSet::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+const X3DPtr <ComposedShader> &
+PointSet::getShaderNode (X3DBrowser* const browser)
 {
-	X3DLineGeometryNode::setExecutionContext (executionContext);
-
-	setShader (getBrowser () -> getPointShader ());
+	return browser -> getPointShader ();
 }
 
 bool

@@ -2,30 +2,15 @@
 
 PROFILE Full
 
-META "comment" "World of Titania"
-META "created" "Mon, 25 Jul 2016 18:09:12 GMT"
-META "creator" "holger"
-META "generator" "Titania V2.0.1, http://titania.create3000.de"
-META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/SculpToolBrushPreview.x3dv"
-META "modified" "Mon, 06 Feb 2017 18:04:52 GMT"
-META "outputStyle" "Nicest"
+COMPONENT Titania : 1
 
-EXTERNPROTO SculpToolBrush [
-  inputOutput SFString type
-  inputOutput SFDouble radius
-  inputOutput SFDouble height
-  inputOutput SFDouble warp
-  inputOutput SFDouble sharpness
-  inputOutput SFDouble hardness
-  inputOutput SFDouble pressure
-  inputOutput SFDouble scale
-  inputOutput SFDouble spacing
-]
-[
-  "../../../../../libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv#SculpToolBrush",
-  "../../tools/SculpToolBrush.x3dv#SculpToolBrush",
-  "file:///usr/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush"
-]
+META "comment" "World of Titania"
+META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V2.0.1, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/Grid.x3dv"
+META "modified" "Mon, 06 Feb 2017 18:19:01 GMT"
+META "outputStyle" "Nicest"
 
 PROTO Grid [
   inputOutput    SFVec3f    translation 0 0 0
@@ -391,70 +376,17 @@ WorldInfo {
     name "Titania"
     reference "http://titania.create3000.de"
     value [
-      DEF AngleGrid MetadataSet {
-        name "AngleGrid"
-        reference "http://titania.create3000.de"
-        value DEF enabled MetadataBoolean {
-          name "enabled"
-          reference "http://titania.create3000.de"
-          value FALSE
-        }
-      }
-      DEF Grid MetadataSet {
-        name "Grid"
+      DEF Selection MetadataSet {
+        name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF enabled_1 MetadataBoolean {
-            name "enabled"
+          DEF previous MetadataSet {
+            name "previous"
             reference "http://titania.create3000.de"
-            value FALSE
           }
-          DEF scale MetadataFloat {
-            name "scale"
+          DEF children MetadataSet {
+            name "children"
             reference "http://titania.create3000.de"
-            value [
-              0.1,
-              0.1,
-              0.1
-            ]
-          }
-          DEF dimension MetadataInteger {
-            name "dimension"
-            reference "http://titania.create3000.de"
-            value [
-              20,
-              10,
-              20
-            ]
-          }
-          DEF translation MetadataFloat {
-            name "translation"
-            reference "http://titania.create3000.de"
-            value [
-              0,
-              -0.01,
-              0
-            ]
-          }
-          DEF lineColor MetadataFloat {
-            name "lineColor"
-            reference "http://titania.create3000.de"
-            value [
-              0.367233,
-              0.905856,
-              1,
-              0.2
-            ]
-          }
-          DEF majorLineColor MetadataFloat {
-            name "majorLineColor"
-            reference "http://titania.create3000.de"
-            value [
-              0.541029,
-              0.698087,
-              1,
-              0.4
-            ]
           }
         ]
       }
@@ -475,19 +407,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              -0.287693977355957,
-              0.448372930288315,
-              0.0837557911872864
+              0.195047289133072,
+              4.12723350524902,
+              9.10649490356445
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.315587153063739,
-              -0.918871289993241,
-              -0.236812797895892,
-              1.36961167604551
+              -0.998934301163994,
+              0.04484227921785,
+              -0.010928492693443,
+              0.425972342491148
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -495,72 +427,13 @@ WorldInfo {
             reference "http://titania.create3000.de"
             value [
               0,
-              0.282938511363109,
+              0,
               0
             ]
           }
         ]
       }
-      DEF Selection MetadataSet {
-        name "Selection"
-        reference "http://titania.create3000.de"
-        value [
-          DEF previous MetadataSet {
-            name "previous"
-            reference "http://titania.create3000.de"
-            value DEF BrushGroup Group {
-              children DEF Brush SculpToolBrush { }
-            }
-          }
-          DEF children MetadataSet {
-            name "children"
-            reference "http://titania.create3000.de"
-          }
-        ]
-      }
     ]
   }
+  title "Grid"
 }
-
-NavigationInfo {
-  type "NONE"
-}
-
-DEF Gray Background {
-  skyColor 0.2 0.2 0.2
-}
-
-Viewpoint {
-  position -1.44916 0.93331 0.421892
-  orientation -0.315587153063739 -0.918871289993241 -0.236812797895892 1.36961167604551
-  centerOfRotation 0 0.0999896 0
-}
-
-Switch {
-  children Grid {
-    translation 0 -0.01 0
-    scale 0.1 0.1 0.1
-    dimension [
-      20,
-      20,
-      20
-    ]
-    transparency 0.8
-    lineColor 0.367233 0.905856 1
-    majorLineColor 0.541029 0.698087 1
-  }
-}
-
-USE BrushGroup
-
-DEF PhongShadingScript Script {
-  url "ecmascript:
-
-function initialize ()
-{
-	Browser .setBrowserOption (\"Shading\", \"PHONG\");
-}
-"
-}
-
-EXPORT BrushGroup

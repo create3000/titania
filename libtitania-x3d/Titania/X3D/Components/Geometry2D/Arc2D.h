@@ -138,6 +138,10 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	const X3DPtr <ComposedShader> &
+	getShaderNode (X3DBrowser* const browser) final override;
+
 	///  @name Operations
 
 	double

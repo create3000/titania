@@ -105,19 +105,14 @@ protected:
 
 	///  @name Member access
 
-	void
-	setShader (const X3DPtr <ComposedShader> & value);
-
+	virtual
 	const X3DPtr <ComposedShader> &
-	getShader () const
-	{ return shaderNode; }
+	getShaderNode (X3DBrowser* const browser) = 0;
 
 
 private:
 
 	///  @name Members
-
-	X3DPtr <ComposedShader> shaderNode;
 
 };
 

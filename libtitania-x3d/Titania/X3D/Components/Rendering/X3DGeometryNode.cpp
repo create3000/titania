@@ -889,7 +889,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	{
 		const auto browser    = context -> getBrowser ();
 		const auto shaderNode = browser -> getShader ();
-	
+
 		context -> setGeometryType  (geometryType);
 		context -> setColorMaterial (not colors .empty ());
 	

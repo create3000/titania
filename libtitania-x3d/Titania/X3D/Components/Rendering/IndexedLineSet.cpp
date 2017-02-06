@@ -114,8 +114,6 @@ IndexedLineSet::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	setShader (getBrowser () -> getWireframeShader ());
-
 	attrib () .addInterest (&IndexedLineSet::set_attrib, this);
 	color ()  .addInterest (&IndexedLineSet::set_color, this);
 	coord ()  .addInterest (&IndexedLineSet::set_coord, this);
@@ -125,14 +123,10 @@ IndexedLineSet::initialize ()
 	set_coord ();
 }
 
-void
-IndexedLineSet::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
+const X3DPtr <ComposedShader> &
+IndexedLineSet::getShaderNode (X3DBrowser* const browser)
 {
-	X3DLineGeometryNode::setExecutionContext (executionContext);
-
-	setShader (getBrowser () -> getWireframeShader ());
+	return browser -> getWireframeShader ();
 }
 
 void
