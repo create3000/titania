@@ -6,8 +6,8 @@ META "comment" "World of Titania"
 META "created" "Fri, 03 Feb 2017 09:50:02 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
-META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/SculpToolBrush.x3dv"
-META "modified" "Mon, 06 Feb 2017 06:40:31 GMT"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv"
+META "modified" "Mon, 06 Feb 2017 13:32:36 GMT"
 META "outputStyle" "Nicest"
 
 PROTO SculpToolBrush [
@@ -18,6 +18,7 @@ PROTO SculpToolBrush [
   inputOutput SFDouble sharpness 0.4
   inputOutput SFDouble hardness 0.4
   inputOutput SFDouble pressure 0.1
+  inputOutput SFDouble scale 1
   inputOutput SFDouble spacing 0.1
 ]
 {
@@ -10253,6 +10254,7 @@ PROTO SculpToolBrush [
     inputOutput    SFDouble sharpness IS sharpness
     inputOutput    SFDouble hardness IS hardness
     inputOutput    SFDouble pressure IS pressure
+    inputOutput    SFDouble scale IS scale
     initializeOnly SFNode   transform USE ElevationGrid
     initializeOnly SFNode   geometry USE _1
 
@@ -10273,9 +10275,9 @@ function eventsProcessed ()
 		xDimension = geometry .xDimension,
 		zDimension = geometry .zDimension;
 
-	transform .scale .x = radius * 2;
-	transform .scale .y = pressure;
-	transform .scale .z = radius * 2;
+	transform .scale .x = scale * radius * 2;
+	transform .scale .y = scale * pressure;
+	transform .scale .z = scale * radius * 2;
 
 	switch (type)
 	{

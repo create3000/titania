@@ -65,6 +65,7 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_BrushHeightAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushHeightAdjustment"));
 	m_BrushPressureAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushPressureAdjustment"));
 	m_BrushRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushRadiusAdjustment"));
+	m_BrushScaleAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushScaleAdjustment"));
 	m_BrushSharpnessAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushSharpnessAdjustment"));
 	m_BrushSpacingAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushSpacingAdjustment"));
 	m_BrushWarpAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushWarpAdjustment"));
@@ -86,10 +87,11 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrushSharpnessScale", m_BrushSharpnessScale);
 	m_builder -> get_widget ("BrushHardnessScale", m_BrushHardnessScale);
 	m_builder -> get_widget ("BrushTypeButton", m_BrushTypeButton);
-	m_builder -> get_widget ("BrushRadiusButton", m_BrushRadiusButton);
 	m_builder -> get_widget ("BrushSpacingButton", m_BrushSpacingButton);
 	m_builder -> get_widget ("BrushHeightButton", m_BrushHeightButton);
 	m_builder -> get_widget ("BrushPressureScale", m_BrushPressureScale);
+	m_builder -> get_widget ("BrushRadiusButton", m_BrushRadiusButton);
+	m_builder -> get_widget ("BrushScaleScale", m_BrushScaleScale);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
 	m_builder -> get_widget ("ChangePaletteBox", m_ChangePaletteBox);

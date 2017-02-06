@@ -7,7 +7,7 @@ META "created" "Mon, 25 Jul 2016 18:09:12 GMT"
 META "creator" "holger"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/SculpToolBrushPreview.x3dv"
-META "modified" "Mon, 06 Feb 2017 06:40:56 GMT"
+META "modified" "Mon, 06 Feb 2017 13:33:51 GMT"
 META "outputStyle" "Nicest"
 
 EXTERNPROTO SculpToolBrush [
@@ -18,12 +18,13 @@ EXTERNPROTO SculpToolBrush [
   inputOutput SFDouble sharpness
   inputOutput SFDouble hardness
   inputOutput SFDouble pressure
+  inputOutput SFDouble scale
   inputOutput SFDouble spacing
 ]
 [
- "../../tools/SculpToolBrush.x3dv#SculpToolBrush",
-  "file:///usr/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush"
   "../../../../../libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv#SculpToolBrush",
+  "../../tools/SculpToolBrush.x3dv#SculpToolBrush",
+  "file:///usr/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush"
 ]
 
 PROTO Grid [
@@ -507,11 +508,14 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
+            value DEF Brush SculpToolBrush {
+              pressure 0
+            }
           }
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF Brush SculpToolBrush { }
+            value USE Brush
           }
         ]
       }

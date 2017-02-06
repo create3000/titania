@@ -184,8 +184,9 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 		if (pointerDistance > brush () -> getField <SFDouble> ("spacing"))
 		{
 			const auto & hitNormal = touchSensor -> getHitNormal ();
-			const auto & radius    = brush () -> getField <SFDouble> ("radius") .getValue ();
-			const auto & height    = brush () -> getField <SFDouble> ("height") .getValue ();
+			const auto scale       = brush () -> getField <SFDouble> ("scale") .getValue ();
+			const auto radius      = brush () -> getField <SFDouble> ("radius") .getValue () * scale;
+			const auto height      = brush () -> getField <SFDouble> ("height") .getValue ();
 
 			if (toolType () == "SCULP")
 			{
@@ -240,10 +241,12 @@ X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const V
 	const auto e = std::pow (brush () -> getField <SFDouble> ("hardness") , 4) * 100;
 
 	const auto p = (point - hitPoint) * Rotation4d (hitNormal, Vector3d (0, 0, 1));
-	const auto v = Vector2d (p .x (), p .y ()) / brush () -> getField <SFDouble> ("radius") .getValue ();
+	const auto r = brush () -> getField <SFDouble> ("radius") .getValue () * brush () -> getField <SFDouble> ("scale") .getValue ();
+	const auto v = Vector2d (p .x (), p .y ()) / r;
 
 	const auto & type     = brush () -> getField <SFString> ("type");
-	const auto & pressure = brush () -> getField <SFDouble> ("pressure");
+	const auto   scale    = brush () -> getField <SFDouble> ("scale") .getValue ();
+	const auto   pressure = brush () -> getField <SFDouble> ("pressure") .getValue () * scale;
 
 	if (type == "SQUARED")
 		return hitNormal * (getCircularHeight (v, w, s, e) * pressure);

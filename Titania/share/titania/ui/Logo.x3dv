@@ -7,7 +7,7 @@ META "created" "Tue, 13 Oct 2015 06:42:37 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Logo.x3dv"
-META "modified" "Mon, 06 Feb 2017 06:50:50 GMT"
+META "modified" "Mon, 06 Feb 2017 13:33:14 GMT"
 META "outputStyle" "nicest"
 META "title" "Logo"
 
@@ -27,6 +27,7 @@ EXTERNPROTO SculpToolBrush [
   inputOutput SFDouble sharpness
   inputOutput SFDouble hardness
   inputOutput SFDouble pressure
+  inputOutput SFDouble scale
   inputOutput SFDouble spacing
 ]
 [
@@ -214,7 +215,7 @@ LayerSet {
               DEF _2 TimeSensor {
                 cycleInterval 4.2
                 loop TRUE
-                pauseTime 1486363832.3219
+                pauseTime 1486387988.71318
               }
               DEF LogoRotationInterpolator OrientationInterpolator {
                 metadata DEF Interpolator MetadataSet {
@@ -328,7 +329,7 @@ LayerSet {
                   -1.82056999998804e-09 3.62531999997618e-06 -0.999999999993428 1.1424,
                   -1.79930999998818e-09 3.62534999997618e-06 -0.999999999993428 1.2852,
                   -1.79757999998819e-09 3.62535999997618e-06 -0.999999999993428 1.428,
-                  -1.82056999998804e-09 3.62531999997618e-06 -0.999999999993428 1.5708,
+                  -1.82056999998804e-09 3.62531999997618e-06 -0.999999999993429 1.5708,
                   -1.85874999998779e-09 3.62524999997618e-06 -0.999999999993429 1.72788,
                   -1.95732999998714e-09 3.62506999997618e-06 -0.999999999993429 1.88496,
                   -1.93511999998728e-09 3.62511999997618e-06 -0.999999999993429 2.04204,
