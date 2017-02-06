@@ -108,6 +108,10 @@ public:
 	{ return m_BrushHeightAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getBrushPressureAdjustment () const
+	{ return m_BrushPressureAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getBrushRadiusAdjustment () const
 	{ return m_BrushRadiusAdjustment; }
 
@@ -155,6 +159,10 @@ public:
 	getSmoothPolygonsButton () const
 	{ return *m_SmoothPolygonsButton; }
 
+	Gtk::RadioToolButton &
+	getUndoBrushButton () const
+	{ return *m_UndoBrushButton; }
+
 	Gtk::Notebook &
 	getNotebook () const
 	{ return *m_Notebook; }
@@ -194,6 +202,10 @@ public:
 	Gtk::SpinButton &
 	getBrushHeightButton () const
 	{ return *m_BrushHeightButton; }
+
+	Gtk::Scale &
+	getBrushPressureScale () const
+	{ return *m_BrushPressureScale; }
 
 	Gtk::Box &
 	getPaletteBox () const
@@ -272,6 +284,10 @@ public:
 	virtual
 	void
 	on_smooth_polygons_toggled () = 0;
+
+	virtual
+	void
+	on_undo_brush_toggled () = 0;
 
 	virtual
 	bool
@@ -357,6 +373,7 @@ private:
 	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_BrushHardnessAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BrushHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_BrushPressureAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BrushRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BrushSharpnessAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BrushSpacingAdjustment;
@@ -369,6 +386,7 @@ private:
 	Gtk::RadioToolButton*          m_PullPolygonsButton;
 	Gtk::RadioToolButton*          m_PushPolygonsButton;
 	Gtk::RadioToolButton*          m_SmoothPolygonsButton;
+	Gtk::RadioToolButton*          m_UndoBrushButton;
 	Gtk::Notebook*                 m_Notebook;
 	Gtk::Expander*                 m_BrushExpander;
 	Gtk::Grid*                     m_BrushBox;
@@ -379,6 +397,7 @@ private:
 	Gtk::SpinButton*               m_BrushRadiusButton;
 	Gtk::SpinButton*               m_BrushSpacingButton;
 	Gtk::SpinButton*               m_BrushHeightButton;
+	Gtk::Scale*                    m_BrushPressureScale;
 	Gtk::Box*                      m_PaletteBox;
 	Gtk::Box*                      m_PalettePreviewBox;
 	Gtk::Box*                      m_ChangePaletteBox;

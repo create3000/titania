@@ -118,6 +118,10 @@ private:
 
 	virtual
 	void
+	on_undo_brush_toggled () final override;
+
+	virtual
+	void
 	store () final override;
 
 	///  @name Members

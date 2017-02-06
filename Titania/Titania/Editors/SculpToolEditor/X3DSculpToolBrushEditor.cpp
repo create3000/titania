@@ -67,6 +67,7 @@ X3DSculpToolBrushEditor::X3DSculpToolBrushEditor () :
 	                       warp (this, getBrushWarpAdjustment (), getBrushWarpScale (), "warp"),
 	                  sharpness (this, getBrushSharpnessAdjustment (), getBrushSharpnessScale (), "sharpness"),
 	                   hardness (this, getBrushHardnessAdjustment (), getBrushHardnessScale (), "hardness"),
+	                   pressure (this, getBrushPressureAdjustment (), getBrushPressureScale (), "pressure"),
 	                    spacing (this, getBrushSpacingAdjustment (), getBrushSpacingButton (), "spacing"),
 	                    preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/SculpToolBrushPreview.x3dv") })),
 	                      brush ()
@@ -141,6 +142,7 @@ X3DSculpToolBrushEditor::set_initalized ()
 		warp      .setNodes (nodes);
 		sharpness .setNodes (nodes);
 		hardness  .setNodes (nodes);
+		pressure  .setNodes (nodes);
 		spacing   .setNodes (nodes);
 	}
 	catch (const X3D::X3DError &)

@@ -98,6 +98,9 @@ private:
 	set_loadState ();
 
 	void
+	set_toolType ();
+
+	void
 	set_touch_sensor_active ();
 
 	void
@@ -109,6 +112,9 @@ private:
 	Vector3d
 	getSmoothHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point);
 
+	Vector3d
+	getUndoHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point, const Vector3d & undoPoint);
+
 	double
 	getCircularHeight (const Vector2d & v, const double w, const double s, const double e);
 	
@@ -117,10 +123,12 @@ private:
 
 	///  @name Members
 
-	X3DPtr <TouchSensor> touchSensor;
-	Vector3d             lastHitPoint;
-	double               pointerDistance;
-	UndoStepPtr          undoStep;
+	X3DPtr <TouchSensor>   touchSensor;
+	Vector3d               lastHitPoint;
+	double                 pointerDistance;
+	bool                   undo;
+	std::vector <Vector3d> undoPoints;
+	UndoStepPtr            undoStep;
 
 };
 

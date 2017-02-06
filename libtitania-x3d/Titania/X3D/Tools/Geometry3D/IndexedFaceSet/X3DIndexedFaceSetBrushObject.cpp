@@ -123,7 +123,7 @@ X3DIndexedFaceSetBrushObject::set_toolType ()
 {
 	try
 	{
-		static const std::set <std::string> brushes = { "SCULP", "SMOOTH" };
+		static const std::set <std::string> brushes = { "SCULP", "SCULP_SMOOTH", "SCULP_UNDO" };
 
 		if (brushes .count (toolType ()))
 			toolSwitch -> whichChoice () = getToolNumber ();

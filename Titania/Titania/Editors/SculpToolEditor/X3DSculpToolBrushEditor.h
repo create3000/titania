@@ -114,6 +114,7 @@ private:
 	X3DFieldAdjustment <X3D::SFDouble> warp;
 	X3DFieldAdjustment <X3D::SFDouble> sharpness;
 	X3DFieldAdjustment <X3D::SFDouble> hardness;
+	X3DFieldAdjustment <X3D::SFDouble> pressure;
 	X3DFieldAdjustment <X3D::SFDouble> spacing;
 
 	X3D::BrowserPtr preview;

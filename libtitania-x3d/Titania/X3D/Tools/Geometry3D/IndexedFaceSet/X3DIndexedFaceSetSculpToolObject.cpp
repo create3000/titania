@@ -73,6 +73,8 @@ X3DIndexedFaceSetSculpToolObject::X3DIndexedFaceSetSculpToolObject () :
 	                 touchSensor (),
 	                lastHitPoint (),
 	             pointerDistance (0),
+	                        undo (true),
+	                  undoPoints (),
 	                    undoStep ()
 {
 	//addType (X3DConstants::X3DIndexedFaceSetSculpToolObject);
@@ -85,7 +87,10 @@ X3DIndexedFaceSetSculpToolObject::initialize ()
 {
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetSculpToolObject::set_loadState, this);
 
+	toolType () .addInterest (&X3DIndexedFaceSetSculpToolObject::set_toolType, this);
+
 	set_loadState ();
+	set_toolType ();
 }
 
 void
@@ -99,6 +104,34 @@ X3DIndexedFaceSetSculpToolObject::set_loadState ()
 
 		touchSensor -> isActive ()         .addInterest (&X3DIndexedFaceSetSculpToolObject::set_touch_sensor_active,   this);
 		touchSensor -> hitPoint_changed () .addInterest (&X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint, this);
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+X3DIndexedFaceSetSculpToolObject::set_toolType ()
+{
+	try
+	{
+		static const std::set <std::string> brushes = { "SCULP", "SCULP_SMOOTH", "SCULP_UNDO" };
+
+		if (brushes .count (toolType ()))
+		{
+			if (undo)
+			{
+				undo = false;
+	
+				undoPoints .clear ();
+	
+				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+					undoPoints .emplace_back (getCoord () -> get1Point (i));
+			}
+		}
+		else
+			undo = true;
 	}
 	catch (const X3DError & error)
 	{
@@ -151,7 +184,7 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 			const auto & hitNormal = touchSensor -> getHitNormal ();
 			const auto & radius    = brush () -> getField <SFDouble> ("radius") .getValue ();
 			const auto & height    = brush () -> getField <SFDouble> ("height") .getValue ();
-		
+
 			if (toolType () == "SCULP")
 			{
 				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
@@ -163,7 +196,7 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 						getCoord () -> set1Point (i, point + (getHeight (hitNormal, hitPoint, point) * height));
 				}
 			}
-			else if (toolType () == "SMOOTH")
+			else if (toolType () == "SCULP_SMOOTH")
 			{
 				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
 				{
@@ -172,6 +205,17 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 
 					if (distance < radius)
 						getCoord () -> set1Point (i, point + getSmoothHeight (hitNormal, hitPoint, point));
+				}
+			}
+			else if (toolType () == "SCULP_UNDO")
+			{
+				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+				{
+					const auto point    = getCoord () -> get1Point (i);
+					const auto distance = math::distance (hitPoint, point);
+
+					if (distance < radius)
+						getCoord () -> set1Point (i, point + getUndoHeight (hitNormal, hitPoint, point, undoPoints [i]));
 				}
 			}
 
@@ -189,26 +233,20 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 Vector3d
 X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point)
 {
-	try
-	{
-		const auto w = 1 + std::pow (brush () -> getField <SFDouble> ("warp") , 8) * 9999;
-		const auto s = 2 + brush () -> getField <SFDouble> ("sharpness")  * 98;
-		const auto e = std::pow (brush () -> getField <SFDouble> ("hardness") , 4) * 100;
+	const auto w = 1 + std::pow (brush () -> getField <SFDouble> ("warp") , 8) * 9999;
+	const auto s = 2 + brush () -> getField <SFDouble> ("sharpness")  * 98;
+	const auto e = std::pow (brush () -> getField <SFDouble> ("hardness") , 4) * 100;
 
-		const auto p = (point - hitPoint) * Rotation4d (hitNormal, Vector3d (0, 0, 1));
-		const auto v = Vector2d (p .x (), p .y ());
+	const auto p = (point - hitPoint) * Rotation4d (hitNormal, Vector3d (0, 0, 1));
+	const auto v = Vector2d (p .x (), p .y ());
 
-		const auto & type = brush () -> getField <SFString> ("type");
+	const auto & type     = brush () -> getField <SFString> ("type");
+	const auto & pressure = brush () -> getField <SFDouble> ("pressure");
 
-		if (type == "SQUARED")
-			return hitNormal * getCircularHeight (v, w, s, e);
+	if (type == "SQUARED")
+		return hitNormal * (getCircularHeight (v, w, s, e) * pressure);
 
-		return hitNormal * getCircularHeight (v, w, s, e);
-	}
-	catch (const X3DError & error)
-	{
-		return Vector3d ();
-	}
+	return hitNormal * (getCircularHeight (v, w, s, e) * pressure);
 }
 
 Vector3d
@@ -220,6 +258,14 @@ X3DIndexedFaceSetSculpToolObject::getSmoothHeight (const Vector3d & hitNormal, c
 	const auto height   = abs (getHeight (hitNormal, hitPoint, point));
 
 	return -(distance * height) * hitNormal;
+}
+
+Vector3d
+X3DIndexedFaceSetSculpToolObject::getUndoHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point, const Vector3d & undoPoint)
+{
+	const auto height = abs (getHeight (hitNormal, hitPoint, point));
+
+	return (undoPoint - point) * height;
 }
 
 double

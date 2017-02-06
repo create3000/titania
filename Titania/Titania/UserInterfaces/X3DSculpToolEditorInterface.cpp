@@ -63,6 +63,7 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	// Get objects.
 	m_BrushHardnessAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushHardnessAdjustment"));
 	m_BrushHeightAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushHeightAdjustment"));
+	m_BrushPressureAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushPressureAdjustment"));
 	m_BrushRadiusAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushRadiusAdjustment"));
 	m_BrushSharpnessAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushSharpnessAdjustment"));
 	m_BrushSpacingAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushSpacingAdjustment"));
@@ -77,6 +78,7 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PullPolygonsButton", m_PullPolygonsButton);
 	m_builder -> get_widget ("PushPolygonsButton", m_PushPolygonsButton);
 	m_builder -> get_widget ("SmoothPolygonsButton", m_SmoothPolygonsButton);
+	m_builder -> get_widget ("UndoBrushButton", m_UndoBrushButton);
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("BrushExpander", m_BrushExpander);
 	m_builder -> get_widget ("BrushBox", m_BrushBox);
@@ -87,6 +89,7 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrushRadiusButton", m_BrushRadiusButton);
 	m_builder -> get_widget ("BrushSpacingButton", m_BrushSpacingButton);
 	m_builder -> get_widget ("BrushHeightButton", m_BrushHeightButton);
+	m_builder -> get_widget ("BrushPressureScale", m_BrushPressureScale);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
 	m_builder -> get_widget ("ChangePaletteBox", m_ChangePaletteBox);
@@ -108,6 +111,7 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_PullPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_pull_polygons_toggled));
 	m_PushPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_push_polygons_toggled));
 	m_SmoothPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_smooth_polygons_toggled));
+	m_UndoBrushButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_undo_brush_toggled));
 
 	// Connect object Gtk::Box with id 'PalettePreviewBox'.
 	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_button_press_event));

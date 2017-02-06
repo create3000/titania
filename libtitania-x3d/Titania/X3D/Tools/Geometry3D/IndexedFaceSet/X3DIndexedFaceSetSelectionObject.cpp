@@ -242,8 +242,6 @@ X3DIndexedFaceSetSelectionObject::set_toolType ()
 {
 	try
 	{
-__LOG__ << toolType () << std::endl;
-
 		if (toolType () == "SELECT")
 		{
 			toolSwitch -> whichChoice () = ToolNumber::SELECT;
