@@ -238,7 +238,7 @@ X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const V
 	const auto e = std::pow (brush () -> getField <SFDouble> ("hardness") , 4) * 100;
 
 	const auto p = (point - hitPoint) * Rotation4d (hitNormal, Vector3d (0, 0, 1));
-	const auto v = Vector2d (p .x (), p .y ());
+	const auto v = Vector2d (p .x (), p .y ()) / brush () -> getField <SFDouble> ("radius") .getValue ();
 
 	const auto & type     = brush () -> getField <SFString> ("type");
 	const auto & pressure = brush () -> getField <SFDouble> ("pressure");

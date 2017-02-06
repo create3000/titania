@@ -163,7 +163,7 @@
                       <object class="GtkRadioToolButton" id="UndoBrushButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Smooth polygons.</property>
+                        <property name="tooltip_text" translatable="yes">Undo brush.</property>
                         <property name="label" translatable="yes">Undo</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">gtk-undo</property>

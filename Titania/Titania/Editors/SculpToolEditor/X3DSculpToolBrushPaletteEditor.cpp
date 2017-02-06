@@ -160,7 +160,7 @@ X3DSculpToolBrushPaletteEditor::set_model (X3D::X3DScenePtr && scene)
 		if (not scene)
 			return;
 
-		const auto   model = scene -> getNamedNode ("Brush");
+		const auto   model = scene -> getNamedNode ("SculpToolBrush");
 		const auto & brush = getBrush ();
 
 		brush -> setField <X3D::SFString> ("type",      model -> getField <X3D::SFString> ("type"));
@@ -168,9 +168,12 @@ X3DSculpToolBrushPaletteEditor::set_model (X3D::X3DScenePtr && scene)
 		brush -> setField <X3D::SFDouble> ("warp",      model -> getField <X3D::SFDouble> ("warp"));
 		brush -> setField <X3D::SFDouble> ("sharpness", model -> getField <X3D::SFDouble> ("sharpness"));
 		brush -> setField <X3D::SFDouble> ("hardness",  model -> getField <X3D::SFDouble> ("hardness"));
+		brush -> setField <X3D::SFDouble> ("pressure",  model -> getField <X3D::SFDouble> ("pressure"));
 	}
-	catch (const X3D::X3DError &)
-	{ }
+	catch (const X3D::X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 bool

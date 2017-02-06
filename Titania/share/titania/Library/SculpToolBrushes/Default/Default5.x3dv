@@ -1,0 +1,35 @@
+#X3D V3.3 utf8 Titania V2.0.1
+
+META "comment" "World of Titania"
+META "created" "Mon, 06 Feb 2017 07:48:41 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V2.0.1, http://titania.create3000.de"
+META "identifier" "/home/holger/Projekte/Titania/Titania/share/titania/ui/Logo.x3dv"
+META "modified" "Mon, 06 Feb 2017 07:48:41 GMT"
+META "titania-identifier" "/usr/share/titania/ui/Logo.x3dv"
+
+EXTERNPROTO SculpToolBrush [
+  inputOutput SFString type
+  inputOutput SFDouble radius
+  inputOutput SFDouble height
+  inputOutput SFDouble warp
+  inputOutput SFDouble sharpness
+  inputOutput SFDouble hardness
+  inputOutput SFDouble pressure
+  inputOutput SFDouble spacing
+]
+[
+  "Editors/SculpToolBrush.x3dv#SculpToolBrush",
+  "file:///usr/share/titania/ui/Editors/SculpToolBrush.x3dv#SculpToolBrush"
+]
+
+DEF SculpToolBrush SculpToolBrush {
+  radius 0.256710000000004
+  height -0.396
+  warp 0.131
+  sharpness 0.394
+  hardness 0.39
+  pressure 0.086
+  spacing 0.449999999999999
+}
+

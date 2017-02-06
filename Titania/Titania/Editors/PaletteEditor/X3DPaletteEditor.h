@@ -497,14 +497,18 @@ X3DPaletteEditor <Type>::on_palette_button_press_event (GdkEventButton* event)
 
 	// Display menu.
 
+	#ifdef TITANIA_DEBUG
+	const bool customPalette = folders .size ();
+	#else
 	const size_t paletteIndex  = this -> getPaletteComboBoxText () .get_active_row_number ();
 	const bool   customPalette = paletteIndex >= numDefaultPalettes and folders .size ();
+	#endif
 
 	this -> getRemovePaletteMenuItem () .set_sensitive (customPalette);
 	this -> getEditPaletteMenuItem ()   .set_sensitive (customPalette);
 
 	this -> getAddObjectToPaletteMenuItem ()      .set_sensitive (customPalette and files .size () < PAGE_SIZE and checkSelection ());
-	this -> getRemoveObjectFromPaletteMenuItem () .set_sensitive (customPalette and selectedIndex < PAGE_SIZE and files .size ());
+	this -> getRemoveObjectFromPaletteMenuItem () .set_sensitive (customPalette and selectedIndex < PAGE_SIZE and files .size () and over);
 
 	this -> getPaletteMenu () .popup (event -> button, event -> time);
 	return true;

@@ -2571,6 +2571,16 @@
     <None Include="share\titania\ui\Editors\SculpToolBrushPreview.x3dv" />
     <None Include="Titania\Editors\SculpToolEditor\X3DSculpToolBrushEditor.h" />
     <None Include="Titania\Editors\SculpToolEditor\X3DSculpToolBrushPaletteEditor.h" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default10.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default9.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default8.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default7.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default6.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default5.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default4.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default3.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default2.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default1.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

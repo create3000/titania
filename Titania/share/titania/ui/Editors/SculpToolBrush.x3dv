@@ -10280,14 +10280,17 @@ function eventsProcessed ()
 			break;
 	}
 
+	var z1 = (zDimension - 1) / 2;
+	var x1 = (xDimension - 1) / 2;
+
 	for (var z = 0; z < zDimension; ++ z)
 	{
-		var b = (z - zDimension / 2) / (zDimension / 2);
+		var b = (z - z1) / z1;
 
 		for (var x = 0; x < xDimension; ++ x)
 		{
 			var
-				a = (x - xDimension / 2) / (xDimension / 2),
+				a = (x - x1) / x1,
 				y = fun (a, b, w, h, s, e);
 
 			geometry .height [z * xDimension + x] = y;
@@ -10306,11 +10309,6 @@ function squared (a, b, w, h, s, e)
 {
 	return (h * Math .pow (w, -(Math .abs (Math .pow (s * Math .abs (a), e)) +
 	                            Math .abs (Math .pow (s * Math .abs (b), e)))));
-}
-
-function lerp (source, destination, t)
-{
-	return source + t * (destination - source);
 }
 "
   }
