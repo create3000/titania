@@ -151,7 +151,7 @@ void
 X3DSculpToolBrushEditor::set_bbox ()
 {
 	if (preview -> getActiveLayer ())
-		preview -> getActiveLayer () -> lookAt ();
+		preview -> getActiveLayer () -> lookAt (1, false, 0);
 }
 
 void

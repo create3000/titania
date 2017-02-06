@@ -74,7 +74,7 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const)
+	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
@@ -144,14 +144,14 @@ public:
 
 	virtual
 	void
-	setPosition (const Vector3d &) = 0;
+	setPosition (const Vector3d & value) = 0;
 
 	virtual
 	Vector3d
 	getPosition () const = 0;
 
 	void
-	setUserPosition (const Vector3d &);
+	setUserPosition (const Vector3d & value);
 
 	Vector3d
 	getUserPosition () const;
@@ -167,21 +167,21 @@ public:
 	{ return orientation () .getValue (); }
 
 	void
-	setUserOrientation (const Rotation4d &);
+	setUserOrientation (const Rotation4d & value);
 
 	Rotation4d
 	getUserOrientation () const;
 
 	virtual
 	void
-	setCenterOfRotation (const Vector3d &) = 0;
+	setCenterOfRotation (const Vector3d & value) = 0;
 
 	virtual
 	Vector3d
 	getCenterOfRotation () const = 0;
 
 	void
-	setUserCenterOfRotation (const Vector3d &);
+	setUserCenterOfRotation (const Vector3d & value);
 
 	Vector3d
 	getUserCenterOfRotation () const;
@@ -207,7 +207,7 @@ public:
 
 	virtual
 	Matrix4d
-	getProjectionMatrix (const double, const double, const Vector4i &) const = 0;
+	getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport) const = 0;
 
 	const Matrix4d &
 	getCameraSpaceMatrix () const
@@ -223,7 +223,7 @@ public:
 
 	virtual
 	Vector3d
-	getScreenScale (const Vector3d &, const Vector4i &) const = 0;
+	getScreenScale (const Vector3d & point, const Vector4i & viewport) const = 0;
 
 	///  @name Operations
 
@@ -241,22 +241,22 @@ public:
 	resetUserOffsets ();
 
 	void
-	straighten (const bool = false);
+	straighten (const bool horizon = false);
 
 	Rotation4d
-	straightenHorizon (const Rotation4d &) const;
+	straightenHorizon (const Rotation4d & orientation) const;
 
 	Rotation4d
-	straightenView (const Rotation4d &) const;
+	straightenView (const Rotation4d & orientation) const;
 
 	void
-	lookAt (Vector3d, const double = 1, const bool = false);
+	lookAt (Vector3d point, const double factor = 1, const bool straighten = false, const time_type cycleInterval = 0.2);
 
 	void
-	lookAt (Box3d, const double = 1, const bool = false);
+	lookAt (Box3d bbox, const double factor = 1, const bool straighten = false, const time_type cycleInterval = 0.2);
 
 	void
-	transitionStart (X3DViewpointNode* const);
+	transitionStart (X3DViewpointNode* const fromViewpoint);
 
 	void
 	transitionStop ();
@@ -289,15 +289,15 @@ protected:
 
 	virtual
 	void
-	bindToLayer (X3DLayerNode* const) override;
+	bindToLayer (X3DLayerNode* const layerNode) override;
 
 	virtual
 	void
-	unbindFromLayer (X3DLayerNode* const) override;
+	unbindFromLayer (X3DLayerNode* const layerNode) override;
 
 	virtual
 	void
-	removeFromLayer (X3DLayerNode* const) override;
+	removeFromLayer (X3DLayerNode* const layerNode) override;
 
 
 private:
@@ -329,7 +329,7 @@ private:
 	///  @name Member access
 
 	void
-	setCameraSpaceMatrix (const Matrix4d &);
+	setCameraSpaceMatrix (const Matrix4d & value);
 
 	void
 	setTransformationMatrix (const Matrix4d & value)
@@ -338,22 +338,26 @@ private:
 	///  @name Operations
 
 	void
-	getRelativeTransformation (X3DViewpointNode* const, Vector3d &, Rotation4d &, Vector3d &, Rotation4d &) const;
+	getRelativeTransformation (X3DViewpointNode* const fromViewpoint,
+	                           Vector3d & relativePosition,
+	                           Rotation4d & relativeOrientation,
+	                           Vector3d & relativeScale,
+	                           Rotation4d & relativeScaleOrientation) const;
 
 	void
-	lookAt (const Vector3d &, const double, const double, const bool);
+	lookAt (const Vector3d & point, const double distance, const double factor, const bool straighten, const time_type cycleInterval);
 
 	virtual
 	double
-	getLookAtDistance (const Box3d &) const = 0;
+	getLookAtDistance (const Box3d & bbox) const = 0;
 
 	void
-	set_isActive (const bool);
+	set_isActive (const bool active);
 
 	void
 	set_bind_ ();
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -370,6 +374,8 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
 
 	Matrix4d transformationMatrix;
 	Matrix4d cameraSpaceMatrix;

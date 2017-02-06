@@ -381,7 +381,7 @@ X3DViewpointNode::straightenView (const Rotation4d & orientation) const
 ///  If @a straighten is true the camera up vector is rotate into the plane defined by the local y-axis and the cameras
 ///  direction vector.
 void
-X3DViewpointNode::lookAt (Vector3d point, const double factor, const bool straighten)
+X3DViewpointNode::lookAt (Vector3d point, const double factor, const bool straighten, const time_type cycleInterval)
 {
 	if (not getBrowser () -> getActiveLayer ())
 		return;
@@ -392,7 +392,7 @@ X3DViewpointNode::lookAt (Vector3d point, const double factor, const bool straig
 
 		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
 
-		lookAt (point, minDistance, factor, straighten);
+		lookAt (point, minDistance, factor, straighten, cycleInterval);
 	}
 	catch (const std::domain_error &)
 	{ }
@@ -402,7 +402,7 @@ X3DViewpointNode::lookAt (Vector3d point, const double factor, const bool straig
 ///  within the browser surface.  If @a straighten is true the camera up vector is rotate into the plane defined by the
 ///  local y-axis and the cameras direction vector.
 void
-X3DViewpointNode::lookAt (Box3d bbox, const double factor, const bool straighten)
+X3DViewpointNode::lookAt (Box3d bbox, const double factor, const bool straighten, const time_type cycleInterval)
 {
 	if (not getBrowser () -> getActiveLayer ())
 		return;
@@ -413,27 +413,16 @@ X3DViewpointNode::lookAt (Box3d bbox, const double factor, const bool straighten
 
 		const double minDistance = getBrowser () -> getActiveLayer () -> getNavigationInfo () -> getNearValue () * 2;
 
-		lookAt (bbox .center (), std::max (minDistance, getLookAtDistance (bbox)), factor, straighten);
+		lookAt (bbox .center (), std::max (minDistance, getLookAtDistance (bbox)), factor, straighten, cycleInterval);
 	}
 	catch (const std::domain_error &)
 	{ }
 }
 
 void
-X3DViewpointNode::lookAt (const Vector3d & point, const double distance, const double factor, const bool straighten)
+X3DViewpointNode::lookAt (const Vector3d & point, const double distance, const double factor, const bool straighten, const time_type cycleInterval)
 {
-   const auto offset = point + Vector3d (0, 0, distance) * getUserOrientation () - getPosition ();
-
-	for (const auto & layer : getLayers ())
-		layer -> getNavigationInfo () -> transitionStart () = true;
-
-	timeSensor -> cycleInterval () = 0.2;
-	timeSensor -> stopTime ()      = getCurrentTime ();
-	timeSensor -> startTime ()     = getCurrentTime ();
-	timeSensor -> isActive () .addInterest (&X3DViewpointNode::set_isActive, this);
-
-	easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
-
+   const auto offset      = point + Vector3d (0, 0, distance) * getUserOrientation () - getPosition ();
 	const auto translation = lerp <Vector3d> (positionOffset (), offset, factor);
 	const auto direction   = getPosition () + translation - point;
 	auto       rotation    = orientationOffset () * Rotation4d (zAxis * getUserOrientation (), direction);
@@ -441,10 +430,30 @@ X3DViewpointNode::lookAt (const Vector3d & point, const double distance, const d
 	if (straighten)
 		rotation = ~getOrientation () * straightenHorizon (getOrientation () * rotation);
 
-	positionInterpolator         -> keyValue () = { positionOffset () .getValue (),         translation };
-	orientationInterpolator      -> keyValue () = { orientationOffset () .getValue (),      rotation };
-	scaleInterpolator            -> keyValue () = { scaleOffset () .getValue (),            scaleOffset () .getValue () };
-	scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset () .getValue (), scaleOrientationOffset () .getValue () };
+	if (cycleInterval)
+	{
+		for (const auto & layer : getLayers ())
+			layer -> getNavigationInfo () -> transitionStart () = true;
+
+		timeSensor -> cycleInterval () = cycleInterval;
+		timeSensor -> stopTime ()      = getCurrentTime ();
+		timeSensor -> startTime ()     = getCurrentTime ();
+		timeSensor -> isActive () .addInterest (&X3DViewpointNode::set_isActive, this);
+	
+		easeInEaseOut -> easeInEaseOut () = { SFVec2f (0, 1), SFVec2f (1, 0) };
+
+		positionInterpolator         -> keyValue () = { positionOffset () .getValue (),         translation };
+		orientationInterpolator      -> keyValue () = { orientationOffset () .getValue (),      rotation };
+		scaleInterpolator            -> keyValue () = { scaleOffset () .getValue (),            scaleOffset () .getValue () };
+		scaleOrientationInterpolator -> keyValue () = { scaleOrientationOffset () .getValue (), scaleOrientationOffset () .getValue () };
+	}
+	else
+	{
+		positionOffset ()    = translation;
+		orientationOffset () = rotation;
+
+		set_isActive (false);
+	}
 
 	centerOfRotationOffset () = point - getCenterOfRotation ();
 	set_bind ()               = true;

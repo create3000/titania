@@ -244,9 +244,9 @@ X3DLayerNode::getUserViewpoints () const
 }
 
 void
-X3DLayerNode::lookAt ()
+X3DLayerNode::lookAt (const double factor, const bool straighten, const time_type cycleInterval)
 {
-	getViewpoint () -> lookAt (getBBox ());
+	getViewpoint () -> lookAt (getBBox (), factor, straighten, cycleInterval);
 }
 
 void

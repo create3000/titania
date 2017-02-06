@@ -125,7 +125,7 @@ public:
 	///  @name Member access
 
 	void
-	isLayer0 (const bool);
+	isLayer0 (const bool value);
 
 	bool
 	isLayer0 () const
@@ -209,7 +209,7 @@ public:
 	///  @name Operations
 
 	void
-	lookAt ();
+	lookAt (const double factor = 1, const bool straighten = false, const time_type cycleInterval = 0.2);
 
 	void
 	bind ();
@@ -275,7 +275,7 @@ private:
 	void
 	collect (const TraverseType, X3DRenderObject* const renderObject);
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -289,6 +289,8 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
 	
 	bool layer0;
 

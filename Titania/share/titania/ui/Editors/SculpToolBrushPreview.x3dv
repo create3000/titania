@@ -7,7 +7,7 @@ META "created" "Mon, 25 Jul 2016 18:09:12 GMT"
 META "creator" "holger"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Editors/SculpToolBrushPreview.x3dv"
-META "modified" "Sun, 05 Feb 2017 07:07:29 GMT"
+META "modified" "Mon, 06 Feb 2017 01:14:05 GMT"
 META "outputStyle" "Nicest"
 
 EXTERNPROTO SculpToolBrush [
@@ -472,28 +472,28 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              -1.74683105945587,
-              1.18355250358582,
-              0.507735669612885
+              -1.44916224479675,
+              0.933310031890869,
+              0.421891748905182
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.292434554038069,
-              -0.93254172036886,
-              -0.211773396289626,
-              1.32056662503878
+              -0.315587153063739,
+              -0.918871289993241,
+              -0.236812797895892,
+              1.36961167604551
             ]
           }
           DEF centerOfRotation MetadataDouble {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              -0.0292998719960451,
-              0.281714498996735,
-              -0.0561513602733612
+              0,
+              0.0999895557761192,
+              0
             ]
           }
         ]
@@ -505,14 +505,11 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
-            value DEF BrushGroup Group {
-              children DEF Brush SculpToolBrush { }
-            }
           }
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value USE Brush
+            value DEF Brush SculpToolBrush { }
           }
         ]
       }
@@ -529,9 +526,9 @@ DEF Gray Background {
 }
 
 Viewpoint {
-  position -1.74683 1.18355 0.507736
-  orientation -0.292434554038069 -0.93254172036886 -0.211773396289626 1.32056662503878
-  centerOfRotation -0.0292999 0.281714 -0.0561514
+  position -1.44916 0.93331 0.421892
+  orientation -0.315587153063739 -0.918871289993241 -0.236812797895892 1.36961167604551
+  centerOfRotation 0 0.0999896 0
 }
 
 Switch {
@@ -549,7 +546,9 @@ Switch {
   }
 }
 
-USE BrushGroup
+DEF BrushGroup Group {
+  children USE Brush
+}
 
 DEF PhongShadingScript Script {
   url "ecmascript:
