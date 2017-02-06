@@ -98,6 +98,8 @@ SculpToolEditor::initialize ()
 	getPullButton () .set_group (selectionGroup);
 	getPushButton () .set_group (selectionGroup);
 
+	// Brush handling
+
 	getBrush () .addInterest (&SculpToolEditor::set_brush, this);
 }
 
@@ -118,28 +120,69 @@ SculpToolEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
 }
 
 void
+SculpToolEditor::set_brush ()
+{
+	try
+	{
+		getBrush () -> getField <X3D::SFDouble> ("height") .addInterest (&SculpToolEditor::set_height, this);
+
+		for (const auto & tool : tools)
+			tool -> setField <X3D::SFNode> ("brush", getBrush ());
+	}
+	catch (const X3D::X3DError & error)
+	{ }
+}
+
+void
+SculpToolEditor::set_height (const double height)
+{
+	if (getPullButton () .get_active () or getPushButton () .get_active ())
+	{
+		if (height >= 0)
+			getPullButton () .set_active (true);
+		else
+			getPushButton () .set_active (true);
+	}
+}
+
+void
 SculpToolEditor::on_pull_toggled ()
 {
-	if (getPullButton () .get_active ())
+	try
 	{
-		for (const auto & tool : tools)
-			tool -> setField <X3D::SFString> ("toolType", "SCULP");
+		if (getPullButton () .get_active ())
+		{
+			for (const auto & tool : tools)
+				tool -> setField <X3D::SFString> ("toolType", "SCULP");
+	
+			const auto & height = getBrush () -> getField <X3D::SFDouble> ("height");
+
+			if (height < 0.0)
+				getBrush () -> setField <X3D::SFDouble> ("height", -height);
+		}
 	}
+	catch (const X3D::X3DError & error)
+	{ }
 }
 
 void
 SculpToolEditor::on_push_toggled ()
 {
+	try
+	{
+		if (getPushButton () .get_active ())
+		{
+			for (const auto & tool : tools)
+				tool -> setField <X3D::SFString> ("toolType", "SCULP");
+	
+			const auto & height = getBrush () -> getField <X3D::SFDouble> ("height");
 
-}
-
-void
-SculpToolEditor::set_brush ()
-{
-	const auto brush = getBrush ();
-
-	for (const auto & tool : tools)
-		tool -> setField <X3D::SFNode> ("brush", brush);
+			if (height > 0.0)
+				getBrush () -> setField <X3D::SFDouble> ("height", -height);
+		}
+	}
+	catch (const X3D::X3DError & error)
+	{ }
 }
 
 void

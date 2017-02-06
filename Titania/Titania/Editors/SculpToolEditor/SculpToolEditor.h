@@ -98,6 +98,12 @@ private:
 	void
 	set_geometry_nodes (const X3D::MFNode & geometryNodes);
 
+	void
+	set_brush ();
+	
+	void
+	set_height (const double height);
+
 	virtual
 	void
 	on_pull_toggled () final override;
@@ -105,9 +111,6 @@ private:
 	virtual
 	void
 	on_push_toggled () final override;
-
-	void
-	set_brush ();
 
 	virtual
 	void

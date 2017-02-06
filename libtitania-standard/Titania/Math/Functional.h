@@ -176,6 +176,15 @@ maximum_norm (const Type & value)
 	return norm;
 }
 
+///  Returns the distance between @a source and @a destination.
+template <class Type>
+inline
+Type
+distance (const Type & source, const Type & destination)
+{
+	return std::abs (destination - source);
+}
+
 ///  Linear interpolate between @a source and @a destination by an amout of @a t.
 template <class Type, class T>
 inline

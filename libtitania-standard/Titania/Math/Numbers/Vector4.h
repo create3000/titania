@@ -525,16 +525,6 @@ dot (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 	   lhs .w () * rhs .w ();
 }
 
-///  Return the @a vector magnitude.
-template <class Type>
-inline
-constexpr
-Type
-abs (const vector4 <Type> & vector)
-{
-	return std::sqrt (norm (vector));
-}
-
 ///  Returns the @a vector magnitude squared.
 template <class Type>
 inline
@@ -543,6 +533,16 @@ Type
 norm (const vector4 <Type> & vector)
 {
 	return dot (vector, vector);
+}
+
+///  Return the @a vector magnitude.
+template <class Type>
+inline
+constexpr
+Type
+abs (const vector4 <Type> & vector)
+{
+	return std::sqrt (norm (vector));
 }
 
 ///  Returns @a vector normalized.
@@ -563,6 +563,15 @@ vector4 <Type>
 reflect (const vector4 <Type> & vector, const vector4 <Type> & normal)
 {
 	return vector - (normal * (2 * dot (vector, normal)));
+}
+
+///  Returns the distance between @a source and @a destination.
+template <class Type>
+inline
+Type
+distance (const vector4 <Type> & source, const vector4 <Type> & destination)
+{
+	return abs (destination - source);
 }
 
 /**

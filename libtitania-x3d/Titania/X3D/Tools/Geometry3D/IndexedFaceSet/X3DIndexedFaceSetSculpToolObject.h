@@ -98,11 +98,25 @@ private:
 	set_loadState ();
 
 	void
+	set_touch_sensor_active ();
+
+	void
 	set_touch_sensor_hitPoint ();
+
+	Vector3d
+	getHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point);
+
+	double
+	getCircularHeight (const Vector2d & v, const double w, const double h, const double s, const double e);
+	
+	double
+	getSquaredHeight (const Vector2d & v, const double w, const double h, const double s, const double e);
 
 	///  @name Members
 
 	X3DPtr <TouchSensor> touchSensor;
+	Vector3d             lastHitPoint;
+	double               pointerDistance;
 
 };
 

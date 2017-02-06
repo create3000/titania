@@ -53,14 +53,26 @@
 #include "../../Rendering/CoordinateTool.h"
 
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
+#include "../../../Components/Rendering/X3DCoordinateNode.h"
 
 namespace titania {
 namespace X3D {
 
+///  Brush
+///  SFString type      ["CIRCULAR", "SQUARED"]
+///  SFDouble radius    [0, inf]
+///  SFDouble height    [-inf, inf]
+///  SFDouble warp      [0, 1]
+///  SFDouble hardness  [0, 1]
+///  SFDouble sharpness [0, 1]
+///  SFDouble spacing   [0, inf]
+
 X3DIndexedFaceSetSculpToolObject::X3DIndexedFaceSetSculpToolObject () :
 	              IndexedFaceSet (getExecutionContext ()),
 	X3DIndexedFaceSetBrushObject (),
-	                 touchSensor ()
+	                 touchSensor (),
+	                lastHitPoint (),
+	             pointerDistance (0)
 {
 	//addType (X3DConstants::X3DIndexedFaceSetSculpToolObject);
 
@@ -84,6 +96,7 @@ X3DIndexedFaceSetSculpToolObject::set_loadState ()
 
 		touchSensor = inlineNode -> getExportedNode <TouchSensor> ("SculpBrushTouchSensor");
 
+		touchSensor -> isActive ()         .addInterest (&X3DIndexedFaceSetSculpToolObject::set_touch_sensor_active,   this);
 		touchSensor -> hitPoint_changed () .addInterest (&X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint, this);
 	}
 	catch (const X3DError & error)
@@ -93,12 +106,98 @@ X3DIndexedFaceSetSculpToolObject::set_loadState ()
 }
 
 void
+X3DIndexedFaceSetSculpToolObject::set_touch_sensor_active ()
+{
+	if (touchSensor -> isActive ())
+	{
+		lastHitPoint    = touchSensor -> getHitPoint ();
+		pointerDistance = std::numeric_limits <double>::infinity ();
+	}
+}
+
+void
 X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 {
-	if (not touchSensor -> isActive ())
-		return;
+	try
+	{
+		__LOG__ << touchSensor -> getHitPoint () << std::endl;
+	
+		if (not touchSensor -> isActive ())
+			return;
+		
+		if (not getCoord ())
+			return;
+	
+		const auto & hitPoint = touchSensor -> getHitPoint ();
 
-	__LOG__ << touchSensor -> getHitPoint () << std::endl;
+		pointerDistance += math::distance (hitPoint, lastHitPoint);
+
+		if (pointerDistance > brush () -> getField <SFDouble> ("spacing"))
+		{
+			const auto & hitNormal = touchSensor -> getHitNormal ();
+			const auto & radius    = brush () -> getField <SFDouble> ("radius") .getValue ();
+		
+			for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+			{
+				const auto point    = getCoord () -> get1Point (i);
+				const auto distance = math::distance (hitPoint, point);
+		
+				if (distance < radius)
+					getCoord () -> set1Point (i, point + getHeight (hitNormal, hitPoint, point));
+			}
+
+			pointerDistance = 0;
+		}
+
+		lastHitPoint = hitPoint;
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+Vector3d
+X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point)
+{
+	try
+	{
+		const auto h = brush () -> getField <SFDouble> ("height") ;
+		const auto w = 1 + std::pow (brush () -> getField <SFDouble> ("warp") , 8) * 9999;
+		const auto s = 2 + brush () -> getField <SFDouble> ("sharpness")  * 98;
+		const auto e = std::pow (brush () -> getField <SFDouble> ("hardness") , 4) * 100;
+
+		const auto p = (point - hitPoint) * Rotation4d (hitNormal, Vector3d (0, 0, 1));
+		const auto v = Vector2d (p .x (), p .y ());
+
+		const auto & type = brush () -> getField <SFString> ("type");
+
+		if (type == "SQUARED")
+			return hitNormal * getCircularHeight (v, w, h, s, e);
+
+		return hitNormal * getCircularHeight (v, w, h, s, e);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+
+		return Vector3d ();
+	}
+}
+
+double
+X3DIndexedFaceSetSculpToolObject::getCircularHeight (const Vector2d & v, const double w, const double h, const double s, const double e)
+{
+	const auto c = abs (v);
+
+	return h * std::pow (w, -std::abs (std::pow (s * c, e)));
+}
+
+double
+X3DIndexedFaceSetSculpToolObject::getSquaredHeight (const Vector2d & v, const double w, const double h, const double s, const double e)
+{
+	return (h * std::pow (w, -(std::abs (std::pow (s * std::abs (v .x ()), e)) +
+	                           std::abs (std::pow (s * std::abs (v .y ()), e)))));
 }
 
 X3DIndexedFaceSetSculpToolObject::~X3DIndexedFaceSetSculpToolObject ()

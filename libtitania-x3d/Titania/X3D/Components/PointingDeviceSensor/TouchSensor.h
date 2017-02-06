@@ -117,6 +117,14 @@ public:
 
 	///  @name Member access
 
+	const Vector2f &
+	getHitTexCoord () const
+	{ return hitTexCoord_changed (); }
+
+	const Vector3f &
+	getHitNormal () const
+	{ return hitNormal_changed (); }
+
 	const Vector3d &
 	getHitPoint () const
 	{ return hitPoint; }

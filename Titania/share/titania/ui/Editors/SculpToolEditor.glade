@@ -111,7 +111,7 @@
                       <object class="GtkRadioToolButton" id="PullButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Pull or push polygons.</property>
+                        <property name="tooltip_text" translatable="yes">Pull polygons.</property>
                         <property name="label" translatable="yes">Pull</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">Pull</property>
@@ -124,6 +124,7 @@
                     </child>
                     <child>
                       <object class="GtkRadioToolButton" id="PushButton">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Push Polygons</property>
                         <property name="label" translatable="yes">Push</property>

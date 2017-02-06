@@ -168,7 +168,6 @@ X3DSculpToolBrushPaletteEditor::set_model (X3D::X3DScenePtr && scene)
 		brush -> setField <X3D::SFDouble> ("warp",      model -> getField <X3D::SFDouble> ("warp"));
 		brush -> setField <X3D::SFDouble> ("sharpness", model -> getField <X3D::SFDouble> ("sharpness"));
 		brush -> setField <X3D::SFDouble> ("hardness",  model -> getField <X3D::SFDouble> ("hardness"));
-		brush -> setField <X3D::SFDouble> ("spacing",   model -> getField <X3D::SFDouble> ("spacing"));
 	}
 	catch (const X3D::X3DError &)
 	{ }

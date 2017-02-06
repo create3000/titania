@@ -95,6 +95,7 @@ TouchSensor::create (X3DExecutionContext* const executionContext) const
 	return new TouchSensor (executionContext);
 }
 
+///  Returns the coordinate of the closest point of the intersection triangle to hitPoint.
 const Vector3d &
 TouchSensor::getClosestPoint () const
 {
