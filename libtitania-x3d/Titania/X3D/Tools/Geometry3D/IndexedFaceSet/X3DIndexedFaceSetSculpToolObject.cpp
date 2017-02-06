@@ -207,8 +207,6 @@ X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const V
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
-
 		return Vector3d ();
 	}
 }

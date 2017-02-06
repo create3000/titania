@@ -118,6 +118,13 @@ SculpToolEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
 	set_brush ();
 
 	getToolbar () .set_sensitive (not tools .empty ());
+
+	if (not tools .empty ())
+	{
+		on_pull_polygons_toggled ();
+		on_push_polygons_toggled ();
+		on_smooth_polygons_toggled ();
+	}
 }
 
 void

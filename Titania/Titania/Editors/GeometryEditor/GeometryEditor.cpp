@@ -265,7 +265,7 @@ GeometryEditor::connect ()
 						// Coord
 
 						coordEditor -> getField <X3D::SFBool>      ("pickable")                .addInterest (node -> getField <X3D::SFBool>   ("pickable"));
-						coordEditor -> getField <X3D::SFString>      ("toolType")              .addInterest (node -> getField <X3D::SFString>   ("toolType"));
+						coordEditor -> getField <X3D::SFString>    ("toolType")                .addInterest (node -> getField <X3D::SFString> ("toolType"));
 						coordEditor -> getField <X3D::SFString>    ("selectionType")           .addInterest (node -> getField <X3D::SFString> ("selectionType"));
 						coordEditor -> getField <X3D::SFBool>      ("paintSelection")          .addInterest (node -> getField <X3D::SFBool>   ("paintSelection"));
 						coordEditor -> getField <X3D::SFBool>      ("selectLineLoop")          .addInterest (node -> getField <X3D::SFBool>   ("selectLineLoop"));
@@ -283,11 +283,11 @@ GeometryEditor::connect ()
 						coordEditor -> getField <X3D::SFColorRGBA> ("color")                   .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
 
 						node -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (&GeometryEditor::set_selectedPoints, this);
-						node -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (&GeometryEditor::set_selectedEdges, this);
-						node -> getField <X3D::SFInt32>              ("selectedHoles_changed")  .addInterest (&GeometryEditor::set_selectedHoles, this);
-						node -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (&GeometryEditor::set_selectedFaces, this);
-						node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (&GeometryEditor::set_undo, this);
-						node -> getField <X3D::SFString>             ("clipboard_changed")      .addInterest (&GeometryEditor::set_clipboard, this);
+						node -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (&GeometryEditor::set_selectedEdges,  this);
+						node -> getField <X3D::SFInt32>              ("selectedHoles_changed")  .addInterest (&GeometryEditor::set_selectedHoles,  this);
+						node -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (&GeometryEditor::set_selectedFaces,  this);
+						node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (&GeometryEditor::set_undo,           this);
+						node -> getField <X3D::SFString>             ("clipboard_changed")      .addInterest (&GeometryEditor::set_clipboard,      this);
 
 						node -> setField <X3D::SFBool>   ("pickable",               coordEditor -> getField <X3D::SFBool>   ("pickable"),               true);
 						node -> setField <X3D::SFString> ("toolType",               coordEditor -> getField <X3D::SFString> ("toolType"),               true);
