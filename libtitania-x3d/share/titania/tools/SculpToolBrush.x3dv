@@ -7,7 +7,7 @@ META "created" "Fri, 03 Feb 2017 09:50:02 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv"
-META "modified" "Mon, 06 Feb 2017 19:24:37 GMT"
+META "modified" "Mon, 06 Feb 2017 19:50:04 GMT"
 META "outputStyle" "Nicest"
 
 EXTERNPROTO Grid [
@@ -10268,16 +10268,16 @@ PROTO SculpToolBrush [
       }
       Grid {
         translation 0.5 0 0.5
-        scale 0.1 0.1 0.1
+        scale 0.25 0.25 0.25
         dimension [
-          10,
+          4,
           0,
-          10
+          4
         ]
         majorLineEvery [
-          5,
+          2,
           0,
-          5
+          2
         ]
         majorLineOffset 0
         color 0 0 0
