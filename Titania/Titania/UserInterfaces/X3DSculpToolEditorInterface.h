@@ -144,12 +144,16 @@ public:
 	{ return *m_Toolbar; }
 
 	Gtk::RadioToolButton &
-	getPullButton () const
-	{ return *m_PullButton; }
+	getPullPolygonsButton () const
+	{ return *m_PullPolygonsButton; }
 
 	Gtk::RadioToolButton &
-	getPushButton () const
-	{ return *m_PushButton; }
+	getPushPolygonsButton () const
+	{ return *m_PushPolygonsButton; }
+
+	Gtk::RadioToolButton &
+	getSmoothPolygonsButton () const
+	{ return *m_SmoothPolygonsButton; }
 
 	Gtk::Notebook &
 	getNotebook () const
@@ -259,11 +263,15 @@ public:
 
 	virtual
 	void
-	on_pull_toggled () = 0;
+	on_pull_polygons_toggled () = 0;
 
 	virtual
 	void
-	on_push_toggled () = 0;
+	on_push_polygons_toggled () = 0;
+
+	virtual
+	void
+	on_smooth_polygons_toggled () = 0;
 
 	virtual
 	bool
@@ -358,8 +366,9 @@ private:
 	Gtk::Paned*                    m_Paned;
 	Gtk::Box*                      m_PreviewBox;
 	Gtk::Toolbar*                  m_Toolbar;
-	Gtk::RadioToolButton*          m_PullButton;
-	Gtk::RadioToolButton*          m_PushButton;
+	Gtk::RadioToolButton*          m_PullPolygonsButton;
+	Gtk::RadioToolButton*          m_PushPolygonsButton;
+	Gtk::RadioToolButton*          m_SmoothPolygonsButton;
 	Gtk::Notebook*                 m_Notebook;
 	Gtk::Expander*                 m_BrushExpander;
 	Gtk::Grid*                     m_BrushBox;

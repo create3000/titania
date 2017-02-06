@@ -136,8 +136,6 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 {
 	try
 	{
-		__LOG__ << touchSensor -> getHitPoint () << std::endl;
-	
 		if (not touchSensor -> isActive ())
 			return;
 		
@@ -152,14 +150,29 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 		{
 			const auto & hitNormal = touchSensor -> getHitNormal ();
 			const auto & radius    = brush () -> getField <SFDouble> ("radius") .getValue ();
+			const auto & height    = brush () -> getField <SFDouble> ("height") .getValue ();
 		
-			for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+			if (toolType () == "SCULP")
 			{
-				const auto point    = getCoord () -> get1Point (i);
-				const auto distance = math::distance (hitPoint, point);
-		
-				if (distance < radius)
-					getCoord () -> set1Point (i, point + getHeight (hitNormal, hitPoint, point));
+				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+				{
+					const auto point    = getCoord () -> get1Point (i);
+					const auto distance = math::distance (hitPoint, point);
+			
+					if (distance < radius)
+						getCoord () -> set1Point (i, point + (getHeight (hitNormal, hitPoint, point) * height));
+				}
+			}
+			else if (toolType () == "SMOOTH")
+			{
+				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+				{
+					const auto point    = getCoord () -> get1Point (i);
+					const auto distance = math::distance (hitPoint, point);
+
+					if (distance < radius)
+						getCoord () -> set1Point (i, point + getSmoothHeight (hitNormal, hitPoint, point));
+				}
 			}
 
 			pointerDistance = 0;
@@ -178,7 +191,6 @@ X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const V
 {
 	try
 	{
-		const auto h = brush () -> getField <SFDouble> ("height");
 		const auto w = 1 + std::pow (brush () -> getField <SFDouble> ("warp") , 8) * 9999;
 		const auto s = 2 + brush () -> getField <SFDouble> ("sharpness")  * 98;
 		const auto e = std::pow (brush () -> getField <SFDouble> ("hardness") , 4) * 100;
@@ -189,9 +201,9 @@ X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const V
 		const auto & type = brush () -> getField <SFString> ("type");
 
 		if (type == "SQUARED")
-			return hitNormal * getCircularHeight (v, w, h, s, e);
+			return hitNormal * getCircularHeight (v, w, s, e);
 
-		return hitNormal * getCircularHeight (v, w, h, s, e);
+		return hitNormal * getCircularHeight (v, w, s, e);
 	}
 	catch (const X3DError & error)
 	{
@@ -201,19 +213,30 @@ X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const V
 	}
 }
 
-double
-X3DIndexedFaceSetSculpToolObject::getCircularHeight (const Vector2d & v, const double w, const double h, const double s, const double e)
+Vector3d
+X3DIndexedFaceSetSculpToolObject::getSmoothHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point)
 {
-	const auto c = abs (v);
+	const Plane3d plane (hitPoint, hitNormal);
 
-	return h * std::pow (w, -std::abs (std::pow (s * c, e)));
+	const auto distance = plane .distance (point);
+	const auto height   = abs (getHeight (hitNormal, hitPoint, point));
+
+	return -(distance * height) * hitNormal;
 }
 
 double
-X3DIndexedFaceSetSculpToolObject::getSquaredHeight (const Vector2d & v, const double w, const double h, const double s, const double e)
+X3DIndexedFaceSetSculpToolObject::getCircularHeight (const Vector2d & v, const double w, const double s, const double e)
 {
-	return (h * std::pow (w, -(std::abs (std::pow (s * std::abs (v .x ()), e)) +
-	                           std::abs (std::pow (s * std::abs (v .y ()), e)))));
+	const auto c = abs (v);
+
+	return std::pow (w, -std::abs (std::pow (s * c, e)));
+}
+
+double
+X3DIndexedFaceSetSculpToolObject::getSquaredHeight (const Vector2d & v, const double w, const double s, const double e)
+{
+	return std::pow (w, -(std::abs (std::pow (s * std::abs (v .x ()), e)) +
+	                      std::abs (std::pow (s * std::abs (v .y ()), e))));
 }
 
 X3DIndexedFaceSetSculpToolObject::~X3DIndexedFaceSetSculpToolObject ()

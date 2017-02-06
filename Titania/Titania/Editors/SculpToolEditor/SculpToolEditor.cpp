@@ -95,8 +95,9 @@ SculpToolEditor::initialize ()
 
 	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
 
-	getPullButton () .set_group (selectionGroup);
-	getPushButton () .set_group (selectionGroup);
+	getPullPolygonsButton ()   .set_group (selectionGroup);
+	getPushPolygonsButton ()   .set_group (selectionGroup);
+	getSmoothPolygonsButton () .set_group (selectionGroup);
 
 	// Brush handling
 
@@ -136,21 +137,21 @@ SculpToolEditor::set_brush ()
 void
 SculpToolEditor::set_height (const double height)
 {
-	if (getPullButton () .get_active () or getPushButton () .get_active ())
+	if (getPullPolygonsButton () .get_active () or getPushPolygonsButton () .get_active ())
 	{
 		if (height >= 0)
-			getPullButton () .set_active (true);
+			getPullPolygonsButton () .set_active (true);
 		else
-			getPushButton () .set_active (true);
+			getPushPolygonsButton () .set_active (true);
 	}
 }
 
 void
-SculpToolEditor::on_pull_toggled ()
+SculpToolEditor::on_pull_polygons_toggled ()
 {
 	try
 	{
-		if (getPullButton () .get_active ())
+		if (getPullPolygonsButton () .get_active ())
 		{
 			for (const auto & tool : tools)
 				tool -> setField <X3D::SFString> ("toolType", "SCULP");
@@ -166,11 +167,11 @@ SculpToolEditor::on_pull_toggled ()
 }
 
 void
-SculpToolEditor::on_push_toggled ()
+SculpToolEditor::on_push_polygons_toggled ()
 {
 	try
 	{
-		if (getPushButton () .get_active ())
+		if (getPushPolygonsButton () .get_active ())
 		{
 			for (const auto & tool : tools)
 				tool -> setField <X3D::SFString> ("toolType", "SCULP");
@@ -179,6 +180,21 @@ SculpToolEditor::on_push_toggled ()
 
 			if (height > 0.0)
 				getBrush () -> setField <X3D::SFDouble> ("height", -height);
+		}
+	}
+	catch (const X3D::X3DError & error)
+	{ }
+}
+
+void
+SculpToolEditor::on_smooth_polygons_toggled ()
+{
+	try
+	{
+		if (getSmoothPolygonsButton () .get_active ())
+		{
+			for (const auto & tool : tools)
+				tool -> setField <X3D::SFString> ("toolType", "SMOOTH");
 		}
 	}
 	catch (const X3D::X3DError & error)

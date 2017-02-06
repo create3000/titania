@@ -106,11 +106,15 @@ private:
 
 	virtual
 	void
-	on_pull_toggled () final override;
+	on_pull_polygons_toggled () final override;
 
 	virtual
 	void
-	on_push_toggled () final override;
+	on_push_polygons_toggled () final override;
+
+	virtual
+	void
+	on_smooth_polygons_toggled () final override;
 
 	virtual
 	void

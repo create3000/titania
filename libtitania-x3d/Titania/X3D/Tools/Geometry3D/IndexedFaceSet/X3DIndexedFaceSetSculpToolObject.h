@@ -106,11 +106,14 @@ private:
 	Vector3d
 	getHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point);
 
+	Vector3d
+	getSmoothHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point);
+
 	double
-	getCircularHeight (const Vector2d & v, const double w, const double h, const double s, const double e);
+	getCircularHeight (const Vector2d & v, const double w, const double s, const double e);
 	
 	double
-	getSquaredHeight (const Vector2d & v, const double w, const double h, const double s, const double e);
+	getSquaredHeight (const Vector2d & v, const double w, const double s, const double e);
 
 	///  @name Members
 

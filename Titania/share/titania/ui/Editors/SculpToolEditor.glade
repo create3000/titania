@@ -108,14 +108,14 @@
                     <property name="toolbar_style">icons</property>
                     <property name="icon_size">1</property>
                     <child>
-                      <object class="GtkRadioToolButton" id="PullButton">
+                      <object class="GtkRadioToolButton" id="PullPolygonsButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Pull polygons.</property>
                         <property name="label" translatable="yes">Pull</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">Pull</property>
-                        <signal name="toggled" handler="on_pull_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_pull_polygons_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -123,15 +123,31 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkRadioToolButton" id="PushButton">
+                      <object class="GtkRadioToolButton" id="PushPolygonsButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="tooltip_text" translatable="yes">Push Polygons</property>
+                        <property name="tooltip_text" translatable="yes">Push polygons.</property>
                         <property name="label" translatable="yes">Push</property>
                         <property name="use_underline">True</property>
                         <property name="stock_id">Push</property>
                         <property name="active">True</property>
-                        <signal name="toggled" handler="on_push_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_push_polygons_toggled" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioToolButton" id="SmoothPolygonsButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Smooth polygons.</property>
+                        <property name="label" translatable="yes">Smooth</property>
+                        <property name="use_underline">True</property>
+                        <property name="stock_id">Smooth</property>
+                        <property name="active">True</property>
+                        <signal name="toggled" handler="on_smooth_polygons_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
