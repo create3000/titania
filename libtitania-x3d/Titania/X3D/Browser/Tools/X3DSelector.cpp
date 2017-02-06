@@ -107,18 +107,16 @@ X3DSelector::on_1button1_release_event (GdkEventButton* event)
 	
 		// Depth buffer
 	
-		getBrowser () -> getDepthBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0, false));
+		getBrowser () -> getDepthBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0, true));
 		getBrowser () -> getDepthBuffer () -> setup ();
 		getBrowser () -> getDepthBuffer () -> bind ();
-	
+
 		getBrowser () -> getActiveLayer () -> traverse (TraverseType::DEPTH, nullptr);
-	
+
 		getBrowser () -> getDepthBuffer () -> readDepth ();
 		getBrowser () -> getDepthBuffer () -> unbind ();
 
 		// Selection buffer
-
-		const auto selectionType = getBrowser () -> getSelectionType ();
 
 		getBrowser () -> getSelectionBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0));
 		getBrowser () -> getSelectionBuffer () -> setup ();
@@ -126,12 +124,19 @@ X3DSelector::on_1button1_release_event (GdkEventButton* event)
 
 		draw ();
 
-		getBrowser () -> setSelectionType (SelectionType::LASSO);
 		getBrowser () -> getSelectionBuffer () -> readPixels ();
+		getBrowser () -> getSelectionBuffer () -> unbind ();
+
+		// Touch
+
+		const auto selectionType = getBrowser () -> getSelectionType ();
+
+		getBrowser () -> setSelectionType (SelectionType::LASSO);
 		getBrowser () -> touch (points [0] .x (), points [0] .y ());
 		getBrowser () -> setSelectionType (selectionType);
 
-		getBrowser () -> getSelectionBuffer () -> unbind ();
+		// Reset
+
 		getBrowser () -> getSelectionBuffer () .reset ();
 		getBrowser () -> getDepthBuffer () .reset ();
 		return false;

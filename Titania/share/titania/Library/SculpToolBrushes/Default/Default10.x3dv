@@ -17,6 +17,7 @@ EXTERNPROTO SculpToolBrush [
   inputOutput SFDouble sharpness
   inputOutput SFDouble hardness
   inputOutput SFDouble pressure
+  inputOutput SFDouble scale
   inputOutput SFDouble spacing
 ]
 [

@@ -413,7 +413,7 @@ X3DLayerNode::display (const TraverseType type, X3DRenderObject* const renderObj
 {
 	using namespace std::placeholders;
 
-	getNavigationInfo () -> enable (renderObject);
+	getNavigationInfo () -> enable (type, renderObject);
 	getModelViewMatrix () .push (getInverseCameraSpaceMatrix () .get ());
 
 	currentViewport -> push (this);

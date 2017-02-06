@@ -394,6 +394,7 @@
                                       <object class="GtkScale" id="BrushPressureScale">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="tooltip_text" translatable="yes">Pressure</property>
                                         <property name="hexpand">True</property>
                                         <property name="adjustment">BrushPressureAdjustment</property>
                                         <property name="round_digits">3</property>
@@ -437,6 +438,7 @@
                                       <object class="GtkScale" id="BrushScaleScale">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="tooltip_text" translatable="yes">Scale</property>
                                         <property name="hexpand">True</property>
                                         <property name="adjustment">BrushScaleAdjustment</property>
                                         <property name="round_digits">3</property>
@@ -741,6 +743,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
   </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-remove</property>
+  </object>
   <object class="GtkImage" id="image9">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -807,6 +814,15 @@
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
         <signal name="activate" handler="on_remove_object_from_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="UpdateObjectInPaletteMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image2</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
       </object>
     </child>
   </object>

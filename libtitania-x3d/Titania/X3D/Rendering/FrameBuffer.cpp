@@ -204,7 +204,7 @@ FrameBuffer::readPixels ()
 			glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer .id);
 	
 			glReadPixels (0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels .data ());
-			glBindFramebuffer (GL_FRAMEBUFFER_EXT, id);
+			glBindFramebuffer (GL_FRAMEBUFFER, id);
 		}
 		catch (const std::runtime_error & error)
 		{
@@ -236,7 +236,7 @@ FrameBuffer::readDepth ()
 		glBindFramebuffer (GL_FRAMEBUFFER, frameBuffer .id);
 
 		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
-		glBindFramebuffer (GL_FRAMEBUFFER_EXT, id);
+		glBindFramebuffer (GL_FRAMEBUFFER, id);
 	}
 	else
 		glReadPixels (0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, depth .data ());
