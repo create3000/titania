@@ -98,7 +98,10 @@ private:
 	set_loadState ();
 
 	void
-	set_toolType ();
+	set_coord ();
+
+	void
+	set_coord_points ();
 
 	void
 	set_touch_sensor_active ();
@@ -123,12 +126,12 @@ private:
 
 	///  @name Members
 
-	X3DPtr <TouchSensor>   touchSensor;
-	Vector3d               lastHitPoint;
-	double                 pointerDistance;
-	bool                   undo;
-	std::vector <Vector3d> undoPoints;
-	UndoStepPtr            undoStep;
+	X3DPtr <TouchSensor>       touchSensor;
+	X3DPtr <X3DCoordinateNode> coordNode;
+	Vector3d                   lastHitPoint;
+	double                     pointerDistance;
+	std::vector <Vector3d>     undoPoints;
+	UndoStepPtr                undoStep;
 
 };
 

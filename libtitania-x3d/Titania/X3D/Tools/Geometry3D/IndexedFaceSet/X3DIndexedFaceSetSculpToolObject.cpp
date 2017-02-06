@@ -71,15 +71,15 @@ X3DIndexedFaceSetSculpToolObject::X3DIndexedFaceSetSculpToolObject () :
 	              IndexedFaceSet (getExecutionContext ()),
 	X3DIndexedFaceSetBrushObject (),
 	                 touchSensor (),
+	                   coordNode (),
 	                lastHitPoint (),
 	             pointerDistance (0),
-	                        undo (true),
 	                  undoPoints (),
 	                    undoStep ()
 {
 	//addType (X3DConstants::X3DIndexedFaceSetSculpToolObject);
 
-	addChildObjects (touchSensor);
+	addChildObjects (touchSensor, coordNode);
 }
 
 void
@@ -87,10 +87,10 @@ X3DIndexedFaceSetSculpToolObject::initialize ()
 {
 	getCoordinateTool () -> getInlineNode () -> checkLoadState () .addInterest (&X3DIndexedFaceSetSculpToolObject::set_loadState, this);
 
-	toolType () .addInterest (&X3DIndexedFaceSetSculpToolObject::set_toolType, this);
+	getCoord () .addInterest (&X3DIndexedFaceSetSculpToolObject::set_coord, this);
 
 	set_loadState ();
-	set_toolType ();
+	set_coord ();
 }
 
 void
@@ -112,30 +112,32 @@ X3DIndexedFaceSetSculpToolObject::set_loadState ()
 }
 
 void
-X3DIndexedFaceSetSculpToolObject::set_toolType ()
+X3DIndexedFaceSetSculpToolObject::set_coord ()
 {
-	try
-	{
-		static const std::set <std::string> brushes = { "SCULP", "SCULP_SMOOTH", "SCULP_UNDO" };
+	if (coordNode)
+		coordNode -> removeInterest (&X3DIndexedFaceSetSculpToolObject::set_coord_points, this);
 
-		if (brushes .count (toolType ()))
-		{
-			if (undo)
-			{
-				undo = false;
-	
-				undoPoints .clear ();
-	
-				for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
-					undoPoints .emplace_back (getCoord () -> get1Point (i));
-			}
-		}
-		else
-			undo = true;
-	}
-	catch (const X3DError & error)
+	coordNode = getCoord ();
+
+	if (coordNode)
 	{
-		//__LOG__ << error .what () << std::endl;
+		coordNode -> addInterest (&X3DIndexedFaceSetSculpToolObject::set_coord_points, this);
+
+		undoPoints .clear ();
+
+		set_coord_points ();
+	}
+}
+
+void
+X3DIndexedFaceSetSculpToolObject::set_coord_points ()
+{
+	if (getCoord () -> getSize () not_eq undoPoints .size ())
+	{
+		undoPoints .clear ();
+
+		for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
+			undoPoints .emplace_back (getCoord () -> get1Point (i));
 	}
 }
 
