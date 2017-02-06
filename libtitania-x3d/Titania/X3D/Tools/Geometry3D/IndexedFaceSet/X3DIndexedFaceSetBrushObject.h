@@ -71,6 +71,35 @@ public:
 	brush () const
 	{ return *fields .brush; }
 
+	///  @name Member access
+
+	const SFString &
+	brushType () const;
+	
+	const SFDouble &
+	radius () const;
+	
+	const SFDouble &
+	height () const;
+	
+	const SFDouble &
+	warp () const;
+	
+	const SFDouble &
+	hardness () const;
+	
+	const SFDouble &
+	sharpness () const;
+	
+	const SFDouble &
+	pressure () const;
+	
+	const SFDouble &
+	scale () const;
+	
+	const SFDouble &
+	spacing () const;
+
 	///  @name Destruction
 
 	virtual

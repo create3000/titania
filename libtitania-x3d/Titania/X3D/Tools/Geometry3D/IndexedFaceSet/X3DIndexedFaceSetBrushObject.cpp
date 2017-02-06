@@ -94,6 +94,60 @@ X3DIndexedFaceSetBrushObject::initialize ()
 	set_brush ();
 }
 
+const SFString &
+X3DIndexedFaceSetBrushObject::brushType () const
+{
+	return brush () -> getField <SFString> ("type");
+}
+
+const SFDouble &
+X3DIndexedFaceSetBrushObject::radius () const
+{
+	return brush () -> getField <SFDouble> ("radius");
+}
+
+const SFDouble &
+X3DIndexedFaceSetBrushObject::height () const
+{
+	return brush () -> getField <SFDouble> ("height");
+}
+
+const SFDouble &
+X3DIndexedFaceSetBrushObject::warp () const
+{
+	return brush () -> getField <SFDouble> ("warp");
+}
+
+const SFDouble &
+X3DIndexedFaceSetBrushObject::hardness () const
+{
+	return brush () -> getField <SFDouble> ("hardness");
+}
+
+const SFDouble &
+X3DIndexedFaceSetBrushObject::sharpness () const
+{
+	return brush () -> getField <SFDouble> ("sharpness");
+}
+
+const SFDouble &
+X3DIndexedFaceSetBrushObject::pressure () const
+{
+	return brush () -> getField <SFDouble> ("pressure");
+}
+
+const SFDouble &
+X3DIndexedFaceSetBrushObject::scale () const
+{
+	return brush () -> getField <SFDouble> ("scale");
+}
+
+const SFDouble &
+X3DIndexedFaceSetBrushObject::spacing () const
+{
+	return brush () -> getField <SFDouble> ("spacing");
+}
+
 void
 X3DIndexedFaceSetBrushObject::set_loadState ()
 {
@@ -141,8 +195,8 @@ X3DIndexedFaceSetBrushObject::set_brush ()
 	{
 		if (brushNode)
 		{
-			brushNode -> getField <SFDouble> ("radius") .removeInterest (&X3DIndexedFaceSetBrushObject::set_brush_radius, this);
-			brushNode -> getField <SFDouble> ("scale")  .removeInterest (&X3DIndexedFaceSetBrushObject::set_brush_radius, this);
+			radius () .removeInterest (&X3DIndexedFaceSetBrushObject::set_brush_radius, this);
+			scale  () .removeInterest (&X3DIndexedFaceSetBrushObject::set_brush_radius, this);
 		}
 	}
 	catch (const X3DError & error)
@@ -154,8 +208,8 @@ X3DIndexedFaceSetBrushObject::set_brush ()
 	{
 		if (brushNode)
 		{
-			brushNode -> getField <SFDouble> ("radius") .addInterest (&X3DIndexedFaceSetBrushObject::set_brush_radius, this);
-			brushNode -> getField <SFDouble> ("scale")  .addInterest (&X3DIndexedFaceSetBrushObject::set_brush_radius, this);
+			radius () .addInterest (&X3DIndexedFaceSetBrushObject::set_brush_radius, this);
+			scale  () .addInterest (&X3DIndexedFaceSetBrushObject::set_brush_radius, this);
 		}
 
 		set_brush_radius ();
@@ -169,10 +223,9 @@ X3DIndexedFaceSetBrushObject::set_brush_radius ()
 {
 	try
 	{
-		const double radius = brushNode -> getField <SFDouble> ("radius");
-		const double scale  = brushNode -> getField <SFDouble> ("scale");
+		const auto s = radius () * scale ();
 
-		brushTransform -> scale () = Vector3d (radius, radius, radius) * scale;
+		brushTransform -> scale () = Vector3d (s, s, s);
 	}
 	catch (const X3DError & error)
 	{ }

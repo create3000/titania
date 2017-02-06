@@ -151,7 +151,7 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_active ()
 			lastHitPoint    = touchSensor -> getHitPoint ();
 			pointerDistance = std::numeric_limits <double>::infinity ();
 
-			undoStep = std::make_shared <UndoStep> (_ (brush () -> getField <SFDouble> ("height") >= 0.0 ? "Pull Polygons" : "Push Polygons"));
+			undoStep = std::make_shared <UndoStep> (_ (height () >= 0.0 ? "Pull Polygons" : "Push Polygons"));
 	
 			undoSetCoordPoint (undoStep);
 		}
@@ -181,14 +181,12 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 
 		pointerDistance += math::distance (hitPoint, lastHitPoint);
 
-		if (pointerDistance > brush () -> getField <SFDouble> ("spacing"))
+		if (pointerDistance > spacing ())
 		{
 			const auto & hitNormal = touchSensor -> getHitNormal ();
-			const auto scale       = brush () -> getField <SFDouble> ("scale") .getValue ();
-			const auto radius      = brush () -> getField <SFDouble> ("radius") .getValue () * scale;
-			const auto height      = brush () -> getField <SFDouble> ("height") .getValue ();
+			const auto   r         = radius () * scale ();
 
-			// Determin affected points.
+			// Determine affected points.
 
 			std::vector <std::pair <size_t, Vector3d>> points;
 
@@ -197,7 +195,7 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 				const auto point    = getCoord () -> get1Point (i);
 				const auto distance = math::distance (hitPoint, point);
 		
-				if (distance < radius)
+				if (distance < r)
 					points .emplace_back (i, point);
 			}
 
@@ -206,7 +204,7 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 			if (toolType () == "SCULP")
 			{
 				for (const auto & pair : points)
-					getCoord () -> set1Point (pair .first, pair .second + (getHeight (hitNormal, hitPoint, pair .second) * height));
+					getCoord () -> set1Point (pair .first, pair .second + (getHeight (hitNormal, hitPoint, pair .second) * height () .getValue ()));
 			}
 			else if (toolType () == "SCULP_SMOOTH")
 			{
@@ -248,22 +246,18 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 Vector3d
 X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point)
 {
-	const auto w = 1 + std::pow (brush () -> getField <SFDouble> ("warp") , 8) * 9999;
-	const auto s = 2 + brush () -> getField <SFDouble> ("sharpness")  * 98;
-	const auto e = std::pow (brush () -> getField <SFDouble> ("hardness") , 4) * 100;
+	const auto w = 1 + std::pow (warp () , 8) * 9999;
+	const auto s = 2 + sharpness ()  * 98;
+	const auto e = std::pow (hardness () , 4) * 100;
 
 	const auto p = (point - hitPoint) * Rotation4d (hitNormal, Vector3d (0, 0, 1));
-	const auto r = brush () -> getField <SFDouble> ("radius") .getValue () * brush () -> getField <SFDouble> ("scale") .getValue ();
+	const auto r = radius () * scale ();
 	const auto v = Vector2d (p .x (), p .y ()) / r;
 
-	const auto & type     = brush () -> getField <SFString> ("type");
-	const auto   scale    = brush () -> getField <SFDouble> ("scale") .getValue ();
-	const auto   pressure = brush () -> getField <SFDouble> ("pressure") .getValue () * scale;
+	if (brushType () == "SQUARED")
+		return hitNormal * (getCircularHeight (v, w, s, e) * pressure () * scale ());
 
-	if (type == "SQUARED")
-		return hitNormal * (getCircularHeight (v, w, s, e) * pressure);
-
-	return hitNormal * (getCircularHeight (v, w, s, e) * pressure);
+	return hitNormal * (getCircularHeight (v, w, s, e) * pressure () * scale ());
 }
 
 Vector3d
