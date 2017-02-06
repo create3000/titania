@@ -853,6 +853,7 @@
     <None Include="Titania\X3D\InputOutput\X3DGenerator.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetBrushObject.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetSculpToolObject.h" />
+    <None Include="share\titania\tools\SculpToolBrush.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

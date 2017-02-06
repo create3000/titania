@@ -2581,6 +2581,8 @@
     <None Include="share\titania\Library\SculpToolBrushes\Default\Default3.x3dv" />
     <None Include="share\titania\Library\SculpToolBrushes\Default\Default2.x3dv" />
     <None Include="share\titania\Library\SculpToolBrushes\Default\Default1.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default11.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default12.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
