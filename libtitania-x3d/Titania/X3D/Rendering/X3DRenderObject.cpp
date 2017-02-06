@@ -57,6 +57,7 @@
 #include "../Components/EnvironmentalEffects/X3DBackgroundNode.h"
 #include "../Components/Navigation/NavigationInfo.h"
 #include "../Components/Navigation/X3DViewpointNode.h"
+#include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Rendering/X3DGeometryNode.h"
 #include "../Components/Shaders/ComposedShader.h"
 #include "../Components/Shape/Appearance.h"
@@ -460,7 +461,12 @@ X3DRenderObject::gravite ()
 	{
 		// Terrain following and gravitation
 
-		if (getNavigationInfo () -> getViewer () not_eq X3DConstants::WalkViewer)
+		if (getBrowser () -> getActiveLayer () -> getNavigationInfo () == getNavigationInfo ())
+		{
+			if (getBrowser () -> getCurrentViewer () not_eq X3DConstants::WalkViewer)
+				return;
+		}
+		else if (getNavigationInfo () -> getViewer () not_eq X3DConstants::WalkViewer)
 			return;
 
 		// Get NavigationInfo values

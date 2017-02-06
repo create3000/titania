@@ -7,7 +7,7 @@ META "created" "Fri, 03 Feb 2017 09:50:02 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv"
-META "modified" "Mon, 06 Feb 2017 19:50:04 GMT"
+META "modified" "Mon, 06 Feb 2017 19:59:48 GMT"
 META "outputStyle" "Nicest"
 
 EXTERNPROTO Grid [
@@ -47,16 +47,17 @@ PROTO SculpToolBrush [
     scale 0.2 0.1 0.2
     center 0.5 0 0.5
     children [
-      Shape {
+      DEF _1 Shape {
         appearance Appearance {
           material DEF Metal17 Material {
             ambientIntensity 0.0570021
             diffuseColor 0.222308 0.15428 0
             specularColor 0.678571 0.661796 0.528818
             shininess 0.0204082
+            transparency 0.2
           }
         }
-        geometry DEF _1 ElevationGrid {
+        geometry DEF _2 ElevationGrid {
           xDimension 101
           zDimension 101
           xSpacing 0.01
@@ -10279,7 +10280,6 @@ PROTO SculpToolBrush [
           0,
           2
         ]
-        majorLineOffset 0
         color 0 0 0
         transparency 1
         lineColor 0 0 0
@@ -10287,6 +10287,19 @@ PROTO SculpToolBrush [
         majorLineColor 0 0 0
         majorLineTransparency 0
         solid FALSE
+      }
+      DEF Circle2D Transform {
+        translation 0.5 0 0.5
+        rotation -0.999999999993254 -3.67320520178193e-06 -2.22360694332192e-14 1.57079636324395
+        scaleOrientation 0 0 -1 0.78539809621802
+        children Shape {
+          appearance Appearance {
+            material Material { }
+          }
+          geometry Circle2D {
+            radius 0.5
+          }
+        }
       }
     ]
   }
@@ -10301,7 +10314,7 @@ PROTO SculpToolBrush [
     inputOutput    SFDouble pressure IS pressure
     inputOutput    SFDouble scale IS scale
     initializeOnly SFNode   transform USE ElevationGrid
-    initializeOnly SFNode   geometry USE _1
+    initializeOnly SFNode   geometry USE _2
 
     url "ecmascript:
 
@@ -10408,19 +10421,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0.110541172325611,
-              0.149627447128296,
-              0.216015815734863
+              0.0725223645567894,
+              0.104869857430458,
+              0.254977196455002
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.795262403559147,
-              0.605071732413403,
-              0.0380250985478152,
-              0.711495001740071
+              -0.830250577203015,
+              0.552039261836057,
+              -0.0770495453949005,
+              0.465103500416339
             ]
           }
           DEF centerOfRotation MetadataDouble {
