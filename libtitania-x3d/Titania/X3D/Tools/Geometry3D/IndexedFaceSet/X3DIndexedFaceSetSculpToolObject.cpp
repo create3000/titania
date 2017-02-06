@@ -215,7 +215,7 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 					const auto distance = math::distance (hitPoint, point);
 
 					if (distance < radius)
-						getCoord () -> set1Point (i, point + getUndoHeight (hitNormal, hitPoint, point, undoPoints [i]));
+						getCoord () -> set1Point (i, point + getUndoHeight (hitNormal, hitPoint, point, undoPoints .at (i)));
 				}
 			}
 
@@ -224,7 +224,7 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 
 		lastHitPoint = hitPoint;
 	}
-	catch (const X3DError & error)
+	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}

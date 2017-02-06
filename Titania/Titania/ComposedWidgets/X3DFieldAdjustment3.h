@@ -121,6 +121,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_scene ();
+
+	void
 	on_value_changed (const int);
 
 	template <class ValueType, class Value>
@@ -217,21 +220,30 @@ X3DFieldAdjustment3 <Type>::X3DFieldAdjustment3 (X3DBaseInterface* const editor,
 	adjustments [0] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment3::on_value_changed), 0));
 	adjustments [1] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment3::on_value_changed), 1));
 	adjustments [2] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DFieldAdjustment3::on_value_changed), 2));
+
+	getCurrentScene () .addInterest (&X3DFieldAdjustment3 <Type>::set_scene, this);
+
+	set_scene ();
+}
+
+template <class Type>
+void
+X3DFieldAdjustment3 <Type>::set_scene ()
+{
+	// Connect units.
+
+	if (scene)
+		scene -> units_changed () .removeInterest (&X3DFieldAdjustment3 <Type>::set_field, this);
+
+	scene = getCurrentScene ();
+
+	scene -> units_changed () .addInterest (&X3DFieldAdjustment3 <Type>::set_field, this);
 }
 
 template <class Type>
 void
 X3DFieldAdjustment3 <Type>::setNodes (const X3D::MFNode & value)
 {
-	// Connect units.
-
-	if (scene)
-		scene -> units_changed () .removeInterest (&X3DFieldAdjustment3::set_field, this);
-
-	scene = getCurrentScene ();
-
-	scene -> units_changed () .addInterest (&X3DFieldAdjustment3::set_field, this);
-
 	// Connect field.
 
 	for (const auto & node : nodes)

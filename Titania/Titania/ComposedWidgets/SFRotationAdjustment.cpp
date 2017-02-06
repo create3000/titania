@@ -87,10 +87,14 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 
 	lower = adjustments [3] -> get_lower ();
 	upper = adjustments [3] -> get_upper ();
+
+	getCurrentScene () .addInterest (&SFRotationAdjustment::set_scene, this);
+
+	set_scene ();
 }
 
 void
-SFRotationAdjustment::setNodes (const X3D::MFNode & value)
+SFRotationAdjustment::set_scene ()
 {
 	// Connect units.
 
@@ -100,7 +104,11 @@ SFRotationAdjustment::setNodes (const X3D::MFNode & value)
 	scene = getCurrentScene ();
 
 	scene -> units_changed () .addInterest (&SFRotationAdjustment::set_field, this);
+}
 
+void
+SFRotationAdjustment::setNodes (const X3D::MFNode & value)
+{
 	// Connect field.
 
 	for (const auto & node : nodes)

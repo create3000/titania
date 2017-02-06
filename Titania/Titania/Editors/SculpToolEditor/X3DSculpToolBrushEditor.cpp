@@ -114,6 +114,9 @@ X3DSculpToolBrushEditor::set_initalized ()
 		{
 			brush = getMasterBrowser () -> getExecutionContext () -> createProto ("SculpToolBrush");
 
+			brush -> getField <X3D::SFDouble> ("radius") .setUnit (X3D::UnitCategory::LENGTH);
+			brush -> getField <X3D::SFDouble> ("height") .setUnit (X3D::UnitCategory::LENGTH);
+
 			getMasterBrowser () -> getExecutionContext () -> updateNamedNode ("SculpToolBrush", brush);
 			getMasterBrowser () -> getExecutionContext () -> getRootNodes () .emplace_back (brush);
 

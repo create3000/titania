@@ -92,6 +92,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_scene ();
+
+	void
 	on_value_changed (const int);
 
 	void
