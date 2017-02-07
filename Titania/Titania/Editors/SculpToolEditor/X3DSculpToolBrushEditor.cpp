@@ -99,12 +99,6 @@ X3DSculpToolBrushEditor::set_initalized ()
 	{
 		preview -> set_opacity (1);
 
-		// Event handlers
-
-		getMasterBrowser () -> getExecutionContext () -> bbox_changed () .addInterest (&X3DSculpToolBrushEditor::set_bbox, this);
-
-		set_bbox ();
-
 		// Create or get brush
 
 		try
@@ -135,8 +129,16 @@ X3DSculpToolBrushEditor::set_initalized ()
 			}
 		}
 
-		brush -> addInterest (&X3D::Browser::addEvent, preview .getValue ());
 		preview -> getExecutionContext () -> getScene () -> getExportedNode <X3D::Group> ("BrushGroup") -> children () = { brush };
+
+		// Event handlers
+
+		brush -> addInterest (&X3D::Browser::addEvent, preview .getValue ());
+
+		getMasterBrowser () -> getExecutionContext () -> bbox_changed () .addInterest (&X3DSculpToolBrushEditor::set_bbox, this);
+		preview             -> getExecutionContext () -> bbox_changed () .addInterest (&X3DSculpToolBrushEditor::set_bbox, this);
+
+		set_bbox ();
 
 		// Setup widgets
 

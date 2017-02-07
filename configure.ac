@@ -42,7 +42,7 @@ dnl ***************************************************************************
 dnl Compile options
 dnl ***************************************************************************
 
-dnl ******* add "-flto" flag (link time optimization) to CXXFLAGS or LDFLAGS if it is working
+dnl ******* add "-flto --plugin=$(gcc --print-file-name=liblto_plugin.so)" flags (link time optimization) to CXXFLAGS or LDFLAGS if it is working
 
 CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing"
 

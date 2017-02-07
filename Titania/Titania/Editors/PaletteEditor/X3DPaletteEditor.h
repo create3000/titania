@@ -171,6 +171,16 @@ private:
 	void
 	set_touchTime (const size_t position);
 
+	void
+	on_drag_begin (const Glib::RefPtr <Gdk::DragContext> & context);
+
+	void
+	on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> &, Gtk::SelectionData & selection_data, guint info, guint time);
+
+	void
+	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y,
+	                       const Gtk::SelectionData & selection_data, guint info, guint time);
+
 	virtual
 	void
 	on_palette_previous_clicked () final override;
@@ -249,6 +259,7 @@ private:
 	bool                         over;
 	size_t                       overIndex;
 	size_t                       selectedIndex;
+	size_t                       dragIndex;
 
 };
 
@@ -267,7 +278,8 @@ X3DPaletteEditor <Type>::X3DPaletteEditor (const std::string & libraryFolder) :
 	numDefaultPalettes (0),
 	              over (false),
 	         overIndex (-1),
-	     selectedIndex (-1)
+	     selectedIndex (-1),
+	         dragIndex (-1)
 {
 	this -> addChildObjects (preview, group, selectionSwitch, selectionRectangle, box);
 }
@@ -285,6 +297,23 @@ X3DPaletteEditor <Type>::initialize ()
 	preview -> show ();
 
 	this -> getPalettePreviewBox () .pack_start (*preview, true, true, 0);
+
+	// TODO?
+	this -> getUpdateObjectInPaletteMenuItem () .set_visible (false);
+
+//	// Drag n drop
+//
+//	std::vector <Gtk::TargetEntry> listTargets;
+//	
+//	listTargets .emplace_back (Gtk::TargetEntry ("STRING"));
+//	listTargets .emplace_back (Gtk::TargetEntry ("text/plain"));
+//
+//	preview -> drag_source_set (listTargets);
+//	preview -> drag_dest_set (listTargets);
+//
+//	preview -> signal_drag_begin ()         .connect (sigc::mem_fun (*this, &X3DPaletteEditor::on_drag_begin));
+//	preview -> signal_drag_data_get ()      .connect (sigc::mem_fun (*this, &X3DPaletteEditor::on_drag_data_get));
+//	preview -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DPaletteEditor::on_drag_data_received));
 }
 
 template <class Type>
@@ -444,9 +473,9 @@ X3DPaletteEditor <Type>::addObject (const size_t position, const basic::uri & UR
 
 	transform -> translation () = getTranslation (position);
 
+	transform -> children () .emplace_back (touchSensor); // Must be the first node.
 	transform -> children () .emplace_back (node);
 	transform -> children () .emplace_back (box);
-	transform -> children () .emplace_back (touchSensor); // Must be the last node.
 
 	group -> children () .resize (std::max (position + 1, group -> children () .size ()));
 	group -> children () [position] = transform;
@@ -454,6 +483,26 @@ X3DPaletteEditor <Type>::addObject (const size_t position, const basic::uri & UR
 	files .resize (std::max (position + 1, files .size ()));
 	files [position] = URL;
 }
+
+//template <class Type>
+//X3D::X3DScenePtr
+//X3DPaletteEditor <Type>::createScene (const size_t position)
+//{
+//	const auto paletteIndex       = this -> getPaletteComboBoxText () .get_active_row_number ();
+//	const auto folder             = Gio::File::create_for_uri (folders .at (paletteIndex));
+//	const auto positionCharacters = basic::to_string (position + 1, std::locale::classic ());
+//	const auto file               = folder -> get_child (folder -> get_basename () + positionCharacters + ".x3dv");
+//	const auto scene              = this -> getCurrentBrowser () -> createScene ();
+//
+//	scene -> setWorldURL (Glib::uri_unescape_string (file -> get_uri ()));
+//
+//	if (not createScene (scene))
+//		return;
+//
+//	scene -> addStandardMetaData ();
+//
+//	return scene;
+//}
 
 template <class Type>
 X3D::Vector3f
@@ -511,6 +560,49 @@ X3DPaletteEditor <Type>::set_touchTime (const size_t position)
 	// Do something with selection.
 
 	setTouchTime (files [position]);
+}
+
+template <class Type>
+void
+X3DPaletteEditor <Type>::on_drag_begin (const Glib::RefPtr <Gdk::DragContext> & context)
+{
+__LOG__ << over << std::endl;
+__LOG__ << context << std::endl;
+
+	if (not over)
+	{
+		dragIndex = -1;
+		return;
+	}
+
+	dragIndex = overIndex;
+}
+
+template <class Type>
+void
+X3DPaletteEditor <Type>::on_drag_data_get (const Glib::RefPtr <Gdk::DragContext> & context, Gtk::SelectionData & selection_data, guint info, guint time)
+{
+	selection_data .set (selection_data .get_target (),
+	                     8 /* 8 bits format */,
+	                     (const guchar*) "I'm Data!",
+	                     9 /* the length of I'm Data! in bytes */);
+}
+
+template <class Type>
+void
+X3DPaletteEditor <Type>::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y,
+                                                const Gtk::SelectionData & selection_data, guint, guint time)
+{
+__LOG__ << over << std::endl;
+
+	const int length = selection_data .get_length ();
+
+	if (length and selection_data .get_format () == 8)
+	{
+		__LOG__ << "Received '" << selection_data .get_data_as_string () << "' in label." << std::endl;
+	}
+
+	context -> drag_finish (false, false, time);
 }
 
 template <class Type>
@@ -751,8 +843,8 @@ X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 			for (size_t position = selectedIndex, size = group -> children () .size (); position < size; ++ position)
 			{
 				const auto & transform   = group -> children () [position];
-				const auto & touchSensor = transform -> getField <X3D::MFNode> ("children") .back ();
-		
+				const auto & touchSensor = transform -> getField <X3D::MFNode> ("children") .at (0);
+
 				transform -> getField <X3D::SFVec3f> ("translation") = getTranslation (position);
 	
 				touchSensor -> getField <X3D::SFBool> ("isOver")    .removeInterest (&X3DPaletteEditor::set_over, this);
@@ -768,7 +860,7 @@ X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 				setSelection (-1);
 		}
 	}
-	catch (const X3D::X3DError & error)
+	catch (const std::exception & error)
 	{
 		__LOG__ << error .what () << std::endl;
 	}
