@@ -240,7 +240,9 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 }
 
 Vector3d
-X3DIndexedFaceSetSculpToolObject::getSculpVector (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point)
+X3DIndexedFaceSetSculpToolObject::getSculpVector (const Vector3d & hitNormal,
+                                                  const Vector3d & hitPoint,
+                                                  const Vector3d & point)
 {
 	const auto p = (point - hitPoint) * Rotation4d (hitNormal, Vector3d (0, 0, 1));
 	const auto r = radius () * scale ();
@@ -250,10 +252,11 @@ X3DIndexedFaceSetSculpToolObject::getSculpVector (const Vector3d & hitNormal, co
 }
 
 Vector3d
-X3DIndexedFaceSetSculpToolObject::getSmoothVector (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point)
+X3DIndexedFaceSetSculpToolObject::getSmoothVector (const Vector3d & hitNormal,
+                                                   const Vector3d & hitPoint,
+                                                   const Vector3d & point)
 {
-	const Plane3d plane (hitPoint, hitNormal);
-
+	const auto plane    = Plane3d (hitPoint, hitNormal);
 	const auto distance = plane .distance (point);
 	const auto height   = abs (getSculpVector (hitNormal, hitPoint, point));
 
@@ -261,7 +264,10 @@ X3DIndexedFaceSetSculpToolObject::getSmoothVector (const Vector3d & hitNormal, c
 }
 
 Vector3d
-X3DIndexedFaceSetSculpToolObject::getUndoVector (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point, const Vector3d & undoPoint)
+X3DIndexedFaceSetSculpToolObject::getUndoVector (const Vector3d & hitNormal,
+                                                 const Vector3d & hitPoint,
+                                                 const Vector3d & point,
+                                                 const Vector3d & undoPoint)
 {
 	const auto height = abs (getSculpVector (hitNormal, hitPoint, point));
 

@@ -80,16 +80,16 @@ private:
 	///  @name Operations
 
 	virtual
-	void
-	addObject (const std::string &) final override;
+	X3D::SFNode
+	getObject (const basic::uri & URL) final override;
 
 	virtual
 	void
-	setTouchTime (const std::string &) final override;
+	setTouchTime (const basic::uri & URL) final override;
 
 	virtual
 	bool
-	createScene (const X3D::X3DScenePtr &) final override;
+	createScene (const X3D::X3DScenePtr & scene) final override;
 	
 	void
 	set_loadState (X3D::Inline* const, X3D::Transform* const);

@@ -65,32 +65,32 @@ X3DTexturePaletteEditor::X3DTexturePaletteEditor () :
 	X3DPaletteEditor <X3DTextureEditorInterface> ("Textures")
 { }
 
-void
-X3DTexturePaletteEditor::addObject (const std::string & uri)
+X3D::SFNode
+X3DTexturePaletteEditor::getObject (const basic::uri & URL)
 {
 	try
 	{
 		const auto undoStep    = std::make_shared <X3D::UndoStep> (_ ("Import"));
-		const auto scene       = getPreview () -> createX3DFromURL ({ uri });
+		const auto scene       = getPreview () -> createX3DFromURL ({ URL .str () });
 		const auto appearance  = getPreview () -> getExecutionContext () -> createNode <X3D::Appearance> ();
 		const auto rectangle   = getPreview () -> getExecutionContext () -> createNode <X3D::Rectangle2D> ();
 		const auto shape       = getPreview () -> getExecutionContext () -> createNode <X3D::Shape> ();
-		const auto transform   = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
+
+		shape -> appearance () = appearance;
+		shape -> geometry ()   = rectangle;
+
+		MagicImport (getBrowserWindow ()) .import (getPreview () -> getExecutionContext (), { shape }, scene, undoStep);
 	
-		shape -> appearance ()   = appearance;
-		shape -> geometry ()     = rectangle;
-		transform -> children () = { shape };
-	
-		MagicImport (getBrowserWindow ()) .import (getPreview () -> getExecutionContext (), { transform }, scene, undoStep);
-	
-		X3DPaletteEditor <X3DTextureEditorInterface>::addObject (uri, transform);
+		return shape;
 	}
 	catch (...)
-	{ }
+	{
+		return nullptr;
+	}
 }
 
 void
-X3DTexturePaletteEditor::setTouchTime (const std::string & url)
+X3DTexturePaletteEditor::setTouchTime (const basic::uri & URL)
 {
 	try
 	{
@@ -100,7 +100,7 @@ X3DTexturePaletteEditor::setTouchTime (const std::string & url)
 			return;
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Texture From Palette"));
-		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ url });
+		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ URL .str () });
 
 		if (MagicImport (getBrowserWindow ()) .import (getCurrentContext (), selection, scene, undoStep))
 			getBrowserWindow () -> addUndoStep (undoStep);

@@ -94,6 +94,7 @@ X3DLibraryViewInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RemovePaletteMenuItem", m_RemovePaletteMenuItem);
 	m_builder -> get_widget ("EditPaletteMenuItem", m_EditPaletteMenuItem);
 	m_builder -> get_widget ("AddObjectToPaletteMenuItem", m_AddObjectToPaletteMenuItem);
+	m_builder -> get_widget ("UpdateObjectInPaletteMenuItem", m_UpdateObjectInPaletteMenuItem);
 	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
@@ -121,6 +122,7 @@ X3DLibraryViewInterface::create (const std::string & filename)
 	m_RemovePaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_remove_palette_activate));
 	m_EditPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_edit_palette_activate));
 	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_add_object_to_palette_activate));
+	m_UpdateObjectInPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_update_object_in_palette_activate));
 	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLibraryViewInterface::on_remove_object_from_palette_activate));
 
 	// Call construct handler of base class.

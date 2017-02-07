@@ -2186,6 +2186,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
   </object>
+  <object class="GtkImage" id="image17">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">document-export</property>
+  </object>
   <object class="GtkImage" id="image9">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -2241,6 +2246,17 @@
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
         <signal name="activate" handler="on_add_object_to_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="UpdateObjectInPaletteMenuItem">
+        <property name="label" translatable="yes">Update Material</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image17</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_update_object_in_palette_activate" swapped="no"/>
       </object>
     </child>
     <child>

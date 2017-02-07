@@ -67,35 +67,37 @@ X3DModelsPaletteEditor::X3DModelsPaletteEditor () :
 	X3DPaletteEditor <X3DLibraryViewInterface> ("Models")
 { }
 
-void
-X3DModelsPaletteEditor::addObject (const std::string & URL)
+X3D::SFNode
+X3DModelsPaletteEditor::getObject (const basic::uri & URL)
 {
 	try
 	{
 		const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Import"));
 		const auto inlineNode = getPreview () -> getExecutionContext () -> createNode <X3D::Inline> ();
+		const auto group      = getPreview () -> getExecutionContext () -> createNode <X3D::Group> ();
 		const auto transform  = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
-		const auto group      = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
 		const auto shape      = getPreview () -> getExecutionContext () -> createNode <X3D::Shape> ();
 		const auto appearance = getPreview () -> getExecutionContext () -> createNode <X3D::Appearance> ();
 		const auto material   = getPreview () -> getExecutionContext () -> createNode <X3D::Material> ();
 		const auto box        = getPreview () -> getExecutionContext () -> createNode <X3D::Box> ();
 	
-		inlineNode -> checkLoadState () .addInterest (&X3DModelsPaletteEditor::set_loadState, this, inlineNode .getValue (), group .getValue ());
+		inlineNode -> checkLoadState () .addInterest (&X3DModelsPaletteEditor::set_loadState, this, inlineNode .getValue (), transform .getValue ());
 
-		inlineNode -> url () = { URL };
-		group -> children () = { inlineNode };
+		inlineNode -> url () = { URL .str () };
+		transform -> children () = { inlineNode };
 
 		material -> transparency () = 0.9;
 		appearance -> material ()   = material;
 		shape -> appearance ()      = appearance;
 		shape -> geometry ()        = box;
-		transform -> children ()    = { group, shape };
+		group -> children ()        = { transform, shape };
 	
-		X3DPaletteEditor <X3DLibraryViewInterface>::addObject (URL, transform);
+		return group;
 	}
 	catch (...)
-	{ }
+	{
+		return nullptr;
+	}
 }
 
 void
@@ -138,7 +140,7 @@ X3DModelsPaletteEditor::set_bbox (X3D::Inline* const inlineNode,
 }
 
 void
-X3DModelsPaletteEditor::setTouchTime (const std::string & URL)
+X3DModelsPaletteEditor::setTouchTime (const basic::uri & URL)
 {
 	try
 	{

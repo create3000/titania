@@ -97,21 +97,16 @@ protected:
 	///  @name Virtual functions
 
 	virtual
-	void
-	addObject (const std::string &) = 0;
+	X3D::SFNode
+	getObject (const basic::uri &) = 0;
 
 	virtual
 	void
-	setTouchTime (const std::string &) = 0;
+	setTouchTime (const basic::uri &) = 0;
 
 	virtual
 	bool
 	createScene (const X3D::X3DScenePtr &) = 0;
-
-	///  @name Operations
-
-	void
-	addObject (const std::string &, const X3D::X3DPtr <X3D::Transform> &);
 
 	///  @name Member access
 
@@ -136,16 +131,19 @@ private:
 	refreshPalette ();
 
 	void
-	addLibrary (const std::string &, const bool);
+	addLibrary (const basic::uri & URL, const bool includeEmptyFolders);
 
 	void
 	setCurrentFolder (const size_t);
 
+	void
+	addObject (const size_t position, const basic::uri & URL);
+
 	X3D::Vector3f
-	getPosition (const size_t) const;
+	getTranslation (const size_t position) const;
 
 	void
-	setSelection (const size_t);
+	setSelection (const size_t position);
 
 	void
 	enable ();
@@ -153,10 +151,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_over (const bool, const size_t);
+	set_over (const bool over, const size_t position);
 
 	void
-	set_touchTime (const size_t);
+	set_touchTime (const size_t position);
 
 	virtual
 	void
@@ -172,7 +170,7 @@ private:
 	
 	virtual
 	bool
-	on_palette_button_press_event (GdkEventButton*) final override;
+	on_palette_button_press_event (GdkEventButton* event) final override;
 	
 	virtual
 	void
@@ -209,6 +207,13 @@ private:
 	virtual
 	void
 	on_add_object_to_palette_activate () final override;
+	
+	virtual
+	void
+	on_update_object_in_palette_activate () final override;
+	
+	void
+	on_save_object_to_folder (const size_t number);
 
 	virtual
 	void
@@ -221,8 +226,8 @@ private:
 	X3D::X3DPtr <X3D::Switch>    selectionSwitch;
 	X3D::X3DPtr <X3D::Transform> selectionRectangle;
 	const std::string            libraryFolder;
-	std::vector <std::string>    folders;
-	std::vector <std::string>    files;
+	std::vector <basic::uri>     folders;
+	std::vector <basic::uri>     files;
 	size_t                       numDefaultPalettes;
 	bool                         over;
 	size_t                       overIndex;
@@ -327,7 +332,7 @@ X3DPaletteEditor <Type>::refreshPalette ()
 
 template <class Type>
 void
-X3DPaletteEditor <Type>::addLibrary (const std::string & libraryPath, const bool includeEmptyFolders)
+X3DPaletteEditor <Type>::addLibrary (const basic::uri & libraryPath, const bool includeEmptyFolders)
 {
 	try
 	{
@@ -338,12 +343,13 @@ X3DPaletteEditor <Type>::addLibrary (const std::string & libraryPath, const bool
 			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_DIRECTORY)
 			{
 				const auto child = folder -> get_child (fileInfo -> get_name ());
-				const auto uri   = child -> get_uri ();
+				const auto URL   = child -> get_uri ();
 
 				if (not includeEmptyFolders and not X3DLibraryView::containsFiles (child))
 					continue;
 
-				folders .emplace_back (uri);
+				folders .emplace_back (URL);
+
 				this -> getPaletteComboBoxText () .append (fileInfo -> get_name ());
 			}
 		}
@@ -374,7 +380,7 @@ X3DPaletteEditor <Type>::setCurrentFolder (const size_t paletteIndex)
 		for (const auto & fileInfo : X3DLibraryView::getChildren (folder))
 		{
 			if (fileInfo -> get_file_type () == Gio::FILE_TYPE_REGULAR)
-				addObject (Glib::uri_unescape_string (folder -> get_child (fileInfo -> get_name ()) -> get_uri ()));
+				addObject (files .size (), Glib::uri_unescape_string (folder -> get_child (fileInfo -> get_name ()) -> get_uri ()));
 
 			if (files .size () < PAGE_SIZE)
 				continue;
@@ -390,28 +396,30 @@ X3DPaletteEditor <Type>::setCurrentFolder (const size_t paletteIndex)
 
 template <class Type>
 void
-X3DPaletteEditor <Type>::addObject (const std::string & uri, const X3D::X3DPtr <X3D::Transform> & transform)
+X3DPaletteEditor <Type>::addObject (const size_t position, const basic::uri & URL)
 {
-	const auto i = files .size ();
-
+	const auto node        = getObject (URL);
+	const auto transform   = preview -> getExecutionContext () -> createNode <X3D::Transform> ();
 	const auto touchSensor = preview -> getExecutionContext () -> createNode <X3D::TouchSensor> ();
 
-	touchSensor -> isOver ()    .addInterest (&X3DPaletteEditor::set_over, this, std::cref (touchSensor -> isOver ()), i);
-	touchSensor -> touchTime () .addInterest (&X3DPaletteEditor::set_touchTime, this, i);
+	touchSensor -> isOver ()    .addInterest (&X3DPaletteEditor::set_over, this, std::cref (touchSensor -> isOver ()), position);
+	touchSensor -> touchTime () .addInterest (&X3DPaletteEditor::set_touchTime, this, position);
 
-	transform -> translation () = getPosition (i);
+	transform -> translation () = getTranslation (position);
 
+	transform -> children () .emplace_back (node);
 	transform -> children () .emplace_back (touchSensor);
 
-	group -> children () .emplace_back (transform);
-	preview -> getExecutionContext () -> realize ();
+	group -> children () .resize (std::max (position + 1, group -> children () .size ()));
+	group -> children () [position] = transform;
 
-	files .emplace_back (uri);
+	files .resize (std::max (position + 1, files .size ()));
+	files [position] = URL;
 }
 
 template <class Type>
 X3D::Vector3f
-X3DPaletteEditor <Type>::getPosition (const size_t i) const
+X3DPaletteEditor <Type>::getTranslation (const size_t i) const
 {
 	const int column = i % COLUMNS;
 	const int row    = i / COLUMNS;
@@ -421,14 +429,14 @@ X3DPaletteEditor <Type>::getPosition (const size_t i) const
 
 template <class Type>
 void
-X3DPaletteEditor <Type>::setSelection (const size_t i)
+X3DPaletteEditor <Type>::setSelection (const size_t position)
 {
-	selectedIndex = i;
+	selectedIndex = position;
 
-	if (i < PAGE_SIZE)
+	if (position < PAGE_SIZE)
 	{
 		selectionSwitch -> whichChoice ()    = true;
-		selectionRectangle -> translation () = getPosition (i);
+		selectionRectangle -> translation () = getTranslation (position);
 	}
 	else
 		selectionSwitch -> whichChoice () = false;
@@ -508,6 +516,7 @@ X3DPaletteEditor <Type>::on_palette_button_press_event (GdkEventButton* event)
 	this -> getEditPaletteMenuItem ()   .set_sensitive (customPalette);
 
 	this -> getAddObjectToPaletteMenuItem ()      .set_sensitive (customPalette and files .size () < PAGE_SIZE and checkSelection ());
+	this -> getUpdateObjectInPaletteMenuItem ()   .set_sensitive (customPalette and selectedIndex < PAGE_SIZE and files .size () and over);
 	this -> getRemoveObjectFromPaletteMenuItem () .set_sensitive (customPalette and selectedIndex < PAGE_SIZE and files .size () and over);
 
 	this -> getPaletteMenu () .popup (event -> button, event -> time);
@@ -620,13 +629,27 @@ template <class Type>
 void
 X3DPaletteEditor <Type>::on_add_object_to_palette_activate ()
 {
+	on_save_object_to_folder (files .size ());
+}
+
+template <class Type>
+void
+X3DPaletteEditor <Type>::on_update_object_in_palette_activate ()
+{
+	on_save_object_to_folder (selectedIndex);
+}
+
+template <class Type>
+void
+X3DPaletteEditor <Type>::on_save_object_to_folder (const size_t position)
+{
 	try
 	{
-		const auto paletteIndex = this -> getPaletteComboBoxText () .get_active_row_number ();
-		const auto folder       = Gio::File::create_for_uri (folders .at (paletteIndex));
-		const auto number       = basic::to_string (files .size () + 1, std::locale::classic ());
-		const auto file         = folder -> get_child (folder -> get_basename () + number + ".x3dv");
-		const auto scene        = this -> getCurrentBrowser () -> createScene ();
+		const auto paletteIndex       = this -> getPaletteComboBoxText () .get_active_row_number ();
+		const auto folder             = Gio::File::create_for_uri (folders .at (paletteIndex));
+		const auto positionCharacters = basic::to_string (position + 1, std::locale::classic ());
+		const auto file               = folder -> get_child (folder -> get_basename () + positionCharacters + ".x3dv");
+		const auto scene              = this -> getCurrentBrowser () -> createScene ();
 	
 		scene -> setWorldURL (file -> get_uri ());
 
@@ -649,7 +672,7 @@ X3DPaletteEditor <Type>::on_add_object_to_palette_activate ()
 	
 		// Append material to palette preview.
 	
-		addObject (Glib::uri_unescape_string (file -> get_uri ()));
+		addObject (position, Glib::uri_unescape_string (file -> get_uri ()));
 	}
 	catch (...)
 	{
@@ -661,43 +684,50 @@ template <class Type>
 void
 X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 {
-	if (selectedIndex < files .size ())
+	try
 	{
-		// Remove and move files
-
-		Gio::File::create_for_uri (files [selectedIndex]) -> remove ();
-
-		for (size_t i = selectedIndex + 1, size = files .size (); i < size; ++ i)
+		if (selectedIndex < files .size ())
 		{
-			const auto file = Gio::File::create_for_uri (files [i]);
-			
-			file -> move (Gio::File::create_for_uri (files [i - 1]), Gio::FILE_COPY_OVERWRITE);
-		}
-
-		files .pop_back ();
-
-		// Move items
-
-		group -> children () .erase (group -> children () .begin () + selectedIndex);
-
-		for (size_t i = selectedIndex, size = group -> children () .size (); i < size; ++ i)
-		{
-			const auto & transform   = group -> children () [i];
-			const auto & touchSensor = transform -> getField <X3D::MFNode> ("children") .back ();
+			// Remove and move files
 	
-			transform -> getField <X3D::SFVec3f> ("translation") = getPosition (i);
-
-			touchSensor -> getField <X3D::SFBool> ("isOver")    .removeInterest (&X3DPaletteEditor::set_over, this);
-			touchSensor -> getField <X3D::SFTime> ("touchTime") .removeInterest (&X3DPaletteEditor::set_touchTime, this);
-
-			touchSensor -> getField <X3D::SFBool> ("isOver")    .addInterest (&X3DPaletteEditor::set_over, this, std::cref (touchSensor -> getField <X3D::SFBool> ("isOver")), i);
-			touchSensor -> getField <X3D::SFTime> ("touchTime") .addInterest (&X3DPaletteEditor::set_touchTime, this, i);
+			Gio::File::create_for_uri (files [selectedIndex]) -> remove ();
+	
+			for (size_t i = selectedIndex + 1, size = files .size (); i < size; ++ i)
+			{
+				const auto file = Gio::File::create_for_uri (files [i]);
+				
+				file -> move (Gio::File::create_for_uri (files [i - 1]), Gio::FILE_COPY_OVERWRITE);
+			}
+	
+			files .pop_back ();
+	
+			// Move items
+	
+			group -> children () .erase (group -> children () .begin () + selectedIndex);
+	
+			for (size_t position = selectedIndex, size = group -> children () .size (); position < size; ++ position)
+			{
+				const auto & transform   = group -> children () [position];
+				const auto & touchSensor = transform -> getField <X3D::MFNode> ("children") .back ();
+		
+				transform -> getField <X3D::SFVec3f> ("translation") = getTranslation (position);
+	
+				touchSensor -> getField <X3D::SFBool> ("isOver")    .removeInterest (&X3DPaletteEditor::set_over, this);
+				touchSensor -> getField <X3D::SFTime> ("touchTime") .removeInterest (&X3DPaletteEditor::set_touchTime, this);
+	
+				touchSensor -> getField <X3D::SFBool> ("isOver")    .addInterest (&X3DPaletteEditor::set_over, this, std::cref (touchSensor -> getField <X3D::SFBool> ("isOver")), position);
+				touchSensor -> getField <X3D::SFTime> ("touchTime") .addInterest (&X3DPaletteEditor::set_touchTime, this, position);
+			}
+	
+			// Handle selection
+	
+			if (selectedIndex >= files .size ())
+				setSelection (-1);
 		}
-
-		// Handle selection
-
-		if (selectedIndex >= files .size ())
-			setSelection (-1);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 }
 

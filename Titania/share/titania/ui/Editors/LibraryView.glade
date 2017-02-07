@@ -379,6 +379,11 @@
       </object>
     </child>
   </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">document-export</property>
+  </object>
   <object class="GtkImage" id="image31">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -454,6 +459,17 @@
         <property name="use_stock">False</property>
         <property name="always_show_image">True</property>
         <signal name="activate" handler="on_add_object_to_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="UpdateObjectInPaletteMenuItem">
+        <property name="label" translatable="yes">Update Object</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image3</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_update_object_in_palette_activate" swapped="no"/>
       </object>
     </child>
     <child>

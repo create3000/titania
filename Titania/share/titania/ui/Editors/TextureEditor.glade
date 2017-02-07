@@ -5685,6 +5685,17 @@
       </object>
     </child>
     <child>
+      <object class="GtkImageMenuItem" id="UpdateObjectInPaletteMenuItem">
+        <property name="label" translatable="yes">Update Texture</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">image36</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_update_object_in_palette_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
       <object class="GtkImageMenuItem" id="RemoveObjectFromPaletteMenuItem">
         <property name="label" translatable="yes">Remove Texture</property>
         <property name="visible">True</property>
@@ -5695,5 +5706,10 @@
         <signal name="activate" handler="on_remove_object_from_palette_activate" swapped="no"/>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="image36">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">document-export</property>
   </object>
 </interface>

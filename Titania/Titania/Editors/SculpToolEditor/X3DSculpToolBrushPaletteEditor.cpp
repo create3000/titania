@@ -69,35 +69,37 @@ X3DSculpToolBrushPaletteEditor::X3DSculpToolBrushPaletteEditor () :
 	                                        future ()
 { }
 
-void
-X3DSculpToolBrushPaletteEditor::addObject (const std::string & URL)
+X3D::SFNode
+X3DSculpToolBrushPaletteEditor::getObject (const basic::uri & URL)
 {
 	try
 	{
 		const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Import"));
 		const auto inlineNode = getPreview () -> getExecutionContext () -> createNode <X3D::Inline> ();
+		const auto group      = getPreview () -> getExecutionContext () -> createNode <X3D::Group> ();
 		const auto transform  = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
-		const auto group      = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
 		const auto shape      = getPreview () -> getExecutionContext () -> createNode <X3D::Shape> ();
 		const auto appearance = getPreview () -> getExecutionContext () -> createNode <X3D::Appearance> ();
 		const auto material   = getPreview () -> getExecutionContext () -> createNode <X3D::Material> ();
 		const auto box        = getPreview () -> getExecutionContext () -> createNode <X3D::Box> ();
 
-		inlineNode -> checkLoadState () .addInterest (&X3DSculpToolBrushPaletteEditor::set_loadState, this, inlineNode .getValue (), group .getValue ());
+		inlineNode -> checkLoadState () .addInterest (&X3DSculpToolBrushPaletteEditor::set_loadState, this, inlineNode .getValue (), transform .getValue ());
 
-		inlineNode -> url () = { URL };
-		group -> children () = { inlineNode };
+		inlineNode -> url ()     = { URL .str () };
+		transform -> children () = { inlineNode };
 
 		material -> transparency () = 0.9;
 		appearance -> material ()   = material;
 		shape -> appearance ()      = appearance;
 		shape -> geometry ()        = box;
-		transform -> children ()    = { group, shape };
+		group -> children ()        = { transform, shape };
 	
-		X3DPaletteEditor <X3DSculpToolEditorInterface>::addObject (URL, transform);
+		return group;
 	}
 	catch (...)
-	{ }
+	{
+		return nullptr;
+	}
 }
 
 void
@@ -151,13 +153,13 @@ X3DSculpToolBrushPaletteEditor::set_bbox (X3D::Inline* const inlineNode,
 }
 
 void
-X3DSculpToolBrushPaletteEditor::setTouchTime (const std::string & URL)
+X3DSculpToolBrushPaletteEditor::setTouchTime (const basic::uri & URL)
 {
 	try
 	{
 		using namespace std::placeholders;
 
-		future = getMasterBrowser () -> createX3DFromURL ({ URL }, std::bind (&X3DSculpToolBrushPaletteEditor::set_model, this, _1));
+		future = getMasterBrowser () -> createX3DFromURL ({ URL .str () }, std::bind (&X3DSculpToolBrushPaletteEditor::set_model, this, _1));
 	}
 	catch (const X3D::X3DError &)
 	{ }

@@ -1084,6 +1084,10 @@ public:
 	{ return *m_AddObjectToPaletteMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getUpdateObjectInPaletteMenuItem () const
+	{ return *m_UpdateObjectInPaletteMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getRemoveObjectFromPaletteMenuItem () const
 	{ return *m_RemoveObjectFromPaletteMenuItem; }
 
@@ -1192,6 +1196,10 @@ public:
 	virtual
 	void
 	on_add_object_to_palette_activate () = 0;
+
+	virtual
+	void
+	on_update_object_in_palette_activate () = 0;
 
 	virtual
 	void
@@ -1469,6 +1477,7 @@ private:
 	Gtk::ImageMenuItem*                    m_RemovePaletteMenuItem;
 	Gtk::ImageMenuItem*                    m_EditPaletteMenuItem;
 	Gtk::ImageMenuItem*                    m_AddObjectToPaletteMenuItem;
+	Gtk::ImageMenuItem*                    m_UpdateObjectInPaletteMenuItem;
 	Gtk::ImageMenuItem*                    m_RemoveObjectFromPaletteMenuItem;
 
 };

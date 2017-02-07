@@ -75,20 +75,18 @@ X3DMaterialPaletteEditor::configure ()
 	getPaletteFaceCombo () .set_active (getConfig () -> getInteger ("paletteFace"));
 }
 
-void
-X3DMaterialPaletteEditor::addObject (const std::string & uri)
+X3D::SFNode
+X3DMaterialPaletteEditor::getObject (const basic::uri & URL)
 {
 	const auto inlineNode  = getPreview () -> getExecutionContext () -> createNode <X3D::Inline> ();
-	const auto transform   = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
 
-	inlineNode -> url ()     = { uri };
-	transform -> children () = { inlineNode };
+	inlineNode -> url () = { URL .str () };
 
-	X3DPaletteEditor <X3DAppearanceEditorInterface>::addObject (uri, transform);
+	return inlineNode;
 }
 
 void
-X3DMaterialPaletteEditor::setTouchTime (const std::string & url)
+X3DMaterialPaletteEditor::setTouchTime (const basic::uri & URL)
 {
 	try
 	{
@@ -100,7 +98,7 @@ X3DMaterialPaletteEditor::setTouchTime (const std::string & url)
 			return;
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Apply Material From Palette"));
-		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ url });
+		const auto scene    = getCurrentBrowser () -> createX3DFromURL ({ URL .str () });
 
 		MagicImport magicImport (getBrowserWindow ());
 
