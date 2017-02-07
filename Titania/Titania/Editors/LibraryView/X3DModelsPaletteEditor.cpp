@@ -131,7 +131,7 @@ X3DModelsPaletteEditor::set_bbox (X3D::Inline* const inlineNode,
 	const auto bbox   = inlineNode -> getBBox ();
 	const auto size   = bbox .size ();
 	const auto center = bbox .center ();
-	const auto scale  = X3D::Vector3d (1.8, 1.8, 1.8) / std::max ({ size .x (), size .y (), size .z () });
+	const auto scale  = X3D::Vector3d (1.8, 1.8, 1.8) / maximum_norm (size);
 
 	transform -> translation () = -center * scale;
 	transform -> scale ()       = scale;

@@ -95,7 +95,7 @@ X3DIndexedFaceSetBrushObject::initialize ()
 }
 
 const SFString &
-X3DIndexedFaceSetBrushObject::brushType () const
+X3DIndexedFaceSetBrushObject::type () const
 {
 	return brush () -> getField <SFString> ("type");
 }
@@ -242,6 +242,34 @@ X3DIndexedFaceSetBrushObject::set_touch_sensor_hitPoint ()
 {
 	brushTransform -> translation () = touchSensor -> hitPoint_changed ();
 	brushTransform -> rotation ()    = Rotation4d (Vector3d (0, 0, 1), Vector3d (touchSensor -> hitNormal_changed () .getValue ()));
+}
+
+double
+X3DIndexedFaceSetBrushObject::getHeight (const Vector2d & v) const
+{
+	const auto w = 1 + std::pow (warp () , 8) * 9999;
+	const auto s = 2 + sharpness ()  * 98;
+	const auto e = std::pow (hardness () , 4) * 100;
+
+	if (type () == "SQUARED")
+		return getCircularHeight (v, w, s, e) * pressure () * scale ();
+
+	return getCircularHeight (v, w, s, e) * pressure () * scale ();
+}
+
+double
+X3DIndexedFaceSetBrushObject::getCircularHeight (const Vector2d & v, const double w, const double s, const double e) const
+{
+	const auto c = abs (v);
+
+	return std::pow (w, -std::abs (std::pow (s * c, e)));
+}
+
+double
+X3DIndexedFaceSetBrushObject::getSquaredHeight (const Vector2d & v, const double w, const double s, const double e) const
+{
+	return std::pow (w, -(std::abs (std::pow (s * std::abs (v .x ()), e)) +
+	                      std::abs (std::pow (s * std::abs (v .y ()), e))));
 }
 
 X3DIndexedFaceSetBrushObject::~X3DIndexedFaceSetBrushObject ()

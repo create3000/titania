@@ -204,32 +204,28 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 			if (toolType () == "SCULP")
 			{
 				for (const auto & pair : points)
-					getCoord () -> set1Point (pair .first, pair .second + (getHeight (hitNormal, hitPoint, pair .second) * height () .getValue ()));
+					getCoord () -> set1Point (pair .first, pair .second + (getSculpVector (hitNormal, hitPoint, pair .second) * height () .getValue ()));
 			}
 			else if (toolType () == "SCULP_SMOOTH")
 			{
 				// Calculate average point within radius.
 
-				size_t   averagePoints = 0;
 				Vector3d averagePoint;
 
 				for (const auto & pair : points)
-				{
-					++ averagePoints;
 					averagePoint += pair .second;
-				}
 
-				averagePoint /= averagePoints;
+				averagePoint /= points .size ();
 
 				// Apply smooth vector.
 
 				for (const auto & pair : points)
-					getCoord () -> set1Point (pair .first, pair .second + getSmoothHeight (hitNormal, averagePoint, pair .second));
+					getCoord () -> set1Point (pair .first, pair .second + getSmoothVector (hitNormal, averagePoint, pair .second));
 			}
 			else if (toolType () == "SCULP_UNDO")
 			{
 				for (const auto & pair : points)
-					getCoord () -> set1Point (pair .first, pair .second + getUndoHeight (hitNormal, hitPoint, pair .second, undoPoints .at (pair .first)));
+					getCoord () -> set1Point (pair .first, pair .second + getUndoVector (hitNormal, hitPoint, pair .second, undoPoints .at (pair .first)));
 			}
 
 			pointerDistance = 0;
@@ -244,54 +240,32 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 }
 
 Vector3d
-X3DIndexedFaceSetSculpToolObject::getHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point)
+X3DIndexedFaceSetSculpToolObject::getSculpVector (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point)
 {
-	const auto w = 1 + std::pow (warp () , 8) * 9999;
-	const auto s = 2 + sharpness ()  * 98;
-	const auto e = std::pow (hardness () , 4) * 100;
-
 	const auto p = (point - hitPoint) * Rotation4d (hitNormal, Vector3d (0, 0, 1));
 	const auto r = radius () * scale ();
 	const auto v = Vector2d (p .x (), p .y ()) / r;
 
-	if (brushType () == "SQUARED")
-		return hitNormal * (getCircularHeight (v, w, s, e) * pressure () * scale ());
-
-	return hitNormal * (getCircularHeight (v, w, s, e) * pressure () * scale ());
+	return hitNormal * getHeight (v);
 }
 
 Vector3d
-X3DIndexedFaceSetSculpToolObject::getSmoothHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point)
+X3DIndexedFaceSetSculpToolObject::getSmoothVector (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point)
 {
 	const Plane3d plane (hitPoint, hitNormal);
 
 	const auto distance = plane .distance (point);
-	const auto height   = abs (getHeight (hitNormal, hitPoint, point));
+	const auto height   = abs (getSculpVector (hitNormal, hitPoint, point));
 
 	return -(distance * height) * hitNormal;
 }
 
 Vector3d
-X3DIndexedFaceSetSculpToolObject::getUndoHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point, const Vector3d & undoPoint)
+X3DIndexedFaceSetSculpToolObject::getUndoVector (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point, const Vector3d & undoPoint)
 {
-	const auto height = abs (getHeight (hitNormal, hitPoint, point));
+	const auto height = abs (getSculpVector (hitNormal, hitPoint, point));
 
-	return (undoPoint - point) * height;
-}
-
-double
-X3DIndexedFaceSetSculpToolObject::getCircularHeight (const Vector2d & v, const double w, const double s, const double e)
-{
-	const auto c = abs (v);
-
-	return std::pow (w, -std::abs (std::pow (s * c, e)));
-}
-
-double
-X3DIndexedFaceSetSculpToolObject::getSquaredHeight (const Vector2d & v, const double w, const double s, const double e)
-{
-	return std::pow (w, -(std::abs (std::pow (s * std::abs (v .x ()), e)) +
-	                      std::abs (std::pow (s * std::abs (v .y ()), e))));
+	return normalize (undoPoint - point) * height;
 }
 
 X3DIndexedFaceSetSculpToolObject::~X3DIndexedFaceSetSculpToolObject ()

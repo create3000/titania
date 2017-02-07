@@ -74,7 +74,7 @@ public:
 	///  @name Member access
 
 	const SFString &
-	brushType () const;
+	type () const;
 	
 	const SFDouble &
 	radius () const;
@@ -127,6 +127,9 @@ protected:
 	int32_t
 	getToolNumber () const = 0;
 
+	double
+	getHeight (const Vector2d & v) const;
+
 
 private:
 
@@ -149,6 +152,14 @@ private:
 
 	void
 	set_touch_sensor_hitPoint ();
+
+	///  @name Member access
+	
+	double
+	getCircularHeight (const Vector2d & v, const double w, const double s, const double e) const;
+	
+	double
+	getSquaredHeight (const Vector2d & v, const double w, const double s, const double e) const;
 
 	///  @name Fields
 
