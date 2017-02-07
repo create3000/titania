@@ -457,10 +457,10 @@ X3DPaletteEditor <Type>::addObject (const size_t position, const basic::uri & UR
 
 template <class Type>
 X3D::Vector3f
-X3DPaletteEditor <Type>::getTranslation (const size_t i) const
+X3DPaletteEditor <Type>::getTranslation (const size_t position) const
 {
-	const int column = i % COLUMNS;
-	const int row    = i / COLUMNS;
+	const int column = position % COLUMNS;
+	const int row    = position / COLUMNS;
 
 	return X3D::Vector3f (column * DISTANCE, -row * DISTANCE, 0);
 }
@@ -489,23 +489,28 @@ X3DPaletteEditor <Type>::enable ()
 
 template <class Type>
 void
-X3DPaletteEditor <Type>::set_over (const bool value, const size_t i)
+X3DPaletteEditor <Type>::set_over (const bool value, const size_t position)
 {
 	over      = value;
-	overIndex = i;
+	overIndex = position;
+
+	if (over)
+		this -> getPalettePreviewBox () .set_tooltip_text (files [position] .basename (false));
+	else
+		this -> getPalettePreviewBox () .set_tooltip_text ("");
 }
 
 template <class Type>
 void
-X3DPaletteEditor <Type>::set_touchTime (const size_t i)
+X3DPaletteEditor <Type>::set_touchTime (const size_t position)
 {
 	// Display and place selection rectangle.
 
-	setSelection (i);
+	setSelection (position);
 
 	// Do something with selection.
 
-	setTouchTime (files [i]);
+	setTouchTime (files [position]);
 }
 
 template <class Type>
