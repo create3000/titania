@@ -67,7 +67,9 @@ using math::pi;
 X3DMaterialPaletteEditor::X3DMaterialPaletteEditor () :
 	X3DPaletteEditor <X3DAppearanceEditorInterface> ("Materials"),
 	                                  frontMaterial (true)
-{ }
+{
+	setBoxTransparency (1);
+}
 
 void
 X3DMaterialPaletteEditor::configure ()

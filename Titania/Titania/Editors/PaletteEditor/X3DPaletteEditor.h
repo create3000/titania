@@ -57,10 +57,14 @@
 #include "../../Editors/LibraryView/X3DLibraryView.h"
 
 #include <Titania/X3D.h>
+#include <Titania/X3D/Components/Geometry3D/Box.h>
 #include <Titania/X3D/Components/Grouping/Group.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
+#include <Titania/X3D/Components/Shape/Appearance.h>
+#include <Titania/X3D/Components/Shape/Material.h>
+#include <Titania/X3D/Components/Shape/Shape.h>
 
 #include <Titania/String/to_string.h>
 
@@ -94,6 +98,14 @@ protected:
 	void
 	initialize () override;
 
+	void
+	setBoxTransparency (const float value)
+	{ boxTransparency = value; }
+
+	float
+	getBoxTransparency () const
+	{ return boxTransparency; }
+
 	///  @name Virtual functions
 
 	virtual
@@ -121,6 +133,9 @@ private:
 
 	void
 	set_browser ();
+
+	X3D::SFNode
+	getBox () const;
 
 	///  @name Operations
 
@@ -225,6 +240,8 @@ private:
 	X3D::X3DPtr <X3D::Group>     group;
 	X3D::X3DPtr <X3D::Switch>    selectionSwitch;
 	X3D::X3DPtr <X3D::Transform> selectionRectangle;
+	X3D::SFNode                  box;
+	float                        boxTransparency;
 	const std::string            libraryFolder;
 	std::vector <basic::uri>     folders;
 	std::vector <basic::uri>     files;
@@ -242,6 +259,8 @@ X3DPaletteEditor <Type>::X3DPaletteEditor (const std::string & libraryFolder) :
 	             group (),
 	   selectionSwitch (),
 	selectionRectangle (),
+	               box (),
+	   boxTransparency (0.9),
 	     libraryFolder (libraryFolder),
 	           folders (),
 	             files (),
@@ -250,7 +269,7 @@ X3DPaletteEditor <Type>::X3DPaletteEditor (const std::string & libraryFolder) :
 	         overIndex (-1),
 	     selectedIndex (-1)
 {
-	this -> addChildObjects (preview, group, selectionSwitch, selectionRectangle);
+	this -> addChildObjects (preview, group, selectionSwitch, selectionRectangle, box);
 }
 
 template <class Type>
@@ -286,7 +305,8 @@ X3DPaletteEditor <Type>::set_browser ()
 		group              = scene -> getExportedNode <X3D::Group>     ("Items");
 		selectionSwitch    = scene -> getExportedNode <X3D::Switch>    ("SelectionSwitch");
 		selectionRectangle = scene -> getExportedNode <X3D::Transform> ("SelectionRectangle");
-	
+		box                = getBox ();
+
 		// Refresh palette.
 
 		refreshPalette ();
@@ -302,6 +322,23 @@ X3DPaletteEditor <Type>::set_browser ()
 	{
 		this -> getPaletteBox () .set_sensitive (false);
 	}
+}
+
+template <class Type>
+X3D::SFNode
+X3DPaletteEditor <Type>::getBox () const
+{
+	const auto shape      = preview -> getExecutionContext () -> createNode <X3D::Shape> ();
+	const auto appearance = preview -> getExecutionContext () -> createNode <X3D::Appearance> ();
+	const auto material   = preview -> getExecutionContext () -> createNode <X3D::Material> ();
+	const auto box        = preview -> getExecutionContext () -> createNode <X3D::Box> ();
+
+	material -> transparency () = boxTransparency;
+	appearance -> material ()   = material;
+	shape -> appearance ()      = appearance;
+	shape -> geometry ()        = box;
+
+	return shape;
 }
 
 template <class Type>
@@ -408,7 +445,8 @@ X3DPaletteEditor <Type>::addObject (const size_t position, const basic::uri & UR
 	transform -> translation () = getTranslation (position);
 
 	transform -> children () .emplace_back (node);
-	transform -> children () .emplace_back (touchSensor);
+	transform -> children () .emplace_back (box);
+	transform -> children () .emplace_back (touchSensor); // Must be the last node.
 
 	group -> children () .resize (std::max (position + 1, group -> children () .size ()));
 	group -> children () [position] = transform;

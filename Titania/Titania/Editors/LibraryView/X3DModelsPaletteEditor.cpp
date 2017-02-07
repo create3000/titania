@@ -52,12 +52,8 @@
 
 #include "../../Browser/MagicImport.h"
 
-#include <Titania/X3D/Components/Geometry3D/Box.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
-#include <Titania/X3D/Components/Shape/Appearance.h>
-#include <Titania/X3D/Components/Shape/Material.h>
-#include <Titania/X3D/Components/Shape/Shape.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 
 namespace titania {
@@ -72,27 +68,15 @@ X3DModelsPaletteEditor::getObject (const basic::uri & URL)
 {
 	try
 	{
-		const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Import"));
 		const auto inlineNode = getPreview () -> getExecutionContext () -> createNode <X3D::Inline> ();
-		const auto group      = getPreview () -> getExecutionContext () -> createNode <X3D::Group> ();
 		const auto transform  = getPreview () -> getExecutionContext () -> createNode <X3D::Transform> ();
-		const auto shape      = getPreview () -> getExecutionContext () -> createNode <X3D::Shape> ();
-		const auto appearance = getPreview () -> getExecutionContext () -> createNode <X3D::Appearance> ();
-		const auto material   = getPreview () -> getExecutionContext () -> createNode <X3D::Material> ();
-		const auto box        = getPreview () -> getExecutionContext () -> createNode <X3D::Box> ();
 	
 		inlineNode -> checkLoadState () .addInterest (&X3DModelsPaletteEditor::set_loadState, this, inlineNode .getValue (), transform .getValue ());
 
-		inlineNode -> url () = { URL .str () };
+		inlineNode -> url ()     = { URL .str () };
 		transform -> children () = { inlineNode };
 
-		material -> transparency () = 0.9;
-		appearance -> material ()   = material;
-		shape -> appearance ()      = appearance;
-		shape -> geometry ()        = box;
-		group -> children ()        = { transform, shape };
-	
-		return group;
+		return transform;
 	}
 	catch (...)
 	{

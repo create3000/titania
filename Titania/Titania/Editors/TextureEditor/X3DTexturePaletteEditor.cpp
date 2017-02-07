@@ -63,7 +63,9 @@ namespace puck {
 
 X3DTexturePaletteEditor::X3DTexturePaletteEditor () :
 	X3DPaletteEditor <X3DTextureEditorInterface> ("Textures")
-{ }
+{
+	setBoxTransparency (1);
+}
 
 X3D::SFNode
 X3DTexturePaletteEditor::getObject (const basic::uri & URL)
