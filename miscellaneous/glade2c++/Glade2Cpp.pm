@@ -550,7 +550,7 @@ sub generate
 	#print get_file ($h_tmp);
 
  	system "call_uncrustify.sh", $h_tmp;
-	print compare ($h_tmp, $h_out) != 0, " ";
+	print compare ($h_tmp, $h_out) != 0 ? ".h" : "", " ";
 
 	system "mv", $h_tmp, $h_out
 		if compare ($h_tmp, $h_out) != 0;
@@ -647,7 +647,7 @@ sub generate
 	#print get_file ($cpp_tmp);
 
 	system "call_uncrustify.sh", $cpp_tmp;
-	print compare ($cpp_tmp, $cpp_out) != 0, " ";
+	print compare ($cpp_tmp, $cpp_out) != 0 ? ".cpp" : "", " ";
 
 	system "mv", $cpp_tmp, $cpp_out
 		if compare ($cpp_tmp, $cpp_out) != 0;

@@ -196,6 +196,14 @@ public:
 	{ return m_EdgeColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getElevationGridHeightMapMaxHeightAdjustment () const
+	{ return m_ElevationGridHeightMapMaxHeightAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getElevationGridHeightMapMinHeightAdjustment () const
+	{ return m_ElevationGridHeightMapMinHeightAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getElevationGridXDimensionAdjustment () const
 	{ return m_ElevationGridXDimensionAdjustment; }
 
@@ -463,6 +471,10 @@ public:
 	getCylinderXDimensionSpinButton () const
 	{ return *m_CylinderXDimensionSpinButton; }
 
+	Gtk::Box &
+	getElevationGridBox () const
+	{ return *m_ElevationGridBox; }
+
 	Gtk::Expander &
 	getElevationGridExpander () const
 	{ return *m_ElevationGridExpander; }
@@ -482,6 +494,22 @@ public:
 	Gtk::SpinButton &
 	getElevationGridZSpacingSpinButton () const
 	{ return *m_ElevationGridZSpacingSpinButton; }
+
+	Gtk::Expander &
+	getElevationGridHeightMapExpander () const
+	{ return *m_ElevationGridHeightMapExpander; }
+
+	Gtk::FileChooserButton &
+	getElevationGridHeightMapImageChooserButton () const
+	{ return *m_ElevationGridHeightMapImageChooserButton; }
+
+	Gtk::SpinButton &
+	getElevationGridHeightMapMinHeightSpinButton () const
+	{ return *m_ElevationGridHeightMapMinHeightSpinButton; }
+
+	Gtk::SpinButton &
+	getElevationGridHeightMapMaxHeightSpinButton () const
+	{ return *m_ElevationGridHeightMapMaxHeightSpinButton; }
 
 	Gtk::Expander &
 	getExtrusionExpander () const
@@ -695,6 +723,14 @@ public:
 
 	virtual
 	void
+	on_elevation_grid_height_map_max_height_changed () = 0;
+
+	virtual
+	void
+	on_elevation_grid_height_map_min_height_changed () = 0;
+
+	virtual
+	void
 	on_geometry_changed () = 0;
 
 	virtual
@@ -783,6 +819,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DInnerRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Disk2DOuterRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_EdgeColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridHeightMapMaxHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridHeightMapMinHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridXDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridXSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZDimensionAdjustment;
@@ -850,11 +888,16 @@ private:
 	Gtk::CheckButton*              m_CylinderSideCheckButton;
 	Gtk::CheckButton*              m_CylinderTopCheckButton;
 	Gtk::SpinButton*               m_CylinderXDimensionSpinButton;
+	Gtk::Box*                      m_ElevationGridBox;
 	Gtk::Expander*                 m_ElevationGridExpander;
 	Gtk::SpinButton*               m_ElevationGridXDimensionSpinButton;
 	Gtk::SpinButton*               m_ElevationGridZDimensionSpinButton;
 	Gtk::SpinButton*               m_ElevationGridXSpacingSpinButton;
 	Gtk::SpinButton*               m_ElevationGridZSpacingSpinButton;
+	Gtk::Expander*                 m_ElevationGridHeightMapExpander;
+	Gtk::FileChooserButton*        m_ElevationGridHeightMapImageChooserButton;
+	Gtk::SpinButton*               m_ElevationGridHeightMapMinHeightSpinButton;
+	Gtk::SpinButton*               m_ElevationGridHeightMapMaxHeightSpinButton;
 	Gtk::Expander*                 m_ExtrusionExpander;
 	Gtk::CheckButton*              m_ExtrusionBeginCapCheckButton;
 	Gtk::CheckButton*              m_ExtrusionEndCapCheckButton;

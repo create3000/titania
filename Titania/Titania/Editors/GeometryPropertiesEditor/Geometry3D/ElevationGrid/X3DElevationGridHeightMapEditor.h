@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,63 +48,85 @@
  *
  ******************************************************************************/
 
-#include "X3DElevationGridEditor.h"
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_ELEVATION_GRID_X3DELEVATION_GRID_HEIGHT_MAP_EDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_ELEVATION_GRID_X3DELEVATION_GRID_HEIGHT_MAP_EDITOR_H__
 
-#include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
-#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include "../../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
-X3DElevationGridEditor::X3DElevationGridEditor () :
-	X3DGeometryPropertiesEditorInterface (),
-	     X3DElevationGridHeightMapEditor (),
-	                          xDimension (this, getElevationGridXDimensionAdjustment (), getElevationGridXDimensionSpinButton (), "xDimension"),
-	                          zDimension (this, getElevationGridZDimensionAdjustment (), getElevationGridZDimensionSpinButton (), "zDimension"),
-	                            xSpacing (this, getElevationGridXSpacingAdjustment (), getElevationGridXSpacingSpinButton (), "xSpacing"),
-	                            zSpacing (this, getElevationGridZSpacingAdjustment (), getElevationGridZSpacingSpinButton (), "zSpacing")
-{ }
-
-void
-X3DElevationGridEditor::initialize ()
+class X3DElevationGridHeightMapEditor :
+	virtual public X3DGeometryPropertiesEditorInterface
 {
-	X3DElevationGridHeightMapEditor::initialize ();
-}
+public:
 
-void
-X3DElevationGridEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DElevationGridEditor::set_geometry, this);
+	///  @name Destruction
 
-	set_geometry ();
-}
+	virtual
+	~X3DElevationGridHeightMapEditor () override;
 
-void
-X3DElevationGridEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DElevationGridEditor::set_geometry, this);
-}
 
-void
-X3DElevationGridEditor::set_geometry ()
-{
-	const auto node  = getOneSelection <X3D::ElevationGrid> (getShapes (), "geometry");
-	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+protected:
 
-	getElevationGridBox () .set_visible (node);
+	///  @name Construction
 
-	xDimension .setNodes (nodes);
-	zDimension .setNodes (nodes);
-	xSpacing   .setNodes (nodes);
-	zSpacing   .setNodes (nodes);
+	X3DElevationGridHeightMapEditor ();
 
-	X3DElevationGridHeightMapEditor::setNode (node);
-}
+	virtual
+	void
+	initialize () override;
 
-X3DElevationGridEditor::~X3DElevationGridEditor ()
-{ }
+	///  @name Member access
+
+	void
+	setNode (const X3D::X3DPtr <X3D::ElevationGrid> & value);
+
+
+private:
+
+	///  @name Member access
+
+	X3D::MFFloat &
+	getHeight (const bool fromMetaData);
+
+	///  @name Event handlers
+
+	void
+	set_scene ();
+
+	void
+	set_height (const bool removeMetaData);
+
+	void
+	set_adjustments ();
+
+	virtual
+	void
+	on_elevation_grid_height_map_min_height_changed () final override;
+
+	virtual
+	void
+	on_elevation_grid_height_map_max_height_changed () final override;
+
+	void
+	on_elevation_grid_height_map_min_max_height_changed ();
+
+	void
+	connectHeight (const X3D::MFFloat & field);
+
+	///  @name Members
+
+	X3D::X3DScenePtr                 scene;
+	X3D::X3DPtr <X3D::ElevationGrid> node;
+
+	float metaMinHeight;
+	float metaMaxHeight;
+	bool  changing;
+
+};
 
 } // puck
 } // titania
+
+#endif

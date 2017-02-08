@@ -53,12 +53,14 @@
 
 #include "../../../ComposedWidgets.h"
 #include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "ElevationGrid/X3DElevationGridHeightMapEditor.h"
 
 namespace titania {
 namespace puck {
 
 class X3DElevationGridEditor :
-	virtual public X3DGeometryPropertiesEditorInterface
+	virtual public X3DGeometryPropertiesEditorInterface,
+	public X3DElevationGridHeightMapEditor
 {
 public:
 
@@ -73,6 +75,10 @@ protected:
 	///  @name Construction
 
 	X3DElevationGridEditor ();
+
+	virtual
+	void
+	initialize () override;
 
 	void
 	addShapes ();

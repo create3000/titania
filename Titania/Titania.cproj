@@ -287,6 +287,7 @@
     <Compile Include="Titania\Editors\TextureEditor\X3DUsedTexturesEditor.cpp" />
     <Compile Include="Titania\Editors\SculpToolEditor\X3DSculpToolBrushEditor.cpp" />
     <Compile Include="Titania\Editors\SculpToolEditor\X3DSculpToolBrushPaletteEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\ElevationGrid\X3DElevationGridHeightMapEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2582,6 +2583,8 @@
     <None Include="share\titania\Library\SculpToolBrushes\Default\Default1.x3dv" />
     <None Include="share\titania\Library\SculpToolBrushes\Default\Default11.x3dv" />
     <None Include="share\titania\Library\SculpToolBrushes\Default\Default12.x3dv" />
+    <None Include="share\titania\Library\SculpToolBrushes\Default\Default13.x3dv" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\ElevationGrid\X3DElevationGridHeightMapEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2686,6 +2689,7 @@
     <Folder Include="share\man\" />
     <Folder Include="Titania\Application\" />
     <Folder Include="share\titania\Library\SculpToolBrushes\" />
+    <Folder Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\ElevationGrid\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />
