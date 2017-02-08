@@ -52,9 +52,14 @@
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_ELEVATION_GRID_H__
 
 #include "../Rendering/X3DGeometryNode.h"
+#include "../../Thread/TextureLoader.h"
+
+#include <Magick++.h>
 
 namespace titania {
 namespace X3D {
+
+class Texture;
 
 class ElevationGrid :
 	public X3DGeometryNode
@@ -63,11 +68,11 @@ public:
 
 	///  @name Construction
 
-	ElevationGrid (X3DExecutionContext* const);
+	ElevationGrid (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 
@@ -221,6 +226,12 @@ public:
 	///  @name Operations
 
 	void
+	setHeightMap (const MFString & url, const double minHeight, const double maxHeight);
+
+	void
+	setHeightMapImage (const Magick::Image & image, const double minHeight, const double maxHeight);
+
+	void
 	addNormals ();
 
 	virtual
@@ -242,6 +253,11 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Operations
+
+	void
+	setHeightMapTexture (const TexturePtr & texture, const double minHeight, const double maxHeight);
 
 	///  @name Event handlers
 
@@ -273,7 +289,7 @@ private:
 	createTexCoord () const;
 
 	std::vector <Vector3f>
-	createNormals (const std::vector <Vector3d> &, const std::vector <size_t> &, const double) const;
+	createNormals (const std::vector <Vector3d> & points, const std::vector <size_t> & coordIndex, const double creaseAngle) const;
 
 	std::vector <size_t>
 	createCoordIndex () const;
@@ -291,7 +307,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -316,10 +332,13 @@ private:
 
 	Fields fields;
 
+	///  @name Members
+
 	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
 	X3DPtr <X3DColorNode>                colorNode;
 	X3DPtr <X3DTextureCoordinateNode>    texCoordNode;
 	X3DPtr <X3DNormalNode>               normalNode;
+	X3DPtr <TextureLoader>               future;
 	bool                                 transparent;
 
 };

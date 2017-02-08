@@ -1,19 +1,10 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/MFNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/ElevationGrid/X3DElevationGridHeightMapEditor.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/PDF/Parser.cpp" Line="76" Column="54" />
-      <File FileName="Titania/Titania/Widgets/BindableNodeList/X3DBindableNodeList.h" Line="461" Column="21" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="2625" Column="1" />
-      <File FileName="Titania/Titania/Widgets/BindableNodeList/BackgroundList.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Execution/BindableNodeList.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/ComposedWidgets/TexturePreview.cpp" Line="184" Column="130" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/X3DPtr.h" Line="141" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/X3DPtrArray.h" Line="400" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.cpp" Line="236" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/X3DArrayField.h" Line="800" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Fields/MFNode.cpp" Line="64" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Fields/MFNode.cpp" Line="191" Column="28" />
+      <File FileName="Titania/Titania/ComposedWidgets/X3DFieldAdjustment.h" Line="232" Column="1" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/ElevationGrid/X3DElevationGridHeightMapEditor.h" Line="113" Column="2" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/ElevationGrid/X3DElevationGridHeightMapEditor.cpp" Line="258" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

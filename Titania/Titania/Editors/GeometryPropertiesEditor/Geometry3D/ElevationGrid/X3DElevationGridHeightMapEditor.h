@@ -115,6 +115,21 @@ private:
 	void
 	connectHeight (const X3D::MFFloat & field);
 
+	void
+	set_heightMap ();
+
+	virtual
+	void
+	on_elevation_grid_height_map_image_set () final override;
+
+	virtual
+	void
+	on_elevation_grid_height_map_image_reload_clicked () final override;
+
+	virtual
+	void
+	on_elevation_grid_height_map_image_remove_clicked () final override;
+
 	///  @name Members
 
 	X3D::X3DScenePtr                 scene;

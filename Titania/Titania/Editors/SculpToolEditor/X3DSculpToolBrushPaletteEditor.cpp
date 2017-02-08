@@ -63,7 +63,9 @@ namespace puck {
 X3DSculpToolBrushPaletteEditor::X3DSculpToolBrushPaletteEditor () :
 	X3DPaletteEditor <X3DSculpToolEditorInterface> ("SculpToolBrushes"),
 	                                        future ()
-{ }
+{
+	addChildObjects (future);
+}
 
 X3D::SFNode
 X3DSculpToolBrushPaletteEditor::getObject (const basic::uri & URL)

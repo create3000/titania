@@ -163,9 +163,11 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ElevationGridXSpacingSpinButton", m_ElevationGridXSpacingSpinButton);
 	m_builder -> get_widget ("ElevationGridZSpacingSpinButton", m_ElevationGridZSpacingSpinButton);
 	m_builder -> get_widget ("ElevationGridHeightMapExpander", m_ElevationGridHeightMapExpander);
-	m_builder -> get_widget ("ElevationGridHeightMapImageChooserButton", m_ElevationGridHeightMapImageChooserButton);
 	m_builder -> get_widget ("ElevationGridHeightMapMinHeightSpinButton", m_ElevationGridHeightMapMinHeightSpinButton);
 	m_builder -> get_widget ("ElevationGridHeightMapMaxHeightSpinButton", m_ElevationGridHeightMapMaxHeightSpinButton);
+	m_builder -> get_widget ("ElevationGridHeightMapImageChooserButton", m_ElevationGridHeightMapImageChooserButton);
+	m_builder -> get_widget ("ElevationGridHeightMapImageReloadButton", m_ElevationGridHeightMapImageReloadButton);
+	m_builder -> get_widget ("ElevationGridHeightMapImageRemoveButton", m_ElevationGridHeightMapImageRemoveButton);
 	m_builder -> get_widget ("ExtrusionExpander", m_ExtrusionExpander);
 	m_builder -> get_widget ("ExtrusionBeginCapCheckButton", m_ExtrusionBeginCapCheckButton);
 	m_builder -> get_widget ("ExtrusionEndCapCheckButton", m_ExtrusionEndCapCheckButton);
@@ -233,7 +235,12 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
 	m_BoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_box_uniform_size_clicked));
 
-	// Connect object Gtk::Button with id 'AddNormalsButton'.
+	// Connect object Gtk::FileChooserButton with id 'ElevationGridHeightMapImageChooserButton'.
+	m_ElevationGridHeightMapImageChooserButton -> signal_file_set () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_elevation_grid_height_map_image_set));
+
+	// Connect object Gtk::Button with id 'ElevationGridHeightMapImageReloadButton'.
+	m_ElevationGridHeightMapImageReloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_elevation_grid_height_map_image_reload_clicked));
+	m_ElevationGridHeightMapImageRemoveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_elevation_grid_height_map_image_remove_clicked));
 	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));
 	m_RemoveNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_remove_normals_clicked));
 

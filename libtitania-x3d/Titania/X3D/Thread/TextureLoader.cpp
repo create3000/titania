@@ -61,11 +61,26 @@ const std::string   TextureLoader::containerField = "future";
 
 TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
                               const MFString & url,
+                              const Callback & callback) :
+	TextureLoader (executionContext, url, 0, 0, false, callback)
+{ }
+
+TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
+                              const MFString & url,
                               const size_t minTextureSize, const size_t maxTextureSize,
+                              const Callback & callback) :
+	TextureLoader (executionContext, url, minTextureSize, maxTextureSize, true, callback)
+{ }
+
+TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
+                              const MFString & url,
+                              const size_t minTextureSize, const size_t maxTextureSize,
+                              const bool process,
                               const Callback & callback) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DFuture (),
 	    browser (executionContext -> getBrowser ()),
+	    process (process),
 	   callback (callback),
 	     loader (nullptr, executionContext -> getWorldURL ()),
 	     future (getFuture (url, minTextureSize, maxTextureSize))
@@ -144,10 +159,13 @@ TextureLoader::loadAsync (const MFString & url,
 
 			checkForInterrupt ();
 
-			texture -> setFlipY (true);
-			texture -> process (minTextureSize, maxTextureSize);
+			if (process)
+			{
+				texture -> setFlipY (true);
+				texture -> process (minTextureSize, maxTextureSize);
 
-			checkForInterrupt ();
+				checkForInterrupt ();
+			}
 
 			getBrowser () -> println ("Done loading image '", loader .getWorldURL (), "'.");
 

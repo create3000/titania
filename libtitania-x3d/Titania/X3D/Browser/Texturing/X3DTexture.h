@@ -116,6 +116,10 @@ public:
 	getData ()
 	{ return blob .data (); }
 
+	const MagickImageArrayPtr &
+	getImages () const
+	{ return images; }
+
 	///  @name Operations
 
 	void

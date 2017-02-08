@@ -67,7 +67,7 @@ class Texture3DLoader :
 {
 public:
 
-	typedef std::function <void (const Texture3DPtr &)> Callback;
+	using Callback = std::function <void (const Texture3DPtr &)>;
 
 	///  @name Construction
 

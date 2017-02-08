@@ -889,3 +889,5 @@ TreeView::focus_out_event
   virtual bool on_focus_out_event(GdkEventFocus* gdk_event);
 TreeView::key_press_event
   virtual bool on_key_press_event(GdkEventKey* key_event);
+FileChooserButton::file_set
+  virtual void on_file_set();

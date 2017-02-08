@@ -94,6 +94,7 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	      colorNode (),
 	   texCoordNode (),
 	     normalNode (),
+	         future (),
 	    transparent (false)
 {
 	addType (X3DConstants::ElevationGrid);
@@ -126,7 +127,8 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	addChildObjects (attribNodes,
 	                 colorNode,
 	                 texCoordNode,
-	                 normalNode);
+	                 normalNode,
+	                 future);
 }
 
 X3DBaseNode*
@@ -149,6 +151,68 @@ ElevationGrid::initialize ()
 	set_color ();
 	set_texCoord ();
 	set_normal ();
+}
+
+void
+ElevationGrid::setHeightMap (const MFString & url, const double minHeight, const double maxHeight)
+{
+	using namespace std::placeholders;
+
+	future .setValue (new TextureLoader (getExecutionContext (), url, std::bind (&ElevationGrid::setHeightMapTexture, this, _1, minHeight, maxHeight)));
+}
+
+void
+ElevationGrid::setHeightMapTexture (const TexturePtr & texture, const double minHeight, const double maxHeight)
+{
+	try
+	{
+		if (texture)
+			setHeightMapImage (texture -> getImages () -> front (), minHeight, maxHeight);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+ElevationGrid::setHeightMapImage (const Magick::Image & value, const double minHeight, const double maxHeight)
+{
+	if (xDimension () < 1 or zDimension () < 1)
+		return;
+
+	// Scale image.
+
+	auto image = value;
+
+	Magick::Geometry geometry (xDimension (), zDimension ());
+
+	geometry .aspect (true);
+
+	image .filterType (Magick::LanczosFilter);
+	image .zoom (geometry);
+
+	// Get image data.
+
+	Magick::Blob blob;
+
+	image .magick ("GRAY");
+	image .interlaceType (Magick::NoInterlace);
+	image .endian (Magick::LSBEndian);
+	image .depth (8);
+
+	image .write (&blob);
+
+	// Set height field.
+
+	const auto   data   = static_cast <const uint8_t*> (blob .data ());
+	const size_t size   = xDimension () * zDimension ();
+	const auto   minMax = std::minmax_element (data, data + size);
+
+	height () .resize (size);
+
+	for (size_t i = 0; i < size; ++ i)
+		height () [i] = project <float> (data [i], *minMax .first, *minMax .second, minHeight, maxHeight);
 }
 
 void

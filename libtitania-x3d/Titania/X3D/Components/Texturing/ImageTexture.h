@@ -155,7 +155,7 @@ private:
 	
 	virtual
 	void
-	setTexture (const TexturePtr &) final override;
+	setTexture (const TexturePtr & texture) final override;
 
 	virtual
 	void

@@ -68,13 +68,18 @@ class TextureLoader :
 {
 public:
 
-	typedef std::function <void (const TexturePtr &)> Callback;
+	using Callback = std::function <void (const TexturePtr &)>;
 
 	///  @name Construction
 
 	TextureLoader (X3DExecutionContext* const executionContext,
-	               const MFString &, const size_t, const size_t,
+	               const MFString &,
 	               const Callback &);
+
+	TextureLoader (X3DExecutionContext* const executionContext,
+	               const MFString & url,
+	               const size_t minTextureSize, const size_t maxTextureSize,
+	               const Callback & callback);
 
 	virtual
 	void
@@ -120,6 +125,14 @@ public:
 
 private:
 
+	///  @name Construction
+
+	TextureLoader (X3DExecutionContext* const executionContext,
+	               const MFString & url,
+	               const size_t minTextureSize, const size_t maxTextureSize,
+	               const bool process,
+	               const Callback & callback);
+
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
@@ -127,9 +140,13 @@ private:
 	std::future <TexturePtr>
 	getFuture (const MFString &, const size_t, const size_t);
 
+	///  @name Member access
+
 	X3DBrowser*
 	getBrowser () const
 	{ return browser; }
+
+	///  @name Operations
 
 	TexturePtr
 	loadAsync (const MFString &, const size_t, const size_t);
@@ -146,6 +163,7 @@ private:
 	///  @name Members
 
 	std::atomic <X3DBrowser*> browser;
+	std::atomic <bool>        process;
 	Callback                  callback;
 	Loader                    loader;
 	std::future <TexturePtr>  future;

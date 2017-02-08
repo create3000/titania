@@ -66,7 +66,7 @@ public:
 	Texture3D (const std::string &);
 
 	virtual
-	~Texture3D ()
+	~Texture3D () final override
 	{ }
 
 
@@ -78,7 +78,7 @@ private:
 
 };
 
-typedef std::unique_ptr <Texture3D> Texture3DPtr;
+using Texture3DPtr = std::unique_ptr <Texture3D>;
 
 } // X3D
 } // titania

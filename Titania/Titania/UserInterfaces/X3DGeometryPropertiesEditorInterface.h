@@ -499,10 +499,6 @@ public:
 	getElevationGridHeightMapExpander () const
 	{ return *m_ElevationGridHeightMapExpander; }
 
-	Gtk::FileChooserButton &
-	getElevationGridHeightMapImageChooserButton () const
-	{ return *m_ElevationGridHeightMapImageChooserButton; }
-
 	Gtk::SpinButton &
 	getElevationGridHeightMapMinHeightSpinButton () const
 	{ return *m_ElevationGridHeightMapMinHeightSpinButton; }
@@ -510,6 +506,18 @@ public:
 	Gtk::SpinButton &
 	getElevationGridHeightMapMaxHeightSpinButton () const
 	{ return *m_ElevationGridHeightMapMaxHeightSpinButton; }
+
+	Gtk::FileChooserButton &
+	getElevationGridHeightMapImageChooserButton () const
+	{ return *m_ElevationGridHeightMapImageChooserButton; }
+
+	Gtk::Button &
+	getElevationGridHeightMapImageReloadButton () const
+	{ return *m_ElevationGridHeightMapImageReloadButton; }
+
+	Gtk::Button &
+	getElevationGridHeightMapImageRemoveButton () const
+	{ return *m_ElevationGridHeightMapImageRemoveButton; }
 
 	Gtk::Expander &
 	getExtrusionExpander () const
@@ -747,6 +755,18 @@ public:
 
 	virtual
 	void
+	on_elevation_grid_height_map_image_set () = 0;
+
+	virtual
+	void
+	on_elevation_grid_height_map_image_reload_clicked () = 0;
+
+	virtual
+	void
+	on_elevation_grid_height_map_image_remove_clicked () = 0;
+
+	virtual
+	void
 	on_add_normals_clicked () = 0;
 
 	virtual
@@ -895,9 +915,11 @@ private:
 	Gtk::SpinButton*               m_ElevationGridXSpacingSpinButton;
 	Gtk::SpinButton*               m_ElevationGridZSpacingSpinButton;
 	Gtk::Expander*                 m_ElevationGridHeightMapExpander;
-	Gtk::FileChooserButton*        m_ElevationGridHeightMapImageChooserButton;
 	Gtk::SpinButton*               m_ElevationGridHeightMapMinHeightSpinButton;
 	Gtk::SpinButton*               m_ElevationGridHeightMapMaxHeightSpinButton;
+	Gtk::FileChooserButton*        m_ElevationGridHeightMapImageChooserButton;
+	Gtk::Button*                   m_ElevationGridHeightMapImageReloadButton;
+	Gtk::Button*                   m_ElevationGridHeightMapImageRemoveButton;
 	Gtk::Expander*                 m_ExtrusionExpander;
 	Gtk::CheckButton*              m_ExtrusionBeginCapCheckButton;
 	Gtk::CheckButton*              m_ExtrusionEndCapCheckButton;

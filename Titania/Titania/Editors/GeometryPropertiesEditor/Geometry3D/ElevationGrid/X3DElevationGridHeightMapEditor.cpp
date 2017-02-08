@@ -51,11 +51,13 @@
 #include "X3DElevationGridHeightMapEditor.h"
 
 #include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
+#include <Titania/OS/home.h>
 
 namespace titania {
 namespace puck {
 
-static constexpr auto HEIGHT = "/ElevationGrid/height";
+static const std::string HEIGHT     = "/ElevationGrid/height";
+static const std::string HEIGHT_MAP = "/ElevationGrid/heightMap";
 
 X3DElevationGridHeightMapEditor::X3DElevationGridHeightMapEditor () :
 	X3DGeometryPropertiesEditorInterface (),
@@ -81,15 +83,22 @@ X3DElevationGridHeightMapEditor::setNode (const X3D::X3DPtr <X3D::ElevationGrid>
 		return;
 
 	if (node)
-		node -> height () .removeInterest (&X3DElevationGridHeightMapEditor::set_height, this);
+	{
+		node -> xDimension () .removeInterest (&X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set, this);
+		node -> zDimension () .removeInterest (&X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set, this);
+		node -> height ()     .removeInterest (&X3DElevationGridHeightMapEditor::set_height, this);
+	}
 
 	node = value;
 
 	if (node)
 	{
-		node -> height () .addInterest (&X3DElevationGridHeightMapEditor::set_height, this, true);
+		node -> xDimension () .addInterest (&X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set, this);
+		node -> zDimension () .addInterest (&X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set, this);
+		node -> height ()     .addInterest (&X3DElevationGridHeightMapEditor::set_height, this, true);
 
 		set_height (false);
+		set_heightMap ();
 	}
 }
 
@@ -204,6 +213,65 @@ X3DElevationGridHeightMapEditor::connectHeight (const X3D::MFFloat & field)
 {
 	field .removeInterest (&X3DElevationGridHeightMapEditor::connectHeight, this);
 	field .addInterest (&X3DElevationGridHeightMapEditor::set_height, this, true);
+}
+
+void
+X3DElevationGridHeightMapEditor::set_heightMap ()
+{
+	try
+	{
+		const auto & heightMap = node -> getMetaData <X3D::MFString> (HEIGHT_MAP, false);
+
+		getElevationGridHeightMapImageChooserButton () .set_uri (heightMap .at (0));
+		getElevationGridHeightMapImageReloadButton () .set_sensitive (true);
+	}
+	catch (const std::exception &)
+	{
+		// No data available.
+
+		getElevationGridHeightMapImageChooserButton () .set_uri ("");
+		getElevationGridHeightMapImageChooserButton () .set_current_folder (os::home ());
+		getElevationGridHeightMapImageReloadButton () .set_sensitive (false);
+	}
+}
+
+void
+X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set ()
+{
+	const std::string path = getElevationGridHeightMapImageChooserButton () .get_file () -> get_path ();
+
+	if (path .empty ())
+		return;
+
+	const basic::uri URL       = "file://" + path;
+	const auto       minHeight = getCurrentScene () -> fromUnit (node -> height () .getUnit (), getElevationGridHeightMapMinHeightAdjustment () -> get_value ());
+	const auto       maxHeight = getCurrentScene () -> fromUnit (node -> height () .getUnit (), getElevationGridHeightMapMaxHeightAdjustment () -> get_value ());
+
+	node -> setMetaData <X3D::MFString> (HEIGHT_MAP, { URL .str () });
+
+	node -> setHeightMap ({ URL .str () }, minHeight, minHeight != maxHeight ? maxHeight : minHeight + 10);
+
+	getElevationGridHeightMapImageReloadButton () .set_sensitive (true);
+}
+
+void
+X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_reload_clicked ()
+{
+	__LOG__ << std::endl;
+
+	on_elevation_grid_height_map_image_set ();
+}
+
+void
+X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_remove_clicked ()
+{
+	getElevationGridHeightMapImageChooserButton () .set_uri ("");
+	getElevationGridHeightMapImageChooserButton () .set_current_folder (os::home ());
+	getElevationGridHeightMapImageReloadButton () .set_sensitive (false);
+
+	node -> removeMetaData (HEIGHT_MAP);
+
+	node -> height () .clear ();
 }
 
 X3DElevationGridHeightMapEditor::~X3DElevationGridHeightMapEditor ()
