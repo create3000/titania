@@ -48,109 +48,61 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_ELEVATION_GRID_X3DELEVATION_GRID_HEIGHT_MAP_EDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_ELEVATION_GRID_X3DELEVATION_GRID_HEIGHT_MAP_EDITOR_H__
+#ifndef __TITANIA_X3D_FIELDS_HASH_H__
+#define __TITANIA_X3D_FIELDS_HASH_H__
 
-#include "../../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "SFColor.h"
+#include "SFColorRGBA.h"
+#include "SFImage.h"
+#include "SFMatrix3.h"
+#include "SFMatrix4.h"
+#include "SFNode.h"
+#include "SFRotation4.h"
+#include "SFString.h"
+#include "SFTime.h"
+#include "SFVec2.h"
+#include "SFVec3.h"
+#include "SFVec4.h"
+#include "X3DScalar.h"
 
-namespace titania {
-namespace puck {
+#include "ArrayFields.h"
+#include "MFInt32.h"
+#include "MFNode.h"
 
-class X3DElevationGridHeightMapEditor :
-	virtual public X3DGeometryPropertiesEditorInterface
+namespace std {
+
+template <>
+struct hash <titania::X3D::MFFloat>
 {
-public:
+	using argument_type = titania::X3D::MFFloat;
+	using result_type   = std::size_t;
 
-	///  @name Destruction
+	result_type
+	operator () (const argument_type & array) const
+	{
+		union IF
+		{
+			uint32_t i;
+			float f;
+		};
 
-	virtual
-	~X3DElevationGridHeightMapEditor () override;
+		result_type h = 1;
 
+		for (const auto & value : array)
+		{
+			IF f = { value .getValue () };
 
-protected:
+			h = 31 * h + f .i;
+		}
 
-	///  @name Construction
+		h ^= (h >> 20) ^ (h >> 12);
+		h ^= (h >> 7) ^ (h >> 4);
 
-	X3DElevationGridHeightMapEditor ();
-
-	virtual
-	void
-	initialize () override;
-
-	///  @name Member access
-
-	void
-	setNode (const X3D::X3DPtr <X3D::ElevationGrid> & value);
-
-
-private:
-
-	///  @name Member access
-
-	std::string
-	getHeightHash () const;
-
-	X3D::MFFloat &
-	getHeight (const bool fromMetaData);
-
-	///  @name Event handlers
-
-	void
-	set_scene ();
-
-	void
-	set_height_verified ();
-
-	void
-	set_height (const bool removeMetaData);
-
-	void
-	set_adjustments ();
-
-	virtual
-	void
-	on_elevation_grid_height_map_min_height_changed () final override;
-
-	virtual
-	void
-	on_elevation_grid_height_map_max_height_changed () final override;
-
-	void
-	on_elevation_grid_height_map_min_max_height_changed (const int32_t input);
-
-	void
-	connectHeight (const X3D::MFFloat & field);
-
-	void
-	set_heightMap ();
-
-	virtual
-	void
-	on_elevation_grid_height_map_image_set () final override;
-
-	virtual
-	void
-	on_elevation_grid_height_map_image_reload_clicked () final override;
-
-	virtual
-	void
-	on_elevation_grid_height_map_image_remove_clicked () final override;
-
-	///  @name Members
-
-	X3D::X3DScenePtr                 scene;
-	X3D::X3DPtr <X3D::ElevationGrid> node;
-
-	float metaMinHeight;
-	float metaMaxHeight;
-	bool  changing;
-
-	X3D::UndoStepPtr undoStep;
-	int32_t          minMaxInput;
+		return h;
+	}
 
 };
 
-} // puck
-} // titania
+} // std
 
 #endif

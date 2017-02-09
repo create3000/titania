@@ -1866,6 +1866,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Clear height map image.</property>
                                             <signal name="clicked" handler="on_elevation_grid_height_map_image_remove_clicked" swapped="no"/>
                                             <child>
                                               <object class="GtkImage">

@@ -122,7 +122,7 @@ throw (Error <DISPOSED>)
 {
 	const auto & providerUrl = getBrowser () -> getProviderUrl ();
 
-	const auto iter = std::remove_if (value () .begin (), value () .end (), [&name, &providerUrl] (const SFNode &node)
+	const auto iter = std::remove_if (value () .begin (), value () .end (), [&] (const SFNode &node)
 	                                  {
 	                                     const auto metadataObject = x3d_cast <X3DMetadataObject*> (node);
 
@@ -135,7 +135,14 @@ throw (Error <DISPOSED>)
 														   return false;
 													 }
 
-	                                     return metadataObject -> name () == name;
+	                                     if (metadataObject -> name () == name)
+	                                     {
+	                                        metadataObject -> removeParent (this);
+	                                        metadataIndex .erase (name);
+	                                        return true;
+	                                     }
+
+	                                     return false;
 												 });
 
 	value () .erase (iter, value () .end ());

@@ -50,14 +50,18 @@
 
 #include "X3DElevationGridHeightMapEditor.h"
 
+#include <Titania/X3D/Components/Core/MetadataFloat.h>
 #include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
+#include <Titania/X3D/Fields/Hash.h>
+
 #include <Titania/OS/home.h>
 
 namespace titania {
 namespace puck {
 
-static const std::string HEIGHT     = "/ElevationGrid/height";
-static const std::string HEIGHT_MAP = "/ElevationGrid/heightMap";
+static const std::string HEIGHT      = "/ElevationGrid/height";
+static const std::string HEIGHT_HASH = "/ElevationGrid/heightHash";
+static const std::string HEIGHT_MAP  = "/ElevationGrid/heightMap";
 
 X3DElevationGridHeightMapEditor::X3DElevationGridHeightMapEditor () :
 	X3DGeometryPropertiesEditorInterface (),
@@ -65,7 +69,9 @@ X3DElevationGridHeightMapEditor::X3DElevationGridHeightMapEditor () :
 	                                node (),
 	                       metaMinHeight (0),
 	                       metaMaxHeight (0),
-	                            changing (false)
+	                            changing (false),
+	                            undoStep (),
+	                         minMaxInput (-1)
 {
 	addChildObjects (scene, node);
 }
@@ -82,11 +88,14 @@ X3DElevationGridHeightMapEditor::setNode (const X3D::X3DPtr <X3D::ElevationGrid>
 	if (value == node)
 		return;
 
+
 	if (node)
 	{
 		node -> xDimension () .removeInterest (&X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set, this);
 		node -> zDimension () .removeInterest (&X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set, this);
-		node -> height ()     .removeInterest (&X3DElevationGridHeightMapEditor::set_height, this);
+		node -> height ()     .removeInterest (&X3DElevationGridHeightMapEditor::set_height_verified, this);
+
+		node -> setMetaData (HEIGHT_HASH, getHeightHash ());
 	}
 
 	node = value;
@@ -95,11 +104,17 @@ X3DElevationGridHeightMapEditor::setNode (const X3D::X3DPtr <X3D::ElevationGrid>
 	{
 		node -> xDimension () .addInterest (&X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set, this);
 		node -> zDimension () .addInterest (&X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set, this);
-		node -> height ()     .addInterest (&X3DElevationGridHeightMapEditor::set_height, this, true);
+		node -> height ()     .addInterest (&X3DElevationGridHeightMapEditor::set_height_verified, this);
 
-		set_height (false);
+		set_height_verified ();
 		set_heightMap ();
 	}
+}
+
+std::string
+X3DElevationGridHeightMapEditor::getHeightHash () const
+{
+	return basic::to_string (std::hash <X3D::MFFloat> { } (node -> height ()), std::locale::classic ());
 }
 
 X3D::MFFloat &
@@ -136,6 +151,23 @@ X3DElevationGridHeightMapEditor::set_scene ()
 }
 
 void
+X3DElevationGridHeightMapEditor::set_height_verified ()
+{
+	try
+	{
+		const auto   heightHash = getHeightHash ();
+		const auto & metaHash   = node -> getMetaData <X3D::MFString> (HEIGHT_HASH, false) .at (0);
+
+		set_height (heightHash != metaHash);
+	}
+	catch (const std::exception &)
+	{
+		// No heightHash available.
+		set_height (true);
+	}
+}
+
+void
 X3DElevationGridHeightMapEditor::set_height (const bool removeMetaData)
 {
 	if (removeMetaData)
@@ -169,20 +201,29 @@ X3DElevationGridHeightMapEditor::set_adjustments ()
 void
 X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_min_height_changed ()
 {
-	on_elevation_grid_height_map_min_max_height_changed ();
+	on_elevation_grid_height_map_min_max_height_changed (0);
 }
 
 void
 X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_max_height_changed ()
 {
-	on_elevation_grid_height_map_min_max_height_changed ();
+	on_elevation_grid_height_map_min_max_height_changed (1);
 }
 
 void
-X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_min_max_height_changed ()
+X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_min_max_height_changed (const int32_t input)
 {
 	if (changing)
 		return;
+
+	// Undo.
+
+	if (input not_eq minMaxInput)
+		resetUndoGroup ("height", undoStep);
+
+	minMaxInput = input;
+
+	addUndoFunction (node, node -> height (), undoStep);
 
 	// Adjust lower and upper bounds of adjustments.
 
@@ -202,17 +243,21 @@ X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_min_max_height_cha
 	node -> height () .resize (metaHeight .size ());
 
 	for (size_t i = 0, size = metaHeight .size (); i < size; ++ i)
-		node -> height () [i] = math::project <float> (metaHeight [i], metaMinHeight, metaMaxHeight, minHeight, maxHeight);
+		node -> height () [i] = math::project <X3D::MFFloat::value_type::value_type> (metaHeight [i], metaMinHeight, metaMaxHeight, minHeight, maxHeight);
 
-	node -> height () .removeInterest (&X3DElevationGridHeightMapEditor::set_height, this);
+	node -> height () .removeInterest (&X3DElevationGridHeightMapEditor::set_height_verified, this);
 	node -> height () .addInterest (&X3DElevationGridHeightMapEditor::connectHeight, this);
+
+	// Redo.
+
+	addRedoFunction (node, node -> height (), undoStep);
 }
 
 void
 X3DElevationGridHeightMapEditor::connectHeight (const X3D::MFFloat & field)
 {
 	field .removeInterest (&X3DElevationGridHeightMapEditor::connectHeight, this);
-	field .addInterest (&X3DElevationGridHeightMapEditor::set_height, this, true);
+	field .addInterest (&X3DElevationGridHeightMapEditor::set_height_verified, this);
 }
 
 void
