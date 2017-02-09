@@ -61,49 +61,51 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_Arc2DEndAngleAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DEndAngleAdjustment"));
-	m_Arc2DMinAngleAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DMinAngleAdjustment"));
-	m_Arc2DRadiusAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DRadiusAdjustment"));
-	m_Arc2DStartAngleAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DStartAngleAdjustment"));
-	m_ArcClose2DEndAngleAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DEndAngleAdjustment"));
-	m_ArcClose2DMinAngleAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DMinAngleAdjustment"));
-	m_ArcClose2DRadiusAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DRadiusAdjustment"));
-	m_ArcClose2DStartAngleAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DStartAngleAdjustment"));
-	m_BoxSizeXAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeXAdjustment"));
-	m_BoxSizeYAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeYAdjustment"));
-	m_BoxSizeZAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeZAdjustment"));
-	m_Circle2DDimensionAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Circle2DDimensionAdjustment"));
-	m_Circle2DRadiusAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Circle2DRadiusAdjustment"));
-	m_ConeBottomRadiusAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeBottomRadiusAdjustment"));
-	m_ConeHeightAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeHeightAdjustment"));
-	m_ConeXDimensionAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeXDimensionAdjustment"));
-	m_CreaseAngleAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CreaseAngleAdjustment"));
-	m_CylinderHeightAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderHeightAdjustment"));
-	m_CylinderRadiusAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderRadiusAdjustment"));
-	m_CylinderXDimensionAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderXDimensionAdjustment"));
-	m_Disk2DDimensionAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DDimensionAdjustment"));
-	m_Disk2DInnerRadiusAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DInnerRadiusAdjustment"));
-	m_Disk2DOuterRadiusAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DOuterRadiusAdjustment"));
-	m_EdgeColorAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EdgeColorAdjustment"));
-	m_ElevationGridHeightMapMaxHeightAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridHeightMapMaxHeightAdjustment"));
-	m_ElevationGridHeightMapMinHeightAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridHeightMapMinHeightAdjustment"));
-	m_ElevationGridXDimensionAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridXDimensionAdjustment"));
-	m_ElevationGridXSpacingAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridXSpacingAdjustment"));
-	m_ElevationGridZDimensionAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridZDimensionAdjustment"));
-	m_ElevationGridZSpacingAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridZSpacingAdjustment"));
-	m_GeoElevationGridXDimensionAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridXDimensionAdjustment"));
-	m_GeoElevationGridXSpacingAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridXSpacingAdjustment"));
-	m_GeoElevationGridYScaleAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridYScaleAdjustment"));
-	m_GeoElevationGridZDimensionAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZDimensionAdjustment"));
-	m_GeoElevationGridZSpacingAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZSpacingAdjustment"));
-	m_GeoElevationGridZoneAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZoneAdjustment"));
-	m_NormalColorAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalColorAdjustment"));
-	m_NormalLengthAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalLengthAdjustment"));
-	m_Rectangle2DSizeXAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeXAdjustment"));
-	m_Rectangle2DSizeYAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeYAdjustment"));
-	m_SphereRadiusAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereRadiusAdjustment"));
-	m_SphereXDimensionAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereXDimensionAdjustment"));
-	m_SphereYDimensionAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereYDimensionAdjustment"));
+	m_Arc2DEndAngleAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DEndAngleAdjustment"));
+	m_Arc2DMinAngleAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DMinAngleAdjustment"));
+	m_Arc2DRadiusAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DRadiusAdjustment"));
+	m_Arc2DStartAngleAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DStartAngleAdjustment"));
+	m_ArcClose2DEndAngleAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DEndAngleAdjustment"));
+	m_ArcClose2DMinAngleAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DMinAngleAdjustment"));
+	m_ArcClose2DRadiusAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DRadiusAdjustment"));
+	m_ArcClose2DStartAngleAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ArcClose2DStartAngleAdjustment"));
+	m_BoxSizeXAdjustment                           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeXAdjustment"));
+	m_BoxSizeYAdjustment                           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeYAdjustment"));
+	m_BoxSizeZAdjustment                           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeZAdjustment"));
+	m_Circle2DDimensionAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Circle2DDimensionAdjustment"));
+	m_Circle2DRadiusAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Circle2DRadiusAdjustment"));
+	m_ConeBottomRadiusAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeBottomRadiusAdjustment"));
+	m_ConeHeightAdjustment                         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeHeightAdjustment"));
+	m_ConeXDimensionAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeXDimensionAdjustment"));
+	m_CreaseAngleAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CreaseAngleAdjustment"));
+	m_CylinderHeightAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderHeightAdjustment"));
+	m_CylinderRadiusAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderRadiusAdjustment"));
+	m_CylinderXDimensionAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderXDimensionAdjustment"));
+	m_Disk2DDimensionAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DDimensionAdjustment"));
+	m_Disk2DInnerRadiusAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DInnerRadiusAdjustment"));
+	m_Disk2DOuterRadiusAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Disk2DOuterRadiusAdjustment"));
+	m_EdgeColorAdjustment                          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EdgeColorAdjustment"));
+	m_ElevationGridHeightMapMaxHeightAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridHeightMapMaxHeightAdjustment"));
+	m_ElevationGridHeightMapMinHeightAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridHeightMapMinHeightAdjustment"));
+	m_ElevationGridXDimensionAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridXDimensionAdjustment"));
+	m_ElevationGridXSpacingAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridXSpacingAdjustment"));
+	m_ElevationGridZDimensionAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridZDimensionAdjustment"));
+	m_ElevationGridZSpacingAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridZSpacingAdjustment"));
+	m_GeoElevationGridHeightMapMaxHeightAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridHeightMapMaxHeightAdjustment"));
+	m_GeoElevationGridHeightMapMinHeightAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridHeightMapMinHeightAdjustment"));
+	m_GeoElevationGridXDimensionAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridXDimensionAdjustment"));
+	m_GeoElevationGridXSpacingAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridXSpacingAdjustment"));
+	m_GeoElevationGridYScaleAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridYScaleAdjustment"));
+	m_GeoElevationGridZDimensionAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZDimensionAdjustment"));
+	m_GeoElevationGridZSpacingAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZSpacingAdjustment"));
+	m_GeoElevationGridZoneAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZoneAdjustment"));
+	m_NormalColorAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalColorAdjustment"));
+	m_NormalLengthAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalLengthAdjustment"));
+	m_Rectangle2DSizeXAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeXAdjustment"));
+	m_Rectangle2DSizeYAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeYAdjustment"));
+	m_SphereRadiusAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereRadiusAdjustment"));
+	m_SphereXDimensionAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereXDimensionAdjustment"));
+	m_SphereYDimensionAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereYDimensionAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -175,6 +177,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SphereRadiusSpinButton", m_SphereRadiusSpinButton);
 	m_builder -> get_widget ("SphereXDimensionSpinButton", m_SphereXDimensionSpinButton);
 	m_builder -> get_widget ("SphereYDimensionSpinButton", m_SphereYDimensionSpinButton);
+	m_builder -> get_widget ("GeoElevationGridBox", m_GeoElevationGridBox);
 	m_builder -> get_widget ("GeoElevationGridExpander", m_GeoElevationGridExpander);
 	m_builder -> get_widget ("GeoElevationGridXDimensionSpinButton", m_GeoElevationGridXDimensionSpinButton);
 	m_builder -> get_widget ("GeoElevationGridZDimensionSpinButton", m_GeoElevationGridZDimensionSpinButton);
@@ -188,6 +191,12 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoElevationGridGeoSystemUTMBox", m_GeoElevationGridGeoSystemUTMBox);
 	m_builder -> get_widget ("GeoElevationGridHemisphereComboBoxText", m_GeoElevationGridHemisphereComboBoxText);
 	m_builder -> get_widget ("GeoElevationGridUTMOrderComboBoxText", m_GeoElevationGridUTMOrderComboBoxText);
+	m_builder -> get_widget ("GeoElevationGridHeightMapExpander", m_GeoElevationGridHeightMapExpander);
+	m_builder -> get_widget ("GeoElevationGridHeightMapMinHeightSpinButton", m_GeoElevationGridHeightMapMinHeightSpinButton);
+	m_builder -> get_widget ("GeoElevationGridHeightMapMaxHeightSpinButton", m_GeoElevationGridHeightMapMaxHeightSpinButton);
+	m_builder -> get_widget ("GeoElevationGridHeightMapImageChooserButton", m_GeoElevationGridHeightMapImageChooserButton);
+	m_builder -> get_widget ("GeoElevationGridHeightMapImageReloadButton", m_GeoElevationGridHeightMapImageReloadButton);
+	m_builder -> get_widget ("GeoElevationGridHeightMapImageRemoveButton", m_GeoElevationGridHeightMapImageRemoveButton);
 	m_builder -> get_widget ("GeometryExpander", m_GeometryExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
@@ -221,10 +230,6 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("EdgeColorButton", m_EdgeColorButton);
 	m_builder -> get_widget ("EdgeColorScale", m_EdgeColorScale);
 
-	// Connect object Gtk::Adjustment with id 'ElevationGridHeightMapMaxHeightAdjustment'.
-	m_ElevationGridHeightMapMaxHeightAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_elevation_grid_height_map_max_height_changed));
-	m_ElevationGridHeightMapMinHeightAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_elevation_grid_height_map_min_height_changed));
-
 	// Connect object Gtk::ComboBoxText with id 'GeometryComboBoxText'.
 	m_GeometryComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_changed));
 
@@ -235,12 +240,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
 	m_BoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_box_uniform_size_clicked));
 
-	// Connect object Gtk::FileChooserButton with id 'ElevationGridHeightMapImageChooserButton'.
-	m_ElevationGridHeightMapImageChooserButton -> signal_file_set () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_elevation_grid_height_map_image_set));
-
-	// Connect object Gtk::Button with id 'ElevationGridHeightMapImageReloadButton'.
-	m_ElevationGridHeightMapImageReloadButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_elevation_grid_height_map_image_reload_clicked));
-	m_ElevationGridHeightMapImageRemoveButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_elevation_grid_height_map_image_remove_clicked));
+	// Connect object Gtk::Button with id 'AddNormalsButton'.
 	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));
 	m_RemoveNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_remove_normals_clicked));
 

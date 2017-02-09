@@ -117,6 +117,7 @@ GeometryPropertiesEditor::initialize ()
 {
 	X3DGeometryPropertiesEditorInterface::initialize ();
 	X3DElevationGridEditor::initialize ();
+	X3DGeoElevationGridEditor::initialize ();
 	X3DPrimitiveCountEditor::initialize ();
 	X3DGeometryTool::initialize ();
 }

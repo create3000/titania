@@ -72,6 +72,38 @@
 namespace std {
 
 template <>
+struct hash <titania::X3D::MFDouble>
+{
+	using argument_type = titania::X3D::MFDouble;
+	using result_type   = std::size_t;
+
+	result_type
+	operator () (const argument_type & array) const
+	{
+		union IF
+		{
+			uint64_t i;
+			double f;
+		};
+
+		result_type h = 1;
+
+		for (const auto & value : array)
+		{
+			IF f = { value .getValue () };
+
+			h = 31 * h + f .i;
+		}
+
+		h ^= (h >> 20) ^ (h >> 12);
+		h ^= (h >> 7) ^ (h >> 4);
+
+		return h;
+	}
+
+};
+
+template <>
 struct hash <titania::X3D::MFFloat>
 {
 	using argument_type = titania::X3D::MFFloat;

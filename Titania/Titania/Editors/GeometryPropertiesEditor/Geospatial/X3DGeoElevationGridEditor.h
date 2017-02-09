@@ -53,6 +53,9 @@
 
 #include "../../../ComposedWidgets.h"
 #include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "../Geometry3D/X3DHeightMapEditor.h"
+
+#include <Titania/X3D/Components/Geospatial/GeoElevationGrid.h>
 
 namespace titania {
 namespace puck {
@@ -60,7 +63,8 @@ namespace puck {
 class MFStringGeoSystem;
 
 class X3DGeoElevationGridEditor :
-	virtual public X3DGeometryPropertiesEditorInterface
+	virtual public X3DGeometryPropertiesEditorInterface,
+	public X3DHeightMapEditor <X3D::GeoElevationGrid, X3D::MFDouble>
 {
 public:
 
@@ -75,6 +79,10 @@ protected:
 	///  @name Construction
 
 	X3DGeoElevationGridEditor ();
+
+	virtual
+	void
+	initialize () override;
 
 	void
 	addShapes ();

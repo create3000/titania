@@ -226,10 +226,10 @@ public:
 	///  @name Operations
 
 	void
-	setHeightMap (const MFString & url, const double minHeight, const double maxHeight);
+	setHeightMap (const MFString & url, const float minHeight, const float maxHeight);
 
 	void
-	setHeightMapImage (const Magick::Image & image, const double minHeight, const double maxHeight);
+	setHeightMapImage (const Magick::Image & image, const float minHeight, const float maxHeight);
 
 	void
 	addNormals ();
@@ -257,7 +257,7 @@ private:
 	///  @name Operations
 
 	void
-	setHeightMapTexture (const TexturePtr & texture, const double minHeight, const double maxHeight);
+	setHeightMapTexture (const TexturePtr & texture, const float minHeight, const float maxHeight);
 
 	///  @name Event handlers
 

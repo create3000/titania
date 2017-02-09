@@ -154,7 +154,7 @@ ElevationGrid::initialize ()
 }
 
 void
-ElevationGrid::setHeightMap (const MFString & url, const double minHeight, const double maxHeight)
+ElevationGrid::setHeightMap (const MFString & url, const float minHeight, const float maxHeight)
 {
 	using namespace std::placeholders;
 
@@ -162,7 +162,7 @@ ElevationGrid::setHeightMap (const MFString & url, const double minHeight, const
 }
 
 void
-ElevationGrid::setHeightMapTexture (const TexturePtr & texture, const double minHeight, const double maxHeight)
+ElevationGrid::setHeightMapTexture (const TexturePtr & texture, const float minHeight, const float maxHeight)
 {
 	try
 	{
@@ -176,7 +176,7 @@ ElevationGrid::setHeightMapTexture (const TexturePtr & texture, const double min
 }
 
 void
-ElevationGrid::setHeightMapImage (const Magick::Image & value, const double minHeight, const double maxHeight)
+ElevationGrid::setHeightMapImage (const Magick::Image & value, const float minHeight, const float maxHeight)
 {
 	if (xDimension () < 1 or zDimension () < 1)
 		return;

@@ -50,25 +50,28 @@
 
 #include "X3DElevationGridEditor.h"
 
-#include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
 namespace puck {
 
 X3DElevationGridEditor::X3DElevationGridEditor () :
-	X3DGeometryPropertiesEditorInterface (),
-	     X3DElevationGridHeightMapEditor (),
-	                          xDimension (this, getElevationGridXDimensionAdjustment (), getElevationGridXDimensionSpinButton (), "xDimension"),
-	                          zDimension (this, getElevationGridZDimensionAdjustment (), getElevationGridZDimensionSpinButton (), "zDimension"),
-	                            xSpacing (this, getElevationGridXSpacingAdjustment (), getElevationGridXSpacingSpinButton (), "xSpacing"),
-	                            zSpacing (this, getElevationGridZSpacingAdjustment (), getElevationGridZSpacingSpinButton (), "zSpacing")
+	                 X3DGeometryPropertiesEditorInterface (),
+	X3DHeightMapEditor <X3D::ElevationGrid, X3D::MFFloat> (getElevationGridHeightMapMinHeightAdjustment (),
+	                                                       getElevationGridHeightMapMaxHeightAdjustment (),
+	                                                       getElevationGridHeightMapImageChooserButton (),
+	                                                       getElevationGridHeightMapImageReloadButton (),
+	                                                       getElevationGridHeightMapImageRemoveButton ()),
+	                                           xDimension (this, getElevationGridXDimensionAdjustment (), getElevationGridXDimensionSpinButton (), "xDimension"),
+	                                           zDimension (this, getElevationGridZDimensionAdjustment (), getElevationGridZDimensionSpinButton (), "zDimension"),
+	                                             xSpacing (this, getElevationGridXSpacingAdjustment (), getElevationGridXSpacingSpinButton (), "xSpacing"),
+	                                             zSpacing (this, getElevationGridZSpacingAdjustment (), getElevationGridZSpacingSpinButton (), "zSpacing")
 { }
 
 void
 X3DElevationGridEditor::initialize ()
 {
-	X3DElevationGridHeightMapEditor::initialize ();
+	X3DHeightMapEditor <X3D::ElevationGrid, X3D::MFFloat>::initialize ();
 }
 
 void
@@ -100,7 +103,7 @@ X3DElevationGridEditor::set_geometry ()
 	xSpacing   .setNodes (nodes);
 	zSpacing   .setNodes (nodes);
 
-	X3DElevationGridHeightMapEditor::setNode (node);
+	X3DHeightMapEditor <X3D::ElevationGrid, X3D::MFFloat>::setNode (node);
 }
 
 X3DElevationGridEditor::~X3DElevationGridEditor ()

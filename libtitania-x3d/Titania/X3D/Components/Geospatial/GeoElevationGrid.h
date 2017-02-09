@@ -57,12 +57,16 @@
 #include "../Rendering/X3DNormalNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 #include "../Texturing/X3DTextureCoordinateNode.h"
+#include "../../Thread/TextureLoader.h"
+
+#include <Magick++.h>
 
 namespace titania {
 namespace X3D {
 
 class GeoElevationGrid :
-	public X3DGeometryNode, public X3DGeospatialObject
+	public X3DGeometryNode,
+	public X3DGeospatialObject
 {
 public:
 
@@ -226,6 +230,12 @@ public:
 	///  @name Operations
 
 	void
+	setHeightMap (const MFString & url, const double minHeight, const double maxHeight);
+
+	void
+	setHeightMapImage (const Magick::Image & image, const double minHeight, const double maxHeight);
+
+	void
 	addNormals ();
 
 	virtual
@@ -249,6 +259,11 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Operations
+
+	void
+	setHeightMapTexture (const TexturePtr & texture, const double minHeight, const double maxHeight);
+
 	///  @name Event handlers
 
 	void
@@ -269,7 +284,7 @@ private:
 	createTexCoord () const;
 
 	std::vector <Vector3f>
-	createNormals (const std::vector <Vector3d> &, const std::vector <size_t> &, const double) const;
+	createNormals (const std::vector <Vector3d> & points, const std::vector <size_t> & coordIndex, const double creaseAngle) const;
 
 	std::vector <size_t>
 	createCoordIndex () const;
@@ -318,6 +333,7 @@ private:
 	X3DPtr <X3DColorNode>             colorNode;
 	X3DPtr <X3DTextureCoordinateNode> texCoordNode;
 	X3DPtr <X3DNormalNode>            normalNode;
+	X3DPtr <TextureLoader>            future;
 	bool                              transparent;
 
 };

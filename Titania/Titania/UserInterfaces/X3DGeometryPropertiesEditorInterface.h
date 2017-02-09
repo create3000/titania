@@ -220,6 +220,14 @@ public:
 	{ return m_ElevationGridZSpacingAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridHeightMapMaxHeightAdjustment () const
+	{ return m_GeoElevationGridHeightMapMaxHeightAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridHeightMapMinHeightAdjustment () const
+	{ return m_GeoElevationGridHeightMapMinHeightAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGeoElevationGridXDimensionAdjustment () const
 	{ return m_GeoElevationGridXDimensionAdjustment; }
 
@@ -547,6 +555,10 @@ public:
 	getSphereYDimensionSpinButton () const
 	{ return *m_SphereYDimensionSpinButton; }
 
+	Gtk::Box &
+	getGeoElevationGridBox () const
+	{ return *m_GeoElevationGridBox; }
+
 	Gtk::Expander &
 	getGeoElevationGridExpander () const
 	{ return *m_GeoElevationGridExpander; }
@@ -598,6 +610,30 @@ public:
 	Gtk::ComboBoxText &
 	getGeoElevationGridUTMOrderComboBoxText () const
 	{ return *m_GeoElevationGridUTMOrderComboBoxText; }
+
+	Gtk::Expander &
+	getGeoElevationGridHeightMapExpander () const
+	{ return *m_GeoElevationGridHeightMapExpander; }
+
+	Gtk::SpinButton &
+	getGeoElevationGridHeightMapMinHeightSpinButton () const
+	{ return *m_GeoElevationGridHeightMapMinHeightSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoElevationGridHeightMapMaxHeightSpinButton () const
+	{ return *m_GeoElevationGridHeightMapMaxHeightSpinButton; }
+
+	Gtk::FileChooserButton &
+	getGeoElevationGridHeightMapImageChooserButton () const
+	{ return *m_GeoElevationGridHeightMapImageChooserButton; }
+
+	Gtk::Button &
+	getGeoElevationGridHeightMapImageReloadButton () const
+	{ return *m_GeoElevationGridHeightMapImageReloadButton; }
+
+	Gtk::Button &
+	getGeoElevationGridHeightMapImageRemoveButton () const
+	{ return *m_GeoElevationGridHeightMapImageRemoveButton; }
 
 	Gtk::Expander &
 	getGeometryExpander () const
@@ -731,14 +767,6 @@ public:
 
 	virtual
 	void
-	on_elevation_grid_height_map_max_height_changed () = 0;
-
-	virtual
-	void
-	on_elevation_grid_height_map_min_height_changed () = 0;
-
-	virtual
-	void
 	on_geometry_changed () = 0;
 
 	virtual
@@ -752,18 +780,6 @@ public:
 	virtual
 	void
 	on_box_uniform_size_clicked () = 0;
-
-	virtual
-	void
-	on_elevation_grid_height_map_image_set () = 0;
-
-	virtual
-	void
-	on_elevation_grid_height_map_image_reload_clicked () = 0;
-
-	virtual
-	void
-	on_elevation_grid_height_map_image_remove_clicked () = 0;
 
 	virtual
 	void
@@ -845,6 +861,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridXSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridHeightMapMaxHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridHeightMapMinHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridXDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridXSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridYScaleAdjustment;
@@ -927,6 +945,7 @@ private:
 	Gtk::SpinButton*               m_SphereRadiusSpinButton;
 	Gtk::SpinButton*               m_SphereXDimensionSpinButton;
 	Gtk::SpinButton*               m_SphereYDimensionSpinButton;
+	Gtk::Box*                      m_GeoElevationGridBox;
 	Gtk::Expander*                 m_GeoElevationGridExpander;
 	Gtk::SpinButton*               m_GeoElevationGridXDimensionSpinButton;
 	Gtk::SpinButton*               m_GeoElevationGridZDimensionSpinButton;
@@ -940,6 +959,12 @@ private:
 	Gtk::Box*                      m_GeoElevationGridGeoSystemUTMBox;
 	Gtk::ComboBoxText*             m_GeoElevationGridHemisphereComboBoxText;
 	Gtk::ComboBoxText*             m_GeoElevationGridUTMOrderComboBoxText;
+	Gtk::Expander*                 m_GeoElevationGridHeightMapExpander;
+	Gtk::SpinButton*               m_GeoElevationGridHeightMapMinHeightSpinButton;
+	Gtk::SpinButton*               m_GeoElevationGridHeightMapMaxHeightSpinButton;
+	Gtk::FileChooserButton*        m_GeoElevationGridHeightMapImageChooserButton;
+	Gtk::Button*                   m_GeoElevationGridHeightMapImageReloadButton;
+	Gtk::Button*                   m_GeoElevationGridHeightMapImageRemoveButton;
 	Gtk::Expander*                 m_GeometryExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;

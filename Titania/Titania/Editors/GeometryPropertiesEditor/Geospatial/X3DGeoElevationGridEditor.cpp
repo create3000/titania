@@ -52,30 +52,40 @@
 
 #include "../../../ComposedWidgets/MFStringGeoSystem.h"
 
-#include <Titania/X3D/Components/Geospatial/GeoElevationGrid.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
 namespace puck {
 
 X3DGeoElevationGridEditor::X3DGeoElevationGridEditor () :
-	X3DGeometryPropertiesEditorInterface (),
-	                           geoSystem (new MFStringGeoSystem (this,
-	                                      getGeoElevationGridCoordinateSystemComboBoxText (),
-	                                      getGeoElevationGridEllipsoidComboBoxText (),
-	                                      getGeoElevationGridGDOrderComboBoxText (),
-	                                      getGeoElevationGridZoneAdjustment (),
-	                                      getGeoElevationGridHemisphereComboBoxText (),
-	                                      getGeoElevationGridUTMOrderComboBoxText (),
-	                                      getGeoElevationGridEllipsoidBox (),
-	                                      getGeoElevationGridGDOrderComboBoxText (),
-	                                      getGeoElevationGridGeoSystemUTMBox ())),
-	                          xDimension (this, getGeoElevationGridXDimensionAdjustment (), getGeoElevationGridXDimensionSpinButton (), "xDimension"),
-	                          zDimension (this, getGeoElevationGridZDimensionAdjustment (), getGeoElevationGridZDimensionSpinButton (), "zDimension"),
-	                            xSpacing (this, getGeoElevationGridXSpacingAdjustment (), getGeoElevationGridXSpacingSpinButton (), "xSpacing"),
-	                            zSpacing (this, getGeoElevationGridZSpacingAdjustment (), getGeoElevationGridZSpacingSpinButton (), "zSpacing"),
-	                              yScale (this, getGeoElevationGridYScaleAdjustment (), getGeoElevationGridYScaleSpinButton (), "yScale")
+	                     X3DGeometryPropertiesEditorInterface (),
+	X3DHeightMapEditor <X3D::GeoElevationGrid, X3D::MFDouble> (getGeoElevationGridHeightMapMinHeightAdjustment (),
+	                                                           getGeoElevationGridHeightMapMaxHeightAdjustment (),
+	                                                           getGeoElevationGridHeightMapImageChooserButton (),
+	                                                           getGeoElevationGridHeightMapImageReloadButton (),
+	                                                           getGeoElevationGridHeightMapImageRemoveButton ()),
+	                                                geoSystem (new MFStringGeoSystem (this,
+	                                                           getGeoElevationGridCoordinateSystemComboBoxText (),
+	                                                           getGeoElevationGridEllipsoidComboBoxText (),
+	                                                           getGeoElevationGridGDOrderComboBoxText (),
+	                                                           getGeoElevationGridZoneAdjustment (),
+	                                                           getGeoElevationGridHemisphereComboBoxText (),
+	                                                           getGeoElevationGridUTMOrderComboBoxText (),
+	                                                           getGeoElevationGridEllipsoidBox (),
+	                                                           getGeoElevationGridGDOrderComboBoxText (),
+	                                                           getGeoElevationGridGeoSystemUTMBox ())),
+	                                               xDimension (this, getGeoElevationGridXDimensionAdjustment (), getGeoElevationGridXDimensionSpinButton (), "xDimension"),
+	                                               zDimension (this, getGeoElevationGridZDimensionAdjustment (), getGeoElevationGridZDimensionSpinButton (), "zDimension"),
+	                                                 xSpacing (this, getGeoElevationGridXSpacingAdjustment (), getGeoElevationGridXSpacingSpinButton (), "xSpacing"),
+	                                                 zSpacing (this, getGeoElevationGridZSpacingAdjustment (), getGeoElevationGridZSpacingSpinButton (), "zSpacing"),
+	                                                   yScale (this, getGeoElevationGridYScaleAdjustment (), getGeoElevationGridYScaleSpinButton (), "yScale")
 { }
+
+void
+X3DGeoElevationGridEditor::initialize ()
+{
+	X3DHeightMapEditor <X3D::GeoElevationGrid, X3D::MFDouble>::initialize ();
+}
 
 void
 X3DGeoElevationGridEditor::addShapes ()
@@ -99,7 +109,7 @@ X3DGeoElevationGridEditor::set_geometry ()
 	const auto node  = getOneSelection <X3D::GeoElevationGrid> (getShapes (), "geometry");
 	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
 
-	getGeoElevationGridExpander () .set_visible (node);
+	getGeoElevationGridBox () .set_visible (node);
 
 	geoSystem -> setNode (node);
 
@@ -108,6 +118,8 @@ X3DGeoElevationGridEditor::set_geometry ()
 	xSpacing   .setNodes (nodes);
 	zSpacing   .setNodes (nodes);
 	yScale     .setNodes (nodes);
+
+	X3DHeightMapEditor <X3D::GeoElevationGrid, X3D::MFDouble>::setNode (node);
 }
 
 X3DGeoElevationGridEditor::~X3DGeoElevationGridEditor ()

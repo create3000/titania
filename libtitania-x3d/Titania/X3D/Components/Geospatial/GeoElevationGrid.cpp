@@ -79,7 +79,7 @@ GeoElevationGrid::Fields::Fields () :
 	          color (new SFNode ()),
 	       texCoord (new SFNode ()),
 	         normal (new SFNode ()),
-	         height (new MFDouble ())
+	         height (new MFDouble ({ 0, 0 }))
 { }
 
 GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext) :
@@ -90,6 +90,7 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	          colorNode (),
 	       texCoordNode (),
 	         normalNode (),
+	             future (),
 	        transparent (false)
 {
 	addType (X3DConstants::GeoElevationGrid);
@@ -118,8 +119,8 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 
 	geoGridOrigin () .setUnit (UnitCategory::LENGTH);
 	yScale ()        .setUnit (UnitCategory::LENGTH);
-	//xSpacing ()      .setUnit (???); // degree, or utm
-	//zSpacing ()      .setUnit (???); // degree, or utm
+	//xSpacing ()      .setUnit (???); // degree, or utm, set dynamically if geosystem changes
+	//zSpacing ()      .setUnit (???); // degree, or utm, set dynamically if geosystem changes
 	creaseAngle ()   .setUnit (UnitCategory::ANGLE);
 	height ()        .setUnit (UnitCategory::LENGTH);
 
@@ -127,7 +128,8 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 
 	addChildObjects (colorNode,
 	                 texCoordNode,
-	                 normalNode);
+	                 normalNode,
+	                 future);
 }
 
 X3DBaseNode*
@@ -149,6 +151,69 @@ GeoElevationGrid::initialize ()
 	set_color ();
 	set_texCoord ();
 	set_normal ();
+}
+
+void
+GeoElevationGrid::setHeightMap (const MFString & url, const double minHeight, const double maxHeight)
+{
+	using namespace std::placeholders;
+
+	future .setValue (new TextureLoader (getExecutionContext (), url, std::bind (&GeoElevationGrid::setHeightMapTexture, this, _1, minHeight, maxHeight)));
+}
+
+void
+GeoElevationGrid::setHeightMapTexture (const TexturePtr & texture, const double minHeight, const double maxHeight)
+{
+	try
+	{
+		if (texture)
+			setHeightMapImage (texture -> getImages () -> front (), minHeight, maxHeight);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+GeoElevationGrid::setHeightMapImage (const Magick::Image & value, const double minHeight, const double maxHeight)
+{
+	if (xDimension () < 1 or zDimension () < 1)
+		return;
+
+	// Scale image.
+
+	auto image = value;
+
+	Magick::Geometry geometry (xDimension (), zDimension ());
+
+	geometry .aspect (true);
+
+	image .filterType (Magick::LanczosFilter);
+	image .zoom (geometry);
+	image .flip ();
+
+	// Get image data.
+
+	Magick::Blob blob;
+
+	image .magick ("GRAY");
+	image .interlaceType (Magick::NoInterlace);
+	image .endian (Magick::LSBEndian);
+	image .depth (8);
+
+	image .write (&blob);
+
+	// Set height field.
+
+	const auto   data   = static_cast <const uint8_t*> (blob .data ());
+	const size_t size   = xDimension () * zDimension ();
+	const auto   minMax = std::minmax_element (data, data + size);
+
+	height () .resize (size);
+
+	for (size_t i = 0; i < size; ++ i)
+		height () [i] = project <double> (data [i], *minMax .first, *minMax .second, minHeight, maxHeight);
 }
 
 void
