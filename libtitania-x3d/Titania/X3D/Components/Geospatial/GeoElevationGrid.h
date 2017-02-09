@@ -233,9 +233,6 @@ public:
 	setHeightMap (const MFString & url, const double minHeight, const double maxHeight);
 
 	void
-	setHeightMapImage (const Magick::Image & image, const double minHeight, const double maxHeight);
-
-	void
 	addNormals ();
 
 	virtual
@@ -296,6 +293,9 @@ private:
 
 	void
 	setHeightMapTexture (const TexturePtr & texture, const double minHeight, const double maxHeight);
+
+	void
+	setHeightMapImage (Magick::Image & image, const double minHeight, const double maxHeight);
 
 	///  @name Static members
 

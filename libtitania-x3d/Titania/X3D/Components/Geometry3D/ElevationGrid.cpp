@@ -480,14 +480,12 @@ ElevationGrid::setHeightMapTexture (const TexturePtr & texture, const float minH
 }
 
 void
-ElevationGrid::setHeightMapImage (const Magick::Image & value, const float minHeight, const float maxHeight)
+ElevationGrid::setHeightMapImage (Magick::Image & image, const float minHeight, const float maxHeight)
 {
 	if (xDimension () < 1 or zDimension () < 1)
 		return;
 
 	// Scale image.
-
-	auto image = value;
 
 	Magick::Geometry geometry (xDimension (), zDimension ());
 

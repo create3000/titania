@@ -434,14 +434,12 @@ GeoElevationGrid::setHeightMapTexture (const TexturePtr & texture, const double 
 }
 
 void
-GeoElevationGrid::setHeightMapImage (const Magick::Image & value, const double minHeight, const double maxHeight)
+GeoElevationGrid::setHeightMapImage (Magick::Image & image, const double minHeight, const double maxHeight)
 {
 	if (xDimension () < 1 or zDimension () < 1)
 		return;
 
 	// Scale image.
-
-	auto image = value;
 
 	Magick::Geometry geometry (xDimension (), zDimension ());
 
