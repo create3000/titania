@@ -56,6 +56,7 @@
 #include <Titania/X3D/Components/Core/MetadataString.h>
 #include <Titania/X3D/Fields/Hash.h>
 
+#include <Titania/OS/file_exists.h>
 #include <Titania/OS/home.h>
 
 namespace titania {
@@ -307,11 +308,20 @@ X3DHeightMapEditor <NodeType, FieldType>::set_height (const bool removeMetaData)
 		node -> removeMetaData (HEIGHT_HASH);
 	}
 
-	const auto & height     = this -> getHeight (false);
-	const auto   metaMinMax = std::minmax_element (height .begin (), height .end ());
+	const auto & height = this -> getHeight (false);
 
-	metaMinHeight = *metaMinMax .first;
-	metaMaxHeight = *metaMinMax .second;
+	if (not height .empty ())
+	{
+		const auto metaMinMax = std::minmax_element (height .begin (), height .end ());
+	
+		metaMinHeight = *metaMinMax .first;
+		metaMaxHeight = *metaMinMax .second;
+	}
+	else
+	{
+		metaMinHeight = 0;
+		metaMaxHeight = 0;
+	}
 
 	set_adjustments ();
 	set_heightMap ();
@@ -323,13 +333,24 @@ X3DHeightMapEditor <NodeType, FieldType>::set_adjustments ()
 {
 	changing = true;
 
-	const auto minMax = std::minmax_element (node -> height () .begin (), node -> height () .end ());
-
-	minHeightAdjustment -> set_upper (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .second));
-	maxHeightAdjustment -> set_lower (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .first));
-
-	minHeightAdjustment -> set_value (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .first));
-	maxHeightAdjustment -> set_value (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .second));
+	if (not node -> height () .empty ())
+	{
+		const auto minMax = std::minmax_element (node -> height () .begin (), node -> height () .end ());
+	
+		minHeightAdjustment -> set_upper (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .second));
+		maxHeightAdjustment -> set_lower (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .first));
+	
+		minHeightAdjustment -> set_value (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .first));
+		maxHeightAdjustment -> set_value (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .second));
+	}
+	else
+	{
+		minHeightAdjustment -> set_upper (getCurrentScene () -> toUnit (node -> height () .getUnit (), 0));
+		maxHeightAdjustment -> set_lower (getCurrentScene () -> toUnit (node -> height () .getUnit (), 0));
+	
+		minHeightAdjustment -> set_value (getCurrentScene () -> toUnit (node -> height () .getUnit (), 0));
+		maxHeightAdjustment -> set_value (getCurrentScene () -> toUnit (node -> height () .getUnit (), 0));
+	}
 
 	changing = false;
 }
@@ -405,11 +426,20 @@ X3DHeightMapEditor <NodeType, FieldType>::set_heightMap ()
 
 	try
 	{
-		const auto heightMap = basic::uri (node -> template getMetaData <X3D::MFString> (HEIGHT_MAP, false) .at (0) .str ());
-
-		fileChooser .set_current_folder_uri (heightMap .parent () .str ());
-		fileChooser .set_uri (heightMap .str ());
-		reloadButton .set_sensitive (true);
+		const auto & heightMaps = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP, false);
+	
+		for (const auto & value : heightMaps)
+		{
+			const auto heightMap = getCurrentContext () -> getWorldURL () .transform (value .str ());
+	
+			if (os::file_exists (heightMap .path ()))
+			{
+				fileChooser .set_current_folder_uri (heightMap .parent () .str ());
+				fileChooser .set_uri (heightMap .str ());
+				reloadButton .set_sensitive (true);
+				break;
+			}
+		}
 	}
 	catch (const std::exception &)
 	{
@@ -435,11 +465,12 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_set ()
 	if (path .empty ())
 		return;
 
-	const auto       undoStep  = std::make_shared <X3D::UndoStep> ("Set ElevationGrid Height Map Image");
-	const basic::uri URL       = "file://" + path;
-	const auto       minHeight = getCurrentScene () -> fromUnit (node -> height () .getUnit (), minHeightAdjustment -> get_value ());
-	auto             maxHeight = getCurrentScene () -> fromUnit (node -> height () .getUnit (), maxHeightAdjustment -> get_value ());
-	const auto &     heightMap = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP, true);
+	const auto       undoStep    = std::make_shared <X3D::UndoStep> ("Set ElevationGrid Height Map Image");
+	const basic::uri URL         = "file://" + path;
+	const basic::uri relativeURL = getCurrentContext () -> getWorldURL () .relative_path (URL);
+	const auto       minHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), minHeightAdjustment -> get_value ());
+	auto             maxHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), maxHeightAdjustment -> get_value ());
+	const auto &     heightMap   = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP, true);
 
 	if (minHeight == maxHeight)
 		maxHeight = minHeight + 10;
@@ -452,7 +483,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_set ()
 	undoStep -> addUndoFunction (&NodeType::template setMetaData <X3D::MFString>, node, HEIGHT_MAP, heightMap);
 	undoStep -> addUndoFunction (&FieldType::setValue,  std::ref (node -> height ()), node -> height ());
 
-	node -> template setMetaData <X3D::MFString> (HEIGHT_MAP, { URL .str () });
+	node -> template setMetaData <X3D::MFString> (HEIGHT_MAP, { relativeURL .str (), URL .str () });
 	node -> setHeightMap ({ URL .str () }, minHeight, maxHeight);
 
 	undoStep -> addRedoFunction (&NodeType::template setMetaData <X3D::MFString>, node, HEIGHT_MAP, X3D::MFString ({ URL .str () }));
