@@ -385,7 +385,7 @@ OutlineTreeObserver::on_row_changed (const Gtk::TreeModel::Path & path)
 
 	//treeView -> get_model () -> row_changed (path, treeView -> get_model () -> get_iter (path));
 
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &OutlineTreeObserver::on_row_changed_impl), path));
+	Glib::signal_timeout () .connect_once (sigc::bind (sigc::mem_fun (*this, &OutlineTreeObserver::on_row_changed_impl), path), 0);
 }
 
 void
