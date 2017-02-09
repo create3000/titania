@@ -50,7 +50,7 @@
 
 #include "X3DElevationGridHeightMapEditor.h"
 
-#include <Titania/X3D/Components/Core/MetadataFloat.h>
+#include <Titania/X3D/Components/Core/MetadataString.h>
 #include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
 #include <Titania/X3D/Fields/Hash.h>
 
@@ -94,8 +94,6 @@ X3DElevationGridHeightMapEditor::setNode (const X3D::X3DPtr <X3D::ElevationGrid>
 		node -> xDimension () .removeInterest (&X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set, this);
 		node -> zDimension () .removeInterest (&X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set, this);
 		node -> height ()     .removeInterest (&X3DElevationGridHeightMapEditor::set_height_verified, this);
-
-		node -> setMetaData (HEIGHT_HASH, getHeightHash ());
 	}
 
 	node = value;
@@ -107,7 +105,6 @@ X3DElevationGridHeightMapEditor::setNode (const X3D::X3DPtr <X3D::ElevationGrid>
 		node -> height ()     .addInterest (&X3DElevationGridHeightMapEditor::set_height_verified, this);
 
 		set_height_verified ();
-		set_heightMap ();
 	}
 }
 
@@ -155,8 +152,8 @@ X3DElevationGridHeightMapEditor::set_height_verified ()
 {
 	try
 	{
-		const auto   heightHash = getHeightHash ();
 		const auto & metaHash   = node -> getMetaData <X3D::MFString> (HEIGHT_HASH, false) .at (0);
+		const auto   heightHash = getHeightHash ();
 
 		set_height (heightHash != metaHash);
 	}
@@ -171,7 +168,10 @@ void
 X3DElevationGridHeightMapEditor::set_height (const bool removeMetaData)
 {
 	if (removeMetaData)
+	{
 		node -> removeMetaData (HEIGHT);
+		node -> removeMetaData (HEIGHT_HASH);
+	}
 
 	const auto & height     = getHeight (false);
 	const auto   metaMinMax = std::minmax_element (height .begin (), height .end ());
@@ -180,6 +180,7 @@ X3DElevationGridHeightMapEditor::set_height (const bool removeMetaData)
 	metaMaxHeight = *metaMinMax .second;
 
 	set_adjustments ();
+	set_heightMap ();
 }
 
 void
@@ -223,7 +224,12 @@ X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_min_max_height_cha
 
 	minMaxInput = input;
 
+	const auto heighHashNode = node -> createMetaData <X3D::MetadataString> (HEIGHT_HASH);
+
+	beginUndoGroup ("height", undoStep);
 	addUndoFunction (node, node -> height (), undoStep);
+	addUndoFunction (heighHashNode, heighHashNode -> value (), undoStep);
+	endUndoGroup ("height", undoStep);
 
 	// Adjust lower and upper bounds of adjustments.
 
@@ -244,13 +250,18 @@ X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_min_max_height_cha
 
 	for (size_t i = 0, size = metaHeight .size (); i < size; ++ i)
 		node -> height () [i] = math::project <X3D::MFFloat::value_type::value_type> (metaHeight [i], metaMinHeight, metaMaxHeight, minHeight, maxHeight);
+			
+	node -> setMetaData (HEIGHT_HASH, getHeightHash ());
 
 	node -> height () .removeInterest (&X3DElevationGridHeightMapEditor::set_height_verified, this);
 	node -> height () .addInterest (&X3DElevationGridHeightMapEditor::connectHeight, this);
 
 	// Redo.
 
+	beginRedoGroup ("height", undoStep);
+	addRedoFunction (heighHashNode, heighHashNode -> value (), undoStep);
 	addRedoFunction (node, node -> height (), undoStep);
+	endRedoGroup ("height", undoStep);
 }
 
 void
@@ -263,6 +274,8 @@ X3DElevationGridHeightMapEditor::connectHeight (const X3D::MFFloat & field)
 void
 X3DElevationGridHeightMapEditor::set_heightMap ()
 {
+	changing = true;
+
 	try
 	{
 		const auto & heightMap = node -> getMetaData <X3D::MFString> (HEIGHT_MAP, false);
@@ -278,23 +291,47 @@ X3DElevationGridHeightMapEditor::set_heightMap ()
 		getElevationGridHeightMapImageChooserButton () .set_current_folder (os::home ());
 		getElevationGridHeightMapImageReloadButton () .set_sensitive (false);
 	}
+
+	changing = false;
 }
 
 void
 X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set ()
 {
+	if (changing)
+		return;
+
 	const std::string path = getElevationGridHeightMapImageChooserButton () .get_file () -> get_path ();
 
 	if (path .empty ())
 		return;
 
-	const basic::uri URL       = "file://" + path;
-	const auto       minHeight = getCurrentScene () -> fromUnit (node -> height () .getUnit (), getElevationGridHeightMapMinHeightAdjustment () -> get_value ());
-	const auto       maxHeight = getCurrentScene () -> fromUnit (node -> height () .getUnit (), getElevationGridHeightMapMaxHeightAdjustment () -> get_value ());
+	const auto       undoStep      = std::make_shared <X3D::UndoStep> ("Set ElevationGrid Height Map Image");
+	const basic::uri URL           = "file://" + path;
+	const auto       minHeight     = getCurrentScene () -> fromUnit (node -> height () .getUnit (), getElevationGridHeightMapMinHeightAdjustment () -> get_value ());
+	auto             maxHeight     = getCurrentScene () -> fromUnit (node -> height () .getUnit (), getElevationGridHeightMapMaxHeightAdjustment () -> get_value ());
+	const auto       heightMapNode = node -> createMetaData <X3D::MetadataString> (HEIGHT_MAP);
+
+	if (minHeight == maxHeight)
+		maxHeight = minHeight + 10;
+
+	undoStep -> addObjects (node, heightMapNode);
+
+	if (heightMapNode -> value () .empty ())
+		undoStep -> addUndoFunction (&X3D::ElevationGrid::removeMetaData, node, HEIGHT_MAP);
+
+	undoStep -> addUndoFunction (&X3D::MFString::setValue, std::ref (heightMapNode -> value ()), heightMapNode -> value ());
+	undoStep -> addUndoFunction (&X3D::MFFloat::setValue,  std::ref (node -> height ()), node -> height ());
 
 	node -> setMetaData <X3D::MFString> (HEIGHT_MAP, { URL .str () });
+	node -> setHeightMap ({ URL .str () }, minHeight, maxHeight);
 
-	node -> setHeightMap ({ URL .str () }, minHeight, minHeight != maxHeight ? maxHeight : minHeight + 10);
+	undoStep -> addRedoFunction (&X3D::MFString::setValue, std::ref (heightMapNode -> value ()), heightMapNode -> value ());
+	undoStep -> addRedoFunction (&X3D::ElevationGrid::setHeightMap, node, X3D::MFString ({ URL .str () }), minHeight, maxHeight);
+
+	addUndoStep (undoStep);
+
+	// Enable Reload button.
 
 	getElevationGridHeightMapImageReloadButton () .set_sensitive (true);
 }
@@ -302,8 +339,6 @@ X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_set ()
 void
 X3DElevationGridHeightMapEditor::on_elevation_grid_height_map_image_reload_clicked ()
 {
-	__LOG__ << std::endl;
-
 	on_elevation_grid_height_map_image_set ();
 }
 

@@ -103,7 +103,7 @@ MetadataSet::initialize ()
 	set_value ();
 }
 
-const X3DPtr <X3DMetadataObject> &
+X3DMetadataObject*
 MetadataSet::getObject (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <DISPOSED>)
@@ -111,7 +111,7 @@ throw (Error <INVALID_NAME>,
 	const auto iter = metadataIndex .find (name);
 
 	if (iter not_eq metadataIndex .end ())
-		return *iter -> second;
+		return iter -> second;
 
 	throw Error <INVALID_NAME> ("MetadataSet::getObject: Invalid name '" + name + "'.");
 }
@@ -137,7 +137,6 @@ throw (Error <DISPOSED>)
 
 	                                     if (metadataObject -> name () == name)
 	                                     {
-	                                        metadataObject -> removeParent (this);
 	                                        metadataIndex .erase (name);
 	                                        return true;
 	                                     }
@@ -149,17 +148,12 @@ throw (Error <DISPOSED>)
 }
 
 void
-MetadataSet::setValue (X3DMetadataObject* const metadataObject, const std::string & name)
+MetadataSet::setValue (const std::string & name, X3DMetadataObject* const metadataObject)
 {
-	const auto value = new X3DPtr <X3DMetadataObject> (metadataObject);
-
-	value -> addParent (this);
-
-	metadataIndex .emplace (name, value);
+	metadataIndex .emplace (name, metadataObject);
 
 	metadataObject -> name ()      = name;
 	metadataObject -> reference () = getBrowser () -> getProviderUrl ();
-	metadataObject -> setup ();
 
 	getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (name), SFNode (metadataObject));
 }
@@ -178,20 +172,13 @@ MetadataSet::addValue (const SFNode & node)
 	if (metadataObject -> reference () not_eq getBrowser () -> getProviderUrl ())
 		return;
 
-	const auto value = new X3DPtr <X3DMetadataObject> (metadataObject);
-
-	value -> addParent (this);
-
-	metadataIndex .emplace (metadataObject -> name (), value);
+	metadataIndex .emplace (metadataObject -> name (), metadataObject);
 }
 
 void
 MetadataSet::removeValues ()
 throw (Error <DISPOSED>)
 {
-	for (const auto & pair : metadataIndex)
-		pair .second -> removeParent (this);
-
 	metadataIndex .clear ();
 }
 

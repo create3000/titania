@@ -120,7 +120,7 @@ public:
 	{ return X3DPtr <Type> (getValue <Type> (name, true)); }
 
 	void
-	removeValue (const std::string &)
+	removeValue (const std::string & name)
 	throw (Error <DISPOSED>);
 
 	///  @name Destruction
@@ -139,7 +139,7 @@ protected:
 	///  Return the metadata with where name is @a name.
 	template <class Type>
 	Type*
-	getValue (const std::string & name, const bool)
+	getValue (const std::string & name, const bool throw_)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>);
@@ -156,13 +156,13 @@ private:
 	void
 	addValue (const SFNode &);
 
-	const X3DPtr <X3DMetadataObject> &
-	getObject (const std::string &) const
+	X3DMetadataObject*
+	getObject (const std::string & name) const
 	throw (Error <INVALID_NAME>,
 	       Error <DISPOSED>);
 
 	void
-	setValue (X3DMetadataObject* const, const std::string &);
+	setValue (const std::string & name, X3DMetadataObject* const metadataObject);
 
 	void
 	removeValues ()
@@ -190,7 +190,7 @@ private:
 
 	Fields fields;
 
-	std::map <std::string, X3DPtr <X3DMetadataObject>*> metadataIndex;
+	std::map <std::string, X3DMetadataObject*> metadataIndex;
 
 };
 
@@ -204,10 +204,10 @@ throw (Error <INVALID_NODE>,
 {
 	try
 	{
-	   Type* metadata = dynamic_cast <Type*> (getObject (name) .getValue ());
+	   Type* const metadataObject = dynamic_cast <Type*> (getObject (name));
 
-		if (metadata)
-			return metadata;
+		if (metadataObject)
+			return metadataObject;
 		
 	   if (throw_)
 	      throw Error <INVALID_NODE> ("MetaData " + name + " has invalid type.");
@@ -225,12 +225,15 @@ throw (Error <INVALID_NODE>,
 		throw;
 	}
 
-	const auto metadata = new Type (getExecutionContext ());
+	const auto metadataObject = new Type (getExecutionContext ());
 
-	value () .emplace_back (metadata);
-	setValue (metadata, name);
+	value () .emplace_back (metadataObject);
 
-	return metadata;
+	setValue (name, metadataObject);
+
+	metadataObject -> setup ();
+
+	return metadataObject;
 }
 
 } // X3D

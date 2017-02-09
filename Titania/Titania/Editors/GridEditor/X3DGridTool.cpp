@@ -376,7 +376,7 @@ X3DGridTool::set_active ()
 
 	if (getTool () -> isActive ())
 	{
-		undoStep .reset ();
+		resetUndoGroup ("properties", undoStep);
 		beginUndoGroup ("properties", undoStep);
 		addUndoFunction <X3D::SFVec3f>    (tool, "translation", undoStep);
 		addUndoFunction <X3D::SFRotation> (tool, "rotation",    undoStep);
