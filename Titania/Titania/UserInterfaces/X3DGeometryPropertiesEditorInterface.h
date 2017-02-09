@@ -636,8 +636,8 @@ public:
 	{ return *m_GeoElevationGridHeightMapImageRemoveButton; }
 
 	Gtk::Expander &
-	getGeometryExpander () const
-	{ return *m_GeometryExpander; }
+	getCommonPropertiesExpander () const
+	{ return *m_CommonPropertiesExpander; }
 
 	Gtk::CheckButton &
 	getSolidCheckButton () const
@@ -965,7 +965,7 @@ private:
 	Gtk::FileChooserButton*        m_GeoElevationGridHeightMapImageChooserButton;
 	Gtk::Button*                   m_GeoElevationGridHeightMapImageReloadButton;
 	Gtk::Button*                   m_GeoElevationGridHeightMapImageRemoveButton;
-	Gtk::Expander*                 m_GeometryExpander;
+	Gtk::Expander*                 m_CommonPropertiesExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;
 	Gtk::CheckButton*              m_ConvexCheckButton;

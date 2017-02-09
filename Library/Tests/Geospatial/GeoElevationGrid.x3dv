@@ -7,7 +7,7 @@ META "created" "Mon, 13 Oct 2014 00:37:06 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Geospatial/GeoElevationGrid.x3dv"
-META "modified" "Thu, 09 Feb 2017 10:34:07 GMT"
+META "modified" "Thu, 09 Feb 2017 10:38:49 GMT"
 META "outputStyle" "nicest"
 
 WorldInfo {
@@ -65417,19 +65417,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              14280253.5019594,
-              -14250585.2747864,
-              7733265.93679684
+              9741076.27547502,
+              16244789.0685894,
+              10393578.975304
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.810820672806031,
-              0.37527351523136,
-              0.44915434464811,
-              1.37386310745696
+              0.132897629026421,
+              0.507785516106685,
+              0.851171010920498,
+              2.65424654277581
             ]
           }
           DEF centerOfRotation MetadataDouble {

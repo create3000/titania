@@ -197,7 +197,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoElevationGridHeightMapImageChooserButton", m_GeoElevationGridHeightMapImageChooserButton);
 	m_builder -> get_widget ("GeoElevationGridHeightMapImageReloadButton", m_GeoElevationGridHeightMapImageReloadButton);
 	m_builder -> get_widget ("GeoElevationGridHeightMapImageRemoveButton", m_GeoElevationGridHeightMapImageRemoveButton);
-	m_builder -> get_widget ("GeometryExpander", m_GeometryExpander);
+	m_builder -> get_widget ("CommonPropertiesExpander", m_CommonPropertiesExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
 	m_builder -> get_widget ("ConvexCheckButton", m_ConvexCheckButton);
