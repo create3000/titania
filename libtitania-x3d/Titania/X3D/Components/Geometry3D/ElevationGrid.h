@@ -254,11 +254,6 @@ private:
 	void
 	initialize () final override;
 
-	///  @name Operations
-
-	void
-	setHeightMapTexture (const TexturePtr & texture, const float minHeight, const float maxHeight);
-
 	///  @name Event handlers
 
 	void
@@ -300,6 +295,9 @@ private:
 	virtual
 	void
 	build () final override;
+
+	void
+	setHeightMapTexture (const TexturePtr & texture, const float minHeight, const float maxHeight);
 
 	///  @name Static members
 

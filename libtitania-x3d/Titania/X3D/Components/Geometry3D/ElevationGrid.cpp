@@ -154,68 +154,6 @@ ElevationGrid::initialize ()
 }
 
 void
-ElevationGrid::setHeightMap (const MFString & url, const float minHeight, const float maxHeight)
-{
-	using namespace std::placeholders;
-
-	future .setValue (new TextureLoader (getExecutionContext (), url, std::bind (&ElevationGrid::setHeightMapTexture, this, _1, minHeight, maxHeight)));
-}
-
-void
-ElevationGrid::setHeightMapTexture (const TexturePtr & texture, const float minHeight, const float maxHeight)
-{
-	try
-	{
-		if (texture)
-			setHeightMapImage (texture -> getImages () -> front (), minHeight, maxHeight);
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-ElevationGrid::setHeightMapImage (const Magick::Image & value, const float minHeight, const float maxHeight)
-{
-	if (xDimension () < 1 or zDimension () < 1)
-		return;
-
-	// Scale image.
-
-	auto image = value;
-
-	Magick::Geometry geometry (xDimension (), zDimension ());
-
-	geometry .aspect (true);
-
-	image .filterType (Magick::LanczosFilter);
-	image .zoom (geometry);
-
-	// Get image data.
-
-	Magick::Blob blob;
-
-	image .magick ("GRAY");
-	image .interlaceType (Magick::NoInterlace);
-	image .endian (Magick::LSBEndian);
-	image .depth (8);
-
-	image .write (&blob);
-
-	// Set height field.
-
-	const auto   data   = static_cast <const uint8_t*> (blob .data ());
-	const size_t size   = xDimension () * zDimension ();
-	const auto   minMax = std::minmax_element (data, data + size);
-
-	height () .resize (size);
-
-	for (size_t i = 0; i < size; ++ i)
-		height () [i] = project <float> (data [i], *minMax .first, *minMax .second, minHeight, maxHeight);
-}
-
-void
 ElevationGrid::set_attrib ()
 {
 	for (const auto & node : attribNodes)
@@ -517,6 +455,68 @@ ElevationGrid::build ()
 	setSolid (solid ());
 	setCCW (ccw ());
 	setAttribs (attribNodes, attribArrays);
+}
+
+void
+ElevationGrid::setHeightMap (const MFString & url, const float minHeight, const float maxHeight)
+{
+	using namespace std::placeholders;
+
+	future .setValue (new TextureLoader (getExecutionContext (), url, std::bind (&ElevationGrid::setHeightMapTexture, this, _1, minHeight, maxHeight)));
+}
+
+void
+ElevationGrid::setHeightMapTexture (const TexturePtr & texture, const float minHeight, const float maxHeight)
+{
+	try
+	{
+		if (texture)
+			setHeightMapImage (texture -> getImages () -> front (), minHeight, maxHeight);
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+ElevationGrid::setHeightMapImage (const Magick::Image & value, const float minHeight, const float maxHeight)
+{
+	if (xDimension () < 1 or zDimension () < 1)
+		return;
+
+	// Scale image.
+
+	auto image = value;
+
+	Magick::Geometry geometry (xDimension (), zDimension ());
+
+	geometry .aspect (true);
+
+	image .filterType (Magick::LanczosFilter);
+	image .zoom (geometry);
+
+	// Get image data.
+
+	Magick::Blob blob;
+
+	image .magick ("GRAY");
+	image .interlaceType (Magick::NoInterlace);
+	image .endian (Magick::LSBEndian);
+	image .depth (8);
+
+	image .write (&blob);
+
+	// Set height field.
+
+	const auto   data   = static_cast <const uint8_t*> (blob .data ());
+	const size_t size   = xDimension () * zDimension ();
+	const auto   minMax = std::minmax_element (data, data + size);
+
+	height () .resize (size);
+
+	for (size_t i = 0; i < size; ++ i)
+		height () [i] = project <float> (data [i], *minMax .first, *minMax .second, minHeight, maxHeight);
 }
 
 void
