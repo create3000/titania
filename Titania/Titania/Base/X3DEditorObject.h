@@ -168,19 +168,19 @@ protected:
 	unlinkClone (const X3D::X3DPtrArray <NodeType> &, const std::string &, X3D::UndoStepPtr &);
 
 	template <class FieldType, class NodeType>
-	void
+	bool
 	addUndoFunction (const X3D::X3DPtrArray <NodeType> &, const std::string &, X3D::UndoStepPtr &);
 
 	template <class FieldType, class NodeType>
-	void
+	bool
 	addRedoFunction (const X3D::X3DPtrArray <NodeType> &, const std::string &, X3D::UndoStepPtr &);
 
 	template <class FieldType, class NodeType>
-	void
+	bool
 	addUndoFunction (const X3D::X3DPtr <NodeType> &, FieldType &, X3D::UndoStepPtr &);
 
 	template <class FieldType, class NodeType>
-	void
+	bool
 	addRedoFunction (const X3D::X3DPtr <NodeType> &, FieldType &, X3D::UndoStepPtr &);
 
 	void
@@ -438,14 +438,14 @@ X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const s
 }
 
 template <class FieldType, class NodeType>
-void
+bool
 X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, X3D::UndoStepPtr & undoStep)
 {
 	if (not undo)
-		return;
+		return false;
 
 	if (nodes .empty ())
-		return;
+		return false;
 
 	const auto lastUndoStep = getUndoStep ();
 
@@ -456,13 +456,13 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 			if (fieldName == currentField)
 			{
 				endUndoGroup (undoGroup, undoStep);
-				return;
+				return false;
 			}
 		}
 		else
 		{
 			if (lastUndoGroup == undoGroup)
-				return;
+				return false;
 		}
 	}
 	else
@@ -540,14 +540,16 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 
 	if (undoStep not_eq lastUndoStep)
 		addUndoStep (undoStep);
+
+	return true;
 }
 
 template <class FieldType, class NodeType>
-void
+bool
 X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName, X3D::UndoStepPtr & undoStep)
 {
 	if (not undo)
-		return;
+		return false;
 
 	// Test if there is no change.
 
@@ -582,7 +584,7 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		if (redoGroup .empty ())
 			endRedoGroup (redoGroup, undoStep);
 
-		return;
+		return false;
 	}
 
 	// Redo field change
@@ -600,14 +602,16 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		catch (const X3D::X3DError &)
 		{ }
 	}
+
+	return true;
 }
 
 template <class FieldType, class NodeType>
-void
+bool
 X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType & field, X3D::UndoStepPtr & undoStep)
 {
 	if (not undo)
-		return;
+		return false;
 
 	const auto fieldName    = basic::to_string (node -> getId (), std::locale::classic ()) + "." + basic::to_string (field .getId (), std::locale::classic ());
 	const auto lastUndoStep = getUndoStep ();
@@ -619,13 +623,13 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 			if (fieldName == currentField)
 			{
 				endUndoGroup (undoGroup, undoStep);
-				return;
+				return false;
 			}
 		}
 		else
 		{
 			if (lastUndoGroup == undoGroup)
-				return;
+				return false;
 		}
 	}
 	else
@@ -661,14 +665,16 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	if (undoStep not_eq lastUndoStep)
 		addUndoStep (undoStep);
+
+	return true;
 }
 
 template <class FieldType, class NodeType>
-void
+bool
 X3DEditorObject::addRedoFunction (const X3D::X3DPtr <NodeType> & node, FieldType & field, X3D::UndoStepPtr & undoStep)
 {
 	if (not undo)
-		return;
+		return false;
 
 	const auto fieldName = basic::to_string (node -> getId (), std::locale::classic ()) + "." + basic::to_string (field .getId (), std::locale::classic ());
 
@@ -678,15 +684,17 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 		if (redoGroup .empty ())
 			endRedoGroup (redoGroup, undoStep);
-	}
-	else
-	{
-		// Redo field change
 
-		using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
-
-		undoStep -> addRedoFunction ((setValue) & FieldType::setValue, std::ref (field), field);
+		return false;
 	}
+
+	// Redo field change
+
+	using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
+
+	undoStep -> addRedoFunction ((setValue) & FieldType::setValue, std::ref (field), field);
+
+	return true;
 }
 
 } // puck

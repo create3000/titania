@@ -369,12 +369,16 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 
 	minMaxInput = input;
 
-	// It would be better not to use the meta node as it is not clear if this is our node.
-	const auto heighHashNode = node -> template createMetaData <X3D::MetadataString> (HEIGHT_HASH);
+	const auto & heighHashValue = node -> template getMetaData <X3D::MFString> (HEIGHT_HASH, true);
 
 	beginUndoGroup ("height", undoStep);
-	addUndoFunction (node, node -> height (), undoStep);
-	addUndoFunction (heighHashNode, heighHashNode -> value (), undoStep);
+	if (addUndoFunction (node, node -> height (), undoStep))
+	{
+		if (heighHashValue .empty ())
+			undoStep -> addUndoFunction (&NodeType::removeMetaData, node, HEIGHT_HASH);
+		else
+			undoStep -> addUndoFunction (&NodeType::template setMetaData <X3D::SFString>, node, HEIGHT_HASH, heighHashValue .at (0));
+	}
 	endUndoGroup ("height", undoStep);
 
 	// Adjust lower and upper bounds of adjustments.
@@ -396,8 +400,10 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 
 	for (size_t i = 0, size = metaHeight .size (); i < size; ++ i)
 		node -> height () [i] = math::project <typename FieldType::value_type::value_type> (metaHeight [i], metaMinHeight, metaMaxHeight, minHeight, maxHeight);
-			
-	node -> setMetaData (HEIGHT_HASH, getHeightHash ());
+
+	const auto heightHash = getHeightHash ();
+
+	node -> setMetaData (HEIGHT_HASH, heightHash);
 
 	node -> height () .removeInterest (&X3DHeightMapEditor::set_height_verified, this);
 	node -> height () .addInterest (&X3DHeightMapEditor::connectHeight, this);
@@ -405,8 +411,8 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 	// Redo.
 
 	beginRedoGroup ("height", undoStep);
-	addRedoFunction (heighHashNode, heighHashNode -> value (), undoStep);
-	addRedoFunction (node, node -> height (), undoStep);
+	if (addRedoFunction (node, node -> height (), undoStep))
+		undoStep -> addRedoFunction (&NodeType::template setMetaData <X3D::SFString>, node, HEIGHT_HASH, X3D::SFString (heightHash));
 	endRedoGroup ("height", undoStep);
 }
 
