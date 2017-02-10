@@ -91,6 +91,7 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	       texCoordNode (),
 	         normalNode (),
 	             future (),
+	          loadState (NOT_STARTED_STATE),
 	        transparent (false)
 {
 	addType (X3DConstants::GeoElevationGrid);
@@ -129,7 +130,8 @@ GeoElevationGrid::GeoElevationGrid (X3DExecutionContext* const executionContext)
 	addChildObjects (colorNode,
 	                 texCoordNode,
 	                 normalNode,
-	                 future);
+	                 future,
+	                 loadState);
 }
 
 X3DBaseNode*
@@ -412,9 +414,11 @@ GeoElevationGrid::build ()
 }
 
 void
-GeoElevationGrid::setHeightMap (const MFString & url, const double minHeight, const double maxHeight)
+GeoElevationGrid::loadHeightMap (const MFString & url, const double minHeight, const double maxHeight)
 {
 	using namespace std::placeholders;
+
+	setLoadState (IN_PROGRESS_STATE);
 
 	future .setValue (new TextureLoader (getExecutionContext (), url, std::bind (&GeoElevationGrid::setHeightMapTexture, this, _1, minHeight, maxHeight)));
 }
@@ -422,15 +426,15 @@ GeoElevationGrid::setHeightMap (const MFString & url, const double minHeight, co
 void
 GeoElevationGrid::setHeightMapTexture (const TexturePtr & texture, const double minHeight, const double maxHeight)
 {
-	try
+	if (not texture)
 	{
-		if (texture)
-			setHeightMapImage (texture -> getImages () -> front (), minHeight, maxHeight);
+		setLoadState (FAILED_STATE);
+		return;
 	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+
+	setLoadState (COMPLETE_STATE);
+
+	setHeightMapImage (texture -> getImages () -> front (), minHeight, maxHeight);
 }
 
 void

@@ -223,10 +223,14 @@ public:
 	isTransparent () const final override
 	{ return transparent; }
 
+	const SFEnum <LoadState> &
+	checkLoadState () const
+	{ return loadState; }
+
 	///  @name Operations
 
 	void
-	setHeightMap (const MFString & url, const float minHeight, const float maxHeight);
+	loadHeightMap (const MFString & url, const float minHeight, const float maxHeight);
 
 	void
 	addNormals ();
@@ -299,6 +303,10 @@ private:
 	void
 	setHeightMapImage (Magick::Image & image, const float minHeight, const float maxHeight);
 
+	void
+	setLoadState (const LoadState value)
+	{ loadState = value; }
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -337,6 +345,7 @@ private:
 	X3DPtr <X3DTextureCoordinateNode>    texCoordNode;
 	X3DPtr <X3DNormalNode>               normalNode;
 	X3DPtr <TextureLoader>               future;
+	SFEnum <LoadState>                   loadState;
 	bool                                 transparent;
 
 };

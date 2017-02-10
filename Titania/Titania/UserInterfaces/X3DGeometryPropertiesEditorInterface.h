@@ -527,6 +527,10 @@ public:
 	getElevationGridHeightMapImageRemoveButton () const
 	{ return *m_ElevationGridHeightMapImageRemoveButton; }
 
+	Gtk::Label &
+	getElevationGridHeightMapLoadStateLabel () const
+	{ return *m_ElevationGridHeightMapLoadStateLabel; }
+
 	Gtk::Expander &
 	getExtrusionExpander () const
 	{ return *m_ExtrusionExpander; }
@@ -634,6 +638,10 @@ public:
 	Gtk::Button &
 	getGeoElevationGridHeightMapImageRemoveButton () const
 	{ return *m_GeoElevationGridHeightMapImageRemoveButton; }
+
+	Gtk::Label &
+	getGeoElevationGridHeightMapLoadStateLabel () const
+	{ return *m_GeoElevationGridHeightMapLoadStateLabel; }
 
 	Gtk::Expander &
 	getCommonPropertiesExpander () const
@@ -938,6 +946,7 @@ private:
 	Gtk::FileChooserButton*        m_ElevationGridHeightMapImageChooserButton;
 	Gtk::Button*                   m_ElevationGridHeightMapImageReloadButton;
 	Gtk::Button*                   m_ElevationGridHeightMapImageRemoveButton;
+	Gtk::Label*                    m_ElevationGridHeightMapLoadStateLabel;
 	Gtk::Expander*                 m_ExtrusionExpander;
 	Gtk::CheckButton*              m_ExtrusionBeginCapCheckButton;
 	Gtk::CheckButton*              m_ExtrusionEndCapCheckButton;
@@ -965,6 +974,7 @@ private:
 	Gtk::FileChooserButton*        m_GeoElevationGridHeightMapImageChooserButton;
 	Gtk::Button*                   m_GeoElevationGridHeightMapImageReloadButton;
 	Gtk::Button*                   m_GeoElevationGridHeightMapImageRemoveButton;
+	Gtk::Label*                    m_GeoElevationGridHeightMapLoadStateLabel;
 	Gtk::Expander*                 m_CommonPropertiesExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;

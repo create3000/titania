@@ -63,11 +63,9 @@ class X3DFuture :
 {
 public:
 
-	///  @name Operations
-
 	virtual
-	bool
-	isReady () = 0;
+	~X3DFuture () override
+	{ }
 
 
 protected:

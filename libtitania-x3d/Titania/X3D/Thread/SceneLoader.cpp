@@ -137,17 +137,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
-bool
-SceneLoader::isReady ()
-{
-	if (not future .valid ())
-		return false;
-
-	const auto status = future .wait_for (std::chrono::milliseconds (0));
-
-	return status == std::future_status::ready;
-}
-
 void
 SceneLoader::wait ()
 {

@@ -106,10 +106,6 @@ public:
 
 	///  @name Member access
 
-	virtual
-	bool
-	isReady () final override;
-
 	const MFString &
 	getUrlError () const
 	{ return urlError; }

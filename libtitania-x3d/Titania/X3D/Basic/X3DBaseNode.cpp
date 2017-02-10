@@ -132,7 +132,7 @@ namespace X3D {
  */
 X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const executionContext) :
 	     X3DParentObject (browser),
-	    executionContext (executionContext),
+	    executionContext (executionContext), // must be atomic
 	          nameOutput (),
 	                type ({ X3DConstants::X3DBaseNode }),
 	    fieldDefinitions (),

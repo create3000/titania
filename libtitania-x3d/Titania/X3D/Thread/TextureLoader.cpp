@@ -126,17 +126,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
-bool
-TextureLoader::isReady ()
-{
-	if (not future .valid ())
-		return false;
-
-	const auto status = future .wait_for (std::chrono::milliseconds (0));
-
-	return status == std::future_status::ready;
-}
-
 TexturePtr
 TextureLoader::loadAsync (const MFString & url,
                           const size_t minTextureSize, const size_t maxTextureSize)

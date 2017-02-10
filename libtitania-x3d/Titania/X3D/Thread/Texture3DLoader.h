@@ -101,12 +101,6 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
-	///  @name Member access
-
-	virtual
-	bool
-	isReady () final override;
-
 	///  @name Destruction
 
 	virtual

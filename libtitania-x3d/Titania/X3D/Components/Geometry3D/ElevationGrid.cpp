@@ -95,6 +95,7 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	   texCoordNode (),
 	     normalNode (),
 	         future (),
+	      loadState (NOT_STARTED_STATE),
 	    transparent (false)
 {
 	addType (X3DConstants::ElevationGrid);
@@ -128,7 +129,8 @@ ElevationGrid::ElevationGrid (X3DExecutionContext* const executionContext) :
 	                 colorNode,
 	                 texCoordNode,
 	                 normalNode,
-	                 future);
+	                 future,
+	                 loadState);
 }
 
 X3DBaseNode*
@@ -458,9 +460,11 @@ ElevationGrid::build ()
 }
 
 void
-ElevationGrid::setHeightMap (const MFString & url, const float minHeight, const float maxHeight)
+ElevationGrid::loadHeightMap (const MFString & url, const float minHeight, const float maxHeight)
 {
 	using namespace std::placeholders;
+
+	setLoadState (IN_PROGRESS_STATE);
 
 	future .setValue (new TextureLoader (getExecutionContext (), url, std::bind (&ElevationGrid::setHeightMapTexture, this, _1, minHeight, maxHeight)));
 }
@@ -468,15 +472,15 @@ ElevationGrid::setHeightMap (const MFString & url, const float minHeight, const 
 void
 ElevationGrid::setHeightMapTexture (const TexturePtr & texture, const float minHeight, const float maxHeight)
 {
-	try
+	if (not texture)
 	{
-		if (texture)
-			setHeightMapImage (texture -> getImages () -> front (), minHeight, maxHeight);
+		setLoadState (FAILED_STATE);
+		return;
 	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+
+	setLoadState (COMPLETE_STATE);
+
+	setHeightMapImage (texture -> getImages () -> front (), minHeight, maxHeight);
 }
 
 void

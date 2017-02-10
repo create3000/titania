@@ -55,6 +55,7 @@
 
 #include <Titania/X3D/Components/Core/MetadataString.h>
 #include <Titania/X3D/Fields/Hash.h>
+#include <Titania/X3D/Thread/TextureLoader.h>
 
 #include <Titania/OS/file_exists.h>
 #include <Titania/OS/home.h>
@@ -82,7 +83,8 @@ protected:
 	                    const Glib::RefPtr <Gtk::Adjustment> & maxHeightAdjustment,
 	                    Gtk::FileChooserButton & fileChooser,
 	                    Gtk::Button & reloadButton,
-	                    Gtk::Button & removeButton);
+	                    Gtk::Button & removeButton,
+	                    Gtk::Label & loadStateLabel);
 	
 	virtual
 	void
@@ -136,6 +138,9 @@ private:
 	void
 	on_height_map_image_remove_clicked ();
 
+	void
+	set_loadState ();
+
 	///  @name Static embers
 
 	static const std::string HEIGHT;
@@ -149,8 +154,9 @@ private:
 	Gtk::FileChooserButton &       fileChooser;
 	Gtk::Button &                  reloadButton;
 	Gtk::Button &                  removeButton;
+	Gtk::Label &                   loadStateLabel;
 
-	X3D::X3DScenePtr                 scene;
+	X3D::X3DScenePtr       scene;
 	X3D::X3DPtr <NodeType> node;
 
 	float metaMinHeight;
@@ -176,13 +182,15 @@ X3DHeightMapEditor <NodeType, FieldType>::X3DHeightMapEditor (const Glib::RefPtr
                                                               const Glib::RefPtr <Gtk::Adjustment> & maxHeightAdjustment,
                                                               Gtk::FileChooserButton & fileChooser,
                                                               Gtk::Button & reloadButton,
-                                                              Gtk::Button & removeButton) :
+                                                              Gtk::Button & removeButton,
+                                                              Gtk::Label & loadStateLabel) :
 	X3DGeometryPropertiesEditorInterface (),
 	                 minHeightAdjustment (minHeightAdjustment),
 	                 maxHeightAdjustment (maxHeightAdjustment),
 	                         fileChooser (fileChooser),
 	                        reloadButton (reloadButton),
 	                        removeButton (removeButton),
+	                      loadStateLabel (loadStateLabel),
 	                               scene (),
 	                                node (),
 	                       metaMinHeight (0),
@@ -218,23 +226,21 @@ X3DHeightMapEditor <NodeType, FieldType>::setNode (const X3D::X3DPtr <NodeType> 
 	if (value == node)
 		return;
 
-
 	if (node)
 	{
-		node -> xDimension () .removeInterest (&X3DHeightMapEditor::on_height_map_image_set, this);
-		node -> zDimension () .removeInterest (&X3DHeightMapEditor::on_height_map_image_set, this);
-		node -> height ()     .removeInterest (&X3DHeightMapEditor::set_height_verified, this);
+		node -> height ()         .removeInterest (&X3DHeightMapEditor::set_height_verified, this);
+		node -> checkLoadState () .removeInterest (&X3DHeightMapEditor::set_loadState,       this);
 	}
 
 	node = value;
 
 	if (node)
 	{
-		node -> xDimension () .addInterest (&X3DHeightMapEditor::on_height_map_image_set, this);
-		node -> zDimension () .addInterest (&X3DHeightMapEditor::on_height_map_image_set, this);
-		node -> height ()     .addInterest (&X3DHeightMapEditor::set_height_verified, this);
+		node -> height ()         .addInterest (&X3DHeightMapEditor::set_height_verified, this);
+		node -> checkLoadState () .addInterest (&X3DHeightMapEditor::set_loadState,       this);
 
 		set_height_verified ();
+		set_loadState ();
 	}
 }
 
@@ -466,17 +472,17 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_set ()
 	if (changing)
 		return;
 
-	const std::string path = fileChooser .get_file () -> get_path ();
+	const auto        undoStep    = std::make_shared <X3D::UndoStep> ("Set ElevationGrid Height Map Image");
+	const std::string path        = fileChooser .get_file () -> get_path ();
+	const basic::uri  URL         = "file://" + path;
+	const basic::uri  relativeURL = getCurrentContext () -> getWorldURL () .relative_path (URL);
+	const auto        url         = X3D::MFString ({ relativeURL .str (), URL .str () });
+	const auto        minHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), minHeightAdjustment -> get_value ());
+	auto              maxHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), maxHeightAdjustment -> get_value ());
+	const auto &      heightMap   = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP, true);
 
 	if (path .empty ())
 		return;
-
-	const auto       undoStep    = std::make_shared <X3D::UndoStep> ("Set ElevationGrid Height Map Image");
-	const basic::uri URL         = "file://" + path;
-	const basic::uri relativeURL = getCurrentContext () -> getWorldURL () .relative_path (URL);
-	const auto       minHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), minHeightAdjustment -> get_value ());
-	auto             maxHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), maxHeightAdjustment -> get_value ());
-	const auto &     heightMap   = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP, true);
 
 	if (minHeight == maxHeight)
 		maxHeight = minHeight + 10;
@@ -489,17 +495,13 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_set ()
 	undoStep -> addUndoFunction (&NodeType::template setMetaData <X3D::MFString>, node, HEIGHT_MAP, heightMap);
 	undoStep -> addUndoFunction (&FieldType::setValue,  std::ref (node -> height ()), node -> height ());
 
-	node -> template setMetaData <X3D::MFString> (HEIGHT_MAP, { relativeURL .str (), URL .str () });
-	node -> setHeightMap ({ URL .str () }, minHeight, maxHeight);
+	node -> template setMetaData <X3D::MFString> (HEIGHT_MAP, url);
+	node -> loadHeightMap (url, minHeight, maxHeight);
 
 	undoStep -> addRedoFunction (&NodeType::template setMetaData <X3D::MFString>, node, HEIGHT_MAP, X3D::MFString ({ URL .str () }));
-	undoStep -> addRedoFunction (&NodeType::setHeightMap, node, X3D::MFString ({ URL .str () }), minHeight, maxHeight);
+	undoStep -> addRedoFunction (&NodeType::loadHeightMap, node, url, minHeight, maxHeight);
 
 	addUndoStep (undoStep);
-
-	// Enable Reload button.
-
-	reloadButton .set_sensitive (true);
 }
 
 template <class NodeType, class FieldType>
@@ -537,6 +539,51 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_remove_clicked ()
 	fileChooser .set_uri ("");
 	fileChooser .set_current_folder (os::home ());
 	reloadButton .set_sensitive (false);
+}
+
+template <class NodeType, class FieldType>
+void
+X3DHeightMapEditor <NodeType, FieldType>::set_loadState ()
+{
+	switch (node -> checkLoadState ())
+	{
+		case X3D::NOT_STARTED_STATE:
+		{
+			loadStateLabel .set_text (_ ("NOT STARTED"));
+
+			fileChooser  .set_sensitive (true);
+			reloadButton .set_sensitive (not fileChooser .get_file () -> get_path () .empty ());
+			removeButton .set_sensitive (true);
+			break;
+		}
+		case X3D::IN_PROGRESS_STATE:
+		{
+			loadStateLabel.set_text (_ ("IN PROGRESS"));
+
+			fileChooser  .set_sensitive (false);
+			reloadButton .set_sensitive (false);
+			removeButton .set_sensitive (false);
+			break;
+		}
+		case X3D::COMPLETE_STATE:
+		{
+			loadStateLabel .set_text (_ ("COMPLETE"));
+
+			fileChooser  .set_sensitive (true);
+			reloadButton .set_sensitive (true);
+			removeButton .set_sensitive (true);
+			break;
+		}
+		case X3D::FAILED_STATE:
+		{
+			loadStateLabel .set_text (_ ("FAILED"));
+
+			fileChooser  .set_sensitive (true);
+			reloadButton .set_sensitive (false);
+			removeButton .set_sensitive (true);
+			break;
+		}
+	}
 }
 
 template <class NodeType, class FieldType>

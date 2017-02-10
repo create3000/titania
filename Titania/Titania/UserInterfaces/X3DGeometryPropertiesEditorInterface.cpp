@@ -170,6 +170,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ElevationGridHeightMapImageChooserButton", m_ElevationGridHeightMapImageChooserButton);
 	m_builder -> get_widget ("ElevationGridHeightMapImageReloadButton", m_ElevationGridHeightMapImageReloadButton);
 	m_builder -> get_widget ("ElevationGridHeightMapImageRemoveButton", m_ElevationGridHeightMapImageRemoveButton);
+	m_builder -> get_widget ("ElevationGridHeightMapLoadStateLabel", m_ElevationGridHeightMapLoadStateLabel);
 	m_builder -> get_widget ("ExtrusionExpander", m_ExtrusionExpander);
 	m_builder -> get_widget ("ExtrusionBeginCapCheckButton", m_ExtrusionBeginCapCheckButton);
 	m_builder -> get_widget ("ExtrusionEndCapCheckButton", m_ExtrusionEndCapCheckButton);
@@ -197,6 +198,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoElevationGridHeightMapImageChooserButton", m_GeoElevationGridHeightMapImageChooserButton);
 	m_builder -> get_widget ("GeoElevationGridHeightMapImageReloadButton", m_GeoElevationGridHeightMapImageReloadButton);
 	m_builder -> get_widget ("GeoElevationGridHeightMapImageRemoveButton", m_GeoElevationGridHeightMapImageRemoveButton);
+	m_builder -> get_widget ("GeoElevationGridHeightMapLoadStateLabel", m_GeoElevationGridHeightMapLoadStateLabel);
 	m_builder -> get_widget ("CommonPropertiesExpander", m_CommonPropertiesExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);

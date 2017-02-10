@@ -61,7 +61,7 @@ namespace X3D {
 
 X3DParentObject::X3DParentObject (X3DBrowser* const browser) :
 	   X3DReferenceObject (),
-	              browser (browser),
+	              browser (browser), // must be atomic
 	extendedEventHandling (true),
 	             children (),
 	             parentId ({ 0 }),
