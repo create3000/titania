@@ -48,35 +48,38 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_THREAD_SCENE_LOADER_H__
-#define __TITANIA_X3D_THREAD_SCENE_LOADER_H__
+#ifndef __TITANIA_X3D_THREAD_TEXTURE_LOADER_H__
+#define __TITANIA_X3D_THREAD_TEXTURE_LOADER_H__
 
-#include "../Fields.h"
-#include "../Types/Pointer.h"
+#include "../Browser/X3DBrowser.h"
 #include "../InputOutput/Loader.h"
+#include "../Browser/Texturing/Texture.h"
+#include "X3DInterruptibleThread.h"
 #include "X3DFuture.h"
 
-#include <Titania/Basic/URI.h>
 #include <atomic>
 #include <future>
 
 namespace titania {
 namespace X3D {
 
-class X3DBrowser;
-class X3DExecutionContext;
-class X3DScene;
-
-class SceneLoader :
+class TextureFuture :
 	public X3DFuture
 {
 public:
 
+	using Callback = std::function <void (const TexturePtr &)>;
+
 	///  @name Construction
 
-	SceneLoader (X3DExecutionContext* const, const MFString &, const SceneLoaderCallback &);
+	TextureFuture (X3DExecutionContext* const executionContext,
+	               const MFString &,
+	               const Callback &);
 
-	///  @name Member access
+	TextureFuture (X3DExecutionContext* const executionContext,
+	               const MFString & url,
+	               const size_t minTextureSize, const size_t maxTextureSize,
+	               const Callback & callback);
 
 	virtual
 	void
@@ -104,17 +107,6 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
-	///  @name Member access
-
-	const MFString &
-	getUrlError () const
-	{ return urlError; }
-
-	///  @name Operations
-
-	void
-	wait ();
-
 	///  @name Destruction
 
 	virtual
@@ -122,26 +114,39 @@ public:
 	dispose () final override;
 
 	virtual
-	~SceneLoader () final override;
+	~TextureFuture () final override;
 
 
 private:
+
+	///  @name Construction
+
+	TextureFuture (X3DExecutionContext* const executionContext,
+	               const MFString & url,
+	               const size_t minTextureSize, const size_t maxTextureSize,
+	               const bool process,
+	               const Callback & callback);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
 
-	std::future <X3DScenePtr>
-	getFuture (const MFString &);
+	std::future <TexturePtr>
+	getFuture (const MFString &, const size_t, const size_t);
 
-	X3DScenePtr
-	loadAsync (const MFString &);
+	///  @name Member access
+
+	X3DBrowser*
+	getBrowser () const
+	{ return browser; }
+
+	///  @name Operations
+
+	TexturePtr
+	loadAsync (const MFString &, const size_t, const size_t);
 
 	void
-	set_scene (const bool);
-
-	void
-	set_loadCount (const int32_t);
+	prepareEvents ();
 
 	///  @name Static members
 
@@ -151,11 +156,11 @@ private:
 
 	///  @name Members
 
-	SceneLoaderCallback       callback;
+	std::atomic <X3DBrowser*> browser;
+	std::atomic <bool>        process;
+	Callback                  callback;
 	Loader                    loader;
-	X3DScenePtr               scene;
-	MFString                  urlError;
-	std::future <X3DScenePtr> future;
+	std::future <TexturePtr>  future;
 
 };
 

@@ -42,8 +42,6 @@
 namespace titania {
 namespace X3D {
 
-class SceneLoader;
-
 class X3DBrowser :
 	virtual public X3DBaseNode, public X3DBrowserContext
 {
@@ -201,8 +199,8 @@ public:
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>);
 
-	SceneLoaderPtr
-	createX3DFromURL (const MFString & url, const SceneLoaderCallback & callback)
+	SceneFuturePtr
+	createX3DFromURL (const MFString & url, const SceneFutureCallback & callback)
 	throw (Error <INVALID_URL>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>);
@@ -377,7 +375,7 @@ private:
 	MFString               urlError;
 	size_t                 inShutdown;
 
-	X3DPtr <SceneLoader> future;
+	X3DPtr <SceneFuture> future;
 
 };
 

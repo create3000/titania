@@ -551,9 +551,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Routing/RouteArray.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
 	Titania/X3D/Routing/X3DRouterObject.cpp \
-	Titania/X3D/Thread/SceneLoader.cpp \
-	Titania/X3D/Thread/Texture3DLoader.cpp \
-	Titania/X3D/Thread/TextureLoader.cpp \
+	Titania/X3D/Thread/SceneFuture.cpp \
+	Titania/X3D/Thread/Texture3DFuture.cpp \
+	Titania/X3D/Thread/TextureFuture.cpp \
 	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \

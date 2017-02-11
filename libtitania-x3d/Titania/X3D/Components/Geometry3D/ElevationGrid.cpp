@@ -466,7 +466,7 @@ ElevationGrid::loadHeightMap (const MFString & url, const float minHeight, const
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	future .setValue (new TextureLoader (getExecutionContext (), url, std::bind (&ElevationGrid::setHeightMapTexture, this, _1, minHeight, maxHeight)));
+	future .setValue (new TextureFuture (getExecutionContext (), url, std::bind (&ElevationGrid::setHeightMapTexture, this, _1, minHeight, maxHeight)));
 }
 
 void

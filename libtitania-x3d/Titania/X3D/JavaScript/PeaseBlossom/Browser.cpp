@@ -60,7 +60,7 @@
 #include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../InputOutput/Loader.h"
-#include "../../Thread/SceneLoader.h"
+#include "../../Thread/SceneFuture.h"
 
 namespace titania {
 namespace X3D {
@@ -382,7 +382,7 @@ Browser::createVrmlFromURL (const pb::ptr <pb::pbExecutionContext> & ec, const p
 
 		using namespace std::placeholders;
 
-		context -> getFuture () .setValue (new X3D::SceneLoader (script -> getExecutionContext (),
+		context -> getFuture () .setValue (new X3D::SceneFuture (script -> getExecutionContext (),
 		                                                         *url,
 		                                                         std::bind (&Browser::setSceneAsync,
 		                                                                    X3D::SFNode (script),

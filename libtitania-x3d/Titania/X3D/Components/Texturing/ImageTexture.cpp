@@ -147,7 +147,7 @@ ImageTexture::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	future .setValue (new TextureLoader (getExecutionContext (),
+	future .setValue (new TextureFuture (getExecutionContext (),
 	                                     url (),
 	                                     resize ? getBrowser () -> getMinTextureSize () : 0,
 	                                     resize ? getBrowser () -> getMaxTextureSize () : 0,

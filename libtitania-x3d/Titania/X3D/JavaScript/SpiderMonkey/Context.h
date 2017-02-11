@@ -70,9 +70,6 @@
 
 namespace titania {
 namespace X3D {
-
-class SceneLoader;
-
 namespace spidermonkey {
 
 class Context :
@@ -136,7 +133,7 @@ public:
 	getObject (X3D::X3DChildObject* const) const
 	noexcept (true);
 
-	X3DPtr <X3D::SceneLoader> &
+	X3DPtr <X3D::SceneFuture> &
 	getFuture ()
 	{ return future; }
 
@@ -262,7 +259,7 @@ private:
 	std::map <size_t, JSObject*>               objects;
 	std::map <basic::uri, jsval>               files;
 
-	X3DPtr <X3D::SceneLoader> future;
+	X3DPtr <X3D::SceneFuture> future;
 
 	size_t frame;
 

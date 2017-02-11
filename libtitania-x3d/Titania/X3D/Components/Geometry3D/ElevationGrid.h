@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_ELEVATION_GRID_H__
 
 #include "../Rendering/X3DGeometryNode.h"
-#include "../../Thread/TextureLoader.h"
+#include "../../Thread/TextureFuture.h"
 
 #include <Magick++.h>
 
@@ -346,7 +346,7 @@ private:
 	X3DPtr <X3DColorNode>                colorNode;
 	X3DPtr <X3DTextureCoordinateNode>    texCoordNode;
 	X3DPtr <X3DNormalNode>               normalNode;
-	X3DPtr <TextureLoader>               future;
+	X3DPtr <TextureFuture>               future;
 	SFEnum <LoadState>                   loadState;
 	bool                                 transparent;
 

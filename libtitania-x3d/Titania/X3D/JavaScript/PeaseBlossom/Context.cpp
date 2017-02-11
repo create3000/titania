@@ -56,7 +56,7 @@
 #include "Fields.h"
 #include "value.h"
 
-#include "../../Thread/SceneLoader.h"
+#include "../../Thread/SceneFuture.h"
 
 #include <Titania/PeaseBlossom/Debug.h>
 #include <cassert>

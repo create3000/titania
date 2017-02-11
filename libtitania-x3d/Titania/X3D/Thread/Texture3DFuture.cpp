@@ -48,18 +48,18 @@
  *
  ******************************************************************************/
 
-#include "Texture3DLoader.h"
+#include "Texture3DFuture.h"
 
 #include "../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType Texture3DLoader::component      = ComponentType::TITANIA;
-const std::string   Texture3DLoader::typeName       = "Texture3DLoader";
-const std::string   Texture3DLoader::containerField = "future";
+const ComponentType Texture3DFuture::component      = ComponentType::TITANIA;
+const std::string   Texture3DFuture::typeName       = "Texture3DFuture";
+const std::string   Texture3DFuture::containerField = "future";
 
-Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
+Texture3DFuture::Texture3DFuture (X3DExecutionContext* const executionContext,
                                   const MFString & url,
                                   const size_t minTextureSize, const size_t maxTextureSize,
                                   const Callback & callback) :
@@ -70,49 +70,49 @@ Texture3DLoader::Texture3DLoader (X3DExecutionContext* const executionContext,
 	    loader (nullptr, executionContext -> getWorldURL ()),
 	    future (getFuture (url, minTextureSize, maxTextureSize))
 {
-	getBrowser () -> prepareEvents () .addInterest (&Texture3DLoader::prepareEvents, this);
+	getBrowser () -> prepareEvents () .addInterest (&Texture3DFuture::prepareEvents, this);
 	getBrowser () -> addEvent ();
 }
 
 X3DBaseNode*
-Texture3DLoader::create (X3DExecutionContext* const executionContext) const
+Texture3DFuture::create (X3DExecutionContext* const executionContext) const
 {
-	throw Error <NOT_SUPPORTED> ("Texture3DLoader::create");
+	throw Error <NOT_SUPPORTED> ("Texture3DFuture::create");
 }
 
 std::future <Texture3DPtr>
-Texture3DLoader::getFuture (const MFString & url,
+Texture3DFuture::getFuture (const MFString & url,
                             const size_t minTextureSize, const size_t maxTextureSize)
 {
 	if (url .empty ())
 		std::async (std::launch::deferred, [ ] (){ return nullptr; });
 
-	return std::async (std::launch::async, std::mem_fn (&Texture3DLoader::loadAsync), this,
+	return std::async (std::launch::async, std::mem_fn (&Texture3DFuture::loadAsync), this,
 	                   url,
 	                   minTextureSize, maxTextureSize);
 }
 
 void
-Texture3DLoader::setExecutionContext (X3DExecutionContext* const executionContext)
+Texture3DFuture::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (&Texture3DLoader::prepareEvents, this);
+	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (&Texture3DFuture::prepareEvents, this);
 
-	getBrowser () -> prepareEvents () .removeInterest (&Texture3DLoader::prepareEvents, this);
+	getBrowser () -> prepareEvents () .removeInterest (&Texture3DFuture::prepareEvents, this);
 
 	X3DFuture::setExecutionContext (executionContext);
 
 	if (prepareEvents)
 	{
-		getBrowser () -> prepareEvents () .addInterest (&Texture3DLoader::prepareEvents, this);
+		getBrowser () -> prepareEvents () .addInterest (&Texture3DFuture::prepareEvents, this);
 
 		getBrowser () -> addEvent ();
 	}
 }
 
 Texture3DPtr
-Texture3DLoader::loadAsync (const MFString & url,
+Texture3DFuture::loadAsync (const MFString & url,
                             const size_t minTextureSize, const size_t maxTextureSize)
 {
 	for (const auto & URL : url)
@@ -170,7 +170,7 @@ Texture3DLoader::loadAsync (const MFString & url,
 }
 
 void
-Texture3DLoader::prepareEvents ()
+Texture3DFuture::prepareEvents ()
 {
 	try
 	{
@@ -186,7 +186,7 @@ Texture3DLoader::prepareEvents ()
 		if (status not_eq std::future_status::ready)
 		   return;
 	
-		getBrowser () -> prepareEvents () .removeInterest (&Texture3DLoader::prepareEvents, this);
+		getBrowser () -> prepareEvents () .removeInterest (&Texture3DFuture::prepareEvents, this);
 	
 		callback (future .get ());
 
@@ -205,7 +205,7 @@ Texture3DLoader::prepareEvents ()
 }
 
 void
-Texture3DLoader::dispose ()
+Texture3DFuture::dispose ()
 {
 	stop ();
 
@@ -216,7 +216,7 @@ Texture3DLoader::dispose ()
 	callback = [ ] (const Texture3DPtr &) { };
 }
 
-Texture3DLoader::~Texture3DLoader ()
+Texture3DFuture::~Texture3DFuture ()
 {
 	if (future .valid ())
 		future .wait ();

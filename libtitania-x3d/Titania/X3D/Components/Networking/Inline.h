@@ -60,8 +60,6 @@
 namespace titania {
 namespace X3D {
 
-class SceneLoader;
-
 class Inline :
 	virtual public X3DChildNode,
 	virtual public X3DBoundedObject,
@@ -262,7 +260,7 @@ private:
 	X3DPtr <Group>       group;
 	SFTime               buffer;
 	bool                 preventLoad;
-	X3DPtr <SceneLoader> future;
+	X3DPtr <SceneFuture> future;
 
 };
 

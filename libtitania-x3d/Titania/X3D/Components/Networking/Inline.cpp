@@ -52,7 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../InputOutput/Loader.h"
-#include "../../Thread/SceneLoader.h"
+#include "../../Thread/SceneFuture.h"
 #include "../../Tools/Networking/InlineTool.h"
 
 namespace titania {
@@ -332,7 +332,7 @@ Inline::requestAsyncLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	future .setValue (new SceneLoader (getExecutionContext (),
+	future .setValue (new SceneFuture (getExecutionContext (),
 	                                   url (),
 	                                   std::bind (&Inline::setSceneAsync, this, _1)));
 }

@@ -57,7 +57,7 @@
 #include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
 #include "../../InputOutput/Loader.h"
-#include "../../Thread/SceneLoader.h"
+#include "../../Thread/SceneFuture.h"
 #include "Fields/ArrayFields.h"
 #include "Fields/MFNode.h"
 #include "Fields/SFNode.h"
@@ -717,7 +717,7 @@ Browser::createVrmlFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 
 			using namespace std::placeholders;
 
-			context -> getFuture () .setValue (new X3D::SceneLoader (script -> getExecutionContext (),
+			context -> getFuture () .setValue (new X3D::SceneFuture (script -> getExecutionContext (),
 			                                                         *url,
 			                                                         std::bind (&Browser::setSceneAsync,
 			                                                                    X3D::SFNode (script),

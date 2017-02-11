@@ -667,9 +667,9 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Routing/Route.lo Titania/X3D/Routing/RouteArray.lo \
 	Titania/X3D/Routing/RouteSet.lo \
 	Titania/X3D/Routing/X3DRouterObject.lo \
-	Titania/X3D/Thread/SceneLoader.lo \
-	Titania/X3D/Thread/Texture3DLoader.lo \
-	Titania/X3D/Thread/TextureLoader.lo \
+	Titania/X3D/Thread/SceneFuture.lo \
+	Titania/X3D/Thread/Texture3DFuture.lo \
+	Titania/X3D/Thread/TextureFuture.lo \
 	Titania/X3D/Tools/Core/Tool.lo \
 	Titania/X3D/Tools/Core/X3DBaseTool.lo \
 	Titania/X3D/Tools/Core/X3DToolObject.lo \
@@ -1509,9 +1509,9 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Routing/RouteArray.cpp \
 	Titania/X3D/Routing/RouteSet.cpp \
 	Titania/X3D/Routing/X3DRouterObject.cpp \
-	Titania/X3D/Thread/SceneLoader.cpp \
-	Titania/X3D/Thread/Texture3DLoader.cpp \
-	Titania/X3D/Thread/TextureLoader.cpp \
+	Titania/X3D/Thread/SceneFuture.cpp \
+	Titania/X3D/Thread/Texture3DFuture.cpp \
+	Titania/X3D/Thread/TextureFuture.cpp \
 	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
@@ -3718,12 +3718,12 @@ Titania/X3D/Thread/$(am__dirstamp):
 Titania/X3D/Thread/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Thread/$(DEPDIR)
 	@: > Titania/X3D/Thread/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Thread/SceneLoader.lo: Titania/X3D/Thread/$(am__dirstamp) \
+Titania/X3D/Thread/SceneFuture.lo: Titania/X3D/Thread/$(am__dirstamp) \
 	Titania/X3D/Thread/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Thread/Texture3DLoader.lo:  \
+Titania/X3D/Thread/Texture3DFuture.lo:  \
 	Titania/X3D/Thread/$(am__dirstamp) \
 	Titania/X3D/Thread/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Thread/TextureLoader.lo:  \
+Titania/X3D/Thread/TextureFuture.lo:  \
 	Titania/X3D/Thread/$(am__dirstamp) \
 	Titania/X3D/Thread/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Core/$(am__dirstamp):
@@ -4640,9 +4640,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/RouteArray.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/RouteSet.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Routing/$(DEPDIR)/X3DRouterObject.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Thread/$(DEPDIR)/SceneLoader.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Thread/$(DEPDIR)/Texture3DLoader.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Thread/$(DEPDIR)/TextureLoader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Thread/$(DEPDIR)/SceneFuture.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Thread/$(DEPDIR)/Texture3DFuture.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Thread/$(DEPDIR)/TextureFuture.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/Tool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/X3DBaseTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/X3DToolObject.Plo@am__quote@

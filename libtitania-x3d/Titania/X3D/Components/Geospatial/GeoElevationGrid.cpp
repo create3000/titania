@@ -420,7 +420,7 @@ GeoElevationGrid::loadHeightMap (const MFString & url, const double minHeight, c
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	future .setValue (new TextureLoader (getExecutionContext (), url, std::bind (&GeoElevationGrid::setHeightMapTexture, this, _1, minHeight, maxHeight)));
+	future .setValue (new TextureFuture (getExecutionContext (), url, std::bind (&GeoElevationGrid::setHeightMapTexture, this, _1, minHeight, maxHeight)));
 }
 
 void

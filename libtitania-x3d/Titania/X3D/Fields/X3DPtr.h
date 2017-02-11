@@ -685,6 +685,18 @@ operator >= (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 	return a >= b;
 }
 
+///  @relates X3DPtr
+///  @name Utiliy functions
+
+///  Constructs an object of type ValueType and wraps it in a X3DPtr using
+///  args as the parameter list for the constructor of Type.
+template <class ValueType, class ... Args>
+X3DPtr <ValueType>
+MakePtr (Args && ... args)
+{
+	return X3DPtr <ValueType> (new ValueType (std::forward <Args> (args) ...));
+}
+
 } // X3D
 } // titania
 

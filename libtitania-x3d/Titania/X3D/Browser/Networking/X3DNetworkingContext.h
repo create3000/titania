@@ -61,9 +61,6 @@
 namespace titania {
 namespace X3D {
 
-class LoadSensor;
-class X3DFuture;
-
 class X3DNetworkingContext :
 	virtual public X3DBaseNode
 {

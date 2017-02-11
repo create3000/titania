@@ -55,7 +55,7 @@
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Execution/X3DScene.h"
 #include "../InputOutput/Loader.h"
-#include "../Thread/SceneLoader.h"
+#include "../Thread/SceneFuture.h"
 
 #include <iomanip>
 
@@ -288,7 +288,7 @@ ExternProtoDeclaration::requestAsyncLoad ()
 
 	getScene () -> addExternProtoLoadCount (this);
 
-	future .setValue (new SceneLoader (getExecutionContext (),
+	future .setValue (new SceneFuture (getExecutionContext (),
 	                                   url (),
 	                                   std::bind (&ExternProtoDeclaration::setSceneAsync, this, _1)));
 }

@@ -472,13 +472,11 @@
     <None Include="Titania\X3D\Browser\Notification.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
     <None Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.h" />
-    <None Include="Titania\X3D\Thread\SceneLoader.h" />
     <None Include="share\titania\mime\model\vrml.png" />
     <None Include="share\titania\mime\model\x3d+vrml.png" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+vrml.svg" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+xml.svg" />
     <None Include="share\titania\mime\model\x3d+xml.png" />
-    <None Include="Titania\X3D\Thread\TextureLoader.h" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-x3d+binary.svg" />
     <None Include="share\titania\mime\model\x3d+binary.png" />
     <None Include="share\titania\tools\library\RoundedRectangle2D.x3dv" />
@@ -491,7 +489,6 @@
     <None Include="Titania\X3D\Components\Followers\TexCoordChaser2D.h" />
     <None Include="Titania\X3D\Rendering\PolygonModeContainer.h" />
     <None Include="Titania\X3D\Rendering\X3DCollectableObject.h" />
-    <None Include="Titania\X3D\Thread\Texture3DLoader.h" />
     <None Include="share\titania\shaders\ParticleSystems\PointEmitter.vs" />
     <None Include="share\titania\shaders\ParticleSystems\Bits\Math.h" />
     <None Include="share\titania\shaders\ParticleSystems\Bits\Quaternion.h" />
@@ -856,6 +853,9 @@
     <None Include="share\titania\tools\SculpToolBrush.x3dv" />
     <None Include="share\titania\tools\library\Grid.x3dv" />
     <None Include="Titania\X3D\Fields\Hash.h" />
+    <None Include="Titania\X3D\Thread\SceneFuture.h" />
+    <None Include="Titania\X3D\Thread\Texture3DFuture.h" />
+    <None Include="Titania\X3D\Thread\TextureFuture.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1210,15 +1210,12 @@
     <Compile Include="Titania\X3D\Browser\Notification.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformNode.cpp" />
     <Compile Include="Titania\X3D\Components\ParticleSystems\ForcePhysicsModel.cpp" />
-    <Compile Include="Titania\X3D\Thread\SceneLoader.cpp" />
-    <Compile Include="Titania\X3D\Thread\TextureLoader.cpp" />
     <Compile Include="Titania\X3D\Rendering\ClipPlaneContainer.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\ScalarDamper.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\ColorChaser.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\CoordinateChaser.cpp" />
     <Compile Include="Titania\X3D\Components\Followers\TexCoordChaser2D.cpp" />
     <Compile Include="Titania\X3D\Rendering\PolygonModeContainer.cpp" />
-    <Compile Include="Titania\X3D\Thread\Texture3DLoader.cpp" />
     <Compile Include="Titania\X3D\Components\Geospatial\X3DGeospatialObject.cpp" />
     <Compile Include="Titania\X3D\Configuration\Unit.cpp" />
     <Compile Include="Titania\X3D\Configuration\UnitArray.cpp" />
@@ -1440,6 +1437,9 @@
     <Compile Include="Titania\X3D\InputOutput\X3DGenerator.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetBrushObject.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetSculpToolObject.cpp" />
+    <Compile Include="Titania\X3D\Thread\SceneFuture.cpp" />
+    <Compile Include="Titania\X3D\Thread\Texture3DFuture.cpp" />
+    <Compile Include="Titania\X3D\Thread\TextureFuture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

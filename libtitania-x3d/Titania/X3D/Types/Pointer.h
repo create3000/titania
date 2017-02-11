@@ -484,7 +484,8 @@ class X3DViewpointNodeTool;
 
 ///  Futures
 
-class SceneLoader;
+class X3DFuture;
+class SceneFuture;
 
 // Bindable stacks and lists
 
@@ -538,8 +539,8 @@ using BackgroundListPtr      = X3DPtr <BackgroundList>;
 using FogListPtr             = X3DPtr <FogList>;
 using ViewpointListPtr       = X3DPtr <ViewpointList>;
 
-using SceneLoaderPtr      = X3DPtr <SceneLoader>;
-using SceneLoaderCallback = std::function <void (X3DScenePtr &&)>;
+using SceneFuturePtr      = X3DPtr <SceneFuture>;
+using SceneFutureCallback = std::function <void (X3DScenePtr &&)>;
 
 class UndoStepContainer;
 

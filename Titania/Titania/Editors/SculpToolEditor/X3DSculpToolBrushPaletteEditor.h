@@ -108,7 +108,7 @@ private:
 
 	///  @name Member types
 
-	X3D::SceneLoaderPtr future;
+	X3D::SceneFuturePtr future;
 
 };
 

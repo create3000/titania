@@ -57,7 +57,7 @@
 #include "../Rendering/X3DNormalNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 #include "../Texturing/X3DTextureCoordinateNode.h"
-#include "../../Thread/TextureLoader.h"
+#include "../../Thread/TextureFuture.h"
 
 #include <Magick++.h>
 
@@ -341,7 +341,7 @@ private:
 	X3DPtr <X3DColorNode>             colorNode;
 	X3DPtr <X3DTextureCoordinateNode> texCoordNode;
 	X3DPtr <X3DNormalNode>            normalNode;
-	X3DPtr <TextureLoader>            future;
+	X3DPtr <TextureFuture>            future;
 	SFEnum <LoadState>                loadState;
 	bool                              transparent;
 

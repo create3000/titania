@@ -48,13 +48,12 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_THREAD_TEXTURE_LOADER_H__
-#define __TITANIA_X3D_THREAD_TEXTURE_LOADER_H__
+#ifndef __TITANIA_X3D_THREAD_TEXTURE3DLOADER_H__
+#define __TITANIA_X3D_THREAD_TEXTURE3DLOADER_H__
 
 #include "../Browser/X3DBrowser.h"
 #include "../InputOutput/Loader.h"
-#include "../Browser/Texturing/Texture.h"
-#include "X3DInterruptibleThread.h"
+#include "../Browser/Texturing3D/Texture3D.h"
 #include "X3DFuture.h"
 
 #include <atomic>
@@ -63,23 +62,18 @@
 namespace titania {
 namespace X3D {
 
-class TextureLoader :
+class Texture3DFuture :
 	public X3DFuture
 {
 public:
 
-	using Callback = std::function <void (const TexturePtr &)>;
+	using Callback = std::function <void (const Texture3DPtr &)>;
 
 	///  @name Construction
 
-	TextureLoader (X3DExecutionContext* const executionContext,
-	               const MFString &,
-	               const Callback &);
-
-	TextureLoader (X3DExecutionContext* const executionContext,
-	               const MFString & url,
-	               const size_t minTextureSize, const size_t maxTextureSize,
-	               const Callback & callback);
+	Texture3DFuture (X3DExecutionContext* const executionContext,
+	                 const MFString &, const size_t, const size_t,
+	                 const Callback &);
 
 	virtual
 	void
@@ -114,35 +108,23 @@ public:
 	dispose () final override;
 
 	virtual
-	~TextureLoader () final override;
+	~Texture3DFuture () final override;
 
 
 private:
-
-	///  @name Construction
-
-	TextureLoader (X3DExecutionContext* const executionContext,
-	               const MFString & url,
-	               const size_t minTextureSize, const size_t maxTextureSize,
-	               const bool process,
-	               const Callback & callback);
 
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const) const final override;
 
-	std::future <TexturePtr>
+	std::future <Texture3DPtr>
 	getFuture (const MFString &, const size_t, const size_t);
-
-	///  @name Member access
 
 	X3DBrowser*
 	getBrowser () const
 	{ return browser; }
 
-	///  @name Operations
-
-	TexturePtr
+	Texture3DPtr
 	loadAsync (const MFString &, const size_t, const size_t);
 
 	void
@@ -156,11 +138,10 @@ private:
 
 	///  @name Members
 
-	std::atomic <X3DBrowser*> browser;
-	std::atomic <bool>        process;
-	Callback                  callback;
-	Loader                    loader;
-	std::future <TexturePtr>  future;
+	std::atomic <X3DBrowser*>  browser;
+	Callback                   callback;
+	Loader                     loader;
+	std::future <Texture3DPtr> future;
 
 };
 

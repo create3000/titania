@@ -48,31 +48,31 @@
  *
  ******************************************************************************/
 
-#include "TextureLoader.h"
+#include "TextureFuture.h"
 
 #include "../InputOutput/Loader.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType TextureLoader::component      = ComponentType::TITANIA;
-const std::string   TextureLoader::typeName       = "TextureLoader";
-const std::string   TextureLoader::containerField = "future";
+const ComponentType TextureFuture::component      = ComponentType::TITANIA;
+const std::string   TextureFuture::typeName       = "TextureFuture";
+const std::string   TextureFuture::containerField = "future";
 
-TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
+TextureFuture::TextureFuture (X3DExecutionContext* const executionContext,
                               const MFString & url,
                               const Callback & callback) :
-	TextureLoader (executionContext, url, 0, 0, false, callback)
+	TextureFuture (executionContext, url, 0, 0, false, callback)
 { }
 
-TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
+TextureFuture::TextureFuture (X3DExecutionContext* const executionContext,
                               const MFString & url,
                               const size_t minTextureSize, const size_t maxTextureSize,
                               const Callback & callback) :
-	TextureLoader (executionContext, url, minTextureSize, maxTextureSize, true, callback)
+	TextureFuture (executionContext, url, minTextureSize, maxTextureSize, true, callback)
 { }
 
-TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
+TextureFuture::TextureFuture (X3DExecutionContext* const executionContext,
                               const MFString & url,
                               const size_t minTextureSize, const size_t maxTextureSize,
                               const bool process,
@@ -85,49 +85,49 @@ TextureLoader::TextureLoader (X3DExecutionContext* const executionContext,
 	     loader (nullptr, executionContext -> getWorldURL ()),
 	     future (getFuture (url, minTextureSize, maxTextureSize))
 {
-	getBrowser () -> prepareEvents () .addInterest (&TextureLoader::prepareEvents, this);
+	getBrowser () -> prepareEvents () .addInterest (&TextureFuture::prepareEvents, this);
 	getBrowser () -> addEvent ();
 }
 
 X3DBaseNode*
-TextureLoader::create (X3DExecutionContext* const executionContext) const
+TextureFuture::create (X3DExecutionContext* const executionContext) const
 {
-	throw Error <NOT_SUPPORTED> ("TextureLoader::create");
+	throw Error <NOT_SUPPORTED> ("TextureFuture::create");
 }
 
 std::future <TexturePtr>
-TextureLoader::getFuture (const MFString & url,
+TextureFuture::getFuture (const MFString & url,
                           const size_t minTextureSize, const size_t maxTextureSize)
 {
 	if (url .empty ())
 		std::async (std::launch::deferred, [ ] (){ return nullptr; });
 
-	return std::async (std::launch::async, std::mem_fn (&TextureLoader::loadAsync), this,
+	return std::async (std::launch::async, std::mem_fn (&TextureFuture::loadAsync), this,
 	                   url,
 	                   minTextureSize, maxTextureSize);
 }
 
 void
-TextureLoader::setExecutionContext (X3DExecutionContext* const executionContext)
+TextureFuture::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (&TextureLoader::prepareEvents, this);
+	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (&TextureFuture::prepareEvents, this);
 
-	getBrowser () -> prepareEvents () .removeInterest (&TextureLoader::prepareEvents, this);
+	getBrowser () -> prepareEvents () .removeInterest (&TextureFuture::prepareEvents, this);
 
 	X3DFuture::setExecutionContext (executionContext);
 
 	if (prepareEvents)
 	{
-		getBrowser () -> prepareEvents () .addInterest (&TextureLoader::prepareEvents, this);
+		getBrowser () -> prepareEvents () .addInterest (&TextureFuture::prepareEvents, this);
 
 		getBrowser () -> addEvent ();
 	}
 }
 
 TexturePtr
-TextureLoader::loadAsync (const MFString & url,
+TextureFuture::loadAsync (const MFString & url,
                           const size_t minTextureSize, const size_t maxTextureSize)
 {
 	for (const auto & URL : url)
@@ -188,7 +188,7 @@ TextureLoader::loadAsync (const MFString & url,
 }
 
 void
-TextureLoader::prepareEvents ()
+TextureFuture::prepareEvents ()
 {
 	try
 	{
@@ -204,7 +204,7 @@ TextureLoader::prepareEvents ()
 		if (status not_eq std::future_status::ready)
 		   return;
 		
-		getBrowser () -> prepareEvents () .removeInterest (&TextureLoader::prepareEvents, this);
+		getBrowser () -> prepareEvents () .removeInterest (&TextureFuture::prepareEvents, this);
 	
 		callback (future .get ());
 
@@ -223,7 +223,7 @@ TextureLoader::prepareEvents ()
 }
 
 void
-TextureLoader::dispose ()
+TextureFuture::dispose ()
 {
 	stop ();
 
@@ -234,7 +234,7 @@ TextureLoader::dispose ()
 	callback = [ ] (const TexturePtr &) { };
 }
 
-TextureLoader::~TextureLoader ()
+TextureFuture::~TextureFuture ()
 {
 	if (future .valid ())
 		future .wait ();

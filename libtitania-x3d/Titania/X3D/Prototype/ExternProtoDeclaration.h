@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 class Loader;
-class SceneLoader;
+class SceneFuture;
 
 class ExternProtoDeclaration :
 	public X3DProtoDeclarationNode, public X3DUrlObject
@@ -218,7 +218,7 @@ private:
 
 	X3DScenePtr          scene;
 	ProtoDeclarationPtr  proto;
-	X3DPtr <SceneLoader> future;
+	X3DPtr <SceneFuture> future;
 
 };
 

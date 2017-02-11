@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "SceneLoader.h"
+#include "SceneFuture.h"
 
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DScene.h"
@@ -62,11 +62,11 @@ namespace X3D {
 // See http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/components/networking.html#X3DUrlObject for
 // how to handle the profile and component arguments/statements of inline nodes.
 
-const ComponentType SceneLoader::component      = ComponentType::TITANIA;
-const std::string   SceneLoader::typeName       = "SceneLoader";
-const std::string   SceneLoader::containerField = "future";
+const ComponentType SceneFuture::component      = ComponentType::TITANIA;
+const std::string   SceneFuture::typeName       = "SceneFuture";
+const std::string   SceneFuture::containerField = "future";
 
-SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFString & url, const SceneLoaderCallback & callback) :
+SceneFuture::SceneFuture (X3DExecutionContext* const executionContext, const MFString & url, const SceneFutureCallback & callback) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DFuture (),
 	  callback (callback),
@@ -75,43 +75,45 @@ SceneLoader::SceneLoader (X3DExecutionContext* const executionContext, const MFS
 	  urlError (),
 	    future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
 {
-	getBrowser () -> prepareEvents () .addInterest (&SceneLoader::set_scene, this, true);
+	addChildObjects (scene);
+
+	getBrowser () -> prepareEvents () .addInterest (&SceneFuture::set_scene, this, true);
 	getBrowser () -> addEvent ();
 }
 
 X3DBaseNode*
-SceneLoader::create (X3DExecutionContext* const executionContext) const
+SceneFuture::create (X3DExecutionContext* const executionContext) const
 {
-	throw Error <NOT_SUPPORTED> ("SceneLoader::create");
+	throw Error <NOT_SUPPORTED> ("SceneFuture::create");
 }
 
 std::future <X3DScenePtr> 
-SceneLoader::getFuture (const MFString & url)
+SceneFuture::getFuture (const MFString & url)
 {
-	return std::async (std::launch::async, std::mem_fn (&SceneLoader::loadAsync), this, url);
+	return std::async (std::launch::async, std::mem_fn (&SceneFuture::loadAsync), this, url);
 }
 
 void
-SceneLoader::setExecutionContext (X3DExecutionContext* const executionContext)
+SceneFuture::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (&SceneLoader::set_scene, this);
+	const bool prepareEvents = getBrowser () -> prepareEvents () .hasInterest (&SceneFuture::set_scene, this);
 
-	getBrowser () -> prepareEvents () .removeInterest (&SceneLoader::set_scene, this);
+	getBrowser () -> prepareEvents () .removeInterest (&SceneFuture::set_scene, this);
 
 	X3DFuture::setExecutionContext (executionContext);
 
 	if (prepareEvents)
 	{
-		getBrowser () -> prepareEvents () .addInterest (&SceneLoader::set_scene, this, true);
+		getBrowser () -> prepareEvents () .addInterest (&SceneFuture::set_scene, this, true);
 
 		getBrowser () -> addEvent ();
 	}
 }
 
 void
-SceneLoader::wait ()
+SceneFuture::wait ()
 {
 	try
 	{
@@ -148,7 +150,7 @@ SceneLoader::wait ()
 }
 
 X3DScenePtr
-SceneLoader::loadAsync (const MFString & url)
+SceneFuture::loadAsync (const MFString & url)
 {
 	try
 	{
@@ -191,7 +193,7 @@ SceneLoader::loadAsync (const MFString & url)
 }
 
 void
-SceneLoader::set_scene (const bool addEvent)
+SceneFuture::set_scene (const bool addEvent)
 {
 	try
 	{
@@ -208,11 +210,11 @@ SceneLoader::set_scene (const bool addEvent)
 		if (status not_eq std::future_status::ready)
 			return;
 	
-		getBrowser () -> prepareEvents () .removeInterest (&SceneLoader::set_scene, this);
+		getBrowser () -> prepareEvents () .removeInterest (&SceneFuture::set_scene, this);
 	
 		scene = future .get ();
 
-		scene -> getExternProtosLoadCount () .addInterest (&SceneLoader::set_loadCount, this);
+		scene -> getExternProtosLoadCount () .addInterest (&SceneFuture::set_loadCount, this);
 
 		scene -> requestAsyncLoadOfExternProtos ();
 	}
@@ -231,7 +233,7 @@ SceneLoader::set_scene (const bool addEvent)
 }
 
 void
-SceneLoader::set_loadCount (const int32_t loadCount)
+SceneFuture::set_loadCount (const int32_t loadCount)
 {
 	try
 	{
@@ -240,7 +242,7 @@ SceneLoader::set_loadCount (const int32_t loadCount)
 		if (loadCount)
 		   return;
 
-		scene -> getExternProtosLoadCount () .removeInterest (&SceneLoader::set_loadCount, this);
+		scene -> getExternProtosLoadCount () .removeInterest (&SceneFuture::set_loadCount, this);
 	
 		callback (std::move (scene));
 
@@ -253,13 +255,11 @@ SceneLoader::set_loadCount (const int32_t loadCount)
 }
 
 void
-SceneLoader::dispose ()
+SceneFuture::dispose ()
 {
 	stop ();
 
 	loader .stop ();
-
-	scene .dispose ();
 
 	X3DFuture::dispose ();
 
@@ -267,7 +267,7 @@ SceneLoader::dispose ()
 	callback = [ ] (X3DScenePtr &&) { };
 }
 
-SceneLoader::~SceneLoader ()
+SceneFuture::~SceneFuture ()
 {
 	if (future .valid ())
 		future .wait ();

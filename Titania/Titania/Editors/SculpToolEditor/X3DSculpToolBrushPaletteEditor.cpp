@@ -55,7 +55,7 @@
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
-#include <Titania/X3D/Thread/SceneLoader.h>
+#include <Titania/X3D/Thread/SceneFuture.h>
 
 namespace titania {
 namespace puck {

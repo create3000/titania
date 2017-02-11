@@ -62,7 +62,7 @@
 #include "../Execution/Scene.h"
 #include "../Execution/World.h"
 #include "../InputOutput/Loader.h"
-#include "../Thread/SceneLoader.h"
+#include "../Thread/SceneFuture.h"
 
 #include <Titania/Backtrace.h>
 
@@ -416,7 +416,7 @@ throw (Error <INVALID_URL>,
 
 	removeLoadCount (future .getValue ());
 
-	future .setValue (new SceneLoader (this,
+	future .setValue (new SceneFuture (this,
 	                                   url,
 	                                   std::bind (&X3DBrowser::set_scene_async, this, _1)));
 
@@ -508,15 +508,15 @@ throw (Error <INVALID_URL>,
 	return loader .createX3DFromURL (url);
 }
 
-SceneLoaderPtr
-X3DBrowser::createX3DFromURL (const MFString & url, const SceneLoaderCallback & callback)
+SceneFuturePtr
+X3DBrowser::createX3DFromURL (const MFString & url, const SceneFutureCallback & callback)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>,
        Error <INVALID_OPERATION_TIMING>)
 {
 	using namespace std::placeholders;
 
-	return SceneLoaderPtr (new SceneLoader (getExecutionContext (), url, [callback] (X3DScenePtr && scene) { scene -> setup (); callback (std::move (scene)); }));
+	return MakePtr <SceneFuture> (getExecutionContext (), url, [callback] (X3DScenePtr && scene) { scene -> setup (); callback (std::move (scene)); });
 }
 
 void

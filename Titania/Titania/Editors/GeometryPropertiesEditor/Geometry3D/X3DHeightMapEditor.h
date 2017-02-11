@@ -48,14 +48,13 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_ELEVATION_GRID_X3DELEVATION_GRID_HEIGHT_MAP_EDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_ELEVATION_GRID_X3DELEVATION_GRID_HEIGHT_MAP_EDITOR_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DHEIGHT_MAP_EDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DHEIGHT_MAP_EDITOR_H__
 
 #include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
 #include <Titania/X3D/Components/Core/MetadataString.h>
 #include <Titania/X3D/Fields/Hash.h>
-#include <Titania/X3D/Thread/TextureLoader.h>
 
 #include <Titania/OS/file_exists.h>
 #include <Titania/OS/home.h>
@@ -85,7 +84,7 @@ protected:
 	                    Gtk::Button & reloadButton,
 	                    Gtk::Button & removeButton,
 	                    Gtk::Label & loadStateLabel);
-	
+
 	virtual
 	void
 	initialize () override;
@@ -248,7 +247,7 @@ template <class NodeType, class FieldType>
 std::string
 X3DHeightMapEditor <NodeType, FieldType>::getHeightHash () const
 {
-	return basic::to_string (std::hash <FieldType> { } (node -> height ()), std::locale::classic ());
+	return basic::to_string (std::hash <FieldType>{ } (node -> height ()), std::locale::classic ());
 }
 
 template <class NodeType, class FieldType>
@@ -264,7 +263,7 @@ X3DHeightMapEditor <NodeType, FieldType>::getHeight (const bool fromMetaData)
 		if (fromMetaData)
 		{
 			node -> template setMetaData <FieldType> (HEIGHT, node -> height ());
-	
+
 			return node -> template getMetaData <FieldType> (HEIGHT, false);
 		}
 
@@ -295,7 +294,7 @@ X3DHeightMapEditor <NodeType, FieldType>::set_height_verified ()
 		const auto & metaHash   = node -> template getMetaData <X3D::MFString> (HEIGHT_HASH, false) .at (0);
 		const auto   heightHash = getHeightHash ();
 
-		set_height (heightHash != metaHash);
+		set_height (heightHash not_eq metaHash);
 	}
 	catch (const std::exception &)
 	{
@@ -319,7 +318,7 @@ X3DHeightMapEditor <NodeType, FieldType>::set_height (const bool removeMetaData)
 	if (not height .empty ())
 	{
 		const auto metaMinMax = std::minmax_element (height .begin (), height .end ());
-	
+
 		metaMinHeight = *metaMinMax .first;
 		metaMaxHeight = *metaMinMax .second;
 	}
@@ -342,10 +341,10 @@ X3DHeightMapEditor <NodeType, FieldType>::set_adjustments ()
 	if (not node -> height () .empty ())
 	{
 		const auto minMax = std::minmax_element (node -> height () .begin (), node -> height () .end ());
-	
+
 		minHeightAdjustment -> set_upper (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .second));
 		maxHeightAdjustment -> set_lower (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .first));
-	
+
 		minHeightAdjustment -> set_value (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .first));
 		maxHeightAdjustment -> set_value (getCurrentScene () -> toUnit (node -> height () .getUnit (), *minMax .second));
 	}
@@ -353,7 +352,7 @@ X3DHeightMapEditor <NodeType, FieldType>::set_adjustments ()
 	{
 		minHeightAdjustment -> set_upper (getCurrentScene () -> toUnit (node -> height () .getUnit (), 0));
 		maxHeightAdjustment -> set_lower (getCurrentScene () -> toUnit (node -> height () .getUnit (), 0));
-	
+
 		minHeightAdjustment -> set_value (getCurrentScene () -> toUnit (node -> height () .getUnit (), 0));
 		maxHeightAdjustment -> set_value (getCurrentScene () -> toUnit (node -> height () .getUnit (), 0));
 	}
@@ -378,6 +377,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 	const auto & heighHashValue = node -> template getMetaData <X3D::MFString> (HEIGHT_HASH, true);
 
 	beginUndoGroup ("height", undoStep);
+
 	if (addUndoFunction (node, node -> height (), undoStep))
 	{
 		if (heighHashValue .empty ())
@@ -385,6 +385,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 		else
 			undoStep -> addUndoFunction (&NodeType::template setMetaData <X3D::SFString>, node, HEIGHT_HASH, heighHashValue .at (0));
 	}
+
 	endUndoGroup ("height", undoStep);
 
 	// Adjust lower and upper bounds of adjustments.
@@ -417,8 +418,10 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 	// Redo.
 
 	beginRedoGroup ("height", undoStep);
+
 	if (addRedoFunction (node, node -> height (), undoStep))
 		undoStep -> addRedoFunction (&NodeType::template setMetaData <X3D::SFString>, node, HEIGHT_HASH, X3D::SFString (heightHash));
+
 	endRedoGroup ("height", undoStep);
 }
 
@@ -439,11 +442,11 @@ X3DHeightMapEditor <NodeType, FieldType>::set_heightMap ()
 	try
 	{
 		const auto & heightMaps = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP, false);
-	
+
 		for (const auto & value : heightMaps)
 		{
 			const auto heightMap = getCurrentContext () -> getWorldURL () .transform (value .str ());
-	
+
 			if (os::file_exists (heightMap .path ()))
 			{
 				fileChooser .set_current_folder_uri (heightMap .parent () .str ());
@@ -558,7 +561,7 @@ X3DHeightMapEditor <NodeType, FieldType>::set_loadState ()
 		}
 		case X3D::IN_PROGRESS_STATE:
 		{
-			loadStateLabel.set_text (_ ("IN PROGRESS"));
+			loadStateLabel .set_text (_ ("IN PROGRESS"));
 
 			fileChooser  .set_sensitive (false);
 			reloadButton .set_sensitive (false);

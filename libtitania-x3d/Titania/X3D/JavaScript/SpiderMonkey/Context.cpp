@@ -52,7 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../InputOutput/Loader.h"
-#include "../../Thread/SceneLoader.h"
+#include "../../Thread/SceneFuture.h"
 
 #include "Global.h"
 #include "X3DConstants.h"

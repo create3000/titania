@@ -53,7 +53,7 @@
 
 #include "../Networking/X3DUrlObject.h"
 #include "../Texturing/X3DTexture2DNode.h"
-#include "../../Thread/TextureLoader.h"
+#include "../../Thread/TextureFuture.h"
 
 namespace titania {
 namespace X3D {
@@ -172,7 +172,7 @@ private:
 	size_t                 imageWidth;
 	size_t                 imageHeight;
 	bool                   resize;
-	X3DPtr <TextureLoader> future;
+	X3DPtr <TextureFuture> future;
 
 
 };
