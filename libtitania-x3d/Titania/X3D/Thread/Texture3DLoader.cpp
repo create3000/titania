@@ -174,8 +174,7 @@ Texture3DLoader::prepareEvents ()
 {
 	try
 	{
-		if (isStopping ())
-			return;
+		checkForInterrupt ();
 	
 		getBrowser () -> addEvent ();
 	
@@ -190,6 +189,8 @@ Texture3DLoader::prepareEvents ()
 		getBrowser () -> prepareEvents () .removeInterest (&Texture3DLoader::prepareEvents, this);
 	
 		callback (future .get ());
+
+		dispose ();
 	}
 	catch (const InterruptThreadException &)
 	{
@@ -198,16 +199,16 @@ Texture3DLoader::prepareEvents ()
 	catch (const std::exception &)
 	{
 		callback (nullptr);
+
+		dispose ();
 	}
 }
 
 void
 Texture3DLoader::dispose ()
 {
-	if (isStopping ())
-		return;
-
 	stop ();
+
 	loader .stop ();
 
 	X3DFuture::dispose ();

@@ -99,10 +99,6 @@ protected:
 
 	///  @name Member access
 
-	bool
-	isStopping () const
-	{ return stopping .load (); }
-
 	void
 	checkForInterrupt () const
 	{
@@ -113,6 +109,12 @@ protected:
 	}
 
 private:
+
+	///  @name Member access
+
+	bool
+	isStopping () const
+	{ return stopping .load (); }
 
 	///  @name Members
 

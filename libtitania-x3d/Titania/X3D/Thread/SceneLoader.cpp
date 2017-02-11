@@ -115,21 +115,23 @@ SceneLoader::wait ()
 {
 	try
 	{
-		if (isStopping ())
-			return;
-	
-		if (future .valid ())
+		checkForInterrupt ();
+
+		if (not future .valid ())
 		{
-			future .wait ();
-	
-			scene = future .get ();
-
-			scene -> requestImmediateLoadOfExternProtos ();
-
-			callback (std::move (scene));
-
-			scene = nullptr;
+			stop ();
+			return;
 		}
+
+		future .wait ();
+
+		scene = future .get ();
+
+		scene -> requestImmediateLoadOfExternProtos ();
+
+		callback (std::move (scene));
+
+		dispose ();
 	}
 	catch (const InterruptThreadException &)
 	{
@@ -140,9 +142,9 @@ SceneLoader::wait ()
 		urlError = { error .what () };
 
 		callback (nullptr);
-	}
 
-	stop ();
+		dispose ();
+	}
 }
 
 X3DScenePtr
@@ -193,8 +195,7 @@ SceneLoader::set_scene (const bool addEvent)
 {
 	try
 	{
-		if (isStopping ())
-			return;
+		checkForInterrupt ();
 	
 		if (addEvent)
 			getBrowser () -> addEvent ();
@@ -224,32 +225,38 @@ SceneLoader::set_scene (const bool addEvent)
 		urlError = { error .what () };
 
 		callback (nullptr);
+
+		dispose ();;
 	}
 }
 
 void
 SceneLoader::set_loadCount (const int32_t loadCount)
 {
-	if (isStopping ())
-		return;
+	try
+	{
+		checkForInterrupt ();
 
-	if (loadCount)
-	   return;
+		if (loadCount)
+		   return;
 
-	scene -> getExternProtosLoadCount () .removeInterest (&SceneLoader::set_loadCount, this);
+		scene -> getExternProtosLoadCount () .removeInterest (&SceneLoader::set_loadCount, this);
+	
+		callback (std::move (scene));
 
-	callback (std::move (scene));
-
-	scene = nullptr;
+		dispose ();
+	}
+	catch (const InterruptThreadException &)
+	{
+	   // Interrupt
+	}
 }
 
 void
 SceneLoader::dispose ()
 {
-	if (isStopping ())
-		return;
-
 	stop ();
+
 	loader .stop ();
 
 	scene .dispose ();
