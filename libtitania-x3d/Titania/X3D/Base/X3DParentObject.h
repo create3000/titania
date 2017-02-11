@@ -57,6 +57,8 @@
 
 #include <Titania/Utility/Pass.h>
 
+#include <atomic>
+
 namespace titania {
 namespace X3D {
 
@@ -135,11 +137,11 @@ protected:
 	///  @name Construction
 
 	///  Constructs new X3DParentObject.
-	X3DParentObject (X3DBrowser* const);
+	X3DParentObject (X3DBrowser* const browser);
 
 	///  Set the browser this node belongs to.
 	void
-	setBrowser (X3DBrowser* const);
+	setBrowser (X3DBrowser* const browser);
 
 	///  @name Children handling
 
@@ -152,7 +154,7 @@ protected:
 	///  Adds a private child object to this object.  The child object is then able to paricipate on event routing.
 	virtual
 	void
-	addChildObject (X3DChildObject &);
+	addChildObject (X3DChildObject & child);
 
 	///  Remove this node as parent from all @a children.  See removeChild.
 	template <typename ... Args>
@@ -163,7 +165,7 @@ protected:
 	///  Removes a private field from this object.  If the reference count of @a object becomes 0 the child will be disposed.
 	virtual
 	void
-	removeChildObject (X3DChildObject &);
+	removeChildObject (X3DChildObject & child);
 
 	///  @name Event handling
 
@@ -181,12 +183,12 @@ protected:
 	///  Handler that is called when a child (field) of this object should be marked tainted.
 	virtual
 	void
-	addEvent (X3DChildObject* const) override;
+	addEvent (X3DChildObject* const object) override;
 
 	///  Handler that is called when a child (field) of this object should be added to the event queue.
 	virtual
 	void
-	addEvent (X3DChildObject* const, const EventPtr &) override;
+	addEvent (X3DChildObject* const object, const EventPtr & event) override;
 
 
 private:

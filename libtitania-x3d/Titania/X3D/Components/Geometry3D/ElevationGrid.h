@@ -223,14 +223,16 @@ public:
 	isTransparent () const final override
 	{ return transparent; }
 
+	///  @name Height map handling
+
 	const SFEnum <LoadState> &
 	checkLoadState () const
 	{ return loadState; }
 
-	///  @name Operations
-
 	void
 	loadHeightMap (const MFString & url, const float minHeight, const float maxHeight);
+
+	///  @name Operations
 
 	void
 	addNormals ();

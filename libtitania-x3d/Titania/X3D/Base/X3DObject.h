@@ -132,7 +132,7 @@ public:
 
 	///  Extracts the value for this object from @a string. The string must be in VRML Classic Encoding.
 	bool
-	fromString (const std::string &)
+	fromString (const std::string & string)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -140,7 +140,7 @@ public:
 
 	///  Extracts the value for this object from @a string with locale support.
 	bool
-	fromLocaleString (const std::string &, const std::locale & = std::locale ())
+	fromLocaleString (const std::string & string, const std::locale & locale = std::locale ())
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -152,7 +152,7 @@ public:
 
 	///  Generates a string representation of this object with locale support.
 	std::string
-	toLocaleString (const std::locale & = std::locale ()) const;
+	toLocaleString (const std::locale & locale = std::locale ()) const;
 
 	///  Generates a string representation of this object in X3D XML Encoding.
 	std::string
@@ -167,7 +167,7 @@ public:
 	///  Extracts the value for this object from @a istream. The contents of @a istream must be in VRML Classic Encoding style.
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -176,17 +176,17 @@ public:
 	///  Inserts this object into @a ostream in VRML Classic Encoding style.
 	virtual
 	void
-	toStream (std::ostream &) const = 0;
+	toStream (std::ostream & ostream) const = 0;
 
 	///  Inserts this object into @a ostream in X3D XML Encoding style.
 	virtual
 	void
-	toXMLStream (std::ostream &) const = 0;
+	toXMLStream (std::ostream & ostream) const = 0;
 
 	///  Inserts this object into @a ostream in X3D XML Encoding style.
 	virtual
 	void
-	toJSONStream (std::ostream &) const = 0;
+	toJSONStream (std::ostream & ostream) const = 0;
 
 	///  @name Destruction
 

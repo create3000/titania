@@ -59,33 +59,6 @@
 namespace titania {
 namespace X3D {
 
-class FutureUrlErrorException:
-	virtual public std::exception
-{
-public:
-
-	FutureUrlErrorException (const MFString & urlError) :
-		std::exception (),
-	   urlError (urlError)
-	{ }
-
-	virtual
-	char const*
-	what () const
-	noexcept (true) override
-	{ return "FutureUrlErrorException"; }
-
-	const MFString &
-	getUrlError () const
-	{ return urlError; }
-
-
-private:
-
-	MFString urlError;
-
-};
-
 // See http://www.web3d.org/files/specifications/19775-1/V3.3/Part01/components/networking.html#X3DUrlObject for
 // how to handle the profile and component arguments/statements of inline nodes.
 
@@ -140,15 +113,15 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 SceneLoader::wait ()
 {
-	if (isStopping ())
-		return;
-
-	if (future .valid ())
+	try
 	{
-		future .wait ();
-
-		try
+		if (isStopping ())
+			return;
+	
+		if (future .valid ())
 		{
+			future .wait ();
+	
 			scene = future .get ();
 
 			scene -> requestImmediateLoadOfExternProtos ();
@@ -157,16 +130,16 @@ SceneLoader::wait ()
 
 			scene = nullptr;
 		}
-		catch (const FutureUrlErrorException & error)
-		{
-			urlError = error .getUrlError ();
+	}
+	catch (const InterruptThreadException &)
+	{
+	   // Interrupt
+	}
+	catch (const std::exception & error)
+	{
+		urlError = { error .what () };
 
-			callback (nullptr);
-		}
-		catch (const std::exception &)
-		{
-		   // Interrupt
-		}
+		callback (nullptr);
 	}
 
 	stop ();
@@ -175,78 +148,82 @@ SceneLoader::wait ()
 X3DScenePtr
 SceneLoader::loadAsync (const MFString & url)
 {
-	checkForInterrupt ();
-
-	const auto mutex = getBrowser () -> getDownloadMutex ();
-
-	checkForInterrupt ();
-
-	std::lock_guard <std::mutex> lock (*mutex);
-
-	checkForInterrupt ();
-
-	const auto scene = getBrowser () -> createScene (false);
-
-	checkForInterrupt ();
-
 	try
 	{
+		checkForInterrupt ();
+	
+		const auto mutex = getBrowser () -> getDownloadMutex ();
+	
+		checkForInterrupt ();
+	
+		std::lock_guard <std::mutex> lock (*mutex);
+	
+		checkForInterrupt ();
+	
+		const auto scene = getBrowser () -> createScene (false);
+	
+		checkForInterrupt ();
+	
 		loader .parseIntoScene (scene, url);
+			
+		checkForInterrupt ();
+	
+		getBrowser () -> println ("Done loading scene '", loader .getWorldURL (), "'.");
+			
+		checkForInterrupt ();
+	
+		return scene;
 	}
-	catch (const X3DError & error)
+	catch (const InterruptThreadException &)
+	{
+		throw;
+	}
+	catch (const std::exception & error)
 	{
 		checkForInterrupt ();
 
 		getBrowser () -> println (error .what ());
 
-		throw FutureUrlErrorException ({ error .what () });
+		throw;
 	}
-		
-	checkForInterrupt ();
-
-	getBrowser () -> println ("Done loading scene '", loader .getWorldURL (), "'.");
-		
-	checkForInterrupt ();
-
-	return scene;
 }
 
 void
 SceneLoader::set_scene (const bool addEvent)
 {
-	if (isStopping ())
-		return;
-
-	if (addEvent)
-		getBrowser () -> addEvent ();
-
-	if (not future .valid ())
-		return;
-
-	const auto status = future .wait_for (std::chrono::milliseconds (0));
-
-	if (status not_eq std::future_status::ready)
-		return;
-
-	getBrowser () -> prepareEvents () .removeInterest (&SceneLoader::set_scene, this);
-
 	try
 	{
+		if (isStopping ())
+			return;
+	
+		if (addEvent)
+			getBrowser () -> addEvent ();
+	
+		if (not future .valid ())
+			return;
+	
+		const auto status = future .wait_for (std::chrono::milliseconds (0));
+	
+		if (status not_eq std::future_status::ready)
+			return;
+	
+		getBrowser () -> prepareEvents () .removeInterest (&SceneLoader::set_scene, this);
+	
 		scene = future .get ();
 
 		scene -> getExternProtosLoadCount () .addInterest (&SceneLoader::set_loadCount, this);
 
 		scene -> requestAsyncLoadOfExternProtos ();
 	}
-	catch (const FutureUrlErrorException & error)
-	{
-		urlError = error .getUrlError ();
-
-		callback (nullptr);
-	}
-	catch (const std::exception &)
+	catch (const InterruptThreadException &)
 	{
 	   // Interrupt
+	}
+	catch (const std::exception & error)
+	{
+		urlError = { error .what () };
+
+		callback (nullptr);
 	}
 }
 

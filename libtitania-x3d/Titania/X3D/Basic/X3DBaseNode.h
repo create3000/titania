@@ -95,7 +95,7 @@ public:
 	///  Constructs a new node into @a executionContext.
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const = 0;
+	create (X3DExecutionContext* const executionContext) const = 0;
 
 	///  Copys this node.  The executionContext will be the same as for this node.
 	virtual
@@ -108,14 +108,14 @@ public:
 	///  Copys this node and sets the execution context to @a executionContext.
 	virtual
 	X3DBaseNode*
-	copy (X3DExecutionContext* const, const CopyType) const
+	copy (X3DExecutionContext* const executionContext, const CopyType type) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
 	///  Assigns @a node. @a node must be of the same type as this node.
 	virtual
 	void
-	assign (const X3DBaseNode* const, const bool = false)
+	assign (const X3DBaseNode* const baseNode, const bool compare = false)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>);
 
@@ -124,7 +124,7 @@ public:
 	///  Sets the name of this object.
 	virtual
 	void
-	setName (const std::string &) override;
+	setName (const std::string & name) override;
 
 	///  Field that processes its interests when the name has changed.
 	virtual
@@ -211,13 +211,13 @@ public:
 	///  Checks if a field with @a name exists for this node.
 	virtual
 	bool
-	hasField (const std::string &) const
+	hasField (const std::string & name) const
 	throw (Error <DISPOSED>);
 
 	///  Checks whether @a field has the default value for this node type.  The @a field must be of this node.
 	virtual
 	bool
-	isDefaultValue (const X3DFieldDefinition* const) const
+	isDefaultValue (const X3DFieldDefinition* const field) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -226,7 +226,7 @@ public:
 	///  value is not the new value.
 	template <class FieldType, class ValueType>
 	void
-	setField (const std::string &, const ValueType &, const bool = false)
+	setField (const std::string & name, const ValueType & value, const bool compare = false)
 	throw (Error <INVALID_FIELD>,
 	       Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -253,7 +253,7 @@ public:
 	///  Return the field with @a name.
 	virtual
 	X3DFieldDefinition*
-	getField (const std::string &) const
+	getField (const std::string & name) const
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
@@ -267,7 +267,7 @@ public:
 	///  Replaces the set of user defined fields of this node with @a userDefinedFields.
 	virtual
 	void
-	setUserDefinedFields (const X3D::FieldDefinitionArray &)
+	setUserDefinedFields (const X3D::FieldDefinitionArray & fields)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>);
@@ -275,7 +275,7 @@ public:
 	///  Adds @a field to the set of user defined fields of this node.
 	virtual
 	void
-	addUserDefinedField (const AccessType, const std::string &, X3DFieldDefinition* const)
+	addUserDefinedField (const AccessType accessType, const std::string & name, X3DFieldDefinition* const field)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>);
@@ -283,7 +283,7 @@ public:
 	///  Removes the field named @a name from the set of user defined fields of this node.
 	virtual
 	void
-	removeUserDefinedField (const std::string &)
+	removeUserDefinedField (const std::string & name)
 	throw (Error <DISPOSED>);
 
 	///  Returns an array with all pre defined fields of this node.
@@ -468,17 +468,17 @@ public:
 	///  Inserts this object into @a ostream in VRML Classic Encoding.
 	virtual
 	void
-	toStream (std::ostream &) const override;
+	toStream (std::ostream & ostream) const override;
 
 	///  Inserts this object into @a ostream in X3D XML Encoding.
 	virtual
 	void
-	toXMLStream (std::ostream &) const override;
+	toXMLStream (std::ostream & ostream) const override;
 
 	///  Inserts this object into @a ostream in X3D JSON Encoding.
 	virtual
 	void
-	toJSONStream (std::ostream &) const override;
+	toJSONStream (std::ostream & ostream) const override;
 
 	///  @name Destruction
 
@@ -517,31 +517,31 @@ protected:
 	///  Adds @a field to the set of fields of this node.
 	virtual
 	void
-	addField (const AccessType, const std::string &, X3DFieldDefinition &)
+	addField (const AccessType accessType, const std::string & name, X3DFieldDefinition & field)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_FIELD>,
 	       Error <DISPOSED>);
 
 	///  Adds a field for X3D @a version.
 	void
-	addField (const SpecificationVersionType, const std::string &, const std::string &)
+	addField (const SpecificationVersionType specificationVersion, const std::string & alias, const std::string & name)
 	throw (Error <INVALID_NAME>,
 	       Error <DISPOSED>);
 
 	///  Remove field @a name from the set of fields.
 	void
-	removeField (const std::string &)
+	removeField (const std::string & name)
 	throw (Error <DISPOSED>);
 
 	///  @name Tool support
 
 	///  Replaces this node by @a tool.
 	void
-	addTool (X3DBaseNode* const);
+	addTool (X3DBaseNode* const tool);
 
 	///  Replaces this node by @a node.
 	void
-	removeTool (X3DBaseNode* const);
+	removeTool (X3DBaseNode* const tool);
 
 
 private:
@@ -556,7 +556,7 @@ private:
 
 	///  Copy or clone this node into @a executionContext.
 	X3DBaseNode*
-	copy (X3DExecutionContext* const) const
+	copy (X3DExecutionContext* const executionContext) const
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
@@ -568,31 +568,31 @@ private:
 
 	///  Replace @a node by this node.
 	void
-	replace (X3DBaseNode* const);
+	replace (X3DBaseNode* const baseNode);
 
 	///  @name Field handling
 
 	///  Remove field implementation.
 	void
-	removeField (const FieldIndex::iterator &, const bool, const bool);
+	removeField (const FieldIndex::iterator & iter, const bool, const bool);
 
 	///  Returns the standard field name for @a alias.
 	const std::string &
-	getFieldName (const std::string &) const;
+	getFieldName (const std::string & name) const;
 
 	///  Returns the standard field name for @a alias depending on @a version.
 	const std::string &
-	getFieldName (const std::string &, const SpecificationVersionType) const;
+	getFieldName (const std::string & name, const SpecificationVersionType specificationVersion) const;
 
 	///  @name Input/Output
 
 	///  Inserts @a userDefinedField into @a ostream.
 	void
-	toStreamUserDefinedField (std::ostream &, X3DFieldDefinition* const, const size_t, const size_t) const;
+	toStreamUserDefinedField (std::ostream & ostream, X3DFieldDefinition* const field, const size_t, const size_t) const;
 
 	///  Inserts @a predefinedField into @a ostream.
 	void
-	toStreamField (std::ostream &, X3DFieldDefinition* const, const size_t, const size_t) const;
+	toStreamField (std::ostream & ostream, X3DFieldDefinition* const field, const size_t, const size_t) const;
 
 	///  @name Members
 

@@ -153,12 +153,16 @@ Texture3DLoader::loadAsync (const MFString & url,
 			checkForInterrupt ();
 
 			getBrowser () -> println (error .what ());
+
+			throw;
 		}
 		catch (const std::exception & error)
 		{
 			checkForInterrupt ();
 
 			getBrowser () -> println ("Bad Image: ", error .what (), ", in URL '", loader .getReferer () .transform (URL .str ()), "'");
+
+			throw;
 		}
 	}
 
@@ -168,28 +172,32 @@ Texture3DLoader::loadAsync (const MFString & url,
 void
 Texture3DLoader::prepareEvents ()
 {
-	if (isStopping ())
-		return;
-
-	getBrowser () -> addEvent ();
-
-	if (not future .valid ())
-	   return;
-
-	const auto status = future .wait_for (std::chrono::milliseconds (0));
-
-	if (status not_eq std::future_status::ready)
-	   return;
-
-	getBrowser () -> prepareEvents () .removeInterest (&Texture3DLoader::prepareEvents, this);
-
 	try
 	{
+		if (isStopping ())
+			return;
+	
+		getBrowser () -> addEvent ();
+	
+		if (not future .valid ())
+		   return;
+	
+		const auto status = future .wait_for (std::chrono::milliseconds (0));
+	
+		if (status not_eq std::future_status::ready)
+		   return;
+	
+		getBrowser () -> prepareEvents () .removeInterest (&Texture3DLoader::prepareEvents, this);
+	
 		callback (future .get ());
+	}
+	catch (const InterruptThreadException &)
+	{
+	   // Interrupt
 	}
 	catch (const std::exception &)
 	{
-	   // Interrupt
+		callback (nullptr);
 	}
 }
 
