@@ -128,12 +128,15 @@ HistoryView::set_history ()
 	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
 	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 
-	const auto rows = getTreeView () .get_selection () -> get_selected_rows ();
+	const auto rows      = getTreeView () .get_selection () -> get_selected_rows ();
+	const auto column    = History::Columns::LAST_ACCESS;
+	const auto sortOrder = History::SortOrder::DESC;
+	const auto search    = getSearchEntry () .get_text ();
 
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
-	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 2000))
+	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 2000, column, sortOrder, search))
 	{
 		const auto & worldURL = item .at ("worldURL");
 		const auto   iter     = getListStore () -> append ();
@@ -154,14 +157,23 @@ HistoryView::set_history ()
 }
 
 void
+HistoryView::on_search_changed ()
+{
+	set_history ();
+}
+
+void
 HistoryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
 	try
 	{
 		// Open worldURL.
-	
-		const std::string URL = getBrowserWindow () -> getHistory () -> getItemFromIndex (path .to_string ()) .at ("worldURL");
-	
+
+		const auto        column    = History::Columns::LAST_ACCESS;
+		const auto        sortOrder = History::SortOrder::DESC;
+		const auto        search    = getSearchEntry () .get_text ();
+		const std::string URL       = getBrowserWindow () -> getHistory () -> getItemFromIndex (path .to_string (), column, sortOrder, search) .at ("worldURL");
+
 		getBrowserWindow () -> open (URL);
 	}
 	catch (const std::exception & error)

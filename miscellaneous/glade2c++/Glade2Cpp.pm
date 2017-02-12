@@ -891,3 +891,5 @@ TreeView::key_press_event
   virtual bool on_key_press_event(GdkEventKey* key_event);
 FileChooserButton::file_set
   virtual void on_file_set();
+SearchEntry::search_changed
+  virtual void on_search_changed();

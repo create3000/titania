@@ -72,6 +72,7 @@ X3DHistoryViewInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("SearchEntry", m_SearchEntry);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("TreeView", m_TreeView);
 	m_builder -> get_widget ("Menu", m_Menu);
@@ -84,6 +85,9 @@ X3DHistoryViewInterface::create (const std::string & filename)
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_map));
 	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_unmap));
+
+	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
+	m_SearchEntry -> signal_search_changed () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_search_changed));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_button_press_event), false);

@@ -132,16 +132,16 @@ private:
 	create (X3DExecutionContext* const) const final override;
 
 	std::future <X3DScenePtr>
-	getFuture (const MFString &);
+	getFuture (const MFString & url);
 
 	X3DScenePtr
-	loadAsync (const MFString &);
+	loadAsync (const MFString & url);
 
 	void
-	set_scene (const bool);
+	set_scene (const bool addEvent);
 
 	void
-	set_loadCount (const int32_t);
+	set_loadCount (const int32_t loadCount);
 
 	///  @name Static members
 

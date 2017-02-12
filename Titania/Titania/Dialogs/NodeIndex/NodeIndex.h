@@ -160,19 +160,19 @@ private:
 
 	virtual
 	bool
-	on_search_entry_key_press_event (GdkEventKey*) final override;
+	on_search_entry_key_press_event (GdkEventKey* event) final override;
 
 	virtual
 	bool
-	on_search_entry_match_selected (const Gtk::TreeModel::iterator &) final override;
+	on_search_entry_match_selected (const Gtk::TreeModel::iterator & iter) final override;
 
 	virtual
 	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
 
 	static
 	void
-	set_adjustment (const Glib::RefPtr <Gtk::Adjustment> &, const double);
+	set_adjustment (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value);
 
 	///  @name Members
 

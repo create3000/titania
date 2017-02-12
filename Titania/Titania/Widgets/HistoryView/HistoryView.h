@@ -93,6 +93,14 @@ private:
 	void
 	set_history ();
 
+	// Search
+
+	virtual
+	void
+	on_search_changed () final override;
+
+	// Menu
+
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;

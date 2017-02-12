@@ -104,13 +104,13 @@ public:
 	removeItem (const std::string &);
 
 	const sql::sqlite3::assoc_row_type &
-	getItemFromIndex (const std::string &) const;
+	getItemFromIndex (const std::string &, const Columns column = LAST_ACCESS, const SortOrder sortOrder = DESC, const std::string & search = "") const;
 
 	const sql::sqlite3::assoc_row_type &
 	getItemFromURL (const std::string &) const;
 
 	const sql::sqlite3::assoc_type &
-	getItems (const size_t offset, const size_t limit, const Columns = LAST_ACCESS, const SortOrder = DESC) const;
+	getItems (const size_t offset, const size_t limit, const Columns column = LAST_ACCESS, const SortOrder sortOrder = DESC, const std::string & search = "") const;
 
 	void
 	constrainSize (const int32_t);

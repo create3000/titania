@@ -270,12 +270,40 @@ History::removeItem (const std::string & id)
 }
 
 const sql::sqlite3::assoc_row_type &
-History::getItemFromIndex (const std::string & index) const
+History::getItemFromIndex (const std::string & index, const Columns column, const SortOrder sortOrder, const std::string & search) const
 {
 	try
 	{
-		return database .query_assoc ("SELECT title, worldURL FROM History "
-		                              "ORDER BY lastAccess DESC "
+		std::string order;
+		
+		switch (column)
+		{
+			case TITLE:
+				order = "ORDER BY title";
+				break;
+			case LAST_ACCESS:
+				order = "ORDER BY lastAccess";
+				break;
+		}
+	
+		switch (sortOrder)
+		{
+			case ASC:
+				order += " ASC";
+				break;
+			case DESC:
+				order += " DESC";
+				break;
+		}
+
+		std::string where;
+
+		if (not search .empty ())
+			where = "WHERE title LIKE " + database .quote ("%" + search + "%") + " OR worldURL LIKE " + database .quote ("%" + search + "%");
+
+		return database .query_assoc ("SELECT title, worldURL FROM History " +
+		                              where + " " +
+		                              order + " " +
 		                              "LIMIT " + index + ", 1") .at (0);
 	}
 	catch (const std::exception & error)
@@ -308,7 +336,7 @@ History::getItemFromURL (const std::string & worldURL) const
 }
 
 const sql::sqlite3::assoc_type &
-History::getItems (const size_t offset, const size_t size, const Columns column, const SortOrder sortOrder) const
+History::getItems (const size_t offset, const size_t size, const Columns column, const SortOrder sortOrder, const std::string & search) const
 {
 	try
 	{
@@ -333,13 +361,17 @@ History::getItems (const size_t offset, const size_t size, const Columns column,
 				order += " DESC";
 				break;
 		}
-	
+
+		std::string where;
 		std::string limit;
-	
+
+		if (not search .empty ())
+			where = "WHERE title LIKE " + database .quote ("%" + search + "%") + " OR worldURL LIKE " + database .quote ("%" + search + "%");
+
 		if (size)
 			limit = "LIMIT " + basic::to_string (size, std::locale::classic ()) + " OFFSET " + basic::to_string (offset, std::locale::classic ());
 	
-		return database .query_assoc ("SELECT id, title, worldURL FROM History " + order + " " + limit);
+		return database .query_assoc ("SELECT id, title, worldURL FROM History " + where + " " + order + " " + limit);
 	}
 	catch (const std::exception & error)
 	{

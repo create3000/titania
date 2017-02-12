@@ -135,6 +135,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::SearchEntry &
+	getSearchEntry () const
+	{ return *m_SearchEntry; }
+
 	Gtk::ScrolledWindow &
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
@@ -176,6 +180,10 @@ public:
 	virtual
 	void
 	on_unmap () = 0;
+
+	virtual
+	void
+	on_search_changed () = 0;
 
 	virtual
 	bool
@@ -240,6 +248,7 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText>   m_LocationRenderer;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
+	Gtk::SearchEntry*                      m_SearchEntry;
 	Gtk::ScrolledWindow*                   m_ScrolledWindow;
 	Gtk::TreeView*                         m_TreeView;
 	Gtk::Menu*                             m_Menu;
