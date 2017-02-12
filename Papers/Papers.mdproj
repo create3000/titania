@@ -241,6 +241,8 @@
     <None Include="[2008 Featherstone] Rigid Body Dynamics Algorithms.pdf" />
     <None Include="FeatherstoneSlides.pdf" />
     <None Include="pipe.cpp" />
+    <None Include="VRML1.spec" />
+    <None Include="SoOffscreenRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />

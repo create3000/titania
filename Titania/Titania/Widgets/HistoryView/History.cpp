@@ -379,10 +379,10 @@ History::getWhere (const std::string & search) const
 		if (word .empty ())
 			continue;
 
-		terms .emplace_back ("title LIKE " + database .quote ("%" + word + "%") + " OR worldURL LIKE " + database .quote ("%" + word + "%"));
+		terms .emplace_back ("(title LIKE " + database .quote ("%" + word + "%") + " OR worldURL LIKE " + database .quote ("%" + word + "%") + ")");
 	}
 
-	return "WHERE " + basic::join (terms, " OR ");
+	return "WHERE " + basic::join (terms, " AND ");
 }
 
 std::string
