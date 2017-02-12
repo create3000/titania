@@ -53,7 +53,8 @@
 #include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
-#include <Titania/String/to_string.h>
+#include <Titania/String.h>
+
 #include <iostream>
 
 namespace titania {
@@ -274,32 +275,8 @@ History::getItemFromIndex (const std::string & index, const Columns column, cons
 {
 	try
 	{
-		std::string order;
-		
-		switch (column)
-		{
-			case TITLE:
-				order = "ORDER BY title";
-				break;
-			case LAST_ACCESS:
-				order = "ORDER BY lastAccess";
-				break;
-		}
-	
-		switch (sortOrder)
-		{
-			case ASC:
-				order += " ASC";
-				break;
-			case DESC:
-				order += " DESC";
-				break;
-		}
-
-		std::string where;
-
-		if (not search .empty ())
-			where = "WHERE title LIKE " + database .quote ("%" + search + "%") + " OR worldURL LIKE " + database .quote ("%" + search + "%");
+		const std::string where = getWhere (search);
+		const std::string order = getOrder (column, sortOrder);
 
 		return database .query_assoc ("SELECT title, worldURL FROM History " +
 		                              where + " " +
@@ -340,36 +317,9 @@ History::getItems (const size_t offset, const size_t size, const Columns column,
 {
 	try
 	{
-		std::string order;
-		
-		switch (column)
-		{
-			case TITLE:
-				order = "ORDER BY title";
-				break;
-			case LAST_ACCESS:
-				order = "ORDER BY lastAccess";
-				break;
-		}
-	
-		switch (sortOrder)
-		{
-			case ASC:
-				order += " ASC";
-				break;
-			case DESC:
-				order += " DESC";
-				break;
-		}
-
-		std::string where;
-		std::string limit;
-
-		if (not search .empty ())
-			where = "WHERE title LIKE " + database .quote ("%" + search + "%") + " OR worldURL LIKE " + database .quote ("%" + search + "%");
-
-		if (size)
-			limit = "LIMIT " + basic::to_string (size, std::locale::classic ()) + " OFFSET " + basic::to_string (offset, std::locale::classic ());
+		const std::string where = getWhere (search);
+		const std::string order = getOrder (column, sortOrder);
+		const std::string limit = getLimit (offset, size);
 	
 		return database .query_assoc ("SELECT id, title, worldURL FROM History " + where + " " + order + " " + limit);
 	}
@@ -381,6 +331,17 @@ History::getItems (const size_t offset, const size_t size, const Columns column,
 
 		return empty;
 	}
+}
+
+const std::string &
+History::getId (const std::string & worldURL) const
+throw (std::out_of_range,
+	    std::invalid_argument)
+{
+	const auto & result = database .query_array ("SELECT id FROM History WHERE "
+	                                             "worldURL = " + database .quote (worldURL));
+
+	return result .at (0) .at (0);
 }
 
 size_t
@@ -400,6 +361,67 @@ History::getSize () const
 	{
 		return 0;
 	}
+}
+
+std::string
+History::getWhere (const std::string & search) const
+{
+	if (search .empty ())
+		return "";
+
+	auto words = std::vector <std::string> ();
+	auto terms = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (words), search, " ");
+
+	for (const auto & word : words)
+	{
+		if (word .empty ())
+			continue;
+
+		terms .emplace_back ("title LIKE " + database .quote ("%" + word + "%") + " OR worldURL LIKE " + database .quote ("%" + word + "%"));
+	}
+
+	return "WHERE " + basic::join (terms, " OR ");
+}
+
+std::string
+History::getOrder (const Columns column, const SortOrder sortOrder) const
+{
+	std::string order;
+	
+	switch (column)
+	{
+		case TITLE:
+			order = "ORDER BY title";
+			break;
+		case LAST_ACCESS:
+			order = "ORDER BY lastAccess";
+			break;
+	}
+
+	switch (sortOrder)
+	{
+		case ASC:
+			order += " ASC";
+			break;
+		case DESC:
+			order += " DESC";
+			break;
+	}
+
+	return order;
+}
+
+std::string
+History::getLimit (const size_t offset, const size_t size) const
+{
+	std::string limit;
+
+	if (size)
+		limit = "LIMIT " + basic::to_string (size, std::locale::classic ()) + " OFFSET " + basic::to_string (offset, std::locale::classic ());
+
+	return limit;
 }
 
 void
@@ -422,17 +444,6 @@ History::update (const std::string & id, const std::string & title)
 	                 "visited    = (visited + 1), "
 	                 "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
 	                 "WHERE id = " + id);
-}
-
-const std::string &
-History::getId (const std::string & worldURL) const
-throw (std::out_of_range,
-	    std::invalid_argument)
-{
-	const auto & result = database .query_array ("SELECT id FROM History WHERE "
-	                                             "worldURL = " + database .quote (worldURL));
-
-	return result .at (0) .at (0);
 }
 
 } // puck

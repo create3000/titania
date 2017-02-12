@@ -82,38 +82,38 @@ public:
 	///  @name Operations
 
 	const std::string &
-	getIndex (const std::string &) const
+	getIndex (const std::string & worldURL) const
 	throw (std::out_of_range,
 	       std::invalid_argument);
 
 	std::string
-	getIcon (const std::string &) const
+	getIcon (const std::string & id) const
 	throw (std::invalid_argument);
 
 	void
-	setPreview (const std::string &, const std::string &);
+	setPreview (const std::string & worldURL, const std::string & image);
 
 	std::string
-	getPreview (const std::string &) const
+	getPreview (const std::string & id) const
 	throw (std::invalid_argument);
 
 	void
-	setItem (const std::string &, const std::string &, const std::string &);
+	setItem (const std::string & title, const std::string & worldURL, const std::string & image);
 
 	void
-	removeItem (const std::string &);
+	removeItem (const std::string & id);
 
 	const sql::sqlite3::assoc_row_type &
 	getItemFromIndex (const std::string &, const Columns column = LAST_ACCESS, const SortOrder sortOrder = DESC, const std::string & search = "") const;
 
 	const sql::sqlite3::assoc_row_type &
-	getItemFromURL (const std::string &) const;
+	getItemFromURL (const std::string & worldURL) const;
 
 	const sql::sqlite3::assoc_type &
 	getItems (const size_t offset, const size_t limit, const Columns column = LAST_ACCESS, const SortOrder sortOrder = DESC, const std::string & search = "") const;
 
 	void
-	constrainSize (const int32_t);
+	constrainSize (const int32_t size);
 
 	size_t
 	getSize () const;
@@ -130,20 +130,29 @@ private:
 	disconnect ();
 
 	void
-	on_history_changed (const Glib::RefPtr <Gio::File> &, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent);
+	on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event);
 
 	///  @name Operations
 
 	const std::string &
-	getId (const std::string &) const
+	getId (const std::string & worldURL) const
 	throw (std::out_of_range,
 	       std::invalid_argument);
 
-	void
-	insert (const std::string &, const std::string &);
+	std::string
+	getOrder (const Columns column, const SortOrder sortOrder) const;
+	
+	std::string
+	getWhere (const std::string & search) const;
+
+	std::string
+	getLimit (const size_t offset, const size_t size) const;
 
 	void
-	update (const std::string &, const std::string &);
+	insert (const std::string & title, const std::string & worldURL);
+
+	void
+	update (const std::string & id, const std::string & title);
 
 	///  @name Members
 
