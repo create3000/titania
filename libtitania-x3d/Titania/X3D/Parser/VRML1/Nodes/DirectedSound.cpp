@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,35 +47,60 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#include "DirectedSound.h"
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "../../../Execution/X3DExecutionContext.h"
+#include "../Converter.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+// VRML 1.1
+
+DirectedSound::Fields::Fields () :
+	       name (new X3D::MFString ({ "" })),
+	description (new X3D::SFString ("")),
+	  intensity (new X3D::SFFloat (1)),
+	   location (new X3D::SFVec3f (0, 0, 0)),
+	  direction (new X3D::SFVec3f (0, 0, 1)),
+	   minRange (new X3D::SFFloat (10)),
+	   maxRange (new X3D::SFFloat (10)),
+	   minAngle (new X3D::SFFloat (0.785398)),
+	   maxAngle (new X3D::SFFloat (0.785398)),
+	       loop (new X3D::SFBool (false)),
+	      start (new X3D::SFTime (0)),
+	      pause (new X3D::SFTime (0)),
+	   children (new X3D::MFNode ())
+{ }
+
+DirectedSound::DirectedSound (X3D::X3DExecutionContext* const executionContext) :
+	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       VRML1Node (),
+	          fields ()
 {
-public:
+	addField (initializeOnly, "name", *fields .name);
+	addField (initializeOnly, "description", *fields .description);
+	addField (initializeOnly, "intensity", *fields .intensity);
+	addField (initializeOnly, "location", *fields .location);
+	addField (initializeOnly, "direction", *fields .direction);
+	addField (initializeOnly, "minRange", *fields .minRange);
+	addField (initializeOnly, "maxRange", *fields .maxRange);
+	addField (initializeOnly, "minAngle", *fields .minAngle);
+	addField (initializeOnly, "maxAngle", *fields .maxAngle);
+	addField (initializeOnly, "loop", *fields .loop);
+	addField (initializeOnly, "start", *fields .start);
+	addField (initializeOnly, "pause", *fields .pause);
+	addField (initializeOnly, "children", *fields .children);
+}
 
-	///  @name Destruction
+void
+DirectedSound::convert (Converter* const converter)
+{ }
 
-	virtual
-	~X3DInfoNode () override;
+DirectedSound::~DirectedSound ()
+{ }
 
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
+} // VRML1
 } // X3D
 } // titania
-
-#endif

@@ -59,5 +59,8 @@ X3DInfoNode::X3DInfoNode () :
 	addType (X3DConstants::X3DInfoNode);
 }
 
+X3DInfoNode::~X3DInfoNode ()
+{ }
+
 } // X3D
 } // titania

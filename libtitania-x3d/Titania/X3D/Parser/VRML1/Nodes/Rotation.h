@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,34 +47,52 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TITANIA_X3D_PARSER_VRML1_NODES_ROTATION_H__
+#define __TITANIA_X3D_PARSER_VRML1_NODES_ROTATION_H__
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "VRML1Node.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+class Rotation :
+	public VRML1Node
 {
 public:
 
-	///  @name Destruction
-
-	virtual
-	~X3DInfoNode () override;
-
-
-protected:
-
 	///  @name Construction
 
-	X3DInfoNode ();
+	Rotation (X3D::X3DExecutionContext* const);
+
+	///  @name Operationis
+
+	virtual
+	void
+	convert (Converter* const converter) final override;
+
+	///  @name Desstruction
+
+	~Rotation ();
+
+
+private:
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		X3D::SFRotation* const rotation;
+		X3D::MFNode* const children;
+	};
+
+	Fields fields;
 
 };
 
+} // VRML1
 } // X3D
 } // titania
 

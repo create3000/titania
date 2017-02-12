@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,35 +47,44 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#include "ElevationGrid.h"
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "../../../Execution/X3DExecutionContext.h"
+#include "../Converter.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+// VRML 1.1
+
+ElevationGrid::Fields::Fields () :
+	   verticesPerRow (new X3D::SFInt32 (0)),
+	verticesPerColumn (new X3D::SFInt32 (0)),
+	         gridStep (new X3D::SFVec2f (0, 0)),
+	           height (new X3D::MFFloat ()),
+	         children (new X3D::MFNode ())
+{ }
+
+ElevationGrid::ElevationGrid (X3D::X3DExecutionContext* const executionContext) :
+	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       VRML1Node (),
+	          fields ()
 {
-public:
+	addField (initializeOnly, "verticesPerRow", *fields .verticesPerRow);
+	addField (initializeOnly, "verticesPerColumn", *fields .verticesPerColumn);
+	addField (initializeOnly, "gridStep", *fields .gridStep);
+	addField (initializeOnly, "height", *fields .height);
+	addField (initializeOnly, "children", *fields .children);
+}
 
-	///  @name Destruction
+void
+ElevationGrid::convert (Converter* const converter)
+{ }
 
-	virtual
-	~X3DInfoNode () override;
+ElevationGrid::~ElevationGrid ()
+{ }
 
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
+} // VRML1
 } // X3D
 } // titania
-
-#endif

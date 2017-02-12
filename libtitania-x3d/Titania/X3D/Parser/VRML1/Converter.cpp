@@ -48,34 +48,18 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "Converter.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
-{
-public:
+Converter::Converter ()
+{ }
 
-	///  @name Destruction
+Converter::~Converter ()
+{ }
 
-	virtual
-	~X3DInfoNode () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
+} // VRML1
 } // X3D
 } // titania
-
-#endif

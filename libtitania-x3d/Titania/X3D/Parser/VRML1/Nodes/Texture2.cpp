@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,35 +47,42 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#include "Texture2.h"
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "../../../Execution/X3DExecutionContext.h"
+#include "../Converter.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+Texture2::Fields::Fields () :
+	filename (new X3D::SFString ("")),
+	   image (new X3D::SFImage ()),
+	   wrapS (new X3D::SFString ("REPEAT")),
+	   wrapT (new X3D::SFString ("REPEAT")),
+	children (new X3D::MFNode ())
+{ }
+
+Texture2::Texture2 (X3D::X3DExecutionContext* const executionContext) :
+	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       VRML1Node (),
+	          fields ()
 {
-public:
+	addField (initializeOnly, "filename", *fields .filename);
+	addField (initializeOnly, "image", *fields .image);
+	addField (initializeOnly, "wrapS", *fields .wrapS);
+	addField (initializeOnly, "wrapT", *fields .wrapT);
+	addField (initializeOnly, "children", *fields .children);
+}
 
-	///  @name Destruction
+void
+Texture2::convert (Converter* const converter)
+{ }
 
-	virtual
-	~X3DInfoNode () override;
+Texture2::~Texture2 ()
+{ }
 
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
+} // VRML1
 } // X3D
 } // titania
-
-#endif

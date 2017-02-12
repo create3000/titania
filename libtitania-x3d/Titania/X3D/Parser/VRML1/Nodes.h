@@ -3,9 +3,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
- * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
+ * All rights reserved. Holger Seelig <holger.seelig@yahoo.de".
  *
  * THIS IS UNPUBLISHED SOURCE CODE OF create3000.
  *
@@ -27,7 +27,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
+ * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de".
  *
  * This file is part of the Titania Project.
  *
@@ -41,41 +41,59 @@
  * details (a copy is included in the LICENSE file that accompanied this code).
  *
  * You should have received a copy of the GNU General Public License version 3
- * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
+ * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html" for a
  * copy of the GPLv3 License.
  *
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
+#ifndef __TITANIA_X3D_PARSER_VRML1_NODES_H__
+#define __TITANIA_X3D_PARSER_VRML1_NODES_H__
 
-#include "../Core/X3DChildNode.h"
-
-namespace titania {
-namespace X3D {
-
-class X3DInfoNode :
-	virtual public X3DChildNode
-{
-public:
-
-	///  @name Destruction
-
-	virtual
-	~X3DInfoNode () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
-} // X3D
-} // titania
+#include "Nodes/Background.h"
+#include "Nodes/CollideStyle.h"
+#include "Nodes/Cone.h"
+#include "Nodes/Coordinate3.h"
+#include "Nodes/Cube.h"
+#include "Nodes/Cylinder.h"
+#include "Nodes/DirectedSound.h"
+#include "Nodes/DirectionalLight.h"
+#include "Nodes/ElevationGrid.h"
+#include "Nodes/Environment.h"
+#include "Nodes/FontStyle.h"
+#include "Nodes/GeneralCylinder.h"
+#include "Nodes/IndexedFaceSet.h"
+#include "Nodes/IndexedLineSet.h"
+#include "Nodes/Info.h"
+#include "Nodes/LOD.h"
+#include "Nodes/Material.h"
+#include "Nodes/MaterialBinding.h"
+#include "Nodes/MatrixTransform.h"
+#include "Nodes/NavigationInfo.h"
+#include "Nodes/Normal.h"
+#include "Nodes/NormalBinding.h"
+#include "Nodes/OrthographicCamera.h"
+#include "Nodes/PerspectiveCamera.h"
+#include "Nodes/PointLight.h"
+#include "Nodes/PointSet.h"
+#include "Nodes/PointSound.h"
+#include "Nodes/Rotation.h"
+#include "Nodes/Scale.h"
+#include "Nodes/Separator.h"
+#include "Nodes/ShapeHints.h"
+#include "Nodes/Sphere.h"
+#include "Nodes/SpotLight.h"
+#include "Nodes/Switch.h"
+#include "Nodes/Text.h"
+#include "Nodes/TextLanguage.h"
+#include "Nodes/Texture2.h"
+#include "Nodes/Texture2Transform.h"
+#include "Nodes/TextureCoordinate2.h"
+#include "Nodes/Transform.h"
+#include "Nodes/Translation.h"
+#include "Nodes/WWWAnchor.h"
+#include "Nodes/WWWInline.h"
+#include "Nodes/WorldInfo.h"
 
 #endif

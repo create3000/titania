@@ -48,33 +48,60 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
+#ifndef __TITANIA_X3D_PARSER_WAVEFRONT_PARSER_H__
+#define __TITANIA_X3D_PARSER_WAVEFRONT_PARSER_H__
 
-#include "../Core/X3DChildNode.h"
+#include "../../Execution/X3DScene.h"
+#include "../../Parser/X3DParser.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+class Parser :
+	public X3D::X3DParser
 {
 public:
+
+	///  @name Construction
+
+	Parser (const X3D::X3DScenePtr &, const basic::uri &, std::istream &);
+
+	///  @name Operations
+
+	virtual
+	void
+	parseIntoScene () final override;
 
 	///  @name Destruction
 
 	virtual
-	~X3DInfoNode () override;
+	~Parser () final override;
 
 
-protected:
+private:
 
-	///  @name Construction
+	///  @name Member types
 
-	X3DInfoNode ();
+	using Function = std::function <X3D::X3DBaseNode* (X3D::X3DExecutionContext* const)>;
+
+	///  @name Operations
+
+	X3DBrowser*
+	getBrowser () const
+	{ return scene -> getBrowser (); }
+
+	///  @name Members
+
+	const X3D::X3DScenePtr scene;
+	const basic::uri       uri;
+	std::istream &         istream;
+
+	std::map <std::string, Function> nodes;
 
 };
 
+} // VRML1
 } // X3D
 } // titania
 

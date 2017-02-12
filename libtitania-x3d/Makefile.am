@@ -526,6 +526,53 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/Parser.cpp \
 	Titania/X3D/Parser/PDF/Parser.cpp \
 	Titania/X3D/Parser/SVG/Parser.cpp \
+	Titania/X3D/Parser/VRML1/Converter.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Background.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/CollideStyle.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Cone.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Coordinate3.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Cube.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Cylinder.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/DirectedSound.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/DirectionalLight.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/ElevationGrid.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Environment.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/FontStyle.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/GeneralCylinder.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/IndexedFaceSet.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/IndexedLineSet.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Info.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/LOD.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Material.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/MaterialBinding.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/MatrixTransform.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/NavigationInfo.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Normal.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/NormalBinding.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/OrthographicCamera.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/PerspectiveCamera.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/PointLight.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/PointSet.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/PointSound.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Rotation.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Scale.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Separator.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/ShapeHints.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Sphere.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/SpotLight.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Switch.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Text.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/TextLanguage.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Texture2.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Texture2Transform.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/TextureCoordinate2.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Transform.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/Translation.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/VRML1Node.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/WorldInfo.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/WWWAnchor.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/WWWInline.cpp \
+	Titania/X3D/Parser/VRML1/Parser.cpp \
 	Titania/X3D/Parser/Wavefront/Parser.cpp \
 	Titania/X3D/Parser/X3DParser.cpp \
 	Titania/X3D/Parser/XMLParser.cpp \

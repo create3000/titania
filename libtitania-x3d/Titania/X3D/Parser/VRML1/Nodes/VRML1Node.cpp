@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,34 +48,26 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "VRML1Node.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+const ComponentType VRML1Node::component      = ComponentType::TITANIA;
+const std::string   VRML1Node::typeName       = "VRML1Node";
+const std::string   VRML1Node::containerField = "children";
+
+VRML1Node::VRML1Node () :
+	X3D::X3DBaseNode ()
+{ }
+
+X3D::X3DBaseNode*
+VRML1Node::create (X3D::X3DExecutionContext* const executionContext) const
 {
-public:
+	throw X3D::Error <X3D::NOT_SUPPORTED> ("VRML1Node::create");
+}
 
-	///  @name Destruction
-
-	virtual
-	~X3DInfoNode () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
+} // VRML1
 } // X3D
 } // titania
-
-#endif

@@ -276,17 +276,15 @@ ifilestream::send ()
 void
 ifilestream::guess_content_type (const basic::uri & url, std::istream* const istream)
 {
-	static constexpr size_t BUFFER_SIZE = 255;
-
 	const auto state = istream -> rdstate ();
 
 	// Guess content type.
 
-	char         data [BUFFER_SIZE];
-	const size_t data_size = istream -> rdbuf () -> sgetn (data, BUFFER_SIZE);
+	auto         data      = std::string (255, 0);
+	const size_t data_size = istream -> rdbuf () -> sgetn (&data [0], data .size ());
 
 	bool        result_uncertain;
-	std::string content_type = Gio::content_type_guess (url .path (), (guchar*) data, data_size, result_uncertain);
+	std::string content_type = Gio::content_type_guess (url .path (), (guchar*) &data [0], data_size, result_uncertain);
 
 	file_response_headers .emplace ("Content-Type", std::move (content_type));
 

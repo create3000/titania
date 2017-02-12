@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,33 +48,72 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
+#ifndef __TITANIA_X3D_PARSER_VRML1_NODES_VRML1NODE_H__
+#define __TITANIA_X3D_PARSER_VRML1_NODES_VRML1NODE_H__
 
-#include "../Core/X3DChildNode.h"
+#include "../../../Basic/X3DBaseNode.h"
+#include "../../../Fields.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+class Converter;
+
+class VRML1Node :
+	virtual public X3D::X3DBaseNode
 {
 public:
 
-	///  @name Destruction
+	///  @name Common members
 
 	virtual
-	~X3DInfoNode () override;
+	ComponentType
+	getComponent () const
+	throw (X3D::Error <X3D::DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (X3D::Error <X3D::DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (X3D::Error <X3D::DISPOSED>) final override
+	{ return containerField; }
+
+	virtual
+	void
+	convert (Converter* const converter) = 0;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DInfoNode ();
+	VRML1Node ();
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	X3D::X3DBaseNode*
+	create (X3D::X3DExecutionContext* const) const final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
 
 };
 
+} // VRML1
 } // X3D
 } // titania
 

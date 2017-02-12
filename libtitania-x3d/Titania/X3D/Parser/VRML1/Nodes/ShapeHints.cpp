@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,35 +47,42 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#include "ShapeHints.h"
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "../../../Execution/X3DExecutionContext.h"
+#include "../Converter.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+ShapeHints::Fields::Fields () :
+	vertexOrdering (new X3D::SFString ("COUNTERCLOCKWISE")),
+	     shapeType (new X3D::SFString ("SOLID")),
+	      faceType (new X3D::SFString ("CONVEX")),
+	   creaseAngle (new X3D::SFFloat (0)),
+	      children (new X3D::MFNode ())
+{ }
+
+ShapeHints::ShapeHints (X3D::X3DExecutionContext* const executionContext) :
+	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       VRML1Node (),
+	          fields ()
 {
-public:
+	addField (initializeOnly, "vertexOrdering", *fields .vertexOrdering);
+	addField (initializeOnly, "shapeType", *fields .shapeType);
+	addField (initializeOnly, "faceType", *fields .faceType);
+	addField (initializeOnly, "creaseAngle", *fields .creaseAngle);
+	addField (initializeOnly, "children", *fields .children);
+}
 
-	///  @name Destruction
+void
+ShapeHints::convert (Converter* const converter)
+{ }
 
-	virtual
-	~X3DInfoNode () override;
+ShapeHints::~ShapeHints ()
+{ }
 
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
+} // VRML1
 } // X3D
 } // titania
-
-#endif

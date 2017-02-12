@@ -87,9 +87,32 @@ golden_parser (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilest
 }
 
 static
+bool
+golden_is_vrml1 (std::istream & istream)
+{
+	const auto   state     = istream .rdstate ();
+	auto         data      = std::string (32, 0);
+	const size_t data_size = istream .rdbuf () -> sgetn (&data [0], data .size ());
+
+	// Reset stream.
+
+	istream .clear (state);
+
+	for (size_t i = 0; i < data_size; ++ i)
+		istream .unget ();
+
+	static const std::regex VRML1 (R"/(^#VRML\s+V1.[01])/");
+
+	return std::regex_search (data, VRML1);
+}
+
+static
 void
 golden_x3dv (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & goldenstream)
 {
+	if (golden_is_vrml1 (goldenstream))
+		throw Error <INVALID_X3D> ("VRML V1.0 not supported.");
+
 	scene -> fromStream (uri, goldenstream);
 }
 

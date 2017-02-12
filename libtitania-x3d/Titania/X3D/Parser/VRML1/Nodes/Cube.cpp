@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,34 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
+#include "Cube.h"
 
-#include "../Core/X3DChildNode.h"
+#include "../../../Execution/X3DExecutionContext.h"
+#include "../Converter.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+Cube::Fields::Fields () :
+	   width (new X3D::SFFloat (2)),
+	  height (new X3D::SFFloat (2)),
+	   depth (new X3D::SFFloat (2)),
+	children (new X3D::MFNode ())
+{ }
+
+Cube::Cube (X3D::X3DExecutionContext* const executionContext) :
+	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       VRML1Node (),
+	          fields ()
 {
-public:
+	addField (initializeOnly, "width",    *fields .width);
+	addField (initializeOnly, "height",   *fields .height);
+	addField (initializeOnly, "depth",    *fields .depth);
+	addField (initializeOnly, "children", *fields .children);
+}
 
-	///  @name Destruction
+void
+Cube::convert (Converter* const converter)
+{ }
 
-	virtual
-	~X3DInfoNode () override;
+Cube::~Cube ()
+{ }
 
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
+} // VRML1
 } // X3D
 } // titania
-
-#endif

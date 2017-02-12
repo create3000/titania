@@ -1,0 +1,2466 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<html version="2.0"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<!-- WEBMAGIC VERSION NUMBER="2.0" -->
+<!-- WEBMAGIC TRANSLATION NAME="ServerRoot" SRC="var/www/htdocs/" DST="/" -->
+<!-- WEBMAGIC TRANSLATION NAME="ProjectRoot" SRC="./" DST="" -->
+<!--Changes: Mitra - 16Dec95
+Added changes supplied by Brian and Tony to SpotLight, PointLight,
+OrthographicCamera, Material, MaterialBinding and ShapeHints.
+Edited Background.
+	Removed all-children behavior from Switch
+-->
+<!--Changes: Mitra - 12Dec95
+Deprecated new user of named info nodes
+Removed Sensors, Interpolators, Logic Nodes.
+Updated Prototypes
+Added note on "Rough Consensus and Working Code"
+Added rest of VAG as authors
+-->
+<!-- Changes: YON - Jan C. Hardenbergh - 22Nov95
+add Text, remove AsciiText;    describe utf8;   added references section.
+add conceptual description (BRIEF) of world and camera spaces.
+-->
+<!-- Changes: Mitra - 30Oct95
+added notes as to status of items search for "TODO" or "Open issue" or VAG
+corrected some HTML formatting errors - buggy Webmagic I think!
+changed "ascii" to "utf8" where appropriate and Inventor V1.1 to VRML V1.1
+-->
+	<title>VRML 1.1 Specification</title>
+	<meta name="description" content="VRML 1.1 Specification">
+	<meta name="keywords" content="VRML, History, Mitra">
+</head>
+<body>
+<p><img src="VRML%201.1%20Specification-Dateien/vrml.gif" alt="VRML" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/vrml.banner.gif" height="130" width="560"> 
+</p><h1>The Virtual Reality Modeling Language</h1>
+<h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> Version 1.1 Draft</h2>
+<b>VAG: This document is a draft. Don't rely on any part of it remaining stable. 
+The VAG now follows the IETF guideline of "Rough Consensus and Working Code", 
+this specification will only be officially finalized when two independant 
+implementations on different platforms are available.</b>
+<p><em>16-Dec-95</em> 
+</p><blockquote><a href="mailto:gavin@sgi.com">Gavin Bell</a>, Silicon Graphics, Inc. <br>
+  <a href="mailto:dagobert@netcom.com">Anthony Parisi,</a> Intervista Software <br>
+  <a href="mailto:mpesce@netcom.com">Mark Pesce</a>, VRML List Moderator<br>
+  <a href="mailto:mitra@mitra.biz">Mitra</a>, WorldMaker <br>
+  <a href="mailto:jch@oki.com">YON - Jan C. Hardenbergh</a>, OKI<br>
+  <a href="mailto:twm@cs.brown.edu">Tom Meyer</a>, Brown University<br>
+  <a href="mailto:wlm@netcom.com">Bill Martin</a>, Headspace<br>
+  <a href="mailto:rikk@sgi.com">Rikk Carey</a>, SGI<br>
+  <a href="mailto:jonmarb@microsoft.com">Jon Marbry</a>, Microsoft<br>
+  <a href="mailto:bblau@intervista.com">Brian Blau</a>, Intervista Software<br>
+</blockquote>
+<hr>
+<h3>Revision History</h3>
+<ul>
+<li>1.0 first Draft - November 2, 1994 
+</li><li>1.0 second Draft - May 8, 1995 
+</li><li>First 1.0 spec- May 26, 1995 
+</li><li>1.0 clarifications - Oct 23, 1995 
+</li><li>1.1 first draft - Oct 24, 1995 
+</li><li>1.1 second draft - Dec 12, 1995
+</li></ul>
+<h3>Table of Contents</h3>
+<ul>
+<li><a href="#Introduction"><b>Introduction</b></a> 
+<ul>
+<li><a href="#Mission%20Statement">VRML Mission Statement</a> 
+</li><li><a href="#History">History</a> 
+</li><li><a href="#Requirements">Version 1.0 Requirements</a> 
+</li><li><a href="#WhatsNew1.1">What's New in Version 1.1</a> 
+</li></ul>
+</li><li><a href="#Language%20Specification"><b>Language Specification</b></a> 
+<ul>
+<li><a href="#Language%20Basics">Language Basics</a> 
+</li><li><a href="#Coordinate%20System">Coordinate System</a> 
+</li><li><a href="#Fields">Fields</a> 
+</li><li><a href="#Nodes">Nodes</a> 
+</li><li><a href="#Prototyping">Prototyping</a> 
+</li><li><a href="#Extensibility">Extensibility</a> 
+</li><li><a href="#An%20Example">An Example</a> 
+</li></ul>
+</li><li><a href="#Browser%20Considerations"><b>Browser Considerations</b></a> 
+<ul>
+<li><a href="#File%20Extensions">File Extensions</a> 
+</li><li><a href="#MIME%20Types">MIME Types</a> 
+</li></ul>
+</li><li><a href="#Acknowledgements"><b>Acknowledgements</b></a> 
+</li><li><a href="#References"><b>References</b></a> 
+</li></ul>
+<hr>
+<h1><img src="VRML%201.1%20Specification-Dateien/cone.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cone.gif" height="30" width="30"> <a name="Introduction">Introduction</a></h1>
+<p>The <strong>Virtual Reality Modeling Language</strong> (VRML) is a 
+language for describing multi-participant interactive simulations -- 
+virtual worlds networked via the global Internet and hyperlinked with 
+the World Wide Web. All aspects of virtual world display, interaction 
+and internetworking can be specified using VRML. It is the intention of 
+its designers that VRML become the standard language for interactive 
+simulation within the World Wide Web. 
+</p><p>The first version of VRML allows for the creation of virtual 
+worlds with limited interactive behavior. These worlds can contain 
+objects which have hyperlinks to other worlds, HTML documents or other 
+valid MIME types. When the user selects an object with a hyperlink, the 
+appropriate MIME viewer is launched. When the user selects a link to a 
+VRML document from within a correctly configured WWW browser, a VRML 
+viewer is launched. Thus VRML viewers are the perfect companion 
+applications to standard WWW browsers for navigating and visualizing the
+ Web. Future versions of VRML will allow for richer behaviors, including
+ animations, motion physics and real-time multi-user interaction. 
+</p><p>This document specifies the features and syntax of Version 1.1 of VRML. 
+</p><h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="Mission Statement">VRML Mission Statement</a></h2>
+<p>The history of the development of the Internet has had three distinct
+ phases; first, the development of the TCP/IP infrastructure which 
+allowed documents and data to be stored in a proximally independent way;
+ that is, Internet provided a layer of abstraction between data sets and
+ the hosts which manipulated them. While this abstraction was useful, it
+ was also confusing; without any clear sense of "what went where", 
+access to Internet was restricted to the class of sysops/net surfers who
+ could maintain internal cognitive maps of the data space. 
+</p><p>Next, Tim Berners-Lee's work at CERN, where he developed the hypermedia system known as <strong>World Wide Web</strong>,
+ added another layer of abstraction to the existing structure. This 
+abstraction provided an "addressing" scheme, a unique identifier (the 
+Universal Resource Locator), which could tell anyone "where to go and 
+how to get there" for any piece of data within the Web. While useful, it
+ lacked dimensionality; there's no <em>there</em> there within the web, 
+and the only type of navigation permissible (other than surfing) is by 
+direct reference. In other words, I can only tell you how to get to the 
+VRML Forum home page by saying, "http://www.wired.com/", which is not 
+human-centered data. In fact, I need to make an effort to remember it at
+ all. So, while the World Wide Web provides a retrieval mechanism to 
+complement the existing storage mechanism, it leaves a lot to be 
+desired, particularly for human beings. 
+</p><p>Finally, we move to "perceptualized" Internetworks, where the 
+data has been sensualized, that is, rendered sensually. If something is 
+represented sensually, it is possible to make sense of it. VRML is an 
+attempt (how successful, only time and effort will tell) to place humans
+ at the center of the Internet, ordering its universe to our whims. In 
+order to do that, the most important single element is a standard that 
+defines the particularities of perception. Virtual Reality Modeling 
+Language is that standard, designed to be a <em>universal description language for multi-participant simulations</em>. 
+</p><p>These three phases, storage, retrieval, and perceptualization are
+ analogous to the human process of consciousness, as expressed in terms 
+of semantics and cognitive science. Events occur and are recorded 
+(memory); inferences are drawn from memory (associations), and from sets
+ of related events, maps of the universe are created (cognitive 
+perception). What is important to remember is that the map is <strong>not</strong> the territory, and we should avoid becoming trapped in any single representation or world-view. Although we need to <em>design to avoid disorientation</em>, we should always push the envelope in the kinds of experience we can bring into manifestation! 
+</p><p>This document is the living proof of the success of a process 
+that was committed to being open and flexible, responsive to the needs 
+of a growing Web community. Rather than re-invent the wheel, we have 
+adapted an existing specification (Open Inventor) as the basis from 
+which our own work can grow, saving years of design work and perhaps 
+many mistakes. Now our real work can begin; that of rendering our 
+noospheric space. 
+</p><h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="History">History</a></h2>
+<p>VRML was conceived in the spring of 1994 at the first annual World 
+Wide Web Conference in Geneva, Switzerland. Tim Berners-Lee and Dave 
+Raggett organized a Birds-of-a-Feather (BOF) session to discuss Virtual 
+Reality interfaces to the World Wide Web. Several BOF attendees 
+described projects already underway to build three dimensional graphical
+ visualization tools which interoperate with the Web. Attendees agreed 
+on the need for these tools to have a common language for specifying 3D 
+scene description and WWW hyperlinks -- an analog of HTML for virtual 
+reality. The term Virtual Reality Markup Language (VRML) was coined, and
+ the group resolved to begin specification work after the conference. 
+The word 'Markup' was later changed to 'Modeling' to reflect the 
+graphical nature of VRML. 
+</p><p>Shortly after the Geneva BOF session, the www-vrml mailing list 
+was created to discuss the development of a specification for the first 
+version of VRML. The response to the list invitation was overwhelming: 
+within a week, there were over a thousand members. After an initial 
+settling-in period, list moderator Mark Pesce of Labyrinth Group 
+announced his intention to have a draft version of the specification 
+ready by the WWW Fall 1994 conference, a mere five months away. There 
+was general agreement on the list that, while this schedule was 
+aggressive, it was achievable provided that the requirements for the 
+first version were not too ambitious and that VRML could be adapted from
+ an existing solution. The list quickly agreed upon a set of <a href="#Requirements">requirements</a> for the first version, and began a search for technologies which could be adapted to fit the needs of VRML. 
+</p><p>The search for existing technologies turned up a several 
+worthwhile candidates. After much deliberation the list came to a 
+consensus: the Open Inventor ASCII File Format from Silicon Graphics, 
+Inc. The Inventor File Format supports complete descriptions of 3D 
+scenes with polygonally rendered objects, lighting, materials, ambient 
+properties and realism effects. A subset of the Inventor File Format, 
+with extensions to support networking, forms the basis of VRML. Gavin 
+Bell of Silicon Graphics has adapted the Inventor File Format for VRML, 
+with design input from the mailing list. SGI has publicly stated that 
+the file format is available for use in the open market, and have 
+contributed a file format parser into the public domain to bootstrap 
+VRML viewer development.
+</p><p><b>TODO: Gavin - History of clarifications etc to be added</b> 
+</p><h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="Requirements">Version 1.0 Requirements</a></h2>
+<p>VRML 1.0 is designed to meet the following requirements: 
+</p><ul>
+<li>Platform independence 
+</li><li>Extensibility 
+</li><li>Ability to work well over low-bandwidth connections 
+</li></ul>
+<p>As with HTML, the above are absolute requirements for a network language standard; they should need little explanation here. 
+</p><p>Early on the designers decided that VRML would not be an 
+extension to HTML. HTML is designed for text, not graphics. Also, VRML 
+requires even more finely tuned network optimizations than HTML; it is 
+expected that a typical VRML scene will be composed of many more 
+"inline" objects and served up by many more servers than a typical HTML 
+document. Moreover, HTML is an accepted standard, with existing 
+implementations that depend on it. To impede the HTML design process 
+with VRML issues and constrain the VRML design process with HTML 
+compatibility concerns would be to do both languages a disservice. As a 
+network language, VRML will succeed or fail independent of HTML. 
+</p><p>It was also decided that, except for the hyperlinking feature, 
+the first version of VRML would not support interactive behaviors. This 
+was a practical decision intended to streamline design and 
+implementation. Design of a language for describing interactive 
+behaviors is a big job, especially when the language needs to express 
+behaviors of objects communicating on a network. Such languages do 
+exist; if we had chosen one of them, we would have risked getting into a
+ "language war." People don't get excited about the syntax of a language
+ for describing polygonal objects; people get <em>very</em> excited 
+about the syntax of real languages for writing programs. Religious wars 
+can extend the design process by months or years. In addition, networked
+ inter-object operation requires brokering services such as those 
+provided by CORBA or OLE, services which don't exist yet within WWW; we 
+would have had to invent them. Finally, by keeping behaviors out of 
+Version 1, we have made it a much smaller task to implement a viewer. We
+ acknowledge that support for arbitrary interactive behaviors is 
+critical to the long-term success of VRML; they will be included in 
+Version 2. 
+</p><h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="WhatsNew1.1">What's New in Version 1.1</a></h2>
+<h4>Changes from 1.0 to 1.1:</h4>
+<ul>
+<li>Near and Far clippng planes - <a href="#PerspectiveCamera">PerspectiveCamera</a> and <a href="#OrthographicCamera">OrthographicCamera</a> now contain nearDistance and farDistance clipping plane specifications. 
+</li><li><a href="#ShapeHints">ShapeHints</a> -field defaults have changed 
+  </li><li>input fields - Several 1.0 nodes have input fields. These fields are dynamic 
+    fields that can be modified by other nodes. 
+</li></ul><div style="display:none;" id="link64_vdp_tabid">1217</div>
+<h4>New objects in 1.1:</h4>
+<ul>
+<li><a href="#Background">Background</a>-describes scene background 
+</li><li><a href="#OrthographicCamera">Cameras</a> -now have nearDistance and farDistance fields 
+</li><li><a href="#CollideStyle">CollideStyle</a> - describes collision information 
+</li><li><a href="#DirectedSound">DirectedSound</a> and <a href="#PointSound">PointSound</a>- spatial sound objects 
+</li><li><a href="#ElevationGrid">ElevationGrid</a> -describes a model as heights over a regular grid 
+</li><li><a href="#Environment">Environment</a> -is from Inventor to do fog and ambient lighting 
+</li><li><a href="#GeneralizedCylinder">GeneralCylinder</a> -is a new node for describing numerous families of shapes 
+</li><li><a href="#NavigationInfo">NavigationInfo</a> - contains view type, speed, and headlight state 
+</li><li>VolumeProximitySensor and PointProximitySensor - Sensors that detect viewer proximity 
+</li><li><a href="#DocumentInfo">WorldInfo</a> - contains title and other document information 
+</li></ul>
+<h4>New features in VRML 1.1: </h4>
+<ul>
+<li><a href="#Prototyping">Prototyping</a> - new node types can be defined in the VRML file 
+</li></ul>
+<hr>
+<h1><img src="VRML%201.1%20Specification-Dateien/cone.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cone.gif" height="30" width="30"> <a name="Language Specification">Language Specification</a></h1>
+<p>The language specification is divided into the following sections: 
+</p><ul>
+<li><a href="#Language%20Basics">Language Basics</a> 
+</li><li><a href="#Coordinate%20System">Coordinate System</a> 
+</li><li><a href="#Fields">Fields</a> 
+</li><li><a href="#Nodes">Nodes</a> 
+</li><li><a href="#Extensibility">Extensibility</a> 
+</li><li><a href="#An%20Example">An Example</a> 
+</li></ul>
+<h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="Language Basics">Language Basics</a></h2>
+<p>At the highest level of abstraction, VRML is just a way for objects 
+to read and write themselves. Theoretically, the objects can contain 
+anything -- 3D geometry, MIDI data, JPEG images, anything. VRML defines a
+ set of objects useful for doing 3D graphics. These objects are called <a href="#Nodes">Nodes</a>. 
+</p><p>Nodes are arranged in hierarchical structures called <strong>scene graphs</strong>.
+ Scene graphs are more than just a collection of nodes; the scene graph 
+defines an ordering for the nodes. The scene graph has a notion of <em>state</em> -- nodes earlier in the scene can affect nodes that appear later in the scene. For example, a <a href="#Rotation">Rotation</a> or <a href="#Material">Material</a> node will affect the nodes after it in the scene. A mechanism is defined to limit the effects of properties ( <a href="#Separator">separator</a> nodes), allowing parts of the scene graph to be functionally isolated from other parts. 
+</p><p>Applications that interpret VRML files need not maintain the 
+scene graph structure internally; the scene graph is merely a convenient
+ way of describing objects. 
+</p><p>A node has the following characteristics: 
+</p><ul>
+<li><b>What kind of object it is.</b> A node might be a cube, a sphere, a texture map, a transformation, etc. 
+<p>
+</p></li><li><b>The parameters that distinguish this node from other nodes of the same type.</b> For example, each <a href="#Sphere">Sphere</a>
+ node might have a different radius, and different texture maps nodes 
+will certainly contain different images to use as the texture maps. 
+These parameters are called <a href="#Fields">Fields</a>. A node can have 0 or more fields. 
+<p>
+</p></li><li><b>A name to identify this node.</b> Being able to name 
+nodes and refer to them elsewhere is very powerful; it allows a scene's 
+author to give hints to applications using the scene about what is in 
+the scene, and creates possibilities for very powerful scripting 
+extensions. Nodes do not have to be named, but if they are named, they 
+can have only one name. However, names do not have to be unique-- 
+several different nodes may be given the same name. 
+<p>
+</p></li><li><b>Child nodes.</b> Object hierarchy is implemented by 
+allowing some types of nodes to contain other nodes. Parent nodes 
+traverse their children in order during rendering. Nodes that may have 
+children are referred to as <strong>group nodes</strong>. Group nodes can have zero or more children. 
+</li></ul>
+<p>The syntax chosen to represent these pieces of information is straightforward: 
+</p><pre>DEF objectname objecttype { fields  children }
+</pre>
+<p>Only the object type and curly braces are required; nodes may or may not have a name, fields, and children. 
+</p><p><a name="NodeNames">Node names</a> must not begin with a digit, 
+and must not contain spaces or control characters, single or double 
+quote characters, backslashes, curly braces, the plus character or the 
+period character. 
+</p><p>For example, this file contains a simple scene defining a view of a red cone and a blue sphere, lit by a directional light: 
+</p><pre>#VRML V1.1 utf8
+Separator {
+    DirectionalLight {
+        direction 0 0 -1  # Light shining from viewer into scene
+    }
+    PerspectiveCamera {
+        position    -8.6 2.1 5.6
+        orientation -0.1352 -0.9831 -0.1233  1.1417
+        focalDistance       10.84
+    }
+    Separator {   # The red sphere
+        Material {
+            diffuseColor 1 0 0   # Red
+        }
+        Translation { translation 3 0 1 }
+        Sphere { radius 2.3 }
+    }
+    Separator {  # The blue cube
+        Material {
+            diffuseColor 0 0 1  # Blue
+        }
+        Transform {
+            translation -2.4 .2 1
+            rotation 0 1 1  .9
+        }
+        Cube {}
+    }
+}
+</pre>
+<h3><a name="General Syntax">General Syntax</a></h3>
+<p>For easy identification of VRML files, every VRML 1.1 file must begin with the characters:
+</p><pre>#VRML V1.1 utf8
+</pre>
+<p>The identifier utf8 allows for international characters to by displayed
+in VRML using the UTF-8 encoding of the ISO 10646 standard. Unicode is
+an alternate encoding of ISO 10646. UTF-8 is explained under the Text node.
+</p><p>Any characters after these on the same line are ignored. The line
+ is terminated by either the ASCII newline or carriage-return 
+characters. 
+</p><p>The '#' character begins a comment; all characters until the next
+ newline or carriage return are ignored. The only exception to this is 
+within double-quoted SFString and MFString fields, where the '#' 
+character will be part of the string. 
+</p><p>Note: Comments and whitespace may not be preserved; in 
+particular, a VRML document server may strip comments and extraneous 
+whitespace from a VRML file before transmitting it. <a href="#Info">Info</a>
+ nodes should be used for persistent information like copyrights or 
+author information. Info nodes could also be used for object 
+descriptions.
+New uses of named info nodes for conveying syntactically meaningfull 
+information
+are deprecated. Use the extension nodes mechanism instead.
+</p><p>Blanks, tabs, newlines and carriage returns are whitespace 
+characters wherever they appear outside of string fields. One or more 
+whitespace characters separates the syntactical entities in VRML files, 
+where necessary. 
+</p><p>After the required header, a VRML file contains exactly one VRML 
+node. That node may of course be a group node, containing any number of 
+other nodes. 
+</p><p>Field names start with lower case letters, Node types start with upper case. 
+The remainder of the characters may be any printable ascii (21H-7EH) except 
+curly braces {}, square brackets [], single ' or double " quotes, sharp #, backslash \\ plus +, period . or ampersand &amp;.
+</p><p><a name="NodeNames">Node names</a> must not begin with a digit
+but they may begin and contain any UTF8 character except those below 21H
+ (control characters and white space), and the characters {} [] ' " # \\
+ + . and &amp;.
+</p><p>VRML is case-sensitive; 'Sphere' is different from 'sphere'. 
+</p><h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="Coordinate System">Coordinate System</a></h2>
+<p>VRML uses a cartesian, right-handed, 3-dimensional coordinate system.
+ By default, objects are projected onto a 2-dimensional device by 
+projecting them in the direction of the positive Z axis, with the 
+positive X axis to the right and the positive Y axis up. A camera or 
+modeling transformation may be used to alter this default projection. 
+</p><p>The standard unit for lengths and distances specified is meters. The standard unit for angles is radians. 
+</p><p>VRML scenes may contain an arbitrary number of local (or 
+"object-space") coordinate systems, defined by modelling transformations
+ using Translate, Rotate, Scale, Transform, and MatrixTransform nodes. 
+Given a vertex <b>V</b> and a series of transformations such as: 
+</p><pre>Translation { translation T }
+Rotation { rotation R }
+Scale { scaleFactor S }
+Coordinate3 { point V } PointSet { numPoints 1 }
+</pre>
+<p>the vertex is transformed into world-space to get <b>V'</b> by applying the transformations in the following order: 
+</p><pre><b>V'</b> = T·R·S·
+<b>V</b> (if you think of vertices as column vectors) OR
+<b>V'</b> = 
+<b>V</b>·S·R·T (if you think of vertices as row vectors)
+</pre>
+<p>Conceptually, VRML also has a "world" coordinate system as
+well as a viewing or "Camera" coordinate system. The various
+local coordinate transformations map objects into the world coordinate
+system. This is where the scene is assembled. The scene is then viewed
+through a camera, introducing another conceptual coordinate system. Nothing
+in VRML is specified using these coordinates. They are rarely found in
+optimized implementations where all of the steps are concatenated. However,
+having a clear model of the object, world and camera spaces will help authors.
+</p><h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="Fields">Fields</a></h2>
+<p>There are two general classes of fields; fields that contain a single
+ value (where a value may be a single number, a vector, or even an 
+image), and fields that contain multiple values. Single-valued fields 
+all have names that begin with "SF", multiple-valued fields have names 
+that begin with "MF". Each field type defines the format for the values 
+it writes. 
+</p><p>Multiple-valued fields are written as a series of values 
+separated by commas, all enclosed in square brackets. If the field has 
+zero values then only the square brackets ("[]") are written. The last 
+may optionally be followed by a comma. If the field has exactly one 
+value, the brackets may be omitted and just the value written. For 
+example, all of the following are valid for a multiple-valued field 
+containing the single integer value 1: 
+</p><pre>1
+[1,]
+[ 1 ]
+</pre>
+<p>TODO: SYNTAX/RULES FOR INPUTS/OUTPUTS NEED TO BE FLESHED OUT HERE!
+</p><h3>SFBitMask</h3>
+<p>A single-value field that contains a mask of bit flags. Nodes that 
+use this field class define mnemonic names for the bit flags. SFBitMasks
+ are written to file as one or more mnemonic enumerated type names, in 
+this format: 
+</p><pre>( flag1 | flag2 | ... )
+</pre>
+<p>If only one flag is used in a mask, the parentheses are optional. 
+These names differ among uses of this field in various node classes. 
+</p><h3>SFBool</h3>
+<p>A field containing a single boolean (true or false) value. SFBools may be written as 0 (representing FALSE), 1, TRUE, or FALSE. 
+</p><h3>SFColor/MFColor</h3>
+<p>Fields containing one (SFColor) or zero or more (MFColor) RGB colors.
+ Each color is written to file as an RGB triple of floating point 
+numbers in ANSI C floating point format, in the range 0.0 to 1.0. For 
+example: 
+</p><pre>[ 1.0 0. 0.0, 0 1 0, 0 0 1 ]
+</pre>
+<p>is an MFColor field containing the three colors red, green, and blue. 
+</p><h3>SFEnum</h3>
+<p>A single-value field that contains an enumerated type value. Nodes 
+that use this field class define mnemonic names for the values. SFEnums 
+are written to file as a mnemonic enumerated type name. The name differs
+ among uses of this field in various node classes. 
+</p><h3>SFFloat/MFFloat</h3>
+<p>Fields that contain one (SFFloat) or zero or more (MFFloat) 
+single-precision floating point number. SFFloats are written to file in 
+ANSI C floating point format. For example: 
+</p><pre>[ 3.1415926, 12.5e-3, .0001 ]
+</pre>
+<p>is an MFFloat field containing three values. 
+</p><h3>SFImage</h3>
+<p>A field that contain an uncompressed 2-dimensional color or greyscale image. 
+</p><p>SFImages are written to file as three integers representing the 
+width, height and number of components in the image, followed by 
+width*height hexadecimal values representing the pixels in the image, 
+separated by whitespace. A one-component image will have one-byte 
+hexadecimal values representing the intensity of the image. For example,
+ 0xFF is full intensity, 0x00 is no intensity. A two-component image 
+puts the intensity in the first (high) byte and the transparency in the 
+second (low) byte. Pixels in a three-component image have the red 
+component in the first (high) byte, followed by the green and blue 
+components (so 0xFF0000 is red). Four-component images put the 
+transparency byte after red/green/blue (so 0x0000FF80 is 
+semi-transparent blue). A value of 1.0 is completely transparent, 0.0 is
+ completely opaque. Note: each pixel is actually read as a single 
+unsigned number, so a 3-component pixel with value "0x0000FF" can also 
+be written as "0xFF" or "255" (decimal). Pixels are specified from left 
+to right, bottom to top. The first hexadecimal value is the lower left 
+pixel of the image, and the last value is the upper right pixel. 
+</p><p>For example, 
+</p><p>1 2 1 0xFF 0x00 
+</p><p>is a 1 pixel wide by 2 pixel high greyscale image, with the bottom pixel white and the top pixel black. And: 
+</p><p>2 4 3 0xFF0000 0xFF00 0 0 0 0 0xFFFFFF 0xFFFF00 
+</p><p>is a 2 pixel wide by 4 pixel high RGB image, with the bottom left
+ pixel red, the bottom right pixel green, the two middle rows of pixels 
+black, the top left pixel white, and the top right pixel yellow. 
+</p><h3>SFLong/MFLong</h3>
+<p>Fields containing one (SFLong) or zero or more (MFLong) 32-bit 
+integers. SFLongs are written to file as an integer in decimal, 
+hexadecimal (beginning with '0x') or octal (beginning with '0') format. 
+For example: 
+</p><pre>[ 17, -0xE20, -518820 ]
+</pre>
+<p>is an MFLong field containing three values. 
+</p><h3>SFMatrix</h3>
+<p>A field containing a transformation matrix. SFMatrices are written to
+ file in row-major order as 16 floating point numbers separated by 
+whitespace. For example, a matrix expressing a translation of 7.3 units 
+along the X axis is written as: 
+</p><pre>1 0 0 0  0 1 0 0  0 0 1 0  7.3 0 0 1
+</pre>
+<h3>NEW in 1.1- SFNode/MFNode</h3>
+<p>... syntax is just node syntax, DEF/USE allowed, etc...
+</p><h3><a name="SFRotation">SFRotation</a></h3>
+<p>A field containing an arbitrary rotation. SFRotations are written to 
+file as four floating point values separated by whitespace. The 4 values
+ represent an axis of rotation followed by the amount of right-handed 
+rotation about that axis, in radians. For example, a 180 degree rotation
+ about the Y axis is: 
+</p><pre>0 1 0  3.14159265
+</pre>
+<h3>SFString/MFString</h3>
+<p>Fields containing one (SFString) or zero or more (MFString) UTF-8 
+string (sequence of characters). Strings are written to file as a 
+sequence of UTF-8 octets in double quotes (optional if the string 
+doesn't contain any whitespace). Any characters (including newlines and 
+'#') may appear within the quotes. To include a double quote character 
+within the string, precede it with a backslash. For example: 
+</p><pre>Testing
+"One, Two, Three"
+"He said, \"Immel did it!\""
+</pre>
+<p>are all valid strings. 
+</p><h3>SFVec2f/MFVec2f</h3>
+<p>Field containing a two-dimensional vector. SFVec2fs are written to 
+file as a pair of floating point values separated by whitespace. 
+</p><h3>SFVec3f/MFVec3f</h3>
+<p>Field containing a three-dimensional vector. SFVec3fs are written to 
+file as three floating point values separated by whitespace. 
+</p><h3>NEW in 1.1 - SFTime</h3>
+<p>Field containing a single time value. Each time value is written to 
+file as a double-precision floating point number in ANSI C floating 
+point format. A absolute SFTime is the number of seconds since Jan 1, 
+1970 GM 
+</p><h3><a name="input fields">NEW in 1.1 - input fields</a></h3>
+<p>TODO: TBD 
+</p><h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="Nodes">Nodes</a></h2>
+<p>VRML defines several different classes of nodes. Most of the nodes 
+can be classified into one of three categories; shape, property or 
+group. Shape nodes define the geometry in the scene. Conceptually, they 
+are the only nodes that draw anything. Property nodes affect the way 
+shapes are drawn. And grouping nodes gather other nodes together, 
+allowing collections of nodes to be treated as a single object. Some 
+group nodes also control whether or not their children are drawn. 
+</p><p>Nodes may contain zero or more fields. Each node type defines the
+ type, name, and default value for each of its fields. The default value
+ for the field is used if a value for the field is not specified in the 
+VRML file. The order in which the fields of a node are read is not 
+important; for example, "Cube { width 2 height 4 depth 6 }" and "Cube { 
+height 4 depth 6 width 2 }" are equivalent. 
+</p><p>Here are the nodes grouped by type. The first group are the shape nodes. These specify geometry: 
+</p><p><a href="#Cone">Cone</a>, <a href="#Cube">Cube</a>, <a href="#Cylinder">Cylinder</a>, <a href="#ElevationGrid">ElevationGrid</a>, <a href="#IndexedFaceSet">IndexedFaceSet</a>, <a href="#IndexedLineSet">IndexedLineSet</a>, <a href="#PointSet">PointSet</a>, <a href="#Text">Text</a>, <a href="#Sphere">Sphere</a> 
+</p><p>The second group are the properties. These can be further grouped
+ into properties of the geometry and its appearance, matrix or transform
+ properties, and cameras and lights: <a href="#CollideStyle">CollideStyle,</a> <a href="#Coordinate3">Coordinate3</a>, <a href="#DocumentInfo">DocumentInfo,</a> <a href="#FontStyle">FontStyle</a>, <a href="#Info">Info</a>, <a href="#LOD">LOD</a>, <a href="#Material">Material</a>, <a href="#MaterialBinding">MaterialBinding</a>, <a href="#NavigationInfo">NavigationInfo,</a> <a href="#Normal">Normal</a>, <a href="#NormalBinding">NormalBinding</a>, <a href="#TextLanguage">TextLanguage</a>, <a href="#Texture2">Texture2</a>, <a href="#Texture2Transform">Texture2Transform</a>, <a href="#TextureCoordinate2">TextureCoordinate2</a>, <a href="#ShapeHints">ShapeHints</a> 
+</p><p><a href="#MatrixTransform">MatrixTransform</a>, <a href="#Rotation">Rotation</a>, <a href="#Scale">Scale</a>, <a href="#Transform">Transform</a>, <a href="#Translation">Translation</a> 
+</p><p><a href="#DirectionalLight">DirectionalLight</a>, <a href="#PointLight">PointLight</a>, <a href="#SpotLight">SpotLight</a> 
+</p><p>These are the group nodes: 
+</p><p><a href="#Separator">Separator</a>, <a href="#Switch">Switch</a>, <a href="#WWWAnchor">WWWAnchor</a> 
+</p><p>Finally, the camera, WWWInline and Background nodes do not fit neatly into any category: 
+</p><p><a href="#OrthographicCamera">OrthographicCamera</a>, <a href="#PerspectiveCamera">PerspectiveCamera</a> 
+</p><p><a href="#Background">Background</a>, <a href="#WWWInline">WWWInline</a> 
+</p><hr>
+<h3><a name="Cone"></a>Cone</h3>
+<p>This node represents a simple cone whose central axis is aligned with
+ the y-axis. By default, the cone is centered at (0,0,0) and has a size 
+of -1 to +1 in all three directions. The cone has a radius of 1 at the 
+bottom and a height of 2, with its apex at 1 and its bottom at -1. The 
+cone has two parts: the sides and the bottom. 
+</p><p>The cone is transformed by the current cumulative transformation and is drawn with the current texture and material. 
+</p><p>If the current material binding is PER_PART or PER_PART_INDEXED, 
+the first current material is used for the sides of the cone, and the 
+second is used for the bottom. Otherwise, the first material is used for
+ the entire cone. 
+</p><p>When a texture is applied to a cone, it is applied differently to
+ the sides and bottom. On the sides, the texture wraps counterclockwise 
+(from above) starting at the back of the cone. The texture has a 
+vertical seam at the back, intersecting the yz-plane. For the bottom, a 
+circle is cut out of the texture square and applied to the cone's base 
+circle. The texture appears right side up when the top of the cone is 
+rotated towards the -Z axis. 
+</p><pre>PARTS
+     SIDES       The conical part
+     BOTTOM      The bottom circular face
+     ALL         All parts
+FILE FORMAT/DEFAULTS
+     Cone {
+          parts         ALL     # SFBitMask
+          bottomRadius  1       # SFFloat
+          height        2       # SFFloat
+     }
+</pre>
+<h3><a name="Coordinate3">MODIFIED 1.1 - Coordinate3</a></h3>
+<p>This node defines a set of 3D coordinates to be used by a subsequent 
+IndexedFaceSet, IndexedLineSet, or PointSet node. This node does not 
+produce a visible result during rendering; it simply replaces the 
+current coordinates in the rendering state for subsequent nodes to use. 
+</p><pre>FILE FORMAT/DEFAULTS
+     Coordinate3 {
+          point  0 0 0  # <b>input</b> MFVec3f
+     }
+</pre>
+<h3><a name="Cube"></a>Cube</h3>
+<p>This node represents a cuboid aligned with the coordinate axes. By 
+default, the cube is centered at (0,0,0) and measures 2 units in each 
+dimension, from -1 to +1. The cube is transformed by the current 
+cumulative transformation and is drawn with the current material and 
+texture. A cube's width is its extent along its object-space X axis, its
+ height is its extent along the object-space Y axis, and its depth is 
+its extent along its object-space Z axis. 
+</p><p>If the current material binding is PER_PART, PER_PART_INDEXED, 
+PER_FACE, or PER_FACE_INDEXED, materials will be bound to the faces of 
+the cube in this order: front (+Z), back (-Z), left (-X), right (+X), 
+top (+Y), and bottom (-Y). 
+</p><p>Textures are applied individually to each face of the cube; the 
+entire texture goes on each face. On the front, back, right, and left 
+sides of the cube, the texture is applied right side up. On the top, the
+ texture appears right side up when the top of the cube is tilted toward
+ the camera. On the bottom, the texture appears right side up when the 
+top of the cube is tilted towards the -Z axis. 
+</p><pre>FILE FORMAT/DEFAULTS
+     Cube {
+          width   2     # SFFloat
+          height  2     # SFFloat
+          depth   2     # SFFloat
+     }
+</pre>
+<h3><a name="Cylinder"></a>Cylinder</h3>
+<p>This node represents a simple capped cylinder centered around the 
+y-axis. By default, the cylinder is centered at (0,0,0) and has a 
+default size of -1 to +1 in all three dimensions. The cylinder has three
+ parts: the sides, the top (y = +1) and the bottom (y = -1). You can use
+ the radius and height fields to create a cylinder with a different 
+size. 
+</p><p>The cylinder is transformed by the current cumulative transformation and is drawn with the current material and texture. 
+</p><p>If the current material binding is PER_PART or PER_PART_INDEXED, 
+the first current material is used for the sides of the cylinder, the 
+second is used for the top, and the third is used for the bottom. 
+Otherwise, the first material is used for the entire cylinder. 
+</p><p>When a texture is applied to a cylinder, it is applied 
+differently to the sides, top, and bottom. On the sides, the texture 
+wraps counterclockwise (from above) starting at the back of the 
+cylinder. The texture has a vertical seam at the back, intersecting the 
+yz-plane. For the top and bottom, a circle is cut out of the texture 
+square and applied to the top or bottom circle. The top texture appears 
+right side up when the top of the cylinder is tilted toward the +Z axis,
+ and the bottom texture appears right side up when the top of the 
+cylinder is tilted toward the -Z axis. 
+</p><pre>PARTS
+     SIDES   The cylindrical part
+     TOP     The top circular face
+     BOTTOM  The bottom circular face
+     ALL     All parts
+FILE FORMAT/DEFAULTS
+     Cylinder {
+          parts   ALL   # SFBitMask
+          radius  1     # SFFloat
+          height  2     # SFFloat
+     }
+</pre>
+<h3><a name="DirectionalLight">DirectionalLight</a></h3>
+<p>This node defines a directional light source that illuminates along rays parallel to a given 3-dimensional vector. 
+</p><p>A light node defines an illumination source that may affect 
+subsequent shapes in the scene graph, depending on the current lighting 
+style. Light sources are affected by the current transformation. A light
+ node under a separator does not affect any objects outside that 
+separator. 
+</p><pre>FILE FORMAT/DEFAULTS
+     DirectionalLight {
+          on         TRUE       # SFBool
+          intensity  1          # SFFloat
+          color      1 1 1      # SFColor
+          direction  0 0 -1     # SFVec3f
+     }
+</pre>
+<h3><a name="FontStyle">FontStyle</a></h3>
+<p>This node defines the current font style used for all subsequent <a href="#Text">AsciiText</a>.
+ Font attributes only are defined. It is up to the browser to assign 
+specific fonts to the various attribute combinations. The size field 
+specifies the height (in object space units) of glyphs rendered and 
+determines the vertical spacing of adjacent lines of text. 
+</p><p>FAMILY 
+</p><pre>     SERIF       Serif style (such as TimesRoman)
+     SANS        Sans Serif Style (such as Helvetica)
+     TYPEWRITER  Fixed pitch style (such as Courier)
+STYLE
+     NONE        No modifications to family
+     BOLD        Embolden family
+     ITALIC      Italicize or Slant family
+FILE FORMAT/DEFAULTS
+     FontStyle {
+          size     10      # SFFloat
+          family   SERIF   # SFEnum
+          style    NONE    # SFBitMask
+     }
+</pre>
+<h3><a name="IndexedFaceSet">IndexedFaceSet</a></h3>
+<p>This node represents a 3D shape formed by constructing faces 
+(polygons) from vertices located at the current coordinates. 
+IndexedFaceSet uses the indices in its coordIndex field to specify the 
+polygonal faces. An index of -1 indicates that the current face has 
+ended and the next one begins. 
+</p><p>The vertices of the faces are transformed by the current transformation matrix. 
+</p><p>Treatment of the current material and normal binding is as 
+follows: The PER_PART and PER_FACE bindings specify a material or normal
+ for each face. PER_VERTEX specifies a material or normal for each 
+vertex. The corresponding _INDEXED bindings are the same, but use the 
+materialIndex or normalIndex indices. The DEFAULT material binding is 
+equal to OVERALL. The DEFAULT normal binding is equal to 
+PER_VERTEX_INDEXED; if insufficient normals exist in the state, vertex 
+normals will be generated automatically. 
+</p><p>Explicit texture coordinates (as defined by TextureCoordinate2) 
+may be bound to vertices of an indexed shape by using the indices in the
+ textureCoordIndex field. As with all vertex-based shapes, if there is a
+ current texture but no texture coordinates are specified, a default 
+texture coordinate mapping is calculated using the bounding box of the 
+shape. The longest dimension of the bounding box defines the S 
+coordinates, and the next longest defines the T coordinates. The value 
+of the S coordinate ranges from 0 to 1, from one end of the bounding box
+ to the other. The T coordinate ranges between 0 and the ratio of the 
+second greatest dimension of the bounding box to the greatest dimension.
+ 
+</p><p>Be sure that the indices contained in the coordIndex, 
+materialIndex, normalIndex, and textureCoordIndex fields are valid with 
+respect to the current state, or errors will occur. 
+</p><pre>FILE FORMAT/DEFAULTS
+     IndexedFaceSet {
+          coordIndex         0  # MFLong
+          materialIndex      -1 # MFLong
+          normalIndex        -1 # MFLong
+          textureCoordIndex  -1 # MFLong
+     }
+</pre>
+<h3><a name="IndexedLineSet">IndexedLineSet</a></h3>
+<p>This node represents a 3D shape formed by constructing polylines from
+ vertices located at the current coordinates. IndexedLineSet uses the 
+indices in its coordIndex field to specify the polylines. An index of -1
+ indicates that the current polyline has ended and the next one begins. 
+</p><p>The coordinates of the line set are transformed by the current cumulative transformation. 
+</p><p>Treatment of the current material and normal binding is as 
+follows: The PER_PART binding specifies a material or normal for each 
+segment of the line. The PER_FACE binding specifies a material or normal
+ for each polyline. PER_VERTEX specifies a material or normal for each 
+vertex. The corresponding _INDEXED bindings are the same, but use the 
+materialIndex or normalIndex indices. The DEFAULT material binding is 
+equal to OVERALL. The DEFAULT normal binding is equal to 
+PER_VERTEX_INDEXED; if insufficient normals exist in the state, the 
+lines will be drawn unlit. The same rules for texture coordinate 
+generation as IndexedFaceSet are used. 
+</p><pre>FILE FORMAT/DEFAULTS
+     IndexedLineSet {
+          coordIndex         0  # MFLong
+          materialIndex      -1 # MFLong
+          normalIndex        -1 # MFLong
+          textureCoordIndex  -1 # MFLong
+     }
+</pre>
+<h3><a name="Info">Info</a></h3>
+<p>This class defines an information node in the scene graph. This node 
+has no effect during traversal. It is used to store information in the 
+scene graph, typically for browser-specific purposes, copyright 
+messages, or other strings. 
+</p><pre>     Info {
+          string  "&lt;Undefined info&gt;"      # SFString
+     }
+</pre>
+<h3><a name="LOD">MODIFIED 1.1 - LOD</a></h3>
+<p>This node is used to allow browsers to switch between various 
+representations of objects automatically. The children of this node 
+typically represent the same object or objects at varying levels of 
+detail, from highest detail to lowest. LOD acts as a Separator, not 
+allowing properties underneath it to affect nodes that come after it in 
+the scene. 
+</p><p>The distance from the viewpoint (transformed into the local 
+coordinate space of the LOD node) to the specified center point of the 
+LOD is calculated. If the distance is less than the first value in the 
+ranges array, then the first child of the LOD is drawn. If between the 
+first and second values in the ranges array, the second child is drawn, 
+etc. If there are N values in the ranges array, the LOD group should 
+have N+1 children. Specifying too few children will result in the last 
+child being used repeatedly for the lowest levels of detail; if too many
+ children are specified, the extra children will be ignored. Each value 
+in the ranges array should be less than the previous value, otherwise 
+results are undefined. Not specifying any values in the ranges array 
+(the default) is a special case that indicates that the browser may 
+decide which child to draw to optimize rendering performance. 
+</p><p>Authors should set LOD ranges so that the transitions from one 
+level of detail to the next are barely noticeable. Browsers may adjust 
+which level of detail is displayed to maintain interactive frame rates, 
+to display an already-fetched level of detail while a higher level of 
+detail (contained in a WWWInline node) is fetched, or might disregard 
+the author-specified ranges for any other implementation-dependent 
+reason. Authors should not use LOD nodes to emulate simple behaviors, 
+because the results will be undefined. For example, using an LOD node to
+ make a door appear to open when the user approaches probably will not 
+work in all browsers. 
+</p><p>For best results, specify ranges only where necessary, and nest LOD nodes with and without ranges. For example: 
+</p><pre>       LOD {
+            range [100, 1000]
+
+            LOD {
+                 Separator { ... detailed version...  }
+                 DEF LoRes Separator { ... less detailed version... }
+            }
+            USE LoRes
+            Info { } # Display nothing
+       }
+</pre>
+<p>In this example, nothing at all will be displayed if the viewer is 
+farther than 1,000 meters away from the object. A low-resolution version
+ of the object will be displayed if the viewer is between 100 and 1,000 
+meters away, and either a low-resolution or a high-resolution version of
+ the object will be displayed when the viewer is closer than 100 meters 
+from the object. 
+</p><pre>FILE FORMAT/DEFAULTS
+     LOD {
+          range [ ]    # MFFloat
+          center 0 0 0  # SFVec3f
+     }
+</pre>
+<h3><a name="Material">MODIFIED 1.1 - Material</a></h3>
+<p>This node defines the current surface material properties for all 
+subsequent shapes. Material sets several components of the current 
+material during traversal. Different shapes interpret materials with 
+multiple values differently. To bind materials to shapes, use a 
+MaterialBinding node. 
+</p><p>The lighting parameters defined by the Material node are the same
+ parameters defined by the OpenGL lighting model. For a rigorous 
+mathematical description of how these parameters should be used to 
+determine how surfaces are lit, see <a href="http://www.sgi.com/Technology/openGL/glspec/node31.html">the description of lighting operations in the OpenGL Specification</a>.
+ Note that VRML 1.1 provides no mechanism for controlling the amount of 
+ambient light in the scene, so use of the ambientColor field is browser 
+dependent. Several other parameters (such as light attenuation factors) 
+are also left as implementation details in VRML. Also note that OpenGL 
+specifies the specular exponent as a non-normalized 0-128 value, which 
+is specified as a normalized 0-1 value in VRML (simply multiplying the 
+VRML value by 128 to translate to the OpenGL parameter). 
+</p><p>For rendering systems that do not support the full OpenGL lighting model, the following simpler lighting model is recommended: 
+
+</p><p>A transparency value of 0 is completely opaque, a value of 1 is 
+completely transparent. Browsers need not support partial transparency, 
+but should support at least fully transparent and fully opaque surfaces,
+ treating transparency values &gt;= 0.5 as fully transparent. 
+</p><p>Specifying only emissiveColors and zero diffuse, specular, 
+emissive, and ambient colors is the way to specify pre-computed 
+lighting. It is expected that browsers will be able to recognize this as
+ a special case and optimize their computations. For example: 
+</p><pre>Material {
+    ambientColor [] diffuseColor [] specularColor []
+    emissiveColor [ 0.1 0.1 0.2, 0.5 0.8 0.8 ]
+}
+</pre>
+
+<i>Issues for Low-End Rendering Systems.</i>  Many low-end PC rendering
+systems are not able to support the full range of the
+VRML material specification. For example, many systems do not render individual
+red, green and blue reflected values as specified in the specularColor field.
+The following table describes which Material fields are typically supported in
+popular low-end systems and suggests actions for browser implementors to take
+when a field is not supported.
+
+<p>
+</p><pre>Field           Supported?      Suggested Action
+
+ambientColor    No              Ignore
+diffuseColor    Yes             Use
+specularColor   No              Ignore
+emissiveColor   No              Use in place of diffuseColor if != 0 0 0
+shininess       Yes             Use
+transparency    No              Ignore
+</pre>
+
+<p>It is also expected that simpler rendering systems will be unable to support both lit and unlit objects in the same scene. 
+
+</p><pre>FILE FORMAT/DEFAULTS
+     Material {
+          ambientColor   0.2 0.2 0.2    # <b>input </b>MFColor
+          diffuseColor   0.8 0.8 0.8    # <b>input </b>MFColor
+          specularColor  0 0 0          # <b>input </b>MFColor
+          emissiveColor  0 0 0          # <b>input </b>MFColor
+          shininess      0.2            # <b>input </b>MFFloat
+          transparency   0              # <b>input </b>MFFloat
+     }
+</pre>
+<h3><a name="MaterialBinding">MaterialBinding</a></h3>
+<p>Material nodes may contain more than one material. This node 
+specifies how the current materials are bound to shapes that follow in 
+the scene graph. Each shape node may interpret bindings differently. For
+ example, a Sphere node is always drawn using the first material in the 
+material node, no matter what the current MaterialBinding, while a Cube 
+node may use six different materials to draw each of its six faces, 
+depending on the MaterialBinding. 
+</p><p>The bindings for faces and vertices are meaningful only for 
+shapes that are made from faces and vertices. Similarly, the indexed 
+bindings are only used by the shapes that allow indexing. 
+</p><p>When multiple material values are needed by a shape, the previous
+ Material node should at least as many materials as are needed, 
+otherwise results are undefined. 
+</p><p>
+<i>Issues for low-end rendering systems.</i>  
+Some renderers do not support per-vertex materials, in which case the
+MaterialBinding values PER_VERTEX and PER_VERTEX_INDEXED will produce
+upredictable results in different browsers.
+
+</p><pre>BINDINGS
+     DEFAULT            Use default binding
+     OVERALL            Whole object has same material
+     PER_PART           One material for each part of object
+     PER_PART_INDEXED   One material for each part, indexed
+     PER_FACE           One material for each face of object
+     PER_FACE_INDEXED   One material for each face, indexed
+     PER_VERTEX         One material for each vertex of object
+     PER_VERTEX_INDEXED One material for each vertex, indexed
+FILE FORMAT/DEFAULTS
+     MaterialBinding {
+          value  OVERALL        # SFEnum
+     }
+</pre>
+<h3><a name="MatrixTransform">MatrixTransform</a></h3>
+<p>This node defines a geometric 3D transformation with a 4 by 4 matrix.
+ Only matrices that are the result of rotations, translations, and 
+non-zero (but possibly non-uniform) scales must be supported. 
+Non-invertable matrices should be avoided. 
+</p><p>Matrices are specified in row-major order, so, for example, a 
+MatrixTransform representing a translation of 6.2 units along the local Z
+ axis would be specified as: 
+</p><pre>MatrixTransform { matrix
+    1 0 0 0
+    0 1 0 0
+    0 0 1 0
+    0 0 6.2 1
+}
+
+FILE FORMAT/DEFAULTS
+     MatrixTransform {
+          matrix  1 0 0 0       # SFMatrix
+                  0 1 0 0
+                  0 0 1 0
+                  0 0 0 1
+     }
+</pre>
+<h3><a name="Normal">MODIFIED 1.1 - Normal</a></h3>
+<p>This node defines a set of 3D surface normal vectors to be used by 
+vertex-based shape nodes (IndexedFaceSet, IndexedLineSet, PointSet) that
+ follow it in the scene graph. This node does not produce a visible 
+result during rendering; it simply replaces the current normals in the 
+rendering state for subsequent nodes to use. This node contains one 
+multiple-valued field that contains the normal vectors. 
+</p><p>To save network bandwidth, it is expected that implementations 
+will be able to automatically generate appropriate normals if none are 
+given. However, the results will vary from implementation to 
+implementation. 
+</p><pre>FILE FORMAT/DEFAULTS
+     Normal {
+          vector  [ ] # <b>input </b>MFVec3f
+     }
+</pre>
+<h3><a name="NormalBinding">NormalBinding</a></h3>
+<p>This node specifies how the current normals are bound to shapes that 
+follow in the scene graph. Each shape node may interpret bindings 
+differently. 
+</p><p>The bindings for faces and vertices are meaningful only for 
+shapes that are made from faces and vertices. Similarly, the indexed 
+bindings are only used by the shapes that allow indexing. For bindings 
+that require multiple normals, be sure to have at least as many normals 
+defined as are necessary; otherwise, errors will occur. 
+</p><pre>BINDINGS
+     DEFAULT            Use default binding
+     OVERALL            Whole object has same normal
+     PER_PART           One normal for each part of object
+     PER_PART_INDEXED   One normal for each part, indexed
+     PER_FACE           One normal for each face of object
+     PER_FACE_INDEXED   One normal for each face, indexed
+     PER_VERTEX         One normal for each vertex of object
+     PER_VERTEX_INDEXED One normal for each vertex, indexed
+
+FILE FORMAT/DEFAULTS
+     NormalBinding {
+          value  DEFAULT        # SFEnum
+     }
+</pre>
+<h3><a name="OrthographicCamera">OrthographicCamera</a></h3>
+<p>An orthographic camera defines a parallel projection from a 
+viewpoint. This camera does not diminish objects with distance, as a 
+PerspectiveCamera does. The viewing volume for an orthographic camera is
+ a rectangular parallelepiped (a box). 
+</p><p>By default, the camera is located at (0,0,1) and looks along the 
+negative z-axis; the position and orientation fields can be used to 
+change these values. The height field defines the total height of the 
+viewing volume. 
+</p><p>A camera can be placed in a VRML world to specify the initial 
+location of the viewer when that world is entered. VRML browsers will 
+typically modify the camera to allow a user to move through the virtual 
+world. 
+</p><p>The results of traversing multiple cameras are undefined; to 
+ensure consistent results, place multiple cameras underneath one or more
+ Switch nodes, and set the Switch's whichChild fields so that only one 
+is traversed. By convention, these non-traversed cameras may be used to 
+define alternate entry points into the scene; these entry points may be 
+named by simply giving the cameras a name (using DEF); see the 
+specification of WWWAnchor for a conventional way of specifying an entry
+ point in a URL. 
+</p><p>Cameras are affected by the current transformation, so you can 
+position a camera by placing a transformation node before it in the 
+scene graph . The default position and orientation of a camera is at 
+(0,0,1) looking along the negative z-axis, with the positive y-axis up. 
+</p><p>The position and orientation fields of a camera are sufficient to
+ place a camera anywhere in space with any orientation. The orientation 
+field can be used to rotate the default view direction (looking down 
+-z-, with +y up) so that it is looking in any direction, with any 
+direction 'up'. 
+</p><p>The focalDistance field defines the point the viewer is looking 
+at, and may be used by a browser as a navigational hint to determine how
+ fast the viewer should travel, which objects in the scene are most 
+important, etc. 
+</p><p>The nearDistance and farDistance are distances from the viewpoint
+ (in the camera's coordinate system); objects closer to the viewpoint 
+than nearDistance or farther from the viewpoint than farDistance should 
+not be seen. Browsers may treat these values as hints, and may decide to
+ adjust them as the viewer moves around the scene. 
+</p><pre>FILE FORMAT/DEFAULTS
+     OrthographicCamera {
+          position         0 0 1        # SFVec3f
+          orientation      0 0 1  0     # SFRotation
+          focalDistance    5            # SFFloat
+          height           2            # SFFloat
+         <b> nearDistance     1            # SFFloat</b>
+<b>          farDistance      10           # SFFloat</b>
+     }
+</pre>
+<i>Issues for low-end rendering systems.</i>  Most low-end rendering
+systems do not support the concept of focalDistance.  Also, cameras
+are global to the scene; placing a camera beneath a particular Separator
+is equivalent to placing it at outermost scope.  For broadest compatibility,
+cameras should only be placed at outermost scope.
+
+<h3><a name="PerspectiveCamera">MODIFIED 1.1 - PerspectiveCamera</a></h3>
+<p>A perspective camera defines a perspective projection from a 
+viewpoint. The viewing volume for a perspective camera is a truncated 
+right pyramid. 
+</p><p>By default, the camera is located at (0,0,1) and looks along the 
+negative z-axis; the position and orientation fields can be used to 
+change these values. The heightAngle field defines the total vertical 
+angle of the viewing volume. 
+</p><p>See more on cameras in the <a href="#OrthographicCamera">OrthographicCamera </a>description. 
+</p><pre>FILE FORMAT/DEFAULTS
+     PerspectiveCamera {
+          position         0 0 1        # SFVec3f
+          orientation      0 0 1  0     # SFRotation
+          focalDistance    5            # SFFloat
+          heightAngle      0.785398     # SFFloat
+         <b> nearDistance     1            # SFFloat</b>
+<b>          farDistance      10           # SFFloat</b>
+     }
+</pre>
+<h3><a name="PointLight">PointLight</a></h3>
+<p>This node defines a point light source at a fixed 3D location. A 
+point source illuminates equally in all directions; that is, it is omni-
+ directional. 
+</p><p>A light node defines an illumination source that may affect 
+subsequent shapes in the scene graph, depending on the current lighting 
+style. Light sources are affected by the current transformation. A light
+ node under a separator should not affect any objects outside that 
+separator (although some rendering systems do not currently support 
+this). 
+</p><pre>FILE FORMAT/DEFAULTS
+     PointLight {
+          on         TRUE       # SFBool
+          intensity  1          # SFFloat
+          color      1 1 1      # SFColor
+          location   0 0 1      # SFVec3f
+     }
+</pre>
+<h3><a name="PointSet">PointSet</a></h3>
+<p>This node represents a set of points located at the current 
+coordinates. PointSet uses the current coordinates in order, starting at
+ the index specified by the startIndex field. The number of points in 
+the set is specified by the numPoints field. A value of -1 for this 
+field indicates that all remaining values in the current coordinates are
+ to be used as points. 
+</p><p>The coordinates of the point set are transformed by the current 
+cumulative transformation. The points are drawn with the current 
+material and texture. 
+</p><p>Treatment of the current material and normal binding is as 
+follows: PER_PART, PER_FACE, and PER_VERTEX bindings bind one material 
+or normal to each point. The DEFAULT material binding is equal to 
+OVERALL. The DEFAULT normal binding is equal to PER_VERTEX. The 
+startIndex is also used for materials or normals when the binding 
+indicates that they should be used per vertex. 
+</p><pre>FILE FORMAT/DEFAULTS
+     PointSet {
+          startIndex  0 # SFLong
+          numPoints   -1        # SFLong
+     }
+</pre>
+<i>Issues for low-end rendering systems.</i>  Many 
+low-end renderers do not support the concept of per-object
+lighting.   This means that placing a light beneath a Separator,
+which implies lighting only the objects beneath the Separator with that
+light, is not supported in all systems.  For the broadest compatibility,
+lights should only be placed at outermost scope.
+
+<h3><a name="Scale">MODIFIED 1.1 - </a><a name="Rotation">Rotation</a></h3>
+<p>This node defines a 3D rotation about an arbitrary axis through the 
+origin. The rotation is accumulated into the current transformation, 
+which is applied to subsequent shapes. 
+</p><pre>FILE FORMAT/DEFAULTS
+     Rotation {
+          rotation  0 0 1  0    # <b>input </b>SFRotation
+     }
+</pre>
+<p>See <a href="#SFRotation">rotation field</a> description for more information. 
+</p><h3><a name="Scale">MODIFIED 1.1 - Scale</a></h3>
+<p>This node defines a 3D scaling about the origin. If the components of
+ the scaling vector are not all the same, this produces a non-uniform 
+scale. 
+</p><pre>FILE FORMAT/DEFAULTS
+     Scale {
+          scaleFactor  1 1 1    # <b>input </b>SFVec3f
+     }
+</pre>
+<h3><a name="Separator">Separator</a></h3>
+<b>A proposal to replace Separator's with Frames and Leafs is at <a href="http://www.mitra.biz/vrml/vrml2/vrml-frames.html">http:</a><a href="http://www.mitra.biz/vrml/vrml2/vrml-behaviors.html">//www.mitra.biz/vrml/vrml2</a><a href="http://www.mitra.biz/vrml/vrml2/vrml-frames.html">/vrml-frames.html</a></b> 
+<p>This group node performs a push (save) of the traversal state before 
+traversing its children and a pop (restore) after traversing them. This 
+isolates the separator's children from the rest of the scene graph. A 
+separator can include lights, cameras, coordinates, normals, bindings, 
+and all other properties. 
+</p><p>Separators can also perform render culling. Render culling skips 
+over traversal of the separator's children if they are not going to be 
+rendered, based on the comparison of the separator's bounding box with 
+the current view volume. Culling is controlled by the renderCulling 
+field. These are set to AUTO by default, allowing the implementation to 
+decide whether or not to cull. 
+</p><pre>CULLING ENUMS
+     ON    Always try to cull to the view volume
+     OFF   Never try to cull to the view volume
+     AUTO  Implementation-defined culling behavior
+
+FILE FORMAT/DEFAULTS
+     Separator {
+          renderCulling       AUTO      # SFEnum
+     }
+</pre>
+<h3><a name="ShapeHints">ShapeHints</a></h3>
+<p>The ShapeHints node indicates that IndexedFaceSets are solid, contain ordered vertices, or contain convex faces. 
+</p><p>These hints allow VRML implementations to optimize certain 
+rendering features. Optimizations that may be performed include enabling
+ back-face culling and disabling two-sided lighting. For example, if an 
+object is solid and has ordered vertices, an implementation may turn on 
+backface culling and turn off two-sided lighting. If the object is not 
+solid but has ordered vertices, it may turn off backface culling and 
+turn on two-sided lighting. 
+</p><p>The ShapeHints node also affects how default normals are 
+generated. When an IndexedFaceSet has to generate default normals, it 
+uses the creaseAngle field to determine which edges should be smoothly 
+shaded and which ones should have a sharp crease. The crease angle is 
+the angle between surface normals on adjacent polygons. For example, a 
+crease angle of .5 radians (the default value) means that an edge 
+between two adjacent polygonal faces will be smooth shaded if the 
+normals to the two faces form an angle that is less than .5 radians 
+(about 30 degrees). Otherwise, it will be faceted. 
+
+</p><p><i>Issues for low-end rendering systems.</i>  The shapeType and vertexOrdering
+fields are used to determine whether or not to generate back faces for each polygon
+in a mesh.  Most low-end rendering systems do not support built-in back face
+generation; browsers built on these systems need to create back faces explicitly.
+
+</p><pre>VERTEX ORDERING ENUMS
+     UNKNOWN_ORDERING    Ordering of vertices is unknown
+     CLOCKWISE           Face vertices are ordered clockwise
+                          (from the outside)
+     COUNTERCLOCKWISE    Face vertices are ordered counterclockwise
+                          (from the outside)
+SHAPE TYPE ENUMS
+     UNKNOWN_SHAPE_TYPE  Nothing is known about the shape
+     SOLID               The shape encloses a volume
+FACE TYPE ENUMS
+     UNKNOWN_FACE_TYPE   Nothing is known about faces
+     CONVEX              All faces are convex
+FILE FORMAT/DEFAULTS
+     ShapeHints {
+          vertexOrdering  COUNTERCLOCKWISE      # SFEnum
+          shapeType       SOLID                 # SFEnum
+          faceType        CONVEX                # SFEnum
+          creaseAngle     0                     # SFFloat
+     }
+</pre>
+<h3><a name="Sphere"></a>Sphere</h3>
+<p>This node represents a sphere. By default, the sphere is centered at 
+the origin and has a radius of 1. The sphere is transformed by the 
+current cumulative transformation and is drawn with the current material
+ and texture. 
+</p><p>A sphere does not have faces or parts. Therefore, the sphere 
+ignores material and normal bindings, using the first material for the 
+entire sphere and using its own normals. When a texture is applied to a 
+sphere, the texture covers the entire surface, wrapping counterclockwise
+ from the back of the sphere. The texture has a seam at the back on the 
+yz-plane. 
+</p><pre>FILE FORMAT/DEFAULTS
+     Sphere {
+          radius  1     # SFFloat
+     }
+</pre>
+<h3><a name="SpotLight"></a>SpotLight</h3>
+<p>This node defines a spotlight light source. A spotlight is placed at a
+ fixed location in 3-space and illuminates in a cone along a particular 
+direction. The intensity of the illumination drops off exponentially as a
+ ray of light diverges from this direction toward the edges of the cone.
+ The rate of drop-off and the angle of the cone are controlled by the 
+dropOffRate and cutOffAngle fields. 
+</p><p>A light node defines an illumination source that may affect 
+subsequent shapes in the scene graph, depending on the current lighting 
+style. Light sources are affected by the current transformation. A light
+ node under a separator should not affect any objects outside that 
+separator (although some rendering systems do not currently support 
+this). 
+</p><pre>FILE FORMAT/DEFAULTS
+     SpotLight {
+          on           TRUE     # SFBool
+          intensity    1        # SFFloat
+          color        1 1 1    # SFVec3f
+          location     0 0 1    # SFVec3f
+          direction    0 0 -1   # SFVec3f
+          dropOffRate  0        # SFFloat
+          cutOffAngle  0.785398 # SFFloat
+     }
+</pre>
+
+<i>Issues for low-end rendering systems.</i>  Many 
+low-end renderers do not support the concept of per-object
+lighting.   This means that placing a light beneath a Separator,
+which implies lighting only the objects beneath the Separator with that
+light, is not supported in all systems.  For the broadest compatibility,
+lights should only be placed at outermost scope.
+
+<h3><a name="Switch">MODIFIED 1.1 - Switch</a></h3>
+<p>This group node traverses one or none of its children. One can use 
+this node to switch on and off the effects of some properties or to 
+switch between different properties. 
+</p><p>The whichChild field specifies the index of the child to 
+traverse, where the first child has index 0. This field is an input and 
+thus can be modified by another node. 
+</p><p><b>Open issue</b><i> It is expected that in a future version of 
+VRML the Switch node will be defined to behave as a Separator node, not 
+allowing its children to affect anything after it in the scene graph. To
+ ensure future compatibility, it is recommended that all children of all
+ Switch nodes be Separator nodes.</i> 
+</p><pre>FILE FORMAT/DEFAULTS
+     Switch {
+          whichChild  -1        # input SFLong
+     }
+</pre>
+<h3><a name="Text">Text</a></h3>
+
+<p>This node represents one or more text strings specified using the 
+UTF-8 encoding of the ISO10646 character set. This is described below. 
+An important note
+is that ASCII is a subset of UTF-8, so any ASCII strings are also UTF-8.
+
+</p><p>The text strings can be rendered in one of four directions:  right to
+left (RL), left to right (LR), top to bottom (TB), or bottom to top (BT).
+The direction field governs this. 
+
+</p><p>The justification field determines where the text will be positioned in
+relation to the origin (0,0,0) of the object coordinate system. The values
+for the justification field are BEGIN, END, CENTER. For a left to right (LR)
+direction, these would correspond to LEFT, RIGHT, CENTER.
+
+</p><p>For the directions RL and LR, the first line of text will be positioned
+with its baseline (bottom of capital letters) at y = 0. The text is positioned
+on the positive side of the x origin for the direction LR and justification
+BEGIN; the same for RL END. The text is on the negative side of X for LR
+END and RL BEGIN. For CENTER justification and horizontal text (RL, LR),
+each string will be centered at x = 0.
+
+</p><p>For the directions TB and BT, the first line of text will be positioned
+with the left side of the glyphs along the y = 0 axis. For TB BEGIN and
+BT END, the text will be positioned with the top left corner at the origin;
+for TB END and BT BEGIN, the bottom left will be at the origin. For TB
+and BT CENTER, the text will be centered vertically at x = 0.
+
+
+</p><pre>
+    LR BEGIN    LR END       LR CENTER
+
+  VRML               VRML       VRML
+  adds a           adds a      adds a
+  dimension!   dimension!    dimension!
+
+    RL BEGIN    RL END       RL CENTER
+                                                 
+        LMRV   LMRV   	        LMRV
+      a sdda   a sdda	       a sdda
+  !noisnemid   !noisnemid    !noisnemid
+
+ TB BEGIN   TB END   TB CENTER     BT BEGIN   BT END   BT CENTER  
+		   		                                  
+  V a d         d          d	        !     L a !          !    
+  R d i         i          i	        n     M   n          n    
+  M d m         m        a m	        o     R s o        a o    
+  L s e         e      V d e	        i     V d i      L   i    
+      n       a n      R d n	      a s       d s      M s s    
+    a s       d s      M s s	        n       a n      R d n    
+      i     V d i      L   i	    L s e         e      V d e    
+      o     R s o        a o	    M d m         m        a m    
+      n     M   n          n	    R d i         i          i    
+      !     L a !          !        V a d         d          d    
+
+</pre>
+
+<p>The spacing field determines the spacing between multiple text strings.  All subsequent strings advance in either x or y by -( <i>size</i> * <i>spacing</i>). See <b>FontStyle</b> for a description of the <i>size</i> field. A value
+of 0 for the spacing will cause the string to be in the same position. A value
+of -1 will cause subsequent strings to advance in the opposite direction.
+
+</p><p>The extent field will limit and scale the text string if the natural
+length of the string is longer than the extent. If the text string is
+shorter than the extent, it will not be scaled. The extent is measured
+horizontally for RL and LR directions; vertically for TB and BT.
+
+</p><p><b>UTF-8 character encodings</b>
+
+</p><p>The 2 byte (UCS-2) encoding of ISO 10646 is identical to the Unicode
+standard. References for both ISO 10646 and Unicode are given in the
+references section at the end. 
+
+</p><p>In order to avoid introducing binary data into VRML we have chosen to
+support the UTF-8 encoding of ISO 10646. This encoding allows ASCII text
+(0x0..0x7F) to appear without any changes and encodes all
+characters from 0x80.. 0x7FFFFFFF into a series of six or fewer bytes.
+
+</p><p>If the most significant bit of the first character is 0, then the
+remaining seven bits are interpretted as an ASCII character. Otherwise,
+the number of leading 1 bits will indicate the number of bytes
+following. There is always a o bit between the count bits and any data.
+
+</p><pre>
+First byte could be one of the following. The X indicates bits available to
+encode the character.
+
+0XXXXXXX  only one byte        0..0x7F (ASCII)
+110XXXXX  two bytes            Maximum character value is 0x7FF 
+1110XXXX  three bytes          Maximum character value is 0xFFFF
+11110XXX  four bytes           Maximum character value is 0x1FFFFF
+111110XX  five bytes           Maximum character value is 0x3FFFFFF
+1111110X  six bytes            Maximum character value is 0x7FFFFFFF
+
+All following bytes have this format: 10XXXXXX
+
+</pre>
+
+<p>A two byte example. The symbol for a register trade mark is "circled R
+registered sign" or 174 in both ISO/Latin-1 (8859/1) and ISO 10646.  In
+hexadecimal it is 0xAE; In HTML &amp;reg;. In UTF-8 it is has the following
+two byte encoding 0xC2, 0xAE.
+
+</p><p>The text is transformed by the current cumulative transformation and is drawn with the current material and texture. 
+
+</p><p>Textures are applied to 3D text as follows. The texture origin is
+ at the origin of the first string, as determined by the justification. 
+The texture is scaled equally in both S and T dimensions, with the font 
+height representing 1 unit. S increases to the right, T increases up. 
+
+</p><pre>DIRECTION
+     LR       Character are drawn from left to right
+     RL       Character are drawn from right to left
+     TB       Character are drawn from top to bottom
+     TB       Character are drawn from bottom to top
+
+JUSTIFICATION
+     BEGIN    Align beginning of text to origin
+     CENTER   Align center of text to origin
+     END      Align end of text to origin
+
+FILE FORMAT/DEFAULTS
+     Text {
+          string         ""    # MFString
+          direction      LR    # SFEnum
+          justification  BEGIN # SFEnum
+          spacing        1     # SFFloat
+          width          0     # MFFloat
+     }
+</pre>
+<h3><a name="TextLanguage">TextLanguage</a></h3>
+<p>There are many languages in which the proper rendering of the text
+requires more than just a sequence of glyphs. The TextLanguage node
+allows the author to specify which, if any, language specific rendering
+techniques to use. For simple languages, such as English, this node
+may be safely ignored.
+</p><p>The tag used to specify languages will follow RFC1766 - Tags for the Identification of Languages. 
+<a href="ftp://ftp.isi.edu/in-notes/rfc1766.txt">ftp://ftp.isi.edu/in-notes/rfc1766.txt</a>. This RFC specifies that a language tag may simply be a two
+letter ISO 639 tag, for example "en" for English, "ja" for Japanese, and "sv" for Swedish. This may be optionally followed by
+a two letter country code from ISO 3166. So, Americans would be absolutely
+safe with "en-US".  <a href="http://www.iso.ch/">ISO</a> does not
+have documents online, yet. They can be ordered.
+</p><pre>FILE FORMAT/DEFAULTS
+     TextLanguage {
+          textLanguage    ""    # SFString
+     }
+</pre>
+
+<h3><a name="Texture2">Texture2</a></h3>
+<b>TODO: Gavin - add sentence about grey scales to Texure2</b>
+<p>This property node defines a texture map and parameters for that map.
+ This map is used to apply texture to subsequent shapes as they are 
+rendered. 
+</p><p>The texture can be read from the URL specified by the filename 
+field. To turn off texturing, set the filename field to an empty string 
+(""). Implementations should support at least the JPEG image file 
+format. Also supporting GIF and PNG formats is recommended. 
+</p><p>If multiple URLs are presented, this expresses a descending order of
+preference, a browser may display a lower preference URL while the higher order
+file is not available. See the section on <a href="#URN">URN</a>s.
+</p><p>Textures can also be specified inline by setting the image field 
+to contain the texture data. Supplying both image and filename fields 
+will result in undefined behavior. 
+</p><p>Texture images may be one component (greyscale), two component 
+(greyscale plus transparency), three component (full RGB color), or 
+four-component (full RGB color plus transparency). An ideal VRML 
+implementation will use the texture image to modify the diffuse color 
+and transparency of an object's material (specified in a <a href="#Material">Material</a>
+ node), then performing any lighting calculations using the rest of the 
+object's material properties with the modified diffuse color to produce 
+the final image. The texture image modifies the diffuse color and 
+transparency depending on how many components are in the image, as 
+follows: 
+</p><ol>
+<li>Diffuse color is multiplied by the greyscale values in the texture image. 
+</li><li>Diffuse color is multiplied by the greyscale values in the 
+texture image, material transparency is multiplied by transparency 
+values in texture image. 
+</li><li>RGB colors in the texture image replace the material's diffuse color. 
+</li><li>RGB colors in the texture image replace the material's diffuse 
+color, transparency values in the texture image replace the material's 
+transparency. 
+</li></ol>
+<p>Browsers may approximate this ideal behavior to increase performance.
+ One common optimization is to calculate lighting only at each vertex 
+and combining the texture image with the color computed from lighting 
+(performing the texturing after lighting). Another common optimization 
+is to perform no lighting calculations at all when texturing is enabled,
+ displaying only the colors of the texture image. 
+</p><pre>WRAP ENUM
+     REPEAT  Repeats texture outside 0-1 texture coordinate range
+     CLAMP   Clamps texture coordinates to lie within 0-1 range
+FILE FORMAT/DEFAULTS
+     Texture2 {
+          filename    ""        # SFString
+          image       0 0 0     # SFImage
+          wrapS       REPEAT    # SFEnum
+          wrapT       REPEAT    # SFEnum
+     }
+</pre>
+<h3><a name="Texture2Transform">Texture2Transform</a></h3>
+<p>This node defines a 2D transformation applied to texture coordinates.
+ This affects the way textures are applied to the surfaces of subsequent
+ shapes. The transformation consists of (in order) a non-uniform scale 
+about an arbitrary center point, a rotation about that same point, and a
+ translation. This allows a user to change the size and position of the 
+textures on shapes. 
+</p><pre>FILE FORMAT/DEFAULTS
+     Texture2Transform {
+          translation  0 0      # SFVec2f
+          rotation     0        # SFFloat
+          scaleFactor  1 1      # SFVec2f
+          center       0 0      # SFVec2f
+     }
+</pre>
+<h3><a name="TextureCoordinate2">TextureCoordinate2</a></h3>
+<p>This node defines a set of 2D coordinates to be used to map textures 
+to the vertices of subsequent PointSet, IndexedLineSet, or 
+IndexedFaceSet objects. It replaces the current texture coordinates in 
+the rendering state for the shapes to use. 
+</p><p>Texture coordinates range from 0 to 1 across the texture. The 
+horizontal coordinate, called S, is specified first, followed by the 
+vertical coordinate, T. 
+</p><pre>FILE FORMAT/DEFAULTS
+     TextureCoordinate2 {
+          point  0 0    # MFVec2f
+     }
+</pre>
+<h3><a name="Transform"><b>MODIFIED 1.1 -</b></a> Transform</h3>
+<p>This node defines a geometric 3D transformation consisting of (in 
+order) a (possibly) non-uniform scale about an arbitrary point, a 
+rotation about an arbitrary point and axis, and a translation. The 
+transform node 
+</p><pre>Transform {
+    translation T1
+    rotation R1
+    scaleFactor S
+    scaleOrientation R2
+    center T2
+  }
+</pre>
+<p>is equivalent to the sequence: 
+</p><pre>Translation { translation T1 }
+Translation { translation T2 }
+Rotation { rotation R1 }
+Rotation { rotation R2 }
+Scale { scaleFactor S }
+Rotation { rotation -R2 }
+Translation { translation -T2 }
+</pre>
+<p>
+</p><pre>FILE FORMAT/DEFAULTS
+     Transform {
+          translation       0 0 0       # <b>input</b> SFVec3f
+          rotation          0 0 1  0    # <b>input </b>SFRotation
+          scaleFactor       1 1 1       # <b>input </b>SFVec3f
+          scaleOrientation  0 0 1  0    # <b>input </b>SFRotation
+          center            0 0 0       # <b>input </b>SFVec3f
+     }
+</pre>
+<h3><a name="Transform"><b>MODIFIED 1.1 -</b></a><a name="Translation">Translation</a></h3>
+<p>This node defines a translation by a 3D vector. 
+</p><pre>FILE FORMAT/DEFAULTS
+     Translation {
+          translation  0 0 0    # <b>input </b>SFVec3f
+     }
+</pre>
+<h3><a name="WWWAnchor">WWWAnchor</a></h3>
+<p>The WWWAnchor group node loads a new scene into a VRML browser when 
+one of its children is chosen. Exactly how a user "chooses" a child of 
+the WWWAnchor is up to the VRML browser; typically, clicking on one of 
+its children with the mouse will result in the new scene replacing the 
+current scene. A WWWAnchor with an empty ("") name does nothing when its
+ children are chosen. The name is an arbitrary URL. 
+</p><p>If multiple URLs are presented, this expresses a descending order of
+preference, a browser may display a lower preference URL if the higher order
+file is not available. See the section on <a href="#URN">URN</a>s.
+</p><p>WWWAnchor behaves like a Separator, pushing the traversal state before traversing its children and popping it afterwards. 
+</p><p>The description field in the WWWAnchor allows for a friendly 
+prompt to be displayed as an alternative to the URL in the name field. 
+Ideally, browsers will allow the user to choose the description, the URL
+ or both to be displayed for a candidate WWWAnchor. 
+</p><p>The WWWAnchor's map field is an enumerated value that can be 
+either NONE (the default) or POINT. If it is POINT then the object-space
+ coordinates of the point on the object the user chose will be added to 
+the URL in the name field, with the syntax "?x,y,z". 
+</p><p>A WWWAnchor may be used to take the viewer to a particular <em>viewpoint</em>
+ in a virtual world by specifying a URL ending with "#cameraName", where
+ "cameraName" is the name of a camera defined in the world. For example:
+ 
+</p><pre>WWWAnchor {
+    name "http://www.school.edu/vrml/someScene.wrl#OverView"
+    Cube { } 
+}
+</pre>
+<p>specifies an anchor that puts the viewer in the "someScene" world 
+looking from the camera named "OverView" when the Cube is chosen. If no 
+world is specified, then the current scene is implied; for example: 
+</p><pre>WWWAnchor {
+    name "#Doorway"
+    Sphere { }
+}
+</pre>
+<p>will take the viewer to the viewpoint defined by the "Doorway" camera in the current world when the sphere is chosen. 
+</p><pre>MAP ENUM
+     NONE  Do not add information to the URL
+     POINT Add object-space coordinates to URL
+FILE FORMAT/DEFAULTS
+     WWWAnchor {
+          name ""        # MFString
+          description "" # SFString
+          map NONE       # SFEnum
+     }
+</pre>
+<h3><a name="WWWInline">WWWInline</a></h3>
+<p>The WWWInline node reads its children from anywhere in the World Wide
+ Web. Exactly when its children are read is not defined; reading the 
+children may be delayed until the WWWInline is actually displayed. A 
+WWWInline with an empty name does nothing. The name is an arbitrary URL.
+ 
+</p><p>The effect of referring to a non-VRML URL in a WWWInline node is undefined. 
+</p><p>If multiple URL's are specified then this expresses a descending order
+of preference, a browser may display a URL for a lower preference file
+while it is obtaining, or if it is unable to obtain, the higher preference file.
+See also the section on <a href="#URN">URN</a>s.
+</p><p>If the WWWInline's bboxSize field specifies a non-empty bounding 
+box (a bounding box is non-empty if at least one of its dimensions is 
+greater than zero), then the WWWInline's object-space bounding box is 
+specified by its bboxSize and bboxCenter fields. This allows an 
+implementation to quickly determine whether or not the contents of the 
+WWWInline might be visible. This is an optimization hint only; if the 
+true bounding box of the contents of the WWWInline is different from the
+ specified bounding box results will be undefined. 
+</p><pre>FILE FORMAT/DEFAULTS
+     WWWInline {
+          name ""               # MFString
+          bboxSize 0 0 0        # SFVec3f
+          bboxCenter 0 0 0      # SFVec3f
+     }
+</pre>
+<hr>
+<h2>NEW - New Nodes for 1.1</h2>
+<h3><a name="Background">Background</a></h3>
+<p>By providing a shaded ground plane, sky and scenic, textures, this 
+node can be used to add substance to the void surrounding the scene. 
+Only the first background node encountered is used, and it must be 
+specified in the main file. 
+</p><p>If groundColors are specified, then a ground plane is added to 
+the scenegraph at Y = 0 in global coordinate space. If more than one 
+color is specified, then the ground color is interpolates between colors
+ from 0 degrees downward to 90 degrees at the horizon. Similarly, 
+skyColors interpolate from the 90 degree mark to 180 degrees overhead. 
+
+</p><p>A scene may describe a more precise atmosphere and include 
+background scenery in the scenery field. 
+This field is used to add a texture to the scene that is conceptually 
+distant 
+enough that it does not translate with respect to the eyepoint. The 
+texture should be mapped wrapped around a cylinder so that it runs all 
+the way around from Y=0 in global coordinate space. 
+</p><p>If multiple URL's are specified then this expresses a descending order
+of preference, a browser may display a URL for a lower preference file
+while it is obtaining, or if it is unable to obtain, the higher preference file.
+See also the section on <a href="#URN">URN</a>s.
+
+</p><pre>Background{
+    groundColors [ ]       # MFColor
+       skyColors [ 0 0 0 ] # MFColor
+       scenery ""          # MFString    
+}
+</pre>
+<p><i>Pros:</i> 
+</p><ul>
+<li><i>Resolves issue that most current scenes hover in black space.</i> 
+</li><li><i>Implementation should make ground plane less expensive than general case.</i> 
+</li><li><i>Geometry will provide good depth queue as closer objects move relative to the user.</i> 
+</li><li><i>Geometry assumes nothing of what environment the author wants to portray.</i> 
+</li><li><i>Geometry being part of scenegraph supports behaviors.</i> 
+</li><li><i>Global coordinate space optimizes rendering of scenery.</i> 
+</li></ul>
+<p><i>Issues:</i> 
+</p><ul>
+<li><i>Global coordinates speed up implementation. If arbitrary ground 
+plane is absolutely needed, consider a rotation and elevation to orient 
+the ground plane in world space.</i> 
+</li><li><i>There has been discussion of supporting different mapping 
+for the background texture - cylindrical, spherical, hemisphere. However
+ current renderers do not support this functionality and simulating it 
+would be an unacceptable performance hit.</i>
+</li></ul>
+<h3><a name="CollideStyle">CollideStyle</a></h3>
+<p>This node specifies to a browser what objects in the scene should not
+ be navigated through. It is useful to keep viewers from walking through
+ walls in a building, for instance. Collision response is browser 
+defined. For example, when the camera comes sufficiently close to an 
+object to register as a collision, the browser may have the camera 
+bounce off the object, or simply come to a stop. 
+</p><p>Since collision with arbitrarily complex geometry is 
+computationally expensive, one method of increasing efficiency is to be 
+able to define an alternate geometry that could serve as a proxy for 
+colliding against. This collision proxy could be as crude as a simple 
+bounding box or bounding sphere, or could be more spohisticated (for 
+example, the convex hull of a polyhedron). This proxy volume is used 
+ONLY to calculate the collision with the viewer and is NOT used for 
+trivial rejection during the computation process. Efficient trivial 
+rejection can be done using hierarchical bounding boxes or some other 
+technique, and its implementation is not specified in the language. 
+</p><p>VRML represents collision proxy volumes for objects through the 
+CollideStyle property node. A CollideStyle node sets the collision proxy
+ volume for all the geometry in the scene graph that follows it upto the
+ next CollideStyle node. Like all other properties, the current 
+collision style would be saved and restored by Separators. Like all 
+other shapes, the geometry is defined in object space and is transformed
+ by the current modeling transformation. 
+</p><p>CollideStyle contains two fields: collide (a boolean) and proxy 
+(a node). If the value of the collide field is FALSE, then no collision 
+is performed with the affected geometry. If the value of the collide 
+field is TRUE, then the proxy field defines the geometry against which 
+collision testing is done. If the proxy value is undefined or NULL, the 
+actual geometry is collided against. If the proxy value is not NULL, 
+then it contains the geometry that is used in collision computations. 
+</p><pre>FILE FORMAT/DEFAULTS
+     CollideStyle {
+          collide       FALSE   # SFBool
+          proxy         NULL    # SFNode
+     }
+</pre>
+<p><i>Notes/Issues:</i> 
+</p><ul>
+<li><b>Open issue - no consensus on what collides with object</b> <i>The
+ viewer must have some geometry to collide against objects in the scene.
+ In the future, this would be an avatar geometry. For 1.1, the 
+collisionRadius fields of the NavigationInfo node is used.</i> 
+</li></ul>
+<h3><a name="DirectedSound">DirectedSound</a></h3>
+<b>TODO: Bill ro write up minor changes; loop/start/pause probably gone
+        <ul>
+        <li>Sound formats AU, AIFF, WAV,
+        </li><li>Note implication that transport system will tell you the type of the file
+        </li></ul>
+</b>
+<p>This node defines a sound source that is located at a specific 3D 
+location and that emits primarily along a given direction. It adds 
+directionality to the <a href="#PointSound">PointSound</a> node. Besides
+ the direction vector, there are minAngle and maxAngle fields that 
+specify how the intensity of the sound changes with direction. Within 
+the cone whose apex is the sound location, whose axis is the direction 
+vector, and whose angle is specified by minAngle, the DirectedSound 
+behaves exactly like a PointSound. Moving along a constant radius (from 
+the source location) from the surface of this cone to the surface of the
+ similar cone whose angle is maxAngle, the intensity falls off to zero. 
+</p><p>See the <a href="#PointSound">PointSound</a> node for a description of all other fields. 
+</p><pre>FILE FORMAT/DEFAULTS
+     DirectedSound {
+          name              ""         # MFString
+          description       ""         # SFString
+          intensity         1          # SFFloat
+          location          0 0 0      # SFVec3f
+          direction         0 0 1      # SFVec3f
+          minRange          10         # SFFloat
+          maxRange          10         # SFFloat
+          minAngle          0.785398   # SFFloat
+          maxAngle          0.785398   # SFFloat
+          loop              FALSE      # SFBool
+          start             0          # input SFTime
+          pause             0          # input SFTime
+     }
+</pre>
+<h3><a name="ElevationGrid">ElevationGrid</a></h3>
+<b>VAG: Accepted - no changes</b>
+<p>This node creates a rectangular grid with varying heights, especially
+ useful in modeling terrain and other space creating surfaces. The model
+ is specified primarily by a scalar array of height values that describe
+ the height of the surface above each point of the grid. 
+</p><p>The verticesPerRow and verticesPerColumn fields define the number
+ of grid points in the Z and X directions, respectively, defining a 
+surface that contains (verticesPerRow-1) x (verticesPerColumn-1) 
+rectangles. 
+</p><p>The vertex locations for the rectangles are defined by the height
+ field and the gridStep field. The vertex corresponding to the i <i>th</i> row and j <i>th</i>
+ column is placed at (gridStep[0] * j, heights[i*verticesPerColumn+j], 
+gridStep[1] * i) in object space, where 0&lt;=i&lt;=verticesPerRow, 
+0&lt;=j&lt;=verticesPerColumn. 
+</p><p>The height field is an array of scalar values representing the 
+height above the grid for each vertex. The height values are stored so 
+that row 0 is first, followed by rows 1, 2, ... verticesPerRow. Within 
+each row, the height values are stored so that column 0 is first, 
+followed by columns 1, 2, ... verticesPerColumn. The rows have fixed Z 
+values, with row 0 having the smallest Z value. The columns have fixed X
+ values, with column 0 having the smallest X value. 
+</p><p>The default texture coordinates will range from [0,0] at the 
+first vertex to [1,1] at the far side of the diagonal. The S texture 
+coordinate will be aligned with X and the T texture coordinate with Z. 
+</p><p>Treatment of the current material and normal binding is as 
+follows: The PER_PART binding specifies a material or normal for each 
+row of the mesh. The PER_FACE binding specifies a material or normal for
+ each quadrilateral. The _INDEXED bindings are equivalent to their 
+non-indexed counterparts. The default material binding is OVERALL. The 
+default normal binding is PER_VERTEX. 
+</p><p>If any normals (or materials) are specified, it is assumed you 
+provide the correct number of them, as indicated by the binding. You 
+will see unexpected results if you specify fewer normals (or materials) 
+than the shape requires. If no normals are specified, they will be 
+generated automatically. 
+</p><p>By default, the rectangles are defined with a counterclockwise 
+ordering, so the Y component of the normal is positive. Setting the 
+vertexOrdering field of the current ShapeHints node to CLOCKWISE 
+reverses the normal direction. Backface culling can be turned on as for 
+all shapes, by defining a ShapeHints node prior to the ElevationGrid 
+node with the vertexOrdering field set to CLOCKWISE or COUNTERCLOCKWISE 
+and the shapeType field set to SOLID. 
+</p><pre>FILE FORMAT/DEFAULTS
+     ElevationGrid {
+          verticesPerRow 0    # SFLong
+          verticesPerColumn 0 # SFLong
+          gridStep []         # SFVec2f
+          height []           # MFFloat
+     }
+</pre>
+<p><i>Pros:</i> 
+</p><ul>
+<li><i>This is an extremely compact way to represent geometry (key for transmission times).</i> 
+</li><li><i>There is a lot of data available that can be easily converted into this form (USGS Digital Elevation Models come to mind)</i> 
+</li><li><i>Easy for browsers to do automatic LOD degradation to keep performance up.</i> 
+</li></ul>
+<h3><a name="Environment">Environment</a></h3>
+<p>This node describes global environmental attributes such as ambient lighting, light attenuation, and fog. 
+</p><p>Ambient lighting is the amount of extra light impinging on each 
+surface point. It is specified as an ambientColor and ambientIntensity. 
+Light attenuation affects all subsequent lights in a scene. It is a 
+quadratic function of distance from a light source to a surface point. 
+The three coefficients are specified in the attenuation field. 
+Attenuation works only for light sources with a fixed location, such as 
+point and spot lights. The ambient lighting and attenuation calculations
+ are defined in the OpenGL lighting model. For a description of these 
+and other lighting calculations, see <a href="http://www.sgi.com/Technology/openGL/glspec/node31.html">the description of lighting operations in the OpenGL Specification.</a> 
+</p><p>Fog has one of four types, each of which blends each surface 
+point with the specified fog color. Each type interprets the visibility 
+field to be the distance at which fog totally obscures objects. A 
+visibility value of 0 (the default) causes the Environment node to set 
+up fog so that the visibility is the distance to the far clipping plane 
+of the current camera. For more details on the fog calculations, see <a href="http://www.sgi.com/Technology/openGL/glspec/node80.html">the description of fog in the OpenGL Specification</a>. 
+</p><pre>FOGTYPE
+     NONE   No fog
+     HAZE   Linear increase in opacity with distance
+     FOG    Exponential increase in opacity
+     SMOKE  Exponential squared increase in opacity
+
+FILE FORMAT/DEFAULTS
+     Environment {
+          ambientIntensity  0.2        # SFFloat
+          ambientColor      1 1 1      # SFColor
+          attenuation       0 0 1      # SFVec3f
+          fogType           NONE       # SFEnum
+          fogColor          1 1 1      # SFColor
+          fogVisibility     0          # SFFloat
+     }
+</pre>
+<h3><a name="GeneralizedCylinder">GeneralCylinder</a></h3>
+<b>TODO: Gavin to edit, minor changes</b>
+<p>This is a node for parametrically describing numerous families of 
+shapes: extrusions (along an axis or an arbitrary path), surfaces of 
+revolution, and bend/twist/taper objects. 
+</p><p>General Cylinders are defined by four piecewise linear curves: 
+crossSection, profile, spine and twist. Shapes are constructed as 
+follows. The crossSection is a 2D curve that is scaled, extruded through
+ space, and twisted by the other curves. First, the crossSection is 
+extruded and scaled along the path of the profile curve. Second, the 
+shape is bent and stretched so that its central axis aligns with the 
+spine curve. Finally, the shape is twisted about the spine by angles (in
+ radians) given by the twist curve. The twist curve is a function of 
+angle at given parametric distances along the spine. 
+</p><p>Surfaces of Revolution: If the crossSection is a circle and the 
+spine is straight, then the General Cylinder will be equivalent to a 
+surface of revolution, where the General Cylinder profile curve maps 
+directly to that of the surface of revolution. 
+</p><p>Cookie-Cutter Extrusions: If both the profile and spine are 
+straight, then the crossSection acts like a cookie-cutter, with the 
+thickness of the cookie equal to the length of the spine. 
+</p><p>Bend/Twist/Taper objects: Shapes like this are the result of 
+utilizing all four curves. The spine curve bends the shape, the twist 
+curve twists it, and the profile curve tapers it. 
+</p><p>Planar TOP and BOTTOM surfaces will be generated when the 
+crossSection is closed (i.e., when the first and last points of the 
+crossSection are equal). However, if the profile is also closed, the TOP
+ and BOTTOM are not generated; this is because a closed crossSection 
+extruded along a closed profile creates a shape that is closed without 
+the addition of TOP and BOTTOM parts. 
+</p><p>The parts field determines which parts are rendered. The notion 
+of BOTTOM versus TOP is determined by the profile curve. The end of the 
+profile curve with a lesser y value is the BOTTOM end. 
+</p><p>The cone is transformed by the current cumulative transformation 
+and is drawn with the current texture and material. The first material 
+in the state is used for the entire GeneralCylinder, regardless of the 
+current material binding. 
+</p><p>GeneralCylinder automatically generates its own normals. 
+NormalBinding in the state is ignored. Orientation of the normals is 
+determined by the vertex ordering of the triangles generated by 
+GeneralCylinder. The vertex ordering is in turn determined by the 
+crossSection curve. If the crossSection is drawn counterclockwise, then 
+the polygons will have counterclockwise ordering when viewed from the 
+'outside' of the shape (and vice versa for clockwise ordered 
+crossSections). The General Cylinder responds to the fields of the 
+ShapeHints node the same way as IndexedFaceSet. 
+</p><p>Texture coordinates are automatically generated by General 
+Cylinders. These will map textures like the label on a soup can: the 
+coordinates will range in the u direction from 0 to 1 along the 
+crossSection curve and in the v direction from 0 to 1 along the spine. 
+If the TOP and/or BOTTOM exist, textures map onto them in a planar 
+fashion. 
+</p><p>When a texture is applied to a General Cylinder, it is applied 
+differently to the sides, top, and bottom. On the sides, the texture 
+wraps [0,1] of the u-direction of the texture along the crossSection 
+from first point to last; it wraps [0,1] of the v-direction of the 
+texture along the direction of the spine, from first point to last. When
+ the crossSection is closed, the texture has a seam that follows the 
+line traced by the crossSection's start/end point as it travels along 
+the spine. For the top and bottom, the crossSection is cut out of the 
+texture square and applied to the top or bottom circle. The top and 
+bottom textures' u and v directions correspond to the x and z directions
+ in which the crossSection coordinates are defined. 
+</p><pre>PARTS
+     SIDES   The extruded surface part
+     TOP     The top cross sectional face
+     BOTTOM  The bottom cross sectional face
+     ALL     All parts
+FILE FORMAT/DEFAULTS
+     GeneralCylinder {
+          spine [ 0 0 0, 0 1 0 ] # MFVec3f
+          crossSection [ -1 1, -1 -1, 1 -1, 1 1 ] # MFVec2f
+          profile [ 1 -1, 1 1 ] # MFVec2f
+          twist [ 0 -1, 0 1 ] # MFVec2f
+          parts   ALL   # SFBitMask
+     }
+</pre>
+<p><i>Pros:</i> 
+</p><ul>
+<li><i>This is an extremely compact way to represent geometry (key for transmission times).</i> 
+</li><li><i>Easy for browsers to do automatic LOD degradation to keep performance up.</i> 
+</li></ul>
+<h3><a name="NavigationInfo">NavigationInfo</a></h3>
+
+<p>This node contains information for the viewer through several fields: type, speed, collisionRadius, and headlight. 
+</p><p>The type field specifies a navigation paradigm to use. The types 
+that all VRML viewers should support are "walk", "examiner", "fly", and 
+"none". A "walk" viewer would constrain the user to a plane (x-z), 
+suitable for architectural walkthroughs. An "examiner" viewer would let 
+the user tumble the entire scene, suitable for examining single objects.
+ A "fly" viewer would provide six degree of freedom movement. The "none"
+ choice removes all viewer controls, forcing the user to navigate using 
+only WWWAnchors linked to viewpoints. The type field is multi-valued so 
+that authors can specify fallbacks in case a browser does not understand
+ a given type. 
+</p><p>The speed is the rate at which the viewer travels through a scene
+ in meters per second. Since viewers may provide mechanisms to travel 
+faster or slower, this should be the default or average speed of the 
+viewer. In an examiner viewer, this only makes sense for panning and 
+dollying - it should have no affect on the rotation speed. 
+</p><p><b>Open issue - no consensus on collisionRadius - see CollideStyle node</b>
+</p><p>The collisionRadius field specifies the smallest allowable 
+distance between the camera position and any collision object (as 
+specified by <a href="#CollideStyle">CollideStyle</a>) before a collision is detected.
+</p><p><b>Open issue - no consensus on headlight field, relates to discussion on Avatars</b> 
+</p><p>The headlight field specifies whether a browser should turn a 
+headlight on. A headlight is a directional light which always points in 
+the direction the camera is looking. This effect can be had by adding a 
+DirectionalLight in front of a Camera in the scene. Instead, setting 
+this field to TRUE allows the browser to provide a headlight possibly 
+with user interface controls to turn it on and off. Scenes that enlist 
+precomputed lighting (e.g. radiosity solutions) can specify the 
+headlight off here. The headlight should have intensity 1, color 1 1 1, 
+and direction 0 0 -1. The effects of specifying headlight on in a 
+NavigationInfo node are equivalent to an author adding a default 
+DirectionalLight in front of a camera in the scene, except that using 
+the NavigationInfo field allows a browser to provide user interface 
+controlling the light. 
+</p><pre>FILE FORMAT/DEFAULTS
+     NavigationInfo {
+          type             "walk"      # <b>input</b> MFString
+          speed            1.0         # <b>input</b> SFFloat
+          collisionRadius  1.0         # SFFloat
+          headlight        TRUE        # SFBool
+     }
+</pre>
+<p><i>Notes/Issues:</i> 
+</p><ul>
+<li><i>The following fields may be dynamic: speed, height, collisionRadius, worldUp</i> 
+</li><li><i>How is the "knee cap" height specified? That is, at what 
+height does the browser climb something (like stairs) as opposed to 
+collide with it (like a table)? This is currently browser defined 
+(probably as some percentage of the collisionRadius).</i> 
+</li><li><i>What happens when the user navigates the viewer "off a 
+cliff" - does the browser hover, drop to terrain instantaneously, or 
+fall at some rate? Forces and masses could come into play here, but then
+ browsers would be doing simulations which is beyond the scope of VRML 
+1.1.</i> 
+</li><li><i>Currently, most browsers automatically turn a headlight on. 
+WebSpace only turns a headlight on if there are no lights in the scene. 
+This means scenes are rendered with different color saturations in 
+different browsers. Adding a headlight field forces browsers to at add 
+headlights consistently.</i> 
+</li></ul>
+<h3><a name="PointSound">PointSound</a></h3>
+<b>TODO: Bill to edit, minor edits</b>
+<p>This node defines a sound source located at a specific 3D location. 
+The name field specifies a URL from which the sound is read. 
+Implementations should support at least the ??? ??? sound file formats. 
+Streaming sound files may be supported by browsers; otherwise, sounds 
+should be loaded when the sound node is loaded. Browsers may limit the 
+maximum number of sounds that can be played simultaneously. 
+</p><p>If multiple URL's are specified then this expresses a descending order
+of preference, a browser may use a URL for a lower preference file
+while it is obtaining, or if it is unable to obtain, the higher preference file.
+See also the section on <a href="#URN">URN</a>s.
+</p><p>The description field is a textual description of the sound, 
+which may be displayed in addition to or in place of playing the sound. 
+</p><p>The intensity field adjusts the volume of each sound source; an 
+intensity of 0 is silence and an intensity of 1 is whatever intensity is
+ contained in the sound file. 
+</p><p>The sound source has a radius specified by the minRadius field. 
+When the viewpoint is within this radius, the sound's intensity (volume)
+ is constant, as indicated by the intensity field. Outside the 
+minRadius, the intensity drops off to zero at a distance of maxRadius 
+from the source location. If the two radii are equal, the drop-off is 
+sharp and sudden. Otherwise, the drop-off should be proportional to the 
+square of the distance of the viewpoint from the minRadius. 
+</p><p>Browsers may also support spatial localizations of sound. 
+However, within minRadius, localization should not occur, so intensity 
+is constant in all channels. Between minRadius and maxRadius, the sound 
+location should be the point on the minRadius sphere that is closest to 
+the current viewpoint. This ensures a smooth change in location when the
+ viewpoint leaves the minRadius sphere. Note also that an ambient sound 
+can therefore be created by using a large minRadius value. 
+</p><p>The loop field specifies whether or not the sound is constantly repeated. By default, the sound is played only once. 
+</p><p>The start input specifies the time at which the sound should 
+start playing. The pause input may be used to make a sound stop playing 
+some time after it has started. If the pause time is less than the start
+ time then it is ignored. Changing the start input while the sound is 
+playing will result in undefined behavior; however, changing the start 
+input after the sound is paused is well-defined and useful. If the sound
+ is not looped, the length of time the sound plays is determined by the 
+sound file read, and is not specified in the VRML file. 
+</p><p>A sound's location in the scene graph determines its spatial 
+location (the sound's location is transformed by the current 
+transformation) and whether or not it can be heard. A sound can only be 
+heard while it is part of the traversed scene; sound nodes underneath 
+LOD nodes or Switch nodes will not be audible unless they are traversed.
+ If it is later part of the traversal again, the sound picks up where it
+ would have been had it been playing continuously. 
+</p><pre>FILE FORMAT/DEFAULTS
+     PointSound {
+          name              ""         # MFString
+          description       ""         # SFString
+          intensity         1          # SFFloat
+          location          0 0 0      # SFVec3f
+          minRange          10         # SFFloat
+          maxRange          10         # SFFloat
+          loop              FALSE      # SFBool
+          start             0          # input SFTime
+          pause             0          # input SFTime
+     }
+</pre>
+<dl>
+<dt><i>Issues:</i> 
+</dt><dd>
+</dd></dl>
+<ul>
+<li><i>What sound file formats do we want to support?</i> 
+</li><li><i>Supporting real-time effects such as frequency modulation, 
+reverb, etc. requires too much CPU performance and is beyond the scope 
+of this spec. Advanced browsers can always define more complicated sound
+ sources and can use the IsA mechanism to maintain compatibility with 
+less capable browsers.</i> 
+</li><li><i>The scene graph semantics chosen allow sounds to be easily 
+attached to objects; putting an object underneath a Switch node is the 
+way to make it (temporarily) disappear from the world. If the sound is 
+part of the object, the sound should also disappear when this happens.</i> 
+</li></ul>
+<h3><a name="DocumentInfo">WorldInfo</a></h3>
+<b>Open issue - tied into pseudo node proposal, current proposal at <a href="http://www.mitra.biz/vrml/vrml2/vrml-pseudo.html">http:</a><a href="http://www.mitra.biz/vrml/vrml2/vrml-behaviors.html">//www.mitra.biz/vrml/vrml2/</a><a href="http://www.mitra.biz/vrml/vrml2/vrml-pseudo.html">vrml-pseudo.html</a>, 
+this is probably OK. </b> 
+<p>This node contains information about the world. The title of the 
+world is stored in its own field, allowing browsers to display it for 
+instance in their window border. Any other information about the world 
+can be stored in the info field, for instance the scene author, 
+copyright information, and public domain information. 
+</p><pre>FILE FORMAT/DEFAULTS
+     WorldInfo {
+          title         ""      # SFString
+          info          ""      # MFString
+     }
+</pre>
+<h2>NEW for 1.1 - <img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="Prototyping">Prototyping</a></h2>
+<p>Prototyping is a mechanism that allows the set of node types to be extended
+from within a VRML file. It allows the encapsulation and parameterization
+of geometry, behaviors, or both.</p>
+<h1>PROTO</h1>
+<p>A prototype is defined using the <b>PROTO</b> keyword, as follows: </p>
+<pre><b>PROTO</b> <i>typename</i> <b>[</b> <b>eventIn</b> <i>fieldtypename</i> <i>name</i>
+<b>                    IS</b> <i>nodename</i><b>.</b><i>eventInName nodename.eventInName ... </i><b>,</b>
+                 <b>eventOut</b> <i>fieldtypename</i> <i>name</i>
+                    <b>IS</b> <i>nodename</i><b>.</b><i>eventOutName nodename</i><b>.</b><i>eventOutName ...</i><b>,</b>
+                 <b>field</b> <i>fieldtypename</i> <i>name </i><b>IS</b> <i>nodename</i><b>.</b><i>fieldName</i><b>,</b>
+                 ... <b>]</b>
+<b>      { </b><i>node </i><b>{</b><i> ... </i><b>} </b><i>Logic and/or ROUTES </i><b>}</b>
+</pre>
+<p>A prototype is NOT a node; it merely defines a prototype (named '<i>typename</i>') that can be used later in the same file as if it were a built-in node.
+The implementation of the prototype is contained in the scene graph rooted
+by <i>node</i>. That node may be followed by Logic and/or ROUTE declarations, as necessary
+to implement the prototype.</p>
+<p>The eventIn and eventOut declarations export events inside the scene graph
+given by <i>node</i>. Specifying the type of each event in the prototype is intended to prevent
+errors when the implementation of prototypes are changed, and to provide
+consistency with external prototypes. Specifying a name for each event allows
+several events with the same name to be exported with unique names.</p>
+<p>Fields hold the persistent state of VRML objects. Allowing a prototype to
+export fields allows the initial state of a prototyped object to be specified
+by prototype instances.</p>
+<p>The node names specified in the event and field declarations must be DEF'ed
+inside the prototype implementation. The first node DEF'ed in lexical (not
+traversal) order will be exported. It is an error (and results are undefined)
+if there is no node with the given name, or the first node found does not
+contain a field of the appropriate type with the given field name. </p>
+<p>Prototype declarations have file scope, and prototype names must be unique
+in any given file.</p>
+<p>Only nodes DEF'ed inside the prototype may be USE'ed inside the prototype,
+and nodes DEF'ed inside the prototype are not visible (may note be USE'ed)
+outside the prototype. </p>
+<p>A prototype is instantiated as if <i>typename</i> were a built-in node. A prototype instance may be DEF'ed or USE'ed. For
+example, a simple chair with variable colors for the leg and seat might
+be prototyped as: </p>
+<pre>PROTO TwoColorChair [ field SFColor legColor IS leg.diffuseColor,
+        field SFColor seatColor IS seat.diffuseColor ] {
+     Separator {
+        Separator {
+            DEF seat Material { diffuseColor .6 .6 .1 }
+            Cube { ... }
+        }
+        Separator {
+            Transform { ... }
+            DEF leg Material { diffuseColor .8 .4 .7 }
+            Cylinder { ... }
+        }
+    } # End of root Separator
+} # End of prototype
+# Prototype is now defined.  Can be used like:
+DEF redGreenChair TwoColorChair { legColor 1 0 0  seatColor 0 1 0 }
+
+USE redGreenChair # Regular DEF/USE rules apply
+</pre>
+<p><i>We're making distinctions between fields, which can be given an initial
+value but cannot be changed except by the node that they're contained in,
+and events, which (at least for the built-in nodes) are requests to change
+fields. So, if we want our TwoColorChair to have colors that can be changed,
+we'd need to expose the leg.setDiffuseColor 'eventIn' and seat.diffuseColor
+'eventIn' events. All of which may make for confusing and wordy prototype
+declarations. Are there ever cases where you might want to ONLY allow initial
+values to be set, and NOT allow them to be changed later?</i></p>
+<p><i>Note: PROTO sort of gives people their non-instantiating DEF: PROTO foo
+[] Cube { } is roughly equal to DEF foo Cube { }, except that foo is now
+a type name instead of an instance name (and you say foo { } to get another
+cube instead of USE foo). Smart implementations will automatically share
+the unchanging stuff in prototype implementations, so the end result will
+be the same.</i> </p>
+<h2><a name="NodeReference">NodeReference</a></h2>
+<p>What if we wanted a prototype that could be instantiated with arbitrary
+geometry? For example, we might want to define a prototype chair that allowed
+the geometry for the legs to be defined, with the default (perhaps) being
+a simple cylinder.</p>
+<p>VRML 1.1 will include the SFNode field type-- a field that contains a pointer
+to a node. Using SFNode, it is easy to write the first part of the PROTO
+definition:</p>
+<pre>PROTO Chair [ field SFNode legGeometry IS
+</pre>
+<p>... but then we get stuck when we try to define the IS part of the prototype.
+We need some way of taking an SFNode field and inserting it into the scene.
+This can be accomplished with a new node, the NodeReference node:</p>
+<pre>NodeReference {
+    node NULL  # SFNode field  (NULL is valid syntax for SFNode)
+    # eventIn SFNode setNode
+    # eventOut SFNode nodeChanged
+}
+</pre>
+<p>Functionally, NodeReference is a "do-nothing" node-- it just behaves exactly
+like whatever 'nodeToUse' points to (unless nodeToUse is NULL, of course,
+in which case NodeReference does nothing). For example, this would be a
+verbose way to add a Sphere to the scene:</p>
+<pre>NodeReference { nodeToUse Sphere { } }
+</pre>
+<p>NodeReference is only interesting if its nodeToUse field is exposed in a
+prototype (or it receives a nodeToUse event). So, for example, our Chair
+with arbitrary leg geometry (with a Cylinder default if none is specified)
+can be filled out as:</p>
+<pre>PROTO Chair [ field SFNode legGeometry  IS  NR.nodeToUse ] {
+     Separator {
+        Separator {
+            Transform { ... }
+            DEF NR NodeReference { nodeToUse Cylinder { } }
+        }
+        Separator {
+            Transform { ... }
+            USE NR
+        }
+        ... would re-use leg with a USE NR, would have
+        geometry for seat/back/etc...
+    }
+}
+</pre>
+<p>Using the Chair prototype would look like:</p>
+<pre>Chair {
+    legGeometry Separator { Coordinate3/IndexedFaceSet/etc }
+}
+</pre>
+<p>It might also make sense to share the same geometry between several prototype
+instances; for example, you might do:</p>
+<pre>Chair {
+    legGeometry DEF LEG Separator { Coordinate3/IndexedFaceSet/etc }
+}
+... somewhere later in scene...
+Chair {
+    legGeometry USE LEG
+}
+</pre>
+<p>Note that SFNode fields follow the regular DEF/USE rules, and that SFNode
+fields contain <b>a pointer to</b> a node; using DEF/USE an SFNode field may contain a pointer to a node that
+is also a child of some node in the scene graph, is pointed to by some other
+SFNode field, etc.</p>
+<p><i>The NodeReference node has nice, clean semantics, and allows a lot of flexibility
+and power for defining prototypes. It also has some nice implementation
+side effects:</i></p>
+<p><i>Browsers that want to maintain a different internal representation for the
+scene graph can implement NodeReference so that nodeToUse is read and the
+different internal representation is generated. Optimizations might also
+be performed at the same time:</i></p>
+<p><i>Browsers that optimize scene graphs can implement NodeReference such that
+whenever nodeToUse changes an optimized scene is created. When rendering,
+the optimized scene will be used instead of the unotimized scene.</i></p>
+<p><i>A really smart browser will figure out that nobody is using the unoptimized
+scene and may free it from memory.</i></p>
+<p><i>Something else to think about: should a prototype be allowed to expose the
+fields or events of an SFNode that is passed in? For example:</i></p>
+<pre><i>PROTO Foo [ field SFNode transform      IS NR.nodeToUse,</i>
+<i>            eventIn SFVec3f setPosition IS NR.nodeToUse.translation ]</i>
+<i>Separator { DEF NR NodeReference { nodeToUse Transform { } } Cube { } }</i>
+</pre>
+<p><i>This could be pretty powerful, but might also be painful to implement, since
+the type-checking would have to be done at run-time when NR.nodeToUse changed.</i></p>
+<h1><a name="EXTERNPROTO">EXTERNPROTO</a></h1>
+<p>A second form of the prototype syntax allows prototypes to be defined in
+external files: </p>
+<pre><b>EXTERNPROTO</b> <i>typename</i> <b>[</b> <b>eventIn</b> <i>fieldtypename</i> <i>name,</i>
+                       <b>eventOut</b> <i>fieldtypename</i> <i>name,</i>
+                       <b>field</b> <i>fieldtypename</i><b>,</b>
+<i>                       ... </i><b>]</b>
+            <i>URL <u>or</u> </i><b>[</b><i> URL, URL, ... </i><b>]</b>
+</pre>
+<p>In this case, the implementation of the prototype is found in the given
+URL. The file pointed to by that URL must contain ONLY a single prototype
+implementation (using <b>PROTO</b>). That prototype is then given the name <i>typename</i> in this file's scope (allowing possible naming clashes to be avoided).
+It is an error if the eventIn/eventOut declaration in the <b>EXTERNPROTO</b> is not a subset of the eventIn/eventOut declaration specified in <i>URL</i>. </p>
+<p><i>Note: The rules about allowing exporting only from files that contain a
+single PROTO declaration are consistent with the WWWInline rules; until
+we have VRML-aware protocols that can send just one object or prototype
+declaration across the wire, I don't think we should encourage people to
+put multiple objects or prototype declarations in a single file.</i></p>
+<p><i>We need to think about scalability when using nested EXTERNPROTO's. EXTERNPROTOS
+don't have bounding boxes specified like WWWInlines, and they might need
+them. I'm starting to think that we might need to add bboxCenter/Size fields
+to Separator instead of having them only on WWWInline; with animations possible,
+pre-specifying maximum-possible bounding boxes could save a lot of work
+recalculating bounding boxes as things move.</i></p>
+
+<h2>MODIFIED 1.1 - <img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="Extensibility">Extensibility</a></h2>
+<b>TODO: Jan to handle type_registry@vrml.org for new suffixes</b>
+<p>Extensions to VRML are supported by supporting self-describing nodes.
+ Nodes that are not part of standard VRML must write out a description 
+of their fields first, so that all VRML implementations are able to 
+parse and ignore the extensions. 
+</p><p>This description is written just after the opening curly-brace 
+for the node, and consists of the keyword 'fields' followed by a list of
+ the types and names of fields used by that node, all enclosed in square
+ brackets and separated by commas. For example, if <a href="#Cube">Cube</a> was not a standard VRML node, it would be written like this: 
+</p><pre>Cube {
+  fields [ SFFloat width, SFFloat height, SFFloat depth ]
+  width 10 height 4 depth 3
+}
+</pre>
+<p>Specifying the fields for nodes that ARE part of standard VRML is not
+ an error; VRML parsers must silently ignore the field[] specification. 
+However, incorrectly specifying the fields of a built-in node is an 
+error. 
+</p><p>The fields specification must be written out with every 
+non-standard node, whether or not that node type was previously 
+encountered during parsing. For each instance of a non-standard node, 
+only the fields written as part of that instance need to be described in
+ the fields[] specification; that is, fields that aren't written because
+ they contain their default value may be omitted from the fields[] 
+specification. It is expected that future versions of VRML will relax 
+this requirement, requiring only that the first non-standard node of a 
+given type be given the fields[] specification. 
+</p><p>Just like standard nodes, instances of non-standard nodes do not 
+automatically share anything besides the default values of their fields,
+ which are not specified in the VRML file but are considered part of the
+ implementation of the non-standard nodes. 
+</p><h3>Is-a relationships</h3>
+<p>A new node type may also be a superset of an existing node that is 
+part of the standard. In this case, if an implementation for the new 
+node type cannot be found the new node type can be safely treated as as 
+the existing node it is based on (with some loss of functionality, of 
+course). To support this, new node types can define an MFString field 
+called 'isA' containing the names of the types of which it is a 
+superset. For example, a new type of Material called "ExtendedMaterial" 
+that adds index of refraction as a material property can be written as: 
+</p><pre>ExtendedMaterial {
+  fields [ MFString isA, MFFloat indexOfRefraction,
+           MFColor diffuseColor, MFFloat transparency ]
+  isA [ "Material" ]
+  indexOfRefraction .34
+  diffuseColor .8 .54 1
+}
+</pre>
+<p>Multiple is-a relationships may be specified in order of preference; 
+implementations are expected to use the first for which there is an 
+implementation. 
+</p><p>Note that IsA and PROTO are different ways to define new nodes, they should not be used together.
+</p><p>Nodes instantiated with isA should not copy default values or children from the first instantiation.
+</p><h3>Alternate representations</h3>
+<p>To allow extension nodes to be handled gracefully by browsers that 
+don't recognise them, a alternateRep field is supported. This is an 
+SFNode field that 
+specifies what to use if the extension node is not recognised, typically
+ it 
+will be a WWWInline of a more complex representation, or of a CGI script
+ 
+which can generate the node dynamically, for example:
+</p><pre>ColoredCube {
+	isA Cube
+	fields [ SFColor color ]
+	color 2 0 0
+	alternateRep { 
+		WWWInline {
+			name "http://foo.com/cgi/ColoredCube/2/0/0"
+		}
+	}
+}
+</pre>
+<h3>Naming conventions</h3>
+<p>Check the General Syntax section of this standard for the rules on valid 
+characters in names. 
+</p><p>To avoid namespace collisions with nodes defined by other people, any of the 
+following conventions should be followed.
+</p><ol>
+<li>Anyone can pick names that include a suffix of an underscore 
+followed
+by a domain name that you own with the periods changed into underscores.
+ For example a company owning foo.com could create an extension node 
+"Cube_foo_com"
+</li><li>If you are building a product for example an authoring tool, or
+ a browser, or defining a lot of new nodes then you can apply for a 
+short prefix. Email type_registry@vrml.org to register for the prefix. 
+This will normally be accepted if it is
+the most significant part of a .com, .org or .net address, in the above 
+example foo.com could register the extension "_foo" and create nodes of 
+the form "Cube_foo".
+</li><li>Extensions supported by several companies should be registered and
+use the "_X" extension.
+</li></ol>
+This process may change as more experience is gained.
+<h3><a name="URN">URN's</a></h3>
+VRML1.1 browsers are not required to support URN's although if they don't then 
+they should ignore URN's when they appear in MFString fields with URL's. URN support 
+is specified in a seperate document at <a href="http://www.mitra.biz/vrml/vrml2/vrml-urn-19950816.html">http://www.mitra.biz/vrml/vrml-urn-19950816.html</a>, 
+which may undergo minor revisions to keep it inline with parallel work happening 
+at the IETF. 
+<h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="An Example">An Example</a></h2>
+<p>This is a longer example of a VRML scene. It contains a simple model 
+of a track-light consisting of primitive shapes, plus three walls (built
+ out of polygons) and a reference to a shape defined elsewhere, both of 
+which are illuminated by a spotlight. The shape acts as a hyperlink to 
+some HTML text. 
+</p><pre>#VRML V1.1 utf8
+Separator {
+    Separator {       # Simple track-light geometry:
+        Translation { translation 0 4 0 }
+        Separator {
+            Material { emissiveColor 0.1 0.3 0.3 }
+            Cube {
+                width   0.1
+                height  0.1
+                depth   4
+            }
+        }
+        Rotation { rotation 0 1 0  1.57079 }
+        Separator {
+            Material { emissiveColor 0.3 0.1 0.3 }
+            Cylinder {
+                radius  0.1
+                height  .2
+            }
+        }
+        Rotation { rotation -1 0 0  1.57079 }
+        Separator {
+            Material { emissiveColor 0.3 0.3 0.1 }
+            Rotation { rotation 1 0 0  1.57079 }
+            Translation { translation 0 -.2 0 }
+            Cone {
+                height  .4
+                bottomRadius .2
+            }
+            Translation { translation 0 .4 0 }
+            Cylinder {
+                radius  0.02
+                height  .4
+            }
+        }
+    }
+    SpotLight {      # Light from above
+        location 0 4 0
+        direction 0 -1 0
+        intensity       0.9
+        cutOffAngle     0.7
+    }
+    Separator {      # Wall geometry; just three flat polygons
+        Coordinate3 {
+            point [
+                   -2 0 -2, -2 0 2, 2 0 2, 2 0 -2,
+                   -2 4 -2, -2 4 2, 2 4 2, 2 4 -2]
+        }
+        IndexedFaceSet {
+            coordIndex [ 0, 1, 2, 3, -1,
+                        0, 4, 5, 1, -1,
+                        0, 3, 7, 4, -1
+                        ]
+        }
+    }
+    WWWAnchor {   # A hyperlinked cow:
+        name "http://www.foo.edu/CowProject/AboutCows.html"
+        Separator {
+            Translation { translation 0 1 0 }
+            WWWInline {   # Reference another object
+                name "http://www.foo.edu/3DObjects/cow.wrl"
+            }
+        }
+    }
+}
+</pre>
+<hr>
+<h1><img src="VRML%201.1%20Specification-Dateien/cone.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cone.gif" height="30" width="30"> <a name="Browser Considerations">Browser Considerations</a></h1>
+<p>This section describes the file naming and MIME conventions to be 
+used in building VRML browsers and configuring WWW browsers to work with
+ them. 
+</p><h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="File Extensions">File Extensions</a></h2>
+<p>The file extension for VMRL files is <tt>.wrl</tt> (for <em>world</em>). 
+</p><h2><img src="VRML%201.1%20Specification-Dateien/cube.gif" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/cube.gif" height="19" width="20"> <a name="MIME Types">MIME</a></h2>
+<p>The MIME type for VRML files is defined as follows: 
+</p><pre>x-world/x-vrml
+</pre>
+<p>The MIME major type for 3D world descriptions is <tt>x-world</tt>. The MIME minor type for VRML documents is <tt>x-vrml</tt>. Other 3D world descriptions, such as <tt>oogl</tt> for The Geometry Center's <em>Object-Oriented Geometry Language</em>, or <tt>iv</tt>, for SGI's <em>Open Inventor</em> ASCII format, can be supported by using different MIME minor types. 
+</p><p>It is anticipated that the official type will change to "model/vrml", at
+this time servers should present files as being of type x-world/x-vrml,
+browsers should recognise both x-world/x-vrml and model/vrml.
+</p><h1><a name="Acknowledgements">Acknowledgements</a></h1>
+<blockquote>I want to thank three people who have been absolutely 
+instrumental in the design process: Brian Behlendorf, whose drive (and 
+disk space) made this process happen; and Tony Parisi and Gavin Bell, 
+the final authors of this specification, who have put in a great deal of
+ design work, ensuring that we have a satisfactory product. My hat goes 
+off to all of them, and to all of you who have made this process a 
+success. </blockquote>
+<p><em>Mark Pesce</em> 
+</p><blockquote>I would like to add a personal note of thanks to Jan 
+Hardenbergh of Oki Advanced Products for his diligent efforts to keep 
+the specification process on track, and his invaluable editing 
+assistance. I would also like to acknowledge Chris Marrin of Silicon 
+Graphics for his timely contributions to the final design. </blockquote>
+<p><em>Tony Parisi</em> 
+</p><blockquote>VRML 1.1 is a result of years of effort from the 
+Inventor group at Silicon Graphics. All of the past and present members 
+of the Inventor team deserve recognition and thanks for their excellent 
+work over the last five years.</blockquote>
+<p><em>Gavin Bell</em> 
+</p><p><img src="VRML%201.1%20Specification-Dateien/hr.gif" alt="--" sgi_setwidth="" sgi_setheight="" sgi_fullpath="/usr/people/rob/vrml/spec/media/hr.gif" height="25" width="470"> <em>22-NOV-95</em>
+</p><h1><a name="References">References</a></h1>
+
+<p>The draft of the ISO UTF-8 proposal is online at: 
+<a href="http://www.stonehand.com/unicode/standard/wg2n1036.html">
+http://www.stonehand.com/unicode/standard/wg2n1036.html</a>
+
+</p><p>The draft for making HTML internationalized is online. We are not
+as constrained as HTML, since VRML will rarely be primarily text. We
+can be a little less efficient.
+<a href="ftp://ftp.alis.com/pub/ietf/html/draft-ietf-html-i18n-00.txt">
+ftp://ftp.alis.com/pub/ietf/html/draft-ietf-html-i18n-00.txt</a>
+
+</p><p><a href="ftp://ftp.isi.edu/in-notes/rfc1766.txt">ftp://ftp.isi.edu/in-notes/rfc1766.txt</a>
+
+</p><p>OpenGL specification and man pages are online:
+<a href="http://www.sgi.com/Technology/openGL/spec.html">
+http://www.sgi.com/Technology/openGL/spec.html</a>
+
+</p><p>Addison Wesley's "The Inventor Mentor" and "Open Inventor C++
+Reference Manual" are invaluable.
+
+
+</p><hr>
+<b>TODO<ul>
+<li>URN
+    <ul>
+    <li> Mark to write sample code
+    </li><li>Mitra to revise proposal in light of IETF meeting in early December
+    </li></ul>
+</li><li>Gavin to spell check
+</li><li>Rikk and Gavin - Input fields
+</li><li>Gavin - add URL to this doc
+</li><li>Gavin - deprecated features added to contents list
+</li><li>Mark - specify conformance process
+</li><li>VAG - check for other things which should be Input fields.
+</li><li>VAG - revist NavigationInfo - 
+</li><li>VAG/Jan - which stings should be UTF-8, URLS? do we need a new type?
+</li></ul></b> 
+
+
+</body></html>

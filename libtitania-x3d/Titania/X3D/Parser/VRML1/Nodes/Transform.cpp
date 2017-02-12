@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,35 +47,44 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#include "Transform.h"
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "../../../Execution/X3DExecutionContext.h"
+#include "../Converter.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+Transform::Fields::Fields () :
+	     translation (new X3D::SFVec3f (0, 0, 0)),
+	        rotation (new X3D::SFRotation (0, 0, 1, 0)),
+	     scaleFactor (new X3D::SFVec3f (1, 1, 1)),
+	scaleOrientation (new X3D::SFRotation (0, 0, 1, 0)),
+	          center (new X3D::SFVec3f (0, 0, 0)),
+	        children (new X3D::MFNode ())
+{ }
+
+Transform::Transform (X3D::X3DExecutionContext* const executionContext) :
+	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       VRML1Node (),
+	          fields ()
 {
-public:
+	addField (initializeOnly, "translation", *fields .translation);
+	addField (initializeOnly, "rotation", *fields .rotation);
+	addField (initializeOnly, "scaleFactor", *fields .scaleFactor);
+	addField (initializeOnly, "scaleOrientation", *fields .scaleOrientation);
+	addField (initializeOnly, "center", *fields .center);
+	addField (initializeOnly, "children", *fields .children);
+}
 
-	///  @name Destruction
+void
+Transform::convert (Converter* const converter)
+{ }
 
-	virtual
-	~X3DInfoNode () override;
+Transform::~Transform ()
+{ }
 
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
+} // VRML1
 } // X3D
 } // titania
-
-#endif

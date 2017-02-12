@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,35 +47,46 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#include "Material.h"
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "../../../Execution/X3DExecutionContext.h"
+#include "../Converter.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+Material::Fields::Fields () :
+	 ambientColor (new X3D::MFColor ({ X3D::Color3f (0.2, 0.2, 0.2) })),
+	 diffuseColor (new X3D::MFColor ({ X3D::Color3f (0.8, 0.8, 0.8) })),
+	specularColor (new X3D::MFColor ({ X3D::Color3f (0, 0, 0) })),
+	emissiveColor (new X3D::MFColor ({ X3D::Color3f (0, 0, 0) })),
+	    shininess (new X3D::MFFloat ({ 0.2 })),
+	 transparency (new X3D::MFFloat ({ 0 })),
+	     children (new X3D::MFNode ())
+{ }
+
+Material::Material (X3D::X3DExecutionContext* const executionContext) :
+	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       VRML1Node (),
+	          fields ()
 {
-public:
+	addField (initializeOnly, "ambientColor", *fields .ambientColor);
+	addField (initializeOnly, "diffuseColor", *fields .diffuseColor);
+	addField (initializeOnly, "specularColor", *fields .specularColor);
+	addField (initializeOnly, "emissiveColor", *fields .emissiveColor);
+	addField (initializeOnly, "shininess", *fields .shininess);
+	addField (initializeOnly, "transparency", *fields .transparency);
+	addField (initializeOnly, "children", *fields .children);
+}
 
-	///  @name Destruction
+void
+Material::convert (Converter* const converter)
+{ }
 
-	virtual
-	~X3DInfoNode () override;
+Material::~Material ()
+{ }
 
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
+} // VRML1
 } // X3D
 } // titania
-
-#endif

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,34 +47,63 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#ifndef __TITANIA_X3D_PARSER_VRML1_NODES_DIRECTED_SOUND_H__
+#define __TITANIA_X3D_PARSER_VRML1_NODES_DIRECTED_SOUND_H__
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "VRML1Node.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+class DirectedSound :
+	public VRML1Node
 {
 public:
 
-	///  @name Destruction
-
-	virtual
-	~X3DInfoNode () override;
-
-
-protected:
-
 	///  @name Construction
 
-	X3DInfoNode ();
+	DirectedSound (X3D::X3DExecutionContext* const);
+
+	///  @name Operationis
+
+	virtual
+	void
+	convert (Converter* const converter) final override;
+
+	///  @name Desstruction
+
+	~DirectedSound ();
+
+
+private:
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+		X3D::MFString* const name;
+		X3D::SFString* const description;
+		X3D::SFFloat* const intensity;
+		X3D::SFVec3f* const location;
+		X3D::SFVec3f* const direction;
+		X3D::SFFloat* const minRange;
+		X3D::SFFloat* const maxRange;
+		X3D::SFFloat* const minAngle;
+		X3D::SFFloat* const maxAngle;
+		X3D::SFBool* const loop;
+		X3D::SFTime* const start;
+		X3D::SFTime* const pause;
+		X3D::MFNode* const children;
+	};
+
+	Fields fields;
 
 };
 
+} // VRML1
 } // X3D
 } // titania
 

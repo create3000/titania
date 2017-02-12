@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,35 +47,46 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+#include "GeneralCylinder.h"
 
-#ifndef __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-#define __TITANIA_X3D_COMPONENTS_CORE_X3DINFO_NODE_H__
-
-#include "../Core/X3DChildNode.h"
+#include "../../../Execution/X3DExecutionContext.h"
+#include "../Converter.h"
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
 
-class X3DInfoNode :
-	virtual public X3DChildNode
+// VRML 1.1
+
+GeneralCylinder::Fields::Fields () :
+	       spine (new X3D::MFVec3f ({ X3D::Vector3f (0, 0, 0), X3D::Vector3f (0, 1, 0) })),
+	crossSection (new X3D::MFVec2f ({ X3D::Vector2f (-1, 1), X3D::Vector2f (-1, -1), X3D::Vector2f (1, -1), X3D::Vector2f (1, 1) })),
+	     profile (new X3D::MFVec2f ({ X3D::Vector2f (1, -1), X3D::Vector2f (1, 1) })),
+	       twist (new X3D::MFVec2f ({ X3D::Vector2f (0, -1), X3D::Vector2f (0, 1) })),
+	       parts (new X3D::SFString ("ALL")),
+	    children (new X3D::MFNode ())
+{ }
+
+GeneralCylinder::GeneralCylinder (X3D::X3DExecutionContext* const executionContext) :
+	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       VRML1Node (),
+	          fields ()
 {
-public:
+	addField (initializeOnly, "spine", *fields .spine);
+	addField (initializeOnly, "crossSection", *fields .crossSection);
+	addField (initializeOnly, "profile", *fields .profile);
+	addField (initializeOnly, "twist", *fields .twist);
+	addField (initializeOnly, "parts", *fields .parts);
+	addField (initializeOnly, "children", *fields .children);
+}
 
-	///  @name Destruction
+void
+GeneralCylinder::convert (Converter* const converter)
+{ }
 
-	virtual
-	~X3DInfoNode () override;
+GeneralCylinder::~GeneralCylinder ()
+{ }
 
-
-protected:
-
-	///  @name Construction
-
-	X3DInfoNode ();
-
-};
-
+} // VRML1
 } // X3D
 } // titania
-
-#endif
