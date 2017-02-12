@@ -271,12 +271,12 @@ History::removeItem (const std::string & id)
 }
 
 const sql::sqlite3::assoc_row_type &
-History::getItemFromIndex (const std::string & index, const Columns column, const SortOrder sortOrder, const std::string & search) const
+History::getItemFromIndex (const std::string & index, const std::string & search) const
 {
 	try
 	{
 		const std::string where = getWhere (search);
-		const std::string order = getOrder (column, sortOrder);
+		const std::string order = getOrder (LAST_ACCESS, DESC);
 
 		return database .query_assoc ("SELECT title, worldURL FROM History " +
 		                              where + " " +
@@ -313,15 +313,15 @@ History::getItemFromURL (const std::string & worldURL) const
 }
 
 const sql::sqlite3::assoc_type &
-History::getItems (const size_t offset, const size_t size, const Columns column, const SortOrder sortOrder, const std::string & search) const
+History::getItems (const size_t offset, const size_t size, const std::string & search) const
 {
 	try
 	{
 		const std::string where = getWhere (search);
-		const std::string order = getOrder (column, sortOrder);
+		const std::string order = getOrder (LAST_ACCESS, DESC);
 		const std::string limit = getLimit (offset, size);
 	
-		return database .query_assoc ("SELECT id, title, worldURL FROM History " + where + " " + order + " " + limit);
+		return database .query_assoc ("SELECT id, title, worldURL, strftime('%s', lastAccess) AS lastAccess FROM History " + where + " " + order + " " + limit);
 	}
 	catch (const std::exception & error)
 	{

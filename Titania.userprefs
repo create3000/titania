@@ -1,10 +1,11 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/ElevationGrid/X3DElevationGridHeightMapEditor.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp">
     <Files>
-      <File FileName="Titania/Titania/ComposedWidgets/X3DFieldAdjustment.h" Line="232" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/ElevationGrid/X3DElevationGridHeightMapEditor.h" Line="113" Column="2" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/ElevationGrid/X3DElevationGridHeightMapEditor.cpp" Line="258" Column="1" />
+      <File FileName="Titania/Titania/Widgets/HistoryView/HistoryView.h" Line="73" Column="9" />
+      <File FileName="Titania/Titania/Widgets/HistoryView/HistoryView.cpp" Line="152" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="126" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.h" Line="163" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

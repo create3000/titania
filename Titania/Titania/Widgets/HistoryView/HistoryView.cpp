@@ -58,9 +58,13 @@
 namespace titania {
 namespace puck {
 
-static constexpr int ICON_COLUMN      = 0;
-static constexpr int TITLE_COLUMN     = 1;
-static constexpr int WORLD_URL_COLUMN = 2;
+namespace Columns {
+	static constexpr int ICON             = 0;
+	static constexpr int TITLE            = 1;
+	static constexpr int WORLD_URL        = 2;
+	static constexpr int LAST_ACCESS      = 3;
+	static constexpr int LAST_ACCESS_TIME = 4;
+}
 
 HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
@@ -104,6 +108,24 @@ HistoryView::configure ()
 
 	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 0))
 		getBrowserWindow () -> loadIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () -> getIcon (item .at ("id")));
+
+	if (getConfig () -> hasItem ("titleColumnSize"))
+		getTitleColumn () -> set_fixed_width (getConfig () -> getInteger ("titleColumnSize"));
+
+	if (getConfig () -> hasItem ("worldURLColumnSize"))
+		getWorlURLColumn () -> set_fixed_width (getConfig () -> getInteger ("worldURLColumnSize"));
+
+	if (getConfig () -> hasItem ("lastAccessColumnSize"))
+		getLastAccessColumn () -> set_fixed_width (getConfig () -> getInteger ("lastAccessColumnSize"));
+}
+
+void
+HistoryView::initialize ()
+{
+	X3DHistoryViewInterface::initialize ();
+
+	getLastAccessColumn () -> clicked ();
+	getLastAccessColumn () -> clicked ();
 }
 
 void
@@ -128,26 +150,31 @@ HistoryView::set_history ()
 	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
 	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
 
-	const auto rows      = getTreeView () .get_selection () -> get_selected_rows ();
-	const auto column    = History::Columns::LAST_ACCESS;
-	const auto sortOrder = History::SortOrder::DESC;
-	const auto search    = getSearchEntry () .get_text ();
+	const auto rows   = getTreeView () .get_selection () -> get_selected_rows ();
+	const auto search = getSearchEntry () .get_text ();
 
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
-	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 2000, column, sortOrder, search))
+	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 2000, search))
 	{
-		const auto & worldURL = item .at ("worldURL");
-		const auto   iter     = getListStore () -> append ();
+		const auto & worldURL   = item .at ("worldURL");
+		const time_t lastAccess = strtoul (item .at ("lastAccess") .c_str (), nullptr, 0);
+		const auto   iter       = getListStore () -> append ();
 
-		iter -> set_value (ICON_COLUMN,      basic::uri (worldURL) .filename () .str ());
-		iter -> set_value (TITLE_COLUMN,     item .at ("title"));
-		iter -> set_value (WORLD_URL_COLUMN, worldURL);
+		std::ostringstream osstream;
+
+		osstream << std::put_time (std::localtime (&lastAccess), "%c"); // "%c %Z"
+
+		iter -> set_value (Columns::ICON,             basic::uri (worldURL) .filename () .str ());
+		iter -> set_value (Columns::TITLE,            item .at ("title"));
+		iter -> set_value (Columns::WORLD_URL,        worldURL);
+		iter -> set_value (Columns::LAST_ACCESS,      osstream .str ());
+		iter -> set_value (Columns::LAST_ACCESS_TIME, lastAccess);
 	}
 
-	getTreeView () .set_model (getListStore ());
-	getTreeView () .set_search_column (TITLE_COLUMN);
+	getTreeView () .set_model (getTreeModelSort ());
+	getTreeView () .set_search_column (Columns::TITLE);
 
 	for (const auto & path : rows)
 		getTreeView () .get_selection () -> select (path);
@@ -169,10 +196,9 @@ HistoryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 	{
 		// Open worldURL.
 
-		const auto        column    = History::Columns::LAST_ACCESS;
-		const auto        sortOrder = History::SortOrder::DESC;
 		const auto        search    = getSearchEntry () .get_text ();
-		const std::string URL       = getBrowserWindow () -> getHistory () -> getItemFromIndex (path .to_string (), column, sortOrder, search) .at ("worldURL");
+		const auto        index     = getTreeModelSort () -> convert_path_to_child_path (path) .to_string ();
+		const std::string URL       = getBrowserWindow () -> getHistory () -> getItemFromIndex (index, search) .at ("worldURL");
 
 		getBrowserWindow () -> open (URL);
 	}
@@ -220,6 +246,16 @@ void
 HistoryView::on_always_toggled ()
 {
 	getBrowserWindow () -> getConfig () -> setItem ("rememberHistory", -1);
+}
+
+void
+HistoryView::store ()
+{
+	getConfig () -> setItem ("titleColumnSize",      getTitleColumn ()      -> get_fixed_width ());
+	getConfig () -> setItem ("worldURLColumnSize",   getWorlURLColumn ()    -> get_fixed_width ());
+	getConfig () -> setItem ("lastAccessColumnSize", getLastAccessColumn () -> get_fixed_width ());
+
+	X3DHistoryViewInterface::store ();
 }
 
 HistoryView::~HistoryView ()

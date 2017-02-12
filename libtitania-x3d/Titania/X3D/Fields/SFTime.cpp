@@ -73,27 +73,14 @@ SFTime::SFTime (const time_type value) :
 std::string
 SFTime::toUTCString () const
 {
-//	const std::time_t time = getValue ();
-//
-//	std::ostringstream ostream;
-//
-//	ostream .imbue (std::locale::classic ());
-//	ostream << std::put_time (std::gmtime (&time), "%a, %d %b %Y %H:%M:%S %Z");
-//
-//	return ostream .str ();
+	const std::time_t time = getValue ();
 
-	constexpr size_t BUFFER_SIZE = 128;
+	std::ostringstream osstream;
 
-	const auto        locale = std::locale::global (std::locale::classic ());
-	const std::time_t time   = getValue ();
+	osstream .imbue (std::locale::classic ());
+	osstream << std::put_time (std::gmtime (&time), "%a, %d %b %Y %H:%M:%S %Z");
 
-	char buffer [BUFFER_SIZE];
-	const size_t size = std::strftime (buffer, 80, "%a, %d %b %Y %H:%M:%S %Z", std::gmtime (&time));
-	const std::string string (buffer, buffer + size);
-
-	std::locale::global (locale);
-
-	return string;
+	return osstream .str ();
 }
 
 void

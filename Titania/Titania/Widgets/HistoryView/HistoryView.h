@@ -74,13 +74,28 @@ public:
 	~HistoryView () final override;
 
 
-private:
+protected:
 
-	///  @name Event handlers
+	///  @name Construction
 
 	virtual
 	void
 	configure () final override;
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	store () final override;
+
+
+private:
+
+	///  @name Event handlers
 
 	virtual
 	void

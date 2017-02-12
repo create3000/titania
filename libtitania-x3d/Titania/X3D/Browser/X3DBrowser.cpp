@@ -429,9 +429,19 @@ X3DBrowser::set_scene_async (X3DScenePtr && scene)
 	// This function is called from the future. Ensure here that the future is not accidentally deleted when calling replaceWorld.
 	// Use finished to get better currentTime on start up of world.
 
-	finished () .addInterest (&X3DBrowser::set_scene, this, std::move (scene));
+	removeLoadCount (future .getValue ());
 
-	addEvent ();
+	if (scene)
+	{
+		finished () .addInterest (&X3DBrowser::set_scene, this, std::move (scene));
+
+		addEvent ();
+	}
+	else
+	{
+		urlError = future -> getUrlError ();
+		setLoadState (FAILED_STATE);
+	}
 }
 
 void
@@ -439,18 +449,8 @@ X3DBrowser::set_scene (const X3DScenePtr & scene)
 {
 	finished () .removeInterest (&X3DBrowser::set_scene, this);
 
-	removeLoadCount (future .getValue ());
-
-	if (scene)
-	{
-		replaceWorld (scene);
-		setLoadState (COMPLETE_STATE);
-	}
-	else
-	{
-		urlError = future -> getUrlError ();
-		setLoadState (FAILED_STATE);
-	}
+	replaceWorld (scene);
+	setLoadState (COMPLETE_STATE);
 }
 
 X3DScenePtr

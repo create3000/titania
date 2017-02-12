@@ -103,6 +103,10 @@ public:
 	getListStore () const
 	{ return m_ListStore; }
 
+	const Glib::RefPtr <Gtk::TreeModelSort> &
+	getTreeModelSort () const
+	{ return m_TreeModelSort; }
+
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
 	getIcon () const
 	{ return m_Icon; }
@@ -120,12 +124,20 @@ public:
 	{ return m_TitleRenderer; }
 
 	const Glib::RefPtr <Gtk::TreeViewColumn> &
-	getLocationColumn () const
-	{ return m_LocationColumn; }
+	getWorlURLColumn () const
+	{ return m_WorlURLColumn; }
 
 	const Glib::RefPtr <Gtk::CellRendererText> &
-	getLocationRenderer () const
-	{ return m_LocationRenderer; }
+	getWorlURLRenderer () const
+	{ return m_WorlURLRenderer; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getLastAccessColumn () const
+	{ return m_LastAccessColumn; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getLastAccessRenderer () const
+	{ return m_LastAccessRenderer; }
 
 	Gtk::Window &
 	getWindow () const
@@ -240,12 +252,15 @@ private:
 	std::string                            filename;
 	Glib::RefPtr <Gtk::Builder>            m_builder;
 	Glib::RefPtr <Gtk::ListStore>          m_ListStore;
+	Glib::RefPtr <Gtk::TreeModelSort>      m_TreeModelSort;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_Icon;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
 	Glib::RefPtr <Gtk::TreeViewColumn>     m_TitleColumn;
 	Glib::RefPtr <Gtk::CellRendererText>   m_TitleRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_LocationColumn;
-	Glib::RefPtr <Gtk::CellRendererText>   m_LocationRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_WorlURLColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_WorlURLRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_LastAccessColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_LastAccessRenderer;
 	Gtk::Window*                           m_Window;
 	Gtk::Box*                              m_Widget;
 	Gtk::SearchEntry*                      m_SearchEntry;

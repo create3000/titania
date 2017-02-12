@@ -10,7 +10,14 @@
       <column type="gchararray"/>
       <!-- column-name Location -->
       <column type="gchararray"/>
+      <!-- column-name LastAccess -->
+      <column type="gchararray"/>
+      <!-- column-name LastAccessTime -->
+      <column type="guint64"/>
     </columns>
+  </object>
+  <object class="GtkTreeModelSort" id="TreeModelSort">
+    <property name="model">ListStore</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
@@ -71,8 +78,7 @@
               <object class="GtkTreeView" id="TreeView">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="model">ListStore</property>
-                <property name="headers_visible">False</property>
+                <property name="model">TreeModelSort</property>
                 <property name="rules_hint">True</property>
                 <property name="search_column">1</property>
                 <signal name="button-press-event" handler="on_button_press_event" after="yes" swapped="no"/>
@@ -83,7 +89,7 @@
                 <child>
                   <object class="GtkTreeViewColumn" id="Icon">
                     <property name="sizing">autosize</property>
-                    <property name="title" translatable="yes">Icon</property>
+                    <property name="sort_column_id">0</property>
                     <child>
                       <object class="GtkCellRendererPixbuf" id="IconRenderer"/>
                       <attributes>
@@ -94,9 +100,13 @@
                 </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="TitleColumn">
-                    <property name="sizing">autosize</property>
+                    <property name="resizable">True</property>
+                    <property name="sizing">fixed</property>
+                    <property name="min_width">50</property>
                     <property name="title" translatable="yes">Title</property>
+                    <property name="clickable">True</property>
                     <property name="sort_indicator">True</property>
+                    <property name="sort_column_id">1</property>
                     <child>
                       <object class="GtkCellRendererText" id="TitleRenderer"/>
                       <attributes>
@@ -106,13 +116,35 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkTreeViewColumn" id="LocationColumn">
-                    <property name="sizing">autosize</property>
-                    <property name="title" translatable="yes">Location</property>
+                  <object class="GtkTreeViewColumn" id="WorlURLColumn">
+                    <property name="resizable">True</property>
+                    <property name="sizing">fixed</property>
+                    <property name="min_width">50</property>
+                    <property name="title" translatable="yes">World URL</property>
+                    <property name="clickable">True</property>
+                    <property name="sort_indicator">True</property>
+                    <property name="sort_column_id">2</property>
                     <child>
-                      <object class="GtkCellRendererText" id="LocationRenderer"/>
+                      <object class="GtkCellRendererText" id="WorlURLRenderer"/>
                       <attributes>
                         <attribute name="text">2</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="LastAccessColumn">
+                    <property name="resizable">True</property>
+                    <property name="sizing">fixed</property>
+                    <property name="min_width">50</property>
+                    <property name="title" translatable="yes">Last Access</property>
+                    <property name="clickable">True</property>
+                    <property name="sort_indicator">True</property>
+                    <property name="sort_column_id">4</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="LastAccessRenderer"/>
+                      <attributes>
+                        <attribute name="text">3</attribute>
                       </attributes>
                     </child>
                   </object>
