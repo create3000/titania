@@ -73,6 +73,8 @@ CollideStyle::CollideStyle (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1CollideStyle);
+
 	addField (initializeOnly, "collide", collide ());
 	addField (initializeOnly, "proxy", proxy ());
 	addField (initializeOnly, "children", children ());

@@ -76,6 +76,8 @@ Material::Material (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Material);
+
 	addField (initializeOnly, "ambientColor",  ambientColor ());
 	addField (initializeOnly, "diffuseColor",  diffuseColor ());
 	addField (initializeOnly, "specularColor", specularColor ());

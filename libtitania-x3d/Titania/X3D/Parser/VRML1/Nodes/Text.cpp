@@ -74,6 +74,8 @@ Text::Text (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Text);
+
 	addField (initializeOnly, "string", string ());
 	addField (initializeOnly, "direction", direction ());
 	addField (initializeOnly, "justification", justification ());

@@ -71,6 +71,8 @@ Scale::Scale (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Scale);
+
 	addField (initializeOnly, "scaleFactor", scaleFactor ());
 	addField (initializeOnly, "children",    children ());
 }

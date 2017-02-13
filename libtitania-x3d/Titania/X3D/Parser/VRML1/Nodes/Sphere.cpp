@@ -70,6 +70,8 @@ Sphere::Sphere (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Sphere);
+
 	addField (initializeOnly, "radius", radius ());
 	addField (initializeOnly, "children", children ());
 }

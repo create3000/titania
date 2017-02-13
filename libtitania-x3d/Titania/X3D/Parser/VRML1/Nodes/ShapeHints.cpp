@@ -75,6 +75,8 @@ ShapeHints::ShapeHints (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1ShapeHints);
+
 	addField (initializeOnly, "vertexOrdering", vertexOrdering ());
 	addField (initializeOnly, "shapeType",      shapeType ());
 	addField (initializeOnly, "faceType",       faceType ());

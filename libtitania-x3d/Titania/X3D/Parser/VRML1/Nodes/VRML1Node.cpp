@@ -64,7 +64,9 @@ VRML1Node::Fields::Fields () :
 VRML1Node::VRML1Node () :
 	X3D::X3DBaseNode (),
 	          fields ()
-{ }
+{
+	//addType (X3D::X3DConstants::VRML1Node);
+}
 
 bool
 VRML1Node::use (Converter* const converter)

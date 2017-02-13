@@ -80,6 +80,8 @@ PointSound::PointSound (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1PointSound);
+
 	addField (initializeOnly, "name", name ());
 	addField (initializeOnly, "description", description ());
 	addField (initializeOnly, "intensity", intensity ());

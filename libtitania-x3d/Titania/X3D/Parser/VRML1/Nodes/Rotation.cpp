@@ -71,6 +71,8 @@ Rotation::Rotation (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Rotation);
+
 	addField (initializeOnly, "rotation", rotation ());
 	addField (initializeOnly, "children", children ());
 }

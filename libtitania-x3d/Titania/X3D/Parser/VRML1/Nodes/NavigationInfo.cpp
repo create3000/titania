@@ -75,6 +75,8 @@ NavigationInfo::NavigationInfo (X3D::X3DExecutionContext* const executionContext
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1NavigationInfo);
+
 	addField (initializeOnly, "type", type ());
 	addField (initializeOnly, "speed", speed ());
 	addField (initializeOnly, "collisionRadius", collisionRadius ());

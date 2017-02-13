@@ -75,6 +75,8 @@ Texture2Transform::Texture2Transform (X3D::X3DExecutionContext* const executionC
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Texture2Transform);
+
 	addField (initializeOnly, "translation", translation ());
 	addField (initializeOnly, "rotation",    rotation ());
 	addField (initializeOnly, "scaleFactor", scaleFactor ());

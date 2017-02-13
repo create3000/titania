@@ -71,6 +71,8 @@ LOD::LOD (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1LOD);
+
 	addField (initializeOnly, "range", range ());
 	addField (initializeOnly, "center", center ());
 	addField (initializeOnly, "children", children ());

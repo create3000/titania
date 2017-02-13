@@ -77,6 +77,8 @@ Environment::Environment (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Environment);
+
 	addField (initializeOnly, "ambientIntensity", ambientIntensity ());
 	addField (initializeOnly, "ambientColor", ambientColor ());
 	addField (initializeOnly, "attenuation", attenuation ());

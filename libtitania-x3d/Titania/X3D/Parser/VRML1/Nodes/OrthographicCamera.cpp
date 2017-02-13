@@ -75,6 +75,8 @@ OrthographicCamera::OrthographicCamera (X3D::X3DExecutionContext* const executio
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1OrthographicCamera);
+
 	addField (initializeOnly, "position", position ());
 	addField (initializeOnly, "orientation", orientation ());
 	addField (initializeOnly, "focalDistance", focalDistance ());

@@ -85,6 +85,8 @@ IndexedFaceSet::IndexedFaceSet (X3D::X3DExecutionContext* const executionContext
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1IndexedFaceSet);
+
 	addField (initializeOnly, "coordIndex",        coordIndex ());
 	addField (initializeOnly, "materialIndex",     materialIndex ());
 	addField (initializeOnly, "normalIndex",       normalIndex ());

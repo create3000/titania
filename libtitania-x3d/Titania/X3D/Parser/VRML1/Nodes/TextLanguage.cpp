@@ -70,6 +70,8 @@ TextLanguage::TextLanguage (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1TextLanguage);
+
 	addField (initializeOnly, "textLanguage", textLanguage ());
 	addField (initializeOnly, "children", children ());
 }

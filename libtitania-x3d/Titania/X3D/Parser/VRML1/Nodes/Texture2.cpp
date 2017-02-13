@@ -75,6 +75,8 @@ Texture2::Texture2 (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Texture2);
+
 	addField (initializeOnly, "filename", filename ());
 	addField (initializeOnly, "image",    image ());
 	addField (initializeOnly, "wrapS",    wrapS ());

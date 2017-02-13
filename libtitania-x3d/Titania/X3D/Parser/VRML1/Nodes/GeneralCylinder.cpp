@@ -76,6 +76,8 @@ GeneralCylinder::GeneralCylinder (X3D::X3DExecutionContext* const executionConte
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1GeneralCylinder);
+
 	addField (initializeOnly, "spine", spine ());
 	addField (initializeOnly, "crossSection", crossSection ());
 	addField (initializeOnly, "profile", profile ());

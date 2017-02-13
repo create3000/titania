@@ -77,6 +77,8 @@ TextureCoordinate2::TextureCoordinate2 (X3D::X3DExecutionContext* const executio
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1TextureCoordinate2);
+
 	addField (initializeOnly, "point",    point ());
 	addField (initializeOnly, "children", children ());
 }

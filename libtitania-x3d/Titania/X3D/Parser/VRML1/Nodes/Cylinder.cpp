@@ -72,6 +72,8 @@ Cylinder::Cylinder (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Cylinder);
+
 	addField (initializeOnly, "parts",        parts ());
 	addField (initializeOnly, "bottomRadius", radius ());
 	addField (initializeOnly, "height",       height ());

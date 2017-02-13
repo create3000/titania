@@ -75,6 +75,8 @@ PerspectiveCamera::PerspectiveCamera (X3D::X3DExecutionContext* const executionC
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1PerspectiveCamera);
+
 	addField (initializeOnly, "position", position ());
 	addField (initializeOnly, "orientation", orientation ());
 	addField (initializeOnly, "focalDistance", focalDistance ());

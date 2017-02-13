@@ -71,6 +71,8 @@ MatrixTransform::MatrixTransform (X3D::X3DExecutionContext* const executionConte
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1MatrixTransform);
+
 	addField (initializeOnly, "matrix",   matrix ());
 	addField (initializeOnly, "children", children ());
 }

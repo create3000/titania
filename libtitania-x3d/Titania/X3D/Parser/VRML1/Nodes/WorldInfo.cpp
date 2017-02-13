@@ -73,6 +73,8 @@ WorldInfo::WorldInfo (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1WorldInfo);
+
 	addField (initializeOnly, "title", title ());
 	addField (initializeOnly, "info", info ());
 	addField (initializeOnly, "children", children ());

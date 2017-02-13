@@ -72,6 +72,8 @@ WWWInline::WWWInline (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1WWWInline);
+
 	addField (initializeOnly, "name", name ());
 	addField (initializeOnly, "bboxSize", bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());

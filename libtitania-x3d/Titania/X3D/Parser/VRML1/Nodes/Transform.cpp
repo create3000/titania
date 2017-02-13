@@ -75,6 +75,8 @@ Transform::Transform (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Transform);
+
 	addField (initializeOnly, "translation",      translation ());
 	addField (initializeOnly, "rotation",         rotation ());
 	addField (initializeOnly, "scaleFactor",      scaleFactor ());

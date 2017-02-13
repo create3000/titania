@@ -72,6 +72,8 @@ WWWAnchor::WWWAnchor (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1WWWAnchor);
+
 	addField (initializeOnly, "name", name ());
 	addField (initializeOnly, "description", description ());
 	addField (initializeOnly, "map", map ());

@@ -71,6 +71,8 @@ Normal::Normal (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Normal);
+
 	addField (initializeOnly, "vector",   vector ());
 	addField (initializeOnly, "children", children ());
 }

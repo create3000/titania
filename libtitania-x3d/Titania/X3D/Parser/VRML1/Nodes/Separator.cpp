@@ -71,6 +71,8 @@ Separator::Separator (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
+	//addType (X3D::X3DConstants::VRML1Separator);
+
 	addField (initializeOnly, "renderCulling", renderCulling ());
 	addField (initializeOnly, "children",      children ());
 }
