@@ -97,10 +97,6 @@ public:
 	bool
 	getConvex () const;
 
-	float
-	getCreaseAngle () const
-	{ return *fields .creaseAngle; }
-
 	///  @name Fields
 
 	SFString &

@@ -131,7 +131,7 @@ IndexedFaceSet::convert (Converter* const converter)
 		geometryNode -> ccw ()         = converter -> shapeHints .back () -> getCCW ();
 		geometryNode -> solid ()       = converter -> shapeHints .back () -> getSolid ();
 		geometryNode -> convex ()      = converter -> shapeHints .back () -> getConvex ();
-		geometryNode -> creaseAngle () = converter -> shapeHints .back () -> getCreaseAngle ();
+		geometryNode -> creaseAngle () = converter -> shapeHints .back () -> creaseAngle ();
 	}
 
 	if (not converter -> normalBindings .empty ())

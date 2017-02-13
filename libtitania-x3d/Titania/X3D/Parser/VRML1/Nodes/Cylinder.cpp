@@ -50,8 +50,18 @@
 
 #include "Cylinder.h"
 
+#include "../../../Components/Geometry3D/Cylinder.h"
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Shape/Appearance.h"
+#include "../../../Components/Shape/Shape.h"
+#include "../../../Components/Shape/X3DMaterialNode.h"
+#include "../../../Components/Texturing/X3DTextureNode.h"
+#include "../../../Components/Texturing/X3DTextureTransformNode.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
+#include "ShapeHints.h"
+
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -74,10 +84,10 @@ Cylinder::Cylinder (X3D::X3DExecutionContext* const executionContext) :
 {
 	//addType (X3D::X3DConstants::VRML1Cylinder);
 
-	addField (initializeOnly, "parts",        parts ());
-	addField (initializeOnly, "bottomRadius", radius ());
-	addField (initializeOnly, "height",       height ());
-	addField (initializeOnly, "children",     children ());
+	addField (initializeOnly, "parts",    parts ());
+	addField (initializeOnly, "radius",   radius ());
+	addField (initializeOnly, "height",   height ());
+	addField (initializeOnly, "children", children ());
 }
 
 X3D::X3DBaseNode*
@@ -86,9 +96,70 @@ Cylinder::create (X3D::X3DExecutionContext* const executionContext) const
 	return new Cylinder (executionContext);
 }
 
+bool
+Cylinder::getSide () const
+{
+	static const std::regex sides (R"/(ALL|SIDES)/");
+
+	return std::regex_search (parts () .str (), sides);
+}
+
+bool
+Cylinder::getTop () const
+{
+	static const std::regex bottom (R"/(ALL|TOP)/");
+
+	return std::regex_search (parts () .str (), bottom);
+}
+
+bool
+Cylinder::getBottom () const
+{
+	static const std::regex bottom (R"/(ALL|BOTTOM)/");
+
+	return std::regex_search (parts () .str (), bottom);
+}
+
 void
 Cylinder::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto shapeNode      = converter -> scene -> createNode <X3D::Shape> ();
+	const auto appearanceNode = converter -> scene -> createNode <X3D::Appearance> ();
+	const auto geometryNode   = converter -> scene -> createNode <X3D::Cylinder> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), shapeNode);
+
+	// Assign values.
+
+	shapeNode -> appearance () = appearanceNode;
+	shapeNode -> geometry ()   = geometryNode;
+
+	appearanceNode -> material ()         = converter -> materials         .back ();
+	appearanceNode -> texture ()          = converter -> textures          .back ();
+	appearanceNode -> textureTransform () = converter -> textureTransforms .back ();
+
+	if (not converter -> shapeHints .empty ())
+		geometryNode -> solid () = converter -> shapeHints .back () -> getSolid ();
+
+	geometryNode -> side ()   = getSide ();
+	geometryNode -> top ()    = getTop ();
+	geometryNode -> bottom () = getBottom ();
+	geometryNode -> radius () = radius ();
+	geometryNode -> height () = height ();
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (shapeNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (shapeNode);
+}
 
 Cylinder::~Cylinder ()
 { }

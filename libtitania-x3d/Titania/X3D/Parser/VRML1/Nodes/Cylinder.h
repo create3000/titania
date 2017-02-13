@@ -112,6 +112,17 @@ public:
 	height () const
 	{ return *fields .height; }
 
+	///  @name Member access
+
+	bool
+	getSide () const;
+	
+	bool
+	getTop () const;
+	
+	bool
+	getBottom () const;
+
 	///  @name Operations
 
 	virtual
