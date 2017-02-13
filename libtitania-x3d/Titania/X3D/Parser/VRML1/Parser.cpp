@@ -141,7 +141,7 @@ Parser::parseIntoScene ()
 
 		convert ();
 
-		//optimize ();
+		optimize ();
 	}
 	catch (const X3DError & error)
 	{
@@ -189,25 +189,26 @@ Parser::optimize (X3D::SFNode & node)
 		if (groupNode -> children () .size () == 0)
 		  return node = nullptr;
 
-		if (groupNode -> children () .size () == 1)
+		if (not groupNode -> metadata ())
 		{
-			const auto transformNode = dynamic_cast <X3D::Transform*> (groupNode -> children () [0] .getValue ());
-	
-			if (transformNode)
+			if (groupNode -> children () .size () == 1)
 			{
-				bool onlyDefaults = true;
-	
-				onlyDefaults &= transformNode -> translation ()      == X3D::Vector3f ();
-				onlyDefaults &= transformNode -> rotation ()         == X3D::Rotation4d ();
-				onlyDefaults &= transformNode -> scale ()            == X3D::Vector3f (1, 1, 1);
-				onlyDefaults &= transformNode -> scaleOrientation () == X3D::Rotation4d ();
-				onlyDefaults &= transformNode -> center ()           == X3D::Vector3f ();
-	
-				if (onlyDefaults)
-					groupNode -> children () = transformNode -> children ();
+				const auto transformNode = dynamic_cast <X3D::Transform*> (groupNode);
+		
+				if (transformNode)
+				{
+					bool onlyDefaults = true;
+		
+					onlyDefaults &= transformNode -> translation ()      == X3D::Vector3f ();
+					onlyDefaults &= transformNode -> rotation ()         == X3D::Rotation4d ();
+					onlyDefaults &= transformNode -> scale ()            == X3D::Vector3f (1, 1, 1);
+					onlyDefaults &= transformNode -> scaleOrientation () == X3D::Rotation4d ();
+					onlyDefaults &= transformNode -> center ()           == X3D::Vector3f ();
+
+					if (onlyDefaults)
+						return node = transformNode -> children () [0];
+				}
 			}
-			else
-				node = groupNode -> children () [0];
 		}
 	}
 

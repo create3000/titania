@@ -50,6 +50,8 @@
 
 #include "Info.h"
 
+#include "../../../Browser/X3DBrowser.h"
+#include "../../../Components/Core/MetadataString.h"
 #include "../../../Components/Core/WorldInfo.h"
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
@@ -87,26 +89,44 @@ Info::create (X3D::X3DExecutionContext* const executionContext) const
 void
 Info::convert (Converter* const converter)
 {
-	if (use (converter))
-		return;
+	// NO USE!
+	//if (use (converter))
+	//	return;
 
 	// Create nodes.
 
-	const auto infoNode = converter -> scene -> createNode <X3D::WorldInfo> ();
-
-	// Set name.
-
-	if (not getName () .empty ())
-		converter -> scene -> updateNamedNode (getName (), infoNode);
-
-	// Assign values.
-
-	infoNode -> info () = { string () };
-
 	if (converter -> transforms .empty ())
+	{
+		// Create nodes.
+
+		const auto infoNode = converter -> scene -> createNode <X3D::WorldInfo> ();
+
+		// Set name.
+
+		// Assign values.
+
+		infoNode -> title () = "Info";
+		infoNode -> info ()  = { string () };
+
 		converter -> scene -> getRootNodes () .emplace_back (infoNode);
+	}
 	else
-		converter -> groups .back () -> children () .emplace_back (infoNode);
+	{
+		const auto metadataNode = converter -> scene -> createNode <X3D::MetadataString> ();
+
+		// Set name.
+
+		if (not getName () .empty ())
+			converter -> scene -> updateNamedNode (getName (), metadataNode);
+
+		// Assign values.
+
+		metadataNode -> name ()      = "Info";
+		metadataNode -> reference () = getBrowser () -> getProviderUrl ();
+		metadataNode -> value ()     = { string () };
+
+		converter -> groups .back () -> metadata () = metadataNode;
+	}
 }
 
 Info::~Info ()

@@ -134,6 +134,9 @@ IndexedFaceSet::convert (Converter* const converter)
 		geometryNode -> creaseAngle () = converter -> shapeHints .back () -> creaseAngle ();
 	}
 
+	// XXX: Always set solid to false.
+	geometryNode -> solid () = false;
+
 	if (not converter -> normalBindings .empty ())
 	{
 		if (converter -> normalBindings .back () -> getValue () == "OVERALL")

@@ -52,6 +52,7 @@
 
 #include "../../../Components/Grouping/Transform.h"
 #include "../../../Components/Texturing/ImageTexture.h"
+#include "../../../Components/Texturing/PixelTexture.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -114,22 +115,44 @@ Texture2::convert (Converter* const converter)
 	if (use (converter))
 		return;
 
-	// Create nodes.
-
-	const auto textureNode = converter -> scene -> createNode <X3D::ImageTexture> ();
-
-	// Set name.
-
-	if (not getName () .empty ())
-		converter -> scene -> updateNamedNode (getName (), textureNode);
-
-	// Assign values.
-
-	textureNode -> url ()     = { filename () };
-	textureNode -> repeatS () = wrapS () == "CLAMP" ? false : true;
-	textureNode -> repeatT () = wrapT () == "CLAMP" ? false : true;
-
-	converter -> textures .emplace_back (textureNode);
+	if (filename () .empty ())
+	{
+		// Create nodes.
+	
+		const auto textureNode = converter -> scene -> createNode <X3D::PixelTexture> ();
+	
+		// Set name.
+	
+		if (not getName () .empty ())
+			converter -> scene -> updateNamedNode (getName (), textureNode);
+	
+		// Assign values.
+	
+		textureNode -> image ()   = image ();
+		textureNode -> repeatS () = wrapS () == "CLAMP" ? false : true;
+		textureNode -> repeatT () = wrapT () == "CLAMP" ? false : true;
+	
+		converter -> textures .emplace_back (textureNode);
+	}
+	else
+	{
+		// Create nodes.
+	
+		const auto textureNode = converter -> scene -> createNode <X3D::ImageTexture> ();
+	
+		// Set name.
+	
+		if (not getName () .empty ())
+			converter -> scene -> updateNamedNode (getName (), textureNode);
+	
+		// Assign values.
+	
+		textureNode -> url ()     = { filename () };
+		textureNode -> repeatS () = wrapS () == "CLAMP" ? false : true;
+		textureNode -> repeatT () = wrapT () == "CLAMP" ? false : true;
+	
+		converter -> textures .emplace_back (textureNode);
+	}
 }
 
 Texture2::~Texture2 ()
