@@ -64,8 +64,8 @@ const std::string   WorldInfo::typeName       = "WorldInfo";
 const std::string   WorldInfo::containerField = "children";
 
 WorldInfo::Fields::Fields () :
-	   title (new X3D::SFString ({ "" })),
-	    info (new X3D::MFString ({ "" }))
+	title (new X3D::SFString ({ "" })),
+	 info (new X3D::MFString ({ "" }))
 { }
 
 WorldInfo::WorldInfo (X3D::X3DExecutionContext* const executionContext) :

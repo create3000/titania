@@ -62,9 +62,9 @@ const std::string   FontStyle::typeName       = "FontStyle";
 const std::string   FontStyle::containerField = "children";
 
 FontStyle::Fields::Fields () :
-	    size (new X3D::SFFloat (10)),
-	  family (new X3D::SFString ("SERIF")),
-	   style (new X3D::SFString ("NONE"))
+	  size (new X3D::SFFloat (10)),
+	family (new X3D::SFString ("SERIF")),
+	 style (new X3D::SFString ("NONE"))
 { }
 
 FontStyle::FontStyle (X3D::X3DExecutionContext* const executionContext) :

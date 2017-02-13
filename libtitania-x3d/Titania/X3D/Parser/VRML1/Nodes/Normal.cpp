@@ -63,7 +63,7 @@ const std::string   Normal::typeName       = "Normal";
 const std::string   Normal::containerField = "children";
 
 Normal::Fields::Fields () :
-	  vector (new X3D::MFVec3f ())
+	vector (new X3D::MFVec3f ())
 { }
 
 Normal::Normal (X3D::X3DExecutionContext* const executionContext) :

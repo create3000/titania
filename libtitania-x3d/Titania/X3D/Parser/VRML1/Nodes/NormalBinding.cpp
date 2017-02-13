@@ -62,7 +62,7 @@ const std::string   NormalBinding::typeName       = "NormalBinding";
 const std::string   NormalBinding::containerField = "children";
 
 NormalBinding::Fields::Fields () :
-	   value (new X3D::SFString ("DEFAULT"))
+	value (new X3D::SFString ("DEFAULT"))
 { }
 
 NormalBinding::NormalBinding (X3D::X3DExecutionContext* const executionContext) :

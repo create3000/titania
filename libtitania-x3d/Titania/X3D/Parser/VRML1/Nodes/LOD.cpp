@@ -62,8 +62,8 @@ const std::string   LOD::typeName       = "LOD";
 const std::string   LOD::containerField = "children";
 
 LOD::Fields::Fields () :
-	   range (new X3D::MFFloat ()),
-	  center (new X3D::SFVec3f (0, 0, 0))
+	 range (new X3D::MFFloat ()),
+	center (new X3D::SFVec3f (0, 0, 0))
 { }
 
 LOD::LOD (X3D::X3DExecutionContext* const executionContext) :

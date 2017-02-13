@@ -90,9 +90,7 @@ Texture2::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 Texture2::push (Converter* const converter)
-{
-
-}
+{ }
 
 void
 Texture2::convert (Converter* const converter)

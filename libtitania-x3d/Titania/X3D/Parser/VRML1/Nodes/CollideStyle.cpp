@@ -64,8 +64,8 @@ const std::string   CollideStyle::typeName       = "CollideStyle";
 const std::string   CollideStyle::containerField = "children";
 
 CollideStyle::Fields::Fields () :
-	 collide (new X3D::SFBool (false)),
-	   proxy (new X3D::SFNode ())
+	collide (new X3D::SFBool (false)),
+	  proxy (new X3D::SFNode ())
 { }
 
 CollideStyle::CollideStyle (X3D::X3DExecutionContext* const executionContext) :

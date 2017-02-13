@@ -62,7 +62,7 @@ const std::string   MaterialBinding::typeName       = "MaterialBinding";
 const std::string   MaterialBinding::containerField = "children";
 
 MaterialBinding::Fields::Fields () :
-	   value (new X3D::SFString ("OVERALL"))
+	value (new X3D::SFString ("OVERALL"))
 { }
 
 MaterialBinding::MaterialBinding (X3D::X3DExecutionContext* const executionContext) :

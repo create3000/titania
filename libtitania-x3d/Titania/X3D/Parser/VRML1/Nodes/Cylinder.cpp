@@ -48,7 +48,6 @@
  *
  ******************************************************************************/
 
-
 #include "Cylinder.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -63,9 +62,9 @@ const std::string   Cylinder::typeName       = "Cylinder";
 const std::string   Cylinder::containerField = "children";
 
 Cylinder::Fields::Fields () :
-	   parts (new X3D::SFString ("ALL")),
-	  radius (new X3D::SFFloat (1)),
-	  height (new X3D::SFFloat (2))
+	 parts (new X3D::SFString ("ALL")),
+	radius (new X3D::SFFloat (1)),
+	height (new X3D::SFFloat (2))
 { }
 
 Cylinder::Cylinder (X3D::X3DExecutionContext* const executionContext) :

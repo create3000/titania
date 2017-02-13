@@ -48,7 +48,6 @@
  *
  ******************************************************************************/
 
-
 #include "VRML1Node.h"
 
 #include "../../../Components/Grouping/Transform.h"
@@ -78,7 +77,7 @@ VRML1Node::use (Converter* const converter)
 		const auto transform = converter -> scene -> getNamedNode (getName ());
 
 		// Add root node if needed or add as child.
-	
+
 		if (converter -> transforms .empty ())
 			converter -> scene -> getRootNodes () .emplace_back (transform);
 		else

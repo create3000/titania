@@ -62,7 +62,7 @@ const std::string   Info::typeName       = "Info";
 const std::string   Info::containerField = "children";
 
 Info::Fields::Fields () :
-	  string (new X3D::SFString ("<Undefined info>"))
+	string (new X3D::SFString ("<Undefined info>"))
 { }
 
 Info::Info (X3D::X3DExecutionContext* const executionContext) :

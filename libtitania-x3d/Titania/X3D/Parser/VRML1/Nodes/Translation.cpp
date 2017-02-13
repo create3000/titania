@@ -48,7 +48,6 @@
  *
  ******************************************************************************/
 
-
 #include "Translation.h"
 
 #include "../../../Components/Grouping/Transform.h"

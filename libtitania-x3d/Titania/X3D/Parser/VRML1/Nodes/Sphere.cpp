@@ -62,7 +62,7 @@ const std::string   Sphere::typeName       = "Sphere";
 const std::string   Sphere::containerField = "children";
 
 Sphere::Fields::Fields () :
-	  radius (new X3D::SFFloat (1))
+	radius (new X3D::SFFloat (1))
 { }
 
 Sphere::Sphere (X3D::X3DExecutionContext* const executionContext) :

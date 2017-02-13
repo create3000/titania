@@ -111,24 +111,24 @@ Material::convert (Converter* const converter)
 	if (not ambientColor () .empty ())
 	{
 		float h, s, v;
-	
+
 		ambientColor () [0] .getHSV (h, s, v);
-	
+
 		material -> ambientIntensity () = v;
 	}
 
 	if (not diffuseColor () .empty ())
 		material -> diffuseColor () = diffuseColor () [0];
-	
+
 	if (not specularColor () .empty ())
 		material -> specularColor () = specularColor () [0];
-	
+
 	if (not emissiveColor () .empty ())
 		material -> emissiveColor () = emissiveColor () [0];
-	
+
 	if (not shininess () .empty ())
 		material -> shininess () = shininess () [0];
-	
+
 	if (not transparency () .empty ())
 		material -> transparency () = transparency () [0];
 

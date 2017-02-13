@@ -50,6 +50,7 @@
 
 #include "MatrixTransform.h"
 
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -62,7 +63,7 @@ const std::string   MatrixTransform::typeName       = "MatrixTransform";
 const std::string   MatrixTransform::containerField = "children";
 
 MatrixTransform::Fields::Fields () :
-	  matrix (new X3D::SFMatrix4f ())
+	matrix (new X3D::SFMatrix4f ())
 { }
 
 MatrixTransform::MatrixTransform (X3D::X3DExecutionContext* const executionContext) :
@@ -70,7 +71,7 @@ MatrixTransform::MatrixTransform (X3D::X3DExecutionContext* const executionConte
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "matrix", matrix ());
+	addField (initializeOnly, "matrix",   matrix ());
 	addField (initializeOnly, "children", children ());
 }
 
@@ -82,7 +83,12 @@ MatrixTransform::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 MatrixTransform::convert (Converter* const converter)
-{ }
+{
+	if (converter -> transforms .empty ())
+		return;
+
+	converter -> transforms .back () -> setMatrix (matrix () .getValue ());
+}
 
 MatrixTransform::~MatrixTransform ()
 { }

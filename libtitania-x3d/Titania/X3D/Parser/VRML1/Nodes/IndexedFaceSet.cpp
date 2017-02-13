@@ -57,8 +57,8 @@
 #include "../../../Components/Shape/Appearance.h"
 #include "../../../Components/Shape/Shape.h"
 #include "../../../Components/Shape/X3DMaterialNode.h"
-#include "../../../Components/Texturing/X3DTextureNode.h"
 #include "../../../Components/Texturing/X3DTextureCoordinateNode.h"
+#include "../../../Components/Texturing/X3DTextureNode.h"
 #include "../../../Components/Texturing/X3DTextureTransformNode.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
@@ -149,8 +149,8 @@ IndexedFaceSet::convert (Converter* const converter)
 			geometry -> normalIndex ()     = normalIndex ();
 		}
 		else if (converter -> normalBindings .back () -> getValue () == "PER_VERTEX")
-			;
-		else //if (converter -> normalBindings .back () -> getValue () == "PER_VERTEX_INDEXED")
+		;
+		else     //if (converter -> normalBindings .back () -> getValue () == "PER_VERTEX_INDEXED")
 		{
 			geometry -> normalIndex () = normalIndex ();
 		}

@@ -48,7 +48,6 @@
  *
  ******************************************************************************/
 
-
 #include "Cube.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -63,9 +62,9 @@ const std::string   Cube::typeName       = "Cube";
 const std::string   Cube::containerField = "children";
 
 Cube::Fields::Fields () :
-	   width (new X3D::SFFloat (2)),
-	  height (new X3D::SFFloat (2)),
-	   depth (new X3D::SFFloat (2))
+	 width (new X3D::SFFloat (2)),
+	height (new X3D::SFFloat (2)),
+	 depth (new X3D::SFFloat (2))
 { }
 
 Cube::Cube (X3D::X3DExecutionContext* const executionContext) :

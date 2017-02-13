@@ -63,7 +63,7 @@ const std::string   TextureCoordinate2::typeName       = "TextureCoordinate2";
 const std::string   TextureCoordinate2::containerField = "children";
 
 TextureCoordinate2::Fields::Fields () :
-	   point (new X3D::MFVec2f ({ X3D::Vector2f (0, 0) }))
+	point (new X3D::MFVec2f ({ X3D::Vector2f (0, 0) }))
 { }
 
 X3D::X3DBaseNode*

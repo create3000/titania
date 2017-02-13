@@ -90,13 +90,13 @@ public:
 
 	bool
 	getCCW () const;
-	
+
 	bool
 	getSolid () const;
-	
+
 	bool
 	getConvex () const;
-	
+
 	float
 	getCreaseAngle () const
 	{ return *fields .creaseAngle; }
