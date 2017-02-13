@@ -49,6 +49,8 @@
  ******************************************************************************/
 #include "Texture2Transform.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Texturing/TextureTransform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -70,16 +72,35 @@ Texture2Transform::Texture2Transform (X3D::X3DExecutionContext* const executionC
 	          fields ()
 {
 	addField (initializeOnly, "translation", *fields .translation);
-	addField (initializeOnly, "rotation", *fields .rotation);
+	addField (initializeOnly, "rotation",    *fields .rotation);
 	addField (initializeOnly, "scaleFactor", *fields .scaleFactor);
-	addField (initializeOnly, "center", *fields .center);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "center",      *fields .center);
+	addField (initializeOnly, "children",    *fields .children);
 }
 
 void
 Texture2Transform::push (Converter* const converter)
 {
+	if (use (converter))
+		return;
 
+	// Create nodes.
+
+	const auto textureTransform = converter -> scene -> createNode <X3D::TextureTransform> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), textureTransform);
+
+	// Assign values.
+
+	textureTransform -> translation () = *fields .translation;
+	textureTransform -> rotation ()    = *fields .rotation;
+	textureTransform -> scale ()       = *fields .scaleFactor;
+	textureTransform -> center ()      = *fields .center;
+
+	converter -> textureTransforms .emplace_back (textureTransform);
 }
 
 void

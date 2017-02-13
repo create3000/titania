@@ -51,6 +51,7 @@
 #include "Parser.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Grouping/Transform.h"
 #include "../Filter.h"
 #include "../Grammar.h"
 #include "../Parser.h"
@@ -159,6 +160,55 @@ Parser::convert ()
 		if (vrml1Node)
 			vrml1Node -> convert (&converter);
 	}
+}
+
+void
+Parser::optimize ()
+{
+	for (auto & child : scene -> getRootNodes ())
+		child = optimize (child);
+
+	scene -> getRootNodes () .remove (nullptr);
+}
+
+X3D::SFNode &
+Parser::optimize (X3D::SFNode & node)
+{
+	const auto transform = dynamic_cast <X3D::Transform*> (node .getValue ());
+
+	if (transform)
+	{
+		for (auto & child : transform -> children ())
+			child = optimize (child);
+	
+		transform -> children () .remove (nullptr);
+	
+		if (transform -> children () .size () == 0)
+		  return node = nullptr;
+
+		if (transform -> children () .size () == 1)
+		{
+			const auto child = dynamic_cast <X3D::Transform*> (transform -> children () [0] .getValue ());
+	
+			if (child)
+			{
+				bool onlyDefaults = true;
+	
+				onlyDefaults &= child -> translation ()      == X3D::Vector3f ();
+				onlyDefaults &= child -> rotation ()         == X3D::Rotation4d ();
+				onlyDefaults &= child -> scale ()            == X3D::Vector3f (1, 1, 1);
+				onlyDefaults &= child -> scaleOrientation () == X3D::Rotation4d ();
+				onlyDefaults &= child -> center ()           == X3D::Vector3f ();
+	
+				if (onlyDefaults)
+					transform -> children () = child -> children ();
+			}
+			else
+				node = transform -> children () [0];
+		}
+	}
+
+	return node;
 }
 
 void

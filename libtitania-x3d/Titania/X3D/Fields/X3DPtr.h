@@ -223,6 +223,14 @@ public:
 
 	///  @name Assignment operators
 
+	///  Assigns the nullptr and propagates an event.
+	X3DPtr &
+	operator = (std::nullptr_t)
+	{
+		setValue (nullptr);
+		return *this;
+	}
+
 	///  Assigns the X3DPtr and propagates an event.
 	X3DPtr &
 	operator = (const X3DPtr & other)

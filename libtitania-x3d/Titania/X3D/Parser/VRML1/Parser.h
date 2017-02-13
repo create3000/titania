@@ -87,6 +87,12 @@ private:
 	convert ();
 
 	void
+	optimize ();
+
+	X3D::SFNode &
+	optimize (X3D::SFNode & node);
+
+	void
 	comments ();
 
 	bool

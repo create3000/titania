@@ -49,6 +49,8 @@
  ******************************************************************************/
 #include "Texture2.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Texturing/ImageTexture.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -70,9 +72,9 @@ Texture2::Texture2 (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "filename", *fields .filename);
-	addField (initializeOnly, "image", *fields .image);
-	addField (initializeOnly, "wrapS", *fields .wrapS);
-	addField (initializeOnly, "wrapT", *fields .wrapT);
+	addField (initializeOnly, "image",    *fields .image);
+	addField (initializeOnly, "wrapS",    *fields .wrapS);
+	addField (initializeOnly, "wrapT",    *fields .wrapT);
 	addField (initializeOnly, "children", *fields .children);
 }
 
@@ -84,7 +86,27 @@ Texture2::push (Converter* const converter)
 
 void
 Texture2::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto texture = converter -> scene -> createNode <X3D::ImageTexture> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), texture);
+
+	// Assign values.
+
+	texture -> url ()     = { *fields .filename };
+	texture -> repeatS () = *fields .wrapS == "CLAMP" ? false : true;
+	texture -> repeatT () = *fields .wrapT == "CLAMP" ? false : true;
+
+	converter -> textures .emplace_back (texture);
+}
 
 Texture2::~Texture2 ()
 { }
