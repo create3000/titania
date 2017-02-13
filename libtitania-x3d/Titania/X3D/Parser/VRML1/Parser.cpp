@@ -177,37 +177,37 @@ Parser::optimize ()
 X3D::SFNode &
 Parser::optimize (X3D::SFNode & node)
 {
-	const auto transform = dynamic_cast <X3D::Transform*> (node .getValue ());
+	const auto groupNode = dynamic_cast <X3D::X3DGroupingNode*> (node .getValue ());
 
-	if (transform)
+	if (groupNode)
 	{
-		for (auto & child : transform -> children ())
+		for (auto & child : groupNode -> children ())
 			child = optimize (child);
 	
-		transform -> children () .remove (nullptr);
+		groupNode -> children () .remove (nullptr);
 	
-		if (transform -> children () .size () == 0)
+		if (groupNode -> children () .size () == 0)
 		  return node = nullptr;
 
-		if (transform -> children () .size () == 1)
+		if (groupNode -> children () .size () == 1)
 		{
-			const auto child = dynamic_cast <X3D::Transform*> (transform -> children () [0] .getValue ());
+			const auto transformNode = dynamic_cast <X3D::Transform*> (groupNode -> children () [0] .getValue ());
 	
-			if (child)
+			if (transformNode)
 			{
 				bool onlyDefaults = true;
 	
-				onlyDefaults &= child -> translation ()      == X3D::Vector3f ();
-				onlyDefaults &= child -> rotation ()         == X3D::Rotation4d ();
-				onlyDefaults &= child -> scale ()            == X3D::Vector3f (1, 1, 1);
-				onlyDefaults &= child -> scaleOrientation () == X3D::Rotation4d ();
-				onlyDefaults &= child -> center ()           == X3D::Vector3f ();
+				onlyDefaults &= transformNode -> translation ()      == X3D::Vector3f ();
+				onlyDefaults &= transformNode -> rotation ()         == X3D::Rotation4d ();
+				onlyDefaults &= transformNode -> scale ()            == X3D::Vector3f (1, 1, 1);
+				onlyDefaults &= transformNode -> scaleOrientation () == X3D::Rotation4d ();
+				onlyDefaults &= transformNode -> center ()           == X3D::Vector3f ();
 	
 				if (onlyDefaults)
-					transform -> children () = child -> children ();
+					groupNode -> children () = transformNode -> children ();
 			}
 			else
-				node = transform -> children () [0];
+				node = groupNode -> children () [0];
 		}
 	}
 
@@ -772,6 +772,8 @@ Parser::sfstringValue (X3D::SFString* _field)
 	// Parse SFEnum and SFBitMask
 
 	static const io::character VerticalBar ('|');
+
+	_field -> clear ();
 
 	std::string _Id;
 
