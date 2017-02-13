@@ -86,11 +86,11 @@ TextureCoordinate2::TextureCoordinate2 (X3D::X3DExecutionContext* const executio
 void
 TextureCoordinate2::push (Converter* const converter)
 {
-	const auto texCoord = converter -> scene -> createNode <X3D::TextureCoordinate> ();
+	const auto texCoordNode = converter -> scene -> createNode <X3D::TextureCoordinate> ();
 
-	texCoord -> point () = point ();
+	texCoordNode -> point () = point ();
 
-	converter -> texCoords .emplace_back (texCoord);
+	converter -> texCoords .emplace_back (texCoordNode);
 }
 
 void

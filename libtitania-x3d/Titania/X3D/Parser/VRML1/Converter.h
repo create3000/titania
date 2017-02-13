@@ -89,6 +89,7 @@ public:
 	const X3D::X3DScenePtr & scene;
 
 	std::vector <X3D::X3DPtr <X3D::Transform>>                transforms;
+	std::vector <X3D::X3DPtr <X3D::X3DGroupingNode>>          groups;
 	std::vector <X3D::X3DPtr <X3D::X3DMaterialNode>>          materials;
 	std::vector <X3D::X3DPtr <X3D::X3DTextureNode>>           textures;
 	std::vector <X3D::X3DPtr <X3D::X3DTextureTransformNode>>  textureTransforms;
@@ -106,6 +107,7 @@ private:
 	///  @name Members
 
 	std::vector <size_t> transformsSize;
+	std::vector <size_t> groupsSize;
 	std::vector <size_t> materialsSize;
 	std::vector <size_t> texturesSize;
 	std::vector <size_t> textureTransformsSize;

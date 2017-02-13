@@ -50,6 +50,8 @@
 
 #include "Switch.h"
 
+#include "../../../Components/Grouping/Switch.h"
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -73,7 +75,7 @@ Switch::Switch (X3D::X3DExecutionContext* const executionContext) :
 	//addType (X3D::X3DConstants::VRML1Switch);
 
 	addField (initializeOnly, "whichChild", whichChild ());
-	addField (initializeOnly, "children", children ());
+	addField (initializeOnly, "children",   children ());
 }
 
 X3D::X3DBaseNode*
@@ -84,7 +86,57 @@ Switch::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 Switch::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create Transform node.
+
+	const auto transformNode = converter -> scene -> createNode <X3D::Transform> ();
+	const auto switchNode    = converter -> scene -> createNode <X3D::Switch> ();
+
+	// Set values.
+
+	transformNode -> children () .emplace_back (switchNode);
+
+	switchNode -> whichChoice () = whichChild ();
+
+	// Add root node if needed or add as child.
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (transformNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (transformNode);
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), transformNode);
+
+	// Convert children.
+
+	converter -> save ();
+	converter -> transforms .emplace_back (transformNode);
+	converter -> groups     .emplace_back (switchNode);
+
+	for (const auto & node : children ())
+	{
+		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
+
+		if (vrml1Node)
+			vrml1Node -> push (converter);
+	}
+
+	for (const auto & node : children ())
+	{
+		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
+
+		if (vrml1Node)
+			vrml1Node -> convert (converter);
+	}
+
+	converter -> restore ();
+}
 
 Switch::~Switch ()
 { }

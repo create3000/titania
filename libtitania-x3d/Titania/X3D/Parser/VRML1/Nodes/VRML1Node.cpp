@@ -83,7 +83,7 @@ VRML1Node::use (Converter* const converter)
 		if (converter -> transforms .empty ())
 			converter -> scene -> getRootNodes () .emplace_back (transform);
 		else
-			converter -> transforms .back () -> children () .emplace_back (transform);
+			converter -> groups .back () -> children () .emplace_back (transform);
 
 		return true;
 	}

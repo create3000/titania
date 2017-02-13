@@ -101,12 +101,12 @@ Material::convert (Converter* const converter)
 
 	// Create nodes.
 
-	const auto material = converter -> scene -> createNode <X3D::Material> ();
+	const auto materialNode = converter -> scene -> createNode <X3D::Material> ();
 
 	// Set name.
 
 	if (not getName () .empty ())
-		converter -> scene -> updateNamedNode (getName (), material);
+		converter -> scene -> updateNamedNode (getName (), materialNode);
 
 	// Assign values.
 
@@ -116,25 +116,25 @@ Material::convert (Converter* const converter)
 
 		ambientColor () [0] .getHSV (h, s, v);
 
-		material -> ambientIntensity () = v;
+		materialNode -> ambientIntensity () = v;
 	}
 
 	if (not diffuseColor () .empty ())
-		material -> diffuseColor () = diffuseColor () [0];
+		materialNode -> diffuseColor () = diffuseColor () [0];
 
 	if (not specularColor () .empty ())
-		material -> specularColor () = specularColor () [0];
+		materialNode -> specularColor () = specularColor () [0];
 
 	if (not emissiveColor () .empty ())
-		material -> emissiveColor () = emissiveColor () [0];
+		materialNode -> emissiveColor () = emissiveColor () [0];
 
 	if (not shininess () .empty ())
-		material -> shininess () = shininess () [0];
+		materialNode -> shininess () = shininess () [0];
 
 	if (not transparency () .empty ())
-		material -> transparency () = transparency () [0];
+		materialNode -> transparency () = transparency () [0];
 
-	converter -> materials .emplace_back (material);
+	converter -> materials .emplace_back (materialNode);
 }
 
 Material::~Material ()

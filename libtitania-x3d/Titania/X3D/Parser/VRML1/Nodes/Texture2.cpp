@@ -102,20 +102,20 @@ Texture2::convert (Converter* const converter)
 
 	// Create nodes.
 
-	const auto texture = converter -> scene -> createNode <X3D::ImageTexture> ();
+	const auto textureNode = converter -> scene -> createNode <X3D::ImageTexture> ();
 
 	// Set name.
 
 	if (not getName () .empty ())
-		converter -> scene -> updateNamedNode (getName (), texture);
+		converter -> scene -> updateNamedNode (getName (), textureNode);
 
 	// Assign values.
 
-	texture -> url ()     = { filename () };
-	texture -> repeatS () = wrapS () == "CLAMP" ? false : true;
-	texture -> repeatT () = wrapT () == "CLAMP" ? false : true;
+	textureNode -> url ()     = { filename () };
+	textureNode -> repeatS () = wrapS () == "CLAMP" ? false : true;
+	textureNode -> repeatT () = wrapT () == "CLAMP" ? false : true;
 
-	converter -> textures .emplace_back (texture);
+	converter -> textures .emplace_back (textureNode);
 }
 
 Texture2::~Texture2 ()

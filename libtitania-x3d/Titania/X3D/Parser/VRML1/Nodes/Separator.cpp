@@ -91,24 +91,25 @@ Separator::convert (Converter* const converter)
 
 	// Create Transform node.
 
-	const auto transform = converter -> scene -> createNode <X3D::Transform> ();
+	const auto transformNode = converter -> scene -> createNode <X3D::Transform> ();
 
 	// Add root node if needed or add as child.
 
 	if (converter -> transforms .empty ())
-		converter -> scene -> getRootNodes () .emplace_back (transform);
+		converter -> scene -> getRootNodes () .emplace_back (transformNode);
 	else
-		converter -> transforms .back () -> children () .emplace_back (transform);
+		converter -> groups .back () -> children () .emplace_back (transformNode);
 
 	// Set name.
 
 	if (not getName () .empty ())
-		converter -> scene -> updateNamedNode (getName (), transform);
+		converter -> scene -> updateNamedNode (getName (), transformNode);
 
 	// Convert children.
 
 	converter -> save ();
-	converter -> transforms .emplace_back (transform);
+	converter -> transforms .emplace_back (transformNode);
+	converter -> groups     .emplace_back (transformNode);
 
 	for (const auto & node : children ())
 	{

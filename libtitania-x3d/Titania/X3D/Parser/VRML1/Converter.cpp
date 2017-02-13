@@ -65,6 +65,7 @@ namespace VRML1 {
 Converter::Converter (const X3D::X3DScenePtr & scene) :
 	                scene (scene),
 	           transforms (),
+	               groups (),
 	            materials ({ scene -> createNode <X3D::Material> () }),
 	             textures ({ nullptr }),
 	    textureTransforms ({ nullptr }),
@@ -75,6 +76,7 @@ Converter::Converter (const X3D::X3DScenePtr & scene) :
 	     materialBindings (),
 	       normalBindings (),
 	       transformsSize (),
+	           groupsSize (),
 	         texturesSize (),
 	textureTransformsSize (),
 	        texCoordsSize (),
@@ -89,6 +91,7 @@ void
 Converter::save ()
 {
 	transformsSize        .emplace_back (transforms        .size ());
+	groupsSize            .emplace_back (groups            .size ());
 	materialsSize         .emplace_back (materials         .size ());
 	texturesSize          .emplace_back (textures          .size ());
 	textureTransformsSize .emplace_back (textureTransforms .size ());
@@ -104,6 +107,7 @@ void
 Converter::restore ()
 {
 	transforms        .resize (transformsSize        .back ());
+	groups            .resize (groupsSize            .back ());
 	materials         .resize (materialsSize         .back ());
 	textures          .resize (texturesSize          .back ());
 	textureTransforms .resize (textureTransformsSize .back ());
@@ -115,6 +119,7 @@ Converter::restore ()
 	normalBindings    .resize (normalBindingsSize    .back ());
 
 	transformsSize        .pop_back ();
+	groupsSize            .pop_back ();
 	materialsSize         .pop_back ();
 	texturesSize          .pop_back ();
 	textureTransformsSize .pop_back ();

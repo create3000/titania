@@ -86,11 +86,11 @@ Normal::create (X3D::X3DExecutionContext* const executionContext) const
 void
 Normal::push (Converter* const converter)
 {
-	const auto normal = converter -> scene -> createNode <X3D::Normal> ();
+	const auto normalNode = converter -> scene -> createNode <X3D::Normal> ();
 
-	normal -> vector () = vector ();
+	normalNode -> vector () = vector ();
 
-	converter -> normals .emplace_back (normal);
+	converter -> normals .emplace_back (normalNode);
 }
 
 void

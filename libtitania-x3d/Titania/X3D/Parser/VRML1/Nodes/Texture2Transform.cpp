@@ -98,21 +98,21 @@ Texture2Transform::push (Converter* const converter)
 
 	// Create nodes.
 
-	const auto textureTransform = converter -> scene -> createNode <X3D::TextureTransform> ();
+	const auto textureTransformNode = converter -> scene -> createNode <X3D::TextureTransform> ();
 
 	// Set name.
 
 	if (not getName () .empty ())
-		converter -> scene -> updateNamedNode (getName (), textureTransform);
+		converter -> scene -> updateNamedNode (getName (), textureTransformNode);
 
 	// Assign values.
 
-	textureTransform -> translation () = translation ();
-	textureTransform -> rotation ()    = rotation ();
-	textureTransform -> scale ()       = scaleFactor ();
-	textureTransform -> center ()      = center ();
+	textureTransformNode -> translation () = translation ();
+	textureTransformNode -> rotation ()    = rotation ();
+	textureTransformNode -> scale ()       = scaleFactor ();
+	textureTransformNode -> center ()      = center ();
 
-	converter -> textureTransforms .emplace_back (textureTransform);
+	converter -> textureTransforms .emplace_back (textureTransformNode);
 }
 
 void

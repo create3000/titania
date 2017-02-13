@@ -108,30 +108,30 @@ IndexedFaceSet::convert (Converter* const converter)
 
 	// Create nodes.
 
-	const auto shape      = converter -> scene -> createNode <X3D::Shape> ();
-	const auto appearance = converter -> scene -> createNode <X3D::Appearance> ();
-	const auto geometry   = converter -> scene -> createNode <X3D::IndexedFaceSet> ();
+	const auto shapeNode      = converter -> scene -> createNode <X3D::Shape> ();
+	const auto appearanceNode = converter -> scene -> createNode <X3D::Appearance> ();
+	const auto geometryNode   = converter -> scene -> createNode <X3D::IndexedFaceSet> ();
 
 	// Set name.
 
 	if (not getName () .empty ())
-		converter -> scene -> updateNamedNode (getName (), shape);
+		converter -> scene -> updateNamedNode (getName (), shapeNode);
 
 	// Assign values.
 
-	shape -> appearance () = appearance;
-	shape -> geometry ()   = geometry;
+	shapeNode -> appearance () = appearanceNode;
+	shapeNode -> geometry ()   = geometryNode;
 
-	appearance -> material ()         = converter -> materials         .back ();
-	appearance -> texture ()          = converter -> textures          .back ();
-	appearance -> textureTransform () = converter -> textureTransforms .back ();
+	appearanceNode -> material ()         = converter -> materials         .back ();
+	appearanceNode -> texture ()          = converter -> textures          .back ();
+	appearanceNode -> textureTransform () = converter -> textureTransforms .back ();
 
 	if (not converter -> shapeHints .empty ())
 	{
-		geometry -> ccw ()         = converter -> shapeHints .back () -> getCCW ();
-		geometry -> solid ()       = converter -> shapeHints .back () -> getSolid ();
-		geometry -> convex ()      = converter -> shapeHints .back () -> getConvex ();
-		geometry -> creaseAngle () = converter -> shapeHints .back () -> getCreaseAngle ();
+		geometryNode -> ccw ()         = converter -> shapeHints .back () -> getCCW ();
+		geometryNode -> solid ()       = converter -> shapeHints .back () -> getSolid ();
+		geometryNode -> convex ()      = converter -> shapeHints .back () -> getConvex ();
+		geometryNode -> creaseAngle () = converter -> shapeHints .back () -> getCreaseAngle ();
 	}
 
 	if (not converter -> normalBindings .empty ())
@@ -139,38 +139,38 @@ IndexedFaceSet::convert (Converter* const converter)
 		if (converter -> normalBindings .back () -> getValue () == "OVERALL")
 		{
 			for (const auto & index : coordIndex ())
-				geometry -> normalIndex () .emplace_back (index < 0 ? -1 : 0);
+				geometryNode -> normalIndex () .emplace_back (index < 0 ? -1 : 0);
 		}
 		else if (converter -> normalBindings .back () -> getValue () == "PER_FACE")
 		{
-			geometry -> normalPerVertex () = false;
+			geometryNode -> normalPerVertex () = false;
 		}
 		else if (converter -> normalBindings .back () -> getValue () == "PER_FACE_INDEXED")
 		{
-			geometry -> normalPerVertex () = false;
-			geometry -> normalIndex ()     = normalIndex ();
+			geometryNode -> normalPerVertex () = false;
+			geometryNode -> normalIndex ()     = normalIndex ();
 		}
 		else if (converter -> normalBindings .back () -> getValue () == "PER_VERTEX")
 		;
 		else     //if (converter -> normalBindings .back () -> getValue () == "PER_VERTEX_INDEXED")
 		{
-			geometry -> normalIndex () = normalIndex ();
+			geometryNode -> normalIndex () = normalIndex ();
 		}
 	}
 	else
-		geometry -> normalIndex () = normalIndex ();
+		geometryNode -> normalIndex () = normalIndex ();
 
-	geometry -> texCoordIndex () = textureCoordIndex ();
-	geometry -> coordIndex ()    = coordIndex ();
+	geometryNode -> texCoordIndex () = textureCoordIndex ();
+	geometryNode -> coordIndex ()    = coordIndex ();
 
-	geometry -> texCoord () = converter -> texCoords .back ();
-	geometry -> normal ()   = converter -> normals   .back ();
-	geometry -> coord ()    = converter -> coords    .back ();
+	geometryNode -> texCoord () = converter -> texCoords .back ();
+	geometryNode -> normal ()   = converter -> normals   .back ();
+	geometryNode -> coord ()    = converter -> coords    .back ();
 
 	if (converter -> transforms .empty ())
-		converter -> scene -> getRootNodes () .emplace_back (shape);
+		converter -> scene -> getRootNodes () .emplace_back (shapeNode);
 	else
-		converter -> transforms .back () -> children () .emplace_back (shape);
+		converter -> groups .back () -> children () .emplace_back (shapeNode);
 }
 
 IndexedFaceSet::~IndexedFaceSet ()

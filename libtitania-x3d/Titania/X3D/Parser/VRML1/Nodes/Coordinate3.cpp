@@ -86,11 +86,11 @@ Coordinate3::create (X3D::X3DExecutionContext* const executionContext) const
 void
 Coordinate3::push (Converter* const converter)
 {
-	const auto coord = converter -> scene -> createNode <X3D::Coordinate> ();
+	const auto coordNode = converter -> scene -> createNode <X3D::Coordinate> ();
 
-	coord -> point () = point ();
+	coordNode -> point () = point ();
 
-	converter -> coords .emplace_back (coord);
+	converter -> coords .emplace_back (coordNode);
 }
 
 void
