@@ -124,10 +124,6 @@ public:
 
 	virtual
 	void
-	push (Converter* const converter) final override;
-
-	virtual
-	void
 	convert (Converter* const converter) final override;
 
 	///  @name Desstruction
@@ -142,6 +138,9 @@ private:
 	virtual
 	X3D::X3DBaseNode*
 	create (X3D::X3DExecutionContext* const) const final override;
+
+	bool
+	use (Converter* const converter);
 
 	///  @name Static members
 

@@ -106,10 +106,6 @@ public:
 
 	virtual
 	void
-	push (Converter* const converter) final override;
-
-	virtual
-	void
 	convert (Converter* const converter) final override;
 
 	///  @name Desstruction

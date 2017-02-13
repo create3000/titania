@@ -83,19 +83,45 @@ TextureCoordinate2::TextureCoordinate2 (X3D::X3DExecutionContext* const executio
 	addField (initializeOnly, "children", children ());
 }
 
-void
-TextureCoordinate2::push (Converter* const converter)
+bool
+TextureCoordinate2::use (Converter* const converter)
 {
+	try
+	{
+		if (getName () .empty ())
+			return false;
+
+		converter -> texCoords .emplace_back (converter -> scene -> getNamedNode (getName ()));
+
+		return true;
+	}
+	catch (const X3D::X3DError &)
+	{
+		return false;
+	}
+}
+
+void
+TextureCoordinate2::convert (Converter* const converter)
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
 	const auto texCoordNode = converter -> scene -> createNode <X3D::TextureCoordinate> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), texCoordNode);
+
+	// Assign values.
 
 	texCoordNode -> point () = point ();
 
 	converter -> texCoords .emplace_back (texCoordNode);
 }
-
-void
-TextureCoordinate2::convert (Converter* const converter)
-{ }
 
 TextureCoordinate2::~TextureCoordinate2 ()
 { }

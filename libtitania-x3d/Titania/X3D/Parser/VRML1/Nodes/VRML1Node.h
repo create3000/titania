@@ -79,11 +79,6 @@ public:
 
 	virtual
 	void
-	push (Converter* const converter)
-	{ }
-
-	virtual
-	void
 	convert (Converter* const converter) = 0;
 
 

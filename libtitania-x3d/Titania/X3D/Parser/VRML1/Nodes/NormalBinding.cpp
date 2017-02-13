@@ -83,14 +83,10 @@ NormalBinding::create (X3D::X3DExecutionContext* const executionContext) const
 }
 
 void
-NormalBinding::push (Converter* const converter)
+NormalBinding::convert (Converter* const converter)
 {
 	converter -> normalBindings .emplace_back (this);
 }
-
-void
-NormalBinding::convert (Converter* const converter)
-{ }
 
 NormalBinding::~NormalBinding ()
 { }

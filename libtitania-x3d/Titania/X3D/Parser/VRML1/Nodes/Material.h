@@ -155,6 +155,9 @@ private:
 	X3D::X3DBaseNode*
 	create (X3D::X3DExecutionContext* const) const final override;
 
+	bool
+	use (Converter* const converter);
+
 	///  @name Static members
 
 	static const ComponentType component;

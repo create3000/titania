@@ -89,7 +89,11 @@ Scale::convert (Converter* const converter)
 	if (converter -> transforms .empty ())
 		return;
 
-	converter -> transforms .back () -> scale () = scaleFactor ();
+	X3D::Matrix4d matrix;
+
+	matrix .scale (scaleFactor () .getValue ());
+
+	converter -> transforms .back () -> setMatrix (matrix * converter -> transforms .back () -> getMatrix ());
 }
 
 Scale::~Scale ()

@@ -118,14 +118,10 @@ ShapeHints::getConvex () const
 }
 
 void
-ShapeHints::push (Converter* const converter)
+ShapeHints::convert (Converter* const converter)
 {
 	converter -> shapeHints .emplace_back (this);
 }
-
-void
-ShapeHints::convert (Converter* const converter)
-{ }
 
 ShapeHints::~ShapeHints ()
 { }

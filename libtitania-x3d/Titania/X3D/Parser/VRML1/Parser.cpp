@@ -117,6 +117,7 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	nodes .emplace ("TextureCoordinate2", [ ] (X3D::X3DExecutionContext* const executionContext) { return new TextureCoordinate2 (executionContext); });
 	nodes .emplace ("Text",               [ ] (X3D::X3DExecutionContext* const executionContext) { return new Text               (executionContext); });
 	nodes .emplace ("Transform",          [ ] (X3D::X3DExecutionContext* const executionContext) { return new Transform          (executionContext); });
+	nodes .emplace ("TransformSeparator", [ ] (X3D::X3DExecutionContext* const executionContext) { return new Separator          (executionContext); });
 	nodes .emplace ("Translation",        [ ] (X3D::X3DExecutionContext* const executionContext) { return new Translation        (executionContext); });
 	nodes .emplace ("WorldInfo",          [ ] (X3D::X3DExecutionContext* const executionContext) { return new WorldInfo          (executionContext); });
 	nodes .emplace ("WWWAnchor",          [ ] (X3D::X3DExecutionContext* const executionContext) { return new WWWAnchor          (executionContext); });
@@ -140,7 +141,7 @@ Parser::parseIntoScene ()
 
 		convert ();
 
-		optimize ();
+		//optimize ();
 	}
 	catch (const X3DError & error)
 	{

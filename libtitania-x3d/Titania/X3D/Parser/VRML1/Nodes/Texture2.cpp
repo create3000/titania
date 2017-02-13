@@ -90,9 +90,23 @@ Texture2::create (X3D::X3DExecutionContext* const executionContext) const
 	return new Texture2 (executionContext);
 }
 
-void
-Texture2::push (Converter* const converter)
-{ }
+bool
+Texture2::use (Converter* const converter)
+{
+	try
+	{
+		if (getName () .empty ())
+			return false;
+
+		converter -> textures .emplace_back (converter -> scene -> getNamedNode (getName ()));
+
+		return true;
+	}
+	catch (const X3D::X3DError &)
+	{
+		return false;
+	}
+}
 
 void
 Texture2::convert (Converter* const converter)

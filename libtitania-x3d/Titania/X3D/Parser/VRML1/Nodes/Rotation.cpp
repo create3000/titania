@@ -89,7 +89,11 @@ Rotation::convert (Converter* const converter)
 	if (converter -> transforms .empty ())
 		return;
 
-	converter -> transforms .back () -> rotation () = rotation ();
+	X3D::Matrix4d matrix;
+
+	matrix .rotate (rotation () .getValue ());
+
+	converter -> transforms .back () -> setMatrix (matrix * converter -> transforms .back () -> getMatrix ());
 }
 
 Rotation::~Rotation ()

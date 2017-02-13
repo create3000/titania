@@ -83,19 +83,45 @@ Coordinate3::create (X3D::X3DExecutionContext* const executionContext) const
 	return new Coordinate3 (executionContext);
 }
 
-void
-Coordinate3::push (Converter* const converter)
+bool
+Coordinate3::use (Converter* const converter)
 {
+	try
+	{
+		if (getName () .empty ())
+			return false;
+
+		converter -> coords .emplace_back (converter -> scene -> getNamedNode (getName ()));
+
+		return true;
+	}
+	catch (const X3D::X3DError &)
+	{
+		return false;
+	}
+}
+
+void
+Coordinate3::convert (Converter* const converter)
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
 	const auto coordNode = converter -> scene -> createNode <X3D::Coordinate> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), coordNode);
+
+	// Assign values.
 
 	coordNode -> point () = point ();
 
 	converter -> coords .emplace_back (coordNode);
 }
-
-void
-Coordinate3::convert (Converter* const converter)
-{ }
 
 Coordinate3::~Coordinate3 ()
 { }

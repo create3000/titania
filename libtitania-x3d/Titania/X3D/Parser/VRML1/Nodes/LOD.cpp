@@ -127,14 +127,6 @@ LOD::convert (Converter* const converter)
 		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
 
 		if (vrml1Node)
-			vrml1Node -> push (converter);
-	}
-
-	for (const auto & node : children ())
-	{
-		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
-
-		if (vrml1Node)
 			vrml1Node -> convert (converter);
 	}
 

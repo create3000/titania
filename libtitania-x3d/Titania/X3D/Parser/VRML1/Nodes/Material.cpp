@@ -93,6 +93,24 @@ Material::create (X3D::X3DExecutionContext* const executionContext) const
 	return new Material (executionContext);
 }
 
+bool
+Material::use (Converter* const converter)
+{
+	try
+	{
+		if (getName () .empty ())
+			return false;
+
+		converter -> materials .emplace_back (converter -> scene -> getNamedNode (getName ()));
+
+		return true;
+	}
+	catch (const X3D::X3DError &)
+	{
+		return false;
+	}
+}
+
 void
 Material::convert (Converter* const converter)
 {

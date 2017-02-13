@@ -97,11 +97,15 @@ Transform::convert (Converter* const converter)
 	if (converter -> transforms .empty ())
 		return;
 
-	converter -> transforms .back () -> translation ()      = translation ();
-	converter -> transforms .back () -> rotation ()         = rotation ();
-	converter -> transforms .back () -> scale ()            = scaleFactor ();
-	converter -> transforms .back () -> scaleOrientation () = scaleOrientation ();
-	converter -> transforms .back () -> center ()           = center ();
+	X3D::Matrix4d matrix;
+
+	matrix .set (translation ()      .getValue (),
+	             rotation ()         .getValue (),
+	             scaleFactor ()      .getValue (),
+	             scaleOrientation () .getValue (),
+	             center ()           .getValue ());
+
+	converter -> transforms .back () -> setMatrix (matrix * converter -> transforms .back () -> getMatrix ());
 }
 
 Transform::~Transform ()

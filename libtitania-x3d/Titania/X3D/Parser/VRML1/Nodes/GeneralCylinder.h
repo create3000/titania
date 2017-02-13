@@ -128,6 +128,14 @@ public:
 	parts () const
 	{ return *fields .parts; }
 
+	///  @name Member access
+
+	bool
+	getBeginCap () const;
+	
+	bool
+	getEndCap () const;
+
 	///  @name Operations
 
 	virtual

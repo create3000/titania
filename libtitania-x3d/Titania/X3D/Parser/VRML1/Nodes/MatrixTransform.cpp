@@ -89,7 +89,7 @@ MatrixTransform::convert (Converter* const converter)
 	if (converter -> transforms .empty ())
 		return;
 
-	converter -> transforms .back () -> setMatrix (matrix () .getValue ());
+	converter -> transforms .back () -> setMatrix (X3D::Matrix4d (matrix () .getValue ()) * converter -> transforms .back () -> getMatrix ());
 }
 
 MatrixTransform::~MatrixTransform ()

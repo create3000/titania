@@ -89,7 +89,11 @@ Translation::convert (Converter* const converter)
 	if (converter -> transforms .empty ())
 		return;
 
-	converter -> transforms .back () -> translation () = translation ();
+	X3D::Matrix4d matrix;
+
+	matrix .translate (translation () .getValue ());
+
+	converter -> transforms .back () -> setMatrix (matrix * converter -> transforms .back () -> getMatrix ());
 }
 
 Translation::~Translation ()

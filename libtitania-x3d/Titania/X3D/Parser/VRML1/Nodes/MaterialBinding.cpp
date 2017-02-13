@@ -83,14 +83,10 @@ MaterialBinding::create (X3D::X3DExecutionContext* const executionContext) const
 }
 
 void
-MaterialBinding::push (Converter* const converter)
+MaterialBinding::convert (Converter* const converter)
 {
 	converter -> materialBindings .emplace_back (this);
 }
-
-void
-MaterialBinding::convert (Converter* const converter)
-{ }
 
 MaterialBinding::~MaterialBinding ()
 { }

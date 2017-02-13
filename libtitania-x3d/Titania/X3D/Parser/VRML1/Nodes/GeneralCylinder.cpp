@@ -50,8 +50,18 @@
 
 #include "GeneralCylinder.h"
 
+#include "../../../Components/Geometry3D/Extrusion.h"
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Shape/Appearance.h"
+#include "../../../Components/Shape/Shape.h"
+#include "../../../Components/Shape/X3DMaterialNode.h"
+#include "../../../Components/Texturing/X3DTextureNode.h"
+#include "../../../Components/Texturing/X3DTextureTransformNode.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
+#include "ShapeHints.h"
+
+#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -78,12 +88,12 @@ GeneralCylinder::GeneralCylinder (X3D::X3DExecutionContext* const executionConte
 {
 	//addType (X3D::X3DConstants::VRML1GeneralCylinder);
 
-	addField (initializeOnly, "spine", spine ());
+	addField (initializeOnly, "spine",        spine ());
 	addField (initializeOnly, "crossSection", crossSection ());
-	addField (initializeOnly, "profile", profile ());
-	addField (initializeOnly, "twist", twist ());
-	addField (initializeOnly, "parts", parts ());
-	addField (initializeOnly, "children", children ());
+	addField (initializeOnly, "profile",      profile ());
+	addField (initializeOnly, "twist",        twist ());
+	addField (initializeOnly, "parts",        parts ());
+	addField (initializeOnly, "children",     children ());
 }
 
 X3D::X3DBaseNode*
@@ -92,9 +102,68 @@ GeneralCylinder::create (X3D::X3DExecutionContext* const executionContext) const
 	return new GeneralCylinder (executionContext);
 }
 
+bool
+GeneralCylinder::getBeginCap () const
+{
+	static const std::regex sides (R"/(ALL|BOTTOM)/");
+
+	return std::regex_search (parts () .str (), sides);
+}
+
+bool
+GeneralCylinder::getEndCap () const
+{
+	static const std::regex bottom (R"/(ALL|TOP)/");
+
+	return std::regex_search (parts () .str (), bottom);
+}
+
 void
 GeneralCylinder::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto shapeNode      = converter -> scene -> createNode <X3D::Shape> ();
+	const auto appearanceNode = converter -> scene -> createNode <X3D::Appearance> ();
+	const auto geometryNode   = converter -> scene -> createNode <X3D::Extrusion> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), shapeNode);
+
+	// Assign values.
+
+	shapeNode -> appearance () = appearanceNode;
+	shapeNode -> geometry ()   = geometryNode;
+
+	appearanceNode -> material ()         = converter -> materials         .back ();
+	appearanceNode -> texture ()          = converter -> textures          .back ();
+	appearanceNode -> textureTransform () = converter -> textureTransforms .back ();
+
+	if (not converter -> shapeHints .empty ())
+	{
+		geometryNode -> ccw ()         = converter -> shapeHints .back () -> getCCW ();
+		geometryNode -> solid ()       = converter -> shapeHints .back () -> getSolid ();
+		geometryNode -> convex ()      = converter -> shapeHints .back () -> getConvex ();
+		geometryNode -> creaseAngle () = converter -> shapeHints .back () -> creaseAngle ();
+	}
+
+	geometryNode -> spine ()        = spine ();
+	geometryNode -> crossSection () = crossSection ();
+	//geometryNode -> orientation ()  = !twist ();
+	//geometryNode -> scale ()        = !profile ();
+	geometryNode -> beginCap ()     = getBeginCap ();
+	geometryNode -> endCap ()       = getEndCap ();
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (shapeNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (shapeNode);
+}
 
 GeneralCylinder::~GeneralCylinder ()
 { }

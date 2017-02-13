@@ -83,19 +83,45 @@ Normal::create (X3D::X3DExecutionContext* const executionContext) const
 	return new Normal (executionContext);
 }
 
-void
-Normal::push (Converter* const converter)
+bool
+Normal::use (Converter* const converter)
 {
+	try
+	{
+		if (getName () .empty ())
+			return false;
+
+		converter -> normals .emplace_back (converter -> scene -> getNamedNode (getName ()));
+
+		return true;
+	}
+	catch (const X3D::X3DError &)
+	{
+		return false;
+	}
+}
+
+void
+Normal::convert (Converter* const converter)
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
 	const auto normalNode = converter -> scene -> createNode <X3D::Normal> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), normalNode);
+
+	// Assign values.
 
 	normalNode -> vector () = vector ();
 
 	converter -> normals .emplace_back (normalNode);
 }
-
-void
-Normal::convert (Converter* const converter)
-{ }
 
 Normal::~Normal ()
 { }
