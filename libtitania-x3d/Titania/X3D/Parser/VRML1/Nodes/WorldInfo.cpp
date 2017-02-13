@@ -50,6 +50,8 @@
 
 #include "WorldInfo.h"
 
+#include "../../../Components/Core/WorldInfo.h"
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -64,7 +66,7 @@ const std::string   WorldInfo::typeName       = "WorldInfo";
 const std::string   WorldInfo::containerField = "children";
 
 WorldInfo::Fields::Fields () :
-	title (new X3D::SFString ({ "" })),
+	title (new X3D::SFString ("" )),
 	 info (new X3D::MFString ({ "" }))
 { }
 
@@ -88,7 +90,29 @@ WorldInfo::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 WorldInfo::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto infoNode = converter -> scene -> createNode <X3D::WorldInfo> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), infoNode);
+
+	// Assign values.
+
+	infoNode -> title () = title ();
+	infoNode -> info ()  = info ();
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (infoNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (infoNode);
+}
 
 WorldInfo::~WorldInfo ()
 { }

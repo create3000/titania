@@ -79,13 +79,13 @@ OrthographicCamera::OrthographicCamera (X3D::X3DExecutionContext* const executio
 {
 	//addType (X3D::X3DConstants::VRML1OrthographicCamera);
 
-	addField (initializeOnly, "position", position ());
-	addField (initializeOnly, "orientation", orientation ());
+	addField (initializeOnly, "position",      position ());
+	addField (initializeOnly, "orientation",   orientation ());
 	addField (initializeOnly, "focalDistance", focalDistance ());
-	addField (initializeOnly, "height", height ());
-	addField (initializeOnly, "nearDistance", nearDistance ());
-	addField (initializeOnly, "farDistance", farDistance ());
-	addField (initializeOnly, "children", children ());
+	addField (initializeOnly, "height",        height ());
+	addField (initializeOnly, "nearDistance",  nearDistance ());
+	addField (initializeOnly, "farDistance",   farDistance ());
+	addField (initializeOnly, "children",      children ());
 }
 
 X3D::X3DBaseNode*

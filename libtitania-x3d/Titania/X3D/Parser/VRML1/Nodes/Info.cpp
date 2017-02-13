@@ -50,6 +50,8 @@
 
 #include "Info.h"
 
+#include "../../../Components/Core/WorldInfo.h"
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -62,7 +64,7 @@ const std::string   Info::typeName       = "Info";
 const std::string   Info::containerField = "children";
 
 Info::Fields::Fields () :
-	string (new X3D::SFString ("<Undefined info>"))
+	string (new X3D::SFString (""))
 { }
 
 Info::Info (X3D::X3DExecutionContext* const executionContext) :
@@ -72,7 +74,7 @@ Info::Info (X3D::X3DExecutionContext* const executionContext) :
 {
 	//addType (X3D::X3DConstants::VRML1Info);
 
-	addField (initializeOnly, "string", string ());
+	addField (initializeOnly, "string",   string ());
 	addField (initializeOnly, "children", children ());
 }
 
@@ -84,7 +86,28 @@ Info::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 Info::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto infoNode = converter -> scene -> createNode <X3D::WorldInfo> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), infoNode);
+
+	// Assign values.
+
+	infoNode -> info () = { string () };
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (infoNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (infoNode);
+}
 
 Info::~Info ()
 { }

@@ -50,6 +50,8 @@
 
 #include "WWWAnchor.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Networking/Anchor.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -74,10 +76,10 @@ WWWAnchor::WWWAnchor (X3D::X3DExecutionContext* const executionContext) :
 {
 	//addType (X3D::X3DConstants::VRML1WWWAnchor);
 
-	addField (initializeOnly, "name", name ());
+	addField (initializeOnly, "name",        name ());
 	addField (initializeOnly, "description", description ());
-	addField (initializeOnly, "map", map ());
-	addField (initializeOnly, "children", children ());
+	addField (initializeOnly, "map",         map ());
+	addField (initializeOnly, "children",    children ());
 }
 
 X3D::X3DBaseNode*
@@ -88,7 +90,58 @@ WWWAnchor::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 WWWAnchor::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create Transform node.
+
+	const auto transformNode = converter -> scene -> createNode <X3D::Transform> ();
+	const auto anchorNode    = converter -> scene -> createNode <X3D::Anchor> ();
+
+	// Set values.
+
+	transformNode -> children () .emplace_back (anchorNode);
+
+	anchorNode -> url ()         = name ();
+	anchorNode -> description () = description ();
+
+	// Add root node if needed or add as child.
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (transformNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (transformNode);
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), transformNode);
+
+	// Convert children.
+
+	converter -> save ();
+	converter -> transforms .emplace_back (transformNode);
+	converter -> groups     .emplace_back (anchorNode);
+
+	for (const auto & node : children ())
+	{
+		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
+
+		if (vrml1Node)
+			vrml1Node -> push (converter);
+	}
+
+	for (const auto & node : children ())
+	{
+		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
+
+		if (vrml1Node)
+			vrml1Node -> convert (converter);
+	}
+
+	converter -> restore ();
+}
 
 WWWAnchor::~WWWAnchor ()
 { }

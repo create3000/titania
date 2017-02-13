@@ -50,6 +50,8 @@
 
 #include "WWWInline.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Networking/Inline.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -74,10 +76,10 @@ WWWInline::WWWInline (X3D::X3DExecutionContext* const executionContext) :
 {
 	//addType (X3D::X3DConstants::VRML1WWWInline);
 
-	addField (initializeOnly, "name", name ());
-	addField (initializeOnly, "bboxSize", bboxSize ());
+	addField (initializeOnly, "name",       name ());
+	addField (initializeOnly, "bboxSize",   bboxSize ());
 	addField (initializeOnly, "bboxCenter", bboxCenter ());
-	addField (initializeOnly, "children", children ());
+	addField (initializeOnly, "children",   children ());
 }
 
 X3D::X3DBaseNode*
@@ -88,7 +90,28 @@ WWWInline::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 WWWInline::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto inlineNode = converter -> scene -> createNode <X3D::Inline> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), inlineNode);
+
+	// Assign values.
+
+	inlineNode -> url () = name ();
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (inlineNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (inlineNode);
+}
 
 WWWInline::~WWWInline ()
 { }
