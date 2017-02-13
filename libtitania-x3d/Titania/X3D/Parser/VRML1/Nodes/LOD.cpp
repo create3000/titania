@@ -50,6 +50,8 @@
 
 #include "LOD.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Navigation/LOD.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -73,8 +75,8 @@ LOD::LOD (X3D::X3DExecutionContext* const executionContext) :
 {
 	//addType (X3D::X3DConstants::VRML1LOD);
 
-	addField (initializeOnly, "range", range ());
-	addField (initializeOnly, "center", center ());
+	addField (initializeOnly, "range",    range ());
+	addField (initializeOnly, "center",   center ());
 	addField (initializeOnly, "children", children ());
 }
 
@@ -86,7 +88,58 @@ LOD::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 LOD::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create Transform node.
+
+	const auto transformNode = converter -> scene -> createNode <X3D::Transform> ();
+	const auto lodNode       = converter -> scene -> createNode <X3D::LOD> ();
+
+	// Set values.
+
+	transformNode -> children () .emplace_back (lodNode);
+
+	lodNode -> range ()  = range ();
+	lodNode -> center () = center ();
+
+	// Add root node if needed or add as child.
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (transformNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (transformNode);
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), transformNode);
+
+	// Convert children.
+
+	converter -> save ();
+	converter -> transforms .emplace_back (transformNode);
+	converter -> groups     .emplace_back (lodNode);
+
+	for (const auto & node : children ())
+	{
+		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
+
+		if (vrml1Node)
+			vrml1Node -> push (converter);
+	}
+
+	for (const auto & node : children ())
+	{
+		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
+
+		if (vrml1Node)
+			vrml1Node -> convert (converter);
+	}
+
+	converter -> restore ();
+}
 
 LOD::~LOD ()
 { }
