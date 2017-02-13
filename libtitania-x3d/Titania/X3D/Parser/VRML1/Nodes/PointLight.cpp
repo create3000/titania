@@ -50,6 +50,8 @@
 
 #include "PointLight.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Lighting/PointLight.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -75,11 +77,11 @@ PointLight::PointLight (X3D::X3DExecutionContext* const executionContext) :
 {
 	//addType (X3D::X3DConstants::VRML1PointLight);
 
-	addField (initializeOnly, "on", on ());
+	addField (initializeOnly, "on",        on ());
 	addField (initializeOnly, "intensity", intensity ());
-	addField (initializeOnly, "color", color ());
-	addField (initializeOnly, "location", location ());
-	addField (initializeOnly, "children", children ());
+	addField (initializeOnly, "color",     color ());
+	addField (initializeOnly, "location",  location ());
+	addField (initializeOnly, "children",  children ());
 }
 
 X3D::X3DBaseNode*
@@ -90,7 +92,31 @@ PointLight::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 PointLight::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto lightNode = converter -> scene -> createNode <X3D::PointLight> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), lightNode);
+
+	// Assign values.
+
+	lightNode -> on ()        = on ();
+	lightNode -> intensity () = intensity ();
+	lightNode -> color ()     = color ();
+	lightNode -> location ()  = location ();
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (lightNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (lightNode);
+}
 
 PointLight::~PointLight ()
 { }

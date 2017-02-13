@@ -50,6 +50,8 @@
 
 #include "SpotLight.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Lighting/SpotLight.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -64,7 +66,7 @@ const std::string   SpotLight::containerField = "children";
 SpotLight::Fields::Fields () :
 	         on (new X3D::SFBool (true)),
 	  intensity (new X3D::SFFloat (1)),
-	      color (new X3D::SFVec3f (1, 1, 1)),
+	      color (new X3D::SFColor (1, 1, 1)),
 	   location (new X3D::SFVec3f (0, 0, 1)),
 	  direction (new X3D::SFVec3f (0, 0, -1)),
 	dropOffRate (new X3D::SFFloat (0)),
@@ -96,7 +98,33 @@ SpotLight::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 SpotLight::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto lightNode = converter -> scene -> createNode <X3D::SpotLight> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), lightNode);
+
+	// Assign values.
+
+	lightNode -> on ()          = on ();
+	lightNode -> intensity ()   = intensity ();
+	lightNode -> color ()       = color ();
+	lightNode -> location ()    = location ();
+	lightNode -> direction ()   = direction ();
+	lightNode -> cutOffAngle () = cutOffAngle ();
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (lightNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (lightNode);
+}
 
 SpotLight::~SpotLight ()
 { }

@@ -50,6 +50,8 @@
 
 #include "DirectionalLight.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Lighting/DirectionalLight.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -75,11 +77,11 @@ DirectionalLight::DirectionalLight (X3D::X3DExecutionContext* const executionCon
 {
 	//addType (X3D::X3DConstants::VRML1DirectionalLight);
 
-	addField (initializeOnly, "on", on ());
+	addField (initializeOnly, "on",        on ());
 	addField (initializeOnly, "intensity", intensity ());
-	addField (initializeOnly, "color", color ());
+	addField (initializeOnly, "color",     color ());
 	addField (initializeOnly, "direction", direction ());
-	addField (initializeOnly, "children", children ());
+	addField (initializeOnly, "children",  children ());
 }
 
 X3D::X3DBaseNode*
@@ -90,7 +92,31 @@ DirectionalLight::create (X3D::X3DExecutionContext* const executionContext) cons
 
 void
 DirectionalLight::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto lightNode = converter -> scene -> createNode <X3D::DirectionalLight> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), lightNode);
+
+	// Assign values.
+
+	lightNode -> on ()        = on ();
+	lightNode -> intensity () = intensity ();
+	lightNode -> color ()     = color ();
+	lightNode -> direction () = direction ();
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (lightNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (lightNode);
+}
 
 DirectionalLight::~DirectionalLight ()
 { }

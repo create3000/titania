@@ -104,11 +104,11 @@ public:
 	intensity () const
 	{ return *fields .intensity; }
 
-	SFVec3f &
+	SFColor &
 	color ()
 	{ return *fields .color; }
 
-	const SFVec3f &
+	const SFColor &
 	color () const
 	{ return *fields .color; }
 
@@ -177,7 +177,7 @@ private:
 
 		X3D::SFBool* const on;
 		X3D::SFFloat* const intensity;
-		X3D::SFVec3f* const color;
+		X3D::SFColor* const color;
 		X3D::SFVec3f* const location;
 		X3D::SFVec3f* const direction;
 		X3D::SFFloat* const dropOffRate;
