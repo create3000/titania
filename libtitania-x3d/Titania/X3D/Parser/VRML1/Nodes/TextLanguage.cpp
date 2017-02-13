@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "TextLanguage.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,9 +57,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType TextLanguage::component      = ComponentType::TITANIA;
+const std::string   TextLanguage::typeName       = "TextLanguage";
+const std::string   TextLanguage::containerField = "children";
+
 TextLanguage::Fields::Fields () :
-	textLanguage (new X3D::SFString ("")),
-	    children (new X3D::MFNode ())
+	textLanguage (new X3D::SFString (""))
 { }
 
 TextLanguage::TextLanguage (X3D::X3DExecutionContext* const executionContext) :
@@ -67,7 +71,13 @@ TextLanguage::TextLanguage (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "textLanguage", *fields .textLanguage);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+TextLanguage::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new TextLanguage (executionContext);
 }
 
 void

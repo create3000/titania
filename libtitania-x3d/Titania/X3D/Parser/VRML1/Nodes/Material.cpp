@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Material.h"
 
 #include "../../../Components/Shape/Material.h"
@@ -57,14 +58,17 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Material::component      = ComponentType::TITANIA;
+const std::string   Material::typeName       = "Material";
+const std::string   Material::containerField = "children";
+
 Material::Fields::Fields () :
 	 ambientColor (new X3D::MFColor ({ X3D::Color3f (0.2, 0.2, 0.2) })),
 	 diffuseColor (new X3D::MFColor ({ X3D::Color3f (0.8, 0.8, 0.8) })),
 	specularColor (new X3D::MFColor ({ X3D::Color3f (0, 0, 0) })),
 	emissiveColor (new X3D::MFColor ({ X3D::Color3f (0, 0, 0) })),
 	    shininess (new X3D::MFFloat ({ 0.2 })),
-	 transparency (new X3D::MFFloat ({ 0 })),
-	     children (new X3D::MFNode ())
+	 transparency (new X3D::MFFloat ({ 0 }))
 { }
 
 Material::Material (X3D::X3DExecutionContext* const executionContext) :
@@ -78,7 +82,13 @@ Material::Material (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "emissiveColor", *fields .emissiveColor);
 	addField (initializeOnly, "shininess",     *fields .shininess);
 	addField (initializeOnly, "transparency",  *fields .transparency);
-	addField (initializeOnly, "children",      *fields .children);
+	addField (initializeOnly, "children",      children ());
+}
+
+X3D::X3DBaseNode*
+Material::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Material (executionContext);
 }
 
 void

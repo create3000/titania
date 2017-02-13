@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "NormalBinding.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,9 +57,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType NormalBinding::component      = ComponentType::TITANIA;
+const std::string   NormalBinding::typeName       = "NormalBinding";
+const std::string   NormalBinding::containerField = "children";
+
 NormalBinding::Fields::Fields () :
-	   value (new X3D::SFString ("DEFAULT")),
-	children (new X3D::MFNode ())
+	   value (new X3D::SFString ("DEFAULT"))
 { }
 
 NormalBinding::NormalBinding (X3D::X3DExecutionContext* const executionContext) :
@@ -67,7 +71,13 @@ NormalBinding::NormalBinding (X3D::X3DExecutionContext* const executionContext) 
 	          fields ()
 {
 	addField (initializeOnly, "value",    *fields .value);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+NormalBinding::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new NormalBinding (executionContext);
 }
 
 void

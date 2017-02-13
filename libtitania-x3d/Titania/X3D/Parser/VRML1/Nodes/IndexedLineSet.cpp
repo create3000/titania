@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "IndexedLineSet.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,12 +57,15 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType IndexedLineSet::component      = ComponentType::TITANIA;
+const std::string   IndexedLineSet::typeName       = "IndexedLineSet";
+const std::string   IndexedLineSet::containerField = "children";
+
 IndexedLineSet::Fields::Fields () :
 	       coordIndex (new X3D::MFInt32 ({ 0 })),
 	    materialIndex (new X3D::MFInt32 ({ -1 })),
 	      normalIndex (new X3D::MFInt32 ({ -1 })),
-	textureCoordIndex (new X3D::MFInt32 ({ -1 })),
-	         children (new X3D::MFNode ())
+	textureCoordIndex (new X3D::MFInt32 ({ -1 }))
 { }
 
 IndexedLineSet::IndexedLineSet (X3D::X3DExecutionContext* const executionContext) :
@@ -73,7 +77,13 @@ IndexedLineSet::IndexedLineSet (X3D::X3DExecutionContext* const executionContext
 	addField (initializeOnly, "materialIndex", *fields .materialIndex);
 	addField (initializeOnly, "normalIndex", *fields .normalIndex);
 	addField (initializeOnly, "textureCoordIndex", *fields .textureCoordIndex);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+IndexedLineSet::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new IndexedLineSet (executionContext);
 }
 
 void

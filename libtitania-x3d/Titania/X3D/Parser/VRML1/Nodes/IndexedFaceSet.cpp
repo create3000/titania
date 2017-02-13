@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "IndexedFaceSet.h"
 
 #include "../../../Components/Geometry3D/IndexedFaceSet.h"
@@ -68,12 +69,15 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType IndexedFaceSet::component      = ComponentType::TITANIA;
+const std::string   IndexedFaceSet::typeName       = "IndexedFaceSet";
+const std::string   IndexedFaceSet::containerField = "children";
+
 IndexedFaceSet::Fields::Fields () :
 	       coordIndex (new X3D::MFInt32 ({ 0 })),
 	    materialIndex (new X3D::MFInt32 ({ -1 })),
 	      normalIndex (new X3D::MFInt32 ({ -1 })),
-	textureCoordIndex (new X3D::MFInt32 ({ -1 })),
-	         children (new X3D::MFNode ())
+	textureCoordIndex (new X3D::MFInt32 ({ -1 }))
 { }
 
 IndexedFaceSet::IndexedFaceSet (X3D::X3DExecutionContext* const executionContext) :
@@ -85,7 +89,13 @@ IndexedFaceSet::IndexedFaceSet (X3D::X3DExecutionContext* const executionContext
 	addField (initializeOnly, "materialIndex",     *fields .materialIndex);
 	addField (initializeOnly, "normalIndex",       *fields .normalIndex);
 	addField (initializeOnly, "textureCoordIndex", *fields .textureCoordIndex);
-	addField (initializeOnly, "children",          *fields .children);
+	addField (initializeOnly, "children",          children ());
+}
+
+X3D::X3DBaseNode*
+IndexedFaceSet::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new IndexedFaceSet (executionContext);
 }
 
 void

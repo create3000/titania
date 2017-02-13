@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Scale.h"
 
 #include "../../../Components/Grouping/Transform.h"
@@ -57,9 +58,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Scale::component      = ComponentType::TITANIA;
+const std::string   Scale::typeName       = "Scale";
+const std::string   Scale::containerField = "children";
+
 Scale::Fields::Fields () :
-	scaleFactor (new X3D::SFVec3f (1, 1, 1)),
-	   children (new X3D::MFNode ())
+	scaleFactor (new X3D::SFVec3f (1, 1, 1))
 { }
 
 Scale::Scale (X3D::X3DExecutionContext* const executionContext) :
@@ -68,7 +72,13 @@ Scale::Scale (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "scaleFactor", *fields .scaleFactor);
-	addField (initializeOnly, "children",    *fields .children);
+	addField (initializeOnly, "children",    children ());
+}
+
+X3D::X3DBaseNode*
+Scale::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Scale (executionContext);
 }
 
 void

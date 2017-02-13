@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+
 #include "Translation.h"
 
 #include "../../../Components/Grouping/Transform.h"
@@ -58,9 +59,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Translation::component      = ComponentType::TITANIA;
+const std::string   Translation::typeName       = "Translation";
+const std::string   Translation::containerField = "children";
+
 Translation::Fields::Fields () :
-	translation (new X3D::SFVec3f (0, 0, 0)),
-	   children (new X3D::MFNode ())
+	translation (new X3D::SFVec3f (0, 0, 0))
 { }
 
 Translation::Translation (X3D::X3DExecutionContext* const executionContext) :
@@ -69,7 +73,13 @@ Translation::Translation (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "translation", *fields .translation);
-	addField (initializeOnly, "children",    *fields .children);
+	addField (initializeOnly, "children",    children ());
+}
+
+X3D::X3DBaseNode*
+Translation::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Translation (executionContext);
 }
 
 void

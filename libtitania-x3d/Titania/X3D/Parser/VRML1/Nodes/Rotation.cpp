@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Rotation.h"
 
 #include "../../../Components/Grouping/Transform.h"
@@ -57,9 +58,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Rotation::component      = ComponentType::TITANIA;
+const std::string   Rotation::typeName       = "Rotation";
+const std::string   Rotation::containerField = "children";
+
 Rotation::Fields::Fields () :
-	rotation (new X3D::SFRotation (0, 0, 1, 0)),
-	children (new X3D::MFNode ())
+	rotation (new X3D::SFRotation (0, 0, 1, 0))
 { }
 
 Rotation::Rotation (X3D::X3DExecutionContext* const executionContext) :
@@ -68,7 +72,13 @@ Rotation::Rotation (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "rotation", *fields .rotation);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+Rotation::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Rotation (executionContext);
 }
 
 void

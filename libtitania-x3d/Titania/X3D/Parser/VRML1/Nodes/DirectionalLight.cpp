@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "DirectionalLight.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,12 +57,15 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType DirectionalLight::component      = ComponentType::TITANIA;
+const std::string   DirectionalLight::typeName       = "DirectionalLight";
+const std::string   DirectionalLight::containerField = "children";
+
 DirectionalLight::Fields::Fields () :
 	       on (new X3D::SFBool (true)),
 	intensity (new X3D::SFFloat (1)),
 	    color (new X3D::SFColor (1, 1, 1)),
-	direction (new X3D::SFVec3f (0, 0, -1)),
-	 children (new X3D::MFNode ())
+	direction (new X3D::SFVec3f (0, 0, -1))
 { }
 
 DirectionalLight::DirectionalLight (X3D::X3DExecutionContext* const executionContext) :
@@ -73,7 +77,13 @@ DirectionalLight::DirectionalLight (X3D::X3DExecutionContext* const executionCon
 	addField (initializeOnly, "intensity", *fields .intensity);
 	addField (initializeOnly, "color", *fields .color);
 	addField (initializeOnly, "direction", *fields .direction);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+DirectionalLight::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new DirectionalLight (executionContext);
 }
 
 void

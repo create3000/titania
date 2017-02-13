@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "GeneralCylinder.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -58,13 +59,16 @@ namespace VRML1 {
 
 // VRML 1.1
 
+const ComponentType GeneralCylinder::component      = ComponentType::TITANIA;
+const std::string   GeneralCylinder::typeName       = "GeneralCylinder";
+const std::string   GeneralCylinder::containerField = "children";
+
 GeneralCylinder::Fields::Fields () :
 	       spine (new X3D::MFVec3f ({ X3D::Vector3f (0, 0, 0), X3D::Vector3f (0, 1, 0) })),
 	crossSection (new X3D::MFVec2f ({ X3D::Vector2f (-1, 1), X3D::Vector2f (-1, -1), X3D::Vector2f (1, -1), X3D::Vector2f (1, 1) })),
 	     profile (new X3D::MFVec2f ({ X3D::Vector2f (1, -1), X3D::Vector2f (1, 1) })),
 	       twist (new X3D::MFVec2f ({ X3D::Vector2f (0, -1), X3D::Vector2f (0, 1) })),
-	       parts (new X3D::SFString ("ALL")),
-	    children (new X3D::MFNode ())
+	       parts (new X3D::SFString ("ALL"))
 { }
 
 GeneralCylinder::GeneralCylinder (X3D::X3DExecutionContext* const executionContext) :
@@ -77,7 +81,13 @@ GeneralCylinder::GeneralCylinder (X3D::X3DExecutionContext* const executionConte
 	addField (initializeOnly, "profile", *fields .profile);
 	addField (initializeOnly, "twist", *fields .twist);
 	addField (initializeOnly, "parts", *fields .parts);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+GeneralCylinder::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new GeneralCylinder (executionContext);
 }
 
 void

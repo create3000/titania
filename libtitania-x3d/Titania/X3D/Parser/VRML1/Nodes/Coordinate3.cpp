@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+
 #include "Coordinate3.h"
 
 #include "../../../Components/Rendering/Coordinate.h"
@@ -58,9 +59,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Coordinate3::component      = ComponentType::TITANIA;
+const std::string   Coordinate3::typeName       = "Coordinate3";
+const std::string   Coordinate3::containerField = "children";
+
 Coordinate3::Fields::Fields () :
-	   point (new X3D::MFVec3f ({ X3D::Vector3f () })),
-	children (new X3D::MFNode ())
+	   point (new X3D::MFVec3f ({ X3D::Vector3f () }))
 { }
 
 Coordinate3::Coordinate3 (X3D::X3DExecutionContext* const executionContext) :
@@ -69,7 +73,13 @@ Coordinate3::Coordinate3 (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "point",    *fields .point);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+Coordinate3::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Coordinate3 (executionContext);
 }
 
 void

@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "MaterialBinding.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,9 +57,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType MaterialBinding::component      = ComponentType::TITANIA;
+const std::string   MaterialBinding::typeName       = "MaterialBinding";
+const std::string   MaterialBinding::containerField = "children";
+
 MaterialBinding::Fields::Fields () :
-	   value (new X3D::SFString ("OVERALL")),
-	children (new X3D::MFNode ())
+	   value (new X3D::SFString ("OVERALL"))
 { }
 
 MaterialBinding::MaterialBinding (X3D::X3DExecutionContext* const executionContext) :
@@ -67,7 +71,13 @@ MaterialBinding::MaterialBinding (X3D::X3DExecutionContext* const executionConte
 	          fields ()
 {
 	addField (initializeOnly, "value",    *fields .value);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+MaterialBinding::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new MaterialBinding (executionContext);
 }
 
 void

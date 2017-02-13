@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "FontStyle.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,11 +57,14 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType FontStyle::component      = ComponentType::TITANIA;
+const std::string   FontStyle::typeName       = "FontStyle";
+const std::string   FontStyle::containerField = "children";
+
 FontStyle::Fields::Fields () :
 	    size (new X3D::SFFloat (10)),
 	  family (new X3D::SFString ("SERIF")),
-	   style (new X3D::SFString ("NONE")),
-	children (new X3D::MFNode ())
+	   style (new X3D::SFString ("NONE"))
 { }
 
 FontStyle::FontStyle (X3D::X3DExecutionContext* const executionContext) :
@@ -71,7 +75,13 @@ FontStyle::FontStyle (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "size", *fields .size);
 	addField (initializeOnly, "family", *fields .family);
 	addField (initializeOnly, "style", *fields .style);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+FontStyle::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new FontStyle (executionContext);
 }
 
 void

@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Texture2Transform.h"
 
 #include "../../../Components/Grouping/Transform.h"
@@ -58,12 +59,15 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Texture2Transform::component      = ComponentType::TITANIA;
+const std::string   Texture2Transform::typeName       = "Texture2Transform";
+const std::string   Texture2Transform::containerField = "children";
+
 Texture2Transform::Fields::Fields () :
 	translation (new X3D::SFVec2f (0, 0)),
 	   rotation (new X3D::SFFloat (0)),
 	scaleFactor (new X3D::SFVec2f (1, 1)),
-	     center (new X3D::SFVec2f (0, 0)),
-	   children (new X3D::MFNode ())
+	     center (new X3D::SFVec2f (0, 0))
 { }
 
 Texture2Transform::Texture2Transform (X3D::X3DExecutionContext* const executionContext) :
@@ -75,7 +79,13 @@ Texture2Transform::Texture2Transform (X3D::X3DExecutionContext* const executionC
 	addField (initializeOnly, "rotation",    *fields .rotation);
 	addField (initializeOnly, "scaleFactor", *fields .scaleFactor);
 	addField (initializeOnly, "center",      *fields .center);
-	addField (initializeOnly, "children",    *fields .children);
+	addField (initializeOnly, "children",    children ());
+}
+
+X3D::X3DBaseNode*
+Texture2Transform::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Texture2Transform (executionContext);
 }
 
 void

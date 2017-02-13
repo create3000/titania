@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "PointLight.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,12 +57,15 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType PointLight::component      = ComponentType::TITANIA;
+const std::string   PointLight::typeName       = "PointLight";
+const std::string   PointLight::containerField = "children";
+
 PointLight::Fields::Fields () :
 	       on (new X3D::SFBool (true)),
 	intensity (new X3D::SFFloat (1)),
 	    color (new X3D::SFColor (1, 1, 1)),
-	 location (new X3D::SFVec3f (0, 0, 1)),
-	 children (new X3D::MFNode ())
+	 location (new X3D::SFVec3f (0, 0, 1))
 { }
 
 PointLight::PointLight (X3D::X3DExecutionContext* const executionContext) :
@@ -73,7 +77,13 @@ PointLight::PointLight (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "intensity", *fields .intensity);
 	addField (initializeOnly, "color", *fields .color);
 	addField (initializeOnly, "location", *fields .location);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+PointLight::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new PointLight (executionContext);
 }
 
 void

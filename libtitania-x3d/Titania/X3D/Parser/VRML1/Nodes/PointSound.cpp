@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "PointSound.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -58,6 +59,10 @@ namespace VRML1 {
 
 // VRML 1.1
 
+const ComponentType PointSound::component      = ComponentType::TITANIA;
+const std::string   PointSound::typeName       = "PointSound";
+const std::string   PointSound::containerField = "children";
+
 PointSound::Fields::Fields () :
 	       name (new X3D::MFString ({ "" })),
 	description (new X3D::SFString ("")),
@@ -67,8 +72,7 @@ PointSound::Fields::Fields () :
 	   maxRange (new X3D::SFFloat (10)),
 	       loop (new X3D::SFBool (false)),
 	      start (new X3D::SFTime (0)),
-	      pause (new X3D::SFTime (0)),
-	   children (new X3D::MFNode ())
+	      pause (new X3D::SFTime (0))
 { }
 
 PointSound::PointSound (X3D::X3DExecutionContext* const executionContext) :
@@ -85,7 +89,13 @@ PointSound::PointSound (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "loop", *fields .loop);
 	addField (initializeOnly, "start", *fields .start);
 	addField (initializeOnly, "pause", *fields .pause);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+PointSound::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new PointSound (executionContext);
 }
 
 void

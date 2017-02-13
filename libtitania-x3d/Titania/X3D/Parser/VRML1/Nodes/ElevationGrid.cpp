@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "ElevationGrid.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -58,12 +59,15 @@ namespace VRML1 {
 
 // VRML 1.1
 
+const ComponentType ElevationGrid::component      = ComponentType::TITANIA;
+const std::string   ElevationGrid::typeName       = "ElevationGrid";
+const std::string   ElevationGrid::containerField = "children";
+
 ElevationGrid::Fields::Fields () :
 	   verticesPerRow (new X3D::SFInt32 (0)),
 	verticesPerColumn (new X3D::SFInt32 (0)),
 	         gridStep (new X3D::SFVec2f (0, 0)),
-	           height (new X3D::MFFloat ()),
-	         children (new X3D::MFNode ())
+	           height (new X3D::MFFloat ())
 { }
 
 ElevationGrid::ElevationGrid (X3D::X3DExecutionContext* const executionContext) :
@@ -75,7 +79,13 @@ ElevationGrid::ElevationGrid (X3D::X3DExecutionContext* const executionContext) 
 	addField (initializeOnly, "verticesPerColumn", *fields .verticesPerColumn);
 	addField (initializeOnly, "gridStep", *fields .gridStep);
 	addField (initializeOnly, "height", *fields .height);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+ElevationGrid::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new ElevationGrid (executionContext);
 }
 
 void

@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "SpotLight.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,6 +57,10 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType SpotLight::component      = ComponentType::TITANIA;
+const std::string   SpotLight::typeName       = "SpotLight";
+const std::string   SpotLight::containerField = "children";
+
 SpotLight::Fields::Fields () :
 	         on (new X3D::SFBool (true)),
 	  intensity (new X3D::SFFloat (1)),
@@ -63,8 +68,7 @@ SpotLight::Fields::Fields () :
 	   location (new X3D::SFVec3f (0, 0, 1)),
 	  direction (new X3D::SFVec3f (0, 0, -1)),
 	dropOffRate (new X3D::SFFloat (0)),
-	cutOffAngle (new X3D::SFFloat (0.785398)),
-	   children (new X3D::MFNode ())
+	cutOffAngle (new X3D::SFFloat (0.785398))
 { }
 
 SpotLight::SpotLight (X3D::X3DExecutionContext* const executionContext) :
@@ -72,14 +76,20 @@ SpotLight::SpotLight (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "on", *fields .on);
-	addField (initializeOnly, "intensity", *fields .intensity);
-	addField (initializeOnly, "color", *fields .color);
-	addField (initializeOnly, "location", *fields .location);
-	addField (initializeOnly, "direction", *fields .direction);
+	addField (initializeOnly, "on",          *fields .on);
+	addField (initializeOnly, "intensity",   *fields .intensity);
+	addField (initializeOnly, "color",       *fields .color);
+	addField (initializeOnly, "location",    *fields .location);
+	addField (initializeOnly, "direction",   *fields .direction);
 	addField (initializeOnly, "dropOffRate", *fields .dropOffRate);
 	addField (initializeOnly, "cutOffAngle", *fields .cutOffAngle);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children",    children ());
+}
+
+X3D::X3DBaseNode*
+SpotLight::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new SpotLight (executionContext);
 }
 
 void

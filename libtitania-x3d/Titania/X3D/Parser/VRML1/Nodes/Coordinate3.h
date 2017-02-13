@@ -64,7 +64,27 @@ public:
 
 	///  @name Construction
 
-	Coordinate3 (X3D::X3DExecutionContext* const);
+	Coordinate3 (X3D::X3DExecutionContext* const executionContext);
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (X3D::Error <X3D::DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (X3D::Error <X3D::DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (X3D::Error <X3D::DISPOSED>) final override
+	{ return containerField; }
 
 	///  @name Operations
 
@@ -83,6 +103,18 @@ public:
 
 private:
 
+	///  @name Construction
+
+	virtual
+	X3D::X3DBaseNode*
+	create (X3D::X3DExecutionContext* const) const final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
 	///  @name Members
 
 	struct Fields
@@ -90,7 +122,6 @@ private:
 		Fields ();
 
 		X3D::MFVec3f* const point;
-		X3D::MFNode* const children;
 	};
 
 	Fields fields;

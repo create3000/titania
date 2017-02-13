@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Separator.h"
 
 #include "../../../Components/Grouping/Transform.h"
@@ -57,9 +58,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Separator::component      = ComponentType::TITANIA;
+const std::string   Separator::typeName       = "Separator";
+const std::string   Separator::containerField = "children";
+
 Separator::Fields::Fields () :
-	renderCulling (new X3D::SFString ("AUTO")),
-	     children (new X3D::MFNode ())
+	renderCulling (new X3D::SFString ("AUTO"))
 { }
 
 Separator::Separator (X3D::X3DExecutionContext* const executionContext) :
@@ -68,7 +72,13 @@ Separator::Separator (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "renderCulling", *fields .renderCulling);
-	addField (initializeOnly, "children",      *fields .children);
+	addField (initializeOnly, "children",      children ());
+}
+
+X3D::X3DBaseNode*
+Separator::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Separator (executionContext);
 }
 
 void
@@ -98,7 +108,7 @@ Separator::convert (Converter* const converter)
 	converter -> save ();
 	converter -> transforms .emplace_back (transform);
 
-	for (const auto & node : *fields .children)
+	for (const auto & node : children ())
 	{
 		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
 
@@ -106,7 +116,7 @@ Separator::convert (Converter* const converter)
 			vrml1Node -> push (converter);
 	}
 
-	for (const auto & node : *fields .children)
+	for (const auto & node : children ())
 	{
 		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
 

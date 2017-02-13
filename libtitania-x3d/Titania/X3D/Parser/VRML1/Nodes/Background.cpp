@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Background.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -58,11 +59,14 @@ namespace VRML1 {
 
 // VRML 1.1
 
+const ComponentType Background::component      = ComponentType::TITANIA;
+const std::string   Background::typeName       = "Background";
+const std::string   Background::containerField = "children";
+
 Background::Fields::Fields () :
 	groundColors (new X3D::MFColor ()),
 	   skyColors (new X3D::MFColor ({ X3D::Color3f () })),
-	     scenery (new X3D::MFString ({ "" })),
-	    children (new X3D::MFNode ())
+	     scenery (new X3D::MFString ({ "" }))
 { }
 
 Background::Background (X3D::X3DExecutionContext* const executionContext) :
@@ -71,9 +75,15 @@ Background::Background (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "groundColors", *fields .groundColors);
-	addField (initializeOnly, "skyColors", *fields .skyColors);
-	addField (initializeOnly, "scenery", *fields .scenery);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "skyColors",    *fields .skyColors);
+	addField (initializeOnly, "scenery",      *fields .scenery);
+	addField (initializeOnly, "children",     children ());
+}
+
+X3D::X3DBaseNode*
+Background::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Background (executionContext);
 }
 
 void

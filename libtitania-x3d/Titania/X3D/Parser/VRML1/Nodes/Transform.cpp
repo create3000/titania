@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Transform.h"
 
 #include "../../../Components/Grouping/Transform.h"
@@ -57,13 +58,16 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Transform::component      = ComponentType::TITANIA;
+const std::string   Transform::typeName       = "Transform";
+const std::string   Transform::containerField = "children";
+
 Transform::Fields::Fields () :
 	     translation (new X3D::SFVec3f (0, 0, 0)),
 	        rotation (new X3D::SFRotation (0, 0, 1, 0)),
 	     scaleFactor (new X3D::SFVec3f (1, 1, 1)),
 	scaleOrientation (new X3D::SFRotation (0, 0, 1, 0)),
-	          center (new X3D::SFVec3f (0, 0, 0)),
-	        children (new X3D::MFNode ())
+	          center (new X3D::SFVec3f (0, 0, 0))
 { }
 
 Transform::Transform (X3D::X3DExecutionContext* const executionContext) :
@@ -76,7 +80,13 @@ Transform::Transform (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "scaleFactor",      *fields .scaleFactor);
 	addField (initializeOnly, "scaleOrientation", *fields .scaleOrientation);
 	addField (initializeOnly, "center",           *fields .center);
-	addField (initializeOnly, "children",         *fields .children);
+	addField (initializeOnly, "children",         children ());
+}
+
+X3D::X3DBaseNode*
+Transform::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Transform (executionContext);
 }
 
 void

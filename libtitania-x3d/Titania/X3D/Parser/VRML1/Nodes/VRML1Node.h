@@ -65,25 +65,17 @@ class VRML1Node :
 {
 public:
 
-	///  @name Common members
+	///  @name Fields
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
-	{ return component; }
+	MFNode &
+	children ()
+	{ return *fields .children; }
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
-	{ return typeName; }
+	const MFNode &
+	children () const
+	{ return *fields .children; }
 
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
-	{ return containerField; }
+	///  @name Operations
 
 	virtual
 	void
@@ -109,17 +101,16 @@ protected:
 
 private:
 
-	///  @name Construction
+	///  @name Members
 
-	virtual
-	X3D::X3DBaseNode*
-	create (X3D::X3DExecutionContext* const) const final override;
+	struct Fields
+	{
+		Fields ();
 
-	///  @name Static members
+		X3D::MFNode* const children;
+	};
 
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	Fields fields;
 
 };
 

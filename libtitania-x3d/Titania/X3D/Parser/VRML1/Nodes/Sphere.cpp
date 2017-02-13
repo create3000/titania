@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Sphere.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,9 +57,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Sphere::component      = ComponentType::TITANIA;
+const std::string   Sphere::typeName       = "Sphere";
+const std::string   Sphere::containerField = "children";
+
 Sphere::Fields::Fields () :
-	  radius (new X3D::SFFloat (1)),
-	children (new X3D::MFNode ())
+	  radius (new X3D::SFFloat (1))
 { }
 
 Sphere::Sphere (X3D::X3DExecutionContext* const executionContext) :
@@ -67,7 +71,13 @@ Sphere::Sphere (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "radius", *fields .radius);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+Sphere::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Sphere (executionContext);
 }
 
 void

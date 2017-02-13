@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "CollideStyle.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -58,10 +59,13 @@ namespace VRML1 {
 
 // VRML 1.1
 
+const ComponentType CollideStyle::component      = ComponentType::TITANIA;
+const std::string   CollideStyle::typeName       = "CollideStyle";
+const std::string   CollideStyle::containerField = "children";
+
 CollideStyle::Fields::Fields () :
 	 collide (new X3D::SFBool (false)),
-	   proxy (new X3D::SFNode ()),
-	children (new X3D::MFNode ())
+	   proxy (new X3D::SFNode ())
 { }
 
 CollideStyle::CollideStyle (X3D::X3DExecutionContext* const executionContext) :
@@ -71,7 +75,13 @@ CollideStyle::CollideStyle (X3D::X3DExecutionContext* const executionContext) :
 {
 	addField (initializeOnly, "collide", *fields .collide);
 	addField (initializeOnly, "proxy", *fields .proxy);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+CollideStyle::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new CollideStyle (executionContext);
 }
 
 void

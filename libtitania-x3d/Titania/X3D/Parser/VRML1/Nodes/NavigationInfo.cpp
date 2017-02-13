@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "NavigationInfo.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -58,12 +59,15 @@ namespace VRML1 {
 
 // VRML 1.1
 
+const ComponentType NavigationInfo::component      = ComponentType::TITANIA;
+const std::string   NavigationInfo::typeName       = "NavigationInfo";
+const std::string   NavigationInfo::containerField = "children";
+
 NavigationInfo::Fields::Fields () :
 	           type (new X3D::MFString ({ "walk" })),
 	          speed (new X3D::SFFloat (1.0)),
 	collisionRadius (new X3D::SFFloat (1.0)),
-	      headlight (new X3D::SFBool (true)),
-	       children (new X3D::MFNode ())
+	      headlight (new X3D::SFBool (true))
 { }
 
 NavigationInfo::NavigationInfo (X3D::X3DExecutionContext* const executionContext) :
@@ -75,7 +79,13 @@ NavigationInfo::NavigationInfo (X3D::X3DExecutionContext* const executionContext
 	addField (initializeOnly, "speed", *fields .speed);
 	addField (initializeOnly, "collisionRadius", *fields .collisionRadius);
 	addField (initializeOnly, "headlight", *fields .headlight);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+NavigationInfo::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new NavigationInfo (executionContext);
 }
 
 void

@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Info.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,9 +57,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Info::component      = ComponentType::TITANIA;
+const std::string   Info::typeName       = "Info";
+const std::string   Info::containerField = "children";
+
 Info::Fields::Fields () :
-	  string (new X3D::SFString ("<Undefined info>")),
-	children (new X3D::MFNode ())
+	  string (new X3D::SFString ("<Undefined info>"))
 { }
 
 Info::Info (X3D::X3DExecutionContext* const executionContext) :
@@ -67,7 +71,13 @@ Info::Info (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "string", *fields .string);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+Info::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Info (executionContext);
 }
 
 void

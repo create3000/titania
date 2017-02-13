@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "PointSet.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,10 +57,13 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType PointSet::component      = ComponentType::TITANIA;
+const std::string   PointSet::typeName       = "PointSet";
+const std::string   PointSet::containerField = "children";
+
 PointSet::Fields::Fields () :
 	startIndex (new X3D::SFInt32 (0)),
-	 numPoints (new X3D::SFInt32 (-1)),
-	  children (new X3D::MFNode ())
+	 numPoints (new X3D::SFInt32 (-1))
 { }
 
 PointSet::PointSet (X3D::X3DExecutionContext* const executionContext) :
@@ -69,7 +73,13 @@ PointSet::PointSet (X3D::X3DExecutionContext* const executionContext) :
 {
 	addField (initializeOnly, "startIndex", *fields .startIndex);
 	addField (initializeOnly, "numPoints", *fields .numPoints);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+PointSet::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new PointSet (executionContext);
 }
 
 void

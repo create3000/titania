@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+
 #include "Cube.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -57,11 +58,14 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Cube::component      = ComponentType::TITANIA;
+const std::string   Cube::typeName       = "Cube";
+const std::string   Cube::containerField = "children";
+
 Cube::Fields::Fields () :
 	   width (new X3D::SFFloat (2)),
 	  height (new X3D::SFFloat (2)),
-	   depth (new X3D::SFFloat (2)),
-	children (new X3D::MFNode ())
+	   depth (new X3D::SFFloat (2))
 { }
 
 Cube::Cube (X3D::X3DExecutionContext* const executionContext) :
@@ -72,7 +76,13 @@ Cube::Cube (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "width",    *fields .width);
 	addField (initializeOnly, "height",   *fields .height);
 	addField (initializeOnly, "depth",    *fields .depth);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+Cube::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Cube (executionContext);
 }
 
 void

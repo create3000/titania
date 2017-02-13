@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "TextureCoordinate2.h"
 
 #include "../../../Components/Texturing/TextureCoordinate.h"
@@ -57,10 +58,19 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType TextureCoordinate2::component      = ComponentType::TITANIA;
+const std::string   TextureCoordinate2::typeName       = "TextureCoordinate2";
+const std::string   TextureCoordinate2::containerField = "children";
+
 TextureCoordinate2::Fields::Fields () :
-	   point (new X3D::MFVec2f ({ X3D::Vector2f (0, 0) })),
-	children (new X3D::MFNode ())
+	   point (new X3D::MFVec2f ({ X3D::Vector2f (0, 0) }))
 { }
+
+X3D::X3DBaseNode*
+TextureCoordinate2::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new TextureCoordinate2 (executionContext);
+}
 
 TextureCoordinate2::TextureCoordinate2 (X3D::X3DExecutionContext* const executionContext) :
 	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
@@ -68,7 +78,7 @@ TextureCoordinate2::TextureCoordinate2 (X3D::X3DExecutionContext* const executio
 	          fields ()
 {
 	addField (initializeOnly, "point",    *fields .point);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
 }
 
 void

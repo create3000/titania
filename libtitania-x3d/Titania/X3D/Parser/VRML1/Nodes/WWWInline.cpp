@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "WWWInline.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,11 +57,14 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType WWWInline::component      = ComponentType::TITANIA;
+const std::string   WWWInline::typeName       = "WWWInline";
+const std::string   WWWInline::containerField = "children";
+
 WWWInline::Fields::Fields () :
 	      name (new X3D::MFString ({ "" })),
 	  bboxSize (new X3D::SFVec3f (0, 0, 0)),
-	bboxCenter (new X3D::SFVec3f (0, 0, 0)),
-	  children (new X3D::MFNode ())
+	bboxCenter (new X3D::SFVec3f (0, 0, 0))
 { }
 
 WWWInline::WWWInline (X3D::X3DExecutionContext* const executionContext) :
@@ -71,7 +75,13 @@ WWWInline::WWWInline (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "name", *fields .name);
 	addField (initializeOnly, "bboxSize", *fields .bboxSize);
 	addField (initializeOnly, "bboxCenter", *fields .bboxCenter);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+WWWInline::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new WWWInline (executionContext);
 }
 
 void

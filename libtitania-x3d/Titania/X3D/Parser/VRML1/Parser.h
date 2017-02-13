@@ -155,7 +155,7 @@ private:
 	{ return scene -> getBrowser (); }
 
 	void
-	pushExecutionContext (X3D::X3DExecutionContext* const);
+	pushExecutionContext (X3D::X3DExecutionContext* const executionContext);
 
 	void
 	popExecutionContext ();

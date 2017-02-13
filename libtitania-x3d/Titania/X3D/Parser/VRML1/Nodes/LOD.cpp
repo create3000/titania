@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "LOD.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,10 +57,13 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType LOD::component      = ComponentType::TITANIA;
+const std::string   LOD::typeName       = "LOD";
+const std::string   LOD::containerField = "children";
+
 LOD::Fields::Fields () :
 	   range (new X3D::MFFloat ()),
-	  center (new X3D::SFVec3f (0, 0, 0)),
-	children (new X3D::MFNode ())
+	  center (new X3D::SFVec3f (0, 0, 0))
 { }
 
 LOD::LOD (X3D::X3DExecutionContext* const executionContext) :
@@ -69,7 +73,13 @@ LOD::LOD (X3D::X3DExecutionContext* const executionContext) :
 {
 	addField (initializeOnly, "range", *fields .range);
 	addField (initializeOnly, "center", *fields .center);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+LOD::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new LOD (executionContext);
 }
 
 void

@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "ShapeHints.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -58,12 +59,15 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType ShapeHints::component      = ComponentType::TITANIA;
+const std::string   ShapeHints::typeName       = "ShapeHints";
+const std::string   ShapeHints::containerField = "children";
+
 ShapeHints::Fields::Fields () :
 	vertexOrdering (new X3D::SFString ("COUNTERCLOCKWISE")),
 	     shapeType (new X3D::SFString ("SOLID")),
 	      faceType (new X3D::SFString ("CONVEX")),
-	   creaseAngle (new X3D::SFFloat (0)),
-	      children (new X3D::MFNode ())
+	   creaseAngle (new X3D::SFFloat (0))
 { }
 
 ShapeHints::ShapeHints (X3D::X3DExecutionContext* const executionContext) :
@@ -75,7 +79,13 @@ ShapeHints::ShapeHints (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "shapeType",      *fields .shapeType);
 	addField (initializeOnly, "faceType",       *fields .faceType);
 	addField (initializeOnly, "creaseAngle",    *fields .creaseAngle);
-	addField (initializeOnly, "children",       *fields .children);
+	addField (initializeOnly, "children",       children ());
+}
+
+X3D::X3DBaseNode*
+ShapeHints::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new ShapeHints (executionContext);
 }
 
 bool

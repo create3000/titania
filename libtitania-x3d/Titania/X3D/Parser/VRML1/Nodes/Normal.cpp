@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Normal.h"
 
 #include "../../../Components/Rendering/Normal.h"
@@ -57,9 +58,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Normal::component      = ComponentType::TITANIA;
+const std::string   Normal::typeName       = "Normal";
+const std::string   Normal::containerField = "children";
+
 Normal::Fields::Fields () :
-	  vector (new X3D::MFVec3f ()),
-	children (new X3D::MFNode ())
+	  vector (new X3D::MFVec3f ())
 { }
 
 Normal::Normal (X3D::X3DExecutionContext* const executionContext) :
@@ -68,7 +72,13 @@ Normal::Normal (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "vector",   *fields .vector);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+Normal::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Normal (executionContext);
 }
 
 void

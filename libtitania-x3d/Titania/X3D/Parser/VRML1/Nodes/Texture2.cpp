@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Texture2.h"
 
 #include "../../../Components/Grouping/Transform.h"
@@ -58,12 +59,15 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Texture2::component      = ComponentType::TITANIA;
+const std::string   Texture2::typeName       = "Texture2";
+const std::string   Texture2::containerField = "children";
+
 Texture2::Fields::Fields () :
 	filename (new X3D::SFString ("")),
 	   image (new X3D::SFImage ()),
 	   wrapS (new X3D::SFString ("REPEAT")),
-	   wrapT (new X3D::SFString ("REPEAT")),
-	children (new X3D::MFNode ())
+	   wrapT (new X3D::SFString ("REPEAT"))
 { }
 
 Texture2::Texture2 (X3D::X3DExecutionContext* const executionContext) :
@@ -75,7 +79,13 @@ Texture2::Texture2 (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "image",    *fields .image);
 	addField (initializeOnly, "wrapS",    *fields .wrapS);
 	addField (initializeOnly, "wrapT",    *fields .wrapT);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+Texture2::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Texture2 (executionContext);
 }
 
 void

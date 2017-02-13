@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Text.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,13 +57,16 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Text::component      = ComponentType::TITANIA;
+const std::string   Text::typeName       = "Text";
+const std::string   Text::containerField = "children";
+
 Text::Fields::Fields () :
 	       string (new X3D::MFString ({ "" })),
 	    direction (new X3D::SFString ("LR")),
 	justification (new X3D::SFString ("BEGIN")),
 	      spacing (new X3D::SFFloat (1)),
-	        width (new X3D::MFFloat ({ 0 })),
-	     children (new X3D::MFNode ())
+	        width (new X3D::MFFloat ({ 0 }))
 { }
 
 Text::Text (X3D::X3DExecutionContext* const executionContext) :
@@ -75,7 +79,13 @@ Text::Text (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "justification", *fields .justification);
 	addField (initializeOnly, "spacing", *fields .spacing);
 	addField (initializeOnly, "width", *fields .width);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+Text::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Text (executionContext);
 }
 
 void

@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "WWWAnchor.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,11 +57,14 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType WWWAnchor::component      = ComponentType::TITANIA;
+const std::string   WWWAnchor::typeName       = "WWWAnchor";
+const std::string   WWWAnchor::containerField = "children";
+
 WWWAnchor::Fields::Fields () :
 	       name (new X3D::MFString ({ "" })),
 	description (new X3D::SFString ("")),
-	        map (new X3D::SFString ("NONE")),
-	   children (new X3D::MFNode ())
+	        map (new X3D::SFString ("NONE"))
 { }
 
 WWWAnchor::WWWAnchor (X3D::X3DExecutionContext* const executionContext) :
@@ -71,7 +75,13 @@ WWWAnchor::WWWAnchor (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "name", *fields .name);
 	addField (initializeOnly, "description", *fields .description);
 	addField (initializeOnly, "map", *fields .map);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+WWWAnchor::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new WWWAnchor (executionContext);
 }
 
 void

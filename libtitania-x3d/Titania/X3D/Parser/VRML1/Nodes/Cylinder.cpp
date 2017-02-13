@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+
 #include "Cylinder.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -57,11 +58,14 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Cylinder::component      = ComponentType::TITANIA;
+const std::string   Cylinder::typeName       = "Cylinder";
+const std::string   Cylinder::containerField = "children";
+
 Cylinder::Fields::Fields () :
 	   parts (new X3D::SFString ("ALL")),
 	  radius (new X3D::SFFloat (1)),
-	  height (new X3D::SFFloat (2)),
-	children (new X3D::MFNode ())
+	  height (new X3D::SFFloat (2))
 { }
 
 Cylinder::Cylinder (X3D::X3DExecutionContext* const executionContext) :
@@ -72,7 +76,13 @@ Cylinder::Cylinder (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "parts",        *fields .parts);
 	addField (initializeOnly, "bottomRadius", *fields .radius);
 	addField (initializeOnly, "height",       *fields .height);
-	addField (initializeOnly, "children",     *fields .children);
+	addField (initializeOnly, "children",     children ());
+}
+
+X3D::X3DBaseNode*
+Cylinder::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Cylinder (executionContext);
 }
 
 void

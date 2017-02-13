@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "DirectedSound.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -57,6 +58,10 @@ namespace X3D {
 namespace VRML1 {
 
 // VRML 1.1
+
+const ComponentType DirectedSound::component      = ComponentType::TITANIA;
+const std::string   DirectedSound::typeName       = "DirectedSound";
+const std::string   DirectedSound::containerField = "children";
 
 DirectedSound::Fields::Fields () :
 	       name (new X3D::MFString ({ "" })),
@@ -70,8 +75,7 @@ DirectedSound::Fields::Fields () :
 	   maxAngle (new X3D::SFFloat (0.785398)),
 	       loop (new X3D::SFBool (false)),
 	      start (new X3D::SFTime (0)),
-	      pause (new X3D::SFTime (0)),
-	   children (new X3D::MFNode ())
+	      pause (new X3D::SFTime (0))
 { }
 
 DirectedSound::DirectedSound (X3D::X3DExecutionContext* const executionContext) :
@@ -91,7 +95,13 @@ DirectedSound::DirectedSound (X3D::X3DExecutionContext* const executionContext) 
 	addField (initializeOnly, "loop", *fields .loop);
 	addField (initializeOnly, "start", *fields .start);
 	addField (initializeOnly, "pause", *fields .pause);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+DirectedSound::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new DirectedSound (executionContext);
 }
 
 void

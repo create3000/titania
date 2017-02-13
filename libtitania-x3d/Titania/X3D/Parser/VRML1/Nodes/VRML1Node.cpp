@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+
 #include "VRML1Node.h"
 
 #include "../../../Components/Grouping/Transform.h"
@@ -57,19 +58,14 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-const ComponentType VRML1Node::component      = ComponentType::TITANIA;
-const std::string   VRML1Node::typeName       = "VRML1Node";
-const std::string   VRML1Node::containerField = "children";
-
-VRML1Node::VRML1Node () :
-	X3D::X3DBaseNode ()
+VRML1Node::Fields::Fields () :
+	children (new X3D::MFNode ())
 { }
 
-X3D::X3DBaseNode*
-VRML1Node::create (X3D::X3DExecutionContext* const executionContext) const
-{
-	throw X3D::Error <X3D::NOT_SUPPORTED> ("VRML1Node::create");
-}
+VRML1Node::VRML1Node () :
+	X3D::X3DBaseNode (),
+	          fields ()
+{ }
 
 bool
 VRML1Node::use (Converter* const converter)

@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+
 #include "Cone.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -57,11 +58,14 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Cone::component      = ComponentType::TITANIA;
+const std::string   Cone::typeName       = "Cone";
+const std::string   Cone::containerField = "children";
+
 Cone::Fields::Fields () :
 	       parts (new X3D::SFString ("ALL")),
 	bottomRadius (new X3D::SFFloat (1)),
-	      height (new X3D::SFFloat (2)),
-	    children (new X3D::MFNode ())
+	      height (new X3D::SFFloat (2))
 { }
 
 Cone::Cone (X3D::X3DExecutionContext* const executionContext) :
@@ -72,7 +76,13 @@ Cone::Cone (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "parts",        *fields .parts);
 	addField (initializeOnly, "bottomRadius", *fields .bottomRadius);
 	addField (initializeOnly, "height",       *fields .height);
-	addField (initializeOnly, "children",     *fields .children);
+	addField (initializeOnly, "children",     children ());
+}
+
+X3D::X3DBaseNode*
+Cone::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Cone (executionContext);
 }
 
 void

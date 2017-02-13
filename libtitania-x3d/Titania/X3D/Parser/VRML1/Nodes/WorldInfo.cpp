@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "WorldInfo.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -58,10 +59,13 @@ namespace VRML1 {
 
 // VRML 1.1
 
+const ComponentType WorldInfo::component      = ComponentType::TITANIA;
+const std::string   WorldInfo::typeName       = "WorldInfo";
+const std::string   WorldInfo::containerField = "children";
+
 WorldInfo::Fields::Fields () :
 	   title (new X3D::SFString ({ "" })),
-	    info (new X3D::MFString ({ "" })),
-	children (new X3D::MFNode ())
+	    info (new X3D::MFString ({ "" }))
 { }
 
 WorldInfo::WorldInfo (X3D::X3DExecutionContext* const executionContext) :
@@ -71,7 +75,13 @@ WorldInfo::WorldInfo (X3D::X3DExecutionContext* const executionContext) :
 {
 	addField (initializeOnly, "title", *fields .title);
 	addField (initializeOnly, "info", *fields .info);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+WorldInfo::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new WorldInfo (executionContext);
 }
 
 void

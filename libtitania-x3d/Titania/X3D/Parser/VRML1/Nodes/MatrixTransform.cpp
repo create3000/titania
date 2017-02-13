@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "MatrixTransform.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,9 +57,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType MatrixTransform::component      = ComponentType::TITANIA;
+const std::string   MatrixTransform::typeName       = "MatrixTransform";
+const std::string   MatrixTransform::containerField = "children";
+
 MatrixTransform::Fields::Fields () :
-	  matrix (new X3D::SFMatrix4f ()),
-	children (new X3D::MFNode ())
+	  matrix (new X3D::SFMatrix4f ())
 { }
 
 MatrixTransform::MatrixTransform (X3D::X3DExecutionContext* const executionContext) :
@@ -67,7 +71,13 @@ MatrixTransform::MatrixTransform (X3D::X3DExecutionContext* const executionConte
 	          fields ()
 {
 	addField (initializeOnly, "matrix", *fields .matrix);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+MatrixTransform::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new MatrixTransform (executionContext);
 }
 
 void

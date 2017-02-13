@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Switch.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,9 +57,12 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType Switch::component      = ComponentType::TITANIA;
+const std::string   Switch::typeName       = "Switch";
+const std::string   Switch::containerField = "children";
+
 Switch::Fields::Fields () :
-	whichChild (new X3D::SFInt32 (-1)),
-	  children (new X3D::MFNode ())
+	whichChild (new X3D::SFInt32 (-1))
 { }
 
 Switch::Switch (X3D::X3DExecutionContext* const executionContext) :
@@ -67,7 +71,13 @@ Switch::Switch (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "whichChild", *fields .whichChild);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+Switch::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Switch (executionContext);
 }
 
 void

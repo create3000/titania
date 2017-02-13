@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "OrthographicCamera.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,14 +57,17 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType OrthographicCamera::component      = ComponentType::TITANIA;
+const std::string   OrthographicCamera::typeName       = "OrthographicCamera";
+const std::string   OrthographicCamera::containerField = "children";
+
 OrthographicCamera::Fields::Fields () :
 	     position (new X3D::SFVec3f (0, 0, 1)),
 	  orientation (new X3D::SFRotation (0, 0, 1, 0)),
 	focalDistance (new X3D::SFFloat (5)),
 	       height (new X3D::SFFloat (2)),
 	 nearDistance (new X3D::SFFloat (1)),
-	  farDistance (new X3D::SFFloat (10)),
-	     children (new X3D::MFNode ())
+	  farDistance (new X3D::SFFloat (10))
 { }
 
 OrthographicCamera::OrthographicCamera (X3D::X3DExecutionContext* const executionContext) :
@@ -77,7 +81,13 @@ OrthographicCamera::OrthographicCamera (X3D::X3DExecutionContext* const executio
 	addField (initializeOnly, "height", *fields .height);
 	addField (initializeOnly, "nearDistance", *fields .nearDistance);
 	addField (initializeOnly, "farDistance", *fields .farDistance);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+OrthographicCamera::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new OrthographicCamera (executionContext);
 }
 
 void

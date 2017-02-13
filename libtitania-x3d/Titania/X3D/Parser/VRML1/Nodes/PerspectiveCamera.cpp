@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "PerspectiveCamera.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -56,14 +57,17 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
+const ComponentType PerspectiveCamera::component      = ComponentType::TITANIA;
+const std::string   PerspectiveCamera::typeName       = "PerspectiveCamera";
+const std::string   PerspectiveCamera::containerField = "children";
+
 PerspectiveCamera::Fields::Fields () :
 	     position (new X3D::SFVec3f (0, 0, 1)),
 	  orientation (new X3D::SFRotation (0, 0, 1, 0)),
 	focalDistance (new X3D::SFFloat (5)),
 	  heightAngle (new X3D::SFFloat (0.785398)),
 	 nearDistance (new X3D::SFFloat (1)),
-	  farDistance (new X3D::SFFloat (10)),
-	     children (new X3D::MFNode ())
+	  farDistance (new X3D::SFFloat (10))
 { }
 
 PerspectiveCamera::PerspectiveCamera (X3D::X3DExecutionContext* const executionContext) :
@@ -77,7 +81,13 @@ PerspectiveCamera::PerspectiveCamera (X3D::X3DExecutionContext* const executionC
 	addField (initializeOnly, "heightAngle", *fields .heightAngle);
 	addField (initializeOnly, "nearDistance", *fields .nearDistance);
 	addField (initializeOnly, "farDistance", *fields .farDistance);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+PerspectiveCamera::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new PerspectiveCamera (executionContext);
 }
 
 void

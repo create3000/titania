@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Environment.h"
 
 #include "../../../Execution/X3DExecutionContext.h"
@@ -58,14 +59,17 @@ namespace VRML1 {
 
 // VRML 1.1
 
+const ComponentType Environment::component      = ComponentType::TITANIA;
+const std::string   Environment::typeName       = "Environment";
+const std::string   Environment::containerField = "children";
+
 Environment::Fields::Fields () :
 	ambientIntensity (new X3D::SFFloat (0.2)),
 	    ambientColor (new X3D::SFColor (1, 1, 1)),
 	     attenuation (new X3D::SFVec3f (0, 0, 1)),
 	         fogType (new X3D::SFString ("NONE")),
 	        fogColor (new X3D::SFColor (1, 1, 1)),
-	   fogVisibility (new X3D::SFFloat (0)),
-	        children (new X3D::MFNode ())
+	   fogVisibility (new X3D::SFFloat (0))
 { }
 
 Environment::Environment (X3D::X3DExecutionContext* const executionContext) :
@@ -79,7 +83,13 @@ Environment::Environment (X3D::X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "fogType", *fields .fogType);
 	addField (initializeOnly, "fogColor", *fields .fogColor);
 	addField (initializeOnly, "fogVisibility", *fields .fogVisibility);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children", children ());
+}
+
+X3D::X3DBaseNode*
+Environment::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new Environment (executionContext);
 }
 
 void
