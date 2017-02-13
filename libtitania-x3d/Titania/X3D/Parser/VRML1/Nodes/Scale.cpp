@@ -49,6 +49,7 @@
  ******************************************************************************/
 #include "Scale.h"
 
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -67,12 +68,17 @@ Scale::Scale (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "scaleFactor", *fields .scaleFactor);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children",    *fields .children);
 }
 
 void
 Scale::convert (Converter* const converter)
-{ }
+{
+	if (converter -> transforms .empty ())
+		return;
+
+	converter -> transforms .back () -> scale () = *fields .scaleFactor;
+}
 
 Scale::~Scale ()
 { }

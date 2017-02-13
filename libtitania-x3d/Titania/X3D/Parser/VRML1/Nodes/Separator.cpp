@@ -49,6 +49,7 @@
  ******************************************************************************/
 #include "Separator.h"
 
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -67,12 +68,54 @@ Separator::Separator (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "renderCulling", *fields .renderCulling);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children",      *fields .children);
 }
 
 void
 Separator::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create Transform node.
+
+	const auto transform = converter -> scene -> createNode <X3D::Transform> ();
+
+	// Add root node if needed or add as child.
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (transform);
+	else
+		converter -> transforms .back () -> children () .emplace_back (transform);
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), transform);
+
+	// Convert children.
+
+	converter -> save ();
+	converter -> transforms .emplace_back (transform);
+
+	for (const auto & node : *fields .children)
+	{
+		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
+
+		if (vrml1Node)
+			vrml1Node -> push (converter);
+	}
+
+	for (const auto & node : *fields .children)
+	{
+		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
+
+		if (vrml1Node)
+			vrml1Node -> convert (converter);
+	}
+
+	converter -> restore ();
+}
 
 Separator::~Separator ()
 { }

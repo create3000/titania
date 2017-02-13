@@ -77,6 +77,12 @@ Texture2Transform::Texture2Transform (X3D::X3DExecutionContext* const executionC
 }
 
 void
+Texture2Transform::push (Converter* const converter)
+{
+
+}
+
+void
 Texture2Transform::convert (Converter* const converter)
 { }
 

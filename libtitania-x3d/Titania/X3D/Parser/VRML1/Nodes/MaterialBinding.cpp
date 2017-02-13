@@ -66,8 +66,14 @@ MaterialBinding::MaterialBinding (X3D::X3DExecutionContext* const executionConte
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "value", *fields .value);
+	addField (initializeOnly, "value",    *fields .value);
 	addField (initializeOnly, "children", *fields .children);
+}
+
+void
+MaterialBinding::push (Converter* const converter)
+{
+	converter -> materialBindings .emplace_back (this);
 }
 
 void

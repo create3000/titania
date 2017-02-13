@@ -49,6 +49,7 @@
  ******************************************************************************/
 #include "Rotation.h"
 
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -72,7 +73,12 @@ Rotation::Rotation (X3D::X3DExecutionContext* const executionContext) :
 
 void
 Rotation::convert (Converter* const converter)
-{ }
+{
+	if (converter -> transforms .empty ())
+		return;
+
+	converter -> transforms .back () -> rotation () = *fields .rotation;
+}
 
 Rotation::~Rotation ()
 { }

@@ -65,7 +65,17 @@ public:
 
 	NormalBinding (X3D::X3DExecutionContext* const);
 
-	///  @name Operationis
+	///  @name Member access
+
+	const std::string &
+	getValue () const
+	{ return *fields .value; }
+
+	///  @name Operations
+
+	virtual
+	void
+	push (Converter* const converter) final override;
 
 	virtual
 	void

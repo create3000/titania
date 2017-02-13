@@ -49,6 +49,7 @@
  ******************************************************************************/
 #include "Normal.h"
 
+#include "../../../Components/Rendering/Normal.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -66,8 +67,18 @@ Normal::Normal (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "vector", *fields .vector);
+	addField (initializeOnly, "vector",   *fields .vector);
 	addField (initializeOnly, "children", *fields .children);
+}
+
+void
+Normal::push (Converter* const converter)
+{
+	const auto normal = converter -> scene -> createNode <X3D::Normal> ();
+
+	normal -> vector () = *fields .vector;
+
+	converter -> normals .emplace_back (normal);
 }
 
 void

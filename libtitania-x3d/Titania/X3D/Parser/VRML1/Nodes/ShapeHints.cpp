@@ -52,6 +52,8 @@
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
+#include <Titania/String/split.h>
+
 namespace titania {
 namespace X3D {
 namespace VRML1 {
@@ -70,10 +72,43 @@ ShapeHints::ShapeHints (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "vertexOrdering", *fields .vertexOrdering);
-	addField (initializeOnly, "shapeType", *fields .shapeType);
-	addField (initializeOnly, "faceType", *fields .faceType);
-	addField (initializeOnly, "creaseAngle", *fields .creaseAngle);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "shapeType",      *fields .shapeType);
+	addField (initializeOnly, "faceType",       *fields .faceType);
+	addField (initializeOnly, "creaseAngle",    *fields .creaseAngle);
+	addField (initializeOnly, "children",       *fields .children);
+}
+
+bool
+ShapeHints::getCCW () const
+{
+	if (*fields .vertexOrdering == "CLOCKWISE")
+		return false;
+
+	return true;
+}
+
+bool
+ShapeHints::getSolid () const
+{
+	if (*fields .shapeType == "UNKNOWN_SHAPE_TYPE")
+		return false;
+
+	return true;
+}
+
+bool
+ShapeHints::getConvex () const
+{
+	if (*fields .shapeType == "UNKNOWN_FACE_TYPE")
+		return false;
+
+	return true;
+}
+
+void
+ShapeHints::push (Converter* const converter)
+{
+	converter -> shapeHints .emplace_back (this);
 }
 
 void

@@ -49,6 +49,7 @@
  ******************************************************************************/
 #include "Transform.h"
 
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -70,17 +71,26 @@ Transform::Transform (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "translation", *fields .translation);
-	addField (initializeOnly, "rotation", *fields .rotation);
-	addField (initializeOnly, "scaleFactor", *fields .scaleFactor);
+	addField (initializeOnly, "translation",      *fields .translation);
+	addField (initializeOnly, "rotation",         *fields .rotation);
+	addField (initializeOnly, "scaleFactor",      *fields .scaleFactor);
 	addField (initializeOnly, "scaleOrientation", *fields .scaleOrientation);
-	addField (initializeOnly, "center", *fields .center);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "center",           *fields .center);
+	addField (initializeOnly, "children",         *fields .children);
 }
 
 void
 Transform::convert (Converter* const converter)
-{ }
+{
+	if (converter -> transforms .empty ())
+		return;
+
+	converter -> transforms .back () -> translation ()      = *fields .translation;
+	converter -> transforms .back () -> rotation ()         = *fields .rotation;
+	converter -> transforms .back () -> scale ()            = *fields .scaleFactor;
+	converter -> transforms .back () -> scaleOrientation () = *fields .scaleOrientation;
+	converter -> transforms .back () -> center ()           = *fields .center;
+}
 
 Transform::~Transform ()
 { }

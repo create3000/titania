@@ -65,7 +65,26 @@ public:
 
 	ShapeHints (X3D::X3DExecutionContext* const);
 
-	///  @name Operationis
+	///  @name Member access
+
+	bool
+	getCCW () const;
+	
+	bool
+	getSolid () const;
+	
+	bool
+	getConvex () const;
+	
+	float
+	getCreaseAngle () const
+	{ return *fields .creaseAngle; }
+
+	///  @name Operations
+
+	virtual
+	void
+	push (Converter* const converter) final override;
 
 	virtual
 	void

@@ -65,7 +65,7 @@ public:
 
 	Transform (X3D::X3DExecutionContext* const);
 
-	///  @name Operationis
+	///  @name Operations
 
 	virtual
 	void

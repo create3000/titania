@@ -50,6 +50,9 @@
 
 #include "VRML1Node.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../Converter.h"
+
 namespace titania {
 namespace X3D {
 namespace VRML1 {
@@ -66,6 +69,31 @@ X3D::X3DBaseNode*
 VRML1Node::create (X3D::X3DExecutionContext* const executionContext) const
 {
 	throw X3D::Error <X3D::NOT_SUPPORTED> ("VRML1Node::create");
+}
+
+bool
+VRML1Node::use (Converter* const converter)
+{
+	try
+	{
+		if (getName () .empty ())
+			return false;
+
+		const auto transform = converter -> scene -> getNamedNode (getName ());
+
+		// Add root node if needed or add as child.
+	
+		if (converter -> transforms .empty ())
+			converter -> scene -> getRootNodes () .emplace_back (transform);
+		else
+			converter -> transforms .back () -> children () .emplace_back (transform);
+
+		return true;
+	}
+	catch (const X3D::X3DError &)
+	{
+		return false;
+	}
 }
 
 } // VRML1

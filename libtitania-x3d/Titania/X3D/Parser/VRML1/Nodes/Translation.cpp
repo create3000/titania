@@ -47,8 +47,10 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #include "Translation.h"
 
+#include "../../../Components/Grouping/Transform.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -67,12 +69,17 @@ Translation::Translation (X3D::X3DExecutionContext* const executionContext) :
 	          fields ()
 {
 	addField (initializeOnly, "translation", *fields .translation);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children",    *fields .children);
 }
 
 void
 Translation::convert (Converter* const converter)
-{ }
+{
+	if (converter -> transforms .empty ())
+		return;
+
+	converter -> transforms .back () -> translation () = *fields .translation;
+}
 
 Translation::~Translation ()
 { }

@@ -87,6 +87,7 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	nodes .emplace ("Environment",        [ ] (X3D::X3DExecutionContext* const executionContext) { return new Environment        (executionContext); });
 	nodes .emplace ("FontStyle",          [ ] (X3D::X3DExecutionContext* const executionContext) { return new FontStyle          (executionContext); });
 	nodes .emplace ("GeneralCylinder",    [ ] (X3D::X3DExecutionContext* const executionContext) { return new GeneralCylinder    (executionContext); });
+	nodes .emplace ("Group",              [ ] (X3D::X3DExecutionContext* const executionContext) { return new Separator          (executionContext); });
 	nodes .emplace ("IndexedFaceSet",     [ ] (X3D::X3DExecutionContext* const executionContext) { return new IndexedFaceSet     (executionContext); });
 	nodes .emplace ("IndexedLineSet",     [ ] (X3D::X3DExecutionContext* const executionContext) { return new IndexedLineSet     (executionContext); });
 	nodes .emplace ("Info",               [ ] (X3D::X3DExecutionContext* const executionContext) { return new Info               (executionContext); });
@@ -330,7 +331,7 @@ Parser::nodeStatement (X3D::SFNode & _node)
 bool
 Parser::node (X3D::SFNode & _node, const std::string & _nodeNameId)
 {
-	__LOG__ << this << " " << _nodeNameId << std::endl;
+	//__LOG__ << this << " " << _nodeNameId << std::endl;
 
 	auto state = istream .rdstate ();
 	auto pos   = istream .tellg ();
@@ -341,7 +342,7 @@ Parser::node (X3D::SFNode & _node, const std::string & _nodeNameId)
 
 	if (nodeTypeId (_nodeTypeId))
 	{
-		// //__LOG__ << this << " " << _nodeTypeId << std::endl;
+		//__LOG__ << this << " " << _nodeTypeId << std::endl;
 
 		const auto iter = nodes .find (_nodeTypeId);
 
@@ -362,7 +363,7 @@ Parser::node (X3D::SFNode & _node, const std::string & _nodeNameId)
 
 		_node = X3D::SFNode (iter -> second (getExecutionContext ()));
 
-		__LOG__ << this << " " << _nodeTypeId << " " << (void*) _node << std::endl;
+		//__LOG__ << this << " " << _nodeTypeId << " " << (void*) _node << std::endl;
 
 		if (not _nodeNameId .empty ())
 		{

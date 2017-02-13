@@ -50,6 +50,7 @@
 
 #include "Coordinate3.h"
 
+#include "../../../Components/Rendering/Coordinate.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -69,6 +70,16 @@ Coordinate3::Coordinate3 (X3D::X3DExecutionContext* const executionContext) :
 {
 	addField (initializeOnly, "point",    *fields .point);
 	addField (initializeOnly, "children", *fields .children);
+}
+
+void
+Coordinate3::push (Converter* const converter)
+{
+	const auto coord = converter -> scene -> createNode <X3D::Coordinate> ();
+
+	coord -> point () = *fields .point;
+
+	converter -> coords .emplace_back (coord);
 }
 
 void

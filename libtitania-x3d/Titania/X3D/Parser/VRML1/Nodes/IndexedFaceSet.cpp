@@ -49,8 +49,20 @@
  ******************************************************************************/
 #include "IndexedFaceSet.h"
 
+#include "../../../Components/Geometry3D/IndexedFaceSet.h"
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Rendering/X3DCoordinateNode.h"
+#include "../../../Components/Rendering/X3DNormalNode.h"
+#include "../../../Components/Shape/Appearance.h"
+#include "../../../Components/Shape/Shape.h"
+#include "../../../Components/Shape/X3DMaterialNode.h"
+#include "../../../Components/Texturing/X3DTextureNode.h"
+#include "../../../Components/Texturing/X3DTextureCoordinateNode.h"
+#include "../../../Components/Texturing/X3DTextureTransformNode.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
+#include "NormalBinding.h"
+#include "ShapeHints.h"
 
 namespace titania {
 namespace X3D {
@@ -69,16 +81,85 @@ IndexedFaceSet::IndexedFaceSet (X3D::X3DExecutionContext* const executionContext
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "coordIndex", *fields .coordIndex);
-	addField (initializeOnly, "materialIndex", *fields .materialIndex);
-	addField (initializeOnly, "normalIndex", *fields .normalIndex);
+	addField (initializeOnly, "coordIndex",        *fields .coordIndex);
+	addField (initializeOnly, "materialIndex",     *fields .materialIndex);
+	addField (initializeOnly, "normalIndex",       *fields .normalIndex);
 	addField (initializeOnly, "textureCoordIndex", *fields .textureCoordIndex);
-	addField (initializeOnly, "children", *fields .children);
+	addField (initializeOnly, "children",          *fields .children);
 }
 
 void
 IndexedFaceSet::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto shape      = converter -> scene -> createNode <X3D::Shape> ();
+	const auto appearance = converter -> scene -> createNode <X3D::Appearance> ();
+	const auto geometry   = converter -> scene -> createNode <X3D::IndexedFaceSet> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), shape);
+
+	// Assign values.
+
+	shape -> appearance () = appearance;
+	shape -> geometry ()   = geometry;
+
+	appearance -> material ()         = converter -> materials         .back ();
+	appearance -> texture ()          = converter -> textures          .back ();
+	appearance -> textureTransform () = converter -> textureTransforms .back ();
+
+	if (not converter -> shapeHints .empty ())
+	{
+		geometry -> ccw ()         = converter -> shapeHints .back () -> getCCW ();
+		geometry -> solid ()       = converter -> shapeHints .back () -> getSolid ();
+		geometry -> convex ()      = converter -> shapeHints .back () -> getConvex ();
+		geometry -> creaseAngle () = converter -> shapeHints .back () -> getCreaseAngle ();
+	}
+
+	if (not converter -> normalBindings .empty ())
+	{
+		if (converter -> normalBindings .back () -> getValue () == "OVERALL")
+		{
+			for (const auto & index : *fields .coordIndex)
+				geometry -> normalIndex () .emplace_back (index < 0 ? -1 : 0);
+		}
+		else if (converter -> normalBindings .back () -> getValue () == "PER_FACE")
+		{
+			geometry -> normalPerVertex () = false;
+		}
+		else if (converter -> normalBindings .back () -> getValue () == "PER_FACE_INDEXED")
+		{
+			geometry -> normalPerVertex () = false;
+			geometry -> normalIndex ()     = *fields .normalIndex;
+		}
+		else if (converter -> normalBindings .back () -> getValue () == "PER_VERTEX")
+			;
+		else //if (converter -> normalBindings .back () -> getValue () == "PER_VERTEX_INDEXED")
+		{
+			geometry -> normalIndex () = *fields .normalIndex;
+		}
+	}
+	else
+		geometry -> normalIndex () = *fields .normalIndex;
+
+	geometry -> texCoordIndex () = *fields .textureCoordIndex;
+	geometry -> coordIndex ()    = *fields .coordIndex;
+
+	geometry -> texCoord () = converter -> texCoords .back ();
+	geometry -> normal ()   = converter -> normals   .back ();
+	geometry -> coord ()    = converter -> coords    .back ();
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (shape);
+	else
+		converter -> transforms .back () -> children () .emplace_back (shape);
+}
 
 IndexedFaceSet::~IndexedFaceSet ()
 { }

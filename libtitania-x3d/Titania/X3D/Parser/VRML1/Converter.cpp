@@ -50,9 +50,10 @@
 
 #include "Converter.h"
 
-#include "../../Components/Grouping/X3DGroupingNode.h"
+#include "../../Components/Grouping/Transform.h"
 #include "../../Components/Rendering/X3DNormalNode.h"
 #include "../../Components/Rendering/X3DCoordinateNode.h"
+#include "../../Components/Shape/Material.h"
 #include "../../Components/Texturing/X3DTextureNode.h"
 #include "../../Components/Texturing/X3DTextureCoordinateNode.h"
 #include "../../Components/Texturing/X3DTextureTransformNode.h"
@@ -62,15 +63,68 @@ namespace X3D {
 namespace VRML1 {
 
 Converter::Converter (const X3D::X3DScenePtr & scene) :
-	            scene (scene),
-	         textures (),
-	texturetransforms (),
-	        texCoords (),
-	          normals (),
-	           coords (),
-	 materialBindings (),
-	   normalBindings ()
+	                scene (scene),
+	           transforms (),
+	            materials ({ scene -> createNode <X3D::Material> () }),
+	             textures ({ nullptr }),
+	    textureTransforms ({ nullptr }),
+	            texCoords ({ nullptr }),
+	              normals ({ nullptr }),
+	               coords ({ nullptr }),
+	           shapeHints (),
+	     materialBindings (),
+	       normalBindings (),
+	       transformsSize (),
+	         texturesSize (),
+	textureTransformsSize (),
+	        texCoordsSize (),
+	          normalsSize (),
+	           coordsSize (),
+	       shapeHintsSize (),
+	 materialBindingsSize (),
+	   normalBindingsSize ()
 { } 
+
+void
+Converter::save ()
+{
+	transformsSize        .emplace_back (transforms        .size ());
+	materialsSize         .emplace_back (materials         .size ());
+	texturesSize          .emplace_back (textures          .size ());
+	textureTransformsSize .emplace_back (textureTransforms .size ());
+	texCoordsSize         .emplace_back (texCoords         .size ());
+	normalsSize           .emplace_back (normals           .size ());
+	coordsSize            .emplace_back (coords            .size ());
+	shapeHintsSize        .emplace_back (shapeHints        .size ());
+	materialBindingsSize  .emplace_back (materialBindings  .size ());
+	normalBindingsSize    .emplace_back (normalBindings    .size ());
+}
+
+void
+Converter::restore ()
+{
+	transforms        .resize (transformsSize        .back ());
+	materials         .resize (materialsSize         .back ());
+	textures          .resize (texturesSize          .back ());
+	textureTransforms .resize (textureTransformsSize .back ());
+	texCoords         .resize (texCoordsSize         .back ());
+	normals           .resize (normalsSize           .back ());
+	coords            .resize (coordsSize            .back ());
+	shapeHints        .resize (shapeHintsSize        .back ());
+	materialBindings  .resize (materialBindingsSize  .back ());
+	normalBindings    .resize (normalBindingsSize    .back ());
+
+	transformsSize        .pop_back ();
+	materialsSize         .pop_back ();
+	texturesSize          .pop_back ();
+	textureTransformsSize .pop_back ();
+	texCoordsSize         .pop_back ();
+	normalsSize           .pop_back ();
+	coordsSize            .pop_back ();
+	shapeHintsSize        .pop_back ();
+	materialBindingsSize  .pop_back ();
+	normalBindingsSize    .pop_back ();
+}
 
 Converter::~Converter ()
 { }

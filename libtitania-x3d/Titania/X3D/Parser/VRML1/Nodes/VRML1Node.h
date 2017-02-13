@@ -87,6 +87,11 @@ public:
 
 	virtual
 	void
+	push (Converter* const converter)
+	{ }
+
+	virtual
+	void
 	convert (Converter* const converter) = 0;
 
 
@@ -95,6 +100,11 @@ protected:
 	///  @name Construction
 
 	VRML1Node ();
+
+	///  @name Operations
+
+	bool
+	use (Converter* const converter);
 
 
 private:

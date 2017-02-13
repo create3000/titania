@@ -62,6 +62,7 @@ namespace VRML1 {
 
 class MaterialBinding;
 class NormalBinding;
+class ShapeHints;
 
 class Converter
 {
@@ -71,6 +72,14 @@ public:
 
 	Converter (const X3D::X3DScenePtr & scene);
 
+	///  @name Operations
+
+	void
+	save ();
+
+	void
+	restore ();
+
 	///  @name Desstruction
 
 	~Converter ();
@@ -79,15 +88,34 @@ public:
 
 	const X3D::X3DScenePtr & scene;
 
-	std::stack <X3D::X3DPtr <X3D::X3DGroupingNode>>          transforms;
-	std::stack <X3D::X3DPtr <X3D::X3DTextureNode>>           textures;
-	std::stack <X3D::X3DPtr <X3D::X3DTextureTransformNode>>  texturetransforms;
-	std::stack <X3D::X3DPtr <X3D::X3DTextureCoordinateNode>> texCoords;
-	std::stack <X3D::X3DPtr <X3D::X3DNormalNode>>            normals;
-	std::stack <X3D::X3DPtr <X3D::X3DCoordinateNode>>        coords;
+	std::vector <X3D::X3DPtr <X3D::Transform>>                transforms;
+	std::vector <X3D::X3DPtr <X3D::X3DMaterialNode>>          materials;
+	std::vector <X3D::X3DPtr <X3D::X3DTextureNode>>           textures;
+	std::vector <X3D::X3DPtr <X3D::X3DTextureTransformNode>>  textureTransforms;
+	std::vector <X3D::X3DPtr <X3D::X3DTextureCoordinateNode>> texCoords;
+	std::vector <X3D::X3DPtr <X3D::X3DNormalNode>>            normals;
+	std::vector <X3D::X3DPtr <X3D::X3DCoordinateNode>>        coords;
 
-	std::stack <MaterialBinding*> materialBindings;
-	std::stack <NormalBinding*>   normalBindings;
+	std::vector <ShapeHints*>      shapeHints;
+	std::vector <MaterialBinding*> materialBindings;
+	std::vector <NormalBinding*>   normalBindings;
+
+
+private:
+
+	///  @name Members
+
+	std::vector <size_t> transformsSize;
+	std::vector <size_t> materialsSize;
+	std::vector <size_t> texturesSize;
+	std::vector <size_t> textureTransformsSize;
+	std::vector <size_t> texCoordsSize;
+	std::vector <size_t> normalsSize;
+	std::vector <size_t> coordsSize;
+
+	std::vector <size_t> shapeHintsSize;
+	std::vector <size_t> materialBindingsSize;
+	std::vector <size_t> normalBindingsSize;
 
 };
 

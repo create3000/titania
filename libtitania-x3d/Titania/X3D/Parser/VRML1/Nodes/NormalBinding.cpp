@@ -66,8 +66,14 @@ NormalBinding::NormalBinding (X3D::X3DExecutionContext* const executionContext) 
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "value", *fields .value);
+	addField (initializeOnly, "value",    *fields .value);
 	addField (initializeOnly, "children", *fields .children);
+}
+
+void
+NormalBinding::push (Converter* const converter)
+{
+	converter -> normalBindings .emplace_back (this);
 }
 
 void

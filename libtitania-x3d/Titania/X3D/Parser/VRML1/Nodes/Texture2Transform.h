@@ -65,7 +65,11 @@ public:
 
 	Texture2Transform (X3D::X3DExecutionContext* const);
 
-	///  @name Operationis
+	///  @name Operations
+
+	virtual
+	void
+	push (Converter* const converter) final override;
 
 	virtual
 	void
