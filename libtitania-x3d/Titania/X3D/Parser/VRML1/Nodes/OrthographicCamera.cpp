@@ -50,6 +50,8 @@
 
 #include "OrthographicCamera.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Navigation/OrthoViewpoint.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -94,7 +96,30 @@ OrthographicCamera::create (X3D::X3DExecutionContext* const executionContext) co
 
 void
 OrthographicCamera::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto viewpointNode = converter -> scene -> createNode <X3D::OrthoViewpoint> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), viewpointNode);
+
+	// Assign values.
+
+	viewpointNode -> position ()    = position ();
+	viewpointNode -> orientation () = orientation ();
+	viewpointNode -> fieldOfView () = { -height () / 2, -height () / 2, height () / 2, height () / 2 };
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (viewpointNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (viewpointNode);
+}
 
 OrthographicCamera::~OrthographicCamera ()
 { }

@@ -50,6 +50,15 @@
 
 #include "PointSet.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Rendering/Coordinate.h"
+#include "../../../Components/Rendering/PointSet.h"
+#include "../../../Components/Rendering/X3DCoordinateNode.h"
+#include "../../../Components/Shape/Appearance.h"
+#include "../../../Components/Shape/Shape.h"
+#include "../../../Components/Shape/X3DMaterialNode.h"
+#include "../../../Components/Texturing/X3DTextureNode.h"
+#include "../../../Components/Texturing/X3DTextureTransformNode.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -74,8 +83,8 @@ PointSet::PointSet (X3D::X3DExecutionContext* const executionContext) :
 	//addType (X3D::X3DConstants::VRML1PointSet);
 
 	addField (initializeOnly, "startIndex", startIndex ());
-	addField (initializeOnly, "numPoints", numPoints ());
-	addField (initializeOnly, "children", children ());
+	addField (initializeOnly, "numPoints",  numPoints ());
+	addField (initializeOnly, "children",   children ());
 }
 
 X3D::X3DBaseNode*
@@ -86,7 +95,55 @@ PointSet::create (X3D::X3DExecutionContext* const executionContext) const
 
 void
 PointSet::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto shapeNode      = converter -> scene -> createNode <X3D::Shape> ();
+	const auto appearanceNode = converter -> scene -> createNode <X3D::Appearance> ();
+	const auto geometryNode   = converter -> scene -> createNode <X3D::PointSet> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), shapeNode);
+
+	// Assign values.
+
+	shapeNode -> appearance () = appearanceNode;
+	shapeNode -> geometry ()   = geometryNode;
+
+	appearanceNode -> material ()         = converter -> materials         .back ();
+	appearanceNode -> texture ()          = converter -> textures          .back ();
+	appearanceNode -> textureTransform () = converter -> textureTransforms .back ();
+
+	if (converter -> coords .back ())
+	{
+		const auto & back = converter -> coords .back ();
+
+		if (startIndex () == 0 and int32_t (back -> getSize ()) == numPoints () .getValue ())
+			geometryNode -> coord () = back;
+		else
+		{
+			const auto coordNode = converter -> scene -> createNode <X3D::Coordinate> ();
+
+			int32_t i    = std::max <int32_t> (0, startIndex ());
+			int32_t size = std::min <int32_t> (back -> getSize (), startIndex () + numPoints ());
+
+			for (; i < size; ++ i)
+				coordNode -> point () .emplace_back (back -> get1Point (i));
+
+			geometryNode -> coord () = coordNode;
+		}
+	}
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (shapeNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (shapeNode);
+}
 
 PointSet::~PointSet ()
 { }

@@ -139,6 +139,8 @@ Parser::parseIntoScene ()
 		vrmlScene ();
 
 		convert ();
+
+		optimize ();
 	}
 	catch (const X3DError & error)
 	{

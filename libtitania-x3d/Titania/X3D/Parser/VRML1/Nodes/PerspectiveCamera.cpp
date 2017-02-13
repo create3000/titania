@@ -50,6 +50,8 @@
 
 #include "PerspectiveCamera.h"
 
+#include "../../../Components/Grouping/Transform.h"
+#include "../../../Components/Navigation/Viewpoint.h"
 #include "../../../Execution/X3DExecutionContext.h"
 #include "../Converter.h"
 
@@ -94,7 +96,30 @@ PerspectiveCamera::create (X3D::X3DExecutionContext* const executionContext) con
 
 void
 PerspectiveCamera::convert (Converter* const converter)
-{ }
+{
+	if (use (converter))
+		return;
+
+	// Create nodes.
+
+	const auto viewpointNode = converter -> scene -> createNode <X3D::Viewpoint> ();
+
+	// Set name.
+
+	if (not getName () .empty ())
+		converter -> scene -> updateNamedNode (getName (), viewpointNode);
+
+	// Assign values.
+
+	viewpointNode -> position ()    = position ();
+	viewpointNode -> orientation () = orientation ();
+	viewpointNode -> fieldOfView () = heightAngle ();
+
+	if (converter -> transforms .empty ())
+		converter -> scene -> getRootNodes () .emplace_back (viewpointNode);
+	else
+		converter -> groups .back () -> children () .emplace_back (viewpointNode);
+}
 
 PerspectiveCamera::~PerspectiveCamera ()
 { }
