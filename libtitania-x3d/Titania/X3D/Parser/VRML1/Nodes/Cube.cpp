@@ -73,9 +73,9 @@ Cube::Cube (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "width",    *fields .width);
-	addField (initializeOnly, "height",   *fields .height);
-	addField (initializeOnly, "depth",    *fields .depth);
+	addField (initializeOnly, "width",    width ());
+	addField (initializeOnly, "height",   height ());
+	addField (initializeOnly, "depth",    depth ());
 	addField (initializeOnly, "children", children ());
 }
 

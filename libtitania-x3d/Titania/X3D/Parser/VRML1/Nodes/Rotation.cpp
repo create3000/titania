@@ -71,7 +71,7 @@ Rotation::Rotation (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "rotation", *fields .rotation);
+	addField (initializeOnly, "rotation", rotation ());
 	addField (initializeOnly, "children", children ());
 }
 
@@ -87,7 +87,7 @@ Rotation::convert (Converter* const converter)
 	if (converter -> transforms .empty ())
 		return;
 
-	converter -> transforms .back () -> rotation () = *fields .rotation;
+	converter -> transforms .back () -> rotation () = rotation ();
 }
 
 Rotation::~Rotation ()

@@ -75,10 +75,10 @@ Texture2Transform::Texture2Transform (X3D::X3DExecutionContext* const executionC
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "translation", *fields .translation);
-	addField (initializeOnly, "rotation",    *fields .rotation);
-	addField (initializeOnly, "scaleFactor", *fields .scaleFactor);
-	addField (initializeOnly, "center",      *fields .center);
+	addField (initializeOnly, "translation", translation ());
+	addField (initializeOnly, "rotation",    rotation ());
+	addField (initializeOnly, "scaleFactor", scaleFactor ());
+	addField (initializeOnly, "center",      center ());
 	addField (initializeOnly, "children",    children ());
 }
 
@@ -105,10 +105,10 @@ Texture2Transform::push (Converter* const converter)
 
 	// Assign values.
 
-	textureTransform -> translation () = *fields .translation;
-	textureTransform -> rotation ()    = *fields .rotation;
-	textureTransform -> scale ()       = *fields .scaleFactor;
-	textureTransform -> center ()      = *fields .center;
+	textureTransform -> translation () = translation ();
+	textureTransform -> rotation ()    = rotation ();
+	textureTransform -> scale ()       = scaleFactor ();
+	textureTransform -> center ()      = center ();
 
 	converter -> textureTransforms .emplace_back (textureTransform);
 }

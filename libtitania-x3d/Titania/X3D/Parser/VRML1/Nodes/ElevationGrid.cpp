@@ -75,10 +75,10 @@ ElevationGrid::ElevationGrid (X3D::X3DExecutionContext* const executionContext) 
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "verticesPerRow", *fields .verticesPerRow);
-	addField (initializeOnly, "verticesPerColumn", *fields .verticesPerColumn);
-	addField (initializeOnly, "gridStep", *fields .gridStep);
-	addField (initializeOnly, "height", *fields .height);
+	addField (initializeOnly, "verticesPerRow", verticesPerRow ());
+	addField (initializeOnly, "verticesPerColumn", verticesPerColumn ());
+	addField (initializeOnly, "gridStep", gridStep ());
+	addField (initializeOnly, "height", height ());
 	addField (initializeOnly, "children", children ());
 }
 

@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_ENVIRONMENT_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_ENVIRONMENT_H__
 
@@ -84,6 +85,56 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	SFFloat &
+	ambientIntensity ()
+	{ return *fields .ambientIntensity; }
+
+	const SFFloat &
+	ambientIntensity () const
+	{ return *fields .ambientIntensity; }
+
+	SFColor &
+	ambientColor ()
+	{ return *fields .ambientColor; }
+
+	const SFColor &
+	ambientColor () const
+	{ return *fields .ambientColor; }
+
+	SFVec3f &
+	attenuation ()
+	{ return *fields .attenuation; }
+
+	const SFVec3f &
+	attenuation () const
+	{ return *fields .attenuation; }
+
+	SFString &
+	fogType ()
+	{ return *fields .fogType; }
+
+	const SFString &
+	fogType () const
+	{ return *fields .fogType; }
+
+	SFColor &
+	fogColor ()
+	{ return *fields .fogColor; }
+
+	const SFColor &
+	fogColor () const
+	{ return *fields .fogColor; }
+
+	SFFloat &
+	fogVisibility ()
+	{ return *fields .fogVisibility; }
+
+	const SFFloat &
+	fogVisibility () const
+	{ return *fields .fogVisibility; }
 
 	///  @name Operations
 

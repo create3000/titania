@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_SCALE_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_SCALE_H__
 
@@ -84,6 +85,16 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	SFVec3f &
+	scaleFactor ()
+	{ return *fields .scaleFactor; }
+
+	const SFVec3f &
+	scaleFactor () const
+	{ return *fields .scaleFactor; }
 
 	///  @name Operations
 

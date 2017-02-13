@@ -75,10 +75,10 @@ Texture2::Texture2 (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "filename", *fields .filename);
-	addField (initializeOnly, "image",    *fields .image);
-	addField (initializeOnly, "wrapS",    *fields .wrapS);
-	addField (initializeOnly, "wrapT",    *fields .wrapT);
+	addField (initializeOnly, "filename", filename ());
+	addField (initializeOnly, "image",    image ());
+	addField (initializeOnly, "wrapS",    wrapS ());
+	addField (initializeOnly, "wrapT",    wrapT ());
 	addField (initializeOnly, "children", children ());
 }
 
@@ -111,9 +111,9 @@ Texture2::convert (Converter* const converter)
 
 	// Assign values.
 
-	texture -> url ()     = { *fields .filename };
-	texture -> repeatS () = *fields .wrapS == "CLAMP" ? false : true;
-	texture -> repeatT () = *fields .wrapT == "CLAMP" ? false : true;
+	texture -> url ()     = { filename () };
+	texture -> repeatS () = wrapS () == "CLAMP" ? false : true;
+	texture -> repeatT () = wrapT () == "CLAMP" ? false : true;
 
 	converter -> textures .emplace_back (texture);
 }

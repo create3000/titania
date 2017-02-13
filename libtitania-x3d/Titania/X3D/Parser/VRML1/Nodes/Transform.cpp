@@ -75,11 +75,11 @@ Transform::Transform (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "translation",      *fields .translation);
-	addField (initializeOnly, "rotation",         *fields .rotation);
-	addField (initializeOnly, "scaleFactor",      *fields .scaleFactor);
-	addField (initializeOnly, "scaleOrientation", *fields .scaleOrientation);
-	addField (initializeOnly, "center",           *fields .center);
+	addField (initializeOnly, "translation",      translation ());
+	addField (initializeOnly, "rotation",         rotation ());
+	addField (initializeOnly, "scaleFactor",      scaleFactor ());
+	addField (initializeOnly, "scaleOrientation", scaleOrientation ());
+	addField (initializeOnly, "center",           center ());
 	addField (initializeOnly, "children",         children ());
 }
 
@@ -95,11 +95,11 @@ Transform::convert (Converter* const converter)
 	if (converter -> transforms .empty ())
 		return;
 
-	converter -> transforms .back () -> translation ()      = *fields .translation;
-	converter -> transforms .back () -> rotation ()         = *fields .rotation;
-	converter -> transforms .back () -> scale ()            = *fields .scaleFactor;
-	converter -> transforms .back () -> scaleOrientation () = *fields .scaleOrientation;
-	converter -> transforms .back () -> center ()           = *fields .center;
+	converter -> transforms .back () -> translation ()      = translation ();
+	converter -> transforms .back () -> rotation ()         = rotation ();
+	converter -> transforms .back () -> scale ()            = scaleFactor ();
+	converter -> transforms .back () -> scaleOrientation () = scaleOrientation ();
+	converter -> transforms .back () -> center ()           = center ();
 }
 
 Transform::~Transform ()

@@ -74,9 +74,9 @@ Background::Background (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "groundColors", *fields .groundColors);
-	addField (initializeOnly, "skyColors",    *fields .skyColors);
-	addField (initializeOnly, "scenery",      *fields .scenery);
+	addField (initializeOnly, "groundColors", groundColors ());
+	addField (initializeOnly, "skyColors",    skyColors ());
+	addField (initializeOnly, "scenery",      scenery ());
 	addField (initializeOnly, "children",     children ());
 }
 

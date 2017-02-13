@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_DIRECTIONAL_LIGHT_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_DIRECTIONAL_LIGHT_H__
 
@@ -84,6 +85,40 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	SFBool &
+	on ()
+	{ return *fields .on; }
+
+	const SFBool &
+	on () const
+	{ return *fields .on; }
+
+	SFFloat &
+	intensity ()
+	{ return *fields .intensity; }
+
+	const SFFloat &
+	intensity () const
+	{ return *fields .intensity; }
+
+	SFColor &
+	color ()
+	{ return *fields .color; }
+
+	const SFColor &
+	color () const
+	{ return *fields .color; }
+
+	SFVec3f &
+	direction ()
+	{ return *fields .direction; }
+
+	const SFVec3f &
+	direction () const
+	{ return *fields .direction; }
 
 	///  @name Operations
 

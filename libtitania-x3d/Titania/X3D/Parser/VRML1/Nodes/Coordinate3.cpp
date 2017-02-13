@@ -72,7 +72,7 @@ Coordinate3::Coordinate3 (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "point",    *fields .point);
+	addField (initializeOnly, "point",    point ());
 	addField (initializeOnly, "children", children ());
 }
 
@@ -87,7 +87,7 @@ Coordinate3::push (Converter* const converter)
 {
 	const auto coord = converter -> scene -> createNode <X3D::Coordinate> ();
 
-	coord -> point () = *fields .point;
+	coord -> point () = point ();
 
 	converter -> coords .emplace_back (coord);
 }

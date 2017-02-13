@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_NORMAL_BINDING_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_NORMAL_BINDING_H__
 
@@ -89,6 +90,16 @@ public:
 
 	const std::string &
 	getValue () const
+	{ return *fields .value; }
+
+	///  @name Fields
+
+	SFString &
+	value ()
+	{ return *fields .value; }
+
+	const SFString &
+	value () const
 	{ return *fields .value; }
 
 	///  @name Operations

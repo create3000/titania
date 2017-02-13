@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_POINT_SET_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_POINT_SET_H__
 
@@ -84,6 +85,24 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	SFInt32 &
+	startIndex ()
+	{ return *fields .startIndex; }
+
+	const SFInt32 &
+	startIndex () const
+	{ return *fields .startIndex; }
+
+	SFInt32 &
+	numPoints ()
+	{ return *fields .numPoints; }
+
+	const SFInt32 &
+	numPoints () const
+	{ return *fields .numPoints; }
 
 	///  @name Operations
 

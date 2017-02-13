@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_WWWANCHOR_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_WWWANCHOR_H__
 
@@ -84,6 +85,32 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	MFString &
+	name ()
+	{ return *fields .name; }
+
+	const MFString &
+	name () const
+	{ return *fields .name; }
+
+	SFString &
+	description ()
+	{ return *fields .description; }
+
+	const SFString &
+	description () const
+	{ return *fields .description; }
+
+	SFString &
+	map ()
+	{ return *fields .map; }
+
+	const SFString &
+	map () const
+	{ return *fields .map; }
 
 	///  @name Operations
 

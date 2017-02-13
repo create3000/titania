@@ -75,10 +75,10 @@ ShapeHints::ShapeHints (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "vertexOrdering", *fields .vertexOrdering);
-	addField (initializeOnly, "shapeType",      *fields .shapeType);
-	addField (initializeOnly, "faceType",       *fields .faceType);
-	addField (initializeOnly, "creaseAngle",    *fields .creaseAngle);
+	addField (initializeOnly, "vertexOrdering", vertexOrdering ());
+	addField (initializeOnly, "shapeType",      shapeType ());
+	addField (initializeOnly, "faceType",       faceType ());
+	addField (initializeOnly, "creaseAngle",    creaseAngle ());
 	addField (initializeOnly, "children",       children ());
 }
 
@@ -91,7 +91,7 @@ ShapeHints::create (X3D::X3DExecutionContext* const executionContext) const
 bool
 ShapeHints::getCCW () const
 {
-	if (*fields .vertexOrdering == "CLOCKWISE")
+	if (vertexOrdering () == "CLOCKWISE")
 		return false;
 
 	return true;
@@ -100,7 +100,7 @@ ShapeHints::getCCW () const
 bool
 ShapeHints::getSolid () const
 {
-	if (*fields .shapeType == "UNKNOWN_SHAPE_TYPE")
+	if (shapeType () == "UNKNOWN_SHAPE_TYPE")
 		return false;
 
 	return true;
@@ -109,7 +109,7 @@ ShapeHints::getSolid () const
 bool
 ShapeHints::getConvex () const
 {
-	if (*fields .shapeType == "UNKNOWN_FACE_TYPE")
+	if (shapeType () == "UNKNOWN_FACE_TYPE")
 		return false;
 
 	return true;

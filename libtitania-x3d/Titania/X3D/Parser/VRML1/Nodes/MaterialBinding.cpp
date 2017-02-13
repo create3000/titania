@@ -70,7 +70,7 @@ MaterialBinding::MaterialBinding (X3D::X3DExecutionContext* const executionConte
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "value",    *fields .value);
+	addField (initializeOnly, "value",    value ());
 	addField (initializeOnly, "children", children ());
 }
 

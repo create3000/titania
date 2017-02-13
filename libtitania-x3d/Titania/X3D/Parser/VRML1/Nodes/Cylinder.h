@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_CYLINDER_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_CYLINDER_H__
 
@@ -85,6 +86,32 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	SFString &
+	parts ()
+	{ return *fields .parts; }
+
+	const SFString &
+	parts () const
+	{ return *fields .parts; }
+
+	SFFloat &
+	radius ()
+	{ return *fields .radius; }
+
+	const SFFloat &
+	radius () const
+	{ return *fields .radius; }
+
+	SFFloat &
+	height ()
+	{ return *fields .height; }
+
+	const SFFloat &
+	height () const
+	{ return *fields .height; }
 
 	///  @name Operations
 

@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_BACKGROUND_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_BACKGROUND_H__
 
@@ -84,6 +85,32 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	MFColor &
+	groundColors ()
+	{ return *fields .groundColors; }
+
+	const MFColor &
+	groundColors () const
+	{ return *fields .groundColors; }
+
+	MFColor &
+	skyColors ()
+	{ return *fields .skyColors; }
+
+	const MFColor &
+	skyColors () const
+	{ return *fields .skyColors; }
+
+	MFString &
+	scenery ()
+	{ return *fields .scenery; }
+
+	const MFString &
+	scenery () const
+	{ return *fields .scenery; }
 
 	///  @name Operations
 

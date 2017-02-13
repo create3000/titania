@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_PERSPECTIVE_CAMERA_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_PERSPECTIVE_CAMERA_H__
 
@@ -84,6 +85,56 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	SFVec3f &
+	position ()
+	{ return *fields .position; }
+
+	const SFVec3f &
+	position () const
+	{ return *fields .position; }
+
+	SFRotation &
+	orientation ()
+	{ return *fields .orientation; }
+
+	const SFRotation &
+	orientation () const
+	{ return *fields .orientation; }
+
+	SFFloat &
+	focalDistance ()
+	{ return *fields .focalDistance; }
+
+	const SFFloat &
+	focalDistance () const
+	{ return *fields .focalDistance; }
+
+	SFFloat &
+	heightAngle ()
+	{ return *fields .heightAngle; }
+
+	const SFFloat &
+	heightAngle () const
+	{ return *fields .heightAngle; }
+
+	SFFloat &
+	nearDistance ()
+	{ return *fields .nearDistance; }
+
+	const SFFloat &
+	nearDistance () const
+	{ return *fields .nearDistance; }
+
+	SFFloat &
+	farDistance ()
+	{ return *fields .farDistance; }
+
+	const SFFloat &
+	farDistance () const
+	{ return *fields .farDistance; }
 
 	///  @name Operations
 

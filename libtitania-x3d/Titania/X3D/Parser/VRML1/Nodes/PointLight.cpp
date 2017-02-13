@@ -73,10 +73,10 @@ PointLight::PointLight (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "on", *fields .on);
-	addField (initializeOnly, "intensity", *fields .intensity);
-	addField (initializeOnly, "color", *fields .color);
-	addField (initializeOnly, "location", *fields .location);
+	addField (initializeOnly, "on", on ());
+	addField (initializeOnly, "intensity", intensity ());
+	addField (initializeOnly, "color", color ());
+	addField (initializeOnly, "location", location ());
 	addField (initializeOnly, "children", children ());
 }
 

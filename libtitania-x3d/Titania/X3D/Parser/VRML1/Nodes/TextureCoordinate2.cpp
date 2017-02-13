@@ -77,7 +77,7 @@ TextureCoordinate2::TextureCoordinate2 (X3D::X3DExecutionContext* const executio
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "point",    *fields .point);
+	addField (initializeOnly, "point",    point ());
 	addField (initializeOnly, "children", children ());
 }
 
@@ -86,7 +86,7 @@ TextureCoordinate2::push (Converter* const converter)
 {
 	const auto texCoord = converter -> scene -> createNode <X3D::TextureCoordinate> ();
 
-	texCoord -> point () = *fields .point;
+	texCoord -> point () = point ();
 
 	converter -> texCoords .emplace_back (texCoord);
 }

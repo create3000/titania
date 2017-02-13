@@ -80,15 +80,15 @@ PointSound::PointSound (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "name", *fields .name);
-	addField (initializeOnly, "description", *fields .description);
-	addField (initializeOnly, "intensity", *fields .intensity);
-	addField (initializeOnly, "location", *fields .location);
-	addField (initializeOnly, "minRange", *fields .minRange);
-	addField (initializeOnly, "maxRange", *fields .maxRange);
-	addField (initializeOnly, "loop", *fields .loop);
-	addField (initializeOnly, "start", *fields .start);
-	addField (initializeOnly, "pause", *fields .pause);
+	addField (initializeOnly, "name", name ());
+	addField (initializeOnly, "description", description ());
+	addField (initializeOnly, "intensity", intensity ());
+	addField (initializeOnly, "location", location ());
+	addField (initializeOnly, "minRange", minRange ());
+	addField (initializeOnly, "maxRange", maxRange ());
+	addField (initializeOnly, "loop", loop ());
+	addField (initializeOnly, "start", start ());
+	addField (initializeOnly, "pause", pause ());
 	addField (initializeOnly, "children", children ());
 }
 

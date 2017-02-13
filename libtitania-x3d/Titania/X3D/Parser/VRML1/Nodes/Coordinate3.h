@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_COORDINATE3_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_COORDINATE3_H__
 
@@ -85,6 +86,16 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	MFVec3f &
+	point ()
+	{ return *fields .point; }
+
+	const MFVec3f &
+	point () const
+	{ return *fields .point; }
 
 	///  @name Operations
 

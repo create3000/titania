@@ -76,13 +76,13 @@ SpotLight::SpotLight (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "on",          *fields .on);
-	addField (initializeOnly, "intensity",   *fields .intensity);
-	addField (initializeOnly, "color",       *fields .color);
-	addField (initializeOnly, "location",    *fields .location);
-	addField (initializeOnly, "direction",   *fields .direction);
-	addField (initializeOnly, "dropOffRate", *fields .dropOffRate);
-	addField (initializeOnly, "cutOffAngle", *fields .cutOffAngle);
+	addField (initializeOnly, "on",          on ());
+	addField (initializeOnly, "intensity",   intensity ());
+	addField (initializeOnly, "color",       color ());
+	addField (initializeOnly, "location",    location ());
+	addField (initializeOnly, "direction",   direction ());
+	addField (initializeOnly, "dropOffRate", dropOffRate ());
+	addField (initializeOnly, "cutOffAngle", cutOffAngle ());
 	addField (initializeOnly, "children",    children ());
 }
 

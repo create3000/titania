@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_GENERAL_CYLINDER_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_GENERAL_CYLINDER_H__
 
@@ -84,6 +85,48 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	MFVec3f &
+	spine ()
+	{ return *fields .spine; }
+
+	const MFVec3f &
+	spine () const
+	{ return *fields .spine; }
+
+	MFVec2f &
+	crossSection ()
+	{ return *fields .crossSection; }
+
+	const MFVec2f &
+	crossSection () const
+	{ return *fields .crossSection; }
+
+	MFVec2f &
+	profile ()
+	{ return *fields .profile; }
+
+	const MFVec2f &
+	profile () const
+	{ return *fields .profile; }
+
+	MFVec2f &
+	twist ()
+	{ return *fields .twist; }
+
+	const MFVec2f &
+	twist () const
+	{ return *fields .twist; }
+
+	SFString &
+	parts ()
+	{ return *fields .parts; }
+
+	const SFString &
+	parts () const
+	{ return *fields .parts; }
 
 	///  @name Operations
 

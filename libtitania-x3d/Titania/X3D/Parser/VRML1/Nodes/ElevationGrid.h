@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_ELEVATION_GRID_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_ELEVATION_GRID_H__
 
@@ -84,6 +85,40 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	SFInt32 &
+	verticesPerRow ()
+	{ return *fields .verticesPerRow; }
+
+	const SFInt32 &
+	verticesPerRow () const
+	{ return *fields .verticesPerRow; }
+
+	SFInt32 &
+	verticesPerColumn ()
+	{ return *fields .verticesPerColumn; }
+
+	const SFInt32 &
+	verticesPerColumn () const
+	{ return *fields .verticesPerColumn; }
+
+	SFVec2f &
+	gridStep ()
+	{ return *fields .gridStep; }
+
+	const SFVec2f &
+	gridStep () const
+	{ return *fields .gridStep; }
+
+	MFFloat &
+	height ()
+	{ return *fields .height; }
+
+	const MFFloat &
+	height () const
+	{ return *fields .height; }
 
 	///  @name Operations
 

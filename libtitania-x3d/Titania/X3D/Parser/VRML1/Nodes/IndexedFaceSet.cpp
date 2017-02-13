@@ -85,10 +85,10 @@ IndexedFaceSet::IndexedFaceSet (X3D::X3DExecutionContext* const executionContext
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "coordIndex",        *fields .coordIndex);
-	addField (initializeOnly, "materialIndex",     *fields .materialIndex);
-	addField (initializeOnly, "normalIndex",       *fields .normalIndex);
-	addField (initializeOnly, "textureCoordIndex", *fields .textureCoordIndex);
+	addField (initializeOnly, "coordIndex",        coordIndex ());
+	addField (initializeOnly, "materialIndex",     materialIndex ());
+	addField (initializeOnly, "normalIndex",       normalIndex ());
+	addField (initializeOnly, "textureCoordIndex", textureCoordIndex ());
 	addField (initializeOnly, "children",          children ());
 }
 
@@ -136,7 +136,7 @@ IndexedFaceSet::convert (Converter* const converter)
 	{
 		if (converter -> normalBindings .back () -> getValue () == "OVERALL")
 		{
-			for (const auto & index : *fields .coordIndex)
+			for (const auto & index : coordIndex ())
 				geometry -> normalIndex () .emplace_back (index < 0 ? -1 : 0);
 		}
 		else if (converter -> normalBindings .back () -> getValue () == "PER_FACE")
@@ -146,20 +146,20 @@ IndexedFaceSet::convert (Converter* const converter)
 		else if (converter -> normalBindings .back () -> getValue () == "PER_FACE_INDEXED")
 		{
 			geometry -> normalPerVertex () = false;
-			geometry -> normalIndex ()     = *fields .normalIndex;
+			geometry -> normalIndex ()     = normalIndex ();
 		}
 		else if (converter -> normalBindings .back () -> getValue () == "PER_VERTEX")
 			;
 		else //if (converter -> normalBindings .back () -> getValue () == "PER_VERTEX_INDEXED")
 		{
-			geometry -> normalIndex () = *fields .normalIndex;
+			geometry -> normalIndex () = normalIndex ();
 		}
 	}
 	else
-		geometry -> normalIndex () = *fields .normalIndex;
+		geometry -> normalIndex () = normalIndex ();
 
-	geometry -> texCoordIndex () = *fields .textureCoordIndex;
-	geometry -> coordIndex ()    = *fields .coordIndex;
+	geometry -> texCoordIndex () = textureCoordIndex ();
+	geometry -> coordIndex ()    = coordIndex ();
 
 	geometry -> texCoord () = converter -> texCoords .back ();
 	geometry -> normal ()   = converter -> normals   .back ();

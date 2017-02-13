@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_POINT_SOUND_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_POINT_SOUND_H__
 
@@ -84,6 +85,80 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	MFString &
+	name ()
+	{ return *fields .name; }
+
+	const MFString &
+	name () const
+	{ return *fields .name; }
+
+	SFString &
+	description ()
+	{ return *fields .description; }
+
+	const SFString &
+	description () const
+	{ return *fields .description; }
+
+	SFFloat &
+	intensity ()
+	{ return *fields .intensity; }
+
+	const SFFloat &
+	intensity () const
+	{ return *fields .intensity; }
+
+	SFVec3f &
+	location ()
+	{ return *fields .location; }
+
+	const SFVec3f &
+	location () const
+	{ return *fields .location; }
+
+	SFFloat &
+	minRange ()
+	{ return *fields .minRange; }
+
+	const SFFloat &
+	minRange () const
+	{ return *fields .minRange; }
+
+	SFFloat &
+	maxRange ()
+	{ return *fields .maxRange; }
+
+	const SFFloat &
+	maxRange () const
+	{ return *fields .maxRange; }
+
+	SFBool &
+	loop ()
+	{ return *fields .loop; }
+
+	const SFBool &
+	loop () const
+	{ return *fields .loop; }
+
+	SFTime &
+	start ()
+	{ return *fields .start; }
+
+	const SFTime &
+	start () const
+	{ return *fields .start; }
+
+	SFTime &
+	pause ()
+	{ return *fields .pause; }
+
+	const SFTime &
+	pause () const
+	{ return *fields .pause; }
 
 	///  @name Operations
 

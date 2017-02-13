@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_NAVIGATION_INFO_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_NAVIGATION_INFO_H__
 
@@ -84,6 +85,40 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	MFString &
+	type ()
+	{ return *fields .type; }
+
+	const MFString &
+	type () const
+	{ return *fields .type; }
+
+	SFFloat &
+	speed ()
+	{ return *fields .speed; }
+
+	const SFFloat &
+	speed () const
+	{ return *fields .speed; }
+
+	SFFloat &
+	collisionRadius ()
+	{ return *fields .collisionRadius; }
+
+	const SFFloat &
+	collisionRadius () const
+	{ return *fields .collisionRadius; }
+
+	SFBool &
+	headlight ()
+	{ return *fields .headlight; }
+
+	const SFBool &
+	headlight () const
+	{ return *fields .headlight; }
 
 	///  @name Operations
 

@@ -75,10 +75,10 @@ NavigationInfo::NavigationInfo (X3D::X3DExecutionContext* const executionContext
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "type", *fields .type);
-	addField (initializeOnly, "speed", *fields .speed);
-	addField (initializeOnly, "collisionRadius", *fields .collisionRadius);
-	addField (initializeOnly, "headlight", *fields .headlight);
+	addField (initializeOnly, "type", type ());
+	addField (initializeOnly, "speed", speed ());
+	addField (initializeOnly, "collisionRadius", collisionRadius ());
+	addField (initializeOnly, "headlight", headlight ());
 	addField (initializeOnly, "children", children ());
 }
 

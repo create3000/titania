@@ -76,12 +76,12 @@ Material::Material (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "ambientColor",  *fields .ambientColor);
-	addField (initializeOnly, "diffuseColor",  *fields .diffuseColor);
-	addField (initializeOnly, "specularColor", *fields .specularColor);
-	addField (initializeOnly, "emissiveColor", *fields .emissiveColor);
-	addField (initializeOnly, "shininess",     *fields .shininess);
-	addField (initializeOnly, "transparency",  *fields .transparency);
+	addField (initializeOnly, "ambientColor",  ambientColor ());
+	addField (initializeOnly, "diffuseColor",  diffuseColor ());
+	addField (initializeOnly, "specularColor", specularColor ());
+	addField (initializeOnly, "emissiveColor", emissiveColor ());
+	addField (initializeOnly, "shininess",     shininess ());
+	addField (initializeOnly, "transparency",  transparency ());
 	addField (initializeOnly, "children",      children ());
 }
 
@@ -108,29 +108,29 @@ Material::convert (Converter* const converter)
 
 	// Assign values.
 
-	if (not fields .ambientColor -> empty ())
+	if (not ambientColor () .empty ())
 	{
 		float h, s, v;
 	
-		fields .ambientColor -> at (0) .getHSV (h, s, v);
+		ambientColor () [0] .getHSV (h, s, v);
 	
 		material -> ambientIntensity () = v;
 	}
 
-	if (not fields .diffuseColor -> empty ())
-		material -> diffuseColor () = fields .diffuseColor -> at (0);
+	if (not diffuseColor () .empty ())
+		material -> diffuseColor () = diffuseColor () [0];
 	
-	if (not fields .specularColor -> empty ())
-		material -> specularColor () = fields .specularColor -> at (0);
+	if (not specularColor () .empty ())
+		material -> specularColor () = specularColor () [0];
 	
-	if (not fields .emissiveColor -> empty ())
-		material -> emissiveColor () = fields .emissiveColor -> at (0);
+	if (not emissiveColor () .empty ())
+		material -> emissiveColor () = emissiveColor () [0];
 	
-	if (not fields .shininess -> empty ())
-		material -> shininess () = fields .shininess -> at (0);
+	if (not shininess () .empty ())
+		material -> shininess () = shininess () [0];
 	
-	if (not fields .transparency -> empty ())
-		material -> transparency () = fields .transparency -> at (0);
+	if (not transparency () .empty ())
+		material -> transparency () = transparency () [0];
 
 	converter -> materials .emplace_back (material);
 }

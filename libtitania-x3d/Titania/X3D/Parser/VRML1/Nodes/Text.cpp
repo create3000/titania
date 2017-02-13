@@ -74,11 +74,11 @@ Text::Text (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "string", *fields .string);
-	addField (initializeOnly, "direction", *fields .direction);
-	addField (initializeOnly, "justification", *fields .justification);
-	addField (initializeOnly, "spacing", *fields .spacing);
-	addField (initializeOnly, "width", *fields .width);
+	addField (initializeOnly, "string", string ());
+	addField (initializeOnly, "direction", direction ());
+	addField (initializeOnly, "justification", justification ());
+	addField (initializeOnly, "spacing", spacing ());
+	addField (initializeOnly, "width", width ());
 	addField (initializeOnly, "children", children ());
 }
 

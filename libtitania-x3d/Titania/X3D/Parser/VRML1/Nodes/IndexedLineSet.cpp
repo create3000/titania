@@ -73,10 +73,10 @@ IndexedLineSet::IndexedLineSet (X3D::X3DExecutionContext* const executionContext
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "coordIndex", *fields .coordIndex);
-	addField (initializeOnly, "materialIndex", *fields .materialIndex);
-	addField (initializeOnly, "normalIndex", *fields .normalIndex);
-	addField (initializeOnly, "textureCoordIndex", *fields .textureCoordIndex);
+	addField (initializeOnly, "coordIndex", coordIndex ());
+	addField (initializeOnly, "materialIndex", materialIndex ());
+	addField (initializeOnly, "normalIndex", normalIndex ());
+	addField (initializeOnly, "textureCoordIndex", textureCoordIndex ());
 	addField (initializeOnly, "children", children ());
 }
 

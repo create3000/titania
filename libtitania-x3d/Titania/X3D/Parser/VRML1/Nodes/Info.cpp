@@ -70,7 +70,7 @@ Info::Info (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "string", *fields .string);
+	addField (initializeOnly, "string", string ());
 	addField (initializeOnly, "children", children ());
 }
 

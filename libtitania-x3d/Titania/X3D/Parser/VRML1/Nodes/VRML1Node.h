@@ -48,6 +48,7 @@
  *
  ******************************************************************************/
 
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_VRML1NODE_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_VRML1NODE_H__
 

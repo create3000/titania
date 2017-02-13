@@ -83,18 +83,18 @@ DirectedSound::DirectedSound (X3D::X3DExecutionContext* const executionContext) 
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "name", *fields .name);
-	addField (initializeOnly, "description", *fields .description);
-	addField (initializeOnly, "intensity", *fields .intensity);
-	addField (initializeOnly, "location", *fields .location);
-	addField (initializeOnly, "direction", *fields .direction);
-	addField (initializeOnly, "minRange", *fields .minRange);
-	addField (initializeOnly, "maxRange", *fields .maxRange);
-	addField (initializeOnly, "minAngle", *fields .minAngle);
-	addField (initializeOnly, "maxAngle", *fields .maxAngle);
-	addField (initializeOnly, "loop", *fields .loop);
-	addField (initializeOnly, "start", *fields .start);
-	addField (initializeOnly, "pause", *fields .pause);
+	addField (initializeOnly, "name", name ());
+	addField (initializeOnly, "description", description ());
+	addField (initializeOnly, "intensity", intensity ());
+	addField (initializeOnly, "location", location ());
+	addField (initializeOnly, "direction", direction ());
+	addField (initializeOnly, "minRange", minRange ());
+	addField (initializeOnly, "maxRange", maxRange ());
+	addField (initializeOnly, "minAngle", minAngle ());
+	addField (initializeOnly, "maxAngle", maxAngle ());
+	addField (initializeOnly, "loop", loop ());
+	addField (initializeOnly, "start", start ());
+	addField (initializeOnly, "pause", pause ());
 	addField (initializeOnly, "children", children ());
 }
 

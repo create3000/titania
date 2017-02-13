@@ -77,12 +77,12 @@ Environment::Environment (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "ambientIntensity", *fields .ambientIntensity);
-	addField (initializeOnly, "ambientColor", *fields .ambientColor);
-	addField (initializeOnly, "attenuation", *fields .attenuation);
-	addField (initializeOnly, "fogType", *fields .fogType);
-	addField (initializeOnly, "fogColor", *fields .fogColor);
-	addField (initializeOnly, "fogVisibility", *fields .fogVisibility);
+	addField (initializeOnly, "ambientIntensity", ambientIntensity ());
+	addField (initializeOnly, "ambientColor", ambientColor ());
+	addField (initializeOnly, "attenuation", attenuation ());
+	addField (initializeOnly, "fogType", fogType ());
+	addField (initializeOnly, "fogColor", fogColor ());
+	addField (initializeOnly, "fogVisibility", fogVisibility ());
 	addField (initializeOnly, "children", children ());
 }
 

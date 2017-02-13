@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_MATERIAL_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_MATERIAL_H__
 
@@ -84,6 +85,56 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	MFColor &
+	ambientColor ()
+	{ return *fields .ambientColor; }
+
+	const MFColor &
+	ambientColor () const
+	{ return *fields .ambientColor; }
+
+	MFColor &
+	diffuseColor ()
+	{ return *fields .diffuseColor; }
+
+	const MFColor &
+	diffuseColor () const
+	{ return *fields .diffuseColor; }
+
+	MFColor &
+	specularColor ()
+	{ return *fields .specularColor; }
+
+	const MFColor &
+	specularColor () const
+	{ return *fields .specularColor; }
+
+	MFColor &
+	emissiveColor ()
+	{ return *fields .emissiveColor; }
+
+	const MFColor &
+	emissiveColor () const
+	{ return *fields .emissiveColor; }
+
+	MFFloat &
+	shininess ()
+	{ return *fields .shininess; }
+
+	const MFFloat &
+	shininess () const
+	{ return *fields .shininess; }
+
+	MFFloat &
+	transparency ()
+	{ return *fields .transparency; }
+
+	const MFFloat &
+	transparency () const
+	{ return *fields .transparency; }
 
 	///  @name Operations
 

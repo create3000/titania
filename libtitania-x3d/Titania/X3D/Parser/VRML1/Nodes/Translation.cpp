@@ -72,7 +72,7 @@ Translation::Translation (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "translation", *fields .translation);
+	addField (initializeOnly, "translation", translation ());
 	addField (initializeOnly, "children",    children ());
 }
 
@@ -88,7 +88,7 @@ Translation::convert (Converter* const converter)
 	if (converter -> transforms .empty ())
 		return;
 
-	converter -> transforms .back () -> translation () = *fields .translation;
+	converter -> transforms .back () -> translation () = translation ();
 }
 
 Translation::~Translation ()

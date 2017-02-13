@@ -71,8 +71,8 @@ PointSet::PointSet (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "startIndex", *fields .startIndex);
-	addField (initializeOnly, "numPoints", *fields .numPoints);
+	addField (initializeOnly, "startIndex", startIndex ());
+	addField (initializeOnly, "numPoints", numPoints ());
 	addField (initializeOnly, "children", children ());
 }
 

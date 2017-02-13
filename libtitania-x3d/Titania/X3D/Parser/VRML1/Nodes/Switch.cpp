@@ -70,7 +70,7 @@ Switch::Switch (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "whichChild", *fields .whichChild);
+	addField (initializeOnly, "whichChild", whichChild ());
 	addField (initializeOnly, "children", children ());
 }
 

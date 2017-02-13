@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_TEXTURE2TRANSFORM_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_TEXTURE2TRANSFORM_H__
 
@@ -84,6 +85,40 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	SFVec2f &
+	translation ()
+	{ return *fields .translation; }
+
+	const SFVec2f &
+	translation () const
+	{ return *fields .translation; }
+
+	SFFloat &
+	rotation ()
+	{ return *fields .rotation; }
+
+	const SFFloat &
+	rotation () const
+	{ return *fields .rotation; }
+
+	SFVec2f &
+	scaleFactor ()
+	{ return *fields .scaleFactor; }
+
+	const SFVec2f &
+	scaleFactor () const
+	{ return *fields .scaleFactor; }
+
+	SFVec2f &
+	center ()
+	{ return *fields .center; }
+
+	const SFVec2f &
+	center () const
+	{ return *fields .center; }
 
 	///  @name Operations
 

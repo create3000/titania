@@ -71,7 +71,7 @@ Normal::Normal (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "vector",   *fields .vector);
+	addField (initializeOnly, "vector",   vector ());
 	addField (initializeOnly, "children", children ());
 }
 
@@ -86,7 +86,7 @@ Normal::push (Converter* const converter)
 {
 	const auto normal = converter -> scene -> createNode <X3D::Normal> ();
 
-	normal -> vector () = *fields .vector;
+	normal -> vector () = vector ();
 
 	converter -> normals .emplace_back (normal);
 }

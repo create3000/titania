@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_SPOT_LIGHT_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_SPOT_LIGHT_H__
 
@@ -84,6 +85,64 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	SFBool &
+	on ()
+	{ return *fields .on; }
+
+	const SFBool &
+	on () const
+	{ return *fields .on; }
+
+	SFFloat &
+	intensity ()
+	{ return *fields .intensity; }
+
+	const SFFloat &
+	intensity () const
+	{ return *fields .intensity; }
+
+	SFVec3f &
+	color ()
+	{ return *fields .color; }
+
+	const SFVec3f &
+	color () const
+	{ return *fields .color; }
+
+	SFVec3f &
+	location ()
+	{ return *fields .location; }
+
+	const SFVec3f &
+	location () const
+	{ return *fields .location; }
+
+	SFVec3f &
+	direction ()
+	{ return *fields .direction; }
+
+	const SFVec3f &
+	direction () const
+	{ return *fields .direction; }
+
+	SFFloat &
+	dropOffRate ()
+	{ return *fields .dropOffRate; }
+
+	const SFFloat &
+	dropOffRate () const
+	{ return *fields .dropOffRate; }
+
+	SFFloat &
+	cutOffAngle ()
+	{ return *fields .cutOffAngle; }
+
+	const SFFloat &
+	cutOffAngle () const
+	{ return *fields .cutOffAngle; }
 
 	///  @name Operations
 

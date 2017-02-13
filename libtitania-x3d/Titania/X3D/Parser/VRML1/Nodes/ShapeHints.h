@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_SHAPE_HINTS_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_SHAPE_HINTS_H__
 
@@ -98,6 +99,40 @@ public:
 	
 	float
 	getCreaseAngle () const
+	{ return *fields .creaseAngle; }
+
+	///  @name Fields
+
+	SFString &
+	vertexOrdering ()
+	{ return *fields .vertexOrdering; }
+
+	const SFString &
+	vertexOrdering () const
+	{ return *fields .vertexOrdering; }
+
+	SFString &
+	shapeType ()
+	{ return *fields .shapeType; }
+
+	const SFString &
+	shapeType () const
+	{ return *fields .shapeType; }
+
+	SFString &
+	faceType ()
+	{ return *fields .faceType; }
+
+	const SFString &
+	faceType () const
+	{ return *fields .faceType; }
+
+	SFFloat &
+	creaseAngle ()
+	{ return *fields .creaseAngle; }
+
+	const SFFloat &
+	creaseAngle () const
 	{ return *fields .creaseAngle; }
 
 	///  @name Operations

@@ -47,6 +47,7 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
+
 #ifndef __TITANIA_X3D_PARSER_VRML1_NODES_INDEXED_FACE_SET_H__
 #define __TITANIA_X3D_PARSER_VRML1_NODES_INDEXED_FACE_SET_H__
 
@@ -84,6 +85,40 @@ public:
 	getContainerField () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Fields
+
+	MFInt32 &
+	coordIndex ()
+	{ return *fields .coordIndex; }
+
+	const MFInt32 &
+	coordIndex () const
+	{ return *fields .coordIndex; }
+
+	MFInt32 &
+	materialIndex ()
+	{ return *fields .materialIndex; }
+
+	const MFInt32 &
+	materialIndex () const
+	{ return *fields .materialIndex; }
+
+	MFInt32 &
+	normalIndex ()
+	{ return *fields .normalIndex; }
+
+	const MFInt32 &
+	normalIndex () const
+	{ return *fields .normalIndex; }
+
+	MFInt32 &
+	textureCoordIndex ()
+	{ return *fields .textureCoordIndex; }
+
+	const MFInt32 &
+	textureCoordIndex () const
+	{ return *fields .textureCoordIndex; }
 
 	///  @name Operations
 

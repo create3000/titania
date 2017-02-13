@@ -72,9 +72,9 @@ FontStyle::FontStyle (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "size", *fields .size);
-	addField (initializeOnly, "family", *fields .family);
-	addField (initializeOnly, "style", *fields .style);
+	addField (initializeOnly, "size", size ());
+	addField (initializeOnly, "family", family ());
+	addField (initializeOnly, "style", style ());
 	addField (initializeOnly, "children", children ());
 }
 

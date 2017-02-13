@@ -76,11 +76,11 @@ GeneralCylinder::GeneralCylinder (X3D::X3DExecutionContext* const executionConte
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "spine", *fields .spine);
-	addField (initializeOnly, "crossSection", *fields .crossSection);
-	addField (initializeOnly, "profile", *fields .profile);
-	addField (initializeOnly, "twist", *fields .twist);
-	addField (initializeOnly, "parts", *fields .parts);
+	addField (initializeOnly, "spine", spine ());
+	addField (initializeOnly, "crossSection", crossSection ());
+	addField (initializeOnly, "profile", profile ());
+	addField (initializeOnly, "twist", twist ());
+	addField (initializeOnly, "parts", parts ());
 	addField (initializeOnly, "children", children ());
 }
 

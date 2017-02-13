@@ -73,9 +73,9 @@ Cone::Cone (X3D::X3DExecutionContext* const executionContext) :
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "parts",        *fields .parts);
-	addField (initializeOnly, "bottomRadius", *fields .bottomRadius);
-	addField (initializeOnly, "height",       *fields .height);
+	addField (initializeOnly, "parts",        parts ());
+	addField (initializeOnly, "bottomRadius", bottomRadius ());
+	addField (initializeOnly, "height",       height ());
 	addField (initializeOnly, "children",     children ());
 }
 

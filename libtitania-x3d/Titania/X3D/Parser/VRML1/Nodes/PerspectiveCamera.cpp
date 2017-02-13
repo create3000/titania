@@ -75,12 +75,12 @@ PerspectiveCamera::PerspectiveCamera (X3D::X3DExecutionContext* const executionC
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "position", *fields .position);
-	addField (initializeOnly, "orientation", *fields .orientation);
-	addField (initializeOnly, "focalDistance", *fields .focalDistance);
-	addField (initializeOnly, "heightAngle", *fields .heightAngle);
-	addField (initializeOnly, "nearDistance", *fields .nearDistance);
-	addField (initializeOnly, "farDistance", *fields .farDistance);
+	addField (initializeOnly, "position", position ());
+	addField (initializeOnly, "orientation", orientation ());
+	addField (initializeOnly, "focalDistance", focalDistance ());
+	addField (initializeOnly, "heightAngle", heightAngle ());
+	addField (initializeOnly, "nearDistance", nearDistance ());
+	addField (initializeOnly, "farDistance", farDistance ());
 	addField (initializeOnly, "children", children ());
 }
 

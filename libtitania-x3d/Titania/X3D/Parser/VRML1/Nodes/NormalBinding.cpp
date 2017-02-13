@@ -70,7 +70,7 @@ NormalBinding::NormalBinding (X3D::X3DExecutionContext* const executionContext) 
 	       VRML1Node (),
 	          fields ()
 {
-	addField (initializeOnly, "value",    *fields .value);
+	addField (initializeOnly, "value",    value ());
 	addField (initializeOnly, "children", children ());
 }
 
