@@ -172,6 +172,14 @@ SFString::append (const String & string)
 	return *this;
 }
 
+SFString &
+SFString::append (const char_type & character)
+{
+	get () += character;
+	addEvent ();
+	return *this;
+}
+
 void
 SFString::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,

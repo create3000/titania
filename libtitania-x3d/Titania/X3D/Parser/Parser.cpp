@@ -101,6 +101,8 @@ throw (Error <INVALID_X3D>)
 		scene -> setEncoding (EncodingType::VRML);
 		scene -> setProfile (getBrowser () -> getProfile ("Full"));
 
+		istream .imbue (std::locale::classic ());
+
 		x3dScene ();
 	}
 	catch (const X3DError & error)
@@ -269,8 +271,6 @@ Parser::popExecutionContext ()
 
 X3DExecutionContext*
 Parser::getExecutionContext () const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
 {
 	//__LOG__ << this << " " << std::endl;
 
@@ -297,8 +297,6 @@ void
 Parser::x3dScene ()
 {
 	//__LOG__ << this << " " << std::endl;
-
-	istream .imbue (std::locale::classic ());
 
 	pushExecutionContext (scene);
 
@@ -331,7 +329,10 @@ Parser::x3dScene ()
 	popExecutionContext ();
 
 	if (istream .peek () not_eq std::char_traits <char>::eof ())
-		throw Error <INVALID_X3D> ("Unknown statement.");
+	{
+		if (getBrowser () -> isStrict ())
+			throw Error <INVALID_X3D> ("Unknown statement.");
+	}
 }
 
 void
@@ -1428,7 +1429,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 
 		if (Grammar::OpenBrace (istream))
 		{
-			X3DBaseNode* _baseNode = _node .getValue ();
+			const auto _baseNode = _node .getValue ();
 
 			_baseNode -> addComments (getComments ());
 

@@ -173,7 +173,10 @@ public:
 	clear ();
 
 	SFString &
-	append (const String &);
+	append (const String & string);
+
+	SFString &
+	append (const char_type & character);
 
 	///  @name Input/Output
 

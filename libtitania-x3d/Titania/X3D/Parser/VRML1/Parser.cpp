@@ -51,7 +51,11 @@
 #include "Parser.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../Filter.h"
+#include "../Grammar.h"
+#include "../Parser.h"
 
+#include "Converter.h"
 #include "Nodes.h"
 
 namespace titania {
@@ -59,11 +63,17 @@ namespace X3D {
 namespace VRML1 {
 
 Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::istream & istream) :
-	X3D::X3DParser (),
-	         scene (scene),
-	           uri (uri),
-	       istream (istream),
-	         nodes ()
+	       X3D::X3DParser (),
+	                scene (scene),
+	                  uri (uri),
+	              istream (istream),
+	                nodes (),
+	                stage (scene -> getBrowser () -> createScene (false)),
+	executionContextStack (),
+	           lineNumber (1),
+	          whiteSpaces (),
+	      currentComments (),
+	    commentCharacters ()
 {
 	nodes .emplace ("Background",         [ ] (X3D::X3DExecutionContext* const executionContext) { return new Background         (executionContext); });
 	nodes .emplace ("CollideStyle",       [ ] (X3D::X3DExecutionContext* const executionContext) { return new CollideStyle       (executionContext); });
@@ -114,23 +124,662 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 void
 Parser::parseIntoScene ()
 {
-	//__LOG__ << this << " " << std::endl;
-
-	scene -> setWorldURL (uri);
-	scene -> setEncoding (EncodingType::VRML);
-	scene -> setProfile (getBrowser () -> getProfile ("Full"));
-
-	istream .imbue (std::locale::classic ());
+	__LOG__ << this << " " << std::endl;
 
 	try
 	{
+		scene -> setWorldURL (uri);
+		scene -> setEncoding (EncodingType::VRML);
+		scene -> setProfile (getBrowser () -> getProfile ("Full"));
+
+		istream .imbue (std::locale::classic ());
+
+		vrmlScene ();
+
+		convert ();
 	}
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
 		__LOG__ << istream .rdbuf () << std::endl;
-		throw;
+		//throw;
 	}
+}
+
+void
+Parser::convert ()
+{
+	Converter converter (scene);
+
+	for (const auto & node : stage -> getRootNodes ())
+	{
+		const auto vrml1Node = dynamic_cast <VRML1Node*> (node .getValue ());
+
+		if (vrml1Node)
+			vrml1Node -> convert (&converter);
+	}
+}
+
+void
+Parser::comments ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	while (comment ())
+		;
+}
+
+bool
+Parser::comment ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	X3D::Grammar::WhiteSpaces (istream, whiteSpaces);
+
+	lines (whiteSpaces);
+
+	whiteSpaces .clear ();
+
+	if (X3D::Grammar::Comment (istream, commentCharacters))
+	{
+		X3D::filter_control_characters (commentCharacters);
+		X3D::filter_bad_utf8_characters (commentCharacters);
+		currentComments .emplace_back (std::move (commentCharacters));
+		return true;
+	}
+
+	return false;
+}
+
+void
+Parser::lines (const std::string & string)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	lineNumber += std::count (string .begin (), string .end (), '\n');
+}
+
+void
+Parser::vrmlScene ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	pushExecutionContext (stage);
+
+	std::string encoding, specificationVersion, characterEncoding, comment;
+
+	if (headerStatement (encoding, specificationVersion, characterEncoding, comment))
+	{
+		scene -> setSpecificationVersion (specificationVersion);
+		scene -> setCharacterEncoding (characterEncoding);
+		scene -> setComment (comment);
+	}
+
+	statements ();
+
+	popExecutionContext ();
+
+	if (istream .peek () not_eq std::char_traits <char>::eof ())
+	{
+		if (getBrowser () -> isStrict ())
+			throw X3D::Error <X3D::INVALID_X3D> ("Unknown statement.");
+	}
+}
+
+bool
+Parser::headerStatement (std::string & _encoding, std::string & _specificationVersion, std::string & _characterEncoding, std::string & _comment)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	std::string _header;
+
+	if (X3D::Grammar::Comment (istream, _header))
+	{
+		if (X3D::Grammar::Header (_header, _encoding, _specificationVersion, _characterEncoding, _comment))
+			return true;
+	}
+
+	return false;
+}
+
+void
+Parser::statements ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	while (statement ())
+		;
+
+	//__LOG__ << this << " " << std::endl;
+}
+
+bool
+Parser::statement ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	//if (protoStatement ())
+	//	return true;
+
+	X3D::SFNode _node;
+
+	if (nodeStatement (_node))
+	{
+		addRootNode (std::move (_node));
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::nodeStatement (X3D::SFNode & _node)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (X3D::Grammar::DEF (istream))
+	{
+		std::string _nodeNameId;
+
+		if (nodeNameId (_nodeNameId))
+		{
+			X3D::filter_bad_utf8_characters (_nodeNameId);
+
+			if (node (_node, _nodeNameId))
+				return true;
+
+			throw X3D::Error <X3D::INVALID_X3D> ("Expected node name after DEF.");
+		}
+
+		throw X3D::Error <X3D::INVALID_X3D> ("No name given after DEF.");
+	}
+
+	if (X3D::Grammar::USE (istream))
+	{
+		std::string _nodeNameId;
+
+		if (nodeNameId (_nodeNameId))
+		{
+			X3D::filter_bad_utf8_characters (_nodeNameId);
+
+			_node = getExecutionContext () -> getNamedNode (_nodeNameId);
+
+			return true;
+		}
+
+		throw X3D::Error <X3D::INVALID_X3D> ("No name given after USE.");
+	}
+
+	if (X3D::Grammar::NULL_ (istream))
+	{
+		_node = nullptr;
+
+		return true;
+	}
+
+	if (node (_node))
+		return true;
+
+	return false;
+}
+
+//Nodes
+
+bool
+Parser::node (X3D::SFNode & _node, const std::string & _nodeNameId)
+{
+	__LOG__ << this << " " << _nodeNameId << std::endl;
+
+	auto state = istream .rdstate ();
+	auto pos   = istream .tellg ();
+	auto ln    = lineNumber;
+	auto com   = currentComments .size ();
+
+	std::string _nodeTypeId;
+
+	if (nodeTypeId (_nodeTypeId))
+	{
+		// //__LOG__ << this << " " << _nodeTypeId << std::endl;
+
+		const auto iter = nodes .find (_nodeTypeId);
+
+		if (iter == nodes .end ())
+		{
+			// Reset stream position.
+	
+			lineNumber = ln;
+			currentComments .resize (com);
+	
+			istream .clear (state);
+	
+			for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+				istream .unget ();
+
+			return false;
+		}
+
+		_node = X3D::SFNode (iter -> second (getExecutionContext ()));
+
+		__LOG__ << this << " " << _nodeTypeId << " " << (void*) _node << std::endl;
+
+		if (not _nodeNameId .empty ())
+		{
+			try
+			{
+				const SFNode namedNode = getExecutionContext () -> getNamedNode (_nodeNameId); // Create copy!
+
+				getExecutionContext () -> updateNamedNode (getExecutionContext () -> getUniqueName (_nodeNameId), namedNode);
+			}
+			catch (const X3D::X3DError &)
+			{ }
+
+			getExecutionContext () -> updateNamedNode (_nodeNameId, _node);
+		}
+
+		comments ();
+
+		if (X3D::Grammar::OpenBrace (istream))
+		{
+			const auto _baseNode = _node .getValue ();
+
+			nodeBody (_baseNode);
+
+			comments ();
+
+			if (Grammar::CloseBrace (istream))
+			{
+				//__LOG__ << this << " " << _nodeTypeId << std::endl;
+
+				getExecutionContext () -> addUninitializedNode (_baseNode);
+
+				//__LOG__ << this << " " << _nodeTypeId << std::endl;
+				return true;
+			}
+
+			throw X3D::Error <X3D::INVALID_X3D> ("Expected '}' at the end of node body.");
+		}
+
+		throw X3D::Error <X3D::INVALID_X3D> ("Expected '{' at the beginning of node body.");
+	}
+
+	//__LOG__ << this << " " << std::endl;
+	return false;
+}
+
+void
+Parser::nodeBody (X3DBaseNode* const _baseNode)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	while (nodeBodyElement (_baseNode))
+		;
+}
+
+bool
+Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	X3D::SFNode _child;
+
+	if (nodeStatement (_child))
+	{
+		_baseNode -> getField <X3D::MFNode> ("children") .emplace_back (_child);
+		return true;
+	}
+
+	std::string _fieldId;
+
+	if (Id (_fieldId))
+	{
+		X3D::X3DFieldDefinition* _field = nullptr;
+
+		try
+		{
+			_field = _baseNode -> getField (_fieldId);
+		}
+		catch (const X3D::Error <X3D::INVALID_NAME> &)
+		{
+			throw X3D::Error <X3D::INVALID_X3D> ("Unknown field '" + _fieldId + "' in class '" + _baseNode -> getTypeName () + "'.");
+		}
+
+		if (_field -> isInitializable ())
+		{
+			if (fieldValue (_field))
+				return true;
+
+			throw X3D::Error <X3D::INVALID_X3D> ("Couldn't read value for field '" + _fieldId + "'.");
+		}
+
+		throw X3D::Error <X3D::INVALID_X3D> ("Couldn't assign value to " + to_string (_field -> getAccessType ()) + " field '" + _fieldId + "'.");
+	}
+
+	return false;
+}
+
+//Ids
+
+bool
+Parser::Id (std::string & _Id)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (static_cast <bool> (istream))
+	{
+		std::istream::int_type c = istream .peek ();
+
+		switch (c)
+		{
+			case -1:
+			case '\x22':
+			case '\x23':
+			case '\x27':
+			case '\x2b':
+			case '\x2c':
+			case '\x2d':
+			case '\x2e':
+			case '\x5b':
+			case '\x5c':
+			case '\x5d':
+			case '\x7b':
+			case '\x7d':
+			case '\x7f':
+			{
+				return false;
+			}
+			default:
+			{
+				if ((c >= '\x00' and c <= '\x20')or (c >= '\x30' and c <= '\x39'))
+				{
+					return false;
+				}
+
+				_Id .push_back (istream .get ());
+			}
+		}
+	}
+	else
+		return false;
+
+	for (; static_cast <bool> (istream);)
+	{
+		if (static_cast <bool> (istream)) // XXX: Tested already in the for loop, delete this line!!!
+		{
+			std::istream::int_type c = istream .peek ();
+
+			switch (c)
+			{
+				case -1:
+				case '\x22':
+				case '\x23':
+				case '\x27':
+				case '\x2c':
+				case '\x2e':
+				case '\x5b':
+				case '\x5c':
+				case '\x5d':
+				case '\x7b':
+				case '\x7d':
+				case '\x7f':
+				{
+					return true;
+				}
+				default:
+				{
+					if ((c >= '\x00' and c <= '\x20'))
+					{
+						return true;
+					}
+
+					_Id .push_back (istream .get ());
+				}
+			}
+		}
+		else
+			return true;
+	}
+
+	return true;
+}
+
+bool
+Parser::fieldValue (X3D::X3DFieldDefinition* const field)
+{
+	field -> isSet (true);
+
+	X3D::Parser parser (istream, scene);
+
+	switch (field -> getType ())
+	{
+		case X3D::X3DConstants::SFBool:
+			return parser .sfboolValue (static_cast <X3D::SFBool*> (field));
+
+		case X3D::X3DConstants::SFColor:
+			return parser .sfcolorValue (static_cast <X3D::SFColor*> (field));
+
+		case X3D::X3DConstants::SFColorRGBA:
+			return parser .sfcolorRGBAValue (static_cast <X3D::SFColorRGBA*> (field));
+
+		case X3D::X3DConstants::SFDouble:
+			return parser .sfdoubleValue (static_cast <X3D::SFDouble*> (field));
+
+		case X3D::X3DConstants::SFFloat:
+			return parser .sffloatValue (static_cast <X3D::SFFloat*> (field));
+
+		case X3D::X3DConstants::SFImage:
+			return parser .sfimageValue (static_cast <X3D::SFImage*> (field));
+
+		case X3D::X3DConstants::SFInt32:
+			return parser .sfint32Value (static_cast <X3D::SFInt32*> (field));
+
+		case X3D::X3DConstants::SFMatrix3d:
+			return parser .sfmatrix3dValue (static_cast <X3D::SFMatrix3d*> (field));
+
+		case X3D::X3DConstants::SFMatrix3f:
+			return parser .sfmatrix3fValue (static_cast <X3D::SFMatrix3f*> (field));
+
+		case X3D::X3DConstants::SFMatrix4d:
+			return parser .sfmatrix4dValue (static_cast <X3D::SFMatrix4d*> (field));
+
+		case X3D::X3DConstants::SFMatrix4f:
+			return parser .sfmatrix4fValue (static_cast <X3D::SFMatrix4f*> (field));
+
+		case X3D::X3DConstants::SFNode:
+			return sfnodeValue (static_cast <X3D::SFNode*> (field));
+
+		case X3D::X3DConstants::SFRotation:
+			return parser .sfrotationValue (static_cast <X3D::SFRotation*> (field));
+
+		case X3D::X3DConstants::SFString:
+			return sfstringValue (static_cast <X3D::SFString*> (field));
+
+		case X3D::X3DConstants::SFTime:
+			return parser .sftimeValue (static_cast <X3D::SFTime*> (field));
+
+		case X3D::X3DConstants::SFVec2d:
+			return parser .sfvec2dValue (static_cast <X3D::SFVec2d*> (field));
+
+		case X3D::X3DConstants::SFVec2f:
+			return parser .sfvec2fValue (static_cast <X3D::SFVec2f*> (field));
+
+		case X3D::X3DConstants::SFVec3d:
+			return parser .sfvec3dValue (static_cast <X3D::SFVec3d*> (field));
+
+		case X3D::X3DConstants::SFVec3f:
+			return parser .sfvec3fValue (static_cast <X3D::SFVec3f*> (field));
+
+		case X3D::X3DConstants::SFVec4d:
+			return parser .sfvec4dValue (static_cast <SFVec4d*> (field));
+
+		case X3D::X3DConstants::SFVec4f:
+			return parser .sfvec4fValue (static_cast <SFVec4f*> (field));
+
+		case X3D::X3DConstants::MFBool:
+			return parser .mfboolValue (static_cast <X3D::MFBool*> (field));
+
+		case X3D::X3DConstants::MFColor:
+			return parser .mfcolorValue (static_cast <X3D::MFColor*> (field));
+
+		case X3D::X3DConstants::MFColorRGBA:
+			return parser .mfcolorRGBAValue (static_cast <X3D::MFColorRGBA*> (field));
+
+		case X3D::X3DConstants::MFDouble:
+			return parser .mfdoubleValue (static_cast <X3D::MFDouble*> (field));
+
+		case X3D::X3DConstants::MFFloat:
+			return parser .mffloatValue (static_cast <X3D::MFFloat*> (field));
+
+		case X3D::X3DConstants::MFImage:
+			return parser .mfimageValue (static_cast <X3D::MFImage*> (field));
+
+		case X3D::X3DConstants::MFInt32:
+			return parser .mfint32Value (static_cast <X3D::MFInt32*> (field));
+
+		case X3D::X3DConstants::MFMatrix3d:
+			return parser .mfmatrix3dValue (static_cast <X3D::MFMatrix3d*> (field));
+
+		case X3D::X3DConstants::MFMatrix3f:
+			return parser .mfmatrix3fValue (static_cast <X3D::MFMatrix3f*> (field));
+
+		case X3D::X3DConstants::MFMatrix4d:
+			return parser .mfmatrix4dValue (static_cast <X3D::MFMatrix4d*> (field));
+
+		case X3D::X3DConstants::MFMatrix4f:
+			return parser .mfmatrix4fValue (static_cast <X3D::MFMatrix4f*> (field));
+
+		case X3D::X3DConstants::MFNode:
+			return false;
+
+		case X3D::X3DConstants::MFRotation:
+			return parser .mfrotationValue (static_cast <X3D::MFRotation*> (field));
+
+		case X3D::X3DConstants::MFString:
+			return parser .mfstringValue (static_cast <X3D::MFString*> (field));
+
+		case X3D::X3DConstants::MFTime:
+			return parser .mftimeValue (static_cast <X3D::MFTime*> (field));
+
+		case X3D::X3DConstants::MFVec2d:
+			return parser .mfvec2dValue (static_cast <X3D::MFVec2d*> (field));
+
+		case X3D::X3DConstants::MFVec2f:
+			return parser .mfvec2fValue (static_cast <X3D::MFVec2f*> (field));
+
+		case X3D::X3DConstants::MFVec3d:
+			return parser .mfvec3dValue (static_cast <X3D::MFVec3d*> (field));
+
+		case X3D::X3DConstants::MFVec3f:
+			return parser .mfvec3fValue (static_cast <X3D::MFVec3f*> (field));
+
+		case X3D::X3DConstants::MFVec4d:
+			return parser .mfvec4dValue (static_cast <X3D::MFVec4d*> (field));
+
+		case X3D::X3DConstants::MFVec4f:
+			return parser .mfvec4fValue (static_cast <X3D::MFVec4f*> (field));
+	}
+
+	return false;
+}
+
+bool
+Parser::String (std::string & _value)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	comments ();
+
+	if (X3D::Grammar::String (istream, _value))
+	{
+		X3D::filter_bad_utf8_characters (_value);
+		lines (_value);
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::sfstringValue (X3D::SFString* _field)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	std::string value;
+
+	if (String (value))
+	{
+		_field -> setValue (value);
+		return true;
+	}
+
+	// Parse SFEnum and SFBitMask
+
+	static const io::character VerticalBar ('|');
+
+	std::string _Id;
+
+	while (Id (_Id))
+	{
+		_field -> append (_Id);
+
+		comments ();
+
+		if (VerticalBar (istream))
+		{
+			_field -> append ('|');
+
+			comments ();
+
+			continue;
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+bool
+Parser::sfnodeValue (X3D::SFNode* _field)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	return nodeStatement (*_field);
+}
+
+void
+Parser::pushExecutionContext (X3D::X3DExecutionContext* const executionContext)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	executionContextStack .emplace_back (executionContext);
+}
+
+void
+Parser::popExecutionContext ()
+{
+	//__LOG__ << this << " " << std::endl;
+
+	executionContextStack .pop_back ();
+}
+
+X3D::X3DExecutionContext*
+Parser::getExecutionContext () const
+{
+	//__LOG__ << this << " " << std::endl;
+
+	return executionContextStack .back ();
+}
+
+void
+Parser::addRootNode (X3D::SFNode && rootNode)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	getExecutionContext () -> getRootNodes () .emplace_back (std::move (rootNode));
 }
 
 Parser::~Parser ()

@@ -58,6 +58,7 @@
 #include "../Parser/Autodesk/Parser.h"
 #include "../Parser/PDF/Parser.h"
 #include "../Parser/SVG/Parser.h"
+#include "../Parser/VRML1/Parser.h"
 #include "../Parser/Wavefront/Parser.h"
 
 #include <Titania/OS.h>
@@ -108,12 +109,13 @@ golden_is_vrml1 (std::istream & istream)
 
 static
 void
-golden_x3dv (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & goldenstream)
+golden_x3dv (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
-	if (golden_is_vrml1 (goldenstream))
-		throw Error <INVALID_X3D> ("VRML V1.0 not supported.");
+	if (golden_is_vrml1 (istream))
+		VRML1::Parser (scene, uri, istream) .parseIntoScene ();
 
-	scene -> fromStream (uri, goldenstream);
+	else
+		scene -> fromStream (uri, istream);
 }
 
 static

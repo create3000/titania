@@ -51,9 +51,17 @@
 #ifndef __TITANIA_X3D_PARSER_VRML1_CONVERTER_H__
 #define __TITANIA_X3D_PARSER_VRML1_CONVERTER_H__
 
+#include "../../Execution/X3DScene.h"
+#include "../../Types/Pointer.h"
+
+#include <stack>
+
 namespace titania {
 namespace X3D {
 namespace VRML1 {
+
+class MaterialBinding;
+class NormalBinding;
 
 class Converter
 {
@@ -61,11 +69,25 @@ public:
 
 	///  @name Construction
 
-	Converter ();
+	Converter (const X3D::X3DScenePtr & scene);
 
 	///  @name Desstruction
 
 	~Converter ();
+
+	///  @name Members
+
+	const X3D::X3DScenePtr & scene;
+
+	std::stack <X3D::X3DPtr <X3D::X3DGroupingNode>>          transforms;
+	std::stack <X3D::X3DPtr <X3D::X3DTextureNode>>           textures;
+	std::stack <X3D::X3DPtr <X3D::X3DTextureTransformNode>>  texturetransforms;
+	std::stack <X3D::X3DPtr <X3D::X3DTextureCoordinateNode>> texCoords;
+	std::stack <X3D::X3DPtr <X3D::X3DNormalNode>>            normals;
+	std::stack <X3D::X3DPtr <X3D::X3DCoordinateNode>>        coords;
+
+	std::stack <MaterialBinding*> materialBindings;
+	std::stack <NormalBinding*>   normalBindings;
 
 };
 

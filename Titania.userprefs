@@ -1,11 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Parser/Parser.h">
     <Files>
-      <File FileName="Titania/Titania/Widgets/HistoryView/HistoryView.h" Line="73" Column="9" />
-      <File FileName="Titania/Titania/Widgets/HistoryView/HistoryView.cpp" Line="152" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="126" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.h" Line="163" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/VRML1/Parser.h" Line="115" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/VRML1/Parser.cpp" Line="536" Column="37" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.h" Line="69" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Parser.cpp" Line="1596" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/Grammar.cpp" Line="129" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/XMLParser.cpp" Line="1250" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

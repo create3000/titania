@@ -63,6 +63,16 @@
 
 namespace titania {
 namespace X3D {
+namespace VRML1 {
+
+class Parser;
+
+}
+}
+}
+
+namespace titania {
+namespace X3D {
 
 class Browser;
 
@@ -107,6 +117,7 @@ private:
 	///  @name Friends
 
 	friend class XMLParser;
+	friend class VRML1::Parser;
 
 	///  @name Operations
 
@@ -135,9 +146,7 @@ private:
 	popExecutionContext ();
 
 	X3DExecutionContext*
-	getExecutionContext () const
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
+	getExecutionContext () const;
 
 	std::vector <std::string>
 	getComments ()

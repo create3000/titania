@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_WAVEFRONT_PARSER_H__
-#define __TITANIA_X3D_PARSER_WAVEFRONT_PARSER_H__
+#ifndef __TITANIA_X3D_PARSER_VRML1_PARSER_H__
+#define __TITANIA_X3D_PARSER_VRML1_PARSER_H__
 
 #include "../../Execution/X3DScene.h"
 #include "../../Parser/X3DParser.h"
@@ -81,15 +81,89 @@ public:
 
 private:
 
-	///  @name Member types
-
-	using Function = std::function <X3D::X3DBaseNode* (X3D::X3DExecutionContext* const)>;
-
 	///  @name Operations
+
+	void
+	convert ();
+
+	void
+	comments ();
+
+	bool
+	comment ();
+
+	void
+	lines (const std::string &);
+
+	void
+	vrmlScene ();
+
+	bool
+	headerStatement (std::string & encoding, std::string & specificationVersion, std::string & characterEncoding, std::string & comment);
+
+	void
+	statements ();
+	
+	bool
+	statement ();
+
+	bool
+	nodeStatement (X3D::SFNode & _node);
+
+	bool
+	node (SFNode & _node, const std::string & _nodeNameId = "");
+
+	void
+	nodeBody (X3DBaseNode* const);
+
+	bool
+	nodeBodyElement (X3DBaseNode* const);
+
+	bool
+	Id (std::string &);
+
+	bool
+	nodeNameId (std::string & id)
+	{ return Id (id); }
+
+	bool
+	nodeTypeId (std::string & id)
+	{ return Id (id); }
+
+	bool
+	fieldValue (X3D::X3DFieldDefinition* const field);
+
+	bool
+	String (std::string & _value);
+	
+	bool
+	sfstringValue (X3D::SFString* _field);
+
+	bool
+	sfnodeValue (X3D::SFNode* _field);
+
+	///  @name Auxillary functions
 
 	X3DBrowser*
 	getBrowser () const
 	{ return scene -> getBrowser (); }
+
+	void
+	pushExecutionContext (X3D::X3DExecutionContext* const);
+
+	void
+	popExecutionContext ();
+
+	X3D::X3DExecutionContext*
+	getExecutionContext () const;
+
+	void
+	addRootNode (X3D::SFNode && rootNode);
+
+	///  @name Member types
+
+	using Function              = std::function <X3D::X3DBaseNode* (X3D::X3DExecutionContext* const)>;
+	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
 
 	///  @name Members
 
@@ -98,6 +172,14 @@ private:
 	std::istream &         istream;
 
 	std::map <std::string, Function> nodes;
+
+	const X3D::X3DScenePtr stage;
+	ExecutionContextStack  executionContextStack;
+
+	size_t                    lineNumber;
+	std::string               whiteSpaces;
+	std::vector <std::string> currentComments;
+	std::string               commentCharacters;
 
 };
 

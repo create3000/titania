@@ -50,12 +50,27 @@
 
 #include "Converter.h"
 
+#include "../../Components/Grouping/X3DGroupingNode.h"
+#include "../../Components/Rendering/X3DNormalNode.h"
+#include "../../Components/Rendering/X3DCoordinateNode.h"
+#include "../../Components/Texturing/X3DTextureNode.h"
+#include "../../Components/Texturing/X3DTextureCoordinateNode.h"
+#include "../../Components/Texturing/X3DTextureTransformNode.h"
+
 namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-Converter::Converter ()
-{ }
+Converter::Converter (const X3D::X3DScenePtr & scene) :
+	            scene (scene),
+	         textures (),
+	texturetransforms (),
+	        texCoords (),
+	          normals (),
+	           coords (),
+	 materialBindings (),
+	   normalBindings ()
+{ } 
 
 Converter::~Converter ()
 { }
