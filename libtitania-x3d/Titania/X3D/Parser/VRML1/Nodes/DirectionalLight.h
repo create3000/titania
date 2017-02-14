@@ -128,7 +128,8 @@ public:
 
 	///  @name Desstruction
 
-	~DirectionalLight ();
+	virtual
+	~DirectionalLight () final override;
 
 
 private:

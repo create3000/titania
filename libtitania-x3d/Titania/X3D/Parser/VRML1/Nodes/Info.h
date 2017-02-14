@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~Info ();
+	virtual
+	~Info () final override;
 
 
 private:

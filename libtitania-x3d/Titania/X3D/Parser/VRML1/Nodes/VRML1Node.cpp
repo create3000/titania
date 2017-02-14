@@ -93,6 +93,9 @@ VRML1Node::use (Converter* const converter)
 	}
 }
 
+VRML1Node::~VRML1Node ()
+{ }
+
 } // VRML1
 } // X3D
 } // titania

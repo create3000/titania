@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~Switch ();
+	virtual
+	~Switch () final override;
 
 
 private:

@@ -144,7 +144,8 @@ public:
 
 	///  @name Desstruction
 
-	~Material ();
+	virtual
+	~Material () final override;
 
 
 private:

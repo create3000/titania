@@ -396,11 +396,59 @@ Parser::node (X3D::SFNode & _node, const std::string & _nodeNameId)
 
 	if (nodeTypeId (_nodeTypeId))
 	{
-		//__LOG__ << this << " " << _nodeTypeId << std::endl;
+		comments ();
 
-		const auto iter = nodes .find (_nodeTypeId);
+		if (X3D::Grammar::OpenBrace (istream))
+		{
+			//__LOG__ << this << " " << _nodeTypeId << std::endl;
+	
+			const auto iter = nodes .find (_nodeTypeId);
+	
+			if (iter == nodes .end ())
+			{
+				_node = X3D::MakePtr <CustomNode> (getExecutionContext ());
 
-		if (iter == nodes .end ())
+				fieldsElements (_node);
+			}
+			else
+			{
+				_node = X3D::SFNode (iter -> second (getExecutionContext ()));
+			}
+	
+	
+			//__LOG__ << this << " " << _nodeTypeId << " " << (void*) _node << std::endl;
+	
+			if (not _nodeNameId .empty ())
+			{
+				try
+				{
+					const SFNode namedNode = getExecutionContext () -> getNamedNode (_nodeNameId); // Create copy!
+	
+					getExecutionContext () -> updateNamedNode (getExecutionContext () -> getUniqueName (_nodeNameId), namedNode);
+				}
+				catch (const X3D::X3DError &)
+				{ }
+	
+				getExecutionContext () -> updateNamedNode (_nodeNameId, _node);
+			}
+
+			nodeBody (_node);
+
+			comments ();
+
+			if (Grammar::CloseBrace (istream))
+			{
+				//__LOG__ << this << " " << _nodeTypeId << std::endl;
+
+				getExecutionContext () -> addUninitializedNode (_node);
+
+				//__LOG__ << this << " " << _nodeTypeId << std::endl;
+				return true;
+			}
+
+			throw X3D::Error <X3D::INVALID_X3D> ("Expected '}' at the end of node body.");
+		}
+		else
 		{
 			// Reset stream position.
 	
@@ -415,47 +463,6 @@ Parser::node (X3D::SFNode & _node, const std::string & _nodeNameId)
 			return false;
 		}
 
-		_node = X3D::SFNode (iter -> second (getExecutionContext ()));
-
-		//__LOG__ << this << " " << _nodeTypeId << " " << (void*) _node << std::endl;
-
-		if (not _nodeNameId .empty ())
-		{
-			try
-			{
-				const SFNode namedNode = getExecutionContext () -> getNamedNode (_nodeNameId); // Create copy!
-
-				getExecutionContext () -> updateNamedNode (getExecutionContext () -> getUniqueName (_nodeNameId), namedNode);
-			}
-			catch (const X3D::X3DError &)
-			{ }
-
-			getExecutionContext () -> updateNamedNode (_nodeNameId, _node);
-		}
-
-		comments ();
-
-		if (X3D::Grammar::OpenBrace (istream))
-		{
-			const auto _baseNode = _node .getValue ();
-
-			nodeBody (_baseNode);
-
-			comments ();
-
-			if (Grammar::CloseBrace (istream))
-			{
-				//__LOG__ << this << " " << _nodeTypeId << std::endl;
-
-				getExecutionContext () -> addUninitializedNode (_baseNode);
-
-				//__LOG__ << this << " " << _nodeTypeId << std::endl;
-				return true;
-			}
-
-			throw X3D::Error <X3D::INVALID_X3D> ("Expected '}' at the end of node body.");
-		}
-
 		throw X3D::Error <X3D::INVALID_X3D> ("Expected '{' at the beginning of node body.");
 	}
 
@@ -464,16 +471,16 @@ Parser::node (X3D::SFNode & _node, const std::string & _nodeNameId)
 }
 
 void
-Parser::nodeBody (X3DBaseNode* const _baseNode)
+Parser::nodeBody (const X3D::SFNode & _node)
 {
 	//__LOG__ << this << " " << std::endl;
 
-	while (nodeBodyElement (_baseNode))
+	while (nodeBodyElement (_node))
 		;
 }
 
 bool
-Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
+Parser::nodeBodyElement (const X3D::SFNode & _node)
 {
 	//__LOG__ << this << " " << std::endl;
 
@@ -481,7 +488,7 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 
 	if (nodeStatement (_child))
 	{
-		_baseNode -> getField <X3D::MFNode> ("children") .emplace_back (_child);
+		_node -> getField <X3D::MFNode> ("children") .emplace_back (_child);
 		return true;
 	}
 
@@ -493,11 +500,11 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 
 		try
 		{
-			_field = _baseNode -> getField (_fieldId);
+			_field = _node -> getField (_fieldId);
 		}
 		catch (const X3D::Error <X3D::INVALID_NAME> &)
 		{
-			throw X3D::Error <X3D::INVALID_X3D> ("Unknown field '" + _fieldId + "' in class '" + _baseNode -> getTypeName () + "'.");
+			throw X3D::Error <X3D::INVALID_X3D> ("Unknown field '" + _fieldId + "' in class '" + _node -> getTypeName () + "'.");
 		}
 
 		if (_field -> isInitializable ())
@@ -509,6 +516,72 @@ Parser::nodeBodyElement (X3DBaseNode* const _baseNode)
 		}
 
 		throw X3D::Error <X3D::INVALID_X3D> ("Couldn't assign value to " + to_string (_field -> getAccessType ()) + " field '" + _fieldId + "'.");
+	}
+
+	return false;
+}
+
+void
+Parser::fieldsElements (const X3D::SFNode & _node)
+{
+	static const io::string fields ("fields");
+
+	comments ();
+
+	if (fields (istream))
+	{
+		comments ();
+
+		if (X3D::Grammar::OpenBracket (istream))
+		{
+			while (fieldElement (_node))
+				;
+
+			if (X3D::Grammar::CloseBracket (istream))
+				return;
+		}
+
+		throw X3D::Error <X3D::INVALID_X3D> ("Couldn't parse custom fields.");
+	}
+}
+
+bool
+Parser::fieldElement (const X3D::SFNode & _node)
+{
+	static const std::map <std::string, std::string> substitutions = {
+		std::make_pair ("SFBitMask", "SFString"),
+		std::make_pair ("SFEnum",    "SFString"),
+		std::make_pair ("SFLong",    "SFInt32"),
+		std::make_pair ("SFMatrix",  "SFMatrix4f"),
+		std::make_pair ("MFBitMask", "MFString"),
+		std::make_pair ("MFEnum",    "MFString"),
+		std::make_pair ("MFLong",    "MFInt32"),
+		std::make_pair ("MFMatrix",  "MFMatrix4f"),
+	};
+
+	comments ();
+
+	std::string _fieldType;
+
+	if (Id (_fieldType))
+	{
+		comments ();
+
+		std::string _fieldName;
+
+		if (Id (_fieldName))
+		{
+			const auto iter = substitutions .find (_fieldType);
+
+			if (iter not_eq substitutions .end ())
+				_fieldType = iter -> second;
+
+			const auto _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
+
+			_node -> addUserDefinedField (initializeOnly, _fieldName, _field);
+
+			return true;
+		}
 	}
 
 	return false;

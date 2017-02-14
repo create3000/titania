@@ -144,7 +144,8 @@ public:
 
 	///  @name Desstruction
 
-	~PerspectiveCamera ();
+	virtual
+	~PerspectiveCamera () final override;
 
 
 private:

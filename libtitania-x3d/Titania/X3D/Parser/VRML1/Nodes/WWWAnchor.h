@@ -120,7 +120,8 @@ public:
 
 	///  @name Desstruction
 
-	~WWWAnchor ();
+	virtual
+	~WWWAnchor () final override;
 
 
 private:

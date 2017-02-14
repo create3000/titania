@@ -112,7 +112,8 @@ public:
 
 	///  @name Desstruction
 
-	~CollideStyle ();
+	virtual
+	~CollideStyle () final override;
 
 
 private:

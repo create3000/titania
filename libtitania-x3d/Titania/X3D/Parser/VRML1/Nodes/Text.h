@@ -136,7 +136,8 @@ public:
 
 	///  @name Desstruction
 
-	~Text ();
+	virtual
+	~Text () final override;
 
 
 private:

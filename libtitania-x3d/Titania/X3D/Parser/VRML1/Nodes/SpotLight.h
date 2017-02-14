@@ -152,7 +152,8 @@ public:
 
 	///  @name Desstruction
 
-	~SpotLight ();
+	virtual
+	~SpotLight () final override;
 
 
 private:

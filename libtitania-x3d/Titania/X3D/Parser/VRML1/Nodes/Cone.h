@@ -128,7 +128,8 @@ public:
 
 	///  @name Desstruction
 
-	~Cone ();
+	virtual
+	~Cone () final override;
 
 
 private:

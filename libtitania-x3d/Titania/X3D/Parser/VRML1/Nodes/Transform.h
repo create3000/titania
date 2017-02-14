@@ -136,7 +136,8 @@ public:
 
 	///  @name Desstruction
 
-	~Transform ();
+	virtual
+	~Transform () final override;
 
 
 private:

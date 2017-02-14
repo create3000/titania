@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~TextLanguage ();
+	virtual
+	~TextLanguage () final override;
 
 
 private:

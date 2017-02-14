@@ -120,7 +120,8 @@ public:
 
 	///  @name Desstruction
 
-	~FontStyle ();
+	virtual
+	~FontStyle () final override;
 
 
 private:

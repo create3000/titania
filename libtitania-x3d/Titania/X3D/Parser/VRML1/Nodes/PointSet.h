@@ -112,7 +112,8 @@ public:
 
 	///  @name Desstruction
 
-	~PointSet ();
+	virtual
+	~PointSet () final override;
 
 
 private:

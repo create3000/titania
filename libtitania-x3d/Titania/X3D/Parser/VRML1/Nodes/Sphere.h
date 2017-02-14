@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~Sphere ();
+	virtual
+	~Sphere () final override;
 
 
 private:

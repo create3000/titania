@@ -128,7 +128,8 @@ public:
 
 	///  @name Desstruction
 
-	~NavigationInfo ();
+	virtual
+	~NavigationInfo () final override;
 
 
 private:

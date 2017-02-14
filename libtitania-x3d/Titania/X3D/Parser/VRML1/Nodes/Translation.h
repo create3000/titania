@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~Translation ();
+	virtual
+	~Translation () final override;
 
 
 private:

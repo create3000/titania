@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~Scale ();
+	virtual
+	~Scale () final override;
 
 
 private:

@@ -144,7 +144,8 @@ public:
 
 	///  @name Desstruction
 
-	~GeneralCylinder ();
+	virtual
+	~GeneralCylinder () final override;
 
 
 private:

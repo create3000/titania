@@ -128,7 +128,8 @@ public:
 
 	///  @name Desstruction
 
-	~IndexedFaceSet ();
+	virtual
+	~IndexedFaceSet () final override;
 
 
 private:

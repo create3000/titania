@@ -128,7 +128,8 @@ public:
 
 	///  @name Desstruction
 
-	~ElevationGrid ();
+	virtual
+	~ElevationGrid () final override;
 
 
 private:

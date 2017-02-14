@@ -128,7 +128,8 @@ public:
 
 	///  @name Desstruction
 
-	~PointLight ();
+	virtual
+	~PointLight () final override;
 
 
 private:

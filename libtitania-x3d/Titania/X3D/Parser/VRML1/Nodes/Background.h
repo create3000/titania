@@ -120,7 +120,8 @@ public:
 
 	///  @name Desstruction
 
-	~Background ();
+	virtual
+	~Background () final override;
 
 
 private:

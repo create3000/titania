@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~Coordinate3 ();
+	virtual
+	~Coordinate3 () final override;
 
 
 private:

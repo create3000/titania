@@ -532,6 +532,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Parser/VRML1/Nodes/Cone.cpp \
 	Titania/X3D/Parser/VRML1/Nodes/Coordinate3.cpp \
 	Titania/X3D/Parser/VRML1/Nodes/Cube.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/CustomNode.cpp \
 	Titania/X3D/Parser/VRML1/Nodes/Cylinder.cpp \
 	Titania/X3D/Parser/VRML1/Nodes/DirectedSound.cpp \
 	Titania/X3D/Parser/VRML1/Nodes/DirectionalLight.cpp \

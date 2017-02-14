@@ -56,6 +56,7 @@
 #include "Nodes/Cone.h"
 #include "Nodes/Coordinate3.h"
 #include "Nodes/Cube.h"
+#include "Nodes/CustomNode.h"
 #include "Nodes/Cylinder.h"
 #include "Nodes/DirectedSound.h"
 #include "Nodes/DirectionalLight.h"

@@ -120,7 +120,8 @@ public:
 
 	///  @name Desstruction
 
-	~WWWInline ();
+	virtual
+	~WWWInline () final override;
 
 
 private:

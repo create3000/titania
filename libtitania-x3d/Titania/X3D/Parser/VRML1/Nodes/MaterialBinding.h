@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~MaterialBinding ();
+	virtual
+	~MaterialBinding () final override;
 
 
 private:

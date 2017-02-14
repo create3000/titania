@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~TextureCoordinate2 ();
+	virtual
+	~TextureCoordinate2 () final override;
 
 
 private:

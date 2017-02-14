@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~Rotation ();
+	virtual
+	~Rotation () final override;
 
 
 private:

@@ -128,7 +128,8 @@ public:
 
 	///  @name Desstruction
 
-	~Texture2 ();
+	virtual
+	~Texture2 () final override;
 
 
 private:

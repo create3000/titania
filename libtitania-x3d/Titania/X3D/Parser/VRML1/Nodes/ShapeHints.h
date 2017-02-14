@@ -139,7 +139,8 @@ public:
 
 	///  @name Desstruction
 
-	~ShapeHints ();
+	virtual
+	~ShapeHints () final override;
 
 
 private:

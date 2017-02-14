@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~Separator ();
+	virtual
+	~Separator () final override;
 
 
 private:

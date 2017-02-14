@@ -128,7 +128,8 @@ public:
 
 	///  @name Desstruction
 
-	~IndexedLineSet ();
+	virtual
+	~IndexedLineSet () final override;
 
 
 private:

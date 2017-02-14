@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_VRML1_NODES_ENVIRONMENT_H__
-#define __TITANIA_X3D_PARSER_VRML1_NODES_ENVIRONMENT_H__
+#ifndef __TITANIA_X3D_PARSER_VRML1_NODES_CUSTOM_NODE_H__
+#define __TITANIA_X3D_PARSER_VRML1_NODES_CUSTOM_NODE_H__
 
 #include "VRML1Node.h"
 
@@ -57,14 +57,14 @@ namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-class Environment :
+class CustomNode :
 	public VRML1Node
 {
 public:
 
 	///  @name Construction
 
-	Environment (X3D::X3DExecutionContext* const executionContext);
+	CustomNode (X3D::X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -86,55 +86,12 @@ public:
 	throw (X3D::Error <X3D::DISPOSED>) final override
 	{ return containerField; }
 
-	///  @name Fields
+	///  @name Member access
 
-	SFFloat &
-	ambientIntensity ()
-	{ return *fields .ambientIntensity; }
-
-	const SFFloat &
-	ambientIntensity () const
-	{ return *fields .ambientIntensity; }
-
-	SFColor &
-	ambientColor ()
-	{ return *fields .ambientColor; }
-
-	const SFColor &
-	ambientColor () const
-	{ return *fields .ambientColor; }
-
-	SFVec3f &
-	attenuation ()
-	{ return *fields .attenuation; }
-
-	const SFVec3f &
-	attenuation () const
-	{ return *fields .attenuation; }
-
-	SFString &
-	fogType ()
-	{ return *fields .fogType; }
-
-	const SFString &
-	fogType () const
-	{ return *fields .fogType; }
-
-	SFColor &
-	fogColor ()
-	{ return *fields .fogColor; }
-
-	const SFColor &
-	fogColor () const
-	{ return *fields .fogColor; }
-
-	SFFloat &
-	fogVisibility ()
-	{ return *fields .fogVisibility; }
-
-	const SFFloat &
-	fogVisibility () const
-	{ return *fields .fogVisibility; }
+	virtual
+	bool
+	canUserDefinedFields () const final override
+	{ return true; }
 
 	///  @name Operations
 
@@ -145,7 +102,7 @@ public:
 	///  @name Desstruction
 
 	virtual
-	~Environment () final override;
+	~CustomNode () final override;
 
 
 private:
@@ -161,22 +118,6 @@ private:
 	static const ComponentType component;
 	static const std::string   typeName;
 	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		X3D::SFFloat* const ambientIntensity;
-		X3D::SFColor* const ambientColor;
-		X3D::SFVec3f* const attenuation;
-		X3D::SFString* const fogType;
-		X3D::SFColor* const fogColor;
-		X3D::SFFloat* const fogVisibility;
-	};
-
-	Fields fields;
 
 };
 

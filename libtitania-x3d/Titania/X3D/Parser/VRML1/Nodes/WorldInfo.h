@@ -112,7 +112,8 @@ public:
 
 	///  @name Desstruction
 
-	~WorldInfo ();
+	virtual
+	~WorldInfo () final override;
 
 
 private:

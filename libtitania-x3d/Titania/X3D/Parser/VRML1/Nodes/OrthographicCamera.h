@@ -144,7 +144,8 @@ public:
 
 	///  @name Desstruction
 
-	~OrthographicCamera ();
+	virtual
+	~OrthographicCamera () final override;
 
 
 private:

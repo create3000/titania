@@ -168,7 +168,8 @@ public:
 
 	///  @name Desstruction
 
-	~PointSound ();
+	virtual
+	~PointSound () final override;
 
 
 private:

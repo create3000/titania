@@ -904,6 +904,7 @@
     <None Include="Titania\X3D\Parser\VRML1\Nodes\WWWInline.h" />
     <None Include="Titania\X3D\Parser\VRML1\Nodes.h" />
     <None Include="Titania\X3D\Parser\VRML1\Parser.h" />
+    <None Include="Titania\X3D\Parser\VRML1\Nodes\CustomNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1535,6 +1536,7 @@
     <Compile Include="Titania\X3D\Parser\VRML1\Nodes\WWWAnchor.cpp" />
     <Compile Include="Titania\X3D\Parser\VRML1\Nodes\WWWInline.cpp" />
     <Compile Include="Titania\X3D\Parser\VRML1\Parser.cpp" />
+    <Compile Include="Titania\X3D\Parser\VRML1\Nodes\CustomNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

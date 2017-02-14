@@ -120,7 +120,8 @@ public:
 
 	///  @name Desstruction
 
-	~Cube ();
+	virtual
+	~Cube () final override;
 
 
 private:

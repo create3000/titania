@@ -104,7 +104,8 @@ public:
 
 	///  @name Desstruction
 
-	~MatrixTransform ();
+	virtual
+	~MatrixTransform () final override;
 
 
 private:

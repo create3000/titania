@@ -48,140 +48,38 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_PARSER_VRML1_NODES_ENVIRONMENT_H__
-#define __TITANIA_X3D_PARSER_VRML1_NODES_ENVIRONMENT_H__
+#include "CustomNode.h"
 
-#include "VRML1Node.h"
+#include "../../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 namespace VRML1 {
 
-class Environment :
-	public VRML1Node
+const ComponentType CustomNode::component      = ComponentType::TITANIA;
+const std::string   CustomNode::typeName       = "CustomNode";
+const std::string   CustomNode::containerField = "children";
+
+CustomNode::CustomNode (X3D::X3DExecutionContext* const executionContext) :
+	X3D::X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	       VRML1Node ()
 {
-public:
+	//addType (X3D::X3DConstants::VRML1CustomNode);
+}
 
-	///  @name Construction
+X3D::X3DBaseNode*
+CustomNode::create (X3D::X3DExecutionContext* const executionContext) const
+{
+	return new CustomNode (executionContext);
+}
 
-	Environment (X3D::X3DExecutionContext* const executionContext);
+void
+CustomNode::convert (Converter* const converter)
+{ }
 
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFFloat &
-	ambientIntensity ()
-	{ return *fields .ambientIntensity; }
-
-	const SFFloat &
-	ambientIntensity () const
-	{ return *fields .ambientIntensity; }
-
-	SFColor &
-	ambientColor ()
-	{ return *fields .ambientColor; }
-
-	const SFColor &
-	ambientColor () const
-	{ return *fields .ambientColor; }
-
-	SFVec3f &
-	attenuation ()
-	{ return *fields .attenuation; }
-
-	const SFVec3f &
-	attenuation () const
-	{ return *fields .attenuation; }
-
-	SFString &
-	fogType ()
-	{ return *fields .fogType; }
-
-	const SFString &
-	fogType () const
-	{ return *fields .fogType; }
-
-	SFColor &
-	fogColor ()
-	{ return *fields .fogColor; }
-
-	const SFColor &
-	fogColor () const
-	{ return *fields .fogColor; }
-
-	SFFloat &
-	fogVisibility ()
-	{ return *fields .fogVisibility; }
-
-	const SFFloat &
-	fogVisibility () const
-	{ return *fields .fogVisibility; }
-
-	///  @name Operations
-
-	virtual
-	void
-	convert (Converter* const converter) final override;
-
-	///  @name Desstruction
-
-	virtual
-	~Environment () final override;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	X3D::X3DBaseNode*
-	create (X3D::X3DExecutionContext* const) const final override;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		X3D::SFFloat* const ambientIntensity;
-		X3D::SFColor* const ambientColor;
-		X3D::SFVec3f* const attenuation;
-		X3D::SFString* const fogType;
-		X3D::SFColor* const fogColor;
-		X3D::SFFloat* const fogVisibility;
-	};
-
-	Fields fields;
-
-};
+CustomNode::~CustomNode ()
+{ }
 
 } // VRML1
 } // X3D
 } // titania
-
-#endif

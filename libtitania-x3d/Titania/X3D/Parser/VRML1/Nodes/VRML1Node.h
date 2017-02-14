@@ -81,6 +81,11 @@ public:
 	void
 	convert (Converter* const converter) = 0;
 
+	///  @name Desstruction
+
+	virtual
+	~VRML1Node () override;
+
 
 protected:
 

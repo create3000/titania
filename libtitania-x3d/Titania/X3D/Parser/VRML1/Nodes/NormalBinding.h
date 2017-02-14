@@ -110,7 +110,8 @@ public:
 
 	///  @name Desstruction
 
-	~NormalBinding ();
+	virtual
+	~NormalBinding () final override;
 
 
 private:

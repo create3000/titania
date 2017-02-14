@@ -649,6 +649,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Parser/VRML1/Nodes/Cone.lo \
 	Titania/X3D/Parser/VRML1/Nodes/Coordinate3.lo \
 	Titania/X3D/Parser/VRML1/Nodes/Cube.lo \
+	Titania/X3D/Parser/VRML1/Nodes/CustomNode.lo \
 	Titania/X3D/Parser/VRML1/Nodes/Cylinder.lo \
 	Titania/X3D/Parser/VRML1/Nodes/DirectedSound.lo \
 	Titania/X3D/Parser/VRML1/Nodes/DirectionalLight.lo \
@@ -1537,6 +1538,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Parser/VRML1/Nodes/Cone.cpp \
 	Titania/X3D/Parser/VRML1/Nodes/Coordinate3.cpp \
 	Titania/X3D/Parser/VRML1/Nodes/Cube.cpp \
+	Titania/X3D/Parser/VRML1/Nodes/CustomNode.cpp \
 	Titania/X3D/Parser/VRML1/Nodes/Cylinder.cpp \
 	Titania/X3D/Parser/VRML1/Nodes/DirectedSound.cpp \
 	Titania/X3D/Parser/VRML1/Nodes/DirectionalLight.cpp \
@@ -3741,6 +3743,9 @@ Titania/X3D/Parser/VRML1/Nodes/Coordinate3.lo:  \
 Titania/X3D/Parser/VRML1/Nodes/Cube.lo:  \
 	Titania/X3D/Parser/VRML1/Nodes/$(am__dirstamp) \
 	Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Parser/VRML1/Nodes/CustomNode.lo:  \
+	Titania/X3D/Parser/VRML1/Nodes/$(am__dirstamp) \
+	Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Parser/VRML1/Nodes/Cylinder.lo:  \
 	Titania/X3D/Parser/VRML1/Nodes/$(am__dirstamp) \
 	Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR)/$(am__dirstamp)
@@ -4875,6 +4880,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR)/Cone.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR)/Coordinate3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR)/Cube.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR)/CustomNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR)/Cylinder.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR)/DirectedSound.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR)/DirectionalLight.Plo@am__quote@

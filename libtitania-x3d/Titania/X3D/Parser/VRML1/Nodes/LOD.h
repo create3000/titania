@@ -112,7 +112,8 @@ public:
 
 	///  @name Desstruction
 
-	~LOD ();
+	virtual
+	~LOD () final override;
 
 
 private:

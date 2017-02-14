@@ -192,7 +192,8 @@ public:
 
 	///  @name Desstruction
 
-	~DirectedSound ();
+	virtual
+	~DirectedSound () final override;
 
 
 private:

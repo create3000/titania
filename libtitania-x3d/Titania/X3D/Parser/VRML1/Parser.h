@@ -120,10 +120,16 @@ private:
 	node (SFNode & _node, const std::string & _nodeNameId = "");
 
 	void
-	nodeBody (X3DBaseNode* const);
+	nodeBody (const X3D::SFNode & _node);
 
 	bool
-	nodeBodyElement (X3DBaseNode* const);
+	nodeBodyElement (const X3D::SFNode & _node);
+
+	void
+	fieldsElements (const X3D::SFNode & _node);
+
+	bool
+	fieldElement (const X3D::SFNode & _node);
 
 	bool
 	Id (std::string &);
