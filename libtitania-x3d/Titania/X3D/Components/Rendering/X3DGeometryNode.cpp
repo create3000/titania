@@ -451,7 +451,6 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 		const auto & modelViewMatrix     = renderObject -> getModelViewMatrix () .get ();
 		const auto & viewport            = renderObject -> getViewVolumes () .back () .getScissor ();
 		const auto   modelViewProjection = modelViewMatrix * projectionMatrix;
-		const auto   invProjection       = inverse (projectionMatrix);
 		const auto   width               = frameBuffer -> getWidth ();
 		const auto   height              = frameBuffer -> getHeight ();
 		const auto & depth               = depthBuffer -> getDepth ();
@@ -478,10 +477,10 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 				case ShadingType::GOURAUD:
 				case ShadingType::PHONG:
 				{
-					const auto z      = depth [x + y * depthBuffer -> getWidth ()];
-					const auto zWorld = ViewVolume::unProjectPoint (x, y, z, invProjection, viewport);
-	
-					if (world .z () - zWorld .z () < -0.05)
+					const auto z     = depth [x + y * depthBuffer -> getWidth ()];
+					const auto delta = screen .z () - z;
+
+					if (delta > 1e-4)
 						continue;
 				}
 				default:
