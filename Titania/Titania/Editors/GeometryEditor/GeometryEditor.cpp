@@ -56,8 +56,6 @@
 
 #include <Titania/X3D/Browser/Core/Cast.h>
 #include <Titania/X3D/Browser/Core/Clipboard.h>
-#include <Titania/X3D/Components/Core/WorldInfo.h>
-#include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
@@ -74,7 +72,6 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
 	             geometryNodes (),
-	         previousSelection (),
 	                   browser (getMasterBrowser ()),
 	             privateViewer (X3D::X3DConstants::X3DBaseNode),
 	                  selector (SelectorType::BRUSH),
@@ -88,7 +85,6 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	addChildObjects (normalEditor,
 	                 coordEditor,
 	                 geometryNodes,
-	                 previousSelection,
 	                 browser);
 
 	normalEnabled .setUndo (false);
@@ -163,8 +159,6 @@ GeometryEditor::initialize ()
 {
 	X3DGeometryEditorInterface::initialize ();
 
-	getCurrentContext () .addInterest (&GeometryEditor::set_executionContext, this);
-
 	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
 
 	getPaintSelectionButton () .set_group (selectionGroup);
@@ -197,13 +191,9 @@ GeometryEditor::on_unmap ()
 void
 GeometryEditor::set_selection (const X3D::MFNode & selection)
 {
-__LOG__ << std::endl;
-
 	X3DGeometryEditorInterface::set_selection (selection);
 
-	changing = true;
-
-	if (selection == geometryNodes and not geometryNodes .empty  ())
+	if (selection == geometryNodes and not selection .empty  ())
 	{
 		getEditToggleButton () .set_active (true);
 	}
@@ -215,24 +205,21 @@ __LOG__ << std::endl;
 
 		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSet });
 
-		if (selection not_eq geometryNodes)
-		   previousSelection = selection;
-
-		if (previousSelection == geometryNodes)
-			previousSelection .clear ();
+		changing = true;
 
 		getHammerButton ()     .set_sensitive (haveSelection);
 		getEditToggleButton () .set_sensitive (not geometryNodes .empty ());
-		getEditToggleButton () .set_active (selection == geometryNodes and not geometryNodes .empty  ());
+		getEditToggleButton () .set_active (selection == geometryNodes and not selection .empty  ());
 
-		connect ();
+		changing = false;
 	}
 
+	connect ();
+
+	if (getEditToggleButton () .get_active ())
+		set_selector (selector);
+
 	getGeometryToolsBox () .set_sensitive (getEditToggleButton () .get_active ());
-
-	changing = false;
-
-	set_selector (selector);
 }
 
 void
@@ -327,32 +314,10 @@ GeometryEditor::set_browser (const X3D::BrowserPtr & value)
 }
 
 void
-GeometryEditor::set_executionContext ()
-{
-__LOG__ << std::endl;
-
-	try
-	{
-		const auto worldInfo   = getCurrentWorldInfo ();
-		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
-		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("previous");
-
-		children -> isPrivate (true);
-		previousSelection = children -> value ();
-	}
-	catch (const std::exception & error)
-	{
-		previousSelection .clear ();
-	}
-}
-
-void
 GeometryEditor::set_viewer ()
 {
-	if (not getCurrentBrowser () -> getSelection () -> isEnabled ())
+	if (not getBrowserWindow () -> getSelection () -> isEnabled ())
 		return;
-
-__LOG__ << std::endl;
 
 	switch (getCurrentBrowser () -> getCurrentViewer ())
 	{
@@ -372,8 +337,6 @@ __LOG__ << std::endl;
 void
 GeometryEditor::connectViewer ()
 {
-__LOG__ << std::endl;
-
 	getCurrentBrowser () -> getViewer () .removeInterest (&GeometryEditor::connectViewer, this);
 	getCurrentBrowser () -> getViewer () .addInterest (&GeometryEditor::set_viewer, this);
 }
@@ -725,8 +688,6 @@ GeometryEditor::set_selectedFaces ()
 void
 GeometryEditor::on_hand_toggled ()
 {
-__LOG__ << getBrowserWindow () -> getHandButton () .get_active () << std::endl;
-
 	if (getBrowserWindow () -> getHandButton () .get_active ())
 		coordEditor -> setField <X3D::SFString> ("toolType", "NONE");
 }
@@ -734,8 +695,6 @@ __LOG__ << getBrowserWindow () -> getHandButton () .get_active () << std::endl;
 void
 GeometryEditor::on_arrow_toggled ()
 {
-__LOG__ << getBrowserWindow () -> getArrowButton () .get_active () << std::endl;
-
 	if (getBrowserWindow () -> getArrowButton () .get_active ())
 		coordEditor -> setField <X3D::SFString> ("toolType", "SELECT");
 }
@@ -807,8 +766,6 @@ GeometryEditor::on_hammer_clicked ()
 void
 GeometryEditor::on_edit_toggled ()
 {
-__LOG__ << getEditToggleButton () .get_active () << std::endl;
-
 	getBrowserWindow () -> getSelection () -> setSelectGeometry (getEditToggleButton () .get_active ());
 
 	if (changing)
@@ -818,14 +775,26 @@ __LOG__ << getEditToggleButton () .get_active () << std::endl;
 		getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
 
 	else
-		getBrowserWindow () -> getSelection () -> setChildren (previousSelection);
+	{
+		const auto & previousSelection = getBrowserWindow () -> getSelection () -> getPrevious ();
+
+		if (previousSelection == geometryNodes)
+			getBrowserWindow () -> getSelection () -> setChildren ({ });
+		else
+			getBrowserWindow () -> getSelection () -> setChildren (previousSelection);
+
+		if (getBrowserWindow () -> getSelection () -> isEnabled ())
+			getBrowserWindow () -> getArrowButton () .set_active (true);
+		else
+			getBrowserWindow () -> getHandButton () .set_active (true);
+
+		getCurrentBrowser () -> setPrivateViewer (privateViewer);
+	}
 }
 
 void
 GeometryEditor::on_paint_selection_toggled ()
 {
-__LOG__ << getPaintSelectionButton () .get_active () << std::endl;
-	
 	if (changing)
 		return;
 
@@ -838,7 +807,7 @@ __LOG__ << getPaintSelectionButton () .get_active () << std::endl;
 		return;
 	}
 
-	getCurrentBrowser () -> getSelection () -> isEnabled (true);
+	getBrowserWindow () -> getSelection () -> isEnabled (true);
 
 	switch (selector)
 	{
@@ -885,8 +854,6 @@ GeometryEditor::on_selection_type_button_press_event (GdkEventButton* event)
 void
 GeometryEditor::on_brush_activated ()
 {
-__LOG__ << std::endl;
-
 	selector = SelectorType::BRUSH;
 
 	getPaintSelectionButton () .set_tooltip_text (_ ("Paint current selection. Right click to open menu."));
@@ -901,8 +868,6 @@ __LOG__ << std::endl;
 void
 GeometryEditor::on_rectangle_activated ()
 {
-__LOG__ << std::endl;
-
 	selector = SelectorType::RECTANGLE;
 
 	getPaintSelectionButton () .set_tooltip_text (_ ("Use rectangle selection. Right click to open menu."));
@@ -917,8 +882,6 @@ __LOG__ << std::endl;
 void
 GeometryEditor::on_lasso_activated ()
 {
-__LOG__ << std::endl;
-
 	selector = SelectorType::LASSO;
 
 	getPaintSelectionButton () .set_tooltip_text (_ ("Use lasso selection. Right click to open menu."));
@@ -933,8 +896,6 @@ __LOG__ << std::endl;
 void
 GeometryEditor::set_selector (const SelectorType & type)
 {
-__LOG__ << int (selector) << std::endl;
-
 	switch (selector)
 	{
 		case SelectorType::BRUSH:
@@ -1012,8 +973,6 @@ GeometryEditor::on_split_points_clicked ()
 void
 GeometryEditor::on_cut_polygons_toggled ()
 {
-__LOG__ << std::endl;
-
 	if (changing)
 		return;
 
@@ -1088,8 +1047,6 @@ GeometryEditor::on_delete_selected_faces_clicked ()
 void
 GeometryEditor::store ()
 {
-__LOG__ << int (selector) << std::endl;
-
 	getConfig () -> set ("paintSelection",         getPaintSelectionButton () .get_active ());
 	getConfig () -> set ("normalEnabled",          normalEditor -> getField <X3D::SFBool>      ("load"));
 	getConfig () -> set ("normalLength",           normalEditor -> getField <X3D::SFFloat>     ("length"));

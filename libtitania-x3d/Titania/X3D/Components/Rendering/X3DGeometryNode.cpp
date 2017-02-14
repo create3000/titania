@@ -480,7 +480,7 @@ X3DGeometryNode::intersects (X3DRenderObject* const renderObject,
 					const auto z     = depth [x + y * depthBuffer -> getWidth ()];
 					const auto delta = screen .z () - z;
 
-					if (delta > 1e-4)
+					if (delta > 1e-3)
 						continue;
 				}
 				default:

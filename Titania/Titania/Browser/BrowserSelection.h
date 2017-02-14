@@ -70,28 +70,28 @@ public:
 	///  @name Member access
 
 	void
-	isEnabled (const bool);
+	isEnabled (const bool value);
 
 	bool
 	isEnabled () const
 	{ return enabled; }
 
 	void
-	setMode (const X3D::Selection::SelectionType);
+	setMode (const X3D::Selection::SelectionType value);
 
 	const X3D::Selection::SelectionType
 	getMode () const
 	{ return mode; }
 
 	void
-	setSelectLowest (const bool);
+	setSelectLowest (const bool value);
 
 	const bool
 	getSelectLowest () const
 	{ return selectLowest; }
 
 	void
-	setSelectGeometry (const bool);
+	setSelectGeometry (const bool value);
 
 	const bool
 	getSelectGeometry () const
@@ -114,8 +114,16 @@ public:
 	{ return browser -> getSelection () -> isSelected (node); }
 
 	void
-	setChildren (const X3D::MFNode & children)
-	{ browser -> getSelection () -> setChildren (children); }
+	addChildren (const X3D::MFNode & nodes);
+
+	void
+	removeChildren (const X3D::MFNode & nodes);
+
+	void
+	setChildren (const X3D::MFNode & nodes);
+
+	void
+	clear ();
 
 	const X3D::MFNode &
 	getChildren () const
@@ -124,22 +132,25 @@ public:
 	///  @name Operations
 
 	void
-	addChildren (const X3D::MFNode &, const X3D::UndoStepPtr &) const;
+	addChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
 
 	void
-	removeChildren (const X3D::MFNode &, const X3D::UndoStepPtr &) const;
+	removeChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
 
 	void
-	setChildren (const X3D::MFNode &, const X3D::UndoStepPtr &) const;
+	setChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
 
 	void
-	clear (const X3D::UndoStepPtr &) const;
+	clear (const X3D::UndoStepPtr & undoStep);
 
 	void
-	undoRestoreSelection (const X3D::UndoStepPtr & undoStep) const;
+	undoRestoreSelection (const X3D::UndoStepPtr & undoStep);
 
 	void
-	redoRestoreSelection (const X3D::UndoStepPtr & undoStep) const;
+	redoRestoreSelection (const X3D::UndoStepPtr & undoStep);
+
+	X3D::MFNode
+	getPrevious () const;
 
 	///  @name Destruction
 
@@ -153,6 +164,9 @@ private:
 
 	void
 	set_browser ();
+
+	void
+	set_children ();
 
 	///  @name Members
 

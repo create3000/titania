@@ -155,24 +155,24 @@ X3DBaseInterface::inPrototypeInstance () const
 
 ///  Return the WorldInfo node from the current scene. The node is created if needed.
 X3D::X3DPtr <X3D::WorldInfo>
-X3DBaseInterface::createCurrentWorldInfo ()
+X3DBaseInterface::createWorldInfo ()
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	return getCurrentWorldInfo (true);
+	return getWorldInfo (true);
 }
 
 ///  Return the WorldInfo node from the current scene, otherwise it throws an exception.
 X3D::X3DPtr <X3D::WorldInfo>
-X3DBaseInterface::getCurrentWorldInfo () const
+X3DBaseInterface::getWorldInfo () const
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	return const_cast <X3DBaseInterface*> (this) -> getCurrentWorldInfo (false);
+	return const_cast <X3DBaseInterface*> (this) -> getWorldInfo (false);
 }
 
 ///  Return the WorldInfo node from the current scene. If @a create is true, the node is created if needed, otherwise it
 ///  throws an exception.
 X3D::X3DPtr <X3D::WorldInfo>
-X3DBaseInterface::getCurrentWorldInfo (const bool create)
+X3DBaseInterface::getWorldInfo (const bool create)
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
 	auto worldInfo = getCurrentScene () -> getWorldInfo ();
@@ -180,7 +180,7 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 	if (not worldInfo)
 	{
 		if (not create)
-			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBaseInterface::getCurrentWorldInfo: not supported.");
+			throw X3D::Error <X3D::NOT_SUPPORTED> ("X3DBaseInterface::getWorldInfo: not supported.");
 	
 		worldInfo = getCurrentScene () -> createNode <X3D::WorldInfo> ();
 		worldInfo -> title () = getCurrentScene () -> getWorldURL () .basename (false);
@@ -201,7 +201,7 @@ X3DBaseInterface::createMetaData (const std::string & key)
 	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 		return layerSet -> getActiveLayer () -> createMetaData <X3D::MetadataSet> (key);
 
-	return createCurrentWorldInfo () -> createMetaData <X3D::MetadataSet> (key);
+	return createWorldInfo () -> createMetaData <X3D::MetadataSet> (key);
 }
 
 ///  Returns a MetaDataSet from the active layer or if no active layer from the current WorldInfo node.
@@ -213,7 +213,7 @@ X3DBaseInterface::getMetaData (const std::string & key) const
 	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
 		return layerSet -> getActiveLayer () -> getMetaData <X3D::MetadataSet> (key);
 	
-	return getCurrentWorldInfo () -> getMetaData <X3D::MetadataSet> (key);
+	return getWorldInfo () -> getMetaData <X3D::MetadataSet> (key);
 }
 
 ///  Adds @a undoStep to the current browser.

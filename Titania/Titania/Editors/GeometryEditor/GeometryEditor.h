@@ -141,9 +141,6 @@ private:
 	set_browser (const X3D::BrowserPtr &);
 
 	void
-	set_executionContext ();
-
-	void
 	set_viewer ();
 
 	void
@@ -294,7 +291,6 @@ private:
 	X3D::SFNode     normalEditor;
 	X3D::SFNode     coordEditor;
 	X3D::MFNode     geometryNodes;
-	X3D::MFNode     previousSelection;
 	X3D::BrowserPtr browser;
 
 	X3D::NodeType  privateViewer;

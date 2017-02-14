@@ -54,6 +54,8 @@
 
 #include <cassert>
 
+#include <Titania/Backtrace.h>
+
 namespace titania {
 namespace X3D {
 

@@ -298,27 +298,6 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DBrowserWidget::set_selection (selection);
 
-	if (true)
-	{
-		const auto worldInfo = createCurrentWorldInfo ();
-
-		if (getSelection () -> getChildren () .empty ())
-			worldInfo -> removeMetaData ("/Titania/Selection/children");
-
-		else
-		{
-			const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
-			const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
-			const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
-
-			previous -> isPrivate (true);
-			previous -> value () = children -> value ();
-
-			children -> isPrivate (true);
-			children -> value () = getSelection () -> getChildren ();
-		}
-	}
-
 	if (selection .empty ())
 		return;
 
@@ -417,7 +396,7 @@ X3DBrowserEditor::setMetaData ()
 {
 	if (true)
 	{
-		const auto   worldInfo = createCurrentWorldInfo ();
+		const auto   worldInfo = createWorldInfo ();
 		const auto & world     = getCurrentWorld ();
 		const auto & layerSet  = world -> getLayerSet ();
 
@@ -445,7 +424,7 @@ X3DBrowserEditor::setMetaData ()
 			std::make_pair (X3D::X3DConstants::LightSaber,         "EXAMINE"),
 		};
 
-		const auto worldInfo   = createCurrentWorldInfo ();
+		const auto worldInfo   = createWorldInfo ();
 		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
 		const auto type        = types .find (getCurrentBrowser () -> getCurrentViewer ());
 
@@ -454,7 +433,7 @@ X3DBrowserEditor::setMetaData ()
 
 	try
 	{
-		const auto   worldInfo        = createCurrentWorldInfo ();
+		const auto   worldInfo        = createWorldInfo ();
 		const auto   metadataSet      = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
 		const auto & activeLayer      = getCurrentWorld () -> getActiveLayer ();
 		const auto   viewpoint        = activeLayer -> getViewpoint ();
@@ -475,12 +454,13 @@ X3DBrowserEditor::getMetaData ()
 {
 	try
 	{
-		const auto worldInfo   = getCurrentWorldInfo ();
+		const auto worldInfo   = getWorldInfo ();
 		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
 		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("children");
 
 		children -> isPrivate (true);
-		getCurrentBrowser () -> getSelection () -> setChildren (children -> value ());
+
+		getSelection () -> setChildren (children -> value ());
 	}
 	catch (const std::exception & error)
 	{ }
@@ -492,7 +472,7 @@ X3DBrowserEditor::getMetaData ()
 
 		if (layerSet not_eq world -> getDefaultLayerSet ())
 		{
-			const auto   worldInfo   = getCurrentWorldInfo ();
+			const auto   worldInfo   = getWorldInfo ();
 			const auto   metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/LayerSet");
 			const auto & activeLayer = metadataSet -> getValue <X3D::MetadataInteger> ("activeLayer") -> value ();
 
@@ -514,7 +494,7 @@ X3DBrowserEditor::getMetaData ()
 			std::make_pair ("LOOKAT",              X3D::X3DConstants::LookAtViewer),
 		};
 
-		const auto   worldInfo   = getCurrentWorldInfo ();
+		const auto   worldInfo   = getWorldInfo ();
 		const auto   metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/NavigationInfo");
 		const auto & type        = metadataSet -> getValue <X3D::MetadataString> ("type") -> value ();
 
@@ -527,7 +507,7 @@ X3DBrowserEditor::getMetaData ()
 
 	try
 	{
-		const auto worldInfo   = getCurrentWorldInfo ();
+		const auto worldInfo   = getWorldInfo ();
 		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Viewpoint");
 
 		auto & p = metadataSet -> getValue <X3D::MetadataDouble> ("position")         -> value ();
@@ -677,7 +657,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputS
 {
 	setMetaData ();
 
-	const auto worldInfo   = createCurrentWorldInfo ();
+	const auto worldInfo   = createWorldInfo ();
 	const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
 	const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
 	const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");

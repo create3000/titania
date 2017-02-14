@@ -104,7 +104,11 @@ X3DSelector::on_1button1_release_event (GdkEventButton* event)
 	
 		getBrowser () -> addEvent ();
 		getBrowser () -> displayed () .removeInterest (&X3DSelector::display, this);
+
+		// Hide tools.
 	
+		getBrowser () -> getDisplayTools () .push (false);
+
 		// Depth buffer
 	
 		getBrowser () -> getDepthBuffer () .reset (new FrameBuffer (getBrowser (), getBrowser () -> get_width (), getBrowser () -> get_height (), 0, true));
@@ -134,6 +138,10 @@ X3DSelector::on_1button1_release_event (GdkEventButton* event)
 		getBrowser () -> setSelectionType (SelectionType::LASSO);
 		getBrowser () -> touch (points [0] .x (), points [0] .y ());
 		getBrowser () -> setSelectionType (selectionType);
+
+		// Show tools.
+	
+		getBrowser () -> getDisplayTools () .pop ();
 
 		// Reset
 

@@ -52,6 +52,9 @@
 
 #include "X3DBrowserWindow.h"
 
+#include <Titania/X3D/Components/Core/MetadataSet.h>
+#include <Titania/X3D/Components/Core/WorldInfo.h>
+
 namespace titania {
 namespace puck {
 
@@ -70,6 +73,7 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	addChildObjects (over, active, touchTime, children, browser);
 
 	getCurrentBrowser () .addInterest (&BrowserSelection::set_browser, this);
+	getChildren ()       .addInterest (&BrowserSelection::set_children, this);
 
 	setup ();
 }
@@ -134,7 +138,47 @@ BrowserSelection::setSelectGeometry (const bool value)
 }
 
 void
-BrowserSelection::addChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep) const
+BrowserSelection::addChildren (const X3D::MFNode & nodes)
+{
+	const auto & selection = getCurrentBrowser () -> getSelection ();
+
+	selection -> addChildren (nodes);
+
+	children = selection -> getChildren ();
+}
+
+void
+BrowserSelection::removeChildren (const X3D::MFNode & nodes)
+{
+	const auto & selection = getCurrentBrowser () -> getSelection ();
+
+	selection -> removeChildren (nodes);
+
+	children = selection -> getChildren ();
+}
+
+void
+BrowserSelection::setChildren (const X3D::MFNode & nodes)
+{
+	const auto & selection = getCurrentBrowser () -> getSelection ();
+
+	selection -> setChildren (nodes);
+
+	children = selection -> getChildren ();
+}
+
+void
+BrowserSelection::clear ()
+{
+	const auto & selection = getCurrentBrowser () -> getSelection ();
+
+	selection -> clear ();
+
+	children = selection -> getChildren ();
+}
+
+void
+BrowserSelection::addChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	const auto & selection = getCurrentBrowser () -> getSelection ();
 
@@ -142,10 +186,12 @@ BrowserSelection::addChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr
 	undoStep -> addRedoFunction (&X3D::Selection::addChildren, selection, nodes);
 
 	selection -> addChildren (nodes);
+
+	children = selection -> getChildren ();
 }
 
 void
-BrowserSelection::removeChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep) const
+BrowserSelection::removeChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	const auto & selection = getCurrentBrowser () -> getSelection ();
 
@@ -153,10 +199,12 @@ BrowserSelection::removeChildren (const X3D::MFNode & nodes, const X3D::UndoStep
 	undoStep -> addRedoFunction (&X3D::Selection::removeChildren, selection, nodes);
 
 	selection -> removeChildren (nodes);
+
+	children = selection -> getChildren ();
 }
 
 void
-BrowserSelection::setChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep) const
+BrowserSelection::setChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
 {
 	const auto & selection = getCurrentBrowser () -> getSelection ();
 
@@ -164,10 +212,12 @@ BrowserSelection::setChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr
 	undoStep -> addRedoFunction (&X3D::Selection::setChildren, selection, nodes);
 
 	selection -> setChildren (nodes);
+
+	children = selection -> getChildren ();
 }
 
 void
-BrowserSelection::undoRestoreSelection (const X3D::UndoStepPtr & undoStep) const
+BrowserSelection::undoRestoreSelection (const X3D::UndoStepPtr & undoStep)
 {
 	undoStep -> addUndoFunction (&X3D::Selection::setChildren,
 	                             getCurrentBrowser () -> getSelection (),
@@ -175,7 +225,7 @@ BrowserSelection::undoRestoreSelection (const X3D::UndoStepPtr & undoStep) const
 }
 
 void
-BrowserSelection::redoRestoreSelection (const X3D::UndoStepPtr & undoStep) const
+BrowserSelection::redoRestoreSelection (const X3D::UndoStepPtr & undoStep)
 {
 	undoStep -> addRedoFunction (&X3D::Selection::setChildren,
 	                             getCurrentBrowser () -> getSelection (),
@@ -183,7 +233,7 @@ BrowserSelection::redoRestoreSelection (const X3D::UndoStepPtr & undoStep) const
 }
 
 void
-BrowserSelection::clear (const X3D::UndoStepPtr & undoStep) const
+BrowserSelection::clear (const X3D::UndoStepPtr & undoStep)
 {
 	const auto & selection = getCurrentBrowser () -> getSelection ();
 
@@ -191,6 +241,50 @@ BrowserSelection::clear (const X3D::UndoStepPtr & undoStep) const
 	undoStep -> addRedoFunction (&X3D::Selection::clear, selection);
 
 	selection -> clear ();
+
+	children = selection -> getChildren ();
+}
+
+X3D::MFNode
+BrowserSelection::getPrevious () const
+{
+	try
+	{
+		const auto worldInfo   = getWorldInfo ();
+		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
+		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("previous");
+
+		return children -> value ();
+	}
+	catch (const std::exception & error)
+	{
+		return X3D::MFNode ();
+	}
+}
+
+void
+BrowserSelection::set_children ()
+{
+	const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
+
+	if (children .empty ())
+		worldInfo -> removeMetaData ("/Titania/Selection/children");
+
+	else
+	{
+		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
+		const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
+		const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
+
+		if (children -> value () == getChildren ())
+			return;
+
+		previous -> isPrivate (true);
+		previous -> value () = children -> value ();
+
+		children -> isPrivate (true);
+		children -> value () = getChildren ();
+	}
 }
 
 BrowserSelection::~BrowserSelection ()
