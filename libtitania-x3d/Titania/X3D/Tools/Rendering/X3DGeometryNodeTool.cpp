@@ -65,7 +65,6 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNodeTool::Fields::Fields () :
-	  pickable (new SFBool (true)),
 	normalTool (new SFNode ()),
 	 coordTool (new SFNode ())
 { }
@@ -109,7 +108,6 @@ X3DGeometryNodeTool::initialize ()
 {
 	X3DNodeTool::initialize ();
 
-	pickable () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
 	getBrowser () -> getSelection () -> isEnabled () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
 
 	selection .addInterest (&X3DGeometryNodeTool::set_selection, this);
@@ -143,8 +141,7 @@ X3DGeometryNodeTool::set_pickable ()
 {
 	try
 	{
-		const bool enabled = pickable () and
-		                     getBrowser () -> getSelection () -> isEnabled () and
+		const bool enabled = getBrowser () -> getSelection () -> isEnabled () and
 		                     not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ());
 
 		coordToolNode  -> getInlineNode () -> getExportedNode ("SelectionShape") -> setField <SFNode> ("geometry", enabled ? getNode <X3DGeometryNode> () : nullptr, true);

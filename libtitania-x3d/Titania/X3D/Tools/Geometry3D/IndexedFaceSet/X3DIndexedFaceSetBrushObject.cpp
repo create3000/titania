@@ -175,6 +175,7 @@ X3DIndexedFaceSetBrushObject::set_loadState ()
 void
 X3DIndexedFaceSetBrushObject::set_toolType ()
 {
+
 	try
 	{
 		static const std::set <std::string> brushes = { "SCULP", "SCULP_SMOOTH", "SCULP_UNDO" };
@@ -184,7 +185,7 @@ X3DIndexedFaceSetBrushObject::set_toolType ()
 	}
 	catch (const X3DError & error)
 	{
-		//__LOG__ << error .what () << std::endl;
+		__LOG__ << error .what () << std::endl;
 	}
 }
 

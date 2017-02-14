@@ -78,12 +78,6 @@ SculpToolEditor::configure ()
 		getPaned () .set_position (getConfig () -> getInteger ("paned"));
 
 	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-
-	// IndexedFaceSetTool detection
-
-	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (&SculpToolEditor::set_geometry_nodes, this);
-
-	set_geometry_nodes (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ());
 }
 
 void
@@ -103,6 +97,12 @@ SculpToolEditor::initialize ()
 	// Brush handling
 
 	getBrush () .addInterest (&SculpToolEditor::set_brush, this);
+
+	// IndexedFaceSetTool detection
+
+	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (&SculpToolEditor::set_geometry_nodes, this);
+
+	set_geometry_nodes (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ());
 }
 
 void
@@ -157,6 +157,9 @@ SculpToolEditor::set_height (const double height)
 void
 SculpToolEditor::on_pull_polygons_toggled ()
 {
+	//__LOG__ << getPullPolygonsButton () .get_active () << std::endl;
+	//__LOG__ << tools .size () << std::endl;
+
 	try
 	{
 		if (getPullPolygonsButton () .get_active ())

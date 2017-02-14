@@ -207,15 +207,6 @@ private:
 
 	void
 	set_selector (const SelectorType &);
-	
-	void
-	set_selection_brush ();
-	
-	void
-	set_selection_rectangle ();
-	
-	void
-	set_selection_lasso ();
 
 	virtual
 	void

@@ -69,14 +69,6 @@ public:
 
 	///  @name Private fields
 
-	SFBool &
-	pickable ()
-	{ return *fields .pickable; }
-
-	const SFBool &
-	pickable () const
-	{ return *fields .pickable; }
-
 	SFNode &
 	normalTool ()
 	{ return *fields .normalTool; }
@@ -266,7 +258,6 @@ private:
 	{
 		Fields ();
 
-		SFBool* const pickable;
 		SFNode* const normalTool;
 		SFNode* const coordTool;
 	};
