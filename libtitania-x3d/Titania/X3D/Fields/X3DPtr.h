@@ -377,7 +377,7 @@ public:
 	///  Returns true if the contents of the arrays are equal, false otherwise.
 	virtual
 	bool
-	operator == (const X3DFieldDefinition & field) const final override
+	equals (const X3DFieldDefinition & field) const final override
 	{
 		const auto rhs = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
 
@@ -385,19 +385,6 @@ public:
 		const size_t b = rhs ? rhs -> getId () : 0;
 
 		return a == b;
-	}
-
-	///  Returns true if the contents of the arrays are not equal, false otherwise.
-	virtual
-	bool
-	operator not_eq (const X3DFieldDefinition & field) const final override
-	{
-		const auto rhs = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
-
-		const size_t a = getValue () ? getValue () -> getId () : 0;
-		const size_t b = rhs ? rhs -> getId () : 0;
-
-		return a not_eq b;
 	}
 
 	///  @name Interest service

@@ -203,7 +203,7 @@ X3DField::equals (JSContext* cx, uint32_t argc, jsval* vp)
 			if (lhs -> getType () not_eq rhs -> getType ())
 				return ThrowException (cx, "%s .equals: both arguments must be of same type.");
 	
-			JS_SET_RVAL (cx, vp, *lhs == *rhs ? JSVAL_TRUE : JSVAL_FALSE);
+			JS_SET_RVAL (cx, vp, lhs -> equals (*rhs) ? JSVAL_TRUE : JSVAL_FALSE);
 			return true;
 		}
 		catch (const std::exception & error)

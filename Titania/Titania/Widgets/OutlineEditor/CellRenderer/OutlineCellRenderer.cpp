@@ -836,7 +836,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 
 	if (puck::set_field_value_from_string (scene, value, string, treeView -> get_use_locale ()))
 	{
-		if (*value not_eq *field)
+		if (not value -> equals (*field))
 		{
 			const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Edit Field »%s«"), field -> getName () .c_str ()));
 

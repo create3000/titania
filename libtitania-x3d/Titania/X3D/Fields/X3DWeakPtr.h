@@ -174,9 +174,8 @@ private:
 	friend class X3DWeakPtr;
 
 	using X3DField <ValueType*>::getValue;
+	using X3DField <ValueType*>::equals;
 	using X3DField <ValueType*>::operator const internal_type &;
-	using X3DField <ValueType*>::operator ==;
-	using X3DField <ValueType*>::operator not_eq;
 
 	///  @name Construction
 

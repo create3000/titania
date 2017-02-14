@@ -610,7 +610,7 @@ X3DPrototypeInstance::toXMLStream (std::ostream & ostream) const
 						{
 							static const SFNode null_;
 	
-							if (*field not_eq null_)
+							if (not field -> equals (null_))
 							{
 								ostream
 									<< Generator::Indent

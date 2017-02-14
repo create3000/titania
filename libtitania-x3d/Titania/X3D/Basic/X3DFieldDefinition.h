@@ -108,12 +108,7 @@ public:
 	/// Compares this X3DFieldDefinition with @a field. Both fields must be of the same type.
 	virtual
 	bool
-	operator == (const X3DFieldDefinition & fieldDefinition) const = 0;
-
-	/// Compares this X3DFieldDefinition with @a field. Both fields must be of the same type.
-	virtual
-	bool
-	operator not_eq (const X3DFieldDefinition & fieldDefinition) const = 0;
+	equals (const X3DFieldDefinition & fieldDefinition) const = 0;
 
 	///  @name Member access
 

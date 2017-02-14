@@ -173,14 +173,8 @@ public:
 	///  Returns true if the type and the value of both fields are equal.
 	virtual
 	bool
-	operator == (const X3DFieldDefinition & field) const override
+	equals (const X3DFieldDefinition & field) const override
 	{ return getValue () == static_cast <const X3DField &> (field) .getValue (); }
-
-	///  Returns true if the type or the value of both fields are not equal.
-	virtual
-	bool
-	operator not_eq (const X3DFieldDefinition & field) const override
-	{ return getValue () not_eq static_cast <const X3DField &> (field) .getValue (); }
 
 	///  @name Event handling
 

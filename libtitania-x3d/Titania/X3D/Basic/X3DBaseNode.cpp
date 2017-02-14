@@ -352,7 +352,7 @@ throw (Error <INVALID_NODE>,
 		{
 			auto & rhs = *node -> getFieldDefinitions () [i];
 
-			if (not compare or lhs not_eq rhs)
+			if (not compare or not lhs .equals (rhs))
 				lhs = rhs;
 		}
 	}
@@ -841,9 +841,9 @@ throw (Error <INVALID_NAME>,
 {
 	try
 	{
-		const X3DFieldDefinition* const declarationField = getInterfaceDeclaration () -> getField (field -> getName ());
+		const auto declarationField = getInterfaceDeclaration () -> getField (field -> getName ());
 
-		return *field == *declarationField;
+		return field -> equals (*declarationField);
 	}
 	catch (const Error <INVALID_NAME> &)
 	{
