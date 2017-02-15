@@ -269,9 +269,10 @@ X3DIndexedFaceSetSculpToolObject::getUndoVector (const Vector3d & hitNormal,
                                                  const Vector3d & point,
                                                  const Vector3d & undoPoint)
 {
-	const auto height = abs (getSculpVector (hitNormal, hitPoint, point));
+	const auto height    = abs (getSculpVector (hitNormal, hitPoint, point));
+	const auto direction = undoPoint - point;
 
-	return normalize (undoPoint - point) * height;
+	return (abs (direction) > 1 ? normalize (direction) : direction) * height;
 }
 
 X3DIndexedFaceSetSculpToolObject::~X3DIndexedFaceSetSculpToolObject ()
