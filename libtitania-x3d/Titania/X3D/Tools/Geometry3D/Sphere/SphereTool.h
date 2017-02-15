@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,74 +48,53 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY3D_SPHERE_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY3D_SPHERE_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../../../Components/Geometry3D/Sphere.h"
+#include "../../Rendering/X3DGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class Sphere :
-	virtual public X3DGeometryNode
+class SphereTool :
+	virtual public Sphere,
+	virtual public X3DGeometryNodeTool
 {
 public:
 
 	///  @name Construction
 
-	Sphere (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
+	SphereTool (Sphere* const node);
 
 	virtual
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
+	       Error <DISPOSED>) final override
+	{ getNode <Sphere> () -> setExecutionContext (executionContext); }
 
 	///  @name Fields
 
 	virtual
 	SFFloat &
-	radius ()
-	{ return *fields .radius; }
+	radius () final override
+	{ return getNode <Sphere> () -> radius (); }
 
 	virtual
 	const SFFloat &
-	radius () const
-	{ return *fields .radius; }
+	radius () const final override
+	{ return getNode <Sphere> () -> radius (); }
 
 	virtual
 	SFBool &
-	solid ()
-	{ return *fields .solid; }
+	solid () final override
+	{ return getNode <Sphere> () -> solid (); }
 
 	virtual
 	const SFBool &
-	solid () const
-	{ return *fields .solid; }
+	solid () const final override
+	{ return getNode <Sphere> () -> solid (); }
 
 	///  @name Operations
 
@@ -123,11 +102,22 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override;
+	       Error <DISPOSED>) final override
+	{ return getNode <Sphere> () -> toPrimitive (); }
 
 	virtual
 	void
-	addTool () override;
+	addTool () final override
+	{ X3DGeometryNodeTool::addTool (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~SphereTool () final override;
 
 
 protected:
@@ -136,27 +126,10 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	initialize () final override;
 
 
 private:
-
-	///  @name Operations
-
-	virtual
-	Box3d
-	createBBox () const final override;
-
-	virtual
-	void
-	build () final override;
-
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
 
 	///  @name Members
 
@@ -164,8 +137,6 @@ private:
 	{
 		Fields ();
 
-		SFFloat* const radius;
-		SFBool* const solid;
 	};
 
 	Fields fields;

@@ -75,7 +75,7 @@ public:
 
 	///  @name Construction
 
-	IndexedFaceSetTool (IndexedFaceSet* const );
+	IndexedFaceSetTool (IndexedFaceSet* const node);
 
 	virtual
 	void

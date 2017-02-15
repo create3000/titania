@@ -905,6 +905,7 @@
     <None Include="Titania\X3D\Parser\VRML1\Nodes.h" />
     <None Include="Titania\X3D\Parser\VRML1\Parser.h" />
     <None Include="Titania\X3D\Parser\VRML1\Nodes\CustomNode.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\Sphere\SphereTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1537,6 +1538,7 @@
     <Compile Include="Titania\X3D\Parser\VRML1\Nodes\WWWInline.cpp" />
     <Compile Include="Titania\X3D\Parser\VRML1\Parser.cpp" />
     <Compile Include="Titania\X3D\Parser\VRML1\Nodes\CustomNode.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\Sphere\SphereTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1626,6 +1628,7 @@
     <Folder Include="Titania\X3D\Parser\PDF\" />
     <Folder Include="Titania\X3D\Parser\VRML1\" />
     <Folder Include="Titania\X3D\Parser\VRML1\Nodes\" />
+    <Folder Include="Titania\X3D\Tools\Geometry3D\Sphere\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

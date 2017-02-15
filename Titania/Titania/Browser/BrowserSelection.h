@@ -149,7 +149,7 @@ public:
 	void
 	redoRestoreSelection (const X3D::UndoStepPtr & undoStep);
 
-	X3D::MFNode
+	const X3D::MFNode &
 	getPrevious () const;
 
 	///  @name Destruction

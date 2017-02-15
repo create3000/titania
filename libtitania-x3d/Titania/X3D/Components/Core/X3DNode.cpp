@@ -352,6 +352,16 @@ throw (Error <INVALID_NODE>,
 
 template <>
 void
+X3DNode::setMetaData <SFNode> (const std::string & key, const SFNode & value)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	setMetaData (key, MFNode ({ value }));
+}
+
+template <>
+void
 X3DNode::setMetaData <Rotation4d> (const std::string & key, const Rotation4d & value)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
@@ -500,6 +510,22 @@ throw (Error <INVALID_NODE>,
 
 template <>
 void
+X3DNode::setMetaData <MFNode> (const std::string & key, const MFNode & value)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
+	const auto metadataSet = getMetadataSet (names, false);
+
+	metadataSet -> createValue <MetadataSet> (names .back ()) -> value () = value;
+}
+
+template <>
+void
 X3DNode::setMetaData <MFString> (const std::string & key, const MFString & value)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
@@ -588,6 +614,25 @@ throw (Error <INVALID_NODE>,
 		return metadataSet -> createValue <MetadataInteger> (names .back ()) -> value ();
 
 	return metadataSet -> getValue <MetadataInteger> (names .back ()) -> value ();
+}
+
+template <>
+MFNode &
+X3DNode::getMetaData <MFNode> (const std::string & key, const bool create)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
+	const auto metadataSet = getMetadataSet (names, not create);
+
+	if (create)
+		return metadataSet -> createValue <MetadataSet> (names .back ()) -> value ();
+
+	return metadataSet -> getValue <MetadataSet> (names .back ()) -> value ();
 }
 
 template <>

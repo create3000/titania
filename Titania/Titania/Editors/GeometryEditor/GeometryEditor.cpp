@@ -203,7 +203,17 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 		const bool haveSelection = inScene and selection .size ();
 		//const bool haveSelections = inScene and selection .size () > 1;
 
-		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSet });
+		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, {
+			//X3D::X3DConstants::Box,
+			//X3D::X3DConstants::Cone,
+			//X3D::X3DConstants::Cylinder,
+			//X3D::X3DConstants::ElevationGrid,
+			//X3D::X3DConstants::Extrusion,
+			X3D::X3DConstants::IndexedFaceSet,
+			X3D::X3DConstants::Sphere,
+			//X3D::X3DConstants::GeoElevationGrid,
+			//X3D::X3DConstants::Text
+		});
 
 		changing = true;
 
@@ -233,10 +243,41 @@ GeometryEditor::connect ()
 			{
 				switch (type)
 				{
+					case X3D::X3DConstants::BoxTool:
+					case X3D::X3DConstants::ConeTool:
+					case X3D::X3DConstants::CylinderTool:
+					case X3D::X3DConstants::ElevationGridTool:
+					case X3D::X3DConstants::ExtrusionTool:
+					case X3D::X3DConstants::SphereTool:
+					case X3D::X3DConstants::GeoElevationGridTool:
+					case X3D::X3DConstants::TextTool:
+					{
+						const auto & normalTool = node -> getField <X3D::SFNode> ("normalTool");
+						const auto & coordTool  = node -> getField <X3D::SFNode> ("coordTool");
+
+						// Normal
+
+						normalEditor -> getField <X3D::SFBool>      ("load")   .addInterest (normalTool -> getField <X3D::SFBool>      ("load"));
+						normalEditor -> getField <X3D::SFFloat>     ("length") .addInterest (normalTool -> getField <X3D::SFFloat>     ("length"));
+						normalEditor -> getField <X3D::SFColorRGBA> ("color")  .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
+
+						normalTool -> setField <X3D::SFBool>      ("load",   normalEditor -> getField <X3D::SFBool>      ("load"),   true);
+						normalTool -> setField <X3D::SFFloat>     ("length", normalEditor -> getField <X3D::SFFloat>     ("length"), true);
+						normalTool -> setField <X3D::SFColorRGBA> ("color",  normalEditor -> getField <X3D::SFColorRGBA> ("color"),  true);
+
+						// Coord
+
+						coordEditor -> getField <X3D::SFColorRGBA> ("color") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
+
+						coordTool -> setField <X3D::SFBool>      ("load",  true,                                                 true);
+						coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("color"), true);
+					}
 					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
 						const auto & normalTool = node -> getField <X3D::SFNode> ("normalTool");
 						const auto & coordTool  = node -> getField <X3D::SFNode> ("coordTool");
+
+						// Normal
 
 						normalEditor -> getField <X3D::SFBool>      ("load")   .addInterest (normalTool -> getField <X3D::SFBool>      ("load"));
 						normalEditor -> getField <X3D::SFFloat>     ("length") .addInterest (normalTool -> getField <X3D::SFFloat>     ("length"));
@@ -775,24 +816,8 @@ GeometryEditor::on_edit_toggled ()
 {
 	getBrowserWindow () -> getSelection () -> setSelectGeometry (getEditToggleButton () .get_active ());
 
-	if (changing)
-		return;
-
-	if (getEditToggleButton () .get_active ())
+	if (not getEditToggleButton () .get_active ())
 	{
-		getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
-	}
-	else
-	{
-		// Restore selection.
-
-		const auto & previousSelection = getBrowserWindow () -> getSelection () -> getPrevious ();
-
-		if (previousSelection == geometryNodes)
-			getBrowserWindow () -> getSelection () -> setChildren ({ });
-		else
-			getBrowserWindow () -> getSelection () -> setChildren (previousSelection);
-
 		// Activate hand or arrow button.
 
 		if (getBrowserWindow () -> getHandButton () .get_active ())
@@ -809,6 +834,29 @@ GeometryEditor::on_edit_toggled ()
 		// Restore viewer.
 
 		getCurrentBrowser () -> setPrivateViewer (privateViewer);
+	}
+
+	// Selection handling
+
+	if (changing)
+		return;
+
+	if (getEditToggleButton () .get_active ())
+	{
+		// Set selection.
+
+		getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
+	}
+	else
+	{
+		// Restore selection.
+
+		const auto & previousSelection = getBrowserWindow () -> getSelection () -> getPrevious ();
+
+		if (previousSelection == geometryNodes)
+			getBrowserWindow () -> getSelection () -> setChildren ({ });
+		else
+			getBrowserWindow () -> getSelection () -> setChildren (previousSelection);
 	}
 }
 

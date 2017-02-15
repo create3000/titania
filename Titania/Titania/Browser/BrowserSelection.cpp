@@ -245,46 +245,40 @@ BrowserSelection::clear (const X3D::UndoStepPtr & undoStep)
 	children = selection -> getChildren ();
 }
 
-X3D::MFNode
+const X3D::MFNode &
 BrowserSelection::getPrevious () const
 {
 	try
 	{
-		const auto worldInfo   = getWorldInfo ();
-		const auto metadataSet = worldInfo -> getMetaData <X3D::MetadataSet> ("/Titania/Selection");
-		const auto children    = metadataSet -> getValue <X3D::MetadataSet> ("previous");
-
-		return children -> value ();
+		return getBrowserWindow () -> getWorldInfo () -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous", false);
 	}
 	catch (const std::exception & error)
 	{
-		return X3D::MFNode ();
+		static const X3D::MFNode empty;
+
+		return empty;
 	}
 }
 
 void
 BrowserSelection::set_children ()
 {
-	const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
-
 	if (children .empty ())
-		worldInfo -> removeMetaData ("/Titania/Selection/children");
+		return;
 
-	else
-	{
-		const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
-		const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
-		const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
+	const auto worldInfo   = getBrowserWindow () -> createWorldInfo ();
+	const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
+	const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
+	const auto children    = metadataSet -> createValue <X3D::MetadataSet> ("children");
 
-		if (children -> value () == getChildren ())
-			return;
+	if (children -> value () == getChildren ())
+		return;
 
-		previous -> isPrivate (true);
-		previous -> value () = children -> value ();
+	previous -> isPrivate (true);
+	previous -> value () = children -> value ();
 
-		children -> isPrivate (true);
-		children -> value () = getChildren ();
-	}
+	children -> isPrivate (true);
+	children -> value () = getChildren ();
 }
 
 BrowserSelection::~BrowserSelection ()

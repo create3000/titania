@@ -338,6 +338,13 @@ throw (Error <INVALID_NODE>,
 
 template <>
 void
+X3DNode::setMetaData <SFNode> (const std::string &, const SFNode &)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
+       Error <DISPOSED>);
+
+template <>
+void
 X3DNode::setMetaData <Rotation4d> (const std::string &, const Rotation4d &)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
@@ -415,6 +422,13 @@ throw (Error <INVALID_NODE>,
 
 template <>
 void
+X3DNode::setMetaData <MFNode> (const std::string &, const MFNode &)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
+       Error <DISPOSED>);
+
+template <>
+void
 X3DNode::setMetaData <MFInt32> (const std::string &, const MFInt32 &)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
@@ -463,6 +477,13 @@ throw (Error <INVALID_NODE>,
 template <>
 MFInt32 &
 X3DNode::getMetaData <MFInt32> (const std::string &, const bool)
+throw (Error <INVALID_NODE>,
+       Error <INVALID_NAME>,
+       Error <DISPOSED>);
+
+template <>
+MFNode &
+X3DNode::getMetaData <MFNode> (const std::string &, const bool)
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>);

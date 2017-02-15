@@ -54,6 +54,8 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../../Tools/Geometry3D/Sphere/SphereTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -89,9 +91,11 @@ Sphere::create (X3DExecutionContext* const executionContext) const
 void
 Sphere::initialize ()
 {
+	using E = void (X3DBaseNode::*) ();
+
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getSphereOptions () .addInterest (&Sphere::update, this);
+	getBrowser () -> getSphereOptions () .addInterest ((E) &Sphere::addEvent, this);
 }
 
 void
@@ -99,13 +103,15 @@ Sphere::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	using E = void (X3DBaseNode::*) ();
+
 	if (isInitialized ())
-		getBrowser () -> getSphereOptions () .removeInterest (&Sphere::update, this);
+		getBrowser () -> getSphereOptions () .removeInterest ((E) &Sphere::addEvent, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getSphereOptions () .addInterest (&Sphere::update, this);
+		getBrowser () -> getSphereOptions () .addInterest ((E) &Sphere::addEvent, this);
 }
 
 Box3d
@@ -161,6 +167,12 @@ throw (Error <NOT_SUPPORTED>,
 		point *= radius () .getValue ();
 
 	return geometry;
+}
+
+void
+Sphere::addTool ()
+{
+	X3DGeometryNode::addTool (new SphereTool (this));
 }
 
 } // X3D
