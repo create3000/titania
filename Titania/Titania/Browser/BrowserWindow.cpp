@@ -198,8 +198,6 @@ BrowserWindow::initialize ()
 	getCurrentScene ()   .addInterest (&BrowserWindow::set_scene, this);
 	getCurrentContext () .addInterest (&BrowserWindow::set_executionContext, this);
 
-	getViewerButton () .set_menu (getViewerTypeMenu ());
-
 	// Window
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 	getWidget () .grab_focus ();
@@ -2517,6 +2515,7 @@ BrowserWindow::on_arrow_button_toggled ()
 	if (getArrowButton () .get_active ())
 	{
 		setViewer (viewer);
+
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 	}
 
@@ -3004,9 +3003,19 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::Node
 }
 
 void
-BrowserWindow::on_viewer_clicked ()
+BrowserWindow::on_viewer_toggled ()
 {
 	setViewer (viewer);
+}
+
+bool
+BrowserWindow::on_viewer_button_press_event (GdkEventButton* event)
+{
+	if (event -> button not_eq 3)
+		return false;
+
+	getViewerTypeMenu () .popup (event -> button, event -> time);
+	return true;
 }
 
 void

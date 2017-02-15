@@ -174,6 +174,9 @@ private:
 	void
 	on_arrow_toggled ();
 
+	void
+	on_viewer_toggled ();
+
 	virtual
 	void
 	on_hammer_clicked () final override;

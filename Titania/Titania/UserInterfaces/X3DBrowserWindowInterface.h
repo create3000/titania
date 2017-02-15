@@ -1491,7 +1491,7 @@ public:
 	getViewerSeparator () const
 	{ return *m_ViewerSeparator; }
 
-	Gtk::MenuToolButton &
+	Gtk::RadioToolButton &
 	getViewerButton () const
 	{ return *m_ViewerButton; }
 
@@ -2114,8 +2114,12 @@ public:
 	on_select_children_button_clicked () = 0;
 
 	virtual
+	bool
+	on_viewer_button_press_event (GdkEventButton* event) = 0;
+
+	virtual
 	void
-	on_viewer_clicked () = 0;
+	on_viewer_toggled () = 0;
 
 	virtual
 	void
@@ -2511,7 +2515,7 @@ private:
 	Gtk::ToolButton*                 m_SelectParentButton;
 	Gtk::ToolButton*                 m_SelectChildrenButton;
 	Gtk::SeparatorToolItem*          m_ViewerSeparator;
-	Gtk::MenuToolButton*             m_ViewerButton;
+	Gtk::RadioToolButton*            m_ViewerButton;
 	Gtk::ToolButton*                 m_StraightenButton;
 	Gtk::ToggleToolButton*           m_StraightenHorizonButton;
 	Gtk::SeparatorToolItem*          m_LookAtSeparator;

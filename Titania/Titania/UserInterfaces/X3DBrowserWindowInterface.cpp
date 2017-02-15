@@ -729,8 +729,9 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_SelectParentButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_parent_button_clicked));
 	m_SelectChildrenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_children_button_clicked));
 
-	// Connect object Gtk::MenuToolButton with id 'ViewerButton'.
-	m_ViewerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewer_clicked));
+	// Connect object Gtk::RadioToolButton with id 'ViewerButton'.
+	m_ViewerButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewer_button_press_event));
+	m_ViewerButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewer_toggled));
 
 	// Connect object Gtk::ToolButton with id 'StraightenButton'.
 	m_StraightenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_straighten_clicked));

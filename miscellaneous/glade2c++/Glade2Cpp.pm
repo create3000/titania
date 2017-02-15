@@ -893,3 +893,5 @@ FileChooserButton::file_set
   virtual void on_file_set();
 SearchEntry::search_changed
   virtual void on_search_changed();
+RadioToolButton::button_press_event
+  virtual bool on_button_press_event(GdkEventButton* event);

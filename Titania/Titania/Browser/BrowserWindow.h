@@ -787,7 +787,11 @@ private:
 
 	virtual
 	void
-	on_viewer_clicked () final override;
+	on_viewer_toggled () final override;
+
+	virtual
+	bool
+	on_viewer_button_press_event (GdkEventButton* event) final override;
 
 	virtual
 	void

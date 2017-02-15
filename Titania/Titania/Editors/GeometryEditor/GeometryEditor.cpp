@@ -110,9 +110,9 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "cutSnapping",            new X3D::SFBool ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",                  new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 
-	getBrowserWindow () -> getViewerButton () .signal_clicked () .connect (sigc::mem_fun (this, &GeometryEditor::on_hand_toggled));
 	getBrowserWindow () -> getHandButton ()   .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_hand_toggled));
 	getBrowserWindow () -> getArrowButton ()  .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_arrow_toggled));
+	getBrowserWindow () -> getViewerButton () .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_viewer_toggled));
 
 	setup ();
 }
@@ -697,6 +697,13 @@ GeometryEditor::on_arrow_toggled ()
 {
 	if (getBrowserWindow () -> getArrowButton () .get_active ())
 		coordEditor -> setField <X3D::SFString> ("toolType", "SELECT");
+}
+
+void
+GeometryEditor::on_viewer_toggled ()
+{
+	if (getBrowserWindow () -> getViewerButton () .get_active ())
+		coordEditor -> setField <X3D::SFString> ("toolType", "NONE");
 }
 
 void

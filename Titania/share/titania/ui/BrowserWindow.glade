@@ -1038,8 +1038,8 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -2508,8 +2508,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -4352,17 +4352,17 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkMenuToolButton" id="ViewerButton">
+                                  <object class="GtkRadioToolButton" id="ViewerButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
-                                    <property name="has_tooltip">True</property>
-                                    <property name="tooltip_markup" translatable="yes">Activate viewer.</property>
-                                    <property name="tooltip_text" translatable="yes">Activate viewer.</property>
+                                    <property name="tooltip_text" translatable="yes">Activate viewer. Right click to open menu.</property>
                                     <property name="label" translatable="yes">Viewer Type</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">ExamineViewer</property>
-                                    <signal name="clicked" handler="on_viewer_clicked" swapped="no"/>
+                                    <property name="group">HandButton</property>
+                                    <signal name="button-press-event" handler="on_viewer_button_press_event" swapped="no"/>
+                                    <signal name="toggled" handler="on_viewer_toggled" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
