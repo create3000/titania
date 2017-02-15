@@ -98,11 +98,26 @@ SculpToolEditor::initialize ()
 
 	getBrush () .addInterest (&SculpToolEditor::set_brush, this);
 
+}
+
+void
+SculpToolEditor::on_map ()
+{
 	// IndexedFaceSetTool detection
 
 	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (&SculpToolEditor::set_geometry_nodes, this);
 
 	set_geometry_nodes (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ());
+}
+
+void
+SculpToolEditor::on_unmap ()
+{
+	// IndexedFaceSetTool detection
+
+	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (&SculpToolEditor::set_geometry_nodes, this);
+
+	set_geometry_nodes ({ });
 }
 
 void

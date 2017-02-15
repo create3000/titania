@@ -145,7 +145,6 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ElevationGridXDimensionAdjustment">
-    <property name="lower">2</property>
     <property name="upper">1000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -156,7 +155,6 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ElevationGridZDimensionAdjustment">
-    <property name="lower">2</property>
     <property name="upper">1000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -179,7 +177,6 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="GeoElevationGridXDimensionAdjustment">
-    <property name="lower">2</property>
     <property name="upper">1000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -195,7 +192,6 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="GeoElevationGridZDimensionAdjustment">
-    <property name="lower">2</property>
     <property name="upper">1000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -1660,7 +1656,6 @@
                                         <property name="text" translatable="yes">4</property>
                                         <property name="adjustment">ElevationGridXDimensionAdjustment</property>
                                         <property name="climb_rate">0.01</property>
-                                        <property name="value">4</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -1674,7 +1669,6 @@
                                         <property name="text" translatable="yes">3</property>
                                         <property name="adjustment">ElevationGridZDimensionAdjustment</property>
                                         <property name="climb_rate">0.01</property>
-                                        <property name="value">3</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2227,7 +2221,6 @@
                                         <property name="text" translatable="yes">4</property>
                                         <property name="adjustment">GeoElevationGridXDimensionAdjustment</property>
                                         <property name="climb_rate">0.01</property>
-                                        <property name="value">4</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2241,7 +2234,6 @@
                                         <property name="text" translatable="yes">3</property>
                                         <property name="adjustment">GeoElevationGridZDimensionAdjustment</property>
                                         <property name="climb_rate">0.01</property>
-                                        <property name="value">3</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>

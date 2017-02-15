@@ -110,6 +110,10 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UpdateObjectInPaletteMenuItem", m_UpdateObjectInPaletteMenuItem);
 	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
 
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_unmap));
+
 	// Connect object Gtk::RadioToolButton with id 'PullPolygonsButton'.
 	m_PullPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_pull_polygons_toggled));
 	m_PushPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_push_polygons_toggled));

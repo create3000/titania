@@ -57,6 +57,8 @@
         <property name="border_width">8</property>
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
+        <signal name="map" handler="on_map" swapped="no"/>
+        <signal name="unmap" handler="on_unmap" swapped="no"/>
         <child>
           <object class="GtkPaned" id="Paned">
             <property name="visible">True</property>

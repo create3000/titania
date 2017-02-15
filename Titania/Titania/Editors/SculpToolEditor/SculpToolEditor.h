@@ -77,6 +77,8 @@ public:
 
 protected:
 
+	///  @name Member access
+
 	virtual
 	const X3D::SFNode &
 	getBrush () const
@@ -94,6 +96,16 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_map () final override;
+
+	virtual
+	void
+	on_unmap () final override;
 
 	void
 	set_geometry_nodes (const X3D::MFNode & geometryNodes);
@@ -119,6 +131,8 @@ private:
 	virtual
 	void
 	on_undo_brush_toggled () final override;
+
+	///  @name Destruction
 
 	virtual
 	void
