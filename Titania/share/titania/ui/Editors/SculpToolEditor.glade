@@ -151,6 +151,22 @@
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkRadioToolButton" id="RoughtenPolygonsButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Rougthen polygons.</property>
+                        <property name="label" translatable="yes">Rought</property>
+                        <property name="use_underline">True</property>
+                        <property name="stock_id">Rought</property>
+                        <property name="active">True</property>
+                        <signal name="toggled" handler="on_roughten_polygons_toggled" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkRadioToolButton" id="SmoothPolygonsButton">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

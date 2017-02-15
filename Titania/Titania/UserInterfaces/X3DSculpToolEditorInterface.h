@@ -160,6 +160,10 @@ public:
 	{ return *m_PushPolygonsButton; }
 
 	Gtk::RadioToolButton &
+	getRoughtenPolygonsButton () const
+	{ return *m_RoughtenPolygonsButton; }
+
+	Gtk::RadioToolButton &
 	getSmoothPolygonsButton () const
 	{ return *m_SmoothPolygonsButton; }
 
@@ -303,6 +307,10 @@ public:
 
 	virtual
 	void
+	on_roughten_polygons_toggled () = 0;
+
+	virtual
+	void
 	on_smooth_polygons_toggled () = 0;
 
 	virtual
@@ -410,6 +418,7 @@ private:
 	Gtk::Toolbar*                  m_Toolbar;
 	Gtk::RadioToolButton*          m_PullPolygonsButton;
 	Gtk::RadioToolButton*          m_PushPolygonsButton;
+	Gtk::RadioToolButton*          m_RoughtenPolygonsButton;
 	Gtk::RadioToolButton*          m_SmoothPolygonsButton;
 	Gtk::RadioToolButton*          m_UndoBrushButton;
 	Gtk::Notebook*                 m_Notebook;

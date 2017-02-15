@@ -78,6 +78,7 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Toolbar", m_Toolbar);
 	m_builder -> get_widget ("PullPolygonsButton", m_PullPolygonsButton);
 	m_builder -> get_widget ("PushPolygonsButton", m_PushPolygonsButton);
+	m_builder -> get_widget ("RoughtenPolygonsButton", m_RoughtenPolygonsButton);
 	m_builder -> get_widget ("SmoothPolygonsButton", m_SmoothPolygonsButton);
 	m_builder -> get_widget ("UndoBrushButton", m_UndoBrushButton);
 	m_builder -> get_widget ("Notebook", m_Notebook);
@@ -117,6 +118,7 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::RadioToolButton with id 'PullPolygonsButton'.
 	m_PullPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_pull_polygons_toggled));
 	m_PushPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_push_polygons_toggled));
+	m_RoughtenPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_roughten_polygons_toggled));
 	m_SmoothPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_smooth_polygons_toggled));
 	m_UndoBrushButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_undo_brush_toggled));
 

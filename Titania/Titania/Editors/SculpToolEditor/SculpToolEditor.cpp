@@ -89,10 +89,11 @@ SculpToolEditor::initialize ()
 
 	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
 
-	getPullPolygonsButton ()   .set_group (selectionGroup);
-	getPushPolygonsButton ()   .set_group (selectionGroup);
-	getSmoothPolygonsButton () .set_group (selectionGroup);
-	getUndoBrushButton ()      .set_group (selectionGroup);
+	getPullPolygonsButton ()     .set_group (selectionGroup);
+	getPushPolygonsButton ()     .set_group (selectionGroup);
+	getRoughtenPolygonsButton () .set_group (selectionGroup);
+	getSmoothPolygonsButton ()   .set_group (selectionGroup);
+	getUndoBrushButton ()        .set_group (selectionGroup);
 
 	// Brush handling
 
@@ -207,6 +208,21 @@ SculpToolEditor::on_push_polygons_toggled ()
 }
 
 void
+SculpToolEditor::on_roughten_polygons_toggled ()
+{
+	try
+	{
+		if (getRoughtenPolygonsButton () .get_active ())
+		{
+			for (const auto & tool : tools)
+				tool -> setField <X3D::SFString> ("toolType", "SCULP_ROUGHENING");
+		}
+	}
+	catch (const X3D::X3DError & error)
+	{ }
+}
+
+void
 SculpToolEditor::on_smooth_polygons_toggled ()
 {
 	try
@@ -214,7 +230,7 @@ SculpToolEditor::on_smooth_polygons_toggled ()
 		if (getSmoothPolygonsButton () .get_active ())
 		{
 			for (const auto & tool : tools)
-				tool -> setField <X3D::SFString> ("toolType", "SCULP_SMOOTH");
+				tool -> setField <X3D::SFString> ("toolType", "SCULP_SMOOTHING");
 		}
 	}
 	catch (const X3D::X3DError & error)

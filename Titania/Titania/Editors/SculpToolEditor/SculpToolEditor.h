@@ -126,6 +126,10 @@ private:
 
 	virtual
 	void
+	on_roughten_polygons_toggled () final override;
+
+	virtual
+	void
 	on_smooth_polygons_toggled () final override;
 
 	virtual

@@ -55,6 +55,9 @@
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../../Components/Rendering/X3DCoordinateNode.h"
 
+#include <random>
+#include <chrono>
+
 namespace titania {
 namespace X3D {
 
@@ -206,7 +209,12 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 				for (const auto & pair : points)
 					getCoord () -> set1Point (pair .first, pair .second + (getSculpVector (hitNormal, hitPoint, pair .second) * height () .getValue ()));
 			}
-			else if (toolType () == "SCULP_SMOOTH")
+			else if (toolType () == "SCULP_ROUGHENING")
+			{
+				for (const auto & pair : points)
+					getCoord () -> set1Point (pair .first, pair .second + (getRoughtVector (hitNormal, hitPoint, pair .second) * height () .getValue ()));
+			}
+			else if (toolType () == "SCULP_SMOOTHING")
 			{
 				// Calculate average point within radius.
 
@@ -239,8 +247,8 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_hitPoint ()
 	}
 }
 
-Vector3d
-X3DIndexedFaceSetSculpToolObject::getSculpVector (const Vector3d & hitNormal,
+double
+X3DIndexedFaceSetSculpToolObject::getSculpHeight (const Vector3d & hitNormal,
                                                   const Vector3d & hitPoint,
                                                   const Vector3d & point)
 {
@@ -248,7 +256,31 @@ X3DIndexedFaceSetSculpToolObject::getSculpVector (const Vector3d & hitNormal,
 	const auto r = radius () * scale ();
 	const auto v = Vector2d (p .x (), p .y ()) / r;
 
-	return hitNormal * getHeight (v);
+	return getHeight (v);
+}
+
+Vector3d
+X3DIndexedFaceSetSculpToolObject::getSculpVector (const Vector3d & hitNormal,
+                                                  const Vector3d & hitPoint,
+                                                  const Vector3d & point)
+{
+	return hitNormal * getSculpHeight (hitNormal, hitPoint, point);
+}
+
+Vector3d
+X3DIndexedFaceSetSculpToolObject::getRoughtVector (const Vector3d & hitNormal,
+                                                   const Vector3d & hitPoint,
+                                                   const Vector3d & point)
+{
+	static std::uniform_real_distribution <double>
+	uniform_real_distribution (-1, 1);
+
+	static std::default_random_engine
+	random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
+
+	const auto height = std::abs (getSculpHeight (hitNormal, hitPoint, point));
+
+	return uniform_real_distribution (random_engine) * height * hitNormal;
 }
 
 Vector3d
@@ -258,7 +290,7 @@ X3DIndexedFaceSetSculpToolObject::getSmoothVector (const Vector3d & hitNormal,
 {
 	const auto plane    = Plane3d (hitPoint, hitNormal);
 	const auto distance = plane .distance (point);
-	const auto height   = abs (getSculpVector (hitNormal, hitPoint, point));
+	const auto height   = getSculpHeight (hitNormal, hitPoint, point);
 
 	return -(distance * height) * hitNormal;
 }
@@ -269,7 +301,7 @@ X3DIndexedFaceSetSculpToolObject::getUndoVector (const Vector3d & hitNormal,
                                                  const Vector3d & point,
                                                  const Vector3d & undoPoint)
 {
-	const auto height    = abs (getSculpVector (hitNormal, hitPoint, point));
+	const auto height    = getSculpHeight (hitNormal, hitPoint, point);
 	const auto direction = undoPoint - point;
 
 	return (abs (direction) > 1 ? normalize (direction) : direction) * height;

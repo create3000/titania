@@ -2584,6 +2584,8 @@
     <None Include="share\titania\Library\SculpToolBrushes\Default\Default12.x3dv" />
     <None Include="share\titania\Library\SculpToolBrushes\Default\Default13.x3dv" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DHeightMapEditor.h" />
+    <None Include="share\titania\ui\icons\Rought.svg" />
+    <None Include="share\titania\ui\icons\Smooth.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

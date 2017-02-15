@@ -109,8 +109,14 @@ private:
 	void
 	set_touch_sensor_hitPoint ();
 
+	double
+	getSculpHeight (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point);
+
 	Vector3d
 	getSculpVector (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point);
+
+	Vector3d
+	getRoughtVector (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point);
 
 	Vector3d
 	getSmoothVector (const Vector3d & hitNormal, const Vector3d & hitPoint, const Vector3d & point);
