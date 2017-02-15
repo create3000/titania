@@ -784,6 +784,8 @@ GeometryEditor::on_edit_toggled ()
 	}
 	else
 	{
+		// Restore selection.
+
 		const auto & previousSelection = getBrowserWindow () -> getSelection () -> getPrevious ();
 
 		if (previousSelection == geometryNodes)
@@ -791,10 +793,20 @@ GeometryEditor::on_edit_toggled ()
 		else
 			getBrowserWindow () -> getSelection () -> setChildren (previousSelection);
 
-		if (getBrowserWindow () -> getSelection () -> isEnabled ())
+		// Activate hand or arrow button.
+
+		if (getBrowserWindow () -> getHandButton () .get_active ())
+			;
+		else if (getBrowserWindow () -> getArrowButton () .get_active ())
+			;
+		else if (getBrowserWindow () -> getViewerButton () .get_active ())
+			;
+		else if (getBrowserWindow () -> getSelection () -> isEnabled ())
 			getBrowserWindow () -> getArrowButton () .set_active (true);
 		else
 			getBrowserWindow () -> getHandButton () .set_active (true);
+
+		// Restore viewer.
 
 		getCurrentBrowser () -> setPrivateViewer (privateViewer);
 	}

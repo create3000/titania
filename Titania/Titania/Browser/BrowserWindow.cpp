@@ -1357,11 +1357,22 @@ BrowserWindow::isEditor (const bool enabled)
 	getFooter ()  -> getScriptEditorBox ()    .set_visible (enabled);
 	getFooter ()  -> getAnimationEditorBox () .set_visible (enabled);
 
-	if (enabled and getConfig () -> getBoolean ("arrow"))
-		getArrowButton () .set_active (true);
+	if (enabled)
+	{
+		if (getConfig () -> getBoolean ("arrow"))
+			getArrowButton () .set_active (true);
+		else if (getConfig () -> getBoolean ("viewer"))
+			getViewerButton () .set_active (true);
+		else
+			getHandButton () .set_active (true);
+	}
 	else
-		getHandButton () .set_active (true);
-	
+	{
+		getViewerButton () .set_active (true);
+
+		getSelection () -> setChildren ({ });
+	}
+
 	set_dashboard (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
 }
 
@@ -2497,15 +2508,16 @@ BrowserWindow::on_hand_button_toggled ()
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 	}
 
-	const bool enabled = getHandButton () .get_active ();
+	const bool enabled = not getHandButton () .get_active () and isEditor ();
 
-	getSelection () -> isEnabled (not enabled);
+	if (getHandButton () .get_active ())
+		getSelection () -> isEnabled (false);
 
-	getPlayPauseButton ()       .set_visible (not enabled);
-	getSelectSeparator ()       .set_visible (not enabled);
-	getSelectParentButton ()    .set_visible (not enabled);
-	getSelectChildrenButton ()  .set_visible (not enabled);
-	getLookAtSelectionButton () .set_visible (isEditor () and not enabled);
+	getPlayPauseButton ()       .set_visible (enabled);
+	getSelectSeparator ()       .set_visible (enabled);
+	getSelectParentButton ()    .set_visible (enabled);
+	getSelectChildrenButton ()  .set_visible (enabled);
+	getLookAtSelectionButton () .set_visible (enabled);
 
 }
 
@@ -2517,6 +2529,8 @@ BrowserWindow::on_arrow_button_toggled ()
 		setViewer (viewer);
 
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
+
+		getSelection () -> isEnabled (true);
 	}
 
 	getConfig () -> setItem ("arrow", getArrowButton () .get_active ());
@@ -2906,7 +2920,7 @@ BrowserWindow::set_viewer ()
 			getArrowButton () .set_sensitive (true);
 
 			if (getLookAtButton () .get_active ())
-				getArrowButton ()  .set_active (true);
+				getViewerButton ()  .set_active (true);
 
 			break;
 		}
@@ -3006,6 +3020,11 @@ void
 BrowserWindow::on_viewer_toggled ()
 {
 	setViewer (viewer);
+
+	if (getViewerButton () .get_active ())
+		getSelection () -> isEnabled (false);
+
+	getConfig () -> setItem ("viewer", getViewerButton () .get_active ());
 }
 
 bool
@@ -3021,30 +3040,40 @@ BrowserWindow::on_viewer_button_press_event (GdkEventButton* event)
 void
 BrowserWindow::on_examine_viewer_activated ()
 {
+	getViewerButton () .set_active (true);
+
 	setViewer (X3D::X3DConstants::ExamineViewer);
 }
 
 void
 BrowserWindow::on_walk_viewer_activated ()
 {
+	getViewerButton () .set_active (true);
+
 	setViewer (X3D::X3DConstants::WalkViewer);
 }
 
 void
 BrowserWindow::on_fly_viewer_activated ()
 {
+	getViewerButton () .set_active (true);
+
 	setViewer (X3D::X3DConstants::FlyViewer);
 }
 
 void
 BrowserWindow::on_plane_viewer_activated ()
 {
+	getViewerButton () .set_active (true);
+
 	setViewer (X3D::X3DConstants::PlaneViewer);
 }
 
 void
 BrowserWindow::on_none_viewer_activated ()
 {
+	getViewerButton () .set_active (true);
+
 	setViewer (X3D::X3DConstants::NoneViewer);
 }
 
