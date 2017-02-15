@@ -772,8 +772,9 @@ GeometryEditor::on_edit_toggled ()
 		return;
 
 	if (getEditToggleButton () .get_active ())
+	{
 		getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
-
+	}
 	else
 	{
 		const auto & previousSelection = getBrowserWindow () -> getSelection () -> getPrevious ();

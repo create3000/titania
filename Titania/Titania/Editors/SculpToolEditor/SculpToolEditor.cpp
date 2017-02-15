@@ -108,13 +108,7 @@ SculpToolEditor::initialize ()
 void
 SculpToolEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
 {
-	tools .clear ();
-
-	for (const auto & node : geometryNodes)
-	{
-		if (node -> isType ({ X3D::X3DConstants::IndexedFaceSetTool }))
-			tools .emplace_back (node);
-	}
+	tools = getNodes <X3D::X3DBaseNode> (geometryNodes, { X3D::X3DConstants::IndexedFaceSetTool });
 
 	set_brush ();
 
