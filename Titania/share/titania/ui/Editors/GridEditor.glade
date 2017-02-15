@@ -482,7 +482,7 @@
                                     <property name="tooltip_text" translatable="yes">x-Axis</property>
                                     <property name="text" translatable="yes">2</property>
                                     <property name="adjustment">GridXDimensionAdjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                     <property name="numeric">True</property>
                                     <property name="value">2</property>
                                   </object>
@@ -499,7 +499,7 @@
                                     <property name="tooltip_text" translatable="yes">y-Axis</property>
                                     <property name="text" translatable="yes">2</property>
                                     <property name="adjustment">GridYDimensionAdjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                     <property name="numeric">True</property>
                                     <property name="value">2</property>
                                   </object>
@@ -517,7 +517,7 @@
                                     <property name="valign">start</property>
                                     <property name="text" translatable="yes">2</property>
                                     <property name="adjustment">GridZDimensionAdjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                     <property name="numeric">True</property>
                                     <property name="value">2</property>
                                   </object>
@@ -718,7 +718,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">GridMajorLineOffsetXAdjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -736,7 +736,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">GridMajorLineOffsetYAdjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -754,7 +754,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">GridMajorLineOffsetZAdjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -785,7 +785,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">GridMajorLineEveryXAdjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -803,7 +803,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">GridMajorLineEveryYAdjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -821,7 +821,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">GridMajorLineEveryZAdjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -1417,7 +1417,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">2</property>
                                     <property name="adjustment">AngleDimension0Adjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                     <property name="numeric">True</property>
                                     <property name="value">2</property>
                                   </object>
@@ -1435,7 +1435,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">2</property>
                                     <property name="adjustment">AngleDimension1Adjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                     <property name="numeric">True</property>
                                     <property name="value">2</property>
                                   </object>
@@ -1453,7 +1453,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">2</property>
                                     <property name="adjustment">AngleDimensionYAdjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                     <property name="numeric">True</property>
                                     <property name="value">10</property>
                                   </object>
@@ -1556,7 +1556,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">AngleMajorLineOffset0Adjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -1574,7 +1574,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">AngleMajorLineOffset1Adjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -1592,7 +1592,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">AngleMajorLineOffsetYAdjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -1623,7 +1623,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">AngleMajorLineEvery0Adjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -1641,7 +1641,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">AngleMajorLineEvery1Adjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>
@@ -1659,7 +1659,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">5</property>
                                 <property name="adjustment">AngleMajorLineEveryYAdjustment</property>
-                                <property name="climb_rate">2</property>
+                                <property name="climb_rate">1.5</property>
                                 <property name="numeric">True</property>
                                 <property name="value">5</property>
                               </object>

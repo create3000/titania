@@ -809,7 +809,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">4</property>
                                     <property name="adjustment">Circle2DDimensionAdjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -955,7 +955,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">4</property>
                                     <property name="adjustment">Disk2DDimensionAdjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                     <property name="value">4</property>
                                   </object>
                                   <packing>
@@ -1374,7 +1374,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">4</property>
                                     <property name="adjustment">ConeXDimensionAdjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                     <property name="value">4</property>
                                   </object>
                                   <packing>
@@ -1584,7 +1584,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">3</property>
                                     <property name="adjustment">CylinderXDimensionAdjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                     <property name="value">3</property>
                                   </object>
                                   <packing>
@@ -1655,7 +1655,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">4</property>
                                         <property name="adjustment">ElevationGridXDimensionAdjustment</property>
-                                        <property name="climb_rate">2</property>
+                                        <property name="climb_rate">1.5</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -1668,7 +1668,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">3</property>
                                         <property name="adjustment">ElevationGridZDimensionAdjustment</property>
-                                        <property name="climb_rate">2</property>
+                                        <property name="climb_rate">1.5</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2106,7 +2106,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">SphereXDimensionAdjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -2119,7 +2119,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0</property>
                                     <property name="adjustment">SphereYDimensionAdjustment</property>
-                                    <property name="climb_rate">2</property>
+                                    <property name="climb_rate">1.5</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -2220,7 +2220,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">4</property>
                                         <property name="adjustment">GeoElevationGridXDimensionAdjustment</property>
-                                        <property name="climb_rate">2</property>
+                                        <property name="climb_rate">1.5</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2233,7 +2233,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">3</property>
                                         <property name="adjustment">GeoElevationGridZDimensionAdjustment</property>
-                                        <property name="climb_rate">2</property>
+                                        <property name="climb_rate">1.5</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
