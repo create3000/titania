@@ -62,7 +62,7 @@ namespace X3D {
 class Texture;
 
 class ElevationGrid :
-	public X3DGeometryNode
+	virtual public X3DGeometryNode
 {
 public:
 
@@ -96,122 +96,152 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFInt32 &
 	xDimension ()
 	{ return *fields .xDimension; }
 
+	virtual
 	const SFInt32 &
 	xDimension () const
 	{ return *fields .xDimension; }
 
+	virtual
 	SFInt32 &
 	zDimension ()
 	{ return *fields .zDimension; }
 
+	virtual
 	const SFInt32 &
 	zDimension () const
 	{ return *fields .zDimension; }
 
+	virtual
 	SFFloat &
 	xSpacing ()
 	{ return *fields .xSpacing; }
 
+	virtual
 	const SFFloat &
 	xSpacing () const
 	{ return *fields .xSpacing; }
 
+	virtual
 	SFFloat &
 	zSpacing ()
 	{ return *fields .zSpacing; }
 
+	virtual
 	const SFFloat &
 	zSpacing () const
 	{ return *fields .zSpacing; }
 
+	virtual
 	SFFloat &
 	creaseAngle ()
 	{ return *fields .creaseAngle; }
 
+	virtual
 	const SFFloat &
 	creaseAngle () const
 	{ return *fields .creaseAngle; }
 
-	SFBool &
-	colorPerVertex ()
-	{ return *fields .colorPerVertex; }
-
-	const SFBool &
-	colorPerVertex () const
-	{ return *fields .colorPerVertex; }
-
-	SFBool &
-	normalPerVertex ()
-	{ return *fields .normalPerVertex; }
-
-	const SFBool &
-	normalPerVertex () const
-	{ return *fields .normalPerVertex; }
-
+	virtual
 	SFBool &
 	solid ()
 	{ return *fields .solid; }
 
+	virtual
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
 
+	virtual
 	SFBool &
 	ccw ()
 	{ return *fields .ccw; }
 
+	virtual
 	const SFBool &
 	ccw () const
 	{ return *fields .ccw; }
 
+	virtual
+	SFBool &
+	colorPerVertex ()
+	{ return *fields .colorPerVertex; }
+
+	virtual
+	const SFBool &
+	colorPerVertex () const
+	{ return *fields .colorPerVertex; }
+
+	virtual
+	SFBool &
+	normalPerVertex ()
+	{ return *fields .normalPerVertex; }
+
+	virtual
+	const SFBool &
+	normalPerVertex () const
+	{ return *fields .normalPerVertex; }
+
+	virtual
 	MFNode &
 	attrib ()
 	{ return *fields .attrib; }
 
+	virtual
 	const MFNode &
 	attrib () const
 	{ return *fields .attrib; }
 
+	virtual
 	SFNode &
 	fogCoord ()
 	{ return *fields .fogCoord; }
 
+	virtual
 	const SFNode &
 	fogCoord () const
 	{ return *fields .fogCoord; }
 
+	virtual
 	SFNode &
 	color ()
 	{ return *fields .color; }
 
+	virtual
 	const SFNode &
 	color () const
 	{ return *fields .color; }
 
+	virtual
 	SFNode &
 	texCoord ()
 	{ return *fields .texCoord; }
 
+	virtual
 	const SFNode &
 	texCoord () const
 	{ return *fields .texCoord; }
 
+	virtual
 	SFNode &
 	normal ()
 	{ return *fields .normal; }
 
+	virtual
 	const SFNode &
 	normal () const
 	{ return *fields .normal; }
 
+	virtual
 	MFFloat &
 	height ()
 	{ return *fields .height; }
 
+	virtual
 	const MFFloat &
 	height () const
 	{ return *fields .height; }
@@ -220,20 +250,23 @@ public:
 
 	virtual
 	bool
-	isTransparent () const final override
+	isTransparent () const override
 	{ return transparent; }
 
 	///  @name Height map handling
 
+	virtual
 	const SFEnum <LoadState> &
 	checkLoadState () const
 	{ return loadState; }
 
+	virtual
 	void
 	loadHeightMap (const MFString & url, const float minHeight, const float maxHeight);
 
 	///  @name Operations
 
+	virtual
 	void
 	addNormals ();
 
@@ -241,21 +274,28 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 	///  @name Destruction
 
 	virtual
-	~ElevationGrid () final override;
+	~ElevationGrid () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Event handlers
 

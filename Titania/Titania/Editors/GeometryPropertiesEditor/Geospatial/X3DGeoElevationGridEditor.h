@@ -105,6 +105,7 @@ private:
 	///  @name Members
 
 	std::unique_ptr <MFStringGeoSystem> geoSystem;
+	X3DFieldAdjustment3 <X3D::SFVec3d>  geoGridOrigin;
 	X3DFieldAdjustment <X3D::SFInt32>   xDimension;
 	X3DFieldAdjustment <X3D::SFInt32>   zDimension;
 	X3DFieldAdjustment <X3D::SFDouble>  xSpacing;

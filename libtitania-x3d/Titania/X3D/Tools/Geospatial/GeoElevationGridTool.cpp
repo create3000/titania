@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,102 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
+#include "GeoElevationGridTool.h"
 
-#include "../../../Components/Geometry3D/Sphere.h"
-#include "../../Rendering/X3DGeometryNodeTool.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class SphereTool :
-	virtual public Sphere,
-	public X3DGeometryNodeTool
+GeoElevationGridTool::Fields::Fields ()
+{ }
+
+GeoElevationGridTool::GeoElevationGridTool (GeoElevationGrid* const node) :
+	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	       GeoElevationGrid (node -> getExecutionContext ()),
+	            X3DBaseTool (node),
+	    X3DGeometryNodeTool (),
+	X3DGeospatialObjectTool (),
+	                 fields ()
 {
-public:
+	addType (X3DConstants::GeoElevationGridTool);
 
-	///  @name Construction
+	addField (inputOutput, "normalTool", normalTool ());
+	addField (inputOutput, "coordTool",  coordTool ());
+}
 
-	SphereTool (Sphere* const node);
+void
+GeoElevationGridTool::initialize ()
+{
+	X3DGeometryNodeTool::initialize ();
+	X3DGeospatialObjectTool::initialize ();
+}
 
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ getNode <Sphere> () -> setExecutionContext (executionContext); }
+void
+GeoElevationGridTool::dispose ()
+{
+	__LOG__ << std::endl;
 
-	///  @name Fields
+	X3DGeospatialObjectTool::dispose ();
+	X3DGeometryNodeTool::dispose ();
+}
 
-	virtual
-	SFFloat &
-	radius () final override
-	{ return getNode <Sphere> () -> radius (); }
-
-	virtual
-	const SFFloat &
-	radius () const final override
-	{ return getNode <Sphere> () -> radius (); }
-
-	virtual
-	SFBool &
-	solid () final override
-	{ return getNode <Sphere> () -> solid (); }
-
-	virtual
-	const SFBool &
-	solid () const final override
-	{ return getNode <Sphere> () -> solid (); }
-
-	///  @name Operations
-
-	virtual
-	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override
-	{ return getNode <Sphere> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-	virtual
-	~SphereTool () final override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
-
-
-private:
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-	};
-
-	Fields fields;
-
-};
+GeoElevationGridTool::~GeoElevationGridTool ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

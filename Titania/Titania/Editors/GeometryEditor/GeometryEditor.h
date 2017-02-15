@@ -107,6 +107,7 @@ public:
 private:
 
 	enum class SelectorType {
+		NONE,
 		BRUSH,
 		RECTANGLE,
 		LASSO
@@ -206,7 +207,7 @@ private:
 	on_lasso_activated () final override;
 
 	void
-	set_selector (const SelectorType &);
+	set_selector (const SelectorType);
 
 	virtual
 	void

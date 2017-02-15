@@ -48,53 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_BOX_BOX_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_BOX_BOX_TOOL_H__
 
-#include "../../../Components/Geometry3D/Sphere.h"
+#include "../../../Components/Geometry3D/Box.h"
 #include "../../Rendering/X3DGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class SphereTool :
-	virtual public Sphere,
+class BoxTool :
+	virtual public Box,
 	public X3DGeometryNodeTool
 {
 public:
 
 	///  @name Construction
 
-	SphereTool (Sphere* const node);
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ getNode <Sphere> () -> setExecutionContext (executionContext); }
+	BoxTool (Box* const node);
 
 	///  @name Fields
 
 	virtual
-	SFFloat &
-	radius () final override
-	{ return getNode <Sphere> () -> radius (); }
+	SFVec3f &
+	size () final override
+	{ return getNode <Box> () -> size (); }
 
 	virtual
-	const SFFloat &
-	radius () const final override
-	{ return getNode <Sphere> () -> radius (); }
+	const SFVec3f &
+	size () const final override
+	{ return getNode <Box> () -> size (); }
 
 	virtual
 	SFBool &
 	solid () final override
-	{ return getNode <Sphere> () -> solid (); }
+	{ return getNode <Box> () -> solid (); }
 
 	virtual
 	const SFBool &
 	solid () const final override
-	{ return getNode <Sphere> () -> solid (); }
+	{ return getNode <Box> () -> solid (); }
 
 	///  @name Operations
 
@@ -103,7 +96,7 @@ public:
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
-	{ return getNode <Sphere> () -> toPrimitive (); }
+	{ return getNode <Box> () -> toPrimitive (); }
 
 	virtual
 	void
@@ -117,7 +110,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~SphereTool () final override;
+	~BoxTool () final override;
 
 
 protected:

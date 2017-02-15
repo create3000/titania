@@ -57,6 +57,8 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
+#include "../../Tools/Geometry3D/Cylinder/CylinderTool.h"
+
 #include <complex>
 
 namespace titania {
@@ -103,9 +105,11 @@ Cylinder::create (X3DExecutionContext* const executionContext) const
 void
 Cylinder::initialize ()
 {
+	using E = void (X3DBaseNode::*) ();
+
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getCylinderOptions () .addInterest (&Cylinder::update, this);
+	getBrowser () -> getCylinderOptions () .addInterest ((E) &Cylinder::addEvent, this);
 }
 
 void
@@ -113,13 +117,15 @@ Cylinder::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	using E = void (X3DBaseNode::*) ();
+
 	if (isInitialized ())
-		getBrowser () -> getCylinderOptions () .removeInterest (&Cylinder::update, this);
+		getBrowser () -> getCylinderOptions () .removeInterest ((E) &Cylinder::addEvent, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getCylinderOptions () .addInterest (&Cylinder::update, this);
+		getBrowser () -> getCylinderOptions () .addInterest ((E) &Cylinder::addEvent, this);
 }
 
 Box3d
@@ -477,6 +483,12 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
+}
+
+void
+Cylinder::addTool ()
+{
+	X3DGeometryNode::addTool (new CylinderTool (this));
 }
 
 } // X3D

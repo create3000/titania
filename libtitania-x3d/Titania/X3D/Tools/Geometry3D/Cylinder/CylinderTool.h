@@ -48,53 +48,93 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_CYLINDER_CYLINDER_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_CYLINDER_CYLINDER_TOOL_H__
 
-#include "../../../Components/Geometry3D/Sphere.h"
+#include "../../../Components/Geometry3D/Cylinder.h"
 #include "../../Rendering/X3DGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class SphereTool :
-	virtual public Sphere,
+class CylinderTool :
+	virtual public Cylinder,
 	public X3DGeometryNodeTool
 {
 public:
 
 	///  @name Construction
 
-	SphereTool (Sphere* const node);
+	CylinderTool (Cylinder* const node);
 
 	virtual
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ getNode <Sphere> () -> setExecutionContext (executionContext); }
+	{ getNode <Cylinder> () -> setExecutionContext (executionContext); }
 
 	///  @name Fields
 
 	virtual
+	SFBool &
+	top () final override
+	{ return getNode <Cylinder> () -> top (); }
+
+	virtual
+	const SFBool &
+	top () const final override
+	{ return getNode <Cylinder> () -> top (); }
+
+	virtual
+	SFBool &
+	side () final override
+	{ return getNode <Cylinder> () -> side (); }
+
+	virtual
+	const SFBool &
+	side () const final override
+	{ return getNode <Cylinder> () -> side (); }
+
+	virtual
+	SFBool &
+	bottom () final override
+	{ return getNode <Cylinder> () -> bottom (); }
+
+	virtual
+	const SFBool &
+	bottom () const final override
+	{ return getNode <Cylinder> () -> bottom (); }
+
+	virtual
+	SFFloat &
+	height () final override
+	{ return getNode <Cylinder> () -> height (); }
+
+	virtual
+	const SFFloat &
+	height () const final override
+	{ return getNode <Cylinder> () -> height (); }
+
+	virtual
 	SFFloat &
 	radius () final override
-	{ return getNode <Sphere> () -> radius (); }
+	{ return getNode <Cylinder> () -> radius (); }
 
 	virtual
 	const SFFloat &
 	radius () const final override
-	{ return getNode <Sphere> () -> radius (); }
+	{ return getNode <Cylinder> () -> radius (); }
 
 	virtual
 	SFBool &
 	solid () final override
-	{ return getNode <Sphere> () -> solid (); }
+	{ return getNode <Cylinder> () -> solid (); }
 
 	virtual
 	const SFBool &
 	solid () const final override
-	{ return getNode <Sphere> () -> solid (); }
+	{ return getNode <Cylinder> () -> solid (); }
 
 	///  @name Operations
 
@@ -103,7 +143,7 @@ public:
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
-	{ return getNode <Sphere> () -> toPrimitive (); }
+	{ return getNode <Cylinder> () -> toPrimitive (); }
 
 	virtual
 	void
@@ -117,7 +157,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~SphereTool () final override;
+	~CylinderTool () final override;
 
 
 protected:

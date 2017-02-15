@@ -57,6 +57,8 @@
 #include "../../Components/Rendering/Normal.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
+#include "../../Tools/Geospatial/GeoElevationGridTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -572,6 +574,12 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
+}
+
+void
+GeoElevationGrid::addTool ()
+{
+	X3DGeometryNode::addTool (new GeoElevationGridTool (this));
 }
 
 void

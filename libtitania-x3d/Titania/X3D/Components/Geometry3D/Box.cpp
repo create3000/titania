@@ -54,6 +54,8 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../../Tools/Geometry3D/Box/BoxTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -162,6 +164,12 @@ throw (Error <NOT_SUPPORTED>,
 		point *= size1_2;
 
 	return geometry;
+}
+
+void
+Box::addTool ()
+{
+	X3DGeometryNode::addTool (new BoxTool (this));
 }
 
 } // X3D

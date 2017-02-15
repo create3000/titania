@@ -56,10 +56,8 @@
 namespace titania {
 namespace X3D {
 
-class IndexedFaceSet;
-
 class Box :
-	public X3DGeometryNode
+	virtual public X3DGeometryNode
 {
 public:
 
@@ -93,18 +91,22 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFVec3f &
 	size ()
 	{ return *fields .size; }
 
+	virtual
 	const SFVec3f &
 	size () const
 	{ return *fields .size; }
 
+	virtual
 	SFBool &
 	solid ()
 	{ return *fields .solid; }
 
+	virtual
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
@@ -115,16 +117,23 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Operations
 

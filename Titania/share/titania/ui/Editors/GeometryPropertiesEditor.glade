@@ -164,6 +164,24 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="GeoElevationGridGeoGridOriginXAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="GeoElevationGridGeoGridOriginYAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="GeoElevationGridGeoGridOriginZAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="GeoElevationGridHeightMapMaxHeightAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
@@ -2199,7 +2217,7 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
-                                        <property name="top_attach">1</property>
+                                        <property name="top_attach">2</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2211,33 +2229,37 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
-                                        <property name="top_attach">2</property>
+                                        <property name="top_attach">3</property>
                                       </packing>
                                     </child>
                                     <child>
                                       <object class="GtkSpinButton" id="GeoElevationGridXDimensionSpinButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">False</property>
                                         <property name="text" translatable="yes">4</property>
                                         <property name="adjustment">GeoElevationGridXDimensionAdjustment</property>
                                         <property name="climb_rate">1.5</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="top_attach">1</property>
+                                        <property name="top_attach">2</property>
                                       </packing>
                                     </child>
                                     <child>
                                       <object class="GtkSpinButton" id="GeoElevationGridZDimensionSpinButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">False</property>
                                         <property name="text" translatable="yes">3</property>
                                         <property name="adjustment">GeoElevationGridZDimensionAdjustment</property>
                                         <property name="climb_rate">1.5</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="top_attach">2</property>
+                                        <property name="top_attach">3</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2249,13 +2271,15 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
-                                        <property name="top_attach">3</property>
+                                        <property name="top_attach">4</property>
                                       </packing>
                                     </child>
                                     <child>
                                       <object class="GtkSpinButton" id="GeoElevationGridXSpacingSpinButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">False</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">GeoElevationGridXSpacingAdjustment</property>
                                         <property name="climb_rate">0.32000000000000001</property>
@@ -2263,7 +2287,7 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="top_attach">3</property>
+                                        <property name="top_attach">4</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2275,13 +2299,15 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
-                                        <property name="top_attach">4</property>
+                                        <property name="top_attach">5</property>
                                       </packing>
                                     </child>
                                     <child>
                                       <object class="GtkSpinButton" id="GeoElevationGridZSpacingSpinButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">False</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">GeoElevationGridZSpacingAdjustment</property>
                                         <property name="climb_rate">0.32000000000000001</property>
@@ -2289,7 +2315,7 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="top_attach">4</property>
+                                        <property name="top_attach">5</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2301,13 +2327,15 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">0</property>
-                                        <property name="top_attach">5</property>
+                                        <property name="top_attach">6</property>
                                       </packing>
                                     </child>
                                     <child>
                                       <object class="GtkSpinButton" id="GeoElevationGridYScaleSpinButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">False</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">GeoElevationGridYScaleAdjustment</property>
                                         <property name="climb_rate">0.32000000000000001</property>
@@ -2315,7 +2343,7 @@
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
-                                        <property name="top_attach">5</property>
+                                        <property name="top_attach">6</property>
                                       </packing>
                                     </child>
                                     <child>
@@ -2540,6 +2568,80 @@
                                       <packing>
                                         <property name="left_attach">1</property>
                                         <property name="top_attach">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label98">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Geo Grid Origin:</property>
+                                        <property name="xalign">0</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox" id="GeoElevationGridGeoGridOriginBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <object class="GtkSpinButton" id="GeoElevationGridGeoGridOriginXSpinButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="text" translatable="yes">0,000000000</property>
+                                            <property name="adjustment">GeoElevationGridGeoGridOriginXAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">9</property>
+                                            <property name="numeric">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="GeoElevationGridGeoGridOriginYSpinButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="text" translatable="yes">0,000000000</property>
+                                            <property name="adjustment">GeoElevationGridGeoGridOriginYAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">9</property>
+                                            <property name="numeric">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="GeoElevationGridGeoGridOriginZSpinButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">Height</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">GeoElevationGridGeoGridOriginZAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">3</property>
+                                            <property name="numeric">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">1</property>
                                       </packing>
                                     </child>
                                   </object>

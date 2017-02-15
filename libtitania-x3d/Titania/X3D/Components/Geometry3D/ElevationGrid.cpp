@@ -61,6 +61,8 @@
 #include "../Texturing/TextureCoordinateGenerator.h"
 #include "../Texturing/X3DTextureCoordinateNode.h"
 
+#include "../../Tools/Geometry3D/ElevationGrid/ElevationGridTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -615,6 +617,12 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
+}
+
+void
+ElevationGrid::addTool ()
+{
+	X3DGeometryNode::addTool (new ElevationGridTool (this));
 }
 
 ElevationGrid::~ElevationGrid ()

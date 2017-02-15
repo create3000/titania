@@ -220,6 +220,18 @@ public:
 	{ return m_ElevationGridZSpacingAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridGeoGridOriginXAdjustment () const
+	{ return m_GeoElevationGridGeoGridOriginXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridGeoGridOriginYAdjustment () const
+	{ return m_GeoElevationGridGeoGridOriginYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getGeoElevationGridGeoGridOriginZAdjustment () const
+	{ return m_GeoElevationGridGeoGridOriginZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGeoElevationGridHeightMapMaxHeightAdjustment () const
 	{ return m_GeoElevationGridHeightMapMaxHeightAdjustment; }
 
@@ -615,6 +627,22 @@ public:
 	getGeoElevationGridUTMOrderComboBoxText () const
 	{ return *m_GeoElevationGridUTMOrderComboBoxText; }
 
+	Gtk::Box &
+	getGeoElevationGridGeoGridOriginBox () const
+	{ return *m_GeoElevationGridGeoGridOriginBox; }
+
+	Gtk::SpinButton &
+	getGeoElevationGridGeoGridOriginXSpinButton () const
+	{ return *m_GeoElevationGridGeoGridOriginXSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoElevationGridGeoGridOriginYSpinButton () const
+	{ return *m_GeoElevationGridGeoGridOriginYSpinButton; }
+
+	Gtk::SpinButton &
+	getGeoElevationGridGeoGridOriginZSpinButton () const
+	{ return *m_GeoElevationGridGeoGridOriginZSpinButton; }
+
 	Gtk::Expander &
 	getGeoElevationGridHeightMapExpander () const
 	{ return *m_GeoElevationGridHeightMapExpander; }
@@ -869,6 +897,9 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridXSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridGeoGridOriginXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridGeoGridOriginYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridGeoGridOriginZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridHeightMapMaxHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridHeightMapMinHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridXDimensionAdjustment;
@@ -968,6 +999,10 @@ private:
 	Gtk::Box*                      m_GeoElevationGridGeoSystemUTMBox;
 	Gtk::ComboBoxText*             m_GeoElevationGridHemisphereComboBoxText;
 	Gtk::ComboBoxText*             m_GeoElevationGridUTMOrderComboBoxText;
+	Gtk::Box*                      m_GeoElevationGridGeoGridOriginBox;
+	Gtk::SpinButton*               m_GeoElevationGridGeoGridOriginXSpinButton;
+	Gtk::SpinButton*               m_GeoElevationGridGeoGridOriginYSpinButton;
+	Gtk::SpinButton*               m_GeoElevationGridGeoGridOriginZSpinButton;
 	Gtk::Expander*                 m_GeoElevationGridHeightMapExpander;
 	Gtk::SpinButton*               m_GeoElevationGridHeightMapMinHeightSpinButton;
 	Gtk::SpinButton*               m_GeoElevationGridHeightMapMaxHeightSpinButton;

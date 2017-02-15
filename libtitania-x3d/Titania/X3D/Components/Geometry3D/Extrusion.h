@@ -66,7 +66,7 @@ namespace titania {
 namespace X3D {
 
 class Extrusion :
-	public X3DGeometryNode
+	virtual public X3DGeometryNode
 {
 public:
 
@@ -100,82 +100,102 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	beginCap ()
 	{ return *fields .beginCap; }
 
+	virtual
 	const SFBool &
 	beginCap () const
 	{ return *fields .beginCap; }
 
+	virtual
 	SFBool &
 	endCap ()
 	{ return *fields .endCap; }
 
+	virtual
 	const SFBool &
 	endCap () const
 	{ return *fields .endCap; }
 
+	virtual
 	SFBool &
 	solid ()
 	{ return *fields .solid; }
 
+	virtual
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
 
+	virtual
 	SFBool &
 	ccw ()
 	{ return *fields .ccw; }
 
+	virtual
 	const SFBool &
 	ccw () const
 	{ return *fields .ccw; }
 
+	virtual
 	SFBool &
 	convex ()
 	{ return *fields .convex; }
 
+	virtual
 	const SFBool &
 	convex () const
 	{ return *fields .convex; }
 
+	virtual
 	SFFloat &
 	creaseAngle ()
 	{ return *fields .creaseAngle; }
 
+	virtual
 	const SFFloat &
 	creaseAngle () const
 	{ return *fields .creaseAngle; }
 
+	virtual
 	MFVec2f &
 	crossSection ()
 	{ return *fields .crossSection; }
 
+	virtual
 	const MFVec2f &
 	crossSection () const
 	{ return *fields .crossSection; }
 
+	virtual
 	MFRotation &
 	orientation ()
 	{ return *fields .orientation; }
 
+	virtual
 	const MFRotation &
 	orientation () const
 	{ return *fields .orientation; }
 
+	virtual
 	MFVec2f &
 	scale ()
 	{ return *fields .scale; }
 
+	virtual
 	const MFVec2f &
 	scale () const
 	{ return *fields .scale; }
 
+	virtual
 	MFVec3f &
 	spine ()
 	{ return *fields .spine; }
 
+	virtual
 	const MFVec3f &
 	spine () const
 	{ return *fields .spine; }
@@ -186,18 +206,25 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
-
-	using Tessellator = math::tessellator <double, size_t, size_t>;
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
+
+	using Tessellator = math::tessellator <double, size_t, size_t>;
 
 	///  @name Operations
 

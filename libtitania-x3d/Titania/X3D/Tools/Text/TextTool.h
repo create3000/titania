@@ -48,62 +48,159 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_TEXT_TEXT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_TEXT_TEXT_TOOL_H__
 
-#include "../../../Components/Geometry3D/Sphere.h"
-#include "../../Rendering/X3DGeometryNodeTool.h"
+#include "../../Components/Text/Text.h"
+#include "../Rendering/X3DGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class SphereTool :
-	virtual public Sphere,
+class TextTool :
+	virtual public Text,
 	public X3DGeometryNodeTool
 {
 public:
 
 	///  @name Construction
 
-	SphereTool (Sphere* const node);
+	TextTool (Text* const node);
 
 	virtual
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ getNode <Sphere> () -> setExecutionContext (executionContext); }
+	{ getNode <Text> () -> setExecutionContext (executionContext); }
 
 	///  @name Fields
 
 	virtual
+	MFString &
+	string () final override
+	{ return getNode <Text> () -> string (); }
+
+	virtual
+	const MFString &
+	string () const final override
+	{ return getNode <Text> () -> string (); }
+
+	virtual
+	MFFloat &
+	length () final override
+	{ return getNode <Text> () -> length (); }
+
+	virtual
+	const MFFloat &
+	length () const final override
+	{ return getNode <Text> () -> length (); }
+
+	virtual
 	SFFloat &
-	radius () final override
-	{ return getNode <Sphere> () -> radius (); }
+	maxExtent () final override
+	{ return getNode <Text> () -> maxExtent (); }
 
 	virtual
 	const SFFloat &
-	radius () const final override
-	{ return getNode <Sphere> () -> radius (); }
+	maxExtent () const final override
+	{ return getNode <Text> () -> maxExtent (); }
 
 	virtual
 	SFBool &
 	solid () final override
-	{ return getNode <Sphere> () -> solid (); }
+	{ return getNode <Text> () -> solid (); }
 
 	virtual
 	const SFBool &
 	solid () const final override
-	{ return getNode <Sphere> () -> solid (); }
+	{ return getNode <Text> () -> solid (); }
+
+	virtual
+	SFVec3f &
+	origin () final override
+	{ return getNode <Text> () -> origin (); }
+
+	virtual
+	const SFVec3f &
+	origin () const final override
+	{ return getNode <Text> () -> origin (); }
+
+	virtual
+	SFVec2f &
+	textBounds () final override
+	{ return getNode <Text> () -> textBounds (); }
+
+	virtual
+	const SFVec2f &
+	textBounds () const final override
+	{ return getNode <Text> () -> textBounds (); }
+
+	virtual
+	MFVec2f &
+	lineBounds () final override
+	{ return getNode <Text> () -> lineBounds (); }
+
+	virtual
+	const MFVec2f &
+	lineBounds () const final override
+	{ return getNode <Text> () -> lineBounds (); }
+
+	virtual
+	SFNode &
+	fontStyle () final override
+	{ return getNode <Text> () -> fontStyle (); }
+
+	virtual
+	const SFNode &
+	fontStyle () const final override
+	{ return getNode <Text> () -> fontStyle (); }
+
+	///  @name Member access
+
+	virtual
+	const Box3d &
+	getBBox () const final override
+	{ return getNode <Text> () -> getBBox (); }
+
+	virtual
+	bool
+	isTransparent () const final override
+	{ return getNode <Text> () -> isTransparent (); }
+
+	virtual
+	float
+	getLength (const size_t index) final override
+	{ return getNode <Text> () -> getLength (index); }
+
+	virtual
+	const X3DPtr <X3DFontStyleNode> &
+	getFontStyle () const final override
+	{ return getNode <Text> () -> getFontStyle (); }
+
+	virtual
+	const X3DPtr <X3DTextGeometry> &
+	getTextGeometry () const final override
+	{ return getNode <Text> () -> getTextGeometry (); }
 
 	///  @name Operations
+
+	virtual
+	void
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
+	{ return X3DGeometryNodeTool::traverse (type, renderObject); }
+
+	virtual
+	void
+	draw (ShapeContainer* const context) final override
+	{ return X3DGeometryNodeTool::draw (context); }
 
 	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
-	{ return getNode <Sphere> () -> toPrimitive (); }
+	{ return getNode <Text> () -> toPrimitive (); }
 
 	virtual
 	void
@@ -117,7 +214,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~SphereTool () final override;
+	~TextTool () final override;
 
 
 protected:
@@ -130,6 +227,13 @@ protected:
 
 
 private:
+
+	///  @name Construction
+
+	virtual
+	Box3d
+	createBBox () const final override
+	{ return Box3d (); }
 
 	///  @name Members
 

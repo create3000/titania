@@ -55,6 +55,8 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Text/X3DFontStyleNode.h"
 
+#include "../../Tools/Text/TextTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -236,10 +238,19 @@ throw (Error <NOT_SUPPORTED>,
 }
 
 void
+Text::addTool ()
+{
+	X3DGeometryNode::addTool (new TextTool (this));
+}
+
+void
 Text::dispose ()
 {
 	X3DGeometryNode::dispose ();
 }
+
+Text::~Text ()
+{ }
 
 } // X3D
 } // titania

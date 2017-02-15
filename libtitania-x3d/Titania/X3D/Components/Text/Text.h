@@ -56,11 +56,10 @@
 namespace titania {
 namespace X3D {
 
-class X3DFontStyleNode;
 class X3DTextGeometry;
 
 class Text :
-	public X3DGeometryNode
+	virtual public X3DGeometryNode
 {
 public:
 
@@ -96,70 +95,86 @@ public:
 	void
 	setExecutionContext (X3DExecutionContext* const)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
 
 	///  @name Fields
 
+	virtual
 	MFString &
 	string ()
 	{ return *fields .string; }
 
+	virtual
 	const MFString &
 	string () const
 	{ return *fields .string; }
 
+	virtual
 	MFFloat &
 	length ()
 	{ return *fields .length; }
 
+	virtual
 	const MFFloat &
 	length () const
 	{ return *fields .length; }
 
+	virtual
 	SFFloat &
 	maxExtent ()
 	{ return *fields .maxExtent; }
 
+	virtual
 	const SFFloat &
 	maxExtent () const
 	{ return *fields .maxExtent; }
 
+	virtual
 	SFBool &
 	solid ()
 	{ return *fields .solid; }
 
+	virtual
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
 
+	virtual
 	SFVec3f &
 	origin ()
 	{ return *fields .origin; }
 
+	virtual
 	const SFVec3f &
 	origin () const
 	{ return *fields .origin; }
 
+	virtual
 	SFVec2f &
 	textBounds ()
 	{ return *fields .textBounds; }
 
+	virtual
 	const SFVec2f &
 	textBounds () const
 	{ return *fields .textBounds; }
 
+	virtual
 	MFVec2f &
 	lineBounds ()
 	{ return *fields .lineBounds; }
 
+	virtual
 	const MFVec2f &
 	lineBounds () const
 	{ return *fields .lineBounds; }
 
+	virtual
 	SFNode &
 	fontStyle ()
 	{ return *fields .fontStyle; }
 
+	virtual
 	const SFNode &
 	fontStyle () const
 	{ return *fields .fontStyle; }
@@ -168,19 +183,22 @@ public:
 
 	virtual
 	const Box3d &
-	getBBox () const final override;
+	getBBox () const override;
 
 	virtual
 	bool
 	isTransparent () const;
 
+	virtual
 	float
-	getLength (const size_t);
+	getLength (const size_t index);
 
+	virtual
 	const X3DPtr <X3DFontStyleNode> &
 	getFontStyle () const
 	{ return fontStyleNode; }
 
+	virtual
 	const X3DPtr <X3DTextGeometry> &
 	getTextGeometry () const
 	{ return textGeometry; }
@@ -189,23 +207,30 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	virtual
 	void
-	draw (ShapeContainer* const) final override;
+	draw (ShapeContainer* const context) override;
 
 	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () override;
+
+	virtual
+	~Text () override;
 
 
 protected:
@@ -215,19 +240,19 @@ protected:
 	friend class PolygonText;
 	friend class ScreenText;
 
-
-private:
-
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Member access
 	virtual
 	Box3d
-	createBBox () const final override;
+	createBBox () const override;
 
 	virtual
 	const Matrix4d &

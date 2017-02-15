@@ -906,6 +906,13 @@
     <None Include="Titania\X3D\Parser\VRML1\Parser.h" />
     <None Include="Titania\X3D\Parser\VRML1\Nodes\CustomNode.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\Sphere\SphereTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\Box\BoxTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\Cone\ConeTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\Cylinder\CylinderTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\ElevationGrid\ElevationGridTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry3D\Extrusion\ExtrusionTool.h" />
+    <None Include="Titania\X3D\Tools\Geospatial\GeoElevationGridTool.h" />
+    <None Include="Titania\X3D\Tools\Text\TextTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1539,6 +1546,13 @@
     <Compile Include="Titania\X3D\Parser\VRML1\Parser.cpp" />
     <Compile Include="Titania\X3D\Parser\VRML1\Nodes\CustomNode.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry3D\Sphere\SphereTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\Box\BoxTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\Cone\ConeTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\Cylinder\CylinderTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\ElevationGrid\ElevationGridTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry3D\Extrusion\ExtrusionTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geospatial\GeoElevationGridTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Text\TextTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
@@ -1629,6 +1643,12 @@
     <Folder Include="Titania\X3D\Parser\VRML1\" />
     <Folder Include="Titania\X3D\Parser\VRML1\Nodes\" />
     <Folder Include="Titania\X3D\Tools\Geometry3D\Sphere\" />
+    <Folder Include="Titania\X3D\Tools\Geometry3D\Box\" />
+    <Folder Include="Titania\X3D\Tools\Geometry3D\Cone\" />
+    <Folder Include="Titania\X3D\Tools\Geometry3D\Cylinder\" />
+    <Folder Include="Titania\X3D\Tools\Geometry3D\ElevationGrid\" />
+    <Folder Include="Titania\X3D\Tools\Geometry3D\Extrusion\" />
+    <Folder Include="Titania\X3D\Tools\Text\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

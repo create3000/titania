@@ -106,7 +106,7 @@ public:
 
 	virtual
 	const Box3d &
-	getBBox () const final override
+	getBBox () const override
 	{ return getNode <X3DGeometryNode> () -> getBBox (); }
 
 	virtual
@@ -184,7 +184,7 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
 	virtual
 	void
@@ -193,7 +193,7 @@ public:
 
 	virtual
 	void
-	draw (ShapeContainer* const) final override;
+	draw (ShapeContainer* const) override;
 
 	virtual
 	SFNode

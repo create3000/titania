@@ -57,6 +57,8 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
+#include "../../Tools/Geometry3D/Cone/ConeTool.h"
+
 #include <complex>
 
 namespace titania {
@@ -101,9 +103,11 @@ Cone::create (X3DExecutionContext* const executionContext) const
 void
 Cone::initialize ()
 {
+	using E = void (X3DBaseNode::*) ();
+
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getConeOptions () .addInterest (&Cone::update, this);
+	getBrowser () -> getConeOptions () .addInterest ((E) &Cone::addEvent, this);
 }
 
 void
@@ -111,12 +115,15 @@ Cone::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getConeOptions () .removeInterest (&Cone::update, this);
+	using E = void (X3DBaseNode::*) ();
+
+	if (isInitialized ())
+		getBrowser () -> getConeOptions () .removeInterest ((E) &Cone::addEvent, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getConeOptions () .addInterest (&Cone::update, this);
+		getBrowser () -> getConeOptions () .addInterest ((E) &Cone::addEvent, this);
 }
 
 Box3d
@@ -312,6 +319,12 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
+}
+
+void
+Cone::addTool ()
+{
+	X3DGeometryNode::addTool (new ConeTool (this));
 }
 
 } // X3D

@@ -75,6 +75,12 @@ X3DGeoElevationGridEditor::X3DGeoElevationGridEditor () :
 	                                                           getGeoElevationGridEllipsoidBox (),
 	                                                           getGeoElevationGridGDOrderComboBoxText (),
 	                                                           getGeoElevationGridGeoSystemUTMBox ())),
+	                                            geoGridOrigin (this,
+	                                                           getGeoElevationGridGeoGridOriginXAdjustment (),
+	                                                           getGeoElevationGridGeoGridOriginYAdjustment (),
+	                                                           getGeoElevationGridGeoGridOriginZAdjustment (),
+	                                                           getGeoElevationGridGeoGridOriginBox (),
+	                                                           "geoGridOrigin"),
 	                                               xDimension (this, getGeoElevationGridXDimensionAdjustment (), getGeoElevationGridXDimensionSpinButton (), "xDimension"),
 	                                               zDimension (this, getGeoElevationGridZDimensionAdjustment (), getGeoElevationGridZDimensionSpinButton (), "zDimension"),
 	                                                 xSpacing (this, getGeoElevationGridXSpacingAdjustment (), getGeoElevationGridXSpacingSpinButton (), "xSpacing"),
@@ -114,11 +120,12 @@ X3DGeoElevationGridEditor::set_geometry ()
 
 	geoSystem -> setNode (node);
 
-	xDimension .setNodes (nodes);
-	zDimension .setNodes (nodes);
-	xSpacing   .setNodes (nodes);
-	zSpacing   .setNodes (nodes);
-	yScale     .setNodes (nodes);
+	geoGridOrigin .setNodes (nodes);
+	xDimension    .setNodes (nodes);
+	zDimension    .setNodes (nodes);
+	xSpacing      .setNodes (nodes);
+	zSpacing      .setNodes (nodes);
+	yScale        .setNodes (nodes);
 
 	X3DHeightMapEditor <X3D::GeoElevationGrid, X3D::MFDouble>::setNode (node);
 }

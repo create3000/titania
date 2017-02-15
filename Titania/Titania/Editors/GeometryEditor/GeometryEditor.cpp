@@ -149,9 +149,7 @@ GeometryEditor::configure ()
 	getCutPolygonsButton ()                 .set_active (getConfig () -> get <bool> ("cutPolygons"));
 	getCutPolygonsEnableSnappingMenuItem () .set_active (getConfig () -> get <bool> ("cutSnapping") or not getConfig () -> hasItem ("cutSnapping"));
 
-	selector = SelectorType (getConfig () -> get <size_t> ("selector"));
-
-	set_selector (selector);
+	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
 }
 
 void
@@ -201,18 +199,17 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 	{
 		const bool inScene       = not inPrototypeInstance ();
 		const bool haveSelection = inScene and selection .size ();
-		//const bool haveSelections = inScene and selection .size () > 1;
 
 		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, {
-			//X3D::X3DConstants::Box,
-			//X3D::X3DConstants::Cone,
-			//X3D::X3DConstants::Cylinder,
-			//X3D::X3DConstants::ElevationGrid,
-			//X3D::X3DConstants::Extrusion,
+			X3D::X3DConstants::Box,
+			X3D::X3DConstants::Cone,
+			X3D::X3DConstants::Cylinder,
+			X3D::X3DConstants::ElevationGrid,
+			X3D::X3DConstants::Extrusion,
 			X3D::X3DConstants::IndexedFaceSet,
 			X3D::X3DConstants::Sphere,
-			//X3D::X3DConstants::GeoElevationGrid,
-			//X3D::X3DConstants::Text
+			X3D::X3DConstants::GeoElevationGrid,
+			X3D::X3DConstants::Text
 		});
 
 		changing = true;
@@ -271,6 +268,8 @@ GeometryEditor::connect ()
 
 						coordTool -> setField <X3D::SFBool>      ("load",  true,                                                 true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("color"), true);
+
+						break;
 					}
 					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
@@ -834,6 +833,8 @@ GeometryEditor::on_edit_toggled ()
 		// Restore viewer.
 
 		getCurrentBrowser () -> setPrivateViewer (privateViewer);
+
+		set_selector (SelectorType::NONE);
 	}
 
 	// Selection handling
@@ -871,6 +872,7 @@ GeometryEditor::on_paint_selection_toggled ()
 
 	if (not getPaintSelectionButton () .get_active ())
 	{
+		selector = SelectorType::NONE;
 		getCurrentBrowser () -> setPrivateViewer (privateViewer);
 		return;
 	}
@@ -879,6 +881,8 @@ GeometryEditor::on_paint_selection_toggled ()
 
 	switch (selector)
 	{
+		case SelectorType::NONE:
+			break;
 		case SelectorType::BRUSH:
 		{
 			getCurrentBrowser () -> getViewer () .removeInterest (&GeometryEditor::set_viewer, this);
@@ -962,10 +966,13 @@ GeometryEditor::on_lasso_activated ()
 }
 
 void
-GeometryEditor::set_selector (const SelectorType & type)
+GeometryEditor::set_selector (const SelectorType type)
 {
-	switch (selector)
+	switch (type)
 	{
+		case SelectorType::NONE:
+			selector = type;
+			break;
 		case SelectorType::BRUSH:
 			on_brush_activated ();
 			break;

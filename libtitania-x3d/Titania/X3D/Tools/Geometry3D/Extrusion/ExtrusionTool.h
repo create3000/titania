@@ -48,53 +48,125 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_SPHERE_SPHERE_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_EXTRUSION_EXTRUSION_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY3D_EXTRUSION_EXTRUSION_TOOL_H__
 
-#include "../../../Components/Geometry3D/Sphere.h"
+#include "../../../Components/Geometry3D/Extrusion.h"
 #include "../../Rendering/X3DGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class SphereTool :
-	virtual public Sphere,
+class ExtrusionTool :
+	virtual public Extrusion,
 	public X3DGeometryNodeTool
 {
 public:
 
 	///  @name Construction
 
-	SphereTool (Sphere* const node);
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ getNode <Sphere> () -> setExecutionContext (executionContext); }
+	ExtrusionTool (Extrusion* const node);
 
 	///  @name Fields
 
 	virtual
-	SFFloat &
-	radius () final override
-	{ return getNode <Sphere> () -> radius (); }
+	SFBool &
+	beginCap () final override
+	{ return getNode <Extrusion> () -> beginCap (); }
 
 	virtual
-	const SFFloat &
-	radius () const final override
-	{ return getNode <Sphere> () -> radius (); }
+	const SFBool &
+	beginCap () const final override
+	{ return getNode <Extrusion> () -> beginCap (); }
+
+	virtual
+	SFBool &
+	endCap () final override
+	{ return getNode <Extrusion> () -> endCap (); }
+
+	virtual
+	const SFBool &
+	endCap () const final override
+	{ return getNode <Extrusion> () -> endCap (); }
 
 	virtual
 	SFBool &
 	solid () final override
-	{ return getNode <Sphere> () -> solid (); }
+	{ return getNode <Extrusion> () -> solid (); }
 
 	virtual
 	const SFBool &
 	solid () const final override
-	{ return getNode <Sphere> () -> solid (); }
+	{ return getNode <Extrusion> () -> solid (); }
+
+	virtual
+	SFBool &
+	ccw () final override
+	{ return getNode <Extrusion> () -> ccw (); }
+
+	virtual
+	const SFBool &
+	ccw () const final override
+	{ return getNode <Extrusion> () -> ccw (); }
+
+	virtual
+	SFBool &
+	convex () final override
+	{ return getNode <Extrusion> () -> convex (); }
+
+	virtual
+	const SFBool &
+	convex () const final override
+	{ return getNode <Extrusion> () -> convex (); }
+
+	virtual
+	SFFloat &
+	creaseAngle () final override
+	{ return getNode <Extrusion> () -> creaseAngle (); }
+
+	virtual
+	const SFFloat &
+	creaseAngle () const final override
+	{ return getNode <Extrusion> () -> creaseAngle (); }
+
+	virtual
+	MFVec2f &
+	crossSection () final override
+	{ return getNode <Extrusion> () -> crossSection (); }
+
+	virtual
+	const MFVec2f &
+	crossSection () const final override
+	{ return getNode <Extrusion> () -> crossSection (); }
+
+	virtual
+	MFRotation &
+	orientation () final override
+	{ return getNode <Extrusion> () -> orientation (); }
+
+	virtual
+	const MFRotation &
+	orientation () const final override
+	{ return getNode <Extrusion> () -> orientation (); }
+
+	MFVec2f &
+	scale () final override
+	{ return getNode <Extrusion> () -> scale (); }
+
+	virtual
+	const MFVec2f &
+	scale () const final override
+	{ return getNode <Extrusion> () -> scale (); }
+
+	virtual
+	MFVec3f &
+	spine () final override
+	{ return getNode <Extrusion> () -> spine (); }
+
+	virtual
+	const MFVec3f &
+	spine () const final override
+	{ return getNode <Extrusion> () -> spine (); }
 
 	///  @name Operations
 
@@ -103,7 +175,7 @@ public:
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
-	{ return getNode <Sphere> () -> toPrimitive (); }
+	{ return getNode <Extrusion> () -> toPrimitive (); }
 
 	virtual
 	void
@@ -117,7 +189,7 @@ public:
 	dispose () final override;
 
 	virtual
-	~SphereTool () final override;
+	~ExtrusionTool () final override;
 
 
 protected:

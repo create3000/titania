@@ -91,6 +91,9 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_ElevationGridXSpacingAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridXSpacingAdjustment"));
 	m_ElevationGridZDimensionAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridZDimensionAdjustment"));
 	m_ElevationGridZSpacingAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ElevationGridZSpacingAdjustment"));
+	m_GeoElevationGridGeoGridOriginXAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridGeoGridOriginXAdjustment"));
+	m_GeoElevationGridGeoGridOriginYAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridGeoGridOriginYAdjustment"));
+	m_GeoElevationGridGeoGridOriginZAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridGeoGridOriginZAdjustment"));
 	m_GeoElevationGridHeightMapMaxHeightAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridHeightMapMaxHeightAdjustment"));
 	m_GeoElevationGridHeightMapMinHeightAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridHeightMapMinHeightAdjustment"));
 	m_GeoElevationGridXDimensionAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridXDimensionAdjustment"));
@@ -192,6 +195,10 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoElevationGridGeoSystemUTMBox", m_GeoElevationGridGeoSystemUTMBox);
 	m_builder -> get_widget ("GeoElevationGridHemisphereComboBoxText", m_GeoElevationGridHemisphereComboBoxText);
 	m_builder -> get_widget ("GeoElevationGridUTMOrderComboBoxText", m_GeoElevationGridUTMOrderComboBoxText);
+	m_builder -> get_widget ("GeoElevationGridGeoGridOriginBox", m_GeoElevationGridGeoGridOriginBox);
+	m_builder -> get_widget ("GeoElevationGridGeoGridOriginXSpinButton", m_GeoElevationGridGeoGridOriginXSpinButton);
+	m_builder -> get_widget ("GeoElevationGridGeoGridOriginYSpinButton", m_GeoElevationGridGeoGridOriginYSpinButton);
+	m_builder -> get_widget ("GeoElevationGridGeoGridOriginZSpinButton", m_GeoElevationGridGeoGridOriginZSpinButton);
 	m_builder -> get_widget ("GeoElevationGridHeightMapExpander", m_GeoElevationGridHeightMapExpander);
 	m_builder -> get_widget ("GeoElevationGridHeightMapMinHeightSpinButton", m_GeoElevationGridHeightMapMinHeightSpinButton);
 	m_builder -> get_widget ("GeoElevationGridHeightMapMaxHeightSpinButton", m_GeoElevationGridHeightMapMaxHeightSpinButton);

@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class Cylinder :
-	public X3DGeometryNode
+	virtual public X3DGeometryNode
 {
 public:
 
@@ -93,54 +93,66 @@ public:
 	void
 	setExecutionContext (X3DExecutionContext* const)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	top ()
 	{ return *fields .top; }
 
+	virtual
 	const SFBool &
 	top () const
 	{ return *fields .top; }
 
+	virtual
 	SFBool &
 	side ()
 	{ return *fields .side; }
 
+	virtual
 	const SFBool &
 	side () const
 	{ return *fields .side; }
 
+	virtual
 	SFBool &
 	bottom ()
 	{ return *fields .bottom; }
 
+	virtual
 	const SFBool &
 	bottom () const
 	{ return *fields .bottom; }
 
+	virtual
 	SFFloat &
 	height ()
 	{ return *fields .height; }
 
+	virtual
 	const SFFloat &
 	height () const
 	{ return *fields .height; }
 
+	virtual
 	SFFloat &
 	radius ()
 	{ return *fields .radius; }
 
+	virtual
 	const SFFloat &
 	radius () const
 	{ return *fields .radius; }
 
+	virtual
 	SFBool &
 	solid ()
 	{ return *fields .solid; }
 
+	virtual
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
@@ -151,16 +163,23 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Operations
 

@@ -721,6 +721,11 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Core/Tool.lo \
 	Titania/X3D/Tools/Core/X3DBaseTool.lo \
 	Titania/X3D/Tools/Core/X3DToolObject.lo \
+	Titania/X3D/Tools/Geometry3D/Box/BoxTool.lo \
+	Titania/X3D/Tools/Geometry3D/Cone/ConeTool.lo \
+	Titania/X3D/Tools/Geometry3D/Cylinder/CylinderTool.lo \
+	Titania/X3D/Tools/Geometry3D/ElevationGrid/ElevationGridTool.lo \
+	Titania/X3D/Tools/Geometry3D/Extrusion/ExtrusionTool.lo \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.lo \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetBrushObject.lo \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetCutObject.lo \
@@ -732,6 +737,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTool.lo \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTransformObject.lo \
 	Titania/X3D/Tools/Geometry3D/Sphere/SphereTool.lo \
+	Titania/X3D/Tools/Geospatial/GeoElevationGridTool.lo \
 	Titania/X3D/Tools/Grids/AngleTool.lo \
 	Titania/X3D/Tools/Grids/GridTool.lo \
 	Titania/X3D/Tools/Grids/X3DGridTool.lo \
@@ -751,7 +757,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.lo \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.lo \
 	Titania/X3D/Tools/Sound/SoundTool.lo \
-	Titania/X3D/Types/Image.lo
+	Titania/X3D/Tools/Text/TextTool.lo Titania/X3D/Types/Image.lo
 libtitania_x3d_la_OBJECTS = $(am_libtitania_x3d_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -1612,6 +1618,11 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/Geometry3D/Box/BoxTool.cpp \
+	Titania/X3D/Tools/Geometry3D/Cone/ConeTool.cpp \
+	Titania/X3D/Tools/Geometry3D/Cylinder/CylinderTool.cpp \
+	Titania/X3D/Tools/Geometry3D/ElevationGrid/ElevationGridTool.cpp \
+	Titania/X3D/Tools/Geometry3D/Extrusion/ExtrusionTool.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetBrushObject.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetCutObject.cpp \
@@ -1623,6 +1634,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTool.cpp \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTransformObject.cpp \
 	Titania/X3D/Tools/Geometry3D/Sphere/SphereTool.cpp \
+	Titania/X3D/Tools/Geospatial/GeoElevationGridTool.cpp \
 	Titania/X3D/Tools/Grids/AngleTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
@@ -1642,6 +1654,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Tools/Sound/SoundTool.cpp \
+	Titania/X3D/Tools/Text/TextTool.cpp \
 	Titania/X3D/Types/Image.cpp
 
 libtitania_x3d_la_LIBADD = $(TITANIA_X3D_LIBS)  \
@@ -3995,6 +4008,51 @@ Titania/X3D/Tools/Core/X3DBaseTool.lo:  \
 Titania/X3D/Tools/Core/X3DToolObject.lo:  \
 	Titania/X3D/Tools/Core/$(am__dirstamp) \
 	Titania/X3D/Tools/Core/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Box/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/Box
+	@: > Titania/X3D/Tools/Geometry3D/Box/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR)
+	@: > Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Box/BoxTool.lo:  \
+	Titania/X3D/Tools/Geometry3D/Box/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Cone/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/Cone
+	@: > Titania/X3D/Tools/Geometry3D/Cone/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR)
+	@: > Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Cone/ConeTool.lo:  \
+	Titania/X3D/Tools/Geometry3D/Cone/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Cylinder/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/Cylinder
+	@: > Titania/X3D/Tools/Geometry3D/Cylinder/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR)
+	@: > Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Cylinder/CylinderTool.lo:  \
+	Titania/X3D/Tools/Geometry3D/Cylinder/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/ElevationGrid/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/ElevationGrid
+	@: > Titania/X3D/Tools/Geometry3D/ElevationGrid/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR)
+	@: > Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/ElevationGrid/ElevationGridTool.lo:  \
+	Titania/X3D/Tools/Geometry3D/ElevationGrid/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Extrusion/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/Extrusion
+	@: > Titania/X3D/Tools/Geometry3D/Extrusion/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR)
+	@: > Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry3D/Extrusion/ExtrusionTool.lo:  \
+	Titania/X3D/Tools/Geometry3D/Extrusion/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/Geometry3D/IndexedFaceSet
 	@: > Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(am__dirstamp)
@@ -4040,6 +4098,15 @@ Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Tools/Geometry3D/Sphere/SphereTool.lo:  \
 	Titania/X3D/Tools/Geometry3D/Sphere/$(am__dirstamp) \
 	Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geospatial/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geospatial
+	@: > Titania/X3D/Tools/Geospatial/$(am__dirstamp)
+Titania/X3D/Tools/Geospatial/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Geospatial/$(DEPDIR)
+	@: > Titania/X3D/Tools/Geospatial/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geospatial/GeoElevationGridTool.lo:  \
+	Titania/X3D/Tools/Geospatial/$(am__dirstamp) \
+	Titania/X3D/Tools/Geospatial/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Grids/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/Grids
 	@: > Titania/X3D/Tools/Grids/$(am__dirstamp)
@@ -4151,6 +4218,15 @@ Titania/X3D/Tools/Sound/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Tools/Sound/SoundTool.lo:  \
 	Titania/X3D/Tools/Sound/$(am__dirstamp) \
 	Titania/X3D/Tools/Sound/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Text/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Text
+	@: > Titania/X3D/Tools/Text/$(am__dirstamp)
+Titania/X3D/Tools/Text/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) Titania/X3D/Tools/Text/$(DEPDIR)
+	@: > Titania/X3D/Tools/Text/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Text/TextTool.lo:  \
+	Titania/X3D/Tools/Text/$(am__dirstamp) \
+	Titania/X3D/Tools/Text/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Types/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Types
 	@: > Titania/X3D/Types/$(am__dirstamp)
@@ -4335,10 +4411,22 @@ mostlyclean-compile:
 	-rm -f Titania/X3D/Thread/*.lo
 	-rm -f Titania/X3D/Tools/Core/*.$(OBJEXT)
 	-rm -f Titania/X3D/Tools/Core/*.lo
+	-rm -f Titania/X3D/Tools/Geometry3D/Box/*.$(OBJEXT)
+	-rm -f Titania/X3D/Tools/Geometry3D/Box/*.lo
+	-rm -f Titania/X3D/Tools/Geometry3D/Cone/*.$(OBJEXT)
+	-rm -f Titania/X3D/Tools/Geometry3D/Cone/*.lo
+	-rm -f Titania/X3D/Tools/Geometry3D/Cylinder/*.$(OBJEXT)
+	-rm -f Titania/X3D/Tools/Geometry3D/Cylinder/*.lo
+	-rm -f Titania/X3D/Tools/Geometry3D/ElevationGrid/*.$(OBJEXT)
+	-rm -f Titania/X3D/Tools/Geometry3D/ElevationGrid/*.lo
+	-rm -f Titania/X3D/Tools/Geometry3D/Extrusion/*.$(OBJEXT)
+	-rm -f Titania/X3D/Tools/Geometry3D/Extrusion/*.lo
 	-rm -f Titania/X3D/Tools/Geometry3D/IndexedFaceSet/*.$(OBJEXT)
 	-rm -f Titania/X3D/Tools/Geometry3D/IndexedFaceSet/*.lo
 	-rm -f Titania/X3D/Tools/Geometry3D/Sphere/*.$(OBJEXT)
 	-rm -f Titania/X3D/Tools/Geometry3D/Sphere/*.lo
+	-rm -f Titania/X3D/Tools/Geospatial/*.$(OBJEXT)
+	-rm -f Titania/X3D/Tools/Geospatial/*.lo
 	-rm -f Titania/X3D/Tools/Grids/*.$(OBJEXT)
 	-rm -f Titania/X3D/Tools/Grids/*.lo
 	-rm -f Titania/X3D/Tools/Grouping/*.$(OBJEXT)
@@ -4357,6 +4445,8 @@ mostlyclean-compile:
 	-rm -f Titania/X3D/Tools/Rendering/*.lo
 	-rm -f Titania/X3D/Tools/Sound/*.$(OBJEXT)
 	-rm -f Titania/X3D/Tools/Sound/*.lo
+	-rm -f Titania/X3D/Tools/Text/*.$(OBJEXT)
+	-rm -f Titania/X3D/Tools/Text/*.lo
 	-rm -f Titania/X3D/Types/*.$(OBJEXT)
 	-rm -f Titania/X3D/Types/*.lo
 
@@ -4963,6 +5053,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/Tool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/X3DBaseTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/X3DToolObject.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR)/BoxTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR)/ConeTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR)/CylinderTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR)/ElevationGridTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR)/ExtrusionTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR)/IndexedFaceSetTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR)/X3DIndexedFaceSetBrushObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR)/X3DIndexedFaceSetCutObject.Plo@am__quote@
@@ -4974,6 +5069,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR)/X3DIndexedFaceSetTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR)/X3DIndexedFaceSetTransformObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR)/SphereTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geospatial/$(DEPDIR)/GeoElevationGridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/AngleTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/GridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/X3DGridTool.Plo@am__quote@
@@ -4993,6 +5089,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/X3DGeometryNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/X3DNormalNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Sound/$(DEPDIR)/SoundTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Text/$(DEPDIR)/TextTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Types/$(DEPDIR)/Image.Plo@am__quote@
 
 .c.o:
@@ -5133,8 +5230,14 @@ clean-libtool:
 	-rm -rf Titania/X3D/Routing/.libs Titania/X3D/Routing/_libs
 	-rm -rf Titania/X3D/Thread/.libs Titania/X3D/Thread/_libs
 	-rm -rf Titania/X3D/Tools/Core/.libs Titania/X3D/Tools/Core/_libs
+	-rm -rf Titania/X3D/Tools/Geometry3D/Box/.libs Titania/X3D/Tools/Geometry3D/Box/_libs
+	-rm -rf Titania/X3D/Tools/Geometry3D/Cone/.libs Titania/X3D/Tools/Geometry3D/Cone/_libs
+	-rm -rf Titania/X3D/Tools/Geometry3D/Cylinder/.libs Titania/X3D/Tools/Geometry3D/Cylinder/_libs
+	-rm -rf Titania/X3D/Tools/Geometry3D/ElevationGrid/.libs Titania/X3D/Tools/Geometry3D/ElevationGrid/_libs
+	-rm -rf Titania/X3D/Tools/Geometry3D/Extrusion/.libs Titania/X3D/Tools/Geometry3D/Extrusion/_libs
 	-rm -rf Titania/X3D/Tools/Geometry3D/IndexedFaceSet/.libs Titania/X3D/Tools/Geometry3D/IndexedFaceSet/_libs
 	-rm -rf Titania/X3D/Tools/Geometry3D/Sphere/.libs Titania/X3D/Tools/Geometry3D/Sphere/_libs
+	-rm -rf Titania/X3D/Tools/Geospatial/.libs Titania/X3D/Tools/Geospatial/_libs
 	-rm -rf Titania/X3D/Tools/Grids/.libs Titania/X3D/Tools/Grids/_libs
 	-rm -rf Titania/X3D/Tools/Grouping/.libs Titania/X3D/Tools/Grouping/_libs
 	-rm -rf Titania/X3D/Tools/Layering/.libs Titania/X3D/Tools/Layering/_libs
@@ -5144,6 +5247,7 @@ clean-libtool:
 	-rm -rf Titania/X3D/Tools/PointingDeviceSensor/.libs Titania/X3D/Tools/PointingDeviceSensor/_libs
 	-rm -rf Titania/X3D/Tools/Rendering/.libs Titania/X3D/Tools/Rendering/_libs
 	-rm -rf Titania/X3D/Tools/Sound/.libs Titania/X3D/Tools/Sound/_libs
+	-rm -rf Titania/X3D/Tools/Text/.libs Titania/X3D/Tools/Text/_libs
 	-rm -rf Titania/X3D/Types/.libs Titania/X3D/Types/_libs
 
 ID: $(am__tagged_files)
@@ -5431,10 +5535,22 @@ distclean-generic:
 	-rm -f Titania/X3D/Thread/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Core/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Core/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geometry3D/Box/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geometry3D/Cone/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geometry3D/Cylinder/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geometry3D/ElevationGrid/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geometry3D/Extrusion/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Geometry3D/Sphere/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geospatial/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Geospatial/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Grids/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Grids/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Grouping/$(DEPDIR)/$(am__dirstamp)
@@ -5453,6 +5569,8 @@ distclean-generic:
 	-rm -f Titania/X3D/Tools/Rendering/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Sound/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Tools/Sound/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Text/$(DEPDIR)/$(am__dirstamp)
+	-rm -f Titania/X3D/Tools/Text/$(am__dirstamp)
 	-rm -f Titania/X3D/Types/$(DEPDIR)/$(am__dirstamp)
 	-rm -f Titania/X3D/Types/$(am__dirstamp)
 
@@ -5465,7 +5583,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Autodesk/$(DEPDIR) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR) Titania/X3D/Parser/PDF/$(DEPDIR) Titania/X3D/Parser/SVG/$(DEPDIR) Titania/X3D/Parser/VRML1/$(DEPDIR) Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Autodesk/$(DEPDIR) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR) Titania/X3D/Parser/PDF/$(DEPDIR) Titania/X3D/Parser/SVG/$(DEPDIR) Titania/X3D/Parser/VRML1/$(DEPDIR) Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR) Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR) Titania/X3D/Tools/Geospatial/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Tools/Text/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -5512,7 +5630,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Autodesk/$(DEPDIR) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR) Titania/X3D/Parser/PDF/$(DEPDIR) Titania/X3D/Parser/SVG/$(DEPDIR) Titania/X3D/Parser/VRML1/$(DEPDIR) Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
+	-rm -rf Titania/$(DEPDIR) Titania/X3D/Base/$(DEPDIR) Titania/X3D/Basic/$(DEPDIR) Titania/X3D/Browser/$(DEPDIR) Titania/X3D/Browser/Core/$(DEPDIR) Titania/X3D/Browser/CubeMapTexturing/$(DEPDIR) Titania/X3D/Browser/Geometry2D/$(DEPDIR) Titania/X3D/Browser/Geometry3D/$(DEPDIR) Titania/X3D/Browser/Geospatial/$(DEPDIR) Titania/X3D/Browser/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Layering/$(DEPDIR) Titania/X3D/Browser/Lighting/$(DEPDIR) Titania/X3D/Browser/Navigation/$(DEPDIR) Titania/X3D/Browser/Networking/$(DEPDIR) Titania/X3D/Browser/ParticleSystems/$(DEPDIR) Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Browser/Rendering/$(DEPDIR) Titania/X3D/Browser/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Browser/Scripting/$(DEPDIR) Titania/X3D/Browser/Shaders/$(DEPDIR) Titania/X3D/Browser/Shape/$(DEPDIR) Titania/X3D/Browser/Sound/$(DEPDIR) Titania/X3D/Browser/Text/$(DEPDIR) Titania/X3D/Browser/Texturing/$(DEPDIR) Titania/X3D/Browser/Texturing3D/$(DEPDIR) Titania/X3D/Browser/Tools/$(DEPDIR) Titania/X3D/Components/CADGeometry/$(DEPDIR) Titania/X3D/Components/Core/$(DEPDIR) Titania/X3D/Components/CubeMapTexturing/$(DEPDIR) Titania/X3D/Components/DIS/$(DEPDIR) Titania/X3D/Components/EnvironmentalEffects/$(DEPDIR) Titania/X3D/Components/EnvironmentalSensor/$(DEPDIR) Titania/X3D/Components/EventUtilities/$(DEPDIR) Titania/X3D/Components/Followers/$(DEPDIR) Titania/X3D/Components/Geometry2D/$(DEPDIR) Titania/X3D/Components/Geometry3D/$(DEPDIR) Titania/X3D/Components/Geospatial/$(DEPDIR) Titania/X3D/Components/Grouping/$(DEPDIR) Titania/X3D/Components/H-Anim/$(DEPDIR) Titania/X3D/Components/Interpolation/$(DEPDIR) Titania/X3D/Components/KeyDeviceSensor/$(DEPDIR) Titania/X3D/Components/Layering/$(DEPDIR) Titania/X3D/Components/Layout/$(DEPDIR) Titania/X3D/Components/Lighting/$(DEPDIR) Titania/X3D/Components/NURBS/$(DEPDIR) Titania/X3D/Components/Navigation/$(DEPDIR) Titania/X3D/Components/Networking/$(DEPDIR) Titania/X3D/Components/ParticleSystems/$(DEPDIR) Titania/X3D/Components/Picking/$(DEPDIR) Titania/X3D/Components/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Components/Rendering/$(DEPDIR) Titania/X3D/Components/RigidBodyPhysics/$(DEPDIR) Titania/X3D/Components/Scripting/$(DEPDIR) Titania/X3D/Components/Shaders/$(DEPDIR) Titania/X3D/Components/Shape/$(DEPDIR) Titania/X3D/Components/Sound/$(DEPDIR) Titania/X3D/Components/Text/$(DEPDIR) Titania/X3D/Components/Texturing/$(DEPDIR) Titania/X3D/Components/Texturing3D/$(DEPDIR) Titania/X3D/Components/Time/$(DEPDIR) Titania/X3D/Configuration/$(DEPDIR) Titania/X3D/Editing/$(DEPDIR) Titania/X3D/Editing/Selection/$(DEPDIR) Titania/X3D/Editing/Undo/$(DEPDIR) Titania/X3D/Execution/$(DEPDIR) Titania/X3D/Fields/$(DEPDIR) Titania/X3D/InputOutput/$(DEPDIR) Titania/X3D/JavaScript/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/$(DEPDIR) Titania/X3D/JavaScript/PeaseBlossom/Fields/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/$(DEPDIR) Titania/X3D/JavaScript/SpiderMonkey/Fields/$(DEPDIR) Titania/X3D/Parser/$(DEPDIR) Titania/X3D/Parser/Autodesk/$(DEPDIR) Titania/X3D/Parser/Autodesk/lib3ds/$(DEPDIR) Titania/X3D/Parser/PDF/$(DEPDIR) Titania/X3D/Parser/SVG/$(DEPDIR) Titania/X3D/Parser/VRML1/$(DEPDIR) Titania/X3D/Parser/VRML1/Nodes/$(DEPDIR) Titania/X3D/Parser/Wavefront/$(DEPDIR) Titania/X3D/Prototype/$(DEPDIR) Titania/X3D/Rendering/$(DEPDIR) Titania/X3D/Routing/$(DEPDIR) Titania/X3D/Thread/$(DEPDIR) Titania/X3D/Tools/Core/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cone/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Cylinder/$(DEPDIR) Titania/X3D/Tools/Geometry3D/ElevationGrid/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Extrusion/$(DEPDIR) Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR) Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR) Titania/X3D/Tools/Geospatial/$(DEPDIR) Titania/X3D/Tools/Grids/$(DEPDIR) Titania/X3D/Tools/Grouping/$(DEPDIR) Titania/X3D/Tools/Layering/$(DEPDIR) Titania/X3D/Tools/Lighting/$(DEPDIR) Titania/X3D/Tools/Navigation/$(DEPDIR) Titania/X3D/Tools/Picking/$(DEPDIR) Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR) Titania/X3D/Tools/Rendering/$(DEPDIR) Titania/X3D/Tools/Sound/$(DEPDIR) Titania/X3D/Tools/Text/$(DEPDIR) Titania/X3D/Types/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

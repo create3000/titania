@@ -60,7 +60,7 @@ namespace X3D {
 
 class X3DIndexedFaceSetTool :
 	virtual public IndexedFaceSet,
-	virtual public X3DComposedGeometryNodeTool
+	public X3DComposedGeometryNodeTool
 {
 public:
 
