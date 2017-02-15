@@ -418,7 +418,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="adjustment">Arc2DStartAngleAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">6</property>
                                   </object>
                                   <packing>
@@ -431,7 +431,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="adjustment">Arc2DEndAngleAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">6</property>
                                   </object>
                                   <packing>
@@ -457,7 +457,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">Arc2DRadiusAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -513,7 +513,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">4</property>
                                     <property name="adjustment">Arc2DMinAngleAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">6</property>
                                   </object>
                                   <packing>
@@ -553,7 +553,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">ArcClose2DRadiusAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -567,7 +567,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000000</property>
                                     <property name="adjustment">ArcClose2DEndAngleAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">6</property>
                                   </object>
                                   <packing>
@@ -581,7 +581,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000000</property>
                                     <property name="adjustment">ArcClose2DStartAngleAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">6</property>
                                   </object>
                                   <packing>
@@ -699,7 +699,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">4,000</property>
                                     <property name="adjustment">ArcClose2DMinAngleAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">6</property>
                                     <property name="value">4</property>
                                   </object>
@@ -753,7 +753,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000000</property>
                                     <property name="adjustment">Circle2DRadiusAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -809,7 +809,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">4</property>
                                     <property name="adjustment">Circle2DDimensionAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">2</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -873,7 +873,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000000</property>
                                     <property name="adjustment">Disk2DInnerRadiusAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -887,7 +887,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000000</property>
                                     <property name="adjustment">Disk2DOuterRadiusAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -955,7 +955,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">4</property>
                                     <property name="adjustment">Disk2DDimensionAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">2</property>
                                     <property name="value">4</property>
                                   </object>
                                   <packing>
@@ -1016,7 +1016,7 @@
                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">Rectangle2DSizeXAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">3</property>
                                         <property name="numeric">True</property>
                                       </object>
@@ -1033,7 +1033,7 @@
                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">Rectangle2DSizeYAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">3</property>
                                         <property name="numeric">True</property>
                                       </object>
@@ -1125,7 +1125,7 @@
                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">BoxSizeXAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">3</property>
                                         <property name="numeric">True</property>
                                       </object>
@@ -1142,7 +1142,7 @@
                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">BoxSizeYAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">3</property>
                                         <property name="numeric">True</property>
                                       </object>
@@ -1159,7 +1159,7 @@
                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">BoxSizeZAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">3</property>
                                         <property name="numeric">True</property>
                                       </object>
@@ -1255,7 +1255,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">ConeBottomRadiusAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -1269,7 +1269,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">ConeHeightAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -1374,7 +1374,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">4</property>
                                     <property name="adjustment">ConeXDimensionAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">2</property>
                                     <property name="value">4</property>
                                   </object>
                                   <packing>
@@ -1472,7 +1472,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">CylinderRadiusAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -1486,7 +1486,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">CylinderHeightAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -1584,7 +1584,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">3</property>
                                     <property name="adjustment">CylinderXDimensionAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">2</property>
                                     <property name="value">3</property>
                                   </object>
                                   <packing>
@@ -1655,7 +1655,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">4</property>
                                         <property name="adjustment">ElevationGridXDimensionAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">2</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -1668,7 +1668,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">3</property>
                                         <property name="adjustment">ElevationGridZDimensionAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">2</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -1693,7 +1693,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">ElevationGridXSpacingAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">3</property>
                                       </object>
                                       <packing>
@@ -1719,7 +1719,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">ElevationGridZSpacingAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">3</property>
                                       </object>
                                       <packing>
@@ -1786,7 +1786,7 @@
                                         <property name="hexpand">False</property>
                                         <property name="text" translatable="yes">4</property>
                                         <property name="adjustment">ElevationGridHeightMapMinHeightAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">3</property>
                                       </object>
                                       <packing>
@@ -1814,7 +1814,7 @@
                                         <property name="hexpand">False</property>
                                         <property name="text" translatable="yes">100,000</property>
                                         <property name="adjustment">ElevationGridHeightMapMaxHeightAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">3</property>
                                         <property name="value">100</property>
                                       </object>
@@ -2068,7 +2068,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">SphereRadiusAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -2106,7 +2106,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">SphereXDimensionAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">2</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -2119,7 +2119,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0</property>
                                     <property name="adjustment">SphereYDimensionAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">2</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -2220,7 +2220,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">4</property>
                                         <property name="adjustment">GeoElevationGridXDimensionAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">2</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2233,7 +2233,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">3</property>
                                         <property name="adjustment">GeoElevationGridZDimensionAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">2</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -2258,7 +2258,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">GeoElevationGridXSpacingAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">9</property>
                                       </object>
                                       <packing>
@@ -2284,7 +2284,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">GeoElevationGridZSpacingAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">9</property>
                                       </object>
                                       <packing>
@@ -2310,7 +2310,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">GeoElevationGridYScaleAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">3</property>
                                       </object>
                                       <packing>
@@ -2601,7 +2601,7 @@
                                         <property name="hexpand">False</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">GeoElevationGridHeightMapMinHeightAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">9</property>
                                       </object>
                                       <packing>
@@ -2629,7 +2629,7 @@
                                         <property name="hexpand">False</property>
                                         <property name="text" translatable="yes">100,000</property>
                                         <property name="adjustment">GeoElevationGridHeightMapMaxHeightAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
                                         <property name="digits">9</property>
                                         <property name="value">100</property>
                                       </object>
@@ -2918,7 +2918,7 @@
                                     <property name="text" translatable="yes">0,000000</property>
                                     <property name="input_purpose">number</property>
                                     <property name="adjustment">CreaseAngleAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">6</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -3627,7 +3627,7 @@
                             <property name="text" translatable="yes">1,000</property>
                             <property name="input_purpose">number</property>
                             <property name="adjustment">NormalLengthAdjustment</property>
-                            <property name="climb_rate">0.01</property>
+                            <property name="climb_rate">0.32000000000000001</property>
                             <property name="digits">3</property>
                             <property name="numeric">True</property>
                             <property name="value">1</property>

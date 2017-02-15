@@ -311,7 +311,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="tooltip_text" translatable="yes">Sky Angle</property>
                                     <property name="adjustment">SkyAngleAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32</property>
                                     <property name="digits">6</property>
                                   </object>
                                   <packing>
@@ -558,7 +558,7 @@
                                     <property name="tooltip_text" translatable="yes">Sky Angle</property>
                                     <property name="text" translatable="yes">0,000000</property>
                                     <property name="adjustment">GroundAngleAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32</property>
                                     <property name="digits">6</property>
                                   </object>
                                   <packing>

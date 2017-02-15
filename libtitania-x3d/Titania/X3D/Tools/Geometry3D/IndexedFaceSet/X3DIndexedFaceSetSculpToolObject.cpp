@@ -278,7 +278,7 @@ X3DIndexedFaceSetSculpToolObject::getRoughtVector (const Vector3d & hitNormal,
 	static std::default_random_engine
 	random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
 
-	const auto height = std::abs (getSculpHeight (hitNormal, hitPoint, point));
+	const auto height = getSculpHeight (hitNormal, hitPoint, point);
 
 	return uniform_real_distribution (random_engine) * height * hitNormal;
 }

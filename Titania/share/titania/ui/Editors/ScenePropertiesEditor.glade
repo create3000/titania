@@ -142,7 +142,7 @@
                             <property name="halign">start</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">UnitMassAdjustment</property>
-                            <property name="climb_rate">0.01</property>
+                            <property name="climb_rate">0.32</property>
                             <property name="digits">20</property>
                             <property name="numeric">True</property>
                           </object>
@@ -159,7 +159,7 @@
                             <property name="halign">start</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">UnitLengthAdjustment</property>
-                            <property name="climb_rate">0.01</property>
+                            <property name="climb_rate">0.32</property>
                             <property name="digits">20</property>
                             <property name="numeric">True</property>
                           </object>
@@ -176,7 +176,7 @@
                             <property name="halign">start</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">UnitForceAdjustment</property>
-                            <property name="climb_rate">0.01</property>
+                            <property name="climb_rate">0.32</property>
                             <property name="digits">20</property>
                             <property name="numeric">True</property>
                           </object>
@@ -193,7 +193,7 @@
                             <property name="halign">start</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">UnitAngleAdjustment</property>
-                            <property name="climb_rate">0.01</property>
+                            <property name="climb_rate">0.32</property>
                             <property name="digits">20</property>
                             <property name="numeric">True</property>
                           </object>

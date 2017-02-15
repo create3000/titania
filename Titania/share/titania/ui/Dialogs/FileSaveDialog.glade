@@ -448,7 +448,7 @@
                     <property name="hexpand">True</property>
                     <property name="text" translatable="yes">1024</property>
                     <property name="adjustment">ImageWidthAdjustment</property>
-                    <property name="climb_rate">1</property>
+                    <property name="climb_rate">2</property>
                     <property name="numeric">True</property>
                     <property name="value">1024</property>
                   </object>
@@ -464,7 +464,7 @@
                     <property name="halign">start</property>
                     <property name="text" translatable="yes">512</property>
                     <property name="adjustment">ImageHeightAdjustment</property>
-                    <property name="climb_rate">1</property>
+                    <property name="climb_rate">2</property>
                     <property name="numeric">True</property>
                     <property name="value">576</property>
                   </object>
@@ -508,7 +508,7 @@
                         <property name="tooltip_text" translatable="yes">PNG/JPEG/MIFF compression level</property>
                         <property name="text" translatable="yes">75</property>
                         <property name="adjustment">ImageCompressionAdjustment</property>
-                        <property name="climb_rate">0.01</property>
+                        <property name="climb_rate">0.32</property>
                         <property name="numeric">True</property>
                         <property name="value">75</property>
                       </object>

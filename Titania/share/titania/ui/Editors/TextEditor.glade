@@ -228,7 +228,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">TextMaxExtentAdjustment</property>
-                                <property name="climb_rate">0.01</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                               </object>
@@ -299,7 +299,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">1,000</property>
                                 <property name="adjustment">TextCharSpacingAdjustment</property>
-                                <property name="climb_rate">0.01</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                               </object>
@@ -605,7 +605,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">1,000</property>
                                 <property name="adjustment">FontStyleSizeAdjustment</property>
-                                <property name="climb_rate">0.01</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                                 <property name="value">1</property>
@@ -622,7 +622,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">1,000</property>
                                 <property name="adjustment">FontStyleSpacingAdjustment</property>
-                                <property name="climb_rate">0.01</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                                 <property name="value">1</property>
@@ -918,7 +918,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">1,000</property>
                                 <property name="adjustment">FontStylePointSizeAdjustment</property>
-                                <property name="climb_rate">0.01</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                                 <property name="value">1</property>
@@ -960,7 +960,6 @@
                                 <property name="can_focus">True</property>
                                 <property name="text" translatable="yes">4</property>
                                 <property name="adjustment">FontStyleBezierDimensionAdjustment</property>
-                                <property name="climb_rate">0.01</property>
                                 <property name="value">4</property>
                               </object>
                               <packing>

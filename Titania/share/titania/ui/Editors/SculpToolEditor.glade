@@ -380,7 +380,7 @@
                                     <property name="halign">start</property>
                                     <property name="hexpand">True</property>
                                     <property name="adjustment">BrushSpacingAdjustment</property>
-                                    <property name="climb_rate">0.01</property>
+                                    <property name="climb_rate">0.32</property>
                                     <property name="digits">3</property>
                                   </object>
                                   <packing>
@@ -399,7 +399,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="adjustment">BrushHeightAdjustment</property>
-                                        <property name="climb_rate">0.0099999997764825821</property>
+                                        <property name="climb_rate">0.32</property>
                                         <property name="digits">3</property>
                                       </object>
                                       <packing>
@@ -442,7 +442,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="halign">start</property>
                                         <property name="adjustment">BrushRadiusAdjustment</property>
-                                        <property name="climb_rate">0.01</property>
+                                        <property name="climb_rate">0.32</property>
                                         <property name="digits">3</property>
                                         <property name="value">1</property>
                                       </object>

@@ -635,7 +635,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="adjustment">RightMarginAdjustment</property>
-                                    <property name="climb_rate">0.0099999997764825821</property>
+                                    <property name="climb_rate">0.32</property>
                                     <property name="numeric">True</property>
                                     <property name="value">80</property>
                                     <signal name="value-changed" handler="on_right_margin_changed" swapped="no"/>
