@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -69,11 +69,11 @@ const std::string   SceneFuture::containerField = "future";
 SceneFuture::SceneFuture (X3DExecutionContext* const executionContext, const MFString & url, const SceneFutureCallback & callback) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DFuture (),
-	  callback (callback),
-	    loader (nullptr, executionContext -> getWorldURL ()),
-	     scene (),
-	  urlError (),
-	    future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
+	   callback (callback),
+	     loader (nullptr, executionContext -> getWorldURL ()),
+	      scene (),
+	   urlError (),
+	     future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))
 {
 	addChildObjects (scene);
 
@@ -87,7 +87,7 @@ SceneFuture::create (X3DExecutionContext* const executionContext) const
 	throw Error <NOT_SUPPORTED> ("SceneFuture::create");
 }
 
-std::future <X3DScenePtr> 
+std::future <X3DScenePtr>
 SceneFuture::getFuture (const MFString & url)
 {
 	return std::async (std::launch::async, std::mem_fn (&SceneFuture::loadAsync), this, url);
@@ -137,7 +137,7 @@ SceneFuture::wait ()
 	}
 	catch (const InterruptThreadException &)
 	{
-	   // Interrupt
+		// Interrupt
 	}
 	catch (const std::exception & error)
 	{
@@ -155,27 +155,27 @@ SceneFuture::loadAsync (const MFString & url)
 	try
 	{
 		checkForInterrupt ();
-	
+
 		const auto mutex = getBrowser () -> getDownloadMutex ();
-	
+
 		checkForInterrupt ();
-	
+
 		std::lock_guard <std::mutex> lock (*mutex);
-	
+
 		checkForInterrupt ();
-	
+
 		const auto scene = getBrowser () -> createScene (false);
-	
+
 		checkForInterrupt ();
-	
+
 		loader .parseIntoScene (scene, url);
-			
+
 		checkForInterrupt ();
-	
+
 		getBrowser () -> println ("Done loading scene '", loader .getWorldURL (), "'.");
-			
+
 		checkForInterrupt ();
-	
+
 		return scene;
 	}
 	catch (const InterruptThreadException &)
@@ -198,20 +198,20 @@ SceneFuture::set_scene (const bool addEvent)
 	try
 	{
 		checkForInterrupt ();
-	
+
 		if (addEvent)
 			getBrowser () -> addEvent ();
-	
+
 		if (not future .valid ())
 			return;
-	
+
 		const auto status = future .wait_for (std::chrono::milliseconds (0));
-	
+
 		if (status not_eq std::future_status::ready)
 			return;
-	
+
 		getBrowser () -> prepareEvents () .removeInterest (&SceneFuture::set_scene, this);
-	
+
 		scene = future .get ();
 
 		scene -> getExternProtosLoadCount () .addInterest (&SceneFuture::set_loadCount, this);
@@ -220,7 +220,7 @@ SceneFuture::set_scene (const bool addEvent)
 	}
 	catch (const InterruptThreadException &)
 	{
-	   // Interrupt
+		// Interrupt
 	}
 	catch (const std::exception & error)
 	{
@@ -228,7 +228,7 @@ SceneFuture::set_scene (const bool addEvent)
 
 		callback (nullptr);
 
-		dispose ();;
+		dispose ();
 	}
 }
 
@@ -240,17 +240,17 @@ SceneFuture::set_loadCount (const int32_t loadCount)
 		checkForInterrupt ();
 
 		if (loadCount)
-		   return;
+			return;
 
 		scene -> getExternProtosLoadCount () .removeInterest (&SceneFuture::set_loadCount, this);
-	
+
 		callback (std::move (scene));
 
 		dispose ();
 	}
 	catch (const InterruptThreadException &)
 	{
-	   // Interrupt
+		// Interrupt
 	}
 }
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -193,26 +193,26 @@ TextureFuture::prepareEvents ()
 	try
 	{
 		checkForInterrupt ();
-	
+
 		getBrowser () -> addEvent ();
-	
+
 		if (not future .valid ())
-		   return;
-	
+			return;
+
 		const auto status = future .wait_for (std::chrono::milliseconds (0));
-	
+
 		if (status not_eq std::future_status::ready)
-		   return;
-		
+			return;
+
 		getBrowser () -> prepareEvents () .removeInterest (&TextureFuture::prepareEvents, this);
-	
+
 		callback (future .get ());
 
 		dispose ();
 	}
 	catch (const InterruptThreadException &)
 	{
-	   // Interrupt
+		// Interrupt
 	}
 	catch (const std::exception &)
 	{

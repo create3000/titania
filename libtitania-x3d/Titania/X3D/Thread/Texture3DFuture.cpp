@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -64,11 +64,11 @@ Texture3DFuture::Texture3DFuture (X3DExecutionContext* const executionContext,
                                   const size_t minTextureSize, const size_t maxTextureSize,
                                   const Callback & callback) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	 X3DFuture (),
-	   browser (executionContext -> getBrowser ()),
-	  callback (callback),
-	    loader (nullptr, executionContext -> getWorldURL ()),
-	    future (getFuture (url, minTextureSize, maxTextureSize))
+	  X3DFuture (),
+	    browser (executionContext -> getBrowser ()),
+	   callback (callback),
+	     loader (nullptr, executionContext -> getWorldURL ()),
+	     future (getFuture (url, minTextureSize, maxTextureSize))
 {
 	getBrowser () -> prepareEvents () .addInterest (&Texture3DFuture::prepareEvents, this);
 	getBrowser () -> addEvent ();
@@ -175,26 +175,26 @@ Texture3DFuture::prepareEvents ()
 	try
 	{
 		checkForInterrupt ();
-	
+
 		getBrowser () -> addEvent ();
-	
+
 		if (not future .valid ())
-		   return;
-	
+			return;
+
 		const auto status = future .wait_for (std::chrono::milliseconds (0));
-	
+
 		if (status not_eq std::future_status::ready)
-		   return;
-	
+			return;
+
 		getBrowser () -> prepareEvents () .removeInterest (&Texture3DFuture::prepareEvents, this);
-	
+
 		callback (future .get ());
 
 		dispose ();
 	}
 	catch (const InterruptThreadException &)
 	{
-	   // Interrupt
+		// Interrupt
 	}
 	catch (const std::exception &)
 	{

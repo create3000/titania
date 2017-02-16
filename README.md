@@ -71,6 +71,11 @@ value depending on the number of processors of your computer.  It can take 20 up
 whole project.
 
 
+Build Software
+--------------------------------------
+Titania is build with [MonoDevelop](http://www.monodevelop.com/)
+
+
 Authors
 --------------------------------------
 All authors contributed to this project can be found in the [list of authors](AUTHORS.md).
