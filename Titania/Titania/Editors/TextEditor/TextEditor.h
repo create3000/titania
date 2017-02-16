@@ -70,7 +70,7 @@ public:
 
 	///  @name Construction
 
-	TextEditor (X3DBrowserWindow* const);
+	TextEditor (X3DBrowserWindow* const browserWindow);
 	
 	virtual
 	~TextEditor () final override;

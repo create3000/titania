@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	OutlineEditor (X3DBrowserWindow* const);
+	OutlineEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Member access
 

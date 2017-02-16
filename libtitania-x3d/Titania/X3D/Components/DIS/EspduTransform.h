@@ -62,11 +62,11 @@ class EspduTransform :
 {
 public:
 
-	EspduTransform (X3DExecutionContext* const);
+	EspduTransform (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 

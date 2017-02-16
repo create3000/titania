@@ -80,7 +80,7 @@ public:
 
 	///  @name Construction
 
-	ScriptEditor (X3DBrowserWindow* const);
+	ScriptEditor (X3DBrowserWindow* const browserWindow);
 
 	/// @name Member access
 

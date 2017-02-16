@@ -170,7 +170,7 @@ private:
 
 	///  @name Members
 
-	std::map <std::string, std::function <X3DUserInterface* (X3DBrowserWindow* const)>>  dialogs;
+	std::map <std::string, std::function <X3DUserInterface* (X3DBrowserWindow* const browserWindow)>>  dialogs;
 
 };
 

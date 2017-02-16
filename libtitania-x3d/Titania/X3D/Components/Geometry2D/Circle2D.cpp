@@ -91,9 +91,11 @@ Circle2D::create (X3DExecutionContext* const executionContext) const
 void
 Circle2D::initialize ()
 {
+	using E = void (X3DBaseNode::*) ();
+
 	X3DLineGeometryNode::initialize ();
 
-	getBrowser () -> getCircle2DOptions () .addInterest (&Circle2D::update, this);
+	getBrowser () -> getCircle2DOptions () .addInterest ((E) &Circle2D::addEvent, this);
 }
 
 void
@@ -101,13 +103,15 @@ Circle2D::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	using E = void (X3DBaseNode::*) ();
+
 	if (isInitialized ())
-		getBrowser () -> getCircle2DOptions () .removeInterest (&Circle2D::update, this);
+		getBrowser () -> getCircle2DOptions () .removeInterest ((E) &Circle2D::addEvent, this);
 
 	X3DLineGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getCircle2DOptions () .addInterest (&Circle2D::update, this);
+		getBrowser () -> getCircle2DOptions () .addInterest ((E) &Circle2D::addEvent, this);
 }
 
 const X3DPtr <ComposedShader> &

@@ -92,7 +92,7 @@ public:
 
 	///  @name Construction
 
-	GeometryPropertiesEditor (X3DBrowserWindow* const);
+	GeometryPropertiesEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

@@ -64,11 +64,11 @@ public:
 
 	///  @name Construction
 
-	TransformMatrix3D (X3DExecutionContext* const);
+	TransformMatrix3D (X3DExecutionContext* const executionContext);
 
 	virtual
 	TransformMatrix3D*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 

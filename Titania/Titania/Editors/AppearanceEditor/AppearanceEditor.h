@@ -73,7 +73,7 @@ public:
 
 	///  @name Construction
 
-	AppearanceEditor (X3DBrowserWindow* const);
+	AppearanceEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

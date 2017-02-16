@@ -65,13 +65,13 @@ public:
 
 	///  @name Construction
 
-	FieldSet (X3DExecutionContext* const);
+	FieldSet (X3DExecutionContext* const executionContext);
 
 	FieldSet (X3DExecutionContext* const, const FieldDefinitionArray &);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 

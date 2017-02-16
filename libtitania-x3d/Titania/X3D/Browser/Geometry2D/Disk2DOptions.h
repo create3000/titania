@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	Disk2DOptions (X3DExecutionContext* const);
+	Disk2DOptions (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -107,7 +107,7 @@ private:
 
 	virtual
 	Disk2DOptions*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Operations
 

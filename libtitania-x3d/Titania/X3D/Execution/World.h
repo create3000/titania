@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	World (X3DExecutionContext* const);
+	World (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -124,7 +124,7 @@ private:
 
 	virtual
 	World*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	virtual
 	void

@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	PrototypeEditor (X3DBrowserWindow* const);
+	PrototypeEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

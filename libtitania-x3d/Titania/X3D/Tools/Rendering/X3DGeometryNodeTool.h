@@ -88,7 +88,7 @@ public:
 	///  @name Member access
 
 	void
-	setExecutionContext (X3DExecutionContext* const)
+	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
@@ -159,20 +159,20 @@ public:
 	intersects (Line3d,
 	            const ClipPlaneContainerArray & clipPlanes,
 	            Matrix4d modelViewMatrix,
-	            std::vector <IntersectionPtr> &) const final override;
+	            std::vector <IntersectionPtr> &) const override;
 
 	virtual
 	bool
 	intersects (Box3d box,
 	            const ClipPlaneContainerArray & clipPlanes,
-	            Matrix4d modelViewMatrix) const final override;
+	            Matrix4d modelViewMatrix) const override;
 
 	virtual
 	std::vector <Vector3d>
 	intersects (X3DRenderObject* const renderObject,
 	            const std::shared_ptr <FrameBuffer> & frameBuffer,
 	            const std::shared_ptr <FrameBuffer> & depthBuffer,
-	            std::vector <IntersectionPtr> & intersections) final override;
+	            std::vector <IntersectionPtr> & intersections) override;
 
 	virtual
 	void
@@ -188,7 +188,7 @@ public:
 
 	virtual
 	void
-	depth (const X3DShapeContainer* const context) final override
+	depth (const X3DShapeContainer* const context) override
 	{ getNode <X3DGeometryNode> () -> depth (context); }
 
 	virtual

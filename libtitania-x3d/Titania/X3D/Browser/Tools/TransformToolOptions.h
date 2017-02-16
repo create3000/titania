@@ -61,7 +61,7 @@ class TransformToolOptions :
 {
 public:
 
-	TransformToolOptions (X3DExecutionContext* const);
+	TransformToolOptions (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -117,7 +117,7 @@ private:
 
 	virtual
 	TransformToolOptions*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Static members
 

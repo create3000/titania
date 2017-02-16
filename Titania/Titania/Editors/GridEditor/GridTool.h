@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	GridTool (X3DBrowserWindow* const);
+	GridTool (X3DBrowserWindow* const browserWindow);
 
 	/// @name Members
 

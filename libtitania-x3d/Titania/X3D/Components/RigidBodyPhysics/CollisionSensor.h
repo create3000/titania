@@ -63,11 +63,11 @@ class CollisionSensor :
 {
 public:
 
-	CollisionSensor (X3DExecutionContext* const);
+	CollisionSensor (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	virtual
 	void

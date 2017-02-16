@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	PeaseBlossom (X3DExecutionContext* const);
+	PeaseBlossom (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -127,7 +127,7 @@ private:
 
 	virtual
 	PeaseBlossom*
-	create (X3DExecutionContext* const)  const;
+	create (X3DExecutionContext* const executionContext)  const;
 
 	virtual
 	void

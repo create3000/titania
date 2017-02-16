@@ -57,17 +57,17 @@ namespace titania {
 namespace X3D {
 
 class Rectangle2D :
-	public X3DGeometryNode
+	virtual public X3DGeometryNode
 {
 public:
 
 	///  @name Construction
 
-	Rectangle2D (X3DExecutionContext* const);
+	Rectangle2D (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 
@@ -91,24 +91,28 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const)
+	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
 
 	///  @name Fields
 
+	virtual
 	SFVec2f &
 	size ()
 	{ return *fields .size; }
 
+	virtual
 	const SFVec2f &
 	size () const
 	{ return *fields .size; }
 
+	virtual
 	SFBool &
 	solid ()
 	{ return *fields .solid; }
 
+	virtual
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
@@ -119,16 +123,23 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	///  @name Operations
 

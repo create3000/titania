@@ -91,7 +91,7 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance (X3DExecutionContext* const) = 0;
+	createInstance (X3DExecutionContext* const executionContext) = 0;
 
 	virtual
 	void

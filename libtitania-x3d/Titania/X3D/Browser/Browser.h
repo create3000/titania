@@ -78,7 +78,7 @@ public:
 	Browser (const Browser &, const MFString &, const MFString &);
 
 	Browser*
-	create (X3DExecutionContext* const) const;
+	create (X3DExecutionContext* const executionContext) const;
 
 	///  @name Member access
 

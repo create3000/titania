@@ -59,6 +59,8 @@
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../../Tools/Geometry2D/Disk2DTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -98,9 +100,11 @@ Disk2D::create (X3DExecutionContext* const executionContext) const
 void
 Disk2D::initialize ()
 {
+	using E = void (X3DBaseNode::*) ();
+
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getDisk2DOptions () .addInterest (&Disk2D::update, this);
+	getBrowser () -> getDisk2DOptions () .addInterest ((E) &Disk2D::addEvent, this);
 }
 
 void
@@ -108,13 +112,15 @@ Disk2D::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	using E = void (X3DBaseNode::*) ();
+
 	if (isInitialized ())
-		getBrowser () -> getDisk2DOptions () .removeInterest (&Disk2D::update, this);
+		getBrowser () -> getDisk2DOptions () .removeInterest ((E) &Disk2D::addEvent, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getDisk2DOptions () .addInterest (&Disk2D::update, this);
+		getBrowser () -> getDisk2DOptions () .addInterest ((E) &Disk2D::addEvent, this);
 }
 
 const X3DPtr <ComposedShader> &
@@ -476,6 +482,12 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
+}
+
+void
+Disk2D::addTool ()
+{
+	X3DGeometryNode::addTool (new Disk2DTool (this));
 }
 
 } // X3D

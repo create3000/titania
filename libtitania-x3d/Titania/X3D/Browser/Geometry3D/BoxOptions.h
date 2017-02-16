@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	BoxOptions (X3DExecutionContext* const);
+	BoxOptions (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -96,7 +96,7 @@ public:
 
 	virtual
 	SFNode
-	toPrimitive (X3DExecutionContext* const) const
+	toPrimitive (X3DExecutionContext* const executionContext) const
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override;
 
@@ -107,7 +107,7 @@ private:
 
 	virtual
 	BoxOptions*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Operations
 

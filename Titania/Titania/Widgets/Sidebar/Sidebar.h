@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	Sidebar (X3DBrowserWindow* const);
+	Sidebar (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

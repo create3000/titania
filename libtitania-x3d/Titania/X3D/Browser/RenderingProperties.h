@@ -78,11 +78,11 @@ public:
 
 	///  @name Construction
 
-	RenderingProperties (X3DExecutionContext* const);
+	RenderingProperties (X3DExecutionContext* const executionContext);
 
 	virtual
 	RenderingProperties*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 

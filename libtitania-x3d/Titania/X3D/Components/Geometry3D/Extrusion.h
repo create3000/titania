@@ -72,11 +72,11 @@ public:
 
 	///  @name Construction
 
-	Extrusion (X3DExecutionContext* const);
+	Extrusion (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 
@@ -235,7 +235,7 @@ private:
 	getClosedSpine () const;
 
 	std::vector <Vector3d>
-	createPoints (const bool) const;
+	createPoints (const bool hasCaps) const;
 
 	std::vector <Matrix4d>
 	createRotations () const;
@@ -245,10 +245,10 @@ private:
 	build () final override;
 
 	void
-	tessellateCap (const Tessellator &,
-	               const std::vector <Vector3d> &,
-	               const Vector2f &,
-	               const float);
+	tessellateCap (const Tessellator & tessellator,
+	               const std::vector <Vector3d> & points,
+	               const Vector2f & min,
+	               const float capMax);
 
 	///  @name Static members
 

@@ -116,7 +116,7 @@ Browser::Browser (const Browser & other, const MFString & url, const MFString & 
 }
 
 Browser*
-Browser::create (X3DExecutionContext* const) const
+Browser::create (X3DExecutionContext* const executionContext) const
 {
 	return new Browser ({ }, { });
 }

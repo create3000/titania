@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 	
-	Console (X3DBrowserWindow* const);
+	Console (X3DBrowserWindow* const browserWindow);
 
 	///  @name Member access
 

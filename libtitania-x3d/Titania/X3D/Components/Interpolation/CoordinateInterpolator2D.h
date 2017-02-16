@@ -63,11 +63,11 @@ public:
 
 	///  @name Construction
 
-	CoordinateInterpolator2D (X3DExecutionContext* const);
+	CoordinateInterpolator2D (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 

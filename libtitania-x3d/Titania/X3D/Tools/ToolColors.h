@@ -92,7 +92,7 @@ static constexpr Color4f DARK_GREEN_RGBA  (0.175, 0.5, 0.35, 1);    // CADAssemb
 static constexpr Color4f DARK_YELLOW_RGBA (0.7, 0.7, 0.35, 1);      // CADLayer
 static constexpr Color4f BROWN_RGBA       (0.75, 0.525, 0.2625, 1); // CADFace
 static constexpr Color4f DARK_CYAN_RGBA   (0.35, 0.75, 0.75, 1);    // GeoLOD
-static constexpr Color4f DARK_BLUE_RGBA   (0.35, 0.35, 1, 1);       // 
+static constexpr Color4f DARK_BLUE_RGBA   (0.35, 0.35, 1, 1);       // Primitive Normals, Edges
 
 }
 

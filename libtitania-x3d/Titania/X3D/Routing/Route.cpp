@@ -80,7 +80,7 @@ Route::Route (X3DExecutionContext* const executionContext,
 }
 
 Route*
-Route::create (X3DExecutionContext* const) const
+Route::create (X3DExecutionContext* const executionContext) const
 {
 	throw Error <NOT_SUPPORTED> ("Fabricating routes is not supported.");
 }

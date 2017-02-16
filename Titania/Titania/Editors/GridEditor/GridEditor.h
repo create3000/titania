@@ -68,7 +68,7 @@ public:
 
 	///  @name Construction
 
-	GridEditor (X3DBrowserWindow* const);
+	GridEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

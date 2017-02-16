@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	BrowserSelection (X3DBrowserWindow* const);
+	BrowserSelection (X3DBrowserWindow* const browserWindow);
 
 	///  @name Member access
 

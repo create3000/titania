@@ -74,7 +74,7 @@ public:
 
 	///  @name Construction
 
-	ViewpointEditor (X3DBrowserWindow* const);
+	ViewpointEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

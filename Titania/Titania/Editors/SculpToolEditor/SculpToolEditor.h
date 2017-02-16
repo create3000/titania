@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	SculpToolEditor (X3DBrowserWindow* const);
+	SculpToolEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

@@ -202,6 +202,17 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 		const bool haveSelection = inScene and selection .size ();
 
 		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, {
+			//X3D::X3DConstants::IndexedQuadSet,
+			//X3D::X3DConstants::QuadSet,
+			//X3D::X3DConstants::Arc2D,
+			//X3D::X3DConstants::Arc2D,
+			//X3D::X3DConstants::ArcClose2D,
+			//X3D::X3DConstants::Circle2D,
+			X3D::X3DConstants::Disk2D,
+			//X3D::X3DConstants::Polyline2D,
+			//X3D::X3DConstants::Polypoint2D,
+			X3D::X3DConstants::Rectangle2D,
+			//X3D::X3DConstants::TriangleSet2D,
 			X3D::X3DConstants::Box,
 			X3D::X3DConstants::Cone,
 			X3D::X3DConstants::Cylinder,
@@ -210,6 +221,15 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 			X3D::X3DConstants::IndexedFaceSet,
 			X3D::X3DConstants::Sphere,
 			X3D::X3DConstants::GeoElevationGrid,
+			//X3D::X3DConstants::IndexedLineSet,
+			//X3D::X3DConstants::IndexedTriangleFanSet,
+			//X3D::X3DConstants::IndexedTriangleSet,
+			//X3D::X3DConstants::IndexedTriangleStripSet,
+			//X3D::X3DConstants::LineSet,
+			//X3D::X3DConstants::PointSet,
+			//X3D::X3DConstants::TriangleFanSet,
+			//X3D::X3DConstants::TriangleSet,
+			//X3D::X3DConstants::TriangleStripSet,
 			X3D::X3DConstants::Text
 		});
 
@@ -241,6 +261,16 @@ GeometryEditor::connect ()
 			{
 				switch (type)
 				{
+					case X3D::X3DConstants::IndexedQuadSetTool:
+					case X3D::X3DConstants::QuadSetTool:
+					case X3D::X3DConstants::Arc2DTool:
+					case X3D::X3DConstants::ArcClose2DTool:
+					case X3D::X3DConstants::Circle2DTool:
+					case X3D::X3DConstants::Disk2DTool:
+					case X3D::X3DConstants::Polyline2DTool:
+					case X3D::X3DConstants::Polypoint2DTool:
+					case X3D::X3DConstants::Rectangle2DTool:
+					case X3D::X3DConstants::TriangleSet2DTool:
 					case X3D::X3DConstants::BoxTool:
 					case X3D::X3DConstants::ConeTool:
 					case X3D::X3DConstants::CylinderTool:
@@ -248,6 +278,15 @@ GeometryEditor::connect ()
 					case X3D::X3DConstants::ExtrusionTool:
 					case X3D::X3DConstants::SphereTool:
 					case X3D::X3DConstants::GeoElevationGridTool:
+					case X3D::X3DConstants::IndexedLineSetTool:
+					case X3D::X3DConstants::IndexedTriangleFanSetTool:
+					case X3D::X3DConstants::IndexedTriangleSetTool:
+					case X3D::X3DConstants::IndexedTriangleStripSetTool:
+					case X3D::X3DConstants::LineSetTool:
+					case X3D::X3DConstants::PointSetTool:
+					case X3D::X3DConstants::TriangleFanSetTool:
+					case X3D::X3DConstants::TriangleSetTool:
+					case X3D::X3DConstants::TriangleStripSetTool:
 					case X3D::X3DConstants::TextTool:
 					{
 						const auto & normalTool = node -> getField <X3D::SFNode> ("normalTool");

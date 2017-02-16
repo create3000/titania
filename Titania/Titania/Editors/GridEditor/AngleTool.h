@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	AngleTool (X3DBrowserWindow* const);
+	AngleTool (X3DBrowserWindow* const browserWindow);
 
 	/// @name Members
 

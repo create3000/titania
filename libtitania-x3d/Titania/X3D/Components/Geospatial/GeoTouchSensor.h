@@ -64,11 +64,11 @@ public:
 
 	///  @name Construction
 
-	GeoTouchSensor (X3DExecutionContext* const);
+	GeoTouchSensor (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 

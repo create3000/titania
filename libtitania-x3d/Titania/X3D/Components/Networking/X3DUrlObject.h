@@ -95,7 +95,7 @@ public:
 	///  Sets the current excecution context to @a executionContext.
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const)
+	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 

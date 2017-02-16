@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	Footer (X3DBrowserWindow* const);
+	Footer (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	LayerEditor (X3DBrowserWindow* const);
+	LayerEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

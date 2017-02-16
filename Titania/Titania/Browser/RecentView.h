@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	RecentView (X3DBrowserWindow* const);
+	RecentView (X3DBrowserWindow* const browserWindow);
 
 	void
 	initialize ();

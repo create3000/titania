@@ -65,11 +65,11 @@ public:
 
 	///  @name Construction
 
-	RigidBody (X3DExecutionContext* const);
+	RigidBody (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	virtual
 	void

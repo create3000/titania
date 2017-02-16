@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	NodeIndex (X3DBrowserWindow* const);
+	NodeIndex (X3DBrowserWindow* const browserWindow);
 
 	///  @name Operations
 

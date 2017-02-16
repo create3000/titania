@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	ScenePropertiesEditor (X3DBrowserWindow* const);
+	ScenePropertiesEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

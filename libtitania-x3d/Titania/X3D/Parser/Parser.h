@@ -140,7 +140,7 @@ private:
 	throw (Error <INVALID_X3D>);
 
 	void
-	pushExecutionContext (X3DExecutionContext* const);
+	pushExecutionContext (X3DExecutionContext* const executionContext);
 
 	void
 	popExecutionContext ();

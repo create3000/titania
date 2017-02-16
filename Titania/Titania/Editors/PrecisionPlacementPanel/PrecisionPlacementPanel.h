@@ -84,7 +84,7 @@ public:
 
 	///  @name Construction
 
-	PrecisionPlacementPanel (X3DBrowserWindow* const);
+	PrecisionPlacementPanel (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

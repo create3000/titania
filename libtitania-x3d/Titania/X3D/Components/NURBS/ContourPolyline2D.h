@@ -61,11 +61,11 @@ class ContourPolyline2D :
 {
 public:
 
-	ContourPolyline2D (X3DExecutionContext* const);
+	ContourPolyline2D (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 

@@ -59,17 +59,17 @@ namespace X3D {
 
 class Disk2D :
 	virtual public X3DGeometryNode,
-	public X3DLineGeometryNode
+	virtual public X3DLineGeometryNode
 {
 public:
 
 	///  @name Construction
 
-	Disk2D (X3DExecutionContext* const);
+	Disk2D (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 
@@ -93,32 +93,38 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const)
+	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
 
 	///  @name Fields
 
+	virtual
 	SFFloat &
 	innerRadius ()
 	{ return *fields .innerRadius; }
 
+	virtual
 	const SFFloat &
 	innerRadius () const
 	{ return *fields .innerRadius; }
 
+	virtual
 	SFFloat &
 	outerRadius ()
 	{ return *fields .outerRadius; }
 
+	virtual
 	const SFFloat &
 	outerRadius () const
 	{ return *fields .outerRadius; }
 
+	virtual
 	SFBool &
 	solid ()
 	{ return *fields .solid; }
 
+	virtual
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
@@ -130,43 +136,50 @@ public:
 	intersects (Line3d line,
 	            const ClipPlaneContainerArray & clipPlanes,
 	            Matrix4d modelViewMatrix,
-	            std::vector <IntersectionPtr> & intersections) const final override;
+	            std::vector <IntersectionPtr> & intersections) const override;
 
 	virtual
 	bool
 	intersects (Box3d box,
 	            const ClipPlaneContainerArray & clipPlanes,
-	            Matrix4d modelViewMatrix) const final override;
+	            Matrix4d modelViewMatrix) const override;
 
 	virtual
 	std::vector <Vector3d>
 	intersects (X3DRenderObject* const renderObject,
 	            const std::shared_ptr <FrameBuffer> & frameBuffer,
 	            const std::shared_ptr <FrameBuffer> & depthBuffer,
-	            std::vector <IntersectionPtr> & intersections) final override;
+	            std::vector <IntersectionPtr> & intersections) override;
 
 	virtual
 	void
-	depth (const X3DShapeContainer* const context) final override;
+	depth (const X3DShapeContainer* const context) override;
 
 	virtual
 	void
-	draw (ShapeContainer* const) final override;
+	draw (ShapeContainer* const context) override;
 
 	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	virtual
 	const X3DPtr <ComposedShader> &

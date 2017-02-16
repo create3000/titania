@@ -79,7 +79,7 @@ public:
 
 	///  @name Construction
 
-	TextureMappingEditor (X3DBrowserWindow* const);
+	TextureMappingEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

@@ -65,11 +65,11 @@ class Clipboard :
 {
 public:
 
-	Clipboard (X3DExecutionContext* const);
+	Clipboard (X3DExecutionContext* const executionContext);
 
 	virtual
 	Clipboard*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 

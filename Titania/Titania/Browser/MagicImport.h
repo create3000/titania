@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	MagicImport (X3DBrowserWindow* const);
+	MagicImport (X3DBrowserWindow* const browserWindow);
 
 	void
 	setFrontMaterial (const bool value)

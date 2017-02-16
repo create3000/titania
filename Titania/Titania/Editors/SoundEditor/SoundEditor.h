@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	SoundEditor (X3DBrowserWindow* const);
+	SoundEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

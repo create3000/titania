@@ -76,7 +76,7 @@ public:
 
 	///  @name Construction
 
-	X3DBindableNodeList (X3DBrowserWindow* const);
+	X3DBindableNodeList (X3DBrowserWindow* const browserWindow);
 
 	///  @name Member acccess
 

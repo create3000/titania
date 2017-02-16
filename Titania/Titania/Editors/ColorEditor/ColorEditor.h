@@ -77,7 +77,7 @@ public:
 
 	///  @name Construction
 
-	ColorEditor (X3DBrowserWindow* const);
+	ColorEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

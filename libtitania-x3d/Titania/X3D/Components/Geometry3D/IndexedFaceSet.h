@@ -74,11 +74,11 @@ public:
 
 	///  @name Construction
 
-	IndexedFaceSet (X3DExecutionContext* const);
+	IndexedFaceSet (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 
@@ -165,19 +165,19 @@ public:
 	///  @name Member access
 
 	size_t
-	getVertexTexCoordIndex (const size_t) const;
+	getVertexTexCoordIndex (const size_t index) const;
 
 	size_t
-	getVertexColorIndex (const size_t) const;
+	getVertexColorIndex (const size_t index) const;
 
 	size_t
-	getFaceColorIndex (const size_t) const;
+	getFaceColorIndex (const size_t index) const;
 
 	size_t
-	getVertexNormalIndex (const size_t) const;
+	getVertexNormalIndex (const size_t index) const;
 
 	size_t
-	getFaceNormalIndex (const size_t) const;
+	getFaceNormalIndex (const size_t index) const;
 
 	///  @name Operations
 
@@ -236,10 +236,10 @@ protected:
 	///  @name Operations
 
 	Vector3f
-	getPolygonNormal (const Vertices &) const;
+	getPolygonNormal (const Vertices & vertices) const;
 
 	double
-	getPolygonArea (const Vertices &) const;
+	getPolygonArea (const Vertices & vertices) const;
 
 
 private:
@@ -265,22 +265,26 @@ private:
 	build () final override;
 
 	std::vector <Vector3f>
-	createNormals (const PolygonArray &) const;
+	createNormals (const PolygonArray & polygons) const;
 
 	void
-	buildNormals (const PolygonArray &);
+	buildNormals (const PolygonArray & polygons);
 
 	void
-	tessellate (const bool, PolygonArray &, size_t &);
+	tessellate (const bool convex, PolygonArray & polygons, size_t & numVertices);
 
 	void
-	tessellate (const std::unique_ptr <Tessellator> &, PolygonArray &);
+	tessellate (const std::unique_ptr <Tessellator> & tessellator, PolygonArray & polygons);
 
 	void
-	rebuildIndices (const size_t, const size_t, const size_t, std::vector <size_t> &, std::vector <size_t> &);
+	rebuildIndices (const size_t faceIndex,
+	                const size_t faceNumber,
+	                const size_t count,
+	                std::vector <size_t> & indices,
+	                std::vector <size_t> & faceNumbers);
 
 	void
-	rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> &, const std::map <int32_t, int32_t> &);
+	rebuildTexCoord (const X3DPtr <X3DTextureCoordinateNode> & texCoord, const std::map <int32_t, int32_t> & map);
 
 	///  @name Static members
 

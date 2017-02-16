@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	MessageDialog (X3DBrowserWindow* const);
+	MessageDialog (X3DBrowserWindow* const browserWindow);
 
 	void
 	setType (const Gtk::MessageType);

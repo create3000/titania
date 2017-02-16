@@ -65,11 +65,11 @@ public:
 
 	///  @name Construction
 
-	CADAssembly (X3DExecutionContext* const);
+	CADAssembly (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 

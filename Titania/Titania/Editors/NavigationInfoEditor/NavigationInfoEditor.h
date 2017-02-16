@@ -70,7 +70,7 @@ public:
 
 	///  @name Construction
 
-	NavigationInfoEditor (X3DBrowserWindow* const);
+	NavigationInfoEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

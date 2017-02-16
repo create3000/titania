@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	BindableNodeEditor (X3DBrowserWindow* const);
+	BindableNodeEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

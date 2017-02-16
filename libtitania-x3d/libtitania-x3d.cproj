@@ -913,6 +913,9 @@
     <None Include="Titania\X3D\Tools\Geometry3D\Extrusion\ExtrusionTool.h" />
     <None Include="Titania\X3D\Tools\Geospatial\GeoElevationGridTool.h" />
     <None Include="Titania\X3D\Tools\Text\TextTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry2D\Rectangle2DTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry2D\Disk2DTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\X3DLineGeometryNodeTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1553,6 +1556,9 @@
     <Compile Include="Titania\X3D\Tools\Geometry3D\Extrusion\ExtrusionTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geospatial\GeoElevationGridTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Text\TextTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry2D\Rectangle2DTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry2D\Disk2DTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\X3DLineGeometryNodeTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

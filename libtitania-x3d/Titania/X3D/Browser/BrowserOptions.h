@@ -82,11 +82,11 @@ public:
 
 	///  @name Construction
 
-	BrowserOptions (X3DExecutionContext* const);
+	BrowserOptions (X3DExecutionContext* const executionContext);
 
 	virtual
 	BrowserOptions*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 
@@ -259,7 +259,7 @@ private:
 
 	struct Fields
 	{
-		Fields (X3DExecutionContext* const);
+		Fields (X3DExecutionContext* const executionContext);
 
 		SFBool* const SplashScreen;
 		SFBool* const Dashboard;

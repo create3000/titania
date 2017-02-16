@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	CylinderOptions (X3DExecutionContext* const);
+	CylinderOptions (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -110,7 +110,7 @@ private:
 
 	virtual
 	CylinderOptions*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Static members
 

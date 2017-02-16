@@ -83,7 +83,7 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const)
+	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
@@ -650,7 +650,7 @@ private:
 	///  @name Import handling
 
 	void
-	updateNamedNodes (X3DExecutionContext* const) const
+	updateNamedNodes (X3DExecutionContext* const executionContext) const
 	throw (Error <IMPORTED_NODE>,
 	       Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
@@ -658,7 +658,7 @@ private:
 	       Error <DISPOSED>);
 
 	void
-	updateImportedNodes (X3DExecutionContext* const) const
+	updateImportedNodes (X3DExecutionContext* const executionContext) const
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <URL_UNAVAILABLE>,
@@ -680,7 +680,7 @@ private:
 	       Error <DISPOSED>);
 
 	void
-	importRoutes (X3DExecutionContext* const);
+	importRoutes (X3DExecutionContext* const executionContext);
 
 	///  @name Members
 

@@ -67,11 +67,11 @@ public:
 
 	///  @name Construction
 
-	ProtoDeclaration (X3DExecutionContext* const);
+	ProtoDeclaration (X3DExecutionContext* const executionContext);
 
 	virtual
 	ProtoDeclaration*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	virtual
 	ProtoDeclaration*
@@ -90,7 +90,7 @@ public:
 
 	virtual
 	X3DPrototypeInstance*
-	createInstance (X3DExecutionContext* const) final override;
+	createInstance (X3DExecutionContext* const executionContext) final override;
 
 	///  @name Common members
 
@@ -113,7 +113,7 @@ public:
 	{ return containerField; }
 
 	void
-	setExecutionContext (X3DExecutionContext* const)
+	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 

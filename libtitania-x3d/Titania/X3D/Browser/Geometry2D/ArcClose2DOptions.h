@@ -61,7 +61,7 @@ class ArcClose2DOptions :
 {
 public:
 
-	ArcClose2DOptions (X3DExecutionContext* const);
+	ArcClose2DOptions (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -98,7 +98,7 @@ private:
 
 	virtual
 	ArcClose2DOptions*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Static members
 

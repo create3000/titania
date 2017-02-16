@@ -63,11 +63,11 @@ public:
 
 	///  @name Constructors
 
-	LightSaber (X3DExecutionContext* const);
+	LightSaber (X3DExecutionContext* const executionContext);
 
 	virtual
 	LightSaber*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Common members
 

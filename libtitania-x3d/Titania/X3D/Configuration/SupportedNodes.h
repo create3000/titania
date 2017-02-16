@@ -65,11 +65,11 @@ public:
 
 	///  @name Member types
 
-	using Function = std::function <X3DBaseNode* (X3DExecutionContext* const)>;
+	using Function = std::function <X3DBaseNode* (X3DExecutionContext* const executionContext)>;
 
 	///  @name Construction
 
-	SupportedNodes (X3DExecutionContext* const);
+	SupportedNodes (X3DExecutionContext* const executionContext);
 
 	///  @name Operations
 

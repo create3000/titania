@@ -65,11 +65,11 @@ public:
 
 	///  @name Construction
 
-	Background (X3DExecutionContext* const);
+	Background (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 	
 	virtual
 	Background*
@@ -87,7 +87,7 @@ public:
 	///  Sets the current excecution context to @a executionContext.
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const)
+	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override;
 

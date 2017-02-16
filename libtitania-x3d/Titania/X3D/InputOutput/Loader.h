@@ -62,7 +62,7 @@ class Loader
 {
 public:
 
-	Loader (X3DExecutionContext* const);
+	Loader (X3DExecutionContext* const executionContext);
 
 	Loader (X3DExecutionContext* const, const basic::uri &);
 

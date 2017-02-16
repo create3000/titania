@@ -104,9 +104,11 @@ ArcClose2D::create (X3DExecutionContext* const executionContext) const
 void
 ArcClose2D::initialize ()
 {
+	using E = void (X3DBaseNode::*) ();
+
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getArcClose2DOptions () .addInterest (&ArcClose2D::update, this);
+	getBrowser () -> getArcClose2DOptions () .addInterest ((E) &ArcClose2D::addEvent, this);
 }
 
 void
@@ -114,13 +116,15 @@ ArcClose2D::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	using E = void (X3DBaseNode::*) ();
+
 	if (isInitialized ())
-		getBrowser () -> getArcClose2DOptions () .removeInterest (&ArcClose2D::update, this);
+		getBrowser () -> getArcClose2DOptions () .removeInterest ((E) &ArcClose2D::addEvent, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getArcClose2DOptions () .addInterest (&ArcClose2D::update, this);
+		getBrowser () -> getArcClose2DOptions () .addInterest ((E) &ArcClose2D::addEvent, this);
 }
 
 double

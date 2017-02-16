@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	MotionBlurEditor (X3DBrowserWindow* const);
+	MotionBlurEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	OpenLocationDialog (X3DBrowserWindow* const);
+	OpenLocationDialog (X3DBrowserWindow* const browserWindow);
 
 	void
 	run ();

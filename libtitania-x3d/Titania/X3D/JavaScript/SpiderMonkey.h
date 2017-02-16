@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	SpiderMonkey (X3DExecutionContext* const);
+	SpiderMonkey (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -121,7 +121,7 @@ private:
 
 	virtual
 	SpiderMonkey*
-	create (X3DExecutionContext* const)  const;
+	create (X3DExecutionContext* const executionContext)  const;
 
 	virtual
 	void

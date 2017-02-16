@@ -64,7 +64,7 @@ public:
 
 	///  @name Construction
 
-	GeometryEditor (X3DBrowserWindow* const);
+	GeometryEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Member access
 

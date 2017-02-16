@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	FileSaveDialog (X3DBrowserWindow* const);
+	FileSaveDialog (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

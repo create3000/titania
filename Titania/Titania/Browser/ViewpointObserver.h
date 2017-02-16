@@ -63,7 +63,7 @@ class ViewpointObserver :
 {
 public:
 
-	ViewpointObserver (X3DBrowserWindow* const);
+	ViewpointObserver (X3DBrowserWindow* const browserWindow);
 
 	void
 	setBrowser (const X3D::BrowserPtr &, const X3D::BrowserPtr &);

@@ -75,7 +75,7 @@ public:
 
 	///  @name Construction
 
-	BackgroundEditor (X3DBrowserWindow* const);
+	BackgroundEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

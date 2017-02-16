@@ -77,7 +77,7 @@ public:
 
 	virtual
 	void
-	setExecutionContext (X3DExecutionContext* const)
+	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) override;
 
@@ -115,7 +115,7 @@ private:
 
 	virtual
 	X3DBaseNode*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	std::future <Texture3DPtr>
 	getFuture (const MFString &, const size_t, const size_t);

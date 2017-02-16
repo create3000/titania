@@ -96,7 +96,7 @@ public:
 
 	virtual
 	SFNode
-	toPrimitive (X3DExecutionContext* const) const
+	toPrimitive (X3DExecutionContext* const executionContext) const
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>)
 	{ throw Error <NOT_SUPPORTED> ("X3DGeometricOptionNode::toPrimitive"); }

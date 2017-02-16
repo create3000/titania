@@ -70,7 +70,7 @@ public:
 
 	///  @name Construction
 
-	FogEditor (X3DBrowserWindow* const);
+	FogEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

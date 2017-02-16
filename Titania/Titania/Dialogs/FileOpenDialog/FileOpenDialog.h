@@ -68,7 +68,7 @@ public:
 
 	///  @name Construction
 
-	FileOpenDialog (X3DBrowserWindow* const);
+	FileOpenDialog (X3DBrowserWindow* const browserWindow);
 
 	void
 	setURL (const basic::uri &);

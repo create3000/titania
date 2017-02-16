@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	InlineEditor (X3DBrowserWindow* const);
+	InlineEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

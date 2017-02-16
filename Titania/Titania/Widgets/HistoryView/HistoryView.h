@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	HistoryView (X3DBrowserWindow* const);
+	HistoryView (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

@@ -9,7 +9,7 @@ use utf8;
 use Glib;
 
 my $keyFile = new Glib::KeyFile ();
-$keyFile -> load_from_data (join ("", `/home/holger/Projekte/Titania/Titania/run.pl --list=nodes 2>/dev/null`), "none");
+$keyFile -> load_from_data (join ("", `/home/holger/Projekte/Titania/Titania/run.pl --list=fields 2>/dev/null`), "none");
 
 foreach my $group ($keyFile -> get_groups ())
 {

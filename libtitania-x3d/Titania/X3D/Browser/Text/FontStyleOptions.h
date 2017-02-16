@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	FontStyleOptions (X3DExecutionContext* const);
+	FontStyleOptions (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -102,7 +102,7 @@ private:
 
 	virtual
 	FontStyleOptions*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Static members
 

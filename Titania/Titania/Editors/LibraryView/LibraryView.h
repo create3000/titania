@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	LibraryView (X3DBrowserWindow* const);
+	LibraryView (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 

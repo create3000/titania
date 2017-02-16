@@ -605,6 +605,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/Geometry2D/Disk2DTool.cpp \
+	Titania/X3D/Tools/Geometry2D/Rectangle2DTool.cpp \
 	Titania/X3D/Tools/Geometry3D/Box/BoxTool.cpp \
 	Titania/X3D/Tools/Geometry3D/Cone/ConeTool.cpp \
 	Titania/X3D/Tools/Geometry3D/Cylinder/CylinderTool.cpp \
@@ -639,6 +641,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Rendering/X3DCoordinateNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DGeometricPropertyNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DGeometryNodeTool.cpp \
+	Titania/X3D/Tools/Rendering/X3DLineGeometryNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DNormalNodeTool.cpp \
 	Titania/X3D/Tools/Sound/SoundTool.cpp \
 	Titania/X3D/Tools/Text/TextTool.cpp \

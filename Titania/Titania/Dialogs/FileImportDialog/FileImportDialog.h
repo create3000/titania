@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	FileImportDialog (X3DBrowserWindow* const);
+	FileImportDialog (X3DBrowserWindow* const browserWindow);
 
 	basic::uri
 	getURL () const;

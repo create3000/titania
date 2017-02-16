@@ -77,7 +77,7 @@ public:
 	 *  @name Construction
 	 */
 
-	AnimationEditor (X3DBrowserWindow* const);
+	AnimationEditor (X3DBrowserWindow* const browserWindow);
 
 	/***
 	 *  @name Destruction

@@ -63,7 +63,7 @@ public:
 
 	///  @name Construction
 
-	ConeOptions (X3DExecutionContext* const);
+	ConeOptions (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -110,7 +110,7 @@ private:
 
 	virtual
 	ConeOptions*
-	create (X3DExecutionContext* const) const final override;
+	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Static members
 

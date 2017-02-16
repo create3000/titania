@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	NodeEditor (X3DBrowserWindow* const);
+	NodeEditor (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 
