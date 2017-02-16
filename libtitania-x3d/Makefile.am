@@ -602,11 +602,15 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Thread/SceneFuture.cpp \
 	Titania/X3D/Thread/Texture3DFuture.cpp \
 	Titania/X3D/Thread/TextureFuture.cpp \
+	Titania/X3D/Tools/CADGeometry/IndexedQuadSetTool.cpp \
+	Titania/X3D/Tools/CADGeometry/QuadSetTool.cpp \
 	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/Geometry2D/ArcClose2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/Disk2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/Rectangle2DTool.cpp \
+	Titania/X3D/Tools/Geometry2D/TriangleSet2DTool.cpp \
 	Titania/X3D/Tools/Geometry3D/Box/BoxTool.cpp \
 	Titania/X3D/Tools/Geometry3D/Cone/ConeTool.cpp \
 	Titania/X3D/Tools/Geometry3D/Cylinder/CylinderTool.cpp \

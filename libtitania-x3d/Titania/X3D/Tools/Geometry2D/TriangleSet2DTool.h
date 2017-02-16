@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,78 +48,95 @@
  *
  ******************************************************************************/
 
-#include "IndexedQuadSet.h"
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY2D_TRIANGLE_SET2DTOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY2D_TRIANGLE_SET2DTOOL_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-
-#include "../../Tools/CADGeometry/IndexedQuadSetTool.h"
+#include "../../Components/Geometry2D/TriangleSet2D.h"
+#include "../Rendering/X3DGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType IndexedQuadSet::component      = ComponentType::CAD_GEOMETRY;
-const std::string   IndexedQuadSet::typeName       = "IndexedQuadSet";
-const std::string   IndexedQuadSet::containerField = "geometry";
-
-IndexedQuadSet::Fields::Fields () :
-	index (new MFInt32 ())
-{ }
-
-IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DComposedGeometryNode (),
-	                 fields ()
+class TriangleSet2DTool :
+	virtual public TriangleSet2D,
+	public X3DGeometryNodeTool
 {
-	addType (X3DConstants::IndexedQuadSet);
+public:
 
-	addField (inputOutput,    "metadata",        metadata ());
+	///  @name Construction
 
-	addField (initializeOnly, "solid",           solid ());
-	addField (initializeOnly, "ccw",             ccw ());
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
-	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
+	TriangleSet2DTool (TriangleSet2D* const node);
 
-	addField (inputOutput,    "index",           index ());
+	///  @name Fields
 
-	addField (inputOutput,    "attrib",          attrib ());
-	addField (inputOutput,    "fogCoord",        fogCoord ());
-	addField (inputOutput,    "color",           color ());
-	addField (inputOutput,    "texCoord",        texCoord ());
-	addField (inputOutput,    "normal",          normal ());
-	addField (inputOutput,    "coord",           coord ());
-}
+	virtual
+	MFVec2f &
+	vertices () final override
+	{ return getNode <TriangleSet2D> () -> vertices (); }
 
-X3DBaseNode*
-IndexedQuadSet::create (X3DExecutionContext* const executionContext) const
-{
-	return new IndexedQuadSet (executionContext);
-}
+	virtual
+	const MFVec2f &
+	vertices () const final override
+	{ return getNode <TriangleSet2D> () -> vertices (); }
 
-void
-IndexedQuadSet::build ()
-{
-	X3DComposedGeometryNode::build (4, index () .size ());
-}
+	virtual
+	SFBool &
+	solid () final override
+	{ return getNode <TriangleSet2D> () -> solid (); }
 
-void
-IndexedQuadSet::addNormals ()
-{
-	X3DComposedGeometryNode::addNormals (4, index () .size ());
-}
+	virtual
+	const SFBool &
+	solid () const final override
+	{ return getNode <TriangleSet2D> () -> solid (); }
 
-SFNode
-IndexedQuadSet::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
-{
-	return X3DComposedGeometryNode::toPrimitive (4, index () .size ());
-}
+	///  @name Operations
 
-void
-IndexedQuadSet::addTool ()
-{
-	X3DComposedGeometryNode::addTool (new IndexedQuadSetTool (this));
-}
+	virtual
+	SFNode
+	toPrimitive () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override
+	{ return getNode <TriangleSet2D> () -> toPrimitive (); }
+
+	virtual
+	void
+	addTool () final override
+	{ X3DGeometryNodeTool::addTool (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~TriangleSet2DTool () final override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+
+private:
+
+	///  @name Members
+
+	struct Fields
+	{
+		Fields ();
+
+	};
+
+	Fields fields;
+
+};
 
 } // X3D
 } // titania
+
+#endif

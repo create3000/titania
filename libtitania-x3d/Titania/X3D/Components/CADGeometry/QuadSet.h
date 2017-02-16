@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class QuadSet :
-	public X3DComposedGeometryNode
+	virtual public X3DComposedGeometryNode
 {
 public:
 
@@ -91,13 +91,17 @@ public:
 
 	virtual
 	void
-	addNormals () final override;
+	addNormals () override;
 
 	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
 private:

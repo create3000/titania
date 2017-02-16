@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,68 +48,83 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY2D_TRIANGLE_SET2D_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_TRIANGLE_SET2D_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY2D_ARC_CLOSE2DTOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY2D_ARC_CLOSE2DTOOL_H__
 
-#include "../Rendering/X3DGeometryNode.h"
+#include "../../Components/Geometry2D/ArcClose2D.h"
+#include "../Rendering/X3DGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class TriangleSet2D :
-	virtual public X3DGeometryNode
+class ArcClose2DTool :
+	virtual public ArcClose2D,
+	public X3DGeometryNodeTool
 {
 public:
 
 	///  @name Construction
 
-	TriangleSet2D (X3DExecutionContext* const executionContext);
+	ArcClose2DTool (ArcClose2D* const node);
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ getNode <ArcClose2D> () -> setExecutionContext (executionContext); }
 
 	///  @name Fields
 
 	virtual
-	MFVec2f &
-	vertices ()
-	{ return *fields .vertices; }
+	SFString &
+	closureType () final override
+	{ return getNode <ArcClose2D> () -> closureType (); }
 
 	virtual
-	const MFVec2f &
-	vertices () const
-	{ return *fields .vertices; }
+	const SFString &
+	closureType () const final override
+	{ return getNode <ArcClose2D> () -> closureType (); }
+
+	virtual
+	SFFloat &
+	startAngle () final override
+	{ return getNode <ArcClose2D> () -> startAngle (); }
+
+	virtual
+	const SFFloat &
+	startAngle () const final override
+	{ return getNode <ArcClose2D> () -> startAngle (); }
+
+	virtual
+	SFFloat &
+	endAngle () final override
+	{ return getNode <ArcClose2D> () -> endAngle (); }
+
+	virtual
+	const SFFloat &
+	endAngle () const final override
+	{ return getNode <ArcClose2D> () -> endAngle (); }
+
+	virtual
+	SFFloat &
+	radius () final override
+	{ return getNode <ArcClose2D> () -> radius (); }
+
+	virtual
+	const SFFloat &
+	radius () const final override
+	{ return getNode <ArcClose2D> () -> radius (); }
 
 	virtual
 	SFBool &
-	solid ()
-	{ return *fields .solid; }
+	solid () final override
+	{ return getNode <ArcClose2D> () -> solid (); }
 
 	virtual
 	const SFBool &
-	solid () const
-	{ return *fields .solid; }
+	solid () const final override
+	{ return getNode <ArcClose2D> () -> solid (); }
 
 	///  @name Operations
 
@@ -117,31 +132,34 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override;
+	       Error <DISPOSED>) final override
+	{ return getNode <ArcClose2D> () -> toPrimitive (); }
 
 	virtual
 	void
-	addTool () override;
+	addTool () final override
+	{ X3DGeometryNodeTool::addTool (); }
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+
+	virtual
+	~ArcClose2DTool () final override;
+
+
+protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
 
 
 private:
-
-	///  @name Operations
-
-	virtual
-	void
-	build () final override;
-
-	virtual
-	void
-	buildTexCoords () final override;
-
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
 
 	///  @name Members
 
@@ -149,8 +167,6 @@ private:
 	{
 		Fields ();
 
-		MFVec2f* const vertices;
-		SFBool* const solid;
 	};
 
 	Fields fields;

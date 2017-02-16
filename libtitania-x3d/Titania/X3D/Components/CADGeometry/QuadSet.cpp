@@ -53,6 +53,8 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/X3DCoordinateNode.h"
 
+#include "../../Tools/CADGeometry/QuadSetTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -115,6 +117,12 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	return X3DComposedGeometryNode::toPrimitive (4, getCoord () ? getCoord () -> getSize () : 0);
+}
+
+void
+QuadSet::addTool ()
+{
+	X3DComposedGeometryNode::addTool (new QuadSetTool (this));
 }
 
 } // X3D

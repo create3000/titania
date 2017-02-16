@@ -168,13 +168,21 @@ X3DGeometryNodeTool::eventProcessed ()
 		auto &       normalVertexCount = inlineNode -> getExportedNode <LineSet> ("NormalsLineSet") -> vertexCount ();
 		auto &       normalPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("NormalsCoord") -> point ();
 
-		normalVertexCount .resize (size, SFInt32 (2));
-		normalPoint       .resize (2 * size);
-
-		for (size_t i = 0; i < size; ++ i)
+		if (normals .empty ())
 		{
-			normalPoint [2 * i + 0] = vertices [i];
-			normalPoint [2 * i + 1] = vertices [i] + Vector3d (normals [i] * normalToolNode -> length () .getValue ());
+			normalVertexCount .clear ();
+			normalPoint       .clear ();
+		}
+		else
+		{
+			normalVertexCount .resize (size, SFInt32 (2));
+			normalPoint       .resize (2 * size);
+	
+			for (size_t i = 0; i < size; ++ i)
+			{
+				normalPoint [2 * i + 0] = vertices [i];
+				normalPoint [2 * i + 1] = vertices [i] + Vector3d (normals [i] * normalToolNode -> length () .getValue ());
+			}
 		}
 	}
 	catch (const X3DError & error)

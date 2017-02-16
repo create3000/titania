@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,78 +48,45 @@
  *
  ******************************************************************************/
 
-#include "IndexedQuadSet.h"
+#include "IndexedQuadSetTool.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-
-#include "../../Tools/CADGeometry/IndexedQuadSetTool.h"
 
 namespace titania {
 namespace X3D {
 
-const ComponentType IndexedQuadSet::component      = ComponentType::CAD_GEOMETRY;
-const std::string   IndexedQuadSet::typeName       = "IndexedQuadSet";
-const std::string   IndexedQuadSet::containerField = "geometry";
-
-IndexedQuadSet::Fields::Fields () :
-	index (new MFInt32 ())
+IndexedQuadSetTool::Fields::Fields ()
 { }
 
-IndexedQuadSet::IndexedQuadSet (X3DExecutionContext* const executionContext) :
-	            X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DComposedGeometryNode (),
-	                 fields ()
+IndexedQuadSetTool::IndexedQuadSetTool (IndexedQuadSet* const node) :
+	                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	             IndexedQuadSet (node -> getExecutionContext ()),
+	                X3DBaseTool (node),
+	X3DComposedGeometryNodeTool (),
+	                     fields ()
 {
-	addType (X3DConstants::IndexedQuadSet);
+	addType (X3DConstants::IndexedQuadSetTool);
 
-	addField (inputOutput,    "metadata",        metadata ());
-
-	addField (initializeOnly, "solid",           solid ());
-	addField (initializeOnly, "ccw",             ccw ());
-	addField (initializeOnly, "colorPerVertex",  colorPerVertex ());
-	addField (initializeOnly, "normalPerVertex", normalPerVertex ());
-
-	addField (inputOutput,    "index",           index ());
-
-	addField (inputOutput,    "attrib",          attrib ());
-	addField (inputOutput,    "fogCoord",        fogCoord ());
-	addField (inputOutput,    "color",           color ());
-	addField (inputOutput,    "texCoord",        texCoord ());
-	addField (inputOutput,    "normal",          normal ());
-	addField (inputOutput,    "coord",           coord ());
-}
-
-X3DBaseNode*
-IndexedQuadSet::create (X3DExecutionContext* const executionContext) const
-{
-	return new IndexedQuadSet (executionContext);
+	addField (inputOutput, "normalTool", normalTool ());
+	addField (inputOutput, "coordTool",  coordTool ());
 }
 
 void
-IndexedQuadSet::build ()
+IndexedQuadSetTool::initialize ()
 {
-	X3DComposedGeometryNode::build (4, index () .size ());
+	X3DComposedGeometryNodeTool::initialize ();
 }
 
 void
-IndexedQuadSet::addNormals ()
+IndexedQuadSetTool::dispose ()
 {
-	X3DComposedGeometryNode::addNormals (4, index () .size ());
+	__LOG__ << std::endl;
+
+	X3DComposedGeometryNodeTool::dispose ();
 }
 
-SFNode
-IndexedQuadSet::toPrimitive () const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
-{
-	return X3DComposedGeometryNode::toPrimitive (4, index () .size ());
-}
-
-void
-IndexedQuadSet::addTool ()
-{
-	X3DComposedGeometryNode::addTool (new IndexedQuadSetTool (this));
-}
+IndexedQuadSetTool::~IndexedQuadSetTool ()
+{ }
 
 } // X3D
 } // titania

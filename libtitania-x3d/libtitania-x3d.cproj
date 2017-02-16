@@ -916,6 +916,10 @@
     <None Include="Titania\X3D\Tools\Geometry2D\Rectangle2DTool.h" />
     <None Include="Titania\X3D\Tools\Geometry2D\Disk2DTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\X3DLineGeometryNodeTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry2D\TriangleSet2DTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry2D\ArcClose2DTool.h" />
+    <None Include="Titania\X3D\Tools\CADGeometry\QuadSetTool.h" />
+    <None Include="Titania\X3D\Tools\CADGeometry\IndexedQuadSetTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1559,6 +1563,10 @@
     <Compile Include="Titania\X3D\Tools\Geometry2D\Rectangle2DTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Geometry2D\Disk2DTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\X3DLineGeometryNodeTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry2D\TriangleSet2DTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry2D\ArcClose2DTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\CADGeometry\QuadSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\CADGeometry\IndexedQuadSetTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

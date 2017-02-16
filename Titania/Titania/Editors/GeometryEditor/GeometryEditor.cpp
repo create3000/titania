@@ -202,17 +202,16 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 		const bool haveSelection = inScene and selection .size ();
 
 		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, {
-			//X3D::X3DConstants::IndexedQuadSet,
-			//X3D::X3DConstants::QuadSet,
+			X3D::X3DConstants::IndexedQuadSet,
+			X3D::X3DConstants::QuadSet,
 			//X3D::X3DConstants::Arc2D,
-			//X3D::X3DConstants::Arc2D,
-			//X3D::X3DConstants::ArcClose2D,
+			X3D::X3DConstants::ArcClose2D,
 			//X3D::X3DConstants::Circle2D,
 			X3D::X3DConstants::Disk2D,
 			//X3D::X3DConstants::Polyline2D,
 			//X3D::X3DConstants::Polypoint2D,
 			X3D::X3DConstants::Rectangle2D,
-			//X3D::X3DConstants::TriangleSet2D,
+			X3D::X3DConstants::TriangleSet2D,
 			X3D::X3DConstants::Box,
 			X3D::X3DConstants::Cone,
 			X3D::X3DConstants::Cylinder,
