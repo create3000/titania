@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,128 +48,58 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NURBS_NURBS_CURVE_H__
-#define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_CURVE_H__
+#include "X3DNurbsCurveEditor.h"
 
-#include "../NURBS/X3DParametricGeometryNode.h"
+#include <Titania/X3D/Components/NURBS/NurbsCurve.h>
+#include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class NurbsCurve :
-	public X3DParametricGeometryNode
+X3DNurbsCurveEditor::X3DNurbsCurveEditor () :
+	X3DGeometryPropertiesEditorInterface (),
+	                        tessellation (this,
+	                                      getNurbsCurveTessellationAdjustment (),
+	                                      getNurbsCurveTessellationSpinButton (),
+	                                      "tessellation"),
+	                              closed (this, getNurbsCurveClosedCheckButton (), "closed"),
+	                               order (this,
+	                                      getNurbsCurveOrderAdjustment (),
+	                                      getNurbsCurveOrderSpinButton (),
+	                                      "order")
+{ }
+
+void
+X3DNurbsCurveEditor::addShapes ()
 {
-public:
+	for (const auto & shapeNode : getShapes ())
+		shapeNode -> geometry () .addInterest (&X3DNurbsCurveEditor::set_geometry, this);
 
-	NurbsCurve (X3DExecutionContext* const executionContext);
+	set_geometry ();
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+void
+X3DNurbsCurveEditor::removeShapes ()
+{
+	for (const auto & shapeNode : getShapes ())
+		shapeNode -> geometry () .removeInterest (&X3DNurbsCurveEditor::set_geometry, this);
+}
 
-	///  @name Common members
+void
+X3DNurbsCurveEditor::set_geometry ()
+{
+	const auto node  = getOneSelection <X3D::NurbsCurve> (getShapes (), "geometry");
+	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
+	getNurbsCurveExpander () .set_visible (node);
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
+	tessellation .setNodes (nodes);
+	closed       .setNodes (nodes);
+	order        .setNodes (nodes);
+}
 
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
+X3DNurbsCurveEditor::~X3DNurbsCurveEditor ()
+{ }
 
-	///  @name Fields
-
-	SFInt32 &
-	tessellation ()
-	{ return *fields .tessellation; }
-
-	const SFInt32 &
-	tessellation () const
-	{ return *fields .tessellation; }
-
-	SFBool &
-	closed ()
-	{ return *fields .closed; }
-
-	const SFBool &
-	closed () const
-	{ return *fields .closed; }
-
-	SFInt32 &
-	order ()
-	{ return *fields .order; }
-
-	const SFInt32 &
-	order () const
-	{ return *fields .order; }
-
-	MFDouble &
-	knot ()
-	{ return *fields .knot; }
-
-	const MFDouble &
-	knot () const
-	{ return *fields .knot; }
-
-	MFDouble &
-	weight ()
-	{ return *fields .weight; }
-
-	const MFDouble &
-	weight () const
-	{ return *fields .weight; }
-
-	SFNode &
-	controlPoint ()
-	{ return *fields .controlPoint; }
-
-	const SFNode &
-	controlPoint () const
-	{ return *fields .controlPoint; }
-
-
-private:
-
-	virtual
-	void
-	build () final override;
-
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFInt32* const tessellation;
-		SFBool* const closed;
-		SFInt32* const order;
-		MFDouble* const knot;
-		MFDouble* const weight;
-		SFNode* const controlPoint;
-	};
-
-	Fields fields;
-
-};
-
-} // X3D
+} // puck
 } // titania
-
-#endif

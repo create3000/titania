@@ -89,22 +89,6 @@ public:
 
 	///  @name Fields
 
-	SFNode &
-	profileCurve ()
-	{ return *fields .profileCurve; }
-
-	const SFNode &
-	profileCurve () const
-	{ return *fields .profileCurve; }
-
-	SFNode &
-	trajectoryCurve ()
-	{ return *fields .trajectoryCurve; }
-
-	const SFNode &
-	trajectoryCurve () const
-	{ return *fields .trajectoryCurve; }
-
 	SFBool &
 	solid ()
 	{ return *fields .solid; }
@@ -120,6 +104,22 @@ public:
 	const SFBool &
 	ccw () const
 	{ return *fields .ccw; }
+
+	SFNode &
+	profileCurve ()
+	{ return *fields .profileCurve; }
+
+	const SFNode &
+	profileCurve () const
+	{ return *fields .profileCurve; }
+
+	SFNode &
+	trajectoryCurve ()
+	{ return *fields .trajectoryCurve; }
+
+	const SFNode &
+	trajectoryCurve () const
+	{ return *fields .trajectoryCurve; }
 
 
 private:
@@ -141,10 +141,10 @@ private:
 	{
 		Fields ();
 
-		SFNode* const profileCurve;
-		SFNode* const trajectoryCurve;
 		SFBool* const solid;
 		SFBool* const ccw;
+		SFNode* const profileCurve;
+		SFNode* const trajectoryCurve;
 	};
 
 	Fields fields;

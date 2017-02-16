@@ -77,6 +77,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                   X3DExtrusionEditor (),
 	                      X3DSphereEditor (),
 	            X3DGeoElevationGridEditor (),
+	                  X3DNurbsCurveEditor (),
 	           X3DNurbsPatchSurfaceEditor (),
 	         X3DNurbsTrimmedSurfaceEditor (),
 	              X3DPrimitiveCountEditor (),
@@ -149,6 +150,7 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DExtrusionEditor::removeShapes ();
 	X3DSphereEditor::removeShapes ();
 	X3DGeoElevationGridEditor::removeShapes ();
+	X3DNurbsCurveEditor::removeShapes ();
 	X3DNurbsPatchSurfaceEditor::removeShapes ();
 	X3DNurbsTrimmedSurfaceEditor::removeShapes ();
 
@@ -169,6 +171,7 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DExtrusionEditor::addShapes ();
 	X3DSphereEditor::addShapes ();
 	X3DGeoElevationGridEditor::addShapes ();
+	X3DNurbsCurveEditor::addShapes ();
 	X3DNurbsPatchSurfaceEditor::addShapes ();
 	X3DNurbsTrimmedSurfaceEditor::addShapes ();
 

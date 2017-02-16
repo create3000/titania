@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,128 +48,59 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NURBS_NURBS_CURVE_H__
-#define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_CURVE_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_NURBS_X3DNURBS_CURVE_EDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_NURBS_X3DNURBS_CURVE_EDITOR_H__
 
-#include "../NURBS/X3DParametricGeometryNode.h"
+#include "../../../ComposedWidgets.h"
+#include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class NurbsCurve :
-	public X3DParametricGeometryNode
+class X3DNurbsCurveEditor :
+	virtual public X3DGeometryPropertiesEditorInterface
 {
 public:
 
-	NurbsCurve (X3DExecutionContext* const executionContext);
+	///  @name Destruction
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+	~X3DNurbsCurveEditor () override;
 
-	///  @name Common members
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
+protected:
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
+	///  @name Construction
+
+	X3DNurbsCurveEditor ();
+
+	void
+	addShapes ();
+
+	void
+	removeShapes ();
 
 	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFInt32 &
-	tessellation ()
-	{ return *fields .tessellation; }
-
-	const SFInt32 &
-	tessellation () const
-	{ return *fields .tessellation; }
-
-	SFBool &
-	closed ()
-	{ return *fields .closed; }
-
-	const SFBool &
-	closed () const
-	{ return *fields .closed; }
-
-	SFInt32 &
-	order ()
-	{ return *fields .order; }
-
-	const SFInt32 &
-	order () const
-	{ return *fields .order; }
-
-	MFDouble &
-	knot ()
-	{ return *fields .knot; }
-
-	const MFDouble &
-	knot () const
-	{ return *fields .knot; }
-
-	MFDouble &
-	weight ()
-	{ return *fields .weight; }
-
-	const MFDouble &
-	weight () const
-	{ return *fields .weight; }
-
-	SFNode &
-	controlPoint ()
-	{ return *fields .controlPoint; }
-
-	const SFNode &
-	controlPoint () const
-	{ return *fields .controlPoint; }
+	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
+	getShapes () = 0;
 
 
 private:
 
-	virtual
+	///  @name Construction
+
 	void
-	build () final override;
-
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	set_geometry ();
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		SFInt32* const tessellation;
-		SFBool* const closed;
-		SFInt32* const order;
-		MFDouble* const knot;
-		MFDouble* const weight;
-		SFNode* const controlPoint;
-	};
-
-	Fields fields;
+	X3DFieldAdjustment <X3D::SFInt32>  tessellation;
+	X3DFieldToggleButton <X3D::SFBool> closed;
+	X3DFieldAdjustment <X3D::SFInt32>  order;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

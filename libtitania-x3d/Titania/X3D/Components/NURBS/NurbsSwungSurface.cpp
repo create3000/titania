@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,10 +60,10 @@ const std::string   NurbsSwungSurface::typeName       = "NurbsSwungSurface";
 const std::string   NurbsSwungSurface::containerField = "geometry";
 
 NurbsSwungSurface::Fields::Fields () :
-	profileCurve (new SFNode ()),
-	trajectoryCurve (new SFNode ()),
-	solid (new SFBool (true)),
-	ccw (new SFBool (true))
+	          solid (new SFBool (true)),
+	            ccw (new SFBool (true)),
+	   profileCurve (new SFNode ()),
+	trajectoryCurve (new SFNode ())
 { }
 
 NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContext) :
@@ -74,10 +74,10 @@ NurbsSwungSurface::NurbsSwungSurface (X3DExecutionContext* const executionContex
 	addType (X3DConstants::NurbsSwungSurface);
 
 	addField (inputOutput,    "metadata",        metadata ());
-	addField (inputOutput,    "profileCurve",    profileCurve ());
-	addField (inputOutput,    "trajectoryCurve", trajectoryCurve ());
 	addField (initializeOnly, "solid",           solid ());
 	addField (initializeOnly, "ccw",             ccw ());
+	addField (inputOutput,    "profileCurve",    profileCurve ());
+	addField (inputOutput,    "trajectoryCurve", trajectoryCurve ());
 }
 
 X3DBaseNode*

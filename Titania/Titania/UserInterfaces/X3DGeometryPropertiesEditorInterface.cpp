@@ -105,6 +105,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_GeoElevationGridZoneAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZoneAdjustment"));
 	m_NormalColorAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalColorAdjustment"));
 	m_NormalLengthAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalLengthAdjustment"));
+	m_NurbsCurveOrderAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsCurveOrderAdjustment"));
+	m_NurbsCurveTessellationAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsCurveTessellationAdjustment"));
 	m_NurbsPatchSurfaceUDimensionAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsPatchSurfaceUDimensionAdjustment"));
 	m_NurbsPatchSurfaceUOrderAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsPatchSurfaceUOrderAdjustment"));
 	m_NurbsPatchSurfaceUTessellationAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsPatchSurfaceUTessellationAdjustment"));
@@ -221,6 +223,10 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoElevationGridHeightMapImageReloadButton", m_GeoElevationGridHeightMapImageReloadButton);
 	m_builder -> get_widget ("GeoElevationGridHeightMapImageRemoveButton", m_GeoElevationGridHeightMapImageRemoveButton);
 	m_builder -> get_widget ("GeoElevationGridHeightMapLoadStateLabel", m_GeoElevationGridHeightMapLoadStateLabel);
+	m_builder -> get_widget ("NurbsCurveExpander", m_NurbsCurveExpander);
+	m_builder -> get_widget ("NurbsCurveTessellationSpinButton", m_NurbsCurveTessellationSpinButton);
+	m_builder -> get_widget ("NurbsCurveClosedCheckButton", m_NurbsCurveClosedCheckButton);
+	m_builder -> get_widget ("NurbsCurveOrderSpinButton", m_NurbsCurveOrderSpinButton);
 	m_builder -> get_widget ("NurbsPatchSurfaceExpander", m_NurbsPatchSurfaceExpander);
 	m_builder -> get_widget ("NurbsPatchSurfaceUTessellationSpinButton", m_NurbsPatchSurfaceUTessellationSpinButton);
 	m_builder -> get_widget ("NurbsPatchSurfaceVTessellationSpinButton", m_NurbsPatchSurfaceVTessellationSpinButton);

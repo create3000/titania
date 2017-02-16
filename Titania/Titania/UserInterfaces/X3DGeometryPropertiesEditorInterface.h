@@ -276,6 +276,14 @@ public:
 	{ return m_NormalLengthAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsCurveOrderAdjustment () const
+	{ return m_NurbsCurveOrderAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsCurveTessellationAdjustment () const
+	{ return m_NurbsCurveTessellationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getNurbsPatchSurfaceUDimensionAdjustment () const
 	{ return m_NurbsPatchSurfaceUDimensionAdjustment; }
 
@@ -732,6 +740,22 @@ public:
 	{ return *m_GeoElevationGridHeightMapLoadStateLabel; }
 
 	Gtk::Expander &
+	getNurbsCurveExpander () const
+	{ return *m_NurbsCurveExpander; }
+
+	Gtk::SpinButton &
+	getNurbsCurveTessellationSpinButton () const
+	{ return *m_NurbsCurveTessellationSpinButton; }
+
+	Gtk::CheckButton &
+	getNurbsCurveClosedCheckButton () const
+	{ return *m_NurbsCurveClosedCheckButton; }
+
+	Gtk::SpinButton &
+	getNurbsCurveOrderSpinButton () const
+	{ return *m_NurbsCurveOrderSpinButton; }
+
+	Gtk::Expander &
 	getNurbsPatchSurfaceExpander () const
 	{ return *m_NurbsPatchSurfaceExpander; }
 
@@ -1067,6 +1091,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZoneAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsCurveOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsCurveTessellationAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceUDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceUOrderAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceUTessellationAdjustment;
@@ -1181,6 +1207,10 @@ private:
 	Gtk::Button*                   m_GeoElevationGridHeightMapImageReloadButton;
 	Gtk::Button*                   m_GeoElevationGridHeightMapImageRemoveButton;
 	Gtk::Label*                    m_GeoElevationGridHeightMapLoadStateLabel;
+	Gtk::Expander*                 m_NurbsCurveExpander;
+	Gtk::SpinButton*               m_NurbsCurveTessellationSpinButton;
+	Gtk::CheckButton*              m_NurbsCurveClosedCheckButton;
+	Gtk::SpinButton*               m_NurbsCurveOrderSpinButton;
 	Gtk::Expander*                 m_NurbsPatchSurfaceExpander;
 	Gtk::SpinButton*               m_NurbsPatchSurfaceUTessellationSpinButton;
 	Gtk::SpinButton*               m_NurbsPatchSurfaceVTessellationSpinButton;

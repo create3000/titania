@@ -65,6 +65,7 @@
 #include "Geometry3D/X3DExtrusionEditor.h"
 #include "Geometry3D/X3DSphereEditor.h"
 #include "Geospatial/X3DGeoElevationGridEditor.h"
+#include "NURBS/X3DNurbsCurveEditor.h"
 #include "NURBS/X3DNurbsPatchSurfaceEditor.h"
 #include "NURBS/X3DNurbsTrimmedSurfaceEditor.h"
 #include "X3DPrimitiveCountEditor.h"
@@ -87,6 +88,7 @@ class GeometryPropertiesEditor :
 	public X3DExtrusionEditor,
 	public X3DSphereEditor,
 	public X3DGeoElevationGridEditor,
+	public X3DNurbsCurveEditor,
 	public X3DNurbsPatchSurfaceEditor,
 	public X3DNurbsTrimmedSurfaceEditor,
 	public X3DPrimitiveCountEditor,

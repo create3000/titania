@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -60,10 +60,10 @@ const std::string   NurbsSweptSurface::typeName       = "NurbsSweptSurface";
 const std::string   NurbsSweptSurface::containerField = "geometry";
 
 NurbsSweptSurface::Fields::Fields () :
+	            solid (new SFBool (true)),
+	              ccw (new SFBool (true)),
 	crossSectionCurve (new SFNode ()),
-	trajectoryCurve (new SFNode ()),
-	solid (new SFBool (true)),
-	ccw (new SFBool (true))
+	  trajectoryCurve (new SFNode ())
 { }
 
 NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContext) :
@@ -74,10 +74,10 @@ NurbsSweptSurface::NurbsSweptSurface (X3DExecutionContext* const executionContex
 	addType (X3DConstants::NurbsSweptSurface);
 
 	addField (inputOutput,    "metadata",          metadata ());
-	addField (inputOutput,    "crossSectionCurve", crossSectionCurve ());
-	addField (inputOutput,    "trajectoryCurve",   trajectoryCurve ());
 	addField (initializeOnly, "solid",             solid ());
 	addField (initializeOnly, "ccw",               ccw ());
+	addField (inputOutput,    "crossSectionCurve", crossSectionCurve ());
+	addField (inputOutput,    "trajectoryCurve",   trajectoryCurve ());
 }
 
 X3DBaseNode*
