@@ -4501,6 +4501,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Normal color of editable objects.</property>
                                 <property name="hexpand">True</property>
                               </object>
                               <packing>
@@ -4565,6 +4566,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Edge color of editable objects.</property>
                                 <property name="hexpand">True</property>
                               </object>
                               <packing>
@@ -4605,6 +4607,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <property name="tooltip_text" translatable="yes">Edge and normal color of primitive objects like Box, Sphere, etc.</property>
                                 <property name="hexpand">True</property>
                               </object>
                               <packing>

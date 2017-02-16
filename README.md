@@ -73,7 +73,7 @@ whole project.
 
 Build Software
 --------------------------------------
-Titania is build with [MonoDevelop](http://www.monodevelop.com/)
+Titania is build with [MonoDevelop](http://www.monodevelop.com/) and Ubuntu.
 
 
 Authors
