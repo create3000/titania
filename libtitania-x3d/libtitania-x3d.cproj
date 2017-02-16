@@ -1649,6 +1649,7 @@
     <Folder Include="Titania\X3D\Tools\Geometry3D\ElevationGrid\" />
     <Folder Include="Titania\X3D\Tools\Geometry3D\Extrusion\" />
     <Folder Include="Titania\X3D\Tools\Text\" />
+    <Folder Include="Titania\X3D\Tools\Geometry2D\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

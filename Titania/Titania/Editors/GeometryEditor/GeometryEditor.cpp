@@ -108,6 +108,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "deleteSelectedFaces",    new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "flipVertexOrdering",     new X3D::SFTime ());
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "cutSnapping",            new X3D::SFBool ());
+	coordEditor -> addUserDefinedField (X3D::inputOutput, "primitiveColor",         new X3D::SFColorRGBA (X3D::ToolColors::DARK_BLUE_RGBA));
 	coordEditor -> addUserDefinedField (X3D::inputOutput, "color",                  new X3D::SFColorRGBA (X3D::ToolColors::BLUE_RGBA));
 
 	getBrowserWindow () -> getHandButton ()   .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_hand_toggled));
@@ -264,10 +265,10 @@ GeometryEditor::connect ()
 
 						// Coord
 
-						coordEditor -> getField <X3D::SFColorRGBA> ("color") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
+						coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
 
-						coordTool -> setField <X3D::SFBool>      ("load",  true,                                                 true);
-						coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("color"), true);
+						coordTool -> setField <X3D::SFBool>      ("load",  true,                                                          true);
+						coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"), true);
 
 						break;
 					}

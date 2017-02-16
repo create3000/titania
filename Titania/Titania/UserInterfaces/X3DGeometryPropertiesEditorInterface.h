@@ -272,6 +272,10 @@ public:
 	{ return m_NormalLengthAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getPrimitiveEdgeColorAdjustment () const
+	{ return m_PrimitiveEdgeColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getRectangle2DSizeXAdjustment () const
 	{ return m_Rectangle2DSizeXAdjustment; }
 
@@ -314,6 +318,10 @@ public:
 	Gtk::Button &
 	getGeometryUnlinkButton () const
 	{ return *m_GeometryUnlinkButton; }
+
+	Gtk::Stack &
+	getGeometryStack () const
+	{ return *m_GeometryStack; }
 
 	Gtk::Expander &
 	getArc2DExpander () const
@@ -799,6 +807,18 @@ public:
 	getEdgeColorScale () const
 	{ return *m_EdgeColorScale; }
 
+	Gtk::Box &
+	getPrimitiveEdgeColorBox () const
+	{ return *m_PrimitiveEdgeColorBox; }
+
+	Gtk::Button &
+	getPrimitiveEdgeColorButton () const
+	{ return *m_PrimitiveEdgeColorButton; }
+
+	Gtk::Scale &
+	getPrimitiveEdgeColorScale () const
+	{ return *m_PrimitiveEdgeColorScale; }
+
 	///  @name Signal handlers
 
 	virtual
@@ -910,6 +930,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZoneAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_PrimitiveEdgeColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SphereRadiusAdjustment;
@@ -921,6 +942,7 @@ private:
 	Gtk::Box*                      m_SelectGeometryBox;
 	Gtk::ComboBoxText*             m_GeometryComboBoxText;
 	Gtk::Button*                   m_GeometryUnlinkButton;
+	Gtk::Stack*                    m_GeometryStack;
 	Gtk::Expander*                 m_Arc2DExpander;
 	Gtk::SpinButton*               m_Arc2DStartAngleSpinButton;
 	Gtk::SpinButton*               m_Arc2DEndAngleSpinButton;
@@ -1042,6 +1064,9 @@ private:
 	Gtk::Box*                      m_EdgeColorBox;
 	Gtk::Button*                   m_EdgeColorButton;
 	Gtk::Scale*                    m_EdgeColorScale;
+	Gtk::Box*                      m_PrimitiveEdgeColorBox;
+	Gtk::Button*                   m_PrimitiveEdgeColorButton;
+	Gtk::Scale*                    m_PrimitiveEdgeColorScale;
 
 };
 

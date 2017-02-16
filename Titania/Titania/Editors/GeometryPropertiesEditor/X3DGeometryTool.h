@@ -95,6 +95,7 @@ private:
 
 	X3DFieldAdjustment <X3D::SFFloat> normalLength;
 	SFColorRGBAButton                 normalColor;
+	SFColorRGBAButton                 primitiveEdgeColor;
 	SFColorRGBAButton                 edgeColor;
 
 };

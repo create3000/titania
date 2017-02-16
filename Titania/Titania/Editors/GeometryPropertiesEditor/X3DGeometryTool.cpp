@@ -57,27 +57,37 @@ namespace puck {
 
 X3DGeometryTool::X3DGeometryTool () :
 	X3DGeometryPropertiesEditorInterface (),
-	                        normalLength (this, getNormalLengthAdjustment (), getNormalLengthSpinButton (), "length"),
-	                         normalColor (this, getNormalColorButton (), getNormalColorAdjustment (), getNormalColorBox (), "color"),
-	                           edgeColor (this, getEdgeColorButton (), getEdgeColorAdjustment (), getEdgeColorBox (), "color")
+	                        normalLength (this,
+	                                      getNormalLengthAdjustment (),
+	                                      getNormalLengthSpinButton (),
+	                                      "length"),
+	                         normalColor (this,
+	                                      getNormalColorButton (),
+	                                      getNormalColorAdjustment (),
+	                                      getNormalColorBox (),
+	                                      "color"),
+	                  primitiveEdgeColor (this,
+	                                      getPrimitiveEdgeColorButton (),
+	                                      getPrimitiveEdgeColorAdjustment (),
+	                                      getPrimitiveEdgeColorBox (),
+	                                      "primitiveColor"),
+	                           edgeColor (this, getEdgeColorButton (),
+	                                      getEdgeColorAdjustment (),
+	                                      getEdgeColorBox (),
+	                                      "color")
 {
-	//	normalLength .setUndo (false);
-	//	normalColor  .setUndo (false);
-	//	edgeColor    .setUndo (false);
-
-	normalLength .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
-	normalColor  .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
-	edgeColor    .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getCoordinateEditor () });
+	normalLength       .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
+	normalColor        .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getNormalEditor () });
+	primitiveEdgeColor .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getCoordinateEditor () });
+	edgeColor          .setNodes ({ getBrowserWindow () -> getGeometryEditor () -> getCoordinateEditor () });
 }
 
 void
 X3DGeometryTool::initialize ()
-{
-}
+{ }
 
 X3DGeometryTool::~X3DGeometryTool ()
-{
-}
+{ }
 
 } // puck
 } // titania

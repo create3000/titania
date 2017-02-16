@@ -2586,6 +2586,7 @@
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry3D\X3DHeightMapEditor.h" />
     <None Include="share\titania\ui\icons\Rought.svg" />
     <None Include="share\titania\ui\icons\Smooth.svg" />
+    <None Include="scripts\Library\Tools.pl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

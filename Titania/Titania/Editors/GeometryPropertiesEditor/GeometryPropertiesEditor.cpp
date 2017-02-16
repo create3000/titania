@@ -161,6 +161,11 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DSphereEditor::addShapes ();
 	X3DGeoElevationGridEditor::addShapes ();
 
+//	const auto widgets  = getGeometryStack () .get_children ();
+//	const auto visibles = std::count_if (widgets .begin (), widgets .end (), [ ] (const Gtk::Widget* w) { return w -> get_visible (); });
+//
+//	getGeometryStack () .set_visible (visibles == 1);
+
 	set_geometry ();
 }
 
@@ -230,8 +235,6 @@ GeometryPropertiesEditor::set_buffer ()
 		try
 		{
 			node -> getField <X3D::SFNode> ("normal") .addInterest (&GeometryPropertiesEditor::set_normal, this);
-
-			getNormalsBox () .set_sensitive (true);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -258,6 +261,7 @@ GeometryPropertiesEditor::set_normal ()
 		{ }
 	}
 
+	getAddNormalsButton ()    .set_sensitive (normal);
 	getRemoveNormalsButton () .set_sensitive (normal);
 }
 
