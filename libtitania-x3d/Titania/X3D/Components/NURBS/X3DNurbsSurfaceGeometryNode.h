@@ -59,120 +59,148 @@ namespace titania {
 namespace X3D {
 
 class X3DNurbsSurfaceGeometryNode :
-	public X3DParametricGeometryNode
+	virtual public X3DParametricGeometryNode
 {
 public:
 
 	///  @name Fields
 
+	virtual
 	SFInt32 &
 	uTessellation ()
 	{ return *fields .uTessellation; }
 
+	virtual
 	const SFInt32 &
 	uTessellation () const
 	{ return *fields .uTessellation; }
 
+	virtual
 	SFInt32 &
 	vTessellation ()
 	{ return *fields .vTessellation; }
 
+	virtual
 	const SFInt32 &
 	vTessellation () const
 	{ return *fields .vTessellation; }
 
+	virtual
 	SFBool &
 	uClosed ()
 	{ return *fields .uClosed; }
 
+	virtual
 	const SFBool &
 	uClosed () const
 	{ return *fields .uClosed; }
 
+	virtual
 	SFBool &
 	vClosed ()
 	{ return *fields .vClosed; }
 
+	virtual
 	const SFBool &
 	vClosed () const
 	{ return *fields .vClosed; }
 
+	virtual
 	SFBool &
 	solid ()
 	{ return *fields .solid; }
 
+	virtual
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
 
+	virtual
 	SFInt32 &
 	uOrder ()
 	{ return *fields .uOrder; }
 
+	virtual
 	const SFInt32 &
 	uOrder () const
 	{ return *fields .uOrder; }
 
+	virtual
 	SFInt32 &
 	vOrder ()
 	{ return *fields .vOrder; }
 
+	virtual
 	const SFInt32 &
 	vOrder () const
 	{ return *fields .vOrder; }
 
+	virtual
 	SFInt32 &
 	uDimension ()
 	{ return *fields .uDimension; }
 
+	virtual
 	const SFInt32 &
 	uDimension () const
 	{ return *fields .uDimension; }
 
+	virtual
 	SFInt32 &
 	vDimension ()
 	{ return *fields .vDimension; }
 
+	virtual
 	const SFInt32 &
 	vDimension () const
 	{ return *fields .vDimension; }
 
+	virtual
 	MFDouble &
 	uKnot ()
 	{ return *fields .uKnot; }
 
+	virtual
 	const MFDouble &
 	uKnot () const
 	{ return *fields .uKnot; }
 
+	virtual
 	MFDouble &
 	vKnot ()
 	{ return *fields .vKnot; }
 
+	virtual
 	const MFDouble &
 	vKnot () const
 	{ return *fields .vKnot; }
 
+	virtual
 	MFDouble &
 	weight ()
 	{ return *fields .weight; }
 
+	virtual
 	const MFDouble &
 	weight () const
 	{ return *fields .weight; }
 
+	virtual
 	SFNode &
 	texCoord ()
 	{ return *fields .texCoord; }
 
+	virtual
 	const SFNode &
 	texCoord () const
 	{ return *fields .texCoord; }
 
+	virtual
 	SFNode &
 	controlPoint ()
 	{ return *fields .controlPoint; }
 
+	virtual
 	const SFNode &
 	controlPoint () const
 	{ return *fields .controlPoint; }

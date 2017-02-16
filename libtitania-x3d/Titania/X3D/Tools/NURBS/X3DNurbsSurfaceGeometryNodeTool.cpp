@@ -48,124 +48,32 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NURBS_NURBS_SWEPT_SURFACE_H__
-#define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_SWEPT_SURFACE_H__
-
-#include "../NURBS/X3DParametricGeometryNode.h"
+#include "X3DNurbsSurfaceGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class NurbsSweptSurface :
-	virtual public X3DParametricGeometryNode
+X3DNurbsSurfaceGeometryNodeTool::X3DNurbsSurfaceGeometryNodeTool () :
+	  X3DNurbsSurfaceGeometryNode (),
+	X3DParametricGeometryNodeTool ()
 {
-public:
+	addType (X3DConstants::X3DNurbsSurfaceGeometryNodeTool);
+}
 
-	NurbsSweptSurface (X3DExecutionContext* const executionContext);
+void
+X3DNurbsSurfaceGeometryNodeTool::initialize ()
+{
+	X3DParametricGeometryNodeTool::initialize ();
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+void
+X3DNurbsSurfaceGeometryNodeTool::dispose ()
+{
+	X3DParametricGeometryNodeTool::dispose ();
+}
 
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	SFBool &
-	solid ()
-	{ return *fields .solid; }
-
-	virtual
-	const SFBool &
-	solid () const
-	{ return *fields .solid; }
-
-	virtual
-	SFBool &
-	ccw ()
-	{ return *fields .ccw; }
-
-	virtual
-	const SFBool &
-	ccw () const
-	{ return *fields .ccw; }
-
-	virtual
-	SFNode &
-	crossSectionCurve ()
-	{ return *fields .crossSectionCurve; }
-
-	virtual
-	const SFNode &
-	crossSectionCurve () const
-	{ return *fields .crossSectionCurve; }
-
-	virtual
-	SFNode &
-	trajectoryCurve ()
-	{ return *fields .trajectoryCurve; }
-
-	virtual
-	const SFNode &
-	trajectoryCurve () const
-	{ return *fields .trajectoryCurve; }
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
-
-private:
-
-	virtual
-	void
-	build () final override;
-
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const solid;
-		SFBool* const ccw;
-		SFNode* const crossSectionCurve;
-		SFNode* const trajectoryCurve;
-	};
-
-	Fields fields;
-
-};
+X3DNurbsSurfaceGeometryNodeTool::~X3DNurbsSurfaceGeometryNodeTool ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

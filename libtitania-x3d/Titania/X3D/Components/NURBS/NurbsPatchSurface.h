@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class NurbsPatchSurface :
-	public X3DNurbsSurfaceGeometryNode
+	virtual public X3DNurbsSurfaceGeometryNode
 {
 public:
 
@@ -88,6 +88,12 @@ public:
 	getContainerField () const
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () override;
 
 
 private:

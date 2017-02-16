@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class X3DParametricGeometryNode :
-	public X3DGeometryNode
+	virtual public X3DGeometryNode
 {
 public:
 
@@ -65,7 +65,7 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
 
 
 protected:

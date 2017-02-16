@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class NurbsSwungSurface :
-	public X3DParametricGeometryNode
+	virtual public X3DParametricGeometryNode
 {
 public:
 
@@ -89,37 +89,51 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	solid ()
 	{ return *fields .solid; }
 
+	virtual
 	const SFBool &
 	solid () const
 	{ return *fields .solid; }
 
+	virtual
 	SFBool &
 	ccw ()
 	{ return *fields .ccw; }
 
+	virtual
 	const SFBool &
 	ccw () const
 	{ return *fields .ccw; }
 
+	virtual
 	SFNode &
 	profileCurve ()
 	{ return *fields .profileCurve; }
 
+	virtual
 	const SFNode &
 	profileCurve () const
 	{ return *fields .profileCurve; }
 
+	virtual
 	SFNode &
 	trajectoryCurve ()
 	{ return *fields .trajectoryCurve; }
 
+	virtual
 	const SFNode &
 	trajectoryCurve () const
 	{ return *fields .trajectoryCurve; }
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () override;
 
 
 private:

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,106 +48,94 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NURBS_NURBS_SWEPT_SURFACE_H__
-#define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_SWEPT_SURFACE_H__
+#ifndef __TITANIA_X3D_TOOLS_NURBS_NURBS_SWEPT_SURFACE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_NURBS_NURBS_SWEPT_SURFACE_TOOL_H__
 
-#include "../NURBS/X3DParametricGeometryNode.h"
+#include "../../Components/NURBS/NurbsSweptSurface.h"
+#include "../NURBS/X3DParametricGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class NurbsSweptSurface :
-	virtual public X3DParametricGeometryNode
+class NurbsSweptSurfaceTool :
+	virtual public NurbsSweptSurface,
+	public X3DParametricGeometryNodeTool
 {
 public:
 
-	NurbsSweptSurface (X3DExecutionContext* const executionContext);
+	///  @name Construction
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
+	NurbsSweptSurfaceTool (NurbsSweptSurface* const node);
 
 	///  @name Fields
 
 	virtual
 	SFBool &
-	solid ()
-	{ return *fields .solid; }
+	solid () final override
+	{ return getNode <NurbsSweptSurface> () -> solid (); }
 
 	virtual
 	const SFBool &
-	solid () const
-	{ return *fields .solid; }
+	solid () const final override
+	{ return getNode <NurbsSweptSurface> () -> solid (); }
 
 	virtual
 	SFBool &
-	ccw ()
-	{ return *fields .ccw; }
+	ccw () final override
+	{ return getNode <NurbsSweptSurface> () -> ccw (); }
 
 	virtual
 	const SFBool &
-	ccw () const
-	{ return *fields .ccw; }
+	ccw () const final override
+	{ return getNode <NurbsSweptSurface> () -> ccw (); }
 
 	virtual
 	SFNode &
-	crossSectionCurve ()
-	{ return *fields .crossSectionCurve; }
+	crossSectionCurve () final override
+	{ return getNode <NurbsSweptSurface> () -> crossSectionCurve (); }
 
 	virtual
 	const SFNode &
-	crossSectionCurve () const
-	{ return *fields .crossSectionCurve; }
+	crossSectionCurve () const final override
+	{ return getNode <NurbsSweptSurface> () -> crossSectionCurve (); }
 
 	virtual
 	SFNode &
-	trajectoryCurve ()
-	{ return *fields .trajectoryCurve; }
+	trajectoryCurve () final override
+	{ return getNode <NurbsSweptSurface> () -> trajectoryCurve (); }
 
 	virtual
 	const SFNode &
-	trajectoryCurve () const
-	{ return *fields .trajectoryCurve; }
+	trajectoryCurve () const final override
+	{ return getNode <NurbsSweptSurface> () -> trajectoryCurve (); }
 
 	///  @name Operations
 
 	virtual
 	void
-	addTool () override;
+	addTool () final override
+	{ X3DParametricGeometryNodeTool::addTool (); }
 
-
-private:
+	///  @name Destruction
 
 	virtual
 	void
-	build () final override;
+	dispose () final override;
+
+	virtual
+	~NurbsSweptSurfaceTool () final override;
 
 
-	///  @name Static members
+protected:
 
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+
+private:
 
 	///  @name Members
 
@@ -155,10 +143,6 @@ private:
 	{
 		Fields ();
 
-		SFBool* const solid;
-		SFBool* const ccw;
-		SFNode* const crossSectionCurve;
-		SFNode* const trajectoryCurve;
 	};
 
 	Fields fields;

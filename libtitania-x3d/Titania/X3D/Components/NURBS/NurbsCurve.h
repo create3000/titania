@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class NurbsCurve :
-	public X3DParametricGeometryNode
+	virtual public X3DParametricGeometryNode
 {
 public:
 
@@ -89,53 +89,71 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFInt32 &
 	tessellation ()
 	{ return *fields .tessellation; }
 
+	virtual
 	const SFInt32 &
 	tessellation () const
 	{ return *fields .tessellation; }
 
+	virtual
 	SFBool &
 	closed ()
 	{ return *fields .closed; }
 
+	virtual
 	const SFBool &
 	closed () const
 	{ return *fields .closed; }
 
+	virtual
 	SFInt32 &
 	order ()
 	{ return *fields .order; }
 
+	virtual
 	const SFInt32 &
 	order () const
 	{ return *fields .order; }
 
+	virtual
 	MFDouble &
 	knot ()
 	{ return *fields .knot; }
 
+	virtual
 	const MFDouble &
 	knot () const
 	{ return *fields .knot; }
 
+	virtual
 	MFDouble &
 	weight ()
 	{ return *fields .weight; }
 
+	virtual
 	const MFDouble &
 	weight () const
 	{ return *fields .weight; }
 
+	virtual
 	SFNode &
 	controlPoint ()
 	{ return *fields .controlPoint; }
 
+	virtual
 	const SFNode &
 	controlPoint () const
 	{ return *fields .controlPoint; }
+
+	///  @name Operations
+
+	virtual
+	void
+	addTool () override;
 
 
 private:

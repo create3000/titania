@@ -61,7 +61,7 @@ namespace X3D {
 
 class X3DComposedGeometryNodeTool :
 	virtual public X3DComposedGeometryNode,
-	virtual public X3DGeometryNodeTool
+	public X3DGeometryNodeTool
 {
 public:
 

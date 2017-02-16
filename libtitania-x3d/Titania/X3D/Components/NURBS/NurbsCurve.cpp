@@ -52,6 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../../Tools/NURBS/NurbsCurveTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -95,6 +97,12 @@ NurbsCurve::create (X3DExecutionContext* const executionContext) const
 void
 NurbsCurve::build ()
 { }
+
+void
+NurbsCurve::addTool ()
+{
+	X3DParametricGeometryNode::addTool (new NurbsCurveTool (this));
+}
 
 } // X3D
 } // titania

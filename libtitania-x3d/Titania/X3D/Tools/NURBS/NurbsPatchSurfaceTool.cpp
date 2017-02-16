@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,124 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NURBS_NURBS_SWEPT_SURFACE_H__
-#define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_SWEPT_SURFACE_H__
+#include "NurbsPatchSurfaceTool.h"
 
-#include "../NURBS/X3DParametricGeometryNode.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class NurbsSweptSurface :
-	virtual public X3DParametricGeometryNode
+NurbsPatchSurfaceTool::Fields::Fields ()
+{ }
+
+NurbsPatchSurfaceTool::NurbsPatchSurfaceTool (NurbsPatchSurface* const node) :
+	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	              NurbsPatchSurface (node -> getExecutionContext ()),
+	                    X3DBaseTool (node),
+	X3DNurbsSurfaceGeometryNodeTool (),
+	                         fields ()
 {
-public:
+	addType (X3DConstants::NurbsPatchSurfaceTool);
 
-	NurbsSweptSurface (X3DExecutionContext* const executionContext);
+	addField (inputOutput, "normalTool", normalTool ());
+	addField (inputOutput, "coordTool",  coordTool ());
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+void
+NurbsPatchSurfaceTool::initialize ()
+{
+	X3DNurbsSurfaceGeometryNodeTool::initialize ();
+}
 
-	///  @name Common members
+void
+NurbsPatchSurfaceTool::dispose ()
+{
+	__LOG__ << std::endl;
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
+	X3DNurbsSurfaceGeometryNodeTool::dispose ();
+}
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	SFBool &
-	solid ()
-	{ return *fields .solid; }
-
-	virtual
-	const SFBool &
-	solid () const
-	{ return *fields .solid; }
-
-	virtual
-	SFBool &
-	ccw ()
-	{ return *fields .ccw; }
-
-	virtual
-	const SFBool &
-	ccw () const
-	{ return *fields .ccw; }
-
-	virtual
-	SFNode &
-	crossSectionCurve ()
-	{ return *fields .crossSectionCurve; }
-
-	virtual
-	const SFNode &
-	crossSectionCurve () const
-	{ return *fields .crossSectionCurve; }
-
-	virtual
-	SFNode &
-	trajectoryCurve ()
-	{ return *fields .trajectoryCurve; }
-
-	virtual
-	const SFNode &
-	trajectoryCurve () const
-	{ return *fields .trajectoryCurve; }
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
-
-private:
-
-	virtual
-	void
-	build () final override;
-
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFBool* const solid;
-		SFBool* const ccw;
-		SFNode* const crossSectionCurve;
-		SFNode* const trajectoryCurve;
-	};
-
-	Fields fields;
-
-};
+NurbsPatchSurfaceTool::~NurbsPatchSurfaceTool ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

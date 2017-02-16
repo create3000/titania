@@ -926,6 +926,13 @@
     <None Include="Titania\X3D\Tools\Rendering\TriangleFanSetTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\TriangleSetTool.h" />
     <None Include="Titania\X3D\Tools\Rendering\TriangleStripSetTool.h" />
+    <None Include="Titania\X3D\Tools\NURBS\X3DParametricGeometryNodeTool.h" />
+    <None Include="Titania\X3D\Tools\NURBS\X3DNurbsSurfaceGeometryNodeTool.h" />
+    <None Include="Titania\X3D\Tools\NURBS\NurbsPatchSurfaceTool.h" />
+    <None Include="Titania\X3D\Tools\NURBS\NurbsTrimmedSurfaceTool.h" />
+    <None Include="Titania\X3D\Tools\NURBS\NurbsCurveTool.h" />
+    <None Include="Titania\X3D\Tools\NURBS\NurbsSweptSurfaceTool.h" />
+    <None Include="Titania\X3D\Tools\NURBS\NurbsSwungSurfaceTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1579,6 +1586,13 @@
     <Compile Include="Titania\X3D\Tools\Rendering\TriangleFanSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\TriangleSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\TriangleStripSet.cpp" />
+    <Compile Include="Titania\X3D\Tools\NURBS\X3DParametricGeometryNodeTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\NURBS\X3DNurbsSurfaceGeometryNodeTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\NURBS\NurbsPatchSurfaceTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\NURBS\NurbsTrimmedSurfaceTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\NURBS\NurbsCurveTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\NURBS\NurbsSweptSurfaceTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\NURBS\NurbsSwungSurfaceTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

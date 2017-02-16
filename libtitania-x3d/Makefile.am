@@ -637,6 +637,13 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
+	Titania/X3D/Tools/NURBS/NurbsCurveTool.cpp \
+	Titania/X3D/Tools/NURBS/NurbsPatchSurfaceTool.cpp \
+	Titania/X3D/Tools/NURBS/NurbsSweptSurfaceTool.cpp \
+	Titania/X3D/Tools/NURBS/NurbsSwungSurfaceTool.cpp \
+	Titania/X3D/Tools/NURBS/NurbsTrimmedSurfaceTool.cpp \
+	Titania/X3D/Tools/NURBS/X3DNurbsSurfaceGeometryNodeTool.cpp \
+	Titania/X3D/Tools/NURBS/X3DParametricGeometryNodeTool.cpp \
 	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
 	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp \
 	Titania/X3D/Tools/Rendering/CoordinateTool.cpp \

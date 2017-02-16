@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,106 +48,84 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NURBS_NURBS_SWEPT_SURFACE_H__
-#define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_SWEPT_SURFACE_H__
+#ifndef __TITANIA_X3D_TOOLS_NURBS_NURBS_TRIMMED_SURFACE_TOOL_H__
+#define __TITANIA_X3D_TOOLS_NURBS_NURBS_TRIMMED_SURFACE_TOOL_H__
 
-#include "../NURBS/X3DParametricGeometryNode.h"
+#include "../../Components/NURBS/NurbsTrimmedSurface.h"
+#include "../NURBS/X3DNurbsSurfaceGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class NurbsSweptSurface :
-	virtual public X3DParametricGeometryNode
+class NurbsTrimmedSurfaceTool :
+	virtual public NurbsTrimmedSurface,
+	public X3DNurbsSurfaceGeometryNodeTool
 {
 public:
 
-	NurbsSweptSurface (X3DExecutionContext* const executionContext);
+	///  @name Construction
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
+	NurbsTrimmedSurfaceTool (NurbsTrimmedSurface* const node);
 
 	///  @name Fields
 
 	virtual
-	SFBool &
-	solid ()
-	{ return *fields .solid; }
+	MFNode &
+	addTrimmingContour () final override
+	{ return getNode <NurbsTrimmedSurface> () -> addTrimmingContour (); }
 
 	virtual
-	const SFBool &
-	solid () const
-	{ return *fields .solid; }
+	const MFNode &
+	addTrimmingContour () const final override
+	{ return getNode <NurbsTrimmedSurface> () -> addTrimmingContour (); }
 
 	virtual
-	SFBool &
-	ccw ()
-	{ return *fields .ccw; }
+	MFNode &
+	removeTrimmingContour () final override
+	{ return getNode <NurbsTrimmedSurface> () -> removeTrimmingContour (); }
 
 	virtual
-	const SFBool &
-	ccw () const
-	{ return *fields .ccw; }
+	const MFNode &
+	removeTrimmingContour () const final override
+	{ return getNode <NurbsTrimmedSurface> () -> removeTrimmingContour (); }
 
 	virtual
-	SFNode &
-	crossSectionCurve ()
-	{ return *fields .crossSectionCurve; }
+	MFNode &
+	trimmingContour () final override
+	{ return getNode <NurbsTrimmedSurface> () -> trimmingContour (); }
 
 	virtual
-	const SFNode &
-	crossSectionCurve () const
-	{ return *fields .crossSectionCurve; }
-
-	virtual
-	SFNode &
-	trajectoryCurve ()
-	{ return *fields .trajectoryCurve; }
-
-	virtual
-	const SFNode &
-	trajectoryCurve () const
-	{ return *fields .trajectoryCurve; }
+	const MFNode &
+	trimmingContour () const final override
+	{ return getNode <NurbsTrimmedSurface> () -> trimmingContour (); }
 
 	///  @name Operations
 
 	virtual
 	void
-	addTool () override;
+	addTool () final override
+	{ X3DNurbsSurfaceGeometryNodeTool::addTool (); }
 
-
-private:
+	///  @name Destruction
 
 	virtual
 	void
-	build () final override;
+	dispose () final override;
+
+	virtual
+	~NurbsTrimmedSurfaceTool () final override;
 
 
-	///  @name Static members
+protected:
 
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+
+private:
 
 	///  @name Members
 
@@ -155,10 +133,6 @@ private:
 	{
 		Fields ();
 
-		SFBool* const solid;
-		SFBool* const ccw;
-		SFNode* const crossSectionCurve;
-		SFNode* const trajectoryCurve;
 	};
 
 	Fields fields;

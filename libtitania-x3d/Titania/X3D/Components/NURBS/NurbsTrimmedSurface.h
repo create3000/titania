@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 
 class NurbsTrimmedSurface :
-	public X3DNurbsSurfaceGeometryNode
+	virtual public X3DNurbsSurfaceGeometryNode
 {
 public:
 
@@ -92,32 +92,50 @@ public:
 
 	///  @name Fields
 
+	virtual
 	MFNode &
 	addTrimmingContour ()
 	{ return *fields .addTrimmingContour; }
 
+	virtual
 	const MFNode &
 	addTrimmingContour () const
 	{ return *fields .addTrimmingContour; }
 
+	virtual
 	MFNode &
 	removeTrimmingContour ()
 	{ return *fields .removeTrimmingContour; }
 
+	virtual
 	const MFNode &
 	removeTrimmingContour () const
 	{ return *fields .removeTrimmingContour; }
 
+	virtual
 	MFNode &
 	trimmingContour ()
 	{ return *fields .trimmingContour; }
 
+	virtual
 	const MFNode &
 	trimmingContour () const
 	{ return *fields .trimmingContour; }
 
+	///  @name Operations
+
+	virtual
+	void
+	addTool () override;
+
 
 protected:
+
+	///  @name Construction
+
+	virtual
+	void
+	initialize () override;
 
 	///  @name Operations
 
@@ -127,12 +145,6 @@ protected:
 
 
 private:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
 	
 	///  @name Event handlers
 

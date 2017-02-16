@@ -52,6 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../../Tools/NURBS/NurbsSweptSurfaceTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -89,6 +91,12 @@ NurbsSweptSurface::create (X3DExecutionContext* const executionContext) const
 void
 NurbsSweptSurface::build ()
 { }
+
+void
+NurbsSweptSurface::addTool ()
+{
+	X3DParametricGeometryNode::addTool (new NurbsSweptSurfaceTool (this));
+}
 
 } // X3D
 } // titania
