@@ -54,6 +54,8 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/X3DCoordinateNode.h"
 
+#include "../../Tools/Rendering/TriangleStripSetTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -148,6 +150,12 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	return X3DComposedGeometryNode::toPrimitive (3, coordIndex .size ());
+}
+
+void
+TriangleStripSet::addTool ()
+{
+	X3DComposedGeometryNode::addTool (new TriangleStripSetTool (this));
 }
 
 } // X3D

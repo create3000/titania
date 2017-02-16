@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class TriangleFanSet :
-	public X3DComposedGeometryNode
+	virtual public X3DComposedGeometryNode
 {
 public:
 
@@ -89,10 +89,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	MFInt32 &
 	fanCount ()
 	{ return *fields .fanCount; }
 
+	virtual
 	const MFInt32 &
 	fanCount () const
 	{ return *fields .fanCount; }
@@ -101,20 +103,27 @@ public:
 
 	virtual
 	void
-	addNormals () final override;
+	addNormals () override;
 
 	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
 private:
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+protected:
 
 	virtual
 	size_t

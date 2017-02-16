@@ -221,14 +221,14 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 			X3D::X3DConstants::Sphere,
 			X3D::X3DConstants::GeoElevationGrid,
 			//X3D::X3DConstants::IndexedLineSet,
-			//X3D::X3DConstants::IndexedTriangleFanSet,
-			//X3D::X3DConstants::IndexedTriangleSet,
-			//X3D::X3DConstants::IndexedTriangleStripSet,
+			X3D::X3DConstants::IndexedTriangleFanSet,
+			X3D::X3DConstants::IndexedTriangleSet,
+			X3D::X3DConstants::IndexedTriangleStripSet,
 			//X3D::X3DConstants::LineSet,
 			//X3D::X3DConstants::PointSet,
-			//X3D::X3DConstants::TriangleFanSet,
-			//X3D::X3DConstants::TriangleSet,
-			//X3D::X3DConstants::TriangleStripSet,
+			X3D::X3DConstants::TriangleFanSet,
+			X3D::X3DConstants::TriangleSet,
+			X3D::X3DConstants::TriangleStripSet,
 			X3D::X3DConstants::Text
 		});
 

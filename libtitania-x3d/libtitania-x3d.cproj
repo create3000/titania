@@ -920,6 +920,12 @@
     <None Include="Titania\X3D\Tools\Geometry2D\ArcClose2DTool.h" />
     <None Include="Titania\X3D\Tools\CADGeometry\QuadSetTool.h" />
     <None Include="Titania\X3D\Tools\CADGeometry\IndexedQuadSetTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\IndexedTriangleFanSetTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\IndexedTriangleSetTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\IndexedTriangleStripSetTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\TriangleFanSetTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\TriangleSetTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\TriangleStripSetTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1567,6 +1573,12 @@
     <Compile Include="Titania\X3D\Tools\Geometry2D\ArcClose2DTool.cpp" />
     <Compile Include="Titania\X3D\Tools\CADGeometry\QuadSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\CADGeometry\IndexedQuadSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\IndexedTriangleFanSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\IndexedTriangleSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\IndexedTriangleStripSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\TriangleFanSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\TriangleSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\TriangleStripSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -84,7 +84,7 @@ public:
 	virtual
 	void
 	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
+	{ X3DComposedGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

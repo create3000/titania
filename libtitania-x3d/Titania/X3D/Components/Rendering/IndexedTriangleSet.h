@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class IndexedTriangleSet :
-	public X3DComposedGeometryNode
+	virtual public X3DComposedGeometryNode
 {
 public:
 
@@ -89,10 +89,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	MFInt32 &
 	index ()
 	{ return *fields .index; }
 
+	virtual
 	const MFInt32 &
 	index () const
 	{ return *fields .index; }
@@ -101,13 +103,17 @@ public:
 
 	virtual
 	void
-	addNormals () final override;
+	addNormals () override;
 
 	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
 private:

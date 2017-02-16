@@ -640,7 +640,13 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
 	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp \
 	Titania/X3D/Tools/Rendering/CoordinateTool.cpp \
+	Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.cpp \
+	Titania/X3D/Tools/Rendering/IndexedTriangleSetTool.cpp \
+	Titania/X3D/Tools/Rendering/IndexedTriangleStripSetTool.cpp \
 	Titania/X3D/Tools/Rendering/NormalTool.cpp \
+	Titania/X3D/Tools/Rendering/TriangleFanSetTool.cpp \
+	Titania/X3D/Tools/Rendering/TriangleSetTool.cpp \
+	Titania/X3D/Tools/Rendering/TriangleStripSet.cpp \
 	Titania/X3D/Tools/Rendering/X3DComposedGeometryNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DCoordinateNodeTool.cpp \
 	Titania/X3D/Tools/Rendering/X3DGeometricPropertyNodeTool.cpp \

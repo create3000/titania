@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,118 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_TRIANGLE_STRIP_SET_H__
-#define __TITANIA_X3D_COMPONENTS_RENDERING_TRIANGLE_STRIP_SET_H__
+#include "TriangleStripSetTool.h"
 
-#include "../Rendering/X3DComposedGeometryNode.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class TriangleStripSet :
-	virtual public X3DComposedGeometryNode
+TriangleStripSetTool::Fields::Fields ()
+{ }
+
+TriangleStripSetTool::TriangleStripSetTool (TriangleStripSet* const node) :
+	                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	           TriangleStripSet (node -> getExecutionContext ()),
+	                X3DBaseTool (node),
+	X3DComposedGeometryNodeTool (),
+	                     fields ()
 {
-public:
+	addType (X3DConstants::TriangleStripSetTool);
 
-	TriangleStripSet (X3DExecutionContext* const executionContext);
+	addField (inputOutput, "normalTool", normalTool ());
+	addField (inputOutput, "coordTool",  coordTool ());
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+void
+TriangleStripSetTool::initialize ()
+{
+	X3DComposedGeometryNodeTool::initialize ();
+}
 
-	///  @name Common members
+void
+TriangleStripSetTool::dispose ()
+{
+	__LOG__ << std::endl;
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
+	X3DComposedGeometryNodeTool::dispose ();
+}
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	MFInt32 &
-	stripCount ()
-	{ return *fields .stripCount; }
-
-	virtual
-	const MFInt32 &
-	stripCount () const
-	{ return *fields .stripCount; }
-
-	///  @name Operations
-
-	virtual
-	void
-	addNormals () override;
-
-	virtual
-	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override;
-
-	virtual
-	void
-	addTool () override;
-
-
-protected:
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	virtual
-	size_t
-	getIndex (const size_t index) const final override
-	{ return coordIndex [index]; }
-
-	void
-	set_stripCount ();
-
-	virtual
-	void
-	build () final override;
-
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		MFInt32* const stripCount;
-	};
-
-	Fields fields;
-
-	std::vector <int32_t> coordIndex;
-
-};
+TriangleStripSetTool::~TriangleStripSetTool ()
+{ }
 
 } // X3D
 } // titania
-
-#endif
