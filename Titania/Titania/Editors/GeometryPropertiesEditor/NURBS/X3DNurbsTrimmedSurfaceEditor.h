@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,130 +48,64 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_NURBS_NURBS_TRIMMED_SURFACE_H__
-#define __TITANIA_X3D_COMPONENTS_NURBS_NURBS_TRIMMED_SURFACE_H__
+#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_NURBS_X3DNURBS_TRIMMED_SURFACEDITOR_H__
+#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_NURBS_X3DNURBS_TRIMMED_SURFACEDITOR_H__
 
-#include "../NURBS/X3DNurbsSurfaceGeometryNode.h"
-#include "../NURBS/Contour2D.h"
+#include "../../../ComposedWidgets.h"
+#include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class NurbsTrimmedSurface :
-	public X3DNurbsSurfaceGeometryNode
+class X3DNurbsTrimmedSurfaceEditor :
+	virtual public X3DGeometryPropertiesEditorInterface
 {
 public:
 
-	///  @name Construction
-
-	NurbsTrimmedSurface (X3DExecutionContext* const executionContext);
+	///  @name Destruction
 
 	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	MFNode &
-	addTrimmingContour ()
-	{ return *fields .addTrimmingContour; }
-
-	const MFNode &
-	addTrimmingContour () const
-	{ return *fields .addTrimmingContour; }
-
-	MFNode &
-	removeTrimmingContour ()
-	{ return *fields .removeTrimmingContour; }
-
-	const MFNode &
-	removeTrimmingContour () const
-	{ return *fields .removeTrimmingContour; }
-
-	MFNode &
-	trimmingContour ()
-	{ return *fields .trimmingContour; }
-
-	const MFNode &
-	trimmingContour () const
-	{ return *fields .trimmingContour; }
+	~X3DNurbsTrimmedSurfaceEditor () override;
 
 
 protected:
 
-	///  @name Operations
+	///  @name Construction
+
+	X3DNurbsTrimmedSurfaceEditor ();
+
+	void
+	addShapes ();
+
+	void
+	removeShapes ();
 
 	virtual
-	void
-	trimSurface (GLUnurbs*) const final override;
+	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
+	getShapes () = 0;
 
 
 private:
 
 	///  @name Construction
 
-	virtual
 	void
-	initialize () final override;
-	
-	///  @name Event handlers
-
-	void
-	set_addTrimmingContour ();
-
-	void
-	set_removeTrimmingContour ();
-
-	void
-	set_trimmingContour ();
-
-	///  @name Operations
-	
-	std::vector <Contour2D*>
-	getContours () const;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	set_geometry ();
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-		MFNode* const addTrimmingContour;
-		MFNode* const removeTrimmingContour;
-		MFNode* const trimmingContour;
-	};
-
-	Fields fields;
+	X3DFieldAdjustment <X3D::SFInt32>  uTessellation;
+	X3DFieldAdjustment <X3D::SFInt32>  vTessellation;
+	X3DFieldToggleButton <X3D::SFBool> uClosed;
+	X3DFieldToggleButton <X3D::SFBool> vClosed;
+	X3DFieldAdjustment <X3D::SFInt32>  uOrder;
+	X3DFieldAdjustment <X3D::SFInt32>  vOrder;
+	X3DFieldAdjustment <X3D::SFInt32>  uDimension;
+	X3DFieldAdjustment <X3D::SFInt32>  vDimension;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

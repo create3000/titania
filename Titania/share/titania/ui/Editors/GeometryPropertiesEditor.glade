@@ -240,6 +240,66 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="NurbsPatchSurfaceUDimensionAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsPatchSurfaceUOrderAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsPatchSurfaceUTessellationAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsPatchSurfaceVDimensionAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsPatchSurfaceVOrderAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsPatchSurfaceVTessellationAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsTrimmedSurfaceUDimensionAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsTrimmedSurfaceUOrderAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsTrimmedSurfaceUTessellationAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsTrimmedSurfaceVDimensionAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsTrimmedSurfaceVOrderAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="NurbsTrimmedSurfaceVTessellationAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkAdjustment" id="PrimitiveEdgeColorAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
@@ -330,35 +390,40 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <items>
-                          <item translatable="yes">None</item>
-                          <item translatable="yes">Arc2D</item>
-                          <item translatable="yes">ArcClose2D</item>
-                          <item translatable="yes">Box</item>
-                          <item translatable="yes">Circle2D</item>
-                          <item translatable="yes">Cone</item>
-                          <item translatable="yes">Cylinder</item>
-                          <item translatable="yes">Disk2D</item>
-                          <item translatable="yes">ElevationGrid</item>
-                          <item translatable="yes">Extrusion</item>
-                          <item translatable="yes">GeoElevationGrid</item>
-                          <item translatable="yes">IndexedFaceSet</item>
-                          <item translatable="yes">IndexedLineSet</item>
-                          <item translatable="yes">IndexedQuadSet</item>
-                          <item translatable="yes">IndexedTriangleFanSet</item>
-                          <item translatable="yes">IndexedTriangleSet</item>
-                          <item translatable="yes">IndexedTriangleStripSet</item>
-                          <item translatable="yes">LineSet</item>
-                          <item translatable="yes">PointSet</item>
-                          <item translatable="yes">Polyline2D</item>
-                          <item translatable="yes">Polypoint2D</item>
-                          <item translatable="yes">QuadSet</item>
-                          <item translatable="yes">Rectangle2D</item>
-                          <item translatable="yes">Sphere</item>
-                          <item translatable="yes">Text</item>
-                          <item translatable="yes">TriangleFanSet</item>
-                          <item translatable="yes">TriangleSet2D</item>
-                          <item translatable="yes">TriangleSet</item>
-                          <item translatable="yes">TriangleStripSet</item>
+                          <item>None</item>
+                          <item>Arc2D</item>
+                          <item>ArcClose2D</item>
+                          <item>Box</item>
+                          <item>Circle2D</item>
+                          <item>Cone</item>
+                          <item>Cylinder</item>
+                          <item>Disk2D</item>
+                          <item>ElevationGrid</item>
+                          <item>Extrusion</item>
+                          <item>GeoElevationGrid</item>
+                          <item>IndexedFaceSet</item>
+                          <item>IndexedLineSet</item>
+                          <item>IndexedQuadSet</item>
+                          <item>IndexedTriangleFanSet</item>
+                          <item>IndexedTriangleSet</item>
+                          <item>IndexedTriangleStripSet</item>
+                          <item>LineSet</item>
+                          <item>NurbsCurve</item>
+                          <item>NurbsPatchSurface</item>
+                          <item>NurbsSweptSurface</item>
+                          <item>NurbsSwungSurface</item>
+                          <item>NurbsTrimmedSurface</item>
+                          <item>PointSet</item>
+                          <item>Polyline2D</item>
+                          <item>Polypoint2D</item>
+                          <item>QuadSet</item>
+                          <item>Rectangle2D</item>
+                          <item>Sphere</item>
+                          <item>Text</item>
+                          <item>TriangleFanSet</item>
+                          <item>TriangleSet2D</item>
+                          <item>TriangleSet</item>
+                          <item>TriangleStripSet</item>
                         </items>
                         <signal name="changed" handler="on_geometry_changed" swapped="no"/>
                       </object>
@@ -2889,6 +2954,481 @@
                             <property name="position">11</property>
                           </packing>
                         </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <object class="GtkExpander" id="NurbsPatchSurfaceExpander">
+                            <property name="name">NurbsPatchSurfaceExpander</property>
+                            <property name="can_focus">True</property>
+                            <property name="expanded">True</property>
+                            <child>
+                              <object class="GtkGrid" id="grid20">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="row_spacing">8</property>
+                                <property name="column_spacing">16</property>
+                                <child>
+                                  <object class="GtkLabel" id="label102">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">U Tessellation:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsPatchSurfaceUTessellationSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0,000</property>
+                                    <property name="adjustment">NurbsPatchSurfaceUTessellationAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label103">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">V Tessellation:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsPatchSurfaceVTessellationSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0,000</property>
+                                    <property name="adjustment">NurbsPatchSurfaceVTessellationAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkCheckButton" id="NurbsPatchSurfaceUClosedCheckButton">
+                                    <property name="label" translatable="yes">U Closed</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkCheckButton" id="NurbsPatchSurfaceVClosedCheckButton">
+                                    <property name="label" translatable="yes">V Closed</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">3</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label104">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label105">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">3</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label107">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">U Order:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">4</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label108">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">V Order:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">5</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label109">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">U Dimension:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">6</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label110">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">V Dimension:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">7</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsPatchSurfaceUOrderSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">NurbsPatchSurfaceUOrderAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">4</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsPatchSurfaceVOrderSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">NurbsPatchSurfaceVOrderAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">5</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsPatchSurfaceUDimensionSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">NurbsPatchSurfaceUDimensionAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">6</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsPatchSurfaceVDimensionSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">NurbsPatchSurfaceVDimensionAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">7</property>
+                                  </packing>
+                                </child>
+                              </object>
+                            </child>
+                            <child type="label">
+                              <object class="GtkLabel" id="label106">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">NurbsPatchSurface</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">page13</property>
+                            <property name="title" translatable="yes">NurbsPatchSurface</property>
+                            <property name="position">13</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkExpander" id="NurbsTrimmedSurfaceExpander">
+                            <property name="name">NurbsTrimmedSurfaceExpander</property>
+                            <property name="can_focus">True</property>
+                            <property name="expanded">True</property>
+                            <child>
+                              <object class="GtkGrid" id="grid21">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="row_spacing">8</property>
+                                <property name="column_spacing">16</property>
+                                <child>
+                                  <object class="GtkLabel" id="label111">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">U Tessellation:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsTrimmedSurfaceUTessellationSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">NurbsTrimmedSurfaceUTessellationAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label112">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">V Tessellation:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsTrimmedSurfaceVTessellationSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">NurbsTrimmedSurfaceVTessellationAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkCheckButton" id="NurbsTrimmedSurfaceUClosedCheckButton">
+                                    <property name="label" translatable="yes">U Closed</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkCheckButton" id="NurbsTrimmedSurfaceVClosedCheckButton">
+                                    <property name="label" translatable="yes">V Closed</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">False</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="draw_indicator">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">3</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label113">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">2</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label114">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">3</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label115">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">U Order:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">4</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label116">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">V Order:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">5</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label117">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">U Dimension:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">6</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="label118">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">V Dimension:</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">7</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsTrimmedSurfaceUOrderSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">NurbsTrimmedSurfaceUOrderAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">4</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsTrimmedSurfaceVOrderSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">NurbsTrimmedSurfaceVOrderAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">5</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsTrimmedSurfaceUDimensionSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">NurbsTrimmedSurfaceUDimensionAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">6</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="NurbsTrimmedSurfaceVDimensionSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">NurbsTrimmedSurfaceVDimensionAdjustment</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">7</property>
+                                  </packing>
+                                </child>
+                              </object>
+                            </child>
+                            <child type="label">
+                              <object class="GtkLabel" id="label119">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">NurbsTrimmedSurface</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="name">page14</property>
+                            <property name="title" translatable="yes">page14</property>
+                            <property name="position">14</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -3066,6 +3606,7 @@
                           <object class="GtkGrid">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <property name="row_spacing">8</property>
                             <property name="column_spacing">8</property>
                             <child>
                               <object class="GtkBox" id="CreaseAngleBox">

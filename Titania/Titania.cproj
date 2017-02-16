@@ -287,6 +287,8 @@
     <Compile Include="Titania\Editors\TextureEditor\X3DUsedTexturesEditor.cpp" />
     <Compile Include="Titania\Editors\SculpToolEditor\X3DSculpToolBrushEditor.cpp" />
     <Compile Include="Titania\Editors\SculpToolEditor\X3DSculpToolBrushPaletteEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsPatchSurfaceEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsTrimmedSurfaceEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2587,6 +2589,10 @@
     <None Include="share\titania\ui\icons\Rought.svg" />
     <None Include="share\titania\ui\icons\Smooth.svg" />
     <None Include="scripts\Library\Tools.pl" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsPatchSurfaceEditor.h" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsTrimmedSurfaceEditor.h" />
+    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsPatchSurface" />
+    <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsTrimmedSurface" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2691,6 +2697,7 @@
     <Folder Include="share\man\" />
     <Folder Include="Titania\Application\" />
     <Folder Include="share\titania\Library\SculpToolBrushes\" />
+    <Folder Include="Titania\Editors\GeometryPropertiesEditor\NURBS\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

@@ -77,6 +77,8 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                   X3DExtrusionEditor (),
 	                      X3DSphereEditor (),
 	            X3DGeoElevationGridEditor (),
+	           X3DNurbsPatchSurfaceEditor (),
+	         X3DNurbsTrimmedSurfaceEditor (),
 	              X3DPrimitiveCountEditor (),
 	                      X3DGeometryTool (),
 	                                solid (this, getSolidCheckButton (),  "solid"),
@@ -147,6 +149,8 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DExtrusionEditor::removeShapes ();
 	X3DSphereEditor::removeShapes ();
 	X3DGeoElevationGridEditor::removeShapes ();
+	X3DNurbsPatchSurfaceEditor::removeShapes ();
+	X3DNurbsTrimmedSurfaceEditor::removeShapes ();
 
 	shapes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
@@ -165,6 +169,8 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 	X3DExtrusionEditor::addShapes ();
 	X3DSphereEditor::addShapes ();
 	X3DGeoElevationGridEditor::addShapes ();
+	X3DNurbsPatchSurfaceEditor::addShapes ();
+	X3DNurbsTrimmedSurfaceEditor::addShapes ();
 
 //	const auto widgets  = getGeometryStack () .get_children ();
 //	const auto visibles = std::count_if (widgets .begin (), widgets .end (), [ ] (const Gtk::Widget* w) { return w -> get_visible (); });

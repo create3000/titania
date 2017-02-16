@@ -276,6 +276,54 @@ public:
 	{ return m_NormalLengthAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsPatchSurfaceUDimensionAdjustment () const
+	{ return m_NurbsPatchSurfaceUDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsPatchSurfaceUOrderAdjustment () const
+	{ return m_NurbsPatchSurfaceUOrderAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsPatchSurfaceUTessellationAdjustment () const
+	{ return m_NurbsPatchSurfaceUTessellationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsPatchSurfaceVDimensionAdjustment () const
+	{ return m_NurbsPatchSurfaceVDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsPatchSurfaceVOrderAdjustment () const
+	{ return m_NurbsPatchSurfaceVOrderAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsPatchSurfaceVTessellationAdjustment () const
+	{ return m_NurbsPatchSurfaceVTessellationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsTrimmedSurfaceUDimensionAdjustment () const
+	{ return m_NurbsTrimmedSurfaceUDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsTrimmedSurfaceUOrderAdjustment () const
+	{ return m_NurbsTrimmedSurfaceUOrderAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsTrimmedSurfaceUTessellationAdjustment () const
+	{ return m_NurbsTrimmedSurfaceUTessellationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsTrimmedSurfaceVDimensionAdjustment () const
+	{ return m_NurbsTrimmedSurfaceVDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsTrimmedSurfaceVOrderAdjustment () const
+	{ return m_NurbsTrimmedSurfaceVOrderAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getNurbsTrimmedSurfaceVTessellationAdjustment () const
+	{ return m_NurbsTrimmedSurfaceVTessellationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getPrimitiveEdgeColorAdjustment () const
 	{ return m_PrimitiveEdgeColorAdjustment; }
 
@@ -684,6 +732,78 @@ public:
 	{ return *m_GeoElevationGridHeightMapLoadStateLabel; }
 
 	Gtk::Expander &
+	getNurbsPatchSurfaceExpander () const
+	{ return *m_NurbsPatchSurfaceExpander; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceUTessellationSpinButton () const
+	{ return *m_NurbsPatchSurfaceUTessellationSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceVTessellationSpinButton () const
+	{ return *m_NurbsPatchSurfaceVTessellationSpinButton; }
+
+	Gtk::CheckButton &
+	getNurbsPatchSurfaceUClosedCheckButton () const
+	{ return *m_NurbsPatchSurfaceUClosedCheckButton; }
+
+	Gtk::CheckButton &
+	getNurbsPatchSurfaceVClosedCheckButton () const
+	{ return *m_NurbsPatchSurfaceVClosedCheckButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceUOrderSpinButton () const
+	{ return *m_NurbsPatchSurfaceUOrderSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceVOrderSpinButton () const
+	{ return *m_NurbsPatchSurfaceVOrderSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceUDimensionSpinButton () const
+	{ return *m_NurbsPatchSurfaceUDimensionSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceVDimensionSpinButton () const
+	{ return *m_NurbsPatchSurfaceVDimensionSpinButton; }
+
+	Gtk::Expander &
+	getNurbsTrimmedSurfaceExpander () const
+	{ return *m_NurbsTrimmedSurfaceExpander; }
+
+	Gtk::SpinButton &
+	getNurbsTrimmedSurfaceUTessellationSpinButton () const
+	{ return *m_NurbsTrimmedSurfaceUTessellationSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsTrimmedSurfaceVTessellationSpinButton () const
+	{ return *m_NurbsTrimmedSurfaceVTessellationSpinButton; }
+
+	Gtk::CheckButton &
+	getNurbsTrimmedSurfaceUClosedCheckButton () const
+	{ return *m_NurbsTrimmedSurfaceUClosedCheckButton; }
+
+	Gtk::CheckButton &
+	getNurbsTrimmedSurfaceVClosedCheckButton () const
+	{ return *m_NurbsTrimmedSurfaceVClosedCheckButton; }
+
+	Gtk::SpinButton &
+	getNurbsTrimmedSurfaceUOrderSpinButton () const
+	{ return *m_NurbsTrimmedSurfaceUOrderSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsTrimmedSurfaceVOrderSpinButton () const
+	{ return *m_NurbsTrimmedSurfaceVOrderSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsTrimmedSurfaceUDimensionSpinButton () const
+	{ return *m_NurbsTrimmedSurfaceUDimensionSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsTrimmedSurfaceVDimensionSpinButton () const
+	{ return *m_NurbsTrimmedSurfaceVDimensionSpinButton; }
+
+	Gtk::Expander &
 	getCommonPropertiesExpander () const
 	{ return *m_CommonPropertiesExpander; }
 
@@ -947,6 +1067,18 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZoneAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceUDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceUOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceUTessellationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceVDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceVOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceVTessellationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceUDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceUOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceUTessellationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVTessellationAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PrimitiveEdgeColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeYAdjustment;
@@ -1049,6 +1181,24 @@ private:
 	Gtk::Button*                   m_GeoElevationGridHeightMapImageReloadButton;
 	Gtk::Button*                   m_GeoElevationGridHeightMapImageRemoveButton;
 	Gtk::Label*                    m_GeoElevationGridHeightMapLoadStateLabel;
+	Gtk::Expander*                 m_NurbsPatchSurfaceExpander;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceUTessellationSpinButton;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceVTessellationSpinButton;
+	Gtk::CheckButton*              m_NurbsPatchSurfaceUClosedCheckButton;
+	Gtk::CheckButton*              m_NurbsPatchSurfaceVClosedCheckButton;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceUOrderSpinButton;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceVOrderSpinButton;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceUDimensionSpinButton;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceVDimensionSpinButton;
+	Gtk::Expander*                 m_NurbsTrimmedSurfaceExpander;
+	Gtk::SpinButton*               m_NurbsTrimmedSurfaceUTessellationSpinButton;
+	Gtk::SpinButton*               m_NurbsTrimmedSurfaceVTessellationSpinButton;
+	Gtk::CheckButton*              m_NurbsTrimmedSurfaceUClosedCheckButton;
+	Gtk::CheckButton*              m_NurbsTrimmedSurfaceVClosedCheckButton;
+	Gtk::SpinButton*               m_NurbsTrimmedSurfaceUOrderSpinButton;
+	Gtk::SpinButton*               m_NurbsTrimmedSurfaceVOrderSpinButton;
+	Gtk::SpinButton*               m_NurbsTrimmedSurfaceUDimensionSpinButton;
+	Gtk::SpinButton*               m_NurbsTrimmedSurfaceVDimensionSpinButton;
 	Gtk::Expander*                 m_CommonPropertiesExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;

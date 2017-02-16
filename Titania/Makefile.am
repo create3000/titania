@@ -77,6 +77,8 @@ titania_SOURCES =  \
 	Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geospatial/X3DGeoElevationGridEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/NURBS/X3DNurbsPatchSurfaceEditor.cpp \
+	Titania/Editors/GeometryPropertiesEditor/NURBS/X3DNurbsTrimmedSurfaceEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DGeometryTool.cpp \
 	Titania/Editors/GeometryPropertiesEditor/X3DPrimitiveCountEditor.cpp \
 	Titania/Editors/GridEditor/AngleTool.cpp \
