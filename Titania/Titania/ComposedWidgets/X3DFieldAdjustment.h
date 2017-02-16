@@ -84,6 +84,14 @@ public:
 	getIndex () const
 	{ return index; }
 
+	bool
+	getHide () const
+	{ return hide; }
+
+	void
+	setHide (const int value)
+	{ hide = value; }
+
 	void
 	setNodes (const X3D::MFNode &);
 
@@ -178,6 +186,7 @@ private:
 	double                               upper;
 	double                               empty;
 	int32_t                              index;
+	bool                                 hide;
 
 };
 
@@ -200,7 +209,8 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
 	            lower (0),
 	            upper (0),
                empty (0),
-               index (-1)
+               index (-1),
+                hide (false)
 {
 	addChildObjects (scene, nodes, buffer);
 
@@ -343,6 +353,9 @@ X3DFieldAdjustment <Type>::set_buffer ()
 	}
 
 	widget .set_sensitive (hasField);
+
+	if (hide)
+		widget .set_visible (hasField);
 
 	changing = false;
 }

@@ -78,6 +78,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_ConeHeightAdjustment                         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeHeightAdjustment"));
 	m_ConeXDimensionAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeXDimensionAdjustment"));
 	m_CreaseAngleAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CreaseAngleAdjustment"));
+	m_CreaseAngleDoubleAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CreaseAngleDoubleAdjustment"));
 	m_CylinderHeightAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderHeightAdjustment"));
 	m_CylinderRadiusAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderRadiusAdjustment"));
 	m_CylinderXDimensionAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("CylinderXDimensionAdjustment"));
@@ -212,14 +213,17 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
 	m_builder -> get_widget ("ConvexCheckButton", m_ConvexCheckButton);
+	m_builder -> get_widget ("ColorPerVertexCheckButton", m_ColorPerVertexCheckButton);
+	m_builder -> get_widget ("NormalPerVertexCheckButton", m_NormalPerVertexCheckButton);
 	m_builder -> get_widget ("CreaseAngleBox", m_CreaseAngleBox);
 	m_builder -> get_widget ("CreaseAngleSpinButton", m_CreaseAngleSpinButton);
 	m_builder -> get_widget ("CreaseAngleScale", m_CreaseAngleScale);
+	m_builder -> get_widget ("CreaseAngleDoubleBox", m_CreaseAngleDoubleBox);
+	m_builder -> get_widget ("CreaseAngleDoubleSpinButton", m_CreaseAngleDoubleSpinButton);
+	m_builder -> get_widget ("CreaseAngleDoubleScale", m_CreaseAngleDoubleScale);
 	m_builder -> get_widget ("NormalsBox", m_NormalsBox);
 	m_builder -> get_widget ("AddNormalsButton", m_AddNormalsButton);
 	m_builder -> get_widget ("RemoveNormalsButton", m_RemoveNormalsButton);
-	m_builder -> get_widget ("ColorPerVertexCheckButton", m_ColorPerVertexCheckButton);
-	m_builder -> get_widget ("NormalPerVertexCheckButton", m_NormalPerVertexCheckButton);
 	m_builder -> get_widget ("PrimitiveCountEventBox", m_PrimitiveCountEventBox);
 	m_builder -> get_widget ("PrimitiveCountExpander", m_PrimitiveCountExpander);
 	m_builder -> get_widget ("PrimitiveCountBox", m_PrimitiveCountBox);

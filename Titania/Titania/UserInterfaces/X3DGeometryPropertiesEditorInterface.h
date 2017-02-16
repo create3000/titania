@@ -168,6 +168,10 @@ public:
 	{ return m_CreaseAngleAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getCreaseAngleDoubleAdjustment () const
+	{ return m_CreaseAngleDoubleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getCylinderHeightAdjustment () const
 	{ return m_CylinderHeightAdjustment; }
 
@@ -695,6 +699,14 @@ public:
 	getConvexCheckButton () const
 	{ return *m_ConvexCheckButton; }
 
+	Gtk::CheckButton &
+	getColorPerVertexCheckButton () const
+	{ return *m_ColorPerVertexCheckButton; }
+
+	Gtk::CheckButton &
+	getNormalPerVertexCheckButton () const
+	{ return *m_NormalPerVertexCheckButton; }
+
 	Gtk::Box &
 	getCreaseAngleBox () const
 	{ return *m_CreaseAngleBox; }
@@ -708,6 +720,18 @@ public:
 	{ return *m_CreaseAngleScale; }
 
 	Gtk::Box &
+	getCreaseAngleDoubleBox () const
+	{ return *m_CreaseAngleDoubleBox; }
+
+	Gtk::SpinButton &
+	getCreaseAngleDoubleSpinButton () const
+	{ return *m_CreaseAngleDoubleSpinButton; }
+
+	Gtk::Scale &
+	getCreaseAngleDoubleScale () const
+	{ return *m_CreaseAngleDoubleScale; }
+
+	Gtk::Box &
 	getNormalsBox () const
 	{ return *m_NormalsBox; }
 
@@ -718,14 +742,6 @@ public:
 	Gtk::Button &
 	getRemoveNormalsButton () const
 	{ return *m_RemoveNormalsButton; }
-
-	Gtk::CheckButton &
-	getColorPerVertexCheckButton () const
-	{ return *m_ColorPerVertexCheckButton; }
-
-	Gtk::CheckButton &
-	getNormalPerVertexCheckButton () const
-	{ return *m_NormalPerVertexCheckButton; }
 
 	Gtk::EventBox &
 	getPrimitiveCountEventBox () const
@@ -904,6 +920,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ConeHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ConeXDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleDoubleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CylinderHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CylinderRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_CylinderXDimensionAdjustment;
@@ -1036,14 +1053,17 @@ private:
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;
 	Gtk::CheckButton*              m_ConvexCheckButton;
+	Gtk::CheckButton*              m_ColorPerVertexCheckButton;
+	Gtk::CheckButton*              m_NormalPerVertexCheckButton;
 	Gtk::Box*                      m_CreaseAngleBox;
 	Gtk::SpinButton*               m_CreaseAngleSpinButton;
 	Gtk::Scale*                    m_CreaseAngleScale;
+	Gtk::Box*                      m_CreaseAngleDoubleBox;
+	Gtk::SpinButton*               m_CreaseAngleDoubleSpinButton;
+	Gtk::Scale*                    m_CreaseAngleDoubleScale;
 	Gtk::Box*                      m_NormalsBox;
 	Gtk::Button*                   m_AddNormalsButton;
 	Gtk::Button*                   m_RemoveNormalsButton;
-	Gtk::CheckButton*              m_ColorPerVertexCheckButton;
-	Gtk::CheckButton*              m_NormalPerVertexCheckButton;
 	Gtk::EventBox*                 m_PrimitiveCountEventBox;
 	Gtk::Expander*                 m_PrimitiveCountExpander;
 	Gtk::Box*                      m_PrimitiveCountBox;

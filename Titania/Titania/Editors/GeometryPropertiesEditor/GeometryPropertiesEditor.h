@@ -155,12 +155,13 @@ private:
 
 	///  @name Members
 
-	X3DFieldToggleButton <X3D::SFBool> solid;
-	X3DFieldToggleButton <X3D::SFBool> ccw;
-	X3DFieldToggleButton <X3D::SFBool> convex;
-	X3DFieldAdjustment <X3D::SFFloat>  creaseAngle;
-	X3DFieldToggleButton <X3D::SFBool> colorPerVertex;
-	X3DFieldToggleButton <X3D::SFBool> normalPerVertex;
+	X3DFieldToggleButton <X3D::SFBool>  solid;
+	X3DFieldToggleButton <X3D::SFBool>  ccw;
+	X3DFieldToggleButton <X3D::SFBool>  convex;
+	X3DFieldAdjustment <X3D::SFFloat>   creaseAngle;
+	X3DFieldAdjustment <X3D::SFDouble>  creaseAngleDouble;
+	X3DFieldToggleButton <X3D::SFBool>  colorPerVertex;
+	X3DFieldToggleButton <X3D::SFBool>  normalPerVertex;
 
 	X3D::SFNode                          geometryNode;
 	X3D::MFNode                          nodes;

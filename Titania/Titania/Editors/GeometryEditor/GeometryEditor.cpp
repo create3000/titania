@@ -220,6 +220,11 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 			X3D::X3DConstants::IndexedFaceSet,
 			X3D::X3DConstants::Sphere,
 			X3D::X3DConstants::GeoElevationGrid,
+			X3D::X3DConstants::NurbsCurve,
+			X3D::X3DConstants::NurbsPatchSurface,
+			X3D::X3DConstants::NurbsSweptSurface,
+			X3D::X3DConstants::NurbsSwungSurface,
+			X3D::X3DConstants::NurbsTrimmedSurface,
 			//X3D::X3DConstants::IndexedLineSet,
 			X3D::X3DConstants::IndexedTriangleFanSet,
 			X3D::X3DConstants::IndexedTriangleSet,
@@ -229,7 +234,7 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 			X3D::X3DConstants::TriangleFanSet,
 			X3D::X3DConstants::TriangleSet,
 			X3D::X3DConstants::TriangleStripSet,
-			X3D::X3DConstants::Text
+			X3D::X3DConstants::Text,
 		});
 
 		changing = true;
@@ -277,6 +282,11 @@ GeometryEditor::connect ()
 					case X3D::X3DConstants::ExtrusionTool:
 					case X3D::X3DConstants::SphereTool:
 					case X3D::X3DConstants::GeoElevationGridTool:
+					case X3D::X3DConstants::NurbsCurveTool:
+					case X3D::X3DConstants::NurbsPatchSurfaceTool:
+					case X3D::X3DConstants::NurbsSweptSurfaceTool:
+					case X3D::X3DConstants::NurbsSwungSurfaceTool:
+					case X3D::X3DConstants::NurbsTrimmedSurfaceTool:
 					case X3D::X3DConstants::IndexedLineSetTool:
 					case X3D::X3DConstants::IndexedTriangleFanSetTool:
 					case X3D::X3DConstants::IndexedTriangleSetTool:
@@ -291,15 +301,32 @@ GeometryEditor::connect ()
 						const auto & normalTool = node -> getField <X3D::SFNode> ("normalTool");
 						const auto & coordTool  = node -> getField <X3D::SFNode> ("coordTool");
 
+						// If the node has a normal or creaseAngle field use light blue as normal color, otherwise dark blue.
+						const auto editableNormals = node -> isType ({
+							X3D::X3DConstants::ElevationGrid,
+							X3D::X3DConstants::Extrusion,
+							X3D::X3DConstants::GeoElevationGrid,
+							X3D::X3DConstants::X3DComposedGeometryNode,
+						});
+
 						// Normal
 
-						normalEditor -> getField <X3D::SFBool>      ("load")   .addInterest (normalTool -> getField <X3D::SFBool>      ("load"));
-						normalEditor -> getField <X3D::SFFloat>     ("length") .addInterest (normalTool -> getField <X3D::SFFloat>     ("length"));
-						normalEditor -> getField <X3D::SFColorRGBA> ("color")  .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
+						normalEditor -> getField <X3D::SFBool>  ("load")   .addInterest (normalTool -> getField <X3D::SFBool>  ("load"));
+						normalEditor -> getField <X3D::SFFloat> ("length") .addInterest (normalTool -> getField <X3D::SFFloat> ("length"));
 
-						normalTool -> setField <X3D::SFBool>      ("load",   normalEditor -> getField <X3D::SFBool>      ("load"),   true);
-						normalTool -> setField <X3D::SFFloat>     ("length", normalEditor -> getField <X3D::SFFloat>     ("length"), true);
-						normalTool -> setField <X3D::SFColorRGBA> ("color",  normalEditor -> getField <X3D::SFColorRGBA> ("color"),  true);
+						normalTool -> setField <X3D::SFBool>  ("load",   normalEditor -> getField <X3D::SFBool>  ("load"),   true);
+						normalTool -> setField <X3D::SFFloat> ("length", normalEditor -> getField <X3D::SFFloat> ("length"), true);
+
+						if (editableNormals)
+						{
+							normalEditor -> getField <X3D::SFColorRGBA> ("color")  .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
+							normalTool -> setField <X3D::SFColorRGBA> ("color",  normalEditor -> getField <X3D::SFColorRGBA> ("color"), true);
+						}
+						else
+						{
+							coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor")  .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
+							normalTool -> setField <X3D::SFColorRGBA> ("color",  coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"),  true);
+						}
 
 						// Coord
 

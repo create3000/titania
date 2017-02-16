@@ -83,6 +83,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                                  ccw (this, getCCWCheckButton (),    "ccw"),
 	                               convex (this, getConvexCheckButton (), "convex"),
 	                          creaseAngle (this, getCreaseAngleAdjustment (), getCreaseAngleBox (), "creaseAngle"),
+	                    creaseAngleDouble (this, getCreaseAngleDoubleAdjustment (), getCreaseAngleDoubleBox (), "creaseAngle"),
 	                       colorPerVertex (this, getColorPerVertexCheckButton (), "colorPerVertex"),
 	                      normalPerVertex (this, getNormalPerVertexCheckButton (), "normalPerVertex"),
 	                         geometryNode (),
@@ -95,7 +96,11 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 
 	nodesBuffer .addInterest (&GeometryPropertiesEditor::set_buffer, this);
 
-	getCreaseAngleAdjustment () -> set_upper (pi <double>);
+	getCreaseAngleAdjustment ()       -> set_upper (pi <double>);
+	getCreaseAngleDoubleAdjustment () -> set_upper (pi <double>);
+
+	creaseAngle       .setHide (true);
+	creaseAngleDouble .setHide (true);
 
 	setup ();
 }
@@ -208,12 +213,13 @@ GeometryPropertiesEditor::set_buffer ()
 	if (nodes .empty () and geometryNode)
 		nodes = { geometryNode };
 
-	solid           .setNodes (nodes);
-	ccw             .setNodes (nodes);
-	convex          .setNodes (nodes);
-	creaseAngle     .setNodes (nodes);
-	colorPerVertex  .setNodes (nodes);
-	normalPerVertex .setNodes (nodes);
+	solid             .setNodes (nodes);
+	ccw               .setNodes (nodes);
+	convex            .setNodes (nodes);
+	creaseAngle       .setNodes (nodes);
+	creaseAngleDouble .setNodes (nodes);
+	colorPerVertex    .setNodes (nodes);
+	normalPerVertex   .setNodes (nodes);
 
 	// Normals Box
 
@@ -235,6 +241,8 @@ GeometryPropertiesEditor::set_buffer ()
 		try
 		{
 			node -> getField <X3D::SFNode> ("normal") .addInterest (&GeometryPropertiesEditor::set_normal, this);
+
+			getNormalsBox () .set_sensitive (true);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -261,7 +269,6 @@ GeometryPropertiesEditor::set_normal ()
 		{ }
 	}
 
-	getAddNormalsButton ()    .set_sensitive (normal);
 	getRemoveNormalsButton () .set_sensitive (normal);
 }
 
