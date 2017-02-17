@@ -1004,6 +1004,9 @@ BrowserWindow::on_group_selected_nodes_activated ()
 	if (selection .empty ())
 		return;
 
+	if (checkForClones (selection .cbegin (), selection .cend ()))
+		return;
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group"));
 	const auto group    = groupNodes (getCurrentContext (), "Transform", selection, undoStep);
 
@@ -1019,6 +1022,9 @@ BrowserWindow::on_ungroup_activated ()
 	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
+		return;
+
+	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Ungroup"));
@@ -1038,6 +1044,9 @@ BrowserWindow::on_add_to_group_activated ()
 	auto selection = getSelection () -> getChildren ();
 
 	if (selection .size () < 2)
+		return;
+
+	if (checkForClones (selection .cbegin (), selection .cend () - 1))
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add To Group"));
@@ -1061,6 +1070,9 @@ BrowserWindow::on_detach_from_group_activated ()
 	const auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
+		return;
+
+	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Detach From Group"));
@@ -1199,6 +1211,9 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	auto selection = getSelection () -> getChildren ();
 
 	if (selection .empty ())
+		return;
+
+	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
@@ -3150,6 +3165,24 @@ BrowserWindow::on_look_at_toggled ()
 		if (getCurrentBrowser () -> getCurrentViewer () not_eq viewer)
 			setViewer (viewer);
 	}
+}
+
+bool
+BrowserWindow::checkForClones (const X3D::MFNode::const_iterator & first, const X3D::MFNode::const_iterator & last)
+{
+	const auto clones = std::count_if (first, last, [] (const X3D::SFNode & node) { return node -> getCloneCount () > 1; });
+
+	if (not clones)
+		return false;
+
+	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+
+	dialog -> setType (Gtk::MESSAGE_WARNING);
+	dialog -> setMessage (_ ("This operation is not clone save!"));
+	dialog -> setText (_ ("You have selected one ore more clones. Use Outline Editor's context menu or drag & drop facility to have a clone save operation."));
+	dialog -> run ();
+
+	return true;
 }
 
 void

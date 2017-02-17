@@ -76,7 +76,7 @@ X3DGeometryNodeTool::X3DGeometryNodeTool () :
 	     X3DNodeTool (),
 	          fields (),
 	       selection (),
-	  normalToolNode (new NormalTool (getExecutionContext ())),
+	  normalToolNode (new NormalTool (getExecutionContext ())), 
 	   coordToolNode (new CoordinateTool (getExecutionContext ())),
 	        viewport (),
 	projectionMatrix (),

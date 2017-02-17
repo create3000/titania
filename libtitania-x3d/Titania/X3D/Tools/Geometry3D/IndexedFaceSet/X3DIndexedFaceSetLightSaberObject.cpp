@@ -75,6 +75,9 @@ X3DIndexedFaceSetLightSaberObject::cut (const Line2d & cutLine)
 {
 	try
 	{
+		if (toolType () not_eq "CUT")
+			return false;
+
 		const auto modelViewProjection  = getModelViewMatrix () * getProjectionMatrix ();
 		const auto viewport             = getViewport ();
 		auto       intersectingFaces    = std::vector <size_t> ();
