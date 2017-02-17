@@ -76,74 +76,74 @@ public:
 
 	static
 	X3DPtrArray <IndexedFaceSet>
-	getIndexedFaceSets (const X3DPtrArray <X3DShapeNode> &);
+	getIndexedFaceSets (const X3DPtrArray <X3DShapeNode> & shapes);
 
 	static
 	mesh3 <double>
-	toMesh (const X3DPtr <IndexedFaceSet> &,
-	         const X3DPtr <X3DCoordinateNode> &,
-	         const Matrix4d &);
+	toMesh (const X3DPtr <IndexedFaceSet> & geometryNode,
+	         const X3DPtr <X3DCoordinateNode> & coordNode,
+	         const Matrix4d & matrix);
 
 	static
 	bool
-	geometryUnion (const X3DExecutionContextPtr &,
-	               const X3DPtrArray <X3DShapeNode> &,
-	               const UndoStepPtr &)
+	geometryUnion (const X3DExecutionContextPtr & executionContext,
+	               const X3DPtrArray <X3DShapeNode> & shapes,
+	               const UndoStepPtr & undoStep)
 	throw (Error <INVALID_NODE>,
           Error <DISPOSED>,
 	       std::domain_error);
 
 	static
 	bool
-	geometryDifference (const X3DExecutionContextPtr &,
-	                    const X3DPtrArray <X3DShapeNode> &,
-	                    const UndoStepPtr &)
+	geometryDifference (const X3DExecutionContextPtr & executionContext,
+	                    const X3DPtrArray <X3DShapeNode> & shapes,
+	                    const UndoStepPtr & undoStep)
 	throw (Error <INVALID_NODE>,
           Error <DISPOSED>,
 	       std::domain_error);
 
 	static
 	bool
-	geometryIntersection (const X3DExecutionContextPtr &,
-	                      const X3DPtrArray <X3DShapeNode> &,
-	                      const UndoStepPtr &)
+	geometryIntersection (const X3DExecutionContextPtr & executionContext,
+	                      const X3DPtrArray <X3DShapeNode> & shapes,
+	                      const UndoStepPtr & undoStep)
 	throw (Error <INVALID_NODE>,
           Error <DISPOSED>,
 	       std::domain_error);
 
 	static
 	bool
-	geometryExclusion (const X3DExecutionContextPtr &,
-	                   const X3DPtrArray <X3DShapeNode> &,
-	                   const UndoStepPtr &)
+	geometryExclusion (const X3DExecutionContextPtr & executionContext,
+	                   const X3DPtrArray <X3DShapeNode> & shapes,
+	                   const UndoStepPtr & undoStep)
 	throw (Error <INVALID_NODE>,
           Error <DISPOSED>,
 	       std::domain_error);
 
 	static
 	bool
-	combineGeometry (const X3DExecutionContextPtr &,
-	                 const X3DPtrArray <X3DShapeNode> &,
-	                 const UndoStepPtr &)
+	combineGeometry (const X3DExecutionContextPtr & executionContext,
+	                 const X3DPtrArray <X3DShapeNode> & shapes,
+	                 const UndoStepPtr & undoStep)
 	throw (Error <INVALID_NODE>,
           Error <DISPOSED>,
 	       std::domain_error);
 
 	static
 	std::vector <int32_t>
-	combine (const X3DExecutionContextPtr &,
-	         const X3DPtrArray <IndexedFaceSet> &,
-	         const X3DPtr <IndexedFaceSet> &,
-	         const X3DPtr <X3DCoordinateNode> &,
-	         const Matrix4d &);
+	combine (const X3DExecutionContextPtr & executionContext,
+	         const X3DPtrArray <IndexedFaceSet> & geometryNodes,
+	         const X3DPtr <IndexedFaceSet> & targetGeometry,
+	         const X3DPtr <X3DCoordinateNode> & targetCoord,
+	         const Matrix4d & targetMatrix);
 
 	static
 	void
-	removeShapes (const X3DExecutionContextPtr &,
-	              const MFNode &,
-	              const X3DPtrArray <X3DGroupingNode> &,
-	              const X3DPtrArray <X3DShapeNode> &,
-	              const X3DPtr <X3DShapeNode> &,
+	removeShapes (const X3DExecutionContextPtr & executionContext,
+	              const MFNode & selection,
+	              const X3DPtrArray <X3DGroupingNode> & groups,
+	              const X3DPtrArray <X3DShapeNode> & shapes,
+	              const X3DPtr <X3DShapeNode> & masterShape,
 	              const UndoStepPtr & undoStep);
 
 	///  @name Destruction
@@ -155,11 +155,11 @@ private:
 
 	static
 	bool
-	geometryBoolean (const BooleanOperation &,
-	                 const X3DExecutionContextPtr &,
-	                 const X3DPtrArray <X3DShapeNode> &,
-	                 const bool,
-	                 const UndoStepPtr &)
+	geometryBoolean (const BooleanOperation & booleanOperation,
+	                 const X3DExecutionContextPtr & executionContext,
+	                 const X3DPtrArray <X3DShapeNode> & shapes,
+	                 const bool front,
+	                 const UndoStepPtr & undoStep)
 	throw (Error <INVALID_NODE>,
           Error <DISPOSED>,
 	       std::domain_error);

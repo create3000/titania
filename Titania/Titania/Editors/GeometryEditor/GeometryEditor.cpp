@@ -187,65 +187,6 @@ GeometryEditor::on_unmap ()
 	browser = getMasterBrowser ();
 }
 
-X3D::MFNode
-GeometryEditor::getGeometries (const X3D::MFNode & selection) const
-{
-	static const std::set <X3D::NodeType> types = {
-		X3D::X3DConstants::IndexedQuadSet,
-		X3D::X3DConstants::QuadSet,
-		//X3D::X3DConstants::Arc2D,
-		X3D::X3DConstants::ArcClose2D,
-		//X3D::X3DConstants::Circle2D,
-		X3D::X3DConstants::Disk2D,
-		//X3D::X3DConstants::Polyline2D,
-		//X3D::X3DConstants::Polypoint2D,
-		X3D::X3DConstants::Rectangle2D,
-		X3D::X3DConstants::TriangleSet2D,
-		X3D::X3DConstants::Box,
-		X3D::X3DConstants::Cone,
-		X3D::X3DConstants::Cylinder,
-		X3D::X3DConstants::ElevationGrid,
-		X3D::X3DConstants::Extrusion,
-		X3D::X3DConstants::IndexedFaceSet,
-		X3D::X3DConstants::Sphere,
-		X3D::X3DConstants::GeoElevationGrid,
-		//X3D::X3DConstants::NurbsCurve,
-		X3D::X3DConstants::NurbsPatchSurface,
-		//X3D::X3DConstants::NurbsSweptSurface,
-		//X3D::X3DConstants::NurbsSwungSurface,
-		X3D::X3DConstants::NurbsTrimmedSurface,
-		//X3D::X3DConstants::IndexedLineSet,
-		X3D::X3DConstants::IndexedTriangleFanSet,
-		X3D::X3DConstants::IndexedTriangleSet,
-		X3D::X3DConstants::IndexedTriangleStripSet,
-		//X3D::X3DConstants::LineSet,
-		//X3D::X3DConstants::PointSet,
-		X3D::X3DConstants::TriangleFanSet,
-		X3D::X3DConstants::TriangleSet,
-		X3D::X3DConstants::TriangleStripSet,
-		X3D::X3DConstants::Text,
-	};
-
-	auto geometryNodes = getNodes <X3D::X3DBaseNode> (selection, types);
-
-	const auto protoInstances = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::X3DPrototypeInstance });
-
-	for (const auto & protoInstance : protoInstances)
-	{
-		try
-		{
-			const auto innerNode = protoInstance -> getInnerNode ();
-
-			if (innerNode -> isType (types))
-				geometryNodes .emplace_back (protoInstance);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	return geometryNodes;
-}
-
 void
 GeometryEditor::set_selection (const X3D::MFNode & selection)
 {
@@ -1200,6 +1141,65 @@ GeometryEditor::on_delete_selected_faces_clicked ()
 	coordEditor -> setField <X3D::SFTime> ("deleteSelectedFaces", chrono::now ());
 }
 
+X3D::MFNode
+GeometryEditor::getGeometries (const X3D::MFNode & selection) const
+{
+	static const std::set <X3D::NodeType> types = {
+		X3D::X3DConstants::IndexedQuadSet,
+		X3D::X3DConstants::QuadSet,
+		//X3D::X3DConstants::Arc2D,
+		X3D::X3DConstants::ArcClose2D,
+		//X3D::X3DConstants::Circle2D,
+		X3D::X3DConstants::Disk2D,
+		//X3D::X3DConstants::Polyline2D,
+		//X3D::X3DConstants::Polypoint2D,
+		X3D::X3DConstants::Rectangle2D,
+		X3D::X3DConstants::TriangleSet2D,
+		X3D::X3DConstants::Box,
+		X3D::X3DConstants::Cone,
+		X3D::X3DConstants::Cylinder,
+		X3D::X3DConstants::ElevationGrid,
+		X3D::X3DConstants::Extrusion,
+		X3D::X3DConstants::IndexedFaceSet,
+		X3D::X3DConstants::Sphere,
+		X3D::X3DConstants::GeoElevationGrid,
+		//X3D::X3DConstants::NurbsCurve,
+		X3D::X3DConstants::NurbsPatchSurface,
+		//X3D::X3DConstants::NurbsSweptSurface,
+		//X3D::X3DConstants::NurbsSwungSurface,
+		X3D::X3DConstants::NurbsTrimmedSurface,
+		//X3D::X3DConstants::IndexedLineSet,
+		X3D::X3DConstants::IndexedTriangleFanSet,
+		X3D::X3DConstants::IndexedTriangleSet,
+		X3D::X3DConstants::IndexedTriangleStripSet,
+		//X3D::X3DConstants::LineSet,
+		//X3D::X3DConstants::PointSet,
+		X3D::X3DConstants::TriangleFanSet,
+		X3D::X3DConstants::TriangleSet,
+		X3D::X3DConstants::TriangleStripSet,
+		X3D::X3DConstants::Text,
+	};
+
+	auto geometryNodes = getNodes <X3D::X3DBaseNode> (selection, types);
+
+	const auto protoInstances = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::X3DPrototypeInstance });
+
+	for (const auto & protoInstance : protoInstances)
+	{
+		try
+		{
+			const auto innerNode = protoInstance -> getInnerNode ();
+
+			if (innerNode -> isType (types))
+				geometryNodes .emplace_back (protoInstance);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	return geometryNodes;
+}
+
 void
 GeometryEditor::store ()
 {
@@ -1211,7 +1211,7 @@ GeometryEditor::store ()
 	getConfig () -> set ("selectLineLoop",         getSelectLineLoopMenuItem () .get_active ());
 	getConfig () -> set ("transform",              getTransformToolButton () .get_active ());
 	getConfig () -> set ("axisAlignedBoundingBox", getAxisAlignedBoundingBoxMenuItem () .get_active ());
-	getConfig () -> set ("edgeColor",              coordEditor  -> getField <X3D::SFColorRGBA> ("color"));
+	getConfig () -> set ("edgeColor",              coordEditor -> getField <X3D::SFColorRGBA> ("color"));
 	getConfig () -> set ("selector",               size_t (selector));
 	getConfig () -> set ("cutPolygons",            getCutPolygonsButton () .get_active ());
 	getConfig () -> set ("cutSnapping",            getCutPolygonsEnableSnappingMenuItem () .get_active ());

@@ -122,7 +122,7 @@ X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 	const auto geometry             = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
 
 	geometry -> solid ()           = solid ();
-	geometry -> ccw ()             = ccw ();
+	geometry -> ccw ()             = determinant (transformationMatrix) >= 0 ? ccw () : not ccw ();
 	geometry -> convex ()          = convex ();
 	geometry -> creaseAngle ()     = creaseAngle ();
 	geometry -> colorPerVertex ()  = colorPerVertex ();

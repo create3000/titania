@@ -131,9 +131,6 @@ private:
 	void
 	on_unmap () final override;
 
-	X3D::MFNode
-	getGeometries (const X3D::MFNode & selection) const;
-
 	virtual
 	void
 	set_selection (const X3D::MFNode & selection) final override;
@@ -286,6 +283,9 @@ private:
 	virtual
 	void
 	on_delete_selected_faces_clicked () final override;
+
+	X3D::MFNode
+	getGeometries (const X3D::MFNode & selection) const;
 
 	virtual
 	void

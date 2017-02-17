@@ -952,6 +952,9 @@ BrowserWindow::on_delete_activated ()
 	if (selection .empty ())
 		return;
 
+	if (checkForClones (selection .cbegin (), selection .cend ()))
+		return;
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node From Scene"));
 
 	removeNodesFromScene (getCurrentContext (), selection, true, undoStep);

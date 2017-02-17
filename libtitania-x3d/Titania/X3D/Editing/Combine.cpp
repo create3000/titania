@@ -568,7 +568,9 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			coordArray .emplace (index, coordArray .size ());
 		}
 
-		const auto matrix = Editor () .getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode) * targetMatrix;
+		const auto transformationMatrix = Editor () .getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode);
+		const auto matrix               = transformationMatrix * targetMatrix;
+		const auto matrixNegative       = determinant (matrix) < 0;
 
 		face              = 0;
 		size_t first      = 0;
@@ -580,7 +582,12 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 
 			if (index < 0)
 			{
-				if (geometryNode -> ccw () not_eq targetGeometry -> ccw ())
+				auto flip = geometryNode -> ccw () not_eq targetGeometry -> ccw ();
+
+				if (matrixNegative)
+					flip = not flip;
+
+				if (flip)
 				{
 					// Flip vertex ordering.
 
