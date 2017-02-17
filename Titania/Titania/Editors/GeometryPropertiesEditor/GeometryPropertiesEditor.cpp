@@ -89,13 +89,13 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                    creaseAngleDouble (this, getCreaseAngleDoubleAdjustment (), getCreaseAngleDoubleBox (), "creaseAngle"),
 	                       colorPerVertex (this, getColorPerVertexCheckButton (), "colorPerVertex"),
 	                      normalPerVertex (this, getNormalPerVertexCheckButton (), "normalPerVertex"),
+	                        geometryNodes (),
 	                         geometryNode (),
-	                                nodes (),
-	                               shapes (),
+	                           shapeNodes (),
 	                          nodesBuffer (),
 	                            changing (false)
 {
-	addChildObjects (geometryNode, nodes, shapes, nodesBuffer);
+	addChildObjects (geometryNodes, geometryNode, shapeNodes, nodesBuffer);
 
 	nodesBuffer .addInterest (&GeometryPropertiesEditor::set_buffer, this);
 
@@ -135,50 +135,13 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DGeometryPropertiesEditorInterface::set_selection (selection);
 
-	for (const auto & shape : shapes)
-		shape -> geometry () .removeInterest (&GeometryPropertiesEditor::set_geometry, this);
+	for (const auto & shapeNode : shapeNodes)
+		shapeNode -> geometry () .removeInterest (&GeometryPropertiesEditor::set_geometry, this);
 
-	X3DArc2DEditor::removeShapes ();
-	X3DArcClose2DEditor::removeShapes ();
-	X3DCircle2DEditor::removeShapes ();
-	X3DDisk2DEditor::removeShapes ();
-	X3DRectangle2DEditor::removeShapes ();
-	X3DBoxEditor::removeShapes ();
-	X3DConeEditor::removeShapes ();
-	X3DCylinderEditor::removeShapes ();
-	X3DElevationGridEditor::removeShapes ();
-	X3DExtrusionEditor::removeShapes ();
-	X3DSphereEditor::removeShapes ();
-	X3DGeoElevationGridEditor::removeShapes ();
-	X3DNurbsCurveEditor::removeShapes ();
-	X3DNurbsPatchSurfaceEditor::removeShapes ();
-	X3DNurbsTrimmedSurfaceEditor::removeShapes ();
+	shapeNodes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
-	shapes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
-
-	for (const auto & shape : shapes)
-		shape -> geometry () .addInterest (&GeometryPropertiesEditor::set_geometry, this);
-
-	X3DArc2DEditor::addShapes ();
-	X3DArcClose2DEditor::addShapes ();
-	X3DCircle2DEditor::addShapes ();
-	X3DDisk2DEditor::addShapes ();
-	X3DRectangle2DEditor::addShapes ();
-	X3DBoxEditor::addShapes ();
-	X3DConeEditor::addShapes ();
-	X3DCylinderEditor::addShapes ();
-	X3DElevationGridEditor::addShapes ();
-	X3DExtrusionEditor::addShapes ();
-	X3DSphereEditor::addShapes ();
-	X3DGeoElevationGridEditor::addShapes ();
-	X3DNurbsCurveEditor::addShapes ();
-	X3DNurbsPatchSurfaceEditor::addShapes ();
-	X3DNurbsTrimmedSurfaceEditor::addShapes ();
-
-//	const auto widgets  = getGeometryStack () .get_children ();
-//	const auto visibles = std::count_if (widgets .begin (), widgets .end (), [ ] (const Gtk::Widget* w) { return w -> get_visible (); });
-//
-//	getGeometryStack () .set_visible (visibles == 1);
+	for (const auto & shapeNode : shapeNodes)
+		shapeNode -> geometry () .addInterest (&GeometryPropertiesEditor::set_geometry, this);
 
 	set_geometry ();
 }
@@ -199,9 +162,25 @@ GeometryPropertiesEditor::connectGeometry (const X3D::SFNode & field)
 void
 GeometryPropertiesEditor::set_buffer ()
 {
+	X3DArc2DEditor::set_geometry ();
+	X3DArcClose2DEditor::set_geometry ();
+	X3DCircle2DEditor::set_geometry ();
+	X3DDisk2DEditor::set_geometry ();
+	X3DRectangle2DEditor::set_geometry ();
+	X3DBoxEditor::set_geometry ();
+	X3DConeEditor::set_geometry ();
+	X3DCylinderEditor::set_geometry ();
+	X3DElevationGridEditor::set_geometry ();
+	X3DExtrusionEditor::set_geometry ();
+	X3DSphereEditor::set_geometry ();
+	X3DGeoElevationGridEditor::set_geometry ();
+	X3DNurbsCurveEditor::set_geometry ();
+	X3DNurbsPatchSurfaceEditor::set_geometry ();
+	X3DNurbsTrimmedSurfaceEditor::set_geometry ();
+
 	changing = true;
 
-	for (const auto & node : nodes)
+	for (const auto & node : geometryNodes)
 	{
 		try
 		{
@@ -211,41 +190,47 @@ GeometryPropertiesEditor::set_buffer ()
 		{ }
 	}
 
-	auto  tuple             = getSelection <X3D::X3DGeometryNode> (getShapes (), "geometry");
-	const int32_t active    = std::get <1> (tuple);
-	const bool    hasParent = std::get <2> (tuple);
-	const bool    hasField  = (active not_eq -2);
+	// Find X3DGeometryNodes.
 
-	geometryNode = std::move (std::get <0> (tuple));
-	nodes        = getNodes <X3D::X3DBaseNode> (getShapes (), { X3D::X3DConstants::X3DGeometryNode });
+	geometryNodes = getNodes <X3D::X3DBaseNode> (shapeNodes, { X3D::X3DConstants::X3DGeometryNode });
 
-	if (nodes .empty () and geometryNode)
-		nodes = { geometryNode };
+	if (geometryNodes .empty ())
+		geometryNodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
 
-	solid             .setNodes (nodes);
-	ccw               .setNodes (nodes);
-	convex            .setNodes (nodes);
-	creaseAngle       .setNodes (nodes);
-	creaseAngleDouble .setNodes (nodes);
-	colorPerVertex    .setNodes (nodes);
-	normalPerVertex   .setNodes (nodes);
+	const auto size = geometryNodes .size ();
+
+	geometryNodes .erase (std::unique (geometryNodes .begin (), geometryNodes .end ()), geometryNodes .end ());
+	geometryNode = geometryNodes .empty () ? nullptr : geometryNodes .back ();
+
+	// Adjust widgets.
+
+	const auto widgets  = getGeometryStack () .get_children ();
+	const auto visibles = std::count_if (widgets .begin (), widgets .end (), [ ] (const Gtk::Widget* widget) { return widget -> get_visible (); });
+	const auto same     = geometryNodes .size () == 1 and size > 1;
+
+	solid             .setNodes (geometryNodes);
+	ccw               .setNodes (geometryNodes);
+	convex            .setNodes (geometryNodes);
+	creaseAngle       .setNodes (geometryNodes);
+	creaseAngleDouble .setNodes (geometryNodes);
+	colorPerVertex    .setNodes (geometryNodes);
+	normalPerVertex   .setNodes (geometryNodes);
 
 	// Normals Box
 
-	getGeometryComboBoxText () .set_sensitive (hasField);
+	getGeometryComboBoxText () .set_sensitive (not shapeNodes .empty ());
 
-	if (active > 0)
-		getGeometryComboBoxText () .set_active_text (geometryNode ? geometryNode -> getTypeName () : "None");
-	else if (active == 0)
-		getGeometryComboBoxText () .set_active_text ("None");
+	if (same)
+		getGeometryComboBoxText () .set_active_text (geometryNode -> getTypeName ());
 	else
 		getGeometryComboBoxText () .set_active (-1);
 
-	getSelectGeometryBox ()    .set_sensitive (hasParent);
-	getGeometryUnlinkButton () .set_sensitive (active > 0 and not nodes .empty () and nodes [0] -> getCloneCount () > 1);
+	getSelectGeometryBox ()    .set_sensitive (not shapeNodes .empty ());
+	getGeometryUnlinkButton () .set_sensitive (same and geometryNode -> getCloneCount () > 1);
+	getGeometryStack ()        .set_visible (visibles == 1);
 	getNormalsBox ()           .set_sensitive (false);
 
-	for (const auto & node : nodes)
+	for (const auto & node : geometryNodes)
 	{
 		try
 		{
@@ -267,7 +252,7 @@ GeometryPropertiesEditor::set_normal ()
 {
 	bool normal = false;
 
-	for (const auto & node : nodes)
+	for (const auto & node : geometryNodes)
 	{
 		try
 		{
@@ -291,9 +276,8 @@ GeometryPropertiesEditor::on_geometry_changed ()
 	{
 	   try
 	   {
-			const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
-			const auto shapeNodes = getShapes ();
-		   auto       node       = getCurrentContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+		   auto       node     = getCurrentContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
 
 		   if (geometryNode and geometryNode -> getType () .back () == node -> getType () .back ())
 				node = geometryNode;
@@ -321,7 +305,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
 
-		for (const auto & shapeNode : getShapes ())
+		for (const auto & shapeNode : shapeNodes)
 		{
 			auto & field = shapeNode -> geometry ();
 
@@ -340,7 +324,7 @@ GeometryPropertiesEditor::on_geometry_unlink_clicked ()
 {
 	X3D::UndoStepPtr undoStep;
 
-	unlinkClone (getShapes (), "geometry", undoStep);
+	unlinkClone (shapeNodes, "geometry", undoStep);
 }
 
 void

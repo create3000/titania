@@ -68,29 +68,12 @@ X3DCylinderEditor::X3DCylinderEditor () :
 { }
 
 void
-X3DCylinderEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DCylinderEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DCylinderEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DCylinderEditor::set_geometry, this);
-}
-
-void
 X3DCylinderEditor::set_geometry ()
 {
-	const auto node   = getOneSelection <X3D::Cylinder> (getShapes (), "geometry");
-	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
-	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getCylinderOptions () }) : X3D::MFNode ();
+	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Cylinder });
+	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getCylinderOptions () });
 
-	getCylinderExpander () .set_visible (node);
+	getCylinderExpander () .set_visible (not nodes .empty ());
 
 	top        .setNodes (nodes);
 	side       .setNodes (nodes);

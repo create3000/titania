@@ -64,29 +64,12 @@ X3DCircle2DEditor::X3DCircle2DEditor () :
 { }
 
 void
-X3DCircle2DEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DCircle2DEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DCircle2DEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DCircle2DEditor::set_geometry, this);
-}
-
-void
 X3DCircle2DEditor::set_geometry ()
 {
-	const auto node   = getOneSelection <X3D::Circle2D> (getShapes (), "geometry");
-	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
-	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getCircle2DOptions () }) : X3D::MFNode ();
+	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Circle2D });
+	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getCircle2DOptions () });
 
-	getCircle2DExpander () .set_visible (node);
+	getCircle2DExpander () .set_visible (not nodes .empty ());
 
 	radius    .setNodes (nodes);
 	dimension .setNodes (global);

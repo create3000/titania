@@ -73,28 +73,11 @@ X3DBoxEditor::configure ()
 }
 
 void
-X3DBoxEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DBoxEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DBoxEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DBoxEditor::set_geometry, this);
-}
-
-void
 X3DBoxEditor::set_geometry ()
 {
-	const auto node  = getOneSelection <X3D::Box> (getShapes (), "geometry");
-	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Box });
 
-	getBoxExpander () .set_visible (node);
+	getBoxExpander () .set_visible (not nodes .empty ());
 
 	size .setNodes (nodes);
 }

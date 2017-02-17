@@ -63,28 +63,11 @@ X3DExtrusionEditor::X3DExtrusionEditor () :
 { }
 
 void
-X3DExtrusionEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DExtrusionEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DExtrusionEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DExtrusionEditor::set_geometry, this);
-}
-
-void
 X3DExtrusionEditor::set_geometry ()
 {
-	const auto node  = getOneSelection <X3D::Extrusion> (getShapes (), "geometry");
-	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Extrusion });
 
-	getExtrusionExpander () .set_visible (node);
+	getExtrusionExpander () .set_visible (not nodes .empty ());
 
 	beginCap .setNodes (nodes);
 	endCap   .setNodes (nodes);

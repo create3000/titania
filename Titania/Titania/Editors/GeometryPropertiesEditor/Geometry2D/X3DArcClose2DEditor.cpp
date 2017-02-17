@@ -67,29 +67,12 @@ X3DArcClose2DEditor::X3DArcClose2DEditor () :
 { }
 
 void
-X3DArcClose2DEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DArcClose2DEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DArcClose2DEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DArcClose2DEditor::set_geometry, this);
-}
-
-void
 X3DArcClose2DEditor::set_geometry ()
 {
-	const auto node   = getOneSelection <X3D::ArcClose2D> (getShapes (), "geometry");
-	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
-	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getArcClose2DOptions () }) : X3D::MFNode ();
+	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::ArcClose2D });
+	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getArcClose2DOptions () });
 
-	getArcClose2DExpander () .set_visible (node);
+	getArcClose2DExpander () .set_visible (not nodes .empty ());
 
 	closureType .setNodes (nodes);
 	startAngle  .setNodes (nodes);

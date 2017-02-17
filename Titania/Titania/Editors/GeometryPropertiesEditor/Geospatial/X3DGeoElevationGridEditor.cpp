@@ -95,30 +95,13 @@ X3DGeoElevationGridEditor::initialize ()
 }
 
 void
-X3DGeoElevationGridEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DGeoElevationGridEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DGeoElevationGridEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DGeoElevationGridEditor::set_geometry, this);
-}
-
-void
 X3DGeoElevationGridEditor::set_geometry ()
 {
-	const auto node  = getOneSelection <X3D::GeoElevationGrid> (getShapes (), "geometry");
-	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::GeoElevationGrid });
 
-	getGeoElevationGridBox () .set_visible (node);
+	getGeoElevationGridBox () .set_visible (not nodes .empty ());
 
-	geoSystem -> setNode (node);
+	geoSystem -> setNodes (nodes);
 
 	geoGridOrigin .setNodes (nodes);
 	xDimension    .setNodes (nodes);
@@ -127,7 +110,7 @@ X3DGeoElevationGridEditor::set_geometry ()
 	zSpacing      .setNodes (nodes);
 	yScale        .setNodes (nodes);
 
-	X3DHeightMapEditor <X3D::GeoElevationGrid, X3D::MFDouble>::setNode (node);
+	X3DHeightMapEditor <X3D::GeoElevationGrid, X3D::MFDouble>::setNode (X3D::X3DPtr <X3D::GeoElevationGrid> (nodes .empty () ? nullptr : nodes .back ()));
 }
 
 X3DGeoElevationGridEditor::~X3DGeoElevationGridEditor ()

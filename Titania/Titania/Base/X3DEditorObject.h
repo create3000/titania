@@ -145,10 +145,6 @@ protected:
 	getSelection (const X3D::X3DPtrArray <NodeType> &, const std::string &);
 
 	template <class FieldType, class NodeType>
-	X3D::X3DPtr <FieldType>
-	getOneSelection (const X3D::X3DPtrArray <NodeType> &, const std::string &);
-
-	template <class FieldType, class NodeType>
 	static
 	std::pair <X3D::X3DPtr <FieldType>, int32_t>
 	getNode (const X3D::X3DPtrArray <NodeType> &, const std::string &);
@@ -269,19 +265,6 @@ X3DEditorObject::getSelection (const X3D::X3DPtrArray <NodeType> & nodes, const 
 	auto pair = getNode <FieldType, NodeType> (nodes, fieldName);
 
 	return std::make_tuple (std::move (pair .first), pair .second, true);
-}
-
-template <class FieldType, class NodeType>
-X3D::X3DPtr <FieldType>
-X3DEditorObject::getOneSelection (const X3D::X3DPtrArray <NodeType> & nodes, const std::string & fieldName)
-{
-	auto          tuple  = getSelection <FieldType, NodeType> (nodes, fieldName);
-	const int32_t active = std::get <1> (tuple);
-
-	if (active == SAME_NODE) // All shapes share the same geometry
-		return std::move (std::get <0> (tuple));
-	else
-		return nullptr;
 }
 	
 /***

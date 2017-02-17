@@ -65,29 +65,12 @@ X3DDisk2DEditor::X3DDisk2DEditor () :
 { }
 
 void
-X3DDisk2DEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DDisk2DEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DDisk2DEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DDisk2DEditor::set_geometry, this);
-}
-
-void
 X3DDisk2DEditor::set_geometry ()
 {
-	const auto node   = getOneSelection <X3D::Disk2D> (getShapes (), "geometry");
-	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
-	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getDisk2DOptions () }) : X3D::MFNode ();
+	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Disk2D });
+	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getDisk2DOptions () });
 
-	getDisk2DExpander () .set_visible (node);
+	getDisk2DExpander () .set_visible (not nodes .empty ());
 
 	innerRadius .setNodes (nodes);
 	outerRadius .setNodes (nodes);

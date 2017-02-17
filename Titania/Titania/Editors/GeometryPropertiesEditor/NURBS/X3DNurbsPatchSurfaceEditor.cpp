@@ -87,28 +87,11 @@ X3DNurbsPatchSurfaceEditor::X3DNurbsPatchSurfaceEditor () :
 { }
 
 void
-X3DNurbsPatchSurfaceEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DNurbsPatchSurfaceEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DNurbsPatchSurfaceEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DNurbsPatchSurfaceEditor::set_geometry, this);
-}
-
-void
 X3DNurbsPatchSurfaceEditor::set_geometry ()
 {
-	const auto node  = getOneSelection <X3D::NurbsPatchSurface> (getShapes (), "geometry");
-	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::NurbsPatchSurface });
 
-	getNurbsPatchSurfaceExpander () .set_visible (node);
+	getNurbsPatchSurfaceExpander () .set_visible (not nodes .empty ());
 
 	uTessellation .setNodes (nodes);
 	vTessellation .setNodes (nodes);

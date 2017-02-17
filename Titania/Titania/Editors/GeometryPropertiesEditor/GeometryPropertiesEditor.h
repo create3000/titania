@@ -119,16 +119,12 @@ private:
 	initialize () final override;
 
 	virtual
-	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
-	getShapes () final override
-	{ return shapes; }
-
-	virtual
 	void
 	set_selection (const X3D::MFNode & selection) final override;
 
+	virtual
 	void
-	set_geometry ();
+	set_geometry () final override;
 
 	void
 	connectGeometry (const X3D::SFNode & field);
@@ -169,9 +165,9 @@ private:
 	X3DFieldToggleButton <X3D::SFBool>  colorPerVertex;
 	X3DFieldToggleButton <X3D::SFBool>  normalPerVertex;
 
+	X3D::MFNode                          geometryNodes;
 	X3D::SFNode                          geometryNode;
-	X3D::MFNode                          nodes;
-	X3D::X3DPtrArray <X3D::X3DShapeNode> shapes;
+	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
 	X3D::SFTime                          nodesBuffer;
 
 	bool changing;

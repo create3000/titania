@@ -65,29 +65,12 @@ X3DSphereEditor::X3DSphereEditor () :
 { }
 
 void
-X3DSphereEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DSphereEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DSphereEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DSphereEditor::set_geometry, this);
-}
-
-void
 X3DSphereEditor::set_geometry ()
 {
-	const auto node   = getOneSelection <X3D::Sphere> (getShapes (), "geometry");
-	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
-	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getSphereOptions () }) : X3D::MFNode ();
+	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Sphere });
+	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getSphereOptions () });
 
-	getSphereExpander () .set_visible (node);
+	getSphereExpander () .set_visible (not nodes .empty ());
 
 	radius     .setNodes (nodes);
 	xDimension .setNodes (global);

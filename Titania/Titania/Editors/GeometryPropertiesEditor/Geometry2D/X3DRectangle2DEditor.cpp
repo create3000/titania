@@ -72,28 +72,11 @@ X3DRectangle2DEditor::configure ()
 }
 
 void
-X3DRectangle2DEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DRectangle2DEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DRectangle2DEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DRectangle2DEditor::set_geometry, this);
-}
-
-void
 X3DRectangle2DEditor::set_geometry ()
 {
-	const auto node  = getOneSelection <X3D::Rectangle2D> (getShapes (), "geometry");
-	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Rectangle2D });
 
-	getRectangle2DExpander () .set_visible (node);
+	getRectangle2DExpander () .set_visible (not nodes .empty ());
 
 	size .setNodes (nodes);
 }

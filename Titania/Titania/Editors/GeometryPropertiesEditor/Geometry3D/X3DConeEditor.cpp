@@ -67,29 +67,12 @@ X3DConeEditor::X3DConeEditor () :
 { }
 
 void
-X3DConeEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DConeEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DConeEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DConeEditor::set_geometry, this);
-}
-
-void
 X3DConeEditor::set_geometry ()
 {
-	const auto node   = getOneSelection <X3D::Cone> (getShapes (), "geometry");
-	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
-	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getConeOptions () }) : X3D::MFNode ();
+	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Cone });
+	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getConeOptions () });
 
-	getConeExpander () .set_visible (node);
+	getConeExpander () .set_visible (not nodes .empty ());
 
 	side         .setNodes (nodes);
 	bottom       .setNodes (nodes);

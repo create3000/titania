@@ -74,23 +74,12 @@ protected:
 
 	X3DCircle2DEditor ();
 
-	void
-	addShapes ();
-
-	void
-	removeShapes ();
-
 	virtual
-	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
-	getShapes () = 0;
+	void
+	set_geometry ();
 
 
 private:
-
-	///  @name Construction
-
-	void
-	set_geometry ();
 
 	///  @name Members
 

@@ -75,7 +75,7 @@ public:
 	                   Gtk::Widget &);
 
 	void
-	setNode (const X3D::SFNode &);
+	setNodes (const X3D::MFNode &);
 
 	///  @name Destruction
 
@@ -99,19 +99,19 @@ private:
 
 	///  @name Members
 
-	Gtk::ComboBoxText &                    coordinateSystem;
-	Gtk::ComboBoxText &                    ellipsoid;
-	Gtk::ComboBoxText &                    gdOrder;
-	const Glib::RefPtr <Gtk::Adjustment>   zone;
-	Gtk::ComboBoxText &                    hemisphere;
-	Gtk::ComboBoxText &                    utmOrder;
-	Gtk::Widget &                          ellipsoidBox;
-	Gtk::Widget &                          gdBox;
-	Gtk::Widget &                          utmBox;
-	X3D::X3DPtr <X3D::X3DGeospatialObject> node;
-	X3D::UndoStepPtr                       undoStep;
-	int                                    input;
-	bool                                   changing;
+	Gtk::ComboBoxText &                         coordinateSystem;
+	Gtk::ComboBoxText &                         ellipsoid;
+	Gtk::ComboBoxText &                         gdOrder;
+	const Glib::RefPtr <Gtk::Adjustment>        zone;
+	Gtk::ComboBoxText &                         hemisphere;
+	Gtk::ComboBoxText &                         utmOrder;
+	Gtk::Widget &                               ellipsoidBox;
+	Gtk::Widget &                               gdBox;
+	Gtk::Widget &                               utmBox;
+	X3D::X3DPtrArray <X3D::X3DGeospatialObject> nodes;
+	X3D::UndoStepPtr                            undoStep;
+	int                                         input;
+	bool                                        changing;
 
 };
 

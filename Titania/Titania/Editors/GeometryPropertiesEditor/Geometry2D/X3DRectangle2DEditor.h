@@ -78,15 +78,11 @@ protected:
 	void
 	configure () override;
 
-	void
-	addShapes ();
-
-	void
-	removeShapes ();
-
 	virtual
-	const X3D::X3DPtrArray <X3D::X3DShapeNode> &
-	getShapes () = 0;
+	void
+	set_geometry ();
+
+	///  @name Desnstruction
 
 	virtual
 	void
@@ -94,11 +90,6 @@ protected:
 
 
 private:
-
-	///  @name Construction
-
-	void
-	set_geometry ();
 
 	///  @name Event handlers
 

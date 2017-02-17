@@ -70,28 +70,11 @@ X3DNurbsCurveEditor::X3DNurbsCurveEditor () :
 { }
 
 void
-X3DNurbsCurveEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DNurbsCurveEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DNurbsCurveEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DNurbsCurveEditor::set_geometry, this);
-}
-
-void
 X3DNurbsCurveEditor::set_geometry ()
 {
-	const auto node  = getOneSelection <X3D::NurbsCurve> (getShapes (), "geometry");
-	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::NurbsCurve });
 
-	getNurbsCurveExpander () .set_visible (node);
+	getNurbsCurveExpander () .set_visible (not nodes .empty ());
 
 	tessellation .setNodes (nodes);
 	closed       .setNodes (nodes);

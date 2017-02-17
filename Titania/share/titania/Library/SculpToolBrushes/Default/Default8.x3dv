@@ -21,9 +21,9 @@ EXTERNPROTO SculpToolBrush [
   inputOutput SFDouble spacing
 ]
 [
+  "../../../../../../libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv#SculpToolBrush",
   "../../../tools/SculpToolBrush.x3dv#SculpToolBrush",
   "file:///usr/share/titania/tools/SculpToolBrush.x3dv#SculpToolBrush"
-  "../../../../../../libtitania-x3d/share/titania/tools/SculpToolBrush.x3dv#SculpToolBrush",
 ]
 
 DEF SculpToolBrush SculpToolBrush {

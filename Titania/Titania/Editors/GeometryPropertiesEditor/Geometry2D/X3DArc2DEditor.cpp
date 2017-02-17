@@ -64,31 +64,14 @@ X3DArc2DEditor::X3DArc2DEditor () :
 	                              radius (this, getArc2DRadiusAdjustment (), getArc2DRadiusSpinButton (), "radius"),
 	                            minAngle (this, getArc2DMinAngleAdjustment (), getArc2DMinAngleSpinButton (), "minAngle")
 { }
-	
-void
-X3DArc2DEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DArc2DEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DArc2DEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DArc2DEditor::set_geometry, this);
-}
 
 void
 X3DArc2DEditor::set_geometry ()
 {
-	const auto node   = getOneSelection <X3D::Arc2D> (getShapes (), "geometry");
-	const auto nodes  = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
-	const auto global = node ? X3D::MFNode ({ getCurrentBrowser () -> getArc2DOptions () }) : X3D::MFNode ();
+	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Arc2D });
+	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getArc2DOptions () });
 
-	getArc2DExpander () .set_visible (node);
+	getArc2DExpander () .set_visible (not nodes .empty ());
 
 	startAngle .setNodes (nodes);
 	endAngle   .setNodes (nodes);

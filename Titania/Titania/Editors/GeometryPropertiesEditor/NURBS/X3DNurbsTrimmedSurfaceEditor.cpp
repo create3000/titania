@@ -87,28 +87,11 @@ X3DNurbsTrimmedSurfaceEditor::X3DNurbsTrimmedSurfaceEditor () :
 { }
 
 void
-X3DNurbsTrimmedSurfaceEditor::addShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .addInterest (&X3DNurbsTrimmedSurfaceEditor::set_geometry, this);
-
-	set_geometry ();
-}
-
-void
-X3DNurbsTrimmedSurfaceEditor::removeShapes ()
-{
-	for (const auto & shapeNode : getShapes ())
-		shapeNode -> geometry () .removeInterest (&X3DNurbsTrimmedSurfaceEditor::set_geometry, this);
-}
-
-void
 X3DNurbsTrimmedSurfaceEditor::set_geometry ()
 {
-	const auto node  = getOneSelection <X3D::NurbsTrimmedSurface> (getShapes (), "geometry");
-	const auto nodes = node ? X3D::MFNode ({ node }) : X3D::MFNode ();
+	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::NurbsTrimmedSurface });
 
-	getNurbsTrimmedSurfaceExpander () .set_visible (node);
+	getNurbsTrimmedSurfaceExpander () .set_visible (not nodes .empty ());
 
 	uTessellation .setNodes (nodes);
 	vTessellation .setNodes (nodes);

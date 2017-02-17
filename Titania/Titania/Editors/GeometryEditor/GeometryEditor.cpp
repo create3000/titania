@@ -187,6 +187,46 @@ GeometryEditor::on_unmap ()
 	browser = getMasterBrowser ();
 }
 
+X3D::MFNode
+GeometryEditor::getGeometries (const X3D::MFNode & selection) const
+{
+	return getNodes <X3D::X3DBaseNode> (selection, {
+		X3D::X3DConstants::IndexedQuadSet,
+		X3D::X3DConstants::QuadSet,
+		//X3D::X3DConstants::Arc2D,
+		X3D::X3DConstants::ArcClose2D,
+		//X3D::X3DConstants::Circle2D,
+		X3D::X3DConstants::Disk2D,
+		//X3D::X3DConstants::Polyline2D,
+		//X3D::X3DConstants::Polypoint2D,
+		X3D::X3DConstants::Rectangle2D,
+		X3D::X3DConstants::TriangleSet2D,
+		X3D::X3DConstants::Box,
+		X3D::X3DConstants::Cone,
+		X3D::X3DConstants::Cylinder,
+		X3D::X3DConstants::ElevationGrid,
+		X3D::X3DConstants::Extrusion,
+		X3D::X3DConstants::IndexedFaceSet,
+		X3D::X3DConstants::Sphere,
+		X3D::X3DConstants::GeoElevationGrid,
+		//X3D::X3DConstants::NurbsCurve,
+		X3D::X3DConstants::NurbsPatchSurface,
+		//X3D::X3DConstants::NurbsSweptSurface,
+		//X3D::X3DConstants::NurbsSwungSurface,
+		X3D::X3DConstants::NurbsTrimmedSurface,
+		//X3D::X3DConstants::IndexedLineSet,
+		X3D::X3DConstants::IndexedTriangleFanSet,
+		X3D::X3DConstants::IndexedTriangleSet,
+		X3D::X3DConstants::IndexedTriangleStripSet,
+		//X3D::X3DConstants::LineSet,
+		//X3D::X3DConstants::PointSet,
+		X3D::X3DConstants::TriangleFanSet,
+		X3D::X3DConstants::TriangleSet,
+		X3D::X3DConstants::TriangleStripSet,
+		X3D::X3DConstants::Text,
+	});
+}
+
 void
 GeometryEditor::set_selection (const X3D::MFNode & selection)
 {
@@ -201,41 +241,7 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 		const bool inScene       = not inPrototypeInstance ();
 		const bool haveSelection = inScene and selection .size ();
 
-		geometryNodes = getNodes <X3D::X3DBaseNode> (selection, {
-			X3D::X3DConstants::IndexedQuadSet,
-			X3D::X3DConstants::QuadSet,
-			//X3D::X3DConstants::Arc2D,
-			X3D::X3DConstants::ArcClose2D,
-			//X3D::X3DConstants::Circle2D,
-			X3D::X3DConstants::Disk2D,
-			//X3D::X3DConstants::Polyline2D,
-			//X3D::X3DConstants::Polypoint2D,
-			X3D::X3DConstants::Rectangle2D,
-			X3D::X3DConstants::TriangleSet2D,
-			X3D::X3DConstants::Box,
-			X3D::X3DConstants::Cone,
-			X3D::X3DConstants::Cylinder,
-			X3D::X3DConstants::ElevationGrid,
-			X3D::X3DConstants::Extrusion,
-			X3D::X3DConstants::IndexedFaceSet,
-			X3D::X3DConstants::Sphere,
-			X3D::X3DConstants::GeoElevationGrid,
-			//X3D::X3DConstants::NurbsCurve,
-			X3D::X3DConstants::NurbsPatchSurface,
-			//X3D::X3DConstants::NurbsSweptSurface,
-			//X3D::X3DConstants::NurbsSwungSurface,
-			X3D::X3DConstants::NurbsTrimmedSurface,
-			//X3D::X3DConstants::IndexedLineSet,
-			X3D::X3DConstants::IndexedTriangleFanSet,
-			X3D::X3DConstants::IndexedTriangleSet,
-			X3D::X3DConstants::IndexedTriangleStripSet,
-			//X3D::X3DConstants::LineSet,
-			//X3D::X3DConstants::PointSet,
-			X3D::X3DConstants::TriangleFanSet,
-			X3D::X3DConstants::TriangleSet,
-			X3D::X3DConstants::TriangleStripSet,
-			X3D::X3DConstants::Text,
-		});
+		geometryNodes = getGeometries (selection);
 
 		changing = true;
 
@@ -918,9 +924,10 @@ GeometryEditor::on_edit_toggled ()
 	{
 		// Restore selection.
 
-		const auto & previousSelection = getBrowserWindow () -> getSelection () -> getPrevious ();
+		const auto & previousSelection     = getBrowserWindow () -> getSelection () -> getPrevious ();
+		const auto   previousGeometryNodes = getGeometries (previousSelection);
 
-		if (previousSelection == geometryNodes)
+		if (previousSelection == geometryNodes or previousSelection == previousGeometryNodes)
 			getBrowserWindow () -> getSelection () -> setChildren ({ });
 		else
 			getBrowserWindow () -> getSelection () -> setChildren (previousSelection);

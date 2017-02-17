@@ -131,15 +131,18 @@ private:
 	void
 	on_unmap () final override;
 
+	X3D::MFNode
+	getGeometries (const X3D::MFNode & selection) const;
+
 	virtual
 	void
-	set_selection (const X3D::MFNode &) final override;
+	set_selection (const X3D::MFNode & selection) final override;
 
 	void
 	connect ();
 
 	void
-	set_browser (const X3D::BrowserPtr &);
+	set_browser (const X3D::BrowserPtr & browser);
 
 	void
 	set_viewer ();
@@ -192,7 +195,7 @@ private:
 
 	virtual
 	bool
-	on_selection_type_button_press_event (GdkEventButton*) final override;
+	on_selection_type_button_press_event (GdkEventButton* event) final override;
 
 	virtual
 	void
@@ -254,7 +257,7 @@ private:
 
 	virtual
 	bool
-	on_cut_polygons_button_press_event (GdkEventButton*) final override;
+	on_cut_polygons_button_press_event (GdkEventButton* event) final override;
 
 	virtual
 	void

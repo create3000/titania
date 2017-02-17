@@ -77,12 +77,12 @@ MFStringGeoSystem::MFStringGeoSystem (X3DBaseInterface* const editor,
 	     ellipsoidBox (ellipsoidBox),
 	            gdBox (gdBox),
 	           utmBox (utmBox),
-	             node (),
+	            nodes (),
 	         undoStep (),
 	            input (-1),
 	         changing (false)
 {
-	addChildObjects (node);
+	addChildObjects (nodes);
 
 	coordinateSystem .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 0));
 	ellipsoid        .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 1));
@@ -96,19 +96,16 @@ MFStringGeoSystem::MFStringGeoSystem (X3DBaseInterface* const editor,
 }
 
 void
-MFStringGeoSystem::setNode (const X3D::SFNode & value)
+MFStringGeoSystem::setNodes (const X3D::MFNode & value)
 {
-	if (node)
+	for (const auto & node : nodes)
 		node -> geoSystem () .removeInterest (&MFStringGeoSystem::set_field, this);
 
-	node = value;
+	nodes = value;
 
-	if (node)
-	{
-		node -> geoSystem () .addInterest (&MFStringGeoSystem::set_field, this);
-		set_field ();
-	}
-	else
+	nodes .remove (nullptr);
+
+	if (nodes .empty ())
 	{
 		undoStep .reset ();
 
@@ -126,14 +123,18 @@ MFStringGeoSystem::setNode (const X3D::SFNode & value)
 
 		changing = false;
 	}
+	else
+	{
+		for (const auto & node : nodes)
+			node -> geoSystem () .addInterest (&MFStringGeoSystem::set_field, this);
+
+		set_field ();
+	}
 }
 
 void
 MFStringGeoSystem::on_changed (const int id)
 {
-	if (not node)
-		return;
-
 	if (changing)
 		return;
 
@@ -142,60 +143,63 @@ MFStringGeoSystem::on_changed (const int id)
 
 	input = id;
 
-	addUndoFunction (node, node -> geoSystem (), undoStep);
-
-	node -> geoSystem () .removeInterest (&MFStringGeoSystem::set_field, this);
-	node -> geoSystem () .addInterest (&MFStringGeoSystem::connect, this);
-
-	node -> geoSystem () .clear ();
-
 	gdBox  .set_visible (false);
 	utmBox .set_visible (false);
 
-	switch (coordinateSystem .get_active_row_number ())
+	addUndoFunction <X3D::MFString> (nodes, "geoSystem", undoStep);
+
+	for (const auto & node : nodes)
 	{
-		case 0:
+		node -> geoSystem () .removeInterest (&MFStringGeoSystem::set_field, this);
+		node -> geoSystem () .addInterest (&MFStringGeoSystem::connect, this);
+	
+		node -> geoSystem () .clear ();
+	
+		switch (coordinateSystem .get_active_row_number ())
 		{
-			ellipsoidBox .set_visible (true);
-			gdBox        .set_visible (true);
-
-			node -> geoSystem () .emplace_back ("GD");
-			node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
-
-			if (gdOrder .get_active_row_number () > 0)
-				node -> geoSystem () .emplace_back ("longitude_first");
-
-			break;
+			case 0:
+			{
+				ellipsoidBox .set_visible (true);
+				gdBox        .set_visible (true);
+	
+				node -> geoSystem () .emplace_back ("GD");
+				node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
+	
+				if (gdOrder .get_active_row_number () > 0)
+					node -> geoSystem () .emplace_back ("longitude_first");
+	
+				break;
+			}
+			case 1:
+			{
+				ellipsoidBox .set_visible (true);
+				utmBox       .set_visible (true);
+	
+				node -> geoSystem () .emplace_back ("UTM");
+				node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
+				node -> geoSystem () .emplace_back ("Z" + basic::to_string (zone -> get_value (), std::locale::classic ()));
+	
+				if (hemisphere .get_active_row_number () > 0)
+					node -> geoSystem () .emplace_back ("S");
+	
+				if (utmOrder .get_active_row_number () > 0)
+					node -> geoSystem () .emplace_back ("easting_first");
+	
+				break;
+			}
+			case 2:
+			{
+				ellipsoidBox .set_visible (false);
+	
+				node -> geoSystem () = { "GC" };
+				break;
+			}
+			default:
+				break;
 		}
-		case 1:
-		{
-			ellipsoidBox .set_visible (true);
-			utmBox       .set_visible (true);
-
-			node -> geoSystem () .emplace_back ("UTM");
-			node -> geoSystem () .emplace_back (ellipsoid .get_active_text ());
-			node -> geoSystem () .emplace_back ("Z" + basic::to_string (zone -> get_value (), std::locale::classic ()));
-
-			if (hemisphere .get_active_row_number () > 0)
-				node -> geoSystem () .emplace_back ("S");
-
-			if (utmOrder .get_active_row_number () > 0)
-				node -> geoSystem () .emplace_back ("easting_first");
-
-			break;
-		}
-		case 2:
-		{
-			ellipsoidBox .set_visible (false);
-
-			node -> geoSystem () = { "GC" };
-			break;
-		}
-		default:
-			break;
 	}
 
-	addRedoFunction (node, node -> geoSystem (), undoStep);
+	addRedoFunction <X3D::MFString> (nodes, "geoSystem", undoStep);
 
 }
 
@@ -206,43 +210,48 @@ MFStringGeoSystem::set_field ()
 
 	changing = true;
 
-	coordinateSystem .set_sensitive (true);
-	ellipsoidBox     .set_sensitive (true);
+	coordinateSystem .set_sensitive (not nodes .empty ());
+	ellipsoidBox     .set_sensitive (not nodes .empty ());
 
 	gdBox  .set_visible (false);
 	utmBox .set_visible (false);
 
-	switch (X3D::Geospatial::getCoordinateSystem (node -> geoSystem ()))
+	for (const auto & node : basic::make_reverse_range (nodes))
 	{
-		case X3D::Geospatial::CoordinateSystemType::GD:
+		switch (X3D::Geospatial::getCoordinateSystem (node -> geoSystem ()))
 		{
-			coordinateSystem .set_active (0);
-			ellipsoid        .set_active_text (X3D::Geospatial::getEllipsoidString (node -> geoSystem ()));
-			gdOrder          .set_active (not X3D::Geospatial::getLatitudeFirst (node -> geoSystem ()));
-
-			ellipsoidBox .set_visible (true);
-			gdBox        .set_visible (true);
-			break;
+			case X3D::Geospatial::CoordinateSystemType::GD:
+			{
+				coordinateSystem .set_active (0);
+				ellipsoid        .set_active_text (X3D::Geospatial::getEllipsoidString (node -> geoSystem ()));
+				gdOrder          .set_active (not X3D::Geospatial::getLatitudeFirst (node -> geoSystem ()));
+	
+				ellipsoidBox .set_visible (true);
+				gdBox        .set_visible (true);
+				break;
+			}
+			case X3D::Geospatial::CoordinateSystemType::UTM:
+			{
+				coordinateSystem .set_active (1);
+				ellipsoid        .set_active_text (X3D::Geospatial::getEllipsoidString (node -> geoSystem ()));
+	
+				zone -> set_value (X3D::Geospatial::getZone (node -> geoSystem ()));
+				hemisphere .set_active (not X3D::Geospatial::getNorthernHemisphere (node -> geoSystem ()));
+				utmOrder   .set_active (not X3D::Geospatial::getNorthingFirst (node -> geoSystem ()));
+	
+				ellipsoidBox .set_visible (true);
+				utmBox       .set_visible (true);
+				break;
+			}
+			case X3D::Geospatial::CoordinateSystemType::GC:
+			{
+				coordinateSystem .set_active (2);
+				ellipsoidBox     .set_visible (false);
+				break;
+			}
 		}
-		case X3D::Geospatial::CoordinateSystemType::UTM:
-		{
-			coordinateSystem .set_active (1);
-			ellipsoid        .set_active_text (X3D::Geospatial::getEllipsoidString (node -> geoSystem ()));
 
-			zone -> set_value (X3D::Geospatial::getZone (node -> geoSystem ()));
-			hemisphere .set_active (not X3D::Geospatial::getNorthernHemisphere (node -> geoSystem ()));
-			utmOrder   .set_active (not X3D::Geospatial::getNorthingFirst (node -> geoSystem ()));
-
-			ellipsoidBox .set_visible (true);
-			utmBox       .set_visible (true);
-			break;
-		}
-		case X3D::Geospatial::CoordinateSystemType::GC:
-		{
-			coordinateSystem .set_active (2);
-			ellipsoidBox     .set_visible (false);
-			break;
-		}
+		break;
 	}
 
 	changing = false;
