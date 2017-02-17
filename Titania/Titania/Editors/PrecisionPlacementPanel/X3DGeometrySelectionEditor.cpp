@@ -115,7 +115,20 @@ X3DGeometrySelectionEditor::initialize ()
 
 void
 X3DGeometrySelectionEditor::set_selection (const X3D::MFNode & selection)
-{ }
+{
+	transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
+
+	// Update composed widgets
+
+	const X3D::MFNode transforms ({ transformNode });
+
+	transformNode -> scale () .setUnit (X3D::UnitCategory::LENGTH);
+
+	translation .setNodes (transforms);
+	rotation    .setNodes (transforms);
+	scale       .setNodes (transforms);
+	rotationTool -> setNodes (transforms);
+}
 
 void
 X3DGeometrySelectionEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
@@ -144,19 +157,7 @@ X3DGeometrySelectionEditor::set_touchTime ()
 		tool -> getSelectionTransform () -> removeInterest (&X3DGeometrySelectionEditor::set_tool_matrix, this);
 	}
 
-	transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
-	tool          = getCurrentTool ();
-
-	// Update composed widgets
-
-	const X3D::MFNode transforms ({ transformNode });
-
-	transformNode -> scale () .setUnit (X3D::UnitCategory::LENGTH);
-
-	translation .setNodes (transforms);
-	rotation    .setNodes (transforms);
-	scale       .setNodes (transforms);
-	rotationTool -> setNodes (transforms);
+	tool = getCurrentTool ();
 
 	//
 
@@ -249,8 +250,10 @@ X3DGeometrySelectionEditor::set_matrix ()
 				break;
 		}
 	}
-	catch (const std::domain_error &)
-	{ }
+	catch (const std::domain_error & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
