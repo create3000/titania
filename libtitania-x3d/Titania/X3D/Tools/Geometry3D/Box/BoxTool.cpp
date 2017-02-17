@@ -67,6 +67,7 @@ BoxTool::BoxTool (Box* const node) :
 {
 	addType (X3DConstants::BoxTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

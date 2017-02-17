@@ -69,6 +69,14 @@ public:
 
 	///  @name Private fields
 
+	SFString &
+	toolType ()
+	{ return *fields .toolType; }
+
+	const SFString &
+	toolType () const
+	{ return *fields .toolType; }
+
 	SFNode &
 	normalTool ()
 	{ return *fields .normalTool; }
@@ -241,7 +249,10 @@ protected:
 
 private:
 
-	///  @name Operations
+	///  @name Event handlers
+
+	void
+	set_toolType ();
 
 	void
 	set_loadState ();
@@ -258,6 +269,7 @@ private:
 	{
 		Fields ();
 
+		SFString* const toolType;
 		SFNode* const normalTool;
 		SFNode* const coordTool;
 	};

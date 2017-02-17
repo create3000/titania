@@ -190,7 +190,7 @@ GeometryEditor::on_unmap ()
 X3D::MFNode
 GeometryEditor::getGeometries (const X3D::MFNode & selection) const
 {
-	return getNodes <X3D::X3DBaseNode> (selection, {
+	static const std::set <X3D::NodeType> types = {
 		X3D::X3DConstants::IndexedQuadSet,
 		X3D::X3DConstants::QuadSet,
 		//X3D::X3DConstants::Arc2D,
@@ -224,7 +224,26 @@ GeometryEditor::getGeometries (const X3D::MFNode & selection) const
 		X3D::X3DConstants::TriangleSet,
 		X3D::X3DConstants::TriangleStripSet,
 		X3D::X3DConstants::Text,
-	});
+	};
+
+	auto geometryNodes = getNodes <X3D::X3DBaseNode> (selection, types);
+
+	const auto protoInstances = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::X3DPrototypeInstance });
+
+	for (const auto & protoInstance : protoInstances)
+	{
+		try
+		{
+			const auto innerNode = protoInstance -> getInnerNode ();
+
+			if (innerNode -> isType (types))
+				geometryNodes .emplace_back (protoInstance);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	return geometryNodes;
 }
 
 void
@@ -267,10 +286,52 @@ GeometryEditor::connect ()
 	{
 		try
 		{
-			for (const auto & type : basic::make_reverse_range (node -> getType ()))
+			const auto innerNode = node -> getInnerNode ();
+
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 			{
 				switch (type)
 				{
+					case X3D::X3DConstants::IndexedFaceSetTool:
+					{
+						if (node == innerNode)
+						{
+							// Coord
+	
+							coordEditor -> getField <X3D::SFString>    ("toolType")                .addInterest (node -> getField <X3D::SFString> ("toolType"));
+							coordEditor -> getField <X3D::SFString>    ("selectionType")           .addInterest (node -> getField <X3D::SFString> ("selectionType"));
+							coordEditor -> getField <X3D::SFBool>      ("paintSelection")          .addInterest (node -> getField <X3D::SFBool>   ("paintSelection"));
+							coordEditor -> getField <X3D::SFBool>      ("selectLineLoop")          .addInterest (node -> getField <X3D::SFBool>   ("selectLineLoop"));
+							coordEditor -> getField <X3D::SFBool>      ("transform")               .addInterest (node -> getField <X3D::SFBool>   ("transform"));
+							coordEditor -> getField <X3D::SFBool>      ("axisAlignedBoundingBox")  .addInterest (node -> getField <X3D::SFBool>   ("axisAlignedBoundingBox"));
+							coordEditor -> getField <X3D::SFTime>      ("mergePoints")             .addInterest (node -> getField <X3D::SFTime>   ("mergePoints"));
+							coordEditor -> getField <X3D::SFTime>      ("splitPoints")             .addInterest (node -> getField <X3D::SFTime>   ("splitPoints"));
+							coordEditor -> getField <X3D::SFTime>      ("formNewFace")             .addInterest (node -> getField <X3D::SFTime>   ("formNewFace"));
+							coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedEdges")    .addInterest (node -> getField <X3D::SFTime>   ("extrudeSelectedEdges"));
+							coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedFaces")    .addInterest (node -> getField <X3D::SFTime>   ("extrudeSelectedFaces"));
+							coordEditor -> getField <X3D::SFTime>      ("chipOfSelectedFaces")     .addInterest (node -> getField <X3D::SFTime>   ("chipOfSelectedFaces"));
+							coordEditor -> getField <X3D::SFTime>      ("flipVertexOrdering")      .addInterest (node -> getField <X3D::SFTime>   ("flipVertexOrdering"));
+							coordEditor -> getField <X3D::SFTime>      ("deleteSelectedFaces")     .addInterest (node -> getField <X3D::SFTime>   ("deleteSelectedFaces"));
+							coordEditor -> getField <X3D::SFBool>      ("cutSnapping")             .addInterest (node -> getField <X3D::SFBool>   ("cutSnapping"));
+		
+							node -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (&GeometryEditor::set_selectedPoints, this);
+							node -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (&GeometryEditor::set_selectedEdges,  this);
+							node -> getField <X3D::SFInt32>              ("selectedHoles_changed")  .addInterest (&GeometryEditor::set_selectedHoles,  this);
+							node -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (&GeometryEditor::set_selectedFaces,  this);
+							node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (&GeometryEditor::set_undo,           this);
+							node -> getField <X3D::SFString>             ("clipboard_changed")      .addInterest (&GeometryEditor::set_clipboard,      this);
+	
+							node -> setField <X3D::SFString> ("toolType",               coordEditor -> getField <X3D::SFString> ("toolType"),               true);
+							node -> setField <X3D::SFString> ("selectionType",          coordEditor -> getField <X3D::SFString> ("selectionType"),          true);
+							node -> setField <X3D::SFBool>   ("paintSelection",         coordEditor -> getField <X3D::SFBool>   ("paintSelection"),         true);
+							node -> setField <X3D::SFBool>   ("selectLineLoop",         coordEditor -> getField <X3D::SFBool>   ("selectLineLoop"),         true);
+							node -> setField <X3D::SFBool>   ("transform",              coordEditor -> getField <X3D::SFBool>   ("transform"),              true);
+							node -> setField <X3D::SFBool>   ("axisAlignedBoundingBox", coordEditor -> getField <X3D::SFBool>   ("axisAlignedBoundingBox"), true);
+							node -> setField <X3D::SFBool>   ("cutSnapping",            coordEditor -> getField <X3D::SFBool>   ("cutSnapping"),            true);
+						}
+
+						// Proceed with next step:
+					}
 					case X3D::X3DConstants::IndexedQuadSetTool:
 					case X3D::X3DConstants::QuadSetTool:
 					case X3D::X3DConstants::Arc2DTool:
@@ -304,11 +365,11 @@ GeometryEditor::connect ()
 					case X3D::X3DConstants::TriangleStripSetTool:
 					case X3D::X3DConstants::TextTool:
 					{
-						const auto & normalTool = node -> getField <X3D::SFNode> ("normalTool");
-						const auto & coordTool  = node -> getField <X3D::SFNode> ("coordTool");
+						const auto & normalTool = innerNode -> getField <X3D::SFNode> ("normalTool");
+						const auto & coordTool  = innerNode -> getField <X3D::SFNode> ("coordTool");
 
 						// If the node has a normal or creaseAngle field use light blue as normal color, otherwise dark blue.
-						const auto editableNormals = node -> isType ({
+						const auto editableNormals = innerNode -> isType ({
 							X3D::X3DConstants::ElevationGrid,
 							X3D::X3DConstants::Extrusion,
 							X3D::X3DConstants::GeoElevationGrid,
@@ -341,59 +402,6 @@ GeometryEditor::connect ()
 						coordTool -> setField <X3D::SFBool>      ("load",  true,                                                          true);
 						coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"), true);
 
-						break;
-					}
-					case X3D::X3DConstants::IndexedFaceSetTool:
-					{
-						const auto & normalTool = node -> getField <X3D::SFNode> ("normalTool");
-						const auto & coordTool  = node -> getField <X3D::SFNode> ("coordTool");
-
-						// Normal
-
-						normalEditor -> getField <X3D::SFBool>      ("load")   .addInterest (normalTool -> getField <X3D::SFBool>      ("load"));
-						normalEditor -> getField <X3D::SFFloat>     ("length") .addInterest (normalTool -> getField <X3D::SFFloat>     ("length"));
-						normalEditor -> getField <X3D::SFColorRGBA> ("color")  .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
-
-						normalTool -> setField <X3D::SFBool>      ("load",   normalEditor -> getField <X3D::SFBool>      ("load"),   true);
-						normalTool -> setField <X3D::SFFloat>     ("length", normalEditor -> getField <X3D::SFFloat>     ("length"), true);
-						normalTool -> setField <X3D::SFColorRGBA> ("color",  normalEditor -> getField <X3D::SFColorRGBA> ("color"),  true);
-
-						// Coord
-
-						coordEditor -> getField <X3D::SFString>    ("toolType")                .addInterest (node -> getField <X3D::SFString> ("toolType"));
-						coordEditor -> getField <X3D::SFString>    ("selectionType")           .addInterest (node -> getField <X3D::SFString> ("selectionType"));
-						coordEditor -> getField <X3D::SFBool>      ("paintSelection")          .addInterest (node -> getField <X3D::SFBool>   ("paintSelection"));
-						coordEditor -> getField <X3D::SFBool>      ("selectLineLoop")          .addInterest (node -> getField <X3D::SFBool>   ("selectLineLoop"));
-						coordEditor -> getField <X3D::SFBool>      ("transform")               .addInterest (node -> getField <X3D::SFBool>   ("transform"));
-						coordEditor -> getField <X3D::SFBool>      ("axisAlignedBoundingBox")  .addInterest (node -> getField <X3D::SFBool>   ("axisAlignedBoundingBox"));
-						coordEditor -> getField <X3D::SFTime>      ("mergePoints")             .addInterest (node -> getField <X3D::SFTime>   ("mergePoints"));
-						coordEditor -> getField <X3D::SFTime>      ("splitPoints")             .addInterest (node -> getField <X3D::SFTime>   ("splitPoints"));
-						coordEditor -> getField <X3D::SFTime>      ("formNewFace")             .addInterest (node -> getField <X3D::SFTime>   ("formNewFace"));
-						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedEdges")    .addInterest (node -> getField <X3D::SFTime>   ("extrudeSelectedEdges"));
-						coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedFaces")    .addInterest (node -> getField <X3D::SFTime>   ("extrudeSelectedFaces"));
-						coordEditor -> getField <X3D::SFTime>      ("chipOfSelectedFaces")     .addInterest (node -> getField <X3D::SFTime>   ("chipOfSelectedFaces"));
-						coordEditor -> getField <X3D::SFTime>      ("flipVertexOrdering")      .addInterest (node -> getField <X3D::SFTime>   ("flipVertexOrdering"));
-						coordEditor -> getField <X3D::SFTime>      ("deleteSelectedFaces")     .addInterest (node -> getField <X3D::SFTime>   ("deleteSelectedFaces"));
-						coordEditor -> getField <X3D::SFBool>      ("cutSnapping")             .addInterest (node -> getField <X3D::SFBool>   ("cutSnapping"));
-						coordEditor -> getField <X3D::SFColorRGBA> ("color")                   .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
-
-						node -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (&GeometryEditor::set_selectedPoints, this);
-						node -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (&GeometryEditor::set_selectedEdges,  this);
-						node -> getField <X3D::SFInt32>              ("selectedHoles_changed")  .addInterest (&GeometryEditor::set_selectedHoles,  this);
-						node -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (&GeometryEditor::set_selectedFaces,  this);
-						node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (&GeometryEditor::set_undo,           this);
-						node -> getField <X3D::SFString>             ("clipboard_changed")      .addInterest (&GeometryEditor::set_clipboard,      this);
-
-						node -> setField <X3D::SFString> ("toolType",               coordEditor -> getField <X3D::SFString> ("toolType"),               true);
-						node -> setField <X3D::SFString> ("selectionType",          coordEditor -> getField <X3D::SFString> ("selectionType"),          true);
-						node -> setField <X3D::SFBool>   ("paintSelection",         coordEditor -> getField <X3D::SFBool>   ("paintSelection"),         true);
-						node -> setField <X3D::SFBool>   ("selectLineLoop",         coordEditor -> getField <X3D::SFBool>   ("selectLineLoop"),         true);
-						node -> setField <X3D::SFBool>   ("transform",              coordEditor -> getField <X3D::SFBool>   ("transform"),              true);
-						node -> setField <X3D::SFBool>   ("axisAlignedBoundingBox", coordEditor -> getField <X3D::SFBool>   ("axisAlignedBoundingBox"), true);
-						node -> setField <X3D::SFBool>   ("cutSnapping",            coordEditor -> getField <X3D::SFBool>   ("cutSnapping"),            true);
-
-						coordTool -> setField <X3D::SFBool>      ("load",  true,                                                 true);
-						coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("color"), true);
 						break;
 					}
 					default:

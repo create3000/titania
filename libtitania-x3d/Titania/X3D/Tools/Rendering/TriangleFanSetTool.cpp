@@ -67,6 +67,7 @@ TriangleFanSetTool::TriangleFanSetTool (TriangleFanSet* const node) :
 {
 	addType (X3DConstants::TriangleFanSetTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

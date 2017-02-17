@@ -67,6 +67,7 @@ ElevationGridTool::ElevationGridTool (ElevationGrid* const node) :
 {
 	addType (X3DConstants::ElevationGridTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

@@ -67,6 +67,7 @@ NurbsCurveTool::NurbsCurveTool (NurbsCurve* const node) :
 {
 	addType (X3DConstants::NurbsCurveTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

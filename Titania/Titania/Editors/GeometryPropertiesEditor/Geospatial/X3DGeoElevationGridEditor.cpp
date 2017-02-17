@@ -110,7 +110,13 @@ X3DGeoElevationGridEditor::set_geometry ()
 	zSpacing      .setNodes (nodes);
 	yScale        .setNodes (nodes);
 
-	X3DHeightMapEditor <X3D::GeoElevationGrid, X3D::MFDouble>::setNode (X3D::X3DPtr <X3D::GeoElevationGrid> (nodes .empty () ? nullptr : nodes .back ()));
+	if (nodes .size () == 1)
+	{
+		getGeoElevationGridHeightMapExpander () .set_visible (true);
+		X3DHeightMapEditor <X3D::GeoElevationGrid, X3D::MFDouble>::setNode (X3D::X3DPtr <X3D::GeoElevationGrid> (nodes .back ()));
+	}
+	else
+		getGeoElevationGridHeightMapExpander () .set_visible (false);
 }
 
 X3DGeoElevationGridEditor::~X3DGeoElevationGridEditor ()

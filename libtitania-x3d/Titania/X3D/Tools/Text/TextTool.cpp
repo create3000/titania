@@ -67,6 +67,7 @@ TextTool::TextTool (Text* const node) :
 {
 	addType (X3DConstants::TextTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

@@ -67,6 +67,7 @@ ArcClose2DTool::ArcClose2DTool (ArcClose2D* const node) :
 {
 	addType (X3DConstants::ArcClose2DTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

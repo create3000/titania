@@ -67,6 +67,7 @@ TriangleSetTool::TriangleSetTool (TriangleSet* const node) :
 {
 	addType (X3DConstants::TriangleSetTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

@@ -67,6 +67,7 @@ ConeTool::ConeTool (Cone* const node) :
 {
 	addType (X3DConstants::ConeTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

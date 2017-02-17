@@ -301,6 +301,7 @@ X3DPrototypeInstance::initialize ()
 
 		getExecutionContext () -> isLive () .addInterest (&X3DPrototypeInstance::set_live, this);
 		X3DBaseNode::isLive () .addInterest (&X3DPrototypeInstance::set_live, this);
+		getRootNodes () .addInterest ([&] () { X3DChildObject::addEvent (); });
 
 		set_live ();
 

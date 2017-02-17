@@ -67,6 +67,7 @@ QuadSetTool::QuadSetTool (QuadSet* const node) :
 {
 	addType (X3DConstants::QuadSetTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

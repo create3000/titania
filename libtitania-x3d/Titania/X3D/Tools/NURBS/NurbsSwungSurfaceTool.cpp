@@ -67,6 +67,7 @@ NurbsSwungSurfaceTool::NurbsSwungSurfaceTool (NurbsSwungSurface* const node) :
 {
 	addType (X3DConstants::NurbsSwungSurfaceTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

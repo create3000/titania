@@ -56,6 +56,7 @@
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Core/X3DPrototypeInstance.h"
+#include "../../Components/Grouping/Switch.h"
 #include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/Rendering/LineSet.h"
 #include "../../Rendering/ShapeContainer.h"
@@ -65,6 +66,7 @@ namespace titania {
 namespace X3D {
 
 X3DGeometryNodeTool::Fields::Fields () :
+	  toolType (new SFString ("NONE")),
 	normalTool (new SFNode ()),
 	 coordTool (new SFNode ())
 { }
@@ -120,6 +122,29 @@ X3DGeometryNodeTool::initialize ()
 
 	normalToolNode -> setup ();
 	coordToolNode  -> setup ();
+
+	toolType () .addInterest (&X3DGeometryNodeTool::set_toolType, this);
+
+	set_loadState ();
+}
+
+void
+X3DGeometryNodeTool::set_toolType ()
+{
+	try
+	{
+		if (toolType () == "NONE")
+		{
+			const auto & inlineNode = coordToolNode -> getInlineNode ();
+			const auto   toolSwich  = inlineNode -> getExportedNode <Switch> ("ToolSwitch");
+
+			toolSwich -> whichChoice () = 0;
+		}
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -127,6 +152,7 @@ X3DGeometryNodeTool::set_loadState ()
 {
 	try
 	{
+		set_toolType ();
 		set_pickable ();
 		eventProcessed ();
 	}

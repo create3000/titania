@@ -67,6 +67,7 @@ Rectangle2DTool::Rectangle2DTool (Rectangle2D* const node) :
 {
 	addType (X3DConstants::Rectangle2DTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

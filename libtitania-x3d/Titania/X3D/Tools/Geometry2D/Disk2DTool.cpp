@@ -68,6 +68,7 @@ Disk2DTool::Disk2DTool (Disk2D* const node) :
 {
 	addType (X3DConstants::Disk2DTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

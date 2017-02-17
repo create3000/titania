@@ -67,6 +67,7 @@ NurbsSweptSurfaceTool::NurbsSweptSurfaceTool (NurbsSweptSurface* const node) :
 {
 	addType (X3DConstants::NurbsSweptSurfaceTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

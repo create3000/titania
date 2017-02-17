@@ -67,6 +67,7 @@ IndexedTriangleStripSetTool::IndexedTriangleStripSetTool (IndexedTriangleStripSe
 {
 	addType (X3DConstants::IndexedTriangleStripSetTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

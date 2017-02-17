@@ -67,6 +67,7 @@ IndexedTriangleSetTool::IndexedTriangleSetTool (IndexedTriangleSet* const node) 
 {
 	addType (X3DConstants::IndexedTriangleSetTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

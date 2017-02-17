@@ -67,6 +67,7 @@ CylinderTool::CylinderTool (Cylinder* const node) :
 {
 	addType (X3DConstants::CylinderTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

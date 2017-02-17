@@ -67,6 +67,7 @@ ExtrusionTool::ExtrusionTool (Extrusion* const node) :
 {
 	addType (X3DConstants::ExtrusionTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

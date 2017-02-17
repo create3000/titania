@@ -87,7 +87,13 @@ X3DElevationGridEditor::set_geometry ()
 	xSpacing   .setNodes (nodes);
 	zSpacing   .setNodes (nodes);
 
-	X3DHeightMapEditor <X3D::ElevationGrid, X3D::MFFloat>::setNode (X3D::X3DPtr <X3D::ElevationGrid> (nodes .empty () ? nullptr : nodes .back ()));
+	if (nodes .size () == 1)
+	{
+		getElevationGridHeightMapExpander () .set_visible (true);
+		X3DHeightMapEditor <X3D::ElevationGrid, X3D::MFFloat>::setNode (X3D::X3DPtr <X3D::ElevationGrid> (nodes .back ()));
+	}
+	else
+		getElevationGridHeightMapExpander () .set_visible (false);
 }
 
 X3DElevationGridEditor::~X3DElevationGridEditor ()

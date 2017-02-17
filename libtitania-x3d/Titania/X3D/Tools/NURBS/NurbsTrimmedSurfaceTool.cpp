@@ -67,6 +67,7 @@ NurbsTrimmedSurfaceTool::NurbsTrimmedSurfaceTool (NurbsTrimmedSurface* const nod
 {
 	addType (X3DConstants::NurbsTrimmedSurfaceTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

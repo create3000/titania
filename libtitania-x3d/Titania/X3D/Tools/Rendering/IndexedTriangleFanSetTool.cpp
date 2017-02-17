@@ -67,6 +67,7 @@ IndexedTriangleFanSetTool::IndexedTriangleFanSetTool (IndexedTriangleFanSet* con
 {
 	addType (X3DConstants::IndexedTriangleFanSetTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

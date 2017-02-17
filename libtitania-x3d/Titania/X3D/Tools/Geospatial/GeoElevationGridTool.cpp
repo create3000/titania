@@ -68,6 +68,7 @@ GeoElevationGridTool::GeoElevationGridTool (GeoElevationGrid* const node) :
 {
 	addType (X3DConstants::GeoElevationGridTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

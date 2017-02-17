@@ -67,6 +67,7 @@ IndexedQuadSetTool::IndexedQuadSetTool (IndexedQuadSet* const node) :
 {
 	addType (X3DConstants::IndexedQuadSetTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

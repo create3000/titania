@@ -67,6 +67,7 @@ SphereTool::SphereTool (Sphere* const node) :
 {
 	addType (X3DConstants::SphereTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }

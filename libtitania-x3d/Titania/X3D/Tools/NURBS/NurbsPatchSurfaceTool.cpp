@@ -67,6 +67,7 @@ NurbsPatchSurfaceTool::NurbsPatchSurfaceTool (NurbsPatchSurface* const node) :
 {
 	addType (X3DConstants::NurbsPatchSurfaceTool);
 
+	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
 }
