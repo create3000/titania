@@ -161,7 +161,7 @@ AppearanceEditor::on_appearance_toggled ()
 
 	getAppearanceUnlinkButton () .set_sensitive (getAppearanceCheckButton () .get_active () and appearanceNode -> getCloneCount () > 1);
 
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 
 void

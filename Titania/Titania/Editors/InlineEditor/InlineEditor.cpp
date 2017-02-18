@@ -160,12 +160,12 @@ InlineEditor::on_index_clicked ()
 void
 InlineEditor::on_convert_master_selection_clicked ()
 {
-	if (getBrowserWindow () -> getSelection () -> getChildren () .empty ())
+	if (getBrowserWindow () -> getSelection () -> getNodes () .empty ())
 		return;
 
 	getWindow () .set_sensitive (false);
 
-	const auto & masterSelection  = getBrowserWindow () -> getSelection () -> getChildren () .back ();
+	const auto & masterSelection  = getBrowserWindow () -> getSelection () -> getNodes () .back ();
 	const X3D::MFNode  nodes      = { masterSelection };
 
 	const auto fileSaveDialog = std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false));
@@ -182,7 +182,7 @@ InlineEditor::on_convert_master_selection_clicked ()
 
 		getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, inlineNode, undoStep);
 		getBrowserWindow () -> replaceNodes (getCurrentContext (), masterSelection, inlineNode, undoStep);
-		getBrowserWindow () -> getSelection () -> setChildren ({ inlineNode }, undoStep);
+		getBrowserWindow () -> getSelection () -> setNodes ({ inlineNode }, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 		getBrowserWindow () -> expandNodes ({ inlineNode });
 	}
@@ -215,7 +215,7 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 	for (const auto & route : importedRoutes)
 		getBrowserWindow () -> addRoute (getCurrentContext (), std::get <0> (route), std::get <1> (route), std::get <2> (route), std::get <3> (route), undoStep);
 
-	getBrowserWindow () -> getSelection () -> setChildren ({ group }, undoStep);
+	getBrowserWindow () -> getSelection () -> setNodes ({ group }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 	getBrowserWindow () -> expandNodes ({ group });
 }

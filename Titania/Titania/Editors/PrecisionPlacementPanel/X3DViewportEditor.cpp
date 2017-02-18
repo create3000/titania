@@ -158,7 +158,7 @@ X3DViewportEditor::set_node ()
 
 	// Find Viewport in selection
 
-	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
+	const auto & selection = getBrowserWindow () -> getSelection () -> getNodes ();
 
 	viewport = selection .empty () ? nullptr : selection .back ();
 

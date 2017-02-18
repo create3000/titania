@@ -77,7 +77,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	          over (),
 	        active (),
 	     touchTime (),
-	      children ()
+	         nodes ()
 {
 	addType (X3DConstants::Selection);
 
@@ -88,7 +88,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	                 over,
 	                 active,
 	                 touchTime,
-	                 children);
+	                 nodes);
 }
 
 X3DBaseNode*
@@ -102,35 +102,35 @@ Selection::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	getBrowser () -> initialized () .addInterest (&Selection::clear, this);
+	getBrowser () -> initialized () .addInterest (&Selection::clearNodes, this);
 }
 
 bool
 Selection::isSelected (const SFNode & node) const
 {
-	return std::find (children .begin (), children .end (), node) not_eq children .end ();
+	return std::find (nodes .begin (), nodes .end (), node) not_eq nodes .end ();
 }
 
 void
-Selection::addChildren (const MFNode & value)
+Selection::addNodes (const MFNode & value)
 {
 	try
 	{
 		ContextLock lock (getBrowser ());
 
-		for (const auto & child : value)
+		for (const auto & node : value)
 		{
-			if (not child)
+			if (not node)
 				continue;
 
-			if (child -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+			if (node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
 				continue;
 
-			if (isSelected (child))
+			if (isSelected (node))
 				continue;
 
-			children .emplace_back (child);
-			child -> addTool ();
+			nodes .emplace_back (node);
+			node -> addTool ();
 		}
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> &)
@@ -138,22 +138,22 @@ Selection::addChildren (const MFNode & value)
 }
 
 void
-Selection::removeChildren (const MFNode & value)
+Selection::removeNodes (const MFNode & value)
 {
 	try
 	{
 		ContextLock lock (getBrowser ());
 
-		for (const auto & child : value)
+		for (const auto & node : value)
 		{
-			if (child)
+			if (node)
 			{
-				children .erase (std::remove (children .begin (),
-				                              children .end (),
-				                              child),
-				                 children .end ());
+				nodes .erase (std::remove (nodes .begin (),
+				                           nodes .end (),
+				                           node),
+				              nodes .end ());
 
-				child -> removeTool ();
+				node -> removeTool ();
 			}
 		}
 	}
@@ -162,38 +162,44 @@ Selection::removeChildren (const MFNode & value)
 }
 
 void
-Selection::setChildren (const MFNode & value)
+Selection::clearNodes ()
 {
-	if (children .empty ())
+	removeNodes (MFNode (nodes)); // Make copy because we erase in children.
+}
+
+void
+Selection::setNodes (const MFNode & value)
+{
+	if (nodes .empty ())
 	{
-		addChildren (value);
+		addNodes (value);
 		return;
 	}
 
-	MFNode sortedChildren = children;
-	MFNode sortedValue    = value;
+	MFNode sortedNodes = nodes;
+	MFNode sortedValue = value;
 	MFNode difference;
 	
-	std::sort (sortedChildren .begin (), sortedChildren .end ());
+	std::sort (sortedNodes .begin (), sortedNodes .end ());
 	std::sort (sortedValue .begin (), sortedValue .end ());
 
 	// Remove
 
-	std::set_difference (sortedChildren .begin (), sortedChildren .end (),
+	std::set_difference (sortedNodes .begin (), sortedNodes .end (),
 	                     sortedValue .begin (), sortedValue .end (),
 	                     std::back_inserter (difference));
 
-	removeChildren (difference);
+	removeNodes (difference);
 	
 	// Add
 	
 	difference .clear ();
 
 	std::set_difference (sortedValue .begin (), sortedValue .end (),
-	                     sortedChildren .begin (), sortedChildren .end (),
+	                     sortedNodes .begin (), sortedNodes .end (),
 	                     std::back_inserter (difference));
 
-	addChildren (difference);
+	addNodes (difference);
 }
 
 bool
@@ -209,7 +215,7 @@ Selection::select ()
 
 	if (getBrowser () -> getHits () .empty ())
 	{
-		clear ();
+		clearNodes ();
 		return false;
 	}
 
@@ -310,16 +316,16 @@ Selection::select ()
 		      return false;
 
 			if (getMode () == Selection::MULTIPLE)
-				removeChildren ({ node });
+				removeNodes ({ node });
 	
 			return false;
 		}
 		else
 		{
 			if (getMode () == Selection::MULTIPLE)
-				addChildren ({ node });
+				addNodes ({ node });
 			else
-				setChildren ({ node });
+				setNodes ({ node });
 
 			touchTime = getCurrentTime ();
 			return true;
@@ -327,12 +333,6 @@ Selection::select ()
 	}
 
 	return false;
-}
-
-void
-Selection::clear ()
-{
-	removeChildren (MFNode (children)); // Make copy because we erase in children.
 }
 
 } // X3D

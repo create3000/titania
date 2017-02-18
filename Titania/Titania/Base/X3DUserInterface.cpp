@@ -209,11 +209,11 @@ X3DUserInterface::configure ()
 void
 X3DUserInterface::on_map ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (&X3DEditorInterface::set_selection, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DEditorInterface::set_selection, this);
 
 	restoreInterface ();
 	configure ();
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 
 void

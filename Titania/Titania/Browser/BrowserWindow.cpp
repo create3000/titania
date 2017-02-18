@@ -353,7 +353,7 @@ BrowserWindow::set_executionContext ()
 
 	// Selection
 
-	set_selection (getSelection () -> getChildren ());
+	set_selection (getSelection () -> getNodes ());
 }
 
 void
@@ -370,10 +370,10 @@ BrowserWindow::set_browserHistory ()
 void
 BrowserWindow::set_touchTime ()
 {
-	if (getSelection () -> getChildren () .empty ())
+	if (getSelection () -> getNodes () .empty ())
 		return;
 
-	expandNodes ({ getSelection () -> getChildren () .back () });
+	expandNodes ({ getSelection () -> getNodes () .back () });
 }
 
 void
@@ -570,7 +570,7 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 
 	if (editMode)
 	{
-		if (not inPrototypeInstance () and not getSelection () -> getChildren () .empty ())
+		if (not inPrototypeInstance () and not getSelection () -> getNodes () .empty ())
 		{
 			static constexpr float NUDGE_STEP   = 0.001;
 			static constexpr float NUDGE_FACTOR = 10;
@@ -786,7 +786,7 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import"));
 				const auto nodes    = import (uris, undoStep);
 	
-				getSelection () -> setChildren (nodes, undoStep);
+				getSelection () -> setNodes (nodes, undoStep);
 				addUndoStep (undoStep);
 			}
 
@@ -894,14 +894,14 @@ BrowserWindow::on_cut_activated ()
 	if (getGeometryEditor () -> on_cut ())
 	   return;
 
-	const auto selection = getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut"));
 
-	getSelection () -> clear (undoStep);
+	getSelection () -> clearNodes (undoStep);
 
 	cutNodes (getCurrentContext (), selection, undoStep);
 
@@ -916,7 +916,7 @@ BrowserWindow::on_copy_activated ()
 	if (getGeometryEditor () -> on_copy ())
 		return;
 
-	const auto selection = getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
@@ -930,7 +930,7 @@ BrowserWindow::on_paste_activated ()
 	if (getGeometryEditor () -> on_paste ())
 		return;
 
-	auto selection = getSelection () -> getChildren ();
+	auto selection = getSelection () -> getNodes ();
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Paste"));
 
@@ -947,7 +947,7 @@ BrowserWindow::on_delete_activated ()
 	if (getGeometryEditor () -> on_delete ())
 		return;
 
-	const auto selection = getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
@@ -965,7 +965,7 @@ BrowserWindow::on_delete_activated ()
 void
 BrowserWindow::on_create_clone_activated ()
 {
-	auto selection = getSelection () -> getChildren ();
+	auto selection = getSelection () -> getNodes ();
 
 	if (selection .size () < 2)
 		return;
@@ -977,7 +977,7 @@ BrowserWindow::on_create_clone_activated ()
 
 	createClone (getCurrentContext (), clone, selection, undoStep);
 
-	getSelection () -> setChildren ({ clone }, undoStep);
+	getSelection () -> setNodes ({ clone }, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -985,7 +985,7 @@ BrowserWindow::on_create_clone_activated ()
 void
 BrowserWindow::on_unlink_clone_activated ()
 {
-	const auto selection = getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
@@ -994,7 +994,7 @@ BrowserWindow::on_unlink_clone_activated ()
 
 	auto nodes = unlinkClone (getCurrentContext (), selection, undoStep);
 
-	getSelection () -> setChildren (nodes, undoStep);
+	getSelection () -> setNodes (nodes, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -1002,7 +1002,7 @@ BrowserWindow::on_unlink_clone_activated ()
 void
 BrowserWindow::on_group_selected_nodes_activated ()
 {
-	const auto selection = getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
@@ -1013,7 +1013,7 @@ BrowserWindow::on_group_selected_nodes_activated ()
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group"));
 	const auto group    = groupNodes (getCurrentContext (), "Transform", selection, undoStep);
 
-	getSelection () -> setChildren ({ group }, undoStep);
+	getSelection () -> setNodes ({ group }, undoStep);
 	addUndoStep (undoStep);
 
 	expandNodes ({ group });
@@ -1022,7 +1022,7 @@ BrowserWindow::on_group_selected_nodes_activated ()
 void
 BrowserWindow::on_ungroup_activated ()
 {
-	const auto selection = getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
@@ -1032,11 +1032,11 @@ BrowserWindow::on_ungroup_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Ungroup"));
 
-	getSelection () -> clear (undoStep);
+	getSelection () -> clearNodes (undoStep);
 
 	const auto nodes = ungroupNodes (getCurrentContext (), selection, undoStep);
 
-	getSelection () -> setChildren (nodes, undoStep);
+	getSelection () -> setNodes (nodes, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -1044,7 +1044,7 @@ BrowserWindow::on_ungroup_activated ()
 void
 BrowserWindow::on_add_to_group_activated ()
 {
-	auto selection = getSelection () -> getChildren ();
+	auto selection = getSelection () -> getNodes ();
 
 	if (selection .size () < 2)
 		return;
@@ -1061,7 +1061,7 @@ BrowserWindow::on_add_to_group_activated ()
 
 	if (addToGroup (getCurrentContext (), group, selection, undoStep))
 	{
-		getSelection () -> setChildren (selection, undoStep);
+		getSelection () -> setNodes (selection, undoStep);
 
 		addUndoStep (undoStep);
 	}
@@ -1070,7 +1070,7 @@ BrowserWindow::on_add_to_group_activated ()
 void
 BrowserWindow::on_detach_from_group_activated ()
 {
-	const auto selection = getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
@@ -1211,7 +1211,7 @@ BrowserWindow::on_create_parent_viewport_activated ()
 void
 BrowserWindow::on_create_parent (const std::string & typeName, const std::string & fieldName)
 {
-	auto selection = getSelection () -> getChildren ();
+	auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
@@ -1222,7 +1222,7 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
 	const auto group    = createParentGroup (getCurrentContext (), typeName, fieldName, selection, undoStep);
 
-	getSelection () -> setChildren ({ group }, undoStep);
+	getSelection () -> setNodes ({ group }, undoStep);
 	addUndoStep (undoStep);
 
 	expandNodes ({ group });
@@ -1296,7 +1296,7 @@ BrowserWindow::on_browser_toggled ()
 		isLive (true);
 		setViewer (getCurrentBrowser () -> getViewerType ());
 
-		getSelection () -> setChildren ({ });
+		getSelection () -> setNodes ({ });
 
 		if (not getBackgroundsAction () -> get_active ())
 			getBackgroundsAction () -> set_active (true);
@@ -1388,7 +1388,7 @@ BrowserWindow::isEditor (const bool enabled)
 	{
 		getViewerButton () .set_active (true);
 
-		getSelection () -> setChildren ({ });
+		getSelection () -> setNodes ({ });
 	}
 
 	set_dashboard (getCurrentBrowser () -> getBrowserOptions () -> Dashboard ());
@@ -1962,7 +1962,7 @@ BrowserWindow::on_select_all_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> ();
 
-	getSelection () -> setChildren (getCurrentContext () -> getRootNodes (), undoStep);
+	getSelection () -> setNodes (getCurrentContext () -> getRootNodes (), undoStep);
 }
 
 void
@@ -1973,13 +1973,13 @@ BrowserWindow::on_deselect_all_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> ();
 
-	getSelection () -> clear (undoStep);
+	getSelection () -> clearNodes (undoStep);
 }
 
 void
 BrowserWindow::on_hide_selected_objects_activated ()
 {
-	auto selection = getSelection () -> getChildren ();
+	auto selection = getSelection () -> getNodes ();
 
 	X3D::traverse (selection, [ ] (X3D::SFNode & node)
 	               {
@@ -1998,7 +1998,7 @@ BrowserWindow::on_hide_unselected_objects_activated ()
 {
 	std::set <X3D::X3DShapeNode*> visibles;
 
-	auto selection = getSelection () -> getChildren ();
+	auto selection = getSelection () -> getNodes ();
 
 	X3D::traverse (selection, [&visibles] (X3D::SFNode & node)
 	               {
@@ -2029,7 +2029,7 @@ BrowserWindow::on_hide_unselected_objects_activated ()
 void
 BrowserWindow::on_show_selected_objects_activated ()
 {
-	auto selection = getSelection () -> getChildren ();
+	auto selection = getSelection () -> getNodes ();
 
 	X3D::traverse (selection, [ ] (X3D::SFNode & node)
 	               {
@@ -2122,7 +2122,7 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 	try
 	{
 		const auto undoStep  = std::make_shared <X3D::UndoStep> (description);
-		const auto selection = getSelection () -> getChildren ();
+		const auto selection = getSelection () -> getNodes ();
 		const auto shapes    = X3DEditorObject::getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 		const auto groups    = X3DEditorObject::getNodes <X3D::X3DGroupingNode> (selection, { X3D::X3DConstants::X3DGroupingNode });
 
@@ -2137,7 +2137,7 @@ BrowserWindow::on_boolean_activated (const std::string & description, const Bool
 
 			// Select target
 
-			getBrowserWindow () -> getSelection () -> setChildren ({ masterShape }, undoStep);
+			getBrowserWindow () -> getSelection () -> setNodes ({ masterShape }, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
 		}
 	}
@@ -2165,7 +2165,7 @@ BrowserWindow::on_transform_to_zero_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Transform To Zero"));
 
-	transformToZero (getSelection () -> getChildren (), undoStep);
+	transformToZero (getSelection () -> getNodes (), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -2568,7 +2568,7 @@ BrowserWindow::on_play_pause_button_clicked ()
 void
 BrowserWindow::on_select_parent_button_clicked ()
 {
-	const auto selection = getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
@@ -2666,14 +2666,14 @@ BrowserWindow::on_select_parent_button_clicked ()
 
 	// Select and expand.
 
-	getSelection () -> setChildren (parents);
+	getSelection () -> setNodes (parents);
 	expandNodes (parents);
 }
 
 void
 BrowserWindow::on_select_children_button_clicked ()
 {
-	const auto selection = getSelection () -> getChildren ();
+	const auto selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;
@@ -2691,7 +2691,7 @@ BrowserWindow::on_select_children_button_clicked ()
 			children .insert (children .end (), nodes .begin (), nodes .end ());
 	}
 
-	getSelection () -> setChildren (children);
+	getSelection () -> setNodes (children);
 	expandNodes (children);
 }
 
@@ -3123,7 +3123,7 @@ BrowserWindow::on_look_at_selection_clicked ()
 	if (not getCurrentBrowser () -> getActiveLayer ())
 		return;
 
-	const auto & selection = getSelection () -> getChildren ();
+	const auto & selection = getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return;

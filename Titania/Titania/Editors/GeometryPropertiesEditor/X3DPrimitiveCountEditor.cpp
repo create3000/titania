@@ -90,7 +90,7 @@ X3DPrimitiveCountEditor::on_map_primitive_count ()
 void
 X3DPrimitiveCountEditor::on_unmap_primitive_count ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (&X3DPrimitiveCountEditor::update, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&X3DPrimitiveCountEditor::update, this);
 
 	getCurrentBrowser () .removeInterest (&X3DPrimitiveCountEditor::update, this);
 	getCurrentBrowser () .removeInterest (&X3DPrimitiveCountEditor::set_browser, this);
@@ -139,7 +139,7 @@ X3DPrimitiveCountEditor::on_primitive_count_count_changed ()
 		case 2:
 		{
 			// Selected objects
-			getBrowserWindow () -> getSelection () -> getChildren () .addInterest (&X3DPrimitiveCountEditor::update, this);
+			getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DPrimitiveCountEditor::update, this);
 			break;
 		}
 	}
@@ -239,7 +239,7 @@ X3DPrimitiveCountEditor::update ()
 		{
 			// Selection
 
-			auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
+			auto selection = getBrowserWindow () -> getSelection () -> getNodes ();
 
 			X3D::traverse (selection,
 		                  std::bind (&X3DPrimitiveCountEditor::traverse, this, _1),

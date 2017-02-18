@@ -23,7 +23,7 @@ META "description" "Simple example demonstrating NURBS trimming contour content 
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/NURBS/NurbsTrimmedSurface/TrimmingContourExample.x3dv"
 META "license" "../license.html"
-META "modified" "Fri, 17 Feb 2017 15:17:30 GMT"
+META "modified" "Sat, 18 Feb 2017 06:20:44 GMT"
 META "outputStyle" "nicest"
 META "reference" "http://www.web3d.org/x3d/specifications/ISO-IEC-19775-X3DAbstractSpecification/Part01/components/nurbs.html#NurbsTrimmedSurface"
 META "subject" "NURBS trimming contour"
@@ -60,7 +60,7 @@ WorldInfo {
                   }
                   geometry DEF _2 NurbsTrimmedSurface {
                     uTessellation 100
-                    vTessellation 1
+                    vTessellation 30
                     solid FALSE
                     uOrder 4
                     vOrder 4
@@ -224,19 +224,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              233,
-              1500,
-              -133.809997558594
+              -22.3726043701172,
+              -1468.61596679688,
+              -302.193054199219
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -1,
-              0,
-              0,
-              1.57
+              0.992857306101629,
+              -0.0493171744239584,
+              -0.108637866452965,
+              1.69586144409479
             ]
           }
           DEF centerOfRotation MetadataDouble {

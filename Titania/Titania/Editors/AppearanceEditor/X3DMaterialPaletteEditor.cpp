@@ -94,7 +94,7 @@ X3DMaterialPaletteEditor::setTouchTime (const basic::uri & URL)
 	{
 		// Apply selected material to selection.
 
-		auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
+		auto selection = getBrowserWindow () -> getSelection () -> getNodes ();
 
 		if (selection .empty ())
 			return;

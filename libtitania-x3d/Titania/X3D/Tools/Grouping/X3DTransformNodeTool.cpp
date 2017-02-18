@@ -186,7 +186,7 @@ X3DTransformNodeTool::eventsProcessed ()
 
 		const auto differenceMatrix = inverse (matrix * transformationMatrix) * getMatrix () * transformationMatrix;
 
-		for (const auto & node : getBrowser () -> getSelection () -> getChildren ())
+		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
 		{
 			try
 			{

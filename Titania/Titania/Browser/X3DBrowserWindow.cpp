@@ -203,7 +203,7 @@ X3DBrowserWindow::pasteNodes (const X3D::X3DExecutionContextPtr & executionConte
 		                                        scene,
 		                                        undoStep);
 
-		getSelection () -> setChildren (importedNodes, undoStep);
+		getSelection () -> setNodes (importedNodes, undoStep);
 	}
 	catch (const X3D::X3DError & error)
 	{

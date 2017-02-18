@@ -114,10 +114,10 @@ X3DLODEditor::on_lod_move_center_button_clicked ()
 {
 	using setValue = void (X3D::SFVec3f::*) (const X3D::SFVec3f::internal_type &);
 
-	if (getBrowserWindow () -> getSelection () -> getChildren () .empty ())
+	if (getBrowserWindow () -> getSelection () -> getNodes () .empty ())
 		return;
 
-	const X3D::X3DPtr <X3D::LOD> lod (getBrowserWindow () -> getSelection () -> getChildren () .back ());
+	const X3D::X3DPtr <X3D::LOD> lod (getBrowserWindow () -> getSelection () -> getNodes () .back ());
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Center Of LOD To BBox Center"));
 

@@ -183,7 +183,7 @@ PrecisionPlacementPanel::on_fill_bounding_box_fields_clicked ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Fill Bounding Box Fields From Scratch"));
 
-	for (const auto & node : getBrowserWindow () -> getSelection () -> getChildren ())
+	for (const auto & node : getBrowserWindow () -> getSelection () -> getNodes ())
 	{
 		const X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject (node);
 		const X3D::X3DPtr <X3D::X3DGroupingNode>  group (node);

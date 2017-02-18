@@ -131,7 +131,7 @@ X3DModelsPaletteEditor::setTouchTime (const basic::uri & URL)
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Import Model From Library"));
 		const auto nodes    = getBrowserWindow () -> import ({ URL }, undoStep);
 
-		getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
+		getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
 	catch (const X3D::X3DError &)
@@ -143,7 +143,7 @@ X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 {
 	using namespace std::placeholders;
 
-	const auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
+	const auto selection = getBrowserWindow () -> getSelection () -> getNodes ();
 
 	if (selection .empty ())
 		return false;

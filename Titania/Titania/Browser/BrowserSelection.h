@@ -114,34 +114,34 @@ public:
 	{ return browser -> getSelection () -> isSelected (node); }
 
 	void
-	addChildren (const X3D::MFNode & nodes);
+	addNodes (const X3D::MFNode & value);
 
 	void
-	removeChildren (const X3D::MFNode & nodes);
+	removeNodes (const X3D::MFNode & value);
 
 	void
-	setChildren (const X3D::MFNode & nodes);
+	clearNodes ();
 
 	void
-	clear ();
+	setNodes (const X3D::MFNode & value);
 
 	const X3D::MFNode &
-	getChildren () const
-	{ return children; }
+	getNodes () const
+	{ return nodes; }
 
 	///  @name Operations
 
 	void
-	addChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
+	addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep);
 
 	void
-	removeChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
+	removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep);
 
 	void
-	setChildren (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
+	clearNodes (const X3D::UndoStepPtr & undoStep);
 
 	void
-	clear (const X3D::UndoStepPtr & undoStep);
+	setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep);
 
 	void
 	undoRestoreSelection (const X3D::UndoStepPtr & undoStep);
@@ -166,7 +166,7 @@ private:
 	set_browser ();
 
 	void
-	set_children ();
+	set_nodes ();
 
 	///  @name Members
 
@@ -178,7 +178,7 @@ private:
 	X3D::SFBool     over;
 	X3D::SFBool     active;
 	X3D::SFBool     touchTime;
-	X3D::MFNode     children;
+	X3D::MFNode     nodes;
 	X3D::BrowserPtr browser;
 
 };

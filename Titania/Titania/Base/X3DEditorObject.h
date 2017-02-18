@@ -232,7 +232,7 @@ template <class NodeType>
 X3D::X3DPtrArray <NodeType>
 X3DEditorObject::getSelection (const std::set <X3D::X3DConstants::NodeType> & types) const
 {
-	auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
+	auto selection = getBrowserWindow () -> getSelection () -> getNodes ();
 
 	return getNodes <NodeType> (selection, types);
 }
@@ -252,7 +252,7 @@ X3DEditorObject::getSelection (const X3D::X3DPtrArray <NodeType> & nodes, const 
 {
 	// Check if there is a direct master selecection of our node type.
 
-	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
+	const auto & selection = getBrowserWindow () -> getSelection () -> getNodes ();
 
 	if (not selection .empty ())
 	{

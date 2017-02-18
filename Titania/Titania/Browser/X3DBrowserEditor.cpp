@@ -237,7 +237,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 {
 	if (value)
 	{
-		for (const auto & child : getSelection () -> getChildren ())
+		for (const auto & child : getSelection () -> getNodes ())
 		{
 			const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
 
@@ -253,7 +253,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 
 		bool changed = false;
 
-		for (const auto & child : getSelection () -> getChildren ())
+		for (const auto & child : getSelection () -> getNodes ())
 		{
 			const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
 
@@ -460,7 +460,7 @@ X3DBrowserEditor::getMetaData ()
 
 		children -> isPrivate (true);
 
-		getSelection () -> setChildren (children -> value ());
+		getSelection () -> setNodes (children -> value ());
 	}
 	catch (const std::exception & error)
 	{ }
@@ -580,7 +580,7 @@ X3DBrowserEditor::import (const std::vector <basic::uri> & uris, const X3D::Undo
 	MagicImport magicImport (getBrowserWindow ());
 
 	X3D::MFNode  nodes;
-	auto         selection = getSelection () -> getChildren ();
+	auto         selection = getSelection () -> getNodes ();
 	const auto & layerSet  = getCurrentWorld () -> getLayerSet ();
 
 	for (const auto & worldURL : uris)
@@ -820,7 +820,7 @@ X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepP
 
 	addNodesToActiveLayer (getCurrentWorld (), { node }, undoStep);
 
-	getSelection () -> setChildren ({ node }, undoStep);
+	getSelection () -> setNodes ({ node }, undoStep);
 
 	return node;
 }
@@ -831,7 +831,7 @@ X3DBrowserEditor::createNode (const std::string & typeName, const X3D::UndoStepP
 void
 X3DBrowserEditor::removeNodesFromScene (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const bool removeFromSceneGraph, const X3D::UndoStepPtr & undoStep) const
 {
-	getSelection () -> removeChildren (nodes, undoStep);
+	getSelection () -> removeNodes (nodes, undoStep);
 
 	X3D::X3DEditor::removeNodesFromScene (executionContext, nodes, removeFromSceneGraph, undoStep);
 }
@@ -850,7 +850,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 		"Nudge Back"
 	};
 
-	for (const auto & node : basic::make_reverse_range (getSelection () -> getChildren ()))
+	for (const auto & node : basic::make_reverse_range (getSelection () -> getNodes ()))
 	{
 		X3D::X3DPtr <X3D::X3DTransformNode> first (node);
 
@@ -875,7 +875,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 
 			// Translate other Transforms
 
-			for (const auto & node : basic::make_reverse_range (getSelection () -> getChildren ()))
+			for (const auto & node : basic::make_reverse_range (getSelection () -> getNodes ()))
 			{
 				X3D::X3DPtr <X3D::X3DTransformNode> transform (node);
 

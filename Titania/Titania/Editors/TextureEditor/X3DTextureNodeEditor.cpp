@@ -314,7 +314,7 @@ X3DTextureNodeEditor::set_node ()
 
 	changing = false;
 
-	X3DTexturePropertiesEditor::set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+	X3DTexturePropertiesEditor::set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 
 void

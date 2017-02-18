@@ -163,7 +163,7 @@ TextEditor::on_text_toggled ()
 
 	addRedoFunction <X3D::SFNode> (shapeNodes, "geometry", undoStep);
 
-	X3DFontStyleNodeEditor::set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+	X3DFontStyleNodeEditor::set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 
 	getTextUnlinkButton () .set_sensitive (getTextCheckButton () .get_active () and text -> getCloneCount () > 1);
 }
@@ -228,7 +228,7 @@ TextEditor::set_node ()
 	string    .setNodes ({ text });
 	maxExtent .setNodes ({ text });
 
-	X3DFontStyleNodeEditor::set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+	X3DFontStyleNodeEditor::set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 
 void

@@ -51,7 +51,6 @@
 #ifndef __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_MATRIX3D_H__
 #define __TITANIA_X3D_COMPONENTS_GROUPING_TRANSFORM_MATRIX3D_H__
 
-#include "../../Browser/Selection.h"
 #include "../Grouping/X3DTransformMatrix3DNode.h"
 
 namespace titania {

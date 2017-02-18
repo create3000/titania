@@ -65,9 +65,9 @@ OutlineSelection::OutlineSelection (X3DBrowserWindow* const browserWindow, X3DOu
 {
 	addChildObjects (children);
 
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (&OutlineSelection::set_children, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&OutlineSelection::set_children, this);
 
-	set_children (getBrowserWindow () -> getSelection () -> getChildren ());
+	set_children (getBrowserWindow () -> getSelection () -> getNodes ());
 
 	setup ();
 }
@@ -103,16 +103,16 @@ OutlineSelection::select (const X3D::SFNode & node) const
 		if (isSelected)
 		{
 			if (selectMultiple)
-				selection -> removeChildren ({ node });
+				selection -> removeNodes ({ node });
 			else
-				selection -> clear ();
+				selection -> clearNodes ();
 		}
 		else
 		{
 			if (selectMultiple)
-				selection -> addChildren ({ node });
+				selection -> addNodes ({ node });
 			else
-				selection -> setChildren ({ node });	
+				selection -> setNodes ({ node });	
 		}
 
 		//getCurrentBrowser () -> update ();

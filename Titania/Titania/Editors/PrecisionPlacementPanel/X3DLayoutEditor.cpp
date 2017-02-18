@@ -157,7 +157,7 @@ X3DLayoutEditor::set_node ()
 
 	// Find Layout in selection
 
-	const auto & selection = getBrowserWindow () -> getSelection () -> getChildren ();
+	const auto & selection = getBrowserWindow () -> getSelection () -> getNodes ();
 
 	layout = selection .empty () ? nullptr : selection .back ();
 

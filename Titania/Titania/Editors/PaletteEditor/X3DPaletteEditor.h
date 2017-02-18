@@ -374,7 +374,7 @@ template <class Type>
 bool
 X3DPaletteEditor <Type>::checkSelection () const
 {
-	return not this -> getBrowserWindow () -> getSelection () -> getChildren () .empty ();
+	return not this -> getBrowserWindow () -> getSelection () -> getNodes () .empty ();
 }
 
 template <class Type>

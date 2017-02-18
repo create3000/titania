@@ -184,7 +184,7 @@ ColorEditor::set_initialized ()
 		touchSensor -> touchTime ()        .addInterest (&ColorEditor::set_touchTime, this);
 
 		configure ();
-		set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+		set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 	}
 	catch (const X3D::X3DError &)
 	{ }

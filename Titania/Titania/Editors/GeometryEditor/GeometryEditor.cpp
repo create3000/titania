@@ -771,7 +771,7 @@ void
 GeometryEditor::on_hammer_clicked ()
 {
 	const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Smash Selection"));
-	auto       selection = getBrowserWindow () -> getSelection () -> getChildren ();
+	auto       selection = getBrowserWindow () -> getSelection () -> getNodes ();
 
 	for (const auto & shape : getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode }))
 	{
@@ -825,8 +825,8 @@ GeometryEditor::on_hammer_clicked ()
 		}
 	}
 
-	getBrowserWindow () -> getSelection () -> setChildren (X3D::MFNode (), undoStep);
-	getBrowserWindow () -> getSelection () -> setChildren (selection,      undoStep);
+	getBrowserWindow () -> getSelection () -> setNodes ({ },       undoStep);
+	getBrowserWindow () -> getSelection () -> setNodes (selection, undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -867,7 +867,7 @@ GeometryEditor::on_edit_toggled ()
 	{
 		// Set selection.
 
-		getBrowserWindow () -> getSelection () -> setChildren (geometryNodes);
+		getBrowserWindow () -> getSelection () -> setNodes (geometryNodes);
 	}
 	else
 	{
@@ -877,9 +877,9 @@ GeometryEditor::on_edit_toggled ()
 		const auto   previousGeometryNodes = getGeometries (previousSelection);
 
 		if (previousSelection == geometryNodes or previousSelection == previousGeometryNodes)
-			getBrowserWindow () -> getSelection () -> setChildren ({ });
+			getBrowserWindow () -> getSelection () -> setNodes ({ });
 		else
-			getBrowserWindow () -> getSelection () -> setChildren (previousSelection);
+			getBrowserWindow () -> getSelection () -> setNodes (previousSelection);
 	}
 }
 

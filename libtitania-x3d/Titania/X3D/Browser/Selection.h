@@ -163,25 +163,25 @@ public:
 	///  @name Member access
 
 	bool
-	isSelected (const SFNode &) const;
+	isSelected (const SFNode & node) const;
 
 	void
-	addChildren (const MFNode &);
+	addNodes (const MFNode & value);
 
 	void
-	removeChildren (const MFNode &);
+	removeNodes (const MFNode & value);
 
 	void
-	setChildren (const MFNode &);
+	clearNodes ();
+
+	void
+	setNodes (const MFNode & value);
 
 	const MFNode &
-	getChildren () const
-	{ return children; }
+	getNodes () const
+	{ return nodes; }
 
 	///  @name Operations
-
-	void
-	clear ();
 
 	bool
 	select ();
@@ -210,7 +210,7 @@ private:
 	SFBool                 over;
 	SFBool                 active;
 	SFBool                 touchTime;
-	MFNode                 children;
+	MFNode                 nodes;
 
 };
 

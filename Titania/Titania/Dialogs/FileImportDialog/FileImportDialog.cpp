@@ -277,7 +277,7 @@ FileImportDialog::run ()
 
 				const auto nodes = getBrowserWindow () -> import ({ getURL () }, undoStep);
 
-				getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
+				getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);
 			}
 
@@ -289,7 +289,7 @@ FileImportDialog::run ()
 
 				const auto nodes = getBrowserWindow () -> importAsInline ({ getURL () }, undoStep);
 
-				getBrowserWindow () -> getSelection () -> setChildren (nodes, undoStep);
+				getBrowserWindow () -> getSelection () -> setNodes (nodes, undoStep);
 				getBrowserWindow () -> addUndoStep (undoStep);
 			}
 

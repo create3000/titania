@@ -232,7 +232,7 @@ TextureMappingEditor::set_initialized ()
 	{ }
 
 	configure ();
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 
 void

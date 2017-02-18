@@ -77,11 +77,11 @@ X3DGridTool::X3DGridTool () :
 	X3DActiveLayerTool (),
 	            fields (),
 	         selection (),
-	          children ()
+	             nodes ()
 {
 	addType (X3DConstants::X3DGridTool);
 
-	addChildObjects (selection, children);
+	addChildObjects (selection, nodes);
 
 	translation ()  .setUnit (UnitCategory::LENGTH);
 	snapDistance () .setUnit (UnitCategory::LENGTH);
@@ -197,18 +197,18 @@ void
 X3DGridTool::set_selection (const SelectionPtr & value)
 {
 	if (selection)
-		selection -> getChildren () .removeInterest (&X3DGridTool::set_children, this);
+		selection -> getNodes () .removeInterest (&X3DGridTool::set_nodes, this);
 
 	selection = value;
-	selection -> getChildren () .addInterest (&X3DGridTool::set_children, this);
+	selection -> getNodes () .addInterest (&X3DGridTool::set_nodes, this);
 
-	set_children (selection -> getChildren ());
+	set_nodes (selection -> getNodes ());
 }
 
 void
-X3DGridTool::set_children (const MFNode & value)
+X3DGridTool::set_nodes (const MFNode & value)
 {
-	for (const auto & node : children)
+	for (const auto & node : nodes)
 	{
 		const X3DPtr <X3DTransformNode> transform (node);
 
@@ -220,9 +220,9 @@ X3DGridTool::set_children (const MFNode & value)
 		}
 	}
 
-	children = value;
+	nodes = value;
 
-	for (const auto & node : children)
+	for (const auto & node : nodes)
 	{
 		const X3DPtr <X3DTransformNode> transform (node);
 
@@ -293,7 +293,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 	
 		const Matrix4d differenceMatrix = inverse (matrix) * (absoluteMatrix * snap);
 	
-		for (const auto & node : children)
+		for (const auto & node : nodes)
 		{
 			if (node == master)
 				continue;
@@ -417,7 +417,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 	
 		const Matrix4d differenceMatrix = inverse (matrixBefore) * currentMatrix * master -> getTransformationMatrix ();
 	
-		for (const auto & node : children)
+		for (const auto & node : nodes)
 		{
 			if (node == master)
 				continue;
@@ -480,7 +480,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	
 		const Matrix4d differenceMatrix = inverse (matrix) * currentMatrix * master -> getTransformationMatrix ();
 	
-		for (const auto & node : children)
+		for (const auto & node : nodes)
 		{
 			if (node == master)
 				continue;

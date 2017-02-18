@@ -180,6 +180,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	uninitializedNodes .emplace_back (uninitializedNode);
+
+	if (isInitialized ())
+	{
+		getBrowser () -> prepareEvents () .addInterest (&X3DExecutionContext::realize, this);
+		getBrowser () -> addEvent ();
+	}
 }
 
 // Component/Profile handling

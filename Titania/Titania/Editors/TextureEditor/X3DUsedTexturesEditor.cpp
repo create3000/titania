@@ -171,7 +171,7 @@ X3DUsedTexturesEditor::set_node (const X3D::SFNode & node)
 	{
 		// Apply selected material to selection.
 
-		const auto selection = getBrowserWindow () -> getSelection () -> getChildren ();
+		const auto selection = getBrowserWindow () -> getSelection () -> getNodes ();
 
 		if (selection .empty ())
 			return;

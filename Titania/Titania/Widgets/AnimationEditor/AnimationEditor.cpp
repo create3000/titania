@@ -201,15 +201,15 @@ AnimationEditor::setScale (const double value)
 void
 AnimationEditor::on_map ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .addInterest (&AnimationEditor::set_selection, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&AnimationEditor::set_selection, this);
 
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 
 void
 AnimationEditor::on_unmap ()
 {
-	getBrowserWindow () -> getSelection () -> getChildren () .removeInterest (&AnimationEditor::set_selection, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&AnimationEditor::set_selection, this);
 }
 
 void
@@ -217,7 +217,7 @@ AnimationEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DAnimationEditorInterface::set_selection (selection);
 
-	const bool haveSelection = not getBrowserWindow () -> getSelection () -> getChildren () .empty ();
+	const bool haveSelection = not getBrowserWindow () -> getSelection () -> getNodes () .empty ();
 	const auto groups        = getNodes <X3D::X3DGroupingNode> (selection, { X3D::X3DConstants::X3DGroupingNode });
 
 	getNewButton ()       .set_sensitive (not groups .empty ());
@@ -471,7 +471,7 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 		set_interpolators ();
 	}
 
-	set_selection (getBrowserWindow () -> getSelection () -> getChildren ());
+	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 
 	nodeName .setNode (animation);
 
@@ -580,7 +580,7 @@ AnimationEditor::removeInterpolators ()
 void
 AnimationEditor::on_add_member ()
 {
-	for (const auto & node : getBrowserWindow () -> getSelection () -> getChildren ())
+	for (const auto & node : getBrowserWindow () -> getSelection () -> getNodes ())
 		addNode (node);
 }
 

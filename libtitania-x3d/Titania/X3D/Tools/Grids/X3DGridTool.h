@@ -223,7 +223,7 @@ private:
 	set_selection (const SelectionPtr &);
 
 	void
-	set_children (const MFNode &);
+	set_nodes (const MFNode &);
 
 	void
 	set_translation (const X3DPtr <X3DTransformNode> &);
@@ -276,7 +276,7 @@ private:
 	Fields fields;
 	
 	SelectionPtr selection;
-	MFNode       children;
+	MFNode       nodes;
 
 };
 
