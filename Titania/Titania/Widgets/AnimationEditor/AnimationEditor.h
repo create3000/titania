@@ -125,8 +125,14 @@ private:
 	getTreeModelFilter () const
 	{ return treeModelFilter; }
 
+	void
+	setDuration (const int32_t value);
+	
 	int32_t
 	getDuration () const;
+	
+	void
+	setFramesPerSecond (const int32_t value);
 
 	int32_t
 	getFramesPerSecond () const;
@@ -282,12 +288,6 @@ private:
 	virtual
 	void
 	on_time () final override;
-
-	void
-	set_duration ();
-
-	void
-	set_frames_per_second ();
 	
 	void
 	set_active ();
@@ -541,10 +541,6 @@ private:
 	using CopiedFrame       = std::tuple <int32_t, const X3D::X3DFieldDefinition*, Gtk::TreePath, std::vector <double>, std::string>;
 	using FrameArray        = std::vector <std::pair <FrameKey, X3D::Box2d>>;
 
-	using setMetaDataInteger = void (X3D::X3DNode::*) (const std::string &, const X3D::MFInt32 &);
-	using setMetaDataDouble  = void (X3D::X3DNode::*) (const std::string &, const X3D::MFDouble &);
-	using setMetaDataString  = void (X3D::X3DNode::*) (const std::string &, const X3D::MFString &);
-
 	/***
 	 *  @name Static members
 	 **/
@@ -591,10 +587,10 @@ template <class Interpolator, class Field, class Type>
 void
 AnimationEditor::setSequencer (const X3D::X3DPtr <Interpolator> & interpolator, const X3D::UndoStepPtr & undoStep)
 {
-	const auto   components = interpolatorComponents .at (interpolator -> getType () .back ());
-	const auto & key        = interpolator -> template getMetaData <X3D::MFInt32> ("/Interpolator/key",       true);
-	auto &       keyValue   = interpolator -> template getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
-	auto &       keyType    = interpolator -> template getMetaData <X3D::MFString> ("/Interpolator/keyType",  true);
+	const auto components = interpolatorComponents .at (interpolator -> getType () .back ());
+	const auto key        = interpolator -> template getMetaData <X3D::MFInt32>  ("/Interpolator/key");
+	auto       keyValue   = interpolator -> template getMetaData <X3D::MFDouble> ("/Interpolator/keyValue");
+	auto       keyType    = interpolator -> template getMetaData <X3D::MFString> ("/Interpolator/keyType");
 
 	keyValue .resize (key .size () * components);
 	keyType  .resize (key .size ());
@@ -634,10 +630,10 @@ template <class Interpolator, class Field, class Type>
 void
 AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolator, const X3D::UndoStepPtr & undoStep)
 {
-	const auto   components = interpolatorComponents .at (interpolator -> getType () .back ());
-	const auto & key        = interpolator -> template getMetaData <X3D::MFInt32> ("/Interpolator/key",      true);
-	auto &       keyValue   = interpolator -> template getMetaData <X3D::MFDouble> ("/Interpolator/keyValue", true);
-	auto &       keyType    = interpolator -> template getMetaData <X3D::MFString> ("/Interpolator/keyType", true);
+	const auto components = interpolatorComponents .at (interpolator -> getType () .back ());
+	const auto key        = interpolator -> template getMetaData <X3D::MFInt32>  ("/Interpolator/key");
+	auto       keyValue   = interpolator -> template getMetaData <X3D::MFDouble> ("/Interpolator/keyValue");
+	auto       keyType    = interpolator -> template getMetaData <X3D::MFString> ("/Interpolator/keyType");
 
 	keyValue .resize (key .size () * components);
 	keyType  .resize (key .size ());

@@ -73,7 +73,7 @@ public:
 
 	virtual
 	void
-	fromMetadata (const X3D::X3DPtr <X3D::MetadataSet> &) final override;
+	fromMetadata () final override;
 
 	///  @name Destruction
 

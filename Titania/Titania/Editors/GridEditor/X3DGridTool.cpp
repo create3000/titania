@@ -76,24 +76,13 @@ X3DGridTool::X3DGridTool () :
 void
 X3DGridTool::isEnabled (const bool value)
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-
-	metadataSet-> createValue <X3D::MetadataBoolean> ("enabled") -> value () = { value };
+	setMetaData ("/Titania/" + getName () + "/enabled", value);
 }
 
 bool
 X3DGridTool::isEnabled () const
 {
-	try
-	{
-		const auto metadataSet = getMetaData ("/Titania/" + getName ());
-
-		return metadataSet -> getValue <X3D::MetadataBoolean> ("enabled") -> value () .at (0);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		return false;
-	}
+	return getMetaData ("/Titania/" + getName () + "/enabled", X3D::SFBool (false));
 }
 
 void
@@ -108,87 +97,51 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 
 	browser -> getActiveLayer () .addInterest (&X3DGridTool::update, this);
 
-	try
-	{
-		const auto metadataSet = getMetaData ("/Titania/" + getName ());
+	// Set tool fields from meta data.
 
-		getTool () -> enabled () .removeInterest (&X3DGridTool::set_enabled, this);
-		getTool () -> enabled () .addInterest (&X3DGridTool::connectEnabled, this);
+	getTool () -> enabled () .removeInterest (&X3DGridTool::set_enabled, this);
+	getTool () -> enabled () .addInterest (&X3DGridTool::connectEnabled, this);
 
-		getTool () -> translation () .removeInterest (&X3DGridTool::set_translation, this);
-		getTool () -> translation () .addInterest (&X3DGridTool::connectTranslation, this);
+	getTool () -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+	getTool () -> translation () .addInterest (&X3DGridTool::connectTranslation, this);
 
-		getTool () -> rotation () .removeInterest (&X3DGridTool::set_rotation, this);
-		getTool () -> rotation () .addInterest (&X3DGridTool::connectRotation, this);
+	getTool () -> rotation () .removeInterest (&X3DGridTool::set_rotation, this);
+	getTool () -> rotation () .addInterest (&X3DGridTool::connectRotation, this);
 
-		getTool () -> scale () .removeInterest (&X3DGridTool::set_scale, this);
-		getTool () -> scale () .addInterest (&X3DGridTool::connectScale, this);
+	getTool () -> scale () .removeInterest (&X3DGridTool::set_scale, this);
+	getTool () -> scale () .addInterest (&X3DGridTool::connectScale, this);
 
-		getTool () -> dimension () .removeInterest (&X3DGridTool::set_dimension, this);
-		getTool () -> dimension () .addInterest (&X3DGridTool::connectDimension, this);
+	getTool () -> dimension () .removeInterest (&X3DGridTool::set_dimension, this);
+	getTool () -> dimension () .addInterest (&X3DGridTool::connectDimension, this);
 
-		getTool () -> majorLineEvery () .removeInterest (&X3DGridTool::set_majorLineEvery, this);
-		getTool () -> majorLineEvery () .addInterest (&X3DGridTool::connectMajorLineEvery, this);
+	getTool () -> majorLineEvery () .removeInterest (&X3DGridTool::set_majorLineEvery, this);
+	getTool () -> majorLineEvery () .addInterest (&X3DGridTool::connectMajorLineEvery, this);
 
-		getTool () -> majorLineOffset () .removeInterest (&X3DGridTool::set_majorLineOffset, this);
-		getTool () -> majorLineOffset () .addInterest (&X3DGridTool::connectMajorLineOffset, this);
+	getTool () -> majorLineOffset () .removeInterest (&X3DGridTool::set_majorLineOffset, this);
+	getTool () -> majorLineOffset () .addInterest (&X3DGridTool::connectMajorLineOffset, this);
 
-		getTool () -> color () .removeInterest (&X3DGridTool::set_color, this);
-		getTool () -> color () .addInterest (&X3DGridTool::connectColor, this);
+	getTool () -> color () .removeInterest (&X3DGridTool::set_color, this);
+	getTool () -> color () .addInterest (&X3DGridTool::connectColor, this);
 
-		getTool () -> lineColor () .removeInterest (&X3DGridTool::set_lineColor, this);
-		getTool () -> lineColor () .addInterest (&X3DGridTool::connectLineColor, this);
+	getTool () -> lineColor () .removeInterest (&X3DGridTool::set_lineColor, this);
+	getTool () -> lineColor () .addInterest (&X3DGridTool::connectLineColor, this);
 
-		getTool () -> majorLineColor () .removeInterest (&X3DGridTool::set_majorLineColor, this);
-		getTool () -> majorLineColor () .addInterest (&X3DGridTool::connectMajorLineColor, this);
+	getTool () -> majorLineColor () .removeInterest (&X3DGridTool::set_majorLineColor, this);
+	getTool () -> majorLineColor () .addInterest (&X3DGridTool::connectMajorLineColor, this);
 
-		getTool () -> snapDistance () .removeInterest (&X3DGridTool::set_snapDistance, this);
-		getTool () -> snapDistance () .addInterest (&X3DGridTool::connectSnapDistance, this);
+	getTool () -> snapDistance () .removeInterest (&X3DGridTool::set_snapDistance, this);
+	getTool () -> snapDistance () .addInterest (&X3DGridTool::connectSnapDistance, this);
 
-		getTool () -> snapToCenter () .removeInterest (&X3DGridTool::set_snapToCenter, this);
-		getTool () -> snapToCenter () .addInterest (&X3DGridTool::connectSnapToCenter, this);
+	getTool () -> snapToCenter () .removeInterest (&X3DGridTool::set_snapToCenter, this);
+	getTool () -> snapToCenter () .addInterest (&X3DGridTool::connectSnapToCenter, this);
 
-		getTool () -> isActive () .addInterest (&X3DGridTool::set_active, this);
+	getTool () -> isActive () .addInterest (&X3DGridTool::set_active, this);
 
-		try
-		{
-			const auto & v = metadataSet -> getValue <X3D::MetadataBoolean> ("snap") -> value ();
-	
-			getTool () -> enabled () = v .at (0);
-		}
-		catch (...)
-		{
-			getTool () -> enabled () = true;
-		}
-	
-		try
-		{
-			const auto & v = metadataSet -> getValue <X3D::MetadataDouble> ("snapDistance") -> value ();
-	
-			getTool () -> snapDistance () = v .at (0);
-		}
-		catch (...)
-		{
-			getTool () -> snapDistance () = 0.25;
-		}
-	
-		try
-		{
-			const auto & v = metadataSet -> getValue <X3D::MetadataBoolean> ("snapToCenter") -> value ();
-	
-			getTool () -> snapToCenter () = v .at (0);
-		}
-		catch (...)
-		{
-			getTool () -> snapToCenter () = true;
-		}
+	getTool () -> enabled ()      = getMetaData ("/Titania/" + getName () + "/snap",         X3D::SFBool (true));
+	getTool () -> snapDistance () = getMetaData ("/Titania/" + getName () + "/snapDistance", X3D::SFDouble (0.25));
+	getTool () -> snapToCenter () = getMetaData ("/Titania/" + getName () + "/snapToCenter", X3D::SFBool (true));
 
-		fromMetadata (metadataSet);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-	}
+	fromMetadata ();
 }
 
 void
@@ -224,10 +177,7 @@ X3DGridTool::disable ()
 void
 X3DGridTool::set_enabled ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataBoolean> ("snap") -> value ();
-
-	value = { getTool () -> enabled () };
+	setMetaData ("/Titania/" + getName () + "/snap", getTool () -> enabled ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -235,12 +185,7 @@ X3DGridTool::set_enabled ()
 void
 X3DGridTool::set_translation ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("translation") -> value ();
-
-	value = { getTool () -> translation () .getX (),
-	          getTool () -> translation () .getY (),
-	          getTool () -> translation () .getZ () };
+	setMetaData ("/Titania/" + getName () + "/translation", getTool () -> translation ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -248,13 +193,7 @@ X3DGridTool::set_translation ()
 void
 X3DGridTool::set_rotation ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("rotation") -> value ();
-
-	value = { getTool () -> rotation () .getX (),
-	          getTool () -> rotation () .getY (),
-	          getTool () -> rotation () .getZ (),
-	          getTool () -> rotation () .getAngle () };
+	setMetaData ("/Titania/" + getName () + "/rotation", getTool () -> rotation ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -262,12 +201,7 @@ X3DGridTool::set_rotation ()
 void
 X3DGridTool::set_scale ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("scale") -> value ();
-
-	value = { getTool () -> scale () .getX (),
-	          getTool () -> scale () .getY (),
-	          getTool () -> scale () .getZ () };
+	setMetaData ("/Titania/" + getName () + "/scale", getTool () -> scale ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -275,10 +209,7 @@ X3DGridTool::set_scale ()
 void
 X3DGridTool::set_dimension ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataInteger> ("dimension") -> value ();
-
-	value = getTool () -> dimension ();
+	setMetaData ("/Titania/" + getName () + "/dimension", getTool () -> dimension ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -286,10 +217,7 @@ X3DGridTool::set_dimension ()
 void
 X3DGridTool::set_majorLineEvery ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataInteger> ("majorLineEvery") -> value ();
-
-	value = getTool () -> majorLineEvery ();
+	setMetaData ("/Titania/" + getName () + "/majorLineEvery", getTool () -> majorLineEvery ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -297,10 +225,7 @@ X3DGridTool::set_majorLineEvery ()
 void
 X3DGridTool::set_majorLineOffset ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataInteger> ("majorLineOffset") -> value ();
-
-	value = getTool () -> majorLineOffset ();
+	setMetaData ("/Titania/" + getName () + "/majorLineOffset", getTool () -> majorLineOffset ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -308,13 +233,7 @@ X3DGridTool::set_majorLineOffset ()
 void
 X3DGridTool::set_color ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("color") -> value ();
-
-	value = { getTool () -> color () .getRed (),
-	          getTool () -> color () .getGreen (),
-	          getTool () -> color () .getBlue (),
-	          getTool () -> color () .getAlpha () };
+	setMetaData ("/Titania/" + getName () + "/color", getTool () -> color ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -322,13 +241,7 @@ X3DGridTool::set_color ()
 void
 X3DGridTool::set_lineColor ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("lineColor") -> value ();
-
-	value = { getTool () -> lineColor () .getRed (),
-	          getTool () -> lineColor () .getGreen (),
-	          getTool () -> lineColor () .getBlue (),
-	          getTool () -> lineColor () .getAlpha () };
+	setMetaData ("/Titania/" + getName () + "/lineColor", getTool () -> lineColor ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -336,13 +249,7 @@ X3DGridTool::set_lineColor ()
 void
 X3DGridTool::set_majorLineColor ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataFloat> ("majorLineColor") -> value ();
-
-	value = { getTool () -> majorLineColor () .getRed (),
-	          getTool () -> majorLineColor () .getGreen (),
-	          getTool () -> majorLineColor () .getBlue (),
-	          getTool () -> majorLineColor () .getAlpha () };
+	setMetaData ("/Titania/" + getName () + "/majorLineColor", getTool () -> majorLineColor ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -350,10 +257,7 @@ X3DGridTool::set_majorLineColor ()
 void
 X3DGridTool::set_snapDistance ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataDouble> ("snapDistance") -> value ();
-
-	value = { getTool () -> snapDistance () };
+	setMetaData ("/Titania/" + getName () + "/snapDistance", getTool () -> snapDistance ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }
@@ -361,10 +265,7 @@ X3DGridTool::set_snapDistance ()
 void
 X3DGridTool::set_snapToCenter ()
 {
-	const auto metadataSet = createMetaData ("/Titania/" + getName ());
-	auto &     value       = metadataSet -> createValue <X3D::MetadataBoolean> ("snapToCenter") -> value ();
-
-	value = { getTool () -> snapToCenter () };
+	setMetaData ("/Titania/" + getName () + "/snapToCenter", getTool () -> snapToCenter ());
 
 	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
 }

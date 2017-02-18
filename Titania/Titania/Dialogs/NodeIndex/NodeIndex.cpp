@@ -185,14 +185,10 @@ NodeIndex::refresh ()
 
 			for (const auto & basenode : getCurrentNodes ({ X3D::X3DConstants::Group }))
 			{
-				try
-				{
-					X3D::X3DPtr <X3D::X3DNode> node (basenode);
-					node -> getMetaData <X3D::MFInt32> ("/Animation/duration", false);
+				X3D::X3DPtr <X3D::X3DNode> node (basenode);
+
+				if (node -> getMetaData <int32_t> ("/Animation/duration"))
 					animations .emplace_back (basenode);
-				}
-				catch (const X3D::X3DError &)
-				{ }
 			}
 
 			setNodes (std::move (animations));

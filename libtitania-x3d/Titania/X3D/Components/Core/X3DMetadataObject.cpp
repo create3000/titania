@@ -63,11 +63,47 @@ X3DMetadataObject::X3DMetadataObject () :
 	     fields ()
 {
 	addType (X3DConstants::X3DMetadataObject);
+
+	X3DBaseNode::isPrivate (true);
 }
 
 void
 X3DMetadataObject::initialize ()
 { }
+
+void
+X3DMetadataObject::isPrivate (const bool value)
+{ }
+
+void
+X3DMetadataObject::toStream (std::ostream & ostream) const
+{
+	const_cast <X3DMetadataObject*> (this) -> X3DBaseNode::isPrivate (false);
+
+	X3DBaseNode::toStream (ostream);
+
+	const_cast <X3DMetadataObject*> (this) -> X3DBaseNode::isPrivate (true);
+}
+
+void
+X3DMetadataObject::toXMLStream (std::ostream & ostream) const
+{
+	const_cast <X3DMetadataObject*> (this) -> X3DBaseNode::isPrivate (false);
+
+	X3DBaseNode::toXMLStream (ostream);
+
+	const_cast <X3DMetadataObject*> (this) -> X3DBaseNode::isPrivate (true);
+}
+
+void
+X3DMetadataObject::toJSONStream (std::ostream & ostream) const
+{
+	const_cast <X3DMetadataObject*> (this) -> X3DBaseNode::isPrivate (false);
+
+	X3DBaseNode::toJSONStream (ostream);
+
+	const_cast <X3DMetadataObject*> (this) -> X3DBaseNode::isPrivate (true);
+}
 
 void
 X3DMetadataObject::dispose ()

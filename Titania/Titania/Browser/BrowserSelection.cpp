@@ -229,19 +229,10 @@ BrowserSelection::redoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 	                             getCurrentBrowser () -> getSelection () -> getNodes ());
 }
 
-const X3D::MFNode &
+X3D::MFNode
 BrowserSelection::getPreviousNodes () const
 {
-	try
-	{
-		return getBrowserWindow () -> getWorldInfo () -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous", false);
-	}
-	catch (const std::exception & error)
-	{
-		static const X3D::MFNode empty;
-
-		return empty;
-	}
+	return getBrowserWindow () -> getWorldInfo () -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous");
 }
 
 void
@@ -250,19 +241,17 @@ BrowserSelection::set_nodes ()
 	if (getNodes () .empty ())
 		return;
 
-	const auto worldInfo   = getBrowserWindow () -> createWorldInfo ();
-	const auto metadataSet = worldInfo -> createMetaData <X3D::MetadataSet> ("/Titania/Selection");
-	const auto previous    = metadataSet -> createValue <X3D::MetadataSet> ("previous");
-	const auto nodes       = metadataSet -> createValue <X3D::MetadataSet> ("children");
+	const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
+	const auto nodes     = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
-	if (nodes -> value () == getNodes ())
+	if (nodes == getNodes ())
 		return;
 
-	previous -> isPrivate (true);
-	previous -> value () = nodes -> value ();
+	worldInfo -> setMetaData ("/Titania/Selection/previous", nodes);
+	worldInfo -> setMetaData ("/Titania/Selection/nodes",    getNodes ());
 
-	nodes -> isPrivate (true);
-	nodes -> value () = getNodes ();
+	// XXX: remove later, 18th Feb. 2017
+	worldInfo -> removeMetaData ("/Titania/Selection/children");
 }
 
 BrowserSelection::~BrowserSelection ()

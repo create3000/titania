@@ -151,8 +151,8 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 	if (not node)
 		return true;
 
-//	if (node -> isPrivate ())
-//		return true;
+	if (node -> isPrivate ())
+		return true;
 
 	if (flags & TRAVERSE_VISIBLE_NODES)
 	{

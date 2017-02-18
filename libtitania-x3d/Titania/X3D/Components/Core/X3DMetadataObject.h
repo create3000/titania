@@ -85,6 +85,29 @@ public:
 
 	virtual
 	void
+	isPrivate (const bool value) final override;
+
+	///  @name Input/Output
+
+	///  Inserts this object into @a ostream in VRML Classic Encoding.
+	virtual
+	void
+	toStream (std::ostream & ostream) const final override;
+
+	///  Inserts this object into @a ostream in X3D XML Encoding.
+	virtual
+	void
+	toXMLStream (std::ostream & ostream) const final override;
+
+	///  Inserts this object into @a ostream in X3D JSON Encoding.
+	virtual
+	void
+	toJSONStream (std::ostream & ostream) const final override;
+
+	///  @name Destruction
+
+	virtual
+	void
 	dispose () override;
 
 

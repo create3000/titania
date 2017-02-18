@@ -102,7 +102,7 @@ private:
 	std::string
 	getHeightHash () const;
 
-	FieldType &
+	FieldType
 	getHeight (const bool fromMetaData);
 
 	///  @name Event handlers
@@ -251,24 +251,22 @@ X3DHeightMapEditor <NodeType, FieldType>::getHeightHash () const
 }
 
 template <class NodeType, class FieldType>
-FieldType &
-X3DHeightMapEditor <NodeType, FieldType>::getHeight (const bool fromMetaData)
+FieldType
+X3DHeightMapEditor <NodeType, FieldType>::getHeight (const bool save)
 {
-	try
-	{
-		return node -> template getMetaData <FieldType> (HEIGHT, false);
-	}
-	catch (const X3D::X3DError &)
-	{
-		if (fromMetaData)
-		{
-			node -> template setMetaData <FieldType> (HEIGHT, node -> height ());
+	const auto height = node -> template getMetaData <FieldType> (HEIGHT);
 
-			return node -> template getMetaData <FieldType> (HEIGHT, false);
-		}
+	if (save and height .empty ())
+	{
+		node -> template setMetaData <FieldType> (HEIGHT, node -> height ());
 
 		return node -> height ();
 	}
+
+	if (height .empty ())
+		return node -> height ();
+
+	return height;
 }
 
 template <class NodeType, class FieldType>
@@ -289,18 +287,13 @@ template <class NodeType, class FieldType>
 void
 X3DHeightMapEditor <NodeType, FieldType>::set_height_verified ()
 {
-	try
-	{
-		const auto & metaHash   = node -> template getMetaData <X3D::MFString> (HEIGHT_HASH, false) .at (0);
-		const auto   heightHash = getHeightHash ();
+	const auto metaHash   = node -> template getMetaData <X3D::MFString> (HEIGHT_HASH);
+	const auto heightHash = getHeightHash ();
 
-		set_height (heightHash not_eq metaHash);
-	}
-	catch (const std::exception &)
-	{
-		// No heightHash available.
+	if (metaHash .empty ())
 		set_height (true);
-	}
+	else
+		set_height (heightHash not_eq metaHash [0]);
 }
 
 template <class NodeType, class FieldType>
@@ -313,7 +306,7 @@ X3DHeightMapEditor <NodeType, FieldType>::set_height (const bool removeMetaData)
 		node -> removeMetaData (HEIGHT_HASH);
 	}
 
-	const auto & height = this -> getHeight (false);
+	const auto height = this -> getHeight (false);
 
 	if (not height .empty ())
 	{
@@ -374,7 +367,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 
 	minMaxInput = input;
 
-	const auto & heighHashValue = node -> template getMetaData <X3D::MFString> (HEIGHT_HASH, true);
+	const auto heighHashValue = node -> getMetaData <X3D::MFString> (HEIGHT_HASH);
 
 	beginUndoGroup ("height", undoStep);
 
@@ -383,7 +376,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 		if (heighHashValue .empty ())
 			undoStep -> addUndoFunction (&NodeType::removeMetaData, node, HEIGHT_HASH);
 		else
-			undoStep -> addUndoFunction (&NodeType::template setMetaData <X3D::SFString>, node, HEIGHT_HASH, heighHashValue .at (0));
+			undoStep -> addUndoFunction (&NodeType::template setMetaData <X3D::SFString>, node, HEIGHT_HASH, heighHashValue [0]);
 	}
 
 	endUndoGroup ("height", undoStep);
@@ -401,14 +394,14 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 	minHeight = getCurrentScene () -> fromUnit (node -> height () .getUnit (), minHeight);
 	maxHeight = getCurrentScene () -> fromUnit (node -> height () .getUnit (), maxHeight);
 
-	const auto & metaHeight = getHeight (true);
+	const auto metaHeight = getHeight (true);
 
 	node -> height () .resize (metaHeight .size ());
 
 	for (size_t i = 0, size = metaHeight .size (); i < size; ++ i)
 		node -> height () [i] = math::project <typename FieldType::value_type::value_type> (metaHeight [i], metaMinHeight, metaMaxHeight, minHeight, maxHeight);
 
-	const auto heightHash = getHeightHash ();
+	const X3D::SFString heightHash (getHeightHash ());
 
 	node -> setMetaData (HEIGHT_HASH, heightHash);
 
@@ -420,7 +413,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_min_max_height_changed (
 	beginRedoGroup ("height", undoStep);
 
 	if (addRedoFunction (node, node -> height (), undoStep))
-		undoStep -> addRedoFunction (&NodeType::template setMetaData <X3D::SFString>, node, HEIGHT_HASH, X3D::SFString (heightHash));
+		undoStep -> addRedoFunction (&NodeType::template setMetaData <X3D::SFString>, node, HEIGHT_HASH, heightHash);
 
 	endRedoGroup ("height", undoStep);
 }
@@ -439,24 +432,25 @@ X3DHeightMapEditor <NodeType, FieldType>::set_heightMap ()
 {
 	changing = true;
 
-	try
+	const auto heightMaps = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP);
+	bool       exists     = false;
+
+	for (const auto & value : heightMaps)
 	{
-		const auto & heightMaps = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP, false);
+		const auto heightMap = getCurrentContext () -> getWorldURL () .transform (value .str ());
 
-		for (const auto & value : heightMaps)
+		if (os::file_exists (heightMap .path ()))
 		{
-			const auto heightMap = getCurrentContext () -> getWorldURL () .transform (value .str ());
+			exists = true;
 
-			if (os::file_exists (heightMap .path ()))
-			{
-				fileChooser .set_current_folder_uri (heightMap .parent () .str ());
-				fileChooser .set_uri (heightMap .str ());
-				reloadButton .set_sensitive (true);
-				break;
-			}
+			fileChooser .set_current_folder_uri (heightMap .parent () .str ());
+			fileChooser .set_uri (heightMap .str ());
+			reloadButton .set_sensitive (true);
+			break;
 		}
 	}
-	catch (const std::exception &)
+
+	if (not exists)
 	{
 		// No data available.
 
@@ -482,7 +476,7 @@ X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_set ()
 	const auto        url         = X3D::MFString ({ relativeURL .str (), URL .str () });
 	const auto        minHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), minHeightAdjustment -> get_value ());
 	auto              maxHeight   = getCurrentScene () -> fromUnit (node -> height () .getUnit (), maxHeightAdjustment -> get_value ());
-	const auto &      heightMap   = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP, true);
+	const auto        heightMap   = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP);
 
 	if (path .empty ())
 		return;
@@ -518,8 +512,8 @@ template <class NodeType, class FieldType>
 void
 X3DHeightMapEditor <NodeType, FieldType>::on_height_map_image_remove_clicked ()
 {
-	const auto   undoStep  = std::make_shared <X3D::UndoStep> ("Remove ElevationGrid Height Map Image");
-	const auto & heightMap = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP, true);
+	const auto undoStep  = std::make_shared <X3D::UndoStep> ("Remove ElevationGrid Height Map Image");
+	const auto heightMap = node -> template getMetaData <X3D::MFString> (HEIGHT_MAP);
 
 	undoStep -> addObjects (node);
 

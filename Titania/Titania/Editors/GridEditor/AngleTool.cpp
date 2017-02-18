@@ -96,122 +96,19 @@ AngleTool::getTool () const
 }
 
 void
-AngleTool::fromMetadata (const X3D::X3DPtr <X3D::MetadataSet> & metadataSet)
+AngleTool::fromMetadata ()
 {
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("translation") -> value ();
+	getTool () -> translation ()     = getMetaData ("/Titania/" + getName () + "/translation",     X3D::SFVec3f ());
+	getTool () -> rotation ()        = getMetaData ("/Titania/" + getName () + "/rotation",        X3D::SFRotation ());
+	getTool () -> scale ()           = getMetaData ("/Titania/" + getName () + "/scale",           X3D::SFVec3f (1, 1, 1));
+	getTool () -> dimension ()       = getMetaData ("/Titania/" + getName () + "/dimension",       X3D::MFInt32 ({ 5, 16, 10 }));
+	getTool () -> majorLineEvery ()  = getMetaData ("/Titania/" + getName () + "/majorLineEvery",  X3D::MFInt32 ({ 5, 2, 5 }));
+	getTool () -> majorLineOffset () = getMetaData ("/Titania/" + getName () + "/majorLineOffset", X3D::MFInt32 ({ 0, 0, 0 }));
+	getTool () -> color ()           = getMetaData ("/Titania/" + getName () + "/color",           X3D::SFColorRGBA (0.5, 0.5, 0.5, 0.2));
+	getTool () -> lineColor ()       = getMetaData ("/Titania/" + getName () + "/lineColor",       X3D::SFColorRGBA (1, 0.7, 0.7, 0.2));
+	getTool () -> majorLineColor ()  = getMetaData ("/Titania/" + getName () + "/majorLineColor",  X3D::SFColorRGBA (1, 0.7, 0.7, 0.4));
 
-		getTool () -> translation () = X3D::Vector3f (v .at (0), v .at (1), v .at (2));
-	}
-	catch (...)
-	{
-		getTool () -> translation () = X3D::Vector3f ();
-	}
-
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("rotation") -> value ();
-
-		getTool () -> rotation () = X3D::Rotation4d (v .at (0), v .at (1), v .at (2), v .at (3));
-	}
-	catch (...)
-	{
-		getTool () -> rotation () = X3D::Rotation4d ();
-	}
-
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("scale") -> value ();
-
-		getTool () -> scale () = X3D::Vector3f (v .at (0), v .at (1), v .at (2));
-	}
-	catch (...)
-	{
-		getTool () -> scale () = X3D::Vector3f (1, 1, 1);
-	}
-
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataInteger> ("dimension") -> value ();
-
-		getTool () -> dimension () = v;
-
-		if (v .size () < 1)
-			getTool () -> dimension () .resize (1, X3D::SFInt32 (5));
-
-		if (v .size () < 2)
-			getTool () -> dimension () .resize (2, X3D::SFInt32 (16));
-
-		if (v .size () < 3)
-			getTool () -> dimension () .resize (3, X3D::SFInt32 (10));
-	}
-	catch (...)
-	{
-		getTool () -> dimension () = { 5, 16, 10 };
-	}
-
-	try
-	{
-		getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * pi <double> / getTool () -> dimension () .at (1);
-	}
-	catch (...)
-	{ }
-
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataInteger> ("majorLineEvery") -> value ();
-
-		getTool () -> majorLineEvery () = v;
-	}
-	catch (...)
-	{
-		getTool () -> majorLineEvery () = { 5, 2, 5 };
-	}
-
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataInteger> ("majorLineOffset") -> value ();
-
-		getTool () -> majorLineOffset () = v;
-	}
-	catch (...)
-	{
-		getTool () -> majorLineOffset () = { 0, 0, 0 };
-	}
-
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("color") -> value ();
-
-		getTool () -> color () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
-	}
-	catch (...)
-	{
-		getTool () -> color () = X3D::Color4f (0.5, 0.5, 0.5, 0.2);
-	}
-
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("lineColor") -> value ();
-
-		getTool () -> lineColor () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
-	}
-	catch (...)
-	{
-		getTool () -> lineColor () = X3D::Color4f (1, 0.7, 0.7, 0.2);
-	}
-
-	try
-	{
-		const auto & v = metadataSet -> getValue <X3D::MetadataFloat> ("majorLineColor") -> value ();
-
-		getTool () -> majorLineColor () = X3D::Color4f (v .at (0), v .at (1), v .at (2), v .at (3));
-	}
-	catch (...)
-	{
-		getTool () -> majorLineColor () = X3D::Color4f (1, 0.7, 0.7, 0.4);
-	}
+	getCurrentBrowser () -> getTransformToolOptions () -> snapAngle () = 2 * pi <double> / getTool () -> dimension () [1];
 }
 
 void

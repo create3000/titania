@@ -51,12 +51,7 @@
 #include "X3DBaseInterface.h"
 
 #include <Titania/X3D/Browser/X3DBrowser.h>
-#include <Titania/X3D/Components/Core/MetadataSet.h>
-#include <Titania/X3D/Components/Core/WorldInfo.h>
-#include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
-#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
-#include <Titania/X3D/Execution/World.h>
 #include <Titania/X3D/Execution/X3DExecutionContext.h>
 
 #include "../Browser/X3DBrowserWindow.h"
@@ -190,30 +185,6 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 	}
 
 	return worldInfo;
-}
-
-///  If needed, this function creates a MetaDataSet from the active layer or if no active layer from the current WorldInfo node.
-X3D::X3DPtr <X3D::MetadataSet>
-X3DBaseInterface::createMetaData (const std::string & key)
-{
-	const auto & layerSet = getCurrentWorld () -> getLayerSet ();
-
-	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
-		return layerSet -> getActiveLayer () -> createMetaData <X3D::MetadataSet> (key);
-
-	return createWorldInfo () -> createMetaData <X3D::MetadataSet> (key);
-}
-
-///  Returns a MetaDataSet from the active layer or if no active layer from the current WorldInfo node.
-X3D::X3DPtr <X3D::MetadataSet>
-X3DBaseInterface::getMetaData (const std::string & key) const
-{
-	const auto & layerSet = getCurrentWorld () -> getLayerSet ();
-
-	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
-		return layerSet -> getActiveLayer () -> getMetaData <X3D::MetadataSet> (key);
-	
-	return getWorldInfo () -> getMetaData <X3D::MetadataSet> (key);
 }
 
 ///  Adds @a undoStep to the current browser.

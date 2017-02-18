@@ -197,16 +197,20 @@ GeometryPropertiesEditor::set_buffer ()
 	if (geometryNodes .empty ())
 		geometryNodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::X3DGeometryNode });
 
-	const auto size = geometryNodes .size ();
-
-	geometryNodes .erase (std::unique (geometryNodes .begin (), geometryNodes .end ()), geometryNodes .end ());
 	geometryNode = geometryNodes .empty () ? nullptr : geometryNodes .back ();
+
+	const auto count = geometryNode
+	                   ? std::count_if (geometryNodes .begin (),
+	                                    geometryNodes .end (),
+	                                    [&] (const X3D::SFNode & node) { return node -> getType () .back () == geometryNode -> getType () .back (); })
+	                   : 0;
+
+	const auto allSameType = count and count == geometryNodes .size ();
 
 	// Adjust widgets.
 
 	const auto widgets  = getGeometryStack () .get_children ();
 	const auto visibles = std::count_if (widgets .begin (), widgets .end (), [ ] (const Gtk::Widget* widget) { return widget -> get_visible (); });
-	const auto same     = geometryNodes .size () == 1 and size > 1;
 
 	solid             .setNodes (geometryNodes);
 	ccw               .setNodes (geometryNodes);
@@ -220,13 +224,13 @@ GeometryPropertiesEditor::set_buffer ()
 
 	getGeometryComboBoxText () .set_sensitive (not shapeNodes .empty ());
 
-	if (same)
+	if (allSameType)
 		getGeometryComboBoxText () .set_active_text (geometryNode -> getTypeName ());
 	else
 		getGeometryComboBoxText () .set_active (-1);
 
 	getSelectGeometryBox ()    .set_sensitive (not shapeNodes .empty ());
-	getGeometryUnlinkButton () .set_sensitive (same and geometryNode -> getCloneCount () > 1);
+	getGeometryUnlinkButton () .set_sensitive (geometryNodes .size () == 1 and geometryNode -> getCloneCount () > 1);
 	getGeometryStack ()        .set_visible (visibles == 1);
 	getNormalsBox ()           .set_sensitive (false);
 
@@ -286,15 +290,10 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			{
 				auto & field = shapeNode -> geometry ();
 
-				field .removeInterest (&GeometryPropertiesEditor::set_geometry, this);
-				field .addInterest (&GeometryPropertiesEditor::connectGeometry, this);
-
 				getBrowserWindow () -> replaceNode (getCurrentContext (), shapeNode, field, node, undoStep);
 			}
 
 			getBrowserWindow () -> addUndoStep (undoStep);
-
-			getGeometryUnlinkButton () .set_sensitive (shapeNodes .size () > 1);
 		}
 		catch (const X3D::X3DError & error)
 		{
@@ -308,9 +307,6 @@ GeometryPropertiesEditor::on_geometry_changed ()
 		for (const auto & shapeNode : shapeNodes)
 		{
 			auto & field = shapeNode -> geometry ();
-
-			field .removeInterest (&GeometryPropertiesEditor::set_geometry, this);
-			field .addInterest (&GeometryPropertiesEditor::connectGeometry, this);
 
 			getBrowserWindow () -> removeNode (getCurrentContext (), shapeNode, field, undoStep);
 		}

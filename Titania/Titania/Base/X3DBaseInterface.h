@@ -55,6 +55,10 @@
 #include <Titania/X3D/Base/X3DParentObject.h>
 #include <Titania/X3D/Editing/Undo/UndoStep.h>
 
+#include <Titania/X3D/Components/Core/WorldInfo.h>
+#include <Titania/X3D/Components/Layering/X3DLayerNode.h>
+#include <Titania/X3D/Execution/World.h>
+
 #include <sigc++/trackable.h>
 
 namespace titania {
@@ -128,11 +132,13 @@ public:
 	getWorldInfo () const
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
-	X3D::X3DPtr <X3D::MetadataSet>
-	createMetaData (const std::string &);
-
-	X3D::X3DPtr <X3D::MetadataSet>
-	getMetaData (const std::string &) const;
+	template <class Type>
+	void
+	setMetaData (const std::string & key, const Type & value);
+	
+	template <class Type>
+	Type
+	getMetaData (const std::string & key, const Type & defaultValue = Type ()) const;
 
 	/***
 	 *  @name Undo/redo handling
@@ -223,6 +229,37 @@ private:
 	X3DBrowserWindow* const browserWindow;
 
 };
+
+template <class Type>
+void
+X3DBaseInterface::setMetaData (const std::string & key, const Type & value)
+{
+	const auto & layerSet = getCurrentWorld () -> getLayerSet ();
+
+	if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
+		layerSet -> getActiveLayer () -> setMetaData (key, value);
+	else
+		createWorldInfo () -> setMetaData (key, value);
+}
+
+template <class Type>
+Type
+X3DBaseInterface::getMetaData (const std::string & key, const Type & defaultValue) const
+{
+	try
+	{
+		const auto & layerSet = getCurrentWorld () -> getLayerSet ();
+	
+		if (layerSet -> getActiveLayer () and layerSet -> getActiveLayer () not_eq layerSet -> getLayer0 ())
+			return layerSet -> getActiveLayer () -> getMetaData <Type> (key, defaultValue);
+	
+		return getWorldInfo () -> getMetaData <Type> (key, defaultValue);
+	}
+	catch (const X3D::X3DError &)
+	{
+		return defaultValue;
+	}
+}
 
 } // puck
 } // titania

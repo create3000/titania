@@ -80,7 +80,7 @@ public:
 
 	virtual
 	void
-	fromMetadata (const X3D::X3DPtr <X3D::MetadataSet> &) = 0;
+	fromMetadata () = 0;
 
 	///  @name Destruction
 
