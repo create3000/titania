@@ -144,13 +144,13 @@ public:
 	setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep);
 
 	void
-	undoRestoreSelection (const X3D::UndoStepPtr & undoStep);
+	undoRestoreNodes (const X3D::UndoStepPtr & undoStep);
 
 	void
-	redoRestoreSelection (const X3D::UndoStepPtr & undoStep);
+	redoRestoreNodes (const X3D::UndoStepPtr & undoStep);
 
 	const X3D::MFNode &
-	getPrevious () const;
+	getPreviousNodes () const;
 
 	///  @name Destruction
 

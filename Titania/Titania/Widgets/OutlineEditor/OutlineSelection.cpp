@@ -61,13 +61,13 @@ OutlineSelection::OutlineSelection (X3DBrowserWindow* const browserWindow, X3DOu
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	        treeView (treeView),
 	  selectMultiple (false),
-	        children ()
+	           nodes ()
 {
-	addChildObjects (children);
+	addChildObjects (nodes);
 
-	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&OutlineSelection::set_children, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&OutlineSelection::set_nodes, this);
 
-	set_children (getBrowserWindow () -> getSelection () -> getNodes ());
+	set_nodes (getBrowserWindow () -> getSelection () -> getNodes ());
 
 	setup ();
 }
@@ -79,15 +79,15 @@ OutlineSelection::set_select_multiple (const bool value)
 }
 
 void
-OutlineSelection::set_children (const X3D::MFNode & value)
+OutlineSelection::set_nodes (const X3D::MFNode & value)
 {
-	for (const auto & child : children)
-		select (child, false);
+	for (const auto & node : nodes)
+		select (node, false);
 
-	children = value;
+	nodes = value;
 
-	for (const auto & child : children)
-		select (child, true);
+	for (const auto & node : nodes)
+		select (node, true);
 
 	treeView -> queue_draw ();
 }

@@ -143,8 +143,6 @@ BrowserSelection::addNodes (const X3D::MFNode & value)
 	const auto & selection = getCurrentBrowser () -> getSelection ();
 
 	selection -> addNodes (value);
-
-	nodes = selection -> getNodes ();
 }
 
 void
@@ -153,8 +151,6 @@ BrowserSelection::removeNodes (const X3D::MFNode & value)
 	const auto & selection = getCurrentBrowser () -> getSelection ();
 
 	selection -> removeNodes (value);
-
-	nodes = selection -> getNodes ();
 }
 
 void
@@ -163,8 +159,6 @@ BrowserSelection::clearNodes ()
 	const auto & selection = getCurrentBrowser () -> getSelection ();
 
 	selection -> clearNodes ();
-
-	nodes = selection -> getNodes ();
 }
 
 void
@@ -173,8 +167,6 @@ BrowserSelection::setNodes (const X3D::MFNode & value)
 	const auto & selection = getCurrentBrowser () -> getSelection ();
 
 	selection -> setNodes (value);
-
-	nodes = selection -> getNodes ();
 }
 
 void
@@ -186,8 +178,6 @@ BrowserSelection::addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 	undoStep -> addRedoFunction (&X3D::Selection::addNodes, selection, value);
 
 	selection -> addNodes (value);
-
-	nodes = selection -> getNodes ();
 }
 
 void
@@ -199,8 +189,6 @@ BrowserSelection::removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr
 	undoStep -> addRedoFunction (&X3D::Selection::removeNodes, selection, value);
 
 	selection -> removeNodes (value);
-
-	nodes = selection -> getNodes ();
 }
 
 void
@@ -212,8 +200,6 @@ BrowserSelection::clearNodes (const X3D::UndoStepPtr & undoStep)
 	undoStep -> addRedoFunction (&X3D::Selection::clearNodes, selection);
 
 	selection -> clearNodes ();
-
-	nodes = selection -> getNodes ();
 }
 
 void
@@ -225,12 +211,10 @@ BrowserSelection::setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 	undoStep -> addRedoFunction (&X3D::Selection::setNodes, selection, value);
 
 	selection -> setNodes (value);
-
-	nodes = selection -> getNodes ();
 }
 
 void
-BrowserSelection::undoRestoreSelection (const X3D::UndoStepPtr & undoStep)
+BrowserSelection::undoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 {
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes,
 	                             getCurrentBrowser () -> getSelection (),
@@ -238,7 +222,7 @@ BrowserSelection::undoRestoreSelection (const X3D::UndoStepPtr & undoStep)
 }
 
 void
-BrowserSelection::redoRestoreSelection (const X3D::UndoStepPtr & undoStep)
+BrowserSelection::redoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 {
 	undoStep -> addRedoFunction (&X3D::Selection::setNodes,
 	                             getCurrentBrowser () -> getSelection (),
@@ -246,7 +230,7 @@ BrowserSelection::redoRestoreSelection (const X3D::UndoStepPtr & undoStep)
 }
 
 const X3D::MFNode &
-BrowserSelection::getPrevious () const
+BrowserSelection::getPreviousNodes () const
 {
 	try
 	{

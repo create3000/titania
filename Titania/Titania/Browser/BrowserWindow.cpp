@@ -905,7 +905,7 @@ BrowserWindow::on_cut_activated ()
 
 	cutNodes (getCurrentContext (), selection, undoStep);
 
-	getSelection () -> undoRestoreSelection (undoStep);
+	getSelection () -> undoRestoreNodes (undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -1054,7 +1054,7 @@ BrowserWindow::on_add_to_group_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add To Group"));
 
-	getSelection () -> undoRestoreSelection (undoStep);
+	getSelection () -> undoRestoreNodes (undoStep);
 
 	const auto group = selection .back ();
 	selection .pop_back ();
@@ -1080,8 +1080,8 @@ BrowserWindow::on_detach_from_group_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Detach From Group"));
 
-	getSelection () -> undoRestoreSelection (undoStep);
-	getSelection () -> redoRestoreSelection (undoStep);
+	getSelection () -> undoRestoreNodes (undoStep);
+	getSelection () -> redoRestoreNodes (undoStep);
 
 	detachFromGroup (getCurrentContext (), selection, getKeys () .shift (), undoStep);
 

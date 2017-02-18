@@ -579,8 +579,8 @@ GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
 {
 	const auto & undoStep = container -> getUndoStep ();
 
-	getBrowserWindow () -> getSelection () -> undoRestoreSelection (undoStep);
-	getBrowserWindow () -> getSelection () -> redoRestoreSelection (undoStep);
+	getBrowserWindow () -> getSelection () -> undoRestoreNodes (undoStep);
+	getBrowserWindow () -> getSelection () -> redoRestoreNodes (undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -873,10 +873,9 @@ GeometryEditor::on_edit_toggled ()
 	{
 		// Restore selection.
 
-		const auto & previousSelection     = getBrowserWindow () -> getSelection () -> getPrevious ();
-		const auto   previousGeometryNodes = getGeometries (previousSelection);
+		const auto previousSelection = getGeometries (getBrowserWindow () -> getSelection () -> getPreviousNodes ());
 
-		if (previousSelection == geometryNodes or previousSelection == previousGeometryNodes)
+		if (previousSelection == geometryNodes)
 			getBrowserWindow () -> getSelection () -> setNodes ({ });
 		else
 			getBrowserWindow () -> getSelection () -> setNodes (previousSelection);

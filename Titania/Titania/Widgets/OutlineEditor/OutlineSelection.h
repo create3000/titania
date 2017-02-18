@@ -95,7 +95,7 @@ private:
 	///  @name Operations
 
 	void
-	set_children (const X3D::MFNode &);
+	set_nodes (const X3D::MFNode & value);
 
 	static
 	void
@@ -117,7 +117,7 @@ private:
 
 	X3DOutlineTreeView* const treeView;
 	bool                      selectMultiple;
-	X3D::MFNode               children;
+	X3D::MFNode               nodes;
 
 };
 

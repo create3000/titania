@@ -249,7 +249,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Edit Transform"));
 
-		getSelection () -> redoRestoreSelection (undoStep);
+		getSelection () -> redoRestoreNodes (undoStep);
 
 		bool changed = false;
 
@@ -286,7 +286,7 @@ X3DBrowserEditor::set_selection_active (const bool value)
 
 		undoMatrices .clear ();
 
-		getSelection () -> undoRestoreSelection (undoStep);
+		getSelection () -> undoRestoreNodes (undoStep);
 
 		if (changed)
 			addUndoStep (undoStep);
@@ -862,7 +862,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 			tool     = currentTool;
 			undoTime = chrono::now ();
 
-			getSelection () -> redoRestoreSelection (nudgeUndoStep);
+			getSelection () -> redoRestoreNodes (nudgeUndoStep);
 
 			// Translate first Transform
 
@@ -892,7 +892,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 
 			// 
 
-			getSelection () -> undoRestoreSelection (nudgeUndoStep);
+			getSelection () -> undoRestoreNodes (nudgeUndoStep);
 
 			if (nudgeUndoStep not_eq getBrowserWindow () -> getUndoStep ())
 				addUndoStep (nudgeUndoStep);
