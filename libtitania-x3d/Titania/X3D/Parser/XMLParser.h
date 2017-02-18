@@ -92,10 +92,6 @@ private:
 
 	///  @name Operations
 
-	X3DBrowser*
-	getBrowser () const
-	{ return scene -> getBrowser (); }
-
 	void
 	xmlElement (xmlpp::Element* const xmlElement);
 
@@ -213,20 +209,9 @@ private:
 	void
 	addNode (xmlpp::Element* const xmlElement, X3DBaseNode* const node);
 
-	///  @name Execution context handling
-
-	void
-	pushExecutionContext (X3DExecutionContext* const executionContext);
-	
-	void
-	popExecutionContext ();
-	
-	X3DExecutionContext*
-	getExecutionContext () const;
-
-	///  @name Member types
-
-	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
+	X3DBrowser*
+	getBrowser () const
+	{ return scene -> getBrowser (); }
 
 	///  @name Members
 
@@ -236,7 +221,6 @@ private:
 
 	const std::unique_ptr <xmlpp::DomParser> xmlParser;
 
-	ExecutionContextStack         executionContextStack;
 	std::vector <X3DChildObject*> parents;
 
 };

@@ -102,7 +102,6 @@ XMLParser::XMLParser (const X3DScenePtr & scene, const basic::uri & uri, std::is
 	                  uri (uri),
 	              istream (istream),
 	            xmlParser (new xmlpp::DomParser ()),
-	executionContextStack (),
 	              parents ()
 {
 	xmlParser -> set_throw_messages (true);
@@ -702,7 +701,7 @@ XMLParser::protoInstanceElement (xmlpp::Element* const xmlElement)
 
 		if (stringAttribute (xmlElement -> get_attribute ("name"), nameCharacters))
 		{
-			const auto node = getExecutionContext () -> createProto (nameCharacters, false);
+			const auto node = getExecutionContext () -> createProto (nameCharacters);
 
 			defAttribute (xmlElement, node);
 
@@ -712,7 +711,7 @@ XMLParser::protoInstanceElement (xmlpp::Element* const xmlElement)
 
 			childrenElements (xmlElement);
 
-			getExecutionContext () -> addUninitializedNode (node);
+			addUninitializedNode (node);
 
 			parents .pop_back ();
 		}
@@ -775,7 +774,7 @@ XMLParser::nodeElement (xmlpp::Element* const xmlElement)
 	
 		// Node object
 	
-		const auto node = getExecutionContext () -> createNode (xmlElement -> get_name (), false);
+		const auto node = getExecutionContext () -> createNode (xmlElement -> get_name ());
 
 		defAttribute (xmlElement, node);
 
@@ -787,7 +786,7 @@ XMLParser::nodeElement (xmlpp::Element* const xmlElement)
 
 		childrenElements (xmlElement);
 
-		getExecutionContext () -> addUninitializedNode (node);
+		addUninitializedNode (node);
 
 		parents .pop_back ();
 	}
@@ -1371,24 +1370,6 @@ XMLParser::addNode (xmlpp::Element* const xmlElement, X3DBaseNode* const childNo
 			return;
 		}
 	}
-}
-
-void
-XMLParser::pushExecutionContext (X3DExecutionContext* const executionContext)
-{
-	executionContextStack .emplace_back (executionContext);
-}
-
-void
-XMLParser::popExecutionContext ()
-{
-	executionContextStack .pop_back ();
-}
-
-X3DExecutionContext*
-XMLParser::getExecutionContext () const
-{
-	return executionContextStack .back ();
 }
 
 XMLParser::~XMLParser ()

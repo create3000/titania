@@ -83,7 +83,6 @@ Parser::Parser (std::istream & istream, X3DScene* scene) :
 	            X3DParser (),
 	              istream (istream),
 	                scene (scene),
-	executionContextStack (),
 	           lineNumber (1),
 	          whiteSpaces (),
 	      currentComments (),
@@ -253,45 +252,6 @@ throw (Error <INVALID_X3D>)
 	getBrowser () -> println (string);
 }
 
-void
-Parser::pushExecutionContext (X3DExecutionContext* const executionContext)
-{
-	//__LOG__ << this << " " << std::endl;
-
-	executionContextStack .emplace_back (executionContext);
-}
-
-void
-Parser::popExecutionContext ()
-{
-	//__LOG__ << this << " " << std::endl;
-
-	executionContextStack .pop_back ();
-}
-
-X3DExecutionContext*
-Parser::getExecutionContext () const
-{
-	//__LOG__ << this << " " << std::endl;
-
-	return executionContextStack .back ();
-}
-
-bool
-Parser::isInsideProtoDefinition () const
-{
-	//__LOG__ << this << " " << std::endl;
-
-	return executionContextStack .size () > 1;
-}
-
-void
-Parser::addRootNode (SFNode && rootNode)
-{
-	//__LOG__ << this << " " << std::endl;
-
-	getExecutionContext () -> getRootNodes () .emplace_back (std::move (rootNode));
-}
 
 void
 Parser::x3dScene ()
@@ -1393,7 +1353,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 
 		try
 		{
-			_node = getExecutionContext () -> createNode (_nodeTypeId, false);
+			_node = getExecutionContext () -> createNode (_nodeTypeId);
 		}
 		catch (const X3DError & error1)
 		{
@@ -1401,7 +1361,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 
 			try
 			{
-				_node = getExecutionContext () -> createProto (_nodeTypeId, false);
+				_node = getExecutionContext () -> createProto (_nodeTypeId);
 			}
 			catch (const X3DError & error2)
 			{
@@ -1447,7 +1407,7 @@ Parser::node (SFNode & _node, const std::string & _nodeNameId)
 
 				_baseNode -> addInnerComments (getComments ());
 
-				getExecutionContext () -> addUninitializedNode (_baseNode);
+				addUninitializedNode (_baseNode);
 
 				//__LOG__ << this << " " << _nodeTypeId << std::endl;
 				return true;

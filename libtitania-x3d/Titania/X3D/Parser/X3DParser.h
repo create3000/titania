@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_PARSER_X3DPARSER_H__
 
 #include "../Base/Error.h"
+#include "../Types/Pointer.h"
+#include "../Fields/SFNode.h"
 
 #include <fstream>
 #include <string>
@@ -78,6 +80,35 @@ protected:
 	std::string
 	save (std::istream & istream, const std::string & suffix)
 	throw (Error <INVALID_X3D>);
+
+	void
+	addUninitializedNode (X3DBaseNode* const baseNode);
+
+	void
+	pushExecutionContext (X3D::X3DExecutionContext* const executionContext);
+
+	void
+	popExecutionContext ();
+
+	X3D::X3DExecutionContext*
+	getExecutionContext () const;
+
+	bool
+	isInsideProtoDefinition () const;
+
+	void
+	addRootNode (X3D::SFNode && rootNode);
+
+
+private:
+
+	///  @name Member types
+
+	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
+
+	///  @name Members
+
+	ExecutionContextStack executionContextStack;
 
 };
 

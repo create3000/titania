@@ -177,35 +177,22 @@ public:
 	X3DPtr <Type>
 	createNode (Args && ... args)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>)
-	{
-		const X3DPtr <Type> node (new Type (this, std::forward <Args> (args) ...));
-
-		addUninitializedNode (node);
-
-		return node;
-	}
+	       Error <DISPOSED>);
 
 	SFNode
-	createNode (const std::string & typeName, const bool setup = true)
+	createNode (const std::string & typeName)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	X3DPrototypeInstancePtr
-	createProto (const std::string & typeName, const bool setup = true)
+	createProto (const std::string & typeName)
 	throw (Error <INVALID_NAME>,
 	       Error <INVALID_X3D>,
 	       Error <INVALID_FIELD>,
 	       Error <INVALID_ACCESS_TYPE>,
 	       Error <URL_UNAVAILABLE>,
 	       Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>);
-
-	/// Add uninitialized node
-	void
-	addUninitializedNode (X3DBaseNode* const)
-	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	///  @name Named node handling
@@ -582,13 +569,25 @@ public:
 
 protected:
 
+	friend class ExternProtoDeclaration;
+	friend class Inline;
+	friend class X3DBaseNode;
+	friend class X3DParser;
+
 	///  @name Construction
 
 	X3DExecutionContext ();
 
+	/// Initialize this node.
 	virtual
 	void
 	initialize () override;
+
+	/// Add uninitialized node. The node will be initialize if this execution context becomes initialized.
+	void
+	addUninitializedNode (X3DBaseNode* const)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
 
 	///  @name Import handling
 
@@ -704,6 +703,22 @@ private:
 	MFNode uninitializedNodes;
 
 };
+
+template <class Type, class ... Args>
+X3DPtr <Type>
+X3DExecutionContext::createNode (Args && ... args)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	const X3DPtr <Type> node (new Type (this, std::forward <Args> (args) ...));
+
+	if (isInitialized ())
+		node -> setup ();
+	else
+		addUninitializedNode (node);
+
+	return node;
+}
 
 template <class Type>
 X3DPtr <Type>

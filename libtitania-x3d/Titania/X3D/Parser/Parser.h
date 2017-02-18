@@ -121,10 +121,6 @@ private:
 
 	///  @name Operations
 
-	X3DBrowser*
-	getBrowser () const
-	{ return scene -> getBrowser (); }
-
 	std::string
 	getMessageFromError (const X3DError &);
 
@@ -139,24 +135,9 @@ private:
 	exception (const std::string &)
 	throw (Error <INVALID_X3D>);
 
-	void
-	pushExecutionContext (X3DExecutionContext* const executionContext);
-
-	void
-	popExecutionContext ();
-
-	X3DExecutionContext*
-	getExecutionContext () const;
-
 	std::vector <std::string>
 	getComments ()
 	{ return std::move (currentComments); }
-
-	bool
-	isInsideProtoDefinition () const;
-
-	void
-	addRootNode (SFNode &&);
 
 	void
 	x3dScene ();
@@ -544,9 +525,9 @@ private:
 	X3DFieldDefinition*
 	createField (const std::type_info &);
 
-	///  @name Member types
-
-	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
+	X3DBrowser*
+	getBrowser () const
+	{ return scene -> getBrowser (); }
 
 	///  @name Static members
 
@@ -556,7 +537,6 @@ private:
 
 	std::istream &            istream;
 	X3DScene*                 scene;
-	ExecutionContextStack     executionContextStack;
 	size_t                    lineNumber;
 	std::string               whiteSpaces;
 	std::vector <std::string> currentComments;

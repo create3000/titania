@@ -391,6 +391,7 @@ class X3DProtoDeclarationNode;
 class X3DRenderObject;
 class X3DRouterObject;
 class X3DScene;
+class X3DBaseNode;
 
 // Viewer
 

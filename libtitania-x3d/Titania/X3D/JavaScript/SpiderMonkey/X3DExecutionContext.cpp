@@ -360,9 +360,7 @@ X3DExecutionContext::createNode (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto argv             = JS_ARGV (cx, vp);
 		const auto executionContext = getThis <X3DExecutionContext> (cx, vp);
 		const auto name             = getArgument <std::string> (cx, argv, 0);
-		auto node                   = executionContext -> createNode (name, false);
-
-		node -> setup ();
+		auto node                   = executionContext -> createNode (name);
 
 		return X3DField::get <SFNode> (cx, &node, &JS_RVAL (cx, vp));
 	}
@@ -383,9 +381,7 @@ X3DExecutionContext::createProto (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto  argv             = JS_ARGV (cx, vp);
 		const auto  executionContext = getThis <X3DExecutionContext> (cx, vp);
 		const auto  name             = getArgument <std::string> (cx, argv, 0);
-		auto        node             = X3D::SFNode (executionContext -> createProto (name, false));
-
-		node -> setup ();
+		auto        node             = X3D::SFNode (executionContext -> createProto (name));
 
 		return X3DField::get <SFNode> (cx, &node, &JS_RVAL (cx, vp));
 	}

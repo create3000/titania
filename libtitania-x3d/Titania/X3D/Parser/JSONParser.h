@@ -84,10 +84,6 @@ private:
 
 	///  @name Operations
 
-	X3DBrowser*
-	getBrowser () const
-	{ return scene -> getBrowser (); }
-
 	void
 	jsonObject (json_object* const jobj);
 
@@ -406,31 +402,15 @@ private:
 	bool
 	vector4fValue (json_object* const jobj, const int32_t i, Vector4f & value);
 
-	///  @name Execution context handling
-
-	void
-	pushExecutionContext (X3DExecutionContext* const executionContext);
-	
-	void
-	popExecutionContext ();
-	
-	X3DExecutionContext*
-	getExecutionContext () const;
-	
-	bool
-	isInsideProtoDefinition () const;
-
-	///  @name Member types
-
-	using ExecutionContextStack = std::vector <X3DExecutionContext*>;
+	X3DBrowser*
+	getBrowser () const
+	{ return scene -> getBrowser (); }
 
 	///  @name Members
 
 	const X3DScenePtr scene;
 	const basic::uri  uri;
 	std::istream &    istream;
-
-	ExecutionContextStack executionContextStack;
 
 };
 

@@ -160,18 +160,6 @@ private:
 	getBrowser () const
 	{ return scene -> getBrowser (); }
 
-	void
-	pushExecutionContext (X3D::X3DExecutionContext* const executionContext);
-
-	void
-	popExecutionContext ();
-
-	X3D::X3DExecutionContext*
-	getExecutionContext () const;
-
-	void
-	addRootNode (X3D::SFNode && rootNode);
-
 	///  @name Member types
 
 	using Function              = std::function <X3D::X3DBaseNode* (X3D::X3DExecutionContext* const)>;

@@ -50,12 +50,16 @@
 
 #include "X3DParser.h"
 
+#include "../Basic/X3DBaseNode.h"
+#include "../Execution/X3DExecutionContext.h"
+
 #include <Titania/OS/mkstemps.h>
 
 namespace titania {
 namespace X3D {
 
-X3DParser::X3DParser ()
+X3DParser::X3DParser () :
+	executionContextStack ()
 { }
 
 std::string
@@ -73,6 +77,46 @@ throw (Error <INVALID_X3D>)
 	ofstream << istream .rdbuf ();
 
 	return filename;
+}
+
+void
+X3DParser::addUninitializedNode (X3DBaseNode* const baseNode)
+{
+	getExecutionContext () -> addUninitializedNode (baseNode);
+}
+
+void
+X3DParser::pushExecutionContext (X3DExecutionContext* const executionContext)
+{
+	executionContextStack .emplace_back (executionContext);
+}
+
+void
+X3DParser::popExecutionContext ()
+{
+	executionContextStack .pop_back ();
+}
+
+X3DExecutionContext*
+X3DParser::getExecutionContext () const
+{
+	return executionContextStack .back ();
+}
+
+bool
+X3DParser::isInsideProtoDefinition () const
+{
+	//__LOG__ << this << " " << std::endl;
+
+	return executionContextStack .size () > 1;
+}
+
+void
+X3DParser::addRootNode (X3D::SFNode && rootNode)
+{
+	//__LOG__ << this << " " << std::endl;
+
+	getExecutionContext () -> getRootNodes () .emplace_back (std::move (rootNode));
 }
 
 X3DParser::~X3DParser ()

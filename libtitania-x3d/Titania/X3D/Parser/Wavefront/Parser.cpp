@@ -377,8 +377,6 @@ MaterialParser::newmtl ()
 		{
 			material = scene -> createNode <X3D::Material> ();
 
-			scene -> addUninitializedNode (material);
-
 			materials [name] = material;
 
 			return true;
@@ -588,8 +586,6 @@ MaterialParser::map_Kd ()
 				if (not url .empty ())
 				{
 					const auto texture = scene -> createNode <X3D::ImageTexture> ();
-
-					scene -> addUninitializedNode (texture);
 
 					texture -> url () = {
 						url .back (),
@@ -910,9 +906,6 @@ Parser::Parser::o ()
 				object = scene -> createNode <X3D::Transform> ();
 				group  = scene -> createNode <X3D::Transform> ();
 
-				scene -> addUninitializedNode (object);
-				scene -> addUninitializedNode (group);
-
 				object -> children () .emplace_back (group);
 				scene -> getRootNodes () .emplace_back (object);
 			}
@@ -954,8 +947,6 @@ Parser::g ()
 				if (not group -> children () .empty ())
 				{
 					group = scene -> createNode <X3D::Transform> ();
-
-					scene -> addUninitializedNode (group);
 
 					object -> children () .emplace_back (group);
 				}
@@ -1143,10 +1134,6 @@ Parser::fs ()
 
 			geometry = scene -> createNode <X3D::IndexedFaceSet> ();
 			shape    = scene -> createNode <X3D::Shape> ();
-
-			scene -> addUninitializedNode (appearance);
-			scene -> addUninitializedNode (geometry);
-			scene -> addUninitializedNode (shape);
 
 			appearance -> material ()  = material;
 			appearance -> texture ()   = texture;

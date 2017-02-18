@@ -246,6 +246,7 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="NurbsCurveTessellationAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -261,6 +262,7 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="NurbsPatchSurfaceUTessellationAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -276,6 +278,7 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="NurbsPatchSurfaceVTessellationAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -291,6 +294,7 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="NurbsTrimmedSurfaceUTessellationAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -306,6 +310,7 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="NurbsTrimmedSurfaceVTessellationAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>

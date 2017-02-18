@@ -180,12 +180,6 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	uninitializedNodes .emplace_back (uninitializedNode);
-
-	if (isInitialized ())
-	{
-		getBrowser () -> prepareEvents () .addInterest (&X3DExecutionContext::realize, this);
-		getBrowser () -> addEvent ();
-	}
 }
 
 // Component/Profile handling
@@ -229,7 +223,7 @@ throw (Error <DISPOSED>)
 // Node handling
 
 SFNode
-X3DExecutionContext::createNode (const std::string & typeName, const bool setup)
+X3DExecutionContext::createNode (const std::string & typeName)
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -241,14 +235,16 @@ throw (Error <INVALID_NAME>,
 
 	SFNode node (declaration -> create (this));
 
-	if (setup)
-		addUninitializedNode (node);
+	if (isInitialized ())
+		node -> setup ();
+	//else
+	//	addUninitializedNode (node);
 
 	return node;
 }
 
 X3DPrototypeInstancePtr
-X3DExecutionContext::createProto (const std::string & typeName, const bool setup)
+X3DExecutionContext::createProto (const std::string & typeName)
 throw (Error <INVALID_NAME>,
        Error <INVALID_X3D>,
        Error <INVALID_FIELD>,
@@ -259,8 +255,10 @@ throw (Error <INVALID_NAME>,
 {
 	X3DPrototypeInstancePtr node (findProtoDeclaration (typeName, AvailableType { }) -> createInstance (this));
 
-	if (setup)
-		addUninitializedNode (node);
+	if (isInitialized ())
+		node -> setup ();
+	//else
+	//	addUninitializedNode (node);
 
 	return node;
 }

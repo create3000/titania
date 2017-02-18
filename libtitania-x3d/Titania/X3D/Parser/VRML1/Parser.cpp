@@ -440,7 +440,7 @@ Parser::node (X3D::SFNode & _node, const std::string & _nodeNameId)
 			{
 				//__LOG__ << this << " " << _nodeTypeId << std::endl;
 
-				getExecutionContext () -> addUninitializedNode (_node);
+				addUninitializedNode (_node);
 
 				//__LOG__ << this << " " << _nodeTypeId << std::endl;
 				return true;
@@ -878,38 +878,6 @@ Parser::sfnodeValue (X3D::SFNode* _field)
 	//__LOG__ << this << " " << std::endl;
 
 	return nodeStatement (*_field);
-}
-
-void
-Parser::pushExecutionContext (X3D::X3DExecutionContext* const executionContext)
-{
-	//__LOG__ << this << " " << std::endl;
-
-	executionContextStack .emplace_back (executionContext);
-}
-
-void
-Parser::popExecutionContext ()
-{
-	//__LOG__ << this << " " << std::endl;
-
-	executionContextStack .pop_back ();
-}
-
-X3D::X3DExecutionContext*
-Parser::getExecutionContext () const
-{
-	//__LOG__ << this << " " << std::endl;
-
-	return executionContextStack .back ();
-}
-
-void
-Parser::addRootNode (X3D::SFNode && rootNode)
-{
-	//__LOG__ << this << " " << std::endl;
-
-	getExecutionContext () -> getRootNodes () .emplace_back (std::move (rootNode));
 }
 
 Parser::~Parser ()

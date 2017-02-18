@@ -71,8 +71,7 @@ JSONParser::JSONParser (const X3DScenePtr & scene, const basic::uri & uri, std::
 	            X3DParser (),
 	                scene (scene),
 	                  uri (uri),
-	              istream (istream),
-	executionContextStack ()
+	              istream (istream)
 { }
 
 void
@@ -642,7 +641,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 		
 			if (stringValue (json_object_object_get (jobj, "@name"), nameCharacters))
 			{
-				node = getExecutionContext () -> createProto (nameCharacters, false) .getValue ();
+				node = getExecutionContext () -> createProto (nameCharacters) .getValue ();
 
 				prototypeInstance = true;
 			}
@@ -653,7 +652,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 			}
 		}
 		else
-			node = getExecutionContext () -> createNode (nodeType, false);
+			node = getExecutionContext () -> createNode (nodeType);
 	}
 	catch (const X3DError & error)
 	{
@@ -707,7 +706,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 
 	// After fields are parsed add node to execution context for initialisation.
 
-	getExecutionContext () -> addUninitializedNode (node);
+	addUninitializedNode (node);
 }
 
 void
@@ -2667,30 +2666,6 @@ JSONParser::vector4fValue (json_object* const jobj, const int32_t i, Vector4f & 
 	}
 
 	return false;
-}
-
-void
-JSONParser::pushExecutionContext (X3DExecutionContext* const executionContext)
-{
-	executionContextStack .emplace_back (executionContext);
-}
-
-void
-JSONParser::popExecutionContext ()
-{
-	executionContextStack .pop_back ();
-}
-
-X3DExecutionContext*
-JSONParser::getExecutionContext () const
-{
-	return executionContextStack .back ();
-}
-
-bool
-JSONParser::isInsideProtoDefinition () const
-{
-	return executionContextStack .size () > 1;
 }
 
 JSONParser::~JSONParser ()

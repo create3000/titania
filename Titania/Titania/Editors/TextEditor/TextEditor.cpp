@@ -210,9 +210,7 @@ TextEditor::set_node ()
 	}
 	else
 	{
-		text = new X3D::Text (getCurrentContext ());
-		getCurrentContext () -> addUninitializedNode (text);
-		getCurrentContext () -> realize ();
+		text = getCurrentContext () -> createNode <X3D::Text> ();
 	}
 
 	changing = true;

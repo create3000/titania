@@ -240,18 +240,10 @@ X3DFontStyleNodeEditor::set_node ()
 	screenFontStyle = fontStyleNode;
 
 	if (not fontStyle)
-	{
-		fontStyle = new X3D::FontStyle (getCurrentContext ());
-		getCurrentContext () -> addUninitializedNode (fontStyle);
-		getCurrentContext () -> realize ();
-	}
+		fontStyle = getCurrentContext () -> createNode <X3D::FontStyle> ();
 
 	if (not screenFontStyle)
-	{
-		screenFontStyle = new X3D::ScreenFontStyle (getCurrentContext ());
-		getCurrentContext () -> addUninitializedNode (screenFontStyle);
-		getCurrentContext () -> realize ();
-	}
+		screenFontStyle = getCurrentContext () -> createNode <X3D::ScreenFontStyle> ();
 
 	if (not fontStyleNode)
 		fontStyleNode = fontStyle;
