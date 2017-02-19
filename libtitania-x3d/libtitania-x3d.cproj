@@ -1706,7 +1706,7 @@
           <GacRefVar />
           <AsmRefVar />
           <ProjectRefVar />
-          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(fatal error|error)\s*:\s*(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(?:(warning|note)\s*:\s*(?&lt;message&gt;.*)|required from here)" Name="Custom" />
+          <MessageRegex Error="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(fatal error|error)\s*:\s*(?&lt;message&gt;.*)" Warning="^\s*(?&lt;file&gt;[^:]*):(?&lt;line&gt;\d*){1}(:(?&lt;column&gt;\d*))?\s*:\s*(?:(warning|note)\s*:\s*(?&lt;message&gt;.*)|(?&lt;message&gt;required\s+from\s+.*))" Name="Custom" />
         </MonoDevelop.Autotools.MakefileInfo>
       </Properties>
     </MonoDevelop>

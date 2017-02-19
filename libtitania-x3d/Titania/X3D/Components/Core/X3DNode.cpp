@@ -64,7 +64,185 @@
 namespace titania {
 namespace X3D {
 
-static const std::string SEPARATOR = "/";
+class X3DNode::MetadataHandling
+{
+public:
+
+	template <class Type, class Metadata>
+	static
+	typename std::enable_if <
+		std::is_same <Type, MFBool>::value or
+		std::is_same <Type, MFDouble>::value or
+		std::is_same <Type, MFFloat>::value or
+		std::is_same <Type, MFInt32>::value or
+		std::is_same <Type, MFNode>::value or
+		std::is_same <Type, MFString>::value,
+		void
+		>::type
+	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
+	throw (Error <DISPOSED>)
+	{
+		auto names = std::vector <std::string> ();
+	
+		basic::split (std::back_inserter (names), key, node -> SEPARATOR);
+	
+		const auto metadataSet = node -> getMetadataSet (names, false);
+	
+		metadataSet -> createValue <Metadata> (names .back ()) -> value () = value;
+	}
+	
+	template <class Type, class Metadata>
+	static
+	typename std::enable_if <
+		not (std::is_same <Type, MFBool>::value or
+		     std::is_same <Type, MFDouble>::value or
+		     std::is_same <Type, MFFloat>::value or
+		     std::is_same <Type, MFInt32>::value or
+		     std::is_same <Type, MFNode>::value or
+		     std::is_same <Type, MFString>::value),
+		void
+		>::type
+	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
+	throw (Error <DISPOSED>)
+	{
+		auto names = std::vector <std::string> ();
+	
+		basic::split (std::back_inserter (names), key, node -> SEPARATOR);
+	
+		const auto metadataSet = node -> getMetadataSet (names, false);
+		auto  &    metaValue   = metadataSet -> createValue <Metadata> (names .back ()) -> value ();
+	
+		metaValue .resize (value .size () * Type::value_type::internal_type::size ());
+	
+		for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
+		{
+			for (size_t v = 0; v < Type::value_type::internal_type::size (); ++ v)
+				metaValue [m ++] = value [i] .get1Value (v);
+		}
+	}
+	
+	template <class Type, class Metadata>
+	static
+	typename std::enable_if <
+		std::is_same <Type, SFBool::internal_type>::value or
+		std::is_same <Type, SFDouble::internal_type>::value or
+		std::is_same <Type, SFFloat::internal_type>::value or
+		std::is_same <Type, SFInt32::internal_type>::value or
+		std::is_same <Type, SFNode>::value or
+		std::is_same <Type, SFString::internal_type>::value,
+		Type
+		>::type
+	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
+	throw (Error <DISPOSED>)
+	{
+		try
+		{
+			std::vector <std::string> names;
+		
+			basic::split (std::back_inserter (names), key, node -> SEPARATOR);
+		
+			const auto   metadataSet = node -> getMetadataSet (names, true);
+			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back ()) -> value ();
+	
+			return metaValue .at (0);
+		}
+		catch (const Error <DISPOSED> &)
+		{
+			throw;
+		}
+		catch (const std::exception &)
+		{
+			return defaultValue;
+		}
+	}
+	
+	template <class Type, class Metadata>
+	static
+	typename std::enable_if <
+		std::is_same <Type, MFBool>::value or
+		std::is_same <Type, MFDouble>::value or
+		std::is_same <Type, MFFloat>::value or
+		std::is_same <Type, MFInt32>::value or
+		std::is_same <Type, MFNode>::value or
+		std::is_same <Type, MFString>::value,
+		Type
+		>::type
+	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
+	throw (Error <DISPOSED>)
+	{
+		try
+		{
+			std::vector <std::string> names;
+		
+			basic::split (std::back_inserter (names), key, node -> SEPARATOR);
+		
+			const auto   metadataSet = node -> getMetadataSet (names, true);
+			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back ()) -> value ();
+	
+			return metaValue;
+		}
+		catch (const Error <DISPOSED> &)
+		{
+			throw;
+		}
+		catch (const X3DError &)
+		{
+			return defaultValue;
+		}
+	}
+	
+	template <class Type, class Metadata>
+	static
+	typename std::enable_if <
+		not (std::is_same <Type, SFBool::internal_type>::value or
+		     std::is_same <Type, SFDouble::internal_type>::value or
+		     std::is_same <Type, SFFloat::internal_type>::value or
+		     std::is_same <Type, SFInt32::internal_type>::value or
+		     std::is_same <Type, SFNode>::value or
+		     std::is_same <Type, SFString::internal_type>::value or
+		     std::is_same <Type, MFBool>::value or
+		     std::is_same <Type, MFDouble>::value or
+		     std::is_same <Type, MFFloat>::value or
+		     std::is_same <Type, MFInt32>::value or
+		     std::is_same <Type, MFNode>::value or
+		     std::is_same <Type, MFString>::value),
+		Type
+		>::type
+	getMetaValue (X3DNode* const node, const std::string & key, const Type & defaultValue)
+	throw (Error <DISPOSED>)
+	{
+		try
+		{
+			std::vector <std::string> names;
+		
+			basic::split (std::back_inserter (names), key, node -> SEPARATOR);
+		
+			const auto   metadataSet = node -> getMetadataSet (names, true);
+			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back ()) -> value ();
+	
+			Type value (metaValue .size () / Type::value_type::internal_type::size ());
+	
+			for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
+			{
+				for (size_t v = 0; v < Type::value_type::internal_type::size (); ++ v)
+					value [i] .set1Value (v, metaValue [m ++]);
+			}
+	
+			return value;
+		}
+		catch (const Error <DISPOSED> &)
+		{
+			throw;
+		}
+		catch (const X3DError &)
+		{
+			return defaultValue;
+		}
+	}
+
+};
+
+const std::string X3DNode::SEPARATOR = "/";
 
 X3DNode::Fields::Fields () :
 	metadata (new SFNode ())
@@ -125,7 +303,7 @@ void
 X3DNode::setMetaData <SFColor::internal_type> (const std::string & key, const SFColor::internal_type & value)
 throw (Error <DISPOSED>)
 {
-	setMetaData (key, MFFloat ({ value .r (), value .g (), value .b () }));
+	setMetaData (key, MFColor ({ value }));
 }
 
 template <>
@@ -133,7 +311,7 @@ void
 X3DNode::setMetaData <SFColorRGBA::internal_type> (const std::string & key, const SFColorRGBA::internal_type & value)
 throw (Error <DISPOSED>)
 {
-	setMetaData (key, MFFloat ({ value .r (), value .g (), value .b (), value .a () }));
+	setMetaData (key, MFColorRGBA ({ value }));
 }
 
 template <>
@@ -154,10 +332,59 @@ throw (Error <DISPOSED>)
 
 template <>
 void
+X3DNode::setMetaData <SFImage> (const std::string & key, const SFImage & value)
+throw (Error <DISPOSED>)
+{
+	MFInt32 array;
+
+	array .emplace_back (value .getWidth ());
+	array .emplace_back (value .getHeight ());
+	array .emplace_back (value .getComponents ());
+
+	for (const auto & pixel : value .getArray ())
+		array .emplace_back (pixel);
+
+	setMetaData (key, array);
+}
+
+template <>
+void
 X3DNode::setMetaData <SFInt32::internal_type> (const std::string & key, const SFInt32::internal_type & value)
 throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFInt32 ({ value }));
+}
+
+template <>
+void
+X3DNode::setMetaData <SFMatrix3d::internal_type> (const std::string & key, const SFMatrix3d::internal_type & value)
+throw (Error <DISPOSED>)
+{
+	setMetaData (key, MFMatrix3d ({ value }));
+}
+
+template <>
+void
+X3DNode::setMetaData <SFMatrix3f::internal_type> (const std::string & key, const SFMatrix3f::internal_type & value)
+throw (Error <DISPOSED>)
+{
+	setMetaData (key, MFMatrix3f ({ value }));
+}
+
+template <>
+void
+X3DNode::setMetaData <SFMatrix4d::internal_type> (const std::string & key, const SFMatrix4d::internal_type & value)
+throw (Error <DISPOSED>)
+{
+	setMetaData (key, MFMatrix4d ({ value }));
+}
+
+template <>
+void
+X3DNode::setMetaData <SFMatrix4f::internal_type> (const std::string & key, const SFMatrix4f::internal_type & value)
+throw (Error <DISPOSED>)
+{
+	setMetaData (key, MFMatrix4f ({ value }));
 }
 
 template <>
@@ -173,11 +400,7 @@ void
 X3DNode::setMetaData <SFRotation::internal_type> (const std::string & key, const SFRotation::internal_type & value)
 throw (Error <DISPOSED>)
 {
-	Rotation4d::value_type x, y, z, angle;
-	
-	value .get (x, y, z, angle);
-
-	setMetaData (key, MFDouble ({ x, y, z, angle }));
+	setMetaData (key, MFRotation ({ value }));
 }
 
 template <>
@@ -193,7 +416,7 @@ void
 X3DNode::setMetaData <SFVec2d::internal_type> (const std::string & key, const SFVec2d::internal_type & value)
 throw (Error <DISPOSED>)
 {
-	setMetaData (key, MFDouble ({ value .x (), value .y () }));
+	setMetaData (key, MFVec2d ({ value }));
 }
 
 template <>
@@ -201,7 +424,7 @@ void
 X3DNode::setMetaData <SFVec2f::internal_type> (const std::string & key, const SFVec2f::internal_type & value)
 throw (Error <DISPOSED>)
 {
-	setMetaData (key, MFFloat ({ value .x (), value .y () }));
+	setMetaData (key, MFVec2f ({ value }));
 }
 
 template <>
@@ -209,7 +432,7 @@ void
 X3DNode::setMetaData <SFVec3d::internal_type> (const std::string & key, const SFVec3d::internal_type & value)
 throw (Error <DISPOSED>)
 {
-	setMetaData (key, MFDouble ({ value .x (), value .y (), value .z () }));
+	setMetaData (key, MFVec3d ({ value }));
 }
 
 template <>
@@ -217,7 +440,7 @@ void
 X3DNode::setMetaData <SFVec3f::internal_type> (const std::string & key, const SFVec3f::internal_type & value)
 throw (Error <DISPOSED>)
 {
-	setMetaData (key, MFFloat ({ value .x (), value .y (), value .z () }));
+	setMetaData (key, MFVec3f ({ value }));
 }
 
 template <>
@@ -225,7 +448,7 @@ void
 X3DNode::setMetaData <SFVec4d::internal_type> (const std::string & key, const SFVec4d::internal_type & value)
 throw (Error <DISPOSED>)
 {
-	setMetaData (key, MFDouble ({ value .x (), value .y (), value .z (), value .w () }));
+	setMetaData (key, MFVec4d ({ value }));
 }
 
 template <>
@@ -233,7 +456,7 @@ void
 X3DNode::setMetaData <SFVec4f::internal_type> (const std::string & key, const SFVec4f::internal_type & value)
 throw (Error <DISPOSED>)
 {
-	setMetaData (key, MFFloat ({ value .x (), value .y (), value .z (), value .w () }));
+	setMetaData (key, MFVec4f ({ value }));
 }
 
 template <>
@@ -241,13 +464,23 @@ void
 X3DNode::setMetaData <MFBool> (const std::string & key, const MFBool & value)
 throw (Error <DISPOSED>)
 {
-	auto names = std::vector <std::string> ();
+	MetadataHandling::setMetaValue <MFBool, MetadataBoolean> (this, key, value);
+}
 
-	basic::split (std::back_inserter (names), key, SEPARATOR);
+template <>
+void
+X3DNode::setMetaData <MFColor> (const std::string & key, const MFColor & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFColor, MetadataFloat> (this, key, value);
+}
 
-	const auto metadataSet = getMetadataSet (names, false);
-
-	metadataSet -> createValue <MetadataBoolean> (names .back ()) -> value () = value;
+template <>
+void
+X3DNode::setMetaData <MFColorRGBA> (const std::string & key, const MFColorRGBA & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFColorRGBA, MetadataFloat> (this, key, value);
 }
 
 template <>
@@ -255,13 +488,7 @@ void
 X3DNode::setMetaData <MFDouble> (const std::string & key, const MFDouble & value)
 throw (Error <DISPOSED>)
 {
-	auto names = std::vector <std::string> ();
-
-	basic::split (std::back_inserter (names), key, SEPARATOR);
-
-	const auto metadataSet = getMetadataSet (names, false);
-
-	metadataSet -> createValue <MetadataDouble> (names .back ()) -> value () = value;
+	MetadataHandling::setMetaValue <MFDouble, MetadataDouble> (this, key, value);
 }
 
 template <>
@@ -269,13 +496,27 @@ void
 X3DNode::setMetaData <MFFloat> (const std::string & key, const MFFloat & value)
 throw (Error <DISPOSED>)
 {
-	auto names = std::vector <std::string> ();
+	MetadataHandling::setMetaValue <MFFloat, MetadataFloat> (this, key, value);
+}
 
-	basic::split (std::back_inserter (names), key, SEPARATOR);
+template <>
+void
+X3DNode::setMetaData <MFImage> (const std::string & key, const MFImage & value)
+throw (Error <DISPOSED>)
+{
+	MFInt32 array;
 
-	const auto metadataSet = getMetadataSet (names, false);
+	for (const auto & image : value)
+	{
+		array .emplace_back (image .getWidth ());
+		array .emplace_back (image .getHeight ());
+		array .emplace_back (image .getComponents ());
+	
+		for (const auto & pixel : image .getArray ())
+			array .emplace_back (pixel);
+	}
 
-	metadataSet -> createValue <MetadataFloat> (names .back ()) -> value () = value;
+	setMetaData (key, array);
 }
 
 template <>
@@ -283,13 +524,39 @@ void
 X3DNode::setMetaData <MFInt32> (const std::string & key, const MFInt32 & value)
 throw (Error <DISPOSED>)
 {
-	auto names = std::vector <std::string> ();
+	MetadataHandling::setMetaValue <MFInt32, MetadataInteger> (this, key, value);
+}
 
-	basic::split (std::back_inserter (names), key, SEPARATOR);
+template <>
+void
+X3DNode::setMetaData <MFMatrix3d> (const std::string & key, const MFMatrix3d & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFMatrix3d, MetadataDouble> (this, key, value);
+}
 
-	const auto metadataSet = getMetadataSet (names, false);
+template <>
+void
+X3DNode::setMetaData <MFMatrix3f> (const std::string & key, const MFMatrix3f & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFMatrix3f, MetadataFloat> (this, key, value);
+}
 
-	metadataSet -> createValue <MetadataInteger> (names .back ()) -> value () = value;
+template <>
+void
+X3DNode::setMetaData <MFMatrix4d> (const std::string & key, const MFMatrix4d & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFMatrix4d, MetadataDouble> (this, key, value);
+}
+
+template <>
+void
+X3DNode::setMetaData <MFMatrix4f> (const std::string & key, const MFMatrix4f & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFMatrix4f, MetadataFloat> (this, key, value);
 }
 
 template <>
@@ -297,13 +564,15 @@ void
 X3DNode::setMetaData <MFNode> (const std::string & key, const MFNode & value)
 throw (Error <DISPOSED>)
 {
-	auto names = std::vector <std::string> ();
+	MetadataHandling::setMetaValue <MFNode, MetadataSet> (this, key, value);
+}
 
-	basic::split (std::back_inserter (names), key, SEPARATOR);
-
-	const auto metadataSet = getMetadataSet (names, false);
-
-	metadataSet -> createValue <MetadataSet> (names .back ()) -> value () = value;
+template <>
+void
+X3DNode::setMetaData <MFRotation> (const std::string & key, const MFRotation & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFRotation, MetadataDouble> (this, key, value);
 }
 
 template <>
@@ -311,13 +580,31 @@ void
 X3DNode::setMetaData <MFString> (const std::string & key, const MFString & value)
 throw (Error <DISPOSED>)
 {
-	auto names = std::vector <std::string> ();
+	MetadataHandling::setMetaValue <MFString, MetadataString> (this, key, value);
+}
 
-	basic::split (std::back_inserter (names), key, SEPARATOR);
+template <>
+void
+X3DNode::setMetaData <MFVec2d> (const std::string & key, const MFVec2d & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFVec2d, MetadataDouble> (this, key, value);
+}
 
-	const auto metadataSet = getMetadataSet (names, false);
+template <>
+void
+X3DNode::setMetaData <MFVec2f> (const std::string & key, const MFVec2f & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFVec2f, MetadataFloat> (this, key, value);
+}
 
-	metadataSet -> createValue <MetadataString> (names .back ()) -> value () = value;
+template <>
+void
+X3DNode::setMetaData <MFVec3d> (const std::string & key, const MFVec3d & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFVec3d, MetadataDouble> (this, key, value);
 }
 
 template <>
@@ -325,20 +612,23 @@ void
 X3DNode::setMetaData <MFVec3f> (const std::string & key, const MFVec3f & value)
 throw (Error <DISPOSED>)
 {
-	auto names = std::vector <std::string> ();
+	MetadataHandling::setMetaValue <MFVec3f, MetadataFloat> (this, key, value);
+}
 
-	basic::split (std::back_inserter (names), key, SEPARATOR);
+template <>
+void
+X3DNode::setMetaData <MFVec4d> (const std::string & key, const MFVec4d & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFVec4d, MetadataDouble> (this, key, value);
+}
 
-	const auto metadataSet = getMetadataSet (names, false);
-	auto  &    metaValue   = metadataSet -> createValue <MetadataFloat> (names .back ()) -> value ();
-
-	metaValue .resize (value .size () * MFVec3f::value_type::internal_type::size ());
-
-	for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
-	{
-		for (size_t v = 0; v < MFVec3f::value_type::internal_type::size (); ++ v)
-			metaValue [m ++] = value [i] .get1Value (v);
-	}
+template <>
+void
+X3DNode::setMetaData <MFVec4f> (const std::string & key, const MFVec4f & value)
+throw (Error <DISPOSED>)
+{
+	MetadataHandling::setMetaValue <MFVec4f, MetadataFloat> (this, key, value);
 }
 
 template <>
@@ -346,24 +636,7 @@ SFBool::internal_type
 X3DNode::getMetaData <SFBool::internal_type> (const std::string & key, const SFBool::internal_type & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		auto names = std::vector <std::string> ();
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto metadataSet = getMetadataSet (names, true);
-	
-		return metadataSet -> getValue <MetadataBoolean> (names .back ()) -> value () .at (0);
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const std::exception &)
-	{
-		return defaultValue;
-	}
+	return MetadataHandling::getMetaValue <SFBool::internal_type, MetadataBoolean> (this, key, defaultValue);
 }
 
 template <>
@@ -397,24 +670,7 @@ SFDouble::internal_type
 X3DNode::getMetaData <SFDouble::internal_type> (const std::string & key, const SFDouble::internal_type & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		auto names = std::vector <std::string> ();
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto metadataSet = getMetadataSet (names, true);
-	
-		return metadataSet -> getValue <MetadataDouble> (names .back ()) -> value () .at (0);
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const std::exception &)
-	{
-		return defaultValue;
-	}
+	return MetadataHandling::getMetaValue <SFDouble::internal_type, MetadataDouble> (this, key, defaultValue);
 }
 
 template <>
@@ -422,24 +678,30 @@ SFFloat::internal_type
 X3DNode::getMetaData <SFFloat::internal_type> (const std::string & key, const SFFloat::internal_type & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		auto names = std::vector <std::string> ();
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto metadataSet = getMetadataSet (names, true);
-	
-		return metadataSet -> getValue <MetadataFloat> (names .back ()) -> value () .at (0);
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const std::exception &)
-	{
+	return MetadataHandling::getMetaValue <SFFloat::internal_type, MetadataFloat> (this, key, defaultValue);
+}
+
+template <>
+SFImage
+X3DNode::getMetaData <SFImage> (const std::string & key, const SFImage & defaultValue)
+throw (Error <DISPOSED>)
+{
+	auto array = MetadataHandling::getMetaValue <MFInt32, MetadataInteger> (this, key, MFInt32 ()); // XXX: defaultValue
+
+	if (array .size () < 3)
 		return defaultValue;
-	}
+
+	const auto width      = std::max <int32_t> (0, array [0]);
+	const auto height     = std::max <int32_t> (0, array [1]);
+	const auto components = std::max <int32_t> (0, array [2]);
+	const auto size       = width * height;
+
+	if (int32_t (array .size ()) < size + 3)
+		return defaultValue;
+
+	array .erase (array .begin (), array .begin () + 3);
+
+	return SFImage (width, height, components, array);
 }
 
 template <>
@@ -447,24 +709,7 @@ SFInt32::internal_type
 X3DNode::getMetaData <SFInt32::internal_type> (const std::string & key, const SFInt32::internal_type & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		auto names = std::vector <std::string> ();
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto metadataSet = getMetadataSet (names, true);
-	
-		return metadataSet -> getValue <MetadataInteger> (names .back ()) -> value () .at (0);
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const X3DError &)
-	{
-		return defaultValue;
-	}
+	return MetadataHandling::getMetaValue <SFInt32::internal_type, MetadataInteger> (this, key, defaultValue);
 }
 
 template <>
@@ -472,24 +717,7 @@ SFNode
 X3DNode::getMetaData <SFNode> (const std::string & key, const SFNode & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		auto names = std::vector <std::string> ();
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto metadataSet = getMetadataSet (names, true);
-	
-		return metadataSet -> getValue <MetadataSet> (names .back ()) -> value () .at (0);
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const std::exception &)
-	{
-		return defaultValue;
-	}
+	return MetadataHandling::getMetaValue <SFNode, MetadataSet> (this, key, defaultValue);
 }
 
 template <>
@@ -510,24 +738,7 @@ SFString::internal_type
 X3DNode::getMetaData <SFString::internal_type> (const std::string & key, const SFString::internal_type & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		auto names = std::vector <std::string> ();
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto metadataSet = getMetadataSet (names, true);
-	
-		return metadataSet -> getValue <MetadataString> (names .back ()) -> value () .at (0);
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const std::exception &)
-	{
-		return defaultValue;
-	}
+	return MetadataHandling::getMetaValue <SFString::internal_type, MetadataString> (this, key, defaultValue);
 }
 
 template <>
@@ -613,25 +824,23 @@ MFBool
 X3DNode::getMetaData <MFBool> (const std::string & key, const MFBool & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		std::vector <std::string> names;
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & metaValue   = metadataSet -> getValue <MetadataBoolean> (names .back ()) -> value ();
+	return MetadataHandling::getMetaValue <MFBool, MetadataBoolean> (this, key, defaultValue);
+}
 
-		return metaValue;
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const X3DError &)
-	{
-		return defaultValue;
-	}
+template <>
+MFColor
+X3DNode::getMetaData <MFColor> (const std::string & key, const MFColor & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFColor, MetadataFloat> (this, key, defaultValue);
+}
+
+template <>
+MFColorRGBA
+X3DNode::getMetaData <MFColorRGBA> (const std::string & key, const MFColorRGBA & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFColorRGBA, MetadataFloat> (this, key, defaultValue);
 }
 
 template <>
@@ -639,25 +848,7 @@ MFDouble
 X3DNode::getMetaData <MFDouble> (const std::string & key, const MFDouble & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		std::vector <std::string> names;
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & metaValue   = metadataSet -> getValue <MetadataDouble> (names .back ()) -> value ();
-
-		return metaValue;
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const X3DError &)
-	{
-		return defaultValue;
-	}
+	return MetadataHandling::getMetaValue <MFDouble, MetadataDouble> (this, key, defaultValue);
 }
 
 template <>
@@ -665,25 +856,39 @@ MFFloat
 X3DNode::getMetaData <MFFloat> (const std::string & key, const MFFloat & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		std::vector <std::string> names;
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & metaValue   = metadataSet -> getValue <MetadataFloat> (names .back ()) -> value ();
+	return MetadataHandling::getMetaValue <MFFloat, MetadataFloat> (this, key, defaultValue);
+}
 
-		return metaValue;
+template <>
+MFImage
+X3DNode::getMetaData <MFImage> (const std::string & key, const MFImage & defaultValue)
+throw (Error <DISPOSED>)
+{
+	auto array = MetadataHandling::getMetaValue <MFInt32, MetadataInteger> (this, key, MFInt32 ());
+
+	MFImage images;
+
+	for (; ; )
+	{	
+		if (array .size () < 3)
+			return images;
+	
+		const auto width      = std::max <int32_t> (0, array [0]);
+		const auto height     = std::max <int32_t> (0, array [1]);
+		const auto components = std::max <int32_t> (0, array [2]);
+		const auto size       = width * height;
+
+		if (int32_t (array .size ()) < size + 3)
+			return images;
+
+		array .erase (array .begin (), array .begin () + 3);
+
+		images .emplace_back (width, height, components, MFInt32 (array .begin (), array .begin () + size));
+
+		array .erase (array .begin (), array .begin () + size);
 	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const X3DError &)
-	{
-		return defaultValue;
-	}
+
+	return images;
 }
 
 template <>
@@ -691,25 +896,7 @@ MFInt32
 X3DNode::getMetaData <MFInt32> (const std::string & key, const MFInt32 & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		std::vector <std::string> names;
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & metaValue   = metadataSet -> getValue <MetadataInteger> (names .back ()) -> value ();
-
-		return metaValue;
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const X3DError &)
-	{
-		return defaultValue;
-	}
+	return MetadataHandling::getMetaValue <MFInt32, MetadataInteger> (this, key, defaultValue);
 }
 
 template <>
@@ -717,25 +904,15 @@ MFNode
 X3DNode::getMetaData <MFNode> (const std::string & key, const MFNode & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		std::vector <std::string> names;
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & metaValue   = metadataSet -> getValue <MetadataSet> (names .back ()) -> value ();
+	return MetadataHandling::getMetaValue <MFNode, MetadataSet> (this, key, defaultValue);
+}
 
-		return metaValue;
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const X3DError &)
-	{
-		return defaultValue;
-	}
+template <>
+MFRotation
+X3DNode::getMetaData <MFRotation> (const std::string & key, const MFRotation & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFRotation, MetadataDouble> (this, key, defaultValue);
 }
 
 template <>
@@ -743,25 +920,31 @@ MFString
 X3DNode::getMetaData <MFString> (const std::string & key, const MFString & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		std::vector <std::string> names;
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & metaValue   = metadataSet -> getValue <MetadataString> (names .back ()) -> value ();
+	return MetadataHandling::getMetaValue <MFString, MetadataString> (this, key, defaultValue);
+}
 
-		return metaValue;
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const X3DError &)
-	{
-		return defaultValue;
-	}
+template <>
+MFVec2d
+X3DNode::getMetaData <MFVec2d> (const std::string & key, const MFVec2d & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFVec2d, MetadataDouble> (this, key, defaultValue);
+}
+
+template <>
+MFVec2f
+X3DNode::getMetaData <MFVec2f> (const std::string & key, const MFVec2f & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFVec2f, MetadataFloat> (this, key, defaultValue);
+}
+
+template <>
+MFVec3d
+X3DNode::getMetaData <MFVec3d> (const std::string & key, const MFVec3d & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFVec3d, MetadataDouble> (this, key, defaultValue);
 }
 
 template <>
@@ -769,33 +952,23 @@ MFVec3f
 X3DNode::getMetaData <MFVec3f> (const std::string & key, const MFVec3f & defaultValue)
 throw (Error <DISPOSED>)
 {
-	try
-	{
-		std::vector <std::string> names;
-	
-		basic::split (std::back_inserter (names), key, SEPARATOR);
-	
-		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & metaValue   = metadataSet -> getValue <MetadataFloat> (names .back ()) -> value ();
+	return MetadataHandling::getMetaValue <MFVec3f, MetadataFloat> (this, key, defaultValue);
+}
 
-		MFVec3f value (metaValue .size () / 3);
+template <>
+MFVec4d
+X3DNode::getMetaData <MFVec4d> (const std::string & key, const MFVec4d & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFVec4d, MetadataDouble> (this, key, defaultValue);
+}
 
-		for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
-		{
-			for (size_t v = 0; v < MFVec3f::value_type::internal_type::size (); ++ v)
-				value [i] .set1Value (v, metaValue [m ++]);
-		}
-
-		return value;
-	}
-	catch (const Error <DISPOSED> &)
-	{
-		throw;
-	}
-	catch (const X3DError &)
-	{
-		return defaultValue;
-	}
+template <>
+MFVec4f
+X3DNode::getMetaData <MFVec4f> (const std::string & key, const MFVec4f & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFVec4f, MetadataFloat> (this, key, defaultValue);
 }
 
 /*
@@ -824,11 +997,13 @@ throw (Error <INVALID_NODE>,
 		if (throw_)
 			throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
 
-		metadataSet                 = new MetadataSet (getExecutionContext ());
+		metadataSet = new MetadataSet (getExecutionContext ());
+
+		const_cast <X3DNode*> (this) -> metadata () = metadataSet;
+
 		metadataSet -> name ()      = names [1];
 		metadataSet -> reference () = getBrowser () -> getProviderUrl ();
 		metadataSet -> setup ();
-		const_cast <X3DNode*> (this) -> metadata () = metadataSet;
 	
 		getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (names [1]), const_cast <X3DNode*> (this) -> metadata ());
 	}

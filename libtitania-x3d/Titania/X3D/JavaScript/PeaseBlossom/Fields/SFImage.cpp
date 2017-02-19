@@ -147,9 +147,13 @@ SFImage::setWidth (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & 
 {
 	try
 	{
-		const auto lhs = getThis <SFImage> (ec, object);
+		const auto lhs   = getThis <SFImage> (ec, object);
+		const auto value = get1Argument <int32_t> (args, 0);
 
-		lhs -> setWidth (get1Argument <uint32_t> (args, 0));
+		if (value < 0)
+			throw pb::TypeError (getTypeName () + ".prototype.width: value less than 0.");
+
+		lhs -> setWidth (value);
 
 		return pb::undefined;
 	}
@@ -179,9 +183,13 @@ SFImage::setHeight (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 {
 	try
 	{
-		const auto lhs = getThis <SFImage> (ec, object);
+		const auto lhs   = getThis <SFImage> (ec, object);
+		const auto value = get1Argument <int32_t> (args, 0);
 
-		lhs -> setHeight (get1Argument <uint32_t> (args, 0));
+		if (value < 0)
+			throw pb::TypeError (getTypeName () + ".prototype.height: value less than 0.");
+
+		lhs -> setHeight (value);
 
 		return pb::undefined;
 	}
@@ -211,9 +219,13 @@ SFImage::setComp (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & o
 {
 	try
 	{
-		const auto lhs = getThis <SFImage> (ec, object);
+		const auto lhs   = getThis <SFImage> (ec, object);
+		const auto value = get1Argument <int32_t> (args, 0);
 
-		lhs -> setComponents (get1Argument <uint32_t> (args, 0));
+		if (value < 0 or value > 4)
+			throw pb::TypeError (getTypeName () + ".prototype.comp: value less than 0 or greater than 4.");
+
+		lhs -> setComponents (value);
 
 		return pb::undefined;
 	}

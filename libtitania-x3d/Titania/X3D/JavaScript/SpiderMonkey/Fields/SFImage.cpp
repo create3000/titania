@@ -140,7 +140,10 @@ SFImage::width (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 	try
 	{
 		const auto lhs   = getThis <SFImage> (cx, obj);
-		const auto value = getArgument <uint32_t> (cx, vp, 0);
+		const auto value = getArgument <int32_t> (cx, vp, 0);
+
+		if (value < 0)
+			throw std::runtime_error ("value less than 0");
 
 		lhs -> setWidth (value);
 
@@ -173,7 +176,10 @@ SFImage::height (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp
 	try
 	{
 		const auto lhs   = getThis <SFImage> (cx, obj);
-		const auto value = getArgument <uint32_t> (cx, vp, 0);
+		const auto value = getArgument <int32_t> (cx, vp, 0);
+
+		if (value < 0)
+			throw std::runtime_error ("value less than 0");
 
 		lhs -> setHeight (value);
 
@@ -206,7 +212,10 @@ SFImage::comp (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 	try
 	{
 		const auto lhs   = getThis <SFImage> (cx, obj);
-		const auto value = getArgument <uint32_t> (cx, vp, 0);
+		const auto value = getArgument <int32_t> (cx, vp, 0);
+
+		if (value < 0 or value > 4)
+			throw std::runtime_error ("value less than 0 or greater than 4");
 
 		lhs -> setComponents (value);
 

@@ -108,7 +108,12 @@ public:
 		               std::is_same <Type, SFColorRGBA::internal_type>::value or
 		               std::is_same <Type, SFDouble::internal_type>::value or
 		               std::is_same <Type, SFFloat::internal_type>::value or
+		               std::is_same <Type, SFImage>::value or
 		               std::is_same <Type, SFInt32::internal_type>::value or
+							std::is_same <Type, SFMatrix3d::internal_type>::value or
+							std::is_same <Type, SFMatrix3f::internal_type>::value or
+							std::is_same <Type, SFMatrix4d::internal_type>::value or
+							std::is_same <Type, SFMatrix4f::internal_type>::value or
 		               std::is_same <Type, SFRotation::internal_type>::value  or
 		               std::is_same <Type, SFString::internal_type>::value or
 		               std::is_same <Type, SFVec2d::internal_type>::value or
@@ -123,6 +128,10 @@ public:
 		               std::is_same <Type, SFDouble>::value or
 		               std::is_same <Type, SFFloat>::value or
 		               std::is_same <Type, SFInt32>::value or
+							std::is_same <Type, SFMatrix3d>::value or
+							std::is_same <Type, SFMatrix3f>::value or
+							std::is_same <Type, SFMatrix4d>::value or
+							std::is_same <Type, SFMatrix4f>::value or
 							std::is_same <Type, SFNode>::value or
 		               std::is_same <Type, SFRotation>::value  or
 		               std::is_same <Type, SFString>::value or
@@ -133,12 +142,25 @@ public:
 		               std::is_same <Type, SFVec4d>::value or
 		               std::is_same <Type, SFVec4f>::value or
 		               std::is_same <Type, MFBool>::value or
+		               std::is_same <Type, MFColor>::value or
+		               std::is_same <Type, MFColorRGBA>::value or
 		               std::is_same <Type, MFDouble>::value or
 		               std::is_same <Type, MFFloat>::value or
+		               std::is_same <Type, MFImage>::value or
 		               std::is_same <Type, MFInt32>::value or
+							std::is_same <Type, MFMatrix3d>::value or
+							std::is_same <Type, MFMatrix3f>::value or
+							std::is_same <Type, MFMatrix4d>::value or
+							std::is_same <Type, MFMatrix4f>::value or
 							std::is_same <Type, MFNode>::value or
+		               std::is_same <Type, MFRotation>::value or
 		               std::is_same <Type, MFString>::value or
-		               std::is_same <Type, MFVec3f>::value,
+		               std::is_same <Type, MFVec2d>::value or
+		               std::is_same <Type, MFVec2f>::value or
+		               std::is_same <Type, MFVec3d>::value or
+		               std::is_same <Type, MFVec3f>::value or
+		               std::is_same <Type, MFVec4d>::value or
+		               std::is_same <Type, MFVec4f>::value,
 		               "X3DNode::setMetaData: Type is not supported!");
 
 		setMetaData (key, value .getValue ());
@@ -155,8 +177,13 @@ public:
 		               std::is_same <Type, SFColorRGBA::internal_type>::value or
 		               std::is_same <Type, SFDouble::internal_type>::value or
 		               std::is_same <Type, SFFloat::internal_type>::value or
+		               std::is_same <Type, SFImage>::value or
 		               std::is_same <Type, SFInt32::internal_type>::value or
-		               std::is_same <Type, SFRotation::internal_type>::value or
+							std::is_same <Type, SFMatrix3d::internal_type>::value or
+							std::is_same <Type, SFMatrix3f::internal_type>::value or
+							std::is_same <Type, SFMatrix4d::internal_type>::value or
+							std::is_same <Type, SFMatrix4f::internal_type>::value or
+		               std::is_same <Type, SFRotation::internal_type>::value  or
 		               std::is_same <Type, SFString::internal_type>::value or
 		               std::is_same <Type, SFVec2d::internal_type>::value or
 		               std::is_same <Type, SFVec2f::internal_type>::value or
@@ -170,8 +197,12 @@ public:
 		               std::is_same <Type, SFDouble>::value or
 		               std::is_same <Type, SFFloat>::value or
 		               std::is_same <Type, SFInt32>::value or
-		               std::is_same <Type, SFNode>::value or
-		               std::is_same <Type, SFRotation>::value or
+							std::is_same <Type, SFMatrix3d>::value or
+							std::is_same <Type, SFMatrix3f>::value or
+							std::is_same <Type, SFMatrix4d>::value or
+							std::is_same <Type, SFMatrix4f>::value or
+							std::is_same <Type, SFNode>::value or
+		               std::is_same <Type, SFRotation>::value  or
 		               std::is_same <Type, SFString>::value or
 		               std::is_same <Type, SFVec2d>::value or
 		               std::is_same <Type, SFVec2f>::value or
@@ -180,12 +211,25 @@ public:
 		               std::is_same <Type, SFVec4d>::value or
 		               std::is_same <Type, SFVec4f>::value or
 		               std::is_same <Type, MFBool>::value or
+		               std::is_same <Type, MFColor>::value or
+		               std::is_same <Type, MFColorRGBA>::value or
 		               std::is_same <Type, MFDouble>::value or
 		               std::is_same <Type, MFFloat>::value or
+		               std::is_same <Type, MFImage>::value or
 		               std::is_same <Type, MFInt32>::value or
+							std::is_same <Type, MFMatrix3d>::value or
+							std::is_same <Type, MFMatrix3f>::value or
+							std::is_same <Type, MFMatrix4d>::value or
+							std::is_same <Type, MFMatrix4f>::value or
 							std::is_same <Type, MFNode>::value or
+		               std::is_same <Type, MFRotation>::value or
 		               std::is_same <Type, MFString>::value or
-		               std::is_same <Type, MFVec3f>::value,
+		               std::is_same <Type, MFVec2d>::value or
+		               std::is_same <Type, MFVec2f>::value or
+		               std::is_same <Type, MFVec3d>::value or
+		               std::is_same <Type, MFVec3f>::value or
+		               std::is_same <Type, MFVec4d>::value or
+		               std::is_same <Type, MFVec4f>::value,
 		               "X3DNode::getMetaData: Type is not supported!");
 
 		return Type (getMetaData <typename Type::internal_type> (key, defaultValue));
@@ -218,7 +262,7 @@ protected:
 
 private:
 
-private:
+	class MetadataHandling;
 
 	///  @name Metadata handling
 
@@ -231,6 +275,10 @@ private:
 	virtual
 	void
 	fieldToMetaData (const X3DPtr <MetadataSet> &, const X3DFieldDefinition* const) const;
+
+	///  @name Static members
+
+	static const std::string SEPARATOR;
 
 	///  @name Members
 
@@ -274,7 +322,32 @@ throw (Error <DISPOSED>);
 
 template <>
 void
+X3DNode::setMetaData <SFImage> (const std::string & key, const SFImage & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
 X3DNode::setMetaData <SFInt32::internal_type> (const std::string & key, const SFInt32::internal_type & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <SFMatrix3d::internal_type> (const std::string & key, const SFMatrix3d::internal_type & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <SFMatrix3f::internal_type> (const std::string & key, const SFMatrix3f::internal_type & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <SFMatrix4d::internal_type> (const std::string & key, const SFMatrix4d::internal_type & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <SFMatrix4f::internal_type> (const std::string & key, const SFMatrix4f::internal_type & value)
 throw (Error <DISPOSED>);
 
 template <>
@@ -336,6 +409,16 @@ throw (Error <DISPOSED>);
 
 template <>
 void
+X3DNode::setMetaData <MFColor> (const std::string & key, const MFColor & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFColorRGBA> (const std::string & key, const MFColorRGBA & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
 X3DNode::setMetaData <MFDouble> (const std::string & key, const MFDouble & value)
 throw (Error <DISPOSED>);
 
@@ -346,7 +429,7 @@ throw (Error <DISPOSED>);
 
 template <>
 void
-X3DNode::setMetaData <MFNode> (const std::string & key, const MFNode & value)
+X3DNode::setMetaData <MFImage> (const std::string & key, const MFImage & value)
 throw (Error <DISPOSED>);
 
 template <>
@@ -356,12 +439,67 @@ throw (Error <DISPOSED>);
 
 template <>
 void
+X3DNode::setMetaData <MFMatrix3d> (const std::string & key, const MFMatrix3d & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFMatrix3f> (const std::string & key, const MFMatrix3f & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFMatrix4d> (const std::string & key, const MFMatrix4d & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFMatrix4f> (const std::string & key, const MFMatrix4f & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFNode> (const std::string & key, const MFNode & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFRotation> (const std::string & key, const MFRotation & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
 X3DNode::setMetaData <MFString> (const std::string & key, const MFString & value)
 throw (Error <DISPOSED>);
 
 template <>
 void
+X3DNode::setMetaData <MFVec2d> (const std::string & key, const MFVec2d & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFVec2f> (const std::string & key, const MFVec2f & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFVec3d> (const std::string & key, const MFVec3d & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
 X3DNode::setMetaData <MFVec3f> (const std::string & key, const MFVec3f & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFVec4d> (const std::string & key, const MFVec4d & value)
+throw (Error <DISPOSED>);
+
+template <>
+void
+X3DNode::setMetaData <MFVec4f> (const std::string & key, const MFVec4f & value)
 throw (Error <DISPOSED>);
 
 // get
@@ -392,8 +530,33 @@ X3DNode::getMetaData <SFFloat::internal_type> (const std::string & key, const SF
 throw (Error <DISPOSED>);
 
 template <>
+SFImage
+X3DNode::getMetaData <SFImage> (const std::string & key, const SFImage & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
 SFInt32::internal_type
 X3DNode::getMetaData <SFInt32::internal_type> (const std::string & key, const SFInt32::internal_type & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+SFMatrix3d::internal_type
+X3DNode::getMetaData <SFMatrix3d::internal_type> (const std::string & key, const SFMatrix3d::internal_type & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+SFMatrix3f::internal_type
+X3DNode::getMetaData <SFMatrix3f::internal_type> (const std::string & key, const SFMatrix3f::internal_type & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+SFMatrix4d::internal_type
+X3DNode::getMetaData <SFMatrix4d::internal_type> (const std::string & key, const SFMatrix4d::internal_type & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+SFMatrix4f::internal_type
+X3DNode::getMetaData <SFMatrix4f::internal_type> (const std::string & key, const SFMatrix4f::internal_type & defaultValue)
 throw (Error <DISPOSED>);
 
 template <>
@@ -454,6 +617,16 @@ X3DNode::getMetaData <MFBool> (const std::string & key, const MFBool & defaultVa
 throw (Error <DISPOSED>);
 
 template <>
+MFColor
+X3DNode::getMetaData <MFColor> (const std::string & key, const MFColor & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+MFColorRGBA
+X3DNode::getMetaData <MFColorRGBA> (const std::string & key, const MFColorRGBA & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
 MFDouble
 X3DNode::getMetaData <MFDouble> (const std::string & key, const MFDouble & defaultValue)
 throw (Error <DISPOSED>);
@@ -464,8 +637,33 @@ X3DNode::getMetaData <MFFloat> (const std::string & key, const MFFloat & default
 throw (Error <DISPOSED>);
 
 template <>
+MFImage
+X3DNode::getMetaData <MFImage> (const std::string & key, const MFImage & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
 MFInt32
 X3DNode::getMetaData <MFInt32> (const std::string & key, const MFInt32 & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+MFMatrix3d
+X3DNode::getMetaData <MFMatrix3d> (const std::string & key, const MFMatrix3d & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+MFMatrix3f
+X3DNode::getMetaData <MFMatrix3f> (const std::string & key, const MFMatrix3f & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+MFMatrix4d
+X3DNode::getMetaData <MFMatrix4d> (const std::string & key, const MFMatrix4d & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+MFMatrix4f
+X3DNode::getMetaData <MFMatrix4f> (const std::string & key, const MFMatrix4f & defaultValue)
 throw (Error <DISPOSED>);
 
 template <>
@@ -474,13 +672,43 @@ X3DNode::getMetaData <MFNode> (const std::string & key, const MFNode & defaultVa
 throw (Error <DISPOSED>);
 
 template <>
+MFRotation
+X3DNode::getMetaData <MFRotation> (const std::string & key, const MFRotation & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
 MFString
 X3DNode::getMetaData <MFString> (const std::string & key, const MFString & defaultValue)
 throw (Error <DISPOSED>);
 
 template <>
+MFVec2d
+X3DNode::getMetaData <MFVec2d> (const std::string & key, const MFVec2d & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+MFVec2f
+X3DNode::getMetaData <MFVec2f> (const std::string & key, const MFVec2f & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+MFVec3d
+X3DNode::getMetaData <MFVec3d> (const std::string & key, const MFVec3d & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
 MFVec3f
 X3DNode::getMetaData <MFVec3f> (const std::string & key, const MFVec3f & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+MFVec4d
+X3DNode::getMetaData <MFVec4d> (const std::string & key, const MFVec4d & defaultValue)
+throw (Error <DISPOSED>);
+
+template <>
+MFVec4f
+X3DNode::getMetaData <MFVec4f> (const std::string & key, const MFVec4f & defaultValue)
 throw (Error <DISPOSED>);
 
 } // X3D
