@@ -346,9 +346,9 @@ public:
 
 };
 
-class A { public: virtual ~A () { } };
-class B : public A { public: };
-class C : public A { public: };
+class A { public: virtual ~A () { } virtual void f () { __LOG__ << std::endl; }; };
+class B : public A { public: void f () { __LOG__ << std::endl; }; };
+class C : public A { public: void f () { __LOG__ << std::endl; }; };
 
 void
 fa (A*)
@@ -371,29 +371,10 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	X3DPtr <A> a (new A ());
-	X3DPtr <B> b (new B ());
-	X3DPtr <C> c (new C ());
+	auto c = new C ();
 
-	X3DPtr <A> ab = b;
-	X3DPtr <A> ac = c;
-	X3DPtr <C> ca (ac);
-
-	ab = b;
-	ac = c;
-	ca = X3DPtr <C> (ac);
-
-	//fa (a);
-
-	__LOG__ << "ab: " << ab .getValue () << std::endl;
-	__LOG__ << "ac: " << ac .getValue () << std::endl;
-	__LOG__ << "ca: " << ca .getValue () << std::endl;
-
-	__LOG__ << std::endl;
-
-	X3DPtrArray <A> va = { new A () };
-	X3DPtrArray <A> vb = { new B () };
-	X3DPtrArray <A> vx = { a, b, c };
+	c -> A::f ();
+	c -> C::f ();
 
 
 

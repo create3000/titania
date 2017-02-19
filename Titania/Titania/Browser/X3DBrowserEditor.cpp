@@ -449,10 +449,6 @@ X3DBrowserEditor::getMetaData ()
 
 		//
 
-		getSelection () -> setNodes (worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes"));
-
-		//
-
 		if (layerSet not_eq world -> getDefaultLayerSet ())
 			layerSet -> privateActiveLayer () = worldInfo -> getMetaData <int32_t> ("/Titania/LayerSet/activeLayer", -1);
 

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BROWSER_SELECTION_H__
 
 #include "../Components/Core/X3DNode.h"
+#include "Tools/ToolType.h"
 
 namespace titania {
 namespace X3D {
@@ -60,22 +61,6 @@ class Selection :
 	virtual public X3DBaseNode
 {
 public:
-
-	enum SelectionType
-	{
-		SINGLE,
-		MULTIPLE	
-
-	};
-
-	enum ToolType
-	{
-		NO_TOOL,
-		MOVE_TOOL,
-		ROTATE_TOOL,
-		SCALE_TOOL	
-
-	};
 
 	///  @name Construction
 
@@ -116,18 +101,17 @@ public:
 	{ return enabled; }
 
 	void
-	setMode (const SelectionType value)
-	{ mode = value; }
-	
-	const
-	SFEnum <SelectionType>
-	getMode () const
-	{ return mode; }
+	setSelectMultiple (const bool value)
+	{ selectMultiple = value; }
+
+	const SFBool &
+	getSelectMultiple () const
+	{ return selectMultiple; }
 
 	void
 	setSelectLowest (const bool value)
 	{ selectLowest = value; }
-	
+
 	const SFBool &
 	getSelectLowest () const
 	{ return selectLowest; }
@@ -135,7 +119,7 @@ public:
 	void
 	setSelectGeometry (const bool value)
 	{ selectGeometry = value; }
-	
+
 	const SFBool &
 	getSelectGeometry () const
 	{ return selectGeometry; }
@@ -195,6 +179,11 @@ private:
 	void
 	initialize () final override;
 
+	///  @name Event handlers
+
+	void
+	set_nodes ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -203,14 +192,15 @@ private:
 
 	///  @name Members
 
-	SFBool                 enabled;
-	SFEnum <SelectionType> mode;
-	SFBool                 selectLowest;
-	SFBool                 selectGeometry;
-	SFBool                 over;
-	SFBool                 active;
-	SFBool                 touchTime;
-	MFNode                 nodes;
+	SFBool enabled;
+	SFBool selectMultiple;
+	SFBool selectLowest;
+	SFBool selectGeometry;
+	SFBool over;
+	SFBool active;
+	SFBool touchTime;
+	MFNode nodes;
+	MFNode removedNodes;
 
 };
 

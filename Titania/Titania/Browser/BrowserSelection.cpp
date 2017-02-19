@@ -52,16 +52,19 @@
 
 #include "X3DBrowserWindow.h"
 
+#include <Titania/X3D/Browser/Selection.h>
 #include <Titania/X3D/Components/Core/MetadataSet.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 
 namespace titania {
 namespace puck {
 
+// nodes triggers two event when setNodes or ... is called because removeTool is called in X3DBrowser::getSelection.
+
 BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	         enabled (getCurrentBrowser () -> getSelection () -> isEnabled ()),  
-	            mode (getCurrentBrowser () -> getSelection () -> getMode ()),
+	  selectMultiple (getCurrentBrowser () -> getSelection () -> getSelectMultiple ()),
 	    selectLowest (getCurrentBrowser () -> getSelection () -> getSelectLowest ()),
 	  selectGeometry (getCurrentBrowser () -> getSelection () -> getSelectGeometry ()),
 	            over (),
@@ -73,7 +76,9 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	addChildObjects (over, active, touchTime, nodes, browser);
 
 	getCurrentBrowser () .addInterest (&BrowserSelection::set_browser, this);
-	getNodes ()          .addInterest (&BrowserSelection::set_nodes, this);
+	getCurrentContext () .addInterest (&BrowserSelection::set_execution_context, this);
+
+	nodes .addInterest (&BrowserSelection::set_nodes, this);
 
 	setup ();
 }
@@ -96,7 +101,7 @@ BrowserSelection::set_browser ()
 		const auto & selection = browser -> getSelection ();
 
 		selection -> isEnabled (enabled);
-		selection -> setMode (mode);
+		selection -> setSelectMultiple (selectMultiple);
 		selection -> setSelectLowest (selectLowest);
 		selection -> setSelectGeometry (selectGeometry);
 
@@ -110,6 +115,46 @@ BrowserSelection::set_browser ()
 }
 
 void
+BrowserSelection::set_execution_context ()
+{
+	try
+	{
+		const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
+		const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
+
+__LOG__ << current .size () << std::endl;
+for (const auto & node : current)
+	__LOG__ << node -> getTypeName () << std::endl;
+
+		setNodes (current);
+	}
+	catch (const X3D::X3DError &)
+	{ }
+}
+
+void
+BrowserSelection::set_nodes ()
+{
+	const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
+	const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
+
+	if (nodes == current)
+		return;
+
+	worldInfo -> setMetaData ("/Titania/Selection/previous", current);
+	worldInfo -> setMetaData ("/Titania/Selection/nodes",    nodes);
+
+	// Remove old meta data: remove this call later, inserted at 18th Feb. 2017.
+	worldInfo -> removeMetaData ("/Titania/Selection/children");
+}
+
+X3D::MFNode
+BrowserSelection::getPreviousNodes () const
+{
+	return getBrowserWindow () -> getWorldInfo () -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous");
+}
+
+void
 BrowserSelection::isEnabled (const bool value)
 {
 	enabled = value;
@@ -117,10 +162,10 @@ BrowserSelection::isEnabled (const bool value)
 }
 
 void
-BrowserSelection::setMode (const X3D::Selection::SelectionType value)
+BrowserSelection::setSelectMultiple (const bool value)
 {
-	mode = value;
-	browser -> getSelection () -> setMode (value);
+	selectMultiple = value;
+	browser -> getSelection () -> setSelectMultiple (value);
 }
 
 void
@@ -137,10 +182,16 @@ BrowserSelection::setSelectGeometry (const bool value)
 	browser -> getSelection () -> setSelectGeometry (value);
 }
 
+bool
+BrowserSelection::isSelected (const X3D::SFNode & node) const
+{
+	return browser -> getSelection () -> isSelected (node);
+}
+
 void
 BrowserSelection::addNodes (const X3D::MFNode & value)
 {
-	const auto & selection = getCurrentBrowser () -> getSelection ();
+	const auto & selection = browser -> getSelection ();
 
 	selection -> addNodes (value);
 }
@@ -148,7 +199,7 @@ BrowserSelection::addNodes (const X3D::MFNode & value)
 void
 BrowserSelection::removeNodes (const X3D::MFNode & value)
 {
-	const auto & selection = getCurrentBrowser () -> getSelection ();
+	const auto & selection = browser-> getSelection ();
 
 	selection -> removeNodes (value);
 }
@@ -156,7 +207,7 @@ BrowserSelection::removeNodes (const X3D::MFNode & value)
 void
 BrowserSelection::clearNodes ()
 {
-	const auto & selection = getCurrentBrowser () -> getSelection ();
+	const auto & selection = browser-> getSelection ();
 
 	selection -> clearNodes ();
 }
@@ -164,7 +215,7 @@ BrowserSelection::clearNodes ()
 void
 BrowserSelection::setNodes (const X3D::MFNode & value)
 {
-	const auto & selection = getCurrentBrowser () -> getSelection ();
+	const auto & selection = browser-> getSelection ();
 
 	selection -> setNodes (value);
 }
@@ -172,7 +223,7 @@ BrowserSelection::setNodes (const X3D::MFNode & value)
 void
 BrowserSelection::addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep)
 {
-	const auto & selection = getCurrentBrowser () -> getSelection ();
+	const auto & selection = browser-> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 	undoStep -> addRedoFunction (&X3D::Selection::addNodes, selection, value);
@@ -183,7 +234,7 @@ BrowserSelection::addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 void
 BrowserSelection::removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep)
 {
-	const auto & selection = getCurrentBrowser () -> getSelection ();
+	const auto & selection = browser-> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes,    selection, selection -> getNodes ());
 	undoStep -> addRedoFunction (&X3D::Selection::removeNodes, selection, value);
@@ -194,7 +245,7 @@ BrowserSelection::removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr
 void
 BrowserSelection::clearNodes (const X3D::UndoStepPtr & undoStep)
 {
-	const auto & selection = getCurrentBrowser () -> getSelection ();
+	const auto & selection = browser-> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 	undoStep -> addRedoFunction (&X3D::Selection::clearNodes, selection);
@@ -205,7 +256,7 @@ BrowserSelection::clearNodes (const X3D::UndoStepPtr & undoStep)
 void
 BrowserSelection::setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep)
 {
-	const auto & selection = getCurrentBrowser () -> getSelection ();
+	const auto & selection = browser-> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 	undoStep -> addRedoFunction (&X3D::Selection::setNodes, selection, value);
@@ -217,41 +268,16 @@ void
 BrowserSelection::undoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 {
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes,
-	                             getCurrentBrowser () -> getSelection (),
-	                             getCurrentBrowser () -> getSelection () -> getNodes ());
+	                             browser-> getSelection (),
+	                             browser-> getSelection () -> getNodes ());
 }
 
 void
 BrowserSelection::redoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 {
 	undoStep -> addRedoFunction (&X3D::Selection::setNodes,
-	                             getCurrentBrowser () -> getSelection (),
-	                             getCurrentBrowser () -> getSelection () -> getNodes ());
-}
-
-X3D::MFNode
-BrowserSelection::getPreviousNodes () const
-{
-	return getBrowserWindow () -> getWorldInfo () -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous");
-}
-
-void
-BrowserSelection::set_nodes ()
-{
-	if (getNodes () .empty ())
-		return;
-
-	const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
-	const auto nodes     = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
-
-	if (nodes == getNodes ())
-		return;
-
-	worldInfo -> setMetaData ("/Titania/Selection/previous", nodes);
-	worldInfo -> setMetaData ("/Titania/Selection/nodes",    getNodes ());
-
-	// Remove old meta data: remove this call later, inserted at 18th Feb. 2017.
-	worldInfo -> removeMetaData ("/Titania/Selection/children");
+	                             browser-> getSelection (),
+	                             browser-> getSelection () -> getNodes ());
 }
 
 BrowserSelection::~BrowserSelection ()

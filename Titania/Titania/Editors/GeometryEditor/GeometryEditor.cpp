@@ -192,22 +192,36 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DGeometryEditorInterface::set_selection (selection);
 
-	if (selection == geometryNodes and not selection .empty  ())
+	if (selection .empty  ())
 	{
+		changing = true;
+
+		geometryNodes .clear ();
+
+		getHammerButton ()     .set_sensitive (false);
+		getEditToggleButton () .set_active (false);
+
+		changing = false;
+	}
+	else if (selection == geometryNodes)
+	{
+		changing = true;
+
 		getEditToggleButton () .set_active (true);
+
+		changing = false;
 	}
 	else
 	{
-		const bool inScene       = not inPrototypeInstance ();
-		const bool haveSelection = inScene and selection .size ();
+		changing = true;
+
+		const bool inScene = not inPrototypeInstance ();
 
 		geometryNodes = getGeometries (selection);
 
-		changing = true;
-
-		getHammerButton ()     .set_sensitive (haveSelection);
+		getHammerButton ()     .set_sensitive (inScene);
 		getEditToggleButton () .set_sensitive (not geometryNodes .empty ());
-		getEditToggleButton () .set_active (selection == geometryNodes and not selection .empty  ());
+		getEditToggleButton () .set_active (selection == geometryNodes);
 
 		changing = false;
 	}
@@ -873,7 +887,7 @@ GeometryEditor::on_edit_toggled ()
 	{
 		// Restore selection.
 
-		const auto previousSelection = getGeometries (getBrowserWindow () -> getSelection () -> getPreviousNodes ());
+		const auto previousSelection = getBrowserWindow () -> getSelection () -> getPreviousNodes ();
 
 		if (previousSelection == geometryNodes)
 			getBrowserWindow () -> getSelection () -> setNodes ({ });

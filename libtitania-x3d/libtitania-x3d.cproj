@@ -933,6 +933,7 @@
     <None Include="Titania\X3D\Tools\NURBS\NurbsCurveTool.h" />
     <None Include="Titania\X3D\Tools\NURBS\NurbsSweptSurfaceTool.h" />
     <None Include="Titania\X3D\Tools\NURBS\NurbsSwungSurfaceTool.h" />
+    <None Include="Titania\X3D\Browser\Tools\ToolType.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

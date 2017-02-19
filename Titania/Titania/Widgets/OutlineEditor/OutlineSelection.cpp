@@ -54,6 +54,8 @@
 #include "OutlineTreeModel.h"
 #include "X3DOutlineTreeView.h"
 
+#include <Titania/X3D/Browser/Selection.h>
+
 namespace titania {
 namespace puck {
 

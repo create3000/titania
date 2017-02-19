@@ -150,9 +150,9 @@ public:
 	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::getTransformationMatrix"); }
 
 	virtual
-	Selection::ToolType
+	ToolType
 	getActiveTool () const
-	{ return Selection::ToolType::NO_TOOL; }
+	{ return ToolType::NO_TOOL; }
 
 
 protected:

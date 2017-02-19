@@ -71,24 +71,26 @@ const std::string   Selection::containerField = "selection";
 Selection::Selection (X3DExecutionContext* const executionContext) :
 	  X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	       enabled (false),
-	          mode (SINGLE),
+	selectMultiple (false),
 	  selectLowest (false),
 	selectGeometry (false),
 	          over (),
 	        active (),
 	     touchTime (),
-	         nodes ()
+	         nodes (),
+	  removedNodes ()
 {
 	addType (X3DConstants::Selection);
 
 	addChildObjects (enabled,
-	                 mode,
+	                 selectMultiple,
 	                 selectLowest,
 	                 selectGeometry,
 	                 over,
 	                 active,
 	                 touchTime,
-	                 nodes);
+	                 nodes,
+	                 removedNodes);
 }
 
 X3DBaseNode*
@@ -103,6 +105,8 @@ Selection::initialize ()
 	X3DBaseNode::initialize ();
 
 	getBrowser () -> initialized () .addInterest (&Selection::clearNodes, this);
+
+	nodes .addInterest (&Selection::set_nodes, this);
 }
 
 bool
@@ -140,25 +144,18 @@ Selection::addNodes (const MFNode & value)
 void
 Selection::removeNodes (const MFNode & value)
 {
-	try
+	for (const auto & node : value)
 	{
-		ContextLock lock (getBrowser ());
-
-		for (const auto & node : value)
+		if (node)
 		{
-			if (node)
-			{
-				nodes .erase (std::remove (nodes .begin (),
-				                           nodes .end (),
-				                           node),
-				              nodes .end ());
+			nodes .erase (std::remove (nodes .begin (),
+			                           nodes .end (),
+			                           node),
+			              nodes .end ());
 
-				node -> removeTool ();
-			}
+			removedNodes .emplace_back (node);
 		}
 	}
-	catch (const Error <INVALID_OPERATION_TIMING> &)
-	{ }
 }
 
 void
@@ -200,6 +197,22 @@ Selection::setNodes (const MFNode & value)
 	                     std::back_inserter (difference));
 
 	addNodes (difference);
+}
+
+void
+Selection::set_nodes ()
+{
+	try
+	{
+		ContextLock lock (getBrowser ());
+
+		for (const auto & node : MFNode (std::move (removedNodes)))
+			node -> removeTool ();
+	}
+	catch (const Error <INVALID_OPERATION_TIMING> & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 bool
@@ -315,14 +328,14 @@ Selection::select ()
 		   if (selectGeometry)
 		      return false;
 
-			if (getMode () == Selection::MULTIPLE)
+			if (selectMultiple)
 				removeNodes ({ node });
 	
 			return false;
 		}
 		else
 		{
-			if (getMode () == Selection::MULTIPLE)
+			if (selectMultiple)
 				addNodes ({ node });
 			else
 				setNodes ({ node });

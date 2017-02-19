@@ -194,9 +194,9 @@ public:
 	{ return transformationMatrix; }
 
 	virtual
-	Selection::ToolType
+	ToolType
 	getActiveTool () const final override
-	{ return Selection::ToolType (getToolNode () -> template getField <SFInt32> ("activeTool_changed") .getValue ()); }
+	{ return ToolType (getToolNode () -> template getField <SFInt32> ("activeTool_changed") .getValue ()); }
 
 	///  @name Operatations
 

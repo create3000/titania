@@ -84,6 +84,8 @@ MetadataSet::MetadataSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "name",      name ());
 	addField (inputOutput, "reference", reference ());
 	addField (inputOutput, "value",     value ());
+
+	isPrivate (true);
 }
 
 X3DBaseNode*

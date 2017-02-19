@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,142 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_BROWSER_BROWSER_SELECTION_H__
-#define __TITANIA_BROWSER_BROWSER_SELECTION_H__
-
-#include "../Base/X3DBaseInterface.h"
+#ifndef __TITANIA_X3D_BROWSER_TOOLS_TOOL_TYPE_H__
+#define __TITANIA_X3D_BROWSER_TOOLS_TOOL_TYPE_H__
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-class BrowserSelection :
-	public X3DBaseInterface
+enum class ToolType
 {
-public:
-
-	///  @name Construction
-
-	BrowserSelection (X3DBrowserWindow* const browserWindow);
-
-	///  @name Member access
-
-	void
-	isEnabled (const bool value);
-
-	bool
-	isEnabled () const
-	{ return enabled; }
-
-	void
-	setSelectMultiple (const bool value);
-
-	bool
-	getSelectMultiple () const
-	{ return selectMultiple; }
-
-	void
-	setSelectLowest (const bool value);
-
-	bool
-	getSelectLowest () const
-	{ return selectLowest; }
-
-	void
-	setSelectGeometry (const bool value);
-
-	bool
-	getSelectGeometry () const
-	{ return selectGeometry; }
-
-	const X3D::SFBool &
-	isOver () const
-	{ return over; }
-
-	const X3D::SFBool &
-	isActive () const
-	{ return active; }
-
-	const X3D::SFBool &
-	getPickedTime () const
-	{ return touchTime; }
-
-	bool
-	isSelected (const X3D::SFNode & node) const;
-
-	void
-	addNodes (const X3D::MFNode & value);
-
-	void
-	removeNodes (const X3D::MFNode & value);
-
-	void
-	clearNodes ();
-
-	void
-	setNodes (const X3D::MFNode & value);
-
-	const X3D::MFNode &
-	getNodes () const
-	{ return nodes; }
-
-	///  @name Operations
-
-	void
-	addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep);
-
-	void
-	removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep);
-
-	void
-	clearNodes (const X3D::UndoStepPtr & undoStep);
-
-	void
-	setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep);
-
-	void
-	undoRestoreNodes (const X3D::UndoStepPtr & undoStep);
-
-	void
-	redoRestoreNodes (const X3D::UndoStepPtr & undoStep);
-
-	X3D::MFNode
-	getPreviousNodes () const;
-
-	///  @name Destruction
-
-	virtual
-	~BrowserSelection () final override;
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	set_browser ();
-
-	void
-	set_execution_context ();
-
-	void
-	set_nodes ();
-
-	///  @name Members
-
-	bool enabled;
-	bool selectMultiple;
-	bool selectLowest;
-	bool selectGeometry;
-
-	X3D::SFBool     over;
-	X3D::SFBool     active;
-	X3D::SFBool     touchTime;
-	X3D::MFNode     nodes;
-	X3D::BrowserPtr browser;
+	NO_TOOL,
+	MOVE_TOOL,
+	ROTATE_TOOL,
+	SCALE_TOOL
 
 };
 
-} // puck
+} // X3D
 } // titania
 
 #endif

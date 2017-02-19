@@ -523,7 +523,7 @@ NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewCol
 			const X3D::MFNode selection = { node };
 
 			if (select)
-				node -> getBrowser () -> getSelection () -> setNodes (selection);
+				getBrowserWindow () -> getSelection () -> setNodes (selection);
 
 			getBrowserWindow () -> expandNodes (selection);
 			break;

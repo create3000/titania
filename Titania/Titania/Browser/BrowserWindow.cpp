@@ -562,7 +562,7 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 	if (not hasAccelerators ())
 		return false;
 
-	getSelection () -> setMode (getKeys () .shift () and not getKeys () .control () ? X3D::Selection::MULTIPLE : X3D::Selection::SINGLE);
+	getSelection () -> setSelectMultiple (getKeys () .shift () and not getKeys () .control ());
 
 	// Nudge selection.
 
@@ -650,9 +650,7 @@ BrowserWindow::on_key_release_event (GdkEventKey* event)
 {
 	getKeys () .release (event);
 
-	getSelection () -> setMode (getKeys () .shift () and not getKeys () .control ()
-	                            ? X3D::Selection::MULTIPLE
-	                            : X3D::Selection::SINGLE);
+	getSelection () -> setSelectMultiple (getKeys () .shift () and not getKeys () .control ());
 
 	if (getCurrentBrowser () -> on_external_key_release_event (event))
 		return false;

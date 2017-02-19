@@ -246,7 +246,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 		if (getBrowser () -> getControlKey () or getBrowser () -> getShiftKey ())
 			return;
 
-		if (master -> getActiveTool () not_eq Selection::MOVE_TOOL)
+		if (master -> getActiveTool () not_eq ToolType::MOVE_TOOL)
 			return;
 	
 		// The position is transformed to an absolute position and then transformed into the coordinate systwm of the grid
@@ -332,7 +332,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 		if (getBrowser () -> getControlKey () or getBrowser () -> getShiftKey ())
 			return;
 
-		if (master -> getActiveTool () not_eq Selection::ROTATE_TOOL)
+		if (master -> getActiveTool () not_eq ToolType::ROTATE_TOOL)
 			return;
 
 //__LOG__ << std::endl;
@@ -456,15 +456,15 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 	
-		const int32_t tool = master -> getActiveTool () - Selection::SCALE_TOOL;
-	
+		const auto tool = int32_t (master -> getActiveTool ()) - int32_t (ToolType::SCALE_TOOL);
+
 		if (tool < 0)
 			return;
 
 		// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 	
-		const Matrix4d currentMatrix = tool < 6 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 6);
-		const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
+		const auto currentMatrix = tool < 6 ? getScaleMatrix (master, tool) : getUniformScaleMatrix (master, tool - 6);
+		const auto matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
 	
 		if (master -> getKeepCenter ())
 			master -> setMatrixKeepCenter (currentMatrix);
