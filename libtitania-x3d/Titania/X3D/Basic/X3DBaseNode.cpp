@@ -1681,7 +1681,7 @@ X3DBaseNode::toXMLStream (std::ostream & ostream) const
 			{
 				ostream
 					<< "<![CDATA["
-					<< escape_cdata (value)
+					<< EscapeSourceText (value)
 					<< "]]>"
 					<< Generator::TidyBreak;
 			}

@@ -103,7 +103,7 @@ Parser::parseIntoScene ()
 
 	groupNode = scene -> createNode <X3D::Transform> ();
 
-	scene -> updateNamedNode (get_name_from_uri (uri), X3D::SFNode (groupNode));
+	scene -> updateNamedNode (GetNameFromURI (uri), X3D::SFNode (groupNode));
 	scene -> getRootNodes () .emplace_back (groupNode);
 
 	statements (save (istream, ".3ds"));
@@ -159,7 +159,7 @@ Parser::material (Lib3dsMaterial* const material)
 
 	// Set material name
 
-	scene -> updateNamedNode (get_name_from_string (material -> name) + "Material", X3D::SFNode (materialNode));
+	scene -> updateNamedNode (GetNameFromString (material -> name) + "Material", X3D::SFNode (materialNode));
 
 	// Create material
 
@@ -285,7 +285,7 @@ Parser::mesh (Lib3dsMesh* const mesh)
 
 	// Set name
 
-	scene -> updateNamedNode (get_name_from_string (mesh -> name), X3D::SFNode (transformNode));
+	scene -> updateNamedNode (GetNameFromString (mesh -> name), X3D::SFNode (transformNode));
 
 	// Set transformation matrix
 

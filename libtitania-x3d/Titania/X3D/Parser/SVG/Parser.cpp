@@ -286,7 +286,7 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 
 	try
 	{
-		scene -> updateNamedNode (get_name_from_uri (uri), X3D::SFNode (rootTransform));
+		scene -> updateNamedNode (GetNameFromURI (uri), X3D::SFNode (rootTransform));
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -389,7 +389,7 @@ Parser::useElement (xmlpp::Element* const xmlElement)
 	{
 		// Get named node.
 	
-		const auto node = scene -> getNamedNode (get_name_from_string (href .fragment ()));
+		const auto node = scene -> getNamedNode (GetNameFromString (href .fragment ()));
 
 		transformNode -> children () .emplace_back (node);
 	}
@@ -421,7 +421,7 @@ Parser::isUsed (xmlpp::Element* const xmlElement)
 
 		// Get named node.
 	
-		const auto node = scene -> getNamedNode (get_name_from_string (id));
+		const auto node = scene -> getNamedNode (GetNameFromString (id));
 
 		groupNodes .back () -> children () .emplace_back (node);
 
@@ -1456,7 +1456,7 @@ Parser::idAttribute (xmlpp::Attribute* const attribute, const X3D::SFNode & node
 		if (not attribute)
 			return;
 
-		scene -> updateNamedNode (get_name_from_string (attribute -> get_value ()), node);
+		scene -> updateNamedNode (GetNameFromString (attribute -> get_value ()), node);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -2823,7 +2823,7 @@ Parser::getFillAppearance (const Style & style, X3D::Box2d bbox)
 
 			try
 			{
-				scene -> updateNamedNode (get_name_from_string (style .fillURL), X3D::SFNode (textureNode));
+				scene -> updateNamedNode (GetNameFromString (style .fillURL), X3D::SFNode (textureNode));
 			}
 			catch (const X3D::X3DError &)
 			{ }

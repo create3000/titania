@@ -59,13 +59,6 @@
 namespace titania {
 namespace X3D {
 
-class MetadataBoolean;
-class MetadataDouble;
-class MetadataFloat;
-class MetadataInteger;
-class MetadataString;
-class MetadataSet;
-
 class X3DNode :
 	virtual public X3DBaseNode
 {
@@ -266,7 +259,7 @@ private:
 
 	///  @name Metadata handling
 
-	MetadataSet*
+	X3DPtr <MetadataSet>
 	getMetadataSet (const std::vector <std::string> & name, const bool throw_) const
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,

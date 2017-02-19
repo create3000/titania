@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_COMPONENTS_CORE_METADATA_SET_H__
 #define __TITANIA_X3D_COMPONENTS_CORE_METADATA_SET_H__
 
+#include "../../Execution/X3DExecutionContext.h"
 #include "../Core/X3DMetadataObject.h"
 #include "../Core/X3DNode.h"
 
@@ -108,7 +109,7 @@ public:
 	createValue (const std::string & name)
 	throw (Error <INVALID_NAME>,
 	       Error <DISPOSED>)
-	{ return X3DPtr <Type> (getValue <Type> (name, false)); }
+	{ return getValue <Type> (name, false); }
 
 	///  Return the metadata with where name is @a name if it exists otherwise throw an exception.
 	template <class Type>
@@ -117,7 +118,7 @@ public:
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>)
-	{ return X3DPtr <Type> (getValue <Type> (name, true)); }
+	{ return getValue <Type> (name, true); }
 
 	void
 	removeValue (const std::string & name)
@@ -138,7 +139,7 @@ protected:
 
 	///  Return the metadata with where name is @a name.
 	template <class Type>
-	Type*
+	X3DPtr <Type>
 	getValue (const std::string & name, const bool throw_)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_NAME>,
@@ -196,7 +197,7 @@ private:
 
 ///  Return the field with @a name.
 template <class Type>
-Type*
+X3DPtr <Type>
 MetadataSet::getValue (const std::string & name, const bool throw_)
 throw (Error <INVALID_NODE>,
 	    Error <INVALID_NAME>,
@@ -204,7 +205,7 @@ throw (Error <INVALID_NODE>,
 {
 	try
 	{
-	   Type* const metadataObject = dynamic_cast <Type*> (getObject (name));
+	   const X3DPtr <Type> metadataObject (getObject (name));
 
 		if (metadataObject)
 			return metadataObject;
@@ -225,13 +226,11 @@ throw (Error <INVALID_NODE>,
 		throw;
 	}
 
-	const auto metadataObject = new Type (getExecutionContext ());
+	const auto metadataObject = getExecutionContext () -> createNode <Type> ();
 
 	value () .emplace_back (metadataObject);
 
 	setValue (name, metadataObject);
-
-	metadataObject -> setup ();
 
 	return metadataObject;
 }

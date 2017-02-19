@@ -602,7 +602,7 @@ X3DBrowserEditor::importAsInline (const std::vector <basic::uri> & uris, const X
 
 		std::string string;
 
-		string += "DEF " + X3D::get_name_from_uri (worldURL) + " Transform {";
+		string += "DEF " + X3D::GetNameFromURI (worldURL) + " Transform {";
 		string += "  children Inline {";
 		string += "    url [";
 		string += "      \"" + relativePath + "\"";
@@ -876,7 +876,7 @@ X3DBrowserEditor::editCDATA (const X3D::SFNode & node)
 	{
 		ostream
 			<< "<![CDATA["
-			<< X3D::escape_cdata (string)
+			<< X3D::EscapeSourceText (string)
 			<< "]]>" << std::endl
 			<< std::endl
 			<< std::endl;

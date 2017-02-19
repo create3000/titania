@@ -174,7 +174,7 @@ InlineEditor::on_convert_master_selection_clicked ()
 
 	if (fileSaveDialog -> exportNodes (nodes, worldURL, undoStep))
 	{
-		const auto name       = X3D::get_name_from_uri (worldURL);
+		const auto name       = X3D::GetNameFromURI (worldURL);
 		const auto inlineNode = getCurrentContext () -> createNode <X3D::Inline> ();
 		const auto url        = X3D::MFString ({ getCurrentContext () -> getWorldURL () .relative_path (worldURL) .str (), worldURL .str () });
 
@@ -202,7 +202,7 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 	const auto undoStep       = std::make_shared <X3D::UndoStep> (_ ("Fold Inline Back Into Scene"));
 	const auto scene          = inlineNode -> getInternalScene ();
 	const auto group          = X3D::SFNode (new X3D::Group (getCurrentContext ()));
-	const auto name           = X3D::get_name_from_uri (scene -> getWorldURL ());
+	const auto name           = X3D::GetNameFromURI (scene -> getWorldURL ());
 	const auto importedRoutes = getBrowserWindow () -> getImportedRoutes (getCurrentContext (), scene);
 
 	const X3D::X3DPtr <X3D::Group> groupNode (group);

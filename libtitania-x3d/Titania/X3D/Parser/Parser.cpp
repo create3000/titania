@@ -124,8 +124,8 @@ Parser::getMessageFromError (const X3DError & error)
 
 	std::string string = error .what ();
 
-	filter_control_characters (string);
-	filter_bad_utf8_characters (string);
+	FilterControlCharacters (string);
+	FilterBadUTF8Characters (string);
 
 	std::ostringstream stringstream;
 
@@ -138,11 +138,11 @@ Parser::getMessageFromError (const X3DError & error)
 		std::string preLine = rgetline ();
 		size_t      linePos = line .size () - rest .size ();
 
-		filter_control_characters (line);
-		filter_control_characters (preLine);
+		FilterControlCharacters (line);
+		FilterControlCharacters (preLine);
 
-		filter_bad_utf8_characters (line);
-		filter_bad_utf8_characters (preLine);
+		FilterBadUTF8Characters (line);
+		FilterBadUTF8Characters (preLine);
 
 		if (line .size () > 80)
 		{
@@ -317,8 +317,8 @@ Parser::comment ()
 
 	if (Grammar::Comment (istream, commentCharacters))
 	{
-		filter_control_characters (commentCharacters);
-		filter_bad_utf8_characters (commentCharacters);
+		FilterControlCharacters (commentCharacters);
+		FilterBadUTF8Characters (commentCharacters);
 		currentComments .emplace_back (std::move (commentCharacters));
 		return true;
 	}
@@ -697,7 +697,7 @@ Parser::nodeStatement (SFNode & _node)
 
 		if (nodeNameId (_nodeNameId))
 		{
-			filter_bad_utf8_characters (_nodeNameId);
+			FilterBadUTF8Characters (_nodeNameId);
 
 			if (node (_node, _nodeNameId))
 				return true;
@@ -714,7 +714,7 @@ Parser::nodeStatement (SFNode & _node)
 
 		if (nodeNameId (_nodeNameId))
 		{
-			filter_bad_utf8_characters (_nodeNameId);
+			FilterBadUTF8Characters (_nodeNameId);
 
 			_node = getExecutionContext () -> getNamedNode (_nodeNameId);
 
@@ -801,7 +801,7 @@ Parser::proto ()
 
 		if (nodeTypeId (_nodeTypeId))
 		{
-			filter_bad_utf8_characters (_nodeTypeId);
+			FilterBadUTF8Characters (_nodeTypeId);
 
 			comments ();
 
@@ -911,7 +911,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (inputOnlyId (_fieldId))
 			{
-				filter_bad_utf8_characters (_fieldId);
+				FilterBadUTF8Characters (_fieldId);
 
 				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (inputOnly);
@@ -936,7 +936,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 			if (outputOnlyId (_fieldId))
 			{
-				filter_bad_utf8_characters (_fieldId);
+				FilterBadUTF8Characters (_fieldId);
 
 				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (outputOnly);
@@ -965,7 +965,7 @@ Parser::restrictedInterfaceDeclaration ()
 
 				if (fieldValue (_field))
 				{
-					filter_bad_utf8_characters (_fieldId);
+					FilterBadUTF8Characters (_fieldId);
 
 					_field -> setAccessType (initializeOnly);
 					_field -> setName (_fieldId);
@@ -1013,7 +1013,7 @@ Parser::interfaceDeclaration ()
 
 				if (fieldValue (_field))
 				{
-					filter_bad_utf8_characters (_fieldId);
+					FilterBadUTF8Characters (_fieldId);
 
 					_field -> setAccessType (inputOutput);
 					_field -> setName (_fieldId);
@@ -1048,7 +1048,7 @@ Parser::externproto ()
 
 		if (nodeTypeId (_nodeTypeId))
 		{
-			filter_bad_utf8_characters (_nodeTypeId);
+			FilterBadUTF8Characters (_nodeTypeId);
 
 			comments ();
 
@@ -1128,7 +1128,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (inputOnlyId (_fieldId))
 			{
-				filter_bad_utf8_characters (_fieldId);
+				FilterBadUTF8Characters (_fieldId);
 
 				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (inputOnly);
@@ -1153,7 +1153,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (outputOnlyId (_fieldId))
 			{
-				filter_bad_utf8_characters (_fieldId);
+				FilterBadUTF8Characters (_fieldId);
 
 				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (outputOnly);
@@ -1178,7 +1178,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (initializeOnlyId (_fieldId))
 			{
-				filter_bad_utf8_characters (_fieldId);
+				FilterBadUTF8Characters (_fieldId);
 
 				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (initializeOnly);
@@ -1203,7 +1203,7 @@ Parser::externInterfaceDeclaration ()
 
 			if (inputOutputId (_fieldId))
 			{
-				filter_bad_utf8_characters (_fieldId);
+				FilterBadUTF8Characters (_fieldId);
 
 				X3DFieldDefinition* _field = getBrowser () -> getSupportedField (_fieldType) -> create ();
 				_field -> setAccessType (inputOutput);
@@ -1234,7 +1234,7 @@ Parser::routeStatement ()
 
 		if (nodeNameId (_fromNodeId))
 		{
-			filter_bad_utf8_characters (_fromNodeId);
+			FilterBadUTF8Characters (_fromNodeId);
 
 			const SFNode _fromNode = getExecutionContext () -> getLocalNode (_fromNodeId);
 
@@ -1246,7 +1246,7 @@ Parser::routeStatement ()
 
 				if (outputOnlyId (_eventOutId))
 				{
-					filter_bad_utf8_characters (_eventOutId);
+					FilterBadUTF8Characters (_eventOutId);
 
 					try
 					{
@@ -1265,7 +1265,7 @@ Parser::routeStatement ()
 
 						if (nodeNameId (_toNodeId))
 						{
-							filter_bad_utf8_characters (_toNodeId);
+							FilterBadUTF8Characters (_toNodeId);
 
 							const SFNode _toNode = getExecutionContext () -> getLocalNode (_toNodeId);
 
@@ -1277,7 +1277,7 @@ Parser::routeStatement ()
 
 								if (inputOnlyId (_eventInId))
 								{
-									filter_bad_utf8_characters (_eventInId);
+									FilterBadUTF8Characters (_eventInId);
 
 									try
 									{
@@ -2010,7 +2010,7 @@ Parser::String (std::string & _value)
 
 	if (Grammar::String (istream, _value))
 	{
-		filter_bad_utf8_characters (_value);
+		FilterBadUTF8Characters (_value);
 		lines (_value);
 		return true;
 	}

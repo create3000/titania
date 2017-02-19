@@ -975,7 +975,7 @@ throw (Error <DISPOSED>)
  * getMetadataSet
  */
 
-MetadataSet*
+X3DPtr <MetadataSet>
 X3DNode::getMetadataSet (const std::vector <std::string> & names, const bool throw_) const
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
@@ -990,22 +990,21 @@ throw (Error <INVALID_NODE>,
 	if (names [1] .empty ())
 		throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
 
-	auto metadataSet = x3d_cast <MetadataSet*> (metadata ());
+	X3DPtr <MetadataSet> metadataSet (x3d_cast <MetadataSet*> (metadata ()));
 
 	if (not metadataSet or metadataSet -> name () not_eq names [1])
 	{
 		if (throw_)
 			throw Error <INVALID_NAME> ("X3DNode::getMetadataSet: invalid key.");
 
-		metadataSet = new MetadataSet (getExecutionContext ());
+		metadataSet = getExecutionContext () -> createNode <MetadataSet> ();
 
 		const_cast <X3DNode*> (this) -> metadata () = metadataSet;
 
 		metadataSet -> name ()      = names [1];
 		metadataSet -> reference () = getBrowser () -> getProviderUrl ();
-		metadataSet -> setup ();
-	
-		getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (names [1]), const_cast <X3DNode*> (this) -> metadata ());
+
+		getExecutionContext () -> addNamedNode (getExecutionContext () -> getUniqueName (names [1]), metadataSet);
 	}
 
 	for (const auto & name : std::make_pair (names .begin () + 2, names .end () - 1))

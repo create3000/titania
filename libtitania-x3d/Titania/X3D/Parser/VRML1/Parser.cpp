@@ -237,8 +237,8 @@ Parser::comment ()
 
 	if (X3D::Grammar::Comment (istream, commentCharacters))
 	{
-		X3D::filter_control_characters (commentCharacters);
-		X3D::filter_bad_utf8_characters (commentCharacters);
+		X3D::FilterControlCharacters (commentCharacters);
+		X3D::FilterBadUTF8Characters (commentCharacters);
 		currentComments .emplace_back (std::move (commentCharacters));
 		return true;
 	}
@@ -340,7 +340,7 @@ Parser::nodeStatement (X3D::SFNode & _node)
 
 		if (nodeNameId (_nodeNameId))
 		{
-			X3D::filter_bad_utf8_characters (_nodeNameId);
+			X3D::FilterBadUTF8Characters (_nodeNameId);
 
 			if (node (_node, _nodeNameId))
 				return true;
@@ -357,7 +357,7 @@ Parser::nodeStatement (X3D::SFNode & _node)
 
 		if (nodeNameId (_nodeNameId))
 		{
-			X3D::filter_bad_utf8_characters (_nodeNameId);
+			X3D::FilterBadUTF8Characters (_nodeNameId);
 
 			_node = getExecutionContext () -> getNamedNode (_nodeNameId);
 
@@ -822,7 +822,7 @@ Parser::String (std::string & _value)
 
 	if (X3D::Grammar::String (istream, _value))
 	{
-		X3D::filter_bad_utf8_characters (_value);
+		X3D::FilterBadUTF8Characters (_value);
 		lines (_value);
 		return true;
 	}

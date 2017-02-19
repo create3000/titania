@@ -59,10 +59,9 @@
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
+#include <Titania/X3D/Parser/Filter.h>
 #include <Titania/X3D/Prototype/X3DProtoDeclarationNode.h>
 #include <Titania/String.h>
-
-#include <regex>
 
 namespace titania {
 namespace puck {
@@ -444,8 +443,6 @@ OutlineCellRenderer::get_access_type_icon (X3D::AccessType & accessType) const
 std::string
 OutlineCellRenderer::get_node_name (const X3D::SFNode & sfnode, std::string name) const
 {
-	static const std::regex LastNumber_ (R"/(_\d+$)/");
-
 	if (sfnode)
 	{
 		const X3D::X3DBaseNode* node = sfnode .getValue ();
@@ -455,7 +452,7 @@ OutlineCellRenderer::get_node_name (const X3D::SFNode & sfnode, std::string name
 		if (name .empty ())
 			name = node -> getName ();
 
-		name = std::regex_replace (name, LastNumber_, "");
+		name = X3D::RemoveTrailingNumber (name);
 
 		// Add typeName and name.
 

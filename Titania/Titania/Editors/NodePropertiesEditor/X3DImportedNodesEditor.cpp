@@ -168,7 +168,7 @@ X3DImportedNodesEditor::on_imported_name_edited (const Glib::ustring & path, con
 {
 	std::string value = new_text;
 
-	X3D::filter_non_id_characters (value);
+	X3D::FilterNonIdCharacters (value);
 
 	bool        imported = false;
 	std::string exportedName;

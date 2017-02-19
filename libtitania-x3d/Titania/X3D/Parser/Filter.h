@@ -59,26 +59,32 @@
 namespace titania {
 namespace X3D {
 
+///  Return the display name of @@ node.
 std::string
-get_display_name (const SFNode &);
+GetDisplayName (const SFNode & node);
 
+///  Creates a display name from @a uri. Filters all bad characters.
 std::string
-get_name_from_uri (const basic::uri &);
+GetNameFromURI (const basic::uri & uri);
 
+///  Creates a display name from @a string. Filters all bad characters.
 std::string
-get_name_from_string (const std::string &);
+GetNameFromString (const std::string & string);
 
 void
-filter_non_id_characters (std::string &);
+FilterNonIdCharacters (std::string & id);
 
 void
-filter_control_characters (std::string &);
+FilterControlCharacters (std::string & id);
 
 void
-filter_bad_utf8_characters (std::string &);
+FilterBadUTF8Characters (std::string & id);
 
 std::string
-escape_cdata (const std::string &);
+RemoveTrailingNumber (const std::string & id);
+
+std::string
+EscapeSourceText (const std::string & string);
 
 } // X3D
 } // titania

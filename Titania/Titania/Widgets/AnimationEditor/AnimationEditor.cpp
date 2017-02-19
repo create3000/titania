@@ -66,8 +66,6 @@
 #include <Titania/Math/Algorithms/CatmullRomSplineInterpolator.h>
 #include <Titania/Math/Algorithms/SquadInterpolator.h>
 
-#include <regex>
-
 namespace titania {
 namespace puck {
 
@@ -806,9 +804,7 @@ AnimationEditor::addFields (const X3D::SFNode & node, Gtk::TreeIter & parent)
 std::string
 AnimationEditor::getNodeName (const X3D::SFNode & node) const
 {
-	static const std::regex LastNumber_ (R"/(_\d+$)/");
-
-	const auto name = std::regex_replace (node -> getName (), LastNumber_, "");
+	const auto name = X3D::RemoveTrailingNumber (node -> getName ());
 
 	return "<b>" + Glib::Markup::escape_text (node -> getTypeName ()) + "</b> " + Glib::Markup::escape_text (name);
 }
@@ -2320,7 +2316,7 @@ AnimationEditor::getInterpolatorName (const X3D::SFNode & node, const X3D::X3DFi
 	Glib::ustring name = field -> getName ();
 	name .replace (0, 1, Glib::ustring (1, name [0]) .uppercase ());
 
-	return X3D::get_display_name (node) + name + "Interpolator";
+	return X3D::GetDisplayName (node) + name + "Interpolator";
 }
 
 bool

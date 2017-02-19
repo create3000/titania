@@ -108,8 +108,8 @@ Parser::setError (pbError & error)
 	std::string line   = rgetline ();
 	size_t      column = line .size () - rest .size ();
 
-	//filter_control_characters (line);
-	//filter_bad_utf8_characters (line);
+	//FilterControlCharacters (line);
+	//FilterBadUTF8Characters (line);
 
 	//	if (line .size () > 80)
 	//	{

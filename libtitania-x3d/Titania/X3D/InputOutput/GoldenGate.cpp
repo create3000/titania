@@ -155,7 +155,7 @@ golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/image.x3dv"));
 
-	file = std::regex_replace (file, Name,   get_name_from_uri (uri));
+	file = std::regex_replace (file, Name,   GetNameFromURI (uri));
 	file = std::regex_replace (file, Width,  basic::to_string (width,  std::locale::classic ()));
 	file = std::regex_replace (file, Height, basic::to_string (height, std::locale::classic ()));
 	file = std::regex_replace (file, URL,    "[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]");
@@ -173,7 +173,7 @@ golden_audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 {
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/audio.x3dv"));
 
-	file = std::regex_replace (file, Name,        get_name_from_uri (uri));
+	file = std::regex_replace (file, Name,        GetNameFromURI (uri));
 	file = std::regex_replace (file, Description, SFString (uri .basename (false)) .toString ());
 	file = std::regex_replace (file, URL,         "[ " + SFString (uri .basename ()) .toString () + ", " + SFString (uri .str ()) .toString () + " ]");
 
@@ -199,7 +199,7 @@ golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 	const auto width  = mediaStream .getWidth  () ? mediaStream .getWidth  () / 72.0 * inch <double> : 1.0;
 	const auto height = mediaStream .getHeight () ? mediaStream .getHeight () / 72.0 * inch <double> : 1.0;
 
-	file = std::regex_replace (file, Name,        get_name_from_uri (uri));
+	file = std::regex_replace (file, Name,        GetNameFromURI (uri));
 	file = std::regex_replace (file, Description, SFString (uri .basename (false)) .toString ());
 	file = std::regex_replace (file, Width,       basic::to_string (width,  std::locale::classic ()));
 	file = std::regex_replace (file, Height,      basic::to_string (height, std::locale::classic ()));

@@ -717,8 +717,8 @@ Parser::comment ()
 
 	if (Grammar::Comment (istream, commentCharacters))
 	{
-		filter_control_characters (commentCharacters);
-		filter_bad_utf8_characters (commentCharacters);
+		FilterControlCharacters (commentCharacters);
+		FilterBadUTF8Characters (commentCharacters);
 		currentComments .emplace_back (std::move (commentCharacters));
 		return true;
 	}
@@ -899,7 +899,7 @@ Parser::Parser::o ()
 		if (Grammar::string (istream, name))
 		{
 			if (not name .empty ())
-				name = get_name_from_string (name);
+				name = GetNameFromString (name);
 
 			if (not group -> children () .empty ())
 			{
@@ -936,7 +936,7 @@ Parser::g ()
 		if (Grammar::string (istream, name))
 		{
 			if (not name .empty ())
-				name = get_name_from_string (name);
+				name = GetNameFromString (name);
 
 			try
 			{

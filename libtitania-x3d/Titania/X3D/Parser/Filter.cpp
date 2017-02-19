@@ -56,66 +56,56 @@ namespace titania {
 namespace X3D {
 
 std::string
-get_display_name (const SFNode & node)
+GetDisplayName (const SFNode & node)
 {
-	static const std::regex _TrailingNumbers (R"/(_\d+$)/");
-
 	if (not node)
 		return "NULL";
 
-	return std::regex_replace (node -> getName (), _TrailingNumbers, "");
+	return RemoveTrailingNumber (node -> getName ());
 }
 
 std::string
-get_name_from_uri (const basic::uri & uri)
+GetNameFromURI (const basic::uri & uri)
 {
-	return get_name_from_string (uri .basename (false));
+	return GetNameFromString (uri .basename (false));
 }
 
 std::string
-get_name_from_string (const std::string & name_)
+GetNameFromString (const std::string & name_)
 {
 	static const std::regex Spaces (R"/(\s+)/");
 
 	auto name = std::regex_replace (name_, Spaces, "_");
 
-	filter_non_id_characters (name);
+	FilterNonIdCharacters (name);
 
-	if (not name .empty ())
-		return name;
+	if (name .empty ())
+		return "Unnamed";
 
-	return "Unnamed";
+	return name;
 }
 
 void
-filter_non_id_characters (std::string & string)
+FilterNonIdCharacters (std::string & id)
 {
 	static const std::regex NonIdFirstChar (R"/(^[\x30-\x39\x00-\x20\x22\x23\x27\x2b\x2c\x2d\x2e\x5b\x5c\x5d\x7b\x7d\x7f]*)/");
 	static const std::regex NonIdChars (R"/([\x00-\x20\x22\x23\x27\x2c\x2e\x5b\x5c\x5d\x7b\x7d\x7f])/");
 	
-	string = std::regex_replace (string, NonIdFirstChar, "");
-	string = std::regex_replace (string, NonIdChars,     "");
+	id = std::regex_replace (id, NonIdFirstChar, "");
+	id = std::regex_replace (id, NonIdChars,     "");
 }
 
 void
-filter_control_characters (std::string & string)
+FilterControlCharacters (std::string & id)
 {
 	static const std::regex ControlCharacters (R"/([\x00-\x08\x0b\x0c\x0e-\x1f])/");
 
-	string = std::regex_replace (string, ControlCharacters, "");
+	id = std::regex_replace (id, ControlCharacters, "");
 }
 
 void
-filter_bad_utf8_characters (std::string & string)
+FilterBadUTF8Characters (std::string & id)
 {
-//	static const std::regex UTF8Characters (R"/(([\000-\177])/"
-//	                                        R"/(|[\300-\337][\200-\277])/"
-//	                                        R"/(|[\340-\357][\200-\277]{2})/"
-//	                                        R"/(|[\360-\367][\200-\277]{3})/"
-//	                                        R"/(|[\370-\373][\200-\277]{4})/"
-//	                                        R"/(|[\374-\375][\200-\277]{5})/"
-//	                                        R"/()|.)/");
-
 	static const std::regex UTF8Characters (R"/(([\x00-\x7f])/"
 	                                        R"/(|[\xc0-\xdf][\x80-\xbf])/"
 	                                        R"/(|[\xe0-\xef][\x80-\xbf]{2})/"
@@ -124,11 +114,19 @@ filter_bad_utf8_characters (std::string & string)
 	                                        R"/(|[\xfc-\xfd][\x80-\xbf]{5})/"
 	                                        R"/()|.)/");
 
-	string = std::regex_replace (string, UTF8Characters, "$1");
+	id = std::regex_replace (id, UTF8Characters, "$1");
 }
 
 std::string
-escape_cdata (const std::string & string)
+RemoveTrailingNumber (const std::string & id)
+{
+	static const std::regex _TrailingNumbers (R"/(_\d+$)/");
+
+	return std::regex_replace (id, _TrailingNumbers, "");
+}
+
+std::string
+EscapeSourceText (const std::string & string)
 {
 	static const std::regex  cdata_end_pattern (R"/((\]\]\>))/");
 	static const std::string cdata_end_subs (R"/(\\]\\]\\>)/");

@@ -1000,7 +1000,7 @@ XMLParser::useAttribute (xmlpp::Element* const xmlElement)
 	
 		if (stringAttribute (xmlElement -> get_attribute ("USE"), nodeNameCharacters))
 		{
-			filter_bad_utf8_characters (nodeNameCharacters);
+			FilterBadUTF8Characters (nodeNameCharacters);
 
 			addNode (xmlElement, getExecutionContext () -> getNamedNode (nodeNameCharacters));
 			return true;
@@ -1025,7 +1025,7 @@ XMLParser::defAttribute (xmlpp::Element* const xmlElement, X3DBaseNode* const ba
 		{
 			try
 			{
-				filter_bad_utf8_characters (nodeNameCharacters);
+				FilterBadUTF8Characters (nodeNameCharacters);
 
 				const auto namedNode = getExecutionContext () -> getNamedNode (nodeNameCharacters);
 

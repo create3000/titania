@@ -617,7 +617,7 @@ JSONParser::nodeObject (json_object* const jobj, const std::string & nodeType, S
 	
 		if (nodeNameString (json_object_object_get (jobj, "@USE"), nodeNameCharacters))
 		{
-			filter_bad_utf8_characters (nodeNameCharacters);
+			FilterBadUTF8Characters (nodeNameCharacters);
 	
 			node = getExecutionContext () -> getNamedNode (nodeNameCharacters);
 			return;

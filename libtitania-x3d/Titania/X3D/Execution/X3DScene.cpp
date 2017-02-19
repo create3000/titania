@@ -57,13 +57,13 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/WorldInfo.h"
 #include "../Execution/ExportedNode.h"
+#include "../Parser/Filter.h"
 #include "../Parser/Parser.h"
 
 #include <Titania/OS.h>
 #include <Titania/String/to_string.h>
 
 #include <random>
-#include <regex>
 
 namespace titania {
 namespace X3D {
@@ -347,9 +347,7 @@ throw (Error <INVALID_NAME>,
 std::string
 X3DScene::getUniqueExportedName (const X3DScene* const scene, std::string exportedName) const
 {
- 	static const std::regex _TrailingNumbers (R"/(_\d+$)/");
-
-	exportedName = std::regex_replace (exportedName, _TrailingNumbers, "");
+	exportedName = RemoveTrailingNumber (exportedName);
  	
 	std::string newName = exportedName;
 	size_t      i       = 64;
