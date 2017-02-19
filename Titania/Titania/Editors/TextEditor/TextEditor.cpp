@@ -204,7 +204,6 @@ TextEditor::set_node ()
 
 		measure -> string ()    = text -> string ();
 		measure -> fontStyle () = text -> fontStyle ();
-		getCurrentContext () -> realize ();
 
 		set_length ();
 	}

@@ -181,7 +181,6 @@ throw (X3D::Error <X3D::NOT_SUPPORTED>)
 		worldInfo -> title () = getCurrentScene () -> getWorldURL () .basename (false);
 
 		getCurrentScene () -> getRootNodes () .emplace_front (worldInfo);
-		getCurrentScene () -> realize ();
 	}
 
 	return worldInfo;

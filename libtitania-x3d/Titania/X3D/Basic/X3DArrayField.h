@@ -136,6 +136,12 @@ public:
 	{ }
 
 	///  Construct new X3DArrayField.
+	explicit
+	X3DArrayField (const size_type size) :
+		X3DArrayField <ValueType> ()
+	{ resize (size); }
+
+	///  Construct new X3DArrayField.
 	template <class InputIterator>
 	X3DArrayField (const InputIterator &, const InputIterator &);
 

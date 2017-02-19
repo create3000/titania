@@ -250,7 +250,7 @@ BrowserSelection::set_nodes ()
 	worldInfo -> setMetaData ("/Titania/Selection/previous", nodes);
 	worldInfo -> setMetaData ("/Titania/Selection/nodes",    getNodes ());
 
-	// XXX: remove later, 18th Feb. 2017
+	// Remove old meta data: remove this call later, inserted at 18th Feb. 2017.
 	worldInfo -> removeMetaData ("/Titania/Selection/children");
 }
 

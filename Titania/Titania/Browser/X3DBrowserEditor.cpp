@@ -422,7 +422,7 @@ X3DBrowserEditor::setMetaData ()
 
 	const auto type = types .find (getCurrentBrowser () -> getCurrentViewer ());
 
-	worldInfo -> setMetaData ("/Titania/NavigationInfo/type", X3D::SFString (type not_eq types .end () ? type -> second : "EXAMINE"));
+	worldInfo -> setMetaData ("/Titania/NavigationInfo/type", type not_eq types .end () ? type -> second : "EXAMINE");
 
 	//
 
@@ -470,7 +470,7 @@ X3DBrowserEditor::getMetaData ()
 				std::make_pair ("LOOKAT",              X3D::X3DConstants::LookAtViewer),
 			};
 
-			setViewer (viewerTypes .at (worldInfo -> getMetaData <X3D::String> ("/Titania/NavigationInfo/type")));
+			setViewer (viewerTypes .at (worldInfo -> getMetaData <std::string> ("/Titania/NavigationInfo/type")));
 		}
 		catch (const std::exception & error)
 		{

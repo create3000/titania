@@ -75,18 +75,47 @@ X3DNode::X3DNode () :
 	     fields ()
 {
 	addType (X3DConstants::X3DNode);
-}
 
+}
 /*
  * Meta Data
  */
 
-template <>
-void
-X3DNode::setMetaData <SFBool::internal_type> (const std::string & key, const SFBool::internal_type & value)
+X3DPtr <MetadataSet>
+X3DNode::creatMetadataSet (const std::string & key)
+throw (Error <NOT_SUPPORTED>,
+       Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
+	const auto metadataSet = getMetadataSet (names, false);
+
+	return metadataSet -> createValue <MetadataSet> (names .back ());
+}
+
+X3DPtr <MetadataSet>
+X3DNode::getMetadataSet (const std::string & key) const
 throw (Error <INVALID_NODE>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
+{
+	std::vector <std::string> names;
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
+	const auto metadataSet = getMetadataSet (names, true);
+	const auto value       = metadataSet -> getValue <MetadataSet> (names .back ());
+
+	return value;
+}
+
+template <>
+void
+X3DNode::setMetaData <SFBool::internal_type> (const std::string & key, const SFBool::internal_type & value)
+throw (Error <DISPOSED>)
 {
 	setMetaData(key, MFBool ({ value }));
 }
@@ -94,9 +123,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFColor::internal_type> (const std::string & key, const SFColor::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFFloat ({ value .r (), value .g (), value .b () }));
 }
@@ -104,9 +131,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFColorRGBA::internal_type> (const std::string & key, const SFColorRGBA::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFFloat ({ value .r (), value .g (), value .b (), value .a () }));
 }
@@ -114,9 +139,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFDouble::internal_type> (const std::string & key, const SFDouble::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFDouble ({ value }));
 }
@@ -124,9 +147,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFFloat::internal_type> (const std::string & key, const SFFloat::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFFloat ({ value }));
 }
@@ -134,9 +155,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFInt32::internal_type> (const std::string & key, const SFInt32::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFInt32 ({ value }));
 }
@@ -144,9 +163,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFNode> (const std::string & key, const SFNode & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFNode ({ value }));
 }
@@ -154,9 +171,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFRotation::internal_type> (const std::string & key, const SFRotation::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	Rotation4d::value_type x, y, z, angle;
 	
@@ -168,9 +183,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFString::internal_type> (const std::string & key, const SFString::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFString ({ value }));
 }
@@ -178,9 +191,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFVec2d::internal_type> (const std::string & key, const SFVec2d::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFDouble ({ value .x (), value .y () }));
 }
@@ -188,9 +199,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFVec2f::internal_type> (const std::string & key, const SFVec2f::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFFloat ({ value .x (), value .y () }));
 }
@@ -198,9 +207,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFVec3d::internal_type> (const std::string & key, const SFVec3d::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFDouble ({ value .x (), value .y (), value .z () }));
 }
@@ -208,9 +215,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFVec3f::internal_type> (const std::string & key, const SFVec3f::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFFloat ({ value .x (), value .y (), value .z () }));
 }
@@ -218,9 +223,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFVec4d::internal_type> (const std::string & key, const SFVec4d::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFDouble ({ value .x (), value .y (), value .z (), value .w () }));
 }
@@ -228,9 +231,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <SFVec4f::internal_type> (const std::string & key, const SFVec4f::internal_type & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	setMetaData (key, MFFloat ({ value .x (), value .y (), value .z (), value .w () }));
 }
@@ -238,9 +239,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <MFBool> (const std::string & key, const MFBool & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	auto names = std::vector <std::string> ();
 
@@ -254,9 +253,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <MFDouble> (const std::string & key, const MFDouble & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	auto names = std::vector <std::string> ();
 
@@ -270,9 +267,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <MFFloat> (const std::string & key, const MFFloat & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	auto names = std::vector <std::string> ();
 
@@ -286,9 +281,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <MFInt32> (const std::string & key, const MFInt32 & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	auto names = std::vector <std::string> ();
 
@@ -302,9 +295,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <MFNode> (const std::string & key, const MFNode & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	auto names = std::vector <std::string> ();
 
@@ -318,9 +309,7 @@ throw (Error <INVALID_NODE>,
 template <>
 void
 X3DNode::setMetaData <MFString> (const std::string & key, const MFString & value)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	auto names = std::vector <std::string> ();
 
@@ -332,11 +321,30 @@ throw (Error <INVALID_NODE>,
 }
 
 template <>
+void
+X3DNode::setMetaData <MFVec3f> (const std::string & key, const MFVec3f & value)
+throw (Error <DISPOSED>)
+{
+	auto names = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (names), key, SEPARATOR);
+
+	const auto metadataSet = getMetadataSet (names, false);
+	auto  &    metaValue   = metadataSet -> createValue <MetadataFloat> (names .back ()) -> value ();
+
+	metaValue .resize (value .size () * MFVec3f::value_type::internal_type::size ());
+
+	for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
+	{
+		for (size_t v = 0; v < MFVec3f::value_type::internal_type::size (); ++ v)
+			metaValue [m ++] = value [i] .get1Value (v);
+	}
+}
+
+template <>
 SFBool::internal_type
 X3DNode::getMetaData <SFBool::internal_type> (const std::string & key, const SFBool::internal_type & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -348,6 +356,10 @@ throw (Error <INVALID_NODE>,
 	
 		return metadataSet -> getValue <MetadataBoolean> (names .back ()) -> value () .at (0);
 	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
+	}
 	catch (const std::exception &)
 	{
 		return defaultValue;
@@ -355,26 +367,35 @@ throw (Error <INVALID_NODE>,
 }
 
 template <>
-SFColorRGBA::internal_type
-X3DNode::getMetaData <SFColorRGBA::internal_type> (const std::string & key, const SFColorRGBA::internal_type & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+SFColor::internal_type
+X3DNode::getMetaData <SFColor::internal_type> (const std::string & key, const SFColor::internal_type & defaultValue)
+throw (Error <DISPOSED>)
 {
-	const auto value = getMetaData <MFFloat> (key);
+	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (value .size () < 4)
+	if (metaValue .size () < SFColor::internal_type::size ())
 		return defaultValue;
 
-	return SFColorRGBA::internal_type (value [0], value [1], value [2], value [3]);
+	return SFColor::internal_type (metaValue [0], metaValue [1], metaValue [2]);
+}
+
+template <>
+SFColorRGBA::internal_type
+X3DNode::getMetaData <SFColorRGBA::internal_type> (const std::string & key, const SFColorRGBA::internal_type & defaultValue)
+throw (Error <DISPOSED>)
+{
+	const auto metaValue = getMetaData <MFFloat> (key);
+
+	if (metaValue .size () < SFColorRGBA::internal_type::size ())
+		return defaultValue;
+
+	return SFColorRGBA::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
 }
 
 template <>
 SFDouble::internal_type
 X3DNode::getMetaData <SFDouble::internal_type> (const std::string & key, const SFDouble::internal_type & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -386,6 +407,10 @@ throw (Error <INVALID_NODE>,
 	
 		return metadataSet -> getValue <MetadataDouble> (names .back ()) -> value () .at (0);
 	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
+	}
 	catch (const std::exception &)
 	{
 		return defaultValue;
@@ -395,9 +420,7 @@ throw (Error <INVALID_NODE>,
 template <>
 SFFloat::internal_type
 X3DNode::getMetaData <SFFloat::internal_type> (const std::string & key, const SFFloat::internal_type & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -409,6 +432,10 @@ throw (Error <INVALID_NODE>,
 	
 		return metadataSet -> getValue <MetadataFloat> (names .back ()) -> value () .at (0);
 	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
+	}
 	catch (const std::exception &)
 	{
 		return defaultValue;
@@ -418,9 +445,7 @@ throw (Error <INVALID_NODE>,
 template <>
 SFInt32::internal_type
 X3DNode::getMetaData <SFInt32::internal_type> (const std::string & key, const SFInt32::internal_type & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -432,6 +457,10 @@ throw (Error <INVALID_NODE>,
 	
 		return metadataSet -> getValue <MetadataInteger> (names .back ()) -> value () .at (0);
 	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
+	}
 	catch (const X3DError &)
 	{
 		return defaultValue;
@@ -441,9 +470,7 @@ throw (Error <INVALID_NODE>,
 template <>
 SFNode
 X3DNode::getMetaData <SFNode> (const std::string & key, const SFNode & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -455,6 +482,10 @@ throw (Error <INVALID_NODE>,
 	
 		return metadataSet -> getValue <MetadataSet> (names .back ()) -> value () .at (0);
 	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
+	}
 	catch (const std::exception &)
 	{
 		return defaultValue;
@@ -464,24 +495,20 @@ throw (Error <INVALID_NODE>,
 template <>
 SFRotation::internal_type
 X3DNode::getMetaData <SFRotation::internal_type> (const std::string & key, const SFRotation::internal_type & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
-	const auto value = getMetaData <MFDouble> (key);
+	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (value .size () < 4)
+	if (metaValue .size () < SFRotation::internal_type::size ())
 		return defaultValue;
 
-	return SFRotation::internal_type (value [0], value [1], value [2], value [3]);
+	return SFRotation::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
 }
 
 template <>
 SFString::internal_type
 X3DNode::getMetaData <SFString::internal_type> (const std::string & key, const SFString::internal_type & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -493,6 +520,10 @@ throw (Error <INVALID_NODE>,
 	
 		return metadataSet -> getValue <MetadataString> (names .back ()) -> value () .at (0);
 	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
+	}
 	catch (const std::exception &)
 	{
 		return defaultValue;
@@ -500,41 +531,87 @@ throw (Error <INVALID_NODE>,
 }
 
 template <>
-SFVec3d::internal_type
-X3DNode::getMetaData <SFVec3d::internal_type> (const std::string & key, const SFVec3d::internal_type & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+SFVec2d::internal_type
+X3DNode::getMetaData <SFVec2d::internal_type> (const std::string & key, const SFVec2d::internal_type & defaultValue)
+throw (Error <DISPOSED>)
 {
-	const auto value = getMetaData <MFDouble> (key);
+	const auto metaValue = getMetaData <MFDouble> (key);
 
-	if (value .size () < 3)
+	if (metaValue .size () < SFVec2d::internal_type::size ())
 		return defaultValue;
 
-	return SFVec3d::internal_type (value [0], value [1], value [2]);
+	return SFVec2d::internal_type (metaValue [0], metaValue [1]);
+}
+
+template <>
+SFVec2f::internal_type
+X3DNode::getMetaData <SFVec2f::internal_type> (const std::string & key, const SFVec2f::internal_type & defaultValue)
+throw (Error <DISPOSED>)
+{
+	const auto metaValue = getMetaData <MFFloat> (key);
+
+	if (metaValue .size () < SFVec2f::internal_type::size ())
+		return defaultValue;
+
+	return SFVec2f::internal_type (metaValue [0], metaValue [1]);
+}
+
+template <>
+SFVec3d::internal_type
+X3DNode::getMetaData <SFVec3d::internal_type> (const std::string & key, const SFVec3d::internal_type & defaultValue)
+throw (Error <DISPOSED>)
+{
+	const auto metaValue = getMetaData <MFDouble> (key);
+
+	if (metaValue .size () < SFVec3d::internal_type::size ())
+		return defaultValue;
+
+	return SFVec3d::internal_type (metaValue [0], metaValue [1], metaValue [2]);
 }
 
 template <>
 SFVec3f::internal_type
 X3DNode::getMetaData <SFVec3f::internal_type> (const std::string & key, const SFVec3f::internal_type & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
-	const auto value = getMetaData <MFFloat> (key);
+	const auto metaValue = getMetaData <MFFloat> (key);
 
-	if (value .size () < 3)
+	if (metaValue .size () < SFVec3f::internal_type::size ())
 		return defaultValue;
 
-	return SFVec3f::internal_type (value [0], value [1], value [2]);
+	return SFVec3f::internal_type (metaValue [0], metaValue [1], metaValue [2]);
+}
+
+template <>
+SFVec4d::internal_type
+X3DNode::getMetaData <SFVec4d::internal_type> (const std::string & key, const SFVec4d::internal_type & defaultValue)
+throw (Error <DISPOSED>)
+{
+	const auto metaValue = getMetaData <MFDouble> (key);
+
+	if (metaValue .size () < SFVec4d::internal_type::size ())
+		return defaultValue;
+
+	return SFVec4d::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
+}
+
+template <>
+SFVec4f::internal_type
+X3DNode::getMetaData <SFVec4f::internal_type> (const std::string & key, const SFVec4f::internal_type & defaultValue)
+throw (Error <DISPOSED>)
+{
+	const auto metaValue = getMetaData <MFFloat> (key);
+
+	if (metaValue .size () < SFVec4f::internal_type::size ())
+		return defaultValue;
+
+	return SFVec4f::internal_type (metaValue [0], metaValue [1], metaValue [2], metaValue [3]);
 }
 
 template <>
 MFBool
 X3DNode::getMetaData <MFBool> (const std::string & key, const MFBool & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -543,9 +620,13 @@ throw (Error <INVALID_NODE>,
 		basic::split (std::back_inserter (names), key, SEPARATOR);
 	
 		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & value       = metadataSet -> getValue <MetadataBoolean> (names .back ()) -> value ();
+		const auto & metaValue   = metadataSet -> getValue <MetadataBoolean> (names .back ()) -> value ();
 
-		return value;
+		return metaValue;
+	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
 	}
 	catch (const X3DError &)
 	{
@@ -556,9 +637,7 @@ throw (Error <INVALID_NODE>,
 template <>
 MFDouble
 X3DNode::getMetaData <MFDouble> (const std::string & key, const MFDouble & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -567,9 +646,13 @@ throw (Error <INVALID_NODE>,
 		basic::split (std::back_inserter (names), key, SEPARATOR);
 	
 		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & value       = metadataSet -> getValue <MetadataDouble> (names .back ()) -> value ();
+		const auto & metaValue   = metadataSet -> getValue <MetadataDouble> (names .back ()) -> value ();
 
-		return value;
+		return metaValue;
+	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
 	}
 	catch (const X3DError &)
 	{
@@ -580,9 +663,7 @@ throw (Error <INVALID_NODE>,
 template <>
 MFFloat
 X3DNode::getMetaData <MFFloat> (const std::string & key, const MFFloat & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -591,9 +672,13 @@ throw (Error <INVALID_NODE>,
 		basic::split (std::back_inserter (names), key, SEPARATOR);
 	
 		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & value       = metadataSet -> getValue <MetadataFloat> (names .back ()) -> value ();
+		const auto & metaValue   = metadataSet -> getValue <MetadataFloat> (names .back ()) -> value ();
 
-		return value;
+		return metaValue;
+	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
 	}
 	catch (const X3DError &)
 	{
@@ -604,9 +689,7 @@ throw (Error <INVALID_NODE>,
 template <>
 MFInt32
 X3DNode::getMetaData <MFInt32> (const std::string & key, const MFInt32 & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -615,9 +698,13 @@ throw (Error <INVALID_NODE>,
 		basic::split (std::back_inserter (names), key, SEPARATOR);
 	
 		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & value       = metadataSet -> getValue <MetadataInteger> (names .back ()) -> value ();
+		const auto & metaValue   = metadataSet -> getValue <MetadataInteger> (names .back ()) -> value ();
 
-		return value;
+		return metaValue;
+	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
 	}
 	catch (const X3DError &)
 	{
@@ -628,9 +715,7 @@ throw (Error <INVALID_NODE>,
 template <>
 MFNode
 X3DNode::getMetaData <MFNode> (const std::string & key, const MFNode & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -639,9 +724,13 @@ throw (Error <INVALID_NODE>,
 		basic::split (std::back_inserter (names), key, SEPARATOR);
 	
 		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & value       = metadataSet -> getValue <MetadataSet> (names .back ()) -> value ();
+		const auto & metaValue   = metadataSet -> getValue <MetadataSet> (names .back ()) -> value ();
 
-		return value;
+		return metaValue;
+	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
 	}
 	catch (const X3DError &)
 	{
@@ -652,9 +741,7 @@ throw (Error <INVALID_NODE>,
 template <>
 MFString
 X3DNode::getMetaData <MFString> (const std::string & key, const MFString & defaultValue)
-throw (Error <INVALID_NODE>,
-       Error <INVALID_NAME>,
-       Error <DISPOSED>)
+throw (Error <DISPOSED>)
 {
 	try
 	{
@@ -663,9 +750,47 @@ throw (Error <INVALID_NODE>,
 		basic::split (std::back_inserter (names), key, SEPARATOR);
 	
 		const auto   metadataSet = getMetadataSet (names, true);
-		const auto & value       = metadataSet -> getValue <MetadataString> (names .back ()) -> value ();
+		const auto & metaValue   = metadataSet -> getValue <MetadataString> (names .back ()) -> value ();
+
+		return metaValue;
+	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
+	}
+	catch (const X3DError &)
+	{
+		return defaultValue;
+	}
+}
+
+template <>
+MFVec3f
+X3DNode::getMetaData <MFVec3f> (const std::string & key, const MFVec3f & defaultValue)
+throw (Error <DISPOSED>)
+{
+	try
+	{
+		std::vector <std::string> names;
+	
+		basic::split (std::back_inserter (names), key, SEPARATOR);
+	
+		const auto   metadataSet = getMetadataSet (names, true);
+		const auto & metaValue   = metadataSet -> getValue <MetadataFloat> (names .back ()) -> value ();
+
+		MFVec3f value (metaValue .size () / 3);
+
+		for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
+		{
+			for (size_t v = 0; v < MFVec3f::value_type::internal_type::size (); ++ v)
+				value [i] .set1Value (v, metaValue [m ++]);
+		}
 
 		return value;
+	}
+	catch (const Error <DISPOSED> &)
+	{
+		throw;
 	}
 	catch (const X3DError &)
 	{

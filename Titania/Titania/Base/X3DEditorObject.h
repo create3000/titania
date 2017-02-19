@@ -415,7 +415,6 @@ X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const s
 	}
 
 	addUndoStep (undoStep);
-	nodes [0] -> getExecutionContext () -> realize ();
 
 	undoStep .reset ();
 }
