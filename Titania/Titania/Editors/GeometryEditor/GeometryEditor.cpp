@@ -71,7 +71,6 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	             normalEnabled (this, getNormalEnabledButton (), "load"),
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
-	             geometryNodes (),
 	                   browser (getMasterBrowser ()),
 	             privateViewer (X3D::X3DConstants::X3DBaseNode),
 	                  selector (SelectorType::BRUSH),
@@ -84,7 +83,6 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 {
 	addChildObjects (normalEditor,
 	                 coordEditor,
-	                 geometryNodes,
 	                 browser);
 
 	normalEnabled .setUndo (false);
@@ -123,6 +121,8 @@ GeometryEditor::configure ()
 {
 	X3DGeometryEditorInterface::configure ();
 
+	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
+
 	normalEditor -> setField <X3D::SFBool> ("load", getConfig () -> get <X3D::SFBool> ("normalEnabled"), true);
 
 	if (getConfig () -> hasItem ("normalLength"))
@@ -143,14 +143,13 @@ GeometryEditor::configure ()
 	else
 		getPointsMenuItem () .set_active (true);
 
+	getEditToggleButton ()                  .set_active (getConfig () -> get <bool> ("selectGeometry"));
 	getPaintSelectionButton ()              .set_active (getConfig () -> get <bool> ("paintSelection"));
 	getSelectLineLoopMenuItem ()            .set_active (getConfig () -> get <bool> ("selectLineLoop"));
 	getTransformToolButton ()               .set_active (getConfig () -> get <bool> ("transform"));
 	getAxisAlignedBoundingBoxMenuItem ()    .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasItem ("axisAlignedBoundingBox"));
 	getCutPolygonsButton ()                 .set_active (getConfig () -> get <bool> ("cutPolygons"));
 	getCutPolygonsEnableSnappingMenuItem () .set_active (getConfig () -> get <bool> ("cutSnapping") or not getConfig () -> hasItem ("cutSnapping"));
-
-	set_selector (SelectorType (getConfig () -> get <size_t> ("selector")));
 }
 
 void
@@ -193,50 +192,19 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 	X3DGeometryEditorInterface::set_selection (selection);
 
 	if (selection .empty  ())
-	{
-		changing = true;
+		getHammerButton () .set_sensitive (false);
 
-		geometryNodes .clear ();
-
-		getHammerButton ()     .set_sensitive (false);
-		getEditToggleButton () .set_active (false);
-
-		changing = false;
-	}
-	else if (selection == geometryNodes)
-	{
-		changing = true;
-
-		getEditToggleButton () .set_active (true);
-
-		changing = false;
-	}
 	else
-	{
-		changing = true;
-
-		const bool inScene = not inPrototypeInstance ();
-
-		geometryNodes = getGeometries (selection);
-
-		getHammerButton ()     .set_sensitive (inScene);
-		getEditToggleButton () .set_sensitive (not geometryNodes .empty ());
-		getEditToggleButton () .set_active (selection == geometryNodes);
-
-		changing = false;
-	}
+		getHammerButton () .set_sensitive (not inPrototypeInstance ());
 
 	connect ();
-
-	if (getEditToggleButton () .get_active ())
-		set_selector (selector);
-
-	getGeometryToolsBox () .set_sensitive (getEditToggleButton () .get_active ());
 }
 
 void
 GeometryEditor::connect ()
 {
+	const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+
 	for (const auto & node : geometryNodes)
 	{
 		try
@@ -331,6 +299,10 @@ GeometryEditor::connect ()
 							X3D::X3DConstants::X3DComposedGeometryNode,
 						});
 
+						const auto editable = node -> isType ({
+							X3D::X3DConstants::IndexedFaceSet,
+						});
+
 						// Normal
 
 						normalEditor -> getField <X3D::SFBool>  ("load")   .addInterest (normalTool -> getField <X3D::SFBool>  ("load"));
@@ -341,21 +313,29 @@ GeometryEditor::connect ()
 
 						if (editableNormals)
 						{
-							normalEditor -> getField <X3D::SFColorRGBA> ("color")  .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
-							normalTool -> setField <X3D::SFColorRGBA> ("color",  normalEditor -> getField <X3D::SFColorRGBA> ("color"), true);
+							normalEditor -> getField <X3D::SFColorRGBA> ("color") .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
+							normalTool -> setField <X3D::SFColorRGBA> ("color", normalEditor -> getField <X3D::SFColorRGBA> ("color"), true);
 						}
 						else
 						{
-							coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor")  .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
-							normalTool -> setField <X3D::SFColorRGBA> ("color",  coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"),  true);
+							coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor") .addInterest (normalTool -> getField <X3D::SFColorRGBA> ("color"));
+							normalTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"),  true);
 						}
 
 						// Coord
 
-						coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
+						coordTool -> setField <X3D::SFBool> ("load", true, true);
 
-						coordTool -> setField <X3D::SFBool>      ("load",  true,                                                          true);
-						coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"), true);
+						if (editable)
+						{
+							coordEditor -> getField <X3D::SFColorRGBA> ("color") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
+							coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("color"), true);
+						}
+						else
+						{
+							coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));
+							coordTool -> setField <X3D::SFColorRGBA> ("color", coordEditor -> getField <X3D::SFColorRGBA> ("primitiveColor"), true);
+						}
 
 						break;
 					}
@@ -419,8 +399,10 @@ GeometryEditor::connectViewer ()
 bool
 GeometryEditor::on_cut ()
 {
-	if (getEditToggleButton () .get_active ())
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+
 		try
 		{
 			geometryNodes .back () -> setField <X3D::SFTime> ("cutSelectedFaces", chrono::now ());
@@ -437,8 +419,10 @@ GeometryEditor::on_cut ()
 bool
 GeometryEditor::on_copy ()
 {
-	if (getEditToggleButton () .get_active ())
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+
 		for (const auto & geometryNode : geometryNodes)
 		{
 			try
@@ -458,8 +442,10 @@ GeometryEditor::on_copy ()
 bool
 GeometryEditor::on_paste ()
 {
-	if (getEditToggleButton () .get_active ())
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+
 		const auto active = std::max_element (geometryNodes .begin (), geometryNodes .end (), [ ] (const X3D::SFNode & lhs, const X3D::SFNode & rhs)
 		{
 			X3D::time_type timeL = -1;
@@ -501,7 +487,7 @@ GeometryEditor::on_paste ()
 bool
 GeometryEditor::on_delete ()
 {
-	if (getEditToggleButton () .get_active ())
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
 		on_delete_selected_faces_clicked ();
 		return true;
@@ -513,8 +499,10 @@ GeometryEditor::on_delete ()
 bool
 GeometryEditor::on_select_all ()
 {
-	if (getEditToggleButton () .get_active ())
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+
 		for (const auto & node : geometryNodes)
 		{
 			try
@@ -552,8 +540,10 @@ GeometryEditor::on_select_all ()
 bool
 GeometryEditor::on_deselect_all ()
 {
-	if (getEditToggleButton () .get_active ())
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+
 		for (const auto & node : geometryNodes)
 		{
 			try
@@ -617,31 +607,36 @@ GeometryEditor::set_selectedPoints ()
 {
 	numSelectedPoints = 0;
 
-	for (const auto & node : geometryNodes)
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		try
-		{
-			const auto innerNode = node -> getInnerNode ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
 
-			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+		for (const auto & node : geometryNodes)
+		{
+			try
 			{
-				switch (type)
+				const auto innerNode = node -> getInnerNode ();
+	
+				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 				{
-					case X3D::X3DConstants::IndexedFaceSetTool:
+					switch (type)
 					{
-						numSelectedPoints += innerNode -> getField <X3D::SFInt32> ("selectedPoints_changed") .getValue ();
-						break;
+						case X3D::X3DConstants::IndexedFaceSetTool:
+						{
+							numSelectedPoints += innerNode -> getField <X3D::SFInt32> ("selectedPoints_changed") .getValue ();
+							break;
+						}
+						default:
+							continue;
 					}
-					default:
-						continue;
+	
+					break;
 				}
-
-				break;
 			}
-		}
-		catch (const X3D::X3DError & error)
-		{
-			__LOG__ << error .what () << std::endl;
+			catch (const X3D::X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
 		}
 	}
 
@@ -654,31 +649,36 @@ GeometryEditor::set_selectedEdges ()
 {
 	numSelectedEdges = 0;
 
-	for (const auto & node : geometryNodes)
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		try
-		{
-			const auto innerNode = node -> getInnerNode ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
 
-			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+		for (const auto & node : geometryNodes)
+		{
+			try
 			{
-				switch (type)
+				const auto innerNode = node -> getInnerNode ();
+	
+				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 				{
-					case X3D::X3DConstants::IndexedFaceSetTool:
+					switch (type)
 					{
-						numSelectedEdges += innerNode -> getField <X3D::SFInt32> ("selectedEdges_changed") .getValue ();
-						break;
+						case X3D::X3DConstants::IndexedFaceSetTool:
+						{
+							numSelectedEdges += innerNode -> getField <X3D::SFInt32> ("selectedEdges_changed") .getValue ();
+							break;
+						}
+						default:
+							continue;
 					}
-					default:
-						continue;
+	
+					break;
 				}
-
-				break;
 			}
-		}
-		catch (const X3D::X3DError & error)
-		{
-			__LOG__ << error .what () << std::endl;
+			catch (const X3D::X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
 		}
 	}
 
@@ -690,31 +690,36 @@ GeometryEditor::set_selectedHoles ()
 {
 	numSelectedHoles = 0;
 
-	for (const auto & node : geometryNodes)
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		try
-		{
-			const auto innerNode = node -> getInnerNode ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
 
-			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+		for (const auto & node : geometryNodes)
+		{
+			try
 			{
-				switch (type)
+				const auto innerNode = node -> getInnerNode ();
+	
+				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 				{
-					case X3D::X3DConstants::IndexedFaceSetTool:
+					switch (type)
 					{
-						numSelectedHoles += innerNode -> getField <X3D::SFInt32> ("selectedHoles_changed") .getValue ();
-						break;
+						case X3D::X3DConstants::IndexedFaceSetTool:
+						{
+							numSelectedHoles += innerNode -> getField <X3D::SFInt32> ("selectedHoles_changed") .getValue ();
+							break;
+						}
+						default:
+							continue;
 					}
-					default:
-						continue;
+	
+					break;
 				}
-
-				break;
 			}
-		}
-		catch (const X3D::X3DError & error)
-		{
-			__LOG__ << error .what () << std::endl;
+			catch (const X3D::X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
 		}
 	}
 
@@ -726,31 +731,36 @@ GeometryEditor::set_selectedFaces ()
 {
 	numSelectedFaces = 0;
 
-	for (const auto & node : geometryNodes)
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		try
-		{
-			const auto innerNode = node -> getInnerNode ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
 
-			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+		for (const auto & node : geometryNodes)
+		{
+			try
 			{
-				switch (type)
+				const auto innerNode = node -> getInnerNode ();
+	
+				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 				{
-					case X3D::X3DConstants::IndexedFaceSetTool:
+					switch (type)
 					{
-						numSelectedFaces += innerNode -> getField <X3D::SFInt32> ("selectedFaces_changed") .getValue ();
-						break;
+						case X3D::X3DConstants::IndexedFaceSetTool:
+						{
+							numSelectedFaces += innerNode -> getField <X3D::SFInt32> ("selectedFaces_changed") .getValue ();
+							break;
+						}
+						default:
+							continue;
 					}
-					default:
-						continue;
+	
+					break;
 				}
-
-				break;
 			}
-		}
-		catch (const X3D::X3DError & error)
-		{
-			__LOG__ << error .what () << std::endl;
+			catch (const X3D::X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
 		}
 	}
 
@@ -850,10 +860,16 @@ GeometryEditor::on_edit_toggled ()
 {
 	getBrowserWindow () -> getSelection () -> setSelectGeometry (getEditToggleButton () .get_active ());
 
-	if (not getEditToggleButton () .get_active ())
+	getGeometryToolsBox () .set_sensitive (getEditToggleButton () .get_active ());
+
+	if (getEditToggleButton () .get_active ())
+	{
+		set_selector (selector);
+	}
+	else
 	{
 		// Activate hand or arrow button.
-
+	
 		if (getBrowserWindow () -> getHandButton () .get_active ())
 			;
 		else if (getBrowserWindow () -> getArrowButton () .get_active ())
@@ -864,35 +880,12 @@ GeometryEditor::on_edit_toggled ()
 			getBrowserWindow () -> getArrowButton () .set_active (true);
 		else
 			getBrowserWindow () -> getHandButton () .set_active (true);
-
+	
 		// Restore viewer.
-
+	
 		getCurrentBrowser () -> setPrivateViewer (privateViewer);
-
+	
 		set_selector (SelectorType::NONE);
-	}
-
-	// Selection handling
-
-	if (changing)
-		return;
-
-	if (getEditToggleButton () .get_active ())
-	{
-		// Set selection.
-
-		getBrowserWindow () -> getSelection () -> setNodes (geometryNodes);
-	}
-	else
-	{
-		// Restore selection.
-
-		const auto previousSelection = getBrowserWindow () -> getSelection () -> getPreviousNodes ();
-
-		if (previousSelection == geometryNodes)
-			getBrowserWindow () -> getSelection () -> setNodes ({ });
-		else
-			getBrowserWindow () -> getSelection () -> setNodes (previousSelection);
 	}
 }
 
@@ -912,6 +905,7 @@ GeometryEditor::on_paint_selection_toggled ()
 		return;
 	}
 
+	// Disable X3DPointingDeviceSensors.
 	getBrowserWindow () -> getSelection () -> isEnabled (true);
 
 	switch (selector)
@@ -1154,68 +1148,10 @@ GeometryEditor::on_delete_selected_faces_clicked ()
 	coordEditor -> setField <X3D::SFTime> ("deleteSelectedFaces", chrono::now ());
 }
 
-X3D::MFNode
-GeometryEditor::getGeometries (const X3D::MFNode & selection) const
-{
-	static const std::set <X3D::NodeType> types = {
-		X3D::X3DConstants::IndexedQuadSet,
-		X3D::X3DConstants::QuadSet,
-		//X3D::X3DConstants::Arc2D,
-		X3D::X3DConstants::ArcClose2D,
-		//X3D::X3DConstants::Circle2D,
-		X3D::X3DConstants::Disk2D,
-		//X3D::X3DConstants::Polyline2D,
-		//X3D::X3DConstants::Polypoint2D,
-		X3D::X3DConstants::Rectangle2D,
-		X3D::X3DConstants::TriangleSet2D,
-		X3D::X3DConstants::Box,
-		X3D::X3DConstants::Cone,
-		X3D::X3DConstants::Cylinder,
-		X3D::X3DConstants::ElevationGrid,
-		X3D::X3DConstants::Extrusion,
-		X3D::X3DConstants::IndexedFaceSet,
-		X3D::X3DConstants::Sphere,
-		X3D::X3DConstants::GeoElevationGrid,
-		//X3D::X3DConstants::NurbsCurve,
-		X3D::X3DConstants::NurbsPatchSurface,
-		//X3D::X3DConstants::NurbsSweptSurface,
-		//X3D::X3DConstants::NurbsSwungSurface,
-		X3D::X3DConstants::NurbsTrimmedSurface,
-		//X3D::X3DConstants::IndexedLineSet,
-		X3D::X3DConstants::IndexedTriangleFanSet,
-		X3D::X3DConstants::IndexedTriangleSet,
-		X3D::X3DConstants::IndexedTriangleStripSet,
-		//X3D::X3DConstants::LineSet,
-		//X3D::X3DConstants::PointSet,
-		X3D::X3DConstants::TriangleFanSet,
-		X3D::X3DConstants::TriangleSet,
-		X3D::X3DConstants::TriangleStripSet,
-		X3D::X3DConstants::Text,
-	};
-
-	auto geometryNodes = getNodes <X3D::X3DBaseNode> (selection, types);
-
-	const auto protoInstances = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::X3DPrototypeInstance });
-
-	for (const auto & protoInstance : protoInstances)
-	{
-		try
-		{
-			const auto innerNode = protoInstance -> getInnerNode ();
-
-			if (innerNode -> isType (types))
-				geometryNodes .emplace_back (protoInstance);
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
-
-	return geometryNodes;
-}
-
 void
 GeometryEditor::store ()
 {
+	getConfig () -> set ("selectGeometry",         getEditToggleButton () .get_active ());
 	getConfig () -> set ("paintSelection",         getPaintSelectionButton () .get_active ());
 	getConfig () -> set ("normalEnabled",          normalEditor -> getField <X3D::SFBool>      ("load"));
 	getConfig () -> set ("normalLength",           normalEditor -> getField <X3D::SFFloat>     ("length"));

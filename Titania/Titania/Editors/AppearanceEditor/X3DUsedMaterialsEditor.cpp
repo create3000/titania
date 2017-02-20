@@ -50,6 +50,7 @@
 
 #include "X3DUsedMaterialsEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../Configuration/config.h"
 

@@ -217,6 +217,9 @@ private:
 	bool
 	validateFolder (const std::string &) const;
 
+	const X3D::MFNode &
+	getSelectedNodes () const;
+
 	///  @name Members
 
 	bool                        undo;
@@ -232,9 +235,7 @@ template <class NodeType>
 X3D::X3DPtrArray <NodeType>
 X3DEditorObject::getSelection (const std::set <X3D::X3DConstants::NodeType> & types) const
 {
-	auto selection = getBrowserWindow () -> getSelection () -> getNodes ();
-
-	return getNodes <NodeType> (selection, types);
+	return getNodes <NodeType> (getSelectedNodes (), types);
 }
 
 /***
@@ -252,7 +253,7 @@ X3DEditorObject::getSelection (const X3D::X3DPtrArray <NodeType> & nodes, const 
 {
 	// Check if there is a direct master selecection of our node type.
 
-	const auto & selection = getBrowserWindow () -> getSelection () -> getNodes ();
+	const auto & selection = getSelectedNodes ();
 
 	if (not selection .empty ())
 	{

@@ -50,6 +50,7 @@
 
 #include "TextEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
 
 #include <Titania/X3D/Components/Core/MetadataString.h>

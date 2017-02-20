@@ -50,6 +50,7 @@
 
 #include "SculpToolEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
 #include "../GeometryEditor/GeometryEditor.h"
 
@@ -106,9 +107,9 @@ SculpToolEditor::on_map ()
 {
 	// IndexedFaceSetTool detection
 
-	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (&SculpToolEditor::set_geometry_nodes, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&SculpToolEditor::set_geometry_nodes, this);
 
-	set_geometry_nodes (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ());
+	set_geometry_nodes (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 
 void
@@ -116,7 +117,7 @@ SculpToolEditor::on_unmap ()
 {
 	// IndexedFaceSetTool detection
 
-	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (&SculpToolEditor::set_geometry_nodes, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&SculpToolEditor::set_geometry_nodes, this);
 
 	set_geometry_nodes ({ });
 }
@@ -124,9 +125,14 @@ SculpToolEditor::on_unmap ()
 void
 SculpToolEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
 {
-	tools = getNodes <X3D::X3DBaseNode> (geometryNodes, { X3D::X3DConstants::IndexedFaceSetTool });
+	tools .clear ();
 
-	set_brush ();
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
+	{
+		tools = getNodes <X3D::X3DBaseNode> (geometryNodes, { X3D::X3DConstants::IndexedFaceSetTool });
+
+		set_brush ();
+	}
 
 	getToolbar () .set_sensitive (not tools .empty ());
 
@@ -258,7 +264,7 @@ SculpToolEditor::store ()
 	getConfig () -> setItem ("paned",       getPaned () .get_position ());
 	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
 
-	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (&SculpToolEditor::set_geometry_nodes, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&SculpToolEditor::set_geometry_nodes, this);
 
 	X3DSculpToolBrushEditor::store ();
 	X3DSculpToolEditorInterface::store ();

@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_NODE_H__
 
 #include "../Grouping/X3DTransformMatrix3DNode.h"
-#include "../../Browser/Selection.h"
+#include "../../Browser/Tools/ToolType.h"
 
 namespace titania {
 namespace X3D {

@@ -70,28 +70,28 @@ public:
 	void
 	isEnabled (const bool value);
 
-	bool
+	const X3D::SFBool &
 	isEnabled () const
 	{ return enabled; }
 
 	void
 	setSelectMultiple (const bool value);
 
-	bool
+	const X3D::SFBool &
 	getSelectMultiple () const
 	{ return selectMultiple; }
 
 	void
 	setSelectLowest (const bool value);
 
-	bool
+	const X3D::SFBool &
 	getSelectLowest () const
 	{ return selectLowest; }
 
 	void
 	setSelectGeometry (const bool value);
 
-	bool
+	const X3D::SFBool &
 	getSelectGeometry () const
 	{ return selectGeometry; }
 
@@ -126,6 +126,9 @@ public:
 	getNodes () const
 	{ return nodes; }
 
+	X3D::MFNode
+	getPreviousNodes () const;
+
 	///  @name Operations
 
 	void
@@ -145,9 +148,6 @@ public:
 
 	void
 	redoRestoreNodes (const X3D::UndoStepPtr & undoStep);
-
-	X3D::MFNode
-	getPreviousNodes () const;
 
 	///  @name Destruction
 
@@ -170,10 +170,10 @@ private:
 
 	///  @name Members
 
-	bool enabled;
-	bool selectMultiple;
-	bool selectLowest;
-	bool selectGeometry;
+	X3D::SFBool enabled;
+	X3D::SFBool selectMultiple;
+	X3D::SFBool selectLowest;
+	X3D::SFBool selectGeometry;
 
 	X3D::SFBool     over;
 	X3D::SFBool     active;

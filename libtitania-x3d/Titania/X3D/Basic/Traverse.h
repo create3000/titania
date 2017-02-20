@@ -74,6 +74,7 @@ constexpr int32_t TRAVERSE_INLINE_NODES                   = 1 << 7;
 constexpr int32_t TRAVERSE_TOOL_OBJECTS                   = 1 << 8;
 constexpr int32_t TRAVERSE_VISIBLE_NODES                  = 1 << 9;
 constexpr int32_t TRAVERSE_CLONED_NODES                   = 1 << 10;
+constexpr int32_t TRAVERSE_META_DATA                      = 1 << 11;
 
 typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
 

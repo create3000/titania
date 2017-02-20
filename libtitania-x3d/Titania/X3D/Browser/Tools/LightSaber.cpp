@@ -147,7 +147,7 @@ LightSaber::on_motion1_notify_event (GdkEventMotion* event)
 void
 LightSaber::display ()
 {
-	PolygonMode polygonMode (GL_FILL);
+	PolygonModeLock polygonMode (GL_FILL);
 
 	// Configure HUD
 

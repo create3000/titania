@@ -120,8 +120,6 @@ void
 MetadataSet::removeValue (const std::string & name)
 throw (Error <DISPOSED>)
 {
-	const auto & providerUrl = getBrowser () -> getProviderUrl ();
-
 	const auto iter = std::remove_if (value () .begin (), value () .end (), [&] (const SFNode &node)
 	                                  {
 	                                     const auto metadataObject = x3d_cast <X3DMetadataObject*> (node);
@@ -129,11 +127,8 @@ throw (Error <DISPOSED>)
 	                                     if (not metadataObject)
 														 return false;
 
-	                                     if (not metadataObject -> reference () .empty ())
-													 {
-	                                       if (metadataObject -> reference () not_eq providerUrl)
-														   return false;
-													 }
+	                                     if (not metadataObject -> belongsToProvider ())
+														  return false;
 
 	                                     if (metadataObject -> name () == name)
 	                                     {
@@ -166,10 +161,7 @@ MetadataSet::addValue (const SFNode & node)
 	if (not metadataObject)
 		return;
 
-	if (metadataObject -> reference () .empty ())
-		metadataObject -> reference () = getBrowser () -> getProviderUrl ();
-
-	if (metadataObject -> reference () not_eq getBrowser () -> getProviderUrl ())
+	if (not metadataObject -> belongsToProvider ())
 		return;
 
 	metadataIndex .emplace (metadataObject -> name (), metadataObject);

@@ -50,6 +50,7 @@
 
 #include "X3DUserInterface.h"
 
+#include "../Browser/BrowserSelection.h"
 #include "../Configuration/config.h"
 #include "DialogFactory.h"
 
@@ -209,10 +210,12 @@ X3DUserInterface::configure ()
 void
 X3DUserInterface::on_map ()
 {
+	restoreInterface ();
+
+	configure ();
+
 	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DEditorInterface::set_selection, this);
 
-	restoreInterface ();
-	configure ();
 	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 

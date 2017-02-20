@@ -64,7 +64,7 @@ PolygonModeContainer::PolygonModeContainer (GLenum type) :
 void
 PolygonModeContainer::enable ()
 {
-	polygonMode .reset (new PolygonMode (type));
+	polygonMode .reset (new PolygonModeLock (type));
 }
 
 void

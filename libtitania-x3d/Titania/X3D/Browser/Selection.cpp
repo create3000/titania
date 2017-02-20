@@ -59,6 +59,7 @@
 #include "../Components/Layering/X3DLayerNode.h"
 #include "../Components/Shape/X3DShapeNode.h"
 #include "../Components/Rendering/X3DGeometryNode.h"
+#include "../Editing/X3DEditor.h"
 #include "../Execution/X3DExecutionContext.h"
 
 namespace titania {
@@ -116,13 +117,37 @@ Selection::isSelected (const SFNode & node) const
 }
 
 void
+Selection::setSelectGeometry (const bool value)
+{
+__LOG__ << value << std::endl;
+
+	if (value == selectGeometry)
+		return;
+
+	selectGeometry = value;
+
+	if (selectGeometry)
+		setNodes (getGeometries (nodes));
+
+	else
+	{
+		MFNode transforms;
+
+		for (const auto & node : nodes)
+			transforms .emplace_back (getTransform (getHierarchy (node)));
+
+		setNodes (transforms);
+	}
+}
+
+void
 Selection::addNodes (const MFNode & value)
 {
 	try
 	{
 		ContextLock lock (getBrowser ());
 
-		for (const auto & node : value)
+		for (const auto & node : selectGeometry ? getGeometries (value) : value)
 		{
 			if (not node)
 				continue;
@@ -174,7 +199,7 @@ Selection::setNodes (const MFNode & value)
 	}
 
 	MFNode sortedNodes = nodes;
-	MFNode sortedValue = value;
+	MFNode sortedValue = selectGeometry ? getGeometries (value) : value;
 	MFNode difference;
 	
 	std::sort (sortedNodes .begin (), sortedNodes .end ());
@@ -199,6 +224,32 @@ Selection::setNodes (const MFNode & value)
 	addNodes (difference);
 }
 
+X3D::MFNode
+Selection::getGeometries (const X3D::MFNode & nodes) const
+{
+	static const std::set <NodeType> geometryTypes = { X3D::X3DConstants::X3DGeometryNode };
+	static const std::set <NodeType> protoTypes    = { X3D::X3DConstants::X3DPrototypeInstance };
+
+	auto geometryNodes = X3DEditor::getNodes <X3D::X3DBaseNode> (nodes, geometryTypes);
+
+	const auto protoInstances = X3DEditor::getNodes <X3D::X3DBaseNode> (nodes, protoTypes);
+
+	for (const auto & protoInstance : protoInstances)
+	{
+		try
+		{
+			const auto innerNode = protoInstance -> getInnerNode ();
+
+			if (innerNode -> isType (geometryTypes))
+				geometryNodes .emplace_back (protoInstance);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	return geometryNodes;
+}
+
 void
 Selection::set_nodes ()
 {
@@ -216,110 +267,28 @@ Selection::set_nodes ()
 }
 
 bool
-Selection::select ()
+Selection::selectNode ()
 {
 	if (not isEnabled ())
 		return false;
 
 	// Selected highest or lowest Node, or clear selection.
 
-	if (selectGeometry)
-		return false;
-
 	if (getBrowser () -> getHits () .empty ())
 	{
-		clearNodes ();
+		if (not selectGeometry)
+			clearNodes ();
+
 		return false;
 	}
 
 	SFNode node;
 
 	if (selectGeometry)
-	{
 		node = getBrowser () -> getNearestHit () -> shape -> getGeometry ();
-	}
+
 	else
-	{
-		const auto hierarchy = find (getBrowser () -> getExecutionContext () -> getRootNodes (),
-		                             getBrowser () -> getNearestHit () -> shape,
-		                             TRAVERSE_ROOT_NODES |
-		                             TRAVERSE_PROTOTYPE_INSTANCES |
-		                             TRAVERSE_INLINE_NODES |
-		                             TRAVERSE_TOOL_OBJECTS |
-		                             TRAVERSE_VISIBLE_NODES);
-
-		if (hierarchy .empty ())
-			return false;
-
-		if (selectLowest)
-		{
-			for (const auto & object : basic::make_reverse_range (hierarchy))
-			{
-				const SFNode lowest (object);
-
-				if (not lowest)
-					continue;
-
-				if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-					continue;
-					
-				if (not node)
-					node = lowest;
-
-				if (dynamic_cast <Transform*> (lowest .getValue ()))
-				{
-					node = lowest;
-					break;
-				}
-			}
-		}
-		else
-		{
-			// Find highest Transform
-		
-			for (const auto & object : hierarchy)
-			{
-				const SFNode highest (object);
-
-				if (not highest)
-					continue;
-
-				if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-					continue;
-
-				if (not node)
-					node = highest;
-
-				if (dynamic_cast <Transform*> (highest .getValue ()))
-				{
-					node = highest;
-					break;
-				}
-			}
-
-			// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
-
-			if (x3d_cast <LayerSet*> (node))
-			{
-				for (const auto & object : hierarchy)
-				{
-					const SFNode highest (object);
-
-					if (not highest)
-						continue;
-
-					if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
-						continue;
-
-					if (x3d_cast <X3DChildNode*> (highest))
-					{
-						node = highest;
-						break;
-					}
-				}
-			}
-		}
-	}
+		node = getTransform (getHierarchy (getBrowser () -> getNearestHit () -> shape));
 
 	if (node)
 	{
@@ -346,6 +315,88 @@ Selection::select ()
 	}
 
 	return false;
+}
+
+SFNode
+Selection::getTransform (const std::vector <X3DChildObject*> & hierarchy) const
+{
+	SFNode node;
+
+	if (selectLowest)
+	{
+		// Find lowes Transform.
+	
+		for (const auto & object : basic::make_reverse_range (hierarchy))
+		{
+			const SFNode lowest (object);
+
+			if (not lowest)
+				continue;
+
+			if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+				continue;
+				
+			if (not node)
+				node = lowest;
+
+			if (dynamic_cast <Transform*> (lowest .getValue ()))
+				return lowest;
+		}
+	}
+	else
+	{
+		// Find highest Transform.
+	
+		for (const auto & object : hierarchy)
+		{
+			const SFNode highest (object);
+	
+			if (not highest)
+				continue;
+	
+			if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+				continue;
+	
+			if (not node)
+				node = highest;
+	
+			if (dynamic_cast <Transform*> (highest .getValue ()))
+				return highest;
+		}
+	
+		// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
+	
+		if (x3d_cast <LayerSet*> (node))
+		{
+			for (const auto & object : hierarchy)
+			{
+				const SFNode highest (object);
+	
+				if (not highest)
+					continue;
+	
+				if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+					continue;
+	
+				if (x3d_cast <X3DChildNode*> (highest))
+					return highest;
+			}
+		}
+	}
+
+	return node;
+}
+
+std::vector <X3DChildObject*>
+Selection::getHierarchy (const SFNode & node) const
+{
+	return find (getBrowser () -> getExecutionContext () -> getRootNodes (),
+		          node,
+		          TRAVERSE_ROOT_NODES |
+		          TRAVERSE_PROTOTYPE_INSTANCES |
+		          TRAVERSE_INLINE_NODES |
+		          TRAVERSE_TOOL_OBJECTS |
+		          TRAVERSE_VISIBLE_NODES);
 }
 
 } // X3D

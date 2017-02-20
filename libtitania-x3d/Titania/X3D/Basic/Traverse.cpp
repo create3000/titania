@@ -51,6 +51,8 @@
 #include "Traverse.h"
 
 #include "../Basic/NodeSet.h"
+#include "../Browser/X3DBrowser.h"
+#include "../Components/Core/X3DMetadataObject.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Components/Grouping/Switch.h"
 #include "../Components/Navigation/Collision.h"
@@ -154,15 +156,31 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 	if (node -> isPrivate ())
 		return true;
 
-	if (flags & TRAVERSE_VISIBLE_NODES)
+	for (const auto & type : basic::make_reverse_range (node -> getType ()))
 	{
-		switch (node -> getType () .back ())
+		switch (type)
 		{
+			case X3DConstants::X3DMetadataObject:
+			{
+				const auto metadataObject = dynamic_cast <X3DMetadataObject*> (node .getValue ());
+
+				if (metadataObject -> belongsToProvider ())
+					return true;
+
+				// Proceed with next case:
+			}
 			case X3DConstants::Script:
-				return true;
-			default:
+			{
+				if (flags & TRAVERSE_VISIBLE_NODES)
+					return true;
+
 				break;
+			}
+			default:
+				continue;
 		}
+
+		break;
 	}
 
 	if (seen .emplace (node) .second)
@@ -478,21 +496,37 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags
 	if (not seen .emplace (node) .second)
 		return false;
 
+	for (const auto & type : basic::make_reverse_range (node -> getType ()))
+	{
+		switch (type)
+		{
+			case X3DConstants::X3DMetadataObject:
+			{
+				const auto metadataObject = dynamic_cast <X3DMetadataObject*> (node);
+
+				if (metadataObject -> belongsToProvider ())
+					return false;
+
+				// Proceed with next case:
+			}
+			case X3DConstants::Script:
+			{
+				if (flags & TRAVERSE_VISIBLE_NODES)
+					return false;
+
+				break;
+			}
+			default:
+				continue;
+		}
+
+		break;
+	}
+
 	hierarchy .emplace_back (node);
 
 	if (node == object)
 		return true;
-
-	if (flags & TRAVERSE_VISIBLE_NODES)
-	{
-		switch (node -> getType () .back ())
-		{
-			case X3DConstants::Script:
-				goto END;
-			default:
-				break;
-		}
-	}
 
 	for (const auto & field : basic::make_reverse_range (node -> getFieldDefinitions ()))
 	{
@@ -699,8 +733,6 @@ CONTINUE:;
 			}
 		}
 	}
-
-END:
 
 	hierarchy .pop_back ();
 	return false;

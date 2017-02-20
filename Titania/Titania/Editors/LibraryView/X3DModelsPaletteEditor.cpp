@@ -50,6 +50,7 @@
 
 #include "X3DModelsPaletteEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/MagicImport.h"
 
 #include <Titania/X3D/Components/Grouping/Transform.h>

@@ -50,40 +50,27 @@
 
 #include "PolygonOffsetContainer.h"
 
-#include "../Components/Rendering/PolygonOffsetGroup.h"
+#include "../Components/Rendering/PolygonOffset.h"
 
 namespace titania {
 namespace X3D {
 
-PolygonOffsetContainer::PolygonOffsetContainer (PolygonOffsetGroup* const node) :
+PolygonOffsetContainer::PolygonOffsetContainer (PolygonOffset* const node) :
 	X3DCollectableObject (),
 	                node (node),
-	             enabled (false),
-	              factor (0),
-	               units (0)
+	       polygonOffset ()
 { }
-        
+
 void
 PolygonOffsetContainer::enable ()
 {
-	enabled = glIsEnabled (node -> getType ());
-
-	glGetFloatv (GL_POLYGON_OFFSET_FACTOR, &factor);
-	glGetFloatv (GL_POLYGON_OFFSET_UNITS,  &units);
-
-	glEnable (node -> getType ());
-	glPolygonOffset (node -> factor (), node -> units ());
+	polygonOffset .reset (new PolygonOffsetLock (node -> getType (), node -> factor (), node -> units ()));
 }
 
 void
 PolygonOffsetContainer::disable ()
 {
-	if (enabled)
-		glEnable (node -> getType ());
-	else
-		glDisable (node -> getType ());
-
-	glPolygonOffset (factor, units);
+	polygonOffset .reset ();
 }
 
 } // X3D

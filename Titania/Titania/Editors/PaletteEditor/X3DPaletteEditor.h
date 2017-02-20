@@ -51,6 +51,7 @@
 #ifndef __TITANIA_EDITORS_PALETTE_EDITOR_X3DPALETTE_EDITOR_H__
 #define __TITANIA_EDITORS_PALETTE_EDITOR_X3DPALETTE_EDITOR_H__
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"

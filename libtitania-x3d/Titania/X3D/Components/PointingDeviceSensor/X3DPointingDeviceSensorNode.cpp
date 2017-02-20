@@ -94,7 +94,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	if (isInitialized ())
+	{
+		getBrowser () -> getSelection () -> isEnabled () .addInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
 		getExecutionContext () -> isLive () .removeInterest (&X3DPointingDeviceSensorNode::set_live, this);
+	}
 
 	X3DSensorNode::setExecutionContext (executionContext);
 

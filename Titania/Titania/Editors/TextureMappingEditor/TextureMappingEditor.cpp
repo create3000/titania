@@ -50,6 +50,7 @@
 
 #include "TextureMappingEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -232,6 +233,7 @@ TextureMappingEditor::set_initialized ()
 	{ }
 
 	configure ();
+
 	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 

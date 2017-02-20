@@ -369,7 +369,7 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 	if (hidden)
 		return;
 
-	PolygonMode polygonMode (GL_FILL);
+	PolygonModeLock polygonMode (GL_FILL);
 
 	// Setup projection matrix
 

@@ -313,7 +313,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Components/Rendering/LineSet.cpp \
 	Titania/X3D/Components/Rendering/Normal.cpp \
 	Titania/X3D/Components/Rendering/PointSet.cpp \
-	Titania/X3D/Components/Rendering/PolygonOffsetGroup.cpp \
+	Titania/X3D/Components/Rendering/PolygonOffset.cpp \
 	Titania/X3D/Components/Rendering/TriangleFanSet.cpp \
 	Titania/X3D/Components/Rendering/TriangleSet.cpp \
 	Titania/X3D/Components/Rendering/TriangleStripSet.cpp \

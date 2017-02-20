@@ -183,7 +183,7 @@ X3DSelector::clear ()
 void
 X3DSelector::display ()
 {
-	PolygonMode polygonMode (GL_FILL);
+	PolygonModeLock polygonMode (GL_FILL);
 
 	// Configure HUD
 
@@ -227,7 +227,7 @@ X3DSelector::display ()
 void
 X3DSelector::draw ()
 {
-	PolygonMode polygonMode (GL_FILL);
+	PolygonModeLock polygonMode (GL_FILL);
 
 	// Configure HUD
 

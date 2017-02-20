@@ -50,6 +50,7 @@
 
 #include "ColorEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -184,6 +185,7 @@ ColorEditor::set_initialized ()
 		touchSensor -> touchTime ()        .addInterest (&ColorEditor::set_touchTime, this);
 
 		configure ();
+
 		set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 	}
 	catch (const X3D::X3DError &)

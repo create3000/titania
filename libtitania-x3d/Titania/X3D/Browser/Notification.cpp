@@ -149,7 +149,7 @@ Notification::set_active (const bool & value)
 void
 Notification::display ()
 {
-	PolygonMode polygonMode (GL_FILL);
+	PolygonModeLock polygonMode (GL_FILL);
 
 	world -> traverse (TraverseType::DISPLAY, nullptr);
 }

@@ -50,6 +50,7 @@
 
 #include "X3DTextureNodeEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/TexturePreview.h"
 
 #include <Titania/X3D/Components/Shape/Appearance.h>

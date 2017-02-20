@@ -74,7 +74,15 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	           nodes (),
 	         browser (getCurrentBrowser ())
 {
-	addChildObjects (over, active, touchTime, nodes, browser);
+	addChildObjects (enabled,
+	                 selectMultiple,
+	                 selectLowest,
+	                 selectGeometry,
+	                 over,
+	                 active,
+	                 touchTime,
+	                 nodes,
+	                 browser);
 
 	getCurrentBrowser () .addInterest (&BrowserSelection::set_browser, this);
 	getCurrentContext () .addInterest (&BrowserSelection::set_execution_context, this);
@@ -89,6 +97,11 @@ BrowserSelection::set_browser ()
 {
 	{
 		const auto & selection = browser -> getSelection ();
+
+		selection -> isEnabled ()         .removeInterest (enabled);
+		selection -> getSelectMultiple () .removeInterest (selectMultiple);
+		selection -> getSelectLowest ()   .removeInterest (selectLowest);
+		selection -> getSelectGeometry () .removeInterest (selectGeometry);
 
 		selection -> isOver ()        .removeInterest (over);
 		selection -> isActive ()      .removeInterest (active);
@@ -105,6 +118,11 @@ BrowserSelection::set_browser ()
 		selection -> setSelectMultiple (selectMultiple);
 		selection -> setSelectLowest   (selectLowest);
 		selection -> setSelectGeometry (selectGeometry);
+
+		selection -> isEnabled ()         .addInterest (enabled);
+		selection -> getSelectMultiple () .addInterest (selectMultiple);
+		selection -> getSelectLowest ()   .addInterest (selectLowest);
+		selection -> getSelectGeometry () .addInterest (selectGeometry);
 
 		selection -> isOver ()        .addInterest (over);
 		selection -> isActive ()      .addInterest (active);

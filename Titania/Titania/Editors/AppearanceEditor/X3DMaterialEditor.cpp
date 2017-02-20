@@ -50,6 +50,7 @@
 
 #include "X3DMaterialEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/MagicImport.h"
 #include "../../Configuration/config.h"
 

@@ -77,8 +77,8 @@ public:
 
 private:
 
-	GLenum                        type;
-	std::unique_ptr <PolygonMode> polygonMode;
+	GLenum                            type;
+	std::unique_ptr <PolygonModeLock> polygonMode;
 
 };
 

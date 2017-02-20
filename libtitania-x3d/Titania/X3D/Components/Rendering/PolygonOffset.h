@@ -56,14 +56,14 @@
 namespace titania {
 namespace X3D {
 
-class PolygonOffsetGroup :
+class PolygonOffset :
 	virtual public X3DGroupingNode
 {
 public:
 
 	///  @name Construction
 
-	PolygonOffsetGroup (X3DExecutionContext* const executionContext);
+	PolygonOffset (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*

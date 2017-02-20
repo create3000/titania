@@ -50,6 +50,7 @@
 
 #include "X3DLayoutEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/RotationTool.h"
 
 namespace titania {

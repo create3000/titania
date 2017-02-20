@@ -50,6 +50,7 @@
 
 #include "X3DBrowserWindow.h"
 
+#include "../Browser/BrowserSelection.h"
 #include "../Browser/MagicImport.h"
 #include "../Browser/ViewpointObserver.h"
 

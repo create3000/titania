@@ -63,7 +63,7 @@
 #include "Rendering/LineSet.h"
 #include "Rendering/Normal.h"
 #include "Rendering/PointSet.h"
-#include "Rendering/PolygonOffsetGroup.h"
+#include "Rendering/PolygonOffset.h"
 #include "Rendering/TriangleFanSet.h"
 #include "Rendering/TriangleSet.h"
 #include "Rendering/TriangleStripSet.h"

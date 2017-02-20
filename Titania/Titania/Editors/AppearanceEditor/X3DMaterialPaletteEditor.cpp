@@ -50,6 +50,7 @@
 
 #include "X3DMaterialPaletteEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/MagicImport.h"
 
 #include <Titania/X3D/Components/Geometry3D/Extrusion.h>

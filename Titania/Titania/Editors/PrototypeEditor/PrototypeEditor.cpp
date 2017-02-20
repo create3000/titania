@@ -50,9 +50,10 @@
 
 #include "PrototypeEditor.h"
 
+#include "../NodePropertiesEditor/NodePropertiesEditor.h"
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 

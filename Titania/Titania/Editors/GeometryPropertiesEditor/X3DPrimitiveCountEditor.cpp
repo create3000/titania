@@ -50,6 +50,8 @@
 
 #include "X3DPrimitiveCountEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
+
 #include <Titania/X3D/Components/Layering/LayerSet.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>

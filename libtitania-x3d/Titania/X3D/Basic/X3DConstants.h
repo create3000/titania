@@ -467,7 +467,7 @@ enum NodeType : uint16_t
 	Clipboard,
 	DepthBuffer,
 	FaceSelection,
-	PolygonOffsetGroup,
+	PolygonOffset,
 	TouchGroup,
 	TransformMatrix3D,
 	X3DFaceSelection,

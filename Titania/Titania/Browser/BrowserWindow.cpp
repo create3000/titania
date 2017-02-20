@@ -3171,7 +3171,10 @@ BrowserWindow::on_look_at_toggled ()
 bool
 BrowserWindow::checkForClones (const X3D::MFNode::const_iterator & first, const X3D::MFNode::const_iterator & last)
 {
-	const auto clones = std::count_if (first, last, [] (const X3D::SFNode & node) { return node -> getCloneCount () > 1; });
+	const auto clones = std::count_if (first,
+	                                   last,
+	                                   [ ] (const X3D::SFNode & node)
+	                                   { return node -> getCloneCount () - node -> getUserData <UserData> () -> cloneCount .count () > 1; });
 
 	if (not clones)
 		return false;

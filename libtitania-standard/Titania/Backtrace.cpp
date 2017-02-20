@@ -103,7 +103,9 @@ install_backtrace ()
 void
 backtrace (size_t size)
 {
-	std::clog << backtrace_symbols (size) << std::endl;
+	std::clog
+		<< "======= Backtrace: ========="
+		<< backtrace_symbols (size) << std::endl;
 }
 
 std::string

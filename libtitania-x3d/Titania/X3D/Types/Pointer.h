@@ -355,7 +355,7 @@ class X3DViewportNode;
 class Clipboard;
 class DepthBuffer;
 class FaceSelection;
-class PolygonOffsetGroup;
+class PolygonOffset;
 class TouchGroup;
 class TransformMatrix3D;
 class X3DFaceSelection;

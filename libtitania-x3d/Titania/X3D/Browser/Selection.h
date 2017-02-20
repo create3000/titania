@@ -117,8 +117,7 @@ public:
 	{ return selectLowest; }
 
 	void
-	setSelectGeometry (const bool value)
-	{ selectGeometry = value; }
+	setSelectGeometry (const bool value);
 
 	const SFBool &
 	getSelectGeometry () const
@@ -168,7 +167,7 @@ public:
 	///  @name Operations
 
 	bool
-	select ();
+	selectNode ();
 
 
 private:
@@ -183,6 +182,17 @@ private:
 
 	void
 	set_nodes ();
+
+	///  @name Operations
+
+	MFNode
+	getGeometries (const MFNode & nodes) const;
+
+	SFNode
+	getTransform (const std::vector <X3DChildObject*> & hierarchy) const;
+
+	std::vector <X3DChildObject*>
+	getHierarchy (const SFNode & node) const;
 
 	///  @name Static members
 

@@ -50,6 +50,8 @@
 
 #include "X3DMetadataObject.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
@@ -68,6 +70,12 @@ X3DMetadataObject::X3DMetadataObject () :
 void
 X3DMetadataObject::initialize ()
 { }
+
+bool
+X3DMetadataObject::belongsToProvider () const
+{
+	return reference () == getBrowser () -> getProviderUrl ();
+}
 
 void
 X3DMetadataObject::dispose ()

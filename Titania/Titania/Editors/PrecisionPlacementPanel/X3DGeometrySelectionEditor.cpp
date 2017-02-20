@@ -51,6 +51,7 @@
 #include "X3DGeometrySelectionEditor.h"
 
 #include "../GeometryEditor/GeometryEditor.h"
+#include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/RotationTool.h"
 
 #include <Titania/X3D/Components/Grouping/Transform.h>
@@ -98,9 +99,9 @@ X3DGeometrySelectionEditor::configure ()
 
 	// IndexedFaceSetTool detection
 
-	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .addInterest (&X3DGeometrySelectionEditor::set_geometry_nodes, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&X3DGeometrySelectionEditor::set_geometry_nodes, this);
 
-	set_geometry_nodes (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes ());
+	set_geometry_nodes (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 
 void
@@ -133,12 +134,15 @@ X3DGeometrySelectionEditor::set_selection (const X3D::MFNode & selection)
 void
 X3DGeometrySelectionEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
 {
-	for (const auto & node : geometryNodes)
+	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		const X3D::X3DPtr <X3D::IndexedFaceSetTool> tool (node);
-
-		if (tool)
-			tool -> touchTime () .addInterest (&X3DGeometrySelectionEditor::set_touchTime, this);
+		for (const auto & node : geometryNodes)
+		{
+			const X3D::X3DPtr <X3D::IndexedFaceSetTool> tool (node);
+	
+			if (tool)
+				tool -> touchTime () .addInterest (&X3DGeometrySelectionEditor::set_touchTime, this);
+		}
 	}
 
 	set_touchTime ();
@@ -321,7 +325,7 @@ X3DGeometrySelectionEditor::on_geometry_selection_uniform_scale_toggled ()
 X3D::X3DPtr <X3D::IndexedFaceSetTool>
 X3DGeometrySelectionEditor::getCurrentTool () const
 {
-	const auto geometryNodes = getNodes <X3D::X3DBaseNode> (getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes (), { X3D::X3DConstants::IndexedFaceSetTool });
+	const auto geometryNodes = getNodes <X3D::X3DBaseNode> (getBrowserWindow () -> getSelection () -> getNodes (), { X3D::X3DConstants::IndexedFaceSetTool });
 
 	const auto result = std::max_element (geometryNodes .begin (),
 	                                      geometryNodes .end (),
@@ -341,7 +345,7 @@ X3DGeometrySelectionEditor::store ()
 {
 	getConfig () -> setItem ("geometrySelectionUniformScale", getGeometrySelectionUniformScaleButton () .get_active ());
 
-	getBrowserWindow () -> getGeometryEditor () -> getGeometryNodes () .removeInterest (&X3DGeometrySelectionEditor::set_geometry_nodes, this);
+	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&X3DGeometrySelectionEditor::set_geometry_nodes, this);
 }
 
 X3DGeometrySelectionEditor::~X3DGeometrySelectionEditor ()

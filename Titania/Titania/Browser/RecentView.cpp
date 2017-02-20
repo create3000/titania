@@ -50,6 +50,7 @@
 
 #include "RecentView.h"
 
+#include "../Browser/BrowserSelection.h"
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 #include "../Widgets/HistoryView/History.h"

@@ -67,11 +67,11 @@ extern "C"
 namespace titania {
 namespace X3D {
 
-class PolygonMode
+class PolygonModeLock
 {
 public:
 
-	PolygonMode (GLenum type) :
+	PolygonModeLock (GLenum type) :
 		m_polygonMode ()
 	{
 		glGetIntegerv (GL_POLYGON_MODE, m_polygonMode);
@@ -87,7 +87,7 @@ public:
 	back () const
 	{ return m_polygonMode [1]; }
 	
-	~PolygonMode ()
+	~PolygonModeLock ()
 	{
 		glPolygonMode (GL_FRONT, m_polygonMode [0]);
 		glPolygonMode (GL_BACK,  m_polygonMode [1]);
@@ -98,11 +98,11 @@ private:
 	GLint m_polygonMode [2];
 };
 	              
-class PolygonOffset
+class PolygonOffsetLock
 {
 public:
 
-	PolygonOffset (GLenum type, float factor, float units) :
+	PolygonOffsetLock (GLenum type, float factor, float units) :
 		   m_type (type),
 		m_enabled (glIsEnabled (type)),
 		 m_factor (0),
@@ -115,7 +115,7 @@ public:
 		glPolygonOffset (factor, units);
 	}
 
-	~PolygonOffset ()
+	~PolygonOffsetLock ()
 	{
 		if (not m_enabled)
 			glDisable (m_type);
@@ -131,11 +131,11 @@ private:
 	float  m_units;
 };
 	              
-class DepthTest
+class DepthTestLock
 {
 public:
 
-	 DepthTest (GLenum function) :
+	 DepthTestLock (GLenum function) :
 		 m_enabled (glIsEnabled (GL_DEPTH_TEST)),
 		m_function ()
 	{
@@ -145,7 +145,7 @@ public:
 		glDepthFunc (function);
 	}
 
-	~DepthTest ()
+	~DepthTestLock ()
 	{
 		if (not m_enabled)
 			glDisable (GL_DEPTH_FUNC);

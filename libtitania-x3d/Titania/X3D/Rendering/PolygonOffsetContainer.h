@@ -51,19 +51,20 @@
 #ifndef __TITANIA_X3D_RENDERING_POLYGON_OFFSET_CONTAINER_H__
 #define __TITANIA_X3D_RENDERING_POLYGON_OFFSET_CONTAINER_H__
 
+#include "../Rendering/OpenGL.h"
 #include "../Rendering/X3DCollectableObject.h"
 
 namespace titania {
 namespace X3D {
 
-class PolygonOffsetGroup;
+class PolygonOffset;
 
 class PolygonOffsetContainer :
 	public X3DCollectableObject
 {
 public:
 
-	PolygonOffsetContainer (PolygonOffsetGroup* const);
+	PolygonOffsetContainer (PolygonOffset* const);
 
 	virtual
 	void
@@ -76,10 +77,8 @@ public:
 
 private:
 
-	PolygonOffsetGroup* const node;
-	bool                      enabled;
-	float                     factor;
-	float                     units;
+	PolygonOffset* const                node;
+	std::unique_ptr <PolygonOffsetLock> polygonOffset;
 
 };
 

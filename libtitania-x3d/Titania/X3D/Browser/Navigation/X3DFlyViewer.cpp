@@ -443,7 +443,7 @@ X3DFlyViewer::disconnect ()
 void
 X3DFlyViewer::display (const MoveType type)
 {
-	PolygonMode polygonMode (GL_FILL);
+	PolygonModeLock polygonMode (GL_FILL);
 
 	// Configure HUD
 

@@ -52,6 +52,7 @@
 
 #include "../Base/X3DEditorObject.h"
 #include "../Browser/BrowserUserData.h"
+#include "../Browser/BrowserSelection.h"
 #include "../Browser/MagicImport.h"
 #include "../Browser/X3DBrowserWindow.h"
 

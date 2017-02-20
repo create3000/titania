@@ -76,10 +76,6 @@ public:
 	getCoordinateEditor () const
 	{ return coordEditor; }
 
-	const X3D::MFNode &
-	getGeometryNodes () const
-	{ return geometryNodes; }
-
 	bool
 	on_cut ();
 
@@ -284,9 +280,6 @@ private:
 	void
 	on_delete_selected_faces_clicked () final override;
 
-	X3D::MFNode
-	getGeometries (const X3D::MFNode & selection) const;
-
 	virtual
 	void
 	store () final override;
@@ -297,7 +290,6 @@ private:
 
 	X3D::SFNode     normalEditor;
 	X3D::SFNode     coordEditor;
-	X3D::MFNode     geometryNodes;
 	X3D::BrowserPtr browser;
 
 	X3D::NodeType  privateViewer;

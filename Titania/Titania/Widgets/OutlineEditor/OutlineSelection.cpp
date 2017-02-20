@@ -50,6 +50,7 @@
 
 #include "OutlineSelection.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "OutlineTreeModel.h"
 #include "X3DOutlineTreeView.h"

@@ -769,7 +769,6 @@
     <None Include="share\titania\tools\library\QuadSphere.x3dv" />
     <None Include="Titania\X3D\Editing\Undo\UndoStepContainer.h" />
     <None Include="Titania\X3D\Rendering\PolygonOffsetContainer.h" />
-    <None Include="Titania\X3D\Components\Rendering\PolygonOffsetGroup.h" />
     <None Include="Titania\X3D\Components\Rendering\DepthBuffer.h" />
     <None Include="Titania\X3D\Rendering\DepthTestContainer.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.h" />
@@ -934,6 +933,7 @@
     <None Include="Titania\X3D\Tools\NURBS\NurbsSweptSurfaceTool.h" />
     <None Include="Titania\X3D\Tools\NURBS\NurbsSwungSurfaceTool.h" />
     <None Include="Titania\X3D\Browser\Tools\ToolType.h" />
+    <None Include="Titania\X3D\Components\Rendering\PolygonOffset.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1454,7 +1454,6 @@
     <Compile Include="Titania\X3D\Tools\Sound\SoundTool.cpp" />
     <Compile Include="Titania\X3D\Editing\Undo\UndoStepContainer.cpp" />
     <Compile Include="Titania\X3D\Rendering\PolygonOffsetContainer.cpp" />
-    <Compile Include="Titania\X3D\Components\Rendering\PolygonOffsetGroup.cpp" />
     <Compile Include="Titania\X3D\Rendering\DepthTestContainer.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\DepthBuffer.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformMatrix3DNode.cpp" />
@@ -1594,6 +1593,7 @@
     <Compile Include="Titania\X3D\Tools\NURBS\NurbsCurveTool.cpp" />
     <Compile Include="Titania\X3D\Tools\NURBS\NurbsSweptSurfaceTool.cpp" />
     <Compile Include="Titania\X3D\Tools\NURBS\NurbsSwungSurfaceTool.cpp" />
+    <Compile Include="Titania\X3D\Components\Rendering\PolygonOffset.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

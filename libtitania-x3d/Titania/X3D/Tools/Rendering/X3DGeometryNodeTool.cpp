@@ -99,10 +99,14 @@ X3DGeometryNodeTool::setExecutionContext (X3DExecutionContext* const executionCo
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	getBrowser () -> getSelection () -> isEnabled () .removeInterest (&X3DGeometryNodeTool::set_pickable, this);
+
 	normalToolNode -> setExecutionContext (executionContext);
 	coordToolNode  -> setExecutionContext (executionContext);
 
 	X3DNodeTool::setExecutionContext (executionContext);
+
+	getBrowser () -> getSelection () -> isEnabled () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
 }
 
 void
@@ -143,7 +147,7 @@ X3DGeometryNodeTool::set_toolType ()
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -174,7 +178,7 @@ X3DGeometryNodeTool::set_pickable ()
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -213,7 +217,7 @@ X3DGeometryNodeTool::eventProcessed ()
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 
 	try
@@ -278,7 +282,7 @@ X3DGeometryNodeTool::eventProcessed ()
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -330,9 +334,9 @@ X3DGeometryNodeTool::traverse (const TraverseType type, X3DRenderObject* const r
 void
 X3DGeometryNodeTool::draw (ShapeContainer* const context)
 {
-	if (PolygonMode (GL_FILL) .front () == GL_FILL)
+	if (PolygonModeLock (GL_FILL) .front () == GL_FILL)
 	{
-		PolygonOffset polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
+		PolygonOffsetLock polygonOffset (GL_POLYGON_OFFSET_FILL, 1, 1);
 
 		getNode <X3DGeometryNode> () -> draw (context);
 	}

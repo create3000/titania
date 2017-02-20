@@ -253,7 +253,7 @@ RenderingProperties::display ()
 
 	// Display statistics
 
-	PolygonMode polygonMode (GL_FILL);
+	PolygonModeLock polygonMode (GL_FILL);
 
 	world -> traverse (TraverseType::DISPLAY, nullptr);
 }

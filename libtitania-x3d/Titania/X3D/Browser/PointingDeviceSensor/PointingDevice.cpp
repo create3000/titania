@@ -52,8 +52,6 @@
 
 #include "PointingDevice.h"
 
-#include "../Selection.h"
-
 namespace titania {
 namespace X3D {
 

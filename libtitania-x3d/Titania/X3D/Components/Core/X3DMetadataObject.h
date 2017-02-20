@@ -81,6 +81,11 @@ public:
 	reference () const
 	{ return *fields .reference; }
 
+	///  @name Member access
+
+	bool
+	belongsToProvider () const;
+
 	///  @name Destruction
 
 	virtual

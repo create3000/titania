@@ -50,6 +50,8 @@
 
 #include "X3DEditorObject.h"
 
+#include "../Browser/BrowserSelection.h"
+
 #include <regex>
 
 namespace titania {
@@ -229,6 +231,12 @@ X3DEditorObject::endRedoGroup (const std::string & name, X3D::UndoStepPtr & undo
 
 		undoStep .reset ();
 	}
+}
+
+const X3D::MFNode &
+X3DEditorObject::getSelectedNodes () const
+{
+	return getBrowserWindow () -> getSelection () -> getNodes ();
 }
 
 } // puck

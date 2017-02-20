@@ -51,7 +51,6 @@
 #ifndef __TITANIA_BROWSER_X3DBROWSER_EDITOR_H__
 #define __TITANIA_BROWSER_X3DBROWSER_EDITOR_H__
 
-#include "../Browser/BrowserSelection.h"
 #include "../Browser/X3DBrowserWidget.h"
 
 #include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
@@ -62,6 +61,7 @@
 namespace titania {
 namespace puck {
 
+class BrowserSelection;
 class MagicImport;
 
 class X3DBrowserEditor :

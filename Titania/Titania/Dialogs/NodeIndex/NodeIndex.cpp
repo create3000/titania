@@ -51,6 +51,7 @@
 #include "NodeIndex.h"
 
 #include "../../Base/AdjustmentObject.h"
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
