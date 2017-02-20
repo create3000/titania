@@ -199,7 +199,7 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 	{
 		case OutlineIterType::ExternProtoDeclaration:
 		{
-			if (get_user_data (field) -> selected & OUTLINE_SPECIAL)
+			if (field -> getUserData <UserData> () -> selected & OUTLINE_SPECIAL)
 				break;
 			
 			return false;

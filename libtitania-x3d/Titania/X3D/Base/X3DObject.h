@@ -66,7 +66,7 @@
 namespace titania {
 namespace X3D {
 
-typedef std::shared_ptr <X3DBase> UserDataPtr;
+using UserDataPtr = std::shared_ptr <X3DBase>;
 
 /**
  *  Class to represent an object that is the base for all X3D objects.
@@ -122,11 +122,22 @@ public:
 	setUserData (const UserDataPtr & value)
 	{ realize (); data -> userData = value; }
 
-	///  Returns the user data of this object. If no user data set an empty pointer is returned.
+	///  Returns the user data of this object. If no user data are available, an empty pointer is returned.
 	virtual
 	const UserDataPtr &
 	getUserData () const
 	{ realize (); return data -> userData; }
+
+	///  Returns the user data of this object. If no user data are available, new user data are created.
+	template <class Type>
+	std::shared_ptr <Type>
+	getUserData ()
+	{
+		if (not getUserData ())
+			setUserData (std::make_shared <Type> ());
+
+		return std::dynamic_pointer_cast <Type> (getUserData ());
+	}
 
 	///  @name String creation
 

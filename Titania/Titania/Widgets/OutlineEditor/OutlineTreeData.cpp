@@ -105,14 +105,14 @@ OutlineTreeData::OutlineTreeData (const OutlineIterType type_, X3D::X3DChildObje
 			{
 				const auto importedNode = dynamic_cast <X3D::ImportedNode*> (parent .getValue ());
 				const auto exportedNode = importedNode -> getExportedNode ();
-				parent -> setUserData (get_user_data (exportedNode));
+				parent -> setUserData (exportedNode -> getUserData <UserData> ());
 				break;
 			}
 			case OutlineIterType::ExportedNode:
 			{
 				const auto exportedNode = dynamic_cast <X3D::ExportedNode*> (parent .getValue ());
 				const auto localNode    = exportedNode -> getLocalNode ();
-				parent -> setUserData (get_user_data (localNode));
+				parent -> setUserData (localNode -> getUserData <UserData> ());
 				break;
 			}
 			default:
@@ -193,18 +193,9 @@ OutlineTreeData::get_user_data () const
 	}
 
 	if (object)
-		return get_user_data (object);
+		return object -> getUserData <UserData> ();
 
-	return get_user_data (get_object ());
-}
-
-UserDataPtr
-OutlineTreeData::get_user_data (X3D::X3DChildObject* const object)
-{
-	if (not object -> getUserData ())
-		object -> setUserData (X3D::UserDataPtr (new UserData ()));
-
-	return std::static_pointer_cast <UserData> (object -> getUserData ());
+	return get_object () -> getUserData <UserData> ();
 }
 
 ///  @name Destruction

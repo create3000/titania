@@ -87,8 +87,10 @@ public:
 
 	OutlineTreeData (const OutlineIterType, X3D::X3DChildObject* const, const Gtk::TreeModel::Path &, const size_t);
 
+	///  @name Comparision operations
+
 	bool
-	is (X3D::X3DChildObject* const) const;
+	is (X3D::X3DChildObject* const value) const;
 
 	///  @name Member access
 
@@ -110,10 +112,6 @@ public:
 
 	UserDataPtr
 	get_user_data () const;
-
-	static
-	UserDataPtr
-	get_user_data (X3D::X3DChildObject* const);
 
 	///  @name Route handling
 
@@ -143,8 +141,7 @@ public:
 
 	///  @name Destruction
 
-	virtual
-	~OutlineTreeData () final override;
+	~OutlineTreeData ();
 
 
 private:

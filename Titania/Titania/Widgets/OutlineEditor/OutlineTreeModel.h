@@ -129,10 +129,6 @@ public:
 	get_user_data (const iterator &) const;
 
 	static
-	UserDataPtr
-	get_user_data (X3D::X3DChildObject*);
-
-	static
 	OutlineIterType
 	get_data_type (const iterator &);
 

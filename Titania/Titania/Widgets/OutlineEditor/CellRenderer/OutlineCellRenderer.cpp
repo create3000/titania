@@ -331,7 +331,7 @@ OutlineCellRenderer::is_full_expanded () const
 {
 	const auto userData = property_data () .get_value () -> get_user_data ();
 
-	return userData -> full_expanded;
+	return userData -> fullExpanded;
 }
 
 const Glib::RefPtr <Gdk::Pixbuf> &

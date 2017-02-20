@@ -1,25 +1,87 @@
-#VRML V2.0 utf8 Titania V0.7.3
+#X3D V3.3 utf8 Titania V2.0.1
 
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Sun, 19 Feb 2017 13:26:31 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "icon" "../../ui/icons/icon-bw.svg"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/home.x3dv"
+META "modified" "Sun, 19 Feb 2017 13:26:31 GMT"
+META "outputStyle" "nicest"
 META "title" "about:home"
 
 EXTERNPROTO Rotor [
-  exposedField SFBool     enabled
-  exposedField SFTime     cycleInterval
-  exposedField SFVec3f    axis
-  exposedField SFFloat    angle
-  exposedField SFBool     loop
-  exposedField SFTime     startTime
-  exposedField SFTime     pauseTime
-  exposedField SFTime     resumeTime
-  exposedField SFTime     stopTime
-  eventOut     SFBool     isActive
-  eventOut     SFTime     cycleTime
-  eventOut     SFRotation rotation_changed
+  inputOutput SFBool     enabled
+  inputOutput SFTime     cycleInterval
+  inputOutput SFVec3f    axis
+  inputOutput SFFloat    angle
+  inputOutput SFBool     loop
+  inputOutput SFTime     startTime
+  inputOutput SFTime     pauseTime
+  inputOutput SFTime     resumeTime
+  inputOutput SFTime     stopTime
+  outputOnly  SFBool     isActive
+  outputOnly  SFTime     cycleTime
+  outputOnly  SFRotation rotation_changed
 ]
 "library/Rotor.x3dv"
 
-DEF NavigationInfo NavigationInfo {
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "NONE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              34
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "home"
+}
+
+DEF NavigationInfo_1 NavigationInfo {
   type "NONE"
 }
 
@@ -46,7 +108,7 @@ DEF Slower Rotor {
 
 DEF _1 TimeSensor {
   cycleInterval 40
-  startTime 1408738676.4655
+  startTime 1487510741.98483
 }
 
 DEF _2 ScalarInterpolator {
@@ -79,7 +141,7 @@ DEF _3 PositionInterpolator {
   ]
 }
 
-DEF Titania Transform {
+DEF Titania_1 Transform {
   children Shape {
     appearance Appearance {
       material DEF _4 Material {
@@ -105,7 +167,7 @@ DEF Titania Transform {
 }
 
 DEF Small Transform {
-  rotation 0 0 -1 5.73428
+  rotation 0 0 -1 5.15162805048931
   scale 0.222222 0.222222 1
   children DEF loops Inline {
     url "library/red.orange.yellow.x3dv"
@@ -117,7 +179,7 @@ DEF Medium Transform {
 }
 
 DEF Large Transform {
-  rotation 0 0 1 4.65809
+  rotation 0 0 1 4.69028819712407
   scale 4.5 4.5 1
   children USE loops
 }

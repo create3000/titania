@@ -326,23 +326,17 @@ X3DOutlineTreeView::get_iters (X3D::X3DChildObject* const object) const
 UserDataPtr
 X3DOutlineTreeView::get_user_data (const Gtk::TreeModel::iterator & iter) const
 {
-	UserDataPtr user_data = get_model () -> get_user_data (iter);
+	const auto userData = get_model () -> get_user_data (iter);
 
 	if (get_data_type (iter) == OutlineIterType::X3DExecutionContext)
 	{
-		if (not user_data -> user_data)
-			user_data -> user_data .reset (new UserData ());
+		if (not userData -> userData)
+			userData -> userData .reset (new UserData ());
 
-		return user_data -> user_data;
+		return userData -> userData;
 	}
 
-	return user_data;
-}
-
-UserDataPtr
-X3DOutlineTreeView::get_user_data (X3D::X3DChildObject* const object)
-{
-	return OutlineTreeModel::get_user_data (object);
+	return userData;
 }
 
 OutlineIterType
@@ -369,7 +363,7 @@ X3DOutlineTreeView::set_open_path (const Gtk::TreeModel::iterator & iter, const 
 	const auto userData = get_user_data (iter);
 
 	if (userData)
-		userData -> open_path = value;
+		userData -> openPath = value;
 }
 
 Gtk::TreeModel::Path
@@ -378,7 +372,7 @@ X3DOutlineTreeView::get_open_path (const Gtk::TreeModel::iterator & iter) const
 	const auto userData = get_user_data (iter);
 
 	if (userData)
-		return userData -> open_path;
+		return userData -> openPath;
 
 	return Gtk::TreeModel::Path ();
 }
@@ -409,7 +403,7 @@ X3DOutlineTreeView::is_full_expanded (const Gtk::TreeModel::iterator & iter, con
 	const auto userData = get_user_data (iter);
 
 	if (userData)
-		userData -> full_expanded = value;
+		userData -> fullExpanded = value;
 }
 
 bool
@@ -418,7 +412,7 @@ X3DOutlineTreeView::is_full_expanded (const Gtk::TreeModel::iterator & iter) con
 	const auto userData = get_user_data (iter);
 
 	if (userData)
-		return userData -> full_expanded;
+		return userData -> fullExpanded;
 
 	return false;
 }
@@ -963,7 +957,7 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			model_expand_node (sfnode, iter);
 
 			get_model () -> append (iter, OutlineIterType::X3DField, url);
-			get_user_data (url) -> selected |= OUTLINE_SPECIAL;
+			url -> getUserData <UserData> () -> selected |= OUTLINE_SPECIAL;
 
 			try
 			{

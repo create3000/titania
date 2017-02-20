@@ -145,6 +145,12 @@ X3DObject::toJSONString () const
 void
 X3DObject::dispose ()
 {
+	if (data)
+	{
+		if (data -> userData)
+			data -> userData -> dispose ();
+	}
+
 	X3DInput::dispose  ();
 	X3DOutput::dispose ();
 }

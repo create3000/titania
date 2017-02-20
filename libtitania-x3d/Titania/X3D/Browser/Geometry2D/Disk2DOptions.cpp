@@ -83,14 +83,14 @@ Disk2DOptions::build ()
 {
 	getVertices () .reserve (dimension () - 1);
 
-	const double angle = pi2 <double> / (dimension () - 1);
+	const auto angle = pi2 <double> / (dimension () - 1);
 
 	for (int32_t n = 0, size = dimension () - 1; n < size; ++ n)
 	{
-		const double theta = angle * n;
+		const auto theta = angle * n;
 
-		const std::complex <double> texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
-		const std::complex <double> point    = std::polar <double> (1, theta);
+		const auto texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
+		const auto point    = std::polar <double> (1, theta);
 
 		getTexCoords () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
 		getNormals   () .emplace_back (0, 0, 1);

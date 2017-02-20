@@ -139,7 +139,7 @@ OutlineSelection::select (X3D::X3DBaseNode* const node, const bool value, X3D::C
 
 		// Select node
 
-		select (X3DOutlineTreeView::get_user_data (node), value);
+		select (node -> getUserData <UserData> (), value);
 
 		// Select children
 
@@ -153,7 +153,7 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, const bool value
 {
 	// Select field
 
-	select (X3DOutlineTreeView::get_user_data (field), value);
+	select (field -> getUserData <UserData> (), value);
 
 	// Select children
 
@@ -172,7 +172,7 @@ OutlineSelection::select (X3D::X3DFieldDefinition* const field, const bool value
 
 			for (auto & sfnode : *mfnode)
 			{
-				select (X3DOutlineTreeView::get_user_data (&sfnode), value);
+				select (sfnode .getUserData <UserData> (), value);
 
 				select (sfnode .getValue (), value, seen);
 			}
@@ -213,24 +213,24 @@ OutlineSelection::update (X3D::X3DFieldDefinition* const field, const X3D::SFNod
 
 		for (const auto & parent : node -> getParents ())
 		{
-			if (X3DOutlineTreeView::get_user_data (parent) -> selected & OUTLINE_SELECTED)
+			if (parent -> getUserData <UserData> () -> selected & OUTLINE_SELECTED)
 			{
 				selected = true;
 				break;
 			}
 		}
 
-		if ((X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED) == selected)
+		if ((node -> getUserData <UserData> () -> selected & OUTLINE_SELECTED) == selected)
 			return;
 
 		select (node, selected);
 	}
 	else
 	{
-		const bool selected = (X3DOutlineTreeView::get_user_data (field) -> selected & OUTLINE_SELECTED)
+		const bool selected = (field -> getUserData <UserData> () -> selected & OUTLINE_SELECTED)
 		                      or selection -> isSelected (node);
 
-		if ((X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED) == selected)
+		if ((node -> getUserData <UserData> () -> selected & OUTLINE_SELECTED) == selected)
 			return;
 
 		select (node, selected);
@@ -243,9 +243,9 @@ OutlineSelection::update (X3D::X3DFieldDefinition* const field, const X3D::SFNod
 void
 OutlineSelection::update (const X3D::SFNode & node, X3D::X3DFieldDefinition* const field)
 {
-	const bool selected = X3DOutlineTreeView::get_user_data (node) -> selected & OUTLINE_SELECTED;
+	const bool selected = node -> getUserData <UserData> () -> selected & OUTLINE_SELECTED;
 
-	if ((X3DOutlineTreeView::get_user_data (field) -> selected & OUTLINE_SELECTED) == selected)
+	if ((field -> getUserData <UserData> () -> selected & OUTLINE_SELECTED) == selected)
 		return;
 	
 	X3D::ChildObjectSet seen;

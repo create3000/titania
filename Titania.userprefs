@@ -1,19 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserSelection.cpp">
     <Files>
-      <File FileName="Papers/VRML1.spec" Line="1502" Column="27" />
       <File FileName="libtitania-x3d/Titania/X3D/Parser/VRML1/Parser.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Parser/VRML1/Parser.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="862" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="251" Column="45" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="422" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.h" Line="255" Column="8" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.cpp" Line="112" Column="34" />
-      <File FileName="libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Arguments.h" Line="142" Column="1" />
+      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="96" Column="3" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="21" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

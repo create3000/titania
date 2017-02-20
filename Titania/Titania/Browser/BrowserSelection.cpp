@@ -100,9 +100,9 @@ BrowserSelection::set_browser ()
 	{
 		const auto & selection = browser -> getSelection ();
 
-		selection -> isEnabled (enabled);
+		selection -> isEnabled         (enabled);
 		selection -> setSelectMultiple (selectMultiple);
-		selection -> setSelectLowest (selectLowest);
+		selection -> setSelectLowest   (selectLowest);
 		selection -> setSelectGeometry (selectGeometry);
 
 		selection -> isOver ()        .addInterest (over);
@@ -121,10 +121,6 @@ BrowserSelection::set_execution_context ()
 	{
 		const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
 		const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
-
-__LOG__ << current .size () << std::endl;
-for (const auto & node : current)
-	__LOG__ << node -> getTypeName () << std::endl;
 
 		setNodes (current);
 	}
@@ -267,17 +263,17 @@ BrowserSelection::setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 void
 BrowserSelection::undoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 {
-	undoStep -> addUndoFunction (&X3D::Selection::setNodes,
-	                             browser-> getSelection (),
-	                             browser-> getSelection () -> getNodes ());
+	const auto & selection = browser-> getSelection ();
+
+	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 }
 
 void
 BrowserSelection::redoRestoreNodes (const X3D::UndoStepPtr & undoStep)
 {
-	undoStep -> addRedoFunction (&X3D::Selection::setNodes,
-	                             browser-> getSelection (),
-	                             browser-> getSelection () -> getNodes ());
+	const auto & selection = browser-> getSelection ();
+
+	undoStep -> addRedoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
 }
 
 BrowserSelection::~BrowserSelection ()

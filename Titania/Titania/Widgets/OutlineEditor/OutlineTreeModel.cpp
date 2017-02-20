@@ -100,12 +100,6 @@ OutlineTreeModel::get_user_data (const iterator & iter) const
 	return nullptr;
 }
 
-UserDataPtr
-OutlineTreeModel::get_user_data (X3D::X3DChildObject* object)
-{
-	return OutlineTreeData::get_user_data (object);
-}
-
 OutlineIterType
 OutlineTreeModel::get_data_type (const iterator & iter)
 {

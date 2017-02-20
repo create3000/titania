@@ -58,38 +58,48 @@
 namespace titania {
 namespace puck {
 
-constexpr int OUTLINE_SELECTED        = 1;
-constexpr int OUTLINE_SELECTED_INPUT  = 1 << 1;
-constexpr int OUTLINE_SELECTED_OUTPUT = 1 << 2;
-constexpr int OUTLINE_OVER_INPUT      = 1 << 3;
-constexpr int OUTLINE_OVER_OUTPUT     = 1 << 4;
-constexpr int OUTLINE_SPECIAL         = 1 << 5;
+constexpr int32_t OUTLINE_SELECTED        = 1;
+constexpr int32_t OUTLINE_SELECTED_INPUT  = 1 << 1;
+constexpr int32_t OUTLINE_SELECTED_OUTPUT = 1 << 2;
+constexpr int32_t OUTLINE_OVER_INPUT      = 1 << 3;
+constexpr int32_t OUTLINE_OVER_OUTPUT     = 1 << 4;
+constexpr int32_t OUTLINE_SPECIAL         = 1 << 5;
+constexpr int32_t SELECTED                = 1 << 6;
+constexpr int32_t PREVIOUSLY_SELECTED     = 1 << 7;
 
 class UserData :
 	public X3D::X3DBase
 {
 public:
 
+	// Construction
+
 	UserData () :
-		    open_path (),
-		        paths (),
-		     expanded (false),
-		full_expanded (false),
-		     selected (0)
+		    openPath (),
+		       paths (),
+		    expanded (false),
+		fullExpanded (false),
+		    selected (0),
+	       userData ()
 	{ }
 
-	Gtk::TreeModel::Path            open_path; // Path of expanded node/clone
-	std::set <Gtk::TreeModel::Path> paths;     // All visible paths
-
-	bool expanded;                             // Expanded state
-	bool full_expanded;                        // Expanded mode
-	int  selected;                             // Selected state
-
-	std::shared_ptr <UserData> user_data;
+	// Destruction
 
 	virtual
 	void
-	dispose () final override;
+	dispose () final override
+	{ }
+
+	// Members
+
+	Gtk::TreeModel::Path            openPath;  // Path of expanded node/clone
+	std::set <Gtk::TreeModel::Path> paths;     // All visible paths
+
+	bool    expanded;                          // Expanded state
+	bool    fullExpanded;                      // Expanded mode
+	int32_t selected;                          // Selected state
+
+	std::shared_ptr <UserData> userData;
 
 
 private:
@@ -105,14 +115,6 @@ private:
 	operator = (UserData &&) = delete;
 
 };
-
-inline
-void
-UserData::dispose ()
-{
-	if (user_data)
-		user_data -> dispose ();
-}
 
 using UserDataPtr = std::shared_ptr <UserData>;
 
