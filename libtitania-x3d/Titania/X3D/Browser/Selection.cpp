@@ -209,7 +209,7 @@ Selection::setNodes (const MFNode & value)
 
 	if (value .size () == 1)
 	{
-		const auto iter = std::lower_bound (hierarchy .begin (), hierarchy .end (), value [0]);
+		const auto iter = std::find (hierarchy .begin (), hierarchy .end (), value [0]);
 
 		if (iter == hierarchy .end ())
 			clearHierarchyState = true;
@@ -304,7 +304,7 @@ Selection::getParents ()
 	if (not selectedNode)
 		return MFNode ();
 
-	auto iter = std::lower_bound (hierarchy .begin (), hierarchy .end (), selectedNode);
+	auto iter = std::find (hierarchy .begin (), hierarchy .end (), selectedNode);
 
 	if (iter == hierarchy .begin ())
 		return MFNode ();
@@ -326,7 +326,7 @@ Selection::getChildren ()
 	if (not selectedNode)
 		return MFNode ();
 
-	auto iter = std::lower_bound (hierarchy .begin (), hierarchy .end (), selectedNode);
+	auto iter = std::find (hierarchy .begin (), hierarchy .end (), selectedNode);
 
 	if (iter == hierarchy .end ())
 		return MFNode ();
