@@ -132,6 +132,10 @@ public:
 	bool
 	isPointerInRectangle (const Vector4i &) const;
 
+	std::vector <X3DChildObject*> &
+	getHierarchy ()
+	{ return hierarchy; }
+
 	std::vector <PointingDeviceSensorContainerSet> &
 	getSensors ()
 	{ return enabledSensors; }
@@ -206,6 +210,7 @@ private:
 	Vector2d                                       pointer;
 	Line3d                                         hitRay;
 	HitArray                                       hits;
+	std::vector <X3DChildObject*>                  hierarchy;
 	std::vector <PointingDeviceSensorContainerSet> enabledSensors;
 	std::vector <PointingDeviceSensorContainerPtr> overSensors;
 	std::vector <PointingDeviceSensorContainerPtr> activeSensors;

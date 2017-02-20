@@ -337,6 +337,8 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 	{
 		case TraverseType::POINTER:
 		{
+			getBrowser () -> getHierarchy () .emplace_back (this);
+
 			if (not pointingDeviceSensors .empty ())
 			{
 				renderObject -> getBrowser () -> getSensors () .emplace_back ();
@@ -357,6 +359,7 @@ X3DGroupingNode::traverse (const TraverseType type, X3DRenderObject* const rende
 			if (not pointingDeviceSensors .empty ())
 				renderObject -> getBrowser () -> getSensors () .pop_back ();
 
+			getBrowser () -> getHierarchy () .pop_back ();
 			return;
 		}
 		case TraverseType::CAMERA:

@@ -165,6 +165,13 @@ public:
 	getNodes () const
 	{ return nodes; }
 
+
+protected:
+
+	///  @name Friends
+
+	friend class X3DPointingDeviceSensorContext;
+
 	///  @name Operations
 
 	bool

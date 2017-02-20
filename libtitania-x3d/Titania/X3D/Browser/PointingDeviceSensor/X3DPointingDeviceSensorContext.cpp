@@ -74,6 +74,7 @@ X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
 	        pointer (),
 	         hitRay (),
 	           hits (),
+	      hierarchy (),
 	 enabledSensors ({ PointingDeviceSensorContainerSet () }),
 	    overSensors (),
 	  activeSensors (),
@@ -166,7 +167,8 @@ X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, c
 	                             X3DPtr <X3DLayerNode> (layer),
 	                             layerNumber,
 	                             getBrowser () -> getDepthTest ()   .top (),
-	                             getBrowser () -> getDepthOffset () .top ()));
+	                             getBrowser () -> getDepthOffset () .top (),
+	                             hierarchy));
 }
 
 bool
@@ -259,22 +261,27 @@ X3DPointingDeviceSensorContext::setButtonReleaseEvent ()
 {
 	// Selection
 
-	if (not hasMoved or chrono::now () - pressTime < SELECTION_TIME)
+	//if (not hasMoved or chrono::now () - pressTime < SELECTION_TIME)
+	if (getBrowser () -> getSelection () -> isEnabled ())
 	{
-		if (getBrowser () -> getSelection () -> selectNode ())
-			return true;
+		getBrowser () -> getSelection () -> selectNode ();
+	}
+	else
+	{
+		const auto nearestHit = getHits () .empty ()
+		                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorContainerSet (), nullptr, selectedLayer, 0, true, 0)
+		                        : getNearestHit ();
+	
+		selectedLayer = nullptr;
+	
+		for (const auto & pointingDeviceSensorNode : activeSensors)
+			pointingDeviceSensorNode -> set_active (false, nearestHit);
+	
+		activeSensors .clear ();
 	}
 
-	const auto nearestHit = getHits () .empty ()
-	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorContainerSet (), nullptr, selectedLayer, 0, true, 0)
-	                        : getNearestHit ();
+	hierarchy .clear ();
 
-	selectedLayer = nullptr;
-
-	for (const auto & pointingDeviceSensorNode : activeSensors)
-		pointingDeviceSensorNode -> set_active (false, nearestHit);
-
-	activeSensors .clear ();
 	return true;
 }
 

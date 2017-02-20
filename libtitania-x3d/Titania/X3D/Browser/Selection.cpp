@@ -289,12 +289,7 @@ Selection::selectNode ()
 
 	else
 	{
-		// TODO: Find Transform that belongs to hit.
-
-		const auto hierarchies = getHierarchies (getBrowser () -> getNearestHit () -> shape);
-
-		if (not hierarchies .empty ())
-			node = getTransform (hierarchies .front ());
+		node = getTransform (getBrowser () -> getNearestHit () -> hierarchy);
 	}
 
 	if (node)

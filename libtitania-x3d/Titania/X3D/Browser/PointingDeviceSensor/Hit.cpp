@@ -65,7 +65,8 @@ Hit::Hit (const Vector2d & pointer,
           const X3DPtr <X3DLayerNode> & layer,
           const size_t layerNumber,
           const bool depthTest,
-          const double depthOffset) :
+          const double depthOffset,
+	       const std::vector <X3DChildObject*> & hierarchy) :
 	        pointer (pointer),
 	modelViewMatrix (modelViewMatrix),    // Shapes model view matrix.
 	         hitRay (hitRay),             // Hit ray in absolute space (null space).
@@ -74,7 +75,8 @@ Hit::Hit (const Vector2d & pointer,
 	        sensors (sensors),
 	          shape (shape),
 	          layer (layer),
-	    layerNumber (layerNumber)
+	    layerNumber (layerNumber),
+	      hierarchy (hierarchy)
 { }
 
 Hit::~Hit ()

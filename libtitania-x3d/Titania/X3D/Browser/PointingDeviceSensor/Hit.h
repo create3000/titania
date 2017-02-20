@@ -58,6 +58,7 @@
 
 #include <memory>
 #include <tuple>
+#include <vector>
 
 namespace titania {
 namespace X3D {
@@ -71,16 +72,17 @@ class Hit
 {
 public:
 
-	Hit (const Vector2d &,
-	     const Matrix4d &,
-	     const Line3d &,
-	     const IntersectionPtr &,
-	     const PointingDeviceSensorContainerSet &,
-	     const X3DPtr <X3DShapeNode> &,
-	     const X3DPtr <X3DLayerNode> &,
-	     const size_t,
-	     const bool,
-	     const double);
+	Hit (const Vector2d & pointer,
+	     const Matrix4d & modelViewMatrix,
+	     const Line3d & hitRay,
+	     const IntersectionPtr & intersection,
+	     const PointingDeviceSensorContainerSet & sensors,
+	     const X3DPtr <X3DShapeNode> & shape,
+	     const X3DPtr <X3DLayerNode> & layer,
+	     const size_t layerNumber,
+	     const bool depthTest,
+	     const double depthOffset,
+	     const std::vector <X3DChildObject*> & hierarchy = { });
 
 	const Vector2d                         pointer;
 	const Matrix4d                         modelViewMatrix;
@@ -91,6 +93,7 @@ public:
 	const X3DPtr <X3DShapeNode>            shape;
 	const X3DPtr <X3DLayerNode>            layer;
 	const size_t                           layerNumber;
+	const std::vector <X3DChildObject*>     hierarchy;
 
 	~Hit ();
 
