@@ -112,7 +112,7 @@ private:
 	add_route (const double, const double);
 
 	void
-	set_access_type_selection (const UserDataPtr &, const int);
+	set_access_type_selection (const UserDataPtr &, const size_t);
 
 	void
 	clear_access_type_selection (const UserDataPtr &);

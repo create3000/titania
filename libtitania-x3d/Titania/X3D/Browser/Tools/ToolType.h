@@ -51,10 +51,13 @@
 #ifndef __TITANIA_X3D_BROWSER_TOOLS_TOOL_TYPE_H__
 #define __TITANIA_X3D_BROWSER_TOOLS_TOOL_TYPE_H__
 
+#include <cstdint>
+
 namespace titania {
 namespace X3D {
 
-enum class ToolType
+enum class ToolType :
+	uint32_t
 {
 	NO_TOOL,
 	MOVE_TOOL,

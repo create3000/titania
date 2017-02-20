@@ -58,6 +58,7 @@
 #include "../Configuration/UnitCategory.h"
 #include "../Routing/RouteSet.h"
 
+#include <bitset>
 #include <vector>
 
 namespace titania {
@@ -184,33 +185,33 @@ public:
 
 	const FieldDefinitionSet &
 	getReferences () const
-	{ realize (); return io -> references; }
+	{ realize (); return data -> references; }
 
 	///  @name Route handling
 
 	void
 	addInputRoute (Route* const route)
-	{ realize (); io -> inputRoutes .emplace (route); }
+	{ realize (); data -> inputRoutes .emplace (route); }
 
 	void
 	removeInputRoute (Route* const route)
-	{ realize (); io -> inputRoutes .erase (route); }
+	{ realize (); data -> inputRoutes .erase (route); }
 
 	const RouteSet &
 	getInputRoutes () const
-	{ realize (); return io -> inputRoutes; }
+	{ realize (); return data -> inputRoutes; }
 
 	void
 	addOutputRoute (Route* const route)
-	{ realize (); io -> outputRoutes .emplace (route); }
+	{ realize (); data -> outputRoutes .emplace (route); }
 
 	void
 	removeOutputRoute (Route* const route)
-	{ realize (); io -> outputRoutes .erase (route); }
+	{ realize (); data -> outputRoutes .erase (route); }
 
 	const RouteSet &
 	getOutputRoutes () const
-	{ realize (); return io -> outputRoutes; }
+	{ realize (); return data -> outputRoutes; }
 
 	///  @name Interest handling
 
@@ -230,7 +231,7 @@ public:
 
 	const FieldDefinitionSet &
 	getInterests () const
-	{ realize (); return io -> outputInterests; }
+	{ realize (); return data -> outputInterests; }
 
 	///  @name Event handling
 
@@ -294,22 +295,17 @@ private:
 
 	///  @name Static Members
 
-	using FlagsType = uint16_t;
-
-	static constexpr FlagsType ACCESS_TYPE_OFFSET = 0;
-	static constexpr FlagsType ACCESS_TYPE_BITS   = 7 << ACCESS_TYPE_OFFSET;
-	static constexpr FlagsType UNIT_OFFSET        = 3;
-	static constexpr FlagsType UNIT_BITS          = 15 << UNIT_OFFSET;
-	static constexpr FlagsType IS_SET_BIT         = 1 << 7;
-	static constexpr FlagsType HIDDEN_BIT         = 1 << 8;
-	static constexpr FlagsType GEO_BIT            = 1 << 9;
+	static constexpr size_t IS_SET_BIT = 0;
+	static constexpr size_t HIDDEN_BIT = 1;
+	static constexpr size_t GEO_BIT    = 2;
 
 	///  @name Members
 
-	struct IO
+	struct Data
 	{
-		IO () :
-			flags (initializeOnly)
+		Data () :
+			accessType (initializeOnly),
+			      unit (UnitCategory::NONE)
 		{ }
 
 		FieldDefinitionSet                   references;
@@ -317,10 +313,12 @@ private:
 		RouteSet                             outputRoutes;
 		std::set <const X3DFieldDefinition*> inputInterests;
 		std::set <X3DFieldDefinition*>       outputInterests;
-		FlagsType                            flags;
+		AccessType                           accessType;
+		UnitCategory                         unit;
+		std::bitset <8>                      flags;
 	};
 
-	mutable std::unique_ptr <IO> io;
+	mutable std::unique_ptr <Data> data;
 
 };
 

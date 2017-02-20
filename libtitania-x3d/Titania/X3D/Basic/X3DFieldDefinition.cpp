@@ -59,7 +59,7 @@ namespace X3D {
 
 X3DFieldDefinition::X3DFieldDefinition () :
 	X3DChildObject (),
-	            io ()
+	            data ()
 {
 	// DEBUG rooted objects
 	//__LOG__ << (X3DChildObject*) this << std::endl;
@@ -69,10 +69,10 @@ X3DFieldDefinition::X3DFieldDefinition () :
 void
 X3DFieldDefinition::realize () const
 {
-	if (io)
+	if (data)
 		return;
 
-	io .reset (new IO ());
+	data .reset (new Data ());
 }
 
 X3DFieldDefinition &
@@ -103,33 +103,31 @@ X3DFieldDefinition::setAccessType (const AccessType value)
 {
 	realize ();
 
-	io -> flags &= ~ACCESS_TYPE_BITS;
-	io -> flags |= FlagsType (value) << ACCESS_TYPE_OFFSET;
+	data -> accessType = value;
 }
 
 AccessType
 X3DFieldDefinition::getAccessType () const
 {
-	if (io)
-		return AccessType ((io -> flags & ACCESS_TYPE_BITS) >> ACCESS_TYPE_OFFSET);
+	if (data)
+		return data -> accessType;
 
 	return AccessType::initializeOnly;
 }
 
 void
-X3DFieldDefinition::setUnit (const UnitCategory unit)
+X3DFieldDefinition::setUnit (const UnitCategory value)
 {
 	realize ();
 
-	io -> flags &= ~UNIT_BITS;
-	io -> flags |= FlagsType (unit) << UNIT_OFFSET;
+	data -> unit = value;
 }
 
 UnitCategory
 X3DFieldDefinition::getUnit () const
 {
-	if (io)
-		return UnitCategory ((io -> flags & UNIT_BITS) >> UNIT_OFFSET);
+	if (data)
+		return data -> unit;
 
 	return UnitCategory::NONE;
 }
@@ -140,17 +138,14 @@ X3DFieldDefinition::isGeospatial (const bool value)
 {
 	realize ();
 
-	if (value)
-		io -> flags |= GEO_BIT;
-	else
-		io -> flags &= ~GEO_BIT;
+	data -> flags .set (GEO_BIT, value);
 }
 
 bool
 X3DFieldDefinition::isGeospatial () const
 {
-	if (io)
-		return io -> flags & GEO_BIT;
+	if (data)
+		return data -> flags [GEO_BIT];
 	
 	return false;
 }
@@ -161,17 +156,14 @@ X3DFieldDefinition::isSet (const bool value)
 {
 	realize ();
 
-	if (value)
-		io -> flags |= IS_SET_BIT;
-	else
-		io -> flags &= ~IS_SET_BIT;
+	data -> flags .set (IS_SET_BIT, value);
 }
 
 bool
 X3DFieldDefinition::isSet () const
 {
-	if (io)
-		return io -> flags & IS_SET_BIT;
+	if (data)
+		return data -> flags [IS_SET_BIT];
 	
 	return false;
 }
@@ -181,17 +173,14 @@ X3DFieldDefinition::isHidden (const bool value)
 {
 	realize ();
 
-	if (value)
-		io -> flags |= HIDDEN_BIT;
-	else
-		io -> flags &= ~HIDDEN_BIT;
+	data -> flags .set (HIDDEN_BIT, value);
 }
 
 bool
 X3DFieldDefinition::isHidden () const
 {
-	if (io)
-		return io -> flags & HIDDEN_BIT;
+	if (data)
+		return data -> flags [HIDDEN_BIT];
 	
 	return false;
 }
@@ -208,7 +197,7 @@ X3DFieldDefinition::addReference (X3DFieldDefinition* const reference)
 {
 	realize ();
 
-	if (io -> references .emplace (reference) .second)
+	if (data -> references .emplace (reference) .second)
 	{
 		// Create IS relationship
 
@@ -235,9 +224,9 @@ X3DFieldDefinition::addReference (X3DFieldDefinition* const reference)
 void
 X3DFieldDefinition::removeReference (X3DFieldDefinition* const reference)
 {
-	if (io)
+	if (data)
 	{
-		if (io -> references .erase (reference))
+		if (data -> references .erase (reference))
 		{
 			// Remove IS relationship
 
@@ -263,9 +252,9 @@ X3DFieldDefinition::removeReference (X3DFieldDefinition* const reference)
 void
 X3DFieldDefinition::updateReferences ()
 {
-	if (io)
+	if (data)
 	{
-		for (auto & reference : io -> references)
+		for (auto & reference : data -> references)
 			updateIsReference (reference);
 	}
 }
@@ -290,16 +279,16 @@ X3DFieldDefinition::addInterest (X3DFieldDefinition* const fieldDefinition) cons
 {
 	realize ();
 
-	io -> outputInterests .emplace (fieldDefinition);
+	data -> outputInterests .emplace (fieldDefinition);
 	fieldDefinition -> addInputInterest (this);
 }
 
 void
 X3DFieldDefinition::removeInterest (X3DFieldDefinition* const fieldDefinition) const
 {
-	if (io)
+	if (data)
 	{
-		io -> outputInterests .erase (fieldDefinition);
+		data -> outputInterests .erase (fieldDefinition);
 		fieldDefinition -> removeInputInterest (this);
 	}
 }
@@ -309,14 +298,14 @@ X3DFieldDefinition::addInputInterest (const X3DFieldDefinition* const fieldDefin
 {
 	realize ();
 
-	io -> inputInterests .emplace (fieldDefinition);
+	data -> inputInterests .emplace (fieldDefinition);
 }
 
 void
 X3DFieldDefinition::removeInputInterest (const X3DFieldDefinition* const fieldDefinition) const
 {
-	if (io)
-		io -> inputInterests .erase (fieldDefinition);
+	if (data)
+		data -> inputInterests .erase (fieldDefinition);
 }
 
 void
@@ -332,12 +321,12 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 
 	std::vector <X3DFieldDefinition*> outputInterests;
 
-	if (io)
-		outputInterests .assign (io -> outputInterests .begin (), io -> outputInterests .end ());
+	if (data)
+		outputInterests .assign (data -> outputInterests .begin (), data -> outputInterests .end ());
 
 	processInterests ();
 
-	if (io)
+	if (data)
 	{
 		//event -> object = this; // TODO: This must be done probably.
 
@@ -360,9 +349,9 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 void
 X3DFieldDefinition::dispose ()
 {
-	if (io)
+	if (data)
 	{
-		std::unique_ptr <IO> temp = std::move (io);
+		std::unique_ptr <Data> temp = std::move (data);
 
 		for (const auto & route : temp -> inputRoutes)
 			route -> erase ();

@@ -52,20 +52,26 @@
 #define __TITANIA_BASE_USER_DATA_H__
 
 #include <Titania/X3D.h>
+
 #include <gtkmm.h>
 #include <gtksourceviewmm/buffer.h>
+
+#include <bitset>
 
 namespace titania {
 namespace puck {
 
-constexpr int32_t OUTLINE_SELECTED        = 1;
-constexpr int32_t OUTLINE_SELECTED_INPUT  = 1 << 1;
-constexpr int32_t OUTLINE_SELECTED_OUTPUT = 1 << 2;
-constexpr int32_t OUTLINE_OVER_INPUT      = 1 << 3;
-constexpr int32_t OUTLINE_OVER_OUTPUT     = 1 << 4;
-constexpr int32_t OUTLINE_SPECIAL         = 1 << 5;
-constexpr int32_t SELECTED                = 1 << 6;
-constexpr int32_t PREVIOUSLY_SELECTED     = 1 << 7;
+// Selected
+static constexpr size_t OUTLINE_SELECTED        = 0;
+static constexpr size_t OUTLINE_SELECTED_INPUT  = 1;
+static constexpr size_t OUTLINE_SELECTED_OUTPUT = 2;
+static constexpr size_t OUTLINE_OVER_INPUT      = 3;
+static constexpr size_t OUTLINE_OVER_OUTPUT     = 4;
+static constexpr size_t OUTLINE_SPECIAL         = 5;
+
+// Clone count
+static constexpr size_t CLONE_SELECTED            = 0;
+static constexpr size_t CLONE_PREVIOUSLY_SELECTED = 1;
 
 class UserData :
 	public X3D::X3DBase
@@ -79,7 +85,8 @@ public:
 		       paths (),
 		    expanded (false),
 		fullExpanded (false),
-		    selected (0),
+		    selected (),
+		  cloneCount (),
 	       userData ()
 	{ }
 
@@ -95,9 +102,10 @@ public:
 	Gtk::TreeModel::Path            openPath;  // Path of expanded node/clone
 	std::set <Gtk::TreeModel::Path> paths;     // All visible paths
 
-	bool    expanded;                          // Expanded state
-	bool    fullExpanded;                      // Expanded mode
-	int32_t selected;                          // Selected state
+	bool             expanded;                 // Expanded state
+	bool             fullExpanded;             // Expanded mode
+	std::bitset <32> selected;                 // Selected state
+	std::bitset <32> cloneCount;               // Lower clone count by set bits
 
 	std::shared_ptr <UserData> userData;
 

@@ -222,7 +222,7 @@ OutlineCellRenderer::on_data ()
 		{
 			const auto userData = property_data () .get_value () -> get_user_data ();
 
-			if (userData -> selected & OUTLINE_SPECIAL)
+			if (userData -> selected [OUTLINE_SPECIAL])
 				property_markup () = "<i><b>" + Glib::Markup::escape_text (get_object () -> getName ()) + "</b></i>";
 
 			else if (not static_cast <X3D::X3DFieldDefinition*> (get_object ()) -> getReferences () .empty ())
@@ -460,13 +460,7 @@ OutlineCellRenderer::get_node_name (const X3D::SFNode & sfnode, std::string name
 
 		// Add clone count if any.
 
-		auto cloneCount = node -> getCloneCount ();
-
-		if (node -> getUserData <UserData> () -> selected & SELECTED)
-			-- cloneCount;
-
-		if (node -> getUserData <UserData> () -> selected & PREVIOUSLY_SELECTED)
-			-- cloneCount;
+		const auto cloneCount = node -> getCloneCount () - node -> getUserData <UserData> () -> cloneCount .count ();
 
 		if (cloneCount > 1)
 			string += " [" + std::to_string (cloneCount) + "]";
@@ -1181,8 +1175,8 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 		const double field_height = minimum_height;
 
 		const auto      data     = property_data () .get_value ();
-		const int32_t   selected = data -> get_user_data () -> selected | property_cell_background_set ();
-		const Gdk::RGBA color    = selected & OUTLINE_SELECTED ? property_foreground_rgba () : property_cell_background_rgba ();
+		const auto &    selected = data -> get_user_data () -> selected;
+		const Gdk::RGBA color    = selected [OUTLINE_SELECTED] or property_cell_background_set () ? property_foreground_rgba () : property_cell_background_rgba ();
 
 		context -> reset_clip ();
 		context -> set_operator (Cairo::OPERATOR_OVER);
@@ -1197,7 +1191,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 				if (is_full_expanded ())
 					break;
 
-				if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
+				if (selected [OUTLINE_OVER_INPUT] or selected [OUTLINE_SELECTED_INPUT])
 				{
 					context -> begin_new_sub_path ();
 					context -> arc_negative (field_x + radius, field_y + radius, radius, pi3_2 <double>, pi1_2 <double>);
@@ -1213,7 +1207,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 					field_x += INPUT_WIDTH + FIELD_PAD;
 				}
 
-				if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
+				if (selected [OUTLINE_OVER_OUTPUT] or selected [OUTLINE_SELECTED_OUTPUT])
 				{
 					context -> begin_new_sub_path ();
 					context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, pi1_2 <double>, pi3_2 <double>);
@@ -1228,7 +1222,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 			}
 			case OutlineIterType::X3DInputRoute:
 			{
-				if (selected & (OUTLINE_OVER_INPUT | OUTLINE_SELECTED_INPUT))
+				if (selected [OUTLINE_OVER_INPUT] or selected [OUTLINE_SELECTED_INPUT])
 				{
 					context -> begin_new_sub_path ();
 					context -> arc_negative (field_x + radius, field_y + radius, radius, pi3_2 <double>, pi1_2 <double>);
@@ -1243,7 +1237,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 			}
 			case OutlineIterType::X3DOutputRoute:
 			{
-				if (selected & (OUTLINE_OVER_OUTPUT | OUTLINE_SELECTED_OUTPUT))
+				if (selected [OUTLINE_OVER_OUTPUT] or selected [OUTLINE_SELECTED_OUTPUT])
 				{
 					context -> begin_new_sub_path ();
 					context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, pi1_2 <double>, pi3_2 <double>);
@@ -1328,8 +1322,8 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 	const auto foregroundColor         = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
 	const auto selectedForegroundColor = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 
-	const int32_t selected      = data -> get_user_data () -> selected | property_cell_background_set ();
-	const auto    selectedColor = selected & OUTLINE_SELECTED ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
+	const auto & selected      = data -> get_user_data () -> selected;
+	const auto   selectedColor = selected [OUTLINE_SELECTED] or property_cell_background_set () ? selectedForegroundColor : property_cell_background_rgba () .get_value ();
 
 	//	context -> set_source_rgb (0.9, 0.9, 0.9);
 	//	context -> rectangle (x, y, width, height);

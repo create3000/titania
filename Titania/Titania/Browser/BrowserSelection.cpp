@@ -124,11 +124,21 @@ BrowserSelection::set_execution_context ()
 		const auto previous  = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous");
 		const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
+		// Set clone bits.
+
 		for (const auto & node : current)
-			node -> getUserData <UserData> () -> selected |= PREVIOUSLY_SELECTED;
-	
+		{
+			if (node)
+				node -> getUserData <UserData> () -> cloneCount .set (CLONE_PREVIOUSLY_SELECTED);
+		}
+
 		for (const auto & node : current)
-			node -> getUserData <UserData> () -> selected |= SELECTED;
+		{
+			if (node)
+				node -> getUserData <UserData> () -> cloneCount .set (CLONE_SELECTED);
+		}
+
+		// Set selection.
 
 		setNodes (current);
 	}
@@ -146,17 +156,30 @@ BrowserSelection::set_nodes ()
 	if (nodes == current)
 		return;
 
+	// Set and clear clone bits.
+
 	for (const auto & node : previous)
-		node -> getUserData <UserData> () -> selected &= ~PREVIOUSLY_SELECTED;
+	{
+		if (node)
+			node -> getUserData <UserData> () -> cloneCount .reset (CLONE_PREVIOUSLY_SELECTED);
+	}
 
 	for (const auto & node : current)
 	{
-		node -> getUserData <UserData> () -> selected &= ~SELECTED;
-		node -> getUserData <UserData> () -> selected |= PREVIOUSLY_SELECTED;
+		if (node)
+		{
+			node -> getUserData <UserData> () -> cloneCount .reset (CLONE_SELECTED);
+			node -> getUserData <UserData> () -> cloneCount .set (CLONE_PREVIOUSLY_SELECTED);
+		}
 	}
 
 	for (const auto & node : nodes)
-		node -> getUserData <UserData> () -> selected |= SELECTED;
+	{
+		if (node)
+			node -> getUserData <UserData> () -> cloneCount .set (CLONE_SELECTED);
+	}
+
+	// Set meta data.
 
 	worldInfo -> setMetaData ("/Titania/Selection/previous", current);
 	worldInfo -> setMetaData ("/Titania/Selection/nodes",    nodes);

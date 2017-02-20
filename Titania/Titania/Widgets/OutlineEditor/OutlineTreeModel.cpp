@@ -368,7 +368,7 @@ OutlineTreeModel::get_value_vfunc (const iterator & iter, int column, Glib::Valu
 					break;
 			}
 
-			val .set (userData and userData -> selected & OUTLINE_SELECTED);
+			val .set (userData and userData -> selected [OUTLINE_SELECTED]);
 
 			value .init (SelectedColumn::ValueType::value_type ());
 			value = val;

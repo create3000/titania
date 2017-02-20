@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 enum class UnitCategory :
-	uint8_t
+	uint16_t
 {
 	NONE,
 

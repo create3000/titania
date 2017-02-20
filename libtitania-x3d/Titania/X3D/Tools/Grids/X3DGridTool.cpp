@@ -456,7 +456,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 	
-		const auto tool = int32_t (master -> getActiveTool ()) - int32_t (ToolType::SCALE_TOOL);
+		const auto tool = uint32_t (master -> getActiveTool ()) - uint32_t (ToolType::SCALE_TOOL);
 
 		if (tool < 0)
 			return;

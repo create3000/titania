@@ -199,7 +199,7 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 	{
 		case OutlineIterType::ExternProtoDeclaration:
 		{
-			if (field -> getUserData <UserData> () -> selected & OUTLINE_SPECIAL)
+			if (field -> getUserData <UserData> () -> selected [OUTLINE_SPECIAL])
 				break;
 			
 			return false;
@@ -298,7 +298,8 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 
 	// Clear over state
 
-	overUserData -> selected &= OUTLINE_SELECTED | OUTLINE_SELECTED_INPUT | OUTLINE_SELECTED_OUTPUT;
+	overUserData -> selected .reset (OUTLINE_OVER_INPUT);
+	overUserData -> selected .reset (OUTLINE_OVER_OUTPUT);
 
 	for (const auto & path : overUserData -> paths)
 		get_model () -> row_changed (path, get_model () -> get_iter (path));
@@ -333,7 +334,7 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 					{
 						if (not matchingAccessType or (field -> getAccessType () & (matchingAccessType & X3D::inputOnly) and field -> getType () == matchingFieldType))
 						{
-							overUserData -> selected |= OUTLINE_OVER_INPUT;
+							overUserData -> selected .set (OUTLINE_OVER_INPUT);
 							get_model () -> row_changed (path, iter);
 							return true;
 						}
@@ -344,7 +345,7 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 					{
 						if (not matchingAccessType or (field -> getAccessType () & (matchingAccessType & X3D::outputOnly) and field -> getType () == matchingFieldType))
 						{
-							overUserData -> selected |= OUTLINE_OVER_OUTPUT;
+							overUserData -> selected .set (OUTLINE_OVER_OUTPUT);
 							get_model () -> row_changed (path, iter);
 							return true;
 						}
@@ -377,7 +378,7 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 					{
 						if (not matchingAccessType)
 						{
-							overUserData -> selected |= OUTLINE_OVER_INPUT;
+							overUserData -> selected .set (OUTLINE_OVER_INPUT);
 							get_model () -> row_changed (path, iter);
 							return true;
 						}
@@ -388,7 +389,7 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 					{
 						if (not matchingAccessType)
 						{
-							overUserData -> selected |= OUTLINE_OVER_OUTPUT;
+							overUserData -> selected .set (OUTLINE_OVER_OUTPUT);
 							get_model () -> row_changed (path, iter);
 							return true;
 						}
@@ -660,10 +661,14 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 }
 
 void
-OutlineTreeViewEditor::set_access_type_selection (const UserDataPtr & userData, const int type)
+OutlineTreeViewEditor::set_access_type_selection (const UserDataPtr & userData, const size_t type)
 {
-	userData -> selected &= OUTLINE_SELECTED;
-	userData -> selected |= type;
+	userData -> selected .reset (OUTLINE_SELECTED_INPUT);
+	userData -> selected .reset (OUTLINE_SELECTED_OUTPUT);
+	userData -> selected .reset (OUTLINE_OVER_INPUT);
+	userData -> selected .reset (OUTLINE_OVER_OUTPUT);
+
+	userData -> selected .set (type);
 
 	selectedUserData = userData;
 
@@ -676,7 +681,10 @@ OutlineTreeViewEditor::clear_access_type_selection (const UserDataPtr & userData
 {
 	if (not get_shift_key ())
 	{
-		userData -> selected &= OUTLINE_SELECTED; // clear over state
+		userData -> selected .reset (OUTLINE_SELECTED_INPUT);
+		userData -> selected .reset (OUTLINE_SELECTED_OUTPUT);
+		userData -> selected .reset (OUTLINE_OVER_INPUT);
+		userData -> selected .reset (OUTLINE_OVER_OUTPUT);
 
 		for (const auto & path : userData -> paths)
 			get_model () -> row_changed (path, get_model () -> get_iter (path));
