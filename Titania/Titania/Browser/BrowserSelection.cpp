@@ -50,6 +50,7 @@
 
 #include "BrowserSelection.h"
 
+#include "UserData.h"
 #include "X3DBrowserWindow.h"
 
 #include <Titania/X3D/Browser/Selection.h>
@@ -120,7 +121,14 @@ BrowserSelection::set_execution_context ()
 	try
 	{
 		const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
+		const auto previous  = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous");
 		const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
+
+		for (const auto & node : current)
+			node -> getUserData <UserData> () -> selected |= PREVIOUSLY_SELECTED;
+	
+		for (const auto & node : current)
+			node -> getUserData <UserData> () -> selected |= SELECTED;
 
 		setNodes (current);
 	}
@@ -132,10 +140,23 @@ void
 BrowserSelection::set_nodes ()
 {
 	const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
+	const auto previous  = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous");
 	const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
 	if (nodes == current)
 		return;
+
+	for (const auto & node : previous)
+		node -> getUserData <UserData> () -> selected &= ~PREVIOUSLY_SELECTED;
+
+	for (const auto & node : current)
+	{
+		node -> getUserData <UserData> () -> selected &= ~SELECTED;
+		node -> getUserData <UserData> () -> selected |= PREVIOUSLY_SELECTED;
+	}
+
+	for (const auto & node : nodes)
+		node -> getUserData <UserData> () -> selected |= SELECTED;
 
 	worldInfo -> setMetaData ("/Titania/Selection/previous", current);
 	worldInfo -> setMetaData ("/Titania/Selection/nodes",    nodes);
