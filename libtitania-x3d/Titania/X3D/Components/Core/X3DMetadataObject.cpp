@@ -72,7 +72,7 @@ X3DMetadataObject::initialize ()
 { }
 
 bool
-X3DMetadataObject::belongsToProvider () const
+X3DMetadataObject::getBelongsToProvider () const
 {
 	return reference () == getBrowser () -> getProviderUrl ();
 }

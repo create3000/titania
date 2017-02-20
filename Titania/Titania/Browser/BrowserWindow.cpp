@@ -2612,12 +2612,12 @@ BrowserWindow::on_select_parent_button_clicked ()
 
 	for (const auto & parent : parentIndex)
 	{
-		const auto hierarchy = X3D::find (parent -> getExecutionContext (), parent);
+		const auto hs = X3D::find (parent -> getExecutionContext (), parent);
 
-		if (hierarchy .empty ())
+		if (hs .empty ())
 			continue;
 
-		hierachies .emplace (hierarchy .size (), std::move (hierarchy));
+		hierachies .emplace (hs .front () .size (), hs .front ());
 	}
 
 	// Sort out parent if parent is a child of another parent.

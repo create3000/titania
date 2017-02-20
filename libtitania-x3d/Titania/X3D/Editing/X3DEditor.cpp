@@ -2424,10 +2424,12 @@ X3DEditor::getModelViewMatrix (const X3DExecutionContextPtr & executionContext, 
 {
 	Matrix4d modelViewMatrix;
 
-	auto hierarchy = find (executionContext, node, TRAVERSE_ROOT_NODES | TRAVERSE_PROTOTYPE_INSTANCES);
+	auto hierarchies = find (executionContext, node, TRAVERSE_ROOT_NODES | TRAVERSE_PROTOTYPE_INSTANCES);
 
-	if (hierarchy .empty ())
+	if (hierarchies .empty ())
 		return modelViewMatrix;
+
+	auto & hierarchy = hierarchies .front ();
 
 	hierarchy .pop_back ();
 

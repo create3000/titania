@@ -206,13 +206,17 @@ X3DOutlineTreeView::expand_to (X3D::X3DChildObject* const object)
 	if (exportedNodes)
 		flags |= X3D::TRAVERSE_EXPORTED_NODES;
 
-	auto hierarchy = X3D::find (get_execution_context (), object, flags);
+	auto hierarchies = X3D::find (get_execution_context (), object, flags);
 
-	if (not hierarchy .empty ())
+	if (not hierarchies .empty ())
+	{
+		auto & hierarchy = hierarchies .front ();
+
 		hierarchy .erase (hierarchy .begin ());
 
-	if (not hierarchy .empty ())
-		expand_to (get_model () -> children (), hierarchy, path);
+		if (not hierarchy .empty ())
+			expand_to (get_model () -> children (), hierarchy, path);
+	}
 
 	enable_shift_key ();
 }

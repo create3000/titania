@@ -84,7 +84,7 @@ public:
 	///  @name Member access
 
 	bool
-	belongsToProvider () const;
+	getBelongsToProvider () const;
 
 	///  @name Destruction
 

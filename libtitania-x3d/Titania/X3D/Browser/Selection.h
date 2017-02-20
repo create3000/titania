@@ -51,6 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_SELECTION_H__
 #define __TITANIA_X3D_BROWSER_SELECTION_H__
 
+#include "../Basic/Traverse.h"
 #include "../Components/Core/X3DNode.h"
 #include "Tools/ToolType.h"
 
@@ -191,8 +192,8 @@ private:
 	SFNode
 	getTransform (const std::vector <X3DChildObject*> & hierarchy) const;
 
-	std::vector <X3DChildObject*>
-	getHierarchy (const SFNode & node) const;
+	Hierarchies
+	getHierarchies (const SFNode & node) const;
 
 	///  @name Static members
 

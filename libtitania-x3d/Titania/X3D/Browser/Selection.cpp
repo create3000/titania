@@ -51,7 +51,6 @@
 #include "Selection.h"
 
 #include "../Browser/Core/Cast.h"
-#include "../Basic/Traverse.h"
 #include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Grouping/Transform.h"
@@ -119,8 +118,6 @@ Selection::isSelected (const SFNode & node) const
 void
 Selection::setSelectGeometry (const bool value)
 {
-__LOG__ << value << std::endl;
-
 	if (value == selectGeometry)
 		return;
 
@@ -134,7 +131,10 @@ __LOG__ << value << std::endl;
 		MFNode transforms;
 
 		for (const auto & node : nodes)
-			transforms .emplace_back (getTransform (getHierarchy (node)));
+		{
+			for (const auto & hierarchy : getHierarchies (node))
+				transforms .emplace_back (getTransform (hierarchy));
+		}
 
 		setNodes (transforms);
 	}
@@ -288,7 +288,14 @@ Selection::selectNode ()
 		node = getBrowser () -> getNearestHit () -> shape -> getGeometry ();
 
 	else
-		node = getTransform (getHierarchy (getBrowser () -> getNearestHit () -> shape));
+	{
+		// TODO: Find Transform that belongs to hit.
+
+		const auto hierarchies = getHierarchies (getBrowser () -> getNearestHit () -> shape);
+
+		if (not hierarchies .empty ())
+			node = getTransform (hierarchies .front ());
+	}
 
 	if (node)
 	{
@@ -387,8 +394,8 @@ Selection::getTransform (const std::vector <X3DChildObject*> & hierarchy) const
 	return node;
 }
 
-std::vector <X3DChildObject*>
-Selection::getHierarchy (const SFNode & node) const
+Hierarchies
+Selection::getHierarchies (const SFNode & node) const
 {
 	return find (getBrowser () -> getExecutionContext () -> getRootNodes (),
 		          node,

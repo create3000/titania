@@ -164,7 +164,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 			{
 				const auto metadataObject = dynamic_cast <X3DMetadataObject*> (node .getValue ());
 
-				if (metadataObject -> belongsToProvider ())
+				if (metadataObject -> getBelongsToProvider ())
 					return true;
 
 				// Proceed with next case:
@@ -203,12 +203,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 								{
 									if (sfnode == &dynamic_cast <Collision*> (node .getValue ()) -> proxy ())
 										goto CONTINUE;		
-									break;
-								}
-								case X3DConstants::X3DNode:
-								{
-									if (sfnode == &dynamic_cast <X3DNode*> (node .getValue ()) -> metadata ())
-										goto CONTINUE;		
+
 									break;
 								}
 								default:
@@ -411,90 +406,86 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 }
 
 static
-bool
-find (X3DBaseNode* const, X3DChildObject* const, const int32_t, std::vector <X3DChildObject*> &, NodeSet &);
+void
+find (X3DBaseNode* const, X3DChildObject* const, const int32_t, Hierarchies & hierarchies, Hierarchy &, NodeSet &);
 
 static
-bool
-find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const int32_t flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+void
+find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const int32_t flags, Hierarchies & hierarchies, Hierarchy & hierarchy, NodeSet & seen)
 {
 	if (not executionContext)
-		return false;
+		return;
 
 	if (executionContext -> isPrivate ())
-		return false;
+		return;
 
 	hierarchy .emplace_back (executionContext);
 
 	if (executionContext == object)
-		return true;
-
-	if (flags & TRAVERSE_EXTERNPROTO_DECLARATIONS)
 	{
-		for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		{
-			if (find (static_cast <X3DBaseNode*> (externProto), object, flags, hierarchy, seen))
-				return true;
-		}
+		hierarchies .emplace_back (hierarchy);
 	}
-
-	if (flags & TRAVERSE_PROTO_DECLARATIONS)
+	else
 	{
-		for (const auto & prototype : executionContext -> getProtoDeclarations ())
+		if (flags & TRAVERSE_EXTERNPROTO_DECLARATIONS)
 		{
-			if (find (static_cast <X3DBaseNode*> (prototype), object, flags, hierarchy, seen))
-				return true;
-		}
-	}
-
-	if (flags & TRAVERSE_ROOT_NODES)
-	{
-		for (const auto & node : basic::make_reverse_range (executionContext -> getRootNodes ()))
-		{
-			if (find (node, object, flags, hierarchy, seen))
-				return true;
-		}
-	}
-
-	if (flags & TRAVERSE_IMPORTED_NODES)
-	{
-		for (const auto & importedNode : executionContext -> getImportedNodes ())
-		{
-			try
+			for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
 			{
-				const auto exportedNode = importedNode .second -> getExportedNode ();
-
-				if (find (exportedNode, object, flags, hierarchy, seen))
-					return true;
+				find (static_cast <X3DBaseNode*> (externProto), object, flags, hierarchies, hierarchy, seen);
 			}
-			catch (...)
-			{ }
+		}
+	
+		if (flags & TRAVERSE_PROTO_DECLARATIONS)
+		{
+			for (const auto & prototype : executionContext -> getProtoDeclarations ())
+			{
+				find (static_cast <X3DBaseNode*> (prototype), object, flags, hierarchies, hierarchy, seen);
+			}
+		}
+	
+		if (flags & TRAVERSE_ROOT_NODES)
+		{
+			for (const auto & node : basic::make_reverse_range (executionContext -> getRootNodes ()))
+			{
+				find (node, object, flags, hierarchies, hierarchy, seen);
+			}
+		}
+	
+		if (flags & TRAVERSE_IMPORTED_NODES)
+		{
+			for (const auto & importedNode : executionContext -> getImportedNodes ())
+			{
+				try
+				{
+					const auto exportedNode = importedNode .second -> getExportedNode ();
+	
+					find (exportedNode, object, flags, hierarchies, hierarchy, seen);
+				}
+				catch (...)
+				{ }
+			}
 		}
 	}
 
 	hierarchy .pop_back ();
-	return false;
 }
 
 static
-bool
-find (X3DScene* const scene, X3DChildObject* const object, const int32_t flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+void
+find (X3DScene* const scene, X3DChildObject* const object, const int32_t flags, Hierarchies & hierarchies, Hierarchy & hierarchy, NodeSet & seen)
 {
-	return find (static_cast <X3DExecutionContext*> (scene), object, flags, hierarchy, seen);
+	find (static_cast <X3DExecutionContext*> (scene), object, flags, hierarchies, hierarchy, seen);
 }
 
 static
-bool
-find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags, std::vector <X3DChildObject*> & hierarchy, NodeSet & seen)
+void
+find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags, Hierarchies & hierarchies, Hierarchy & hierarchy, NodeSet & seen)
 {
 	if (not node)
-		return false;
+		return;
 
 	if (node -> isPrivate ())
-		return false;
-
-	if (not seen .emplace (node) .second)
-		return false;
+		return;
 
 	for (const auto & type : basic::make_reverse_range (node -> getType ()))
 	{
@@ -504,15 +495,15 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags
 			{
 				const auto metadataObject = dynamic_cast <X3DMetadataObject*> (node);
 
-				if (metadataObject -> belongsToProvider ())
-					return false;
+				if (metadataObject -> getBelongsToProvider ())
+					return;
 
 				// Proceed with next case:
 			}
 			case X3DConstants::Script:
 			{
 				if (flags & TRAVERSE_VISIBLE_NODES)
-					return false;
+					return;
 
 				break;
 			}
@@ -523,267 +514,262 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags
 		break;
 	}
 
+	if (not seen .emplace (node) .second)
+		return;
+
 	hierarchy .emplace_back (node);
 
 	if (node == object)
-		return true;
-
-	for (const auto & field : basic::make_reverse_range (node -> getFieldDefinitions ()))
 	{
-		if (field == object)
+		hierarchies .emplace_back (hierarchy);
+	}
+	else
+	{
+		for (const auto & field : node -> getFieldDefinitions ())
 		{
 			hierarchy .emplace_back (field);
-			return true;
-		}
 
-		switch (field -> getType ())
-		{
-			case X3DConstants::SFNode:
+			if (field == object)
 			{
-				const auto sfnode = static_cast <X3D::SFNode*> (field);
-
-				if (flags & TRAVERSE_VISIBLE_NODES)
-				{
-					for (const auto & type : basic::make_reverse_range (node -> getType ()))
-					{
-						switch (type)
-						{
-							case X3DConstants::Collision:
-							{
-								if (sfnode == &dynamic_cast <Collision*> (node) -> proxy ())
-									goto CONTINUE;
-								break;
-							}
-							case X3DConstants::X3DNode:
-							{
-								if (sfnode == &dynamic_cast <X3DNode*> (node) -> metadata ())
-									goto CONTINUE;
-								break;
-							}
-							default:
-								break;
-						}
-					}
-				}
-
-				// Normal case:
-
-				hierarchy .emplace_back (field);
-
-				if (find (*sfnode, object, flags, hierarchy, seen))
-					return true;
-
-				hierarchy .pop_back ();
-				break;
+				hierarchies .emplace_back (hierarchy);
 			}
-			case X3DConstants::MFNode:
+			else
 			{
-				const auto mfnode = static_cast <X3D::MFNode*> (field);
-
-				if (flags & TRAVERSE_VISIBLE_NODES)
+				switch (field -> getType ())
 				{
-					switch (node -> getType () .back ())
+					case X3DConstants::SFNode:
 					{
-						case X3DConstants::Switch:
-						case X3DConstants::SwitchTool:
+						const auto sfnode = static_cast <X3D::SFNode*> (field);
+		
+						if (flags & TRAVERSE_VISIBLE_NODES)
 						{
-							const auto switchNode = dynamic_cast <Switch*> (node);
-
-							if (mfnode == &switchNode -> children ())
+							for (const auto & type : basic::make_reverse_range (node -> getType ()))
 							{
-								if (switchNode -> getWhichChoice () >= 0 and switchNode -> getWhichChoice () < (int32_t) switchNode -> children () .size ())
+								switch (type)
 								{
-									hierarchy .emplace_back (field);
-
-									if (find (switchNode -> children () [switchNode -> getWhichChoice ()], object, flags, hierarchy, seen))
-										return true;
-
-									hierarchy .pop_back ();
-								}
-								
-								continue;
-							}
-
-							break;
-						}
-						case X3DConstants::LOD:
-						case X3DConstants::LODTool:
-						{
-							const auto lod = dynamic_cast <LOD*> (node);
-								
-							if (mfnode == &lod -> children ())
-							{
-								if (lod -> children () .size ())
-								{
-									const int32_t index = std::min <int32_t> (lod -> level_changed (), lod -> children () .size () - 1);
-
-									if (index >= 0)
+									case X3DConstants::Collision:
 									{
-										hierarchy .emplace_back (field);
-	
-										if (find (lod -> children () [index], object, flags, hierarchy, seen))
-											return true;
-	
-										hierarchy .pop_back ();
+										if (sfnode == &dynamic_cast <Collision*> (node) -> proxy ())
+											goto CONTINUE;
+
+										break;
 									}
+									case X3DConstants::X3DNode:
+									{
+										if (sfnode == &dynamic_cast <X3DNode*> (node) -> metadata ())
+											goto CONTINUE;
+
+										break;
+									}
+									default:
+										break;
 								}
-								
-								continue;
 							}
-
-							break;
 						}
-						default:
-							break;
+
+						// Normal case:
+			
+						find (*sfnode, object, flags, hierarchies, hierarchy, seen);
+
+						break;
 					}
+					case X3DConstants::MFNode:
+					{
+						const auto mfnode = static_cast <X3D::MFNode*> (field);
+		
+						if (flags & TRAVERSE_VISIBLE_NODES)
+						{
+							switch (node -> getType () .back ())
+							{
+								case X3DConstants::Switch:
+								case X3DConstants::SwitchTool:
+								{
+									const auto switchNode = dynamic_cast <Switch*> (node);
+		
+									if (mfnode == &switchNode -> children ())
+									{
+										if (switchNode -> getWhichChoice () >= 0 and switchNode -> getWhichChoice () < (int32_t) switchNode -> children () .size ())
+										{
+											find (switchNode -> children () [switchNode -> getWhichChoice ()], object, flags, hierarchies, hierarchy, seen);
+										}
+										
+										goto CONTINUE;
+									}
+		
+									break;
+								}
+								case X3DConstants::LOD:
+								case X3DConstants::LODTool:
+								{
+									const auto lod = dynamic_cast <LOD*> (node);
+										
+									if (mfnode == &lod -> children ())
+									{
+										if (lod -> children () .size ())
+										{
+											const int32_t index = std::min <int32_t> (lod -> level_changed (), lod -> children () .size () - 1);
+		
+											if (index >= 0)
+											{
+												find (lod -> children () [index], object, flags, hierarchies, hierarchy, seen);
+											}
+										}
+										
+										goto CONTINUE;
+									}
+		
+									break;
+								}
+								default:
+									break;
+							}
+						}
+		
+						// Normal case:
+		
+						for (const auto & value : *mfnode)
+						{
+							find (value, object, flags, hierarchies, hierarchy, seen);
+						}
+
+						break;
+					}
+					default:
+						break;
 				}
-
-				// Normal case:
-
-				hierarchy .emplace_back (field);
-
-				for (const auto & value : basic::make_reverse_range (*mfnode))
-				{
-					if (find (value, object, flags, hierarchy, seen))
-						return true;
-				}
-
-				hierarchy .pop_back ();
-				break;
-			}
-			default:
-				break;
-		}
 
 CONTINUE:;
-	}
 
-	if (flags & ~TRAVERSE_ROOT_NODES)
-	{
-		for (const auto & type : basic::make_reverse_range (node -> getType ()))
+				hierarchy .pop_back ();
+			}
+		}
+	
+		if (flags & ~TRAVERSE_ROOT_NODES)
 		{
-			switch (type)
+			for (const auto & type : basic::make_reverse_range (node -> getType ()))
 			{
-				case X3DConstants::ExternProtoDeclaration:
+				switch (type)
 				{
-					if (flags & TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS)
+					case X3DConstants::ExternProtoDeclaration:
 					{
-					   try
-					   {
-							const auto externProto = dynamic_cast <ExternProtoDeclaration*> (node);
-
-							if (find (static_cast <X3DBaseNode*> (externProto -> getProtoDeclaration ()), object, flags, hierarchy, seen))
-								return true;
-						}
-						catch (const X3DError &)
-						{ }
-					}
-
-					break;
-				}
-				case X3DConstants::ProtoDeclaration:
-				{
-					if (flags & TRAVERSE_PROTO_DECLARATIONS)
-					{
-						if (find (dynamic_cast <X3DExecutionContext*> (node), object, flags, hierarchy, seen))
-							return true;
-					}
-
-					break;
-				}
-				case X3DConstants::X3DPrototypeInstance:
-				{
-					if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
-					{
-						if (find (dynamic_cast <X3DExecutionContext*> (node), object, flags, hierarchy, seen))
-							return true;
-					}
-					
-					break;
-				}
-				case X3DConstants::Inline:
-				{
-					if (flags & TRAVERSE_INLINE_NODES)
-					{
-						const auto inlineNode = dynamic_cast <Inline*> (node);
-
-						if (find (static_cast <X3DExecutionContext*> (inlineNode -> getInternalScene ()), object, flags, hierarchy, seen))
-							return true;
-					}
-
-					break;
-				}
-				case X3DConstants::X3DToolObject:
-				{
-					if (flags & TRAVERSE_TOOL_OBJECTS)
-					{
-						const auto tool = dynamic_cast <X3DToolObject*> (node);
-
-						for (const auto & rootNode : basic::make_reverse_range (tool -> getInlineNode () -> getRootNodes ()))
+						if (flags & TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS)
 						{
-							if (find (rootNode, object, flags, hierarchy, seen))
-								return true;
+						   try
+						   {
+								const auto externProto = dynamic_cast <ExternProtoDeclaration*> (node);
+	
+								find (static_cast <X3DBaseNode*> (externProto -> getProtoDeclaration ()), object, flags, hierarchies, hierarchy, seen);
+							}
+							catch (const X3DError &)
+							{ }
 						}
+	
+						break;
 					}
+					case X3DConstants::ProtoDeclaration:
+					{
+						if (flags & TRAVERSE_PROTO_DECLARATIONS)
+						{
+							find (dynamic_cast <X3DExecutionContext*> (node), object, flags, hierarchies, hierarchy, seen);
+						}
+	
+						break;
+					}
+					case X3DConstants::X3DPrototypeInstance:
+					{
+						if (flags & TRAVERSE_PROTOTYPE_INSTANCES)
+						{
+							find (dynamic_cast <X3DExecutionContext*> (node), object, flags, hierarchies, hierarchy, seen);
+						}
+						
+						break;
+					}
+					case X3DConstants::Inline:
+					{
+						if (flags & TRAVERSE_INLINE_NODES)
+						{
+							const auto inlineNode = dynamic_cast <Inline*> (node);
+	
+							find (static_cast <X3DExecutionContext*> (inlineNode -> getInternalScene ()), object, flags, hierarchies, hierarchy, seen);
+						}
+	
+						break;
+					}
+					case X3DConstants::X3DToolObject:
+					{
+						if (flags & TRAVERSE_TOOL_OBJECTS)
+						{
+							const auto tool = dynamic_cast <X3DToolObject*> (node);
+	
+							for (const auto & rootNode : tool -> getInlineNode () -> getRootNodes ())
+							{
+								find (rootNode, object, flags, hierarchies, hierarchy, seen);
+							}
+						}
 
-					break;
+						break;
+					}
+					default:
+						break;
 				}
-				default:
-					break;
 			}
 		}
 	}
 
 	hierarchy .pop_back ();
-	return false;
+
+	seen .erase (node);
 }
 
-std::vector <X3DChildObject*>
+Hierarchies
 find (X3DScene* const scene, X3DChildObject* const object, const int32_t flags)
 {
-	std::vector <X3DChildObject*> hierarchy;
-	NodeSet                       seen;
+	Hierarchies hierarchies;
+	Hierarchy   hierarchy;
+	NodeSet     seen;
 
-	find (scene, object, flags, hierarchy, seen);
+	find (scene, object, flags, hierarchies, hierarchy, seen);
 
-	return hierarchy;
+	return hierarchies;
 }
 
-std::vector <X3DChildObject*>
+Hierarchies
 find (X3DExecutionContext* const executionContext, X3DChildObject* const object, const int32_t flags)
 {
-	std::vector <X3DChildObject*> hierarchy;
-	NodeSet                       seen;
+	Hierarchies hierarchies;
+	Hierarchy   hierarchy;
+	NodeSet     seen;
 
-	find (executionContext, object, flags, hierarchy, seen);
+	find (executionContext, object, flags, hierarchies, hierarchy, seen);
 
-	return hierarchy;
+	return hierarchies;
 }
 
-std::vector <X3DChildObject*>
+Hierarchies
 find (const X3D::MFNode & nodes, X3DChildObject* const object, const int32_t flags)
 {
-	std::vector <X3DChildObject*> hierarchy;
-	NodeSet                       seen;
+	Hierarchies hierarchies;
+	Hierarchy   hierarchy;
+	NodeSet     seen;
 
-	for (const auto & node : basic::make_reverse_range (nodes))
+	for (const auto & node : nodes)
 	{
-		if (find (node, object, flags, hierarchy, seen))
-			return hierarchy;
+		find (node, object, flags, hierarchies, hierarchy, seen);
 	}
 
-	return hierarchy;
+	return hierarchies;
 }
 
-std::vector <X3DChildObject*>
+Hierarchies
 find (const X3D::SFNode & node, X3DChildObject* const object, const int32_t flags)
 {
-	std::vector <X3DChildObject*> hierarchy;
-	NodeSet                       seen;
+	Hierarchies hierarchies;
+	Hierarchy   hierarchy;
+	NodeSet     seen;
 
-	find (node, object, flags, hierarchy, seen);
+	find (node, object, flags, hierarchies, hierarchy, seen);
 
-	return hierarchy;
+	return hierarchies;
 }
 
 } // X3D

@@ -76,7 +76,9 @@ constexpr int32_t TRAVERSE_VISIBLE_NODES                  = 1 << 9;
 constexpr int32_t TRAVERSE_CLONED_NODES                   = 1 << 10;
 constexpr int32_t TRAVERSE_META_DATA                      = 1 << 11;
 
-typedef std::function <bool (X3D::SFNode &)> TraverseCallback;
+using TraverseCallback = std::function <bool (X3D::SFNode &)>;
+using Hierarchy        = std::vector <X3DChildObject*>;
+using Hierarchies      = std::vector <Hierarchy>;
 
 bool
 traverse (X3DExecutionContext* const, const TraverseCallback &, const bool = true, const int32_t = TRAVERSE_ROOT_NODES);
@@ -97,26 +99,26 @@ traverse (MFNode &, const TraverseCallback &, const bool = true, const int32_t =
 bool
 traverse (SFNode &, const TraverseCallback &, const bool = true, const int32_t = TRAVERSE_ROOT_NODES);
 
-std::vector <X3DChildObject*>
+Hierarchies
 find (X3DScene* const, X3DChildObject* const, const int32_t = TRAVERSE_ROOT_NODES);
 
 inline
-std::vector <X3DChildObject*>
+Hierarchies
 find (const X3DScenePtr & scene, X3DChildObject* const object, const int32_t flags = TRAVERSE_ROOT_NODES)
 { return find (scene .getValue (), object, flags); }
 
-std::vector <X3DChildObject*>
+Hierarchies
 find (X3DExecutionContext* const, X3DChildObject* const, const int32_t = TRAVERSE_ROOT_NODES);
 
 inline
-std::vector <X3DChildObject*>
+Hierarchies
 find (const X3DExecutionContextPtr & executionContext, X3DChildObject* const object, const int32_t flags = TRAVERSE_ROOT_NODES)
 { return find (executionContext .getValue (), object, flags); }
 
-std::vector <X3DChildObject*>
+Hierarchies
 find (const X3D::MFNode &, X3DChildObject* const, const int32_t = TRAVERSE_ROOT_NODES);
 
-std::vector <X3DChildObject*>
+Hierarchies
 find (const X3D::SFNode &, X3DChildObject* const, const int32_t = TRAVERSE_ROOT_NODES);
 
 template <class Type>

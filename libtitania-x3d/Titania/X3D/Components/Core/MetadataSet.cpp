@@ -127,7 +127,7 @@ throw (Error <DISPOSED>)
 	                                     if (not metadataObject)
 														 return false;
 
-	                                     if (not metadataObject -> belongsToProvider ())
+	                                     if (not metadataObject -> getBelongsToProvider ())
 														  return false;
 
 	                                     if (metadataObject -> name () == name)
@@ -161,7 +161,7 @@ MetadataSet::addValue (const SFNode & node)
 	if (not metadataObject)
 		return;
 
-	if (not metadataObject -> belongsToProvider ())
+	if (not metadataObject -> getBelongsToProvider ())
 		return;
 
 	metadataIndex .emplace (metadataObject -> name (), metadataObject);
