@@ -87,11 +87,11 @@ public:
 	isEditor (const bool);
 
 	void
-	isModified (const X3D::BrowserPtr &, const bool);
+	setModified (const X3D::BrowserPtr & browser, const bool value);
 
 	virtual
 	bool
-	isModified (const X3D::BrowserPtr &) const final override;
+	getModified (const X3D::BrowserPtr & browser) const final override;
 
 	/// @name Operations
 

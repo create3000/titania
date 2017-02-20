@@ -204,6 +204,8 @@ BrowserSelection::set_nodes ()
 
 	// Remove old meta data: remove this call later, inserted at 18th Feb. 2017.
 	worldInfo -> removeMetaData ("/Titania/Selection/children");
+
+	getBrowserWindow () -> setModified (browser, true);
 }
 
 X3D::MFNode

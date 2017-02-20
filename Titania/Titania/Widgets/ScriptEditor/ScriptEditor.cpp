@@ -172,7 +172,7 @@ ScriptEditor::initialize ()
 }
 
 bool
-ScriptEditor::isModified () const
+ScriptEditor::getModified () const
 {
 	if (not node)
 		return false;
@@ -212,7 +212,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 
 	if (node)
 	{
-		if (isModified ())
+		if (getModified ())
 			on_apply_clicked ();
 
 		const auto sourceText = node -> getSourceText ();
@@ -268,7 +268,7 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		set_loadState (X3D::NOT_STARTED_STATE);
 	}
 
-	isModified (false);
+	setModified (false);
 }
 
 void
@@ -375,7 +375,7 @@ ScriptEditor::apply (const X3D::UndoStepPtr & undoStep)
 
 	getCurrentBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("%s »%s« is build."), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
 
-	isModified (false);
+	setModified (false);
 }
 
 void
@@ -399,8 +399,8 @@ ScriptEditor::on_can_undo_changed ()
 	{
 		if (node)
 		{
-			isModified (true);
-			getBrowserWindow () -> isModified (X3D::BrowserPtr (node -> getBrowser ()), true);
+			setModified (true);
+			getBrowserWindow () -> setModified (X3D::BrowserPtr (node -> getBrowser ()), true);
 		}
 	}
 }

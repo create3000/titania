@@ -87,7 +87,7 @@ public:
 	///  @name Operations
 
 	bool
-	isModified () const
+	getModified () const
 	{ return index not_eq savedIndex; }
 
 	void

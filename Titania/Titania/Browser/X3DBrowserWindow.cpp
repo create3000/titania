@@ -151,7 +151,7 @@ X3DBrowserWindow::save (const basic::uri & worldURL, const std::string & outputS
 {
 	const auto scriptEditor = footer -> getPage <ScriptEditor> ("ScriptEditor");
 
-	if (scriptEditor -> isModified ())
+	if (scriptEditor -> getModified ())
 		scriptEditor -> apply (std::make_shared <X3D::UndoStep> (""));
 
 	return X3DBrowserEditor::save (worldURL, outputStyle, copy);

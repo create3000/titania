@@ -2188,7 +2188,7 @@ BrowserWindow::on_grid_layout_tool_toggled ()
 
 	getGridTool () -> isEnabled (getGridLayoutToolAction () -> get_active ());
 	getGridTool () -> update ();
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -2209,7 +2209,7 @@ BrowserWindow::on_angle_layout_tool_toggled ()
 
 	getAngleTool () -> isEnabled (getAngleLayoutToolAction () -> get_active ());
 	getAngleTool () -> update ();
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -2247,7 +2247,7 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 	for (const auto & browser : getBrowsers ())
 	{
 	   const auto & worldURL = getWorldURL (browser);
-	   const bool   modified = isModified (browser);
+	   const bool   modified = getModified (browser);
 		const auto   icon     = Gtk::manage (new Gtk::Image (Gtk::StockID (worldURL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 		auto         menuItem = Gtk::manage (new Gtk::ImageMenuItem ());
 

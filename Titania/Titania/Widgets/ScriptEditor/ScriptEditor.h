@@ -85,7 +85,7 @@ public:
 	/// @name Member access
 
 	bool
-	isModified () const;
+	getModified () const;
 
 	///  @name Event handlers
 
@@ -130,7 +130,7 @@ private:
 	///  @name Member access
 
 	void
-	isModified (const bool value)
+	setModified (const bool value)
 	{ modified = value; }
 
 	///  @name Event handlers

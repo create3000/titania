@@ -122,20 +122,20 @@ public:
 
 	virtual
 	bool
-	isModified (const X3D::BrowserPtr &) const
+	getModified (const X3D::BrowserPtr & browser) const
 	{ return false; }
 
 	static
 	std::shared_ptr <BrowserUserData>
-	getUserData (const X3D::BrowserPtr &);
+	getUserData (const X3D::BrowserPtr & browser);
 
 	static
 	std::shared_ptr <UserData>
-	getUserData (const X3D::X3DExecutionContextPtr &);
+	getUserData (const X3D::X3DExecutionContextPtr & executionContextPtr);
 
 	static
 	std::shared_ptr <UserData>
-	getUserData (const X3D::SFNode &);
+	getUserData (const X3D::SFNode & node);
 
 	std::string
 	getOutputStyle (const X3D::X3DScenePtr & scene) const;
@@ -144,23 +144,23 @@ public:
 
 	virtual
 	void
-	open (const basic::uri &);
+	open (const basic::uri & uri);
 
 	void
 	openRecent ();
 
 	virtual
 	void
-	load (const X3D::BrowserPtr &, const basic::uri &);
+	load (const X3D::BrowserPtr & browser, const basic::uri & uri);
 
 	void
-	append (const X3D::BrowserPtr &, const basic::uri &);
+	append (const X3D::BrowserPtr & browser, const basic::uri & uri);
 
 	void
 	loadIcon (const basic::uri &, const std::string &);
 
 	std::string
-	getIcon (const basic::uri &, const Gtk::IconSize &);
+	getIcon (const basic::uri & uri, const Gtk::IconSize &);
 
 	virtual
 	bool

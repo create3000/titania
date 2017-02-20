@@ -179,7 +179,7 @@ X3DGridTool::set_enabled ()
 {
 	setMetaData ("/Titania/" + getName () + "/snap", getTool () -> enabled ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -187,7 +187,7 @@ X3DGridTool::set_translation ()
 {
 	setMetaData ("/Titania/" + getName () + "/translation", getTool () -> translation ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -195,7 +195,7 @@ X3DGridTool::set_rotation ()
 {
 	setMetaData ("/Titania/" + getName () + "/rotation", getTool () -> rotation ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -203,7 +203,7 @@ X3DGridTool::set_scale ()
 {
 	setMetaData ("/Titania/" + getName () + "/scale", getTool () -> scale ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -211,7 +211,7 @@ X3DGridTool::set_dimension ()
 {
 	setMetaData ("/Titania/" + getName () + "/dimension", getTool () -> dimension ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -219,7 +219,7 @@ X3DGridTool::set_majorLineEvery ()
 {
 	setMetaData ("/Titania/" + getName () + "/majorLineEvery", getTool () -> majorLineEvery ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -227,7 +227,7 @@ X3DGridTool::set_majorLineOffset ()
 {
 	setMetaData ("/Titania/" + getName () + "/majorLineOffset", getTool () -> majorLineOffset ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -235,7 +235,7 @@ X3DGridTool::set_color ()
 {
 	setMetaData ("/Titania/" + getName () + "/color", getTool () -> color ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -243,7 +243,7 @@ X3DGridTool::set_lineColor ()
 {
 	setMetaData ("/Titania/" + getName () + "/lineColor", getTool () -> lineColor ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -251,7 +251,7 @@ X3DGridTool::set_majorLineColor ()
 {
 	setMetaData ("/Titania/" + getName () + "/majorLineColor", getTool () -> majorLineColor ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -259,7 +259,7 @@ X3DGridTool::set_snapDistance ()
 {
 	setMetaData ("/Titania/" + getName () + "/snapDistance", getTool () -> snapDistance ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void
@@ -267,7 +267,7 @@ X3DGridTool::set_snapToCenter ()
 {
 	setMetaData ("/Titania/" + getName () + "/snapToCenter", getTool () -> snapToCenter ());
 
-	getBrowserWindow () -> isModified (getCurrentBrowser (), true);
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
 }
 
 void

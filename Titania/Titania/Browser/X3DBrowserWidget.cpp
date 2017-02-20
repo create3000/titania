@@ -398,7 +398,7 @@ void
 X3DBrowserWidget::setTitle ()
 {
 	const auto userData = getUserData (getCurrentBrowser ());
-	const bool modified = isModified (getCurrentBrowser ());
+	const bool modified = getModified (getCurrentBrowser ());
 	const auto title    = getTitle (getCurrentBrowser ());
 
 	getBrowserNotebook () .set_menu_label_text (*getCurrentBrowser (), title);
@@ -423,7 +423,7 @@ X3DBrowserWidget::setTitle ()
 std::string
 X3DBrowserWidget::getTitle (const X3D::BrowserPtr & browser) const
 {
-	const bool modified = isModified (browser);
+	const bool modified = getModified (browser);
 
 	auto title = browser -> getExecutionContext () -> getTitle ();
 

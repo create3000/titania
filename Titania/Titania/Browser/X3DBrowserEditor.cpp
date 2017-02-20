@@ -180,7 +180,7 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 			getCurrentBrowser () -> shutdown () .addInterest (&X3DBrowserEditor::connectShutdown, this);
 
 			getUserData (getCurrentBrowser ()) -> dispose ();
-			isModified (getCurrentBrowser (), false);
+			setModified (getCurrentBrowser (), false);
 
 			X3DBrowserWidget::setCurrentContext (value);
 		}
@@ -201,7 +201,7 @@ X3DBrowserEditor::set_shutdown ()
 	if (isSaved (getCurrentBrowser ()))
 	{
 		getUserData (getCurrentBrowser ()) -> dispose ();
-		isModified (getCurrentBrowser (), false);
+		setModified (getCurrentBrowser (), false);
 	}
 	else
 		// Cancel shutdown, there will be no further shutdown now.
@@ -337,7 +337,7 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 	if (userData -> saveConfirmed)
 		return true;
 
-	if (isModified (browser))
+	if (getModified (browser))
 	{
 		const auto pageNumber = getBrowserNotebook () .page_num (*browser);
 
@@ -353,7 +353,7 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 			case Gtk::RESPONSE_OK:
 			{
 				on_save_activated ();
-				userData -> saveConfirmed = not isModified (browser);
+				userData -> saveConfirmed = not getModified (browser);
 				return userData -> saveConfirmed;
 			}
 			case Gtk::RESPONSE_CANCEL:
@@ -373,7 +373,7 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 }
 
 void
-X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser, const bool value)
+X3DBrowserEditor::setModified (const X3D::BrowserPtr & browser, const bool value)
 {
 	const auto userData = getUserData (browser);
 
@@ -387,9 +387,9 @@ X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser, const bool value)
 }
 
 bool
-X3DBrowserEditor::isModified (const X3D::BrowserPtr & browser) const
+X3DBrowserEditor::getModified (const X3D::BrowserPtr & browser) const
 {
-	return getUndoHistory (browser) .isModified () or getUserData (browser) -> modified;
+	return getUndoHistory (browser) .getModified () or getUserData (browser) -> modified;
 }
 
 void
@@ -627,7 +627,7 @@ X3DBrowserEditor::save (const basic::uri & worldURL, const std::string & outputS
 	if (saved)
 	{
 		if (not copy)
-			isModified (getCurrentBrowser (), false);
+			setModified (getCurrentBrowser (), false);
 
 		return true;
 	}
