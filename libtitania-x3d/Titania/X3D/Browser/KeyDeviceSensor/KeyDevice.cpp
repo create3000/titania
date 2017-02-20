@@ -165,7 +165,8 @@ KeyDevice::on_key_press_event (GdkEventKey* event)
 	}
 
 	getBrowser () -> getKeyDeviceSensorNode () -> setActionKeyPressEvent (event -> keyval);
-	return not getBrowser () -> getSelection () -> isEnabled ();
+
+	return not getBrowser () -> getSelection () -> getEnabled ();
 }
 
 bool
@@ -185,7 +186,8 @@ KeyDevice::on_key_release_event (GdkEventKey* event)
 	}
 
 	getBrowser () -> getKeyDeviceSensorNode () -> setActionKeyReleaseEvent (event -> keyval);
-	return not getBrowser () -> getSelection () -> isEnabled ();
+
+	return not getBrowser () -> getSelection () -> getEnabled ();
 }
 
 void

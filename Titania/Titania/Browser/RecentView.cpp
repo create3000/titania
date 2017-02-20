@@ -133,7 +133,7 @@ RecentView::set_scene ()
 		return;
 
 	// XXX: or extend the use of isPrivate
-	getBrowserWindow () -> getSelection () -> isEnabled (false);
+	getBrowserWindow () -> getSelection () -> setEnabled (false);
 	getCurrentBrowser () -> beginUpdate ();
 
 	try
@@ -247,7 +247,7 @@ RecentView::set_url (const X3D::SFString & url)
 		if (not getBrowserWindow () -> isLive ())
 			getBrowserWindow () -> getCurrentBrowser () -> endUpdate ();
 
-		getBrowserWindow () -> getSelection () -> isEnabled (getBrowserWindow () -> getSelection () -> isEnabled ());
+		getBrowserWindow () -> getSelection () -> setEnabled (getBrowserWindow () -> getSelection () -> getEnabled ());
 
 		getBrowserWindow () -> load (getBrowserWindow () -> getCurrentBrowser (), URL);
 	}

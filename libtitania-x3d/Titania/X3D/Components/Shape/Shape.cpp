@@ -183,6 +183,8 @@ Shape::pointer (X3DRenderObject* const renderObject)
 	if (not renderObject -> getViewVolumes () .back () .intersects (bbox))
 		return;
 
+	getBrowser () -> getHierarchy () .emplace_back (this);
+
 	switch (browser -> getSelectionType ())
 	{
 		case SelectionType::DEFAULT:
@@ -195,6 +197,8 @@ Shape::pointer (X3DRenderObject* const renderObject)
 			cut (renderObject);
 			break;
 	}
+
+	getBrowser () -> getHierarchy () .pop_back ();
 }
 
 void

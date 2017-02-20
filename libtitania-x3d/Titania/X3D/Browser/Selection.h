@@ -94,11 +94,11 @@ public:
 	///  @name Member access
 
 	void
-	isEnabled (const bool value)
+	setEnabled (const bool value)
 	{ enabled = value; }
 
 	const SFBool &
-	isEnabled () const
+	getEnabled () const
 	{ return enabled; }
 
 	void
@@ -165,6 +165,16 @@ public:
 	getNodes () const
 	{ return nodes; }
 
+	const MFNode &
+	getHierarchy () const
+	{ return hierarchy; }
+
+	MFNode
+	getParents ();
+	
+	MFNode
+	getChildren ();
+
 
 protected:
 
@@ -174,7 +184,7 @@ protected:
 
 	///  @name Operations
 
-	bool
+	void
 	selectNode ();
 
 
@@ -192,6 +202,12 @@ private:
 	set_nodes ();
 
 	///  @name Operations
+
+	void
+	setHierarchy (const SFNode & node, const Hierarchy & hierarchy);
+
+	void
+	clearHierarchy ();
 
 	MFNode
 	getGeometries (const MFNode & nodes) const;
@@ -219,6 +235,9 @@ private:
 	SFBool touchTime;
 	MFNode nodes;
 	MFNode removedNodes;
+	SFNode selectedNode;
+	MFNode hierarchy;
+	bool   clearHierarchyState;
 
 };
 

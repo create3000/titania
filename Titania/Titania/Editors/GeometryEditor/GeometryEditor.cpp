@@ -371,7 +371,7 @@ GeometryEditor::set_browser (const X3D::BrowserPtr & value)
 void
 GeometryEditor::set_viewer ()
 {
-	if (not getBrowserWindow () -> getSelection () -> isEnabled ())
+	if (not getBrowserWindow () -> getSelection () -> getEnabled ())
 		return;
 
 	switch (getCurrentBrowser () -> getCurrentViewer ())
@@ -876,7 +876,7 @@ GeometryEditor::on_edit_toggled ()
 			;
 		else if (getBrowserWindow () -> getViewerButton () .get_active ())
 			;
-		else if (getBrowserWindow () -> getSelection () -> isEnabled ())
+		else if (getBrowserWindow () -> getSelection () -> getEnabled ())
 			getBrowserWindow () -> getArrowButton () .set_active (true);
 		else
 			getBrowserWindow () -> getHandButton () .set_active (true);
@@ -906,7 +906,7 @@ GeometryEditor::on_paint_selection_toggled ()
 	}
 
 	// Disable X3DPointingDeviceSensors.
-	getBrowserWindow () -> getSelection () -> isEnabled (true);
+	getBrowserWindow () -> getSelection () -> setEnabled (true);
 
 	switch (selector)
 	{

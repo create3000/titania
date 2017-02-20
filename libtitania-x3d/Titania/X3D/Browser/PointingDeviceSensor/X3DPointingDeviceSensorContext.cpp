@@ -262,7 +262,7 @@ X3DPointingDeviceSensorContext::setButtonReleaseEvent ()
 	// Selection
 
 	//if (not hasMoved or chrono::now () - pressTime < SELECTION_TIME)
-	if (getBrowser () -> getSelection () -> isEnabled ())
+	if (getBrowser () -> getSelection () -> getEnabled ())
 	{
 		getBrowser () -> getSelection () -> selectNode ();
 	}

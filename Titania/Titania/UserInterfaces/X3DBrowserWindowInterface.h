@@ -1484,8 +1484,8 @@ public:
 	{ return *m_SelectParentButton; }
 
 	Gtk::ToolButton &
-	getSelectChildrenButton () const
-	{ return *m_SelectChildrenButton; }
+	getSelectChildButton () const
+	{ return *m_SelectChildButton; }
 
 	Gtk::SeparatorToolItem &
 	getViewerSeparator () const
@@ -2111,7 +2111,7 @@ public:
 
 	virtual
 	void
-	on_select_children_button_clicked () = 0;
+	on_select_child_button_clicked () = 0;
 
 	virtual
 	bool
@@ -2513,7 +2513,7 @@ private:
 	Gtk::ToolButton*                 m_PlayPauseButton;
 	Gtk::SeparatorToolItem*          m_SelectSeparator;
 	Gtk::ToolButton*                 m_SelectParentButton;
-	Gtk::ToolButton*                 m_SelectChildrenButton;
+	Gtk::ToolButton*                 m_SelectChildButton;
 	Gtk::SeparatorToolItem*          m_ViewerSeparator;
 	Gtk::RadioToolButton*            m_ViewerButton;
 	Gtk::ToolButton*                 m_StraightenButton;

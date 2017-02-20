@@ -99,14 +99,14 @@ X3DGeometryNodeTool::setExecutionContext (X3DExecutionContext* const executionCo
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getSelection () -> isEnabled () .removeInterest (&X3DGeometryNodeTool::set_pickable, this);
+	getBrowser () -> getSelection () -> getEnabled () .removeInterest (&X3DGeometryNodeTool::set_pickable, this);
 
 	normalToolNode -> setExecutionContext (executionContext);
 	coordToolNode  -> setExecutionContext (executionContext);
 
 	X3DNodeTool::setExecutionContext (executionContext);
 
-	getBrowser () -> getSelection () -> isEnabled () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
+	getBrowser () -> getSelection () -> getEnabled () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
 }
 
 void
@@ -114,7 +114,7 @@ X3DGeometryNodeTool::initialize ()
 {
 	X3DNodeTool::initialize ();
 
-	getBrowser () -> getSelection () -> isEnabled () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
+	getBrowser () -> getSelection () -> getEnabled () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
 
 	selection .addInterest (&X3DGeometryNodeTool::set_selection, this);
 
@@ -171,7 +171,7 @@ X3DGeometryNodeTool::set_pickable ()
 {
 	try
 	{
-		const bool enabled = getBrowser () -> getSelection () -> isEnabled () and
+		const bool enabled = getBrowser () -> getSelection () -> getEnabled () and
 		                     not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ());
 
 		coordToolNode  -> getInlineNode () -> getExportedNode ("SelectionShape") -> setField <SFNode> ("geometry", enabled ? getNode <X3DGeometryNode> () : nullptr, true);

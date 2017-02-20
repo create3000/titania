@@ -409,7 +409,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PlayPauseButton", m_PlayPauseButton);
 	m_builder -> get_widget ("SelectSeparator", m_SelectSeparator);
 	m_builder -> get_widget ("SelectParentButton", m_SelectParentButton);
-	m_builder -> get_widget ("SelectChildrenButton", m_SelectChildrenButton);
+	m_builder -> get_widget ("SelectChildButton", m_SelectChildButton);
 	m_builder -> get_widget ("ViewerSeparator", m_ViewerSeparator);
 	m_builder -> get_widget ("ViewerButton", m_ViewerButton);
 	m_builder -> get_widget ("StraightenButton", m_StraightenButton);
@@ -727,7 +727,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ToolButton with id 'PlayPauseButton'.
 	m_PlayPauseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_play_pause_button_clicked));
 	m_SelectParentButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_parent_button_clicked));
-	m_SelectChildrenButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_children_button_clicked));
+	m_SelectChildButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_select_child_button_clicked));
 
 	// Connect object Gtk::RadioToolButton with id 'ViewerButton'.
 	m_ViewerButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_viewer_button_press_event));

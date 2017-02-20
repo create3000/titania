@@ -765,13 +765,16 @@ private:
 	void
 	on_play_pause_button_clicked () final override;
 
+	void
+	set_hierarchy ();
+
 	virtual
 	void
 	on_select_parent_button_clicked () final override;
 
 	virtual
 	void
-	on_select_children_button_clicked () final override;
+	on_select_child_button_clicked () final override;
 
 	X3D::MFNode
 	getChildren (const X3D::SFNode &, const bool = false) const;

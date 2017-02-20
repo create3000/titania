@@ -68,10 +68,10 @@ public:
 	///  @name Member access
 
 	void
-	isEnabled (const bool value);
+	setEnabled (const bool value);
 
 	const X3D::SFBool &
-	isEnabled () const
+	getEnabled () const
 	{ return enabled; }
 
 	void
@@ -129,6 +129,16 @@ public:
 	X3D::MFNode
 	getPreviousNodes () const;
 
+	const X3D::MFNode &
+	getHierarchy () const
+	{ return hierarchy; }
+
+	X3D::MFNode
+	getParents () const;
+
+	X3D::MFNode
+	getChildren () const;
+
 	///  @name Operations
 
 	void
@@ -179,6 +189,7 @@ private:
 	X3D::SFBool     active;
 	X3D::SFBool     touchTime;
 	X3D::MFNode     nodes;
+	X3D::MFNode     hierarchy;
 	X3D::BrowserPtr browser;
 
 };

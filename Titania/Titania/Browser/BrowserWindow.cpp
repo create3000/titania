@@ -198,6 +198,8 @@ BrowserWindow::initialize ()
 	getCurrentScene ()   .addInterest (&BrowserWindow::set_scene, this);
 	getCurrentContext () .addInterest (&BrowserWindow::set_executionContext, this);
 
+	getSelection () -> getHierarchy () .addInterest (&BrowserWindow::set_hierarchy, this);
+
 	// Window
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 	getWidget () .grab_focus ();
@@ -433,8 +435,6 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 
 	// Dashboard
 
-	getSelectParentButton ()    .set_sensitive (haveSelection);
-	getSelectChildrenButton ()  .set_sensitive (haveSelection);
 	getLookAtSelectionButton () .set_sensitive (haveSelection);
 
 	// Show/Hide Object Icons.
@@ -1361,7 +1361,7 @@ BrowserWindow::isEditor (const bool enabled)
 	getPlayPauseButton ()       .set_visible (enabled);
 	getSelectSeparator ()       .set_visible (enabled);
 	getSelectParentButton ()    .set_visible (enabled);
-	getSelectChildrenButton ()  .set_visible (enabled);
+	getSelectChildButton ()     .set_visible (enabled);
 	getViewerSeparator ()       .set_visible (enabled);
 	getLookAtSelectionButton () .set_visible (enabled and getArrowButton () .get_active ());
 
@@ -2527,12 +2527,12 @@ BrowserWindow::on_hand_button_toggled ()
 	const bool enabled = not getHandButton () .get_active () and isEditor ();
 
 	if (getHandButton () .get_active ())
-		getSelection () -> isEnabled (false);
+		getSelection () -> setEnabled (false);
 
 	getPlayPauseButton ()       .set_visible (enabled);
 	getSelectSeparator ()       .set_visible (enabled);
 	getSelectParentButton ()    .set_visible (enabled);
-	getSelectChildrenButton ()  .set_visible (enabled);
+	getSelectChildButton ()     .set_visible (enabled);
 	getLookAtSelectionButton () .set_visible (enabled);
 
 }
@@ -2546,7 +2546,7 @@ BrowserWindow::on_arrow_button_toggled ()
 
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 
-		getSelection () -> isEnabled (true);
+		getSelection () -> setEnabled (true);
 	}
 
 	getConfig () -> setItem ("arrow", getArrowButton () .get_active ());
@@ -2564,132 +2564,35 @@ BrowserWindow::on_play_pause_button_clicked ()
 }
 
 void
+BrowserWindow::set_hierarchy ()
+{
+	getSelectParentButton () .set_sensitive (not getSelection () -> getParents ()  .empty ());
+	getSelectChildButton ()  .set_sensitive (not getSelection () -> getChildren () .empty ());
+}
+
+void
 BrowserWindow::on_select_parent_button_clicked ()
 {
-	const auto selection = getSelection () -> getNodes ();
-
-	if (selection .empty ())
-		return;
-
-	std::set <X3D::SFNode> parentIndex;
-
-	for (const auto & child : selection)
-	{
-		bool hasParents = false;
-
-		for (const auto & parent : getParentNodes (child))
-		{
-			if (parent == child -> getExecutionContext ())
-				continue;
-
-			if (parent -> getExecutionContext () not_eq child -> getExecutionContext ())
-				continue;
-
-			for (const auto & type : basic::make_reverse_range (parent -> getType ()))
-			{
-				switch (type)
-				{
-					case X3D::X3DConstants::X3DGroupingNode      :
-					case X3D::X3DConstants::X3DPrototypeInstance :
-						{
-							hasParents = true;
-							parentIndex .emplace (parent);
-							break;
-						}
-					default:
-						break;
-				}
-			}
-		}
-
-		if (not hasParents)
-			parentIndex .emplace (child);
-	}
-
-	// Get all hierarchies sorted by length.
-
-	std::multimap <size_t, std::vector <X3D::X3DChildObject*>>  hierachies;
-
-	for (const auto & parent : parentIndex)
-	{
-		const auto hs = X3D::find (parent -> getExecutionContext (), parent);
-
-		if (hs .empty ())
-			continue;
-
-		hierachies .emplace (hs .front () .size (), hs .front ());
-	}
-
-	// Sort out parent if parent is a child of another parent.
-
-	std::map <X3D::X3DChildObject*, bool> tree;
-
-	for (auto & pair : hierachies)
-	{
-		auto & hierarchy = pair .second;
-
-		// Insert parent.
-
-		tree .emplace (hierarchy .back (), true);
-
-		// Insert other parents.
-
-		for (const auto & object : std::make_pair (hierarchy .crbegin () + 1, hierarchy .crend ()))
-		{
-			if (tree .emplace (object, false) .first -> second)
-			{
-				hierarchy .back () = nullptr;
-				break;
-			}
-		}
-	}
-
-	X3D::MFNode parents;
-
-	for (const auto & hierarchy : hierachies)
-	{
-		if (hierarchy .second .back ())
-			parents .emplace_back (hierarchy .second .back ());
-	}
-
-	//	{ // DEBUG
-	//		__LOG__ << parents .size () << std::endl;
-	//
-	//		for (const auto & parent : parents)
-	//			__LOG__ << parent -> getTypeName () << std::endl;
-	//	} // DEBUG
+	const auto parents = getSelection () -> getParents ();
 
 	if (parents .empty ())
 		return;
 
-	// Select and expand.
-
 	getSelection () -> setNodes (parents);
+
 	expandNodes (parents);
 }
 
 void
-BrowserWindow::on_select_children_button_clicked ()
+BrowserWindow::on_select_child_button_clicked ()
 {
-	const auto selection = getSelection () -> getNodes ();
+	const auto children = getSelection () -> getChildren ();
 
-	if (selection .empty ())
+	if (children .empty ())
 		return;
 
-	X3D::MFNode children;
-
-	for (const auto & parent : selection)
-	{
-		const auto nodes = getChildren (parent);
-
-		if (nodes .empty ())
-			children .emplace_back (parent);
-
-		else
-			children .insert (children .end (), nodes .begin (), nodes .end ());
-	}
-
 	getSelection () -> setNodes (children);
+
 	expandNodes (children);
 }
 
@@ -3038,7 +2941,7 @@ BrowserWindow::on_viewer_toggled ()
 	setViewer (viewer);
 
 	if (getViewerButton () .get_active ())
-		getSelection () -> isEnabled (false);
+		getSelection () -> setEnabled (false);
 
 	getConfig () -> setItem ("viewer", getViewerButton () .get_active ());
 }

@@ -95,7 +95,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	if (isInitialized ())
 	{
-		getBrowser () -> getSelection () -> isEnabled () .addInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
+		getBrowser () -> getSelection () -> getEnabled () .addInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
 		getExecutionContext () -> isLive () .removeInterest (&X3DPointingDeviceSensorNode::set_live, this);
 	}
 
@@ -114,12 +114,12 @@ X3DPointingDeviceSensorNode::set_live ()
 {
 	if (enabled () and getExecutionContext () -> isLive () and isLive ())
 	{
-		getBrowser () -> getSelection () -> isEnabled () .addInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
+		getBrowser () -> getSelection () -> getEnabled () .addInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
 		set_disabled ();
 	}
 	else
 	{
-		getBrowser () -> getSelection () -> isEnabled () .removeInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
+		getBrowser () -> getSelection () -> getEnabled () .removeInterest (&X3DPointingDeviceSensorNode::set_disabled, this);
 		disabled = true;
 	}
 }
@@ -127,7 +127,7 @@ X3DPointingDeviceSensorNode::set_live ()
 void
 X3DPointingDeviceSensorNode::set_disabled ()
 {
-	disabled = getBrowser () -> getSelection () -> isEnabled () and not getScene () -> isPrivate ();
+	disabled = getBrowser () -> getSelection () -> getEnabled () and not getScene () -> isPrivate ();
 }
 
 void

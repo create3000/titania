@@ -64,7 +64,7 @@ namespace puck {
 
 BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	         enabled (getCurrentBrowser () -> getSelection () -> isEnabled ()),  
+	         enabled (getCurrentBrowser () -> getSelection () -> getEnabled ()),  
 	  selectMultiple (getCurrentBrowser () -> getSelection () -> getSelectMultiple ()),
 	    selectLowest (getCurrentBrowser () -> getSelection () -> getSelectLowest ()),
 	  selectGeometry (getCurrentBrowser () -> getSelection () -> getSelectGeometry ()),
@@ -72,6 +72,7 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	          active (),
 	       touchTime (),
 	           nodes (),
+	       hierarchy (),
 	         browser (getCurrentBrowser ())
 {
 	addChildObjects (enabled,
@@ -82,6 +83,7 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	                 active,
 	                 touchTime,
 	                 nodes,
+	                 hierarchy,
 	                 browser);
 
 	getCurrentBrowser () .addInterest (&BrowserSelection::set_browser, this);
@@ -98,7 +100,7 @@ BrowserSelection::set_browser ()
 	{
 		const auto & selection = browser -> getSelection ();
 
-		selection -> isEnabled ()         .removeInterest (enabled);
+		selection -> getEnabled ()        .removeInterest (enabled);
 		selection -> getSelectMultiple () .removeInterest (selectMultiple);
 		selection -> getSelectLowest ()   .removeInterest (selectLowest);
 		selection -> getSelectGeometry () .removeInterest (selectGeometry);
@@ -106,6 +108,7 @@ BrowserSelection::set_browser ()
 		selection -> isOver ()        .removeInterest (over);
 		selection -> isActive ()      .removeInterest (active);
 		selection -> getPickedTime () .removeInterest (touchTime);
+		selection -> getHierarchy ()  .removeInterest (hierarchy);
 		selection -> getNodes ()      .removeInterest (nodes);
 	}
 
@@ -114,12 +117,12 @@ BrowserSelection::set_browser ()
 	{
 		const auto & selection = browser -> getSelection ();
 
-		selection -> isEnabled         (enabled);
+		selection -> setEnabled         (enabled);
 		selection -> setSelectMultiple (selectMultiple);
 		selection -> setSelectLowest   (selectLowest);
 		selection -> setSelectGeometry (selectGeometry);
 
-		selection -> isEnabled ()         .addInterest (enabled);
+		selection -> getEnabled ()        .addInterest (enabled);
 		selection -> getSelectMultiple () .addInterest (selectMultiple);
 		selection -> getSelectLowest ()   .addInterest (selectLowest);
 		selection -> getSelectGeometry () .addInterest (selectGeometry);
@@ -128,8 +131,10 @@ BrowserSelection::set_browser ()
 		selection -> isActive ()      .addInterest (active);
 		selection -> getPickedTime () .addInterest (touchTime);
 		selection -> getNodes ()      .addInterest (nodes);
+		selection -> getHierarchy ()  .addInterest (hierarchy);
 
-		nodes = selection -> getNodes ();
+		nodes     = selection -> getNodes ();
+		hierarchy = selection -> getHierarchy ();
 	}
 }
 
@@ -215,10 +220,10 @@ BrowserSelection::getPreviousNodes () const
 }
 
 void
-BrowserSelection::isEnabled (const bool value)
+BrowserSelection::setEnabled (const bool value)
 {
 	enabled = value;
-	browser -> getSelection () -> isEnabled (value);
+	browser -> getSelection () -> setEnabled (value);
 }
 
 void
@@ -278,6 +283,22 @@ BrowserSelection::setNodes (const X3D::MFNode & value)
 	const auto & selection = browser-> getSelection ();
 
 	selection -> setNodes (value);
+}
+
+X3D::MFNode
+BrowserSelection::getParents () const
+{
+	const auto & selection = browser-> getSelection ();
+
+	return selection -> getParents ();
+}
+
+X3D::MFNode
+BrowserSelection::getChildren () const
+{
+	const auto & selection = browser-> getSelection ();
+
+	return selection -> getChildren ();
 }
 
 void

@@ -4330,13 +4330,13 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkToolButton" id="SelectChildrenButton">
+                                  <object class="GtkToolButton" id="SelectChildButton">
                                     <property name="can_focus">False</property>
-                                    <property name="tooltip_text" translatable="yes">Selects the next lower children within the selected group in the hierarchy.</property>
+                                    <property name="tooltip_text" translatable="yes">Selects the next lower child within the selected group in the hierarchy.</property>
                                     <property name="label" translatable="yes">Select Children</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">gtk-go-down</property>
-                                    <signal name="clicked" handler="on_select_children_button_clicked" swapped="no"/>
+                                    <signal name="clicked" handler="on_select_child_button_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
