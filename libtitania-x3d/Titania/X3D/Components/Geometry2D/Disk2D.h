@@ -160,6 +160,12 @@ public:
 	draw (ShapeContainer* const context) override;
 
 	virtual
+	NodeType
+	getPrimitiveType () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) override;
+
+	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,

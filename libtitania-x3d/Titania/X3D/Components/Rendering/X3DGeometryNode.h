@@ -223,6 +223,12 @@ public:
 	draw (ShapeContainer* const);
 
 	virtual
+	NodeType
+	getPrimitiveType () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) = 0;
+
+	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,

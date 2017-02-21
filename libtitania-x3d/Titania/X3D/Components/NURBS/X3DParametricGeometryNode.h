@@ -62,6 +62,12 @@ class X3DParametricGeometryNode :
 public:
 
 	virtual
+	NodeType
+	getPrimitiveType () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
+
+	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,

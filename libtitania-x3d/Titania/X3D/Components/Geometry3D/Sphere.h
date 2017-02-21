@@ -120,6 +120,13 @@ public:
 	///  @name Operations
 
 	virtual
+	NodeType
+	getPrimitiveType () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override
+	{ return X3DConstants::IndexedFaceSet; }
+
+	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,

@@ -201,6 +201,13 @@ public:
 	void
 	addNormals () = 0;
 
+	virtual
+	NodeType
+	getPrimitiveType () const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) override
+	{ return X3DConstants::IndexedFaceSet; }
+
 	///  @name Destruction
 
 	virtual

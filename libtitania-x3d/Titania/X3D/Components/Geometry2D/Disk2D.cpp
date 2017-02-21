@@ -317,6 +317,20 @@ Disk2D::draw (ShapeContainer* const context)
 		X3DGeometryNode::draw (context);
 }
 
+NodeType
+Disk2D::getPrimitiveType () const
+throw (Error <NOT_SUPPORTED>,
+       Error <DISPOSED>)
+{
+	if (getElements () [0] .vertexMode () == GL_POINTS)
+		return X3DConstants::PointSet;
+
+	if (getElements () [0] .vertexMode () == GL_LINE_LOOP)
+		return X3DConstants::IndexedLineSet;
+
+	return X3DConstants::IndexedFaceSet;
+}
+
 SFNode
 Disk2D::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
