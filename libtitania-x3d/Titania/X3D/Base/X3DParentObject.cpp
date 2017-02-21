@@ -72,7 +72,7 @@ X3DParentObject::X3DParentObject (X3DBrowser* const browser) :
 {
 	assert (browser);
 
-	isTainted (true);
+	setTainted (true);
 }
 
 /***
@@ -84,9 +84,9 @@ X3DParentObject::setup ()
 	browser -> addParent (this);
 
 	for (const auto & child : children)
-		child -> isTainted (false);
+		child -> setTainted (false);
 
-	isTainted (false);
+	setTainted (false);
 
 	initialized = true;
 }
@@ -121,7 +121,7 @@ X3DParentObject::setBrowser (X3DBrowser* const value)
 
 	// Add events.
 	
-	isTainted (false);
+	setTainted (false);
 
 	for (const auto & object : objects)
 		addEvent (object .first, object .second);
@@ -136,7 +136,7 @@ X3DParentObject::setBrowser (X3DBrowser* const value)
 void
 X3DParentObject::addChildObject (X3DChildObject & child)
 {
-	child .isTainted (true);
+	child .setTainted (true);
 
 	children .emplace (&child);
 
@@ -163,10 +163,10 @@ X3DParentObject::addEvent (X3DChildObject* const object)
 {
 	object -> isSet (true);
 
-	if (object -> isTainted ())
+	if (object -> getTainted ())
 		return;
 
-	object -> isTainted (true);
+	object -> setTainted (true);
 
 	addEvent (object, std::make_shared <Event> (object));
 }
@@ -192,11 +192,11 @@ X3DParentObject::addEvent (X3DChildObject* const object, const EventPtr & event)
 
 	// Register for eventsProcessed
 
-	if (not isTainted ())
+	if (not getTainted ())
 	{
 		if (object -> isInput () or (extendedEventHandling and not object -> isOutput ()))
 		{
-			isTainted (true);
+			setTainted (true);
 		}
 	}
 
@@ -212,9 +212,9 @@ X3DParentObject::addEvent (X3DChildObject* const object, const EventPtr & event)
 void
 X3DParentObject::addEvent ()
 {
-	if (not isTainted ())
+	if (not getTainted ())
 	{
-		isTainted (true);
+		setTainted (true);
 
 		if (not parentId .time)
 			parentId = browser -> addTaintedParent (this);
@@ -233,9 +233,9 @@ X3DParentObject::eventsProcessed ()
 	events .clear ();
 	parentId .time = 0;
 
-	if (isTainted ())
+	if (getTainted ())
 	{
-		isTainted (false);
+		setTainted (false);
 		processInterests ();
 	}
 }

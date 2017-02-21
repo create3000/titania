@@ -51,7 +51,6 @@
 #include "X3DExecutionContext.h"
 
 #include "../Browser/Core/Cast.h"
-#include "../Browser/ContextLock.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/WorldInfo.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
@@ -147,7 +146,7 @@ X3DExecutionContext::initialize ()
 	sceneGraphOutput .addInterest (&X3DExecutionContext::set_sceneGraph, this);
 	bboxOutput       .addInterest (&X3DExecutionContext::set_bbox, this);
 
-	uninitializedNodes .isTainted (true); // !!! Prevent generating events when protos add nodes.
+	uninitializedNodes .setTainted (true); // !!! Prevent generating events when protos add nodes.
 
 	if (not isProtoDeclaration ())
 		realize ();
@@ -242,7 +241,11 @@ throw (Error <INVALID_NAME>,
 	SFNode node (declaration -> create (this));
 
 	if (isInitialized ())
+	{
+		ContextLock lock (getBrowser ());
+
 		node -> setup ();
+	}
 	//else
 	//	addUninitializedNode (node);
 
@@ -262,7 +265,11 @@ throw (Error <INVALID_NAME>,
 	X3DPrototypeInstancePtr node (findProtoDeclaration (typeName, AvailableType { }) -> createInstance (this));
 
 	if (isInitialized ())
+	{
+		ContextLock lock (getBrowser ());
+
 		node -> setup ();
+	}
 	//else
 	//	addUninitializedNode (node);
 
@@ -317,7 +324,7 @@ throw (Error <IMPORTED_NODE>,
 
 	auto & namedNode = namedNodes .emplace (name, new NamedNode (this, node)) .first -> second;
 
-	namedNode .isTainted (true);
+	namedNode .setTainted (true);
 	namedNode .addParent (this);
 
 	if (isInitialized ())
@@ -476,7 +483,7 @@ throw (Error <INVALID_NODE>,
 
 	auto & importedNode = importedNodes .emplace (importedName, new ImportedNode (this, inlineNode, exportedName, importedName)) .first -> second;
 
-	importedNode .isTainted (true);
+	importedNode .setTainted (true);
 	importedNode .addParent (this);
 
 	if (isInitialized ())
@@ -679,7 +686,7 @@ throw (Error <INVALID_NAME>,
 		throw Error <INVALID_NAME> ("Couldn't add proto declaration: proto '" + name + "' is already in use.");
 
 	prototypes .push_back (name, prototype);
-	prototypes .back () .isTainted (true);
+	prototypes .back () .setTainted (true);
 	prototypes .back () .addParent (this);
 
 	prototype -> setName (name);
@@ -712,7 +719,7 @@ throw (Error <INVALID_NAME>,
 		catch (const std::out_of_range &)
 		{
 			prototypes .push_back (name, prototype);
-			prototypes .back () .isTainted (true);
+			prototypes .back () .setTainted (true);
 			prototypes .back () .addParent (this);
 		}
 	}
@@ -821,7 +828,7 @@ throw (Error <INVALID_NAME>,
 		throw Error <INVALID_NAME> ("Couldn't add extern proto declaration: extern proto '" + name + "' is already in use.");
 
 	externProtos .push_back (name, externProto);
-	externProtos .back () .isTainted (true);
+	externProtos .back () .setTainted (true);
 	externProtos .back () .addParent (this);
 
 	externProto -> setName (name);
@@ -854,7 +861,7 @@ throw (Error <INVALID_NAME>,
 		catch (const std::out_of_range &)
 		{
 			externProtos .push_back (name, externProto);
-			externProtos .back () .isTainted (true);
+			externProtos .back () .setTainted (true);
 			externProtos .back () .addParent (this);
 		}
 	}
@@ -945,7 +952,7 @@ X3DExecutionContext::requestImmediateLoadOfExternProtos ()
 void
 X3DExecutionContext::requestAsyncLoadOfExternProtos ()
 {
-	externProtosLoadCount .isTainted (false);
+	externProtosLoadCount .setTainted (false);
 	externProtosLoadCount .addEvent ();
 
 	for (const auto & externProto : getExternProtoDeclarations ())
@@ -1141,7 +1148,7 @@ throw (Error <INVALID_NODE>,
 
 	auto & route = routes .back ();
 
-	route .isTainted (true);
+	route .setTainted (true);
 	route .addParent (this);
 
 	return route;

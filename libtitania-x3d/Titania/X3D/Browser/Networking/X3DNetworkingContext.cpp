@@ -86,7 +86,7 @@ X3DNetworkingContext::initialize ()
 {
 	userAgent = getBrowser () -> getName () + "/" + getBrowser () -> getVersion () + " (X3D Browser; +" + providerUrl + ")";
 
-	privateScene -> isPrivate (true);
+	privateScene -> setPrivate (true);
 	privateScene -> setup ();
 	loadSensor   -> setup ();
 

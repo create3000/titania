@@ -177,7 +177,7 @@ ColorEditor::set_initialized ()
 		const auto appearance  = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 		const auto touchSensor = preview -> getExecutionContext () -> getNamedNode <X3D::TouchSensor> ("TouchSensor");
 
-		appearance -> isPrivate (true);
+		appearance -> setPrivate (true);
 
 		transform -> addInterest (&ColorEditor::set_viewer, this);
 		shape -> geometry ()               .addInterest (&ColorEditor::set_viewer, this);
@@ -324,13 +324,13 @@ ColorEditor::on_remove_unused_colors_activate ()
 void
 ColorEditor::on_hand_toggled ()
 {
-	preview -> isPickable (false);
+	preview -> setPickable (false);
 }
 
 void
 ColorEditor::on_arrow_toggled ()
 {
-	preview -> isPickable (true);
+	preview -> setPickable (true);
 }
 
 void
@@ -680,7 +680,7 @@ ColorEditor::set_multi_texture ()
 	if (multiTexture)
 	{
 		previewAppearance -> texture () = appearance -> texture () -> copy (previewAppearance -> getExecutionContext (), X3D::FLAT_COPY);
-		previewAppearance -> texture () -> isPrivate (true);
+		previewAppearance -> texture () -> setPrivate (true);
 		previewAppearance -> getExecutionContext () -> realize ();
 	}
 	else
@@ -697,7 +697,7 @@ ColorEditor::set_multi_textureTransform ()
 	if (multiTextureTransform)
 	{
 		previewAppearance -> textureTransform () = appearance -> textureTransform () -> copy (previewAppearance -> getExecutionContext (), X3D::FLAT_COPY);
-		previewAppearance -> textureTransform () -> isPrivate (true);
+		previewAppearance -> textureTransform () -> setPrivate (true);
 		previewAppearance -> getExecutionContext () -> realize ();
 	}
 	else
@@ -727,7 +727,7 @@ ColorEditor::set_geometry (const X3D::SFNode & value)
 		{
 			coord           = geometry -> coord ();
 			previewGeometry = X3D::X3DPtr <X3D::IndexedFaceSet> (geometry -> copy (previewShape -> getExecutionContext (), X3D::FLAT_COPY));
-			previewGeometry -> isPrivate (true);
+			previewGeometry -> setPrivate (true);
 
 			geometry -> solid ()           .addInterest (previewGeometry -> solid ());
 			geometry -> convex ()          .addInterest (previewGeometry -> convex ());

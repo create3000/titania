@@ -123,7 +123,7 @@ PolylineEmitter::initialize ()
 	coordIndex () .addInterest (polylineNode -> coordIndex ());
 	coord ()      .addInterest (polylineNode -> coord ());
 
-	polylineNode -> isPrivate (true);
+	polylineNode -> setPrivate (true);
 	polylineNode -> coordIndex () = coordIndex ();
 	polylineNode -> coord ()      = coord ();
 

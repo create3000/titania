@@ -101,7 +101,7 @@ StaticGroup::initialize ()
 	group -> bboxCenter () = bboxCenter ();
 	group -> children ()   = children ();
 
-	group -> isPrivate (true);
+	group -> setPrivate (true);
 	group -> setup ();
 
 	// Connect after Group setup.

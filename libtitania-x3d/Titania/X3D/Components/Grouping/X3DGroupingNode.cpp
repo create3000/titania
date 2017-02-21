@@ -102,13 +102,13 @@ X3DGroupingNode::initialize ()
 	X3DChildNode::initialize ();
 	X3DBoundedObject::initialize ();
 
-	visible               .isTainted (true);
-	pointingDeviceSensors .isTainted (true);
-	cameraObjects         .isTainted (true);
-	clipPlanes            .isTainted (true);
-	localFogs             .isTainted (true);
-	lights                .isTainted (true);
-	childNodes            .isTainted (true);
+	visible               .setTainted (true);
+	pointingDeviceSensors .setTainted (true);
+	cameraObjects         .setTainted (true);
+	clipPlanes            .setTainted (true);
+	localFogs             .setTainted (true);
+	lights                .setTainted (true);
+	childNodes            .setTainted (true);
 
 	addChildren ()    .addInterest (&X3DGroupingNode::set_addChildren, this);
 	removeChildren () .addInterest (&X3DGroupingNode::set_removeChildren, this);
@@ -148,12 +148,12 @@ X3DGroupingNode::set_addChildren ()
 	for (const auto & value : children ())
 		set .emplace (value ? value -> getId () : 0);
 
-	addChildren () .isTainted (true);
+	addChildren () .setTainted (true);
 	addChildren () .erase (std::remove_if (addChildren () .begin (), addChildren () .end (),
 	                                       [&set] (const SFNode & value) { return set .count (value ? value -> getId () : 0); }),
 	                       addChildren () .end ());
 
-	if (not children () .isTainted ())
+	if (not children () .getTainted ())
 	{
 		children () .removeInterest (&X3DGroupingNode::set_children, this);
 		children () .addInterest (&X3DGroupingNode::connectChildren, this);
@@ -163,7 +163,7 @@ X3DGroupingNode::set_addChildren ()
 	add (addChildren ());
 
 	addChildren () .set ({ });
-	addChildren () .isTainted (false);
+	addChildren () .setTainted (false);
 }
 
 void
@@ -175,7 +175,7 @@ X3DGroupingNode::set_removeChildren ()
 	if (children () .empty ())
 		return;
 
-	if (not children () .isTainted ())
+	if (not children () .getTainted ())
 	{
 		children () .removeInterest (&X3DGroupingNode::set_children, this);
 		children () .addInterest (&X3DGroupingNode::connectChildren, this);

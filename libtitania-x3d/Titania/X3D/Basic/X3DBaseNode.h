@@ -336,13 +336,13 @@ public:
 	///  Marks this node as private or not.  The default is false.
 	virtual
 	void
-	isPrivate (const bool);
+	setPrivate (const bool value);
 
 	///  Returns whether this node is marked private.
 	virtual
 	bool
-	isPrivate () const
-	{ return private_; }
+	getPrivate () const
+	{ return privateState; }
 
 	///  Returns the number of clones of this node used in the scene graph.
 	virtual
@@ -607,7 +607,7 @@ private:
 	size_t               numUserDefinedFields;   // Number of user defined fields
 	SFTime               fieldsOutput;
 
-	bool   private_;
+	bool   privateState;
 	size_t cloneCount;
 	SFBool live;
 

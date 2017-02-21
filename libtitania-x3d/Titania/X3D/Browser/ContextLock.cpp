@@ -50,16 +50,31 @@
 
 #include "ContextLock.h"
 
+#include "../Browser/X3DBrowser.h"
+#include "../Execution/X3DExecutionContext.h"
+
 namespace titania {
 namespace X3D {
 
-/**
- *  When a ContextLock object is created, it attempts to aquire the GLX context of the browser instance, otherwise
- *  an exception of type INVALID_OPERATION_TIMING is thrown.  On destruction the previous GLX context is restored.
- *
- *  @param  browserContext  A valid X3DBrowserContext instance.
- */
-ContextLock::ContextLock (X3DBrowserContext* const browserContext)
+class ContextLock::Implementation
+{
+public:
+
+	Implementation (X3DBrowserContext* const browserContext)
+	throw (Error <INVALID_OPERATION_TIMING>);
+
+	~Implementation ();
+
+
+private:
+
+	Display* const    xDisplay;
+	const GLXDrawable xDrawable;
+	const GLXContext  xContext;
+
+};
+
+ContextLock::Implementation::Implementation (X3DBrowserContext* const browserContext)
 throw (Error <INVALID_OPERATION_TIMING>) :
 	 xDisplay (glXGetCurrentDisplay ()),
 	xDrawable (glXGetCurrentDrawable ()),
@@ -72,7 +87,7 @@ throw (Error <INVALID_OPERATION_TIMING>) :
 	throw Error <INVALID_OPERATION_TIMING> ("Invalid operation timing.");
 }
 
-ContextLock::~ContextLock ()
+ContextLock::Implementation::~Implementation ()
 {
 	if (xDisplay)
 		glXMakeCurrent (xDisplay, xDrawable, xContext);
@@ -86,6 +101,25 @@ ContextLock::~ContextLock ()
 			glXMakeCurrent (xCurrentDisplay, None, nullptr);
 	}
 }
+
+/**
+ *  When a ContextLock object is created, it attempts to aquire the GLX context of the browser instance, otherwise
+ *  an exception of type INVALID_OPERATION_TIMING is thrown.  On destruction the previous GLX context is restored.
+ *
+ *  @param  browserContext  A valid X3DBrowserContext instance.
+ */
+ContextLock::ContextLock (X3DBrowserContext* const browserContext)
+throw (Error <INVALID_OPERATION_TIMING>) :
+	 implementation (new Implementation (browserContext))
+{ }
+
+ContextLock::ContextLock (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>) :
+	 implementation (new Implementation (executionContext -> getBrowser ()))
+{ }
+
+ContextLock::~ContextLock ()
+{ }
 
 } // X3D
 } // titania

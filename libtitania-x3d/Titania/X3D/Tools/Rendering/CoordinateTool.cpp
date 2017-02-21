@@ -108,12 +108,12 @@ CoordinateTool::realize ()
 		const auto selectedEdgesGeometry = getInlineNode () -> getExportedNode ("SelectedEdgesGeometry");
 		const auto selectedFacesGeometry = getInlineNode () -> getExportedNode ("SelectedFacesGeometry");
 
-		hotEdgesGeometry      -> isPrivate (true);
-		hotFaceGeometry       -> isPrivate (true);
-		activeEdgesGeometry   -> isPrivate (true);
-		activeFaceGeometry    -> isPrivate (true);
-		selectedEdgesGeometry -> isPrivate (true);
-		selectedFacesGeometry -> isPrivate (true);
+		hotEdgesGeometry      -> setPrivate (true);
+		hotFaceGeometry       -> setPrivate (true);
+		activeEdgesGeometry   -> setPrivate (true);
+		activeFaceGeometry    -> setPrivate (true);
+		selectedEdgesGeometry -> setPrivate (true);
+		selectedFacesGeometry -> setPrivate (true);
 
 		color () .addInterest (&CoordinateTool::set_color, this);
 

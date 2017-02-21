@@ -90,14 +90,14 @@ static constexpr double UNDO_TIME = 0.6; // Key press delay time + 0.1???
 X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
 	 X3DBrowserWidget (browser),
 	   X3D::X3DEditor (),
-	          enabled (false),
+	          editing (false),
 	        selection (new BrowserSelection (getBrowserWindow ())),
 	     undoMatrices (),
 	    nudgeUndoStep (),
 	         undoTime (0),
 	             tool (NONE_TOOL)
 {
-	addChildObjects (enabled);
+	addChildObjects (editing);
 }
 
 void
@@ -137,7 +137,7 @@ X3DBrowserEditor::initialize ()
 void
 X3DBrowserEditor::setBrowser (const X3D::BrowserPtr & value)
 {
-	if (isEditor () and getCurrentBrowser () -> isInitialized ())
+	if (getEditing () and getCurrentBrowser () -> isInitialized ())
 		setMetaData ();
 
 	getCurrentBrowser () -> shutdown ()   .removeInterest (&X3DBrowserEditor::set_shutdown, this);
@@ -191,7 +191,7 @@ X3DBrowserEditor::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 		}
 	}
 
-	if (isEditor ())
+	if (getEditing ())
 		getCurrentBrowser () -> getBrowserOptions () -> assign (browserOptions, true);
 }
 
@@ -229,7 +229,7 @@ X3DBrowserEditor::set_scene ()
 void
 X3DBrowserEditor::set_executionContext ()
 {
-	if (isEditor ())
+	if (getEditing ())
 		getMetaData ();
 }
 
@@ -323,9 +323,9 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 }
 
 void
-X3DBrowserEditor::isEditor (const bool value)
+X3DBrowserEditor::setEditing (const bool value)
 {
-	enabled = value;
+	editing = value;
 	getConfig () -> setItem ("environment", value ? 1 : 0);
 }
 
@@ -496,7 +496,7 @@ X3DBrowserEditor::getMetaData ()
 void
 X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
 {
-	if (isEditor () and not getHandButton () .get_active ())
+	if (getEditing () and not getHandButton () .get_active ())
 		getCurrentBrowser () -> setPrivateViewer (viewer);
 	else
 	{
@@ -510,7 +510,7 @@ X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
 void
 X3DBrowserEditor::blank ()
 {
-	if (isEditor ())
+	if (getEditing ())
 	{
 		append (X3D::createBrowser (getMasterBrowser ()), get_page ("about/new.wrl"));
 		getBrowserNotebook () .set_current_page (getBrowsers () .size () - 1);
@@ -522,7 +522,7 @@ X3DBrowserEditor::blank ()
 void
 X3DBrowserEditor::open (const basic::uri & URL)
 {
-	if (isEditor ())
+	if (getEditing ())
 		X3DBrowserWidget::open (URL);
 
 	else

@@ -101,7 +101,7 @@ LayerSet::initialize ()
 {
 	X3DNode::initialize ();
 
-	layerNode0 -> isPrivate (true);
+	layerNode0 -> setPrivate (true);
 	layerNode0 -> setup ();
 
 	privateActiveLayer () .addInterest (&LayerSet::set_activeLayer, this);

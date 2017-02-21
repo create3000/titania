@@ -1286,7 +1286,7 @@ BrowserWindow::on_browser_toggled ()
 	{
 		toggleActions (getBrowserAction (), environmentActions);
 
-		isEditor (false);
+		setEditing (false);
 		isLive (true);
 		setViewer (getCurrentBrowser () -> getViewerType ());
 
@@ -1310,14 +1310,14 @@ BrowserWindow::on_editor_toggled ()
 	{
 		toggleActions (getEditorAction (), environmentActions);
 
-		isEditor (true);
+		setEditing (true);
 	}
 }
 
 void
-BrowserWindow::isEditor (const bool enabled)
+BrowserWindow::setEditing (const bool enabled)
 {
-	X3DBrowserWindow::isEditor (enabled);
+	X3DBrowserWindow::setEditing (enabled);
 
 	getOpenRecentMenuItem ()                   .set_visible (enabled);
 	getImportMenuItem ()                       .set_visible (enabled);
@@ -2065,10 +2065,10 @@ BrowserWindow::on_follow_primary_selection_toggled ()
 	getConfig () -> setItem ("followPrimarySelection", getFollowPrimarySelectionAction () -> get_active ());
 
 	if (getFollowPrimarySelectionAction () -> get_active ())
-		getSelection () -> getPickedTime () .addInterest (&BrowserWindow::set_touchTime, this);
+		getSelection () -> getTouchTime () .addInterest (&BrowserWindow::set_touchTime, this);
 
 	else
-		getSelection () -> getPickedTime () .removeInterest (&BrowserWindow::set_touchTime, this);
+		getSelection () -> getTouchTime () .removeInterest (&BrowserWindow::set_touchTime, this);
 }
 
 void
@@ -2521,7 +2521,7 @@ BrowserWindow::on_hand_button_toggled ()
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
 	}
 
-	const bool enabled = not getHandButton () .get_active () and isEditor ();
+	const bool enabled = not getHandButton () .get_active () and getEditing ();
 
 	getPlayPauseButton ()       .set_visible (enabled);
 	getSelectSeparator ()       .set_visible (enabled);
@@ -2880,7 +2880,7 @@ BrowserWindow::set_viewer ()
 void
 BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::NodeType> & availableViewers)
 {
-	const bool editor    = isEditor () and getArrowButton () .get_active ();
+	const bool editor    = getEditing () and getArrowButton () .get_active ();
 	const bool dashboard = getCurrentBrowser () -> getBrowserOptions () -> Dashboard ();
 
 	bool examine = editor;

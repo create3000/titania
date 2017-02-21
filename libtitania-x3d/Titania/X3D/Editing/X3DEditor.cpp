@@ -750,11 +750,9 @@ X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & execu
 		undoStep -> addRedoFunction (&X3DBaseNode::endUpdate,   node);
 		node -> endUpdate ();
 
-		using isPrivate = void (X3DBaseNode::*) (const bool);
-
-		undoStep -> addUndoFunction ((isPrivate) & X3DBaseNode::isPrivate, node, false);
-		undoStep -> addRedoFunction ((isPrivate) & X3DBaseNode::isPrivate, node, true);
-		node -> isPrivate (true);
+		undoStep -> addUndoFunction (&X3DBaseNode::setPrivate, node, false);
+		undoStep -> addRedoFunction (&X3DBaseNode::setPrivate, node, true);
+		node -> setPrivate (true);
 	}
 }
 
@@ -1149,10 +1147,10 @@ X3DEditor::deleteRoute (const X3DExecutionContextPtr & executionContext,
 	using addRoute        = const RoutePtr &(X3DExecutionContext::*) (const SFNode &, const std::string &, const SFNode &, const std::string &);
 	using deleteRoute     = void            (X3DExecutionContext::*) (const SFNode &, const std::string &, const SFNode &, const std::string &);
 
-	if (sourceNode -> getScene () -> isPrivate ())
+	if (sourceNode -> getScene () -> getPrivate ())
 		return;
 
-	if (destinationNode -> getScene () -> isPrivate ())
+	if (destinationNode -> getScene () -> getPrivate ())
 		return;
 
 	bool sourceImported      = false;
@@ -2157,7 +2155,7 @@ X3DEditor::getParentNodes (const SFNode & child) const
 						{
 							if (baseNode not_eq child)
 							{
-								if (not baseNode -> isPrivate ())
+								if (not baseNode -> getPrivate ())
 									parentNodes .emplace_back (baseNode);
 							}
 						}
@@ -2172,7 +2170,7 @@ X3DEditor::getParentNodes (const SFNode & child) const
 				{
 					if (baseNode not_eq child)
 					{
-						if (not baseNode -> isPrivate ())
+						if (not baseNode -> getPrivate ())
 							parentNodes .emplace_back (baseNode);
 					}
 

@@ -51,10 +51,15 @@
 #ifndef __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
 #define __TITANIA_X3D_BROWSER_CONTEXT_LOCK_H__
 
-#include "../Browser/X3DBrowserContext.h"
+#include "../Base/Error.h"
+
+#include <memory>
 
 namespace titania {
 namespace X3D {
+
+class X3DBrowserContext;
+class X3DExecutionContext;
 
 class ContextLock
 {
@@ -63,14 +68,17 @@ public:
 	ContextLock (X3DBrowserContext* const browserContext)
 	throw (Error <INVALID_OPERATION_TIMING>);
 
+	ContextLock (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>);
+
 	~ContextLock ();
 
 
 private:
 
-	Display* const    xDisplay;
-	const GLXDrawable xDrawable;
-	const GLXContext  xContext;
+	class Implementation;
+
+	std::unique_ptr <Implementation> implementation;
 
 };
 

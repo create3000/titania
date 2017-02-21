@@ -314,7 +314,7 @@ X3DFieldDefinition::processEvent (const EventPtr & event)
 	if (not event -> sources .emplace (this) .second)
 		return;
 
-	isTainted (false);
+	setTainted (false);
 
 	if (event -> object not_eq this)
 		set (*event -> object);

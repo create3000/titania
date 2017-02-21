@@ -50,7 +50,6 @@
 
 #include "Loader.h"
 
-#include "../../X3D.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DScene.h"
 #include "../InputOutput/GoldenGate.h"
@@ -66,7 +65,7 @@ Loader::Loader (X3DExecutionContext* const executionContext) :
 
 Loader::Loader (X3DExecutionContext* const executionContext, const basic::uri & referer) :
 	executionContext (executionContext),
-	       userAgent (X3D::getBrowser () -> getUserAgent ()),
+	       userAgent (executionContext -> getBrowser () -> getUserAgent ()),
 	         referer (referer),
 	        worldURL (),
 	        urlError (),
@@ -111,7 +110,7 @@ throw (Error <INVALID_X3D>,
 	if (executionContext not_eq executionContext -> getBrowser ())
 	{
 		scene -> setExecutionContext (executionContext);
-		scene -> isPrivate (executionContext -> isPrivate ());
+		scene -> setPrivate (executionContext -> getPrivate ());
 	}
 
 	scene -> isLive () = executionContext -> isLive ();
@@ -132,7 +131,7 @@ throw (Error <INVALID_URL>,
 	if (executionContext not_eq executionContext -> getBrowser ())
 	{
 		scene -> setExecutionContext (executionContext);
-		scene -> isPrivate (executionContext -> isPrivate ());
+		scene -> setPrivate (executionContext -> getPrivate ());
 	}
 
 	scene -> isLive () = executionContext -> isLive ();

@@ -92,7 +92,7 @@ ImageCubeMapTexture::initialize ()
 	textureProperties () .addInterest (textureNode -> textureProperties ());
 
 	textureNode -> checkLoadState () .addInterest (&ImageCubeMapTexture::set_loadState, this);
-	textureNode -> isPrivate (true);
+	textureNode -> setPrivate (true);
 	textureNode -> setResizeToPowerOfTwo (false);
 	textureNode -> url () = url ();
 	textureNode -> textureProperties () = textureProperties ();

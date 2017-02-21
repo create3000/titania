@@ -306,7 +306,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 				{
 					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
 	
-					if (transform -> translation () .isTainted ())
+					if (transform -> translation () .getTainted ())
 					{
 						transform -> translation () .removeInterest (&X3DGridTool::set_translation, this);
 						transform -> translation () .addInterest (&X3DGridTool::connectTranslation, this, transform);
@@ -430,7 +430,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 				{
 					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
 	
-					if (transform -> translation () .isTainted ())
+					if (transform -> translation () .getTainted ())
 					{
 						transform -> translation () .removeInterest (&X3DGridTool::set_translation, this);
 						transform -> translation () .addInterest (&X3DGridTool::connectTranslation, this, transform);
@@ -493,7 +493,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 				{
 					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
 	
-					if (transform -> scale () .isTainted ())
+					if (transform -> scale () .getTainted ())
 					{
 						transform -> scale () .removeInterest (&X3DGridTool::set_scale, this);
 						transform -> scale () .addInterest (&X3DGridTool::connectScale, this, transform);

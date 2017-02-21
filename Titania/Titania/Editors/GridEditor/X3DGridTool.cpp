@@ -70,7 +70,7 @@ X3DGridTool::X3DGridTool () :
 {
 	addChildObjects (browser);
 
-	getBrowserWindow () -> isEditor () .addInterest (&X3DGridTool::update, this);
+	getBrowserWindow () -> getEditing () .addInterest (&X3DGridTool::update, this);
 }
 
 void
@@ -147,7 +147,7 @@ X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 void
 X3DGridTool::update ()
 {
-	if (isEnabled () and getBrowserWindow () -> isEditor ())
+	if (isEnabled () and getBrowserWindow () -> getEditing ())
 	   enable ();
 	else
 		disable ();

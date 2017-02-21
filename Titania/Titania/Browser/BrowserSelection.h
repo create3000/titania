@@ -104,7 +104,7 @@ public:
 	{ return active; }
 
 	const X3D::SFBool &
-	getPickedTime () const
+	getTouchTime () const
 	{ return touchTime; }
 
 	bool

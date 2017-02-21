@@ -96,7 +96,7 @@ NavigationInfoEditor::initialize ()
 
 	navigationInfoList -> getSelection () .addInterest (&NavigationInfoEditor::set_navigationInfo, this);
 
-	navigationInfoList -> isEditor (true);
+	navigationInfoList -> setEditing (true);
 	navigationInfoList -> getHeaderNotebook () .set_current_page (1);
 	navigationInfoList -> getHeaderBar () .set_visible (false);
 	navigationInfoList -> getTreeView () .set_headers_visible (true);

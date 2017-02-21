@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_EXECUTION_X3DEXECUTION_CONTEXT_H__
 
 #include "../Basic/X3DBaseNode.h"
+#include "../Browser/ContextLock.h"
 #include "../Configuration/ProfileInfo.h"
 #include "../Configuration/SupportedComponents.h"
 #include "../Execution/EncodingType.h"
@@ -713,7 +714,11 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	const X3DPtr <Type> node (new Type (this, std::forward <Args> (args) ...));
 
 	if (isInitialized ())
+	{
+		ContextLock lock (this);
+
 		node -> setup ();
+	}
 	else
 		addUninitializedNode (node);
 

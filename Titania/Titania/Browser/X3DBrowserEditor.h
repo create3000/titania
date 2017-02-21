@@ -79,12 +79,12 @@ public:
 	setCurrentContext (const X3D::X3DExecutionContextPtr &) final override;
 
 	const X3D::SFBool &
-	isEditor () const
-	{ return enabled; }
+	getEditing () const
+	{ return editing; }
 
 	virtual
 	void
-	isEditor (const bool);
+	setEditing (const bool);
 
 	void
 	setModified (const X3D::BrowserPtr & browser, const bool value);
@@ -281,7 +281,7 @@ private:
 
 	using UndoMatrixIndex = std::map <X3D::X3DPtr <X3D::X3DTransformNode>, std::pair <X3D::Matrix4d, X3D::Vector3d>>;
 
-	X3D::SFBool                        enabled;
+	X3D::SFBool                        editing;
 	std::unique_ptr <BrowserSelection> selection;
 	UndoMatrixIndex                    undoMatrices;
 	X3D::UndoStepPtr                   nudgeUndoStep;

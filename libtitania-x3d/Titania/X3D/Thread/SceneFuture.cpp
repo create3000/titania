@@ -70,7 +70,7 @@ SceneFuture::SceneFuture (X3DExecutionContext* const executionContext, const MFS
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DFuture (),
 	   callback (callback),
-	     loader (nullptr, executionContext -> getWorldURL ()),
+	     loader (executionContext, executionContext -> getWorldURL ()),
 	      scene (),
 	   urlError (),
 	     future (getFuture (url /*, executionContext -> getProfile (), executionContext -> getComponents () */))

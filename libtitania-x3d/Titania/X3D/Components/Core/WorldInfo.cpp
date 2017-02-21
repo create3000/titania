@@ -89,7 +89,7 @@ WorldInfo::initialize ()
 {
 	X3DInfoNode::initialize ();
 
-	if (not isPrivate ())
+	if (not getPrivate ())
 		getExecutionContext () -> setWorldInfo (X3DPtr <WorldInfo> (this));
 
 //	if (not title () .empty ())
@@ -111,9 +111,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 void
-WorldInfo::isPrivate (const bool value)
+WorldInfo::setPrivate (const bool value)
 {
-	X3DInfoNode::isPrivate (value);
+	X3DInfoNode::setPrivate (value);
 
 	if (value)
 	{

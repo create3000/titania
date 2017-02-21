@@ -1,13 +1,18 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserSelection.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/VRML1/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/VRML1/Parser.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="96" Column="3" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.cpp" Line="21" Column="25" />
+      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="109" Column="4" />
+      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="910" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.h" Line="139" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.cpp" Line="342" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Extrusion.cpp" Line="52" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="52" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DComposedGeometryNode.cpp" Line="55" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.cpp" Line="53" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.cpp" Line="57" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/GoldenGate.h" Line="54" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/InputOutput/Loader.h" Line="54" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -17,6 +22,8 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" line="196" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/SculpToolEditor/SculpToolEditor.cpp" line="123" column="2" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

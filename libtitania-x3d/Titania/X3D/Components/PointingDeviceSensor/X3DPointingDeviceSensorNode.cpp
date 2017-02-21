@@ -127,7 +127,7 @@ X3DPointingDeviceSensorNode::set_live ()
 void
 X3DPointingDeviceSensorNode::set_disabled ()
 {
-	disabled = getBrowser () -> getSelection () -> getEnabled () and not getScene () -> isPrivate ();
+	disabled = getBrowser () -> getSelection () -> getEnabled () and not getScene () -> getPrivate ();
 }
 
 void

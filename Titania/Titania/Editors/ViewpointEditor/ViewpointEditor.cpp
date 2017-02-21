@@ -87,7 +87,7 @@ ViewpointEditor::initialize ()
 
 	viewpointList -> getSelection () .addInterest (&ViewpointEditor::set_viewpoint, this);
 
-	viewpointList -> isEditor (true);
+	viewpointList -> setEditing (true);
 	viewpointList -> getHeaderNotebook () .set_current_page (1);
 	viewpointList -> getHeaderBar () .set_visible (false);
 	viewpointList -> getTreeView () .set_headers_visible (true);

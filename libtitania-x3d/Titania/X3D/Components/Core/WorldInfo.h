@@ -61,8 +61,6 @@ class WorldInfo :
 {
 public:
 
-	using X3DInfoNode::isPrivate;
-
 	///  @name Construction
 
 	WorldInfo (X3DExecutionContext* const executionContext);
@@ -119,7 +117,7 @@ public:
 
 	virtual
 	void
-	isPrivate (const bool) final override;
+	setPrivate (const bool value) final override;
 
 
 private:

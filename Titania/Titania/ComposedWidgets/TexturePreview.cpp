@@ -152,8 +152,8 @@ TexturePreview::set_initialized ()
 	{
 		preview -> initialized () .removeInterest (&TexturePreview::set_initialized, this);
 		preview -> set_opacity (1);
-		preview -> getExecutionContext () -> getNamedNode ("Appearance")    -> isPrivate (true);
-		preview -> getExecutionContext () -> getNamedNode ("TextureScript") -> isPrivate (true);
+		preview -> getExecutionContext () -> getNamedNode ("Appearance")    -> setPrivate (true);
+		preview -> getExecutionContext () -> getNamedNode ("TextureScript") -> setPrivate (true);
 	}
 	catch (const X3D::X3DError & error)
 	{

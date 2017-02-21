@@ -138,7 +138,7 @@ X3DMaterialEditor::set_initialized ()
 
 	try
 	{
-		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> isPrivate (true);
+		preview -> getExecutionContext () -> getNamedNode ("Appearance") -> setPrivate (true);
 	}
 	catch (const X3D::X3DError &)
 	{ }

@@ -71,11 +71,11 @@ public:
 	///  @name Outputs
 
 	void
-	isPickable (const bool value)
+	setPickable (const bool value)
 	{ pickable = value; }
 
 	const SFBool &
-	isPickable () const
+	getPickable () const
 	{ return pickable; }
 
 	///  @name Member access

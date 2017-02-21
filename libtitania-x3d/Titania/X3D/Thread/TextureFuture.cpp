@@ -82,7 +82,7 @@ TextureFuture::TextureFuture (X3DExecutionContext* const executionContext,
 	    browser (executionContext -> getBrowser ()),
 	    process (process),
 	   callback (callback),
-	     loader (nullptr, executionContext -> getWorldURL ()),
+	     loader (executionContext, executionContext -> getWorldURL ()),
 	     future (getFuture (url, minTextureSize, maxTextureSize))
 {
 	getBrowser () -> prepareEvents () .addInterest (&TextureFuture::prepareEvents, this);

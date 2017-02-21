@@ -107,7 +107,7 @@ BrowserSelection::set_browser ()
 
 		selection -> isOver ()        .removeInterest (over);
 		selection -> isActive ()      .removeInterest (active);
-		selection -> getPickedTime () .removeInterest (touchTime);
+		selection -> getTouchTime ()  .removeInterest (touchTime);
 		selection -> getHierarchy ()  .removeInterest (hierarchy);
 		selection -> getNodes ()      .removeInterest (nodes);
 	}
@@ -129,7 +129,7 @@ BrowserSelection::set_browser ()
 
 		selection -> isOver ()        .addInterest (over);
 		selection -> isActive ()      .addInterest (active);
-		selection -> getPickedTime () .addInterest (touchTime);
+		selection -> getTouchTime ()  .addInterest (touchTime);
 		selection -> getNodes ()      .addInterest (nodes);
 		selection -> getHierarchy ()  .addInterest (hierarchy);
 

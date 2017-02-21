@@ -83,7 +83,7 @@ PointingDevice::initialize ()
 	X3DBrowserObject::initialize ();
 
 	getBrowser () -> initialized () .addInterest (&PointingDevice::set_initialized, this);
-	getBrowser () -> isPickable ()  .addInterest (&PointingDevice::set_pickable, this);
+	getBrowser () -> getPickable ()  .addInterest (&PointingDevice::set_pickable, this);
 
 	set_pickable ();
 }
@@ -115,7 +115,7 @@ PointingDevice::set_pickable ()
 
 	// Connect.
 
-	if (getBrowser () -> isPickable ())
+	if (getBrowser () -> getPickable ())
 	{
 		button_press_conncection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
 		button_release_conncection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event));

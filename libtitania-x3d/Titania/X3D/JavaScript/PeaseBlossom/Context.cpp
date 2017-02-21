@@ -472,7 +472,7 @@ Context::prepareEvents ()
 void
 Context::set_field (X3D::X3DFieldDefinition* const field, const pb::Identifier & identifier)
 {
-	field -> isTainted (true);
+	field -> setTainted (true);
 
 	try
 	{
@@ -491,7 +491,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field, const pb::Identifier &
 	catch (const std::exception & error)
 	{ }
 
-	field -> isTainted (false);
+	field -> setTainted (false);
 }
 
 void

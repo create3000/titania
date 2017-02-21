@@ -71,7 +71,6 @@ class X3DFieldDefinition :
 {
 public:
 
-	using X3DChildObject::isTainted;
 	using X3DChildObject::addInterest;
 	using X3DChildObject::removeInterest;
 

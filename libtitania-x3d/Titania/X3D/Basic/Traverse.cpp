@@ -77,7 +77,7 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 	if (not executionContext)
 		return true;
 
-//	if (executionContext -> isPrivate ())
+//	if (executionContext -> getPrivate ())
 //		return true;
 
 	if (flags & TRAVERSE_EXTERNPROTO_DECLARATIONS)
@@ -153,7 +153,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 	if (not node)
 		return true;
 
-	if (node -> isPrivate ())
+	if (node -> getPrivate ())
 		return true;
 
 	for (const auto & type : basic::make_reverse_range (node -> getType ()))
@@ -416,7 +416,7 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 	if (not executionContext)
 		return;
 
-	if (executionContext -> isPrivate ())
+	if (executionContext -> getPrivate ())
 		return;
 
 	hierarchy .emplace_back (executionContext);
@@ -484,7 +484,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags
 	if (not node)
 		return;
 
-	if (node -> isPrivate ())
+	if (node -> getPrivate ())
 		return;
 
 	for (const auto & type : basic::make_reverse_range (node -> getType ()))

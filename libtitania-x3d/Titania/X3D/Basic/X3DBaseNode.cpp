@@ -140,7 +140,7 @@ X3DBaseNode::X3DBaseNode (X3DBrowser* const browser, X3DExecutionContext* const 
 	        fieldAliases (),
 	numUserDefinedFields (0),
 	        fieldsOutput (),
-	            private_ (false),
+	        privateState (false),
 	          cloneCount (0),
 	                live (true),
 	            comments ()
@@ -165,7 +165,7 @@ X3DBaseNode::setup ()
 		const auto & field = pair .second;
 
 		field -> updateReferences ();
-		field -> isTainted (false);
+		field -> setTainted (false);
 	}
 
 	initialize ();
@@ -530,13 +530,13 @@ throw (Error <INVALID_NAME>,
 		removeField (iter, false, iter -> second not_eq &field);
 
 	if (not isInitialized ())
-		field .isTainted (true);
+		field .setTainted (true);
 
 	field .addParent (this);
 	field .setAccessType (accessType);
 	field .setName (name);
 
-	if (not private_)
+	if (not privateState)
 		field .addClones (1);
 
 	if (not field .isHidden ())
@@ -611,7 +611,7 @@ X3DBaseNode::removeField (const FieldIndex::iterator & field, const bool userDef
 			X3DParentObject::disposed () .addInterest (&X3DFieldDefinition::removeParent, field -> second, this);
 		}
 	
-		if (not private_)
+		if (not privateState)
 			field -> second -> removeClones (1);
 	
 		fieldDefinitions .erase (iter);
@@ -869,14 +869,14 @@ throw (Error <INVALID_NAME>,
  *  are not fully printable.
  */
 void
-X3DBaseNode::isPrivate (const bool value)
+X3DBaseNode::setPrivate (const bool value)
 {
-	if (value == private_)
+	if (value == privateState)
 		return;
 
-	private_ = value;
+	privateState = value;
 
-	if (private_)
+	if (privateState)
 	{
 		for (const auto & pair : fields)
 			pair .second -> removeClones (1);
@@ -2257,7 +2257,7 @@ X3DBaseNode::dispose ()
 	{
 		const auto & field = pair .second;
 
-		if (not private_)
+		if (not privateState)
 			field -> removeClones (1);
 
 		field -> removeParent (this);

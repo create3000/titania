@@ -106,9 +106,9 @@ X3DBrowserWindow::initialize ()
 }
 
 void
-X3DBrowserWindow::isEditor (const bool value)
+X3DBrowserWindow::setEditing (const bool value)
 {
-	X3DBrowserEditor::isEditor (value);
+	X3DBrowserEditor::setEditing (value);
 
 	geometryEditor -> getWidget () .set_reveal_child (value and getConfig () -> getBoolean ("geometryEditor"));
 }

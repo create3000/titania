@@ -64,7 +64,7 @@ const std::string   LookAtViewer::containerField = "viewer";
 LookAtViewer::LookAtViewer (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	  X3DViewer (),
-	   pickable (executionContext -> getBrowser () -> isPickable ()),
+	   pickable (executionContext -> getBrowser () -> getPickable ()),
 	     isOver (false),
 	orientation (),
 	   rotation (),
@@ -93,7 +93,7 @@ LookAtViewer::initialize ()
 	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &LookAtViewer::on_button_release_event), false);
 	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &LookAtViewer::on_motion_notify_event),  false);
 
-	getBrowser () -> isPickable (false);
+	getBrowser () -> setPickable (false);
 }
 
 bool
@@ -208,7 +208,7 @@ LookAtViewer::getOrientationOffset ()
 void
 LookAtViewer::dispose ()
 {
-	getBrowser () -> isPickable (pickable);
+	getBrowser () -> setPickable (pickable);
 
 	X3DViewer::dispose ();
 }

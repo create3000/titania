@@ -137,7 +137,7 @@ Inline::initialize ()
 
 	group -> isCameraObject () .addInterest (&Inline::setCameraObject, static_cast <X3DChildNode*> (this));
 
-	group -> isPrivate (true);
+	group -> setPrivate (true);
 	group -> setup ();
 }
 
@@ -196,7 +196,7 @@ Inline::setScene (X3DScenePtr && value)
 	{
 		value -> setExecutionContext (getExecutionContext ());
 		value -> isLive () = getExecutionContext () -> isLive () and isLive ();
-		value -> isPrivate (getExecutionContext () -> isPrivate ());
+		value -> setPrivate (getExecutionContext () -> getPrivate ());
 		value -> getRootNodes () .addInterest (group -> children ());
 
 		if (isInitialized ())

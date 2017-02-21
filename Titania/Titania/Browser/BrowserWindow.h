@@ -61,8 +61,6 @@ class BrowserWindow :
 {
 public:
 
-	using X3DBrowserWindow::isEditor;
-
 	/// @name Member types
 
 	using BooleanOperation = std::function <bool (const X3D::X3DExecutionContextPtr &, const X3D::X3DPtrArray <X3D::X3DShapeNode> &, const X3D::UndoStepPtr &)>;
@@ -73,7 +71,7 @@ public:
 
 	virtual
 	void
-	isEditor (const bool) final override;
+	setEditing (const bool) final override;
 
 	/// @name Destruction
 

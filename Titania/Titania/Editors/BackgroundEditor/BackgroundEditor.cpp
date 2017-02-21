@@ -118,7 +118,7 @@ BackgroundEditor::initialize ()
 
 	backgroundList -> getSelection () .addInterest (&BackgroundEditor::set_background, this);
 
-	backgroundList -> isEditor (true);
+	backgroundList -> setEditing (true);
 	backgroundList -> getHeaderNotebook () .set_current_page (1);
 	backgroundList -> getHeaderBar () .set_visible (false);
 	backgroundList -> getTreeView () .set_headers_visible (true);

@@ -85,11 +85,11 @@ public:
 	{ return name; }
 
 	void
-	isEditor (const bool);
+	setEditing (const bool);
 
 	bool
-	isEditor () const
-	{ return editor; }
+	getEditing () const
+	{ return editing; }
 
 	const X3D::X3DPtr <Type> &
 	getSelection () const
@@ -195,7 +195,7 @@ private:
 	X3D::X3DPtr <X3D::X3DLayerNode> activeLayer;
 	X3D::X3DPtrArray <Type>         nodes;
 	X3D::X3DPtr <Type>              selection;
-	bool                            editor;
+	bool                            editing;
 
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;
@@ -216,7 +216,7 @@ X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browser
 	                 activeLayer (),
 	                       nodes (),
 	                   selection (),
-	                      editor (false),
+	                     editing (false),
 	                 hadjustment (new AdjustmentObject ()),
 	                 vadjustment (new AdjustmentObject ())
 {
@@ -266,26 +266,26 @@ X3DBindableNodeList <Type>::on_unmap ()
 
 template <class Type>
 void
-X3DBindableNodeList <Type>::isEditor (const bool value)
+X3DBindableNodeList <Type>::setEditing (const bool value)
 {
-	editor = value;
+	editing = value;
 
-	getTypeNameColumn () -> set_visible (editor);
-	getNameColumn ()     -> set_visible (editor);
-	getPadColumn ()      -> set_visible (editor);
-	getBindColumn ()     -> set_visible (editor);
+	getTypeNameColumn () -> set_visible (editing);
+	getNameColumn ()     -> set_visible (editing);
+	getPadColumn ()      -> set_visible (editing);
+	getBindColumn ()     -> set_visible (editing);
 }
 
 template <class Type>
 void
 X3DBindableNodeList <Type>::setSelection (const X3D::X3DPtr <Type> & value)
 {
-	if (not editor or (activeLayer and value == getList (activeLayer) -> at (0)))
+	if (not editing or (activeLayer and value == getList (activeLayer) -> at (0)))
 		selection = nullptr;
 	else
 		selection = value;
 
-	if (editor)
+	if (editing)
 		set_stack ();
 }
 
@@ -340,7 +340,7 @@ template <class Type>
 void
 X3DBindableNodeList <Type>::set_list ()
 {
-	if (editor)
+	if (editing)
 	{
 		for (const auto & node : nodes)
 		   node -> name_changed () .removeInterest (&X3DBindableNodeList::set_stack, this);
@@ -368,12 +368,12 @@ X3DBindableNodeList <Type>::set_list ()
 			{
 			   X3D::X3DPtr <Type> node (list -> at (i));
 
-				if (not editor and getDescription (node) .empty ())
+				if (not editing and getDescription (node) .empty ())
 				   continue;
 
 				getListStore () -> append () -> set_value (Columns::INDEX, i);
 
-				if (editor)
+				if (editing)
 				{
 					node -> name_changed () .addInterest (&X3DBindableNodeList::set_stack, this);
 					nodes .emplace_back (std::move (node));
@@ -406,7 +406,7 @@ X3DBindableNodeList <Type>::set_stack ()
 	{
 	   const X3D::X3DPtr <Type> node (list -> at (i));
 
-		if (not editor and getDescription (node) .empty ())
+		if (not editing and getDescription (node) .empty ())
 		   continue;
 
 		const auto name = X3D::RemoveTrailingNumber (node -> getName ());
@@ -416,7 +416,7 @@ X3DBindableNodeList <Type>::set_stack ()
 		row -> set_value (Columns::DESCRIPTION, i ? getDescription (node) : description);
 		row -> set_value (Columns::BIND,        node -> isBound () ? std::string ("Bound") : std::string ("Bind"));
 
-		if ((editor and node == selection) or (not editor and node -> isBound ()))
+		if ((editing and node == selection) or (not editing and node -> isBound ()))
 		{
 			row -> set_value (Columns::WEIGHT, Weight::BOLD);
 			row -> set_value (Columns::STYLE,  Pango::STYLE_ITALIC);
@@ -446,7 +446,7 @@ X3DBindableNodeList <Type>::on_row_activated (const Gtk::TreeModel::Path & path,
 
 	const X3D::X3DPtr <Type> node (getList (activeLayer) -> at (index));
 
-	if (not editor)
+	if (not editing)
 	{
 		if (node -> isBound ())
 			node -> transitionStart (node);

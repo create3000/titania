@@ -205,7 +205,7 @@ TextureMappingEditor::set_initialized ()
 		selectedGeometry ->                     addInterest (&TextureMappingEditor::set_left_image, this);
 		centerSensor -> translation_changed () .addInterest (&TextureMappingEditor::set_left_center, this);
 
-		appearance -> isPrivate (true);
+		appearance -> setPrivate (true);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -225,9 +225,9 @@ TextureMappingEditor::set_initialized ()
 		touchSensor -> touchTime ()        .addInterest (&TextureMappingEditor::set_right_touchTime, this);
 		touchSensor -> hitPoint_changed () .addInterest (&TextureMappingEditor::set_right_hitPoint, this);
 
-		appearance        -> isPrivate (true);
-		selectedGeometry  -> isPrivate (true);
-		selectionGeometry -> isPrivate (true);
+		appearance        -> setPrivate (true);
+		selectedGeometry  -> setPrivate (true);
+		selectionGeometry -> setPrivate (true);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -1075,7 +1075,7 @@ TextureMappingEditor::on_split_point ()
 void
 TextureMappingEditor::on_left_hand_toggled ()
 {
-	left -> isPickable (false);
+	left -> setPickable (false);
 	left -> grab_focus ();
 }
 
@@ -1083,7 +1083,7 @@ void
 TextureMappingEditor::on_left_arrow_toggled ()
 {
 	tool = ToolType::MOVE;
-	left -> isPickable (true);
+	left -> setPickable (true);
 	left -> grab_focus ();
 }
 
@@ -1091,7 +1091,7 @@ void
 TextureMappingEditor::on_left_rotate_toggled ()
 {
 	tool = ToolType::ROTATE;
-	left -> isPickable (true);
+	left -> setPickable (true);
 	left -> grab_focus ();
 }
 
@@ -1099,7 +1099,7 @@ void
 TextureMappingEditor::on_left_scale_toggled ()
 {
 	tool = ToolType::SCALE;
-	left -> isPickable (true);
+	left -> setPickable (true);
 	left -> grab_focus ();
 }
 
@@ -1121,14 +1121,14 @@ TextureMappingEditor::on_left_look_at_all_clicked ()
 void
 TextureMappingEditor::on_right_hand_toggled ()
 {
-	right -> isPickable (false);
+	right -> setPickable (false);
 	right -> grab_focus ();
 }
 
 void
 TextureMappingEditor::on_right_arrow_toggled ()
 {
-	right -> isPickable (true);
+	right -> setPickable (true);
 	right -> grab_focus ();
 }
 
@@ -1474,7 +1474,7 @@ TextureMappingEditor::set_geometry (const X3D::SFNode & value)
 			coord           = geometry -> coord ();
 			previewGeometry = X3D::X3DPtr <X3D::IndexedFaceSet> (geometry -> copy (rightShape -> getExecutionContext (), X3D::FLAT_COPY));
 
-			previewGeometry -> isPrivate (true);
+			previewGeometry -> setPrivate (true);
 			previewGeometry -> texCoordIndex () .addInterest (&TextureMappingEditor::set_left_selected_faces, this);
 
 			geometry -> solid ()           .addInterest (previewGeometry -> solid ());

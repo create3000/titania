@@ -65,7 +65,7 @@ X3DBaseTool::X3DBaseTool (X3DBaseNode* node) :
 	X3DToolObject (),
 	         node (node)
 {
-	isPrivate (node -> isPrivate ());
+	setPrivate (node -> getPrivate ());
 
 	node -> addParent (this);
 }
@@ -124,7 +124,7 @@ X3DBaseTool::removeTool (const bool)
 void
 X3DBaseTool::dispose ()
 {
-	node -> isPrivate (isPrivate ());
+	node -> setPrivate (getPrivate ());
 	node -> removeParent (this);
 
 	X3DToolObject::dispose ();

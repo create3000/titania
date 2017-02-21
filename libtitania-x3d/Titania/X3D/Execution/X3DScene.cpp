@@ -293,7 +293,7 @@ throw (Error <INVALID_NAME>,
 
 	auto & exportedNode = exportedNodes .emplace (exportedName, new ExportedNode (this, exportedName, node)) .first -> second;
 
-	exportedNode .isTainted (true);
+	exportedNode .setTainted (true);
 	exportedNode .addParent (this);
 
 	if (isInitialized ())

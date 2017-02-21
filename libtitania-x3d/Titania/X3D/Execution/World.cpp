@@ -86,7 +86,7 @@ World::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	layerSet -> isPrivate (true);
+	layerSet -> setPrivate (true);
 	layerSet -> setup ();
 	layerSet -> setLayer0 (layer0);
 	layerSet -> getActiveLayer () .addInterest (&World::set_activeLayer, this);
@@ -96,7 +96,7 @@ World::initialize ()
 	set_rootNodes (); // This can happen twice when rootNodes is tainted
 
 	layer0 -> isLayer0 (true);
-	layer0 -> isPrivate (true);
+	layer0 -> setPrivate (true);
 	layer0 -> setup ();
 
 	if (glXGetCurrentContext ())

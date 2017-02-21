@@ -582,7 +582,7 @@ Context::prepareEvents ()
 void
 Context::set_field (X3D::X3DFieldDefinition* const field, const jsval & function)
 {
-	field -> isTainted (true);
+	field -> setTainted (true);
 
 	jsval argv [2];
 
@@ -592,7 +592,7 @@ Context::set_field (X3D::X3DFieldDefinition* const field, const jsval & function
 	jsval rval;
 	JS_CallFunctionValue (cx, global, function, 2, argv, &rval);
 
-	field -> isTainted (false);
+	field -> setTainted (false);
 }
 
 void

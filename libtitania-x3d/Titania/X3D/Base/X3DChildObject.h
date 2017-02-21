@@ -118,16 +118,16 @@ public:
 
 	///  @name Event Handling
 
-	///  Sets the tainted state.  See isTainted ().
+	///  Sets the tainted state.  See getTainted ().
 	virtual
 	void
-	isTainted (const bool value)
+	setTainted (const bool value)
 	{ tainted = value; }
 
 	///  Returns true if this objects has unprocessed events otherwise false.
 	virtual
 	bool
-	isTainted () const
+	getTainted () const
 	{ return tainted; }
 
 	/// Set is set state.

@@ -141,7 +141,7 @@ public:
 	{ return active; }
 
 	const SFBool &
-	getPickedTime () const
+	getTouchTime () const
 	{ return touchTime; }
 
 	///  @name Member access

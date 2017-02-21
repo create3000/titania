@@ -128,13 +128,20 @@ X3DPointingDeviceSensorContext::setHitRay (const Matrix4d & projectionMatrix, co
 void
 X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
 {
+	// Or do this in Selection
+
+	if (shape -> getPrivate ())
+		return;
+
 	auto hierarchy = getHierarchy ();
 
 	hierarchy .erase (std::remove_if (hierarchy .begin (),
 	                                  hierarchy .end (),
 	                                  [ ] (X3DBaseNode* const node)
-	                                  { return node -> isPrivate (); }),
+	                                  { return node -> getPrivate (); }),
 	                  hierarchy .end ());
+
+	//
 
 	hits .emplace_back (new Hit (pointer,
 	                             transformationMatrix,

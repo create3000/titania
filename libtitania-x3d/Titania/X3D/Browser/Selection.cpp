@@ -336,8 +336,10 @@ Selection::selectNode ()
 	SFNode node;
 
 	if (selectGeometry)
-		node = nearestHit -> shape -> getGeometry ();
-
+	{
+		if (nearestHit -> shape -> getGeometry () -> getExecutionContext () == getBrowser () -> getExecutionContext ())
+			node = nearestHit -> shape -> getGeometry ();
+	}
 	else
 		node = getTransform (nearestHit -> hierarchy);
 
@@ -474,7 +476,7 @@ Selection::getTransform (const MFNode & hierarchy) const
 				if (not highest)
 					continue;
 
-				if (highest -> isPrivate ())
+				if (highest -> getPrivate ())
 					continue;
 
 				if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())

@@ -143,11 +143,11 @@ X3DLayerNode::initialize ()
 	backgrounds     -> setup ();
 	fogs            -> setup ();
 
-	groupNode -> isPrivate (true);
+	groupNode -> setPrivate (true);
 	groupNode -> children () = children ();
 	groupNode -> setup ();
 
-	friendsNode -> isPrivate (true);
+	friendsNode -> setPrivate (true);
 	friendsNode -> setup ();
 
 	viewport ()       .addInterest (&X3DLayerNode::set_viewport, this);

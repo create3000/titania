@@ -96,7 +96,7 @@ RecentView::getURL () const
 void
 RecentView::open ()
 {
-	if (getBrowserWindow () -> isEditor ())
+	if (getBrowserWindow () -> getEditing ())
 		getBrowserWindow () -> X3DBrowserWidget::open (getURL ());
 	else
 	{

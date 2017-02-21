@@ -81,7 +81,7 @@ FogEditor::initialize ()
 
 	fogList -> getSelection () .addInterest (&FogEditor::set_fog, this);
 
-	fogList -> isEditor (true);
+	fogList -> setEditing (true);
 	fogList -> getHeaderNotebook () .set_current_page (1);
 	fogList -> getHeaderBar () .set_visible (false);
 	fogList -> getTreeView () .set_headers_visible (true);
