@@ -352,10 +352,6 @@ BrowserWindow::set_executionContext ()
 	getLocationEntry () .set_icon_from_stock (Gtk::StockID (getCurrentContext () -> getMasterScene () -> getWorldURL () .filename () .str ()), Gtk::ENTRY_ICON_PRIMARY);
 
 	changing = false;
-
-	// Selection
-
-	set_selection (getSelection () -> getNodes ());
 }
 
 void
@@ -2526,8 +2522,7 @@ BrowserWindow::on_hand_button_toggled ()
 
 	const bool enabled = not getHandButton () .get_active () and isEditor ();
 
-	if (getHandButton () .get_active ())
-		getSelection () -> setEnabled (false);
+	getSelection () -> setEnabled (enabled);
 
 	getPlayPauseButton ()       .set_visible (enabled);
 	getSelectSeparator ()       .set_visible (enabled);
@@ -2545,8 +2540,6 @@ BrowserWindow::on_arrow_button_toggled ()
 		setViewer (viewer);
 
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
-
-		getSelection () -> setEnabled (true);
 	}
 
 	getConfig () -> setItem ("arrow", getArrowButton () .get_active ());
@@ -2939,9 +2932,6 @@ void
 BrowserWindow::on_viewer_toggled ()
 {
 	setViewer (viewer);
-
-	if (getViewerButton () .get_active ())
-		getSelection () -> setEnabled (false);
 
 	getConfig () -> setItem ("viewer", getViewerButton () .get_active ());
 }

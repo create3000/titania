@@ -96,9 +96,6 @@ protected:
 private:
 
 	void
-	set_geometry_nodes (const X3D::MFNode &);
-
-	void
 	set_touchTime ();
 
 	void

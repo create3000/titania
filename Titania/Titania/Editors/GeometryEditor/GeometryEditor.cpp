@@ -905,9 +905,6 @@ GeometryEditor::on_paint_selection_toggled ()
 		return;
 	}
 
-	// Disable X3DPointingDeviceSensors.
-	getBrowserWindow () -> getSelection () -> setEnabled (true);
-
 	switch (selector)
 	{
 		case SelectorType::NONE:

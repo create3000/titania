@@ -66,7 +66,7 @@ Hit::Hit (const Vector2d & pointer,
           const size_t layerNumber,
           const bool depthTest,
           const double depthOffset,
-	       const std::vector <X3DChildObject*> & hierarchy) :
+	       MFNode && hierarchy) :
 	        pointer (pointer),
 	modelViewMatrix (modelViewMatrix),    // Shapes model view matrix.
 	         hitRay (hitRay),             // Hit ray in absolute space (null space).
@@ -76,7 +76,7 @@ Hit::Hit (const Vector2d & pointer,
 	          shape (shape),
 	          layer (layer),
 	    layerNumber (layerNumber),
-	      hierarchy (hierarchy)
+	      hierarchy (std::move (hierarchy))
 { }
 
 Hit::~Hit ()

@@ -101,14 +101,7 @@ private:
 
 	virtual
 	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-	void
-	set_geometry_nodes (const X3D::MFNode & geometryNodes);
+	set_selection (const X3D::MFNode & selection) final override;
 
 	void
 	set_brush ();

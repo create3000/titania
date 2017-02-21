@@ -108,8 +108,8 @@ PointingDevice::set_pickable ()
 		motion_notify_conncection  .disconnect ();
 		leave_notify_conncection   .disconnect ();
 
-		getBrowser () -> setButtonReleaseEvent ();
-		getBrowser () -> setLeaveNotifyEvent ();
+		getBrowser () -> setButtonReleaseEvent (-1000, -1000);
+		getBrowser () -> setLeaveNotifyEvent (-1000, -1000);
 		getBrowser () -> setCursor ("default");
 	}
 
@@ -197,7 +197,7 @@ bool
 PointingDevice::on_button_release_event (GdkEventButton* event)
 {
 	if (button == 1)
-		getBrowser () -> setButtonReleaseEvent ();
+		getBrowser () -> setButtonReleaseEvent (event -> x, getBrowser () -> get_height () - event -> y);
 
 	if (isOver)
 		getBrowser () -> setCursor ("grab");
@@ -213,9 +213,9 @@ PointingDevice::on_button_release_event (GdkEventButton* event)
 }
 
 bool
-PointingDevice::on_leave_notify_event (GdkEventCrossing*)
+PointingDevice::on_leave_notify_event (GdkEventCrossing* event)
 {
-	getBrowser () -> setLeaveNotifyEvent ();
+	getBrowser () -> setLeaveNotifyEvent (event -> x, getBrowser () -> get_height () - event -> y);
 	return false;
 }
 

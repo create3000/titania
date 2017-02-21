@@ -114,7 +114,8 @@ X3DGeometryNodeTool::initialize ()
 {
 	X3DNodeTool::initialize ();
 
-	getBrowser () -> getSelection () -> getEnabled () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
+	getBrowser () -> getSelection () -> getEnabled ()        .addInterest (&X3DGeometryNodeTool::set_pickable, this);
+	getBrowser () -> getSelection () -> getSelectGeometry () .addInterest (&X3DGeometryNodeTool::set_pickable, this);
 
 	selection .addInterest (&X3DGeometryNodeTool::set_selection, this);
 
@@ -172,6 +173,7 @@ X3DGeometryNodeTool::set_pickable ()
 	try
 	{
 		const bool enabled = getBrowser () -> getSelection () -> getEnabled () and
+		                     getBrowser () -> getSelection () -> getSelectGeometry () and
 		                     not dynamic_cast <X3DPrototypeInstance*> (getExecutionContext ());
 
 		coordToolNode  -> getInlineNode () -> getExportedNode ("SelectionShape") -> setField <SFNode> ("geometry", enabled ? getNode <X3DGeometryNode> () : nullptr, true);

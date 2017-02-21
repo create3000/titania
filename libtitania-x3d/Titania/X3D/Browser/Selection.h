@@ -184,7 +184,7 @@ protected:
 
 	///  @name Operations
 
-	void
+	bool
 	selectNode ();
 
 
@@ -196,15 +196,10 @@ private:
 	void
 	initialize () final override;
 
-	///  @name Event handlers
-
-	void
-	set_nodes ();
-
 	///  @name Operations
 
 	void
-	setHierarchy (const SFNode & node, const Hierarchy & hierarchy);
+	setHierarchy (const SFNode & node, const MFNode & hierarchy);
 
 	void
 	clearHierarchy ();
@@ -213,7 +208,7 @@ private:
 	getGeometries (const MFNode & nodes) const;
 
 	SFNode
-	getTransform (const Hierarchy & hierarchy) const;
+	getTransform (const MFNode & hierarchy) const;
 
 	Hierarchies
 	getHierarchies (const SFNode & node) const;
@@ -234,7 +229,6 @@ private:
 	SFBool active;
 	SFBool touchTime;
 	MFNode nodes;
-	MFNode removedNodes;
 	SFNode selectedNode;
 	MFNode hierarchy;
 	bool   clearHierarchyState;

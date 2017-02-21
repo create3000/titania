@@ -61,6 +61,8 @@
 #include "../Editing/X3DEditor.h"
 #include "../Execution/X3DExecutionContext.h"
 
+#include "../Tools/Core/X3DToolObject.h"
+
 namespace titania {
 namespace X3D {
 
@@ -78,7 +80,6 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	             active (),
 	          touchTime (),
 	              nodes (),
-	       removedNodes (),
 	       selectedNode (),
 	          hierarchy (),
 	clearHierarchyState (true)
@@ -94,7 +95,6 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	                 touchTime,
 	                 nodes,
 	                 selectedNode,
-	                 removedNodes,
 	                 hierarchy);
 }
 
@@ -110,8 +110,6 @@ Selection::initialize ()
 	X3DBaseNode::initialize ();
 
 	getBrowser () -> initialized () .addInterest (&Selection::clearNodes, this);
-
-	nodes .addInterest (&Selection::set_nodes, this);
 }
 
 bool
@@ -138,7 +136,7 @@ Selection::setSelectGeometry (const bool value)
 		for (const auto & node : nodes)
 		{
 			for (const auto & hierarchy : getHierarchies (node))
-				transforms .emplace_back (getTransform (hierarchy));
+				transforms .emplace_back (getTransform (MFNode (hierarchy .begin (), hierarchy .end ())));
 		}
 
 		setNodes (transforms);
@@ -177,20 +175,29 @@ Selection::addNodes (const MFNode & value)
 void
 Selection::removeNodes (const MFNode & value)
 {
-	if (clearHierarchyState)
-		clearHierarchy ();
-
-	for (const auto & node : value)
+	try
 	{
-		if (node)
-		{
-			nodes .erase (std::remove (nodes .begin (),
-			                           nodes .end (),
-			                           node),
-			              nodes .end ());
+		ContextLock lock (getBrowser ());
 
-			removedNodes .emplace_back (node);
+		if (clearHierarchyState)
+			clearHierarchy ();
+
+		for (const auto & node : value)
+		{
+			if (node)
+			{
+				nodes .erase (std::remove (nodes .begin (),
+				                           nodes .end (),
+				                           node),
+				              nodes .end ());
+	
+				node -> removeTool ();
+			}
 		}
+	}
+	catch (const Error <INVALID_OPERATION_TIMING> & error)
+	{
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -253,6 +260,140 @@ Selection::setNodes (const MFNode & value)
 
 	clearHierarchyState = true;
 }
+
+MFNode
+Selection::getParents ()
+{
+	if (selectGeometry)
+		return MFNode ();
+
+	if (hierarchy .empty ())
+		return MFNode ();
+
+	if (not selectedNode)
+		return MFNode ();
+
+	auto iter = std::find (hierarchy .rbegin (), hierarchy .rend (), selectedNode);
+
+	if (iter == hierarchy .rend ())
+		return MFNode ();
+
+	++ iter;
+
+	if (iter == hierarchy .rend ())
+		return MFNode ();
+
+	return MFNode ({ *iter });
+}
+
+MFNode
+Selection::getChildren ()
+{
+	if (selectGeometry)
+		return MFNode ();
+
+	if (hierarchy .empty ())
+		return MFNode ();
+
+	if (not selectedNode)
+		return MFNode ();
+
+	auto iter = std::find (hierarchy .begin (), hierarchy .end (), selectedNode);
+
+	if (iter == hierarchy .end ())
+		return MFNode ();
+
+	++ iter;
+
+	if (iter == hierarchy .end ())
+		return MFNode ();
+
+	return MFNode ({ *iter });
+}
+
+bool
+Selection::selectNode ()
+{
+	if (not getEnabled ())
+		return false;
+
+	// Selected highest or lowest Node, or clear selection.
+
+	if (getBrowser () -> getHits () .empty ())
+	{
+		if (not selectGeometry)
+			clearNodes ();
+
+		return false;
+	}
+
+	// Get selected node.
+
+	const auto & nearestHit = getBrowser () -> getNearestHit ();
+
+	SFNode node;
+
+	if (selectGeometry)
+		node = nearestHit -> shape -> getGeometry ();
+
+	else
+		node = getTransform (nearestHit -> hierarchy);
+
+	// Select node or remove frpm selection.
+
+	if (node)
+	{
+		if (isSelected (node))
+		{
+		   if (selectGeometry)
+		      setHierarchy (node, nearestHit -> hierarchy);
+
+			else if (selectMultiple)
+				removeNodes ({ node });
+
+			else
+				clearHierarchy ();
+	
+			return false;
+		}
+		else
+		{
+			if (selectMultiple)
+				addNodes ({ node });
+			else
+				setNodes ({ node });
+
+			setHierarchy (node, nearestHit -> hierarchy);
+
+			selectedNode = node;
+
+			touchTime = getCurrentTime ();
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void
+Selection::setHierarchy (const SFNode & node, const MFNode & otherHierarchy)
+{
+	// Update hierarchy.
+
+	selectedNode = node;
+
+	hierarchy = otherHierarchy;
+}
+
+void
+Selection::clearHierarchy ()
+{
+	selectedNode = nullptr;
+
+	hierarchy .clear ();
+}
+
 X3D::MFNode
 Selection::getGeometries (const X3D::MFNode & nodes) const
 {
@@ -279,147 +420,8 @@ Selection::getGeometries (const X3D::MFNode & nodes) const
 	return geometryNodes;
 }
 
-void
-Selection::set_nodes ()
-{
-	try
-	{
-		ContextLock lock (getBrowser ());
-
-		for (const auto & node : MFNode (std::move (removedNodes)))
-			node -> removeTool ();
-	}
-	catch (const Error <INVALID_OPERATION_TIMING> & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-MFNode
-Selection::getParents ()
-{
-	if (hierarchy .empty ())
-		return MFNode ();
-
-	if (not selectedNode)
-		return MFNode ();
-
-	auto iter = std::find (hierarchy .begin (), hierarchy .end (), selectedNode);
-
-	if (iter == hierarchy .begin ())
-		return MFNode ();
-
-	-- iter;
-
-	if (iter == hierarchy .begin ())
-		return MFNode ();
-
-	return MFNode ({ *iter });
-}
-
-MFNode
-Selection::getChildren ()
-{
-	if (hierarchy .empty ())
-		return MFNode ();
-
-	if (not selectedNode)
-		return MFNode ();
-
-	auto iter = std::find (hierarchy .begin (), hierarchy .end (), selectedNode);
-
-	if (iter == hierarchy .end ())
-		return MFNode ();
-
-	++ iter;
-
-	if (iter == hierarchy .end ())
-		return MFNode ();
-
-	return MFNode ({ *iter });
-}
-
-void
-Selection::selectNode ()
-{
-	if (not getEnabled ())
-		return;
-
-	// Selected highest or lowest Node, or clear selection.
-
-	if (getBrowser () -> getHits () .empty ())
-	{
-		if (not selectGeometry)
-			clearNodes ();
-
-		return;
-	}
-
-	// Get selected node.
-
-	const auto & nearestHit = getBrowser () -> getNearestHit ();
-
-	SFNode node;
-
-	if (selectGeometry)
-		node = nearestHit -> shape -> getGeometry ();
-
-	else
-	{
-		node = getTransform (nearestHit -> hierarchy);
-	}
-
-	// Select node or remove frpm selction.
-
-	if (node)
-	{
-		if (isSelected (node))
-		{
-		   if (selectGeometry)
-		      setHierarchy (node, nearestHit -> hierarchy);
-
-			else if (selectMultiple)
-				removeNodes ({ node });
-
-			else
-				clearHierarchy ();
-		}
-		else
-		{
-			if (selectMultiple)
-				addNodes ({ node });
-			else
-				setNodes ({ node });
-
-		   setHierarchy (node, nearestHit -> hierarchy);
-
-			selectedNode = node;
-
-			touchTime = getCurrentTime ();
-		}
-	}
-}
-
-void
-Selection::setHierarchy (const SFNode & node, const Hierarchy & otherHierarchy)
-{
-	// Update hierarchy.
-
-	selectedNode = node;
-
-	hierarchy = MFNode (otherHierarchy .begin (), otherHierarchy .end ());
-}
-
-void
-Selection::clearHierarchy ()
-{
-	selectedNode = nullptr;
-
-	hierarchy .clear ();
-}
-
 SFNode
-Selection::getTransform (const Hierarchy & hierarchy) const
+Selection::getTransform (const MFNode & hierarchy) const
 {
 	SFNode node;
 
@@ -427,13 +429,11 @@ Selection::getTransform (const Hierarchy & hierarchy) const
 	{
 		// Find lowes Transform.
 	
-		for (const auto & object : basic::make_reverse_range (hierarchy))
+		for (const auto & lowest : basic::make_reverse_range (hierarchy))
 		{
-			const SFNode lowest (object);
-
 			if (not lowest)
 				continue;
-
+			
 			if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
 				continue;
 				
@@ -448,13 +448,11 @@ Selection::getTransform (const Hierarchy & hierarchy) const
 	{
 		// Find highest Transform.
 	
-		for (const auto & object : hierarchy)
+		for (const auto & highest : hierarchy)
 		{
-			const SFNode highest (object);
-	
 			if (not highest)
 				continue;
-	
+
 			if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
 				continue;
 	
@@ -469,13 +467,14 @@ Selection::getTransform (const Hierarchy & hierarchy) const
 	
 		if (x3d_cast <LayerSet*> (node))
 		{
-			for (const auto & object : hierarchy)
+			for (const auto & highest : hierarchy)
 			{
-				const SFNode highest (object);
-	
 				if (not highest)
 					continue;
-	
+
+				if (highest -> isPrivate ())
+					continue;
+
 				if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
 					continue;
 	

@@ -82,7 +82,7 @@ public:
 	     const size_t layerNumber,
 	     const bool depthTest,
 	     const double depthOffset,
-	     const std::vector <X3DChildObject*> & hierarchy = { });
+	     MFNode && hierarchy = { });
 
 	const Vector2d                         pointer;
 	const Matrix4d                         modelViewMatrix;
@@ -93,7 +93,7 @@ public:
 	const X3DPtr <X3DShapeNode>            shape;
 	const X3DPtr <X3DLayerNode>            layer;
 	const size_t                           layerNumber;
-	const std::vector <X3DChildObject*>     hierarchy;
+	const MFNode                           hierarchy;
 
 	~Hit ();
 

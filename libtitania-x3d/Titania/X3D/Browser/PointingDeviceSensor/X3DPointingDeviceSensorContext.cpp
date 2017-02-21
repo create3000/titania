@@ -62,29 +62,28 @@
 
 #include "PointingDeviceSensorContainer.h"
 
-
 namespace titania {
 namespace X3D {
 
 static constexpr time_type SELECTION_TIME = 0.01; // Use ExamineViewer SPIN_RELEASE_TIME here.
 
 X3DPointingDeviceSensorContext::X3DPointingDeviceSensorContext () :
-	    X3DBaseNode (),
-	       pickable (true),
-	        pointer (),
-	         hitRay (),
-	           hits (),
-	      hierarchy (),
-	 enabledSensors ({ PointingDeviceSensorContainerSet () }),
-	    overSensors (),
-	  activeSensors (),
-	  selectedLayer (),
-	    layerNumber (0),
-	      pressTime (0),
-	       hasMoved (false),
-	  selectionType (SelectionType::DEFAULT),
-	selectionBuffer (),
-	    depthBuffer ()
+	       X3DBaseNode (),
+	          pickable (true),
+	           pointer (),
+	            hitRay (),
+	              hits (),
+	    enabledSensors ({ PointingDeviceSensorContainerSet () }),
+	       overSensors (),
+	     activeSensors (),
+	     selectedLayer (),
+	       layerNumber (0),
+	         hierarchy (),
+	   buttonPressTime (0),
+	buttonPressPointer (),
+	     selectionType (SelectionType::DEFAULT),
+	   selectionBuffer (),
+	       depthBuffer ()
 {
 	addChildObjects (pickable,
 	                 selectedLayer);
@@ -102,35 +101,6 @@ X3DPointingDeviceSensorContext::set_shutdown ()
 	hits          .clear ();
 	overSensors   .clear ();
 	activeSensors .clear ();
-}
-
-void
-X3DPointingDeviceSensorContext::touch (const double x, const double y)
-{
-	pointer = Vector2d (x, y);
-
-	// Clear hits.
-
-	hits .clear ();
-
-	// Pick.
-
-	try
-	{
-		ContextLock lock (getBrowser ());
-
-		//update (); // We cannot make an update here because of gravity.
-
-		getWorld () -> traverse (TraverseType::POINTER, nullptr);
-	}
-	catch (const Error <INVALID_OPERATION_TIMING> &)
-	{ }
-
-	// Picking end.
-
-	std::stable_sort (hits .begin (), hits .end (), HitComp { });
-
-	enabledSensors = { PointingDeviceSensorContainerSet () };
 }
 
 bool
@@ -158,6 +128,14 @@ X3DPointingDeviceSensorContext::setHitRay (const Matrix4d & projectionMatrix, co
 void
 X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer)
 {
+	auto hierarchy = getHierarchy ();
+
+	hierarchy .erase (std::remove_if (hierarchy .begin (),
+	                                  hierarchy .end (),
+	                                  [ ] (X3DBaseNode* const node)
+	                                  { return node -> isPrivate (); }),
+	                  hierarchy .end ());
+
 	hits .emplace_back (new Hit (pointer,
 	                             transformationMatrix,
 	                             hitRay,
@@ -168,14 +146,73 @@ X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, c
 	                             layerNumber,
 	                             getBrowser () -> getDepthTest ()   .top (),
 	                             getBrowser () -> getDepthOffset () .top (),
-	                             hierarchy));
+	                             MFNode (hierarchy .begin (), hierarchy .end ())));
+}
+
+bool
+X3DPointingDeviceSensorContext::setButtonPressEvent (const double x, const double y)
+{
+	buttonPressTime    = chrono::now ();
+	buttonPressPointer = Vector2d (x, y);
+
+	touch (x, y);
+
+	if (getHits () .empty ())
+		return false;
+
+	if (getNearestHit () -> sensors .empty ())
+		return false;
+
+	selectedLayer = getNearestHit () -> layer;
+
+	activeSensors .assign (getNearestHit () -> sensors .begin (),
+	                       getNearestHit () -> sensors .end ());
+
+	for (const auto & pointingDeviceSensorNode : activeSensors)
+		pointingDeviceSensorNode -> set_active (true, getNearestHit ());
+
+	return true;
+}
+
+bool
+X3DPointingDeviceSensorContext::setButtonReleaseEvent (const double x, const double y)
+{
+	// Selection
+	pointer = Vector2d (x, y);
+
+	// TODO: Sometimes there is no selection.
+	if (distance (buttonPressPointer, pointer) < 1 or distance (buttonPressTime, chrono::now ()) < SELECTION_TIME)
+	{
+		if (getBrowser () -> getSelection () -> selectNode ())
+			return true;
+	}
+
+	const auto nearestHit = getHits () .empty ()
+	                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorContainerSet (), nullptr, selectedLayer, 0, true, 0)
+	                        : getNearestHit ();
+
+	selectedLayer = nullptr;
+
+	for (const auto & pointingDeviceSensorNode : activeSensors)
+		pointingDeviceSensorNode -> set_active (false, nearestHit);
+
+	activeSensors .clear ();
+	return true;
+}
+
+void
+X3DPointingDeviceSensorContext::setLeaveNotifyEvent (const double x, const double y)
+{
+	// Clear hits.
+
+	hits .clear ();
+
+	motion ();
 }
 
 bool
 X3DPointingDeviceSensorContext::setMotionNotifyEvent (const double x, const double y)
 {
-	hasMoved |= pointer not_eq Vector2d (x, y);
-
 	touch (x, y);
 
 	motion ();
@@ -231,68 +268,33 @@ X3DPointingDeviceSensorContext::motion ()
 		pointingDeviceSensorNode -> set_motion (nearestHit);
 }
 
-bool
-X3DPointingDeviceSensorContext::setButtonPressEvent (const double x, const double y)
-{
-	pressTime = chrono::now ();
-	hasMoved  = false;
-
-	touch (x, y);
-
-	if (getHits () .empty ())
-		return false;
-
-	if (getNearestHit () -> sensors .empty ())
-		return false;
-
-	selectedLayer = getNearestHit () -> layer;
-
-	activeSensors .assign (getNearestHit () -> sensors .begin (),
-	                       getNearestHit () -> sensors .end ());
-
-	for (const auto & pointingDeviceSensorNode : activeSensors)
-		pointingDeviceSensorNode -> set_active (true, getNearestHit ());
-
-	return true;
-}
-
-bool
-X3DPointingDeviceSensorContext::setButtonReleaseEvent ()
-{
-	// Selection
-
-	//if (not hasMoved or chrono::now () - pressTime < SELECTION_TIME)
-	if (getBrowser () -> getSelection () -> getEnabled ())
-	{
-		getBrowser () -> getSelection () -> selectNode ();
-	}
-	else
-	{
-		const auto nearestHit = getHits () .empty ()
-		                        ? std::make_shared <Hit> (pointer, Matrix4d (), hitRay, std::make_shared <Intersection> (), PointingDeviceSensorContainerSet (), nullptr, selectedLayer, 0, true, 0)
-		                        : getNearestHit ();
-	
-		selectedLayer = nullptr;
-	
-		for (const auto & pointingDeviceSensorNode : activeSensors)
-			pointingDeviceSensorNode -> set_active (false, nearestHit);
-	
-		activeSensors .clear ();
-	}
-
-	hierarchy .clear ();
-
-	return true;
-}
-
 void
-X3DPointingDeviceSensorContext::setLeaveNotifyEvent ()
+X3DPointingDeviceSensorContext::touch (const double x, const double y)
 {
+	pointer = Vector2d (x, y);
+
 	// Clear hits.
 
 	hits .clear ();
 
-	motion ();
+	// Pick.
+
+	try
+	{
+		ContextLock lock (getBrowser ());
+
+		//update (); // We cannot make an update here because of gravity.
+
+		getWorld () -> traverse (TraverseType::POINTER, nullptr);
+	}
+	catch (const Error <INVALID_OPERATION_TIMING> &)
+	{ }
+
+	// Picking end.
+
+	std::stable_sort (hits .begin (), hits .end (), HitComp { });
+
+	enabledSensors = { PointingDeviceSensorContainerSet () };
 }
 
 X3DPointingDeviceSensorContext::~X3DPointingDeviceSensorContext ()

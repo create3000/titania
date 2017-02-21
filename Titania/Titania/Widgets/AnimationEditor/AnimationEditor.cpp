@@ -198,25 +198,11 @@ AnimationEditor::setScale (const double value)
 }
 
 void
-AnimationEditor::on_map ()
-{
-	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&AnimationEditor::set_selection, this);
-
-	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
-}
-
-void
-AnimationEditor::on_unmap ()
-{
-	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&AnimationEditor::set_selection, this);
-}
-
-void
 AnimationEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DAnimationEditorInterface::set_selection (selection);
 
-	const bool haveSelection = not getBrowserWindow () -> getSelection () -> getNodes () .empty ();
+	const bool haveSelection = not selection .empty ();
 	const auto groups        = getNodes <X3D::X3DGroupingNode> (selection, { X3D::X3DConstants::X3DGroupingNode });
 
 	getNewButton ()       .set_sensitive (not groups .empty ());

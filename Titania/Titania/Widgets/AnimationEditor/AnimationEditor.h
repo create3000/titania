@@ -103,14 +103,6 @@ private:
 
 	virtual
 	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-	virtual
-	void
 	set_selection (const X3D::MFNode &) final override;
 
 	/***

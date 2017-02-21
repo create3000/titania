@@ -141,7 +141,23 @@ X3DToolObject::traverse (const TraverseType type, X3DRenderObject* const renderO
 
 	renderObject -> getLocalObjects () .emplace_back (new PolygonModeContainer (GL_FILL));
 
-	inlineNode -> traverse (type, renderObject);
+	switch (type)
+	{
+		case TraverseType::POINTER:
+		{
+			getBrowser () -> getHierarchy () .emplace_back (this);
+		
+			inlineNode -> traverse (type, renderObject);
+		
+			getBrowser () -> getHierarchy () .pop_back ();
+			break;
+		}
+		default:
+		{
+			inlineNode -> traverse (type, renderObject);
+			break;
+		}
+	}
 
 	renderObject -> getLocalObjects () .pop_back ();
 }

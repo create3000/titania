@@ -120,10 +120,6 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_FrameAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_current_frame_changed));
 	m_TranslationAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_translation_changed));
 
-	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_unmap));
-
 	// Connect object Gtk::ToolButton with id 'NewButton'.
 	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new));
 	m_AddMemberButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_add_member));

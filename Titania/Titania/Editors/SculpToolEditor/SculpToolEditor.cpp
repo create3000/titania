@@ -99,37 +99,18 @@ SculpToolEditor::initialize ()
 	// Brush handling
 
 	getBrush () .addInterest (&SculpToolEditor::set_brush, this);
-
 }
 
 void
-SculpToolEditor::on_map ()
+SculpToolEditor::set_selection (const X3D::MFNode & selection)
 {
-	// IndexedFaceSetTool detection
+	X3DSculpToolEditorInterface::set_selection (selection);
 
-	getBrowserWindow () -> getSelection () -> getNodes () .addInterest (&SculpToolEditor::set_geometry_nodes, this);
-
-	set_geometry_nodes (getBrowserWindow () -> getSelection () -> getNodes ());
-}
-
-void
-SculpToolEditor::on_unmap ()
-{
-	// IndexedFaceSetTool detection
-
-	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&SculpToolEditor::set_geometry_nodes, this);
-
-	set_geometry_nodes ({ });
-}
-
-void
-SculpToolEditor::set_geometry_nodes (const X3D::MFNode & geometryNodes)
-{
 	tools .clear ();
 
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		tools = getNodes <X3D::X3DBaseNode> (geometryNodes, { X3D::X3DConstants::IndexedFaceSetTool });
+		tools = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSetTool });
 
 		set_brush ();
 	}
@@ -263,8 +244,6 @@ SculpToolEditor::store ()
 {
 	getConfig () -> setItem ("paned",       getPaned () .get_position ());
 	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
-
-	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&SculpToolEditor::set_geometry_nodes, this);
 
 	X3DSculpToolBrushEditor::store ();
 	X3DSculpToolEditorInterface::store ();

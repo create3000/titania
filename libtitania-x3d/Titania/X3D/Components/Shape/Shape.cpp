@@ -184,6 +184,7 @@ Shape::pointer (X3DRenderObject* const renderObject)
 		return;
 
 	getBrowser () -> getHierarchy () .emplace_back (this);
+	getBrowser () -> getHierarchy () .emplace_back (getGeometry ());
 
 	switch (browser -> getSelectionType ())
 	{
@@ -198,6 +199,7 @@ Shape::pointer (X3DRenderObject* const renderObject)
 			break;
 	}
 
+	getBrowser () -> getHierarchy () .pop_back ();
 	getBrowser () -> getHierarchy () .pop_back ();
 }
 

@@ -126,43 +126,43 @@ public:
 
 	///  @name Operations
 
-	void
-	touch (const double, const double);
-
 	bool
-	isPointerInRectangle (const Vector4i &) const;
-
-	std::vector <X3DChildObject*> &
-	getHierarchy ()
-	{ return hierarchy; }
-
-	std::vector <PointingDeviceSensorContainerSet> &
-	getSensors ()
-	{ return enabledSensors; }
+	isPointerInRectangle (const Vector4i & rectangle) const;
 
 	void
 	setHitRay (const Matrix4d & projectionMatrix, const Vector4i & viewport);
+
+	void
+	addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer);
 
 	const Line3d &
 	getHitRay () const
 	{ return hitRay; }
 
-	void
-	addHit (const Matrix4d & transformationMatrix, const IntersectionPtr & intersection, X3DShapeNode* const shape, X3DLayerNode* const layer);
+	std::vector <PointingDeviceSensorContainerSet> &
+	getSensors ()
+	{ return enabledSensors; }
+
+	std::vector <X3DBaseNode*> &
+	getHierarchy ()
+	{ return hierarchy; }
 
 	///  @name Event handlers
 
 	bool
-	setMotionNotifyEvent (const double, const double);
+	setButtonPressEvent (const double x, const double y);
 
 	bool
-	setButtonPressEvent (const double, const double);
-
-	bool
-	setButtonReleaseEvent ();
+	setButtonReleaseEvent (const double x, const double y);
 
 	void
-	setLeaveNotifyEvent ();
+	setLeaveNotifyEvent (const double x, const double y);
+
+	bool
+	setMotionNotifyEvent (const double x, const double y);
+
+	void
+	touch (const double x, const double y);
 
 	///  @name Destruction
 
@@ -210,14 +210,14 @@ private:
 	Vector2d                                       pointer;
 	Line3d                                         hitRay;
 	HitArray                                       hits;
-	std::vector <X3DChildObject*>                  hierarchy;
 	std::vector <PointingDeviceSensorContainerSet> enabledSensors;
 	std::vector <PointingDeviceSensorContainerPtr> overSensors;
 	std::vector <PointingDeviceSensorContainerPtr> activeSensors;
 	X3DPtr <X3DLayerNode>                          selectedLayer;
 	size_t                                         layerNumber;
-	time_type                                      pressTime;
-	bool                                           hasMoved;
+	std::vector <X3DBaseNode*>                     hierarchy;
+	time_type                                      buttonPressTime;
+	Vector2d                                       buttonPressPointer;
 	SelectionType                                  selectionType;
 	std::shared_ptr <FrameBuffer>                  selectionBuffer;
 	std::shared_ptr <FrameBuffer>                  depthBuffer;
