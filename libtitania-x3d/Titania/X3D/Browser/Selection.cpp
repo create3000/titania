@@ -135,12 +135,14 @@ Selection::setSelectGeometry (const bool value)
 
 		for (const auto & node : nodes)
 		{
-			for (const auto & hierarchy : getHierarchies (node))
+			for (const auto & hierarchy : findNode (node))
 				transforms .emplace_back (getTransform (MFNode (hierarchy .begin (), hierarchy .end ())));
 		}
 
 		setNodes (transforms);
 	}
+
+	hierarchy .addEvent ();
 }
 
 void
@@ -488,7 +490,7 @@ Selection::getTransform (const MFNode & hierarchy) const
 }
 
 Hierarchies
-Selection::getHierarchies (const SFNode & node) const
+Selection::findNode (const SFNode & node) const
 {
 	return find (getBrowser () -> getExecutionContext () -> getRootNodes (),
 		          node,

@@ -349,6 +349,7 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_active (const bool active)
 			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 
 		setTranslate (false);
+		setTranslation (Vector3d ());
 	}
 }
 

@@ -1371,12 +1371,11 @@ BrowserWindow::isEditor (const bool enabled)
 
 	if (enabled)
 	{
-		if (getConfig () -> getBoolean ("arrow"))
-			getArrowButton () .set_active (true);
-		else if (getConfig () -> getBoolean ("viewer"))
-			getViewerButton () .set_active (true);
-		else
+		if (getConfig () -> getBoolean ("hand"))
 			getHandButton () .set_active (true);
+
+		else
+			getArrowButton () .set_active (true);
 	}
 	else
 	{
@@ -2515,6 +2514,8 @@ BrowserWindow::on_hand_button_toggled ()
 {
 	if (getHandButton () .get_active ())
 	{
+		getSelection () -> setEnabled (false);
+
 		setViewer (viewer);
 
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());
@@ -2522,14 +2523,13 @@ BrowserWindow::on_hand_button_toggled ()
 
 	const bool enabled = not getHandButton () .get_active () and isEditor ();
 
-	getSelection () -> setEnabled (enabled);
-
 	getPlayPauseButton ()       .set_visible (enabled);
 	getSelectSeparator ()       .set_visible (enabled);
 	getSelectParentButton ()    .set_visible (enabled);
 	getSelectChildButton ()     .set_visible (enabled);
 	getLookAtSelectionButton () .set_visible (enabled);
 
+	getConfig () -> setItem ("hand", getHandButton () .get_active ());
 }
 
 void
@@ -2537,6 +2537,8 @@ BrowserWindow::on_arrow_button_toggled ()
 {
 	if (getArrowButton () .get_active ())
 	{
+		getSelection () -> setEnabled (true);
+
 		setViewer (viewer);
 
 		set_available_viewers (getCurrentBrowser () -> getAvailableViewers ());

@@ -161,6 +161,8 @@ SculpToolEditor::on_pull_polygons_toggled ()
 	{
 		if (getPullPolygonsButton () .get_active ())
 		{
+			getBrowserWindow () -> getSelection () -> setEnabled (true);
+
 			for (const auto & tool : tools)
 				tool -> setField <X3D::SFString> ("toolType", "SCULP");
 	
@@ -181,6 +183,8 @@ SculpToolEditor::on_push_polygons_toggled ()
 	{
 		if (getPushPolygonsButton () .get_active ())
 		{
+			getBrowserWindow () -> getSelection () -> setEnabled (true);
+
 			for (const auto & tool : tools)
 				tool -> setField <X3D::SFString> ("toolType", "SCULP");
 	
@@ -201,6 +205,8 @@ SculpToolEditor::on_roughten_polygons_toggled ()
 	{
 		if (getRoughtenPolygonsButton () .get_active ())
 		{
+			getBrowserWindow () -> getSelection () -> setEnabled (true);
+
 			for (const auto & tool : tools)
 				tool -> setField <X3D::SFString> ("toolType", "SCULP_ROUGHENING");
 		}
@@ -216,6 +222,8 @@ SculpToolEditor::on_smooth_polygons_toggled ()
 	{
 		if (getSmoothPolygonsButton () .get_active ())
 		{
+			getBrowserWindow () -> getSelection () -> setEnabled (true);
+
 			for (const auto & tool : tools)
 				tool -> setField <X3D::SFString> ("toolType", "SCULP_SMOOTHING");
 		}
@@ -231,6 +239,8 @@ SculpToolEditor::on_undo_brush_toggled ()
 	{
 		if (getUndoBrushButton () .get_active ())
 		{
+			getBrowserWindow () -> getSelection () -> setEnabled (true);
+
 			for (const auto & tool : tools)
 				tool -> setField <X3D::SFString> ("toolType", "SCULP_UNDO");
 		}

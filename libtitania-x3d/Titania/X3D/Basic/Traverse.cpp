@@ -445,7 +445,7 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 	
 		if (flags & TRAVERSE_ROOT_NODES)
 		{
-			for (const auto & node : basic::make_reverse_range (executionContext -> getRootNodes ()))
+			for (const auto & node : executionContext -> getRootNodes ())
 			{
 				find (node, object, flags, hierarchies, hierarchy, seen);
 			}

@@ -211,7 +211,7 @@ private:
 	getTransform (const MFNode & hierarchy) const;
 
 	Hierarchies
-	getHierarchies (const SFNode & node) const;
+	findNode (const SFNode & node) const;
 
 	///  @name Static members
 

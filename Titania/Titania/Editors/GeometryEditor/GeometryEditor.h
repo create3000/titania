@@ -103,7 +103,6 @@ public:
 private:
 
 	enum class SelectorType {
-		NONE,
 		BRUSH,
 		RECTANGLE,
 		LASSO

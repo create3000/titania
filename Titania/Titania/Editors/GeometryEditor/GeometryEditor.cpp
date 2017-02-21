@@ -884,8 +884,6 @@ GeometryEditor::on_edit_toggled ()
 		// Restore viewer.
 	
 		getCurrentBrowser () -> setPrivateViewer (privateViewer);
-	
-		set_selector (SelectorType::NONE);
 	}
 }
 
@@ -900,15 +898,16 @@ GeometryEditor::on_paint_selection_toggled ()
 
 	if (not getPaintSelectionButton () .get_active ())
 	{
-		selector = SelectorType::NONE;
 		getCurrentBrowser () -> setPrivateViewer (privateViewer);
+		coordEditor -> setField <X3D::SFBool> ("paintSelection", false);
 		return;
 	}
 
+	// Disable X3DPointingDeviceSensors.
+	getBrowserWindow () -> getSelection () -> setEnabled (true);
+
 	switch (selector)
 	{
-		case SelectorType::NONE:
-			break;
 		case SelectorType::BRUSH:
 		{
 			getCurrentBrowser () -> getViewer () .removeInterest (&GeometryEditor::set_viewer, this);
@@ -996,9 +995,6 @@ GeometryEditor::set_selector (const SelectorType type)
 {
 	switch (type)
 	{
-		case SelectorType::NONE:
-			selector = type;
-			break;
 		case SelectorType::BRUSH:
 			on_brush_activated ();
 			break;
@@ -1085,9 +1081,11 @@ GeometryEditor::set_cut_polygons ()
 {
 	if (getCutPolygonsButton () .get_active ())
 	{
-		coordEditor -> setField <X3D::SFString> ("toolType", "CUT");
+		getBrowserWindow () -> getSelection () -> setEnabled (true);
 
 		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::LightSaber);
+
+		coordEditor -> setField <X3D::SFString> ("toolType", "CUT");
 	}
 	else
 		getCurrentBrowser () -> setPrivateViewer (privateViewer);

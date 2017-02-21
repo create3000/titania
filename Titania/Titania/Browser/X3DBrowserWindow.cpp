@@ -245,12 +245,15 @@ X3DBrowserWindow::expandNodesImpl (const X3D::MFNode & nodes)
 		for (const auto & iter : outlineTreeView -> get_iters (node))
 		{
 			paths .emplace_back (outlineTreeView-> get_model () -> get_path (iter));
-			outlineTreeView -> expand_row (paths .back (), false);
+			break;
 		}
 	}
 
+	for (const auto & path : paths)
+		outlineTreeView -> expand_row (path, false);
+
 	if  (not paths .empty ())
-		outlineTreeView -> scroll_to_row (paths .back (), 2 - math::phi <double>);
+		outlineTreeView -> scroll_to_row (paths .front (), 2 - math::phi <double>);
 }
 
 void
