@@ -405,29 +405,21 @@ Selection::setHierarchy (const SFNode & node, const Hierarchy & otherHierarchy)
 {
 	// Update hierarchy.
 
-	clearHierarchy ();
-
 	selectedNode = node;
 
-	for (const auto & object : otherHierarchy)
-	{
-		SFNode node (object);
-
-		if (node)
-			hierarchy .emplace_back (std::move (node));
-	}
+	hierarchy = MFNode (otherHierarchy .begin (), otherHierarchy .end ());
 }
 
 void
 Selection::clearHierarchy ()
 {
-	selectedNode = nullptr;;
+	selectedNode = nullptr;
 
 	hierarchy .clear ();
 }
 
 SFNode
-Selection::getTransform (const std::vector <X3DChildObject*> & hierarchy) const
+Selection::getTransform (const Hierarchy & hierarchy) const
 {
 	SFNode node;
 

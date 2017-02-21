@@ -213,7 +213,7 @@ private:
 	getGeometries (const MFNode & nodes) const;
 
 	SFNode
-	getTransform (const std::vector <X3DChildObject*> & hierarchy) const;
+	getTransform (const Hierarchy & hierarchy) const;
 
 	Hierarchies
 	getHierarchies (const SFNode & node) const;

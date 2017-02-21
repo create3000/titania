@@ -159,8 +159,26 @@ Switch::set_cameraObjects ()
 void
 Switch::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	if (childNode)
-		childNode -> traverse (type, renderObject);
+	switch (type)
+	{
+		case TraverseType::POINTER:
+		{
+			getBrowser () -> getHierarchy () .emplace_back (this);
+		
+			if (childNode)
+				childNode -> traverse (type, renderObject);
+		
+			getBrowser () -> getHierarchy () .pop_back ();
+			break;
+		}
+		default:
+		{
+			if (childNode)
+				childNode -> traverse (type, renderObject);
+
+			break;
+		}
+	}
 }
 
 void
