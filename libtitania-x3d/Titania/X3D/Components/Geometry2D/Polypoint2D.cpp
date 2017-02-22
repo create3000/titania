@@ -56,6 +56,8 @@
 #include "../Rendering/PointSet.h"
 #include "../Shaders/ComposedShader.h"
 
+#include "../../Tools/Geometry2D/Polypoint2DTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -97,7 +99,20 @@ Polypoint2D::initialize ()
 const X3DPtr <ComposedShader> &
 Polypoint2D::getShaderNode (X3DBrowser* const browser)
 {
-	return browser -> getWireframeShader ();
+	return browser -> getPointShader ();
+}
+
+bool
+Polypoint2D::isTransparent () const
+{
+	#ifdef FIXED_PIPELINE
+
+	if (getBrowser () -> getFixedPipeline ())
+		return false;
+
+	#endif
+
+	return true; // The antialiased border is transparent!
 }
 
 void
@@ -128,6 +143,12 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
+}
+
+void
+Polypoint2D::addTool ()
+{
+	X3DLineGeometryNode::addTool (new Polypoint2DTool (this));
 }
 
 } // X3D

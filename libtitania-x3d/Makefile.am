@@ -607,8 +607,12 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/Geometry2D/Arc2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/ArcClose2DTool.cpp \
+	Titania/X3D/Tools/Geometry2D/Circle2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/Disk2DTool.cpp \
+	Titania/X3D/Tools/Geometry2D/Polyline2DTool.cpp \
+	Titania/X3D/Tools/Geometry2D/Polypoint2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/Rectangle2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/TriangleSet2DTool.cpp \
 	Titania/X3D/Tools/Geometry3D/Box/BoxTool.cpp \
@@ -647,10 +651,13 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
 	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp \
 	Titania/X3D/Tools/Rendering/CoordinateTool.cpp \
+	Titania/X3D/Tools/Rendering/IndexedLineSetTool.cpp \
 	Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.cpp \
 	Titania/X3D/Tools/Rendering/IndexedTriangleSetTool.cpp \
 	Titania/X3D/Tools/Rendering/IndexedTriangleStripSetTool.cpp \
+	Titania/X3D/Tools/Rendering/LineSetTool.cpp \
 	Titania/X3D/Tools/Rendering/NormalTool.cpp \
+	Titania/X3D/Tools/Rendering/PointSetTool.cpp \
 	Titania/X3D/Tools/Rendering/TriangleFanSetTool.cpp \
 	Titania/X3D/Tools/Rendering/TriangleSetTool.cpp \
 	Titania/X3D/Tools/Rendering/TriangleStripSet.cpp \

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,119 +48,96 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_POINT_SET_H__
-#define __TITANIA_X3D_COMPONENTS_RENDERING_POINT_SET_H__
+#ifndef __TITANIA_X3D_TOOLS_RENDERING_POINT_SET_TOOL_H__
+#define __TITANIA_X3D_TOOLS_RENDERING_POINT_SET_TOOL_H__
 
-#include "../Rendering/X3DLineGeometryNode.h"
+#include "../../Components/Rendering/PointSet.h"
+#include "../Rendering/X3DLineGeometryNodeTool.h"
 
 namespace titania {
 namespace X3D {
 
-class PointSet :
-	virtual public X3DLineGeometryNode
+class PointSetTool :
+	virtual public PointSet,
+	public X3DLineGeometryNodeTool
 {
 public:
 
 	///  @name Construction
 
-	PointSet (X3DExecutionContext* const executionContext);
-
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
+	PointSetTool (PointSet* const node);
 
 	///  @name Fields
 
 	virtual
 	MFNode &
-	attrib ()
-	{ return *fields .attrib; }
+	attrib () final override
+	{ return getNode <PointSet> () -> attrib (); }
 
 	virtual
 	const MFNode &
-	attrib () const
-	{ return *fields .attrib; }
+	attrib () const final override
+	{ return getNode <PointSet> () -> attrib (); }
 
 	virtual
 	SFNode &
-	fogCoord ()
-	{ return *fields .fogCoord; }
+	fogCoord () final override
+	{ return getNode <PointSet> () -> fogCoord (); }
 
 	virtual
 	const SFNode &
-	fogCoord () const
-	{ return *fields .fogCoord; }
+	fogCoord () const final override
+	{ return getNode <PointSet> () -> fogCoord (); }
 
 	virtual
 	SFNode &
-	color ()
-	{ return *fields .color; }
+	color () final override
+	{ return getNode <PointSet> () -> color (); }
 
 	virtual
 	const SFNode &
-	color () const
-	{ return *fields .color; }
+	color () const final override
+	{ return getNode <PointSet> () -> color (); }
 
 	virtual
 	SFNode &
-	coord ()
-	{ return *fields .coord; }
+	coord () final override
+	{ return getNode <PointSet> () -> coord (); }
 
 	virtual
 	const SFNode &
-	coord () const
-	{ return *fields .coord; }
+	coord () const final override
+	{ return getNode <PointSet> () -> coord (); }
 
-	///  @name Member access
+	///  @name Test
 
 	virtual
 	bool
-	isTransparent () const override;
+	isTransparent () const final override
+	{ return X3DLineGeometryNodeTool::isTransparent (); }
 
 	///  @name Operations
-
-	virtual
-	NodeType
-	getPrimitiveType () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override
-	{ throw Error <NOT_SUPPORTED> ("PointSet::getPrimitiveType"); }
 
 	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override
-	{ throw Error <NOT_SUPPORTED> ("PointSet::toPrimitive"); }
+	       Error <DISPOSED>) final override
+	{ return getNode <PointSet> () -> toPrimitive (); }
 
 	virtual
 	void
-	addTool () override;
+	addTool () final override
+	{ X3DLineGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 
 	virtual
-	~PointSet () override;
+	void
+	dispose () final override;
+
+	virtual
+	~PointSetTool () final override;
 
 
 protected:
@@ -169,40 +146,10 @@ protected:
 
 	virtual
 	void
-	initialize () override;
+	initialize () final override;
 
 
 private:
-
-	virtual
-	const X3DPtr <ComposedShader> &
-	getShaderNode (X3DBrowser* const browser) final override;
-
-	///  @name Event handler
-
-	void
-	set_attrib ();
-
-	void
-	set_color ();
-
-	void
-	set_transparency ();
-
-	void
-	set_coord ();
-
-	///  @name Operations
-
-	virtual
-	void
-	build () final override;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
 
 	///  @name Members
 
@@ -210,18 +157,9 @@ private:
 	{
 		Fields ();
 
-		MFNode* const attrib;
-		SFNode* const fogCoord;
-		SFNode* const color;
-		SFNode* const coord;
 	};
 
 	Fields fields;
-
-	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
-	X3DPtr <X3DColorNode>                colorNode;
-	X3DPtr <X3DCoordinateNode>           coordNode;
-	bool                                 transparent;
 
 };
 

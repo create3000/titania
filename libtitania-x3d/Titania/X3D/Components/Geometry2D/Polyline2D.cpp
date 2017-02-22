@@ -56,6 +56,8 @@
 #include "../Rendering/Coordinate.h"
 #include "../Rendering/IndexedLineSet.h"
 
+#include "../../Tools/Geometry2D/Polyline2DTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -150,6 +152,12 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
+}
+
+void
+Polyline2D::addTool ()
+{
+	X3DLineGeometryNode::addTool (new Polyline2DTool (this));
 }
 
 } // X3D

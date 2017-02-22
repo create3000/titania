@@ -59,6 +59,8 @@
 #include "../Shaders/ComposedShader.h"
 #include "../Shaders/X3DVertexAttributeNode.h"
 
+#include "../../Tools/Rendering/IndexedLineSetTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -353,6 +355,15 @@ throw (Error <NOT_SUPPORTED>,
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
 }
+
+void
+IndexedLineSet::addTool ()
+{
+	X3DLineGeometryNode::addTool (new IndexedLineSetTool (this));
+}
+
+IndexedLineSet::~IndexedLineSet ()
+{ }
 
 } // X3D
 } // titania

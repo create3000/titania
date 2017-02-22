@@ -723,8 +723,12 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Core/Tool.lo \
 	Titania/X3D/Tools/Core/X3DBaseTool.lo \
 	Titania/X3D/Tools/Core/X3DToolObject.lo \
+	Titania/X3D/Tools/Geometry2D/Arc2DTool.lo \
 	Titania/X3D/Tools/Geometry2D/ArcClose2DTool.lo \
+	Titania/X3D/Tools/Geometry2D/Circle2DTool.lo \
 	Titania/X3D/Tools/Geometry2D/Disk2DTool.lo \
+	Titania/X3D/Tools/Geometry2D/Polyline2DTool.lo \
+	Titania/X3D/Tools/Geometry2D/Polypoint2DTool.lo \
 	Titania/X3D/Tools/Geometry2D/Rectangle2DTool.lo \
 	Titania/X3D/Tools/Geometry2D/TriangleSet2DTool.lo \
 	Titania/X3D/Tools/Geometry3D/Box/BoxTool.lo \
@@ -763,10 +767,13 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Picking/PickableGroupTool.lo \
 	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.lo \
 	Titania/X3D/Tools/Rendering/CoordinateTool.lo \
+	Titania/X3D/Tools/Rendering/IndexedLineSetTool.lo \
 	Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.lo \
 	Titania/X3D/Tools/Rendering/IndexedTriangleSetTool.lo \
 	Titania/X3D/Tools/Rendering/IndexedTriangleStripSetTool.lo \
+	Titania/X3D/Tools/Rendering/LineSetTool.lo \
 	Titania/X3D/Tools/Rendering/NormalTool.lo \
+	Titania/X3D/Tools/Rendering/PointSetTool.lo \
 	Titania/X3D/Tools/Rendering/TriangleFanSetTool.lo \
 	Titania/X3D/Tools/Rendering/TriangleSetTool.lo \
 	Titania/X3D/Tools/Rendering/TriangleStripSet.lo \
@@ -1640,8 +1647,12 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Core/Tool.cpp \
 	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/Geometry2D/Arc2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/ArcClose2DTool.cpp \
+	Titania/X3D/Tools/Geometry2D/Circle2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/Disk2DTool.cpp \
+	Titania/X3D/Tools/Geometry2D/Polyline2DTool.cpp \
+	Titania/X3D/Tools/Geometry2D/Polypoint2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/Rectangle2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/TriangleSet2DTool.cpp \
 	Titania/X3D/Tools/Geometry3D/Box/BoxTool.cpp \
@@ -1680,10 +1691,13 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Picking/PickableGroupTool.cpp \
 	Titania/X3D/Tools/PointingDeviceSensor/TouchGroupTool.cpp \
 	Titania/X3D/Tools/Rendering/CoordinateTool.cpp \
+	Titania/X3D/Tools/Rendering/IndexedLineSetTool.cpp \
 	Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.cpp \
 	Titania/X3D/Tools/Rendering/IndexedTriangleSetTool.cpp \
 	Titania/X3D/Tools/Rendering/IndexedTriangleStripSetTool.cpp \
+	Titania/X3D/Tools/Rendering/LineSetTool.cpp \
 	Titania/X3D/Tools/Rendering/NormalTool.cpp \
+	Titania/X3D/Tools/Rendering/PointSetTool.cpp \
 	Titania/X3D/Tools/Rendering/TriangleFanSetTool.cpp \
 	Titania/X3D/Tools/Rendering/TriangleSetTool.cpp \
 	Titania/X3D/Tools/Rendering/TriangleStripSet.cpp \
@@ -4066,10 +4080,22 @@ Titania/X3D/Tools/Geometry2D/$(am__dirstamp):
 Titania/X3D/Tools/Geometry2D/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/Geometry2D/$(DEPDIR)
 	@: > Titania/X3D/Tools/Geometry2D/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry2D/Arc2DTool.lo:  \
+	Titania/X3D/Tools/Geometry2D/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry2D/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Geometry2D/ArcClose2DTool.lo:  \
 	Titania/X3D/Tools/Geometry2D/$(am__dirstamp) \
 	Titania/X3D/Tools/Geometry2D/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry2D/Circle2DTool.lo:  \
+	Titania/X3D/Tools/Geometry2D/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry2D/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Geometry2D/Disk2DTool.lo:  \
+	Titania/X3D/Tools/Geometry2D/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry2D/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry2D/Polyline2DTool.lo:  \
+	Titania/X3D/Tools/Geometry2D/$(am__dirstamp) \
+	Titania/X3D/Tools/Geometry2D/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geometry2D/Polypoint2DTool.lo:  \
 	Titania/X3D/Tools/Geometry2D/$(am__dirstamp) \
 	Titania/X3D/Tools/Geometry2D/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Geometry2D/Rectangle2DTool.lo:  \
@@ -4288,6 +4314,9 @@ Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Tools/Rendering/CoordinateTool.lo:  \
 	Titania/X3D/Tools/Rendering/$(am__dirstamp) \
 	Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Rendering/IndexedLineSetTool.lo:  \
+	Titania/X3D/Tools/Rendering/$(am__dirstamp) \
+	Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Rendering/IndexedTriangleFanSetTool.lo:  \
 	Titania/X3D/Tools/Rendering/$(am__dirstamp) \
 	Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
@@ -4297,7 +4326,13 @@ Titania/X3D/Tools/Rendering/IndexedTriangleSetTool.lo:  \
 Titania/X3D/Tools/Rendering/IndexedTriangleStripSetTool.lo:  \
 	Titania/X3D/Tools/Rendering/$(am__dirstamp) \
 	Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Rendering/LineSetTool.lo:  \
+	Titania/X3D/Tools/Rendering/$(am__dirstamp) \
+	Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Rendering/NormalTool.lo:  \
+	Titania/X3D/Tools/Rendering/$(am__dirstamp) \
+	Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Rendering/PointSetTool.lo:  \
 	Titania/X3D/Tools/Rendering/$(am__dirstamp) \
 	Titania/X3D/Tools/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Rendering/TriangleFanSetTool.lo:  \
@@ -5179,8 +5214,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/Tool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/X3DBaseTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/X3DToolObject.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry2D/$(DEPDIR)/Arc2DTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry2D/$(DEPDIR)/ArcClose2DTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry2D/$(DEPDIR)/Circle2DTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry2D/$(DEPDIR)/Disk2DTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry2D/$(DEPDIR)/Polyline2DTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry2D/$(DEPDIR)/Polypoint2DTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry2D/$(DEPDIR)/Rectangle2DTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry2D/$(DEPDIR)/TriangleSet2DTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/Box/$(DEPDIR)/BoxTool.Plo@am__quote@
@@ -5219,10 +5258,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Picking/$(DEPDIR)/PickableGroupTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR)/TouchGroupTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/CoordinateTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedLineSetTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedTriangleFanSetTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedTriangleSetTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/IndexedTriangleStripSetTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/LineSetTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/NormalTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/PointSetTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/TriangleFanSetTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/TriangleSetTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/TriangleStripSet.Plo@am__quote@

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,126 +48,46 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_COMPONENTS_GEOMETRY2D_POLYLINE2D_H__
-#define __TITANIA_X3D_COMPONENTS_GEOMETRY2D_POLYLINE2D_H__
+#include "IndexedLineSetTool.h"
 
-#include "../Rendering/X3DLineGeometryNode.h"
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-class Polyline2D :
-	virtual public X3DLineGeometryNode
+IndexedLineSetTool::Fields::Fields ()
+{ }
+
+IndexedLineSetTool::IndexedLineSetTool (IndexedLineSet* const node) :
+	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	         IndexedLineSet (node -> getExecutionContext ()),
+	            X3DBaseTool (node),
+	X3DLineGeometryNodeTool (),
+	                 fields ()
 {
-public:
+	addType (X3DConstants::IndexedLineSetTool);
 
-	///  @name Construction
+	addField (inputOutput, "toolType",   toolType ());
+	addField (inputOutput, "normalTool", normalTool ());
+	addField (inputOutput, "coordTool",  coordTool ());
+}
 
-	Polyline2D (X3DExecutionContext* const executionContext);
+void
+IndexedLineSetTool::initialize ()
+{
+	X3DLineGeometryNodeTool::initialize ();
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+void
+IndexedLineSetTool::dispose ()
+{
+	__LOG__ << std::endl;
 
-	///  @name Common members
+	X3DLineGeometryNodeTool::dispose ();
+}
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	virtual
-	MFVec2f &
-	lineSegments ()
-	{ return *fields .lineSegments; }
-
-	virtual
-	const MFVec2f &
-	lineSegments () const
-	{ return *fields .lineSegments; }
-
-	///  @name Member access
-
-	virtual
-	bool
-	isTransparent () const override;
-
-	///  @name Operations
-
-	virtual
-	NodeType
-	getPrimitiveType () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override
-	{ return X3DConstants::IndexedLineSet; }
-
-	virtual
-	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) override;
-
-	virtual
-	void
-	addTool () override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () override;
-
-
-private:
-
-	virtual
-	const X3DPtr <ComposedShader> &
-	getShaderNode (X3DBrowser* const browser) final override;
-
-	///  @name Operations
-
-	virtual
-	void
-	build () final override;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		MFVec2f* const lineSegments;
-	};
-
-	Fields fields;
-
-};
+IndexedLineSetTool::~IndexedLineSetTool ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

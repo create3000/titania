@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class Arc2D :
-	public X3DLineGeometryNode
+	virtual public X3DLineGeometryNode
 {
 public:
 
@@ -93,30 +93,36 @@ public:
 	void
 	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
 
 	///  @name Fields
 
+	virtual
 	SFFloat &
 	startAngle ()
 	{ return *fields .startAngle; }
 
+	virtual
 	const SFFloat &
 	startAngle () const
 	{ return *fields .startAngle; }
 
+	virtual
 	SFFloat &
 	endAngle ()
 	{ return *fields .endAngle; }
 
+	virtual
 	const SFFloat &
 	endAngle () const
 	{ return *fields .endAngle; }
 
+	virtual
 	SFFloat &
 	radius ()
 	{ return *fields .radius; }
 
+	virtual
 	const SFFloat &
 	radius () const
 	{ return *fields .radius; }
@@ -134,16 +140,23 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	virtual
 	const X3DPtr <ComposedShader> &

@@ -56,6 +56,8 @@
 #include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../../Tools/Geometry2D/Arc2DTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -205,6 +207,12 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
+}
+
+void
+Arc2D::addTool ()
+{
+	X3DLineGeometryNode::addTool (new Arc2DTool (this));
 }
 
 } // X3D

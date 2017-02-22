@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class IndexedLineSet :
-	public X3DLineGeometryNode
+	virtual public X3DLineGeometryNode
 {
 public:
 
@@ -91,58 +91,72 @@ public:
 
 	///  @name Fields
 
+	virtual
 	SFBool &
 	colorPerVertex ()
 	{ return *fields .colorPerVertex; }
 
+	virtual
 	const SFBool &
 	colorPerVertex () const
 	{ return *fields .colorPerVertex; }
 
+	virtual
 	MFInt32 &
 	colorIndex ()
 	{ return *fields .colorIndex; }
 
+	virtual
 	const MFInt32 &
 	colorIndex () const
 	{ return *fields .colorIndex; }
 
+	virtual
 	MFInt32 &
 	coordIndex ()
 	{ return *fields .coordIndex; }
 
+	virtual
 	const MFInt32 &
 	coordIndex () const
 	{ return *fields .coordIndex; }
 
+	virtual
 	MFNode &
 	attrib ()
 	{ return *fields .attrib; }
 
+	virtual
 	const MFNode &
 	attrib () const
 	{ return *fields .attrib; }
 
+	virtual
 	SFNode &
 	fogCoord ()
 	{ return *fields .fogCoord; }
 
+	virtual
 	const SFNode &
 	fogCoord () const
 	{ return *fields .fogCoord; }
 
+	virtual
 	SFNode &
 	color ()
 	{ return *fields .color; }
 
+	virtual
 	const SFNode &
 	color () const
 	{ return *fields .color; }
 
+	virtual
 	SFNode &
 	coord ()
 	{ return *fields .coord; }
 
+	virtual
 	const SFNode &
 	coord () const
 	{ return *fields .coord; }
@@ -151,11 +165,12 @@ public:
 
 	virtual
 	bool
-	isTransparent () const final override
+	isTransparent () const override
 	{ return transparent; }
 
 	///  @name Operations
 
+	virtual
 	std::vector <Vector3d>
 	getPolylines () const;
 
@@ -170,16 +185,28 @@ public:
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
+
+	///  @name Destruction
+
+	virtual
+	~IndexedLineSet () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	virtual
 	const X3DPtr <ComposedShader> &

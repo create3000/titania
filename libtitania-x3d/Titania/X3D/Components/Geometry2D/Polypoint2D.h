@@ -57,7 +57,7 @@ namespace titania {
 namespace X3D {
 
 class Polypoint2D :
-	public X3DLineGeometryNode
+	virtual public X3DLineGeometryNode
 {
 public:
 
@@ -91,10 +91,12 @@ public:
 
 	///  @name Fields
 
+	virtual
 	MFVec2f &
 	point ()
 	{ return *fields .point; }
 
+	virtual
 	const MFVec2f &
 	point () const
 	{ return *fields .point; }
@@ -103,8 +105,7 @@ public:
 
 	virtual
 	bool
-	isTransparent () const final override
-	{ return false; }
+	isTransparent () const override;
 
 	///  @name Operations
 
@@ -112,23 +113,30 @@ public:
 	NodeType
 	getPrimitiveType () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override
+	       Error <DISPOSED>) override
 	{ return X3DConstants::PointSet; }
 
 	virtual
 	SFNode
 	toPrimitive () const
 	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	       Error <DISPOSED>) override;
+
+	virtual
+	void
+	addTool () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override;
+
+
+private:
 
 	virtual
 	const X3DPtr <ComposedShader> &

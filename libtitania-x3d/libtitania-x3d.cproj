@@ -934,6 +934,13 @@
     <None Include="Titania\X3D\Tools\NURBS\NurbsSwungSurfaceTool.h" />
     <None Include="Titania\X3D\Browser\Tools\ToolType.h" />
     <None Include="Titania\X3D\Components\Rendering\PolygonOffset.h" />
+    <None Include="Titania\X3D\Tools\Geometry2D\Arc2DTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry2D\Circle2DTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry2D\Polypoint2DTool.h" />
+    <None Include="Titania\X3D\Tools\Geometry2D\Polyline2DTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\IndexedLineSetTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\LineSetTool.h" />
+    <None Include="Titania\X3D\Tools\Rendering\PointSetTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1594,6 +1601,13 @@
     <Compile Include="Titania\X3D\Tools\NURBS\NurbsSweptSurfaceTool.cpp" />
     <Compile Include="Titania\X3D\Tools\NURBS\NurbsSwungSurfaceTool.cpp" />
     <Compile Include="Titania\X3D\Components\Rendering\PolygonOffset.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry2D\Arc2DTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry2D\Circle2DTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry2D\Polypoint2DTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Geometry2D\Polyline2DTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\IndexedLineSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\LineSetTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Rendering\PointSetTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
