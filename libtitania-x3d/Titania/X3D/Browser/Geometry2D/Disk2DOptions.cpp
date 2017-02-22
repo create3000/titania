@@ -61,7 +61,7 @@ const std::string   Disk2DOptions::typeName       = "Disk2DOptions";
 const std::string   Disk2DOptions::containerField = "disk2DOptions";
 
 Disk2DOptions::Fields::Fields () :
-	dimension (new SFInt32 (61))
+	dimension (new SFInt32 (60))
 { }
 
 Disk2DOptions::Disk2DOptions (X3DExecutionContext* const executionContext) :
@@ -81,11 +81,11 @@ Disk2DOptions::create (X3DExecutionContext* const executionContext) const
 void
 Disk2DOptions::build ()
 {
-	getVertices () .reserve (dimension () - 1);
+	getVertices () .reserve (dimension ());
 
-	const auto angle = pi2 <double> / (dimension () - 1);
+	const auto angle = pi2 <double> / (dimension ());
 
-	for (int32_t n = 0, size = dimension () - 1; n < size; ++ n)
+	for (int32_t n = 0, size = dimension (); n < size; ++ n)
 	{
 		const auto theta = angle * n;
 

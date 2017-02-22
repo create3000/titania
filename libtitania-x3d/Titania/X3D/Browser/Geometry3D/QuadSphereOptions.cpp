@@ -65,8 +65,8 @@ const std::string   QuadSphereOptions::typeName       = "QuadSphereOptions";
 const std::string   QuadSphereOptions::containerField = "sphereOptions";
 
 QuadSphereOptions::Fields::Fields () :
-	xDimension (new SFInt32 (40)),
-	yDimension (new SFInt32 (20))
+	xDimension (new SFInt32 (32)),
+	yDimension (new SFInt32 (15))
 { }
 
 QuadSphereOptions::QuadSphereOptions (X3DExecutionContext* const executionContext) :
@@ -91,30 +91,30 @@ QuadSphereOptions::createTexCoordIndex () const
 	
 	int32_t p = 0;
 
-	for (int32_t u = 0; u < xDimension () - 1; ++ u, ++ p)
+	for (int32_t u = 0; u < xDimension (); ++ u, ++ p)
 	{
 		texCoordIndices .emplace_back (p);
-		texCoordIndices .emplace_back (p + xDimension () - 1);
 		texCoordIndices .emplace_back (p + xDimension ());
+		texCoordIndices .emplace_back (p + xDimension () + 1);
 		texCoordIndices .emplace_back (p);
 	}
 
 	for (int32_t v = 1; v < yDimension () - 2; ++ v, ++ p)
 	{
-		for (int32_t u = 0; u < xDimension () - 1; ++ u, ++ p)
+		for (int32_t u = 0; u < xDimension (); ++ u, ++ p)
 		{
 			texCoordIndices .emplace_back (p);
-			texCoordIndices .emplace_back (p + xDimension ());
 			texCoordIndices .emplace_back (p + xDimension () + 1);
+			texCoordIndices .emplace_back (p + xDimension () + 2);
 			texCoordIndices .emplace_back (p + 1);
 		}
 	}
 
-	for (int32_t u = 0; u < xDimension () - 1; ++ u, ++ p)
+	for (int32_t u = 0; u < xDimension (); ++ u, ++ p)
 	{
 		texCoordIndices .emplace_back (p);
-		texCoordIndices .emplace_back (p + xDimension ());
-		texCoordIndices .emplace_back (p + xDimension ());
+		texCoordIndices .emplace_back (p + xDimension () + 1);
+		texCoordIndices .emplace_back (p + xDimension () + 1);
 		texCoordIndices .emplace_back (p + 1);
 	}
 
@@ -126,11 +126,11 @@ QuadSphereOptions::createTexCoord () const
 {
 	std::vector <Vector4f> texCoord;
 
-	const auto polOffset = 1 / (2 * double (xDimension () - 1));
+	const auto polOffset = 1 / (2 * double (xDimension ()));
 
-	for (int32_t u = 0; u < xDimension () - 1; ++ u)
+	for (int32_t u = 0; u < xDimension (); ++ u)
 	{
-		const double x = u / double (xDimension () - 1) + polOffset;
+		const double x = u / double (xDimension ()) + polOffset;
 		texCoord .emplace_back (x, 1, 0, 1);
 	}
 
@@ -138,18 +138,18 @@ QuadSphereOptions::createTexCoord () const
 	{
 		const double y = v / double (yDimension () - 1);
 
-		for (int32_t u = 0; u < xDimension () - 1; ++ u)
+		for (int32_t u = 0; u < xDimension (); ++ u)
 		{
-			const double x = u / double (xDimension () - 1);
+			const double x = u / double (xDimension ());
 			texCoord .emplace_back (x, 1 - y, 0, 1);
 		}
 
 		texCoord .emplace_back (1, 1 - y, 0, 1);
 	}
 
-	for (int32_t u = 0; u < xDimension () - 1; ++ u)
+	for (int32_t u = 0; u < xDimension (); ++ u)
 	{
-		const double x = u / double (xDimension () - 1) + polOffset;
+		const double x = u / double (xDimension ()) + polOffset;
 		texCoord .emplace_back (x, 0, 0, 1);
 	}
 
@@ -163,18 +163,18 @@ QuadSphereOptions::createCoordIndex () const
 
 	for (int32_t p = 0, v = 0; v < yDimension () - 1; ++ v, ++ p)
 	{
-		for (int32_t u = 0; u < xDimension () - 2; ++ u, ++ p)
+		for (int32_t u = 0; u < xDimension () - 1; ++ u, ++ p)
 		{
 			coordIndices .emplace_back (p);
-			coordIndices .emplace_back (p + xDimension () - 1);
 			coordIndices .emplace_back (p + xDimension ());
+			coordIndices .emplace_back (p + xDimension () + 1);
 			coordIndices .emplace_back (p + 1);
 		}
 
 		coordIndices .emplace_back (p);
-		coordIndices .emplace_back (p + xDimension () - 1);
+		coordIndices .emplace_back (p + xDimension ());
 		coordIndices .emplace_back (p + 1);
-		coordIndices .emplace_back (p - xDimension () + 2);
+		coordIndices .emplace_back (p - xDimension () + 1);
 	}
 
 	return coordIndices;
@@ -186,7 +186,7 @@ QuadSphereOptions::createPoints () const
 	std::vector <Vector3d> points;
 
 	// north pole
-	for (int32_t u = 0; u < xDimension () - 1; ++ u)
+	for (int32_t u = 0; u < xDimension (); ++ u)
 		points .emplace_back (0, 1, 0);
 
 	// sphere segments
@@ -194,16 +194,16 @@ QuadSphereOptions::createPoints () const
 	{
 		const auto zPlane = std::polar <double> (1, -pi <double> * (v / double (yDimension () - 1)));
 
-		for (int32_t u = 0; u < xDimension () - 1; ++ u)
+		for (int32_t u = 0; u < xDimension (); ++ u)
 		{
-			const auto yPlane = std::polar <double> (zPlane .imag (), 2 * pi <double> * (u / double (xDimension () - 1)));
+			const auto yPlane = std::polar <double> (zPlane .imag (), 2 * pi <double> * (u / double (xDimension ())));
 
 			points .emplace_back (yPlane .imag (), zPlane .real (), yPlane .real ());
 		}
 	}
 
 	// south pole
-	for (int32_t u = 0; u < xDimension () - 1; ++ u)
+	for (int32_t u = 0; u < xDimension (); ++ u)
 		points .emplace_back (0, -1, 0);
 
 	return points;
@@ -235,8 +235,8 @@ QuadSphereOptions::toPrimitive (X3DExecutionContext* const executionContext) con
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	const auto xDimension_1    = xDimension () - 1;
-	const auto xDimension_2    = xDimension () - 2;
+	const auto xDimension_1    = xDimension ();
+	const auto xDimension_2    = xDimension () - 1;
 	const auto texCoordIndices = createTexCoordIndex ();
 	auto       texCoords       = createTexCoord ();
 	const auto coordIndices    = createCoordIndex ();

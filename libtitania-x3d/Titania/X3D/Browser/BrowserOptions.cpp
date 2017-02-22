@@ -242,16 +242,16 @@ BrowserOptions::set_PrimitiveQuality ()
 	{
 		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = pi <float> / 40;
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = pi <float> / 40;
-		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 81;
-		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 81;
-		getBrowser () -> getConeOptions ()       -> xDimension () = 33;
-		getBrowser () -> getCylinderOptions ()   -> xDimension () = 33;
+		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 80;
+		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 80;
+		getBrowser () -> getConeOptions ()       -> xDimension () = 32;
+		getBrowser () -> getCylinderOptions ()   -> xDimension () = 32;
 
 		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
 		if (quadSphere)
 		{
-			quadSphere -> xDimension () = 63;
+			quadSphere -> xDimension () = 64;
 			quadSphere -> yDimension () = 31;
 		}
 
@@ -263,16 +263,16 @@ BrowserOptions::set_PrimitiveQuality ()
 	{
 		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = pi <float> / 10;
 		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = pi <float> / 10;
-		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 21;
-		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 21;
-		getBrowser () -> getConeOptions ()       -> xDimension () = 17;
-		getBrowser () -> getCylinderOptions ()   -> xDimension () = 17;
+		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 20;
+		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 20;
+		getBrowser () -> getConeOptions ()       -> xDimension () = 16;
+		getBrowser () -> getCylinderOptions ()   -> xDimension () = 16;
 
 		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
 		if (quadSphere)
 		{
-			quadSphere -> xDimension () = 21;
+			quadSphere -> xDimension () = 20;
 			quadSphere -> yDimension () = 9;
 		}
 
@@ -284,16 +284,16 @@ BrowserOptions::set_PrimitiveQuality ()
 
 	getBrowser () -> getArc2DOptions ()      -> minAngle ()   = pi <float> / 20;
 	getBrowser () -> getArcClose2DOptions () -> minAngle ()   = pi <float> / 20;
-	getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 41;
-	getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 41;
-	getBrowser () -> getConeOptions ()       -> xDimension () = 21;
-	getBrowser () -> getCylinderOptions ()   -> xDimension () = 21;
+	getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 40;
+	getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 40;
+	getBrowser () -> getConeOptions ()       -> xDimension () = 20;
+	getBrowser () -> getCylinderOptions ()   -> xDimension () = 20;
 
 	const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
 
 	if (quadSphere)
 	{
-		quadSphere -> xDimension () = 31;
+		quadSphere -> xDimension () = 32;
 		quadSphere -> yDimension () = 15;
 	}
 

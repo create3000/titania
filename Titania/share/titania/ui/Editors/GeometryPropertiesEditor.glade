@@ -64,7 +64,7 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="Circle2DDimensionAdjustment">
-    <property name="lower">4</property>
+    <property name="lower">3</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -85,7 +85,7 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ConeXDimensionAdjustment">
-    <property name="lower">4</property>
+    <property name="lower">3</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -111,13 +111,13 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="CylinderXDimensionAdjustment">
-    <property name="lower">4</property>
+    <property name="lower">3</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="Disk2DDimensionAdjustment">
-    <property name="lower">4</property>
+    <property name="lower">3</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -336,7 +336,7 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="SphereXDimensionAdjustment">
-    <property name="lower">4</property>
+    <property name="lower">3</property>
     <property name="upper">10000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>

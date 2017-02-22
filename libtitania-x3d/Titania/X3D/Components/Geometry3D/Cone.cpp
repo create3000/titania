@@ -145,7 +145,7 @@ void
 Cone::build ()
 {
 	const auto & options    = getBrowser () -> getConeOptions ();
-	const double xDimension = options -> xDimension () - 1;
+	const double xDimension = options -> xDimension ();
 
 	getTexCoords () .emplace_back ();
 
@@ -222,7 +222,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto & options    = getBrowser () -> getConeOptions ();
-	const double xDimension = options -> xDimension () - 1;
+	const double xDimension = options -> xDimension ();
 
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();

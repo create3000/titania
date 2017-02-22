@@ -60,7 +60,7 @@ const std::string   ConeOptions::typeName       = "ConeOptions";
 const std::string   ConeOptions::containerField = "coneOptions";
 
 ConeOptions::Fields::Fields () :
-	xDimension (new SFInt32 (21)),
+	xDimension (new SFInt32 (20)),
 	yDimension (new SFInt32 (1))
 { }
 

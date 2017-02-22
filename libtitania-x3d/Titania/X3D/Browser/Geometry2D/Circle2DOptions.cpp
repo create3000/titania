@@ -61,7 +61,7 @@ const std::string   Circle2DOptions::typeName       = "Circle2DOptions";
 const std::string   Circle2DOptions::containerField = "circle2DOptions";
 
 Circle2DOptions::Fields::Fields () :
-	dimension (new SFInt32 (33))
+	dimension (new SFInt32 (32))
 { }
 
 Circle2DOptions::Circle2DOptions (X3DExecutionContext* const executionContext) :
@@ -81,11 +81,11 @@ Circle2DOptions::create (X3DExecutionContext* const executionContext) const
 void
 Circle2DOptions::build ()
 {
-	getVertices () .reserve (dimension () - 1);
+	getVertices () .reserve (dimension ());
 
-	const auto angle = pi2 <double> / (dimension () - 1);
+	const auto angle = pi2 <double> / dimension ();
 
-	for (int32_t n = 0, size = dimension () - 1; n < size; ++ n)
+	for (int32_t n = 0, size = dimension (); n < size; ++ n)
 	{
 		const auto point = std::polar <double> (1, angle * n);
 

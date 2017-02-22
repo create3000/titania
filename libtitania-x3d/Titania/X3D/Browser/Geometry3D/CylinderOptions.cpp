@@ -60,7 +60,7 @@ const std::string   CylinderOptions::typeName       = "CylinderOptions";
 const std::string   CylinderOptions::containerField = "cylinderOptions";
 
 CylinderOptions::Fields::Fields () :
-	xDimension (new SFInt32 (21)),
+	xDimension (new SFInt32 (20)),
 	yDimension (new SFInt32 (1))
 { }
 
