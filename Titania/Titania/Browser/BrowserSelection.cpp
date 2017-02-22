@@ -149,7 +149,7 @@ BrowserSelection::set_execution_context ()
 
 		// Set clone bits.
 
-		for (const auto & node : current)
+		for (const auto & node : previous)
 		{
 			if (node)
 				node -> getUserData <UserData> () -> cloneCount .set (CLONE_PREVIOUSLY_SELECTED);
