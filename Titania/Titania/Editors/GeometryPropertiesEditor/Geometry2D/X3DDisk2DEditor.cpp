@@ -65,15 +65,10 @@ X3DDisk2DEditor::X3DDisk2DEditor () :
 { }
 
 void
-X3DDisk2DEditor::on_disk2d_inner_radius_value_changed ()
-{
-	getDisk2DOuterRadiusAdjustment () -> set_lower (getDisk2DInnerRadiusAdjustment () -> get_value ());
-}
-
-void
-X3DDisk2DEditor::on_disk2d_outer_radius_value_changed ()
+X3DDisk2DEditor::on_disk2d_radius_value_changed ()
 {
 	getDisk2DInnerRadiusAdjustment () -> set_upper (getDisk2DOuterRadiusAdjustment () -> get_value ());
+	getDisk2DOuterRadiusAdjustment () -> set_lower (getDisk2DInnerRadiusAdjustment () -> get_value ());
 }
 
 void

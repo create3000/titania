@@ -285,8 +285,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PrimitiveEdgeColorScale", m_PrimitiveEdgeColorScale);
 
 	// Connect object Gtk::Adjustment with id 'Disk2DInnerRadiusAdjustment'.
-	m_Disk2DInnerRadiusAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_disk2d_inner_radius_value_changed));
-	m_Disk2DOuterRadiusAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_disk2d_outer_radius_value_changed));
+	m_Disk2DInnerRadiusAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_disk2d_radius_value_changed));
+	m_Disk2DOuterRadiusAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_disk2d_radius_value_changed));
 
 	// Connect object Gtk::ComboBoxText with id 'GeometryComboBoxText'.
 	m_GeometryComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_changed));

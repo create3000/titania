@@ -85,11 +85,7 @@ private:
 
 	virtual
 	void
-	on_disk2d_inner_radius_value_changed () final override;
-
-	virtual
-	void
-	on_disk2d_outer_radius_value_changed () final override;
+	on_disk2d_radius_value_changed () final override;
 
 	///  @name Members
 
