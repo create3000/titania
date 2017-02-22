@@ -7,7 +7,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V2.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Tue, 14 Feb 2017 12:41:11 GMT"
+META "modified" "Wed, 22 Feb 2017 13:56:19 GMT"
 META "outputStyle" "nicest"
 
 WorldInfo {
@@ -65,10 +65,30 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
+            value DEF VerticesCoord CoordinateDouble { }
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF Vertices Shape {
+              appearance Appearance {
+                lineProperties LineProperties {
+                  linewidthScaleFactor 5
+                }
+                material DEF EdgesMaterial Material {
+                  diffuseColor 0 0 0
+                  emissiveColor 0.702794 0.852152 1
+                }
+              }
+              geometry PointSet {
+                coord USE VerticesCoord
+              }
+            }
           }
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
+            value USE Vertices
           }
         ]
       }
@@ -107,9 +127,8 @@ Collision {
         DEF NoneGroup Group {
           children DEF SelectionShape Shape {
             appearance Appearance {
-              texture PixelTexture {
-                image 1 1 2
-                  0
+              material Material {
+                transparency 1
               }
             }
           }
@@ -160,16 +179,19 @@ Collision {
             solid FALSE
           }
         }
-        DEF Edges Shape {
-          appearance Appearance {
-            material DEF EdgesMaterial Material {
-              diffuseColor 0 0 0
-              emissiveColor 0.702794 0.852152 1
+        DEF EdgesSwitch Switch {
+          whichChoice 0
+          children [
+            DEF Edges Shape {
+              appearance Appearance {
+                material USE EdgesMaterial
+              }
+              geometry DEF EdgesLineSet LineSet {
+                coord DEF EdgesCoord CoordinateDouble { }
+              }
             }
-          }
-          geometry DEF EdgesLineSet LineSet {
-            coord DEF EdgesCoord CoordinateDouble { }
-          }
+            USE Vertices
+          ]
         }
         DEF SelectedEdges Shape {
           appearance Appearance {
@@ -514,6 +536,7 @@ EXPORT BrushTouchSensor
 EXPORT EdgesCoord
 EXPORT EdgesLineSet
 EXPORT EdgesMaterial
+EXPORT EdgesSwitch
 EXPORT HotEdgesGeometry
 EXPORT HotFaceGeometry
 EXPORT HotPointCoord
@@ -540,3 +563,4 @@ EXPORT TouchSensor
 EXPORT Transform
 EXPORT TransformTool
 EXPORT TransformToolSwitch
+EXPORT VerticesCoord

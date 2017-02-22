@@ -621,6 +621,129 @@ SFVec4 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
 }
 
 ///  @relates SFVec4
+///  @name Comparision operations
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs less than @a rhs.
+template <class ValueType>
+inline
+bool
+operator < (const SFVec4 <ValueType> & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs .getValue () < rhs .getValue ();
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs less than @a rhs.
+template <class ValueType>
+inline
+bool
+operator < (const ValueType& lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs < rhs .getValue ();
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs less than @a rhs.
+template <class ValueType>
+inline
+bool
+operator < (const SFVec4 <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () < rhs;
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator > (const SFVec4 <ValueType> & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs .getValue () > rhs .getValue ();
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator > (const ValueType& lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs > rhs .getValue ();
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator > (const SFVec4 <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () > rhs;
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs greater than @a rhs.
+template <class ValueType>
+inline
+bool
+operator <= (const SFVec4 <ValueType> & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs .getValue () <= rhs .getValue ();
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs greater than @a rhs.
+template <class ValueType>
+inline
+bool
+operator <= (const ValueType& lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs <= rhs .getValue ();
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs greater than @a rhs.
+template <class ValueType>
+inline
+bool
+operator <= (const SFVec4 <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () <= rhs;
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator >= (const SFVec4 <ValueType> & lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs .getValue () >= rhs .getValue ();
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator >= (const ValueType& lhs, const SFVec4 <ValueType> & rhs)
+{
+	return lhs >= rhs .getValue ();
+}
+
+///  Compares two SFVec4 vectors.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class ValueType>
+inline
+bool
+operator >= (const SFVec4 <ValueType> & lhs, const ValueType & rhs)
+{
+	return lhs .getValue () >= rhs;
+}
+
+///  @relates SFVec4
 ///  @name Aritmetic operators.
 
 template <class ValueType>

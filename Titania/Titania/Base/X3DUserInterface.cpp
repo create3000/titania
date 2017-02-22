@@ -222,11 +222,11 @@ X3DUserInterface::on_map ()
 void
 X3DUserInterface::on_unmap ()
 {
-	store ();
-
 	getBrowserWindow () -> getSelection () -> getNodes () .removeInterest (&X3DEditorInterface::set_selection, this);
 
 	set_selection ({ });
+
+	store ();
 }
 
 bool

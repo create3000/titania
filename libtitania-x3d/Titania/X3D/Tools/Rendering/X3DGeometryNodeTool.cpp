@@ -59,6 +59,7 @@
 #include "../../Components/Grouping/Switch.h"
 #include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/Rendering/LineSet.h"
+#include "../../Components/Shape/Shape.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
 
@@ -227,34 +228,51 @@ X3DGeometryNodeTool::eventProcessed ()
 		// Points
 
 		const auto & inlineNode       = coordToolNode -> getInlineNode ();
+		const auto   edgesSwich       = inlineNode -> getExportedNode <Switch> ("EdgesSwitch");
 		auto &       edgesVertexCount = inlineNode -> getExportedNode <LineSet> ("EdgesLineSet") -> vertexCount ();
 		auto &       edgesPoint       = inlineNode -> getExportedNode <CoordinateDouble> ("EdgesCoord") -> point ();
+		auto &       verticesPoint    = inlineNode -> getExportedNode <CoordinateDouble> ("VerticesCoord") -> point ();
+		const bool   lineGeometry     = getGeometryType () == GeometryType::GEOMETRY_POINTS or getGeometryType () == GeometryType::GEOMETRY_LINES;
 
-		size_t p = 0;
+		edgesSwich -> whichChoice () = lineGeometry;
+
 		size_t v = 0;
+		size_t c = 0;
+		size_t p = 0;
 
 		for (const auto & element : elements)
 		{
 			switch (element .vertexMode ())
 			{
-				case GL_TRIANGLES :
-					{
-						for (size_t i = element .first (), size = element .last (); i < size; i += 3)
-						{
-							edgesVertexCount .set1Value (v ++, 4);
-							edgesPoint       .set1Value (p ++, vertices [i + 0]);
-							edgesPoint       .set1Value (p ++, vertices [i + 1]);
-							edgesPoint       .set1Value (p ++, vertices [i + 2]);
-							edgesPoint       .set1Value (p ++, vertices [i + 0]);
-						}
+				case GL_POINTS:
+					break;
+				case GL_LINES:
+				case GL_LINE_STRIP:
+				case GL_LINE_LOOP:
+				{
+					for (size_t i = element .first (), size = element .last (); i < size; ++ i)
+						verticesPoint .set1Value (v ++, vertices [i]);
 
-						break;
+					break;
+				}
+				case GL_TRIANGLES:
+				{
+					for (size_t i = element .first (), size = element .last (); i < size; i += 3)
+					{
+						edgesVertexCount .set1Value (c ++, 4);
+						edgesPoint       .set1Value (p ++, vertices [i + 0]);
+						edgesPoint       .set1Value (p ++, vertices [i + 1]);
+						edgesPoint       .set1Value (p ++, vertices [i + 2]);
+						edgesPoint       .set1Value (p ++, vertices [i + 0]);
 					}
+
+					break;
+				}
 				case GL_QUADS:
 				{
 					for (size_t i = element .first (), size = element .last (); i < size; i += 4)
 					{
-						edgesVertexCount .set1Value (v ++, 5);
+						edgesVertexCount .set1Value (c ++, 5);
 						edgesPoint       .set1Value (p ++, vertices [i + 0]);
 						edgesPoint       .set1Value (p ++, vertices [i + 1]);
 						edgesPoint       .set1Value (p ++, vertices [i + 2]);
@@ -266,7 +284,7 @@ X3DGeometryNodeTool::eventProcessed ()
 				}
 				case GL_POLYGON:
 				{
-					edgesVertexCount .set1Value (v ++, element .count () + 1);
+					edgesVertexCount .set1Value (c ++, element .count () + 1);
 
 					for (size_t i = element .first (), size = element .last (); i < size; ++ i)
 						edgesPoint .set1Value (p ++, vertices [i]);
@@ -279,8 +297,13 @@ X3DGeometryNodeTool::eventProcessed ()
 			}
 		}
 
-		edgesVertexCount .resize (v);
+		verticesPoint    .resize (v);
+		edgesVertexCount .resize (c);
 		edgesPoint       .resize (p);
+
+		std::sort (verticesPoint .begin (), verticesPoint .end ());
+
+		verticesPoint .erase (std::unique (verticesPoint .begin (), verticesPoint .end ()), verticesPoint .end ());
 	}
 	catch (const X3DError & error)
 	{
