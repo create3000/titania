@@ -65,6 +65,18 @@ X3DDisk2DEditor::X3DDisk2DEditor () :
 { }
 
 void
+X3DDisk2DEditor::on_disk2d_inner_radius_value_changed ()
+{
+	getDisk2DOuterRadiusAdjustment () -> set_lower (getDisk2DInnerRadiusAdjustment () -> get_value ());
+}
+
+void
+X3DDisk2DEditor::on_disk2d_outer_radius_value_changed ()
+{
+	getDisk2DInnerRadiusAdjustment () -> set_upper (getDisk2DOuterRadiusAdjustment () -> get_value ());
+}
+
+void
 X3DDisk2DEditor::set_geometry ()
 {
 	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Disk2D });

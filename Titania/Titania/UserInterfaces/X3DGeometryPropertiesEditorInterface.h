@@ -983,6 +983,14 @@ public:
 
 	virtual
 	void
+	on_disk2d_inner_radius_value_changed () = 0;
+
+	virtual
+	void
+	on_disk2d_outer_radius_value_changed () = 0;
+
+	virtual
+	void
 	on_geometry_changed () = 0;
 
 	virtual

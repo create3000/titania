@@ -255,14 +255,6 @@ Disk2D::build ()
 		getVertices () .emplace_back (vertices [i1] * minRadius);
 	}
 
-	// The last two vertices are the first two.
-	getTexCoords () [0] .emplace_back (getTexCoords () [0] [0]);
-	getTexCoords () [0] .emplace_back (getTexCoords () [0] [1]);
-	getNormals  () .emplace_back (getNormals ()  [0]);
-	getNormals  () .emplace_back (getNormals ()  [1]);
-	getVertices () .emplace_back (getVertices () [0]);
-	getVertices () .emplace_back (getVertices () [1]);
-
 	addElements (GL_QUADS, getVertices () .size ());
 	setGeometryType (GeometryType::GEOMETRY_2D);
 	setSolid (solid ());

@@ -245,11 +245,13 @@ X3DGeometryNodeTool::eventProcessed ()
 			switch (element .vertexMode ())
 			{
 				case GL_POINTS:
+__LOG__ << std::endl;
 					break;
 				case GL_LINES:
 				case GL_LINE_STRIP:
 				case GL_LINE_LOOP:
 				{
+__LOG__ << std::endl;
 					for (size_t i = element .first (), size = element .last (); i < size; ++ i)
 						verticesPoint .set1Value (v ++, vertices [i]);
 
@@ -257,6 +259,7 @@ X3DGeometryNodeTool::eventProcessed ()
 				}
 				case GL_TRIANGLES:
 				{
+__LOG__ << std::endl;
 					for (size_t i = element .first (), size = element .last (); i < size; i += 3)
 					{
 						edgesVertexCount .set1Value (c ++, 4);
@@ -270,6 +273,10 @@ X3DGeometryNodeTool::eventProcessed ()
 				}
 				case GL_QUADS:
 				{
+__LOG__ << std::endl;
+__LOG__ << element .first () << std::endl;
+__LOG__ << element .last () << std::endl;
+
 					for (size_t i = element .first (), size = element .last (); i < size; i += 4)
 					{
 						edgesVertexCount .set1Value (c ++, 5);
@@ -284,6 +291,7 @@ X3DGeometryNodeTool::eventProcessed ()
 				}
 				case GL_POLYGON:
 				{
+__LOG__ << std::endl;
 					edgesVertexCount .set1Value (c ++, element .count () + 1);
 
 					for (size_t i = element .first (), size = element .last (); i < size; ++ i)
@@ -293,6 +301,7 @@ X3DGeometryNodeTool::eventProcessed ()
 					break;
 				}
 				default:
+__LOG__ << std::endl;
 					break;
 			}
 		}

@@ -81,6 +81,16 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_disk2d_inner_radius_value_changed () final override;
+
+	virtual
+	void
+	on_disk2d_outer_radius_value_changed () final override;
+
 	///  @name Members
 
 	X3DFieldAdjustment <X3D::SFFloat> innerRadius;
