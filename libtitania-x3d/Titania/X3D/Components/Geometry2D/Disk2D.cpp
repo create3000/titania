@@ -425,21 +425,21 @@ throw (Error <NOT_SUPPORTED>,
 		{
 			geometry -> texCoordIndex () .emplace_back (i);
 			geometry -> texCoordIndex () .emplace_back (i + 1);
-			geometry -> texCoordIndex () .emplace_back (i + 3);
 			geometry -> texCoordIndex () .emplace_back (i + 2);
+			geometry -> texCoordIndex () .emplace_back (i + 3);
 			geometry -> texCoordIndex () .emplace_back (-1);
 
 			geometry -> coordIndex () .emplace_back (i);
 			geometry -> coordIndex () .emplace_back (i + 1);
-			geometry -> coordIndex () .emplace_back (i + 3);
 			geometry -> coordIndex () .emplace_back (i + 2);
+			geometry -> coordIndex () .emplace_back (i + 3);
 			geometry -> coordIndex () .emplace_back (-1);
 		}
 
 		geometry -> texCoordIndex () .emplace_back (i);
 		geometry -> texCoordIndex () .emplace_back (i + 1);
-		geometry -> texCoordIndex () .emplace_back (i + 3);
 		geometry -> texCoordIndex () .emplace_back (i + 2);
+		geometry -> texCoordIndex () .emplace_back (i + 3);
 		geometry -> texCoordIndex () .emplace_back (-1);
 
 		geometry -> coordIndex () .emplace_back (i);
@@ -460,21 +460,21 @@ throw (Error <NOT_SUPPORTED>,
 			for (; i < size; i += 2)
 			{
 				geometry -> texCoordIndex () .emplace_back (ts + i);
-				geometry -> texCoordIndex () .emplace_back (ts + i + 2);
 				geometry -> texCoordIndex () .emplace_back (ts + i + 3);
+				geometry -> texCoordIndex () .emplace_back (ts + i + 2);
 				geometry -> texCoordIndex () .emplace_back (ts + i + 1);
 				geometry -> texCoordIndex () .emplace_back (-1);
 
 				geometry -> coordIndex () .emplace_back (i);
-				geometry -> coordIndex () .emplace_back (i + 2);
 				geometry -> coordIndex () .emplace_back (i + 3);
+				geometry -> coordIndex () .emplace_back (i + 2);
 				geometry -> coordIndex () .emplace_back (i + 1);
 				geometry -> coordIndex () .emplace_back (-1);
 			}
 
 			geometry -> texCoordIndex () .emplace_back (ts + i);
-			geometry -> texCoordIndex () .emplace_back (ts + i + 2);
 			geometry -> texCoordIndex () .emplace_back (ts + i + 3);
+			geometry -> texCoordIndex () .emplace_back (ts + i + 2);
 			geometry -> texCoordIndex () .emplace_back (ts + i + 1);
 			geometry -> texCoordIndex () .emplace_back (-1);
 
