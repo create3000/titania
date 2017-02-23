@@ -84,6 +84,7 @@
 #include <Titania/X3D/Components/Navigation/LOD.h>
 #include <Titania/X3D/Components/Sound/Sound.h>
 #include <Titania/X3D/Editing/Combine.h>
+#include <Titania/X3D/Parser/Filter.h>
 #include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 #include <Titania/X3D/Types/MatrixStack.h>
 
@@ -2561,8 +2562,42 @@ BrowserWindow::on_play_pause_button_clicked ()
 void
 BrowserWindow::set_hierarchy ()
 {
-	getSelectParentButton () .set_sensitive (not getSelection () -> getParents ()  .empty ());
-	getSelectChildButton ()  .set_sensitive (not getSelection () -> getChildren () .empty ());
+	const auto & parents  = getSelection () -> getParents ();
+	const auto & children = getSelection () -> getChildren ();
+
+	if (parents .empty ())
+	{
+		getSelectParentButton () .set_sensitive (false);
+		getSelectParentButton () .set_tooltip_text (_("Selects the immediate parent of the current selection."));
+	}
+	else
+	{
+		const auto & parent = parents .back ();
+
+		getSelectParentButton () .set_sensitive (true);
+
+		if (parent -> getName () .empty ())
+			getSelectParentButton () .set_tooltip_text (Glib::ustring::compose (_("Selects the immediate parent (%1) of the current selection."), parent -> getTypeName ()));
+		else
+			getSelectParentButton () .set_tooltip_text (Glib::ustring::compose (_("Selects the immediate parent (%1 »%2«) of the current selection."), parent -> getTypeName (), X3D::GetDisplayName (parent)));
+	}
+
+	if (children .empty ())
+	{
+		getSelectChildButton () .set_sensitive (false);
+		getSelectChildButton () .set_tooltip_text (_("Selects the next lower child within the selected group in the hierarchy."));
+	}
+	else
+	{
+		const auto & child = children .back ();
+
+		getSelectChildButton () .set_sensitive (true);
+
+		if (child -> getName () .empty ())
+			getSelectChildButton () .set_tooltip_text (Glib::ustring::compose (_("Selects the next lower child (%1) within the selected group in the hierarchy."), child -> getTypeName ()));
+		else
+			getSelectChildButton () .set_tooltip_text (Glib::ustring::compose (_("Selects the next lower child (%1 »%2«) within the selected group in the hierarchy."), child -> getTypeName (), X3D::GetDisplayName (child)));
+	}
 }
 
 void

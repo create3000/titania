@@ -11,7 +11,7 @@ DEF Pyramid Transform {
     appearance Appearance {
       material Material { }
     }
-    geometry DEF Cube IndexedFaceSet {
+    geometry IndexedFaceSet {
       coordIndex [
         3,
         2,

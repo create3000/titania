@@ -205,9 +205,6 @@ private:
 	void
 	setHierarchy (const SFNode & node, const MFNode & hierarchy);
 
-	void
-	clearHierarchy ();
-
 	MFNode
 	getGeometries (const MFNode & nodes) const;
 
@@ -235,7 +232,7 @@ private:
 	MFNode nodes;
 	SFNode masterSelection;
 	MFNode hierarchy;
-	bool   clearHierarchyState;
+	bool   clearHierarchy;
 
 };
 
