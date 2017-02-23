@@ -158,7 +158,7 @@ protected:
 	
 	virtual
 	void
-	set_selection (const X3D::MFNode &)
+	set_selection (const X3D::MFNode & selection)
 	{ }
 
 	bool

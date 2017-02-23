@@ -84,9 +84,12 @@ protected:
 	void
 	initialize () override;
 
+	void
+	set_select_geometry ();
+
 	virtual
 	void
-	set_selection (const X3D::MFNode &) override;
+	set_selection (const X3D::MFNode & selection) override;
 	
 	virtual
 	void

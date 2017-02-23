@@ -90,7 +90,7 @@ private:
 
 	virtual
 	void
-	set_selection (const X3D::MFNode &) final override;
+	set_selection (const X3D::MFNode & selection) final override;
 
 	///  @name CDATA field
 

@@ -26,7 +26,7 @@
  * marked to indicate is contains 'non-military use only' components.
  *	virtual
 	void
-	set_selection (const X3D::MFNode &) final override;
+	set_selection (const X3D::MFNode & selection) final override;
 
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -90,7 +90,7 @@ private:
 
 	virtual
 	void
-	set_selection (const X3D::MFNode &) final override;
+	set_selection (const X3D::MFNode & selection) final override;
 
 	///  @name text
 

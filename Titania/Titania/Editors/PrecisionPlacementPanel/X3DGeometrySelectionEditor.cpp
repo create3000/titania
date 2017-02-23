@@ -96,6 +96,8 @@ void
 X3DGeometrySelectionEditor::configure ()
 {
 	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getBoolean ("geometrySelectionUniformScale"));
+
+	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&X3DGeometrySelectionEditor::set_select_geometry, this);
 }
 
 void
@@ -109,10 +111,14 @@ X3DGeometrySelectionEditor::initialize ()
 }
 
 void
+X3DGeometrySelectionEditor::set_select_geometry ()
+{
+	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
+}
+
+void
 X3DGeometrySelectionEditor::set_selection (const X3D::MFNode & selection)
 {
-	X3DPrecisionPlacementPanelInterface::set_selection (selection);
-
 	transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
 
 	// Update composed widgets
@@ -130,7 +136,7 @@ X3DGeometrySelectionEditor::set_selection (const X3D::MFNode & selection)
 
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		for (const auto & node : selection)
+		for (const auto & node : getBrowserWindow () -> getSelection () -> getGeometries ())
 		{
 			const X3D::X3DPtr <X3D::IndexedFaceSetTool> tool (node);
 	
@@ -338,6 +344,8 @@ void
 X3DGeometrySelectionEditor::store ()
 {
 	getConfig () -> setItem ("geometrySelectionUniformScale", getGeometrySelectionUniformScaleButton () .get_active ());
+
+	getBrowserWindow () -> getSelection () -> getSelectGeometry () .removeInterest (&X3DGeometrySelectionEditor::set_select_geometry, this);
 }
 
 X3DGeometrySelectionEditor::~X3DGeometrySelectionEditor ()
