@@ -139,6 +139,9 @@ public:
 	X3D::MFNode
 	getChildren () const;
 
+	X3D::MFNode
+	getGeometries () const;
+
 	///  @name Operations
 
 	void

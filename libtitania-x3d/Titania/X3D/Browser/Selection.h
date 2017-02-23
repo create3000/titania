@@ -175,6 +175,10 @@ public:
 	MFNode
 	getChildren ();
 
+	MFNode
+	getGeometries () const
+	{ return getGeometries (nodes); }
+
 
 protected:
 
@@ -229,7 +233,7 @@ private:
 	SFBool active;
 	SFBool touchTime;
 	MFNode nodes;
-	SFNode selectedNode;
+	SFNode masterSelection;
 	MFNode hierarchy;
 	bool   clearHierarchyState;
 

@@ -79,6 +79,8 @@ SculpToolEditor::configure ()
 		getPaned () .set_position (getConfig () -> getInteger ("paned"));
 
 	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+
+	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&SculpToolEditor::set_select_geometry, this);
 }
 
 void
@@ -99,6 +101,12 @@ SculpToolEditor::initialize ()
 	// Brush handling
 
 	getBrush () .addInterest (&SculpToolEditor::set_brush, this);
+}
+
+void
+SculpToolEditor::set_select_geometry ()
+{
+	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
 }
 
 void
@@ -254,6 +262,8 @@ SculpToolEditor::store ()
 {
 	getConfig () -> setItem ("paned",       getPaned () .get_position ());
 	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
+
+	getBrowserWindow () -> getSelection () -> getSelectGeometry () .removeInterest (&SculpToolEditor::set_select_geometry, this);
 
 	X3DSculpToolBrushEditor::store ();
 	X3DSculpToolEditorInterface::store ();

@@ -80,7 +80,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	             active (),
 	          touchTime (),
 	              nodes (),
-	       selectedNode (),
+	    masterSelection (),
 	          hierarchy (),
 	clearHierarchyState (true)
 {
@@ -94,7 +94,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	                 active,
 	                 touchTime,
 	                 nodes,
-	                 selectedNode,
+	                 masterSelection,
 	                 hierarchy);
 }
 
@@ -121,28 +121,58 @@ Selection::isSelected (const SFNode & node) const
 void
 Selection::setSelectGeometry (const bool value)
 {
-	if (value == selectGeometry)
-		return;
-
-	selectGeometry = value;
-
-	if (selectGeometry)
-		setNodes (getGeometries (nodes));
-
-	else
+	try
 	{
-		MFNode transforms;
+		static const std::set <NodeType> geometryTypes = { X3DConstants::X3DGeometryNode };
 
-		for (const auto & node : nodes)
+		ContextLock lock (getBrowser ());
+
+		if (value == selectGeometry)
+			return;
+	
+		selectGeometry = value;
+
+		if (selectGeometry)
 		{
-			for (const auto & hierarchy : findNode (node))
-				transforms .emplace_back (getTransform (MFNode (hierarchy .begin (), hierarchy .end ())));
+			for (const auto & node : nodes)
+			{
+				if (node -> isType (geometryTypes))
+					continue;
+
+				node -> removeTool ();
+			}
+
+			for (const auto & node : getGeometries (nodes))
+			{
+				if (node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+					continue;
+	
+				node -> addTool ();
+			}
 		}
+		else
+		{
+			for (const auto & node : getGeometries (nodes))
+			{
+				if (isSelected (node))
+					continue;
 
-		setNodes (transforms);
+				node -> removeTool ();
+			}
+
+			for (const auto & node : nodes)
+			{
+				if (node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+					continue;
+
+				node -> addTool ();
+			}
+		}
 	}
-
-	hierarchy .addEvent ();
+	catch (const Error <INVALID_OPERATION_TIMING> & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -155,7 +185,7 @@ Selection::addNodes (const MFNode & value)
 	{
 		ContextLock lock (getBrowser ());
 
-		for (const auto & node : selectGeometry ? getGeometries (value) : value)
+		for (const auto & node : value)
 		{
 			if (not node)
 				continue;
@@ -167,11 +197,15 @@ Selection::addNodes (const MFNode & value)
 				continue;
 
 			nodes .emplace_back (node);
-			node -> addTool ();
 		}
+
+		for (const auto & node : selectGeometry ? getGeometries (nodes) : nodes)
+			node -> addTool ();
 	}
-	catch (const Error <INVALID_OPERATION_TIMING> &)
-	{ }
+	catch (const Error <INVALID_OPERATION_TIMING> & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -184,6 +218,8 @@ Selection::removeNodes (const MFNode & value)
 		if (clearHierarchyState)
 			clearHierarchy ();
 
+		MFNode removedNodes;
+
 		for (const auto & node : value)
 		{
 			if (node)
@@ -192,10 +228,13 @@ Selection::removeNodes (const MFNode & value)
 				                           nodes .end (),
 				                           node),
 				              nodes .end ());
-	
-				node -> removeTool ();
+
+				removedNodes .emplace_back (node);
 			}
 		}
+
+		for (const auto & node : selectGeometry ? getGeometries (removedNodes) : removedNodes)
+			node -> removeTool ();
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> & error)
 	{
@@ -216,15 +255,31 @@ Selection::setNodes (const MFNode & value)
 {
 	clearHierarchyState = false;
 
-	if (value .size () == 1)
+	if (not value .empty () and value .back ())
 	{
-		const auto iter = std::find (hierarchy .begin (), hierarchy .end (), value [0]);
+		const auto iter = std::find (hierarchy .begin (), hierarchy .end (), value .back ());
 
 		if (iter == hierarchy .end ())
+		{
 			clearHierarchyState = true;
 
+			const auto geometryNodes = getGeometries ({ value .back () });
+
+			if (not geometryNodes .empty ())
+			{
+				const auto hierarchies = findNode (geometryNodes .back ());
+
+				for (const auto & hierarchy : hierarchies)
+				{
+					clearHierarchyState = false;
+	
+					setHierarchy (value .back (), MFNode (hierarchy .begin (), hierarchy .end ()));
+					break;
+				}
+			}
+		}
 		else
-			selectedNode = value [0];
+			masterSelection = value .back ();
 	}
 	else
 		clearHierarchyState = true;
@@ -236,7 +291,7 @@ Selection::setNodes (const MFNode & value)
 	}
 
 	MFNode sortedNodes = nodes;
-	MFNode sortedValue = selectGeometry ? getGeometries (value) : value;
+	MFNode sortedValue = value;
 	MFNode difference;
 	
 	std::sort (sortedNodes .begin (), sortedNodes .end ());
@@ -266,16 +321,13 @@ Selection::setNodes (const MFNode & value)
 MFNode
 Selection::getParents ()
 {
-	if (selectGeometry)
-		return MFNode ();
-
 	if (hierarchy .empty ())
 		return MFNode ();
 
-	if (not selectedNode)
+	if (not masterSelection)
 		return MFNode ();
 
-	auto iter = std::find (hierarchy .rbegin (), hierarchy .rend (), selectedNode);
+	auto iter = std::find (hierarchy .rbegin (), hierarchy .rend (), masterSelection);
 
 	if (iter == hierarchy .rend ())
 		return MFNode ();
@@ -291,16 +343,13 @@ Selection::getParents ()
 MFNode
 Selection::getChildren ()
 {
-	if (selectGeometry)
-		return MFNode ();
-
 	if (hierarchy .empty ())
 		return MFNode ();
 
-	if (not selectedNode)
+	if (not masterSelection)
 		return MFNode ();
 
-	auto iter = std::find (hierarchy .begin (), hierarchy .end (), selectedNode);
+	auto iter = std::find (hierarchy .begin (), hierarchy .end (), masterSelection);
 
 	if (iter == hierarchy .end ())
 		return MFNode ();
@@ -369,7 +418,7 @@ Selection::selectNode ()
 
 			setHierarchy (node, nearestHit -> hierarchy);
 
-			selectedNode = node;
+			masterSelection = node;
 
 			touchTime = getCurrentTime ();
 
@@ -385,15 +434,17 @@ Selection::setHierarchy (const SFNode & node, const MFNode & otherHierarchy)
 {
 	// Update hierarchy.
 
-	selectedNode = node;
+	masterSelection = node;
 
 	hierarchy = otherHierarchy;
+
+	hierarchy .erase (std::remove_if (hierarchy .begin (), hierarchy .end (), [ ] (const SFNode & node) { return not node; }), hierarchy .end ());
 }
 
 void
 Selection::clearHierarchy ()
 {
-	selectedNode = nullptr;
+	masterSelection = nullptr;
 
 	hierarchy .clear ();
 }

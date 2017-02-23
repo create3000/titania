@@ -203,7 +203,7 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 void
 GeometryEditor::connect ()
 {
-	const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+	const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
 	for (const auto & node : geometryNodes)
 	{
@@ -401,7 +401,7 @@ GeometryEditor::on_cut ()
 {
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
 		try
 		{
@@ -421,7 +421,7 @@ GeometryEditor::on_copy ()
 {
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
 		for (const auto & geometryNode : geometryNodes)
 		{
@@ -444,7 +444,7 @@ GeometryEditor::on_paste ()
 {
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
 		const auto active = std::max_element (geometryNodes .begin (), geometryNodes .end (), [ ] (const X3D::SFNode & lhs, const X3D::SFNode & rhs)
 		{
@@ -501,7 +501,7 @@ GeometryEditor::on_select_all ()
 {
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
 		for (const auto & node : geometryNodes)
 		{
@@ -542,7 +542,7 @@ GeometryEditor::on_deselect_all ()
 {
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
 		for (const auto & node : geometryNodes)
 		{
@@ -609,7 +609,7 @@ GeometryEditor::set_selectedPoints ()
 
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
 		for (const auto & node : geometryNodes)
 		{
@@ -651,7 +651,7 @@ GeometryEditor::set_selectedEdges ()
 
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
 		for (const auto & node : geometryNodes)
 		{
@@ -692,7 +692,7 @@ GeometryEditor::set_selectedHoles ()
 
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
 		for (const auto & node : geometryNodes)
 		{
@@ -733,7 +733,7 @@ GeometryEditor::set_selectedFaces ()
 
 	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
 	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getNodes ();
+		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
 		for (const auto & node : geometryNodes)
 		{

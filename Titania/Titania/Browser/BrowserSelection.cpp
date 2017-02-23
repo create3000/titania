@@ -301,6 +301,14 @@ BrowserSelection::getChildren () const
 	return selection -> getChildren ();
 }
 
+X3D::MFNode
+BrowserSelection::getGeometries () const
+{
+	const auto & selection = browser-> getSelection ();
+
+	return selection -> getGeometries ();
+}
+
 void
 BrowserSelection::addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & undoStep)
 {

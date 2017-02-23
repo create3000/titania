@@ -99,6 +99,9 @@ private:
 
 	///  @name Event handlers
 
+	void
+	set_select_geometry ();
+
 	virtual
 	void
 	set_selection (const X3D::MFNode & selection) final override;
