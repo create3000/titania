@@ -67,6 +67,15 @@ ScenePropertiesEditor::ScenePropertiesEditor (X3DBrowserWindow* const browserWin
 }
 
 void
+ScenePropertiesEditor::initialize ()
+{
+	X3DScenePropertiesEditorInterface::initialize ();
+	X3DMetaDataEditor::initialize ();
+	X3DUnitEditor::initialize ();
+	X3DWorldInfoEditor::initialize ();
+}
+
+void
 ScenePropertiesEditor::configure ()
 {
 	X3DScenePropertiesEditorInterface::configure ();
@@ -75,15 +84,6 @@ ScenePropertiesEditor::configure ()
 	X3DWorldInfoEditor::configure ();
 
 	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-}
-
-void
-ScenePropertiesEditor::initialize ()
-{
-	X3DScenePropertiesEditorInterface::initialize ();
-	X3DMetaDataEditor::initialize ();
-	X3DUnitEditor::initialize ();
-	X3DWorldInfoEditor::initialize ();
 }
 
 void

@@ -78,11 +78,11 @@ protected:
 
 	virtual
 	void
-	configure () override;
+	initialize () override;
 
 	virtual
 	void
-	initialize () override;
+	configure () override;
 
 	void
 	set_select_geometry ();

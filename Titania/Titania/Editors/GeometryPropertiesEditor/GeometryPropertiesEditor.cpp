@@ -109,6 +109,16 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 }
 
 void
+GeometryPropertiesEditor::initialize ()
+{
+	X3DGeometryPropertiesEditorInterface::initialize ();
+	X3DElevationGridEditor::initialize ();
+	X3DGeoElevationGridEditor::initialize ();
+	X3DPrimitiveCountEditor::initialize ();
+	X3DGeometryTool::initialize ();
+}
+
+void
 GeometryPropertiesEditor::configure ()
 {
 	X3DGeometryPropertiesEditorInterface::configure ();
@@ -118,16 +128,6 @@ GeometryPropertiesEditor::configure ()
 	X3DGeometryTool::configure ();
 
 	getGeometryChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-}
-
-void
-GeometryPropertiesEditor::initialize ()
-{
-	X3DGeometryPropertiesEditorInterface::initialize ();
-	X3DElevationGridEditor::initialize ();
-	X3DGeoElevationGridEditor::initialize ();
-	X3DPrimitiveCountEditor::initialize ();
-	X3DGeometryTool::initialize ();
 }
 
 void

@@ -84,11 +84,11 @@ protected:
 
 	virtual
 	void
-	configure () override;
+	initialize () override;
 
 	virtual
 	void
-	initialize () override;
+	configure () override;
 
 	virtual
 	void

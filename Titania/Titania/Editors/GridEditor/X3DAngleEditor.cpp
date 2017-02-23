@@ -133,12 +133,6 @@ X3DAngleEditor::X3DAngleEditor () :
 }
 
 void
-X3DAngleEditor::configure ()
-{
-	getAngleUniformScaleButton () .set_active (getConfig () -> getBoolean ("angleUniformScale"));
-}
-
-void
 X3DAngleEditor::initialize ()
 {
 	const auto &      angleTool  = getBrowserWindow () -> getAngleTool () -> getTool ();
@@ -168,6 +162,12 @@ X3DAngleEditor::initialize ()
 	on_grid_toggled ();
 	set_rotation ();
 	set_majorLineEvery ();
+}
+
+void
+X3DAngleEditor::configure ()
+{
+	getAngleUniformScaleButton () .set_active (getConfig () -> getBoolean ("angleUniformScale"));
 }
 
 void

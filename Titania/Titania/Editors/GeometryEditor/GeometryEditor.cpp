@@ -117,6 +117,22 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+GeometryEditor::initialize ()
+{
+	X3DGeometryEditorInterface::initialize ();
+
+	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
+
+	getPaintSelectionButton () .set_group (selectionGroup);
+	getCutPolygonsButton ()    .set_group (selectionGroup);
+
+	normalEditor -> setup ();
+	coordEditor  -> setup ();
+
+	normalEnabled .setNodes ({ normalEditor });
+}
+
+void
 GeometryEditor::configure ()
 {
 	X3DGeometryEditorInterface::configure ();
@@ -150,22 +166,6 @@ GeometryEditor::configure ()
 	getAxisAlignedBoundingBoxMenuItem ()    .set_active (getConfig () -> get <bool> ("axisAlignedBoundingBox") or not getConfig () -> hasItem ("axisAlignedBoundingBox"));
 	getCutPolygonsButton ()                 .set_active (getConfig () -> get <bool> ("cutPolygons"));
 	getCutPolygonsEnableSnappingMenuItem () .set_active (getConfig () -> get <bool> ("cutSnapping") or not getConfig () -> hasItem ("cutSnapping"));
-}
-
-void
-GeometryEditor::initialize ()
-{
-	X3DGeometryEditorInterface::initialize ();
-
-	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
-
-	getPaintSelectionButton () .set_group (selectionGroup);
-	getCutPolygonsButton ()    .set_group (selectionGroup);
-
-	normalEditor -> setup ();
-	coordEditor  -> setup ();
-
-	normalEnabled .setNodes ({ normalEditor });
 }
 
 void

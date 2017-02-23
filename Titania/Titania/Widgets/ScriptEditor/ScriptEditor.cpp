@@ -99,30 +99,6 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-ScriptEditor::configure ()
-{
-	X3DScriptEditorInterface::configure ();
-
-	try
-	{
-	   if (node)
-	   {
-			ScriptEditorDatabase database;
-
-			const auto item     = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), node -> getName ());
-			const auto nodeName = std::get <0> (item);
-
-			hadjustment -> restore (getScrolledWindow () .get_hadjustment (), std::get <1> (item));
-			vadjustment -> restore (getScrolledWindow () .get_vadjustment (), std::get <2> (item));
-		}
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
 ScriptEditor::initialize ()
 {
 	X3DScriptEditorInterface::initialize ();
@@ -169,6 +145,30 @@ ScriptEditor::initialize ()
 	// Initialize after all.
 
 	X3DScriptEditorSearch::initialize ();
+}
+
+void
+ScriptEditor::configure ()
+{
+	X3DScriptEditorInterface::configure ();
+
+	try
+	{
+	   if (node)
+	   {
+			ScriptEditorDatabase database;
+
+			const auto item     = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), node -> getName ());
+			const auto nodeName = std::get <0> (item);
+
+			hadjustment -> restore (getScrolledWindow () .get_hadjustment (), std::get <1> (item));
+			vadjustment -> restore (getScrolledWindow () .get_vadjustment (), std::get <2> (item));
+		}
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 bool

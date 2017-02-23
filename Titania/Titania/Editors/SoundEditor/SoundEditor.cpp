@@ -90,20 +90,20 @@ SoundEditor::SoundEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-SoundEditor::configure ()
-{
-	X3DSoundEditorInterface::configure ();
-
-	getSoundNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-}
-
-void
 SoundEditor::initialize ()
 {
 	X3DSoundEditorInterface::initialize ();
 	X3DSoundSourceNodeEditor::initialize ();
 
 	direction .setNormalize (true);
+}
+
+void
+SoundEditor::configure ()
+{
+	X3DSoundEditorInterface::configure ();
+
+	getSoundNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void

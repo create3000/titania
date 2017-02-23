@@ -76,6 +76,15 @@ HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+HistoryView::initialize ()
+{
+	X3DHistoryViewInterface::initialize ();
+
+	getLastAccessColumn () -> clicked ();
+	getLastAccessColumn () -> clicked ();
+}
+
+void
 HistoryView::configure ()
 {
 	X3DHistoryViewInterface::configure ();
@@ -117,15 +126,6 @@ HistoryView::configure ()
 
 	if (getConfig () -> hasItem ("lastAccessColumnSize"))
 		getLastAccessColumn () -> set_fixed_width (getConfig () -> getInteger ("lastAccessColumnSize"));
-}
-
-void
-HistoryView::initialize ()
-{
-	X3DHistoryViewInterface::initialize ();
-
-	getLastAccessColumn () -> clicked ();
-	getLastAccessColumn () -> clicked ();
 }
 
 void

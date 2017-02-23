@@ -101,6 +101,16 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
 }
 
 void
+X3DBrowserEditor::initialize ()
+{
+	X3DBrowserWidget::initialize ();
+
+	getCurrentScene ()   .addInterest (&X3DBrowserEditor::set_scene, this);
+	getCurrentContext () .addInterest (&X3DBrowserEditor::set_executionContext, this);
+	getBrowserWindow () -> getSelection () -> isActive () .addInterest (&X3DBrowserEditor::set_selection_active, this);
+}
+
+void
 X3DBrowserEditor::configure ()
 {
 	// Workspace
@@ -122,16 +132,6 @@ X3DBrowserEditor::configure ()
 
 	// This must be done after.
 	X3DBrowserWidget::configure ();
-}
-
-void
-X3DBrowserEditor::initialize ()
-{
-	X3DBrowserWidget::initialize ();
-
-	getCurrentScene ()   .addInterest (&X3DBrowserEditor::set_scene, this);
-	getCurrentContext () .addInterest (&X3DBrowserEditor::set_executionContext, this);
-	getBrowserWindow () -> getSelection () -> isActive () .addInterest (&X3DBrowserEditor::set_selection_active, this);
 }
 
 void

@@ -93,14 +93,6 @@ X3DGeometrySelectionEditor::X3DGeometrySelectionEditor () :
 }
 
 void
-X3DGeometrySelectionEditor::configure ()
-{
-	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getBoolean ("geometrySelectionUniformScale"));
-
-	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&X3DGeometrySelectionEditor::set_select_geometry, this);
-}
-
-void
 X3DGeometrySelectionEditor::initialize ()
 {
 	translation .setUndo (false);
@@ -108,6 +100,14 @@ X3DGeometrySelectionEditor::initialize ()
 	scale       .setUndo (false);
 
 	rotationTool -> setUndo (false);
+}
+
+void
+X3DGeometrySelectionEditor::configure ()
+{
+	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getBoolean ("geometrySelectionUniformScale"));
+
+	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&X3DGeometrySelectionEditor::set_select_geometry, this);
 }
 
 void

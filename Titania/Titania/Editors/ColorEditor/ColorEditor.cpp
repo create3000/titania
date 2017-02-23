@@ -114,6 +114,22 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+ColorEditor::initialize ()
+{
+	X3DColorEditorInterface::initialize ();
+
+	preview -> initialized () .addInterest (&ColorEditor::set_initialized, this);
+	preview -> set_opacity (0);
+	preview -> show ();
+
+	getPreviewBox () .pack_start (*preview, true, true, 0);
+
+	selection -> setup ();
+
+	undoHistory .addInterest (&ColorEditor::set_undoHistory, this);
+}
+
+void
 ColorEditor::configure ()
 {
 	X3DColorEditorInterface::configure ();
@@ -146,22 +162,6 @@ ColorEditor::configure ()
 		default:
 			break;
 	}
-}
-
-void
-ColorEditor::initialize ()
-{
-	X3DColorEditorInterface::initialize ();
-
-	preview -> initialized () .addInterest (&ColorEditor::set_initialized, this);
-	preview -> set_opacity (0);
-	preview -> show ();
-
-	getPreviewBox () .pack_start (*preview, true, true, 0);
-
-	selection -> setup ();
-
-	undoHistory .addInterest (&ColorEditor::set_undoHistory, this);
 }
 
 void

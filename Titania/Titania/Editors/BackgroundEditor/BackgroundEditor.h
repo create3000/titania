@@ -89,11 +89,11 @@ private:
 
 	virtual
 	void
-	configure () final override;
+	initialize () final override;
 
 	virtual
 	void
-	initialize () final override;
+	configure () final override;
 
 	void
 	set_background (const X3D::X3DPtr <X3D::X3DBackgroundNode> &);

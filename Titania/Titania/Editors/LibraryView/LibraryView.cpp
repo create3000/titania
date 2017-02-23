@@ -66,19 +66,19 @@ LibraryView::LibraryView (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-LibraryView::configure ()
-{
-	X3DLibraryViewInterface::configure ();
-
-	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-}
-
-void
 LibraryView::initialize ()
 {
 	X3DLibraryViewInterface::initialize ();
 	X3DLibraryView::initialize ();
 	X3DModelsPaletteEditor::initialize ();
+}
+
+void
+LibraryView::configure ()
+{
+	X3DLibraryViewInterface::configure ();
+
+	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void

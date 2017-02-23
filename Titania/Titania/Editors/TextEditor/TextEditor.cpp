@@ -88,18 +88,18 @@ TextEditor::TextEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+TextEditor::initialize ()
+{
+	X3DTextEditorInterface::initialize ();
+	X3DFontStyleNodeEditor::initialize ();
+}
+
+void
 TextEditor::configure ()
 {
 	X3DTextEditorInterface::configure ();
 
 	getTextNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-}
-
-void
-TextEditor::initialize ()
-{
-	X3DTextEditorInterface::initialize ();
-	X3DFontStyleNodeEditor::initialize ();
 }
 
 void

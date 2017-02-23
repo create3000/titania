@@ -100,15 +100,6 @@ BackgroundEditor::BackgroundEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-BackgroundEditor::configure ()
-{
-	X3DBackgroundEditorInterface::configure ();
-
-	getNotebook ()         .set_current_page (getConfig () -> getInteger ("currentPage"));
-	getTexturesNotebook () .set_current_page (getConfig () -> getInteger ("texturePage"));
-}
-
-void
 BackgroundEditor::initialize ()
 {
 	X3DBackgroundEditorInterface::initialize ();
@@ -137,6 +128,15 @@ BackgroundEditor::initialize ()
 	
 	skyColor    .setColorsSize (16);
 	groundColor .setColorsSize (16);
+}
+
+void
+BackgroundEditor::configure ()
+{
+	X3DBackgroundEditorInterface::configure ();
+
+	getNotebook ()         .set_current_page (getConfig () -> getInteger ("currentPage"));
+	getTexturesNotebook () .set_current_page (getConfig () -> getInteger ("texturePage"));
 }
 
 void

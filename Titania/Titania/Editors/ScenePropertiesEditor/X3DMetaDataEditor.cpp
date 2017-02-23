@@ -72,17 +72,17 @@ X3DMetaDataEditor::X3DMetaDataEditor () :
 }
 
 void
+X3DMetaDataEditor::initialize ()
+{
+	set_current_scene ();
+}
+
+void
 X3DMetaDataEditor::configure ()
 {
 	getCurrentScene () .addInterest (&X3DMetaDataEditor::set_current_scene, this);
 
 	getAddStandardMetaDataButton () .set_state (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"));
-}
-
-void
-X3DMetaDataEditor::initialize ()
-{
-	set_current_scene ();
 }
 
 void

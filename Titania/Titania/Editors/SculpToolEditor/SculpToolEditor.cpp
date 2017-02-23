@@ -70,22 +70,10 @@ SculpToolEditor::SculpToolEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-SculpToolEditor::configure ()
-{
-	X3DSculpToolEditorInterface::configure ();
-	X3DSculpToolBrushEditor::configure ();
-
-	if (getConfig () -> hasItem ("paned"))
-		getPaned () .set_position (getConfig () -> getInteger ("paned"));
-
-	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-
-	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&SculpToolEditor::set_select_geometry, this);
-}
-
-void
 SculpToolEditor::initialize ()
 {
+__LOG__ << std::endl;
+
 	X3DSculpToolEditorInterface::initialize ();
 	X3DSculpToolBrushEditor::initialize ();
 	X3DSculpToolBrushPaletteEditor::initialize ();
@@ -104,6 +92,20 @@ SculpToolEditor::initialize ()
 }
 
 void
+SculpToolEditor::configure ()
+{
+	X3DSculpToolEditorInterface::configure ();
+	X3DSculpToolBrushEditor::configure ();
+
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+
+	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
+
+	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&SculpToolEditor::set_select_geometry, this);
+}
+
+void
 SculpToolEditor::set_select_geometry ()
 {
 	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
@@ -112,6 +114,8 @@ SculpToolEditor::set_select_geometry ()
 void
 SculpToolEditor::set_selection (const X3D::MFNode & selection)
 {
+__LOG__ << std::endl;
+
 	X3DSculpToolEditorInterface::set_selection (selection);
 
 	tools .clear ();
@@ -129,7 +133,9 @@ SculpToolEditor::set_selection (const X3D::MFNode & selection)
 	{
 		on_pull_polygons_toggled ();
 		on_push_polygons_toggled ();
+		on_roughten_polygons_toggled ();
 		on_smooth_polygons_toggled ();
+		on_undo_brush_toggled ();
 	}
 }
 
@@ -167,6 +173,8 @@ SculpToolEditor::on_pull_polygons_toggled ()
 
 	try
 	{
+__LOG__ << getPullPolygonsButton () .get_active () << std::endl;
+
 		if (getPullPolygonsButton () .get_active ())
 		{
 			getBrowserWindow () -> getSelection () -> setEnabled (true);
@@ -189,6 +197,8 @@ SculpToolEditor::on_push_polygons_toggled ()
 {
 	try
 	{
+__LOG__ << getPushPolygonsButton () .get_active () << std::endl;
+
 		if (getPushPolygonsButton () .get_active ())
 		{
 			getBrowserWindow () -> getSelection () -> setEnabled (true);
@@ -211,6 +221,8 @@ SculpToolEditor::on_roughten_polygons_toggled ()
 {
 	try
 	{
+__LOG__ << getRoughtenPolygonsButton () .get_active () << std::endl;
+
 		if (getRoughtenPolygonsButton () .get_active ())
 		{
 			getBrowserWindow () -> getSelection () -> setEnabled (true);
@@ -228,6 +240,8 @@ SculpToolEditor::on_smooth_polygons_toggled ()
 {
 	try
 	{
+__LOG__ << getSmoothPolygonsButton () .get_active () << std::endl;
+
 		if (getSmoothPolygonsButton () .get_active ())
 		{
 			getBrowserWindow () -> getSelection () -> setEnabled (true);
@@ -245,6 +259,8 @@ SculpToolEditor::on_undo_brush_toggled ()
 {
 	try
 	{
+__LOG__ << getUndoBrushButton () .get_active () << std::endl;
+
 		if (getUndoBrushButton () .get_active ())
 		{
 			getBrowserWindow () -> getSelection () -> setEnabled (true);

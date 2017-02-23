@@ -85,15 +85,15 @@ private:
 
 	virtual
 	void
+	initialize () final override;
+
+	virtual
+	void
 	configure () final override;
 	
 	virtual
 	void
 	store () final override;
-
-	virtual
-	void
-	initialize () final override;
 
 	void
 	loadStyles ();

@@ -62,14 +62,14 @@ X3DWorldInfoEditor::X3DWorldInfoEditor () :
 { }
 
 void
+X3DWorldInfoEditor::initialize ()
+{ }
+
+void
 X3DWorldInfoEditor::configure ()
 {
 	getCurrentScene () .addInterest (&X3DWorldInfoEditor::set_current_scene, this);
-}
 
-void
-X3DWorldInfoEditor::initialize ()
-{
 	set_current_scene ();
 }
 

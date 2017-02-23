@@ -140,12 +140,6 @@ TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindo
 }
 
 void
-TextureMappingEditor::configure ()
-{
-	getSnapCenterButton () .set_active (getConfig () -> getBoolean ("snapCenter"));
-}
-
-void
 TextureMappingEditor::initialize ()
 {
 	X3DTextureMappingEditorInterface::initialize ();
@@ -166,6 +160,12 @@ TextureMappingEditor::initialize ()
 	rightSelection -> setup ();
 
 	undoHistory .addInterest (&TextureMappingEditor::set_undoHistory, this);
+}
+
+void
+TextureMappingEditor::configure ()
+{
+	getSnapCenterButton () .set_active (getConfig () -> getBoolean ("snapCenter"));
 }
 
 void

@@ -71,16 +71,6 @@ TextureEditor::TextureEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-TextureEditor::configure ()
-{
-	X3DTextureEditorInterface::configure ();
-	X3DTextureNodeEditor::configure ();
-	X3DTextureTransformNodeEditor::configure ();
-
-	getTextureChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-}
-
-void
 TextureEditor::initialize ()
 {
 	X3DTextureEditorInterface::initialize ();
@@ -89,6 +79,16 @@ TextureEditor::initialize ()
 	X3DTextureCoordinateGeneratorEditor::initialize ();
 	X3DTexturePaletteEditor::initialize ();
 	X3DUsedTexturesEditor::initialize ();
+}
+
+void
+TextureEditor::configure ()
+{
+	X3DTextureEditorInterface::configure ();
+	X3DTextureNodeEditor::configure ();
+	X3DTextureTransformNodeEditor::configure ();
+
+	getTextureChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
 
 void

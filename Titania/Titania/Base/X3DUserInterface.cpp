@@ -126,7 +126,9 @@ X3DUserInterface::setName (const std::string & value)
 	X3DBaseInterface::setName (value);
 
 	config .reset (new Configuration (value));
-	configure ();
+
+	if (getWidget () .get_mapped ())
+		configure ();
 }
 
 void
@@ -140,20 +142,20 @@ X3DUserInterface::on_constructed ()
 	getWidget () .signal_map ()   .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 	getWidget () .signal_unmap () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_unmap));
 
-	on_map ();
+	connectFocusEvent (getWidget ());
+
+ 	if (isFullscreen ())
+	   getWindow () .fullscreen ();
+
+	set_fullscreen (isFullscreen ());
 
 	#ifdef TITANIA_DEBUG
 	std::clog << "Initializing widget: " << getWidgetName () << std::endl;
 	#endif
 
-   connectFocusEvent (getWidget ());
-
 	initialize ();
 
-	if (isFullscreen ())
-	   getWindow () .fullscreen ();
-
-	 set_fullscreen (isFullscreen ());
+	on_map ();
 }
 
 void

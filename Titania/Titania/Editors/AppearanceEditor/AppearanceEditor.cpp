@@ -84,6 +84,17 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+AppearanceEditor::initialize ()
+{
+	X3DAppearanceEditorInterface::initialize ();
+	X3DMaterialEditor::initialize ();
+	X3DFillPropertiesEditor::initialize ();
+	X3DLinePropertiesEditor::initialize ();
+	X3DUsedMaterialsEditor::initialize ();
+	X3DMaterialPaletteEditor::initialize ();
+}
+
+void
 AppearanceEditor::configure ()
 {
 	X3DAppearanceEditorInterface::configure ();
@@ -93,17 +104,6 @@ AppearanceEditor::configure ()
 		getPaned () .set_position (getConfig () -> getInteger ("paned"));
 
 	getAppearanceChildNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
-}
-
-void
-AppearanceEditor::initialize ()
-{
-	X3DAppearanceEditorInterface::initialize ();
-	X3DMaterialEditor::initialize ();
-	X3DFillPropertiesEditor::initialize ();
-	X3DLinePropertiesEditor::initialize ();
-	X3DUsedMaterialsEditor::initialize ();
-	X3DMaterialPaletteEditor::initialize ();
 }
 
 void

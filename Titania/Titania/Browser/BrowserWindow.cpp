@@ -154,18 +154,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 }
 
 void
-BrowserWindow::configure ()
-{
-	X3DBrowserWindow::configure ();
-
-	getTransformToolModeAction () -> set_active (getConfig () -> getInteger ("transformToolMode"));
-
-	#ifdef FIXED_PIPELINE
-	getCobwebCompatibilityAction () -> set_active (getConfig () -> getBoolean ("cobwebCompatibility"));
-	#endif
-}
-
-void
 BrowserWindow::store ()
 {
 	getConfig () -> setItem ("transformToolMode", (int32_t) getTransformToolModeAction () -> get_active ());
@@ -204,6 +192,18 @@ BrowserWindow::initialize ()
 	// Window
 	getWindow () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 	getWidget () .grab_focus ();
+}
+
+void
+BrowserWindow::configure ()
+{
+	X3DBrowserWindow::configure ();
+
+	getTransformToolModeAction () -> set_active (getConfig () -> getInteger ("transformToolMode"));
+
+	#ifdef FIXED_PIPELINE
+	getCobwebCompatibilityAction () -> set_active (getConfig () -> getBoolean ("cobwebCompatibility"));
+	#endif
 }
 
 void

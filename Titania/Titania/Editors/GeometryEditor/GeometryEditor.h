@@ -112,11 +112,11 @@ private:
 
 	virtual
 	void
-	configure () final override;
+	initialize () final override;
 
 	virtual
 	void
-	initialize () final override;
+	configure () final override;
 
 	virtual
 	void

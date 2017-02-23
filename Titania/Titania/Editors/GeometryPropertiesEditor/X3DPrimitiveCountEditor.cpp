@@ -78,15 +78,15 @@ X3DPrimitiveCountEditor::X3DPrimitiveCountEditor () :
 }
 
 void
-X3DPrimitiveCountEditor::configure ()
-{
-	getPrimitiveCountCountButton () .set_active (getConfig () -> getInteger ("primitiveCount"));
-}
-
-void
 X3DPrimitiveCountEditor::on_map_primitive_count ()
 {
 	on_primitive_count_count_changed ();
+}
+
+void
+X3DPrimitiveCountEditor::configure ()
+{
+	getPrimitiveCountCountButton () .set_active (getConfig () -> getInteger ("primitiveCount"));
 }
 
 void

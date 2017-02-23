@@ -77,10 +77,6 @@ X3DSculpToolBrushEditor::X3DSculpToolBrushEditor () :
 }
 
 void
-X3DSculpToolBrushEditor::configure ()
-{ }
-
-void
 X3DSculpToolBrushEditor::initialize ()
 {
 	preview -> initialized () .addInterest (&X3DSculpToolBrushEditor::set_initalized, this);
@@ -91,6 +87,10 @@ X3DSculpToolBrushEditor::initialize ()
 
 	getPreviewBox () .pack_start (*preview, true, true, 0);
 }
+
+void
+X3DSculpToolBrushEditor::configure ()
+{ }
 
 void
 X3DSculpToolBrushEditor::set_initalized ()

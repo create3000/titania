@@ -93,17 +93,6 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 }
 
 void
-PrecisionPlacementPanel::configure ()
-{
-	X3DPrecisionPlacementPanelInterface::configure ();
-	X3DTransformEditor::configure ();
-	X3DGeoTransformEditor::configure ();
-	X3DGeometrySelectionEditor::configure ();
-
-	getBBoxUniformSizeButton () .set_active (getConfig () -> getBoolean ("bboxUniformSize"));
-}
-
-void
 PrecisionPlacementPanel::initialize ()
 {
 	X3DPrecisionPlacementPanelInterface::initialize ();
@@ -117,6 +106,17 @@ PrecisionPlacementPanel::initialize ()
 	X3DGeoTransformEditor::initialize ();
 	X3DGeoLocationEditor::initialize ();
 	X3DGeometrySelectionEditor::initialize ();
+}
+
+void
+PrecisionPlacementPanel::configure ()
+{
+	X3DPrecisionPlacementPanelInterface::configure ();
+	X3DTransformEditor::configure ();
+	X3DGeoTransformEditor::configure ();
+	X3DGeometrySelectionEditor::configure ();
+
+	getBBoxUniformSizeButton () .set_active (getConfig () -> getBoolean ("bboxUniformSize"));
 }
 
 void
