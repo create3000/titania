@@ -103,11 +103,16 @@ public:
 	getAltKey () const
 	{ return altKey; }
 
-	bool
-	on_external_key_press_event (GdkEventKey*);
+	///  @name Event handlers
 
 	bool
-	on_external_key_release_event (GdkEventKey*);
+	on_external_focus_out_event (GdkEventFocus* event);
+
+	bool
+	on_external_key_press_event (GdkEventKey* event);
+
+	bool
+	on_external_key_release_event (GdkEventKey* event);
 
 	///  @name Destruction
 
@@ -130,6 +135,11 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	on_external_key_event ();
 
 	///  @name Members
 

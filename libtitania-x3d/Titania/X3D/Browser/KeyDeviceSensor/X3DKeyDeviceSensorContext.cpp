@@ -98,18 +98,21 @@ X3DKeyDeviceSensorContext::setAltKey (const bool value)
 }
 
 bool
+X3DKeyDeviceSensorContext::on_external_focus_out_event (GdkEventFocus* event)
+{
+	externalKeys .clear ();
+
+	on_external_key_event ();
+
+	return false;
+}
+
+bool
 X3DKeyDeviceSensorContext::on_external_key_press_event (GdkEventKey* event)
 {
 	externalKeys .press (event);
 
-	if ((internalControlKey or externalKeys .control ()) not_eq controlKey)
-		controlKey = internalControlKey or externalKeys .control ();
-
-	if ((internalShiftKey or externalKeys .shift ()) not_eq shiftKey)
-		shiftKey = internalShiftKey or externalKeys .shift ();
-
-	if ((internalAltKey or externalKeys .alt ()) not_eq altKey)
-		altKey = internalAltKey or externalKeys .alt ();
+	on_external_key_event ();
 
 	return false;
 }
@@ -119,6 +122,14 @@ X3DKeyDeviceSensorContext::on_external_key_release_event (GdkEventKey* event)
 {
 	externalKeys .release (event);
 
+	on_external_key_event ();
+
+	return false;
+}
+
+void
+X3DKeyDeviceSensorContext::on_external_key_event ()
+{
 	if ((internalControlKey or externalKeys .control ()) not_eq controlKey)
 		controlKey = internalControlKey or externalKeys .control ();
 	
@@ -127,8 +138,6 @@ X3DKeyDeviceSensorContext::on_external_key_release_event (GdkEventKey* event)
 	
 	if ((internalAltKey or externalKeys .alt ()) not_eq altKey)
 		altKey = internalAltKey or externalKeys .alt ();
-
-	return false;
 }
 
 // Key device

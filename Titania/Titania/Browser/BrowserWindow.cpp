@@ -538,9 +538,12 @@ BrowserWindow::on_style_updated ()
 // Keys
 
 bool
-BrowserWindow::on_focus_out_event (GdkEventFocus*)
+BrowserWindow::on_focus_out_event (GdkEventFocus* event)
 {
 	getKeys () .clear ();
+
+	if (getCurrentBrowser () -> on_external_focus_out_event (event))
+		return false;
 
 	return false;
 }

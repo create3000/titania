@@ -83,7 +83,7 @@ PointingDevice::initialize ()
 	X3DBrowserObject::initialize ();
 
 	getBrowser () -> initialized () .addInterest (&PointingDevice::set_initialized, this);
-	getBrowser () -> getPickable ()  .addInterest (&PointingDevice::set_pickable, this);
+	getBrowser () -> getPickable () .addInterest (&PointingDevice::set_pickable, this);
 
 	set_pickable ();
 }
