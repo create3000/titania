@@ -72,7 +72,7 @@ public:
 	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ getNode <Cylinder> () -> setExecutionContext (executionContext); }
+	{ X3DGeometryNodeTool::setExecutionContext (executionContext); }
 
 	///  @name Fields
 

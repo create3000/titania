@@ -52,6 +52,8 @@
 
 #include "TransformToolOptions.h"
 
+#include "../../Tools/Grouping/TransformTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -59,9 +61,10 @@ X3DToolContext::X3DToolContext () :
 	         X3DBaseNode (),
 	        displayTools ({ true }),
 	transformToolOptions (new TransformToolOptions (getExecutionContext ())),
+	      transformTools (),
 	             cutLine ()
 {
-	addChildObjects (transformToolOptions);
+	addChildObjects (transformToolOptions, transformTools);
 }
 
 void

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,22 +48,17 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_MFNODE_H__
-#define __TITANIA_X3D_FIELDS_MFNODE_H__
+#ifndef __TITANIA_X3D_FIELDS_X3DWEAK_PTR_ARRAY_H__
+#define __TITANIA_X3D_FIELDS_X3DWEAK_PTR_ARRAY_H__
 
-#include "../Fields/SFNode.h"
-#include "../Fields/X3DPtrArray.h"
-
-extern template class std::vector <titania::X3D::SFNode*>;
+#include "X3DBasePtrArray.h"
+#include "X3DWeakPtr.h"
 
 namespace titania {
 namespace X3D {
 
-using MFNode = X3DPtrArray <X3DBaseNode>;
-
-extern template class X3DField <Array <SFNode>>;
-extern template class X3DArrayField <SFNode>;
-extern template class X3DBasePtrArray <X3DPtr <X3DBaseNode>>;
+template <class ValueType>
+using X3DWeakPtrArray = X3DBasePtrArray <X3DWeakPtr <ValueType>>;
 
 } // X3D
 } // titania

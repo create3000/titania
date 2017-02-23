@@ -48,24 +48,49 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_MFNODE_H__
-#define __TITANIA_X3D_FIELDS_MFNODE_H__
+#include "TransformTool.h"
 
-#include "../Fields/SFNode.h"
-#include "../Fields/X3DPtrArray.h"
-
-extern template class std::vector <titania::X3D::SFNode*>;
+#include "../../Execution/X3DExecutionContext.h"
 
 namespace titania {
 namespace X3D {
 
-using MFNode = X3DPtrArray <X3DBaseNode>;
+TransformTool::TransformTool (Transform* const node) :
+	         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	           Transform (node -> getExecutionContext ()),
+	         X3DBaseTool (node),
+	X3DTransformNodeTool ()
+{
+	addType (X3DConstants::TransformTool);
+}
 
-extern template class X3DField <Array <SFNode>>;
-extern template class X3DArrayField <SFNode>;
-extern template class X3DBasePtrArray <X3DPtr <X3DBaseNode>>;
+void
+TransformTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getTransformTools () .remove (this);
+
+	X3DTransformNodeTool::setExecutionContext (executionContext);
+
+	getBrowser () -> getTransformTools () .emplace_back (this);
+}
+
+void
+TransformTool::initialize ()
+{
+	X3DTransformNodeTool::initialize ();
+
+	getBrowser () -> getTransformTools () .emplace_back (this);
+}
+
+void
+TransformTool::dispose ()
+{
+	getBrowser () -> getTransformTools () .remove (this);
+
+	X3DTransformNodeTool::dispose ();
+}
 
 } // X3D
 } // titania
-
-#endif

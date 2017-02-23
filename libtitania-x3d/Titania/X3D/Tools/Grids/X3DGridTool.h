@@ -53,6 +53,8 @@
 
 #include "../Layering/X3DActiveLayerTool.h"
 
+#include "../../Fields/X3DWeakPtrArray.h"
+
 namespace titania {
 namespace X3D {
 
@@ -220,37 +222,34 @@ private:
 	set_majorLineColor ();
 
 	void
-	set_selection (const SelectionPtr &);
+	set_transform_tools (const X3DWeakPtrArray <TransformTool> & value);
 
 	void
-	set_nodes (const MFNode &);
+	set_translation (const X3DWeakPtr <TransformTool> & master);
 
 	void
-	set_translation (const X3DPtr <X3DTransformNode> &);
+	set_rotation (const X3DWeakPtr <TransformTool> & master);
 
 	void
-	set_rotation (const X3DPtr <X3DTransformNode> &);
-
-	void
-	set_scale (const X3DPtr <X3DTransformNode> &);
+	set_scale (const X3DWeakPtr <TransformTool> & master);
 
 	Matrix4d
-	getScaleMatrix (const X3DPtr <X3DTransformNode> &, const size_t);
+	getScaleMatrix (const X3DWeakPtr <TransformTool> & master, const size_t);
 
 	Matrix4d
-	getUniformScaleMatrix (const X3DPtr <X3DTransformNode> &, const size_t);
+	getUniformScaleMatrix (const X3DWeakPtr <TransformTool> & master, const size_t);
 
 	Matrix4d
 	getOffset (const Box3d &, const Matrix4d, const Vector3d &) const;
 
 	void
-	connectTranslation (const X3DPtr <X3DTransformNode> &);
+	connectTranslation (const X3DWeakPtr <TransformTool> & tool);
 
 	void
-	connectRotation (const X3DPtr <X3DTransformNode> &);
+	connectRotation (const X3DWeakPtr <TransformTool> & tool);
 
 	void
-	connectScale (const X3DPtr <X3DTransformNode> &);
+	connectScale (const X3DWeakPtr <TransformTool> & tool);
 
 	///  @name Members
 
@@ -275,8 +274,7 @@ private:
 
 	Fields fields;
 	
-	SelectionPtr selection;
-	MFNode       nodes;
+	X3DWeakPtrArray <TransformTool> tools;
 
 };
 

@@ -166,7 +166,6 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		transformTool -> getField <SFBool> ("isActive")  .addInterest (&X3DIndexedFaceSetTransformObject::set_transform_active, this);
 		transformTool -> getField <SFBool> ("isActive")  .addInterest (isActive ());
 		transformTool -> getField <SFTime> ("touchTime") .addInterest (touchTime ());
-		transformTool -> setField <SFBool> ("bbox", false);
 
 		selectionCoord -> getField <MFVec3d> ("point") .addInterest (&X3DIndexedFaceSetTransformObject::set_selection, this);
 

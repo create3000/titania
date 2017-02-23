@@ -61,6 +61,9 @@ template <class ValueType>
 class X3DPtr;
 
 template <class ValueType>
+class X3DBasePtrArray;
+
+template <class ValueType>
 class X3DWeakPtr :
 	public X3DField <ValueType*>,
 	public X3DPtrBase
@@ -90,16 +93,6 @@ public:
 		X3DWeakPtr (other .getValue ())
 	{ }
 
-	///  @name Construction
-
-	///  Assigns the X3DPtr and propagates an event.
-	X3DWeakPtr &
-	operator = (const X3DPtrBase & other)
-	{
-		setValue (dynamic_cast <ValueType*> (other .getObject ()));
-		return *this;
-	}
-
 	///  @name Field services
 
 	virtual
@@ -113,12 +106,37 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return typeName; }
 
-	///  @name Boolean operator
+	///  @name Observers
+
+	ValueType*
+	operator -> () const
+	throw (Error <DISPOSED>)
+	{
+	   const auto value = getValue ();
+
+	   if (value)
+			return value;
+
+		//__LOG__ << "X3DPtr::operator -> ()\n\n" << std::endl;
+		//backtrace ();
+
+		throw Error <DISPOSED> ("X3DPtr::operator -> ()\n\n" + backtrace_symbols ());
+	}
+
+	ValueType &
+	operator * () const
+	throw (Error <DISPOSED>)
+	{
+	   const auto value = getValue ();
+
+	   if (value)
+			return *value;
+
+		throw Error <DISPOSED> ("X3DPtr::operator * ()\n\n" + backtrace_symbols ());
+	}
 
 	operator bool () const
-	{ return getValue () and getValue () -> getReferenceCount (); }
-
-	///  @name Observers
+	{ return getValue (); }
 
 	X3DPtr <ValueType>
 	getLock () const
@@ -154,6 +172,33 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	template <class Up>
+	friend class X3DPtr;
+
+	template <class Up>
+	friend class X3DWeakPtr;
+
+	friend class X3DBasePtrArray <X3DWeakPtr <ValueType>>;
+
+	friend class X3DArrayField <X3DWeakPtr <ValueType>>;
+
+	///  @name Construction
+
+	///  Constructs new X3DWeakPtr.
+	explicit
+	X3DWeakPtr (ValueType* const value) :
+		X3DField <ValueType*> (value)
+	{ addObject (value); }
+
+	///  Constructs new X3DWeakPtr.
+	template <class Up>
+	explicit
+	X3DWeakPtr (Up* const value) :
+		X3DWeakPtr (dynamic_cast <ValueType*> (value))
+	{ }
+
 	///  @name X3DChildObject
 
 	virtual
@@ -164,25 +209,18 @@ protected:
 		return false;
 	}
 
+	void
+	toJSONStreamValue (std::ostream &) const
+	{ }
+
 
 private:
-
-	template <class Up>
-	friend class X3DPtr;
-
-	template <class Up>
-	friend class X3DWeakPtr;
 
 	using X3DField <ValueType*>::getValue;
 	using X3DField <ValueType*>::equals;
 	using X3DField <ValueType*>::operator const internal_type &;
 
 	///  @name Construction
-
-	explicit
-	X3DWeakPtr (ValueType* const value) :
-		X3DField <ValueType*> (value)
-	{ addObject (value); }
 
 	virtual
 	X3DWeakPtr*
@@ -315,64 +353,88 @@ const std::string X3DWeakPtr <ValueType>::typeName ("SFNode");
 ///  @relates X3DWeakPtr
 ///  @name Comparision operations
 
-///  NOT_SUPPORTED
-template <class ValueType>
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs is equal to @a rhs.
+template <class LHS, class RHS>
 inline
 bool
-operator == (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
-throw (Error <NOT_SUPPORTED>)
+operator == (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
+throw (Error <DISPOSED>)
 {
-	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator ==: not supported!");
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a == b;
 }
 
-///  NOT_SUPPORTED
-template <class ValueType>
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs is not equal to @a rhs.
+template <class LHS, class RHS>
 inline
 bool
-operator not_eq (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
-throw (Error <NOT_SUPPORTED>)
+operator not_eq (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
+throw (Error <DISPOSED>)
 {
-	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator not_eq: not supported!");
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a not_eq b;
 }
 
-///  NOT_SUPPORTED
-template <class ValueType>
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs less than @a rhs.
+template <class LHS, class RHS>
 inline
 bool
-operator < (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
-throw (Error <NOT_SUPPORTED>)
+operator < (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
+throw (Error <DISPOSED>)
 {
-	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator <: not supported!");
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a < b;
 }
 
-///  NOT_SUPPORTED
-template <class ValueType>
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs less than equal to @a rhs.
+template <class LHS, class RHS>
 inline
 bool
-operator <= (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
-throw (Error <NOT_SUPPORTED>)
+operator <= (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
+throw (Error <DISPOSED>)
 {
-	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator <=: not supported!");
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a <= b;
 }
 
-///  NOT_SUPPORTED
-template <class ValueType>
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs greater than @a rhs.
+template <class LHS, class RHS>
 inline
 bool
-operator > (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
-throw (Error <NOT_SUPPORTED>)
+operator > (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
+throw (Error <DISPOSED>)
 {
-	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator >: not supported!");
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a > b;
 }
 
-///  NOT_SUPPORTED
-template <class ValueType>
+///  Compares two X3DWeakPtr.
+///  Returns true if @a lhs greater than equal to @a rhs.
+template <class LHS, class RHS>
 inline
 bool
-operator >= (const X3DWeakPtr <ValueType> & lhs, const X3DWeakPtr <ValueType> & rhs)
-throw (Error <NOT_SUPPORTED>)
+operator >= (const X3DWeakPtr <LHS> & lhs, const X3DWeakPtr <RHS> & rhs)
+throw (Error <DISPOSED>)
 {
-	throw Error <NOT_SUPPORTED> ("X3DWeakPtr::operator >=: not supported!");
+	const size_t a = lhs ? lhs -> getId () : 0;
+	const size_t b = rhs ? rhs -> getId () : 0;
+
+	return a >= b;
 }
 
 } // X3D

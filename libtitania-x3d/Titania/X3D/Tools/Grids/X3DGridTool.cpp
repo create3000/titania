@@ -52,7 +52,8 @@
 
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Grouping/X3DTransformNode.h"
+
+#include "../Grouping/TransformTool.h"
 
 namespace titania {
 namespace X3D {
@@ -76,12 +77,11 @@ X3DGridTool::Fields::Fields () :
 X3DGridTool::X3DGridTool () :
 	X3DActiveLayerTool (),
 	            fields (),
-	         selection (),
-	             nodes ()
+	             tools ()
 {
 	addType (X3DConstants::X3DGridTool);
 
-	addChildObjects (selection, nodes);
+	addChildObjects (tools);
 
 	translation ()  .setUnit (UnitCategory::LENGTH);
 	snapDistance () .setUnit (UnitCategory::LENGTH);
@@ -92,7 +92,9 @@ X3DGridTool::initialize ()
 {
 	X3DActiveLayerTool::initialize ();
 
-	set_selection (getBrowser () -> getSelection ());
+	getBrowser () -> getTransformTools () .addInterest (&X3DGridTool::set_transform_tools, this);
+
+	set_transform_tools (getBrowser () -> getTransformTools ());
 }
 
 void
@@ -100,9 +102,13 @@ X3DGridTool::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	getBrowser () -> getTransformTools () .removeInterest (&X3DGridTool::set_transform_tools, this);
+
 	X3DActiveLayerTool::setExecutionContext (executionContext);
 
-	set_selection (getBrowser () -> getSelection ());
+	getBrowser () -> getTransformTools () .addInterest (&X3DGridTool::set_transform_tools, this);
+
+	set_transform_tools (getBrowser () -> getTransformTools ());
 }
 
 void
@@ -194,49 +200,37 @@ X3DGridTool::set_majorLineColor ()
 // Snaping
 
 void
-X3DGridTool::set_selection (const SelectionPtr & value)
+X3DGridTool::set_transform_tools (const X3DWeakPtrArray <TransformTool> & value)
 {
-	if (selection)
-		selection -> getNodes () .removeInterest (&X3DGridTool::set_nodes, this);
-
-	selection = value;
-	selection -> getNodes () .addInterest (&X3DGridTool::set_nodes, this);
-
-	set_nodes (selection -> getNodes ());
-}
-
-void
-X3DGridTool::set_nodes (const MFNode & value)
-{
-	for (const auto & node : nodes)
+	for (const auto & tool : tools)
 	{
-		const X3DPtr <X3DTransformNode> transform (node);
-
-		if (transform)
+		try
 		{
-			transform -> translation () .removeInterest (&X3DGridTool::set_translation, this);
-			transform -> rotation ()    .removeInterest (&X3DGridTool::set_rotation, this);
-			transform -> scale ()       .removeInterest (&X3DGridTool::set_scale, this);
+			tool -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+			tool -> rotation ()    .removeInterest (&X3DGridTool::set_rotation,    this);
+			tool -> scale ()       .removeInterest (&X3DGridTool::set_scale,       this);
 		}
+		catch (const Error <DISPOSED> &)
+		{ }
 	}
 
-	nodes = value;
+	tools = value;
 
-	for (const auto & node : nodes)
+	for (const auto & tool : tools)
 	{
-		const X3DPtr <X3DTransformNode> transform (node);
-
-		if (transform)
+		try
 		{
-			transform -> translation () .addInterest (&X3DGridTool::set_translation, this, transform);
-			transform -> rotation ()    .addInterest (&X3DGridTool::set_rotation, this,    transform);
-			transform -> scale ()       .addInterest (&X3DGridTool::set_scale, this,       transform);
+			tool -> translation () .addInterest (&X3DGridTool::set_translation, this, tool);
+			tool -> rotation ()    .addInterest (&X3DGridTool::set_rotation,    this, tool);
+			tool -> scale ()       .addInterest (&X3DGridTool::set_scale,       this, tool);
 		}
+		catch (const Error <DISPOSED> &)
+		{ }
 	}
 }
 
 void
-X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
+X3DGridTool::set_translation (const X3DWeakPtr <TransformTool> & master)
 {
 	try
 	{
@@ -276,8 +270,8 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 		Matrix4d snap;
 		snap .set (getSnapPosition (position * inverse (grid)) * grid - position);
 	
-		const Matrix4d matrix        = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix ();
-		const Matrix4d currentMatrix = absoluteMatrix * snap * inverse (master -> getTransformationMatrix ());
+		const auto matrix        = master -> getMatrix () * master -> getTransformationMatrix ();
+		const auto currentMatrix = absoluteMatrix * snap * inverse (master -> getTransformationMatrix ());
 	
 		if (master -> getKeepCenter ())
 			master -> setMatrixKeepCenter (currentMatrix);
@@ -291,26 +285,21 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 	
 		// Apply translation to translation group.
 	
-		const Matrix4d differenceMatrix = inverse (matrix) * (absoluteMatrix * snap);
+		const auto differenceMatrix = inverse (matrix) * (absoluteMatrix * snap);
 	
-		for (const auto & node : nodes)
+		for (const auto & tool : getBrowser () -> getTransformTools ())
 		{
-			if (node == master)
-				continue;
-	
 			try
 			{
-				const X3DPtr <X3DTransformNode> transform (node);
-	
-				if (transform)
+				if (tool == master)
+					continue;
+		
+				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
+
+				if (tool -> translation () .getTainted ())
 				{
-					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
-	
-					if (transform -> translation () .getTainted ())
-					{
-						transform -> translation () .removeInterest (&X3DGridTool::set_translation, this);
-						transform -> translation () .addInterest (&X3DGridTool::connectTranslation, this, transform);
-					}
+					tool -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+					tool -> translation () .addInterest (&X3DGridTool::connectTranslation, this, tool);
 				}
 			}
 			catch (const std::exception &)
@@ -322,7 +311,7 @@ X3DGridTool::set_translation (const X3DPtr <X3DTransformNode> & master)
 }
 
 void
-X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
+X3DGridTool::set_rotation (const X3DWeakPtr <TransformTool> & master)
 {
 	try
 	{
@@ -415,26 +404,21 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 	
 		// Apply translation to translation group.
 	
-		const Matrix4d differenceMatrix = inverse (matrixBefore) * currentMatrix * master -> getTransformationMatrix ();
+		const auto differenceMatrix = inverse (matrixBefore) * currentMatrix * master -> getTransformationMatrix ();
 	
-		for (const auto & node : nodes)
+		for (const auto & tool : getBrowser () -> getTransformTools ())
 		{
-			if (node == master)
-				continue;
-	
 			try
 			{
-				const X3DPtr <X3DTransformNode> transform (node);
+				if (tool == master)
+					continue;
 	
-				if (transform)
+				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
+
+				if (tool -> translation () .getTainted ())
 				{
-					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
-	
-					if (transform -> translation () .getTainted ())
-					{
-						transform -> translation () .removeInterest (&X3DGridTool::set_translation, this);
-						transform -> translation () .addInterest (&X3DGridTool::connectTranslation, this, transform);
-					}
+					tool -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+					tool -> translation () .addInterest (&X3DGridTool::connectTranslation, this, tool);
 				}
 			}
 			catch (const std::exception &)
@@ -446,7 +430,7 @@ X3DGridTool::set_rotation (const X3DPtr <X3DTransformNode> & master)
 }
 
 void
-X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
+X3DGridTool::set_scale (const X3DWeakPtr <TransformTool> & master)
 {
 	try
 	{
@@ -456,7 +440,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 		if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 	
-		const auto tool = uint32_t (master -> getActiveTool ()) - uint32_t (ToolType::SCALE_TOOL);
+		const auto tool = int32_t (master -> getActiveTool ()) - int32_t (ToolType::SCALE_TOOL);
 
 		if (tool < 0)
 			return;
@@ -478,26 +462,21 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 	
 		// Apply translation to translation group.
 	
-		const Matrix4d differenceMatrix = inverse (matrix) * currentMatrix * master -> getTransformationMatrix ();
+		const auto differenceMatrix = inverse (matrix) * currentMatrix * master -> getTransformationMatrix ();
 	
-		for (const auto & node : nodes)
+		for (const auto & tool : getBrowser () -> getTransformTools ())
 		{
-			if (node == master)
-				continue;
-	
 			try
 			{
-				const X3DPtr <X3DTransformNode> transform (node);
-	
-				if (transform)
+				if (tool == master)
+					continue;
+
+				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
+
+				if (tool -> scale () .getTainted ())
 				{
-					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
-	
-					if (transform -> scale () .getTainted ())
-					{
-						transform -> scale () .removeInterest (&X3DGridTool::set_scale, this);
-						transform -> scale () .addInterest (&X3DGridTool::connectScale, this, transform);
-					}
+					tool -> scale () .removeInterest (&X3DGridTool::set_scale, this);
+					tool -> scale () .addInterest (&X3DGridTool::connectScale, this, tool);
 				}
 			}
 			catch (const std::exception &)
@@ -509,7 +488,7 @@ X3DGridTool::set_scale (const X3DPtr <X3DTransformNode> & master)
 }
 
 Matrix4d
-X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const size_t tool)
+X3DGridTool::getScaleMatrix (const X3DWeakPtr <TransformTool> & master, const size_t tool)
 {
 	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 
@@ -572,7 +551,7 @@ X3DGridTool::getScaleMatrix (const X3DPtr <X3DTransformNode> & master, const siz
 }
 
 Matrix4d
-X3DGridTool::getUniformScaleMatrix (const X3DPtr <X3DTransformNode> & master, const size_t tool)
+X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <TransformTool> & master, const size_t tool)
 {
 	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 
@@ -668,24 +647,39 @@ X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const V
 }
 
 void
-X3DGridTool::connectTranslation (const X3DPtr <X3DTransformNode> & transform)
+X3DGridTool::connectTranslation (const X3DWeakPtr <TransformTool> & tool)
 {
-	transform -> translation () .removeInterest (&X3DGridTool::connectTranslation, this);
-	transform -> translation () .addInterest (&X3DGridTool::set_translation, this, transform);
+	try
+	{
+		tool -> translation () .removeInterest (&X3DGridTool::connectTranslation, this);
+		tool -> translation () .addInterest (&X3DGridTool::set_translation, this, tool);
+	}
+	catch (const Error <DISPOSED> &)
+	{ }
 }
 
 void
-X3DGridTool::connectRotation (const X3DPtr <X3DTransformNode> & transform)
+X3DGridTool::connectRotation (const X3DWeakPtr <TransformTool> & tool)
 {
-	transform -> rotation () .removeInterest (&X3DGridTool::connectRotation, this);
-	transform -> rotation () .addInterest (&X3DGridTool::set_rotation, this, transform);
+	try
+	{
+		tool -> rotation () .removeInterest (&X3DGridTool::connectRotation, this);
+		tool -> rotation () .addInterest (&X3DGridTool::set_rotation, this, tool);
+	}
+	catch (const Error <DISPOSED> &)
+	{ }
 }
 
 void
-X3DGridTool::connectScale (const X3DPtr <X3DTransformNode> & transform)
+X3DGridTool::connectScale (const X3DWeakPtr <TransformTool> & tool)
 {
-	transform -> scale () .removeInterest (&X3DGridTool::connectScale, this);
-	transform -> scale () .addInterest (&X3DGridTool::set_scale, this, transform);
+	try
+	{
+		tool -> scale () .removeInterest (&X3DGridTool::connectScale, this);
+		tool -> scale () .addInterest (&X3DGridTool::set_scale, this, tool);
+	}
+	catch (const Error <DISPOSED> &)
+	{ }
 }
 
 X3DGridTool::~X3DGridTool ()

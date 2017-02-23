@@ -78,6 +78,8 @@
 #include <iostream>
 #include <limits>
 
+#include "../Fields/X3DWeakPtrArray.h"
+
 namespace titania {
 namespace X3D {
 

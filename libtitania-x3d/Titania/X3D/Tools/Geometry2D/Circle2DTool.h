@@ -72,7 +72,7 @@ public:
 	setExecutionContext (X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>) final override
-	{ getNode <Circle2D> () -> setExecutionContext (executionContext); }
+	{ X3DLineGeometryNodeTool::setExecutionContext (executionContext); }
 
 	///  @name Fields
 

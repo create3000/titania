@@ -53,6 +53,7 @@
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Fields/X3DPtr.h"
+#include "../../Fields/X3DWeakPtrArray.h"
 #include "../../Types/Geometry.h"
 
 #include <stack>
@@ -82,6 +83,14 @@ public:
 	const X3DPtr <TransformToolOptions> &
 	getTransformToolOptions () const
 	{ return transformToolOptions; }
+
+	X3DWeakPtrArray <TransformTool> &
+	getTransformTools ()
+	{ return transformTools; }
+
+	const X3DWeakPtrArray <TransformTool> &
+	getTransformTools () const
+	{ return transformTools; }
 
 	void
 	setCutLine (const Line2d & value)
@@ -114,9 +123,10 @@ protected:
 
 private:
 
-	RenderToolsStack              displayTools;
-	X3DPtr <TransformToolOptions> transformToolOptions;
-	Line2d                        cutLine;
+	RenderToolsStack                displayTools;
+	X3DPtr <TransformToolOptions>   transformToolOptions;
+	X3DWeakPtrArray <TransformTool> transformTools;
+	Line2d                          cutLine;
 
 };
 
