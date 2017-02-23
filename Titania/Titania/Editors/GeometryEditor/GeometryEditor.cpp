@@ -191,11 +191,9 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 {
 	X3DGeometryEditorInterface::set_selection (selection);
 
-	if (selection .empty  ())
-		getHammerButton () .set_sensitive (false);
+	const auto shapeNodes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
-	else
-		getHammerButton () .set_sensitive (not inPrototypeInstance ());
+	getHammerButton () .set_sensitive (not inPrototypeInstance () and not shapeNodes .empty ());
 
 	connect ();
 }
@@ -863,9 +861,7 @@ GeometryEditor::on_edit_toggled ()
 	getGeometryToolsBox () .set_sensitive (getEditToggleButton () .get_active ());
 
 	if (getEditToggleButton () .get_active ())
-	{
-		set_selector (selector);
-	}
+		;
 	else
 	{
 		// Activate hand or arrow button.

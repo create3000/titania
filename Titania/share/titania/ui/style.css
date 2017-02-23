@@ -37,6 +37,15 @@ expander > title > label {
 	font-size: 114%;
 }
 
+expander > title {
+	border-left: 1px solid rgb(50%, 50%, 50%);
+	border-top: 1px solid rgb(50%, 50%, 50%);
+	border-right: 1px solid rgb(10%, 10%, 10%);
+	border-bottom: 1px solid rgb(10%, 10%, 10%);
+	padding: 0px 8px;
+	margin: 8px 0px;
+}
+
 /* Surface */
 
 .titania-surface {

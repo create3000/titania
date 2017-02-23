@@ -236,7 +236,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNode> & master)
 		if (not enabled ())
 			return;
 
-		if (getBrowser () -> getControlKey () or getBrowser () -> getShiftKey ())
+		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 
 		if (master -> getActiveTool () not_eq ToolType::MOVE_TOOL)
@@ -317,7 +317,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNode> & master)
 		if (not enabled ())
 			return;
 
-		if (getBrowser () -> getControlKey () or getBrowser () -> getShiftKey ())
+		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 
 		if (master -> getActiveTool () not_eq ToolType::ROTATE_TOOL)
@@ -436,7 +436,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNode> & master)
 		if (not enabled ())
 			return;
 
-		if (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
+		if ((not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()) or (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()))
 			return;
 	
 		const auto tool = int32_t (master -> getActiveTool ()) - int32_t (ToolType::SCALE_TOOL);

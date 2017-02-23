@@ -625,7 +625,7 @@
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
         <child>
-          <object class="GtkHeaderBar">
+          <object class="GtkHeaderBar" id="HeaderBar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="title">Precision Placement Panel</property>
@@ -678,6 +678,7 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">start</property>
                     <property name="margin_left">8</property>
                     <property name="margin_right">8</property>
                     <property name="margin_top">8</property>
@@ -753,7 +754,7 @@
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">True</property>
+                        <property name="fill">False</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -761,6 +762,7 @@
                       <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="halign">start</property>
                         <child>
                           <object class="GtkStack" id="Stack">
                             <property name="visible">True</property>
@@ -3728,8 +3730,8 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -3957,153 +3959,6 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkBox" id="GeometrySelectionRBox">
-                                <property name="visible">True</property>
-                                <property name="sensitive">False</property>
-                                <property name="can_focus">False</property>
-                                <property name="orientation">vertical</property>
-                                <child>
-                                  <object class="GtkBox" id="GeometrySelectionRotationBox">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="halign">start</property>
-                                    <property name="spacing">8</property>
-                                    <child>
-                                      <object class="GtkViewport" id="viewport6">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <child>
-                                          <object class="GtkBox" id="GeometrySelectionRotationToolBox">
-                                            <property name="width_request">96</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="orientation">vertical</property>
-                                            <child>
-                                              <placeholder/>
-                                            </child>
-                                          </object>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">True</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkBox" id="box31">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="hexpand">False</property>
-                                        <property name="spacing">2</property>
-                                        <child>
-                                          <object class="GtkBox" id="box37">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="orientation">vertical</property>
-                                            <property name="spacing">2</property>
-                                            <child>
-                                              <object class="GtkSpinButton" id="GeometrySelectionRotationXButton">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="tooltip_text" translatable="yes">x-Axis</property>
-                                                <property name="text" translatable="yes">0,000</property>
-                                                <property name="adjustment">GeometrySelectionRotationXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
-                                                <property name="digits">3</property>
-                                                <property name="numeric">True</property>
-                                                <signal name="focus-in-event" handler="on_geometry_selection_focus_in_event" swapped="no"/>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">0</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkSpinButton" id="GeometrySelectionRotationYButton">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="tooltip_text" translatable="yes">y-Axis</property>
-                                                <property name="text" translatable="yes">0,000</property>
-                                                <property name="adjustment">GeometrySelectionRotationYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
-                                                <property name="digits">3</property>
-                                                <property name="numeric">True</property>
-                                                <signal name="focus-in-event" handler="on_geometry_selection_focus_in_event" swapped="no"/>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">1</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkSpinButton" id="GeometrySelectionRotationZButton">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="tooltip_text" translatable="yes">z-Axis</property>
-                                                <property name="text" translatable="yes">0,000</property>
-                                                <property name="adjustment">GeometrySelectionRotationZAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
-                                                <property name="digits">3</property>
-                                                <property name="numeric">True</property>
-                                                <signal name="focus-in-event" handler="on_geometry_selection_focus_in_event" swapped="no"/>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">2</property>
-                                              </packing>
-                                            </child>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="GeometrySelectionRotationAButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">Angle</property>
-                                            <property name="valign">end</property>
-                                            <property name="text" translatable="yes">0,000000</property>
-                                            <property name="adjustment">GeometrySelectionRotationAAdjustment</property>
-                                            <property name="climb_rate">0.32000000000000001</property>
-                                            <property name="digits">6</property>
-                                            <property name="numeric">True</property>
-                                            <signal name="focus-in-event" handler="on_geometry_selection_focus_in_event" swapped="no"/>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">True</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="top_attach">1</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkLabel" id="label57">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
@@ -4262,6 +4117,140 @@
                                 <property name="top_attach">6</property>
                               </packing>
                             </child>
+                            <child>
+                              <object class="GtkBox" id="GeometrySelectionRotationBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="halign">start</property>
+                                <property name="spacing">8</property>
+                                <child>
+                                  <object class="GtkViewport" id="viewport6">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <child>
+                                      <object class="GtkBox" id="GeometrySelectionRotationToolBox">
+                                        <property name="width_request">96</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="box31">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="hexpand">False</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkBox" id="box37">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <object class="GtkSpinButton" id="GeometrySelectionRotationXButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">GeometrySelectionRotationXAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">3</property>
+                                            <property name="numeric">True</property>
+                                            <signal name="focus-in-event" handler="on_geometry_selection_focus_in_event" swapped="no"/>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="GeometrySelectionRotationYButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">GeometrySelectionRotationYAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">3</property>
+                                            <property name="numeric">True</property>
+                                            <signal name="focus-in-event" handler="on_geometry_selection_focus_in_event" swapped="no"/>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="GeometrySelectionRotationZButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">z-Axis</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">GeometrySelectionRotationZAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">3</property>
+                                            <property name="numeric">True</property>
+                                            <signal name="focus-in-event" handler="on_geometry_selection_focus_in_event" swapped="no"/>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSpinButton" id="GeometrySelectionRotationAButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="tooltip_text" translatable="yes">Angle</property>
+                                        <property name="valign">end</property>
+                                        <property name="text" translatable="yes">0,000000</property>
+                                        <property name="adjustment">GeometrySelectionRotationAAdjustment</property>
+                                        <property name="climb_rate">0.32000000000000001</property>
+                                        <property name="digits">6</property>
+                                        <property name="numeric">True</property>
+                                        <signal name="focus-in-event" handler="on_geometry_selection_focus_in_event" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">1</property>
+                              </packing>
+                            </child>
                           </object>
                         </child>
                         <child type="label">
@@ -4285,6 +4274,7 @@
                         <property name="can_focus">True</property>
                         <property name="expanded">True</property>
                         <property name="spacing">8</property>
+                        <property name="label_fill">True</property>
                         <child>
                           <object class="GtkGrid" id="BoundingBoxBox">
                             <property name="visible">True</property>

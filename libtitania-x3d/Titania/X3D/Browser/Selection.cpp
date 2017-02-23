@@ -389,6 +389,9 @@ Selection::selectNode ()
 	const auto & nearestHit = getBrowser () -> getNearestHit ();
 	const auto   node       = getTransform (nearestHit -> hierarchy);
 
+	if (not nearestHit -> sensors .empty ())
+		return false;
+
 	// Select node or remove from selection.
 
 	if (node)

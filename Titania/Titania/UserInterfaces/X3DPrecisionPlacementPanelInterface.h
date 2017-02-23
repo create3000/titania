@@ -451,6 +451,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Button &
 	getIndexButton () const
 	{ return *m_IndexButton; }
@@ -907,9 +911,21 @@ public:
 	getGeometrySelectionUniformScaleImage () const
 	{ return *m_GeometrySelectionUniformScaleImage; }
 
-	Gtk::Box &
-	getGeometrySelectionRBox () const
-	{ return *m_GeometrySelectionRBox; }
+	Gtk::Label &
+	getSelectedPointsLabel () const
+	{ return *m_SelectedPointsLabel; }
+
+	Gtk::Label &
+	getSelectedEdgesLabel () const
+	{ return *m_SelectedEdgesLabel; }
+
+	Gtk::Label &
+	getSelectedHolesLabel () const
+	{ return *m_SelectedHolesLabel; }
+
+	Gtk::Label &
+	getSelectedFacesLabel () const
+	{ return *m_SelectedFacesLabel; }
 
 	Gtk::Box &
 	getGeometrySelectionRotationBox () const
@@ -934,22 +950,6 @@ public:
 	Gtk::SpinButton &
 	getGeometrySelectionRotationAButton () const
 	{ return *m_GeometrySelectionRotationAButton; }
-
-	Gtk::Label &
-	getSelectedPointsLabel () const
-	{ return *m_SelectedPointsLabel; }
-
-	Gtk::Label &
-	getSelectedEdgesLabel () const
-	{ return *m_SelectedEdgesLabel; }
-
-	Gtk::Label &
-	getSelectedHolesLabel () const
-	{ return *m_SelectedHolesLabel; }
-
-	Gtk::Label &
-	getSelectedFacesLabel () const
-	{ return *m_SelectedFacesLabel; }
 
 	Gtk::Expander &
 	getBoundingBoxExpander () const
@@ -1195,6 +1195,7 @@ private:
 	Gtk::Button*                   m_RangeColorButton;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
+	Gtk::HeaderBar*                m_HeaderBar;
 	Gtk::Button*                   m_IndexButton;
 	Gtk::Box*                      m_NameBox;
 	Gtk::Entry*                    m_NameEntry;
@@ -1309,17 +1310,16 @@ private:
 	Gtk::SpinButton*               m_GeometrySelectionScaleZButton;
 	Gtk::ToggleButton*             m_GeometrySelectionUniformScaleButton;
 	Gtk::Image*                    m_GeometrySelectionUniformScaleImage;
-	Gtk::Box*                      m_GeometrySelectionRBox;
+	Gtk::Label*                    m_SelectedPointsLabel;
+	Gtk::Label*                    m_SelectedEdgesLabel;
+	Gtk::Label*                    m_SelectedHolesLabel;
+	Gtk::Label*                    m_SelectedFacesLabel;
 	Gtk::Box*                      m_GeometrySelectionRotationBox;
 	Gtk::Box*                      m_GeometrySelectionRotationToolBox;
 	Gtk::SpinButton*               m_GeometrySelectionRotationXButton;
 	Gtk::SpinButton*               m_GeometrySelectionRotationYButton;
 	Gtk::SpinButton*               m_GeometrySelectionRotationZButton;
 	Gtk::SpinButton*               m_GeometrySelectionRotationAButton;
-	Gtk::Label*                    m_SelectedPointsLabel;
-	Gtk::Label*                    m_SelectedEdgesLabel;
-	Gtk::Label*                    m_SelectedHolesLabel;
-	Gtk::Label*                    m_SelectedFacesLabel;
 	Gtk::Expander*                 m_BoundingBoxExpander;
 	Gtk::Grid*                     m_BoundingBoxBox;
 	Gtk::Box*                      m_BBoxSizeBox;
