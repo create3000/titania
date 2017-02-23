@@ -290,8 +290,8 @@ Grammar::getSupportedFields ()
 
 	std::set <std::string> supportedFields;
 
-	for (const auto & field : X3DSupportedFields .get ())
-		supportedFields .emplace (field -> getTypeName ());
+	for (const auto & field : X3DSupportedFields .getFields ())
+		supportedFields .emplace (field .second -> getTypeName ());
 
 	return supportedFields;
 }

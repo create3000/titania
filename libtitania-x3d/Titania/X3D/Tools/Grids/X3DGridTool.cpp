@@ -52,7 +52,7 @@
 
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Grouping/Transform.h"
+#include "../../Components/Grouping/X3DTransformNode.h"
 
 namespace titania {
 namespace X3D {
@@ -199,7 +199,7 @@ X3DGridTool::set_majorLineColor ()
 // Snaping
 
 void
-X3DGridTool::set_transform_tools (const X3DWeakPtrArray <Transform> & value)
+X3DGridTool::set_transform_tools (const X3DWeakPtrArray <X3DTransformNode> & value)
 {
 	for (const auto & tool : tools)
 	{
@@ -229,7 +229,7 @@ X3DGridTool::set_transform_tools (const X3DWeakPtrArray <Transform> & value)
 }
 
 void
-X3DGridTool::set_translation (const X3DWeakPtr <Transform> & master)
+X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNode> & master)
 {
 	try
 	{
@@ -310,7 +310,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <Transform> & master)
 }
 
 void
-X3DGridTool::set_rotation (const X3DWeakPtr <Transform> & master)
+X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNode> & master)
 {
 	try
 	{
@@ -429,7 +429,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <Transform> & master)
 }
 
 void
-X3DGridTool::set_scale (const X3DWeakPtr <Transform> & master)
+X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNode> & master)
 {
 	try
 	{
@@ -487,7 +487,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <Transform> & master)
 }
 
 Matrix4d
-X3DGridTool::getScaleMatrix (const X3DWeakPtr <Transform> & master, const size_t tool)
+X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNode> & master, const size_t tool)
 {
 	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 
@@ -550,7 +550,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <Transform> & master, const size_t
 }
 
 Matrix4d
-X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <Transform> & master, const size_t tool)
+X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNode> & master, const size_t tool)
 {
 	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 
@@ -646,7 +646,7 @@ X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const V
 }
 
 void
-X3DGridTool::connectTranslation (const X3DWeakPtr <Transform> & tool)
+X3DGridTool::connectTranslation (const X3DWeakPtr <X3DTransformNode> & tool)
 {
 	try
 	{
@@ -658,7 +658,7 @@ X3DGridTool::connectTranslation (const X3DWeakPtr <Transform> & tool)
 }
 
 void
-X3DGridTool::connectRotation (const X3DWeakPtr <Transform> & tool)
+X3DGridTool::connectRotation (const X3DWeakPtr <X3DTransformNode> & tool)
 {
 	try
 	{
@@ -670,7 +670,7 @@ X3DGridTool::connectRotation (const X3DWeakPtr <Transform> & tool)
 }
 
 void
-X3DGridTool::connectScale (const X3DWeakPtr <Transform> & tool)
+X3DGridTool::connectScale (const X3DWeakPtr <X3DTransformNode> & tool)
 {
 	try
 	{

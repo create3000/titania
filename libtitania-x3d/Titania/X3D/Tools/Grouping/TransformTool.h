@@ -66,13 +66,14 @@ public:
 
 	///  @name Construction
 
-	TransformTool (Transform* const node);
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override;
+	TransformTool (Transform* const node) :
+		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+		           Transform (node -> getExecutionContext ()),
+		         X3DBaseTool (node),
+		X3DTransformNodeTool ()
+	{
+		addType (X3DConstants::TransformTool);
+	}
 
 	///  @name Operations
 
@@ -80,19 +81,6 @@ public:
 	void
 	addTool () final override
 	{ X3DTransformNodeTool::addTool (); }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-
-protected:
-
-	virtual
-	void
-	initialize () final override;
 
 };
 

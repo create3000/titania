@@ -64,14 +64,15 @@ public:
 	SupportedFields ();
 
 	void
-	add (X3DFieldDefinition* const);
+	addField (X3DFieldDefinition* const field)
+	throw (Error <INVALID_NAME>);
 
 	const X3DFieldDefinition*
-	get (const std::string &) const
+	getField (const std::string & typeName) const
 	throw (Error <INVALID_NAME>);
 
 	const SupporteFieldArray &
-	get () const;
+	getFields () const;
 
 	void
 	dispose ();

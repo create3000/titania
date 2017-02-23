@@ -52,18 +52,17 @@
 #define __TITANIA_X3D_CONFIGURATION_FIELD_TYPES_ARRAY_H__
 
 #include "../Basic/X3DFieldDefinition.h"
-#include <Titania/Basic/IndexedMultiMap.h>
+#include <map>
 #include <string>
 
 namespace titania {
 namespace X3D {
 
-using SupporteFieldArray = basic::indexed_multimap <std::string, const X3DFieldDefinition*>;
+using SupporteFieldArray = std::map <std::string, const X3DFieldDefinition*>;
 
 } // X3D
-
-extern template class basic::indexed_multimap <std::string, const X3D::X3DFieldDefinition*>;
-
 } // titania
+
+extern template class std::map <std::string, const titania::X3D::X3DFieldDefinition*>;
 
 #endif

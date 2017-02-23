@@ -1610,7 +1610,6 @@
     <Compile Include="Titania\X3D\Tools\Rendering\IndexedLineSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\LineSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\PointSetTool.cpp" />
-    <Compile Include="Titania\X3D\Tools\Grouping\TransformTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

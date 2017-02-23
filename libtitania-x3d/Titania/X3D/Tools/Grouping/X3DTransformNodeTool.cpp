@@ -50,6 +50,8 @@
 
 #include "X3DTransformNodeTool.h"
 
+#include "../../Browser/X3DBrowser.h"
+
 namespace titania {
 namespace X3D {
 
@@ -76,9 +78,23 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 }
 
 void
+X3DTransformNodeTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNode> (this));
+
+	X3DTransformMatrix3DNodeTool::setExecutionContext (executionContext);
+
+	getBrowser () -> getTransformTools () .emplace_back (this);
+}
+
+void
 X3DTransformNodeTool::initialize ()
 {
-	X3DBaseTool::initialize ();
+	X3DChildNodeTool::initialize ();
+
+	getBrowser () -> getTransformTools () .emplace_back (this);
 
 	requestAsyncLoad ({ get_tool ("TransformTool.x3dv") .str () });
 }
@@ -257,6 +273,16 @@ X3DTransformNodeTool::traverse (const TraverseType type, X3DRenderObject* const 
 	X3DToolObject::traverse (type, renderObject);
 
 	renderObject -> getModelViewMatrix () .pop ();
+}
+
+void
+X3DTransformNodeTool::dispose ()
+{
+	__LOG__ << std::endl;
+
+	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNode> (this));
+
+	X3DTransformMatrix3DNodeTool::dispose ();
 }
 
 } // X3D

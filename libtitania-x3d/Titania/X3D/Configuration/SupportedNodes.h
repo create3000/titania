@@ -74,14 +74,15 @@ public:
 	///  @name Operations
 
 	void
-	add (const std::string & typeName, const Function & function);
+	addNode (const std::string & typeName, const Function & function)
+	throw (Error <INVALID_NAME>);
 
 	const X3DBaseNode*
-	get (const std::string & typeName) const
+	getNode (const std::string & typeName) const
 	throw (Error <INVALID_NAME>);
 
 	const BaseNodeArray &
-	get () const;
+	getNodes () const;
 
 	///  @name Destructions
 

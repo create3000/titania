@@ -222,34 +222,34 @@ private:
 	set_majorLineColor ();
 
 	void
-	set_transform_tools (const X3DWeakPtrArray <Transform> & value);
+	set_transform_tools (const X3DWeakPtrArray <X3DTransformNode> & value);
 
 	void
-	set_translation (const X3DWeakPtr <Transform> & master);
+	set_translation (const X3DWeakPtr <X3DTransformNode> & master);
 
 	void
-	set_rotation (const X3DWeakPtr <Transform> & master);
+	set_rotation (const X3DWeakPtr <X3DTransformNode> & master);
 
 	void
-	set_scale (const X3DWeakPtr <Transform> & master);
+	set_scale (const X3DWeakPtr <X3DTransformNode> & master);
 
 	Matrix4d
-	getScaleMatrix (const X3DWeakPtr <Transform> & master, const size_t);
+	getScaleMatrix (const X3DWeakPtr <X3DTransformNode> & master, const size_t);
 
 	Matrix4d
-	getUniformScaleMatrix (const X3DWeakPtr <Transform> & master, const size_t);
+	getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNode> & master, const size_t);
 
 	Matrix4d
 	getOffset (const Box3d &, const Matrix4d, const Vector3d &) const;
 
 	void
-	connectTranslation (const X3DWeakPtr <Transform> & tool);
+	connectTranslation (const X3DWeakPtr <X3DTransformNode> & tool);
 
 	void
-	connectRotation (const X3DWeakPtr <Transform> & tool);
+	connectRotation (const X3DWeakPtr <X3DTransformNode> & tool);
 
 	void
-	connectScale (const X3DWeakPtr <Transform> & tool);
+	connectScale (const X3DWeakPtr <X3DTransformNode> & tool);
 
 	///  @name Members
 
@@ -274,7 +274,7 @@ private:
 
 	Fields fields;
 	
-	X3DWeakPtrArray <Transform> tools;
+	X3DWeakPtrArray <X3DTransformNode> tools;
 
 };
 

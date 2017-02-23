@@ -70,6 +70,14 @@ class X3DTransformNodeTool :
 {
 public:
 
+	///  @name Construction
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Fields
 
 	virtual
@@ -203,6 +211,12 @@ public:
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () override;
 
 
 protected:

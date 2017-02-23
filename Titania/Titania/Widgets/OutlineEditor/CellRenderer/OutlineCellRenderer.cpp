@@ -118,7 +118,17 @@ OutlineCellRenderer::OutlineCellRenderer (X3D::X3DBrowser* const browser, X3DOut
 	// Images
 
 	for (const auto & field : browser -> getSupportedFields ())
-		fieldTypeImages [field -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field -> getTypeName () + ".svg"));
+	{
+		try
+		{
+			fieldTypeImages [field .second -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/" + field .second -> getTypeName () + ".svg"));
+		}
+		catch (const std::exception &)
+		{
+			// TODO: make image.
+			fieldTypeImages [field .second -> getType ()] = Gdk::Pixbuf::create_from_file (get_ui ("icons/FieldType/Unkown.svg"));
+		}
+	}
 
 	accessTypeImages [X3D::initializeOnly] .emplace_back (Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/initializeOnly.png")));
 	accessTypeImages [X3D::inputOnly]      .emplace_back (Gdk::Pixbuf::create_from_file (get_ui ("icons/AccessType/inputOnly.0.png")));

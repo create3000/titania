@@ -2595,6 +2595,7 @@
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsPatchSurface" />
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsTrimmedSurface" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsCurveEditor.h" />
+    <None Include="share\titania\ui\icons\FieldType\Unkown.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

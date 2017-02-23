@@ -160,10 +160,10 @@ private:
 		for (const auto & field : X3D::getBrowser () -> getSupportedFields ())
 		{
 			std::cout
-				<< '[' << field -> getTypeName () << ']' << std::endl
+				<< '[' << field .second -> getTypeName () << ']' << std::endl
 				<< '\t'
 				<< "value" << " = "
-				<< *field
+				<< *field .second
 				<< std::endl
 				<< std::endl;
 		}

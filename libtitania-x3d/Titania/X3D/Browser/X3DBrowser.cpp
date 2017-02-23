@@ -212,31 +212,31 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 const X3DFieldDefinition*
-X3DBrowser::getSupportedField (const std::string & name) const
+X3DBrowser::getSupportedField (const std::string & typeName) const
 throw (Error <INVALID_NAME>)
 {
-	return supportedFields .get (name);
+	return supportedFields .getField (typeName);
 }
 
 const SupporteFieldArray &
 X3DBrowser::getSupportedFields () const
 throw (Error <DISPOSED>)
 {
-	return supportedFields .get ();
+	return supportedFields .getFields ();
 }
 
 const X3DBaseNode*
-X3DBrowser::getSupportedNode (const std::string & name) const
+X3DBrowser::getSupportedNode (const std::string & typeName) const
 throw (Error <INVALID_NAME>)
 {
-	return supportedNodes .get (name);
+	return supportedNodes .getNode (typeName);
 }
 
 const BaseNodeArray &
 X3DBrowser::getSupportedNodes () const
 throw (Error <DISPOSED>)
 {
-	return supportedNodes .get ();
+	return supportedNodes .getNodes ();
 }
 
 const ComponentInfoArray &

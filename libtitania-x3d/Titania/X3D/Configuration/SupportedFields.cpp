@@ -60,81 +60,78 @@ SupportedFields::SupportedFields ()
 {
 	//std::clog << "Creating field index:" << std::endl;
 
-	add (new SFBool      ());
-	add (new SFBool      ());
-	add (new SFColor     ());
-	add (new SFColorRGBA ());
-	add (new SFDouble    ());
-	add (new SFFloat     ());
-	add (new SFImage     ());
-	add (new SFInt32     ());
-	add (new SFMatrix3d  ());
-	add (new SFMatrix3f  ());
-	add (new SFMatrix4d  ());
-	add (new SFMatrix4f  ());
-	add (new SFNode      ());
-	add (new SFRotation  ());
-	add (new SFString    ());
-	add (new SFTime      ());
-	add (new SFVec2d     ());
-	add (new SFVec2f     ());
-	add (new SFVec3d     ());
-	add (new SFVec3f     ());
-	add (new SFVec4d     ());
-	add (new SFVec4f     ());
+	addField (new SFBool      ());
+	addField (new SFBool      ());
+	addField (new SFColor     ());
+	addField (new SFColorRGBA ());
+	addField (new SFDouble    ());
+	addField (new SFFloat     ());
+	addField (new SFImage     ());
+	addField (new SFInt32     ());
+	addField (new SFMatrix3d  ());
+	addField (new SFMatrix3f  ());
+	addField (new SFMatrix4d  ());
+	addField (new SFMatrix4f  ());
+	addField (new SFNode      ());
+	addField (new SFRotation  ());
+	addField (new SFString    ());
+	addField (new SFTime      ());
+	addField (new SFVec2d     ());
+	addField (new SFVec2f     ());
+	addField (new SFVec3d     ());
+	addField (new SFVec3f     ());
+	addField (new SFVec4d     ());
+	addField (new SFVec4f     ());
 
-	add (new MFBool      ());
-	add (new MFBool      ());
-	add (new MFColor     ());
-	add (new MFColorRGBA ());
-	add (new MFDouble    ());
-	add (new MFFloat     ());
-	add (new MFImage     ());
-	add (new MFInt32     ());
-	add (new MFMatrix3d  ());
-	add (new MFMatrix3f  ());
-	add (new MFMatrix4d  ());
-	add (new MFMatrix4f  ());
-	add (new MFNode      ());
-	add (new MFRotation  ());
-	add (new MFString    ());
-	add (new MFTime      ());
-	add (new MFVec2d     ());
-	add (new MFVec2f     ());
-	add (new MFVec3d     ());
-	add (new MFVec3f     ());
-	add (new MFVec4d     ());
-	add (new MFVec4f     ());
-
-	//std::clog << "\tDone creating field index." << std::endl;
+	addField (new MFBool      ());
+	addField (new MFBool      ());
+	addField (new MFColor     ());
+	addField (new MFColorRGBA ());
+	addField (new MFDouble    ());
+	addField (new MFFloat     ());
+	addField (new MFImage     ());
+	addField (new MFInt32     ());
+	addField (new MFMatrix3d  ());
+	addField (new MFMatrix3f  ());
+	addField (new MFMatrix4d  ());
+	addField (new MFMatrix4f  ());
+	addField (new MFNode      ());
+	addField (new MFRotation  ());
+	addField (new MFString    ());
+	addField (new MFTime      ());
+	addField (new MFVec2d     ());
+	addField (new MFVec2f     ());
+	addField (new MFVec3d     ());
+	addField (new MFVec3f     ());
+	addField (new MFVec4d     ());
+	addField (new MFVec4f     ());
 }
 
 void
-SupportedFields::add (X3DFieldDefinition* const field)
+SupportedFields::addField (X3DFieldDefinition* const field)
+throw (Error <INVALID_NAME>)
 {
 	//std::clog << "\tAdding field type " << field -> getTypeName () << ": " << std::flush;
 
-	fields .push_back (field -> getTypeName (), field);
-
-	//std::clog << "Done." << std::endl;
+	fields .emplace (field -> getTypeName (), field);
 }
 
 const X3DFieldDefinition*
-SupportedFields::get (const std::string & name) const
+SupportedFields::getField (const std::string & typeName) const
 throw (Error <INVALID_NAME>)
 {
 	try
 	{
-		return fields .rfind (name);
+		return fields .at (typeName);
 	}
 	catch (const std::out_of_range &)
 	{
-		throw Error <INVALID_NAME> ("Unknown field type '" + name + "'.");
+		throw Error <INVALID_NAME> ("Unknown field type '" + typeName + "'.");
 	}
 }
 
 const SupporteFieldArray &
-SupportedFields::get () const
+SupportedFields::getFields () const
 {
 	return fields;
 }
@@ -142,8 +139,8 @@ SupportedFields::get () const
 void
 SupportedFields::dispose ()
 {
-	for (const auto & field : fields)
-		delete field;
+	for (const auto & pair : fields)
+		delete pair .second;
 
 	fields .clear ();
 }
