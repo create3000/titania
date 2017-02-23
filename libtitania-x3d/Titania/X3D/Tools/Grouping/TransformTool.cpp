@@ -69,7 +69,7 @@ TransformTool::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getTransformTools () .remove (this);
+	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <Transform> (this));
 
 	X3DTransformNodeTool::setExecutionContext (executionContext);
 
@@ -87,7 +87,9 @@ TransformTool::initialize ()
 void
 TransformTool::dispose ()
 {
-	getBrowser () -> getTransformTools () .remove (this);
+	__LOG__ << std::endl;
+
+	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <Transform> (this));
 
 	X3DTransformNodeTool::dispose ();
 }

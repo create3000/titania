@@ -844,7 +844,6 @@
     <None Include="Titania\X3D\SAI.h" />
     <None Include="Titania\X3D\Parser\XMLParser.h" />
     <None Include="Titania\X3D\Parser\PDF\Parser.h" />
-    <None Include="Titania\X3D\Fields\X3DPtrBase.h" />
     <None Include="Titania\X3D\Configuration\BaseNodeArray.h" />
     <None Include="Titania\X3D\InputOutput\X3DGenerator.h" />
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetBrushObject.h" />
@@ -943,6 +942,7 @@
     <None Include="Titania\X3D\Tools\Rendering\PointSetTool.h" />
     <None Include="Titania\X3D\Fields\X3DBasePtrArray.h" />
     <None Include="Titania\X3D\Fields\X3DWeakPtrArray.h" />
+    <None Include="Titania\X3D\Fields\X3DPtrObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />

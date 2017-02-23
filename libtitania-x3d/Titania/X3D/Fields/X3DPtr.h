@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_FIELDS_X3DPTR_H__
 
 #include "../Basic/X3DField.h"
-#include "../Fields/X3DPtrBase.h"
+#include "../Fields/X3DPtrObject.h"
 
 #include <Titania/Backtrace.h>
 
@@ -77,7 +77,7 @@ class X3DArrayField;
 template <class ValueType>
 class X3DPtr :
 	public X3DField <ValueType*>,
-	public X3DPtrBase
+	public X3DPtrObject
 {
 public:
 
@@ -296,7 +296,7 @@ public:
 	void
 	set (const X3DChildObject & other) final override
 	{
-		X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (other) .getObject ();
+		X3DChildObject* const object = dynamic_cast <const X3DPtrObject &> (other) .getObject ();
 
 		set (dynamic_cast <internal_type> (object));
 	}
@@ -379,7 +379,7 @@ public:
 	bool
 	equals (const X3DFieldDefinition & field) const final override
 	{
-		const auto rhs = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
+		const auto rhs = dynamic_cast <const X3DPtrObject &> (field) .getObject ();
 
 		const size_t a = getValue () ? getValue () -> getId () : 0;
 		const size_t b = rhs ? rhs -> getId () : 0;

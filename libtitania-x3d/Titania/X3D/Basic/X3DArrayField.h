@@ -423,9 +423,8 @@ public:
 	erase (const iterator &, const iterator &);
 
 	///  Removes elements completely.
-	template <class T>
 	void
-	remove (const T & value)
+	remove (const ValueType & value)
 	{ erase (std::remove (begin (), end (), value), end ()); }
 
 	///  Inserts elements to the beginning.

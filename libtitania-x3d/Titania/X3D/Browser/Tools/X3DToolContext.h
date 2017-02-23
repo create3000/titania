@@ -84,11 +84,11 @@ public:
 	getTransformToolOptions () const
 	{ return transformToolOptions; }
 
-	X3DWeakPtrArray <TransformTool> &
+	X3DWeakPtrArray <Transform> &
 	getTransformTools ()
 	{ return transformTools; }
 
-	const X3DWeakPtrArray <TransformTool> &
+	const X3DWeakPtrArray <Transform> &
 	getTransformTools () const
 	{ return transformTools; }
 
@@ -123,10 +123,10 @@ protected:
 
 private:
 
-	RenderToolsStack                displayTools;
-	X3DPtr <TransformToolOptions>   transformToolOptions;
-	X3DWeakPtrArray <TransformTool> transformTools;
-	Line2d                          cutLine;
+	RenderToolsStack              displayTools;
+	X3DPtr <TransformToolOptions> transformToolOptions;
+	X3DWeakPtrArray <Transform>   transformTools;
+	Line2d                        cutLine;
 
 };
 

@@ -114,7 +114,7 @@ void
 X3DActiveLayerTool::set_activeLayer ()
 {
 	if (activeLayer)
-		activeLayer -> getFriends () -> children () .remove (tool .getValue ());
+		activeLayer -> getFriends () -> children () .remove (tool);
 
 	activeLayer = getBrowser () -> getActiveLayer ();
 

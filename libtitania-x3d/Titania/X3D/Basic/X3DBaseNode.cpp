@@ -372,7 +372,7 @@ X3DBaseNode::replace (X3DBaseNode* const node)
 
 	for (const auto & parent : node -> getParents ())
 	{
-		if (dynamic_cast <X3DPtrBase*> (parent))
+		if (dynamic_cast <X3DPtrObject*> (parent))
 			parents .emplace_back (parent);
 	}
 

@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_FIELDS_X3DPTR_BASE_H__
-#define __TITANIA_X3D_FIELDS_X3DPTR_BASE_H__
+#ifndef __TITANIA_X3D_FIELDS_X3DPTR_OBJECT_H__
+#define __TITANIA_X3D_FIELDS_X3DPTR_OBJECT_H__
 
 #include "../Base/X3DBase.h"
 
@@ -59,7 +59,7 @@ namespace X3D {
 /**
  *  Base class for X3DPtr and X3DWeakPtr.
  */
-class X3DPtrBase :
+class X3DPtrObject :
 	virtual public X3DBase
 {
 public:
@@ -67,7 +67,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DPtrBase ()
+	~X3DPtrObject ()
 	{ }
 
 
@@ -83,7 +83,7 @@ protected:
 
 	///  @name Construction
 
-	X3DPtrBase () :
+	X3DPtrObject () :
 		X3DBase ()
 	{ }
 

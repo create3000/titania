@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_FIELDS_X3DWEAK_SFNODE_H__
 
 #include "../Basic/X3DField.h"
-#include "../Fields/X3DPtrBase.h"
+#include "../Fields/X3DPtrObject.h"
 
 namespace titania {
 namespace X3D {
@@ -66,7 +66,7 @@ class X3DBasePtrArray;
 template <class ValueType>
 class X3DWeakPtr :
 	public X3DField <ValueType*>,
-	public X3DPtrBase
+	public X3DPtrObject
 {
 public:
 
@@ -91,6 +91,19 @@ public:
 	template <class Up>
 	X3DWeakPtr (const X3DPtr <Up> & other) :
 		X3DWeakPtr (other .getValue ())
+	{ }
+
+	///  Constructs new X3DWeakPtr.
+	explicit
+	X3DWeakPtr (ValueType* const value) :
+		X3DField <ValueType*> (value)
+	{ addObject (value); }
+
+	///  Constructs new X3DWeakPtr.
+	template <class Up>
+	explicit
+	X3DWeakPtr (Up* const value) :
+		X3DWeakPtr (dynamic_cast <ValueType*> (value))
 	{ }
 
 	///  @name Field services
@@ -183,21 +196,6 @@ protected:
 	friend class X3DBasePtrArray <X3DWeakPtr <ValueType>>;
 
 	friend class X3DArrayField <X3DWeakPtr <ValueType>>;
-
-	///  @name Construction
-
-	///  Constructs new X3DWeakPtr.
-	explicit
-	X3DWeakPtr (ValueType* const value) :
-		X3DField <ValueType*> (value)
-	{ addObject (value); }
-
-	///  Constructs new X3DWeakPtr.
-	template <class Up>
-	explicit
-	X3DWeakPtr (Up* const value) :
-		X3DWeakPtr (dynamic_cast <ValueType*> (value))
-	{ }
 
 	///  @name X3DChildObject
 
@@ -294,7 +292,7 @@ private:
 	void
 	set (const X3DChildObject & field) final override
 	{
-		X3DChildObject* const object = dynamic_cast <const X3DPtrBase &> (field) .getObject ();
+		X3DChildObject* const object = dynamic_cast <const X3DPtrObject &> (field) .getObject ();
 
 		set (dynamic_cast <internal_type> (object));
 	}
