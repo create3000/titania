@@ -58,8 +58,7 @@
 #include "X3DScriptEditorSearch.h"
 #include "X3DScriptEditorPreferences.h"
 
-#include <gtksourceviewmm/buffer.h>
-#include <gtksourceviewmm/view.h>
+#include <gtksourceviewmm.h>
 
 namespace titania {
 namespace puck {

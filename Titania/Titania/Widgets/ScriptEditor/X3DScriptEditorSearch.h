@@ -53,10 +53,9 @@
 
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
 
-#include <gtksourceviewmm/buffer.h>
-#include <gtksourceviewmm/view.h>
-
 #include <Titania/X3D/Browser/KeyDeviceSensor/Keys.h>
+
+#include <gtksourceviewmm.h>
 
 namespace titania {
 namespace puck {

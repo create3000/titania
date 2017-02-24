@@ -3,90 +3,10 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Selection.cpp">
     <Files>
       <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.h" Line="120" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="134" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.h" Line="182" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.cpp" Line="381" Column="26" />
+      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.cpp" Line="372" Column="25" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Titania" expanded="True">
-            <Node name="libtitania-x3d" expanded="True">
-              <Node name="share" expanded="True">
-                <Node name="titania" expanded="True">
-                  <Node name="tools" expanded="True" />
-                </Node>
-              </Node>
-              <Node name="Titania" expanded="True">
-                <Node name="X3D" expanded="True">
-                  <Node name="Basic" expanded="True" />
-                  <Node name="Browser" expanded="True">
-                    <Node name="Tools" expanded="True">
-                      <Node name="SupportedTools.h" selected="True" />
-                    </Node>
-                  </Node>
-                  <Node name="Components" expanded="True">
-                    <Node name="CADGeometry" expanded="True" />
-                    <Node name="Core" expanded="True" />
-                    <Node name="EnvironmentalSensor" expanded="True" />
-                    <Node name="Geometry2D" expanded="True" />
-                    <Node name="Geometry3D" expanded="True" />
-                    <Node name="Geospatial" expanded="True" />
-                    <Node name="Grouping" expanded="True" />
-                    <Node name="Layout" expanded="True" />
-                    <Node name="Lighting" expanded="True" />
-                    <Node name="Navigation" expanded="True" />
-                    <Node name="Networking" expanded="True" />
-                    <Node name="NURBS" expanded="True" />
-                    <Node name="ParticleSystems" expanded="True" />
-                    <Node name="Picking" expanded="True" />
-                    <Node name="PointingDeviceSensor" expanded="True" />
-                    <Node name="Rendering" expanded="True" />
-                    <Node name="Shape" expanded="True" />
-                    <Node name="Sound" expanded="True" />
-                    <Node name="Text" expanded="True" />
-                  </Node>
-                  <Node name="Tools" expanded="True">
-                    <Node name="CADGeometry" expanded="True" />
-                    <Node name="Core" expanded="True" />
-                    <Node name="EnvironmentalSensor" expanded="True" />
-                    <Node name="Geometry2D" expanded="True" />
-                    <Node name="Geometry3D" expanded="True">
-                      <Node name="Box" expanded="True" />
-                      <Node name="Cone" expanded="True" />
-                      <Node name="Cylinder" expanded="True" />
-                      <Node name="ElevationGrid" expanded="True" />
-                      <Node name="Extrusion" expanded="True" />
-                      <Node name="IndexedFaceSet" expanded="True" />
-                      <Node name="Sphere" expanded="True" />
-                    </Node>
-                    <Node name="Geospatial" expanded="True" />
-                    <Node name="Grouping" expanded="True" />
-                    <Node name="Layering" expanded="True" />
-                    <Node name="Layout" expanded="True" />
-                    <Node name="Lighting" expanded="True" />
-                    <Node name="Navigation" expanded="True" />
-                    <Node name="Networking" expanded="True" />
-                    <Node name="NURBS" expanded="True" />
-                    <Node name="ParticleSystems" expanded="True" />
-                    <Node name="Picking" expanded="True" />
-                    <Node name="PointingDeviceSensor" expanded="True" />
-                    <Node name="Rendering" expanded="True" />
-                    <Node name="Shape" expanded="True" />
-                    <Node name="Sound" expanded="True" />
-                    <Node name="Text" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="scripts" expanded="True" />
-              <Node name="Titania" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
@@ -95,9 +15,6 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" line="196" column="1" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/SculpToolEditor/SculpToolEditor.cpp" line="123" column="2" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Tools/Geometry2D/Polypoint2DTool.h" line="87" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

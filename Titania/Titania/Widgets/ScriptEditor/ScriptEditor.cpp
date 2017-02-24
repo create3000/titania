@@ -57,13 +57,11 @@
 #include "../Console/Console.h"
 #include "ScriptEditorDatabase.h"
 
-#include <gtksourceviewmm/init.h>
-#include <gtksourceviewmm/languagemanager.h>
-#include <gtksourceviewmm/styleschememanager.h>
-
 #include <Titania/X3D/Components/Shaders/ShaderPart.h>
 #include <Titania/X3D/Components/Shaders/ShaderProgram.h>
 #include <Titania/X3D/Components/Scripting/Script.h>
+
+#include <gtksourceviewmm.h>
 
 namespace titania {
 namespace puck {

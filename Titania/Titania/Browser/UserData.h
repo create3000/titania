@@ -54,7 +54,6 @@
 #include <Titania/X3D.h>
 
 #include <gtkmm.h>
-#include <gtksourceviewmm/buffer.h>
 
 #include <bitset>
 

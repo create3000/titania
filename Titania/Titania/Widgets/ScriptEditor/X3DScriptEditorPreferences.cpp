@@ -50,7 +50,7 @@
 
 #include "X3DScriptEditorPreferences.h"
 
-#include <gtksourceviewmm/styleschememanager.h>
+#include <gtksourceview/gtksource.h>
 
 namespace titania {
 namespace puck {

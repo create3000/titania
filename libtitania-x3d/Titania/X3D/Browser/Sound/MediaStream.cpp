@@ -291,20 +291,20 @@ MediaStream::on_message (const Glib::RefPtr <Gst::Message> & message)
 		}
 		case Gst::MESSAGE_DURATION_CHANGED:
 		{
-			__LOG__
-				<< "MESSAGE_DURATION_CHANGED: "
-				<< Glib::RefPtr <Gst::MessageDuration>::cast_static (message) -> parse ()
-				<< std::endl;
+//			__LOG__
+//				<< "MESSAGE_DURATION_CHANGED: "
+//				<< Glib::RefPtr <Gst::MessageDuration>::cast_static (message) -> parse ()
+//				<< std::endl;
 
 			duration_changed .emit ();
 			break;
 		}
 		case Gst::MESSAGE_ERROR:
 		{
-			__LOG__
-				<< "MESSAGE_ERROR: "
-				<< Glib::RefPtr <Gst::MessageError>::cast_static (message) -> parse () .what ()
-				<< std::endl;
+//			__LOG__
+//				<< "MESSAGE_ERROR: "
+//				<< Glib::RefPtr <Gst::MessageError>::cast_static (message) -> parse () .what ()
+//				<< std::endl;
 
 			stop ();
 			break;
