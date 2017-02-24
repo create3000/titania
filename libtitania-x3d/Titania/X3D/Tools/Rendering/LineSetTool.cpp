@@ -58,7 +58,7 @@ namespace X3D {
 LineSetTool::Fields::Fields ()
 { }
 
-LineSetTool::LineSetTool (LineSet* const node) :
+LineSetTool::LineSetTool (X3DBaseNode* const node) :
 	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	         LineSet (node -> getExecutionContext ()),
 	            X3DBaseTool (node),

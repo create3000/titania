@@ -912,6 +912,19 @@ X3DBaseNode::removeClones (const size_t count)
 	cloneCount -= count;
 }
 
+void
+X3DBaseNode::addTool ()
+{
+	try
+	{
+		addTool (getBrowser () -> getSupportedTool (getTypeName ()) (this));
+	}
+	catch (const Error <INVALID_NAME> & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
 /***
  *  Replaces this node by @a tool and calls setup on tool.
  */

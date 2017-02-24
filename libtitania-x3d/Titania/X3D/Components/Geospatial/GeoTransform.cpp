@@ -51,7 +51,6 @@
 #include "GeoTransform.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/Geospatial/GeoTransformTool.h"
 
 namespace titania {
 namespace X3D {
@@ -137,12 +136,6 @@ GeoTransform::eventsProcessed ()
 		// Should normally not happen.
 		isHidden (true);
 	}
-}
-
-void
-GeoTransform::addTool ()
-{
-	X3DTransformMatrix3DNode::addTool (new GeoTransformTool (this));
 }
 
 void

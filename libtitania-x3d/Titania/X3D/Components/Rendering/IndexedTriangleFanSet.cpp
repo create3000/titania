@@ -52,7 +52,6 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../../Tools/Rendering/IndexedTriangleFanSetTool.h"
 
 namespace titania {
 namespace X3D {
@@ -153,12 +152,6 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	return X3DComposedGeometryNode::toPrimitive (3, coordIndex .size ());
-}
-
-void
-IndexedTriangleFanSet::addTool ()
-{
-	X3DComposedGeometryNode::addTool (new IndexedTriangleFanSetTool (this));
 }
 
 } // X3D

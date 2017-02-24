@@ -53,7 +53,6 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../../Tools/NURBS/NurbsTrimmedSurfaceTool.h"
 
 namespace titania {
 namespace X3D {
@@ -173,12 +172,6 @@ NurbsTrimmedSurface::trimSurface (GLUnurbs* nurbsRenderer) const
 
 		contours [i] -> trimSurface (nurbsRenderer);
 	}
-}
-
-void
-NurbsTrimmedSurface::addTool ()
-{
-	X3DNurbsSurfaceGeometryNode::addTool (new NurbsTrimmedSurfaceTool (this));
 }
 
 } // X3D

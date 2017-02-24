@@ -58,7 +58,7 @@ namespace X3D {
 BoxTool::Fields::Fields ()
 { }
 
-BoxTool::BoxTool (Box* const node) :
+BoxTool::BoxTool (X3DBaseNode* const node) :
 	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                Box (node -> getExecutionContext ()),
 	        X3DBaseTool (node),

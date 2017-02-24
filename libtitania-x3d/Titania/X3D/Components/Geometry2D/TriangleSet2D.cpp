@@ -56,7 +56,6 @@
 #include "../Rendering/Coordinate.h"
 #include "../Texturing/TextureCoordinate.h"
 
-#include "../../Tools/Geometry2D/TriangleSet2DTool.h"
 
 namespace titania {
 namespace X3D {
@@ -197,12 +196,6 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
-}
-
-void
-TriangleSet2D::addTool ()
-{
-	X3DGeometryNode::addTool (new TriangleSet2DTool (this));
 }
 
 } // X3D

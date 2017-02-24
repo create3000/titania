@@ -58,7 +58,7 @@ namespace X3D {
 GeoElevationGridTool::Fields::Fields ()
 { }
 
-GeoElevationGridTool::GeoElevationGridTool (GeoElevationGrid* const node) :
+GeoElevationGridTool::GeoElevationGridTool (X3DBaseNode* const node) :
 	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	       GeoElevationGrid (node -> getExecutionContext ()),
 	            X3DBaseTool (node),

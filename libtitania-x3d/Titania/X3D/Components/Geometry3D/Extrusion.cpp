@@ -55,7 +55,6 @@
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../../Tools/Geometry3D/Extrusion/ExtrusionTool.h"
 
 #include <Titania/Math/Mesh/Tessellator.h>
 #include <Titania/Utility/Range.h>
@@ -964,12 +963,6 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> rebuildCoord ();
 
 	return SFNode (geometry);
-}
-
-void
-Extrusion::addTool ()
-{
-	X3DGeometryNode::addTool (new ExtrusionTool (this));
 }
 
 } // X3D

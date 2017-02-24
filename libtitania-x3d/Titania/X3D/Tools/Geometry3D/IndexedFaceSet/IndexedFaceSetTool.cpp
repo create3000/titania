@@ -53,7 +53,7 @@
 namespace titania {
 namespace X3D {
 
-IndexedFaceSetTool::IndexedFaceSetTool (IndexedFaceSet* const node) :
+IndexedFaceSetTool::IndexedFaceSetTool (X3DBaseNode* const node) :
 	                      X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                   IndexedFaceSet (node -> getExecutionContext ()),
 	                      X3DBaseTool (node),

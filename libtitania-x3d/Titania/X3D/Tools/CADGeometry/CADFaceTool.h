@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	CADFaceTool (CADFace* const node) :
+	CADFaceTool (X3DBaseNode* const node) :
 		                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		                         CADFace (node -> getExecutionContext ()),
 		                     X3DBaseTool (node),
@@ -107,11 +107,6 @@ public:
 		X3DProductStructureChildNodeTool::traverse (type, renderObject);
 		X3DBoundedObjectTool::traverse (type, renderObject);
 	}
-
-	virtual
-	void
-	addTool () final override
-	{ X3DProductStructureChildNodeTool::addTool (); }
 
 	/// @name Destruction
 

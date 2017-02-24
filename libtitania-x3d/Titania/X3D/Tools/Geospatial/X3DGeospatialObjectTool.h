@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_NAVIGATION_X3DURL_OBJECT_TOOL_H__
-#define __TITANIA_X3D_TOOLS_NAVIGATION_X3DURL_OBJECT_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOSPATIAL_X3DGEOSPATIAL_OBJECT_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOSPATIAL_X3DGEOSPATIAL_OBJECT_TOOL_H__
 
 #include "../Core/X3DBaseTool.h"
 

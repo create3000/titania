@@ -51,8 +51,8 @@
 #include "Switch.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/Grouping/SwitchTool.h"
 
 namespace titania {
 namespace X3D {
@@ -179,12 +179,6 @@ Switch::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 			break;
 		}
 	}
-}
-
-void
-Switch::addTool ()
-{
-	X3DGroupingNode::addTool (new SwitchTool (this));
 }
 
 } // X3D

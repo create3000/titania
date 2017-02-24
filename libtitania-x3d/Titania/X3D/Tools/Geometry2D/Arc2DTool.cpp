@@ -58,7 +58,7 @@ namespace X3D {
 Arc2DTool::Fields::Fields ()
 { }
 
-Arc2DTool::Arc2DTool (Arc2D* const node) :
+Arc2DTool::Arc2DTool (X3DBaseNode* const node) :
 	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                  Arc2D (node -> getExecutionContext ()),
 	            X3DBaseTool (node),

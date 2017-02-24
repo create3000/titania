@@ -60,7 +60,6 @@
 #include "../../Browser/ParticleSystems/Random.h"
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/ParticleSystems/ParticleSystemTool.h"
 #include "../ParticleSystems/X3DParticlePhysicsModelNode.h"
 #include "../Rendering/X3DGeometryNode.h"
 #include "../Shaders/ShaderPart.h"
@@ -1962,12 +1961,6 @@ ParticleSystem::dispose ()
 	// Dispose base
 
 	X3DShapeNode::dispose ();
-}
-
-void
-ParticleSystem::addTool ()
-{
-	X3DShapeNode::addTool (new ParticleSystemTool (this));
 }
 
 ParticleSystem::~ParticleSystem ()

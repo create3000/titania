@@ -56,7 +56,6 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../InputOutput/Loader.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Networking/AnchorTool.h"
 
 namespace titania {
 namespace X3D {
@@ -161,12 +160,6 @@ Anchor::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 			break;
 		}
 	}
-}
-
-void
-Anchor::addTool ()
-{
-	X3DGroupingNode::addTool (new AnchorTool (this));
 }
 
 void

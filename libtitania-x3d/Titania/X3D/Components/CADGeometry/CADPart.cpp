@@ -51,7 +51,6 @@
 #include "CADPart.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/CADGeometry/CADPartTool.h"
 
 namespace titania {
 namespace X3D {
@@ -85,12 +84,6 @@ X3DBaseNode*
 CADPart::create (X3DExecutionContext* const executionContext) const
 {
 	return new CADPart (executionContext);
-}
-
-void
-CADPart::addTool ()
-{
-	X3DGroupingNode::addTool (new CADPartTool (this));
 }
 
 } // X3D

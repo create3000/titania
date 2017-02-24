@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	Arc2DTool (Arc2D* const node);
+	Arc2DTool (X3DBaseNode* const node);
 
 	virtual
 	void
@@ -114,11 +114,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <Arc2D> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DLineGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

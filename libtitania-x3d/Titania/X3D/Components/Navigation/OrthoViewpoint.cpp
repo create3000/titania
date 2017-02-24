@@ -51,7 +51,6 @@
 #include "OrthoViewpoint.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/Navigation/OrthoViewpointTool.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 
@@ -195,12 +194,6 @@ OrthoViewpoint::getProjectionMatrix (const double nearValue, const double farVal
 	const double size1_2 = (getSizeX () / aspect) / 2;
 
 	return camera <double>::ortho (getMinimumX (), getMaximumX (), center - size1_2, center + size1_2, nearValue, farValue);
-}
-
-void
-OrthoViewpoint::addTool ()
-{
-	X3DViewpointNode::addTool (new OrthoViewpointTool (this));
 }
 
 } // X3D

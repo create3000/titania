@@ -183,11 +183,6 @@ public:
 	       Error <DISPOSED>) final override
 	{ return getNode <IndexedFaceSet> () -> toPrimitive (); }
 
-	virtual
-	void
-	addTool () final override
-	{ X3DComposedGeometryNodeTool::addTool (); }
-
 	///  @name Destruction
 
 	virtual

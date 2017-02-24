@@ -365,8 +365,7 @@ public:
 	///  Replace the node by its tool if it supports any.
 	virtual
 	void
-	addTool ()
-	{ }
+	addTool ();
 
 	///  Reverses the effect of addTool.  For some tools @a really must be true.
 	virtual

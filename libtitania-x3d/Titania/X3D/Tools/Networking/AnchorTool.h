@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	AnchorTool (Anchor* const node) :
+	AnchorTool (X3DBaseNode* const node) :
 		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		             Anchor (node -> getExecutionContext ()),
 		        X3DBaseTool (node),
@@ -124,11 +124,6 @@ public:
 		X3DGroupingNodeTool::traverse (type, renderObject);
 		X3DUrlObjectTool::traverse (type, renderObject);
 	}
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGroupingNodeTool::addTool (); }
 
 	///  @name Destruction
 

@@ -58,7 +58,7 @@ namespace X3D {
 QuadSetTool::Fields::Fields ()
 { }
 
-QuadSetTool::QuadSetTool (QuadSet* const node) :
+QuadSetTool::QuadSetTool (X3DBaseNode* const node) :
 	                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                    QuadSet (node -> getExecutionContext ()),
 	                X3DBaseTool (node),

@@ -58,7 +58,7 @@ namespace X3D {
 Circle2DTool::Fields::Fields ()
 { }
 
-Circle2DTool::Circle2DTool (Circle2D* const node) :
+Circle2DTool::Circle2DTool (X3DBaseNode* const node) :
 	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	               Circle2D (node -> getExecutionContext ()),
 	            X3DBaseTool (node),

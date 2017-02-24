@@ -143,12 +143,6 @@ public:
 	geoCenter () const
 	{ return *fields .geoCenter; }
 
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
 	///  @name Destruction
 
 	virtual

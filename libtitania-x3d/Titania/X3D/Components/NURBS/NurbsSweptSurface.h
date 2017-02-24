@@ -129,12 +129,6 @@ public:
 	trajectoryCurve () const
 	{ return *fields .trajectoryCurve; }
 
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
 
 private:
 

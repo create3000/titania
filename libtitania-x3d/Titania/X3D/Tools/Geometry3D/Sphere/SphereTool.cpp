@@ -58,7 +58,7 @@ namespace X3D {
 SphereTool::Fields::Fields ()
 { }
 
-SphereTool::SphereTool (Sphere* const node) :
+SphereTool::SphereTool (X3DBaseNode* const node) :
 	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	             Sphere (node -> getExecutionContext ()),
 	        X3DBaseTool (node),

@@ -57,7 +57,6 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
-#include "../../Tools/Geometry3D/Cylinder/CylinderTool.h"
 
 #include <complex>
 
@@ -483,12 +482,6 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
-}
-
-void
-Cylinder::addTool ()
-{
-	X3DGeometryNode::addTool (new CylinderTool (this));
 }
 
 } // X3D

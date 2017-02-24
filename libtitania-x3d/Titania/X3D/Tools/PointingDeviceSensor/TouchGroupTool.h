@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -68,7 +68,7 @@ public:
 
 	///  @name Construction
 
-	TouchGroupTool (TouchGroup* const);
+	TouchGroupTool (X3DBaseNode* const node);
 
 	///  @name Member access
 
@@ -83,11 +83,6 @@ public:
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{ return X3DGroupingNodeTool::traverse (type, renderObject); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGroupingNodeTool::addTool (); }
 
 	///  @name Destruction
 

@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	PointSetTool (PointSet* const node);
+	PointSetTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -124,11 +124,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <PointSet> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DLineGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

@@ -65,14 +65,7 @@ public:
 
 	///  @name Construction
 
-	NurbsPatchSurfaceTool (NurbsPatchSurface* const node);
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () final override
-	{ X3DNurbsSurfaceGeometryNodeTool::addTool (); }
+	NurbsPatchSurfaceTool (X3DBaseNode* const node);
 
 	///  @name Destruction
 

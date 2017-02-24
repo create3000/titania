@@ -151,12 +151,6 @@ public:
 	Matrix4d
 	getProjectionMatrix (const double, const double, const Vector4i &) const final override;
 
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
 
 private:
 

@@ -58,7 +58,7 @@ namespace X3D {
 IndexedTriangleFanSetTool::Fields::Fields ()
 { }
 
-IndexedTriangleFanSetTool::IndexedTriangleFanSetTool (IndexedTriangleFanSet* const node) :
+IndexedTriangleFanSetTool::IndexedTriangleFanSetTool (X3DBaseNode* const node) :
 	                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	      IndexedTriangleFanSet (node -> getExecutionContext ()),
 	                X3DBaseTool (node),

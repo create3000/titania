@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	CADPartTool (CADPart* const node) :
+	CADPartTool (X3DBaseNode* const node) :
 		                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		                         CADPart (node -> getExecutionContext ()),
 		                     X3DBaseTool (node),
@@ -85,11 +85,6 @@ public:
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{ X3DTransformNodeTool::traverse (type, renderObject); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DTransformNodeTool::addTool (); }
 
 	/// @name Destruction
 

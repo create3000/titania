@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	NurbsSweptSurfaceTool (NurbsSweptSurface* const node);
+	NurbsSweptSurfaceTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -108,13 +108,6 @@ public:
 	const SFNode &
 	trajectoryCurve () const final override
 	{ return getNode <NurbsSweptSurface> () -> trajectoryCurve (); }
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () final override
-	{ X3DParametricGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

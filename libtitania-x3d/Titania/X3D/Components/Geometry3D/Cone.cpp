@@ -57,7 +57,6 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
-#include "../../Tools/Geometry3D/Cone/ConeTool.h"
 
 #include <complex>
 
@@ -319,12 +318,6 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
-}
-
-void
-Cone::addTool ()
-{
-	X3DGeometryNode::addTool (new ConeTool (this));
 }
 
 } // X3D

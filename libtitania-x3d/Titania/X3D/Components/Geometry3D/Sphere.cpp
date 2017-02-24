@@ -54,7 +54,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../../Tools/Geometry3D/Sphere/SphereTool.h"
 
 namespace titania {
 namespace X3D {
@@ -167,12 +166,6 @@ throw (Error <NOT_SUPPORTED>,
 		point *= radius () .getValue ();
 
 	return geometry;
-}
-
-void
-Sphere::addTool ()
-{
-	X3DGeometryNode::addTool (new SphereTool (this));
 }
 
 } // X3D

@@ -117,12 +117,6 @@ public:
 	targetObject () const
 	{ return *fields .targetObject; }
 
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
 
 protected:
 

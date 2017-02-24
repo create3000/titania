@@ -51,7 +51,6 @@
 #include "TouchGroup.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/PointingDeviceSensor/TouchGroupTool.h"
 
 namespace titania {
 namespace X3D {
@@ -106,12 +105,6 @@ TouchGroup::traverse (const TraverseType type, X3DRenderObject* const renderObje
 			return;
 		}
 	}
-}
-
-void
-TouchGroup::addTool ()
-{
-	X3DGroupingNode::addTool (new TouchGroupTool (this));
 }
 
 } // X3D

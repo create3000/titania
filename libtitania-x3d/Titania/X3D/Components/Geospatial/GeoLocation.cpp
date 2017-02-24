@@ -51,7 +51,6 @@
 #include "GeoLocation.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/Geospatial/GeoLocationTool.h"
 
 namespace titania {
 namespace X3D {
@@ -106,12 +105,6 @@ void
 GeoLocation::eventsProcessed ()
 {
 	setMatrix (getLocationMatrix (geoCoords ()));
-}
-
-void
-GeoLocation::addTool ()
-{
-	X3DTransformMatrix3DNode::addTool (new GeoLocationTool (this));
 }
 
 void

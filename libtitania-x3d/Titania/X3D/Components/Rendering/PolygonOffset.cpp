@@ -53,7 +53,6 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/PolygonOffsetContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Grouping/GroupTool.h"
 
 namespace titania {
 namespace X3D {
@@ -137,12 +136,6 @@ PolygonOffset::traverse (const TraverseType type, X3DRenderObject* const renderO
 			break;
 		}
 	}
-}
-
-void
-PolygonOffset::addTool ()
-{
-	//X3DGroupingNode::addTool (new PolygonOffsetTool (this));
 }
 
 } // X3D

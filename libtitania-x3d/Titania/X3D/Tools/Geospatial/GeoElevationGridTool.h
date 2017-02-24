@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY3D_ELEVATION_GRID_ELEVATION_GRID_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY3D_ELEVATION_GRID_ELEVATION_GRID_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOSPATIAL_GEO_ELEVATION_GRID_TOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOSPATIAL_GEO_ELEVATION_GRID_TOOL_H__
 
 #include "../../Components/Geospatial/GeoElevationGrid.h"
 #include "../Geospatial/X3DGeospatialObjectTool.h"
@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	GeoElevationGridTool (GeoElevationGrid* const node);
+	GeoElevationGridTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -253,11 +253,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <GeoElevationGrid> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

@@ -57,7 +57,6 @@
 
 #include "../Sound/X3DSoundSourceNode.h"
 
-#include "../../Tools/Sound/SoundTool.h"
 
 namespace titania {
 namespace X3D {
@@ -201,12 +200,6 @@ throw (std::domain_error)
 
 	radius   = b;
 	distance = abs (viewer);
-}
-
-void
-Sound::addTool ()
-{
-	X3DSoundNode::addTool (new SoundTool (this));
 }
 
 Sound::~Sound ()

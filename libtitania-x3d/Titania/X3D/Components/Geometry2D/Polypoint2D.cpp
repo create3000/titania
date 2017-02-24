@@ -56,7 +56,6 @@
 #include "../Rendering/PointSet.h"
 #include "../Shaders/ComposedShader.h"
 
-#include "../../Tools/Geometry2D/Polypoint2DTool.h"
 
 namespace titania {
 namespace X3D {
@@ -143,12 +142,6 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
-}
-
-void
-Polypoint2D::addTool ()
-{
-	X3DLineGeometryNode::addTool (new Polypoint2DTool (this));
 }
 
 } // X3D

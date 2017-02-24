@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_RENDERING_INDEXED_LINE_SET_TOOL_H__
-#define __TITANIA_X3D_TOOLS_RENDERING_INDEXED_LINE_SET_TOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_RENDERING_LINE_SET_TOOL_H__
+#define __TITANIA_X3D_TOOLS_RENDERING_LINE_SET_TOOL_H__
 
 #include "../../Components/Rendering/LineSet.h"
 #include "../Rendering/X3DLineGeometryNodeTool.h"
@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	LineSetTool (LineSet* const node);
+	LineSetTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -134,11 +134,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <LineSet> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DLineGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

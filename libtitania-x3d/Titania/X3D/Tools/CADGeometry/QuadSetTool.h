@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	QuadSetTool (QuadSet* const node);
+	QuadSetTool (X3DBaseNode* const node);
 
 	///  @name Operations
 
@@ -80,11 +80,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <QuadSet> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DComposedGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

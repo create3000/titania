@@ -55,7 +55,6 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Text/X3DFontStyleNode.h"
 
-#include "../../Tools/Text/TextTool.h"
 
 namespace titania {
 namespace X3D {
@@ -235,12 +234,6 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	return textGeometry -> toPrimitive ();
-}
-
-void
-Text::addTool ()
-{
-	X3DGeometryNode::addTool (new TextTool (this));
 }
 
 void

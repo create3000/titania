@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	NurbsCurveTool (NurbsCurve* const node);
+	NurbsCurveTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -128,13 +128,6 @@ public:
 	const SFNode &
 	controlPoint () const final override
 	{ return getNode <NurbsCurve> () -> controlPoint (); }
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () final override
-	{ X3DParametricGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	TriangleFanSetTool (TriangleFanSet* const node);
+	TriangleFanSetTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -92,11 +92,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <TriangleFanSet> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DComposedGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

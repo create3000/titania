@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	ParticleSystemTool (ParticleSystem* const node) :
+	ParticleSystemTool (X3DBaseNode* const node) :
 		     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		  ParticleSystem (node -> getExecutionContext ()),
 		     X3DBaseTool (node),
@@ -260,13 +260,6 @@ public:
 	void
 	depth (const X3DShapeContainer* const context) final override
 	{ return X3DShapeNodeTool::depth (context); }
-
-	///  @name Tool handling
-
-	virtual
-	void
-	addTool () final override
-	{ X3DShapeNodeTool::addTool (); }
 
 	///  @name Destruction
 

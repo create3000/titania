@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	IndexedQuadSetTool (IndexedQuadSet* const node);
+	IndexedQuadSetTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -92,11 +92,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <IndexedQuadSet> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DComposedGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	TransformTool (Transform* const node) :
+	TransformTool (X3DBaseNode* const node) :
 		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		           Transform (node -> getExecutionContext ()),
 		         X3DBaseTool (node),
@@ -74,14 +74,6 @@ public:
 	{
 		addType (X3DConstants::TransformTool);
 	}
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () final override
-	{ X3DTransformNodeTool::addTool (); }
-
 };
 
 } // X3D

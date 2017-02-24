@@ -48,83 +48,56 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY2D_POLYLINE2DTOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY2D_POLYLINE2DTOOL_H__
+#ifndef __TITANIA_X3D_BROWSER_TOOLS_SUPPORTED_TOOLS_H__
+#define __TITANIA_X3D_BROWSER_TOOLS_SUPPORTED_TOOLS_H__
 
-#include "../../Components/Geometry2D/Polyline2D.h"
-#include "../Rendering/X3DLineGeometryNodeTool.h"
+#include "../../Base/Error.h"
+#include "../../Types/Pointer.h"
+
+#include <functional>
+#include <map>
+#include <string>
 
 namespace titania {
 namespace X3D {
 
-class Polyline2DTool :
-	virtual public Polyline2D,
-	public X3DLineGeometryNodeTool
+class SupportedTools
 {
 public:
 
+	///  @name Member types
+
+	using Function = std::function <X3DBaseNode* (X3DBaseNode* const node)>;
+
 	///  @name Construction
 
-	Polyline2DTool (X3DBaseNode* const node);
-
-	///  @name Fields
-
-	virtual
-	MFVec2f &
-	lineSegments () final override
-	{ return getNode <Polyline2D> () -> lineSegments (); }
-
-	virtual
-	const MFVec2f &
-	lineSegments () const final override
-	{ return getNode <Polyline2D> () -> lineSegments (); }
-
-	///  @name Test
-
-	virtual
-	bool
-	isTransparent () const final override
-	{ return X3DLineGeometryNodeTool::isTransparent (); }
+	SupportedTools ();
 
 	///  @name Operations
 
-	virtual
-	SFNode
-	toPrimitive () const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override
-	{ return getNode <Polyline2D> () -> toPrimitive (); }
-
-	///  @name Destruction
-
-	virtual
 	void
-	dispose () final override;
+	addTool (const std::string & typeName, const Function & function)
+	throw (Error <INVALID_NAME>);
+
+	const Function &
+	getTool (const std::string & typeName) const
+	throw (Error <INVALID_NAME>);
+
+	const std::map <std::string, Function> &
+	getTools () const
+	{ return functions; }
+
+	///  @name Destructions
 
 	virtual
-	~Polyline2DTool () final override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override;
+	~SupportedTools ();
 
 
 private:
 
 	///  @name Members
 
-	struct Fields
-	{
-		Fields ();
-
-	};
-
-	Fields fields;
+	std::map <std::string, Function> functions;
 
 };
 

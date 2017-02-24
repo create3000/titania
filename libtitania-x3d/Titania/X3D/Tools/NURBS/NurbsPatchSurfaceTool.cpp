@@ -58,7 +58,7 @@ namespace X3D {
 NurbsPatchSurfaceTool::Fields::Fields ()
 { }
 
-NurbsPatchSurfaceTool::NurbsPatchSurfaceTool (NurbsPatchSurface* const node) :
+NurbsPatchSurfaceTool::NurbsPatchSurfaceTool (X3DBaseNode* const node) :
 	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	              NurbsPatchSurface (node -> getExecutionContext ()),
 	                    X3DBaseTool (node),

@@ -55,7 +55,6 @@
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/TextureBuffer.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Lighting/PointLightTool.h"
 
 #include "../Navigation/X3DViewpointNode.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
@@ -341,12 +340,6 @@ PointLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, 
 	glUniform3fv (shaderObject -> getLightAttenuationUniformLocation      () [i], 1, attenuation () .getValue () .data ());
 	glUniform3fv (shaderObject -> getLightLocationUniformLocation         () [i], 1, worldLocation .data ());
 	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], getRadius ());
-}
-
-void
-PointLight::addTool ()
-{
-	X3DLightNode::addTool (new PointLightTool (this));
 }
 
 } // X3D

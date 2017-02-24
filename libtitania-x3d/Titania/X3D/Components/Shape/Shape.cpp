@@ -56,7 +56,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Shape/ShapeTool.h"
 #include "../../Types/Geometry.h"
 #include "../Navigation/NavigationInfo.h"
 #include "../Rendering/X3DGeometryNode.h"
@@ -284,12 +283,6 @@ void
 Shape::draw (ShapeContainer* const context)
 {
 	getGeometry () -> draw (context);
-}
-
-void
-Shape::addTool ()
-{
-	X3DShapeNode::addTool (new ShapeTool (this));
 }
 
 } // X3D

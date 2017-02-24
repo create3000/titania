@@ -58,7 +58,7 @@ namespace X3D {
 NurbsCurveTool::Fields::Fields ()
 { }
 
-NurbsCurveTool::NurbsCurveTool (NurbsCurve* const node) :
+NurbsCurveTool::NurbsCurveTool (X3DBaseNode* const node) :
 	                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                   NurbsCurve (node -> getExecutionContext ()),
 	                  X3DBaseTool (node),

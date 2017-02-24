@@ -71,7 +71,7 @@ public:
 
 	///  @name Construction
 
-	GeoLODTool (GeoLOD* const node) :
+	GeoLODTool (X3DBaseNode* const node) :
 		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		              GeoLOD (node -> getExecutionContext ()),
 		         X3DBaseTool (node),
@@ -220,12 +220,7 @@ public:
 		X3DBoundedObjectTool::traverse (type, renderObject);
 		X3DGeospatialObjectTool::traverse (type, renderObject);
 	}
-
-	virtual
-	void
-	addTool () final override
-	{ X3DChildNodeTool::addTool (); }
-
+	
 	///  @name Destruction
 
 	virtual

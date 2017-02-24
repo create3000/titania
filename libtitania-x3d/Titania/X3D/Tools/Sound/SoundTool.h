@@ -68,7 +68,7 @@ public:
 
 	///  @name Construction
 
-	SoundTool (Sound* const);
+	SoundTool (X3DBaseNode* const node);
 
 	///  @name Fields
 

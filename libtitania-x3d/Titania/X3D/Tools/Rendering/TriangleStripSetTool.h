@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	TriangleStripSetTool (TriangleStripSet* const node);
+	TriangleStripSetTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -92,11 +92,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <TriangleStripSet> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DComposedGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

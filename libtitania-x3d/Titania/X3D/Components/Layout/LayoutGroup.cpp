@@ -54,7 +54,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Layout/LayoutGroupTool.h"
 #include "../Layout/Layout.h"
 
 namespace titania {
@@ -188,12 +187,6 @@ LayoutGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 		default:
 			break;
 	}
-}
-
-void
-LayoutGroup::addTool ()
-{
-	X3DGroupingNode::addTool (new LayoutGroupTool (this));
 }
 
 void

@@ -58,7 +58,7 @@ namespace X3D {
 PointSetTool::Fields::Fields ()
 { }
 
-PointSetTool::PointSetTool (PointSet* const node) :
+PointSetTool::PointSetTool (X3DBaseNode* const node) :
 	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	               PointSet (node -> getExecutionContext ()),
 	            X3DBaseTool (node),

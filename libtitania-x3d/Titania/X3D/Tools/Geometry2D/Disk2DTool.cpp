@@ -58,7 +58,7 @@ namespace X3D {
 Disk2DTool::Fields::Fields ()
 { }
 
-Disk2DTool::Disk2DTool (Disk2D* const node) :
+Disk2DTool::Disk2DTool (X3DBaseNode* const node) :
 	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                 Disk2D (node -> getExecutionContext ()),
 	            X3DBaseTool (node),

@@ -51,7 +51,6 @@
 #include "PickableGroup.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/Picking/PickableGroupTool.h"
 
 namespace titania {
 namespace X3D {
@@ -94,12 +93,6 @@ void
 PickableGroup::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	X3DGroupingNode::traverse (type, renderObject);
-}
-
-void
-PickableGroup::addTool ()
-{
-	X3DGroupingNode::addTool (new PickableGroupTool (this));
 }
 
 void

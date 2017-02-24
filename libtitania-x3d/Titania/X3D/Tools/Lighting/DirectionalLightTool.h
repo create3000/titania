@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	DirectionalLightTool (DirectionalLight* const node) :
+	DirectionalLightTool (X3DBaseNode* const node) :
 		     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		DirectionalLight (node -> getExecutionContext ()),
 		     X3DBaseTool (node),
@@ -93,11 +93,6 @@ public:
 	void
 	draw (const GLenum lightId) final override
 	{ return X3DLightNodeTool::draw (lightId); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DLightNodeTool::addTool (); }
 
 
 protected:

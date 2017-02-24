@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	CylinderTool (Cylinder* const node);
+	CylinderTool (X3DBaseNode* const node);
 
 	virtual
 	void
@@ -144,11 +144,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <Cylinder> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

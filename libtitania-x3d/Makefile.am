@@ -96,6 +96,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Tools/LassoSelection.cpp \
 	Titania/X3D/Browser/Tools/LightSaber.cpp \
 	Titania/X3D/Browser/Tools/RectangleSelection.cpp \
+	Titania/X3D/Browser/Tools/SupportedTools.cpp \
 	Titania/X3D/Browser/Tools/TransformToolOptions.cpp \
 	Titania/X3D/Browser/Tools/X3DSelector.cpp \
 	Titania/X3D/Browser/Tools/X3DToolContext.cpp \

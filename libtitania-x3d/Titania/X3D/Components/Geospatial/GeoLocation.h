@@ -103,12 +103,6 @@ public:
 	geoCoords () const
 	{ return *fields .geoCoords; }
 
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
 	///  @name Destruction
 
 	virtual

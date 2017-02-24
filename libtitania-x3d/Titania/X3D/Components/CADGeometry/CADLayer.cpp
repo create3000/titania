@@ -51,7 +51,6 @@
 #include "CADLayer.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/CADGeometry/CADLayerTool.h"
 
 namespace titania {
 namespace X3D {
@@ -94,12 +93,6 @@ CADLayer::initialize ()
 	X3DGroupingNode::initialize ();
 
 	visible () .addInterest (&CADLayer::set_children, static_cast <X3DGroupingNode*> (this));
-}
-
-void
-CADLayer::addTool ()
-{
-	X3DGroupingNode::addTool (new CADLayerTool (this));
 }
 
 } // X3D

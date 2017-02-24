@@ -58,7 +58,7 @@ namespace X3D {
 Rectangle2DTool::Fields::Fields ()
 { }
 
-Rectangle2DTool::Rectangle2DTool (Rectangle2D* const node) :
+Rectangle2DTool::Rectangle2DTool (X3DBaseNode* const node) :
 	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	        Rectangle2D (node -> getExecutionContext ()),
 	        X3DBaseTool (node),

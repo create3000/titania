@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	ConeTool (Cone* const node);
+	ConeTool (X3DBaseNode* const node);
 
 	virtual
 	void
@@ -134,11 +134,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <Cone> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

@@ -59,7 +59,6 @@
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../../Tools/Geometry2D/Disk2DTool.h"
 
 namespace titania {
 namespace X3D {
@@ -488,12 +487,6 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
-}
-
-void
-Disk2D::addTool ()
-{
-	X3DGeometryNode::addTool (new Disk2DTool (this));
 }
 
 } // X3D

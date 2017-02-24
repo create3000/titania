@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	BoxTool (Box* const node);
+	BoxTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -97,11 +97,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <Box> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

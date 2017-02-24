@@ -58,7 +58,7 @@ namespace X3D {
 CylinderTool::Fields::Fields ()
 { }
 
-CylinderTool::CylinderTool (Cylinder* const node) :
+CylinderTool::CylinderTool (X3DBaseNode* const node) :
 	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	           Cylinder (node -> getExecutionContext ()),
 	        X3DBaseTool (node),

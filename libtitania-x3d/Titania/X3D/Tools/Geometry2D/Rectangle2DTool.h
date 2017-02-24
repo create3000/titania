@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	Rectangle2DTool (Rectangle2D* const node);
+	Rectangle2DTool (X3DBaseNode* const node);
 
 	virtual
 	void
@@ -104,11 +104,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <Rectangle2D> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

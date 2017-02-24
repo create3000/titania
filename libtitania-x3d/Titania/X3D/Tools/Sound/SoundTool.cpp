@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-SoundTool::SoundTool (Sound* const node) :
+SoundTool::SoundTool (X3DBaseNode* const node) :
 	     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	           Sound (node -> getExecutionContext ()),
 	     X3DBaseTool (node),

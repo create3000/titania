@@ -58,7 +58,6 @@
 #include "../Shaders/ComposedShader.h"
 #include "../Shaders/X3DVertexAttributeNode.h"
 
-#include "../../Tools/Rendering/PointSetTool.h"
 
 namespace titania {
 namespace X3D {
@@ -233,12 +232,6 @@ PointSet::build ()
 	addElements (GL_POINTS, getVertices () .size ());
 	setSolid (true);
 	setAttribs (attribNodes, attribArrays);
-}
-
-void
-PointSet::addTool ()
-{
-	X3DLineGeometryNode::addTool (new PointSetTool (this));
 }
 
 PointSet::~PointSet ()

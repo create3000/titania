@@ -58,7 +58,7 @@ namespace X3D {
 ConeTool::Fields::Fields ()
 { }
 
-ConeTool::ConeTool (Cone* const node) :
+ConeTool::ConeTool (X3DBaseNode* const node) :
 	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	               Cone (node -> getExecutionContext ()),
 	        X3DBaseTool (node),

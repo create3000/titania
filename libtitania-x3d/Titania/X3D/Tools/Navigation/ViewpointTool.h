@@ -66,7 +66,7 @@ public:
 
 	///  @name Construction
 
-	ViewpointTool (Viewpoint* const node) :
+	ViewpointTool (X3DBaseNode* const node) :
 		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		           Viewpoint (node -> getExecutionContext ()),
 		         X3DBaseTool (node),
@@ -106,13 +106,6 @@ public:
 	const SFFloat &
 	fieldOfView () const final override
 	{ return getNode <Viewpoint> () -> fieldOfView (); }
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () final override
-	{ X3DViewpointNodeTool::addTool (); }
 
 };
 

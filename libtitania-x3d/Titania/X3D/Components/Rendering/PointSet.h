@@ -153,10 +153,6 @@ public:
 	       Error <DISPOSED>) override
 	{ throw Error <NOT_SUPPORTED> ("PointSet::toPrimitive"); }
 
-	virtual
-	void
-	addTool () override;
-
 	///  @name Destruction
 
 	virtual

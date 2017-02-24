@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	Disk2DTool (Disk2D* const node);
+	Disk2DTool (X3DBaseNode* const node);
 
 	virtual
 	void
@@ -156,11 +156,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <Disk2D> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

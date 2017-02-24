@@ -71,7 +71,7 @@ public:
 
 	///  @name Construction
 
-	InlineTool (Inline* const node) :
+	InlineTool (X3DBaseNode* const node) :
 		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		              Inline (node -> getExecutionContext ()),
 		         X3DBaseTool (node),
@@ -182,11 +182,6 @@ public:
 		X3DBoundedObjectTool::traverse (type, renderObject);
 		X3DUrlObjectTool::traverse (type, renderObject);
 	}
-
-	virtual
-	void
-	addTool () final override
-	{ X3DChildNodeTool::addTool (); }
 
 	///  @name Destruction
 

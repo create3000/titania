@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 	
-	SwitchTool (Switch* const node) :
+	SwitchTool (X3DBaseNode* const node) :
 		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		             Switch (node -> getExecutionContext ()),
 		        X3DBaseTool (node),
@@ -111,11 +111,6 @@ public:
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{ return X3DGroupingNodeTool::traverse (type, renderObject); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGroupingNodeTool::addTool (); }
 
 
 protected:

@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	GroupTool (Group* const node) :
+	GroupTool (X3DBaseNode* const node) :
 		        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		              Group (node -> getExecutionContext ()),
 		        X3DBaseTool (node),
@@ -75,13 +75,6 @@ public:
 	{
 		addType (X3DConstants::GroupTool);
 	}
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGroupingNodeTool::addTool (); }
 
 };
 

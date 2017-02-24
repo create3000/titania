@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	NurbsTrimmedSurfaceTool (NurbsTrimmedSurface* const node);
+	NurbsTrimmedSurfaceTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -98,13 +98,6 @@ public:
 	const MFNode &
 	trimmingContour () const final override
 	{ return getNode <NurbsTrimmedSurface> () -> trimmingContour (); }
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () final override
-	{ X3DNurbsSurfaceGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

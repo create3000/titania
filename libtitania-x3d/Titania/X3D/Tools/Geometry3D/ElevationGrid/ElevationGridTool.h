@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	ElevationGridTool (ElevationGrid* const node);
+	ElevationGridTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -251,11 +251,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <ElevationGrid> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

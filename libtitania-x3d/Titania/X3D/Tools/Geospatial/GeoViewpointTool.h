@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	GeoViewpointTool (GeoViewpoint* const node) :
+	GeoViewpointTool (X3DBaseNode* const node) :
 		            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		           GeoViewpoint (node -> getExecutionContext ()),
 		            X3DBaseTool (node),
@@ -139,11 +139,6 @@ public:
 		X3DViewpointNodeTool::traverse (type, renderObject);
 		X3DGeospatialObjectTool::traverse (type, renderObject);
 	}
-
-	virtual
-	void
-	addTool () final override
-	{ X3DViewpointNodeTool::addTool (); }
 
 	///  @name Destruction
 

@@ -52,7 +52,6 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/Grouping/TransformTool.h"
 
 namespace titania {
 namespace X3D {
@@ -84,12 +83,6 @@ X3DBaseNode*
 Transform::create (X3DExecutionContext* const executionContext) const
 {
 	return new Transform (executionContext);
-}
-
-void
-Transform::addTool ()
-{
-	X3DTransformNode::addTool (new TransformTool (this));
 }
 
 } // X3D

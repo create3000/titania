@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	TriangleSet2DTool (TriangleSet2D* const node);
+	TriangleSet2DTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -97,11 +97,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <TriangleSet2D> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

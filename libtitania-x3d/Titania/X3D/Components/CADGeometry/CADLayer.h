@@ -111,12 +111,6 @@ public:
 	visible () const
 	{ return *fields .visible; }
 
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
 
 protected:
 

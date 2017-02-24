@@ -56,7 +56,6 @@
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/TextureBuffer.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Lighting/DirectionalLightTool.h"
 
 #include "../Navigation/X3DViewpointNode.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
@@ -253,12 +252,6 @@ DirectionalLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 	glUniform1f  (shaderObject -> getLightIntensityUniformLocation        () [i], getIntensity ());
 	glUniform1f  (shaderObject -> getLightAmbientIntensityUniformLocation () [i], getAmbientIntensity ());
 	glUniform3fv (shaderObject -> getLightDirectionUniformLocation        () [i], 1, worldDirection .data ());
-}
-
-void
-DirectionalLight::addTool ()
-{
-	X3DLightNode::addTool (new DirectionalLightTool (this));
 }
 
 } // X3D

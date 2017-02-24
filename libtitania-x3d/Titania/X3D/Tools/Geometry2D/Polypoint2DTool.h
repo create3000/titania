@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GEOMETRY2D_CIRCLE2DTOOL_H__
-#define __TITANIA_X3D_TOOLS_GEOMETRY2D_CIRCLE2DTOOL_H__
+#ifndef __TITANIA_X3D_TOOLS_GEOMETRY2D_POLYPOINT2DTOOL_H__
+#define __TITANIA_X3D_TOOLS_GEOMETRY2D_POLYPOINT2DTOOL_H__
 
 #include "../../Components/Geometry2D/Polypoint2D.h"
 #include "../Rendering/X3DLineGeometryNodeTool.h"
@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	Polypoint2DTool (Polypoint2D* const node);
+	Polypoint2DTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -94,11 +94,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <Polypoint2D> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DLineGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

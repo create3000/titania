@@ -58,7 +58,7 @@ namespace X3D {
 TextTool::Fields::Fields ()
 { }
 
-TextTool::TextTool (Text* const node) :
+TextTool::TextTool (X3DBaseNode* const node) :
 	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	               Text (node -> getExecutionContext ()),
 	        X3DBaseTool (node),

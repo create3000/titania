@@ -52,7 +52,6 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/Navigation/ViewpointTool.h"
 #include "../Layering/X3DLayerNode.h"
 
 #include <Titania/Math/Geometry/Camera.h>
@@ -136,12 +135,6 @@ Matrix4d
 Viewpoint::getProjectionMatrix (const double nearValue, const double farValue, const Vector4i & viewport) const
 {
 	return camera <double>::perspective (getFieldOfView (), nearValue, farValue, viewport [2], viewport [3]);
-}
-
-void
-Viewpoint::addTool ()
-{
-	X3DViewpointNode::addTool (new ViewpointTool (this));
 }
 
 } // X3D

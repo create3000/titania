@@ -59,7 +59,6 @@
 #include "../Shaders/ComposedShader.h"
 #include "../Shaders/X3DVertexAttributeNode.h"
 
-#include "../../Tools/Rendering/LineSetTool.h"
 
 namespace titania {
 namespace X3D {
@@ -270,12 +269,6 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
-}
-
-void
-LineSet::addTool ()
-{
-	X3DLineGeometryNode::addTool (new LineSetTool (this));
 }
 
 LineSet::~LineSet ()

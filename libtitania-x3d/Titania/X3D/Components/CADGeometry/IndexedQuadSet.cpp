@@ -52,7 +52,6 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../../Tools/CADGeometry/IndexedQuadSetTool.h"
 
 namespace titania {
 namespace X3D {
@@ -113,12 +112,6 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	return X3DComposedGeometryNode::toPrimitive (4, index () .size ());
-}
-
-void
-IndexedQuadSet::addTool ()
-{
-	X3DComposedGeometryNode::addTool (new IndexedQuadSetTool (this));
 }
 
 } // X3D

@@ -53,7 +53,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/Geospatial/GeoViewpointTool.h"
 
 #include "../Layering/X3DViewportNode.h"
 
@@ -310,12 +309,6 @@ GeoViewpoint::traverse (const TraverseType type, X3DRenderObject* const renderOb
 
 	if (not navType () .isHidden ())
 		navigationInfoNode -> traverse (type, renderObject);
-}
-
-void
-GeoViewpoint::addTool ()
-{
-	X3DViewpointNode::addTool (new GeoViewpointTool (this));
 }
 
 void

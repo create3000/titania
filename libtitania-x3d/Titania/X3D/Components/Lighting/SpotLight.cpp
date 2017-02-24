@@ -56,7 +56,6 @@
 #include "../../Rendering/FrameBuffer.h"
 #include "../../Rendering/TextureBuffer.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Lighting/SpotLightTool.h"
 
 #include "../Navigation/X3DViewpointNode.h"
 #include "../Shaders/X3DProgrammableShaderObject.h"
@@ -315,12 +314,6 @@ SpotLight::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, c
 	glUniform1f  (shaderObject -> getLightBeamWidthUniformLocation        () [i], getBeamWidth ());
 	glUniform1f  (shaderObject -> getLightCutOffAngleUniformLocation      () [i], getCutOffAngle ());
 	glUniform1f  (shaderObject -> getLightRadiusUniformLocation           () [i], getRadius ());
-}
-
-void
-SpotLight::addTool ()
-{
-	X3DLightNode::addTool (new SpotLightTool (this));
 }
 
 } // X3D

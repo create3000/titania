@@ -89,12 +89,6 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
 
 private:
 

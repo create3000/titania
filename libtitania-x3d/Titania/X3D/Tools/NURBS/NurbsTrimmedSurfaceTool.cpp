@@ -58,7 +58,7 @@ namespace X3D {
 NurbsTrimmedSurfaceTool::Fields::Fields ()
 { }
 
-NurbsTrimmedSurfaceTool::NurbsTrimmedSurfaceTool (NurbsTrimmedSurface* const node) :
+NurbsTrimmedSurfaceTool::NurbsTrimmedSurfaceTool (X3DBaseNode* const node) :
 	                    X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	            NurbsTrimmedSurface (node -> getExecutionContext ()),
 	                    X3DBaseTool (node),

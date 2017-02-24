@@ -51,8 +51,9 @@
 #include "TransformSensor.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/EnvironmentalSensor/TransformSensorTool.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Grouping/X3DBoundedObject.h"
 
 namespace titania {
@@ -175,12 +176,6 @@ TransformSensor::update ()
 			exitTime () = getCurrentTime ();
 		}
 	}
-}
-
-void
-TransformSensor::addTool ()
-{
-	X3DEnvironmentalSensorNode::addTool (new TransformSensorTool (this));
 }
 
 } // X3D

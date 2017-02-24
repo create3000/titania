@@ -58,7 +58,7 @@ namespace X3D {
 ArcClose2DTool::Fields::Fields ()
 { }
 
-ArcClose2DTool::ArcClose2DTool (ArcClose2D* const node) :
+ArcClose2DTool::ArcClose2DTool (X3DBaseNode* const node) :
 	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	         ArcClose2D (node -> getExecutionContext ()),
 	        X3DBaseTool (node),

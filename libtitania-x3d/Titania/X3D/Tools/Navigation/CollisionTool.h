@@ -68,7 +68,7 @@ public:
 
 	///  @name Construction
 
-	CollisionTool (Collision* const);
+	CollisionTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -98,11 +98,6 @@ public:
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{ return X3DGroupingNodeTool::traverse (type, renderObject); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGroupingNodeTool::addTool (); }
 
 	///  @name Destruction
 

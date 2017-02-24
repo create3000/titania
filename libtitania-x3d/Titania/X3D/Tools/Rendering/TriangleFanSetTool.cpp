@@ -58,7 +58,7 @@ namespace X3D {
 TriangleFanSetTool::Fields::Fields ()
 { }
 
-TriangleFanSetTool::TriangleFanSetTool (TriangleFanSet* const node) :
+TriangleFanSetTool::TriangleFanSetTool (X3DBaseNode* const node) :
 	                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	             TriangleFanSet (node -> getExecutionContext ()),
 	                X3DBaseTool (node),

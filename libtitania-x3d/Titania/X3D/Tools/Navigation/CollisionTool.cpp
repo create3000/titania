@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-CollisionTool::CollisionTool (Collision* const node) :
+CollisionTool::CollisionTool (X3DBaseNode* const node) :
 	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	          Collision (node -> getExecutionContext ()),
 	        X3DBaseTool (node),

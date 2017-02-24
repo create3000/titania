@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	GeoLocationTool (GeoLocation* const node) :
+	GeoLocationTool (X3DBaseNode* const node) :
 		                 X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		                 GeoLocation (node -> getExecutionContext ()),
 		                 X3DBaseTool (node),
@@ -100,11 +100,6 @@ public:
 		X3DTransformMatrix3DNodeTool::traverse (type, renderObject);
 		X3DGeospatialObjectTool::traverse (type, renderObject);
 	}
-
-	virtual
-	void
-	addTool () final override
-	{ X3DTransformMatrix3DNodeTool::addTool (); }
 
 	///  @name Destruction
 

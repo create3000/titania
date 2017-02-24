@@ -58,7 +58,7 @@ namespace X3D {
 IndexedQuadSetTool::Fields::Fields ()
 { }
 
-IndexedQuadSetTool::IndexedQuadSetTool (IndexedQuadSet* const node) :
+IndexedQuadSetTool::IndexedQuadSetTool (X3DBaseNode* const node) :
 	                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	             IndexedQuadSet (node -> getExecutionContext ()),
 	                X3DBaseTool (node),

@@ -57,7 +57,6 @@
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../../Tools/Geometry2D/ArcClose2DTool.h"
 
 #include <complex>
 
@@ -262,12 +261,6 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
-}
-
-void
-ArcClose2D::addTool ()
-{
-	X3DGeometryNode::addTool (new ArcClose2DTool (this));
 }
 
 } // X3D

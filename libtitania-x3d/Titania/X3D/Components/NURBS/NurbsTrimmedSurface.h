@@ -122,12 +122,6 @@ public:
 	trimmingContour () const
 	{ return *fields .trimmingContour; }
 
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
 
 protected:
 

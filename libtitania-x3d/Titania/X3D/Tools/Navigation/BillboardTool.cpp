@@ -55,7 +55,7 @@
 namespace titania {
 namespace X3D {
 
-BillboardTool::BillboardTool (Billboard* const node) :
+BillboardTool::BillboardTool (X3DBaseNode* const node) :
 	                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                     Billboard (node -> getExecutionContext ()),
 	                   X3DBaseTool (node),

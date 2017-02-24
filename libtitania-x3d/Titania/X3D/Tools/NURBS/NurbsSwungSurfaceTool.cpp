@@ -58,7 +58,7 @@ namespace X3D {
 NurbsSwungSurfaceTool::Fields::Fields ()
 { }
 
-NurbsSwungSurfaceTool::NurbsSwungSurfaceTool (NurbsSwungSurface* const node) :
+NurbsSwungSurfaceTool::NurbsSwungSurfaceTool (X3DBaseNode* const node) :
 	                  X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	            NurbsSwungSurface (node -> getExecutionContext ()),
 	                  X3DBaseTool (node),

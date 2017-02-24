@@ -943,6 +943,7 @@
     <None Include="Titania\X3D\Fields\X3DBasePtrArray.h" />
     <None Include="Titania\X3D\Fields\X3DWeakPtrArray.h" />
     <None Include="Titania\X3D\Fields\X3DPtrObject.h" />
+    <None Include="Titania\X3D\Browser\Tools\SupportedTools.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1610,6 +1611,7 @@
     <Compile Include="Titania\X3D\Tools\Rendering\IndexedLineSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\LineSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\PointSetTool.cpp" />
+    <Compile Include="Titania\X3D\Browser\Tools\SupportedTools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

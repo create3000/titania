@@ -103,10 +103,6 @@ public:
 	void
 	dispose () override;
 
-	virtual
-	void
-	addTool () override;
-
 
 protected:
 

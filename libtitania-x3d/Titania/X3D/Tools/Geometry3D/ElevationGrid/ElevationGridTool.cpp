@@ -58,7 +58,7 @@ namespace X3D {
 ElevationGridTool::Fields::Fields ()
 { }
 
-ElevationGridTool::ElevationGridTool (ElevationGrid* const node) :
+ElevationGridTool::ElevationGridTool (X3DBaseNode* const node) :
 	        X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	      ElevationGrid (node -> getExecutionContext ()),
 	        X3DBaseTool (node),

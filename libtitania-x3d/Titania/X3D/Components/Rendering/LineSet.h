@@ -163,10 +163,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) override;
 
-	virtual
-	void
-	addTool () override;
-
 	///  @name Destruction
 
 	virtual

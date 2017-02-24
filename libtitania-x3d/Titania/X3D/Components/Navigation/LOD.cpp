@@ -54,7 +54,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Navigation/LODTool.h"
 
 namespace titania {
 namespace X3D {
@@ -238,12 +237,6 @@ LOD::set_child (const int32_t level)
 		childNode .set (nullptr);
 			
 	set_cameraObjects ();
-}
-
-void
-LOD::addTool ()
-{
-	X3DGroupingNode::addTool (new LODTool (this));
 }
 
 } // X3D

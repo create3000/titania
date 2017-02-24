@@ -59,6 +59,7 @@ namespace X3D {
 
 X3DToolContext::X3DToolContext () :
 	         X3DBaseNode (),
+	      supportedTools (),
 	        displayTools ({ true }),
 	transformToolOptions (new TransformToolOptions (getExecutionContext ())),
 	      transformTools (),
@@ -71,6 +72,14 @@ void
 X3DToolContext::initialize ()
 {
 	transformToolOptions -> setup ();
+}
+
+const SupportedTools::Function &
+X3DToolContext::getSupportedTool (const std::string & typeName) const
+throw (Error <INVALID_NAME>,
+       Error <DISPOSED>)
+{
+	return supportedTools .getTool (typeName);
 }
 
 void

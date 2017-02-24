@@ -50,10 +50,10 @@
 
 #include "DepthBuffer.h"
 
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/DepthTestContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Grouping/GroupTool.h"
 
 namespace titania {
 namespace X3D {
@@ -154,12 +154,6 @@ DepthBuffer::traverse (const TraverseType type, X3DRenderObject* const renderObj
 
 	renderObject -> getBrowser () -> getDepthOffset () .pop ();
 	renderObject -> getBrowser () -> getDepthTest ()   .pop ();
-}
-
-void
-DepthBuffer::addTool ()
-{
-	//X3DGroupingNode::addTool (new DepthBufferTool (this));
 }
 
 } // X3D

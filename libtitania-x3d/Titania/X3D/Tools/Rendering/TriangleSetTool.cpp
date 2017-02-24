@@ -58,7 +58,7 @@ namespace X3D {
 TriangleSetTool::Fields::Fields ()
 { }
 
-TriangleSetTool::TriangleSetTool (TriangleSet* const node) :
+TriangleSetTool::TriangleSetTool (X3DBaseNode* const node) :
 	                X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	                TriangleSet (node -> getExecutionContext ()),
 	                X3DBaseTool (node),

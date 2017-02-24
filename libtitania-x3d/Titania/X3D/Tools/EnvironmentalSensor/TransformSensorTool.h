@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	TransformSensorTool (TransformSensor* const node) :
+	TransformSensorTool (X3DBaseNode* const node) :
 		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		               TransformSensor (node -> getExecutionContext ()),
 		                   X3DBaseTool (node),
@@ -75,13 +75,6 @@ public:
 	{
 		addType (X3DConstants::TransformSensorTool);
 	}
-
-	///  @name Operations
-
-	virtual
-	void
-	addTool () final override
-	{ X3DEnvironmentalSensorNodeTool::addTool (); }
 
 
 protected:

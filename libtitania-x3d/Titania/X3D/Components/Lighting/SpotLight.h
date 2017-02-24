@@ -175,10 +175,6 @@ public:
 	void
 	setShaderUniforms (X3DProgrammableShaderObject* const, const size_t, const Matrix4d &) final override;
 
-	virtual
-	void
-	addTool () override;
-
 
 protected:
 

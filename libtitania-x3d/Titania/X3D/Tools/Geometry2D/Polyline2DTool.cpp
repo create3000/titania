@@ -58,7 +58,7 @@ namespace X3D {
 Polyline2DTool::Fields::Fields ()
 { }
 
-Polyline2DTool::Polyline2DTool (Polyline2D* const node) :
+Polyline2DTool::Polyline2DTool (X3DBaseNode* const node) :
 	            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 	             Polyline2D (node -> getExecutionContext ()),
 	            X3DBaseTool (node),

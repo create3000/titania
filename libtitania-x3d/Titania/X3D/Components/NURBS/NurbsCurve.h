@@ -149,12 +149,6 @@ public:
 	controlPoint () const
 	{ return *fields .controlPoint; }
 
-	///  @name Operations
-
-	virtual
-	void
-	addTool () override;
-
 
 private:
 

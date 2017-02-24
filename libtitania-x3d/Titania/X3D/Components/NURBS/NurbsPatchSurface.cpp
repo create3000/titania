@@ -52,7 +52,6 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../../Tools/NURBS/NurbsPatchSurfaceTool.h"
 
 namespace titania {
 namespace X3D {
@@ -88,12 +87,6 @@ X3DBaseNode*
 NurbsPatchSurface::create (X3DExecutionContext* const executionContext) const
 {
 	return new NurbsPatchSurface (executionContext);
-}
-
-void
-NurbsPatchSurface::addTool ()
-{
-	X3DNurbsSurfaceGeometryNode::addTool (new NurbsPatchSurfaceTool (this));
 }
 
 }  // X3D

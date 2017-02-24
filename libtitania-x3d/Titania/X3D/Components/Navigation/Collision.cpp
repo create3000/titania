@@ -51,9 +51,9 @@
 #include "Collision.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Navigation/CollisionTool.h"
 
 namespace titania {
 namespace X3D {
@@ -169,12 +169,6 @@ Collision::traverse (const TraverseType type, X3DRenderObject* const renderObjec
 			break;
 		}
 	}
-}
-
-void
-Collision::addTool ()
-{
-	X3DGroupingNode::addTool (new CollisionTool (this));
 }
 
 void

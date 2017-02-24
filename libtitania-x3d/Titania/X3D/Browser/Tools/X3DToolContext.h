@@ -55,6 +55,7 @@
 #include "../../Fields/X3DPtr.h"
 #include "../../Fields/X3DWeakPtrArray.h"
 #include "../../Types/Geometry.h"
+#include "SupportedTools.h"
 
 #include <stack>
 
@@ -71,6 +72,17 @@ class X3DToolContext :
 public:
 
 	///  @name Member access
+
+	const SupportedTools::Function &
+	getSupportedTool (const std::string & typeName) const
+	throw (Error <INVALID_NAME>,
+	       Error <DISPOSED>);
+
+	const SupportedTools &
+	getSupportedTools () const
+	throw (Error <INVALID_NAME>,
+	       Error <DISPOSED>)
+	{ return supportedTools; }
 
 	RenderToolsStack &
 	getDisplayTools ()
@@ -123,6 +135,7 @@ protected:
 
 private:
 
+	SupportedTools                     supportedTools;
 	RenderToolsStack                   displayTools;
 	X3DPtr <TransformToolOptions>      transformToolOptions;
 	X3DWeakPtrArray <X3DTransformNode> transformTools;

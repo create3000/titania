@@ -52,7 +52,6 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"
-#include "../../Tools/Navigation/BillboardTool.h"
 
 namespace titania {
 namespace X3D {
@@ -168,12 +167,6 @@ Billboard::traverse (const TraverseType type, X3DRenderObject* const renderObjec
 	{ }
 
 	renderObject -> getModelViewMatrix () .pop ();
-}
-
-void
-Billboard::addTool ()
-{
-	X3DGroupingNode::addTool (new BillboardTool (this));
 }
 
 void

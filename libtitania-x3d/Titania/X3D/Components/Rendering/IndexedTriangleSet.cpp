@@ -53,7 +53,6 @@
 #include "../../Browser/Core/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../../Tools/Rendering/IndexedTriangleSetTool.h"
 
 namespace titania {
 namespace X3D {
@@ -114,12 +113,6 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	return X3DComposedGeometryNode::toPrimitive (3, index () .size ());
-}
-
-void
-IndexedTriangleSet::addTool ()
-{
-	X3DComposedGeometryNode::addTool (new IndexedTriangleSetTool (this));
 }
 
 } // X3D

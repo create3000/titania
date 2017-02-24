@@ -55,7 +55,6 @@
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Execution/X3DExecutionContext.h"
 
-#include "../../Tools/Geometry2D/Rectangle2DTool.h"
 
 namespace titania {
 namespace X3D {
@@ -186,12 +185,6 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return geometry;
-}
-
-void
-Rectangle2D::addTool ()
-{
-	X3DGeometryNode::addTool (new Rectangle2DTool (this));
 }
 
 } // X3D

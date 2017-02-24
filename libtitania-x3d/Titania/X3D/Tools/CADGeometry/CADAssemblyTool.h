@@ -69,7 +69,7 @@ public:
 
 	///  @name Construction
 
-	CADAssemblyTool (CADAssembly* const node) :
+	CADAssemblyTool (X3DBaseNode* const node) :
 		                     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		                     CADAssembly (node -> getExecutionContext ()),
 		                     X3DBaseTool (node),
@@ -78,11 +78,6 @@ public:
 	{
 		addType (X3DConstants::CADAssemblyTool);
 	}
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGroupingNodeTool::addTool (); }
 
 
 protected:

@@ -51,8 +51,8 @@
 #include "ScreenGroup.h"
 
 #include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/X3DRenderObject.h"
 #include "../Navigation/Viewpoint.h"
-#include "../../Tools/Layout/ScreenGroupTool.h"
 
 namespace titania {
 namespace X3D {
@@ -163,12 +163,6 @@ ScreenGroup::traverse (const TraverseType type, X3DRenderObject* const renderObj
 	}
 	catch (const std::domain_error &)
 	{ }
-}
-
-void
-ScreenGroup::addTool ()
-{
-	X3DGroupingNode::addTool (new ScreenGroupTool (this));
 }
 
 void

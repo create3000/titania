@@ -66,7 +66,6 @@
 #include "../Texturing3D/TextureCoordinate3D.h"
 #include "../Texturing3D/TextureCoordinate4D.h"
 
-#include "../../Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h"
 
 #include <Titania/Math/Mesh/Tessellator.h>
 
@@ -1242,12 +1241,6 @@ throw (Error <NOT_SUPPORTED>,
 	}
 
 	return SFNode (geometry);
-}
-
-void
-IndexedFaceSet::addTool ()
-{
-	X3DComposedGeometryNode::addTool (new IndexedFaceSetTool (this));
 }
 
 IndexedFaceSet::~IndexedFaceSet ()

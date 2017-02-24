@@ -75,7 +75,7 @@ public:
 
 	///  @name Construction
 
-	IndexedFaceSetTool (IndexedFaceSet* const node);
+	IndexedFaceSetTool (X3DBaseNode* const node);
 
 	virtual
 	void

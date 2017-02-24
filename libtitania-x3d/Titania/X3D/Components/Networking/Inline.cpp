@@ -53,7 +53,6 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../InputOutput/Loader.h"
 #include "../../Thread/SceneFuture.h"
-#include "../../Tools/Networking/InlineTool.h"
 
 namespace titania {
 namespace X3D {
@@ -403,12 +402,6 @@ void
 Inline::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
 	group -> traverse (type, renderObject);
-}
-
-void
-Inline::addTool ()
-{
-	X3DChildNode::addTool (new InlineTool (this));
 }
 
 void

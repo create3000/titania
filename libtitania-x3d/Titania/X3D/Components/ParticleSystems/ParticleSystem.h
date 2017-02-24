@@ -273,10 +273,6 @@ public:
 	void
 	depth (const X3DShapeContainer* const context) override;
 
-	virtual
-	void
-	addTool () override;
-
 	///  @name Destruction
 
 	virtual

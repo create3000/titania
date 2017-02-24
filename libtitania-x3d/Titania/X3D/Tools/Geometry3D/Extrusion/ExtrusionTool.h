@@ -65,7 +65,7 @@ public:
 
 	///  @name Construction
 
-	ExtrusionTool (Extrusion* const node);
+	ExtrusionTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -176,11 +176,6 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <Extrusion> () -> toPrimitive (); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DGeometryNodeTool::addTool (); }
 
 	///  @name Destruction
 

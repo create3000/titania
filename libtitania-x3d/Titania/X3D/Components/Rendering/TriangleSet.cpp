@@ -54,7 +54,6 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Rendering/X3DCoordinateNode.h"
 
-#include "../../Tools/Rendering/TriangleSetTool.h"
 
 namespace titania {
 namespace X3D {
@@ -118,12 +117,6 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	return X3DComposedGeometryNode::toPrimitive (3, getCoord () ? getCoord () -> getSize () : 0);
-}
-
-void
-TriangleSet::addTool ()
-{
-	X3DComposedGeometryNode::addTool (new TriangleSetTool (this));
 }
 
 } // X3D

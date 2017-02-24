@@ -67,7 +67,7 @@ public:
 
 	///  @name Construction
 
-	ProximitySensorTool (ProximitySensor* const node) :
+	ProximitySensorTool (X3DBaseNode* const node) :
 		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
 		               ProximitySensor (node -> getExecutionContext ()),
 		                   X3DBaseTool (node),
@@ -114,11 +114,6 @@ public:
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{ X3DEnvironmentalSensorNodeTool::traverse (type, renderObject); }
-
-	virtual
-	void
-	addTool () final override
-	{ X3DEnvironmentalSensorNodeTool::addTool (); }
 
 
 protected:

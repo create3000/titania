@@ -137,10 +137,6 @@ public:
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
 
-	virtual
-	void
-	addTool () override;
-
 	///  @name Destruction
 
 	virtual

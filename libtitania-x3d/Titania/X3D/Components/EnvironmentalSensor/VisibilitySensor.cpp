@@ -51,7 +51,8 @@
 #include "VisibilitySensor.h"
 
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Tools/EnvironmentalSensor/VisibilitySensorTool.h"
+#include "../../Rendering/X3DRenderObject.h"
+#include "../../Types/Geometry.h"
 
 namespace titania {
 namespace X3D {
@@ -146,12 +147,6 @@ VisibilitySensor::traverse (const TraverseType type, X3DRenderObject* const rend
 			}
 		}
 	}
-}
-
-void
-VisibilitySensor::addTool ()
-{
-	X3DEnvironmentalSensorNode::addTool (new VisibilitySensorTool (this));
 }
 
 } // X3D
