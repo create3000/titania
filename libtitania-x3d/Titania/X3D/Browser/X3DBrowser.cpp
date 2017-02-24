@@ -677,7 +677,7 @@ X3DBrowser::dispose ()
 
 X3DBrowser::~X3DBrowser ()
 {
-	__LOG__ << std::endl;
+	__LOG__ << this << std::endl;
 }
 
 } // X3D

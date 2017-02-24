@@ -92,6 +92,8 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	pointingDevice  (new PointingDevice (this)),
 	         cursor ("default")
 {
+	__LOG__ << "Constructing browser " << this << "." << std::endl;
+
 	addType (X3DConstants::Browser);
 
 	addChildObjects (viewer,

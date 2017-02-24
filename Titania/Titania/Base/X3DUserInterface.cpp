@@ -139,20 +139,20 @@ X3DUserInterface::on_constructed ()
 	getWidget () .signal_map ()   .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 	getWidget () .signal_unmap () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_unmap));
 
-	connectFocusEvent (getWidget ());
-
- 	if (isFullscreen ())
-	   getWindow () .fullscreen ();
-
-	set_fullscreen (isFullscreen ());
-
 	#ifdef TITANIA_DEBUG
 	std::clog << "Initializing widget: " << getName () << std::endl;
 	#endif
 
 	on_map ();
 
+	connectFocusEvent (getWidget ());
+
 	initialize ();
+
+	if (isFullscreen ())
+		getWindow () .fullscreen ();
+
+	set_fullscreen (isFullscreen ());
 }
 
 void
