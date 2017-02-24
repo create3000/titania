@@ -150,9 +150,9 @@ X3DUserInterface::on_constructed ()
 	std::clog << "Initializing widget: " << getName () << std::endl;
 	#endif
 
-	initialize ();
-
 	on_map ();
+
+	initialize ();
 }
 
 void
