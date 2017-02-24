@@ -91,20 +91,12 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface () :
-	X3DUserInterface ("")
-{
-	assert (false);
-}
-
-X3DUserInterface::X3DUserInterface (const std::string & widgetName) :
 	      X3DBaseInterface (),
-	                config (new Configuration (widgetName)),
+	                config (),
 	constructed_connection (),
 	         userInterface (),
 	               dialogs (new DialogIndex ())
 {
-	X3DBaseInterface::setName (widgetName);
-
 	userInterfaces .emplace_back (this);
 	userInterface = -- userInterfaces .end ();
 }
@@ -112,6 +104,10 @@ X3DUserInterface::X3DUserInterface (const std::string & widgetName) :
 void
 X3DUserInterface::construct ()
 {
+	X3DBaseInterface::setName (getWidget () .get_name ());
+
+	config .reset (new Configuration (getWidget () .get_name ()));
+
 	constructed_connection = getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_constructed));
 
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_window_state_event));
@@ -150,7 +146,7 @@ X3DUserInterface::on_constructed ()
 	set_fullscreen (isFullscreen ());
 
 	#ifdef TITANIA_DEBUG
-	std::clog << "Initializing widget: " << getWidgetName () << std::endl;
+	std::clog << "Initializing widget: " << getName () << std::endl;
 	#endif
 
 	initialize ();

@@ -149,7 +149,7 @@ X3DNotebook <Interface>::addPage (const std::string & name, Gtk::Box & box)
 		const auto userInterface = getPage <X3DUserInterface> (name);
 
 		userInterface -> getWidget () .set_visible (true);
-		this -> getLabel () .set_text (_ (userInterface -> getWidgetName () .c_str ()));
+		this -> getLabel () .set_text (_ (userInterface -> getWidget () .get_name ()));
 	}
 }
 
@@ -186,7 +186,7 @@ X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
 		const auto page = getPage <X3DUserInterface> (userInterfaces .at (pageNumber));
 
 		page -> getWidget () .set_visible (true);
-		this -> getLabel () .set_text (_ (page -> getWidgetName () .c_str ()));
+		this -> getLabel () .set_text (_ (page -> getWidget () .get_name ()));
 	}
 
 	this -> getConfig () -> setItem ("currentPage", int (pageNumber));

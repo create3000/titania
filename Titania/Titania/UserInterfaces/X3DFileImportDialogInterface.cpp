@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DFileImportDialogInterface::m_widgetName = "FileImportDialog";
-
 void
 X3DFileImportDialogInterface::create (const std::string & filename)
 {

@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DFileOpenDialogInterface::m_widgetName = "FileOpenDialog";
-
 void
 X3DFileOpenDialogInterface::create (const std::string & filename)
 {

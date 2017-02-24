@@ -78,10 +78,7 @@ protected:
 
 	/// @name Construction
 
-	X3DDialogInterface ()
-	{ }
-
-	X3DDialogInterface (const std::string &);
+	X3DDialogInterface ();
 
 	virtual
 	void

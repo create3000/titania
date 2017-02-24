@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DBindableNodeListInterface::m_widgetName = "BindableNodeList";
-
 void
 X3DBindableNodeListInterface::create (const std::string & filename)
 {

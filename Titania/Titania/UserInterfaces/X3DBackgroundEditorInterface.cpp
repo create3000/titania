@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DBackgroundEditorInterface::m_widgetName = "BackgroundEditor";
-
 void
 X3DBackgroundEditorInterface::create (const std::string & filename)
 {

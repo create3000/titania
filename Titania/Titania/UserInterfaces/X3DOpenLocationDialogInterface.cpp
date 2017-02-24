@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DOpenLocationDialogInterface::m_widgetName = "OpenLocationDialog";
-
 void
 X3DOpenLocationDialogInterface::create (const std::string & filename)
 {

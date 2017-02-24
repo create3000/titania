@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DLightEditorInterface::m_widgetName = "LightEditor";
-
 void
 X3DLightEditorInterface::create (const std::string & filename)
 {

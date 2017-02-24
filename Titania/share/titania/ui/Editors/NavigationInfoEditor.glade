@@ -87,6 +87,7 @@
     <property name="skip_pager_hint">True</property>
     <child>
       <object class="GtkBox" id="Widget">
+        <property name="name">NavigationInfoEditor</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">8</property>
@@ -254,7 +255,7 @@
                         <property name="tooltip_text" translatable="yes">Collision Radius</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">CollisionRadiusAdjustment</property>
-                        <property name="climb_rate">0.32</property>
+                        <property name="climb_rate">0.32000000000000001</property>
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
                       </object>
@@ -271,7 +272,7 @@
                         <property name="tooltip_text" translatable="yes">Height</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">HeightAdjustment</property>
-                        <property name="climb_rate">0.32</property>
+                        <property name="climb_rate">0.32000000000000001</property>
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
                       </object>
@@ -288,7 +289,7 @@
                         <property name="tooltip_text" translatable="yes">Step Height</property>
                         <property name="text" translatable="yes">0,000</property>
                         <property name="adjustment">StepHeightAdjustment</property>
-                        <property name="climb_rate">0.32</property>
+                        <property name="climb_rate">0.32000000000000001</property>
                         <property name="digits">3</property>
                         <property name="numeric">True</property>
                       </object>
@@ -311,7 +312,7 @@
                     <property name="halign">start</property>
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">SpeedAdjustment</property>
-                    <property name="climb_rate">0.32</property>
+                    <property name="climb_rate">0.32000000000000001</property>
                     <property name="digits">3</property>
                     <property name="numeric">True</property>
                   </object>
@@ -353,7 +354,7 @@
                     <property name="halign">start</property>
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">TransitionTimeAdjustment</property>
-                    <property name="climb_rate">0.32</property>
+                    <property name="climb_rate">0.32000000000000001</property>
                     <property name="digits">3</property>
                     <property name="numeric">True</property>
                   </object>
@@ -381,7 +382,7 @@
                     <property name="halign">start</property>
                     <property name="text" translatable="yes">0,000</property>
                     <property name="adjustment">VisibilityLimitAdjustment</property>
-                    <property name="climb_rate">0.32</property>
+                    <property name="climb_rate">0.32000000000000001</property>
                     <property name="digits">3</property>
                     <property name="numeric">True</property>
                   </object>

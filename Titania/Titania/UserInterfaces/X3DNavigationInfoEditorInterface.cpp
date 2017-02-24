@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DNavigationInfoEditorInterface::m_widgetName = "NavigationInfoEditor";
-
 void
 X3DNavigationInfoEditorInterface::create (const std::string & filename)
 {

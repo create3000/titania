@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DMotionBlurEditorInterface::m_widgetName = "MotionBlurEditor";
-
 void
 X3DMotionBlurEditorInterface::create (const std::string & filename)
 {

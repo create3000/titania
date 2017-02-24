@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DFooterInterface::m_widgetName = "Footer";
-
 void
 X3DFooterInterface::create (const std::string & filename)
 {

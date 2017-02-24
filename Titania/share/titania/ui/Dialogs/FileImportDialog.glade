@@ -201,6 +201,7 @@
         </child>
         <child>
           <object class="GtkBox" id="Widget">
+            <property name="name">FileImportDialog</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>

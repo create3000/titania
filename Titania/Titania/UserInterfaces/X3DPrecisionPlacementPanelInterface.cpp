@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DPrecisionPlacementPanelInterface::m_widgetName = "PrecisionPlacementPanel";
-
 void
 X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 {

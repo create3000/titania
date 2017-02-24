@@ -77,10 +77,7 @@ protected:
 
 	/// @name Construction
 
-	X3DRevealerInterface ()
-	{ }
-
-	X3DRevealerInterface (const std::string &);
+	X3DRevealerInterface ();
 
 	virtual
 	void

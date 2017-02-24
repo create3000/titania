@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DViewpointEditorInterface::m_widgetName = "ViewpointEditor";
-
 void
 X3DViewpointEditorInterface::create (const std::string & filename)
 {

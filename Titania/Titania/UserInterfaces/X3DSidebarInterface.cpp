@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DSidebarInterface::m_widgetName = "Sidebar";
-
 void
 X3DSidebarInterface::create (const std::string & filename)
 {

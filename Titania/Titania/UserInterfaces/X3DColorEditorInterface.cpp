@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DColorEditorInterface::m_widgetName = "ColorEditor";
-
 void
 X3DColorEditorInterface::create (const std::string & filename)
 {

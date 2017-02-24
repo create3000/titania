@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DNodeIndexInterface::m_widgetName = "NodeIndex";
-
 void
 X3DNodeIndexInterface::create (const std::string & filename)
 {

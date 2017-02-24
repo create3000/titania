@@ -79,11 +79,6 @@ public:
 
 	///  @name Member acccess
 
-	virtual
-	const std::string &
-	getWidgetName () const final override
-	{ return name; }
-
 	void
 	setEditing (const bool);
 

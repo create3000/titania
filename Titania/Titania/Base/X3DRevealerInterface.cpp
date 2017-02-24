@@ -53,8 +53,8 @@
 namespace titania {
 namespace puck {
 
-X3DRevealerInterface::X3DRevealerInterface (const std::string & widgetName) :
-	X3DEditorInterface (widgetName),
+X3DRevealerInterface::X3DRevealerInterface () :
+	X3DEditorInterface (),
 	          position (),
 	           pointer ()
 { }

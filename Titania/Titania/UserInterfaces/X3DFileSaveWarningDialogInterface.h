@@ -73,7 +73,7 @@ public:
 
 	template <class ... Arguments>
 	X3DFileSaveWarningDialogInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DDialogInterface (m_widgetName, arguments ...),
+		X3DDialogInterface (arguments ...),
 		          filename (filename)
 	{ create (filename); }
 
@@ -82,11 +82,6 @@ public:
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
 	{ return m_builder; }
-
-	virtual
-	const std::string &
-	getWidgetName () const
-	{ return m_widgetName; }
 
 	template <class Type>
 	Type*
@@ -144,8 +139,6 @@ private:
 	create (const std::string &);
 
 	///  @name Static members
-
-	static const std::string m_widgetName;
 
 	///  @name Members
 

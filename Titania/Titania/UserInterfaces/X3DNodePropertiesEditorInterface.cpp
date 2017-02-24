@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DNodePropertiesEditorInterface::m_widgetName = "NodePropertiesEditor";
-
 void
 X3DNodePropertiesEditorInterface::create (const std::string & filename)
 {

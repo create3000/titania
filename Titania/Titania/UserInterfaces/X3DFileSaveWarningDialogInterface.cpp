@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DFileSaveWarningDialogInterface::m_widgetName = "FileSaveWarningDialog";
-
 void
 X3DFileSaveWarningDialogInterface::create (const std::string & filename)
 {

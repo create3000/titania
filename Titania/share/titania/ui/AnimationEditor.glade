@@ -32,6 +32,7 @@
     <property name="can_focus">False</property>
     <child>
       <object class="GtkBox" id="Widget">
+        <property name="name">AnimationEditor</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>

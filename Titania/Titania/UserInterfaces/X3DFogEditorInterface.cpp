@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DFogEditorInterface::m_widgetName = "FogEditor";
-
 void
 X3DFogEditorInterface::create (const std::string & filename)
 {

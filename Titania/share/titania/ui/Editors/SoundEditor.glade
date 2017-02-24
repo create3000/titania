@@ -125,6 +125,7 @@
     <property name="skip_pager_hint">True</property>
     <child>
       <object class="GtkBox" id="Widget">
+        <property name="name">SoundEditor</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">8</property>
@@ -372,7 +373,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">SoundIntensityAdjustment</property>
-                                <property name="climb_rate">0.32</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                               </object>
@@ -480,7 +481,7 @@
                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">SoundLocationXAdjustment</property>
-                                <property name="climb_rate">0.32</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                               </object>
@@ -497,7 +498,7 @@
                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">SoundLocationYAdjustment</property>
-                                <property name="climb_rate">0.32</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                               </object>
@@ -514,7 +515,7 @@
                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">SoundLocationZAdjustment</property>
-                                <property name="climb_rate">0.32</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                               </object>
@@ -587,7 +588,7 @@
                                     <property name="tooltip_text" translatable="yes">x-Axis</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">SoundDirectionXAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -604,7 +605,7 @@
                                     <property name="tooltip_text" translatable="yes">y-Axis</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">SoundDirectionYAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -621,7 +622,7 @@
                                     <property name="tooltip_text" translatable="yes">z-Axis</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">SoundDirectionZAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -655,7 +656,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="text" translatable="yes">0,000</property>
                                 <property name="adjustment">SoundPriorityAdjustment</property>
-                                <property name="climb_rate">0.32</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                               </object>
@@ -804,7 +805,7 @@
                             <property name="halign">start</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SoundMinBackAdjustment</property>
-                            <property name="climb_rate">0.32</property>
+                            <property name="climb_rate">0.32000000000000001</property>
                             <property name="digits">3</property>
                             <property name="numeric">True</property>
                           </object>
@@ -820,7 +821,7 @@
                             <property name="halign">start</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SoundMinFrontAdjustment</property>
-                            <property name="climb_rate">0.32</property>
+                            <property name="climb_rate">0.32000000000000001</property>
                             <property name="digits">3</property>
                             <property name="numeric">True</property>
                           </object>
@@ -836,7 +837,7 @@
                             <property name="halign">start</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SoundMaxBackAdjustment</property>
-                            <property name="climb_rate">0.32</property>
+                            <property name="climb_rate">0.32000000000000001</property>
                             <property name="digits">3</property>
                             <property name="numeric">True</property>
                           </object>
@@ -852,7 +853,7 @@
                             <property name="halign">start</property>
                             <property name="text" translatable="yes">0,000</property>
                             <property name="adjustment">SoundMaxFrontAdjustment</property>
-                            <property name="climb_rate">0.32</property>
+                            <property name="climb_rate">0.32000000000000001</property>
                             <property name="digits">3</property>
                             <property name="numeric">True</property>
                           </object>
@@ -1236,7 +1237,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">1,000</property>
                                 <property name="adjustment">SoundSourceSpeedAdjustment</property>
-                                <property name="climb_rate">0.32</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                                 <property name="value">1</property>
@@ -1253,7 +1254,7 @@
                                 <property name="halign">start</property>
                                 <property name="text" translatable="yes">1,000</property>
                                 <property name="adjustment">SoundSourcePitchAdjustment</property>
-                                <property name="climb_rate">0.32</property>
+                                <property name="climb_rate">0.32000000000000001</property>
                                 <property name="digits">3</property>
                                 <property name="numeric">True</property>
                                 <property name="value">1</property>
@@ -1464,7 +1465,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">1,000000000</property>
                                     <property name="adjustment">SoundSourceCycleTimeAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">9</property>
                                     <property name="numeric">True</property>
                                     <property name="value">1</property>
@@ -1494,7 +1495,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">1,000000000</property>
                                     <property name="adjustment">SoundSourceElapsedTimeAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">9</property>
                                     <property name="numeric">True</property>
                                     <property name="value">1</property>
@@ -1524,7 +1525,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">1,000000000</property>
                                     <property name="adjustment">SoundSourceDurationAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">9</property>
                                     <property name="numeric">True</property>
                                     <property name="value">1</property>
@@ -1553,7 +1554,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">1,000</property>
                                     <property name="adjustment">SoundSourceStartTimeAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">9</property>
                                     <property name="numeric">True</property>
                                     <property name="value">1</property>
@@ -1603,7 +1604,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">1,000</property>
                                     <property name="adjustment">SoundSourceResumeTimeAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">9</property>
                                     <property name="numeric">True</property>
                                     <property name="value">1</property>
@@ -1653,7 +1654,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">1,000</property>
                                     <property name="adjustment">SoundSourcePauseTimeAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">9</property>
                                     <property name="numeric">True</property>
                                     <property name="value">1</property>
@@ -1703,7 +1704,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">1,000</property>
                                     <property name="adjustment">SoundSourceStopTimeAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="digits">9</property>
                                     <property name="numeric">True</property>
                                     <property name="value">1</property>

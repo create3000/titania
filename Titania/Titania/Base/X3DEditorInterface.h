@@ -85,8 +85,6 @@ protected:
 
 	X3DEditorInterface ();
 
-	X3DEditorInterface (const std::string &);
-
 	virtual
 	void
 	initialize () override;

@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DScenePropertiesEditorInterface::m_widgetName = "ScenePropertiesEditor";
-
 void
 X3DScenePropertiesEditorInterface::create (const std::string & filename)
 {

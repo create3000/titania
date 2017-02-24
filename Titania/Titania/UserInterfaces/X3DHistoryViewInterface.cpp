@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DHistoryViewInterface::m_widgetName = "HistoryView";
-
 void
 X3DHistoryViewInterface::create (const std::string & filename)
 {

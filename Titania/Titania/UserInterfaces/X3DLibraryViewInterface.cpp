@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DLibraryViewInterface::m_widgetName = "LibraryView";
-
 void
 X3DLibraryViewInterface::create (const std::string & filename)
 {

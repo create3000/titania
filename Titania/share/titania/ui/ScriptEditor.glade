@@ -165,6 +165,7 @@
     <property name="can_focus">False</property>
     <child>
       <object class="GtkBox" id="Widget">
+        <property name="name">ScriptEditor</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <signal name="map" handler="on_map" swapped="no"/>
@@ -635,7 +636,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="adjustment">RightMarginAdjustment</property>
-                                    <property name="climb_rate">0.32</property>
+                                    <property name="climb_rate">0.32000000000000001</property>
                                     <property name="numeric">True</property>
                                     <property name="value">80</property>
                                     <signal name="value-changed" handler="on_right_margin_changed" swapped="no"/>

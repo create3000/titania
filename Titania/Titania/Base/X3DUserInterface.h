@@ -73,15 +73,11 @@ public:
 	const std::string &
 	getTypeName () const
 	throw (X3D::Error <X3D::DISPOSED>) final override
-	{ return getWidgetName (); }
+	{ return getName (); }
 
 	virtual
 	void
 	setName (const std::string &) final override; // must be final, called in constructor
-
-	virtual
-	const std::string &
-	getWidgetName () const = 0;
 
 	virtual
 	Gtk::Window &
@@ -140,8 +136,6 @@ protected:
 	/// @name Construction
 
 	X3DUserInterface ();
-
-	X3DUserInterface (const std::string &);
 
 	virtual
 	void

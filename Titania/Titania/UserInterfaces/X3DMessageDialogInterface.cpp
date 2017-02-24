@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DMessageDialogInterface::m_widgetName = "MessageDialog";
-
 void
 X3DMessageDialogInterface::create (const std::string & filename)
 {

@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DLayerEditorInterface::m_widgetName = "LayerEditor";
-
 void
 X3DLayerEditorInterface::create (const std::string & filename)
 {

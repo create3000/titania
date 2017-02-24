@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DConsoleInterface::m_widgetName = "Console";
-
 void
 X3DConsoleInterface::create (const std::string & filename)
 {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkAdjustment" id="TextureStageAdjustment">
@@ -16,6 +16,7 @@
     <property name="skip_pager_hint">True</property>
     <child>
       <object class="GtkBox" id="Widget">
+        <property name="name">TextureMappingEditor</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>

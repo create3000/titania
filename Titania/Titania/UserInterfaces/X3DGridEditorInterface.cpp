@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DGridEditorInterface::m_widgetName = "GridEditor";
-
 void
 X3DGridEditorInterface::create (const std::string & filename)
 {

@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DOutlineEditorInterface::m_widgetName = "OutlineEditor";
-
 void
 X3DOutlineEditorInterface::create (const std::string & filename)
 {

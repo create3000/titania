@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DBrowserWindowInterface::m_widgetName = "BrowserWindow";
-
 void
 X3DBrowserWindowInterface::create (const std::string & filename)
 {

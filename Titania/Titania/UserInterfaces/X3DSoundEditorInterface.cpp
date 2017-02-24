@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DSoundEditorInterface::m_widgetName = "SoundEditor";
-
 void
 X3DSoundEditorInterface::create (const std::string & filename)
 {

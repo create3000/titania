@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DSculpToolEditorInterface::m_widgetName = "SculpToolEditor";
-
 void
 X3DSculpToolEditorInterface::create (const std::string & filename)
 {

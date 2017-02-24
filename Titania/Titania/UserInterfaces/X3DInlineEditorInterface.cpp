@@ -52,8 +52,6 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DInlineEditorInterface::m_widgetName = "InlineEditor";
-
 void
 X3DInlineEditorInterface::create (const std::string & filename)
 {

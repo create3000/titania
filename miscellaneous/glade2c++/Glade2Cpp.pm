@@ -423,9 +423,9 @@ sub generate
 	
 	# Call base class construtor if any.
 	if ($base_class_name) {
-		say OUT "  $base_class_name (m_widgetName, arguments ...),";
+		say OUT "  $base_class_name (arguments ...),";
 	}
-	
+
 	say OUT "   filename (filename)";
 
 	# Constructor end begin body
@@ -439,11 +439,6 @@ sub generate
 	# Builder
 	say OUT "  const Glib::RefPtr <Gtk::Builder> & getBuilder () const";
 	say OUT "  { return m_builder; }";
-
-	# Name
-	say OUT "  virtual";
-	say OUT "  const std::string & getWidgetName () const";
-	say OUT "  { return m_widgetName; }";
 
 	#say OUT "  void updateWidgets (const std::vector <Glib::ustring> & names) const";
 	#say OUT "  { getBuilder () -> add_from_file (filename, names); }";
@@ -519,9 +514,6 @@ sub generate
 	say OUT "///  \@name Static members";
 	say OUT "";
 
-	say OUT "  static const std::string m_widgetName;";
-	say OUT "";
-
 	say OUT "///  \@name Members";
 	say OUT "";
 
@@ -572,10 +564,6 @@ sub generate
 
 	# Namespace
 	say OUT "namespace $_ {" foreach @{$self -> {namespaces}};
-	say OUT "";
-
-	# Static members
-	say OUT "const std::string $self->{class_name}\::m_widgetName = \"$name\";";
 	say OUT "";
 
 	# create
