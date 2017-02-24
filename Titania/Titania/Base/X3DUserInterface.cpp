@@ -104,6 +104,7 @@ X3DUserInterface::X3DUserInterface () :
 void
 X3DUserInterface::construct ()
 {
+	setTypeName (getWidget () .get_name ());
 	X3DBaseInterface::setName (getWidget () .get_name ());
 
 	config .reset (new Configuration (getWidget () .get_name ()));

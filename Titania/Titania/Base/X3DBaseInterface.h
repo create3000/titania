@@ -198,15 +198,17 @@ public:
 
 protected:
 
-	/// @name Friends
-
-	friend class X3DBrowserWindow;
-
 	/// @name Construction
 
 	X3DBaseInterface ();
 
 	X3DBaseInterface (X3DBrowserWindow* const, X3D::Browser* const);
+
+	/// @name Member access
+	 
+	void
+	setTypeName (const std::string & value)
+	{ typeName = value; }
 
 
 private:
@@ -220,12 +222,9 @@ private:
 	getWorldInfo (const bool)
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
-	/// @name Static members
-
-	static const std::string typeName;
-
 	/// @name Members
 
+	std::string             typeName;
 	X3DBrowserWindow* const browserWindow;
 
 };

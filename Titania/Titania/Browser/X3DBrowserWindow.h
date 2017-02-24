@@ -71,7 +71,6 @@ class X3DBrowserWindow :
 {
 public:
 
-	using X3DBrowserEditor::getWorldInfo;
 	using X3DBrowserEditor::save;
 
 	virtual

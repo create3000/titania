@@ -61,12 +61,11 @@
 namespace titania {
 namespace puck {
 
-const std::string X3DBaseInterface::typeName = "X3DBaseInterface";
-
 ///  Constructor.
 X3DBaseInterface::X3DBaseInterface (X3DBrowserWindow* const browserWindow, X3D::Browser* const browser) :
 	     sigc::trackable (),
 	X3D::X3DParentObject (browser),
+	            typeName (),
 	       browserWindow (browserWindow)
 {
 	assert (browserWindow);
@@ -76,6 +75,7 @@ X3DBaseInterface::X3DBaseInterface (X3DBrowserWindow* const browserWindow, X3D::
 X3DBaseInterface::X3DBaseInterface () :
 	     sigc::trackable (),
 	X3D::X3DParentObject (nullptr),
+	            typeName (),
 	       browserWindow (nullptr)
 {
 	assert (false);

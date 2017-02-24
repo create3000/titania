@@ -68,13 +68,6 @@ public:
 
 	///  @name Member access
 
-	///  Returns the type name of this object.
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (X3D::Error <X3D::DISPOSED>) final override
-	{ return getName (); }
-
 	virtual
 	void
 	setName (const std::string &) final override; // must be final, called in constructor
