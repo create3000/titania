@@ -99,11 +99,8 @@ X3DModelsPaletteEditor::set_loadState (X3D::Inline* const inlineNode,
 
 			set_bbox (inlineNode, transform);
 
-			// Proceed with next case:
-		}
-		case X3D::FAILED_STATE:
-			inlineNode -> checkLoadState () .removeInterest (&X3DModelsPaletteEditor::set_loadState, this);
 			break;
+		}
 		default:
 			break;
 	}

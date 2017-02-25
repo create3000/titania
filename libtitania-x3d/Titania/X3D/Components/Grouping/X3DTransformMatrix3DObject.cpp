@@ -81,12 +81,7 @@ X3DTransformMatrix3DObject::setMatrix (const Vector3d & t,
 
 	value .set (t, r);
 
-	if (value == matrix)
-		return;
-
-	matrix = value;
-
-	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
+	X3DTransformMatrix3DObject::setMatrix (value);
 }
 
 void
@@ -100,12 +95,7 @@ X3DTransformMatrix3DObject::setMatrix (const Vector3d & t,
 
 	value .set (t, r, s, so, c);
 
-	if (value == matrix)
-		return;
-
-	matrix = value;
-
-	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
+	X3DTransformMatrix3DObject::setMatrix (value);
 }
 
 } // X3D

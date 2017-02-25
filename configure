@@ -3901,7 +3901,7 @@ fi
 CXXFLAGS=$CXXFLAGS" -DFIXED_PIPELINE"
 
 if test "x$enable_debug" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG -Wno-deprecated-declarations"
+	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG"
 fi
 
 LDFLAGS="-rdynamic"

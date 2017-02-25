@@ -164,6 +164,8 @@ X3DGroupingNode::set_addChildren ()
 
 	addChildren () .set ({ });
 	addChildren () .setTainted (false);
+
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
 
 void
