@@ -158,12 +158,13 @@ ShaderProgram::requestImmediateLoad ()
 		{
 			// Create shader program
 
-			Loader            loader (getExecutionContext ());
-			const std::string document     = loader .loadDocument (URL);
-			const std::string shaderSource = Shader::getShaderSource (this, document, loader .getWorldURL ());
-			const char*       string       = shaderSource .c_str ();
+			Loader loader (getExecutionContext ());
 
-			setOpenGLES (Shader::isOpenGLES (shaderSource));
+			const auto document = loader .loadDocument (URL);
+			const auto source   = Shader::getSource (this, document, loader .getWorldURL ());
+			const auto string   = source .string .c_str ();
+
+			setOpenGLES (Shader::getOpenGLES (source .string));
 
 			if (programId)
 				glDeleteProgram (programId);
@@ -182,7 +183,7 @@ ShaderProgram::requestImmediateLoad ()
 					glCompileShader (shaderId);
 					glGetShaderiv   (shaderId, GL_COMPILE_STATUS, &valid);
 
-					Shader::printShaderInfoLog (getBrowser (), getTypeName (), getName (), type (), shaderId);
+					Shader::printShaderInfoLog (getBrowser (), getTypeName (), getName (), type (), shaderId, source .uris);
 
 					if (valid)
 					{
@@ -206,7 +207,7 @@ ShaderProgram::requestImmediateLoad ()
 		
 					// Print info log
 		
-					Shader::printProgramInfoLog (getBrowser (), getTypeName (), getName (), programId);
+					Shader::printProgramInfoLog (getBrowser (), getTypeName (), getName (), programId, source .uris);
 		
 					// Initialize uniform variables
 					getDefaultUniforms ();

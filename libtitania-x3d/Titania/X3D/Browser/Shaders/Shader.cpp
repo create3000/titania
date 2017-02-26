@@ -57,10 +57,9 @@
 
 namespace titania {
 namespace X3D {
-namespace Shader {
 
 bool
-isOpenGLES (const std::string & source)
+Shader::getOpenGLES (const std::string & source)
 {
 	// OpenGL ES1 shaders use '#version 100' directive.
 	// OpenGL ES2 shaders use '#version 100' directive, there is no '#version 200'.
@@ -71,61 +70,8 @@ isOpenGLES (const std::string & source)
 	return std::regex_search (source, version_es);
 }
 
-static
-std::string
-getShaderSource (X3DBaseNode* const node, const std::string & source, const basic::uri & worldURL, const size_t level, std::set <basic::uri> & files)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
-{
-	static const std::regex include (R"/(^#pragma\s+X3D\s+include\s+\"(.*?)\"\s*$)/");
-
-	if (not files .insert (worldURL) .second)
-		return "";
-
-	if (level > 1024)
-		throw Error <INVALID_URL> ("Header inclusion depth limit reached, might be caused by cyclic header inclusion.");
-
-	std::istringstream input (source);
-	std::ostringstream output;
-
-	input  .imbue (std::locale::classic ());
-	output .imbue (std::locale::classic ());
-
-	size_t      lineNumber = 0;
-	std::string line;
-
-	if (level)
-	{
-		output << "#pragma file \"" << worldURL .filename () << "(" << node -> getName () << ")\"" << std::endl;
-		output << "#line "<< lineNumber << std::endl;
-	}
-
-	while (std::getline (input, line))
-	{
-		std::smatch filename;
-
-		if (std::regex_match (line, filename, include))
-		{
-			Loader loader (node -> getExecutionContext ());
-
-			output << getShaderSource (node, loader .loadDocument (worldURL .transform (filename .str (1))), loader .getWorldURL (), level + 1, files) << std::endl;
-
-			output << "#pragma file \"" << worldURL << "\""  << std::endl;
-			output << "#line "<< lineNumber + 1 << std::endl;
-		}
-		else
-		{
-			output << line << std::endl;
-		}
-
-		++ lineNumber;
-	}
-
-	return output .str ();
-}
-
 GLenum
-getShaderType (const std::string & type)
+Shader::getShaderType (const std::string & type)
 {
 	// http://www.opengl.org/wiki/Shader
 	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
@@ -156,7 +102,7 @@ getShaderType (const std::string & type)
 }
 
 GLint
-getProgramStageBit (const std::string & type)
+Shader::getProgramStageBit (const std::string & type)
 {
 	// http://www.opengl.org/wiki/Rendering_Pipeline_Overview
 
@@ -185,8 +131,84 @@ getProgramStageBit (const std::string & type)
 	}
 }
 
+ShaderSource
+Shader::getSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>)
+{
+	static const std::regex version (R"/(^(?:\s+|/\*.*?\*/|//.*?\n)*#version\s+\d+)/");
+
+	ShaderSource          source;
+	std::set <basic::uri> files;
+
+	source .string = getSource (node, string, worldURL, source .uris, 0, files);
+
+	if (std::regex_search (source .string, version))
+		source .string = addConstants (node -> getBrowser (), source .string);
+	else
+		source .string = addConstants (node -> getBrowser (), "#version 100\n#line 0\n" + source .string);
+
+	return source;
+}
+
 std::string
-addConstants (X3DBrowser* const browser, const std::string & source)
+Shader::getSource (X3DBaseNode* const node,
+                   const std::string & source,
+                   const basic::uri & worldURL,
+                   std::vector <basic::uri> & uris,
+                   const size_t level,
+                   std::set <basic::uri> & files)
+throw (Error <INVALID_URL>,
+       Error <URL_UNAVAILABLE>)
+{
+	static const std::regex include (R"/(^#pragma\s+X3D\s+include\s+\"(.*?)\"\s*$)/");
+
+	if (not files .insert (worldURL) .second)
+		return "";
+
+	if (level > 1024)
+		throw Error <INVALID_URL> ("Header inclusion depth limit reached, might be caused by cyclic header inclusion.");
+
+	std::istringstream input (source);
+	std::ostringstream output;
+
+	input  .imbue (std::locale::classic ());
+	output .imbue (std::locale::classic ());
+
+	size_t      fileNumber = uris .size ();
+	size_t      lineNumber = 1;
+	std::string line;
+
+	uris .emplace_back (worldURL);
+
+	if (level)
+		output << "#line "<< lineNumber << " " << fileNumber << std::endl;
+
+	while (std::getline (input, line))
+	{
+		std::smatch filename;
+
+		if (std::regex_match (line, filename, include))
+		{
+			Loader loader (node -> getExecutionContext ());
+
+			output << getSource (node, loader .loadDocument (worldURL .transform (filename .str (1))), loader .getWorldURL (), uris, level + 1, files) << std::endl;
+
+			output << "#line "<< lineNumber + 1 << " " << fileNumber << std::endl;
+		}
+		else
+		{
+			output << line << std::endl;
+		}
+
+		++ lineNumber;
+	}
+
+	return output .str ();
+}
+
+std::string
+Shader::addConstants (X3DBrowser* const browser, const std::string & source)
 {
 	static const std::regex version (R"/(^([\s\S]*?[\n]{0,1})(\s*#version\s+\d+.*?\n))/");
 
@@ -234,25 +256,13 @@ addConstants (X3DBrowser* const browser, const std::string & source)
 	return std::regex_replace (source, version, constants);
 }
 
-std::string
-getShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>)
-{
-	static const std::regex version (R"/(^(?:\s+|/\*.*?\*/|//.*?\n)*#version\s+\d+)/");
-
-	std::set <basic::uri> files;
-
-	const auto source = getShaderSource (node, string, worldURL, 0, files);
-
-	if (std::regex_search (source, version))
-		return addConstants (node -> getBrowser (), source);
-
-	return addConstants (node -> getBrowser (), "#version 100\n#line 0\n" + source);
-}
-
 void
-printShaderInfoLog (X3DBrowser* const browser, const std::string & typeName, const std::string & name, const std::string & type, const GLint shaderId)
+Shader::printShaderInfoLog (X3DBrowser* const browser,
+                            const std::string & typeName,
+                            const std::string & name,
+                            const std::string & type,
+                            const GLint shaderId, 
+                            const std::vector <basic::uri> & sources)
 {
 	if (not shaderId)
 		return;
@@ -263,19 +273,38 @@ printShaderInfoLog (X3DBrowser* const browser, const std::string & typeName, con
 
 	if (infoLogLength > 1)
 	{
-		char infoLog [infoLogLength];
+		static const std::regex numbers (R"/((\d+):(\d+)\((\d+)\))/");
 
-		glGetShaderInfoLog (shaderId, infoLogLength, 0, infoLog);
+		std::string infoLog (infoLogLength, '\0');
+
+		glGetShaderInfoLog (shaderId, infoLogLength, 0, &infoLog [0]);
+
+		basic::uri filename;
+	
+		try
+		{
+			std::smatch match;
+
+			if (std::regex_search (infoLog, match, numbers))
+				filename = sources .at (atoi (match .str (1) .c_str ()));
+		}
+		catch (const std::out_of_range &)
+		{ }
 
 		browser -> print (std::string (80, '#'), '\n',
 		                  typeName, name .empty () ? "" : " '" + name + "'" ," InfoLog (", type, "):\n",
-		                  std::string (infoLog),
+		                  "in file '", filename, "'\n",
+		                  infoLog,
 		                  std::string (80, '#'), '\n');
 	}
 }
 
 void
-printProgramInfoLog (X3DBrowser* const browser, const std::string & typeName, const std::string & name, const GLint programId)
+Shader::printProgramInfoLog (X3DBrowser* const browser,
+                             const std::string & typeName,
+                             const std::string & name,
+                             const GLint programId,
+                             const std::vector <basic::uri> & sources)
 {
 	if (not programId)
 		return;
@@ -286,17 +315,31 @@ printProgramInfoLog (X3DBrowser* const browser, const std::string & typeName, co
 
 	if (infoLogLength > 1)
 	{
-		char infoLog [infoLogLength];
+		static const std::regex numbers (R"/((\d+):(\d+)\((\d+)\))/");
 
-		glGetProgramInfoLog (programId, infoLogLength, 0, infoLog);
+		std::string infoLog (infoLogLength, '\0');
+
+		glGetProgramInfoLog (programId, infoLogLength, 0, &infoLog [0]);
+
+		basic::uri filename;
+
+		try
+		{
+			std::smatch match;
+
+			if (std::regex_search (infoLog, match, numbers))
+				filename = sources .at (atoi (match .str (1) .c_str ()));
+		}
+		catch (const std::out_of_range &)
+		{ }
 
 		browser -> print (std::string (80, '#'), '\n',
 		                  typeName, name .empty () ? "" : " '" + name + "'" , " Info Log:\n",
-		                  std::string (infoLog),
+		                  "in file '", filename, "'\n",
+		                  infoLog,
 		                  std::string (80, '#'), '\n');
 	}
 }
 
-} // Shader
 } // X3D
 } // titania

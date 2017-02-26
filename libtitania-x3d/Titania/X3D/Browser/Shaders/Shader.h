@@ -57,29 +57,73 @@
 
 namespace titania {
 namespace X3D {
-namespace Shader {
 
-bool
-isOpenGLES (const std::string &);
+struct ShaderSource
+{
+	std::string              string;
+	std::vector <basic::uri> uris;
 
-std::string
-getShaderSource (X3DBaseNode* const, const std::string &, const basic::uri &)
-throw (Error <INVALID_URL>,
-       Error <URL_UNAVAILABLE>);
+};
 
-GLenum
-getShaderType (const std::string &);
+class Shader
+{
+public:
 
-GLint
-getProgramStageBit (const std::string &);
+	static
+	bool
+	getOpenGLES (const std::string & source);
 
-void
-printShaderInfoLog (X3DBrowser* const, const std::string &, const std::string &, const std::string &, const GLint);
+	static
+	ShaderSource
+	getSource (X3DBaseNode* const node, const std::string & source, const basic::uri & worldURL)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
 
-void
-printProgramInfoLog (X3DBrowser* const, const std::string &, const std::string &, const GLint);
+	static
+	GLenum
+	getShaderType (const std::string & type);
 
-} // Shader
+	static
+	GLint
+	getProgramStageBit (const std::string & type);
+
+	static
+	void
+	printShaderInfoLog (X3DBrowser* const browser,
+	                    const std::string & typeName,
+	                    const std::string & name,
+	                    const std::string & type,
+	                    const GLint shaderId,
+	                    const std::vector <basic::uri> & sources);
+
+	static
+	void
+	printProgramInfoLog (X3DBrowser* const browser,
+	                     const std::string & typeName,
+	                     const std::string & name,
+	                     const GLint programId,
+	                     const std::vector <basic::uri> & sources);
+
+
+private:
+
+	static
+	std::string
+	getSource (X3DBaseNode* const node,
+	           const std::string & source,
+	           const basic::uri & worldURL,
+	           std::vector <basic::uri> & sources,
+	           const size_t level,
+	           std::set <basic::uri> & files)
+	throw (Error <INVALID_URL>,
+	       Error <URL_UNAVAILABLE>);
+
+	static
+	std::string
+	addConstants (X3DBrowser* const browser, const std::string & source);
+
+};
+
 } // X3D
 } // titania
 

@@ -58,7 +58,8 @@ namespace titania {
 namespace X3D {
 
 class ShaderPart :
-	virtual public X3DNode, public X3DUrlObject
+	virtual public X3DNode,
+	public X3DUrlObject
 {
 public:
 
@@ -113,7 +114,7 @@ public:
 	{ return valid; }
 
 	bool
-	isOpenGLES () const
+	getOpenGLES () const
 	{ return openGLES; }
 
 	GLint

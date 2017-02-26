@@ -174,7 +174,7 @@ ComposedShader::set_loaded ()
 				{
 					if (partNode -> isValid ())
 					{
-						openGLES |= partNode -> isOpenGLES ();
+						openGLES |= partNode -> getOpenGLES ();
 	
 						glAttachShader (programId, partNode -> getShaderId ());
 					}
@@ -212,7 +212,7 @@ ComposedShader::set_loaded ()
 
 		// Print info log
 
-		Shader::printProgramInfoLog (getBrowser (), getTypeName (), getName (), programId);
+		Shader::printProgramInfoLog (getBrowser (), getTypeName (), getName (), programId, { });
 
 		if (bool (valid) != isValid ())
 			isValid () = valid;

@@ -59,7 +59,9 @@ namespace titania {
 namespace X3D {
 
 class ShaderProgram :
-	virtual public X3DNode, public X3DUrlObject, public X3DProgrammableShaderObject
+	virtual public X3DNode,
+	public X3DUrlObject,
+	public X3DProgrammableShaderObject
 {
 public:
 

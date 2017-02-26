@@ -125,12 +125,13 @@ ShaderPart::requestImmediateLoad ()
 	{
 		try
 		{
-			Loader            loader (getExecutionContext ());
-			const std::string document     = loader .loadDocument (URL);
-			const std::string shaderSource = Shader::getShaderSource (this, document, loader .getWorldURL ());
-			const char*       string       = shaderSource .c_str ();
+			Loader loader (getExecutionContext ());
 
-			openGLES = Shader::isOpenGLES (shaderSource);
+			const auto document = loader .loadDocument (URL);
+			const auto source   = Shader::getSource (this, document, loader .getWorldURL ());
+			const auto string   = source .string .c_str ();
+
+			openGLES = Shader::getOpenGLES (source .string);
 
 			if (shaderId)
 				glDeleteShader (shaderId);
@@ -144,7 +145,7 @@ ShaderPart::requestImmediateLoad ()
 
 				glGetShaderiv (shaderId, GL_COMPILE_STATUS, &valid);
 
-				Shader::printShaderInfoLog (getBrowser (), getTypeName (), getName (), type (), shaderId);
+				Shader::printShaderInfoLog (getBrowser (), getTypeName (), getName (), type (), shaderId, source .uris);
 
 				if (valid)
 					break;
