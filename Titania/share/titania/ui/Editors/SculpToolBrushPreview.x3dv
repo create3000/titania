@@ -11,6 +11,7 @@ META "modified" "Tue, 07 Feb 2017 07:53:37 GMT"
 META "outputStyle" "Nicest"
 
 EXTERNPROTO SculpToolBrush [
+  inputOutput SFBool   normalize
   inputOutput SFString type
   inputOutput SFDouble radius
   inputOutput SFDouble height
@@ -153,7 +154,9 @@ WorldInfo {
           DEF children MetadataSet {
             name "children"
             reference "http://titania.create3000.de"
-            value DEF SculpToolBrush SculpToolBrush { }
+            value DEF SculpToolBrush SculpToolBrush {
+              normalize FALSE
+            }
           }
         ]
       }

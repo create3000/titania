@@ -10,6 +10,7 @@ META "identifier" "/home/holger/Projekte/Titania/Titania/share/titania/ui/Logo.x
 META "modified" "Tue, 07 Feb 2017 06:22:29 GMT"
 
 EXTERNPROTO SculpToolBrush [
+  inputOutput SFBool   normalize
   inputOutput SFString type
   inputOutput SFDouble radius
   inputOutput SFDouble height
@@ -27,6 +28,7 @@ EXTERNPROTO SculpToolBrush [
 ]
 
 DEF SculpToolBrush SculpToolBrush {
+  normalize TRUE
   radius 100
   height 1
   warp 0.153

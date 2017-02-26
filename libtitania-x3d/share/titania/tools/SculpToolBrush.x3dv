@@ -31,6 +31,7 @@ EXTERNPROTO Grid [
 ]
 
 PROTO SculpToolBrush [
+  inputOutput SFBool   normalize FALSE
   inputOutput SFString type "CIRCULAR"
   inputOutput SFDouble radius 0.1
   inputOutput SFDouble height 0.2
@@ -44,7 +45,6 @@ PROTO SculpToolBrush [
 {
   DEF ElevationGrid Transform {
     translation -0.5 0 -0.5
-    scale 0.2 0.1 0.2
     center 0.5 0 0.5
     children [
       DEF _1 Shape {
@@ -10305,6 +10305,7 @@ PROTO SculpToolBrush [
   }
 
   DEF NormalDistributionScript Script {
+    inputOutput    SFBool   normalize IS normalize
     inputOutput    SFString type IS type
     inputOutput    SFDouble radius IS radius
     inputOutput    SFDouble height IS height
@@ -10333,9 +10334,12 @@ function eventsProcessed ()
 		xDimension = geometry .xDimension,
 		zDimension = geometry .zDimension;
 
-	transform .scale .x = scale * radius * 2;
-	transform .scale .y = scale * pressure;
-	transform .scale .z = scale * radius * 2;
+	if (! normalize)
+	{
+		transform .scale .x = scale * radius * 2;
+		transform .scale .y = scale * pressure;
+		transform .scale .z = scale * radius * 2;
+	}
 
 	switch (type)
 	{

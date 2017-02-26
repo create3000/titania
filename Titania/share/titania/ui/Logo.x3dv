@@ -20,6 +20,7 @@ EXTERNPROTO Red [
 ]
 
 EXTERNPROTO SculpToolBrush [
+  inputOutput SFBool   normalize
   inputOutput SFString type
   inputOutput SFDouble radius
   inputOutput SFDouble height

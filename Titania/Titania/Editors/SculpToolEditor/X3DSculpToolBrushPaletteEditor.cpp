@@ -117,14 +117,10 @@ X3DSculpToolBrushPaletteEditor::set_bbox (X3D::Inline* const inlineNode,
 	{
 		// Center and scale Inline depending on bbox in palette.
 
-		const auto bbox     = inlineNode -> getBBox ();
-		const auto brush    = inlineNode -> getInternalScene () -> getNamedNode ("SculpToolBrush");
-		const auto diameter = brush -> getField <X3D::SFDouble> ("radius") .getValue () * 2;
-		const auto pressure = brush -> getField <X3D::SFDouble> ("pressure") .getValue ();
-		const auto display  = X3D::Vector3d (diameter, pressure, diameter);
-		const auto size     = bbox .size () / display;
-		const auto center   = bbox .center ();
-		const auto scale    = X3D::Vector3d (1.8, 1.8, 1.8) / display / maximum_norm (size);
+		const auto bbox   = inlineNode -> getBBox ();
+		const auto size   = bbox .size ();
+		const auto center = bbox .center ();
+		const auto scale  = X3D::Vector3d (1.8, 1.8, 1.8) / maximum_norm (size);
 
 		transform -> translation () = -center * scale;
 		transform -> scale ()       = scale;
@@ -186,6 +182,8 @@ X3DSculpToolBrushPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 
 		const auto brush = X3D::MFNode ({ getBrush () });
 
+		brush [0] -> setField <X3D::SFBool> ("normalize", true);
+
 		// Export brush to stream
 
 		std::stringstream sstream;
@@ -196,10 +194,14 @@ X3DSculpToolBrushPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 	
 		scene -> fromStream (sstream);
 
+		brush [0] -> setField <X3D::SFBool> ("normalize", false);
+
 		return true;
 	}
-	catch (const X3D::X3DError &)
+	catch (const X3D::X3DError & error)
 	{
+		__LOG__ << error .what () << std::endl;
+
 		return false;
 	}
 }
