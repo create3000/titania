@@ -198,26 +198,26 @@ private:
 
 	///  @name Members
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::string filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
-	Glib::RefPtr <Gtk::ListStore>  m_FogTypeListStore;
+	Glib::RefPtr <Gtk::ListStore> m_FogTypeListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_VisibilityRangeAdjustment;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::Box*                      m_FogListBox;
-	Gtk::Box*                      m_FogActionBox;
-	Gtk::Button*                   m_NewFogButton;
-	Gtk::Button*                   m_RemoveFogButton;
-	Gtk::Expander*                 m_FogExpander;
-	Gtk::Grid*                     m_FogBox;
-	Gtk::SpinButton*               m_VisibilityRangeSpinButton;
-	Gtk::Box*                      m_NameBox;
-	Gtk::Entry*                    m_NameEntry;
-	Gtk::Button*                   m_RenameButton;
-	Gtk::Box*                      m_ColorBox;
-	Gtk::Button*                   m_ColorButton;
-	Gtk::ComboBoxText*             m_FogTypeComboBoxText;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::Box* m_FogListBox;
+	Gtk::Box* m_FogActionBox;
+	Gtk::Button* m_NewFogButton;
+	Gtk::Button* m_RemoveFogButton;
+	Gtk::Expander* m_FogExpander;
+	Gtk::Grid* m_FogBox;
+	Gtk::SpinButton* m_VisibilityRangeSpinButton;
+	Gtk::Box* m_NameBox;
+	Gtk::Entry* m_NameEntry;
+	Gtk::Button* m_RenameButton;
+	Gtk::Box* m_ColorBox;
+	Gtk::Button* m_ColorButton;
+	Gtk::ComboBoxText* m_FogTypeComboBoxText;
 
 };
 

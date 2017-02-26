@@ -210,8 +210,8 @@ private:
 
 	///  @name Members
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::string filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAutodesk3DSMax;
@@ -227,14 +227,14 @@ private:
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DClassicVRMLEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DJSONEncoding;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterX3DXMLEncoding;
-	Gtk::Image*                    m_ImportImage1;
-	Gtk::FileChooserDialog*        m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::Dialog*                   m_ImportDialog;
-	Gtk::RadioButton*              m_ImportSceneButton;
-	Gtk::RadioButton*              m_ImportAsInlineButton;
-	Gtk::RadioButton*              m_ImportExternProtosButton;
-	Gtk::RadioButton*              m_ImportProtosButton;
+	Gtk::Image* m_ImportImage1;
+	Gtk::FileChooserDialog* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::Dialog* m_ImportDialog;
+	Gtk::RadioButton* m_ImportSceneButton;
+	Gtk::RadioButton* m_ImportAsInlineButton;
+	Gtk::RadioButton* m_ImportExternProtosButton;
+	Gtk::RadioButton* m_ImportProtosButton;
 
 };
 

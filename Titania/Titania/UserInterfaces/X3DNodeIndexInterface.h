@@ -186,22 +186,22 @@ private:
 
 	///  @name Members
 
-	std::string                         filename;
-	Glib::RefPtr <Gtk::Builder>         m_builder;
-	Glib::RefPtr <Gtk::ListStore>       m_ListStore;
-	Glib::RefPtr <Gtk::TreeModelSort>   m_TreeModelSort;
-	Glib::RefPtr <Gtk::ListStore>       m_SearchListStore;
+	std::string filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::ListStore> m_ListStore;
+	Glib::RefPtr <Gtk::TreeModelSort> m_TreeModelSort;
+	Glib::RefPtr <Gtk::ListStore> m_SearchListStore;
 	Glib::RefPtr <Gtk::EntryCompletion> m_SearchEntryCompletion;
-	Glib::RefPtr <Gtk::TreeViewColumn>  m_CustomImageColumn;
-	Glib::RefPtr <Gtk::TreeViewColumn>  m_TypeNameColumn;
-	Glib::RefPtr <Gtk::TreeViewColumn>  m_NameColumn;
-	Gtk::Window*                        m_Window;
-	Gtk::Box*                           m_Widget;
-	Gtk::HeaderBar*                     m_HeaderBar;
-	Gtk::SearchEntry*                   m_SearchEntry;
-	Gtk::ScrolledWindow*                m_ScrolledWindow;
-	Gtk::TreeView*                      m_TreeView;
-	Gtk::Box*                           m_FooterBox;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_CustomImageColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_TypeNameColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::SearchEntry* m_SearchEntry;
+	Gtk::ScrolledWindow* m_ScrolledWindow;
+	Gtk::TreeView* m_TreeView;
+	Gtk::Box* m_FooterBox;
 
 };
 

@@ -190,24 +190,24 @@ private:
 
 	///  @name Members
 
-	std::string                 filename;
+	std::string filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window*                m_Window;
-	Gtk::Box*                   m_Widget;
-	Gtk::Label*                 m_Label;
-	Gtk::Notebook*              m_Notebook;
-	Gtk::Box*                   m_NodePropertiesEditorBox;
-	Gtk::Box*                   m_AppearanceEditorBox;
-	Gtk::Box*                   m_TextureEditorBox;
-	Gtk::Box*                   m_GeometryPropertiesEditorBox;
-	Gtk::Box*                   m_TextEditorBox;
-	Gtk::Box*                   m_LayerEditorBox;
-	Gtk::Box*                   m_BindableNodeEditorBox;
-	Gtk::Box*                   m_LightEditorBox;
-	Gtk::Box*                   m_SoundEditorBox;
-	Gtk::Box*                   m_InlineEditorBox;
-	Gtk::Box*                   m_PrecisionPlacementPanelBox;
-	Gtk::Box*                   m_SculpToolEditorBox;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::Label* m_Label;
+	Gtk::Notebook* m_Notebook;
+	Gtk::Box* m_NodePropertiesEditorBox;
+	Gtk::Box* m_AppearanceEditorBox;
+	Gtk::Box* m_TextureEditorBox;
+	Gtk::Box* m_GeometryPropertiesEditorBox;
+	Gtk::Box* m_TextEditorBox;
+	Gtk::Box* m_LayerEditorBox;
+	Gtk::Box* m_BindableNodeEditorBox;
+	Gtk::Box* m_LightEditorBox;
+	Gtk::Box* m_SoundEditorBox;
+	Gtk::Box* m_InlineEditorBox;
+	Gtk::Box* m_PrecisionPlacementPanelBox;
+	Gtk::Box* m_SculpToolEditorBox;
 
 };
 

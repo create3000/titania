@@ -293,8 +293,6 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxCenterXLabel", m_BBoxCenterXLabel);
 	m_builder -> get_widget ("BBoxCenterYLabel", m_BBoxCenterYLabel);
 	m_builder -> get_widget ("BBoxCenterZLabel", m_BBoxCenterZLabel);
-
-	// Connect object Gtk::Button with id 'IndexButton'.
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'TransformUniformScaleButton'.

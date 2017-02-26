@@ -142,14 +142,14 @@ private:
 
 	///  @name Members
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::string filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_IntensityAdjustment;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::CheckButton*              m_EnabledCheckButton;
-	Gtk::Box*                      m_IntensityBox;
-	Gtk::Scale*                    m_IntensityScale;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::CheckButton* m_EnabledCheckButton;
+	Gtk::Box* m_IntensityBox;
+	Gtk::Scale* m_IntensityScale;
 
 };
 

@@ -262,36 +262,36 @@ private:
 
 	///  @name Members
 
-	std::string                            filename;
-	Glib::RefPtr <Gtk::Builder>            m_builder;
-	Glib::RefPtr <Gtk::CellRendererText>   m_URLCellRendererText;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_URLChooserColumn;
+	std::string filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::CellRendererText> m_URLCellRendererText;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_URLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;
-	Gtk::Menu*                             m_PrototypeMenu;
-	Gtk::Menu*                             m_CreateProtoMenu;
-	Gtk::ImageMenuItem*                    m_CreatePrototypeMenuItem;
-	Gtk::ImageMenuItem*                    m_CreateExternProtoMenuItem;
-	Gtk::Window*                           m_Window;
-	Gtk::Box*                              m_Widget;
-	Gtk::HeaderBar*                        m_HeaderBar;
-	Gtk::Image*                            m_EditPrototypeImage;
-	Gtk::Button*                           m_CreateInstanceButton;
-	Gtk::MenuButton*                       m_MenuButton;
-	Gtk::Image*                            m_PrototypeImage;
-	Gtk::Label*                            m_PrototypeLabel;
-	Gtk::Box*                              m_NameBox;
-	Gtk::Entry*                            m_NameEntry;
-	Gtk::Button*                           m_RenameButton;
-	Gtk::Notebook*                         m_PrototypeNotebook;
-	Gtk::Expander*                         m_InterfaceExpander;
-	Gtk::Box*                              m_InterfaceBox;
-	Gtk::Box*                              m_URLBox;
-	Gtk::TreeView*                         m_URLTreeView;
-	Gtk::Button*                           m_URLAddButton;
-	Gtk::Button*                           m_URLRemoveButton;
-	Gtk::Button*                           m_URLReloadButton;
-	Gtk::Box*                              m_InstancesBox;
-	Gtk::Button*                           m_UpdateInstancesButton;
+	Gtk::Menu* m_PrototypeMenu;
+	Gtk::Menu* m_CreateProtoMenu;
+	Gtk::ImageMenuItem* m_CreatePrototypeMenuItem;
+	Gtk::ImageMenuItem* m_CreateExternProtoMenuItem;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::Image* m_EditPrototypeImage;
+	Gtk::Button* m_CreateInstanceButton;
+	Gtk::MenuButton* m_MenuButton;
+	Gtk::Image* m_PrototypeImage;
+	Gtk::Label* m_PrototypeLabel;
+	Gtk::Box* m_NameBox;
+	Gtk::Entry* m_NameEntry;
+	Gtk::Button* m_RenameButton;
+	Gtk::Notebook* m_PrototypeNotebook;
+	Gtk::Expander* m_InterfaceExpander;
+	Gtk::Box* m_InterfaceBox;
+	Gtk::Box* m_URLBox;
+	Gtk::TreeView* m_URLTreeView;
+	Gtk::Button* m_URLAddButton;
+	Gtk::Button* m_URLRemoveButton;
+	Gtk::Button* m_URLReloadButton;
+	Gtk::Box* m_InstancesBox;
+	Gtk::Button* m_UpdateInstancesButton;
 
 };
 

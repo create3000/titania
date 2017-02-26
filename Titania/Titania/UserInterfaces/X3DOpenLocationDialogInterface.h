@@ -142,12 +142,12 @@ private:
 
 	///  @name Members
 
-	std::string                 filename;
+	std::string filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Image*                 m_OpenLocationImage;
-	Gtk::Dialog*                m_Window;
-	Gtk::Box*                   m_Widget;
-	Gtk::Entry*                 m_LocationEntry;
+	Gtk::Image* m_OpenLocationImage;
+	Gtk::Dialog* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::Entry* m_LocationEntry;
 
 };
 

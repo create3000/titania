@@ -150,16 +150,16 @@ private:
 
 	///  @name Members
 
-	std::string                   filename;
-	Glib::RefPtr <Gtk::Builder>   m_builder;
+	std::string filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::ListStore> m_ListStore;
-	Gtk::Dialog*                  m_Window;
-	Gtk::Button*                  m_CancelButton;
-	Gtk::Button*                  m_OkButton;
-	Gtk::Box*                     m_Widget;
-	Gtk::Image*                   m_Image;
-	Gtk::Label*                   m_MessageLabel;
-	Gtk::Label*                   m_TextLabel;
+	Gtk::Dialog* m_Window;
+	Gtk::Button* m_CancelButton;
+	Gtk::Button* m_OkButton;
+	Gtk::Box* m_Widget;
+	Gtk::Image* m_Image;
+	Gtk::Label* m_MessageLabel;
+	Gtk::Label* m_TextLabel;
 
 };
 

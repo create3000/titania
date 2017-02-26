@@ -278,35 +278,35 @@ private:
 
 	///  @name Members
 
-	std::string                        filename;
-	Glib::RefPtr <Gtk::Builder>        m_builder;
-	Glib::RefPtr <Gtk::ListStore>      m_LayerListStore;
-	Glib::RefPtr <Gtk::TreeSelection>  m_LayerSelection;
+	std::string filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::ListStore> m_LayerListStore;
+	Glib::RefPtr <Gtk::TreeSelection> m_LayerSelection;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_VisibilityColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_PickableColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_TypeNameColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_SpacerColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_ActiveLayerColumn;
-	Gtk::Menu*                         m_NewMenu;
-	Gtk::MenuItem*                     m_LayerMenuItem;
-	Gtk::MenuItem*                     m_LayoutLayerMenuItem;
-	Gtk::Window*                       m_Window;
-	Gtk::Box*                          m_Widget;
-	Gtk::Button*                       m_NewLayerSetButton;
-	Gtk::Button*                       m_RemoveLayerSetButton;
-	Gtk::Button*                       m_IndexButton;
-	Gtk::Expander*                     m_LayerSetExpander;
-	Gtk::ScrolledWindow*               m_LayerScrolledWindow;
-	Gtk::TreeView*                     m_LayerTreeView;
-	Gtk::Box*                          m_LayerActionBox;
-	Gtk::Button*                       m_RemoveLayerButton;
-	Gtk::Box*                          m_MoveLayerBox;
-	Gtk::Button*                       m_TopButton;
-	Gtk::Button*                       m_UpButton;
-	Gtk::Button*                       m_DownButton;
-	Gtk::Button*                       m_BottomButton;
-	Gtk::Label*                        m_LayerSetLabel;
+	Gtk::Menu* m_NewMenu;
+	Gtk::MenuItem* m_LayerMenuItem;
+	Gtk::MenuItem* m_LayoutLayerMenuItem;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::Button* m_NewLayerSetButton;
+	Gtk::Button* m_RemoveLayerSetButton;
+	Gtk::Button* m_IndexButton;
+	Gtk::Expander* m_LayerSetExpander;
+	Gtk::ScrolledWindow* m_LayerScrolledWindow;
+	Gtk::TreeView* m_LayerTreeView;
+	Gtk::Box* m_LayerActionBox;
+	Gtk::Button* m_RemoveLayerButton;
+	Gtk::Box* m_MoveLayerBox;
+	Gtk::Button* m_TopButton;
+	Gtk::Button* m_UpButton;
+	Gtk::Button* m_DownButton;
+	Gtk::Button* m_BottomButton;
+	Gtk::Label* m_LayerSetLabel;
 
 };
 
