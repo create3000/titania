@@ -141,9 +141,9 @@ ShaderPart::requestImmediateLoad ()
 			{
 				glShaderSource  (shaderId, 1, &string, nullptr);
 				glCompileShader (shaderId);
-	
+
 				glGetShaderiv (shaderId, GL_COMPILE_STATUS, &valid);
-	
+
 				Shader::printShaderInfoLog (getBrowser (), getTypeName (), getName (), type (), shaderId);
 
 				if (valid)
