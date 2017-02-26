@@ -73,7 +73,7 @@ isOpenGLES (const std::string & source)
 
 static
 std::string
-getShaderSource (X3DBaseNode* const node, const std::string & string, const basic::uri & worldURL, const size_t level, std::set <basic::uri> & files)
+getShaderSource (X3DBaseNode* const node, const std::string & source, const basic::uri & worldURL, const bool es, const size_t level, std::set <basic::uri> & files)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -85,7 +85,7 @@ throw (Error <INVALID_URL>,
 	if (level > 1024)
 		throw Error <INVALID_URL> ("Header inclusion depth limit reached, might be caused by cyclic header inclusion.");
 
-	std::istringstream input (string);
+	std::istringstream input (source);
 	std::ostringstream output;
 
 	input  .imbue (std::locale::classic ());
@@ -94,8 +94,16 @@ throw (Error <INVALID_URL>,
 	size_t      lineNumber = 0;
 	std::string line;
 
-	if (level)
-		output << "#line "<< lineNumber << " \"" << worldURL .filename () << "(" << node -> getName () << ")\""  << std::endl;
+	if (es)
+	{
+		if (level)
+			output << "#line "<< lineNumber << std::endl;
+	}
+	else
+	{
+		if (level)
+			output << "#line "<< lineNumber << " \"" << worldURL .filename () << "(" << node -> getName () << ")\""  << std::endl;
+	}
 
 	while (std::getline (input, line))
 	{
@@ -104,8 +112,13 @@ throw (Error <INVALID_URL>,
 		if (std::regex_match (line, filename, include))
 		{
 			Loader loader (node -> getExecutionContext ());
-			output << getShaderSource (node, loader .loadDocument (worldURL .transform (filename .str (1))), loader .getWorldURL (), level + 1, files) << std::endl;
-			output << "#line "<< lineNumber + 1 << " \"" << worldURL << "\""  << std::endl;
+
+			output << getShaderSource (node, loader .loadDocument (worldURL .transform (filename .str (1))), loader .getWorldURL (), es, level + 1, files) << std::endl;
+
+			if (es)
+				output << "#line "<< lineNumber + 1 << std::endl;
+			else
+				output << "#line "<< lineNumber + 1 << " \"" << worldURL << "\""  << std::endl;
 		}
 		else
 		{
@@ -235,14 +248,18 @@ throw (Error <INVALID_URL>,
 {
 	static const std::regex version (R"/(^(?:\s+|/\*.*?\*/|//.*?\n)*#version\s+\d+)/");
 
-	std::set <basic::uri> files;
-
-	const auto source = getShaderSource (node, string, worldURL, 0, files);
+	auto source = string;
 
 	if (std::regex_search (source, version))
-		return addConstants (node -> getBrowser (), source);
+		source = addConstants (node -> getBrowser (), source);
+	else
+		source = addConstants (node -> getBrowser (), "#version 100\n#line 0\n" + source);
 
-	return addConstants (node -> getBrowser (), "#version 100\n#line 0\n" + source);
+	std::set <basic::uri> files;
+
+	const auto es = isOpenGLES (source);
+
+	return getShaderSource (node, source, worldURL, es, 0, files);
 }
 
 void
