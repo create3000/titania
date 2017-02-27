@@ -166,6 +166,10 @@ public:
 	{ return nodes; }
 
 	const MFNode &
+	getGeometries () const
+	{ return geometryNodes; }
+
+	const MFNode &
 	getHierarchy () const
 	{ return hierarchy; }
 
@@ -174,10 +178,6 @@ public:
 	
 	MFNode
 	getChildren ();
-
-	MFNode
-	getGeometries () const
-	{ return getGeometries (nodes); }
 
 
 protected:
@@ -199,6 +199,17 @@ private:
 	virtual
 	void
 	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_initialized ();
+	
+	void
+	set_shutdown ();
+	
+	void
+	set_sceneGraph ();
 
 	///  @name Operations
 
@@ -230,6 +241,7 @@ private:
 	SFBool active;
 	SFBool touchTime;
 	MFNode nodes;
+	MFNode geometryNodes;
 	SFNode masterSelection;
 	MFNode hierarchy;
 	bool   clearHierarchy;

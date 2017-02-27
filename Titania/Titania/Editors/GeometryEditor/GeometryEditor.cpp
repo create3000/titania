@@ -173,7 +173,10 @@ GeometryEditor::on_map ()
 {
 	getCurrentBrowser () .addInterest (&GeometryEditor::set_browser, this);
 
+	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&GeometryEditor::set_geometries, this);
+
 	set_browser (getCurrentBrowser ());
+	set_geometries (getBrowserWindow () -> getSelection () -> getGeometries ());
 }
 
 void
@@ -183,7 +186,19 @@ GeometryEditor::on_unmap ()
 	getCurrentBrowser () -> getViewer () .removeInterest (&GeometryEditor::connectViewer, this);
 	getCurrentBrowser () .removeInterest (&GeometryEditor::set_browser, this);
 
+	getBrowserWindow () -> getSelection () -> getGeometries () .removeInterest (&GeometryEditor::set_geometries, this);
+
 	browser = getMasterBrowser ();
+}
+
+void
+GeometryEditor::set_browser (const X3D::BrowserPtr & value)
+{
+	browser -> getViewer () .removeInterest (&GeometryEditor::set_viewer, this);
+
+	browser = value;
+
+	browser -> getViewer () .addInterest (&GeometryEditor::set_viewer, this);
 }
 
 void
@@ -194,15 +209,11 @@ GeometryEditor::set_selection (const X3D::MFNode & selection)
 	const auto shapeNodes = getNodes <X3D::X3DShapeNode> (selection, { X3D::X3DConstants::X3DShapeNode });
 
 	getHammerButton () .set_sensitive (not inPrototypeInstance () and not shapeNodes .empty ());
-
-	connect ();
 }
 
 void
-GeometryEditor::connect ()
+GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 {
-	const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
-
 	for (const auto & node : geometryNodes)
 	{
 		try
@@ -354,16 +365,6 @@ GeometryEditor::connect ()
 	set_selectedEdges  ();
 	set_selectedHoles  ();
 	set_selectedFaces  ();
-}
-
-void
-GeometryEditor::set_browser (const X3D::BrowserPtr & value)
-{
-	browser -> getViewer () .removeInterest (&GeometryEditor::set_viewer, this);
-
-	browser = value;
-
-	browser -> getViewer () .addInterest (&GeometryEditor::set_viewer, this);
 }
 
 void
@@ -605,36 +606,33 @@ GeometryEditor::set_selectedPoints ()
 {
 	numSelectedPoints = 0;
 
-	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
-	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
+	const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
-		for (const auto & node : geometryNodes)
+	for (const auto & node : geometryNodes)
+	{
+		try
 		{
-			try
+			const auto innerNode = node -> getInnerNode ();
+
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 			{
-				const auto innerNode = node -> getInnerNode ();
-	
-				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+				switch (type)
 				{
-					switch (type)
+					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
-						case X3D::X3DConstants::IndexedFaceSetTool:
-						{
-							numSelectedPoints += innerNode -> getField <X3D::SFInt32> ("selectedPoints_changed") .getValue ();
-							break;
-						}
-						default:
-							continue;
+						numSelectedPoints += innerNode -> getField <X3D::SFInt32> ("selectedPoints_changed") .getValue ();
+						break;
 					}
-	
-					break;
+					default:
+						continue;
 				}
+
+				break;
 			}
-			catch (const X3D::X3DError & error)
-			{
-				__LOG__ << error .what () << std::endl;
-			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
 		}
 	}
 
@@ -647,36 +645,33 @@ GeometryEditor::set_selectedEdges ()
 {
 	numSelectedEdges = 0;
 
-	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
-	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
+	const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
-		for (const auto & node : geometryNodes)
+	for (const auto & node : geometryNodes)
+	{
+		try
 		{
-			try
+			const auto innerNode = node -> getInnerNode ();
+
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 			{
-				const auto innerNode = node -> getInnerNode ();
-	
-				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+				switch (type)
 				{
-					switch (type)
+					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
-						case X3D::X3DConstants::IndexedFaceSetTool:
-						{
-							numSelectedEdges += innerNode -> getField <X3D::SFInt32> ("selectedEdges_changed") .getValue ();
-							break;
-						}
-						default:
-							continue;
+						numSelectedEdges += innerNode -> getField <X3D::SFInt32> ("selectedEdges_changed") .getValue ();
+						break;
 					}
-	
-					break;
+					default:
+						continue;
 				}
+
+				break;
 			}
-			catch (const X3D::X3DError & error)
-			{
-				__LOG__ << error .what () << std::endl;
-			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
 		}
 	}
 
@@ -688,36 +683,33 @@ GeometryEditor::set_selectedHoles ()
 {
 	numSelectedHoles = 0;
 
-	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
-	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
+	const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
-		for (const auto & node : geometryNodes)
+	for (const auto & node : geometryNodes)
+	{
+		try
 		{
-			try
+			const auto innerNode = node -> getInnerNode ();
+
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 			{
-				const auto innerNode = node -> getInnerNode ();
-	
-				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+				switch (type)
 				{
-					switch (type)
+					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
-						case X3D::X3DConstants::IndexedFaceSetTool:
-						{
-							numSelectedHoles += innerNode -> getField <X3D::SFInt32> ("selectedHoles_changed") .getValue ();
-							break;
-						}
-						default:
-							continue;
+						numSelectedHoles += innerNode -> getField <X3D::SFInt32> ("selectedHoles_changed") .getValue ();
+						break;
 					}
-	
-					break;
+					default:
+						continue;
 				}
+
+				break;
 			}
-			catch (const X3D::X3DError & error)
-			{
-				__LOG__ << error .what () << std::endl;
-			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
 		}
 	}
 
@@ -729,36 +721,33 @@ GeometryEditor::set_selectedFaces ()
 {
 	numSelectedFaces = 0;
 
-	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
-	{
-		const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
+	const auto & geometryNodes = getBrowserWindow () -> getSelection () -> getGeometries ();
 
-		for (const auto & node : geometryNodes)
+	for (const auto & node : geometryNodes)
+	{
+		try
 		{
-			try
+			const auto innerNode = node -> getInnerNode ();
+
+			for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
 			{
-				const auto innerNode = node -> getInnerNode ();
-	
-				for (const auto & type : basic::make_reverse_range (innerNode -> getType ()))
+				switch (type)
 				{
-					switch (type)
+					case X3D::X3DConstants::IndexedFaceSetTool:
 					{
-						case X3D::X3DConstants::IndexedFaceSetTool:
-						{
-							numSelectedFaces += innerNode -> getField <X3D::SFInt32> ("selectedFaces_changed") .getValue ();
-							break;
-						}
-						default:
-							continue;
+						numSelectedFaces += innerNode -> getField <X3D::SFInt32> ("selectedFaces_changed") .getValue ();
+						break;
 					}
-	
-					break;
+					default:
+						continue;
 				}
+
+				break;
 			}
-			catch (const X3D::X3DError & error)
-			{
-				__LOG__ << error .what () << std::endl;
-			}
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
 		}
 	}
 

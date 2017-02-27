@@ -100,28 +100,19 @@ SculpToolEditor::configure ()
 
 	getNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 
-	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&SculpToolEditor::set_select_geometry, this);
+	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&SculpToolEditor::set_geometries, this);
+
+	set_geometries (getBrowserWindow () -> getSelection () -> getGeometries ());
 }
 
 void
-SculpToolEditor::set_select_geometry ()
+SculpToolEditor::set_geometries (const X3D::MFNode & geometryNodes)
 {
-	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
-}
-
-void
-SculpToolEditor::set_selection (const X3D::MFNode & selection)
-{
-	X3DSculpToolEditorInterface::set_selection (selection);
-
 	tools .clear ();
 
-	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
-	{
-		tools = getNodes <X3D::X3DBaseNode> (selection, { X3D::X3DConstants::IndexedFaceSetTool });
+	tools = getNodes <X3D::X3DBaseNode> (geometryNodes, { X3D::X3DConstants::IndexedFaceSetTool });
 
-		set_brush ();
-	}
+	set_tool_brush ();
 
 	getToolbar () .set_sensitive (not tools .empty ());
 
@@ -142,6 +133,17 @@ SculpToolEditor::set_brush ()
 	{
 		getBrush () -> getField <X3D::SFDouble> ("height") .addInterest (&SculpToolEditor::set_height, this);
 
+		set_tool_brush ();
+	}
+	catch (const X3D::X3DError & error)
+	{ }
+}
+
+void
+SculpToolEditor::set_tool_brush ()
+{
+	try
+	{
 		for (const auto & tool : tools)
 			tool -> setField <X3D::SFNode> ("brush", getBrush ());
 	}
@@ -265,7 +267,7 @@ SculpToolEditor::store ()
 	getConfig () -> setItem ("paned",       getPaned () .get_position ());
 	getConfig () -> setItem ("currentPage", getNotebook () .get_current_page ());
 
-	getBrowserWindow () -> getSelection () -> getSelectGeometry () .removeInterest (&SculpToolEditor::set_select_geometry, this);
+	getBrowserWindow () -> getSelection () -> getGeometries () .removeInterest (&SculpToolEditor::set_geometries, this);
 
 	X3DSculpToolBrushEditor::store ();
 	X3DSculpToolEditorInterface::store ();

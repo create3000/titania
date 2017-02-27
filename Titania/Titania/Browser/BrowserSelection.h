@@ -126,6 +126,10 @@ public:
 	getNodes () const
 	{ return nodes; }
 
+	const X3D::MFNode &
+	getGeometries () const
+	{ return geometryNodes; }
+
 	X3D::MFNode
 	getPreviousNodes () const;
 
@@ -138,9 +142,6 @@ public:
 
 	X3D::MFNode
 	getChildren () const;
-
-	X3D::MFNode
-	getGeometries () const;
 
 	///  @name Operations
 
@@ -192,6 +193,7 @@ private:
 	X3D::SFBool     active;
 	X3D::SFBool     touchTime;
 	X3D::MFNode     nodes;
+	X3D::MFNode     geometryNodes;
 	X3D::MFNode     hierarchy;
 	X3D::BrowserPtr browser;
 

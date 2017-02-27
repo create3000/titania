@@ -1088,6 +1088,8 @@ X3DExecutionContext::set_sceneGraph ()
 		return;
 
 	const_cast <SFTime &> (getExecutionContext () -> sceneGraph_changed ()) = getCurrentTime ();
+
+	const_cast <SFTime &> (bbox_changed ()) = getCurrentTime ();
 }
 
 void

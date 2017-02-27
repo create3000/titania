@@ -197,8 +197,6 @@ LOD::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 				level_changed () = level;
 
 				set_child (level);
-
-				const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 			}
 			else if (keepCurrentLevel)
 				set_child (level);
@@ -237,6 +235,8 @@ LOD::set_child (const int32_t level)
 		childNode .set (nullptr);
 			
 	set_cameraObjects ();
+
+	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
 
 } // X3D

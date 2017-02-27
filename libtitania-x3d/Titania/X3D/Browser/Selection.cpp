@@ -80,6 +80,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	             active (),
 	          touchTime (),
 	              nodes (),
+	      geometryNodes (),
 	    masterSelection (),
 	          hierarchy (),
 	     clearHierarchy (true)
@@ -94,6 +95,7 @@ Selection::Selection (X3DExecutionContext* const executionContext) :
 	                 active,
 	                 touchTime,
 	                 nodes,
+	                 geometryNodes,
 	                 masterSelection,
 	                 hierarchy);
 }
@@ -109,7 +111,44 @@ Selection::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	getBrowser () -> initialized () .addInterest (&Selection::clearNodes, this);
+	getBrowser () -> initialized () .addInterest (&Selection::set_initialized, this);
+	getBrowser () -> shutdown ()    .addInterest (&Selection::set_shutdown,    this);
+
+	set_initialized ();
+}
+
+void
+Selection::set_initialized ()
+{
+	if (selectGeometry)
+		getBrowser () -> getExecutionContext () -> sceneGraph_changed () .addInterest (&Selection::set_sceneGraph, this);
+}
+
+void
+Selection::set_shutdown ()
+{
+	getBrowser () -> getExecutionContext () -> sceneGraph_changed () .removeInterest (&Selection::set_sceneGraph, this);
+
+	clearNodes ();
+}
+
+void
+Selection::set_sceneGraph ()
+{
+	auto value = getGeometries (nodes);
+
+	for (const auto & node : set_difference (geometryNodes, value))
+		node -> removeTool ();
+
+	geometryNodes = std::move (value);
+
+	for (const auto & node : geometryNodes)
+	{
+		if (node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
+			continue;
+
+		node -> addTool ();
+	}
 }
 
 bool
@@ -134,6 +173,8 @@ Selection::setSelectGeometry (const bool value)
 
 		if (selectGeometry)
 		{
+			getExecutionContext () -> sceneGraph_changed () .addInterest (&Selection::set_sceneGraph, this);
+
 			for (const auto & node : nodes)
 			{
 				if (node -> isType (geometryTypes))
@@ -142,7 +183,9 @@ Selection::setSelectGeometry (const bool value)
 				node -> removeTool ();
 			}
 
-			for (const auto & node : getGeometries (nodes))
+			geometryNodes = getGeometries (nodes);
+
+			for (const auto & node : geometryNodes)
 			{
 				if (node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
 					continue;
@@ -152,13 +195,17 @@ Selection::setSelectGeometry (const bool value)
 		}
 		else
 		{
-			for (const auto & node : getGeometries (nodes))
+			getExecutionContext () -> sceneGraph_changed () .removeInterest (&Selection::set_sceneGraph, this);
+
+			for (const auto & node : geometryNodes)
 			{
 				if (isSelected (node))
 					continue;
 
 				node -> removeTool ();
 			}
+
+			geometryNodes .clear ();
 
 			for (const auto & node : nodes)
 			{
@@ -199,7 +246,10 @@ Selection::addNodes (const MFNode & value)
 			nodes .emplace_back (node);
 		}
 
-		for (const auto & node : selectGeometry ? getGeometries (nodes) : nodes)
+		if (selectGeometry)
+			geometryNodes = getGeometries (nodes);
+
+		for (const auto & node : selectGeometry ? geometryNodes : nodes)
 			node -> addTool ();
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> & error)
@@ -233,7 +283,13 @@ Selection::removeNodes (const MFNode & value)
 			}
 		}
 
-		for (const auto & node : selectGeometry ? getGeometries (removedNodes) : removedNodes)
+		if (selectGeometry)
+		{
+			geometryNodes = getGeometries (nodes);
+			removedNodes  = set_difference (getGeometries (removedNodes), geometryNodes);
+		}
+
+		for (const auto & node : removedNodes)
 			node -> removeTool ();
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> & error)
@@ -296,30 +352,11 @@ Selection::setNodes (const MFNode & value)
 		return;
 	}
 
-	MFNode sortedNodes = nodes;
-	MFNode sortedValue = value;
-	MFNode difference;
-	
-	std::sort (sortedNodes .begin (), sortedNodes .end ());
-	std::sort (sortedValue .begin (), sortedValue .end ());
-
-	// Remove
-
-	std::set_difference (sortedNodes .begin (), sortedNodes .end (),
-	                     sortedValue .begin (), sortedValue .end (),
-	                     std::back_inserter (difference));
-
-	removeNodes (difference);
+	removeNodes (set_difference (nodes, value));
 	
 	// Add
-	
-	difference .clear ();
 
-	std::set_difference (sortedValue .begin (), sortedValue .end (),
-	                     sortedNodes .begin (), sortedNodes .end (),
-	                     std::back_inserter (difference));
-
-	addNodes (difference);
+	addNodes (set_difference (value, nodes));
 
 	clearHierarchy = true;
 }

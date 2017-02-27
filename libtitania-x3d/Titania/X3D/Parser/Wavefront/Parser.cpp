@@ -697,6 +697,10 @@ Parser::parseIntoScene ()
 		__LOG__ << istream .rdbuf () << std::endl;
 		throw;
 	}
+	catch (...)
+	{
+		throw Error <INVALID_X3D> ("Unkown parser error.");
+	}
 }
 
 void

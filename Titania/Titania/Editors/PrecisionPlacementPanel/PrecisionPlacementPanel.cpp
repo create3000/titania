@@ -132,7 +132,6 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 	X3DViewportEditor::set_selection (selection);
 	X3DGeoTransformEditor::set_selection (selection);
 	X3DGeoLocationEditor::set_selection (selection);
-	X3DGeometrySelectionEditor::set_selection (selection);
 
 	boundedObject = selection .empty () ? nullptr : selection .back ();
 	geometryNode  = selection .empty () ? nullptr : selection .back ();

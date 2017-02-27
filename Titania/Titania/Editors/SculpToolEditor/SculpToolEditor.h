@@ -102,12 +102,14 @@ private:
 	void
 	set_select_geometry ();
 
-	virtual
 	void
-	set_selection (const X3D::MFNode & selection) final override;
+	set_geometries (const X3D::MFNode & geometryNodes);
 
 	void
 	set_brush ();
+
+	void
+	set_tool_brush ();
 	
 	void
 	set_height (const double height);

@@ -136,6 +136,10 @@ XMLParser::parseIntoScene ()
 	{
 		throw Error <X3D::INVALID_X3D> (error .what ()); 
 	}
+	catch (...)
+	{
+		throw Error <INVALID_X3D> ("Unkown parser error.");
+	}
 }
 
 void

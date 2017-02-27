@@ -126,15 +126,15 @@ private:
 	void
 	on_unmap () final override;
 
+	void
+	set_browser (const X3D::BrowserPtr & browser);
+
 	virtual
 	void
 	set_selection (const X3D::MFNode & selection) final override;
 
 	void
-	connect ();
-
-	void
-	set_browser (const X3D::BrowserPtr & browser);
+	set_geometries (const X3D::MFNode & geometryNodes);
 
 	void
 	set_viewer ();

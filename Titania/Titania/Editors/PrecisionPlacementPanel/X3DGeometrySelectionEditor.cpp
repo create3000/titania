@@ -107,17 +107,13 @@ X3DGeometrySelectionEditor::configure ()
 {
 	getGeometrySelectionUniformScaleButton () .set_active (getConfig () -> getBoolean ("geometrySelectionUniformScale"));
 
-	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&X3DGeometrySelectionEditor::set_select_geometry, this);
+	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&X3DGeometrySelectionEditor::set_geometries, this);
+
+	set_geometries (getBrowserWindow () -> getSelection () -> getGeometries ());
 }
 
 void
-X3DGeometrySelectionEditor::set_select_geometry ()
-{
-	set_selection (getBrowserWindow () -> getSelection () -> getNodes ());
-}
-
-void
-X3DGeometrySelectionEditor::set_selection (const X3D::MFNode & selection)
+X3DGeometrySelectionEditor::set_geometries (const X3D::MFNode & geometryNodes)
 {
 	transformNode = getCurrentContext () -> createNode <X3D::Transform> ();
 
@@ -134,15 +130,12 @@ X3DGeometrySelectionEditor::set_selection (const X3D::MFNode & selection)
 
 	// IndexedFaceSetTool detection
 
-	if (getBrowserWindow () -> getSelection () -> getSelectGeometry ())
+	for (const auto & node : geometryNodes)
 	{
-		for (const auto & node : getBrowserWindow () -> getSelection () -> getGeometries ())
-		{
-			const X3D::X3DPtr <X3D::IndexedFaceSetTool> tool (node);
-	
-			if (tool)
-				tool -> touchTime () .addInterest (&X3DGeometrySelectionEditor::set_touchTime, this);
-		}
+		const X3D::X3DPtr <X3D::IndexedFaceSetTool> tool (node);
+
+		if (tool)
+			tool -> touchTime () .addInterest (&X3DGeometrySelectionEditor::set_touchTime, this);
 	}
 
 	set_touchTime ();
@@ -345,7 +338,7 @@ X3DGeometrySelectionEditor::store ()
 {
 	getConfig () -> setItem ("geometrySelectionUniformScale", getGeometrySelectionUniformScaleButton () .get_active ());
 
-	getBrowserWindow () -> getSelection () -> getSelectGeometry () .removeInterest (&X3DGeometrySelectionEditor::set_select_geometry, this);
+	getBrowserWindow () -> getSelection () -> getGeometries () .removeInterest (&X3DGeometrySelectionEditor::set_geometries, this);
 }
 
 X3DGeometrySelectionEditor::~X3DGeometrySelectionEditor ()

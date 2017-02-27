@@ -164,8 +164,6 @@ X3DGroupingNode::set_addChildren ()
 
 	addChildren () .set ({ });
 	addChildren () .setTainted (false);
-
-	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
 
 void
@@ -183,14 +181,7 @@ X3DGroupingNode::set_removeChildren ()
 		children () .addInterest (&X3DGroupingNode::connectChildren, this);
 	}
 
-	std::set <size_t> set;
-
-	for (const auto & value : removeChildren ())
-		set .emplace (value ? value -> getId () : 0);
-
-	children () .erase (std::remove_if (children () .begin (), children () .end (),
-	                                   [&set] (const SFNode & value) { return set .count (value ? value -> getId () : 0); }),
-	                    children () .end ());
+	children () .set_difference (removeChildren ());
 
 	removeChildren () .set ({ });
 
@@ -300,8 +291,6 @@ X3DGroupingNode::add (const MFNode & children)
 	}
 
 	set_cameraObjects ();
-
-	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
 
 void

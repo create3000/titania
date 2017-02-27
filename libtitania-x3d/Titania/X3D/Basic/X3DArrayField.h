@@ -226,6 +226,8 @@ public:
 	isArray () const override
 	{ return true; }
 
+	///  @name Comparision operations
+
 	///  Returns true if the contents of the arrays are equal, false otherwise.
 	virtual
 	bool

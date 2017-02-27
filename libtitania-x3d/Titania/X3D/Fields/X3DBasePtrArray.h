@@ -74,10 +74,14 @@ public:
 	using X3DArrayField <ValueType>::assign;
 	using X3DArrayField <ValueType>::front;
 	using X3DArrayField <ValueType>::back;
+	using X3DArrayField <ValueType>::begin;
 	using X3DArrayField <ValueType>::cbegin;
 	using X3DArrayField <ValueType>::cend;
+	using X3DArrayField <ValueType>::end;
 	using X3DArrayField <ValueType>::empty;
 	using X3DArrayField <ValueType>::size;
+	using X3DArrayField <ValueType>::emplace_back;
+	using X3DArrayField <ValueType>::erase;
 	using X3DArrayField <ValueType>::addInterest;
 
 	///  @name Construction
@@ -222,6 +226,67 @@ public:
 	X3DConstants::FieldType
 	getType () const final override
 	{ return X3DConstants::MFNode; }
+
+	///  @name Arithmetic operations
+
+	///  Returns the set difference of this array and @a other.
+	X3DBasePtrArray &
+	set_union (const X3DBasePtrArray & other)
+	{
+		std::set <size_t> set;
+	
+		for (const auto & value : *this)
+			set .emplace (value ? value -> getId () : 0);
+	
+		for (const auto & value : other)
+		{
+			if (not set .count (value ? value -> getId () : 0))
+				emplace_back (value);
+		}
+
+		return *this;
+	}
+
+	///  Returns the set difference of this array and @a other.
+	X3DBasePtrArray &
+	set_difference (const X3DBasePtrArray & other)
+	{
+		std::set <size_t> set;
+	
+		for (const auto & value : other)
+			set .emplace (value ? value -> getId () : 0);
+	
+		erase (std::remove_if (begin (), end (),
+		                       [&set] (const ValueType & value)
+		                       { return set .count (value ? value -> getId () : 0); }),
+		       end ());
+
+		return *this;
+	}
+
+	///  Returns the set difference of this array and @a other.
+	X3DBasePtrArray &
+	set_intersection (const X3DBasePtrArray & other)
+	{
+		std::set <size_t> a;
+		std::set <size_t> b;
+		std::set <size_t> i;
+	
+		for (const auto & value : *this)
+			a .emplace (value ? value -> getId () : 0);
+	
+		for (const auto & value : other)
+			b .emplace (value ? value -> getId () : 0);
+
+		std::set_intersection (a. begin (), a .end (), b .begin (), b .end (), std::inserter (i, i .end ()));
+
+		erase (std::remove_if (begin (), end (),
+		                       [&i] (const ValueType & value)
+		                       { return not i .count (value ? value -> getId () : 0); }),
+		       end ());
+
+		return *this;
+	}
 
 	///  @name Clone handling
 
@@ -608,6 +673,42 @@ X3DBasePtrArray <ValueType>::toJSONStream (std::ostream & ostream) const
 
 		Generator::LeaveScope (ostream);
 	}
+}
+
+///  @relates X3DBasePtrArray
+///  @name Artihmetic operations
+
+///  Returns the set set union of @a lhs and @a rhs.
+template <class ValueType>
+inline
+X3DBasePtrArray <ValueType>
+set_union (const X3DBasePtrArray <ValueType> & lhs, const X3DBasePtrArray <ValueType> & rhs)
+{
+	X3DBasePtrArray <ValueType> result (lhs);
+
+	return result .set_union (rhs);
+}
+
+///  Returns the set difference of @a lhs and @a rhs.
+template <class ValueType>
+inline
+X3DBasePtrArray <ValueType>
+set_difference (const X3DBasePtrArray <ValueType> & lhs, const X3DBasePtrArray <ValueType> & rhs)
+{
+	X3DBasePtrArray <ValueType> result (lhs);
+
+	return result .set_difference (rhs);
+}
+
+///  Returns the set intersection of @a lhs and @a rhs.
+template <class ValueType>
+inline
+X3DBasePtrArray <ValueType>
+set_intersection (const X3DBasePtrArray <ValueType> & lhs, const X3DBasePtrArray <ValueType> & rhs)
+{
+	X3DBasePtrArray <ValueType> result (lhs);
+
+	return result .set_intersection (rhs);
 }
 
 } // X3D

@@ -72,6 +72,7 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	          active (),
 	       touchTime (),
 	           nodes (),
+	   geometryNodes (),
 	       hierarchy (),
 	         browser (getCurrentBrowser ())
 {
@@ -83,6 +84,7 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	                 active,
 	                 touchTime,
 	                 nodes,
+	                 geometryNodes,
 	                 hierarchy,
 	                 browser);
 
@@ -108,8 +110,9 @@ BrowserSelection::set_browser ()
 		selection -> isOver ()        .removeInterest (over);
 		selection -> isActive ()      .removeInterest (active);
 		selection -> getTouchTime ()  .removeInterest (touchTime);
-		selection -> getHierarchy ()  .removeInterest (hierarchy);
+		selection -> getGeometries () .removeInterest (geometryNodes);
 		selection -> getNodes ()      .removeInterest (nodes);
+		selection -> getHierarchy ()  .removeInterest (hierarchy);
 	}
 
 	browser = getCurrentBrowser ();
@@ -117,7 +120,7 @@ BrowserSelection::set_browser ()
 	{
 		const auto & selection = browser -> getSelection ();
 
-		selection -> setEnabled         (enabled);
+		selection -> setEnabled        (enabled);
 		selection -> setSelectMultiple (selectMultiple);
 		selection -> setSelectLowest   (selectLowest);
 		selection -> setSelectGeometry (selectGeometry);
@@ -131,10 +134,12 @@ BrowserSelection::set_browser ()
 		selection -> isActive ()      .addInterest (active);
 		selection -> getTouchTime ()  .addInterest (touchTime);
 		selection -> getNodes ()      .addInterest (nodes);
+		selection -> getGeometries () .addInterest (geometryNodes);
 		selection -> getHierarchy ()  .addInterest (hierarchy);
 
-		nodes     = selection -> getNodes ();
-		hierarchy = selection -> getHierarchy ();
+		nodes         = selection -> getNodes ();
+		geometryNodes = selection -> getGeometries ();
+		hierarchy     = selection -> getHierarchy ();
 	}
 }
 
@@ -299,14 +304,6 @@ BrowserSelection::getChildren () const
 	const auto & selection = browser-> getSelection ();
 
 	return selection -> getChildren ();
-}
-
-X3D::MFNode
-BrowserSelection::getGeometries () const
-{
-	const auto & selection = browser-> getSelection ();
-
-	return selection -> getGeometries ();
 }
 
 void
