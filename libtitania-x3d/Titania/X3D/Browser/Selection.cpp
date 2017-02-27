@@ -137,6 +137,9 @@ Selection::set_sceneGraph ()
 {
 	auto value = getGeometries (nodes);
 
+	if (value == geometryNodes)
+		return;
+
 	for (const auto & node : set_difference (geometryNodes, value))
 		node -> removeTool ();
 
@@ -232,6 +235,8 @@ Selection::addNodes (const MFNode & value)
 	{
 		ContextLock lock (getBrowser ());
 
+		const auto size = nodes .size ();
+
 		for (const auto & node : value)
 		{
 			if (not node)
@@ -246,11 +251,14 @@ Selection::addNodes (const MFNode & value)
 			nodes .emplace_back (node);
 		}
 
-		if (selectGeometry)
-			geometryNodes = getGeometries (nodes);
-
-		for (const auto & node : selectGeometry ? geometryNodes : nodes)
-			node -> addTool ();
+		if (nodes .size () not_eq size)
+		{
+			if (selectGeometry)
+				geometryNodes = getGeometries (nodes);
+	
+			for (const auto & node : selectGeometry ? geometryNodes : nodes)
+				node -> addTool ();
+		}
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> & error)
 	{
@@ -264,9 +272,6 @@ Selection::removeNodes (const MFNode & value)
 	try
 	{
 		ContextLock lock (getBrowser ());
-
-		if (clearHierarchy)
-			setHierarchy (nullptr, { });
 
 		MFNode removedNodes;
 
@@ -283,14 +288,20 @@ Selection::removeNodes (const MFNode & value)
 			}
 		}
 
-		if (selectGeometry)
+		if (not removedNodes .empty ())
 		{
-			geometryNodes = getGeometries (nodes);
-			removedNodes  = set_difference (getGeometries (removedNodes), geometryNodes);
-		}
+			if (clearHierarchy)
+				setHierarchy (nullptr, { });
 
-		for (const auto & node : removedNodes)
-			node -> removeTool ();
+			if (selectGeometry)
+			{
+				geometryNodes = getGeometries (nodes);
+				removedNodes  = set_difference (getGeometries (removedNodes), geometryNodes);
+			}
+	
+			for (const auto & node : removedNodes)
+				node -> removeTool ();
+		}
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> & error)
 	{

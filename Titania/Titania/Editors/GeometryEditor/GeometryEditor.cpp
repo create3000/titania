@@ -59,6 +59,7 @@
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include <Titania/X3D/Editing/Editor.h>
 #include <Titania/X3D/Editing/Undo/UndoStepContainer.h>
 #include <Titania/X3D/Tools/ToolColors.h>
 
@@ -807,7 +808,7 @@ GeometryEditor::on_hammer_clicked ()
 							const auto scene = getCurrentBrowser () -> createX3DFromStream (getCurrentContext () -> getWorldURL (), text);
 							const auto nodes = getBrowserWindow () -> importScene (getCurrentContext (), getCurrentContext (), getCurrentContext () -> getRootNodes (), scene, undoStep);
 
-							getBrowserWindow () -> addToGroup (getCurrentContext (), shape, nodes, undoStep);
+							X3D::Editor () .addToGroup (getCurrentContext (), shape, nodes, undoStep);
 						}
 					}
 					catch (const X3D::X3DError &)
@@ -821,7 +822,7 @@ GeometryEditor::on_hammer_clicked ()
 					{
 						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
 
-						getBrowserWindow () -> replaceNode (getCurrentContext (), shape, shape -> geometry (), geometry -> toPrimitive (), undoStep);
+						X3D::Editor () .replaceNode (getCurrentContext (), shape, shape -> geometry (), geometry -> toPrimitive (), undoStep);
 					}
 					catch (const X3D::X3DError &)
 					{ }

@@ -56,6 +56,7 @@
 #include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
 #include <Titania/X3D/Components/Geospatial/GeoElevationGrid.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
+#include <Titania/X3D/Editing/Editor.h>
 
 namespace titania {
 namespace puck {
@@ -290,7 +291,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			{
 				auto & field = shapeNode -> geometry ();
 
-				getBrowserWindow () -> replaceNode (getCurrentContext (), shapeNode, field, node, undoStep);
+				X3D::Editor () .replaceNode (getCurrentContext (), shapeNode, field, node, undoStep);
 			}
 
 			getBrowserWindow () -> addUndoStep (undoStep);
@@ -308,7 +309,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 		{
 			auto & field = shapeNode -> geometry ();
 
-			getBrowserWindow () -> removeNode (getCurrentContext (), shapeNode, field, undoStep);
+			X3D::Editor () .removeNode (getCurrentContext (), shapeNode, field, undoStep);
 		}
 
 		getBrowserWindow () -> addUndoStep (undoStep);
