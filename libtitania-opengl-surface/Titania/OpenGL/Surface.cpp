@@ -59,7 +59,6 @@ extern "C"
 #include <gtkmm/main.h>
 
 #include "Context/WindowContext.h"
-#include "Context/Background.h"
 
 #include <Titania/LOG.h>
 #include <stdexcept>
@@ -73,13 +72,10 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	            treadId (std::this_thread::get_id ()),
 	            context (),
 	     sharingContext (sharingContext),
-	         background (new Background ()),
 	      mapConnection (),
 	constructConnection (),
 	     drawConnection ()
 {
-	get_style_context () -> add_class ("background");
-	get_style_context () -> add_class ("titania-surface");
 	set_double_buffered (false);
 	set_app_paintable (true);
 
@@ -139,28 +135,6 @@ Surface::setAntialiasing (const int32_t samples)
 	}
 }
 
-void
-Surface::renderBackground ()
-{
-	background -> draw ();
-}
-
-bool
-Surface::glew ()
-{
-	// Initilaize GLEW.
-
-	GLenum glewErrorNum = glewInit ();
-
-	if (glewErrorNum not_eq GLEW_OK)
-		throw std::runtime_error (std::string ("Error in glew init: ") + (char*) glewGetErrorString (glewErrorNum));
-
-	if (not GLEW_ARB_vertex_buffer_object)
-		throw std::runtime_error ("The glew vertex buffer objects are not supported.");
-
-	return true;
-}
-
 bool
 Surface::makeCurrent () const
 {
@@ -196,39 +170,15 @@ Surface::set_map_event (GdkEventAny* const event)
 		                                   gdk_x11_window_get_xid (get_window () -> gobj ())));
 	}
 
-	if (makeCurrent ())
-	{
-		signal_configure_event () .connect (sigc::mem_fun (*this, &Surface::set_configure_event));
-
-		constructConnection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_construct));
-
-		glewInit ();
-	}
+	constructConnection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_construct));
 
 	return false; // Propagate the event further.
-}
-
-void
-Surface::on_style_updated ()
-{
-	Gtk::DrawingArea::on_style_updated ();
-
-	if (makeCurrent ())
-	{
-		if (background)
-		   background -> configure (get_style_context (), get_width (), get_height ());
-	}
 }
 
 bool
 Surface::set_configure_event (GdkEventConfigure* const event)
 {
-	if (makeCurrent ())
-	{
-		background -> configure (get_style_context (), get_width (), get_height ());
-
-		reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
-	}
+	reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
 
 	queue_draw ();
 
@@ -243,16 +193,21 @@ Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 	if (drawConnection .connected ())
 		return false;
 
-	if (makeCurrent ())
-	{
-		drawConnection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_draw));
+	signal_configure_event () .connect (sigc::mem_fun (*this, &Surface::set_configure_event));
 
-		background -> setup ();
+	drawConnection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_draw));
 
-		construct ();
-	}
+	setup ();
+
+	reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
 
 	return false; // Propagate the event further.
+}
+
+void
+Surface::initialize ()
+{
+	glewInit ();
 }
 
 bool

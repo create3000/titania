@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,22 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_PRIMITIVES_BACKGROUND_H__
-#define __TITANIA_OPEN_GL_PRIMITIVES_BACKGROUND_H__
+#ifndef __TITANIA_X3D_BROWSER_RENDERING_BACKGROUND_TEXTURE_H__
+#define __TITANIA_X3D_BROWSER_RENDERING_BACKGROUND_TEXTURE_H__
 
 #include <gtkmm/stylecontext.h>
 
-#include "OpenGL.h"
-#include <Titania/Math/Numbers/Matrix4.h>
+#include "../../Rendering/OpenGL.h"
+#include "../../Types/Numbers.h"
 
 namespace titania {
-namespace opengl {
+namespace X3D {
 
-class Background
+class BackgroundTexture
 {
 public:
 
-	Background ();
+	BackgroundTexture ();
 
 	void
 	setup ();
@@ -77,19 +77,19 @@ public:
 	void
 	dispose ();
 
-	~Background ();
+	~BackgroundTexture ();
 
 
 private:
 
-	GLuint                 textureId;
-	math::matrix4 <double> projectionMatrix;
-	size_t                 width;
-	size_t                 height;
+	GLuint   textureId;
+	Matrix4d projectionMatrix;
+	size_t   width;
+	size_t   height;
+
 };
 
-
-} // opengl
+} // X3D
 } // titania
 
 #endif

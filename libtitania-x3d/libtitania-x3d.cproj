@@ -944,6 +944,7 @@
     <None Include="Titania\X3D\Fields\X3DWeakPtrArray.h" />
     <None Include="Titania\X3D\Fields\X3DPtrObject.h" />
     <None Include="Titania\X3D\Browser\Tools\SupportedTools.h" />
+    <None Include="Titania\X3D\Browser\Rendering\BackgroundTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1612,6 +1613,7 @@
     <Compile Include="Titania\X3D\Tools\Rendering\LineSetTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Rendering\PointSetTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\SupportedTools.cpp" />
+    <Compile Include="Titania\X3D\Browser\Rendering\BackgroundTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

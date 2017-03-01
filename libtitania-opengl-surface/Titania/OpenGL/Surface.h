@@ -64,8 +64,6 @@
 namespace titania {
 namespace opengl {
 
-class Background;
-
 class Surface :
 	public Gtk::DrawingArea
 {
@@ -76,9 +74,6 @@ public:
 
 	void
 	setAntialiasing (const int32_t = 4);
-
-	void
-	renderBackground ();
 
 	bool
 	makeCurrent () const;
@@ -99,15 +94,15 @@ protected:
 
 	Surface (const Surface &);
 
-	virtual
-	void
-	on_style_updated () override;
-
 	/// @name OpenGL handler
 
 	virtual
 	void
-	construct () = 0;
+	setup () = 0;
+
+	virtual
+	void
+	initialize ();
 
 	virtual
 	void
@@ -125,9 +120,6 @@ protected:
 private:
 
 	bool
-	glew ();
-
-	bool
 	set_map_event (GdkEventAny* const);
 
 	bool
@@ -142,8 +134,6 @@ private:
 	std::thread::id                 treadId;
 	std::shared_ptr <WindowContext> context;
 	std::shared_ptr <WindowContext> sharingContext;
-
-	std::unique_ptr <Background> background;
 
 	sigc::connection mapConnection;
 	sigc::connection constructConnection;

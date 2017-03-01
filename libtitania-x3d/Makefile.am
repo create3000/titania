@@ -74,6 +74,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/PointingDeviceSensor/HitArray.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
+	Titania/X3D/Browser/Rendering/BackgroundTexture.cpp \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \
 	Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \

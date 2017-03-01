@@ -60,6 +60,7 @@
 #include "../Browser/Navigation/WalkViewer.h"
 #include "../Browser/Navigation/X3DViewer.h"
 #include "../Browser/PointingDeviceSensor/PointingDevice.h"
+#include "../Browser/Rendering/BackgroundTexture.h"
 #include "../Browser/Tools/LightSaber.h"
 #include "../Browser/Tools/LassoSelection.h"
 #include "../Browser/Tools/RectangleSelection.h"
@@ -90,7 +91,8 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
-	         cursor ("default")
+	         cursor ("default"),
+	     background (new BackgroundTexture ())
 {
 	__LOG__ << "Constructing browser " << this << "." << std::endl;
 
@@ -109,7 +111,8 @@ Browser::Browser (const Browser & other, const MFString & url, const MFString & 
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
-	         cursor ("default")
+	         cursor ("default"),
+	     background (new BackgroundTexture ())
 {
 	addType (X3DConstants::Browser);
 
@@ -128,34 +131,61 @@ Browser::create (X3DExecutionContext* const executionContext) const
 void
 Browser::initialize ()
 {
-	X3DBrowser::initialize ();
+	try
+	{
+		ContextLock lock (this);
 
-	//swapInterval (0);
+		opengl::Surface::initialize ();
+		X3DBrowser::initialize ();
+	
+		get_style_context () -> add_class ("background");
+		get_style_context () -> add_class ("titania-surface");
+	
+		//swapInterval (0);
+	
+		viewer         -> setup ();
+		keyDevice      -> setup ();
+		pointingDevice -> setup ();
+		background     -> setup ();
+	
+		getCursor ()        .addInterest (&Browser::set_cursor, this);
+		getViewerType ()    .addInterest (&Browser::set_viewer, this);
+		getPrivateViewer () .addInterest (&Browser::set_viewer, this);
+		changed ()          .addInterest (&Gtk::Widget::queue_draw, this);
+	
+		add_events (Gdk::BUTTON_PRESS_MASK |
+		            Gdk::POINTER_MOTION_MASK |
+		            Gdk::POINTER_MOTION_HINT_MASK |
+		            Gdk::BUTTON_RELEASE_MASK |
+		            Gdk::FOCUS_CHANGE_MASK |
+		            Gdk::LEAVE_NOTIFY_MASK |
+		            Gdk::SCROLL_MASK |
+		            Gdk::KEY_PRESS_MASK |
+		            Gdk::KEY_RELEASE_MASK);
+	
+		set_can_focus (true);
+		//set_focus_on_click (true); // uncomment if gtkmm 3.20 and see PointingDevice button press event
+		grab_focus ();
+	
+		setCursor ("default");
+	}
+	catch (const std::exception & exception)
+	{ }
+}
 
-	viewer         -> setup ();
-	keyDevice      -> setup ();
-	pointingDevice -> setup ();
+void
+Browser::on_style_updated ()
+{
+	try
+	{
+		ContextLock lock (this);
 
-	getCursor ()        .addInterest (&Browser::set_cursor, this);
-	getViewerType ()    .addInterest (&Browser::set_viewer, this);
-	getPrivateViewer () .addInterest (&Browser::set_viewer, this);
-	changed ()          .addInterest (&Gtk::Widget::queue_draw, this);
+		opengl::Surface::on_style_updated ();
 
-	add_events (Gdk::BUTTON_PRESS_MASK |
-	            Gdk::POINTER_MOTION_MASK |
-	            Gdk::POINTER_MOTION_HINT_MASK |
-	            Gdk::BUTTON_RELEASE_MASK |
-	            Gdk::FOCUS_CHANGE_MASK |
-	            Gdk::LEAVE_NOTIFY_MASK |
-	            Gdk::SCROLL_MASK |
-	            Gdk::KEY_PRESS_MASK |
-	            Gdk::KEY_RELEASE_MASK);
-
-	set_can_focus (true);
-	//set_focus_on_click (true); // uncomment if gtkmm 3.20 and see PointingDevice button press event
-	grab_focus ();
-
-	setCursor ("default");
+		background -> configure (get_style_context (), get_width (), get_height ());
+	}
+	catch (const std::exception & exception)
+	{ }
 }
 
 void
@@ -276,7 +306,22 @@ void
 Browser::reshape (const Vector4i & viewport)
 noexcept (true)
 {
-	X3DBrowser::reshape (viewport);
+	try
+	{
+		ContextLock lock (this);
+
+		background -> configure (get_style_context (), get_width (), get_height ());
+	
+		X3DBrowser::reshape (viewport);
+	}
+	catch (const std::exception & exception)
+	{ }
+}
+
+void
+Browser::renderBackground ()
+{
+	background -> draw ();
 }
 
 void

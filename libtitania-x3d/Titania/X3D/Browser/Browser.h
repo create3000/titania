@@ -58,6 +58,7 @@
 namespace titania {
 namespace X3D {
 
+class BackgroundTexture;
 class KeyDevice;
 class PointingDevice;
 class X3DViewer;
@@ -97,14 +98,13 @@ public:
 	///  @name Operations
 
 	virtual
-	void
-	renderBackground () final override
-	{ opengl::Surface::renderBackground (); }
-
-	virtual
 	bool
 	makeCurrent ()
 	noexcept (true) final override;
+
+	virtual
+	void
+	renderBackground () final override;
 
 	virtual
 	void
@@ -130,6 +130,12 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_style_updated () override;
+
 
 private:
 
@@ -137,8 +143,8 @@ private:
 
 	virtual
 	void
-	construct () final override
-	{ setup (); }
+	setup () final override
+	{ X3DBrowser::setup (); }
 
 	///  @name Event handler
 
@@ -170,10 +176,12 @@ private:
 
 	///  @name Members
 
-	X3DPtr <X3DViewer>       viewer;
-	X3DPtr <KeyDevice>       keyDevice;
-	X3DPtr <PointingDevice>  pointingDevice;
-	SFString                 cursor;
+	X3DPtr <X3DViewer>                  viewer;
+	X3DPtr <KeyDevice>                  keyDevice;
+	X3DPtr <PointingDevice>             pointingDevice;
+	SFString                            cursor;
+	std::unique_ptr <BackgroundTexture> background;
+
 };
 
 } // X3D

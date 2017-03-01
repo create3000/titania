@@ -48,49 +48,18 @@
  *
  ******************************************************************************/
 
-#include "Background.h"
+#include "BackgroundTexture.h"
 
 #include <Titania/Math/Geometry/Camera.h>
 #include <Titania/Math/Numbers/Vector4.h>
 #include <Titania/LOG.h>
 
 namespace titania {
-namespace opengl {
+namespace X3D {
 
 using namespace math;
 
-class PolygonMode
-{
-public:
-
-	PolygonMode (GLenum type) :
-		polygonMode ()
-	{
-		glGetIntegerv (GL_POLYGON_MODE, polygonMode);
-
-		glPolygonMode (GL_FRONT_AND_BACK, type);
-	}
-	
-	GLenum
-	front () const
-	{ return polygonMode [0]; }
-	
-	GLenum
-	back () const
-	{ return polygonMode [1]; }
-	
-	~PolygonMode ()
-	{
-		glPolygonMode (GL_FRONT, polygonMode [0]);
-		glPolygonMode (GL_BACK,  polygonMode [1]);
-	}
-
-private:
-
-	GLint polygonMode [2];
-};
-
-Background::Background () :
+BackgroundTexture::BackgroundTexture () :
 	       textureId (0),
 	projectionMatrix (camera <double>::ortho (0, 1, 0, 1, -1, 1)),
 	           width (0),
@@ -98,13 +67,13 @@ Background::Background () :
 { }
 
 void
-Background::setup ()
+BackgroundTexture::setup ()
 {
 	glGenTextures (1, &textureId);
 }
 
 void
-Background::configure (const Glib::RefPtr <Gtk::StyleContext> & styleContext, const size_t width, const size_t height)
+BackgroundTexture::configure (const Glib::RefPtr <Gtk::StyleContext> & styleContext, const size_t width, const size_t height)
 {
 	this -> width  = width;
 	this -> height = height;
@@ -126,15 +95,15 @@ Background::configure (const Glib::RefPtr <Gtk::StyleContext> & styleContext, co
 }
 
 void
-Background::draw ()
+BackgroundTexture::draw ()
 {
-	PolygonMode polygonMode (GL_FILL);
+	PolygonModeLock polygonMode (GL_FILL);
 
-	static const std::vector <vector4 <float>> coords = {
-		vector4 <float> (0, 0, 0, 1),
-		vector4 <float> (1, 0, 0, 1),
-		vector4 <float> (1, 1, 0, 1),
-		vector4 <float> (0, 1, 0, 1)
+	static const std::vector <Vector4f> coords = {
+		Vector4f (0, 0, 0, 1),
+		Vector4f (1, 0, 0, 1),
+		Vector4f (1, 1, 0, 1),
+		Vector4f (0, 1, 0, 1)
 	};
 
 	glViewport (0, 0, width, height);
@@ -174,15 +143,15 @@ Background::draw ()
 }
 
 void
-Background::dispose ()
+BackgroundTexture::dispose ()
 {
 	if (textureId)
 		glDeleteTextures (1, &textureId);
 }
 
-Background::~Background ()
+BackgroundTexture::~BackgroundTexture ()
 { }
 
 
-} // opengl
+} // X3D
 } // titania
