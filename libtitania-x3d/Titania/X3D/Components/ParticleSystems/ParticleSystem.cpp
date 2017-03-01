@@ -521,7 +521,12 @@ Box3d
 ParticleSystem::getBBox () const
 {
 	if (bboxSize () == Vector3f (-1, -1, -1))
-		return emitterNode -> getBBox ();
+	{
+		if (emitterNode)
+			return emitterNode -> getBBox ();
+
+		return Box3d ();
+	}
 
 	return Box3d (bboxSize () .getValue (), bboxCenter () .getValue ());
 }

@@ -102,7 +102,7 @@ TextureBuffer::setup ()
 	glTexParameteri  (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,       GL_CLAMP_TO_BORDER);
 	glTexParameterfv (GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, Color4f (1, 1, 1, 0) .data ());
 
-	glFramebufferTexture (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTextureId, 0);
+	glFramebufferTexture2D (GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTextureId, 0);
 
 	glBindTexture (GL_TEXTURE_2D, 0);
 
