@@ -61,8 +61,6 @@
 #include "../Editing/X3DEditor.h"
 #include "../Execution/X3DExecutionContext.h"
 
-#include "../Tools/Core/X3DToolObject.h"
-
 namespace titania {
 namespace X3D {
 
@@ -176,7 +174,7 @@ Selection::setSelectGeometry (const bool value)
 
 		if (selectGeometry)
 		{
-			getExecutionContext () -> sceneGraph_changed () .addInterest (&Selection::set_sceneGraph, this);
+			getBrowser () -> getExecutionContext () -> sceneGraph_changed () .addInterest (&Selection::set_sceneGraph, this);
 
 			for (const auto & node : nodes)
 			{
@@ -198,7 +196,7 @@ Selection::setSelectGeometry (const bool value)
 		}
 		else
 		{
-			getExecutionContext () -> sceneGraph_changed () .removeInterest (&Selection::set_sceneGraph, this);
+			getBrowser () -> getExecutionContext () -> sceneGraph_changed () .removeInterest (&Selection::set_sceneGraph, this);
 
 			for (const auto & node : geometryNodes)
 			{
@@ -228,11 +226,11 @@ Selection::setSelectGeometry (const bool value)
 void
 Selection::addNodes (const MFNode & value)
 {
-	if (clearHierarchy)
-		setHierarchy (nullptr, { });
-
 	try
 	{
+		if (clearHierarchy)
+			setHierarchy (nullptr, { });
+
 		ContextLock lock (getBrowser ());
 
 		const auto size = nodes .size ();
@@ -465,8 +463,6 @@ Selection::selectNode ()
 				setNodes ({ node });
 
 			setHierarchy (node, nearestHit -> hierarchy);
-
-			masterSelection = node;
 
 			touchTime = getCurrentTime ();
 
