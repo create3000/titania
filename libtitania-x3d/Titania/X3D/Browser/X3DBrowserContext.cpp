@@ -296,9 +296,9 @@ noexcept (true)
 
 		finished () .processInterests ();
 
+		#ifdef TITANIA_DEBUG
 		const GLenum errorNum = glGetError ();
 
-		#ifdef TITANIA_DEBUG
 		if (errorNum not_eq GL_NO_ERROR)
 			std::clog << "OpenGL Error at " << SFTime (getCurrentTime ()) .toUTCString () << ": " << gluErrorString (errorNum) << std::endl;
 		#endif

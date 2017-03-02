@@ -76,10 +76,7 @@ X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 void
 X3DUsedMaterialsEditor::initialize ()
 {
-	#ifdef FIXED_PIPELINE
 	preview -> setFixedPipeline (false);
-	#endif
-
 	preview -> setAntialiasing (4);
 	preview -> set_opacity (0);
 	preview -> show ();

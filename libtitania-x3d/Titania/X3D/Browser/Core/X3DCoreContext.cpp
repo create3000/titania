@@ -66,6 +66,9 @@ namespace X3D {
 X3DCoreContext::X3DCoreContext () :
 	           X3DBaseNode (),
 	                strict (true),
+	                vendor (),
+	              renderer (),
+	               version (),
 	            extensions ()
 {
 	glibtop_init ();
@@ -77,7 +80,13 @@ X3DCoreContext::initialize ()
 	XInitThreads ();
 
 	if (glXGetCurrentContext ())
+	{
+		vendor   = (const char*) glGetString (GL_VENDOR);
+		renderer = (const char*) glGetString (GL_RENDERER);
+		version  = (const char*) glGetString (GL_VERSION);
+
 		basic::split (std::inserter (extensions, extensions .end ()), (const char*) glGetString (GL_EXTENSIONS), " ");
+	}
 }
 
 bool

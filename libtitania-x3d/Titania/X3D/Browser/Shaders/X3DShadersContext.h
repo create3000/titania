@@ -112,7 +112,6 @@ public:
 	getShader () const
 	{ return shaderNode; }
 
-	#ifdef FIXED_PIPELINE
 	void
 	setFixedPipeline (const bool);
 
@@ -122,7 +121,6 @@ public:
 
 	bool
 	getFixedPipelineRequired () const;
-	#endif
 
 	///  @name Destruction
 
@@ -164,9 +162,8 @@ private:
 	int32_t                 maxVertexUniformVectors;
 	int32_t                 maxFragmentUniformVectors;
 	int32_t                 maxVertexAttributes;
-	#ifdef FIXED_PIPELINE
 	SFBool                  fixedPipeline;
-	#endif
+	bool                    fixedPipelineDriver;
 	X3DPtr <ComposedShader> pointShader;
 	X3DPtr <ComposedShader> wireframeShader;
 	X3DPtr <ComposedShader> gouraudShader;

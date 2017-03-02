@@ -133,9 +133,9 @@ RenderingProperties::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
-		Vendor ()   = (const char*) glGetString (GL_VENDOR);
-		Renderer () = (const char*) glGetString (GL_RENDERER);
-		Version ()  = (const char*) glGetString (GL_VERSION);
+		Vendor ()   = getBrowser () -> getVendor ();
+		Renderer () = getBrowser () -> getRenderer ();
+		Version ()  = getBrowser () -> getGLVersion ();
 
 		GLint glRedBits, glGreen, glBlueBits, glAlphaBits;
 

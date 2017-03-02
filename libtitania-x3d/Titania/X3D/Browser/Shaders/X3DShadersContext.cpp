@@ -59,6 +59,8 @@
 #include "../BrowserOptions.h"
 #include "../X3DBrowser.h"
 
+#include <regex>
+
 namespace titania {
 namespace X3D {
 
@@ -68,9 +70,8 @@ X3DShadersContext::X3DShadersContext () :
 	  maxVertexUniformVectors (0),
 	maxFragmentUniformVectors (0),
 	      maxVertexAttributes (0),
-#ifdef FIXED_PIPELINE
 	            fixedPipeline (true),
-#endif
+	      fixedPipelineDriver (true),
 	              pointShader (),
 	          wireframeShader (),
 	            gouraudShader (),
@@ -91,6 +92,10 @@ X3DShadersContext::initialize ()
 {
 	if (glXGetCurrentContext ())
 	{
+		static const std::regex fixedPipelineDrivers (R"/(nouveau)/", std::regex_constants::icase);
+
+		fixedPipelineDriver = std::regex_search (getBrowser () -> getVendor (), fixedPipelineDrivers);
+
 		// shadingLanguageVersionStream
 
 		std::istringstream shadingLanguageVersionStream ((const char*) glGetString (GL_SHADING_LANGUAGE_VERSION));
@@ -118,7 +123,6 @@ X3DShadersContext::initialize ()
 	}
 }
 
-#ifdef FIXED_PIPELINE
 void
 X3DShadersContext::setFixedPipeline (const bool value)
 {
@@ -130,9 +134,10 @@ X3DShadersContext::setFixedPipeline (const bool value)
 bool
 X3DShadersContext::getFixedPipelineRequired () const
 {
-	return fixedPipeline or not getBrowser () -> getLoaded ();
+	return fixedPipeline or
+	       not getBrowser () -> getLoaded () or
+	       fixedPipelineDriver;
 }
-#endif
 
 X3DPtr <ComposedShader>
 X3DShadersContext::createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl)
@@ -160,9 +165,7 @@ X3DShadersContext::createShader (const std::string & name, const MFString & vert
 
 void
 X3DShadersContext::set_shading (const ShadingType & shading)
-{
-	#ifdef FIXED_PIPELINE
-	
+{	
 	if (getFixedPipelineRequired ())
 	{
 		defaultShader = nullptr;
@@ -179,21 +182,6 @@ X3DShadersContext::set_shading (const ShadingType & shading)
 		}
 	}
 
-	#else
-
-	if (shading == ShadingType::PHONG)
-	{
-		defaultShader = getPhongShader ();
-	}
-	else // GOURAUD
-	{
-		defaultShader = getGouraudShader ();
-	}
-
-	#endif
-
-
-	#ifdef FIXED_PIPELINE
 	try
 	{
 		ContextLock lock (getBrowser ());
@@ -211,7 +199,6 @@ X3DShadersContext::set_shading (const ShadingType & shading)
 	}
 	catch (const Error <INVALID_OPERATION_TIMING> &)
 	{ }
-	#endif
 }
 
 X3DShadersContext::~X3DShadersContext ()

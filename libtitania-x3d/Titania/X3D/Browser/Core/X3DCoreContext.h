@@ -80,6 +80,18 @@ public:
 	bool
 	isExtensionAvailable (const std::string &) const;
 
+	const std::string &
+	getVendor () const
+	{ return vendor; }
+
+	const std::string &
+	getRenderer () const
+	{ return renderer; }
+
+	const std::string &
+	getGLVersion () const
+	{ return version; }
+
 	size_t
 	getMaxRenderBufferSize () const;
 
@@ -115,6 +127,9 @@ private:
 	///  @name Members
 
 	std::atomic <bool>     strict;
+	std::string            vendor;
+	std::string            renderer;
+	std::string            version;
 	std::set <std::string> extensions;
 
 };
