@@ -76,11 +76,7 @@ Scene::create (X3DExecutionContext* const executionContext) const
 }
 
 Scene::~Scene ()
-{
-	__LOG__ << getWorldURL () << std::endl;
-
-	trimFreeMemory ();
-}
+{ }
 
 } // X3D
 } // titania

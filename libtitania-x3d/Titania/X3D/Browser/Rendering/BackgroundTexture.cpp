@@ -78,9 +78,8 @@ BackgroundTexture::configure (const Glib::RefPtr <Gtk::StyleContext> & styleCont
 	this -> width  = width;
 	this -> height = height;
 
-	Cairo::RefPtr <Cairo::ImageSurface> surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
-
-	const auto cairo = Cairo::Context::create (surface);
+	const auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
+	const auto cairo   = Cairo::Context::create (surface);
 
 	styleContext -> render_background (cairo, 0, 0, width, height);
 

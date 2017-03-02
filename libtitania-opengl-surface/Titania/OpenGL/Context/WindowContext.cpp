@@ -83,31 +83,28 @@ WindowContext::WindowContext (Display* const display,
 void
 WindowContext::setSwapInterval (const size_t interval)
 {
-	if (makeCurrent ())
+	auto glXSwapIntervalEXT = (PFNGLXSWAPINTERVALEXTPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalEXT");
+	
+	if (glXSwapIntervalEXT)
 	{
-		auto glXSwapIntervalEXT = (PFNGLXSWAPINTERVALEXTPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalEXT");
-		
-		if (glXSwapIntervalEXT)
-		{
-			glXSwapIntervalEXT (getDisplay (), xWindow, interval);
-			return;
-		}
+		glXSwapIntervalEXT (getDisplay (), xWindow, interval);
+		return;
+	}
 
-		auto glXSwapIntervalSGI = (PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalSGI");
+	auto glXSwapIntervalSGI = (PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalSGI");
 
-		if (glXSwapIntervalSGI)
-		{
-			glXSwapIntervalSGI (interval);
-			return;
-		}
-		
-		auto glXSwapIntervalMESA = (PFNGLXSWAPINTERVALMESAPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalMESA");
+	if (glXSwapIntervalSGI)
+	{
+		glXSwapIntervalSGI (interval);
+		return;
+	}
+	
+	auto glXSwapIntervalMESA = (PFNGLXSWAPINTERVALMESAPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalMESA");
 
-		if (glXSwapIntervalMESA)
-		{
-			glXSwapIntervalMESA (interval);
-			return;
-		}
+	if (glXSwapIntervalMESA)
+	{
+		glXSwapIntervalMESA (interval);
+		return;
 	}
 }
 

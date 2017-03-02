@@ -124,6 +124,7 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 		context -> setGeometryType  (getGeometryType ());
 		context -> setColorMaterial (not getColors () .empty ());
 	
+		//shaderNode -> enable ();
 		shaderNode -> setLocalUniforms (context);
 	
 		// Setup vertex attributes.
@@ -151,6 +152,7 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 	
 		shaderNode -> disableColorAttrib ();
 		shaderNode -> disableVertexAttrib ();
+		shaderNode -> disable ();
 	
 		glBindBuffer (GL_ARRAY_BUFFER, 0);
 	}

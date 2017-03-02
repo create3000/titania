@@ -927,30 +927,31 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 			glVertexPointer (3, GL_DOUBLE, 0, 0);
 		}
 		#endif
-	
+
 		if (shaderNode)
 		{
 			// Enable shader
-		
+
+			//shaderNode -> enable ();
 			shaderNode -> setLocalUniforms (context);
-	
+
 			// Enable vertex attribute nodes
-	
+
 			for (size_t i = 0, size = attribNodes .size (); i < size; ++ i)
 				attribNodes [i] -> enable (shaderNode, attribBufferIds [i]);
-	
+
 			if (not colors .empty ())
 				shaderNode -> enableColorAttrib (colorBufferId, GL_FLOAT, 0, nullptr);
-	
+
 			if (not texCoords .empty ())
 				shaderNode -> enableTexCoordAttrib (texCoordBufferIds, GL_FLOAT, { }, { });
-	
+
 			if (not normals .empty ())
 				shaderNode -> enableNormalAttrib (normalBufferId, GL_FLOAT, 0, nullptr);
-		
+
 			shaderNode -> enableVertexAttrib (vertexBufferId, GL_DOUBLE, 0, nullptr);
 		}
-	
+
 		// Draw depending on ccw, transparency and solid.
 	
 		const auto positiveScale = determinant3 (context -> getModelViewMatrix ()) > 0;
@@ -1025,6 +1026,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 			shaderNode -> disableTexCoordAttrib ();
 			shaderNode -> disableNormalAttrib ();
 			shaderNode -> disableVertexAttrib ();
+			shaderNode -> disable ();
 		}
 	
 		glBindBuffer (GL_ARRAY_BUFFER, 0);

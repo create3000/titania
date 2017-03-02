@@ -145,11 +145,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	//if (not getConfig () -> hasItem ("maximized"))
 	//	getWindow () .maximize ();
 
-	#ifndef FIXED_PIPELINE
-	getShaderPipelineMenuItem ()        .set_visible (false);
-	getBrowserShaderPipelineMenuItem () .set_visible (false);
-	#endif
-
 	setup ();
 }
 

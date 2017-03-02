@@ -214,9 +214,6 @@ X3DShapeNode::display (ShapeContainer* const context)
 
 	glDisable (GL_FOG);
 	glDisable (GL_COLOR_MATERIAL);
-
-	glUseProgram (0);
-	glBindProgramPipeline (0);
 }
 
 #ifdef FIXED_PIPELINE

@@ -310,7 +310,7 @@ Appearance::draw (X3DRenderObject* const renderObject)
 	if (shaderNode)
 		browser -> setShader (shaderNode);
 	else
-		browser -> setShader (renderObject -> getBrowser () -> getDefaultShader ());
+		browser -> setShader (browser -> getDefaultShader ());
 }
 
 } // X3D

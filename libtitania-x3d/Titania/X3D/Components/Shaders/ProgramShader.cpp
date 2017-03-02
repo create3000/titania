@@ -226,6 +226,8 @@ ProgramShader::draw (X3DRenderObject* const renderObject)
 void
 ProgramShader::setGlobalUniforms (X3DRenderObject* const renderObject)
 {
+	glBindProgramPipeline (pipelineId);
+
 	for (const auto & programNode : programNodes)
 	{
 		glActiveShaderProgram (pipelineId, programNode -> getProgramId ());
@@ -237,6 +239,8 @@ void
 ProgramShader::setLocalUniforms (ShapeContainer* const context)
 throw (std::domain_error)
 {
+	glBindProgramPipeline (pipelineId);
+
 	for (const auto & programNode : programNodes)
 	{
 		glActiveShaderProgram (pipelineId, programNode -> getProgramId ());

@@ -55,8 +55,6 @@ if test "x$enable_parallel" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4"
 fi
 
-CXXFLAGS=$CXXFLAGS" -DFIXED_PIPELINE"
-
 if test "x$enable_debug" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG"
 fi
