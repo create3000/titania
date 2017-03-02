@@ -1,11 +1,15 @@
-#X3D V3.3 utf8 Titania V1.1.0
+#X3D V3.3 utf8 Titania V3.0.0
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Fri, 05 Sep 2014 01:58:48 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.1.0, http://titania.create3000.de"
+META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "icon" "../../ui/icons/icon-bw.svg"
-META "modified" "Sat, 19 Sep 2015 15:21:06 GMT"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/pages/about/info.x3dv"
+META "modified" "Thu, 02 Mar 2017 20:09:03 GMT"
+META "outputStyle" "nicest"
 META "title" "about:info"
 
 EXTERNPROTO Rotor [
@@ -24,11 +28,108 @@ EXTERNPROTO Rotor [
 ]
 "library/Rotor.x3dv"
 
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+            value DEF Copyright Transform {
+              translation 0.262 0.217 1
+              children Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0 0 0
+                  }
+                }
+                geometry Text {
+                  string "© 2010 - 2017"
+                  fontStyle DEF _1 FontStyle {
+                    family [
+                      "../../fonts/pt-sans/PTN77F.ttf",
+                      "sans"
+                    ]
+                    style "BOLD"
+                    size 0.03
+                  }
+                }
+              }
+            }
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF LayerSet MetadataSet {
+        name "LayerSet"
+        reference "http://titania.create3000.de"
+        value DEF activeLayer MetadataInteger {
+          name "activeLayer"
+          reference "http://titania.create3000.de"
+          value -1
+        }
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "info"
+}
+
 NavigationInfo {
   type "NONE"
 }
 
-DEF about:info_1 LayerSet {
+DEF about:info LayerSet {
   order 1
   layers LayoutLayer {
     layout Layout { }
@@ -73,7 +174,7 @@ DEF about:info_1 LayerSet {
           }
         }
       }
-      DEF Page_1 LayoutGroup {
+      DEF Page LayoutGroup {
         layout Layout {
           scaleMode [
             "STRETCH",
@@ -148,6 +249,7 @@ DEF about:info_1 LayerSet {
                       loop TRUE
                     }
                     DEF Logo Transform {
+                      rotation 0 0 -1 3.56414481403479
                       center 5.6 -5.9 0
                       children Inline {
                         url "library/logo.x3dv"
@@ -155,7 +257,7 @@ DEF about:info_1 LayerSet {
                     }
                   ]
                 }
-                DEF Titania Transform {
+                DEF Titania_1 Transform {
                   translation -0.219 0.3611 1
                   children Shape {
                     appearance Appearance {
@@ -198,15 +300,15 @@ DEF about:info_1 LayerSet {
                   }
                 }
                 DEF StayInteractive Transform {
-                  translation 0.0368572 0.219 1
+                  translation 0.197 0.219 1
                   children Shape {
                     appearance Appearance {
-                      material Material {
+                      material DEF _2 Material {
                         diffuseColor 1 1 1
                       }
                     }
                     geometry Text {
-                      string "Stay interactive!"
+                      string "Future to the Fantasy!"
                       fontStyle FontStyle {
                         family [
                           "../../fonts/pt-sans/PTN57F.ttf",
@@ -214,6 +316,7 @@ DEF about:info_1 LayerSet {
                         ]
                         style "BOLD"
                         size 0.03
+                        justify "END"
                       }
                     }
                   }
@@ -267,28 +370,7 @@ DEF about:info_1 LayerSet {
                     }
                   }
                 }
-                DEF Copyright Transform {
-                  translation 0.262 0.217 1
-                  children Shape {
-                    appearance Appearance {
-                      material Material {
-                        diffuseColor 0 0 0
-                      }
-                    }
-                    geometry Text {
-                      string "© 2010 - 2014"
-                      length 0.15
-                      fontStyle FontStyle {
-                        family [
-                          "../../fonts/pt-sans/PTN77F.ttf",
-                          "sans"
-                        ]
-                        style "BOLD"
-                        size 0.03
-                      }
-                    }
-                  }
-                }
+                USE Copyright
                 DEF VersionNumber Transform {
                   translation -0.438782 -0.385263 1
                   children [
@@ -299,7 +381,7 @@ DEF about:info_1 LayerSet {
                         }
                       }
                       geometry DEF VersionNumberText Text {
-                        string "1.1.0"
+                        string "3.0.0"
                         maxExtent 0.65
                         fontStyle FontStyle {
                           family [
