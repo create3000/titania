@@ -833,6 +833,7 @@ enable_maintainer_mode
 enable_dependency_tracking
 enable_debug
 enable_parallel
+enable_fixed_pipeline_drivers
 enable_nls
 enable_shared
 enable_static
@@ -1516,6 +1517,9 @@ Optional Features:
                           speeds up one-time build
   --enable-debug          Use 'DEBUG' Configuration [default=NO]
   --enable-parallel       Use 'PARALLEL' Configuration [default=NO]
+  --enable-fixed-pipeline-drivers
+                          Use 'FIXED PIPELINE_DRIVERS' Configuration
+                          [default=NO]
   --disable-nls           do not use Native Language Support
   --enable-shared[=PKGS]  build shared libraries [default=yes]
   --enable-static[=PKGS]  build static libraries [default=yes]
@@ -3883,12 +3887,18 @@ else
 fi
 
 
+# Check whether --enable-fixed-pipeline-drivers was given.
+if test "${enable_fixed_pipeline_drivers+set}" = set; then :
+  enableval=$enable_fixed_pipeline_drivers; enable_fixed_pipeline_drivers=yes
+else
+  enable_fixed_pipeline_drivers=no
+fi
 
 
 
 
 
-CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing"
+CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing -DFIXED_PIPELINE"
 
 if test "x$enable_release" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" "
@@ -3898,10 +3908,12 @@ if test "x$enable_parallel" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4"
 fi
 
-CXXFLAGS=$CXXFLAGS" -DFIXED_PIPELINE"
-
 if test "x$enable_debug" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG"
+fi
+
+if test ! "x$enable_fixed_pipeline_drivers" = "xyes" ; then
+	CXXFLAGS=$CXXFLAGS" -DTITANIA_FIXED_PIPELINE_DRIVERS"
 fi
 
 LDFLAGS="-rdynamic"

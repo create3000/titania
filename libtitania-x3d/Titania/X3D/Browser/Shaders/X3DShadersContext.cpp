@@ -71,7 +71,7 @@ X3DShadersContext::X3DShadersContext () :
 	maxFragmentUniformVectors (0),
 	      maxVertexAttributes (0),
 	            fixedPipeline (true),
-	      fixedPipelineDriver (true),
+	      fixedPipelineDriver (false),
 	              pointShader (),
 	          wireframeShader (),
 	            gouraudShader (),
@@ -92,9 +92,11 @@ X3DShadersContext::initialize ()
 {
 	if (glXGetCurrentContext ())
 	{
+		#ifdef TITANIA_FIXED_PIPELINE_DRIVERS
 		static const std::regex fixedPipelineDrivers (R"/(nouveau)/", std::regex_constants::icase);
 
 		fixedPipelineDriver = std::regex_search (getBrowser () -> getVendor (), fixedPipelineDrivers);
+		#endif
 
 		// shadingLanguageVersionStream
 

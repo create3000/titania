@@ -31,11 +31,10 @@ AC_ARG_ENABLE(parallel,
 		[Use 'PARALLEL' Configuration [default=NO]]),
 		enable_parallel=yes, enable_parallel=no)
 
-dnl AC_ARG_ENABLE(fixed-pipeline,
-dnl 	AC_HELP_STRING([--enable-fixed-pipeline],
-dnl 		[Use 'FIXED PIPELINE' Configuration [default=YES]]),
-dnl 		enable_fixed_pipeline=yes, enable_fixed_pipeline=no)
-
+AC_ARG_ENABLE(fixed-pipeline-drivers,
+	AC_HELP_STRING([--enable-fixed-pipeline-drivers],
+		[Use 'FIXED PIPELINE_DRIVERS' Configuration [default=NO]]),
+		enable_fixed_pipeline_drivers=yes, enable_fixed_pipeline_drivers=no)
 
 
 dnl ***************************************************************************
@@ -45,7 +44,7 @@ dnl ***************************************************************************
 dnl ******* add "-flto --plugin=$(gcc --print-file-name=liblto_plugin.so)" flags (link time optimization) to CXXFLAGS or LDFLAGS if it is working
 dnl ******* CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG -Wno-deprecated-declarations"
 
-CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing"
+CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing -DFIXED_PIPELINE"
 
 if test "x$enable_release" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" "
@@ -57,6 +56,10 @@ fi
 
 if test "x$enable_debug" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG"
+fi
+
+if test ! "x$enable_fixed_pipeline_drivers" = "xyes" ; then
+	CXXFLAGS=$CXXFLAGS" -DTITANIA_FIXED_PIPELINE_DRIVERS"
 fi
 
 LDFLAGS="-rdynamic"
