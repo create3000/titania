@@ -321,7 +321,7 @@ PointLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer
 
 		return true;
 	}
-	catch (const std::domain_error &)
+	catch (const std::exception &)
 	{
 		__LOG__ << std::endl;
 		return false;

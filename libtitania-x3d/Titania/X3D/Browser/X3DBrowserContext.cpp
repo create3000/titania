@@ -156,9 +156,9 @@ X3DBrowserContext::initialize ()
  */
 std::shared_ptr <Magick::Image>
 X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing) const
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>,
-       std::runtime_error)
+throw (Error <INSUFFICIENT_CAPABILITIES>,
+       Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
 {
 	// Update browser.
 

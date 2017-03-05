@@ -291,7 +291,7 @@ SpotLight::renderShadowMap (X3DRenderObject* const renderObject, LightContainer*
 		lightContainer -> setShadowMatrix (invLightSpaceMatrix * projectionMatrix * getBiasMatrix ());
 		return true;
 	}
-	catch (const std::domain_error & error)
+	catch (const std::exception & error)
 	{
 		__LOG__ << std::endl;
 		return false;

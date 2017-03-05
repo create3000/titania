@@ -33,7 +33,7 @@ AC_ARG_ENABLE(parallel,
 
 AC_ARG_ENABLE(fixed-pipeline-drivers,
 	AC_HELP_STRING([--enable-fixed-pipeline-drivers],
-		[Use 'FIXED PIPELINE_DRIVERS' Configuration [default=NO]]),
+		[Enable Nouveau for 'Cobweb Compatibility Mode' [default=NO]]),
 		enable_fixed_pipeline_drivers=yes, enable_fixed_pipeline_drivers=no)
 
 

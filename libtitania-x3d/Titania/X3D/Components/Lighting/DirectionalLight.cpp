@@ -235,7 +235,7 @@ DirectionalLight::renderShadowMap (X3DRenderObject* const renderObject, LightCon
 
 		return true;
 	}
-	catch (const std::domain_error & error)
+	catch (const std::exception & error)
 	{
 		__LOG__ << std::endl;
 		return false;

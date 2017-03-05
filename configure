@@ -1518,7 +1518,7 @@ Optional Features:
   --enable-debug          Use 'DEBUG' Configuration [default=NO]
   --enable-parallel       Use 'PARALLEL' Configuration [default=NO]
   --enable-fixed-pipeline-drivers
-                          Use 'FIXED PIPELINE_DRIVERS' Configuration
+                          Enable Nouveau for 'Cobweb Compatibility Mode'
                           [default=NO]
   --disable-nls           do not use Native Language Support
   --enable-shared[=PKGS]  build shared libraries [default=yes]

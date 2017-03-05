@@ -125,7 +125,7 @@ FrameBuffer::setup ()
 		if (complete)
 			return;
 
-		throw std::runtime_error ("Couldn't create frame buffer.");
+		throw Error <INSUFFICIENT_CAPABILITIES> ("Couldn't create frame buffer.");
 	}
 }
 
