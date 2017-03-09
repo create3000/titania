@@ -173,7 +173,7 @@
                   return _xpfpa_result; \
               }
 
-#elif defined(HAVE__FPU_SETCW) // glibc systems
+#elif defined(HAVE__FPU_SETCW) && ! defined (__APPLE__) // glibc systems
 
   // fpu_control.h defines _FPU_[GS]ETCW
   # include <fpu_control.h>
