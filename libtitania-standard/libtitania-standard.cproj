@@ -531,6 +531,19 @@
     <None Include="Titania\String\toupper.h" />
     <None Include="Titania\External\ApproxMVBB\AABB.hpp" />
     <None Include="Titania\External\ApproxMVBB\AngleFunctions.hpp" />
+    <None Include="Titania\External\ApproxMVBB\ComputeApproxMVBB.hpp" />
+    <None Include="Titania\External\ApproxMVBB\ContainerFunctions.hpp" />
+    <None Include="Titania\External\ApproxMVBB\ConvexHull2D.hpp" />
+    <None Include="Titania\External\ApproxMVBB\GreatestCommonDivisor.hpp" />
+    <None Include="Titania\External\ApproxMVBB\KdTree.hpp" />
+    <None Include="Titania\External\ApproxMVBB\KdTreeXml.hpp" />
+    <None Include="Titania\External\ApproxMVBB\MakeCoordinateSystem.hpp" />
+    <None Include="Titania\External\ApproxMVBB\MinAreaRectangle.hpp" />
+    <None Include="Titania\External\ApproxMVBB\OOBB.hpp" />
+    <None Include="Titania\External\ApproxMVBB\PointFunctions.hpp" />
+    <None Include="Titania\External\ApproxMVBB\ProjectedPointSet.hpp" />
+    <None Include="Titania\External\ApproxMVBB\RandomGenerators.hpp" />
+    <None Include="Titania\External\ApproxMVBB\TypeDefsPoints.hpp" />
     <None Include="Titania\External\ApproxMVBB\Common\AssertionDebug.hpp" />
     <None Include="Titania\External\ApproxMVBB\Common\ContainerTag.hpp" />
     <None Include="Titania\External\ApproxMVBB\Common\CygwinPatch.hpp" />
@@ -543,10 +556,7 @@
     <None Include="Titania\External\ApproxMVBB\Common\SfinaeMacros.hpp" />
     <None Include="Titania\External\ApproxMVBB\Common\StaticAssert.hpp" />
     <None Include="Titania\External\ApproxMVBB\Common\TypeDefs.hpp" />
-    <None Include="Titania\External\ApproxMVBB\ComputeApproxMVBB.hpp" />
     <None Include="Titania\External\ApproxMVBB\Config\Config.hpp" />
-    <None Include="Titania\External\ApproxMVBB\ContainerFunctions.hpp" />
-    <None Include="Titania\External\ApproxMVBB\ConvexHull2D.hpp" />
     <None Include="Titania\External\ApproxMVBB\Diameter\EstimateDiameter.hpp" />
     <None Include="Titania\External\ApproxMVBB\Diameter\TypeSegment.hpp" />
     <None Include="Titania\External\ApproxMVBB\Diameter\Utils\alloc.hpp" />
@@ -557,18 +567,8 @@
     <None Include="Titania\External\ApproxMVBB\GeometryPredicates\PredicatesInit.hpp" />
     <None Include="Titania\External\ApproxMVBB\GeometryPredicates\Rounding.hpp" />
     <None Include="Titania\External\ApproxMVBB\GeometryPredicates\xpfpa.h" />
-    <None Include="Titania\External\ApproxMVBB\GreatestCommonDivisor.hpp" />
-    <None Include="Titania\External\ApproxMVBB\KdTree.hpp" />
-    <None Include="Titania\External\ApproxMVBB\KdTreeXml.hpp" />
-    <None Include="Titania\External\ApproxMVBB\MakeCoordinateSystem.hpp" />
-    <None Include="Titania\External\ApproxMVBB\MinAreaRectangle.hpp" />
-    <None Include="Titania\External\ApproxMVBB\OOBB.hpp" />
-    <None Include="Titania\External\ApproxMVBB\PointFunctions.hpp" />
-    <None Include="Titania\External\ApproxMVBB\ProjectedPointSet.hpp" />
     <None Include="Titania\External\ApproxMVBB\pugixml\pugiconfig.hpp" />
     <None Include="Titania\External\ApproxMVBB\pugixml\pugixml.hpp" />
-    <None Include="Titania\External\ApproxMVBB\RandomGenerators.hpp" />
-    <None Include="Titania\External\ApproxMVBB\TypeDefsPoints.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -642,18 +642,18 @@
     <Compile Include="Titania\OS\program_exists.cpp" />
     <Compile Include="Titania\OS\rename.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\AABB.cpp" />
-    <Compile Include="Titania\External\ApproxMVBB\Common\MyMatrixTypeDefs.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\ConvexHull2D.cpp" />
-    <Compile Include="Titania\External\ApproxMVBB\Diameter\alloc.cpp" />
+    <Compile Include="Titania\External\ApproxMVBB\MinAreaRectangle.cpp" />
+    <Compile Include="Titania\External\ApproxMVBB\OOBB.cpp" />
+    <Compile Include="Titania\External\ApproxMVBB\RandomGenerators.cpp" />
+    <Compile Include="Titania\External\ApproxMVBB\Common\MyMatrixTypeDefs.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\Diameter\EstimateDiameter.cpp" />
+    <Compile Include="Titania\External\ApproxMVBB\Diameter\alloc.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\Diameter\rand.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\Diameter\util.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\GeometryPredicates\Predicates.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\GeometryPredicates\PredicatesInit.cpp" />
-    <Compile Include="Titania\External\ApproxMVBB\MinAreaRectangle.cpp" />
-    <Compile Include="Titania\External\ApproxMVBB\OOBB.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\pugixml\pugixml.cpp" />
-    <Compile Include="Titania\External\ApproxMVBB\RandomGenerators.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -682,6 +682,5 @@
     <Folder Include="Titania\External\unsupported\" />
     <Folder Include="Titania\RegEx\" />
     <Folder Include="Titania\Math\Mesh\" />
-    <Folder Include="Titania\External\ApproxMVBB\" />
   </ItemGroup>
 </Project>

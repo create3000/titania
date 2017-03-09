@@ -56,6 +56,8 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#pragma GCC diagnostic ignored "-Wignored-attributes"
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <Titania/External/ApproxMVBB/ComputeApproxMVBB.hpp>
 #pragma GCC diagnostic pop
 
