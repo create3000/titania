@@ -158,228 +158,308 @@
           </packing>
         </child>
         <child>
-          <object class="GtkExpander" id="LayerSetExpander">
-            <property name="name">LODExpander</property>
+          <object class="GtkScrolledWindow">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="expanded">True</property>
-            <property name="spacing">8</property>
+            <property name="shadow_type">in</property>
             <child>
-              <object class="GtkBox" id="box2">
+              <object class="GtkViewport">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="vexpand">True</property>
-                <property name="orientation">vertical</property>
-                <property name="spacing">2</property>
                 <child>
-                  <object class="GtkScrolledWindow" id="LayerScrolledWindow">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="shadow_type">in</property>
-                    <child>
-                      <object class="GtkTreeView" id="LayerTreeView">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="model">LayerListStore</property>
-                        <property name="headers_visible">False</property>
-                        <property name="rules_hint">True</property>
-                        <signal name="button-release-event" handler="on_layers_button_release_event" after="yes" swapped="no"/>
-                        <signal name="row-activated" handler="on_layer_activated" swapped="no"/>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection" id="LayerSelection">
-                            <signal name="changed" handler="on_layer_selection_changed" swapped="no"/>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn" id="VisibilityColumn">
-                            <property name="sizing">autosize</property>
-                            <property name="title" translatable="yes">Visible</property>
-                            <child>
-                              <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf2"/>
-                              <attributes>
-                                <attribute name="stock-id">7</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn" id="PickableColumn">
-                            <property name="sizing">autosize</property>
-                            <property name="title" translatable="yes">Pickable</property>
-                            <child>
-                              <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
-                              <attributes>
-                                <attribute name="stock-id">6</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn" id="TypeNameColumn">
-                            <property name="sizing">autosize</property>
-                            <property name="title" translatable="yes">TypeName</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
-                              <attributes>
-                                <attribute name="style">4</attribute>
-                                <attribute name="text">1</attribute>
-                                <attribute name="weight">3</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn" id="NameColumn">
-                            <property name="sizing">autosize</property>
-                            <property name="title" translatable="yes">Name</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext2"/>
-                              <attributes>
-                                <attribute name="style">4</attribute>
-                                <attribute name="text">2</attribute>
-                                <attribute name="weight">3</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn" id="SpacerColumn">
-                            <property name="sizing">autosize</property>
-                            <property name="title" translatable="yes">column</property>
-                            <property name="expand">True</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext3"/>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn" id="ActiveLayerColumn">
-                            <property name="sizing">autosize</property>
-                            <property name="title" translatable="yes">ActiveLayer</property>
-                            <child>
-                              <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf3"/>
-                              <attributes>
-                                <attribute name="stock-id">9</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="LayerActionBox">
+                  <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="border_width">8</property>
+                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkBox" id="box4">
+                      <object class="GtkExpander" id="LayerSetExpander">
+                        <property name="name">LODExpander</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="hexpand">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="expanded">True</property>
+                        <property name="spacing">8</property>
                         <child>
-                          <object class="GtkMenuButton" id="menubutton1">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Add new layer node</property>
-                            <property name="popup">NewMenu</property>
-                            <child>
-                              <object class="GtkImage" id="image3">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="stock">gtk-new</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="RemoveLayerButton">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Remove selected layer node</property>
-                            <signal name="clicked" handler="on_remove_layer_button_clicked" swapped="no"/>
-                            <child>
-                              <object class="GtkImage" id="image4">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="stock">gtk-remove</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="box10">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="spacing">2</property>
-                        <child>
-                          <object class="GtkBox" id="MoveLayerBox">
+                          <object class="GtkBox" id="box2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="halign">end</property>
-                            <property name="hexpand">True</property>
+                            <property name="vexpand">True</property>
+                            <property name="orientation">vertical</property>
                             <property name="spacing">2</property>
                             <child>
-                              <object class="GtkButton" id="TopButton">
+                              <object class="GtkScrolledWindow" id="LayerScrolledWindow">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Raise the current layer to the top</property>
-                                <signal name="clicked" handler="on_top_clicked" swapped="no"/>
+                                <property name="shadow_type">in</property>
                                 <child>
-                                  <object class="GtkImage" id="image8">
+                                  <object class="GtkTreeView" id="LayerTreeView">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="stock">gtk-goto-top</property>
-                                    <property name="icon_size">1</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="model">LayerListStore</property>
+                                    <property name="headers_visible">False</property>
+                                    <property name="rules_hint">True</property>
+                                    <signal name="button-release-event" handler="on_layers_button_release_event" after="yes" swapped="no"/>
+                                    <signal name="row-activated" handler="on_layer_activated" swapped="no"/>
+                                    <child internal-child="selection">
+                                      <object class="GtkTreeSelection" id="LayerSelection">
+                                        <signal name="changed" handler="on_layer_selection_changed" swapped="no"/>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn" id="VisibilityColumn">
+                                        <property name="sizing">autosize</property>
+                                        <property name="title" translatable="yes">Visible</property>
+                                        <child>
+                                          <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf2"/>
+                                          <attributes>
+                                            <attribute name="stock-id">7</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn" id="PickableColumn">
+                                        <property name="sizing">autosize</property>
+                                        <property name="title" translatable="yes">Pickable</property>
+                                        <child>
+                                          <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
+                                          <attributes>
+                                            <attribute name="stock-id">6</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn" id="TypeNameColumn">
+                                        <property name="sizing">autosize</property>
+                                        <property name="title" translatable="yes">TypeName</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                                          <attributes>
+                                            <attribute name="style">4</attribute>
+                                            <attribute name="text">1</attribute>
+                                            <attribute name="weight">3</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn" id="NameColumn">
+                                        <property name="sizing">autosize</property>
+                                        <property name="title" translatable="yes">Name</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                                          <attributes>
+                                            <attribute name="style">4</attribute>
+                                            <attribute name="text">2</attribute>
+                                            <attribute name="weight">3</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn" id="SpacerColumn">
+                                        <property name="sizing">autosize</property>
+                                        <property name="title" translatable="yes">column</property>
+                                        <property name="expand">True</property>
+                                        <child>
+                                          <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <object class="GtkTreeViewColumn" id="ActiveLayerColumn">
+                                        <property name="sizing">autosize</property>
+                                        <property name="title" translatable="yes">ActiveLayer</property>
+                                        <child>
+                                          <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf3"/>
+                                          <attributes>
+                                            <attribute name="stock-id">9</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                    </child>
                                   </object>
                                 </child>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
+                                <property name="expand">True</property>
                                 <property name="fill">True</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="UpButton">
+                              <object class="GtkBox" id="LayerActionBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Raise the current layer</property>
-                                <signal name="clicked" handler="on_up_clicked" swapped="no"/>
+                                <property name="can_focus">False</property>
                                 <child>
-                                  <object class="GtkImage" id="image5">
+                                  <object class="GtkBox" id="box4">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="stock">gtk-go-up</property>
-                                    <property name="icon_size">1</property>
+                                    <property name="halign">start</property>
+                                    <property name="hexpand">False</property>
+                                    <child>
+                                      <object class="GtkMenuButton" id="menubutton1">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="tooltip_text" translatable="yes">Add new layer node</property>
+                                        <property name="popup">NewMenu</property>
+                                        <child>
+                                          <object class="GtkImage" id="image3">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="stock">gtk-new</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="RemoveLayerButton">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="tooltip_text" translatable="yes">Remove selected layer node</property>
+                                        <signal name="clicked" handler="on_remove_layer_button_clicked" swapped="no"/>
+                                        <child>
+                                          <object class="GtkImage" id="image4">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="stock">gtk-remove</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
                                   </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox" id="box10">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="spacing">2</property>
+                                    <child>
+                                      <object class="GtkBox" id="MoveLayerBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="halign">end</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <object class="GtkButton" id="TopButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Raise the current layer to the top</property>
+                                            <signal name="clicked" handler="on_top_clicked" swapped="no"/>
+                                            <child>
+                                              <object class="GtkImage" id="image8">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-goto-top</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="UpButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Raise the current layer</property>
+                                            <signal name="clicked" handler="on_up_clicked" swapped="no"/>
+                                            <child>
+                                              <object class="GtkImage" id="image5">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-go-up</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="DownButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Lower the current layer</property>
+                                            <signal name="clicked" handler="on_down_clicked" swapped="no"/>
+                                            <child>
+                                              <object class="GtkImage" id="image6">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-go-down</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkButton" id="BottomButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">Lower the current layer to the bottom</property>
+                                            <signal name="clicked" handler="on_bottom_clicked" swapped="no"/>
+                                            <child>
+                                              <object class="GtkImage" id="image7">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">gtk-goto-bottom</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">3</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
                                 </child>
                               </object>
                               <packing>
@@ -388,78 +468,24 @@
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                            <child>
-                              <object class="GtkButton" id="DownButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Lower the current layer</property>
-                                <signal name="clicked" handler="on_down_clicked" swapped="no"/>
-                                <child>
-                                  <object class="GtkImage" id="image6">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="stock">gtk-go-down</property>
-                                    <property name="icon_size">1</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="BottomButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Lower the current layer to the bottom</property>
-                                <signal name="clicked" handler="on_bottom_clicked" swapped="no"/>
-                                <child>
-                                  <object class="GtkImage" id="image7">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="stock">gtk-goto-bottom</property>
-                                    <property name="icon_size">1</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">3</property>
-                              </packing>
-                            </child>
                           </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel" id="LayerSetLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">LayerSet</property>
+                          </object>
                         </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">1</property>
+                        <property name="position">0</property>
                       </packing>
                     </child>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="LayerSetLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">LayerSet</property>
               </object>
             </child>
           </object>

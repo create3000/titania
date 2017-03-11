@@ -234,8 +234,8 @@ private:
 
 	///  @name Members
 
-	std::string filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
+	std::string                    filename;
+	Glib::RefPtr <Gtk::Builder>    m_builder;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAll;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterAudio;
 	Glib::RefPtr <Gtk::FileFilter> m_FileFilterCompressedVrmlEncoding;
@@ -258,13 +258,13 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ImageCompressionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageWidthAdjustment;
-	Gtk::FileChooserDialog* m_Window;
-	Gtk::Box* m_Widget;
-	Gtk::Box* m_OutputStyleBox;
-	Gtk::ComboBoxText* m_OutputStyleButton;
-	Gtk::Dialog* m_ImageOptionsDialog;
-	Gtk::Switch* m_ImageAlphaChannelSwitch;
-	Gtk::Box* m_ImageAntialiasingBox;
+	Gtk::FileChooserDialog*        m_Window;
+	Gtk::Box*                      m_Widget;
+	Gtk::Box*                      m_OutputStyleBox;
+	Gtk::ComboBoxText*             m_OutputStyleButton;
+	Gtk::Dialog*                   m_ImageOptionsDialog;
+	Gtk::Switch*                   m_ImageAlphaChannelSwitch;
+	Gtk::Box*                      m_ImageAntialiasingBox;
 
 };
 

@@ -158,17 +158,17 @@ private:
 
 	///  @name Members
 
-	std::string filename;
+	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window* m_Window;
-	Gtk::Box* m_Widget;
-	Gtk::Label* m_Label;
-	Gtk::Notebook* m_Notebook;
-	Gtk::Box* m_ViewpointListBox;
-	Gtk::Box* m_HistoryViewBox;
-	Gtk::Box* m_LibraryViewBox;
-	Gtk::Box* m_OutlineEditorBox;
-	Gtk::Box* m_NodeEditorBox;
+	Gtk::Window*                m_Window;
+	Gtk::Box*                   m_Widget;
+	Gtk::Label*                 m_Label;
+	Gtk::Notebook*              m_Notebook;
+	Gtk::Box*                   m_ViewpointListBox;
+	Gtk::Box*                   m_HistoryViewBox;
+	Gtk::Box*                   m_LibraryViewBox;
+	Gtk::Box*                   m_OutlineEditorBox;
+	Gtk::Box*                   m_NodeEditorBox;
 
 };
 

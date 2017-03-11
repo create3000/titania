@@ -135,7 +135,9 @@ BackgroundEditor::configure ()
 {
 	X3DBackgroundEditorInterface::configure ();
 
-	getNotebook ()         .set_current_page (getConfig () -> getInteger ("currentPage"));
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+
 	getTexturesNotebook () .set_current_page (getConfig () -> getInteger ("texturePage"));
 }
 
@@ -303,7 +305,7 @@ BackgroundEditor::on_remove_background_clicked ()
 void
 BackgroundEditor::store ()
 {
-	getConfig () -> setItem ("currentPage", getNotebook ()         .get_current_page ());
+	getConfig () -> setItem ("paned",       getPaned () .get_position ());
 	getConfig () -> setItem ("texturePage", getTexturesNotebook () .get_current_page ());
 
 	X3DBackgroundEditorInterface::store ();

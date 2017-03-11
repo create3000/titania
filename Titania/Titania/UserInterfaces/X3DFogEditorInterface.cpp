@@ -66,6 +66,7 @@ X3DFogEditorInterface::create (const std::string & filename)
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("FogListBox", m_FogListBox);
 	m_builder -> get_widget ("FogActionBox", m_FogActionBox);
 	m_builder -> get_widget ("NewFogButton", m_NewFogButton);

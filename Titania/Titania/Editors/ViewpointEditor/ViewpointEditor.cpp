@@ -95,6 +95,15 @@ ViewpointEditor::initialize ()
 }
 
 void
+ViewpointEditor::configure ()
+{
+	X3DViewpointEditorInterface::configure ();
+
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+}
+
+void
 ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & value)
 {
 	if (viewpointNode)
@@ -218,6 +227,14 @@ ViewpointEditor::update (const X3D::UndoStepPtr & undoStep)
 	viewpointNode -> setOrientation      (orientation);
 	viewpointNode -> setCenterOfRotation (centerOfRotation);
 	viewpointNode -> resetUserOffsets ();
+}
+
+void
+ViewpointEditor::store ()
+{
+	getConfig () -> setItem ("paned", getPaned () .get_position ());
+
+	X3DViewpointEditorInterface::store ();
 }
 
 ViewpointEditor::~ViewpointEditor ()

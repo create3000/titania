@@ -97,6 +97,10 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	void
+	configure () final override;
+
 	void
 	set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> &);
 
@@ -119,6 +123,12 @@ private:
 
 	void
 	update (const X3D::UndoStepPtr &);
+
+	///  @name Destruction
+
+	virtual
+	void
+	store () final override;
 
 	///  @name Members
 

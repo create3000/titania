@@ -86,6 +86,10 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	void
+	configure () final override;
+
 	void
 	set_navigationInfo (const X3D::X3DPtr <X3D::NavigationInfo> &);
 
@@ -98,6 +102,12 @@ private:
 	virtual
 	void
 	on_remove_navigation_info_clicked () final override;
+
+	///  @name Destruction
+
+	virtual
+	void
+	store () final override;
 
 	///  @name Members
 

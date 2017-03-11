@@ -89,6 +89,7 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NewTextureBackgroundMenuItem", m_NewTextureBackgroundMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("BackgroundListBox", m_BackgroundListBox);
 	m_builder -> get_widget ("ActionBox", m_ActionBox);
 	m_builder -> get_widget ("RemoveBackgroundButton", m_RemoveBackgroundButton);
@@ -97,8 +98,6 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
-	m_builder -> get_widget ("Notebook", m_Notebook);
-	m_builder -> get_widget ("ColorBox", m_ColorBox);
 	m_builder -> get_widget ("ColorsExpander", m_ColorsExpander);
 	m_builder -> get_widget ("SkyBox", m_SkyBox);
 	m_builder -> get_widget ("SkyGradientBox", m_SkyGradientBox);
@@ -119,7 +118,6 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GroundColorBox", m_GroundColorBox);
 	m_builder -> get_widget ("GroundColorButton", m_GroundColorButton);
 	m_builder -> get_widget ("TransparencyScale", m_TransparencyScale);
-	m_builder -> get_widget ("TexturesBox", m_TexturesBox);
 	m_builder -> get_widget ("TextureExpander", m_TextureExpander);
 	m_builder -> get_widget ("TexturesNotebook", m_TexturesNotebook);
 	m_builder -> get_widget ("FrontTextureFormatLabel", m_FrontTextureFormatLabel);

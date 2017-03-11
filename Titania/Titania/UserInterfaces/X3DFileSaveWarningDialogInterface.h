@@ -142,14 +142,14 @@ private:
 
 	///  @name Members
 
-	std::string filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
+	std::string                   filename;
+	Glib::RefPtr <Gtk::Builder>   m_builder;
 	Glib::RefPtr <Gtk::ListStore> m_ListStore;
-	Gtk::Dialog* m_Window;
-	Gtk::Box* m_Widget;
-	Gtk::Label* m_Message;
-	Gtk::Box* m_FilesBox;
-	Gtk::TreeView* m_TreeView;
+	Gtk::Dialog*                  m_Window;
+	Gtk::Box*                     m_Widget;
+	Gtk::Label*                   m_Message;
+	Gtk::Box*                     m_FilesBox;
+	Gtk::TreeView*                m_TreeView;
 
 };
 

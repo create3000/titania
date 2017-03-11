@@ -150,15 +150,15 @@ private:
 
 	///  @name Members
 
-	std::string filename;
+	std::string                 filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Gtk::Window* m_Window;
-	Gtk::Box* m_Widget;
-	Gtk::Label* m_Label;
-	Gtk::Notebook* m_Notebook;
-	Gtk::Box* m_ConsoleBox;
-	Gtk::Box* m_ScriptEditorBox;
-	Gtk::Box* m_AnimationEditorBox;
+	Gtk::Window*                m_Window;
+	Gtk::Box*                   m_Widget;
+	Gtk::Label*                 m_Label;
+	Gtk::Notebook*              m_Notebook;
+	Gtk::Box*                   m_ConsoleBox;
+	Gtk::Box*                   m_ScriptEditorBox;
+	Gtk::Box*                   m_AnimationEditorBox;
 
 };
 

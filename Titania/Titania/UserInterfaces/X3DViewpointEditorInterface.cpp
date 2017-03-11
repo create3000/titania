@@ -107,6 +107,7 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NewGeoViewpointMenuItem", m_NewGeoViewpointMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
 	m_builder -> get_widget ("ViewpointActionBox", m_ViewpointActionBox);
 	m_builder -> get_widget ("RemoveViewpointButton", m_RemoveViewpointButton);

@@ -242,29 +242,29 @@ private:
 
 	///  @name Members
 
-	std::string filename;
-	Glib::RefPtr <Gtk::Builder> m_builder;
-	Glib::RefPtr <Gtk::ListStore> m_ListStore;
-	Glib::RefPtr <Gtk::TreeModelSort> m_TreeModelSort;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_Icon;
+	std::string                            filename;
+	Glib::RefPtr <Gtk::Builder>            m_builder;
+	Glib::RefPtr <Gtk::ListStore>          m_ListStore;
+	Glib::RefPtr <Gtk::TreeModelSort>      m_TreeModelSort;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_Icon;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_IconRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_TitleColumn;
-	Glib::RefPtr <Gtk::CellRendererText> m_TitleRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_WorlURLColumn;
-	Glib::RefPtr <Gtk::CellRendererText> m_WorlURLRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn> m_LastAccessColumn;
-	Glib::RefPtr <Gtk::CellRendererText> m_LastAccessRenderer;
-	Gtk::Window* m_Window;
-	Gtk::Box* m_Widget;
-	Gtk::SearchEntry* m_SearchEntry;
-	Gtk::ScrolledWindow* m_ScrolledWindow;
-	Gtk::TreeView* m_TreeView;
-	Gtk::Menu* m_Menu;
-	Gtk::RadioMenuItem* m_NeverMenuItem;
-	Gtk::RadioMenuItem* m_OneMonthMenuItem;
-	Gtk::RadioMenuItem* m_HalfYearMenuItem;
-	Gtk::RadioMenuItem* m_OneYearMenuItem;
-	Gtk::RadioMenuItem* m_AlwaysMenuItem;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_TitleColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_TitleRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_WorlURLColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_WorlURLRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn>     m_LastAccessColumn;
+	Glib::RefPtr <Gtk::CellRendererText>   m_LastAccessRenderer;
+	Gtk::Window*                           m_Window;
+	Gtk::Box*                              m_Widget;
+	Gtk::SearchEntry*                      m_SearchEntry;
+	Gtk::ScrolledWindow*                   m_ScrolledWindow;
+	Gtk::TreeView*                         m_TreeView;
+	Gtk::Menu*                             m_Menu;
+	Gtk::RadioMenuItem*                    m_NeverMenuItem;
+	Gtk::RadioMenuItem*                    m_OneMonthMenuItem;
+	Gtk::RadioMenuItem*                    m_HalfYearMenuItem;
+	Gtk::RadioMenuItem*                    m_OneYearMenuItem;
+	Gtk::RadioMenuItem*                    m_AlwaysMenuItem;
 
 };
 

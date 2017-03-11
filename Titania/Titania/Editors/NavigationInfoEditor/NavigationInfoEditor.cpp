@@ -108,6 +108,15 @@ NavigationInfoEditor::initialize ()
 }
 
 void
+NavigationInfoEditor::configure ()
+{
+	X3DNavigationInfoEditorInterface::configure ();
+
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+}
+
+void
 NavigationInfoEditor::set_navigationInfo (const X3D::X3DPtr <X3D::NavigationInfo> & value)
 {
 	navigationInfoNode = value;
@@ -150,6 +159,14 @@ NavigationInfoEditor::on_remove_navigation_info_clicked ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_navigationInfo (nullptr);
+}
+
+void
+NavigationInfoEditor::store ()
+{
+	getConfig () -> setItem ("paned", getPaned () .get_position ());
+
+	X3DNavigationInfoEditorInterface::store ();
 }
 
 NavigationInfoEditor::~NavigationInfoEditor ()

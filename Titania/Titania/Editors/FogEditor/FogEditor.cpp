@@ -89,6 +89,15 @@ FogEditor::initialize ()
 }
 
 void
+FogEditor::configure ()
+{
+	X3DFogEditorInterface::configure ();
+
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+}
+
+void
 FogEditor::set_fog (const X3D::X3DPtr <X3D::Fog> & value)
 {
 	fogNode = value;
@@ -125,6 +134,14 @@ FogEditor::on_remove_fog_clicked ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_fog (nullptr);
+}
+
+void
+FogEditor::store ()
+{
+	getConfig () -> setItem ("paned", getPaned () .get_position ());
+
+	X3DFogEditorInterface::store ();
 }
 
 FogEditor::~FogEditor ()
