@@ -3373,6 +3373,9 @@
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="menu_label">Texture</property>
+              </packing>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="label40">
@@ -3917,6 +3920,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Texture Properties</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -5115,6 +5119,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Texture Transform</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -5351,6 +5356,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Texture Coordinate Generator</property>
                 <property name="position">3</property>
               </packing>
             </child>
@@ -5430,6 +5436,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Used Textures</property>
                 <property name="position">4</property>
               </packing>
             </child>
@@ -5555,6 +5562,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Palette</property>
                 <property name="position">5</property>
               </packing>
             </child>

@@ -44,6 +44,9 @@
                   <placeholder/>
                 </child>
               </object>
+              <packing>
+                <property name="menu_label">Background</property>
+              </packing>
             </child>
             <child type="tab">
               <object class="GtkBox" id="box4">
@@ -91,6 +94,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Fog</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -141,6 +145,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Navigation Info</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -191,6 +196,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Viewpoint</property>
                 <property name="position">3</property>
               </packing>
             </child>

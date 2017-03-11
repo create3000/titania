@@ -283,6 +283,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tab_pos">bottom</property>
+            <property name="enable_popup">True</property>
             <child>
               <object class="GtkScrolledWindow">
                 <property name="visible">True</property>
@@ -1122,6 +1123,9 @@
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="menu_label">Grid Layout Tool</property>
+              </packing>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="label3">
@@ -1976,6 +1980,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Angle Layout Tool</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -1992,8 +1997,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkScrolledWindow">
-                <property name="visible">True</property>
+              <object class="GtkScrolledWindow" id="GridSnappingScrolledWindow">
                 <property name="can_focus">True</property>
                 <child>
                   <object class="GtkViewport">
@@ -2001,7 +2005,8 @@
                     <property name="can_focus">False</property>
                     <property name="shadow_type">none</property>
                     <child>
-                      <object class="GtkBox" id="GridSnappingBox">
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="border_width">8</property>
                         <property name="orientation">vertical</property>
@@ -2127,6 +2132,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Snapping</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -2142,8 +2148,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkScrolledWindow">
-                <property name="visible">True</property>
+              <object class="GtkScrolledWindow" id="AngleSnappingScrolledWindow">
                 <property name="can_focus">True</property>
                 <child>
                   <object class="GtkViewport">
@@ -2151,7 +2156,8 @@
                     <property name="can_focus">False</property>
                     <property name="shadow_type">none</property>
                     <child>
-                      <object class="GtkBox" id="AngleSnappingBox">
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="border_width">8</property>
                         <property name="orientation">vertical</property>
@@ -2278,6 +2284,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Snapping</property>
                 <property name="position">3</property>
               </packing>
             </child>

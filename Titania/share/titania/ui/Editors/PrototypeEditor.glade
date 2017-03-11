@@ -228,6 +228,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="tab_pos">bottom</property>
+                <property name="enable_popup">True</property>
                 <child>
                   <object class="GtkScrolledWindow">
                     <property name="visible">True</property>
@@ -278,6 +279,9 @@
                       </object>
                     </child>
                   </object>
+                  <packing>
+                    <property name="menu_label">Interface</property>
+                  </packing>
                 </child>
                 <child type="tab">
                   <object class="GtkLabel" id="label1">
@@ -444,6 +448,7 @@
                     </child>
                   </object>
                   <packing>
+                    <property name="menu_label">URL</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -509,6 +514,7 @@
                     </child>
                   </object>
                   <packing>
+                    <property name="menu_label">Instances</property>
                     <property name="position">2</property>
                   </packing>
                 </child>

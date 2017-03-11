@@ -174,12 +174,12 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AngleLineColorButton", m_AngleLineColorButton);
 	m_builder -> get_widget ("AngleColorBox", m_AngleColorBox);
 	m_builder -> get_widget ("AngleColorButton", m_AngleColorButton);
-	m_builder -> get_widget ("GridSnappingBox", m_GridSnappingBox);
+	m_builder -> get_widget ("GridSnappingScrolledWindow", m_GridSnappingScrolledWindow);
 	m_builder -> get_widget ("GridSnappingExpander", m_GridSnappingExpander);
 	m_builder -> get_widget ("GridEnabledCheckButton", m_GridEnabledCheckButton);
 	m_builder -> get_widget ("GridSnapToCenterCheckButton", m_GridSnapToCenterCheckButton);
 	m_builder -> get_widget ("GridSnapDistanceSpinButton", m_GridSnapDistanceSpinButton);
-	m_builder -> get_widget ("AngleSnappingBox", m_AngleSnappingBox);
+	m_builder -> get_widget ("AngleSnappingScrolledWindow", m_AngleSnappingScrolledWindow);
 	m_builder -> get_widget ("AngleSnappingExpander", m_AngleSnappingExpander);
 	m_builder -> get_widget ("AngleEnabledCheckButton", m_AngleEnabledCheckButton);
 	m_builder -> get_widget ("AngleSnapToCenterCheckButton", m_AngleSnapToCenterCheckButton);

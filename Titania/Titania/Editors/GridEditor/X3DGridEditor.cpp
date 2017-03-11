@@ -176,10 +176,10 @@ X3DGridEditor::configure ()
 void
 X3DGridEditor::on_grid_toggled ()
 {
-	getGridTransformBox ()  .set_sensitive (getGridCheckButton () .get_active ());
-	getGridMajorLinesBox () .set_sensitive (getGridCheckButton () .get_active ());
-	getGridColorsBox ()     .set_sensitive (getGridCheckButton () .get_active ());
-	getGridSnappingBox ()   .set_visible   (getGridCheckButton () .get_active ());
+	getGridTransformBox ()           .set_sensitive (getGridCheckButton () .get_active ());
+	getGridMajorLinesBox ()          .set_sensitive (getGridCheckButton () .get_active ());
+	getGridColorsBox ()              .set_sensitive (getGridCheckButton () .get_active ());
+	getGridSnappingScrolledWindow () .set_visible   (getGridCheckButton () .get_active ());
 }
 
 void

@@ -369,6 +369,9 @@
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="menu_label">Text</property>
+              </packing>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="label21">
@@ -1048,6 +1051,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Font Style</property>
                 <property name="position">1</property>
               </packing>
             </child>

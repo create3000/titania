@@ -3988,6 +3988,9 @@
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="menu_label">Geometry</property>
+              </packing>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="label2">
@@ -4446,6 +4449,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Primitive Count</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -4701,6 +4705,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Geometry Tool</property>
                 <property name="position">2</property>
               </packing>
             </child>

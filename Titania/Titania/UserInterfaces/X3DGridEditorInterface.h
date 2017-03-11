@@ -546,9 +546,9 @@ public:
 	getAngleColorButton () const
 	{ return *m_AngleColorButton; }
 
-	Gtk::Box &
-	getGridSnappingBox () const
-	{ return *m_GridSnappingBox; }
+	Gtk::ScrolledWindow &
+	getGridSnappingScrolledWindow () const
+	{ return *m_GridSnappingScrolledWindow; }
 
 	Gtk::Expander &
 	getGridSnappingExpander () const
@@ -566,9 +566,9 @@ public:
 	getGridSnapDistanceSpinButton () const
 	{ return *m_GridSnapDistanceSpinButton; }
 
-	Gtk::Box &
-	getAngleSnappingBox () const
-	{ return *m_AngleSnappingBox; }
+	Gtk::ScrolledWindow &
+	getAngleSnappingScrolledWindow () const
+	{ return *m_AngleSnappingScrolledWindow; }
 
 	Gtk::Expander &
 	getAngleSnappingExpander () const
@@ -773,12 +773,12 @@ private:
 	Gtk::Button*                   m_AngleLineColorButton;
 	Gtk::Box*                      m_AngleColorBox;
 	Gtk::Button*                   m_AngleColorButton;
-	Gtk::Box*                      m_GridSnappingBox;
+	Gtk::ScrolledWindow*           m_GridSnappingScrolledWindow;
 	Gtk::Expander*                 m_GridSnappingExpander;
 	Gtk::CheckButton*              m_GridEnabledCheckButton;
 	Gtk::CheckButton*              m_GridSnapToCenterCheckButton;
 	Gtk::SpinButton*               m_GridSnapDistanceSpinButton;
-	Gtk::Box*                      m_AngleSnappingBox;
+	Gtk::ScrolledWindow*           m_AngleSnappingScrolledWindow;
 	Gtk::Expander*                 m_AngleSnappingExpander;
 	Gtk::CheckButton*              m_AngleEnabledCheckButton;
 	Gtk::CheckButton*              m_AngleSnapToCenterCheckButton;

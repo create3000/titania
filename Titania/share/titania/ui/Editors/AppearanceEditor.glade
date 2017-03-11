@@ -1267,6 +1267,9 @@
                               </object>
                             </child>
                           </object>
+                          <packing>
+                            <property name="menu_label">Material</property>
+                          </packing>
                         </child>
                         <child type="tab">
                           <object class="GtkLabel" id="label3">
@@ -1592,6 +1595,7 @@
                             </child>
                           </object>
                           <packing>
+                            <property name="menu_label">Fill Properties</property>
                             <property name="position">1</property>
                           </packing>
                         </child>
@@ -1873,6 +1877,7 @@
                             </child>
                           </object>
                           <packing>
+                            <property name="menu_label">Line Properties</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
@@ -1942,6 +1947,7 @@
                             </child>
                           </object>
                           <packing>
+                            <property name="menu_label">Used Materials</property>
                             <property name="position">3</property>
                           </packing>
                         </child>
@@ -2084,6 +2090,7 @@
                             </child>
                           </object>
                           <packing>
+                            <property name="menu_label">Palette</property>
                             <property name="position">4</property>
                           </packing>
                         </child>

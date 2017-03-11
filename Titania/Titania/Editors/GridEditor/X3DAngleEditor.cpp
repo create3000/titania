@@ -173,10 +173,10 @@ X3DAngleEditor::configure ()
 void
 X3DAngleEditor::on_angle_toggled ()
 {
-	getAngleTransformBox ()  .set_sensitive (getAngleCheckButton () .get_active ());
-	getAngleMajorLinesBox () .set_sensitive (getAngleCheckButton () .get_active ());
-	getAngleColorsBox ()     .set_sensitive (getAngleCheckButton () .get_active ());
-	getAngleSnappingBox ()   .set_visible   (getAngleCheckButton () .get_active ());
+	getAngleTransformBox ()           .set_sensitive (getAngleCheckButton () .get_active ());
+	getAngleMajorLinesBox ()          .set_sensitive (getAngleCheckButton () .get_active ());
+	getAngleColorsBox ()              .set_sensitive (getAngleCheckButton () .get_active ());
+	getAngleSnappingScrolledWindow () .set_visible   (getAngleCheckButton () .get_active ());
 }
 
 void

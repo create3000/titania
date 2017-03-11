@@ -503,6 +503,9 @@
                           </object>
                         </child>
                       </object>
+                      <packing>
+                        <property name="menu_label">Brush</property>
+                      </packing>
                     </child>
                     <child type="tab">
                       <object class="GtkLabel">
@@ -625,6 +628,7 @@
                         </child>
                       </object>
                       <packing>
+                        <property name="menu_label">Palette</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
