@@ -82,7 +82,7 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PrototypeNotebook", m_PrototypeNotebook);
 	m_builder -> get_widget ("InterfaceExpander", m_InterfaceExpander);
 	m_builder -> get_widget ("InterfaceBox", m_InterfaceBox);
-	m_builder -> get_widget ("URLBox", m_URLBox);
+	m_builder -> get_widget ("URLScrolledWindow", m_URLScrolledWindow);
 	m_builder -> get_widget ("URLTreeView", m_URLTreeView);
 	m_builder -> get_widget ("URLAddButton", m_URLAddButton);
 	m_builder -> get_widget ("URLRemoveButton", m_URLRemoveButton);

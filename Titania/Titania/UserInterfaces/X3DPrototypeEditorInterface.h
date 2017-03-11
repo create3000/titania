@@ -178,9 +178,9 @@ public:
 	getInterfaceBox () const
 	{ return *m_InterfaceBox; }
 
-	Gtk::Box &
-	getURLBox () const
-	{ return *m_URLBox; }
+	Gtk::ScrolledWindow &
+	getURLScrolledWindow () const
+	{ return *m_URLScrolledWindow; }
 
 	Gtk::TreeView &
 	getURLTreeView () const
@@ -285,7 +285,7 @@ private:
 	Gtk::Notebook*                         m_PrototypeNotebook;
 	Gtk::Expander*                         m_InterfaceExpander;
 	Gtk::Box*                              m_InterfaceBox;
-	Gtk::Box*                              m_URLBox;
+	Gtk::ScrolledWindow*                   m_URLScrolledWindow;
 	Gtk::TreeView*                         m_URLTreeView;
 	Gtk::Button*                           m_URLAddButton;
 	Gtk::Button*                           m_URLRemoveButton;

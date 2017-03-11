@@ -132,7 +132,7 @@ PrototypeEditor::set_executionContext ()
 
 	getCreateInstanceButton ()  .set_sensitive (false);
 	getNameBox ()               .set_sensitive (false);
-	getURLBox ()                .set_visible (false);
+	getURLScrolledWindow ()     .set_visible (false);
 	getUpdateInstancesButton () .set_sensitive (false);
 
 	on_create_prototype_menu ();
@@ -213,7 +213,7 @@ PrototypeEditor::set_prototype (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode>
 
 	// URL
 
-	getURLBox () .set_visible (protoNode -> isExternproto ());
+	getURLScrolledWindow () .set_visible (protoNode -> isExternproto ());
 
 	if (protoNode -> isExternproto ())
 	{

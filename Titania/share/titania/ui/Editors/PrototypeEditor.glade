@@ -294,7 +294,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkScrolledWindow">
+                  <object class="GtkScrolledWindow" id="URLScrolledWindow">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <child>
@@ -303,7 +303,7 @@
                         <property name="can_focus">False</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkBox" id="URLBox">
+                          <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="hexpand">True</property>
