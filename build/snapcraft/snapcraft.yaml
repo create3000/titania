@@ -1,5 +1,5 @@
 name: titania
-version: 1.4.5
+version: 3.0.0
 summary: Titania is a X3D/VRML editor and browser for Ubuntu.
 description: Titania is a X3D/VRML editor and browser for Ubuntu.
 confinement: strict
@@ -25,9 +25,9 @@ parts:
       - libglew-dev
       - libgl1-mesa-dev
       - libmozjs185-dev
+      - libxml++2.6-dev
+      - libjson-c-dev
       - libfontconfig1-dev
-      - libftgl-dev
-      - libpcre++-dev
       - libmagick++-dev
       - libcurl4-openssl-dev
       - libsqlite3-dev
@@ -40,6 +40,9 @@ parts:
       - libtool
       - libtool-bin
       - libgtop2-dev
+      - libcgal-dev
+      - libgmp-dev
+      - libmpfr-dev
     stage-packages:
       - libgtkmm-3.0-1v5
       - libgtksourceviewmm-3.0-0v5
@@ -47,9 +50,9 @@ parts:
       - libglew1.13
       - libgl1-mesa-glx
       - libmozjs185-1.0
+      - libxml++2.6-2v5
+      - libjson-c3
       - libfontconfig1
-      - libftgl2
-      - libpcrecpp0v5
       - libmagick++-6.q16-5v5
       - libcurl3
       - libsqlite3-0
@@ -57,10 +60,10 @@ parts:
       - zlib1g
       - libgtop-2.0-10
       - gettext
-      - perl
-      - libxml-libxml-perl
-      - libglib-perl
-      - libswitch-perl
+      - libcgal11v5
+      - libgmp10
+      - libmpfr4
+      - ttf-ubuntu-font-family
       - language-pack-en
       - language-pack-de
       - libc-bin
