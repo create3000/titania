@@ -109,6 +109,9 @@ private:
 	void
 	storeExpanders ();
 
+	void
+	on_expander_expanded (Gtk::Expander* const expander);
+
 	static
 	void
 	getLabels (Gtk::Widget* const widget, std::vector <Gtk::Label*> & labels);

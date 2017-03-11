@@ -57,7 +57,8 @@ namespace X3D {
 
 X3DTransformMatrix3DObject::X3DTransformMatrix3DObject () :
 	X3DBaseNode (),
-	     matrix ()
+	     matrix (),
+	 bboxCanged (true)
 {
 	addType (X3DConstants::X3DTransformMatrix3DObject);
 }
@@ -70,7 +71,8 @@ X3DTransformMatrix3DObject::setMatrix (const Matrix4d & value)
 
 	matrix = value;
 
-	const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
+	if (bboxCanged)
+		const_cast <SFTime &> (getExecutionContext () -> bbox_changed ()) = getCurrentTime ();
 }
 
 void

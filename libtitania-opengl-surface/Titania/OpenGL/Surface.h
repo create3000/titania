@@ -119,8 +119,8 @@ protected:
 
 private:
 
-	bool
-	set_map_event (GdkEventAny* const);
+	void
+	set_map ();
 
 	bool
 	set_construct (const Cairo::RefPtr <Cairo::Context> &);

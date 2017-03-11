@@ -83,7 +83,7 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	add_events (Gdk::STRUCTURE_MASK);
 
 	// Connect to map_event.
-	mapConnection = signal_map_event () .connect (sigc::mem_fun (*this, &Surface::set_map_event));
+	mapConnection = signal_map () .connect (sigc::mem_fun (*this, &Surface::set_map));
 	signal_unrealize () .connect (sigc::mem_fun (*this, &Surface::dispose));
 }
 
@@ -153,8 +153,8 @@ Surface::swapBuffers () const
 	context -> swapBuffers ();
 }
 
-bool
-Surface::set_map_event (GdkEventAny* const event)
+void
+Surface::set_map ()
 {
 	mapConnection .disconnect ();
 
@@ -171,8 +171,6 @@ Surface::set_map_event (GdkEventAny* const event)
 	}
 
 	constructConnection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_construct));
-
-	return false; // Propagate the event further.
 }
 
 bool

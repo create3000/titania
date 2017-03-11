@@ -90,9 +90,13 @@ protected:
 
 	///  @name Member access
 
+	void
+	setBBoxChanged (const bool value)
+	{ bboxCanged = value; }
+
 	virtual
 	void
-	setMatrix (const Matrix4d &);
+	setMatrix (const Matrix4d & value);
 
 	void
 	setMatrix (const Vector3d & t,
@@ -111,6 +115,7 @@ private:
 	///  @name Members
 
 	Matrix4d matrix;
+	bool     bboxCanged;
 
 };
 
