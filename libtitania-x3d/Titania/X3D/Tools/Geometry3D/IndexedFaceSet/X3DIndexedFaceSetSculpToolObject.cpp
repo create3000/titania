@@ -54,6 +54,7 @@
 
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../../Components/Rendering/X3DCoordinateNode.h"
+#include "../../../Editing/Undo/UndoStepContainer.h"
 
 #include <random>
 #include <chrono>

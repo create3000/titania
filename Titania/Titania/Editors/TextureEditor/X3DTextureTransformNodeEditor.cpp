@@ -172,9 +172,9 @@ X3DTextureTransformNodeEditor::on_textureTransform_changed ()
 			field .addInterest (&X3DTextureTransformNodeEditor::connectTextureTransform, this);
 
 			if (getTextureTransformComboBoxText () .get_active_row_number () > 0)
-				getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, textureTransformNode, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, textureTransformNode, undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

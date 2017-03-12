@@ -121,9 +121,9 @@ X3DViewportEditor::on_viewport_toggled ()
 			field .addInterest (&X3DViewportEditor::connectViewport, this);
 
 			if (getViewportCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, viewport, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), node, field, viewport, undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), node, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

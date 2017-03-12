@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_TOOLS_GEOMETRY3D_INDEXED_FACE_SET_X3DINDEXED_FACE_SET_TOOL_H__
 
 #include "../../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../../Editing/Undo/UndoStepContainer.h"
 #include "../../Rendering/X3DComposedGeometryNodeTool.h"
 
 namespace titania {
@@ -143,14 +142,6 @@ public:
 	const SFTime &
 	touchTime () const
 	{ return *fields .touchTime; }
-
-	UndoStepContainerPtr &
-	undo_changed ()
-	{ return *fields .undo_changed; }
-
-	const UndoStepContainerPtr &
-	undo_changed () const
-	{ return *fields .undo_changed; }
 
 	///  @name Member access
 
@@ -256,7 +247,6 @@ private:
 
 		SFBool* const isActive;
 		SFTime* const touchTime;
-		UndoStepContainerPtr* const undo_changed;
 	};
 
 	Fields fields;

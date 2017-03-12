@@ -57,6 +57,7 @@
 #include "OutlineFields.h"
 
 #include <Titania/X3D/Components/Networking/Inline.h>
+#include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
 #include <Titania/X3D/Parser/Filter.h>
@@ -853,9 +854,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 				(field -> getName () == "load" and value -> toString () == "FALSE") or 
 				 field -> getName () == "url"))
 			{
-				treeView -> getBrowserWindow () -> removeImportedNodes (treeView -> get_execution_context (),
-				                                                        { inlineNode },
-				                                                        undoStep);
+				X3D::X3DEditor::removeImportedNodes (treeView -> get_execution_context (), { inlineNode }, undoStep);
 			}
 
 			undoStep -> addObjects (node);

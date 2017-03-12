@@ -838,7 +838,7 @@ BrowserWindow::on_remove_unused_prototypes_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Unused Prototypes"));
 
-	removeUnusedPrototypes (getCurrentContext (), undoStep);
+	X3D::X3DEditor::removeUnusedPrototypes (getCurrentContext (), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -968,7 +968,7 @@ BrowserWindow::on_create_clone_activated ()
 	const auto clone = selection .back ();
 	selection .pop_back ();
 
-	createClone (getCurrentContext (), clone, selection, undoStep);
+	X3D::X3DEditor::createClone (getCurrentContext (), clone, selection, undoStep);
 
 	getSelection () -> setNodes ({ clone }, undoStep);
 
@@ -985,7 +985,7 @@ BrowserWindow::on_unlink_clone_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Unlink Clone"));
 
-	auto nodes = unlinkClone (getCurrentContext (), selection, undoStep);
+	auto nodes = X3D::X3DEditor::unlinkClone (getCurrentContext (), selection, undoStep);
 
 	getSelection () -> setNodes (nodes, undoStep);
 
@@ -1004,7 +1004,7 @@ BrowserWindow::on_group_selected_nodes_activated ()
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group"));
-	const auto group    = groupNodes (getCurrentContext (), "Transform", selection, undoStep);
+	const auto group    = X3D::X3DEditor::groupNodes (getCurrentContext (), "Transform", selection, undoStep);
 
 	getSelection () -> setNodes ({ group }, undoStep);
 	addUndoStep (undoStep);
@@ -1027,7 +1027,7 @@ BrowserWindow::on_ungroup_activated ()
 
 	getSelection () -> clearNodes (undoStep);
 
-	const auto nodes = ungroupNodes (getCurrentContext (), selection, undoStep);
+	const auto nodes = X3D::X3DEditor::ungroupNodes (getCurrentContext (), selection, undoStep);
 
 	getSelection () -> setNodes (nodes, undoStep);
 
@@ -1052,7 +1052,7 @@ BrowserWindow::on_add_to_group_activated ()
 	const auto group = selection .back ();
 	selection .pop_back ();
 
-	if (addToGroup (getCurrentContext (), group, selection, undoStep))
+	if (X3D::X3DEditor::addToGroup (getCurrentContext (), group, selection, undoStep))
 	{
 		getSelection () -> setNodes (selection, undoStep);
 
@@ -1076,7 +1076,7 @@ BrowserWindow::on_detach_from_group_activated ()
 	getSelection () -> undoRestoreNodes (undoStep);
 	getSelection () -> redoRestoreNodes (undoStep);
 
-	detachFromGroup (getCurrentContext (), selection, getKeys () .shift (), undoStep);
+	X3D::X3DEditor::detachFromGroup (getCurrentContext (), selection, getKeys () .shift (), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -1213,7 +1213,7 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 		return;
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
-	const auto group    = createParentGroup (getCurrentContext (), typeName, fieldName, selection, undoStep);
+	const auto group    = X3D::X3DEditor::createParentGroup (getCurrentContext (), typeName, fieldName, selection, undoStep);
 
 	getSelection () -> setNodes ({ group }, undoStep);
 	addUndoStep (undoStep);
@@ -2157,7 +2157,7 @@ BrowserWindow::on_transform_to_zero_activated ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Transform To Zero"));
 
-	transformToZero (getSelection () -> getNodes (), undoStep);
+	X3D::X3DEditor::transformToZero (getSelection () -> getNodes (), undoStep);
 
 	addUndoStep (undoStep);
 }
@@ -3063,12 +3063,12 @@ BrowserWindow::on_look_at_selection_clicked ()
 		const auto boundedObject = X3D::x3d_cast <X3D::X3DBoundedObject*> (node);
 
 		if (boundedObject)
-			bbox += boundedObject -> getBBox () * getModelViewMatrix (getCurrentContext (), node);
+			bbox += boundedObject -> getBBox () * X3D::X3DEditor::getModelViewMatrix (getCurrentContext (), node);
 
 		const auto geometryNode = X3D::x3d_cast <X3D::X3DGeometryNode*> (node);
 
 		if (geometryNode)
-			bbox += geometryNode -> getBBox () * getModelViewMatrix (getCurrentContext (), node);
+			bbox += geometryNode -> getBBox () * X3D::X3DEditor::getModelViewMatrix (getCurrentContext (), node);
 	}
 
 	activeViewpoint -> lookAt (bbox);

@@ -75,17 +75,45 @@ public:
 	metadata () const final override
 	{ return getNode <X3DNode> () -> metadata (); }
 
+	///  @name Hidden fields
+
+	UndoStepContainerPtr &
+	undo_changed ()
+	{ return *fields .undo_changed; }
+
+	const UndoStepContainerPtr &
+	undo_changed () const
+	{ return *fields .undo_changed; }
+
+	SFString &
+	clipboard_changed ()
+	{ return *fields .clipboard_changed; }
+
+	const SFString &
+	clipboard_changed () const
+	{ return *fields .clipboard_changed; }
+
 
 protected:
 
 	///  @name Construction
 
-	X3DNodeTool () :
-	       X3DNode (),
-		X3DBaseTool ()
+	X3DNodeTool ();
+
+
+private:
+
+	///  @name Members
+
+	struct Fields
 	{
-		addType (X3DConstants::X3DNodeTool);
-	}
+		Fields ();
+
+		UndoStepContainerPtr* const undo_changed;
+		SFString* const clipboard_changed;
+	};
+
+	Fields fields;
 
 };
 

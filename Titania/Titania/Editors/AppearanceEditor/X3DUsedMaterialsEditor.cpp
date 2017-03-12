@@ -162,7 +162,7 @@ X3DUsedMaterialsEditor::set_node (const X3D::SFNode & node)
 		const auto appearances = getNodes <X3D::Appearance> (selection, { X3D::X3DConstants::Appearance });
 
 		for (const auto & appearance : appearances)
-			getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, appearance -> material (), node, undoStep);
+			X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, appearance -> material (), node, undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}

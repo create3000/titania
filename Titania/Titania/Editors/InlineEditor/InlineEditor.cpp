@@ -180,8 +180,8 @@ InlineEditor::on_convert_master_selection_clicked ()
 
 		inlineNode -> url () = url;
 
-		getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, inlineNode, undoStep);
-		getBrowserWindow () -> replaceNodes (getCurrentContext (), masterSelection, inlineNode, undoStep);
+		X3D::X3DEditor::updateNamedNode (getCurrentContext (), name, inlineNode, undoStep);
+		X3D::X3DEditor::replaceNodes (getCurrentContext (), masterSelection, inlineNode, undoStep);
 		getBrowserWindow () -> getSelection () -> setNodes ({ inlineNode }, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 		getBrowserWindow () -> expandNodes ({ inlineNode });
@@ -203,17 +203,17 @@ InlineEditor::on_fold_back_into_scene_clicked ()
 	const auto scene          = inlineNode -> getInternalScene ();
 	const auto group          = X3D::SFNode (new X3D::Group (getCurrentContext ()));
 	const auto name           = X3D::GetNameFromURI (scene -> getWorldURL ());
-	const auto importedRoutes = getBrowserWindow () -> getImportedRoutes (getCurrentContext (), scene);
+	const auto importedRoutes = X3D::X3DEditor::getImportedRoutes (getCurrentContext (), scene);
 
 	const X3D::X3DPtr <X3D::Group> groupNode (group);
 
-	getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, group, undoStep);
-	getBrowserWindow () -> replaceNodes (getCurrentContext (), inlineNode, group, undoStep);
-	getBrowserWindow () -> importScene (getCurrentContext (), group, groupNode -> children (), scene, undoStep);
+	X3D::X3DEditor::updateNamedNode (getCurrentContext (), name, group, undoStep);
+	X3D::X3DEditor::replaceNodes (getCurrentContext (), inlineNode, group, undoStep);
+	X3D::X3DEditor::importScene (getCurrentContext (), group, groupNode -> children (), scene, undoStep);
 	group -> setup ();
 
 	for (const auto & route : importedRoutes)
-		getBrowserWindow () -> addRoute (getCurrentContext (), std::get <0> (route), std::get <1> (route), std::get <2> (route), std::get <3> (route), undoStep);
+		X3D::X3DEditor::addRoute (getCurrentContext (), std::get <0> (route), std::get <1> (route), std::get <2> (route), std::get <3> (route), undoStep);
 
 	getBrowserWindow () -> getSelection () -> setNodes ({ group }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -231,7 +231,7 @@ InlineEditor::on_load_clicked ()
 
 	// Inline is loaded and should be unloaded.  Now create undo step for imported nodes.
 	if (loadState and load .getOwnUndoStep ())
-		getBrowserWindow () -> removeImportedNodes (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), { inlineNode }, load .getOwnUndoStep ());				
+		X3D::X3DEditor::removeImportedNodes (X3D::X3DExecutionContextPtr (inlineNode -> getExecutionContext ()), { inlineNode }, load .getOwnUndoStep ());				
 
 	loadState = inlineNode -> load ();
 }

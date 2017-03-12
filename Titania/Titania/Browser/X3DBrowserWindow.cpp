@@ -76,7 +76,6 @@ namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	 X3DBrowserEditor (browser),
-	        clipboard (browser -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
 	   geometryEditor (new GeometryEditor (this)),
 	          sidebar (new Sidebar (this)),
 	           footer (new Footer (this)),
@@ -85,11 +84,7 @@ X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
 	viewpointObserver (new ViewpointObserver (this)),
 	             keys (),
 	     accelerators (true)
-{
-	addChildObjects (clipboard);
-
-	clipboard -> target () = "model/x3d+vrml";
-}
+{ }
 
 void
 X3DBrowserWindow::initialize ()
@@ -101,8 +96,6 @@ X3DBrowserWindow::initialize ()
 	geometryEditor -> reparent (getBrowserOverlay (), getWindow ());
 	sidebar        -> reparent (getSidebarBox (),     getWindow ());
 	footer         -> reparent (getFooterBox (),      getWindow ());
-
-	clipboard -> string_changed () .addInterest (&X3DBrowserWindow::set_clipboard, this);
 }
 
 void
@@ -165,57 +158,6 @@ X3DBrowserWindow::expandNodes (const X3D::MFNode & nodes)
 		getCurrentBrowser () -> addEvent ();
 		getCurrentBrowser () -> finished () .addInterest (&X3DBrowserWindow::expandNodesImpl, this, nodes);
 	}
-}
-
-void
-X3DBrowserWindow::cutNodes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
-{
-	clipboard -> set_string () = X3D::X3DEditor::cutNodes (executionContext, nodes, undoStep);
-}
-
-void
-X3DBrowserWindow::copyNodes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes)
-{
-	clipboard -> set_string () = X3D::X3DEditor::copyNodes (executionContext, nodes);
-}
-
-void
-X3DBrowserWindow::pasteNodes (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep)
-{
-	try
-	{
-		const auto scene = getCurrentBrowser () -> createX3DFromString (clipboard -> string_changed ());
-
-		if (MagicImport (getBrowserWindow ()) .import (executionContext, nodes, scene, undoStep))
-			return;
-
-		const auto & activeLayer = getCurrentWorld () -> getActiveLayer ();
-		auto &       children    = activeLayer and activeLayer not_eq getCurrentWorld () -> getLayer0 ()
-		                           ? activeLayer -> children ()
-											: getCurrentContext () -> getRootNodes ();
-
-		undoStep -> addObjects (getCurrentContext (), activeLayer);
-
-		const auto importedNodes = importScene (executionContext,
-		                                        executionContext,
-		                                        executionContext == getCurrentContext ()
-		                                        ? children
-															 : executionContext -> getRootNodes (),
-		                                        scene,
-		                                        undoStep);
-
-		getSelection () -> setNodes (importedNodes, undoStep);
-	}
-	catch (const X3D::X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-X3DBrowserWindow::set_clipboard (const X3D::SFString & string)
-{
-	getPasteMenuItem () .set_sensitive (not string .empty ());
 }
 
 void

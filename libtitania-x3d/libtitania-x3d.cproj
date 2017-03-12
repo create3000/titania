@@ -780,7 +780,6 @@
     <None Include="Titania\X3D\Tools\Geometry3D\IndexedFaceSet\X3DIndexedFaceSetTransformObject.h" />
     <None Include="Titania\X3D\Browser\Sound\X3DMediaStream.h" />
     <None Include="Titania\X3D\Editing\Combine.h" />
-    <None Include="Titania\X3D\Editing\Editor.h" />
     <None Include="share\titania\tools\library\gradient.png" />
     <None Include="share\icons\hicolor\scalable\mimetypes\model-vrml.svg">
       <DeployService-Deploy>True</DeployService-Deploy>
@@ -1614,6 +1613,7 @@
     <Compile Include="Titania\X3D\Tools\Rendering\PointSetTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Tools\SupportedTools.cpp" />
     <Compile Include="Titania\X3D\Browser\Rendering\BackgroundTexture.cpp" />
+    <Compile Include="Titania\X3D\Tools\Core\X3DNodeTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

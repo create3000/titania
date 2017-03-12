@@ -96,7 +96,7 @@ namespace X3D {
  */
 
 MFNode
-X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & field, const X3DScenePtr & scene, const UndoStepPtr & undoStep) const
+X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & field, const X3DScenePtr & scene, const UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -136,7 +136,7 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const S
 }
 
 std::string
-X3DEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const UndoStepPtr & undoStep) const
+X3DEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const UndoStepPtr & undoStep)
 {
 	// Detach from group
 
@@ -154,13 +154,13 @@ X3DEditor::cutNodes (const X3DExecutionContextPtr & executionContext, const MFNo
 }
 
 std::string
-X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes) const
+X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes)
 {
 	// Detach from group
 
 	const auto undoDetachFromGroup = std::make_shared <UndoStep> ();
 
-	const_cast <X3DEditor*> (this) -> detachFromGroup (executionContext, nodes, true, undoDetachFromGroup);
+	detachFromGroup (executionContext, nodes, true, undoDetachFromGroup);
 
 	// Set clipboard text
 
@@ -174,7 +174,7 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 }
 
 std::string
-X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier) const
+X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier)
 {
 	std::ostringstream osstream;
 
@@ -184,7 +184,7 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, const M
 }
 
 void
-X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::ostream & ostream, const MFNode & nodes, const bool identifier) const
+X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::ostream & ostream, const MFNode & nodes, const bool identifier)
 {
 	// Find proto declarations
 
@@ -234,7 +234,7 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::os
 }
 
 std::vector <X3DProtoDeclarationNodePtr>
-X3DEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes) const
+X3DEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes)
 {
 	std::map <X3DProtoDeclarationNodePtr, size_t> protoIndex;
 
@@ -282,7 +282,7 @@ X3DEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, c
 }
 
 std::vector <Route*>
-X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes) const
+X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes)
 {
 	// Create node index
 
@@ -334,7 +334,7 @@ X3DEditor::getConnectedRoutes (const X3DExecutionContextPtr & executionContext, 
  */
 
 void
-X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep) const
+X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (executionContext);
 
@@ -386,7 +386,7 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 void
 X3DEditor::removeUsedPrototypes (const X3DExecutionContextPtr & executionContext,
                                  std::map <ExternProtoDeclarationPtr, size_t> & externProtos,
-                                 std::map <ProtoDeclarationPtr, size_t> & prototypes) const
+                                 std::map <ProtoDeclarationPtr, size_t> & prototypes)
 {
 	traverse (executionContext -> getRootNodes (), [&] (SFNode & node)
 	          {
@@ -434,7 +434,7 @@ X3DEditor::removeUsedPrototypes (const X3DExecutionContextPtr & executionContext
 }
 
 SFNode
-X3DEditor::addPrototypeInstance (const X3DExecutionContextPtr & executionContext, const std::string & name, const UndoStepPtr & undoStep) const
+X3DEditor::addPrototypeInstance (const X3DExecutionContextPtr & executionContext, const std::string & name, const UndoStepPtr & undoStep)
 {
 	const SFNode instance (executionContext -> createProto (name));
 
@@ -457,7 +457,7 @@ X3DEditor::addPrototypeInstance (const X3DExecutionContextPtr & executionContext
  *  Replaces in the entire scene graph of current execution context @a node by @a newValue.
  */
 void
-X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode & node, const SFNode & newValue, const UndoStepPtr & undoStep) const
+X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode & node, const SFNode & newValue, const UndoStepPtr & undoStep)
 {
 	replaceNodes (executionContext, executionContext, executionContext -> getRootNodes (), node, newValue, undoStep);
 
@@ -496,7 +496,7 @@ X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const 
  *  Sets @a sfnode to @a newValue.
  */
 void
-X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, SFNode & sfnode, const SFNode & newValue, const UndoStepPtr & undoStep) const
+X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, SFNode & sfnode, const SFNode & newValue, const UndoStepPtr & undoStep)
 {
 	const auto oldValue = sfnode;
 
@@ -526,7 +526,7 @@ X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const S
  *  Sets @a mfnode to @a newValue.
  */
 void
-X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const MFNode & newValue, const UndoStepPtr & undoStep) const
+X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const MFNode & newValue, const UndoStepPtr & undoStep)
 {
 	const auto oldValue = mfnode;
 
@@ -556,7 +556,7 @@ X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const 
  *  Replaces in @a mfnode all occurences of @a node by @a newValue.
  */
 void
-X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const SFNode & node, const SFNode & newValue, const UndoStepPtr & undoStep) const
+X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const SFNode & node, const SFNode & newValue, const UndoStepPtr & undoStep)
 {
 	const auto indices = mfnode .indices_of (node);
 
@@ -571,7 +571,7 @@ X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const 
  *  Sets in @a mfnode at @a index the value to @a newValue.
  */
 void
-X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const size_t index, const SFNode & newValue, const UndoStepPtr & undoStep) const
+X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const size_t index, const SFNode & newValue, const UndoStepPtr & undoStep)
 {
 	const SFNode oldValue = mfnode [index];
 
@@ -609,13 +609,13 @@ X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const S
  */
 
 void
-X3DEditor::removeNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, SFNode & node, const UndoStepPtr & undoStep) const
+X3DEditor::removeNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, SFNode & node, const UndoStepPtr & undoStep)
 {
 	replaceNode (executionContext, parent, node, nullptr, undoStep);
 }
 
 void
-X3DEditor::removeNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const size_t index, const UndoStepPtr & undoStep) const
+X3DEditor::removeNode (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & mfnode, const size_t index, const UndoStepPtr & undoStep)
 {
 	if (index < mfnode .size ())
 	{
@@ -636,7 +636,7 @@ X3DEditor::removeNode (const X3DExecutionContextPtr & executionContext, const SF
  *  Removes @a node completely from scene if not exists in scene graph anymore.
  */
 void
-X3DEditor::removeNodesFromSceneIfNotExists (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const UndoStepPtr & undoStep) const
+X3DEditor::removeNodesFromSceneIfNotExists (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const UndoStepPtr & undoStep)
 {
 	MFNode remove;
 
@@ -658,7 +658,7 @@ X3DEditor::removeNodesFromSceneIfNotExists (const X3DExecutionContextPtr & execu
  */
 
 void
-X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode & nodes_, const bool removeFromSceneGraph, const UndoStepPtr & undoStep) const
+X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode & nodes_, const bool removeFromSceneGraph, const UndoStepPtr & undoStep)
 {
 	MFNode nodes = nodes_;
 
@@ -702,7 +702,7 @@ void
 X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & executionContext,
                                             const std::set <SFNode> & nodes,
                                             const UndoStepPtr & undoStep,
-                                            const bool doRemoveFromSceneGraph) const
+                                            const bool doRemoveFromSceneGraph)
 {
 	// Remove node from scene graph
 
@@ -757,7 +757,7 @@ X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & execu
 }
 
 void
-X3DEditor::removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep) const
+X3DEditor::removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep)
 {
 	const SFNode executionContextNode (executionContext);
 
@@ -768,7 +768,7 @@ X3DEditor::removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionCo
 }
 
 void
-X3DEditor::removeNodesFromSceneGraph (const MFNode & array, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep) const
+X3DEditor::removeNodesFromSceneGraph (const MFNode & array, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep)
 {
 	traverse (const_cast <MFNode &> (array), [&] (SFNode & parent)
 	          {
@@ -813,7 +813,7 @@ X3DEditor::removeNodesFromSceneGraph (const MFNode & array, const std::set <SFNo
 }
 
 void
-X3DEditor::removeNode (const SFNode & parent, MFNode & mfnode, const SFNode & node, const UndoStepPtr & undoStep) const
+X3DEditor::removeNode (const SFNode & parent, MFNode & mfnode, const SFNode & node, const UndoStepPtr & undoStep)
 {
 	if (std::find (mfnode .begin (), mfnode .end (), node) == mfnode .end ())
 		return;
@@ -827,7 +827,7 @@ X3DEditor::removeNode (const SFNode & parent, MFNode & mfnode, const SFNode & no
 }
 
 void
-X3DEditor::removeExportedNodes (const X3DScenePtr & scene, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep) const
+X3DEditor::removeExportedNodes (const X3DScenePtr & scene, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep)
 {
 	// Remove exported nodes
 
@@ -852,7 +852,7 @@ X3DEditor::removeExportedNodes (const X3DScenePtr & scene, const std::set <SFNod
 }
 
 void
-X3DEditor::removeNamedNodes (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep) const
+X3DEditor::removeNamedNodes (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> & nodes, const UndoStepPtr & undoStep)
 {
 	// Remove named node
 
@@ -877,7 +877,7 @@ X3DEditor::removeNamedNodes (const X3DExecutionContextPtr & executionContext, co
  *  Only pass inline nodes that are loaded and should be unloaded.
  */
 void
-X3DEditor::removeImportedNodes (const X3DExecutionContextPtr & executionContext, const std::set <X3DPtr <Inline>> & inlineNodes, const UndoStepPtr & undoStep) const
+X3DEditor::removeImportedNodes (const X3DExecutionContextPtr & executionContext, const std::set <X3DPtr <Inline>> & inlineNodes, const UndoStepPtr & undoStep)
 {
 	// Remove nodes imported from node
 
@@ -928,7 +928,7 @@ X3DEditor::removeImportedNodes (const X3DExecutionContextPtr & executionContext,
  */
 
 void
-X3DEditor::updateNamedNode (const X3DExecutionContextPtr & executionContext, const std::string & name, const SFNode & node, const UndoStepPtr & undoStep) const
+X3DEditor::updateNamedNode (const X3DExecutionContextPtr & executionContext, const std::string & name, const SFNode & node, const UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -968,7 +968,7 @@ void
 X3DEditor::updateProtoDeclaration (const X3DExecutionContextPtr & executionContext,
                                    const std::string & name,
                                    const ProtoDeclarationPtr & prototype,
-                                   const UndoStepPtr & undoStep) const
+                                   const UndoStepPtr & undoStep)
 throw (Error <DISPOSED>)
 {
 	if (name .empty ())
@@ -989,7 +989,7 @@ void
 X3DEditor::updateExternProtoDeclaration (const X3DExecutionContextPtr & executionContext,
                                          const std::string & name,
                                          const ExternProtoDeclarationPtr & externProto,
-                                         const UndoStepPtr & undoStep) const
+                                         const UndoStepPtr & undoStep)
 throw (Error <DISPOSED>)
 {
 	if (name .empty ())
@@ -1037,7 +1037,7 @@ throw (Error <DISPOSED>)
  */
 
 void
-X3DEditor::deleteRoutes (const X3DExecutionContextPtr & executionContext, const SFNode & node, const UndoStepPtr & undoStep) const
+X3DEditor::deleteRoutes (const X3DExecutionContextPtr & executionContext, const SFNode & node, const UndoStepPtr & undoStep)
 {
 	// Delete routes from and to node
 
@@ -1093,7 +1093,7 @@ X3DEditor::addRoute (const X3DExecutionContextPtr & executionContext,
                      const std::string & sourceField,
                      const SFNode & destinationNode,
                      const std::string & destinationField,
-                     const UndoStepPtr & undoStep) const
+                     const UndoStepPtr & undoStep)
 throw (Error <INVALID_NODE>,
        Error <INVALID_FIELD>,
        Error <INVALID_OPERATION_TIMING>,
@@ -1141,7 +1141,7 @@ X3DEditor::deleteRoute (const X3DExecutionContextPtr & executionContext,
                         const std::string & sourceField,
                         const SFNode & destinationNode,
                         const std::string & destinationField,
-                        const UndoStepPtr & undoStep) const
+                        const UndoStepPtr & undoStep)
 {
 	using getImportedNode = SFNode          (X3DExecutionContext::*) (const std::string &) const;
 	using addRoute        = const RoutePtr &(X3DExecutionContext::*) (const SFNode &, const std::string &, const SFNode &, const std::string &);
@@ -1231,7 +1231,7 @@ X3DEditor::deleteRoute (const X3DExecutionContextPtr & executionContext,
 }
 
 std::vector <std::tuple <SFNode, std::string, SFNode, std::string>> 
-X3DEditor::getImportedRoutes (const X3DExecutionContextPtr & executionContext, const X3DScenePtr & scene) const
+X3DEditor::getImportedRoutes (const X3DExecutionContextPtr & executionContext, const X3DScenePtr & scene)
 {
 	std::vector <std::tuple <SFNode, std::string, SFNode, std::string>>  routes;
 
@@ -1296,7 +1296,7 @@ X3DEditor::getImportedRoutes (const X3DExecutionContextPtr & executionContext, c
 
 ///  This function is with reference handling.
 void
-X3DEditor::addUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep) const
+X3DEditor::addUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (FieldPtr (field));
 
@@ -1308,7 +1308,7 @@ X3DEditor::addUserDefinedField (const SFNode & node, X3DFieldDefinition* const f
 
 ///  This function is with reference handling.
 void
-X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep) const
+X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
 {
 	auto userDefinedFields = node -> getUserDefinedFields ();
 	auto iter              = std::find (userDefinedFields .begin (), userDefinedFields .end (), oldField);
@@ -1354,7 +1354,6 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 				const bool selfConnection = route -> getSourceNode () == node and route -> getSourceField () == oldField -> getName ();
 
 				addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
-				                                    this,
 				                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
 				                                    route -> getSourceNode (),
 				                                    selfConnection ? newField -> getName () : route -> getSourceField (),
@@ -1371,7 +1370,6 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 				const bool selfConnection = route -> getDestinationNode () == node and route -> getDestinationField () == oldField -> getName ();
 
 				addRoutes .emplace_back (std::bind (&X3DEditor::addRoute,
-				                                    this,
 				                                    X3DExecutionContextPtr (node -> getExecutionContext ()),
 				                                    node,
 				                                    newField -> getName (),
@@ -1425,7 +1423,7 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 
 ///  This function is with reference handling.
 void
-X3DEditor::removeUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep) const
+X3DEditor::removeUserDefinedField (const SFNode & node, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
 {
 	// Handle IS references, if node is proto.
 
@@ -1453,7 +1451,7 @@ X3DEditor::removeUserDefinedField (const SFNode & node, X3DFieldDefinition* cons
 
 ///  This function is without reference handling.
 void
-X3DEditor::setUserDefinedFields (const SFNode & node, const FieldDefinitionArray & userDefinedFields, const UndoStepPtr & undoStep) const
+X3DEditor::setUserDefinedFields (const SFNode & node, const FieldDefinitionArray & userDefinedFields, const UndoStepPtr & undoStep)
 {
 	// Remove any routes and user data.
 
@@ -1480,7 +1478,7 @@ X3DEditor::setUserDefinedFields (const SFNode & node, const FieldDefinitionArray
 }
 
 void
-X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & undoStep) const
+X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
 {
 	// Remove routes from field.
 
@@ -1506,18 +1504,18 @@ X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & un
 }
 
 void
-X3DEditor::replaceReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep) const
+X3DEditor::replaceReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
 {
 	using namespace std::placeholders;
 	
 	undoStep -> addObjects (proto);
 
 	if (proto)
-		traverse (proto .getValue (), std::bind (&X3DEditor::replaceReferencesCallback, this, _1, oldField, newField, undoStep));
+		traverse (proto .getValue (), std::bind (&X3DEditor::replaceReferencesCallback, _1, oldField, newField, undoStep));
 }
 
 bool
-X3DEditor::replaceReferencesCallback (SFNode & node, X3DFieldDefinition* const oldProtoField, X3DFieldDefinition* const newProtoField, const UndoStepPtr & undoStep) const
+X3DEditor::replaceReferencesCallback (SFNode & node, X3DFieldDefinition* const oldProtoField, X3DFieldDefinition* const newProtoField, const UndoStepPtr & undoStep)
 {
 	for (const auto & field : node -> getFieldDefinitions ())
 	{
@@ -1536,18 +1534,18 @@ X3DEditor::replaceReferencesCallback (SFNode & node, X3DFieldDefinition* const o
 }
 
 void
-X3DEditor::removeReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const field, const UndoStepPtr & undoStep) const
+X3DEditor::removeReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const field, const UndoStepPtr & undoStep)
 {
 	using namespace std::placeholders;
 	
 	undoStep -> addObjects (proto);
 
 	if (proto)
-		traverse (proto .getValue (), std::bind (&X3DEditor::removeReferencesCallback, this, _1, field, undoStep));
+		traverse (proto .getValue (), std::bind (&X3DEditor::removeReferencesCallback, _1, field, undoStep));
 }
 
 bool
-X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep) const
+X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
 {
 	for (const auto & field : node -> getFieldDefinitions ())
 	{
@@ -1562,7 +1560,7 @@ X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const pr
 }
 
 void
-X3DEditor::addReference (X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep) const
+X3DEditor::addReference (X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (FieldPtr (field), FieldPtr (protoField));
 
@@ -1572,7 +1570,7 @@ X3DEditor::addReference (X3DFieldDefinition* const field, X3DFieldDefinition* co
 }
 
 void
-X3DEditor::removeReference (X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep) const
+X3DEditor::removeReference (X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (FieldPtr (field), FieldPtr (protoField));
 
@@ -1592,7 +1590,7 @@ X3DEditor::removeReference (X3DFieldDefinition* const field, X3DFieldDefinition*
  */
 
 void
-X3DEditor::createClone (const X3DExecutionContextPtr & executionContext, const SFNode & clone, const MFNode & nodes, const UndoStepPtr & undoStep) const
+X3DEditor::createClone (const X3DExecutionContextPtr & executionContext, const SFNode & clone, const MFNode & nodes, const UndoStepPtr & undoStep)
 {
 	for (const auto & node : nodes)
 	{
@@ -1635,7 +1633,7 @@ X3DEditor::createClone (const X3DExecutionContextPtr & executionContext, const S
 }
 
 MFNode
-X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext, const MFNode & clones, const UndoStepPtr & undoStep) const
+X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext, const MFNode & clones, const UndoStepPtr & undoStep)
 {
 	MFNode nodes;
 
@@ -1708,7 +1706,7 @@ X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext,
                         const SFNode & clone,
                         MFNode & nodes,
                         bool & first,
-                        const UndoStepPtr & undoStep) const
+                        const UndoStepPtr & undoStep)
 {
 	const auto indices = mfnode .indices_of (clone);
 
@@ -1741,7 +1739,7 @@ SFNode
 X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
                        const std::string & typeName,
                        const MFNode & nodes,
-                       const UndoStepPtr & undoStep) const
+                       const UndoStepPtr & undoStep)
 {
 	const auto layers = findParents <X3DLayerNode> (nodes .back ());
 
@@ -1787,7 +1785,7 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
 MFNode
 X3DEditor::ungroupNodes (const X3DExecutionContextPtr & executionContext,
                          const MFNode & groups,
-                         const UndoStepPtr & undoStep) const
+                         const UndoStepPtr & undoStep)
 {
 	MFNode children;
 
@@ -1855,7 +1853,7 @@ bool
 X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
                        const SFNode & group,
                        const MFNode & children,
-                       const UndoStepPtr & undoStep) const
+                       const UndoStepPtr & undoStep)
 {
 	if (not group)
 		return false;
@@ -1945,7 +1943,7 @@ void
 X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
                             const MFNode & children_,
                             const bool detachToLayer0,
-                            const UndoStepPtr & undoStep) const
+                            const UndoStepPtr & undoStep)
 {
 	MFNode children = children_;
 
@@ -1987,7 +1985,7 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
                               const std::string & typeName,
                               const std::string & fieldName,
                               const MFNode & children,
-                              const UndoStepPtr & undoStep) const
+                              const UndoStepPtr & undoStep)
 {
 	// Add node to group
 
@@ -2056,7 +2054,7 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
                               MFNode & children,
                               const SFNode & child,
                               const SFNode & parent,
-                              const UndoStepPtr & undoStep) const
+                              const UndoStepPtr & undoStep)
 {
 	const auto indices = children .indices_of (child);
 
@@ -2080,7 +2078,7 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 
 ///  Add node to active layer root nodes or layer 0.
 void
-X3DEditor::addNodesToActiveLayer (const WorldPtr & world, const MFNode & nodes, const UndoStepPtr & undoStep) const
+X3DEditor::addNodesToActiveLayer (const WorldPtr & world, const MFNode & nodes, const UndoStepPtr & undoStep)
 {
 	const auto & activeLayer = world -> getActiveLayer ();
 	auto &       children    = activeLayer and activeLayer not_eq world -> getLayer0 ()
@@ -2100,7 +2098,7 @@ X3DEditor::addNodesToActiveLayer (const WorldPtr & world, const MFNode & nodes, 
 
 /// Add node to layers.
 void
-X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const std::vector <X3DLayerNode*> & layers, const SFNode & node, const UndoStepPtr & undoStep) const
+X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const std::vector <X3DLayerNode*> & layers, const SFNode & node, const UndoStepPtr & undoStep)
 {
 	bool added = false;
 
@@ -2131,7 +2129,7 @@ X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const s
  */
 
 MFNode
-X3DEditor::getParentNodes (const SFNode & child) const
+X3DEditor::getParentNodes (const SFNode & child)
 {
 	MFNode parentNodes;
 
@@ -2184,7 +2182,7 @@ X3DEditor::getParentNodes (const SFNode & child) const
 }
 
 X3DFieldDefinition*
-X3DEditor::getContainerField (const SFNode & parent, const SFNode & child) const
+X3DEditor::getContainerField (const SFNode & parent, const SFNode & child)
 throw (Error <INVALID_NODE>)
 {
 	try
@@ -2240,7 +2238,7 @@ throw (Error <INVALID_NODE>)
  */
 
 void
-X3DEditor::transformToZero (const MFNode & children, const UndoStepPtr & undoStep) const
+X3DEditor::transformToZero (const MFNode & children, const UndoStepPtr & undoStep)
 {
 	Matrix4dStack           modelViewMatrix;
 	std::set <X3DBaseNode*> coords;
@@ -2252,7 +2250,7 @@ void
 X3DEditor::transformToZero (const MFNode & children,
                             Matrix4dStack & modelViewMatrix,
                             std::set <X3DBaseNode*> & coords,
-                            const UndoStepPtr & undoStep) const
+                            const UndoStepPtr & undoStep)
 {
 	for (const auto & child : children)
 	{
@@ -2265,7 +2263,7 @@ void
 X3DEditor::transformToZero (const SFNode & child,
                             Matrix4dStack & modelViewMatrix,
                             std::set <X3DBaseNode*> & coords,
-                            const UndoStepPtr & undoStep) const
+                            const UndoStepPtr & undoStep)
 {
 	for (const auto & type : basic::make_reverse_range (child -> getType ()))
 	{
@@ -2322,7 +2320,7 @@ void
 X3DEditor::transformToZero (const X3DPtr <X3DGeometryNode> & geometry,
                             const Matrix4d & matrix,
                             std::set <X3DBaseNode*> & coords,
-                            const UndoStepPtr & undoStep) const
+                            const UndoStepPtr & undoStep)
 {
 	try
 	{
@@ -2339,7 +2337,7 @@ void
 X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord,
                             const Matrix4d & matrix,
                             std::set <X3DBaseNode*> & coords,
-                            const UndoStepPtr & undoStep) const
+                            const UndoStepPtr & undoStep)
 {
 	if (not coords .emplace (coord) .second)
 		return;
@@ -2391,7 +2389,7 @@ X3DEditor::transformToZero (const X3DPtr <X3DCoordinateNode> & coord,
 }
 
 void
-X3DEditor::storeMatrix (const SFNode & node, const UndoStepPtr & undoStep) const
+X3DEditor::storeMatrix (const SFNode & node, const UndoStepPtr & undoStep)
 {
 	X3DPtr <X3DTransformNode> transform (node);
 
@@ -2404,7 +2402,7 @@ X3DEditor::storeMatrix (const SFNode & node, const UndoStepPtr & undoStep) const
 }
 
 void
-X3DEditor::setMatrix (const X3DPtr <X3DTransformNode> & transform, const Matrix4d & matrix, const UndoStepPtr & undoStep) const
+X3DEditor::setMatrix (const X3DPtr <X3DTransformNode> & transform, const Matrix4d & matrix, const UndoStepPtr & undoStep)
 {
 	undoStep -> addUndoFunction (&X3DTransformNode::setMatrix,
 	                             transform,
@@ -2418,7 +2416,7 @@ X3DEditor::setMatrix (const X3DPtr <X3DTransformNode> & transform, const Matrix4
 }
 
 Matrix4d
-X3DEditor::getModelViewMatrix (const X3DExecutionContextPtr & executionContext, const SFNode & node) const
+X3DEditor::getModelViewMatrix (const X3DExecutionContextPtr & executionContext, const SFNode & node)
 {
 	Matrix4d modelViewMatrix;
 
@@ -2480,7 +2478,7 @@ END:
  */
 
 void
-X3DEditor::mergePoints (const X3DPtr <IndexedFaceSet> & geometryNode, const double distance, const UndoStepPtr & undoStep) const
+X3DEditor::mergePoints (const X3DPtr <IndexedFaceSet> & geometryNode, const double distance, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (geometryNode);
 	undoStep -> addUndoFunction (&MFInt32::setValue, std::ref (geometryNode -> colorIndex    ()), geometryNode -> colorIndex    ());
@@ -2511,7 +2509,7 @@ X3DEditor::mergePoints (const X3DPtr <IndexedFaceSet> & geometryNode, const doub
  */
 
 void
-X3DEditor::undoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const UndoStepPtr & undoStep) const
+X3DEditor::undoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const UndoStepPtr & undoStep)
 {
 	if (not colorNode)
 	   return;
@@ -2540,7 +2538,7 @@ X3DEditor::undoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const Und
 }
 
 void
-X3DEditor::undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep) const
+X3DEditor::undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
 {
 	if (not texCoordNode)
 	   return;
@@ -2563,7 +2561,7 @@ X3DEditor::undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCo
 }
 
 void
-X3DEditor::undoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep) const
+X3DEditor::undoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (texCoordNode);
 
@@ -2596,7 +2594,7 @@ X3DEditor::undoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> & t
 }
 
 void
-X3DEditor::undoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const UndoStepPtr & undoStep) const
+X3DEditor::undoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const UndoStepPtr & undoStep)
 {
 	if (not normalNode)
 	   return;
@@ -2618,7 +2616,7 @@ X3DEditor::undoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const
 }
 
 void
-X3DEditor::undoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, const UndoStepPtr & undoStep) const
+X3DEditor::undoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, const UndoStepPtr & undoStep)
 {
 	if (not coordNode)
 	   return;
@@ -2654,7 +2652,7 @@ X3DEditor::undoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, cons
 }
 
 void
-X3DEditor::redoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const UndoStepPtr & undoStep) const
+X3DEditor::redoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const UndoStepPtr & undoStep)
 {
 	if (not colorNode)
 	   return;
@@ -2683,7 +2681,7 @@ X3DEditor::redoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const Und
 }
 
 void
-X3DEditor::redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep) const
+X3DEditor::redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
 {
 	if (not texCoordNode)
 	   return;
@@ -2706,7 +2704,7 @@ X3DEditor::redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCo
 }
 
 void
-X3DEditor::redoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep) const
+X3DEditor::redoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> & texCoordNode, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (texCoordNode);
 
@@ -2739,7 +2737,7 @@ X3DEditor::redoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> & t
 }
 
 void
-X3DEditor::redoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const UndoStepPtr & undoStep) const
+X3DEditor::redoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const UndoStepPtr & undoStep)
 {
 	if (not normalNode)
 	   return;
@@ -2761,7 +2759,7 @@ X3DEditor::redoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const
 }
 
 void
-X3DEditor::redoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, const UndoStepPtr & undoStep) const
+X3DEditor::redoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, const UndoStepPtr & undoStep)
 {
 	if (not coordNode)
 	   return;
@@ -2807,7 +2805,7 @@ X3DEditor::redoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, cons
  */
 
 void
-X3DEditor::pushBackIntoArray (const SFNode & parent, MFNode & array, const SFNode & node, const UndoStepPtr & undoStep) const
+X3DEditor::pushBackIntoArray (const SFNode & parent, MFNode & array, const SFNode & node, const UndoStepPtr & undoStep)
 {
 	// Add to group
 
@@ -2820,7 +2818,7 @@ X3DEditor::pushBackIntoArray (const SFNode & parent, MFNode & array, const SFNod
 }
 
 void
-X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const SFNode & node, const UndoStepPtr & undoStep) const
+X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const SFNode & node, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (parent);
 	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
@@ -2831,7 +2829,7 @@ X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t 
 }
 
 void
-X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const MFNode::iterator & first, const MFNode::iterator & last, const UndoStepPtr & undoStep) const
+X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const MFNode::iterator & first, const MFNode::iterator & last, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (parent);
 	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
@@ -2842,7 +2840,7 @@ X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t 
 }
 
 void
-X3DEditor::moveValueWithinArray (const SFNode & parent, MFNode & array, const size_t fromIndex, const size_t toIndex, const UndoStepPtr & undoStep) const
+X3DEditor::moveValueWithinArray (const SFNode & parent, MFNode & array, const size_t fromIndex, const size_t toIndex, const UndoStepPtr & undoStep)
 {
 	// Undo
 
@@ -2869,7 +2867,7 @@ X3DEditor::moveValueWithinArray (const SFNode & parent, MFNode & array, const si
 }
 
 void
-X3DEditor::eraseFromArray (const SFNode & parent, MFNode & array, const size_t index, const UndoStepPtr & undoStep) const
+X3DEditor::eraseFromArray (const SFNode & parent, MFNode & array, const size_t index, const UndoStepPtr & undoStep)
 {
 	undoStep -> addObjects (parent);
 	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);

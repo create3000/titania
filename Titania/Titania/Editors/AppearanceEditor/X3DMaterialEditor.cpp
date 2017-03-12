@@ -425,17 +425,17 @@ X3DMaterialEditor::on_material_changed ()
 			{
 				case 0:
 				{
-					getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
 					break;
 				}
 				case 1:
 				{
-					getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, material, undoStep);
+					X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, material, undoStep);
 					break;
 				}
 				case 2:
 				{
-					getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, twoSidedMaterial, undoStep);
+					X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, twoSidedMaterial, undoStep);
 					break;
 				}
 				default:

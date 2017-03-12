@@ -56,7 +56,6 @@
 #include <Titania/X3D/Components/Rendering/X3DCoordinateNode.h>
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
 #include <Titania/X3D/Editing/Undo/UndoHistory.h>
-#include <Titania/X3D/Editing/X3DEditor.h>
 
 namespace titania {
 namespace puck {
@@ -65,8 +64,7 @@ class BrowserSelection;
 class MagicImport;
 
 class X3DBrowserEditor :
-	public X3DBrowserWidget,
-	public X3D::X3DEditor
+	public X3DBrowserWidget
 {
 public:
 
@@ -159,19 +157,36 @@ public:
 	void
 	redo ();
 
+	/// @name Clipboard handling
+
+	const X3D::ClipboardPtr &
+	getClipboard () const
+	{ return clipboard; }
+
+	void
+	cutNodes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
+
+	void
+	copyNodes (const X3D::X3DExecutionContextPtr & executionContext, const X3D::MFNode & nodes);
+
+	void
+	pasteNodes (const X3D::X3DExecutionContextPtr & executionContext, X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
+
 	/// @name Edit operations
 
 	X3D::SFNode
-	createNode (const std::string & typeName, const X3D::UndoStepPtr &);
+	createNode (const std::string & typeName, const X3D::UndoStepPtr & undoStep);
 
-	virtual
 	void
-	removeNodesFromScene (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const bool, const X3D::UndoStepPtr &) const final override;
-
+	removeNodesFromScene (const X3D::X3DExecutionContextPtr & executionContext,
+	                      const X3D::MFNode & nodes,
+	                      const bool,
+	                      const X3D::UndoStepPtr & undoStep) const;
+	
 	/// @name CDATA field operations
 
 	void
-	editCDATA (const X3D::SFNode &);
+	editSourceCode (const X3D::SFNode &);
 
 	/// @name Selection operations
 
@@ -259,7 +274,7 @@ private:
 	void
 	set_selection_active (const bool);
 
-	// File
+	///  @name File handling
 
 	bool
 	isSaved (const X3D::BrowserPtr &);
@@ -270,19 +285,29 @@ private:
 	void
 	getMetaData ();
 
-	// Edit
-
-	///  @name CDATA field
+	///  @name Undo handling
 
 	void
-	on_cdata_changed (const Glib::RefPtr <Gio::File> &, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode &);
+	set_undo (const X3D::UndoStepContainerPtr & undoContainer);
+
+	///  @name Clipboard handling
+
+	void
+	set_clipboard (const X3D::SFString & string);
+
+	///  @name Source code handling
+
+	void
+	on_source_code_changed (const Glib::RefPtr <Gio::File> &, const Glib::RefPtr <Gio::File> &, Gio::FileMonitorEvent event, const X3D::SFNode &);
 
 	///  @name Members
 
 	using UndoMatrixIndex = std::map <X3D::X3DPtr <X3D::X3DTransformNode>, std::pair <X3D::Matrix4d, X3D::Vector3d>>;
 
 	X3D::SFBool                        editing;
+	X3D::ClipboardPtr                  clipboard;
 	std::unique_ptr <BrowserSelection> selection;
+	X3D::time_type                     copyTime;
 	UndoMatrixIndex                    undoMatrices;
 	X3D::UndoStepPtr                   nudgeUndoStep;
 	double                             undoTime;

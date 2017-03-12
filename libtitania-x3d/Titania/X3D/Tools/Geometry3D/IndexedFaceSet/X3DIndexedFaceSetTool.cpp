@@ -62,9 +62,8 @@ const int32_t X3DIndexedFaceSetTool::ToolNumber::CUT    = 2;
 const int32_t X3DIndexedFaceSetTool::ToolNumber::SCULP  = 3;
 
 X3DIndexedFaceSetTool::Fields::Fields () :
-	    isActive (new SFBool ()),
-	   touchTime (new SFTime ()),
-	undo_changed (new UndoStepContainerPtr ())
+	 isActive (new SFBool ()),
+	touchTime (new SFTime ())
 { }
 
 X3DIndexedFaceSetTool::X3DIndexedFaceSetTool () :

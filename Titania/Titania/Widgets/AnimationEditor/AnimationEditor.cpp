@@ -628,7 +628,7 @@ AnimationEditor::on_remove_member ()
 
 					interpolatorsToRemove .emplace (interpolator);
 
-					getBrowserWindow () -> deleteRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
+					X3D::X3DEditor::deleteRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
 
 					interpolatorIndex .erase (iter);
 				}
@@ -679,7 +679,7 @@ AnimationEditor::on_remove_member ()
 				const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Interpolator"));
 
 				undoStep -> addUndoFunction (&AnimationEditor::set_interpolators, this);
-				getBrowserWindow () -> deleteRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
+				X3D::X3DEditor::deleteRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
 
 				interpolatorIndex .erase (field);
 
@@ -1184,7 +1184,7 @@ AnimationEditor::on_time ()
 
 	undoStep -> addObjects (timeSensor);
 
-	getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, animation, undoStep);
+	X3D::X3DEditor::updateNamedNode (getCurrentContext (), name, animation, undoStep);
 
 	// Adjust metadata
 
@@ -2288,10 +2288,10 @@ AnimationEditor::getInterpolator (const std::string & typeName,
 		interpolators .emplace (interpolatorNode);
 
 		undoStep -> addObjects (animation);
-		getBrowserWindow () -> pushBackIntoArray (animation, animation -> children (), interpolator, undoStep);
-		getBrowserWindow () -> addRoute (getCurrentContext (), timeSensor, "fraction_changed", interpolator, "set_fraction", undoStep);
-		getBrowserWindow () -> addRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
-		getBrowserWindow () -> updateNamedNode (getCurrentContext (), name, interpolator, undoStep);
+		X3D::X3DEditor::pushBackIntoArray (animation, animation -> children (), interpolator, undoStep);
+		X3D::X3DEditor::addRoute (getCurrentContext (), timeSensor, "fraction_changed", interpolator, "set_fraction", undoStep);
+		X3D::X3DEditor::addRoute (getCurrentContext (), interpolator, "value_changed", node, field -> getName (), undoStep);
+		X3D::X3DEditor::updateNamedNode (getCurrentContext (), name, interpolator, undoStep);
 
 		return interpolatorNode;
 	}

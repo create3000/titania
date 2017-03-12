@@ -96,10 +96,6 @@ public:
 
 	///  @name Tool handling
 
-	const X3D::ClipboardPtr &
-	getClipboard () const
-	{ return clipboard; }
-
 	const std::shared_ptr <GeometryEditor> &
 	getGeometryEditor () const
 	{ return geometryEditor; }
@@ -125,17 +121,6 @@ public:
 	virtual
 	bool
 	save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy) final override;
-
-	/// @name Clipboard handling
-
-	void
-	cutNodes (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &, const X3D::UndoStepPtr &);
-
-	void
-	copyNodes (const X3D::X3DExecutionContextPtr &, const X3D::MFNode &);
-
-	void
-	pasteNodes (const X3D::X3DExecutionContextPtr &, X3D::MFNode &, const X3D::UndoStepPtr &);
 
 	///  @name Outline Editor
 
@@ -180,9 +165,6 @@ private:
 
 	/// @name Operations
 
-	void
-	set_clipboard (const X3D::SFString &);
-
 	virtual
 	void
 	on_geometry_editor_clicked () final override;
@@ -195,7 +177,6 @@ private:
 
 	///  @name Members
 
-	X3D::ClipboardPtr                   clipboard;
 	std::shared_ptr <GeometryEditor>    geometryEditor;
 	std::shared_ptr <Sidebar>           sidebar;
 	std::shared_ptr <Footer>            footer;

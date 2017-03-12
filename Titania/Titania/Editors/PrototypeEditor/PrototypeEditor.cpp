@@ -259,7 +259,7 @@ void
 PrototypeEditor::on_create_instance_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create %s"), protoNode -> getName () .c_str ()));
-	const auto instance = getBrowserWindow () -> addPrototypeInstance (getCurrentContext (), protoNode -> getName () .c_str (), undoStep);
+	const auto instance = X3D::X3DEditor::addPrototypeInstance (getCurrentContext (), protoNode -> getName () .c_str (), undoStep);
 
 	getBrowserWindow () -> getSelection () -> setNodes ({ instance }, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
@@ -310,7 +310,7 @@ PrototypeEditor::on_rename_clicked ()
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> ("Rename Extern Prototype");
 
-		getBrowserWindow () -> updateExternProtoDeclaration (getCurrentContext (), name, X3D::ExternProtoDeclarationPtr (protoNode), undoStep);
+		X3D::X3DEditor::updateExternProtoDeclaration (getCurrentContext (), name, X3D::ExternProtoDeclarationPtr (protoNode), undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
@@ -318,7 +318,7 @@ PrototypeEditor::on_rename_clicked ()
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> ("Rename Prototype");
 
-		getBrowserWindow () -> updateProtoDeclaration (getCurrentContext (), name, X3D::ProtoDeclarationPtr (protoNode), undoStep);
+		X3D::X3DEditor::updateProtoDeclaration (getCurrentContext (), name, X3D::ProtoDeclarationPtr (protoNode), undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}

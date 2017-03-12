@@ -48,31 +48,28 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EDITING_EDITOR_H__
-#define __TITANIA_X3D_EDITING_EDITOR_H__
+#include "X3DNodeTool.h"
 
-#include "X3DEditor.h"
+#include "../../Editing/Undo/UndoStepContainer.h"
 
 namespace titania {
 namespace X3D {
 
-class Editor :
-	public X3DEditor
+X3DNodeTool::Fields::Fields () :
+	     undo_changed (new UndoStepContainerPtr ()),
+	clipboard_changed (new SFString ())
+{ }
+
+X3DNodeTool::X3DNodeTool () :
+       X3DNode (),
+	X3DBaseTool (),
+        fields ()
 {
-public:
+	addType (X3DConstants::X3DNodeTool);
 
-	///  @name Construction
-
-	Editor () = default;
-
-	///  @name Destruction
-
-	virtual
-	~Editor () = default;
-
-};
+	addField (outputOnly , "undo_changed",      undo_changed ());
+	addField (outputOnly,  "clipboard_changed", clipboard_changed ());
+}
 
 } // X3D
 } // titania
-
-#endif

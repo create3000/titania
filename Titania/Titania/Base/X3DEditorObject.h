@@ -58,6 +58,7 @@
 #include <Titania/X3D/Basic/FieldSet.h>
 #include <Titania/X3D/Browser/X3DBrowser.h>
 #include <Titania/X3D/Fields/X3DPtrArray.h>
+#include <Titania/X3D/Editing/X3DEditor.h>
 
 #include <Titania/String/sprintf.h>
 #include <Titania/String/to_string.h>
@@ -409,7 +410,7 @@ X3DEditorObject::unlinkClone (const X3D::X3DPtrArray <NodeType> & nodes, const s
 
 			const X3D::SFNode copy (field -> copy (X3D::FLAT_COPY));
 
-			getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, copy, undoStep);
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, field, copy, undoStep);
 		}
 
 		first = false;

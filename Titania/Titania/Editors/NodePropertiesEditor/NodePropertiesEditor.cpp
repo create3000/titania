@@ -135,7 +135,7 @@ NodePropertiesEditor::set_name ()
 void
 NodePropertiesEditor::on_edit_cdata_clicked ()
 {
-	getBrowserWindow () -> editCDATA (node);
+	getBrowserWindow () -> editSourceCode (node);
 }
 
 void

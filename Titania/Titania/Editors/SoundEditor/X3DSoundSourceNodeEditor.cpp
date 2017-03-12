@@ -201,9 +201,9 @@ X3DSoundSourceNodeEditor::on_sound_source_changed ()
 			field .addInterest (&X3DSoundSourceNodeEditor::connectSource, this);
 
 			if (getSoundSourceComboBoxText () .get_active_row_number () > 0)
-				getBrowserWindow () -> replaceNode (getCurrentContext (), sound, field, soundSourceNode, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), sound, field, soundSourceNode, undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getCurrentContext (), sound, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), sound, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

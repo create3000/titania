@@ -56,7 +56,7 @@
 #include "../Components/Rendering/Coordinate.h"
 #include "../Components/Rendering/Color.h"
 #include "../Components/Rendering/X3DNormalNode.h"
-#include "../Editing/Editor.h"
+#include "../Editing/X3DEditor.h"
 
 #include <Titania/Math/Mesh/Tessellator.h>
 #include <Titania/Utility/Map.h>
@@ -231,7 +231,7 @@ throw (Error <INVALID_NODE>,
 		const auto & masterShape    = front ? shapes .front () : shapes .back ();
 		const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 		const auto   targetCoord    = executionContext -> createNode <Coordinate> ();
-		const auto   targetMatrix   = inverse (Editor () .getModelViewMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), masterShape));
+		const auto   targetMatrix   = inverse (X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), masterShape));
 	
 		targetGeometry -> coord () = targetCoord;
 	
@@ -255,11 +255,11 @@ throw (Error <INVALID_NODE>,
 
 			// Merge coincident points as preparation for Boolean operation.
 
-			Editor () .mergePoints (geometryNode, MERGE_DISTANCE, undoStep);
+			X3DEditor::mergePoints (geometryNode, MERGE_DISTANCE, undoStep);
 
 			// Generate mesh.
 
-			const auto matrix = Editor () .getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode) * targetMatrix;
+			const auto matrix = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode) * targetMatrix;
 		
 			meshes .emplace_back (toMesh (geometryNode, coordNode, matrix));
 		}
@@ -294,7 +294,7 @@ throw (Error <INVALID_NODE>,
 
 		// Replace node.
 
-		Editor () .replaceNode (X3DExecutionContextPtr (masterShape -> getExecutionContext ()), masterShape, masterShape -> geometry (), targetGeometry, undoStep);
+		X3DEditor::replaceNode (X3DExecutionContextPtr (masterShape -> getExecutionContext ()), masterShape, masterShape -> geometry (), targetGeometry, undoStep);
 
 		return true;
 	}
@@ -327,7 +327,7 @@ throw (Error <INVALID_NODE>,
 	const auto & masterShape    = shapes .back ();
 	const auto   targetGeometry = executionContext -> createNode <IndexedFaceSet> ();
 	const auto   targetCoord    = X3DPtr <X3DCoordinateNode> (executionContext -> createNode <Coordinate> ());
-	const auto   targetMatrix   = inverse (Editor () .getModelViewMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), masterShape));
+	const auto   targetMatrix   = inverse (X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (executionContext -> getMasterScene ()), masterShape));
 
 	targetGeometry -> coord () = targetCoord;
 
@@ -367,7 +367,7 @@ throw (Error <INVALID_NODE>,
 
 	// Replace node
 
-	Editor () .replaceNode (X3DExecutionContextPtr (masterShape -> getExecutionContext ()), masterShape, masterShape -> geometry (), targetGeometry, undoStep);
+	X3DEditor::replaceNode (X3DExecutionContextPtr (masterShape -> getExecutionContext ()), masterShape, masterShape -> geometry (), targetGeometry, undoStep);
 
 	return true;
 }
@@ -568,7 +568,7 @@ Combine::combine (const X3DExecutionContextPtr & executionContext,
 			coordArray .emplace (index, coordArray .size ());
 		}
 
-		const auto transformationMatrix = Editor () .getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode);
+		const auto transformationMatrix = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (geometryNode -> getMasterScene ()), geometryNode);
 		const auto matrix               = transformationMatrix * targetMatrix;
 		const auto matrixNegative       = determinant (matrix) < 0;
 
@@ -764,17 +764,17 @@ Combine::removeShapes (const X3DExecutionContextPtr & executionContext,
 		nodes .emplace_back (node);
 	}
 
-	Editor () .removeNodesFromScene (executionContext, nodes, true, undoStep);
+	X3DEditor::removeNodesFromScene (executionContext, nodes, true, undoStep);
 
 	// Remove Shape nodes from selection.
 
 	nodes .assign (shapes .begin (), shapes .end ());
 	nodes .remove (masterShape);
 
-	Editor () .removeNodesFromSceneGraph (selection, std::set <SFNode> (nodes .begin (), nodes .end ()), undoStep);
+	X3DEditor::removeNodesFromSceneGraph (selection, std::set <SFNode> (nodes .begin (), nodes .end ()), undoStep);
 
 	for (const auto & node : nodes)
-		Editor () .removeNodesFromSceneIfNotExists (executionContext, { node }, undoStep);
+		X3DEditor::removeNodesFromSceneIfNotExists (executionContext, { node }, undoStep);
 
 	// Find empty groups in selection and remove from scene.
 
@@ -786,7 +786,7 @@ Combine::removeShapes (const X3DExecutionContextPtr & executionContext,
 			nodes .emplace_back (group);
 	}
 
-	Editor () .removeNodesFromScene (executionContext, nodes, true, undoStep);
+	X3DEditor::removeNodesFromScene (executionContext, nodes, true, undoStep);
 }
 
 Combine::~Combine ()

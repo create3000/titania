@@ -62,6 +62,7 @@
 #include <Titania/X3D/Components/Shape/TwoSidedMaterial.h>
 #include <Titania/X3D/Components/Texturing/X3DTexture2DNode.h>
 #include <Titania/X3D/Components/Texturing3D/X3DTexture3DNode.h>
+#include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
 
@@ -203,7 +204,7 @@ MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D
 		                        lhs -> shininess ()        = rhs -> shininess ();
 		                        lhs -> transparency ()     = rhs -> transparency ();
 	
-		                        getBrowserWindow () -> updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
+		                        X3D::X3DEditor::updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
 									}
 		                     else
 									{
@@ -239,10 +240,10 @@ MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D
 			                        shininess        = rhs -> shininess ();
 			                        transparency     = rhs -> transparency ();
 		
-			                        getBrowserWindow () -> updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
+			                        X3D::X3DEditor::updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
 										}
 										else
-											getBrowserWindow () -> replaceNode (executionContext, node, appearance -> material (), material, undoStep);
+											X3D::X3DEditor::replaceNode (executionContext, node, appearance -> material (), material, undoStep);
 									}
 								}
 								else
@@ -274,7 +275,7 @@ MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D
 			                        lhs -> shininess ()        = rhs -> shininess ();
 			                        lhs -> transparency ()     = rhs -> transparency ();
 		
-			                        getBrowserWindow () -> updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
+			                        X3D::X3DEditor::updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
 										}
 			                     else
 										{
@@ -324,10 +325,10 @@ MagicImport::material (const X3D::X3DExecutionContextPtr & executionContext, X3D
 				                        lhs -> backShininess ()        = rhs -> backShininess ();
 				                        lhs -> backTransparency ()     = rhs -> backTransparency ();
 			
-				                        getBrowserWindow () -> updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
+				                        X3D::X3DEditor::updateNamedNode (executionContext, rhs -> getName (), appearance -> material (), undoStep);
 											}
 											else
-												getBrowserWindow () -> replaceNode (executionContext, node, appearance -> material (), material, undoStep);
+												X3D::X3DEditor::replaceNode (executionContext, node, appearance -> material (), material, undoStep);
 										}
 									}
 								}
@@ -398,7 +399,7 @@ MagicImport::texture (const X3D::X3DExecutionContextPtr & executionContext, X3D:
 	                        texture3D -> textureProperties () = oldTexture3D -> textureProperties ();
 								}
 
-	                     getBrowserWindow () -> replaceNode (executionContext, node, appearance -> texture (), texture, undoStep);
+	                     X3D::X3DEditor::replaceNode (executionContext, node, appearance -> texture (), texture, undoStep);
 							}
 
 	                  return true;

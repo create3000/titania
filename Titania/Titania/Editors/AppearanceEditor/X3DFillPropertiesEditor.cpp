@@ -132,12 +132,12 @@ X3DFillPropertiesEditor::on_fillProperties_toggled ()
 
 				if (getFillPropertiesCheckButton () .get_active ())
 				{
-					getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, fillProperties, undoStep);
+					X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, fillProperties, undoStep);
 					previewAppearance -> fillProperties () = fillProperties;
 				}
 				else
 				{
-					getBrowserWindow () -> replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (getCurrentContext (), appearance, field, nullptr, undoStep);
 					previewAppearance -> fillProperties () = nullptr;
 				}
 			}

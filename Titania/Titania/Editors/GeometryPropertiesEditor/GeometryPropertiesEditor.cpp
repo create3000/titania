@@ -56,7 +56,6 @@
 #include <Titania/X3D/Components/Geometry3D/ElevationGrid.h>
 #include <Titania/X3D/Components/Geospatial/GeoElevationGrid.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
-#include <Titania/X3D/Editing/Editor.h>
 
 namespace titania {
 namespace puck {
@@ -291,7 +290,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 			{
 				auto & field = shapeNode -> geometry ();
 
-				X3D::Editor () .replaceNode (getCurrentContext (), shapeNode, field, node, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), shapeNode, field, node, undoStep);
 			}
 
 			getBrowserWindow () -> addUndoStep (undoStep);
@@ -309,7 +308,7 @@ GeometryPropertiesEditor::on_geometry_changed ()
 		{
 			auto & field = shapeNode -> geometry ();
 
-			X3D::Editor () .removeNode (getCurrentContext (), shapeNode, field, undoStep);
+			X3D::X3DEditor::removeNode (getCurrentContext (), shapeNode, field, undoStep);
 		}
 
 		getBrowserWindow () -> addUndoStep (undoStep);
@@ -345,7 +344,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (elevationGrid -> normalPerVertex ()), true);
 					elevationGrid -> normalPerVertex () = true;
 
-					getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, elevationGrid -> normal (), nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, elevationGrid -> normal (), nullptr, undoStep);
 
 					elevationGrid -> addNormals ();
 
@@ -361,7 +360,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					undoStep -> addRedoFunction (&X3D::SFBool::setValue, std::ref (geoElevationGrid -> normalPerVertex ()), true);
 					geoElevationGrid -> normalPerVertex () = true;
 
-					getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, geoElevationGrid -> normal (), nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geoElevationGrid -> normal (), nullptr, undoStep);
 
 					geoElevationGrid -> addNormals ();
 
@@ -378,7 +377,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					indexedFaceSet -> normalPerVertex () = true;
 
 					undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (indexedFaceSet -> normalIndex ()), indexedFaceSet -> normalIndex ());
-					getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, indexedFaceSet -> normal (), nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, indexedFaceSet -> normal (), nullptr, undoStep);
 
 					indexedFaceSet -> addNormals ();
 
@@ -391,7 +390,7 @@ GeometryPropertiesEditor::on_add_normals_clicked ()
 					const auto composedGeometryNode = dynamic_cast <X3D::X3DComposedGeometryNode*> (geometry .getValue ());
 
 					undoStep -> addObjects (geometry);
-					getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, composedGeometryNode -> normal (), nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, composedGeometryNode -> normal (), nullptr, undoStep);
 
 					composedGeometryNode -> addNormals ();
 
@@ -433,7 +432,7 @@ GeometryPropertiesEditor::on_remove_normals_clicked ()
 		{
 			auto & normal = geometry -> getField <X3D::SFNode> ("normal");
 
-			getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, normal, nullptr, undoStep);
+			X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, normal, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

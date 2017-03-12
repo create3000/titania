@@ -103,8 +103,6 @@ IndexedFaceSetTool::IndexedFaceSetTool (X3DBaseNode* const node) :
 	addField (outputOnly,  "selectedEdges_changed",  selectedEdges_changed ());
 	addField (outputOnly,  "selectedHoles_changed",  selectedHoles_changed ());
 	addField (outputOnly,  "selectedFaces_changed",  selectedFaces_changed ());
-	addField (outputOnly , "undo_changed",           undo_changed ());
-	addField (outputOnly,  "clipboard_changed",      clipboard_changed ());
 	addField (inputOutput, "brush",                  brush ());
 	addField (inputOutput, "normalTool",             normalTool ());
 	addField (inputOutput, "coordTool",              coordTool ());

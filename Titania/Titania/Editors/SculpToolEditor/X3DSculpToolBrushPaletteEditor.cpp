@@ -188,7 +188,7 @@ X3DSculpToolBrushPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 
 		std::stringstream sstream;
 	
-		getBrowserWindow () -> exportNodes (X3D::X3DExecutionContextPtr (brush [0] -> getExecutionContext ()), sstream, brush, true);
+		X3D::X3DEditor::exportNodes (X3D::X3DExecutionContextPtr (brush [0] -> getExecutionContext ()), sstream, brush, true);
 	
 		// Parse exported nodes into scene.
 	

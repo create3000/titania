@@ -151,9 +151,9 @@ X3DTexturePropertiesEditor::on_textureProperties_toggled ()
 			field .addInterest (&X3DTexturePropertiesEditor::connectTextureProperties, this);
 
 			if (getTexturePropertiesCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getCurrentContext (), textureNode, field, textureProperties, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), textureNode, field, textureProperties, undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getCurrentContext (), textureNode, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), textureNode, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

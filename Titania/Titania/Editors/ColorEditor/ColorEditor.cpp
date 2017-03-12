@@ -476,7 +476,7 @@ ColorEditor::on_remove_clicked ()
 	undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (geometry -> colorIndex ()));
 	geometry -> colorIndex () .clear ();
 
-	getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, geometry -> color (), nullptr, undoStep);
+	X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geometry -> color (), nullptr, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -506,7 +506,7 @@ ColorEditor::on_apply_clicked ()
 
 		color -> color () = previewColor -> color ();
 
-		getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, geometry -> color (), color, undoStep);
+		X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geometry -> color (), color, undoStep);
 	}
 	else
 	{
@@ -515,7 +515,7 @@ ColorEditor::on_apply_clicked ()
 		for (const auto & c : previewColor -> color ())
 			color -> color () .emplace_back (c .getRed (), c .getGreen (), c .getBlue ());
 
-		getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, geometry -> color (), color, undoStep);
+		X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geometry -> color (), color, undoStep);
 	}
 
 	geometry -> getExecutionContext () -> realize ();
@@ -563,7 +563,7 @@ ColorEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 		if (shape)
 		{
 			const auto transform       = preview -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-			const auto modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (getCurrentContext (), shape);
+			const auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (getCurrentContext (), shape);
 
 			transform -> setMatrix (modelViewMatrix);
 

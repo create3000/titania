@@ -152,14 +152,6 @@ public:
 	deleteSelectedFaces () const
 	{ return *fields .deleteSelectedFaces; }
 
-	SFString &
-	clipboard_changed ()
-	{ return *fields .clipboard_changed; }
-
-	const SFString &
-	clipboard_changed () const
-	{ return *fields .clipboard_changed; }
-
 	///  @name Destruction
 
 	virtual
@@ -259,7 +251,6 @@ private:
 		SFTime* const chipOfSelectedFaces;
 		SFTime* const flipVertexOrdering;
 		SFTime* const deleteSelectedFaces;
-		SFString* const clipboard_changed;
 	};
 
 	Fields fields;

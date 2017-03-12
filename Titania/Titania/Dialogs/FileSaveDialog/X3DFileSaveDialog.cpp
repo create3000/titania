@@ -55,6 +55,7 @@
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
 
 #include <Titania/X3D/Basic/Traverse.h>
+#include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/OS.h>
 
 #include <regex>
@@ -534,7 +535,7 @@ X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & wo
 
 	std::ostringstream osstream;
 
-	getBrowserWindow () -> exportNodes (getCurrentContext (), osstream, nodes, false);
+	X3D::X3DEditor::exportNodes (getCurrentContext (), osstream, nodes, false);
 
 	// Undo url change in protos
 

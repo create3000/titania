@@ -57,6 +57,7 @@
 #include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
 
+#include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
 #include <Titania/String.h>
@@ -534,8 +535,8 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									try
 									{
 										const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
-										getBrowserWindow () -> storeMatrix (destinationNode, undoStep);
-										getBrowserWindow () -> addRoute (get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
+										X3D::X3DEditor::storeMatrix (destinationNode, undoStep);
+										X3D::X3DEditor::addRoute (get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
 									}
 									catch (const X3D::X3DError &)
@@ -602,8 +603,8 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 									try
 									{
 										const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Route"));
-										getBrowserWindow () -> storeMatrix (destinationNode, undoStep);
-										getBrowserWindow () -> addRoute (get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
+										X3D::X3DEditor::storeMatrix (destinationNode, undoStep);
+										X3D::X3DEditor::addRoute (get_execution_context (), sourceNode, sourceField, destinationNode, destinationField, undoStep);
 										getBrowserWindow () -> addUndoStep (undoStep);
 									}
 									catch (const X3D::X3DError &)
@@ -736,12 +737,12 @@ OutlineTreeViewEditor::remove_route (const double x, const double y)
 							{
 								const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Route"));
 
-								getBrowserWindow () -> deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
-								                                    route -> getSourceNode (),
-								                                    route -> getSourceField (),
-								                                    route -> getDestinationNode (),
-								                                    route -> getDestinationField (),
-								                                    undoStep);
+								X3D::X3DEditor::deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
+								                             route -> getSourceNode (),
+								                             route -> getSourceField (),
+								                             route -> getDestinationNode (),
+								                             route -> getDestinationField (),
+								                             undoStep);
 
 								getBrowserWindow () -> addUndoStep (undoStep);
 
@@ -814,12 +815,12 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 				{
 					const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Route"));
 
-					getBrowserWindow () -> deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
-					                                    route -> getSourceNode (),
-					                                    route -> getSourceField (),
-					                                    route -> getDestinationNode (),
-					                                    route -> getDestinationField (),
-					                                    undoStep);
+					X3D::X3DEditor::deleteRoute (X3D::X3DExecutionContextPtr (route -> getExecutionContext ()),
+					                             route -> getSourceNode (),
+					                             route -> getSourceField (),
+					                             route -> getDestinationNode (),
+					                             route -> getDestinationField (),
+					                             undoStep);
 
 					getBrowserWindow () -> addUndoStep (undoStep);
 				}

@@ -59,8 +59,6 @@
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
-#include <Titania/X3D/Editing/Editor.h>
-#include <Titania/X3D/Editing/Undo/UndoStepContainer.h>
 #include <Titania/X3D/Tools/ToolColors.h>
 
 namespace titania {
@@ -79,7 +77,6 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	          numSelectedEdges (0),
 	          numSelectedHoles (0),
 	          numSelectedFaces (0),
-	                  copyTime (0),
 	                  changing (false)
 {
 	addChildObjects (normalEditor,
@@ -231,28 +228,26 @@ GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 						{
 							// Coord
 	
-							coordEditor -> getField <X3D::SFString>    ("toolType")                .addInterest (node -> getField <X3D::SFString> ("toolType"));
-							coordEditor -> getField <X3D::SFString>    ("selectionType")           .addInterest (node -> getField <X3D::SFString> ("selectionType"));
-							coordEditor -> getField <X3D::SFBool>      ("paintSelection")          .addInterest (node -> getField <X3D::SFBool>   ("paintSelection"));
-							coordEditor -> getField <X3D::SFBool>      ("selectLineLoop")          .addInterest (node -> getField <X3D::SFBool>   ("selectLineLoop"));
-							coordEditor -> getField <X3D::SFBool>      ("transform")               .addInterest (node -> getField <X3D::SFBool>   ("transform"));
-							coordEditor -> getField <X3D::SFBool>      ("axisAlignedBoundingBox")  .addInterest (node -> getField <X3D::SFBool>   ("axisAlignedBoundingBox"));
-							coordEditor -> getField <X3D::SFTime>      ("mergePoints")             .addInterest (node -> getField <X3D::SFTime>   ("mergePoints"));
-							coordEditor -> getField <X3D::SFTime>      ("splitPoints")             .addInterest (node -> getField <X3D::SFTime>   ("splitPoints"));
-							coordEditor -> getField <X3D::SFTime>      ("formNewFace")             .addInterest (node -> getField <X3D::SFTime>   ("formNewFace"));
-							coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedEdges")    .addInterest (node -> getField <X3D::SFTime>   ("extrudeSelectedEdges"));
-							coordEditor -> getField <X3D::SFTime>      ("extrudeSelectedFaces")    .addInterest (node -> getField <X3D::SFTime>   ("extrudeSelectedFaces"));
-							coordEditor -> getField <X3D::SFTime>      ("chipOfSelectedFaces")     .addInterest (node -> getField <X3D::SFTime>   ("chipOfSelectedFaces"));
-							coordEditor -> getField <X3D::SFTime>      ("flipVertexOrdering")      .addInterest (node -> getField <X3D::SFTime>   ("flipVertexOrdering"));
-							coordEditor -> getField <X3D::SFTime>      ("deleteSelectedFaces")     .addInterest (node -> getField <X3D::SFTime>   ("deleteSelectedFaces"));
-							coordEditor -> getField <X3D::SFBool>      ("cutSnapping")             .addInterest (node -> getField <X3D::SFBool>   ("cutSnapping"));
-		
-							node -> getField <X3D::SFInt32>              ("selectedPoints_changed") .addInterest (&GeometryEditor::set_selectedPoints, this);
-							node -> getField <X3D::SFInt32>              ("selectedEdges_changed")  .addInterest (&GeometryEditor::set_selectedEdges,  this);
-							node -> getField <X3D::SFInt32>              ("selectedHoles_changed")  .addInterest (&GeometryEditor::set_selectedHoles,  this);
-							node -> getField <X3D::SFInt32>              ("selectedFaces_changed")  .addInterest (&GeometryEditor::set_selectedFaces,  this);
-							node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")           .addInterest (&GeometryEditor::set_undo,           this);
-							node -> getField <X3D::SFString>             ("clipboard_changed")      .addInterest (&GeometryEditor::set_clipboard,      this);
+							coordEditor -> getField <X3D::SFString> ("toolType")               .addInterest (node -> getField <X3D::SFString> ("toolType"));
+							coordEditor -> getField <X3D::SFString> ("selectionType")          .addInterest (node -> getField <X3D::SFString> ("selectionType"));
+							coordEditor -> getField <X3D::SFBool>   ("paintSelection")         .addInterest (node -> getField <X3D::SFBool>   ("paintSelection"));
+							coordEditor -> getField <X3D::SFBool>   ("selectLineLoop")         .addInterest (node -> getField <X3D::SFBool>   ("selectLineLoop"));
+							coordEditor -> getField <X3D::SFBool>   ("transform")              .addInterest (node -> getField <X3D::SFBool>   ("transform"));
+							coordEditor -> getField <X3D::SFBool>   ("axisAlignedBoundingBox") .addInterest (node -> getField <X3D::SFBool>   ("axisAlignedBoundingBox"));
+							coordEditor -> getField <X3D::SFTime>   ("mergePoints")            .addInterest (node -> getField <X3D::SFTime>   ("mergePoints"));
+							coordEditor -> getField <X3D::SFTime>   ("splitPoints")            .addInterest (node -> getField <X3D::SFTime>   ("splitPoints"));
+							coordEditor -> getField <X3D::SFTime>   ("formNewFace")            .addInterest (node -> getField <X3D::SFTime>   ("formNewFace"));
+							coordEditor -> getField <X3D::SFTime>   ("extrudeSelectedEdges")   .addInterest (node -> getField <X3D::SFTime>   ("extrudeSelectedEdges"));
+							coordEditor -> getField <X3D::SFTime>   ("extrudeSelectedFaces")   .addInterest (node -> getField <X3D::SFTime>   ("extrudeSelectedFaces"));
+							coordEditor -> getField <X3D::SFTime>   ("chipOfSelectedFaces")    .addInterest (node -> getField <X3D::SFTime>   ("chipOfSelectedFaces"));
+							coordEditor -> getField <X3D::SFTime>   ("flipVertexOrdering")     .addInterest (node -> getField <X3D::SFTime>   ("flipVertexOrdering"));
+							coordEditor -> getField <X3D::SFTime>   ("deleteSelectedFaces")    .addInterest (node -> getField <X3D::SFTime>   ("deleteSelectedFaces"));
+							coordEditor -> getField <X3D::SFBool>   ("cutSnapping")            .addInterest (node -> getField <X3D::SFBool>   ("cutSnapping"));
+
+							node -> getField <X3D::SFInt32>  ("selectedPoints_changed") .addInterest (&GeometryEditor::set_selectedPoints, this);
+							node -> getField <X3D::SFInt32>  ("selectedEdges_changed")  .addInterest (&GeometryEditor::set_selectedEdges,  this);
+							node -> getField <X3D::SFInt32>  ("selectedHoles_changed")  .addInterest (&GeometryEditor::set_selectedHoles,  this);
+							node -> getField <X3D::SFInt32>  ("selectedFaces_changed")  .addInterest (&GeometryEditor::set_selectedFaces,  this);
 	
 							node -> setField <X3D::SFString> ("toolType",               coordEditor -> getField <X3D::SFString> ("toolType"),               true);
 							node -> setField <X3D::SFString> ("selectionType",          coordEditor -> getField <X3D::SFString> ("selectionType"),          true);
@@ -579,30 +574,6 @@ GeometryEditor::on_deselect_all ()
 }
 
 void
-GeometryEditor::set_undo (const X3D::UndoStepContainerPtr & container)
-{
-	const auto & undoStep = container -> getUndoStep ();
-
-	getBrowserWindow () -> getSelection () -> undoRestoreNodes (undoStep);
-	getBrowserWindow () -> getSelection () -> redoRestoreNodes (undoStep);
-
-	getBrowserWindow () -> addUndoStep (undoStep);
-}
-
-void
-GeometryEditor::set_clipboard (const X3D::SFString & string)
-{
-	if (copyTime not_eq getCurrentBrowser () -> getCurrentTime ())
-	{
-		copyTime = getCurrentBrowser () -> getCurrentTime ();
-
-		getBrowserWindow () -> getClipboard () -> set_string () .clear ();
-	}
-
-	getBrowserWindow () -> getClipboard () -> set_string () .append (string);
-}
-
-void
 GeometryEditor::set_selectedPoints ()
 {
 	numSelectedPoints = 0;
@@ -803,12 +774,12 @@ GeometryEditor::on_hammer_clicked ()
 						if (geometry)
 						{
 							const X3D::MFNode  exports ({ geometry });
-							basic::ifilestream text (getBrowserWindow () -> exportNodes (getCurrentContext (), exports, true));
+							basic::ifilestream text (X3D::X3DEditor::exportNodes (getCurrentContext (), exports, true));
 
 							const auto scene = getCurrentBrowser () -> createX3DFromStream (getCurrentContext () -> getWorldURL (), text);
-							const auto nodes = getBrowserWindow () -> importScene (getCurrentContext (), getCurrentContext (), getCurrentContext () -> getRootNodes (), scene, undoStep);
+							const auto nodes = X3D::X3DEditor::importScene (getCurrentContext (), getCurrentContext (), getCurrentContext () -> getRootNodes (), scene, undoStep);
 
-							X3D::Editor () .addToGroup (getCurrentContext (), shape, nodes, undoStep);
+							X3D::X3DEditor::addToGroup (getCurrentContext (), shape, nodes, undoStep);
 						}
 					}
 					catch (const X3D::X3DError &)
@@ -822,7 +793,7 @@ GeometryEditor::on_hammer_clicked ()
 					{
 						const X3D::X3DPtr <X3D::X3DGeometryNode> geometry (shape -> geometry ());
 
-						X3D::Editor () .replaceNode (getCurrentContext (), shape, shape -> geometry (), geometry -> toPrimitive (), undoStep);
+						X3D::X3DEditor::replaceNode (getCurrentContext (), shape, shape -> geometry (), geometry -> toPrimitive (), undoStep);
 					}
 					catch (const X3D::X3DError &)
 					{ }

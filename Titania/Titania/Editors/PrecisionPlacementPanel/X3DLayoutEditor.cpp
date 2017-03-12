@@ -120,9 +120,9 @@ X3DLayoutEditor::on_layout_toggled ()
 			field .addInterest (&X3DLayoutEditor::connectLayout, this);
 
 			if (getLayoutCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, layout, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), node, field, layout, undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getCurrentContext (), node, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), node, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

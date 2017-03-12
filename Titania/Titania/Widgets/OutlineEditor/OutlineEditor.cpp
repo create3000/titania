@@ -58,6 +58,7 @@
 
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
+#include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>
@@ -476,7 +477,7 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 		{
 			const auto & node     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Instance %s"), node -> getName () .c_str ()));
-			const auto   instance = getBrowserWindow () -> addPrototypeInstance (treeView -> get_execution_context (), node -> getName (), undoStep);
+			const auto   instance = X3D::X3DEditor::addPrototypeInstance (treeView -> get_execution_context (), node -> getName (), undoStep);
 
 			//getBrowserWindow () -> getSelection () -> setNodes ({ instance }, undoStep);
 			getBrowserWindow () -> addUndoStep (undoStep);
@@ -495,7 +496,7 @@ OutlineEditor::on_add_reference_activate (const X3D::FieldPtr & fieldPtr, const 
 	const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Reference To »%s«"), reference -> getName () .c_str ()));
 
 	undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
-	getBrowserWindow () -> addReference (field, reference, undoStep);
+	X3D::X3DEditor::addReference (field, reference, undoStep);
 	
 	undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 	treeView -> queue_draw ();
@@ -511,7 +512,7 @@ OutlineEditor::on_remove_reference_activate (const X3D::FieldPtr & fieldPtr, con
 	const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Reference To »%s«"), reference -> getName () .c_str ()));
 
 	undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
-	getBrowserWindow () -> removeReference (field, reference, undoStep);
+	X3D::X3DEditor::removeReference (field, reference, undoStep);
 	
 	undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 	treeView -> queue_draw ();
@@ -546,7 +547,7 @@ OutlineEditor::on_remove_activate ()
 		auto &            rootNodes = treeView -> get_execution_context () -> getRootNodes ();
 		const auto        index     = treeView -> get_index (iter);
 
-		getBrowserWindow () -> removeNode (treeView -> get_execution_context (), parent, rootNodes, index, undoStep);
+		X3D::X3DEditor::removeNode (treeView -> get_execution_context (), parent, rootNodes, index, undoStep);
 	}
 	else if (nodePath .size () > 2)
 	{
@@ -579,14 +580,14 @@ OutlineEditor::on_remove_activate ()
 		{
 			case X3D::X3DConstants::SFNode:
 			{
-				getBrowserWindow () -> removeNode (treeView -> get_execution_context (), parent, *static_cast <X3D::SFNode*> (field), undoStep);
+				X3D::X3DEditor::removeNode (treeView -> get_execution_context (), parent, *static_cast <X3D::SFNode*> (field), undoStep);
 				break;
 			}
 			case X3D::X3DConstants::MFNode:
 			{
 				const auto index = treeView -> get_index (iter);
 
-				getBrowserWindow () -> removeNode (treeView -> get_execution_context (), parent, *static_cast <X3D::MFNode*> (field), index, undoStep);
+				X3D::X3DEditor::removeNode (treeView -> get_execution_context (), parent, *static_cast <X3D::MFNode*> (field), index, undoStep);
 				break;
 			}
 			default:
@@ -619,7 +620,7 @@ OutlineEditor::on_unlink_clone_activate ()
 		const auto        index     = treeView -> get_index (iter);
 		const auto        copy      = X3D::SFNode (rootNodes [index] -> copy (X3D::FLAT_COPY));
 
-		getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, rootNodes, index, copy, undoStep);
+		X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), parent, rootNodes, index, copy, undoStep);
 		copy -> getExecutionContext () -> realize ();
 	}
 	else if (nodePath .size () > 2)
@@ -656,7 +657,7 @@ OutlineEditor::on_unlink_clone_activate ()
 				auto &     sfnode = *static_cast <X3D::SFNode*> (field);
 				const auto copy   = X3D::SFNode (sfnode -> copy (X3D::FLAT_COPY));
 
-				getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, sfnode, copy, undoStep);
+				X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), parent, sfnode, copy, undoStep);
 				copy -> getExecutionContext () -> realize ();
 				break;
 			}
@@ -666,7 +667,7 @@ OutlineEditor::on_unlink_clone_activate ()
 				const auto index  = treeView -> get_index (iter);
 				const auto copy   = X3D::SFNode (mfnode [index] -> copy (X3D::FLAT_COPY));
 
-				getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, mfnode, index, copy, undoStep);
+				X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), parent, mfnode, index, copy, undoStep);
 				copy -> getExecutionContext () -> realize ();
 				break;
 			}
@@ -823,8 +824,8 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		const auto   group            = executionContext -> createNode (typeName);
 		auto &       children         = group -> getField <X3D::MFNode> (fieldName);
 
-		getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
-		getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, rootNodes, index, group, undoStep);
+		X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
+		X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), parent, rootNodes, index, group, undoStep);
 		//getBrowserWindow () -> getSelection () -> setNodes ({ group });
 		getBrowserWindow () -> expandNodes ({ group });
 	}
@@ -866,8 +867,8 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 			   const auto group    = executionContext -> createNode (typeName);
 				auto &     children = group -> getField <X3D::MFNode> (fieldName);
 
-				getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
-				getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, child, group, undoStep);
+				X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
+				X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), parent, child, group, undoStep);
 				//getBrowserWindow () -> getSelection () -> setNodes ({ group });
 				getBrowserWindow () -> expandNodes ({ group });
 				break;
@@ -880,8 +881,8 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 				const auto   group    = executionContext -> createNode (typeName);
 				auto &       children = group -> getField <X3D::MFNode> (fieldName);
 
-				getBrowserWindow () -> pushBackIntoArray (group, children, child, undoStep);
-				getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, mfnode, index, group, undoStep);
+				X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
+				X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), parent, mfnode, index, group, undoStep);
 				//getBrowserWindow () -> getSelection () -> setNodes ({ group });
 				getBrowserWindow () -> expandNodes ({ group });
 				break;
@@ -933,12 +934,12 @@ OutlineEditor::on_remove_parent_activate ()
 			{
 				auto & sfnode = *static_cast <X3D::SFNode*> (field);
 	
-				getBrowserWindow () -> insertIntoArray (treeView -> get_execution_context (), rootNodes, index, sfnode, undoStep);
+				X3D::X3DEditor::insertIntoArray (treeView -> get_execution_context (), rootNodes, index, sfnode, undoStep);
 
 				if (parent -> getCloneCount () < 2)
-					getBrowserWindow () -> removeNode (treeView -> get_execution_context (), root, rootNodes, index + 1, undoStep);
+					X3D::X3DEditor::removeNode (treeView -> get_execution_context (), root, rootNodes, index + 1, undoStep);
 				else
-					getBrowserWindow () -> eraseFromArray (root, rootNodes, index + 1, undoStep);
+					X3D::X3DEditor::eraseFromArray (root, rootNodes, index + 1, undoStep);
 
 				break;
 			}
@@ -946,12 +947,12 @@ OutlineEditor::on_remove_parent_activate ()
 			{
 				auto & mfnode = *static_cast <X3D::MFNode*> (field);
 	
-				getBrowserWindow () -> insertIntoArray (treeView -> get_execution_context (), rootNodes, index, mfnode .begin (), mfnode .end (), undoStep);
+				X3D::X3DEditor::insertIntoArray (treeView -> get_execution_context (), rootNodes, index, mfnode .begin (), mfnode .end (), undoStep);
 
 				if (parent -> getCloneCount () < 2)
-					getBrowserWindow () -> removeNode (treeView -> get_execution_context (), root, rootNodes, index + mfnode .size (), undoStep);
+					X3D::X3DEditor::removeNode (treeView -> get_execution_context (), root, rootNodes, index + mfnode .size (), undoStep);
 				else
-					getBrowserWindow () -> eraseFromArray (root, rootNodes, index + mfnode .size (), undoStep);
+					X3D::X3DEditor::eraseFromArray (root, rootNodes, index + mfnode .size (), undoStep);
 
 				break;
 			}
@@ -983,7 +984,7 @@ OutlineEditor::on_remove_parent_activate ()
 				{
 					case X3D::X3DConstants::SFNode:
 					{
-						getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), secondParent, *static_cast <X3D::SFNode*> (secondField), sfnode, undoStep);
+						X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), secondParent, *static_cast <X3D::SFNode*> (secondField), sfnode, undoStep);
 						break;
 					}
 					case X3D::X3DConstants::MFNode:
@@ -991,12 +992,12 @@ OutlineEditor::on_remove_parent_activate ()
 						auto &     mfnode = *static_cast <X3D::MFNode*> (secondField);
 						const auto index  = treeView -> get_index (parentIter);
 
-						getBrowserWindow () -> insertIntoArray (secondParent, mfnode, index, sfnode, undoStep);
+						X3D::X3DEditor::insertIntoArray (secondParent, mfnode, index, sfnode, undoStep);
 
 						if (parent -> getCloneCount () < 2)
-							getBrowserWindow () -> removeNode (treeView -> get_execution_context (), secondParent, mfnode, index + 1, undoStep);
+							X3D::X3DEditor::removeNode (treeView -> get_execution_context (), secondParent, mfnode, index + 1, undoStep);
 						else
-							getBrowserWindow () -> eraseFromArray (secondParent, mfnode, index + 1, undoStep);
+							X3D::X3DEditor::eraseFromArray (secondParent, mfnode, index + 1, undoStep);
 
 						break;
 					}
@@ -1005,7 +1006,7 @@ OutlineEditor::on_remove_parent_activate ()
 				}
 
 				if (parent -> getCloneCount () < 1)
-					getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), parent, sfnode, nullptr, undoStep);
+					X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), parent, sfnode, nullptr, undoStep);
 
 				break;
 			}
@@ -1018,7 +1019,7 @@ OutlineEditor::on_remove_parent_activate ()
 				{
 					case X3D::X3DConstants::SFNode:
 					{
-						getBrowserWindow () -> replaceNode (treeView -> get_execution_context (), secondParent, *static_cast <X3D::SFNode*> (secondField), mfnode [index], undoStep);
+						X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), secondParent, *static_cast <X3D::SFNode*> (secondField), mfnode [index], undoStep);
 						break;
 					}
 					case X3D::X3DConstants::MFNode:
@@ -1026,12 +1027,12 @@ OutlineEditor::on_remove_parent_activate ()
 						auto &     secondmfnode = *static_cast <X3D::MFNode*> (secondField);
 						const auto secondIndex  = treeView -> get_index (parentIter);
 
-						getBrowserWindow () -> insertIntoArray (secondParent, secondmfnode, secondIndex, mfnode .begin (), mfnode .end (), undoStep);
+						X3D::X3DEditor::insertIntoArray (secondParent, secondmfnode, secondIndex, mfnode .begin (), mfnode .end (), undoStep);
 
 						if (secondParent -> getCloneCount () < 2)
-							getBrowserWindow () -> removeNode (treeView -> get_execution_context (), secondParent, secondmfnode, secondIndex + mfnode .size (), undoStep);
+							X3D::X3DEditor::removeNode (treeView -> get_execution_context (), secondParent, secondmfnode, secondIndex + mfnode .size (), undoStep);
 						else
-							getBrowserWindow () -> eraseFromArray (secondParent, secondmfnode, secondIndex + mfnode .size (), undoStep);
+							X3D::X3DEditor::eraseFromArray (secondParent, secondmfnode, secondIndex + mfnode .size (), undoStep);
 
 						break;
 					}
@@ -1040,7 +1041,7 @@ OutlineEditor::on_remove_parent_activate ()
 				}
 						
 				if (parent -> getCloneCount () < 1)
-					getBrowserWindow () -> replaceNodes (treeView -> get_execution_context (), parent, mfnode, { }, undoStep);
+					X3D::X3DEditor::replaceNodes (treeView -> get_execution_context (), parent, mfnode, { }, undoStep);
 
 				break;
 			}

@@ -1169,7 +1169,7 @@ TextureMappingEditor::on_remove_clicked ()
 	undoStep -> addRedoFunction (&X3D::MFInt32::clear, std::ref (geometry -> texCoordIndex ()));
 	geometry -> texCoordIndex () .clear ();
 
-	getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, geometry -> texCoord (), nullptr, undoStep);
+	X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geometry -> texCoord (), nullptr, undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -1223,10 +1223,10 @@ TextureMappingEditor::on_apply_clicked ()
 		//
 		//		getBrowserWindow () -> replaceNodes (getCurrentContext (), X3D::SFNode (multiTextureCoordinate), multiTextureCoordinate -> texCoord (), texCoords, undoStep);
 
-		getBrowserWindow () -> replaceNodes (getCurrentContext (), multiTextureCoordinate, multiTextureCoordinate -> texCoord (), { texCoordNode }, undoStep);
+		X3D::X3DEditor::replaceNodes (getCurrentContext (), multiTextureCoordinate, multiTextureCoordinate -> texCoord (), { texCoordNode }, undoStep);
 	}
 	else
-		getBrowserWindow () -> replaceNode (getCurrentContext (), geometry, geometry -> texCoord (), texCoordNode, undoStep);
+		X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geometry -> texCoord (), texCoordNode, undoStep);
 
 	geometry -> getExecutionContext () -> realize ();
 
@@ -1290,7 +1290,7 @@ TextureMappingEditor::set_shape (const X3D::X3DPtr <X3D::X3DShapeNode> & value)
 		if (shape)
 		{
 			const auto transform       = right -> getExecutionContext () -> getNamedNode <X3D::Transform> ("Transform");
-			const auto modelViewMatrix = getBrowserWindow () -> getModelViewMatrix (getCurrentContext (), shape);
+			const auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (getCurrentContext (), shape);
 
 			transform -> setMatrix (modelViewMatrix);
 

@@ -154,9 +154,9 @@ TextEditor::on_text_toggled ()
 			field .addInterest (&TextEditor::connectGeometry, this);
 
 			if (getTextCheckButton () .get_active ())
-				getBrowserWindow () -> replaceNode (getCurrentContext (), shapeNode, field, text, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), shapeNode, field, text, undoStep);
 			else
-				getBrowserWindow () -> replaceNode (getCurrentContext (), shapeNode, field, nullptr, undoStep);
+				X3D::X3DEditor::replaceNode (getCurrentContext (), shapeNode, field, nullptr, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }

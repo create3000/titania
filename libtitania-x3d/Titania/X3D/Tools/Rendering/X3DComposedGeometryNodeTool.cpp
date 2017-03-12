@@ -54,7 +54,7 @@
 
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
-#include "../../Editing/Editor.h"
+#include "../../Editing/X3DEditor.h"
 
 namespace titania {
 namespace X3D {
@@ -104,7 +104,7 @@ X3DComposedGeometryNodeTool::undoSetColorColor (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	Editor () .undoSetColorColor (getColor (), undoStep);
+	X3DEditor::undoSetColorColor (getColor (), undoStep);
 }
 
 void
@@ -117,7 +117,7 @@ X3DComposedGeometryNodeTool::undoSetTexCoordPoint (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	Editor () .undoSetTexCoordPoint (getTexCoord (), undoStep);
+	X3DEditor::undoSetTexCoordPoint (getTexCoord (), undoStep);
 }
 
 void
@@ -130,7 +130,7 @@ X3DComposedGeometryNodeTool::undoSetNormalVector (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	Editor () .undoSetNormalVector (getNormal (), undoStep);
+	X3DEditor::undoSetNormalVector (getNormal (), undoStep);
 }
 
 void
@@ -143,7 +143,7 @@ X3DComposedGeometryNodeTool::undoSetCoordPoint (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	Editor () .undoSetCoordPoint (getCoord (), undoStep);
+	X3DEditor::undoSetCoordPoint (getCoord (), undoStep);
 }
 
 void
@@ -156,7 +156,7 @@ X3DComposedGeometryNodeTool::redoSetColorColor (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	Editor () .redoSetColorColor (getColor (), undoStep);
+	X3DEditor::redoSetColorColor (getColor (), undoStep);
 }
 
 void
@@ -169,7 +169,7 @@ X3DComposedGeometryNodeTool::redoSetTexCoordPoint (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	Editor () .redoSetTexCoordPoint (getTexCoord (), undoStep);
+	X3DEditor::redoSetTexCoordPoint (getTexCoord (), undoStep);
 }
 
 void
@@ -182,7 +182,7 @@ X3DComposedGeometryNodeTool::redoSetNormalVector (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	Editor () .redoSetNormalVector (getNormal (), undoStep);
+	X3DEditor::redoSetNormalVector (getNormal (), undoStep);
 }
 
 void
@@ -195,7 +195,7 @@ X3DComposedGeometryNodeTool::redoSetCoordPoint (const UndoStepPtr & undoStep)
 	   return;
 	}
 
-	Editor () .redoSetCoordPoint (getCoord (), undoStep);
+	X3DEditor::redoSetCoordPoint (getCoord (), undoStep);
 }
 
 } // X3D

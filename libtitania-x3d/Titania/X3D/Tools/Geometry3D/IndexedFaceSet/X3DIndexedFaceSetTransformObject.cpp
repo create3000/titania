@@ -62,6 +62,7 @@
 #include "../../../Components/PointingDeviceSensor/PlaneSensor.h"
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../../Editing/Selection/FaceSelection.h"
+#include "../../../Editing/Undo/UndoStepContainer.h"
 
 #include <Titania/String/sprintf.h>
 

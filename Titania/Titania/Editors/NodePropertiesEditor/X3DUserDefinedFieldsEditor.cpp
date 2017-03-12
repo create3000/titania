@@ -266,7 +266,7 @@ X3DUserDefinedFieldsEditor::on_drag_data_received (const Glib::RefPtr <Gdk::Drag
 		node -> fields_changed () .removeInterest (&X3DUserDefinedFieldsEditor::set_fields, this);
 		node -> fields_changed () .addInterest (&X3DUserDefinedFieldsEditor::connectFields, this);
 
-		getBrowserWindow () -> setUserDefinedFields (node, userDefinedFields, undoStep);
+		X3D::X3DEditor::setUserDefinedFields (node, userDefinedFields, undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
@@ -337,7 +337,7 @@ X3DUserDefinedFieldsEditor::on_remove_user_defined_field_clicked ()
 	node -> fields_changed () .removeInterest (&X3DUserDefinedFieldsEditor::set_fields, this);
 	node -> fields_changed () .addInterest (&X3DUserDefinedFieldsEditor::connectFields, this);
 
-	getBrowserWindow () -> removeUserDefinedField (node, field, undoStep);
+	X3D::X3DEditor::removeUserDefinedField (node, field, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -439,7 +439,7 @@ X3DUserDefinedFieldsEditor::on_add_field_ok_clicked ()
 				node -> fields_changed () .removeInterest (&X3DUserDefinedFieldsEditor::set_fields, this);
 				node -> fields_changed () .addInterest (&X3DUserDefinedFieldsEditor::connectFields, this);
 
-				getBrowserWindow () -> replaceUserDefinedField (node, userDefinedField, field, undoStep);
+				X3D::X3DEditor::replaceUserDefinedField (node, userDefinedField, field, undoStep);
 
 				getBrowserWindow () -> addUndoStep (undoStep);
 			}
@@ -464,7 +464,7 @@ X3DUserDefinedFieldsEditor::on_add_field_ok_clicked ()
 			node -> fields_changed () .removeInterest (&X3DUserDefinedFieldsEditor::set_fields, this);
 			node -> fields_changed () .addInterest (&X3DUserDefinedFieldsEditor::connectFields, this);
 
-			getBrowserWindow () -> addUserDefinedField (node, field, undoStep);
+			X3D::X3DEditor::addUserDefinedField (node, field, undoStep);
 
 			getBrowserWindow () -> addUndoStep (undoStep);
 		}

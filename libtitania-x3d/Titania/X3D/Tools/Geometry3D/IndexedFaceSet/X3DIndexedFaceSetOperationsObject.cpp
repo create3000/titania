@@ -57,9 +57,10 @@
 #include "../../../Components/Rendering/X3DNormalNode.h"
 #include "../../../Components/Shape/Shape.h"
 #include "../../../Components/Texturing/X3DTextureCoordinateNode.h"
-#include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Editing/Combine.h"
-#include "../../../Editing/Editor.h"
+#include "../../../Editing/X3DEditor.h"
+#include "../../../Editing/Selection/FaceSelection.h"
+#include "../../../Editing/Undo/UndoStepContainer.h"
 
 #include <Titania/Utility/Map.h>
 
@@ -77,13 +78,13 @@ X3DIndexedFaceSetOperationsObject::Fields::Fields () :
 	 extrudeSelectedFaces (new SFTime ()),
 	  chipOfSelectedFaces (new SFTime ()),
 	   flipVertexOrdering (new SFTime ()),
-	  deleteSelectedFaces (new SFTime ()),
-	    clipboard_changed (new SFString ())
+	  deleteSelectedFaces (new SFTime ())
 { }
 
 X3DIndexedFaceSetOperationsObject::X3DIndexedFaceSetOperationsObject () :
 	                  IndexedFaceSet (getExecutionContext ()),
-	X3DIndexedFaceSetSelectionObject ()
+	X3DIndexedFaceSetSelectionObject (),
+	                          fields ()
 {
 	addType (X3DConstants::X3DIndexedFaceSetOperationsObject);
 }
@@ -118,7 +119,7 @@ X3DIndexedFaceSetOperationsObject::set_cutSelectedFaces ()
 void
 X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 {
-	const auto transformationMatrix = Editor () .getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this));
+	const auto transformationMatrix = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this));
 	const auto geometry             = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
 
 	geometry -> solid ()           = solid ();
@@ -338,8 +339,8 @@ X3DIndexedFaceSetOperationsObject::set_pasteFaces ()
 	{
 		const auto undoStep     = std::make_shared <UndoStep> (_ ("Paste Faces"));
 		const auto scene        = getBrowser () -> createX3DFromString (pasteFaces ());
-		auto       geometries   = Editor () .getNodes <IndexedFaceSet> (scene -> getRootNodes (), { X3DConstants::IndexedFaceSet });
-		const auto targetMatrix = inverse (Editor () .getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this)));
+		auto       geometries   = X3DEditor::getNodes <IndexedFaceSet> (scene -> getRootNodes (), { X3DConstants::IndexedFaceSet });
+		const auto targetMatrix = inverse (X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this)));
 
 		undoRestoreSelection (undoStep);
 		undoSetColorIndex    (undoStep);

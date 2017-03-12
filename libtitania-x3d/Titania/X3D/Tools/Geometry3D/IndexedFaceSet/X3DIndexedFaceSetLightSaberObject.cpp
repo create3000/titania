@@ -52,6 +52,7 @@
 
 #include "../../../Components/Rendering/X3DCoordinateNode.h"
 #include "../../../Editing/Selection/FaceSelection.h"
+#include "../../../Editing/Undo/UndoStepContainer.h"
 #include "../../../Rendering/ViewVolume.h"
 
 namespace titania {
