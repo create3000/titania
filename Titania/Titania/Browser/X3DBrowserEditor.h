@@ -288,12 +288,15 @@ private:
 	///  @name Undo handling
 
 	void
-	set_undo (const X3D::UndoStepContainerPtr & undoContainer);
+	set_tool_undo (const X3D::UndoStepContainerPtr & undoContainer);
 
 	///  @name Clipboard handling
 
 	void
 	set_clipboard (const X3D::SFString & string);
+
+	void
+	set_tool_clipboard (const X3D::SFString & string);
 
 	///  @name Source code handling
 

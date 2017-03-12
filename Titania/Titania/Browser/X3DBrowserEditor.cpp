@@ -315,8 +315,8 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 	{
 		try
 		{
-			node -> getField <X3D::SFString>             ("clipboard_changed") .addInterest (&X3DBrowserEditor::set_clipboard, this);
-			node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")      .addInterest (&X3DBrowserEditor::set_undo,      this);
+			node -> getField <X3D::SFString>             ("clipboard_changed") .addInterest (&X3DBrowserEditor::set_tool_clipboard, this);
+			node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")      .addInterest (&X3DBrowserEditor::set_tool_undo,      this);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -787,7 +787,7 @@ X3DBrowserEditor::set_undoHistory ()
 }
 
 void
-X3DBrowserEditor::set_undo (const X3D::UndoStepContainerPtr & container)
+X3DBrowserEditor::set_tool_undo (const X3D::UndoStepContainerPtr & container)
 {
 	const auto & undoStep = container -> getUndoStep ();
 
@@ -801,7 +801,11 @@ void
 X3DBrowserEditor::set_clipboard (const X3D::SFString & string)
 {
 	getPasteMenuItem () .set_sensitive (not string .empty ());
+}
 
+void
+X3DBrowserEditor::set_tool_clipboard (const X3D::SFString & string)
+{
 	if (copyTime not_eq getCurrentBrowser () -> getCurrentTime ())
 	{
 		copyTime = getCurrentBrowser () -> getCurrentTime ();
