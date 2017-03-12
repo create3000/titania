@@ -238,6 +238,11 @@ private:
 	void
 	realize () final override;
 
+	///  @name Event handlers
+
+	void
+	set_active ();
+
 	void
 	eventsProcessed ();
 
@@ -245,6 +250,10 @@ private:
 
 	void
 	reshape (X3DRenderObject* const renderObject);
+
+	///  @name Member types
+
+	using UndoMatrix = std::pair <X3D::Matrix4d, X3D::Vector3d>;
 
 	///  @name Members
 
@@ -259,9 +268,10 @@ private:
 
 	Fields fields;
 
-	Matrix4d transformationMatrix;
-	Matrix4d matrix;
-	bool     changing;
+	Matrix4d   transformationMatrix;
+	Matrix4d   matrix;
+	UndoMatrix undoMatrix;
+	bool       changing;
 
 };
 

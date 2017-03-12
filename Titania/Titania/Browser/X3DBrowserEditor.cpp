@@ -95,7 +95,6 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
 	          editing (false),
 	        clipboard (browser -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
 	        selection (new BrowserSelection (getBrowserWindow ())),
-	     undoMatrices (),
 	    nudgeUndoStep (),
 	         undoTime (0),
 	             tool (NONE_TOOL)
@@ -114,7 +113,6 @@ X3DBrowserEditor::initialize ()
 	getCurrentScene ()   .addInterest (&X3DBrowserEditor::set_scene,            this);
 	getCurrentContext () .addInterest (&X3DBrowserEditor::set_executionContext, this);
 
-	getBrowserWindow () -> getSelection () -> isActive ()      .addInterest (&X3DBrowserEditor::set_selection_active, this);
 	getBrowserWindow () -> getSelection () -> getNodes ()      .addInterest (&X3DBrowserEditor::set_selection, this);
 	getBrowserWindow () -> getSelection () -> getGeometries () .addInterest (&X3DBrowserEditor::set_selection, this);
 
@@ -242,67 +240,6 @@ X3DBrowserEditor::set_executionContext ()
 {
 	if (getEditing ())
 		getMetaData ();
-}
-
-void
-X3DBrowserEditor::set_selection_active (const bool value)
-{
-	if (value)
-	{
-		for (const auto & child : getSelection () -> getNodes ())
-		{
-			const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
-
-			if (transform)
-				undoMatrices [transform] = std::make_pair (transform -> getMatrix (), transform -> center () .getValue ());
-		}
-	}
-	else
-	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Edit Transform"));
-
-		getSelection () -> redoRestoreNodes (undoStep);
-
-		bool changed = false;
-
-		for (const auto & child : getSelection () -> getNodes ())
-		{
-			const X3D::X3DPtr <X3D::X3DTransformNode> transform (child);
-
-			if (transform)
-			{
-				try
-				{
-					const auto & matrix = undoMatrices .at (transform) .first;
-					const auto & center = undoMatrices .at (transform) .second;
-
-					if (matrix not_eq transform -> getMatrix () or center not_eq transform -> center ())
-					{
-						changed = true;
-
-						undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
-						                             transform,
-						                             matrix,
-						                             center);
-
-						undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
-						                             transform,
-						                             transform -> getMatrix (),
-						                             transform -> center () .getValue ());
-					}
-				}
-				catch (const std::out_of_range &)
-				{ }
-			}
-		}
-
-		undoMatrices .clear ();
-
-		getSelection () -> undoRestoreNodes (undoStep);
-
-		if (changed)
-			addUndoStep (undoStep);
-	}
 }
 
 void
@@ -1065,7 +1002,6 @@ void
 X3DBrowserEditor::dispose ()
 {
 	selection     .reset ();
-	undoMatrices  .clear ();
 	nudgeUndoStep .reset ();
 
 	X3DBrowserWidget::dispose ();

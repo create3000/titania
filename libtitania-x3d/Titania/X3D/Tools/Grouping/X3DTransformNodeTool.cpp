@@ -51,6 +51,7 @@
 #include "X3DTransformNodeTool.h"
 
 #include "../../Browser/X3DBrowser.h"
+#include "../../Editing/Undo/UndoStepContainer.h"
 
 namespace titania {
 namespace X3D {
@@ -66,6 +67,7 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 	X3DTransformMatrix3DNodeTool (ToolColors::GREEN),
 	        transformationMatrix (),
 	                      matrix (),
+	                  undoMatrix (),
 	                    changing (false)
 {
 	addType (X3DConstants::X3DTransformNodeTool);
@@ -94,6 +96,8 @@ X3DTransformNodeTool::initialize ()
 {
 	X3DChildNodeTool::initialize ();
 
+	isActive () .addInterest (&X3DTransformNodeTool::set_active, this);
+
 	getBrowser () -> getTransformTools () .emplace_back (this);
 
 	requestAsyncLoad ({ get_tool ("TransformTool.x3dv") .str () });
@@ -111,7 +115,6 @@ X3DTransformNodeTool::realize ()
 		getBrowser ()  -> getControlKey () .addInterest (getToolNode () -> getField ("controlKey"));
 		getBrowser ()  -> getShiftKey ()   .addInterest (getToolNode () -> getField ("shiftKey"));
 		getBrowser ()  -> getAltKey ()     .addInterest (getToolNode () -> getField ("altKey"));
-		getToolNode () -> getField ("isActive") -> addInterest (getBrowser () -> getSelection () -> isActive ());
 		getToolNode () -> getField ("isActive") -> addInterest (isActive ());
 		getToolNode () -> getField ("touchTime") -> addInterest (touchTime ());
 
@@ -128,6 +131,56 @@ X3DTransformNodeTool::realize ()
 	}
 	catch (const X3DError & error)
 	{ }
+}
+
+void
+X3DTransformNodeTool::set_active ()
+{
+	if (isActive ())
+	{
+		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
+		{
+			const X3D::X3DPtr <X3D::X3DTransformNodeTool> tool (node);
+
+			if (tool)
+				tool -> undoMatrix = std::make_pair (tool -> getMatrix (), tool -> center () .getValue ());
+		}
+	}
+	else
+	{
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Transform"));
+
+		bool changed = false;
+
+		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
+		{
+			const X3D::X3DPtr <X3D::X3DTransformNodeTool> tool (node);
+
+			if (tool)
+			{
+				const auto & matrix = tool -> undoMatrix .first;
+				const auto & center = tool -> undoMatrix .second;
+
+				if (matrix not_eq tool -> getMatrix () or center not_eq tool -> center ())
+				{
+					changed = true;
+
+					undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
+					                             X3D::X3DPtr <X3D::X3DTransformNode> (tool),
+					                             matrix,
+					                             center);
+
+					undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
+					                             X3D::X3DPtr <X3D::X3DTransformNode> (tool),
+					                             tool -> getMatrix (),
+					                             tool -> center () .getValue ());
+				}
+			}
+		}
+
+		if (changed)
+			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+	}
 }
 
 bool

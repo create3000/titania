@@ -271,9 +271,6 @@ private:
 	void
 	set_executionContext ();
 
-	void
-	set_selection_active (const bool);
-
 	///  @name File handling
 
 	bool
@@ -302,12 +299,9 @@ private:
 
 	///  @name Members
 
-	using UndoMatrixIndex = std::map <X3D::X3DPtr <X3D::X3DTransformNode>, std::pair <X3D::Matrix4d, X3D::Vector3d>>;
-
 	X3D::SFBool                        editing;
 	X3D::ClipboardPtr                  clipboard;
 	std::unique_ptr <BrowserSelection> selection;
-	UndoMatrixIndex                    undoMatrices;
 	X3D::UndoStepPtr                   nudgeUndoStep;
 	double                             undoTime;
 	ToolType                           tool;

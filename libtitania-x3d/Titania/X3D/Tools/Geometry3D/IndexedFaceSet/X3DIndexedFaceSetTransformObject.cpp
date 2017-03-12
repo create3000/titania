@@ -395,8 +395,6 @@ X3DIndexedFaceSetTransformObject::set_transform_modelViewMatrix ()
 		if (not active)
 			return;
 	
-		// The Transform Tool has own exidential event handling.
-	
 		setTranslate (true);
 		setTranslation (Vector3f (1, 1, 1));
 	

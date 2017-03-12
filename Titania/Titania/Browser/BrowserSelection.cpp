@@ -68,8 +68,6 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	  selectMultiple (getCurrentBrowser () -> getSelection () -> getSelectMultiple ()),
 	    selectLowest (getCurrentBrowser () -> getSelection () -> getSelectLowest ()),
 	  selectGeometry (getCurrentBrowser () -> getSelection () -> getSelectGeometry ()),
-	            over (),
-	          active (),
 	       touchTime (),
 	           nodes (),
 	   geometryNodes (),
@@ -80,8 +78,6 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 	                 selectMultiple,
 	                 selectLowest,
 	                 selectGeometry,
-	                 over,
-	                 active,
 	                 touchTime,
 	                 nodes,
 	                 geometryNodes,
@@ -107,8 +103,6 @@ BrowserSelection::set_browser ()
 		selection -> getSelectLowest ()   .removeInterest (selectLowest);
 		selection -> getSelectGeometry () .removeInterest (selectGeometry);
 
-		selection -> isOver ()        .removeInterest (over);
-		selection -> isActive ()      .removeInterest (active);
 		selection -> getTouchTime ()  .removeInterest (touchTime);
 		selection -> getGeometries () .removeInterest (geometryNodes);
 		selection -> getNodes ()      .removeInterest (nodes);
@@ -130,8 +124,6 @@ BrowserSelection::set_browser ()
 		selection -> getSelectLowest ()   .addInterest (selectLowest);
 		selection -> getSelectGeometry () .addInterest (selectGeometry);
 
-		selection -> isOver ()        .addInterest (over);
-		selection -> isActive ()      .addInterest (active);
 		selection -> getTouchTime ()  .addInterest (touchTime);
 		selection -> getNodes ()      .addInterest (nodes);
 		selection -> getGeometries () .addInterest (geometryNodes);

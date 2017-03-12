@@ -124,22 +124,6 @@ public:
 	getSelectGeometry () const
 	{ return selectGeometry; }
 
-	SFBool &
-	isOver ()
-	{ return over; }
-
-	const SFBool &
-	isOver () const
-	{ return over; }
-
-	SFBool &
-	isActive ()
-	{ return active; }
-
-	const SFBool &
-	isActive () const
-	{ return active; }
-
 	const SFBool &
 	getTouchTime () const
 	{ return touchTime; }
@@ -237,8 +221,6 @@ private:
 	SFBool selectMultiple;
 	SFBool selectLowest;
 	SFBool selectGeometry;
-	SFBool over;
-	SFBool active;
 	SFBool touchTime;
 	MFNode nodes;
 	MFNode geometryNodes;

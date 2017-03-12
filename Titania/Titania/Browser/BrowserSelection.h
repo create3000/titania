@@ -96,14 +96,6 @@ public:
 	{ return selectGeometry; }
 
 	const X3D::SFBool &
-	isOver () const
-	{ return over; }
-
-	const X3D::SFBool &
-	isActive () const
-	{ return active; }
-
-	const X3D::SFBool &
 	getTouchTime () const
 	{ return touchTime; }
 
@@ -189,8 +181,6 @@ private:
 	X3D::SFBool selectLowest;
 	X3D::SFBool selectGeometry;
 
-	X3D::SFBool     over;
-	X3D::SFBool     active;
 	X3D::SFBool     touchTime;
 	X3D::MFNode     nodes;
 	X3D::MFNode     geometryNodes;

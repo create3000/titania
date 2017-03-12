@@ -50,7 +50,6 @@
 
 #include "X3DGridTool.h"
 
-#include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Grouping/X3DTransformNode.h"
 
