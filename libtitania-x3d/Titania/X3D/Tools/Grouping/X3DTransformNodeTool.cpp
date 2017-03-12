@@ -202,17 +202,14 @@ X3DTransformNodeTool::eventsProcessed ()
 
 		const auto differenceMatrix = inverse (matrix * transformationMatrix) * getMatrix () * transformationMatrix;
 
-		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
+		for (const auto & transform : getBrowser () -> getTransformTools ())
 		{
 			try
 			{
-				if (node == this)
+				if (transform == this)
 					continue;
-	
-				const auto transform = dynamic_cast <X3DTransformNode*> (node .getValue ());
-	
-				if (transform)
-					transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
+
+				transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
 			}
 			catch (const X3D::X3DError &)
 			{ }
