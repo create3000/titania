@@ -65,28 +65,28 @@ public:
 	///  @name Hidden fields
 
 	SFTime &
-	cutSelectedFaces ()
-	{ return *fields .cutSelectedFaces; }
+	cutGeometry ()
+	{ return *fields .cutGeometry; }
 
 	const SFTime &
-	cutSelectedFaces () const
-	{ return *fields .cutSelectedFaces; }
+	cutGeometry () const
+	{ return *fields .cutGeometry; }
 
 	SFTime &
-	copySelectedFaces ()
-	{ return *fields .copySelectedFaces; }
+	copyGeometry ()
+	{ return *fields .copyGeometry; }
 
 	const SFTime &
-	copySelectedFaces () const
-	{ return *fields .copySelectedFaces; }
+	copyGeometry () const
+	{ return *fields .copyGeometry; }
 
 	SFString &
-	pasteFaces ()
-	{ return *fields .pasteFaces; }
+	pasteGeometry ()
+	{ return *fields .pasteGeometry; }
 
 	const SFString &
-	pasteFaces () const
-	{ return *fields .pasteFaces; }
+	pasteGeometry () const
+	{ return *fields .pasteGeometry; }
 
 	SFTime &
 	mergePoints ()
@@ -152,6 +152,14 @@ public:
 	deleteSelectedFaces () const
 	{ return *fields .deleteSelectedFaces; }
 
+	SFString &
+	clipboard_changed ()
+	{ return *fields .clipboard_changed; }
+
+	const SFString &
+	clipboard_changed () const
+	{ return *fields .clipboard_changed; }
+
 	///  @name Destruction
 
 	virtual
@@ -179,13 +187,13 @@ private:
 	///  @name Event handlers
 
 	void
-	set_cutSelectedFaces ();
+	set_cutGeometry ();
 
 	void
-	set_copySelectedFaces ();
+	set_copyGeometry ();
 
 	void
-	set_pasteFaces ();
+	set_pasteGeometry ();
 
 	void
 	set_mergePoints ();
@@ -240,9 +248,9 @@ private:
 	{
 		Fields ();
 
-		SFTime* const cutSelectedFaces;
-		SFTime* const copySelectedFaces;
-		SFString* const pasteFaces;
+		SFTime* const cutGeometry;
+		SFTime* const copyGeometry;
+		SFString* const pasteGeometry;
 		SFTime* const mergePoints;
 		SFTime* const splitPoints;
 		SFTime* const formNewFace;
@@ -251,6 +259,7 @@ private:
 		SFTime* const chipOfSelectedFaces;
 		SFTime* const flipVertexOrdering;
 		SFTime* const deleteSelectedFaces;
+		SFString* const clipboard_changed;
 	};
 
 	Fields fields;

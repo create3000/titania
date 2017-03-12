@@ -85,14 +85,6 @@ public:
 	undo_changed () const
 	{ return *fields .undo_changed; }
 
-	SFString &
-	clipboard_changed ()
-	{ return *fields .clipboard_changed; }
-
-	const SFString &
-	clipboard_changed () const
-	{ return *fields .clipboard_changed; }
-
 
 protected:
 
@@ -110,7 +102,6 @@ private:
 		Fields ();
 
 		UndoStepContainerPtr* const undo_changed;
-		SFString* const clipboard_changed;
 	};
 
 	Fields fields;

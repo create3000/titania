@@ -95,7 +95,6 @@ X3DBrowserEditor::X3DBrowserEditor (const X3D::BrowserPtr & browser) :
 	          editing (false),
 	        clipboard (browser -> getExecutionContext () -> createNode <X3D::Clipboard> ()),
 	        selection (new BrowserSelection (getBrowserWindow ())),
-	         copyTime (0),
 	     undoMatrices (),
 	    nudgeUndoStep (),
 	         undoTime (0),
@@ -313,13 +312,21 @@ X3DBrowserEditor::set_selection (const X3D::MFNode & selection)
 
 	for (const auto & node : getSelection () -> getSelectGeometry () ? getSelection () -> getGeometries () : selection)
 	{
-		try
+		for (const auto & type : basic::make_reverse_range (node -> getType ()))
 		{
-			node -> getField <X3D::SFString>             ("clipboard_changed") .addInterest (&X3DBrowserEditor::set_tool_clipboard, this);
-			node -> getField <X3D::UndoStepContainerPtr> ("undo_changed")      .addInterest (&X3DBrowserEditor::set_tool_undo,      this);
+			switch (type)
+			{
+				case X3D::X3DConstants::X3DNodeTool:
+				{
+					node -> getField <X3D::UndoStepContainerPtr> ("undo_changed") .addInterest (&X3DBrowserEditor::set_tool_undo, this);
+					break;
+				}
+				default:
+					continue;
+			}
+
+			break;
 		}
-		catch (const X3D::X3DError &)
-		{ }
 	}
 
 	if (selection .empty ())
@@ -801,19 +808,6 @@ void
 X3DBrowserEditor::set_clipboard (const X3D::SFString & string)
 {
 	getPasteMenuItem () .set_sensitive (not string .empty ());
-}
-
-void
-X3DBrowserEditor::set_tool_clipboard (const X3D::SFString & string)
-{
-	if (copyTime not_eq getCurrentBrowser () -> getCurrentTime ())
-	{
-		copyTime = getCurrentBrowser () -> getCurrentTime ();
-
-		getClipboard () -> set_string () .clear ();
-	}
-
-	getClipboard () -> set_string () .append (string);
 }
 
 void

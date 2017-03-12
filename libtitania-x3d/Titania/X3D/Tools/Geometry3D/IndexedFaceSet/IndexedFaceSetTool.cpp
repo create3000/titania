@@ -85,9 +85,9 @@ IndexedFaceSetTool::IndexedFaceSetTool (X3DBaseNode* const node) :
 	addField (inputOutput, "replaceSelectedFaces",   replaceSelectedFaces ());
 	addField (inputOutput, "addSelectedFaces",       addSelectedFaces ());
 	addField (inputOutput, "removeSelectedFaces",    removeSelectedFaces ());
-	addField (inputOutput, "cutSelectedFaces",       cutSelectedFaces ());
-	addField (inputOutput, "copySelectedFaces",      copySelectedFaces ());
-	addField (inputOutput, "pasteFaces",             pasteFaces ());
+	addField (inputOutput, "cutGeometry",            cutGeometry ());
+	addField (inputOutput, "copyGeometry",           copyGeometry ());
+	addField (inputOutput, "pasteGeometry",          pasteGeometry ());
 	addField (inputOutput, "mergePoints",            mergePoints ());
 	addField (inputOutput, "splitPoints",            splitPoints ());
 	addField (inputOutput, "formNewFace",            formNewFace ());
@@ -103,6 +103,7 @@ IndexedFaceSetTool::IndexedFaceSetTool (X3DBaseNode* const node) :
 	addField (outputOnly,  "selectedEdges_changed",  selectedEdges_changed ());
 	addField (outputOnly,  "selectedHoles_changed",  selectedHoles_changed ());
 	addField (outputOnly,  "selectedFaces_changed",  selectedFaces_changed ());
+	addField (outputOnly,  "clipboard_changed",      clipboard_changed ());
 	addField (inputOutput, "brush",                  brush ());
 	addField (inputOutput, "normalTool",             normalTool ());
 	addField (inputOutput, "coordTool",              coordTool ());

@@ -295,9 +295,6 @@ private:
 	void
 	set_clipboard (const X3D::SFString & string);
 
-	void
-	set_tool_clipboard (const X3D::SFString & string);
-
 	///  @name Source code handling
 
 	void
@@ -310,7 +307,6 @@ private:
 	X3D::SFBool                        editing;
 	X3D::ClipboardPtr                  clipboard;
 	std::unique_ptr <BrowserSelection> selection;
-	X3D::time_type                     copyTime;
 	UndoMatrixIndex                    undoMatrices;
 	X3D::UndoStepPtr                   nudgeUndoStep;
 	double                             undoTime;

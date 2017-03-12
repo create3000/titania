@@ -68,9 +68,9 @@ namespace titania {
 namespace X3D {
 
 X3DIndexedFaceSetOperationsObject::Fields::Fields () :
-	     cutSelectedFaces (new SFTime ()),
-	    copySelectedFaces (new SFTime ()),
-	           pasteFaces (new SFString ()),
+	          cutGeometry (new SFTime ()),
+	         copyGeometry (new SFTime ()),
+	        pasteGeometry (new SFString ()),
 	          mergePoints (new SFTime ()),
 	          splitPoints (new SFTime ()),
 	          formNewFace (new SFTime ()),
@@ -78,7 +78,8 @@ X3DIndexedFaceSetOperationsObject::Fields::Fields () :
 	 extrudeSelectedFaces (new SFTime ()),
 	  chipOfSelectedFaces (new SFTime ()),
 	   flipVertexOrdering (new SFTime ()),
-	  deleteSelectedFaces (new SFTime ())
+	  deleteSelectedFaces (new SFTime ()),
+	    clipboard_changed (new SFString ())
 { }
 
 X3DIndexedFaceSetOperationsObject::X3DIndexedFaceSetOperationsObject () :
@@ -92,9 +93,9 @@ X3DIndexedFaceSetOperationsObject::X3DIndexedFaceSetOperationsObject () :
 void
 X3DIndexedFaceSetOperationsObject::initialize ()
 {
-	cutSelectedFaces ()     .addInterest (&X3DIndexedFaceSetOperationsObject::set_cutSelectedFaces, this);
-	copySelectedFaces ()    .addInterest (&X3DIndexedFaceSetOperationsObject::set_copySelectedFaces, this);
-	pasteFaces ()           .addInterest (&X3DIndexedFaceSetOperationsObject::set_pasteFaces, this);
+	cutGeometry ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_cutGeometry, this);
+	copyGeometry ()         .addInterest (&X3DIndexedFaceSetOperationsObject::set_copyGeometry, this);
+	pasteGeometry ()        .addInterest (&X3DIndexedFaceSetOperationsObject::set_pasteGeometry, this);
 	mergePoints ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_mergePoints, this);
 	splitPoints ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_splitPoints, this);
 	formNewFace ()          .addInterest (&X3DIndexedFaceSetOperationsObject::set_formNewFace, this);
@@ -106,18 +107,18 @@ X3DIndexedFaceSetOperationsObject::initialize ()
 }
 
 void
-X3DIndexedFaceSetOperationsObject::set_cutSelectedFaces ()
+X3DIndexedFaceSetOperationsObject::set_cutGeometry ()
 {
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Cut Selected Faces"));
 
-	set_copySelectedFaces ();
+	set_copyGeometry ();
 	deleteSelectedFaces (undoStep);
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
 void
-X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
+X3DIndexedFaceSetOperationsObject::set_copyGeometry ()
 {
 	const auto transformationMatrix = X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this));
 	const auto geometry             = X3DPtr <IndexedFaceSet> (new IndexedFaceSet (getExecutionContext ()));
@@ -333,12 +334,12 @@ X3DIndexedFaceSetOperationsObject::set_copySelectedFaces ()
 }
 
 void
-X3DIndexedFaceSetOperationsObject::set_pasteFaces ()
+X3DIndexedFaceSetOperationsObject::set_pasteGeometry ()
 {
 	try
 	{
 		const auto undoStep     = std::make_shared <UndoStep> (_ ("Paste Faces"));
-		const auto scene        = getBrowser () -> createX3DFromString (pasteFaces ());
+		const auto scene        = getBrowser () -> createX3DFromString (pasteGeometry ());
 		auto       geometries   = X3DEditor::getNodes <IndexedFaceSet> (scene -> getRootNodes (), { X3DConstants::IndexedFaceSet });
 		const auto targetMatrix = inverse (X3DEditor::getModelViewMatrix (X3DExecutionContextPtr (getMasterScene ()), SFNode (this)));
 

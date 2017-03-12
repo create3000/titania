@@ -56,8 +56,7 @@ namespace titania {
 namespace X3D {
 
 X3DNodeTool::Fields::Fields () :
-	     undo_changed (new UndoStepContainerPtr ()),
-	clipboard_changed (new SFString ())
+	undo_changed (new UndoStepContainerPtr ())
 { }
 
 X3DNodeTool::X3DNodeTool () :
@@ -67,8 +66,7 @@ X3DNodeTool::X3DNodeTool () :
 {
 	addType (X3DConstants::X3DNodeTool);
 
-	addField (outputOnly , "undo_changed",      undo_changed ());
-	addField (outputOnly,  "clipboard_changed", clipboard_changed ());
+	addField (outputOnly , "undo_changed", undo_changed ());
 }
 
 } // X3D

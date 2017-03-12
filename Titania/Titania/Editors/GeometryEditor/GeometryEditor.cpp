@@ -77,6 +77,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	          numSelectedEdges (0),
 	          numSelectedHoles (0),
 	          numSelectedFaces (0),
+	                  copyTime (0),
 	                  changing (false)
 {
 	addChildObjects (normalEditor,
@@ -248,6 +249,7 @@ GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 							node -> getField <X3D::SFInt32>  ("selectedEdges_changed")  .addInterest (&GeometryEditor::set_selectedEdges,  this);
 							node -> getField <X3D::SFInt32>  ("selectedHoles_changed")  .addInterest (&GeometryEditor::set_selectedHoles,  this);
 							node -> getField <X3D::SFInt32>  ("selectedFaces_changed")  .addInterest (&GeometryEditor::set_selectedFaces,  this);
+							node -> getField <X3D::SFString> ("clipboard_changed")      .addInterest (&GeometryEditor::set_clipboard,      this);
 	
 							node -> setField <X3D::SFString> ("toolType",               coordEditor -> getField <X3D::SFString> ("toolType"),               true);
 							node -> setField <X3D::SFString> ("selectionType",          coordEditor -> getField <X3D::SFString> ("selectionType"),          true);
@@ -400,7 +402,7 @@ GeometryEditor::on_cut ()
 
 		try
 		{
-			geometryNodes .back () -> setField <X3D::SFTime> ("cutSelectedFaces", chrono::now ());
+			geometryNodes .back () -> setField <X3D::SFTime> ("cutGeometry", chrono::now ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -422,7 +424,7 @@ GeometryEditor::on_copy ()
 		{
 			try
 			{
-				geometryNode -> setField <X3D::SFTime> ("copySelectedFaces", chrono::now ());
+				geometryNode -> setField <X3D::SFTime> ("copyGeometry", chrono::now ());
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -467,7 +469,7 @@ GeometryEditor::on_paste ()
 		{
 			try
 			{
-				(*active) -> setField <X3D::SFString> ("pasteFaces", getBrowserWindow () -> getClipboard () -> string_changed ());
+				(*active) -> setField <X3D::SFString> ("pasteGeometry", getBrowserWindow () -> getClipboard () -> string_changed ());
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -571,6 +573,19 @@ GeometryEditor::on_deselect_all ()
 	}
 
 	return false;
+}
+
+void
+GeometryEditor::set_clipboard (const X3D::SFString & string)
+{
+	if (copyTime not_eq getCurrentBrowser () -> getCurrentTime ())
+	{
+		copyTime = getCurrentBrowser () -> getCurrentTime ();
+
+		getBrowserWindow () -> getClipboard () -> set_string () .clear ();
+	}
+
+	getBrowserWindow () -> getClipboard () -> set_string () .append (string);
 }
 
 void

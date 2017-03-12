@@ -145,6 +145,9 @@ private:
 	///  @name Geometry handling
 
 	void
+	set_clipboard (const X3D::SFString & string);
+
+	void
 	set_selectedPoints ();
 
 	void
@@ -291,6 +294,7 @@ private:
 	size_t         numSelectedEdges;
 	size_t         numSelectedHoles;
 	size_t         numSelectedFaces;
+	X3D::time_type copyTime;
 	bool           changing;
 
 };
