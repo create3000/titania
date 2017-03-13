@@ -529,7 +529,7 @@ Selection::getTransform (const MFNode & hierarchy) const
 			if (not node)
 				node = lowest;
 
-			if (dynamic_cast <Transform*> (lowest .getValue ()))
+			if (lowest -> isType ({ X3DConstants::X3DTransformNode, X3DConstants::X3DViewpointNode }))
 				return lowest;
 		}
 	}
@@ -548,12 +548,12 @@ Selection::getTransform (const MFNode & hierarchy) const
 			if (not node)
 				node = highest;
 	
-			if (dynamic_cast <Transform*> (highest .getValue ()))
+			if (highest -> isType ({ X3DConstants::X3DTransformNode }))
 				return highest;
 		}
-	
+
 		// If highest is a LayerSet, no Transform is found and we search for the highest X3DChildNode.
-	
+
 		if (x3d_cast <LayerSet*> (node))
 		{
 			for (const auto & highest : hierarchy)

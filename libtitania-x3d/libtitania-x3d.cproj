@@ -1614,6 +1614,7 @@
     <Compile Include="Titania\X3D\Browser\Tools\SupportedTools.cpp" />
     <Compile Include="Titania\X3D\Browser\Rendering\BackgroundTexture.cpp" />
     <Compile Include="Titania\X3D\Tools\Core\X3DNodeTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Navigation\X3DViewpointNodeTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

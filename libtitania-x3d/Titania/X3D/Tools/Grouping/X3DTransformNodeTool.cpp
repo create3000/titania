@@ -57,9 +57,12 @@ namespace titania {
 namespace X3D {
 
 X3DTransformNodeTool::Fields::Fields () :
-	     bbox (new SFBool (true)),
-	 isActive (new SFBool ()),
-	touchTime (new SFTime ())
+	      enabled (new SFBool (true)),
+	        tools (new MFString ({ "MOVE", "ROTATE", "SCALE" })),
+	  displayBBox (new SFBool (true)),
+	displayCenter (new SFBool (true)),
+	     isActive (new SFBool ()),
+	    touchTime (new SFTime ())
 { }
 
 X3DTransformNodeTool::X3DTransformNodeTool () :
@@ -72,9 +75,12 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 {
 	addType (X3DConstants::X3DTransformNodeTool);
 
-	addField (inputOutput, "bbox",      bbox ());
-	addField (outputOnly,  "isActive",  isActive ());
-	addField (outputOnly,  "touchTime", touchTime ());
+	addField (inputOutput, "enabled",       enabled ());
+	addField (inputOutput, "tools",         tools ());
+	addField (inputOutput, "displayBBox",   displayBBox ());
+	addField (inputOutput, "displayCenter", displayCenter ());
+	addField (outputOnly,  "isActive",      isActive ());
+	addField (outputOnly,  "touchTime",     touchTime ());
 
 	setCameraObject (true);
 }
@@ -125,62 +131,18 @@ X3DTransformNodeTool::realize ()
 		getToolNode () -> setField <SFBool>   ("altKey",     getBrowser () -> getAltKey ());
 		getToolNode () -> setField <SFNode>   ("transform",  getNode <X3DTransformNode> ());
 
-		bbox () .addInterest (getToolNode () -> getField <SFBool> ("bbox"));
+		enabled ()       .addInterest (getToolNode () -> getField <SFBool>   ("enabled"));
+		tools ()         .addInterest (getToolNode () -> getField <MFString> ("tools"));
+		displayBBox ()   .addInterest (getToolNode () -> getField <SFBool>   ("displayBBox"));
+		displayCenter () .addInterest (getToolNode () -> getField <SFBool>   ("displayCenter"));
 
-		getToolNode () -> setField <SFBool> ("bbox", bbox ());
+		getToolNode () -> setField <SFBool>   ("enabled",       enabled ());
+		getToolNode () -> setField <MFString> ("tools",         tools ());
+		getToolNode () -> setField <SFBool>   ("displayBBox",   displayBBox ());
+		getToolNode () -> setField <SFBool>   ("displayCenter", displayCenter ());
 	}
 	catch (const X3DError & error)
 	{ }
-}
-
-void
-X3DTransformNodeTool::set_active ()
-{
-	if (isActive ())
-	{
-		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
-		{
-			const X3D::X3DPtr <X3D::X3DTransformNodeTool> tool (node);
-
-			if (tool)
-				tool -> undoMatrix = std::make_pair (tool -> getMatrix (), tool -> center () .getValue ());
-		}
-	}
-	else
-	{
-		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Transform"));
-
-		bool changed = false;
-
-		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
-		{
-			const X3D::X3DPtr <X3D::X3DTransformNodeTool> tool (node);
-
-			if (tool)
-			{
-				const auto & matrix = tool -> undoMatrix .first;
-				const auto & center = tool -> undoMatrix .second;
-
-				if (matrix not_eq tool -> getMatrix () or center not_eq tool -> center ())
-				{
-					changed = true;
-
-					undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
-					                             X3D::X3DPtr <X3D::X3DTransformNode> (tool),
-					                             matrix,
-					                             center);
-
-					undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter,
-					                             X3D::X3DPtr <X3D::X3DTransformNode> (tool),
-					                             tool -> getMatrix (),
-					                             tool -> center () .getValue ());
-				}
-			}
-		}
-
-		if (changed)
-			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
-	}
 }
 
 bool
@@ -243,6 +205,62 @@ throw (Error <NOT_SUPPORTED>)
 }
 
 void
+X3DTransformNodeTool::beginUndo ()
+{
+	undoMatrix = std::make_pair (getMatrix (), center () .getValue ());
+}
+
+void
+X3DTransformNodeTool::endUndo (const UndoStepPtr & undoStep)
+{
+	const auto & startMatrix = undoMatrix .first;
+	const auto & startCenter = undoMatrix .second;
+
+	if (startMatrix not_eq getMatrix () or startCenter not_eq center ())
+	{
+		undoStep -> addUndoFunction (&X3DTransformNode::setMatrixWithCenter,
+		                             X3DPtr <X3DTransformNode> (this),
+		                             startMatrix,
+		                             startCenter);
+
+		undoStep -> addRedoFunction (&X3DTransformNode::setMatrixWithCenter,
+		                             X3DPtr <X3DTransformNode> (this),
+		                             getMatrix (),
+		                             center () .getValue ());
+	}
+}
+
+void
+X3DTransformNodeTool::set_active ()
+{
+	if (isActive ())
+	{
+		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
+		{
+			const X3DPtr <X3DNodeTool> tool (node);
+
+			if (tool)
+				tool -> beginUndo ();
+		}
+	}
+	else
+	{
+		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Transform"));
+
+		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
+		{
+			const X3DPtr <X3DNodeTool> tool (node);
+
+			if (tool)
+				tool -> endUndo (undoStep);
+		}
+
+		if (not undoStep -> isEmpty ())
+			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+	}
+}
+
+void
 X3DTransformNodeTool::eventsProcessed ()
 {
 	try
@@ -255,16 +273,19 @@ X3DTransformNodeTool::eventsProcessed ()
 
 		const auto differenceMatrix = inverse (matrix * transformationMatrix) * getMatrix () * transformationMatrix;
 
-		for (const auto & transform : getBrowser () -> getTransformTools ())
+		for (const auto & tool : getBrowser () -> getTransformTools ())
 		{
 			try
 			{
-				if (transform == this)
+				if (tool == this)
 					continue;
 
-				transform -> addAbsoluteMatrix (differenceMatrix, transform -> getKeepCenter ());
+				if (not tool -> getField <SFBool> ("enabled"))
+					continue;
+
+				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
 			}
-			catch (const X3D::X3DError &)
+			catch (const X3DError &)
 			{ }
 		}
 	}

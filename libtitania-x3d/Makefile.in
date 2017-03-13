@@ -760,6 +760,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Navigation/BillboardTool.lo \
 	Titania/X3D/Tools/Navigation/CollisionTool.lo \
 	Titania/X3D/Tools/Navigation/LODTool.lo \
+	Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.lo \
 	Titania/X3D/Tools/NURBS/NurbsCurveTool.lo \
 	Titania/X3D/Tools/NURBS/NurbsPatchSurfaceTool.lo \
 	Titania/X3D/Tools/NURBS/NurbsSweptSurfaceTool.lo \
@@ -1687,6 +1688,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
+	Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.cpp \
 	Titania/X3D/Tools/NURBS/NurbsCurveTool.cpp \
 	Titania/X3D/Tools/NURBS/NurbsPatchSurfaceTool.cpp \
 	Titania/X3D/Tools/NURBS/NurbsSweptSurfaceTool.cpp \
@@ -4275,6 +4277,9 @@ Titania/X3D/Tools/Navigation/CollisionTool.lo:  \
 Titania/X3D/Tools/Navigation/LODTool.lo:  \
 	Titania/X3D/Tools/Navigation/$(am__dirstamp) \
 	Titania/X3D/Tools/Navigation/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.lo:  \
+	Titania/X3D/Tools/Navigation/$(am__dirstamp) \
+	Titania/X3D/Tools/Navigation/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/NURBS/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/NURBS
 	@: > Titania/X3D/Tools/NURBS/$(am__dirstamp)
@@ -5273,6 +5278,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/BillboardTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/CollisionTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/LODTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/X3DViewpointNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Picking/$(DEPDIR)/PickableGroupTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR)/TouchGroupTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Rendering/$(DEPDIR)/CoordinateTool.Plo@am__quote@

@@ -132,32 +132,50 @@ public:
 
 	///  @name Hidden fields
 
-	virtual
 	SFBool &
-	bbox ()
-	{ return *fields .bbox; }
+	enabled ()
+	{ return *fields .enabled; }
 
-	virtual
 	const SFBool &
-	bbox () const
-	{ return *fields .bbox; }
+	enabled () const
+	{ return *fields .enabled; }
 
-	virtual
+	MFString &
+	tools ()
+	{ return *fields .tools; }
+
+	const MFString &
+	tools () const
+	{ return *fields .tools; }
+
+	SFBool &
+	displayBBox ()
+	{ return *fields .displayBBox; }
+
+	const SFBool &
+	displayBBox () const
+	{ return *fields .displayBBox; }
+
+	SFBool &
+	displayCenter ()
+	{ return *fields .displayCenter; }
+
+	const SFBool &
+	displayCenter () const
+	{ return *fields .displayCenter; }
+
 	SFBool &
 	isActive ()
 	{ return *fields .isActive; }
 
-	virtual
 	const SFBool &
 	isActive () const
 	{ return *fields .isActive; }
 
-	virtual
 	SFTime &
 	touchTime ()
 	{ return *fields .touchTime; }
 
-	virtual
 	const SFTime &
 	touchTime () const
 	{ return *fields .touchTime; }
@@ -205,6 +223,18 @@ public:
 	ToolType
 	getActiveTool () const final override
 	{ return ToolType (getToolNode () -> template getField <SFInt32> ("activeTool_changed") .getValue ()); }
+
+	void
+	setChanging (const bool value)
+	{ changing = value; }
+
+	virtual
+	void
+	beginUndo () final override;
+
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep) final override;
 
 	///  @name Operatations
 
@@ -261,7 +291,10 @@ private:
 	{
 		Fields ();
 
-		SFBool* const bbox;
+		SFBool* const enabled;
+		MFString* const tools;
+		SFBool* const displayBBox;
+		SFBool* const displayCenter;
 		SFBool* const isActive;
 		SFTime* const touchTime;
 	};

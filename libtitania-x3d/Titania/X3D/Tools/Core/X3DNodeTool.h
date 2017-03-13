@@ -53,6 +53,7 @@
 
 #include "../Core/X3DBaseTool.h"
 #include "../../Components/Core/X3DNode.h"
+#include "../../Editing/Undo/UndoStep.h"
 
 namespace titania {
 namespace X3D {
@@ -84,6 +85,18 @@ public:
 	const UndoStepContainerPtr &
 	undo_changed () const
 	{ return *fields .undo_changed; }
+
+	///  @name Operations
+
+	virtual
+	void
+	beginUndo ()
+	{ }
+
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep)
+	{ }
 
 
 protected:

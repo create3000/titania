@@ -53,10 +53,6 @@
 
 #include "../Core/X3DBindableNodeTool.h"
 
-#include "../../Browser/Networking/config.h"
-#include "../../Browser/Selection.h"
-#include "../../Browser/X3DBrowser.h"
-
 #include "../../Components/Grouping/X3DBoundedObject.h"
 #include "../../Components/Navigation/X3DViewpointNode.h"
 
@@ -143,19 +139,21 @@ public:
 
 	virtual
 	Box3d
-	getBBox () const final override
-	{
-		if (getBrowser () -> getDisplayTools () .top ())
-			return getInlineNode () -> getBBox ();
-
-		return Box3d ();
-	}
+	getBBox () const final override;
 
 	///  @name Operations
 
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
+	virtual
+	void
+	beginUndo () final override;
+
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep) final override;
 
 	virtual
 	void
@@ -169,27 +167,14 @@ public:
 
 	virtual
 	void
-	dispose () override
-	{
-		X3DBoundedObject::dispose ();
-		X3DBindableNodeTool::dispose ();
+	dispose () override;
 
-		removeChildObjects (bboxSize (), bboxCenter ());
-	}
 
 protected:
 
 	///  @name Construction
 
-	X3DViewpointNodeTool () :
-		   X3DViewpointNode (),
-		X3DBindableNodeTool (),
-		   X3DBoundedObject ()
-	{
-		addType (X3DConstants::X3DViewpointNodeTool);
-
-		addChildObjects (bboxSize (), bboxCenter ());
-	}
+	X3DViewpointNodeTool ();
 
 	virtual
 	void
@@ -199,78 +184,28 @@ protected:
 	void
 	realize () final override;
 
+	///  @name Event handlers
+
+	void
+	set_active (const bool active);
+
+	///  @name Operations
+
+	static
+	void
+	setChanging (const X3DPtr <X3D::X3DViewpointNode> & viewpoint, const bool value);
+
 	virtual
 	void
 	reshape ()
 	{ }
 
+	///  @name Members
+
+	Vector3d   startPosition;
+	Rotation4d startOrientation;
+
 };
-
-inline
-void
-X3DViewpointNodeTool::initialize ()
-{
-	X3DBindableNodeTool::initialize ();
-	X3DBoundedObject::initialize ();
-
-	requestAsyncLoad ({ get_tool ("ViewpointTool.x3dv") .str () });
-}
-
-inline
-void
-X3DViewpointNodeTool::realize ()
-{
-	try
-	{
-		getToolNode () -> setField <SFNode> ("viewpointNode", getNode <X3DViewpointNode> ());
-	}
-	catch (const X3DError & error)
-	{ }
-}
-
-inline
-void
-X3DViewpointNodeTool::addTool ()
-{
-	try
-	{
-		getToolNode () -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (SFNode (this)));
-	}
-	catch (const X3DError &)
-	{ }
-}
-
-inline
-void
-X3DViewpointNodeTool::removeTool (const bool really)
-{
-	if (really)
-		X3DBindableNodeTool::removeTool ();
-
-	else
-	{
-		try
-		{
-			getToolNode () -> setField <SFBool> ("set_selected", false);
-		}
-		catch (const X3DError &)
-		{ }
-	}
-}
-
-inline
-void
-X3DViewpointNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
-{
-	getNode <X3DViewpointNode> () -> traverse (type, renderObject);
-
-	if (type == TraverseType::DISPLAY) // Last chance to process events
-		reshape ();
-
-	// Tool
-
-	X3DToolObject::traverse (type, renderObject);
-}
 
 } // X3D
 } // titania

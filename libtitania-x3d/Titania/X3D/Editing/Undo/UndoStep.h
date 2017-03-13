@@ -100,6 +100,10 @@ public:
 	getRedoFunctions () const
 	{ return redoFunctions; }
 
+	bool
+	isEmpty () const
+	{ return undoFunctions .empty (); }
+
 	///  @name Operations
 
 	template <class ... Args>

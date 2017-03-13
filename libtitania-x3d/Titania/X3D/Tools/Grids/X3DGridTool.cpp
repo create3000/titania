@@ -291,6 +291,9 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNode> & master)
 			{
 				if (tool == master)
 					continue;
+
+				if (not tool -> getField <SFBool> ("enabled"))
+					continue;
 		
 				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
 
@@ -410,6 +413,9 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNode> & master)
 			{
 				if (tool == master)
 					continue;
+
+				if (not tool -> getField <SFBool> ("enabled"))
+					continue;
 	
 				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
 
@@ -467,6 +473,9 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNode> & master)
 			try
 			{
 				if (tool == master)
+					continue;
+
+				if (not tool -> getField <SFBool> ("enabled"))
 					continue;
 
 				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());

@@ -644,6 +644,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
+	Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.cpp \
 	Titania/X3D/Tools/NURBS/NurbsCurveTool.cpp \
 	Titania/X3D/Tools/NURBS/NurbsPatchSurfaceTool.cpp \
 	Titania/X3D/Tools/NURBS/NurbsSweptSurfaceTool.cpp \
