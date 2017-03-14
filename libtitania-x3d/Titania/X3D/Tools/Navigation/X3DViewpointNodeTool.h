@@ -169,6 +169,9 @@ public:
 	void
 	dispose () override;
 
+	virtual
+	~X3DViewpointNodeTool () override;
+
 
 protected:
 
@@ -191,13 +194,6 @@ protected:
 
 
 private:
-
-	///  @name Operations
-
-	virtual
-	void
-	reshape ()
-	{ }
 
 	///  @name Members
 

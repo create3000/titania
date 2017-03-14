@@ -182,9 +182,6 @@ X3DViewpointNodeTool::traverse (const TraverseType type, X3DRenderObject* const 
 {
 	getNode <X3DViewpointNode> () -> traverse (type, renderObject);
 
-	if (type == TraverseType::DISPLAY) // Last chance to process events
-		reshape ();
-
 	// Tool
 
 	X3DToolObject::traverse (type, renderObject);
@@ -198,6 +195,9 @@ X3DViewpointNodeTool::dispose ()
 
 	removeChildObjects (bboxSize (), bboxCenter ());
 }
+
+X3DViewpointNodeTool::~X3DViewpointNodeTool ()
+{ }
 
 } // X3D
 } // titania

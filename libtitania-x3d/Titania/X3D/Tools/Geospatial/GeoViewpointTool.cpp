@@ -114,10 +114,16 @@ GeoViewpointTool::set_geo_orientation ()
 void
 GeoViewpointTool::set_translation ()
 {
+	const auto userOrientation = getNode <GeoViewpoint> () -> getUserOrientation ();
+
 	getNode <GeoViewpoint> () -> setPosition (getTransformTool () -> translation () .getValue ());
+	getNode <GeoViewpoint> () -> setUserOrientation (userOrientation);
 
 	getNode <GeoViewpoint> () -> position () .removeInterest (&GeoViewpointTool::set_geo_position, this);
 	getNode <GeoViewpoint> () -> position () .addInterest (&GeoViewpointTool::connectGeoPosition,  this);
+
+	getNode <GeoViewpoint> () -> orientation () .removeInterest (&GeoViewpointTool::set_geo_orientation, this);
+	getNode <GeoViewpoint> () -> orientation () .addInterest (&GeoViewpointTool::connectGeoOrientation,  this);
 }
 
 void
