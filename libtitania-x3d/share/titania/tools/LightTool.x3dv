@@ -7,7 +7,7 @@ META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/LightTool.x3dv"
-META "modified" "Tue, 14 Mar 2017 12:17:53 GMT"
+META "modified" "Tue, 14 Mar 2017 12:30:54 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]
@@ -123,7 +123,7 @@ WorldInfo {
               inputOnly      SFFloat    set_lightIntensity
               inputOnly      SFVec3f    set_lightDirection
               inputOnly      SFVec3f    set_connectLightDirection
-              inputOnly      SFFloat    set_lightCutOffAngle
+              inputOnly      SFFloat    set_lightAngle
               inputOnly      SFRotation set_rotation
               inputOnly      SFRotation set_connectRotation
               initializeOnly SFNode     transform DEF TransformTool Transform {
@@ -212,11 +212,12 @@ function set_spotLight ()
 	Browser .addRoute (light, 'direction', self, 'set_lightDirection');
 	Browser .addRoute (transform, 'rotation', self, 'set_rotation');
 	
-	Browser .addRoute (light, 'cutOffAngle', self, 'set_lightCutOffAngle');
+	Browser .addRoute (light, 'beamWidth', self, 'set_lightAngle');
+	Browser .addRoute (light, 'cutOffAngle', self, 'set_lightAngle');
 
 	transform .translation = light .location;
 	set_lightDirection (light .direction);
-	set_lightCutOffAngle (light .cutOffAngle);
+	set_lightAngle ();
 
 	whichChoice_changed = 2;
 }
@@ -250,18 +251,19 @@ function set_connectLightDirection (value)
 	Browser .addRoute (light, 'direction', self, 'set_lightDirection');
 }
 
-function set_lightCutOffAngle (cutOffAngle)
+function set_lightAngle ()
 {
-//	var height = 2;
-//	var radius = 1.2;
-//	var side   = Math .sqrt (height * height + radius * radius);
+	var height = 2;
+	var radius = 1.2;
+	var side   = Math .sqrt (height * height + radius * radius);
 
-//	var r = side * Math .sin (cutOffAngle);
-//	var h = side * Math .cos (cutOffAngle);
-	
-//	cone .scale .x = r / radius;
-//	cone .scale .y = r / radius;
-//	cone .scale .z = h / height;
+	var angle = Math .min (light .beamWidth, light .cutOffAngle);
+	var r     = side * Math .sin (angle);
+	var h     = side * Math .cos (angle);
+
+	cone .scale .x = r / radius;
+	cone .scale .y = r / radius;
+	cone .scale .z = h / height;
 }
 
 function set_rotation (value)

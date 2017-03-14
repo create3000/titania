@@ -883,7 +883,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">PointLightAttenuationXAdjustment</property>
-                                    <property name="climb_rate">0.32000000000000001</property>
+                                    <property name="climb_rate">0.10000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -900,7 +900,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">PointLightAttenuationYAdjustment</property>
-                                    <property name="climb_rate">0.32000000000000001</property>
+                                    <property name="climb_rate">0.10000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -917,7 +917,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">PointLightAttenuationZAdjustment</property>
-                                    <property name="climb_rate">0.32000000000000001</property>
+                                    <property name="climb_rate">0.10000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -1013,7 +1013,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">SpotLightAttenuationXAdjustment</property>
-                                    <property name="climb_rate">0.32000000000000001</property>
+                                    <property name="climb_rate">0.10000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -1030,7 +1030,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">SpotLightAttenuationYAdjustment</property>
-                                    <property name="climb_rate">0.32000000000000001</property>
+                                    <property name="climb_rate">0.10000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -1047,7 +1047,7 @@
                                     <property name="halign">start</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">SpotLightAttenuationZAdjustment</property>
-                                    <property name="climb_rate">0.32000000000000001</property>
+                                    <property name="climb_rate">0.10000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -1193,38 +1193,6 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkSpinButton" id="SpotLightBeamWidthSpinButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="halign">start</property>
-                                <property name="text" translatable="yes">0,000</property>
-                                <property name="adjustment">SpotLightBeamWidthAdjustment</property>
-                                <property name="climb_rate">0.32000000000000001</property>
-                                <property name="digits">6</property>
-                                <property name="numeric">True</property>
-                              </object>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="top_attach">4</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkSpinButton" id="SpotLightCutOffAngleSpinButton">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="halign">start</property>
-                                <property name="text" translatable="yes">0,000</property>
-                                <property name="adjustment">SpotLightCutOffAngleAdjustment</property>
-                                <property name="climb_rate">0.32000000000000001</property>
-                                <property name="digits">6</property>
-                                <property name="numeric">True</property>
-                              </object>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="top_attach">5</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkBox" id="box2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
@@ -1324,6 +1292,90 @@
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="top_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox" id="SpotLightBeamWidthBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="spacing">8</property>
+                                <child>
+                                  <object class="GtkSpinButton" id="SpotLightBeamWidthSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0,000</property>
+                                    <property name="adjustment">SpotLightBeamWidthAdjustment</property>
+                                    <property name="climb_rate">0.10000000000000001</property>
+                                    <property name="digits">6</property>
+                                    <property name="numeric">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkScale">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="adjustment">SpotLightBeamWidthAdjustment</property>
+                                    <property name="round_digits">1</property>
+                                    <property name="draw_value">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">4</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="spacing">8</property>
+                                <child>
+                                  <object class="GtkSpinButton" id="SpotLightCutOffAngleSpinButton">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="text" translatable="yes">0,000</property>
+                                    <property name="adjustment">SpotLightCutOffAngleAdjustment</property>
+                                    <property name="climb_rate">0.10000000000000001</property>
+                                    <property name="digits">6</property>
+                                    <property name="numeric">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkScale">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="adjustment">SpotLightCutOffAngleAdjustment</property>
+                                    <property name="round_digits">1</property>
+                                    <property name="draw_value">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">5</property>
                               </packing>
                             </child>
                           </object>
