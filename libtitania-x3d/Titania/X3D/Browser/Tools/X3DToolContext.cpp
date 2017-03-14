@@ -52,7 +52,7 @@
 
 #include "TransformToolOptions.h"
 
-#include "../../Components/Grouping/X3DTransformNode.h"
+#include "../../Tools/Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {

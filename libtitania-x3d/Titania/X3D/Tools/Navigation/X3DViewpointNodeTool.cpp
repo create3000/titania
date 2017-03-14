@@ -51,14 +51,9 @@
 #include "X3DViewpointNodeTool.h"
 
 #include "../../Browser/Networking/config.h"
-#include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 
-#include "../../Editing/Undo/UndoStepContainer.h"
-
 #include "../Grouping/TransformTool.h"
-
-#include <Titania/String/sprintf.h>
 
 namespace titania {
 namespace X3D {
@@ -89,49 +84,19 @@ X3DViewpointNodeTool::realize ()
 {
 	try
 	{
-		const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("Transform");
+		const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("TransformTool");
 
 		transformTool -> addTool ();
 		transformTool -> setField <MFString> ("tools",         MFString ({ "MOVE", "ROTATE" }));
 		transformTool -> setField <SFBool>   ("displayCenter", false);
 
-		transformTool -> getField <SFBool> ("isActive") .addInterest (&X3DViewpointNodeTool::set_active, this);
+		setTransformTool (transformTool);
 
 		getToolNode () -> setField <SFNode> ("viewpoint", getNode <X3DViewpointNode> ());
 	}
 	catch (const X3DError & error)
 	{
 		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
-X3DViewpointNodeTool::set_active (const bool active)
-{
-	if (active)
-	{
-		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
-		{
-			const X3DPtr <X3DNodeTool> tool (node);
-
-			if (tool)
-				tool -> beginUndo ();
-		}
-	}
-	else
-	{
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit %s"), getTypeName () .c_str ()));
-
-		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
-		{
-			const X3DPtr <X3DNodeTool> tool (node);
-
-			if (tool)
-				tool -> endUndo (undoStep);
-		}
-
-		if (not undoStep -> isEmpty ())
-			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 	}
 }
 
@@ -168,29 +133,13 @@ X3DViewpointNodeTool::endUndo (const UndoStepPtr & undoStep)
 }
 
 void
-X3DViewpointNodeTool::setChanging (const X3DPtr <X3D::X3DViewpointNode> & viewpoint, const bool value)
-{
-	try
-	{
-		const X3DPtr <X3D::X3DViewpointNodeTool> viewpointTool (viewpoint);
-
-		const auto transformTool = viewpointTool -> getInlineNode () -> getExportedNode <TransformTool> ("Transform");
-
-		transformTool -> setChanging (value);
-	}
-	catch (const X3DError & error)
-	{ }
-}
-
-void
 X3DViewpointNodeTool::addTool ()
 {
 	try
 	{
-		const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("Transform");
+		const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("TransformTool");
 
-		transformTool -> setField <SFBool> ("enabled", true);
-
+		transformTool  -> setField <SFBool> ("enabled",  true);
 		getToolNode () -> setField <SFBool> ("selected", true);
 	}
 	catch (const X3DError & error)
@@ -209,10 +158,9 @@ X3DViewpointNodeTool::removeTool (const bool really)
 	{
 		try
 		{
-			const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("Transform");
+			const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("TransformTool");
 
-			transformTool -> setField <SFBool> ("enabled", false);
-
+			transformTool  -> setField <SFBool> ("enabled",  false);
 			getToolNode () -> setField <SFBool> ("selected", false);
 		}
 		catch (const X3DError & error)

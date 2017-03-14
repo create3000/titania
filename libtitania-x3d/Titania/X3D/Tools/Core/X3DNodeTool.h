@@ -105,10 +105,24 @@ protected:
 
 	X3DNodeTool ();
 
+	///  @name Member access
+
+	void
+	setTransformTool (X3DTransformNode* const transformTool);
+
+	static
+	void
+	setChanging (const X3DPtr <X3D::X3DNode> & node, const bool value);
+
 
 private:
 
-	///  @name Members
+	///  @name Event handlers
+
+	void
+	set_active (const bool active);
+
+	///  @name Fields
 
 	struct Fields
 	{

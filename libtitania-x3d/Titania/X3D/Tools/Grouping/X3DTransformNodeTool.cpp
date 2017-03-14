@@ -51,10 +51,8 @@
 #include "X3DTransformNodeTool.h"
 
 #include "../../Browser/Networking/config.h"
-#include "../../Browser/Selection.h"
 #include "../../Browser/Tools/TransformToolOptions.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Editing/Undo/UndoStepContainer.h"
 
 #include "../ToolColors.h"
 
@@ -95,7 +93,7 @@ X3DTransformNodeTool::setExecutionContext (X3DExecutionContext* const executionC
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNode> (this));
+	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNodeTool> (this));
 
 	X3DTransformMatrix3DNodeTool::setExecutionContext (executionContext);
 
@@ -107,7 +105,7 @@ X3DTransformNodeTool::initialize ()
 {
 	X3DChildNodeTool::initialize ();
 
-	isActive () .addInterest (&X3DTransformNodeTool::set_active, this);
+	setTransformTool (this);
 
 	getBrowser () -> getTransformTools () .emplace_back (this);
 
@@ -192,7 +190,6 @@ X3DTransformNodeTool::setMatrixKeepCenter (const Matrix4d & matrix)
 // This function must be virtual, as it is not guarenteed that a X3DPtr has a X3DTransformNodeTool inside.
 void
 X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const bool keepCenter)
-throw (Error <NOT_SUPPORTED>)
 {
 	try
 	{
@@ -236,36 +233,6 @@ X3DTransformNodeTool::endUndo (const UndoStepPtr & undoStep)
 }
 
 void
-X3DTransformNodeTool::set_active ()
-{
-	if (isActive ())
-	{
-		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
-		{
-			const X3DPtr <X3DNodeTool> tool (node);
-
-			if (tool)
-				tool -> beginUndo ();
-		}
-	}
-	else
-	{
-		const auto undoStep = std::make_shared <UndoStep> (_ ("Edit Transform"));
-
-		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
-		{
-			const X3DPtr <X3DNodeTool> tool (node);
-
-			if (tool)
-				tool -> endUndo (undoStep);
-		}
-
-		if (not undoStep -> isEmpty ())
-			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
-	}
-}
-
-void
 X3DTransformNodeTool::eventsProcessed ()
 {
 	try
@@ -285,7 +252,7 @@ X3DTransformNodeTool::eventsProcessed ()
 				if (tool == this)
 					continue;
 
-				if (not tool -> getField <SFBool> ("enabled"))
+				if (not tool -> enabled ())
 					continue;
 
 				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
@@ -356,7 +323,7 @@ X3DTransformNodeTool::dispose ()
 {
 	__LOG__ << std::endl;
 
-	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNode> (this));
+	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNodeTool> (this));
 
 	X3DTransformMatrix3DNodeTool::dispose ();
 }

@@ -77,6 +77,7 @@ public:
 	using X3DField <ValueType*>::addEvent;
 	using X3DField <ValueType*>::addInterest;
 	using X3DField <ValueType*>::setValue;
+	using X3DField <ValueType*>::getValue;
 
 	///  @name Constructors
 
@@ -213,10 +214,6 @@ protected:
 
 
 private:
-
-	using X3DField <ValueType*>::getValue;
-	using X3DField <ValueType*>::equals;
-	using X3DField <ValueType*>::operator const internal_type &;
 
 	///  @name Construction
 

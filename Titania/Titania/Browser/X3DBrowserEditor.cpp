@@ -68,13 +68,13 @@
 #include <Titania/X3D/Components/Core/MetadataString.h>
 #include <Titania/X3D/Components/Core/WorldInfo.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
-#include <Titania/X3D/Components/Grouping/X3DTransformNode.h>
 #include <Titania/X3D/Components/Layering/X3DLayerNode.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/Editing/Undo/UndoStepContainer.h>
 #include <Titania/X3D/Execution/World.h>
 #include <Titania/X3D/Parser/Filter.h>
+#include <Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h>
 
 #include <Titania/InputOutput/MultiLineComment.h>
 #include <Titania/OS.h>
@@ -834,7 +834,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 
 	for (const auto & node : basic::make_reverse_range (getSelection () -> getNodes ()))
 	{
-		X3D::X3DPtr <X3D::X3DTransformNode> first (node);
+		X3D::X3DPtr <X3D::X3DTransformNodeTool> first (node);
 
 		if (first)
 		{
@@ -859,7 +859,7 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 
 			for (const auto & node : basic::make_reverse_range (getSelection () -> getNodes ()))
 			{
-				X3D::X3DPtr <X3D::X3DTransformNode> transform (node);
+				X3D::X3DPtr <X3D::X3DTransformNodeTool> transform (node);
 
 				if (not transform)
 					continue;

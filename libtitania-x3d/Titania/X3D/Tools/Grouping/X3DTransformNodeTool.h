@@ -52,6 +52,8 @@
 #define __TITANIA_X3D_TOOLS_GROUPING_X3DTRANSFORM_NODE_TOOL_H__
 
 #include "../Grouping/X3DTransformMatrix3DNodeTool.h"
+
+#include "../../Browser/Tools/ToolType.h"
 #include "../../Components/Grouping/X3DTransformNode.h"
 
 namespace titania {
@@ -201,21 +203,16 @@ public:
 	void
 	setMatrixKeepCenter (const Matrix4d &) final override;
 
-	virtual
 	void
-	addAbsoluteMatrix (const Matrix4d &, const bool)
-	throw (Error <NOT_SUPPORTED>) final override;
+	addAbsoluteMatrix (const Matrix4d &, const bool);
 
-	virtual
 	const Matrix4d &
 	getTransformationMatrix () const
-	throw (Error <NOT_SUPPORTED>) final override
 	{ return transformationMatrix; }
 
-	virtual
 	ToolType
-	getActiveTool () const final override
-	{ return ToolType (getToolNode () -> template getField <SFInt32> ("activeTool_changed") .getValue ()); }
+	getActiveTool () const
+	{ return ToolType (getToolNode () -> getField <SFInt32> ("activeTool_changed") .getValue ()); }
 
 	void
 	setChanging (const bool value)
@@ -262,9 +259,6 @@ private:
 	realize () final override;
 
 	///  @name Event handlers
-
-	void
-	set_active ();
 
 	void
 	eventsProcessed ();

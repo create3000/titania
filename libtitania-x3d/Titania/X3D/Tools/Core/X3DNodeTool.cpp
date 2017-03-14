@@ -50,7 +50,12 @@
 
 #include "X3DNodeTool.h"
 
+#include "../../Browser/Selection.h"
+#include "../../Browser/X3DBrowser.h"
 #include "../../Editing/Undo/UndoStepContainer.h"
+#include "../../Tools/Grouping/X3DTransformNodeTool.h"
+
+#include <Titania/String/sprintf.h>
 
 namespace titania {
 namespace X3D {
@@ -67,6 +72,56 @@ X3DNodeTool::X3DNodeTool () :
 	addType (X3DConstants::X3DNodeTool);
 
 	addField (outputOnly , "undo_changed", undo_changed ());
+}
+
+void
+X3DNodeTool::setTransformTool (X3DTransformNode* const transformTool)
+{
+	transformTool -> getField <SFBool> ("isActive") .addInterest (&X3DNodeTool::set_active, this);
+}
+
+void
+X3DNodeTool::setChanging (const X3DPtr <X3D::X3DNode> & node, const bool value)
+{
+	try
+	{
+		const auto tool          = X3DPtr <X3D::X3DToolObject> (node);
+		const auto transformTool = tool -> getInlineNode () -> getExportedNode <X3DTransformNodeTool> ("TransformTool");
+
+		transformTool -> setChanging (value);
+	}
+	catch (const X3DError & error)
+	{ }
+}
+
+void
+X3DNodeTool::set_active (const bool active)
+{
+	if (active)
+	{
+		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
+		{
+			const X3DPtr <X3DNodeTool> tool (node);
+
+			if (tool)
+				tool -> beginUndo ();
+		}
+	}
+	else
+	{
+		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit %s"), getTypeName () .c_str ()));
+
+		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
+		{
+			const X3DPtr <X3DNodeTool> tool (node);
+
+			if (tool)
+				tool -> endUndo (undoStep);
+		}
+
+		if (not undoStep -> isEmpty ())
+			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+	}
 }
 
 } // X3D

@@ -184,16 +184,7 @@ protected:
 	void
 	realize () final override;
 
-	///  @name Event handlers
-
-	void
-	set_active (const bool active);
-
 	///  @name Operations
-
-	static
-	void
-	setChanging (const X3DPtr <X3D::X3DViewpointNode> & viewpoint, const bool value);
 
 	virtual
 	void

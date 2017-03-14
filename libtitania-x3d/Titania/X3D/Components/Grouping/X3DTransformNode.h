@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_X3DTRANSFORM_NODE_H__
 
 #include "../Grouping/X3DTransformMatrix3DNode.h"
-#include "../../Browser/Tools/ToolType.h"
 
 namespace titania {
 namespace X3D {
@@ -136,23 +135,6 @@ public:
 	virtual
 	void
 	setMatrixKeepCenter (const Matrix4d &);
-
-	virtual
-	void
-	addAbsoluteMatrix (const Matrix4d &, const bool)
-	throw (Error <NOT_SUPPORTED>)
-	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::addAbsoluteMatrix"); }
-
-	virtual
-	const Matrix4d &
-	getTransformationMatrix () const
-	throw (Error <NOT_SUPPORTED>)
-	{ throw Error <NOT_SUPPORTED> ("X3DTransformNode::getTransformationMatrix"); }
-
-	virtual
-	ToolType
-	getActiveTool () const
-	{ return ToolType::NO_TOOL; }
 
 
 protected:

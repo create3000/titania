@@ -51,7 +51,7 @@
 #include "X3DGridTool.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Grouping/X3DTransformNode.h"
+#include "../../Tools/Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
@@ -75,11 +75,11 @@ X3DGridTool::Fields::Fields () :
 X3DGridTool::X3DGridTool () :
 	X3DActiveLayerTool (),
 	            fields (),
-	             tools ()
+	    transformNodes ()
 {
 	addType (X3DConstants::X3DGridTool);
 
-	addChildObjects (tools);
+	addChildObjects (transformNodes);
 
 	translation ()  .setUnit (UnitCategory::LENGTH);
 	snapDistance () .setUnit (UnitCategory::LENGTH);
@@ -198,23 +198,23 @@ X3DGridTool::set_majorLineColor ()
 // Snaping
 
 void
-X3DGridTool::set_transform_tools (const X3DWeakPtrArray <X3DTransformNode> & value)
+X3DGridTool::set_transform_tools (const X3DWeakPtrArray <X3DTransformNodeTool> & value)
 {
-	for (const auto & tool : tools)
+	for (const auto & transformNode : transformNodes)
 	{
 		try
 		{
-			tool -> translation () .removeInterest (&X3DGridTool::set_translation, this);
-			tool -> rotation ()    .removeInterest (&X3DGridTool::set_rotation,    this);
-			tool -> scale ()       .removeInterest (&X3DGridTool::set_scale,       this);
+			transformNode -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+			transformNode -> rotation ()    .removeInterest (&X3DGridTool::set_rotation,    this);
+			transformNode -> scale ()       .removeInterest (&X3DGridTool::set_scale,       this);
 		}
 		catch (const Error <DISPOSED> &)
 		{ }
 	}
 
-	tools = value;
+	transformNodes = value;
 
-	for (const auto & tool : tools)
+	for (const auto & tool : value)
 	{
 		try
 		{
@@ -228,7 +228,7 @@ X3DGridTool::set_transform_tools (const X3DWeakPtrArray <X3DTransformNode> & val
 }
 
 void
-X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNode> & master)
+X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 {
 	try
 	{
@@ -292,7 +292,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNode> & master)
 				if (tool == master)
 					continue;
 
-				if (not tool -> getField <SFBool> ("enabled"))
+				if (not tool -> enabled ())
 					continue;
 		
 				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
@@ -312,7 +312,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNode> & master)
 }
 
 void
-X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNode> & master)
+X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 {
 	try
 	{
@@ -414,7 +414,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNode> & master)
 				if (tool == master)
 					continue;
 
-				if (not tool -> getField <SFBool> ("enabled"))
+				if (not tool -> enabled ())
 					continue;
 	
 				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
@@ -434,7 +434,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNode> & master)
 }
 
 void
-X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNode> & master)
+X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 {
 	try
 	{
@@ -475,7 +475,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNode> & master)
 				if (tool == master)
 					continue;
 
-				if (not tool -> getField <SFBool> ("enabled"))
+				if (not tool -> enabled ())
 					continue;
 
 				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
@@ -495,7 +495,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNode> & master)
 }
 
 Matrix4d
-X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNode> & master, const size_t tool)
+X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool)
 {
 	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 
@@ -558,7 +558,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNode> & master, const
 }
 
 Matrix4d
-X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNode> & master, const size_t tool)
+X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t tool)
 {
 	// All points are first transformed to grid space, then a snap position is calculated, and then transformed back to absolute space.
 
@@ -654,7 +654,7 @@ X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const V
 }
 
 void
-X3DGridTool::connectTranslation (const X3DWeakPtr <X3DTransformNode> & tool)
+X3DGridTool::connectTranslation (const X3DWeakPtr <X3DTransformNodeTool> & tool)
 {
 	try
 	{
@@ -666,7 +666,7 @@ X3DGridTool::connectTranslation (const X3DWeakPtr <X3DTransformNode> & tool)
 }
 
 void
-X3DGridTool::connectRotation (const X3DWeakPtr <X3DTransformNode> & tool)
+X3DGridTool::connectRotation (const X3DWeakPtr <X3DTransformNodeTool> & tool)
 {
 	try
 	{
@@ -678,7 +678,7 @@ X3DGridTool::connectRotation (const X3DWeakPtr <X3DTransformNode> & tool)
 }
 
 void
-X3DGridTool::connectScale (const X3DWeakPtr <X3DTransformNode> & tool)
+X3DGridTool::connectScale (const X3DWeakPtr <X3DTransformNodeTool> & tool)
 {
 	try
 	{
