@@ -529,7 +529,7 @@ Selection::getTransform (const MFNode & hierarchy) const
 			if (not node)
 				node = lowest;
 
-			if (lowest -> isType ({ X3DConstants::X3DTransformNode, X3DConstants::X3DViewpointNode }))
+			if (lowest -> isType ({ X3DConstants::X3DTransformNode, X3DConstants::X3DViewpointNode, X3DConstants::X3DLightNode }))
 				return lowest;
 		}
 	}

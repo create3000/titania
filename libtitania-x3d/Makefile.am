@@ -641,6 +641,9 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
 	Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp \
 	Titania/X3D/Tools/Layering/X3DActiveLayerTool.cpp \
+	Titania/X3D/Tools/Lighting/DirectionalLightTool.cpp \
+	Titania/X3D/Tools/Lighting/PointLightTool.cpp \
+	Titania/X3D/Tools/Lighting/SpotLightTool.cpp \
 	Titania/X3D/Tools/Lighting/X3DLightNodeTool.cpp \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \

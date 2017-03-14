@@ -66,14 +66,7 @@ public:
 
 	///  @name Construction
 
-	SpotLightTool (X3DBaseNode* const node) :
-		     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		       SpotLight (node -> getExecutionContext ()),
-		     X3DBaseTool (node),
-		X3DLightNodeTool ()
-	{
-		addType (X3DConstants::SpotLightTool);
-	}
+	SpotLightTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -161,6 +154,14 @@ public:
 	draw (const GLenum lightId) final override
 	{ return X3DLightNodeTool::draw (lightId); }
 
+	virtual
+	void
+	beginUndo () final override;
+
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep) final override;
+
 
 protected:
 
@@ -170,6 +171,18 @@ protected:
 	void
 	initialize () final override
 	{ X3DLightNodeTool::initialize (); }
+
+	virtual
+	void
+	realize () final override;
+
+
+private:
+
+	///  @name Member access
+
+	Vector3f startLocation;
+	Vector3f startDirection;
 
 };
 

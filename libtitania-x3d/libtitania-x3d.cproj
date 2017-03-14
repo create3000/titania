@@ -1618,6 +1618,9 @@
     <Compile Include="Titania\X3D\Tools\Geospatial\GeoViewpointTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Navigation\ViewpointTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Navigation\OrthoViewpointTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Lighting\SpotLightTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Lighting\DirectionalLightTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\Lighting\PointLightTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

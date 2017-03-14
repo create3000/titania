@@ -1,13 +1,16 @@
-#X3D V3.3 utf8 Titania V0.7.4
+#X3D V3.3 utf8 Titania V3.0.0
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Fri, 01 Aug 2014 17:41:58 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V0.7.4, http://titania.create3000.de"
-META "modified" "Sat, 06 Sep 2014 17:50:42 GMT"
+META "generator" "Titania V3.0.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/LightTool.x3dv"
+META "modified" "Tue, 14 Mar 2017 09:43:42 GMT"
+META "outputStyle" "nicest"
 
-EXTERNPROTO ToolShader [
-]
+EXTERNPROTO ToolShader [ ]
 "library/ToolShader.x3dv"
 
 EXTERNPROTO BooleanSwitch [
@@ -20,23 +23,197 @@ EXTERNPROTO BooleanSwitch [
 ]
 "library/BooleanSwitch.x3dv"
 
-DEF Tool Script {
-  inputOutput SFBool     enabled FALSE
-  inputOutput SFBool     selected FALSE
-  inputOutput SFVec3f    translation 0 0 0
-  inputOutput SFRotation rotation 0 0 1 0
-  inputOutput SFColor    diffuseColor 0 0 0
-  inputOutput SFColor    emissiveColor 1 1 1
-  inputOutput SFFloat    emissiveIntensity 0.67
-  inputOutput SFInt32    whichChoice 0
-  inputOutput SFNode     light NULL
-  inputOutput SFNode     self USE Tool
-  inputOnly   SFBool     set_lightOn
-  inputOnly   SFColor    set_lightColor
-  inputOnly   SFFloat    set_lightIntensity
-  inputOnly   SFVec3f    set_lightDirection
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              94.0767710159545,
+              52.1923305534947,
+              86.2264747845403
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.34620796262057,
+              0.92516588440986,
+              0.155589629931545,
+              0.90438574646727
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              1.55034659798597,
+              9.36342214733164,
+              4.07576429276368
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+            value BooleanSwitch {
+              children [
+                Transform { }
+                Transform {
+                  children [
+                    Shape {
+                      geometry IndexedLineSet {
+                        colorPerVertex FALSE
+                        coordIndex [
+                          0,
+                          1,
+                          -1,
+                          0,
+                          2,
+                          -1,
+                          0,
+                          3,
+                          -1
+                        ]
+                        color Color {
+                          color [
+                            1 0 0,
+                            0 1 0,
+                            0 0 1
+                          ]
+                        }
+                        coord Coordinate {
+                          point [
+                            0 0 0,
+                            36 0 0,
+                            0 36 0,
+                            0 0 36,
+                            0 0 0
+                          ]
+                        }
+                      }
+                    }
+                    Transform {
+                      translation 36.5 0 0
+                      rotation 0 0 1 4.71239
+                      children Shape {
+                        appearance Appearance {
+                          material Material {
+                            diffuseColor 1 0 0
+                          }
+                          shaders ToolShader { }
+                        }
+                        geometry Cone {
+                          height 12
+                          bottomRadius 4
+                        }
+                      }
+                    }
+                    Transform {
+                      translation 0 36.5 0
+                      children Shape {
+                        appearance Appearance {
+                          material Material {
+                            diffuseColor 0 1 0
+                          }
+                          shaders ToolShader { }
+                        }
+                        geometry Cone {
+                          height 12
+                          bottomRadius 4
+                        }
+                      }
+                    }
+                    Transform {
+                      translation 0 0 36.5
+                      rotation 1 0 0 1.5708
+                      children Shape {
+                        appearance Appearance {
+                          material Material {
+                            diffuseColor 0 0 1
+                          }
+                          shaders ToolShader { }
+                        }
+                        geometry Cone {
+                          height 12
+                          bottomRadius 4
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+    ]
+  }
+  title "LightTool"
+}
 
-  url "javascript:
+DEF Tool Script {
+  inputOutput    SFBool     enabled FALSE
+  inputOutput    SFBool     selected FALSE
+  inputOutput    SFColor    diffuseColor 0 0 0
+  inputOutput    SFColor    emissiveColor 1 1 1
+  inputOutput    SFFloat    emissiveIntensity 0.67
+  outputOnly     SFInt32    whichChoice_changed
+  inputOnly      SFBool     set_lightOn
+  inputOnly      SFColor    set_lightColor
+  inputOnly      SFFloat    set_lightIntensity
+  inputOnly      SFVec3f    set_lightDirection
+  inputOnly      SFVec3f    set_connectLightDirection
+  inputOnly      SFRotation set_rotation
+  inputOnly      SFRotation set_connectRotation
+  inputOutput    SFNode     light NULL
+  initializeOnly SFNode     transform DEF TransformTool Transform {
+    children ScreenGroup {
+      children DEF Box Transform {
+        scaleOrientation 3.46944695195361e-17 -1.43709198143318e-17 1 3.92699081698724
+        children Shape {
+          appearance Appearance {
+            material Material {
+              transparency 1
+            }
+          }
+          geometry Box {
+            size 60 60 60
+          }
+        }
+      }
+    }
+  }
+  inputOutput    SFNode     self USE Tool
+
+  url "ecmascript:
+
 function set_light ()
 {
 	Browser .addRoute (light, 'on',        self, 'set_lightOn');
@@ -75,29 +252,35 @@ function set_light ()
 function set_directionalLight ()
 {
 	Browser .addRoute (light, 'direction', self, 'set_lightDirection');
+	Browser .addRoute (transform, 'rotation', self, 'set_rotation');
 
 	set_lightDirection (light .direction);
 
-	whichChoice = 0;
+	whichChoice_changed = 0;
 }
 
 function set_pointLight ()
 {
-	Browser .addRoute (light, 'location', self, 'translation');
+	Browser .addRoute (light, 'location', transform, 'translation');
+	Browser .addRoute (transform, 'translation', light, 'location');
 
-	translation = light .location;
-	whichChoice = 1;
+	transform .translation = light .location;
+	
+	whichChoice_changed = 1;
 }
 
 function set_spotLight ()
 {
-	Browser .addRoute (light, 'location',  self, 'translation');
+	Browser .addRoute (light, 'location',  transform, 'translation');
+	Browser .addRoute (transform, 'translation', light, 'location');
+	
 	Browser .addRoute (light, 'direction', self, 'set_lightDirection');
+	Browser .addRoute (transform, 'rotation', self, 'set_rotation');
 
-	translation = light .location;
+	transform .translation = light .location;
 	set_lightDirection (light .direction);
 
-	whichChoice = 2;
+	whichChoice_changed = 2;
 }
 
 function set_lightOn ()
@@ -117,7 +300,30 @@ function set_lightIntensity ()
 
 function set_lightDirection (value)
 {
-	rotation = new SFRotation (new SFVec3f (0, 0, 1), value);
+	transform .rotation = new SFRotation (new SFVec3f (0, 0, 1), value);
+	
+	Browser .deleteRoute (transform, 'rotation', self, 'set_rotation');
+	Browser .addRoute (transform, 'rotation', self, 'set_connectRotation');
+}
+
+function set_connectLightDirection (value)
+{
+	Browser .deleteRoute (light, 'direction', self, 'set_connectLightDirection');
+	Browser .addRoute (light, 'direction', self, 'set_lightDirection');
+}
+
+function set_rotation (value)
+{
+	light .direction = transform .rotation .multVec (new SFVec3f (0, 0, 1));
+	
+	Browser .deleteRoute (light, 'direction', self, 'set_lightDirection');
+	Browser .addRoute (light, 'direction', self, 'set_connectLightDirection');
+}
+
+function set_connectRotation (value)
+{
+	Browser .deleteRoute (transform, 'rotation', self, 'set_connectRotation');
+	Browser .addRoute (transform, 'rotation', self, 'set_rotation');
 }
 
 function set_color (on, color, intensity)
@@ -139,14 +345,23 @@ function set_color (on, color, intensity)
 "
 }
 
-DEF _1 Transform {
-  children Collision {
-    enabled FALSE
-    children DEF Lights ScreenGroup {
+Collision {
+  enabled FALSE
+  children [
+    DEF _1 BooleanSwitch {
+      whichChoice TRUE
       children [
-        DEF Lights_1 Transform {
+        DEF _2 Group { }
+        USE TransformTool
+      ]
+    }
+    DEF _3 Transform {
+      children ScreenGroup {
+        children DEF Lights Transform {
+          translation 0 0 1.26218e-29
           scale 12 12 12
-          children DEF _2 Switch {
+          scaleOrientation 0 0 -1 0.785398163397448
+          children DEF _4 Switch {
             whichChoice 2
             children [
               DEF DirectionalLight Transform {
@@ -155,7 +370,7 @@ DEF _1 Transform {
                 children [
                   DEF Rays Transform {
                     children Shape {
-                      appearance DEF _3 Appearance {
+                      appearance DEF _5 Appearance {
                         fillProperties FillProperties {
                           filled FALSE
                           hatched FALSE
@@ -163,7 +378,7 @@ DEF _1 Transform {
                         lineProperties LineProperties {
                           linewidthScaleFactor 2
                         }
-                        material DEF _4 Material {
+                        material DEF _6 Material {
                           ambientIntensity 0.1
                           specularColor 0.8 0.8 0.8
                           emissiveColor 1 1 1
@@ -225,84 +440,84 @@ DEF _1 Transform {
                       }
                     }
                   }
-                  DEF Box Transform {
+                  DEF Box_1 Transform {
                     scale 1 0.61803 0.1
                     children Shape {
-                      appearance DEF _5 Appearance {
-                        material USE _4
+                      appearance DEF _7 Appearance {
+                        material USE _6
                       }
                       geometry Box { }
                     }
                   }
                   DEF Cones Transform {
                     children [
-                      DEF Cone_1 Transform {
+                      DEF Cone Transform {
                         translation 0 0 1.225
-                        rotation 1 3.62585e-06 -1.62383e-10 1.5708
+                        rotation 0.999999999993426 3.62584999997617e-06 -1.62382999998933e-10 1.5708
                         scale 0.15 0.15 0.15
-                        scaleOrientation 1 2.43263e-06 4.63357e-06 0.785354
-                        children DEF _6 Shape {
-                          appearance USE _5
+                        scaleOrientation 0.999999999986306 2.43262999996669e-06 4.63356999993655e-06 0.785354
+                        children DEF _8 Shape {
+                          appearance USE _7
                           geometry Cone {
                             height 3
                           }
                         }
                       }
-                      DEF Cone_2 Transform {
+                      DEF Cone_1 Transform {
                         translation 1 -4.44089e-16 1.225
-                        rotation 1 3.62462e-06 -9.72236e-11 1.5708
+                        rotation 0.999999999993431 3.62461999997619e-06 -9.72235999993613e-11 1.5708
                         scale 0.15 0.15 0.15
-                        scaleOrientation 0.98444 -0.0466438 0.16942 0.398651
-                        children USE _6
+                        scaleOrientation 0.984439559917005 -0.046643779148406 0.169419924262666 0.398651
+                        children USE _8
+                      }
+                      DEF Cone_2 Transform {
+                        translation -1 -8.88178e-16 1.225
+                        rotation 0.999999999993444 3.62108999997626e-06 -4.7589199999688e-09 1.5708
+                        scale 0.15 0.15 0.15
+                        scaleOrientation -0.132251066233268 -0.367121183859658 -0.920723461111775 1.57758
+                        children USE _8
                       }
                       DEF Cone_3 Transform {
-                        translation -1 -8.88178e-16 1.225
-                        rotation 1 3.62109e-06 -4.75892e-09 1.5708
+                        translation -3.55271e-14 -0.61803 1.225
+                        rotation 0.999999999993423 3.62695999997614e-06 -1.86050999998776e-09 1.5708
                         scale 0.15 0.15 0.15
-                        scaleOrientation -0.132251 -0.367121 -0.920723 1.57758
-                        children USE _6
+                        scaleOrientation -0.9994523954216 -0.0259091102506351 -0.0205822081431089 0.784698
+                        children USE _8
                       }
                       DEF Cone_4 Transform {
-                        translation -3.55271e-14 -0.61803 1.225
-                        rotation 1 3.62696e-06 -1.86051e-09 1.5708
+                        translation 1 -0.61803 1.225
+                        rotation 0.999999999993422 3.62709999997614e-06 1.10498999999273e-08 1.5708
                         scale 0.15 0.15 0.15
-                        scaleOrientation -0.999452 -0.0259091 -0.0205822 0.784698
-                        children USE _6
+                        scaleOrientation 0.0538396818233784 -0.995172664023332 -0.0820527722984583 0.797265
+                        children USE _8
                       }
                       DEF Cone_5 Transform {
-                        translation 1 -0.61803 1.225
-                        rotation 1 3.6271e-06 1.10499e-08 1.5708
+                        translation -1 -0.61803 1.225
+                        rotation 0.999999999993491 3.60801999997652e-06 7.93031999994838e-09 1.5708
                         scale 0.15 0.15 0.15
-                        scaleOrientation 0.0538397 -0.995173 -0.0820528 0.797265
-                        children USE _6
+                        scaleOrientation -0.852006943637186 -0.180680988047411 0.491363967494801 0.720824
+                        children USE _8
                       }
                       DEF Cone_6 Transform {
-                        translation -1 -0.61803 1.225
-                        rotation 1 3.60802e-06 7.93032e-09 1.5708
+                        translation -2.84217e-14 0.618029 1.225
+                        rotation 0.999999999993423 3.62695999997614e-06 -1.86050999998776e-09 1.5708
                         scale 0.15 0.15 0.15
-                        scaleOrientation -0.852007 -0.180681 0.491364 0.720824
-                        children USE _6
+                        scaleOrientation -0.9994523954216 -0.0259091102506351 -0.0205822081431089 0.784698
+                        children USE _8
                       }
                       DEF Cone_7 Transform {
-                        translation -2.84217e-14 0.618029 1.225
-                        rotation 1 3.62696e-06 -1.86051e-09 1.5708
+                        translation 1 0.618029 1.225
+                        rotation 0.999999999993422 3.62709999997614e-06 1.10498999999273e-08 1.5708
                         scale 0.15 0.15 0.15
-                        scaleOrientation -0.999452 -0.0259091 -0.0205822 0.784698
-                        children USE _6
+                        scaleOrientation 0.0538396818233784 -0.995172664023332 -0.0820527722984583 0.797265
+                        children USE _8
                       }
                       DEF Cone_8 Transform {
-                        translation 1 0.618029 1.225
-                        rotation 1 3.6271e-06 1.10499e-08 1.5708
-                        scale 0.15 0.15 0.15
-                        scaleOrientation 0.0538397 -0.995173 -0.0820528 0.797265
-                        children USE _6
-                      }
-                      DEF Cone_9 Transform {
                         translation -1 0.618029 1.225
-                        rotation 1 3.60802e-06 7.93032e-09 1.5708
+                        rotation 0.999999999993491 3.60801999997652e-06 7.93031999994838e-09 1.5708
                         scale 0.15 0.15 0.15
-                        scaleOrientation -0.852007 -0.180681 0.491364 0.720824
-                        children USE _6
+                        scaleOrientation -0.852006943637186 -0.180680988047411 0.491363967494801 0.720824
+                        children USE _8
                       }
                     ]
                   }
@@ -312,8 +527,8 @@ DEF _1 Transform {
                 children [
                   DEF Ray1 Transform {
                     scale 2 2 2
-                    children DEF _7 Shape {
-                      appearance USE _3
+                    children DEF _9 Shape {
+                      appearance USE _5
                       geometry IndexedLineSet {
                         coordIndex [
                           0,
@@ -340,32 +555,32 @@ DEF _1 Transform {
                     }
                   }
                   DEF Ray2 Transform {
-                    rotation 0.281085 -0.678597 -0.678599 1.09606
+                    rotation 0.28108510281603 -0.678597248219043 -0.678599248219775 1.09606
                     scale 2 2 2
-                    scaleOrientation -0.174907 -0.321006 -0.930786 0.279269
-                    children USE _7
+                    scaleOrientation -0.174907009752728 -0.321006017899136 -0.930786051900166 0.279268999999999
+                    children USE _9
                   }
                   DEF Ray3 Transform {
-                    rotation -0.281084 0.6786 -0.678597 1.09606
+                    rotation -0.281083991080502 0.678599978466327 -0.678596978466422 1.09606
                     scale 2 2 2
-                    scaleOrientation -0.985768 0.161219 -0.0476505 0.470038
-                    children USE _7
+                    scaleOrientation -0.985767661913664 0.161218944707131 -0.0476504836574296 0.470038
+                    children USE _9
                   }
                   DEF Sphere Shape {
-                    appearance USE _5
+                    appearance USE _7
                     geometry Sphere { }
                   }
                 ]
               }
               DEF SpotLight Transform {
                 children [
-                  DEF Cone Transform {
+                  DEF Cone_9 Transform {
                     translation 5.68434e-14 1.20792e-13 -0.373349
-                    rotation 1 3.6325e-06 -7.44203e-09 4.71239
+                    rotation 0.999999999993402 3.63249999997603e-06 -7.4420299999509e-09 4.71239
                     scale 1.70236 1.70236 1.70236
-                    scaleOrientation 0.347583 0.0964911 -0.932671 1.23464
+                    scaleOrientation 0.347583057610296 0.0964911159929595 -0.932671154585962 1.23464
                     children Shape {
-                      appearance USE _3
+                      appearance USE _5
                       geometry Cone {
                         bottom FALSE
                         bottomRadius 1.2
@@ -377,13 +592,13 @@ DEF _1 Transform {
                     translation 0 0 1.46147
                     children [
                       DEF Sphere_1 Shape {
-                        appearance USE _5
+                        appearance USE _7
                         geometry Sphere { }
                       }
                       DEF Ray1_1 Transform {
                         scale 2 2 2
                         children Shape {
-                          appearance USE _3
+                          appearance USE _5
                           geometry IndexedLineSet {
                             coordIndex [
                               0,
@@ -410,11 +625,11 @@ DEF _1 Transform {
                         }
                       }
                       DEF Ray2_1 Transform {
-                        rotation 0.281085 -0.678597 -0.678599 1.09606
+                        rotation 0.28108510281603 -0.678597248219043 -0.678599248219775 1.09606
                         scale 2 2 2
-                        scaleOrientation 0.747419 -0.663393 0.0357048 1.19385
+                        scaleOrientation 0.747418900311875 -0.663392911518968 0.035704795237819 1.19385
                         children Shape {
-                          appearance USE _3
+                          appearance USE _5
                           geometry IndexedLineSet {
                             coordIndex [
                               0,
@@ -441,11 +656,11 @@ DEF _1 Transform {
                         }
                       }
                       DEF Ray3_1 Transform {
-                        rotation -0.281084 0.6786 -0.678597 1.09606
+                        rotation -0.281083991080502 0.678599978466327 -0.678596978466422 1.09606
                         scale 2 2 2
-                        scaleOrientation -0.805953 -0.138029 0.575662 0.849512
+                        scaleOrientation -0.805953410514892 -0.138029070305539 0.575662293215391 0.849512
                         children Shape {
-                          appearance USE _3
+                          appearance USE _5
                           geometry IndexedLineSet {
                             coordIndex [
                               0,
@@ -478,101 +693,17 @@ DEF _1 Transform {
             ]
           }
         }
-        DEF Axes_1 BooleanSwitch {
-          children [
-            DEF _8 Transform { }
-            DEF Axes_2 Transform {
-              children [
-                DEF Axes Shape {
-                  geometry IndexedLineSet {
-                    colorPerVertex FALSE
-                    coordIndex [
-                      0,
-                      1,
-                      -1,
-                      0,
-                      2,
-                      -1,
-                      0,
-                      3,
-                      -1
-                    ]
-                    color Color {
-                      color [
-                        1 0 0,
-                        0 1 0,
-                        0 0 1
-                      ]
-                    }
-                    coord DEF AxesCoord Coordinate {
-                      point [
-                        0 0 0,
-                        36 0 0,
-                        0 36 0,
-                        0 0 36,
-                        0 0 0
-                      ]
-                    }
-                  }
-                }
-                DEF XHandle Transform {
-                  translation 36.5 0 0
-                  rotation 0 0 1 4.71239
-                  children Shape {
-                    appearance DEF Red Appearance {
-                      material Material {
-                        diffuseColor 1 0 0
-                      }
-                      shaders ToolShader {
-                      }
-                    }
-                    geometry DEF Arrow Cone {
-                      height 12
-                      bottomRadius 4
-                    }
-                  }
-                }
-                DEF YHandle Transform {
-                  translation 0 36.5 0
-                  children Shape {
-                    appearance DEF Green Appearance {
-                      material Material {
-                        diffuseColor 0 1 0
-                      }
-                      shaders ToolShader {
-                      }
-                    }
-                    geometry USE Arrow
-                  }
-                }
-                DEF ZHandle Transform {
-                  translation 0 0 36.5
-                  rotation 1 0 0 1.5708
-                  children Shape {
-                    appearance DEF Blue Appearance {
-                      material Material {
-                        diffuseColor 0 0 1
-                      }
-                      shaders ToolShader {
-                      }
-                    }
-                    geometry USE Arrow
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      }
     }
-  }
+  ]
 }
 
-ROUTE Tool.whichChoice_changed TO _2.set_whichChoice
-ROUTE Tool.selected_changed TO Axes_1.set_whichChoice
-ROUTE Tool.translation_changed TO _1.set_translation
-ROUTE Tool.diffuseColor_changed TO _4.set_diffuseColor
-ROUTE Tool.emissiveColor_changed TO _4.set_emissiveColor
-ROUTE Tool.rotation_changed TO Lights_1.set_rotation
+ROUTE Tool.diffuseColor_changed TO _6.set_diffuseColor
+ROUTE Tool.emissiveColor_changed TO _6.set_emissiveColor
+ROUTE Tool.whichChoice_changed TO _4.set_whichChoice
+ROUTE Tool.selected_changed TO _1.set_whichChoice
+ROUTE TransformTool.translation_changed TO _3.set_translation
+ROUTE TransformTool.rotation_changed TO _3.set_rotation
 
 EXPORT Tool
+EXPORT TransformTool

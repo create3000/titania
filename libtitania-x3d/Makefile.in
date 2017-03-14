@@ -757,6 +757,9 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Grids/X3DGridTool.lo \
 	Titania/X3D/Tools/Grouping/X3DTransformNodeTool.lo \
 	Titania/X3D/Tools/Layering/X3DActiveLayerTool.lo \
+	Titania/X3D/Tools/Lighting/DirectionalLightTool.lo \
+	Titania/X3D/Tools/Lighting/PointLightTool.lo \
+	Titania/X3D/Tools/Lighting/SpotLightTool.lo \
 	Titania/X3D/Tools/Lighting/X3DLightNodeTool.lo \
 	Titania/X3D/Tools/Navigation/BillboardTool.lo \
 	Titania/X3D/Tools/Navigation/CollisionTool.lo \
@@ -1688,6 +1691,9 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
 	Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp \
 	Titania/X3D/Tools/Layering/X3DActiveLayerTool.cpp \
+	Titania/X3D/Tools/Lighting/DirectionalLightTool.cpp \
+	Titania/X3D/Tools/Lighting/PointLightTool.cpp \
+	Titania/X3D/Tools/Lighting/SpotLightTool.cpp \
 	Titania/X3D/Tools/Lighting/X3DLightNodeTool.cpp \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
@@ -4268,6 +4274,15 @@ Titania/X3D/Tools/Lighting/$(am__dirstamp):
 Titania/X3D/Tools/Lighting/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/Lighting/$(DEPDIR)
 	@: > Titania/X3D/Tools/Lighting/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Lighting/DirectionalLightTool.lo:  \
+	Titania/X3D/Tools/Lighting/$(am__dirstamp) \
+	Titania/X3D/Tools/Lighting/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Lighting/PointLightTool.lo:  \
+	Titania/X3D/Tools/Lighting/$(am__dirstamp) \
+	Titania/X3D/Tools/Lighting/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Lighting/SpotLightTool.lo:  \
+	Titania/X3D/Tools/Lighting/$(am__dirstamp) \
+	Titania/X3D/Tools/Lighting/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Lighting/X3DLightNodeTool.lo:  \
 	Titania/X3D/Tools/Lighting/$(am__dirstamp) \
 	Titania/X3D/Tools/Lighting/$(DEPDIR)/$(am__dirstamp)
@@ -5283,6 +5298,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/X3DGridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grouping/$(DEPDIR)/X3DTransformNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Layering/$(DEPDIR)/X3DActiveLayerTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Lighting/$(DEPDIR)/DirectionalLightTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Lighting/$(DEPDIR)/PointLightTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Lighting/$(DEPDIR)/SpotLightTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Lighting/$(DEPDIR)/X3DLightNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/NURBS/$(DEPDIR)/NurbsCurveTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/NURBS/$(DEPDIR)/NurbsPatchSurfaceTool.Plo@am__quote@

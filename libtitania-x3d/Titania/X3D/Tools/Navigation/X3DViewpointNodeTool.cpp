@@ -51,6 +51,7 @@
 #include "X3DViewpointNodeTool.h"
 
 #include "../../Browser/Networking/config.h"
+#include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 
 #include "../Grouping/TransformTool.h"
@@ -129,13 +130,13 @@ X3DViewpointNodeTool::endUndo (const UndoStepPtr & undoStep)
 	if (getPosition ()    not_eq startPosition or
 	    getOrientation () not_eq startOrientation)
 	{
-		undoStep -> addUndoFunction (&X3DViewpointNode::setOrientation,  X3DPtr <X3D::X3DViewpointNode> (this), startOrientation);
-		undoStep -> addUndoFunction (&X3DViewpointNode::setPosition,     X3DPtr <X3D::X3DViewpointNode> (this), startPosition);
-		undoStep -> addUndoFunction (&X3DViewpointNodeTool::setChanging, X3DPtr <X3D::X3DViewpointNode> (this), true);
+		undoStep -> addUndoFunction (&X3DViewpointNode::setOrientation,  X3DPtr <X3DViewpointNode> (this), startOrientation);
+		undoStep -> addUndoFunction (&X3DViewpointNode::setPosition,     X3DPtr <X3DViewpointNode> (this), startPosition);
+		undoStep -> addUndoFunction (&X3DViewpointNodeTool::setChanging, X3DPtr <X3DViewpointNode> (this), true);
 
-		undoStep -> addRedoFunction (&X3DViewpointNodeTool::setChanging, X3DPtr <X3D::X3DViewpointNode> (this), true);
-		undoStep -> addRedoFunction (&X3DViewpointNode::setPosition,     X3DPtr <X3D::X3DViewpointNode> (this), getPosition ());
-		undoStep -> addRedoFunction (&X3DViewpointNode::setOrientation,  X3DPtr <X3D::X3DViewpointNode> (this), getOrientation ());
+		undoStep -> addRedoFunction (&X3DViewpointNodeTool::setChanging, X3DPtr <X3DViewpointNode> (this), true);
+		undoStep -> addRedoFunction (&X3DViewpointNode::setPosition,     X3DPtr <X3DViewpointNode> (this), getPosition ());
+		undoStep -> addRedoFunction (&X3DViewpointNode::setOrientation,  X3DPtr <X3DViewpointNode> (this), getOrientation ());
 	}
 }
 
@@ -145,9 +146,10 @@ X3DViewpointNodeTool::addTool ()
 	try
 	{
 		const auto transformTool = getTransformTool ();
+		const auto selected      = getBrowser () -> getSelection () -> isSelected (SFNode (this));
 
-		transformTool  -> setField <SFBool> ("enabled",  true);
-		getToolNode () -> setField <SFBool> ("selected", true);
+		transformTool  -> setField <SFBool> ("enabled",  selected);
+		getToolNode () -> setField <SFBool> ("selected", selected);
 	}
 	catch (const X3DError & error)
 	{

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,109 +48,51 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_LIGHTING_POINT_LIGHT_TOOL_H__
-#define __TITANIA_X3D_TOOLS_LIGHTING_POINT_LIGHT_TOOL_H__
+#include "PointLightTool.h"
 
-#include "../Lighting/X3DLightNodeTool.h"
-
-#include "../../Components/Lighting/PointLight.h"
+#include "../Grouping/TransformTool.h"
 
 namespace titania {
 namespace X3D {
 
-class PointLightTool :
-	virtual public PointLight,
-	public X3DLightNodeTool
+PointLightTool::PointLightTool (X3DBaseNode* const node) :
+	     X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	      PointLight (node -> getExecutionContext ()),
+	     X3DBaseTool (node),
+	X3DLightNodeTool (),
+	   startLocation ()
 {
-public:
+	addType (X3DConstants::PointLightTool);
+}
 
-	///  @name Construction
+void
+PointLightTool::realize ()
+{
+	X3DLightNodeTool::realize ();
 
-	PointLightTool (X3DBaseNode* const node);
+	const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
 
-	///  @name Fields
+	transformTool -> setField <MFString> ("tools", MFString ({ "MOVE" }));
+}
 
-	virtual
-	SFVec3f &
-	attenuation () final override
-	{ return getNode <PointLight> () -> attenuation (); }
+void
+PointLightTool::beginUndo ()
+{
+	startLocation = location ();
+}
 
-	virtual
-	const SFVec3f &
-	attenuation () const final override
-	{ return getNode <PointLight> () -> attenuation (); }
+void
+PointLightTool::endUndo (const UndoStepPtr & undoStep)
+{
+	if (location () not_eq startLocation)
+	{
+		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (location ()), startLocation);
+		undoStep -> addUndoFunction (&PointLightTool::setChanging, X3DPtr <PointLight> (this), true);
 
-	virtual
-	SFVec3f &
-	location () final override
-	{ return getNode  <PointLight>() -> location (); }
-
-	virtual
-	const SFVec3f &
-	location () const final override
-	{ return getNode <PointLight> () -> location (); }
-
-	virtual
-	SFFloat &
-	radius () final override
-	{ return getNode <PointLight> () -> radius (); }
-
-	virtual
-	const SFFloat &
-	radius () const final override
-	{ return getNode <PointLight> () -> radius (); }
-
-	///  @name Member access
-
-	virtual
-	float
-	getRadius () const final override
-	{ return getNode <PointLight> () -> getRadius (); }
-
-	virtual
-	size_t
-	getShadowMapSize () const final override
-	{ return getNode <PointLight> () -> getShadowMapSize (); }
-
-	///  @name Operations
-
-	virtual
-	void
-	draw (const GLenum lightId) final override
-	{ return X3DLightNodeTool::draw (lightId); }
-
-	virtual
-	void
-	beginUndo () final override;
-
-	virtual
-	void
-	endUndo (const UndoStepPtr & undoStep) final override;
-
-
-protected:
-
-	///  @name Construction
-
-	virtual
-	void
-	initialize () final override
-	{ X3DLightNodeTool::initialize (); }
-
-	virtual
-	void
-	realize () final override;
-
-
-private:
-
-	///  @name Member access
-
-	Vector3f startLocation;
-
-};
+		undoStep -> addRedoFunction (&PointLightTool::setChanging, X3DPtr <PointLight> (this), true);
+		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (location ()), location ());
+	}
+}
 
 } // X3D
 } // titania
-
-#endif

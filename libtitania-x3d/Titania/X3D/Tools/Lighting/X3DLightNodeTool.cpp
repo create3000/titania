@@ -54,6 +54,8 @@
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
 
+#include "../Grouping/TransformTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -81,10 +83,20 @@ X3DLightNodeTool::realize ()
 {
 	try
 	{
+		const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("TransformTool");
+
+		transformTool -> addTool ();
+		transformTool -> setField <SFBool> ("displayCenter", false);
+
+		setTransformTool (transformTool);
+		addTool ();
+
 		getToolNode () -> setField <SFNode> ("light", getNode <X3DLightNode> ());
 	}
 	catch (const X3DError & error)
-	{ }
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 Box3d
@@ -101,7 +113,11 @@ X3DLightNodeTool::addTool ()
 {
 	try
 	{
-		getToolNode () -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (SFNode (this)));
+		const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
+		const auto selected      = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+
+		transformTool  -> setField <SFBool> ("enabled",  selected);
+		getToolNode () -> setField <SFBool> ("selected", selected);
 	}
 	catch (const X3DError &)
 	{ }
@@ -117,7 +133,10 @@ X3DLightNodeTool::removeTool (const bool really)
 	{
 		try
 		{
-			getToolNode () -> setField <SFBool> ("set_selected", false);
+			const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
+
+			transformTool  -> setField <SFBool> ("enabled",  false);
+			getToolNode () -> setField <SFBool> ("selected", false);
 		}
 		catch (const X3DError &)
 		{ }

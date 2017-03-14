@@ -224,7 +224,7 @@ public:
 
 	virtual
 	void
-	addTool () override;
+	addTool () final override;
 
 	virtual
 	void
@@ -249,7 +249,7 @@ protected:
 
 	virtual
 	void
-	realize () final override;
+	realize () override;
 
 };
 
