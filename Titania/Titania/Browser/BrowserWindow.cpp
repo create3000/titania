@@ -458,8 +458,6 @@ BrowserWindow::set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLightNodeTool
 void
 BrowserWindow::set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3D::ProximitySensorTool> & tools)
 {
-__LOG__ << tools .size () << std::endl;
-
 	changing = true;
 
 	getProximitySensorsAction () -> set_active (tools .size ());
