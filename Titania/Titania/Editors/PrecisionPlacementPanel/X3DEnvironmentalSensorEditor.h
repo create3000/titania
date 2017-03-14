@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,98 +48,63 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
-#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_PRECISION_PLACEMENT_PANEL_H__
+#ifndef __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DENVIRONMENTAL_SENSOR_EDITOR_H__
+#define __TITANIA_EDITORS_PRECISION_PLACEMENT_PANEL_X3DENVIRONMENTAL_SENSOR_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrecisionPlacementPanelInterface.h"
-#include "X3DBillboardEditor.h"
-#include "X3DCollisionEditor.h"
-#include "X3DEnvironmentalSensorEditor.h"
-#include "X3DGeoLocationEditor.h"
-#include "X3DGeoTransformEditor.h"
-#include "X3DLODEditor.h"
-#include "X3DLayoutEditor.h"
-#include "X3DSwitchEditor.h"
-#include "X3DTransformEditor.h"
-#include "X3DViewportEditor.h"
-#include "X3DGeometrySelectionEditor.h"
 
 namespace titania {
 namespace puck {
 
-class PrecisionPlacementPanel :
-	virtual public X3DPrecisionPlacementPanelInterface,
-	public X3DTransformEditor,
-	public X3DSwitchEditor,
-	public X3DBillboardEditor,
-	public X3DCollisionEditor,
-	public X3DLODEditor,
-	public X3DLayoutEditor,
-	public X3DViewportEditor,
-	public X3DGeoTransformEditor,
-	public X3DGeoLocationEditor,
-	public X3DEnvironmentalSensorEditor,
-	public X3DGeometrySelectionEditor
+class X3DEnvironmentalSensorEditor :
+	virtual public X3DPrecisionPlacementPanelInterface
 {
 public:
-
-	///  @name Construction
-
-	PrecisionPlacementPanel (X3DBrowserWindow* const browserWindow);
 
 	///  @name Destruction
 
 	virtual
-	~PrecisionPlacementPanel () final override;
+	~X3DEnvironmentalSensorEditor () override;
 
 
-private:
+protected:
 
 	///  @name Construction
 
-	virtual
-	void
-	configure () final override;
+	X3DEnvironmentalSensorEditor ();
 
 	virtual
 	void
-	initialize () final override;
+	initialize () override
+	{ }
 
 	virtual
 	void
-	set_selection (const X3D::MFNode & selection) final override;
+	configure () override;
+
+	virtual
+	void
+	set_selection (const X3D::MFNode & selection) override;
+
+	virtual
+	void
+	store () override;
+
+
+private:
 
 	///  @name Event handlers
 
 	virtual
 	void
-	on_index_clicked () final override;
-
-	virtual
-	void
-	on_bbox_uniform_size_clicked () final override;
-
-	virtual
-	void
-	on_fill_bounding_box_fields_clicked () final override;
-
-	bool
-	on_bbox ();
-	
-	virtual
-	void
-	store () final override;
+	on_proximity_sensor_uniform_size_clicked () final override;
 
 	///  @name Members
 
-	NameEntry                          nodeName;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
-	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
-
-	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
-	X3D::X3DPtr <X3D::X3DGeometryNode>  geometryNode;
-	sigc::connection                    bboxConnection;
+	X3DFieldToggleButton <X3D::SFBool> enabled;
+	X3DFieldAdjustment3 <X3D::SFVec3f> size;
+	X3DFieldAdjustment3 <X3D::SFVec3f> center;
 
 };
 

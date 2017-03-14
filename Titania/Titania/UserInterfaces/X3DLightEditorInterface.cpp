@@ -135,13 +135,14 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SpotLightLocationYSpinButton", m_SpotLightLocationYSpinButton);
 	m_builder -> get_widget ("SpotLightLocationZSpinButton", m_SpotLightLocationZSpinButton);
 	m_builder -> get_widget ("SpotLightRadiusSpinButton", m_SpotLightRadiusSpinButton);
-	m_builder -> get_widget ("SpotLightBeamWidthSpinButton", m_SpotLightBeamWidthSpinButton);
-	m_builder -> get_widget ("SpotLightCutOffAngleSpinButton", m_SpotLightCutOffAngleSpinButton);
 	m_builder -> get_widget ("SpotLightNormalToolBox", m_SpotLightNormalToolBox);
 	m_builder -> get_widget ("SpotLightDirectionBox", m_SpotLightDirectionBox);
 	m_builder -> get_widget ("SpotLightDirectionXSpinButton", m_SpotLightDirectionXSpinButton);
 	m_builder -> get_widget ("SpotLightDirectionYSpinButton", m_SpotLightDirectionYSpinButton);
 	m_builder -> get_widget ("SpotLightDirectionZSpinButton", m_SpotLightDirectionZSpinButton);
+	m_builder -> get_widget ("SpotLightBeamWidthBox", m_SpotLightBeamWidthBox);
+	m_builder -> get_widget ("SpotLightBeamWidthSpinButton", m_SpotLightBeamWidthSpinButton);
+	m_builder -> get_widget ("SpotLightCutOffAngleSpinButton", m_SpotLightCutOffAngleSpinButton);
 	m_builder -> get_widget ("ShadowExpander", m_ShadowExpander);
 	m_builder -> get_widget ("LightBox1", m_LightBox1);
 	m_builder -> get_widget ("ShadowIntensityBox", m_ShadowIntensityBox);

@@ -290,6 +290,7 @@
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsPatchSurfaceEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsTrimmedSurfaceEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsCurveEditor.cpp" />
+    <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DEnvironmentalSensorEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2596,6 +2597,7 @@
     <None Include="share\titania\Library\Components\NURBS\.Titania\NurbsTrimmedSurface" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsCurveEditor.h" />
     <None Include="share\titania\ui\icons\FieldType\Unkown.svg" />
+    <None Include="Titania\Editors\PrecisionPlacementPanel\X3DEnvironmentalSensorEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

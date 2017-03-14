@@ -131,6 +131,30 @@ public:
 	{ return m_BillboardAxisOfRotationZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getEnvironmentalSensorCenterXAdjustment () const
+	{ return m_EnvironmentalSensorCenterXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getEnvironmentalSensorCenterYAdjustment () const
+	{ return m_EnvironmentalSensorCenterYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getEnvironmentalSensorCenterZAdjustment () const
+	{ return m_EnvironmentalSensorCenterZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getEnvironmentalSensorSizeXAdjustment () const
+	{ return m_EnvironmentalSensorSizeXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getEnvironmentalSensorSizeYAdjustment () const
+	{ return m_EnvironmentalSensorSizeYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getEnvironmentalSensorSizeZAdjustment () const
+	{ return m_EnvironmentalSensorSizeZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGeoLocationGeoCoordsXAdjustment () const
 	{ return m_GeoLocationGeoCoordsXAdjustment; }
 
@@ -859,6 +883,34 @@ public:
 	{ return *m_GeoLocationGeoCoordsZSpinButton; }
 
 	Gtk::Expander &
+	getEnvironmentalSensorExpander () const
+	{ return *m_EnvironmentalSensorExpander; }
+
+	Gtk::Grid &
+	getEnvironmentalSensorBox () const
+	{ return *m_EnvironmentalSensorBox; }
+
+	Gtk::Box &
+	getEnvironmentalSensorSizeBox () const
+	{ return *m_EnvironmentalSensorSizeBox; }
+
+	Gtk::ToggleButton &
+	getEnvironmentalSensorUniformSizeButton () const
+	{ return *m_EnvironmentalSensorUniformSizeButton; }
+
+	Gtk::Image &
+	getEnvironmentalSensorUniformSizeImage () const
+	{ return *m_EnvironmentalSensorUniformSizeImage; }
+
+	Gtk::Box &
+	getEnvironmentalSensorCenterBox () const
+	{ return *m_EnvironmentalSensorCenterBox; }
+
+	Gtk::CheckButton &
+	getEnvironmentalSensorEnabledCheckButton () const
+	{ return *m_EnvironmentalSensorEnabledCheckButton; }
+
+	Gtk::Expander &
 	getGeometrySelectionExpander () const
 	{ return *m_GeometrySelectionExpander; }
 
@@ -1061,6 +1113,10 @@ public:
 	on_geo_transform_uniform_scale_clicked () = 0;
 
 	virtual
+	void
+	on_proximity_sensor_uniform_size_clicked () = 0;
+
+	virtual
 	bool
 	on_geometry_selection_focus_in_event (GdkEventFocus* focus_event) = 0;
 
@@ -1109,6 +1165,12 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BillboardAxisOfRotationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorCenterXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorCenterYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorCenterZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorSizeXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorSizeYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_EnvironmentalSensorSizeZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoLocationGeoCoordsZAdjustment;
@@ -1291,6 +1353,13 @@ private:
 	Gtk::SpinButton*               m_GeoLocationGeoCoordsXSpinButton;
 	Gtk::SpinButton*               m_GeoLocationGeoCoordsYSpinButton;
 	Gtk::SpinButton*               m_GeoLocationGeoCoordsZSpinButton;
+	Gtk::Expander*                 m_EnvironmentalSensorExpander;
+	Gtk::Grid*                     m_EnvironmentalSensorBox;
+	Gtk::Box*                      m_EnvironmentalSensorSizeBox;
+	Gtk::ToggleButton*             m_EnvironmentalSensorUniformSizeButton;
+	Gtk::Image*                    m_EnvironmentalSensorUniformSizeImage;
+	Gtk::Box*                      m_EnvironmentalSensorCenterBox;
+	Gtk::CheckButton*              m_EnvironmentalSensorEnabledCheckButton;
 	Gtk::Expander*                 m_GeometrySelectionExpander;
 	Gtk::Grid*                     m_GeometrySelectionBox;
 	Gtk::Box*                      m_GeometrySelectionTranslationBox;

@@ -68,6 +68,12 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_BillboardAxisOfRotationXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationXAdjustment"));
 	m_BillboardAxisOfRotationYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationYAdjustment"));
 	m_BillboardAxisOfRotationZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BillboardAxisOfRotationZAdjustment"));
+	m_EnvironmentalSensorCenterXAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EnvironmentalSensorCenterXAdjustment"));
+	m_EnvironmentalSensorCenterYAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EnvironmentalSensorCenterYAdjustment"));
+	m_EnvironmentalSensorCenterZAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EnvironmentalSensorCenterZAdjustment"));
+	m_EnvironmentalSensorSizeXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EnvironmentalSensorSizeXAdjustment"));
+	m_EnvironmentalSensorSizeYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EnvironmentalSensorSizeYAdjustment"));
+	m_EnvironmentalSensorSizeZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("EnvironmentalSensorSizeZAdjustment"));
 	m_GeoLocationGeoCoordsXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoLocationGeoCoordsXAdjustment"));
 	m_GeoLocationGeoCoordsYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoLocationGeoCoordsYAdjustment"));
 	m_GeoLocationGeoCoordsZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoLocationGeoCoordsZAdjustment"));
@@ -252,6 +258,13 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoLocationGeoCoordsXSpinButton", m_GeoLocationGeoCoordsXSpinButton);
 	m_builder -> get_widget ("GeoLocationGeoCoordsYSpinButton", m_GeoLocationGeoCoordsYSpinButton);
 	m_builder -> get_widget ("GeoLocationGeoCoordsZSpinButton", m_GeoLocationGeoCoordsZSpinButton);
+	m_builder -> get_widget ("EnvironmentalSensorExpander", m_EnvironmentalSensorExpander);
+	m_builder -> get_widget ("EnvironmentalSensorBox", m_EnvironmentalSensorBox);
+	m_builder -> get_widget ("EnvironmentalSensorSizeBox", m_EnvironmentalSensorSizeBox);
+	m_builder -> get_widget ("EnvironmentalSensorUniformSizeButton", m_EnvironmentalSensorUniformSizeButton);
+	m_builder -> get_widget ("EnvironmentalSensorUniformSizeImage", m_EnvironmentalSensorUniformSizeImage);
+	m_builder -> get_widget ("EnvironmentalSensorCenterBox", m_EnvironmentalSensorCenterBox);
+	m_builder -> get_widget ("EnvironmentalSensorEnabledCheckButton", m_EnvironmentalSensorEnabledCheckButton);
 	m_builder -> get_widget ("GeometrySelectionExpander", m_GeometrySelectionExpander);
 	m_builder -> get_widget ("GeometrySelectionBox", m_GeometrySelectionBox);
 	m_builder -> get_widget ("GeometrySelectionTranslationBox", m_GeometrySelectionTranslationBox);
@@ -314,6 +327,7 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ToggleButton with id 'GeoTransformUniformScaleButton'.
 	m_GeoTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_uniform_scale_clicked));
+	m_EnvironmentalSensorUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_proximity_sensor_uniform_size_clicked));
 
 	// Connect object Gtk::SpinButton with id 'GeometrySelectionTranslationXButton'.
 	m_GeometrySelectionTranslationXButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));

@@ -390,14 +390,6 @@ public:
 	getSpotLightRadiusSpinButton () const
 	{ return *m_SpotLightRadiusSpinButton; }
 
-	Gtk::SpinButton &
-	getSpotLightBeamWidthSpinButton () const
-	{ return *m_SpotLightBeamWidthSpinButton; }
-
-	Gtk::SpinButton &
-	getSpotLightCutOffAngleSpinButton () const
-	{ return *m_SpotLightCutOffAngleSpinButton; }
-
 	Gtk::Box &
 	getSpotLightNormalToolBox () const
 	{ return *m_SpotLightNormalToolBox; }
@@ -417,6 +409,18 @@ public:
 	Gtk::SpinButton &
 	getSpotLightDirectionZSpinButton () const
 	{ return *m_SpotLightDirectionZSpinButton; }
+
+	Gtk::Box &
+	getSpotLightBeamWidthBox () const
+	{ return *m_SpotLightBeamWidthBox; }
+
+	Gtk::SpinButton &
+	getSpotLightBeamWidthSpinButton () const
+	{ return *m_SpotLightBeamWidthSpinButton; }
+
+	Gtk::SpinButton &
+	getSpotLightCutOffAngleSpinButton () const
+	{ return *m_SpotLightCutOffAngleSpinButton; }
 
 	Gtk::Expander &
 	getShadowExpander () const
@@ -566,13 +570,14 @@ private:
 	Gtk::SpinButton*               m_SpotLightLocationYSpinButton;
 	Gtk::SpinButton*               m_SpotLightLocationZSpinButton;
 	Gtk::SpinButton*               m_SpotLightRadiusSpinButton;
-	Gtk::SpinButton*               m_SpotLightBeamWidthSpinButton;
-	Gtk::SpinButton*               m_SpotLightCutOffAngleSpinButton;
 	Gtk::Box*                      m_SpotLightNormalToolBox;
 	Gtk::Box*                      m_SpotLightDirectionBox;
 	Gtk::SpinButton*               m_SpotLightDirectionXSpinButton;
 	Gtk::SpinButton*               m_SpotLightDirectionYSpinButton;
 	Gtk::SpinButton*               m_SpotLightDirectionZSpinButton;
+	Gtk::Box*                      m_SpotLightBeamWidthBox;
+	Gtk::SpinButton*               m_SpotLightBeamWidthSpinButton;
+	Gtk::SpinButton*               m_SpotLightCutOffAngleSpinButton;
 	Gtk::Expander*                 m_ShadowExpander;
 	Gtk::Grid*                     m_LightBox1;
 	Gtk::Box*                      m_ShadowIntensityBox;

@@ -56,6 +56,39 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="EnvironmentalSensorCenterXAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="EnvironmentalSensorCenterYAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="EnvironmentalSensorCenterZAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="EnvironmentalSensorSizeXAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="EnvironmentalSensorSizeYAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="EnvironmentalSensorSizeZAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="GeoLocationGeoCoordsXAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
@@ -3724,6 +3757,234 @@
                                 <property name="name">page8</property>
                                 <property name="title" translatable="yes">GeoLocation</property>
                                 <property name="position">8</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkExpander" id="EnvironmentalSensorExpander">
+                                <property name="name">EnvironmentalSensorExpander</property>
+                                <property name="can_focus">True</property>
+                                <property name="expanded">True</property>
+                                <property name="spacing">8</property>
+                                <child>
+                                  <object class="GtkGrid" id="EnvironmentalSensorBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="row_spacing">8</property>
+                                    <property name="column_spacing">16</property>
+                                    <child>
+                                      <object class="GtkBox" id="EnvironmentalSensorSizeBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="halign">start</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <object class="GtkSpinButton" id="spinbutton48">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">EnvironmentalSensorSizeXAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">3</property>
+                                            <property name="numeric">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="spinbutton49">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">EnvironmentalSensorSizeYAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">3</property>
+                                            <property name="numeric">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="spinbutton50">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">z-Axis</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">EnvironmentalSensorSizeZAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">3</property>
+                                            <property name="numeric">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkToggleButton" id="EnvironmentalSensorUniformSizeButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                            <property name="tooltip_text" translatable="yes">If connected, change all axes by the same proportion.</property>
+                                            <property name="halign">start</property>
+                                            <signal name="toggled" handler="on_proximity_sensor_uniform_size_clicked" swapped="no"/>
+                                            <child>
+                                              <object class="GtkImage" id="EnvironmentalSensorUniformSizeImage">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="stock">Disconnected</property>
+                                                <property name="icon_size">1</property>
+                                              </object>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">3</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label67">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Size:</property>
+                                        <property name="xalign">0</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label69">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">Center:</property>
+                                        <property name="xalign">0</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">2</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox" id="EnvironmentalSensorCenterBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="halign">start</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="spacing">2</property>
+                                        <child>
+                                          <object class="GtkSpinButton" id="spinbutton51">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">EnvironmentalSensorCenterXAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">3</property>
+                                            <property name="numeric">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="spinbutton52">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">EnvironmentalSensorCenterYAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">3</property>
+                                            <property name="numeric">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="spinbutton53">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">z-Axis</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">EnvironmentalSensorCenterZAdjustment</property>
+                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="digits">3</property>
+                                            <property name="numeric">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">2</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkLabel" id="label1">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="xalign">0</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">0</property>
+                                        <property name="top_attach">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkCheckButton" id="EnvironmentalSensorEnabledCheckButton">
+                                        <property name="label" translatable="yes">Enabled</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="hexpand">True</property>
+                                        <property name="xalign">0</property>
+                                        <property name="draw_indicator">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="left_attach">1</property>
+                                        <property name="top_attach">0</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="label">
+                                  <object class="GtkLabel" id="label70">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Environmental Sensor</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="name">page9</property>
+                                <property name="title" translatable="yes">EnvironmentalSensor</property>
+                                <property name="position">9</property>
                               </packing>
                             </child>
                           </object>

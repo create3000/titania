@@ -466,7 +466,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">IntensityAdjustment</property>
-                                    <property name="climb_rate">0.32000000000000001</property>
+                                    <property name="climb_rate">0.10000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
@@ -521,7 +521,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="text" translatable="yes">0,000</property>
                                     <property name="adjustment">AmbientIntensityAdjustment</property>
-                                    <property name="climb_rate">0.32000000000000001</property>
+                                    <property name="climb_rate">0.10000000000000001</property>
                                     <property name="digits">3</property>
                                     <property name="numeric">True</property>
                                   </object>
