@@ -635,6 +635,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTransformObject.cpp \
 	Titania/X3D/Tools/Geometry3D/Sphere/SphereTool.cpp \
 	Titania/X3D/Tools/Geospatial/GeoElevationGridTool.cpp \
+	Titania/X3D/Tools/Geospatial/GeoViewpointTool.cpp \
 	Titania/X3D/Tools/Grids/AngleTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
@@ -644,6 +645,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
+	Titania/X3D/Tools/Navigation/OrthoViewpointTool.cpp \
+	Titania/X3D/Tools/Navigation/ViewpointTool.cpp \
 	Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.cpp \
 	Titania/X3D/Tools/NURBS/NurbsCurveTool.cpp \
 	Titania/X3D/Tools/NURBS/NurbsPatchSurfaceTool.cpp \

@@ -66,14 +66,7 @@ public:
 
 	///  @name Construction
 
-	OrthoViewpointTool (X3DBaseNode* const node) :
-		         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		      OrthoViewpoint (node -> getExecutionContext ()),
-		         X3DBaseTool (node),
-		X3DViewpointNodeTool ()
-	{
-		addType (X3DConstants::OrthoViewpointTool);
-	}
+	OrthoViewpointTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -106,6 +99,18 @@ public:
 	const MFFloat &
 	fieldOfView () const final override
 	{ return getNode <OrthoViewpoint> () -> fieldOfView (); }
+
+	///  @name Destruction
+
+	virtual
+	~OrthoViewpointTool () final override;
+
+
+private:
+
+	virtual
+	void
+	realize () final override;
 
 };
 

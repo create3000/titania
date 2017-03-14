@@ -751,6 +751,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTransformObject.lo \
 	Titania/X3D/Tools/Geometry3D/Sphere/SphereTool.lo \
 	Titania/X3D/Tools/Geospatial/GeoElevationGridTool.lo \
+	Titania/X3D/Tools/Geospatial/GeoViewpointTool.lo \
 	Titania/X3D/Tools/Grids/AngleTool.lo \
 	Titania/X3D/Tools/Grids/GridTool.lo \
 	Titania/X3D/Tools/Grids/X3DGridTool.lo \
@@ -760,6 +761,8 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Navigation/BillboardTool.lo \
 	Titania/X3D/Tools/Navigation/CollisionTool.lo \
 	Titania/X3D/Tools/Navigation/LODTool.lo \
+	Titania/X3D/Tools/Navigation/OrthoViewpointTool.lo \
+	Titania/X3D/Tools/Navigation/ViewpointTool.lo \
 	Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.lo \
 	Titania/X3D/Tools/NURBS/NurbsCurveTool.lo \
 	Titania/X3D/Tools/NURBS/NurbsPatchSurfaceTool.lo \
@@ -1679,6 +1682,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Geometry3D/IndexedFaceSet/X3DIndexedFaceSetTransformObject.cpp \
 	Titania/X3D/Tools/Geometry3D/Sphere/SphereTool.cpp \
 	Titania/X3D/Tools/Geospatial/GeoElevationGridTool.cpp \
+	Titania/X3D/Tools/Geospatial/GeoViewpointTool.cpp \
 	Titania/X3D/Tools/Grids/AngleTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
@@ -1688,6 +1692,8 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Navigation/BillboardTool.cpp \
 	Titania/X3D/Tools/Navigation/CollisionTool.cpp \
 	Titania/X3D/Tools/Navigation/LODTool.cpp \
+	Titania/X3D/Tools/Navigation/OrthoViewpointTool.cpp \
+	Titania/X3D/Tools/Navigation/ViewpointTool.cpp \
 	Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.cpp \
 	Titania/X3D/Tools/NURBS/NurbsCurveTool.cpp \
 	Titania/X3D/Tools/NURBS/NurbsPatchSurfaceTool.cpp \
@@ -4220,6 +4226,9 @@ Titania/X3D/Tools/Geospatial/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Tools/Geospatial/GeoElevationGridTool.lo:  \
 	Titania/X3D/Tools/Geospatial/$(am__dirstamp) \
 	Titania/X3D/Tools/Geospatial/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Geospatial/GeoViewpointTool.lo:  \
+	Titania/X3D/Tools/Geospatial/$(am__dirstamp) \
+	Titania/X3D/Tools/Geospatial/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Grids/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/Grids
 	@: > Titania/X3D/Tools/Grids/$(am__dirstamp)
@@ -4275,6 +4284,12 @@ Titania/X3D/Tools/Navigation/CollisionTool.lo:  \
 	Titania/X3D/Tools/Navigation/$(am__dirstamp) \
 	Titania/X3D/Tools/Navigation/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Navigation/LODTool.lo:  \
+	Titania/X3D/Tools/Navigation/$(am__dirstamp) \
+	Titania/X3D/Tools/Navigation/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Navigation/OrthoViewpointTool.lo:  \
+	Titania/X3D/Tools/Navigation/$(am__dirstamp) \
+	Titania/X3D/Tools/Navigation/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Navigation/ViewpointTool.lo:  \
 	Titania/X3D/Tools/Navigation/$(am__dirstamp) \
 	Titania/X3D/Tools/Navigation/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.lo:  \
@@ -5262,6 +5277,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/IndexedFaceSet/$(DEPDIR)/X3DIndexedFaceSetTransformObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry3D/Sphere/$(DEPDIR)/SphereTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geospatial/$(DEPDIR)/GeoElevationGridTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geospatial/$(DEPDIR)/GeoViewpointTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/AngleTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/GridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/X3DGridTool.Plo@am__quote@
@@ -5278,6 +5294,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/BillboardTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/CollisionTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/LODTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/OrthoViewpointTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/ViewpointTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Navigation/$(DEPDIR)/X3DViewpointNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Picking/$(DEPDIR)/PickableGroupTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/PointingDeviceSensor/$(DEPDIR)/TouchGroupTool.Plo@am__quote@

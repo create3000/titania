@@ -116,7 +116,7 @@ X3DBaseTool::addEvent ()
 }
 
 void
-X3DBaseTool::removeTool (const bool)
+X3DBaseTool::removeTool (const bool really)
 {
 	X3DBaseNode::removeTool (node);
 }

@@ -48,73 +48,41 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_NAVIGATION_VIEWPOINT_TOOL_H__
-#define __TITANIA_X3D_TOOLS_NAVIGATION_VIEWPOINT_TOOL_H__
+#include "ViewpointTool.h"
 
-#include "../Navigation/X3DViewpointNodeTool.h"
-
-#include "../../Components/Navigation/Viewpoint.h"
+#include "../Grouping/TransformTool.h"
 
 namespace titania {
 namespace X3D {
 
-class ViewpointTool :
-	virtual public Viewpoint,
-	public X3DViewpointNodeTool
+ViewpointTool::ViewpointTool (X3DBaseNode* const node) :
+	         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	           Viewpoint (node -> getExecutionContext ()),
+	         X3DBaseTool (node),
+	X3DViewpointNodeTool ()
 {
-public:
+	addType (X3DConstants::ViewpointTool);
+}
 
-	///  @name Construction
+void
+ViewpointTool::realize ()
+{
+	X3DViewpointNodeTool::realize ();
 
-	ViewpointTool (X3DBaseNode* const node);
+	const auto transformTool = getTransformTool ();
 
-	///  @name Fields
+	getNode <Viewpoint> () -> position ()    .addInterest (transformTool -> translation ());
+	getNode <Viewpoint> () -> orientation () .addInterest (transformTool -> rotation ());
 
-	virtual
-	SFVec3f &
-	position () final override
-	{ return getNode <Viewpoint> () -> position (); }
+	transformTool -> translation () .addInterest (getNode <Viewpoint> () -> position ());
+	transformTool -> rotation ()    .addInterest (getNode <Viewpoint> () -> orientation ());
 
-	virtual
-	const SFVec3f &
-	position () const final override
-	{ return getNode <Viewpoint> () -> position (); }
+	transformTool -> translation () = getNode <Viewpoint> () -> position ();
+	transformTool -> rotation ()    = getNode <Viewpoint> () -> orientation ();
+}
 
-	virtual
-	SFVec3f &
-	centerOfRotation () final override
-	{ return getNode <Viewpoint> () -> centerOfRotation (); }
-
-	virtual
-	const SFVec3f &
-	centerOfRotation () const final override
-	{ return getNode <Viewpoint> () -> centerOfRotation (); }
-
-	virtual
-	SFFloat &
-	fieldOfView () final override
-	{ return getNode <Viewpoint> () -> fieldOfView (); }
-
-	virtual
-	const SFFloat &
-	fieldOfView () const final override
-	{ return getNode <Viewpoint> () -> fieldOfView (); }
-
-	///  @name Destruction
-
-	virtual
-	~ViewpointTool () final override;
-
-
-private:
-
-	virtual
-	void
-	realize () final override;
-
-};
+ViewpointTool::~ViewpointTool ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

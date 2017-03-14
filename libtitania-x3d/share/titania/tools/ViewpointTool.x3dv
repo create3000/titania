@@ -7,7 +7,7 @@ META "created" "Sun, 03 Aug 2014 03:06:41 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/ViewpointTool.x3dv"
-META "modified" "Tue, 14 Mar 2017 03:03:17 GMT"
+META "modified" "Tue, 14 Mar 2017 06:37:44 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO BooleanSwitch [
@@ -109,7 +109,7 @@ WorldInfo {
 
 DEF Tool Script {
   inputOutput    SFBool  enabled FALSE
-  inputOutput    SFBool  selected FALSE
+  inputOutput    SFBool  selected TRUE
   inputOutput    SFBool  isBound TRUE
   inputOutput    SFInt32 whichChoice_changed 0
   inputOutput    SFNode  viewpoint NULL
@@ -187,6 +187,7 @@ function set_geoViewpoint ()
 }
 
 DEF _1 BooleanSwitch {
+  whichChoice TRUE
   children [
     DEF _2 Group { }
     USE TransformTool
@@ -239,7 +240,7 @@ DEF _3 Transform {
                     translation 1.1422e-21 -0.0999999 0.945998
                     rotation 0.999999999993201 3.68565999997494e-06 1.20211999999183e-07 4.71239
                     scale 1.22447 1.22447 1.22447
-                    scaleOrientation 0.997968674291363 0.0016424394639544 0.0636853792149007 0.198092
+                    scaleOrientation 0.997968674291364 0.0016424394639544 0.0636853792149007 0.198092
                     children Shape {
                       appearance USE _5
                       geometry DEF Cube IndexedFaceSet {

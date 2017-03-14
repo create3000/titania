@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,73 +48,41 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_NAVIGATION_VIEWPOINT_TOOL_H__
-#define __TITANIA_X3D_TOOLS_NAVIGATION_VIEWPOINT_TOOL_H__
+#include "OrthoViewpointTool.h"
 
-#include "../Navigation/X3DViewpointNodeTool.h"
-
-#include "../../Components/Navigation/Viewpoint.h"
+#include "../Grouping/TransformTool.h"
 
 namespace titania {
 namespace X3D {
 
-class ViewpointTool :
-	virtual public Viewpoint,
-	public X3DViewpointNodeTool
+OrthoViewpointTool::OrthoViewpointTool (X3DBaseNode* const node) :
+	         X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	      OrthoViewpoint (node -> getExecutionContext ()),
+	         X3DBaseTool (node),
+	X3DViewpointNodeTool ()
 {
-public:
+	addType (X3DConstants::OrthoViewpointTool);
+}
 
-	///  @name Construction
+void
+OrthoViewpointTool::realize ()
+{
+	X3DViewpointNodeTool::realize ();
 
-	ViewpointTool (X3DBaseNode* const node);
+	const auto transformTool = getTransformTool ();
 
-	///  @name Fields
+	getNode <OrthoViewpoint> () -> position ()    .addInterest (transformTool -> translation ());
+	getNode <OrthoViewpoint> () -> orientation () .addInterest (transformTool -> rotation ());
 
-	virtual
-	SFVec3f &
-	position () final override
-	{ return getNode <Viewpoint> () -> position (); }
+	transformTool -> translation () .addInterest (getNode <OrthoViewpoint> () -> position ());
+	transformTool -> rotation ()    .addInterest (getNode <OrthoViewpoint> () -> orientation ());
 
-	virtual
-	const SFVec3f &
-	position () const final override
-	{ return getNode <Viewpoint> () -> position (); }
+	transformTool -> translation () = getNode <OrthoViewpoint> () -> position ();
+	transformTool -> rotation ()    = getNode <OrthoViewpoint> () -> orientation ();
+}
 
-	virtual
-	SFVec3f &
-	centerOfRotation () final override
-	{ return getNode <Viewpoint> () -> centerOfRotation (); }
-
-	virtual
-	const SFVec3f &
-	centerOfRotation () const final override
-	{ return getNode <Viewpoint> () -> centerOfRotation (); }
-
-	virtual
-	SFFloat &
-	fieldOfView () final override
-	{ return getNode <Viewpoint> () -> fieldOfView (); }
-
-	virtual
-	const SFFloat &
-	fieldOfView () const final override
-	{ return getNode <Viewpoint> () -> fieldOfView (); }
-
-	///  @name Destruction
-
-	virtual
-	~ViewpointTool () final override;
-
-
-private:
-
-	virtual
-	void
-	realize () final override;
-
-};
+OrthoViewpointTool::~OrthoViewpointTool ()
+{ }
 
 } // X3D
 } // titania
-
-#endif

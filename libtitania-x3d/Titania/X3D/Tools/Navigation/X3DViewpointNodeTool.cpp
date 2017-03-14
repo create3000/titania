@@ -91,6 +91,7 @@ X3DViewpointNodeTool::realize ()
 		transformTool -> setField <SFBool>   ("displayCenter", false);
 
 		setTransformTool (transformTool);
+		addTool ();
 
 		getToolNode () -> setField <SFNode> ("viewpoint", getNode <X3DViewpointNode> ());
 	}
@@ -109,6 +110,12 @@ X3DViewpointNodeTool::getBBox () const
 	return Box3d ();
 }
 
+X3DPtr <TransformTool>
+X3DViewpointNodeTool::getTransformTool () const
+{
+	return getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
+}
+
 void
 X3DViewpointNodeTool::beginUndo ()
 {
@@ -122,8 +129,8 @@ X3DViewpointNodeTool::endUndo (const UndoStepPtr & undoStep)
 	if (getPosition ()    not_eq startPosition or
 	    getOrientation () not_eq startOrientation)
 	{
-		undoStep -> addUndoFunction (&X3DViewpointNode::setPosition,     X3DPtr <X3D::X3DViewpointNode> (this), startPosition);
 		undoStep -> addUndoFunction (&X3DViewpointNode::setOrientation,  X3DPtr <X3D::X3DViewpointNode> (this), startOrientation);
+		undoStep -> addUndoFunction (&X3DViewpointNode::setPosition,     X3DPtr <X3D::X3DViewpointNode> (this), startPosition);
 		undoStep -> addUndoFunction (&X3DViewpointNodeTool::setChanging, X3DPtr <X3D::X3DViewpointNode> (this), true);
 
 		undoStep -> addRedoFunction (&X3DViewpointNodeTool::setChanging, X3DPtr <X3D::X3DViewpointNode> (this), true);
@@ -137,7 +144,7 @@ X3DViewpointNodeTool::addTool ()
 {
 	try
 	{
-		const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("TransformTool");
+		const auto transformTool = getTransformTool ();
 
 		transformTool  -> setField <SFBool> ("enabled",  true);
 		getToolNode () -> setField <SFBool> ("selected", true);
@@ -158,7 +165,7 @@ X3DViewpointNodeTool::removeTool (const bool really)
 	{
 		try
 		{
-			const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("TransformTool");
+			const auto transformTool = getTransformTool ();
 
 			transformTool  -> setField <SFBool> ("enabled",  false);
 			getToolNode () -> setField <SFBool> ("selected", false);

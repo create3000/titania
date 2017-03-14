@@ -157,11 +157,11 @@ public:
 
 	virtual
 	void
-	addTool () override;
+	addTool () final override;
 
 	virtual
 	void
-	removeTool (const bool) final override;
+	removeTool (const bool really) final override;
 
 	///  @name Destruction
 
@@ -182,7 +182,15 @@ protected:
 
 	virtual
 	void
-	realize () final override;
+	realize () override;
+
+	///  @name Member access
+
+	X3DPtr <TransformTool>
+	getTransformTool () const;
+
+
+private:
 
 	///  @name Operations
 

@@ -53,7 +53,6 @@
 
 #include "../Geospatial/X3DGeospatialObjectTool.h"
 #include "../Navigation/X3DViewpointNodeTool.h"
-#include "../ToolColors.h"
 
 #include "../../Components/Geospatial/GeoViewpoint.h"
 
@@ -69,15 +68,7 @@ public:
 
 	///  @name Construction
 
-	GeoViewpointTool (X3DBaseNode* const node) :
-		            X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		           GeoViewpoint (node -> getExecutionContext ()),
-		            X3DBaseTool (node),
-		   X3DViewpointNodeTool (),
-		X3DGeospatialObjectTool ()
-	{
-		addType (X3DConstants::GeoViewpointTool);
-	}
+	GeoViewpointTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -134,55 +125,55 @@ public:
 
 	virtual
 	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
-	{
-		X3DViewpointNodeTool::traverse (type, renderObject);
-		X3DGeospatialObjectTool::traverse (type, renderObject);
-	}
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override;
 
 	///  @name Destruction
 
 	virtual
 	void
-	dispose () final override
-	{
-		X3DGeospatialObjectTool::dispose ();
-		X3DViewpointNodeTool::dispose ();
-	}
+	dispose () final override;
+
+	virtual
+	~GeoViewpointTool () final override;
+
 
 private:
 
-	///  @name Destruction
+	///  @name Construction
 
 	virtual
 	void
-	initialize () final override
-	{
-		X3DViewpointNodeTool::initialize ();
-		X3DGeospatialObjectTool::initialize ();
-	}
+	initialize () final override;
 
 	virtual
 	void
-	reshape () final override
-	{
-		try
-		{
-	      getBrowser () -> endUpdateForFrame ();
-			
-			const SFNode & tool = getToolNode ();
+	realize () final override;
 
-			tool -> setField <SFVec3f>    ("translation", getNode <GeoViewpoint> () -> getPosition (),    true);
-			tool -> setField <SFRotation> ("rotation",    getNode <GeoViewpoint> () -> getOrientation (), true);
+	///  @name Event handler
 
-			getBrowser () -> processEvents ();
-	      getBrowser () -> beginUpdateForFrame ();
-		}
-		catch (const X3DError & error)
-		{
-			getBrowser () -> beginUpdateForFrame ();
-		}
-	}
+	void
+	set_geo_position ();
+	
+	void
+	set_geo_orientation ();
+	
+	void
+	set_translation ();
+
+	void
+	set_rotation ();
+
+	void
+	connectGeoPosition (const SFVec3d & field);
+	
+	void
+	connectGeoOrientation (const SFRotation & field);
+	
+	void
+	connectTranslation (const SFVec3f & field);
+	
+	void
+	connectRotation (const SFRotation & field);
 
 };
 

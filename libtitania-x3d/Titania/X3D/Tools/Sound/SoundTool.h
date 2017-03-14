@@ -190,7 +190,7 @@ public:
 
 	virtual
 	void
-	removeTool (const bool) final override;
+	removeTool (const bool really) final override;
 
 	///  @name Destruction
 
