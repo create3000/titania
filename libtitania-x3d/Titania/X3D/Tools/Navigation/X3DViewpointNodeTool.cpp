@@ -77,6 +77,8 @@ X3DViewpointNodeTool::initialize ()
 	X3DBindableNodeTool::initialize ();
 	X3DBoundedObject::initialize ();
 
+	getBrowser () -> getViewpointTools () .emplace_back (this);
+
 	requestAsyncLoad ({ get_tool ("ViewpointTool.x3dv") .str () });
 }
 
@@ -192,6 +194,8 @@ X3DViewpointNodeTool::traverse (const TraverseType type, X3DRenderObject* const 
 void
 X3DViewpointNodeTool::dispose ()
 {
+	getBrowser () -> getViewpointTools () .remove (nullptr);
+
 	X3DBoundedObject::dispose ();
 	X3DBindableNodeTool::dispose ();
 

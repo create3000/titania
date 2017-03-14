@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_VISIBILITY_SENSOR_TOOL_H__
 
 #include "../EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.h"
-#include "../ToolColors.h"
 
 #include "../../Components/EnvironmentalSensor/VisibilitySensor.h"
 
@@ -67,14 +66,7 @@ public:
 
 	///  @name Construction
 
-	VisibilitySensorTool (X3DBaseNode* const node) :
-		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		              VisibilitySensor (node -> getExecutionContext ()),
-		                   X3DBaseTool (node),
-		X3DEnvironmentalSensorNodeTool (Color3f (1, 0, 0))
-	{
-		addType (X3DConstants::VisibilitySensorTool);
-	}
+	VisibilitySensorTool (X3DBaseNode* const node);
 
 	///  @name Operations
 
@@ -83,6 +75,15 @@ public:
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{ X3DEnvironmentalSensorNodeTool::traverse (type, renderObject); }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+	
+	virtual
+	~VisibilitySensorTool () final override;
+
 
 protected:
 
@@ -90,8 +91,7 @@ protected:
 
 	virtual
 	void
-	initialize () final override
-	{ X3DEnvironmentalSensorNodeTool::initialize (); }
+	initialize () final override;
 
 };
 

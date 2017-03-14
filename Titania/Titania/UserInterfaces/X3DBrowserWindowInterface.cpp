@@ -193,7 +193,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserShowHideEnvironmentalEffectsMenuItem", m_BrowserShowHideEnvironmentalEffectsMenuItem);
 	m_builder -> get_widget ("BrowserBackgroundsMenuItem", m_BrowserBackgroundsMenuItem);
 	m_builder -> get_widget ("BrowserFogsMenuItem", m_BrowserFogsMenuItem);
-	m_builder -> get_widget ("BrowserObjectIconsMenuItem", m_BrowserObjectIconsMenuItem);
+	m_builder -> get_widget ("BrowserIconicObjectsMenuItem", m_BrowserIconicObjectsMenuItem);
 	m_builder -> get_widget ("BrowserLightsMenuItem", m_BrowserLightsMenuItem);
 	m_builder -> get_widget ("BrowserProximitySensorsMenuItem", m_BrowserProximitySensorsMenuItem);
 	m_builder -> get_widget ("BrowserTransformSensorsMenuItem", m_BrowserTransformSensorsMenuItem);
@@ -316,7 +316,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ShowHideEnvironmentalEffectsMenuItem", m_ShowHideEnvironmentalEffectsMenuItem);
 	m_builder -> get_widget ("BackgroundsMenuItem", m_BackgroundsMenuItem);
 	m_builder -> get_widget ("FogsMenuItem", m_FogsMenuItem);
-	m_builder -> get_widget ("ObjectIconsMenuItem", m_ObjectIconsMenuItem);
+	m_builder -> get_widget ("IconicObjectsMenuItem", m_IconicObjectsMenuItem);
 	m_builder -> get_widget ("LightsMenuItem", m_LightsMenuItem);
 	m_builder -> get_widget ("ProximitySensorsMenuItem", m_ProximitySensorsMenuItem);
 	m_builder -> get_widget ("SoundsMenuItem", m_SoundsMenuItem);

@@ -48,64 +48,39 @@
  *
  ******************************************************************************/
 
-#include "X3DToolContext.h"
+#include "TransformSensorTool.h"
 
-#include "TransformToolOptions.h"
-
-#include "../../Tools/EnvironmentalSensor/ProximitySensorTool.h"
-#include "../../Tools/EnvironmentalSensor/TransformSensorTool.h"
-#include "../../Tools/EnvironmentalSensor/VisibilitySensorTool.h"
-#include "../../Tools/Grouping/X3DTransformNodeTool.h"
-#include "../../Tools/Lighting/X3DLightNodeTool.h"
-#include "../../Tools/Navigation/X3DViewpointNodeTool.h"
-#include "../../Tools/Sound/SoundTool.h"
+#include "../../Browser/X3DBrowser.h"
 
 namespace titania {
 namespace X3D {
 
-X3DToolContext::X3DToolContext () :
-	          X3DBaseNode (),
-	       supportedTools (),
-	         displayTools ({ true }),
-	 transformToolOptions (new TransformToolOptions (getExecutionContext ())),
-	       transformTools (),
-	           lightTools (),
-	 proximitySensorTools (),
-	           soundTools (),
-	 transformSensorTools (),
-	visibilitySensorTools (),
-	       viewpointTools (),
-	              cutLine ()
+TransformSensorTool::TransformSensorTool (X3DBaseNode* const node) :
+	                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
+	               TransformSensor (node -> getExecutionContext ()),
+	                   X3DBaseTool (node),
+	X3DEnvironmentalSensorNodeTool (Color3f (0, 1, 0))
 {
-	addChildObjects (transformToolOptions,
-	                 transformTools,
-	                 lightTools,
-	                 proximitySensorTools,
-	                 soundTools,
-	                 transformSensorTools,
-	                 visibilitySensorTools,
-	                 viewpointTools);
+	addType (X3DConstants::TransformSensorTool);
 }
 
 void
-X3DToolContext::initialize ()
+TransformSensorTool::initialize ()
 {
-	transformToolOptions -> setup ();
-}
+	X3DEnvironmentalSensorNodeTool::initialize ();
 
-const SupportedTools::Function &
-X3DToolContext::getSupportedTool (const std::string & typeName) const
-throw (Error <INVALID_NAME>,
-       Error <DISPOSED>)
-{
-	return supportedTools .getTool (typeName);
+	getBrowser () -> getTransformSensorTools () .emplace_back (this);
 }
 
 void
-X3DToolContext::dispose ()
-{ }
+TransformSensorTool::dispose ()
+{
+	getBrowser () -> getTransformSensorTools () .remove (nullptr);
 
-X3DToolContext::~X3DToolContext ()
+	X3DEnvironmentalSensorNodeTool::dispose ();
+}
+
+TransformSensorTool::~TransformSensorTool ()
 { }
 
 } // X3D

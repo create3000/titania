@@ -726,6 +726,9 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Core/X3DBaseTool.lo \
 	Titania/X3D/Tools/Core/X3DNodeTool.lo \
 	Titania/X3D/Tools/Core/X3DToolObject.lo \
+	Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.lo \
+	Titania/X3D/Tools/EnvironmentalSensor/TransformSensorTool.lo \
+	Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.lo \
 	Titania/X3D/Tools/EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.lo \
 	Titania/X3D/Tools/Geometry2D/Arc2DTool.lo \
 	Titania/X3D/Tools/Geometry2D/ArcClose2DTool.lo \
@@ -1661,6 +1664,9 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DNodeTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.cpp \
+	Titania/X3D/Tools/EnvironmentalSensor/TransformSensorTool.cpp \
+	Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.cpp \
 	Titania/X3D/Tools/EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.cpp \
 	Titania/X3D/Tools/Geometry2D/Arc2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/ArcClose2DTool.cpp \
@@ -4111,6 +4117,15 @@ Titania/X3D/Tools/EnvironmentalSensor/$(am__dirstamp):
 Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)
 	@: > Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/EnvironmentalSensor/ProximitySensorTool.lo:  \
+	Titania/X3D/Tools/EnvironmentalSensor/$(am__dirstamp) \
+	Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/EnvironmentalSensor/TransformSensorTool.lo:  \
+	Titania/X3D/Tools/EnvironmentalSensor/$(am__dirstamp) \
+	Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/EnvironmentalSensor/VisibilitySensorTool.lo:  \
+	Titania/X3D/Tools/EnvironmentalSensor/$(am__dirstamp) \
+	Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.lo:  \
 	Titania/X3D/Tools/EnvironmentalSensor/$(am__dirstamp) \
 	Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)/$(am__dirstamp)
@@ -5280,6 +5295,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/X3DBaseTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/X3DNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Core/$(DEPDIR)/X3DToolObject.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)/ProximitySensorTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)/TransformSensorTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)/VisibilitySensorTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/EnvironmentalSensor/$(DEPDIR)/X3DEnvironmentalSensorNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry2D/$(DEPDIR)/Arc2DTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geometry2D/$(DEPDIR)/ArcClose2DTool.Plo@am__quote@

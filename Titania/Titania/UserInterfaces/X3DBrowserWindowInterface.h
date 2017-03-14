@@ -623,8 +623,8 @@ public:
 	{ return *m_BrowserFogsMenuItem; }
 
 	Gtk::MenuItem &
-	getBrowserObjectIconsMenuItem () const
-	{ return *m_BrowserObjectIconsMenuItem; }
+	getBrowserIconicObjectsMenuItem () const
+	{ return *m_BrowserIconicObjectsMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getBrowserLightsMenuItem () const
@@ -1115,8 +1115,8 @@ public:
 	{ return *m_FogsMenuItem; }
 
 	Gtk::MenuItem &
-	getObjectIconsMenuItem () const
-	{ return *m_ObjectIconsMenuItem; }
+	getIconicObjectsMenuItem () const
+	{ return *m_IconicObjectsMenuItem; }
 
 	Gtk::CheckMenuItem &
 	getLightsMenuItem () const
@@ -2292,7 +2292,7 @@ private:
 	Gtk::MenuItem*                   m_BrowserShowHideEnvironmentalEffectsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserBackgroundsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserFogsMenuItem;
-	Gtk::MenuItem*                   m_BrowserObjectIconsMenuItem;
+	Gtk::MenuItem*                   m_BrowserIconicObjectsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserLightsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserProximitySensorsMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserTransformSensorsMenuItem;
@@ -2415,7 +2415,7 @@ private:
 	Gtk::MenuItem*                   m_ShowHideEnvironmentalEffectsMenuItem;
 	Gtk::CheckMenuItem*              m_BackgroundsMenuItem;
 	Gtk::CheckMenuItem*              m_FogsMenuItem;
-	Gtk::MenuItem*                   m_ObjectIconsMenuItem;
+	Gtk::MenuItem*                   m_IconicObjectsMenuItem;
 	Gtk::CheckMenuItem*              m_LightsMenuItem;
 	Gtk::CheckMenuItem*              m_ProximitySensorsMenuItem;
 	Gtk::CheckMenuItem*              m_SoundsMenuItem;

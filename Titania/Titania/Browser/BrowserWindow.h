@@ -128,6 +128,24 @@ private:
 	void
 	set_selection (const X3D::MFNode & children) final override;
 
+	void
+	set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLightNodeTool> & tools);
+	
+	void
+	set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3D::ProximitySensorTool> & tools);
+	
+	void
+	set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTool> & tools);
+	
+	void
+	set_transformSensorTools (const X3D::X3DWeakPtrArray <X3D::TransformSensorTool> & tools);
+	
+	void
+	set_visibilitySensorTools (const X3D::X3DWeakPtrArray <X3D::VisibilitySensorTool> & tools);
+	
+	void
+	set_viewpointTools (const X3D::X3DWeakPtrArray <X3D::X3DViewpointNodeTool> & tools);
+
 	///  @name Key events
 
 	virtual

@@ -67,14 +67,16 @@ public:
 
 	///  @name Construction
 
-	TransformSensorTool (X3DBaseNode* const node) :
-		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		               TransformSensor (node -> getExecutionContext ()),
-		                   X3DBaseTool (node),
-		X3DEnvironmentalSensorNodeTool (Color3f (0, 1, 0))
-	{
-		addType (X3DConstants::TransformSensorTool);
-	}
+	TransformSensorTool (X3DBaseNode* const node);
+
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+	
+	virtual
+	~TransformSensorTool () final override;
 
 
 protected:
@@ -83,8 +85,7 @@ protected:
 
 	virtual
 	void
-	initialize () final override
-	{ X3DEnvironmentalSensorNodeTool::initialize (); }
+	initialize () final override;
 
 };
 

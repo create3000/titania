@@ -52,7 +52,6 @@
 #define __TITANIA_X3D_TOOLS_ENVIRONMENTAL_SENSOR_PROXIMITY_SENSOR_TOOL_H__
 
 #include "../EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.h"
-#include "../ToolColors.h"
 
 #include "../../Components/EnvironmentalSensor/ProximitySensor.h"
 
@@ -67,14 +66,7 @@ public:
 
 	///  @name Construction
 
-	ProximitySensorTool (X3DBaseNode* const node) :
-		                   X3DBaseNode (node -> getExecutionContext () -> getBrowser (), node -> getExecutionContext ()),
-		               ProximitySensor (node -> getExecutionContext ()),
-		                   X3DBaseTool (node),
-		X3DEnvironmentalSensorNodeTool (Color3f (0.5, 0, 1))
-	{
-		addType (X3DConstants::ProximitySensorTool);
-	}
+	ProximitySensorTool (X3DBaseNode* const node);
 
 	///  @name Fields
 
@@ -115,6 +107,15 @@ public:
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) final override
 	{ X3DEnvironmentalSensorNodeTool::traverse (type, renderObject); }
 
+	///  @name Destruction
+
+	virtual
+	void
+	dispose () final override;
+	
+	virtual
+	~ProximitySensorTool () final override;
+
 
 protected:
 
@@ -122,8 +123,7 @@ protected:
 
 	virtual
 	void
-	initialize () final override
-	{ X3DEnvironmentalSensorNodeTool::initialize (); }
+	initialize () final override;
 
 };
 

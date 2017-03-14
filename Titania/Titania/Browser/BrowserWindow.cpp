@@ -224,15 +224,22 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 {
 	// Disconnect
 
-	getCurrentBrowser () -> getViewer ()           .removeInterest (&BrowserWindow::set_viewer, this);
-	getCurrentBrowser () -> getActiveLayer ()      .removeInterest (&BrowserWindow::set_activeLayer, this);
-	getCurrentBrowser () -> getViewerType ()       .removeInterest (&BrowserWindow::set_viewer, this);
-	getCurrentBrowser () -> getPrivateViewer ()    .removeInterest (&BrowserWindow::set_viewer, this);
+	getCurrentBrowser () -> getViewer ()           .removeInterest (&BrowserWindow::set_viewer,            this);
+	getCurrentBrowser () -> getActiveLayer ()      .removeInterest (&BrowserWindow::set_activeLayer,       this);
+	getCurrentBrowser () -> getViewerType ()       .removeInterest (&BrowserWindow::set_viewer,            this);
+	getCurrentBrowser () -> getPrivateViewer ()    .removeInterest (&BrowserWindow::set_viewer,            this);
 	getCurrentBrowser () -> getAvailableViewers () .removeInterest (&BrowserWindow::set_available_viewers, this);
 
-	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (&BrowserWindow::set_dashboard, this);
-	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (&BrowserWindow::set_shading, this);
+	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .removeInterest (&BrowserWindow::set_dashboard,        this);
+	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .removeInterest (&BrowserWindow::set_shading,          this);
 	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .removeInterest (&BrowserWindow::set_primitiveQuality, this);
+
+	getCurrentBrowser () -> getLightTools ()            .removeInterest (&BrowserWindow::set_lightTools,            this);
+	getCurrentBrowser () -> getProximitySensorTools ()  .removeInterest (&BrowserWindow::set_proximitySensorTools,  this);
+	getCurrentBrowser () -> getSoundTools ()            .removeInterest (&BrowserWindow::set_soundTools,            this);
+	getCurrentBrowser () -> getTransformSensorTools ()  .removeInterest (&BrowserWindow::set_transformSensorTools,  this);
+	getCurrentBrowser () -> getVisibilitySensorTools () .removeInterest (&BrowserWindow::set_visibilitySensorTools, this);
+	getCurrentBrowser () -> getViewpointTools ()        .removeInterest (&BrowserWindow::set_viewpointTools,        this);
 
 	getUserData (getCurrentBrowser ()) -> browserHistory .removeInterest (&BrowserWindow::set_browserHistory, this);
 
@@ -242,14 +249,21 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 
 	// Connect
 
-	getCurrentBrowser () -> getActiveLayer ()      .addInterest (&BrowserWindow::set_activeLayer, this);
-	getCurrentBrowser () -> getViewerType ()       .addInterest (&BrowserWindow::set_viewer, this);
-	getCurrentBrowser () -> getPrivateViewer ()    .addInterest (&BrowserWindow::set_viewer, this);
+	getCurrentBrowser () -> getActiveLayer ()      .addInterest (&BrowserWindow::set_activeLayer,       this);
+	getCurrentBrowser () -> getViewerType ()       .addInterest (&BrowserWindow::set_viewer,            this);
+	getCurrentBrowser () -> getPrivateViewer ()    .addInterest (&BrowserWindow::set_viewer,            this);
 	getCurrentBrowser () -> getAvailableViewers () .addInterest (&BrowserWindow::set_available_viewers, this);
 
-	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard, this);
-	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (&BrowserWindow::set_shading, this);
+	getCurrentBrowser () -> getBrowserOptions () -> Dashboard ()        .addInterest (&BrowserWindow::set_dashboard,        this);
+	getCurrentBrowser () -> getBrowserOptions () -> Shading ()          .addInterest (&BrowserWindow::set_shading,          this);
 	getCurrentBrowser () -> getBrowserOptions () -> PrimitiveQuality () .addInterest (&BrowserWindow::set_primitiveQuality, this);
+
+	getCurrentBrowser () -> getLightTools ()            .addInterest (&BrowserWindow::set_lightTools,            this);
+	getCurrentBrowser () -> getProximitySensorTools ()  .addInterest (&BrowserWindow::set_proximitySensorTools,  this);
+	getCurrentBrowser () -> getSoundTools ()            .addInterest (&BrowserWindow::set_soundTools,            this);
+	getCurrentBrowser () -> getTransformSensorTools ()  .addInterest (&BrowserWindow::set_transformSensorTools,  this);
+	getCurrentBrowser () -> getVisibilitySensorTools () .addInterest (&BrowserWindow::set_visibilitySensorTools, this);
+	getCurrentBrowser () -> getViewpointTools ()        .addInterest (&BrowserWindow::set_viewpointTools,        this);
 
 	getUserData (getCurrentBrowser ()) -> browserHistory .addInterest (&BrowserWindow::set_browserHistory, this);
 
@@ -283,20 +297,21 @@ BrowserWindow::set_browsers ()
 void
 BrowserWindow::set_scene ()
 {
-	changing = true;
-
 	// View Menu
 
-	getBackgroundsAction ()       -> set_active (true);
-	getFogsAction ()              -> set_active (true);
-	getLightsAction ()            -> set_active (false);
-	getProximitySensorsAction ()  -> set_active (false);
-	getSoundsAction ()            -> set_active (false);
-	getTransformSensorsAction ()  -> set_active (false);
-	getVisibilitySensorsAction () -> set_active (false);
-	getViewpointsAction ()        -> set_active (false);
+	changing = true;
+
+	getBackgroundsAction () -> set_active (true);
+	getFogsAction ()        -> set_active (true);
 
 	changing = false;
+
+	set_lightTools            (getCurrentBrowser () -> getLightTools ());
+	set_proximitySensorTools  (getCurrentBrowser () -> getProximitySensorTools ());
+	set_soundTools            (getCurrentBrowser () -> getSoundTools ());
+	set_transformSensorTools  (getCurrentBrowser () -> getTransformSensorTools ());
+	set_visibilitySensorTools (getCurrentBrowser () -> getVisibilitySensorTools ());
+	set_viewpointTools        (getCurrentBrowser () -> getViewpointTools ());
 }
 
 void
@@ -428,69 +443,66 @@ BrowserWindow::set_selection (const X3D::MFNode & selection)
 	// Dashboard
 
 	getLookAtSelectionButton () .set_sensitive (haveSelection);
+}
 
-	// Show/Hide Object Icons.
+void
+BrowserWindow::set_lightTools (const X3D::X3DWeakPtrArray <X3D::X3DLightNodeTool> & tools)
+{
+	changing = true;
+
+	getLightsAction () -> set_active (tools .size ());
+
+	changing = false;
+}
+
+void
+BrowserWindow::set_proximitySensorTools (const X3D::X3DWeakPtrArray <X3D::ProximitySensorTool> & tools)
+{
+__LOG__ << tools .size () << std::endl;
 
 	changing = true;
 
-	for (const auto & node : selection)
-	{
-		if (X3D::x3d_cast <X3D::X3DLightNode*> (node))
-		{
-			getLightsAction () -> set_active (true);
-			break;
-		}
-	}
+	getProximitySensorsAction () -> set_active (tools .size ());
 
-	for (const auto & node : selection)
-	{
-		try
-		{
-			if (node -> getInnerNode () -> isType (proximitySensors))
-			{
-				getProximitySensorsAction () -> set_active (true);
-				break;
-			}
-		}
-		catch (const X3D::X3DError &)
-		{ }
-	}
+	changing = false;
+}
 
-	for (const auto & node : selection)
-	{
-		if (X3D::x3d_cast <X3D::Sound*> (node))
-		{
-			getSoundsAction () -> set_active (true);
-			break;
-		}
-	}
+void
+BrowserWindow::set_soundTools (const X3D::X3DWeakPtrArray <X3D::SoundTool> & tools)
+{
+	changing = true;
 
-	for (const auto & node : selection)
-	{
-		if (X3D::x3d_cast <X3D::TransformSensor*> (node))
-		{
-			getTransformSensorsAction () -> set_active (true);
-			break;
-		}
-	}
+	getSoundsAction () -> set_active (tools .size ());
 
-	for (const auto & node : selection)
-	{
-		if (X3D::x3d_cast <X3D::VisibilitySensor*> (node))
-		{
-			getVisibilitySensorsAction () -> set_active (true);
-			break;
-		}
-	}
+	changing = false;
+}
 
-	for (const auto & node : selection)
-	{
-		if (X3D::x3d_cast <X3D::X3DViewpointNode*> (node))
-		{
-			getViewpointsAction () -> set_active (true);
-			break;
-		}
-	}
+void
+BrowserWindow::set_transformSensorTools (const X3D::X3DWeakPtrArray <X3D::TransformSensorTool> & tools)
+{
+	changing = true;
+
+	getTransformSensorsAction () -> set_active (tools .size ());
+
+	changing = false;
+}
+
+void
+BrowserWindow::set_visibilitySensorTools (const X3D::X3DWeakPtrArray <X3D::VisibilitySensorTool> & tools)
+{
+	changing = true;
+
+	getVisibilitySensorsAction () -> set_active (tools .size ());
+
+	changing = false;
+}
+
+void
+BrowserWindow::set_viewpointTools (const X3D::X3DWeakPtrArray <X3D::X3DViewpointNodeTool> & tools)
+{
+	changing = true;
+
+	getViewpointsAction () -> set_active (tools .size ());
 
 	changing = false;
 }
@@ -1327,7 +1339,7 @@ BrowserWindow::setEditing (const bool enabled)
 	getMotionBlurMenuItem ()                   .set_visible (enabled);
 	getShadingMenuItem ()                      .set_visible (enabled);
 	getShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
-	getObjectIconsMenuItem ()                  .set_visible (enabled);
+	getIconicObjectsMenuItem ()                .set_visible (enabled);
 	getSelectionMenuItem ()                    .set_visible (enabled);
 	getGeometryMenuItem ()                     .set_visible (enabled);
 	getLayoutMenuItem ()                       .set_visible (enabled);
@@ -1341,7 +1353,7 @@ BrowserWindow::setEditing (const bool enabled)
 	getBrowserMotionBlurMenuItem ()                   .set_visible (enabled);
 	getBrowserShadingMenuItem ()                      .set_visible (enabled);
 	getBrowserShowHideEnvironmentalEffectsMenuItem () .set_visible (enabled);
-	getBrowserObjectIconsMenuItem ()                  .set_visible (enabled);
+	getBrowserIconicObjectsMenuItem ()                .set_visible (enabled);
 	getBrowserSelectionMenuItem ()                    .set_visible (enabled);
 	getBrowserGeometryMenuItem ()                     .set_visible (enabled);
 	getBrowserLayoutMenuItem ()                       .set_visible (enabled);

@@ -93,7 +93,7 @@ X3DTransformNodeTool::setExecutionContext (X3DExecutionContext* const executionC
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNodeTool> (this));
+	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNodeTool> ());
 
 	X3DTransformMatrix3DNodeTool::setExecutionContext (executionContext);
 
@@ -105,9 +105,9 @@ X3DTransformNodeTool::initialize ()
 {
 	X3DChildNodeTool::initialize ();
 
-	setTransformTool (this);
-
 	getBrowser () -> getTransformTools () .emplace_back (this);
+
+	setTransformTool (this);
 
 	requestAsyncLoad ({ get_tool ("TransformTool.x3dv") .str () });
 }
@@ -323,7 +323,7 @@ X3DTransformNodeTool::dispose ()
 {
 	__LOG__ << std::endl;
 
-	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNodeTool> (this));
+	getBrowser () -> getTransformTools () .remove (nullptr);
 
 	X3DTransformMatrix3DNodeTool::dispose ();
 }

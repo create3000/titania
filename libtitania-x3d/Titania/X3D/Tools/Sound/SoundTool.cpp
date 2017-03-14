@@ -73,6 +73,8 @@ SoundTool::initialize ()
 	X3DSoundNodeTool::initialize ();
 	X3DBoundedObject::initialize ();
 
+	getBrowser () -> getSoundTools () .emplace_back (this);
+
 	requestAsyncLoad ({ get_tool ("SoundTool.x3dv") .str () });
 }
 
@@ -150,6 +152,8 @@ SoundTool::removeTool (const bool really)
 void
 SoundTool::dispose ()
 {
+	getBrowser () -> getSoundTools () .remove (nullptr);
+
 	X3DBoundedObject::dispose ();
 	X3DSoundNodeTool::dispose ();
 }

@@ -75,6 +75,8 @@ X3DLightNodeTool::initialize ()
 	X3DChildNodeTool::initialize ();
 	X3DBoundedObject::initialize ();
 
+	getBrowser () -> getLightTools () .emplace_back (this);
+
 	requestAsyncLoad ({ get_tool ("LightTool.x3dv") .str () });
 }
 
@@ -156,6 +158,8 @@ X3DLightNodeTool::traverse (const TraverseType type, X3DRenderObject* const rend
 void
 X3DLightNodeTool::dispose ()
 {
+	getBrowser () -> getLightTools () .remove (nullptr);
+
 	X3DBoundedObject::dispose ();
 	X3DChildNodeTool::dispose ();
 	

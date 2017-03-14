@@ -104,6 +104,54 @@ public:
 	getTransformTools () const
 	{ return transformTools; }
 
+	X3DWeakPtrArray <X3DLightNodeTool> &
+	getLightTools ()
+	{ return lightTools; }
+
+	const X3DWeakPtrArray <X3DLightNodeTool> &
+	getLightTools () const
+	{ return lightTools; }
+
+	X3DWeakPtrArray <ProximitySensorTool> &
+	getProximitySensorTools ()
+	{ return proximitySensorTools; }
+
+	const X3DWeakPtrArray <ProximitySensorTool> &
+	getProximitySensorTools () const
+	{ return proximitySensorTools; }
+
+	X3DWeakPtrArray <SoundTool> &
+	getSoundTools ()
+	{ return soundTools; }
+
+	const X3DWeakPtrArray <SoundTool> &
+	getSoundTools () const
+	{ return soundTools; }
+
+	X3DWeakPtrArray <TransformSensorTool> &
+	getTransformSensorTools ()
+	{ return transformSensorTools; }
+
+	const X3DWeakPtrArray <TransformSensorTool> &
+	getTransformSensorTools () const
+	{ return transformSensorTools; }
+
+	X3DWeakPtrArray <VisibilitySensorTool> &
+	getVisibilitySensorTools ()
+	{ return visibilitySensorTools; }
+
+	const X3DWeakPtrArray <VisibilitySensorTool> &
+	getVisibilitySensorTools () const
+	{ return visibilitySensorTools; }
+
+	X3DWeakPtrArray <X3DViewpointNodeTool> &
+	getViewpointTools ()
+	{ return viewpointTools; }
+
+	const X3DWeakPtrArray <X3DViewpointNodeTool> &
+	getViewpointTools () const
+	{ return viewpointTools; }
+
 	void
 	setCutLine (const Line2d & value)
 	{ cutLine = value; }
@@ -135,11 +183,20 @@ protected:
 
 private:
 
-	SupportedTools                         supportedTools;
-	RenderToolsStack                       displayTools;
+	SupportedTools  supportedTools;
+	RenderToolsStack displayTools;
+
 	X3DPtr <TransformToolOptions>          transformToolOptions;
 	X3DWeakPtrArray <X3DTransformNodeTool> transformTools;
-	Line2d                                 cutLine;
+
+	X3DWeakPtrArray <X3DLightNodeTool>     lightTools;
+	X3DWeakPtrArray <ProximitySensorTool>  proximitySensorTools;
+	X3DWeakPtrArray <SoundTool>            soundTools;
+	X3DWeakPtrArray <TransformSensorTool>  transformSensorTools;
+	X3DWeakPtrArray <VisibilitySensorTool> visibilitySensorTools;
+	X3DWeakPtrArray <X3DViewpointNodeTool> viewpointTools;
+
+	Line2d cutLine;
 
 };
 

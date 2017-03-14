@@ -81,14 +81,22 @@ public:
 
 	///  @name Constructors
 
+	///  Constructs new X3DWeakPtr.
 	X3DWeakPtr () :
 		X3DField <ValueType*> ()
 	{ }
 
+	///  Constructs new X3DWeakPtr.
+	X3DWeakPtr (std::nullptr_t) :
+		X3DField <ValueType*> ()
+	{ }
+
+	///  Constructs new X3DWeakPtr.
 	X3DWeakPtr (const X3DWeakPtr & other) :
 		X3DWeakPtr (other .getValue ())
 	{ }
 
+	///  Constructs new X3DWeakPtr.
 	template <class Up>
 	X3DWeakPtr (const X3DPtr <Up> & other) :
 		X3DWeakPtr (other .getValue ())
