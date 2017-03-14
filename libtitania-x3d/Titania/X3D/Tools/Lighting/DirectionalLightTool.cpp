@@ -72,7 +72,21 @@ DirectionalLightTool::realize ()
 
 	const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
 
-	transformTool -> setField <MFString> ("tools", MFString ({ "ROTATE" }));
+	transformTool -> setField <MFString> ("tools", MFString ({ "MOVE", "ROTATE" }));
+
+	// Connect tool location
+
+	transformTool -> translation () = getMetaData <SFVec3f> ("/DirectionalLight/location");
+
+	transformTool -> translation () .addInterest (&DirectionalLightTool::set_translation, this);
+}
+
+void
+DirectionalLightTool::set_translation ()
+{
+	const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
+
+	setMetaData <SFVec3f> ("/DirectionalLight/location", transformTool -> translation ());
 }
 
 void

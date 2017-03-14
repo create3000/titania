@@ -112,6 +112,11 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_translation ();
+
 	///  @name Member access
 
 	Vector3f startDirection;

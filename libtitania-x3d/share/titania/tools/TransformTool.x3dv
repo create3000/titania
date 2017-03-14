@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Mon, 13 Mar 2017 06:00:21 GMT"
+META "modified" "Tue, 14 Mar 2017 10:09:26 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]
@@ -137,11 +137,85 @@ WorldInfo {
               inputOutput SFInt32    activeTool_changed 0
               inputOutput SFNode     transform NULL
 
+              url "ecmascript:
+"
             }
           }
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
+            value DEF ModeScript Script {
+              inputOnly   SFBool   set_active
+              inputOnly   SFTime   set_time
+              inputOutput SFBool   pickable TRUE
+              inputOutput MFString tools [
+                "MOVE",
+                "ROTATE",
+                "SCALE"
+              ]
+              inputOutput SFVec3f  bboxSize 0 0 0
+              outputOnly  SFTime   touchTime
+              outputOnly  SFBool   move
+              outputOnly  SFBool   rotate
+              outputOnly  SFBool   scale
+              outputOnly  SFInt32  whichChoice_changed
+
+              url "peaseblossom:
+
+function initialize ()
+{
+	set_pickable (pickable);
+}
+
+function set_pickable (value, time)
+{
+	set_tool (value ? 0 : -1);
+}
+
+function set_tools ()
+{
+	set_tool (pickable ? 0 : -1);
+}
+
+function set_active (value, time)
+{
+	if (! value)
+		touchTime = time;
+}
+
+function set_time (value, time)
+{
+	if (bboxSize .length ())
+		set_tool ((whichChoice_changed + 1) % tools .length);
+	else
+		set_tool (0);
+}
+
+function set_tool (value)
+{
+	move   = false;
+	rotate = false;
+	scale  = false;
+
+	switch (tools [value])
+	{
+		case \"MOVE\":
+			move                = true;
+			whichChoice_changed = 0;
+			break;
+		case \"ROTATE\":
+			move                = true;
+			rotate              = true;
+			whichChoice_changed = 1;
+			break;
+		case \"SCALE\":
+			scale               = true;
+			whichChoice_changed = 2;
+			break;
+	}
+}
+"
+            }
           }
         ]
       }
@@ -1192,73 +1266,7 @@ DEF ModeDoubleClick DoubleClick { }
 
 DEF CenterDoubleClick DoubleClick { }
 
-DEF ModeScript Script {
-  inputOnly   SFBool   set_active
-  inputOnly   SFTime   set_time
-  inputOutput SFBool   pickable TRUE
-  inputOutput MFString tools [
-    "MOVE",
-    "ROTATE",
-    "SCALE"
-  ]
-  inputOutput SFVec3f  bboxSize 0 0 0
-  outputOnly  SFTime   touchTime
-  outputOnly  SFBool   move
-  outputOnly  SFBool   rotate
-  outputOnly  SFBool   scale
-  outputOnly  SFInt32  whichChoice_changed
-
-  url "peaseblossom:
-
-function initialize ()
-{
-	set_pickable (pickable);
-}
-
-function set_pickable (value, time)
-{
-	set_tool (value ? 0 : -1);
-}
-
-function set_active (value, time)
-{
-	if (! value)
-		touchTime = time;
-}
-
-function set_time (value, time)
-{
-	if (bboxSize .length ())
-		set_tool ((whichChoice_changed + 1) % tools .length);
-	else
-		set_tool (0);
-}
-
-function set_tool (value)
-{
-	move   = false;
-	rotate = false;
-	scale  = false;
-
-	switch (tools [value])
-	{
-		case \"MOVE\":
-			move                = true;
-			whichChoice_changed = 0;
-			break;
-		case \"ROTATE\":
-			move                = true;
-			rotate              = true;
-			whichChoice_changed = 1;
-			break;
-		case \"SCALE\":
-			scale               = true;
-			whichChoice_changed = 2;
-			break;
-	}
-}
-"
-}
+USE ModeScript
 
 DEF BBoxScript Script {
   inputOutput    SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
