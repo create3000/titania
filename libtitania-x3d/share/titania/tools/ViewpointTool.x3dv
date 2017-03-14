@@ -7,7 +7,7 @@ META "created" "Sun, 03 Aug 2014 03:06:41 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/ViewpointTool.x3dv"
-META "modified" "Mon, 13 Mar 2017 06:01:09 GMT"
+META "modified" "Tue, 14 Mar 2017 01:42:37 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO BooleanSwitch [
@@ -35,31 +35,101 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
-            value DEF Tool Script {
-              inputOutput    SFBool  enabled FALSE
-              inputOutput    SFBool  isBound TRUE
-              inputOutput    SFInt32 whichChoice_changed 0
-              inputOutput    SFNode  viewpoint NULL
-              initializeOnly SFNode  transform DEF Transform Transform {
-                children ScreenGroup {
-                  children DEF Box Transform {
-                    scaleOrientation 3.46944695195361e-17 -1.43709198143318e-17 1 3.92699081698724
-                    children Shape {
-                      appearance Appearance {
-                        material Material {
-                          transparency 1
-                        }
-                      }
-                      geometry Box {
-                        size 60 60 60
-                      }
-                    }
+            value DEF Cylinder Transform {
+              translation 0 0.51224 0.129679
+              rotation 6.52104999995729e-10 -3.61946999997629e-06 0.99999999999345 4.71239
+              scaleOrientation -0.0108843975971709 -0.025452394381154 -0.999616779325564 0.785487
+              children DEF _1 Shape {
+                appearance DEF _2 Appearance {
+                  material DEF _3 Material {
+                    diffuseColor 0.2 0.2 0.2
+                    specularColor 0.164 0.164 0.164
                   }
                 }
+                geometry Cylinder { }
               }
-              inputOutput    SFNode  self USE Tool
+            }
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0.699033209678521,
+              0.313755732303525,
+              -0.345113122541905
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0.117539149489031,
+              -0.97487921034868,
+              -0.189195860333492,
+              4.2307197740577
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0.000695131384978342,
+              -0.000424782519811373,
+              -2.22044604925031e-16
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "ViewpointTool"
+}
 
-              url "ecmascript:
+DEF Tool Script {
+  inputOutput    SFBool  enabled FALSE
+  inputOutput    SFBool  selected FALSE
+  inputOutput    SFBool  isBound TRUE
+  inputOutput    SFInt32 whichChoice_changed 0
+  inputOutput    SFNode  viewpoint NULL
+  initializeOnly SFNode  transform DEF Transform Transform {
+    children ScreenGroup {
+      children DEF Box Transform {
+        scaleOrientation 3.46944695195361e-17 -1.43709198143318e-17 1 3.92699081698724
+        children Shape {
+          appearance Appearance {
+            material Material {
+              transparency 1
+            }
+          }
+          geometry Box {
+            size 60 60 60
+          }
+        }
+      }
+    }
+  }
+  inputOutput    SFNode  self USE Tool
+
+  url "ecmascript:
 
 function set_viewpoint ()
 {
@@ -127,69 +197,16 @@ function set_geoViewpoint ()
 	whichChoice_changed = 0;
 }
 "
-            }
-          }
-          DEF nodes MetadataSet {
-            name "nodes"
-            reference "http://titania.create3000.de"
-          }
-        ]
-      }
-      DEF NavigationInfo MetadataSet {
-        name "NavigationInfo"
-        reference "http://titania.create3000.de"
-        value DEF type MetadataString {
-          name "type"
-          reference "http://titania.create3000.de"
-          value "EXAMINE"
-        }
-      }
-      DEF Viewpoint MetadataSet {
-        name "Viewpoint"
-        reference "http://titania.create3000.de"
-        value [
-          DEF position MetadataDouble {
-            name "position"
-            reference "http://titania.create3000.de"
-            value [
-              0.828256811988449,
-              0.136241362757648,
-              -0.0441878305824854
-            ]
-          }
-          DEF orientation MetadataDouble {
-            name "orientation"
-            reference "http://titania.create3000.de"
-            value [
-              0.0771547654677714,
-              -0.99369196604403,
-              -0.0813843890753203,
-              4.6527262660917
-            ]
-          }
-          DEF centerOfRotation MetadataDouble {
-            name "centerOfRotation"
-            reference "http://titania.create3000.de"
-            value [
-              0.000695131384978342,
-              -0.000424782519811373,
-              -2.22044604925031e-16
-            ]
-          }
-        ]
-      }
-    ]
-  }
-  title "ViewpointTool"
 }
 
-USE Tool
+DEF _4 BooleanSwitch {
+  children [
+    DEF _5 Group { }
+    USE Transform
+  ]
+}
 
-Transform { }
-
-USE Transform
-
-DEF _1 Transform {
+DEF _6 Transform {
   children Collision {
     enabled FALSE
     children ScreenGroup {
@@ -197,32 +214,19 @@ DEF _1 Transform {
         rotation 0 1 0 3.14159
         scale 8 8 8
         children [
-          DEF Cylinder Transform {
-            translation 0 0.51224 0.129679
-            rotation 6.52104999995729e-10 -3.61946999997629e-06 0.99999999999345 4.71239
-            scaleOrientation -0.0108843975971709 -0.025452394381154 -0.999616779325564 0.785487
-            children DEF _2 Shape {
-              appearance DEF _3 Appearance {
-                material Material {
-                  diffuseColor 0.2 0.2 0.2
-                  specularColor 1 1 1
-                }
-              }
-              geometry Cylinder { }
-            }
-          }
+          USE Cylinder
           DEF Cylinder_1 Transform {
             translation -4.9011e-06 0.512245 -1.22191
             rotation 8.03429999994739e-10 -3.6189799999763e-06 0.999999999993451 4.71239
             scale 0.999983 0.999983 1
             scaleOrientation 2.18250999999023e-06 -2.04758999999083e-06 -0.999999999995522 0.784907
-            children USE _2
+            children USE _1
           }
           DEF Box_1 Transform {
             translation -2.8327e-21 -0.13107 -0.550901
             scale 1 1.22448 1.25897
             children Shape {
-              appearance USE _3
+              appearance USE _2
               geometry Box { }
             }
           }
@@ -237,7 +241,7 @@ DEF _1 Transform {
                     scale 1.22447 1.22447 1.22447
                     scaleOrientation 0.997968674291364 0.0016424394639544 0.0636853792149007 0.198092
                     children Shape {
-                      appearance USE _3
+                      appearance USE _2
                       geometry DEF Cube IndexedFaceSet {
                         solid FALSE
                         coordIndex [
@@ -274,8 +278,8 @@ DEF _1 Transform {
                     translation 1.1422e-21 -0.0999999 1.18352
                     scale 0.709888 0.709874 0.709874
                     scaleOrientation -0.999999999999964 2.6894099999999e-08 -2.65377999999991e-07 1.5708
-                    children DEF _4 Shape {
-                      appearance USE _3
+                    children DEF _7 Shape {
+                      appearance USE _2
                       geometry Rectangle2D { }
                     }
                   }
@@ -286,7 +290,7 @@ DEF _1 Transform {
                   DEF Box_2 Transform {
                     translation 5.50571e-21 -0.0862152 1.44525
                     children Shape {
-                      appearance USE _3
+                      appearance USE _2
                       geometry DEF Cube_1 IndexedFaceSet {
                         solid FALSE
                         coordIndex [
@@ -333,16 +337,16 @@ DEF _1 Transform {
                   }
                   DEF Rectangle2D_1 Transform {
                     translation -6.98802e-20 -0.0862152 1.46945
-                    children USE _4
+                    children USE _7
                   }
                 ]
               }
             ]
           }
-          DEF _5 BooleanSwitch {
+          DEF _8 BooleanSwitch {
             whichChoice TRUE
             children [
-              DEF _6 Transform {
+              DEF _9 Transform {
                 scale 0.0833333 0.0833333 0.0833333
               }
               DEF Cylinder_2 Transform {
@@ -369,10 +373,11 @@ DEF _1 Transform {
   }
 }
 
-ROUTE Tool.isBound_changed TO _5.set_whichChoice
-ROUTE Transform.translation_changed TO _1.set_translation
-ROUTE Transform.rotation_changed TO _1.set_rotation
+ROUTE Tool.isBound_changed TO _8.set_whichChoice
+ROUTE Transform.translation_changed TO _6.set_translation
+ROUTE Transform.rotation_changed TO _6.set_rotation
 ROUTE Tool.whichChoice_changed_changed TO Lenses.set_whichChoice
+ROUTE Tool.selected_changed TO _4.set_whichChoice
 
 EXPORT Tool
 EXPORT Transform

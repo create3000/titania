@@ -50,8 +50,13 @@
 
 #include "X3DTransformNodeTool.h"
 
+#include "../../Browser/Networking/config.h"
+#include "../../Browser/Selection.h"
+#include "../../Browser/Tools/TransformToolOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Editing/Undo/UndoStepContainer.h"
+
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {

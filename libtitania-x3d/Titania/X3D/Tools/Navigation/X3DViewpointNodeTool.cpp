@@ -190,6 +190,8 @@ X3DViewpointNodeTool::addTool ()
 		const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("Transform");
 
 		transformTool -> setField <SFBool> ("enabled", true);
+
+		getToolNode () -> setField <SFBool> ("selected", true);
 	}
 	catch (const X3DError & error)
 	{
@@ -210,6 +212,8 @@ X3DViewpointNodeTool::removeTool (const bool really)
 			const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("Transform");
 
 			transformTool -> setField <SFBool> ("enabled", false);
+
+			getToolNode () -> setField <SFBool> ("selected", false);
 		}
 		catch (const X3DError & error)
 		{
