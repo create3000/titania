@@ -53,11 +53,6 @@
 
 #include "../Core/X3DSensorNodeTool.h"
 
-#include "../../Browser/Networking/config.h"
-#include "../../Browser/Selection.h"
-#include "../../Browser/X3DBrowser.h"
-#include "../../Rendering/X3DRenderObject.h"
-
 #include "../../Components/EnvironmentalSensor/X3DEnvironmentalSensorNode.h"
 #include "../../Components/Grouping/X3DBoundedObject.h"
 
@@ -124,17 +119,19 @@ public:
 	
 	virtual
 	Box3d
-	getBBox () const final override
-	{
-		if (getBrowser () -> getDisplayTools () .top ())
-			return Box3d (size () .getValue (), center () .getValue ());
-
-		return Box3d ();
-	}
+	getBBox () const final override;
 
 	virtual
 	void
 	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
+	virtual
+	void
+	beginUndo () final override;
+
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep) final override;
 
 	virtual
 	void
@@ -148,29 +145,17 @@ public:
 
 	virtual
 	void
-	dispose () override
-	{
-		X3DBoundedObject::dispose ();
-		X3DSensorNodeTool::dispose ();
+	dispose () override;
 
-		removeChildObjects (bboxSize (), bboxCenter ());
-	}
+	virtual
+	~X3DEnvironmentalSensorNodeTool () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DEnvironmentalSensorNodeTool (const Color3f & color) :
-		X3DEnvironmentalSensorNode (),
-		         X3DSensorNodeTool (),
-		          X3DBoundedObject (),
-		                    color (color)
-	{
-		addType (X3DConstants::X3DEnvironmentalSensorNodeTool);
-
-		addChildObjects (bboxSize (), bboxCenter ());
-	}
+	X3DEnvironmentalSensorNodeTool (const Color3f & color);
 
 	virtual
 	void
@@ -183,115 +168,13 @@ protected:
 
 private:
 
-	void
-	reshape (X3DRenderObject* const renderObject);
-
 	///  @name Members
 
 	Color3f  color;
+	Vector3f startSize;
+	Vector3f startCenter;
 
 };
-
-inline
-void
-X3DEnvironmentalSensorNodeTool::initialize ()
-{
-	X3DSensorNodeTool::initialize ();
-	X3DBoundedObject::initialize ();
-
-	requestAsyncLoad ({ get_tool ("EnvironmentalSensor.x3dv") .str () });
-}
-
-inline
-void
-X3DEnvironmentalSensorNodeTool::realize ()
-{
-	try
-	{
-		addTool ();
-
-		getToolNode () -> setField <SFColor> ("color", color);
-		getToolNode () -> setField <SFNode>  ("node",  getNode <X3DEnvironmentalSensorNode> ());
-
-		auto & set_enabled = getToolNode () -> getField <SFBool> ("set_enabled");
-		enabled () .addInterest (set_enabled);
-		set_enabled = getNode <X3DEnvironmentalSensorNode> () -> enabled ();
-
-		auto & set_size = getToolNode () -> getField <SFVec3f> ("set_size");
-		size () .addInterest (set_size);
-		set_size = getNode <X3DEnvironmentalSensorNode> () -> size ();
-
-		auto & set_center = getToolNode () -> getField <SFVec3f> ("set_center");
-		center () .addInterest (set_center);
-		set_center = getNode <X3DEnvironmentalSensorNode> () -> center ();
-	}
-	catch (const X3DError & error)
-	{ }
-}
-
-inline
-void
-X3DEnvironmentalSensorNodeTool::addTool ()
-{
-	try
-	{
-		getToolNode () -> setField <SFBool> ("set_selected", getBrowser () -> getSelection () -> isSelected (SFNode (this)));
-	}
-	catch (const X3DError &)
-	{ }
-}
-
-inline
-void
-X3DEnvironmentalSensorNodeTool::removeTool (const bool really)
-{
-	if (really)
-		X3DSensorNodeTool::removeTool ();
-	
-	else
-	{
-		try
-		{
-			getToolNode () -> setField <SFBool> ("set_selected", false);
-		}
-		catch (const X3DError &)
-		{ }
-	}
-}
-
-inline
-void
-X3DEnvironmentalSensorNodeTool::reshape (X3DRenderObject* const renderObject)
-{
-	try
-	{
-	   getBrowser () -> endUpdateForFrame ();
-		
-		getToolNode () -> setField <SFMatrix4f> ("cameraSpaceMatrix", renderObject -> getCameraSpaceMatrix () .get (), true);
-		getToolNode () -> setField <SFMatrix4f> ("modelViewMatrix",   renderObject -> getModelViewMatrix   () .get (), true);
-
-		getBrowser () -> processEvents ();
-	   getBrowser () -> beginUpdateForFrame ();
-	}
-	catch (const X3DError & error)
-	{
-		getBrowser () -> beginUpdateForFrame ();
-	}
-}
-
-inline
-void
-X3DEnvironmentalSensorNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
-{
-	getNode <X3DEnvironmentalSensorNode> () -> traverse (type, renderObject);
-
-	// Tool
-
-	if (type == TraverseType::DISPLAY) // Last chance to process events
-		reshape (renderObject);
-
-	X3DToolObject::traverse (type, renderObject);
-}
 
 } // X3D
 } // titania

@@ -88,6 +88,9 @@ X3DEnvironmentalSensorEditor::set_selection (const X3D::MFNode & selection)
 
 	getEnvironmentalSensorExpander () .set_visible (sensor);
 
+	if (sensor)
+		getEnvironmentalSensorExpander () .set_label (_ (refineName (sensor -> getTypeName ())));
+
 	enabled .setNodes (sensors);
 	size    .setNodes (sensors);
 	center  .setNodes (sensors);

@@ -1,11 +1,14 @@
-#X3D V3.3 utf8 Titania V2.0.0
+#X3D V3.3 utf8 Titania V3.0.0
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Thu, 29 May 2014 16:43:52 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V2.0.0, http://titania.create3000.de"
+META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/EnvironmentalSensor.x3dv"
-META "modified" "Mon, 26 Sep 2016 00:54:17 GMT"
+META "modified" "Tue, 14 Mar 2017 16:19:17 GMT"
+META "outputStyle" "nicest"
 
 EXTERNPROTO BooleanSwitch [
   inputOutput    SFBool  whichChoice
@@ -17,258 +20,6 @@ EXTERNPROTO BooleanSwitch [
 ]
 "library/BooleanSwitch.x3dv"
 
-PROTO EnvironmentalSensor [
-  # required fields
-  inputOutput SFBool     enabled TRUE
-  inputOutput SFBool     selected TRUE
-  inputOutput SFColor    color 0.35 1 0.7
-  inputOutput SFVec3f    size 1 1 1
-  inputOutput SFVec3f    center 0 0 0
-  inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  outputOnly  SFBool     isActive
-  inputOutput SFNode     node NULL
-]
-{
-  Collision {
-    enabled FALSE
-    children DEF BoundingBox Transform {
-      translation IS center
-      children [
-        BooleanSwitch {
-          whichChoice IS selected
-          children [
-            DEF _1 Group { }
-            DEF Lines Shape {
-              appearance Appearance {
-                lineProperties DEF LineProperties LineProperties {
-                  linewidthScaleFactor 1
-                }
-                material Material {
-                  emissiveColor 1 1 1
-                  transparency 0.2
-                }
-              }
-              geometry IndexedLineSet {
-                coordIndex [
-                  0,
-                  1,
-                  2,
-                  3,
-                  0,
-                  -1,
-                  4,
-                  5,
-                  6,
-                  7,
-                  4,
-                  -1,
-                  0,
-                  4,
-                  -1,
-                  3,
-                  7,
-                  -1,
-                  1,
-                  5,
-                  -1,
-                  2,
-                  6,
-                  -1
-                ]
-                coord DEF BBox Coordinate {
-                  point [
-                    -0.5 0.5 0.5,
-                    -0.5 -0.5 0.5,
-                    0.5 -0.5 0.5,
-                    0.5 0.5 0.5,
-                    -0.5 0.5 -0.5,
-                    -0.5 -0.5 -0.5,
-                    0.5 -0.5 -0.5,
-                    0.5 0.5 -0.5
-                  ]
-                }
-              }
-            }
-          ]
-        }
-        DEF Front Transform {
-          translation 0 0 0.5
-          children Transform {
-            children [
-              DEF FrontSensor PlaneSensor {
-                enabled FALSE
-                autoOffset FALSE
-              }
-              DEF Plane Shape {
-                appearance DEF Transparent Appearance {
-                  material DEF BBoxMaterial Material {
-                    ambientIntensity 0
-                    diffuseColor 0.2 0.2 0.2
-                    emissiveColor 0.35 1 0.7
-                    shininess 0
-                    transparency 0.5
-                  }
-                }
-                geometry Rectangle2D {
-                  size 1 1
-                  solid FALSE
-                }
-              }
-            ]
-          }
-        }
-        DEF Right Transform {
-          translation 0.5 0 0
-          children Transform {
-            rotation 0 1 0 1.5708
-            children [
-              DEF RightSensor PlaneSensor {
-                enabled FALSE
-                autoOffset FALSE
-              }
-              USE Plane
-            ]
-          }
-        }
-        DEF Back Transform {
-          translation 0 0 -0.5
-          children Transform {
-            rotation 0 1 0 3.14159
-            children [
-              DEF BackSensor PlaneSensor {
-                enabled FALSE
-                autoOffset FALSE
-              }
-              USE Plane
-            ]
-          }
-        }
-        DEF Left Transform {
-          translation -0.5 0 0
-          children Transform {
-            rotation 0 -1 0 1.5708
-            children [
-              DEF LeftSensor PlaneSensor {
-                enabled FALSE
-                autoOffset FALSE
-              }
-              USE Plane
-            ]
-          }
-        }
-        DEF Top Transform {
-          translation 0 0.5 0
-          children Transform {
-            rotation -1 0 0 1.5708
-            children [
-              DEF TopSensor PlaneSensor {
-                enabled FALSE
-                autoOffset FALSE
-              }
-              USE Plane
-            ]
-          }
-        }
-        DEF Bottom Transform {
-          translation 0 -0.5 0
-          children Transform {
-            rotation 1 0 0 1.5708
-            children [
-              DEF BottomSensor PlaneSensor {
-                enabled FALSE
-                autoOffset FALSE
-              }
-              USE Plane
-            ]
-          }
-        }
-      ]
-    }
-  }
-
-  DEF BBoxScript Script {
-    inputOutput    SFBool     enabled IS enabled
-    inputOutput    SFColor    color IS color
-    inputOutput    SFMatrix4f cameraSpaceMatrix IS cameraSpaceMatrix
-    inputOutput    SFMatrix4f modelViewMatrix IS modelViewMatrix
-    inputOutput    SFVec3f    bboxSize IS size
-    initializeOnly SFFloat    offset 0
-    initializeOnly SFNode     bbox USE BBox
-    initializeOnly SFNode     front USE Front
-    initializeOnly SFNode     right USE Right
-    initializeOnly SFNode     back USE Back
-    initializeOnly SFNode     left USE Left
-    initializeOnly SFNode     top USE Top
-    initializeOnly SFNode     bottom USE Bottom
-    inputOutput    SFNode     node IS node
-    initializeOnly SFNode     material USE BBoxMaterial
-
-    url "peaseblossom:
-
-function initialize ()
-{
-	set_color ();
-}
-
-function set_enabled ()
-{
-	set_color ();
-}
-
-function set_color ()
-{
-	if (enabled)
-		material .emissiveColor = color;
-	else
-		material .emissiveColor = new SFColor (color .r / 2, color .g / 2, color .b / 2);
-}
-
-function eventsProcessed ()
-{
-	var bboxSize1_2 = bboxSize .divide (2);
-
-	// BBox
-
-	bbox .point = new MFVec3f (new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z),
-	                           new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z), 
-	                           new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y,  bboxSize1_2 .z), 
-	                           new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y,  bboxSize1_2 .z), 
-	                           new SFVec3f (-bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z), 
-	                           new SFVec3f (-bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z), 
-	                           new SFVec3f ( bboxSize1_2 .x, -bboxSize1_2 .y, -bboxSize1_2 .z), 
-	                           new SFVec3f ( bboxSize1_2 .x,  bboxSize1_2 .y, -bboxSize1_2 .z));
-
-	// Position and scale planes
-
-	var scale = new SFVec3f ();
-	var m     = modelViewMatrix .multRight (cameraSpaceMatrix); // m = transformationMatrix
-	m .getTransform (null, null, scale);
-
-	var x = offset / Math .abs (scale .x);
-	var y = offset / Math .abs (scale .y);
-	var z = offset / Math .abs (scale .z);
-
-	front  .translation = new SFVec3f ( 0,  0,  z + bboxSize1_2 .z);
-	right  .translation = new SFVec3f ( x + bboxSize1_2 .x,  0,  0);
-	back   .translation = new SFVec3f ( 0,  0, -z - bboxSize1_2 .z);
-	left   .translation = new SFVec3f (-x - bboxSize1_2 .x,  0,  0);
-	top    .translation = new SFVec3f ( 0,  y + bboxSize1_2 .y,  0);
-	bottom .translation = new SFVec3f ( 0, -y - bboxSize1_2 .y,  0);
-	
-	front  .scale = new SFVec3f (bboxSize .x, bboxSize .y, 1);
-	right  .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
-	back   .scale = new SFVec3f (bboxSize .x, bboxSize .y, 1);
-	left   .scale = new SFVec3f (1, bboxSize .y, bboxSize .z);
-	top    .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
-	bottom .scale = new SFVec3f (bboxSize .x, 1, bboxSize .z);
-
-}
-"
-    directOutput TRUE
-  }
-}
-
 WorldInfo {
   metadata DEF Titania MetadataSet {
     name "Titania"
@@ -277,10 +28,35 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value DEF previous MetadataSet {
-          name "previous"
-          reference "http://titania.create3000.de"
-        }
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+            value TouchGroup {
+              enabled FALSE
+              children DEF Box Transform {
+                children Shape {
+                  appearance Appearance {
+                    material DEF BoxMaterial Material {
+                      ambientIntensity 0
+                      diffuseColor 0.2 0.2 0.2
+                      emissiveColor 0.0875 0.25 0.175
+                      shininess 0
+                      transparency 0.5
+                    }
+                  }
+                  geometry Box {
+                    size 1 1 1
+                  }
+                }
+              }
+            }
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+        ]
       }
       DEF NavigationInfo MetadataSet {
         name "NavigationInfo"
@@ -299,19 +75,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              10
+              3.34630913748991,
+              4.14241507017866,
+              8.46419591826121
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              1,
-              0
+              -0.743714430510542,
+              0.653311689577789,
+              0.141678093265665,
+              0.567451161073157
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -330,8 +106,77 @@ WorldInfo {
   title "EnvironmentalSensor"
 }
 
-DEF Tool EnvironmentalSensor {
-  color 0.5 0 1
+Collision {
+  enabled FALSE
+  children [
+    DEF _1 BooleanSwitch {
+      whichChoice TRUE
+      children [
+        DEF _2 Group { }
+        DEF TransformTool Transform {
+          children Shape {
+            appearance Appearance {
+              material Material {
+                transparency 1
+              }
+            }
+            geometry Box {
+              size 1 1 1
+            }
+          }
+        }
+      ]
+    }
+    USE Box
+  ]
 }
 
+DEF Tool Script {
+  inputOutput    SFBool  enabled FALSE
+  inputOutput    SFBool  selected FALSE
+  inputOutput    SFColor color 0.35 1 0.7
+  inputOutput    SFNode  node NULL
+  initializeOnly SFNode  material USE BoxMaterial
+  initializeOnly SFNode  transform USE TransformTool
+
+  url "ecmascript:
+
+function initialize ()
+{
+	set_color ();
+}
+
+function set_enabled ()
+{
+	set_color ();
+}
+
+function set_color ()
+{
+	if (enabled)
+		material .emissiveColor = color;
+	else
+		material .emissiveColor = new SFColor (color .r / 4, color .g / 4, color .b / 4);
+}
+
+function set_node ()
+{
+	Browser .addRoute (node, \"size\", transform, \"scale\");
+	Browser .addRoute (node, \"center\", transform, \"translation\");
+
+	Browser .addRoute (transform, \"scale\", node, \"size\");
+	Browser .addRoute (transform, \"translation\", node, \"center\");
+
+	transform .scale       = node .size;
+	transform .translation = node .center;
+}
+"
+  directOutput TRUE
+}
+
+ROUTE Tool.selected_changed TO _1.set_whichChoice
+ROUTE TransformTool.translation_changed TO Box.set_translation
+ROUTE TransformTool.scale_changed TO Box.set_scale
+
 EXPORT Tool
+EXPORT TransformTool

@@ -610,6 +610,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Core/X3DBaseTool.cpp \
 	Titania/X3D/Tools/Core/X3DNodeTool.cpp \
 	Titania/X3D/Tools/Core/X3DToolObject.cpp \
+	Titania/X3D/Tools/EnvironmentalSensor/X3DEnvironmentalSensorNodeTool.cpp \
 	Titania/X3D/Tools/Geometry2D/Arc2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/ArcClose2DTool.cpp \
 	Titania/X3D/Tools/Geometry2D/Circle2DTool.cpp \

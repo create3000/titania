@@ -157,6 +157,7 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("IndexButton", m_IndexButton);
+	m_builder -> get_widget ("NodePropertiesExpander", m_NodePropertiesExpander);
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
@@ -295,17 +296,17 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BBoxSizeZSpinButton", m_BBoxSizeZSpinButton);
 	m_builder -> get_widget ("BBoxUniformSizeButton", m_BBoxUniformSizeButton);
 	m_builder -> get_widget ("BBoxUniformSizeImage", m_BBoxUniformSizeImage);
-	m_builder -> get_widget ("BBoxCenterBox", m_BBoxCenterBox);
-	m_builder -> get_widget ("BBoxCenterXSpinButton", m_BBoxCenterXSpinButton);
-	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
-	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
-	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
 	m_builder -> get_widget ("BBoxSizeXLabel", m_BBoxSizeXLabel);
 	m_builder -> get_widget ("BBoxSizeYLabel", m_BBoxSizeYLabel);
 	m_builder -> get_widget ("BBoxSizeZLabel", m_BBoxSizeZLabel);
 	m_builder -> get_widget ("BBoxCenterXLabel", m_BBoxCenterXLabel);
 	m_builder -> get_widget ("BBoxCenterYLabel", m_BBoxCenterYLabel);
 	m_builder -> get_widget ("BBoxCenterZLabel", m_BBoxCenterZLabel);
+	m_builder -> get_widget ("FillBoundingBoxFieldsButton", m_FillBoundingBoxFieldsButton);
+	m_builder -> get_widget ("BBoxCenterBox", m_BBoxCenterBox);
+	m_builder -> get_widget ("BBoxCenterXSpinButton", m_BBoxCenterXSpinButton);
+	m_builder -> get_widget ("BBoxCenterYSpinButton", m_BBoxCenterYSpinButton);
+	m_builder -> get_widget ("BBoxCenterZSpinButton", m_BBoxCenterZSpinButton);
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_index_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'TransformUniformScaleButton'.

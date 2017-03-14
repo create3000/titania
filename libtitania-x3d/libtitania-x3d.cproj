@@ -1621,6 +1621,7 @@
     <Compile Include="Titania\X3D\Tools\Lighting\SpotLightTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Lighting\DirectionalLightTool.cpp" />
     <Compile Include="Titania\X3D\Tools\Lighting\PointLightTool.cpp" />
+    <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\X3DEnvironmentalSensorNodeTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

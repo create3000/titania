@@ -513,6 +513,7 @@ SFNode
 Selection::getTransform (const MFNode & hierarchy) const
 {
 	static const std::set <NodeType> lowestTypes = {
+		X3DConstants::X3DEnvironmentalSensorNode,
 		X3DConstants::X3DLightNode,
 		X3DConstants::X3DTransformNode,
 		X3DConstants::X3DViewpointNode,

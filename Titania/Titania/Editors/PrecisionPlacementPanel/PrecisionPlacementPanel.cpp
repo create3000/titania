@@ -151,7 +151,7 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 	bboxSize   .setNodes (boundedObjects);
 	bboxCenter .setNodes (boundedObjects);
 
-	getFillBoundingBoxFieldsButton () .set_sensitive (boundedObject);
+	getFillBoundingBoxFieldsButton () .set_sensitive (boundedObject and not boundedObject -> isType ({ X3D::X3DConstants::X3DEnvironmentalSensorNode }));
 	getWindow () .resize (getWindow () .get_width (), 1);
 
 	if (boundedObject or geometryNode)

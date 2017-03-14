@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Tue, 14 Mar 2017 10:56:03 GMT"
+META "modified" "Tue, 14 Mar 2017 16:11:28 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]
@@ -145,20 +145,21 @@ WorldInfo {
             name "nodes"
             reference "http://titania.create3000.de"
             value DEF ModeScript Script {
-              inputOnly   SFBool   set_active
-              inputOnly   SFTime   set_time
-              inputOutput SFBool   pickable TRUE
-              inputOutput MFString tools [
+              inputOnly      SFBool   set_active
+              inputOnly      SFTime   set_time
+              inputOutput    SFBool   pickable TRUE
+              inputOutput    MFString tools [
                 "MOVE",
                 "ROTATE",
                 "SCALE"
               ]
-              inputOutput SFVec3f  bboxSize 0 0 0
-              outputOnly  SFTime   touchTime
-              outputOnly  SFBool   move
-              outputOnly  SFBool   rotate
-              outputOnly  SFBool   scale
-              outputOnly  SFInt32  whichChoice_changed
+              inputOutput    SFVec3f  bboxSize 0 0 0
+              outputOnly     SFTime   touchTime
+              outputOnly     SFBool   move
+              outputOnly     SFBool   rotate
+              outputOnly     SFBool   scale
+              outputOnly     SFInt32  whichChoice_changed
+              initializeOnly SFInt32  tool 0
 
               url "peaseblossom:
 
@@ -186,13 +187,14 @@ function set_active (value, time)
 function set_time (value, time)
 {
 	if (bboxSize .length ())
-		set_tool ((whichChoice_changed + 1) % tools .length);
+		set_tool ((tool + 1) % tools .length);
 	else
 		set_tool (0);
 }
 
 function set_tool (value)
 {
+	tool   = value;
 	move   = false;
 	rotate = false;
 	scale  = false;

@@ -478,6 +478,10 @@ public:
 	getIndexButton () const
 	{ return *m_IndexButton; }
 
+	Gtk::Expander &
+	getNodePropertiesExpander () const
+	{ return *m_NodePropertiesExpander; }
+
 	Gtk::Box &
 	getNameBox () const
 	{ return *m_NameBox; }
@@ -1030,26 +1034,6 @@ public:
 	getBBoxUniformSizeImage () const
 	{ return *m_BBoxUniformSizeImage; }
 
-	Gtk::Box &
-	getBBoxCenterBox () const
-	{ return *m_BBoxCenterBox; }
-
-	Gtk::SpinButton &
-	getBBoxCenterXSpinButton () const
-	{ return *m_BBoxCenterXSpinButton; }
-
-	Gtk::SpinButton &
-	getBBoxCenterYSpinButton () const
-	{ return *m_BBoxCenterYSpinButton; }
-
-	Gtk::SpinButton &
-	getBBoxCenterZSpinButton () const
-	{ return *m_BBoxCenterZSpinButton; }
-
-	Gtk::Button &
-	getFillBoundingBoxFieldsButton () const
-	{ return *m_FillBoundingBoxFieldsButton; }
-
 	Gtk::Label &
 	getBBoxSizeXLabel () const
 	{ return *m_BBoxSizeXLabel; }
@@ -1073,6 +1057,26 @@ public:
 	Gtk::Label &
 	getBBoxCenterZLabel () const
 	{ return *m_BBoxCenterZLabel; }
+
+	Gtk::Button &
+	getFillBoundingBoxFieldsButton () const
+	{ return *m_FillBoundingBoxFieldsButton; }
+
+	Gtk::Box &
+	getBBoxCenterBox () const
+	{ return *m_BBoxCenterBox; }
+
+	Gtk::SpinButton &
+	getBBoxCenterXSpinButton () const
+	{ return *m_BBoxCenterXSpinButton; }
+
+	Gtk::SpinButton &
+	getBBoxCenterYSpinButton () const
+	{ return *m_BBoxCenterYSpinButton; }
+
+	Gtk::SpinButton &
+	getBBoxCenterZSpinButton () const
+	{ return *m_BBoxCenterZSpinButton; }
 
 	///  @name Signal handlers
 
@@ -1252,6 +1256,7 @@ private:
 	Gtk::Box*                      m_Widget;
 	Gtk::HeaderBar*                m_HeaderBar;
 	Gtk::Button*                   m_IndexButton;
+	Gtk::Expander*                 m_NodePropertiesExpander;
 	Gtk::Box*                      m_NameBox;
 	Gtk::Entry*                    m_NameEntry;
 	Gtk::Button*                   m_RenameButton;
@@ -1390,17 +1395,17 @@ private:
 	Gtk::SpinButton*               m_BBoxSizeZSpinButton;
 	Gtk::ToggleButton*             m_BBoxUniformSizeButton;
 	Gtk::Image*                    m_BBoxUniformSizeImage;
-	Gtk::Box*                      m_BBoxCenterBox;
-	Gtk::SpinButton*               m_BBoxCenterXSpinButton;
-	Gtk::SpinButton*               m_BBoxCenterYSpinButton;
-	Gtk::SpinButton*               m_BBoxCenterZSpinButton;
-	Gtk::Button*                   m_FillBoundingBoxFieldsButton;
 	Gtk::Label*                    m_BBoxSizeXLabel;
 	Gtk::Label*                    m_BBoxSizeYLabel;
 	Gtk::Label*                    m_BBoxSizeZLabel;
 	Gtk::Label*                    m_BBoxCenterXLabel;
 	Gtk::Label*                    m_BBoxCenterYLabel;
 	Gtk::Label*                    m_BBoxCenterZLabel;
+	Gtk::Button*                   m_FillBoundingBoxFieldsButton;
+	Gtk::Box*                      m_BBoxCenterBox;
+	Gtk::SpinButton*               m_BBoxCenterXSpinButton;
+	Gtk::SpinButton*               m_BBoxCenterYSpinButton;
+	Gtk::SpinButton*               m_BBoxCenterZSpinButton;
 
 };
 
