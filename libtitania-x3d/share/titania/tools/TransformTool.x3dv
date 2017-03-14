@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Tue, 14 Mar 2017 10:09:26 GMT"
+META "modified" "Tue, 14 Mar 2017 10:56:03 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]

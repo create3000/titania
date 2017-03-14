@@ -512,6 +512,16 @@ Selection::getGeometries (const X3D::MFNode & nodes) const
 SFNode
 Selection::getTransform (const MFNode & hierarchy) const
 {
+	static const std::set <NodeType> lowestTypes = {
+		X3DConstants::X3DLightNode,
+		X3DConstants::X3DTransformNode,
+		X3DConstants::X3DViewpointNode,
+	};
+
+	static const std::set <NodeType> highestTypes = {
+		X3DConstants::X3DTransformNode,
+	};
+
 	SFNode node;
 
 	if (selectLowest)
@@ -529,14 +539,14 @@ Selection::getTransform (const MFNode & hierarchy) const
 			if (not node)
 				node = lowest;
 
-			if (lowest -> isType ({ X3DConstants::X3DTransformNode, X3DConstants::X3DViewpointNode, X3DConstants::X3DLightNode }))
+			if (lowest -> isType (lowestTypes))
 				return lowest;
 		}
 	}
 	else
 	{
 		// Find highest Transform.
-	
+
 		for (const auto & highest : hierarchy)
 		{
 			if (not highest)
@@ -544,11 +554,11 @@ Selection::getTransform (const MFNode & hierarchy) const
 
 			if (highest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
 				continue;
-	
+
 			if (not node)
 				node = highest;
-	
-			if (highest -> isType ({ X3DConstants::X3DTransformNode }))
+
+			if (highest -> isType (highestTypes))
 				return highest;
 		}
 
