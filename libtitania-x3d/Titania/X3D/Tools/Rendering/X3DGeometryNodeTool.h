@@ -252,10 +252,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_toolType ();
+	set_loadState ();
 
 	void
-	set_loadState ();
+	set_toolType ();
 
 	void
 	set_pickable ();

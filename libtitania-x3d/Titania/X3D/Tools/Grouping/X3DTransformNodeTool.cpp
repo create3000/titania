@@ -64,6 +64,7 @@ X3DTransformNodeTool::Fields::Fields () :
 	        tools (new MFString ({ "MOVE", "ROTATE", "SCALE" })),
 	  displayBBox (new SFBool (true)),
 	displayCenter (new SFBool (true)),
+	        color (new SFColor (ToolColors::GREEN)),
 	     isActive (new SFBool ()),
 	    touchTime (new SFTime ())
 { }
@@ -71,6 +72,7 @@ X3DTransformNodeTool::Fields::Fields () :
 X3DTransformNodeTool::X3DTransformNodeTool () :
 	            X3DTransformNode (),
 	X3DTransformMatrix3DNodeTool (ToolColors::GREEN),
+	              availableTools (),
 	        transformationMatrix (),
 	                      matrix (),
 	                  undoMatrix (),
@@ -82,6 +84,7 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 	addField (inputOutput, "tools",         tools ());
 	addField (inputOutput, "displayBBox",   displayBBox ());
 	addField (inputOutput, "displayCenter", displayCenter ());
+	addField (inputOutput, "color",         color ());
 	addField (outputOnly,  "isActive",      isActive ());
 	addField (outputOnly,  "touchTime",     touchTime ());
 
@@ -93,7 +96,7 @@ X3DTransformNodeTool::setExecutionContext (X3DExecutionContext* const executionC
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNodeTool> ());
+	getBrowser () -> getTransformTools () .remove (X3DWeakPtr <X3DTransformNodeTool> (this));
 
 	X3DTransformMatrix3DNodeTool::setExecutionContext (executionContext);
 
@@ -105,11 +108,15 @@ X3DTransformNodeTool::initialize ()
 {
 	X3DChildNodeTool::initialize ();
 
+	tools () .addInterest (&X3DTransformNodeTool::set_tools, this);
+
 	getBrowser () -> getTransformTools () .emplace_back (this);
 
-	setTransformTool (this);
+	setTransformTool (X3DWeakPtr <X3DTransformNode> (this));
 
 	requestAsyncLoad ({ get_tool ("TransformTool.x3dv") .str () });
+
+	set_tools ();
 }
 
 void
@@ -138,11 +145,13 @@ X3DTransformNodeTool::realize ()
 		tools ()         .addInterest (getToolNode () -> getField <MFString> ("tools"));
 		displayBBox ()   .addInterest (getToolNode () -> getField <SFBool>   ("displayBBox"));
 		displayCenter () .addInterest (getToolNode () -> getField <SFBool>   ("displayCenter"));
+		color ()         .addInterest (getToolNode () -> getField <SFColor>  ("color"));
 
 		getToolNode () -> setField <SFBool>   ("enabled",       enabled ());
 		getToolNode () -> setField <MFString> ("tools",         tools ());
 		getToolNode () -> setField <SFBool>   ("displayBBox",   displayBBox ());
 		getToolNode () -> setField <SFBool>   ("displayCenter", displayCenter ());
+		getToolNode () -> setField <SFColor>  ("color",         color ());
 	}
 	catch (const X3DError & error)
 	{ }
@@ -193,7 +202,23 @@ X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const 
 {
 	try
 	{
-		const auto matrix = getMatrix () * transformationMatrix * absoluteMatrix * inverse (transformationMatrix);
+		auto matrix = getMatrix () * transformationMatrix * absoluteMatrix * inverse (transformationMatrix);
+
+		Vector3d t, s;
+		Rotation4d r, so;
+
+		matrix .get (t, r, s, so);
+
+		if (not availableTools .count (ToolType::MOVE))
+			t = Vector3d ();
+
+		if (not availableTools .count (ToolType::ROTATE))
+			r = Rotation4d ();
+
+		if (not availableTools .count (ToolType::SCALE))
+			s = Vector3d ();
+
+		matrix .set (t, r, s, so);
 
 		if (keepCenter)
 			setMatrixKeepCenter (matrix);
@@ -229,6 +254,28 @@ X3DTransformNodeTool::endUndo (const UndoStepPtr & undoStep)
 		                             X3DPtr <X3DTransformNode> (this),
 		                             getMatrix (),
 		                             center () .getValue ());
+	}
+}
+
+void
+X3DTransformNodeTool::set_tools ()
+{
+	static const std::map <std::string, ToolType> toolTypes = {
+		std::make_pair ("MOVE",   ToolType::MOVE),
+		std::make_pair ("ROTATE", ToolType::ROTATE),
+		std::make_pair ("SCALE",  ToolType::SCALE),
+	};
+
+	availableTools .clear ();
+
+	for (const auto & tool : tools ())
+	{
+		try
+		{
+			availableTools .emplace (toolTypes .at (tool));
+		}
+		catch (const std::out_of_range &)
+		{ }
 	}
 }
 

@@ -65,6 +65,18 @@ TransformSensorTool::TransformSensorTool (X3DBaseNode* const node) :
 }
 
 void
+TransformSensorTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getTransformSensorTools () .remove (X3DWeakPtr <TransformSensorTool> (this));
+
+	X3DEnvironmentalSensorNodeTool::setExecutionContext (executionContext);
+
+	getBrowser () -> getTransformSensorTools () .emplace_back (this);
+}
+
+void
 TransformSensorTool::initialize ()
 {
 	X3DEnvironmentalSensorNodeTool::initialize ();

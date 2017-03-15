@@ -53,9 +53,10 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Grouping/Transform.h"
 #include "../../Rendering/X3DRenderObject.h"
 
-#include "../Grouping/TransformTool.h"
+#include "../Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
@@ -87,14 +88,12 @@ X3DEnvironmentalSensorNodeTool::realize ()
 {
 	try
 	{
-		const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("TransformTool");
+		setTransformTool (getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
 
-		transformTool -> addTool ();
-		transformTool -> setField <MFString> ("tools", MFString ({ "MOVE", "SCALE" }));
-		transformTool -> setField <SFBool> ("displayCenter", false);
-
-		setTransformTool (transformTool);
 		addTool ();
+
+		getTransformTool () -> setField <MFString> ("tools", MFString ({ "MOVE", "SCALE" }));
+		getTransformTool () -> setField <SFBool> ("displayCenter", false);
 
 		getToolNode () -> setField <SFColor> ("color", color);
 		getToolNode () -> setField <SFNode>  ("node",  getNode <X3DEnvironmentalSensorNode> ());
@@ -144,11 +143,10 @@ X3DEnvironmentalSensorNodeTool::addTool ()
 {
 	try
 	{
-		const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
-		const auto selected      = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+		const auto selected = getBrowser () -> getSelection () -> isSelected (SFNode (this));
 
-		transformTool  -> setField <SFBool> ("enabled",  selected);
-		getToolNode () -> setField <SFBool> ("selected", selected);
+		getTransformTool () -> setField <SFBool> ("enabled",  selected);
+		getToolNode ()      -> setField <SFBool> ("selected", selected);
 	}
 	catch (const X3DError &)
 	{ }
@@ -164,10 +162,8 @@ X3DEnvironmentalSensorNodeTool::removeTool (const bool really)
 	{
 		try
 		{
-			const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
-
-			transformTool  -> setField <SFBool> ("enabled",  false);
-			getToolNode () -> setField <SFBool> ("selected", false);
+			getTransformTool () -> setField <SFBool> ("enabled",  false);
+			getToolNode ()      -> setField <SFBool> ("selected", false);
 		}
 		catch (const X3DError &)
 		{ }

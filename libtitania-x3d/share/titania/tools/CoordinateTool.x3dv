@@ -1,13 +1,13 @@
-#X3D V3.3 utf8 Titania V2.0.1
+#X3D V3.3 utf8 Titania V3.0.0
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V2.0.1, http://titania.create3000.de"
+META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Thu, 23 Feb 2017 13:58:42 GMT"
+META "modified" "Wed, 15 Mar 2017 08:54:23 GMT"
 META "outputStyle" "nicest"
 
 WorldInfo {
@@ -65,32 +65,15 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
-            value DEF HotEdges Shape {
-              appearance Appearance {
-                lineProperties LineProperties {
-                  linewidthScaleFactor 2
-                }
-                material DEF HotMaterial Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.519546 0.173182 0.865911
-                }
-              }
-              geometry DEF HotEdgesGeometry IndexedLineSet { }
-            }
           }
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF ActiveFace Shape {
+            value DEF SelectionShape Shape {
               appearance Appearance {
-                material DEF ActvieFaceMaterial Material {
-                  diffuseColor 0 0 0
-                  emissiveColor 0.5 0.0792565 0
-                  transparency 0.635417
+                material Material {
+                  transparency 1
                 }
-              }
-              geometry DEF ActiveFaceGeometry IndexedFaceSet {
-                solid FALSE
               }
             }
           }
@@ -129,13 +112,7 @@ Collision {
       whichChoice 0
       children [
         DEF NoneGroup Group {
-          children DEF SelectionShape Shape {
-            appearance Appearance {
-              material Material {
-                transparency 1
-              }
-            }
-          }
+          children USE SelectionShape
         }
         DEF SelectionGroup Group {
           children [
@@ -166,6 +143,7 @@ Collision {
             DEF SculpBrushTouchSensor TouchSensor { }
           ]
         }
+        DEF TransformToolSelectionGroup Group { }
       ]
     }
     TouchGroup {
@@ -239,10 +217,21 @@ Collision {
             DEF MagicFaceSwitch Switch {
               whichChoice 0
               children [
-                USE ActiveFace
+                DEF ActiveFace Shape {
+                  appearance Appearance {
+                    material DEF ActvieFaceMaterial Material {
+                      diffuseColor 0 0 0
+                      emissiveColor 0.5 0.0792565 0
+                      transparency 0.635417
+                    }
+                  }
+                  geometry DEF ActiveFaceGeometry IndexedFaceSet {
+                    solid FALSE
+                  }
+                }
                 DEF HotFace Shape {
                   appearance Appearance {
-                    material DEF HotMaterial_1 Material {
+                    material DEF HotMaterial Material {
                       diffuseColor 0 0 0
                       emissiveColor 0.519546 0.173182 0.865911
                       transparency 0.635417
@@ -267,7 +256,18 @@ Collision {
                   }
                   geometry DEF ActiveEdgesGeometry IndexedLineSet { }
                 }
-                USE HotEdges
+                DEF HotEdges Shape {
+                  appearance Appearance {
+                    lineProperties LineProperties {
+                      linewidthScaleFactor 2
+                    }
+                    material DEF HotMaterial_1 Material {
+                      diffuseColor 0 0 0
+                      emissiveColor 0.519546 0.173182 0.865911
+                    }
+                  }
+                  geometry DEF HotEdgesGeometry IndexedLineSet { }
+                }
               ]
             }
             DEF MagicPointsSwitch Switch {
@@ -285,7 +285,7 @@ Collision {
                 DEF HotPoints Shape {
                   appearance Appearance {
                     lineProperties USE _3
-                    material USE HotMaterial
+                    material USE HotMaterial_1
                   }
                   geometry PointSet {
                     coord DEF HotPointCoord CoordinateDouble { }
@@ -301,11 +301,11 @@ Collision {
       whichChoice 0
       children [
         DEF None Group {
-          children DEF TransformToolSwitch Switch {
+          children DEF SelectionTransformToolSwitch Switch {
             children [
               Group { }
-              DEF Transform Transform {
-                children DEF TransformTool Transform {
+              DEF SelectionTransform Transform {
+                children DEF SelectionTransformTool Transform {
                   bboxSize 1 1 1
                 }
               }
@@ -313,7 +313,7 @@ Collision {
           }
         }
         DEF Select Group {
-          children USE TransformToolSwitch
+          children USE SelectionTransformToolSwitch
         }
         DEF Knife Group {
           children [
@@ -497,6 +497,7 @@ Collision {
             ]
           }
         }
+        DEF TransformTool Transform { }
       ]
     }
   ]
@@ -510,8 +511,8 @@ ROUTE MagicPointsSwitch.whichChoice_changed TO MagicFaceSwitch.set_whichChoice
 ROUTE HotEdgesGeometry.coord_changed TO HotFaceGeometry.set_coord
 ROUTE ActiveMaterial.emissiveColor_changed TO ActvieFaceMaterial.set_emissiveColor
 ROUTE ActvieFaceMaterial.emissiveColor_changed TO ActiveMaterial.set_emissiveColor
-ROUTE HotMaterial.emissiveColor_changed TO HotMaterial_1.set_emissiveColor
 ROUTE HotMaterial_1.emissiveColor_changed TO HotMaterial.set_emissiveColor
+ROUTE HotMaterial.emissiveColor_changed TO HotMaterial_1.set_emissiveColor
 ROUTE ActiveEdgesGeometry.coord_changed TO SelectedEdgesGeometry.set_coord
 ROUTE _6.linetype_changed TO _9.set_linetype
 ROUTE _9.linetype_changed TO _6.set_linetype
@@ -551,9 +552,10 @@ EXPORT SelectedEdgesGeometry
 EXPORT SelectedFacesGeometry
 EXPORT SelectionCoord
 EXPORT SelectionShape
+EXPORT SelectionTransform
+EXPORT SelectionTransformTool
+EXPORT SelectionTransformToolSwitch
 EXPORT ToolSwitch
 EXPORT TouchSensor
-EXPORT Transform
 EXPORT TransformTool
-EXPORT TransformToolSwitch
 EXPORT VerticesCoord

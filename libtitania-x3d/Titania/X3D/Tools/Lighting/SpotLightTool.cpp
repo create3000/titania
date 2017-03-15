@@ -50,7 +50,7 @@
 
 #include "SpotLightTool.h"
 
-#include "../Grouping/TransformTool.h"
+#include "../Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
@@ -69,11 +69,16 @@ SpotLightTool::SpotLightTool (X3DBaseNode* const node) :
 void
 SpotLightTool::realize ()
 {
-	X3DLightNodeTool::realize ();
-
-	const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
-
-	transformTool -> setField <MFString> ("tools", MFString ({ "MOVE", "ROTATE" }));
+	try
+	{
+		X3DLightNodeTool::realize ();
+	
+		getTransformTool () -> setField <MFString> ("tools", MFString ({ "MOVE", "ROTATE" }));
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

@@ -66,6 +66,13 @@ class X3DLightNodeTool :
 {
 public:
 
+	///  @name Common members
+
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override;
+
 	///  @name Fields
 
 	virtual

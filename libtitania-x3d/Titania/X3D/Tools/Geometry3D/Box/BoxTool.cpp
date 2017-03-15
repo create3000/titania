@@ -52,6 +52,8 @@
 
 #include "../../../Execution/X3DExecutionContext.h"
 
+#include "../../Grouping/X3DTransformNodeTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -63,19 +65,54 @@ BoxTool::BoxTool (X3DBaseNode* const node) :
 	                Box (node -> getExecutionContext ()),
 	        X3DBaseTool (node),
 	X3DGeometryNodeTool (),
-	             fields ()
+	             fields (),
+	          startSize ()
 {
 	addType (X3DConstants::BoxTool);
 
 	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
+
+	toolType () = "TRANSFORM";
 }
 
 void
 BoxTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
+
+	getTransformTool () .addInterest (&BoxTool::set_transform_tool, this);
+}
+
+void
+BoxTool::set_transform_tool ()
+{
+	size () .addInterest (getTransformTool () -> scale ());
+	getTransformTool () -> scale () .addInterest (size ());
+
+	getTransformTool () -> scale () = size ();
+}
+
+void
+BoxTool::beginUndo ()
+{
+__LOG__ << std::endl;
+	startSize = size ();
+}
+
+void
+BoxTool::endUndo (const UndoStepPtr & undoStep)
+{
+__LOG__ << std::endl;
+	if (size () not_eq startSize)
+	{
+		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (size ()), startSize);
+		undoStep -> addUndoFunction (&BoxTool::setChanging, X3DPtr <Box> (this), true);
+
+		undoStep -> addRedoFunction (&BoxTool::setChanging, X3DPtr <Box> (this), true);
+		undoStep -> addRedoFunction (&SFVec3f::setValue, std::ref (size ()), size ());
+	}
 }
 
 void

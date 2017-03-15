@@ -68,6 +68,18 @@ SoundTool::SoundTool (X3DBaseNode* const node) :
 }
 
 void
+SoundTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getSoundTools () .remove (X3DWeakPtr <SoundTool> (this));
+
+	X3DSoundNodeTool::setExecutionContext (executionContext);
+
+	getBrowser () -> getSoundTools () .emplace_back (this);
+}
+
+void
 SoundTool::initialize ()
 {
 	X3DSoundNodeTool::initialize ();
@@ -83,7 +95,7 @@ SoundTool::realize ()
 {
 	try
 	{
-		getToolNode () -> setField <SFNode>  ("sound", getNode <Sound> ());
+		getToolNode () -> setField <SFNode> ("sound", getNode <Sound> ());
 	}
 	catch (const X3DError & error)
 	{ }

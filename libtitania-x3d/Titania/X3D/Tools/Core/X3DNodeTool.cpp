@@ -65,19 +65,26 @@ X3DNodeTool::Fields::Fields () :
 { }
 
 X3DNodeTool::X3DNodeTool () :
-       X3DNode (),
-	X3DBaseTool (),
-        fields ()
+         X3DNode (),
+	  X3DBaseTool (),
+          fields (),
+	transformTool ()
 {
 	addType (X3DConstants::X3DNodeTool);
 
 	addField (outputOnly , "undo_changed", undo_changed ());
+
+	addChildObjects (transformTool);
 }
 
 void
-X3DNodeTool::setTransformTool (X3DTransformNode* const transformTool)
+X3DNodeTool::setTransformTool (const X3DWeakPtr <X3DTransformNode> & value)
 {
-	transformTool -> getField <SFBool> ("isActive") .addInterest (&X3DNodeTool::set_active, this);
+	value -> addTool ();
+
+	transformTool = X3DWeakPtr <X3DTransformNodeTool> (value);
+
+	transformTool -> isActive () .addInterest (&X3DNodeTool::set_active, this);
 }
 
 void
@@ -85,8 +92,8 @@ X3DNodeTool::setChanging (const X3DPtr <X3D::X3DNode> & node, const bool value)
 {
 	try
 	{
-		const auto tool          = X3DPtr <X3D::X3DToolObject> (node);
-		const auto transformTool = tool -> getInlineNode () -> getExportedNode <X3DTransformNodeTool> ("TransformTool");
+		const auto   tool          = X3DPtr <X3D::X3DNodeTool> (node);
+		const auto & transformTool = tool -> getTransformTool ();
 
 		transformTool -> setChanging (value);
 	}
@@ -97,9 +104,11 @@ X3DNodeTool::setChanging (const X3DPtr <X3D::X3DNode> & node, const bool value)
 void
 X3DNodeTool::set_active (const bool active)
 {
+	const auto & selection = getBrowser () -> getSelection ();
+
 	if (active)
 	{
-		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
+		for (const auto & node : selection -> getSelectGeometry () ? selection -> getGeometries () : selection -> getNodes ())
 		{
 			const X3DPtr <X3DNodeTool> tool (node);
 
@@ -111,7 +120,7 @@ X3DNodeTool::set_active (const bool active)
 	{
 		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit %s"), getTypeName () .c_str ()));
 
-		for (const auto & node : getBrowser () -> getSelection () -> getNodes ())
+		for (const auto & node : selection -> getSelectGeometry () ? selection -> getGeometries () : selection -> getNodes ())
 		{
 			const X3DPtr <X3DNodeTool> tool (node);
 
@@ -123,6 +132,9 @@ X3DNodeTool::set_active (const bool active)
 			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 	}
 }
+
+X3DNodeTool::~X3DNodeTool ()
+{ }
 
 } // X3D
 } // titania

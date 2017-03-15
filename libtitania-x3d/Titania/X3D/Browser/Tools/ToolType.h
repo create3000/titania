@@ -59,10 +59,10 @@ namespace X3D {
 enum class ToolType :
 	uint32_t
 {
-	NO_TOOL,
-	MOVE_TOOL,
-	ROTATE_TOOL,
-	SCALE_TOOL
+	DEFAULT,
+	MOVE,
+	ROTATE,
+	SCALE
 
 };
 

@@ -134,9 +134,9 @@ X3DIndexedFaceSetTransformObject::set_loadState ()
 		touchSensor         = inlineNode -> getExportedNode <TouchSensor>      ("TouchSensor");
 		planeSensor         = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensor");
 		planeSensorNormal   = inlineNode -> getExportedNode <PlaneSensor>      ("PlaneSensorNormal");
-		transformToolSwitch = inlineNode -> getExportedNode <Switch>           ("TransformToolSwitch");
-		transformNode       = inlineNode -> getExportedNode <Transform>        ("Transform");
-		transformTool       = inlineNode -> getExportedNode <Transform>        ("TransformTool");
+		transformToolSwitch = inlineNode -> getExportedNode <Switch>           ("SelectionTransformToolSwitch");
+		transformNode       = inlineNode -> getExportedNode <Transform>        ("SelectionTransform");
+		transformTool       = inlineNode -> getExportedNode <Transform>        ("SelectionTransformTool");
 		selectionCoord      = inlineNode -> getExportedNode <CoordinateDouble> ("SelectionCoord");
 
 		transform ()              .addInterest (&X3DIndexedFaceSetTransformObject::set_transform, this);

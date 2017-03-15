@@ -98,6 +98,11 @@ public:
 	endUndo (const UndoStepPtr & undoStep)
 	{ }
 
+	///  @name Construction
+
+	virtual
+	~X3DNodeTool () override;
+
 
 protected:
 
@@ -108,7 +113,11 @@ protected:
 	///  @name Member access
 
 	void
-	setTransformTool (X3DTransformNode* const transformTool);
+	setTransformTool (const X3DWeakPtr <X3DTransformNode> & value);
+
+	const X3DWeakPtr <X3DTransformNodeTool> &
+	getTransformTool () const
+	{ return transformTool; }
 
 	static
 	void
@@ -132,6 +141,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DWeakPtr <X3DTransformNodeTool> transformTool;
 
 };
 

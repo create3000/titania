@@ -55,13 +55,19 @@
 
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
+
 #include "../../Components/Core/X3DPrototypeInstance.h"
 #include "../../Components/Grouping/Switch.h"
+#include "../../Components/Grouping/Transform.h"
 #include "../../Components/NURBS/CoordinateDouble.h"
 #include "../../Components/Rendering/LineSet.h"
 #include "../../Components/Shape/Shape.h"
+
 #include "../../Rendering/ShapeContainer.h"
 #include "../../Rendering/X3DRenderObject.h"
+
+#include "../Grouping/X3DTransformNodeTool.h"
+#include "../ToolColors.h"
 
 namespace titania {
 namespace X3D {
@@ -135,6 +141,21 @@ X3DGeometryNodeTool::initialize ()
 }
 
 void
+X3DGeometryNodeTool::set_loadState ()
+{
+	try
+	{
+		set_toolType ();
+		set_pickable ();
+		eventProcessed ();
+	}
+	catch (const X3DError & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
 X3DGeometryNodeTool::set_toolType ()
 {
 	try
@@ -146,21 +167,22 @@ X3DGeometryNodeTool::set_toolType ()
 
 			toolSwich -> whichChoice () = 0;
 		}
-	}
-	catch (const X3DError & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-	}
-}
+		else if (toolType () == "TRANSFORM")
+		{
+			const auto & inlineNode = coordToolNode -> getInlineNode ();
+			const auto   toolSwich  = inlineNode -> getExportedNode <Switch> ("ToolSwitch");
 
-void
-X3DGeometryNodeTool::set_loadState ()
-{
-	try
-	{
-		set_toolType ();
-		set_pickable ();
-		eventProcessed ();
+			toolSwich -> whichChoice () = 4;
+
+			// Enable TransformTool
+
+			setTransformTool (inlineNode -> getExportedNode <Transform> ("TransformTool"));
+
+			getTransformTool () -> setField <MFString> ("tools", MFString ({ "SCALE" }));
+			getTransformTool () -> setField <SFBool> ("displayCenter", false);
+			getTransformTool () -> setField <SFBool> ("displayBBox", false);
+			getTransformTool () -> setField <SFColor> ("color", ToolColors::DARK_BLUE);
+		}
 	}
 	catch (const X3DError & error)
 	{

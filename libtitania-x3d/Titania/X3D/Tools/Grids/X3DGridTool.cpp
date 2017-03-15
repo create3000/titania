@@ -238,7 +238,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 
-		if (master -> getActiveTool () not_eq ToolType::MOVE_TOOL)
+		if (master -> getActiveTool () not_eq ToolType::MOVE)
 			return;
 
 		// The position is transformed to an absolute position and then transformed into the coordinate systwm of the grid
@@ -322,7 +322,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if (not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ())
 			return;
 
-		if (master -> getActiveTool () not_eq ToolType::ROTATE_TOOL)
+		if (master -> getActiveTool () not_eq ToolType::ROTATE)
 			return;
 
 //__LOG__ << std::endl;
@@ -444,7 +444,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		if ((not getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()) or (getBrowser () -> getControlKey () and getBrowser () -> getShiftKey ()))
 			return;
 	
-		const auto tool = int32_t (master -> getActiveTool ()) - int32_t (ToolType::SCALE_TOOL);
+		const auto tool = int32_t (master -> getActiveTool ()) - int32_t (ToolType::SCALE);
 
 		if (tool < 0)
 			return;

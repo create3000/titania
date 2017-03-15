@@ -65,6 +65,18 @@ VisibilitySensorTool::VisibilitySensorTool (X3DBaseNode* const node) :
 }
 
 void
+VisibilitySensorTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getVisibilitySensorTools () .remove (X3DWeakPtr <VisibilitySensorTool> (this));
+
+	X3DEnvironmentalSensorNodeTool::setExecutionContext (executionContext);
+
+	getBrowser () -> getVisibilitySensorTools () .emplace_back (this);
+}
+
+void
 VisibilitySensorTool::initialize ()
 {
 	X3DEnvironmentalSensorNodeTool::initialize ();

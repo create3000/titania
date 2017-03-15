@@ -50,7 +50,7 @@
 
 #include "DirectionalLightTool.h"
 
-#include "../Grouping/TransformTool.h"
+#include "../Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
@@ -68,25 +68,35 @@ DirectionalLightTool::DirectionalLightTool (X3DBaseNode* const node) :
 void
 DirectionalLightTool::realize ()
 {
-	X3DLightNodeTool::realize ();
-
-	const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
-
-	transformTool -> setField <MFString> ("tools", MFString ({ "MOVE", "ROTATE" }));
-
-	// Connect tool location
-
-	transformTool -> translation () = getMetaData <SFVec3f> ("/DirectionalLight/location");
-
-	transformTool -> translation () .addInterest (&DirectionalLightTool::set_translation, this);
+	try
+	{
+		X3DLightNodeTool::realize ();
+	
+		getTransformTool () -> setField <MFString> ("tools", MFString ({ "MOVE", "ROTATE" }));
+	
+		// Connect tool location
+	
+		getTransformTool () -> translation () = getMetaData <SFVec3f> ("/DirectionalLight/location");
+	
+		getTransformTool () -> translation () .addInterest (&DirectionalLightTool::set_translation, this);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
 DirectionalLightTool::set_translation ()
 {
-	const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
-
-	setMetaData <SFVec3f> ("/DirectionalLight/location", transformTool -> translation ());
+	try
+	{
+		setMetaData <SFVec3f> ("/DirectionalLight/location", getTransformTool () -> translation ());
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

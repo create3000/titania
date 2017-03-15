@@ -53,8 +53,9 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Grouping/Transform.h"
 
-#include "../Grouping/TransformTool.h"
+#include "../Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
@@ -67,6 +68,18 @@ X3DLightNodeTool::X3DLightNodeTool () :
 	addType (X3DConstants::X3DLightNodeTool);
 
 	addChildObjects (bboxSize (), bboxCenter ());
+}
+
+void
+X3DLightNodeTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getLightTools () .remove (X3DWeakPtr <X3DLightNodeTool> (this));
+
+	X3DChildNodeTool::setExecutionContext (executionContext);
+
+	getBrowser () -> getLightTools () .emplace_back (this);
 }
 
 void
@@ -85,15 +98,12 @@ X3DLightNodeTool::realize ()
 {
 	try
 	{
-		const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("TransformTool");
+		setTransformTool (getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
 
-		transformTool -> addTool ();
-		transformTool -> setField <SFBool> ("displayCenter", false);
-
-		setTransformTool (transformTool);
 		addTool ();
 
-		getToolNode () -> setField <SFNode> ("light", getNode <X3DLightNode> ());
+		getTransformTool () -> setField <SFBool> ("displayCenter", false);
+		getToolNode ()      -> setField <SFNode> ("light", getNode <X3DLightNode> ());
 	}
 	catch (const X3DError & error)
 	{
@@ -115,11 +125,10 @@ X3DLightNodeTool::addTool ()
 {
 	try
 	{
-		const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
-		const auto selected      = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+		const auto selected = getBrowser () -> getSelection () -> isSelected (SFNode (this));
 
-		transformTool  -> setField <SFBool> ("enabled",  selected);
-		getToolNode () -> setField <SFBool> ("selected", selected);
+		getTransformTool () -> setField <SFBool> ("enabled",  selected);
+		getToolNode ()      -> setField <SFBool> ("selected", selected);
 	}
 	catch (const X3DError &)
 	{ }
@@ -135,10 +144,8 @@ X3DLightNodeTool::removeTool (const bool really)
 	{
 		try
 		{
-			const auto transformTool = getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
-
-			transformTool  -> setField <SFBool> ("enabled",  false);
-			getToolNode () -> setField <SFBool> ("selected", false);
+			getTransformTool () -> setField <SFBool> ("enabled",  false);
+			getToolNode ()      -> setField <SFBool> ("selected", false);
 		}
 		catch (const X3DError &)
 		{ }

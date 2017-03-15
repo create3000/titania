@@ -66,6 +66,13 @@ class X3DViewpointNodeTool :
 {
 public:
 
+	///  @name Common members
+
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override;
+
 	///  @name Fields
 
 	virtual
@@ -131,13 +138,6 @@ public:
 	///  @name Member access
 
 	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override
-	{ X3DBindableNodeTool::setExecutionContext (executionContext); }
-
-	virtual
 	Box3d
 	getBBox () const final override;
 
@@ -186,11 +186,6 @@ protected:
 	virtual
 	void
 	realize () override;
-
-	///  @name Member access
-
-	X3DPtr <TransformTool>
-	getTransformTool () const;
 
 
 private:

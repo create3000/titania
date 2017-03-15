@@ -53,8 +53,9 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/Selection.h"
 #include "../../Browser/X3DBrowser.h"
+#include "../../Components/Grouping/Transform.h"
 
-#include "../Grouping/TransformTool.h"
+#include "../Grouping/X3DTransformNodeTool.h"
 
 namespace titania {
 namespace X3D {
@@ -69,6 +70,18 @@ X3DViewpointNodeTool::X3DViewpointNodeTool () :
 	addType (X3DConstants::X3DViewpointNodeTool);
 
 	addChildObjects (bboxSize (), bboxCenter ());
+}
+
+void
+X3DViewpointNodeTool::setExecutionContext (X3DExecutionContext* const executionContext)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	getBrowser () -> getViewpointTools () .remove (X3DWeakPtr <X3DViewpointNodeTool> (this));
+
+	X3DBindableNodeTool::setExecutionContext (executionContext);
+
+	getBrowser () -> getViewpointTools () .emplace_back (this);
 }
 
 void
@@ -87,14 +100,12 @@ X3DViewpointNodeTool::realize ()
 {
 	try
 	{
-		const auto transformTool = getInlineNode () -> getExportedNode <Transform> ("TransformTool");
+		setTransformTool (getInlineNode () -> getExportedNode <Transform> ("TransformTool"));
 
-		transformTool -> addTool ();
-		transformTool -> setField <MFString> ("tools",         MFString ({ "MOVE", "ROTATE" }));
-		transformTool -> setField <SFBool>   ("displayCenter", false);
-
-		setTransformTool (transformTool);
 		addTool ();
+
+		getTransformTool () -> setField <MFString> ("tools",         MFString ({ "MOVE", "ROTATE" }));
+		getTransformTool () -> setField <SFBool>   ("displayCenter", false);
 
 		getToolNode () -> setField <SFNode> ("viewpoint", getNode <X3DViewpointNode> ());
 	}
@@ -111,12 +122,6 @@ X3DViewpointNodeTool::getBBox () const
 		return getInlineNode () -> getBBox ();
 
 	return Box3d ();
-}
-
-X3DPtr <TransformTool>
-X3DViewpointNodeTool::getTransformTool () const
-{
-	return getInlineNode () -> getExportedNode <TransformTool> ("TransformTool");
 }
 
 void
@@ -147,11 +152,10 @@ X3DViewpointNodeTool::addTool ()
 {
 	try
 	{
-		const auto transformTool = getTransformTool ();
-		const auto selected      = getBrowser () -> getSelection () -> isSelected (SFNode (this));
+		const auto selected = getBrowser () -> getSelection () -> isSelected (SFNode (this));
 
-		transformTool  -> setField <SFBool> ("enabled",  selected);
-		getToolNode () -> setField <SFBool> ("selected", selected);
+		getTransformTool () -> setField <SFBool> ("enabled",  selected);
+		getToolNode ()      -> setField <SFBool> ("selected", selected);
 	}
 	catch (const X3DError & error)
 	{
@@ -169,10 +173,8 @@ X3DViewpointNodeTool::removeTool (const bool really)
 	{
 		try
 		{
-			const auto transformTool = getTransformTool ();
-
-			transformTool  -> setField <SFBool> ("enabled",  false);
-			getToolNode () -> setField <SFBool> ("selected", false);
+			getTransformTool () -> setField <SFBool> ("enabled",  false);
+			getToolNode ()      -> setField <SFBool> ("selected", false);
 		}
 		catch (const X3DError & error)
 		{

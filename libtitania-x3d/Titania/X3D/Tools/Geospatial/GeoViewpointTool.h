@@ -70,6 +70,15 @@ public:
 
 	GeoViewpointTool (X3DBaseNode* const node);
 
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) final override
+	{ X3DViewpointNodeTool::setExecutionContext (executionContext); }
+
 	///  @name Fields
 
 	virtual
@@ -111,15 +120,6 @@ public:
 	const SFFloat &
 	speedFactor () const final override
 	{ return getNode <GeoViewpoint> () -> speedFactor (); }
-
-	///  @name Member access
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ X3DViewpointNodeTool::setExecutionContext (executionContext); }
 
 	///  @name Operations
 

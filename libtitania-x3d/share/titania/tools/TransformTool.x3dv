@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Tue, 14 Mar 2017 16:11:28 GMT"
+META "modified" "Wed, 15 Mar 2017 07:17:11 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]
@@ -112,38 +112,6 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
-            value DEF Tool Script {
-              inputOutput SFBool     enabled TRUE
-              inputOutput SFBool     pickable TRUE
-              inputOutput MFString   tools [
-                "MOVE",
-                "ROTATE",
-                "SCALE"
-              ]
-              inputOutput SFInt32    toolMode 0
-              inputOutput SFDouble   snapAngle 0.196349540849362
-              inputOutput SFBool     controlKey FALSE
-              inputOutput SFBool     shiftKey FALSE
-              inputOutput SFBool     altKey FALSE
-              inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-              inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-              inputOutput SFBool     displayBBox TRUE
-              inputOutput SFBool     displayCenter TRUE
-              inputOutput SFVec3f    bboxSize 0 0 0
-              inputOutput SFVec3f    bboxCenter 0 0 0
-              inputOutput SFBool     isActive FALSE
-              inputOutput SFTime     touchTime 0
-              inputOutput SFBool     keepCenter_changed FALSE
-              inputOutput SFInt32    activeTool_changed 0
-              inputOutput SFNode     transform NULL
-
-              url "ecmascript:
-"
-            }
-          }
-          DEF nodes MetadataSet {
-            name "nodes"
-            reference "http://titania.create3000.de"
             value DEF ModeScript Script {
               inputOnly      SFBool   set_active
               inputOnly      SFTime   set_time
@@ -216,6 +184,39 @@ function set_tool (value)
 			break;
 	}
 }
+"
+            }
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF Tool Script {
+              inputOutput SFBool     enabled TRUE
+              inputOutput SFBool     pickable TRUE
+              inputOutput MFString   tools [
+                "MOVE",
+                "ROTATE",
+                "SCALE"
+              ]
+              inputOutput SFInt32    toolMode 0
+              inputOutput SFColor    color 0.35 1 0.7
+              inputOutput SFDouble   snapAngle 0.196349540849362
+              inputOutput SFBool     controlKey FALSE
+              inputOutput SFBool     shiftKey FALSE
+              inputOutput SFBool     altKey FALSE
+              inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+              inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+              inputOutput SFBool     displayBBox TRUE
+              inputOutput SFBool     displayCenter TRUE
+              inputOutput SFVec3f    bboxSize 0 0 0
+              inputOutput SFVec3f    bboxCenter 0 0 0
+              inputOutput SFBool     isActive FALSE
+              inputOutput SFTime     touchTime 0
+              inputOutput SFBool     keepCenter_changed FALSE
+              inputOutput SFInt32    activeTool_changed 0
+              inputOutput SFNode     transform NULL
+
+              url "ecmascript:
 "
             }
           }
@@ -316,7 +317,7 @@ DEF _1 BooleanSwitch {
                   lineProperties DEF LineProperties LineProperties {
                     linewidthScaleFactor 1
                   }
-                  material Material {
+                  material DEF _5 Material {
                     emissiveColor 0.35 1 0.7
                   }
                 }
@@ -361,11 +362,11 @@ DEF _1 BooleanSwitch {
                   }
                 }
               }
-              DEF _5 BooleanSwitch {
+              DEF _6 BooleanSwitch {
                 bboxSize 0 0 0
                 children [
-                  DEF _6 Group { }
-                  DEF _7 Group {
+                  DEF _7 Group { }
+                  DEF _8 Group {
                     children [
                       DEF Front Transform {
                         translation 0 0 0.01
@@ -460,7 +461,7 @@ DEF _1 BooleanSwitch {
             ]
           }
         }
-        DEF _8 DepthBuffer {
+        DEF _9 DepthBuffer {
           enabled FALSE
           depthOffset 1000000000
           children DEF AdjustmentHandles Transform {
@@ -483,7 +484,7 @@ DEF _1 BooleanSwitch {
                                       Transform {
                                         translation 10.5 0 0
                                         rotation 0 0 -1 1.5708
-                                        children DEF _9 Shape {
+                                        children DEF _10 Shape {
                                           appearance DEF Red Appearance {
                                             material Material {
                                               ambientIntensity 0
@@ -500,7 +501,7 @@ DEF _1 BooleanSwitch {
                                       }
                                       Transform {
                                         translation 8 0 0
-                                        children DEF _10 Shape {
+                                        children DEF _11 Shape {
                                           appearance USE Red
                                           geometry DEF Sphere Sphere {
                                             radius 8
@@ -509,7 +510,7 @@ DEF _1 BooleanSwitch {
                                       }
                                       Transform {
                                         translation 6 0 0
-                                        children DEF _11 Shape {
+                                        children DEF _12 Shape {
                                           appearance USE Red
                                           geometry DEF Box Box {
                                             size 12 12 12
@@ -539,25 +540,25 @@ DEF _1 BooleanSwitch {
                               DEF XBack Transform {
                                 translation -0.5 0 0
                                 children ScreenGroup {
-                                  children DEF _12 Switch {
+                                  children DEF _13 Switch {
                                     whichChoice 0
                                     children [
-                                      DEF _13 Transform {
+                                      DEF _14 Transform {
                                         translation -3.5 0 0
                                         rotation 0 0 -1 1.5708
-                                        children DEF _14 Shape {
+                                        children DEF _15 Shape {
                                           appearance USE Red
-                                          geometry DEF _15 Cylinder {
+                                          geometry DEF _16 Cylinder {
                                             height 8
                                             radius 7
                                           }
                                         }
                                       }
-                                      USE _13
+                                      USE _14
                                       Transform {
                                         translation -4 0 0
                                         scale 0.666667 1 1
-                                        children USE _11
+                                        children USE _12
                                       }
                                     ]
                                   }
@@ -587,7 +588,7 @@ DEF _1 BooleanSwitch {
                                     children [
                                       Transform {
                                         translation 0 10.5 0
-                                        children DEF _16 Shape {
+                                        children DEF _17 Shape {
                                           appearance DEF Green Appearance {
                                             material Material {
                                               ambientIntensity 0
@@ -601,14 +602,14 @@ DEF _1 BooleanSwitch {
                                       }
                                       Transform {
                                         translation 0 8 0
-                                        children DEF _17 Shape {
+                                        children DEF _18 Shape {
                                           appearance USE Green
                                           geometry USE Sphere
                                         }
                                       }
                                       Transform {
                                         translation 0 6 0
-                                        children DEF _18 Shape {
+                                        children DEF _19 Shape {
                                           appearance USE Green
                                           geometry USE Box
                                         }
@@ -636,21 +637,21 @@ DEF _1 BooleanSwitch {
                               DEF YBack Transform {
                                 translation 0 -0.5 0
                                 children ScreenGroup {
-                                  children DEF _19 Switch {
+                                  children DEF _20 Switch {
                                     whichChoice 0
                                     children [
-                                      DEF _20 Transform {
+                                      DEF _21 Transform {
                                         translation 0 -3.5 0
-                                        children DEF _21 Shape {
+                                        children DEF _22 Shape {
                                           appearance USE Green
-                                          geometry USE _15
+                                          geometry USE _16
                                         }
                                       }
-                                      USE _20
+                                      USE _21
                                       Transform {
                                         translation 0 -4 0
                                         scale 1 0.666667 1
-                                        children USE _18
+                                        children USE _19
                                       }
                                     ]
                                   }
@@ -681,7 +682,7 @@ DEF _1 BooleanSwitch {
                                       Transform {
                                         translation 0 0 10.5
                                         rotation 1 0 0 1.5708
-                                        children DEF _22 Shape {
+                                        children DEF _23 Shape {
                                           appearance DEF Blue Appearance {
                                             material Material {
                                               ambientIntensity 0
@@ -695,14 +696,14 @@ DEF _1 BooleanSwitch {
                                       }
                                       Transform {
                                         translation 0 0 8
-                                        children DEF _23 Shape {
+                                        children DEF _24 Shape {
                                           appearance USE Blue
                                           geometry USE Sphere
                                         }
                                       }
                                       Transform {
                                         translation 0 0 6
-                                        children DEF _24 Shape {
+                                        children DEF _25 Shape {
                                           appearance USE Blue
                                           geometry USE Box
                                         }
@@ -732,22 +733,22 @@ DEF _1 BooleanSwitch {
                               DEF ZBack Transform {
                                 translation 0 0 -0.5
                                 children ScreenGroup {
-                                  children DEF _25 Switch {
+                                  children DEF _26 Switch {
                                     whichChoice 0
                                     children [
-                                      DEF _26 Transform {
+                                      DEF _27 Transform {
                                         translation 0 0 -3.5
                                         rotation 1 0 0 1.5708
-                                        children DEF _27 Shape {
+                                        children DEF _28 Shape {
                                           appearance USE Blue
-                                          geometry USE _15
+                                          geometry USE _16
                                         }
                                       }
-                                      USE _26
+                                      USE _27
                                       Transform {
                                         translation 0 0 -4
                                         scale 1 1 0.666667
-                                        children USE _24
+                                        children USE _25
                                       }
                                     ]
                                   }
@@ -779,15 +780,15 @@ DEF _1 BooleanSwitch {
                                 Transform {
                                   translation 60.5 0 0
                                   rotation 0 0 -1 1.5708
-                                  children USE _9
-                                }
-                                Transform {
-                                  translation 58 0 0
                                   children USE _10
                                 }
                                 Transform {
-                                  translation 56 0 0
+                                  translation 58 0 0
                                   children USE _11
+                                }
+                                Transform {
+                                  translation 56 0 0
+                                  children USE _12
                                 }
                               ]
                             }
@@ -800,19 +801,19 @@ DEF _1 BooleanSwitch {
                       DEF XBack_1 Group {
                         children [
                           ScreenGroup {
-                            children DEF _28 Switch {
+                            children DEF _29 Switch {
                               whichChoice 0
                               children [
-                                DEF _29 Transform {
+                                DEF _30 Transform {
                                   translation -53.5 0 0
                                   rotation 0 0 -1 1.5708
-                                  children USE _14
+                                  children USE _15
                                 }
-                                USE _29
+                                USE _30
                                 Transform {
                                   translation -54 0 0
                                   scale 0.666667 1 1
-                                  children USE _11
+                                  children USE _12
                                 }
                               ]
                             }
@@ -830,15 +831,15 @@ DEF _1 BooleanSwitch {
                               children [
                                 Transform {
                                   translation 0 60.5 0
-                                  children USE _16
-                                }
-                                Transform {
-                                  translation 0 58 0
                                   children USE _17
                                 }
                                 Transform {
-                                  translation 0 56 0
+                                  translation 0 58 0
                                   children USE _18
+                                }
+                                Transform {
+                                  translation 0 56 0
+                                  children USE _19
                                 }
                               ]
                             }
@@ -851,18 +852,18 @@ DEF _1 BooleanSwitch {
                       DEF YBack_1 Group {
                         children [
                           ScreenGroup {
-                            children DEF _30 Switch {
+                            children DEF _31 Switch {
                               whichChoice 0
                               children [
-                                DEF _31 Transform {
+                                DEF _32 Transform {
                                   translation 0 -53.5 0
-                                  children USE _21
+                                  children USE _22
                                 }
-                                USE _31
+                                USE _32
                                 Transform {
                                   translation 0 -54 0
                                   scale 1 0.666667 1
-                                  children USE _18
+                                  children USE _19
                                 }
                               ]
                             }
@@ -881,15 +882,15 @@ DEF _1 BooleanSwitch {
                                 Transform {
                                   translation 0 0 60.5
                                   rotation 1 0 0 1.5708
-                                  children USE _22
-                                }
-                                Transform {
-                                  translation 0 0 58
                                   children USE _23
                                 }
                                 Transform {
-                                  translation 0 0 56
+                                  translation 0 0 58
                                   children USE _24
+                                }
+                                Transform {
+                                  translation 0 0 56
+                                  children USE _25
                                 }
                               ]
                             }
@@ -902,19 +903,19 @@ DEF _1 BooleanSwitch {
                       DEF ZBack_1 Group {
                         children [
                           ScreenGroup {
-                            children DEF _32 Switch {
+                            children DEF _33 Switch {
                               whichChoice 0
                               children [
-                                DEF _33 Transform {
+                                DEF _34 Transform {
                                   translation 0 0 -53.5
                                   rotation 1 0 0 1.5708
-                                  children USE _27
+                                  children USE _28
                                 }
-                                USE _33
+                                USE _34
                                 Transform {
                                   translation 0 0 -54
                                   scale 1 1 0.666667
-                                  children USE _24
+                                  children USE _25
                                 }
                               ]
                             }
@@ -1042,21 +1043,21 @@ DEF _1 BooleanSwitch {
             ]
           }
         }
-        DEF _34 DepthBuffer {
+        DEF _35 DepthBuffer {
           enabled FALSE
           depthOffset 1000000000
           children [
             DEF CenterPoint Transform {
               children [
-                DEF _35 TouchSensor { }
-                DEF _36 BooleanSwitch {
+                DEF _36 TouchSensor { }
+                DEF _37 BooleanSwitch {
                   children [
-                    DEF _37 Group { }
-                    DEF _38 ScreenGroup {
-                      children DEF _39 BooleanSwitch {
+                    DEF _38 Group { }
+                    DEF _39 ScreenGroup {
+                      children DEF _40 BooleanSwitch {
                         bboxSize 0 0 0
                         children [
-                          DEF _40 Shape {
+                          DEF _41 Shape {
                             appearance Appearance {
                               material Material {
                                 ambientIntensity 0
@@ -1065,13 +1066,13 @@ DEF _1 BooleanSwitch {
                               }
                               shaders ToolShader { }
                             }
-                            geometry DEF _41 Sphere {
+                            geometry DEF _42 Sphere {
                               radius 5
                             }
                           }
-                          DEF _42 Shape {
+                          DEF _43 Shape {
                             appearance USE Red
-                            geometry USE _41
+                            geometry USE _42
                           }
                         ]
                       }
@@ -1204,9 +1205,9 @@ DEF _1 BooleanSwitch {
                 }
               ]
             }
-            DEF _43 BooleanSwitch {
+            DEF _44 BooleanSwitch {
               children [
-                DEF _44 Group { }
+                DEF _45 Group { }
                 DEF CenterLine Shape {
                   appearance Appearance {
                     lineProperties LineProperties {
@@ -1260,9 +1261,9 @@ DEF _1 BooleanSwitch {
   ]
 }
 
-DEF _45 BooleanFilter { }
+DEF _46 BooleanFilter { }
 
-DEF _46 TimeTrigger { }
+DEF _47 TimeTrigger { }
 
 DEF ModeDoubleClick DoubleClick { }
 
@@ -2229,24 +2230,24 @@ ROUTE ScaleSensor5.translation_changed TO ScaleScript.set_scale5
 ROUTE ScaleSensor6.translation_changed TO ScaleScript.set_scale6
 ROUTE ScaleSensor7.translation_changed TO ScaleScript.set_scale7
 ROUTE ScaleSensor8.translation_changed TO ScaleScript.set_scale8
-ROUTE _35.touchTime TO CenterDoubleClick.set_time
+ROUTE _36.touchTime TO CenterDoubleClick.set_time
 ROUTE CenterDoubleClick.doubleClickTime TO CenterScript.set_doubleClickTime
 ROUTE CenterScript.keepCenter_changed TO ScaleScript.set_keepCenter
-ROUTE CenterScript.keepCenter_changed TO _39.set_whichChoice
+ROUTE CenterScript.keepCenter_changed TO _40.set_whichChoice
 ROUTE CenterScript.keepCenter_changed TO MoveScript.set_keepCenter
-ROUTE _46.triggerTime TO ModeDoubleClick.set_time
-ROUTE XRotationSensor.isActive TO _45.set_boolean
-ROUTE YRotationSensor.isActive TO _45.set_boolean
-ROUTE ZRotationSensor.isActive TO _45.set_boolean
-ROUTE _45.inputFalse TO _46.set_boolean
-ROUTE ScaleSensor1.isActive TO _45.set_boolean
-ROUTE ScaleSensor2.isActive TO _45.set_boolean
-ROUTE ScaleSensor3.isActive TO _45.set_boolean
-ROUTE ScaleSensor4.isActive TO _45.set_boolean
-ROUTE ScaleSensor5.isActive TO _45.set_boolean
-ROUTE ScaleSensor6.isActive TO _45.set_boolean
-ROUTE ScaleSensor7.isActive TO _45.set_boolean
-ROUTE ScaleSensor8.isActive TO _45.set_boolean
+ROUTE _47.triggerTime TO ModeDoubleClick.set_time
+ROUTE XRotationSensor.isActive TO _46.set_boolean
+ROUTE YRotationSensor.isActive TO _46.set_boolean
+ROUTE ZRotationSensor.isActive TO _46.set_boolean
+ROUTE _46.inputFalse TO _47.set_boolean
+ROUTE ScaleSensor1.isActive TO _46.set_boolean
+ROUTE ScaleSensor2.isActive TO _46.set_boolean
+ROUTE ScaleSensor3.isActive TO _46.set_boolean
+ROUTE ScaleSensor4.isActive TO _46.set_boolean
+ROUTE ScaleSensor5.isActive TO _46.set_boolean
+ROUTE ScaleSensor6.isActive TO _46.set_boolean
+ROUTE ScaleSensor7.isActive TO _46.set_boolean
+ROUTE ScaleSensor8.isActive TO _46.set_boolean
 ROUTE XScaleBackSensor.translation_changed TO ScaleScript.set_xScaleBack
 ROUTE YScaleBackSensor.translation_changed TO ScaleScript.set_yScaleBack
 ROUTE ZScaleBackSensor.translation_changed TO ScaleScript.set_zScaleBack
@@ -2256,10 +2257,10 @@ ROUTE XScaleBackSensor.isActive TO ScaleScript.set_active
 ROUTE ModeScript.scale TO ZScaleBackSensor.set_enabled
 ROUTE ModeScript.scale TO YScaleBackSensor.set_enabled
 ROUTE ModeScript.scale TO XScaleBackSensor.set_enabled
-ROUTE XSwitch_1.whichChoice_changed TO _28.set_whichChoice
-ROUTE YSwitch_1.whichChoice_changed TO _30.set_whichChoice
-ROUTE BBoxScript.rotationHandlesDepthOffset_changed TO _34.set_depthOffset
-ROUTE BBoxScript.handlesDepthOffset_changed TO _8.set_depthOffset
+ROUTE XSwitch_1.whichChoice_changed TO _29.set_whichChoice
+ROUTE YSwitch_1.whichChoice_changed TO _31.set_whichChoice
+ROUTE BBoxScript.rotationHandlesDepthOffset_changed TO _35.set_depthOffset
+ROUTE BBoxScript.handlesDepthOffset_changed TO _9.set_depthOffset
 ROUTE BBoxScript.scaleToolWhichChoice_changed TO ScaleHandlesSwitch.set_whichChoice
 ROUTE Tool.bboxCenter_changed TO _4.set_translation
 ROUTE FrontSensor.isActive TO Tool.set_isActive
@@ -2287,7 +2288,7 @@ ROUTE ScaleSensor5.isActive TO Tool.set_isActive
 ROUTE ScaleSensor6.isActive TO Tool.set_isActive
 ROUTE ScaleSensor7.isActive TO Tool.set_isActive
 ROUTE ScaleSensor8.isActive TO Tool.set_isActive
-ROUTE _35.touchTime TO Tool.set_touchTime
+ROUTE _36.touchTime TO Tool.set_touchTime
 ROUTE XRotationSensor.isActive TO Tool.set_isActive
 ROUTE YRotationSensor.isActive TO Tool.set_isActive
 ROUTE ZRotationSensor.isActive TO Tool.set_isActive
@@ -2322,19 +2323,19 @@ ROUTE Tool.bboxCenter_changed TO ScaleScript.set_bboxCenter
 ROUTE Tool.transform_changed TO ScaleScript.set_transform
 ROUTE ScaleScript.activeTool_changed TO Tool.set_activeTool_changed
 ROUTE ModeScript.whichChoice_changed TO ZSwitch_1.set_whichChoice
-ROUTE ZSwitch_1.whichChoice_changed TO _32.set_whichChoice
-ROUTE ZSwitch.whichChoice_changed TO _25.set_whichChoice
-ROUTE YSwitch.whichChoice_changed TO _19.set_whichChoice
-ROUTE XSwitch.whichChoice_changed TO _12.set_whichChoice
+ROUTE ZSwitch_1.whichChoice_changed TO _33.set_whichChoice
+ROUTE ZSwitch.whichChoice_changed TO _26.set_whichChoice
+ROUTE YSwitch.whichChoice_changed TO _20.set_whichChoice
+ROUTE XSwitch.whichChoice_changed TO _13.set_whichChoice
 ROUTE XSwitch_1.whichChoice_changed TO XSwitch.set_whichChoice
 ROUTE YSwitch_1.whichChoice_changed TO YSwitch.set_whichChoice
 ROUTE ZSwitch_1.whichChoice_changed TO ZSwitch.set_whichChoice
 ROUTE Tool.toolMode_changed TO ToolModeSwitch.set_whichChoice
 ROUTE Tool.toolMode_changed TO ToolModeSwitch_1.set_whichChoice
 ROUTE Tool.tools_changed TO ModeScript.set_tools
-ROUTE Tool.displayBBox_changed TO _5.set_whichChoice
-ROUTE Tool.displayCenter_changed TO _43.set_whichChoice
-ROUTE Tool.displayCenter_changed TO _36.set_whichChoice
+ROUTE Tool.displayBBox_changed TO _6.set_whichChoice
+ROUTE Tool.displayCenter_changed TO _44.set_whichChoice
+ROUTE Tool.displayCenter_changed TO _37.set_whichChoice
 ROUTE Tool.pickable_changed TO ModeScript.set_pickable
 ROUTE Tool.pickable_changed TO FrontSensor.set_enabled
 ROUTE Tool.pickable_changed TO RightSensor.set_enabled
@@ -2343,7 +2344,8 @@ ROUTE Tool.pickable_changed TO LeftSensor.set_enabled
 ROUTE Tool.pickable_changed TO TopSensor.set_enabled
 ROUTE Tool.pickable_changed TO BottomSensor.set_enabled
 ROUTE Tool.pickable_changed TO ModeTouch.set_enabled
-ROUTE Tool.pickable_changed TO _35.set_enabled
+ROUTE Tool.pickable_changed TO _36.set_enabled
 ROUTE Tool.enabled_changed TO _1.set_whichChoice
+ROUTE Tool.color_changed TO _5.set_emissiveColor
 
 EXPORT Tool

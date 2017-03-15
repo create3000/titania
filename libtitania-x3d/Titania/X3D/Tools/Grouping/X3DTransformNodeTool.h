@@ -159,6 +159,14 @@ public:
 	displayCenter () const
 	{ return *fields .displayCenter; }
 
+	SFColor &
+	color ()
+	{ return *fields .color; }
+
+	const SFColor &
+	color () const
+	{ return *fields .color; }
+
 	SFBool &
 	isActive ()
 	{ return *fields .isActive; }
@@ -261,6 +269,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_tools ();
+
+	void
 	eventsProcessed ();
 
 	///  @name Operatations
@@ -282,16 +293,18 @@ private:
 		MFString* const tools;
 		SFBool* const displayBBox;
 		SFBool* const displayCenter;
+		SFColor* const color;
 		SFBool* const isActive;
 		SFTime* const touchTime;
 	};
 
 	Fields fields;
-
-	Matrix4d   transformationMatrix;
-	Matrix4d   matrix;
-	UndoMatrix undoMatrix;
-	bool       changing;
+	
+	std::set <ToolType> availableTools;
+	Matrix4d            transformationMatrix;
+	Matrix4d            matrix;
+	UndoMatrix          undoMatrix;
+	bool                changing;
 
 };
 

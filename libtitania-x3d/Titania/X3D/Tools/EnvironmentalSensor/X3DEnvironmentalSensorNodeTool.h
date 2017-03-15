@@ -66,6 +66,15 @@ class X3DEnvironmentalSensorNodeTool :
 {
 public:
 
+	///  @name Common members
+
+	virtual
+	void
+	setExecutionContext (X3DExecutionContext* const executionContext)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>) override
+	{ X3DSensorNodeTool::setExecutionContext (executionContext); }
+
 	///  @name Fields
 
 	virtual
@@ -109,13 +118,6 @@ public:
 	{ return getNode <X3DEnvironmentalSensorNode> () -> exitTime (); }
 
 	///  @name Operations
-
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) final override
-	{ X3DSensorNodeTool::setExecutionContext (executionContext); }
 	
 	virtual
 	Box3d
