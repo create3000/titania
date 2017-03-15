@@ -402,6 +402,10 @@ private:
 	bool
 	vector4fValue (json_object* const jobj, const int32_t i, Vector4f & value);
 
+	static
+	struct json_object*
+	json_object_object_get (struct json_object* obj, const char *key);
+
 	X3DBrowser*
 	getBrowser () const
 	{ return scene -> getBrowser (); }
