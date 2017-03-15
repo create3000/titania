@@ -52,6 +52,8 @@
 
 #include "../../../Execution/X3DExecutionContext.h"
 
+#include "../../Grouping/X3DTransformNodeTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -63,19 +65,90 @@ SphereTool::SphereTool (X3DBaseNode* const node) :
 	             Sphere (node -> getExecutionContext ()),
 	        X3DBaseTool (node),
 	X3DGeometryNodeTool (),
-	             fields ()
+	             fields (),
+	        startRadius (0)
 {
 	addType (X3DConstants::SphereTool);
 
 	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
+
+	toolType () = "TRANSFORM";
 }
 
 void
 SphereTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
+
+	getTransformTool () .addInterest (&SphereTool::set_transform_tool, this);
+}
+
+void
+SphereTool::set_transform_tool ()
+{
+	radius () .addInterest (&SphereTool::set_radius, this);
+
+	getTransformTool () -> scaleXAxis ()    = false;
+	getTransformTool () -> scaleYAxis ()    = false;
+	getTransformTool () -> scaleZAxis ()    = false;
+	getTransformTool () -> scaleFromEdge () = false;
+
+	set_radius ();
+}
+
+void
+SphereTool::set_radius ()
+{
+	const float diameter = 2 * radius ();
+
+	getTransformTool () -> scale () .removeInterest (&SphereTool::set_scale, this);
+	getTransformTool () -> scale () .addInterest (&SphereTool::connectScale, this);
+
+	getTransformTool () -> scale () = Vector3f (diameter, diameter, diameter);
+}
+
+void
+SphereTool::set_scale ()
+{
+	radius () .removeInterest (&SphereTool::set_radius, this);
+	radius () .addInterest (&SphereTool::connectRadius, this);
+
+	radius () = getTransformTool () -> scale () .getX () / 2;
+}
+
+void
+SphereTool::connectRadius (const SFFloat & field)
+{
+	field .removeInterest (&SphereTool::connectRadius, this);
+	field .addInterest (&SphereTool::set_radius, this);
+}
+
+void
+SphereTool::connectScale (const SFVec3f & field)
+{
+	field .removeInterest (&SphereTool::connectScale, this);
+	field .addInterest (&SphereTool::set_scale, this);
+}
+
+void
+SphereTool::beginUndo ()
+{
+	startRadius = radius ();
+}
+
+void
+SphereTool::endUndo (const UndoStepPtr & undoStep)
+{
+	if (radius () not_eq startRadius)
+	{
+		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (radius ()), startRadius);
+		undoStep -> addUndoFunction (&SphereTool::setChanging, X3DPtr <Sphere> (this), true);
+
+		undoStep -> addRedoFunction (&SphereTool::setChanging, X3DPtr <Sphere> (this), true);
+		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (radius ()), radius ());
+	}
 }
 
 void

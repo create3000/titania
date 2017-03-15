@@ -144,6 +144,30 @@ public:
 	{ return *fields .tools; }
 
 	SFBool &
+	scaleXAxis ()
+	{ return *fields .scaleXAxis; }
+
+	const SFBool &
+	scaleXAxis () const
+	{ return *fields .scaleXAxis; }
+
+	SFBool &
+	scaleYAxis ()
+	{ return *fields .scaleYAxis; }
+
+	const SFBool &
+	scaleYAxis () const
+	{ return *fields .scaleYAxis; }
+
+	SFBool &
+	scaleZAxis ()
+	{ return *fields .scaleZAxis; }
+
+	const SFBool &
+	scaleZAxis () const
+	{ return *fields .scaleZAxis; }
+
+	SFBool &
 	scaleFromEdge ()
 	{ return *fields .scaleFromEdge; }
 
@@ -299,6 +323,9 @@ private:
 
 		SFBool* const enabled;
 		MFString* const tools;
+		SFBool* const scaleXAxis;
+		SFBool* const scaleYAxis;
+		SFBool* const scaleZAxis;
 		SFBool* const scaleFromEdge;
 		SFColor* const color;
 		SFBool* const displayBBox;

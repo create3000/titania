@@ -62,6 +62,9 @@ namespace X3D {
 X3DTransformNodeTool::Fields::Fields () :
 	      enabled (new SFBool (true)),
 	        tools (new MFString ({ "MOVE", "ROTATE", "SCALE" })),
+	   scaleXAxis (new SFBool (true)),
+	   scaleYAxis (new SFBool (true)),
+	   scaleZAxis (new SFBool (true)),
 	scaleFromEdge (new SFBool (true)),
 	        color (new SFColor (ToolColors::GREEN)),
 	  displayBBox (new SFBool (true)),
@@ -83,6 +86,9 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 
 	addField (inputOutput, "enabled",       enabled ());
 	addField (inputOutput, "tools",         tools ());
+	addField (inputOutput, "scaleXAxis",    scaleXAxis ());
+	addField (inputOutput, "scaleYAxis",    scaleYAxis ());
+	addField (inputOutput, "scaleZAxis",    scaleZAxis ());
 	addField (inputOutput, "scaleFromEdge", scaleFromEdge ());
 	addField (inputOutput, "color",         color ());
 	addField (inputOutput, "displayBBox",   displayBBox ());
@@ -145,6 +151,9 @@ X3DTransformNodeTool::realize ()
 
 		enabled ()       .addInterest (getToolNode () -> getField <SFBool>   ("enabled"));
 		tools ()         .addInterest (getToolNode () -> getField <MFString> ("tools"));
+		scaleXAxis ()    .addInterest (getToolNode () -> getField <SFBool>   ("scaleXAxis"));
+		scaleYAxis ()    .addInterest (getToolNode () -> getField <SFBool>   ("scaleYAxis"));
+		scaleZAxis ()    .addInterest (getToolNode () -> getField <SFBool>   ("scaleZAxis"));
 		scaleFromEdge () .addInterest (getToolNode () -> getField <SFBool>   ("scaleFromEdge"));
 		color ()         .addInterest (getToolNode () -> getField <SFColor>  ("color"));
 		displayBBox ()   .addInterest (getToolNode () -> getField <SFBool>   ("displayBBox"));
@@ -152,13 +161,18 @@ X3DTransformNodeTool::realize ()
 
 		getToolNode () -> setField <SFBool>   ("enabled",       enabled ());
 		getToolNode () -> setField <MFString> ("tools",         tools ());
+		getToolNode () -> setField <SFBool>   ("scaleXAxis",    scaleXAxis ());
+		getToolNode () -> setField <SFBool>   ("scaleYAxis",    scaleYAxis ());
+		getToolNode () -> setField <SFBool>   ("scaleZAxis",    scaleZAxis ());
 		getToolNode () -> setField <SFBool>   ("scaleFromEdge", scaleFromEdge ());
 		getToolNode () -> setField <SFColor>  ("color",         color ());
 		getToolNode () -> setField <SFBool>   ("displayBBox",   displayBBox ());
 		getToolNode () -> setField <SFBool>   ("displayCenter", displayCenter ());
 	}
 	catch (const X3DError & error)
-	{ }
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 bool
