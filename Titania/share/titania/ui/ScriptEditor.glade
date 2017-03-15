@@ -1057,7 +1057,7 @@
                           <object class="GtkButton" id="ReplaceButton">
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
-                            <property name="can_focus">True</property>
+                            <property name="can_focus">False</property>
                             <property name="focus_on_click">False</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Replace</property>
@@ -1075,7 +1075,7 @@
                           <object class="GtkButton" id="ReplaceAllButton">
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
-                            <property name="can_focus">True</property>
+                            <property name="can_focus">False</property>
                             <property name="focus_on_click">False</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Replace All</property>
@@ -1120,7 +1120,7 @@
                           <object class="GtkButton" id="SearchBackwardButton">
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
-                            <property name="can_focus">True</property>
+                            <property name="can_focus">False</property>
                             <property name="focus_on_click">False</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Find previous (Ctrl+Shift+G)</property>
@@ -1138,7 +1138,7 @@
                           <object class="GtkButton" id="SearchForwardButton">
                             <property name="visible">True</property>
                             <property name="sensitive">False</property>
-                            <property name="can_focus">True</property>
+                            <property name="can_focus">False</property>
                             <property name="focus_on_click">False</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Find next (Ctrl+G)</property>
@@ -1155,7 +1155,7 @@
                         <child>
                           <object class="GtkButton" id="HideSearchButton">
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
+                            <property name="can_focus">False</property>
                             <property name="focus_on_click">False</property>
                             <property name="receives_default">True</property>
                             <property name="tooltip_text" translatable="yes">Close</property>
@@ -1197,7 +1197,7 @@
                     <child>
                       <object class="GtkToggleButton" id="ToggleReplaceButton">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="can_focus">False</property>
                         <property name="focus_on_click">False</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Toggle between search and replace.</property>
@@ -1249,7 +1249,7 @@
                     <child>
                       <object class="GtkButton" id="GoToLineButton">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="can_focus">False</property>
                         <property name="receives_default">True</property>
                         <property name="image">image9</property>
                         <property name="always_show_image">True</property>
@@ -1264,7 +1264,7 @@
                     <child>
                       <object class="GtkButton" id="HideGoToLineButton">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="can_focus">False</property>
                         <property name="receives_default">True</property>
                         <property name="image">image10</property>
                         <property name="always_show_image">True</property>

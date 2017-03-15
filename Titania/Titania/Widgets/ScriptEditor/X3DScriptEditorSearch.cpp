@@ -169,6 +169,16 @@ X3DScriptEditorSearch::on_key_press_event (GdkEventKey* event)
 			on_hide_search_clicked ();
 			return true;
 		}
+		case GDK_KEY_Tab:
+		{
+			if (getSearchEntry () .has_focus ())
+				getReplaceEntry () .grab_focus ();
+
+			else if (getReplaceEntry () .has_focus ())
+				getSearchEntry () .grab_focus ();
+
+			return true;
+		}
 		case GDK_KEY_h:
 		{
 			if (keys .control ())
