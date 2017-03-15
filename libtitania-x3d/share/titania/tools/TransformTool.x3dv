@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Wed, 15 Mar 2017 19:04:55 GMT"
+META "modified" "Wed, 15 Mar 2017 19:09:50 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]
@@ -112,10 +112,6 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
-          }
-          DEF nodes MetadataSet {
-            name "nodes"
-            reference "http://titania.create3000.de"
             value DEF ModeScript Script {
               inputOnly      SFBool   set_active
               inputOnly      SFTime   set_time
@@ -217,6 +213,10 @@ function set_tool (value)
 }
 "
             }
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
           }
         ]
       }
@@ -361,6 +361,7 @@ DEF _1 BooleanSwitch {
                 }
               }
               DEF _6 BooleanSwitch {
+                whichChoice TRUE
                 bboxSize 0 0 0
                 children [
                   DEF _7 Group { }
