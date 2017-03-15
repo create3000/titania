@@ -138,10 +138,10 @@ private:
 	on_build_search_menu ();
 
 	void
-	on_search_activate (const Glib::ustring &);
+	on_search_activate (const Glib::ustring & search, const Glib::ustring & replace);
 
 	void
-	on_add_search (const Glib::ustring &);
+	on_add_search (const Glib::ustring & search, const Glib::ustring & replace);
 
 	virtual
 	void
@@ -239,6 +239,7 @@ private:
 	Glib::RefPtr <Gsv::Buffer::Mark> searchMark;
 	sigc::connection                 searchConnection;
 	std::deque <Glib::ustring>       recentSearches;
+	std::deque <Glib::ustring>       recentReplaces;
 	bool                             replace;
 
 };

@@ -75,6 +75,7 @@ X3DScriptEditorSearch::X3DScriptEditorSearch () :
 	              searchMark (),
 	        searchConnection (),
 	          recentSearches (),
+	          recentReplaces (),
 	                 replace (false)
 { }
 
@@ -110,9 +111,15 @@ X3DScriptEditorSearch::initialize ()
 	getWrapAroundMenuItemMenuItem () .set_active (getConfig () -> getBoolean ("searchWrapAround"));
 
 	basic::basic_split <Glib::ustring> (std::back_inserter (recentSearches), getConfig () -> getString ("recentSearches"), ";");
+	basic::basic_split <Glib::ustring> (std::back_inserter (recentReplaces), getConfig () -> getString ("recentReplaces"), ";");
 
 	for (auto search : recentSearches)
 		search = basic::base64_decode (search);
+
+	for (auto search : recentReplaces)
+		search = basic::base64_decode (search);
+
+	recentReplaces .resize (recentSearches .size ());
 
 	// Restore search and replace strings
 
@@ -293,7 +300,6 @@ X3DScriptEditorSearch::on_enable_search ()
 
 	if (selection .size ())
 	{
-		on_add_search (selection);
 		getSearchEntry () .set_text (selection);
 		gtk_source_search_settings_set_search_text (searchSettings, selection .c_str ());
 	}
@@ -361,10 +367,10 @@ X3DScriptEditorSearch::on_build_search_menu ()
 
 	// Add menu items
 
-	for (const auto & search : recentSearches)
+	for (size_t i = 0, size = recentSearches .size (); i < size; ++ i)
 	{
-		const auto menuItem = Gtk::manage (new Gtk::MenuItem (search));
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_search_activate), search));
+		const auto menuItem = Gtk::manage (new Gtk::MenuItem (recentSearches [i]));
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_search_activate), recentSearches [i], recentReplaces [i]));
 		menuItem -> show ();
 
 		getSearchMenu () .append (*menuItem);
@@ -372,22 +378,29 @@ X3DScriptEditorSearch::on_build_search_menu ()
 }
 
 void
-X3DScriptEditorSearch::on_search_activate (const Glib::ustring & search)
+X3DScriptEditorSearch::on_search_activate (const Glib::ustring & search, const Glib::ustring & replace)
 {
-	getSearchEntry () .set_text (search);
+	getSearchEntry ()  .set_text (search);
+	getReplaceEntry () .set_text (replace);
 }
 
 void
-X3DScriptEditorSearch::on_add_search (const Glib::ustring & search)
+X3DScriptEditorSearch::on_add_search (const Glib::ustring & search, const Glib::ustring & replace)
 {
 	// Add search to recentSearches
 
+	if (not recentSearches .empty () and recentSearches .front () == search)
+		return;
+
 	recentSearches .emplace_front (search);
+	recentReplaces .emplace_front (replace);
 
 	// Constrain recentSearches
 
 	if (recentSearches .size () > RECENT_SEARCHES_MAX)
 		recentSearches .pop_back ();
+
+	recentReplaces .resize (recentSearches .size ());
 }
 
 void
@@ -421,8 +434,6 @@ X3DScriptEditorSearch::on_search_wrap_around_toggled ()
 void
 X3DScriptEditorSearch::on_search_entry_changed ()
 {
-	on_add_search (getSearchEntry () .get_text ());
-
 	gtk_source_search_settings_set_search_text (searchSettings, getSearchEntry () .get_text () .c_str ());
 
 	on_search_forward_clicked (searchMark);
@@ -446,6 +457,8 @@ X3DScriptEditorSearch::on_search_backward_clicked ()
 	const auto insertIter = getTextBuffer () -> get_iter_at_mark (getTextBuffer () -> get_insert ());
 
 	gtk_source_search_context_backward_async (searchContext, insertIter .gobj (), nullptr, &X3DScriptEditorSearch::on_search_backward_callback, this);
+
+	on_add_search (getSearchEntry () .get_text (), getReplaceEntry () .get_text ());
 }
 
 void
@@ -481,6 +494,8 @@ X3DScriptEditorSearch::on_search_forward_clicked ()
 		getTextBuffer () -> place_cursor (selectionEnd);
 
 	on_search_forward_clicked (getTextBuffer () -> get_insert ());
+
+	on_add_search (getSearchEntry () .get_text (), getReplaceEntry () .get_text ());
 }
 
 void
@@ -657,7 +672,11 @@ X3DScriptEditorSearch::~X3DScriptEditorSearch ()
 	for (auto search : recentSearches)
 		search = basic::base64_encode (search);
 
+	for (auto search : recentReplaces)
+		search = basic::base64_encode (search);
+
 	getConfig () -> setItem ("recentSearches", basic::join (recentSearches, ";"));
+	getConfig () -> setItem ("recentReplaces", basic::join (recentReplaces, ";"));
 
 	//how to delete searchContext;
 	//how to delete searchSettings;
