@@ -92,19 +92,19 @@ BoxTool::set_transform_tool ()
 	getTransformTool () -> scale () .addInterest (size ());
 
 	getTransformTool () -> scale () = size ();
+
+	getTransformTool () -> scaleFromEdge () = false;
 }
 
 void
 BoxTool::beginUndo ()
 {
-__LOG__ << std::endl;
 	startSize = size ();
 }
 
 void
 BoxTool::endUndo (const UndoStepPtr & undoStep)
 {
-__LOG__ << std::endl;
 	if (size () not_eq startSize)
 	{
 		undoStep -> addUndoFunction (&SFVec3f::setValue, std::ref (size ()), startSize);

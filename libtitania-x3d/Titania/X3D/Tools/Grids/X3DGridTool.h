@@ -240,7 +240,7 @@ private:
 	getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, const size_t);
 
 	Matrix4d
-	getOffset (const Box3d &, const Matrix4d, const Vector3d &) const;
+	getOffset (const X3DWeakPtr <X3DTransformNodeTool> & master, const Box3d &, const Matrix4d, const Vector3d &) const;
 
 	void
 	connectTranslation (const X3DWeakPtr <X3DTransformNodeTool> & tool);

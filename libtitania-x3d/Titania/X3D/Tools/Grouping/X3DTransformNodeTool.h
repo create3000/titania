@@ -144,6 +144,14 @@ public:
 	{ return *fields .tools; }
 
 	SFBool &
+	scaleFromEdge ()
+	{ return *fields .scaleFromEdge; }
+
+	const SFBool &
+	scaleFromEdge () const
+	{ return *fields .scaleFromEdge; }
+
+	SFBool &
 	displayBBox ()
 	{ return *fields .displayBBox; }
 
@@ -291,9 +299,10 @@ private:
 
 		SFBool* const enabled;
 		MFString* const tools;
+		SFBool* const scaleFromEdge;
+		SFColor* const color;
 		SFBool* const displayBBox;
 		SFBool* const displayCenter;
-		SFColor* const color;
 		SFBool* const isActive;
 		SFTime* const touchTime;
 	};

@@ -525,7 +525,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 	auto         after        = (snapPosition * inverse (absoluteMatrix) - shape .center ()) [axis];
 	auto         before       = shape .axes () [axis] [axis] * sgn;
 
-	if (getBrowser () -> getControlKey ()) // Scale from corner.
+	if (master -> scaleFromEdge () and getBrowser () -> getControlKey ()) // Scale from corner.
 	{
 		after  += before;
 		before *= 2;
@@ -552,7 +552,7 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 	Matrix4d snap;
 	snap .scale (scale);
 
-	snap *= getOffset (shape, snap, shape .axes () [axis] * sgn);
+	snap *= getOffset (master, shape, snap, shape .axes () [axis] * sgn);
 
 	return snap * currentMatrix;
 }
@@ -581,7 +581,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & ma
 	const auto points = bbox .points ();
 	double     min    = infinity;
 
-	if (getBrowser () -> getControlKey ())
+	if (master -> scaleFromEdge () and getBrowser () -> getControlKey ())
 	{
 		// Uniform scale from corner.
 
@@ -632,19 +632,19 @@ X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & ma
 	Matrix4d snap;
 	snap .scale (Vector3d (min, min, min));
 
-	snap *= getOffset (bbox, snap, points [tool] - bbox .center ());
+	snap *= getOffset (master, bbox, snap, points [tool] - bbox .center ());
 
 	return absoluteMatrix * snap * inverse (master -> getTransformationMatrix ());
 }
 
 Matrix4d
-X3DGridTool::getOffset (const Box3d & bbox, const Matrix4d scaledMatrix, const Vector3d & offset) const
+X3DGridTool::getOffset (const X3DWeakPtr <X3DTransformNodeTool> & master, const Box3d & bbox, const Matrix4d scaledMatrix, const Vector3d & offset) const
 {
 	// To keep the bbox center at its point we must compute a translation offset.
 
 	Vector3d distanceFromCenter = bbox .center ();
 
-	if (getBrowser () -> getControlKey ()) // Scale from corner.
+	if (master -> scaleFromEdge () and getBrowser () -> getControlKey ()) // Scale from corner.
 		distanceFromCenter -= offset;
 
 	Matrix4d translation;

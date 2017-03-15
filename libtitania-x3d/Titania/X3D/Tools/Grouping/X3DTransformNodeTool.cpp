@@ -62,9 +62,10 @@ namespace X3D {
 X3DTransformNodeTool::Fields::Fields () :
 	      enabled (new SFBool (true)),
 	        tools (new MFString ({ "MOVE", "ROTATE", "SCALE" })),
+	scaleFromEdge (new SFBool (true)),
+	        color (new SFColor (ToolColors::GREEN)),
 	  displayBBox (new SFBool (true)),
 	displayCenter (new SFBool (true)),
-	        color (new SFColor (ToolColors::GREEN)),
 	     isActive (new SFBool ()),
 	    touchTime (new SFTime ())
 { }
@@ -82,9 +83,10 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 
 	addField (inputOutput, "enabled",       enabled ());
 	addField (inputOutput, "tools",         tools ());
+	addField (inputOutput, "scaleFromEdge", scaleFromEdge ());
+	addField (inputOutput, "color",         color ());
 	addField (inputOutput, "displayBBox",   displayBBox ());
 	addField (inputOutput, "displayCenter", displayCenter ());
-	addField (inputOutput, "color",         color ());
 	addField (outputOnly,  "isActive",      isActive ());
 	addField (outputOnly,  "touchTime",     touchTime ());
 
@@ -143,15 +145,17 @@ X3DTransformNodeTool::realize ()
 
 		enabled ()       .addInterest (getToolNode () -> getField <SFBool>   ("enabled"));
 		tools ()         .addInterest (getToolNode () -> getField <MFString> ("tools"));
+		scaleFromEdge () .addInterest (getToolNode () -> getField <SFBool>   ("scaleFromEdge"));
+		color ()         .addInterest (getToolNode () -> getField <SFColor>  ("color"));
 		displayBBox ()   .addInterest (getToolNode () -> getField <SFBool>   ("displayBBox"));
 		displayCenter () .addInterest (getToolNode () -> getField <SFBool>   ("displayCenter"));
-		color ()         .addInterest (getToolNode () -> getField <SFColor>  ("color"));
 
 		getToolNode () -> setField <SFBool>   ("enabled",       enabled ());
 		getToolNode () -> setField <MFString> ("tools",         tools ());
+		getToolNode () -> setField <SFBool>   ("scaleFromEdge", scaleFromEdge ());
+		getToolNode () -> setField <SFColor>  ("color",         color ());
 		getToolNode () -> setField <SFBool>   ("displayBBox",   displayBBox ());
 		getToolNode () -> setField <SFBool>   ("displayCenter", displayCenter ());
-		getToolNode () -> setField <SFColor>  ("color",         color ());
 	}
 	catch (const X3DError & error)
 	{ }
