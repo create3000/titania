@@ -79,13 +79,13 @@ ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow) :
 void
 ViewpointObserver::set_browser (const X3D::BrowserPtr & value)
 {
-	browser -> getActiveViewpointEvent () .removeInterest (&ViewpointObserver::set_offsets, this);
-	browser -> getViewer ()               .removeInterest (&ViewpointObserver::set_viewer, this);
+	browser -> getActiveViewpoint () .removeInterest (&ViewpointObserver::set_offsets, this);
+	browser -> getViewer ()          .removeInterest (&ViewpointObserver::set_viewer, this);
 
 	browser = value;
 
-	browser -> getActiveViewpointEvent () .addInterest (&ViewpointObserver::set_offsets, this);
-	browser -> getViewer ()               .addInterest (&ViewpointObserver::set_viewer, this);
+	browser -> getActiveViewpoint () .addInterest (&ViewpointObserver::set_offsets, this);
+	browser -> getViewer ()          .addInterest (&ViewpointObserver::set_viewer, this);
 
 	set_viewer (value -> getViewer ());
 }

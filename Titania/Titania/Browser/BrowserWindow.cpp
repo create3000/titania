@@ -276,6 +276,13 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	set_textureQuality   (getCurrentBrowser () -> getBrowserOptions () -> TextureQuality ());
 	set_viewer ();
 
+	set_lightTools            (getCurrentBrowser () -> getLightTools ());
+	set_proximitySensorTools  (getCurrentBrowser () -> getProximitySensorTools ());
+	set_soundTools            (getCurrentBrowser () -> getSoundTools ());
+	set_transformSensorTools  (getCurrentBrowser () -> getTransformSensorTools ());
+	set_visibilitySensorTools (getCurrentBrowser () -> getVisibilitySensorTools ());
+	set_viewpointTools        (getCurrentBrowser () -> getViewpointTools ());
+
 	set_browserHistory ();
 
 	getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
@@ -305,13 +312,6 @@ BrowserWindow::set_scene ()
 	getFogsAction ()        -> set_active (true);
 
 	changing = false;
-
-	set_lightTools            (getCurrentBrowser () -> getLightTools ());
-	set_proximitySensorTools  (getCurrentBrowser () -> getProximitySensorTools ());
-	set_soundTools            (getCurrentBrowser () -> getSoundTools ());
-	set_transformSensorTools  (getCurrentBrowser () -> getTransformSensorTools ());
-	set_visibilitySensorTools (getCurrentBrowser () -> getVisibilitySensorTools ());
-	set_viewpointTools        (getCurrentBrowser () -> getViewpointTools ());
 }
 
 void

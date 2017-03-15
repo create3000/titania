@@ -52,6 +52,7 @@
 #define __TITANIA_X3D_BROWSER_NAVIGATION_X3DNAVIGATION_CONTEXT_H__
 
 #include "../../Fields.h"
+#include "../../Fields/X3DWeakPtr.h"
 #include "../../Types/Pointer.h"
 
 namespace titania {
@@ -73,13 +74,13 @@ public:
 	getActiveLayer () const
 	{ return activeLayer; }
 
-	const SFTime &
-	getActiveNavigationInfoEvent () const
-	{ return activeNavigationInfoOutput; }
+	const X3DWeakPtr <NavigationInfo> &
+	getActiveNavigationInfo () const
+	{ return activeNavigationInfo; }
 
-	const SFTime &
-	getActiveViewpointEvent () const
-	{ return activeViewpointOutput; }
+	const X3DWeakPtr <X3DViewpointNode> &
+	getActiveViewpoint () const
+	{ return activeViewpoint; }
 
 	X3D::X3DConstants::NodeType
 	getCurrentViewer () const;
@@ -147,12 +148,6 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Members access
-
-	NavigationInfo*
-	getActiveNavigationInfo () const
-	{ return activeNavigationInfo; }
-
 
 private:
 
@@ -174,7 +169,7 @@ private:
 	set_navigationInfo ();
 
 	void
-	remove_navigationInfo ();
+	set_active_navigationInfo ();
 
 	void
 	set_viewpoint ();
@@ -184,12 +179,11 @@ private:
 	X3DPtr <DirectionalLight>        headlightNode;
 	std::shared_ptr <LightContainer> headlightContainer;
 	X3DPtr <X3DLayerNode>            activeLayer;
-	NavigationInfo*                  activeNavigationInfo;
-	SFTime                           activeNavigationInfoOutput;
+	X3DWeakPtr <NavigationInfo>      activeNavigationInfo;
 	SFEnum <X3DConstants::NodeType>  viewer;
 	SFEnum <X3DConstants::NodeType>  privateViewer;
 	MFEnum <X3DConstants::NodeType>  availableViewers;
-	SFTime                           activeViewpointOutput;
+	X3DWeakPtr <X3DViewpointNode>    activeViewpoint;
 	std::set <const X3DBaseNode*>    activeCollisions;
 	SFBool                           straightenHorizon;
 

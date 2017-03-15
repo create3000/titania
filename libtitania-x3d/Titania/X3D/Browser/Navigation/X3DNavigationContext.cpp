@@ -52,6 +52,9 @@
 
 #include "../../Components/Layering/X3DLayerNode.h"
 #include "../../Components/Lighting/DirectionalLight.h"
+#include "../../Components/Navigation/NavigationInfo.h"
+#include "../../Components/Navigation/X3DViewpointNode.h"
+
 #include "../../Execution/World.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/LightContainer.h"
@@ -68,22 +71,21 @@ X3DNavigationContext::X3DNavigationContext () :
 	             headlightNode (new DirectionalLight (getExecutionContext ())),
 	        headlightContainer (std::make_shared <LightContainer> (getBrowser (), headlightNode, nullptr, Matrix4d ())),
 	               activeLayer (),
-	      activeNavigationInfo (nullptr),
-	activeNavigationInfoOutput (),
+	      activeNavigationInfo (),
 	                    viewer (X3DConstants::NoneViewer),
 	             privateViewer (X3DConstants::X3DBaseNode),
 	          availableViewers (),
-	     activeViewpointOutput (),
+	           activeViewpoint (),
 	          activeCollisions (),
 	         straightenHorizon ()
 {
 	addChildObjects (headlightNode,
 	                 activeLayer,
-	                 activeNavigationInfoOutput,
+	                 activeNavigationInfo,
 	                 viewer,
 	                 privateViewer,
 	                 availableViewers,
-	                 activeViewpointOutput,
+	                 activeViewpoint,
 	                 straightenHorizon);
 }
 
@@ -93,6 +95,8 @@ X3DNavigationContext::initialize ()
 	headlightNode -> setup ();
 
 	getBrowser () -> initialized () .addInterest (&X3DNavigationContext::set_initialized, this);
+
+	activeNavigationInfo .addInterest (&X3DNavigationContext::set_active_navigationInfo, this);
 }
 
 X3D::X3DConstants::NodeType
@@ -141,35 +145,30 @@ X3DNavigationContext::set_navigationInfo ()
 {
 	if (activeNavigationInfo)
 	{
-		activeNavigationInfo -> disposed ()            .removeInterest (&X3DNavigationContext::remove_navigationInfo, this);
 		activeNavigationInfo -> getViewer ()           .removeInterest (viewer);
 		activeNavigationInfo -> getAvailableViewers () .removeInterest (availableViewers);
 	}
 
-	activeNavigationInfo       = activeLayer ? activeLayer -> getNavigationInfo () : nullptr;
-	activeNavigationInfoOutput = getCurrentTime ();
+	if (activeLayer)
+		activeNavigationInfo .setValue (activeLayer -> getNavigationInfo ());
+	else
+		activeNavigationInfo = nullptr;
 
 	if (activeNavigationInfo)
 	{
-		activeNavigationInfo -> disposed ()            .addInterest (&X3DNavigationContext::remove_navigationInfo, this);
 		activeNavigationInfo -> getViewer ()           .addInterest (viewer);
 		activeNavigationInfo -> getAvailableViewers () .addInterest (availableViewers);
 
 		viewer           = activeNavigationInfo -> getViewer ();
 		availableViewers = activeNavigationInfo -> getAvailableViewers ();
 	}
-	else
-	{
-		viewer = X3DConstants::NoneViewer;
-		availableViewers .clear ();
-	}
 }
 
 void
-X3DNavigationContext::remove_navigationInfo ()
+X3DNavigationContext::set_active_navigationInfo ()
 {
-	activeNavigationInfo       = nullptr;
-	activeNavigationInfoOutput = getCurrentTime ();
+	if (activeNavigationInfo)
+		return;
 
 	viewer = X3DConstants::NoneViewer;
 	availableViewers .clear ();
@@ -178,7 +177,10 @@ X3DNavigationContext::remove_navigationInfo ()
 void
 X3DNavigationContext::set_viewpoint ()
 {
-	activeViewpointOutput = getCurrentTime ();
+	if (activeLayer)
+		activeViewpoint .setValue (activeLayer -> getViewpoint ());
+	else
+		activeViewpoint = nullptr;
 }
 
 X3DNavigationContext::~X3DNavigationContext ()

@@ -99,7 +99,7 @@ X3DExamineViewer::initialize ()
 		getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &X3DExamineViewer::on_scroll_event));
 
 		getNavigationInfo () -> transitionStart () .addInterest (&X3DExamineViewer::disconnect, this); // XXX: getNavigationInfo kann sich auch ?ndern, bei allen!!!
-		getBrowser () -> getActiveViewpointEvent () .addInterest (&X3DExamineViewer::disconnect, this);
+		getBrowser () -> getActiveViewpoint () .addInterest (&X3DExamineViewer::disconnect, this);
 	}
 	catch (const X3DError &)
 	{ }
