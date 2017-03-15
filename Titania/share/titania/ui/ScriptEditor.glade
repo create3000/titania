@@ -132,7 +132,7 @@
   <object class="GtkImage" id="ToggleReplaceImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-no</property>
+    <property name="stock">gtk-add</property>
   </object>
   <object class="GtkImage" id="VertexShaderImage">
     <property name="visible">True</property>
@@ -990,6 +990,11 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-go-up</property>
   </object>
+  <object class="GtkImage" id="image10">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-close</property>
+  </object>
   <object class="GtkImage" id="image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1010,11 +1015,6 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-find-and-replace</property>
   </object>
-  <object class="GtkImage" id="image8">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-no</property>
-  </object>
   <object class="GtkImage" id="image9">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1030,117 +1030,230 @@
         <property name="valign">start</property>
         <property name="transition_duration">300</property>
         <child>
-          <object class="GtkBox" id="SearchBox">
+          <object class="GtkViewport">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_right">2</property>
-            <property name="margin_top">2</property>
-            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkGrid" id="SearchAndReplaceBox">
+              <object class="GtkBox" id="SearchBox">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">4</property>
-                <property name="margin_right">4</property>
-                <property name="margin_top">4</property>
-                <property name="margin_bottom">4</property>
-                <property name="row_spacing">2</property>
-                <property name="column_spacing">6</property>
+                <property name="margin_right">2</property>
+                <property name="margin_top">2</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkBox" id="ReplaceButtonsBox">
+                  <object class="GtkGrid" id="SearchAndReplaceBox">
                     <property name="can_focus">False</property>
-                    <property name="spacing">2</property>
+                    <property name="margin_left">4</property>
+                    <property name="margin_right">4</property>
+                    <property name="margin_top">4</property>
+                    <property name="margin_bottom">4</property>
+                    <property name="row_spacing">2</property>
+                    <property name="column_spacing">6</property>
                     <child>
-                      <object class="GtkButton" id="ReplaceButton">
-                        <property name="visible">True</property>
-                        <property name="sensitive">False</property>
-                        <property name="can_focus">True</property>
-                        <property name="focus_on_click">False</property>
-                        <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Replace</property>
-                        <property name="image">image4</property>
-                        <property name="always_show_image">True</property>
-                        <signal name="clicked" handler="on_replace_forward_clicked" swapped="no"/>
+                      <object class="GtkBox" id="ReplaceButtonsBox">
+                        <property name="can_focus">False</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <object class="GtkButton" id="ReplaceButton">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="focus_on_click">False</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Replace</property>
+                            <property name="image">image4</property>
+                            <property name="always_show_image">True</property>
+                            <signal name="clicked" handler="on_replace_forward_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="ReplaceAllButton">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="focus_on_click">False</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Replace All</property>
+                            <property name="hexpand">True</property>
+                            <property name="image">image5</property>
+                            <property name="always_show_image">True</property>
+                            <signal name="clicked" handler="on_replace_all_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">1</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="ReplaceAllButton">
-                        <property name="visible">True</property>
-                        <property name="sensitive">False</property>
+                      <object class="GtkSearchEntry" id="ReplaceEntry">
                         <property name="can_focus">True</property>
-                        <property name="focus_on_click">False</property>
-                        <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Replace All</property>
                         <property name="hexpand">True</property>
-                        <property name="image">image5</property>
-                        <property name="always_show_image">True</property>
-                        <signal name="clicked" handler="on_replace_all_clicked" swapped="no"/>
+                        <property name="placeholder_text" translatable="yes">Replace</property>
+                        <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
+                        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
+                        <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
+                        <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">1</property>
                       </packing>
                     </child>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSearchEntry" id="ReplaceEntry">
-                    <property name="can_focus">True</property>
-                    <property name="hexpand">True</property>
-                    <property name="placeholder_text" translatable="yes">Replace</property>
-                    <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
-                    <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
-                    <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
-                    <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox" id="box5">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="spacing">2</property>
                     <child>
-                      <object class="GtkButton" id="SearchBackwardButton">
+                      <object class="GtkBox" id="box5">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="spacing">2</property>
+                        <child>
+                          <object class="GtkButton" id="SearchBackwardButton">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="focus_on_click">False</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Find previous (Ctrl+Shift+G)</property>
+                            <property name="image">image1</property>
+                            <property name="always_show_image">True</property>
+                            <signal name="clicked" handler="on_search_backward_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="SearchForwardButton">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="focus_on_click">False</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Find next (Ctrl+G)</property>
+                            <property name="image">image2</property>
+                            <property name="always_show_image">True</property>
+                            <signal name="clicked" handler="on_search_forward_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="HideSearchButton">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="focus_on_click">False</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Close</property>
+                            <property name="image">image3</property>
+                            <property name="always_show_image">True</property>
+                            <signal name="clicked" handler="on_hide_search_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSearchEntry" id="SearchEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="primary_icon_stock">edit-find-symbolic</property>
+                        <property name="placeholder_text" translatable="yes">Search</property>
+                        <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
+                        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
+                        <signal name="icon-release" handler="on_search_menu_icon_released" after="yes" swapped="no"/>
+                        <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
+                        <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
+                        <signal name="size-allocate" handler="on_search_size_allocate" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToggleButton" id="ToggleReplaceButton">
+                        <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="focus_on_click">False</property>
                         <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Find previous (Ctrl+Shift+G)</property>
-                        <property name="image">image1</property>
+                        <property name="tooltip_text" translatable="yes">Toggle between search and replace.</property>
+                        <property name="image">ToggleReplaceImage</property>
                         <property name="always_show_image">True</property>
-                        <signal name="clicked" handler="on_search_backward_clicked" swapped="no"/>
+                        <signal name="toggled" handler="on_replace_toggled" swapped="no"/>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox" id="GoToLineBox">
+                    <property name="can_focus">False</property>
+                    <property name="border_width">4</property>
+                    <property name="spacing">3</property>
+                    <child>
+                      <object class="GtkSearchEntry" id="GoToLineEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">False</property>
+                        <property name="placeholder_text" translatable="yes">Go To Line</property>
+                        <property name="input_purpose">digits</property>
+                        <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
+                        <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
+                        <signal name="insert-text" handler="on_go_to_line_insert_text" after="yes" swapped="no"/>
+                        <signal name="key-press-event" handler="on_go_to_line_key_press_event" after="yes" swapped="no"/>
+                        <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
+                        <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
                         <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="SearchForwardButton">
+                      <object class="GtkButton" id="GoToLineButton">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
-                        <property name="focus_on_click">False</property>
                         <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Find next (Ctrl+G)</property>
-                        <property name="image">image2</property>
+                        <property name="image">image9</property>
                         <property name="always_show_image">True</property>
-                        <signal name="clicked" handler="on_search_forward_clicked" swapped="no"/>
+                        <signal name="clicked" handler="on_go_to_line_button_clicked" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1149,13 +1262,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="HideSearchButton">
+                      <object class="GtkButton" id="HideGoToLineButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="focus_on_click">False</property>
                         <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Close</property>
-                        <property name="image">image3</property>
+                        <property name="image">image10</property>
                         <property name="always_show_image">True</property>
                         <signal name="clicked" handler="on_hide_search_clicked" swapped="no"/>
                       </object>
@@ -1167,120 +1278,15 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSearchEntry" id="SearchEntry">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="hexpand">True</property>
-                    <property name="primary_icon_stock">edit-find-symbolic</property>
-                    <property name="placeholder_text" translatable="yes">Search</property>
-                    <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
-                    <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
-                    <signal name="icon-release" handler="on_search_menu_icon_released" after="yes" swapped="no"/>
-                    <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
-                    <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
-                    <signal name="size-allocate" handler="on_search_size_allocate" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkToggleButton" id="ToggleReplaceButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="focus_on_click">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Toggle between search and replace.</property>
-                    <property name="image">image8</property>
-                    <property name="always_show_image">True</property>
-                    <signal name="toggled" handler="on_replace_toggled" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox" id="GoToLineBox">
-                <property name="can_focus">False</property>
-                <property name="border_width">4</property>
-                <property name="spacing">3</property>
-                <child>
-                  <object class="GtkSearchEntry" id="GoToLineEntry">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="primary_icon_activatable">False</property>
-                    <property name="primary_icon_sensitive">False</property>
-                    <property name="placeholder_text" translatable="yes">Go To Line</property>
-                    <property name="input_purpose">digits</property>
-                    <signal name="focus-in-event" handler="on_entry_focus_in_event" swapped="no"/>
-                    <signal name="focus-out-event" handler="on_entry_focus_out_event" swapped="no"/>
-                    <signal name="insert-text" handler="on_go_to_line_insert_text" after="yes" swapped="no"/>
-                    <signal name="key-press-event" handler="on_go_to_line_key_press_event" after="yes" swapped="no"/>
-                    <signal name="key-press-event" handler="on_key_press_event" after="yes" swapped="no"/>
-                    <signal name="key-release-event" handler="on_key_release_event" after="yes" swapped="no"/>
-                  </object>
-                  <packing>
                     <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="GoToLineButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">image9</property>
-                    <property name="always_show_image">True</property>
-                    <signal name="clicked" handler="on_go_to_line_button_clicked" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkButton" id="HideGoToLineButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">ToggleReplaceImage</property>
-                    <property name="always_show_image">True</property>
-                    <signal name="clicked" handler="on_hide_search_clicked" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
             <style>
-              <class name="button"/>
+              <class name="background"/>
             </style>
           </object>
         </child>

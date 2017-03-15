@@ -2598,6 +2598,8 @@
     <None Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsCurveEditor.h" />
     <None Include="share\titania\ui\icons\FieldType\Unkown.svg" />
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DEnvironmentalSensorEditor.h" />
+    <None Include="share\titania\ui\icons\Faenza\16\gtk-sort-ascending.png" />
+    <None Include="share\titania\ui\icons\Faenza\16\gtk-sort-descending.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -306,7 +306,7 @@ X3DScriptEditorSearch::on_replace_toggled ()
 
 	getReplaceEntry ()       .set_visible (active);
 	getReplaceButtonsBox ()  .set_visible (active);
-	getToggleReplaceImage () .set (Gtk::StockID (active ? "gtk-yes" : "gtk-no"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	//getToggleReplaceImage () .set (Gtk::StockID (active ? "gtk-go-up" : "gtk-go-down"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
 }
 
 void
