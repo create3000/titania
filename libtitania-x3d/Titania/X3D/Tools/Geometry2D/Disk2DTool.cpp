@@ -217,16 +217,33 @@ Disk2DTool::beginUndo ()
 void
 Disk2DTool::endUndo (const UndoStepPtr & undoStep)
 {
-	if (outerRadius () not_eq startOuterRadius)
+	if (innerRadius () not_eq startInnerRadius or
+	    outerRadius () not_eq startOuterRadius)
 	{
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (outerRadius ()), startOuterRadius);
 		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (innerRadius ()), startInnerRadius);
 		undoStep -> addUndoFunction (&Disk2DTool::setChanging, X3DPtr <Disk2D> (this), true);
+		undoStep -> addUndoFunction (&Disk2DTool::setChanging2, X3DPtr <Disk2D> (this), true);
 
+		undoStep -> addRedoFunction (&Disk2DTool::setChanging2, X3DPtr <Disk2D> (this), true);
 		undoStep -> addRedoFunction (&Disk2DTool::setChanging, X3DPtr <Disk2D> (this), true);
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (innerRadius ()), innerRadius ());
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (outerRadius ()), outerRadius ());
 	}
+}
+
+void
+Disk2DTool::setChanging2 (const X3DPtr <X3D::X3DNode> & node, const bool value)
+{
+	try
+	{
+		const auto   tool          = X3DPtr <X3D::Disk2DTool> (node);
+		const auto & transformTool = tool -> transformTool2;
+
+		transformTool -> setChanging (value);
+	}
+	catch (const X3DError & error)
+	{ }
 }
 
 void

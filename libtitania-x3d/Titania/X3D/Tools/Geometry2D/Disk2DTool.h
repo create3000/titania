@@ -215,6 +215,10 @@ private:
 	void
 	connectScale2 (const SFVec3f & field);
 
+	static
+	void
+	setChanging2 (const X3DPtr <X3D::X3DNode> & node, const bool value);
+
 	///  @name Fields
 
 	struct Fields
