@@ -244,10 +244,41 @@ X3DTransformNodeTool::addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const 
 {
 	try
 	{
-		auto matrix = getMatrix () * transformationMatrix * absoluteMatrix * inverse (transformationMatrix);
-
 		Vector3d t, s;
 		Rotation4d r, so;
+
+		auto relativeMatrix = transformationMatrix * absoluteMatrix * inverse (transformationMatrix);
+
+		// Connected Axes handling
+		if (not connectedAxes () .empty ())
+		{
+			relativeMatrix .get (t, r, s, so);
+
+			for (const auto & connectedAxis : basic::make_reverse_range (connectedAxes ()))
+			{
+				try
+				{
+					static const std::map <String::value_type, size_t> axes = {
+						std::make_pair ('x', 0),
+						std::make_pair ('y', 1),
+						std::make_pair ('z', 2),
+					};
+		
+					const auto lhs = axes .at (std::tolower (connectedAxis .getValue () .at (0)));
+					const auto rhs = axes .at (std::tolower (connectedAxis .getValue () .at (1)));
+
+					s [lhs] = s [rhs];
+				}
+				catch (const std::out_of_range &)
+				{ }
+			}
+	
+			relativeMatrix .set (t, r, s, so);
+		}
+
+		//
+
+		auto matrix = getMatrix () * relativeMatrix;
 
 		matrix .get (t, r, s, so);
 

@@ -371,11 +371,24 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	auto c = new C ();
+	float d = 1e-7;
 
-	c -> A::f ();
-	c -> C::f ();
-
+	__LOG__ << almost_equal <float> (0.1, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.01, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.0001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.00001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.000001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.0000001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.00000001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.000000001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.0000000001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.00000000001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.000000000001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.0000000000001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.00000000000001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.000000000000001, 0, d) << std::endl;
+	__LOG__ << almost_equal <float> (0.0000000000000001, 0, d) << std::endl;
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

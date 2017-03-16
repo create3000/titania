@@ -123,25 +123,56 @@ X3DTransformNode::setMatrix (const Matrix4d & matrix)
 void
 X3DTransformNode::setMatrixWithCenter (const Matrix4d & matrix, const Vector3d & c)
 {
+	static constexpr auto eps = 1e-6;
+
 	Vector3d   t, s;
 	Rotation4d r, so;
 
 	matrix .get (t, r, s, so, c);
 
-	if (not almost_equal <float> (t, translation () .getValue (), 64))
-		translation () = t;
+	if (not almost_equal <float> (t .x (), translation () .getX (), eps))
+		translation () .setX (t .x ());
 
-	if (not almost_equal <float> (r, rotation () .getValue (), 64))
+	if (not almost_equal <float> (t .y (), translation () .getY (), eps))
+		translation () .setY (t .y ());
+
+	if (not almost_equal <float> (t .z (), translation () .getZ (), eps))
+		translation () .setZ (t .z ());
+
+
+	if (almost_equal <float> (r .angle (), 0, eps))
+		rotation () = Rotation4d ();
+
+	else if (not almost_equal <float> (r, rotation () .getValue (), eps))
 		rotation () = r;
 
-	if (not almost_equal <float> (s, scale () .getValue (), 64))
-		scale () = s;
 
-	if (not almost_equal <float> (so, scaleOrientation () .getValue (), 64))
+	if (not almost_equal <float> (s .x (), scale () .getX (), eps))
+		scale () .setX (s .x ());
+
+	if (not almost_equal <float> (s .y (), scale () .getY (), eps))
+		scale () .setY (s .y ());
+
+	if (not almost_equal <float> (s .z (), scale () .getZ (), eps))
+		scale () .setZ (s .z ());
+
+
+	if (almost_equal <float> (so .angle (), 0, eps))
+		scaleOrientation () = Rotation4d ();
+
+	else if (not almost_equal <float> (so, scaleOrientation () .getValue (), eps))
 		scaleOrientation () = so;
 
-	if (not almost_equal <float> (c, center () .getValue (), 64))
-		center () = c;
+
+	if (not almost_equal <float> (c .x (), center () .getX (), eps))
+		center () .setX (c .x ());
+
+	if (not almost_equal <float> (c .y (), center () .getY (), eps))
+		center () .setY (c .y ());
+
+	if (not almost_equal <float> (c .z (), center () .getZ (), eps))
+		center () .setZ (c .z ());
+
 
 	addEvent ();
 

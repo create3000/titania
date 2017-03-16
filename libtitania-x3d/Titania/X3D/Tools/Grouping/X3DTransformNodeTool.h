@@ -281,18 +281,18 @@ public:
 
 	virtual
 	void
-	setMatrix (const Matrix4d &) final override;
+	setMatrix (const Matrix4d & matrix) final override;
 
 	virtual
 	void
-	setMatrixWithCenter (const Matrix4d &, const Vector3d &) final override;
+	setMatrixWithCenter (const Matrix4d & matrix, const Vector3d & center) final override;
 
 	virtual
 	void
-	setMatrixKeepCenter (const Matrix4d &) final override;
+	setMatrixKeepCenter (const Matrix4d & matrix) final override;
 
 	void
-	addAbsoluteMatrix (const Matrix4d &, const bool);
+	addAbsoluteMatrix (const Matrix4d & absoluteMatrix, const bool keepCenter);
 
 	const Matrix4d &
 	getTransformationMatrix () const

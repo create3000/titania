@@ -65,84 +65,76 @@
 namespace titania {
 namespace math {
 
-template <class T>
-typename std::enable_if <not std::numeric_limits <T>::is_integer, bool>::type
-almost_equal (const T & lhs, const T & rhs, const int unitsInTheLastPlace)
+template <class Type>
+bool
+almost_equal (const Type & lhs, const Type & rhs, const Type & epsilon)
 {
-	// The machine epsilon has to be scaled to the magnitude of the values used
-	// and multiplied by the desired precision in ULPs (units in the last place).
-	// http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
-
-	const T difference = std::abs (lhs - rhs);
-
-	return difference < std::numeric_limits <T>::epsilon () * std::abs (lhs + rhs) * unitsInTheLastPlace
-	       // unless the result is subnormal
-	       or difference < std::numeric_limits <T>::min ();
+	return std::abs (lhs - rhs) < epsilon;
 }
 
 template <class Type>
 bool
-almost_equal (const color3 <Type> & lhs, const color3 <Type> & rhs, const int unitsInTheLastPlace)
+almost_equal (const color3 <Type> & lhs, const color3 <Type> & rhs, const Type & epsilon)
 {
-	return almost_equal (lhs .r (), rhs .r (), unitsInTheLastPlace) and
-	       almost_equal (lhs .g (), rhs .g (), unitsInTheLastPlace) and
-	       almost_equal (lhs .b (), rhs .b (), unitsInTheLastPlace);
+	return almost_equal (lhs .r (), rhs .r (), epsilon) and
+	       almost_equal (lhs .g (), rhs .g (), epsilon) and
+	       almost_equal (lhs .b (), rhs .b (), epsilon);
 }
 
 template <class Type>
 bool
-almost_equal (const color4 <Type> & lhs, const color4 <Type> & rhs, const int unitsInTheLastPlace)
+almost_equal (const color4 <Type> & lhs, const color4 <Type> & rhs, const Type & epsilon)
 {
-	return almost_equal (lhs .r (), rhs .r (), unitsInTheLastPlace) and
-	       almost_equal (lhs .g (), rhs .g (), unitsInTheLastPlace) and
-	       almost_equal (lhs .b (), rhs .b (), unitsInTheLastPlace) and
-	       almost_equal (lhs .a (), rhs .a (), unitsInTheLastPlace);
+	return almost_equal (lhs .r (), rhs .r (), epsilon) and
+	       almost_equal (lhs .g (), rhs .g (), epsilon) and
+	       almost_equal (lhs .b (), rhs .b (), epsilon) and
+	       almost_equal (lhs .a (), rhs .a (), epsilon);
 }
 
 template <class Type>
 bool
-almost_equal (const vector2 <Type> & lhs, const vector2 <Type> & rhs, const int unitsInTheLastPlace)
+almost_equal (const vector2 <Type> & lhs, const vector2 <Type> & rhs, const Type & epsilon)
 {
-	return almost_equal (lhs .x (), rhs .x (), unitsInTheLastPlace) and
-	       almost_equal (lhs .y (), rhs .y (), unitsInTheLastPlace);
+	return almost_equal (lhs .x (), rhs .x (), epsilon) and
+	       almost_equal (lhs .y (), rhs .y (), epsilon);
 }
 
 template <class Type>
 bool
-almost_equal (const vector3 <Type> & lhs, const vector3 <Type> & rhs, const int unitsInTheLastPlace)
+almost_equal (const vector3 <Type> & lhs, const vector3 <Type> & rhs, const Type & epsilon)
 {
-	return almost_equal (lhs .x (), rhs .x (), unitsInTheLastPlace) and
-	       almost_equal (lhs .y (), rhs .y (), unitsInTheLastPlace) and
-	       almost_equal (lhs .z (), rhs .z (), unitsInTheLastPlace);
+	return almost_equal (lhs .x (), rhs .x (), epsilon) and
+	       almost_equal (lhs .y (), rhs .y (), epsilon) and
+	       almost_equal (lhs .z (), rhs .z (), epsilon);
 }
 
 template <class Type>
 bool
-almost_equal (const vector4 <Type> & lhs, const vector4 <Type> & rhs, const int unitsInTheLastPlace)
+almost_equal (const vector4 <Type> & lhs, const vector4 <Type> & rhs, const int epsilon)
 {
-	return almost_equal (lhs .x (), rhs .x (), unitsInTheLastPlace) and
-	       almost_equal (lhs .y (), rhs .y (), unitsInTheLastPlace) and
-	       almost_equal (lhs .z (), rhs .z (), unitsInTheLastPlace) and
-	       almost_equal (lhs .w (), rhs .w (), unitsInTheLastPlace);
+	return almost_equal (lhs .x (), rhs .x (), epsilon) and
+	       almost_equal (lhs .y (), rhs .y (), epsilon) and
+	       almost_equal (lhs .z (), rhs .z (), epsilon) and
+	       almost_equal (lhs .w (), rhs .w (), epsilon);
 }
 
 template <class Type>
 bool
-almost_equal (const quaternion <Type> & lhs, const quaternion <Type> & rhs, const int unitsInTheLastPlace)
+almost_equal (const quaternion <Type> & lhs, const quaternion <Type> & rhs, const Type & epsilon)
 {
-	return almost_equal (lhs .x (), rhs .x (), unitsInTheLastPlace) and
-	       almost_equal (lhs .y (), rhs .y (), unitsInTheLastPlace) and
-	       almost_equal (lhs .z (), rhs .z (), unitsInTheLastPlace) and
-	       almost_equal (lhs .w (), rhs .w (), unitsInTheLastPlace);
+	return almost_equal (lhs .x (), rhs .x (), epsilon) and
+	       almost_equal (lhs .y (), rhs .y (), epsilon) and
+	       almost_equal (lhs .z (), rhs .z (), epsilon) and
+	       almost_equal (lhs .w (), rhs .w (), epsilon);
 }
 
 template <class Type>
 bool
-almost_equal (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs, const int unitsInTheLastPlace)
+almost_equal (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs, const Type & epsilon)
 {
-	return almost_equal (lhs .quat (), rhs .quat (), unitsInTheLastPlace)
+	return almost_equal (lhs .quat (), rhs .quat (), epsilon)
 	       or
-	       almost_equal (-lhs .quat (), rhs .quat (), unitsInTheLastPlace);
+	       almost_equal (-lhs .quat (), rhs .quat (), epsilon);
 }
 
 } // math

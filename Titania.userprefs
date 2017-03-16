@@ -1,16 +1,19 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DNavigationContext.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.h" Line="157" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.cpp" Line="199" Column="31" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="461" Column="1" />
-      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="141" Column="26" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Layering/X3DLayeringContext.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DNavigationContext.h" Line="55" Column="37" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DNavigationContext.cpp" Line="79" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Navigation/X3DExamineViewer.cpp" Line="102" Column="38" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Tools/X3DToolContext.h" Line="57" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h" Line="382" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp" Line="189" Column="69" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/ElevationGrid/ElevationGridTool.h" Line="307" Column="32" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/ElevationGrid/ElevationGridTool.cpp" Line="242" Column="120" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DHeightMapEditor.h" Line="389" Column="47" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/ElevationGrid.h" Line="260" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/ElevationGrid.cpp" Line="471" Column="80" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="529" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Cone.cpp" Line="135" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.cpp" Line="119" Column="50" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Cylinder.cpp" Line="140" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Box.cpp" Line="116" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
