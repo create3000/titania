@@ -168,12 +168,28 @@ public:
 	{ return *fields .scaleZAxis; }
 
 	SFBool &
+	scaleUniform ()
+	{ return *fields .scaleUniform; }
+
+	const SFBool &
+	scaleUniform () const
+	{ return *fields .scaleUniform; }
+
+	SFBool &
 	scaleFromEdge ()
 	{ return *fields .scaleFromEdge; }
 
 	const SFBool &
 	scaleFromEdge () const
 	{ return *fields .scaleFromEdge; }
+
+	MFString &
+	connectedAxes ()
+	{ return *fields .connectedAxes; }
+
+	const MFString &
+	connectedAxes () const
+	{ return *fields .connectedAxes; }
 
 	SFBool &
 	displayBBox ()
@@ -326,7 +342,9 @@ private:
 		SFBool* const scaleXAxis;
 		SFBool* const scaleYAxis;
 		SFBool* const scaleZAxis;
+		SFBool* const scaleUniform;
 		SFBool* const scaleFromEdge;
+		MFString* const connectedAxes;
 		SFColor* const color;
 		SFBool* const displayBBox;
 		SFBool* const displayCenter;

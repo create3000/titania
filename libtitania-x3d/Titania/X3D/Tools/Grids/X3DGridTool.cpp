@@ -549,6 +549,26 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 	Vector3d scale (1, 1, 1);
 	scale [axis] = ratio;
 
+	for (const auto & connectedAxis : master -> connectedAxes ())
+	{
+		try
+		{
+			static const std::map <String::value_type, size_t> axes = {
+				std::make_pair ('x', 0),
+				std::make_pair ('y', 1),
+				std::make_pair ('z', 2),
+			};
+
+			const auto lhs = axes .at (std::tolower (connectedAxis .getValue () .at (0)));
+			const auto rhs = axes .at (std::tolower (connectedAxis .getValue () .at (1)));
+
+			if (rhs == axis)
+				scale [lhs] = scale [rhs];
+		}
+		catch (const std::out_of_range &)
+		{ }
+	}
+
 	Matrix4d snap;
 	snap .scale (scale);
 

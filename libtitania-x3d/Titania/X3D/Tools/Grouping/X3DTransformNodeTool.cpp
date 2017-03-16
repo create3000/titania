@@ -65,7 +65,9 @@ X3DTransformNodeTool::Fields::Fields () :
 	   scaleXAxis (new SFBool (true)),
 	   scaleYAxis (new SFBool (true)),
 	   scaleZAxis (new SFBool (true)),
+	 scaleUniform (new SFBool (true)),
 	scaleFromEdge (new SFBool (true)),
+	connectedAxes (new MFString ()),
 	        color (new SFColor (ToolColors::GREEN)),
 	  displayBBox (new SFBool (true)),
 	displayCenter (new SFBool (true)),
@@ -89,7 +91,9 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 	addField (inputOutput, "scaleXAxis",    scaleXAxis ());
 	addField (inputOutput, "scaleYAxis",    scaleYAxis ());
 	addField (inputOutput, "scaleZAxis",    scaleZAxis ());
+	addField (inputOutput, "scaleUniform",  scaleUniform ());
 	addField (inputOutput, "scaleFromEdge", scaleFromEdge ());
+	addField (inputOutput, "connectedAxes", connectedAxes ());
 	addField (inputOutput, "color",         color ());
 	addField (inputOutput, "displayBBox",   displayBBox ());
 	addField (inputOutput, "displayCenter", displayCenter ());
@@ -154,7 +158,9 @@ X3DTransformNodeTool::realize ()
 		scaleXAxis ()    .addInterest (getToolNode () -> getField <SFBool>   ("scaleXAxis"));
 		scaleYAxis ()    .addInterest (getToolNode () -> getField <SFBool>   ("scaleYAxis"));
 		scaleZAxis ()    .addInterest (getToolNode () -> getField <SFBool>   ("scaleZAxis"));
+		scaleUniform ()  .addInterest (getToolNode () -> getField <SFBool>   ("scaleUniform"));
 		scaleFromEdge () .addInterest (getToolNode () -> getField <SFBool>   ("scaleFromEdge"));
+		connectedAxes () .addInterest (getToolNode () -> getField <MFString> ("connectedAxes"));
 		color ()         .addInterest (getToolNode () -> getField <SFColor>  ("color"));
 		displayBBox ()   .addInterest (getToolNode () -> getField <SFBool>   ("displayBBox"));
 		displayCenter () .addInterest (getToolNode () -> getField <SFBool>   ("displayCenter"));
@@ -164,7 +170,9 @@ X3DTransformNodeTool::realize ()
 		getToolNode () -> setField <SFBool>   ("scaleXAxis",    scaleXAxis ());
 		getToolNode () -> setField <SFBool>   ("scaleYAxis",    scaleYAxis ());
 		getToolNode () -> setField <SFBool>   ("scaleZAxis",    scaleZAxis ());
+		getToolNode () -> setField <SFBool>   ("scaleUniform",  scaleUniform ());
 		getToolNode () -> setField <SFBool>   ("scaleFromEdge", scaleFromEdge ());
+		getToolNode () -> setField <MFString> ("connectedAxes", connectedAxes ());
 		getToolNode () -> setField <SFColor>  ("color",         color ());
 		getToolNode () -> setField <SFBool>   ("displayBBox",   displayBBox ());
 		getToolNode () -> setField <SFBool>   ("displayCenter", displayCenter ());
