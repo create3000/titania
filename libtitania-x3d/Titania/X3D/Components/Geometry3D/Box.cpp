@@ -111,7 +111,7 @@ Box::initialize ()
 Box3d
 Box::createBBox () const
 {
-	return Box3d (size () .getValue (), Vector3d ());
+	return Box3d (max (size () .getValue (), -size () .getValue ()), Vector3d ());
 }
 
 void

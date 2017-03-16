@@ -232,12 +232,12 @@ public:
 
 	virtual
 	const SFEnum <LoadState> &
-	checkLoadState () const
+	checkLoadState () const final override
 	{ return getNode <GeoElevationGrid> () -> checkLoadState (); }
 
 	virtual
 	void
-	loadHeightMap (const MFString & url, const float minHeight, const float maxHeight)
+	loadHeightMap (const MFString & url, const double minHeight, const double maxHeight) final override
 	{ getNode <GeoElevationGrid> () -> loadHeightMap (url, minHeight, maxHeight); }
 
 	///  @name Operations

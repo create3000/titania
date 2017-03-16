@@ -229,14 +229,19 @@ public:
 	///  @name Height map handling
 
 	virtual
-	const SFEnum <LoadState> &
-	checkLoadState () const
-	{ return getNode <ElevationGrid> () -> checkLoadState (); }
+	std::pair <float, float>
+	getMinMaxHeight () const final override
+	{ return getNode <ElevationGrid> () -> getMinMaxHeight (); }
 
 	virtual
 	void
-	loadHeightMap (const MFString & url, const float minHeight, const float maxHeight)
+	loadHeightMap (const MFString & url, const float minHeight, const float maxHeight) final override
 	{ getNode <ElevationGrid> () -> loadHeightMap (url, minHeight, maxHeight); }
+
+	virtual
+	const SFEnum <LoadState> &
+	checkLoadState () const final override
+	{ return getNode <ElevationGrid> () -> checkLoadState (); }
 
 	///  @name Operations
 
@@ -251,6 +256,14 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) final override
 	{ return getNode <ElevationGrid> () -> toPrimitive (); }
+
+	virtual
+	void
+	beginUndo () final override;
+
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep) final override;
 
 	///  @name Destruction
 
@@ -273,7 +286,39 @@ protected:
 
 private:
 
-	///  @name Members
+	///  @name Event handlers
+
+	void
+	set_transform_tool ();
+	
+	void
+	set_xSpacing ();
+	
+	void
+	set_zSpacing ();
+
+	void
+	set_height ();
+	
+	void
+	set_scale ();
+
+	void
+	set_yScale (const float yScale);
+
+	void
+	connectXSpacing (const SFFloat & field);
+	
+	void
+	connectZSpacing (const SFFloat & field);
+	
+	void
+	connectHeight (const MFFloat & field);
+	
+	void
+	connectScale ();
+
+	///  @name Fields
 
 	struct Fields
 	{
@@ -282,6 +327,13 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	float                    startXSpacing;
+	float                    startZSpacing;
+	MFFloat                  startHeight;
+	std::pair <float, float> startMinMaxHeight;
 
 };
 

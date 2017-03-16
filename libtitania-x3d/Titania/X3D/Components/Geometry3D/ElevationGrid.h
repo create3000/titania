@@ -256,13 +256,17 @@ public:
 	///  @name Height map handling
 
 	virtual
-	const SFEnum <LoadState> &
-	checkLoadState () const
-	{ return loadState; }
+	std::pair <float, float>
+	getMinMaxHeight () const;
 
 	virtual
 	void
 	loadHeightMap (const MFString & url, const float minHeight, const float maxHeight);
+
+	virtual
+	const SFEnum <LoadState> &
+	checkLoadState () const
+	{ return loadState; }
 
 	///  @name Operations
 

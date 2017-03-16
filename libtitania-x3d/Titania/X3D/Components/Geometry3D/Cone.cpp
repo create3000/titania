@@ -128,7 +128,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 Box3d
 Cone::createBBox () const
 {
-	const double diameter = bottomRadius () * 2;
+	const double diameter = std::abs (bottomRadius ()) * 2;
 
 	if (not side () and not bottom ())
 		return Box3d ();
@@ -137,7 +137,7 @@ Cone::createBBox () const
 		return Box3d (Vector3d (diameter, 0, diameter), Vector3d (0, -height () / 2, 0));
 
 	else
-		return Box3d (Vector3d (diameter, height (), diameter), Vector3d ());
+		return Box3d (Vector3d (diameter, std::abs (height ()), diameter), Vector3d ());
 }
 
 void

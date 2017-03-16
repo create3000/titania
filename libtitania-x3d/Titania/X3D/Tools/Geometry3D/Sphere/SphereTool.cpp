@@ -90,10 +90,13 @@ SphereTool::set_transform_tool ()
 {
 	radius () .addInterest (&SphereTool::set_radius, this);
 
-	getTransformTool () -> scaleXAxis ()    = false;
-	getTransformTool () -> scaleYAxis ()    = false;
-	getTransformTool () -> scaleZAxis ()    = false;
-	getTransformTool () -> scaleFromEdge () = false;
+	getTransformTool () -> scaleXAxis ()     = false;
+	getTransformTool () -> scaleYAxis ()     = false;
+	getTransformTool () -> scaleZAxis ()     = false;
+	getTransformTool () -> scaleXBackAxis () = false;
+	getTransformTool () -> scaleYBackAxis () = false;
+	getTransformTool () -> scaleZBackAxis () = false;
+	getTransformTool () -> scaleFromEdge ()  = false;
 
 	set_radius ();
 }

@@ -49,16 +49,19 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="BoxSizeXAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="BoxSizeYAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="BoxSizeZAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -75,11 +78,13 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ConeBottomRadiusAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="ConeHeightAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -101,11 +106,13 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="CylinderHeightAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="CylinderRadiusAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -157,6 +164,7 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="ElevationGridXSpacingAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -167,6 +175,7 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="ElevationGridZSpacingAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -333,6 +342,7 @@
     <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="SphereRadiusAdjustment">
+    <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>

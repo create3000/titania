@@ -52,6 +52,8 @@
 
 #include "../../../Execution/X3DExecutionContext.h"
 
+#include "../../Grouping/X3DTransformNodeTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -63,19 +65,192 @@ ElevationGridTool::ElevationGridTool (X3DBaseNode* const node) :
 	      ElevationGrid (node -> getExecutionContext ()),
 	        X3DBaseTool (node),
 	X3DGeometryNodeTool (),
-	             fields ()
+	             fields (),
+	      startXSpacing (0),
+	      startZSpacing (0),
+	        startHeight (),
+	  startMinMaxHeight (0, 0)
 {
 	addType (X3DConstants::ElevationGridTool);
 
 	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
+
+	toolType () = "TRANSFORM";
 }
 
 void
 ElevationGridTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
+
+	getTransformTool () .addInterest (&ElevationGridTool::set_transform_tool, this);
+}
+
+void
+ElevationGridTool::set_transform_tool ()
+{
+	xSpacing () .addInterest (&ElevationGridTool::set_xSpacing, this);
+	zSpacing () .addInterest (&ElevationGridTool::set_zSpacing, this);
+	height ()   .addInterest (&ElevationGridTool::set_height,   this);
+
+	getTransformTool () -> scaleXBackAxis ()  = false;
+	getTransformTool () -> scaleZBackAxis ()  = false;
+	getTransformTool () -> scaleUniform ()    = false;
+	getTransformTool () -> scaleFromCenter () = false;
+
+	set_xSpacing ();
+	set_zSpacing ();
+	set_height ();
+}
+
+void
+ElevationGridTool::set_xSpacing ()
+{
+	getTransformTool () -> removeInterest (&ElevationGridTool::set_scale, this);
+	getTransformTool () -> addInterest (&ElevationGridTool::connectScale, this);
+
+	const auto xScale = xSpacing () * (xDimension () - 1);
+
+	getTransformTool () -> translation () .setX (xScale / 2);
+	getTransformTool () -> scale ()       .setX (xScale);
+}
+
+void
+ElevationGridTool::set_zSpacing ()
+{
+	getTransformTool () -> removeInterest (&ElevationGridTool::set_scale, this);
+	getTransformTool () -> addInterest (&ElevationGridTool::connectScale, this);
+
+	const auto zScale = zSpacing () * (zDimension () - 1);
+
+	getTransformTool () -> translation () .setZ (zScale / 2);
+	getTransformTool () -> scale ()       .setZ (zScale);
+}
+
+void
+ElevationGridTool::set_height ()
+{
+	getTransformTool () -> removeInterest (&ElevationGridTool::set_scale, this);
+	getTransformTool () -> addInterest (&ElevationGridTool::connectScale, this);
+
+	const auto pair             = getMinMaxHeight ();
+	const auto calculatedHeight = pair .second - pair .first;
+	const auto calculatedCenter = (pair .second + pair .first) / 2;
+
+	getTransformTool () -> translation () .setY (calculatedCenter);
+	getTransformTool () -> scale ()       .setY (calculatedHeight);
+}
+
+void
+ElevationGridTool::set_scale ()
+{
+	xSpacing () .removeInterest (&ElevationGridTool::set_xSpacing, this);
+	xSpacing () .addInterest (&ElevationGridTool::connectXSpacing, this);
+
+	zSpacing () .removeInterest (&ElevationGridTool::set_zSpacing, this);
+	zSpacing () .addInterest (&ElevationGridTool::connectZSpacing, this);
+
+	const auto scale = getTransformTool () -> getMatrix () .mult_dir_matrix (Vector3d (1, 1, 1));
+
+	xSpacing () = scale .x () / (xDimension () - 1);
+	zSpacing () = scale .z () / (zDimension () - 1);
+
+	// height
+
+	set_yScale (scale .y ());
+}
+
+void
+ElevationGridTool::set_yScale (const float yScale)
+{
+	// height
+
+	const auto calculatedHeight = startMinMaxHeight .second - startMinMaxHeight .first;
+
+	if (yScale not_eq calculatedHeight)
+	{
+		height () .removeInterest (&ElevationGridTool::set_height, this);
+		height () .addInterest (&ElevationGridTool::connectHeight, this);
+
+		const auto center    = getTransformTool () -> translation () .getY ();
+		const auto minHeight = center - yScale / 2;
+		const auto maxHeight = center + yScale / 2;
+
+		height () .resize (startHeight .size ());
+
+		for (size_t i = 0, size = startHeight .size (); i < size; ++ i)
+			height () [i] = project <float> (startHeight [i], startMinMaxHeight .first, startMinMaxHeight .second, minHeight, maxHeight);
+	}
+}
+
+void
+ElevationGridTool::connectXSpacing (const SFFloat & field)
+{
+	field .removeInterest (&ElevationGridTool::connectXSpacing, this);
+	field .addInterest (&ElevationGridTool::set_xSpacing, this);
+}
+
+void
+ElevationGridTool::connectZSpacing (const SFFloat & field)
+{
+	field .removeInterest (&ElevationGridTool::connectZSpacing, this);
+	field .addInterest (&ElevationGridTool::set_zSpacing, this);
+}
+
+void
+ElevationGridTool::connectHeight (const MFFloat & field)
+{
+	field .removeInterest (&ElevationGridTool::connectHeight, this);
+	field .addInterest (&ElevationGridTool::set_height, this);
+}
+
+void
+ElevationGridTool::connectScale ()
+{
+	getTransformTool () -> removeInterest (&ElevationGridTool::connectScale, this);
+	getTransformTool () -> addInterest (&ElevationGridTool::set_scale, this);
+}
+
+void
+ElevationGridTool::beginUndo ()
+{
+	startXSpacing     = xSpacing ();
+	startZSpacing     = zSpacing ();
+	startHeight       = height ();
+	startMinMaxHeight = getMinMaxHeight ();
+}
+
+void
+ElevationGridTool::endUndo (const UndoStepPtr & undoStep)
+{
+	if (xSpacing () not_eq startXSpacing or
+	    zSpacing () not_eq startZSpacing or
+	    height ()   not_eq startHeight)
+	{
+		undoStep -> addUndoFunction (&MFFloat::setValue, std::ref (height ()),   startHeight);
+		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (zSpacing ()), startZSpacing);
+		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (xSpacing ()), startXSpacing);
+		undoStep -> addUndoFunction (&ElevationGridTool::setChanging, X3DPtr <ElevationGrid> (this), true);
+
+		undoStep -> addRedoFunction (&ElevationGridTool::setChanging, X3DPtr <ElevationGrid> (this), true);
+		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (xSpacing ()), xSpacing ());
+		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (zSpacing ()), zSpacing ());
+		undoStep -> addRedoFunction (&MFFloat::setValue, std::ref (height ()),   height ());
+
+		// Scale Y must always be positive after transformation end as it cannot be determined a negative scale Y from height.
+
+		getTransformTool () -> removeInterest (&ElevationGridTool::set_scale, this);
+		getTransformTool () -> addInterest (&ElevationGridTool::connectScale, this);
+
+		auto scale = getTransformTool () -> getMatrix () .mult_dir_matrix (Vector3d (1, 1, 1));
+		
+		scale .y (std::abs (scale .y ()));
+
+		getTransformTool () -> rotation () = Rotation4d ();
+		getTransformTool () -> scale ()    = scale;
+	}
 }
 
 void

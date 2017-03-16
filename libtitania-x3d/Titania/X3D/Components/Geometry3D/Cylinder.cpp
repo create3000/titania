@@ -130,7 +130,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 Box3d
 Cylinder::createBBox () const
 {
-	const double diameter = radius () * 2;
+	const double diameter = std::abs (radius ()) * 2;
 
 	if (not top () and not side () and not bottom ())
 		return Box3d ();

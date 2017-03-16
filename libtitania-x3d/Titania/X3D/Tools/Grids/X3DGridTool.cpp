@@ -525,8 +525,9 @@ X3DGridTool::getScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & master, c
 	auto         after        = (snapPosition * inverse (absoluteMatrix) - shape .center ()) [axis];
 	auto         before       = shape .axes () [axis] [axis] * sgn;
 
-	if (master -> scaleFromEdge () and getBrowser () -> getControlKey ()) // Scale from corner.
+	if (getScaleFromEdge (master))
 	{
+		// Scale from corner.
 		after  += before;
 		before *= 2;
 	}
@@ -601,7 +602,7 @@ X3DGridTool::getUniformScaleMatrix (const X3DWeakPtr <X3DTransformNodeTool> & ma
 	const auto points = bbox .points ();
 	double     min    = infinity;
 
-	if (master -> scaleFromEdge () and getBrowser () -> getControlKey ())
+	if (getScaleFromEdge (master))
 	{
 		// Uniform scale from corner.
 
@@ -664,7 +665,7 @@ X3DGridTool::getOffset (const X3DWeakPtr <X3DTransformNodeTool> & master, const 
 
 	Vector3d distanceFromCenter = bbox .center ();
 
-	if (master -> scaleFromEdge () and getBrowser () -> getControlKey ()) // Scale from corner.
+	if (getScaleFromEdge (master))
 		distanceFromCenter -= offset;
 
 	Matrix4d translation;
@@ -707,6 +708,18 @@ X3DGridTool::connectScale (const X3DWeakPtr <X3DTransformNodeTool> & tool)
 	}
 	catch (const Error <DISPOSED> &)
 	{ }
+}
+
+bool
+X3DGridTool::getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const
+{
+	if (master -> scaleFromEdge () and getBrowser () -> getControlKey ())
+		return true;
+
+	if (not master -> scaleFromCenter () and master -> scaleFromEdge ())
+		return true;
+
+	return false;
 }
 
 X3DGridTool::~X3DGridTool ()

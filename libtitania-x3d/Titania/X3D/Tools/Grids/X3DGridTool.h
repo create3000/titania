@@ -251,6 +251,9 @@ private:
 	void
 	connectScale (const X3DWeakPtr <X3DTransformNodeTool> & tool);
 
+	bool
+	getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const;
+
 	///  @name Members
 
 	struct Fields

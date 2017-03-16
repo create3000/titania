@@ -168,6 +168,30 @@ public:
 	{ return *fields .scaleZAxis; }
 
 	SFBool &
+	scaleXBackAxis ()
+	{ return *fields .scaleXBackAxis; }
+
+	const SFBool &
+	scaleXBackAxis () const
+	{ return *fields .scaleXBackAxis; }
+
+	SFBool &
+	scaleYBackAxis ()
+	{ return *fields .scaleYBackAxis; }
+
+	const SFBool &
+	scaleYBackAxis () const
+	{ return *fields .scaleYBackAxis; }
+
+	SFBool &
+	scaleZBackAxis ()
+	{ return *fields .scaleZBackAxis; }
+
+	const SFBool &
+	scaleZBackAxis () const
+	{ return *fields .scaleZBackAxis; }
+
+	SFBool &
 	scaleUniform ()
 	{ return *fields .scaleUniform; }
 
@@ -182,6 +206,14 @@ public:
 	const SFBool &
 	scaleFromEdge () const
 	{ return *fields .scaleFromEdge; }
+
+	SFBool &
+	scaleFromCenter ()
+	{ return *fields .scaleFromCenter; }
+
+	const SFBool &
+	scaleFromCenter () const
+	{ return *fields .scaleFromCenter; }
 
 	MFString &
 	connectedAxes ()
@@ -342,8 +374,12 @@ private:
 		SFBool* const scaleXAxis;
 		SFBool* const scaleYAxis;
 		SFBool* const scaleZAxis;
+		SFBool* const scaleXBackAxis;
+		SFBool* const scaleYBackAxis;
+		SFBool* const scaleZBackAxis;
 		SFBool* const scaleUniform;
 		SFBool* const scaleFromEdge;
+		SFBool* const scaleFromCenter;
 		MFString* const connectedAxes;
 		SFColor* const color;
 		SFBool* const displayBBox;

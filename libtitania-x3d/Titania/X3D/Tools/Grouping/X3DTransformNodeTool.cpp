@@ -60,19 +60,23 @@ namespace titania {
 namespace X3D {
 
 X3DTransformNodeTool::Fields::Fields () :
-	      enabled (new SFBool (true)),
-	        tools (new MFString ({ "MOVE", "ROTATE", "SCALE" })),
-	   scaleXAxis (new SFBool (true)),
-	   scaleYAxis (new SFBool (true)),
-	   scaleZAxis (new SFBool (true)),
-	 scaleUniform (new SFBool (true)),
-	scaleFromEdge (new SFBool (true)),
-	connectedAxes (new MFString ()),
-	        color (new SFColor (ToolColors::GREEN)),
-	  displayBBox (new SFBool (true)),
-	displayCenter (new SFBool (true)),
-	     isActive (new SFBool ()),
-	    touchTime (new SFTime ())
+	        enabled (new SFBool (true)),
+	          tools (new MFString ({ "MOVE", "ROTATE", "SCALE" })),
+	     scaleXAxis (new SFBool (true)),
+	     scaleYAxis (new SFBool (true)),
+	     scaleZAxis (new SFBool (true)),
+	 scaleXBackAxis (new SFBool (true)),
+	 scaleYBackAxis (new SFBool (true)),
+	 scaleZBackAxis (new SFBool (true)),
+	   scaleUniform (new SFBool (true)),
+	  scaleFromEdge (new SFBool (true)),
+	scaleFromCenter (new SFBool (true)),
+	  connectedAxes (new MFString ()),
+	          color (new SFColor (ToolColors::GREEN)),
+	    displayBBox (new SFBool (true)),
+	  displayCenter (new SFBool (true)),
+	       isActive (new SFBool ()),
+	      touchTime (new SFTime ())
 { }
 
 X3DTransformNodeTool::X3DTransformNodeTool () :
@@ -86,19 +90,23 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 {
 	addType (X3DConstants::X3DTransformNodeTool);
 
-	addField (inputOutput, "enabled",       enabled ());
-	addField (inputOutput, "tools",         tools ());
-	addField (inputOutput, "scaleXAxis",    scaleXAxis ());
-	addField (inputOutput, "scaleYAxis",    scaleYAxis ());
-	addField (inputOutput, "scaleZAxis",    scaleZAxis ());
-	addField (inputOutput, "scaleUniform",  scaleUniform ());
-	addField (inputOutput, "scaleFromEdge", scaleFromEdge ());
-	addField (inputOutput, "connectedAxes", connectedAxes ());
-	addField (inputOutput, "color",         color ());
-	addField (inputOutput, "displayBBox",   displayBBox ());
-	addField (inputOutput, "displayCenter", displayCenter ());
-	addField (outputOnly,  "isActive",      isActive ());
-	addField (outputOnly,  "touchTime",     touchTime ());
+	addField (inputOutput, "enabled",         enabled ());
+	addField (inputOutput, "tools",           tools ());
+	addField (inputOutput, "scaleXAxis",      scaleXAxis ());
+	addField (inputOutput, "scaleYAxis",      scaleYAxis ());
+	addField (inputOutput, "scaleZAxis",      scaleZAxis ());
+	addField (inputOutput, "scaleXBackAxis",  scaleXBackAxis ());
+	addField (inputOutput, "scaleYBackAxis",  scaleYBackAxis ());
+	addField (inputOutput, "scaleZBackAxis",  scaleZBackAxis ());
+	addField (inputOutput, "scaleUniform",    scaleUniform ());
+	addField (inputOutput, "scaleFromEdge",   scaleFromEdge ());
+	addField (inputOutput, "scaleFromCenter", scaleFromCenter ());
+	addField (inputOutput, "connectedAxes",   connectedAxes ());
+	addField (inputOutput, "color",           color ());
+	addField (inputOutput, "displayBBox",     displayBBox ());
+	addField (inputOutput, "displayCenter",   displayCenter ());
+	addField (outputOnly,  "isActive",        isActive ());
+	addField (outputOnly,  "touchTime",       touchTime ());
 
 	setCameraObject (true);
 }
@@ -153,29 +161,37 @@ X3DTransformNodeTool::realize ()
 		getToolNode () -> setField <SFBool>   ("altKey",     getBrowser () -> getAltKey ());
 		getToolNode () -> setField <SFNode>   ("transform",  getNode <X3DTransformNode> ());
 
-		enabled ()       .addInterest (getToolNode () -> getField <SFBool>   ("enabled"));
-		tools ()         .addInterest (getToolNode () -> getField <MFString> ("tools"));
-		scaleXAxis ()    .addInterest (getToolNode () -> getField <SFBool>   ("scaleXAxis"));
-		scaleYAxis ()    .addInterest (getToolNode () -> getField <SFBool>   ("scaleYAxis"));
-		scaleZAxis ()    .addInterest (getToolNode () -> getField <SFBool>   ("scaleZAxis"));
-		scaleUniform ()  .addInterest (getToolNode () -> getField <SFBool>   ("scaleUniform"));
-		scaleFromEdge () .addInterest (getToolNode () -> getField <SFBool>   ("scaleFromEdge"));
-		connectedAxes () .addInterest (getToolNode () -> getField <MFString> ("connectedAxes"));
-		color ()         .addInterest (getToolNode () -> getField <SFColor>  ("color"));
-		displayBBox ()   .addInterest (getToolNode () -> getField <SFBool>   ("displayBBox"));
-		displayCenter () .addInterest (getToolNode () -> getField <SFBool>   ("displayCenter"));
+		enabled ()         .addInterest (getToolNode () -> getField <SFBool>   ("enabled"));
+		tools ()           .addInterest (getToolNode () -> getField <MFString> ("tools"));
+		scaleXAxis ()      .addInterest (getToolNode () -> getField <SFBool>   ("scaleXAxis"));
+		scaleYAxis ()      .addInterest (getToolNode () -> getField <SFBool>   ("scaleYAxis"));
+		scaleZAxis ()      .addInterest (getToolNode () -> getField <SFBool>   ("scaleZAxis"));
+		scaleXBackAxis ()  .addInterest (getToolNode () -> getField <SFBool>   ("scaleXBackAxis"));
+		scaleYBackAxis ()  .addInterest (getToolNode () -> getField <SFBool>   ("scaleYBackAxis"));
+		scaleZBackAxis ()  .addInterest (getToolNode () -> getField <SFBool>   ("scaleZBackAxis"));
+		scaleUniform ()    .addInterest (getToolNode () -> getField <SFBool>   ("scaleUniform"));
+		scaleFromEdge ()   .addInterest (getToolNode () -> getField <SFBool>   ("scaleFromEdge"));
+		scaleFromCenter () .addInterest (getToolNode () -> getField <SFBool>   ("scaleFromCenter"));
+		connectedAxes ()   .addInterest (getToolNode () -> getField <MFString> ("connectedAxes"));
+		color ()           .addInterest (getToolNode () -> getField <SFColor>  ("color"));
+		displayBBox ()     .addInterest (getToolNode () -> getField <SFBool>   ("displayBBox"));
+		displayCenter ()   .addInterest (getToolNode () -> getField <SFBool>   ("displayCenter"));
 
-		getToolNode () -> setField <SFBool>   ("enabled",       enabled ());
-		getToolNode () -> setField <MFString> ("tools",         tools ());
-		getToolNode () -> setField <SFBool>   ("scaleXAxis",    scaleXAxis ());
-		getToolNode () -> setField <SFBool>   ("scaleYAxis",    scaleYAxis ());
-		getToolNode () -> setField <SFBool>   ("scaleZAxis",    scaleZAxis ());
-		getToolNode () -> setField <SFBool>   ("scaleUniform",  scaleUniform ());
-		getToolNode () -> setField <SFBool>   ("scaleFromEdge", scaleFromEdge ());
-		getToolNode () -> setField <MFString> ("connectedAxes", connectedAxes ());
-		getToolNode () -> setField <SFColor>  ("color",         color ());
-		getToolNode () -> setField <SFBool>   ("displayBBox",   displayBBox ());
-		getToolNode () -> setField <SFBool>   ("displayCenter", displayCenter ());
+		getToolNode () -> setField <SFBool>   ("enabled",         enabled ());
+		getToolNode () -> setField <MFString> ("tools",           tools ());
+		getToolNode () -> setField <SFBool>   ("scaleXAxis",      scaleXAxis ());
+		getToolNode () -> setField <SFBool>   ("scaleYAxis",      scaleYAxis ());
+		getToolNode () -> setField <SFBool>   ("scaleZAxis",      scaleZAxis ());
+		getToolNode () -> setField <SFBool>   ("scaleXBackAxis",  scaleXBackAxis ());
+		getToolNode () -> setField <SFBool>   ("scaleYBackAxis",  scaleYBackAxis ());
+		getToolNode () -> setField <SFBool>   ("scaleZBackAxis",  scaleZBackAxis ());
+		getToolNode () -> setField <SFBool>   ("scaleUniform",    scaleUniform ());
+		getToolNode () -> setField <SFBool>   ("scaleFromEdge",   scaleFromEdge ());
+		getToolNode () -> setField <SFBool>   ("scaleFromCenter", scaleFromCenter ());
+		getToolNode () -> setField <MFString> ("connectedAxes",   connectedAxes ());
+		getToolNode () -> setField <SFColor>  ("color",           color ());
+		getToolNode () -> setField <SFBool>   ("displayBBox",     displayBBox ());
+		getToolNode () -> setField <SFBool>   ("displayCenter",   displayCenter ());
 	}
 	catch (const X3DError & error)
 	{

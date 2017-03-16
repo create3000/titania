@@ -174,7 +174,6 @@ protected:
 
 private:
 
-
 	///  @name Event handlers
 
 	void

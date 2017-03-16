@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Thu, 16 Mar 2017 01:40:40 GMT"
+META "modified" "Thu, 16 Mar 2017 03:00:30 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]
@@ -112,6 +112,10 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
             value DEF ScaleScript Script {
               inputOnly      SFBool     set_active
               inputOnly      SFVec3f    set_xScale
@@ -131,6 +135,7 @@ WorldInfo {
               inputOnly      SFVec3f    set_linetype
               inputOutput    SFBool     keepCenter FALSE
               inputOutput    SFBool     scaleFromEdge TRUE
+              inputOutput    SFBool     scaleFromCenter TRUE
               inputOutput    MFString   connectedAxes [ ]
               inputOutput    SFBool     controlKey FALSE
               inputOutput    SFBool     altKey FALSE
@@ -360,7 +365,7 @@ function set_axisScale (axis, value, sgn)
 {
 	value = value [axis];
 
-	if (scaleFromEdge && controlKey)
+	if ((scaleFromEdge && controlKey) || (scaleFromEdge && ! scaleFromCenter))
 	{
 		var
 			vector = new SFVec3f (1, 1, 1),
@@ -373,7 +378,7 @@ function set_axisScale (axis, value, sgn)
 
 		scale (vector, offset);
 	}
-	else
+	else if (scaleFromCenter)
 	{
 		var
 			vector = new SFVec3f (1, 1, 1),
@@ -461,7 +466,7 @@ function set_scale8 (value)
 
 function set_scale (value, sgn, centerOffset)
 {
-	if (scaleFromEdge && controlKey)
+	if ((scaleFromEdge && controlKey) || (scaleFromEdge && ! scaleFromCenter))
 	{
 		centerOffset = centerOffset .multVec (bboxSize .divide (2));
 
@@ -469,7 +474,7 @@ function set_scale (value, sgn, centerOffset)
 
 		scale (new SFVec3f (s, s, s), centerOffset);
 	}
-	else
+	else if (scaleFromCenter)
 	{
 		var s = 1 + 2 * sgn * value .length () / bboxSize .length ();
 
@@ -537,45 +542,6 @@ function sgn (value)
 }
 "
               directOutput TRUE
-            }
-          }
-          DEF nodes MetadataSet {
-            name "nodes"
-            reference "http://titania.create3000.de"
-            value DEF Tool Script {
-              inputOutput SFBool     enabled TRUE
-              inputOutput SFBool     pickable TRUE
-              inputOutput MFString   tools [
-                "MOVE",
-                "ROTATE",
-                "SCALE"
-              ]
-              inputOutput SFInt32    toolMode 0
-              inputOutput SFBool     scaleXAxis TRUE
-              inputOutput SFBool     scaleYAxis TRUE
-              inputOutput SFBool     scaleZAxis TRUE
-              inputOutput SFBool     scaleUniform TRUE
-              inputOutput SFBool     scaleFromEdge TRUE
-              inputOutput MFString   connectedAxes [ ]
-              inputOutput SFColor    color 0.35 1 0.7
-              inputOutput SFDouble   snapAngle 0.196349540849362
-              inputOutput SFBool     displayBBox TRUE
-              inputOutput SFBool     displayCenter TRUE
-              inputOutput SFBool     controlKey FALSE
-              inputOutput SFBool     shiftKey FALSE
-              inputOutput SFBool     altKey FALSE
-              inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-              inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-              inputOutput SFVec3f    bboxSize 0 0 0
-              inputOutput SFVec3f    bboxCenter 0 0 0
-              inputOutput SFBool     isActive FALSE
-              inputOutput SFTime     touchTime 0
-              inputOutput SFBool     keepCenter_changed FALSE
-              inputOutput SFInt32    activeTool_changed 0
-              inputOutput SFNode     transform NULL
-
-              url "ecmascript:
-"
             }
           }
         ]
@@ -1036,6 +1002,7 @@ DEF _1 BooleanSwitch {
                                       }
                                       USE _35
                                       DEF _37 BooleanSwitch {
+                                        whichChoice TRUE
                                         children [
                                           DEF _38 Transform {
                                             translation 0 -2.5 0
@@ -1148,6 +1115,7 @@ DEF _1 BooleanSwitch {
                                       }
                                       USE _49
                                       DEF _51 BooleanSwitch {
+                                        whichChoice TRUE
                                         children [
                                           DEF _52 Transform {
                                             translation 0 0 -2.5
@@ -1722,6 +1690,9 @@ DEF ModeScript Script {
   inputOutput    SFBool   scaleXAxis FALSE
   inputOutput    SFBool   scaleYAxis FALSE
   inputOutput    SFBool   scaleZAxis FALSE
+  inputOutput    SFBool   scaleXBackAxis TRUE
+  inputOutput    SFBool   scaleYBackAxis TRUE
+  inputOutput    SFBool   scaleZBackAxis TRUE
   inputOutput    SFBool   scaleUniform FALSE
   inputOutput    SFVec3f  bboxSize 0 0 0
   outputOnly     SFTime   touchTime
@@ -1731,6 +1702,9 @@ DEF ModeScript Script {
   outputOnly     SFBool   scaleX
   outputOnly     SFBool   scaleY
   outputOnly     SFBool   scaleZ
+  outputOnly     SFBool   scaleXBack
+  outputOnly     SFBool   scaleYBack
+  outputOnly     SFBool   scaleZBack
   outputOnly     SFInt32  whichChoice_changed
   initializeOnly SFInt32  tool 0
 
@@ -1766,6 +1740,21 @@ function set_scaleZAxis ()
 	set_tool (tool)
 }
 
+function set_scaleXBackAxis ()
+{
+	set_tool (tool)
+}
+
+function set_scaleYBackAxis ()
+{
+	set_tool (tool)
+}
+
+function set_scaleZBackAxis ()
+{
+	set_tool (tool)
+}
+
 function set_scaleUniform ()
 {
 	set_tool (tool)
@@ -1787,13 +1776,16 @@ function set_time (value, time)
 
 function set_tool (value)
 {
-	tool   = value;
-	move   = false;
-	rotate = false;
-	scale  = false;
-	scaleX = false;
-	scaleY = false;
-	scaleZ = false;
+	tool       = value;
+	move       = false;
+	rotate     = false;
+	scale      = false;
+	scaleX     = false;
+	scaleY     = false;
+	scaleZ     = false;
+	scaleXBack = false;
+	scaleYBack = false;
+	scaleZBack = false;
 
 	switch (tools [value])
 	{
@@ -1811,6 +1803,9 @@ function set_tool (value)
 			scaleX              = scaleXAxis;
 			scaleY              = scaleYAxis;
 			scaleZ              = scaleZAxis;
+			scaleXBack          = scaleXBackAxis;
+			scaleYBack          = scaleYBackAxis;
+			scaleZBack          = scaleZBackAxis;
 			whichChoice_changed = 2;
 			break;
 	}
@@ -2328,7 +2323,45 @@ function eventsProcessed ()
 
 USE ScaleScript
 
-USE Tool
+DEF Tool Script {
+  inputOutput SFBool     enabled TRUE
+  inputOutput SFBool     pickable TRUE
+  inputOutput MFString   tools [
+    "MOVE",
+    "ROTATE",
+    "SCALE"
+  ]
+  inputOutput SFInt32    toolMode 0
+  inputOutput SFBool     scaleXAxis TRUE
+  inputOutput SFBool     scaleYAxis TRUE
+  inputOutput SFBool     scaleZAxis TRUE
+  inputOutput SFBool     scaleXBackAxis TRUE
+  inputOutput SFBool     scaleYBackAxis TRUE
+  inputOutput SFBool     scaleZBackAxis TRUE
+  inputOutput SFBool     scaleUniform TRUE
+  inputOutput SFBool     scaleFromEdge TRUE
+  inputOutput SFBool     scaleFromCenter TRUE
+  inputOutput MFString   connectedAxes [ ]
+  inputOutput SFColor    color 0.35 1 0.7
+  inputOutput SFDouble   snapAngle 0.196349540849362
+  inputOutput SFBool     displayBBox TRUE
+  inputOutput SFBool     displayCenter TRUE
+  inputOutput SFBool     controlKey FALSE
+  inputOutput SFBool     shiftKey FALSE
+  inputOutput SFBool     altKey FALSE
+  inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+  inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+  inputOutput SFVec3f    bboxSize 0 0 0
+  inputOutput SFVec3f    bboxCenter 0 0 0
+  inputOutput SFBool     isActive FALSE
+  inputOutput SFTime     touchTime 0
+  inputOutput SFBool     keepCenter_changed FALSE
+  inputOutput SFInt32    activeTool_changed 0
+  inputOutput SFNode     transform NULL
+
+  url "ecmascript:
+"
+}
 
 
 # Debug
@@ -2553,28 +2586,32 @@ ROUTE Tool.color_changed TO _5.set_emissiveColor
 ROUTE Tool.controlKey_changed TO ScaleScript.set_controlKey
 ROUTE Tool.scaleFromEdge_changed TO ScaleScript.set_scaleFromEdge
 ROUTE Tool.scaleXAxis_changed TO _55.set_whichChoice
-ROUTE Tool.scaleXAxis_changed TO _60.set_whichChoice
 ROUTE Tool.scaleYAxis_changed TO _63.set_whichChoice
-ROUTE Tool.scaleYAxis_changed TO _68.set_whichChoice
 ROUTE Tool.scaleZAxis_changed TO _71.set_whichChoice
-ROUTE Tool.scaleZAxis_changed TO _76.set_whichChoice
 ROUTE Tool.scaleXAxis_changed TO ModeScript.set_scaleXAxis
 ROUTE Tool.scaleYAxis_changed TO ModeScript.set_scaleYAxis
 ROUTE Tool.scaleZAxis_changed TO ModeScript.set_scaleZAxis
-ROUTE Tool.scaleZAxis_changed TO _51.set_whichChoice
 ROUTE Tool.scaleZAxis_changed TO _43.set_whichChoice
-ROUTE Tool.scaleYAxis_changed TO _37.set_whichChoice
 ROUTE Tool.scaleYAxis_changed TO _29.set_whichChoice
-ROUTE Tool.scaleXAxis_changed TO _22.set_whichChoice
 ROUTE Tool.scaleXAxis_changed TO _12.set_whichChoice
-ROUTE ModeScript.scaleZ TO ZScaleBackSensor.set_enabled
 ROUTE ModeScript.scaleZ TO ZScaleSensor.set_enabled
-ROUTE ModeScript.scaleY TO YScaleBackSensor.set_enabled
 ROUTE ModeScript.scaleY TO YScaleSensor.set_enabled
-ROUTE ModeScript.scaleX TO XScaleBackSensor.set_enabled
 ROUTE ModeScript.scaleX TO XScaleSensor.set_enabled
 ROUTE ModeScript.scale TO _79.set_whichChoice
 ROUTE Tool.scaleUniform_changed TO ModeScript.set_scaleUniform
 ROUTE Tool.connectedAxes_changed TO ScaleScript.set_connectedAxes
+ROUTE Tool.scaleXBackAxis_changed TO ModeScript.set_scaleXBackAxis
+ROUTE Tool.scaleYBackAxis_changed TO ModeScript.set_scaleYBackAxis
+ROUTE Tool.scaleZBackAxis_changed TO ModeScript.set_scaleZBackAxis
+ROUTE ModeScript.scaleXBack TO XScaleBackSensor.set_enabled
+ROUTE ModeScript.scaleYBack TO YScaleBackSensor.set_enabled
+ROUTE ModeScript.scaleZBack TO ZScaleBackSensor.set_enabled
+ROUTE Tool.scaleXBackAxis_changed TO _60.set_whichChoice
+ROUTE Tool.scaleXBackAxis_changed TO _22.set_whichChoice
+ROUTE Tool.scaleYBackAxis_changed TO _68.set_whichChoice
+ROUTE Tool.scaleYBackAxis_changed TO _37.set_whichChoice
+ROUTE Tool.scaleZBackAxis_changed TO _76.set_whichChoice
+ROUTE Tool.scaleZBackAxis_changed TO _51.set_whichChoice
+ROUTE Tool.scaleFromCenter_changed TO ScaleScript.set_scaleFromCenter
 
 EXPORT Tool

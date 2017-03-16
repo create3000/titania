@@ -460,6 +460,17 @@ ElevationGrid::build ()
 	setAttribs (attribNodes, attribArrays);
 }
 
+std::pair <float, float>
+ElevationGrid::getMinMaxHeight () const
+{
+	if (height () .empty ())
+		return std::make_pair (0, 0);
+
+	const auto pair = std::minmax_element (height () .begin (), height () .end ());
+
+	return std::make_pair (pair .first -> getValue (), pair .second -> getValue ());
+}
+
 void
 ElevationGrid::loadHeightMap (const MFString & url, const float minHeight, const float maxHeight)
 {
