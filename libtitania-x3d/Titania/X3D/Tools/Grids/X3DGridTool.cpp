@@ -283,28 +283,31 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	
 		// Apply translation to translation group.
 	
-		const auto differenceMatrix = inverse (matrix) * (absoluteMatrix * snap);
-	
-		for (const auto & tool : getBrowser () -> getTransformTools ())
+		if (master -> enabled ())
 		{
-			try
-			{
-				if (tool == master)
-					continue;
-
-				if (not tool -> enabled ())
-					continue;
+			const auto differenceMatrix = inverse (matrix) * (absoluteMatrix * snap);
 		
-				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
-
-				if (tool -> translation () .getTainted ())
+			for (const auto & tool : getBrowser () -> getTransformTools ())
+			{
+				try
 				{
-					tool -> translation () .removeInterest (&X3DGridTool::set_translation, this);
-					tool -> translation () .addInterest (&X3DGridTool::connectTranslation, this, tool);
+					if (tool == master)
+						continue;
+	
+					if (not tool -> enabled ())
+						continue;
+			
+					tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
+	
+					if (tool -> translation () .getTainted ())
+					{
+						tool -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+						tool -> translation () .addInterest (&X3DGridTool::connectTranslation, this, tool);
+					}
 				}
+				catch (const std::exception &)
+				{ }
 			}
-			catch (const std::exception &)
-			{ }
 		}
 	}
 	catch (const std::exception &)
@@ -405,28 +408,31 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	
 		// Apply translation to translation group.
 	
-		const auto differenceMatrix = inverse (matrixBefore) * currentMatrix * master -> getTransformationMatrix ();
-	
-		for (const auto & tool : getBrowser () -> getTransformTools ())
+		if (master -> enabled ())
 		{
-			try
+			const auto differenceMatrix = inverse (matrixBefore) * currentMatrix * master -> getTransformationMatrix ();
+		
+			for (const auto & tool : getBrowser () -> getTransformTools ())
 			{
-				if (tool == master)
-					continue;
-
-				if (not tool -> enabled ())
-					continue;
-	
-				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
-
-				if (tool -> translation () .getTainted ())
+				try
 				{
-					tool -> translation () .removeInterest (&X3DGridTool::set_translation, this);
-					tool -> translation () .addInterest (&X3DGridTool::connectTranslation, this, tool);
+					if (tool == master)
+						continue;
+	
+					if (not tool -> enabled ())
+						continue;
+		
+					tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
+	
+					if (tool -> translation () .getTainted ())
+					{
+						tool -> translation () .removeInterest (&X3DGridTool::set_translation, this);
+						tool -> translation () .addInterest (&X3DGridTool::connectTranslation, this, tool);
+					}
 				}
+				catch (const std::exception &)
+				{ }
 			}
-			catch (const std::exception &)
-			{ }
 		}
 	}
 	catch (const std::exception &)
@@ -465,29 +471,32 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		master -> scale () .addInterest (&X3DGridTool::connectScale, this, master);
 	
 		// Apply translation to translation group.
-	
-		const auto differenceMatrix = inverse (matrix) * currentMatrix * master -> getTransformationMatrix ();
-	
-		for (const auto & tool : getBrowser () -> getTransformTools ())
+
+		if (master -> enabled ())
 		{
-			try
+			const auto differenceMatrix = inverse (matrix) * currentMatrix * master -> getTransformationMatrix ();
+		
+			for (const auto & tool : getBrowser () -> getTransformTools ())
 			{
-				if (tool == master)
-					continue;
-
-				if (not tool -> enabled ())
-					continue;
-
-				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
-
-				if (tool -> scale () .getTainted ())
+				try
 				{
-					tool -> scale () .removeInterest (&X3DGridTool::set_scale, this);
-					tool -> scale () .addInterest (&X3DGridTool::connectScale, this, tool);
+					if (tool == master)
+						continue;
+	
+					if (not tool -> enabled ())
+						continue;
+	
+					tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
+	
+					if (tool -> scale () .getTainted ())
+					{
+						tool -> scale () .removeInterest (&X3DGridTool::set_scale, this);
+						tool -> scale () .addInterest (&X3DGridTool::connectScale, this, tool);
+					}
 				}
+				catch (const std::exception &)
+				{ }
 			}
-			catch (const std::exception &)
-			{ }
 		}
 	}
 	catch (const std::exception &)

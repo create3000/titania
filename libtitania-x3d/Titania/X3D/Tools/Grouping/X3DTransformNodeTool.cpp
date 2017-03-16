@@ -363,6 +363,9 @@ X3DTransformNodeTool::eventsProcessed ()
 			return;
 		}
 
+		if (not enabled ())
+			return;
+
 		const auto differenceMatrix = inverse (matrix * transformationMatrix) * getMatrix () * transformationMatrix;
 
 		for (const auto & tool : getBrowser () -> getTransformTools ())

@@ -78,13 +78,13 @@ X3DNodeTool::X3DNodeTool () :
 }
 
 void
-X3DNodeTool::setTransformTool (const X3DWeakPtr <X3DTransformNode> & value)
+X3DNodeTool::setTransformTool (const X3DWeakPtr <X3DTransformNode> & transformNode)
 {
-	value -> addTool ();
+	transformNode -> addTool ();
 
-	transformTool = X3DWeakPtr <X3DTransformNodeTool> (value);
+	transformTool = X3DWeakPtr <X3DTransformNodeTool> (transformNode);
 
-	transformTool -> isActive () .addInterest (&X3DNodeTool::set_active, this);
+	transformTool -> isActive () .addInterest (&X3DNodeTool::set_transform_tool_active, this);
 }
 
 void
@@ -102,7 +102,7 @@ X3DNodeTool::setChanging (const X3DPtr <X3D::X3DNode> & node, const bool value)
 }
 
 void
-X3DNodeTool::set_active (const bool active)
+X3DNodeTool::set_transform_tool_active (const bool active)
 {
 	const auto & selection = getBrowser () -> getSelection ();
 

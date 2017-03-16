@@ -7,7 +7,7 @@ META "created" "Mon, 08 Feb 2016 08:41:58 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/CoordinateTool.x3dv"
-META "modified" "Wed, 15 Mar 2017 08:54:23 GMT"
+META "modified" "Thu, 16 Mar 2017 11:17:34 GMT"
 META "outputStyle" "nicest"
 
 WorldInfo {
@@ -65,17 +65,17 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
+            value DEF TransformTools Group {
+              children [
+                DEF TransformTool Transform { }
+                DEF TransformTool2 Transform { }
+              ]
+            }
           }
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value DEF SelectionShape Shape {
-              appearance Appearance {
-                material Material {
-                  transparency 1
-                }
-              }
-            }
+            value USE TransformTool2
           }
         ]
       }
@@ -112,7 +112,13 @@ Collision {
       whichChoice 0
       children [
         DEF NoneGroup Group {
-          children USE SelectionShape
+          children DEF SelectionShape Shape {
+            appearance Appearance {
+              material Material {
+                transparency 1
+              }
+            }
+          }
         }
         DEF SelectionGroup Group {
           children [
@@ -497,7 +503,7 @@ Collision {
             ]
           }
         }
-        DEF TransformTool Transform { }
+        USE TransformTools
       ]
     }
   ]
@@ -558,4 +564,5 @@ EXPORT SelectionTransformToolSwitch
 EXPORT ToolSwitch
 EXPORT TouchSensor
 EXPORT TransformTool
+EXPORT TransformTool2
 EXPORT VerticesCoord

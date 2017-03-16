@@ -157,6 +157,14 @@ public:
 	       Error <DISPOSED>) final override
 	{ return getNode <Disk2D> () -> toPrimitive (); }
 
+	virtual
+	void
+	beginUndo () final override;
+
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep) final override;
+
 	///  @name Destruction
 
 	virtual
@@ -178,7 +186,36 @@ protected:
 
 private:
 
-	///  @name Members
+	///  @name Event handlers
+
+	void
+	set_transform_tool ();
+
+	void
+	set_innerRadius ();
+
+	void
+	set_outerRadius ();
+	
+	void
+	set_scale1 ();
+	
+	void
+	set_scale2 ();
+	
+	void
+	connectInnerRadius (const SFFloat & field);
+	
+	void
+	connectOuterRadius (const SFFloat & field);
+	
+	void
+	connectScale1 (const SFVec3f & field);
+	
+	void
+	connectScale2 (const SFVec3f & field);
+
+	///  @name Fields
 
 	struct Fields
 	{
@@ -187,6 +224,13 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DWeakPtr <X3DTransformNodeTool> transformTool2;
+
+	float startInnerRadius;
+	float startOuterRadius;
 
 };
 

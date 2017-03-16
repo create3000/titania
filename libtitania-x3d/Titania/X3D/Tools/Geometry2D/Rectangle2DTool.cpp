@@ -52,6 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../Grouping/X3DTransformNodeTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -63,19 +65,87 @@ Rectangle2DTool::Rectangle2DTool (X3DBaseNode* const node) :
 	        Rectangle2D (node -> getExecutionContext ()),
 	        X3DBaseTool (node),
 	X3DGeometryNodeTool (),
-	             fields ()
+	             fields (),
+	          startSize ()
 {
 	addType (X3DConstants::Rectangle2DTool);
 
 	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
+
+	toolType () = "TRANSFORM";
 }
 
 void
 Rectangle2DTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
+
+	getTransformTool () .addInterest (&Rectangle2DTool::set_transform_tool, this);
+}
+
+void
+Rectangle2DTool::set_transform_tool ()
+{
+	size () .addInterest (&Rectangle2DTool::set_size, this);
+
+	getTransformTool () -> scaleZAxis ()     = false;
+	getTransformTool () -> scaleZBackAxis () = false;
+	getTransformTool () -> scaleFromEdge ()  = false;
+
+	set_size ();
+}
+
+void
+Rectangle2DTool::set_size ()
+{
+	getTransformTool () -> scale () .removeInterest (&Rectangle2DTool::set_scale, this);
+	getTransformTool () -> scale () .addInterest (&Rectangle2DTool::connectScale, this);
+
+	getTransformTool () -> scale () = Vector3f (size () .getX (), size () .getY (), 1e-6);
+}
+
+void
+Rectangle2DTool::set_scale ()
+{
+	size () .removeInterest (&Rectangle2DTool::set_size, this);
+	size () .addInterest (&Rectangle2DTool::connectSize, this);
+
+	size () = Vector2f (getTransformTool () -> scale () .getX (), getTransformTool () -> scale () .getY ());
+}
+
+void
+Rectangle2DTool::connectSize (const SFVec2f & field)
+{
+	field .removeInterest (&Rectangle2DTool::connectSize, this);
+	field .addInterest (&Rectangle2DTool::set_size, this);
+}
+
+void
+Rectangle2DTool::connectScale (const SFVec3f & field)
+{
+	field .removeInterest (&Rectangle2DTool::connectScale, this);
+	field .addInterest (&Rectangle2DTool::set_scale, this);
+}
+
+void
+Rectangle2DTool::beginUndo ()
+{
+	startSize = size ();
+}
+
+void
+Rectangle2DTool::endUndo (const UndoStepPtr & undoStep)
+{
+	if (size () not_eq startSize)
+	{
+		undoStep -> addUndoFunction (&SFVec2f::setValue, std::ref (size ()), startSize);
+		undoStep -> addUndoFunction (&Rectangle2DTool::setChanging, X3DPtr <Rectangle2D> (this), true);
+
+		undoStep -> addRedoFunction (&Rectangle2DTool::setChanging, X3DPtr <Rectangle2D> (this), true);
+		undoStep -> addRedoFunction (&SFVec2f::setValue, std::ref (size ()), size ());
+	}
 }
 
 void

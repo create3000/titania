@@ -260,10 +260,10 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		for (int32_t i = 0; i < xDimension; ++ i)
 		{
-			const double u     = i / xDimension;
-			const double theta = 2 * pi <double> * u;
-			const auto  t     = std::polar <double> (-1, theta);
-			const auto  p     = t * double (radius () .getValue ());
+			const auto u     = i / xDimension;
+			const auto theta = 2 * pi <double> * u;
+			const auto t     = std::polar <double> (-1, theta);
+			const auto p     = t * double (radius () .getValue ());
 
 			if (top ())
 				texCoord -> point () .emplace_back ((t .imag () + 1) / 2, -(t .real () - 1) / 2);
@@ -276,10 +276,10 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		for (int32_t i = 0; i < xDimension; ++ i)
 		{
-			const double u     = i / xDimension;
-			const double theta = 2 * pi <double> * u;
-			const auto   t     = std::polar <double> (-1, theta);
-			const auto   p     = t * double (radius () .getValue ());
+			const auto u     = i / xDimension;
+			const auto theta = 2 * pi <double> * u;
+			const auto t     = std::polar <double> (-1, theta);
+			const auto p     = t * double (radius () .getValue ());
 
 			if (bottom ())
 				texCoord -> point () .emplace_back ((t .imag () + 1) / 2, (t .real () + 1) / 2);
@@ -292,7 +292,7 @@ throw (Error <NOT_SUPPORTED>,
 	{
 		for (int32_t i = 0; i < xDimension; ++ i)
 		{
-			const double u = i / xDimension;
+			const auto u = i / xDimension;
 
 			texCoord -> point () .emplace_back (u, 1);
 			texCoord -> point () .emplace_back (u, 0);

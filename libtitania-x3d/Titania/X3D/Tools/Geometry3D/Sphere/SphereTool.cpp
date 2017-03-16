@@ -104,10 +104,10 @@ SphereTool::set_transform_tool ()
 void
 SphereTool::set_radius ()
 {
-	const float diameter = 2 * radius ();
-
 	getTransformTool () -> scale () .removeInterest (&SphereTool::set_scale, this);
 	getTransformTool () -> scale () .addInterest (&SphereTool::connectScale, this);
+
+	const float diameter = 2 * radius ();
 
 	getTransformTool () -> scale () = Vector3f (diameter, diameter, diameter);
 }

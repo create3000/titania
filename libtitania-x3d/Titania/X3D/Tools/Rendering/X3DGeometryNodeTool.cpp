@@ -178,10 +178,10 @@ X3DGeometryNodeTool::set_toolType ()
 
 			setTransformTool (inlineNode -> getExportedNode <Transform> ("TransformTool"));
 
-			getTransformTool () -> setField <MFString> ("tools", MFString ({ "SCALE" }));
-			getTransformTool () -> setField <SFBool> ("displayCenter", false);
-			getTransformTool () -> setField <SFBool> ("displayBBox", false);
-			getTransformTool () -> setField <SFColor> ("color", ToolColors::DARK_BLUE);
+			getTransformTool () -> tools ()         = { "SCALE" };
+			getTransformTool () -> displayCenter () = false;
+			getTransformTool () -> displayBBox ()   = false;
+			getTransformTool () -> color ()         = ToolColors::DARK_BLUE;
 		}
 	}
 	catch (const X3DError & error)

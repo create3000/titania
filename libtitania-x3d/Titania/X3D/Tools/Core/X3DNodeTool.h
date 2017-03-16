@@ -113,7 +113,7 @@ protected:
 	///  @name Member access
 
 	void
-	setTransformTool (const X3DWeakPtr <X3DTransformNode> & value);
+	setTransformTool (const X3DWeakPtr <X3DTransformNode> & transformNode);
 
 	const X3DWeakPtr <X3DTransformNodeTool> &
 	getTransformTool () const
@@ -123,13 +123,13 @@ protected:
 	void
 	setChanging (const X3DPtr <X3D::X3DNode> & node, const bool value);
 
-
-private:
-
 	///  @name Event handlers
 
 	void
-	set_active (const bool active);
+	set_transform_tool_active (const bool active);
+
+
+private:
 
 	///  @name Fields
 
