@@ -145,6 +145,14 @@ public:
 	       Error <DISPOSED>) final override
 	{ return getNode <Cylinder> () -> toPrimitive (); }
 
+	virtual
+	void
+	beginUndo () final override;
+
+	virtual
+	void
+	endUndo (const UndoStepPtr & undoStep) final override;
+
 	///  @name Destruction
 
 	virtual
@@ -166,7 +174,31 @@ protected:
 
 private:
 
-	///  @name Members
+
+	///  @name Event handlers
+
+	void
+	set_transform_tool ();
+	
+	void
+	set_height ();
+	
+	void
+	set_radius ();
+	
+	void
+	set_scale ();
+	
+	void
+	connectHeight (const SFFloat & field);
+	
+	void
+	connectRadius (const SFFloat & field);
+	
+	void
+	connectScale (const SFVec3f & field);
+
+	///  @name Fields
 
 	struct Fields
 	{
@@ -175,6 +207,11 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	float startHeight;
+	float startRadius;
 
 };
 

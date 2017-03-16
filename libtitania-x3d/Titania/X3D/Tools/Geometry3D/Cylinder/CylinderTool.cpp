@@ -52,6 +52,8 @@
 
 #include "../../../Execution/X3DExecutionContext.h"
 
+#include "../../Grouping/X3DTransformNodeTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -63,19 +65,117 @@ CylinderTool::CylinderTool (X3DBaseNode* const node) :
 	           Cylinder (node -> getExecutionContext ()),
 	        X3DBaseTool (node),
 	X3DGeometryNodeTool (),
-	             fields ()
+	             fields (),
+	        startHeight (0),
+	        startRadius (0)
 {
 	addType (X3DConstants::CylinderTool);
 
 	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
+
+	toolType () = "TRANSFORM";
 }
 
 void
 CylinderTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
+
+	getTransformTool () .addInterest (&CylinderTool::set_transform_tool, this);
+}
+
+void
+CylinderTool::set_transform_tool ()
+{
+	height () .addInterest (&CylinderTool::set_height, this);
+	radius () .addInterest (&CylinderTool::set_radius, this);
+
+	getTransformTool () -> scaleUniform ()  = false;
+	getTransformTool () -> scaleFromEdge () = false;
+	getTransformTool () -> connectedAxes () = { "XZ", "ZX" };
+
+	set_height ();
+	set_radius ();
+}
+
+void
+CylinderTool::set_height ()
+{
+	getTransformTool () -> scale () .removeInterest (&CylinderTool::set_scale, this);
+	getTransformTool () -> scale () .addInterest (&CylinderTool::connectScale, this);
+
+	getTransformTool () -> scale () .setY (height ());
+}
+
+void
+CylinderTool::set_radius ()
+{
+	const float diameter = 2 * radius ();
+
+	getTransformTool () -> scale () .removeInterest (&CylinderTool::set_scale, this);
+	getTransformTool () -> scale () .addInterest (&CylinderTool::connectScale, this);
+
+	getTransformTool () -> scale () .setX (diameter);
+	getTransformTool () -> scale () .setZ (diameter);
+}
+
+void
+CylinderTool::set_scale ()
+{
+	height () .removeInterest (&CylinderTool::set_height, this);
+	height () .addInterest (&CylinderTool::connectHeight, this);
+
+	radius () .removeInterest (&CylinderTool::set_radius, this);
+	radius () .addInterest (&CylinderTool::connectRadius, this);
+
+	height () = getTransformTool () -> scale () .getY ();
+	radius () = getTransformTool () -> scale () .getX () / 2;
+}
+
+void
+CylinderTool::connectHeight (const SFFloat & field)
+{
+	field .removeInterest (&CylinderTool::connectHeight, this);
+	field .addInterest (&CylinderTool::set_height, this);
+}
+
+void
+CylinderTool::connectRadius (const SFFloat & field)
+{
+	field .removeInterest (&CylinderTool::connectRadius, this);
+	field .addInterest (&CylinderTool::set_radius, this);
+}
+
+void
+CylinderTool::connectScale (const SFVec3f & field)
+{
+	field .removeInterest (&CylinderTool::connectScale, this);
+	field .addInterest (&CylinderTool::set_scale, this);
+}
+
+void
+CylinderTool::beginUndo ()
+{
+	startHeight = height ();
+	startRadius = radius ();
+}
+
+void
+CylinderTool::endUndo (const UndoStepPtr & undoStep)
+{
+	if (height () not_eq startHeight or
+	    radius () not_eq startRadius)
+	{
+		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (radius ()), startRadius);
+		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (height ()), startHeight);
+		undoStep -> addUndoFunction (&CylinderTool::setChanging, X3DPtr <Cylinder> (this), true);
+
+		undoStep -> addRedoFunction (&CylinderTool::setChanging, X3DPtr <Cylinder> (this), true);
+		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (height ()), height ());
+		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (radius ()), radius ());
+	}
 }
 
 void
