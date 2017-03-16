@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 
 X3DTransformNodeTool::Fields::Fields () :
-	        enabled (new SFBool (true)),
+	       grouping (new SFBool (true)),
 	          tools (new MFString ({ "MOVE", "ROTATE", "SCALE" })),
 	     scaleXAxis (new SFBool (true)),
 	     scaleYAxis (new SFBool (true)),
@@ -90,7 +90,7 @@ X3DTransformNodeTool::X3DTransformNodeTool () :
 {
 	addType (X3DConstants::X3DTransformNodeTool);
 
-	addField (inputOutput, "enabled",         enabled ());
+	addField (inputOutput, "grouping",        grouping ());
 	addField (inputOutput, "tools",           tools ());
 	addField (inputOutput, "scaleXAxis",      scaleXAxis ());
 	addField (inputOutput, "scaleYAxis",      scaleYAxis ());
@@ -161,7 +161,6 @@ X3DTransformNodeTool::realize ()
 		getToolNode () -> setField <SFBool>   ("altKey",     getBrowser () -> getAltKey ());
 		getToolNode () -> setField <SFNode>   ("transform",  getNode <X3DTransformNode> ());
 
-		enabled ()         .addInterest (getToolNode () -> getField <SFBool>   ("enabled"));
 		tools ()           .addInterest (getToolNode () -> getField <MFString> ("tools"));
 		scaleXAxis ()      .addInterest (getToolNode () -> getField <SFBool>   ("scaleXAxis"));
 		scaleYAxis ()      .addInterest (getToolNode () -> getField <SFBool>   ("scaleYAxis"));
@@ -177,7 +176,6 @@ X3DTransformNodeTool::realize ()
 		displayBBox ()     .addInterest (getToolNode () -> getField <SFBool>   ("displayBBox"));
 		displayCenter ()   .addInterest (getToolNode () -> getField <SFBool>   ("displayCenter"));
 
-		getToolNode () -> setField <SFBool>   ("enabled",         enabled ());
 		getToolNode () -> setField <MFString> ("tools",           tools ());
 		getToolNode () -> setField <SFBool>   ("scaleXAxis",      scaleXAxis ());
 		getToolNode () -> setField <SFBool>   ("scaleYAxis",      scaleYAxis ());
@@ -363,7 +361,7 @@ X3DTransformNodeTool::eventsProcessed ()
 			return;
 		}
 
-		if (not enabled ())
+		if (not grouping ())
 			return;
 
 		const auto differenceMatrix = inverse (matrix * transformationMatrix) * getMatrix () * transformationMatrix;
@@ -375,7 +373,7 @@ X3DTransformNodeTool::eventsProcessed ()
 				if (tool == this)
 					continue;
 
-				if (not tool -> enabled ())
+				if (not tool -> grouping ())
 					continue;
 
 				tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());

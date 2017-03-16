@@ -128,12 +128,12 @@ public:
 	///  @name Hidden fields
 
 	SFBool &
-	enabled ()
-	{ return *fields .enabled; }
+	grouping ()
+	{ return *fields .grouping; }
 
 	const SFBool &
-	enabled () const
-	{ return *fields .enabled; }
+	grouping () const
+	{ return *fields .grouping; }
 
 	MFString &
 	tools ()
@@ -369,7 +369,7 @@ private:
 	{
 		Fields ();
 
-		SFBool* const enabled;
+		SFBool* const grouping;
 		MFString* const tools;
 		SFBool* const scaleXAxis;
 		SFBool* const scaleYAxis;

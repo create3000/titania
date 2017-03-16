@@ -327,27 +327,29 @@ Disk2D::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	if (getElements () .empty ())
-		throw Error <DISPOSED> ("Disk2D::toPrimitive");
+	const auto & options = getBrowser () -> getDisk2DOptions ();
 
-	if (getElements () [0] .vertexMode () == GL_POINTS)
+	if (innerRadius () == outerRadius ())
 	{
+		const double radius = std::abs (outerRadius ());
+
 		// Point
+
+		if (radius == 0)
+		{
+			// Point
+		
+			const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
+			const auto geometry = getExecutionContext () -> createNode <PointSet> ();
 	
-		const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
-		const auto geometry = getExecutionContext () -> createNode <PointSet> ();
+			geometry -> metadata () = metadata ();
+			geometry -> coord ()    = coord;
+	
+			coord -> point () .emplace_back ();
+	
+			return SFNode (geometry);
+		}
 
-		geometry -> metadata () = metadata ();
-		geometry -> coord ()    = coord;
-
-		coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
-
-		getExecutionContext () -> realize ();
-		return SFNode (geometry);
-	}
-
-	if (getElements () [0] .vertexMode () == GL_LINE_LOOP)
-	{
 		// Circle
 	
 		const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
@@ -356,15 +358,20 @@ throw (Error <NOT_SUPPORTED>,
 		geometry -> metadata () = metadata ();
 		geometry -> coord ()    = coord;
 
-		coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
+		coord -> point () .assign (options -> getVertices () .begin (), options -> getVertices () .end ());
 
-		for (int32_t i = 0, size = getVertices () .size (); i < size; ++ i)
+		if (radius not_eq 1)
+		{
+			for (auto & vertex : coord -> point ())
+				vertex *= radius;
+		}
+
+		for (int32_t i = 0, size = options -> getVertices () .size (); i < size; ++ i)
 			geometry -> coordIndex () .emplace_back (i);
 
 		geometry -> coordIndex () .emplace_back (0);
 		geometry -> coordIndex () .emplace_back (-1);
 
-		getExecutionContext () -> realize ();
 		return SFNode (geometry);
 	}
 
@@ -375,117 +382,80 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> metadata () = metadata ();
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
-		
-	if (getElements () [0] .vertexMode () == GL_POLYGON)
+	geometry -> solid ()    = solid ();
+
+	if (innerRadius () == 0.0f or outerRadius () == 0.0f)
 	{
 		// Disk
-	
-		coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count ());
 
-		for (int32_t i = 0, size = getElements () [0] .count (); i < size; ++ i)
+		const double radius = std::abs (std::max (innerRadius (), outerRadius ()));
+	
+		coord -> point () .assign (options -> getVertices () .begin (), options -> getVertices () .end ());
+
+		if (radius not_eq 1)
 		{
-			texCoord -> point () .emplace_back (getTexCoords () [0] [i] .x (), getTexCoords () [0] [i] .y ());
+			for (auto & vertex : coord -> point ())
+				vertex *= radius;
+		}
+
+		for (auto & point : options -> getTexCoords ())
+			texCoord -> point () .emplace_back (point .x (), point .y ());
+
+		for (int32_t i = 0, size = options -> getVertices () .size (); i < size; ++ i)
+		{
 			geometry -> texCoordIndex () .emplace_back (i);
 			geometry -> coordIndex ()    .emplace_back (i);
 		}
 
 		geometry -> texCoordIndex () .emplace_back (-1);
 		geometry -> coordIndex ()    .emplace_back (-1);
-		
-		if (not solid ())
-		{
-			for (int32_t i = 1, size = getElements () [0] .count (); i < size; ++ i)
-			{
-				texCoord -> point () .emplace_back (1 - texCoord -> point () [size - i] .getX (), texCoord -> point () [size - i] .getY ());
-				geometry -> texCoordIndex () .emplace_back (i - 1 + getElements () [0] .count ());
-				geometry -> coordIndex ()    .emplace_back (size - i);
-			}
 
-			texCoord -> point () .emplace_back (1 - texCoord -> point () [0] .getX (), texCoord -> point () [0] .getY ());
-			geometry -> texCoordIndex () .emplace_back (getElements () [0] .count ());
-			geometry -> coordIndex ()    .emplace_back (0);
-			geometry -> texCoordIndex () .emplace_back (-1);
-			geometry -> coordIndex ()    .emplace_back (-1);
-		}
+		return SFNode (geometry);
 	}
-	else
+
+	// Disk with hole
+
+	// Texture Coordinates
+
+	const double maxRadius = std::abs (std::max (innerRadius (), outerRadius ()));
+	const double minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
+	const double scale     = minRadius / maxRadius;
+
+	coord -> point () .assign (options -> getVertices () .begin (), options -> getVertices () .begin ());
+
+	for (auto & point : options -> getVertices ())
+		coord -> point () .emplace_back (point * minRadius);
+
+	for (auto & point : options -> getVertices ())
+		coord -> point () .emplace_back (point * maxRadius);
+
+	for (auto & point : options -> getTexCoords ())
+		texCoord -> point () .emplace_back (point .x () * scale + (1 - scale) / 2, point .y () * scale + (1 - scale) / 2);
+
+	for (auto & point : options -> getTexCoords ())
+		texCoord -> point () .emplace_back (point .x (), point .y ());
+
+	for (size_t i = 0, size = options -> getVertices () .size (); i < size; ++ i)
 	{
-		// Disk with hole
+		const auto i1 = (i + 1) % size;
 
-		coord -> point () .assign (getVertices () .begin (), getVertices () .begin () + getElements () [0] .count () - 2);
-
-		for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count ()))
-			texCoord -> point () .emplace_back (point .x (), point .y ());
-
-		int32_t       i    = 0;
-		const int32_t size = getElements () [0] .count () - 4;
-
-		for (; i < size; i += 2)
-		{
-			geometry -> texCoordIndex () .emplace_back (i);
-			geometry -> texCoordIndex () .emplace_back (i + 1);
-			geometry -> texCoordIndex () .emplace_back (i + 2);
-			geometry -> texCoordIndex () .emplace_back (i + 3);
-			geometry -> texCoordIndex () .emplace_back (-1);
-
-			geometry -> coordIndex () .emplace_back (i);
-			geometry -> coordIndex () .emplace_back (i + 1);
-			geometry -> coordIndex () .emplace_back (i + 2);
-			geometry -> coordIndex () .emplace_back (i + 3);
-			geometry -> coordIndex () .emplace_back (-1);
-		}
+		// TexCoords
 
 		geometry -> texCoordIndex () .emplace_back (i);
-		geometry -> texCoordIndex () .emplace_back (i + 1);
-		geometry -> texCoordIndex () .emplace_back (i + 2);
-		geometry -> texCoordIndex () .emplace_back (i + 3);
+		geometry -> texCoordIndex () .emplace_back (i + size);
+		geometry -> texCoordIndex () .emplace_back (i1 + size);
+		geometry -> texCoordIndex () .emplace_back (i1);
 		geometry -> texCoordIndex () .emplace_back (-1);
 
+		// Vertices
+
 		geometry -> coordIndex () .emplace_back (i);
-		geometry -> coordIndex () .emplace_back (i + 1);
-		geometry -> coordIndex () .emplace_back (1);
-		geometry -> coordIndex () .emplace_back (0);
+		geometry -> coordIndex () .emplace_back (i + size);
+		geometry -> coordIndex () .emplace_back (i1 + size);
+		geometry -> coordIndex () .emplace_back (i1);
 		geometry -> coordIndex () .emplace_back (-1);
-
-		if (not solid ())
-		{
-			const int32_t ts = texCoord -> point () .size ();
-
-			for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count ()))
-				texCoord -> point () .emplace_back (1 - point .x (), point .y ());
-
-			i = 0;
-
-			for (; i < size; i += 2)
-			{
-				geometry -> texCoordIndex () .emplace_back (ts + i);
-				geometry -> texCoordIndex () .emplace_back (ts + i + 3);
-				geometry -> texCoordIndex () .emplace_back (ts + i + 2);
-				geometry -> texCoordIndex () .emplace_back (ts + i + 1);
-				geometry -> texCoordIndex () .emplace_back (-1);
-
-				geometry -> coordIndex () .emplace_back (i);
-				geometry -> coordIndex () .emplace_back (i + 3);
-				geometry -> coordIndex () .emplace_back (i + 2);
-				geometry -> coordIndex () .emplace_back (i + 1);
-				geometry -> coordIndex () .emplace_back (-1);
-			}
-
-			geometry -> texCoordIndex () .emplace_back (ts + i);
-			geometry -> texCoordIndex () .emplace_back (ts + i + 3);
-			geometry -> texCoordIndex () .emplace_back (ts + i + 2);
-			geometry -> texCoordIndex () .emplace_back (ts + i + 1);
-			geometry -> texCoordIndex () .emplace_back (-1);
-
-			geometry -> coordIndex () .emplace_back (i);
-			geometry -> coordIndex () .emplace_back (0);
-			geometry -> coordIndex () .emplace_back (1);
-			geometry -> coordIndex () .emplace_back (i + 1);
-			geometry -> coordIndex () .emplace_back (-1);
-		}
 	}
 
-	getExecutionContext () -> realize ();
 	return SFNode (geometry);
 }
 

@@ -283,7 +283,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	
 		// Apply translation to translation group.
 	
-		if (master -> enabled ())
+		if (master -> grouping ())
 		{
 			const auto differenceMatrix = inverse (matrix) * (absoluteMatrix * snap);
 		
@@ -294,7 +294,7 @@ X3DGridTool::set_translation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 					if (tool == master)
 						continue;
 	
-					if (not tool -> enabled ())
+					if (not tool -> grouping ())
 						continue;
 			
 					tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
@@ -408,7 +408,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	
 		// Apply translation to translation group.
 	
-		if (master -> enabled ())
+		if (master -> grouping ())
 		{
 			const auto differenceMatrix = inverse (matrixBefore) * currentMatrix * master -> getTransformationMatrix ();
 		
@@ -419,7 +419,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 					if (tool == master)
 						continue;
 	
-					if (not tool -> enabled ())
+					if (not tool -> grouping ())
 						continue;
 		
 					tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());
@@ -472,7 +472,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 	
 		// Apply translation to translation group.
 
-		if (master -> enabled ())
+		if (master -> grouping ())
 		{
 			const auto differenceMatrix = inverse (matrix) * currentMatrix * master -> getTransformationMatrix ();
 		
@@ -483,7 +483,7 @@ X3DGridTool::set_scale (const X3DWeakPtr <X3DTransformNodeTool> & master)
 					if (tool == master)
 						continue;
 	
-					if (not tool -> enabled ())
+					if (not tool -> grouping ())
 						continue;
 	
 					tool -> addAbsoluteMatrix (differenceMatrix, tool -> getKeepCenter ());

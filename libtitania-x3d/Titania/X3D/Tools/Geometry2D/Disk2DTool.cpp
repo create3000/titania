@@ -106,7 +106,7 @@ Disk2DTool::set_transform_tool ()
 
 	transformTool2 -> isActive () .addInterest (&Disk2DTool::set_transform_tool_active, static_cast <X3DNodeTool*> (this));
 
-	transformTool2 -> enabled ()       = false;
+	transformTool2 -> grouping ()      = false;
 	transformTool2 -> tools ()         = { "SCALE" };
 	transformTool2 -> displayCenter () = false;
 	transformTool2 -> displayBBox ()   = false;

@@ -127,7 +127,7 @@ X3DLightNodeTool::addTool ()
 	{
 		const auto selected = getBrowser () -> getSelection () -> isSelected (SFNode (this));
 
-		getTransformTool () -> setField <SFBool> ("enabled",  selected);
+		getTransformTool () -> setField <SFBool> ("grouping", selected);
 		getToolNode ()      -> setField <SFBool> ("selected", selected);
 	}
 	catch (const X3DError &)
@@ -144,7 +144,7 @@ X3DLightNodeTool::removeTool (const bool really)
 	{
 		try
 		{
-			getTransformTool () -> setField <SFBool> ("enabled",  false);
+			getTransformTool () -> setField <SFBool> ("grouping", false);
 			getToolNode ()      -> setField <SFBool> ("selected", false);
 		}
 		catch (const X3DError &)

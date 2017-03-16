@@ -9,7 +9,7 @@ META "created" "Tue, 20 May 2014 19:16:28 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/TransformTool.x3dv"
-META "modified" "Thu, 16 Mar 2017 11:50:54 GMT"
+META "modified" "Thu, 16 Mar 2017 15:35:46 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]
@@ -111,10 +111,6 @@ WorldInfo {
         value [
           DEF previous MetadataSet {
             name "previous"
-            reference "http://titania.create3000.de"
-          }
-          DEF nodes MetadataSet {
-            name "nodes"
             reference "http://titania.create3000.de"
             value DEF ScaleScript Script {
               inputOnly      SFBool     set_active
@@ -542,6 +538,48 @@ function sgn (value)
 }
 "
               directOutput TRUE
+            }
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+            value DEF Tool Script {
+              inputOutput SFBool     pickable TRUE
+              inputOutput MFString   tools [
+                "MOVE",
+                "ROTATE",
+                "SCALE"
+              ]
+              inputOutput SFInt32    toolMode 0
+              inputOutput SFBool     scaleXAxis TRUE
+              inputOutput SFBool     scaleYAxis TRUE
+              inputOutput SFBool     scaleZAxis TRUE
+              inputOutput SFBool     scaleXBackAxis TRUE
+              inputOutput SFBool     scaleYBackAxis TRUE
+              inputOutput SFBool     scaleZBackAxis TRUE
+              inputOutput SFBool     scaleUniform TRUE
+              inputOutput SFBool     scaleFromEdge TRUE
+              inputOutput SFBool     scaleFromCenter TRUE
+              inputOutput MFString   connectedAxes [ ]
+              inputOutput SFColor    color 0.35 1 0.7
+              inputOutput SFDouble   snapAngle 0.196349540849362
+              inputOutput SFBool     displayBBox TRUE
+              inputOutput SFBool     displayCenter TRUE
+              inputOutput SFBool     controlKey FALSE
+              inputOutput SFBool     shiftKey FALSE
+              inputOutput SFBool     altKey FALSE
+              inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+              inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+              inputOutput SFVec3f    bboxSize 0 0 0
+              inputOutput SFVec3f    bboxCenter 0 0 0
+              inputOutput SFBool     isActive FALSE
+              inputOutput SFTime     touchTime 0
+              inputOutput SFBool     keepCenter_changed FALSE
+              inputOutput SFInt32    activeTool_changed 0
+              inputOutput SFNode     transform NULL
+
+              url "ecmascript:
+"
             }
           }
         ]
@@ -2314,45 +2352,7 @@ function eventsProcessed ()
 
 USE ScaleScript
 
-DEF Tool Script {
-  inputOutput SFBool     enabled TRUE
-  inputOutput SFBool     pickable TRUE
-  inputOutput MFString   tools [
-    "MOVE",
-    "ROTATE",
-    "SCALE"
-  ]
-  inputOutput SFInt32    toolMode 0
-  inputOutput SFBool     scaleXAxis TRUE
-  inputOutput SFBool     scaleYAxis TRUE
-  inputOutput SFBool     scaleZAxis TRUE
-  inputOutput SFBool     scaleXBackAxis TRUE
-  inputOutput SFBool     scaleYBackAxis TRUE
-  inputOutput SFBool     scaleZBackAxis TRUE
-  inputOutput SFBool     scaleUniform TRUE
-  inputOutput SFBool     scaleFromEdge TRUE
-  inputOutput SFBool     scaleFromCenter TRUE
-  inputOutput MFString   connectedAxes [ ]
-  inputOutput SFColor    color 0.35 1 0.7
-  inputOutput SFDouble   snapAngle 0.196349540849362
-  inputOutput SFBool     displayBBox TRUE
-  inputOutput SFBool     displayCenter TRUE
-  inputOutput SFBool     controlKey FALSE
-  inputOutput SFBool     shiftKey FALSE
-  inputOutput SFBool     altKey FALSE
-  inputOutput SFMatrix4f cameraSpaceMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  inputOutput SFMatrix4f modelViewMatrix 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
-  inputOutput SFVec3f    bboxSize 0 0 0
-  inputOutput SFVec3f    bboxCenter 0 0 0
-  inputOutput SFBool     isActive FALSE
-  inputOutput SFTime     touchTime 0
-  inputOutput SFBool     keepCenter_changed FALSE
-  inputOutput SFInt32    activeTool_changed 0
-  inputOutput SFNode     transform NULL
-
-  url "ecmascript:
-"
-}
+USE Tool
 
 
 # Debug
