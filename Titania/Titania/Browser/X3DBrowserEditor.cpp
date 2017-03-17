@@ -438,23 +438,21 @@ X3DBrowserEditor::getMetaData ()
 		}
 		catch (const std::exception & error)
 		{
-			setViewer (X3D::X3DConstants::ExamineViewer);
+			getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::X3DBaseNode);
 		}
 
 		//
 
-		const auto position         = worldInfo -> getMetaData <X3D::Vector3d>   ("/Titania/Viewpoint/position");
-		const auto orientation      = worldInfo -> getMetaData <X3D::Rotation4d> ("/Titania/Viewpoint/orientation");
-		const auto centerOfRotation = worldInfo -> getMetaData <X3D::Vector3d>   ("/Titania/Viewpoint/centerOfRotation");
-
 		const auto activeLayer = layerSet -> getActiveLayer ();
 		const auto viewpoint   = activeLayer -> getViewpoint ();
+
+		const auto position         = worldInfo -> getMetaData <X3D::Vector3d>   ("/Titania/Viewpoint/position",         viewpoint -> getUserPosition ());
+		const auto orientation      = worldInfo -> getMetaData <X3D::Rotation4d> ("/Titania/Viewpoint/orientation",      viewpoint -> getUserOrientation ());
+		const auto centerOfRotation = worldInfo -> getMetaData <X3D::Vector3d>   ("/Titania/Viewpoint/centerOfRotation", viewpoint -> getUserCenterOfRotation ());
 
 		viewpoint -> setUserPosition         (position);
 		viewpoint -> setUserOrientation      (orientation);
 		viewpoint -> setUserCenterOfRotation (centerOfRotation);
-
-		viewpoint -> set_bind () = true;
 	}
 	catch (const std::exception & error)
 	{ }

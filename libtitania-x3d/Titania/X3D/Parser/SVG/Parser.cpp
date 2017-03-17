@@ -1889,24 +1889,23 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 		
 					if (Grammar::DoubleValue (vstream, x))
 					{
-						if (commaWhiteSpaces (vstream))
+						commaWhiteSpaces (vstream);
+
+						if (Grammar::DoubleValue (vstream, y))
 						{
-							if (Grammar::DoubleValue (vstream, y))
+							if (relative)
 							{
-								if (relative)
-								{
-									x += ax;
-									y += ay;
-								}
-
-								contour .emplace_back (x, y);
-
-								ax = x;
-								ay = y;
-
-								if (commaWhiteSpaces (vstream))
-									continue;
+								x += ax;
+								y += ay;
 							}
+
+							contour .emplace_back (x, y);
+
+							ax = x;
+							ay = y;
+
+							commaWhiteSpaces (vstream);
+							continue;
 						}
 					}
 	
@@ -1928,24 +1927,23 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 		
 					if (Grammar::DoubleValue (vstream, x))
 					{
-						if (commaWhiteSpaces (vstream))
+						commaWhiteSpaces (vstream);
+
+						if (Grammar::DoubleValue (vstream, y))
 						{
-							if (Grammar::DoubleValue (vstream, y))
+							if (relative)
 							{
-								if (relative)
-								{
-									x += ax;
-									y += ay;
-								}
-
-								contour .emplace_back (x, y);
-
-								ax = x;
-								ay = y;
-
-								if (commaWhiteSpaces (vstream))
-									continue;
+								x += ax;
+								y += ay;
 							}
+
+							contour .emplace_back (x, y);
+
+							ax = x;
+							ay = y;
+
+							commaWhiteSpaces (vstream);
+							continue;
 						}
 					}
 	
@@ -1974,8 +1972,8 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 
 						ax = x;
 
-						if (commaWhiteSpaces (vstream))
-							continue;
+						commaWhiteSpaces (vstream);
+						continue;
 					}
 	
 					break;
@@ -2003,8 +2001,8 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 
 						ay = y;
 
-						if (commaWhiteSpaces (vstream))
-							continue;
+						commaWhiteSpaces (vstream);
+						continue;
 					}
 	
 					break;
@@ -2025,38 +2023,35 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 		
 					if (Grammar::DoubleValue (vstream, x1))
 					{
-						if (commaWhiteSpaces (vstream))
+						commaWhiteSpaces (vstream);
+
+						if (Grammar::DoubleValue (vstream, y1))
 						{
-							if (Grammar::DoubleValue (vstream, y1))
+							commaWhiteSpaces (vstream);
+
+							if (Grammar::DoubleValue (vstream, x))
 							{
-								if (commaWhiteSpaces (vstream))
+								commaWhiteSpaces (vstream);
+
+								if (Grammar::DoubleValue (vstream, y))
 								{
-									if (Grammar::DoubleValue (vstream, x))
+									if (relative)
 									{
-										if (commaWhiteSpaces (vstream))
-										{
-											if (Grammar::DoubleValue (vstream, y))
-											{
-												if (relative)
-												{
-													x1 += ax;
-													y1 += ay;
-													x  += ax;
-													y  += ay;
-												}
-
-												math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-
-												ax = x;
-												ay = y;
-												px = x1;
-												py = y1;
-
-												if (commaWhiteSpaces (vstream))
-													continue;
-											}
-										}
+										x1 += ax;
+										y1 += ay;
+										x  += ax;
+										y  += ay;
 									}
+
+									math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+									ax = x;
+									ay = y;
+									px = x1;
+									py = y1;
+
+									commaWhiteSpaces (vstream);
+									continue;
 								}
 							}
 						}
@@ -2080,43 +2075,42 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 		
 					if (Grammar::DoubleValue (vstream, x))
 					{
-						if (commaWhiteSpaces (vstream))
+						commaWhiteSpaces (vstream);
+
+						if (Grammar::DoubleValue (vstream, y))
 						{
-							if (Grammar::DoubleValue (vstream, y))
+							if (relative)
 							{
-								if (relative)
-								{
-									x += ax;
-									y += ay;
-								}
-
-								switch (previous)
-								{
-									case 'Q':
-									case 'q':
-									case 'T':
-									case 't':
-									{
-										x1 = ax + (ax - px);
-										y1 = ay + (ay - py);
-										break;
-									}
-									default:
-									{
-										x1 = ax;
-										y1 = ay;
-										break;
-									}
-								}
-
-								math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-
-								ax = x;
-								ay = y;
-
-								if (commaWhiteSpaces (vstream))
-									continue;
+								x += ax;
+								y += ay;
 							}
+
+							switch (previous)
+							{
+								case 'Q':
+								case 'q':
+								case 'T':
+								case 't':
+								{
+									x1 = ax + (ax - px);
+									y1 = ay + (ay - py);
+									break;
+								}
+								default:
+								{
+									x1 = ax;
+									y1 = ay;
+									break;
+								}
+							}
+
+							math::bezier::quadratic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+							ax = x;
+							ay = y;
+
+							commaWhiteSpaces (vstream);
+							continue;
 						}
 					}
 	
@@ -2138,50 +2132,45 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 		
 					if (Grammar::DoubleValue (vstream, x1))
 					{
-						if (commaWhiteSpaces (vstream))
+						commaWhiteSpaces (vstream);
+
+						if (Grammar::DoubleValue (vstream, y1))
 						{
-							if (Grammar::DoubleValue (vstream, y1))
+							commaWhiteSpaces (vstream);
+
+							if (Grammar::DoubleValue (vstream, x2))
 							{
-								if (commaWhiteSpaces (vstream))
+								commaWhiteSpaces (vstream);
+
+								if (Grammar::DoubleValue (vstream, y2))
 								{
-									if (Grammar::DoubleValue (vstream, x2))
+									commaWhiteSpaces (vstream);
+
+									if (Grammar::DoubleValue (vstream, x))
 									{
-										if (commaWhiteSpaces (vstream))
+										commaWhiteSpaces (vstream);
+
+										if (Grammar::DoubleValue (vstream, y))
 										{
-											if (Grammar::DoubleValue (vstream, y2))
+											if (relative)
 											{
-												if (commaWhiteSpaces (vstream))
-												{
-													if (Grammar::DoubleValue (vstream, x))
-													{
-														if (commaWhiteSpaces (vstream))
-														{
-															if (Grammar::DoubleValue (vstream, y))
-															{
-																if (relative)
-																{
-																	x1 += ax;
-																	y1 += ay;
-																	x2 += ax;
-																	y2 += ay;
-																	x  += ax;
-																	y  += ay;
-																}
-
-																math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-
-																ax = x;
-																ay = y;
-																px = x2;
-																py = y2;
-
-																if (commaWhiteSpaces (vstream))
-																	continue;
-															}
-														}
-													}
-												}
+												x1 += ax;
+												y1 += ay;
+												x2 += ax;
+												y2 += ay;
+												x  += ax;
+												y  += ay;
 											}
+
+											math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+											ax = x;
+											ay = y;
+											px = x2;
+											py = y2;
+
+											commaWhiteSpaces (vstream);
+											continue;
 										}
 									}
 								}
@@ -2207,57 +2196,54 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 		
 					if (Grammar::DoubleValue (vstream, x2))
 					{
-						if (commaWhiteSpaces (vstream))
+						commaWhiteSpaces (vstream);
+
+						if (Grammar::DoubleValue (vstream, y2))
 						{
-							if (Grammar::DoubleValue (vstream, y2))
+							commaWhiteSpaces (vstream);
+
+							if (Grammar::DoubleValue (vstream, x))
 							{
-								if (commaWhiteSpaces (vstream))
+								commaWhiteSpaces (vstream);
+
+								if (Grammar::DoubleValue (vstream, y))
 								{
-									if (Grammar::DoubleValue (vstream, x))
+									if (relative)
 									{
-										if (commaWhiteSpaces (vstream))
+										x2 += ax;
+										y2 += ay;
+										x  += ax;
+										y  += ay;
+									}
+
+									switch (previous)
+									{
+										case 'C':
+										case 'c':
+										case 'S':
+										case 's':
 										{
-											if (Grammar::DoubleValue (vstream, y))
-											{
-												if (relative)
-												{
-													x2 += ax;
-													y2 += ay;
-													x  += ax;
-													y  += ay;
-												}
-
-												switch (previous)
-												{
-													case 'C':
-													case 'c':
-													case 'S':
-													case 's':
-													{
-														x1 = ax + (ax - px);
-														y1 = ay + (ay - py);
-														break;
-													}
-													default:
-													{
-														x1 = ax;
-														y1 = ay;
-														break;
-													}
-												}
-
-												math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
-
-												ax = x;
-												ay = y;
-												px = x2;
-												py = y2;
-
-												if (commaWhiteSpaces (vstream))
-													continue;
-											}
+											x1 = ax + (ax - px);
+											y1 = ay + (ay - py);
+											break;
+										}
+										default:
+										{
+											x1 = ax;
+											y1 = ay;
+											break;
 										}
 									}
+
+									math::bezier::cubic_curve (X3D::Vector2d (ax, ay), X3D::Vector2d (x1, y1), X3D::Vector2d (x2, y2), X3D::Vector2d (x, y), BEZIER_STEPS, contour);
+
+									ax = x;
+									ay = y;
+									px = x2;
+									py = y2;
+
+									commaWhiteSpaces (vstream);
+									continue;
 								}
 							}
 						}
@@ -2284,8 +2270,8 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 					contours .emplace_back (std::move (contour));
 				}
 
-				if (commaWhiteSpaces (vstream))
-					continue;
+				commaWhiteSpaces (vstream);
+				continue;
 			}
 			default:
 				break;
