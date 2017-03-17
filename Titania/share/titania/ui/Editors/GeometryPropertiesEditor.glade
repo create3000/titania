@@ -609,21 +609,6 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkSpinButton" id="Arc2DMinAngleSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">4</property>
-                                            <property name="adjustment">Arc2DMinAngleAdjustment</property>
-                                            <property name="climb_rate">0.32000000000000001</property>
-                                            <property name="digits">6</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">4</property>
-                                          </packing>
-                                        </child>
-                                        <child>
                                           <object class="GtkBox">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
@@ -634,7 +619,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="adjustment">Arc2DStartAngleAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.10000000000000001</property>
                                                 <property name="digits">6</property>
                                               </object>
                                               <packing>
@@ -674,7 +659,7 @@
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="adjustment">Arc2DEndAngleAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.10000000000000001</property>
                                                 <property name="digits">6</property>
                                               </object>
                                               <packing>
@@ -701,6 +686,48 @@
                                           <packing>
                                             <property name="left_attach">1</property>
                                             <property name="top_attach">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="hexpand">True</property>
+                                            <property name="spacing">8</property>
+                                            <child>
+                                              <object class="GtkSpinButton" id="Arc2DMinAngleSpinButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="halign">start</property>
+                                                <property name="text" translatable="yes">4</property>
+                                                <property name="adjustment">Arc2DMinAngleAdjustment</property>
+                                                <property name="climb_rate">0.10000000000000001</property>
+                                                <property name="digits">6</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkScale">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="adjustment">Arc2DMinAngleAdjustment</property>
+                                                <property name="round_digits">1</property>
+                                                <property name="draw_value">False</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">4</property>
                                           </packing>
                                         </child>
                                       </object>
@@ -850,22 +877,6 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkSpinButton" id="ArcClose2DMinAngleSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">4,000</property>
-                                            <property name="adjustment">ArcClose2DMinAngleAdjustment</property>
-                                            <property name="climb_rate">0.32000000000000001</property>
-                                            <property name="digits">6</property>
-                                            <property name="value">4</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">5</property>
-                                          </packing>
-                                        </child>
-                                        <child>
                                           <object class="GtkBox">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
@@ -877,7 +888,7 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="text" translatable="yes">0,000000</property>
                                                 <property name="adjustment">ArcClose2DStartAngleAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.10000000000000001</property>
                                                 <property name="digits">6</property>
                                               </object>
                                               <packing>
@@ -919,7 +930,7 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="text" translatable="yes">0,000000</property>
                                                 <property name="adjustment">ArcClose2DEndAngleAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.10000000000000001</property>
                                                 <property name="digits">6</property>
                                               </object>
                                               <packing>
@@ -947,6 +958,49 @@
                                           <packing>
                                             <property name="left_attach">1</property>
                                             <property name="top_attach">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="hexpand">True</property>
+                                            <property name="spacing">8</property>
+                                            <child>
+                                              <object class="GtkSpinButton" id="ArcClose2DMinAngleSpinButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="halign">start</property>
+                                                <property name="text" translatable="yes">4,000</property>
+                                                <property name="adjustment">ArcClose2DMinAngleAdjustment</property>
+                                                <property name="climb_rate">0.10000000000000001</property>
+                                                <property name="digits">6</property>
+                                                <property name="value">4</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkScale">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="adjustment">ArcClose2DMinAngleAdjustment</property>
+                                                <property name="round_digits">1</property>
+                                                <property name="draw_value">False</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">5</property>
                                           </packing>
                                         </child>
                                       </object>
