@@ -2600,6 +2600,7 @@
     <None Include="Titania\Editors\PrecisionPlacementPanel\X3DEnvironmentalSensorEditor.h" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-sort-ascending.png" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-sort-descending.png" />
+    <None Include="share\titania\Library\Primitives\Geometry2D\Star.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
