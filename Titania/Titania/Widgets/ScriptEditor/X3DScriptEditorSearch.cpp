@@ -318,6 +318,8 @@ X3DScriptEditorSearch::on_enable_search ()
 
 	if (selection .size ())
 		getTextBuffer () -> select_range (selectionBegin, selectionEnd);
+
+	on_add_search (getSearchEntry () .get_text (), getToggleReplaceButton () .get_active () ? getReplaceEntry () .get_text () : "");
 }
 
 void
@@ -374,13 +376,33 @@ X3DScriptEditorSearch::on_build_search_menu ()
 
 	for (size_t i = 0, size = recentSearches .size (); i < size; ++ i)
 	{
-		const auto menuItem = Gtk::manage (new Gtk::MenuItem (recentSearches [i]));
+		static constexpr size_t TEXT_LENGTH = 32;
+
+		auto label = recentSearches [i] .substr (0, TEXT_LENGTH);
+
+		if (recentSearches [i] .size () > TEXT_LENGTH)
+			label += "…";
+
+		if (not recentSearches [i] .empty ())
+		{
+			label += " »";
+			label += recentReplaces [i] .substr (0, TEXT_LENGTH);
+
+			if (recentReplaces [i] .size () > TEXT_LENGTH)
+				label += "…";
+
+			label += "«";
+		}
+
+		const auto menuItem = Gtk::manage (new Gtk::MenuItem (label));
 		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_search_activate), recentSearches [i], recentReplaces [i]));
 		menuItem -> show ();
 
 		getSearchMenu () .append (*menuItem);
 	}
 }
+
+
 
 void
 X3DScriptEditorSearch::on_search_activate (const Glib::ustring & search, const Glib::ustring & replace)
@@ -394,8 +416,11 @@ X3DScriptEditorSearch::on_add_search (const Glib::ustring & search, const Glib::
 {
 	// Add search to recentSearches
 
-	if (not recentSearches .empty () and recentSearches .front () == search)
+	if ((not recentSearches .empty () and recentSearches .front () == search) and
+	    (not recentReplaces .empty () and recentReplaces .front () == replace))
+	{
 		return;
+	}
 
 	recentSearches .emplace_front (search);
 	recentReplaces .emplace_front (replace);

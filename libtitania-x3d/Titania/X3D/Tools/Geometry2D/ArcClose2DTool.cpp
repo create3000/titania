@@ -52,6 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../Grouping/X3DTransformNodeTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -70,12 +72,85 @@ ArcClose2DTool::ArcClose2DTool (X3DBaseNode* const node) :
 	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
+
+	toolType () = "TRANSFORM";
 }
 
 void
 ArcClose2DTool::initialize ()
 {
 	X3DGeometryNodeTool::initialize ();
+
+	getTransformTool () .addInterest (&ArcClose2DTool::set_transform_tool, this);
+}
+
+void
+ArcClose2DTool::set_transform_tool ()
+{
+	radius () .addInterest (&ArcClose2DTool::set_radius, this);
+
+	getTransformTool () -> scaleXAxis ()     = false;
+	getTransformTool () -> scaleYAxis ()     = false;
+	getTransformTool () -> scaleZAxis ()     = false;
+	getTransformTool () -> scaleXBackAxis () = false;
+	getTransformTool () -> scaleYBackAxis () = false;
+	getTransformTool () -> scaleZBackAxis () = false;
+	getTransformTool () -> scaleFromEdge ()  = false;
+
+	set_radius ();
+}
+
+void
+ArcClose2DTool::set_radius ()
+{
+	getTransformTool () -> scale () .removeInterest (&ArcClose2DTool::set_scale, this);
+	getTransformTool () -> scale () .addInterest (&ArcClose2DTool::connectScale, this);
+
+	const float diameter = 2 * radius ();
+
+	getTransformTool () -> scale () = Vector3f (diameter, diameter, 1e-6);
+}
+
+void
+ArcClose2DTool::set_scale ()
+{
+	radius () .removeInterest (&ArcClose2DTool::set_radius, this);
+	radius () .addInterest (&ArcClose2DTool::connectRadius, this);
+
+	radius () = getTransformTool () -> scale () .getX () / 2;
+}
+
+void
+ArcClose2DTool::connectRadius (const SFFloat & field)
+{
+	field .removeInterest (&ArcClose2DTool::connectRadius, this);
+	field .addInterest (&ArcClose2DTool::set_radius, this);
+}
+
+void
+ArcClose2DTool::connectScale (const SFVec3f & field)
+{
+	field .removeInterest (&ArcClose2DTool::connectScale, this);
+	field .addInterest (&ArcClose2DTool::set_scale, this);
+}
+
+void
+ArcClose2DTool::beginUndo ()
+{
+	startRadius = radius ();
+}
+
+void
+ArcClose2DTool::endUndo (const UndoStepPtr & undoStep)
+{
+	if (radius () not_eq startRadius)
+	{
+		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (radius ()), startRadius);
+		undoStep -> addUndoFunction (&ArcClose2DTool::setChanging, X3DPtr <ArcClose2D> (this), true);
+
+		undoStep -> addRedoFunction (&ArcClose2DTool::setChanging, X3DPtr <ArcClose2D> (this), true);
+		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (radius ()), radius ());
+	}
 }
 
 void
