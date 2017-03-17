@@ -934,9 +934,6 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
 				geometryNode -> coordIndex () .emplace_back (-1);
 			}
-
-			for (const auto & point : points)
-				coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 	
 			transformNode -> children () .emplace_back (shapeNode);
 		}
@@ -1068,9 +1065,6 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
 				geometryNode -> coordIndex () .emplace_back (-1);
 			}
-
-			for (const auto & point : points)
-				coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 
 			transformNode -> children () .emplace_back (shapeNode);
 		}
@@ -1210,12 +1204,6 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 1] .data ()));
 				geometryNode -> coordIndex () .emplace_back (std::get <0> (triangles [i + 2] .data ()));
 				geometryNode -> coordIndex () .emplace_back (-1);
-			}
-
-			for (const auto & contour : contours)
-			{
-				for (const auto & point : contour)
-					coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 			}
 
 			transformNode -> children () .emplace_back (shapeNode);
