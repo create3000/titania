@@ -125,7 +125,7 @@ X3DUsedTexturesEditor::on_render_node ()
 
 		set_camera ();
 	}
-	catch (const X3D::X3DError & error)
+	catch (const std::exception & error)
 	{
 		//__LOG__ << error .what () << std::endl;
 	}
@@ -150,27 +150,17 @@ X3DUsedTexturesEditor::set_camera ()
 void
 X3DUsedTexturesEditor::set_camera (double width, double height)
 {
-	try
-	{
-		const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
-		const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
+	const X3D::X3DPtr <X3D::OrthoViewpoint> viewpoint (preview -> getExecutionContext () -> getNamedNode ("Texture2DViewpoint"));
+	const X3D::X3DPtr <X3D::Transform>      transform (preview -> getExecutionContext () -> getNamedNode ("Texture2D"));
 
-		if (viewpoint and transform)
-		{
-			if (not width or not height)
-			{
-				width  = 1;
-				height = 1;
-			}
-
-			viewpoint -> fieldOfView () = { -width, -height, width, height };
-			transform -> scale ()       = X3D::Vector3f (width, height, 1);
-		}
-	}
-	catch (const X3D::X3DError & error)
+	if (not width or not height)
 	{
-		//__LOG__ << error .what () << std::endl;
+		width  = 1;
+		height = 1;
 	}
+
+	viewpoint -> fieldOfView () = { -width, -height, width, height };
+	transform -> scale ()       = X3D::Vector3f (width, height, 1);
 }
 
 void

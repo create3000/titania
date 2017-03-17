@@ -146,8 +146,7 @@ X3DUsedMaterialsEditor::on_render_node ()
 
 		const X3D::X3DPtr <X3D::Switch> sphere (preview -> getExecutionContext () -> getNamedNode ("Sphere"));
 
-		if (sphere)
-			sphere -> whichChoice () = twoSidedMaterial;
+		sphere -> whichChoice () = twoSidedMaterial;
 	}
 	catch (const std::exception & error)
 	{ 
