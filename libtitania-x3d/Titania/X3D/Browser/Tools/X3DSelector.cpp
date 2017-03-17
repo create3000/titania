@@ -271,11 +271,11 @@ X3DSelector::polygon ()
 	tessellator .end_contour ();
 	tessellator .end_polygon ();
 
-	for (const auto & element : tessellator .polygon ())
+	for (const auto & polygon : tessellator .polygons ())
 	{
-		glBegin (element .type ());
+		glBegin (polygon .type ());
 
-		for (const auto & vertex : element)
+		for (const auto & vertex : polygon)
 			glVertex3dv (vertex .point () .data ());
 
 		glEnd ();

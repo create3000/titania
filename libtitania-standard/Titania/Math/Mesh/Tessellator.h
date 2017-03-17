@@ -82,31 +82,31 @@ public:
 
 	///  @name Member types
 
-	using Data = std::tuple <Args ...>;
+	using data_type = std::tuple <Args ...>;
 
 	///  @name Construction
 
 	template <class ... A>
-	tessellator_vertex (const math::vector3 <Type> & point, A && ... data) :
+	tessellator_vertex (const vector3 <Type> & point, A && ... data) :
 		m_point (point),
 		m_data  (std::forward <A> (data) ...)
 	{ }
 
 	///  @name Member access
 
-	math::vector3 <Type> &
+	vector3 <Type> &
 	point ()
 	{ return m_point; }
 
-	const math::vector3 <Type> &
+	const vector3 <Type> &
 	point () const
 	{ return m_point; }
 
 	void
-	data (const Data & value)
+	data (const data_type & value)
 	{ m_data = value; }
 
-	const Data &
+	const data_type &
 	data () const
 	{ return m_data; }
 
@@ -115,26 +115,26 @@ private:
 
 	///  @name Members
 
-	math::vector3 <Type> m_point;
-	Data                 m_data;
+	vector3 <Type> m_point;
+	data_type      m_data;
 
 };
 
 template <class Type, class ... Args>
-class tessellator_polygon_element
+class tessellator_polygon
 {
 public:
 
 	///  @name Member types
 
-	using vertex         = tessellator_vertex <Type, Args ...>;
-	using vertex_array   = std::vector <vertex*>;
-	using const_iterator = basic::reference_iterator <typename vertex_array::const_iterator, vertex>;
-	using size_type      = typename vertex_array::size_type;
+	using vertex_type       = tessellator_vertex <Type, Args ...>;
+	using vertex_array_type = std::vector <vertex_type*>;
+	using const_iterator    = basic::reference_iterator <typename vertex_array_type::const_iterator, vertex_type>;
+	using size_type         = typename vertex_array_type::size_type;
 
 	///  @name Construction
 
-	tessellator_polygon_element (GLenum type) :
+	tessellator_polygon (GLenum type) :
 		    m_type (type),
 		m_vertices ()
 	{ }
@@ -145,7 +145,7 @@ public:
 	type () const
 	{ return m_type; }
 
-	const vertex &
+	const vertex_type &
 	operator [ ] (size_t i) const
 	{ return *m_vertices [i]; }
 
@@ -170,8 +170,8 @@ private:
 
 	///  @name Members
 
-	GLenum       m_type;
-	vertex_array m_vertices;
+	GLenum            m_type;
+	vertex_array_type m_vertices;
 
 };
 
@@ -182,10 +182,11 @@ public:
 
 	///  @name Member types
 
-	using polygon_element       = tessellator_polygon_element <Type, Args ...>;
-	using polygon_element_array = std::vector <polygon_element>;
-	using vertex                = tessellator_vertex <Type, Args ...>;
-	using combine_function      = std::function <void (vertex &, const vertex* const [4], const float [4])>;
+	using polygon_type          = tessellator_polygon <Type, Args ...>;
+	using polygon_array_type    = std::vector <polygon_type>;
+	using vertex_type           = tessellator_vertex <Type, Args ...>;
+	using data_type             = typename vertex_type::data_type;
+	using combine_function_type = std::function <data_type (const vector3 <Type> &, const vertex_type* const [4], const float [4])>;
 
 	///  @name Construction
 
@@ -197,11 +198,10 @@ public:
 	property (const GLenum, const double);
 
 	void
-	normal (const math::vector3 <Type> &);
+	normal (const vector3 <Type> & value);
 
 	void
-	combine (const combine_function & value)
-	{ m_combine = value; }
+	combine (const combine_function_type & value);
 
 	void
 	begin_polygon ();
@@ -217,15 +217,15 @@ public:
 
 	template <class ... A>
 	void
-	add_vertex (const math::vector3 <Type> &, A && ... args);
+	add_vertex (const vector3 <Type> &, A && ... args);
 
 	///  @name Members access
 
-	const polygon_element_array &
-	polygon () const
-	{ return m_polygon; }
+	const polygon_array_type &
+	polygons () const
+	{ return m_polygons; }
 
-	polygon_element
+	polygon_type
 	triangles () const;
 
 	///  @name Destruction
@@ -243,11 +243,11 @@ private:
 
 	static
 	void
-	tessVertexData (vertex* const, tessellator* const);
+	tessVertexData (vertex_type* const, tessellator* const);
 
 	static
 	void
-	tessCombineData (const double [3], const vertex* const [4], const float [4], void**, tessellator* const);
+	tessCombineData (const double [3], const vertex_type* const [4], const float [4], void**, tessellator* const);
 
 	static
 	void
@@ -258,10 +258,10 @@ private:
 
 	///  @name Members
 
-	GLUtesselator*        m_tess;
-	std::deque <vertex>   m_vertices;
-	polygon_element_array m_polygon;
-	combine_function      m_combine;
+	GLUtesselator*           m_tess;
+	std::deque <vertex_type> m_vertices;
+	polygon_array_type       m_polygons;
+	combine_function_type    m_combine;
 
 };
 
@@ -269,7 +269,7 @@ template <class Type, class ... Args>
 tessellator <Type, Args ...>::tessellator (const bool debug) :
 	    m_tess (gluNewTess ()),
 	m_vertices (),
-	 m_polygon (),
+	m_polygons (),
 	 m_combine ()
 {
 	if (m_tess)
@@ -277,7 +277,6 @@ tessellator <Type, Args ...>::tessellator (const bool debug) :
 		gluTessProperty (m_tess, GLU_TESS_BOUNDARY_ONLY, GLU_FALSE);
 		gluTessCallback (m_tess, GLU_TESS_BEGIN_DATA,   _GLUfuncptr (&tessellator::tessBeginData));
 		gluTessCallback (m_tess, GLU_TESS_VERTEX_DATA,  _GLUfuncptr (&tessellator::tessVertexData));
-		gluTessCallback (m_tess, GLU_TESS_COMBINE_DATA, _GLUfuncptr (&tessellator::tessCombineData));
 		gluTessCallback (m_tess, GLU_TESS_END_DATA,     _GLUfuncptr (&tessellator::tessEndData));
 
 		if (debug)
@@ -296,16 +295,28 @@ tessellator <Type, Args ...>::property (const GLenum property, const GLdouble va
 template <class Type, class ... Args>
 inline
 void
-tessellator <Type, Args ...>::normal (const math::vector3 <Type> & normal)
+tessellator <Type, Args ...>::normal (const vector3 <Type> & normal)
 {
 	gluTessNormal (m_tess, normal .x (), normal .y (), normal .z ());
 }
 
 template <class Type, class ... Args>
 void
+tessellator <Type, Args ...>::combine (const combine_function_type & value)
+{
+	m_combine = value;
+
+	if (m_combine)
+		gluTessCallback (m_tess, GLU_TESS_COMBINE_DATA, _GLUfuncptr (&tessellator::tessCombineData));
+	else
+		gluTessCallback (m_tess, GLU_TESS_COMBINE_DATA, nullptr);
+}
+
+template <class Type, class ... Args>
+void
 tessellator <Type, Args ...>::begin_polygon ()
 {
-	m_polygon  .clear ();
+	m_polygons .clear ();
 	m_vertices .clear ();
 
 	gluTessBeginPolygon (m_tess, this);
@@ -339,7 +350,7 @@ template <class Type, class ... Args>
 template <class ... A>
 inline
 void
-tessellator <Type, Args ...>::add_vertex (const math::vector3 <Type> & point, A && ... args)
+tessellator <Type, Args ...>::add_vertex (const vector3 <Type> & point, A && ... args)
 {
 	m_vertices .emplace_back (point, std::forward <A> (args) ...);
 
@@ -350,28 +361,27 @@ template <class Type, class ... Args>
 void
 tessellator <Type, Args ...>::tessBeginData (const GLenum type, tessellator* const self)
 {
-	self -> m_polygon .emplace_back (type);
+	self -> m_polygons .emplace_back (type);
 }
 
 template <class Type, class ... Args>
 void
-tessellator <Type, Args ...>::tessVertexData (vertex* const vertex, tessellator* const self)
+tessellator <Type, Args ...>::tessVertexData (vertex_type* const vertex, tessellator* const self)
 {
-	self -> m_polygon .back () .m_vertices .emplace_back (vertex);
+	self -> m_polygons .back () .m_vertices .emplace_back (vertex);
 }
 
 template <class Type, class ... Args>
 void
-tessellator <Type, Args ...>::tessCombineData (const double coords [3], const vertex* const vertices [4],
+tessellator <Type, Args ...>::tessCombineData (const double coords [3], const vertex_type* const vertices [4],
                                                const float weight [4], void** outData,
                                                tessellator* const self)
 {
-	self -> m_vertices .emplace_back (math::vector3 <Type> (coords [0], coords [1], coords [2]), vertices [0] -> data ());
+	vector3 <Type> point (coords [0], coords [1], coords [2]);
+
+	self -> m_vertices .emplace_back (point, self -> m_combine (point, vertices, weight));
 
 	*outData = &self -> m_vertices .back ();
-
-	if (self -> m_combine)
-		self -> m_combine (self -> m_vertices .back (), vertices, weight);
 }
 
 template <class Type, class ... Args>
@@ -389,49 +399,49 @@ tessellator <Type, Args ...>::tessError (const GLenum err_no)
 }
 
 template <class Type, class ... Args>
-typename tessellator <Type, Args ...>::polygon_element
+typename tessellator <Type, Args ...>::polygon_type
 tessellator <Type, Args ...>::triangles () const
 {
-	polygon_element element (GL_TRIANGLES);
+	polygon_type triangles (GL_TRIANGLES);
 
-	auto & vertices = element .m_vertices;
+	auto & vertices = triangles .m_vertices;
 
-	for (const auto & polygonElement : this -> polygon ())
+	for (const auto & polygon : this -> polygons ())
 	{
-		switch (polygonElement .type ())
+		switch (polygon .type ())
 		{
-			case GL_TRIANGLE_FAN :
-				{
-					for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
-					{
-						// Add triangle to polygon.
-						vertices .emplace_back (const_cast <vertex*> (&polygonElement [0]));
-						vertices .emplace_back (const_cast <vertex*> (&polygonElement [i]));
-						vertices .emplace_back (const_cast <vertex*> (&polygonElement [i + 1]));
-					}
-
-					break;
-				}
-			case GL_TRIANGLE_STRIP:
+			case GL_TRIANGLE_FAN:
 			{
-				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
+				for (size_t i = 1, size = polygon .size () - 1; i < size; ++ i)
 				{
 					// Add triangle to polygon.
-					vertices .emplace_back (const_cast <vertex*> (&polygonElement [math::is_odd (i) ? i + 1 : i]));
-					vertices .emplace_back (const_cast <vertex*> (&polygonElement [math::is_odd (i) ? i : i + 1]));
-					vertices .emplace_back (const_cast <vertex*> (&polygonElement [i + 2]));
+					vertices .emplace_back (const_cast <vertex_type*> (&polygon [0]));
+					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i]));
+					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i + 1]));
+				}
+
+				break;
+			}
+			case GL_TRIANGLE_STRIP:
+			{
+				for (size_t i = 0, size = polygon .size () - 2; i < size; ++ i)
+				{
+					// Add triangle to polygon.
+					vertices .emplace_back (const_cast <vertex_type*> (&polygon [is_odd (i) ? i + 1 : i]));
+					vertices .emplace_back (const_cast <vertex_type*> (&polygon [is_odd (i) ? i : i + 1]));
+					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i + 2]));
 				}
 
 				break;
 			}
 			case GL_TRIANGLES:
 			{
-				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
+				for (size_t i = 0, size = polygon .size (); i < size; i += 3)
 				{
 					// Add triangle to polygon.
-					vertices .emplace_back (const_cast <vertex*> (&polygonElement [i]));
-					vertices .emplace_back (const_cast <vertex*> (&polygonElement [i + 1]));
-					vertices .emplace_back (const_cast <vertex*> (&polygonElement [i + 2]));
+					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i]));
+					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i + 1]));
+					vertices .emplace_back (const_cast <vertex_type*> (&polygon [i + 2]));
 				}
 
 				break;
@@ -441,7 +451,7 @@ tessellator <Type, Args ...>::triangles () const
 		}
 	}
 
-	return element;
+	return triangles;
 }
 
 template <class Type, class ... Args>

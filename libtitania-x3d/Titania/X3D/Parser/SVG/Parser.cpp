@@ -48,8 +48,6 @@
  *
  ******************************************************************************/
 
-#include "Parser.h"
-
 #include <libxml++/libxml++.h>
 
 #include "../../Components/EnvironmentalEffects/Background.h"
@@ -75,8 +73,9 @@
 #include "../../Parser/Colors.h"
 #include "../../Parser/Filter.h"
 
+#include "Parser.h"
+
 #include <Titania/Math/Algorithms/Bezier.h>
-#include <Titania/Math/Mesh/Tessellator.h>
 #include <Titania/InputOutput.h>
 #include <Titania/Math/Constants.h>
 #include <Titania/String.h>
@@ -843,7 +842,7 @@ Parser::imageElement (xmlpp::Element* const xmlElement)
 void
 Parser::polylineElement (xmlpp::Element* const xmlElement)
 {
-	using Tesselator = math::tessellator <double, size_t>;
+	using namespace std::placeholders;
 
 	// Get path points.
 
@@ -886,6 +885,8 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 		tessellator .property (GLU_TESS_WINDING_RULE, getFillRule (style));
 		tessellator .property (GLU_TESS_TOLERANCE, 0);
 		tessellator .normal (Vector3d (0, 0, 1));
+		tessellator .combine (std::bind (&Parser::combine, this, coordinateNode, _1));
+
 		tessellator .begin_polygon ();
 		tessellator .begin_contour ();
 
@@ -913,8 +914,8 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 				const auto texCoordNode  = scene -> createNode <X3D::TextureCoordinate> ();
 				const auto invBBoxMatrix = inverse (bbox .matrix ());
 
-				for (const auto & point : points)
-					texCoordNode -> point () .emplace_back ((point * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
+				for (const auto & point : coordinateNode -> point ())
+					texCoordNode -> point () .emplace_back ((Vector2d (point .getX (), point .getY ()) * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
 
 				geometryNode -> texCoord () = texCoordNode;
 			}
@@ -972,7 +973,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 void
 Parser::polygonElement (xmlpp::Element* const xmlElement)
 {
-	using Tesselator = math::tessellator <double, size_t>;
+	using namespace std::placeholders;
 
 	// Get path points.
 
@@ -1016,9 +1017,10 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 		Tesselator tessellator;
 
 		tessellator .property (GLU_TESS_WINDING_RULE, getFillRule (style));
-
 		tessellator .property (GLU_TESS_TOLERANCE, 0);
 		tessellator .normal (Vector3d (0, 0, 1));
+		tessellator .combine (std::bind (&Parser::combine, this, coordinateNode, _1));
+
 		tessellator .begin_polygon ();
 		tessellator .begin_contour ();
 
@@ -1046,8 +1048,8 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 				const auto texCoordNode  = scene -> createNode <X3D::TextureCoordinate> ();
 				const auto invBBoxMatrix = inverse (bbox .matrix ());
 	
-				for (const auto & point : points)
-					texCoordNode -> point () .emplace_back ((point * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
+				for (const auto & point : coordinateNode -> point ())
+					texCoordNode -> point () .emplace_back ((Vector2d (point .getX (), point .getY ()) * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
 
 				geometryNode -> texCoord () = texCoordNode;
 			}
@@ -1105,7 +1107,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 void
 Parser::pathElement (xmlpp::Element* const xmlElement)
 {
-	using Tesselator = math::tessellator <double, size_t>;
+	using namespace std::placeholders;
 
 	// Get path points.
 
@@ -1155,6 +1157,8 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		tessellator .property (GLU_TESS_WINDING_RULE, getFillRule (style));
 		tessellator .property (GLU_TESS_TOLERANCE, 0);
 		tessellator .normal (Vector3d (0, 0, 1));
+		tessellator .combine (std::bind (&Parser::combine, this, coordinateNode, _1));
+
 		tessellator .begin_polygon ();
 
 		size_t index = 0;
@@ -1187,11 +1191,8 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 				const auto texCoordNode  = scene -> createNode <X3D::TextureCoordinate> ();
 				const auto invBBoxMatrix = inverse (bbox .matrix ());
 	
-				for (const auto & contour : contours)
-				{
-					for (const auto & point : contour)
-						texCoordNode -> point () .emplace_back ((point * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
-				}
+				for (const auto & point : coordinateNode -> point ())
+					texCoordNode -> point () .emplace_back ((Vector2d (point .getX (), point .getY ()) * invBBoxMatrix + X3D::Vector2d (1, 1)) / 2.0);
 
 				geometryNode -> texCoord () = texCoordNode;
 			}
@@ -1254,6 +1255,16 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 	if (not transformNode -> children () .empty ())
 		groupNodes .back () -> children () .emplace_back (transformNode);
+}
+
+Parser::Tesselator::data_type
+Parser::combine (const X3D::X3DPtr <X3D::Coordinate> & coordinateNode, const Vector3d & point) const
+{
+	const auto index = coordinateNode -> point () .size ();
+
+	coordinateNode -> point () .emplace_back (point);
+
+	return Tesselator::data_type (index);
 }
 
 bool
@@ -2853,7 +2864,7 @@ Parser::getStrokeAppearance (const Style & style)
 	return appearanceNode;
 }
 
-int
+GLenum
 Parser::getFillRule (const Style & style)
 {
 	if (style .fillRule == "evenodd")

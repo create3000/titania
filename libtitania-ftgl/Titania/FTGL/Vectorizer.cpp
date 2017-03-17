@@ -174,7 +174,7 @@ Vectorizer::triangulate (const double zNormal,
 
 	Tesselator tessellator;
 
-	tessellator .combine (std::bind (&Vectorizer::combine, this, std::ref (points), _1, _2, _3));
+	tessellator .combine (std::bind (&Vectorizer::combine, this, std::ref (points), _1));
 
 	if (contourFlag & ft_outline_even_odd_fill) // ft_outline_reverse_fill
 	{
@@ -225,12 +225,14 @@ Vectorizer::triangulate (const double zNormal,
 		indices .emplace_back (std::get <0> (vertex .data ()));
 }
 
-void
-Vectorizer::combine (std::vector <Vector3d> & points, Tesselator::vertex & vertex, const Tesselator::vertex* const vertices [4], const float weight [4]) const
+Vectorizer::Tesselator::data_type
+Vectorizer::combine (std::vector <Vector3d> & points, const Vector3d & coord) const
 {
-	vertex .data (std::make_tuple (points .size ()));
+	const auto index = points .size ();
 
-	points .emplace_back (vertex .point ());
+	points .emplace_back (coord);
+
+	return Tesselator::data_type (index);
 }
 
 Vectorizer::~Vectorizer ()

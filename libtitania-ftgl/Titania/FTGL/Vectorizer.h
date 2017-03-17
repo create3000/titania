@@ -156,8 +156,8 @@ private:
 	processContours (const size_t bezierSteps);
 
 	// Combine function for tesselator
-	void
-	combine (std::vector <Vector3d> & points, Tesselator::vertex & vertex, const Tesselator::vertex* const vertices [4], const float weight [4]) const;
+	Tesselator::data_type
+	combine (std::vector <Vector3d> & points, const Vector3d & coord) const;
 
 	///  @name Members
 

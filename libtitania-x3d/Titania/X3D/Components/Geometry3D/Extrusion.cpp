@@ -603,39 +603,39 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 
 	Vector3f normal;
 
-	for (const auto & polygonElement : tessellator .polygon ())
+	for (const auto & polygon : tessellator .polygons ())
 	{
-		switch (polygonElement .type ())
+		switch (polygon .type ())
 		{
 			case GL_TRIANGLE_FAN:
 			{
-				for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
+				for (size_t i = 1, size = polygon .size () - 1; i < size; ++ i)
 				{
-					normal += math::normal (points [std::get < I > (polygonElement [0] .data ())],
-					                        points [std::get < I > (polygonElement [i] .data ())],
-					                        points [std::get < I > (polygonElement [i + 1] .data ())]);
+					normal += math::normal (points [std::get < I > (polygon [0] .data ())],
+					                        points [std::get < I > (polygon [i] .data ())],
+					                        points [std::get < I > (polygon [i + 1] .data ())]);
 				}
 
 				break;
 			}
 			case GL_TRIANGLE_STRIP:
 			{
-				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
+				for (size_t i = 0, size = polygon .size () - 2; i < size; ++ i)
 				{
-					normal += math::normal (points [std::get < I > (polygonElement [is_odd (i) ? i + 1 : i] .data ())],
-					                        points [std::get < I > (polygonElement [is_odd (i) ? i : i + 1] .data ())],
-					                        points [std::get < I > (polygonElement [i + 2] .data ())]);
+					normal += math::normal (points [std::get < I > (polygon [is_odd (i) ? i + 1 : i] .data ())],
+					                        points [std::get < I > (polygon [is_odd (i) ? i : i + 1] .data ())],
+					                        points [std::get < I > (polygon [i + 2] .data ())]);
 				}
 
 				break;
 			}
 			case GL_TRIANGLES:
 			{
-				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
+				for (size_t i = 0, size = polygon .size (); i < size; i += 3)
 				{
-					normal += math::normal (points [std::get < I > (polygonElement [i] .data ())],
-					                        points [std::get < I > (polygonElement [i + 1] .data ())],
-					                        points [std::get < I > (polygonElement [i + 2] .data ())]);
+					normal += math::normal (points [std::get < I > (polygon [i] .data ())],
+					                        points [std::get < I > (polygon [i + 1] .data ())],
+					                        points [std::get < I > (polygon [i + 2] .data ())]);
 				}
 
 				break;
@@ -650,72 +650,72 @@ Extrusion::tessellateCap (const Tessellator & tessellator,
 	if (not ccw ())
 		normal .negate ();
 
-	for (const auto & polygonElement : tessellator .polygon ())
+	for (const auto & polygon : tessellator .polygons ())
 	{
-		switch (polygonElement .type ())
+		switch (polygon .type ())
 		{
 			case GL_TRIANGLE_FAN:
 			{
-				for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
+				for (size_t i = 1, size = polygon .size () - 1; i < size; ++ i)
 				{
-					Vector2f t = (crossSection () [std::get < K > (polygonElement [0] .data ())] - min) / capMax;
+					Vector2f t = (crossSection () [std::get < K > (polygon [0] .data ())] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [0] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygon [0] .data ())]);
 
-					t = (crossSection () [std::get < K > (polygonElement [i] .data ())] - min) / capMax;
+					t = (crossSection () [std::get < K > (polygon [i] .data ())] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [i] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygon [i] .data ())]);
 
-					t = (crossSection () [std::get < K > (polygonElement [i + 1] .data ())] - min) / capMax;
+					t = (crossSection () [std::get < K > (polygon [i + 1] .data ())] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [i + 1] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygon [i + 1] .data ())]);
 				}
 
 				break;
 			}
 			case GL_TRIANGLE_STRIP:
 			{
-				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
+				for (size_t i = 0, size = polygon .size () - 2; i < size; ++ i)
 				{
-					Vector2f t = (crossSection () [std::get < K > (polygonElement [is_odd (i) ? i + 1 : i] .data ())] - min) / capMax;
+					Vector2f t = (crossSection () [std::get < K > (polygon [is_odd (i) ? i + 1 : i] .data ())] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [is_odd (i) ? i + 1 : i] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygon [is_odd (i) ? i + 1 : i] .data ())]);
 
-					t = (crossSection () [std::get < K > (polygonElement [is_odd (i) ? i : i + 1] .data ())] - min) / capMax;
+					t = (crossSection () [std::get < K > (polygon [is_odd (i) ? i : i + 1] .data ())] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [is_odd (i) ? i : i + 1] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygon [is_odd (i) ? i : i + 1] .data ())]);
 
-					t = (crossSection () [std::get < K > (polygonElement [i + 2] .data ())] - min) / capMax;
+					t = (crossSection () [std::get < K > (polygon [i + 2] .data ())] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [i + 2] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygon [i + 2] .data ())]);
 				}
 
 				break;
 			}
 			case GL_TRIANGLES:
 			{
-				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
+				for (size_t i = 0, size = polygon .size (); i < size; i += 3)
 				{
-					Vector2f t = (crossSection () [std::get < K > (polygonElement [i] .data ())] - min) / capMax;
+					Vector2f t = (crossSection () [std::get < K > (polygon [i] .data ())] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [i] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygon [i] .data ())]);
 
-					t = (crossSection () [std::get < K > (polygonElement [i + 1] .data ())] - min) / capMax;
+					t = (crossSection () [std::get < K > (polygon [i + 1] .data ())] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [i + 1] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygon [i + 1] .data ())]);
 
-					t = (crossSection () [std::get < K > (polygonElement [i + 2] .data ())] - min) / capMax;
+					t = (crossSection () [std::get < K > (polygon [i + 2] .data ())] - min) / capMax;
 					getTexCoords () [0] .emplace_back (t .x (), t .y (), 0, 1);
 					getNormals () .emplace_back (normal);
-					getVertices () .emplace_back (points [std::get < I > (polygonElement [i + 2] .data ())]);
+					getVertices () .emplace_back (points [std::get < I > (polygon [i + 2] .data ())]);
 				}
 
 				break;

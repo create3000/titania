@@ -393,45 +393,45 @@ IndexedFaceSet::tessellate (const std::unique_ptr <Tessellator> & tessellator, P
 	tessellator -> end_contour ();
 	tessellator -> end_polygon ();
 
-	for (const auto & polygonElement : tessellator -> polygon ())
+	for (const auto & polygon : tessellator -> polygons ())
 	{
-		switch (polygonElement .type ())
+		switch (polygon .type ())
 		{
 			case GL_TRIANGLE_FAN:
 			{
-				for (size_t i = 1, size = polygonElement .size () - 1; i < size; ++ i)
+				for (size_t i = 1, size = polygon .size () - 1; i < size; ++ i)
 				{
 					// Add triangle to polygon.
 					elements .emplace_back ();
-					elements .back () .emplace_back (std::get <0> (polygonElement [0] .data ()));
-					elements .back () .emplace_back (std::get <0> (polygonElement [i] .data ()));
-					elements .back () .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygon [0] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygon [i] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygon [i + 1] .data ()));
 				}
 
 				break;
 			}
 			case GL_TRIANGLE_STRIP:
 			{
-				for (size_t i = 0, size = polygonElement .size () - 2; i < size; ++ i)
+				for (size_t i = 0, size = polygon .size () - 2; i < size; ++ i)
 				{
 					// Add triangle to polygon.
 					elements .emplace_back ();
-					elements .back () .emplace_back (std::get <0> (polygonElement [is_odd (i) ? i + 1 : i] .data ()));
-					elements .back () .emplace_back (std::get <0> (polygonElement [is_odd (i) ? i : i + 1] .data ()));
-					elements .back () .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygon [is_odd (i) ? i + 1 : i] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygon [is_odd (i) ? i : i + 1] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygon [i + 2] .data ()));
 				}
 
 				break;
 			}
 			case GL_TRIANGLES:
 			{
-				for (size_t i = 0, size = polygonElement .size (); i < size; i += 3)
+				for (size_t i = 0, size = polygon .size (); i < size; i += 3)
 				{
 					// Add triangle to polygon.
 					elements .emplace_back ();
-					elements .back () .emplace_back (std::get <0> (polygonElement [i + 0] .data ()));
-					elements .back () .emplace_back (std::get <0> (polygonElement [i + 1] .data ()));
-					elements .back () .emplace_back (std::get <0> (polygonElement [i + 2] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygon [i + 0] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygon [i + 1] .data ()));
+					elements .back () .emplace_back (std::get <0> (polygon [i + 2] .data ()));
 				}
 
 				break;

@@ -55,6 +55,8 @@
 #include "../../Parser/X3DParser.h"
 #include "../../Types/Geometry.h"
 
+#include <Titania/Math/Mesh/Tessellator.h>
+
 #include <cairomm/cairomm.h>
 
 namespace xmlpp {
@@ -93,8 +95,9 @@ public:
 
 private:
 
-	using Contour  = std::vector <X3D::Vector2d>;
-	using Contours = std::vector <Contour>;
+	using Tesselator = math::tessellator <double, size_t>;
+	using Contour    = std::vector <X3D::Vector2d>;
+	using Contours   = std::vector <Contour>;
 
 	struct Gradient
 	{
@@ -236,7 +239,10 @@ private:
 
 	void
 	pathElement (xmlpp::Element* const xmlElement);
-	
+
+	Parser::Tesselator::data_type
+	combine (const X3D::X3DPtr <X3D::Coordinate> & coordinateNode, const Vector3d & point) const;
+
 	bool
 	paintURL (const basic::uri & url,
 	          const X3D::Box2d & bbox,
@@ -353,7 +359,7 @@ private:
 	X3D::X3DPtr <X3D::Appearance>
 	getStrokeAppearance (const Style & strokeStyle);
 
-	int
+	GLenum
 	getFillRule (const Style & style);
 
 	///  @name Members
