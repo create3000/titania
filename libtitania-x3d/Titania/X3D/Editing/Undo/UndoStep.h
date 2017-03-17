@@ -80,6 +80,10 @@ public:
 
 	///  @name Member access
 
+	void
+	setDescription (const std::string & value)
+	{ description = value; }
+
 	const std::string &
 	getDescription () const
 	{ return description; }
@@ -132,7 +136,7 @@ private:
 
 	using Variables = std::function <void ()>;
 
-	const std::string          description;
+	std::string                description;
 	std::vector <Variables>    variables;
 	std::vector <UndoFunction> undoFunctions;
 	std::vector <UndoFunction> redoFunctions;

@@ -70,7 +70,6 @@ Disk2DTool::Disk2DTool (X3DBaseNode* const node) :
 	    X3DGeometryNodeTool (),
 	X3DLineGeometryNodeTool (),
 	                 fields (),
-	         transformTool2 (),
 	       startInnerRadius (0),
 	       startOuterRadius (0)
 {
@@ -79,8 +78,6 @@ Disk2DTool::Disk2DTool (X3DBaseNode* const node) :
 	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
-
-	addChildObjects (transformTool2);
 
 	toolType () = "TRANSFORM";
 }
@@ -98,19 +95,13 @@ Disk2DTool::set_transform_tool ()
 {
 	// TransformTool 2
 
-	const auto transformNode = getCoordinateTool () -> getInlineNode () -> getExportedNode <Transform> ("TransformTool2");
+	setTransformTool2 (getCoordinateTool () -> getInlineNode () -> getExportedNode <Transform> ("TransformTool2"));
 
-	transformNode -> addTool ();
-
-	transformTool2 = transformNode;
-
-	transformTool2 -> isActive () .addInterest (&Disk2DTool::set_transform_tool_active, static_cast <X3DNodeTool*> (this));
-
-	transformTool2 -> grouping ()      = false;
-	transformTool2 -> tools ()         = { "SCALE" };
-	transformTool2 -> displayCenter () = false;
-	transformTool2 -> displayBBox ()   = false;
-	transformTool2 -> color ()         = ToolColors::DARK_BLUE;
+	getTransformTool2 () -> grouping ()      = false;
+	getTransformTool2 () -> tools ()         = { "SCALE" };
+	getTransformTool2 () -> displayCenter () = false;
+	getTransformTool2 () -> displayBBox ()   = false;
+	getTransformTool2 () -> color ()         = ToolColors::DARK_BLUE;
 
 	getTransformTool () -> color () = ToolColors::BLUE;
 
@@ -127,13 +118,13 @@ Disk2DTool::set_transform_tool ()
 	getTransformTool () -> scaleZBackAxis () = false;
 	getTransformTool () -> scaleFromEdge ()  = false;
 
-	transformTool2 -> scaleXAxis ()     = false;
-	transformTool2 -> scaleYAxis ()     = false;
-	transformTool2 -> scaleZAxis ()     = false;
-	transformTool2 -> scaleXBackAxis () = false;
-	transformTool2 -> scaleYBackAxis () = false;
-	transformTool2 -> scaleZBackAxis () = false;
-	transformTool2 -> scaleFromEdge ()  = false;
+	getTransformTool2 () -> scaleXAxis ()     = false;
+	getTransformTool2 () -> scaleYAxis ()     = false;
+	getTransformTool2 () -> scaleZAxis ()     = false;
+	getTransformTool2 () -> scaleXBackAxis () = false;
+	getTransformTool2 () -> scaleYBackAxis () = false;
+	getTransformTool2 () -> scaleZBackAxis () = false;
+	getTransformTool2 () -> scaleFromEdge ()  = false;
 
 	set_innerRadius ();
 	set_outerRadius ();
@@ -153,12 +144,12 @@ Disk2DTool::set_innerRadius ()
 void
 Disk2DTool::set_outerRadius ()
 {
-	transformTool2 -> scale () .removeInterest (&Disk2DTool::set_scale2, this);
-	transformTool2 -> scale () .addInterest (&Disk2DTool::connectScale2, this);
+	getTransformTool2 () -> scale () .removeInterest (&Disk2DTool::set_scale2, this);
+	getTransformTool2 () -> scale () .addInterest (&Disk2DTool::connectScale2, this);
 
 	const float diameter = 2 * outerRadius ();
 
-	transformTool2 -> scale () = Vector3f (diameter, diameter, 1e-6);
+	getTransformTool2 () -> scale () = Vector3f (diameter, diameter, 1e-6);
 }
 
 void
@@ -176,7 +167,7 @@ Disk2DTool::set_scale2 ()
 	outerRadius () .removeInterest (&Disk2DTool::set_outerRadius, this);
 	outerRadius () .addInterest (&Disk2DTool::connectOuterRadius, this);
 
-	outerRadius () = transformTool2 -> scale () .getX () / 2;
+	outerRadius () = getTransformTool2 () -> scale () .getX () / 2;
 }
 
 void
@@ -230,20 +221,6 @@ Disk2DTool::endUndo (const UndoStepPtr & undoStep)
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (innerRadius ()), innerRadius ());
 		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (outerRadius ()), outerRadius ());
 	}
-}
-
-void
-Disk2DTool::setChanging2 (const X3DPtr <X3D::X3DNode> & node, const bool value)
-{
-	try
-	{
-		const auto   tool          = X3DPtr <X3D::Disk2DTool> (node);
-		const auto & transformTool = tool -> transformTool2;
-
-		transformTool -> setChanging (value);
-	}
-	catch (const X3DError & error)
-	{ }
 }
 
 void

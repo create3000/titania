@@ -65,26 +65,37 @@ X3DNodeTool::Fields::Fields () :
 { }
 
 X3DNodeTool::X3DNodeTool () :
-         X3DNode (),
-	  X3DBaseTool (),
-          fields (),
-	transformTool ()
+          X3DNode (),
+	   X3DBaseTool (),
+           fields (),
+	 transformTool1 (),
+	transformTool2 ()
 {
 	addType (X3DConstants::X3DNodeTool);
 
-	addField (outputOnly , "undo_changed", undo_changed ());
+	addField (outputOnly, "undo_changed", undo_changed ());
 
-	addChildObjects (transformTool);
+	addChildObjects (transformTool1, transformTool2);
 }
 
 void
-X3DNodeTool::setTransformTool (const X3DWeakPtr <X3DTransformNode> & transformNode)
+X3DNodeTool::setTransformTool (const X3DWeakPtr <X3DTransformNode> & transformNode1)
 {
-	transformNode -> addTool ();
+	transformNode1 -> addTool ();
 
-	transformTool = X3DWeakPtr <X3DTransformNodeTool> (transformNode);
+	transformTool1 = X3DWeakPtr <X3DTransformNodeTool> (transformNode1);
 
-	transformTool -> isActive () .addInterest (&X3DNodeTool::set_transform_tool_active, this);
+	transformTool1 -> undo_changed () .addInterest (&X3DNodeTool::set_undo, this);
+}
+
+void
+X3DNodeTool::setTransformTool2 (const X3DWeakPtr <X3DTransformNode> & transformNode2)
+{
+	transformNode2 -> addTool ();
+
+	transformTool2 = X3DWeakPtr <X3DTransformNodeTool> (transformNode2);
+
+	transformTool2 -> undo_changed () .addInterest (&X3DNodeTool::set_undo, this);
 }
 
 void
@@ -92,45 +103,35 @@ X3DNodeTool::setChanging (const X3DPtr <X3D::X3DNode> & node, const bool value)
 {
 	try
 	{
-		const auto   tool          = X3DPtr <X3D::X3DNodeTool> (node);
-		const auto & transformTool = tool -> getTransformTool ();
+		const auto   tool           = X3DPtr <X3D::X3DNodeTool> (node);
+		const auto & transformTool1 = tool -> getTransformTool ();
 
-		transformTool -> setChanging (value);
+		transformTool1 -> setChanging (value);
 	}
 	catch (const X3DError & error)
 	{ }
 }
 
 void
-X3DNodeTool::set_transform_tool_active (const bool active)
+X3DNodeTool::setChanging2 (const X3DPtr <X3D::X3DNode> & node, const bool value)
 {
-	const auto & selection = getBrowser () -> getSelection ();
-
-	if (active)
+	try
 	{
-		for (const auto & node : selection -> getSelectGeometry () ? selection -> getGeometries () : selection -> getNodes ())
-		{
-			const X3DPtr <X3DNodeTool> tool (node);
+		const auto   tool           = X3DPtr <X3D::X3DNodeTool> (node);
+		const auto & transformTool2 = tool -> getTransformTool2 ();
 
-			if (tool)
-				tool -> beginUndo ();
-		}
+		transformTool2 -> setChanging (value);
 	}
-	else
-	{
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit %s"), getTypeName () .c_str ()));
+	catch (const X3DError & error)
+	{ }
+}
 
-		for (const auto & node : selection -> getSelectGeometry () ? selection -> getGeometries () : selection -> getNodes ())
-		{
-			const X3DPtr <X3DNodeTool> tool (node);
+void
+X3DNodeTool::set_undo (const UndoStepContainerPtr & undoStepContainer)
+{
+	undoStepContainer -> getUndoStep () -> setDescription (basic::sprintf (_ ("Edit %s"), getTypeName () .c_str ()));
 
-			if (tool)
-				tool -> endUndo (undoStep);
-		}
-
-		if (not undoStep -> isEmpty ())
-			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
-	}
+	undo_changed () = undoStepContainer;
 }
 
 X3DNodeTool::~X3DNodeTool ()

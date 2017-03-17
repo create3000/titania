@@ -352,6 +352,9 @@ private:
 	set_tools ();
 
 	void
+	set_active ();
+
+	void
 	eventsProcessed ();
 
 	///  @name Operatations

@@ -115,21 +115,32 @@ protected:
 	void
 	setTransformTool (const X3DWeakPtr <X3DTransformNode> & transformNode);
 
+	void
+	setTransformTool2 (const X3DWeakPtr <X3DTransformNode> & transformNode);
+
 	const X3DWeakPtr <X3DTransformNodeTool> &
 	getTransformTool () const
-	{ return transformTool; }
+	{ return transformTool1; }
+
+	const X3DWeakPtr <X3DTransformNodeTool> &
+	getTransformTool2 () const
+	{ return transformTool2; }
 
 	static
 	void
 	setChanging (const X3DPtr <X3D::X3DNode> & node, const bool value);
 
-	///  @name Event handlers
-
+	static
 	void
-	set_transform_tool_active (const bool active);
+	setChanging2 (const X3DPtr <X3D::X3DNode> & node, const bool value);
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_undo (const UndoStepContainerPtr & undoStepContainer);
 
 	///  @name Fields
 
@@ -144,7 +155,8 @@ private:
 
 	///  @name Members
 
-	X3DWeakPtr <X3DTransformNodeTool> transformTool;
+	X3DWeakPtr <X3DTransformNodeTool> transformTool1;
+	X3DWeakPtr <X3DTransformNodeTool> transformTool2;
 
 };
 
