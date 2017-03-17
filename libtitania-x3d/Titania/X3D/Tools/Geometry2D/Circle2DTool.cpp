@@ -52,6 +52,8 @@
 
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../Grouping/X3DTransformNodeTool.h"
+
 namespace titania {
 namespace X3D {
 
@@ -63,19 +65,93 @@ Circle2DTool::Circle2DTool (X3DBaseNode* const node) :
 	               Circle2D (node -> getExecutionContext ()),
 	            X3DBaseTool (node),
 	X3DLineGeometryNodeTool (),
-	                 fields ()
+	                 fields (),
+	            startRadius (0)
 {
 	addType (X3DConstants::Circle2DTool);
 
 	addField (inputOutput, "toolType",   toolType ());
 	addField (inputOutput, "normalTool", normalTool ());
 	addField (inputOutput, "coordTool",  coordTool ());
+
+	toolType () = "TRANSFORM";
 }
 
 void
 Circle2DTool::initialize ()
 {
 	X3DLineGeometryNodeTool::initialize ();
+
+	getTransformTool () .addInterest (&Circle2DTool::set_transform_tool, this);
+}
+
+void
+Circle2DTool::set_transform_tool ()
+{
+	radius () .addInterest (&Circle2DTool::set_radius, this);
+
+	getTransformTool () -> scaleXAxis ()     = false;
+	getTransformTool () -> scaleYAxis ()     = false;
+	getTransformTool () -> scaleZAxis ()     = false;
+	getTransformTool () -> scaleXBackAxis () = false;
+	getTransformTool () -> scaleYBackAxis () = false;
+	getTransformTool () -> scaleZBackAxis () = false;
+	getTransformTool () -> scaleFromEdge ()  = false;
+
+	set_radius ();
+}
+
+void
+Circle2DTool::set_radius ()
+{
+	getTransformTool () -> scale () .removeInterest (&Circle2DTool::set_scale, this);
+	getTransformTool () -> scale () .addInterest (&Circle2DTool::connectScale, this);
+
+	const float diameter = 2 * radius ();
+
+	getTransformTool () -> scale () = Vector3f (diameter, diameter, 1e-6);
+}
+
+void
+Circle2DTool::set_scale ()
+{
+	radius () .removeInterest (&Circle2DTool::set_radius, this);
+	radius () .addInterest (&Circle2DTool::connectRadius, this);
+
+	radius () = getTransformTool () -> scale () .getX () / 2;
+}
+
+void
+Circle2DTool::connectRadius (const SFFloat & field)
+{
+	field .removeInterest (&Circle2DTool::connectRadius, this);
+	field .addInterest (&Circle2DTool::set_radius, this);
+}
+
+void
+Circle2DTool::connectScale (const SFVec3f & field)
+{
+	field .removeInterest (&Circle2DTool::connectScale, this);
+	field .addInterest (&Circle2DTool::set_scale, this);
+}
+
+void
+Circle2DTool::beginUndo ()
+{
+	startRadius = radius ();
+}
+
+void
+Circle2DTool::endUndo (const UndoStepPtr & undoStep)
+{
+	if (radius () not_eq startRadius)
+	{
+		undoStep -> addUndoFunction (&SFFloat::setValue, std::ref (radius ()), startRadius);
+		undoStep -> addUndoFunction (&Circle2DTool::setChanging, X3DPtr <Circle2D> (this), true);
+
+		undoStep -> addRedoFunction (&Circle2DTool::setChanging, X3DPtr <Circle2D> (this), true);
+		undoStep -> addRedoFunction (&SFFloat::setValue, std::ref (radius ()), radius ());
+	}
 }
 
 void

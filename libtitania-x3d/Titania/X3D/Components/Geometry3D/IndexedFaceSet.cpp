@@ -1117,7 +1117,7 @@ IndexedFaceSet::mergePoints (const double distance)
 		return abs (lhs - rhs) < distance ? false : lhs < rhs;
 	};
 
-	const auto coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
+	const X3DPtr <X3DCoordinateNode> coordNode (coord ());
 
 	if (not coordNode)
 		return;
