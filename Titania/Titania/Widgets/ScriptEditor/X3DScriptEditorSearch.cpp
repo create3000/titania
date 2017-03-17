@@ -385,14 +385,11 @@ X3DScriptEditorSearch::on_build_search_menu ()
 
 		if (not recentReplaces [i] .empty ())
 		{
-			label += Glib::ustring (6, ' ');
-			label += "»";
+			label += "   ⏵   ";
 			label += recentReplaces [i] .substr (0, TEXT_LENGTH);
 
 			if (recentReplaces [i] .size () > TEXT_LENGTH)
 				label += "…";
-
-			label += "«";
 		}
 
 		const auto menuItem = Gtk::manage (new Gtk::MenuItem (label));
