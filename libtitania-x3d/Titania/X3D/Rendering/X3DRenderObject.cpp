@@ -666,7 +666,7 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	glEnable (GL_BLEND);
 	glDepthMask (GL_FALSE);
 
-	std::sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
+	std::stable_sort (transparentShapes .begin (), transparentShapes .begin () + numTransparentShapes, comp);
 
 	for (const auto & context : basic::make_range (transparentShapes .cbegin (), numTransparentShapes))
 		context -> display ();

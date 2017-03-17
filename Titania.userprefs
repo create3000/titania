@@ -1,19 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h" Line="382" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp" Line="189" Column="69" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/ElevationGrid/ElevationGridTool.h" Line="307" Column="32" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Geometry3D/ElevationGrid/ElevationGridTool.cpp" Line="242" Column="120" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DHeightMapEditor.h" Line="389" Column="47" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/ElevationGrid.h" Line="260" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/ElevationGrid.cpp" Line="471" Column="80" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/X3DGridTool.cpp" Line="529" Column="3" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Cone.cpp" Line="135" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.cpp" Line="119" Column="50" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Cylinder.cpp" Line="140" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Box.cpp" Line="116" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h" Line="354" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp" Line="65" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/X3DNodeTool.h" Line="123" Column="25" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/X3DNodeTool.cpp" Line="56" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/SVG/Parser.h" Line="358" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/SVG/Parser.cpp" Line="215" Column="23" />
+      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp" Line="669" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -23,7 +18,7 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Tools/Navigation/X3DViewpointNodeTool.cpp" line="58" column="22" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Mesh/Tessellator.h" line="411" column="3" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
