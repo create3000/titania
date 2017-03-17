@@ -64,7 +64,10 @@ X3DArcClose2DEditor::X3DArcClose2DEditor () :
 	                            endAngle (this, getArcClose2DEndAngleAdjustment (), getArcClose2DEndAngleSpinButton (), "endAngle"),
 	                              radius (this, getArcClose2DRadiusAdjustment (), getArcClose2DRadiusSpinButton (), "radius"),
 	                            minAngle (this, getArcClose2DMinAngleAdjustment (), getArcClose2DMinAngleSpinButton (), "minAngle")
-{ }
+{
+	getArcClose2DStartAngleAdjustment () -> set_upper (2 * math::pi <double>);
+	getArcClose2DEndAngleAdjustment ()   -> set_upper (2 * math::pi <double>);
+}
 
 void
 X3DArcClose2DEditor::set_geometry ()
