@@ -173,28 +173,6 @@ throw (Error <NOT_SUPPORTED>,
 		geometry -> coordIndex () .emplace_back (-1);
 	}
 
-	if (not solid ())
-	{
-		const int32_t tb = texCoord -> point () .size ();
-
-		for (const auto & point : basic::make_range (getTexCoords () [0] .begin (), getElements () [0] .count ()))
-			texCoord -> point () .emplace_back (1 - point .x (), point .y ());
-
-		for (int32_t i = 0, size = getVertices () .size (); i < size; i += 3)
-		{
-			geometry -> texCoordIndex () .emplace_back (tb + i);
-			geometry -> texCoordIndex () .emplace_back (tb + i + 2);
-			geometry -> texCoordIndex () .emplace_back (tb + i + 1);
-			geometry -> texCoordIndex () .emplace_back (-1);
-
-			geometry -> coordIndex () .emplace_back (i);
-			geometry -> coordIndex () .emplace_back (i + 2);
-			geometry -> coordIndex () .emplace_back (i + 1);
-			geometry -> coordIndex () .emplace_back (-1);
-		}
-	}
-
-	getExecutionContext () -> realize ();
 	return SFNode (geometry);
 }
 

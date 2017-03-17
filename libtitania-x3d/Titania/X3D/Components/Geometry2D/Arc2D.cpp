@@ -204,7 +204,6 @@ throw (Error <NOT_SUPPORTED>,
 
 	geometry -> coordIndex () .emplace_back (-1);
 
-	getExecutionContext () -> realize ();
 	return SFNode (geometry);
 }
 

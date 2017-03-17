@@ -140,7 +140,6 @@ throw (Error <NOT_SUPPORTED>,
 
 	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
 
-	getExecutionContext () -> realize ();
 	return SFNode (geometry);
 }
 

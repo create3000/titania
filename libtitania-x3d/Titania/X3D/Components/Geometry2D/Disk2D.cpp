@@ -380,9 +380,9 @@ throw (Error <NOT_SUPPORTED>,
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
 	geometry -> metadata () = metadata ();
+	geometry -> solid ()    = solid ();
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
-	geometry -> solid ()    = solid ();
 
 	if (innerRadius () == 0.0f or outerRadius () == 0.0f)
 	{

@@ -788,7 +788,9 @@ IndexedFaceSet::rebuildColor ()
 {
 	std::map <int32_t, int32_t> map;
 
-	if (not getColor ())
+	const X3DPtr <X3DColorNode> colorNode (color ());
+
+	if (not colorNode)
 	   return map;
 
 	// Build indices map
@@ -818,11 +820,11 @@ IndexedFaceSet::rebuildColor ()
 
 	// Rebuild node
 	   
-	switch (getColor () -> getType () .back ())
+	switch (colorNode -> getType () .back ())
 	{
 		case X3DConstants::Color:
 		{
-			const X3DPtr <Color> node (getColor ());
+			const X3DPtr <Color> node (colorNode);
 
 			std::vector <Color3f> colors;
 
@@ -837,7 +839,7 @@ IndexedFaceSet::rebuildColor ()
 		}
 		case X3DConstants::ColorRGBA:
 		{
-			const X3DPtr <ColorRGBA> node (getColor ());
+			const X3DPtr <ColorRGBA> node (colorNode);
 
 			std::vector <Color4f> colors;
 
@@ -860,7 +862,9 @@ IndexedFaceSet::rebuildTexCoord ()
 {
 	std::map <int32_t, int32_t> map;
 
-	if (not getTexCoord ())
+	const X3DPtr <X3DTextureCoordinateNode> texCoordNode (texCoord ());
+
+	if (not texCoordNode)
 	   return map;
 
 	// Build indices map
@@ -890,11 +894,11 @@ IndexedFaceSet::rebuildTexCoord ()
 
 	// Rebuild node
 	   
-	switch (getTexCoord () -> getType () .back ())
+	switch (texCoordNode -> getType () .back ())
 	{
 	   case X3DConstants::MultiTextureCoordinate:
 		{
-			const X3DPtr <MultiTextureCoordinate> texCoordNode (getTexCoord ());
+			const X3DPtr <MultiTextureCoordinate> texCoordNode (texCoordNode);
 
 			for (const auto & node : texCoordNode -> getTexCoord ())
 			   rebuildTexCoord (node, map);
@@ -902,7 +906,7 @@ IndexedFaceSet::rebuildTexCoord ()
 			break;
 		}
 	   default:
-	      rebuildTexCoord (getTexCoord (), map);
+	      rebuildTexCoord (texCoordNode, map);
 	      break;
 	}
 
@@ -967,7 +971,9 @@ IndexedFaceSet::rebuildNormal ()
 {
 	std::map <int32_t, int32_t> map;
 
-	if (not getNormal ())
+	const X3DPtr <X3DNormalNode> normalNode (normal ());
+
+	if (not normalNode)
 	   return map;
 
 	// Build indices map
@@ -997,11 +1003,11 @@ IndexedFaceSet::rebuildNormal ()
 
 	// Rebuild node
 	   
-	switch (getNormal () -> getType () .back ())
+	switch (normalNode -> getType () .back ())
 	{
 		case X3DConstants::Normal:
 		{
-			const X3DPtr <Normal> node (getNormal ());
+			const X3DPtr <Normal> node (normalNode);
 
 			std::vector <Vector3f> normals;
 
@@ -1024,7 +1030,9 @@ IndexedFaceSet::rebuildCoord ()
 {
 	std::map <int32_t, int32_t> map;
 
-	if (not getCoord ())
+	const X3DPtr <X3DCoordinateNode> coordNode (coord ());
+
+	if (not coordNode)
 		return map;
 
 	// Build indices map
@@ -1054,11 +1062,11 @@ IndexedFaceSet::rebuildCoord ()
 
 	// Rebuild node
 	   
-	switch (getCoord () -> getType () .back ())
+	switch (coordNode -> getType () .back ())
 	{
 		case X3DConstants::Coordinate:
 		{
-			const X3DPtr <Coordinate> coordinate (getCoord ());
+			const X3DPtr <Coordinate> coordinate (coordNode);
 
 			std::vector <Vector3f> points;
 
@@ -1070,7 +1078,7 @@ IndexedFaceSet::rebuildCoord ()
 		}
 		case X3DConstants::CoordinateDouble:
 		{
-			const X3DPtr <CoordinateDouble> coordinate (getCoord ());
+			const X3DPtr <CoordinateDouble> coordinate (coordNode);
 
 			std::vector <Vector3d> points;
 
@@ -1082,7 +1090,7 @@ IndexedFaceSet::rebuildCoord ()
 		}
 		case X3DConstants::GeoCoordinate:
 		{
-			const X3DPtr <GeoCoordinate> coordinate (getCoord ());
+			const X3DPtr <GeoCoordinate> coordinate (coordNode);
 
 			std::vector <Vector3d> points;
 
@@ -1109,15 +1117,17 @@ IndexedFaceSet::mergePoints (const double distance)
 		return abs (lhs - rhs) < distance ? false : lhs < rhs;
 	};
 
-	if (not getCoord ())
+	const auto coordNode = x3d_cast <X3DCoordinateNode*> (coord ());
+
+	if (not coordNode)
 		return;
 
 	std::map <Vector3d, int32_t, std::function <bool (const Vector3d &, const Vector3d &)>> map (Compare);
 
 	// Create points map.
 
-	for (size_t i = 0, size = getCoord () -> getSize (); i < size; ++ i)
-	   map .emplace (getCoord () -> get1Point (i), map .size ());
+	for (size_t i = 0, size = coordNode -> getSize (); i < size; ++ i)
+	   map .emplace (coordNode -> get1Point (i), map .size ());
 	
 	// Rewrite coordIndex.
 
@@ -1128,7 +1138,7 @@ IndexedFaceSet::mergePoints (const double distance)
 		
 		try
 		{
-			index = map .at (getCoord () -> get1Point (index));
+			index = map .at (coordNode -> get1Point (index));
 		}
 		catch (const std::out_of_range &)
 		{
@@ -1139,9 +1149,9 @@ IndexedFaceSet::mergePoints (const double distance)
 	// Rewrite coord point.
 
 	for (const auto & pair : map)
-		getCoord () -> set1Point (pair .second, pair .first);
+		coordNode -> set1Point (pair .second, pair .first);
 
-	getCoord () -> resize (map .size ());
+	coordNode -> resize (map .size ());
 
 	// Remove degenerated faces.
 

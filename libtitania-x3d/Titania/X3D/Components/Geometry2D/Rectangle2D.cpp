@@ -183,7 +183,6 @@ throw (Error <NOT_SUPPORTED>,
 			point *= size1_2;
 	}
 
-	getExecutionContext () -> realize ();
 	return geometry;
 }
 
