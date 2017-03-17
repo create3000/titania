@@ -53,6 +53,10 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include <Titania/Stream/Base64.h>
+
+#include <sigc++/bind.h>
+
 namespace titania {
 namespace X3D {
 
@@ -160,6 +164,26 @@ ImageTexture::update ()
 	setLoadState (NOT_STARTED_STATE);
 
 	requestAsyncLoad ();
+}
+
+void
+ImageTexture::setUrl (const Cairo::RefPtr <Cairo::ImageSurface> & surface)
+throw (Error <INVALID_OPERATION_TIMING>,
+       Error <DISPOSED>)
+{
+	std::ostringstream osstream;
+
+	surface -> write_to_png_stream (sigc::bind (sigc::mem_fun (this, &ImageTexture::write_to_png_stream), sigc::ref (osstream)));
+
+	url () = { "data:image/png;base64," + basic::base64_encode (osstream .str ()) };
+}
+
+Cairo::ErrorStatus
+ImageTexture::write_to_png_stream (const unsigned char* data, unsigned int length, std::ostringstream & osstream)
+{
+	osstream .write (reinterpret_cast <const char*> (data), length);
+
+	return CAIRO_STATUS_SUCCESS;
 }
 
 void

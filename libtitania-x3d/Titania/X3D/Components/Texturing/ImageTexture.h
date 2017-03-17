@@ -55,6 +55,8 @@
 #include "../Texturing/X3DTexture2DNode.h"
 #include "../../Thread/TextureFuture.h"
 
+#include <cairomm/cairomm.h>
+
 namespace titania {
 namespace X3D {
 
@@ -124,6 +126,11 @@ public:
 	getResizeToPowerOfTwo () const
 	{ return resize; }
 
+	void
+	setUrl (const Cairo::RefPtr <Cairo::ImageSurface> &)
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>);
+
 	///  @name Operations
 	
 	virtual
@@ -160,6 +167,9 @@ private:
 	virtual
 	void
 	update () final override;
+
+	Cairo::ErrorStatus
+	write_to_png_stream (const unsigned char* data, unsigned int length, std::ostringstream & osstream);
 
 	///  @name Static members
 

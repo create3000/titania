@@ -67,7 +67,6 @@
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
 #include "../../Components/Texturing/ImageTexture.h"
-#include "../../Components/Texturing/PixelTexture.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Components/Texturing/TextureProperties.h"
 #include "../../Parser/Colors.h"
@@ -2807,7 +2806,7 @@ Parser::getFillAppearance (const Style & style, X3D::Box2d bbox)
 
 			const auto surface     = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, GRADIENT_WIDTH, GRADIENT_HEIGHT);
 			const auto context     = Cairo::Context::create (surface);
-			const auto textureNode = scene -> createNode <X3D::PixelTexture> ();
+			const auto textureNode = scene -> createNode <X3D::ImageTexture> ();
 
 			try
 			{
@@ -2821,7 +2820,7 @@ Parser::getFillAppearance (const Style & style, X3D::Box2d bbox)
 				return nullptr;
 			}
 
-			textureNode -> setImage (surface);
+			textureNode -> setUrl (surface);
 	      textureNode -> textureProperties () = texturePropertiesNode;
 
 			try
