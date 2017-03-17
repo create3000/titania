@@ -100,6 +100,9 @@ public:
 	void
 	setSelection (const X3D::SFNode & node);
 
+	void
+	scrollToRow (const X3D::SFNode & node);
+
 	const X3D::MFNode &
 	getNodes () const
 	{ return nodes; }
@@ -137,6 +140,9 @@ private:
 	refresh ();
 
 	///  @name Operations
+
+	Gtk::TreePath
+	getPath (const X3D::SFNode & node);
 
 	void
 	setNodes (X3D::MFNode &&);

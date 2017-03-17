@@ -109,6 +109,7 @@ void
 X3DUsedMaterialsEditor::set_material ()
 {
 	nodeIndex -> setSelection (getMaterial ());
+	nodeIndex -> scrollToRow (getMaterial ());
 }
 
 X3D::Browser*

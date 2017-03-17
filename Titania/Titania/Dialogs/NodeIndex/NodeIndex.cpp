@@ -277,16 +277,38 @@ NodeIndex::setSelection (const X3D::SFNode & selection)
 {
 	node .set (selection);
 
+	const auto path = getPath (node);
+
+	if (path .empty ())
+		getTreeView () .get_selection () -> unselect_all ();
+	else
+		getTreeView () .get_selection () -> select (path);
+}
+
+void
+NodeIndex::scrollToRow (const X3D::SFNode & node)
+{
+	const auto path = getPath (node);
+
+	if (path .empty ())
+		return;
+
+	getTreeView () .scroll_to_row (path, 2 - math::phi <double>);
+}
+
+Gtk::TreePath
+NodeIndex::getPath (const X3D::SFNode & node)
+{
 	const auto iter = std::find (nodes .begin (), nodes .end (), node);
 
 	if (iter == nodes .end ())
-		return;
+		return Gtk::TreePath ();
 
-	Gtk::TreePath path;
+	Gtk::TreePath childPath;
 
-	path .push_back (iter - nodes .begin ());
+	childPath .push_back (iter - nodes .begin ());
 
-	getTreeView () .get_selection () -> select (getTreeModelSort () -> convert_child_path_to_path (path));
+	return getTreeModelSort () -> convert_child_path_to_path (childPath);
 }
 
 void
@@ -295,6 +317,9 @@ NodeIndex::setNodes (X3D::MFNode && value)
 	static const std::string empty_string;
 	static const std::string document_import ("document-import");
 	static const std::string document_export ("document-export");
+
+	if (value == nodes)
+		return;
 
 	for (const auto & node : nodes)
 		node -> removeInterest (&NodeIndex::on_row_changed, this);

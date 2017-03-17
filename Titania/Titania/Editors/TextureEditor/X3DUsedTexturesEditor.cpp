@@ -110,6 +110,7 @@ void
 X3DUsedTexturesEditor::set_texture ()
 {
 	nodeIndex -> setSelection (getTexture ());
+	nodeIndex -> scrollToRow (getTexture ());
 }
 
 X3D::Browser*
