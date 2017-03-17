@@ -58,6 +58,8 @@
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Grouping/Switch.h"
 #include "../../Components/Grouping/Transform.h"
+#include "../../Components/Layering/Layer.h"
+#include "../../Components/Layering/LayerSet.h"
 #include "../../Components/Navigation/OrthoViewpoint.h"
 #include "../../Components/Navigation/NavigationInfo.h"
 #include "../../Components/Networking/Anchor.h"
@@ -154,7 +156,7 @@ const io::sequence          Grammar::NamedColor ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcd
 
 // Parser
 
-static constexpr size_t BEZIER_STEPS    = 9;
+static constexpr size_t BEZIER_STEPS    = 16;
 static constexpr size_t GRADIENT_WIDTH  = 256;
 static constexpr size_t GRADIENT_HEIGHT = 256;
 
@@ -165,9 +167,13 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	              istream (istream),
 	            xmlParser (new xmlpp::DomParser ()),
 	               styles (1),
+	             layerSet (scene -> createNode <X3D::LayerSet> ()),
 	        rootTransform (scene -> createNode <X3D::Transform> ()),
 	           groupNodes ({ rootTransform }),
+	            viewpoint (scene -> createNode <X3D::OrthoViewpoint> ()),
 	texturePropertiesNode (scene -> createNode <X3D::TextureProperties> ()),
+	          translation (),
+	                scale (1, 1, 1),
 	 whiteSpaceCharacters ()
 {
 	xmlParser -> set_throw_messages (true);
@@ -175,7 +181,7 @@ Parser::Parser (const X3D::X3DScenePtr & scene, const basic::uri & uri, std::ist
 	xmlParser -> set_include_default_attributes (true);
 
 	texturePropertiesNode -> generateMipMaps ()     = true;
-	texturePropertiesNode -> minificationFilter ()  = "DEFAULT";
+	texturePropertiesNode -> minificationFilter ()  = "NEAREST_PIXEL_AVG_MIPMAP";
 	texturePropertiesNode -> magnificationFilter () = "DEFAULT";
 	texturePropertiesNode -> boundaryModeS ()       = "CLAMP_TO_EDGE";
 	texturePropertiesNode -> boundaryModeT ()       = "CLAMP_TO_EDGE";
@@ -272,8 +278,6 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 
 	// Create viewpoint.
 
-	const auto viewpoint = scene -> createNode <X3D::OrthoViewpoint> ();
-
 	viewpoint -> description ()      = uri .basename ();
 	viewpoint -> position ()         = X3D::Vector3f ((viewBox .x () + width / 2) * math::pixel <double>, -(viewBox .y () + height / 2) * math::pixel <double>, 10);
 	viewpoint -> centerOfRotation () = X3D::Vector3f ((viewBox .x () + width / 2) * math::pixel <double>, -(viewBox .y () + height / 2) * math::pixel <double>, 0);
@@ -287,26 +291,33 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 
 	scene -> getRootNodes () .emplace_back (viewpoint);
 
-	// Create root Transform.
+	// Create first layer.
 
-	const auto translation = X3D::Vector3d (-viewBox .x (), viewBox .y (), 0);
-	const auto scale       = X3D::Vector3d (math::pixel <double> * width / viewBox [2], -math::pixel <double> * height / viewBox [3], 1);
+	scale       = X3D::Vector3d (math::pixel <double> * width / viewBox [2], -math::pixel <double> * height / viewBox [3], 1);
+	translation = X3D::Vector3d (-viewBox .x (), viewBox .y (), 0) * scale;
 
-	rootTransform -> translation () = translation * scale;
+	rootTransform -> translation () = translation;
 	rootTransform -> scale ()       = scale;
-
-	try
-	{
-		scene -> updateNamedNode (GetNameFromURI (uri), X3D::SFNode (rootTransform));
-	}
-	catch (const X3D::X3DError &)
-	{ }
-
-	scene -> getRootNodes () .emplace_back (rootTransform);
 
 	// Parse elements.
 
 	elements (xmlElement);
+
+	if (rootTransform)
+	{
+		scene -> updateNamedNode (scene -> getUniqueName (GetNameFromURI (uri)), X3D::SFNode (rootTransform));
+		scene -> getRootNodes () .emplace_back (rootTransform);
+	}
+	else
+	{
+		scene -> updateNamedNode (scene -> getUniqueName (GetNameFromURI (uri)), X3D::SFNode (layerSet));
+		scene -> getRootNodes () .emplace_back (layerSet);
+
+		layerSet -> activeLayer () = 0;
+
+		for (size_t i = 1, size = layerSet -> layers () .size () + 1; i < size; ++ i)
+			layerSet -> order () .emplace_back (i);
+	}
 }
 
 bool
@@ -450,6 +461,8 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 	// Determine style.
 
 	Style style;
+	std::string groupmode;
+	std::string label;
 
 	styleAttributes (xmlElement, style);
 
@@ -459,8 +472,45 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 	styles .emplace_back (style);
 
 	// Get transform.	
-
+	
 	const auto transformNode = getTransform (xmlElement);
+
+	// Layer handling.
+
+	stringAttribute (xmlElement -> get_attribute ("groupmode", "inkscape"), groupmode);
+	stringAttribute (xmlElement -> get_attribute ("label",     "inkscape"), label);
+
+	if (groupmode == "layer")
+	{
+		// Add first root Transform to a layer if need.
+
+		if (rootTransform and not rootTransform -> children () .empty ())
+		{
+			const auto layer = scene -> createNode <X3D::Layer> ();
+
+			layerSet -> layers () .emplace_back (layer);
+			layer -> children ()  .emplace_back (rootTransform);
+		}
+
+		// Clear.
+
+		rootTransform = nullptr;
+
+		groupNodes .clear ();
+
+		// Create a new layer with a new root Transform.
+
+		const auto layer = scene -> createNode <X3D::Layer> ();
+
+		scene -> updateNamedNode (scene -> getUniqueName (GetNameFromString (label)), layer);
+
+		layerSet -> layers () .emplace_back (layer);
+		layer -> children ()  .emplace_back (viewpoint);
+		layer -> children ()  .emplace_back (transformNode);
+
+		transformNode -> translation () = translation;
+		transformNode -> scale ()       = scale;
+	}
 
 	// Get child elements.
 
@@ -468,13 +518,17 @@ Parser::groupElement (xmlpp::Element* const xmlElement)
 
 	elements (xmlElement);
 
-	groupNodes .pop_back ();
 	styles .pop_back ();
 
 	// Add node.
 
-	if (not transformNode -> children () .empty ())
-		groupNodes .back () -> children () .emplace_back (transformNode);
+	if (groupmode not_eq "layer")
+	{
+		groupNodes .pop_back ();
+
+		if (not transformNode -> children () .empty ())
+			groupNodes .back () -> children () .emplace_back (transformNode);
+	}
 }
 
 void
@@ -1465,7 +1519,7 @@ Parser::idAttribute (xmlpp::Attribute* const attribute, const X3D::SFNode & node
 		if (not attribute)
 			return;
 
-		scene -> updateNamedNode (GetNameFromString (attribute -> get_value ()), node);
+		scene -> updateNamedNode (scene -> getUniqueName (GetNameFromString (attribute -> get_value ())), node);
 	}
 	catch (const X3D::X3DError &)
 	{ }
@@ -2825,7 +2879,7 @@ Parser::getFillAppearance (const Style & style, X3D::Box2d bbox)
 
 			try
 			{
-				scene -> updateNamedNode (GetNameFromString (style .fillURL), X3D::SFNode (textureNode));
+				scene -> updateNamedNode (scene -> getUniqueName (GetNameFromString (style .fillURL)), X3D::SFNode (textureNode));
 			}
 			catch (const X3D::X3DError &)
 			{ }

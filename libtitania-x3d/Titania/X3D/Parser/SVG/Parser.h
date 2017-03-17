@@ -371,9 +371,13 @@ private:
 	const std::unique_ptr <xmlpp::DomParser> xmlParser;
 
 	std::vector <Style>                     styles;
+	X3D::X3DPtr <X3D::LayerSet>             layerSet;
 	X3D::X3DPtr <X3D::Transform>            rootTransform;
 	X3D::X3DPtrArray <X3D::X3DGroupingNode> groupNodes;
+	X3D::X3DPtr <X3D::OrthoViewpoint>       viewpoint;
 	X3D::X3DPtr <X3D::TextureProperties>    texturePropertiesNode;
+	Vector3d                                translation;
+	Vector3d                                scale;
 
 	std::string whiteSpaceCharacters;
 
