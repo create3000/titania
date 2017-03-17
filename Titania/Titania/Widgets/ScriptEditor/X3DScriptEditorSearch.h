@@ -141,7 +141,7 @@ private:
 	on_search_activate (const Glib::ustring & search, const Glib::ustring & replace);
 
 	void
-	on_add_search (const Glib::ustring & search, const Glib::ustring & replace);
+	on_add_recent_search ();
 
 	virtual
 	void

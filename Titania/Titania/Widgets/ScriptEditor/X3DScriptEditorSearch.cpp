@@ -319,7 +319,7 @@ X3DScriptEditorSearch::on_enable_search ()
 	if (selection .size ())
 		getTextBuffer () -> select_range (selectionBegin, selectionEnd);
 
-	on_add_search (getSearchEntry () .get_text (), getToggleReplaceButton () .get_active () ? getReplaceEntry () .get_text () : "");
+	on_add_recent_search ();
 }
 
 void
@@ -412,9 +412,18 @@ X3DScriptEditorSearch::on_search_activate (const Glib::ustring & search, const G
 }
 
 void
-X3DScriptEditorSearch::on_add_search (const Glib::ustring & search, const Glib::ustring & replace)
+X3DScriptEditorSearch::on_add_recent_search ()
 {
-	// Add search to recentSearches
+	Glib::ustring search  = getSearchEntry  () .get_text ();
+	Glib::ustring replace = getReplaceEntry () .get_text ();
+
+	if (not getToggleReplaceButton () .get_active ())
+		replace .clear ();
+
+	// Test if string can be added.
+
+	if (search .empty ())
+		return;
 
 	if ((not recentSearches .empty () and recentSearches .front () == search) and
 	    (not recentReplaces .empty () and recentReplaces .front () == replace))
@@ -422,15 +431,18 @@ X3DScriptEditorSearch::on_add_search (const Glib::ustring & search, const Glib::
 		return;
 	}
 
+	// Add search to recentSearches
+
 	recentSearches .emplace_front (search);
 	recentReplaces .emplace_front (replace);
 
 	// Constrain recentSearches
 
 	if (recentSearches .size () > RECENT_SEARCHES_MAX)
+	{
 		recentSearches .pop_back ();
-
-	recentReplaces .resize (recentSearches .size ());
+		recentReplaces .pop_back ();
+	}
 }
 
 void
@@ -488,7 +500,7 @@ X3DScriptEditorSearch::on_search_backward_clicked ()
 
 	gtk_source_search_context_backward_async (searchContext, insertIter .gobj (), nullptr, &X3DScriptEditorSearch::on_search_backward_callback, this);
 
-	on_add_search (getSearchEntry () .get_text (), getReplaceEntry () .get_text ());
+	on_add_recent_search ();
 }
 
 void
@@ -525,7 +537,7 @@ X3DScriptEditorSearch::on_search_forward_clicked ()
 
 	on_search_forward_clicked (getTextBuffer () -> get_insert ());
 
-	on_add_search (getSearchEntry () .get_text (), getReplaceEntry () .get_text ());
+	on_add_recent_search ();
 }
 
 void
