@@ -509,7 +509,7 @@
                         <property name="tooltip_text" translatable="yes">PNG/JPEG/MIFF compression level</property>
                         <property name="text" translatable="yes">75</property>
                         <property name="adjustment">ImageCompressionAdjustment</property>
-                        <property name="climb_rate">0.32000000000000001</property>
+                        <property name="climb_rate">0.01</property>
                         <property name="numeric">True</property>
                         <property name="value">75</property>
                       </object>

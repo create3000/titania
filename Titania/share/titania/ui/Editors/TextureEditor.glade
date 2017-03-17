@@ -796,7 +796,7 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="text" translatable="yes">0,000</property>
                                                     <property name="adjustment">MultiTextureAlphaAdjustment</property>
-                                                    <property name="climb_rate">0.32000000000000001</property>
+                                                    <property name="climb_rate">0.01</property>
                                                     <property name="digits">3</property>
                                                     <property name="numeric">True</property>
                                                   </object>
@@ -3664,7 +3664,7 @@
                                         <property name="halign">start</property>
                                         <property name="text" translatable="yes">1,000</property>
                                         <property name="adjustment">TexturePropertiesAnisotropicDegreeAdjustment</property>
-                                        <property name="climb_rate">0.32000000000000001</property>
+                                        <property name="climb_rate">0.01</property>
                                         <property name="digits">3</property>
                                         <property name="numeric">True</property>
                                         <property name="value">1</property>
@@ -3758,7 +3758,7 @@
                                         <property name="halign">start</property>
                                         <property name="text" translatable="yes">0,000</property>
                                         <property name="adjustment">TexturePropertiesTexturePriorityAdjustment</property>
-                                        <property name="climb_rate">0.32000000000000001</property>
+                                        <property name="climb_rate">0.01</property>
                                         <property name="digits">3</property>
                                         <property name="numeric">True</property>
                                       </object>
@@ -4155,7 +4155,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformTranslationXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4172,7 +4172,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformTranslationYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4214,7 +4214,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">1,000</property>
                                                 <property name="adjustment">TextureTransformScaleXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                                 <property name="value">1</property>
@@ -4232,7 +4232,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">1,000</property>
                                                 <property name="adjustment">TextureTransformScaleYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                                 <property name="value">1</property>
@@ -4287,7 +4287,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformCenterXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                               </object>
                                               <packing>
@@ -4303,7 +4303,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformCenterYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                               </object>
                                               <packing>
@@ -4350,7 +4350,7 @@
                                             <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000000</property>
                                             <property name="adjustment">TextureTransformRotationAdjustment</property>
-                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="climb_rate">0.01</property>
                                             <property name="digits">6</property>
                                             <property name="numeric">True</property>
                                           </object>
@@ -4394,7 +4394,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransform3DTranslationXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4411,7 +4411,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransform3DTranslationYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4428,7 +4428,7 @@
                                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransform3DTranslationZAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4492,7 +4492,7 @@
                                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">TextureTransform3DRotationXAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -4509,7 +4509,7 @@
                                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">TextureTransform3DRotationYAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -4526,7 +4526,7 @@
                                                         <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">TextureTransform3DRotationZAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -4551,7 +4551,7 @@
                                                     <property name="valign">end</property>
                                                     <property name="text" translatable="yes">0,000000</property>
                                                     <property name="adjustment">TextureTransform3DRotationAAdjustment</property>
-                                                    <property name="climb_rate">0.32000000000000001</property>
+                                                    <property name="climb_rate">0.01</property>
                                                     <property name="digits">6</property>
                                                     <property name="numeric">True</property>
                                                   </object>
@@ -4587,7 +4587,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransform3DScaleXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4604,7 +4604,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransform3DScaleYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4621,7 +4621,7 @@
                                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransform3DScaleZAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4722,7 +4722,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransform3DCenterXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4739,7 +4739,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransform3DCenterYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4756,7 +4756,7 @@
                                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransform3DCenterZAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4819,7 +4819,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D00Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4835,7 +4835,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D01Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4851,7 +4851,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D02Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4867,7 +4867,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D03Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4883,7 +4883,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D04Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4899,7 +4899,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D05Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4915,7 +4915,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D06Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4931,7 +4931,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D07Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4947,7 +4947,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D08Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4963,7 +4963,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D09Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4979,7 +4979,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D10Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -4995,7 +4995,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D11Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -5011,7 +5011,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D12Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -5027,7 +5027,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D13Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -5043,7 +5043,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D14Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -5059,7 +5059,7 @@
                                                 <property name="tooltip_text" translatable="yes">Value 0</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">TextureTransformMatrix3D15Adjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>

@@ -645,7 +645,7 @@
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="input_purpose">number</property>
                                                 <property name="adjustment">PerspectiveViewpointFieldOfViewAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">6</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -763,7 +763,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">PerspectiveViewpointPositionXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -780,7 +780,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">PerspectiveViewpointPositionYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -797,7 +797,7 @@
                                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">PerspectiveViewpointPositionZAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -851,7 +851,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">PerspectiveViewpointCenterOfRotationXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -868,7 +868,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">PerspectiveViewpointCenterOfRotationYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -885,7 +885,7 @@
                                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">PerspectiveViewpointCenterOfRotationZAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -949,7 +949,7 @@
                                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">PerspectiveViewpointOrientationXAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -966,7 +966,7 @@
                                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">PerspectiveViewpointOrientationYAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -983,7 +983,7 @@
                                                         <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">PerspectiveViewpointOrientationZAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -1008,7 +1008,7 @@
                                                     <property name="valign">end</property>
                                                     <property name="text" translatable="yes">0,000</property>
                                                     <property name="adjustment">PerspectiveViewpointOrientationAAdjustment</property>
-                                                    <property name="climb_rate">0.32000000000000001</property>
+                                                    <property name="climb_rate">0.01</property>
                                                     <property name="digits">6</property>
                                                     <property name="numeric">True</property>
                                                   </object>
@@ -1096,7 +1096,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">OrthoViewpointPositionXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1113,7 +1113,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">OrthoViewpointPositionYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1130,7 +1130,7 @@
                                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">OrthoViewpointPositionZAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1184,7 +1184,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">OrthoViewpointCenterOfRotationXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1201,7 +1201,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">OrthoViewpointCenterOfRotationYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1218,7 +1218,7 @@
                                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">OrthoViewpointCenterOfRotationZAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1282,7 +1282,7 @@
                                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">OrthoViewpointOrientationXAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -1299,7 +1299,7 @@
                                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">OrthoViewpointOrientationYAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -1316,7 +1316,7 @@
                                                         <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">OrthoViewpointOrientationZAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -1341,7 +1341,7 @@
                                                     <property name="valign">end</property>
                                                     <property name="text" translatable="yes">0,000</property>
                                                     <property name="adjustment">OrthoViewpointOrientationAAdjustment</property>
-                                                    <property name="climb_rate">0.32000000000000001</property>
+                                                    <property name="climb_rate">0.01</property>
                                                     <property name="digits">6</property>
                                                     <property name="numeric">True</property>
                                                   </object>
@@ -1376,7 +1376,7 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="tooltip_text" translatable="yes">Top</property>
                                                 <property name="adjustment">OrthoViewpointFieldOfViewMaxYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1391,7 +1391,7 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="tooltip_text" translatable="yes">Left</property>
                                                 <property name="adjustment">OrthoViewpointFieldOfViewMinXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1406,7 +1406,7 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="tooltip_text" translatable="yes">Right</property>
                                                 <property name="adjustment">OrthoViewpointFieldOfViewMaxXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1421,7 +1421,7 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="tooltip_text" translatable="yes">Bottom</property>
                                                 <property name="adjustment">OrthoViewpointFieldOfViewMinYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">3</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1525,7 +1525,7 @@
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="input_purpose">number</property>
                                                 <property name="adjustment">GeoViewpointFieldOfViewAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">6</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1642,7 +1642,7 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">GeoViewpointPositionXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">9</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1658,7 +1658,7 @@
                                                 <property name="can_focus">True</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">GeoViewpointPositionYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">9</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1675,7 +1675,7 @@
                                                 <property name="tooltip_text" translatable="yes">Height</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">GeoViewpointPositionZAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">9</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1729,7 +1729,7 @@
                                                 <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">GeoViewpointCenterOfRotationXAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">9</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1746,7 +1746,7 @@
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">GeoViewpointCenterOfRotationYAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">9</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1763,7 +1763,7 @@
                                                 <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">GeoViewpointCenterOfRotationZAdjustment</property>
-                                                <property name="climb_rate">0.32000000000000001</property>
+                                                <property name="climb_rate">0.01</property>
                                                 <property name="digits">9</property>
                                                 <property name="numeric">True</property>
                                               </object>
@@ -1827,7 +1827,7 @@
                                                         <property name="tooltip_text" translatable="yes">x-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">GeoViewpointOrientationXAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -1844,7 +1844,7 @@
                                                         <property name="tooltip_text" translatable="yes">y-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">GeoViewpointOrientationYAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -1861,7 +1861,7 @@
                                                         <property name="tooltip_text" translatable="yes">z-Axis</property>
                                                         <property name="text" translatable="yes">0,000</property>
                                                         <property name="adjustment">GeoViewpointOrientationZAdjustment</property>
-                                                        <property name="climb_rate">0.32000000000000001</property>
+                                                        <property name="climb_rate">0.01</property>
                                                         <property name="digits">3</property>
                                                         <property name="numeric">True</property>
                                                       </object>
@@ -1886,7 +1886,7 @@
                                                     <property name="valign">end</property>
                                                     <property name="text" translatable="yes">0,000</property>
                                                     <property name="adjustment">GeoViewpointOrientationAAdjustment</property>
-                                                    <property name="climb_rate">0.32000000000000001</property>
+                                                    <property name="climb_rate">0.01</property>
                                                     <property name="digits">6</property>
                                                     <property name="numeric">True</property>
                                                   </object>
@@ -1928,7 +1928,7 @@
                                             <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000</property>
                                             <property name="adjustment">GeoViewpointSpeedFactorAdjustment</property>
-                                            <property name="climb_rate">0.32000000000000001</property>
+                                            <property name="climb_rate">0.01</property>
                                             <property name="digits">3</property>
                                             <property name="numeric">True</property>
                                           </object>
