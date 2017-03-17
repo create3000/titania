@@ -84,6 +84,10 @@ X3DUsedTexturesEditor::initialize ()
 
 	getUsedTexturesBrowserBox () .pack_start (*preview, true, true);
 
+	// Selection
+
+	getTexture () .addInterest (&X3DUsedTexturesEditor::set_texture, this);
+
 	// Node index
 
 	nodeIndex -> getNode () .addInterest (&X3DUsedTexturesEditor::set_node, this);
@@ -100,6 +104,12 @@ X3DUsedTexturesEditor::initialize ()
 	nodeIndex -> getCustomImageColumn () -> set_visible (true);
 	nodeIndex -> getCustomImageColumn () -> pack_start (*cellrenderer, false);
 	nodeIndex -> getCustomImageColumn () -> add_attribute (*cellrenderer, "index", nodeIndex -> getIndexColumn ());
+}
+
+void
+X3DUsedTexturesEditor::set_texture ()
+{
+	nodeIndex -> setSelection (getTexture ());
 }
 
 X3D::Browser*

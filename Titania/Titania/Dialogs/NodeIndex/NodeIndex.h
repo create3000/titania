@@ -97,6 +97,9 @@ public:
 	void
 	setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> &);
 
+	void
+	setSelection (const X3D::SFNode & node);
+
 	const X3D::MFNode &
 	getNodes () const
 	{ return nodes; }

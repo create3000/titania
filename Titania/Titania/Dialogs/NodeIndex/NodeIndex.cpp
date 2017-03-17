@@ -273,6 +273,23 @@ NodeIndex::setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & value)
 }
 
 void
+NodeIndex::setSelection (const X3D::SFNode & selection)
+{
+	node .set (selection);
+
+	const auto iter = std::find (nodes .begin (), nodes .end (), node);
+
+	if (iter == nodes .end ())
+		return;
+
+	Gtk::TreePath path;
+
+	path .push_back (iter - nodes .begin ());
+
+	getTreeView () .get_selection () -> select (getTreeModelSort () -> convert_child_path_to_path (path));
+}
+
+void
 NodeIndex::setNodes (X3D::MFNode && value)
 {
 	static const std::string empty_string;
@@ -311,6 +328,8 @@ NodeIndex::setNodes (X3D::MFNode && value)
 
 	getTreeView () .set_model (getTreeModelSort ());
 	getTreeView () .set_search_column (Columns::NAME);
+
+	setSelection (node);
 }
 
 /***

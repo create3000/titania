@@ -88,10 +88,19 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
+	virtual
+	const X3D::X3DPtr <X3D::X3DMaterialNode> &
+	getMaterial () const = 0;
+
 
 private:
 
 	///  @name Event handlers
+
+	void
+	set_material ();
 
 	X3D::Browser*
 	on_render_node ();

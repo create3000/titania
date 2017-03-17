@@ -83,6 +83,10 @@ X3DUsedMaterialsEditor::initialize ()
 
 	getUsedMaterialsBrowserBox () .pack_start (*preview, true, true);
 
+	// Selection
+
+	getMaterial () .addInterest (&X3DUsedMaterialsEditor::set_material, this);
+
 	// Node index
 
 	nodeIndex -> getNode () .addInterest (&X3DUsedMaterialsEditor::set_node, this);
@@ -99,6 +103,12 @@ X3DUsedMaterialsEditor::initialize ()
 	nodeIndex -> getCustomImageColumn () -> set_visible (true);
 	nodeIndex -> getCustomImageColumn () -> pack_start (*cellrenderer, false);
 	nodeIndex -> getCustomImageColumn () -> add_attribute (*cellrenderer, "index", nodeIndex -> getIndexColumn ());
+}
+
+void
+X3DUsedMaterialsEditor::set_material ()
+{
+	nodeIndex -> setSelection (getMaterial ());
 }
 
 X3D::Browser*
