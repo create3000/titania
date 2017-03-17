@@ -146,7 +146,8 @@ private:
 			    fillColor (),
 			      fillURL (),
 			  fillOpacity (1),
-			   strokeType (ColorType::COLOR),
+			     fillRule ("nonzero"),
+			   strokeType (ColorType::NONE),
 			  strokeColor (),
 			    strokeURL (),
 			strokeOpacity (1),
@@ -161,6 +162,7 @@ private:
 		X3D::Color3f fillColor;
 		basic::uri   fillURL;
 		double       fillOpacity;
+		std::string  fillRule;
 		ColorType    strokeType;
 		X3D::Color3f strokeColor;
 		basic::uri   strokeURL;
@@ -305,31 +307,34 @@ private:
 	styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & value);
 
 	void
-	displayAttribute (const std::string & value, Style & style);
+	displayStyle (const std::string & value, Style & style);
 	
 	void
-	fillAttribute (const std::string & value, Style & style);
+	fillStyle (const std::string & value, Style & style);
 	
 	void
-	fillOpacityAttribute (const std::string & value, Style & style);
+	fillOpacityStyle (const std::string & value, Style & style);
+
+	void
+	fillRuleStyle (const std::string & value, Style & style);
 	
 	void
-	strokeAttribute (const std::string & value, Style & style);
+	strokeStyle (const std::string & value, Style & style);
 	
 	void
-	strokeOpacityAttribute (const std::string & value, Style & style);
+	strokeOpacityStyle (const std::string & value, Style & style);
 	
 	void
-	strokeWidthAttribute (const std::string & value, Style & style);
+	strokeWidthStyle (const std::string & value, Style & style);
 	
 	void
-	opacityAttribute (const std::string & value, Style & style);
+	opacityStyle (const std::string & value, Style & style);
 	
 	void
-	stopColorAttribute (const std::string & value, Style & style);
+	stopColorStyle (const std::string & value, Style & style);
 	
 	void
-	stopOpacityAttribute (const std::string & value, Style & style);
+	stopOpacityStyle (const std::string & value, Style & style);
 
 	bool
 	colorValue (std::istream & istream, X3D::Color3f & color);
@@ -347,6 +352,9 @@ private:
 
 	X3D::X3DPtr <X3D::Appearance>
 	getStrokeAppearance (const Style & strokeStyle);
+
+	int
+	getFillRule (const Style & style);
 
 	///  @name Members
 

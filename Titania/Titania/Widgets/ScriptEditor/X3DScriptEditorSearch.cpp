@@ -65,7 +65,8 @@
 namespace titania {
 namespace puck {
 
-constexpr size_t RECENT_SEARCHES_MAX = 12;
+static constexpr size_t RECENT_SEARCHES_MAX = 16;
+static constexpr size_t RECENT_TEXT_LENGTH  = 32;
 
 X3DScriptEditorSearch::X3DScriptEditorSearch () :
 	X3DScriptEditorInterface (),
@@ -116,8 +117,8 @@ X3DScriptEditorSearch::initialize ()
 	for (auto search : recentSearches)
 		search = basic::base64_decode (search);
 
-	for (auto search : recentReplaces)
-		search = basic::base64_decode (search);
+	for (auto replace : recentReplaces)
+		replace = basic::base64_decode (replace);
 
 	recentReplaces .resize (recentSearches .size ());
 
@@ -376,19 +377,17 @@ X3DScriptEditorSearch::on_build_search_menu ()
 
 	for (size_t i = 0, size = recentSearches .size (); i < size; ++ i)
 	{
-		static constexpr size_t TEXT_LENGTH = 32;
+		auto label = recentSearches [i] .substr (0, RECENT_TEXT_LENGTH);
 
-		auto label = recentSearches [i] .substr (0, TEXT_LENGTH);
-
-		if (recentSearches [i] .size () > TEXT_LENGTH)
+		if (recentSearches [i] .size () > RECENT_TEXT_LENGTH)
 			label += "…";
 
 		if (not recentReplaces [i] .empty ())
 		{
 			label += "   ⏵   ";
-			label += recentReplaces [i] .substr (0, TEXT_LENGTH);
+			label += recentReplaces [i] .substr (0, RECENT_TEXT_LENGTH);
 
-			if (recentReplaces [i] .size () > TEXT_LENGTH)
+			if (recentReplaces [i] .size () > RECENT_TEXT_LENGTH)
 				label += "…";
 		}
 

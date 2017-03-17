@@ -52,6 +52,7 @@
 
 #include <libxml++/libxml++.h>
 
+#include "../../Components/EnvironmentalEffects/Background.h"
 #include "../../Components/Geometry2D/Circle2D.h"
 #include "../../Components/Geometry2D/Disk2D.h"
 #include "../../Components/Geometry2D/Rectangle2D.h"
@@ -254,6 +255,14 @@ Parser::svgElement (xmlpp::Element* const xmlElement)
 
 	if (not viewBoxAttribute (xmlElement -> get_attribute ("viewBox"), viewBox))
 		viewBox = X3D::Vector4d (0, 0, width, height);
+
+	// Create background.
+
+	const auto background = scene -> createNode <X3D::Background> ();
+
+	background -> skyColor () = { Color3f (1, 1, 1) };
+
+	scene -> getRootNodes () .emplace_back (background);
 
 	// Create navigation info.
 
@@ -874,8 +883,7 @@ Parser::polylineElement (xmlpp::Element* const xmlElement)
 
 		Tesselator tessellator;
 
-		tessellator .property (GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
-
+		tessellator .property (GLU_TESS_WINDING_RULE, getFillRule (style));
 		tessellator .property (GLU_TESS_TOLERANCE, 0);
 		tessellator .normal (Vector3d (0, 0, 1));
 		tessellator .begin_polygon ();
@@ -1007,7 +1015,7 @@ Parser::polygonElement (xmlpp::Element* const xmlElement)
 
 		Tesselator tessellator;
 
-		tessellator .property (GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
+		tessellator .property (GLU_TESS_WINDING_RULE, getFillRule (style));
 
 		tessellator .property (GLU_TESS_TOLERANCE, 0);
 		tessellator .normal (Vector3d (0, 0, 1));
@@ -1144,8 +1152,7 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 
 		Tesselator tessellator;
 
-		tessellator .property (GLU_TESS_WINDING_RULE, GLU_TESS_WINDING_ODD);
-
+		tessellator .property (GLU_TESS_WINDING_RULE, getFillRule (style));
 		tessellator .property (GLU_TESS_TOLERANCE, 0);
 		tessellator .normal (Vector3d (0, 0, 1));
 		tessellator .begin_polygon ();
@@ -2291,7 +2298,6 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 		contours .emplace_back (std::move (contour));
 
 	return true;
-
 }
 
 void
@@ -2301,15 +2307,16 @@ Parser::styleAttributes (xmlpp::Element* const xmlElement, Style & style)
 
 	static const std::map <std::string, StyleFunction> stylesIndex =
 	{
-		std::make_pair ("display",        std::mem_fn (&Parser::displayAttribute)),
-		std::make_pair ("fill",           std::mem_fn (&Parser::fillAttribute)),
-		std::make_pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityAttribute)),
-		std::make_pair ("stroke",         std::mem_fn (&Parser::strokeAttribute)),
-		std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityAttribute)),
-		std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthAttribute)),
-		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityAttribute)),
-		std::make_pair ("stop-color",     std::mem_fn (&Parser::stopColorAttribute)),
-		std::make_pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityAttribute)),
+		std::make_pair ("display",        std::mem_fn (&Parser::displayStyle)),
+		std::make_pair ("fill",           std::mem_fn (&Parser::fillStyle)),
+		std::make_pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityStyle)),
+		std::make_pair ("fill-rule",      std::mem_fn (&Parser::fillRuleStyle)),
+		std::make_pair ("stroke",         std::mem_fn (&Parser::strokeStyle)),
+		std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityStyle)),
+		std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthStyle)),
+		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityStyle)),
+		std::make_pair ("stop-color",     std::mem_fn (&Parser::stopColorStyle)),
+		std::make_pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityStyle)),
 	};
 
 	for (const auto & pair : stylesIndex)
@@ -2335,15 +2342,16 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & style)
 
 	static const std::map <std::string, StyleFunction> stylesIndex =
 	{
-		std::make_pair ("display",        std::mem_fn (&Parser::displayAttribute)),
-		std::make_pair ("fill",           std::mem_fn (&Parser::fillAttribute)),
-		std::make_pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityAttribute)),
-		std::make_pair ("stroke",         std::mem_fn (&Parser::strokeAttribute)),
-		std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityAttribute)),
-		std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthAttribute)),
-		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityAttribute)),
-		std::make_pair ("stop-color",     std::mem_fn (&Parser::stopColorAttribute)),
-		std::make_pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityAttribute)),
+		std::make_pair ("display",        std::mem_fn (&Parser::displayStyle)),
+		std::make_pair ("fill",           std::mem_fn (&Parser::fillStyle)),
+		std::make_pair ("fill-opacity",   std::mem_fn (&Parser::fillOpacityStyle)),
+		std::make_pair ("fill-rule",      std::mem_fn (&Parser::fillRuleStyle)),
+		std::make_pair ("stroke",         std::mem_fn (&Parser::strokeStyle)),
+		std::make_pair ("stroke-opacity", std::mem_fn (&Parser::strokeOpacityStyle)),
+		std::make_pair ("stroke-width",   std::mem_fn (&Parser::strokeWidthStyle)),
+		std::make_pair ("opacity",        std::mem_fn (&Parser::opacityStyle)),
+		std::make_pair ("stop-color",     std::mem_fn (&Parser::stopColorStyle)),
+		std::make_pair ("stop-opacity",   std::mem_fn (&Parser::stopOpacityStyle)),
 	};
 
 	if (not xmlAttribute)
@@ -2377,7 +2385,7 @@ Parser::styleAttribute (xmlpp::Attribute* const xmlAttribute, Style & style)
 }
 
 void
-Parser::displayAttribute (const std::string & value, Style & style)
+Parser::displayStyle (const std::string & value, Style & style)
 {
 	if (value == "default")
 		return;
@@ -2392,7 +2400,7 @@ Parser::displayAttribute (const std::string & value, Style & style)
 }
 
 void
-Parser::fillAttribute (const std::string & value, Style & style)
+Parser::fillStyle (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2436,7 +2444,7 @@ Parser::fillAttribute (const std::string & value, Style & style)
 }
 
 void
-Parser::fillOpacityAttribute (const std::string & value, Style & style)
+Parser::fillOpacityStyle (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2462,7 +2470,13 @@ Parser::fillOpacityAttribute (const std::string & value, Style & style)
 }
 
 void
-Parser::strokeAttribute (const std::string & value, Style & style)
+Parser::fillRuleStyle (const std::string & value, Style & style)
+{
+	style .fillRule = value;
+}
+
+void
+Parser::strokeStyle (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2506,7 +2520,7 @@ Parser::strokeAttribute (const std::string & value, Style & style)
 }
 
 void
-Parser::strokeOpacityAttribute (const std::string & value, Style & style)
+Parser::strokeOpacityStyle (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2532,7 +2546,7 @@ Parser::strokeOpacityAttribute (const std::string & value, Style & style)
 }
 
 void
-Parser::strokeWidthAttribute (const std::string & value, Style & style)
+Parser::strokeWidthStyle (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2558,7 +2572,7 @@ Parser::strokeWidthAttribute (const std::string & value, Style & style)
 }
 
 void
-Parser::opacityAttribute (const std::string & value, Style & style)
+Parser::opacityStyle (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2580,7 +2594,7 @@ Parser::opacityAttribute (const std::string & value, Style & style)
 }
 
 void
-Parser::stopColorAttribute (const std::string & value, Style & style)
+Parser::stopColorStyle (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2596,7 +2610,7 @@ Parser::stopColorAttribute (const std::string & value, Style & style)
 }
 
 void
-Parser::stopOpacityAttribute (const std::string & value, Style & style)
+Parser::stopOpacityStyle (const std::string & value, Style & style)
 {
 	std::istringstream vstream (value);
 
@@ -2851,6 +2865,15 @@ Parser::getStrokeAppearance (const Style & style)
 	materialNode -> transparency ()  = 1 - style .strokeOpacity * style .opacity;
 
 	return appearanceNode;
+}
+
+int
+Parser::getFillRule (const Style & style)
+{
+	if (style .fillRule == "evenodd")
+		return GLU_TESS_WINDING_ODD;
+
+	return GLU_TESS_WINDING_NONZERO;
 }
 
 Parser::~Parser ()

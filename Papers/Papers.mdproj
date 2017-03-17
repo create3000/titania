@@ -249,6 +249,7 @@
     <None Include="VRML 1.1 Specification-Dateien\hr.gif" />
     <None Include="VRML 1.1 Specification-Dateien\vrml.gif" />
     <None Include="Oses.h" />
+    <None Include="nurbsinvrml.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
