@@ -171,7 +171,7 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> coordIndex () .emplace_back (0);
 	geometry -> coordIndex () .emplace_back (-1);
 
-	return SFNode (geometry);
+	return geometry;
 }
 
 } // X3D

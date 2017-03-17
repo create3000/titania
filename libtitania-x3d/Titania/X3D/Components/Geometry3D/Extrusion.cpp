@@ -962,7 +962,7 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> rebuildTexCoord ();
 	geometry -> rebuildCoord ();
 
-	return SFNode (geometry);
+	return geometry;
 }
 
 } // X3D

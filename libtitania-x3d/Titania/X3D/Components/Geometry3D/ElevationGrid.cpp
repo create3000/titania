@@ -625,7 +625,7 @@ throw (Error <NOT_SUPPORTED>,
 		geometry -> coordIndex () .emplace_back (-1);
 	}
 
-	return SFNode (geometry);
+	return geometry;
 }
 
 ElevationGrid::~ElevationGrid ()

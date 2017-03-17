@@ -1250,7 +1250,7 @@ throw (Error <NOT_SUPPORTED>,
 		}
 	}
 
-	return SFNode (geometry);
+	return geometry;
 }
 
 IndexedFaceSet::~IndexedFaceSet ()

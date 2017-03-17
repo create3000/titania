@@ -384,7 +384,7 @@ X3DComposedGeometryNode::toPrimitive (const size_t vertexCount, size_t size) con
 		geometry -> coordIndex () .emplace_back (-1);
 	}
 
-	return SFNode (geometry);
+	return geometry;
 }
 
 X3DComposedGeometryNode::~X3DComposedGeometryNode ()

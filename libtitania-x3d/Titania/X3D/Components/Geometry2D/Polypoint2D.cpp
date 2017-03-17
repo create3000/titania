@@ -140,7 +140,7 @@ throw (Error <NOT_SUPPORTED>,
 
 	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
 
-	return SFNode (geometry);
+	return geometry;
 }
 
 } // X3D
