@@ -383,9 +383,10 @@ X3DScriptEditorSearch::on_build_search_menu ()
 		if (recentSearches [i] .size () > TEXT_LENGTH)
 			label += "…";
 
-		if (not recentSearches [i] .empty ())
+		if (not recentReplaces [i] .empty ())
 		{
-			label += " »";
+			label += Glib::ustring (6, ' ');
+			label += "»";
 			label += recentReplaces [i] .substr (0, TEXT_LENGTH);
 
 			if (recentReplaces [i] .size () > TEXT_LENGTH)
@@ -402,13 +403,13 @@ X3DScriptEditorSearch::on_build_search_menu ()
 	}
 }
 
-
-
 void
 X3DScriptEditorSearch::on_search_activate (const Glib::ustring & search, const Glib::ustring & replace)
 {
 	getSearchEntry ()  .set_text (search);
 	getReplaceEntry () .set_text (replace);
+
+	getToggleReplaceButton () .set_active (replace .size ());
 }
 
 void
