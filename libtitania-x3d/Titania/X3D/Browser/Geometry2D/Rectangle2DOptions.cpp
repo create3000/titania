@@ -124,8 +124,8 @@ throw (Error <NOT_SUPPORTED>,
 		Vector3f (-1, 1, 0)
 	};
 
-	geometry -> texCoordIndex () = { 0, 1, 2, 3, -1, 2, 3, 0, 1, -1 };
-	geometry -> coordIndex ()    = { 0, 1, 2, 3, -1, 3, 2, 1, 0, -1 };
+	geometry -> texCoordIndex () = { 0, 1, 2, 3, -1 };
+	geometry -> coordIndex ()    = { 0, 1, 2, 3, -1 };
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);

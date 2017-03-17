@@ -168,12 +168,7 @@ throw (Error <NOT_SUPPORTED>,
 	const auto   geometry = options -> toPrimitive (getExecutionContext ());
 
 	geometry -> getField <SFNode> ("metadata") = metadata ();
-
-	if (solid ())
-	{
-		geometry -> getField <MFInt32> ("texCoordIndex") .resize (5);
-		geometry -> getField <MFInt32> ("coordIndex")    .resize (5);
-	}
+	geometry -> getField <SFBool> ("solid")    = solid ();
 
 	if (size () not_eq Vector2f (2, 2))
 	{

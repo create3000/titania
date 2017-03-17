@@ -925,10 +925,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 		{
 			if (colorPerVertex ())
 			{
-				colorIndex () .set1Value (size + 0, colorIndex () .get1Value (edge .first));
-				colorIndex () .set1Value (size + 1, colorIndex () .get1Value (edge .second));
-				colorIndex () .set1Value (size + 2, colorIndex () .get1Value (edge .second));
-				colorIndex () .set1Value (size + 3, colorIndex () .get1Value (edge .first));
+				colorIndex () .set1Value (size + 0, colorIndex () .get1Value (edge .second));
+				colorIndex () .set1Value (size + 1, colorIndex () .get1Value (edge .first));
+				colorIndex () .set1Value (size + 2, colorIndex () .get1Value (edge .first));
+				colorIndex () .set1Value (size + 3, colorIndex () .get1Value (edge .second));
 				colorIndex () .set1Value (size + 4, -1);
 			}
 			else
@@ -939,10 +939,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 
 	   if (texCoordIndex () .size ())
 	   {
-			texCoordIndex () .set1Value (size + 0, texCoordIndex () .get1Value (edge .first));
-			texCoordIndex () .set1Value (size + 1, texCoordIndex () .get1Value (edge .second));
-			texCoordIndex () .set1Value (size + 2, texCoordIndex () .get1Value (edge .second));
-			texCoordIndex () .set1Value (size + 3, texCoordIndex () .get1Value (edge .first));
+			texCoordIndex () .set1Value (size + 0, texCoordIndex () .get1Value (edge .second));
+			texCoordIndex () .set1Value (size + 1, texCoordIndex () .get1Value (edge .first));
+			texCoordIndex () .set1Value (size + 2, texCoordIndex () .get1Value (edge .first));
+			texCoordIndex () .set1Value (size + 3, texCoordIndex () .get1Value (edge .second));
 			texCoordIndex () .set1Value (size + 4, -1);
 		}
 
@@ -950,10 +950,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 		{
 			if (normalPerVertex ())
 			{
-				normalIndex () .set1Value (size + 0, normalIndex () .get1Value (edge .first));
-				normalIndex () .set1Value (size + 1, normalIndex () .get1Value (edge .second));
-				normalIndex () .set1Value (size + 2, normalIndex () .get1Value (edge .second));
-				normalIndex () .set1Value (size + 3, normalIndex () .get1Value (edge .first));
+				normalIndex () .set1Value (size + 0, normalIndex () .get1Value (edge .second));
+				normalIndex () .set1Value (size + 1, normalIndex () .get1Value (edge .first));
+				normalIndex () .set1Value (size + 2, normalIndex () .get1Value (edge .first));
+				normalIndex () .set1Value (size + 3, normalIndex () .get1Value (edge .second));
 				normalIndex () .set1Value (size + 4, -1);
 			}
 			else
@@ -962,10 +962,10 @@ X3DIndexedFaceSetOperationsObject::extrudeSelectedEdges (const std::vector <std:
 			}
 		}
 
-		coordIndex () .emplace_back (coordIndex () [edge .first]);
 		coordIndex () .emplace_back (coordIndex () [edge .second]);
-		coordIndex () .emplace_back (points [coordIndex () [edge .second]]);
+		coordIndex () .emplace_back (coordIndex () [edge .first]);
 		coordIndex () .emplace_back (points [coordIndex () [edge .first]]);
+		coordIndex () .emplace_back (points [coordIndex () [edge .second]]);
 		coordIndex () .emplace_back (-1);
 
 		++ numFaces;
