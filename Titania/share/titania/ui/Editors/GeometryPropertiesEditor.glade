@@ -893,6 +893,7 @@
                                                 <property name="hexpand">True</property>
                                                 <property name="adjustment">ArcClose2DStartAngleAdjustment</property>
                                                 <property name="round_digits">1</property>
+                                                <property name="draw_value">False</property>
                                               </object>
                                               <packing>
                                                 <property name="expand">False</property>
@@ -934,6 +935,7 @@
                                                 <property name="hexpand">True</property>
                                                 <property name="adjustment">ArcClose2DEndAngleAdjustment</property>
                                                 <property name="round_digits">1</property>
+                                                <property name="draw_value">False</property>
                                               </object>
                                               <packing>
                                                 <property name="expand">False</property>
