@@ -66,6 +66,7 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Components/Shape/Appearance.h"
+#include "../../Components/Shape/LineProperties.h"
 #include "../../Components/Shape/Material.h"
 #include "../../Components/Shape/Shape.h"
 #include "../../Components/Texturing/ImageTexture.h"
@@ -1820,6 +1821,9 @@ Parser::lengthAttribute (xmlpp::Attribute* const xmlAttribute, double & value)
 		if (Grammar::cm (vstream))
 			value /= 100 * math::pixel <double>;
 
+		if (Grammar::in (vstream))
+			value *= math::inch <double> / math::pixel <double>;
+
 		return true;
 	}
 
@@ -1963,7 +1967,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 								y += ay;
 							}
 
-							bezier::add_point (X3D::Vector2d (x, y), BEZIER_TOLERANCE, points);
+							points .emplace_back (x, y);
 
 							ax = x;
 							ay = y;
@@ -2003,7 +2007,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 								y += ay;
 							}
 
-							bezier::add_point (X3D::Vector2d (x, y), BEZIER_TOLERANCE, points);
+							points .emplace_back (x, y);
 
 							ax = x;
 							ay = y;
@@ -2036,7 +2040,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 						if (relative)
 							x += ax;
 
-						bezier::add_point (X3D::Vector2d (x, ay), BEZIER_TOLERANCE, points);
+						points .emplace_back (x, ay);
 
 						ax = x;
 
@@ -2067,7 +2071,7 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 						if (relative)
 							y += ay;
 
-						bezier::add_point (X3D::Vector2d (ax, y), BEZIER_TOLERANCE, points);
+						points .emplace_back (ax, y);
 
 						ay = y;
 
@@ -2995,6 +2999,14 @@ Parser::getStrokeAppearance (const Style & style)
 	appearanceNode -> material ()    = materialNode;
 	materialNode -> emissiveColor () = style .strokeColor;
 	materialNode -> transparency ()  = 1 - style .strokeOpacity * style .opacity;
+
+	if (style .strokeWidth not_eq 1)
+	{
+		const auto lineProperties = scene -> createNode <X3D::LineProperties> ();
+
+		appearanceNode -> lineProperties ()       = lineProperties;
+		lineProperties -> linewidthScaleFactor () = style .strokeWidth;
+	}
 
 	return appearanceNode;
 }

@@ -102,6 +102,9 @@ public:
 	           const Type & tolerance,
 	           Container & points);
 
+
+private:
+
 	template <class Vector, class Container>
 	static
 	void
@@ -260,9 +263,9 @@ bezier::arc_curve (const vector2 <Type> & p0,
 	const size_t bezier_steps   = std::abs (sweepAngle) * circle_dimension / (2 * pi <Type>);
 	const auto   bezier_steps_1 = bezier_steps ? bezier_steps - 1 : 0;
 
-	//add_point (p0, tolerance, points);
+	add_point (p0, tolerance, points);
 
-	for (size_t i = 0; i < bezier_steps; ++ i)
+	for (size_t i = 1; i < bezier_steps_1; ++ i)
 	{
 		const auto t = Type (i) / bezier_steps_1;
 
@@ -277,7 +280,7 @@ bezier::arc_curve (const vector2 <Type> & p0,
 		add_point (point, tolerance, points);
 	}
 
-	//add_point (p1, tolerance, points);
+	add_point (p1, tolerance, points);
 }
 
 template <class Vector, class Container>
@@ -285,7 +288,7 @@ inline
 void
 bezier::add_point (const Vector & point, const typename Vector::value_type & tolerance, Container & points)
 {
-	//if (points .empty () or (not almost_equal (point, points .back (), tolerance) and not almost_equal (point, points .front (), tolerance)))
+	if (points .empty () or (not almost_equal (point, points .back (), tolerance) and not almost_equal (point, points .front (), tolerance)))
 	{
 		points .emplace_back (point);
 	}
