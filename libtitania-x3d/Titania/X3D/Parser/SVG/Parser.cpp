@@ -1195,6 +1195,12 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 			coordinateNode -> point () .emplace_back (point .x (), point .y (), 0);
 	}
 
+	if (transformNode -> getName () == "path4427")
+		__LOG__ << (coordinateNode -> point () .size ()) << std::endl;
+
+	if (transformNode -> getName () == "path4427")
+		__LOG__ << (style .fillType not_eq ColorType::NONE) << std::endl;
+
 	if (style .fillType not_eq ColorType::NONE)
 	{
 		// Tesselate contours
@@ -1209,6 +1215,9 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		tessellator .begin_polygon ();
 
 		size_t index = 0;
+
+		if (transformNode -> getName () == "path4427")
+			__LOG__ << (contours .size ()) << std::endl;
 
 		for (const auto & contour : contours)
 		{
@@ -1225,6 +1234,9 @@ Parser::pathElement (xmlpp::Element* const xmlElement)
 		tessellator .end_polygon ();
 
 		const auto triangles = tessellator .triangles ();
+
+		if (transformNode -> getName () == "path4427")
+			__LOG__ << (triangles .size () >= 3) << std::endl;
 
 		if (triangles .size () >= 3)
 		{
@@ -2304,6 +2316,73 @@ Parser::dAttribute (xmlpp::Attribute* const xmlAttribute, Contours & contours)
 					break;
 				}
 	
+				continue;
+			}
+			case 'A':
+			case 'a':
+			{
+				vstream .get ();
+
+				whiteSpaces (vstream);
+	
+				while (vstream)
+				{
+					double rx, ry, xAxisRotation, x, y;
+					int32_t largeArcFlag, sweepFlag;
+		
+					if (Grammar::DoubleValue (vstream, rx))
+					{
+						commaWhiteSpaces (vstream);
+
+						if (Grammar::DoubleValue (vstream, ry))
+						{
+							commaWhiteSpaces (vstream);
+
+							if (Grammar::DoubleValue (vstream, xAxisRotation))
+							{
+								commaWhiteSpaces (vstream);
+
+								if (Grammar::IntegerValue (vstream, largeArcFlag))
+								{
+									commaWhiteSpaces (vstream);
+	
+									if (Grammar::IntegerValue (vstream, sweepFlag))
+									{
+										commaWhiteSpaces (vstream);
+
+										if (Grammar::DoubleValue (vstream, x))
+										{
+											commaWhiteSpaces (vstream);
+			
+											if (Grammar::DoubleValue (vstream, y))
+											{
+												if (relative)
+												{
+													x += ax;
+													y += ay;
+												}
+
+												const auto start = X3D::Vector2d (ax, ay);
+												const auto end   = X3D::Vector2d (x, y);
+
+												bezier::arc_curve (start, rx, ry, radians (xAxisRotation), largeArcFlag, sweepFlag, end, 2 * BEZIER_STEPS, contour);
+
+												ax = x;
+												ay = y;
+			
+												commaWhiteSpaces (vstream);
+												continue;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+	
+					break;
+				}
+
 				continue;
 			}
 			case 'Z':

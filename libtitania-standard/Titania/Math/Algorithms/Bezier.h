@@ -51,6 +51,9 @@
 #ifndef __TITANIA_MATH_ALGORITHMS_BEZIER_H__
 #define __TITANIA_MATH_ALGORITHMS_BEZIER_H__
 
+#include "../Numbers/Vector2.h"
+#include "../Functional.h"
+
 namespace titania {
 namespace math {
 
@@ -79,6 +82,29 @@ public:
 	void
 	cubic_curve (const Vector & A, const Vector & B, const Vector & C, const Vector & D, const size_t bezier_steps, Container & points);
 
+	/**
+	 * SVG arc curve.
+	 */
+	template <class Type, class Container>
+	static
+	void
+	arc_curve (const vector2 <Type> & p0,
+	           Type rx,
+	           Type ry,
+	           Type xAxisRotation,
+	           const bool largeArcFlag,
+	           const bool sweepFlag,
+	           const vector2 <Type> & p1,
+	           const size_t bezier_steps,
+	           Container & points);
+
+private:
+
+	template <class Type>
+	static
+	vector2 <Type>
+	arc_point (const vector2 <Type> & p0, Type rx, Type ry, Type xAxisRotation, const bool largeArcFlag, const bool sweepFlag, const vector2 <Type> & p1, const Type t);
+
 };
 
 template <class Vector, class Container>
@@ -103,6 +129,7 @@ bezier::quadratic_curve (const Vector & A, const Vector & B, const Vector & C, c
 	}
 }
 
+// http://ericeastwood.com/blog/25/curves-and-arcs-quadratic-cubic-elliptical-svg-implementations
 template <class Vector, class Container>
 void
 bezier::cubic_curve (const Vector & A, const Vector & B, const Vector & C, const Vector & D, const size_t bezier_steps, Container & points)
@@ -127,6 +154,119 @@ bezier::cubic_curve (const Vector & A, const Vector & B, const Vector & C, const
 			points .emplace_back (P);
 		}
 	}
+}
+
+template <class Type, class Container>
+void
+bezier::arc_curve (const vector2 <Type> & p0,
+                   Type rx,
+                   Type ry,
+                   Type xAxisRotation,
+                   const bool largeArcFlag,
+                   const bool sweepFlag,
+                   const vector2 <Type> & p1,
+                   const size_t bezier_steps,
+                   Container & points)
+{
+	const auto bezier_steps_1 = bezier_steps - 1;
+
+	for (size_t i = 0; i < bezier_steps; ++ i)
+	{
+		const auto t = Type (i) / bezier_steps_1;
+
+		const auto P = arc_point (p0, rx, ry, xAxisRotation, largeArcFlag, sweepFlag, p1, t);
+
+		if (points .empty () or (P not_eq points .back () and P not_eq points .front ()))
+		{
+			points .emplace_back (P);
+		}
+	}
+}
+
+template <class Type>
+vector2 <Type>
+bezier::arc_point (const vector2 <Type> & p0, Type rx, Type ry, Type xAxisRotation, const bool largeArcFlag, const bool sweepFlag, const vector2 <Type> & p1, const Type t)
+{
+	// In accordance to: http://www.w3.org/TR/SVG/implnote.html#ArcOutOfRangeParameters
+
+	rx = std::abs (rx);
+	ry = std::abs (ry);
+
+	xAxisRotation = interval <Type> (xAxisRotation, 0, 2 * pi <Type>);
+
+	// If the endpoints are identical, then this is equivalent to omitting the elliptical arc segment entirely.
+	if (p0 == p1)
+		return p0;
+
+	// If rx = 0 or ry = 0 then this arc is treated as a straight line segment joining the endpoints.    
+	if (rx == 0 || ry == 0)
+		return lerp (p0, p1, t);
+
+	// Following "Conversion from endpoint to center parameterization"
+	// http://www.w3.org/TR/SVG/implnote.html#ArcConversionEndpointToCenter
+	
+	// Step #1: Compute transformedPoint
+	const auto d = (p0 - p1) / Type (2);
+
+	const auto transformedPoint = vector2 <Type> (std::cos (xAxisRotation) * d .x () + std::sin (xAxisRotation) * d .y (),
+		                                           std::sin (xAxisRotation) * d .x () + std::cos (xAxisRotation) * d .y ());
+
+	// Ensure radii are large enough
+	const auto radiiCheck = std::pow (transformedPoint .x (), 2) / std::pow (rx, 2) + std::pow (transformedPoint .y (), 2) / std::pow (ry, 2);
+	
+	if (radiiCheck > 1) {
+		rx = std::sqrt (radiiCheck) * rx;
+		ry = std::sqrt (radiiCheck) * ry;
+	}
+
+	// Step #2: Compute transformedCenter
+	const auto cSquareNumerator = std::pow (rx, 2) * std::pow (ry, 2) - std::pow (rx, 2) * std::pow (transformedPoint .y (), 2) - std::pow (ry, 2) * std::pow (transformedPoint .x (), 2);
+	const auto cSquareRootDenom = std::pow (rx, 2) * std::pow (transformedPoint .y (), 2) + std::pow (ry, 2) * std::pow (transformedPoint .x (), 2);
+	auto       cRadicand        = cSquareNumerator / cSquareRootDenom;
+
+	// Make sure this never drops below zero because of precision
+	cRadicand = cRadicand < 0 ? 0 : cRadicand;
+
+	const auto cCoef = (largeArcFlag not_eq sweepFlag ? 1 : -1) * std::sqrt (cRadicand);
+
+	const auto transformedCenter = vector2 <Type> (cCoef * (+(rx * transformedPoint .y ()) / ry),
+	                                               cCoef * (-(ry * transformedPoint .x ()) / rx));
+
+	// Step #3: Compute center
+	const auto center = vector2 <Type> (std::cos (xAxisRotation) * transformedCenter .x () - std::sin (xAxisRotation) * transformedCenter .y () + ((p0 .x () + p1 .x ()) / 2),
+	                                    std::sin (xAxisRotation) * transformedCenter .x () + std::cos (xAxisRotation) * transformedCenter .y () + ((p0 .y () + p1 .y ()) / 2));
+
+	// Step #4: Compute start/sweep angles
+	// Start angle of the elliptical arc prior to the stretch and rotate operations.
+	// Difference between the start and end angles
+	const auto startVector = vector2 <Type> ((transformedPoint .x () - transformedCenter .x ()) / rx,
+	                                         (transformedPoint .y () - transformedCenter .y ()) / ry);
+
+	const auto startAngle = std::acos (dot (vector2 <Type> (1, 0), normalize (startVector)));
+
+	const auto endVector = vector2 <Type> ((-transformedPoint .x () - transformedCenter .x ()) / rx,
+	                                       (-transformedPoint .y () - transformedCenter .y ()) / ry);
+
+	auto sweepAngle = std::acos (dot (normalize (startVector), normalize (endVector)));
+
+	if (not sweepFlag and sweepAngle > 0)
+		sweepAngle -= 2 * pi <Type>;
+
+	else if (sweepFlag and sweepAngle < 0)
+		sweepAngle += 2 * pi <Type>;
+
+	// We use % instead of `mod(..)` because we want it to be -360deg to 360deg(but actually in radians)
+	sweepAngle = interval (sweepAngle, -2 * pi <Type>, 2 * pi <Type>);
+
+	// From http://www.w3.org/TR/SVG/implnote.html#ArcParameterizationAlternatives
+	const auto angle             = startAngle + (sweepAngle * t);
+	const auto ellipseComponentX = rx * std::cos (angle);
+	const auto ellipseComponentY = ry  *std::sin (angle);
+
+	const auto point = vector2 <Type> (std::cos (xAxisRotation) * ellipseComponentX - std::sin (xAxisRotation) * ellipseComponentY + center .x (),
+	                                   std::sin (xAxisRotation) * ellipseComponentX + std::cos (xAxisRotation) * ellipseComponentY + center .y ());
+
+	return point;
 }
 
 } // math
