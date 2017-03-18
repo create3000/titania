@@ -96,7 +96,8 @@ public:
 private:
 
 	using Tesselator = math::tessellator <double, size_t>;
-	using Contour    = std::vector <X3D::Vector2d>;
+	using Points     = std::vector <X3D::Vector2d>;
+	using Contour    = std::pair <Points, bool>;
 	using Contours   = std::vector <Contour>;
 
 	struct Gradient

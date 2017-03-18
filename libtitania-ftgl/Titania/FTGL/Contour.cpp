@@ -37,6 +37,8 @@ namespace FTGL {
 
 using math::pi;
 
+static constexpr double BEZIER_TOLERANCE = 1e-4;
+
 Contour::Contour (FT_Vector* const contour, char* const tags, const size_t n, const size_t bezierSteps)
 {
 	const size_t c = (n - 1) % n;
@@ -96,7 +98,7 @@ Contour::Contour (FT_Vector* const contour, char* const tags, const size_t n, co
 				next2 = (cur + next) * 0.5;
 			}
 
-			math::bezier::quadratic_curve (prev2, cur, next2, bezierSteps, pointList);
+			math::bezier::quadratic_curve (prev2, cur, next2, bezierSteps, BEZIER_TOLERANCE, pointList);
 		}
 		else if (FT_CURVE_TAG (tags [i]) == FT_Curve_Tag_Cubic
 		         and FT_CURVE_TAG (tags [(i + 1) % n]) == FT_Curve_Tag_Cubic)
@@ -106,6 +108,7 @@ Contour::Contour (FT_Vector* const contour, char* const tags, const size_t n, co
 			math::bezier::cubic_curve (prev, cur, next,
 			                           Vector3d (contour [i2] .x, contour [i2] .y, 0),
 			                           bezierSteps,
+			                           BEZIER_TOLERANCE,
 			                           pointList);
 		}
 	}

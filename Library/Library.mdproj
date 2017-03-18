@@ -689,6 +689,7 @@
     <None Include="Tests\3rd Party\SVG\Vase.svg" />
     <None Include="Tests\3rd Party\SVG\Vase.pdf" />
     <None Include="Tests\3rd Party\SVG\Gradient.svg" />
+    <None Include="Tests\3rd Party\SVG\Arc.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
