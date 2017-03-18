@@ -95,12 +95,12 @@ public:
 	}
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getArc2DEndAngleAdjustment () const
-	{ return m_Arc2DEndAngleAdjustment; }
+	getArc2DDimensionAdjustment () const
+	{ return m_Arc2DDimensionAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getArc2DMinAngleAdjustment () const
-	{ return m_Arc2DMinAngleAdjustment; }
+	getArc2DEndAngleAdjustment () const
+	{ return m_Arc2DEndAngleAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getArc2DRadiusAdjustment () const
@@ -111,12 +111,12 @@ public:
 	{ return m_Arc2DStartAngleAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getArcClose2DEndAngleAdjustment () const
-	{ return m_ArcClose2DEndAngleAdjustment; }
+	getArcClose2DDimensionAdjustment () const
+	{ return m_ArcClose2DDimensionAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getArcClose2DMinAngleAdjustment () const
-	{ return m_ArcClose2DMinAngleAdjustment; }
+	getArcClose2DEndAngleAdjustment () const
+	{ return m_ArcClose2DEndAngleAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getArcClose2DRadiusAdjustment () const
@@ -395,8 +395,8 @@ public:
 	{ return *m_Arc2DEndAngleSpinButton; }
 
 	Gtk::SpinButton &
-	getArc2DMinAngleSpinButton () const
-	{ return *m_Arc2DMinAngleSpinButton; }
+	getArc2DDimensionSpinButton () const
+	{ return *m_Arc2DDimensionSpinButton; }
 
 	Gtk::Expander &
 	getArcClose2DExpander () const
@@ -419,8 +419,8 @@ public:
 	{ return *m_ArcClose2DEndAngleSpinButton; }
 
 	Gtk::SpinButton &
-	getArcClose2DMinAngleSpinButton () const
-	{ return *m_ArcClose2DMinAngleSpinButton; }
+	getArcClose2DDimensionSpinButton () const
+	{ return *m_ArcClose2DDimensionSpinButton; }
 
 	Gtk::Expander &
 	getCircle2DExpander () const
@@ -1044,12 +1044,12 @@ private:
 
 	std::string                    filename;
 	Glib::RefPtr <Gtk::Builder>    m_builder;
+	Glib::RefPtr <Gtk::Adjustment> m_Arc2DDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DEndAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Arc2DMinAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Arc2DStartAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DEndAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DMinAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DStartAngleAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_BoxSizeXAdjustment;
@@ -1119,13 +1119,13 @@ private:
 	Gtk::SpinButton*               m_Arc2DRadiusSpinButton;
 	Gtk::SpinButton*               m_Arc2DStartAngleSpinButton;
 	Gtk::SpinButton*               m_Arc2DEndAngleSpinButton;
-	Gtk::SpinButton*               m_Arc2DMinAngleSpinButton;
+	Gtk::SpinButton*               m_Arc2DDimensionSpinButton;
 	Gtk::Expander*                 m_ArcClose2DExpander;
 	Gtk::SpinButton*               m_ArcClose2DRadiusSpinButton;
 	Gtk::ComboBoxText*             m_ArcClose2DClosureTypeComboBoxText;
 	Gtk::SpinButton*               m_ArcClose2DStartAngleSpinButton;
 	Gtk::SpinButton*               m_ArcClose2DEndAngleSpinButton;
-	Gtk::SpinButton*               m_ArcClose2DMinAngleSpinButton;
+	Gtk::SpinButton*               m_ArcClose2DDimensionSpinButton;
 	Gtk::Expander*                 m_Circle2DExpander;
 	Gtk::SpinButton*               m_Circle2DRadiusSpinButton;
 	Gtk::SpinButton*               m_Circle2DDimensionSpinButton;

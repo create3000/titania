@@ -61,7 +61,7 @@ const std::string   Arc2DOptions::typeName       = "Arc2DOptions";
 const std::string   Arc2DOptions::containerField = "arc2DOptions";
 
 Arc2DOptions::Fields::Fields () :
-	minAngle (new SFFloat (pi <float> / 20))
+	dimension (new SFInt32 (32))
 { }
 
 Arc2DOptions::Arc2DOptions (X3DExecutionContext* const executionContext) :
@@ -69,9 +69,7 @@ Arc2DOptions::Arc2DOptions (X3DExecutionContext* const executionContext) :
 	X3DOptionNode (),
 	       fields ()
 {
-	addField (inputOutput, "minAngle", minAngle ());
-
-	minAngle () .setUnit (UnitCategory::ANGLE);
+	addField (inputOutput, "dimension", dimension ());
 }
 
 Arc2DOptions*

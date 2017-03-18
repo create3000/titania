@@ -85,13 +85,13 @@ public:
 
 	///  @name Fields
 
-	SFFloat &
-	minAngle ()
-	{ return *fields .minAngle; }
+	SFInt32 &
+	dimension ()
+	{ return *fields .dimension; }
 
-	const SFFloat &
-	minAngle () const
-	{ return *fields .minAngle; }
+	const SFInt32 &
+	dimension () const
+	{ return *fields .dimension; }
 
 
 private:
@@ -112,7 +112,7 @@ private:
 	{
 		Fields ();
 
-		SFFloat* const minAngle;
+		SFInt32* const dimension;
 	};
 
 	Fields fields;

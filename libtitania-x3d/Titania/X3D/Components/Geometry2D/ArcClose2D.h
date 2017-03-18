@@ -177,7 +177,7 @@ private:
 	///  @name Tests
 
 	double
-	getAngle () const;
+	getSweepAngle () const;
 
 	virtual
 	void

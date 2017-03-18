@@ -161,7 +161,7 @@ private:
 	///  @name Operations
 
 	double
-	getAngle ();
+	getSweepAngle ();
 
 	virtual
 	void

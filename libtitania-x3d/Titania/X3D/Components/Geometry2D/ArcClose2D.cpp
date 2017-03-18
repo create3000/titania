@@ -129,7 +129,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 double
-ArcClose2D::getAngle () const
+ArcClose2D::getSweepAngle () const
 {
 	const double start = math::interval <double> (startAngle (), 0, pi2 <double>);
 	const double end   = math::interval <double> (endAngle (),   0, pi2 <double>);
@@ -137,13 +137,13 @@ ArcClose2D::getAngle () const
 	if (start == end)
 		return pi2 <double>;
 
-	const double difference = std::abs (end - start);
+	const double sweepAngle = std::abs (end - start);
 
 	if (start > end)
-		return pi2 <double> - difference;
+		return pi2 <double> - sweepAngle;
 
-	if (not std::isnan (difference))
-		return difference;
+	if (not std::isnan (sweepAngle))
+		return sweepAngle;
 	
 	// We must test for NAN, as NAN to int32_t is undefined.
 	return 0;
@@ -154,12 +154,12 @@ ArcClose2D::build ()
 {
 	const auto & options = getBrowser () -> getArcClose2DOptions ();
 
-	const double difference = getAngle ();
-	size_t       segments   = std::ceil (difference / options -> minAngle ());
-	const double angle      = difference / segments;
+	const double sweepAngle = getSweepAngle ();
+	const auto   circle     = sweepAngle == pi2 <double>;
+	const auto   steps      = std::max <int32_t> (4, sweepAngle * options -> dimension () / (2 * pi <double>) + 1);
 
 	const size_t elements = solid () ? 1 : 2;
-	const size_t vertices = segments + 2;
+	const size_t vertices = steps + 2;
 	const size_t reserve  = elements * vertices;
 
 	getTexCoords () .emplace_back ();
@@ -168,7 +168,7 @@ ArcClose2D::build ()
 	getNormals  () .reserve (reserve);
 	getVertices () .reserve (reserve);
 
-	if (difference < pi2 <double>)
+	if (not circle)
 	{
 		// If it is a arc, add a center point otherwise it is a circle.
 
@@ -178,13 +178,14 @@ ArcClose2D::build ()
 			getNormals  () .emplace_back (0, 0, 1);
 			getVertices () .emplace_back (0, 0, 0);
 		}
-
-		++ segments;
 	}
 
-	for (size_t n = 0; n < segments; ++ n)
+	const auto steps_1 = steps - 1;
+
+	for (int32_t n = 0; n < steps; ++ n)
 	{
-		const double theta    = startAngle () + angle * n;
+		const auto   t        = double (n) / steps_1;
+		const double theta    = startAngle () + (sweepAngle * t);
 		const auto   texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
 		const auto   point    = std::polar <double> (std::abs (radius ()), theta);
 
@@ -205,9 +206,9 @@ throw (Error <NOT_SUPPORTED>,
 {
 	const auto & options = getBrowser () -> getArcClose2DOptions ();
 
-	const double difference = getAngle ();
-	size_t       segments   = std::ceil (difference / options -> minAngle ());
-	const double angle      = difference / segments;
+	const double sweepAngle = getSweepAngle ();
+	const auto   circle     = sweepAngle == pi2 <double>;
+	const auto   steps      = std::max <int32_t> (4, sweepAngle * options -> dimension () / (2 * pi <double>) + 1);
 
 	const auto texCoords = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord     = getExecutionContext () -> createNode <Coordinate> ();
@@ -219,7 +220,7 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoord () = texCoords;
 	geometry -> coord ()    = coord;
 
-	if (difference < pi2 <double>)
+	if (not circle)
 	{
 		// If it is a arc, add a center point otherwise it is a circle.
 
@@ -228,13 +229,14 @@ throw (Error <NOT_SUPPORTED>,
 			texCoords -> point () .emplace_back (0.5, 0.5);
 			coord -> point () .emplace_back (0, 0, 0);
 		}
-
-		++ segments;
 	}
 
-	for (size_t n = 0; n < segments; ++ n)
+	const auto steps_1 = steps - 1;
+
+	for (int32_t n = 0, size = circle ? steps_1 : steps; n < size; ++ n)
 	{
-		const double theta    = startAngle () + angle * n;
+		const auto   t        = double (n) / steps_1;
+		const double theta    = startAngle () + (sweepAngle * t);
 		const auto   texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
 		const auto   point    = std::polar <double> (std::abs (radius ()), theta);
 

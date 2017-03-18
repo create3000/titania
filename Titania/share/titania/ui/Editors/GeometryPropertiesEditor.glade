@@ -2,13 +2,13 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkAdjustment" id="Arc2DEndAngleAdjustment">
-    <property name="upper">6.2800000000000002</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.10000000000000001</property>
+  <object class="GtkAdjustment" id="Arc2DDimensionAdjustment">
+    <property name="lower">3</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="Arc2DMinAngleAdjustment">
-    <property name="lower">0.01</property>
+  <object class="GtkAdjustment" id="Arc2DEndAngleAdjustment">
     <property name="upper">6.2800000000000002</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -23,13 +23,13 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="ArcClose2DEndAngleAdjustment">
-    <property name="upper">6.2800000000000002</property>
-    <property name="step_increment">0.01</property>
-    <property name="page_increment">0.10000000000000001</property>
+  <object class="GtkAdjustment" id="ArcClose2DDimensionAdjustment">
+    <property name="lower">3</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="ArcClose2DMinAngleAdjustment">
-    <property name="lower">0.01</property>
+  <object class="GtkAdjustment" id="ArcClose2DEndAngleAdjustment">
     <property name="upper">6.2800000000000002</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
@@ -600,7 +600,7 @@
                                           <object class="GtkLabel" id="label70">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Minimum Angle:</property>
+                                            <property name="label" translatable="yes">Dimension:</property>
                                             <property name="xalign">0</property>
                                           </object>
                                           <packing>
@@ -621,6 +621,7 @@
                                                 <property name="adjustment">Arc2DStartAngleAdjustment</property>
                                                 <property name="climb_rate">0.01</property>
                                                 <property name="digits">6</property>
+                                                <property name="wrap">True</property>
                                               </object>
                                               <packing>
                                                 <property name="expand">False</property>
@@ -661,6 +662,7 @@
                                                 <property name="adjustment">Arc2DEndAngleAdjustment</property>
                                                 <property name="climb_rate">0.01</property>
                                                 <property name="digits">6</property>
+                                                <property name="wrap">True</property>
                                               </object>
                                               <packing>
                                                 <property name="expand">False</property>
@@ -689,41 +691,15 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkBox">
+                                          <object class="GtkSpinButton" id="Arc2DDimensionSpinButton">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="spacing">8</property>
-                                            <child>
-                                              <object class="GtkSpinButton" id="Arc2DMinAngleSpinButton">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="halign">start</property>
-                                                <property name="text" translatable="yes">4</property>
-                                                <property name="adjustment">Arc2DMinAngleAdjustment</property>
-                                                <property name="climb_rate">0.01</property>
-                                                <property name="digits">6</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">0</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkScale">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="adjustment">Arc2DMinAngleAdjustment</property>
-                                                <property name="round_digits">1</property>
-                                                <property name="draw_value">False</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">True</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">1</property>
-                                              </packing>
-                                            </child>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">Dimension of a full circle.</property>
+                                            <property name="halign">start</property>
+                                            <property name="text" translatable="yes">4</property>
+                                            <property name="adjustment">Arc2DDimensionAdjustment</property>
+                                            <property name="climb_rate">1.5</property>
+                                            <property name="value">3</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -868,7 +844,7 @@
                                           <object class="GtkLabel" id="label72">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Minimum Angle:</property>
+                                            <property name="label" translatable="yes">Dimension:</property>
                                             <property name="xalign">0</property>
                                           </object>
                                           <packing>
@@ -890,6 +866,7 @@
                                                 <property name="adjustment">ArcClose2DStartAngleAdjustment</property>
                                                 <property name="climb_rate">0.01</property>
                                                 <property name="digits">6</property>
+                                                <property name="wrap">True</property>
                                               </object>
                                               <packing>
                                                 <property name="expand">False</property>
@@ -932,6 +909,7 @@
                                                 <property name="adjustment">ArcClose2DEndAngleAdjustment</property>
                                                 <property name="climb_rate">0.01</property>
                                                 <property name="digits">6</property>
+                                                <property name="wrap">True</property>
                                               </object>
                                               <packing>
                                                 <property name="expand">False</property>
@@ -961,42 +939,15 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkBox">
+                                          <object class="GtkSpinButton" id="ArcClose2DDimensionSpinButton">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="spacing">8</property>
-                                            <child>
-                                              <object class="GtkSpinButton" id="ArcClose2DMinAngleSpinButton">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="halign">start</property>
-                                                <property name="text" translatable="yes">4,000</property>
-                                                <property name="adjustment">ArcClose2DMinAngleAdjustment</property>
-                                                <property name="climb_rate">0.01</property>
-                                                <property name="digits">6</property>
-                                                <property name="value">4</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">0</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkScale">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="adjustment">ArcClose2DMinAngleAdjustment</property>
-                                                <property name="round_digits">1</property>
-                                                <property name="draw_value">False</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">True</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">1</property>
-                                              </packing>
-                                            </child>
+                                            <property name="can_focus">True</property>
+                                            <property name="tooltip_text" translatable="yes">Dimension of a full circle.</property>
+                                            <property name="halign">start</property>
+                                            <property name="text" translatable="yes">4,000</property>
+                                            <property name="adjustment">ArcClose2DDimensionAdjustment</property>
+                                            <property name="climb_rate">1.5</property>
+                                            <property name="value">3</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -1046,6 +997,7 @@
                                           <object class="GtkSpinButton" id="Circle2DRadiusSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000000</property>
                                             <property name="adjustment">Circle2DRadiusAdjustment</property>
                                             <property name="climb_rate">0.01</property>
@@ -1102,6 +1054,7 @@
                                           <object class="GtkSpinButton" id="Circle2DDimensionSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">4</property>
                                             <property name="adjustment">Circle2DDimensionAdjustment</property>
                                             <property name="climb_rate">1.5</property>
@@ -1166,6 +1119,7 @@
                                           <object class="GtkSpinButton" id="Disk2DInnerRadiusSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000000</property>
                                             <property name="adjustment">Disk2DInnerRadiusAdjustment</property>
                                             <property name="climb_rate">0.01</property>
@@ -1180,6 +1134,7 @@
                                           <object class="GtkSpinButton" id="Disk2DOuterRadiusSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000000</property>
                                             <property name="adjustment">Disk2DOuterRadiusAdjustment</property>
                                             <property name="climb_rate">0.01</property>
@@ -1224,10 +1179,11 @@
                                           <object class="GtkSpinButton" id="Disk2DDimensionSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">4</property>
                                             <property name="adjustment">Disk2DDimensionAdjustment</property>
                                             <property name="climb_rate">1.5</property>
-                                            <property name="value">4</property>
+                                            <property name="value">3</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -1536,6 +1492,7 @@
                                           <object class="GtkSpinButton" id="ConeBottomRadiusSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000</property>
                                             <property name="adjustment">ConeBottomRadiusAdjustment</property>
                                             <property name="climb_rate">0.01</property>
@@ -1550,6 +1507,7 @@
                                           <object class="GtkSpinButton" id="ConeHeightSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000</property>
                                             <property name="adjustment">ConeHeightAdjustment</property>
                                             <property name="climb_rate">0.01</property>
@@ -1588,6 +1546,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
@@ -1602,6 +1561,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
@@ -1655,6 +1615,7 @@
                                           <object class="GtkSpinButton" id="ConeXDimensionSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">4</property>
                                             <property name="adjustment">ConeXDimensionAdjustment</property>
                                             <property name="climb_rate">1.5</property>
@@ -1753,6 +1714,7 @@
                                           <object class="GtkSpinButton" id="CylinderRadiusSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000</property>
                                             <property name="adjustment">CylinderRadiusAdjustment</property>
                                             <property name="climb_rate">0.01</property>
@@ -1767,6 +1729,7 @@
                                           <object class="GtkSpinButton" id="CylinderHeightSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000</property>
                                             <property name="adjustment">CylinderHeightAdjustment</property>
                                             <property name="climb_rate">0.01</property>
@@ -1783,6 +1746,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
@@ -1797,6 +1761,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
@@ -1811,6 +1776,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
@@ -1865,6 +1831,7 @@
                                           <object class="GtkSpinButton" id="CylinderXDimensionSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">3</property>
                                             <property name="adjustment">CylinderXDimensionAdjustment</property>
                                             <property name="climb_rate">1.5</property>
@@ -1936,6 +1903,7 @@
                                               <object class="GtkSpinButton" id="ElevationGridXDimensionSpinButton">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
+                                                <property name="halign">start</property>
                                                 <property name="text" translatable="yes">4</property>
                                                 <property name="adjustment">ElevationGridXDimensionAdjustment</property>
                                                 <property name="climb_rate">1.5</property>
@@ -1949,6 +1917,7 @@
                                               <object class="GtkSpinButton" id="ElevationGridZDimensionSpinButton">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
+                                                <property name="halign">start</property>
                                                 <property name="text" translatable="yes">3</property>
                                                 <property name="adjustment">ElevationGridZDimensionAdjustment</property>
                                                 <property name="climb_rate">1.5</property>
@@ -1974,6 +1943,7 @@
                                               <object class="GtkSpinButton" id="ElevationGridXSpacingSpinButton">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
+                                                <property name="halign">start</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">ElevationGridXSpacingAdjustment</property>
                                                 <property name="climb_rate">0.01</property>
@@ -2000,6 +1970,7 @@
                                               <object class="GtkSpinButton" id="ElevationGridZSpacingSpinButton">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
+                                                <property name="halign">start</property>
                                                 <property name="text" translatable="yes">0,000</property>
                                                 <property name="adjustment">ElevationGridZSpacingAdjustment</property>
                                                 <property name="climb_rate">0.01</property>
@@ -2110,6 +2081,7 @@
                                               <object class="GtkBox">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
+                                                <property name="halign">start</property>
                                                 <property name="orientation">vertical</property>
                                                 <property name="spacing">4</property>
                                                 <child>
@@ -2284,6 +2256,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
@@ -2298,6 +2271,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
                                           </object>
@@ -2349,6 +2323,7 @@
                                           <object class="GtkSpinButton" id="SphereRadiusSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000</property>
                                             <property name="adjustment">SphereRadiusAdjustment</property>
                                             <property name="climb_rate">0.01</property>
@@ -2387,6 +2362,7 @@
                                           <object class="GtkSpinButton" id="SphereXDimensionSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">0,000</property>
                                             <property name="adjustment">SphereXDimensionAdjustment</property>
                                             <property name="climb_rate">1.5</property>
@@ -2400,6 +2376,7 @@
                                           <object class="GtkSpinButton" id="SphereYDimensionSpinButton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
                                             <property name="text" translatable="yes">0</property>
                                             <property name="adjustment">SphereYDimensionAdjustment</property>
                                             <property name="climb_rate">1.5</property>
@@ -2626,6 +2603,7 @@
                                               <object class="GtkBox" id="box24">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
+                                                <property name="halign">start</property>
                                                 <property name="orientation">vertical</property>
                                                 <property name="spacing">4</property>
                                                 <child>
@@ -3316,6 +3294,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="hexpand">True</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
@@ -3331,6 +3310,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="hexpand">True</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
@@ -3549,6 +3529,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="hexpand">True</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
@@ -3564,6 +3545,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
                                             <property name="hexpand">True</property>
                                             <property name="xalign">0</property>
                                             <property name="draw_indicator">True</property>
@@ -3757,6 +3739,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="halign">start</property>
                                     <property name="hexpand">True</property>
                                     <property name="xalign">0</property>
                                     <property name="draw_indicator">True</property>
@@ -3782,6 +3765,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="halign">start</property>
                                     <property name="xalign">0</property>
                                     <property name="draw_indicator">True</property>
                                   </object>
@@ -3818,6 +3802,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="halign">start</property>
                                     <property name="xalign">0</property>
                                     <property name="draw_indicator">True</property>
                                   </object>
@@ -3862,6 +3847,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="halign">start</property>
                                     <property name="hexpand">True</property>
                                     <property name="xalign">0</property>
                                     <property name="draw_indicator">True</property>
@@ -3877,6 +3863,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
+                                    <property name="halign">start</property>
                                     <property name="hexpand">True</property>
                                     <property name="xalign">0</property>
                                     <property name="draw_indicator">True</property>

@@ -128,7 +128,7 @@ Arc2D::getShaderNode (X3DBrowser* const browser)
 }
 
 double
-Arc2D::getAngle ()
+Arc2D::getSweepAngle ()
 {
 	const double start = math::interval <double> (startAngle (), 0, pi2 <double>);
 	const double end   = math::interval <double> (endAngle (),   0, pi2 <double>);
@@ -136,13 +136,13 @@ Arc2D::getAngle ()
 	if (start == end)
 		return pi2 <double>;
 
-	const double difference = std::abs (end - start);
+	const double sweepAngle = std::abs (end - start);
 
 	if (start > end)
-		return pi2 <double> - difference;
+		return pi2 <double> - sweepAngle;
 
-	if (not std::isnan (difference))
-		return difference;
+	if (not std::isnan (sweepAngle))
+		return sweepAngle;
 	
 	// We must test for NAN, as NAN to int32_t is undefined.
 	return 0;
@@ -153,24 +153,27 @@ Arc2D::build ()
 {
 	const auto & options = getBrowser () -> getArc2DOptions ();
 
-	const double difference = getAngle ();
-	size_t       segments   = std::ceil (difference / options -> minAngle ());
-	const double angle      = difference / segments;
+	const double sweepAngle = getSweepAngle ();
+	const auto   circle     = sweepAngle == pi2 <double>;
+	int32_t      steps      = sweepAngle * options -> dimension () / (2 * pi <double>);
 	GLenum       vertexMode = GL_LINE_LOOP;
 
-	getVertices () .reserve (segments + 1);
+	steps = std::max (3, steps);
 
-	if (difference < pi2 <double>)
+	getVertices () .reserve (steps + 1);
+
+	if (not circle)
 	{
-		++ segments;
+		++ steps;
 		vertexMode = GL_LINE_STRIP;
 	}
-	else
-		vertexMode = GL_LINE_LOOP;
 
-	for (size_t n = 0; n < segments; ++ n)
+	const auto steps_1 = vertexMode == GL_LINE_STRIP ? steps - 1 : steps;
+
+	for (int32_t n = 0; n < steps; ++ n)
 	{
-		const double theta = startAngle () + angle * n;
+		const auto   t     = double (n) / steps_1;
+		const double theta = startAngle () + (sweepAngle * t);
 		const auto   point = std::polar <double> (std::abs (radius ()), theta);
 
 		getVertices () .emplace_back (point .real (), point .imag (), 0);

@@ -264,12 +264,12 @@ bezier::arc_curve (const vector2 <Type> & p0,
 
 	// Interpolate:
 
-	const size_t bezier_steps   = std::abs (sweepAngle) * circle_dimension / (2 * pi <Type>);
-	const auto   bezier_steps_1 = bezier_steps ? bezier_steps - 1 : 0;
+	const auto bezier_steps   = std::max <int32_t> (4, std::abs (sweepAngle) * circle_dimension / (2 * pi <Type>));
+	const auto bezier_steps_1 = bezier_steps - 1;
 
 	add_point (p0, tolerance, points);
 
-	for (size_t i = 1; i < bezier_steps_1; ++ i)
+	for (int32_t i = 1; i < bezier_steps_1; ++ i)
 	{
 		const auto t = Type (i) / bezier_steps_1;
 

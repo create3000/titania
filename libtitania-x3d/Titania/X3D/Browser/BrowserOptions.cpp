@@ -240,8 +240,8 @@ BrowserOptions::set_PrimitiveQuality ()
 {
 	if (PrimitiveQuality () == "HIGH")
 	{
-		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = pi <float> / 40;
-		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = pi <float> / 40;
+		getBrowser () -> getArc2DOptions ()      -> dimension ()  = 80;
+		getBrowser () -> getArcClose2DOptions () -> dimension ()  = 80;
 		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 80;
 		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 80;
 		getBrowser () -> getConeOptions ()       -> xDimension () = 32;
@@ -261,8 +261,8 @@ BrowserOptions::set_PrimitiveQuality ()
 
 	if (PrimitiveQuality () == "LOW")
 	{
-		getBrowser () -> getArc2DOptions ()      -> minAngle ()   = pi <float> / 10;
-		getBrowser () -> getArcClose2DOptions () -> minAngle ()   = pi <float> / 10;
+		getBrowser () -> getArc2DOptions ()      -> dimension ()  = 20;
+		getBrowser () -> getArcClose2DOptions () -> dimension ()  = 20;
 		getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 20;
 		getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 20;
 		getBrowser () -> getConeOptions ()       -> xDimension () = 16;
@@ -282,8 +282,8 @@ BrowserOptions::set_PrimitiveQuality ()
 
 	// MEDIUM
 
-	getBrowser () -> getArc2DOptions ()      -> minAngle ()   = pi <float> / 20;
-	getBrowser () -> getArcClose2DOptions () -> minAngle ()   = pi <float> / 20;
+	getBrowser () -> getArc2DOptions ()      -> dimension ()  = 40;
+	getBrowser () -> getArcClose2DOptions () -> dimension ()  = 40;
 	getBrowser () -> getCircle2DOptions ()   -> dimension ()  = 40;
 	getBrowser () -> getDisk2DOptions ()     -> dimension ()  = 40;
 	getBrowser () -> getConeOptions ()       -> xDimension () = 20;

@@ -62,7 +62,7 @@ X3DArc2DEditor::X3DArc2DEditor () :
 	                          startAngle (this, getArc2DStartAngleAdjustment (), getArc2DStartAngleSpinButton (), "startAngle"),
 	                            endAngle (this, getArc2DEndAngleAdjustment (), getArc2DEndAngleSpinButton (), "endAngle"),
 	                              radius (this, getArc2DRadiusAdjustment (), getArc2DRadiusSpinButton (), "radius"),
-	                            minAngle (this, getArc2DMinAngleAdjustment (), getArc2DMinAngleSpinButton (), "minAngle")
+	                           dimension (this, getArc2DDimensionAdjustment (), getArc2DDimensionSpinButton (), "dimension")
 {
 	getArc2DStartAngleAdjustment () -> set_upper (2 * math::pi <double>);
 	getArc2DEndAngleAdjustment ()   -> set_upper (2 * math::pi <double>);
@@ -79,7 +79,7 @@ X3DArc2DEditor::set_geometry ()
 	startAngle .setNodes (nodes);
 	endAngle   .setNodes (nodes);
 	radius     .setNodes (nodes);
-	minAngle   .setNodes (global);
+	dimension  .setNodes (global);
 }
 
 X3DArc2DEditor::~X3DArc2DEditor ()
