@@ -188,6 +188,9 @@ bezier::arc_curve (const vector2 <Type> & p0,
 		return;
 	}
 
+	const auto rx2 = rx * rx;
+	const auto ry2 = ry * ry;
+
 	// In accordance to: http://www.w3.org/TR/SVG/implnote.html#ArcOutOfRangeParameters
 
 	xAxisRotation = interval <Type> (xAxisRotation, 0, 2 * pi <Type>);
@@ -204,8 +207,10 @@ bezier::arc_curve (const vector2 <Type> & p0,
 	const auto transformedPoint = vector2 <Type> ( cosRotation * d .x () + sinRotation * d .y (),
 		                                           -sinRotation * d .x () + cosRotation * d .y ());
 
+	const auto transformedPoint2 = transformedPoint * transformedPoint;
+
 	// Ensure radii are large enough
-	const auto radiiCheck = std::pow (transformedPoint .x (), 2) / std::pow (rx, 2) + std::pow (transformedPoint .y (), 2) / std::pow (ry, 2);
+	const auto radiiCheck = transformedPoint2 .x () / rx2 + transformedPoint2 .y () / ry2;
 	
 	if (radiiCheck > 1)
 	{
@@ -214,8 +219,8 @@ bezier::arc_curve (const vector2 <Type> & p0,
 	}
 
 	// Step #2: Compute transformedCenter
-	const auto cSquareNumerator = std::pow (rx, 2) * std::pow (ry, 2) - std::pow (rx, 2) * std::pow (transformedPoint .y (), 2) - std::pow (ry, 2) * std::pow (transformedPoint .x (), 2);
-	const auto cSquareRootDenom =                                       std::pow (rx, 2) * std::pow (transformedPoint .y (), 2) + std::pow (ry, 2) * std::pow (transformedPoint .x (), 2);
+	const auto cSquareNumerator = rx2 * ry2 - rx2 * transformedPoint2 .y () - ry2 * transformedPoint2 .x ();
+	const auto cSquareRootDenom =             rx2 * transformedPoint2 .y () + ry2 * transformedPoint2 .x ();
 	auto       cRadicand        = cSquareNumerator / cSquareRootDenom;
 
 	// Make sure this never drops below zero because of precision
@@ -234,12 +239,11 @@ bezier::arc_curve (const vector2 <Type> & p0,
 	const auto startVector = vector2 <Type> ((transformedPoint .x () - transformedCenter .x ()) / rx,
 	                                         (transformedPoint .y () - transformedCenter .y ()) / ry);
 
-	const auto startAngle = std::atan2 (startVector .y (), startVector .x ());
-
 	const auto endVector = vector2 <Type> ((-transformedPoint .x () - transformedCenter .x ()) / rx,
 	                                       (-transformedPoint .y () - transformedCenter .y ()) / ry);
 
-	const auto endAngle = std::atan2 (endVector .y (), endVector .x ());
+	const auto startAngle = std::atan2 (startVector .y (), startVector .x ());
+	const auto endAngle   = std::atan2 (endVector .y (), endVector .x ());
 
 	auto sweepAngle = endAngle - startAngle;
 
