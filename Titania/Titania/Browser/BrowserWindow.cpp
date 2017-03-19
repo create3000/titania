@@ -1228,7 +1228,7 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Nod »%s«"), typeName .c_str ()));
 	const auto group    = X3D::X3DEditor::createParentGroup (getCurrentContext (), typeName, fieldName, selection, undoStep);
 
 	getSelection () -> setNodes ({ group }, undoStep);

@@ -308,7 +308,7 @@ PrototypeEditor::on_rename_clicked ()
 
 	if (protoNode -> isExternproto ())
 	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> ("Rename Extern Prototype");
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Rename Extern Prototype To »%s«", name .c_str ())));
 
 		X3D::X3DEditor::updateExternProtoDeclaration (getCurrentContext (), name, X3D::ExternProtoDeclarationPtr (protoNode), undoStep);
 
@@ -316,7 +316,7 @@ PrototypeEditor::on_rename_clicked ()
 	}
 	else
 	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> ("Rename Prototype");
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Rename Prototype To »%s«", name .c_str ())));
 
 		X3D::X3DEditor::updateProtoDeclaration (getCurrentContext (), name, X3D::ProtoDeclarationPtr (protoNode), undoStep);
 

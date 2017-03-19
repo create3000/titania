@@ -810,7 +810,7 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent %s"), typeName .c_str ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Node »%s«"), typeName .c_str ()));
 
 	if (nodePath .size () == 1)
 	{
