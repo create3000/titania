@@ -87,6 +87,8 @@ UndoHistoryDialog::initialize ()
 
 	undoBuffer .addInterest (&UndoHistoryDialog::set_undoHistory, this);
 
+	getTreeView () .set_headers_clickable (false);
+
 	set_browser ();
 }
 
