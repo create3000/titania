@@ -110,13 +110,13 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 {
 	try
 	{
-		const auto image = browser -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, std::min <size_t> (16, getCurrentBrowser () -> getMaxSamples ()));
+		auto image = browser -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, std::min <size_t> (16, getCurrentBrowser () -> getMaxSamples ()));
 
-		image -> quality (PREVIEW_QUALITY);
-		image -> magick (PREVIEW_TYPE);
+		image .quality (PREVIEW_QUALITY);
+		image .magick (PREVIEW_TYPE);
 
 		Magick::Blob blob;
-		image -> write (&blob);
+		image .write (&blob);
 
 		getBrowserWindow () -> getHistory () -> setPreview (browser -> getExecutionContext () -> getWorldURL (), std::string ((char*) blob .data (), blob .length ()));
 	}

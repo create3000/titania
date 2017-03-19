@@ -116,7 +116,7 @@ HistoryView::configure ()
 	}
 
 	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 0))
-		getBrowserWindow () -> loadIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () -> getIcon (item .at ("id")));
+		getBrowserWindow () -> createIcon (item .at ("worldURL"), getBrowserWindow () -> getHistory () -> getIcon (item .at ("id")));
 
 	if (getConfig () -> hasItem ("titleColumnSize"))
 		getTitleColumn () -> set_fixed_width (getConfig () -> getInteger ("titleColumnSize"));

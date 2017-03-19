@@ -54,14 +54,6 @@
 #include "../../UserInterfaces/X3DAppearanceEditorInterface.h"
 
 namespace titania {
-namespace X3D {
-
-class BrowserCellRenderer;
-
-} // X3D
-} // titania
-
-namespace titania {
 namespace puck {
 
 class BrowserCellRenderer;
@@ -102,8 +94,8 @@ private:
 	void
 	set_material ();
 
-	X3D::Browser*
-	on_render_node ();
+	void
+	on_row_changed (const Gtk::TreePath & path, const Gtk::TreeIter & iter);
 
 	void
 	set_node (const X3D::SFNode & value);
@@ -112,7 +104,7 @@ private:
 
 	X3D::BrowserPtr                 preview;
 	std::unique_ptr <NodeIndex>     nodeIndex;
-	X3D::BrowserCellRenderer* const cellrenderer;
+	X3D::MFTime                     times;
 
 };
 

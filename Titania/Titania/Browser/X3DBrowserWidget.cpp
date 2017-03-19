@@ -947,7 +947,7 @@ X3DBrowserWidget::on_browser_reordered (Gtk::Widget* widget, guint pageNumber)
 void
 X3DBrowserWidget::set_scene ()
 {
-	loadIcon ();
+	createIcon ();
 	setTitle ();
 
 	#ifdef TITANIA_DEBUG
@@ -1031,7 +1031,7 @@ X3DBrowserWidget::set_urlError ()
 }
 
 void
-X3DBrowserWidget::loadIcon ()
+X3DBrowserWidget::createIcon ()
 {
 	const basic::uri & worldURL = getCurrentScene () -> getWorldURL ();
 
@@ -1051,18 +1051,18 @@ X3DBrowserWidget::loadIcon ()
 			uri = "/favicon.ico";
 		}
 
-		loadIcon (worldURL, X3D::Loader (getCurrentScene ()) .loadDocument (uri));
+		createIcon (worldURL, X3D::Loader (getCurrentScene ()) .loadDocument (uri));
 	}
 	catch (const std::exception & error)
 	{
-		loadIcon (worldURL, "");
+		createIcon (worldURL, "");
 	}
 }
 
 void
-X3DBrowserWidget::loadIcon (const basic::uri & worldURL, const std::string & document)
+X3DBrowserWidget::createIcon (const std::string & name, const std::string & document)
 {
-	const Gtk::StockID stockId = Gtk::StockID (worldURL .filename () .str ());
+	const Gtk::StockID stockId = Gtk::StockID (name);
 
 	Glib::RefPtr <Gtk::IconSet> iconSet;
 
@@ -1072,23 +1072,44 @@ X3DBrowserWidget::loadIcon (const basic::uri & worldURL, const std::string & doc
 		{
 			const titania::Image icon (document);
 
-			iconSet = Gtk::IconSet::create (Gdk::Pixbuf::create_from_data (icon .getData (),
-			                                                               Gdk::COLORSPACE_RGB,
-			                                                               icon .getTransparency (),
-			                                                               sizeof (Image::value_type) * 8,
-			                                                               icon .getWidth (),
-			                                                               icon .getHeight (),
-			                                                               icon .getWidth () * icon .getComponents ()) -> copy ());
+			iconSet = Gtk::IconSet::create (icon .getIcon ());
 		}
 		catch (const std::exception & error)
-		{ }
+		{
+			__LOG__ << error .what () << std::endl;
+		}
 	}
 
 	if (not iconSet)
 		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
 
 	getIconFactory () -> add (stockId, iconSet);
-	Gtk::Stock::add (Gtk::StockItem (stockId, worldURL .filename () .str ()));
+	Gtk::Stock::add (Gtk::StockItem (stockId, name));
+}
+
+void
+X3DBrowserWidget::createIcon (const std::string & name, Magick::Image && image)
+{
+	const Gtk::StockID stockId = Gtk::StockID (name);
+
+	Glib::RefPtr <Gtk::IconSet> iconSet;
+
+	try
+	{
+		const titania::Image icon (std::move (image));
+
+		iconSet = Gtk::IconSet::create (icon .getIcon ());
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+
+	if (not iconSet)
+		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
+
+	getIconFactory () -> add (stockId, iconSet);
+	Gtk::Stock::add (Gtk::StockItem (stockId, name));
 }
 
 std::string

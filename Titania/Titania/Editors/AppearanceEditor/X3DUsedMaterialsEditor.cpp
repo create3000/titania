@@ -54,7 +54,6 @@
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/X3D/Browser/BrowserCellRenderer.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Navigation/Viewpoint.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>
@@ -68,9 +67,11 @@ X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 	X3DAppearanceEditorInterface (),
 	                     preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
 	                   nodeIndex (new NodeIndex (getBrowserWindow ())),
-	                cellrenderer (Gtk::manage (new X3D::BrowserCellRenderer ()))
+	                       times ()
 {
-	addChildObjects (preview);
+	addChildObjects (preview, times);
+
+	nodeIndex -> setName ("X3DUsedMaterialsEditorNodeIndex");
 }
 
 void
@@ -98,11 +99,9 @@ X3DUsedMaterialsEditor::initialize ()
 
 	// Tree view column
 
-	cellrenderer -> property_callback () .set_value (std::bind (&X3DUsedMaterialsEditor::on_render_node, this));
-
-	nodeIndex -> getCustomImageColumn () -> set_visible (true);
-	nodeIndex -> getCustomImageColumn () -> pack_start (*cellrenderer, false);
-	nodeIndex -> getCustomImageColumn () -> add_attribute (*cellrenderer, "index", nodeIndex -> getIndexColumn ());
+	nodeIndex -> getListStore () -> signal_row_inserted () .connect (sigc::mem_fun (this, &X3DUsedMaterialsEditor::on_row_changed));
+	nodeIndex -> getListStore () -> signal_row_changed ()  .connect (sigc::mem_fun (this, &X3DUsedMaterialsEditor::on_row_changed));
+	nodeIndex -> getImageColumn () -> set_visible (true);
 }
 
 void
@@ -112,19 +111,27 @@ X3DUsedMaterialsEditor::set_material ()
 	nodeIndex -> scrollToRow (getMaterial ());
 }
 
-X3D::Browser*
-X3DUsedMaterialsEditor::on_render_node ()
+void
+X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::TreeIter & iter)
 {
 	try
 	{
-		const auto index = cellrenderer -> property_index () .get_value ();
+		if (path .size () > 1)
+			return;
+
+		const auto index = path .back ();
+
+		if (times .get1Value (index) == getCurrentBrowser () -> getCurrentTime ())
+			return;
+
+		times .set1Value (index, getCurrentBrowser () -> getCurrentTime ());
 
 		const X3D::X3DPtr <X3D::Material>         material (nodeIndex -> getNodes () .at (index));
 		const X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial (nodeIndex -> getNodes () .at (index));
 		const X3D::X3DPtr <X3D::Appearance>       appearance (preview -> getExecutionContext () -> getNamedNode ("Appearance"));
 
 		if (not (material or twoSidedMaterial) or not appearance)
-			return preview;
+			return;
 
 		if (material)
 			appearance -> material () = material;
@@ -147,13 +154,16 @@ X3DUsedMaterialsEditor::on_render_node ()
 		const X3D::X3DPtr <X3D::Switch> sphere (preview -> getExecutionContext () -> getNamedNode ("Sphere"));
 
 		sphere -> whichChoice () = twoSidedMaterial;
+
+		// Create Icon
+
+		getBrowserWindow () -> createIcon (nodeIndex -> getName () + basic::to_string (path .back ()),
+		                                   preview -> getSnapshot (16, 16, false, 8));
 	}
 	catch (const std::exception & error)
 	{ 
 		__LOG__ << error .what () << std::endl;
 	}
-
-	return preview;
 }
 
 void

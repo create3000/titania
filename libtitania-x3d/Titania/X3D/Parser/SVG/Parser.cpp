@@ -48,7 +48,10 @@
  *
  ******************************************************************************/
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <libxml++/libxml++.h>
+#pragma GCC diagnostic pop
 
 #include "../../Components/EnvironmentalEffects/Background.h"
 #include "../../Components/Geometry2D/Circle2D.h"

@@ -124,7 +124,7 @@ BrowserCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 		// Get snapshot image.
 
-		const auto image = browser -> getSnapshot (width, height, property_transparent () .get_value (), 8);
+		auto image = browser -> getSnapshot (width, height, property_transparent () .get_value (), 8);
 
 		// Determine height and update tree view if needed.
 
@@ -135,24 +135,24 @@ BrowserCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 
 		// Setup image.
 
-		image -> interlaceType (Magick::NoInterlace);
-		image -> endian (Magick::LSBEndian);
-		image -> depth (8);
-		image -> magick ("RGBA");
+		image .interlaceType (Magick::NoInterlace);
+		image .endian (Magick::LSBEndian);
+		image .depth (8);
+		image .magick ("RGBA");
 
 		// Swap red and blue layers.
 
-		const auto redChannel  = image -> separate (Magick::RedChannel);
-		const auto blueChannel = image -> separate (Magick::BlueChannel);
+		const auto redChannel  = image .separate (Magick::RedChannel);
+		const auto blueChannel = image .separate (Magick::BlueChannel);
 
-		image -> composite (blueChannel, 0, 0, Magick::CopyRedCompositeOp);
-		image -> composite (redChannel,  0, 0, Magick::CopyBlueCompositeOp);
+		image .composite (blueChannel, 0, 0, Magick::CopyRedCompositeOp);
+		image .composite (redChannel,  0, 0, Magick::CopyBlueCompositeOp);
 
 		// Create Cairo Surface.
 
 		Magick::Blob blob;
 
-		image -> write (&blob);
+		image .write (&blob);
 
 		const auto surface = Cairo::ImageSurface::create ((uint8_t*) blob .data (), Cairo::FORMAT_ARGB32, width, height, stride);
 

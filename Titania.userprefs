@@ -1,14 +1,18 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h" Line="354" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp" Line="65" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/X3DNodeTool.h" Line="123" Column="25" />
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/X3DNodeTool.cpp" Line="56" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/SVG/Parser.h" Line="358" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/X3DNodeTool.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/X3DNodeTool.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/SVG/Parser.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Parser/SVG/Parser.cpp" Line="215" Column="23" />
-      <File FileName="libtitania-x3d/Titania/X3D/Rendering/X3DRenderObject.cpp" Line="669" Column="14" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Arc2D.h" Line="164" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Arc2D.cpp" Line="162" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/ArcClose2D.h" Line="180" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/ArcClose2D.cpp" Line="212" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Algorithms/Bezier.h" Line="277" Column="52" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -18,7 +22,6 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Mesh/Tessellator.h" line="411" column="3" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

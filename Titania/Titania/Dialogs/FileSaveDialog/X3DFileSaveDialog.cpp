@@ -382,12 +382,12 @@ X3DFileSaveDialog::exportImage ()
 			{
 				auto filename = basic::uri (Glib::uri_unescape_string (getWindow () .get_filename ()));
 
-				const auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
-				                                                        getImageHeightAdjustment () -> get_value (),
-				                                                        getImageAlphaChannelSwitch () .get_active (),
-				                                                        getImageAntialiasingAdjustment () -> get_value ());
+				auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
+				                                                  getImageHeightAdjustment () -> get_value (),
+				                                                  getImageAlphaChannelSwitch () .get_active (),
+				                                                  getImageAntialiasingAdjustment () -> get_value ());
 
-				image -> quality (getImageCompressionAdjustment () -> get_value ());
+				image .quality (getImageCompressionAdjustment () -> get_value ());
 
 				if (filename .suffix () == ".xcf" and os::program_exists ("gimp"))
 				{
@@ -400,7 +400,7 @@ X3DFileSaveDialog::exportImage ()
 
 						filename = std::regex_replace (filename .str (), quotes, "\\\"");
 
-						image -> write (pngFilename);
+						image .write (pngFilename);
 
 						os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + pngFilename + "\" \"" + pngFilename + "\")))"
 						            "(drawable (car (gimp-image-get-active-layer image))))"
@@ -413,7 +413,7 @@ X3DFileSaveDialog::exportImage ()
 					os::unlink (pngFilename);
 				}
 				else
-					image -> write (filename);
+					image .write (filename);
 			}
 			catch (const Magick::Exception & error)
 			{

@@ -154,7 +154,7 @@ X3DBrowserContext::initialize ()
  *  @param  alphaChannel  Whether or not the image should have a alpha channel.
  *  @param  antialiasing  Number of samples used for antialising.
  */
-std::shared_ptr <Magick::Image>
+Magick::Image
 X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing) const
 throw (Error <INSUFFICIENT_CAPABILITIES>,
        Error <INVALID_OPERATION_TIMING>,
@@ -201,19 +201,19 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
 
 		// Process image.
 
-		const auto image = std::make_shared <Magick::Image> (width, height, "RGBA", Magick::CharPixel, frameBuffer .getPixels () .data ());
+		Magick::Image image (width, height, "RGBA", Magick::CharPixel, frameBuffer .getPixels () .data ());
 
 		if (alphaChannel)
-			image -> type (Magick::TrueColorMatteType);
+			image .type (Magick::TrueColorMatteType);
 		else
 		{
-			image -> matte (false);
-			image -> type (Magick::TrueColorType);
+			image .matte (false);
+			image .type (Magick::TrueColorType);
 		}
 
-		image -> flip ();
-		image -> resolutionUnits (Magick::PixelsPerInchResolution);
-		image -> density (Magick::Geometry (72, 72));
+		image .flip ();
+		image .resolutionUnits (Magick::PixelsPerInchResolution);
+		image .density (Magick::Geometry (72, 72));
 
 		return image;
 	}

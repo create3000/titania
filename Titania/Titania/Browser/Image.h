@@ -63,17 +63,19 @@ public:
 
 	///  @name Construction
 
-	Image (const std::string &);
+	Image (const std::string & document);
+
+	Image (Magick::Image && image);
 
 	///  @name Member access
 
 	size_type
 	getWidth () const
-	{ return image .size () .width (); }
+	{ return width; }
 
 	size_type
 	getHeight () const
-	{ return image .size () .height (); }
+	{ return height; }
 
 	size_type
 	getComponents () const
@@ -87,6 +89,9 @@ public:
 	getData () const
 	{ return static_cast <const value_type*> (blob .data ()); }
 
+	Glib::RefPtr <Gdk::Pixbuf> 
+	getIcon () const;
+
 	///  @name Destructions
 
 	~Image ();
@@ -96,56 +101,54 @@ private:
 
 	///  @name Operations
 
-	void
-	getBlob ();
+	Magick::Image
+	getImage (const std::string & document) const;
+
+	Magick::Blob
+	getBlob (Magick::Image && image);
 	
 	///  @name Members
 
-	Magick::Image image;
-	Magick::Blob  blob;
-
-	size_type components;
-	bool      transparency;
+	size_type    width;
+	size_type    height;
+	size_type    components;
+	bool         transparency;
+	Magick::Blob blob;
 
 };
 
 inline
-Image::Image (const std::string & data) :
-	       image (),
-	        blob (),
+Image::Image (const std::string & document) :
+	Image (getImage (document))
+{ }
+
+inline
+Image::Image (Magick::Image && image) :
+	       width (image .size () .width ()),
+	      height (image .size () .height ()),
 	  components (0),
-	transparency (false)
+	transparency (false),
+	        blob (getBlob (std::move (image)))
+{ }
+
+inline
+Magick::Image
+Image::getImage (const std::string & document) const
 {
+	Magick::Image image;
+
 	image .backgroundColor (Magick::Color (0, 0, 0, uint16_t (-1)));
-	image .read (Magick::Blob (data .c_str (), data .length ()));
+	image .read (Magick::Blob (document .c_str (), document .length ()));
 
-	getBlob ();
-
-	//	std::list <Magick::Image> images;
-	//	Magick::readImages (&images, Magick::Blob (data .c_str (), data .length ()));
-	//
-	//	switch (images .size ())
-	//	{
-	//		case 0:
-	//			break;
-	//
-	//		case 1:  // Image with one layer image.
-	//			image = images .back ();
-	//			break;
-	//
-	//		default: // Flatten image with more than one layer.
-	//			Magick::flattenImages (&image, images .begin (), images .end ());
-	//			break;
-	//	}
-	//
-	//	getBlob ();
+	return image;
 }
 
 inline
-void
-Image::getBlob ()
+Magick::Blob
+Image::getBlob (Magick::Image && image)
 {
-	std::string magick;
+	Magick::Blob blob;
+	std::string  magick;
 
 	switch (image .type ())
 	{
@@ -219,6 +222,22 @@ Image::getBlob ()
 	image .depth (8);
 	image .magick (magick);
 	image .write (&blob);
+
+	return blob;
+}
+
+Glib::RefPtr <Gdk::Pixbuf> 
+Image::getIcon () const
+{
+	// XXX: It must be done a copy, otherwise the Pixbuf wont work.
+
+	return Gdk::Pixbuf::create_from_data (getData (),
+		                                   Gdk::COLORSPACE_RGB,
+		                                   getTransparency (),
+		                                   sizeof (value_type) * 8,
+		                                   getWidth (),
+		                                   getHeight (),
+		                                   getWidth () * getComponents ()) -> copy ();
 }
 
 inline

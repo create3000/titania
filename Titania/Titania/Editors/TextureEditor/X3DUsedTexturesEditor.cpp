@@ -101,9 +101,9 @@ X3DUsedTexturesEditor::initialize ()
 
 	cellrenderer -> property_callback () .set_value (std::bind (&X3DUsedTexturesEditor::on_render_node, this));
 
-	nodeIndex -> getCustomImageColumn () -> set_visible (true);
-	nodeIndex -> getCustomImageColumn () -> pack_start (*cellrenderer, false);
-	nodeIndex -> getCustomImageColumn () -> add_attribute (*cellrenderer, "index", nodeIndex -> getIndexColumn ());
+	nodeIndex -> getImageColumn () -> set_visible (true);
+	nodeIndex -> getImageColumn () -> pack_start (*cellrenderer, false);
+	nodeIndex -> getImageColumn () -> add_attribute (*cellrenderer, "index", nodeIndex -> getIndexColumn ());
 }
 
 void

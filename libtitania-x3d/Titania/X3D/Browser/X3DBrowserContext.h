@@ -163,7 +163,7 @@ public:
 
 	///  @name Operations
 
-	std::shared_ptr <Magick::Image>
+	Magick::Image
 	getSnapshot (const size_t, const size_t, const bool, const size_t) const
 	throw (Error <INSUFFICIENT_CAPABILITIES>,
 	       Error <INVALID_OPERATION_TIMING>,

@@ -168,7 +168,7 @@ Arc2D::build ()
 		vertexMode = GL_LINE_STRIP;
 	}
 
-	const auto steps_1 = vertexMode == GL_LINE_STRIP ? steps - 1 : steps;
+	const auto steps_1 = circle ? steps : steps - 1;
 
 	for (int32_t n = 0; n < steps; ++ n)
 	{

@@ -157,7 +157,10 @@ public:
 	append (const X3D::BrowserPtr & browser, const basic::uri & uri);
 
 	void
-	loadIcon (const basic::uri &, const std::string &);
+	createIcon (const std::string & name, const std::string & document);
+
+	void
+	createIcon (const std::string & name, Magick::Image && image);
 
 	std::string
 	getIcon (const basic::uri & uri, const Gtk::IconSize &);
@@ -284,7 +287,7 @@ private:
 	setWorldURL (const X3D::X3DScenePtr &, const basic::uri &, const X3D::UndoStepPtr &);
 
 	void
-	loadIcon ();
+	createIcon ();
 
 	bool
 	statistics ();

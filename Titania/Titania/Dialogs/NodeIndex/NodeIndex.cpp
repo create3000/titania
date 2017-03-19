@@ -77,11 +77,12 @@ static constexpr int TYPE_NAME = 0;
 
 namespace Columns {
 
-static constexpr int INDEX          = 0;
+static constexpr int IMAGE          = 0;
 static constexpr int TYPE_NAME      = 1;
 static constexpr int NAME           = 2;
 static constexpr int IMPORTED_NODES = 3;
 static constexpr int EXPORTED_NODES = 4;
+static constexpr int INDEX          = 5;
 
 };
 
@@ -339,11 +340,13 @@ NodeIndex::setNodes (X3D::MFNode && value)
 	for (const auto & node : nodes)
 	{
 		const auto row = getListStore () -> append ();
-		row -> set_value (Columns::INDEX,          index);
+
+		row -> set_value (Columns::IMAGE,          getName () + basic::to_string (index));
 		row -> set_value (Columns::TYPE_NAME,      node -> getTypeName ());
 		row -> set_value (Columns::NAME,           node -> getName ());
 		row -> set_value (Columns::IMPORTED_NODES, importingInlines .count (node) ? document_import : empty_string);
 		row -> set_value (Columns::EXPORTED_NODES, exportedNodes .count (node)    ? document_export : empty_string);
+		row -> set_value (Columns::INDEX,          index);
 
 		if (observeNodes)
 			node -> addInterest (&NodeIndex::on_row_changed, this, index);

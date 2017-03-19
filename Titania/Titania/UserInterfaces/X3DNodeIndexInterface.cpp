@@ -63,7 +63,7 @@ X3DNodeIndexInterface::create (const std::string & filename)
 	m_TreeModelSort         = Glib::RefPtr <Gtk::TreeModelSort>::cast_dynamic (m_builder -> get_object ("TreeModelSort"));
 	m_SearchListStore       = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("SearchListStore"));
 	m_SearchEntryCompletion = Glib::RefPtr <Gtk::EntryCompletion>::cast_dynamic (m_builder -> get_object ("SearchEntryCompletion"));
-	m_CustomImageColumn     = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("CustomImageColumn"));
+	m_ImageColumn           = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImageColumn"));
 	m_TypeNameColumn        = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TypeNameColumn"));
 	m_NameColumn            = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
 
