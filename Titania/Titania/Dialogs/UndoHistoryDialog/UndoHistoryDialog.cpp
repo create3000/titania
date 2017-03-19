@@ -171,7 +171,7 @@ UndoHistoryDialog::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::Tre
 		const auto size = undoHistory .getUndoList () .size () - index;
 
 		for (size_t i = 0; i < size; ++ i)
-			on_undo_clicked ();
+			getBrowserWindow () -> undo ();
 	}
 	else
 	{
@@ -180,7 +180,7 @@ UndoHistoryDialog::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::Tre
 		const auto size = index - undoHistory .getUndoList () .size () + 1;
 
 		for (size_t i = 0; i < size; ++ i)
-			on_redo_clicked ();	
+			getBrowserWindow () -> redo ();
 	}
 }
 

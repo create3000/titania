@@ -384,6 +384,7 @@ X3DTransformNodeTool::set_active ()
 				description = basic::sprintf (_ ("Edit Field %s »rotation«"), getTypeName () .c_str ());
 				break;
 			case ToolType::SCALE:
+			default:
 				description = basic::sprintf (_ ("Edit Field %s »scale«"), getTypeName () .c_str ());
 				break;
 		}
