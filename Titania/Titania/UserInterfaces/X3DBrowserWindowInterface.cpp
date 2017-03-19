@@ -133,6 +133,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BrowserEditMenuItem", m_BrowserEditMenuItem);
 	m_builder -> get_widget ("BrowserUndoMenuItem", m_BrowserUndoMenuItem);
 	m_builder -> get_widget ("BrowserRedoMenuItem", m_BrowserRedoMenuItem);
+	m_builder -> get_widget ("BrowserUndoHistoryMenuItem", m_BrowserUndoHistoryMenuItem);
 	m_builder -> get_widget ("BrowserCutMenuItem", m_BrowserCutMenuItem);
 	m_builder -> get_widget ("BrowserCopyMenuItem", m_BrowserCopyMenuItem);
 	m_builder -> get_widget ("BrowserPasteMenuItem", m_BrowserPasteMenuItem);
@@ -256,6 +257,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_builder -> get_widget ("EditMenuItem", m_EditMenuItem);
 	m_builder -> get_widget ("UndoMenuItem", m_UndoMenuItem);
 	m_builder -> get_widget ("RedoMenuItem", m_RedoMenuItem);
+	m_builder -> get_widget ("UndoHistoryMenuItem", m_UndoHistoryMenuItem);
 	m_builder -> get_widget ("CutMenuItem", m_CutMenuItem);
 	m_builder -> get_widget ("CopyMenuItem", m_CopyMenuItem);
 	m_builder -> get_widget ("PasteMenuItem", m_PasteMenuItem);
@@ -485,6 +487,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_BrowserQuitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_quit_activated));
 	m_BrowserUndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_activated));
 	m_BrowserRedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo_activated));
+
+	// Connect object Gtk::MenuItem with id 'BrowserUndoHistoryMenuItem'.
+	m_BrowserUndoHistoryMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_history_activated));
+
+	// Connect object Gtk::ImageMenuItem with id 'BrowserCutMenuItem'.
 	m_BrowserCutMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_cut_activated));
 	m_BrowserCopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_copy_activated));
 	m_BrowserPasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paste_activated));
@@ -589,6 +596,11 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	m_QuitMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_quit_activated));
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_activated));
 	m_RedoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_redo_activated));
+
+	// Connect object Gtk::MenuItem with id 'UndoHistoryMenuItem'.
+	m_UndoHistoryMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_undo_history_activated));
+
+	// Connect object Gtk::ImageMenuItem with id 'CutMenuItem'.
 	m_CutMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_cut_activated));
 	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_copy_activated));
 	m_PasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DBrowserWindowInterface::on_paste_activated));

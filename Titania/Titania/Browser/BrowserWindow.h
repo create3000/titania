@@ -253,6 +253,10 @@ private:
 	void
 	on_redo_activated () final override;
 
+	virtual
+	void
+	on_undo_history_activated () final override;
+
 	///  @name Clipboard handling
 
 	virtual

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,102 +48,66 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_EDITOR_UNDO_UNDO_HISTORY_H__
-#define __TITANIA_X3D_EDITOR_UNDO_UNDO_HISTORY_H__
+#ifndef __TITANIA_DIALOGS_UNDO_HISTORY_DIALOG_UNDO_HISTORY_DIALOG_H__
+#define __TITANIA_DIALOGS_UNDO_HISTORY_DIALOG_UNDO_HISTORY_DIALOG_H__
 
-#include "../Undo/UndoStep.h"
-
-#include <Titania/X3D/Base/X3DOutput.h>
-#include <memory>
+#include "../../Browser/UserData.h"
+#include "../../UserInterfaces/X3DUndoHistoryDialogInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class UndoHistory :
-	public X3D::X3DOutput
+class AdjustmentObject;
+
+class UndoHistoryDialog :
+	virtual public X3DUndoHistoryDialogInterface
 {
 public:
 
 	///  @name Construction
 
-	UndoHistory ();
+	UndoHistoryDialog (X3DBrowserWindow* const browserWindow);
 
-	///  @name Member access
+	///  @name Destruction
 
-	int32_t
-	getIndex () const
-	{ return index; }
-
-	const std::vector <UndoStepPtr> &
-	getUndoList () const
-	{ return list; }
-
-	const std::vector <UndoStepPtr> &
-	getRedoList () const
-	{ return redoList; }
-
-	std::string
-	getUndoDescription () const;
-
-	std::string
-	getRedoDescription () const;
-
-	///  @name Operations
-
-	bool
-	getModified () const
-	{ return index not_eq savedIndex; }
-
-	void
-	save ()
-	{ savedIndex = index; }
-
-	void
-	addUndoStep (const UndoStepPtr &);
-
-	void
-	removeUndoStep ();
-
-	const std::shared_ptr <UndoStep> &
-	getUndoStep () const;
-
-	bool
-	hasUndo () const;
-
-	bool
-	hasRedo () const;
-
-	void
-	undo ();
-
-	void
-	redo ();
-
-	void
-	clear ();
-
-	bool
-	isEmpty () const
-	{ return list .empty (); }
-
-	size_t
-	getSize () const
-	{ return list .size (); }
+	virtual
+	~UndoHistoryDialog () final override;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_browser ();
+
+	void
+	set_undoHistory ();
+
+	virtual
+	void
+	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
+
+	static
+	void
+	set_adjustment (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value);
+
 	///  @name Members
 
-	std::vector <UndoStepPtr> list;
-	std::vector <UndoStepPtr> redoList;
-	int32_t                   index;
-	int32_t                   redoIndex;
-	int32_t                   savedIndex;
+	X3D::BrowserPtr browser;
+
+	std::unique_ptr <AdjustmentObject> hadjustment;
+	std::unique_ptr <AdjustmentObject> vadjustment;
 
 };
 
-} // X3D
+} // puck
 } // titania
 
 #endif

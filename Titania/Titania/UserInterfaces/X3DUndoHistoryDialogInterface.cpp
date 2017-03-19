@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -47,103 +47,40 @@
  * For Silvio, Joy and Adi.
  *
  ******************************************************************************/
-
-#ifndef __TITANIA_X3D_EDITOR_UNDO_UNDO_HISTORY_H__
-#define __TITANIA_X3D_EDITOR_UNDO_UNDO_HISTORY_H__
-
-#include "../Undo/UndoStep.h"
-
-#include <Titania/X3D/Base/X3DOutput.h>
-#include <memory>
+#include "X3DUndoHistoryDialogInterface.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-class UndoHistory :
-	public X3D::X3DOutput
+void
+X3DUndoHistoryDialogInterface::create (const std::string & filename)
 {
-public:
+	// Create Builder.
+	m_builder = Gtk::Builder::create_from_file (filename);
 
-	///  @name Construction
+	// Get objects.
+	m_ListStore         = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
+	m_NumberColumn      = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NumberColumn"));
+	m_DescriptionColumn = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("DescriptionColumn"));
 
-	UndoHistory ();
+	// Get widgets.
+	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
+	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_builder -> get_widget ("TreeView", m_TreeView);
 
-	///  @name Member access
+	// Connect object Gtk::TreeView with id 'TreeView'.
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DUndoHistoryDialogInterface::on_row_activated));
 
-	int32_t
-	getIndex () const
-	{ return index; }
+	// Call construct handler of base class.
+	construct ();
+}
 
-	const std::vector <UndoStepPtr> &
-	getUndoList () const
-	{ return list; }
+X3DUndoHistoryDialogInterface::~X3DUndoHistoryDialogInterface ()
+{
+	delete m_Window;
+}
 
-	const std::vector <UndoStepPtr> &
-	getRedoList () const
-	{ return redoList; }
-
-	std::string
-	getUndoDescription () const;
-
-	std::string
-	getRedoDescription () const;
-
-	///  @name Operations
-
-	bool
-	getModified () const
-	{ return index not_eq savedIndex; }
-
-	void
-	save ()
-	{ savedIndex = index; }
-
-	void
-	addUndoStep (const UndoStepPtr &);
-
-	void
-	removeUndoStep ();
-
-	const std::shared_ptr <UndoStep> &
-	getUndoStep () const;
-
-	bool
-	hasUndo () const;
-
-	bool
-	hasRedo () const;
-
-	void
-	undo ();
-
-	void
-	redo ();
-
-	void
-	clear ();
-
-	bool
-	isEmpty () const
-	{ return list .empty (); }
-
-	size_t
-	getSize () const
-	{ return list .size (); }
-
-
-private:
-
-	///  @name Members
-
-	std::vector <UndoStepPtr> list;
-	std::vector <UndoStepPtr> redoList;
-	int32_t                   index;
-	int32_t                   redoIndex;
-	int32_t                   savedIndex;
-
-};
-
-} // X3D
+} // puck
 } // titania
-
-#endif

@@ -892,6 +892,12 @@ BrowserWindow::on_redo_activated ()
 }
 
 void
+BrowserWindow::on_undo_history_activated ()
+{
+	addDialog ("UndoHistoryDialog");
+}
+
+void
 BrowserWindow::on_cut_activated ()
 {
 	if (getGeometryEditor () -> on_cut ())

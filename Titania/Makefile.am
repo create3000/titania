@@ -52,6 +52,7 @@ titania_SOURCES =  \
 	Titania/Dialogs/MessageDialog/MessageDialog.cpp \
 	Titania/Dialogs/NodeIndex/NodeIndex.cpp \
 	Titania/Dialogs/OpenLocationDialog/OpenLocationDialog.cpp \
+	Titania/Dialogs/UndoHistoryDialog/UndoHistoryDialog.cpp \
 	Titania/Editors/AppearanceEditor/AppearanceEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DFillPropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
@@ -197,6 +198,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DTextEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureMappingEditorInterface.cpp \
+	Titania/UserInterfaces/X3DUndoHistoryDialogInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
 	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \
 	Titania/Widgets/BindableNodeList/BackgroundList.cpp \

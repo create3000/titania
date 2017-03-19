@@ -370,7 +370,25 @@ X3DTransformNodeTool::set_active ()
 	}
 	else
 	{
-		const auto undoStep = std::make_shared <UndoStep> (basic::sprintf (_ ("Edit %s"), getTypeName () .c_str ()));
+		std::string description;
+
+      switch (getActiveTool ())
+		{
+			case ToolType::DEFAULT:
+				description = basic::sprintf (_ ("Edit %s"), getTypeName () .c_str ());
+				break;
+			case ToolType::MOVE:
+				description = basic::sprintf (_ ("Edit Field %s »translation«"), getTypeName () .c_str ());
+				break;
+			case ToolType::ROTATE:
+				description = basic::sprintf (_ ("Edit Field %s »rotation«"), getTypeName () .c_str ());
+				break;
+			case ToolType::SCALE:
+				description = basic::sprintf (_ ("Edit Field %s »scale«"), getTypeName () .c_str ());
+				break;
+		}
+
+		const auto undoStep = std::make_shared <UndoStep> (description);
 
 		for (const auto & node : selection -> getSelectGeometry () ? selection -> getGeometries () : selection -> getNodes ())
 		{

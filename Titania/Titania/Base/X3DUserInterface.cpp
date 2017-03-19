@@ -85,6 +85,7 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"PrecisionPlacementPanel",
 	"PrototypeEditor",
 	"NodeIndex",
+	"UndoHistoryDialog",
 
 };
 

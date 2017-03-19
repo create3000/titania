@@ -291,6 +291,8 @@
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsTrimmedSurfaceEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\NURBS\X3DNurbsCurveEditor.cpp" />
     <Compile Include="Titania\Editors\PrecisionPlacementPanel\X3DEnvironmentalSensorEditor.cpp" />
+    <Compile Include="Titania\Dialogs\UndoHistoryDialog\UndoHistoryDialog.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DUndoHistoryDialogInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2601,6 +2603,9 @@
     <None Include="share\titania\ui\icons\Faenza\16\gtk-sort-ascending.png" />
     <None Include="share\titania\ui\icons\Faenza\16\gtk-sort-descending.png" />
     <None Include="share\titania\Library\Primitives\Geometry2D\Star.x3dv" />
+    <None Include="Titania\Dialogs\UndoHistoryDialog\UndoHistoryDialog.h" />
+    <None Include="Titania\UserInterfaces\X3DUndoHistoryDialogInterface.h" />
+    <None Include="share\titania\ui\Dialogs\UndoHistoryDialog.glade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2706,6 +2711,7 @@
     <Folder Include="Titania\Application\" />
     <Folder Include="share\titania\Library\SculpToolBrushes\" />
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\NURBS\" />
+    <Folder Include="Titania\Dialogs\UndoHistoryDialog\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

@@ -697,32 +697,40 @@ X3DBrowserEditor::set_undoHistory ()
 
 	if (undoHistory .hasUndo ())
 	{
-		getUndoMenuItem () .set_label (undoHistory .getUndoDescription ());
-		getUndoButton ()   .set_tooltip_text (undoHistory .getUndoDescription ());
-		getUndoMenuItem () .set_sensitive (true);
-		getUndoButton ()   .set_sensitive (true);
+		getUndoMenuItem ()        .set_label (undoHistory .getUndoDescription ());
+		getBrowserUndoMenuItem () .set_label (undoHistory .getUndoDescription ());
+		getUndoButton ()          .set_tooltip_text (undoHistory .getUndoDescription ());
+		getUndoMenuItem ()        .set_sensitive (true);
+		getBrowserUndoMenuItem () .set_sensitive (true);
+		getUndoButton ()          .set_sensitive (true);
 	}
 	else
 	{
-		getUndoMenuItem () .set_label (_ ("Undo"));
-		getUndoButton ()   .set_tooltip_text (_ ("Undo last action (Ctrl-Z)."));
-		getUndoMenuItem () .set_sensitive (false);
-		getUndoButton ()   .set_sensitive (false);
+		getUndoMenuItem ()        .set_label (_ ("Undo"));
+		getBrowserUndoMenuItem () .set_label (_ ("Undo"));
+		getUndoButton ()          .set_tooltip_text (_ ("Undo last action (Ctrl-Z)."));
+		getUndoMenuItem ()        .set_sensitive (false);
+		getBrowserUndoMenuItem () .set_sensitive (false);
+		getUndoButton ()          .set_sensitive (false);
 	}
 
 	if (undoHistory .hasRedo ())
 	{
-		getRedoMenuItem () .set_label (undoHistory .getRedoDescription ());
-		getRedoButton ()   .set_tooltip_text (undoHistory .getRedoDescription ());
-		getRedoMenuItem () .set_sensitive (true);
-		getRedoButton ()   .set_sensitive (true);
+		getRedoMenuItem ()        .set_label (undoHistory .getRedoDescription ());
+		getBrowserRedoMenuItem () .set_label (undoHistory .getRedoDescription ());
+		getRedoButton ()          .set_tooltip_text (undoHistory .getRedoDescription ());
+		getRedoMenuItem ()        .set_sensitive (true);
+		getBrowserRedoMenuItem () .set_sensitive (true);
+		getRedoButton ()          .set_sensitive (true);
 	}
 	else
 	{
-		getRedoMenuItem () .set_label (_ ("Redo"));
-		getRedoButton ()   .set_tooltip_text (_ ("Redo last action (Ctrl-Shift-Z)."));
-		getRedoMenuItem () .set_sensitive (false);
-		getRedoButton ()   .set_sensitive (false);
+		getRedoMenuItem ()        .set_label (_ ("Redo"));
+		getBrowserRedoMenuItem () .set_label (_ ("Redo"));
+		getRedoButton ()          .set_tooltip_text (_ ("Redo last action (Ctrl-Shift-Z)."));
+		getRedoMenuItem ()        .set_sensitive (false);
+		getBrowserRedoMenuItem () .set_sensitive (false);
+		getRedoButton ()          .set_sensitive (false);
 	}
 
 	setTitle ();
@@ -742,7 +750,8 @@ X3DBrowserEditor::set_tool_undo (const X3D::UndoStepContainerPtr & container)
 void
 X3DBrowserEditor::set_clipboard (const X3D::SFString & string)
 {
-	getPasteMenuItem () .set_sensitive (not string .empty ());
+	getPasteMenuItem ()        .set_sensitive (not string .empty ());
+	getBrowserPasteMenuItem () .set_sensitive (not string .empty ());
 }
 
 void
