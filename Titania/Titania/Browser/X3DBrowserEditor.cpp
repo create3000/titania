@@ -348,7 +348,7 @@ X3DBrowserEditor::setModified (const X3D::BrowserPtr & browser, const bool value
 	userData -> saveConfirmed = false;
 
 	if (not value)
-		getUndoHistory (browser) .save ();
+		getUndoHistory (browser) .setSaved ();
 
 	setTitle ();
 }

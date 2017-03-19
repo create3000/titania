@@ -54,6 +54,8 @@
 #include "../Undo/UndoStep.h"
 
 #include <Titania/X3D/Base/X3DOutput.h>
+
+#include <deque>
 #include <memory>
 
 namespace titania {
@@ -70,15 +72,11 @@ public:
 
 	///  @name Member access
 
-	int32_t
-	getIndex () const
-	{ return index; }
-
-	const std::vector <UndoStepPtr> &
+	const std::deque <UndoStepPtr> &
 	getUndoList () const
-	{ return list; }
+	{ return undoList; }
 
-	const std::vector <UndoStepPtr> &
+	const std::deque <UndoStepPtr> &
 	getRedoList () const
 	{ return redoList; }
 
@@ -91,12 +89,10 @@ public:
 	///  @name Operations
 
 	bool
-	getModified () const
-	{ return index not_eq savedIndex; }
+	getModified () const;
 
 	void
-	save ()
-	{ savedIndex = index; }
+	setSaved ();
 
 	void
 	addUndoStep (const UndoStepPtr &);
@@ -124,22 +120,20 @@ public:
 
 	bool
 	isEmpty () const
-	{ return list .empty (); }
+	{ return undoList .empty (); }
 
 	size_t
 	getSize () const
-	{ return list .size (); }
+	{ return undoList .size (); }
 
 
 private:
 
 	///  @name Members
 
-	std::vector <UndoStepPtr> list;
-	std::vector <UndoStepPtr> redoList;
-	int32_t                   index;
-	int32_t                   redoIndex;
-	int32_t                   savedIndex;
+	std::deque <UndoStepPtr> undoList;
+	std::deque <UndoStepPtr> redoList;
+	int32_t                  savedIndex;
 
 };
 

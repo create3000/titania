@@ -55,23 +55,33 @@ namespace X3D {
 
 UndoHistory::UndoHistory () :
 	X3D::X3DOutput (),
-	          list (),
+	      undoList (),
 	      redoList (),
-	         index (-1),
-	     redoIndex (-1),
 	    savedIndex (-1)
 { }
+
+bool
+UndoHistory::getModified () const
+{
+	return int32_t (undoList .size ()) - 1 not_eq savedIndex;
+}
+
+void
+UndoHistory::setSaved ()
+{
+	savedIndex = int32_t (undoList .size ()) - 1;
+}
 
 std::string
 UndoHistory::getUndoDescription () const
 {
-	return _ ("Undo ") + list [index] -> getDescription ();
+	return _ ("Undo ") + undoList .back () -> getDescription ();
 }
 
 std::string
 UndoHistory::getRedoDescription () const
 {
-	return _ ("Redo ") + list [index + 1] -> getDescription ();
+	return _ ("Redo ") + redoList .front () -> getDescription ();
 }
 
 void
@@ -80,18 +90,11 @@ UndoHistory::addUndoStep (const UndoStepPtr & undoStep)
 	if (undoStep -> getUndoFunctions () .empty ())
 		return;
 
-	if (index < savedIndex)
-		savedIndex = -2;
+	if (int32_t (undoList .size ()) - 1 < savedIndex)
+		savedIndex = -1;
 
-	const size_t size = index + 1;
-
-	redoIndex = index;
-	redoList .assign (list .begin () + size, list .end ());
-
-	list .resize (size);
-	list .emplace_back (undoStep);
-
-	++ index;
+	undoList .emplace_back (undoStep);
+	redoList .clear ();
 
 	processInterests ();
 }
@@ -99,18 +102,10 @@ UndoHistory::addUndoStep (const UndoStepPtr & undoStep)
 void
 UndoHistory::removeUndoStep ()
 {
-	if (index < 0)
+	if (undoList .empty ())
 		return;
 
-	-- index;
-
-	list .pop_back ();
-
-	if (redoIndex == index)
-	{
-		for (const auto & undoStep : redoList)
-			list .emplace_back (undoStep);
-	}
+	undoList .pop_back ();
 
 	processInterests ();
 }
@@ -120,58 +115,63 @@ UndoHistory::getUndoStep () const
 {
 	static const std::shared_ptr <UndoStep> empty;
 
-	if (list .empty () or index < 0)
+	if (undoList .empty ())
 		return empty;
 
-	return list [index];
+	return undoList .back ();
 }
 
 bool
 UndoHistory::hasUndo () const
 {
-	return index >= 0;
+	return not undoList .empty ();
 }
 
 bool
 UndoHistory::hasRedo () const
 {
-	return index + 1 < (int32_t) list .size ();
+	return not redoList .empty ();
 }
 
 void
 UndoHistory::undo ()
 {
-	if (index >= 0)
-	{
-		list [index] -> undo ();
+	if (undoList .empty ())
+		return;
 
-		-- index;
+	const auto undoStep = undoList .back ();
 
-		processInterests ();
-	}
+	undoStep -> undo ();
+
+	undoList .pop_back ();
+	redoList .emplace_front (undoStep);
+
+	processInterests ();
 }
 
 void
 UndoHistory::redo ()
 {
-	if (index + 1 < (int32_t) list .size ())
-	{
-		++ index;
+	if (redoList .empty ())
+		return;
 
-		list [index] -> redo ();
+	const auto undoStep = redoList .front ();
 
-		processInterests ();
-	}
+	undoStep -> redo ();
+
+	undoList .emplace_back (undoStep);
+	redoList .pop_front ();
+
+	processInterests ();
 }
 
 void
 UndoHistory::clear ()
 {
-	list .clear ();
+	undoList .clear ();
+	redoList .clear ();
 
-	index = -1;
-
-	save ();
+	setSaved ();
 
 	processInterests ();
 }
