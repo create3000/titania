@@ -136,7 +136,8 @@ protected:
 
 	virtual
 	void
-	configure ();
+	configure ()
+	{ }
 
 	virtual
 	void
@@ -211,6 +212,9 @@ private:
 	on_focus_out_event (GdkEventFocus*);
 
 	///  @name Operations
+
+	void
+	restoreDialogs ();
 
 	void
 	removeDialog (const std::string &);

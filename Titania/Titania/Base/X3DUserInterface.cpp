@@ -124,13 +124,15 @@ X3DUserInterface::setName (const std::string & value)
 
 	config .reset (new Configuration (value));
 
-	if (getWidget () .get_mapped ())
+	if (not constructed_connection .connected ())
 		configure ();
 }
 
 void
 X3DUserInterface::on_constructed ()
 {
+	__LOG__ << "Initializing widget: " << getName () << std::endl;
+
 	constructed_connection .disconnect ();
 
 	getWindow () .set_deletable (true); /// ??? Does it work with the Gnome shell ???
@@ -138,10 +140,6 @@ X3DUserInterface::on_constructed ()
 
 	getWidget () .signal_map ()   .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
 	getWidget () .signal_unmap () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_unmap));
-
-	#ifdef TITANIA_DEBUG
-	std::clog << "Initializing widget: " << getName () << std::endl;
-	#endif
 
 	on_map ();
 
@@ -153,6 +151,10 @@ X3DUserInterface::on_constructed ()
 		getWindow () .fullscreen ();
 
 	set_fullscreen (isFullscreen ());
+
+	Glib::signal_idle () .connect_once (sigc::mem_fun (*this, &X3DUserInterface::restoreDialogs), Glib::PRIORITY_HIGH);
+
+	__LOG__ << "Initialized widget: " << getName () << std::endl;
 }
 
 void
@@ -187,22 +189,6 @@ X3DUserInterface::removeFocus (Gtk::Widget & parent)
 			   break;
 			}
 		}
-	}
-}
-
-void
-X3DUserInterface::configure ()
-{
-	// Restore dialogs
-
-	auto dialogNames = std::vector <std::string> ();
-
-	basic::split (std::back_inserter (dialogNames), getConfig () -> getString ("dialogs"), ";");
-
-	for (const auto & dialogName : dialogNames)
-	{
-		if (restorableDialogs .count (dialogName))
-			addDialog (dialogName, true);
 	}
 }
 
@@ -265,6 +251,22 @@ X3DUserInterface::on_delete_event (GdkEventAny*)
 	removeFocus (getWidget ());
 
 	return quit ();
+}
+
+void
+X3DUserInterface::restoreDialogs ()
+{
+	// Restore dialogs
+
+	auto dialogNames = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (dialogNames), getConfig () -> getString ("dialogs"), ";");
+
+	for (const auto & dialogName : dialogNames)
+	{
+		if (restorableDialogs .count (dialogName))
+			addDialog (dialogName, true);
+	}
 }
 
 bool

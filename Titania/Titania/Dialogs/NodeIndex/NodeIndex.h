@@ -103,6 +103,9 @@ public:
 	void
 	scrollToRow (const X3D::SFNode & node);
 
+	void
+	rowChanged (const size_t index);
+
 	const X3D::MFNode &
 	getNodes () const
 	{ return nodes; }
@@ -162,10 +165,10 @@ private:
 	///  @name Event handlers
 
 	void
-	set_executionContext ();
+	set_nodes (const X3D::MFNode & value);
 
 	void
-	on_row_changed (const size_t index);
+	set_executionContext ();
 
 	virtual
 	bool

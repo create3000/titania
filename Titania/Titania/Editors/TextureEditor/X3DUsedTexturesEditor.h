@@ -100,13 +100,16 @@ private:
 	///  @name Event handlers
 
 	void
-	set_texture ();
-
-	X3D::Browser*
-	on_render_node ();
+	set_initialized ();
 
 	void
-	set_camera ();
+	set_texture ();
+
+	void
+	on_row_changed (const Gtk::TreePath & path, const Gtk::TreeIter & iter);
+
+	void
+	set_camera (const size_t index);
 
 	void
 	set_camera (double width, double height);
@@ -118,7 +121,7 @@ private:
 
 	X3D::BrowserPtr                 preview;
 	std::unique_ptr <NodeIndex>     nodeIndex;
-	X3D::BrowserCellRenderer* const cellrenderer;
+	X3D::MFTime                     times;
 
 };
 

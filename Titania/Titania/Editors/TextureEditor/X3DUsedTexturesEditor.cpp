@@ -54,7 +54,6 @@
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/X3D/Browser/BrowserCellRenderer.h>
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Components/Navigation/OrthoViewpoint.h>
@@ -69,14 +68,19 @@ X3DUsedTexturesEditor::X3DUsedTexturesEditor () :
 	X3DTextureEditorInterface (),
 	                  preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }, { })),
 	                nodeIndex (new NodeIndex (getBrowserWindow ())),
-	             cellrenderer (Gtk::manage (new X3D::BrowserCellRenderer ()))
+	                    times ()
 {
-	addChildObjects (preview);
+	addChildObjects (preview, times);
+
+	nodeIndex -> setName ("X3DUsedTexturesEditorNodeIndex");
 }
 
 void
 X3DUsedTexturesEditor::initialize ()
 {
+	// Browser
+
+	preview -> initialized () .addInterest (&X3DUsedTexturesEditor::set_initialized, this);
 	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
 	preview -> set_opacity (0);
@@ -99,11 +103,18 @@ X3DUsedTexturesEditor::initialize ()
 
 	// Tree view column
 
-	cellrenderer -> property_callback () .set_value (std::bind (&X3DUsedTexturesEditor::on_render_node, this));
-
+	nodeIndex -> getListStore () -> signal_row_inserted () .connect (sigc::mem_fun (this, &X3DUsedTexturesEditor::on_row_changed));
+	nodeIndex -> getListStore () -> signal_row_changed ()  .connect (sigc::mem_fun (this, &X3DUsedTexturesEditor::on_row_changed));
 	nodeIndex -> getImageColumn () -> set_visible (true);
-	nodeIndex -> getImageColumn () -> pack_start (*cellrenderer, false);
-	nodeIndex -> getImageColumn () -> add_attribute (*cellrenderer, "index", nodeIndex -> getIndexColumn ());
+}
+
+void
+X3DUsedTexturesEditor::set_initialized ()
+{
+	times .clear ();
+
+	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
+		nodeIndex -> rowChanged (i);
 }
 
 void
@@ -113,31 +124,46 @@ X3DUsedTexturesEditor::set_texture ()
 	nodeIndex -> scrollToRow (getTexture ());
 }
 
-X3D::Browser*
-X3DUsedTexturesEditor::on_render_node ()
+void
+X3DUsedTexturesEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::TreeIter & iter)
 {
+
 	try
 	{
-		const auto index      = cellrenderer -> property_index () .get_value ();
+		// Check.
+
+		if (path .size () > 1)
+			return;
+
+		const auto index = path .back ();
+
+		if (times .get1Value (index) == getCurrentBrowser () -> getCurrentTime ())
+			return;
+
+		times .set1Value (index, getCurrentBrowser () -> getCurrentTime ());
+
+		// Configure scene.
+
 		const auto appearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
 
 		appearance -> texture () = nodeIndex -> getNodes () .at (index);
 
-		set_camera ();
+		set_camera (index);
+
+		// Create Icon.
+
+		getBrowserWindow () -> createIcon (nodeIndex -> getName () + basic::to_string (path .back ()),
+		                                   preview -> getSnapshot (16, 16, false, 8));
 	}
 	catch (const std::exception & error)
 	{
-		//__LOG__ << error .what () << std::endl;
+		__LOG__ << error .what () << std::endl;
 	}
-
-	return preview;
 }
 
 void
-X3DUsedTexturesEditor::set_camera ()
+X3DUsedTexturesEditor::set_camera (const size_t index)
 {
-	const auto index = cellrenderer -> property_index () .get_value ();
-
 	const X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (nodeIndex -> getNodes () .at (index));
 
 	if (texture2DNode)

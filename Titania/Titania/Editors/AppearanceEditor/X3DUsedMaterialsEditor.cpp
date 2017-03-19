@@ -77,6 +77,9 @@ X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 void
 X3DUsedMaterialsEditor::initialize ()
 {
+	// Browser
+
+	preview -> initialized () .addInterest (&X3DUsedMaterialsEditor::set_initialized, this);
 	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
 	preview -> set_opacity (0);
@@ -105,6 +108,15 @@ X3DUsedMaterialsEditor::initialize ()
 }
 
 void
+X3DUsedMaterialsEditor::set_initialized ()
+{
+	times .clear ();
+
+	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
+		nodeIndex -> rowChanged (i);
+}
+
+void
 X3DUsedMaterialsEditor::set_material ()
 {
 	nodeIndex -> setSelection (getMaterial ());
@@ -116,6 +128,8 @@ X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::T
 {
 	try
 	{
+		// Check.
+
 		if (path .size () > 1)
 			return;
 
@@ -125,6 +139,8 @@ X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::T
 			return;
 
 		times .set1Value (index, getCurrentBrowser () -> getCurrentTime ());
+
+		// Configure scene.
 
 		const X3D::X3DPtr <X3D::Material>         material (nodeIndex -> getNodes () .at (index));
 		const X3D::X3DPtr <X3D::TwoSidedMaterial> twoSidedMaterial (nodeIndex -> getNodes () .at (index));
@@ -155,7 +171,7 @@ X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::T
 
 		sphere -> whichChoice () = twoSidedMaterial;
 
-		// Create Icon
+		// Create Icon.
 
 		getBrowserWindow () -> createIcon (nodeIndex -> getName () + basic::to_string (path .back ()),
 		                                   preview -> getSnapshot (16, 16, false, 8));
