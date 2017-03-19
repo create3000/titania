@@ -1062,8 +1062,6 @@ X3DBrowserWidget::createIcon ()
 void
 X3DBrowserWidget::createIcon (const std::string & name, const std::string & document)
 {
-	const Gtk::StockID stockId = Gtk::StockID (name);
-
 	Glib::RefPtr <Gtk::IconSet> iconSet;
 
 	if (not document .empty ())
@@ -1083,6 +1081,8 @@ X3DBrowserWidget::createIcon (const std::string & name, const std::string & docu
 	if (not iconSet)
 		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
 
+	const Gtk::StockID stockId = Gtk::StockID (name);
+
 	getIconFactory () -> add (stockId, iconSet);
 	Gtk::Stock::add (Gtk::StockItem (stockId, name));
 }
@@ -1090,8 +1090,6 @@ X3DBrowserWidget::createIcon (const std::string & name, const std::string & docu
 void
 X3DBrowserWidget::createIcon (const std::string & name, Magick::Image && image)
 {
-	const Gtk::StockID stockId = Gtk::StockID (name);
-
 	Glib::RefPtr <Gtk::IconSet> iconSet;
 
 	try
@@ -1107,6 +1105,8 @@ X3DBrowserWidget::createIcon (const std::string & name, Magick::Image && image)
 
 	if (not iconSet)
 		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
+
+	const Gtk::StockID stockId = Gtk::StockID (name);
 
 	getIconFactory () -> add (stockId, iconSet);
 	Gtk::Stock::add (Gtk::StockItem (stockId, name));

@@ -117,8 +117,6 @@ NodeIndex::initialize ()
 
 	getCurrentContext () .addInterest (&NodeIndex::set_executionContext, this);
 
-	nodes .addInterest (&NodeIndex::set_nodes, this);
-
 	// Initialize tree view:
 
 	set_executionContext ();
@@ -317,6 +315,10 @@ NodeIndex::getPath (const X3D::SFNode & node)
 void
 NodeIndex::setNodes (X3D::MFNode && value)
 {
+	static const std::string empty_string;
+	static const std::string document_import ("document-import");
+	static const std::string document_export ("document-export");
+
 	if (value == nodes)
 		return;
 
@@ -324,20 +326,6 @@ NodeIndex::setNodes (X3D::MFNode && value)
 		node -> removeInterest (&NodeIndex::rowChanged, this);
 
 	nodes = std::move (value);
-
-	if (observeNodes)
-	{
-		for (const auto & node : nodes)
-			node -> addInterest (&NodeIndex::rowChanged, this, index);
-	}
-}
-
-void
-NodeIndex::set_nodes (const X3D::MFNode & value)
-{
-	static const std::string empty_string;
-	static const std::string document_import ("document-import");
-	static const std::string document_export ("document-export");
 
 	hadjustment -> preserve (getTreeView () .get_hadjustment ());
 	vadjustment -> preserve (getTreeView () .get_vadjustment ());
@@ -359,6 +347,9 @@ NodeIndex::set_nodes (const X3D::MFNode & value)
 		row -> set_value (Columns::IMPORTED_NODES, importingInlines .count (node) ? document_import : empty_string);
 		row -> set_value (Columns::EXPORTED_NODES, exportedNodes .count (node)    ? document_export : empty_string);
 		row -> set_value (Columns::INDEX,          index);
+	
+		if (observeNodes)
+			node -> addInterest (&NodeIndex::rowChanged, this, index);
 
 		++ index;
 	}

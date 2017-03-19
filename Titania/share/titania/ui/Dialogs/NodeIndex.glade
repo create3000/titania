@@ -114,7 +114,7 @@
                     <property name="sizing">autosize</property>
                     <property name="sort_column_id">0</property>
                     <child>
-                      <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf3"/>
+                      <object class="GtkCellRendererPixbuf" id="CellRendererImage"/>
                       <attributes>
                         <attribute name="stock-id">0</attribute>
                       </attributes>

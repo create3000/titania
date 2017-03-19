@@ -63,6 +63,9 @@
 namespace titania {
 namespace puck {
 
+static constexpr size_t IMAGE_SIZE = 48;
+static constexpr size_t ICON_SIZE  = Gtk::ICON_SIZE_DIALOG;
+
 X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 	X3DAppearanceEditorInterface (),
 	                     preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
@@ -105,6 +108,7 @@ X3DUsedMaterialsEditor::initialize ()
 	nodeIndex -> getListStore () -> signal_row_inserted () .connect (sigc::mem_fun (this, &X3DUsedMaterialsEditor::on_row_changed));
 	nodeIndex -> getListStore () -> signal_row_changed ()  .connect (sigc::mem_fun (this, &X3DUsedMaterialsEditor::on_row_changed));
 	nodeIndex -> getImageColumn () -> set_visible (true);
+	nodeIndex -> getCellRendererImage () -> property_stock_size () = ICON_SIZE;
 }
 
 void
@@ -174,11 +178,11 @@ X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::T
 		// Create Icon.
 
 		getBrowserWindow () -> createIcon (nodeIndex -> getName () + basic::to_string (path .back ()),
-		                                   preview -> getSnapshot (16, 16, false, 8));
+		                                   preview -> getSnapshot (IMAGE_SIZE, IMAGE_SIZE, false, 8));
 	}
 	catch (const std::exception & error)
 	{ 
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 

@@ -165,9 +165,6 @@ private:
 	///  @name Event handlers
 
 	void
-	set_nodes (const X3D::MFNode & value);
-
-	void
 	set_executionContext ();
 
 	virtual
