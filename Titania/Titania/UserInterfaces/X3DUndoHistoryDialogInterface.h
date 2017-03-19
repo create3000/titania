@@ -126,11 +126,27 @@ public:
 	getTreeView () const
 	{ return *m_TreeView; }
 
+	Gtk::Button &
+	getUndoButton () const
+	{ return *m_UndoButton; }
+
+	Gtk::Button &
+	getRedoButton () const
+	{ return *m_RedoButton; }
+
 	///  @name Signal handlers
 
 	virtual
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+
+	virtual
+	void
+	on_undo_clicked () = 0;
+
+	virtual
+	void
+	on_redo_clicked () = 0;
 
 	///  @name Destruction
 
@@ -164,6 +180,8 @@ private:
 	Gtk::HeaderBar*                    m_HeaderBar;
 	Gtk::ScrolledWindow*               m_ScrolledWindow;
 	Gtk::TreeView*                     m_TreeView;
+	Gtk::Button*                       m_UndoButton;
+	Gtk::Button*                       m_RedoButton;
 
 };
 

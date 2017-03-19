@@ -92,6 +92,14 @@ private:
 
 	virtual
 	void
+	on_undo_clicked () final override;
+
+	virtual
+	void
+	on_redo_clicked () final override;
+
+	virtual
+	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
 
 	static
@@ -105,6 +113,7 @@ private:
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;
 
+	X3D::SFTime undoBuffer;
 };
 
 } // puck

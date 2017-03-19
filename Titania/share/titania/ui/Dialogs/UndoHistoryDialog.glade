@@ -35,7 +35,6 @@
             <property name="title">Undo History</property>
             <child>
               <object class="GtkImage" id="image1">
-                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="stock">Index</property>
               </object>
@@ -110,13 +109,14 @@
             <property name="halign">end</property>
             <property name="spacing">4</property>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="UndoButton">
                 <property name="label">gtk-undo</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_undo_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -125,13 +125,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="RedoButton">
                 <property name="label">gtk-redo</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
                 <property name="always_show_image">True</property>
+                <signal name="clicked" handler="on_redo_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

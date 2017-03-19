@@ -282,6 +282,16 @@ sub cpp_signals
 
 	if ($self -> {object} ne $self -> {class})
 	{
+		if (! $self->{id})
+		{
+			warn "\n";
+			warn "*" x 80, "\n";
+			warn "\n";
+			warn "$self->{class} has no id!\n";
+			warn "\n";
+			warn "*" x 80, "\n";
+		}
+
 		$self -> {object} = $self -> {class};
 		
 		say $file "";

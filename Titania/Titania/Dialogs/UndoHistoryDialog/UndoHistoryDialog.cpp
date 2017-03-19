@@ -70,9 +70,10 @@ UndoHistoryDialog::UndoHistoryDialog (X3DBrowserWindow* const browserWindow) :
 	X3DUndoHistoryDialogInterface (get_ui ("Dialogs/UndoHistoryDialog.glade")),
 	                      browser (browserWindow -> getCurrentBrowser ()),
 	                  hadjustment (new AdjustmentObject ()),
-	                  vadjustment (new AdjustmentObject ())
+	                  vadjustment (new AdjustmentObject ()),
+	                   undoBuffer ()
 {
-	addChildObjects (browser);
+	addChildObjects (browser, undoBuffer);
 
 	setup ();
 }
@@ -84,17 +85,19 @@ UndoHistoryDialog::initialize ()
 
 	getCurrentBrowser () .addInterest (&UndoHistoryDialog::set_browser, this);
 
+	undoBuffer .addInterest (&UndoHistoryDialog::set_undoHistory, this);
+
 	set_browser ();
 }
 
 void
 UndoHistoryDialog::set_browser ()
 {
-	getBrowserWindow () -> getUndoHistory (getCurrentBrowser ()) .removeInterest (&UndoHistoryDialog::set_undoHistory, this);
+	getBrowserWindow () -> getUndoHistory (getCurrentBrowser ()) .removeInterest (&X3D::SFTime::setValue, undoBuffer);
 
 	browser = getCurrentBrowser ();
 
-	getBrowserWindow () -> getUndoHistory (getCurrentBrowser ()) .addInterest (&UndoHistoryDialog::set_undoHistory, this);
+	getBrowserWindow () -> getUndoHistory (getCurrentBrowser ()) .addInterest (&X3D::SFTime::setValue, undoBuffer, 1);
 
 	set_undoHistory ();
 }
@@ -110,9 +113,11 @@ UndoHistoryDialog::set_undoHistory ()
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
+	const auto & undoHistory = getBrowserWindow () -> getUndoHistory (getCurrentBrowser ());
+
 	size_t number = 1;
 
-	for (const auto & undoStep : getBrowserWindow () -> getUndoHistory (getCurrentBrowser ()) .getUndoList ())
+	for (const auto & undoStep : undoHistory .getUndoList ())
 	{
 		const auto row = getListStore () -> append ();
 
@@ -123,7 +128,7 @@ UndoHistoryDialog::set_undoHistory ()
 		++ number;
 	}
 
-	for (const auto & undoStep : getBrowserWindow () -> getUndoHistory (getCurrentBrowser ()) .getRedoList ())
+	for (const auto & undoStep : undoHistory .getRedoList ())
 	{
 		const auto row = getListStore () -> append ();
 
@@ -136,12 +141,47 @@ UndoHistoryDialog::set_undoHistory ()
 
 	getTreeView () .set_model (getListStore ());
 	getTreeView () .set_search_column (Columns::DESCRIPTION);
+
+	getUndoButton () .set_sensitive (undoHistory .hasUndo ());
+	getRedoButton () .set_sensitive (undoHistory .hasRedo ());
+}
+
+void
+UndoHistoryDialog::on_undo_clicked ()
+{
+	getBrowserWindow () -> undo ();
+}
+
+void
+UndoHistoryDialog::on_redo_clicked ()
+{
+	getBrowserWindow () -> redo ();
 }
 
 void
 UndoHistoryDialog::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn*)
 {
+	const size_t index       = path .front ();
+	const auto & undoHistory = getBrowserWindow () -> getUndoHistory (getCurrentBrowser ());
 
+	if (index < undoHistory .getUndoList () .size ())
+	{
+		// Undo
+
+		const auto size = undoHistory .getUndoList () .size () - index;
+
+		for (size_t i = 0; i < size; ++ i)
+			on_undo_clicked ();
+	}
+	else
+	{
+		// Redo
+
+		const auto size = index - undoHistory .getUndoList () .size () + 1;
+
+		for (size_t i = 0; i < size; ++ i)
+			on_redo_clicked ();	
+	}
 }
 
 void
