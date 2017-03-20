@@ -84,11 +84,11 @@ PrecisionPlacementPanel::PrecisionPlacementPanel (X3DBrowserWindow* const browse
 	                                     getBBoxCenterZAdjustment (),
 	                                     getBBoxCenterBox (),
 	                                     "bboxCenter"),
+	                   executionContext (browserWindow -> getCurrentContext ()),
 	                      boundedObject (),
-	                       geometryNode (),
-	                     bboxConnection ()
+	                       geometryNode ()
 {
-	addChildObjects (boundedObject, geometryNode);
+	addChildObjects (executionContext, boundedObject, geometryNode);
 
 	setup ();
 }
@@ -123,6 +123,30 @@ PrecisionPlacementPanel::configure ()
 }
 
 void
+PrecisionPlacementPanel::on_map ()
+{
+	getCurrentContext () .addInterest (&PrecisionPlacementPanel::set_execution_context, this);
+
+	set_execution_context ();
+}
+
+void
+PrecisionPlacementPanel::on_unmap ()
+{
+	getCurrentContext () .removeInterest (&PrecisionPlacementPanel::set_execution_context, this);
+}
+
+void
+PrecisionPlacementPanel::set_execution_context ()
+{
+	executionContext -> bbox_changed () .removeInterest (&PrecisionPlacementPanel::set_bbox, this);
+
+	executionContext = getCurrentContext ();
+
+	executionContext -> bbox_changed () .addInterest (&PrecisionPlacementPanel::set_bbox, this);
+}
+
+void
 PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 {
 	X3DPrecisionPlacementPanelInterface::set_selection (selection);
@@ -153,12 +177,6 @@ PrecisionPlacementPanel::set_selection (const X3D::MFNode & selection)
 
 	getFillBoundingBoxFieldsButton () .set_sensitive (boundedObject and not boundedObject -> isType ({ X3D::X3DConstants::X3DEnvironmentalSensorNode }));
 	getWindow () .resize (getWindow () .get_width (), 1);
-
-	if (boundedObject or geometryNode)
-	{
-		bboxConnection .disconnect ();
-		bboxConnection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &PrecisionPlacementPanel::on_bbox), 1000);
-	}
 }
 
 void
@@ -224,8 +242,8 @@ PrecisionPlacementPanel::on_fill_bounding_box_fields_clicked ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
-bool
-PrecisionPlacementPanel::on_bbox ()
+void
+PrecisionPlacementPanel::set_bbox ()
 {
 	X3D::Box3d bbox;
 
@@ -244,15 +262,11 @@ PrecisionPlacementPanel::on_bbox ()
 	getBBoxCenterXLabel () .set_text (basic::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .x ())));
 	getBBoxCenterYLabel () .set_text (basic::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .y ())));
 	getBBoxCenterZLabel () .set_text (basic::to_string (getCurrentScene () -> toUnit (X3D::UnitCategory::LENGTH, bboxCenter .z ())));
-
-	return true;
 }
 
 void
 PrecisionPlacementPanel::store ()
 {
-	bboxConnection .disconnect ();
-
 	getConfig () -> setItem ("bboxUniformSize", getBBoxUniformSizeButton () .get_active ());
 
 	X3DGeometrySelectionEditor::store ();

@@ -129,6 +129,16 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
+//	virtual
+//	SFInt32 &
+//	dimension ()
+//	{ return *fields .dimension; }
+//
+//	virtual
+//	const SFInt32 &
+//	dimension () const
+//	{ return *fields .dimension; }
+
 	///  @name Operations
 
 	virtual

@@ -108,6 +108,17 @@ private:
 
 	virtual
 	void
+	on_map () final override;
+
+	virtual
+	void
+	on_unmap () final override;
+
+	void
+	set_execution_context ();
+
+	virtual
+	void
 	set_selection (const X3D::MFNode & selection) final override;
 
 	///  @name Event handlers
@@ -124,8 +135,8 @@ private:
 	void
 	on_fill_bounding_box_fields_clicked () final override;
 
-	bool
-	on_bbox ();
+	void
+	set_bbox ();
 	
 	virtual
 	void
@@ -137,9 +148,9 @@ private:
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxSize;
 	X3DFieldAdjustment3 <X3D::SFVec3f> bboxCenter;
 
+	X3D::X3DExecutionContextPtr         executionContext;
 	X3D::X3DPtr <X3D::X3DBoundedObject> boundedObject;
 	X3D::X3DPtr <X3D::X3DGeometryNode>  geometryNode;
-	sigc::connection                    bboxConnection;
 
 };
 

@@ -1082,6 +1082,14 @@ public:
 
 	virtual
 	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_unmap () = 0;
+
+	virtual
+	void
 	on_index_clicked () = 0;
 
 	virtual
