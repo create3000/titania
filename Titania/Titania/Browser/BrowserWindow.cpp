@@ -908,7 +908,7 @@ BrowserWindow::on_cut_activated ()
 	if (selection .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Cut Nodes"));
 
 	getSelection () -> clearNodes (undoStep);
 
@@ -941,7 +941,7 @@ BrowserWindow::on_paste_activated ()
 
 	auto selection = getSelection () -> getNodes ();
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Paste"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Paste Nodes"));
 
 	pasteNodes (getCurrentContext (), selection, undoStep);
 
@@ -1019,7 +1019,7 @@ BrowserWindow::on_group_selected_nodes_activated ()
 	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Group Selection"));
 	const auto group    = X3D::X3DEditor::groupNodes (getCurrentContext (), "Transform", selection, undoStep);
 
 	getSelection () -> setNodes ({ group }, undoStep);
@@ -1039,7 +1039,7 @@ BrowserWindow::on_ungroup_activated ()
 	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Ungroup"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Ungroup Selection"));
 
 	getSelection () -> clearNodes (undoStep);
 
@@ -1061,7 +1061,7 @@ BrowserWindow::on_add_to_group_activated ()
 	if (checkForClones (selection .cbegin (), selection .cend () - 1))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add To Group"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Add Selection To Group"));
 
 	getSelection () -> undoRestoreNodes (undoStep);
 
@@ -1087,7 +1087,7 @@ BrowserWindow::on_detach_from_group_activated ()
 	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Detach From Group"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Detach Selection From Group"));
 
 	getSelection () -> undoRestoreNodes (undoStep);
 	getSelection () -> redoRestoreNodes (undoStep);
@@ -1228,7 +1228,7 @@ BrowserWindow::on_create_parent (const std::string & typeName, const std::string
 	if (checkForClones (selection .cbegin (), selection .cend ()))
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Nod »%s«"), typeName .c_str ()));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Node »%s«"), typeName .c_str ()));
 	const auto group    = X3D::X3DEditor::createParentGroup (getCurrentContext (), typeName, fieldName, selection, undoStep);
 
 	getSelection () -> setNodes ({ group }, undoStep);

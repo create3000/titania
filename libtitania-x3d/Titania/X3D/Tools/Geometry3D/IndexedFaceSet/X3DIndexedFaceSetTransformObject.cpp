@@ -331,7 +331,7 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_active (const bool active)
 	{
 		// Create undo step for translation.
 
-		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Translate %s »point«"), getCoord () -> getTypeName () .c_str ()));
+		undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Transform %s »point«"), getCoord () -> getTypeName () .c_str ()));
 
 		undoSetCoordPoint (undoStep);
 

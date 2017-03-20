@@ -141,7 +141,7 @@ X3DTransformEditor::on_transform_move_center_button ()
 	if (getBrowserWindow () -> getSelection () -> getNodes () .empty ())
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Center Of Transform To BBox Center"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Move Center Of Transform To Bounding Box Center"));
 	
 	for (const auto & node : getBrowserWindow () -> getSelection () -> getNodes ())
 	{
