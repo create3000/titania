@@ -63,7 +63,8 @@ X3DConeEditor::X3DConeEditor () :
 	                              bottom (this, getConeBottomCheckButton (), "bottom"),
 	                              height (this, getConeHeightAdjustment (), getConeHeightSpinButton (), "height"),
 	                        bottomRadius (this, getConeBottomRadiusAdjustment (), getConeBottomRadiusSpinButton (), "bottomRadius"),
-	                          xDimension (this, getConeXDimensionAdjustment (), getConeXDimensionSpinButton (), "xDimension")
+	                          xDimension (this, getConeXDimensionAdjustment (), getConeXDimensionSpinButton (), "xDimension"),
+	                            changing (false)
 { }
 
 void
@@ -78,7 +79,45 @@ X3DConeEditor::set_geometry ()
 	bottom       .setNodes (nodes);
 	height       .setNodes (nodes);
 	bottomRadius .setNodes (nodes);
-	xDimension   .setNodes (global);
+	xDimension   .setNodes (nodes);
+
+	if (nodes .empty ())
+		getConeUseGlobalOptionsCheckButton () .set_sensitive (false);
+
+	else
+	{
+		changing = true;
+
+		const auto global = nodes .back () -> getField <X3D::SFInt32> ("xDimension") < 3;
+
+		getConeXDimensionBox ()               .set_sensitive (not global);
+		getConeUseGlobalOptionsCheckButton () .set_sensitive (true);
+		getConeUseGlobalOptionsCheckButton () .set_active (global);
+
+		changing = false;
+	}
+}
+
+void
+X3DConeEditor::on_cone_use_global_options_toggled ()
+{
+	if (changing)
+		return;
+
+	if (getConeUseGlobalOptionsCheckButton () .get_active ())
+	{
+		getConeXDimensionBox () .set_sensitive (false);
+
+		for (const auto & node : xDimension .getNodes ())
+			node -> setField <X3D::SFInt32> ("xDimension", 0);
+	}
+	else
+	{
+		getConeXDimensionBox () .set_sensitive (true);
+
+		for (const auto & node : xDimension .getNodes ())
+			node -> setField <X3D::SFInt32> ("xDimension", getCurrentBrowser () -> getConeOptions () -> xDimension ());	
+	}
 }
 
 X3DConeEditor::~X3DConeEditor ()

@@ -147,6 +147,18 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
+	///  @name Hidden fields
+
+	virtual
+	SFInt32 &
+	xDimension ()
+	{ return *fields .xDimension; }
+
+	virtual
+	const SFInt32 &
+	xDimension () const
+	{ return *fields .xDimension; }
+
 	///  @name Operations
 
 	virtual
@@ -174,6 +186,11 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_xDimension ();
+
 	///  @name Operations
 
 	virtual
@@ -191,6 +208,8 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
+	static const std::string   META_CONE_X_DIMENSION;
+
 	///  @name Members
 
 	struct Fields
@@ -202,6 +221,7 @@ private:
 		SFFloat* const height;
 		SFFloat* const bottomRadius;
 		SFBool* const solid;
+		SFInt32* const xDimension;
 	};
 
 	Fields fields;

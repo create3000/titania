@@ -126,6 +126,18 @@ public:
 	solid () const final override
 	{ return getNode <Cone> () -> solid (); }
 
+	///  @name Hidden fields
+
+	virtual
+	SFInt32 &
+	xDimension () final override
+	{ return getNode <Cone> () -> xDimension (); }
+
+	virtual
+	const SFInt32 &
+	xDimension () const final override
+	{ return getNode <Cone> () -> xDimension (); }
+
 	///  @name Operations
 
 	virtual

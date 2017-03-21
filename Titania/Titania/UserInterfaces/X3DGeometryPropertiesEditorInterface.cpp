@@ -168,7 +168,9 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ConeHeightSpinButton", m_ConeHeightSpinButton);
 	m_builder -> get_widget ("ConeSideCheckButton", m_ConeSideCheckButton);
 	m_builder -> get_widget ("ConeBottomCheckButton", m_ConeBottomCheckButton);
+	m_builder -> get_widget ("ConeXDimensionBox", m_ConeXDimensionBox);
 	m_builder -> get_widget ("ConeXDimensionSpinButton", m_ConeXDimensionSpinButton);
+	m_builder -> get_widget ("ConeUseGlobalOptionsCheckButton", m_ConeUseGlobalOptionsCheckButton);
 	m_builder -> get_widget ("CylinderExpander", m_CylinderExpander);
 	m_builder -> get_widget ("CylinderRadiusSpinButton", m_CylinderRadiusSpinButton);
 	m_builder -> get_widget ("CylinderHeightSpinButton", m_CylinderHeightSpinButton);
@@ -298,7 +300,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
 	m_BoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_box_uniform_size_clicked));
 
-	// Connect object Gtk::CheckButton with id 'CylinderUseGlobalOptionsCheckButton'.
+	// Connect object Gtk::CheckButton with id 'ConeUseGlobalOptionsCheckButton'.
+	m_ConeUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_cone_use_global_options_toggled));
 	m_CylinderUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_cylinder_use_global_options_toggled));
 
 	// Connect object Gtk::Button with id 'AddNormalsButton'.

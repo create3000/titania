@@ -67,12 +67,15 @@ const ComponentType Cone::component      = ComponentType::GEOMETRY_3D;
 const std::string   Cone::typeName       = "Cone";
 const std::string   Cone::containerField = "geometry";
 
+const std::string   Cone::META_CONE_X_DIMENSION = "/Cone/xDimension";
+
 Cone::Fields::Fields () :
 	        side (new SFBool (true)),
 	      bottom (new SFBool (true)),
 	      height (new SFFloat (2)),
 	bottomRadius (new SFFloat (1)),
-	       solid (new SFBool (true))
+	       solid (new SFBool (true)),
+	xDimension (new SFInt32 (0))
 { }
 
 Cone::Cone (X3DExecutionContext* const executionContext) :
@@ -88,9 +91,12 @@ Cone::Cone (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "height",       height ());
 	addField (initializeOnly, "bottomRadius", bottomRadius ());
 	addField (initializeOnly, "solid",        solid ());
+	addField (initializeOnly, "xDimension",   xDimension ());
 
 	height ()       .setUnit (UnitCategory::LENGTH);
 	bottomRadius () .setUnit (UnitCategory::LENGTH);
+
+	xDimension () .isHidden (true);
 }
 
 X3DBaseNode*
@@ -102,11 +108,13 @@ Cone::create (X3DExecutionContext* const executionContext) const
 void
 Cone::initialize ()
 {
-	using E = void (X3DBaseNode::*) ();
-
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getConeOptions () .addInterest ((E) &Cone::addEvent, this);
+	xDimension () .addInterest (&Cone::set_xDimension, this);
+
+	xDimension () .set (getMetaData <int32_t> (META_CONE_X_DIMENSION));
+
+	set_xDimension ();
 }
 
 void
@@ -122,7 +130,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getConeOptions () .addInterest ((E) &Cone::addEvent, this);
+		set_xDimension ();
 }
 
 Box3d
@@ -141,10 +149,27 @@ Cone::createBBox () const
 }
 
 void
+Cone::set_xDimension ()
+{
+	using E = void (X3DBaseNode::*) ();
+
+	if (xDimension () < 3)
+	{
+		removeMetaData (META_CONE_X_DIMENSION);
+		getBrowser () -> getConeOptions () .addInterest ((E) &Cone::addEvent, this);
+	}
+	else
+	{
+		setMetaData (META_CONE_X_DIMENSION, xDimension ());
+		getBrowser () -> getConeOptions () .removeInterest ((E) &Cone::addEvent, this);
+	}
+}
+
+void
 Cone::build ()
 {
 	const auto & options    = getBrowser () -> getConeOptions ();
-	const double xDimension = options -> xDimension ();
+	const double xDimension = this -> xDimension () < 3 ? options -> xDimension () : this -> xDimension ();
 
 	getTexCoords () .emplace_back ();
 
@@ -221,7 +246,7 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto & options    = getBrowser () -> getConeOptions ();
-	const double xDimension = options -> xDimension ();
+	const double xDimension = this -> xDimension () < 3 ? options -> xDimension () : this -> xDimension ();
 
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();

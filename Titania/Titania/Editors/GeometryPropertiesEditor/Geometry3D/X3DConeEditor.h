@@ -81,6 +81,12 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_cone_use_global_options_toggled () final override;
+
 	///  @name Members
 
 	X3DFieldToggleButton <X3D::SFBool> side;
@@ -88,6 +94,8 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat>  height;
 	X3DFieldAdjustment <X3D::SFFloat>  bottomRadius;
 	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
+
+	bool changing;
 
 };
 

@@ -136,6 +136,18 @@ public:
 	solid () const final override
 	{ return getNode <Cylinder> () -> solid (); }
 
+	///  @name Hidden fields
+
+	virtual
+	SFInt32 &
+	xDimension () final override
+	{ return getNode <Cylinder> () -> xDimension (); }
+
+	virtual
+	const SFInt32 &
+	xDimension () const final override
+	{ return getNode <Cylinder> () -> xDimension (); }
+
 	///  @name Operations
 
 	virtual

@@ -522,9 +522,17 @@ public:
 	getConeBottomCheckButton () const
 	{ return *m_ConeBottomCheckButton; }
 
+	Gtk::Box &
+	getConeXDimensionBox () const
+	{ return *m_ConeXDimensionBox; }
+
 	Gtk::SpinButton &
 	getConeXDimensionSpinButton () const
 	{ return *m_ConeXDimensionSpinButton; }
+
+	Gtk::CheckButton &
+	getConeUseGlobalOptionsCheckButton () const
+	{ return *m_ConeUseGlobalOptionsCheckButton; }
 
 	Gtk::Expander &
 	getCylinderExpander () const
@@ -1006,6 +1014,10 @@ public:
 
 	virtual
 	void
+	on_cone_use_global_options_toggled () = 0;
+
+	virtual
+	void
 	on_cylinder_use_global_options_toggled () = 0;
 
 	virtual
@@ -1163,7 +1175,9 @@ private:
 	Gtk::SpinButton*               m_ConeHeightSpinButton;
 	Gtk::CheckButton*              m_ConeSideCheckButton;
 	Gtk::CheckButton*              m_ConeBottomCheckButton;
+	Gtk::Box*                      m_ConeXDimensionBox;
 	Gtk::SpinButton*               m_ConeXDimensionSpinButton;
+	Gtk::CheckButton*              m_ConeUseGlobalOptionsCheckButton;
 	Gtk::Expander*                 m_CylinderExpander;
 	Gtk::SpinButton*               m_CylinderRadiusSpinButton;
 	Gtk::SpinButton*               m_CylinderHeightSpinButton;
