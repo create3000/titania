@@ -57,7 +57,6 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
-
 #include <complex>
 
 namespace titania {
@@ -67,13 +66,16 @@ const ComponentType Cylinder::component      = ComponentType::GEOMETRY_3D;
 const std::string   Cylinder::typeName       = "Cylinder";
 const std::string   Cylinder::containerField = "geometry";
 
+const std::string   Cylinder::META_CYLINDER_X_DIMENSION = "/Cylinder/xDimension";
+
 Cylinder::Fields::Fields () :
-	   top (new SFBool (true)),
-	  side (new SFBool (true)),
-	bottom (new SFBool (true)),
-	height (new SFFloat (2)),
-	radius (new SFFloat (1)),
-	 solid (new SFBool (true))
+	       top (new SFBool (true)),
+	      side (new SFBool (true)),
+	    bottom (new SFBool (true)),
+	    height (new SFFloat (2)),
+	    radius (new SFFloat (1)),
+	     solid (new SFBool (true)),
+	xDimension (new SFInt32 (0))
 { }
 
 Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
@@ -83,16 +85,19 @@ Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 {
 	addType (X3DConstants::Cylinder);
 
-	addField (inputOutput,    "metadata", metadata ());
-	addField (initializeOnly, "top",      top ());
-	addField (initializeOnly, "side",     side ());
-	addField (initializeOnly, "bottom",   bottom ());
-	addField (initializeOnly, "height",   height ());
-	addField (initializeOnly, "radius",   radius ());
-	addField (initializeOnly, "solid",    solid ());
+	addField (inputOutput,    "metadata",   metadata ());
+	addField (initializeOnly, "top",        top ());
+	addField (initializeOnly, "side",       side ());
+	addField (initializeOnly, "bottom",     bottom ());
+	addField (initializeOnly, "height",     height ());
+	addField (initializeOnly, "radius",     radius ());
+	addField (initializeOnly, "solid",      solid ());
+	addField (initializeOnly, "xDimension", xDimension ());
 
 	height () .setUnit (UnitCategory::LENGTH);
 	radius () .setUnit (UnitCategory::LENGTH);
+
+	xDimension () .isHidden (true);
 }
 
 X3DBaseNode*
@@ -104,11 +109,13 @@ Cylinder::create (X3DExecutionContext* const executionContext) const
 void
 Cylinder::initialize ()
 {
-	using E = void (X3DBaseNode::*) ();
-
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getCylinderOptions () .addInterest ((E) &Cylinder::addEvent, this);
+	xDimension () .addInterest (&Cylinder::set_xDimension, this);
+
+	xDimension () .set (getMetaData <int32_t> (META_CYLINDER_X_DIMENSION));
+
+	set_xDimension ();
 }
 
 void
@@ -124,7 +131,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getCylinderOptions () .addInterest ((E) &Cylinder::addEvent, this);
+		set_xDimension ();
 }
 
 Box3d
@@ -146,10 +153,27 @@ Cylinder::createBBox () const
 }
 
 void
+Cylinder::set_xDimension ()
+{
+	using E = void (X3DBaseNode::*) ();
+
+	if (xDimension () < 3)
+	{
+		removeMetaData (META_CYLINDER_X_DIMENSION);
+		getBrowser () -> getCylinderOptions () .addInterest ((E) &Cylinder::addEvent, this);
+	}
+	else
+	{
+		setMetaData (META_CYLINDER_X_DIMENSION, xDimension ());
+		getBrowser () -> getCylinderOptions () .removeInterest ((E) &Cylinder::addEvent, this);
+	}
+}
+
+void
 Cylinder::build ()
 {
 	const auto & options    = getBrowser () -> getCylinderOptions ();
-	const double xDimension = options -> xDimension ();
+	const double xDimension = this -> xDimension () < 3 ? options -> xDimension () : this -> xDimension ();
 
 	getTexCoords () .emplace_back ();
 
@@ -241,13 +265,12 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto & options    = getBrowser () -> getCylinderOptions ();
-	const double xDimension = options -> xDimension ();
+	const double xDimension = this -> xDimension () < 3 ? options -> xDimension () : this -> xDimension ();
 
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
-	geometry -> metadata ()    = metadata ();
 	geometry -> solid ()       = solid ();
 	geometry -> creaseAngle () = 1;
 	geometry -> texCoord ()    = texCoord;

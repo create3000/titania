@@ -175,6 +175,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CylinderBottomCheckButton", m_CylinderBottomCheckButton);
 	m_builder -> get_widget ("CylinderSideCheckButton", m_CylinderSideCheckButton);
 	m_builder -> get_widget ("CylinderTopCheckButton", m_CylinderTopCheckButton);
+	m_builder -> get_widget ("CylinderUseGlobalOptionsCheckButton", m_CylinderUseGlobalOptionsCheckButton);
+	m_builder -> get_widget ("CylinderXDimensionBox", m_CylinderXDimensionBox);
 	m_builder -> get_widget ("CylinderXDimensionSpinButton", m_CylinderXDimensionSpinButton);
 	m_builder -> get_widget ("ElevationGridBox", m_ElevationGridBox);
 	m_builder -> get_widget ("ElevationGridExpander", m_ElevationGridExpander);
@@ -295,6 +297,9 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::ToggleButton with id 'Rectangle2DUniformSizeButton'.
 	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
 	m_BoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_box_uniform_size_clicked));
+
+	// Connect object Gtk::CheckButton with id 'CylinderUseGlobalOptionsCheckButton'.
+	m_CylinderUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_cylinder_use_global_options_toggled));
 
 	// Connect object Gtk::Button with id 'AddNormalsButton'.
 	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));

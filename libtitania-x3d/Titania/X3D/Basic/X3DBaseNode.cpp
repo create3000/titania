@@ -762,6 +762,9 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	{
 		try
 		{
+			if (field -> isHidden ())
+				continue;
+
 			getInterfaceDeclaration () -> getField (field -> getName ());
 
 			predefinedFields .emplace_back (field);
@@ -804,8 +807,10 @@ X3DBaseNode::getChangedFields () const
 	{
 		if (field -> getReferences () .empty ())
 		{
-
 			if (not field -> isInitializable ())
+				continue;
+
+			if (field -> isHidden ())
 				continue;
 
 			try

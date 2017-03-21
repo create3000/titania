@@ -550,6 +550,14 @@ public:
 	getCylinderTopCheckButton () const
 	{ return *m_CylinderTopCheckButton; }
 
+	Gtk::CheckButton &
+	getCylinderUseGlobalOptionsCheckButton () const
+	{ return *m_CylinderUseGlobalOptionsCheckButton; }
+
+	Gtk::Box &
+	getCylinderXDimensionBox () const
+	{ return *m_CylinderXDimensionBox; }
+
 	Gtk::SpinButton &
 	getCylinderXDimensionSpinButton () const
 	{ return *m_CylinderXDimensionSpinButton; }
@@ -998,6 +1006,10 @@ public:
 
 	virtual
 	void
+	on_cylinder_use_global_options_toggled () = 0;
+
+	virtual
+	void
 	on_add_normals_clicked () = 0;
 
 	virtual
@@ -1158,6 +1170,8 @@ private:
 	Gtk::CheckButton*              m_CylinderBottomCheckButton;
 	Gtk::CheckButton*              m_CylinderSideCheckButton;
 	Gtk::CheckButton*              m_CylinderTopCheckButton;
+	Gtk::CheckButton*              m_CylinderUseGlobalOptionsCheckButton;
+	Gtk::Box*                      m_CylinderXDimensionBox;
 	Gtk::SpinButton*               m_CylinderXDimensionSpinButton;
 	Gtk::Box*                      m_ElevationGridBox;
 	Gtk::Expander*                 m_ElevationGridExpander;

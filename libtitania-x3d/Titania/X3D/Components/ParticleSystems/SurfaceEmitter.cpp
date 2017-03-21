@@ -124,7 +124,7 @@ SurfaceEmitter::initialize ()
 
 	// Setup
 
-	surface () .addInterest (&SurfaceEmitter::set_surface, this);
+	surface () .addInterest (&SurfaceEmitter::set_surface,  this);
 	surface () .addInterest (&SurfaceEmitter::set_geometry, this);
 
 	set_surface ();

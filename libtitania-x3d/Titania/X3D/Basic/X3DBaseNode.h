@@ -406,8 +406,7 @@ public:
 
 	///  @name Interest service
 
-	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.  This version
-	///  of the function effectivly calls addEvent on @a requester.
+	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.
 	template <class ValueType>
 	void
 	addInterest (X3DField <ValueType>* const requester) const

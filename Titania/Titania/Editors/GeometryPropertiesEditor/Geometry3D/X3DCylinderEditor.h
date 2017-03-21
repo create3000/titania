@@ -81,6 +81,12 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_cylinder_use_global_options_toggled () final override;
+
 	///  @name Members
 
 	X3DFieldToggleButton <X3D::SFBool> top;
@@ -90,6 +96,7 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat>  radius;
 	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
 
+	bool changing;
 };
 
 } // puck
