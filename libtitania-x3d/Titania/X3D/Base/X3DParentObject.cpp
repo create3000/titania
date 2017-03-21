@@ -124,7 +124,7 @@ X3DParentObject::setBrowser (X3DBrowser* const value)
 	setTainted (false);
 
 	for (const auto & object : objects)
-		addEvent (object .first, object .second);
+		addEventObject (object .first, object .second);
 
 	if (tainted)
 		addEvent ();
@@ -159,7 +159,7 @@ X3DParentObject::removeChildObject (X3DChildObject & child)
  *  Adds @a object to the router event queue.
  */
 void
-X3DParentObject::addEvent (X3DChildObject* const object)
+X3DParentObject::addEventObject (X3DChildObject* const object)
 {
 	object -> isSet (true);
 
@@ -168,14 +168,14 @@ X3DParentObject::addEvent (X3DChildObject* const object)
 
 	object -> setTainted (true);
 
-	addEvent (object, std::make_shared <Event> (object));
+	addEventObject (object, std::make_shared <Event> (object));
 }
 
 /***
  *  Adds @a object to the router event queue.
  */
 void
-X3DParentObject::addEvent (X3DChildObject* const object, const EventPtr & event)
+X3DParentObject::addEventObject (X3DChildObject* const object, const EventPtr & event)
 {
 //try
 //{

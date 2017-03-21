@@ -45,14 +45,14 @@ void
 X3DChildObject::addEvent ()
 {
 	for (const auto & parent : parents)
-		parent -> addEvent (this);
+		parent -> addEventObject (this);
 }
 
 void
-X3DChildObject::addEvent (X3DChildObject* const, const EventPtr & event)
+X3DChildObject::addEventObject (X3DChildObject* const, const EventPtr & event)
 {
 	for (const auto & parent : parents)
-		parent -> addEvent (this, event);
+		parent -> addEventObject (this, event);
 }
 
 // Children handling

@@ -98,11 +98,9 @@ Arc2D::create (X3DExecutionContext* const executionContext) const
 void
 Arc2D::initialize ()
 {
-	using E = void (X3DBaseNode::*) ();
-
 	X3DLineGeometryNode::initialize ();
 
-	getBrowser () -> getArc2DOptions () .addInterest ((E) &Arc2D::addEvent, this);
+	getBrowser () -> getArc2DOptions () .addInterest (&Arc2D::addEvent, this);
 }
 
 void
@@ -110,15 +108,13 @@ Arc2D::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	using E = void (X3DBaseNode::*) ();
-
 	if (isInitialized ())
-		getBrowser () -> getArc2DOptions () .removeInterest ((E) &Arc2D::addEvent, this);
+		getBrowser () -> getArc2DOptions () .removeInterest (&Arc2D::addEvent, this);
 
 	X3DLineGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getArc2DOptions () .addInterest ((E) &Arc2D::addEvent, this);
+		getBrowser () -> getArc2DOptions () .addInterest (&Arc2D::addEvent, this);
 }
 
 const X3DPtr <ComposedShader> &

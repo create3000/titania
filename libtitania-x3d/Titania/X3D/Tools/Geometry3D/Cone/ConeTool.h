@@ -129,6 +129,16 @@ public:
 	///  @name Hidden fields
 
 	virtual
+	SFBool &
+	useGlobalOptions () final override
+	{ return getNode <Cone> () -> useGlobalOptions (); }
+
+	virtual
+	const SFBool &
+	useGlobalOptions () const final override
+	{ return getNode <Cone> () -> useGlobalOptions (); }
+
+	virtual
 	SFInt32 &
 	xDimension () final override
 	{ return getNode <Cone> () -> xDimension (); }

@@ -50,7 +50,6 @@
 
 #include "X3DCylinderEditor.h"
 
-#include <Titania/X3D/Browser/Geometry3D/CylinderOptions.h>
 #include <Titania/X3D/Components/Geometry3D/Cylinder.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
@@ -64,62 +63,31 @@ X3DCylinderEditor::X3DCylinderEditor () :
 	                              bottom (this, getCylinderBottomCheckButton (), "bottom"),
 	                              height (this, getCylinderHeightAdjustment (), getCylinderHeightSpinButton (), "height"),
 	                              radius (this, getCylinderRadiusAdjustment (), getCylinderRadiusSpinButton (), "radius"),
-	                          xDimension (this, getCylinderXDimensionAdjustment (), getCylinderXDimensionSpinButton (), "xDimension"),
-	                            changing (false)
+	                    useGlobalOptions (this, getCylinderUseGlobalOptionsCheckButton (),"useGlobalOptions"),
+	                          xDimension (this, getCylinderXDimensionAdjustment (), getCylinderXDimensionSpinButton (), "xDimension")
 { }
 
 void
 X3DCylinderEditor::set_geometry ()
 {
-	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Cylinder });
-	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getCylinderOptions () });
+	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Cylinder });
 
 	getCylinderExpander () .set_visible (not nodes .empty ());
 
-	top        .setNodes (nodes);
-	side       .setNodes (nodes);
-	bottom     .setNodes (nodes);
-	height     .setNodes (nodes);
-	radius     .setNodes (nodes);
-	xDimension .setNodes (nodes);
+	top    .setNodes (nodes);
+	side   .setNodes (nodes);
+	bottom .setNodes (nodes);
+	height .setNodes (nodes);
+	radius .setNodes (nodes);
 
-	if (nodes .empty ())
-		getCylinderUseGlobalOptionsCheckButton () .set_sensitive (false);
-
-	else
-	{
-		changing = true;
-
-		const auto global = nodes .back () -> getField <X3D::SFInt32> ("xDimension") < 3;
-
-		getCylinderXDimensionBox ()               .set_sensitive (not global);
-		getCylinderUseGlobalOptionsCheckButton () .set_sensitive (true);
-		getCylinderUseGlobalOptionsCheckButton () .set_active (global);
-
-		changing = false;
-	}
+	useGlobalOptions .setNodes (nodes);
+	xDimension       .setNodes (nodes);
 }
 
 void
 X3DCylinderEditor::on_cylinder_use_global_options_toggled ()
 {
-	if (changing)
-		return;
-
-	if (getCylinderUseGlobalOptionsCheckButton () .get_active ())
-	{
-		getCylinderXDimensionBox () .set_sensitive (false);
-
-		for (const auto & node : xDimension .getNodes ())
-			node -> setField <X3D::SFInt32> ("xDimension", 0);
-	}
-	else
-	{
-		getCylinderXDimensionBox () .set_sensitive (true);
-
-		for (const auto & node : xDimension .getNodes ())
-			node -> setField <X3D::SFInt32> ("xDimension", getCurrentBrowser () -> getCylinderOptions () -> xDimension ());	
-	}
+	getCylinderXDimensionBox () .set_sensitive (not getCylinderUseGlobalOptionsCheckButton () .get_active ());
 }
 
 X3DCylinderEditor::~X3DCylinderEditor ()

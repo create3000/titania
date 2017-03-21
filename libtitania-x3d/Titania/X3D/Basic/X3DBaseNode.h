@@ -410,25 +410,25 @@ public:
 	template <class ValueType>
 	void
 	addInterest (X3DField <ValueType>* const requester) const
-	{ addInterest ((void (X3DField <ValueType>::*) ()) &X3DField <ValueType>::addEvent, requester); }
+	{ addInterest (&X3DField <ValueType>::addEvent, requester); }
 
 	///  Adds an interest to this object.  The @a requester is then notified about a change of this object.
 	template <class ValueType>
 	void
 	addInterest (X3DField <ValueType> & requester) const
-	{ addInterest ((void (X3DField <ValueType>::*) ()) &X3DField <ValueType>::addEvent, &requester); }
+	{ addInterest (&X3DField <ValueType>::addEvent, &requester); }
 
 	///  Removes an interest from this object.  The @a requester will not further notified about a change of this object.
 	template <class ValueType>
 	void
 	removeInterest (X3DField <ValueType>* const requester) const
-	{ removeInterest ((void (X3DField <ValueType>::*) ()) &X3DField <ValueType>::addEvent, requester); }
+	{ removeInterest (&X3DField <ValueType>::addEvent, requester); }
 
 	///  Removes an interest from this object.  The @a requester will not further notified about a change of this object.
 	template <class ValueType>
 	void
 	removeInterest (X3DField <ValueType> & requester) const
-	{ removeInterest ((void (X3DField <ValueType>::*) ()) &X3DField <ValueType>::addEvent, &requester); }
+	{ removeInterest (&X3DField <ValueType>::addEvent, &requester); }
 
 	///  @name Traversal handling
 

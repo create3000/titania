@@ -119,17 +119,17 @@ X3DGridTool::realize ()
 		auto & set_translation = getToolNode () -> getField <SFVec3f> ("set_translation");
 		translation ()  .addInterest (set_translation);
 		set_translation .addInterest (translation ());
-		set_translation .addEvent (translation ());
+		set_translation .addEventObject (translation ()); // TODO: use normal assign, and remove addEventObject from X3DField.
 
 		auto & set_rotation = getToolNode () -> getField <SFRotation> ("set_rotation");
 		rotation ()  .addInterest (set_rotation);
 		set_rotation .addInterest (rotation ());
-		set_rotation .addEvent (rotation ());
+		set_rotation .addEventObject (rotation ()); // TODO: use normal assign, and remove addEventObject from X3DField.
 
 		auto & set_scale = getToolNode () -> getField <SFVec3f> ("set_scale");
 		scale ()  .addInterest (set_scale);
 		set_scale .addInterest (scale ());
-		set_scale .addEvent (scale ());
+		set_scale .addEventObject (scale ()); // TODO: use normal assign, and remove addEventObject from X3DField.
 
 		getToolNode () -> getField <SFBool> ("isActive") .addInterest (isActive ());
 

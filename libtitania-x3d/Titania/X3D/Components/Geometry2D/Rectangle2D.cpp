@@ -93,11 +93,9 @@ Rectangle2D::create (X3DExecutionContext* const executionContext) const
 void
 Rectangle2D::initialize ()
 {
-	using E = void (X3DBaseNode::*) ();
-
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getRectangle2DOptions () .addInterest ((E) &Rectangle2D::addEvent, this);
+	getBrowser () -> getRectangle2DOptions () .addInterest (&Rectangle2D::addEvent, this);
 }
 
 void
@@ -105,15 +103,13 @@ Rectangle2D::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	using E = void (X3DBaseNode::*) ();
-
 	if (isInitialized ())
-		getBrowser () -> getRectangle2DOptions () .removeInterest ((E) &Rectangle2D::addEvent, this);
+		getBrowser () -> getRectangle2DOptions () .removeInterest (&Rectangle2D::addEvent, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getRectangle2DOptions () .addInterest ((E) &Rectangle2D::addEvent, this);
+		getBrowser () -> getRectangle2DOptions () .addInterest (&Rectangle2D::addEvent, this);
 }
 
 Box3d

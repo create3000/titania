@@ -82,17 +82,17 @@ FieldSet::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-FieldSet::addEvent (X3DChildObject* const object)
+FieldSet::addEventObject (X3DChildObject* const object)
 {
 	if (events)
-		X3DBaseNode::addEvent (object);
+		X3DBaseNode::addEventObject (object);
 }
 
 void
-FieldSet::addEvent (X3DChildObject* const object, const EventPtr & event)
+FieldSet::addEventObject (X3DChildObject* const object, const EventPtr & event)
 {
 	if (events)
-		X3DBaseNode::addEvent (object, event);
+		X3DBaseNode::addEventObject (object, event);
 }
 
 } // X3D

@@ -99,11 +99,9 @@ Disk2D::create (X3DExecutionContext* const executionContext) const
 void
 Disk2D::initialize ()
 {
-	using E = void (X3DBaseNode::*) ();
-
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getDisk2DOptions () .addInterest ((E) &Disk2D::addEvent, this);
+	getBrowser () -> getDisk2DOptions () .addInterest (&Disk2D::addEvent, this);
 }
 
 void
@@ -111,15 +109,13 @@ Disk2D::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	using E = void (X3DBaseNode::*) ();
-
 	if (isInitialized ())
-		getBrowser () -> getDisk2DOptions () .removeInterest ((E) &Disk2D::addEvent, this);
+		getBrowser () -> getDisk2DOptions () .removeInterest (&Disk2D::addEvent, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getDisk2DOptions () .addInterest ((E) &Disk2D::addEvent, this);
+		getBrowser () -> getDisk2DOptions () .addInterest (&Disk2D::addEvent, this);
 }
 
 const X3DPtr <ComposedShader> &

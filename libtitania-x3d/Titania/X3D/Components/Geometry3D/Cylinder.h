@@ -160,6 +160,16 @@ public:
 	///  @name Hidden fields
 
 	virtual
+	SFBool &
+	useGlobalOptions ()
+	{ return *fields .useGlobalOptions; }
+
+	virtual
+	const SFBool &
+	useGlobalOptions () const
+	{ return *fields .useGlobalOptions; }
+
+	virtual
 	SFInt32 &
 	xDimension ()
 	{ return *fields .xDimension; }
@@ -199,6 +209,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_useGlobalOptions ();
+
+	void
 	set_xDimension ();
 
 	///  @name Operations
@@ -217,8 +230,6 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	static const std::string   META_CYLINDER_X_DIMENSION;
-
 	///  @name Members
 
 	struct Fields
@@ -231,6 +242,7 @@ private:
 		SFFloat* const height;
 		SFFloat* const radius;
 		SFBool* const solid;
+		SFBool* const useGlobalOptions;
 		SFInt32* const xDimension;
 	};
 

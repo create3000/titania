@@ -110,17 +110,17 @@ GridTool::realize ()
 		auto & set_dimension = getToolNode () -> getField <MFInt32> ("set_dimension");
 		dimension ()  .addInterest (set_dimension);
 		set_dimension .addInterest (dimension ());
-		set_dimension .addEvent (dimension ());
+		set_dimension .addEventObject (dimension ()); // TODO: use normal assign, and remove addEventObject from X3DField.
 
 		auto & set_majorLineEvery = getToolNode () -> getField <MFInt32> ("set_majorLineEvery");
 		majorLineEvery ()  .addInterest (set_majorLineEvery);
 		set_majorLineEvery .addInterest (majorLineEvery ());
-		set_majorLineEvery .addEvent (majorLineEvery ());
+		set_majorLineEvery .addEventObject (majorLineEvery ()); // TODO: use normal assign, and remove addEventObject from X3DField.
 
 		auto & set_majorLineOffset = getToolNode () -> getField <MFInt32> ("set_majorLineOffset");
 		majorLineOffset ()  .addInterest (set_majorLineOffset);
 		set_majorLineOffset .addInterest (majorLineOffset ());
-		set_majorLineOffset .addEvent (majorLineOffset ());
+		set_majorLineOffset .addEventObject (majorLineOffset ()); // TODO: use normal assign, and remove addEventObject from X3DField.
 	}
 	catch (const X3DError & error)
 	{ }

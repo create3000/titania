@@ -135,14 +135,16 @@ public:
 		addEvent ();
 	}
 
+	///  DEPRECATED
 	///  Deferredly assigns @a value to this field and notifies its parents about a change.
 	void
-	addEvent (const X3DField & value)
+	addEventObject (const X3DField & value)
 	{
 		const auto event = std::make_shared <Event> (&value);
 
 		event -> sources .emplace (&value);
-		addEvent (this, event);
+
+		X3DFieldDefinition::addEventObject (this, event);
 	}
 
 	///  Set @a value to this field without notifying this fields parents.

@@ -90,11 +90,9 @@ Sphere::create (X3DExecutionContext* const executionContext) const
 void
 Sphere::initialize ()
 {
-	using E = void (X3DBaseNode::*) ();
-
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getSphereOptions () .addInterest ((E) &Sphere::addEvent, this);
+	getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
 }
 
 void
@@ -102,15 +100,13 @@ Sphere::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	using E = void (X3DBaseNode::*) ();
-
 	if (isInitialized ())
-		getBrowser () -> getSphereOptions () .removeInterest ((E) &Sphere::addEvent, this);
+		getBrowser () -> getSphereOptions () .removeInterest (&Sphere::addEvent, this);
 
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getSphereOptions () .addInterest ((E) &Sphere::addEvent, this);
+		getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
 }
 
 Box3d

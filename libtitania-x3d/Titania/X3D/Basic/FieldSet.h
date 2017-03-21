@@ -110,11 +110,11 @@ public:
 
 	virtual
 	void
-	addEvent (X3DChildObject* const) final override;
+	addEventObject (X3DChildObject* const) final override;
 
 	virtual
 	void
-	addEvent (X3DChildObject* const, const EventPtr &) final override;
+	addEventObject (X3DChildObject* const, const EventPtr &) final override;
 
 
 private:

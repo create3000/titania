@@ -93,9 +93,9 @@ private:
 	X3DFieldToggleButton <X3D::SFBool> bottom;
 	X3DFieldAdjustment <X3D::SFFloat>  height;
 	X3DFieldAdjustment <X3D::SFFloat>  bottomRadius;
-	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
 
-	bool changing;
+	X3DFieldToggleButton <X3D::SFBool> useGlobalOptions;
+	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
 
 };
 

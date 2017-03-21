@@ -213,13 +213,13 @@ protected:
 	///  Handler that is called when a child of this object should be marked tainted.
 	virtual
 	void
-	addEvent (X3DChildObject* const object)
+	addEventObject (X3DChildObject* const object)
 	{ addEvent (); }
 
 	///  Handler that is called when a child (field) of this node should be added to the event queue.
 	virtual
 	void
-	addEvent (X3DChildObject* const object, const EventPtr & event);
+	addEventObject (X3DChildObject* const object, const EventPtr & event);
 
 	///  @name Destruction
 

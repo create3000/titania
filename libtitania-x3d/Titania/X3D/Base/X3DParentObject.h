@@ -183,12 +183,12 @@ protected:
 	///  Handler that is called when a child (field) of this object should be marked tainted.
 	virtual
 	void
-	addEvent (X3DChildObject* const object) override;
+	addEventObject (X3DChildObject* const object) override;
 
 	///  Handler that is called when a child (field) of this object should be added to the event queue.
 	virtual
 	void
-	addEvent (X3DChildObject* const object, const EventPtr & event) override;
+	addEventObject (X3DChildObject* const object, const EventPtr & event) override;
 
 
 private:
