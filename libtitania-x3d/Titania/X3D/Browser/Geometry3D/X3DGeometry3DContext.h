@@ -60,7 +60,8 @@ namespace X3D {
 class BoxOptions;
 class ConeOptions;
 class CylinderOptions;
-class X3DSphereOptionNode;
+class SphereOptions;
+class QuadSphereProperties;
 
 class X3DGeometry3DContext :
 	virtual public X3DBaseNode
@@ -81,9 +82,13 @@ public:
 	getCylinderOptions () const
 	{ return cylinderOptions; }
 
-	const X3DPtr <X3DSphereOptionNode> &
+	const X3DPtr <SphereOptions> &
 	getSphereOptions () const
 	{ return sphereOptions; }
+
+	const X3DPtr <QuadSphereProperties> &
+	getQuadSphereProperties () const
+	{ return quadSphereProperties; }
 
 	///  @name Destruction
 
@@ -111,10 +116,11 @@ private:
 
 	///  @name Members
 
-	X3DPtr <BoxOptions>          boxOptions;
-	X3DPtr <ConeOptions>         coneOptions;
-	X3DPtr <CylinderOptions>     cylinderOptions;
-	X3DPtr <X3DSphereOptionNode> sphereOptions;
+	X3DPtr <BoxOptions>           boxOptions;
+	X3DPtr <ConeOptions>          coneOptions;
+	X3DPtr <CylinderOptions>      cylinderOptions;
+	X3DPtr <SphereOptions>        sphereOptions;
+	X3DPtr <QuadSphereProperties> quadSphereProperties;
 
 };
 

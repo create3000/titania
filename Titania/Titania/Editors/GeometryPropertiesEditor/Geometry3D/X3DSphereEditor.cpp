@@ -50,7 +50,7 @@
 
 #include "X3DSphereEditor.h"
 
-#include <Titania/X3D/Browser/Geometry3D/QuadSphereOptions.h>
+#include <Titania/X3D/Browser/Geometry3D/QuadSphereProperties.h>
 #include <Titania/X3D/Components/Geometry3D/Sphere.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
@@ -68,7 +68,7 @@ void
 X3DSphereEditor::set_geometry ()
 {
 	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Sphere });
-	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getSphereOptions () });
+	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getQuadSphereProperties () });
 
 	getSphereExpander () .set_visible (not nodes .empty ());
 

@@ -50,7 +50,7 @@
 
 #include "Sphere.h"
 
-#include "../../Browser/Geometry3D/X3DSphereOptionNode.h"
+#include "../../Browser/Geometry3D/SphereOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 

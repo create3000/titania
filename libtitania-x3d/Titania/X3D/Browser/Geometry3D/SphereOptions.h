@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,31 +48,110 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_OPTION_NODE_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_OPTION_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_SPHERE_OPTIONS_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_SPHERE_OPTIONS_H__
 
 #include "../Rendering/X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DSphereOptionNode :
+class X3DSpherePropertiesNode;
+
+class SphereOptions :
 	public X3DGeometricOptionNode
 {
 public:
 
-	///  @name Operations
+	///  @name Construction
+
+	SphereOptions (X3DExecutionContext* const executionContext);
+
+	///  @name Common members
 
 	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFNode &
+	properties ()
+	{ return *fields .properties; }
+
+	const SFNode &
+	properties () const
+	{ return *fields .properties; }
+
+	///  @name Member access
+
+	virtual
+	GLenum
+	getVertexMode () const final override;
+
+	///  @name Operations
+
 	SFNode
-	toPrimitive (X3DExecutionContext* const executionContext) const = 0;
+	toPrimitive (X3DExecutionContext* const executionContext) const;
 
 
-protected:
+private:
 
 	///  @name Construction
 
-	X3DSphereOptionNode ();
+	virtual
+	SphereOptions*
+	create (X3DExecutionContext* const executionContext) const final override;
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Event handlers
+
+	void
+	set_properties ();
+
+	///  @name Operations
+
+	virtual
+	void
+	build () final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Fields
+
+	struct Fields
+	{
+		Fields ();
+
+		SFNode* const properties;
+	};
+
+	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DSpherePropertiesNode> propertiesNode;
 
 };
 

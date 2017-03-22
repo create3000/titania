@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,86 +48,122 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_RENDERING_X3DGEOMETRIC_OPTION_NODE_H__
-#define __TITANIA_X3D_BROWSER_RENDERING_X3DGEOMETRIC_OPTION_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_PARAMETER_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_PARAMETER_H__
 
-#include "../Core/X3DOptionNode.h"
-
-#include "../../Fields/SFNode.h"
-#include "../../Rendering/OpenGL.h"
+#include "../Geometry3D/X3DSpherePropertiesNode.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DGeometricOptionNode :
-	public X3DOptionNode
+class QuadSphereProperties :
+	public X3DSpherePropertiesNode
 {
 public:
 
 	///  @name Construction
 
+	QuadSphereProperties (X3DExecutionContext* const executionContext);
+
+	///  @name Common members
+
 	virtual
-	void
-	setup () final override;
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFInt32 &
+	xDimension ()
+	{ return *fields .xDimension; }
+
+	const SFInt32 &
+	xDimension () const
+	{ return *fields .xDimension; }
+
+	SFInt32 &
+	yDimension ()
+	{ return *fields .yDimension; }
+
+	const SFInt32 &
+	yDimension () const
+	{ return *fields .yDimension; }
 
 	///  @name Member access
 
-	std::vector <Vector4f> &
-	getTexCoords ()
-	{ return texCoord; }
-
-	const std::vector <Vector4f> &
-	getTexCoords () const
-	{ return texCoord; }
-
-	std::vector <Vector3f> &
-	getNormals ()
-	{ return normals; }
-
-	const std::vector <Vector3f> &
-	getNormals () const
-	{ return normals; }
-
-	std::vector <Vector3d> &
-	getVertices ()
-	{ return vertices; }
-
-	const std::vector <Vector3d> &
-	getVertices () const
-	{ return vertices; }
-
 	virtual
 	GLenum
-	getVertexMode () const = 0;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DGeometricOptionNode ();
-
-	virtual
-	void
-	initialize () override;
+	getVertexMode () const final override
+	{ return GL_QUADS; }
 
 	///  @name Operations
 
-	void
-	update ();
+	virtual
+	std::vector <Vector4f>
+	createTexCoords () const final override;
 
 	virtual
-	void
-	build () = 0;
+	std::vector <Vector3d>
+	createVertices () const final override;
+
+	virtual
+	SFNode
+	toPrimitive (X3DExecutionContext* const executionContext) const;
 
 
 private:
 
+	///  @name Construction
+
+	virtual
+	QuadSphereProperties*
+	create (X3DExecutionContext* const executionContext) const final override;
+
+	///  @name Operations
+
+	std::vector <int32_t>
+	createTexCoordIndex () const;
+
+	std::vector <Vector4f>
+	createTexCoord () const;
+
+	std::vector <int32_t>
+	createCoordIndex () const;
+
+	std::vector <Vector3d>
+	createPoints () const;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
 	///  @name Members
 
-	std::vector <Vector4f> texCoord;
-	std::vector <Vector3f> normals;
-	std::vector <Vector3d> vertices;
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const xDimension;
+		SFInt32* const yDimension;
+	};
+
+	Fields fields;
 
 };
 

@@ -45,9 +45,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/BoxOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/ConeOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/CylinderOptions.cpp \
-	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
+	Titania/X3D/Browser/Geometry3D/QuadSphereProperties.cpp \
+	Titania/X3D/Browser/Geometry3D/SphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DGeometry3DContext.cpp \
-	Titania/X3D/Browser/Geometry3D/X3DSphereOptionNode.cpp \
+	Titania/X3D/Browser/Geometry3D/X3DSpherePropertiesNode.cpp \
 	Titania/X3D/Browser/Geospatial/Geospatial.cpp \
 	Titania/X3D/Browser/KeyDeviceSensor/KeyDevice.cpp \
 	Titania/X3D/Browser/KeyDeviceSensor/Keys.cpp \

@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "QuadSphereOptions.h"
+#include "QuadSphereProperties.h"
 
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
@@ -60,32 +60,32 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType QuadSphereOptions::component      = ComponentType::TITANIA;
-const std::string   QuadSphereOptions::typeName       = "QuadSphereOptions";
-const std::string   QuadSphereOptions::containerField = "sphereOptions";
+const ComponentType QuadSphereProperties::component      = ComponentType::TITANIA;
+const std::string   QuadSphereProperties::typeName       = "QuadSphereProperties";
+const std::string   QuadSphereProperties::containerField = "sphereOptions";
 
-QuadSphereOptions::Fields::Fields () :
+QuadSphereProperties::Fields::Fields () :
 	xDimension (new SFInt32 (32)),
 	yDimension (new SFInt32 (15))
 { }
 
-QuadSphereOptions::QuadSphereOptions (X3DExecutionContext* const executionContext) :
-	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DSphereOptionNode (),
-	             fields ()
+QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const executionContext) :
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DSpherePropertiesNode (),
+	                fields ()
 {
 	addField (inputOutput, "xDimension", xDimension ());
 	addField (inputOutput, "yDimension", yDimension ());
 }
 
-QuadSphereOptions*
-QuadSphereOptions::create (X3DExecutionContext* const executionContext) const
+QuadSphereProperties*
+QuadSphereProperties::create (X3DExecutionContext* const executionContext) const
 {
-	return new QuadSphereOptions (executionContext);
+	return new QuadSphereProperties (executionContext);
 }
 
 std::vector <int32_t>
-QuadSphereOptions::createTexCoordIndex () const
+QuadSphereProperties::createTexCoordIndex () const
 {
 	std::vector <int32_t> texCoordIndices;
 	
@@ -122,7 +122,7 @@ QuadSphereOptions::createTexCoordIndex () const
 }
 
 std::vector <Vector4f>
-QuadSphereOptions::createTexCoord () const
+QuadSphereProperties::createTexCoord () const
 {
 	std::vector <Vector4f> texCoord;
 
@@ -157,7 +157,7 @@ QuadSphereOptions::createTexCoord () const
 }
 
 std::vector <int32_t>
-QuadSphereOptions::createCoordIndex () const
+QuadSphereProperties::createCoordIndex () const
 {
 	std::vector <int32_t> coordIndices;
 
@@ -181,7 +181,7 @@ QuadSphereOptions::createCoordIndex () const
 }
 
 std::vector <Vector3d>
-QuadSphereOptions::createPoints () const
+QuadSphereProperties::createPoints () const
 {
 	std::vector <Vector3d> points;
 
@@ -209,29 +209,36 @@ QuadSphereOptions::createPoints () const
 	return points;
 }
 
-void
-QuadSphereOptions::build ()
+std::vector <Vector4f>
+QuadSphereProperties::createTexCoords () const
 {
-	const std::vector <int32_t>  texCoordIndices = createTexCoordIndex ();
-	const std::vector <Vector4f> texCoords       = createTexCoord ();
-	const std::vector <int32_t>  coordIndices    = createCoordIndex ();
-	const std::vector <Vector3d> points          = createPoints ();
+	std::vector <Vector4f> texCoords;
 
-	auto texCoordIndex = texCoordIndices .begin ();
-	auto coordIndex    = coordIndices .begin ();
+	const auto texCoordIndex = createTexCoordIndex ();
+	const auto texCoord      = createTexCoord ();
 
-	for ( ; coordIndex not_eq coordIndices .end (); ++ coordIndex, ++ texCoordIndex)
-	{
-		const auto & point = points [*coordIndex];
+	for (const auto & index : texCoordIndex)
+		texCoords .emplace_back (texCoord [index]);
 
-		getTexCoords () .emplace_back (texCoords [*texCoordIndex]);
-		getNormals   () .emplace_back (point);
-		getVertices  () .emplace_back (point);
-	}
+	return texCoords;
+}
+
+std::vector <Vector3d>
+QuadSphereProperties::createVertices () const
+{
+	std::vector <Vector3d> vertices;
+
+	const auto coordIndex = createCoordIndex ();
+	const auto points     = createPoints ();
+
+	for (const auto & index : coordIndex)
+		vertices .emplace_back (points [index]);
+
+	return vertices;
 }
 
 SFNode
-QuadSphereOptions::toPrimitive (X3DExecutionContext* const executionContext) const
+QuadSphereProperties::toPrimitive (X3DExecutionContext* const executionContext) const
 {
 	const auto xDimension_1    = xDimension ();
 	const auto xDimension_2    = xDimension () - 1;

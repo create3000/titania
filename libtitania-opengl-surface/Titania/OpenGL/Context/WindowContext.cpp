@@ -148,7 +148,7 @@ WindowContext::create (const GLXContext sharingContext, const bool direct)
 
 	visualInfoList = glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), xVisualAttributes);
 
-	GLXContext xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
+	const auto xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
 
 	if (not xContext)
 		throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");

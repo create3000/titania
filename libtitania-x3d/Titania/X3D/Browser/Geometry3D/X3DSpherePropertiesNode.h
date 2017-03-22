@@ -48,86 +48,43 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_RENDERING_X3DGEOMETRIC_OPTION_NODE_H__
-#define __TITANIA_X3D_BROWSER_RENDERING_X3DGEOMETRIC_OPTION_NODE_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_OPTION_NODE_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_OPTION_NODE_H__
 
-#include "../Core/X3DOptionNode.h"
-
-#include "../../Fields/SFNode.h"
-#include "../../Rendering/OpenGL.h"
+#include "../../Components/Core/X3DNode.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DGeometricOptionNode :
-	public X3DOptionNode
+class X3DSpherePropertiesNode :
+	public X3DNode
 {
 public:
 
-	///  @name Construction
+	virtual
+	std::vector <Vector4f>
+	createTexCoords () const = 0;
 
 	virtual
-	void
-	setup () final override;
-
-	///  @name Member access
-
-	std::vector <Vector4f> &
-	getTexCoords ()
-	{ return texCoord; }
-
-	const std::vector <Vector4f> &
-	getTexCoords () const
-	{ return texCoord; }
-
-	std::vector <Vector3f> &
-	getNormals ()
-	{ return normals; }
-
-	const std::vector <Vector3f> &
-	getNormals () const
-	{ return normals; }
-
-	std::vector <Vector3d> &
-	getVertices ()
-	{ return vertices; }
-
-	const std::vector <Vector3d> &
-	getVertices () const
-	{ return vertices; }
+	std::vector <Vector3d>
+	createVertices () const = 0;
 
 	virtual
 	GLenum
 	getVertexMode () const = 0;
+
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive (X3DExecutionContext* const executionContext) const = 0;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DGeometricOptionNode ();
-
-	virtual
-	void
-	initialize () override;
-
-	///  @name Operations
-
-	void
-	update ();
-
-	virtual
-	void
-	build () = 0;
-
-
-private:
-
-	///  @name Members
-
-	std::vector <Vector4f> texCoord;
-	std::vector <Vector3f> normals;
-	std::vector <Vector3d> vertices;
+	X3DSpherePropertiesNode ();
 
 };
 

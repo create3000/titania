@@ -48,14 +48,86 @@
  *
  ******************************************************************************/
 
-#include "X3DSphereOptionNode.h"
+#include "SphereOptions.h"
+
+#include "../../Browser/X3DBrowser.h"
+#include "../../Execution/X3DExecutionContext.h"
+
+#include "../Geometry3D/QuadSphereProperties.h"
 
 namespace titania {
 namespace X3D {
 
-X3DSphereOptionNode::X3DSphereOptionNode () :
-	X3DGeometricOptionNode ()
+const ComponentType SphereOptions::component      = ComponentType::TITANIA;
+const std::string   SphereOptions::typeName       = "SphereOptions";
+const std::string   SphereOptions::containerField = "sphereOptions";
+
+SphereOptions::Fields::Fields () :
+	properties (new SFNode ())
 { }
+
+SphereOptions::SphereOptions (X3DExecutionContext* const executionContext) :
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometricOptionNode (),
+	                fields (),
+	        propertiesNode ()
+{
+	addField (inputOutput, "properties", properties ());
+
+	addChildObjects (propertiesNode);
+}
+
+SphereOptions*
+SphereOptions::create (X3DExecutionContext* const executionContext) const
+{
+	return new SphereOptions (executionContext);
+}
+
+void
+SphereOptions::initialize ()
+{
+	X3DGeometricOptionNode::initialize ();
+
+	properties () .addInterest (&SphereOptions::set_properties, this);
+
+	set_properties ();
+}
+
+GLenum
+SphereOptions::getVertexMode () const
+{
+	return propertiesNode -> getVertexMode ();	
+}
+
+void
+SphereOptions::set_properties ()
+{
+	if (propertiesNode)
+		propertiesNode -> removeInterest (&SphereOptions::addEvent, this);
+
+	propertiesNode .set (properties ());
+
+	if (not propertiesNode)
+		propertiesNode .set (getBrowser () -> getQuadSphereProperties ());
+
+	propertiesNode -> addInterest (&SphereOptions::addEvent, this);	
+}
+
+void
+SphereOptions::build ()
+{
+	getTexCoords () = propertiesNode -> createTexCoords ();
+	getVertices ()  = propertiesNode -> createVertices ();
+
+	for (const auto & vertex : getVertices ())
+		getNormals () .emplace_back (vertex);
+}
+
+SFNode
+SphereOptions::toPrimitive (X3DExecutionContext* const executionContext) const
+{
+	return propertiesNode -> toPrimitive (executionContext);
+}
 
 } // X3D
 } // titania

@@ -48,122 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_OPTIONS_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_OPTIONS_H__
-
-#include "../Geometry3D/X3DSphereOptionNode.h"
+#include "X3DSpherePropertiesNode.h"
 
 namespace titania {
 namespace X3D {
 
-class QuadSphereOptions :
-	public X3DSphereOptionNode
-{
-public:
-
-	///  @name Construction
-
-	QuadSphereOptions (X3DExecutionContext* const executionContext);
-
-	///  @name Common members
-
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
-
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
-
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
-
-	///  @name Fields
-
-	SFInt32 &
-	xDimension ()
-	{ return *fields .xDimension; }
-
-	const SFInt32 &
-	xDimension () const
-	{ return *fields .xDimension; }
-
-	SFInt32 &
-	yDimension ()
-	{ return *fields .yDimension; }
-
-	const SFInt32 &
-	yDimension () const
-	{ return *fields .yDimension; }
-
-	///  @name Member access
-
-	virtual
-	GLenum
-	getVertexMode () const final override
-	{ return GL_QUADS; }
-
-	///  @name Operations
-
-	virtual
-	SFNode
-	toPrimitive (X3DExecutionContext* const executionContext) const;
-
-
-private:
-
-	///  @name Construction
-
-	virtual
-	QuadSphereOptions*
-	create (X3DExecutionContext* const executionContext) const final override;
-
-	///  @name Operations
-
-	std::vector <int32_t>
-	createTexCoordIndex () const;
-
-	std::vector <Vector4f>
-	createTexCoord () const;
-
-	std::vector <int32_t>
-	createCoordIndex () const;
-
-	std::vector <Vector3d>
-	createPoints () const;
-
-	virtual
-	void
-	build () final override;
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
-	{
-		Fields ();
-
-		SFInt32* const xDimension;
-		SFInt32* const yDimension;
-	};
-
-	Fields fields;
-
-};
+X3DSpherePropertiesNode::X3DSpherePropertiesNode () :
+	X3DNode ()
+{ }
 
 } // X3D
 } // titania
-
-#endif
