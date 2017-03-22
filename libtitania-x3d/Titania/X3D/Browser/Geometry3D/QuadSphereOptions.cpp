@@ -232,8 +232,6 @@ QuadSphereOptions::build ()
 
 SFNode
 QuadSphereOptions::toPrimitive (X3DExecutionContext* const executionContext) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto xDimension_1    = xDimension ();
 	const auto xDimension_2    = xDimension () - 1;
@@ -308,8 +306,7 @@ throw (Error <NOT_SUPPORTED>,
 
 	coord -> point () .assign (points .begin (), points .end ());
 
-	executionContext -> realize ();
-	return SFNode (geometry);
+	return geometry;
 }
 
 

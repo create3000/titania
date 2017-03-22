@@ -59,7 +59,18 @@ namespace X3D {
 class X3DSphereOptionNode :
 	public X3DGeometricOptionNode
 {
+public:
+
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive (X3DExecutionContext* const executionContext) const = 0;
+
+
 protected:
+
+	///  @name Construction
 
 	X3DSphereOptionNode ();
 

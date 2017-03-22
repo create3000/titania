@@ -155,11 +155,11 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> getField <SFNode> ("metadata") = metadata ();
 	geometry -> getField <SFBool> ("solid")    = solid ();
 
-	if (radius () == 1.0f)
-		return geometry;
-
-	for (auto & point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
-		point *= radius () .getValue ();
+	if (radius () not_eq 1.0f)
+	{
+		for (auto & point : geometry -> getField <SFNode> ("coord") -> getField <MFVec3f> ("point"))
+			point *= radius () .getValue ();
+	}
 
 	return geometry;
 }

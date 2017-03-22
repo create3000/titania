@@ -185,8 +185,6 @@ BoxOptions::build ()
 
 SFNode
 BoxOptions::toPrimitive (X3DExecutionContext* const executionContext) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto texCoord = executionContext -> createNode <TextureCoordinate> ();
 	const auto coord    = executionContext -> createNode <Coordinate> ();
@@ -231,8 +229,7 @@ throw (Error <NOT_SUPPORTED>,
 		1, 5, 6, 2, -1  // right
 	};
 
-	executionContext -> realize ();
-	return SFNode (geometry);
+	return geometry;
 }
 
 } // X3D

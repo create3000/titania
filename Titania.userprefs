@@ -7,12 +7,12 @@
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/X3DNodeTool.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Tools/Core/X3DNodeTool.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Parser/SVG/Parser.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Parser/SVG/Parser.cpp" Line="215" Column="23" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Arc2D.h" Line="164" Column="15" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Arc2D.cpp" Line="162" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/ArcClose2D.h" Line="180" Column="15" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/ArcClose2D.cpp" Line="212" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Algorithms/Bezier.h" Line="277" Column="52" />
+      <File FileName="libtitania-x3d/Titania/X3D/Parser/SVG/Parser.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Arc2D.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/Arc2D.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/ArcClose2D.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry2D/ArcClose2D.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Algorithms/Bezier.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

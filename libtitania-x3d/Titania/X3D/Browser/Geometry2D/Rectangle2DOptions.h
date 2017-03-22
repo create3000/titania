@@ -96,9 +96,7 @@ public:
 
 	virtual
 	SFNode
-	toPrimitive (X3DExecutionContext* const executionContext) const
-	throw (Error <NOT_SUPPORTED>,
-	       Error <DISPOSED>) final override;
+	toPrimitive (X3DExecutionContext* const executionContext) const;
 
 
 private:

@@ -100,8 +100,6 @@ Rectangle2DOptions::build ()
 
 SFNode
 Rectangle2DOptions::toPrimitive (X3DExecutionContext* const executionContext) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
 {
 	const auto texCoord = executionContext -> createNode <TextureCoordinate> ();
 	const auto coord    = executionContext -> createNode <Coordinate> ();
@@ -127,8 +125,7 @@ throw (Error <NOT_SUPPORTED>,
 	geometry -> texCoordIndex () = { 0, 1, 2, 3, -1 };
 	geometry -> coordIndex ()    = { 0, 1, 2, 3, -1 };
 
-	getExecutionContext () -> realize ();
-	return SFNode (geometry);
+	return geometry;
 }
 
 } // X3D
