@@ -50,10 +50,12 @@
 
 #include "Sphere.h"
 
+#include "../../Browser/Geometry3D/QuadSphereProperties.h"
 #include "../../Browser/Geometry3D/SphereOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../Core/MetadataSet.h"
 
 namespace titania {
 namespace X3D {
@@ -63,14 +65,17 @@ const std::string   Sphere::typeName       = "Sphere";
 const std::string   Sphere::containerField = "geometry";
 
 Sphere::Fields::Fields () :
-	radius (new SFFloat (1)),
-	 solid (new SFBool (true))
+	          radius (new SFFloat (1)),
+	           solid (new SFBool (true)),
+	useGlobalOptions (new SFBool (true)),
+	      properties (new SFNode ())
 { }
 
 Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
-	         fields ()
+	         fields (),
+	 propertiesNode ()
 {
 	addType (X3DConstants::Sphere);
 
@@ -78,7 +83,15 @@ Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "radius",   radius ());
 	addField (initializeOnly, "solid",    solid ());
 
+	addField (initializeOnly, "useGlobalOptions", useGlobalOptions ());
+	addField (initializeOnly, "properties",       properties ());
+
+	addChildObjects (propertiesNode);
+
 	radius () .setUnit (UnitCategory::LENGTH);
+
+	useGlobalOptions () .isHidden (true);
+	properties ()       .isHidden (true);
 }
 
 X3DBaseNode*
@@ -92,7 +105,29 @@ Sphere::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
+	useGlobalOptions () .addInterest (&Sphere::set_useGlobalOptions, this);
+	properties ()       .addInterest (&Sphere::set_properties,       this);
+
+	useGlobalOptions () .set (getMetaData <bool> ("/Sphere/useGlobalOptions", true));
+
+	if (useGlobalOptions ())
+		getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
+
+	else
+	{
+		const auto type = getMetaData <std::string> ("/Sphere/propertiesType", "QuadSphereProperties");
+
+		if (type == "IcoSphereProperties" and false)
+			; // TODO
+		else // QuadSphereProperties
+			propertiesNode .set (MakePtr <QuadSphereProperties> (getExecutionContext ()));
+
+		propertiesNode -> addInterest (&Sphere::set_properties_node, this);
+		propertiesNode -> fromMetaData (createMetadataSet ("/Sphere/properties"));
+		propertiesNode -> setup ();
+
+		properties () .set (propertiesNode);
+	}
 }
 
 void
@@ -106,7 +141,10 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
+	{
+		if (useGlobalOptions ())
+			getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
+	}
 }
 
 Box3d
@@ -118,29 +156,87 @@ Sphere::createBBox () const
 }
 
 void
-Sphere::build ()
+Sphere::set_useGlobalOptions ()
 {
-	const auto & options = getBrowser () -> getSphereOptions ();
+	if (useGlobalOptions ())
+	{
+		getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
 
-	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (options -> getTexCoords () .size ());
-	getTexCoords () [0] = options -> getTexCoords ();
-
-	getNormals () .reserve (options -> getNormals () .size ());
-	getNormals () = options -> getNormals  ();
-
-	if (radius () == 1.0f)
-		getVertices () = options -> getVertices ();
-
+		removeMetaData ("/Sphere");
+	}
 	else
 	{
-		getVertices () .reserve (options -> getVertices () .size ());
+		getBrowser () -> getSphereOptions () .removeInterest (&Sphere::addEvent, this);
 
-		for (const auto & vertex : options -> getVertices ())
-			getVertices () .emplace_back (vertex * double (radius () .getValue ()));
+		setMetaData ("/Sphere/useGlobalOptions", false);
+
+		set_properties ();
+	}
+}
+
+void
+Sphere::set_properties ()
+{
+	removeMetaData ("/Sphere/properties");
+
+	if (propertiesNode)
+		propertiesNode -> removeInterest (&Sphere::set_properties_node, this);
+
+	propertiesNode .set (properties ());
+
+	if (not propertiesNode)
+		propertiesNode .set (MakePtr <QuadSphereProperties> (getExecutionContext ()));
+
+	propertiesNode -> addInterest (&Sphere::set_properties_node, this);
+
+	set_properties_node ();
+}
+
+void
+Sphere::set_properties_node ()
+{
+	if (useGlobalOptions ())
+		return;
+
+	setMetaData ("/Sphere/propertiesType", propertiesNode -> getTypeName ());
+
+	propertiesNode -> toMetaData (createMetadataSet ("/Sphere/properties"));
+
+	addEvent ();
+}
+
+void
+Sphere::build ()
+{
+	if (useGlobalOptions ())
+	{
+		const auto & options = getBrowser () -> getSphereOptions ();
+	
+		getTexCoords () .emplace_back (options -> getTexCoords ());
+
+		getNormals ()  = options -> getNormals  ();
+		getVertices () = options -> getVertices ();
+
+		addElements (options -> getVertexMode (), getVertices () .size ());
+	}
+	else
+	{
+		getTexCoords () .emplace_back (propertiesNode -> createTexCoords ());
+
+		getVertices () = propertiesNode -> createVertices ();
+
+		for (const auto & vertex : getVertices ())
+			getNormals () .emplace_back (vertex);
+
+		addElements (propertiesNode -> getVertexMode (), getVertices () .size ());
 	}
 
-	addElements (options -> getVertexMode (), getVertices () .size ());
+	if (radius () not_eq 1.0f)
+	{
+		for (auto & vertex : getVertices ())
+			vertex *= double (radius () .getValue ());
+	}
+
 	setSolid (solid ());
 }
 
@@ -150,10 +246,11 @@ throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
 	const auto & options  = getBrowser () -> getSphereOptions ();
-	const auto   geometry = options -> toPrimitive (getExecutionContext ());
+	const auto   geometry = useGlobalOptions ()
+	                        ? options -> toPrimitive (getExecutionContext ())
+	                        : propertiesNode -> toPrimitive (getExecutionContext ());
 
-	geometry -> getField <SFNode> ("metadata") = metadata ();
-	geometry -> getField <SFBool> ("solid")    = solid ();
+	geometry -> getField <SFBool> ("solid") = solid ();
 
 	if (radius () not_eq 1.0f)
 	{
@@ -163,6 +260,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	return geometry;
 }
+
+Sphere::~Sphere ()
+{ }
 
 } // X3D
 } // titania

@@ -79,7 +79,7 @@ public:
 	///  @name Metadata handling
 
 	X3DPtr <MetadataSet>
-	creatMetadataSet (const std::string & key)
+	createMetadataSet (const std::string & key)
 	throw (Error <NOT_SUPPORTED>,
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>);
@@ -234,11 +234,11 @@ public:
 
 	virtual
 	void
-	fromMetaData (const X3DPtr <MetadataSet> &);
+	fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode);
 
 	virtual
-	X3DPtr <MetadataSet>
-	toMetaData () const;
+	void
+	toMetaData (const X3DPtr <MetadataSet> & metadataSetNode) const;
 
 	///  @name Member access
 
@@ -265,9 +265,11 @@ private:
 	       Error <INVALID_NAME>,
 	       Error <DISPOSED>);
 
-	virtual
 	void
-	fieldToMetaData (const X3DPtr <MetadataSet> &, const X3DFieldDefinition* const) const;
+	fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDefinition* const field) const;
+
+	void
+	toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFieldDefinition* const field) const;
 
 	///  @name Static members
 

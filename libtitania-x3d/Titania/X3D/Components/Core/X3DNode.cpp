@@ -260,7 +260,7 @@ X3DNode::X3DNode () :
  */
 
 X3DPtr <MetadataSet>
-X3DNode::creatMetadataSet (const std::string & key)
+X3DNode::createMetadataSet (const std::string & key)
 throw (Error <NOT_SUPPORTED>,
        Error <INVALID_NAME>,
        Error <DISPOSED>)
@@ -1101,26 +1101,529 @@ throw (Error <DISPOSED>)
 void
 X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode)
 {
-
-}
-
-X3DPtr <MetadataSet>
-X3DNode::toMetaData () const
-{
-	auto metadataSetNode = getExecutionContext () -> createNode <MetadataSet> ();
-
-	metadataSetNode -> name () = getName ();
-	metadataSetNode -> createValue <MetadataString> ("TypeName") -> value () = { getTypeName () };
-
-	for (const auto & fieldDefinition : getChangedFields ())
-		fieldToMetaData (metadataSetNode, fieldDefinition);
-
-	metadataSetNode -> setup ();
-	return metadataSetNode;
+	for (const auto & fieldDefinition : getFieldDefinitions ())
+		toMetaData (metadataSetNode, fieldDefinition);
 }
 
 void
-X3DNode::fieldToMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFieldDefinition* const fieldDefinition) const
+X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDefinition* const fieldDefinition) const
+{
+	try
+	{
+		switch (fieldDefinition -> getType ())
+		{
+			case X3D::X3DConstants::SFBool:
+			{
+				auto &       field = static_cast <SFBool &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataBoolean> (field .getName ()) -> value ();
+	
+				field = value .at (0);
+				break;
+			}
+			case X3D::X3DConstants::SFColor:
+			{
+				auto &       field = static_cast <SFColor &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				field = Color3f (value .at (0), value .at (1), value .at (2));
+				break;
+			}
+			case X3D::X3DConstants::SFColorRGBA:
+			{
+				auto &       field    = static_cast <SFColorRGBA &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				field = Color4f (value .at (0), value .at (1), value .at (2), value .at (3));
+				break;
+			}
+			case X3D::X3DConstants::SFDouble:
+			{
+				auto &       field = static_cast <SFDouble &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				field = value .at (0);
+				break;
+			}
+			case X3D::X3DConstants::SFFloat:
+			{
+				auto &       field = static_cast <SFFloat &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				field = value .at (0);
+				break;
+			}
+			case X3D::X3DConstants::SFInt32:
+			{
+				auto &       field = static_cast <SFInt32 &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName ()) -> value ();
+	
+				field = value .at (0);
+				break;
+			}
+			case X3D::X3DConstants::SFImage:
+			{
+				auto &       field = static_cast <SFImage &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName ()) -> value ();
+	
+				SFImage image;
+	
+				image .setWidth      (value .at (0));
+				image .setHeight     (value .at (1));
+				image .setComponents (value .at (2));
+	
+				for (size_t i = 0, size = image .getArray () .size (); i < size; ++ i)
+					image .getArray () [i] = value .at (i + 3);
+	
+				field = image;
+				break;
+			}
+			case X3D::X3DConstants::SFMatrix3d:
+			{
+				auto &       field = static_cast <SFMatrix3d &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				SFMatrix3d matrix;
+	
+				for (size_t i = 0; i < Matrix3d::size (); ++ i)
+				   matrix .set1Value (i, value .at (i));
+	
+				field = matrix;
+				break;
+			}
+			case X3D::X3DConstants::SFMatrix3f:
+			{
+				auto &       field = static_cast <SFMatrix3f &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				SFMatrix3f matrix;
+	
+				for (size_t i = 0; i < Matrix3f::size (); ++ i)
+				   matrix .set1Value (i, value .at (i));
+	
+				field = matrix;
+				break;
+			}
+			case X3D::X3DConstants::SFMatrix4d:
+			{
+				auto &       field = static_cast <SFMatrix4d &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				SFMatrix4d matrix;
+	
+				for (size_t i = 0; i < Matrix4d::size (); ++ i)
+				   matrix .set1Value (i, value .at (i));
+	
+				field = matrix;
+				break;
+			}
+			case X3D::X3DConstants::SFMatrix4f:
+			{
+				auto &       field = static_cast <SFMatrix4f &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				SFMatrix4f matrix;
+	
+				for (size_t i = 0; i < Matrix4f::size (); ++ i)
+				   matrix .set1Value (i, value .at (i));
+	
+				field = matrix;
+				break;
+			}
+			case X3D::X3DConstants::SFNode:
+			{
+				auto &       field = static_cast <SFNode &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataSet> (field .getName ()) -> value ();
+			
+				field = value .at (0);
+				break;
+			}
+			case X3D::X3DConstants::SFRotation:
+			{
+				auto &       field = static_cast <SFRotation &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				field = Rotation4d (value .at (0), value .at (1), value .at (2), value .at (3));
+				break;
+			}
+			case X3D::X3DConstants::SFString:
+			{
+				auto &       field = static_cast <SFString &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataString> (field .getName ()) -> value ();
+	
+				field = value .at (0);
+				break;
+			}
+			case X3D::X3DConstants::SFTime:
+			{
+				auto &       field = static_cast <SFTime &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				field = value .at (0);
+				break;
+			}
+			case X3D::X3DConstants::SFVec2d:
+			{
+				auto &       field = static_cast <SFVec2d &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				field = Vector2d (value .at (0), value .at (1));
+				break;
+			}
+			case X3D::X3DConstants::SFVec2f:
+			{
+				auto &       field = static_cast <SFVec2f &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				field = Vector2f (value .at (0), value .at (1));
+				break;
+			}
+			case X3D::X3DConstants::SFVec3d:
+			{
+				auto &       field = static_cast <SFVec3d &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				field = Vector3d (value .at (0), value .at (1), value .at (2));
+				break;
+			}
+			case X3D::X3DConstants::SFVec3f:
+			{
+				auto &       field = static_cast <SFVec3f &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				field = Vector3f (value .at (0), value .at (1), value .at (2));
+				break;
+			}
+			case X3D::X3DConstants::SFVec4d:
+			{
+				auto &       field = static_cast <SFVec4d &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				field = Vector4d (value .at (0), value .at (1), value .at (2), value .at (3));
+				break;
+			}
+			case X3D::X3DConstants::SFVec4f:
+			{
+				auto &       field = static_cast <SFVec4f &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				field = Vector4f (value .at (0), value .at (1), value .at (2), value .at (3));
+				break;
+			}
+			case X3D::X3DConstants::MFBool:
+			{
+				auto &       field = static_cast <MFBool &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataBoolean> (field .getName ()) -> value ();
+	
+				field = value;
+				break;
+			}
+			case X3D::X3DConstants::MFColor:
+			{
+				auto &       field = static_cast <MFColor &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				MFColor array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Color3f::size ())
+					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFColorRGBA:
+			{
+				auto &       field = static_cast <MFColorRGBA &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				MFColorRGBA array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Color4f::size ())
+					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFDouble:
+			{
+				auto &       field = static_cast <MFDouble &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				field = value;
+				break;
+			}
+			case X3D::X3DConstants::MFFloat:
+			{
+				auto &       field = static_cast <MFFloat &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				field = value;
+				break;
+			}
+			case X3D::X3DConstants::MFImage:
+			{
+				auto &       field = static_cast <MFImage &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName ()) -> value ();
+	
+				SFImage image;
+				MFImage images;
+	
+				for (size_t n = 0, size = value .size (), count = 0; n < size; n += count)
+				{
+					image .setWidth      (value .at (n + 0));
+					image .setHeight     (value .at (n + 1));
+					image .setComponents (value .at (n + 2));
+		
+					for (size_t i = 0, size = image .getArray () .size (); i < size; ++ i)
+						image .getArray () [i] = value .at (n + i + 3);
+	
+					count = image .getArray () .size () + 3;
+	
+					images .emplace_back (std::move (image));
+				}
+	
+				field = images;
+				break;
+			}
+			case X3D::X3DConstants::MFInt32:
+			{
+				auto &       field = static_cast <MFInt32 &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataInteger> (field .getName ()) -> value ();
+	
+				field = value;
+				break;
+			}
+			case X3D::X3DConstants::MFMatrix3d:
+			{
+				auto &       field = static_cast <MFMatrix3d &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				MFMatrix3d array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Matrix3d::size ())
+					array .emplace_back (value .at (i),
+					                     value .at (i + 1),
+					                     value .at (i + 2),
+					                     value .at (i + 3),
+					                     value .at (i + 4),
+					                     value .at (i + 5),
+					                     value .at (i + 6),
+					                     value .at (i + 7),
+					                     value .at (i + 8));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFMatrix3f:
+			{
+				auto &       field = static_cast <MFMatrix3f &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				MFMatrix3f array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Matrix3f::size ())
+					array .emplace_back (value .at (i),
+					                     value .at (i + 1),
+					                     value .at (i + 2),
+					                     value .at (i + 3),
+					                     value .at (i + 4),
+					                     value .at (i + 5),
+					                     value .at (i + 6),
+					                     value .at (i + 7),
+					                     value .at (i + 8));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFMatrix4d:
+			{
+				auto &       field = static_cast <MFMatrix4d &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				MFMatrix4d array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Matrix4d::size ())
+					array .emplace_back (value .at (i),
+					                     value .at (i + 1),
+					                     value .at (i + 2),
+					                     value .at (i + 3),
+					                     value .at (i + 4),
+					                     value .at (i + 5),
+					                     value .at (i + 6),
+					                     value .at (i + 7),
+					                     value .at (i + 8),
+					                     value .at (i + 9),
+					                     value .at (i + 10),
+					                     value .at (i + 11),
+					                     value .at (i + 12),
+					                     value .at (i + 13),
+					                     value .at (i + 14),
+					                     value .at (i + 15));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFMatrix4f:
+			{
+				auto &       field = static_cast <MFMatrix4f &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				MFMatrix4f array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Matrix4f::size ())
+					array .emplace_back (value .at (i),
+					                     value .at (i + 1),
+					                     value .at (i + 2),
+					                     value .at (i + 3),
+					                     value .at (i + 4),
+					                     value .at (i + 5),
+					                     value .at (i + 6),
+					                     value .at (i + 7),
+					                     value .at (i + 8),
+					                     value .at (i + 9),
+					                     value .at (i + 10),
+					                     value .at (i + 11),
+					                     value .at (i + 12),
+					                     value .at (i + 13),
+					                     value .at (i + 14),
+					                     value .at (i + 15));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFNode:
+			{
+				auto &       field = static_cast <MFNode &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataSet> (field .getName ()) -> value ();
+			
+				field = value;
+				break;
+			}
+			case X3D::X3DConstants::MFRotation:
+			{
+				auto &       field    = static_cast <MFRotation &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				MFRotation array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Rotation4d::size ())
+					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFString:
+			{
+				auto &       field = static_cast <MFString &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataString> (field .getName ()) -> value ();
+	
+				field = value;
+				break;
+			}
+			case X3D::X3DConstants::MFTime:
+			{
+				auto &       field = static_cast <MFTime &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				field .clear ();
+	
+				for (const auto & v : value)
+					field .emplace_back (v);
+	
+				break;
+			}
+			case X3D::X3DConstants::MFVec2d:
+			{
+				auto &       field = static_cast <MFVec2d &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				MFVec2d array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Vector2d::size ())
+					array .emplace_back (value .at (i), value .at (i + 1));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFVec2f:
+			{
+				auto &       field = static_cast <MFVec2f &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				MFVec2f array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Vector2f::size ())
+					array .emplace_back (value .at (i), value .at (i + 1));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFVec3d:
+			{
+				auto &       field = static_cast <MFVec3d &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				MFVec3d array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Vector3d::size ())
+					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFVec3f:
+			{
+				auto &       field = static_cast <MFVec3f &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				MFVec3f array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Vector3f::size ())
+					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFVec4d:
+			{
+				auto &       field = static_cast <MFVec4d &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataDouble> (field .getName ()) -> value ();
+	
+				MFVec4d array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Vector4d::size ())
+					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
+	
+				field = array;
+				break;
+			}
+			case X3D::X3DConstants::MFVec4f:
+			{
+				auto &       field = static_cast <MFVec4f &> (*fieldDefinition);
+				const auto & value = metadataSetNode -> getValue <MetadataFloat> (field .getName ()) -> value ();
+	
+				MFVec4f array;
+	
+				for (size_t i = 0, size = value .size (); i < size; i += Vector4f::size ())
+					array .emplace_back (value .at (i), value .at (i + 1), value .at (i + 2), value .at (i + 3));
+	
+				field = array;
+				break;
+			}
+		}
+	}
+	catch (const std::exception & error)
+	{ }
+}
+
+void
+X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode) const
+{
+	for (const auto & fieldDefinition : getFieldDefinitions ())
+		toMetaData (metadataSetNode, fieldDefinition);
+}
+
+void
+X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFieldDefinition* const fieldDefinition) const
 {
 	switch (fieldDefinition -> getType ())
 	{

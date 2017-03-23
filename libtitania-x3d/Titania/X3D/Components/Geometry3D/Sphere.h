@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class X3DSpherePropertiesNode;
+
 class Sphere :
 	virtual public X3DGeometryNode
 {
@@ -117,6 +119,28 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
+	///  @name Hidden fields
+
+	virtual
+	SFBool &
+	useGlobalOptions ()
+	{ return *fields .useGlobalOptions; }
+
+	virtual
+	const SFBool &
+	useGlobalOptions () const
+	{ return *fields .useGlobalOptions; }
+
+	virtual
+	SFNode &
+	properties ()
+	{ return *fields .properties; }
+
+	virtual
+	const SFNode &
+	properties () const
+	{ return *fields .properties; }
+
 	///  @name Operations
 
 	virtual
@@ -132,6 +156,11 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) override;
 
+	///  @name Destruction
+
+	virtual
+	~Sphere () override;
+
 
 protected:
 
@@ -143,6 +172,17 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_useGlobalOptions ();
+
+	void
+	set_properties ();
+
+	void
+	set_properties_node ();
 
 	///  @name Operations
 
@@ -161,7 +201,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -169,9 +209,15 @@ private:
 
 		SFFloat* const radius;
 		SFBool* const solid;
+		SFBool* const useGlobalOptions;
+		SFNode* const properties;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <X3DSpherePropertiesNode> propertiesNode;
 
 };
 

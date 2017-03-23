@@ -74,6 +74,8 @@ QuadSphereProperties::QuadSphereProperties (X3DExecutionContext* const execution
 	X3DSpherePropertiesNode (),
 	                fields ()
 {
+	addType (X3DConstants::QuadSphereProperties);
+
 	addField (inputOutput, "xDimension", xDimension ());
 	addField (inputOutput, "yDimension", yDimension ());
 }

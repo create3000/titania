@@ -462,12 +462,14 @@ enum NodeType : uint16_t
 	X3DViewpointObject,
 	X3DViewportNode,
 
-	// Non statndard
+	// Non standard
 
 	Clipboard,
 	DepthBuffer,
 	FaceSelection,
+	IcoSphereProperties,
 	PolygonOffset,
+	QuadSphereProperties,
 	TouchGroup,
 	TransformMatrix3D,
 	X3DFaceSelection,

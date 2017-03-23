@@ -57,7 +57,6 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
-
 #include <complex>
 
 namespace titania {
