@@ -110,6 +110,9 @@ Sphere::initialize ()
 
 	useGlobalOptions () .set (getMetaData <bool> ("/Sphere/useGlobalOptions", true));
 
+__LOG__ << std::endl;
+__LOG__ << properties () << std::endl;
+
 	if (useGlobalOptions ())
 		getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
 

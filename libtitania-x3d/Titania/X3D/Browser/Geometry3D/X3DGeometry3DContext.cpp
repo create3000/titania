@@ -77,6 +77,8 @@ X3DGeometry3DContext::X3DGeometry3DContext () :
 void
 X3DGeometry3DContext::initialize ()
 {
+	sphereOptions -> properties () = quadSphereProperties;
+
 	quadSphereProperties -> setup ();
 
 	boxOptions      -> setup ();

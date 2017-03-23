@@ -198,8 +198,11 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ExtrusionEndCapCheckButton", m_ExtrusionEndCapCheckButton);
 	m_builder -> get_widget ("SphereExpander", m_SphereExpander);
 	m_builder -> get_widget ("SphereRadiusSpinButton", m_SphereRadiusSpinButton);
+	m_builder -> get_widget ("SphereXDimensionBox", m_SphereXDimensionBox);
 	m_builder -> get_widget ("SphereXDimensionSpinButton", m_SphereXDimensionSpinButton);
+	m_builder -> get_widget ("SphereYDimensionBox", m_SphereYDimensionBox);
 	m_builder -> get_widget ("SphereYDimensionSpinButton", m_SphereYDimensionSpinButton);
+	m_builder -> get_widget ("SphereUseGlobalOptionsCheckButton", m_SphereUseGlobalOptionsCheckButton);
 	m_builder -> get_widget ("GeoElevationGridBox", m_GeoElevationGridBox);
 	m_builder -> get_widget ("GeoElevationGridExpander", m_GeoElevationGridExpander);
 	m_builder -> get_widget ("GeoElevationGridXDimensionSpinButton", m_GeoElevationGridXDimensionSpinButton);
@@ -303,6 +306,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::CheckButton with id 'ConeUseGlobalOptionsCheckButton'.
 	m_ConeUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_cone_use_global_options_toggled));
 	m_CylinderUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_cylinder_use_global_options_toggled));
+	m_SphereUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_sphere_use_global_options_toggled));
 
 	// Connect object Gtk::Button with id 'AddNormalsButton'.
 	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));

@@ -51,6 +51,7 @@
 #include "X3DSphereEditor.h"
 
 #include <Titania/X3D/Browser/Geometry3D/QuadSphereProperties.h>
+#include <Titania/X3D/Browser/Geometry3D/SphereOptions.h>
 #include <Titania/X3D/Components/Geometry3D/Sphere.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
@@ -60,21 +61,67 @@ namespace puck {
 X3DSphereEditor::X3DSphereEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius"),
+	                    useGlobalOptions (this, getSphereUseGlobalOptionsCheckButton (),"useGlobalOptions"),
 	                          xDimension (this, getSphereXDimensionAdjustment (), getSphereXDimensionSpinButton (), "xDimension"),
 	                          yDimension (this, getSphereYDimensionAdjustment (), getSphereYDimensionSpinButton (), "yDimension")
-{ }
+{
+	getSphereUseGlobalOptionsCheckButton () .property_inconsistent () .signal_changed () .connect (sigc::mem_fun (this, &X3DSphereEditor::on_sphere_use_global_options_toggled));
+}
 
 void
 X3DSphereEditor::set_geometry ()
 {
-	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Sphere });
-	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getQuadSphereProperties () });
+	// Hidden fields
+
+	for (const auto & node : useGlobalOptions .getNodes ())
+		node -> getField <X3D::SFNode> ("properties") .removeInterest (&X3DSphereEditor::set_properties, this);
+
+	// Fields
+
+	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Sphere });
 
 	getSphereExpander () .set_visible (not nodes .empty ());
 
-	radius     .setNodes (nodes);
-	xDimension .setNodes (global);
-	yDimension .setNodes (global);
+	radius .setNodes (nodes);
+
+	// Hidden fields
+
+	useGlobalOptions .setNodes (nodes);
+
+	for (const auto & node : useGlobalOptions .getNodes ())
+		node -> getField <X3D::SFNode> ("properties") .addInterest (&X3DSphereEditor::set_properties, this);
+
+	set_properties ();
+}
+
+void
+X3DSphereEditor::on_sphere_use_global_options_toggled ()
+{
+	const auto global = getSphereUseGlobalOptionsCheckButton () .get_active () or getSphereUseGlobalOptionsCheckButton () .get_inconsistent ();
+
+	getSphereXDimensionBox () .set_sensitive (not global);
+	getSphereYDimensionBox () .set_sensitive (not global);
+
+	set_properties ();
+}
+
+void
+X3DSphereEditor::set_properties ()
+{
+	X3D::MFNode nodes;
+
+	for (const auto & node : useGlobalOptions .getNodes ())
+	{
+		auto & propertiesNode = node -> getField <X3D::SFNode> ("properties");
+
+		if (not propertiesNode)
+			propertiesNode = getCurrentBrowser () -> getSphereOptions () -> properties () -> copy (getCurrentContext (), X3D::FLAT_COPY);
+
+		nodes .emplace_back (propertiesNode);
+	}
+
+	xDimension .setNodes (nodes);
+	yDimension .setNodes (nodes);
 }
 
 X3DSphereEditor::~X3DSphereEditor ()

@@ -1102,7 +1102,7 @@ void
 X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode)
 {
 	for (const auto & fieldDefinition : getFieldDefinitions ())
-		toMetaData (metadataSetNode, fieldDefinition);
+		fromMetaData (metadataSetNode, fieldDefinition);
 }
 
 void
@@ -1612,7 +1612,9 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 		}
 	}
 	catch (const std::exception & error)
-	{ }
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

@@ -64,7 +64,9 @@ X3DConeEditor::X3DConeEditor () :
 	                        bottomRadius (this, getConeBottomRadiusAdjustment (), getConeBottomRadiusSpinButton (), "bottomRadius"),
 	                    useGlobalOptions (this, getConeUseGlobalOptionsCheckButton (),"useGlobalOptions"),
 	                          xDimension (this, getConeXDimensionAdjustment (), getConeXDimensionSpinButton (), "xDimension")
-{ }
+{
+	getConeUseGlobalOptionsCheckButton () .property_inconsistent () .signal_changed () .connect (sigc::mem_fun (this, &X3DConeEditor::on_cone_use_global_options_toggled));
+}
 
 void
 X3DConeEditor::set_geometry ()
@@ -85,7 +87,9 @@ X3DConeEditor::set_geometry ()
 void
 X3DConeEditor::on_cone_use_global_options_toggled ()
 {
-	getConeXDimensionBox () .set_sensitive (not getConeUseGlobalOptionsCheckButton () .get_active ());
+	const auto global = getConeUseGlobalOptionsCheckButton () .get_active () or getConeUseGlobalOptionsCheckButton () .get_inconsistent ();
+
+	getConeXDimensionBox () .set_sensitive (not global);
 }
 
 X3DConeEditor::~X3DConeEditor ()

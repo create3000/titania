@@ -114,7 +114,7 @@ public:
 
 	virtual
 	void
-	setup () final override;
+	setup () override;
 
 	virtual
 	void

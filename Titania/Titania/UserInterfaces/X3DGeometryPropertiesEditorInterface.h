@@ -642,13 +642,25 @@ public:
 	getSphereRadiusSpinButton () const
 	{ return *m_SphereRadiusSpinButton; }
 
+	Gtk::Box &
+	getSphereXDimensionBox () const
+	{ return *m_SphereXDimensionBox; }
+
 	Gtk::SpinButton &
 	getSphereXDimensionSpinButton () const
 	{ return *m_SphereXDimensionSpinButton; }
 
+	Gtk::Box &
+	getSphereYDimensionBox () const
+	{ return *m_SphereYDimensionBox; }
+
 	Gtk::SpinButton &
 	getSphereYDimensionSpinButton () const
 	{ return *m_SphereYDimensionSpinButton; }
+
+	Gtk::CheckButton &
+	getSphereUseGlobalOptionsCheckButton () const
+	{ return *m_SphereUseGlobalOptionsCheckButton; }
 
 	Gtk::Box &
 	getGeoElevationGridBox () const
@@ -1022,6 +1034,10 @@ public:
 
 	virtual
 	void
+	on_sphere_use_global_options_toggled () = 0;
+
+	virtual
+	void
 	on_add_normals_clicked () = 0;
 
 	virtual
@@ -1205,8 +1221,11 @@ private:
 	Gtk::CheckButton*              m_ExtrusionEndCapCheckButton;
 	Gtk::Expander*                 m_SphereExpander;
 	Gtk::SpinButton*               m_SphereRadiusSpinButton;
+	Gtk::Box*                      m_SphereXDimensionBox;
 	Gtk::SpinButton*               m_SphereXDimensionSpinButton;
+	Gtk::Box*                      m_SphereYDimensionBox;
 	Gtk::SpinButton*               m_SphereYDimensionSpinButton;
+	Gtk::CheckButton*              m_SphereUseGlobalOptionsCheckButton;
 	Gtk::Box*                      m_GeoElevationGridBox;
 	Gtk::Expander*                 m_GeoElevationGridExpander;
 	Gtk::SpinButton*               m_GeoElevationGridXDimensionSpinButton;

@@ -96,6 +96,28 @@ public:
 	solid () const final override
 	{ return getNode <Sphere> () -> solid (); }
 
+	///  @name Hidden fields
+
+	virtual
+	SFBool &
+	useGlobalOptions () final override
+	{ return getNode <Sphere> () -> useGlobalOptions (); }
+
+	virtual
+	const SFBool &
+	useGlobalOptions () const final override
+	{ return getNode <Sphere> () -> useGlobalOptions (); }
+
+	virtual
+	SFNode &
+	properties () final override
+	{ return getNode <Sphere> () -> properties (); }
+
+	virtual
+	const SFNode &
+	properties () const final override
+	{ return getNode <Sphere> () -> properties (); }
+
 	///  @name Operations
 
 	virtual

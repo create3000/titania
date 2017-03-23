@@ -2423,7 +2423,7 @@
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
-                                            <property name="top_attach">2</property>
+                                            <property name="top_attach">3</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -2435,35 +2435,7 @@
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
-                                            <property name="top_attach">3</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="SphereXDimensionSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">0,000</property>
-                                            <property name="adjustment">SphereXDimensionAdjustment</property>
-                                            <property name="climb_rate">1.5</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="SphereYDimensionSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">0</property>
-                                            <property name="adjustment">SphereYDimensionAdjustment</property>
-                                            <property name="climb_rate">1.5</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">3</property>
+                                            <property name="top_attach">4</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -2477,7 +2449,7 @@
                                                 <property name="can_focus">False</property>
                                                 <property name="margin_left">8</property>
                                                 <property name="ypad">2</property>
-                                                <property name="label" translatable="yes">Global Options</property>
+                                                <property name="label" translatable="yes">Non-Standard Options</property>
                                                 <property name="xalign">0</property>
                                                 <attributes>
                                                   <attribute name="weight" value="bold"/>
@@ -2494,6 +2466,86 @@
                                             <property name="left_attach">0</property>
                                             <property name="top_attach">1</property>
                                             <property name="width">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox" id="SphereXDimensionBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">start</property>
+                                            <property name="orientation">vertical</property>
+                                            <child>
+                                              <object class="GtkSpinButton" id="SphereXDimensionSpinButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="text" translatable="yes">0,000</property>
+                                                <property name="adjustment">SphereXDimensionAdjustment</property>
+                                                <property name="climb_rate">1.5</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">3</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox" id="SphereYDimensionBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">start</property>
+                                            <property name="orientation">vertical</property>
+                                            <child>
+                                              <object class="GtkSpinButton" id="SphereYDimensionSpinButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="text" translatable="yes">0</property>
+                                                <property name="adjustment">SphereYDimensionAdjustment</property>
+                                                <property name="climb_rate">1.5</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">4</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label125">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="xalign">0</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkCheckButton" id="SphereUseGlobalOptionsCheckButton">
+                                            <property name="label" translatable="yes">Use Global Options</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="tooltip_text" translatable="yes">Use values defined by browser setting of primitive quality.</property>
+                                            <property name="halign">start</property>
+                                            <property name="xalign">0</property>
+                                            <property name="draw_indicator">True</property>
+                                            <signal name="toggled" handler="on_sphere_use_global_options_toggled" swapped="no"/>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">2</property>
                                           </packing>
                                         </child>
                                       </object>

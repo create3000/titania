@@ -67,6 +67,13 @@ class X3DGeometryNodeTool :
 {
 public:
 
+	///  @name Construction
+
+	virtual
+	void
+	setup () final override
+	{ X3DNodeTool::setup (); }
+
 	///  @name Private fields
 
 	SFString &

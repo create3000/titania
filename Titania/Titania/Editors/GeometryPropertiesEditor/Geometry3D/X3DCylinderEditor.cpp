@@ -65,7 +65,9 @@ X3DCylinderEditor::X3DCylinderEditor () :
 	                              radius (this, getCylinderRadiusAdjustment (), getCylinderRadiusSpinButton (), "radius"),
 	                    useGlobalOptions (this, getCylinderUseGlobalOptionsCheckButton (),"useGlobalOptions"),
 	                          xDimension (this, getCylinderXDimensionAdjustment (), getCylinderXDimensionSpinButton (), "xDimension")
-{ }
+{
+	getCylinderUseGlobalOptionsCheckButton () .property_inconsistent () .signal_changed () .connect (sigc::mem_fun (this, &X3DCylinderEditor::on_cylinder_use_global_options_toggled));
+}
 
 void
 X3DCylinderEditor::set_geometry ()
@@ -87,7 +89,9 @@ X3DCylinderEditor::set_geometry ()
 void
 X3DCylinderEditor::on_cylinder_use_global_options_toggled ()
 {
-	getCylinderXDimensionBox () .set_sensitive (not getCylinderUseGlobalOptionsCheckButton () .get_active ());
+	const auto global = getCylinderUseGlobalOptionsCheckButton () .get_active () or getCylinderUseGlobalOptionsCheckButton () .get_inconsistent ();
+
+	getCylinderXDimensionBox () .set_sensitive (not global);
 }
 
 X3DCylinderEditor::~X3DCylinderEditor ()
