@@ -1,9 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.h" Line="21" Column="23" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.cpp" Line="84" Column="13" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.h" Line="186" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.cpp" Line="177" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Cone.h" Line="237" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Cone.cpp" Line="181" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Geometry3D/SphereOptions.cpp" Line="114" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -13,7 +16,6 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
-      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/Browser/Geometry3D/SphereOptions.cpp" line="121" column="26" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
