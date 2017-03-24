@@ -91,8 +91,7 @@ Cone::Cone (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "height",       height ());
 	addField (initializeOnly, "bottomRadius", bottomRadius ());
 	addField (initializeOnly, "solid",        solid ());
-
-	addField (initializeOnly, "options", options ());
+	addField (initializeOnly, "options",      options ());
 
 	addChildObjects (optionsNode);
 

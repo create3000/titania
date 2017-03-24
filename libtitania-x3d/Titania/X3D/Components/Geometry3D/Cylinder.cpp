@@ -93,8 +93,7 @@ Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "height",   height ());
 	addField (initializeOnly, "radius",   radius ());
 	addField (initializeOnly, "solid",    solid ());
-
-	addField (initializeOnly, "options", options ());
+	addField (initializeOnly, "options",  options ());
 
 	addChildObjects (optionsNode);
 

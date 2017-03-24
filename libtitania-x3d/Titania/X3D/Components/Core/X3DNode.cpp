@@ -1620,6 +1620,8 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 void
 X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode) const
 {
+	metadataSetNode -> createValue <MetadataString> ("@typeName") -> value () = { getTypeName () };
+
 	for (const auto & fieldDefinition : getFieldDefinitions ())
 		toMetaData (metadataSetNode, fieldDefinition);
 }

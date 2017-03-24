@@ -518,6 +518,19 @@ reflect (const vector2 <Type> & vector, const vector2 <Type> & normal)
 	return vector - (normal * (2 * dot (vector, normal)));
 }
 
+///  Rotates @a vector by @a angle.
+template <class Type>
+vector2 <Type>
+rotate (const vector2 <Type> & vector, const Type & angle)
+{
+	const auto sinAngle = std::sin (angle);
+	const auto cosAngle = std::cos (angle);
+
+	return vector2 <Type> (cosAngle *vector .x () - sinAngle * vector .y (),
+		                    sinAngle *vector .x () + cosAngle * vector .y ());
+
+}
+
 ///  Returns the distance between @a source and @a destination.
 template <class Type>
 inline

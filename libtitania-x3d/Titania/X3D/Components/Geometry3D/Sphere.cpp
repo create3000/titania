@@ -80,8 +80,7 @@ Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "radius",   radius ());
 	addField (initializeOnly, "solid",    solid ());
-
-	addField (initializeOnly, "options", options ());
+	addField (initializeOnly, "options",  options ());
 
 	addChildObjects (optionsNode);
 
@@ -105,7 +104,7 @@ Sphere::initialize ()
 
 	try
 	{
-		const auto typeName    = getMetaData <std::string> ("/Sphere/options/typeName", "QuadSphereOptions");
+		const auto typeName    = getMetaData <std::string> ("/Sphere/options/@typeName", "QuadSphereOptions");
 		const auto metaOptions = getMetadataSet ("/Sphere/options");
 	
 		if (typeName == "IcoSphereOptions" and false)
@@ -164,11 +163,7 @@ void
 Sphere::build ()
 {
 	if (options ())
-	{
-		setMetaData ("/Sphere/options/typeName", optionsNode -> getTypeName ());
-
 		optionsNode -> toMetaData (createMetadataSet ("/Sphere/options"));
-	}
 
 	getTexCoords () .emplace_back (optionsNode -> getTexCoords ());
 
