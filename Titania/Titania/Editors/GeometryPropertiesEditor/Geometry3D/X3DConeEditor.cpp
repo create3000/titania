@@ -50,6 +50,7 @@
 
 #include "X3DConeEditor.h"
 
+#include <Titania/X3D/Browser/Geometry3D/ConeOptions.h>
 #include <Titania/X3D/Components/Geometry3D/Cone.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
@@ -62,16 +63,24 @@ X3DConeEditor::X3DConeEditor () :
 	                              bottom (this, getConeBottomCheckButton (), "bottom"),
 	                              height (this, getConeHeightAdjustment (), getConeHeightSpinButton (), "height"),
 	                        bottomRadius (this, getConeBottomRadiusAdjustment (), getConeBottomRadiusSpinButton (), "bottomRadius"),
-	                    useGlobalOptions (this, getConeUseGlobalOptionsCheckButton (),"useGlobalOptions"),
-	                          xDimension (this, getConeXDimensionAdjustment (), getConeXDimensionSpinButton (), "xDimension")
+	                          xDimension (this, getConeXDimensionAdjustment (), getConeXDimensionSpinButton (), "xDimension"),
+	                               nodes (),
+	                            changing (false)
 {
-	getConeUseGlobalOptionsCheckButton () .property_inconsistent () .signal_changed () .connect (sigc::mem_fun (this, &X3DConeEditor::on_cone_use_global_options_toggled));
+	addChildObjects (nodes);
 }
 
 void
 X3DConeEditor::set_geometry ()
 {
-	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Cone });
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .removeInterest (&X3DConeEditor::set_options, this);
+
+	// Fields
+
+	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Cone });
 
 	getConeExpander () .set_visible (not nodes .empty ());
 
@@ -80,16 +89,78 @@ X3DConeEditor::set_geometry ()
 	height       .setNodes (nodes);
 	bottomRadius .setNodes (nodes);
 
-	useGlobalOptions .setNodes (nodes);
-	xDimension       .setNodes (nodes);
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .addInterest (&X3DConeEditor::set_options, this);
+
+	set_options ();
 }
 
 void
 X3DConeEditor::on_cone_use_global_options_toggled ()
 {
-	const auto global = getConeUseGlobalOptionsCheckButton () .get_active () or getConeUseGlobalOptionsCheckButton () .get_inconsistent ();
+	if (changing)
+		return;
 
-	getConeXDimensionBox () .set_sensitive (not global);
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Toggle Cone Global Options"));
+
+	if (getConeUseGlobalOptionsCheckButton () .get_active ())
+	{
+		for (const auto & node : nodes)
+		{
+			auto & options = node -> getField <X3D::SFNode> ("options");
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, nullptr, undoStep);
+		}
+	}
+	else
+	{
+		for (const auto & node : nodes)
+		{
+			auto &     options    = node -> getField <X3D::SFNode> ("options");
+			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getConeOptions () -> copy (getCurrentContext (), X3D::FLAT_COPY));
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, optionNode, undoStep);
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+X3DConeEditor::set_options ()
+{
+	// Set composed widgets.
+
+	X3D::MFNode optionsNodes;
+
+	for (const auto & node : nodes)
+	{
+		const auto & optionsNode = node -> getField <X3D::SFNode> ("options");
+
+		if (optionsNode)
+			optionsNodes .emplace_back (optionsNode);
+	}
+
+	const auto active       = optionsNodes .empty ();
+	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
+
+	if (optionsNodes .empty ())
+		optionsNodes .emplace_back (getCurrentBrowser () -> getConeOptions ());
+
+	xDimension .setNodes (optionsNodes);
+
+	// Set global widget.
+
+	changing = true;
+
+	getConeUseGlobalOptionsCheckButton () .set_active (active);
+	getConeUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
+
+	getConeXDimensionBox () .set_sensitive (not active and not inconsistent);
+
+	changing = false;
 }
 
 X3DConeEditor::~X3DConeEditor ()

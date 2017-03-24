@@ -54,22 +54,11 @@ namespace titania {
 namespace X3D {
 
 X3DOptionNode::X3DOptionNode () :
-	X3DBaseNode ()
+	X3DNode ()
 { }
 
-void
-X3DOptionNode::initialize ()
-{
-	X3DBaseNode::initialize ();
-
-	addInterest (&X3DOptionNode::eventsProcessed, this);
-}
-
-void
-X3DOptionNode::eventsProcessed ()
-{
-	X3DChildObject::addEvent ();
-}
+X3DOptionNode::~X3DOptionNode ()
+{ }
 
 } // X3D
 } // titania

@@ -99,24 +99,14 @@ public:
 	///  @name Hidden fields
 
 	virtual
-	SFBool &
-	useGlobalOptions () final override
-	{ return getNode <Sphere> () -> useGlobalOptions (); }
-
-	virtual
-	const SFBool &
-	useGlobalOptions () const final override
-	{ return getNode <Sphere> () -> useGlobalOptions (); }
-
-	virtual
 	SFNode &
-	properties () final override
-	{ return getNode <Sphere> () -> properties (); }
+	options () final override
+	{ return getNode <Sphere> () -> options (); }
 
 	virtual
 	const SFNode &
-	properties () const final override
-	{ return getNode <Sphere> () -> properties (); }
+	options () const final override
+	{ return getNode <Sphere> () -> options (); }
 
 	///  @name Operations
 

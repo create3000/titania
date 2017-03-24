@@ -88,15 +88,16 @@ private:
 	on_sphere_use_global_options_toggled () final override;
 
 	void
-	set_properties ();
+	set_options ();
 
 	///  @name Members
 
-	X3DFieldAdjustment <X3D::SFFloat> radius;
-
-	X3DFieldToggleButton <X3D::SFBool> useGlobalOptions;
+	X3DFieldAdjustment <X3D::SFFloat>  radius;
 	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
 	X3DFieldAdjustment <X3D::SFInt32>  yDimension;
+
+	X3D::MFNode nodes;
+	bool        changing;
 
 };
 

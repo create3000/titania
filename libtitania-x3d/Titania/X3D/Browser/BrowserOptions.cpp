@@ -59,7 +59,7 @@
 #include "../Browser/Geometry3D/BoxOptions.h"
 #include "../Browser/Geometry3D/ConeOptions.h"
 #include "../Browser/Geometry3D/CylinderOptions.h"
-#include "../Browser/Geometry3D/QuadSphereProperties.h"
+#include "../Browser/Geometry3D/QuadSphereOptions.h"
 #include "../Browser/Rendering/MotionBlur.h"
 #include "../Browser/Text/FontStyleOptions.h"
 #include "../Browser/RenderingProperties.h"
@@ -247,8 +247,13 @@ BrowserOptions::set_PrimitiveQuality ()
 		getBrowser () -> getConeOptions ()       -> xDimension () = 32;
 		getBrowser () -> getCylinderOptions ()   -> xDimension () = 32;
 
-		getBrowser () -> getQuadSphereProperties () -> xDimension () = 64;
-		getBrowser () -> getQuadSphereProperties () -> yDimension () = 31;
+		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
+
+		if (quadSphere)
+		{
+			quadSphere -> xDimension () = 64;
+			quadSphere -> yDimension () = 31;
+		}
 
 		getBrowser () -> getFontStyleOptions () -> bezierDimension () = 7;
 		return;
@@ -263,8 +268,13 @@ BrowserOptions::set_PrimitiveQuality ()
 		getBrowser () -> getConeOptions ()       -> xDimension () = 16;
 		getBrowser () -> getCylinderOptions ()   -> xDimension () = 16;
 
-		getBrowser () -> getQuadSphereProperties () -> xDimension () = 20;
-		getBrowser () -> getQuadSphereProperties () -> yDimension () = 9;
+		const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
+
+		if (quadSphere)
+		{
+			quadSphere -> xDimension () = 20;
+			quadSphere -> yDimension () = 9;
+		}
 
 		getBrowser () -> getFontStyleOptions () -> bezierDimension () = 3;
 		return;
@@ -279,8 +289,13 @@ BrowserOptions::set_PrimitiveQuality ()
 	getBrowser () -> getConeOptions ()       -> xDimension () = 20;
 	getBrowser () -> getCylinderOptions ()   -> xDimension () = 20;
 
-	getBrowser () -> getQuadSphereProperties () -> xDimension () = 32;
-	getBrowser () -> getQuadSphereProperties () -> yDimension () = 15;
+	const auto quadSphere = dynamic_cast <QuadSphereOptions*> (getBrowser () -> getSphereOptions () .getValue ());
+
+	if (quadSphere)
+	{
+		quadSphere -> xDimension () = 32;
+		quadSphere -> yDimension () = 15;
+	}
 
 	getBrowser () -> getFontStyleOptions () -> bezierDimension () = 5;
 }

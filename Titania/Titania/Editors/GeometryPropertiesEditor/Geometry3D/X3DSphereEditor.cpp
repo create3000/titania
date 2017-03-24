@@ -50,8 +50,7 @@
 
 #include "X3DSphereEditor.h"
 
-#include <Titania/X3D/Browser/Geometry3D/QuadSphereProperties.h>
-#include <Titania/X3D/Browser/Geometry3D/SphereOptions.h>
+#include <Titania/X3D/Browser/Geometry3D/QuadSphereOptions.h>
 #include <Titania/X3D/Components/Geometry3D/Sphere.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
@@ -61,11 +60,12 @@ namespace puck {
 X3DSphereEditor::X3DSphereEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius"),
-	                    useGlobalOptions (this, getSphereUseGlobalOptionsCheckButton (),"useGlobalOptions"),
 	                          xDimension (this, getSphereXDimensionAdjustment (), getSphereXDimensionSpinButton (), "xDimension"),
-	                          yDimension (this, getSphereYDimensionAdjustment (), getSphereYDimensionSpinButton (), "yDimension")
+	                          yDimension (this, getSphereYDimensionAdjustment (), getSphereYDimensionSpinButton (), "yDimension"),
+	                               nodes (),
+	                            changing (false)
 {
-	getSphereUseGlobalOptionsCheckButton () .property_inconsistent () .signal_changed () .connect (sigc::mem_fun (this, &X3DSphereEditor::on_sphere_use_global_options_toggled));
+	addChildObjects (nodes);
 }
 
 void
@@ -73,12 +73,12 @@ X3DSphereEditor::set_geometry ()
 {
 	// Hidden fields
 
-	for (const auto & node : useGlobalOptions .getNodes ())
-		node -> getField <X3D::SFNode> ("properties") .removeInterest (&X3DSphereEditor::set_properties, this);
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .removeInterest (&X3DSphereEditor::set_options, this);
 
 	// Fields
 
-	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Sphere });
+	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Sphere });
 
 	getSphereExpander () .set_visible (not nodes .empty ());
 
@@ -86,42 +86,78 @@ X3DSphereEditor::set_geometry ()
 
 	// Hidden fields
 
-	useGlobalOptions .setNodes (nodes);
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .addInterest (&X3DSphereEditor::set_options, this);
 
-	for (const auto & node : useGlobalOptions .getNodes ())
-		node -> getField <X3D::SFNode> ("properties") .addInterest (&X3DSphereEditor::set_properties, this);
-
-	set_properties ();
+	set_options ();
 }
 
 void
 X3DSphereEditor::on_sphere_use_global_options_toggled ()
 {
-	const auto global = getSphereUseGlobalOptionsCheckButton () .get_active () or getSphereUseGlobalOptionsCheckButton () .get_inconsistent ();
+	if (changing)
+		return;
 
-	getSphereXDimensionBox () .set_sensitive (not global);
-	getSphereYDimensionBox () .set_sensitive (not global);
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Toggle Sphere Global Options"));
 
-	set_properties ();
+	if (getSphereUseGlobalOptionsCheckButton () .get_active ())
+	{
+		for (const auto & node : nodes)
+		{
+			auto & options = node -> getField <X3D::SFNode> ("options");
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, nullptr, undoStep);
+		}
+	}
+	else
+	{
+		for (const auto & node : nodes)
+		{
+			auto &     options    = node -> getField <X3D::SFNode> ("options");
+			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getSphereOptions () -> copy (getCurrentContext (), X3D::FLAT_COPY));
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, optionNode, undoStep);
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
-X3DSphereEditor::set_properties ()
+X3DSphereEditor::set_options ()
 {
-	X3D::MFNode nodes;
+	// Set composed widgets.
 
-	for (const auto & node : useGlobalOptions .getNodes ())
+	X3D::MFNode optionsNodes;
+
+	for (const auto & node : nodes)
 	{
-		auto & propertiesNode = node -> getField <X3D::SFNode> ("properties");
+		const auto & optionsNode = node -> getField <X3D::SFNode> ("options");
 
-		if (not propertiesNode)
-			propertiesNode = getCurrentBrowser () -> getSphereOptions () -> properties () -> copy (getCurrentContext (), X3D::FLAT_COPY);
-
-		nodes .emplace_back (propertiesNode);
+		if (optionsNode)
+			optionsNodes .emplace_back (optionsNode);
 	}
 
-	xDimension .setNodes (nodes);
-	yDimension .setNodes (nodes);
+	const auto active       = optionsNodes .empty ();
+	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
+
+	if (optionsNodes .empty ())
+		optionsNodes .emplace_back (getCurrentBrowser () -> getSphereOptions ());
+
+	xDimension .setNodes (optionsNodes);
+	yDimension .setNodes (optionsNodes);
+
+	// Set global widget.
+
+	changing = true;
+
+	getSphereUseGlobalOptionsCheckButton () .set_active (active);
+	getSphereUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
+
+	getSphereXDimensionBox () .set_sensitive (not active and not inconsistent);
+	getSphereYDimensionBox () .set_sensitive (not active and not inconsistent);
+
+	changing = false;
 }
 
 X3DSphereEditor::~X3DSphereEditor ()

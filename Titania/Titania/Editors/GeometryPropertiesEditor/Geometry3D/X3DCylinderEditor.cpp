@@ -50,6 +50,7 @@
 
 #include "X3DCylinderEditor.h"
 
+#include <Titania/X3D/Browser/Geometry3D/CylinderOptions.h>
 #include <Titania/X3D/Components/Geometry3D/Cylinder.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
 
@@ -63,16 +64,24 @@ X3DCylinderEditor::X3DCylinderEditor () :
 	                              bottom (this, getCylinderBottomCheckButton (), "bottom"),
 	                              height (this, getCylinderHeightAdjustment (), getCylinderHeightSpinButton (), "height"),
 	                              radius (this, getCylinderRadiusAdjustment (), getCylinderRadiusSpinButton (), "radius"),
-	                    useGlobalOptions (this, getCylinderUseGlobalOptionsCheckButton (),"useGlobalOptions"),
-	                          xDimension (this, getCylinderXDimensionAdjustment (), getCylinderXDimensionSpinButton (), "xDimension")
+	                          xDimension (this, getCylinderXDimensionAdjustment (), getCylinderXDimensionSpinButton (), "xDimension"),
+	                               nodes (),
+	                            changing (false)
 {
-	getCylinderUseGlobalOptionsCheckButton () .property_inconsistent () .signal_changed () .connect (sigc::mem_fun (this, &X3DCylinderEditor::on_cylinder_use_global_options_toggled));
+	addChildObjects (nodes);
 }
 
 void
 X3DCylinderEditor::set_geometry ()
 {
-	const auto nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Cylinder });
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .removeInterest (&X3DCylinderEditor::set_options, this);
+
+	// Fields
+
+	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Cylinder });
 
 	getCylinderExpander () .set_visible (not nodes .empty ());
 
@@ -82,16 +91,78 @@ X3DCylinderEditor::set_geometry ()
 	height .setNodes (nodes);
 	radius .setNodes (nodes);
 
-	useGlobalOptions .setNodes (nodes);
-	xDimension       .setNodes (nodes);
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .addInterest (&X3DCylinderEditor::set_options, this);
+
+	set_options ();
 }
 
 void
 X3DCylinderEditor::on_cylinder_use_global_options_toggled ()
 {
-	const auto global = getCylinderUseGlobalOptionsCheckButton () .get_active () or getCylinderUseGlobalOptionsCheckButton () .get_inconsistent ();
+	if (changing)
+		return;
 
-	getCylinderXDimensionBox () .set_sensitive (not global);
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Toggle Cylinder Global Options"));
+
+	if (getCylinderUseGlobalOptionsCheckButton () .get_active ())
+	{
+		for (const auto & node : nodes)
+		{
+			auto & options = node -> getField <X3D::SFNode> ("options");
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, nullptr, undoStep);
+		}
+	}
+	else
+	{
+		for (const auto & node : nodes)
+		{
+			auto &     options    = node -> getField <X3D::SFNode> ("options");
+			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getCylinderOptions () -> copy (getCurrentContext (), X3D::FLAT_COPY));
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, optionNode, undoStep);
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+X3DCylinderEditor::set_options ()
+{
+	// Set composed widgets.
+
+	X3D::MFNode optionsNodes;
+
+	for (const auto & node : nodes)
+	{
+		const auto & optionsNode = node -> getField <X3D::SFNode> ("options");
+
+		if (optionsNode)
+			optionsNodes .emplace_back (optionsNode);
+	}
+
+	const auto active       = optionsNodes .empty ();
+	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
+
+	if (optionsNodes .empty ())
+		optionsNodes .emplace_back (getCurrentBrowser () -> getCylinderOptions ());
+
+	xDimension .setNodes (optionsNodes);
+
+	// Set global widget.
+
+	changing = true;
+
+	getCylinderUseGlobalOptionsCheckButton () .set_active (active);
+	getCylinderUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
+
+	getCylinderXDimensionBox () .set_sensitive (not active and not inconsistent);
+
+	changing = false;
 }
 
 X3DCylinderEditor::~X3DCylinderEditor ()

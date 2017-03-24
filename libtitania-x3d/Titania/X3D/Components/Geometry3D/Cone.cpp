@@ -53,9 +53,11 @@
 #include "../../Browser/Geometry3D/ConeOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
+
+#include "../Core/MetadataSet.h"
+#include "../Geometry3D/IndexedFaceSet.h"
+#include "../Rendering/Coordinate.h"
+#include "../Texturing/TextureCoordinate.h"
 
 #include <complex>
 
@@ -67,19 +69,19 @@ const std::string   Cone::typeName       = "Cone";
 const std::string   Cone::containerField = "geometry";
 
 Cone::Fields::Fields () :
-	            side (new SFBool (true)),
-	          bottom (new SFBool (true)),
-	          height (new SFFloat (2)),
-	    bottomRadius (new SFFloat (1)),
-	           solid (new SFBool (true)),
-	useGlobalOptions (new SFBool (true)),
-	      xDimension (new SFInt32 (0))
+	        side (new SFBool (true)),
+	      bottom (new SFBool (true)),
+	      height (new SFFloat (2)),
+	bottomRadius (new SFFloat (1)),
+	       solid (new SFBool (true)),
+	     options (new SFNode ())
 { }
 
 Cone::Cone (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
-	         fields ()
+	         fields (),
+	    optionsNode ()
 {
 	addType (X3DConstants::Cone);
 
@@ -90,14 +92,12 @@ Cone::Cone (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "bottomRadius", bottomRadius ());
 	addField (initializeOnly, "solid",        solid ());
 
-	addField (initializeOnly, "useGlobalOptions", useGlobalOptions ());
-	addField (initializeOnly, "xDimension",       xDimension ());
+	addField (initializeOnly, "options", options ());
 
 	height ()       .setUnit (UnitCategory::LENGTH);
 	bottomRadius () .setUnit (UnitCategory::LENGTH);
 
-	useGlobalOptions () .isHidden (true);
-	xDimension ()       .isHidden (true);
+	options () .isHidden (true);
 }
 
 X3DBaseNode*
@@ -111,14 +111,24 @@ Cone::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	useGlobalOptions () .addInterest (&Cone::set_useGlobalOptions, this);
-	xDimension ()       .addInterest (&Cone::set_xDimension,       this);
+	options () .addInterest (&Cone::set_options, this);
 
-	useGlobalOptions () .set (getMetaData <bool> ("/Cone/useGlobalOptions", true));
-	xDimension ()       .set (getMetaData <int32_t> ("/Cone/xDimension", getBrowser () -> getConeOptions () -> xDimension ()));
+	try
+	{
+		const auto metaOptions = getMetadataSet ("/Cone/options");
+	
+		optionsNode .set (MakePtr <ConeOptions> (getExecutionContext ()));
 
-	if (useGlobalOptions ())
-		getBrowser () -> getConeOptions () .addInterest (&Cone::addEvent, this);
+		optionsNode -> addInterest (&Cone::addEvent, this);
+		optionsNode -> fromMetaData (metaOptions);
+		optionsNode -> setup ();
+
+		options () .set (optionsNode);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		set_options ();
+	}
 }
 
 void
@@ -132,10 +142,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-	{
-		if (useGlobalOptions ())
-			getBrowser () -> getConeOptions () .addInterest (&Cone::addEvent, this);
-	}
+		set_options ();
 }
 
 Box3d
@@ -154,38 +161,34 @@ Cone::createBBox () const
 }
 
 void
-Cone::set_useGlobalOptions ()
+Cone::set_options ()
 {
-	if (useGlobalOptions ())
-	{
-		getBrowser () -> getConeOptions () .addInterest (&Cone::addEvent, this);
+	removeMetaData ("/Cone/options");
 
-		removeMetaData ("/Cone");
-	}
-	else
-	{
-		getBrowser () -> getConeOptions () .removeInterest (&Cone::addEvent, this);
+	if (optionsNode)
+		optionsNode -> removeInterest (&Cone::addEvent, this);
 
-		setMetaData ("/Cone/useGlobalOptions", false);
+	optionsNode .set (options ());
 
-		set_xDimension ();
-	}
-}
+	if (not optionsNode)
+		optionsNode .set (getBrowser () -> getConeOptions ());
 
-void
-Cone::set_xDimension ()
-{
-	if (useGlobalOptions ())
-		return;
-
-	setMetaData ("/Cone/xDimension", xDimension ());
+	optionsNode -> addInterest (&Cone::addEvent, this);
 }
 
 void
 Cone::build ()
 {
-	const auto & options    = getBrowser () -> getConeOptions ();
-	const double xDimension = useGlobalOptions () ? options -> xDimension () : this -> xDimension ();
+	if (options ())
+	{
+		setMetaData ("/Cone/options/typeName", optionsNode -> getTypeName ());
+
+		optionsNode -> toMetaData (createMetadataSet ("/Cone/options"));
+	}
+	else
+		removeMetaData ("/Cone");
+
+	const double xDimension = optionsNode -> xDimension ();
 
 	getTexCoords () .emplace_back ();
 
@@ -261,8 +264,7 @@ Cone::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	const auto & options    = getBrowser () -> getConeOptions ();
-	const double xDimension = useGlobalOptions () ? options -> xDimension () : this -> xDimension ();
+	const double xDimension = optionsNode -> xDimension ();
 
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
@@ -358,6 +360,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	return geometry;
 }
+
+Cone::~Cone ()
+{ }
 
 } // X3D
 } // titania

@@ -50,8 +50,7 @@
 
 #include "Sphere.h"
 
-#include "../../Browser/Geometry3D/QuadSphereProperties.h"
-#include "../../Browser/Geometry3D/SphereOptions.h"
+#include "../../Browser/Geometry3D/QuadSphereOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -65,17 +64,16 @@ const std::string   Sphere::typeName       = "Sphere";
 const std::string   Sphere::containerField = "geometry";
 
 Sphere::Fields::Fields () :
-	          radius (new SFFloat (1)),
-	           solid (new SFBool (true)),
-	useGlobalOptions (new SFBool (true)),
-	      properties (new SFNode ())
+	 radius (new SFFloat (1)),
+	  solid (new SFBool (true)),
+	options (new SFNode ())
 { }
 
 Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
 	         fields (),
-	 propertiesNode ()
+	    optionsNode ()
 {
 	addType (X3DConstants::Sphere);
 
@@ -83,15 +81,13 @@ Sphere::Sphere (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "radius",   radius ());
 	addField (initializeOnly, "solid",    solid ());
 
-	addField (initializeOnly, "useGlobalOptions", useGlobalOptions ());
-	addField (initializeOnly, "properties",       properties ());
+	addField (initializeOnly, "options", options ());
 
-	addChildObjects (propertiesNode);
+	addChildObjects (optionsNode);
 
 	radius () .setUnit (UnitCategory::LENGTH);
 
-	useGlobalOptions () .isHidden (true);
-	properties ()       .isHidden (true);
+	options () .isHidden (true);
 }
 
 X3DBaseNode*
@@ -105,31 +101,27 @@ Sphere::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	useGlobalOptions () .addInterest (&Sphere::set_useGlobalOptions, this);
-	properties ()       .addInterest (&Sphere::set_properties,       this);
+	options () .addInterest (&Sphere::set_options, this);
 
-	useGlobalOptions () .set (getMetaData <bool> ("/Sphere/useGlobalOptions", true));
-
-__LOG__ << std::endl;
-__LOG__ << properties () << std::endl;
-
-	if (useGlobalOptions ())
-		getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
-
-	else
+	try
 	{
-		const auto type = getMetaData <std::string> ("/Sphere/propertiesType", "QuadSphereProperties");
-
-		if (type == "IcoSphereProperties" and false)
+		const auto typeName    = getMetaData <std::string> ("/Sphere/options/typeName", "QuadSphereOptions");
+		const auto metaOptions = getMetadataSet ("/Sphere/options");
+	
+		if (typeName == "IcoSphereOptions" and false)
 			; // TODO
 		else // QuadSphereProperties
-			propertiesNode .set (MakePtr <QuadSphereProperties> (getExecutionContext ()));
+			optionsNode .set (MakePtr <QuadSphereOptions> (getExecutionContext ()));
 
-		propertiesNode -> addInterest (&Sphere::set_properties_node, this);
-		propertiesNode -> fromMetaData (createMetadataSet ("/Sphere/properties"));
-		propertiesNode -> setup ();
+		optionsNode -> addInterest (&Sphere::addEvent, this);
+		optionsNode -> fromMetaData (metaOptions);
+		optionsNode -> setup ();
 
-		properties () .set (propertiesNode);
+		options () .set (optionsNode);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		set_options ();
 	}
 }
 
@@ -138,16 +130,10 @@ Sphere::setExecutionContext (X3DExecutionContext* const executionContext)
 throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	if (isInitialized ())
-		getBrowser () -> getSphereOptions () .removeInterest (&Sphere::addEvent, this);
-
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-	{
-		if (useGlobalOptions ())
-			getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
-	}
+		set_options ();
 }
 
 Box3d
@@ -159,80 +145,37 @@ Sphere::createBBox () const
 }
 
 void
-Sphere::set_useGlobalOptions ()
+Sphere::set_options ()
 {
-	if (useGlobalOptions ())
-	{
-		getBrowser () -> getSphereOptions () .addInterest (&Sphere::addEvent, this);
+	removeMetaData ("/Sphere/options");
 
-		removeMetaData ("/Sphere");
-	}
-	else
-	{
-		getBrowser () -> getSphereOptions () .removeInterest (&Sphere::addEvent, this);
+	if (optionsNode)
+		optionsNode -> removeInterest (&Sphere::addEvent, this);
 
-		setMetaData ("/Sphere/useGlobalOptions", false);
+	optionsNode .set (options ());
 
-		set_properties ();
-	}
-}
+	if (not optionsNode)
+		optionsNode .set (getBrowser () -> getSphereOptions ());
 
-void
-Sphere::set_properties ()
-{
-	removeMetaData ("/Sphere/properties");
-
-	if (propertiesNode)
-		propertiesNode -> removeInterest (&Sphere::set_properties_node, this);
-
-	propertiesNode .set (properties ());
-
-	if (not propertiesNode)
-		propertiesNode .set (MakePtr <QuadSphereProperties> (getExecutionContext ()));
-
-	propertiesNode -> addInterest (&Sphere::set_properties_node, this);
-
-	set_properties_node ();
-}
-
-void
-Sphere::set_properties_node ()
-{
-	if (useGlobalOptions ())
-		return;
-
-	setMetaData ("/Sphere/propertiesType", propertiesNode -> getTypeName ());
-
-	propertiesNode -> toMetaData (createMetadataSet ("/Sphere/properties"));
-
-	addEvent ();
+	optionsNode -> addInterest (&Sphere::addEvent, this);
 }
 
 void
 Sphere::build ()
 {
-	if (useGlobalOptions ())
+	if (options ())
 	{
-		const auto & options = getBrowser () -> getSphereOptions ();
-	
-		getTexCoords () .emplace_back (options -> getTexCoords ());
+		setMetaData ("/Sphere/options/typeName", optionsNode -> getTypeName ());
 
-		getNormals ()  = options -> getNormals  ();
-		getVertices () = options -> getVertices ();
-
-		addElements (options -> getVertexMode (), getVertices () .size ());
+		optionsNode -> toMetaData (createMetadataSet ("/Sphere/options"));
 	}
 	else
-	{
-		getTexCoords () .emplace_back (propertiesNode -> createTexCoords ());
+		removeMetaData ("/Sphere");
 
-		getVertices () = propertiesNode -> createVertices ();
+	getTexCoords () .emplace_back (optionsNode -> getTexCoords ());
 
-		for (const auto & vertex : getVertices ())
-			getNormals () .emplace_back (vertex);
-
-		addElements (propertiesNode -> getVertexMode (), getVertices () .size ());
-	}
+	getNormals ()  = optionsNode -> getNormals ();
+	getVertices () = optionsNode -> getVertices ();
 
 	if (radius () not_eq 1.0f)
 	{
@@ -240,6 +183,7 @@ Sphere::build ()
 			vertex *= double (radius () .getValue ());
 	}
 
+	addElements (optionsNode -> getVertexMode (), getVertices () .size ());
 	setSolid (solid ());
 }
 
@@ -248,10 +192,7 @@ Sphere::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	const auto & options  = getBrowser () -> getSphereOptions ();
-	const auto   geometry = useGlobalOptions ()
-	                        ? options -> toPrimitive (getExecutionContext ())
-	                        : propertiesNode -> toPrimitive (getExecutionContext ());
+	const auto geometry = optionsNode -> toPrimitive (getExecutionContext ());
 
 	geometry -> getField <SFBool> ("solid") = solid ();
 

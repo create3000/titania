@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,14 +48,33 @@
  *
  ******************************************************************************/
 
-#include "X3DSpherePropertiesNode.h"
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_OPTIONS_NODE_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_X3DSPHERE_OPTIONS_NODE_H__
+
+#include "../Rendering/X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-X3DSpherePropertiesNode::X3DSpherePropertiesNode () :
-	X3DNode ()
-{ }
+class X3DSphereOptionsNode :
+	public X3DGeometricOptionNode
+{
+public:
+
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive (X3DExecutionContext* const executionContext) const = 0;
+
+
+protected:
+
+	X3DSphereOptionsNode ();
+
+};
 
 } // X3D
 } // titania
+
+#endif

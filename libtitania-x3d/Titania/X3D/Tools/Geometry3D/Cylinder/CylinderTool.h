@@ -139,24 +139,14 @@ public:
 	///  @name Hidden fields
 
 	virtual
-	SFBool &
-	useGlobalOptions () final override
-	{ return getNode <Cylinder> () -> useGlobalOptions (); }
+	SFNode &
+	options () final override
+	{ return getNode <Cylinder> () -> options (); }
 
 	virtual
-	const SFBool &
-	useGlobalOptions () const final override
-	{ return getNode <Cylinder> () -> useGlobalOptions (); }
-
-	virtual
-	SFInt32 &
-	xDimension () final override
-	{ return getNode <Cylinder> () -> xDimension (); }
-
-	virtual
-	const SFInt32 &
-	xDimension () const final override
-	{ return getNode <Cylinder> () -> xDimension (); }
+	const SFNode &
+	options () const final override
+	{ return getNode <Cylinder> () -> options (); }
 
 	///  @name Operations
 

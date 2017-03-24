@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class ConeOptions;
+
 class Cone :
 	virtual public X3DGeometryNode
 {
@@ -150,24 +152,14 @@ public:
 	///  @name Hidden fields
 
 	virtual
-	SFBool &
-	useGlobalOptions ()
-	{ return *fields .useGlobalOptions; }
+	SFNode &
+	options ()
+	{ return *fields .options; }
 
 	virtual
-	const SFBool &
-	useGlobalOptions () const
-	{ return *fields .useGlobalOptions; }
-
-	virtual
-	SFInt32 &
-	xDimension ()
-	{ return *fields .xDimension; }
-
-	virtual
-	const SFInt32 &
-	xDimension () const
-	{ return *fields .xDimension; }
+	const SFNode &
+	options () const
+	{ return *fields .options; }
 
 	///  @name Operations
 
@@ -184,6 +176,11 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) override;
 
+	///  @name Destruction
+
+	virtual
+	~Cone () override;
+
 
 protected:
 
@@ -199,10 +196,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_useGlobalOptions ();
-
-	void
-	set_xDimension ();
+	set_options ();
 
 	///  @name Operations
 
@@ -221,7 +215,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -232,11 +226,14 @@ private:
 		SFFloat* const height;
 		SFFloat* const bottomRadius;
 		SFBool* const solid;
-		SFBool* const useGlobalOptions;
-		SFInt32* const xDimension;
+		SFNode* const options;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <ConeOptions> optionsNode;
 
 };
 

@@ -87,6 +87,9 @@ private:
 	void
 	on_cylinder_use_global_options_toggled () final override;
 
+	void
+	set_options ();
+
 	///  @name Members
 
 	X3DFieldToggleButton <X3D::SFBool> top;
@@ -94,9 +97,10 @@ private:
 	X3DFieldToggleButton <X3D::SFBool> bottom;
 	X3DFieldAdjustment <X3D::SFFloat>  height;
 	X3DFieldAdjustment <X3D::SFFloat>  radius;
-
-	X3DFieldToggleButton <X3D::SFBool> useGlobalOptions;
 	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
+
+	X3D::MFNode nodes;
+	bool        changing;
 };
 
 } // puck

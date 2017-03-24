@@ -53,9 +53,11 @@
 #include "../../Browser/Geometry3D/CylinderOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
+
+#include "../Core/MetadataSet.h"
+#include "../Geometry3D/IndexedFaceSet.h"
+#include "../Rendering/Coordinate.h"
+#include "../Texturing/TextureCoordinate.h"
 
 #include <complex>
 
@@ -67,20 +69,20 @@ const std::string   Cylinder::typeName       = "Cylinder";
 const std::string   Cylinder::containerField = "geometry";
 
 Cylinder::Fields::Fields () :
-	             top (new SFBool (true)),
-	            side (new SFBool (true)),
-	          bottom (new SFBool (true)),
-	          height (new SFFloat (2)),
-	          radius (new SFFloat (1)),
-	           solid (new SFBool (true)),
-	useGlobalOptions (new SFBool (true)),
-	      xDimension (new SFInt32 (0))
+	    top (new SFBool (true)),
+	   side (new SFBool (true)),
+	 bottom (new SFBool (true)),
+	 height (new SFFloat (2)),
+	 radius (new SFFloat (1)),
+	  solid (new SFBool (true)),
+	options (new SFNode ())
 { }
 
 Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
-	         fields ()
+	         fields (),
+	    optionsNode ()
 {
 	addType (X3DConstants::Cylinder);
 
@@ -92,14 +94,12 @@ Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 	addField (initializeOnly, "radius",   radius ());
 	addField (initializeOnly, "solid",    solid ());
 
-	addField (initializeOnly, "useGlobalOptions", useGlobalOptions ());
-	addField (initializeOnly, "xDimension",       xDimension ());
+	addField (initializeOnly, "options", options ());
 
 	height () .setUnit (UnitCategory::LENGTH);
 	radius () .setUnit (UnitCategory::LENGTH);
 
-	useGlobalOptions () .isHidden (true);
-	xDimension ()       .isHidden (true);
+	options () .isHidden (true);
 }
 
 X3DBaseNode*
@@ -113,14 +113,24 @@ Cylinder::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	useGlobalOptions () .addInterest (&Cylinder::set_useGlobalOptions, this);
-	xDimension ()       .addInterest (&Cylinder::set_xDimension,       this);
+	options () .addInterest (&Cylinder::set_options, this);
 
-	useGlobalOptions () .set (getMetaData <bool> ("/Cylinder/useGlobalOptions", true));
-	xDimension ()       .set (getMetaData <int32_t> ("/Cylinder/xDimension", getBrowser () -> getCylinderOptions () -> xDimension ()));
+	try
+	{
+		const auto metaOptions = getMetadataSet ("/Cylinder/options");
+	
+		optionsNode .set (MakePtr <CylinderOptions> (getExecutionContext ()));
 
-	if (useGlobalOptions ())
-		getBrowser () -> getCylinderOptions () .addInterest (&Cylinder::addEvent, this);
+		optionsNode -> addInterest (&Cylinder::addEvent, this);
+		optionsNode -> fromMetaData (metaOptions);
+		optionsNode -> setup ();
+
+		options () .set (optionsNode);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		set_options ();
+	}
 }
 
 void
@@ -134,10 +144,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-	{
-		if (useGlobalOptions ())
-			getBrowser () -> getCylinderOptions () .addInterest (&Cylinder::addEvent, this);
-	}
+		set_options ();
 }
 
 Box3d
@@ -159,38 +166,34 @@ Cylinder::createBBox () const
 }
 
 void
-Cylinder::set_useGlobalOptions ()
+Cylinder::set_options ()
 {
-	if (useGlobalOptions ())
-	{
-		getBrowser () -> getCylinderOptions () .addInterest (&Cylinder::addEvent, this);
+	removeMetaData ("/Cylinder/options");
 
-		removeMetaData ("/Cylinder");
-	}
-	else
-	{
-		getBrowser () -> getCylinderOptions () .removeInterest (&Cylinder::addEvent, this);
+	if (optionsNode)
+		optionsNode -> removeInterest (&Cylinder::addEvent, this);
 
-		setMetaData ("/Cylinder/useGlobalOptions", false);
+	optionsNode .set (options ());
 
-		set_xDimension ();
-	}
-}
+	if (not optionsNode)
+		optionsNode .set (getBrowser () -> getCylinderOptions ());
 
-void
-Cylinder::set_xDimension ()
-{
-	if (useGlobalOptions ())
-		return;
-
-	setMetaData ("/Cylinder/xDimension", xDimension ());
+	optionsNode -> addInterest (&Cylinder::addEvent, this);
 }
 
 void
 Cylinder::build ()
 {
-	const auto & options    = getBrowser () -> getCylinderOptions ();
-	const double xDimension = useGlobalOptions () ? options -> xDimension () : this -> xDimension ();
+	if (options ())
+	{
+		setMetaData ("/Cylinder/options/typeName", optionsNode -> getTypeName ());
+
+		optionsNode -> toMetaData (createMetadataSet ("/Cylinder/options"));
+	}
+	else
+		removeMetaData ("/Cylinder");
+
+	const double xDimension = optionsNode -> xDimension ();
 
 	getTexCoords () .emplace_back ();
 
@@ -281,8 +284,7 @@ Cylinder::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	const auto & options    = getBrowser () -> getCylinderOptions ();
-	const double xDimension = useGlobalOptions () ? options -> xDimension () : this -> xDimension ();
+	const double xDimension = optionsNode -> xDimension ();
 
 	const auto texCoord = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
@@ -522,6 +524,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	return geometry;
 }
+
+Cylinder::~Cylinder ()
+{ }
 
 } // X3D
 } // titania

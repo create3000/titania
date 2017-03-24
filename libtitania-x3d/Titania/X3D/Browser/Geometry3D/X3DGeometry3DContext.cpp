@@ -53,34 +53,27 @@
 #include "../Geometry3D/BoxOptions.h"
 #include "../Geometry3D/ConeOptions.h"
 #include "../Geometry3D/CylinderOptions.h"
-#include "../Geometry3D/SphereOptions.h"
-#include "../Geometry3D/QuadSphereProperties.h"
+#include "../Geometry3D/QuadSphereOptions.h"
 
 namespace titania {
 namespace X3D {
 
 X3DGeometry3DContext::X3DGeometry3DContext () :
-	          X3DBaseNode (),
-	          boxOptions (new BoxOptions (getExecutionContext ())),
-	         coneOptions (new ConeOptions (getExecutionContext ())),
-	     cylinderOptions (new CylinderOptions (getExecutionContext ())),
-	       sphereOptions (new SphereOptions (getExecutionContext ())),
-	quadSphereProperties (new QuadSphereProperties (getExecutionContext ()))
+	     X3DBaseNode (),
+	     boxOptions (new BoxOptions (getExecutionContext ())),
+	    coneOptions (new ConeOptions (getExecutionContext ())),
+	cylinderOptions (new CylinderOptions (getExecutionContext ())),
+	  sphereOptions (new QuadSphereOptions (getExecutionContext ()))
 {
 	addChildObjects (boxOptions,
 	                 coneOptions,
 	                 cylinderOptions,
-	                 sphereOptions,
-	                 quadSphereProperties);
+	                 sphereOptions);
 }
 
 void
 X3DGeometry3DContext::initialize ()
 {
-	sphereOptions -> properties () = quadSphereProperties;
-
-	quadSphereProperties -> setup ();
-
 	boxOptions      -> setup ();
 	coneOptions     -> setup ();
 	cylinderOptions -> setup ();

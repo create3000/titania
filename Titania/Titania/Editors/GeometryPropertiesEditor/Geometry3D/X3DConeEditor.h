@@ -87,15 +87,19 @@ private:
 	void
 	on_cone_use_global_options_toggled () final override;
 
+	void
+	set_options ();
+
 	///  @name Members
 
 	X3DFieldToggleButton <X3D::SFBool> side;
 	X3DFieldToggleButton <X3D::SFBool> bottom;
 	X3DFieldAdjustment <X3D::SFFloat>  height;
 	X3DFieldAdjustment <X3D::SFFloat>  bottomRadius;
-
-	X3DFieldToggleButton <X3D::SFBool> useGlobalOptions;
 	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
+
+	X3D::MFNode nodes;
+	bool        changing;
 
 };
 

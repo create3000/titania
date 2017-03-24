@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,24 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_SPHERE_OPTIONS_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY3D_SPHERE_OPTIONS_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_OPTIONS_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_QUAD_SPHERE_OPTIONS_H__
 
-#include "../Rendering/X3DGeometricOptionNode.h"
+#include "../Geometry3D/X3DSphereOptionsNode.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DSpherePropertiesNode;
-
-class SphereOptions :
-	public X3DGeometricOptionNode
+class QuadSphereOptions :
+	public X3DSphereOptionsNode
 {
 public:
 
 	///  @name Construction
 
-	SphereOptions (X3DExecutionContext* const executionContext);
+	QuadSphereOptions (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -89,24 +87,36 @@ public:
 
 	///  @name Fields
 
-	SFNode &
-	properties ()
-	{ return *fields .properties; }
+	SFInt32 &
+	xDimension ()
+	{ return *fields .xDimension; }
 
-	const SFNode &
-	properties () const
-	{ return *fields .properties; }
+	const SFInt32 &
+	xDimension () const
+	{ return *fields .xDimension; }
+
+	SFInt32 &
+	yDimension ()
+	{ return *fields .yDimension; }
+
+	const SFInt32 &
+	yDimension () const
+	{ return *fields .yDimension; }
 
 	///  @name Member access
 
 	virtual
 	GLenum
-	getVertexMode () const final override;
+	getVertexMode () const final override
+	{ return GL_QUADS; }
 
 	///  @name Operations
 
+	virtual
 	SFNode
-	toPrimitive (X3DExecutionContext* const executionContext) const;
+	toPrimitive (X3DExecutionContext* const executionContext) const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
 
 
 private:
@@ -114,19 +124,22 @@ private:
 	///  @name Construction
 
 	virtual
-	SphereOptions*
+	QuadSphereOptions*
 	create (X3DExecutionContext* const executionContext) const final override;
 
-	virtual
-	void
-	initialize () final override;
-
-	///  @name Event handlers
-
-	void
-	set_properties ();
-
 	///  @name Operations
+
+	std::vector <int32_t>
+	createTexCoordIndex () const;
+
+	std::vector <Vector4f>
+	createTexCoord () const;
+
+	std::vector <int32_t>
+	createCoordIndex () const;
+
+	std::vector <Vector3d>
+	createPoints () const;
 
 	virtual
 	void
@@ -138,20 +151,17 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Fields
+	///  @name Members
 
 	struct Fields
 	{
 		Fields ();
 
-		SFNode* const properties;
+		SFInt32* const xDimension;
+		SFInt32* const yDimension;
 	};
 
 	Fields fields;
-
-	///  @name Members
-
-	X3DPtr <X3DSpherePropertiesNode> propertiesNode;
 
 };
 

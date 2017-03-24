@@ -56,7 +56,7 @@
 namespace titania {
 namespace X3D {
 
-class X3DSpherePropertiesNode;
+class X3DSphereOptionsNode;
 
 class Sphere :
 	virtual public X3DGeometryNode
@@ -122,24 +122,14 @@ public:
 	///  @name Hidden fields
 
 	virtual
-	SFBool &
-	useGlobalOptions ()
-	{ return *fields .useGlobalOptions; }
-
-	virtual
-	const SFBool &
-	useGlobalOptions () const
-	{ return *fields .useGlobalOptions; }
-
-	virtual
 	SFNode &
-	properties ()
-	{ return *fields .properties; }
+	options ()
+	{ return *fields .options; }
 
 	virtual
 	const SFNode &
-	properties () const
-	{ return *fields .properties; }
+	options () const
+	{ return *fields .options; }
 
 	///  @name Operations
 
@@ -176,13 +166,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_useGlobalOptions ();
-
-	void
-	set_properties ();
-
-	void
-	set_properties_node ();
+	set_options ();
 
 	///  @name Operations
 
@@ -209,19 +193,18 @@ private:
 
 		SFFloat* const radius;
 		SFBool* const solid;
-		SFBool* const useGlobalOptions;
-		SFNode* const properties;
+		SFNode* const options;
 	};
 
 	Fields fields;
 
 	///  @name Members
 
-	X3DPtr <X3DSpherePropertiesNode> propertiesNode;
+	X3DPtr <X3DSphereOptionsNode> optionsNode;
 
 };
 
-} // X3D
+} // X3DS
 } // titania
 
 #endif

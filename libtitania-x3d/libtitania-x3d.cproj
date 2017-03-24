@@ -942,9 +942,8 @@
     <None Include="Titania\X3D\Fields\X3DPtrObject.h" />
     <None Include="Titania\X3D\Browser\Tools\SupportedTools.h" />
     <None Include="Titania\X3D\Browser\Rendering\BackgroundTexture.h" />
-    <None Include="Titania\X3D\Browser\Geometry3D\SphereOptions.h" />
-    <None Include="Titania\X3D\Browser\Geometry3D\QuadSphereProperties.h" />
-    <None Include="Titania\X3D\Browser\Geometry3D\X3DSpherePropertiesNode.h" />
+    <None Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.h" />
+    <None Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionsNode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1624,9 +1623,8 @@
     <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\ProximitySensorTool.cpp" />
     <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\VisibilitySensorTool.cpp" />
     <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\TransformSensorTool.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry3D\SphereOptions.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry3D\QuadSphereProperties.cpp" />
-    <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSpherePropertiesNode.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionsNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />
