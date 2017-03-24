@@ -94,6 +94,8 @@ Cone::Cone (X3DExecutionContext* const executionContext) :
 
 	addField (initializeOnly, "options", options ());
 
+	addChildObjects (optionsNode);
+
 	height ()       .setUnit (UnitCategory::LENGTH);
 	bottomRadius () .setUnit (UnitCategory::LENGTH);
 
@@ -180,13 +182,7 @@ void
 Cone::build ()
 {
 	if (options ())
-	{
-		setMetaData ("/Cone/options/typeName", optionsNode -> getTypeName ());
-
 		optionsNode -> toMetaData (createMetadataSet ("/Cone/options"));
-	}
-	else
-		removeMetaData ("/Cone");
 
 	const double xDimension = optionsNode -> xDimension ();
 

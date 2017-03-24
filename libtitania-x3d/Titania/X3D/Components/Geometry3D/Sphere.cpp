@@ -169,8 +169,6 @@ Sphere::build ()
 
 		optionsNode -> toMetaData (createMetadataSet ("/Sphere/options"));
 	}
-	else
-		removeMetaData ("/Sphere");
 
 	getTexCoords () .emplace_back (optionsNode -> getTexCoords ());
 

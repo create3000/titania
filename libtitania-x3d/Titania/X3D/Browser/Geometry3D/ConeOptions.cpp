@@ -61,7 +61,7 @@ const std::string   ConeOptions::containerField = "coneOptions";
 
 ConeOptions::Fields::Fields () :
 	xDimension (new SFInt32 (20)),
-	yDimension (new SFInt32 (1))
+	yDimension (new SFInt32 (2))
 { }
 
 ConeOptions::ConeOptions (X3DExecutionContext* const executionContext) :

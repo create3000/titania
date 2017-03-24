@@ -61,7 +61,7 @@ const std::string   CylinderOptions::containerField = "cylinderOptions";
 
 CylinderOptions::Fields::Fields () :
 	xDimension (new SFInt32 (20)),
-	yDimension (new SFInt32 (1))
+	yDimension (new SFInt32 (2))
 { }
 
 CylinderOptions::CylinderOptions (X3DExecutionContext* const executionContext) :

@@ -96,6 +96,8 @@ Cylinder::Cylinder (X3DExecutionContext* const executionContext) :
 
 	addField (initializeOnly, "options", options ());
 
+	addChildObjects (optionsNode);
+
 	height () .setUnit (UnitCategory::LENGTH);
 	radius () .setUnit (UnitCategory::LENGTH);
 
@@ -185,13 +187,7 @@ void
 Cylinder::build ()
 {
 	if (options ())
-	{
-		setMetaData ("/Cylinder/options/typeName", optionsNode -> getTypeName ());
-
 		optionsNode -> toMetaData (createMetadataSet ("/Cylinder/options"));
-	}
-	else
-		removeMetaData ("/Cylinder");
 
 	const double xDimension = optionsNode -> xDimension ();
 
