@@ -371,6 +371,7 @@ class Rectangle2DOptions;
 class BoxOptions;
 class ConeOptions;
 class CylinderOptions;
+class OctahedronOptions;
 class QuadSphereOptions;
 class X3DSphereOptionsNode;
 

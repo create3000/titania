@@ -50,7 +50,8 @@
 
 #include "Sphere.h"
 
-#include "../../Browser/Geometry3D/IcoSphereOptions.h"
+#include "../../Browser/Geometry3D/IcosahedronOptions.h"
+#include "../../Browser/Geometry3D/OctahedronOptions.h"
 #include "../../Browser/Geometry3D/QuadSphereOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -108,8 +109,10 @@ Sphere::initialize ()
 		const auto typeName    = getMetaData <std::string> ("/Sphere/options/@typeName", "QuadSphereOptions");
 		const auto metaOptions = getMetadataSet ("/Sphere/options");
 	
-		if (typeName == "IcoSphereOptions")
-			optionsNode .set (MakePtr <IcoSphereOptions> (getExecutionContext ()));
+		if (typeName == "IcosahedronOptions")
+			optionsNode .set (MakePtr <IcosahedronOptions> (getExecutionContext ()));
+		else if (typeName == "OctahedronOptions")
+			optionsNode .set (MakePtr <OctahedronOptions> (getExecutionContext ()));
 		else // QuadSphereProperties
 			optionsNode .set (MakePtr <QuadSphereOptions> (getExecutionContext ()));
 

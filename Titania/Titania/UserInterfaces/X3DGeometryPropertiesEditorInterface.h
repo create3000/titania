@@ -263,8 +263,8 @@ public:
 	{ return m_GeoElevationGridZoneAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getIcoSphereOrderAdjustment () const
-	{ return m_IcoSphereOrderAdjustment; }
+	getIcosahedronOrderAdjustment () const
+	{ return m_IcosahedronOrderAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getNormalColorAdjustment () const
@@ -329,6 +329,10 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getNurbsTrimmedSurfaceVTessellationAdjustment () const
 	{ return m_NurbsTrimmedSurfaceVTessellationAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getOctahedronOrderAdjustment () const
+	{ return m_OctahedronOrderAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getPrimitiveEdgeColorAdjustment () const
@@ -711,16 +715,28 @@ public:
 	{ return *m_QuadSphereYDimensionSpinButton; }
 
 	Gtk::Grid &
-	getIcoSphereOptions () const
-	{ return *m_IcoSphereOptions; }
+	getIcosahedronOptions () const
+	{ return *m_IcosahedronOptions; }
 
 	Gtk::Box &
-	getIcoSphereOrderBox () const
-	{ return *m_IcoSphereOrderBox; }
+	getIcosahedronOrderBox () const
+	{ return *m_IcosahedronOrderBox; }
 
 	Gtk::SpinButton &
-	getIcoSphereOrderSpinButton () const
-	{ return *m_IcoSphereOrderSpinButton; }
+	getIcosahedronOrderSpinButton () const
+	{ return *m_IcosahedronOrderSpinButton; }
+
+	Gtk::Grid &
+	getOctahedronOptions () const
+	{ return *m_OctahedronOptions; }
+
+	Gtk::Box &
+	getOctahedronOrderBox () const
+	{ return *m_OctahedronOrderBox; }
+
+	Gtk::SpinButton &
+	getOctahedronOrderSpinButton () const
+	{ return *m_OctahedronOrderSpinButton; }
 
 	Gtk::Box &
 	getGeoElevationGridBox () const
@@ -1206,7 +1222,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZoneAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_IcoSphereOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_IcosahedronOrderAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsCurveOrderAdjustment;
@@ -1223,6 +1239,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVOrderAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVTessellationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_OctahedronOrderAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PrimitiveEdgeColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_QuadSphereXDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_QuadSphereYDimensionAdjustment;
@@ -1318,9 +1335,12 @@ private:
 	Gtk::SpinButton*               m_QuadSphereXDimensionSpinButton;
 	Gtk::Box*                      m_QuadSphereYDimensionBox;
 	Gtk::SpinButton*               m_QuadSphereYDimensionSpinButton;
-	Gtk::Grid*                     m_IcoSphereOptions;
-	Gtk::Box*                      m_IcoSphereOrderBox;
-	Gtk::SpinButton*               m_IcoSphereOrderSpinButton;
+	Gtk::Grid*                     m_IcosahedronOptions;
+	Gtk::Box*                      m_IcosahedronOrderBox;
+	Gtk::SpinButton*               m_IcosahedronOrderSpinButton;
+	Gtk::Grid*                     m_OctahedronOptions;
+	Gtk::Box*                      m_OctahedronOrderBox;
+	Gtk::SpinButton*               m_OctahedronOrderSpinButton;
 	Gtk::Box*                      m_GeoElevationGridBox;
 	Gtk::Expander*                 m_GeoElevationGridExpander;
 	Gtk::SpinButton*               m_GeoElevationGridXDimensionSpinButton;

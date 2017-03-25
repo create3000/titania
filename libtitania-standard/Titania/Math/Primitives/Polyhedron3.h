@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,33 +48,30 @@
  *
  ******************************************************************************/
 
-#include "IcoSphereOptions.h"
+#ifndef __TITANIA_MATH_PRIMITIVES_TRIANGLE_SPHERE3_H__
+#define __TITANIA_MATH_PRIMITIVES_TRIANGLE_SPHERE3_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
+#include "../Numbers/Vector2.h"
+#include "../Numbers/Vector3.h"
+#include "../Numbers/Rotation4.h"
 
-#include <complex>
+#include <map>
+#include <vector>
 
 namespace titania {
 namespace math {
 
 template <class Type>
-class icosahedron
+class basic_polyhedron3
 {
 public:
-
-	///  @name Construction
-
-	icosahedron (const size_t order);
 
 	///  @name Member access
 
 	size_t
 	order () const
 	{ return m_order; }
-	
+
 	const std::vector <int32_t> &
 	coord_index () const
 	{ return m_coord_index; }
@@ -82,7 +79,7 @@ public:
 	const std::vector <vector3 <Type>> &
 	points () const
 	{ return m_points; }
-	
+
 	const std::vector <int32_t> &
 	tex_coord_index () const
 	{ return m_tex_coord_index; }
@@ -93,30 +90,43 @@ public:
 
 	///  @name Destruction
 
-	~icosahedron () = default;
+	virtual
+	~basic_polyhedron3 () = default;
 
 
-private:
+protected:
+
+	///  @name Construction
+
+	basic_polyhedron3 (const size_t order);
 
 	///  @name Operations
 
-	void
-	create_primitive ();
-	
 	int32_t
 	add_point (const vector3 <Type> & point);
 
 	void
-	add_triangle (const int32_t i1, const int32_t i2, const int32_t i3, std::vector <int32_t> & m_coord_index);
+	add_triangle (const int32_t i1, const int32_t i2, const int32_t i3)
+	{ add_triangle (i1, i2, i3, m_coord_index); }
+
+	std::vector <vector3 <Type>> &
+	get_points ()
+	{ return m_points; }
 
 	void
 	create_triangles ();
 
-	int32_t
-	create_middle_point (const int32_t p1, const int32_t p2);
-
 	void
 	create_tex_coord ();
+
+
+private:
+
+	void
+	add_triangle (const int32_t i1, const int32_t i2, const int32_t i3, std::vector <int32_t> & m_coord_index);
+
+	int32_t
+	create_middle_point (const int32_t p1, const int32_t p2);
 
 	int32_t
 	resolve_overlap (const int32_t i0, const int32_t i1);
@@ -138,82 +148,16 @@ private:
 };
 
 template <class Type>
-icosahedron <Type>::icosahedron (const size_t order) :
+basic_polyhedron3 <Type>::basic_polyhedron3 (const size_t order) :
 	             m_order (order),
 	       m_coord_index (),
 	            m_points (),
 	m_middle_point_index ()
-{
-	create_primitive ();
-	create_triangles ();
-	create_tex_coord ();
-}
-
-template <class Type>
-void
-icosahedron <Type>::create_primitive ()
-{
-	// Create 12 vertices of a icosahedron
-
-	static constexpr auto p = phi <Type>;
-
-	add_point (vector3 <Type> (-1,  p,  0));
-	add_point (vector3 <Type> ( 1,  p,  0));
-	add_point (vector3 <Type> (-1, -p,  0));
-	add_point (vector3 <Type> ( 1, -p,  0));
-
-	add_point (vector3 <Type> ( 0, -1,  p));
-	add_point (vector3 <Type> ( 0,  1,  p));
-	add_point (vector3 <Type> ( 0, -1, -p));
-	add_point (vector3 <Type> ( 0,  1, -p));
-
-	add_point (vector3 <Type> ( p,  0, -1));
-	add_point (vector3 <Type> ( p,  0,  1));
-	add_point (vector3 <Type> (-p,  0, -1));
-	add_point (vector3 <Type> (-p,  0,  1));
-
-	// Rotate point thus a vertice is a pole
-
-	if (m_order == 0)
-	{
-		const auto rotation = rotation4 <Type> (0, 0, 1, std::atan (1 / p)) * rotation4 <Type> (0, 1, 0, -pi <Type> / 10);
-
-		for (auto & point : m_points)
-			point = normalize (rotation .mult_vec_rot (point));
-	}
-
-	// 5 faces around point 0
-	add_triangle ( 0, 11,  5, m_coord_index);
-	add_triangle ( 0,  5,  1, m_coord_index);
-	add_triangle ( 0,  1,  7, m_coord_index);
-	add_triangle ( 0,  7, 10, m_coord_index);
-	add_triangle ( 0, 10, 11, m_coord_index);
-
-	// 5 adjacent faces
-	add_triangle ( 1,  5,  9, m_coord_index);
-	add_triangle ( 5, 11,  4, m_coord_index);
-	add_triangle (11, 10,  2, m_coord_index);
-	add_triangle (10,  7,  6, m_coord_index);
-	add_triangle ( 7,  1,  8, m_coord_index);
-
-	// 5 faces around point
-	add_triangle ( 3,  9,  4, m_coord_index);
-	add_triangle ( 3,  4,  2, m_coord_index);
-	add_triangle ( 3,  2,  6, m_coord_index);
-	add_triangle ( 3,  6,  8, m_coord_index);
-	add_triangle ( 3,  8,  9, m_coord_index);
-
-	// 5 adjacent faces
-	add_triangle ( 4,  9,  5, m_coord_index);
-	add_triangle ( 2,  4, 11, m_coord_index);
-	add_triangle ( 6,  2, 10, m_coord_index);
-	add_triangle ( 8,  6,  7, m_coord_index);
-	add_triangle ( 9,  8,  1, m_coord_index);
-}
+{ }
 
 template <class Type>
 int32_t
-icosahedron <Type>::add_point (const vector3 <Type> & point)
+basic_polyhedron3 <Type>::add_point (const vector3 <Type> & point)
 {
 	const auto index = m_points .size ();
 
@@ -224,7 +168,7 @@ icosahedron <Type>::add_point (const vector3 <Type> & point)
 
 template <class Type>
 void
-icosahedron <Type>::add_triangle (const int32_t i1, const int32_t i2, const int32_t i3, std::vector <int32_t> & m_coord_index)
+basic_polyhedron3 <Type>::add_triangle (const int32_t i1, const int32_t i2, const int32_t i3, std::vector <int32_t> & m_coord_index)
 {
 	m_coord_index .emplace_back (i1);
 	m_coord_index .emplace_back (i2);
@@ -233,7 +177,7 @@ icosahedron <Type>::add_triangle (const int32_t i1, const int32_t i2, const int3
 
 template <class Type>
 void
-icosahedron <Type>::create_triangles ()
+basic_polyhedron3 <Type>::create_triangles ()
 {
 	auto m_coord_index2 = std::vector <int32_t> ();
 
@@ -261,7 +205,7 @@ icosahedron <Type>::create_triangles ()
 
 template <class Type>
 int32_t
-icosahedron <Type>::create_middle_point (const int32_t p1, const int32_t p2)
+basic_polyhedron3 <Type>::create_middle_point (const int32_t p1, const int32_t p2)
 {
 	// First check if we have it already
 	const auto key  = std::minmax (p1, p2);
@@ -273,7 +217,7 @@ icosahedron <Type>::create_middle_point (const int32_t p1, const int32_t p2)
 	// Not in cache, calculate it
 	const auto & point1 = m_points [p1];
 	const auto & point2 = m_points [p2];
-	
+
 	// Add middle point, makes sure point is on unit sphere
 	const auto index = add_point ((point1 + point2) / Type (2));
 
@@ -285,7 +229,7 @@ icosahedron <Type>::create_middle_point (const int32_t p1, const int32_t p2)
 
 template <class Type>
 void
-icosahedron <Type>::create_tex_coord ()
+basic_polyhedron3 <Type>::create_tex_coord ()
 {
 	//
 	// Create texture coordinates
@@ -294,11 +238,11 @@ icosahedron <Type>::create_tex_coord ()
 
 	// Copy coordIndex
 	m_tex_coord_index = m_coord_index;
-	
+
 	for (const auto & point : m_points)
 	{
 		m_tex_points .emplace_back (std::atan2 (point .x (), point .z ()) / (2 * pi <Type>) + Type (0.5),
-		                            std::asin (point .y ()) / pi <Type> + Type (0.5));
+		                            std::asin (point .y ()) / pi <Type>+Type (0.5));
 	}
 
 	// Refine poles
@@ -310,23 +254,23 @@ icosahedron <Type>::create_tex_coord ()
 		int32_t i0 = -1;
 		int32_t i1 = -1;
 		int32_t i2 = -1;
-		
+
 		// Find north pole
-		
+
 		if (m_tex_points [m_tex_coord_index [i]] .y () > north_pole_threshold)
 		{
 			i0 = i;
 			i1 = i + 1;
 			i2 = i + 2;
 		}
-			
+
 		else if (m_tex_points [m_tex_coord_index [i + 1]] .y () > north_pole_threshold)
 		{
 			i0 = i + 1;
 			i1 = i;
 			i2 = i + 2;
 		}
-		
+
 		else if (m_tex_points [m_tex_coord_index [i + 2]] .y () > north_pole_threshold)
 		{
 			i0 = i + 2;
@@ -340,13 +284,13 @@ icosahedron <Type>::create_tex_coord ()
 			const auto index0 = m_tex_coord_index [i0]; // North pole
 			const auto index1 = m_tex_coord_index [i1];
 			const auto index2 = resolve_overlap (i1, i2);
-		
+
 			m_tex_coord_index [i0] = m_tex_points .size ();
 
 			m_tex_points .emplace_back ((m_tex_points [index1] .x () + m_tex_points [index2] .x ()) / 2, m_tex_points [index0] .y ());
 			continue;
 		}
-		
+
 		// Find south pole
 
 		if (m_tex_points [m_tex_coord_index [i]] .y () < south_pole_threshold)
@@ -355,14 +299,14 @@ icosahedron <Type>::create_tex_coord ()
 			i1 = i + 1;
 			i2 = i + 2;
 		}
-			
+
 		else if (m_tex_points [m_tex_coord_index [i + 1]] .y () < south_pole_threshold)
 		{
 			i0 = i + 1;
 			i1 = i;
 			i2 = i + 2;
 		}
-		
+
 		else if (m_tex_points [m_tex_coord_index [i + 2]] .y () < south_pole_threshold)
 		{
 			i0 = i + 2;
@@ -390,11 +334,11 @@ icosahedron <Type>::create_tex_coord ()
 
 template <class Type>
 int32_t
-icosahedron <Type>::resolve_overlap (const int32_t i0, const int32_t i1)
+basic_polyhedron3 <Type>::resolve_overlap (const int32_t i0, const int32_t i1)
 {
 	const auto index1   = m_tex_coord_index [i1];
 	const auto distance = m_tex_points [m_tex_coord_index [i0]] .x () - m_tex_points [index1] .x ();
-	
+
 	if (distance > overlap_threshold)
 	{
 		m_tex_coord_index [i1] = m_tex_points .size ();
@@ -405,106 +349,170 @@ icosahedron <Type>::resolve_overlap (const int32_t i0, const int32_t i1)
 	{
 		m_tex_coord_index [i1] = m_tex_points .size ();
 
-		m_tex_points .emplace_back (m_tex_points [index1] .x () - 1, m_tex_points [index1] .y ());	
+		m_tex_points .emplace_back (m_tex_points [index1] .x () - 1, m_tex_points [index1] .y ());
 	}
 
 	return m_tex_coord_index [i1];
 }
 
+template <class Type>
+class octahedron3 :
+	public basic_polyhedron3 <Type>
+{
+public:
+
+	///  @name Construction
+
+	octahedron3 (const size_t order);
+
+	///  @name Destruction
+
+	virtual
+	~octahedron3 () final override
+	{ }
+
+
+private:
+
+	///  @name Operations
+
+	void
+	create_primitive ();
+
+};
+
+template <class Type>
+octahedron3 <Type>::octahedron3 (const size_t order) :
+	basic_polyhedron3 <Type> (order)
+{
+	this -> create_primitive ();
+	this -> create_triangles ();
+	this -> create_tex_coord ();
+}
+
+template <class Type>
+void
+octahedron3 <Type>::create_primitive ()
+{
+	this -> add_point (vector3 <Type> ( 0,  1,  0));
+
+	this -> add_point (vector3 <Type> ( 0,  0,  1));
+	this -> add_point (vector3 <Type> ( 1,  0,  0));
+	this -> add_point (vector3 <Type> ( 0,  0, -1));
+	this -> add_point (vector3 <Type> (-1,  0,  0));
+
+	this -> add_point (vector3 <Type> ( 0, -1,  0));
+	
+	// 8 faces
+	this -> add_triangle (0, 1, 2);
+	this -> add_triangle (0, 2, 3);
+	this -> add_triangle (0, 3, 4);
+	this -> add_triangle (0, 4, 1);
+	
+	this -> add_triangle (5, 2, 1);
+	this -> add_triangle (5, 3, 2);
+	this -> add_triangle (5, 4, 3);
+	this -> add_triangle (5, 1, 4);
+}
+
+template <class Type>
+class icosahedron3 :
+	public basic_polyhedron3 <Type>
+{
+public:
+
+	///  @name Construction
+
+	icosahedron3 (const size_t order);
+
+	///  @name Destruction
+
+	virtual
+	~icosahedron3 () final override
+	{ }
+
+
+private:
+
+	///  @name Operations
+
+	void
+	create_primitive ();
+
+};
+
+template <class Type>
+icosahedron3 <Type>::icosahedron3 (const size_t order) :
+	basic_polyhedron3 <Type> (order)
+{
+	this -> create_primitive ();
+	this -> create_triangles ();
+	this -> create_tex_coord ();
+}
+
+template <class Type>
+void
+icosahedron3 <Type>::create_primitive ()
+{
+	// Create 12 vertices of a icosahedron
+
+	static constexpr auto p = phi <Type>;
+
+	this -> add_point (vector3 <Type> (-1,  p,  0));
+	this -> add_point (vector3 <Type> (1,  p,  0));
+	this -> add_point (vector3 <Type> (-1, -p,  0));
+	this -> add_point (vector3 <Type> (1, -p,  0));
+
+	this -> add_point (vector3 <Type> (0, -1,  p));
+	this -> add_point (vector3 <Type> (0,  1,  p));
+	this -> add_point (vector3 <Type> (0, -1, -p));
+	this -> add_point (vector3 <Type> (0,  1, -p));
+
+	this -> add_point (vector3 <Type> (p,  0, -1));
+	this -> add_point (vector3 <Type> (p,  0,  1));
+	this -> add_point (vector3 <Type> (-p,  0, -1));
+	this -> add_point (vector3 <Type> (-p,  0,  1));
+
+	// Rotate point thus a vertice is a pole
+
+	if (this -> order () == 0)
+	{
+		const auto rotation = rotation4 <Type> (0, 0, 1, std::atan (1 / p)) * rotation4 <Type> (0, 1, 0, -pi <Type>/ 10);
+
+		for (auto & point : this -> get_points ())
+			point = normalize (rotation .mult_vec_rot (point));
+	}
+
+	// 5 faces around point 0
+	this -> add_triangle (0, 11,  5);
+	this -> add_triangle (0,  5,  1);
+	this -> add_triangle (0,  1,  7);
+	this -> add_triangle (0,  7, 10);
+	this -> add_triangle (0, 10, 11);
+
+	// 5 adjacent faces
+	this -> add_triangle ( 1,  5,  9);
+	this -> add_triangle ( 5, 11,  4);
+	this -> add_triangle (11, 10,  2);
+	this -> add_triangle (10,  7,  6);
+	this -> add_triangle ( 7,  1,  8);
+
+	// 5 faces around point
+	this -> add_triangle (3,  9,  4);
+	this -> add_triangle (3,  4,  2);
+	this -> add_triangle (3,  2,  6);
+	this -> add_triangle (3,  6,  8);
+	this -> add_triangle (3,  8,  9);
+
+	// 5 adjacent faces
+	this -> add_triangle (4,  9,  5);
+	this -> add_triangle (2,  4, 11);
+	this -> add_triangle (6,  2, 10);
+	this -> add_triangle (8,  6,  7);
+	this -> add_triangle (9,  8,  1);
+}
+
 } // math
 } // titania
 
-namespace titania {
-namespace X3D {
-
-const ComponentType IcoSphereOptions::component      = ComponentType::TITANIA;
-const std::string   IcoSphereOptions::typeName       = "IcoSphereOptions";
-const std::string   IcoSphereOptions::containerField = "sphereOptions";
-
-IcoSphereOptions::Fields::Fields () :
-	order (new SFInt32 (2))
-{ }
-
-IcoSphereOptions::IcoSphereOptions (X3DExecutionContext* const executionContext) :
-	         X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DSphereOptionsNode (),
-	              fields ()
-{
-	addType (X3DConstants::IcoSphereOptions);
-
-	addField (inputOutput, "order", order ());
-}
-
-IcoSphereOptions*
-IcoSphereOptions::create (X3DExecutionContext* const executionContext) const
-{
-	return new IcoSphereOptions (executionContext);
-}
-
-void
-IcoSphereOptions::build () 
-{
-	icosahedron <double> icoSphere (order ());
-
-	for (const auto & index : icoSphere .tex_coord_index ())
-	{
-		const auto & point = icoSphere .tex_points () [index];
-
-		getTexCoords () .emplace_back (point .x (), point .y (), 0, 1);
-	}
-
-	for (const auto & index : icoSphere .coord_index ())
-	{
-		const auto & point = icoSphere .points () [index];
-
-		getNormals ()  .emplace_back (point);
-		getVertices () .emplace_back (point);
-	}	
-}
-
-SFNode
-IcoSphereOptions::toPrimitive (X3DExecutionContext* const executionContext) const
-throw (Error <NOT_SUPPORTED>,
-       Error <DISPOSED>)
-{
-	icosahedron <double> icoSphere (order ());
-
-	const auto texCoord = executionContext -> createNode <TextureCoordinate> ();
-	const auto coord    = executionContext -> createNode <Coordinate> ();
-	const auto geometry = executionContext -> createNode <IndexedFaceSet> ();
-
-	geometry -> creaseAngle () = pi <float>;
-	geometry -> texCoord ()    = texCoord;
-	geometry -> coord ()       = coord;
-
-	// Coordinates
-
-	for (const auto & point : icoSphere .tex_points ())
-		texCoord -> point () .emplace_back (point);
-
-	for (const auto & point : icoSphere .points ())
-		coord -> point () .emplace_back (point);
-	
-	// Indices
-
-	for (size_t i = 0, size = icoSphere .tex_coord_index () .size (); i < size; i += 3)
-	{
-		geometry -> texCoordIndex () .emplace_back (icoSphere .tex_coord_index () [i + 0]);
-		geometry -> texCoordIndex () .emplace_back (icoSphere .tex_coord_index () [i + 1]);
-		geometry -> texCoordIndex () .emplace_back (icoSphere .tex_coord_index () [i + 2]);
-		geometry -> texCoordIndex () .emplace_back (-1);
-	}
-
-	for (size_t i = 0, size = icoSphere .coord_index () .size (); i < size; i += 3)
-	{
-		geometry -> coordIndex () .emplace_back (icoSphere .coord_index () [i + 0]);
-		geometry -> coordIndex () .emplace_back (icoSphere .coord_index () [i + 1]);
-		geometry -> coordIndex () .emplace_back (icoSphere .coord_index () [i + 2]);
-		geometry -> coordIndex () .emplace_back (-1);
-	}
-
-	return geometry;
-}
-
-} // X3D
-} // titania
+#endif

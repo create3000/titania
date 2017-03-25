@@ -45,7 +45,8 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Browser/Geometry3D/BoxOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/ConeOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/CylinderOptions.cpp \
-	Titania/X3D/Browser/Geometry3D/IcoSphereOptions.cpp \
+	Titania/X3D/Browser/Geometry3D/IcosahedronOptions.cpp \
+	Titania/X3D/Browser/Geometry3D/OctahedronOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DGeometry3DContext.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionsNode.cpp \

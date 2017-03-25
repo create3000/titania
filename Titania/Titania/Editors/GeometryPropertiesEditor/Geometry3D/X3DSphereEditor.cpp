@@ -50,7 +50,8 @@
 
 #include "X3DSphereEditor.h"
 
-#include <Titania/X3D/Browser/Geometry3D/IcoSphereOptions.h>
+#include <Titania/X3D/Browser/Geometry3D/IcosahedronOptions.h>
+#include <Titania/X3D/Browser/Geometry3D/OctahedronOptions.h>
 #include <Titania/X3D/Browser/Geometry3D/QuadSphereOptions.h>
 #include <Titania/X3D/Components/Geometry3D/Sphere.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
@@ -63,7 +64,8 @@ X3DSphereEditor::X3DSphereEditor () :
 	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius"),
 	                          xDimension (this, getQuadSphereXDimensionAdjustment (), getQuadSphereXDimensionSpinButton (), "xDimension"),
 	                          yDimension (this, getQuadSphereYDimensionAdjustment (), getQuadSphereYDimensionSpinButton (), "yDimension"),
-	                               order (this, getIcoSphereOrderAdjustment (), getIcoSphereOrderSpinButton (), "order"),
+	                    icosahedronOrder (this, getIcosahedronOrderAdjustment (), getIcosahedronOrderSpinButton (), "order"),
+	                     octahedronOrder (this, getOctahedronOrderAdjustment (), getOctahedronOrderSpinButton (), "order"),
 	                               nodes (),
 	                            changing (false)
 {
@@ -138,7 +140,12 @@ X3DSphereEditor::on_sphere_type_changed ()
 	{
 		case 1:
 		{
-			optionNode = X3D::MakePtr <X3D::IcoSphereOptions> (getCurrentContext ());
+			optionNode = X3D::MakePtr <X3D::OctahedronOptions> (getCurrentContext ());
+			break;
+		}
+		case 2:
+		{
+			optionNode = X3D::MakePtr <X3D::IcosahedronOptions> (getCurrentContext ());
 			break;
 		}
 		default:
@@ -182,7 +189,8 @@ X3DSphereEditor::set_options ()
 
 	xDimension .setNodes (optionsNodes);
 	yDimension .setNodes (optionsNodes);
-	order      .setNodes (optionsNodes);
+	icosahedronOrder .setNodes (optionsNodes);
+	octahedronOrder .setNodes (optionsNodes);
 
 	// Set global widget.
 
@@ -193,10 +201,11 @@ X3DSphereEditor::set_options ()
 
 	getSphereTypeButton ()  .set_sensitive (not active and not inconsistent);
 	getQuadSphereOptions () .set_sensitive (not active and not inconsistent);
-	getIcoSphereOptions ()  .set_sensitive (not active and not inconsistent);
+	getIcosahedronOptions ()  .set_sensitive (not active and not inconsistent);
 
-	getQuadSphereOptions () .set_visible (false);
-	getIcoSphereOptions ()  .set_visible (false);
+	getQuadSphereOptions ()  .set_visible (false);
+	getOctahedronOptions ()  .set_visible (false);
+	getIcosahedronOptions () .set_visible (false);
 
 	if (active)
 	{
@@ -217,10 +226,16 @@ X3DSphereEditor::set_options ()
 				getQuadSphereOptions () .set_visible (true);
 				break;
 			}
-			case X3D::X3DConstants::IcoSphereOptions:
+			case X3D::X3DConstants::OctahedronOptions:
 			{
 				getSphereTypeButton () .set_active (1);
-				getIcoSphereOptions () .set_visible (true);
+				getOctahedronOptions () .set_visible (true);
+				break;
+			}
+			case X3D::X3DConstants::IcosahedronOptions:
+			{
+				getSphereTypeButton () .set_active (2);
+				getIcosahedronOptions () .set_visible (true);
 				break;
 			}
 			default:

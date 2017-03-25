@@ -237,7 +237,7 @@
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
   </object>
-  <object class="GtkAdjustment" id="IcoSphereOrderAdjustment">
+  <object class="GtkAdjustment" id="IcosahedronOrderAdjustment">
     <property name="upper">8</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
@@ -324,6 +324,11 @@
   <object class="GtkAdjustment" id="NurbsTrimmedSurfaceVTessellationAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="OctahedronOrderAdjustment">
+    <property name="upper">8</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
@@ -2663,6 +2668,7 @@
                                                 <property name="active">0</property>
                                                 <items>
                                                   <item translatable="yes">Quad Sphere</item>
+                                                  <item translatable="yes">Octahedron</item>
                                                   <item translatable="yes">Icosahedron</item>
                                                 </items>
                                                 <signal name="changed" handler="on_sphere_type_changed" swapped="no"/>
@@ -2772,7 +2778,7 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkGrid" id="IcoSphereOptions">
+                                              <object class="GtkGrid" id="IcosahedronOptions">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                                 <property name="row_spacing">8</property>
@@ -2790,17 +2796,17 @@
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <object class="GtkBox" id="IcoSphereOrderBox">
+                                                  <object class="GtkBox" id="IcosahedronOrderBox">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">False</property>
                                                     <property name="halign">start</property>
                                                     <property name="orientation">vertical</property>
                                                     <child>
-                                                      <object class="GtkSpinButton" id="IcoSphereOrderSpinButton">
+                                                      <object class="GtkSpinButton" id="IcosahedronOrderSpinButton">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="text" translatable="yes">3</property>
-                                                        <property name="adjustment">IcoSphereOrderAdjustment</property>
+                                                        <property name="adjustment">IcosahedronOrderAdjustment</property>
                                                         <property name="climb_rate">1.5</property>
                                                         <property name="value">3</property>
                                                       </object>
@@ -2821,6 +2827,58 @@
                                                 <property name="name">page1</property>
                                                 <property name="title" translatable="yes">page1</property>
                                                 <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkGrid" id="OctahedronOptions">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="row_spacing">8</property>
+                                                <property name="column_spacing">16</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="label133">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">Order:</property>
+                                                    <property name="xalign">0</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox" id="OctahedronOrderBox">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="OctahedronOrderSpinButton">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="text" translatable="yes">3</property>
+                                                        <property name="adjustment">OctahedronOrderAdjustment</property>
+                                                        <property name="climb_rate">1.5</property>
+                                                        <property name="value">3</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">0</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="name">page2</property>
+                                                <property name="title" translatable="yes">page2</property>
+                                                <property name="position">2</property>
                                               </packing>
                                             </child>
                                           </object>

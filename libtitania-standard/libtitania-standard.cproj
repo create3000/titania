@@ -569,6 +569,7 @@
     <None Include="Titania\External\ApproxMVBB\GeometryPredicates\xpfpa.h" />
     <None Include="Titania\External\ApproxMVBB\pugixml\pugiconfig.hpp" />
     <None Include="Titania\External\ApproxMVBB\pugixml\pugixml.hpp" />
+    <None Include="Titania\Math\Primitives\Polyhedron3.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -682,5 +683,6 @@
     <Folder Include="Titania\External\unsupported\" />
     <Folder Include="Titania\RegEx\" />
     <Folder Include="Titania\Math\Mesh\" />
+    <Folder Include="Titania\Math\Primitives\" />
   </ItemGroup>
 </Project>

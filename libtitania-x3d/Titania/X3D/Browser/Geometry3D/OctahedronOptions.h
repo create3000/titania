@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_ICO_SPHERE_OPTIONS_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY3D_ICO_SPHERE_OPTIONS_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_OCTAHEDRON_OPTIONS_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_OCTAHEDRON_OPTIONS_H__
 
 #include "../Geometry3D/X3DSphereOptionsNode.h"
 
@@ -58,14 +58,14 @@
 namespace titania {
 namespace X3D {
 
-class IcoSphereOptions :
+class OctahedronOptions :
 	public X3DSphereOptionsNode
 {
 public:
 
 	///  @name Construction
 
-	IcoSphereOptions (X3DExecutionContext* const executionContext);
+	OctahedronOptions (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -118,7 +118,7 @@ private:
 	///  @name Construction
 
 	virtual
-	IcoSphereOptions*
+	OctahedronOptions*
 	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Operations
