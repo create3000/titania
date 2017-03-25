@@ -87,11 +87,21 @@ private:
 	void
 	on_disk2d_radius_value_changed () final override;
 
+	virtual
+	void
+	on_disk2d_use_global_options_toggled () final override;
+
+	void
+	set_options ();
+
 	///  @name Members
 
 	X3DFieldAdjustment <X3D::SFFloat> innerRadius;
 	X3DFieldAdjustment <X3D::SFFloat> outerRadius;
 	X3DFieldAdjustment <X3D::SFInt32> dimension;
+
+	X3D::MFNode nodes;
+	bool        changing;
 
 };
 

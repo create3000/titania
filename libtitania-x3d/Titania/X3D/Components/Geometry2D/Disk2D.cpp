@@ -52,13 +52,14 @@
 
 #include "../../Browser/Geometry2D/Disk2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Rendering/IndexedLineSet.h"
-#include "../../Components/Rendering/PointSet.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../Core/MetadataSet.h"
+#include "../Geometry3D/IndexedFaceSet.h"
+#include "../Rendering/Coordinate.h"
+#include "../Rendering/IndexedLineSet.h"
+#include "../Rendering/PointSet.h"
+#include "../Texturing/TextureCoordinate.h"
 
 namespace titania {
 namespace X3D {
@@ -70,14 +71,16 @@ const std::string   Disk2D::containerField = "geometry";
 Disk2D::Fields::Fields () :
 	innerRadius (new SFFloat ()),
 	outerRadius (new SFFloat (1)),
-	      solid (new SFBool (true))
+	      solid (new SFBool (true)),
+	    options (new SFNode ())
 { }
 
 Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	    X3DGeometryNode (),
 	X3DLineGeometryNode (),
-	             fields ()
+	             fields (),
+	        optionsNode ()
 {
 	addType (X3DConstants::Disk2D);
 
@@ -85,9 +88,14 @@ Disk2D::Disk2D (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "innerRadius", innerRadius ());
 	addField (inputOutput,    "outerRadius", outerRadius ());
 	addField (initializeOnly, "solid",       solid ());
+	addField (initializeOnly, "options",     options ());
+
+	addChildObjects (optionsNode);
 
 	innerRadius () .setUnit (UnitCategory::LENGTH);
 	outerRadius () .setUnit (UnitCategory::LENGTH);
+
+	options () .isHidden (true);
 }
 
 X3DBaseNode*
@@ -101,7 +109,24 @@ Disk2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getDisk2DOptions () .addInterest (&Disk2D::addEvent, this);
+	options () .addInterest (&Disk2D::set_options, this);
+
+	try
+	{
+		const auto metaOptions = getMetadataSet ("/Disk2D/options");
+	
+		optionsNode .set (MakePtr <Disk2DOptions> (getExecutionContext ()));
+
+		optionsNode -> addInterest (&Disk2D::addEvent, this);
+		optionsNode -> fromMetaData (metaOptions);
+		optionsNode -> setup ();
+
+		options () .set (optionsNode);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		set_options ();
+	}
 }
 
 void
@@ -115,7 +140,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getDisk2DOptions () .addInterest (&Disk2D::addEvent, this);
+		set_options ();
 }
 
 const X3DPtr <ComposedShader> &
@@ -133,9 +158,26 @@ Disk2D::createBBox () const
 }
 
 void
+Disk2D::set_options ()
+{
+	removeMetaData ("/Disk2D/options");
+
+	if (optionsNode)
+		optionsNode -> removeInterest (&Disk2D::addEvent, this);
+
+	optionsNode .set (options ());
+
+	if (not optionsNode)
+		optionsNode .set (getBrowser () -> getDisk2DOptions ());
+
+	optionsNode -> addInterest (&Disk2D::addEvent, this);
+}
+
+void
 Disk2D::build ()
 {
-	const auto & options = getBrowser () -> getDisk2DOptions ();
+	if (options ())
+		optionsNode -> toMetaData (createMetadataSet ("/Disk2D/options"));
 
 	if (innerRadius () == outerRadius ())
 	{
@@ -155,13 +197,13 @@ Disk2D::build ()
 		// Circle
 
 		if (radius == 1)
-			getVertices () = options -> getVertices ();
+			getVertices () = optionsNode -> getVertices ();
 
 		else
 		{
-			getVertices () .reserve (options -> getVertices () .size ());
+			getVertices () .reserve (optionsNode -> getVertices () .size ());
 
-			for (const auto & vertex : options -> getVertices ())
+			for (const auto & vertex : optionsNode -> getVertices ())
 				getVertices () .emplace_back (vertex * radius);
 		}
 
@@ -179,29 +221,29 @@ Disk2D::build ()
 		const size_t elements = solid () ? 1 : 2;
 
 		getTexCoords () .emplace_back ();
-		getTexCoords () [0] .reserve (elements * options -> getTexCoords () .size ());
-		getTexCoords () [0] = options -> getTexCoords ();
+		getTexCoords () [0] .reserve (elements * optionsNode -> getTexCoords () .size ());
+		getTexCoords () [0] = optionsNode -> getTexCoords ();
 
-		getNormals () .reserve (elements * options -> getNormals  () .size ());
-		getNormals () = options -> getNormals  ();
+		getNormals () .reserve (elements * optionsNode -> getNormals  () .size ());
+		getNormals () = optionsNode -> getNormals  ();
 
-		getVertices () .reserve (elements * options -> getVertices () .size ());
+		getVertices () .reserve (elements * optionsNode -> getVertices () .size ());
 
 		if (radius == 1)
-			getVertices () = options -> getVertices ();
+			getVertices () = optionsNode -> getVertices ();
 
 		else
 		{
-			getVertices () .reserve (options -> getVertices () .size ());
+			getVertices () .reserve (optionsNode -> getVertices () .size ());
 
-			for (const auto & vertex : options -> getVertices ())
+			for (const auto & vertex : optionsNode -> getVertices ())
 				getVertices () .emplace_back (vertex * radius);
 		}
 
 		addElements (GL_POLYGON, getVertices () .size ());
 		setGeometryType (GeometryType::GEOMETRY_2D);
 		setSolid (solid ());
-		addMirrorVertices (options -> getVertexMode (), true);
+		addMirrorVertices (optionsNode -> getVertexMode (), true);
 		return;
 	}
 
@@ -210,21 +252,21 @@ Disk2D::build ()
 	const size_t elements = solid () ? 1 : 2;
 
 	getTexCoords () .emplace_back ();
-	getTexCoords () [0] .reserve (elements * (options -> getTexCoords () .size () + 2));
+	getTexCoords () [0] .reserve (elements * (optionsNode -> getTexCoords () .size () + 2));
 
-	getNormals  () .reserve (elements * (options -> getNormals  () .size () + 2));
-	getVertices () .reserve (elements * (options -> getVertices () .size () + 2));
+	getNormals  () .reserve (elements * (optionsNode -> getNormals  () .size () + 2));
+	getVertices () .reserve (elements * (optionsNode -> getVertices () .size () + 2));
 
 	// Texture Coordinates
 
-	const auto & texCoords = options -> getTexCoords ();
-	const auto & normals   = options -> getNormals ();
-	const auto & vertices  = options -> getVertices ();
+	const auto & texCoords = optionsNode -> getTexCoords ();
+	const auto & normals   = optionsNode -> getNormals ();
+	const auto & vertices  = optionsNode -> getVertices ();
 	const double maxRadius = std::abs (std::max (innerRadius (), outerRadius ()));
 	const double minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
 	const double scale     = minRadius / maxRadius;
 
-	for (size_t i = 0, size = options -> getVertices () .size (); i < size; ++ i)
+	for (size_t i = 0, size = optionsNode -> getVertices () .size (); i < size; ++ i)
 	{
 		const auto i1 = (i + 1) % size;
 
@@ -323,8 +365,6 @@ Disk2D::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	const auto & options = getBrowser () -> getDisk2DOptions ();
-
 	if (innerRadius () == outerRadius ())
 	{
 		const double radius = std::abs (outerRadius ());
@@ -338,8 +378,7 @@ throw (Error <NOT_SUPPORTED>,
 			const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 			const auto geometry = getExecutionContext () -> createNode <PointSet> ();
 	
-			geometry -> metadata () = metadata ();
-			geometry -> coord ()    = coord;
+			geometry -> coord () = coord;
 	
 			coord -> point () .emplace_back ();
 	
@@ -351,10 +390,9 @@ throw (Error <NOT_SUPPORTED>,
 		const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 		const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
 
-		geometry -> metadata () = metadata ();
-		geometry -> coord ()    = coord;
+		geometry -> coord () = coord;
 
-		coord -> point () .assign (options -> getVertices () .begin (), options -> getVertices () .end ());
+		coord -> point () .assign (optionsNode -> getVertices () .begin (), optionsNode -> getVertices () .end ());
 
 		if (radius not_eq 1)
 		{
@@ -362,7 +400,7 @@ throw (Error <NOT_SUPPORTED>,
 				vertex *= radius;
 		}
 
-		for (int32_t i = 0, size = options -> getVertices () .size (); i < size; ++ i)
+		for (int32_t i = 0, size = optionsNode -> getVertices () .size (); i < size; ++ i)
 			geometry -> coordIndex () .emplace_back (i);
 
 		geometry -> coordIndex () .emplace_back (0);
@@ -375,7 +413,6 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
-	geometry -> metadata () = metadata ();
 	geometry -> solid ()    = solid ();
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
@@ -386,7 +423,7 @@ throw (Error <NOT_SUPPORTED>,
 
 		const double radius = std::abs (std::max (innerRadius (), outerRadius ()));
 	
-		coord -> point () .assign (options -> getVertices () .begin (), options -> getVertices () .end ());
+		coord -> point () .assign (optionsNode -> getVertices () .begin (), optionsNode -> getVertices () .end ());
 
 		if (radius not_eq 1)
 		{
@@ -394,10 +431,10 @@ throw (Error <NOT_SUPPORTED>,
 				vertex *= radius;
 		}
 
-		for (auto & point : options -> getTexCoords ())
+		for (auto & point : optionsNode -> getTexCoords ())
 			texCoord -> point () .emplace_back (point .x (), point .y ());
 
-		for (int32_t i = 0, size = options -> getVertices () .size (); i < size; ++ i)
+		for (int32_t i = 0, size = optionsNode -> getVertices () .size (); i < size; ++ i)
 		{
 			geometry -> texCoordIndex () .emplace_back (i);
 			geometry -> coordIndex ()    .emplace_back (i);
@@ -417,21 +454,21 @@ throw (Error <NOT_SUPPORTED>,
 	const double minRadius = std::abs (std::min (innerRadius (), outerRadius ()));
 	const double scale     = minRadius / maxRadius;
 
-	coord -> point () .assign (options -> getVertices () .begin (), options -> getVertices () .begin ());
+	coord -> point () .assign (optionsNode -> getVertices () .begin (), optionsNode -> getVertices () .begin ());
 
-	for (auto & point : options -> getVertices ())
+	for (auto & point : optionsNode -> getVertices ())
 		coord -> point () .emplace_back (point * minRadius);
 
-	for (auto & point : options -> getVertices ())
+	for (auto & point : optionsNode -> getVertices ())
 		coord -> point () .emplace_back (point * maxRadius);
 
-	for (auto & point : options -> getTexCoords ())
+	for (auto & point : optionsNode -> getTexCoords ())
 		texCoord -> point () .emplace_back (point .x () * scale + (1 - scale) / 2, point .y () * scale + (1 - scale) / 2);
 
-	for (auto & point : options -> getTexCoords ())
+	for (auto & point : optionsNode -> getTexCoords ())
 		texCoord -> point () .emplace_back (point .x (), point .y ());
 
-	for (size_t i = 0, size = options -> getVertices () .size (); i < size; ++ i)
+	for (size_t i = 0, size = optionsNode -> getVertices () .size (); i < size; ++ i)
 	{
 		const auto i1 = (i + 1) % size;
 
@@ -454,6 +491,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	return geometry;
 }
+
+Disk2D::~Disk2D ()
+{ }
 
 } // X3D
 } // titania

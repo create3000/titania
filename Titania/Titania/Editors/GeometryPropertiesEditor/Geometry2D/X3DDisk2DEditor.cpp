@@ -61,8 +61,12 @@ X3DDisk2DEditor::X3DDisk2DEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                         innerRadius (this, getDisk2DInnerRadiusAdjustment (), getDisk2DInnerRadiusSpinButton (), "innerRadius"),
 	                         outerRadius (this, getDisk2DOuterRadiusAdjustment (), getDisk2DOuterRadiusSpinButton (), "outerRadius"),
-	                           dimension (this, getDisk2DDimensionAdjustment (), getDisk2DDimensionSpinButton (), "dimension")
-{ }
+	                           dimension (this, getDisk2DDimensionAdjustment (), getDisk2DDimensionSpinButton (), "dimension"),
+	                               nodes (),
+	                            changing (false)
+{
+	addChildObjects (nodes);
+}
 
 void
 X3DDisk2DEditor::on_disk2d_radius_value_changed ()
@@ -74,14 +78,93 @@ X3DDisk2DEditor::on_disk2d_radius_value_changed ()
 void
 X3DDisk2DEditor::set_geometry ()
 {
-	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Disk2D });
-	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getDisk2DOptions () });
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .removeInterest (&X3DDisk2DEditor::set_options, this);
+
+	// Fields
+
+	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Disk2D });
 
 	getDisk2DExpander () .set_visible (not nodes .empty ());
 
 	innerRadius .setNodes (nodes);
 	outerRadius .setNodes (nodes);
-	dimension   .setNodes (global);
+	dimension   .setNodes (nodes);
+
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .addInterest (&X3DDisk2DEditor::set_options, this);
+
+	set_options ();
+}
+
+void
+X3DDisk2DEditor::on_disk2d_use_global_options_toggled ()
+{
+	if (changing)
+		return;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Disk2D Global Options To »%s«", getDisk2DUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+
+	if (getDisk2DUseGlobalOptionsCheckButton () .get_active ())
+	{
+		for (const auto & node : nodes)
+		{
+			auto & options = node -> getField <X3D::SFNode> ("options");
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, nullptr, undoStep);
+		}
+	}
+	else
+	{
+		for (const auto & node : nodes)
+		{
+			auto &     options    = node -> getField <X3D::SFNode> ("options");
+			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getDisk2DOptions () -> copy (getCurrentContext (), X3D::FLAT_COPY));
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, optionNode, undoStep);
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+X3DDisk2DEditor::set_options ()
+{
+	// Set composed widgets.
+
+	X3D::MFNode optionsNodes;
+
+	for (const auto & node : nodes)
+	{
+		const auto & optionsNode = node -> getField <X3D::SFNode> ("options");
+
+		if (optionsNode)
+			optionsNodes .emplace_back (optionsNode);
+	}
+
+	const auto active       = optionsNodes .empty ();
+	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
+
+	if (optionsNodes .empty ())
+		optionsNodes .emplace_back (getCurrentBrowser () -> getDisk2DOptions ());
+
+	dimension .setNodes (optionsNodes);
+
+	// Set global widget.
+
+	changing = true;
+
+	getDisk2DUseGlobalOptionsCheckButton () .set_active (active);
+	getDisk2DUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
+
+	getDisk2DDimensionBox () .set_sensitive (not active and not inconsistent);
+
+	changing = false;
 }
 
 X3DDisk2DEditor::~X3DDisk2DEditor ()

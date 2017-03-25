@@ -57,6 +57,8 @@
 namespace titania {
 namespace X3D {
 
+class Disk2DOptions;
+
 class Disk2D :
 	virtual public X3DGeometryNode,
 	virtual public X3DLineGeometryNode
@@ -129,15 +131,17 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
-//	virtual
-//	SFInt32 &
-//	dimension ()
-//	{ return *fields .dimension; }
-//
-//	virtual
-//	const SFInt32 &
-//	dimension () const
-//	{ return *fields .dimension; }
+	///  @name Hidden fields
+
+	virtual
+	SFNode &
+	options ()
+	{ return *fields .options; }
+
+	virtual
+	const SFNode &
+	options () const
+	{ return *fields .options; }
 
 	///  @name Operations
 
@@ -181,6 +185,11 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) override;
 
+	///  @name Construction
+
+	virtual
+	~Disk2D () override;
+
 
 protected:
 
@@ -193,11 +202,16 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_options ();
+
+	///  @name Operations
+
 	virtual
 	const X3DPtr <ComposedShader> &
 	getShaderNode (X3DBrowser* const browser) final override;
-
-	///  @name Operations
 
 	virtual
 	Box3d
@@ -214,7 +228,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -223,9 +237,14 @@ private:
 		SFFloat* const innerRadius;
 		SFFloat* const outerRadius;
 		SFBool* const solid;
+		SFNode* const options;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <Disk2DOptions> optionsNode;
 
 };
 

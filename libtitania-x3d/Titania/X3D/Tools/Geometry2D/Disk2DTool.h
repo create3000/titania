@@ -108,6 +108,18 @@ public:
 	solid () const final override
 	{ return getNode <Disk2D> () -> solid (); }
 
+	///  @name Hidden fields
+
+	virtual
+	SFNode &
+	options () final override
+	{ return getNode <Disk2D> () -> options (); }
+
+	virtual
+	const SFNode &
+	options () const final override
+	{ return getNode <Disk2D> () -> options (); }
+
 	///  @name Operations
 
 	virtual

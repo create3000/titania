@@ -446,9 +446,17 @@ public:
 	getDisk2DOuterRadiusSpinButton () const
 	{ return *m_Disk2DOuterRadiusSpinButton; }
 
+	Gtk::Box &
+	getDisk2DDimensionBox () const
+	{ return *m_Disk2DDimensionBox; }
+
 	Gtk::SpinButton &
 	getDisk2DDimensionSpinButton () const
 	{ return *m_Disk2DDimensionSpinButton; }
+
+	Gtk::CheckButton &
+	getDisk2DUseGlobalOptionsCheckButton () const
+	{ return *m_Disk2DUseGlobalOptionsCheckButton; }
 
 	Gtk::Expander &
 	getRectangle2DExpander () const
@@ -1018,6 +1026,10 @@ public:
 
 	virtual
 	void
+	on_disk2d_use_global_options_toggled () = 0;
+
+	virtual
+	void
 	on_rectangle2d_uniform_size_clicked () = 0;
 
 	virtual
@@ -1172,7 +1184,9 @@ private:
 	Gtk::Expander*                 m_Disk2DExpander;
 	Gtk::SpinButton*               m_Disk2DInnerRadiusSpinButton;
 	Gtk::SpinButton*               m_Disk2DOuterRadiusSpinButton;
+	Gtk::Box*                      m_Disk2DDimensionBox;
 	Gtk::SpinButton*               m_Disk2DDimensionSpinButton;
+	Gtk::CheckButton*              m_Disk2DUseGlobalOptionsCheckButton;
 	Gtk::Expander*                 m_Rectangle2DExpander;
 	Gtk::Box*                      m_Rectangle2DSizeBox;
 	Gtk::SpinButton*               m_Rectangle2DSizeXSpinButton;

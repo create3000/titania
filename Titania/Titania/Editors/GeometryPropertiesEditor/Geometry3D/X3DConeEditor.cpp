@@ -103,7 +103,7 @@ X3DConeEditor::on_cone_use_global_options_toggled ()
 	if (changing)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Toggle Cone Global Options"));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Cone Global Options To »%s«", getConeUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
 
 	if (getConeUseGlobalOptionsCheckButton () .get_active ())
 	{

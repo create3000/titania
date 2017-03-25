@@ -149,7 +149,9 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Disk2DExpander", m_Disk2DExpander);
 	m_builder -> get_widget ("Disk2DInnerRadiusSpinButton", m_Disk2DInnerRadiusSpinButton);
 	m_builder -> get_widget ("Disk2DOuterRadiusSpinButton", m_Disk2DOuterRadiusSpinButton);
+	m_builder -> get_widget ("Disk2DDimensionBox", m_Disk2DDimensionBox);
 	m_builder -> get_widget ("Disk2DDimensionSpinButton", m_Disk2DDimensionSpinButton);
+	m_builder -> get_widget ("Disk2DUseGlobalOptionsCheckButton", m_Disk2DUseGlobalOptionsCheckButton);
 	m_builder -> get_widget ("Rectangle2DExpander", m_Rectangle2DExpander);
 	m_builder -> get_widget ("Rectangle2DSizeBox", m_Rectangle2DSizeBox);
 	m_builder -> get_widget ("Rectangle2DSizeXSpinButton", m_Rectangle2DSizeXSpinButton);
@@ -298,6 +300,9 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::Button with id 'GeometryUnlinkButton'.
 	m_GeometryUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_unlink_clicked));
+
+	// Connect object Gtk::CheckButton with id 'Disk2DUseGlobalOptionsCheckButton'.
+	m_Disk2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_disk2d_use_global_options_toggled));
 
 	// Connect object Gtk::ToggleButton with id 'Rectangle2DUniformSizeButton'.
 	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
