@@ -132,7 +132,7 @@ CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, con
 
 	// Use asin on the cylinder and outside linear angle.
 	const auto sinp  = interval (distance, -1.0, 1.0);
-	const auto phi   = section == 0 ? std::asin (sinp) : sinp * pi1_2 <double>;
+	const auto phi   = section == 0 ? std::asin (sinp) : sinp * pi_2 <double>;
 	const auto angle = phi + section * pi <double>;
 
 	const Rotation4d rotation (cylinder .axis () .direction (), angle);

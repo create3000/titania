@@ -307,7 +307,7 @@ X3DFlyViewer::fly ()
 
 		// Position offset
 
-		double speedFactor = 1 - rubberBandRotation .angle () / pi1_2 <double>;
+		double speedFactor = 1 - rubberBandRotation .angle () / pi_2 <double>;
 
 		speedFactor *= getNavigationInfo () -> speed ();
 		speedFactor *= viewpoint -> getSpeedFactor ();

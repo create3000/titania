@@ -62,10 +62,10 @@ namespace puck {
 X3DSphereEditor::X3DSphereEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius"),
-	                          xDimension (this, getQuadSphereXDimensionAdjustment (), getQuadSphereXDimensionSpinButton (), "xDimension"),
-	                          yDimension (this, getQuadSphereYDimensionAdjustment (), getQuadSphereYDimensionSpinButton (), "yDimension"),
-	                    icosahedronOrder (this, getIcosahedronOrderAdjustment (), getIcosahedronOrderSpinButton (), "order"),
 	                     octahedronOrder (this, getOctahedronOrderAdjustment (), getOctahedronOrderSpinButton (), "order"),
+	                    icosahedronOrder (this, getIcosahedronOrderAdjustment (), getIcosahedronOrderSpinButton (), "order"),
+	                      quadXDimension (this, getQuadSphereXDimensionAdjustment (), getQuadSphereXDimensionSpinButton (), "xDimension"),
+	                      quadYDimension (this, getQuadSphereYDimensionAdjustment (), getQuadSphereYDimensionSpinButton (), "yDimension"),
 	                               nodes (),
 	                            changing (false)
 {
@@ -138,12 +138,12 @@ X3DSphereEditor::on_sphere_type_changed ()
 
 	switch (getSphereTypeButton () .get_active_row_number ())
 	{
-		case 1:
+		case 0:
 		{
 			optionNode = X3D::MakePtr <X3D::OctahedronOptions> (getCurrentContext ());
 			break;
 		}
-		case 2:
+		case 1:
 		{
 			optionNode = X3D::MakePtr <X3D::IcosahedronOptions> (getCurrentContext ());
 			break;
@@ -191,10 +191,10 @@ X3DSphereEditor::set_options ()
 	if (optionsNodes .empty ())
 		optionsNodes .emplace_back (getCurrentBrowser () -> getSphereOptions ());
 
-	xDimension .setNodes (optionsNodes);
-	yDimension .setNodes (optionsNodes);
+	quadXDimension   .setNodes (optionsNodes);
+	quadYDimension   .setNodes (optionsNodes);
 	icosahedronOrder .setNodes (optionsNodes);
-	octahedronOrder .setNodes (optionsNodes);
+	octahedronOrder  .setNodes (optionsNodes);
 
 	// Set global widget.
 
@@ -203,13 +203,14 @@ X3DSphereEditor::set_options ()
 	getSphereUseGlobalOptionsCheckButton () .set_active (active);
 	getSphereUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
 
-	getSphereTypeButton ()  .set_sensitive (not active and not inconsistent);
-	getQuadSphereOptions () .set_sensitive (not active and not inconsistent);
-	getIcosahedronOptions ()  .set_sensitive (not active and not inconsistent);
+	getSphereTypeButton ()   .set_sensitive (not active and not inconsistent);
+	getOctahedronOptions ()  .set_sensitive (not active and not inconsistent);
+	getIcosahedronOptions () .set_sensitive (not active and not inconsistent);
+	getQuadSphereOptions ()  .set_sensitive (not active and not inconsistent);
 
-	getQuadSphereOptions ()  .set_visible (false);
 	getOctahedronOptions ()  .set_visible (false);
 	getIcosahedronOptions () .set_visible (false);
+	getQuadSphereOptions ()  .set_visible (false);
 
 	if (active)
 	{
@@ -224,22 +225,22 @@ X3DSphereEditor::set_options ()
 	{
 		switch (optionsNodes .back () -> getType () .back ())
 		{
-			case X3D::X3DConstants::QuadSphereOptions:
-			{
-				getSphereTypeButton ()  .set_active (0);
-				getQuadSphereOptions () .set_visible (true);
-				break;
-			}
 			case X3D::X3DConstants::OctahedronOptions:
 			{
-				getSphereTypeButton () .set_active (1);
+				getSphereTypeButton ()  .set_active (1);
 				getOctahedronOptions () .set_visible (true);
 				break;
 			}
 			case X3D::X3DConstants::IcosahedronOptions:
 			{
-				getSphereTypeButton () .set_active (2);
+				getSphereTypeButton ()   .set_active (2);
 				getIcosahedronOptions () .set_visible (true);
+				break;
+			}
+			case X3D::X3DConstants::QuadSphereOptions:
+			{
+				getSphereTypeButton ()  .set_active (3);
+				getQuadSphereOptions () .set_visible (true);
 				break;
 			}
 			default:

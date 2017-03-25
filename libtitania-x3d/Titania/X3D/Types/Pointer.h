@@ -373,6 +373,7 @@ class ConeOptions;
 class CylinderOptions;
 class OctahedronOptions;
 class QuadSphereOptions;
+class TetrahedronOptions;
 class X3DSphereOptionsNode;
 
 // Browser node types

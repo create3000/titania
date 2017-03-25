@@ -67,7 +67,7 @@
 namespace titania {
 namespace puck {
 
-using math::pi1_2;
+using math::pi_2;
 using math::pi2;
 using math::pi3_2;
 
@@ -1203,7 +1203,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 				if (selected [OUTLINE_OVER_INPUT] or selected [OUTLINE_SELECTED_INPUT])
 				{
 					context -> begin_new_sub_path ();
-					context -> arc_negative (field_x + radius, field_y + radius, radius, pi3_2 <double>, pi1_2 <double>);
+					context -> arc_negative (field_x + radius, field_y + radius, radius, pi3_2 <double>, pi_2 <double>);
 					context -> rel_line_to (FIELD_WIDTH - radius, 0);
 					context -> rel_line_to (0, -field_height + 1);
 		
@@ -1219,7 +1219,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 				if (selected [OUTLINE_OVER_OUTPUT] or selected [OUTLINE_SELECTED_OUTPUT])
 				{
 					context -> begin_new_sub_path ();
-					context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, pi1_2 <double>, pi3_2 <double>);
+					context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, pi_2 <double>, pi3_2 <double>);
 					context -> rel_line_to (-(FIELD_WIDTH - radius - 1), 0);
 					context -> rel_line_to (0, field_height);
 		
@@ -1234,7 +1234,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 				if (selected [OUTLINE_OVER_INPUT] or selected [OUTLINE_SELECTED_INPUT])
 				{
 					context -> begin_new_sub_path ();
-					context -> arc_negative (field_x + radius, field_y + radius, radius, pi3_2 <double>, pi1_2 <double>);
+					context -> arc_negative (field_x + radius, field_y + radius, radius, pi3_2 <double>, pi_2 <double>);
 					context -> rel_line_to (FIELD_WIDTH - radius, 0);
 					context -> rel_line_to (0, -field_height + 1);
 		
@@ -1249,7 +1249,7 @@ OutlineCellRenderer::render_vfunc (const Cairo::RefPtr <Cairo::Context> & contex
 				if (selected [OUTLINE_OVER_OUTPUT] or selected [OUTLINE_SELECTED_OUTPUT])
 				{
 					context -> begin_new_sub_path ();
-					context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, pi1_2 <double>, pi3_2 <double>);
+					context -> arc_negative (field_x + FIELD_WIDTH - radius - 1, field_y + radius, radius, pi_2 <double>, pi3_2 <double>);
 					context -> rel_line_to (-(FIELD_WIDTH - radius - 1), 0);
 					context -> rel_line_to (0, field_height);
 		
@@ -1364,7 +1364,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 			context -> begin_new_sub_path ();
-			context -> arc (input_x + input_w, input_y - radius, radius, 0, pi1_2 <double>);
+			context -> arc (input_x + input_w, input_y - radius, radius, 0, pi_2 <double>);
 
 			context -> move_to (connector_x, y);
 			context -> line_to (connector_x, input_y - radius);
@@ -1409,7 +1409,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 			context -> set_source_rgba (c .get_red (), c .get_green (), c .get_blue (), c .get_alpha ());
 
 			context -> begin_new_sub_path ();
-			context -> arc (output_x + output_w, output_y - radius, radius, 0, pi1_2 <double>);
+			context -> arc (output_x + output_w, output_y - radius, radius, 0, pi_2 <double>);
 
 			context -> move_to (connector_x, y);
 			context -> line_to (connector_x, output_y - radius);
@@ -1445,7 +1445,7 @@ OutlineCellRenderer::render_routes (const Cairo::RefPtr <Cairo::Context> & conte
 		context -> line_to (output_x, input_y);
 
 		context -> begin_new_sub_path ();
-		context -> arc (output_x, cy, radius, pi3_2 <double>, pi1_2 <double>);
+		context -> arc (output_x, cy, radius, pi3_2 <double>, pi_2 <double>);
 		context -> stroke ();
 	}
 

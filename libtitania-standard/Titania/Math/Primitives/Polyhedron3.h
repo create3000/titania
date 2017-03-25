@@ -459,17 +459,17 @@ icosahedron3 <Type>::create_primitive ()
 	static constexpr auto p = phi <Type>;
 
 	this -> add_point (vector3 <Type> (-1,  p,  0));
-	this -> add_point (vector3 <Type> (1,  p,  0));
+	this -> add_point (vector3 <Type> ( 1,  p,  0));
 	this -> add_point (vector3 <Type> (-1, -p,  0));
-	this -> add_point (vector3 <Type> (1, -p,  0));
+	this -> add_point (vector3 <Type> ( 1, -p,  0));
 
 	this -> add_point (vector3 <Type> (0, -1,  p));
 	this -> add_point (vector3 <Type> (0,  1,  p));
 	this -> add_point (vector3 <Type> (0, -1, -p));
 	this -> add_point (vector3 <Type> (0,  1, -p));
 
-	this -> add_point (vector3 <Type> (p,  0, -1));
-	this -> add_point (vector3 <Type> (p,  0,  1));
+	this -> add_point (vector3 <Type> ( p,  0, -1));
+	this -> add_point (vector3 <Type> ( p,  0,  1));
 	this -> add_point (vector3 <Type> (-p,  0, -1));
 	this -> add_point (vector3 <Type> (-p,  0,  1));
 
@@ -481,11 +481,11 @@ icosahedron3 <Type>::create_primitive ()
 		point = normalize (rotation .mult_vec_rot (point));
 
 	// 5 faces around point 0
-	this -> add_triangle (0, 11,  5);
-	this -> add_triangle (0,  5,  1);
-	this -> add_triangle (0,  1,  7);
-	this -> add_triangle (0,  7, 10);
-	this -> add_triangle (0, 10, 11);
+	this -> add_triangle ( 0, 11,  5);
+	this -> add_triangle ( 0,  5,  1);
+	this -> add_triangle ( 0,  1,  7);
+	this -> add_triangle ( 0,  7, 10);
+	this -> add_triangle ( 0, 10, 11);
 
 	// 5 adjacent faces
 	this -> add_triangle ( 1,  5,  9);
@@ -495,18 +495,18 @@ icosahedron3 <Type>::create_primitive ()
 	this -> add_triangle ( 7,  1,  8);
 
 	// 5 faces around point 3
-	this -> add_triangle (3,  9,  4);
-	this -> add_triangle (3,  4,  2);
-	this -> add_triangle (3,  2,  6);
-	this -> add_triangle (3,  6,  8);
-	this -> add_triangle (3,  8,  9);
+	this -> add_triangle ( 3,  9,  4);
+	this -> add_triangle ( 3,  4,  2);
+	this -> add_triangle ( 3,  2,  6);
+	this -> add_triangle ( 3,  6,  8);
+	this -> add_triangle ( 3,  8,  9);
 
 	// 5 adjacent faces
-	this -> add_triangle (4,  9,  5);
-	this -> add_triangle (2,  4, 11);
-	this -> add_triangle (6,  2, 10);
-	this -> add_triangle (8,  6,  7);
-	this -> add_triangle (9,  8,  1);
+	this -> add_triangle ( 4,  9,  5);
+	this -> add_triangle ( 2,  4, 11);
+	this -> add_triangle ( 6,  2, 10);
+	this -> add_triangle ( 8,  6,  7);
+	this -> add_triangle ( 9,  8,  1);
 }
 
 } // math

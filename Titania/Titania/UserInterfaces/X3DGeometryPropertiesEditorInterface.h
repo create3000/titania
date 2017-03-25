@@ -358,6 +358,10 @@ public:
 	getSphereRadiusAdjustment () const
 	{ return m_SphereRadiusAdjustment; }
 
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getTetrahedronOrderAdjustment () const
+	{ return m_TetrahedronOrderAdjustment; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -1246,6 +1250,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SphereRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_TetrahedronOrderAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Notebook*                 m_GeometryChildNotebook;

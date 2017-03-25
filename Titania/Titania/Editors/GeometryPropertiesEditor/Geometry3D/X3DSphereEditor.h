@@ -96,11 +96,11 @@ private:
 
 	///  @name Members
 
-	X3DFieldAdjustment <X3D::SFFloat>  radius;
-	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
-	X3DFieldAdjustment <X3D::SFInt32>  yDimension;
-	X3DFieldAdjustment <X3D::SFInt32>  icosahedronOrder;
-	X3DFieldAdjustment <X3D::SFInt32>  octahedronOrder;
+	X3DFieldAdjustment <X3D::SFFloat> radius;
+	X3DFieldAdjustment <X3D::SFInt32> octahedronOrder;
+	X3DFieldAdjustment <X3D::SFInt32> icosahedronOrder;
+	X3DFieldAdjustment <X3D::SFInt32> quadXDimension;
+	X3DFieldAdjustment <X3D::SFInt32> quadYDimension;
 
 	X3D::MFNode nodes;
 	bool        changing;

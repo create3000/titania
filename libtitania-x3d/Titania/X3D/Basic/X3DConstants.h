@@ -486,6 +486,7 @@ enum NodeType : uint16_t
 	IcosahedronOptions,
 	OctahedronOptions,
 	QuadSphereOptions,
+	TetrahedronOptions,
 	X3DSphereOptionsNode,
 
 	// Browser node types

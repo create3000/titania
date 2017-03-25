@@ -191,7 +191,7 @@ X3DBackgroundNode::buildHalfSphere (const float radius, const std::vector <float
 	std::complex <float> y;
 	Vector3f             p;
 	
-	const auto    vAngleMax   = bottom ? pi1_2 <float> : pi <float>;
+	const auto    vAngleMax   = bottom ? pi_2 <float> : pi <float>;
 	const int32_t V_DIMENSION = vAngle .size () - 1;
 
 	numIndices += 4 * U_DIMENSION * V_DIMENSION;
@@ -318,7 +318,7 @@ X3DBackgroundNode::build ()
 			if (vAngle .empty () or vAngle .front () > 0)
 				vAngle .insert (vAngle .begin (), 0);
 
-			const auto vAngleMax = groundColor () .size () > groundAngle () .size () ? pi1_2 <float> : pi <float>;
+			const auto vAngleMax = groundColor () .size () > groundAngle () .size () ? pi_2 <float> : pi <float>;
 
 			if (vAngle .back () < vAngleMax)
 				vAngle .emplace_back (vAngleMax);
@@ -330,8 +330,8 @@ X3DBackgroundNode::build ()
 		{
 			std::vector <float> vAngle (groundAngle () .rbegin (), groundAngle () .rend ());
 
-			if (vAngle .empty () or vAngle .front () < pi1_2 <float>)
-				vAngle .insert (vAngle .begin (), pi1_2 <float>);
+			if (vAngle .empty () or vAngle .front () < pi_2 <float>)
+				vAngle .insert (vAngle .begin (), pi_2 <float>);
 
 			if (vAngle .back () > 0)
 				vAngle .emplace_back (0);

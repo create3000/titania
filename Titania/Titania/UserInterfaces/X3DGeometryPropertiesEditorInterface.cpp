@@ -125,6 +125,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_Rectangle2DSizeXAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeXAdjustment"));
 	m_Rectangle2DSizeYAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeYAdjustment"));
 	m_SphereRadiusAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereRadiusAdjustment"));
+	m_TetrahedronOrderAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TetrahedronOrderAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
