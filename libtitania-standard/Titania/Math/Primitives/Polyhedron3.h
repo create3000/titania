@@ -242,7 +242,7 @@ basic_polyhedron3 <Type>::create_tex_coord ()
 	for (const auto & point : m_points)
 	{
 		m_tex_points .emplace_back (std::atan2 (point .x (), point .z ()) / (2 * pi <Type>) + Type (0.5),
-		                            std::asin (point .y ()) / pi <Type>+Type (0.5));
+		                            std::asin (clamp <Type> (point .y (), -1, 1)) / pi <Type> + Type (0.5));
 	}
 
 	// Refine poles
