@@ -263,6 +263,10 @@ public:
 	{ return m_GeoElevationGridZoneAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getIcoSphereOrderAdjustment () const
+	{ return m_IcoSphereOrderAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getNormalColorAdjustment () const
 	{ return m_NormalColorAdjustment; }
 
@@ -331,6 +335,14 @@ public:
 	{ return m_PrimitiveEdgeColorAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getQuadSphereXDimensionAdjustment () const
+	{ return m_QuadSphereXDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getQuadSphereYDimensionAdjustment () const
+	{ return m_QuadSphereYDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getRectangle2DSizeXAdjustment () const
 	{ return m_Rectangle2DSizeXAdjustment; }
 
@@ -341,14 +353,6 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getSphereRadiusAdjustment () const
 	{ return m_SphereRadiusAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getSphereXDimensionAdjustment () const
-	{ return m_SphereXDimensionAdjustment; }
-
-	const Glib::RefPtr <Gtk::Adjustment> &
-	getSphereYDimensionAdjustment () const
-	{ return m_SphereYDimensionAdjustment; }
 
 	Gtk::Window &
 	getWindow () const
@@ -674,25 +678,49 @@ public:
 	getSphereRadiusSpinButton () const
 	{ return *m_SphereRadiusSpinButton; }
 
-	Gtk::Box &
-	getSphereXDimensionBox () const
-	{ return *m_SphereXDimensionBox; }
-
-	Gtk::SpinButton &
-	getSphereXDimensionSpinButton () const
-	{ return *m_SphereXDimensionSpinButton; }
-
-	Gtk::Box &
-	getSphereYDimensionBox () const
-	{ return *m_SphereYDimensionBox; }
-
-	Gtk::SpinButton &
-	getSphereYDimensionSpinButton () const
-	{ return *m_SphereYDimensionSpinButton; }
-
 	Gtk::CheckButton &
 	getSphereUseGlobalOptionsCheckButton () const
 	{ return *m_SphereUseGlobalOptionsCheckButton; }
+
+	Gtk::ComboBoxText &
+	getSphereTypeButton () const
+	{ return *m_SphereTypeButton; }
+
+	Gtk::Stack &
+	getSphereStack () const
+	{ return *m_SphereStack; }
+
+	Gtk::Grid &
+	getQuadSphereOptions () const
+	{ return *m_QuadSphereOptions; }
+
+	Gtk::Box &
+	getQuadSphereXDimensionBox () const
+	{ return *m_QuadSphereXDimensionBox; }
+
+	Gtk::SpinButton &
+	getQuadSphereXDimensionSpinButton () const
+	{ return *m_QuadSphereXDimensionSpinButton; }
+
+	Gtk::Box &
+	getQuadSphereYDimensionBox () const
+	{ return *m_QuadSphereYDimensionBox; }
+
+	Gtk::SpinButton &
+	getQuadSphereYDimensionSpinButton () const
+	{ return *m_QuadSphereYDimensionSpinButton; }
+
+	Gtk::Grid &
+	getIcoSphereOptions () const
+	{ return *m_IcoSphereOptions; }
+
+	Gtk::Box &
+	getIcoSphereOrderBox () const
+	{ return *m_IcoSphereOrderBox; }
+
+	Gtk::SpinButton &
+	getIcoSphereOrderSpinButton () const
+	{ return *m_IcoSphereOrderSpinButton; }
 
 	Gtk::Box &
 	getGeoElevationGridBox () const
@@ -1086,6 +1114,10 @@ public:
 
 	virtual
 	void
+	on_sphere_type_changed () = 0;
+
+	virtual
+	void
 	on_add_normals_clicked () = 0;
 
 	virtual
@@ -1174,6 +1206,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZoneAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_IcoSphereOrderAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsCurveOrderAdjustment;
@@ -1191,11 +1224,11 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVOrderAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVTessellationAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_PrimitiveEdgeColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_QuadSphereXDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_QuadSphereYDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SphereRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SphereXDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SphereYDimensionAdjustment;
 	Gtk::Window*                   m_Window;
 	Gtk::Box*                      m_Widget;
 	Gtk::Notebook*                 m_GeometryChildNotebook;
@@ -1277,11 +1310,17 @@ private:
 	Gtk::CheckButton*              m_ExtrusionEndCapCheckButton;
 	Gtk::Expander*                 m_SphereExpander;
 	Gtk::SpinButton*               m_SphereRadiusSpinButton;
-	Gtk::Box*                      m_SphereXDimensionBox;
-	Gtk::SpinButton*               m_SphereXDimensionSpinButton;
-	Gtk::Box*                      m_SphereYDimensionBox;
-	Gtk::SpinButton*               m_SphereYDimensionSpinButton;
 	Gtk::CheckButton*              m_SphereUseGlobalOptionsCheckButton;
+	Gtk::ComboBoxText*             m_SphereTypeButton;
+	Gtk::Stack*                    m_SphereStack;
+	Gtk::Grid*                     m_QuadSphereOptions;
+	Gtk::Box*                      m_QuadSphereXDimensionBox;
+	Gtk::SpinButton*               m_QuadSphereXDimensionSpinButton;
+	Gtk::Box*                      m_QuadSphereYDimensionBox;
+	Gtk::SpinButton*               m_QuadSphereYDimensionSpinButton;
+	Gtk::Grid*                     m_IcoSphereOptions;
+	Gtk::Box*                      m_IcoSphereOrderBox;
+	Gtk::SpinButton*               m_IcoSphereOrderSpinButton;
 	Gtk::Box*                      m_GeoElevationGridBox;
 	Gtk::Expander*                 m_GeoElevationGridExpander;
 	Gtk::SpinButton*               m_GeoElevationGridXDimensionSpinButton;

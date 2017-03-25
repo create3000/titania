@@ -50,6 +50,7 @@
 
 #include "X3DSphereEditor.h"
 
+#include <Titania/X3D/Browser/Geometry3D/IcoSphereOptions.h>
 #include <Titania/X3D/Browser/Geometry3D/QuadSphereOptions.h>
 #include <Titania/X3D/Components/Geometry3D/Sphere.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>
@@ -60,8 +61,9 @@ namespace puck {
 X3DSphereEditor::X3DSphereEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius"),
-	                          xDimension (this, getSphereXDimensionAdjustment (), getSphereXDimensionSpinButton (), "xDimension"),
-	                          yDimension (this, getSphereYDimensionAdjustment (), getSphereYDimensionSpinButton (), "yDimension"),
+	                          xDimension (this, getQuadSphereXDimensionAdjustment (), getQuadSphereXDimensionSpinButton (), "xDimension"),
+	                          yDimension (this, getQuadSphereYDimensionAdjustment (), getQuadSphereYDimensionSpinButton (), "yDimension"),
+	                               order (this, getIcoSphereOrderAdjustment (), getIcoSphereOrderSpinButton (), "order"),
 	                               nodes (),
 	                            changing (false)
 {
@@ -124,6 +126,40 @@ X3DSphereEditor::on_sphere_use_global_options_toggled ()
 }
 
 void
+X3DSphereEditor::on_sphere_type_changed ()
+{
+	if (changing)
+		return;
+
+	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Change Sphere Type To »%s«", getSphereTypeButton () .get_active_text () .c_str ())));
+	auto       optionNode = X3D::SFNode ();
+
+	switch (getSphereTypeButton () .get_active_row_number ())
+	{
+		case 1:
+		{
+			optionNode = X3D::MakePtr <X3D::IcoSphereOptions> (getCurrentContext ());
+			break;
+		}
+		default:
+		{
+			optionNode = X3D::MakePtr <X3D::QuadSphereOptions> (getCurrentContext ());
+			break;
+		}
+	}
+
+	for (const auto & node : nodes)
+	{
+		auto &     options = node -> getField <X3D::SFNode> ("options");
+		const auto copy    = X3D::SFNode (optionNode -> copy (getCurrentContext (), X3D::FLAT_COPY));
+
+		X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, copy, undoStep);
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
 X3DSphereEditor::set_options ()
 {
 	// Set composed widgets.
@@ -146,6 +182,7 @@ X3DSphereEditor::set_options ()
 
 	xDimension .setNodes (optionsNodes);
 	yDimension .setNodes (optionsNodes);
+	order      .setNodes (optionsNodes);
 
 	// Set global widget.
 
@@ -154,8 +191,45 @@ X3DSphereEditor::set_options ()
 	getSphereUseGlobalOptionsCheckButton () .set_active (active);
 	getSphereUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
 
-	getSphereXDimensionBox () .set_sensitive (not active and not inconsistent);
-	getSphereYDimensionBox () .set_sensitive (not active and not inconsistent);
+	getSphereTypeButton ()  .set_sensitive (not active and not inconsistent);
+	getQuadSphereOptions () .set_sensitive (not active and not inconsistent);
+	getIcoSphereOptions ()  .set_sensitive (not active and not inconsistent);
+
+	getQuadSphereOptions () .set_visible (false);
+	getIcoSphereOptions ()  .set_visible (false);
+
+	if (active)
+	{
+		getSphereTypeButton ()  .set_active (0);
+		getQuadSphereOptions () .set_visible (true);
+	}
+	else if (inconsistent)
+	{
+		getSphereTypeButton () .set_active (-1);
+	}
+	else
+	{
+		switch (optionsNodes .back () -> getType () .back ())
+		{
+			case X3D::X3DConstants::QuadSphereOptions:
+			{
+				getSphereTypeButton ()  .set_active (0);
+				getQuadSphereOptions () .set_visible (true);
+				break;
+			}
+			case X3D::X3DConstants::IcoSphereOptions:
+			{
+				getSphereTypeButton () .set_active (1);
+				getIcoSphereOptions () .set_visible (true);
+				break;
+			}
+			default:
+			{
+				getSphereTypeButton () .set_active (-1);
+				break;
+			}
+		}
+	}
 
 	changing = false;
 }

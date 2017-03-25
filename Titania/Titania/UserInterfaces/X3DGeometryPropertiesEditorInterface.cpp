@@ -101,6 +101,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_GeoElevationGridZDimensionAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZDimensionAdjustment"));
 	m_GeoElevationGridZSpacingAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZSpacingAdjustment"));
 	m_GeoElevationGridZoneAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZoneAdjustment"));
+	m_IcoSphereOrderAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IcoSphereOrderAdjustment"));
 	m_NormalColorAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalColorAdjustment"));
 	m_NormalLengthAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalLengthAdjustment"));
 	m_NurbsCurveOrderAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsCurveOrderAdjustment"));
@@ -118,11 +119,11 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_NurbsTrimmedSurfaceVOrderAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsTrimmedSurfaceVOrderAdjustment"));
 	m_NurbsTrimmedSurfaceVTessellationAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsTrimmedSurfaceVTessellationAdjustment"));
 	m_PrimitiveEdgeColorAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PrimitiveEdgeColorAdjustment"));
+	m_QuadSphereXDimensionAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("QuadSphereXDimensionAdjustment"));
+	m_QuadSphereYDimensionAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("QuadSphereYDimensionAdjustment"));
 	m_Rectangle2DSizeXAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeXAdjustment"));
 	m_Rectangle2DSizeYAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeYAdjustment"));
 	m_SphereRadiusAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereRadiusAdjustment"));
-	m_SphereXDimensionAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereXDimensionAdjustment"));
-	m_SphereYDimensionAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereYDimensionAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -206,11 +207,17 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ExtrusionEndCapCheckButton", m_ExtrusionEndCapCheckButton);
 	m_builder -> get_widget ("SphereExpander", m_SphereExpander);
 	m_builder -> get_widget ("SphereRadiusSpinButton", m_SphereRadiusSpinButton);
-	m_builder -> get_widget ("SphereXDimensionBox", m_SphereXDimensionBox);
-	m_builder -> get_widget ("SphereXDimensionSpinButton", m_SphereXDimensionSpinButton);
-	m_builder -> get_widget ("SphereYDimensionBox", m_SphereYDimensionBox);
-	m_builder -> get_widget ("SphereYDimensionSpinButton", m_SphereYDimensionSpinButton);
 	m_builder -> get_widget ("SphereUseGlobalOptionsCheckButton", m_SphereUseGlobalOptionsCheckButton);
+	m_builder -> get_widget ("SphereTypeButton", m_SphereTypeButton);
+	m_builder -> get_widget ("SphereStack", m_SphereStack);
+	m_builder -> get_widget ("QuadSphereOptions", m_QuadSphereOptions);
+	m_builder -> get_widget ("QuadSphereXDimensionBox", m_QuadSphereXDimensionBox);
+	m_builder -> get_widget ("QuadSphereXDimensionSpinButton", m_QuadSphereXDimensionSpinButton);
+	m_builder -> get_widget ("QuadSphereYDimensionBox", m_QuadSphereYDimensionBox);
+	m_builder -> get_widget ("QuadSphereYDimensionSpinButton", m_QuadSphereYDimensionSpinButton);
+	m_builder -> get_widget ("IcoSphereOptions", m_IcoSphereOptions);
+	m_builder -> get_widget ("IcoSphereOrderBox", m_IcoSphereOrderBox);
+	m_builder -> get_widget ("IcoSphereOrderSpinButton", m_IcoSphereOrderSpinButton);
 	m_builder -> get_widget ("GeoElevationGridBox", m_GeoElevationGridBox);
 	m_builder -> get_widget ("GeoElevationGridExpander", m_GeoElevationGridExpander);
 	m_builder -> get_widget ("GeoElevationGridXDimensionSpinButton", m_GeoElevationGridXDimensionSpinButton);
@@ -321,6 +328,9 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_ConeUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_cone_use_global_options_toggled));
 	m_CylinderUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_cylinder_use_global_options_toggled));
 	m_SphereUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_sphere_use_global_options_toggled));
+
+	// Connect object Gtk::ComboBoxText with id 'SphereTypeButton'.
+	m_SphereTypeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_sphere_type_changed));
 
 	// Connect object Gtk::Button with id 'AddNormalsButton'.
 	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));

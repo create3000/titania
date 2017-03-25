@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,65 +48,105 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DSPHERE_EDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY3D_X3DSPHERE_EDITOR_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_ICO_SPHERE_OPTIONS_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_ICO_SPHERE_OPTIONS_H__
 
-#include "../../../ComposedWidgets.h"
-#include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "../Geometry3D/X3DSphereOptionsNode.h"
+
+#include <map>
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-class X3DSphereEditor :
-	virtual public X3DGeometryPropertiesEditorInterface
+class IcoSphereOptions :
+	public X3DSphereOptionsNode
 {
 public:
 
-	///  @name Destruction
-
-	virtual
-	~X3DSphereEditor () override;
-
-
-protected:
-
 	///  @name Construction
 
-	X3DSphereEditor ();
+	IcoSphereOptions (X3DExecutionContext* const executionContext);
+
+	///  @name Common members
 
 	virtual
-	void
-	set_geometry ();
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFInt32 &
+	order ()
+	{ return *fields .order; }
+
+	const SFInt32 &
+	order () const
+	{ return *fields .order; }
+
+	///  @name Member access
+
+	virtual
+	GLenum
+	getVertexMode () const final override
+	{ return GL_TRIANGLES; }
+
+	///  @name Operations
+
+	virtual
+	SFNode
+	toPrimitive (X3DExecutionContext* const executionContext) const
+	throw (Error <NOT_SUPPORTED>,
+	       Error <DISPOSED>) final override;
 
 
 private:
 
-	///  @name Event handlers
+	///  @name Construction
+
+	virtual
+	IcoSphereOptions*
+	create (X3DExecutionContext* const executionContext) const final override;
+
+	///  @name Operations
 
 	virtual
 	void
-	on_sphere_use_global_options_toggled () final override;
+	build () final override;
 
-	virtual
-	void
-	on_sphere_type_changed () final override;
+	///  @name Static members
 
-	void
-	set_options ();
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
-	X3DFieldAdjustment <X3D::SFFloat>  radius;
-	X3DFieldAdjustment <X3D::SFInt32>  xDimension;
-	X3DFieldAdjustment <X3D::SFInt32>  yDimension;
-	X3DFieldAdjustment <X3D::SFInt32>  order;
+	struct Fields
+	{
+		Fields ();
 
-	X3D::MFNode nodes;
-	bool        changing;
+		SFInt32* const order;
+	};
+
+	Fields fields;
 
 };
 
-} // puck
+} // X3D
 } // titania
 
 #endif

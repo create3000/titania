@@ -172,6 +172,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/Geometry3D/BoxOptions.lo \
 	Titania/X3D/Browser/Geometry3D/ConeOptions.lo \
 	Titania/X3D/Browser/Geometry3D/CylinderOptions.lo \
+	Titania/X3D/Browser/Geometry3D/IcoSphereOptions.lo \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.lo \
 	Titania/X3D/Browser/Geometry3D/X3DGeometry3DContext.lo \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionsNode.lo \
@@ -1099,6 +1100,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/Geometry3D/BoxOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/ConeOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/CylinderOptions.cpp \
+	Titania/X3D/Browser/Geometry3D/IcoSphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/QuadSphereOptions.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DGeometry3DContext.cpp \
 	Titania/X3D/Browser/Geometry3D/X3DSphereOptionsNode.cpp \
@@ -1977,6 +1979,9 @@ Titania/X3D/Browser/Geometry3D/ConeOptions.lo:  \
 	Titania/X3D/Browser/Geometry3D/$(am__dirstamp) \
 	Titania/X3D/Browser/Geometry3D/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Geometry3D/CylinderOptions.lo:  \
+	Titania/X3D/Browser/Geometry3D/$(am__dirstamp) \
+	Titania/X3D/Browser/Geometry3D/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Browser/Geometry3D/IcoSphereOptions.lo:  \
 	Titania/X3D/Browser/Geometry3D/$(am__dirstamp) \
 	Titania/X3D/Browser/Geometry3D/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Geometry3D/QuadSphereOptions.lo:  \
@@ -4735,6 +4740,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Geometry3D/$(DEPDIR)/BoxOptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Geometry3D/$(DEPDIR)/ConeOptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Geometry3D/$(DEPDIR)/CylinderOptions.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Geometry3D/$(DEPDIR)/IcoSphereOptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Geometry3D/$(DEPDIR)/QuadSphereOptions.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Geometry3D/$(DEPDIR)/X3DGeometry3DContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Geometry3D/$(DEPDIR)/X3DSphereOptionsNode.Plo@am__quote@

@@ -483,6 +483,7 @@ enum NodeType : uint16_t
 	BoxOptions,
 	ConeOptions,
 	CylinderOptions,
+	IcoSphereOptions,
 	QuadSphereOptions,
 	X3DSphereOptionsNode,
 

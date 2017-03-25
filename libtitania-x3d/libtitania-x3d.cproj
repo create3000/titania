@@ -944,6 +944,7 @@
     <None Include="Titania\X3D\Browser\Rendering\BackgroundTexture.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.h" />
     <None Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionsNode.h" />
+    <None Include="Titania\X3D\Browser\Geometry3D\IcoSphereOptions.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1625,6 +1626,7 @@
     <Compile Include="Titania\X3D\Tools\EnvironmentalSensor\TransformSensorTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\QuadSphereOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionsNode.cpp" />
+    <Compile Include="Titania\X3D\Browser\Geometry3D\IcoSphereOptions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

@@ -237,6 +237,11 @@
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
   </object>
+  <object class="GtkAdjustment" id="IcoSphereOrderAdjustment">
+    <property name="upper">8</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkAdjustment" id="NormalColorAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
@@ -327,6 +332,18 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="QuadSphereXDimensionAdjustment">
+    <property name="lower">3</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="QuadSphereYDimensionAdjustment">
+    <property name="lower">3</property>
+    <property name="upper">10000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkAdjustment" id="Rectangle2DSizeXAdjustment">
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
@@ -342,18 +359,6 @@
     <property name="upper">1000000000</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
-  </object>
-  <object class="GtkAdjustment" id="SphereXDimensionAdjustment">
-    <property name="lower">3</property>
-    <property name="upper">10000</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
-  <object class="GtkAdjustment" id="SphereYDimensionAdjustment">
-    <property name="lower">3</property>
-    <property name="upper">10000</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
@@ -2542,170 +2547,287 @@
                                     <property name="can_focus">True</property>
                                     <property name="expanded">True</property>
                                     <child>
-                                      <object class="GtkGrid" id="grid14">
+                                      <object class="GtkBox">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="row_spacing">8</property>
-                                        <property name="column_spacing">16</property>
+                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">8</property>
                                         <child>
-                                          <object class="GtkLabel" id="label55">
+                                          <object class="GtkGrid" id="grid14">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Radius:</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="SphereRadiusSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">0,000</property>
-                                            <property name="adjustment">SphereRadiusAdjustment</property>
-                                            <property name="climb_rate">0.01</property>
-                                            <property name="digits">3</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="label61">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">X Dimension:</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">3</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="label62">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">Y Dimension:</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">4</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkBox" id="box16">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="orientation">vertical</property>
+                                            <property name="row_spacing">8</property>
+                                            <property name="column_spacing">16</property>
                                             <child>
-                                              <object class="GtkLabel" id="label57">
+                                              <object class="GtkLabel" id="label55">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
-                                                <property name="margin_left">8</property>
-                                                <property name="ypad">2</property>
-                                                <property name="label" translatable="yes">Non-Standard Options</property>
+                                                <property name="label" translatable="yes">Radius:</property>
                                                 <property name="xalign">0</property>
-                                                <attributes>
-                                                  <attribute name="weight" value="bold"/>
-                                                </attributes>
                                               </object>
                                               <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">0</property>
+                                                <property name="left_attach">0</property>
+                                                <property name="top_attach">0</property>
                                               </packing>
                                             </child>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">1</property>
-                                            <property name="width">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkBox" id="SphereXDimensionBox">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="halign">start</property>
-                                            <property name="orientation">vertical</property>
                                             <child>
-                                              <object class="GtkSpinButton" id="SphereXDimensionSpinButton">
+                                              <object class="GtkSpinButton" id="SphereRadiusSpinButton">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
+                                                <property name="halign">start</property>
                                                 <property name="text" translatable="yes">0,000</property>
-                                                <property name="adjustment">SphereXDimensionAdjustment</property>
-                                                <property name="climb_rate">1.5</property>
+                                                <property name="adjustment">SphereRadiusAdjustment</property>
+                                                <property name="climb_rate">0.01</property>
+                                                <property name="digits">3</property>
                                               </object>
                                               <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">0</property>
+                                                <property name="left_attach">1</property>
+                                                <property name="top_attach">0</property>
                                               </packing>
                                             </child>
                                           </object>
                                           <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">3</property>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkBox" id="SphereYDimensionBox">
+                                          <object class="GtkLabel" id="label57">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <property name="halign">start</property>
-                                            <property name="orientation">vertical</property>
+                                            <property name="margin_left">8</property>
+                                            <property name="ypad">2</property>
+                                            <property name="label" translatable="yes">Non-Standard Options</property>
+                                            <property name="xalign">0</property>
+                                            <attributes>
+                                              <attribute name="weight" value="bold"/>
+                                            </attributes>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkGrid">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="row_spacing">8</property>
+                                            <property name="column_spacing">16</property>
                                             <child>
-                                              <object class="GtkSpinButton" id="SphereYDimensionSpinButton">
+                                              <object class="GtkLabel" id="label125">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="xalign">0</property>
+                                              </object>
+                                              <packing>
+                                                <property name="left_attach">0</property>
+                                                <property name="top_attach">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkCheckButton" id="SphereUseGlobalOptionsCheckButton">
+                                                <property name="label" translatable="yes">Use Global Options</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
-                                                <property name="text" translatable="yes">0</property>
-                                                <property name="adjustment">SphereYDimensionAdjustment</property>
-                                                <property name="climb_rate">1.5</property>
+                                                <property name="receives_default">False</property>
+                                                <property name="tooltip_text" translatable="yes">Use values defined by browser setting of primitive quality.</property>
+                                                <property name="halign">start</property>
+                                                <property name="xalign">0</property>
+                                                <property name="draw_indicator">True</property>
+                                                <signal name="toggled" handler="on_sphere_use_global_options_toggled" swapped="no"/>
                                               </object>
                                               <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">True</property>
-                                                <property name="position">0</property>
+                                                <property name="left_attach">1</property>
+                                                <property name="top_attach">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkLabel" id="label131">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="label" translatable="yes">Type:</property>
+                                                <property name="xalign">0</property>
+                                              </object>
+                                              <packing>
+                                                <property name="left_attach">0</property>
+                                                <property name="top_attach">1</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkComboBoxText" id="SphereTypeButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="active">0</property>
+                                                <items>
+                                                  <item translatable="yes">Quad Sphere</item>
+                                                  <item translatable="yes">Icosahedron</item>
+                                                </items>
+                                                <signal name="changed" handler="on_sphere_type_changed" swapped="no"/>
+                                              </object>
+                                              <packing>
+                                                <property name="left_attach">1</property>
+                                                <property name="top_attach">1</property>
                                               </packing>
                                             </child>
                                           </object>
                                           <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">4</property>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">2</property>
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkLabel" id="label125">
+                                          <object class="GtkStack" id="SphereStack">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
-                                            <property name="xalign">0</property>
+                                            <child>
+                                              <object class="GtkGrid" id="QuadSphereOptions">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="row_spacing">8</property>
+                                                <property name="column_spacing">16</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="label61">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">X Dimension:</property>
+                                                    <property name="xalign">0</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkLabel" id="label62">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">Y Dimension:</property>
+                                                    <property name="xalign">0</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">1</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox" id="QuadSphereXDimensionBox">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="QuadSphereXDimensionSpinButton">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="text" translatable="yes">0,000</property>
+                                                        <property name="adjustment">QuadSphereXDimensionAdjustment</property>
+                                                        <property name="climb_rate">1.5</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox" id="QuadSphereYDimensionBox">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="QuadSphereYDimensionSpinButton">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="text" translatable="yes">0</property>
+                                                        <property name="adjustment">QuadSphereYDimensionAdjustment</property>
+                                                        <property name="climb_rate">1.5</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">1</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="name">page0</property>
+                                                <property name="title" translatable="yes">page0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkGrid" id="IcoSphereOptions">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="row_spacing">8</property>
+                                                <property name="column_spacing">16</property>
+                                                <child>
+                                                  <object class="GtkLabel" id="label132">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="label" translatable="yes">Order:</property>
+                                                    <property name="xalign">0</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">0</property>
+                                                    <property name="top_attach">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkBox" id="IcoSphereOrderBox">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="halign">start</property>
+                                                    <property name="orientation">vertical</property>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="IcoSphereOrderSpinButton">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="text" translatable="yes">3</property>
+                                                        <property name="adjustment">IcoSphereOrderAdjustment</property>
+                                                        <property name="climb_rate">1.5</property>
+                                                        <property name="value">3</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="expand">False</property>
+                                                        <property name="fill">True</property>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="top_attach">0</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="name">page1</property>
+                                                <property name="title" translatable="yes">page1</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
                                           </object>
                                           <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkCheckButton" id="SphereUseGlobalOptionsCheckButton">
-                                            <property name="label" translatable="yes">Use Global Options</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="tooltip_text" translatable="yes">Use values defined by browser setting of primitive quality.</property>
-                                            <property name="halign">start</property>
-                                            <property name="xalign">0</property>
-                                            <property name="draw_indicator">True</property>
-                                            <signal name="toggled" handler="on_sphere_use_global_options_toggled" swapped="no"/>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">2</property>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">3</property>
                                           </packing>
                                         </child>
                                       </object>
