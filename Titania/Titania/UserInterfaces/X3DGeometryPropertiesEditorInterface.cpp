@@ -136,7 +136,9 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Arc2DRadiusSpinButton", m_Arc2DRadiusSpinButton);
 	m_builder -> get_widget ("Arc2DStartAngleSpinButton", m_Arc2DStartAngleSpinButton);
 	m_builder -> get_widget ("Arc2DEndAngleSpinButton", m_Arc2DEndAngleSpinButton);
+	m_builder -> get_widget ("Arc2DDimensionBox", m_Arc2DDimensionBox);
 	m_builder -> get_widget ("Arc2DDimensionSpinButton", m_Arc2DDimensionSpinButton);
+	m_builder -> get_widget ("Arc2DUseGlobalOptionsCheckButton", m_Arc2DUseGlobalOptionsCheckButton);
 	m_builder -> get_widget ("ArcClose2DExpander", m_ArcClose2DExpander);
 	m_builder -> get_widget ("ArcClose2DRadiusSpinButton", m_ArcClose2DRadiusSpinButton);
 	m_builder -> get_widget ("ArcClose2DClosureTypeComboBoxText", m_ArcClose2DClosureTypeComboBoxText);
@@ -303,7 +305,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'GeometryUnlinkButton'.
 	m_GeometryUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_unlink_clicked));
 
-	// Connect object Gtk::CheckButton with id 'ArcClose2DUseGlobalOptionsCheckButton'.
+	// Connect object Gtk::CheckButton with id 'Arc2DUseGlobalOptionsCheckButton'.
+	m_Arc2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_arc2d_use_global_options_toggled));
 	m_ArcClose2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_arcclose2d_use_global_options_toggled));
 	m_Disk2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_disk2d_use_global_options_toggled));
 

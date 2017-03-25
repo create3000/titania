@@ -106,6 +106,18 @@ public:
 	radius () const final override
 	{ return getNode <Arc2D> () -> radius (); }
 
+	///  @name Hidden fields
+
+	virtual
+	SFNode &
+	options () final override
+	{ return getNode <Arc2D> () -> options (); }
+
+	virtual
+	const SFNode &
+	options () const final override
+	{ return getNode <Arc2D> () -> options (); }
+
 	///  @name Operations
 
 	virtual

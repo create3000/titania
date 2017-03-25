@@ -394,9 +394,17 @@ public:
 	getArc2DEndAngleSpinButton () const
 	{ return *m_Arc2DEndAngleSpinButton; }
 
+	Gtk::Box &
+	getArc2DDimensionBox () const
+	{ return *m_Arc2DDimensionBox; }
+
 	Gtk::SpinButton &
 	getArc2DDimensionSpinButton () const
 	{ return *m_Arc2DDimensionSpinButton; }
+
+	Gtk::CheckButton &
+	getArc2DUseGlobalOptionsCheckButton () const
+	{ return *m_Arc2DUseGlobalOptionsCheckButton; }
 
 	Gtk::Expander &
 	getArcClose2DExpander () const
@@ -1034,6 +1042,10 @@ public:
 
 	virtual
 	void
+	on_arc2d_use_global_options_toggled () = 0;
+
+	virtual
+	void
 	on_arcclose2d_use_global_options_toggled () = 0;
 
 	virtual
@@ -1183,7 +1195,9 @@ private:
 	Gtk::SpinButton*               m_Arc2DRadiusSpinButton;
 	Gtk::SpinButton*               m_Arc2DStartAngleSpinButton;
 	Gtk::SpinButton*               m_Arc2DEndAngleSpinButton;
+	Gtk::Box*                      m_Arc2DDimensionBox;
 	Gtk::SpinButton*               m_Arc2DDimensionSpinButton;
+	Gtk::CheckButton*              m_Arc2DUseGlobalOptionsCheckButton;
 	Gtk::Expander*                 m_ArcClose2DExpander;
 	Gtk::SpinButton*               m_ArcClose2DRadiusSpinButton;
 	Gtk::ComboBoxText*             m_ArcClose2DClosureTypeComboBoxText;

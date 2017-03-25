@@ -577,7 +577,7 @@
                                                 <property name="can_focus">False</property>
                                                 <property name="margin_left">8</property>
                                                 <property name="ypad">2</property>
-                                                <property name="label" translatable="yes">Global Options</property>
+                                                <property name="label" translatable="yes">Non-Standard Options</property>
                                                 <property name="xalign">0</property>
                                                 <attributes>
                                                   <attribute name="weight" value="bold"/>
@@ -605,7 +605,7 @@
                                           </object>
                                           <packing>
                                             <property name="left_attach">0</property>
-                                            <property name="top_attach">4</property>
+                                            <property name="top_attach">5</property>
                                           </packing>
                                         </child>
                                         <child>
@@ -691,15 +691,55 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkSpinButton" id="Arc2DDimensionSpinButton">
+                                          <object class="GtkBox" id="Arc2DDimensionBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="halign">start</property>
+                                            <property name="orientation">vertical</property>
+                                            <child>
+                                              <object class="GtkSpinButton" id="Arc2DDimensionSpinButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="tooltip_text" translatable="yes">Dimension of a full circle.</property>
+                                                <property name="text" translatable="yes">4</property>
+                                                <property name="adjustment">Arc2DDimensionAdjustment</property>
+                                                <property name="climb_rate">1.5</property>
+                                                <property name="value">3</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">5</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label129">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="xalign">0</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">4</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkCheckButton" id="Arc2DUseGlobalOptionsCheckButton">
+                                            <property name="label" translatable="yes">Use Global Options</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="tooltip_text" translatable="yes">Dimension of a full circle.</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="tooltip_text" translatable="yes">Use values defined by browser setting of primitive quality.</property>
                                             <property name="halign">start</property>
-                                            <property name="text" translatable="yes">4</property>
-                                            <property name="adjustment">Arc2DDimensionAdjustment</property>
-                                            <property name="climb_rate">1.5</property>
-                                            <property name="value">3</property>
+                                            <property name="xalign">0</property>
+                                            <property name="draw_indicator">True</property>
+                                            <signal name="toggled" handler="on_arc2d_use_global_options_toggled" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>

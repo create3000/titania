@@ -105,7 +105,7 @@ X3DCylinderEditor::on_cylinder_use_global_options_toggled ()
 	if (changing)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Cylinder Global Options To »%s«", getCylinderUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Cylinder Use Global Options To »%s«", getCylinderUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
 
 	if (getCylinderUseGlobalOptionsCheckButton () .get_active ())
 	{

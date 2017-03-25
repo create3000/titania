@@ -52,10 +52,11 @@
 
 #include "../../Browser/Geometry2D/Arc2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../Core/MetadataSet.h"
+#include "../Rendering/Coordinate.h"
+#include "../Rendering/IndexedLineSet.h"
 
 namespace titania {
 namespace X3D {
@@ -67,13 +68,15 @@ const std::string   Arc2D::containerField = "geometry";
 Arc2D::Fields::Fields () :
 	startAngle (new SFFloat ()),
 	  endAngle (new SFFloat (1.570796)),
-	    radius (new SFFloat (1))
+	    radius (new SFFloat (1)),
+	   options (new SFNode ())
 { }
 
 Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DLineGeometryNode (),
-	             fields ()
+	             fields (),
+	        optionsNode ()
 {
 	addType (X3DConstants::Arc2D);
 
@@ -81,10 +84,15 @@ Arc2D::Arc2D (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "startAngle", startAngle ());
 	addField (inputOutput,    "endAngle",   endAngle ());
 	addField (initializeOnly, "radius",     radius ());
+	addField (initializeOnly, "options",    options ());
+
+	addChildObjects (optionsNode);
 
 	startAngle () .setUnit (UnitCategory::ANGLE);
 	endAngle ()   .setUnit (UnitCategory::ANGLE);
 	radius ()     .setUnit (UnitCategory::LENGTH);
+
+	options () .isHidden (true);
 
 	setGeometryType (GeometryType::GEOMETRY_LINES);
 }
@@ -100,7 +108,24 @@ Arc2D::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	getBrowser () -> getArc2DOptions () .addInterest (&Arc2D::addEvent, this);
+	options () .addInterest (&Arc2D::set_options, this);
+
+	try
+	{
+		const auto metaOptions = getMetadataSet ("/Arc2D/options");
+	
+		optionsNode .set (MakePtr <Arc2DOptions> (getExecutionContext ()));
+
+		optionsNode -> addInterest (&Arc2D::addEvent, this);
+		optionsNode -> fromMetaData (metaOptions);
+		optionsNode -> setup ();
+
+		options () .set (optionsNode);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		set_options ();
+	}
 }
 
 void
@@ -114,7 +139,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DLineGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getArc2DOptions () .addInterest (&Arc2D::addEvent, this);
+		set_options ();
 }
 
 const X3DPtr <ComposedShader> &
@@ -145,13 +170,30 @@ Arc2D::getSweepAngle ()
 }
 
 void
+Arc2D::set_options ()
+{
+	removeMetaData ("/Arc2D/options");
+
+	if (optionsNode)
+		optionsNode -> removeInterest (&Arc2D::addEvent, this);
+
+	optionsNode .set (options ());
+
+	if (not optionsNode)
+		optionsNode .set (getBrowser () -> getArc2DOptions ());
+
+	optionsNode -> addInterest (&Arc2D::addEvent, this);
+}
+
+void
 Arc2D::build ()
 {
-	const auto & options = getBrowser () -> getArc2DOptions ();
+	if (options ())
+		optionsNode -> toMetaData (createMetadataSet ("/Arc2D/options"));
 
 	const double sweepAngle = getSweepAngle ();
 	const auto   circle     = sweepAngle == pi2 <double>;
-	int32_t      steps      = sweepAngle * options -> dimension () / (2 * pi <double>);
+	int32_t      steps      = sweepAngle * optionsNode -> dimension () / (2 * pi <double>);
 	GLenum       vertexMode = GL_LINE_LOOP;
 
 	steps = std::max (3, steps);
@@ -190,8 +232,7 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
 
-	geometry -> metadata () = metadata ();
-	geometry -> coord ()    = coord;
+	geometry -> coord () = coord;
 
 	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
 
@@ -205,6 +246,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	return geometry;
 }
+
+Arc2D::~Arc2D ()
+{ }
 
 } // X3D
 } // titania

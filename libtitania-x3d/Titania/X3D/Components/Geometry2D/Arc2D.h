@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class Arc2DOptions;
+
 class Arc2D :
 	virtual public X3DLineGeometryNode
 {
@@ -127,6 +129,18 @@ public:
 	radius () const
 	{ return *fields .radius; }
 
+	///  @name Hidden fields
+
+	virtual
+	SFNode &
+	options ()
+	{ return *fields .options; }
+
+	virtual
+	const SFNode &
+	options () const
+	{ return *fields .options; }
+
 	///  @name Operations
 
 	virtual
@@ -142,6 +156,11 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) override;
 
+	///  @name Construction
+
+	virtual
+	~Arc2D () override;
+
 
 protected:
 
@@ -154,11 +173,16 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_options ();
+
+	///  @name Operations
+
 	virtual
 	const X3DPtr <ComposedShader> &
 	getShaderNode (X3DBrowser* const browser) final override;
-
-	///  @name Operations
 
 	double
 	getSweepAngle ();
@@ -174,7 +198,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -183,9 +207,14 @@ private:
 		SFFloat* const startAngle;
 		SFFloat* const endAngle;
 		SFFloat* const radius;
+		SFNode* const options;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <Arc2DOptions> optionsNode;
 
 };
 

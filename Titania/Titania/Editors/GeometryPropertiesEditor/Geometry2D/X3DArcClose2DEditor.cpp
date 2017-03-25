@@ -67,6 +67,8 @@ X3DArcClose2DEditor::X3DArcClose2DEditor () :
 	                               nodes (),
 	                            changing (false)
 {
+	addChildObjects (nodes);
+
 	getArcClose2DStartAngleAdjustment () -> set_upper (2 * math::pi <double>);
 	getArcClose2DEndAngleAdjustment ()   -> set_upper (2 * math::pi <double>);
 }
@@ -105,7 +107,7 @@ X3DArcClose2DEditor::on_arcclose2d_use_global_options_toggled ()
 	if (changing)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle ArcClose2D Global Options To »%s«", getArcClose2DUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle ArcClose2D Use Global Options To »%s«", getArcClose2DUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
 
 	if (getArcClose2DUseGlobalOptionsCheckButton () .get_active ())
 	{

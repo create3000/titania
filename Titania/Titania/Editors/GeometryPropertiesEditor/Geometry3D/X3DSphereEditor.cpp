@@ -98,7 +98,7 @@ X3DSphereEditor::on_sphere_use_global_options_toggled ()
 	if (changing)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Sphere Global Options To »%s«", getSphereUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Sphere Use Global Options To »%s«", getSphereUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
 
 	if (getSphereUseGlobalOptionsCheckButton () .get_active ())
 	{
