@@ -171,18 +171,22 @@ X3DSphereEditor::set_options ()
 {
 	// Set composed widgets.
 
-	X3D::MFNode optionsNodes;
+	X3D::MFNode              optionsNodes;
+	std::set <X3D::NodeType> types;
 
 	for (const auto & node : nodes)
 	{
 		const auto & optionsNode = node -> getField <X3D::SFNode> ("options");
 
 		if (optionsNode)
+		{
 			optionsNodes .emplace_back (optionsNode);
+			types .emplace (optionsNode -> getType () .back ());
+		}
 	}
 
 	const auto active       = optionsNodes .empty ();
-	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
+	const auto inconsistent = not (optionsNodes .size () == nodes .size () and types .size () == 1);
 
 	if (optionsNodes .empty ())
 		optionsNodes .emplace_back (getCurrentBrowser () -> getSphereOptions ());
