@@ -63,7 +63,9 @@ X3DArcClose2DEditor::X3DArcClose2DEditor () :
 	                          startAngle (this, getArcClose2DStartAngleAdjustment (), getArcClose2DStartAngleSpinButton (), "startAngle"),
 	                            endAngle (this, getArcClose2DEndAngleAdjustment (), getArcClose2DEndAngleSpinButton (), "endAngle"),
 	                              radius (this, getArcClose2DRadiusAdjustment (), getArcClose2DRadiusSpinButton (), "radius"),
-	                           dimension (this, getArcClose2DDimensionAdjustment (), getArcClose2DDimensionSpinButton (), "dimension")
+	                           dimension (this, getArcClose2DDimensionAdjustment (), getArcClose2DDimensionSpinButton (), "dimension"),
+	                               nodes (),
+	                            changing (false)
 {
 	getArcClose2DStartAngleAdjustment () -> set_upper (2 * math::pi <double>);
 	getArcClose2DEndAngleAdjustment ()   -> set_upper (2 * math::pi <double>);
@@ -72,8 +74,14 @@ X3DArcClose2DEditor::X3DArcClose2DEditor () :
 void
 X3DArcClose2DEditor::set_geometry ()
 {
-	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::ArcClose2D });
-	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getArcClose2DOptions () });
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .removeInterest (&X3DArcClose2DEditor::set_options, this);
+
+	// Fields
+
+	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::ArcClose2D });
 
 	getArcClose2DExpander () .set_visible (not nodes .empty ());
 
@@ -81,7 +89,80 @@ X3DArcClose2DEditor::set_geometry ()
 	startAngle  .setNodes (nodes);
 	endAngle    .setNodes (nodes);
 	radius      .setNodes (nodes);
-	dimension   .setNodes (global);
+	dimension   .setNodes (nodes);
+
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .addInterest (&X3DArcClose2DEditor::set_options, this);
+
+	set_options ();
+}
+
+void
+X3DArcClose2DEditor::on_arcclose2d_use_global_options_toggled ()
+{
+	if (changing)
+		return;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle ArcClose2D Global Options To »%s«", getArcClose2DUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+
+	if (getArcClose2DUseGlobalOptionsCheckButton () .get_active ())
+	{
+		for (const auto & node : nodes)
+		{
+			auto & options = node -> getField <X3D::SFNode> ("options");
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, nullptr, undoStep);
+		}
+	}
+	else
+	{
+		for (const auto & node : nodes)
+		{
+			auto &     options    = node -> getField <X3D::SFNode> ("options");
+			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getArcClose2DOptions () -> copy (getCurrentContext (), X3D::FLAT_COPY));
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, optionNode, undoStep);
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+X3DArcClose2DEditor::set_options ()
+{
+	// Set composed widgets.
+
+	X3D::MFNode optionsNodes;
+
+	for (const auto & node : nodes)
+	{
+		const auto & optionsNode = node -> getField <X3D::SFNode> ("options");
+
+		if (optionsNode)
+			optionsNodes .emplace_back (optionsNode);
+	}
+
+	const auto active       = optionsNodes .empty ();
+	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
+
+	if (optionsNodes .empty ())
+		optionsNodes .emplace_back (getCurrentBrowser () -> getArcClose2DOptions ());
+
+	dimension .setNodes (optionsNodes);
+
+	// Set global widget.
+
+	changing = true;
+
+	getArcClose2DUseGlobalOptionsCheckButton () .set_active (active);
+	getArcClose2DUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
+
+	getArcClose2DDimensionBox () .set_sensitive (not active and not inconsistent);
+
+	changing = false;
 }
 
 X3DArcClose2DEditor::~X3DArcClose2DEditor ()

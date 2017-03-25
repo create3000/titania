@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class ArcClose2DOptions;
+
 class ArcClose2D :
 	virtual public X3DGeometryNode
 {
@@ -147,6 +149,18 @@ public:
 	solid () const
 	{ return *fields .solid; }
 
+	///  @name Hidden fields
+
+	virtual
+	SFNode &
+	options ()
+	{ return *fields .options; }
+
+	virtual
+	const SFNode &
+	options () const
+	{ return *fields .options; }
+
 	///  @name Operations
 
 	virtual
@@ -162,6 +176,11 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) override;
 
+	///  @name Construction
+
+	virtual
+	~ArcClose2D () override;
+
 
 protected:
 
@@ -173,6 +192,11 @@ protected:
 
 
 private:
+
+	///  @name Event handlers
+
+	void
+	set_options ();
 
 	///  @name Tests
 
@@ -190,7 +214,7 @@ private:
 	static const std::string   typeName;
 	static const std::string   containerField;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -201,9 +225,14 @@ private:
 		SFFloat* const endAngle;
 		SFFloat* const radius;
 		SFBool* const solid;
+		SFNode* const options;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <ArcClose2DOptions> optionsNode;
 
 };
 

@@ -52,11 +52,12 @@
 
 #include "../../Browser/Geometry2D/ArcClose2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Geometry3D/IndexedFaceSet.h"
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Texturing/TextureCoordinate.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../Core/MetadataSet.h"
+#include "../Geometry3D/IndexedFaceSet.h"
+#include "../Rendering/Coordinate.h"
+#include "../Texturing/TextureCoordinate.h"
 
 #include <complex>
 
@@ -72,13 +73,15 @@ ArcClose2D::Fields::Fields () :
 	 startAngle (new SFFloat ()),
 	   endAngle (new SFFloat (1.570796)),
 	     radius (new SFFloat (1)),
-	      solid (new SFBool (true))
+	      solid (new SFBool (true)),
+	    options (new SFNode ())
 { }
 
 ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
 	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometryNode (),
-	         fields ()
+	         fields (),
+	    optionsNode ()
 {
 	addType (X3DConstants::ArcClose2D);
 
@@ -88,10 +91,15 @@ ArcClose2D::ArcClose2D (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "endAngle",    endAngle ());
 	addField (initializeOnly, "radius",      radius ());
 	addField (initializeOnly, "solid",       solid ());
+	addField (initializeOnly, "options",     options ());
+
+	addChildObjects (optionsNode);
 
 	startAngle () .setUnit (UnitCategory::ANGLE);
 	endAngle ()   .setUnit (UnitCategory::ANGLE);
 	radius ()     .setUnit (UnitCategory::LENGTH);
+
+	options () .isHidden (true);
 
 	setGeometryType (GeometryType::GEOMETRY_2D);
 }
@@ -107,7 +115,24 @@ ArcClose2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
 
-	getBrowser () -> getArcClose2DOptions () .addInterest (&ArcClose2D::addEvent, this);
+	options () .addInterest (&ArcClose2D::set_options, this);
+
+	try
+	{
+		const auto metaOptions = getMetadataSet ("/ArcClose2D/options");
+	
+		optionsNode .set (MakePtr <ArcClose2DOptions> (getExecutionContext ()));
+
+		optionsNode -> addInterest (&ArcClose2D::addEvent, this);
+		optionsNode -> fromMetaData (metaOptions);
+		optionsNode -> setup ();
+
+		options () .set (optionsNode);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		set_options ();
+	}
 }
 
 void
@@ -121,7 +146,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getArcClose2DOptions () .addInterest (&ArcClose2D::addEvent, this);
+		set_options ();
 }
 
 double
@@ -146,13 +171,30 @@ ArcClose2D::getSweepAngle () const
 }
 
 void
+ArcClose2D::set_options ()
+{
+	removeMetaData ("/ArcClose2D/options");
+
+	if (optionsNode)
+		optionsNode -> removeInterest (&ArcClose2D::addEvent, this);
+
+	optionsNode .set (options ());
+
+	if (not optionsNode)
+		optionsNode .set (getBrowser () -> getArcClose2DOptions ());
+
+	optionsNode -> addInterest (&ArcClose2D::addEvent, this);
+}
+
+void
 ArcClose2D::build ()
 {
-	const auto & options = getBrowser () -> getArcClose2DOptions ();
+	if (options ())
+		optionsNode -> toMetaData (createMetadataSet ("/ArcClose2D/options"));
 
 	const double sweepAngle = getSweepAngle ();
 	const auto   circle     = sweepAngle == pi2 <double>;
-	const auto   steps      = std::max <int32_t> (4, sweepAngle * options -> dimension () / (2 * pi <double>) + 1);
+	const auto   steps      = std::max <int32_t> (4, sweepAngle * optionsNode -> dimension () / (2 * pi <double>) + 1);
 
 	const size_t elements = solid () ? 1 : 2;
 	const size_t vertices = steps + 2;
@@ -200,17 +242,14 @@ ArcClose2D::toPrimitive () const
 throw (Error <NOT_SUPPORTED>,
        Error <DISPOSED>)
 {
-	const auto & options = getBrowser () -> getArcClose2DOptions ();
-
 	const double sweepAngle = getSweepAngle ();
 	const auto   circle     = sweepAngle == pi2 <double>;
-	const auto   steps      = std::max <int32_t> (4, sweepAngle * options -> dimension () / (2 * pi <double>) + 1);
+	const auto   steps      = std::max <int32_t> (4, sweepAngle * optionsNode -> dimension () / (2 * pi <double>) + 1);
 
 	const auto texCoords = getExecutionContext () -> createNode <TextureCoordinate> ();
 	const auto coord     = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry  = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
-	geometry -> metadata () = metadata ();
 	geometry -> solid ()    = solid ();
 	geometry -> convex ()   = false;
 	geometry -> texCoord () = texCoords;
@@ -251,6 +290,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	return geometry;
 }
+
+ArcClose2D::~ArcClose2D ()
+{ }
 
 } // X3D
 } // titania

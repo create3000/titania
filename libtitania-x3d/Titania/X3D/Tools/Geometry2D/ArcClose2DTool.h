@@ -126,6 +126,18 @@ public:
 	solid () const final override
 	{ return getNode <ArcClose2D> () -> solid (); }
 
+	///  @name Hidden fields
+
+	virtual
+	SFNode &
+	options () final override
+	{ return getNode <ArcClose2D> () -> options (); }
+
+	virtual
+	const SFNode &
+	options () const final override
+	{ return getNode <ArcClose2D> () -> options (); }
+
 	///  @name Operations
 
 	virtual

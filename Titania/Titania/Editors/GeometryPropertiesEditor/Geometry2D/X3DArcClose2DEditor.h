@@ -81,6 +81,15 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_arcclose2d_use_global_options_toggled () final override;
+
+	void
+	set_options ();
+
 	///  @name Members
 
 	SFStringComboBoxText              closureType;
@@ -88,6 +97,9 @@ private:
 	X3DFieldAdjustment <X3D::SFFloat> endAngle;
 	X3DFieldAdjustment <X3D::SFFloat> radius;
 	X3DFieldAdjustment <X3D::SFInt32> dimension;
+
+	X3D::MFNode nodes;
+	bool        changing;
 
 };
 
