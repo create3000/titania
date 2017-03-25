@@ -50,6 +50,7 @@
 
 #include "Cylinder.h"
 
+#include "../../Browser/Core/Cast.h"
 #include "../../Browser/Geometry3D/CylinderOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -174,7 +175,7 @@ Cylinder::set_options ()
 	if (optionsNode)
 		optionsNode -> removeInterest (&Cylinder::addEvent, this);
 
-	optionsNode .set (options ());
+	optionsNode .set (x3d_cast <CylinderOptions*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getCylinderOptions ());

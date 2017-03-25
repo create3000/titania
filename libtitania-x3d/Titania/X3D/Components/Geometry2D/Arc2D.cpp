@@ -50,6 +50,7 @@
 
 #include "Arc2D.h"
 
+#include "../../Browser/Core/Cast.h"
 #include "../../Browser/Geometry2D/Arc2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -177,7 +178,7 @@ Arc2D::set_options ()
 	if (optionsNode)
 		optionsNode -> removeInterest (&Arc2D::addEvent, this);
 
-	optionsNode .set (options ());
+	optionsNode .set (x3d_cast <Arc2DOptions*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getArc2DOptions ());

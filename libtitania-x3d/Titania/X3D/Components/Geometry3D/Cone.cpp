@@ -50,6 +50,7 @@
 
 #include "Cone.h"
 
+#include "../../Browser/Core/Cast.h"
 #include "../../Browser/Geometry3D/ConeOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -169,7 +170,7 @@ Cone::set_options ()
 	if (optionsNode)
 		optionsNode -> removeInterest (&Cone::addEvent, this);
 
-	optionsNode .set (options ());
+	optionsNode .set (x3d_cast <ConeOptions*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getConeOptions ());

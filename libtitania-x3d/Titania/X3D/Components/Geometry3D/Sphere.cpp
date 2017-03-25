@@ -50,6 +50,7 @@
 
 #include "Sphere.h"
 
+#include "../../Browser/Core/Cast.h"
 #include "../../Browser/Geometry3D/IcosahedronOptions.h"
 #include "../../Browser/Geometry3D/OctahedronOptions.h"
 #include "../../Browser/Geometry3D/QuadSphereOptions.h"
@@ -155,7 +156,7 @@ Sphere::set_options ()
 	if (optionsNode)
 		optionsNode -> removeInterest (&Sphere::addEvent, this);
 
-	optionsNode .set (options ());
+	optionsNode .set (x3d_cast <X3DSphereOptionsNode*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getSphereOptions ());

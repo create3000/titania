@@ -50,6 +50,7 @@
 
 #include "Disk2D.h"
 
+#include "../../Browser/Core/Cast.h"
 #include "../../Browser/Geometry2D/Disk2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -165,7 +166,7 @@ Disk2D::set_options ()
 	if (optionsNode)
 		optionsNode -> removeInterest (&Disk2D::addEvent, this);
 
-	optionsNode .set (options ());
+	optionsNode .set (x3d_cast <Disk2DOptions*> (options ()));
 
 	if (not optionsNode)
 		optionsNode .set (getBrowser () -> getDisk2DOptions ());
