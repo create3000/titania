@@ -227,19 +227,19 @@ X3DSphereEditor::set_options ()
 		{
 			case X3D::X3DConstants::OctahedronOptions:
 			{
-				getSphereTypeButton ()  .set_active (1);
+				getSphereTypeButton ()  .set_active (0);
 				getOctahedronOptions () .set_visible (true);
 				break;
 			}
 			case X3D::X3DConstants::IcosahedronOptions:
 			{
-				getSphereTypeButton ()   .set_active (2);
+				getSphereTypeButton ()   .set_active (1);
 				getIcosahedronOptions () .set_visible (true);
 				break;
 			}
 			case X3D::X3DConstants::QuadSphereOptions:
 			{
-				getSphereTypeButton ()  .set_active (3);
+				getSphereTypeButton ()  .set_active (2);
 				getQuadSphereOptions () .set_visible (true);
 				break;
 			}
