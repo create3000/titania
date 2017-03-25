@@ -475,13 +475,10 @@ icosahedron3 <Type>::create_primitive ()
 
 	// Rotate point thus a vertice is a pole
 
-	if (this -> order () == 0)
-	{
-		const auto rotation = rotation4 <Type> (0, 0, 1, std::atan (1 / p)) * rotation4 <Type> (0, 1, 0, -pi <Type>/ 10);
+	const auto rotation = rotation4 <Type> (0, 0, 1, std::atan (1 / p)) * rotation4 <Type> (0, 1, 0, -pi <Type> / 10);
 
-		for (auto & point : this -> get_points ())
-			point = normalize (rotation .mult_vec_rot (point));
-	}
+	for (auto & point : this -> get_points ())
+		point = normalize (rotation .mult_vec_rot (point));
 
 	// 5 faces around point 0
 	this -> add_triangle (0, 11,  5);
@@ -497,7 +494,7 @@ icosahedron3 <Type>::create_primitive ()
 	this -> add_triangle (10,  7,  6);
 	this -> add_triangle ( 7,  1,  8);
 
-	// 5 faces around point
+	// 5 faces around point 3
 	this -> add_triangle (3,  9,  4);
 	this -> add_triangle (3,  4,  2);
 	this -> add_triangle (3,  2,  6);
