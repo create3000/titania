@@ -446,6 +446,14 @@ public:
 	getCircle2DRadiusSpinButton () const
 	{ return *m_Circle2DRadiusSpinButton; }
 
+	Gtk::CheckButton &
+	getCircle2DUseGlobalOptionsCheckButton () const
+	{ return *m_Circle2DUseGlobalOptionsCheckButton; }
+
+	Gtk::Box &
+	getCircle2DDimensionBox () const
+	{ return *m_Circle2DDimensionBox; }
+
 	Gtk::SpinButton &
 	getCircle2DDimensionSpinButton () const
 	{ return *m_Circle2DDimensionSpinButton; }
@@ -1050,6 +1058,10 @@ public:
 
 	virtual
 	void
+	on_circle2d_use_global_options_toggled () = 0;
+
+	virtual
+	void
 	on_disk2d_use_global_options_toggled () = 0;
 
 	virtual
@@ -1208,6 +1220,8 @@ private:
 	Gtk::CheckButton*              m_ArcClose2DUseGlobalOptionsCheckButton;
 	Gtk::Expander*                 m_Circle2DExpander;
 	Gtk::SpinButton*               m_Circle2DRadiusSpinButton;
+	Gtk::CheckButton*              m_Circle2DUseGlobalOptionsCheckButton;
+	Gtk::Box*                      m_Circle2DDimensionBox;
 	Gtk::SpinButton*               m_Circle2DDimensionSpinButton;
 	Gtk::Expander*                 m_Disk2DExpander;
 	Gtk::SpinButton*               m_Disk2DInnerRadiusSpinButton;

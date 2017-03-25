@@ -52,10 +52,11 @@
 
 #include "../../Browser/Geometry2D/Circle2DOptions.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Rendering/Coordinate.h"
-#include "../../Components/Rendering/IndexedLineSet.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../Core/MetadataSet.h"
+#include "../Rendering/Coordinate.h"
+#include "../Rendering/IndexedLineSet.h"
 
 namespace titania {
 namespace X3D {
@@ -65,20 +66,27 @@ const std::string   Circle2D::typeName       = "Circle2D";
 const std::string   Circle2D::containerField = "geometry";
 
 Circle2D::Fields::Fields () :
-	radius (new SFFloat (1))
+	 radius (new SFFloat (1)),
+	options (new SFNode ())
 { }
 
 Circle2D::Circle2D (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DLineGeometryNode (),
-	             fields ()
+	             fields (),
+	        optionsNode ()
 {
 	addType (X3DConstants::Circle2D);
 
 	addField (inputOutput,    "metadata", metadata ());
 	addField (initializeOnly, "radius",   radius ());
+	addField (initializeOnly, "options",  options ());
+
+	addChildObjects (optionsNode);
 
 	radius () .setUnit (UnitCategory::LENGTH);
+
+	options () .isHidden (true);
 
 	setGeometryType (GeometryType::GEOMETRY_LINES);
 }
@@ -94,7 +102,24 @@ Circle2D::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	getBrowser () -> getCircle2DOptions () .addInterest (&Circle2D::addEvent, this);
+	options () .addInterest (&Circle2D::set_options, this);
+
+	try
+	{
+		const auto metaOptions = getMetadataSet ("/Circle2D/options");
+	
+		optionsNode .set (MakePtr <Circle2DOptions> (getExecutionContext ()));
+
+		optionsNode -> addInterest (&Circle2D::addEvent, this);
+		optionsNode -> fromMetaData (metaOptions);
+		optionsNode -> setup ();
+
+		options () .set (optionsNode);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		set_options ();
+	}
 }
 
 void
@@ -108,7 +133,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	X3DLineGeometryNode::setExecutionContext (executionContext);
 
 	if (isInitialized ())
-		getBrowser () -> getCircle2DOptions () .addInterest (&Circle2D::addEvent, this);
+		set_options ();
 }
 
 const X3DPtr <ComposedShader> &
@@ -126,22 +151,39 @@ Circle2D::createBBox () const
 }
 
 void
+Circle2D::set_options ()
+{
+	removeMetaData ("/Circle2D/options");
+
+	if (optionsNode)
+		optionsNode -> removeInterest (&Circle2D::addEvent, this);
+
+	optionsNode .set (options ());
+
+	if (not optionsNode)
+		optionsNode .set (getBrowser () -> getCircle2DOptions ());
+
+	optionsNode -> addInterest (&Circle2D::addEvent, this);
+}
+
+void
 Circle2D::build ()
 {
-	const auto & options = getBrowser () -> getCircle2DOptions ();
+	if (options ())
+		optionsNode -> toMetaData (createMetadataSet ("/Circle2D/options"));
 
 	if (std::abs (radius ()) == 1.0f)
-		getVertices () = options -> getVertices ();
+		getVertices () = optionsNode -> getVertices ();
 
 	else
 	{
-		getVertices () .reserve (options -> getVertices () .size ());
+		getVertices () .reserve (optionsNode -> getVertices () .size ());
 
-		for (const auto & vertex : options -> getVertices ())
+		for (const auto & vertex : optionsNode -> getVertices ())
 			getVertices () .emplace_back (vertex * std::abs <double> (radius () .getValue ()));
 	}
 
-	addElements (options -> getVertexMode (), getVertices () .size ());
+	addElements (optionsNode -> getVertexMode (), getVertices () .size ());
 	setSolid (false);
 }
 
@@ -156,8 +198,7 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
 
-	geometry -> metadata () = metadata ();
-	geometry -> coord ()    = coord;
+	geometry -> coord () = coord;
 
 	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
 
@@ -169,6 +210,9 @@ throw (Error <NOT_SUPPORTED>,
 
 	return geometry;
 }
+
+Circle2D::~Circle2D ()
+{ }
 
 } // X3D
 } // titania

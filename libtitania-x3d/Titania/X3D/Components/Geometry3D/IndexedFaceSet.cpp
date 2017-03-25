@@ -1165,7 +1165,6 @@ throw (Error <NOT_SUPPORTED>,
 {
 	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
 
-	geometry -> metadata ()       = metadata ();
 	geometry -> colorPerVertex () = colorPerVertex ();
 	geometry -> attrib ()         = attrib ();
 	geometry -> fogCoord ()       = fogCoord ();

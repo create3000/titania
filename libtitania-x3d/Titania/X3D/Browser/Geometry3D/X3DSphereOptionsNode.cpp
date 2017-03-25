@@ -55,7 +55,9 @@ namespace X3D {
 
 X3DSphereOptionsNode::X3DSphereOptionsNode () :
 	X3DGeometricOptionNode ()
-{ }
+{
+	addType (X3DConstants::X3DSphereOptionsNode);
+}
 
 } // X3D
 } // titania

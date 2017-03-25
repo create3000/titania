@@ -139,8 +139,7 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedLineSet> ();
 
-	geometry -> metadata () = metadata ();
-	geometry -> coord ()    = coord;
+	geometry -> coord () = coord;
 
 	coord -> point () .assign (getVertices () .begin (), getVertices () .end ());
 

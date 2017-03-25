@@ -69,6 +69,8 @@ Circle2DOptions::Circle2DOptions (X3DExecutionContext* const executionContext) :
 	X3DGeometricOptionNode (),
 	                fields ()
 {
+	addType (X3DConstants::Circle2DOptions);
+
 	addField (inputOutput, "dimension", dimension ());
 }
 

@@ -74,6 +74,8 @@ QuadSphereOptions::QuadSphereOptions (X3DExecutionContext* const executionContex
 	X3DSphereOptionsNode (),
 	              fields ()
 {
+	addType (X3DConstants::QuadSphereOptions);
+
 	addField (inputOutput, "xDimension", xDimension ());
 	addField (inputOutput, "yDimension", yDimension ());
 }

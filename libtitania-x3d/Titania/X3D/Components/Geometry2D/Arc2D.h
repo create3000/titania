@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class Arc2DOptions;
-
 class Arc2D :
 	virtual public X3DLineGeometryNode
 {

@@ -151,7 +151,6 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
-	geometry -> metadata () = metadata ();
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;
 

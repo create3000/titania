@@ -89,12 +89,6 @@ public:
 	throw (Error <DISPOSED>) final override
 	{ return containerField; }
 
-	virtual
-	void
-	setExecutionContext (X3DExecutionContext* const executionContext)
-	throw (Error <INVALID_OPERATION_TIMING>,
-	       Error <DISPOSED>) override;
-
 	///  @name Fields
 
 	virtual

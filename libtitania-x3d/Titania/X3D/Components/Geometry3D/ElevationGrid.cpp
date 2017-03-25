@@ -586,7 +586,6 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
-	geometry -> metadata ()        = metadata ();
 	geometry -> solid ()           = solid ();
 	geometry -> ccw ()             = ccw ();
 	geometry -> creaseAngle ()     = creaseAngle ();

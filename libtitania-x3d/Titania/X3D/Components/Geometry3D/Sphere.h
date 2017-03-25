@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class X3DSphereOptionsNode;
-
 class Sphere :
 	virtual public X3DGeometryNode
 {

@@ -65,7 +65,9 @@ const std::string   BoxOptions::containerField = "boxOptions";
 BoxOptions::BoxOptions (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometricOptionNode ()
-{ }
+{
+	addType (X3DConstants::BoxOptions);
+}
 
 BoxOptions*
 BoxOptions::create (X3DExecutionContext* const executionContext) const

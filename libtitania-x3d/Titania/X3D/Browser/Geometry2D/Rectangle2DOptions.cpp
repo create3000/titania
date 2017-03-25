@@ -65,7 +65,9 @@ const std::string   Rectangle2DOptions::containerField = "rectangle2DOptions";
 Rectangle2DOptions::Rectangle2DOptions (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometricOptionNode ()
-{ }
+{
+	addType (X3DConstants::Rectangle2DOptions);
+}
 
 Rectangle2DOptions*
 Rectangle2DOptions::create (X3DExecutionContext* const executionContext) const

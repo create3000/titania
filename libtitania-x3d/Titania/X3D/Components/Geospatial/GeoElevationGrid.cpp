@@ -533,7 +533,6 @@ throw (Error <NOT_SUPPORTED>,
 	coord -> geoSystem () = geoSystem ();
 	coord -> geoOrigin () = geoOrigin ();
 
-	geometry -> metadata ()        = metadata ();
 	geometry -> solid ()           = solid ();
 	geometry -> ccw ()             = ccw ();
 	geometry -> creaseAngle ()     = creaseAngle ();

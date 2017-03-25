@@ -69,9 +69,10 @@ CylinderOptions::CylinderOptions (X3DExecutionContext* const executionContext) :
 	X3DOptionNode (),
 	       fields ()
 {
+	addType (X3DConstants::CylinderOptions);
+
 	addField (inputOutput, "xDimension", xDimension ());
 	addField (inputOutput, "yDimension", yDimension ());
-	//addField (inputOutput, "hDimension", hDimension ());
 }
 
 CylinderOptions*

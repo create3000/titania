@@ -467,12 +467,24 @@ enum NodeType : uint16_t
 	Clipboard,
 	DepthBuffer,
 	FaceSelection,
-	IcoSphereProperties,
 	PolygonOffset,
-	QuadSphereProperties,
 	TouchGroup,
 	TransformMatrix3D,
 	X3DFaceSelection,
+
+	// Option nodes
+
+	Arc2DOptions,
+	ArcClose2DOptions,
+	Circle2DOptions,
+	Disk2DOptions,
+	Rectangle2DOptions,
+	
+	BoxOptions,
+	ConeOptions,
+	CylinderOptions,
+	QuadSphereOptions,
+	X3DSphereOptionsNode,
 
 	// Browser node types
 

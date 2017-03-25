@@ -60,19 +60,102 @@ namespace puck {
 X3DCircle2DEditor::X3DCircle2DEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                              radius (this, getCircle2DRadiusAdjustment (), getCircle2DRadiusSpinButton (), "radius"),
-	                           dimension (this, getCircle2DDimensionAdjustment (), getCircle2DDimensionSpinButton (), "dimension")
-{ }
+	                           dimension (this, getCircle2DDimensionAdjustment (), getCircle2DDimensionSpinButton (), "dimension"),
+	                               nodes (),
+	                            changing (false)
+{
+	addChildObjects (nodes);
+}
 
 void
 X3DCircle2DEditor::set_geometry ()
 {
-	const auto nodes  = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Circle2D });
-	const auto global = X3D::MFNode ({ getCurrentBrowser () -> getCircle2DOptions () });
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .removeInterest (&X3DCircle2DEditor::set_options, this);
+
+	// Fields
+
+	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Circle2D });
 
 	getCircle2DExpander () .set_visible (not nodes .empty ());
 
 	radius    .setNodes (nodes);
-	dimension .setNodes (global);
+	dimension .setNodes (nodes);
+
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .addInterest (&X3DCircle2DEditor::set_options, this);
+
+	set_options ();
+}
+
+void
+X3DCircle2DEditor::on_circle2d_use_global_options_toggled ()
+{
+	if (changing)
+		return;
+
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Toggle Circle2D Use Global Options To »%s«", getCircle2DUseGlobalOptionsCheckButton () .get_active () ? "TRUE" : "FALSE")));
+
+	if (getCircle2DUseGlobalOptionsCheckButton () .get_active ())
+	{
+		for (const auto & node : nodes)
+		{
+			auto & options = node -> getField <X3D::SFNode> ("options");
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, nullptr, undoStep);
+		}
+	}
+	else
+	{
+		for (const auto & node : nodes)
+		{
+			auto &     options    = node -> getField <X3D::SFNode> ("options");
+			const auto optionNode = X3D::SFNode (getCurrentBrowser () -> getCircle2DOptions () -> copy (getCurrentContext (), X3D::FLAT_COPY));
+
+			X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, optionNode, undoStep);
+		}
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+X3DCircle2DEditor::set_options ()
+{
+	// Set composed widgets.
+
+	X3D::MFNode optionsNodes;
+
+	for (const auto & node : nodes)
+	{
+		const auto & optionsNode = node -> getField <X3D::SFNode> ("options");
+
+		if (optionsNode)
+			optionsNodes .emplace_back (optionsNode);
+	}
+
+	const auto active       = optionsNodes .empty ();
+	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
+
+	if (optionsNodes .empty ())
+		optionsNodes .emplace_back (getCurrentBrowser () -> getCircle2DOptions ());
+
+	dimension .setNodes (optionsNodes);
+
+	// Set global widget.
+
+	changing = true;
+
+	getCircle2DUseGlobalOptionsCheckButton () .set_active (active);
+	getCircle2DUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
+
+	getCircle2DDimensionBox () .set_sensitive (not active and not inconsistent);
+
+	changing = false;
 }
 
 X3DCircle2DEditor::~X3DCircle2DEditor ()

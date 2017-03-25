@@ -69,6 +69,8 @@ Disk2DOptions::Disk2DOptions (X3DExecutionContext* const executionContext) :
 	X3DGeometricOptionNode (),
 	                fields ()
 {
+	addType (X3DConstants::Disk2DOptions);
+
 	addField (inputOutput, "dimension", dimension ());
 }
 

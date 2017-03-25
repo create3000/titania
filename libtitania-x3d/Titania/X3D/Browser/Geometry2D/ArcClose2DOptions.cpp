@@ -69,6 +69,8 @@ ArcClose2DOptions::ArcClose2DOptions (X3DExecutionContext* const executionContex
 	X3DOptionNode (),
 	       fields ()
 {
+	addType (X3DConstants::ArcClose2DOptions);
+
 	addField (inputOutput, "dimension", dimension ());
 }
 

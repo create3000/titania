@@ -149,6 +149,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ArcClose2DUseGlobalOptionsCheckButton", m_ArcClose2DUseGlobalOptionsCheckButton);
 	m_builder -> get_widget ("Circle2DExpander", m_Circle2DExpander);
 	m_builder -> get_widget ("Circle2DRadiusSpinButton", m_Circle2DRadiusSpinButton);
+	m_builder -> get_widget ("Circle2DUseGlobalOptionsCheckButton", m_Circle2DUseGlobalOptionsCheckButton);
+	m_builder -> get_widget ("Circle2DDimensionBox", m_Circle2DDimensionBox);
 	m_builder -> get_widget ("Circle2DDimensionSpinButton", m_Circle2DDimensionSpinButton);
 	m_builder -> get_widget ("Disk2DExpander", m_Disk2DExpander);
 	m_builder -> get_widget ("Disk2DInnerRadiusSpinButton", m_Disk2DInnerRadiusSpinButton);
@@ -308,6 +310,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::CheckButton with id 'Arc2DUseGlobalOptionsCheckButton'.
 	m_Arc2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_arc2d_use_global_options_toggled));
 	m_ArcClose2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_arcclose2d_use_global_options_toggled));
+	m_Circle2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_circle2d_use_global_options_toggled));
 	m_Disk2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_disk2d_use_global_options_toggled));
 
 	// Connect object Gtk::ToggleButton with id 'Rectangle2DUniformSizeButton'.

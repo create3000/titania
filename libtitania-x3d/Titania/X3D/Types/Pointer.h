@@ -360,6 +360,20 @@ class TouchGroup;
 class TransformMatrix3D;
 class X3DFaceSelection;
 
+// Option nodes
+
+class Arc2DOptions;
+class ArcClose2DOptions;
+class Circle2DOptions;
+class Disk2DOptions;
+class Rectangle2DOptions;
+	
+class BoxOptions;
+class ConeOptions;
+class CylinderOptions;
+class QuadSphereOptions;
+class X3DSphereOptionsNode;
+
 // Browser node types
 
 class Browser;

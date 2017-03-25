@@ -357,7 +357,6 @@ X3DComposedGeometryNode::toPrimitive (const size_t vertexCount, size_t size) con
 {
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
-	geometry -> metadata ()        = metadata ();
 	geometry -> colorPerVertex ()  = colorPerVertex ();
 	geometry -> normalPerVertex () = normalPerVertex ();
 	geometry -> solid ()           = solid ();

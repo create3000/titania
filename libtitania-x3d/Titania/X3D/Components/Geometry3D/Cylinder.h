@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class CylinderOptions;
-
 class Cylinder :
 	virtual public X3DGeometryNode
 {

@@ -107,6 +107,18 @@ public:
 	radius () const
 	{ return *fields .radius; }
 
+	///  @name Hidden fields
+
+	virtual
+	SFNode &
+	options ()
+	{ return *fields .options; }
+
+	virtual
+	const SFNode &
+	options () const
+	{ return *fields .options; }
+
 	///  @name Operations
 
 	virtual
@@ -122,6 +134,11 @@ public:
 	throw (Error <NOT_SUPPORTED>,
 	       Error <DISPOSED>) override;
 
+	///  @name Construction
+
+	virtual
+	~Circle2D () override;
+
 
 protected:
 
@@ -134,12 +151,16 @@ protected:
 
 private:
 
+	///  @name Event handlers
+
+	void
+	set_options ();
+
+	///  @name Operations
+
 	virtual
 	const X3DPtr <ComposedShader> &
 	getShaderNode (X3DBrowser* const browser) final override;
-
-
-	///  @name Operations
 
 	virtual
 	Box3d
@@ -163,9 +184,14 @@ private:
 		Fields ();
 
 		SFFloat* const radius;
+		SFNode* const options;
 	};
 
 	Fields fields;
+
+	///  @name Members
+
+	X3DPtr <Circle2DOptions> optionsNode;
 
 };
 

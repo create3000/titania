@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class ArcClose2DOptions;
-
 class ArcClose2D :
 	virtual public X3DGeometryNode
 {

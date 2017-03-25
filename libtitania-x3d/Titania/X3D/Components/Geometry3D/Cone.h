@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class ConeOptions;
-
 class Cone :
 	virtual public X3DGeometryNode
 {

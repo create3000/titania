@@ -57,8 +57,6 @@
 namespace titania {
 namespace X3D {
 
-class Disk2DOptions;
-
 class Disk2D :
 	virtual public X3DGeometryNode,
 	virtual public X3DLineGeometryNode

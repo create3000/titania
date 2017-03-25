@@ -86,6 +86,18 @@ public:
 	radius () const final override
 	{ return getNode <Circle2D> () -> radius (); }
 
+	///  @name Hidden fields
+
+	virtual
+	SFNode &
+	options () final override
+	{ return getNode <Circle2D> () -> options (); }
+
+	virtual
+	const SFNode &
+	options () const final override
+	{ return getNode <Circle2D> () -> options (); }
+
 	///  @name Operations
 
 	virtual

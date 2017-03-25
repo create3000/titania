@@ -1622,6 +1622,11 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode) const
 {
 	metadataSetNode -> createValue <MetadataString> ("@typeName") -> value () = { getTypeName () };
 
+	if (not getName () .empty ())
+		metadataSetNode -> createValue <MetadataString> ("@name") -> value () = { getName () };
+
+	// Output all fields, thus we can output non-standard nodes.
+
 	for (const auto & fieldDefinition : getFieldDefinitions ())
 		toMetaData (metadataSetNode, fieldDefinition);
 }

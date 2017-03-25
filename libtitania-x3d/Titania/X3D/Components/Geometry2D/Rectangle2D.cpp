@@ -94,22 +94,6 @@ void
 Rectangle2D::initialize ()
 {
 	X3DGeometryNode::initialize ();
-
-	getBrowser () -> getRectangle2DOptions () .addInterest (&Rectangle2D::addEvent, this);
-}
-
-void
-Rectangle2D::setExecutionContext (X3DExecutionContext* const executionContext)
-throw (Error <INVALID_OPERATION_TIMING>,
-       Error <DISPOSED>)
-{
-	if (isInitialized ())
-		getBrowser () -> getRectangle2DOptions () .removeInterest (&Rectangle2D::addEvent, this);
-
-	X3DGeometryNode::setExecutionContext (executionContext);
-
-	if (isInitialized ())
-		getBrowser () -> getRectangle2DOptions () .addInterest (&Rectangle2D::addEvent, this);
 }
 
 Box3d
@@ -163,8 +147,7 @@ throw (Error <NOT_SUPPORTED>,
 	const auto & options  = getBrowser () -> getRectangle2DOptions ();
 	const auto   geometry = options -> toPrimitive (getExecutionContext ());
 
-	geometry -> getField <SFNode> ("metadata") = metadata ();
-	geometry -> getField <SFBool> ("solid")    = solid ();
+	geometry -> getField <SFBool> ("solid") = solid ();
 
 	if (size () not_eq Vector2f (2, 2))
 	{

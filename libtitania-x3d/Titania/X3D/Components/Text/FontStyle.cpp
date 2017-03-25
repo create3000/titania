@@ -219,7 +219,6 @@ throw (Error <NOT_SUPPORTED>,
 	const auto coord    = getExecutionContext () -> createNode <Coordinate> ();
 	const auto geometry = getExecutionContext () -> createNode <IndexedFaceSet> ();
 
-	geometry -> metadata () = getText () -> metadata ();
 	geometry -> solid ()    = getText () -> solid ();
 	geometry -> texCoord () = texCoord;
 	geometry -> coord ()    = coord;

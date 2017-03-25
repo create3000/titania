@@ -91,22 +91,7 @@ void
 Box::initialize ()
 {
 	X3DGeometryNode::initialize ();
-
-	//getBrowser () -> getBoxOptions () .addInterest (&Box::update, this);
 }
-
-//void
-//Box::setExecutionContext (X3DExecutionContext* const executionContext)
-//throw (Error <INVALID_OPERATION_TIMING>,
-//       Error <DISPOSED>)
-//{
-//	getBrowser () -> getBoxOptions () .removeInterest (&Box::update, this);
-//
-//	X3DGeometryNode::setExecutionContext (executionContext);
-//
-//	if (isInitialized ())
-//		getBrowser () -> getBoxOptions () .addInterest (&Box::update, this);
-//}
 
 Box3d
 Box::createBBox () const
@@ -151,8 +136,7 @@ throw (Error <NOT_SUPPORTED>,
 	const auto & options  = getBrowser () -> getBoxOptions ();
 	const auto   geometry = options -> toPrimitive (getExecutionContext ());
 
-	geometry -> getField <SFNode> ("metadata") = metadata ();
-	geometry -> getField <SFBool> ("solid")    = solid ();
+	geometry -> getField <SFBool> ("solid") = solid ();
 
 	if (size () == Vector3f (2, 2, 2))
 		return geometry;
