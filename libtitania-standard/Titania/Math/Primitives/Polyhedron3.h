@@ -181,25 +181,130 @@ basic_polyhedron3 <Type>::create_triangles ()
 {
 	auto m_coord_index2 = std::vector <int32_t> ();
 
-	// Refine triangles
-	for (size_t o = 0; o < m_order; ++ o)
+
+
+
+//	// Create triangles
+//
+//	for (size_t o = 0; o < m_order; ++ o)
+//	{
+//		m_coord_index2 .clear ();
+//
+//		for (size_t i = 0, size = m_coord_index .size (); i < size; i += 3)
+//		{
+//			// Replace triangle by 4 triangles
+//			const auto a = create_middle_point (m_coord_index [i + 0], m_coord_index [i + 1]);
+//			const auto b = create_middle_point (m_coord_index [i + 1], m_coord_index [i + 2]);
+//			const auto c = create_middle_point (m_coord_index [i + 2], m_coord_index [i + 0]);
+//
+//			add_triangle (m_coord_index [i],     a, c, m_coord_index2);
+//			add_triangle (m_coord_index [i + 1], b, a, m_coord_index2);
+//			add_triangle (m_coord_index [i + 2], c, b, m_coord_index2);
+//			add_triangle (a, b, c, m_coord_index2);
+//		}
+//
+//		std::swap (m_coord_index, m_coord_index2);
+//	}
+
+
+
+	const Type order  = m_order + 1;
+	const auto yOrder = int32_t (m_order) + 1;
+
+	for (size_t i = 0, size = m_coord_index .size (); i < size; i += 3)
 	{
-		m_coord_index2 .clear ();
+		// Points
+		const auto point0 = m_points [m_coord_index [i + 0]];
+		const auto point1 = m_points [m_coord_index [i + 1]];
+		const auto point2 = m_points [m_coord_index [i + 2]];
 
-		for (size_t i = 0, size = m_coord_index .size (); i < size; i += 3)
+		// Angle between points
+		const auto angle0 = std::acos (dot (point0, point1));
+		const auto angle1 = std::acos (dot (point1, point2));
+		const auto angle2 = std::acos (dot (point2, point0));
+
+		const auto length0 = distance (point1, point0);
+		const auto length1 = distance (point2, point1);
+		const auto length2 = distance (point0, point2);
+
+		const auto beta0 = std::acos (dot (normalize (point0 - point1), point0));
+		const auto beta1 = std::acos (dot (normalize (point1 - point2), point1));
+		const auto beta2 = std::acos (dot (normalize (point2 - point0), point2));
+
+		for (int32_t y = 0; y < yOrder; ++ y)
 		{
-			// Replace triangle by 4 triangles
-			const auto a = create_middle_point (m_coord_index [i + 0], m_coord_index [i + 1]);
-			const auto b = create_middle_point (m_coord_index [i + 1], m_coord_index [i + 2]);
-			const auto c = create_middle_point (m_coord_index [i + 2], m_coord_index [i + 0]);
+			const auto xOrder = yOrder - y;
 
-			add_triangle (m_coord_index [i],     a, c, m_coord_index2);
-			add_triangle (m_coord_index [i + 1], b, a, m_coord_index2);
-			add_triangle (m_coord_index [i + 2], c, b, m_coord_index2);
-			add_triangle (a, b, c, m_coord_index2);
+			for (int32_t x = 0; x < xOrder; ++ x)
+			{
+				const auto u0 = (x + 0) / order;
+				const auto v0 = (y + 0) / order;
+				const auto u1 = (x + 1) / order;
+				const auto v1 = (y + 1) / order;
+				const auto u2 = (x - 1) / order;
+				const auto t0 = 1 - u0 - v0;
+				const auto t1 = 1 - u1 - v0;
+				const auto t2 = 1 - u0 - v1;
+				const auto t3 = 1 - u2 - v1;
+
+				const auto alphaU0 = angle0 * u0;
+				const auto alphaU1 = angle0 * u1;
+				const auto alphaU2 = angle0 * u2;
+				const auto alphaV0 = angle1 * v0;
+				const auto alphaV1 = angle1 * v1;
+				const auto alphaT0 = angle2 * t0;
+				const auto alphaT1 = angle2 * t1;
+				const auto alphaT2 = angle2 * t2;
+				const auto alphaT3 = angle2 * t3;
+
+				const auto a0 = std::sin (alphaU0) / std::sin (pi <Type> - alphaU0 - beta0) / length0;
+				const auto a1 = std::sin (alphaU1) / std::sin (pi <Type> - alphaU1 - beta0) / length0;
+				const auto a2 = std::sin (alphaU2) / std::sin (pi <Type> - alphaU2 - beta0) / length0;
+				const auto b0 = std::sin (alphaV0) / std::sin (pi <Type> - alphaV0 - beta1) / length1;
+				const auto b1 = std::sin (alphaV1) / std::sin (pi <Type> - alphaV1 - beta1) / length1;
+				const auto c0 = std::sin (alphaT0) / std::sin (pi <Type> - alphaT0 - beta2) / length2;
+				const auto c1 = std::sin (alphaT1) / std::sin (pi <Type> - alphaT1 - beta2) / length2;
+				const auto c2 = std::sin (alphaT2) / std::sin (pi <Type> - alphaT2 - beta2) / length2;
+				const auto c3 = std::sin (alphaT3) / std::sin (pi <Type> - alphaT3 - beta2) / length2;
+
+				const auto index0 = add_point (a0 * point0 + b0 * point1 + c0 * point2);
+				const auto index1 = add_point (a1 * point0 + b0 * point1 + c1 * point2);
+				const auto index2 = add_point (a0 * point0 + b1 * point1 + c2 * point2);
+
+				add_triangle (index0, index1, index2, m_coord_index2);
+
+				if (u2 >= 0)
+				{
+					const auto index3 = add_point (a2 * point0 + b1 * point1 + c3 * point2);
+
+					add_triangle (index0, index2, index3, m_coord_index2);
+				}
+			}
 		}
+	}
 
-		std::swap (m_coord_index, m_coord_index2);
+	std::swap (m_coord_index, m_coord_index2);
+
+
+
+	__LOG__ << std::endl;
+	__LOG__ << std::endl;
+	__LOG__ << std::endl;
+
+	for (size_t i = 0, size = m_coord_index .size (); i < size; i += 3)
+	{
+		// Points
+		const auto point0 = m_points [m_coord_index [i + 0]];
+		const auto point1 = m_points [m_coord_index [i + 1]];
+		const auto point2 = m_points [m_coord_index [i + 2]];
+
+		const auto length0 = distance (point1, point0);
+		const auto length1 = distance (point2, point1);
+		const auto length2 = distance (point0, point2);
+
+		__LOG__ << length0 << std::endl;
+		__LOG__ << length1 << std::endl;
+		__LOG__ << length2 << std::endl;
 	}
 }
 
