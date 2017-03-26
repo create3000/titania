@@ -238,7 +238,7 @@
     <property name="page_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="IcosahedronOrderAdjustment">
-    <property name="upper">8</property>
+    <property name="upper">400</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
@@ -328,7 +328,7 @@
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="OctahedronOrderAdjustment">
-    <property name="upper">8</property>
+    <property name="upper">400</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
@@ -5363,10 +5363,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkAdjustment" id="TetrahedronOrderAdjustment">
-    <property name="upper">8</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
   </object>
 </interface>

@@ -56,6 +56,7 @@
 #include "../Numbers/Rotation4.h"
 
 #include <map>
+#include <tuple>
 #include <vector>
 
 namespace titania {
@@ -70,7 +71,7 @@ public:
 
 	size_t
 	order () const
-	{ return m_order; }
+	{ return m_order - 1; }
 
 	const std::vector <int32_t> &
 	coord_index () const
@@ -102,7 +103,7 @@ protected:
 
 	///  @name Operations
 
-	int32_t
+	void
 	add_point (const vector3 <Type> & point);
 
 	void
@@ -122,11 +123,11 @@ protected:
 
 private:
 
+	int32_t
+	add_point (const vector3 <Type> & point, const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z);
+
 	void
 	add_triangle (const int32_t i1, const int32_t i2, const int32_t i3, std::vector <int32_t> & m_coord_index);
-
-	int32_t
-	create_middle_point (const int32_t p1, const int32_t p2);
 
 	int32_t
 	resolve_overlap (const int32_t i0, const int32_t i1);
@@ -138,29 +139,98 @@ private:
 
 	///  @name Members
 
-	size_t                                           m_order;
-	std::vector <int32_t>                            m_coord_index;
-	std::vector <vector3 <Type>>                     m_points;
-	std::map <std::pair <int32_t, int32_t>, int32_t> m_middle_point_index;
-	std::vector <int32_t>                            m_tex_coord_index;
-	std::vector <vector2 <Type>>                     m_tex_points;
+	using Key     = std::tuple <int32_t, int32_t, int32_t, int32_t, int32_t, int32_t>;
+	using EdgeKey = std::pair <std::pair <int32_t, int32_t>, int32_t>;
+
+	size_t                         m_order;
+	std::vector <int32_t>          m_coord_index;
+	std::vector <vector3 <Type>>   m_simplex;
+	std::vector <vector3 <Type>>   m_points;
+	std::map <Key, int32_t>        m_point_cache;
+	std::map <EdgeKey, int32_t>    m_edge_point_cache;
+	std::map <int32_t, int32_t>    m_vertex_point_cache;
+	std::vector <int32_t>          m_tex_coord_index;
+	std::vector <vector2 <Type>>   m_tex_points;
 
 };
 
 template <class Type>
 basic_polyhedron3 <Type>::basic_polyhedron3 (const size_t order) :
-	             m_order (order),
+	             m_order (order + 1),
 	       m_coord_index (),
+	           m_simplex (),
 	            m_points (),
-	m_middle_point_index ()
+	       m_point_cache (),
+	  m_edge_point_cache (),
+	m_vertex_point_cache ()
 { }
 
 template <class Type>
-int32_t
+void
 basic_polyhedron3 <Type>::add_point (const vector3 <Type> & point)
 {
+	m_simplex .emplace_back (normalize (point));
+}
+
+template <class Type>
+int32_t
+basic_polyhedron3 <Type>::add_point (const vector3 <Type> & point, const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z)
+{
+	if (x == 0 or y == 0 or z == 0)
+	{
+		std::array <int32_t, 3> indices = { p0, p1, p2 };
+		std::array <int32_t, 3> axes    = { x, y, z };
+
+		const auto one = std::find (axes .begin (), axes .end (), m_order);
+
+		if (one not_eq axes .end ())
+		{
+			const auto i0  = one - axes .begin ();
+			const auto key = indices [i0];
+			
+			const auto iter = m_vertex_point_cache .find (key);
+	
+			if (iter not_eq m_vertex_point_cache .end ())
+				return iter -> second;
+			
+			const auto index = m_points .size ();
+
+			m_vertex_point_cache .emplace (key, index);
+			m_points .emplace_back (normalize (point));
+	
+			return index;
+		}
+
+		const auto zero   = std::find (axes .begin (), axes .end (), 0);
+		const auto i0     = (zero - axes .begin () + 1) % 3;
+		const auto i1     = (zero - axes .begin () + 2) % 3;
+		const auto index0 = indices [i0];
+		const auto index1 = indices [i1];
+		const auto weight = index0 < index1 ? axes [i0] : m_order - axes [i0];
+		const auto key    = std::make_pair (index0 < index1 ? std::make_pair (index0, index1) : std::make_pair (index1, index0), weight);
+		
+		const auto iter = m_edge_point_cache .find (key);
+
+		if (iter not_eq m_edge_point_cache .end ())
+			return iter -> second;
+		
+		const auto index = m_points .size ();
+	
+		m_edge_point_cache .emplace (key, index);
+		m_points .emplace_back (normalize (point));
+
+		return index;
+	}
+
+	const auto key  = std::make_tuple (p0, p1, p2, x, y, z);
+	const auto iter = m_point_cache .find (key);
+
+	if (iter not_eq m_point_cache .end ())
+		return iter -> second;
+
 	const auto index = m_points .size ();
 
+	m_point_cache .emplace (key, index);
 	m_points .emplace_back (normalize (point));
 
 	return index;
@@ -181,55 +251,35 @@ basic_polyhedron3 <Type>::create_triangles ()
 {
 	auto m_coord_index2 = std::vector <int32_t> ();
 
-
-
-
-//	// Create triangles
-//
-//	for (size_t o = 0; o < m_order; ++ o)
-//	{
-//		m_coord_index2 .clear ();
-//
-//		for (size_t i = 0, size = m_coord_index .size (); i < size; i += 3)
-//		{
-//			// Replace triangle by 4 triangles
-//			const auto a = create_middle_point (m_coord_index [i + 0], m_coord_index [i + 1]);
-//			const auto b = create_middle_point (m_coord_index [i + 1], m_coord_index [i + 2]);
-//			const auto c = create_middle_point (m_coord_index [i + 2], m_coord_index [i + 0]);
-//
-//			add_triangle (m_coord_index [i],     a, c, m_coord_index2);
-//			add_triangle (m_coord_index [i + 1], b, a, m_coord_index2);
-//			add_triangle (m_coord_index [i + 2], c, b, m_coord_index2);
-//			add_triangle (a, b, c, m_coord_index2);
-//		}
-//
-//		std::swap (m_coord_index, m_coord_index2);
-//	}
-
-
-
-	const Type order  = m_order + 1;
-	const auto yOrder = int32_t (m_order) + 1;
+	const Type order  = m_order;
+	const auto yOrder = int32_t (m_order);
 
 	for (size_t i = 0, size = m_coord_index .size (); i < size; i += 3)
 	{
+		// Indices
+		const auto p0 = m_coord_index [i + 0];
+		const auto p1 = m_coord_index [i + 1];
+		const auto p2 = m_coord_index [i + 2];
+
 		// Points
-		const auto point0 = m_points [m_coord_index [i + 0]];
-		const auto point1 = m_points [m_coord_index [i + 1]];
-		const auto point2 = m_points [m_coord_index [i + 2]];
+		const auto & point0 = m_simplex [p0];
+		const auto & point1 = m_simplex [p1];
+		const auto & point2 = m_simplex [p2];
 
 		// Angle between points
-		const auto angle0 = std::acos (dot (point0, point1));
-		const auto angle1 = std::acos (dot (point1, point2));
-		const auto angle2 = std::acos (dot (point2, point0));
+		const auto angle0 = std::acos (clamp <Type> (dot (point0, point1), -1, 1));
+		const auto angle1 = std::acos (clamp <Type> (dot (point1, point2), -1, 1));
+		const auto angle2 = std::acos (clamp <Type> (dot (point2, point0), -1, 1));
 
+		// Length of triangle edges
 		const auto length0 = distance (point1, point0);
 		const auto length1 = distance (point2, point1);
 		const auto length2 = distance (point0, point2);
 
-		const auto beta0 = std::acos (dot (normalize (point0 - point1), point0));
-		const auto beta1 = std::acos (dot (normalize (point1 - point2), point1));
-		const auto beta2 = std::acos (dot (normalize (point2 - point0), point2));
+		// Angle between point and corresponding edge
+		const auto beta0 = pi <Type> - std::acos (clamp <Type> (dot (normalize (point0 - point1), point0), -1, 1));
+		const auto beta1 = pi <Type> - std::acos (clamp <Type> (dot (normalize (point1 - point2), point1), -1, 1));
+		const auto beta2 = pi <Type> - std::acos (clamp <Type> (dot (normalize (point2 - point0), point2), -1, 1));
 
 		for (int32_t y = 0; y < yOrder; ++ y)
 		{
@@ -237,15 +287,27 @@ basic_polyhedron3 <Type>::create_triangles ()
 
 			for (int32_t x = 0; x < xOrder; ++ x)
 			{
-				const auto u0 = (x + 0) / order;
-				const auto v0 = (y + 0) / order;
-				const auto u1 = (x + 1) / order;
-				const auto v1 = (y + 1) / order;
-				const auto u2 = (x - 1) / order;
-				const auto t0 = 1 - u0 - v0;
-				const auto t1 = 1 - u1 - v0;
-				const auto t2 = 1 - u0 - v1;
-				const auto t3 = 1 - u2 - v1;
+				// Interpolate triangles over barycentric coordinates.
+
+				const auto x0 = x + 0;
+				const auto y0 = y + 0;
+				const auto x1 = x + 1;
+				const auto y1 = y + 1;
+				const auto x2 = x - 1;
+				const auto z0 = m_order - x0 - y0;
+				const auto z1 = m_order - x1 - y0;
+				const auto z2 = m_order - x0 - y1;
+				const auto z3 = m_order - x2 - y1;
+
+				const auto u0 = x0 / order;
+				const auto v0 = y0 / order;
+				const auto u1 = x1 / order;
+				const auto v1 = y1 / order;
+				const auto u2 = x2 / order;
+				const auto t0 = z0 / order;
+				const auto t1 = z1 / order;
+				const auto t2 = z2 / order;
+				const auto t3 = z3 / order;
 
 				const auto alphaU0 = angle0 * u0;
 				const auto alphaU1 = angle0 * u1;
@@ -257,25 +319,26 @@ basic_polyhedron3 <Type>::create_triangles ()
 				const auto alphaT2 = angle2 * t2;
 				const auto alphaT3 = angle2 * t3;
 
-				const auto a0 = std::sin (alphaU0) / std::sin (pi <Type> - alphaU0 - beta0) / length0;
-				const auto a1 = std::sin (alphaU1) / std::sin (pi <Type> - alphaU1 - beta0) / length0;
-				const auto a2 = std::sin (alphaU2) / std::sin (pi <Type> - alphaU2 - beta0) / length0;
-				const auto b0 = std::sin (alphaV0) / std::sin (pi <Type> - alphaV0 - beta1) / length1;
-				const auto b1 = std::sin (alphaV1) / std::sin (pi <Type> - alphaV1 - beta1) / length1;
-				const auto c0 = std::sin (alphaT0) / std::sin (pi <Type> - alphaT0 - beta2) / length2;
-				const auto c1 = std::sin (alphaT1) / std::sin (pi <Type> - alphaT1 - beta2) / length2;
-				const auto c2 = std::sin (alphaT2) / std::sin (pi <Type> - alphaT2 - beta2) / length2;
-				const auto c3 = std::sin (alphaT3) / std::sin (pi <Type> - alphaT3 - beta2) / length2;
+				// Law of sines
+				const auto a0 = std::sin (alphaU0) / std::sin (beta0 - alphaU0) / length0;
+				const auto a1 = std::sin (alphaU1) / std::sin (beta0 - alphaU1) / length0;
+				const auto a2 = std::sin (alphaU2) / std::sin (beta0 - alphaU2) / length0;
+				const auto b0 = std::sin (alphaV0) / std::sin (beta1 - alphaV0) / length1;
+				const auto b1 = std::sin (alphaV1) / std::sin (beta1 - alphaV1) / length1;
+				const auto c0 = std::sin (alphaT0) / std::sin (beta2 - alphaT0) / length2;
+				const auto c1 = std::sin (alphaT1) / std::sin (beta2 - alphaT1) / length2;
+				const auto c2 = std::sin (alphaT2) / std::sin (beta2 - alphaT2) / length2;
+				const auto c3 = std::sin (alphaT3) / std::sin (beta2 - alphaT3) / length2;
 
-				const auto index0 = add_point (a0 * point0 + b0 * point1 + c0 * point2);
-				const auto index1 = add_point (a1 * point0 + b0 * point1 + c1 * point2);
-				const auto index2 = add_point (a0 * point0 + b1 * point1 + c2 * point2);
+				const auto index0 = add_point (a0 * point0 + b0 * point1 + c0 * point2, p0, p1, p2, x0, y0, z0);
+				const auto index1 = add_point (a1 * point0 + b0 * point1 + c1 * point2, p0, p1, p2, x1, y0, z1);
+				const auto index2 = add_point (a0 * point0 + b1 * point1 + c2 * point2, p0, p1, p2, x0, y1, z2);
 
 				add_triangle (index0, index1, index2, m_coord_index2);
 
-				if (u2 >= 0)
+				if (x2 >= 0)
 				{
-					const auto index3 = add_point (a2 * point0 + b1 * point1 + c3 * point2);
+					const auto index3 = add_point (a2 * point0 + b1 * point1 + c3 * point2, p0, p1, p2, x2, y1, z3);
 
 					add_triangle (index0, index2, index3, m_coord_index2);
 				}
@@ -284,52 +347,6 @@ basic_polyhedron3 <Type>::create_triangles ()
 	}
 
 	std::swap (m_coord_index, m_coord_index2);
-
-
-
-	__LOG__ << std::endl;
-	__LOG__ << std::endl;
-	__LOG__ << std::endl;
-
-	for (size_t i = 0, size = m_coord_index .size (); i < size; i += 3)
-	{
-		// Points
-		const auto point0 = m_points [m_coord_index [i + 0]];
-		const auto point1 = m_points [m_coord_index [i + 1]];
-		const auto point2 = m_points [m_coord_index [i + 2]];
-
-		const auto length0 = distance (point1, point0);
-		const auto length1 = distance (point2, point1);
-		const auto length2 = distance (point0, point2);
-
-		__LOG__ << length0 << std::endl;
-		__LOG__ << length1 << std::endl;
-		__LOG__ << length2 << std::endl;
-	}
-}
-
-template <class Type>
-int32_t
-basic_polyhedron3 <Type>::create_middle_point (const int32_t p1, const int32_t p2)
-{
-	// First check if we have it already
-	const auto key  = std::minmax (p1, p2);
-	const auto iter = m_middle_point_index .find (key);
-
-	if (iter not_eq m_middle_point_index .end ())
-		return iter -> second;
-
-	// Not in cache, calculate it
-	const auto & point1 = m_points [p1];
-	const auto & point2 = m_points [p2];
-
-	// Add middle point, makes sure point is on unit sphere
-	const auto index = add_point ((point1 + point2) / Type (2));
-
-	// Store it, return index
-	m_middle_point_index .emplace (key, index);
-
-	return index;
 }
 
 template <class Type>
