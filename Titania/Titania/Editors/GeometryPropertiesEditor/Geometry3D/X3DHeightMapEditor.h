@@ -331,6 +331,9 @@ X3DHeightMapEditor <NodeType, FieldType>::set_adjustments ()
 {
 	changing = true;
 
+	if (not node)
+		return;
+
 	if (not node -> height () .empty ())
 	{
 		const auto minMax = std::minmax_element (node -> height () .begin (), node -> height () .end ());

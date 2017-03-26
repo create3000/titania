@@ -70,8 +70,8 @@ public:
 	///  @name Member access
 
 	size_t
-	order () const
-	{ return m_order - 1; }
+	dimension () const
+	{ return m_dimension; }
 
 	const std::vector <int32_t> &
 	coord_index () const
@@ -99,7 +99,7 @@ protected:
 
 	///  @name Construction
 
-	basic_polyhedron3 (const size_t order);
+	basic_polyhedron3 (const size_t dimension);
 
 	///  @name Operations
 
@@ -142,7 +142,7 @@ private:
 	using Key     = std::tuple <int32_t, int32_t, int32_t, int32_t, int32_t, int32_t>;
 	using EdgeKey = std::pair <std::pair <int32_t, int32_t>, int32_t>;
 
-	size_t                         m_order;
+	size_t                         m_dimension;
 	std::vector <int32_t>          m_coord_index;
 	std::vector <vector3 <Type>>   m_simplex;
 	std::vector <vector3 <Type>>   m_points;
@@ -155,8 +155,8 @@ private:
 };
 
 template <class Type>
-basic_polyhedron3 <Type>::basic_polyhedron3 (const size_t order) :
-	             m_order (order + 1),
+basic_polyhedron3 <Type>::basic_polyhedron3 (const size_t dimension) :
+	         m_dimension (std::max (1UL, dimension)),
 	       m_coord_index (),
 	           m_simplex (),
 	            m_points (),
@@ -181,7 +181,7 @@ basic_polyhedron3 <Type>::add_point (const vector3 <Type> & point, const int32_t
 		std::array <int32_t, 3> indices = { p0, p1, p2 };
 		std::array <int32_t, 3> axes    = { x, y, z };
 
-		const auto one = std::find (axes .begin (), axes .end (), m_order);
+		const auto one = std::find (axes .begin (), axes .end (), m_dimension);
 
 		if (one not_eq axes .end ())
 		{
@@ -206,7 +206,7 @@ basic_polyhedron3 <Type>::add_point (const vector3 <Type> & point, const int32_t
 		const auto i1     = (zero - axes .begin () + 2) % 3;
 		const auto index0 = indices [i0];
 		const auto index1 = indices [i1];
-		const auto weight = index0 < index1 ? axes [i0] : m_order - axes [i0];
+		const auto weight = index0 < index1 ? axes [i0] : m_dimension - axes [i0];
 		const auto key    = std::make_pair (index0 < index1 ? std::make_pair (index0, index1) : std::make_pair (index1, index0), weight);
 		
 		const auto iter = m_edge_point_cache .find (key);
@@ -251,8 +251,8 @@ basic_polyhedron3 <Type>::create_triangles ()
 {
 	auto m_coord_index2 = std::vector <int32_t> ();
 
-	const Type order  = m_order;
-	const auto yOrder = int32_t (m_order);
+	const Type dimension  = m_dimension;
+	const auto yDimension = int32_t (m_dimension);
 
 	for (size_t i = 0, size = m_coord_index .size (); i < size; i += 3)
 	{
@@ -281,11 +281,11 @@ basic_polyhedron3 <Type>::create_triangles ()
 		const auto beta1 = pi <Type> - std::acos (clamp <Type> (dot (normalize (point1 - point2), point1), -1, 1));
 		const auto beta2 = pi <Type> - std::acos (clamp <Type> (dot (normalize (point2 - point0), point2), -1, 1));
 
-		for (int32_t y = 0; y < yOrder; ++ y)
+		for (int32_t y = 0; y < yDimension; ++ y)
 		{
-			const auto xOrder = yOrder - y;
+			const auto xDimension = yDimension - y;
 
-			for (int32_t x = 0; x < xOrder; ++ x)
+			for (int32_t x = 0; x < xDimension; ++ x)
 			{
 				// Interpolate triangles over barycentric coordinates.
 
@@ -294,20 +294,20 @@ basic_polyhedron3 <Type>::create_triangles ()
 				const auto x1 = x + 1;
 				const auto y1 = y + 1;
 				const auto x2 = x - 1;
-				const auto z0 = m_order - x0 - y0;
-				const auto z1 = m_order - x1 - y0;
-				const auto z2 = m_order - x0 - y1;
-				const auto z3 = m_order - x2 - y1;
+				const auto z0 = m_dimension - x0 - y0;
+				const auto z1 = m_dimension - x1 - y0;
+				const auto z2 = m_dimension - x0 - y1;
+				const auto z3 = m_dimension - x2 - y1;
 
-				const auto u0 = x0 / order;
-				const auto v0 = y0 / order;
-				const auto u1 = x1 / order;
-				const auto v1 = y1 / order;
-				const auto u2 = x2 / order;
-				const auto t0 = z0 / order;
-				const auto t1 = z1 / order;
-				const auto t2 = z2 / order;
-				const auto t3 = z3 / order;
+				const auto u0 = x0 / dimension;
+				const auto v0 = y0 / dimension;
+				const auto u1 = x1 / dimension;
+				const auto v1 = y1 / dimension;
+				const auto u2 = x2 / dimension;
+				const auto t0 = z0 / dimension;
+				const auto t1 = z1 / dimension;
+				const auto t2 = z2 / dimension;
+				const auto t3 = z3 / dimension;
 
 				const auto alphaU0 = angle0 * u0;
 				const auto alphaU1 = angle0 * u1;
@@ -485,7 +485,7 @@ public:
 
 	///  @name Construction
 
-	octahedron3 (const size_t order);
+	octahedron3 (const size_t dimension);
 
 	///  @name Destruction
 
@@ -504,8 +504,8 @@ private:
 };
 
 template <class Type>
-octahedron3 <Type>::octahedron3 (const size_t order) :
-	basic_polyhedron3 <Type> (order)
+octahedron3 <Type>::octahedron3 (const size_t dimension) :
+	basic_polyhedron3 <Type> (dimension)
 {
 	this -> create_primitive ();
 	this -> create_triangles ();
@@ -545,7 +545,7 @@ public:
 
 	///  @name Construction
 
-	icosahedron3 (const size_t order);
+	icosahedron3 (const size_t dimension);
 
 	///  @name Destruction
 
@@ -564,8 +564,8 @@ private:
 };
 
 template <class Type>
-icosahedron3 <Type>::icosahedron3 (const size_t order) :
-	basic_polyhedron3 <Type> (order)
+icosahedron3 <Type>::icosahedron3 (const size_t dimension) :
+	basic_polyhedron3 <Type> (dimension)
 {
 	this -> create_primitive ();
 	this -> create_triangles ();

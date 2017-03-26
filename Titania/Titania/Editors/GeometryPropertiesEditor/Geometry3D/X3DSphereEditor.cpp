@@ -62,8 +62,8 @@ namespace puck {
 X3DSphereEditor::X3DSphereEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                              radius (this, getSphereRadiusAdjustment (), getSphereRadiusSpinButton (), "radius"),
-	                     octahedronOrder (this, getOctahedronOrderAdjustment (), getOctahedronOrderSpinButton (), "order"),
-	                    icosahedronOrder (this, getIcosahedronOrderAdjustment (), getIcosahedronOrderSpinButton (), "order"),
+	                 octahedronDimension (this, getOctahedronDimensionAdjustment (), getOctahedronDimensionSpinButton (), "order"),
+	                icosahedronDimension (this, getIcosahedronDimensionAdjustment (), getIcosahedronDimensionSpinButton (), "order"),
 	                      quadXDimension (this, getQuadSphereXDimensionAdjustment (), getQuadSphereXDimensionSpinButton (), "xDimension"),
 	                      quadYDimension (this, getQuadSphereYDimensionAdjustment (), getQuadSphereYDimensionSpinButton (), "yDimension"),
 	                               nodes (),
@@ -191,10 +191,10 @@ X3DSphereEditor::set_options ()
 	if (optionsNodes .empty ())
 		optionsNodes .emplace_back (getCurrentBrowser () -> getSphereOptions ());
 
-	quadXDimension   .setNodes (optionsNodes);
-	quadYDimension   .setNodes (optionsNodes);
-	icosahedronOrder .setNodes (optionsNodes);
-	octahedronOrder  .setNodes (optionsNodes);
+	quadXDimension       .setNodes (optionsNodes);
+	quadYDimension       .setNodes (optionsNodes);
+	icosahedronDimension .setNodes (optionsNodes);
+	octahedronDimension  .setNodes (optionsNodes);
 
 	// Set global widget.
 

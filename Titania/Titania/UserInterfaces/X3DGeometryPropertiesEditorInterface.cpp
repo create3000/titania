@@ -101,7 +101,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_GeoElevationGridZDimensionAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZDimensionAdjustment"));
 	m_GeoElevationGridZSpacingAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZSpacingAdjustment"));
 	m_GeoElevationGridZoneAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZoneAdjustment"));
-	m_IcosahedronOrderAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IcosahedronOrderAdjustment"));
+	m_IcosahedronDimensionAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IcosahedronDimensionAdjustment"));
 	m_NormalColorAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalColorAdjustment"));
 	m_NormalLengthAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalLengthAdjustment"));
 	m_NurbsCurveOrderAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsCurveOrderAdjustment"));
@@ -118,14 +118,13 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_NurbsTrimmedSurfaceVDimensionAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsTrimmedSurfaceVDimensionAdjustment"));
 	m_NurbsTrimmedSurfaceVOrderAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsTrimmedSurfaceVOrderAdjustment"));
 	m_NurbsTrimmedSurfaceVTessellationAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsTrimmedSurfaceVTessellationAdjustment"));
-	m_OctahedronOrderAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OctahedronOrderAdjustment"));
+	m_OctahedronDimensionAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("OctahedronDimensionAdjustment"));
 	m_PrimitiveEdgeColorAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("PrimitiveEdgeColorAdjustment"));
 	m_QuadSphereXDimensionAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("QuadSphereXDimensionAdjustment"));
 	m_QuadSphereYDimensionAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("QuadSphereYDimensionAdjustment"));
 	m_Rectangle2DSizeXAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeXAdjustment"));
 	m_Rectangle2DSizeYAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeYAdjustment"));
 	m_SphereRadiusAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereRadiusAdjustment"));
-	m_TetrahedronOrderAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TetrahedronOrderAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -218,11 +217,11 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("QuadSphereYDimensionBox", m_QuadSphereYDimensionBox);
 	m_builder -> get_widget ("QuadSphereYDimensionSpinButton", m_QuadSphereYDimensionSpinButton);
 	m_builder -> get_widget ("IcosahedronOptions", m_IcosahedronOptions);
-	m_builder -> get_widget ("IcosahedronOrderBox", m_IcosahedronOrderBox);
-	m_builder -> get_widget ("IcosahedronOrderSpinButton", m_IcosahedronOrderSpinButton);
+	m_builder -> get_widget ("IcosahedronDimensionBox", m_IcosahedronDimensionBox);
+	m_builder -> get_widget ("IcosahedronDimensionSpinButton", m_IcosahedronDimensionSpinButton);
 	m_builder -> get_widget ("OctahedronOptions", m_OctahedronOptions);
-	m_builder -> get_widget ("OctahedronOrderBox", m_OctahedronOrderBox);
-	m_builder -> get_widget ("OctahedronOrderSpinButton", m_OctahedronOrderSpinButton);
+	m_builder -> get_widget ("OctahedronDimensionBox", m_OctahedronDimensionBox);
+	m_builder -> get_widget ("OctahedronDimensionSpinButton", m_OctahedronDimensionSpinButton);
 	m_builder -> get_widget ("GeoElevationGridBox", m_GeoElevationGridBox);
 	m_builder -> get_widget ("GeoElevationGridExpander", m_GeoElevationGridExpander);
 	m_builder -> get_widget ("GeoElevationGridXDimensionSpinButton", m_GeoElevationGridXDimensionSpinButton);

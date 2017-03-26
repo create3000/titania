@@ -97,8 +97,8 @@ private:
 	///  @name Members
 
 	X3DFieldAdjustment <X3D::SFFloat> radius;
-	X3DFieldAdjustment <X3D::SFInt32> octahedronOrder;
-	X3DFieldAdjustment <X3D::SFInt32> icosahedronOrder;
+	X3DFieldAdjustment <X3D::SFInt32> octahedronDimension;
+	X3DFieldAdjustment <X3D::SFInt32> icosahedronDimension;
 	X3DFieldAdjustment <X3D::SFInt32> quadXDimension;
 	X3DFieldAdjustment <X3D::SFInt32> quadYDimension;
 
