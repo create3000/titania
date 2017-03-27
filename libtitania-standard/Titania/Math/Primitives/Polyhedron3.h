@@ -127,24 +127,21 @@ private:
 	add_point (const vector3 <Type> & point, const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z);
 
 	const vector3 <Type> &
-	get_edge_point (const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z);
+	get_point (const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z);
+
+	int32_t
+	get_index (const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z);
 
 	void
 	add_triangle (const int32_t i1, const int32_t i2, const int32_t i3, std::vector <int32_t> & m_coord_index);
 
 	vector3 <Type>
-	create_point (const vector3 <Type> & U0,
-	              const vector3 <Type> & U1,
-	              const vector3 <Type> & V0,
-	              const vector3 <Type> & V1,
-	              const vector3 <Type> & T0,
-	              const vector3 <Type> & T1,
+	create_point (const vector3 <Type> & point0,
+	              const vector3 <Type> & point1,
+	              const vector3 <Type> & point2,
 	              const int32_t x,
 	              const int32_t y,
-	              const int32_t z,
-	              const int32_t xDimension,
-	              const int32_t yDimension,
-	              const int32_t zDimension);
+	              const int32_t z);
 
 	int32_t
 	resolve_overlap (const int32_t i0, const int32_t i1);
@@ -238,9 +235,16 @@ basic_polyhedron3 <Type>::add_point (const vector3 <Type> & point, const int32_t
 
 template <class Type>
 const vector3 <Type> &
-basic_polyhedron3 <Type>::get_edge_point (const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z)
+basic_polyhedron3 <Type>::get_point (const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z)
 {
-	return m_points [add_point (vector3 <Type> (), p0, p1, p2, x, y, z)];
+	return m_points [get_index (p0, p1, p2, x, y, z)];
+}
+
+template <class Type>
+int32_t
+basic_polyhedron3 <Type>::get_index (const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z)
+{
+	return add_point (vector3 <Type> (), p0, p1, p2, x, y, z);
 }
 
 template <class Type>
@@ -260,7 +264,7 @@ basic_polyhedron3 <Type>::create_triangles ()
 
 	const auto yDimension = int32_t (m_dimension);
 
-	for (size_t i = 1 * 3, size = m_coord_index .size (); i < size; i += 3)
+	for (size_t i = 0, size = m_coord_index .size (); i < size; i += 3)
 	{
 		// Indices
 		const auto p0 = m_coord_index [i + 0];
@@ -271,11 +275,6 @@ basic_polyhedron3 <Type>::create_triangles ()
 		const auto & point0 = m_simplex [p0];
 		const auto & point1 = m_simplex [p1];
 		const auto & point2 = m_simplex [p2];
-
-		const auto distances = vector3 <Type> (distance (point0, point1), distance (point1, point2), distance (point2, point0));
-
-__LOG__ << distances << std::endl;
-__LOG__ << std::endl;
 
 		// Add vertices
 		add_point (point0, p0, p1, p2, m_dimension, 0, 0);
@@ -288,27 +287,21 @@ __LOG__ << std::endl;
 			const auto d = m_dimension - e;
 
          // If the point is normalized by add point, dividing by edge distances after create_point can be left away if all three distances are equal.
-			const auto bu = create_point (point2, point0, point0, point1, point1, point2, 0, d, e, m_dimension, m_dimension, m_dimension) / distances;
-			const auto bv = create_point (point2, point0, point0, point1, point1, point2, e, 0, d, m_dimension, m_dimension, m_dimension) / distances;
-			const auto bt = create_point (point2, point0, point0, point1, point1, point2, d, e, 0, m_dimension, m_dimension, m_dimension) / distances;
+			const auto bu = create_point (point0, point1, point2, 0, d, e);
+			const auto bv = create_point (point0, point1, point2, e, 0, d);
+			const auto bt = create_point (point0, point1, point2, d, e, 0);
 
 			add_point (point0 * bu .x () + point1 * bu .y () + point2 * bu .z (), p0, p1, p2, 0, d, e);
 			add_point (point0 * bv .x () + point1 * bv .y () + point2 * bv .z (), p0, p1, p2, e, 0, d);
 			add_point (point0 * bt .x () + point1 * bt .y () + point2 * bt .z (), p0, p1, p2, d, e, 0);
 		}
 
-__LOG__ << m_points .size () << std::endl;
-
 		for (int32_t y = 0; y < yDimension; ++ y)
 		{
-__LOG__ << std::endl;
-
 			const auto xDimension = yDimension - y;
 
 			for (int32_t x = 0; x < xDimension; ++ x)
 			{
-__LOG__ << std::endl;
-
 				// Interpolate triangles over barycentric coordinates.
 				const auto x0 = x + 0;
 				const auto y0 = y + 0;
@@ -320,59 +313,24 @@ __LOG__ << std::endl;
 				const auto z2 = m_dimension - x0 - y1;
 				const auto z3 = m_dimension - x2 - y1;
 
-				// Get u edge points.
-				const auto eu00 = get_edge_point (p0, p1, p2, 0,              y0, xDimension);
-				const auto eu01 = get_edge_point (p0, p1, p2, xDimension,     y0, 0);
-				const auto eu10 = get_edge_point (p0, p1, p2, 0,              y1, xDimension - 1);
-				const auto eu11 = get_edge_point (p0, p1, p2, xDimension - 1, y1, 0);
+				// Barycentric coordinates for leading point of quad.
+				const auto b2 = create_point (point0, point1, point2, x0, y1, z2);
 
-				// Get v edge points.
-				const auto ev00 = get_edge_point (p0, p1, p2, m_dimension - z0, 0, z0);
-				const auto ev01 = get_edge_point (p0, p1, p2, 0, m_dimension - z0, z0);
-				const auto ev10 = get_edge_point (p0, p1, p2, m_dimension - z1, 0, z1);
-				const auto ev11 = get_edge_point (p0, p1, p2, 0, m_dimension - z1, z1);
-
-				// Get t edge points.
-				const auto et00 = get_edge_point (p0, p1, p2, x0, m_dimension - x0, 0);
-				const auto et01 = get_edge_point (p0, p1, p2, x0, 0, m_dimension - x0);
-				const auto et10 = get_edge_point (p0, p1, p2, x1, m_dimension - x1, 0);
-				const auto et11 = get_edge_point (p0, p1, p2, x1, 0, m_dimension - x1);
-
-				// Barycentric coordinates for first three points of quad
-				const auto b0 = create_point (eu00, eu01, ev00, ev01, et00, et01, x0, y0, z0, xDimension,     m_dimension - z0, m_dimension - x0) / distances;
-				const auto b1 = create_point (eu00, eu01, ev10, ev11, et10, et11, x1, y0, z1, xDimension,     m_dimension - z1, m_dimension - x1) / distances;
-				const auto b2 = create_point (eu10, eu11, ev10, ev11, et00, et01, x0, y1, z2, xDimension - 1, m_dimension - z1, m_dimension - x0) / distances;
-
-				//const auto b2 = create_point (eu10, eu11, point0, point1, point1, point2, x0, y1, z2, xDimension - 1, m_dimension, m_dimension) / distances;
-
-				//const auto b0 = create_point (point2, point0, point0, point1, point1, point2, x0, y0, z0, m_dimension, m_dimension, m_dimension) / distances;
-				//const auto b1 = create_point (point2, point0, point0, point1, point1, point2, x1, y0, z1, m_dimension, m_dimension, m_dimension) / distances;
-				//const auto b2 = create_point (point2, point0, point0, point1, point1, point2, x0, y1, z2, m_dimension, m_dimension, m_dimension) / distances;
-
-				// Create points from barycentric coordinates
-				const auto index0 = add_point (point0 * b0 .x () + point1 * b0 .y () + point2 * b0 .z (), p0, p1, p2, x0, y0, z0);
-				const auto index1 = add_point (point0 * b1 .x () + point1 * b1 .y () + point2 * b1 .z (), p0, p1, p2, x1, y0, z1);
-				const auto index2 = add_point (point0 * b2 .x () + point1 * b2 .y () + point2 * b2 .z (), p0, p1, p2, x0, y1, z2);
+				// Create points from barycentric coordinates or use cached index.
+				const auto index0 = get_index (p0, p1, p2, x0, y0, z0);
+				const auto index1 = get_index (p0, p1, p2, x1, y0, z1);
+				const auto index2 = add_point (barycentric_multiply (point0, point1, point2, b2), p0, p1, p2, x0, y1, z2);
 
 				add_triangle (index0, index1, index2, m_coord_index2);
 
 				if (x2 >= 0)
 				{
-					// Get t edge points.
-					const auto et20 = get_edge_point (p0, p1, p2, x2, m_dimension - x2, 0);
-					const auto et21 = get_edge_point (p0, p1, p2, x2, 0, m_dimension - x2);
-
-					// Barycentric coordinates for fourth point of quad
-					const auto b3     = create_point (eu10, eu11, ev00, ev01, et20, et21, x2, y1, z3, xDimension - 1, m_dimension - z0, m_dimension - x2) / distances;
-					//const auto b3     = create_point (point2, point0, point0, point1, point1, point2, x2, y1, z3, m_dimension, m_dimension, m_dimension) / distances;
-					const auto index3 = add_point (point0 * b3 .x () + point1 * b3 .y () + point2 * b3 .y (), p0, p1, p2, x2, y1, z3);
+					const auto index3 = get_index (p0, p1, p2, x2, y1, z3);
 
 					add_triangle (index0, index2, index3, m_coord_index2);
 				}
 			}
 		}
-
-break;
 	}
 
 	std::swap (m_coord_index, m_coord_index2);
@@ -380,42 +338,42 @@ break;
 
 template <class Type>
 vector3 <Type>
-basic_polyhedron3 <Type>::create_point (const vector3 <Type> & u0,
-                                        const vector3 <Type> & u1,
-                                        const vector3 <Type> & v0,
-                                        const vector3 <Type> & v1,
-                                        const vector3 <Type> & t0,
-                                        const vector3 <Type> & t1,
+basic_polyhedron3 <Type>::create_point (const vector3 <Type> & point0,
+                                        const vector3 <Type> & point1,
+                                        const vector3 <Type> & point2,
                                         const int32_t x,
                                         const int32_t y,
-                                        const int32_t z,
-                                        const int32_t xDimension,
-                                        const int32_t yDimension,
-                                        const int32_t zDimension
+                                        const int32_t z
 )
 {
-	// Barycentric input coordinates.
-	const auto u = xDimension ? x / Type (xDimension) : Type (0);
-	const auto v = yDimension ? y / Type (yDimension) : Type (0);
-	const auto t = zDimension ? z / Type (zDimension) : Type (0);
+	// Angle factors.
+	const auto dimension = Type (m_dimension);
+	const auto factorX   = x / dimension;
+	const auto factorY   = y / dimension;
+	const auto factorZ   = z / dimension;
 
 	// Angle between points
-	const auto alphaU = std::acos (clamp <Type> (dot (u0, u1), -1, 1)) * u;
-	const auto alphaV = std::acos (clamp <Type> (dot (v0, v1), -1, 1)) * v;
-	const auto alphaT = std::acos (clamp <Type> (dot (t0, t1), -1, 1)) * t;
+	const auto alphaU = std::acos (clamp <Type> (dot (point2, point0), -1, 1)) * factorX;
+	const auto alphaV = std::acos (clamp <Type> (dot (point0, point1), -1, 1)) * factorY;
+	const auto alphaT = std::acos (clamp <Type> (dot (point1, point2), -1, 1)) * factorZ;
 
-	// Angle between point and corresponding edge
-	const auto betaU = pi <Type> - std::acos (clamp <Type> (dot (normalize (u0 - u1), u0), -1, 1));
-	const auto betaV = pi <Type> - std::acos (clamp <Type> (dot (normalize (v0 - v1), v0), -1, 1));
-	const auto betaT = pi <Type> - std::acos (clamp <Type> (dot (normalize (t0 - t1), t0), -1, 1));
+	// Angle between point and corresponding edgepoint0
+	const auto betaU = std::acos (clamp <Type> (dot (normalize (point2 - point0), point2), -1, 1));
+	const auto betaV = std::acos (clamp <Type> (dot (normalize (point0 - point1), point0), -1, 1));
+	const auto betaT = std::acos (clamp <Type> (dot (normalize (point1 - point2), point1), -1, 1));
 
 	// Law of sines
-	const auto a = std::sin (alphaU) / std::sin (betaU - alphaU);
-	const auto b = std::sin (alphaV) / std::sin (betaV - alphaV);
-	const auto c = std::sin (alphaT) / std::sin (betaT - alphaT);
+	const auto a = std::sin (alphaU) / std::sin (pi <Type> - betaU - alphaU);
+	const auto b = std::sin (alphaV) / std::sin (pi <Type> - betaV - alphaV);
+	const auto c = std::sin (alphaT) / std::sin (pi <Type> - betaT - alphaT);
 
 	// Barycentric coordinates.
-	return vector3 <Type> (a, b, c);
+	const auto u = a / distance (point2, point0); 
+	const auto v = b / distance (point0, point1); 
+	const auto t = c / distance (point1, point2); 
+
+	// Barycentric coordinates.
+	return vector3 <Type> (u, v, t);
 }
 
 template <class Type>

@@ -638,6 +638,25 @@ round (const vector3 <Type> & arg)
 	                       std::round (arg .z ()));
 }
 
+/**
+ * @returns Computes coordinates on triangle from barycentric coordinates.
+ * @param  point0  first point.
+ * @param  point1  second point.
+ * @param  point2  third point.
+ * @param  barycentric  barycentric vector.
+ * @a Type is any type supporting copy constructions.
+ */
+
+template <class Type>
+vector3 <Type>
+barycentric_multiply (const vector3 <Type> & point0,
+                      const vector3 <Type> & point1,
+                      const vector3 <Type> & point2,
+                      const vector3 <Type> & barycentric)
+{
+	return point0 * barycentric .x () + point1 * barycentric .y () + point2 * barycentric .z ();
+}
+
 ///  @relates vector3
 ///  @name Input/Output operations
 
