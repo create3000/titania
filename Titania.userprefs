@@ -1,13 +1,15 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Primitives/Polyhedron3.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.h" Line="143" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.cpp" Line="134" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DConeEditor.h" Line="89" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DConeEditor.cpp" Line="70" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.h" Line="92" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.cpp" Line="96" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.h" Line="136" Column="27" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.cpp" Line="150" Column="1" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.h" Line="90" Column="9" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.cpp" Line="65" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Geometry3D/IcosahedronOptions.cpp" Line="123" Column="16" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Geometry3D/OctahedronOptions.cpp" Line="113" Column="39" />
+      <File FileName="libtitania-standard/Titania/Math/Primitives/Polyhedron3.h" Line="274" Column="17" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="298" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
