@@ -59,50 +59,78 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_AngleColorAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleColorAdjustment"));
-	m_AngleDimension0Adjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleDimension0Adjustment"));
-	m_AngleDimension1Adjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleDimension1Adjustment"));
-	m_AngleDimensionYAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleDimensionYAdjustment"));
-	m_AngleLineColorAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleLineColorAdjustment"));
-	m_AngleMajorGridAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorGridAdjustment"));
-	m_AngleMajorLineColorAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineColorAdjustment"));
-	m_AngleMajorLineEvery0Adjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineEvery0Adjustment"));
-	m_AngleMajorLineEvery1Adjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineEvery1Adjustment"));
-	m_AngleMajorLineEveryYAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineEveryYAdjustment"));
-	m_AngleMajorLineOffset0Adjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineOffset0Adjustment"));
-	m_AngleMajorLineOffset1Adjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineOffset1Adjustment"));
-	m_AngleMajorLineOffsetYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineOffsetYAdjustment"));
-	m_AngleScaleXAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleScaleXAdjustment"));
-	m_AngleScaleYAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleScaleYAdjustment"));
-	m_AngleScaleZAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleScaleZAdjustment"));
-	m_AngleSnapDistanceAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleSnapDistanceAdjustment"));
-	m_AngleTranslationXAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleTranslationXAdjustment"));
-	m_AngleTranslationYAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleTranslationYAdjustment"));
-	m_AngleTranslationZAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleTranslationZAdjustment"));
-	m_GridColorAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridColorAdjustment"));
-	m_GridGapXAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridGapXAdjustment"));
-	m_GridGapYAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridGapYAdjustment"));
-	m_GridGapZAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridGapZAdjustment"));
-	m_GridLineColorAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridLineColorAdjustment"));
-	m_GridMajorGridAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorGridAdjustment"));
-	m_GridMajorLineColorAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineColorAdjustment"));
-	m_GridMajorLineEveryXAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineEveryXAdjustment"));
-	m_GridMajorLineEveryYAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineEveryYAdjustment"));
-	m_GridMajorLineEveryZAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineEveryZAdjustment"));
-	m_GridMajorLineOffsetXAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineOffsetXAdjustment"));
-	m_GridMajorLineOffsetYAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineOffsetYAdjustment"));
-	m_GridMajorLineOffsetZAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineOffsetZAdjustment"));
-	m_GridScaleXAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleXAdjustment"));
-	m_GridScaleYAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleYAdjustment"));
-	m_GridScaleZAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleZAdjustment"));
-	m_GridSnapDistanceAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridSnapDistanceAdjustment"));
-	m_GridTranslationXAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationXAdjustment"));
-	m_GridTranslationYAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationYAdjustment"));
-	m_GridTranslationZAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationZAdjustment"));
-	m_GridTransparencyAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTransparencyAdjustment"));
-	m_GridXDimensionAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridXDimensionAdjustment"));
-	m_GridYDimensionAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridYDimensionAdjustment"));
-	m_GridZDimensionAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridZDimensionAdjustment"));
+	m_AngleColorAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleColorAdjustment"));
+	m_AngleDimension0Adjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleDimension0Adjustment"));
+	m_AngleDimension1Adjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleDimension1Adjustment"));
+	m_AngleDimensionYAdjustment                 = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleDimensionYAdjustment"));
+	m_AngleLineColorAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleLineColorAdjustment"));
+	m_AngleMajorGridAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorGridAdjustment"));
+	m_AngleMajorLineColorAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineColorAdjustment"));
+	m_AngleMajorLineEvery0Adjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineEvery0Adjustment"));
+	m_AngleMajorLineEvery1Adjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineEvery1Adjustment"));
+	m_AngleMajorLineEveryYAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineEveryYAdjustment"));
+	m_AngleMajorLineOffset0Adjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineOffset0Adjustment"));
+	m_AngleMajorLineOffset1Adjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineOffset1Adjustment"));
+	m_AngleMajorLineOffsetYAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleMajorLineOffsetYAdjustment"));
+	m_AngleScaleXAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleScaleXAdjustment"));
+	m_AngleScaleYAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleScaleYAdjustment"));
+	m_AngleScaleZAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleScaleZAdjustment"));
+	m_AngleSnapDistanceAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleSnapDistanceAdjustment"));
+	m_AngleTranslationXAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleTranslationXAdjustment"));
+	m_AngleTranslationYAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleTranslationYAdjustment"));
+	m_AngleTranslationZAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AngleTranslationZAdjustment"));
+	m_AxonometricGridAngleAlphaAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridAngleAlphaAdjustment"));
+	m_AxonometricGridAngleBetaAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridAngleBetaAdjustment"));
+	m_AxonometricGridAngleGammaAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridAngleGammaAdjustment"));
+	m_AxonometricGridColorAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridColorAdjustment"));
+	m_AxonometricGridGapXAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridGapXAdjustment"));
+	m_AxonometricGridGapYAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridGapYAdjustment"));
+	m_AxonometricGridGapZAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridGapZAdjustment"));
+	m_AxonometricGridLineColorAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridLineColorAdjustment"));
+	m_AxonometricGridMajorGridAdjustment        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridMajorGridAdjustment"));
+	m_AxonometricGridMajorLineColorAdjustment   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridMajorLineColorAdjustment"));
+	m_AxonometricGridMajorLineEveryTAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridMajorLineEveryTAdjustment"));
+	m_AxonometricGridMajorLineEveryUAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridMajorLineEveryUAdjustment"));
+	m_AxonometricGridMajorLineEveryVAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridMajorLineEveryVAdjustment"));
+	m_AxonometricGridMajorLineEveryYAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridMajorLineEveryYAdjustment"));
+	m_AxonometricGridMajorLineOffsetTAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridMajorLineOffsetTAdjustment"));
+	m_AxonometricGridMajorLineOffsetUAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridMajorLineOffsetUAdjustment"));
+	m_AxonometricGridMajorLineOffsetVAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridMajorLineOffsetVAdjustment"));
+	m_AxonometricGridMajorLineOffsetYAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridMajorLineOffsetYAdjustment"));
+	m_AxonometricGridScaleXAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridScaleXAdjustment"));
+	m_AxonometricGridScaleYAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridScaleYAdjustment"));
+	m_AxonometricGridScaleZAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridScaleZAdjustment"));
+	m_AxonometricGridSnapDistanceAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridSnapDistanceAdjustment"));
+	m_AxonometricGridTranslationXAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridTranslationXAdjustment"));
+	m_AxonometricGridTranslationYAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridTranslationYAdjustment"));
+	m_AxonometricGridTranslationZAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridTranslationZAdjustment"));
+	m_AxonometricGridTransparencyAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridTransparencyAdjustment"));
+	m_AxonometricGridUVTDimensionAdjustment     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridUVTDimensionAdjustment"));
+	m_AxonometricGridYDimensionAdjustment       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("AxonometricGridYDimensionAdjustment"));
+	m_GridColorAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridColorAdjustment"));
+	m_GridGapXAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridGapXAdjustment"));
+	m_GridGapYAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridGapYAdjustment"));
+	m_GridGapZAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridGapZAdjustment"));
+	m_GridLineColorAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridLineColorAdjustment"));
+	m_GridMajorGridAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorGridAdjustment"));
+	m_GridMajorLineColorAdjustment              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineColorAdjustment"));
+	m_GridMajorLineEveryXAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineEveryXAdjustment"));
+	m_GridMajorLineEveryYAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineEveryYAdjustment"));
+	m_GridMajorLineEveryZAdjustment             = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineEveryZAdjustment"));
+	m_GridMajorLineOffsetXAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineOffsetXAdjustment"));
+	m_GridMajorLineOffsetYAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineOffsetYAdjustment"));
+	m_GridMajorLineOffsetZAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridMajorLineOffsetZAdjustment"));
+	m_GridScaleXAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleXAdjustment"));
+	m_GridScaleYAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleYAdjustment"));
+	m_GridScaleZAdjustment                      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridScaleZAdjustment"));
+	m_GridSnapDistanceAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridSnapDistanceAdjustment"));
+	m_GridTranslationXAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationXAdjustment"));
+	m_GridTranslationYAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationYAdjustment"));
+	m_GridTranslationZAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTranslationZAdjustment"));
+	m_GridTransparencyAdjustment                = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridTransparencyAdjustment"));
+	m_GridXDimensionAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridXDimensionAdjustment"));
+	m_GridYDimensionAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridYDimensionAdjustment"));
+	m_GridZDimensionAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GridZDimensionAdjustment"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -174,6 +202,41 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AngleLineColorButton", m_AngleLineColorButton);
 	m_builder -> get_widget ("AngleColorBox", m_AngleColorBox);
 	m_builder -> get_widget ("AngleColorButton", m_AngleColorButton);
+	m_builder -> get_widget ("AxonometricGridExpander", m_AxonometricGridExpander);
+	m_builder -> get_widget ("AxonometricGridCheckButton", m_AxonometricGridCheckButton);
+	m_builder -> get_widget ("AxonometricGridTransformBox", m_AxonometricGridTransformBox);
+	m_builder -> get_widget ("AxonometricGridPlaneComboBoxText", m_AxonometricGridPlaneComboBoxText);
+	m_builder -> get_widget ("AxonometricGridTranslationBox", m_AxonometricGridTranslationBox);
+	m_builder -> get_widget ("AxonometricGridDimensionBox", m_AxonometricGridDimensionBox);
+	m_builder -> get_widget ("AxonometricGridDimensionSpinButton0", m_AxonometricGridDimensionSpinButton0);
+	m_builder -> get_widget ("AxonometricGridDimensionSpinButton1", m_AxonometricGridDimensionSpinButton1);
+	m_builder -> get_widget ("AxonometricGridScaleBox", m_AxonometricGridScaleBox);
+	m_builder -> get_widget ("AxonometricGridUniformScaleButton", m_AxonometricGridUniformScaleButton);
+	m_builder -> get_widget ("AxonometricGridUniformScaleImage", m_AxonometricGridUniformScaleImage);
+	m_builder -> get_widget ("AxonometricGridAngleBox", m_AxonometricGridAngleBox);
+	m_builder -> get_widget ("AxonometricGridMajorLinesExpander", m_AxonometricGridMajorLinesExpander);
+	m_builder -> get_widget ("AxonometricGridMajorLinesBox", m_AxonometricGridMajorLinesBox);
+	m_builder -> get_widget ("AxonometricGridMajorLineOffsetBox", m_AxonometricGridMajorLineOffsetBox);
+	m_builder -> get_widget ("AxonometricGridMajorLineOffsetSpinButton0", m_AxonometricGridMajorLineOffsetSpinButton0);
+	m_builder -> get_widget ("AxonometricGridMajorLineOffsetSpinButton1", m_AxonometricGridMajorLineOffsetSpinButton1);
+	m_builder -> get_widget ("AxonometricGridMajorLineOffsetSpinButton2", m_AxonometricGridMajorLineOffsetSpinButton2);
+	m_builder -> get_widget ("AxonometricGridMajorLineOffsetSpinButton3", m_AxonometricGridMajorLineOffsetSpinButton3);
+	m_builder -> get_widget ("AxonometricGridMajorLineEveryBox", m_AxonometricGridMajorLineEveryBox);
+	m_builder -> get_widget ("AxonometricGridMajorLineEverySpinButton0", m_AxonometricGridMajorLineEverySpinButton0);
+	m_builder -> get_widget ("AxonometricGridMajorLineEverySpinButton1", m_AxonometricGridMajorLineEverySpinButton1);
+	m_builder -> get_widget ("AxonometricGridMajorLineEverySpinButton2", m_AxonometricGridMajorLineEverySpinButton2);
+	m_builder -> get_widget ("AxonometricGridMajorLineEverySpinButton3", m_AxonometricGridMajorLineEverySpinButton3);
+	m_builder -> get_widget ("AxonometricGridMajorGridSpinButton", m_AxonometricGridMajorGridSpinButton);
+	m_builder -> get_widget ("AxonometricGridAddMajorGridButton", m_AxonometricGridAddMajorGridButton);
+	m_builder -> get_widget ("AxonometricGridRemoveMajorGridButton", m_AxonometricGridRemoveMajorGridButton);
+	m_builder -> get_widget ("AxonometricGridColorsExpander", m_AxonometricGridColorsExpander);
+	m_builder -> get_widget ("AxonometricGridColorsBox", m_AxonometricGridColorsBox);
+	m_builder -> get_widget ("AxonometricGridMajorLineColorBox", m_AxonometricGridMajorLineColorBox);
+	m_builder -> get_widget ("AxonometricGridMajorLineColorButton", m_AxonometricGridMajorLineColorButton);
+	m_builder -> get_widget ("AxonometricGridLineColorBox", m_AxonometricGridLineColorBox);
+	m_builder -> get_widget ("AxonometricGridLineColorButton", m_AxonometricGridLineColorButton);
+	m_builder -> get_widget ("AxonometricGridColorBox", m_AxonometricGridColorBox);
+	m_builder -> get_widget ("AxonometricGridColorButton", m_AxonometricGridColorButton);
 	m_builder -> get_widget ("GridSnappingScrolledWindow", m_GridSnappingScrolledWindow);
 	m_builder -> get_widget ("GridSnappingExpander", m_GridSnappingExpander);
 	m_builder -> get_widget ("GridEnabledCheckButton", m_GridEnabledCheckButton);
@@ -184,6 +247,11 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AngleEnabledCheckButton", m_AngleEnabledCheckButton);
 	m_builder -> get_widget ("AngleSnapToCenterCheckButton", m_AngleSnapToCenterCheckButton);
 	m_builder -> get_widget ("AngleSnapDistanceSpinButton", m_AngleSnapDistanceSpinButton);
+	m_builder -> get_widget ("AxonometricGridSnappingScrolledWindow", m_AxonometricGridSnappingScrolledWindow);
+	m_builder -> get_widget ("AxonometricGridSnappingExpander", m_AxonometricGridSnappingExpander);
+	m_builder -> get_widget ("AxonometricGridEnabledCheckButton", m_AxonometricGridEnabledCheckButton);
+	m_builder -> get_widget ("AxonometricGridSnapToCenterCheckButton", m_AxonometricGridSnapToCenterCheckButton);
+	m_builder -> get_widget ("AxonometricGridSnapDistanceSpinButton", m_AxonometricGridSnapDistanceSpinButton);
 
 	// Connect object Gtk::CheckButton with id 'GridCheckButton'.
 	m_GridCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_toggled));
@@ -216,6 +284,22 @@ X3DGridEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'AngleAddMajorGridButton'.
 	m_AngleAddMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_add_major_line_grid));
 	m_AngleRemoveMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_remove_major_line_grid));
+
+	// Connect object Gtk::CheckButton with id 'AxonometricGridCheckButton'.
+	m_AxonometricGridCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_grid_toggled));
+
+	// Connect object Gtk::ComboBoxText with id 'AxonometricGridPlaneComboBoxText'.
+	m_AxonometricGridPlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_grid_plane_changed));
+
+	// Connect object Gtk::ToggleButton with id 'AxonometricGridUniformScaleButton'.
+	m_AxonometricGridUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_grid_uniform_scale_clicked));
+
+	// Connect object Gtk::SpinButton with id 'AxonometricGridMajorGridSpinButton'.
+	m_AxonometricGridMajorGridSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_major_line_grid_value_changed));
+
+	// Connect object Gtk::Button with id 'AxonometricGridAddMajorGridButton'.
+	m_AxonometricGridAddMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_add_major_line_grid));
+	m_AxonometricGridRemoveMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_remove_major_line_grid));
 
 	// Call construct handler of base class.
 	construct ();

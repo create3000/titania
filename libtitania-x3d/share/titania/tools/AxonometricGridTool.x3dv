@@ -9,7 +9,7 @@ META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AxonometricGridTool.x3dv"
-META "modified" "Tue, 28 Mar 2017 12:41:58 GMT"
+META "modified" "Tue, 28 Mar 2017 16:13:26 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]
@@ -19,8 +19,8 @@ EXTERNPROTO AxonometricGrid [
   inputOutput    SFVec3f    translation
   inputOutput    SFRotation rotation
   inputOutput    SFVec3f    scale
-  inputOutput    SFVec2f    angle
   inputOutput    MFInt32    dimension
+  inputOutput    SFVec2f    angle
   inputOutput    MFInt32    majorLineEvery
   inputOutput    MFInt32    majorLineOffset
   inputOutput    SFColor    color
@@ -67,7 +67,7 @@ WorldInfo {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.945656817782016,
+              0.945656817782015,
               -0.287073410275208,
               -0.152715552892802,
               5.17517615049785
@@ -91,22 +91,28 @@ WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
             value DEF Tool Script {
               inputOutput SFVec3f    translation 0 0 0
               inputOutput SFRotation rotation 0 0 1 0
               inputOutput SFVec3f    scale 1 1 1
-              inputOutput SFVec2f    angle 1.0472 1.0472
               inputOutput MFInt32    dimension [
                 10,
                 10
               ]
+              inputOutput SFVec2f    angle 1.0472 1.0472
               inputOutput MFInt32    majorLineEvery [
+                5,
                 5,
                 5,
                 5
               ]
               inputOutput MFInt32    majorLineOffset [
                 0,
+                1,
                 0,
                 0
               ]
@@ -121,10 +127,6 @@ WorldInfo {
               url "ecmascript:
 // Empty body"
             }
-          }
-          DEF nodes MetadataSet {
-            name "nodes"
-            reference "http://titania.create3000.de"
           }
         ]
       }
@@ -177,6 +179,15 @@ WorldInfo {
           }
         ]
       }
+      DEF AxonometricGrid MetadataSet {
+        name "AxonometricGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_2 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
     ]
   }
   title "AxonometricGridTool"
@@ -188,6 +199,12 @@ DEF GridTool Collision {
     DEF Grid_1 TouchGroup {
       enabled FALSE
       children DEF _1 AxonometricGrid {
+        majorLineOffset [
+          0,
+          1,
+          0,
+          0
+        ]
         transparency 0.8
       }
     }

@@ -76,8 +76,8 @@ AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionCo
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());
 	addField (inputOutput, "scale",           scale ());
-	addField (inputOutput, "angle",           angle ());
 	addField (inputOutput, "dimension",       dimension ());
+	addField (inputOutput, "angle",           angle ());
 	addField (inputOutput, "majorLineEvery",  majorLineEvery ());
 	addField (inputOutput, "majorLineOffset", majorLineOffset ());
 	addField (inputOutput, "color",           color ());
@@ -86,6 +86,8 @@ AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionCo
 	addField (inputOutput, "snapToCenter",    snapToCenter ());
 	addField (inputOutput, "snapDistance",    snapDistance ());
 	addField (outputOnly,  "isActive",        isActive ());
+
+	angle () .setUnit (UnitCategory::ANGLE);
 
 	dimension ()       = { 10, 10 };
 	majorLineEvery ()  = { 5, 5, 5, 5 };

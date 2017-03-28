@@ -4,23 +4,25 @@ PROFILE Full
 
 COMPONENT Titania : 1
 
+UNIT angle degree 0.0174532925199432958
+
 META "comment" "World of Titania"
 META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/AxonometricGrid.x3dv"
-META "modified" "Tue, 28 Mar 2017 14:34:28 GMT"
+META "modified" "Tue, 28 Mar 2017 16:38:02 GMT"
 META "outputStyle" "Nicest"
 
 PROTO AxonometricGrid [
   inputOutput    SFVec3f    translation 0 0 0
   inputOutput    SFRotation rotation 0 0 1 0
   inputOutput    SFVec3f    scale 1 1 1
-  inputOutput    SFVec2f    angle 1.0472 1.0472
   inputOutput    MFInt32    dimension [
     10,
     10
   ]
+  inputOutput    SFVec2f    angle 1.0472 1.0472
   inputOutput    MFInt32    majorLineEvery [
     5,
     5,
@@ -318,8 +320,8 @@ PROTO AxonometricGrid [
   }
 
   DEF GridScript Script {
-    inputOutput    SFVec2f angle IS angle
     inputOutput    MFInt32 dimension IS dimension
+    inputOutput    SFVec2f angle IS angle
     inputOutput    MFInt32 majorLineEvery IS majorLineEvery
     inputOutput    MFInt32 majorLineOffset IS majorLineOffset
     initializeOnly SFNode  hexagon USE HexagonCoord
@@ -349,8 +351,8 @@ function eventsProcessed ()
 
 	// Axonometric grid
 
-	generateGrid (true,  majorGrid, sides, heights);
-	generateGrid (false, minorGrid, sides, heights);
+	generateGrid (true,  majorGrid, angles, sides, heights);
+	generateGrid (false, minorGrid, angles, sides, heights);
 
 	// Points
 
@@ -362,6 +364,12 @@ function eventsProcessed ()
 	var left  = Math .sqrt (Math .pow (sides [2], 2) - Math .pow (heights [1], 2));
 	var right = Math .sqrt (Math .pow (sides [0], 2) - Math .pow (heights [1], 2));
 
+	if (angles [1] > Math .PI / 2)
+		left = -left;
+
+	if (angles [0] > Math .PI / 2)
+		right = -right;
+
 	hexagon .point [0] = new SFVec3f (v, 0, 0)             .multiply (dimension [0] / 2);
 	hexagon .point [1] = new SFVec3f ( right, 0, -heightV) .multiply (dimension [0] / 2);
 	hexagon .point [2] = new SFVec3f (-left,  0, -heightV) .multiply (dimension [0] / 2);
@@ -370,20 +378,20 @@ function eventsProcessed ()
 	hexagon .point [5] = hexagon .point [2] .negate ();
 }
 
-function generateGrid (major, grid, sides, heights)
+function generateGrid (major, grid, angles, sides, heights)
 {
 	var coordIndex = new MFInt32 ();
 	var p          = 0;
 
-	p = generateGridAxis (0,  angle [0], sides, heights, major, grid, coordIndex, p);
-	p = generateGridAxis (1,  0,         sides, heights, major, grid, coordIndex, p);
-	p = generateGridAxis (2, -angle [1], sides, heights, major, grid, coordIndex, p);
+	p = generateGridAxis (0,  angle [0], angles, sides, heights, major, grid, coordIndex, p);
+	p = generateGridAxis (1,  0,         angles, sides, heights, major, grid, coordIndex, p);
+	p = generateGridAxis (2, -angle [1], angles, sides, heights, major, grid, coordIndex, p);
 
 	grid .coord .point .length = p;
 	grid .set_coordIndex = coordIndex;
 }
 
-function generateGridAxis (axis, angle, sides, heights, major, grid, coordIndex, p)
+function generateGridAxis (axis, angle, angles, sides, heights, major, grid, coordIndex, p)
 {
 	var point     = grid .coord .point;
 	var majorAdd  = major / 4;
@@ -391,6 +399,7 @@ function generateGridAxis (axis, angle, sides, heights, major, grid, coordIndex,
 	var rotation  = new SFRotation (0, 1, 0, angle);
 	var height    = heights [axis];
 	var side      = sides [axis];
+	var aMap      = [ 0, 1, 0 ];
 	var lMap      = [ 2, 0, 1 ];
 	var rMap      = [ 1, 2, 0 ];
 	var left      = Math .sqrt (Math .pow (sides [lMap [axis]], 2) - Math .pow (heights [axis], 2));
@@ -406,6 +415,13 @@ function generateGridAxis (axis, angle, sides, heights, major, grid, coordIndex,
 		var l = i > 0 ? right * i : left  * -i;
 		var r = i > 0 ? left  * i : right * -i;
 		var z = i * height;
+		var a = aMap [axis] ? i > 0 : i < 0;
+
+		if (a && angles [1] > Math .PI / 2)
+			l = -l;
+
+		if (a && angles [0] > Math .PI / 2)
+			r = -r;
 
 		point [p]     = rotation .multVec (new SFVec3f (-x + l, 0, z));
 		point [p + 1] = rotation .multVec (new SFVec3f ( x - r, 0, z));
@@ -477,13 +493,13 @@ WorldInfo {
             name "previous"
             reference "http://titania.create3000.de"
             value AxonometricGrid {
-              angle 0.6 1.2
               dimension [
                 100,
                 100,
                 100,
                 10
               ]
+              angle 0.6 1.2
               majorLineEvery [
                 10,
                 10,
@@ -515,19 +531,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              4.19859881787725,
-              25.5755965065336,
-              25.3515500956482
+              0.904421875346767,
+              15.5549094997242,
+              0.313591383004598
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.986913437334251,
-              0.16124069210797,
-              -0.00181835575060223,
-              0.796446318130823
+              -0.99912134324859,
+              0.0339032859362693,
+              -0.0246395752369447,
+              1.55126811151973
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -544,11 +560,59 @@ WorldInfo {
       DEF Grid MetadataSet {
         name "Grid"
         reference "http://titania.create3000.de"
-        value DEF enabled MetadataBoolean {
-          name "enabled"
-          reference "http://titania.create3000.de"
-          value FALSE
-        }
+        value [
+          DEF enabled MetadataBoolean {
+            name "enabled"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF dimension MetadataInteger {
+            name "dimension"
+            reference "http://titania.create3000.de"
+            value [
+              10,
+              10,
+              10
+            ]
+          }
+          DEF majorLineOffset MetadataInteger {
+            name "majorLineOffset"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+          DEF scale MetadataFloat {
+            name "scale"
+            reference "http://titania.create3000.de"
+            value [
+              1,
+              1,
+              1
+            ]
+          }
+          DEF rotation MetadataDouble {
+            name "rotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              1,
+              0
+            ]
+          }
+          DEF translation MetadataFloat {
+            name "translation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
       }
       DEF AngleGrid MetadataSet {
         name "AngleGrid"
@@ -566,15 +630,91 @@ WorldInfo {
           DEF enabled_2 MetadataBoolean {
             name "enabled"
             reference "http://titania.create3000.de"
-            value TRUE
+            value FALSE
           }
-          DEF dimension MetadataInteger {
+          DEF dimension_1 MetadataInteger {
             name "dimension"
             reference "http://titania.create3000.de"
             value [
-              30,
+              26,
               10,
               10
+            ]
+          }
+          DEF majorLineEvery MetadataInteger {
+            name "majorLineEvery"
+            reference "http://titania.create3000.de"
+            value [
+              10,
+              10,
+              10,
+              0,
+              10,
+              10,
+              10,
+              0
+            ]
+          }
+          DEF majorLineOffset_1 MetadataInteger {
+            name "majorLineOffset"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              0
+            ]
+          }
+          DEF color MetadataFloat {
+            name "color"
+            reference "http://titania.create3000.de"
+            value [
+              0.5,
+              0.5,
+              0.5,
+              0.2
+            ]
+          }
+          DEF lineColor MetadataFloat {
+            name "lineColor"
+            reference "http://titania.create3000.de"
+            value [
+              1,
+              0.7,
+              0.7,
+              0.2
+            ]
+          }
+          DEF majorLineColor MetadataFloat {
+            name "majorLineColor"
+            reference "http://titania.create3000.de"
+            value [
+              1,
+              0.7,
+              0.7,
+              0.4
+            ]
+          }
+          DEF scale_1 MetadataFloat {
+            name "scale"
+            reference "http://titania.create3000.de"
+            value [
+              1,
+              1,
+              1
+            ]
+          }
+          DEF translation_1 MetadataFloat {
+            name "translation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              -3.55271e-15,
+              0
             ]
           }
         ]
@@ -582,4 +722,8 @@ WorldInfo {
     ]
   }
   title "AxonometricGrid"
+}
+
+AxonometricGrid {
+  angle 0.7 1.9
 }

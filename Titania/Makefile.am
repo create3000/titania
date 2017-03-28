@@ -88,6 +88,7 @@ titania_SOURCES =  \
 	Titania/Editors/GridEditor/GridEditor.cpp \
 	Titania/Editors/GridEditor/GridTool.cpp \
 	Titania/Editors/GridEditor/X3DAngleEditor.cpp \
+	Titania/Editors/GridEditor/X3DAxonometricGridEditor.cpp \
 	Titania/Editors/GridEditor/X3DGridEditor.cpp \
 	Titania/Editors/GridEditor/X3DGridTool.cpp \
 	Titania/Editors/InlineEditor/InlineEditor.cpp \

@@ -175,6 +175,118 @@ public:
 	{ return m_AngleTranslationZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridAngleAlphaAdjustment () const
+	{ return m_AxonometricGridAngleAlphaAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridAngleBetaAdjustment () const
+	{ return m_AxonometricGridAngleBetaAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridAngleGammaAdjustment () const
+	{ return m_AxonometricGridAngleGammaAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridColorAdjustment () const
+	{ return m_AxonometricGridColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridGapXAdjustment () const
+	{ return m_AxonometricGridGapXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridGapYAdjustment () const
+	{ return m_AxonometricGridGapYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridGapZAdjustment () const
+	{ return m_AxonometricGridGapZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridLineColorAdjustment () const
+	{ return m_AxonometricGridLineColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridMajorGridAdjustment () const
+	{ return m_AxonometricGridMajorGridAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridMajorLineColorAdjustment () const
+	{ return m_AxonometricGridMajorLineColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridMajorLineEveryTAdjustment () const
+	{ return m_AxonometricGridMajorLineEveryTAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridMajorLineEveryUAdjustment () const
+	{ return m_AxonometricGridMajorLineEveryUAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridMajorLineEveryVAdjustment () const
+	{ return m_AxonometricGridMajorLineEveryVAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridMajorLineEveryYAdjustment () const
+	{ return m_AxonometricGridMajorLineEveryYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridMajorLineOffsetTAdjustment () const
+	{ return m_AxonometricGridMajorLineOffsetTAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridMajorLineOffsetUAdjustment () const
+	{ return m_AxonometricGridMajorLineOffsetUAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridMajorLineOffsetVAdjustment () const
+	{ return m_AxonometricGridMajorLineOffsetVAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridMajorLineOffsetYAdjustment () const
+	{ return m_AxonometricGridMajorLineOffsetYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridScaleXAdjustment () const
+	{ return m_AxonometricGridScaleXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridScaleYAdjustment () const
+	{ return m_AxonometricGridScaleYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridScaleZAdjustment () const
+	{ return m_AxonometricGridScaleZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridSnapDistanceAdjustment () const
+	{ return m_AxonometricGridSnapDistanceAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridTranslationXAdjustment () const
+	{ return m_AxonometricGridTranslationXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridTranslationYAdjustment () const
+	{ return m_AxonometricGridTranslationYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridTranslationZAdjustment () const
+	{ return m_AxonometricGridTranslationZAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridTransparencyAdjustment () const
+	{ return m_AxonometricGridTransparencyAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridUVTDimensionAdjustment () const
+	{ return m_AxonometricGridUVTDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getAxonometricGridYDimensionAdjustment () const
+	{ return m_AxonometricGridYDimensionAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getGridColorAdjustment () const
 	{ return m_GridColorAdjustment; }
 
@@ -546,6 +658,146 @@ public:
 	getAngleColorButton () const
 	{ return *m_AngleColorButton; }
 
+	Gtk::Expander &
+	getAxonometricGridExpander () const
+	{ return *m_AxonometricGridExpander; }
+
+	Gtk::CheckButton &
+	getAxonometricGridCheckButton () const
+	{ return *m_AxonometricGridCheckButton; }
+
+	Gtk::Grid &
+	getAxonometricGridTransformBox () const
+	{ return *m_AxonometricGridTransformBox; }
+
+	Gtk::ComboBoxText &
+	getAxonometricGridPlaneComboBoxText () const
+	{ return *m_AxonometricGridPlaneComboBoxText; }
+
+	Gtk::Box &
+	getAxonometricGridTranslationBox () const
+	{ return *m_AxonometricGridTranslationBox; }
+
+	Gtk::Box &
+	getAxonometricGridDimensionBox () const
+	{ return *m_AxonometricGridDimensionBox; }
+
+	Gtk::SpinButton &
+	getAxonometricGridDimensionSpinButton0 () const
+	{ return *m_AxonometricGridDimensionSpinButton0; }
+
+	Gtk::SpinButton &
+	getAxonometricGridDimensionSpinButton1 () const
+	{ return *m_AxonometricGridDimensionSpinButton1; }
+
+	Gtk::Box &
+	getAxonometricGridScaleBox () const
+	{ return *m_AxonometricGridScaleBox; }
+
+	Gtk::ToggleButton &
+	getAxonometricGridUniformScaleButton () const
+	{ return *m_AxonometricGridUniformScaleButton; }
+
+	Gtk::Image &
+	getAxonometricGridUniformScaleImage () const
+	{ return *m_AxonometricGridUniformScaleImage; }
+
+	Gtk::Box &
+	getAxonometricGridAngleBox () const
+	{ return *m_AxonometricGridAngleBox; }
+
+	Gtk::Expander &
+	getAxonometricGridMajorLinesExpander () const
+	{ return *m_AxonometricGridMajorLinesExpander; }
+
+	Gtk::Grid &
+	getAxonometricGridMajorLinesBox () const
+	{ return *m_AxonometricGridMajorLinesBox; }
+
+	Gtk::Box &
+	getAxonometricGridMajorLineOffsetBox () const
+	{ return *m_AxonometricGridMajorLineOffsetBox; }
+
+	Gtk::SpinButton &
+	getAxonometricGridMajorLineOffsetSpinButton0 () const
+	{ return *m_AxonometricGridMajorLineOffsetSpinButton0; }
+
+	Gtk::SpinButton &
+	getAxonometricGridMajorLineOffsetSpinButton1 () const
+	{ return *m_AxonometricGridMajorLineOffsetSpinButton1; }
+
+	Gtk::SpinButton &
+	getAxonometricGridMajorLineOffsetSpinButton2 () const
+	{ return *m_AxonometricGridMajorLineOffsetSpinButton2; }
+
+	Gtk::SpinButton &
+	getAxonometricGridMajorLineOffsetSpinButton3 () const
+	{ return *m_AxonometricGridMajorLineOffsetSpinButton3; }
+
+	Gtk::Box &
+	getAxonometricGridMajorLineEveryBox () const
+	{ return *m_AxonometricGridMajorLineEveryBox; }
+
+	Gtk::SpinButton &
+	getAxonometricGridMajorLineEverySpinButton0 () const
+	{ return *m_AxonometricGridMajorLineEverySpinButton0; }
+
+	Gtk::SpinButton &
+	getAxonometricGridMajorLineEverySpinButton1 () const
+	{ return *m_AxonometricGridMajorLineEverySpinButton1; }
+
+	Gtk::SpinButton &
+	getAxonometricGridMajorLineEverySpinButton2 () const
+	{ return *m_AxonometricGridMajorLineEverySpinButton2; }
+
+	Gtk::SpinButton &
+	getAxonometricGridMajorLineEverySpinButton3 () const
+	{ return *m_AxonometricGridMajorLineEverySpinButton3; }
+
+	Gtk::SpinButton &
+	getAxonometricGridMajorGridSpinButton () const
+	{ return *m_AxonometricGridMajorGridSpinButton; }
+
+	Gtk::Button &
+	getAxonometricGridAddMajorGridButton () const
+	{ return *m_AxonometricGridAddMajorGridButton; }
+
+	Gtk::Button &
+	getAxonometricGridRemoveMajorGridButton () const
+	{ return *m_AxonometricGridRemoveMajorGridButton; }
+
+	Gtk::Expander &
+	getAxonometricGridColorsExpander () const
+	{ return *m_AxonometricGridColorsExpander; }
+
+	Gtk::Grid &
+	getAxonometricGridColorsBox () const
+	{ return *m_AxonometricGridColorsBox; }
+
+	Gtk::Box &
+	getAxonometricGridMajorLineColorBox () const
+	{ return *m_AxonometricGridMajorLineColorBox; }
+
+	Gtk::Button &
+	getAxonometricGridMajorLineColorButton () const
+	{ return *m_AxonometricGridMajorLineColorButton; }
+
+	Gtk::Box &
+	getAxonometricGridLineColorBox () const
+	{ return *m_AxonometricGridLineColorBox; }
+
+	Gtk::Button &
+	getAxonometricGridLineColorButton () const
+	{ return *m_AxonometricGridLineColorButton; }
+
+	Gtk::Box &
+	getAxonometricGridColorBox () const
+	{ return *m_AxonometricGridColorBox; }
+
+	Gtk::Button &
+	getAxonometricGridColorButton () const
+	{ return *m_AxonometricGridColorButton; }
+
 	Gtk::ScrolledWindow &
 	getGridSnappingScrolledWindow () const
 	{ return *m_GridSnappingScrolledWindow; }
@@ -585,6 +837,26 @@ public:
 	Gtk::SpinButton &
 	getAngleSnapDistanceSpinButton () const
 	{ return *m_AngleSnapDistanceSpinButton; }
+
+	Gtk::ScrolledWindow &
+	getAxonometricGridSnappingScrolledWindow () const
+	{ return *m_AxonometricGridSnappingScrolledWindow; }
+
+	Gtk::Expander &
+	getAxonometricGridSnappingExpander () const
+	{ return *m_AxonometricGridSnappingExpander; }
+
+	Gtk::CheckButton &
+	getAxonometricGridEnabledCheckButton () const
+	{ return *m_AxonometricGridEnabledCheckButton; }
+
+	Gtk::CheckButton &
+	getAxonometricGridSnapToCenterCheckButton () const
+	{ return *m_AxonometricGridSnapToCenterCheckButton; }
+
+	Gtk::SpinButton &
+	getAxonometricGridSnapDistanceSpinButton () const
+	{ return *m_AxonometricGridSnapDistanceSpinButton; }
 
 	///  @name Signal handlers
 
@@ -636,6 +908,30 @@ public:
 	void
 	on_angle_remove_major_line_grid () = 0;
 
+	virtual
+	void
+	on_axonometric_grid_toggled () = 0;
+
+	virtual
+	void
+	on_axonometric_grid_plane_changed () = 0;
+
+	virtual
+	void
+	on_axonometric_grid_uniform_scale_clicked () = 0;
+
+	virtual
+	void
+	on_axonometric_major_line_grid_value_changed () = 0;
+
+	virtual
+	void
+	on_axonometric_add_major_line_grid () = 0;
+
+	virtual
+	void
+	on_axonometric_remove_major_line_grid () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -680,6 +976,34 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_AngleTranslationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridAngleAlphaAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridAngleBetaAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridAngleGammaAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridGapXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridGapYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridGapZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridLineColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridMajorGridAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridMajorLineColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridMajorLineEveryTAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridMajorLineEveryUAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridMajorLineEveryVAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridMajorLineEveryYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridMajorLineOffsetTAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridMajorLineOffsetUAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridMajorLineOffsetVAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridMajorLineOffsetYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridScaleXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridScaleYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridScaleZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridSnapDistanceAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridTranslationXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridTranslationYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridTranslationZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridTransparencyAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridUVTDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_AxonometricGridYDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridGapXAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GridGapYAdjustment;
@@ -773,6 +1097,41 @@ private:
 	Gtk::Button*                   m_AngleLineColorButton;
 	Gtk::Box*                      m_AngleColorBox;
 	Gtk::Button*                   m_AngleColorButton;
+	Gtk::Expander*                 m_AxonometricGridExpander;
+	Gtk::CheckButton*              m_AxonometricGridCheckButton;
+	Gtk::Grid*                     m_AxonometricGridTransformBox;
+	Gtk::ComboBoxText*             m_AxonometricGridPlaneComboBoxText;
+	Gtk::Box*                      m_AxonometricGridTranslationBox;
+	Gtk::Box*                      m_AxonometricGridDimensionBox;
+	Gtk::SpinButton*               m_AxonometricGridDimensionSpinButton0;
+	Gtk::SpinButton*               m_AxonometricGridDimensionSpinButton1;
+	Gtk::Box*                      m_AxonometricGridScaleBox;
+	Gtk::ToggleButton*             m_AxonometricGridUniformScaleButton;
+	Gtk::Image*                    m_AxonometricGridUniformScaleImage;
+	Gtk::Box*                      m_AxonometricGridAngleBox;
+	Gtk::Expander*                 m_AxonometricGridMajorLinesExpander;
+	Gtk::Grid*                     m_AxonometricGridMajorLinesBox;
+	Gtk::Box*                      m_AxonometricGridMajorLineOffsetBox;
+	Gtk::SpinButton*               m_AxonometricGridMajorLineOffsetSpinButton0;
+	Gtk::SpinButton*               m_AxonometricGridMajorLineOffsetSpinButton1;
+	Gtk::SpinButton*               m_AxonometricGridMajorLineOffsetSpinButton2;
+	Gtk::SpinButton*               m_AxonometricGridMajorLineOffsetSpinButton3;
+	Gtk::Box*                      m_AxonometricGridMajorLineEveryBox;
+	Gtk::SpinButton*               m_AxonometricGridMajorLineEverySpinButton0;
+	Gtk::SpinButton*               m_AxonometricGridMajorLineEverySpinButton1;
+	Gtk::SpinButton*               m_AxonometricGridMajorLineEverySpinButton2;
+	Gtk::SpinButton*               m_AxonometricGridMajorLineEverySpinButton3;
+	Gtk::SpinButton*               m_AxonometricGridMajorGridSpinButton;
+	Gtk::Button*                   m_AxonometricGridAddMajorGridButton;
+	Gtk::Button*                   m_AxonometricGridRemoveMajorGridButton;
+	Gtk::Expander*                 m_AxonometricGridColorsExpander;
+	Gtk::Grid*                     m_AxonometricGridColorsBox;
+	Gtk::Box*                      m_AxonometricGridMajorLineColorBox;
+	Gtk::Button*                   m_AxonometricGridMajorLineColorButton;
+	Gtk::Box*                      m_AxonometricGridLineColorBox;
+	Gtk::Button*                   m_AxonometricGridLineColorButton;
+	Gtk::Box*                      m_AxonometricGridColorBox;
+	Gtk::Button*                   m_AxonometricGridColorButton;
 	Gtk::ScrolledWindow*           m_GridSnappingScrolledWindow;
 	Gtk::Expander*                 m_GridSnappingExpander;
 	Gtk::CheckButton*              m_GridEnabledCheckButton;
@@ -783,6 +1142,11 @@ private:
 	Gtk::CheckButton*              m_AngleEnabledCheckButton;
 	Gtk::CheckButton*              m_AngleSnapToCenterCheckButton;
 	Gtk::SpinButton*               m_AngleSnapDistanceSpinButton;
+	Gtk::ScrolledWindow*           m_AxonometricGridSnappingScrolledWindow;
+	Gtk::Expander*                 m_AxonometricGridSnappingExpander;
+	Gtk::CheckButton*              m_AxonometricGridEnabledCheckButton;
+	Gtk::CheckButton*              m_AxonometricGridSnapToCenterCheckButton;
+	Gtk::SpinButton*               m_AxonometricGridSnapDistanceSpinButton;
 
 };
 

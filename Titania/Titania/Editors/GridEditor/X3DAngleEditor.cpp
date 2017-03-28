@@ -262,11 +262,11 @@ X3DAngleEditor::on_angle_major_line_grid_value_changed ()
 	const auto & grid  = getBrowserWindow () -> getAngleTool () -> getTool ();
 	const size_t index = getAngleMajorGridAdjustment () -> get_value () - 1;
 
-	if (grid -> majorLineEvery () .size () < INDICES * index + 3)
-		grid -> majorLineEvery () .resize (INDICES * index + 3);
+	if (grid -> majorLineEvery () .size () < INDICES * index + INDICES)
+		grid -> majorLineEvery () .resize (INDICES * index + INDICES);
 
-	if (grid -> majorLineOffset () .size () < INDICES * index + 3)
-		grid -> majorLineOffset () .resize (INDICES * index + 3);
+	if (grid -> majorLineOffset () .size () < INDICES * index + INDICES)
+		grid -> majorLineOffset () .resize (INDICES * index + INDICES);
 
 	majorLineEvery0  .setIndex (INDICES * index + 0);
 	majorLineEvery1  .setIndex (INDICES * index + 1);

@@ -52,6 +52,7 @@
 #define __TITANIA_EDITORS_GRID_EDITOR_GRID_EDITOR_H__
 
 #include "X3DAngleEditor.h"
+#include "X3DAxonometricGridEditor.h"
 #include "X3DGridEditor.h"
 
 namespace titania {
@@ -62,7 +63,8 @@ class BrowserWindow;
 class GridEditor :
 	virtual public X3DGridEditorInterface,
 	public X3DGridEditor,
-	public X3DAngleEditor
+	public X3DAngleEditor,
+	public X3DAxonometricGridEditor
 {
 public:
 

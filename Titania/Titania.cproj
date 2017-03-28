@@ -294,6 +294,7 @@
     <Compile Include="Titania\Dialogs\UndoHistoryDialog\UndoHistoryDialog.cpp" />
     <Compile Include="Titania\UserInterfaces\X3DUndoHistoryDialogInterface.cpp" />
     <Compile Include="Titania\Editors\GridEditor\AxonometricGridTool.cpp" />
+    <Compile Include="Titania\Editors\GridEditor\X3DAxonometricGridEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2608,6 +2609,7 @@
     <None Include="Titania\UserInterfaces\X3DUndoHistoryDialogInterface.h" />
     <None Include="share\titania\ui\Dialogs\UndoHistoryDialog.glade" />
     <None Include="Titania\Editors\GridEditor\AxonometricGridTool.h" />
+    <None Include="Titania\Editors\GridEditor\X3DAxonometricGridEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

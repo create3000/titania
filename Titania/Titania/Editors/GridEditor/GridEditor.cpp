@@ -58,10 +58,11 @@ namespace titania {
 namespace puck {
 
 GridEditor::GridEditor (X3DBrowserWindow* const browserWindow) :
-	      X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DGridEditorInterface (get_ui ("Editors/GridEditor.glade")),
-	         X3DGridEditor (),
-	        X3DAngleEditor ()
+	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	  X3DGridEditorInterface (get_ui ("Editors/GridEditor.glade")),
+	           X3DGridEditor (),
+	          X3DAngleEditor (),
+	X3DAxonometricGridEditor ()
 {
 	setup ();
 }
@@ -72,6 +73,7 @@ GridEditor::initialize ()
 	X3DGridEditorInterface::initialize ();
 	X3DGridEditor::initialize ();
 	X3DAngleEditor::initialize ();
+	X3DAxonometricGridEditor::initialize ();
 }
 
 void
@@ -80,6 +82,7 @@ GridEditor::configure ()
 	X3DGridEditorInterface::configure ();
 	X3DGridEditor::configure ();
 	X3DAngleEditor::configure ();
+	X3DAxonometricGridEditor::configure ();
 
 	getGridNotebook () .set_current_page (getConfig () -> getInteger ("currentPage"));
 }
@@ -89,6 +92,7 @@ GridEditor::store ()
 {
 	getConfig () -> setItem ("currentPage", getGridNotebook () .get_current_page ());
 
+	X3DAxonometricGridEditor::store ();
 	X3DAngleEditor::store ();
 	X3DGridEditor::store ();
 	X3DGridEditorInterface::store ();
