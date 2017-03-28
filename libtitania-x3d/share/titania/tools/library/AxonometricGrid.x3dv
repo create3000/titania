@@ -1,0 +1,352 @@
+#X3D V3.3 utf8 Titania V3.0.0
+
+PROFILE Full
+
+COMPONENT Titania : 1
+
+META "comment" "World of Titania"
+META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V3.0.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/AxonometricGrid.x3dv"
+META "modified" "Tue, 28 Mar 2017 10:35:33 GMT"
+META "outputStyle" "Nicest"
+
+PROTO AxonometricGrid [
+  inputOutput    SFVec3f    translation 0 0 0
+  inputOutput    SFRotation rotation 0 0 1 0
+  inputOutput    SFVec3f    scale 1 1 1
+  inputOutput    SFVec2f    angle 1.0472 1.0472
+  inputOutput    MFInt32    dimension [
+    10,
+    10,
+    10,
+    10
+  ]
+  inputOutput    MFInt32    majorLineEvery [
+    5,
+    5,
+    5,
+    5
+  ]
+  inputOutput    MFInt32    majorLineOffset [
+    0,
+    0,
+    0,
+    0
+  ]
+  inputOutput    SFColor    color 0.5 0.5 0.5
+  inputOutput    SFFloat    transparency 0.61803
+  inputOutput    SFColor    lineColor 1 0.7 0.7
+  inputOutput    SFFloat    lineTransparency 0.8
+  inputOutput    SFColor    majorLineColor 1 0.7 0.7
+  inputOutput    SFFloat    majorLineTransparency 0.6
+  initializeOnly SFBool     solid TRUE
+]
+{
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    scale IS scale
+    children [
+      DEF HexagonPlane Shape {
+        appearance Appearance {
+          material DEF Material2 Material {
+            diffuseColor 0 0 0
+            emissiveColor IS color
+            transparency IS transparency
+          }
+        }
+        geometry IndexedFaceSet {
+          solid IS solid
+          coordIndex [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            -1
+          ]
+          coord DEF HexagonCoord Coordinate { }
+        }
+      }
+      DEF MajorGrid Shape {
+        appearance Appearance {
+          material DEF MajorMaterial Material {
+            emissiveColor IS majorLineColor
+            transparency IS majorLineTransparency
+          }
+        }
+        geometry DEF MajorGrid_1 IndexedLineSet {
+          coord Coordinate { }
+        }
+      }
+      DEF MinorGrid Shape {
+        appearance Appearance {
+          material DEF MinorMaterial Material {
+            emissiveColor IS lineColor
+            transparency IS lineTransparency
+          }
+        }
+        geometry DEF MinorGrid_1 IndexedLineSet {
+          coord Coordinate { }
+        }
+      }
+      DEF MajorPoints Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 6
+          }
+          material USE MajorMaterial
+        }
+        geometry DEF MajorPoints_1 PointSet {
+          coord Coordinate { }
+        }
+      }
+      DEF MinorPoints Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 4
+          }
+          material USE MinorMaterial
+        }
+        geometry DEF MinorPoints_1 PointSet {
+          coord Coordinate { }
+        }
+      }
+    ]
+  }
+
+  DEF GridScript Script {
+    inputOutput    SFVec2f angle IS angle
+    inputOutput    MFInt32 dimension IS dimension
+    inputOutput    MFInt32 majorLineEvery IS majorLineEvery
+    inputOutput    MFInt32 majorLineOffset IS majorLineOffset
+    initializeOnly SFNode  hexagon USE HexagonCoord
+    initializeOnly SFNode  majorGrid USE MajorGrid_1
+    initializeOnly SFNode  minorGrid USE MinorGrid_1
+    initializeOnly SFNode  majorPoints USE MajorPoints_1
+    initializeOnly SFNode  minorPoints USE MinorPoints_1
+
+    url "peaseblossom:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	var angles     = new SFVec3f (angle [0], angle [1], Math .PI - angle [0] - angle [1])
+	var u          = Math .sin (angles [1]) / Math .sin (angles [2]);
+	var v          = 1;
+	var t          = Math .sin (angles [0]) / Math .sin (angles [2]);
+	var sides      = new SFVec3f (u, 1, t);
+	var heightU    = v * Math .sin (angles [0]);
+	var heightV    = t * Math .sin (angles [1]);
+	var heightT    = u * Math .sin (angles [2]);
+	var heights    = new SFVec3f (heightU, heightV, heightT);
+
+	// Axonometric grid
+
+	generateGrid (true,  majorGrid, sides, heights);
+	generateGrid (false, minorGrid, sides, heights);
+
+	// Points
+
+	generatePoints (true,  majorPoints .coord .point);
+	generatePoints (false, minorPoints .coord .point);
+
+	// Hexagon plane
+
+	var left  = Math .sqrt (Math .pow (sides [2], 2) - Math .pow (heights [1], 2));
+	var right = Math .sqrt (Math .pow (sides [0], 2) - Math .pow (heights [1], 2));
+
+	hexagon .point [0] = new SFVec3f (v, 0, 0)             .multiply (dimension [1] / 2);
+	hexagon .point [1] = new SFVec3f ( right, 0, -heightV) .multiply (dimension [0] / 2);
+	hexagon .point [2] = new SFVec3f (-left,  0, -heightV) .multiply (dimension [2] / 2);
+	hexagon .point [3] = hexagon .point [0] .negate ();
+	hexagon .point [4] = hexagon .point [1] .negate ();
+	hexagon .point [5] = hexagon .point [2] .negate ();
+
+print (hexagon .point);
+}
+
+function generateGrid (major, grid, sides, heights)
+{
+	var coordIndex = new MFInt32 ();
+	var p          = 0;
+
+	p = generateGridAxis (0,  angle [0], sides, heights, major, grid, coordIndex, p);
+	p = generateGridAxis (1,  0,         sides, heights, major, grid, coordIndex, p);
+	p = generateGridAxis (2, -angle [1], sides, heights, major, grid, coordIndex, p);
+
+	grid .coord .point .length = p;
+	grid .set_coordIndex = coordIndex;
+}
+
+function generateGridAxis (axis, angle, sides, heights, major, grid, coordIndex, p)
+{
+	var point     = grid .coord .point;
+	var majorAdd  = major / 4;
+	var scale_2   = dimension [axis] / 2;
+	var rotation  = new SFRotation (0, 1, 0, angle);
+	var height    = heights [axis];
+	var side      = sides [axis];
+	var lMap      = [ 2, 0, 1 ];
+	var rMap      = [ 1, 2, 0 ];
+	var left      = Math .sqrt (Math .pow (sides [lMap [axis]], 2) - Math .pow (heights [axis], 2));
+	var right     = Math .sqrt (Math .pow (sides [rMap [axis]], 2) - Math .pow (heights [axis], 2));
+
+	for (var n = 0, size = dimension [axis] + 1; n < size; ++ n)
+	{
+		if (major - isMajorLine (n, axis))
+			continue;
+
+		var i = n - scale_2;
+		var x = scale_2 * side + majorAdd;
+		var l = i > 0 ? right * i : left  * -i;
+		var r = i > 0 ? left  * i : right * -i;
+		var z = i * height;
+
+		point [p]     = rotation .multVec (new SFVec3f (-x + l, 0, z));
+		point [p + 1] = rotation .multVec (new SFVec3f ( x - r, 0, z));
+		coordIndex [coordIndex .length] = p;
+		coordIndex [coordIndex .length] = p + 1;
+		coordIndex [coordIndex .length] = -1;
+			
+		p += 2;
+	}
+
+	return p;
+}
+
+function generatePoints (major, point)
+{
+	var scaleY_2 = -dimension [3] / 2;
+	var p         = 0;
+
+	for (var i = 0, size = dimension [3] + 1; i < size; ++ i)
+	{
+		if (major - isMajorLine (i, 3))
+			continue;
+
+		point [p] = new SFVec3f (0, scaleY_2 + i, 0);
+		++ p;
+	}
+
+	point .length = p;
+}
+
+function isMajorLine (i, index)
+{
+	for (var d = index; d < majorLineEvery .length; d += 4)
+	{
+		if (isMajor (i, dimension [index], majorLineEvery [d], majorLineOffset [d]))
+			return true;
+	}
+
+	return false;
+}
+
+function isMajor (i, dimension, majorLineEvery, majorLineOffset)
+{
+	if (majorLineEvery)
+	{
+		var index = Math .floor (i - dimension / 2 - majorLineOffset);
+
+		return !(index % majorLineEvery);
+	}
+
+	return false;
+}
+"
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
+}
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+            value DEF _1 AxonometricGrid {
+              angle 0.6 1.2
+              dimension [
+                100,
+                100,
+                100,
+                10
+              ]
+              majorLineEvery [
+                10,
+                10,
+                10,
+                5
+              ]
+            }
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              12.2299941681429,
+              29.3451489886358,
+              17.4278493920652
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              -0.866266998016664,
+              0.469886549735607,
+              0.169670617741446,
+              1.08681569140469
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  title "AxonometricGrid"
+}
+
+USE _1
