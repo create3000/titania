@@ -171,7 +171,7 @@ private:
 
 template <class Type>
 basic_polyhedron3 <Type>::basic_polyhedron3 (const size_t dimension) :
-	         m_dimension (std::max (1UL, dimension)),
+	         m_dimension (std::max <size_t> (1, dimension)),
 	       m_coord_index (),
 	           m_simplex (),
 	            m_points (),
