@@ -11,7 +11,7 @@ META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/AxonometricGrid.x3dv"
-META "modified" "Tue, 28 Mar 2017 16:38:02 GMT"
+META "modified" "Tue, 28 Mar 2017 17:41:01 GMT"
 META "outputStyle" "Nicest"
 
 PROTO AxonometricGrid [
@@ -399,7 +399,8 @@ function generateGridAxis (axis, angle, angles, sides, heights, major, grid, coo
 	var rotation  = new SFRotation (0, 1, 0, angle);
 	var height    = heights [axis];
 	var side      = sides [axis];
-	var aMap      = [ 0, 1, 0 ];
+	var dMap      = [ 1, 1, 0, 0, 1, 1 ];
+	var eMap      = [ 0, 1, 0 ];
 	var lMap      = [ 2, 0, 1 ];
 	var rMap      = [ 1, 2, 0 ];
 	var left      = Math .sqrt (Math .pow (sides [lMap [axis]], 2) - Math .pow (heights [axis], 2));
@@ -415,13 +416,29 @@ function generateGridAxis (axis, angle, angles, sides, heights, major, grid, coo
 		var l = i > 0 ? right * i : left  * -i;
 		var r = i > 0 ? left  * i : right * -i;
 		var z = i * height;
-		var a = aMap [axis] ? i > 0 : i < 0;
+		var e = eMap [axis] ? i < 0 : i > 0;
 
-		if (a && angles [1] > Math .PI / 2)
-			l = -l;
+		if (e)
+		{
+			if (dMap [axis] && angles [0] > Math .PI / 2)
+				l = -l;
+		}
+		else
+		{
+			if (dMap [axis] && angles [0] > Math .PI / 2)
+				r = -r;
+		}
 
-		if (a && angles [0] > Math .PI / 2)
-			r = -r;
+		if (e)
+		{
+			if (dMap [axis + 3] && angles [1] > Math .PI / 2)
+				r = -r;
+		}
+		else
+		{
+			if (dMap [axis + 3] && angles [1] > Math .PI / 2)
+				l = -l;
+		}
 
 		point [p]     = rotation .multVec (new SFVec3f (-x + l, 0, z));
 		point [p + 1] = rotation .multVec (new SFVec3f ( x - r, 0, z));
@@ -493,19 +510,7 @@ WorldInfo {
             name "previous"
             reference "http://titania.create3000.de"
             value AxonometricGrid {
-              dimension [
-                100,
-                100,
-                100,
-                10
-              ]
-              angle 0.6 1.2
-              majorLineEvery [
-                10,
-                10,
-                10,
-                5
-              ]
+              angle 1.9 0.7
             }
           }
           DEF nodes MetadataSet {
@@ -722,8 +727,4 @@ WorldInfo {
     ]
   }
   title "AxonometricGrid"
-}
-
-AxonometricGrid {
-  angle 0.7 1.9
 }
