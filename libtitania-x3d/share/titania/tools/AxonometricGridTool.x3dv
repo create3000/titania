@@ -9,7 +9,7 @@ META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/AxonometricGridTool.x3dv"
-META "modified" "Tue, 28 Mar 2017 12:21:53 GMT"
+META "modified" "Tue, 28 Mar 2017 12:41:58 GMT"
 META "outputStyle" "nicest"
 
 EXTERNPROTO ToolShader [ ]
@@ -179,7 +179,7 @@ WorldInfo {
       }
     ]
   }
-  title "GridTool"
+  title "AxonometricGridTool"
 }
 
 DEF GridTool Collision {

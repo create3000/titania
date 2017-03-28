@@ -116,6 +116,10 @@ public:
 	getAngleTool () const
 	{ return angleTool; }
 
+	const std::shared_ptr <X3DGridTool> &
+	getAxonometricGridTool () const
+	{ return axonometricGridTool; }
+
 	/// @name File oerations
 
 	virtual
@@ -182,6 +186,7 @@ private:
 	std::shared_ptr <Footer>            footer;
 	std::shared_ptr <X3DGridTool>       gridTool;
 	std::shared_ptr <X3DGridTool>       angleTool;
+	std::shared_ptr <X3DGridTool>       axonometricGridTool;
 	std::unique_ptr <ViewpointObserver> viewpointObserver;
 
 	X3D::Keys keys;

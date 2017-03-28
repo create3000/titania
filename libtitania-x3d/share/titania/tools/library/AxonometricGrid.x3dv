@@ -9,7 +9,7 @@ META "created" "Tue, 05 Aug 2014 20:06:52 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/AxonometricGrid.x3dv"
-META "modified" "Tue, 28 Mar 2017 12:20:22 GMT"
+META "modified" "Tue, 28 Mar 2017 14:34:28 GMT"
 META "outputStyle" "Nicest"
 
 PROTO AxonometricGrid [
@@ -515,19 +515,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              12.2299941681429,
-              29.3451489886358,
-              17.4278493920652
+              4.19859881787725,
+              25.5755965065336,
+              25.3515500956482
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.866266998016664,
-              0.469886549735607,
-              0.169670617741446,
-              1.08681569140469
+              -0.986913437334251,
+              0.16124069210797,
+              -0.00181835575060223,
+              0.796446318130823
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -537,6 +537,44 @@ WorldInfo {
               0,
               0,
               0
+            ]
+          }
+        ]
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF AxonometricGrid MetadataSet {
+        name "AxonometricGrid"
+        reference "http://titania.create3000.de"
+        value [
+          DEF enabled_2 MetadataBoolean {
+            name "enabled"
+            reference "http://titania.create3000.de"
+            value TRUE
+          }
+          DEF dimension MetadataInteger {
+            name "dimension"
+            reference "http://titania.create3000.de"
+            value [
+              30,
+              10,
+              10
             ]
           }
         ]

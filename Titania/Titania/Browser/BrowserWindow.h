@@ -636,6 +636,10 @@ private:
 
 	virtual
 	void
+	on_axonometric_layout_tool_toggled () final override;
+
+	virtual
+	void
 	on_grid_properties_activated () final override;
 
 	///  @name Scenes menu

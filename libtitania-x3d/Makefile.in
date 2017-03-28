@@ -759,6 +759,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Geospatial/GeoElevationGridTool.lo \
 	Titania/X3D/Tools/Geospatial/GeoViewpointTool.lo \
 	Titania/X3D/Tools/Grids/AngleTool.lo \
+	Titania/X3D/Tools/Grids/AxonometricGridTool.lo \
 	Titania/X3D/Tools/Grids/GridTool.lo \
 	Titania/X3D/Tools/Grids/X3DGridTool.lo \
 	Titania/X3D/Tools/Grouping/X3DTransformNodeTool.lo \
@@ -1699,6 +1700,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Geospatial/GeoElevationGridTool.cpp \
 	Titania/X3D/Tools/Geospatial/GeoViewpointTool.cpp \
 	Titania/X3D/Tools/Grids/AngleTool.cpp \
+	Titania/X3D/Tools/Grids/AxonometricGridTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
 	Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp \
@@ -4280,6 +4282,9 @@ Titania/X3D/Tools/Grids/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Tools/Grids/AngleTool.lo:  \
 	Titania/X3D/Tools/Grids/$(am__dirstamp) \
 	Titania/X3D/Tools/Grids/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Grids/AxonometricGridTool.lo:  \
+	Titania/X3D/Tools/Grids/$(am__dirstamp) \
+	Titania/X3D/Tools/Grids/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Grids/GridTool.lo:  \
 	Titania/X3D/Tools/Grids/$(am__dirstamp) \
 	Titania/X3D/Tools/Grids/$(DEPDIR)/$(am__dirstamp)
@@ -5338,6 +5343,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geospatial/$(DEPDIR)/GeoElevationGridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Geospatial/$(DEPDIR)/GeoViewpointTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/AngleTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/AxonometricGridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/GridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/X3DGridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grouping/$(DEPDIR)/X3DTransformNodeTool.Plo@am__quote@

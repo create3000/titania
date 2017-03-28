@@ -103,6 +103,10 @@ public:
 	{ return m_AngleLayoutToolAction; }
 
 	const Glib::RefPtr <Gtk::ToggleAction> &
+	getAxonometricGridLayoutToolAction () const
+	{ return m_AxonometricGridLayoutToolAction; }
+
+	const Glib::RefPtr <Gtk::ToggleAction> &
 	getBackgroundsAction () const
 	{ return m_BackgroundsAction; }
 
@@ -762,6 +766,10 @@ public:
 	getBrowserAngleLayoutToolMenuItem () const
 	{ return *m_BrowserAngleLayoutToolMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getBrowserAxonometricGridLayoutToolMenuItem () const
+	{ return *m_BrowserAxonometricGridLayoutToolMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getBrowserGridPropertiesMenuItem () const
 	{ return *m_BrowserGridPropertiesMenuItem; }
@@ -1258,6 +1266,10 @@ public:
 	getAngleLayoutToolMenuItem () const
 	{ return *m_AngleLayoutToolMenuItem; }
 
+	Gtk::CheckMenuItem &
+	getAxonometricGridLayoutToolMenuItem () const
+	{ return *m_AxonometricGridLayoutToolMenuItem; }
+
 	Gtk::ImageMenuItem &
 	getGridPropertiesMenuItem () const
 	{ return *m_GridPropertiesMenuItem; }
@@ -1535,6 +1547,10 @@ public:
 	virtual
 	void
 	on_angle_layout_tool_toggled () = 0;
+
+	virtual
+	void
+	on_axonometric_layout_tool_toggled () = 0;
 
 	virtual
 	void
@@ -2174,6 +2190,7 @@ private:
 	Glib::RefPtr <Gtk::Builder>      m_builder;
 	Glib::RefPtr <Gtk::IconFactory>  m_IconFactory;
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
+	Glib::RefPtr <Gtk::ToggleAction> m_AxonometricGridLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BackgroundsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BrowserAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_CobwebCompatibilityAction;
@@ -2339,6 +2356,7 @@ private:
 	Gtk::MenuItem*                   m_BrowserLayoutMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserGridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_BrowserAngleLayoutToolMenuItem;
+	Gtk::CheckMenuItem*              m_BrowserAxonometricGridLayoutToolMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserGridPropertiesMenuItem;
 	Gtk::MenuItem*                   m_BrowserScenesMenuItem;
 	Gtk::Menu*                       m_BrowserScenesMenu;
@@ -2463,6 +2481,7 @@ private:
 	Gtk::MenuItem*                   m_LayoutMenuItem;
 	Gtk::CheckMenuItem*              m_GridLayoutToolMenuItem;
 	Gtk::CheckMenuItem*              m_AngleLayoutToolMenuItem;
+	Gtk::CheckMenuItem*              m_AxonometricGridLayoutToolMenuItem;
 	Gtk::ImageMenuItem*              m_GridPropertiesMenuItem;
 	Gtk::MenuItem*                   m_ScenesMenuItem;
 	Gtk::Menu*                       m_ScenesMenu;

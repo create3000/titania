@@ -196,6 +196,10 @@
     <property name="label" translatable="yes">Activate _Angle Layout Tool</property>
     <signal name="toggled" handler="on_angle_layout_tool_toggled" swapped="no"/>
   </object>
+  <object class="GtkToggleAction" id="AxonometricGridLayoutToolAction">
+    <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
+    <signal name="toggled" handler="on_axonometric_layout_tool_toggled" swapped="no"/>
+  </object>
   <object class="GtkToggleAction" id="BackgroundsAction">
     <property name="label" translatable="yes">_Backgounds</property>
     <signal name="toggled" handler="on_backgrounds_toggled" swapped="no"/>
@@ -2000,6 +2004,15 @@
               </object>
             </child>
             <child>
+              <object class="GtkCheckMenuItem" id="BrowserAxonometricGridLayoutToolMenuItem">
+                <property name="related_action">AxonometricGridLayoutToolAction</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+            <child>
               <object class="GtkImageMenuItem" id="BrowserGridPropertiesMenuItem">
                 <property name="label" translatable="yes">Grid _Properties ...</property>
                 <property name="visible">True</property>
@@ -3497,6 +3510,15 @@
                                 <property name="label" translatable="yes">Activate _Angle Layout Tool</property>
                                 <property name="use_underline">True</property>
                                 <accelerator key="apostrophe" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckMenuItem" id="AxonometricGridLayoutToolMenuItem">
+                                <property name="related_action">AxonometricGridLayoutToolAction</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Activate A_xonometric Layout Tool</property>
+                                <property name="use_underline">True</property>
                               </object>
                             </child>
                             <child>

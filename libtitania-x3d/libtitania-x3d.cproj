@@ -948,6 +948,7 @@
     <None Include="Titania\X3D\Browser\Geometry3D\OctahedronOptions.h" />
     <None Include="share\titania\tools\AxonometricGridTool.x3dv" />
     <None Include="share\titania\tools\library\AxonometricGrid.x3dv" />
+    <None Include="Titania\X3D\Tools\Grids\AxonometricGridTool.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1631,6 +1632,7 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\X3DSphereOptionsNode.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\IcosahedronOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\OctahedronOptions.cpp" />
+    <Compile Include="Titania\X3D\Tools\Grids\AxonometricGridTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

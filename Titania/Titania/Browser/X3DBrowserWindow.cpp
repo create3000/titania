@@ -56,6 +56,7 @@
 
 #include "../Editors/GeometryEditor/GeometryEditor.h"
 #include "../Editors/GridEditor/AngleTool.h"
+#include "../Editors/GridEditor/AxonometricGridTool.h"
 #include "../Editors/GridEditor/GridTool.h"
 
 #include "../Widgets/Sidebar/Sidebar.h"
@@ -75,16 +76,17 @@ namespace titania {
 namespace puck {
 
 X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
-	 X3DBrowserEditor (browser),
-	   geometryEditor (new GeometryEditor (this)),
-	          sidebar (new Sidebar (this)),
-	           footer (new Footer (this)),
-	         gridTool (new GridTool (this)),
-	        angleTool (new AngleTool (this)),
-	viewpointObserver (new ViewpointObserver (this)),
-	             keys (),
-	     accelerators (true)
-{ }
+	   X3DBrowserEditor (browser),
+	     geometryEditor (new GeometryEditor (this)),
+	            sidebar (new Sidebar (this)),
+	             footer (new Footer (this)),
+	           gridTool (new GridTool (this)),
+	          angleTool (new AngleTool (this)),
+	axonometricGridTool (new AxonometricGridTool (this)),
+	  viewpointObserver (new ViewpointObserver (this)),
+	               keys (),
+	       accelerators (true)
+{ }  
 
 void
 X3DBrowserWindow::initialize ()
@@ -207,12 +209,13 @@ X3DBrowserWindow::store ()
 void
 X3DBrowserWindow::dispose ()
 {
-	geometryEditor    .reset ();
-	sidebar           .reset ();
-	footer            .reset ();
-	gridTool          .reset ();
-	angleTool         .reset ();
-	viewpointObserver .reset ();
+	geometryEditor      .reset ();
+	sidebar             .reset ();
+	footer              .reset ();
+	gridTool            .reset ();
+	angleTool           .reset ();
+	axonometricGridTool .reset ();
+	viewpointObserver   .reset ();
 
 	X3DBrowserEditor::dispose ();
 }

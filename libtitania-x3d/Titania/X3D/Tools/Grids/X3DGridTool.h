@@ -254,7 +254,7 @@ private:
 	bool
 	getScaleFromEdge (const X3DWeakPtr <X3DTransformNodeTool> & master) const;
 
-	///  @name Members
+	///  @name Fields
 
 	struct Fields
 	{
@@ -276,6 +276,8 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Members
 	
 	X3DWeakPtrArray <X3DTransformNode> transformNodes;
 

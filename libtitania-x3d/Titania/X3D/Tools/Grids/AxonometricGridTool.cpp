@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "GridTool.h"
+#include "AxonometricGridTool.h"
 
 #include "../../Browser/Networking/config.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -56,21 +56,27 @@
 namespace titania {
 namespace X3D {
 
-const ComponentType GridTool::component      = ComponentType::TITANIA;
-const std::string   GridTool::typeName       = "GridTool";
-const std::string   GridTool::containerField = "grid";
+const ComponentType AxonometricGridTool::component      = ComponentType::TITANIA;
+const std::string   AxonometricGridTool::typeName       = "AxonometricGridTool";
+const std::string   AxonometricGridTool::containerField = "grid";
 
-GridTool::GridTool (X3DExecutionContext* const executionContext) :
+AxonometricGridTool::Fields::Fields () :
+  angle (new SFVec2f (radians (60.0), radians (60.0)))
+{ }
+
+AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGridTool ()
+	X3DGridTool (),
+	     fields ()
 {
-	addType (X3DConstants::GridTool);
+	//addType (X3DConstants::AxonometricGridTool);
 
 	addField (inputOutput, "metadata",        metadata ());
 	addField (inputOutput, "enabled",         enabled ());
 	addField (inputOutput, "translation",     translation ());
 	addField (inputOutput, "rotation",        rotation ());
 	addField (inputOutput, "scale",           scale ());
+	addField (inputOutput, "angle",           angle ());
 	addField (inputOutput, "dimension",       dimension ());
 	addField (inputOutput, "majorLineEvery",  majorLineEvery ());
 	addField (inputOutput, "majorLineOffset", majorLineOffset ());
@@ -81,79 +87,53 @@ GridTool::GridTool (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "snapDistance",    snapDistance ());
 	addField (outputOnly,  "isActive",        isActive ());
 
-	dimension ()       = { 10, 10, 10 };
-	majorLineEvery ()  = { 5, 5, 5 };
-	majorLineOffset () = { 0, 0, 0 };
+	dimension ()       = { 10, 10 };
+	majorLineEvery ()  = { 5, 5, 5, 5 };
+	majorLineOffset () = { 0, 0, 0, 0 };
 }
 
 X3DBaseNode*
-GridTool::create (X3DExecutionContext* const executionContext) const
+AxonometricGridTool::create (X3DExecutionContext* const executionContext) const
 {
-	return new GridTool (executionContext);
+	return new AxonometricGridTool (executionContext);
 }
 
 void
-GridTool::initialize ()
+AxonometricGridTool::initialize ()
 {
 	X3DGridTool::initialize ();
 
-	requestAsyncLoad ({ get_tool ("GridTool.x3dv") .str () });
+	requestAsyncLoad ({ get_tool ("AxonometricGridTool.x3dv") .str () });
 }
 
 void
-GridTool::realize ()
+AxonometricGridTool::realize ()
 {
 	X3DGridTool::realize ();
+
+	try
+	{
+		auto & set_angle = getToolNode () -> getField <SFVec2f> ("set_angle");
+		angle ()  .addInterest (set_angle);
+		set_angle .addInterest (angle ());
+		set_angle = angle ();
+	}
+	catch (const X3DError & error)
+	{ }
 }
 
 Vector3d
-GridTool::getSnapPosition (const Vector3d & position, const bool)
+AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snapY)
 {
 	auto translation = position;
-
-	for (size_t i = 0; i < 3; ++ i)
-	{
-		const auto value = getSnapPosition (i, position);
-
-		if (std::abs (value - translation [i]) < std::abs (snapDistance ()))
-			translation [i] = value;
-	}
 
 	return translation;
 }
 
-double
-GridTool::getSnapPosition (const size_t axis, const Vector3d & position)
-{
-	const auto o  = dimension () .get1Value (axis) % 2 * 0.5; // Add a half scale if dimension is odd.
-	const auto p  = std::round (position [axis]);
-	const auto p1 = p - o;
-	const auto p2 = p + o;
-
-	return std::abs (p1 - position [axis]) < std::abs (p2 - position [axis]) ? p1 : p2;
-}
-
 Vector3d
-GridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction)
+AxonometricGridTool::getSnapPosition (const Vector3d & position, const Vector3d & direction)
 {
-	for (size_t i = 0; i < 3; ++ i)
-	{
-		const auto translation = getSnapPosition (i, position, direction);
-
-		if (abs (translation - position) < std::abs (snapDistance ()))
-			return translation;
-	}
-
 	return position;
-}
-
-Vector3d
-GridTool::getSnapPosition (const size_t axis, const Vector3d & position, const Vector3d & direction)
-{
-	const auto value = getSnapPosition (axis, position);
-	const auto t     = (value - position [axis]) / direction [axis];
-
-	return position + t * direction;
 }
 
 } // X3D

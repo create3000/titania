@@ -643,6 +643,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Geospatial/GeoElevationGridTool.cpp \
 	Titania/X3D/Tools/Geospatial/GeoViewpointTool.cpp \
 	Titania/X3D/Tools/Grids/AngleTool.cpp \
+	Titania/X3D/Tools/Grids/AxonometricGridTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
 	Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp \
