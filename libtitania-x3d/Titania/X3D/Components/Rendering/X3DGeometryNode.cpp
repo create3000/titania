@@ -61,6 +61,8 @@
 #include "../Shaders/X3DVertexAttributeNode.h"
 #include "../Texturing/TextureCoordinateGenerator.h"
 
+#include <Titania/Math/Algorithms/Barycentric.h>
+
 namespace titania {
 namespace X3D {
 
@@ -289,21 +291,19 @@ X3DGeometryNode::intersects (const Line3d & line,
 	                          const Matrix4d & modelViewMatrix,
 	                          std::vector <IntersectionPtr> & intersections) const
 {
-	double u, v, t;
+	Vector3d intersection;
 
-	if (not line .intersects (vertices [i1], vertices [i2], vertices [i3], u, v, t))
+	if (not line .intersects (vertices [i1], vertices [i2], vertices [i3], intersection))
 		return false;
-
-	t = 1 - u - v;
 
 	Vector4f     texCoord (0, 0, 0, 1);
 	const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 
 	if (i1 < texCoordSize)
-		texCoord = float (t) * texCoords [0] [i1] + float (u) * texCoords [0] [i2] + float (v) * texCoords [0] [i3];
+		texCoord = barycentric_multiply <float> (texCoords [0] [i1], texCoords [0] [i2], texCoords [0] [i3], intersection);
 
-	const auto normal = normalize (float (t) * normals [i1] + float (u) * normals [i2] + float (v) * normals [i3]);
-	const auto point  = t * vertices [i1] + u * vertices [i2] + v * vertices [i3];
+	const auto normal = normalize (barycentric_multiply <float> (normals [i1], normals [i2], normals [i3], intersection));
+	const auto point  = barycentric_multiply (vertices [i1], vertices [i2], vertices [i3], intersection);
 
 	if (isClipped (point * modelViewMatrix, clipPlanes))
 		return false;

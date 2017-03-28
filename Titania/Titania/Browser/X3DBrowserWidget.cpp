@@ -1068,7 +1068,7 @@ X3DBrowserWidget::createIcon (const std::string & name, const std::string & docu
 	{
 		try
 		{
-			const titania::Image icon (document);
+			const Image icon (document);
 
 			iconSet = Gtk::IconSet::create (icon .getIcon ());
 		}
@@ -1094,7 +1094,7 @@ X3DBrowserWidget::createIcon (const std::string & name, Magick::Image && image)
 
 	try
 	{
-		const titania::Image icon (std::move (image));
+		const Image icon (std::move (image));
 
 		iconSet = Gtk::IconSet::create (icon .getIcon ());
 	}

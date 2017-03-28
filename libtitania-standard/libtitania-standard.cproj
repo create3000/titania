@@ -570,6 +570,7 @@
     <None Include="Titania\External\ApproxMVBB\pugixml\pugiconfig.hpp" />
     <None Include="Titania\External\ApproxMVBB\pugixml\pugixml.hpp" />
     <None Include="Titania\Math\Primitives\Polyhedron3.h" />
+    <None Include="Titania\Math\Algorithms\Barycentric.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

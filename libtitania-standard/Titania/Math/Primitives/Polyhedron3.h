@@ -51,6 +51,7 @@
 #ifndef __TITANIA_MATH_PRIMITIVES_TRIANGLE_SPHERE3_H__
 #define __TITANIA_MATH_PRIMITIVES_TRIANGLE_SPHERE3_H__
 
+#include "../Algorithms/Barycentric.h"
 #include "../Numbers/Vector2.h"
 #include "../Numbers/Vector3.h"
 #include "../Numbers/Rotation4.h"

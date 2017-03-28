@@ -55,11 +55,14 @@
 
 #include <Titania/Basic/URI.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <gstreamermm.h>
 #include <gstreamermm/message.h>
 #include <gstreamermm/playbin.h>
 #include <gstreamermm/ximagesink.h>
 #include <glibmm/dispatcher.h>
+#pragma GCC diagnostic pop
 
 extern "C"
 {

@@ -51,6 +51,7 @@
 #include <Magick++.h>
 
 namespace titania {
+namespace puck {
 
 class Image
 {
@@ -244,4 +245,5 @@ inline
 Image::~Image ()
 { }
 
+} // puck
 } // titania

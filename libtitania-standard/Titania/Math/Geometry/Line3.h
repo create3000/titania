@@ -218,10 +218,10 @@ public:
 
 	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this line, otherwise false.
 	bool
-	intersects (const vector3 <Type> &,
-	            const vector3 <Type> &,
-	            const vector3 <Type> &,
-	            Type &, Type &, Type &) const;
+	intersects (const vector3 <Type> & A,
+	            const vector3 <Type> & B,
+	            const vector3 <Type> & C,
+	            vector3 <Type> & intersection) const;
 
 
 private:
@@ -236,48 +236,50 @@ bool
 line3 <Type>::intersects (const vector3 <Type> & A,
                           const vector3 <Type> & B,
                           const vector3 <Type> & C,
-                          Type & u, Type & v, Type & t) const
+                          vector3 <Type> & intersection) const
 {
 	// Möller–Trumbore intersection algorithm.
 	// https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 
 	// find vectors for two edges sharing vert0
-	const vector3 <Type> edge1 = B - A;
-	const vector3 <Type> edge2 = C - A;
+	const auto edge1 = B - A;
+	const auto edge2 = C - A;
 
 	// begin calculating determinant - also used to calculate U parameter
-	const vector3 <Type> pvec = cross (direction (), edge2);
+	const auto pvec = cross (direction (), edge2);
 
 	// if determinant is near zero, ray lies in plane of triangle
-	const Type det = dot (edge1, pvec);
+	const auto det = dot (edge1, pvec);
 
 	// Non culling intersection
 
 	if (det == 0)
 		return false;
 
-	const Type inv_det = 1 / det;
+	const auto inv_det = 1 / det;
 
 	// calculate distance from vert0 to ray point
-	const vector3 <Type> tvec = point () - A;
+	const auto tvec = point () - A;
 
 	// calculate U parameter and test bounds
-	u = dot (tvec, pvec) * inv_det;
+	const auto u = dot (tvec, pvec) * inv_det;
 
 	if (u < 0 or u > 1)
 		return false;
 
 	// prepare to test V parameter
-	const vector3 <Type> qvec = cross (tvec, edge1);
+	const auto qvec = cross (tvec, edge1);
 
 	// calculate V parameter and test bounds
-	v = dot (direction (), qvec) * inv_det;
+	const auto v = dot (direction (), qvec) * inv_det;
 
 	if (v < 0 or u + v > 1)
 		return false;
 
-	t = dot (edge2, qvec) * inv_det;
+	// Don' know what this is.
+	//t = dot (edge2, qvec) * inv_det;
 
+	intersection = vector3 <Type> (1 - u - v, u, v);
 	return true;
 }
 

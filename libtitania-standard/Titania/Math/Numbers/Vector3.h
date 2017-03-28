@@ -609,7 +609,7 @@ floor (const vector3 <Type> & arg)
 
 /**
  * @returns Computes nearest integer not less than arg.
- * @param a vector3 <Type>.\n
+ * @param arg vector to floor.\n
  * @a Type is any type supporting copy constructions and comparisons with operator<.
  */
 
@@ -623,9 +623,9 @@ ceil (const vector3 <Type> & arg)
 }
 
 /**
- * @returns Computes the nearest integer value to arg (in floating-point format),
+ * @returns Computes the nearest integer value to @a arg (in floating-point format),
  *          rounding halfway cases away from zero, regardless of the current rounding mode.
- * @param a vector3 <Type>.\n
+ * @param arg vector to round.\n
  * @a Type is any type supporting copy constructions and comparisons with operator<.
  */
 
@@ -636,25 +636,6 @@ round (const vector3 <Type> & arg)
 	return vector3 <Type> (std::round (arg .x ()),
 	                       std::round (arg .y ()),
 	                       std::round (arg .z ()));
-}
-
-/**
- * @returns Computes coordinates on triangle from barycentric coordinates.
- * @param  point0  first point.
- * @param  point1  second point.
- * @param  point2  third point.
- * @param  barycentric  barycentric vector.
- * @a Type is any type supporting copy constructions.
- */
-
-template <class Type>
-vector3 <Type>
-barycentric_multiply (const vector3 <Type> & point0,
-                      const vector3 <Type> & point1,
-                      const vector3 <Type> & point2,
-                      const vector3 <Type> & barycentric)
-{
-	return point0 * barycentric .x () + point1 * barycentric .y () + point2 * barycentric .z ();
 }
 
 ///  @relates vector3
