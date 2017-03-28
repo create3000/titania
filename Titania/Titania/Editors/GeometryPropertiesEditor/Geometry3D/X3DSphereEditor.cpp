@@ -214,7 +214,7 @@ X3DSphereEditor::set_options ()
 
 	if (active)
 	{
-		getSphereTypeButton ()  .set_active (0);
+		getSphereTypeButton ()  .set_active (2);
 		getQuadSphereOptions () .set_visible (true);
 	}
 	else if (inconsistent)
