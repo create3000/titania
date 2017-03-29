@@ -139,34 +139,37 @@ public:
 	///  @name Member access
 
 	void
-	setX (const value_type &);
+	setX (const value_type & value);
 
 	value_type
 	getX () const;
 
 	void
-	setY (const value_type &);
+	setY (const value_type & value);
 
 	value_type
 	getY () const;
 
 	void
-	setZ (const value_type &);
+	setZ (const value_type & value);
 
 	value_type
 	getZ () const;
 
 	void
-	setW (const value_type &);
+	setW (const value_type & value);
 
 	value_type
 	getW () const;
 
 	void
-	set1Value (const size_type &, const value_type &);
+	set1Value (const size_type & index, const value_type & value);
 
 	value_type
-	get1Value (const size_type &) const;
+	get1Value (const size_type & index) const;
+
+	value_type
+	operator [ ] (const size_type & index) const;
 
 	///  @name Arithmetic operations
 
@@ -353,6 +356,14 @@ template <class ValueType>
 inline
 typename SFVec4 <ValueType>::value_type
 SFVec4 <ValueType>::get1Value (const size_type & index) const
+{
+	return getValue () [index];
+}
+
+template <class ValueType>
+inline
+typename SFVec4 <ValueType>::value_type
+SFVec4 <ValueType>::operator [ ] (const size_type & index) const
 {
 	return getValue () [index];
 }

@@ -706,6 +706,10 @@ public:
 	getAxonometricGridAngleBox () const
 	{ return *m_AxonometricGridAngleBox; }
 
+	Gtk::SpinButton &
+	getAxonometricGridAngleGammaSpinButton () const
+	{ return *m_AxonometricGridAngleGammaSpinButton; }
+
 	Gtk::Expander &
 	getAxonometricGridMajorLinesExpander () const
 	{ return *m_AxonometricGridMajorLinesExpander; }
@@ -1109,6 +1113,7 @@ private:
 	Gtk::ToggleButton*             m_AxonometricGridUniformScaleButton;
 	Gtk::Image*                    m_AxonometricGridUniformScaleImage;
 	Gtk::Box*                      m_AxonometricGridAngleBox;
+	Gtk::SpinButton*               m_AxonometricGridAngleGammaSpinButton;
 	Gtk::Expander*                 m_AxonometricGridMajorLinesExpander;
 	Gtk::Grid*                     m_AxonometricGridMajorLinesBox;
 	Gtk::Box*                      m_AxonometricGridMajorLineOffsetBox;

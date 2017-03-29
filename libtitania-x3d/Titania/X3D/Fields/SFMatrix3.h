@@ -135,10 +135,13 @@ public:
 	///  @name Member access
 
 	void
-	set1Value (const size_type &, const value_type &);
+	set1Value (const size_type & index, const value_type & value);
 
 	value_type
-	get1Value (const size_type &) const;
+	get1Value (const size_type & index) const;
+
+	value_type
+	operator [ ] (const size_type & index) const;
 
 	///  @name Arithmetic operations
 
@@ -284,6 +287,14 @@ template <class ValueType>
 inline
 typename SFMatrix3 <ValueType>::value_type
 SFMatrix3 <ValueType>::get1Value (const size_type & index) const
+{
+	return getValue () .data () [index];
+}
+
+template <class ValueType>
+inline
+typename SFMatrix3 <ValueType>::value_type
+SFMatrix3 <ValueType>::operator [ ] (const size_type & index) const
 {
 	return getValue () .data () [index];
 }

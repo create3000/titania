@@ -361,18 +361,9 @@ function eventsProcessed ()
 
 	// Hexagon plane
 
-	var left  = Math .sqrt (Math .pow (sides [2], 2) - Math .pow (heights [1], 2));
-	var right = Math .sqrt (Math .pow (sides [0], 2) - Math .pow (heights [1], 2));
-
-	if (angles [1] > Math .PI / 2)
-		left = -left;
-
-	if (angles [0] > Math .PI / 2)
-		right = -right;
-
-	hexagon .point [0] = new SFVec3f (v, 0, 0)             .multiply (dimension [0] / 2);
-	hexagon .point [1] = new SFVec3f ( right, 0, -heightV) .multiply (dimension [0] / 2);
-	hexagon .point [2] = new SFVec3f (-left,  0, -heightV) .multiply (dimension [0] / 2);
+	hexagon .point [0] = new SFVec3f (v, 0, 0) .multiply (dimension [0] / 2);
+	hexagon .point [1] = new SFRotation (0, 1, 0, angles [0])              .multVec (new SFVec3f (u * dimension [0] / 2, 0, 0));
+	hexagon .point [2] = new SFRotation (0, 1, 0, angles [0] + angles [2]) .multVec (new SFVec3f (t * dimension [0] / 2, 0, 0));
 	hexagon .point [3] = hexagon .point [0] .negate ();
 	hexagon .point [4] = hexagon .point [1] .negate ();
 	hexagon .point [5] = hexagon .point [2] .negate ();

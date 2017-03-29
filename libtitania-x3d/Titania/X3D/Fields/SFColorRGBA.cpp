@@ -116,8 +116,14 @@ SFColorRGBA::set1Value (const size_type & index, const value_type & value)
 	addEvent ();
 }
 
-typename SFColorRGBA::value_type
+SFColorRGBA::value_type
 SFColorRGBA::get1Value (const size_type & index) const
+{
+	return getValue () [index];
+}
+
+SFColorRGBA::value_type
+SFColorRGBA::operator [ ] (const size_type & index) const
 {
 	return getValue () [index];
 }

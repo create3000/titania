@@ -86,6 +86,14 @@ private:
 	void
 	realize ();
 
+	///  @name Event handlers
+
+	void
+	set_angle ();
+	
+	void
+	connectAngle (const X3D::SFVec2f & field);
+
 	///  @name Members
 
 	X3D::X3DPtr <X3D::X3DGridTool> tool;

@@ -124,10 +124,55 @@ AxonometricGridTool::realize ()
 	{ }
 }
 
+/**
+ * @returns Barycentric coordinates (u, v, w) for @a point with respect to triangle (a, b, c).
+ * @param point  in cartesian coordinate system.
+ * @param a      first point of triangle.
+ * @param b      second point of triangle.
+ * @param c      third point of triangle.\n
+ * Type is any type supporting copy constructions.
+ */
+template <class Type>
+vector3 <Type>
+barycentric (const vector3 <Type> & point,
+             const vector3 <Type> & a,
+             const vector3 <Type> & b,
+             const vector3 <Type> & c)
+{
+	const auto v0 = b - a;
+	const auto v1 = c - a;
+	const auto v2 = point - a;
+
+	const auto d00   = dot (v0, v0);
+	const auto d01   = dot (v0, v1);
+	const auto d11   = dot (v1, v1);
+	const auto d20   = dot (v2, v0);
+	const auto d21   = dot (v2, v1);
+	const auto denom = d00 * d11 - d01 * d01;
+
+	const auto v = (d11 * d20 - d01 * d21) / denom;
+	const auto t = (d00 * d21 - d01 * d20) / denom;
+	const auto u = 1 - v - t;
+
+	return vector3 <Type> (u, v, t);
+}
+
 Vector3d
 AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snapY)
 {
 	auto translation = position;
+
+	const auto angles = Vector3d (angle () [0], angle () [1], pi <double> - angle () [0] - angle () [1]);
+	const auto u      = std::sin (angles [1]) / std::sin (angles [2]);
+	const auto v      = 1;
+	const auto t      = std::sin (angles [0]) / std::sin (angles [2]);
+	const auto A      = Vector3d (0, 0, 0);
+	const auto B      = Vector3d (v, 0, 0);
+	const auto C      = Vector3d (u, 0, 0) * Rotation4d (0, 1, 0, angles [0]);
+
+	const auto coord = barycentric (translation, A, B, C);
+
+	__LOG__ << coord << std::endl;
 
 	return translation;
 }

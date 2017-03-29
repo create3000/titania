@@ -214,6 +214,7 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AxonometricGridUniformScaleButton", m_AxonometricGridUniformScaleButton);
 	m_builder -> get_widget ("AxonometricGridUniformScaleImage", m_AxonometricGridUniformScaleImage);
 	m_builder -> get_widget ("AxonometricGridAngleBox", m_AxonometricGridAngleBox);
+	m_builder -> get_widget ("AxonometricGridAngleGammaSpinButton", m_AxonometricGridAngleGammaSpinButton);
 	m_builder -> get_widget ("AxonometricGridMajorLinesExpander", m_AxonometricGridMajorLinesExpander);
 	m_builder -> get_widget ("AxonometricGridMajorLinesBox", m_AxonometricGridMajorLinesBox);
 	m_builder -> get_widget ("AxonometricGridMajorLineOffsetBox", m_AxonometricGridMajorLineOffsetBox);

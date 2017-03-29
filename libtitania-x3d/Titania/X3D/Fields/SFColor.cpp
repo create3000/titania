@@ -109,8 +109,14 @@ SFColor::set1Value (const size_type & index, const value_type & value)
 	addEvent ();
 }
 
-typename SFColor::value_type
+SFColor::value_type
 SFColor::get1Value (const size_type & index) const
+{
+	return getValue () [index];
+}
+
+SFColor::value_type
+SFColor::operator [ ] (const size_type & index) const
 {
 	return getValue () [index];
 }

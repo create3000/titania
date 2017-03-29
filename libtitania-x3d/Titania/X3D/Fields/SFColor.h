@@ -116,42 +116,45 @@ public:
 	///  @name Member access
 
 	void
-	setRed (const value_type &);
+	setRed (const value_type & value);
 
 	value_type
 	getRed () const
 	{ return getValue () .r (); }
 
 	void
-	setGreen (const value_type &);
+	setGreen (const value_type & value);
 
 	value_type
 	getGreen () const
 	{ return getValue () .g (); }
 
 	void
-	setBlue (const value_type &);
+	setBlue (const value_type & value);
 
 	value_type
 	getBlue () const
 	{ return getValue () .b (); }
 
 	void
-	set1Value (const size_type &, const value_type &);
+	set1Value (const size_type & index, const value_type & value);
 
 	value_type
-	get1Value (const size_type &) const;
+	get1Value (const size_type & index) const;
+
+	value_type
+	operator [ ] (const size_type & index) const;
 
 	///  @name Operations
 
 	void
-	setHSV (const value_type &, const value_type &, const value_type &);
+	setHSV (const value_type & h, const value_type & s, const value_type & v);
 
 	void
-	getHSV (value_type &, value_type &, value_type &) const;
+	getHSV (value_type & h, value_type & s, value_type & v) const;
 
 	SFColor*
-	lerp (const SFColor &, const value_type &) const;
+	lerp (const SFColor & toColor, const value_type & t) const;
 
 	///  @name Input/Output
 

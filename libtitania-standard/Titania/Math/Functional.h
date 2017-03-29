@@ -128,6 +128,18 @@ degrees (const Type & value)
 	return value * Type (180 / pi <Type>);
 }
 
+constexpr long double
+operator "" _deg (const long double value)
+{
+	return radians (value);
+}
+
+constexpr long double
+operator "" _rad (const long double value)
+{
+	return degrees (value);
+}
+
 ///  Clamp @a value in the range @a low and @a high.
 template <class Type>
 inline

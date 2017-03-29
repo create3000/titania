@@ -103,7 +103,27 @@ AxonometricGridTool::fromMetadata ()
 	getTool () -> lineColor ()       = getMetaData ("/Titania/" + getName () + "/lineColor",       X3D::SFColorRGBA (1, 0.7, 0.7, 0.2));
 	getTool () -> majorLineColor ()  = getMetaData ("/Titania/" + getName () + "/majorLineColor",  X3D::SFColorRGBA (1, 0.7, 0.7, 0.4));
 
-	X3D::X3DPtr <X3D::AxonometricGridTool> (getTool ()) -> angle () = getMetaData ("/Titania/" + getName () + "/angle", X3D::SFVec2f (math::radians (60.0), math::radians (60.0)));
+	auto & angle = getTool () -> getField <X3D::SFVec2f> ("angle");
+
+	angle .removeInterest (&AxonometricGridTool::set_angle, this);
+	angle .addInterest (&AxonometricGridTool::connectAngle, this);
+
+	angle = getMetaData ("/Titania/" + getName () + "/angle", X3D::SFVec2f (math::radians (60.0), math::radians (60.0)));
+}
+
+void
+AxonometricGridTool::set_angle ()
+{
+	setMetaData ("/Titania/" + getName () + "/angle", getTool () -> getField <X3D::SFVec2f> ("angle"));
+
+	getBrowserWindow () -> setModified (getCurrentBrowser (), true);
+}
+
+void
+AxonometricGridTool::connectAngle (const X3D::SFVec2f & field)
+{
+	field .removeInterest (&AxonometricGridTool::connectAngle, this);
+	field .addInterest (&AxonometricGridTool::set_angle, this);
 }
 
 AxonometricGridTool::~AxonometricGridTool ()

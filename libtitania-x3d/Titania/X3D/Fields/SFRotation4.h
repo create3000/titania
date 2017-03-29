@@ -129,43 +129,46 @@ public:
 	///  @name Member access
 
 	void
-	setX (const value_type &);
+	setX (const value_type & value);
 
 	value_type
 	getX () const;
 
 	void
-	setY (const value_type &);
+	setY (const value_type & value);
 
 	value_type
 	getY () const;
 
 	void
-	setZ (const value_type &);
+	setZ (const value_type & value);
 
 	value_type
 	getZ () const;
 
 	void
-	setAxis (const vector3_type &);
+	setAxis (const vector3_type & value);
 
 	vector3_type*
 	getAxis () const;
 
 	void
-	setAngle (const value_type &);
+	setAngle (const value_type & value);
 
 	value_type
 	getAngle () const;
 
 	void
-	set1Value (const size_type &, const value_type &);
+	set1Value (const size_type & index, const value_type & value);
 
 	value_type
-	get1Value (const size_type &) const;
+	get1Value (const size_type & index) const;
 
 	void
-	getValue (value_type &, value_type &, value_type &, value_type &) const;
+	getValue (value_type & x, value_type & y, value_type & z, value_type & angle) const;
+
+	value_type
+	operator [ ] (const size_type & index) const;
 
 	///  @name Arithmetic operations
 
@@ -366,6 +369,14 @@ void
 SFRotation4 <ValueType>::getValue (value_type & x, value_type & y, value_type & z, value_type & angle) const
 {
 	getValue () .get (x, y, z, angle);
+}
+
+template <class ValueType>
+inline
+typename SFRotation4 <ValueType>::value_type
+SFRotation4 <ValueType>::operator [ ] (const size_type & index) const
+{
+	return getValue () [index];
 }
 
 template <class ValueType>
