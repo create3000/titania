@@ -133,12 +133,33 @@ inline
 std::tuple <vector3 <Type>, vector3 <Type>, vector3 <Type>>
 barycentric_triangle (const vector3 <Type> & barycentric)
 {
-	const auto min  = floor (barycentric);
-	const auto max  = ceil (barycentric);
-	const auto even = min .x () + min .y () + min .z () == 0;
-	const auto A    = even ? vector3 <Type> (max [0], min [1], min [2]) : vector3 <Type> (min [0], max [1], max [2]);
-	const auto B    = even ? vector3 <Type> (min [0], max [1], min [2]) : vector3 <Type> (max [0], min [1], max [2]);
-	const auto C    = even ? vector3 <Type> (min [0], min [1], max [2]) : vector3 <Type> (max [0], max [1], min [2]);
+	const auto min    = floor (barycentric);
+	const auto max    = ceil (barycentric);
+	const auto even   = min .x () + min .y () + min .z () == 0;
+	auto       A      = even ? vector3 <Type> (max .x (), min .y (), min .z ()) : vector3 <Type> (min .x (), max .y (), max .z ());
+	auto       B      = even ? vector3 <Type> (min .x (), max .y (), min .z ()) : vector3 <Type> (max .x (), min .y (), max .z ());
+	auto       C      = even ? vector3 <Type> (min .x (), min .y (), max .z ()) : vector3 <Type> (max .x (), max .y (), min .z ());
+
+	if (min .x () == max .x ())
+	{
+		A .x (1 - A .y () - A .z ());
+		B .x (1 - B .y () - B .z ());
+		C .x (1 - C .y () - C .z ());
+	}
+
+	if (min .y () == max .y ())
+	{
+		A .y (1 - A .z () - A .x ());
+		B .y (1 - B .z () - B .x ());
+		C .y (1 - C .z () - C .x ());
+	}
+
+	if (min .z () == max .z ())
+	{
+		A .z (1 - A .x () - A .y ());
+		B .z (1 - B .x () - B .y ());
+		C .z (1 - C .x () - C .y ());
+	}
 
 	return std::make_tuple (A, B, C);
 }

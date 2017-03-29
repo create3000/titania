@@ -177,7 +177,7 @@ AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snap
 		const auto eD     = std::array <double, 3> ({ std::abs (pU .distance (p)), std::abs (pV .distance (p)), std::abs (pT .distance (p)) });
 		const auto iter   = std::min_element (eD .begin (), eD .end ());
 
-		if (*iter and *iter < std::abs (snapDistance ()))
+		if (*iter < std::abs (snapDistance ()))
 			p = planes [iter - eD .begin ()] .closest_point (p);
 	}
 
