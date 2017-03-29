@@ -91,11 +91,11 @@ public:
 
 	///  @name Fields
 
-	SFVec2f &
+	SFVec2d &
 	angle ()
 	{ return *fields .angle; }
 
-	const SFVec2f &
+	const SFVec2d &
 	angle () const
 	{ return *fields .angle; }
 
@@ -134,7 +134,7 @@ private:
 	{
 		Fields ();
 
-		SFVec2f* const angle;
+		SFVec2d* const angle;
 	};
 
 	Fields fields;

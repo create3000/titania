@@ -92,7 +92,7 @@ private:
 	set_angle ();
 	
 	void
-	connectAngle (const X3D::SFVec2f & field);
+	connectAngle (const X3D::SFVec2d & field);
 
 	///  @name Members
 

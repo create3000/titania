@@ -20,7 +20,7 @@ EXTERNPROTO AxonometricGrid [
   inputOutput    SFRotation rotation
   inputOutput    SFVec3f    scale
   inputOutput    MFInt32    dimension
-  inputOutput    SFVec2f    angle
+  inputOutput    SFVec2d    angle
   inputOutput    MFInt32    majorLineEvery
   inputOutput    MFInt32    majorLineOffset
   inputOutput    SFColor    color
@@ -103,7 +103,7 @@ WorldInfo {
                 10,
                 10
               ]
-              inputOutput SFVec2f    angle 1.0472 1.0472
+              inputOutput SFVec2d    angle 1.047197551196597746154214461093167628065 1.047197551196597746154214461093167628065
               inputOutput MFInt32    majorLineEvery [
                 5,
                 5,

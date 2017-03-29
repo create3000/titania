@@ -22,7 +22,7 @@ PROTO AxonometricGrid [
     10,
     10
   ]
-  inputOutput    SFVec2f    angle 1.0472 1.0472
+  inputOutput    SFVec2d    angle 1.047197551196597746154214461093167628065 1.047197551196597746154214461093167628065
   inputOutput    MFInt32    majorLineEvery [
     5,
     5,
@@ -321,7 +321,7 @@ PROTO AxonometricGrid [
 
   DEF GridScript Script {
     inputOutput    MFInt32 dimension IS dimension
-    inputOutput    SFVec2f angle IS angle
+    inputOutput    SFVec2d angle IS angle
     inputOutput    MFInt32 majorLineEvery IS majorLineEvery
     inputOutput    MFInt32 majorLineOffset IS majorLineOffset
     initializeOnly SFNode  hexagon USE HexagonCoord

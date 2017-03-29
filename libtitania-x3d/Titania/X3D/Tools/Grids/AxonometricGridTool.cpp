@@ -63,7 +63,7 @@ const std::string   AxonometricGridTool::typeName       = "AxonometricGridTool";
 const std::string   AxonometricGridTool::containerField = "grid";
 
 AxonometricGridTool::Fields::Fields () :
-  angle (new SFVec2f (radians (60.0), radians (60.0)))
+  angle (new SFVec2d (radians (60.0), radians (60.0)))
 { }
 
 AxonometricGridTool::AxonometricGridTool (X3DExecutionContext* const executionContext) :
@@ -117,7 +117,7 @@ AxonometricGridTool::realize ()
 
 	try
 	{
-		auto & set_angle = getToolNode () -> getField <SFVec2f> ("set_angle");
+		auto & set_angle = getToolNode () -> getField <SFVec2d> ("set_angle");
 		angle ()  .addInterest (set_angle);
 		set_angle .addInterest (angle ());
 		set_angle = angle ();
@@ -133,12 +133,17 @@ AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snap
 
 	p .y (0);
 
-	const auto angles   = Vector3d (angle () [0], angle () [1], pi <double> - angle () [0] - angle () [1]);
-	const auto u        = std::sin (angles [1]) / std::sin (angles [2]);
-	const auto v        = 1;
-	const auto As       = Vector3d (0, 0, 0);
-	const auto Bs       = Vector3d (v, 0, 0);
-	const auto Cs       = Vector3d (u, 0, 0) * Rotation4d (0, 1, 0, angles [0]);
+	// Construct simplex.
+
+	const auto angles = Vector3d (angle () [0], angle () [1], pi <double> - angle () [0] - angle () [1]);
+	const auto u      = std::sin (angles [1]) / std::sin (angles [2]);
+	const auto v      = 1;
+	const auto As     = Vector3d (0, 0, 0);
+	const auto Bs     = Vector3d (v, 0, 0);
+	const auto Cs     = Vector3d (u, 0, 0) * Rotation4d (0, 1, 0, angles [0]);
+
+	// Construct triangle.
+
 	const auto triangle = barycentric_triangle (to_barycentric (position, As, Bs, Cs));
 	const auto A        = from_barycentric (std::get <0> (triangle), As, Bs, Cs);
 	const auto B        = from_barycentric (std::get <1> (triangle), As, Bs, Cs);
