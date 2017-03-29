@@ -172,13 +172,24 @@ AxonometricGridTool::getSnapPosition (const Vector3d & position, const bool snap
 		const auto eD     = std::array <double, 3> ({ std::abs (pU .distance (p)), std::abs (pV .distance (p)), std::abs (pT .distance (p)) });
 		const auto iter   = std::min_element (eD .begin (), eD .end ());
 
-__LOG__ << *iter << std::endl;
-
 		if (*iter < std::abs (snapDistance ()))
 			p = planes [iter - eD .begin ()] .closest_point (p);
 	}
 
-	p .y (position .y ());
+	{
+		// Snap y-Axis.
+
+		const auto o  = dimension () .get1Value (1) % 2 * 0.5; // Add a half scale if dimension is odd.
+		const auto yr = std::round (position .y ());
+		const auto p1 = yr - o;
+		const auto p2 = yr + o;
+		const auto y  = std::abs (p1 - position .y ()) < std::abs (p2 - position .y ()) ? p1 : p2;
+
+		if (std::abs (y - position .y ()) < std::abs (snapDistance ()))
+			p .y (y);
+		else
+			p .y (position .y ());
+	}
 
 	return p;
 }
