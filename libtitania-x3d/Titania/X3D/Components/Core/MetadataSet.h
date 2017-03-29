@@ -212,9 +212,8 @@ throw (Error <INVALID_NODE>,
 		
 	   if (throw_)
 	      throw Error <INVALID_NODE> ("MetaData " + name + " has invalid type.");
-		
-		else
-			removeMetaData (name);
+
+		removeValue (name);
 	}
 	catch (const Error <INVALID_NAME> &)
 	{
