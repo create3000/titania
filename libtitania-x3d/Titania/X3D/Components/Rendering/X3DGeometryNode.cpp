@@ -300,10 +300,10 @@ X3DGeometryNode::intersects (const Line3d & line,
 	const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
 
 	if (i1 < texCoordSize)
-		texCoord = barycentric_multiply <float> (texCoords [0] [i1], texCoords [0] [i2], texCoords [0] [i3], intersection);
+		texCoord = from_barycentric <float> (intersection, texCoords [0] [i1], texCoords [0] [i2], texCoords [0] [i3]);
 
-	const auto normal = normalize (barycentric_multiply <float> (normals [i1], normals [i2], normals [i3], intersection));
-	const auto point  = barycentric_multiply (vertices [i1], vertices [i2], vertices [i3], intersection);
+	const auto normal = normalize (from_barycentric <float> (intersection, normals [i1], normals [i2], normals [i3]));
+	const auto point  = from_barycentric (intersection, vertices [i1], vertices [i2], vertices [i3]);
 
 	if (isClipped (point * modelViewMatrix, clipPlanes))
 		return false;

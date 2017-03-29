@@ -82,7 +82,7 @@ class plane3
 public:
 
 	///  Value typedef.
-	typedef Type value_type;
+	using value_type = Type;
 
 	///  @name Constructors
 
@@ -147,23 +147,23 @@ public:
 
 	///  Transform this plane by @a matrix.
 	void
-	mult_right (const matrix4 <Type> &)
+	mult_right (const matrix4 <Type> & matrix)
 	throw (std::domain_error);
 
 	///  Transform this plane by @a matrix.
 	void
-	mult_left (const matrix4 <Type> &)
+	mult_left (const matrix4 <Type> & matrix)
 	throw (std::domain_error);
 
 	//  @name Distance
 
 	///  Returns the distance from @a point.
 	constexpr Type
-	distance (const vector3 <Type> &) const;
+	distance (const vector3 <Type> & point) const;
 
 	///  Returns the closest point on the plane to a given point @a point.
 	vector3 <Type>
-	closest_point (const vector3 <Type> & point)
+	closest_point (const vector3 <Type> & point) const
 	{
 		vector3 <Type> closest_point;
 		intersects (line3 <Type> (point, m_normal), closest_point);
@@ -172,7 +172,7 @@ public:
 
 	///  Returns true if @a line intersects with this box3. The intersection point is stored in @a point.
 	bool
-	intersects (const line3 <Type> &, vector3 <Type> &) const;
+	intersects (const line3 <Type> & line, vector3 <Type> & point) const;
 
 
 private:

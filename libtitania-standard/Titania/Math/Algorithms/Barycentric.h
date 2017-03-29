@@ -55,11 +55,43 @@
 #include "../Numbers/Vector3.h"
 #include "../Numbers/Vector4.h"
 
+#include <tuple>
+
 namespace titania {
 namespace math {
 
-///  @relates vector2
-///  @name Operations
+/**
+ * @returns Barycentric coordinates (u, v, w) for @a point with respect to triangle (a, b, c).
+ * @param point  in cartesian coordinate system.
+ * @param a      first point of triangle.
+ * @param b      second point of triangle.
+ * @param c      third point of triangle.\n
+ * Type is any type supporting copy constructions.
+ */
+template <class Type, class Vector>
+vector3 <Type>
+to_barycentric (const vector3 <Type> & point,
+                const Vector & a,
+                const Vector & b,
+                const Vector & c)
+{
+	const auto v0 = b - a;
+	const auto v1 = c - a;
+	const auto v2 = point - a;
+
+	const auto d00   = dot (v0, v0);
+	const auto d01   = dot (v0, v1);
+	const auto d11   = dot (v1, v1);
+	const auto d20   = dot (v2, v0);
+	const auto d21   = dot (v2, v1);
+	const auto denom = d00 * d11 - d01 * d01;
+
+	const auto v = (d11 * d20 - d01 * d21) / denom;
+	const auto t = (d00 * d21 - d01 * d20) / denom;
+	const auto u = 1 - v - t;
+
+	return vector3 <Type> (u, v, t);
+}
 
 /**
  * @returns Computes coordinates on triangle defined @a point0, @a point1, @a point2 by from @a barycentric coordinates.
@@ -69,59 +101,46 @@ namespace math {
  * @param  barycentric  barycentric vector of triangle.
  */
 
-template <class Type>
+template <class Type, class Vector>
 inline
-vector2 <Type>
-barycentric_multiply (const vector2 <Type> & point0,
-                      const vector2 <Type> & point1,
-                      const vector2 <Type> & point2,
-                      const vector3 <Type> & barycentric)
+Vector
+from_barycentric (const vector3 <Type> & barycentric,
+                  const Vector & point0,
+                  const Vector & point1,
+                  const Vector & point2)
 {
 	return point0 * barycentric .x () + point1 * barycentric .y () + point2 * barycentric .z ();
 }
 
-///  @relates vector3
-///  @name Operations
-
 /**
- * @returns Computes coordinates on triangle defined @a point0, @a point1, @a point2 by from @a barycentric coordinates.
- * @param  point0  first point of triangle.
- * @param  point1  second point of triangle.
- * @param  point2  third point of triangle.
+ * @returns Computes the greates element of the barycentric axes.
  * @param  barycentric  barycentric vector of triangle.
  */
-
 template <class Type>
 inline
 vector3 <Type>
-barycentric_multiply (const vector3 <Type> & point0,
-                      const vector3 <Type> & point1,
-                      const vector3 <Type> & point2,
-                      const vector3 <Type> & barycentric)
+barycentric_max (const vector3 <Type> & barycentric)
 {
-	return point0 * barycentric .x () + point1 * barycentric .y () + point2 * barycentric .z ();
+	return vector3 <Type> (barycentric [0] + barycentric [2], barycentric [1] + barycentric [0], barycentric [2] + barycentric [1]);
 }
 
-///  @relates vector4
-///  @name Operations
-
 /**
- * @returns Computes coordinates on triangle defined @a point0, @a point1, @a point2 by from @a barycentric coordinates.
- * @param  point0  first point of triangle.
- * @param  point1  second point of triangle.
- * @param  point2  third point of triangle.
- * @param  barycentric  barycentric vector of triangle.
+ * @returns Returns the vertices of the triangle an arbitary barycentric point.
+ * @param  barycentric  barycentric vector within triangle.
  */
-
 template <class Type>
 inline
-vector4 <Type>
-barycentric_multiply (const vector4 <Type> & point0,
-                      const vector4 <Type> & point1,
-                      const vector4 <Type> & point2,
-                      const vector3 <Type> & barycentric)
+std::tuple <vector3 <Type>, vector3 <Type>, vector3 <Type>>
+barycentric_triangle (const vector3 <Type> & barycentric)
 {
-	return point0 * barycentric .x () + point1 * barycentric .y () + point2 * barycentric .z ();
+	const auto min  = floor (barycentric);
+	const auto max  = ceil (barycentric);
+	const auto even = min .x () + min .y () + min .z () == 0;
+	const auto A    = even ? vector3 <Type> (max [0], min [1], min [2]) : vector3 <Type> (min [0], max [1], max [2]);
+	const auto B    = even ? vector3 <Type> (min [0], max [1], min [2]) : vector3 <Type> (max [0], min [1], max [2]);
+	const auto C    = even ? vector3 <Type> (min [0], min [1], max [2]) : vector3 <Type> (max [0], max [1], min [2]);
+
+	return std::make_tuple (A, B, C);
 }
 
 } // math

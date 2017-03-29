@@ -344,7 +344,7 @@ basic_polyhedron3 <Type>::create_point (const vector3 <Type> & point0,
 )
 {
 	// Barycentric coordinates.
-	return barycentric_multiply (point0, point1, point2, vector3 <Type> (x, y, z) / Type (m_dimension));
+	return from_barycentric (vector3 <Type> (x, y, z) / Type (m_dimension), point0, point1, point2);
 }
 
 template <class Type>
