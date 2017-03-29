@@ -254,6 +254,9 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AxonometricGridSnapToCenterCheckButton", m_AxonometricGridSnapToCenterCheckButton);
 	m_builder -> get_widget ("AxonometricGridSnapDistanceSpinButton", m_AxonometricGridSnapDistanceSpinButton);
 
+	// Connect object Gtk::Adjustment with id 'AxonometricGridUVTDimensionAdjustment'.
+	m_AxonometricGridUVTDimensionAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_grid_uvt_dimension_value_changed));
+
 	// Connect object Gtk::CheckButton with id 'GridCheckButton'.
 	m_GridCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_toggled));
 

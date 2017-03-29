@@ -254,8 +254,9 @@
   <object class="GtkAdjustment" id="AxonometricGridUVTDimensionAdjustment">
     <property name="lower">1</property>
     <property name="upper">10000</property>
-    <property name="step_increment">1</property>
+    <property name="step_increment">2</property>
     <property name="page_increment">10</property>
+    <signal name="value-changed" handler="on_axonometric_grid_uvt_dimension_value_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="AxonometricGridYDimensionAdjustment">
     <property name="lower">1</property>
