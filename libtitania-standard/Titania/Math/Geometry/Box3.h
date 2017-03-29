@@ -457,12 +457,15 @@ box3 <Type>::intersects (const line3 <Type> & line) const
 	const auto & min     = extents .first;
 	const auto & max     = extents .second;
 
-	vector3 <Type> intersection;
 
 	for (size_t i = 0; i < 5; ++ i)
 	{
-		if (plane3 <Type> (is_odd (i) ? min : max, normals [i]) .intersects (line, intersection))
+		const auto pair = plane3 <Type> (is_odd (i) ? min : max, normals [i]) .intersects (line);
+
+		if (pair .second)
 		{
+			const auto & intersection = pair .first;
+
 			switch (i)
 			{
 				case 0:

@@ -161,18 +161,21 @@ public:
 	constexpr Type
 	distance (const vector3 <Type> & point) const;
 
+	///  Returns the perpendicular vector from @a point to this plane.
+	vector3 <Type>
+	perpendicular_vector (const vector3 <Type> & point) const;
+
 	///  Returns the closest point on the plane to a given point @a point.
 	vector3 <Type>
 	closest_point (const vector3 <Type> & point) const
 	{
-		vector3 <Type> closest_point;
-		intersects (line3 <Type> (point, m_normal), closest_point);
-		return closest_point;
+		return point + perpendicular_vector (point);
 	}
 
-	///  Returns true if @a line intersects with this box3. The intersection point is stored in @a point.
-	bool
-	intersects (const line3 <Type> & line, vector3 <Type> & point) const;
+	///  Returns a pair consisting of the intersection with @a line point and a bool denoting whether
+	///  the intersection was successful.
+	std::pair <vector3 <Type>, bool>
+	intersects (const line3 <Type> & line) const;
 
 
 private:
@@ -249,25 +252,32 @@ plane3 <Type>::distance (const vector3 <Type> & point) const
 	return dot (point, normal ()) - distance_from_origin ();
 }
 
-///  Return true if @a line intersects with this plane otherwise false.  The intersection
-///  point is stored in @a point.
+///  Returns the perpendicular vector from @a point to this plane.
 template <class Type>
-bool
-plane3 <Type>::intersects (const line3 <Type> & line, vector3 <Type> & point) const
+vector3 <Type>
+plane3 <Type>::perpendicular_vector (const vector3 <Type> & point) const
+{
+	return normal () * -distance (point);
+}
+
+///  Returns a pair consisting of the intersection with @a line point and a bool denoting whether
+///  the intersection was successful.
+template <class Type>
+std::pair <vector3 <Type>, bool>
+plane3 <Type>::intersects (const line3 <Type> & line) const
 {
 	// Check if the line is parallel to the plane.
-	const Type theta = dot (line .direction (), normal ());
+	const auto theta = dot (line .direction (), normal ());
 
 	// Plane and line are parallel.
 	if (theta == 0)
-		return false;
+		return std::make_pair (vector3 <Type> (), false);
 
 	// Plane and line are not parallel. The intersection point can be calculated now.
-	const Type t = (distance_from_origin () - dot (normal (), line .point ())) / theta;
+	const auto t     = (distance_from_origin () - dot (normal (), line .point ())) / theta;
+	const auto point = line .point () + line .direction () * t;
 
-	point = line .point () + line .direction () * t;
-
-	return true;
+	return std::make_pair (point, true);
 }
 
 ///  @relates plane3

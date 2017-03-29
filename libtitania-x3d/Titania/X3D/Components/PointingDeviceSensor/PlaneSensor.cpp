@@ -167,8 +167,12 @@ PlaneSensor::set_active (const bool active,
 
 			if (planeSensor)
 			{
-				if (plane .intersects (hitRay, startPoint))
+				const auto intersection = plane .intersects (hitRay);
+
+				if (intersection .second)
 				{
+					startPoint = intersection .first;
+
 					trackStart (startPoint);
 				}
 			}
@@ -220,13 +224,12 @@ PlaneSensor::set_motion (const HitPtr & hit,
 	{
 		if (planeSensor)
 		{
-			const auto hitRay = hit -> hitRay * inverseModelViewMatrix;
+			const auto hitRay       = hit -> hitRay * inverseModelViewMatrix;
+			const auto intersection = plane .intersects (hitRay);
 
-			Vector3d endPoint;
-
-			if (plane .intersects (hitRay, endPoint))
+			if (intersection .second)
 			{
-				track (endPoint, endPoint);
+				track (intersection .first, intersection .first);
 			}
 			else
 				throw std::domain_error ("Plane and line are parallel.");

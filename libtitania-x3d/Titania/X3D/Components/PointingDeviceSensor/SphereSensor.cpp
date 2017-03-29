@@ -172,8 +172,7 @@ SphereSensor::set_motion (const HitPtr & hit,
 		{
 			// Find trackPoint on the plane with sphere
 
-			Vector3d tangentPoint;
-			zPlane .intersects (hitRay, tangentPoint);
+			const auto tangentPoint = zPlane .intersects (hitRay) .first;
 
 			hitRay = Line3d (tangentPoint, sphere .center (), points_type ());
 
