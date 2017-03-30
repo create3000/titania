@@ -155,7 +155,7 @@ WorldInfo {
             name "children"
             reference "http://titania.create3000.de"
             value DEF SculpToolBrush SculpToolBrush {
-              normalize FALSE
+              normalize TRUE
             }
           }
         ]
