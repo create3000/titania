@@ -133,8 +133,8 @@ private:
 
 	///  @name Operations
 
-	bool
-	getTrackPoint (const Line3d &, Vector3d &, const bool = false) const;
+	std::pair <Vector3d, bool>
+	getTrackPoint (const Line3d &, const bool = false) const;
 
 	///  @name Static members
 

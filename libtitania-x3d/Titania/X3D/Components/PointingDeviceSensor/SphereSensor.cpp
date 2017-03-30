@@ -95,22 +95,21 @@ SphereSensor::create (X3DExecutionContext* const executionContext) const
 	return new SphereSensor (executionContext);
 }
 
-bool
-SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & enter, const bool behind) const
+std::pair <Vector3d, bool>
+SphereSensor::getTrackPoint (const Line3d & hitRay, const bool behind) const
 {
 	const auto intersection = sphere .intersects (hitRay);
 
 	if (not std::get <2> (intersection))
-		return false;
+		return std::make_pair (Vector3d (), false);
 
-	enter = std::get <0> (intersection);
-
-	const auto exit = std::get <1> (intersection);
+	const auto enter = std::get <0> (intersection);
+	const auto exit  = std::get <1> (intersection);
 
 	if ((abs (hitRay .point () - exit) < abs (hitRay .point () - enter)) - behind)
-		enter = exit;
+		return std::make_pair (exit, true);
 
-	return true;
+	return std::make_pair (enter, true);
 }
 
 void
@@ -160,15 +159,18 @@ SphereSensor::set_motion (const HitPtr & hit,
 {
 	try
 	{
-		auto       hitRay    = hit -> hitRay * inverseModelViewMatrix;
-		const auto startPoint = this -> startPoint * inverseModelViewMatrix;
+		auto       hitRay      = hit -> hitRay * inverseModelViewMatrix;
+		const auto startPoint   = this -> startPoint * inverseModelViewMatrix;
+		const auto intersection = getTrackPoint (hitRay, behind);
 
 		Vector3d trackPoint;
 
-		if (getTrackPoint (hitRay, trackPoint, behind))
+		if (intersection .second)
 		{
 			const auto zAxis = normalize (inverseModelViewMatrix .mult_dir_matrix (Vector3d (0, 0, 1))); // Camera direction
-			zPlane = Plane3d (trackPoint, zAxis);                                                        // Screen aligned Z-plane
+
+			trackPoint = intersection .first;
+			zPlane     = Plane3d (trackPoint, zAxis); // Screen aligned Z-plane
 		}
 		else
 		{
@@ -178,28 +180,27 @@ SphereSensor::set_motion (const HitPtr & hit,
 
 			hitRay = Line3d (tangentPoint, sphere .center (), points_type ());
 
-			getTrackPoint (hitRay, trackPoint);
+			const auto   intersection = getTrackPoint (hitRay);
+			const auto & trackPoint1  = intersection .first;
 
 			// Find trackPoint behind sphere
 
-			const auto triNormal     = math::normal (sphere .center (), trackPoint, startPoint);
-			const auto dirFromCenter = normalize (trackPoint - sphere .center ());
+			const auto triNormal     = math::normal (sphere .center (), trackPoint1, startPoint);
+			const auto dirFromCenter = normalize (trackPoint1 - sphere .center ());
 			const auto normal        = normalize (cross (triNormal, dirFromCenter));
 
-			hitRay = Line3d (trackPoint - normal * abs (tangentPoint - trackPoint), sphere .center (), points_type ());
-
-			getTrackPoint (hitRay, trackPoint);
+			hitRay     = Line3d (trackPoint1 - normal * abs (tangentPoint - trackPoint1), sphere .center (), points_type ());
+			trackPoint = getTrackPoint (hitRay) .first;
 		}
 
-		trackPoint_changed () = trackPoint;
-
-		const auto toVector   = trackPoint - sphere .center ();
-		auto       rotation   = Rotation4d (fromVector, toVector);
+		const auto toVector = trackPoint - sphere .center ();
+		auto       rotation = Rotation4d (fromVector, toVector);
 
 		if (behind)
 			rotation .inverse ();
 
-		rotation_changed () = startOffset * rotation;
+		trackPoint_changed () = trackPoint;
+		rotation_changed ()   = startOffset * rotation;
 	}
 	catch (const std::domain_error &)
 	{ }
