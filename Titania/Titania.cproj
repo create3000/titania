@@ -2646,6 +2646,8 @@
     <None Include="share\titania\Library\Materials\Gray\Gray7.x3dv" />
     <None Include="share\titania\Library\Materials\Gray\Gray8.x3dv" />
     <None Include="share\titania\Library\Materials\Gray\Gray9.x3dv" />
+    <None Include="share\titania\ui\icons\PolygonReducer.svg" />
+    <None Include="share\titania\ui\icons\UndoHistory.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
