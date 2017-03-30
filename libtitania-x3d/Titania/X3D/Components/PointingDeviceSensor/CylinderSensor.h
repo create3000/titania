@@ -167,8 +167,8 @@ private:
 	bool
 	isBehind (const Line3d &, const Vector3d &) const;
 
-	bool
-	getTrackPoint (const Line3d &, Vector3d &, const bool = false) const;
+	Vector3d
+	getTrackPoint (const Line3d &) const;
 
 	double
 	getAngle (const Rotation4d &) const;

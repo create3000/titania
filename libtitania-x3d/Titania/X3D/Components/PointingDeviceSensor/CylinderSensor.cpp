@@ -117,8 +117,8 @@ CylinderSensor::isBehind (const Line3d & hitRay, const Vector3d & hitPoint) cons
 	return abs (hitPoint - std::get <0> (intersection)) > abs (hitPoint - std::get <1> (intersection));
 }
 
-bool
-CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, const bool) const
+Vector3d
+CylinderSensor::getTrackPoint (const Line3d & hitRay) const
 {
 	const auto zPoint    = zPlane .intersects (hitRay) .first;
 	const auto axisPoint = zPoint + cylinder .axis () .perpendicular_vector (zPoint);
@@ -126,16 +126,13 @@ CylinderSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, con
 	const auto section   = std::floor ((distance + 1) / 2);
 
 	// Use asin on the cylinder and outside linear angle.
-	const auto sinp  = interval (distance, -1.0, 1.0);
-	const auto phi   = section == 0 ? std::asin (sinp) : sinp * pi_2 <double>;
-	const auto angle = phi + section * pi <double>;
+	const auto sinp       = interval (distance, -1.0, 1.0);
+	const auto phi        = section == 0 ? std::asin (sinp) : sinp * pi_2 <double>;
+	const auto angle      = phi + section * pi <double>;
+	const auto rotation   = Rotation4d  (cylinder .axis () .direction (), angle);
+	const auto trackPoint = szNormal * cylinder .radius () * rotation + axisPoint;
 
-	const Rotation4d rotation (cylinder .axis () .direction (), angle);
-
-	trackPoint  = szNormal * cylinder .radius () * rotation;
-	trackPoint += axisPoint;
-
-	return true;
+	return trackPoint;
 }
 
 // Returns an angle in the interval [-2pi,2pi]
@@ -194,7 +191,7 @@ CylinderSensor::set_active (const bool active,
 			if (disk)
 				trackPoint = yPlane .intersects (hitRay) .first;
 			else
-				getTrackPoint (hitRay, trackPoint, behind);
+				trackPoint = getTrackPoint (hitRay);
 
 			fromVector  = -cylinder .axis () .perpendicular_vector (trackPoint);
 			startOffset = Rotation4d (yAxis, offset ());
@@ -227,7 +224,7 @@ CylinderSensor::set_motion (const HitPtr & hit,
 		if (disk)
 			trackPoint = yPlane .intersects (hitRay) .first;
 		else
-			getTrackPoint (hitRay, trackPoint, behind);
+			trackPoint = getTrackPoint (hitRay);
 
 		trackPoint_changed () = trackPoint;
 
