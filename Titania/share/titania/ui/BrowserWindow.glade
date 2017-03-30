@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="UndoHistory" filename="icons/UndoHistory.svg"/>
       <source stock-id="gtk-sort-ascending" filename="icons/Faenza/16/gtk-sort-ascending.png"/>
       <source stock-id="gtk-sort-descending" filename="icons/Faenza/16/gtk-sort-descending.png"/>
       <source stock-id="Rought" filename="icons/Rought.svg"/>
@@ -663,6 +664,18 @@
     <property name="stock">Exclusion</property>
     <property name="icon_size">1</property>
   </object>
+  <object class="GtkImage" id="image37">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">UndoHistory</property>
+    <property name="icon_size">1</property>
+  </object>
+  <object class="GtkImage" id="image38">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">UndoHistory</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkMenu" id="BrowserMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -907,11 +920,14 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="BrowserUndoHistoryMenuItem">
+              <object class="GtkImageMenuItem" id="BrowserUndoHistoryMenuItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Undo History ...</property>
                 <property name="use_underline">True</property>
+                <property name="image">image37</property>
+                <property name="use_stock">False</property>
+                <property name="always_show_image">True</property>
                 <signal name="activate" handler="on_undo_history_activated" swapped="no"/>
               </object>
             </child>
@@ -2397,12 +2413,15 @@
                               </object>
                             </child>
                             <child>
-                              <object class="GtkMenuItem" id="UndoHistoryMenuItem">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Undo History ...</property>
-                                <property name="use_underline">True</property>
-                                <signal name="activate" handler="on_undo_history_activated" swapped="no"/>
+                              <object class="GtkImageMenuItem" id="UndoHistoryMenuItem">
+                                 <property name="visible">True</property>
+                                 <property name="can_focus">False</property>
+                                 <property name="label" translatable="yes">Undo History ...</property>
+                                 <property name="use_underline">True</property>
+                                 <property name="image">image38</property>
+                                 <property name="use_stock">False</property>
+                                 <property name="always_show_image">True</property>
+                                 <signal name="activate" handler="on_undo_history_activated" swapped="no"/>
                               </object>
                             </child>
                             <child>

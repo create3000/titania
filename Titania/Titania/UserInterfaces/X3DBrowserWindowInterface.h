@@ -386,7 +386,7 @@ public:
 	getBrowserRedoMenuItem () const
 	{ return *m_BrowserRedoMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getBrowserUndoHistoryMenuItem () const
 	{ return *m_BrowserUndoHistoryMenuItem; }
 
@@ -886,7 +886,7 @@ public:
 	getRedoMenuItem () const
 	{ return *m_RedoMenuItem; }
 
-	Gtk::MenuItem &
+	Gtk::ImageMenuItem &
 	getUndoHistoryMenuItem () const
 	{ return *m_UndoHistoryMenuItem; }
 
@@ -2261,7 +2261,7 @@ private:
 	Gtk::MenuItem*                   m_BrowserEditMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserUndoMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserRedoMenuItem;
-	Gtk::MenuItem*                   m_BrowserUndoHistoryMenuItem;
+	Gtk::ImageMenuItem*              m_BrowserUndoHistoryMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserCutMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserCopyMenuItem;
 	Gtk::ImageMenuItem*              m_BrowserPasteMenuItem;
@@ -2386,7 +2386,7 @@ private:
 	Gtk::MenuItem*                   m_EditMenuItem;
 	Gtk::ImageMenuItem*              m_UndoMenuItem;
 	Gtk::ImageMenuItem*              m_RedoMenuItem;
-	Gtk::MenuItem*                   m_UndoHistoryMenuItem;
+	Gtk::ImageMenuItem*              m_UndoHistoryMenuItem;
 	Gtk::ImageMenuItem*              m_CutMenuItem;
 	Gtk::ImageMenuItem*              m_CopyMenuItem;
 	Gtk::ImageMenuItem*              m_PasteMenuItem;

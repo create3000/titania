@@ -35,8 +35,9 @@
             <property name="title">Undo History</property>
             <child>
               <object class="GtkImage" id="image1">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="stock">Index</property>
+                <property name="stock">UndoHistory</property>
               </object>
             </child>
           </object>
