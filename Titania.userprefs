@@ -1,16 +1,56 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Primitives/Polyhedron3.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.h" Line="136" Column="27" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/Sphere.cpp" Line="150" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.h" Line="90" Column="9" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Geometry3D/X3DSphereEditor.cpp" Line="65" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Geometry3D/IcosahedronOptions.cpp" Line="123" Column="16" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Geometry3D/OctahedronOptions.cpp" Line="113" Column="39" />
-      <File FileName="libtitania-standard/Titania/Math/Primitives/Polyhedron3.h" Line="274" Column="17" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="298" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/AxonometricGridTool.cpp" Line="173" Column="36" />
+      <File FileName="libtitania-standard/Titania/Math/Algorithms/Barycentric.h" Line="102" Column="4" />
+      <File FileName="experimental/main.cpp" Line="172" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Selection.cpp" Line="433" Column="1" />
+      <File FileName="debian/control" Line="43" Column="21" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Titania" expanded="True">
+            <Node name="libtitania-standard" expanded="True">
+              <Node name="Titania" expanded="True">
+                <Node name="Math" expanded="True">
+                  <Node name="Geometry" expanded="True">
+                    <Node name="ConvexHull3.h" selected="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+            <Node name="libtitania-x3d" expanded="True">
+              <Node name="Titania" expanded="True">
+                <Node name="X3D" expanded="True">
+                  <Node name="Browser" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+            <Node name="Titania" expanded="True">
+              <Node name="share" expanded="True">
+                <Node name="titania" expanded="True">
+                  <Node name="Library" expanded="True" />
+                  <Node name="ui" expanded="True">
+                    <Node name="Dialogs" expanded="True" />
+                  </Node>
+                  <Node name="units" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="Titania" expanded="True">
+                <Node name="Browser" expanded="True" />
+                <Node name="ComposedWidgets" expanded="True" />
+                <Node name="Editors" expanded="True">
+                  <Node name="GeometryEditor" expanded="True" />
+                  <Node name="GridEditor" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
@@ -19,6 +59,7 @@
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-x3d/Titania/X3D/JavaScript/SpiderMonkey/Context.cpp" line="86" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/PrototypeEditor/PrototypeEditor.h" line="48" column="1" />
       <Breakpoint file="/home/holger/Projekte/Titania/libtitania-standard/Titania/Math/Geometry/Box2 (Kopie).h" line="58" column="1" />
+      <RunToCursorBreakpoint file="/home/holger/Projekte/Titania/Titania/Titania/Editors/GridEditor/X3DAxonometricGridEditor.cpp" line="196" column="128" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
