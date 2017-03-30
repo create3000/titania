@@ -111,8 +111,8 @@ PlaneSensor::create (X3DExecutionContext* const executionContext) const
 	return new PlaneSensor (executionContext);
 }
 
-bool
-PlaneSensor::getLineTrackPoint (const HitPtr & hit, const Line3d & line, Vector3d & trackPoint)
+std::pair <Vector3d, bool>
+PlaneSensor::getLineTrackPoint (const HitPtr & hit, const Line3d & line)
 throw (std::domain_error)
 {
 	const auto screenLine     = ViewVolume::projectLine (line, modelViewMatrix, projectionMatrix, viewport);
@@ -120,9 +120,7 @@ throw (std::domain_error)
 	const auto trackPointLine = ViewVolume::unProjectRay (trackPoint1, modelViewMatrix, projectionMatrix, viewport);
 	const auto intersection   = line .closest_point (trackPointLine);
 
-	trackPoint = intersection .first;
-
-	return intersection .second;
+	return intersection;
 }
 
 void
@@ -181,20 +179,20 @@ PlaneSensor::set_active (const bool active,
 			}
 			else
 			{
-				if (getLineTrackPoint (hit, line, startPoint))
+				const auto intersection = getLineTrackPoint (hit, line);
+
+				if (intersection .second)
 				{
-					Vector3d trackPoint;
+					startPoint = intersection .first;
 
 					try
 					{
-						getLineTrackPoint (hit, Line3d (line .direction (), line .direction ()), trackPoint);
+						trackStart (getLineTrackPoint (hit, Line3d (line .direction (), line .direction ())) .first);
 					}
 					catch (const std::domain_error &)
 					{
-						trackPoint = startPoint;
+						trackStart (startPoint);
 					}
-
-					trackStart (trackPoint);
 				}
 			}
 		}
@@ -239,20 +237,22 @@ PlaneSensor::set_motion (const HitPtr & hit,
 		}
 		else
 		{
-			Vector3d endPoint, trackPoint;
+			const auto intersection = getLineTrackPoint (hit, line);
 
-			if (getLineTrackPoint (hit, line, endPoint))
+			Vector3d trackPoint;
+
+			if (intersection .second)
 			{
 				try
 				{
-					getLineTrackPoint (hit, Line3d (Vector3d (), line .direction ()), trackPoint);
+					trackPoint = getLineTrackPoint (hit, Line3d (Vector3d (), line .direction ())) .first;
 				}
 				catch (const std::domain_error &)
 				{
-					trackPoint = endPoint;
+					trackPoint = intersection .first;
 				}
 
-				track (endPoint, trackPoint);
+				track (intersection .first, trackPoint);
 			}
 			else
 				throw std::domain_error ("Lines are parallel.");

@@ -156,8 +156,8 @@ private:
 
 	///  @name Operations
 
-	bool
-	getLineTrackPoint (const HitPtr &, const Line3d &, Vector3d &)
+	std::pair <Vector3d, bool>
+	getLineTrackPoint (const HitPtr &, const Line3d &)
 	throw (std::domain_error);
 
 	void
