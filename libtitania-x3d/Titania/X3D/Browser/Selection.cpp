@@ -476,7 +476,8 @@ Selection::setHierarchy (const SFNode & node, const MFNode & other)
 
 	hierarchy .erase (std::remove_if (hierarchy .begin (),
 	                                  hierarchy .end (),
-	                                  [ ] (const SFNode & node) { return not node; }),
+	                                  [&] (const SFNode & node)
+	                                  { return not node or node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext (); }),
 	                  hierarchy .end ());
 }
 

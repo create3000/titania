@@ -401,7 +401,23 @@ Inline::set_buffer ()
 void
 Inline::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	group -> traverse (type, renderObject);
+	switch (type)
+	{
+		case TraverseType::POINTER:
+		{
+			getBrowser () -> getHierarchy () .emplace_back (this);
+
+			group -> traverse (type, renderObject);
+
+			getBrowser () -> getHierarchy () .pop_back ();
+			break;
+		}
+		default:
+		{
+			group -> traverse (type, renderObject);
+			break;
+		}
+	}
 }
 
 void
