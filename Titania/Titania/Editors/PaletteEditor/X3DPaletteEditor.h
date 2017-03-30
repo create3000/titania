@@ -772,7 +772,7 @@ X3DPaletteEditor <Type>::on_update_object_in_palette_activate ()
 	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (this -> addDialog ("MessageDialog", false));
 
 	dialog -> setType (Gtk::MESSAGE_QUESTION);
-	dialog -> setMessage (_ ("Do you realy want to update the selected item in the palette?"));
+	dialog -> setMessage (_ ("Do you realy want to update the selected item in this palette?"));
 	dialog -> setText (_ ("This will immediately override the selected item."));
 
 	if (dialog -> run () not_eq Gtk::RESPONSE_OK)
