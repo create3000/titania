@@ -2648,6 +2648,8 @@
     <None Include="share\titania\Library\Materials\Gray\Gray9.x3dv" />
     <None Include="share\titania\ui\icons\PolygonReducer.svg" />
     <None Include="share\titania\ui\icons\UndoHistory.svg" />
+    <None Include="share\titania\pages\about\library\box-shadow.png" />
+    <None Include="share\titania\ui\Editors\FogEditor.glade" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
