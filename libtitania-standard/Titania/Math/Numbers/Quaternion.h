@@ -86,14 +86,28 @@ class quaternion
 {
 public:
 
-	///  Size typedef.  Used for size and indices.
-	typedef size_t size_type;
+	///  @name Member types
 
-	///  Value typedef.
-	typedef Type value_type;
+	///  Type.
+	using value_type = Type;
 
 	///  Vector3 typedef.
-	typedef vector3 <Type> vector3_type;
+	using vector3_type = vector3 <Type>;
+
+	///  Size typedef.  Used for size and indices.
+	using size_type = size_t;
+
+	///  Random access iterator
+	using iterator = Type*;
+
+	///  Constant random access iterator 
+	using const_iterator = const Type*;
+
+	///  std::reverse_iterator <iterator>
+	using reverse_iterator = std::reverse_iterator <iterator>;
+
+	///  std::reverse_iterator <iterator>
+	using const_reverse_iterator = std::reverse_iterator <const_iterator>;
 
 	///  @name Constructors
 
@@ -191,6 +205,68 @@ public:
 	const Type*
 	data () const
 	{ return value; }
+
+	///  @name Iterators
+
+	///  Returns an iterator to the beginning.
+	iterator
+	begin ()
+	{ return data (); }
+
+	///  Returns an iterator to the beginning.
+	const_iterator
+	begin () const
+	{ return data (); }
+
+	///  Returns an iterator to the beginning.
+	const_iterator
+	cbegin () const
+	{ return data (); }
+
+	///  Returns an iterator to the end.
+	iterator
+	end ()
+	{ return data () + size (); }
+
+	///  Returns an iterator to the end.
+	const_iterator
+	end () const
+	{ return data () + size (); }
+
+	///  Returns an iterator to the end.
+	const_iterator
+	cend () const
+	{ return data () + size (); }
+
+	///  Returns a reverse iterator to the beginning.
+	reverse_iterator
+	rbegin ()
+	{ return std::make_reverse_iterator (end ()); }
+
+	///  returns a reverse iterator to the beginning.
+	const_reverse_iterator
+	rbegin () const
+	{ return std::make_reverse_iterator (end ()); }
+
+	///  Returns a reverse iterator to the beginning.
+	const_reverse_iterator
+	crbegin () const
+	{ return std::make_reverse_iterator (cend ()); }
+
+	///  Returns a reverse iterator to the end.
+	reverse_iterator
+	rend ()
+	{ return std::make_reverse_iterator (begin ()); }
+
+	///  Returns a reverse iterator to the end.
+	const_reverse_iterator
+	rend () const
+	{ return std::make_reverse_iterator (begin ()); }
+
+	///  Returns a reverse iterator to the end.
+	const_reverse_iterator
+	crend () const
+	{ return std::make_reverse_iterator (cbegin ()); }
 
 	///  @name Capacity
 

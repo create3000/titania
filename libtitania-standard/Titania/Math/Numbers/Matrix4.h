@@ -94,23 +94,25 @@ class matrix4
 {
 private:
 
-	static constexpr size_t Order = 4;
-	static constexpr size_t Size  = Order * Order;
+	static constexpr size_t ORDER = 4;
+	static constexpr size_t SIZE  = ORDER * ORDER;
 
 
 public:
 
-	///  Size typedef.  Used for size and indices.
-	using size_type = size_t;
+	///  @name Member types
 
 	///  Value typedef.
 	using value_type = Type;
+
+	///  Size typedef.  Used for size and indices.
+	using size_type = size_t;
 
 	///  Matrix typedef.
 	using matrix_type = vector4 <vector4 <Type>>;
 
 	///  Array typedef.
-	typedef Type array_type [Size];
+	using array_type = Type [SIZE];
 
 	///  Translation typedef.
 	using translation_type = vector3 <Type>;
@@ -129,6 +131,18 @@ public:
 
 	///  Normal typedef.
 	using normal_type = vector3 <Type>;
+
+	///  Random access iterator
+	using iterator = Type*;
+
+	///  Constant random access iterator 
+	using const_iterator = const Type*;
+
+	///  std::reverse_iterator <iterator>
+	using reverse_iterator = std::reverse_iterator <iterator>;
+
+	///  std::reverse_iterator <iterator>
+	using const_reverse_iterator = std::reverse_iterator <const_iterator>;
 
 	///  @name Constructors
 
@@ -327,19 +341,81 @@ public:
 	vector () const
 	{ return value; }
 
+	///  @name Iterators
+
+	///  Returns an iterator to the beginning.
+	iterator
+	begin ()
+	{ return data (); }
+
+	///  Returns an iterator to the beginning.
+	const_iterator
+	begin () const
+	{ return data (); }
+
+	///  Returns an iterator to the beginning.
+	const_iterator
+	cbegin () const
+	{ return data (); }
+
+	///  Returns an iterator to the end.
+	iterator
+	end ()
+	{ return data () + size (); }
+
+	///  Returns an iterator to the end.
+	const_iterator
+	end () const
+	{ return data () + size (); }
+
+	///  Returns an iterator to the end.
+	const_iterator
+	cend () const
+	{ return data () + size (); }
+
+	///  Returns a reverse iterator to the beginning.
+	reverse_iterator
+	rbegin ()
+	{ return std::make_reverse_iterator (end ()); }
+
+	///  returns a reverse iterator to the beginning.
+	const_reverse_iterator
+	rbegin () const
+	{ return std::make_reverse_iterator (end ()); }
+
+	///  Returns a reverse iterator to the beginning.
+	const_reverse_iterator
+	crbegin () const
+	{ return std::make_reverse_iterator (cend ()); }
+
+	///  Returns a reverse iterator to the end.
+	reverse_iterator
+	rend ()
+	{ return std::make_reverse_iterator (begin ()); }
+
+	///  Returns a reverse iterator to the end.
+	const_reverse_iterator
+	rend () const
+	{ return std::make_reverse_iterator (begin ()); }
+
+	///  Returns a reverse iterator to the end.
+	const_reverse_iterator
+	crend () const
+	{ return std::make_reverse_iterator (cbegin ()); }
+
 	///  @name Capacity
 
 	///  Returns the order of the matrix.
 	static
 	constexpr size_type
 	order ()
-	{ return Order; }
+	{ return ORDER; }
 
-	///  Returns the number of elements in the matrix. The size is the same as order () * order ().
+	///  Returns the number of elements in the matrix.
 	static
 	constexpr size_type
 	size ()
-	{ return Size; }
+	{ return SIZE; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this matrix4 inplace.
