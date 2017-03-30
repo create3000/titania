@@ -71,6 +71,10 @@ class line_segment2
 {
 public:
 
+	///  @name Member types
+
+	using value_type = Type;
+
 	///  @name Construction
 
 	///  Default constructor. Constructs a line segement with length 0 on point (0, 0, 0).
@@ -113,22 +117,10 @@ public:
 
 	///  @name Operations
 
-	/// Returns true if this line segment intersects with @a line, otherwise false.
-	bool
-	intersects (const line2 <Type> & line, vector2 <Type> & point) const
-	{
-		const auto normal  = line .normal ();
-		const auto vector1 = line .perpendicular_vector (point1 ());
-		const auto vector2 = line .perpendicular_vector (point2 ());
-		const auto signum1 = signum (dot (normal, vector1));
-		const auto signum2 = signum (dot (normal, vector2));
-
-		if (std::abs (signum1 - signum2) not_eq 2)
-			return false;
-
-		this -> line () .intersects (line, point);
-		return true;
-	}
+	///  Returns a pair consisting of the intersection point,
+	///  and a bool denoting whether the intersection was successful.
+	std::pair <vector2 <Type>, bool>
+	intersects (const line2 <Type> & line) const;
 
 private:
 
@@ -137,6 +129,24 @@ private:
 	line2 <Type>   m_line;
 
 };
+
+template <class Type>
+std::pair <vector2 <Type>, bool>
+line_segment2 <Type>::intersects (const line2 <Type> & line) const
+{
+	static constexpr auto l = vector2 <Type> ();
+
+	const auto normal  = line .normal ();
+	const auto vector1 = line .perpendicular_vector (point1 ());
+	const auto vector2 = line .perpendicular_vector (point2 ());
+	const auto signum1 = signum (dot (normal, vector1));
+	const auto signum2 = signum (dot (normal, vector2));
+
+	if (std::abs (signum1 - signum2) not_eq 2)
+		return std::make_pair (l, false);
+
+	return this -> line () .intersects (line);
+}
 
 ///  @relates line_segment2
 ///  @name Input/Output operations

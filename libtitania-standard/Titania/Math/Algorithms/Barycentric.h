@@ -100,7 +100,6 @@ to_barycentric (const vector3 <Type> & point,
  * @param  point2  third point of triangle.
  * @param  barycentric  barycentric vector of triangle.
  */
-
 template <class Type, class Vector>
 inline
 Vector

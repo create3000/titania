@@ -131,7 +131,7 @@ ViewVolume::intersects (const Box3d & bbox) const
 // http://www.opengl.org/wiki/GluProject_and_gluUnProject_code
 
 Vector3d
-ViewVolume::unProjectPoint (double winx, double winy, double winz,
+ViewVolume::unProjectPoint (const double winx, const double winy, const double winz,
                             const Matrix4d & modelViewMatrix,
                             const Matrix4d & projectionMatrix,
                             const Vector4i & viewport)
@@ -143,7 +143,7 @@ throw (std::domain_error)
 }
 
 Vector3d
-ViewVolume::unProjectPoint (double winx, double winy, double winz, const Matrix4d & invModelViewProjection, const Vector4i & viewport)
+ViewVolume::unProjectPoint (const double winx, const double winy, const double winz, const Matrix4d & invModelViewProjection, const Vector4i & viewport)
 throw (std::domain_error)
 {
 	// Transformation of normalized coordinates between -1 and 1
@@ -164,21 +164,21 @@ throw (std::domain_error)
 }
 
 Line3d
-ViewVolume::unProjectRay (double winx, double winy,
+ViewVolume::unProjectRay (const Vector2d & point,
                           const Matrix4d & modelViewMatrix,
                           const Matrix4d & projectionMatrix,
                           const Vector4i & viewport)
 throw (std::domain_error)
 {
-	return unProjectRay (winx, winy, inverse (modelViewMatrix * projectionMatrix), viewport);
+	return unProjectRay (point, inverse (modelViewMatrix * projectionMatrix), viewport);
 }
 
 Line3d
-ViewVolume::unProjectRay (double winx, double winy, const Matrix4d & invModelViewProjection, const Vector4i & viewport)
+ViewVolume::unProjectRay (const Vector2d & point, const Matrix4d & invModelViewProjection, const Vector4i & viewport)
 throw (std::domain_error)
 {
-	const Vector3f near = ViewVolume::unProjectPoint (winx, winy, 0.0, invModelViewProjection, viewport);
-	const Vector3f far  = ViewVolume::unProjectPoint (winx, winy, 0.9, invModelViewProjection, viewport);
+	const Vector3f near = ViewVolume::unProjectPoint (point .x (), point .y (), 0.0, invModelViewProjection, viewport);
+	const Vector3f far  = ViewVolume::unProjectPoint (point .x (), point .y (), 0.9, invModelViewProjection, viewport);
 
 	return Line3d (near, far, points_type ());
 }

@@ -73,8 +73,9 @@ class line3
 {
 public:
 
-	///  Value typedef.
-	typedef Type value_type;
+	///  @name Member types
+
+	using value_type = Type;
 
 	///  @name Constructors
 
@@ -169,22 +170,7 @@ public:
 
 	///  Returns the perpendicular vector from @a line to this line.
 	vector3 <Type>
-	perpendicular_vector (const line3 <Type> & line) const
-	{
-		const vector3 <Type> d = point () - line .point ();
-
-		const Type re1 = dot (d, direction ());
-		const Type re2 = dot (d, line .direction ());
-		const Type e12 = dot (direction (), line .direction ());
-		const Type E12 = std::pow (e12, 2);
-
-		const Type a = (re1 - re2 * e12) / (1 - E12);
-		const Type b = -(re2 - re1 * e12) / (1 - E12);
-
-		return d + b* line .direction () - a*
-		       direction ();
-
-	}
+	perpendicular_vector (const line3 <Type> & line) const;
 
 	///  Returns the closest point from @a point to this line on this line.
 	vector3 <Type>
@@ -193,35 +179,19 @@ public:
 		return this -> point () + direction () * dot (point - this -> point (), direction ());
 	}
 
-	///  Returns the closest point from @a line to this line on this line.
-	///  The return value is the angle between both lines. The return value
-	///  must be checked whether both lines are parallel.
-	Type
-	closest_point (const line3 & line, vector3 <Type> & point) const
-	{
-		const auto & p1 = this -> point ();
-		const auto & p2 = line .point ();
-
-		const auto & d1 = direction ();
-		const auto & d2 = line .direction ();
-
-		const auto theta = dot (d1, d2); // angle between both lines
-		const auto u     = p2 - p1;
-		const auto t     = (dot (u, d1) - theta * dot (u, d2)) / (1 - theta * theta);
-
-		point = p1 + t * d1;
-
-		return theta;
-	}
+	///  Returns a pair consisting of the closest point from @a line to this line on this line,
+	///  and a bool denoting whether both lines are parallel.
+	std::pair <vector3 <Type>, bool>
+	closest_point (const line3 & line) const;
 
 	///  @name Intersection
 
-	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this line, otherwise false.
-	bool
+	///  Returns a pair consisting of the barycentric intersection coordinates for the triangle,
+	///  and a bool denoting whether the intersection was successful.
+	std::pair <vector3 <Type>, bool>
 	intersects (const vector3 <Type> & A,
 	            const vector3 <Type> & B,
-	            const vector3 <Type> & C,
-	            vector3 <Type> & intersection) const;
+	            const vector3 <Type> & C) const;
 
 
 private:
@@ -232,11 +202,50 @@ private:
 };
 
 template <class Type>
-bool
+vector3 <Type>
+line3 <Type>::perpendicular_vector (const line3 <Type> & line) const
+{
+	const vector3 <Type> d = point () - line .point ();
+
+	const Type re1 = dot (d, direction ());
+	const Type re2 = dot (d, line .direction ());
+	const Type e12 = dot (direction (), line .direction ());
+	const Type E12 = std::pow (e12, 2);
+
+	const Type a = (re1 - re2 * e12) / (1 - E12);
+	const Type b = -(re2 - re1 * e12) / (1 - E12);
+
+	return d + b * line .direction () - a * direction ();
+
+}
+
+template <class Type>
+std::pair <vector3 <Type>, bool>
+line3 <Type>::closest_point (const line3 & line) const
+{
+	const auto & p1 = this -> point ();
+	const auto & p2 = line .point ();
+
+	const auto & d1 = direction ();
+	const auto & d2 = line .direction ();
+
+	const auto theta = dot (d1, d2);
+
+	if (std::abs (theta) >= 1)
+		return std::make_pair (vector3 <Type> (), false);  // lines are parallel
+
+	const auto u     = p2 - p1;
+	const auto t     = (dot (u, d1) - theta * dot (u, d2)) / (1 - theta * theta);
+	const auto point = p1 + t * d1;
+
+	return std::make_pair (point, true);
+}
+
+template <class Type>
+std::pair <vector3 <Type>, bool>
 line3 <Type>::intersects (const vector3 <Type> & A,
                           const vector3 <Type> & B,
-                          const vector3 <Type> & C,
-                          vector3 <Type> & intersection) const
+                          const vector3 <Type> & C) const
 {
 	// Möller–Trumbore intersection algorithm.
 	// https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
@@ -254,7 +263,7 @@ line3 <Type>::intersects (const vector3 <Type> & A,
 	// Non culling intersection
 
 	if (det == 0)
-		return false;
+		return std::make_pair (vector3 <Type> (), false);
 
 	const auto inv_det = 1 / det;
 
@@ -265,7 +274,7 @@ line3 <Type>::intersects (const vector3 <Type> & A,
 	const auto u = dot (tvec, pvec) * inv_det;
 
 	if (u < 0 or u > 1)
-		return false;
+		return std::make_pair (vector3 <Type> (), false);
 
 	// prepare to test V parameter
 	const auto qvec = cross (tvec, edge1);
@@ -274,13 +283,12 @@ line3 <Type>::intersects (const vector3 <Type> & A,
 	const auto v = dot (direction (), qvec) * inv_det;
 
 	if (v < 0 or u + v > 1)
-		return false;
+		return std::make_pair (vector3 <Type> (), false);
 
 	// Don' know what this is.
 	//t = dot (edge2, qvec) * inv_det;
 
-	intersection = vector3 <Type> (1 - u - v, u, v);
-	return true;
+	return std::make_pair (vector3 <Type> (1 - u - v, u, v), true);
 }
 
 ///  @relates line3

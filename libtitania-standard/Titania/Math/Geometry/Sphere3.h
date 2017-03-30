@@ -55,7 +55,7 @@
 #include "../Numbers/Matrix4.h"
 #include "../Numbers/Vector3.h"
 
-#include "../../LOG.h"
+#include <tuple>
 
 namespace titania {
 namespace math {
@@ -66,15 +66,16 @@ namespace math {
  *  Extern instantiations for float, double, and long double are part of the
  *  library.  Results with any other type are not guaranteed.
  *
- *  @param  Type  Type of matrix values.
+ *  @param  Type  Type of values.
  */
 template <class Type>
 class sphere3
 {
 public:
 
-	///  Value typedef.
-	typedef Type value_type;
+	///  @name Member types
+
+	using value_type = Type;
 
 	///  @name Constructors
 
@@ -94,8 +95,8 @@ public:
 	///  Constructs a line of from @a radius and @a center.
 	constexpr
 	sphere3 (const Type & radius, const vector3 <Type> & center) :
-		radius_ (radius),
-		center_ (center)
+		m_radius (radius),
+		m_center (center)
 	{ }
 
 	///  @name Element access
@@ -103,74 +104,72 @@ public:
 	///  Sets the radius of this sphere.
 	void
 	radius (const Type & value)
-	{ radius_ = value; }
+	{ m_radius = value; }
 
 	///  Returns the radius of this sphere.
 	const Type &
 	radius () const
-	{ return radius_; }
+	{ return m_radius; }
 
 	///  Returns the center of this sphere.
 	void
 	center (const vector3 <Type> & value)
-	{ center_ = value; }
+	{ m_center = value; }
 
 	///  Returns the center of this sphere.
 	const vector3 <Type> &
 	center () const
-	{ return center_; }
+	{ return m_center; }
 
 	///  @name Intersection
 
 	///  Returns true if the @a point intersects with this sphere.
 	bool
 	intersects (const vector3 <Type> & point) const
-	{
-		return abs (point - center ()) <= radius ();
-	}
+	{ return abs (point - center ()) <= radius (); }
 
 	///  Returns true if the @a line intersects with this sphere.
-	bool
-	intersects (const line3 <Type> &, vector3 <Type> &, vector3 <Type> &) const;
+	std::tuple <vector3 <Type>, vector3 <Type>, bool>
+	intersects (const line3 <Type> & line) const;
 
 	///  Returns true if the triangle of points @a A, @a B and @a C intersects with this sphere.
 	bool
-	intersects (vector3 <Type>, vector3 <Type>, vector3 <Type>) const;
+	intersects (vector3 <Type> A, vector3 <Type> B, vector3 <Type> C) const;
 
 
 private:
 
-	Type           radius_;
-	vector3 <Type> center_;
+	Type           m_radius;
+	vector3 <Type> m_center;
 
 };
 
 template <class Type>
-bool
-sphere3 <Type>::intersects (const line3 <Type> & line, vector3 <Type> & intersection1, vector3 <Type> & intersection2) const
+std::tuple <vector3 <Type>, vector3 <Type>, bool>
+sphere3 <Type>::intersects (const line3 <Type> & line) const
 {
 	const auto L   = center () - line .point ();
-	const Type tca = dot (L, line .direction ());
+	const auto tca = dot (L, line .direction ());
 
 	if (tca < 0)
 		// there is no intersection
-		return false;
+		return std::make_tuple (vector3 <Type> (), vector3 <Type> (), false);
 
-	const Type d2 = dot (L, L) - std::pow (tca, 2);
-	const Type r2 = std::pow (radius (), 2);
+	const auto d2 = dot (L, L) - std::pow (tca, 2);
+	const auto r2 = std::pow (radius (), 2);
 
 	if (d2 > r2)
-		return false;
+		return std::make_tuple (vector3 <Type> (), vector3 <Type> (), false);
 
 	const Type thc = std::sqrt (r2 - d2);
 
-	const Type t1 = tca - thc;
-	const Type t2 = tca + thc;
+	const auto t1 = tca - thc;
+	const auto t2 = tca + thc;
 
-	intersection1 = line .point () + line .direction () * t1;
-	intersection2 = line .point () + line .direction () * t2;
+	const auto enter = line .point () + line .direction () * t1;
+	const auto exit  = line .point () + line .direction () * t2;
 
-	return true;
+	return std::make_tuple (enter, exit, true);
 }
 
 // http://realtimecollisiondetection.net/blog/?p=103

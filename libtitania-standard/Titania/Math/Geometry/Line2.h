@@ -71,8 +71,9 @@ class line2
 {
 public:
 
-	///  Value typedef.
-	typedef Type value_type;
+	///  @name Member types
+
+	using value_type = Type;
 
 	///  @name Constructors
 
@@ -176,59 +177,15 @@ public:
 
 	///  @name Intersection
 
-	///  Returns the closest point from @a line to this line on this line.
-	///  The return value is the angle between both lines. The return value
-	///  must be checked whether both lines are parallel.
-	Type
-	intersects (const line2 & line, vector2 <Type> & point) const
-	{
-		const auto & p1 = this -> point ();
-		const auto & p2 = line .point ();
-
-		const auto & d1 = direction ();
-		const auto & d2 = line .direction ();
-
-		const auto theta = dot (d1, d2); // angle between both lines
-		const auto u     = p2 - p1;
-		const auto t     = (dot (u, d1) - theta * dot (u, d2)) / (1 - theta * theta);
-
-		point = p1 + t * d1;
-
-		return theta;
-	}
+	///  Returns a pair consisting of the intersection point,
+	///  and a bool denoting whether the intersection was successful.
+	std::pair <vector2 <Type>, bool>
+	intersects (const line2 & line) const;
 	
 	///  Returns true if the polygon given by a range of points intersects with this line, otherwise false.
 	template <class Iterator>
 	bool
-	intersects (Iterator first, Iterator last) const
-	{
-		const auto n      = normal ();
-		int32_t    signum = 0;
-	
-		for (; first not_eq last; ++ first)
-		{
-			const auto theta = dot (perpendicular_vector (*first), n);
-
-			if (theta < 0)
-			{
-				if (signum > 0)
-					return true;
-	
-				signum = -1;
-			}
-			else if (theta > 0)
-			{
-				if (signum < 0)
-					return true;
-	
-				signum = 1;
-			}
-			else
-				return true;
-		}
-	
-		return false;
-	}
+	intersects (Iterator first, Iterator last) const;
 
 
 private:
@@ -237,6 +194,61 @@ private:
 	vector2 <Type> m_direction;	
 
 };
+
+template <class Type>
+std::pair <vector2 <Type>, bool>
+line2 <Type>::intersects (const line2 & line) const
+{
+	const auto & p1 = this -> point ();
+	const auto & p2 = line .point ();
+
+	const auto & d1 = direction ();
+	const auto & d2 = line .direction ();
+
+	const auto theta = dot (d1, d2); // angle between both lines
+
+	if (std::abs (theta) >= 1)
+		return std::make_pair (vector2 <Type> (), false);  // lines are parallel
+
+	const auto u     = p2 - p1;
+	const auto t     = (dot (u, d1) - theta * dot (u, d2)) / (1 - theta * theta);
+	const auto point = p1 + t * d1;
+
+	return std::make_pair (point, true);
+}
+
+template <class Type>
+template <class Iterator>
+bool
+line2 <Type>::intersects (Iterator first, Iterator last) const
+{
+	const auto n      = normal ();
+	int32_t    signum = 0;
+
+	for (; first not_eq last; ++ first)
+	{
+		const auto theta = dot (perpendicular_vector (*first), n);
+
+		if (theta < 0)
+		{
+			if (signum > 0)
+				return true;
+
+			signum = -1;
+		}
+		else if (theta > 0)
+		{
+			if (signum < 0)
+				return true;
+
+			signum = 1;
+		}
+		else
+			return true;
+	}
+
+	return false;
+}
 
 ///  @relates line2
 ///  @name Arithmetic operations

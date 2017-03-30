@@ -125,17 +125,15 @@ X3DIndexedFaceSetLightSaberObject::cut (const Line2d & cutLine)
 				const auto index1       = k;
 				const auto index2       = (k + 1) % sizeK;
 				const auto lineSegment  = LineSegment2d (screenPoints [index1], screenPoints [index2]);
-				auto       intersection = Vector2d ();
+				const auto intersection = lineSegment .intersects (cutLine);
 
-				if (lineSegment .intersects (cutLine, intersection))
+				if (intersection .second)
 				{
 					const auto point1   = coordIndex () [vertices [index1]];
 					const auto point2   = coordIndex () [vertices [index2]];
 					const auto line     = Line3d (getCoord () -> get1Point (point1), getCoord () -> get1Point (point2), points_type ());
-					const auto ray      = ViewVolume::unProjectRay (intersection .x (), intersection .y (), invModelViewProjection, viewport);
-					auto       cutPoint = Vector3d ();
-
-					line .closest_point (ray, cutPoint);
+					const auto ray      = ViewVolume::unProjectRay (intersection .first, invModelViewProjection, viewport);
+					const auto cutPoint = line .closest_point (ray) .first;
 
 					points .emplace_back (cutPoint);
 					edges  .emplace_back (std::vector <int32_t> { point1, point2 });

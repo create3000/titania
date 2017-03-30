@@ -78,8 +78,9 @@ class box3
 {
 public:
 
-	///  Value typedef.
-	typedef Type value_type;
+	///  @name Member types
+
+	using value_type = Type;
 
 	///  @name Constructors
 

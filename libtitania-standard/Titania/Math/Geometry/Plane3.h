@@ -81,7 +81,8 @@ class plane3
 {
 public:
 
-	///  Value typedef.
+	///  @name Member types
+
 	using value_type = Type;
 
 	///  @name Constructors

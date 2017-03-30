@@ -82,43 +82,43 @@ public:
 	///  @name Operations
 
 	bool
-	intersects (const Box3d &) const;
+	intersects (const Box3d & box) const;
 
 	///  @name Projection operations
 
 	static
 	Vector3d
-	unProjectPoint (double, double, double, const Matrix4d &, const Matrix4d &, const Vector4i &)
+	unProjectPoint (const double winx, const double winy, const double winz, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
 	throw (std::domain_error);
 
 	static
 	Vector3d
-	unProjectPoint (double, double, double, const Matrix4d &, const Vector4i &)
+	unProjectPoint (const double winx, const double winy, const double winz, const Matrix4d & modelViewProjection, const Vector4i & viewport)
 	throw (std::domain_error);
 
 	static
 	Line3d
-	unProjectRay (double, double, const Matrix4d &, const Matrix4d &, const Vector4i &)
+	unProjectRay (const Vector2d & point, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
 	throw (std::domain_error);
 
 	static
 	Line3d
-	unProjectRay (double, double, const Matrix4d &, const Vector4i &)
+	unProjectRay (const Vector2d & point, const Matrix4d & modelViewProjection, const Vector4i & viewport)
 	throw (std::domain_error);
 
 	static
 	Vector3d
-	projectPoint (const Vector3d &, const Matrix4d &, const Matrix4d &, const Vector4i &)
+	projectPoint (const Vector3d & point, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
 	throw (std::domain_error);
 
 	static
 	Vector3d
-	projectPoint (const Vector3d &, const Matrix4d &, const Vector4i &)
+	projectPoint (const Vector3d & point, const Matrix4d & modelViewProjection, const Vector4i & viewport)
 	throw (std::domain_error);
 
 	static
 	Line2d
-	projectLine (const Line3d &, const Matrix4d &, const Matrix4d &, const Vector4i &)
+	projectLine (const Line3d & line, const Matrix4d & modelViewMatrix, const Matrix4d & projectionMatrix, const Vector4i & viewport)
 	throw (std::domain_error);
 
 

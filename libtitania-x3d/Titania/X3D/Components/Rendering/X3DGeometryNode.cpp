@@ -291,19 +291,20 @@ X3DGeometryNode::intersects (const Line3d & line,
 	                          const Matrix4d & modelViewMatrix,
 	                          std::vector <IntersectionPtr> & intersections) const
 {
-	Vector3d intersection;
+	const auto intersection = line .intersects (vertices [i1], vertices [i2], vertices [i3]);
 
-	if (not line .intersects (vertices [i1], vertices [i2], vertices [i3], intersection))
+	if (not intersection .second)
 		return false;
 
-	Vector4f     texCoord (0, 0, 0, 1);
+	const auto & uvt          = intersection .first;
 	const size_t texCoordSize = texCoords .empty () ? 0 : texCoords [0] .size (); // LineGeometry doesn't have texCoords
+	auto         texCoord     = Vector4f (0, 0, 0, 1);
 
 	if (i1 < texCoordSize)
-		texCoord = from_barycentric <float> (intersection, texCoords [0] [i1], texCoords [0] [i2], texCoords [0] [i3]);
+		texCoord = from_barycentric <float> (uvt, texCoords [0] [i1], texCoords [0] [i2], texCoords [0] [i3]);
 
-	const auto normal = normalize (from_barycentric <float> (intersection, normals [i1], normals [i2], normals [i3]));
-	const auto point  = from_barycentric (intersection, vertices [i1], vertices [i2], vertices [i3]);
+	const auto normal = normalize (from_barycentric <float> (uvt, normals [i1], normals [i2], normals [i3]));
+	const auto point  = from_barycentric (uvt, vertices [i1], vertices [i2], vertices [i3]);
 
 	if (isClipped (point * modelViewMatrix, clipPlanes))
 		return false;

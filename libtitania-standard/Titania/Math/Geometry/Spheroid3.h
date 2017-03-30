@@ -71,30 +71,32 @@ class spheroid3
 {
 public:
 
-	///  Value typedef.
-	typedef Type value_type;
+	///  @name Member types
+
+	using value_type = Type;
 
 	///  @name Constructors
 
 	///  Default constructor.
 	constexpr
 	spheroid3 () :
-		value ()
+		m_semi_major_axis (1),
+		m_semi_minor_axis (1)
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	spheroid3 (const spheroid3 <Up> & sphere) :
-		value { sphere .a (), sphere .c () }
-
+		m_semi_major_axis (sphere .a ()),
+		m_semi_minor_axis (sphere .c ())
 	{ }
 
 	///  Constructs a spheroid of from @a a semi-major axis and @a c semi-minor axis.
 	constexpr
 	spheroid3 (const Type & semi_major_axis, const Type & semi_minor_axis) :
-		value { semi_major_axis, semi_minor_axis }
-
+		m_semi_major_axis (semi_major_axis),
+		m_semi_minor_axis (semi_minor_axis)
 	{ }
 
 	///  Constructs a spheroid of from @a a semi-major axis and @a f_1 inverse flattening.
@@ -108,12 +110,12 @@ public:
 	///  Returns the semi-major axis of this spheroid.
 	const Type &
 	semi_major_axis () const
-	{ return value .semi_major_axis; }
+	{ return m_semi_major_axis; }
 
 	///  Returns the semi-minor axis of this spheroid.
 	const Type &
 	semi_minor_axis () const
-	{ return value .semi_minor_axis; }
+	{ return m_semi_minor_axis; }
 
 	///  Returns the semi-minor axis of this spheroid.
 	Type
@@ -123,13 +125,8 @@ public:
 
 private:
 
-	struct Value
-	{
-		Type semi_major_axis;
-		Type semi_minor_axis;
-	};
-
-	Value value;
+	Type m_semi_major_axis;
+	Type m_semi_minor_axis;
 
 };
 

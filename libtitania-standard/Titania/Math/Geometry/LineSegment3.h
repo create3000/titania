@@ -70,6 +70,10 @@ class line_segment3
 {
 public:
 
+	///  @name Member types
+
+	using value_type = Type;
+
 	///  @name Construction
 
 	///  Default constructor. Constructs a line segement with length 0 on point (0, 0, 0).
@@ -117,6 +121,7 @@ public:
 
 	Type
 	distance (const vector3 <Type> & point) const;
+
 
 private:
 

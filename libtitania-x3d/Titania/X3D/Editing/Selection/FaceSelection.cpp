@@ -605,12 +605,9 @@ throw (std::domain_error)
 			const auto point1        = coordNode -> get1Point (geometryNode -> coordIndex () [i1]);
 			const auto segment       = LineSegment3d (point0, point1);
 			const auto closestPoint0 = segment .line () .closest_point (cutSegment .point1 ());
-			auto       closestPoint1 = Vector3d (0, 0, 0);
-
-			cutSegment .line () .closest_point (segment .line (), closestPoint1);
-
-			const auto distance = segment .distance (cutSegment .point2 ());
-			const auto between  = segment .is_between (closestPoint1);
+			const auto closestPoint1 = cutSegment .line () .closest_point (segment .line ()) .first;
+			const auto distance      = segment .distance (cutSegment .point2 ());
+			const auto between       = segment .is_between (closestPoint1);
 
 			if (abs (closestPoint0 - cutSegment .point1 ()) < EPSILON_DISTANCE)
 				continue;

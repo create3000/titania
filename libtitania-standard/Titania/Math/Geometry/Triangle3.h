@@ -59,62 +59,62 @@
 namespace titania {
 namespace math {
 
-// v1
+// A
 //  |
 //  |
 //  |
 //  |
 //  ----------
-// v2         v3
+// B         C
 
-///  Returns the area of the triangle with the vertices @a v1, @a v2 and @a v3.
+///  Returns the area of the triangle with the vertices @a A, @a B and @a C.
 template <class Type>
 inline
 Type
-area (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Type> & v3)
+area (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C)
 {
-	return abs (cross (v2 - v1, v3 - v1)) / 2;
+	return abs (cross (B - A, C - A)) / 2;
 }
 
-// v1
+// A
 //  |
 //  |
 //  |
 //  |
 //  ----------
-// v2         v3
+// B         C
 
 template <class Type>
 inline
 vector3 <Type>
-normal (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Type> & v3)
+normal (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C)
 {
-	return normalize (cross (v3 - v2, v1 - v2));
+	return normalize (cross (C - B, A - B));
 }
 
-// v4 ----- v3
+// D ----- C
 //  |       |
 //  |       |
 //  |       |
-// v1 ----- v2
+// A ----- B
 
 template <class Type>
 inline
 vector3 <Type>
-normal (const vector3 <Type> & v1, const vector3 <Type> & v2, const vector3 <Type> & v3, const vector3 <Type> & v4)
+normal (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C, const vector3 <Type> & D)
 {
-	// (p3 - p1) x (p4 - p2)
-	return normalize (cross (v3 - v1, v4 - v2));
+	// (p3 - B) x (p4 - C)
+	return normalize (cross (C - A, D - B));
 }
 
-///  Returns the index of one of the three points defined by @a p0, @a p1, @a p2 to @a point.
+///  Returns the index of one of the three points defined by @a A, @a B, @a C to @a point.
 template <class Type>
 size_t
-triangle_closest_point (const vector3 <Type> & p0, const vector3 <Type> & p1, const vector3 <Type> & p2, const vector3 <Type> & point)
+triangle_closest_point (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C, const vector3 <Type> & point)
 {
-	const auto distance0 = abs (p0 - point);
-	const auto distance1 = abs (p1 - point);
-	const auto distance2 = abs (p2 - point);
+	const auto distance0 = abs (A - point);
+	const auto distance1 = abs (B - point);
+	const auto distance2 = abs (C - point);
 
 	if (distance0 < distance1)
 	{
@@ -128,27 +128,27 @@ triangle_closest_point (const vector3 <Type> & p0, const vector3 <Type> & p1, co
 	return 2;
 }
 
-///  Returns the squared distance from the triangle defined by @a p0, @a p1, @a p2 to @a point.
+///  Returns the squared distance from the triangle defined by @a A, @a B, @a C to @a point.
 template <class Type>
 Type
-triangle_distance_to_point (const vector3 <Type> & p0, const vector3 <Type> & p1, const vector3 <Type> & p2, const vector3 <Type> & point)
+triangle_distance_to_point (const vector3 <Type> & A, const vector3 <Type> & B, const vector3 <Type> & C, const vector3 <Type> & point)
 {
 	// http://www.geometrictools.com/GTEngine/Include/GteDistPoint3Triangle3.inl
 
 	Type sqrDistance;
 
-	vector3 <Type> diff  = p0 - point;
-	vector3 <Type> edge0 = p1 - p0;
-	vector3 <Type> edge1 = p2 - p0;
-	Type           a00   = dot (edge0, edge0);
-	Type           a01   = dot (edge0, edge1);
-	Type           a11   = dot (edge1, edge1);
-	Type           b0    = dot (diff, edge0);
-	Type           b1    = dot (diff, edge1);
-	Type           c     = dot (diff, diff);
-	Type           det   = std::abs (a00 * a11 - a01 * a01);
-	Type           s     = a01 * b1 - a11 * b0;
-	Type           t     = a01 * b0 - a00 * b1;
+	const auto diff  = A - point;
+	const auto edge0 = B - A;
+	const auto edge1 = C - A;
+	auto       a00   = dot (edge0, edge0);
+	auto       a01   = dot (edge0, edge1);
+	auto       a11   = dot (edge1, edge1);
+	auto       b0    = dot (diff, edge0);
+	auto       b1    = dot (diff, edge1);
+	auto       c     = dot (diff, diff);
+	auto       det   = std::abs (a00 * a11 - a01 * a01);
+	auto       s     = a01 * b1 - a11 * b0;
+	auto       t     = a01 * b0 - a00 * b1;
 
 	if (s + t <= det)
 	{
@@ -389,15 +389,15 @@ bool
 triangle_intersects (const std::vector <vector3 <Type>> & points1,
 	                  const std::vector <vector3 <Type>> & edges1,
 	                  const std::vector <vector3 <Type>> & normals1,
-                     const vector3 <Type> & a,
-                     const vector3 <Type> & b,
-                     const vector3 <Type> & c)
+                     const vector3 <Type> & A,
+                     const vector3 <Type> & B,
+                     const vector3 <Type> & C)
 {
 	// Test special cases.
 
 	// Get points.
 
-	const std::vector <vector3 <Type>> points2 = { a, b, c };
+	const std::vector <vector3 <Type>> points2 = { A, B, C };
 
 	// Test the three planes spanned by the normal vectors of the faces of the first parallelepiped.
 
@@ -406,15 +406,15 @@ triangle_intersects (const std::vector <vector3 <Type>> & points1,
 
 	// Test the normal of the triangle.
 
-	if (sat::separated ({ normal (a, b, c) }, points1, points2))
+	if (sat::separated ({ normal (A, B, C) }, points1, points2))
 		return false;
 
 	// Test the nine other planes spanned by the edges of the parallelepiped and the edges of the triangle.
 
 	const std::array <vector3 <Type>, 3> edges2 = {
-		a - b,
-		b - c,
-		c - a,
+		A - B,
+		B - C,
+		C - A,
 	};
 
 	std::vector <vector3 <Type>> axes;

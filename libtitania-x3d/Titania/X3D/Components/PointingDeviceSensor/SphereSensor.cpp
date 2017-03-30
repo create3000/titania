@@ -96,19 +96,21 @@ SphereSensor::create (X3DExecutionContext* const executionContext) const
 }
 
 bool
-SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & trackPoint, const bool behind) const
+SphereSensor::getTrackPoint (const Line3d & hitRay, Vector3d & enter, const bool behind) const
 {
-	Vector3d exit;
+	const auto intersection = sphere .intersects (hitRay);
 
-	if (sphere .intersects (hitRay, trackPoint, exit))
-	{
-		if ((abs (hitRay .point () - exit) < abs (hitRay .point () - trackPoint)) - behind)
-			trackPoint = exit;
+	if (not std::get <2> (intersection))
+		return false;
 
-		return true;
-	}
+	enter = std::get <0> (intersection);
 
-	return false;
+	const auto exit = std::get <1> (intersection);
+
+	if ((abs (hitRay .point () - exit) < abs (hitRay .point () - enter)) - behind)
+		enter = exit;
+
+	return true;
 }
 
 void

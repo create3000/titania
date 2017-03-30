@@ -560,9 +560,6 @@ X3DIndexedFaceSetKnifeObject::getClosestPoint (const std::pair <size_t, size_t> 
 {
 	try
 	{
-		Vector2d closestPoint2d;
-		Vector3d closestPoint3d;
-	
 		const auto point1     = getCoord () -> get1Point (coordIndex () [edge .first]);
 		const auto point2     = getCoord () -> get1Point (coordIndex () [edge .second]);
 		const auto edgeLine   = Line3d (point1, point2, math::points_type ());	                   
@@ -571,9 +568,9 @@ X3DIndexedFaceSetKnifeObject::getClosestPoint (const std::pair <size_t, size_t> 
 		const auto cutScreen  = ViewVolume::projectLine (cutRay,   getModelViewMatrix (), getProjectionMatrix (), getViewport ());
 
 		// Determine closeset point.
-		edgeScreen .intersects (cutScreen, closestPoint2d);
-		const auto hitRay = ViewVolume::unProjectRay (closestPoint2d .x (), closestPoint2d .y (), getModelViewMatrix (), getProjectionMatrix (), getViewport ());
-		edgeLine .closest_point (hitRay, closestPoint3d);
+		const auto closestPoint2d = edgeScreen .intersects (cutScreen) .first;
+		const auto hitRay         = ViewVolume::unProjectRay (closestPoint2d, getModelViewMatrix (), getProjectionMatrix (), getViewport ());
+		const auto closestPoint3d = edgeLine .closest_point (hitRay) .first;
 
 		return closestPoint3d;
 	}
