@@ -1,0 +1,559 @@
+#X3D V3.3 utf8 Titania V3.0.0
+
+PROFILE Full
+
+META "comment" "World of Titania"
+META "created" "Thu, 30 Mar 2017 06:49:35 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V3.0.0, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Shape/Gray.x3dv"
+META "modified" "Thu, 30 Mar 2017 07:11:39 GMT"
+META "outputStyle" "Nicest"
+
+WorldInfo {
+  metadata DEF Titania MetadataSet {
+    name "Titania"
+    reference "http://titania.create3000.de"
+    value [
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value [
+          DEF enabled_1 MetadataBoolean {
+            name "enabled"
+            reference "http://titania.create3000.de"
+            value TRUE
+          }
+          DEF rotation MetadataDouble {
+            name "rotation"
+            reference "http://titania.create3000.de"
+            value [
+              1,
+              0,
+              0,
+              1.5707963267949
+            ]
+          }
+          DEF scale MetadataFloat {
+            name "scale"
+            reference "http://titania.create3000.de"
+            value [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+          DEF dimension MetadataInteger {
+            name "dimension"
+            reference "http://titania.create3000.de"
+            value [
+              40,
+              10,
+              40
+            ]
+          }
+        ]
+      }
+      DEF NavigationInfo MetadataSet {
+        name "NavigationInfo"
+        reference "http://titania.create3000.de"
+        value DEF type MetadataString {
+          name "type"
+          reference "http://titania.create3000.de"
+          value "EXAMINE"
+        }
+      }
+      DEF Viewpoint MetadataSet {
+        name "Viewpoint"
+        reference "http://titania.create3000.de"
+        value [
+          DEF position MetadataDouble {
+            name "position"
+            reference "http://titania.create3000.de"
+            value [
+              0.741338010712091,
+              -2.36426041767375,
+              34.6655929291737
+            ]
+          }
+          DEF orientation MetadataDouble {
+            name "orientation"
+            reference "http://titania.create3000.de"
+            value [
+              0.851812504738858,
+              0.522976715772457,
+              0.0301796542453409,
+              0.0365552231862942
+            ]
+          }
+          DEF centerOfRotation MetadataDouble {
+            name "centerOfRotation"
+            reference "http://titania.create3000.de"
+            value [
+              0.0768836014387246,
+              -1.2833501279393,
+              -0.0440462665691194
+            ]
+          }
+        ]
+      }
+      DEF Selection MetadataSet {
+        name "Selection"
+        reference "http://titania.create3000.de"
+        value [
+          DEF previous MetadataSet {
+            name "previous"
+            reference "http://titania.create3000.de"
+            value [
+              DEF Sphere Transform {
+                translation 7.5 -7.41622 0
+                children Shape {
+                  appearance Appearance {
+                    material Material { }
+                  }
+                  geometry Sphere { }
+                }
+              }
+              DEF Sphere_1 Transform {
+                translation 4.5 -7.41622 0
+                children Shape {
+                  appearance Appearance {
+                    material Material {
+                      diffuseColor 0 0 0
+                    }
+                  }
+                  geometry Sphere { }
+                }
+              }
+            ]
+          }
+          DEF nodes MetadataSet {
+            name "nodes"
+            reference "http://titania.create3000.de"
+          }
+        ]
+      }
+    ]
+  }
+}
+
+DEF Sphere_2 Transform {
+  translation -4.5 4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.79 0.79 0.79
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_3 Transform {
+  translation -1.5 4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.765 0.765 0.765
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_4 Transform {
+  translation 1.5 4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.732 0.732 0.732
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_5 Transform {
+  translation 4.5 4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.7 0.7 0.7
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_6 Transform {
+  translation 7.5 4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.67 0.67 0.67
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_7 Transform {
+  translation -7.5 1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.64 0.64 0.64
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_8 Transform {
+  translation -4.5 1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.61 0.61 0.61
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_9 Transform {
+  translation -1.5 1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.58 0.58 0.58
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_10 Transform {
+  translation 1.5 1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.55 0.55 0.55
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_11 Transform {
+  translation 4.5 1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.52 0.52 0.52
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_12 Transform {
+  translation 7.5 1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.5 0.5 0.5
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_13 Transform {
+  translation -7.5 -1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.47 0.47 0.47
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_14 Transform {
+  translation -4.5 -1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.44 0.44 0.44
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_15 Transform {
+  translation -1.5 -1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.41 0.41 0.41
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_16 Transform {
+  translation 1.5 -1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.38 0.38 0.38
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_17 Transform {
+  translation 4.5 -1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.35 0.35 0.35
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_18 Transform {
+  translation 7.5 -1.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.32 0.32 0.32
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_19 Transform {
+  translation -7.5 -4.64465 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.29 0.29 0.29
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_20 Transform {
+  translation -4.5 -4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.26 0.26 0.26
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_21 Transform {
+  translation -1.5 -4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.23 0.207301 0.207301
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_22 Transform {
+  translation 1.5 -4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.2 0.167614 0.167614
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_23 Transform {
+  translation 4.5 -4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.17 0.140076 0.140076
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_24 Transform {
+  translation 7.5 -4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.14 0.122367 0.122367
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_25 Transform {
+  translation -7.5 -7.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.11 0.11 0.11
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_26 Transform {
+  translation -4.5 -7.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.08 0.08 0.08
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_27 Transform {
+  translation -1.5 -7.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.05 0.05 0.05
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_28 Transform {
+  translation 1.5 -7.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.02 0.02 0.02
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_29 Transform {
+  translation -4.5 7.5 0
+  children Shape {
+    appearance Appearance {
+      material DEF _1 Material {
+        diffuseColor 0.97 0.97 0.97
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+USE Sphere_1
+
+USE Sphere
+
+DEF Sphere_30 Transform {
+  translation -7.5 7.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 1 1 1
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_31 Transform {
+  translation -1.5 7.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.94 0.94 0.94
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_32 Transform {
+  translation 1.5 7.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.91 0.91 0.91
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_33 Transform {
+  translation 4.5 7.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.88 0.88 0.88
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_34 Transform {
+  translation 7.5 7.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.85 0.85 0.85
+      }
+    }
+    geometry Sphere { }
+  }
+}
+
+DEF Sphere_35 Transform {
+  translation -7.5 4.5 0
+  children Shape {
+    appearance Appearance {
+      material Material {
+        diffuseColor 0.82 0.82 0.82
+      }
+    }
+    geometry Sphere { }
+  }
+}
