@@ -85,7 +85,7 @@ X3DArcClose2DEditor::set_geometry ()
 
 	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::ArcClose2D });
 
-	getArcClose2DExpander () .set_visible (not nodes .empty ());
+	getArcClose2DBox () .set_visible (not nodes .empty ());
 
 	closureType .setNodes (nodes);
 	startAngle  .setNodes (nodes);
@@ -147,7 +147,7 @@ X3DArcClose2DEditor::set_options ()
 			optionsNodes .emplace_back (optionsNode);
 	}
 
-	const auto active       = optionsNodes .empty ();
+	const auto global       = optionsNodes .empty ();
 	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
 
 	if (optionsNodes .empty ())
@@ -159,10 +159,10 @@ X3DArcClose2DEditor::set_options ()
 
 	changing = true;
 
-	getArcClose2DUseGlobalOptionsCheckButton () .set_active (active);
+	getArcClose2DUseGlobalOptionsCheckButton () .set_active (global);
 	getArcClose2DUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
 
-	getArcClose2DDimensionBox () .set_sensitive (not active and not inconsistent);
+	getArcClose2DOptionsGrid () .set_sensitive (not global and not inconsistent);
 
 	changing = false;
 }

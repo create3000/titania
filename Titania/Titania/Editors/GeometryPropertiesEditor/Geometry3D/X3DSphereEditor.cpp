@@ -84,7 +84,7 @@ X3DSphereEditor::set_geometry ()
 
 	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Sphere });
 
-	getSphereExpander () .set_visible (not nodes .empty ());
+	getSphereBox () .set_visible (not nodes .empty ());
 
 	radius .setNodes (nodes);
 
@@ -185,7 +185,7 @@ X3DSphereEditor::set_options ()
 		}
 	}
 
-	const auto active       = optionsNodes .empty ();
+	const auto global       = optionsNodes .empty ();
 	const auto inconsistent = not (optionsNodes .size () == nodes .size () and types .size () == 1);
 
 	if (optionsNodes .empty ())
@@ -200,22 +200,22 @@ X3DSphereEditor::set_options ()
 
 	changing = true;
 
-	getSphereUseGlobalOptionsCheckButton () .set_active (active);
+	getSphereUseGlobalOptionsCheckButton () .set_active (global);
 	getSphereUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
 
-	getSphereTypeButton ()   .set_sensitive (not active and not inconsistent);
-	getOctahedronOptions ()  .set_sensitive (not active and not inconsistent);
-	getIcosahedronOptions () .set_sensitive (not active and not inconsistent);
-	getQuadSphereOptions ()  .set_sensitive (not active and not inconsistent);
+	getSphereTypeButton ()       .set_sensitive (not global and not inconsistent);
+	getOctahedronOptionsGrid ()  .set_sensitive (not global and not inconsistent);
+	getIcosahedronOptionsGrid () .set_sensitive (not global and not inconsistent);
+	getQuadSphereOptionsGrid ()  .set_sensitive (not global and not inconsistent);
 
-	getOctahedronOptions ()  .set_visible (false);
-	getIcosahedronOptions () .set_visible (false);
-	getQuadSphereOptions ()  .set_visible (false);
+	getOctahedronOptionsGrid ()  .set_visible (false);
+	getIcosahedronOptionsGrid () .set_visible (false);
+	getQuadSphereOptionsGrid ()  .set_visible (false);
 
-	if (active)
+	if (global)
 	{
-		getSphereTypeButton ()  .set_active (2);
-		getQuadSphereOptions () .set_visible (true);
+		getSphereTypeButton ()      .set_active (2);
+		getQuadSphereOptionsGrid () .set_visible (true);
 	}
 	else if (inconsistent)
 	{
@@ -227,20 +227,20 @@ X3DSphereEditor::set_options ()
 		{
 			case X3D::X3DConstants::OctahedronOptions:
 			{
-				getSphereTypeButton ()  .set_active (0);
-				getOctahedronOptions () .set_visible (true);
+				getSphereTypeButton ()      .set_active (0);
+				getOctahedronOptionsGrid () .set_visible (true);
 				break;
 			}
 			case X3D::X3DConstants::IcosahedronOptions:
 			{
-				getSphereTypeButton ()   .set_active (1);
-				getIcosahedronOptions () .set_visible (true);
+				getSphereTypeButton ()       .set_active (1);
+				getIcosahedronOptionsGrid () .set_visible (true);
 				break;
 			}
 			case X3D::X3DConstants::QuadSphereOptions:
 			{
-				getSphereTypeButton ()  .set_active (2);
-				getQuadSphereOptions () .set_visible (true);
+				getSphereTypeButton ()      .set_active (2);
+				getQuadSphereOptionsGrid () .set_visible (true);
 				break;
 			}
 			default:

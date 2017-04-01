@@ -83,7 +83,7 @@ X3DCylinderEditor::set_geometry ()
 
 	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Cylinder });
 
-	getCylinderExpander () .set_visible (not nodes .empty ());
+	getCylinderBox () .set_visible (not nodes .empty ());
 
 	top    .setNodes (nodes);
 	side   .setNodes (nodes);
@@ -145,7 +145,7 @@ X3DCylinderEditor::set_options ()
 			optionsNodes .emplace_back (optionsNode);
 	}
 
-	const auto active       = optionsNodes .empty ();
+	const auto global       = optionsNodes .empty ();
 	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
 
 	if (optionsNodes .empty ())
@@ -157,10 +157,10 @@ X3DCylinderEditor::set_options ()
 
 	changing = true;
 
-	getCylinderUseGlobalOptionsCheckButton () .set_active (active);
+	getCylinderUseGlobalOptionsCheckButton () .set_active (global);
 	getCylinderUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
 
-	getCylinderXDimensionBox () .set_sensitive (not active and not inconsistent);
+	getCylinderOptionsGrid () .set_sensitive (not global and not inconsistent);
 
 	changing = false;
 }

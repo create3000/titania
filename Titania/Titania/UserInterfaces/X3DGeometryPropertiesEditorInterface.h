@@ -394,6 +394,10 @@ public:
 	getGeometryStack () const
 	{ return *m_GeometryStack; }
 
+	Gtk::Box &
+	getArc2DBox () const
+	{ return *m_Arc2DBox; }
+
 	Gtk::Expander &
 	getArc2DExpander () const
 	{ return *m_Arc2DExpander; }
@@ -410,17 +414,25 @@ public:
 	getArc2DEndAngleSpinButton () const
 	{ return *m_Arc2DEndAngleSpinButton; }
 
-	Gtk::Box &
-	getArc2DDimensionBox () const
-	{ return *m_Arc2DDimensionBox; }
+	Gtk::Expander &
+	getArc2DOptionsExpander () const
+	{ return *m_Arc2DOptionsExpander; }
+
+	Gtk::CheckButton &
+	getArc2DUseGlobalOptionsCheckButton () const
+	{ return *m_Arc2DUseGlobalOptionsCheckButton; }
+
+	Gtk::Grid &
+	getArc2DOptionsGrid () const
+	{ return *m_Arc2DOptionsGrid; }
 
 	Gtk::SpinButton &
 	getArc2DDimensionSpinButton () const
 	{ return *m_Arc2DDimensionSpinButton; }
 
-	Gtk::CheckButton &
-	getArc2DUseGlobalOptionsCheckButton () const
-	{ return *m_Arc2DUseGlobalOptionsCheckButton; }
+	Gtk::Box &
+	getArcClose2DBox () const
+	{ return *m_ArcClose2DBox; }
 
 	Gtk::Expander &
 	getArcClose2DExpander () const
@@ -442,17 +454,25 @@ public:
 	getArcClose2DEndAngleSpinButton () const
 	{ return *m_ArcClose2DEndAngleSpinButton; }
 
-	Gtk::Box &
-	getArcClose2DDimensionBox () const
-	{ return *m_ArcClose2DDimensionBox; }
+	Gtk::Expander &
+	getArcClose2DOptionsExpander () const
+	{ return *m_ArcClose2DOptionsExpander; }
+
+	Gtk::CheckButton &
+	getArcClose2DUseGlobalOptionsCheckButton () const
+	{ return *m_ArcClose2DUseGlobalOptionsCheckButton; }
+
+	Gtk::Grid &
+	getArcClose2DOptionsGrid () const
+	{ return *m_ArcClose2DOptionsGrid; }
 
 	Gtk::SpinButton &
 	getArcClose2DDimensionSpinButton () const
 	{ return *m_ArcClose2DDimensionSpinButton; }
 
-	Gtk::CheckButton &
-	getArcClose2DUseGlobalOptionsCheckButton () const
-	{ return *m_ArcClose2DUseGlobalOptionsCheckButton; }
+	Gtk::Box &
+	getCircle2DBox () const
+	{ return *m_Circle2DBox; }
 
 	Gtk::Expander &
 	getCircle2DExpander () const
@@ -462,17 +482,25 @@ public:
 	getCircle2DRadiusSpinButton () const
 	{ return *m_Circle2DRadiusSpinButton; }
 
+	Gtk::Expander &
+	getCircle2DOptionsExpander () const
+	{ return *m_Circle2DOptionsExpander; }
+
 	Gtk::CheckButton &
 	getCircle2DUseGlobalOptionsCheckButton () const
 	{ return *m_Circle2DUseGlobalOptionsCheckButton; }
 
-	Gtk::Box &
-	getCircle2DDimensionBox () const
-	{ return *m_Circle2DDimensionBox; }
+	Gtk::Grid &
+	getCircle2DOptionsGrid () const
+	{ return *m_Circle2DOptionsGrid; }
 
 	Gtk::SpinButton &
 	getCircle2DDimensionSpinButton () const
 	{ return *m_Circle2DDimensionSpinButton; }
+
+	Gtk::Box &
+	getDisk2DBox () const
+	{ return *m_Disk2DBox; }
 
 	Gtk::Expander &
 	getDisk2DExpander () const
@@ -486,17 +514,21 @@ public:
 	getDisk2DOuterRadiusSpinButton () const
 	{ return *m_Disk2DOuterRadiusSpinButton; }
 
-	Gtk::Box &
-	getDisk2DDimensionBox () const
-	{ return *m_Disk2DDimensionBox; }
-
-	Gtk::SpinButton &
-	getDisk2DDimensionSpinButton () const
-	{ return *m_Disk2DDimensionSpinButton; }
+	Gtk::Expander &
+	getDisk2DOptionsExpander () const
+	{ return *m_Disk2DOptionsExpander; }
 
 	Gtk::CheckButton &
 	getDisk2DUseGlobalOptionsCheckButton () const
 	{ return *m_Disk2DUseGlobalOptionsCheckButton; }
+
+	Gtk::Grid &
+	getDisk2DOptionsGrid () const
+	{ return *m_Disk2DOptionsGrid; }
+
+	Gtk::SpinButton &
+	getDisk2DDimensionSpinButton () const
+	{ return *m_Disk2DDimensionSpinButton; }
 
 	Gtk::Expander &
 	getRectangle2DExpander () const
@@ -550,6 +582,10 @@ public:
 	getBoxUniformSizeImage () const
 	{ return *m_BoxUniformSizeImage; }
 
+	Gtk::Box &
+	getConeBox () const
+	{ return *m_ConeBox; }
+
 	Gtk::Expander &
 	getConeExpander () const
 	{ return *m_ConeExpander; }
@@ -570,17 +606,25 @@ public:
 	getConeBottomCheckButton () const
 	{ return *m_ConeBottomCheckButton; }
 
-	Gtk::Box &
-	getConeXDimensionBox () const
-	{ return *m_ConeXDimensionBox; }
+	Gtk::Expander &
+	getConeOptionsExpander () const
+	{ return *m_ConeOptionsExpander; }
+
+	Gtk::CheckButton &
+	getConeUseGlobalOptionsCheckButton () const
+	{ return *m_ConeUseGlobalOptionsCheckButton; }
+
+	Gtk::Grid &
+	getConeOptionsGrid () const
+	{ return *m_ConeOptionsGrid; }
 
 	Gtk::SpinButton &
 	getConeXDimensionSpinButton () const
 	{ return *m_ConeXDimensionSpinButton; }
 
-	Gtk::CheckButton &
-	getConeUseGlobalOptionsCheckButton () const
-	{ return *m_ConeUseGlobalOptionsCheckButton; }
+	Gtk::Box &
+	getCylinderBox () const
+	{ return *m_CylinderBox; }
 
 	Gtk::Expander &
 	getCylinderExpander () const
@@ -606,13 +650,17 @@ public:
 	getCylinderTopCheckButton () const
 	{ return *m_CylinderTopCheckButton; }
 
+	Gtk::Expander &
+	getCylinderOptionsExpander () const
+	{ return *m_CylinderOptionsExpander; }
+
 	Gtk::CheckButton &
 	getCylinderUseGlobalOptionsCheckButton () const
 	{ return *m_CylinderUseGlobalOptionsCheckButton; }
 
-	Gtk::Box &
-	getCylinderXDimensionBox () const
-	{ return *m_CylinderXDimensionBox; }
+	Gtk::Grid &
+	getCylinderOptionsGrid () const
+	{ return *m_CylinderOptionsGrid; }
 
 	Gtk::SpinButton &
 	getCylinderXDimensionSpinButton () const
@@ -682,6 +730,10 @@ public:
 	getExtrusionEndCapCheckButton () const
 	{ return *m_ExtrusionEndCapCheckButton; }
 
+	Gtk::Box &
+	getSphereBox () const
+	{ return *m_SphereBox; }
+
 	Gtk::Expander &
 	getSphereExpander () const
 	{ return *m_SphereExpander; }
@@ -690,61 +742,49 @@ public:
 	getSphereRadiusSpinButton () const
 	{ return *m_SphereRadiusSpinButton; }
 
-	Gtk::CheckButton &
-	getSphereUseGlobalOptionsCheckButton () const
-	{ return *m_SphereUseGlobalOptionsCheckButton; }
+	Gtk::Expander &
+	getSphereOptionsExpander () const
+	{ return *m_SphereOptionsExpander; }
 
 	Gtk::ComboBoxText &
 	getSphereTypeButton () const
 	{ return *m_SphereTypeButton; }
 
+	Gtk::CheckButton &
+	getSphereUseGlobalOptionsCheckButton () const
+	{ return *m_SphereUseGlobalOptionsCheckButton; }
+
 	Gtk::Stack &
-	getSphereStack () const
-	{ return *m_SphereStack; }
+	getSphereOptionsStack () const
+	{ return *m_SphereOptionsStack; }
 
 	Gtk::Grid &
-	getQuadSphereOptions () const
-	{ return *m_QuadSphereOptions; }
-
-	Gtk::Box &
-	getQuadSphereXDimensionBox () const
-	{ return *m_QuadSphereXDimensionBox; }
+	getQuadSphereOptionsGrid () const
+	{ return *m_QuadSphereOptionsGrid; }
 
 	Gtk::SpinButton &
 	getQuadSphereXDimensionSpinButton () const
 	{ return *m_QuadSphereXDimensionSpinButton; }
-
-	Gtk::Box &
-	getQuadSphereYDimensionBox () const
-	{ return *m_QuadSphereYDimensionBox; }
 
 	Gtk::SpinButton &
 	getQuadSphereYDimensionSpinButton () const
 	{ return *m_QuadSphereYDimensionSpinButton; }
 
 	Gtk::Grid &
-	getIcosahedronOptions () const
-	{ return *m_IcosahedronOptions; }
-
-	Gtk::Box &
-	getIcosahedronDimensionBox () const
-	{ return *m_IcosahedronDimensionBox; }
-
-	Gtk::SpinButton &
-	getIcosahedronDimensionSpinButton () const
-	{ return *m_IcosahedronDimensionSpinButton; }
-
-	Gtk::Grid &
-	getOctahedronOptions () const
-	{ return *m_OctahedronOptions; }
-
-	Gtk::Box &
-	getOctahedronDimensionBox () const
-	{ return *m_OctahedronDimensionBox; }
+	getOctahedronOptionsGrid () const
+	{ return *m_OctahedronOptionsGrid; }
 
 	Gtk::SpinButton &
 	getOctahedronDimensionSpinButton () const
 	{ return *m_OctahedronDimensionSpinButton; }
+
+	Gtk::Grid &
+	getIcosahedronOptionsGrid () const
+	{ return *m_IcosahedronOptionsGrid; }
+
+	Gtk::SpinButton &
+	getIcosahedronDimensionSpinButton () const
+	{ return *m_IcosahedronDimensionSpinButton; }
 
 	Gtk::Box &
 	getGeoElevationGridBox () const
@@ -933,6 +973,38 @@ public:
 	Gtk::SpinButton &
 	getNurbsPatchSurfaceVDimensionSpinButton () const
 	{ return *m_NurbsPatchSurfaceVDimensionSpinButton; }
+
+	Gtk::Expander &
+	getIndexedLineSetExpander () const
+	{ return *m_IndexedLineSetExpander; }
+
+	Gtk::ComboBoxText &
+	getIndexedLineSetTypeButton () const
+	{ return *m_IndexedLineSetTypeButton; }
+
+	Gtk::Stack &
+	getIndexedLineSetStack () const
+	{ return *m_IndexedLineSetStack; }
+
+	Gtk::Grid &
+	getIndexedLineSetLSystemOptions () const
+	{ return *m_IndexedLineSetLSystemOptions; }
+
+	Gtk::Box &
+	getQuadSphereXDimensionBox1 () const
+	{ return *m_QuadSphereXDimensionBox1; }
+
+	Gtk::SpinButton &
+	getQuadSphereXDimensionSpinButton1 () const
+	{ return *m_QuadSphereXDimensionSpinButton1; }
+
+	Gtk::Box &
+	getQuadSphereYDimensionBox1 () const
+	{ return *m_QuadSphereYDimensionBox1; }
+
+	Gtk::SpinButton &
+	getQuadSphereYDimensionSpinButton1 () const
+	{ return *m_QuadSphereYDimensionSpinButton1; }
 
 	Gtk::Expander &
 	getCommonPropertiesExpander () const
@@ -1198,11 +1270,11 @@ public:
 
 	virtual
 	void
-	on_sphere_use_global_options_toggled () = 0;
+	on_sphere_type_changed () = 0;
 
 	virtual
 	void
-	on_sphere_type_changed () = 0;
+	on_sphere_use_global_options_toggled () = 0;
 
 	virtual
 	void
@@ -1335,32 +1407,40 @@ private:
 	Gtk::ComboBoxText*             m_GeometryComboBoxText;
 	Gtk::Button*                   m_GeometryUnlinkButton;
 	Gtk::Stack*                    m_GeometryStack;
+	Gtk::Box*                      m_Arc2DBox;
 	Gtk::Expander*                 m_Arc2DExpander;
 	Gtk::SpinButton*               m_Arc2DRadiusSpinButton;
 	Gtk::SpinButton*               m_Arc2DStartAngleSpinButton;
 	Gtk::SpinButton*               m_Arc2DEndAngleSpinButton;
-	Gtk::Box*                      m_Arc2DDimensionBox;
-	Gtk::SpinButton*               m_Arc2DDimensionSpinButton;
+	Gtk::Expander*                 m_Arc2DOptionsExpander;
 	Gtk::CheckButton*              m_Arc2DUseGlobalOptionsCheckButton;
+	Gtk::Grid*                     m_Arc2DOptionsGrid;
+	Gtk::SpinButton*               m_Arc2DDimensionSpinButton;
+	Gtk::Box*                      m_ArcClose2DBox;
 	Gtk::Expander*                 m_ArcClose2DExpander;
 	Gtk::SpinButton*               m_ArcClose2DRadiusSpinButton;
 	Gtk::ComboBoxText*             m_ArcClose2DClosureTypeComboBoxText;
 	Gtk::SpinButton*               m_ArcClose2DStartAngleSpinButton;
 	Gtk::SpinButton*               m_ArcClose2DEndAngleSpinButton;
-	Gtk::Box*                      m_ArcClose2DDimensionBox;
-	Gtk::SpinButton*               m_ArcClose2DDimensionSpinButton;
+	Gtk::Expander*                 m_ArcClose2DOptionsExpander;
 	Gtk::CheckButton*              m_ArcClose2DUseGlobalOptionsCheckButton;
+	Gtk::Grid*                     m_ArcClose2DOptionsGrid;
+	Gtk::SpinButton*               m_ArcClose2DDimensionSpinButton;
+	Gtk::Box*                      m_Circle2DBox;
 	Gtk::Expander*                 m_Circle2DExpander;
 	Gtk::SpinButton*               m_Circle2DRadiusSpinButton;
+	Gtk::Expander*                 m_Circle2DOptionsExpander;
 	Gtk::CheckButton*              m_Circle2DUseGlobalOptionsCheckButton;
-	Gtk::Box*                      m_Circle2DDimensionBox;
+	Gtk::Grid*                     m_Circle2DOptionsGrid;
 	Gtk::SpinButton*               m_Circle2DDimensionSpinButton;
+	Gtk::Box*                      m_Disk2DBox;
 	Gtk::Expander*                 m_Disk2DExpander;
 	Gtk::SpinButton*               m_Disk2DInnerRadiusSpinButton;
 	Gtk::SpinButton*               m_Disk2DOuterRadiusSpinButton;
-	Gtk::Box*                      m_Disk2DDimensionBox;
-	Gtk::SpinButton*               m_Disk2DDimensionSpinButton;
+	Gtk::Expander*                 m_Disk2DOptionsExpander;
 	Gtk::CheckButton*              m_Disk2DUseGlobalOptionsCheckButton;
+	Gtk::Grid*                     m_Disk2DOptionsGrid;
+	Gtk::SpinButton*               m_Disk2DDimensionSpinButton;
 	Gtk::Expander*                 m_Rectangle2DExpander;
 	Gtk::Box*                      m_Rectangle2DSizeBox;
 	Gtk::SpinButton*               m_Rectangle2DSizeXSpinButton;
@@ -1374,22 +1454,26 @@ private:
 	Gtk::SpinButton*               m_BoxSizeZSpinButton;
 	Gtk::ToggleButton*             m_BoxUniformSizeButton;
 	Gtk::Image*                    m_BoxUniformSizeImage;
+	Gtk::Box*                      m_ConeBox;
 	Gtk::Expander*                 m_ConeExpander;
 	Gtk::SpinButton*               m_ConeBottomRadiusSpinButton;
 	Gtk::SpinButton*               m_ConeHeightSpinButton;
 	Gtk::CheckButton*              m_ConeSideCheckButton;
 	Gtk::CheckButton*              m_ConeBottomCheckButton;
-	Gtk::Box*                      m_ConeXDimensionBox;
-	Gtk::SpinButton*               m_ConeXDimensionSpinButton;
+	Gtk::Expander*                 m_ConeOptionsExpander;
 	Gtk::CheckButton*              m_ConeUseGlobalOptionsCheckButton;
+	Gtk::Grid*                     m_ConeOptionsGrid;
+	Gtk::SpinButton*               m_ConeXDimensionSpinButton;
+	Gtk::Box*                      m_CylinderBox;
 	Gtk::Expander*                 m_CylinderExpander;
 	Gtk::SpinButton*               m_CylinderRadiusSpinButton;
 	Gtk::SpinButton*               m_CylinderHeightSpinButton;
 	Gtk::CheckButton*              m_CylinderBottomCheckButton;
 	Gtk::CheckButton*              m_CylinderSideCheckButton;
 	Gtk::CheckButton*              m_CylinderTopCheckButton;
+	Gtk::Expander*                 m_CylinderOptionsExpander;
 	Gtk::CheckButton*              m_CylinderUseGlobalOptionsCheckButton;
-	Gtk::Box*                      m_CylinderXDimensionBox;
+	Gtk::Grid*                     m_CylinderOptionsGrid;
 	Gtk::SpinButton*               m_CylinderXDimensionSpinButton;
 	Gtk::Box*                      m_ElevationGridBox;
 	Gtk::Expander*                 m_ElevationGridExpander;
@@ -1407,22 +1491,20 @@ private:
 	Gtk::Expander*                 m_ExtrusionExpander;
 	Gtk::CheckButton*              m_ExtrusionBeginCapCheckButton;
 	Gtk::CheckButton*              m_ExtrusionEndCapCheckButton;
+	Gtk::Box*                      m_SphereBox;
 	Gtk::Expander*                 m_SphereExpander;
 	Gtk::SpinButton*               m_SphereRadiusSpinButton;
-	Gtk::CheckButton*              m_SphereUseGlobalOptionsCheckButton;
+	Gtk::Expander*                 m_SphereOptionsExpander;
 	Gtk::ComboBoxText*             m_SphereTypeButton;
-	Gtk::Stack*                    m_SphereStack;
-	Gtk::Grid*                     m_QuadSphereOptions;
-	Gtk::Box*                      m_QuadSphereXDimensionBox;
+	Gtk::CheckButton*              m_SphereUseGlobalOptionsCheckButton;
+	Gtk::Stack*                    m_SphereOptionsStack;
+	Gtk::Grid*                     m_QuadSphereOptionsGrid;
 	Gtk::SpinButton*               m_QuadSphereXDimensionSpinButton;
-	Gtk::Box*                      m_QuadSphereYDimensionBox;
 	Gtk::SpinButton*               m_QuadSphereYDimensionSpinButton;
-	Gtk::Grid*                     m_IcosahedronOptions;
-	Gtk::Box*                      m_IcosahedronDimensionBox;
-	Gtk::SpinButton*               m_IcosahedronDimensionSpinButton;
-	Gtk::Grid*                     m_OctahedronOptions;
-	Gtk::Box*                      m_OctahedronDimensionBox;
+	Gtk::Grid*                     m_OctahedronOptionsGrid;
 	Gtk::SpinButton*               m_OctahedronDimensionSpinButton;
+	Gtk::Grid*                     m_IcosahedronOptionsGrid;
+	Gtk::SpinButton*               m_IcosahedronDimensionSpinButton;
 	Gtk::Box*                      m_GeoElevationGridBox;
 	Gtk::Expander*                 m_GeoElevationGridExpander;
 	Gtk::SpinButton*               m_GeoElevationGridXDimensionSpinButton;
@@ -1470,6 +1552,14 @@ private:
 	Gtk::SpinButton*               m_NurbsPatchSurfaceVOrderSpinButton;
 	Gtk::SpinButton*               m_NurbsPatchSurfaceUDimensionSpinButton;
 	Gtk::SpinButton*               m_NurbsPatchSurfaceVDimensionSpinButton;
+	Gtk::Expander*                 m_IndexedLineSetExpander;
+	Gtk::ComboBoxText*             m_IndexedLineSetTypeButton;
+	Gtk::Stack*                    m_IndexedLineSetStack;
+	Gtk::Grid*                     m_IndexedLineSetLSystemOptions;
+	Gtk::Box*                      m_QuadSphereXDimensionBox1;
+	Gtk::SpinButton*               m_QuadSphereXDimensionSpinButton1;
+	Gtk::Box*                      m_QuadSphereYDimensionBox1;
+	Gtk::SpinButton*               m_QuadSphereYDimensionSpinButton1;
 	Gtk::Expander*                 m_CommonPropertiesExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;

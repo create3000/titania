@@ -82,7 +82,7 @@ X3DConeEditor::set_geometry ()
 
 	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Cone });
 
-	getConeExpander () .set_visible (not nodes .empty ());
+	getConeBox () .set_visible (not nodes .empty ());
 
 	side         .setNodes (nodes);
 	bottom       .setNodes (nodes);
@@ -143,7 +143,7 @@ X3DConeEditor::set_options ()
 			optionsNodes .emplace_back (optionsNode);
 	}
 
-	const auto active       = optionsNodes .empty ();
+	const auto global       = optionsNodes .empty ();
 	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
 
 	if (optionsNodes .empty ())
@@ -155,10 +155,10 @@ X3DConeEditor::set_options ()
 
 	changing = true;
 
-	getConeUseGlobalOptionsCheckButton () .set_active (active);
+	getConeUseGlobalOptionsCheckButton () .set_active (global);
 	getConeUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
 
-	getConeXDimensionBox () .set_sensitive (not active and not inconsistent);
+	getConeOptionsGrid () .set_sensitive (not global and not inconsistent);
 
 	changing = false;
 }

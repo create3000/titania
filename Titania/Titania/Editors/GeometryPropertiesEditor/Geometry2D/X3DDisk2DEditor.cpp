@@ -87,7 +87,7 @@ X3DDisk2DEditor::set_geometry ()
 
 	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Disk2D });
 
-	getDisk2DExpander () .set_visible (not nodes .empty ());
+	getDisk2DBox () .set_visible (not nodes .empty ());
 
 	innerRadius .setNodes (nodes);
 	outerRadius .setNodes (nodes);
@@ -147,7 +147,7 @@ X3DDisk2DEditor::set_options ()
 			optionsNodes .emplace_back (optionsNode);
 	}
 
-	const auto active       = optionsNodes .empty ();
+	const auto global       = optionsNodes .empty ();
 	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
 
 	if (optionsNodes .empty ())
@@ -159,10 +159,10 @@ X3DDisk2DEditor::set_options ()
 
 	changing = true;
 
-	getDisk2DUseGlobalOptionsCheckButton () .set_active (active);
+	getDisk2DUseGlobalOptionsCheckButton () .set_active (global);
 	getDisk2DUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
 
-	getDisk2DDimensionBox () .set_sensitive (not active and not inconsistent);
+	getDisk2DOptionsGrid () .set_sensitive (not global and not inconsistent);
 
 	changing = false;
 }

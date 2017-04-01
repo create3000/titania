@@ -79,7 +79,7 @@ X3DCircle2DEditor::set_geometry ()
 
 	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Circle2D });
 
-	getCircle2DExpander () .set_visible (not nodes .empty ());
+	getCircle2DBox () .set_visible (not nodes .empty ());
 
 	radius    .setNodes (nodes);
 	dimension .setNodes (nodes);
@@ -138,7 +138,7 @@ X3DCircle2DEditor::set_options ()
 			optionsNodes .emplace_back (optionsNode);
 	}
 
-	const auto active       = optionsNodes .empty ();
+	const auto global       = optionsNodes .empty ();
 	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
 
 	if (optionsNodes .empty ())
@@ -150,10 +150,10 @@ X3DCircle2DEditor::set_options ()
 
 	changing = true;
 
-	getCircle2DUseGlobalOptionsCheckButton () .set_active (active);
+	getCircle2DUseGlobalOptionsCheckButton () .set_active (global);
 	getCircle2DUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
 
-	getCircle2DDimensionBox () .set_sensitive (not active and not inconsistent);
+	getCircle2DOptionsGrid () .set_sensitive (not global and not inconsistent);
 
 	changing = false;
 }

@@ -84,7 +84,7 @@ X3DArc2DEditor::set_geometry ()
 
 	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::Arc2D });
 
-	getArc2DExpander () .set_visible (not nodes .empty ());
+	getArc2DBox () .set_visible (not nodes .empty ());
 
 	startAngle .setNodes (nodes);
 	endAngle   .setNodes (nodes);
@@ -145,7 +145,7 @@ X3DArc2DEditor::set_options ()
 			optionsNodes .emplace_back (optionsNode);
 	}
 
-	const auto active       = optionsNodes .empty ();
+	const auto global       = optionsNodes .empty ();
 	const auto inconsistent = optionsNodes .size () not_eq nodes .size ();
 
 	if (optionsNodes .empty ())
@@ -157,10 +157,10 @@ X3DArc2DEditor::set_options ()
 
 	changing = true;
 
-	getArc2DUseGlobalOptionsCheckButton () .set_active (active);
+	getArc2DUseGlobalOptionsCheckButton () .set_active (global);
 	getArc2DUseGlobalOptionsCheckButton () .set_inconsistent (inconsistent);
 
-	getArc2DDimensionBox () .set_sensitive (not active and not inconsistent);
+	getArc2DOptionsGrid () .set_sensitive (not global and not inconsistent);
 
 	changing = false;
 }

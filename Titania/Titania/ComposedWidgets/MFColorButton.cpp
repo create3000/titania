@@ -97,6 +97,10 @@ MFColorButton::MFColorButton (X3DBaseInterface* const editor,
 
 	buffer .addInterest (&MFColorButton::set_buffer, this);
 
+	// Widget
+
+	widget .signal_style_updated () .connect (sigc::mem_fun (colorsDrawingArea, &Gtk::Widget::queue_draw));
+
 	// Button
 
 	colorButton .signal_button_press_event () .connect (sigc::mem_fun (*this, &MFColorButton::on_button_press_event));
@@ -607,7 +611,7 @@ MFColorButton::on_colors_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 			if (i == getIndex ())
 			{
-				const auto color = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
+				const auto color = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_NORMAL);
 
 				context -> set_line_width (2);
 				context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
