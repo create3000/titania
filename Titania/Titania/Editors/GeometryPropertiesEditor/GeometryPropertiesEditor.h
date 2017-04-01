@@ -68,6 +68,7 @@
 #include "NURBS/X3DNurbsCurveEditor.h"
 #include "NURBS/X3DNurbsPatchSurfaceEditor.h"
 #include "NURBS/X3DNurbsTrimmedSurfaceEditor.h"
+#include "Rendering/X3DIndexedLineSetEditor.h"
 #include "X3DPrimitiveCountEditor.h"
 #include "X3DGeometryTool.h"
 
@@ -95,6 +96,7 @@ class GeometryPropertiesEditor :
 	public X3DNurbsCurveEditor,
 	public X3DNurbsPatchSurfaceEditor,
 	public X3DNurbsTrimmedSurfaceEditor,
+	public X3DIndexedLineSetEditor,
 	public X3DPrimitiveCountEditor,
 	public X3DGeometryTool
 {

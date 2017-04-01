@@ -643,114 +643,6 @@ public:
 	{ return *m_RangeGradientBox; }
 
 	Gtk::Expander &
-	getLayoutExpander () const
-	{ return *m_LayoutExpander; }
-
-	Gtk::Grid &
-	getCreateLayoutBox () const
-	{ return *m_CreateLayoutBox; }
-
-	Gtk::CheckButton &
-	getLayoutCheckButton () const
-	{ return *m_LayoutCheckButton; }
-
-	Gtk::Grid &
-	getLayoutBox () const
-	{ return *m_LayoutBox; }
-
-	Gtk::Box &
-	getLayoutOffsetBox () const
-	{ return *m_LayoutOffsetBox; }
-
-	Gtk::SpinButton &
-	getLayoutOffsetXSpinButton () const
-	{ return *m_LayoutOffsetXSpinButton; }
-
-	Gtk::SpinButton &
-	getLayoutOffsetYSpinButton () const
-	{ return *m_LayoutOffsetYSpinButton; }
-
-	Gtk::Box &
-	getLayoutSizeBox () const
-	{ return *m_LayoutSizeBox; }
-
-	Gtk::SpinButton &
-	getLayoutSizeXSpinButton () const
-	{ return *m_LayoutSizeXSpinButton; }
-
-	Gtk::SpinButton &
-	getLayoutSizeYSpinButton () const
-	{ return *m_LayoutSizeYSpinButton; }
-
-	Gtk::ComboBoxText &
-	getLayoutAlignXComboBoxText () const
-	{ return *m_LayoutAlignXComboBoxText; }
-
-	Gtk::ComboBoxText &
-	getLayoutAlignYComboBoxText () const
-	{ return *m_LayoutAlignYComboBoxText; }
-
-	Gtk::ComboBoxText &
-	getLayoutOffsetUnitsXComboBoxText () const
-	{ return *m_LayoutOffsetUnitsXComboBoxText; }
-
-	Gtk::ComboBoxText &
-	getLayoutOffsetUnitsYComboBoxText () const
-	{ return *m_LayoutOffsetUnitsYComboBoxText; }
-
-	Gtk::ComboBoxText &
-	getLayoutSizeUnitsXComboBoxText () const
-	{ return *m_LayoutSizeUnitsXComboBoxText; }
-
-	Gtk::ComboBoxText &
-	getLayoutSizeUnitsYComboBoxText () const
-	{ return *m_LayoutSizeUnitsYComboBoxText; }
-
-	Gtk::ComboBoxText &
-	getLayoutScaleModeXComboBoxText () const
-	{ return *m_LayoutScaleModeXComboBoxText; }
-
-	Gtk::ComboBoxText &
-	getLayoutScaleModeYComboBoxText () const
-	{ return *m_LayoutScaleModeYComboBoxText; }
-
-	Gtk::Expander &
-	getViewportExpander () const
-	{ return *m_ViewportExpander; }
-
-	Gtk::Grid &
-	getCreateViewportBox () const
-	{ return *m_CreateViewportBox; }
-
-	Gtk::CheckButton &
-	getViewportCheckButton () const
-	{ return *m_ViewportCheckButton; }
-
-	Gtk::Grid &
-	getViewportBox () const
-	{ return *m_ViewportBox; }
-
-	Gtk::Grid &
-	getViewportClipBoundaryBox () const
-	{ return *m_ViewportClipBoundaryBox; }
-
-	Gtk::SpinButton &
-	getViewportClipBoundaryTopSpinButton () const
-	{ return *m_ViewportClipBoundaryTopSpinButton; }
-
-	Gtk::SpinButton &
-	getViewportClipBoundaryLeftSpinButton () const
-	{ return *m_ViewportClipBoundaryLeftSpinButton; }
-
-	Gtk::SpinButton &
-	getViewportClipBoundaryRightSpinButton () const
-	{ return *m_ViewportClipBoundaryRightSpinButton; }
-
-	Gtk::SpinButton &
-	getViewportClipBoundaryBottomSpinButton () const
-	{ return *m_ViewportClipBoundaryBottomSpinButton; }
-
-	Gtk::Expander &
 	getGeoTransformExpander () const
 	{ return *m_GeoTransformExpander; }
 
@@ -913,6 +805,114 @@ public:
 	Gtk::CheckButton &
 	getEnvironmentalSensorEnabledCheckButton () const
 	{ return *m_EnvironmentalSensorEnabledCheckButton; }
+
+	Gtk::Expander &
+	getLayoutExpander () const
+	{ return *m_LayoutExpander; }
+
+	Gtk::Grid &
+	getCreateLayoutBox () const
+	{ return *m_CreateLayoutBox; }
+
+	Gtk::CheckButton &
+	getLayoutCheckButton () const
+	{ return *m_LayoutCheckButton; }
+
+	Gtk::Grid &
+	getLayoutBox () const
+	{ return *m_LayoutBox; }
+
+	Gtk::Box &
+	getLayoutOffsetBox () const
+	{ return *m_LayoutOffsetBox; }
+
+	Gtk::SpinButton &
+	getLayoutOffsetXSpinButton () const
+	{ return *m_LayoutOffsetXSpinButton; }
+
+	Gtk::SpinButton &
+	getLayoutOffsetYSpinButton () const
+	{ return *m_LayoutOffsetYSpinButton; }
+
+	Gtk::Box &
+	getLayoutSizeBox () const
+	{ return *m_LayoutSizeBox; }
+
+	Gtk::SpinButton &
+	getLayoutSizeXSpinButton () const
+	{ return *m_LayoutSizeXSpinButton; }
+
+	Gtk::SpinButton &
+	getLayoutSizeYSpinButton () const
+	{ return *m_LayoutSizeYSpinButton; }
+
+	Gtk::ComboBoxText &
+	getLayoutAlignXComboBoxText () const
+	{ return *m_LayoutAlignXComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutAlignYComboBoxText () const
+	{ return *m_LayoutAlignYComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutOffsetUnitsXComboBoxText () const
+	{ return *m_LayoutOffsetUnitsXComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutOffsetUnitsYComboBoxText () const
+	{ return *m_LayoutOffsetUnitsYComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutSizeUnitsXComboBoxText () const
+	{ return *m_LayoutSizeUnitsXComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutSizeUnitsYComboBoxText () const
+	{ return *m_LayoutSizeUnitsYComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutScaleModeXComboBoxText () const
+	{ return *m_LayoutScaleModeXComboBoxText; }
+
+	Gtk::ComboBoxText &
+	getLayoutScaleModeYComboBoxText () const
+	{ return *m_LayoutScaleModeYComboBoxText; }
+
+	Gtk::Expander &
+	getViewportExpander () const
+	{ return *m_ViewportExpander; }
+
+	Gtk::Grid &
+	getCreateViewportBox () const
+	{ return *m_CreateViewportBox; }
+
+	Gtk::CheckButton &
+	getViewportCheckButton () const
+	{ return *m_ViewportCheckButton; }
+
+	Gtk::Grid &
+	getViewportBox () const
+	{ return *m_ViewportBox; }
+
+	Gtk::Grid &
+	getViewportClipBoundaryBox () const
+	{ return *m_ViewportClipBoundaryBox; }
+
+	Gtk::SpinButton &
+	getViewportClipBoundaryTopSpinButton () const
+	{ return *m_ViewportClipBoundaryTopSpinButton; }
+
+	Gtk::SpinButton &
+	getViewportClipBoundaryLeftSpinButton () const
+	{ return *m_ViewportClipBoundaryLeftSpinButton; }
+
+	Gtk::SpinButton &
+	getViewportClipBoundaryRightSpinButton () const
+	{ return *m_ViewportClipBoundaryRightSpinButton; }
+
+	Gtk::SpinButton &
+	getViewportClipBoundaryBottomSpinButton () const
+	{ return *m_ViewportClipBoundaryBottomSpinButton; }
 
 	Gtk::Expander &
 	getGeometrySelectionExpander () const
@@ -1114,19 +1114,19 @@ public:
 
 	virtual
 	void
-	on_layout_toggled () = 0;
-
-	virtual
-	void
-	on_viewport_toggled () = 0;
-
-	virtual
-	void
 	on_geo_transform_uniform_scale_clicked () = 0;
 
 	virtual
 	void
 	on_proximity_sensor_uniform_size_clicked () = 0;
+
+	virtual
+	void
+	on_layout_toggled () = 0;
+
+	virtual
+	void
+	on_viewport_toggled () = 0;
 
 	virtual
 	bool
@@ -1305,33 +1305,6 @@ private:
 	Gtk::SpinButton*               m_LODLevelSpinButton;
 	Gtk::CheckButton*              m_LODKeepCurrentLevelCheckButton;
 	Gtk::Box*                      m_RangeGradientBox;
-	Gtk::Expander*                 m_LayoutExpander;
-	Gtk::Grid*                     m_CreateLayoutBox;
-	Gtk::CheckButton*              m_LayoutCheckButton;
-	Gtk::Grid*                     m_LayoutBox;
-	Gtk::Box*                      m_LayoutOffsetBox;
-	Gtk::SpinButton*               m_LayoutOffsetXSpinButton;
-	Gtk::SpinButton*               m_LayoutOffsetYSpinButton;
-	Gtk::Box*                      m_LayoutSizeBox;
-	Gtk::SpinButton*               m_LayoutSizeXSpinButton;
-	Gtk::SpinButton*               m_LayoutSizeYSpinButton;
-	Gtk::ComboBoxText*             m_LayoutAlignXComboBoxText;
-	Gtk::ComboBoxText*             m_LayoutAlignYComboBoxText;
-	Gtk::ComboBoxText*             m_LayoutOffsetUnitsXComboBoxText;
-	Gtk::ComboBoxText*             m_LayoutOffsetUnitsYComboBoxText;
-	Gtk::ComboBoxText*             m_LayoutSizeUnitsXComboBoxText;
-	Gtk::ComboBoxText*             m_LayoutSizeUnitsYComboBoxText;
-	Gtk::ComboBoxText*             m_LayoutScaleModeXComboBoxText;
-	Gtk::ComboBoxText*             m_LayoutScaleModeYComboBoxText;
-	Gtk::Expander*                 m_ViewportExpander;
-	Gtk::Grid*                     m_CreateViewportBox;
-	Gtk::CheckButton*              m_ViewportCheckButton;
-	Gtk::Grid*                     m_ViewportBox;
-	Gtk::Grid*                     m_ViewportClipBoundaryBox;
-	Gtk::SpinButton*               m_ViewportClipBoundaryTopSpinButton;
-	Gtk::SpinButton*               m_ViewportClipBoundaryLeftSpinButton;
-	Gtk::SpinButton*               m_ViewportClipBoundaryRightSpinButton;
-	Gtk::SpinButton*               m_ViewportClipBoundaryBottomSpinButton;
 	Gtk::Expander*                 m_GeoTransformExpander;
 	Gtk::Grid*                     m_GeoTransformBox;
 	Gtk::Box*                      m_GeoTransformTranslationBox;
@@ -1373,6 +1346,33 @@ private:
 	Gtk::Image*                    m_EnvironmentalSensorUniformSizeImage;
 	Gtk::Box*                      m_EnvironmentalSensorCenterBox;
 	Gtk::CheckButton*              m_EnvironmentalSensorEnabledCheckButton;
+	Gtk::Expander*                 m_LayoutExpander;
+	Gtk::Grid*                     m_CreateLayoutBox;
+	Gtk::CheckButton*              m_LayoutCheckButton;
+	Gtk::Grid*                     m_LayoutBox;
+	Gtk::Box*                      m_LayoutOffsetBox;
+	Gtk::SpinButton*               m_LayoutOffsetXSpinButton;
+	Gtk::SpinButton*               m_LayoutOffsetYSpinButton;
+	Gtk::Box*                      m_LayoutSizeBox;
+	Gtk::SpinButton*               m_LayoutSizeXSpinButton;
+	Gtk::SpinButton*               m_LayoutSizeYSpinButton;
+	Gtk::ComboBoxText*             m_LayoutAlignXComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutAlignYComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutOffsetUnitsXComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutOffsetUnitsYComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutSizeUnitsXComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutSizeUnitsYComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutScaleModeXComboBoxText;
+	Gtk::ComboBoxText*             m_LayoutScaleModeYComboBoxText;
+	Gtk::Expander*                 m_ViewportExpander;
+	Gtk::Grid*                     m_CreateViewportBox;
+	Gtk::CheckButton*              m_ViewportCheckButton;
+	Gtk::Grid*                     m_ViewportBox;
+	Gtk::Grid*                     m_ViewportClipBoundaryBox;
+	Gtk::SpinButton*               m_ViewportClipBoundaryTopSpinButton;
+	Gtk::SpinButton*               m_ViewportClipBoundaryLeftSpinButton;
+	Gtk::SpinButton*               m_ViewportClipBoundaryRightSpinButton;
+	Gtk::SpinButton*               m_ViewportClipBoundaryBottomSpinButton;
 	Gtk::Expander*                 m_GeometrySelectionExpander;
 	Gtk::Grid*                     m_GeometrySelectionBox;
 	Gtk::Box*                      m_GeometrySelectionTranslationBox;

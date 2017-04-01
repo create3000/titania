@@ -62,7 +62,7 @@ X3DIndexedFaceSetLightSaberObject::X3DIndexedFaceSetLightSaberObject () :
 	            IndexedFaceSet (getExecutionContext ()),
 	X3DIndexedFaceSetCutObject ()
 {
-	//addType (X3DConstants::X3DIndexedFaceSetLightSaberObject);
+	addType (X3DConstants::X3DIndexedFaceSetLightSaberObject);
 }
 
 /**

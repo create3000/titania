@@ -61,7 +61,7 @@ NavigationInfoEditor::NavigationInfoEditor (X3DBrowserWindow* const browserWindo
 	X3DNavigationInfoEditorInterface (get_ui ("Editors/NavigationInfoEditor.glade")),
 	              navigationInfoList (new NavigationInfoList (browserWindow)),
 	                        nodeName (this, getNameEntry (), getRenameButton ()),
-	                            type (new MFStringWidget (browserWindow,
+	                            type (new MFStringWidget (this,
 	                                  getTypeTreeView (),
 	                                  getTypeCellRendererCombo (),
 	                                  getTypeAddButton (),

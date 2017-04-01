@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,24 +48,48 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_H__
-#define __TITANIA_COMPOSED_WIDGETS_H__
+#include "LSystemOptions.h"
 
-#include "ComposedWidgets/MFColorButton.h"
-#include "ComposedWidgets/MFColorRGBAButton.h"
-#include "ComposedWidgets/MFStringComboBoxText.h"
-#include "ComposedWidgets/MFStringWidget.h"
-#include "ComposedWidgets/NameEntry.h"
-#include "ComposedWidgets/SFColorButton.h"
-#include "ComposedWidgets/SFColorRGBAButton.h"
-#include "ComposedWidgets/SFRotationAdjustment.h"
-#include "ComposedWidgets/SFStringComboBoxText.h"
-#include "ComposedWidgets/SFStringEntry.h"
-#include "ComposedWidgets/SFStringTextView.h"
-#include "ComposedWidgets/X3DFieldAdjustment.h"
-#include "ComposedWidgets/X3DFieldAdjustment2.h"
-#include "ComposedWidgets/X3DFieldAdjustment3.h"
-#include "ComposedWidgets/X3DFieldAdjustment4.h"
-#include "ComposedWidgets/X3DFieldToggleButton.h"
+#include "../../Execution/X3DExecutionContext.h"
 
-#endif
+namespace titania {
+namespace X3D {
+
+const ComponentType LSystemOptions::component      = ComponentType::TITANIA;
+const std::string   LSystemOptions::typeName       = "LSystemOptions";
+const std::string   LSystemOptions::containerField = "boxOptions";
+
+LSystemOptions::Fields::Fields () :
+	iterations (new SFInt32 (8)),
+	     angle (new SFFloat (radians (10.0))),
+	 constants (new SFString ()),
+	     axiom (new SFString ("X")),
+	      rule (new MFString ({ "F=C0FF", "X=C1F[+X]--X" }))
+{ }
+
+LSystemOptions::LSystemOptions (X3DExecutionContext* const executionContext) :
+	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGeometricOptionNode ()
+{
+	addType (X3DConstants::LSystemOptions);
+
+	addField (inputOutput, "iterations", iterations ());
+	addField (inputOutput, "angle",      angle ());
+	addField (inputOutput, "constants",  constants ());
+	addField (inputOutput, "axiom",      axiom ());
+	addField (inputOutput, "rule",       rule ());
+}
+
+LSystemOptions*
+LSystemOptions::create (X3DExecutionContext* const executionContext) const
+{
+	return new LSystemOptions (executionContext);
+}
+
+void
+LSystemOptions::build ()
+{
+}
+
+} // X3D
+} // titania

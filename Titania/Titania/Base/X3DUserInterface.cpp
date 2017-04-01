@@ -186,7 +186,7 @@ X3DUserInterface::removeFocus (Gtk::Widget & parent)
 		{
 			if (widget -> has_focus ())
 			{
-			   getBrowserWindow () -> hasAccelerators (true);
+			   getBrowserWindow () -> setAccelerators (true);
 			   break;
 			}
 		}
@@ -235,14 +235,14 @@ X3DUserInterface::on_window_state_event (GdkEventWindowState* event)
 bool
 X3DUserInterface::on_focus_in_event (GdkEventFocus* event)
 {
-	getBrowserWindow () -> hasAccelerators (false);
+	getBrowserWindow () -> setAccelerators (false);
 	return false;
 }
 
 bool
 X3DUserInterface::on_focus_out_event (GdkEventFocus* event)
 {
-	getBrowserWindow () -> hasAccelerators (true);
+	getBrowserWindow () -> setAccelerators (true);
 	return false;
 }
 

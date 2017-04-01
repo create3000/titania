@@ -2316,7 +2316,7 @@ AnimationEditor::on_configure_event (GdkEventConfigure*)
 bool
 AnimationEditor::on_focus_in_event (GdkEventFocus*)
 {
-	getBrowserWindow () -> hasAccelerators (false);
+	getBrowserWindow () -> setAccelerators (false);
 	getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
 	getDrawingArea () .queue_draw ();
 	return false;
@@ -2327,7 +2327,7 @@ AnimationEditor::on_focus_out_event (GdkEventFocus*)
 {
 	keys .clear ();
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
-	getBrowserWindow () -> hasAccelerators (true);
+	getBrowserWindow () -> setAccelerators (true);
 	getDrawingArea () .queue_draw ();
 	return false;
 }

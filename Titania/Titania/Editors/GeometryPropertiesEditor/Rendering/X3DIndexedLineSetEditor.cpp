@@ -50,6 +50,7 @@
 
 #include "X3DIndexedLineSetEditor.h"
 
+#include <Titania/X3D/Browser/Rendering/LSystemOptions.h>
 #include <Titania/X3D/Components/Rendering/IndexedLineSet.h>
 
 namespace titania {
@@ -57,26 +58,147 @@ namespace puck {
 
 X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                               nodes ()
+	                   lSystemIterations (this, getIndexLineSetLSystemIterationsAdjustment (), getIndexLineSetLSystemIterationsSpinButton (), "iterations"),
+	                        lSystemAngle (this, getIndexLineSetLSystemAngleAdjustment (), getIndexLineSetLSystemAngleBox (), "angle"),
+	                    lSystemConstants (this, getIndexLineSetLSystemConstantsEntry (), "constants"),
+	                        lSystemAxiom (this, getIndexLineSetLSystemAxiomEntry (), "axiom"),
+	                         lSystemRule (this,
+	                                      getIndexLineSetLSystemRuleTreeView (),
+	                                      getIndexLineSetLSystemRuleCellRendererText (),
+	                                      getIndexLineSetLSystemRuleAddButton (),
+	                                      getIndexLineSetLSystemRuleRemoveButton (),
+	                                      "rule",
+	                                      "F=F"),
+	                               nodes (),
+	                            changing (false)
 {
 	addChildObjects (nodes);
-}
 
-void
-X3DIndexedLineSetEditor::configure ()
-{ }
+	getIndexLineSetLSystemAngleAdjustment () -> set_upper (math::pi <double> * 2);
+}
 
 void
 X3DIndexedLineSetEditor::set_geometry ()
 {
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .removeInterest (&X3DIndexedLineSetEditor::set_options, this);
+
+	// Fields
+
 	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::IndexedLineSet });
 
-	//getIndexedLineSetExpander () .set_visible (not nodes .empty ());
+	#ifdef TITANIA_DEBUG
+	getIndexedLineSetBox () .set_visible (not nodes .empty ());
+	#else
+	getIndexedLineSetBox () .set_visible (false);
+	#endif
+
+	// Hidden fields
+
+	for (const auto & node : nodes)
+		node -> getField <X3D::SFNode> ("options") .addInterest (&X3DIndexedLineSetEditor::set_options, this);
+
+	set_options ();
 }
 
 void
-X3DIndexedLineSetEditor::store ()
-{ }
+X3DIndexedLineSetEditor::on_indexed_line_set_type_changed ()
+{
+	if (changing)
+		return;
+
+	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Change IndexedLineSet Type To »%s«", getIndexedLineSetTypeButton () .get_active_text () .c_str ())));
+	auto       optionNode = X3D::SFNode ();
+
+	switch (getIndexedLineSetTypeButton () .get_active_row_number ())
+	{
+		case 1:
+		{
+			optionNode = X3D::MakePtr <X3D::LSystemOptions> (getCurrentContext ());
+			break;
+		}
+		default:
+		{
+			break;
+		}
+	}
+
+	for (const auto & node : nodes)
+	{
+		auto &     options = node -> getField <X3D::SFNode> ("options");
+		const auto copy    = X3D::SFNode (optionNode -> copy (getCurrentContext (), X3D::FLAT_COPY));
+
+		X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, copy, undoStep);
+	}
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+X3DIndexedLineSetEditor::set_options ()
+{
+	// Set composed widgets.
+
+	X3D::MFNode              optionsNodes;
+	std::set <X3D::NodeType> types;
+
+	for (const auto & node : nodes)
+	{
+		const auto & optionsNode = node -> getField <X3D::SFNode> ("options");
+
+		if (optionsNode)
+		{
+			optionsNodes .emplace_back (optionsNode);
+			types .emplace (optionsNode -> getType () .back ());
+		}
+	}
+
+	const auto global       = optionsNodes .empty ();
+	const auto inconsistent = not (optionsNodes .size () == nodes .size () and types .size () == 1);
+
+	lSystemIterations .setNodes (optionsNodes);
+	lSystemAngle      .setNodes (optionsNodes);
+	lSystemConstants  .setNodes (optionsNodes);
+	lSystemAxiom      .setNodes (optionsNodes);
+	lSystemRule       .setNodes (optionsNodes);
+
+	// Set global widget.
+
+	changing = true;
+
+	getIndexedLineSetLSystemOptions () .set_sensitive (not global and not inconsistent);
+	getIndexedLineSetLSystemOptions () .set_visible (false);
+
+	if (global)
+	{
+		getIndexedLineSetTypeButton () .set_active (0);
+	}
+	else if (inconsistent)
+	{
+		getIndexedLineSetTypeButton () .set_active (-1);
+	}
+	else
+	{
+		switch (optionsNodes .back () -> getType () .back ())
+		{
+			case X3D::X3DConstants::LSystemOptions:
+			{
+				getIndexedLineSetTypeButton ()     .set_active (0);
+				getIndexedLineSetLSystemOptions () .set_visible (true);
+				break;
+			}
+			default:
+			{
+				getIndexedLineSetTypeButton () .set_active (-1);
+				break;
+			}
+		}
+	}
+
+	changing = false;
+}
 
 X3DIndexedLineSetEditor::~X3DIndexedLineSetEditor ()
 {

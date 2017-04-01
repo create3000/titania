@@ -80,6 +80,7 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                  X3DNurbsCurveEditor (),
 	           X3DNurbsPatchSurfaceEditor (),
 	         X3DNurbsTrimmedSurfaceEditor (),
+	              X3DIndexedLineSetEditor (),
 	              X3DPrimitiveCountEditor (),
 	                      X3DGeometryTool (),
 	                                solid (this, getSolidCheckButton (),  "solid"),
@@ -252,6 +253,7 @@ GeometryPropertiesEditor::set_buffer ()
 	X3DNurbsCurveEditor::set_geometry ();
 	X3DNurbsPatchSurfaceEditor::set_geometry ();
 	X3DNurbsTrimmedSurfaceEditor::set_geometry ();
+	X3DIndexedLineSetEditor::set_geometry ();
 
 	changing = true;
 

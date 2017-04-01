@@ -52,7 +52,6 @@
 
 #include "../../Configuration/config.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
-#include "../../ComposedWidgets/MFStringWidget.h"
 
 #include <Titania/X3D/Components/EnvironmentalEffects/LocalFog.h>
 

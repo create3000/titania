@@ -275,6 +275,18 @@ public:
 	{ return m_IcosahedronDimensionAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getIndexLineSetLSystemAngleAdjustment () const
+	{ return m_IndexLineSetLSystemAngleAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getIndexLineSetLSystemIterationsAdjustment () const
+	{ return m_IndexLineSetLSystemIterationsAdjustment; }
+
+	const Glib::RefPtr <Gtk::ListStore> &
+	getIndexLineSetLSystemRuleListSTore () const
+	{ return m_IndexLineSetLSystemRuleListSTore; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getNormalColorAdjustment () const
 	{ return m_NormalColorAdjustment; }
 
@@ -365,6 +377,10 @@ public:
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getSphereRadiusAdjustment () const
 	{ return m_SphereRadiusAdjustment; }
+
+	const Glib::RefPtr <Gtk::CellRendererText> &
+	getIndexLineSetLSystemRuleCellRendererText () const
+	{ return m_IndexLineSetLSystemRuleCellRendererText; }
 
 	Gtk::Window &
 	getWindow () const
@@ -974,37 +990,61 @@ public:
 	getNurbsPatchSurfaceVDimensionSpinButton () const
 	{ return *m_NurbsPatchSurfaceVDimensionSpinButton; }
 
+	Gtk::Box &
+	getIndexedLineSetBox () const
+	{ return *m_IndexedLineSetBox; }
+
 	Gtk::Expander &
-	getIndexedLineSetExpander () const
-	{ return *m_IndexedLineSetExpander; }
+	getIndexedLineSetOptionsExpander () const
+	{ return *m_IndexedLineSetOptionsExpander; }
 
 	Gtk::ComboBoxText &
 	getIndexedLineSetTypeButton () const
 	{ return *m_IndexedLineSetTypeButton; }
 
 	Gtk::Stack &
-	getIndexedLineSetStack () const
-	{ return *m_IndexedLineSetStack; }
+	getIndexedLineSetOptionsStack () const
+	{ return *m_IndexedLineSetOptionsStack; }
 
 	Gtk::Grid &
 	getIndexedLineSetLSystemOptions () const
 	{ return *m_IndexedLineSetLSystemOptions; }
 
 	Gtk::Box &
-	getQuadSphereXDimensionBox1 () const
-	{ return *m_QuadSphereXDimensionBox1; }
+	getIndexLineSetLSystemRuleBox () const
+	{ return *m_IndexLineSetLSystemRuleBox; }
+
+	Gtk::TreeView &
+	getIndexLineSetLSystemRuleTreeView () const
+	{ return *m_IndexLineSetLSystemRuleTreeView; }
+
+	Gtk::Button &
+	getIndexLineSetLSystemRuleAddButton () const
+	{ return *m_IndexLineSetLSystemRuleAddButton; }
+
+	Gtk::Button &
+	getIndexLineSetLSystemRuleRemoveButton () const
+	{ return *m_IndexLineSetLSystemRuleRemoveButton; }
 
 	Gtk::SpinButton &
-	getQuadSphereXDimensionSpinButton1 () const
-	{ return *m_QuadSphereXDimensionSpinButton1; }
+	getIndexLineSetLSystemIterationsSpinButton () const
+	{ return *m_IndexLineSetLSystemIterationsSpinButton; }
+
+	Gtk::Entry &
+	getIndexLineSetLSystemConstantsEntry () const
+	{ return *m_IndexLineSetLSystemConstantsEntry; }
+
+	Gtk::Entry &
+	getIndexLineSetLSystemAxiomEntry () const
+	{ return *m_IndexLineSetLSystemAxiomEntry; }
 
 	Gtk::Box &
-	getQuadSphereYDimensionBox1 () const
-	{ return *m_QuadSphereYDimensionBox1; }
+	getIndexLineSetLSystemAngleBox () const
+	{ return *m_IndexLineSetLSystemAngleBox; }
 
 	Gtk::SpinButton &
-	getQuadSphereYDimensionSpinButton1 () const
-	{ return *m_QuadSphereYDimensionSpinButton1; }
+	getIndexLineSetLSystemAngleSpinButton () const
+	{ return *m_IndexLineSetLSystemAngleSpinButton; }
 
 	Gtk::Expander &
 	getCommonPropertiesExpander () const
@@ -1278,6 +1318,10 @@ public:
 
 	virtual
 	void
+	on_indexed_line_set_type_changed () = 0;
+
+	virtual
+	void
 	on_add_normals_clicked () = 0;
 
 	virtual
@@ -1330,290 +1374,300 @@ private:
 
 	///  @name Members
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
-	Glib::RefPtr <Gtk::Adjustment> m_Arc2DDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Arc2DEndAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Arc2DRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Arc2DStartAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DEndAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ArcClose2DStartAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BoxSizeXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BoxSizeYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_BoxSizeZAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Circle2DDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Circle2DRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ColorRGBAAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ConeBottomRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ConeHeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ConeXDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_CreaseAngleDoubleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_CylinderHeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_CylinderRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_CylinderXDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Disk2DDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Disk2DInnerRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Disk2DOuterRadiusAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_EdgeColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridHeightMapMaxHeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridHeightMapMinHeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridXDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridXSpacingAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_ElevationGridZSpacingAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridGeoGridOriginXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridGeoGridOriginYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridGeoGridOriginZAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridHeightMapMaxHeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridHeightMapMinHeightAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridXDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridXSpacingAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridYScaleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZSpacingAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZoneAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_IcosahedronDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NormalColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsCurveOrderAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsCurveTessellationAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceUDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceUOrderAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceUTessellationAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceVDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceVOrderAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsPatchSurfaceVTessellationAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceUDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceUOrderAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceUTessellationAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVOrderAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_NurbsTrimmedSurfaceVTessellationAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_OctahedronDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_PrimitiveEdgeColorAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_QuadSphereXDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_QuadSphereYDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeXAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_Rectangle2DSizeYAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_SphereRadiusAdjustment;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::Notebook*                 m_GeometryChildNotebook;
-	Gtk::Box*                      m_SelectGeometryBox;
-	Gtk::ComboBoxText*             m_GeometryComboBoxText;
-	Gtk::Button*                   m_GeometryUnlinkButton;
-	Gtk::Stack*                    m_GeometryStack;
-	Gtk::Box*                      m_Arc2DBox;
-	Gtk::Expander*                 m_Arc2DExpander;
-	Gtk::SpinButton*               m_Arc2DRadiusSpinButton;
-	Gtk::SpinButton*               m_Arc2DStartAngleSpinButton;
-	Gtk::SpinButton*               m_Arc2DEndAngleSpinButton;
-	Gtk::Expander*                 m_Arc2DOptionsExpander;
-	Gtk::CheckButton*              m_Arc2DUseGlobalOptionsCheckButton;
-	Gtk::Grid*                     m_Arc2DOptionsGrid;
-	Gtk::SpinButton*               m_Arc2DDimensionSpinButton;
-	Gtk::Box*                      m_ArcClose2DBox;
-	Gtk::Expander*                 m_ArcClose2DExpander;
-	Gtk::SpinButton*               m_ArcClose2DRadiusSpinButton;
-	Gtk::ComboBoxText*             m_ArcClose2DClosureTypeComboBoxText;
-	Gtk::SpinButton*               m_ArcClose2DStartAngleSpinButton;
-	Gtk::SpinButton*               m_ArcClose2DEndAngleSpinButton;
-	Gtk::Expander*                 m_ArcClose2DOptionsExpander;
-	Gtk::CheckButton*              m_ArcClose2DUseGlobalOptionsCheckButton;
-	Gtk::Grid*                     m_ArcClose2DOptionsGrid;
-	Gtk::SpinButton*               m_ArcClose2DDimensionSpinButton;
-	Gtk::Box*                      m_Circle2DBox;
-	Gtk::Expander*                 m_Circle2DExpander;
-	Gtk::SpinButton*               m_Circle2DRadiusSpinButton;
-	Gtk::Expander*                 m_Circle2DOptionsExpander;
-	Gtk::CheckButton*              m_Circle2DUseGlobalOptionsCheckButton;
-	Gtk::Grid*                     m_Circle2DOptionsGrid;
-	Gtk::SpinButton*               m_Circle2DDimensionSpinButton;
-	Gtk::Box*                      m_Disk2DBox;
-	Gtk::Expander*                 m_Disk2DExpander;
-	Gtk::SpinButton*               m_Disk2DInnerRadiusSpinButton;
-	Gtk::SpinButton*               m_Disk2DOuterRadiusSpinButton;
-	Gtk::Expander*                 m_Disk2DOptionsExpander;
-	Gtk::CheckButton*              m_Disk2DUseGlobalOptionsCheckButton;
-	Gtk::Grid*                     m_Disk2DOptionsGrid;
-	Gtk::SpinButton*               m_Disk2DDimensionSpinButton;
-	Gtk::Expander*                 m_Rectangle2DExpander;
-	Gtk::Box*                      m_Rectangle2DSizeBox;
-	Gtk::SpinButton*               m_Rectangle2DSizeXSpinButton;
-	Gtk::SpinButton*               m_Rectangle2DSizeYSpinButton;
-	Gtk::ToggleButton*             m_Rectangle2DUniformSizeButton;
-	Gtk::Image*                    m_Rectangle2DUniformSizeImage;
-	Gtk::Expander*                 m_BoxExpander;
-	Gtk::Box*                      m_BoxSizeBox;
-	Gtk::SpinButton*               m_BoxSizeXSpinButton;
-	Gtk::SpinButton*               m_BoSizeYSpinButton;
-	Gtk::SpinButton*               m_BoxSizeZSpinButton;
-	Gtk::ToggleButton*             m_BoxUniformSizeButton;
-	Gtk::Image*                    m_BoxUniformSizeImage;
-	Gtk::Box*                      m_ConeBox;
-	Gtk::Expander*                 m_ConeExpander;
-	Gtk::SpinButton*               m_ConeBottomRadiusSpinButton;
-	Gtk::SpinButton*               m_ConeHeightSpinButton;
-	Gtk::CheckButton*              m_ConeSideCheckButton;
-	Gtk::CheckButton*              m_ConeBottomCheckButton;
-	Gtk::Expander*                 m_ConeOptionsExpander;
-	Gtk::CheckButton*              m_ConeUseGlobalOptionsCheckButton;
-	Gtk::Grid*                     m_ConeOptionsGrid;
-	Gtk::SpinButton*               m_ConeXDimensionSpinButton;
-	Gtk::Box*                      m_CylinderBox;
-	Gtk::Expander*                 m_CylinderExpander;
-	Gtk::SpinButton*               m_CylinderRadiusSpinButton;
-	Gtk::SpinButton*               m_CylinderHeightSpinButton;
-	Gtk::CheckButton*              m_CylinderBottomCheckButton;
-	Gtk::CheckButton*              m_CylinderSideCheckButton;
-	Gtk::CheckButton*              m_CylinderTopCheckButton;
-	Gtk::Expander*                 m_CylinderOptionsExpander;
-	Gtk::CheckButton*              m_CylinderUseGlobalOptionsCheckButton;
-	Gtk::Grid*                     m_CylinderOptionsGrid;
-	Gtk::SpinButton*               m_CylinderXDimensionSpinButton;
-	Gtk::Box*                      m_ElevationGridBox;
-	Gtk::Expander*                 m_ElevationGridExpander;
-	Gtk::SpinButton*               m_ElevationGridXDimensionSpinButton;
-	Gtk::SpinButton*               m_ElevationGridZDimensionSpinButton;
-	Gtk::SpinButton*               m_ElevationGridXSpacingSpinButton;
-	Gtk::SpinButton*               m_ElevationGridZSpacingSpinButton;
-	Gtk::Expander*                 m_ElevationGridHeightMapExpander;
-	Gtk::SpinButton*               m_ElevationGridHeightMapMinHeightSpinButton;
-	Gtk::SpinButton*               m_ElevationGridHeightMapMaxHeightSpinButton;
-	Gtk::FileChooserButton*        m_ElevationGridHeightMapImageChooserButton;
-	Gtk::Button*                   m_ElevationGridHeightMapImageReloadButton;
-	Gtk::Button*                   m_ElevationGridHeightMapImageRemoveButton;
-	Gtk::Label*                    m_ElevationGridHeightMapLoadStateLabel;
-	Gtk::Expander*                 m_ExtrusionExpander;
-	Gtk::CheckButton*              m_ExtrusionBeginCapCheckButton;
-	Gtk::CheckButton*              m_ExtrusionEndCapCheckButton;
-	Gtk::Box*                      m_SphereBox;
-	Gtk::Expander*                 m_SphereExpander;
-	Gtk::SpinButton*               m_SphereRadiusSpinButton;
-	Gtk::Expander*                 m_SphereOptionsExpander;
-	Gtk::ComboBoxText*             m_SphereTypeButton;
-	Gtk::CheckButton*              m_SphereUseGlobalOptionsCheckButton;
-	Gtk::Stack*                    m_SphereOptionsStack;
-	Gtk::Grid*                     m_QuadSphereOptionsGrid;
-	Gtk::SpinButton*               m_QuadSphereXDimensionSpinButton;
-	Gtk::SpinButton*               m_QuadSphereYDimensionSpinButton;
-	Gtk::Grid*                     m_OctahedronOptionsGrid;
-	Gtk::SpinButton*               m_OctahedronDimensionSpinButton;
-	Gtk::Grid*                     m_IcosahedronOptionsGrid;
-	Gtk::SpinButton*               m_IcosahedronDimensionSpinButton;
-	Gtk::Box*                      m_GeoElevationGridBox;
-	Gtk::Expander*                 m_GeoElevationGridExpander;
-	Gtk::SpinButton*               m_GeoElevationGridXDimensionSpinButton;
-	Gtk::SpinButton*               m_GeoElevationGridZDimensionSpinButton;
-	Gtk::SpinButton*               m_GeoElevationGridXSpacingSpinButton;
-	Gtk::SpinButton*               m_GeoElevationGridZSpacingSpinButton;
-	Gtk::SpinButton*               m_GeoElevationGridYScaleSpinButton;
-	Gtk::ComboBoxText*             m_GeoElevationGridCoordinateSystemComboBoxText;
-	Gtk::Box*                      m_GeoElevationGridEllipsoidBox;
-	Gtk::ComboBoxText*             m_GeoElevationGridEllipsoidComboBoxText;
-	Gtk::ComboBoxText*             m_GeoElevationGridGDOrderComboBoxText;
-	Gtk::Box*                      m_GeoElevationGridGeoSystemUTMBox;
-	Gtk::ComboBoxText*             m_GeoElevationGridHemisphereComboBoxText;
-	Gtk::ComboBoxText*             m_GeoElevationGridUTMOrderComboBoxText;
-	Gtk::Box*                      m_GeoElevationGridGeoGridOriginBox;
-	Gtk::SpinButton*               m_GeoElevationGridGeoGridOriginXSpinButton;
-	Gtk::SpinButton*               m_GeoElevationGridGeoGridOriginYSpinButton;
-	Gtk::SpinButton*               m_GeoElevationGridGeoGridOriginZSpinButton;
-	Gtk::Expander*                 m_GeoElevationGridHeightMapExpander;
-	Gtk::SpinButton*               m_GeoElevationGridHeightMapMinHeightSpinButton;
-	Gtk::SpinButton*               m_GeoElevationGridHeightMapMaxHeightSpinButton;
-	Gtk::FileChooserButton*        m_GeoElevationGridHeightMapImageChooserButton;
-	Gtk::Button*                   m_GeoElevationGridHeightMapImageReloadButton;
-	Gtk::Button*                   m_GeoElevationGridHeightMapImageRemoveButton;
-	Gtk::Label*                    m_GeoElevationGridHeightMapLoadStateLabel;
-	Gtk::Expander*                 m_NurbsCurveExpander;
-	Gtk::SpinButton*               m_NurbsCurveTessellationSpinButton;
-	Gtk::CheckButton*              m_NurbsCurveClosedCheckButton;
-	Gtk::SpinButton*               m_NurbsCurveOrderSpinButton;
-	Gtk::Expander*                 m_NurbsTrimmedSurfaceExpander;
-	Gtk::SpinButton*               m_NurbsTrimmedSurfaceUTessellationSpinButton;
-	Gtk::SpinButton*               m_NurbsTrimmedSurfaceVTessellationSpinButton;
-	Gtk::CheckButton*              m_NurbsTrimmedSurfaceUClosedCheckButton;
-	Gtk::CheckButton*              m_NurbsTrimmedSurfaceVClosedCheckButton;
-	Gtk::SpinButton*               m_NurbsTrimmedSurfaceUOrderSpinButton;
-	Gtk::SpinButton*               m_NurbsTrimmedSurfaceVOrderSpinButton;
-	Gtk::SpinButton*               m_NurbsTrimmedSurfaceUDimensionSpinButton;
-	Gtk::SpinButton*               m_NurbsTrimmedSurfaceVDimensionSpinButton;
-	Gtk::Expander*                 m_NurbsPatchSurfaceExpander;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceUTessellationSpinButton;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceVTessellationSpinButton;
-	Gtk::CheckButton*              m_NurbsPatchSurfaceUClosedCheckButton;
-	Gtk::CheckButton*              m_NurbsPatchSurfaceVClosedCheckButton;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceUOrderSpinButton;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceVOrderSpinButton;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceUDimensionSpinButton;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceVDimensionSpinButton;
-	Gtk::Expander*                 m_IndexedLineSetExpander;
-	Gtk::ComboBoxText*             m_IndexedLineSetTypeButton;
-	Gtk::Stack*                    m_IndexedLineSetStack;
-	Gtk::Grid*                     m_IndexedLineSetLSystemOptions;
-	Gtk::Box*                      m_QuadSphereXDimensionBox1;
-	Gtk::SpinButton*               m_QuadSphereXDimensionSpinButton1;
-	Gtk::Box*                      m_QuadSphereYDimensionBox1;
-	Gtk::SpinButton*               m_QuadSphereYDimensionSpinButton1;
-	Gtk::Expander*                 m_CommonPropertiesExpander;
-	Gtk::CheckButton*              m_SolidCheckButton;
-	Gtk::CheckButton*              m_CCWCheckButton;
-	Gtk::CheckButton*              m_ConvexCheckButton;
-	Gtk::CheckButton*              m_ColorPerVertexCheckButton;
-	Gtk::CheckButton*              m_NormalPerVertexCheckButton;
-	Gtk::Box*                      m_CreaseAngleBox;
-	Gtk::SpinButton*               m_CreaseAngleSpinButton;
-	Gtk::Scale*                    m_CreaseAngleScale;
-	Gtk::Box*                      m_CreaseAngleDoubleBox;
-	Gtk::SpinButton*               m_CreaseAngleDoubleSpinButton;
-	Gtk::Scale*                    m_CreaseAngleDoubleScale;
-	Gtk::Box*                      m_NormalsBox;
-	Gtk::Button*                   m_AddNormalsButton;
-	Gtk::Button*                   m_RemoveNormalsButton;
-	Gtk::Box*                      m_ColorsBox;
-	Gtk::Expander*                 m_ColorExpander;
-	Gtk::ComboBoxText*             m_ColorTypeButton;
-	Gtk::Button*                   m_ColorUnlinkButton;
-	Gtk::Grid*                     m_ColorGrid;
-	Gtk::ScrolledWindow*           m_ColorScrolledWindow;
-	Gtk::Button*                   m_AddColorButton;
-	Gtk::Button*                   m_RemoveColorButton;
-	Gtk::Box*                      m_ColorBox;
-	Gtk::Button*                   m_ColorButton;
-	Gtk::Grid*                     m_ColorRGBAGrid;
-	Gtk::ScrolledWindow*           m_ColorRGBAScrolledWindow;
-	Gtk::Button*                   m_AddColorRGBAButton;
-	Gtk::Button*                   m_RemoveColorRGBAButton;
-	Gtk::Box*                      m_ColorRGBABox;
-	Gtk::Button*                   m_ColorRGBAButton;
-	Gtk::EventBox*                 m_PrimitiveCountEventBox;
-	Gtk::Expander*                 m_PrimitiveCountExpander;
-	Gtk::Box*                      m_PrimitiveCountBox;
-	Gtk::Label*                    m_PrimitiveCountNodesLabel;
-	Gtk::Label*                    m_PrimitiveCountOpaqueShapesLabel;
-	Gtk::Label*                    m_PrimitiveCountTransparentShapesLabel;
-	Gtk::Label*                    m_PrimitiveCountPointsLabel;
-	Gtk::Label*                    m_PrimitiveCountLinesLabel;
-	Gtk::Label*                    m_PrimitiveCountTrianglesLabel;
-	Gtk::Label*                    m_PrimitiveCountQuadsLabel;
-	Gtk::Label*                    m_PrimitiveCountPolygonsLabel;
-	Gtk::ComboBoxText*             m_PrimitiveCountCountButton;
-	Gtk::Expander*                 m_GeometryToolExpander;
-	Gtk::SpinButton*               m_NormalLengthSpinButton;
-	Gtk::Box*                      m_NormalColorBox;
-	Gtk::Button*                   m_NormalColorButton;
-	Gtk::Scale*                    m_NormalColorScale;
-	Gtk::Box*                      m_EdgeColorBox;
-	Gtk::Button*                   m_EdgeColorButton;
-	Gtk::Scale*                    m_EdgeColorScale;
-	Gtk::Box*                      m_PrimitiveEdgeColorBox;
-	Gtk::Button*                   m_PrimitiveEdgeColorButton;
-	Gtk::Scale*                    m_PrimitiveEdgeColorScale;
+	std::string                          filename;
+	Glib::RefPtr <Gtk::Builder>          m_builder;
+	Glib::RefPtr <Gtk::Adjustment>       m_Arc2DDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_Arc2DEndAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_Arc2DRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_Arc2DStartAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ArcClose2DDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ArcClose2DEndAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ArcClose2DRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ArcClose2DStartAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_BoxSizeXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_BoxSizeYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_BoxSizeZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_Circle2DDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_Circle2DRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ColorRGBAAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ConeBottomRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ConeHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ConeXDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_CreaseAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_CreaseAngleDoubleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_CylinderHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_CylinderRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_CylinderXDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_Disk2DDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_Disk2DInnerRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_Disk2DOuterRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_EdgeColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ElevationGridHeightMapMaxHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ElevationGridHeightMapMinHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ElevationGridXDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ElevationGridXSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ElevationGridZDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_ElevationGridZSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridGeoGridOriginXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridGeoGridOriginYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridGeoGridOriginZAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridHeightMapMaxHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridHeightMapMinHeightAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridXDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridXSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridYScaleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridZDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridZSpacingAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_GeoElevationGridZoneAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_IcosahedronDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_IndexLineSetLSystemAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_IndexLineSetLSystemIterationsAdjustment;
+	Glib::RefPtr <Gtk::ListStore>        m_IndexLineSetLSystemRuleListSTore;
+	Glib::RefPtr <Gtk::Adjustment>       m_NormalColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NormalLengthAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsCurveOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsCurveTessellationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsPatchSurfaceUDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsPatchSurfaceUOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsPatchSurfaceUTessellationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsPatchSurfaceVDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsPatchSurfaceVOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsPatchSurfaceVTessellationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsTrimmedSurfaceUDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsTrimmedSurfaceUOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsTrimmedSurfaceUTessellationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsTrimmedSurfaceVDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsTrimmedSurfaceVOrderAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_NurbsTrimmedSurfaceVTessellationAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_OctahedronDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_PrimitiveEdgeColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_QuadSphereXDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_QuadSphereYDimensionAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_Rectangle2DSizeXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_Rectangle2DSizeYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment>       m_SphereRadiusAdjustment;
+	Glib::RefPtr <Gtk::CellRendererText> m_IndexLineSetLSystemRuleCellRendererText;
+	Gtk::Window*                         m_Window;
+	Gtk::Box*                            m_Widget;
+	Gtk::Notebook*                       m_GeometryChildNotebook;
+	Gtk::Box*                            m_SelectGeometryBox;
+	Gtk::ComboBoxText*                   m_GeometryComboBoxText;
+	Gtk::Button*                         m_GeometryUnlinkButton;
+	Gtk::Stack*                          m_GeometryStack;
+	Gtk::Box*                            m_Arc2DBox;
+	Gtk::Expander*                       m_Arc2DExpander;
+	Gtk::SpinButton*                     m_Arc2DRadiusSpinButton;
+	Gtk::SpinButton*                     m_Arc2DStartAngleSpinButton;
+	Gtk::SpinButton*                     m_Arc2DEndAngleSpinButton;
+	Gtk::Expander*                       m_Arc2DOptionsExpander;
+	Gtk::CheckButton*                    m_Arc2DUseGlobalOptionsCheckButton;
+	Gtk::Grid*                           m_Arc2DOptionsGrid;
+	Gtk::SpinButton*                     m_Arc2DDimensionSpinButton;
+	Gtk::Box*                            m_ArcClose2DBox;
+	Gtk::Expander*                       m_ArcClose2DExpander;
+	Gtk::SpinButton*                     m_ArcClose2DRadiusSpinButton;
+	Gtk::ComboBoxText*                   m_ArcClose2DClosureTypeComboBoxText;
+	Gtk::SpinButton*                     m_ArcClose2DStartAngleSpinButton;
+	Gtk::SpinButton*                     m_ArcClose2DEndAngleSpinButton;
+	Gtk::Expander*                       m_ArcClose2DOptionsExpander;
+	Gtk::CheckButton*                    m_ArcClose2DUseGlobalOptionsCheckButton;
+	Gtk::Grid*                           m_ArcClose2DOptionsGrid;
+	Gtk::SpinButton*                     m_ArcClose2DDimensionSpinButton;
+	Gtk::Box*                            m_Circle2DBox;
+	Gtk::Expander*                       m_Circle2DExpander;
+	Gtk::SpinButton*                     m_Circle2DRadiusSpinButton;
+	Gtk::Expander*                       m_Circle2DOptionsExpander;
+	Gtk::CheckButton*                    m_Circle2DUseGlobalOptionsCheckButton;
+	Gtk::Grid*                           m_Circle2DOptionsGrid;
+	Gtk::SpinButton*                     m_Circle2DDimensionSpinButton;
+	Gtk::Box*                            m_Disk2DBox;
+	Gtk::Expander*                       m_Disk2DExpander;
+	Gtk::SpinButton*                     m_Disk2DInnerRadiusSpinButton;
+	Gtk::SpinButton*                     m_Disk2DOuterRadiusSpinButton;
+	Gtk::Expander*                       m_Disk2DOptionsExpander;
+	Gtk::CheckButton*                    m_Disk2DUseGlobalOptionsCheckButton;
+	Gtk::Grid*                           m_Disk2DOptionsGrid;
+	Gtk::SpinButton*                     m_Disk2DDimensionSpinButton;
+	Gtk::Expander*                       m_Rectangle2DExpander;
+	Gtk::Box*                            m_Rectangle2DSizeBox;
+	Gtk::SpinButton*                     m_Rectangle2DSizeXSpinButton;
+	Gtk::SpinButton*                     m_Rectangle2DSizeYSpinButton;
+	Gtk::ToggleButton*                   m_Rectangle2DUniformSizeButton;
+	Gtk::Image*                          m_Rectangle2DUniformSizeImage;
+	Gtk::Expander*                       m_BoxExpander;
+	Gtk::Box*                            m_BoxSizeBox;
+	Gtk::SpinButton*                     m_BoxSizeXSpinButton;
+	Gtk::SpinButton*                     m_BoSizeYSpinButton;
+	Gtk::SpinButton*                     m_BoxSizeZSpinButton;
+	Gtk::ToggleButton*                   m_BoxUniformSizeButton;
+	Gtk::Image*                          m_BoxUniformSizeImage;
+	Gtk::Box*                            m_ConeBox;
+	Gtk::Expander*                       m_ConeExpander;
+	Gtk::SpinButton*                     m_ConeBottomRadiusSpinButton;
+	Gtk::SpinButton*                     m_ConeHeightSpinButton;
+	Gtk::CheckButton*                    m_ConeSideCheckButton;
+	Gtk::CheckButton*                    m_ConeBottomCheckButton;
+	Gtk::Expander*                       m_ConeOptionsExpander;
+	Gtk::CheckButton*                    m_ConeUseGlobalOptionsCheckButton;
+	Gtk::Grid*                           m_ConeOptionsGrid;
+	Gtk::SpinButton*                     m_ConeXDimensionSpinButton;
+	Gtk::Box*                            m_CylinderBox;
+	Gtk::Expander*                       m_CylinderExpander;
+	Gtk::SpinButton*                     m_CylinderRadiusSpinButton;
+	Gtk::SpinButton*                     m_CylinderHeightSpinButton;
+	Gtk::CheckButton*                    m_CylinderBottomCheckButton;
+	Gtk::CheckButton*                    m_CylinderSideCheckButton;
+	Gtk::CheckButton*                    m_CylinderTopCheckButton;
+	Gtk::Expander*                       m_CylinderOptionsExpander;
+	Gtk::CheckButton*                    m_CylinderUseGlobalOptionsCheckButton;
+	Gtk::Grid*                           m_CylinderOptionsGrid;
+	Gtk::SpinButton*                     m_CylinderXDimensionSpinButton;
+	Gtk::Box*                            m_ElevationGridBox;
+	Gtk::Expander*                       m_ElevationGridExpander;
+	Gtk::SpinButton*                     m_ElevationGridXDimensionSpinButton;
+	Gtk::SpinButton*                     m_ElevationGridZDimensionSpinButton;
+	Gtk::SpinButton*                     m_ElevationGridXSpacingSpinButton;
+	Gtk::SpinButton*                     m_ElevationGridZSpacingSpinButton;
+	Gtk::Expander*                       m_ElevationGridHeightMapExpander;
+	Gtk::SpinButton*                     m_ElevationGridHeightMapMinHeightSpinButton;
+	Gtk::SpinButton*                     m_ElevationGridHeightMapMaxHeightSpinButton;
+	Gtk::FileChooserButton*              m_ElevationGridHeightMapImageChooserButton;
+	Gtk::Button*                         m_ElevationGridHeightMapImageReloadButton;
+	Gtk::Button*                         m_ElevationGridHeightMapImageRemoveButton;
+	Gtk::Label*                          m_ElevationGridHeightMapLoadStateLabel;
+	Gtk::Expander*                       m_ExtrusionExpander;
+	Gtk::CheckButton*                    m_ExtrusionBeginCapCheckButton;
+	Gtk::CheckButton*                    m_ExtrusionEndCapCheckButton;
+	Gtk::Box*                            m_SphereBox;
+	Gtk::Expander*                       m_SphereExpander;
+	Gtk::SpinButton*                     m_SphereRadiusSpinButton;
+	Gtk::Expander*                       m_SphereOptionsExpander;
+	Gtk::ComboBoxText*                   m_SphereTypeButton;
+	Gtk::CheckButton*                    m_SphereUseGlobalOptionsCheckButton;
+	Gtk::Stack*                          m_SphereOptionsStack;
+	Gtk::Grid*                           m_QuadSphereOptionsGrid;
+	Gtk::SpinButton*                     m_QuadSphereXDimensionSpinButton;
+	Gtk::SpinButton*                     m_QuadSphereYDimensionSpinButton;
+	Gtk::Grid*                           m_OctahedronOptionsGrid;
+	Gtk::SpinButton*                     m_OctahedronDimensionSpinButton;
+	Gtk::Grid*                           m_IcosahedronOptionsGrid;
+	Gtk::SpinButton*                     m_IcosahedronDimensionSpinButton;
+	Gtk::Box*                            m_GeoElevationGridBox;
+	Gtk::Expander*                       m_GeoElevationGridExpander;
+	Gtk::SpinButton*                     m_GeoElevationGridXDimensionSpinButton;
+	Gtk::SpinButton*                     m_GeoElevationGridZDimensionSpinButton;
+	Gtk::SpinButton*                     m_GeoElevationGridXSpacingSpinButton;
+	Gtk::SpinButton*                     m_GeoElevationGridZSpacingSpinButton;
+	Gtk::SpinButton*                     m_GeoElevationGridYScaleSpinButton;
+	Gtk::ComboBoxText*                   m_GeoElevationGridCoordinateSystemComboBoxText;
+	Gtk::Box*                            m_GeoElevationGridEllipsoidBox;
+	Gtk::ComboBoxText*                   m_GeoElevationGridEllipsoidComboBoxText;
+	Gtk::ComboBoxText*                   m_GeoElevationGridGDOrderComboBoxText;
+	Gtk::Box*                            m_GeoElevationGridGeoSystemUTMBox;
+	Gtk::ComboBoxText*                   m_GeoElevationGridHemisphereComboBoxText;
+	Gtk::ComboBoxText*                   m_GeoElevationGridUTMOrderComboBoxText;
+	Gtk::Box*                            m_GeoElevationGridGeoGridOriginBox;
+	Gtk::SpinButton*                     m_GeoElevationGridGeoGridOriginXSpinButton;
+	Gtk::SpinButton*                     m_GeoElevationGridGeoGridOriginYSpinButton;
+	Gtk::SpinButton*                     m_GeoElevationGridGeoGridOriginZSpinButton;
+	Gtk::Expander*                       m_GeoElevationGridHeightMapExpander;
+	Gtk::SpinButton*                     m_GeoElevationGridHeightMapMinHeightSpinButton;
+	Gtk::SpinButton*                     m_GeoElevationGridHeightMapMaxHeightSpinButton;
+	Gtk::FileChooserButton*              m_GeoElevationGridHeightMapImageChooserButton;
+	Gtk::Button*                         m_GeoElevationGridHeightMapImageReloadButton;
+	Gtk::Button*                         m_GeoElevationGridHeightMapImageRemoveButton;
+	Gtk::Label*                          m_GeoElevationGridHeightMapLoadStateLabel;
+	Gtk::Expander*                       m_NurbsCurveExpander;
+	Gtk::SpinButton*                     m_NurbsCurveTessellationSpinButton;
+	Gtk::CheckButton*                    m_NurbsCurveClosedCheckButton;
+	Gtk::SpinButton*                     m_NurbsCurveOrderSpinButton;
+	Gtk::Expander*                       m_NurbsTrimmedSurfaceExpander;
+	Gtk::SpinButton*                     m_NurbsTrimmedSurfaceUTessellationSpinButton;
+	Gtk::SpinButton*                     m_NurbsTrimmedSurfaceVTessellationSpinButton;
+	Gtk::CheckButton*                    m_NurbsTrimmedSurfaceUClosedCheckButton;
+	Gtk::CheckButton*                    m_NurbsTrimmedSurfaceVClosedCheckButton;
+	Gtk::SpinButton*                     m_NurbsTrimmedSurfaceUOrderSpinButton;
+	Gtk::SpinButton*                     m_NurbsTrimmedSurfaceVOrderSpinButton;
+	Gtk::SpinButton*                     m_NurbsTrimmedSurfaceUDimensionSpinButton;
+	Gtk::SpinButton*                     m_NurbsTrimmedSurfaceVDimensionSpinButton;
+	Gtk::Expander*                       m_NurbsPatchSurfaceExpander;
+	Gtk::SpinButton*                     m_NurbsPatchSurfaceUTessellationSpinButton;
+	Gtk::SpinButton*                     m_NurbsPatchSurfaceVTessellationSpinButton;
+	Gtk::CheckButton*                    m_NurbsPatchSurfaceUClosedCheckButton;
+	Gtk::CheckButton*                    m_NurbsPatchSurfaceVClosedCheckButton;
+	Gtk::SpinButton*                     m_NurbsPatchSurfaceUOrderSpinButton;
+	Gtk::SpinButton*                     m_NurbsPatchSurfaceVOrderSpinButton;
+	Gtk::SpinButton*                     m_NurbsPatchSurfaceUDimensionSpinButton;
+	Gtk::SpinButton*                     m_NurbsPatchSurfaceVDimensionSpinButton;
+	Gtk::Box*                            m_IndexedLineSetBox;
+	Gtk::Expander*                       m_IndexedLineSetOptionsExpander;
+	Gtk::ComboBoxText*                   m_IndexedLineSetTypeButton;
+	Gtk::Stack*                          m_IndexedLineSetOptionsStack;
+	Gtk::Grid*                           m_IndexedLineSetLSystemOptions;
+	Gtk::Box*                            m_IndexLineSetLSystemRuleBox;
+	Gtk::TreeView*                       m_IndexLineSetLSystemRuleTreeView;
+	Gtk::Button*                         m_IndexLineSetLSystemRuleAddButton;
+	Gtk::Button*                         m_IndexLineSetLSystemRuleRemoveButton;
+	Gtk::SpinButton*                     m_IndexLineSetLSystemIterationsSpinButton;
+	Gtk::Entry*                          m_IndexLineSetLSystemConstantsEntry;
+	Gtk::Entry*                          m_IndexLineSetLSystemAxiomEntry;
+	Gtk::Box*                            m_IndexLineSetLSystemAngleBox;
+	Gtk::SpinButton*                     m_IndexLineSetLSystemAngleSpinButton;
+	Gtk::Expander*                       m_CommonPropertiesExpander;
+	Gtk::CheckButton*                    m_SolidCheckButton;
+	Gtk::CheckButton*                    m_CCWCheckButton;
+	Gtk::CheckButton*                    m_ConvexCheckButton;
+	Gtk::CheckButton*                    m_ColorPerVertexCheckButton;
+	Gtk::CheckButton*                    m_NormalPerVertexCheckButton;
+	Gtk::Box*                            m_CreaseAngleBox;
+	Gtk::SpinButton*                     m_CreaseAngleSpinButton;
+	Gtk::Scale*                          m_CreaseAngleScale;
+	Gtk::Box*                            m_CreaseAngleDoubleBox;
+	Gtk::SpinButton*                     m_CreaseAngleDoubleSpinButton;
+	Gtk::Scale*                          m_CreaseAngleDoubleScale;
+	Gtk::Box*                            m_NormalsBox;
+	Gtk::Button*                         m_AddNormalsButton;
+	Gtk::Button*                         m_RemoveNormalsButton;
+	Gtk::Box*                            m_ColorsBox;
+	Gtk::Expander*                       m_ColorExpander;
+	Gtk::ComboBoxText*                   m_ColorTypeButton;
+	Gtk::Button*                         m_ColorUnlinkButton;
+	Gtk::Grid*                           m_ColorGrid;
+	Gtk::ScrolledWindow*                 m_ColorScrolledWindow;
+	Gtk::Button*                         m_AddColorButton;
+	Gtk::Button*                         m_RemoveColorButton;
+	Gtk::Box*                            m_ColorBox;
+	Gtk::Button*                         m_ColorButton;
+	Gtk::Grid*                           m_ColorRGBAGrid;
+	Gtk::ScrolledWindow*                 m_ColorRGBAScrolledWindow;
+	Gtk::Button*                         m_AddColorRGBAButton;
+	Gtk::Button*                         m_RemoveColorRGBAButton;
+	Gtk::Box*                            m_ColorRGBABox;
+	Gtk::Button*                         m_ColorRGBAButton;
+	Gtk::EventBox*                       m_PrimitiveCountEventBox;
+	Gtk::Expander*                       m_PrimitiveCountExpander;
+	Gtk::Box*                            m_PrimitiveCountBox;
+	Gtk::Label*                          m_PrimitiveCountNodesLabel;
+	Gtk::Label*                          m_PrimitiveCountOpaqueShapesLabel;
+	Gtk::Label*                          m_PrimitiveCountTransparentShapesLabel;
+	Gtk::Label*                          m_PrimitiveCountPointsLabel;
+	Gtk::Label*                          m_PrimitiveCountLinesLabel;
+	Gtk::Label*                          m_PrimitiveCountTrianglesLabel;
+	Gtk::Label*                          m_PrimitiveCountQuadsLabel;
+	Gtk::Label*                          m_PrimitiveCountPolygonsLabel;
+	Gtk::ComboBoxText*                   m_PrimitiveCountCountButton;
+	Gtk::Expander*                       m_GeometryToolExpander;
+	Gtk::SpinButton*                     m_NormalLengthSpinButton;
+	Gtk::Box*                            m_NormalColorBox;
+	Gtk::Button*                         m_NormalColorButton;
+	Gtk::Scale*                          m_NormalColorScale;
+	Gtk::Box*                            m_EdgeColorBox;
+	Gtk::Button*                         m_EdgeColorButton;
+	Gtk::Scale*                          m_EdgeColorScale;
+	Gtk::Box*                            m_PrimitiveEdgeColorBox;
+	Gtk::Button*                         m_PrimitiveEdgeColorButton;
+	Gtk::Scale*                          m_PrimitiveEdgeColorScale;
 
 };
 

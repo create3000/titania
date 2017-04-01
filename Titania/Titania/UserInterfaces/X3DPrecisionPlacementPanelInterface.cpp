@@ -198,33 +198,6 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LODLevelSpinButton", m_LODLevelSpinButton);
 	m_builder -> get_widget ("LODKeepCurrentLevelCheckButton", m_LODKeepCurrentLevelCheckButton);
 	m_builder -> get_widget ("RangeGradientBox", m_RangeGradientBox);
-	m_builder -> get_widget ("LayoutExpander", m_LayoutExpander);
-	m_builder -> get_widget ("CreateLayoutBox", m_CreateLayoutBox);
-	m_builder -> get_widget ("LayoutCheckButton", m_LayoutCheckButton);
-	m_builder -> get_widget ("LayoutBox", m_LayoutBox);
-	m_builder -> get_widget ("LayoutOffsetBox", m_LayoutOffsetBox);
-	m_builder -> get_widget ("LayoutOffsetXSpinButton", m_LayoutOffsetXSpinButton);
-	m_builder -> get_widget ("LayoutOffsetYSpinButton", m_LayoutOffsetYSpinButton);
-	m_builder -> get_widget ("LayoutSizeBox", m_LayoutSizeBox);
-	m_builder -> get_widget ("LayoutSizeXSpinButton", m_LayoutSizeXSpinButton);
-	m_builder -> get_widget ("LayoutSizeYSpinButton", m_LayoutSizeYSpinButton);
-	m_builder -> get_widget ("LayoutAlignXComboBoxText", m_LayoutAlignXComboBoxText);
-	m_builder -> get_widget ("LayoutAlignYComboBoxText", m_LayoutAlignYComboBoxText);
-	m_builder -> get_widget ("LayoutOffsetUnitsXComboBoxText", m_LayoutOffsetUnitsXComboBoxText);
-	m_builder -> get_widget ("LayoutOffsetUnitsYComboBoxText", m_LayoutOffsetUnitsYComboBoxText);
-	m_builder -> get_widget ("LayoutSizeUnitsXComboBoxText", m_LayoutSizeUnitsXComboBoxText);
-	m_builder -> get_widget ("LayoutSizeUnitsYComboBoxText", m_LayoutSizeUnitsYComboBoxText);
-	m_builder -> get_widget ("LayoutScaleModeXComboBoxText", m_LayoutScaleModeXComboBoxText);
-	m_builder -> get_widget ("LayoutScaleModeYComboBoxText", m_LayoutScaleModeYComboBoxText);
-	m_builder -> get_widget ("ViewportExpander", m_ViewportExpander);
-	m_builder -> get_widget ("CreateViewportBox", m_CreateViewportBox);
-	m_builder -> get_widget ("ViewportCheckButton", m_ViewportCheckButton);
-	m_builder -> get_widget ("ViewportBox", m_ViewportBox);
-	m_builder -> get_widget ("ViewportClipBoundaryBox", m_ViewportClipBoundaryBox);
-	m_builder -> get_widget ("ViewportClipBoundaryTopSpinButton", m_ViewportClipBoundaryTopSpinButton);
-	m_builder -> get_widget ("ViewportClipBoundaryLeftSpinButton", m_ViewportClipBoundaryLeftSpinButton);
-	m_builder -> get_widget ("ViewportClipBoundaryRightSpinButton", m_ViewportClipBoundaryRightSpinButton);
-	m_builder -> get_widget ("ViewportClipBoundaryBottomSpinButton", m_ViewportClipBoundaryBottomSpinButton);
 	m_builder -> get_widget ("GeoTransformExpander", m_GeoTransformExpander);
 	m_builder -> get_widget ("GeoTransformBox", m_GeoTransformBox);
 	m_builder -> get_widget ("GeoTransformTranslationBox", m_GeoTransformTranslationBox);
@@ -266,6 +239,33 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 	m_builder -> get_widget ("EnvironmentalSensorUniformSizeImage", m_EnvironmentalSensorUniformSizeImage);
 	m_builder -> get_widget ("EnvironmentalSensorCenterBox", m_EnvironmentalSensorCenterBox);
 	m_builder -> get_widget ("EnvironmentalSensorEnabledCheckButton", m_EnvironmentalSensorEnabledCheckButton);
+	m_builder -> get_widget ("LayoutExpander", m_LayoutExpander);
+	m_builder -> get_widget ("CreateLayoutBox", m_CreateLayoutBox);
+	m_builder -> get_widget ("LayoutCheckButton", m_LayoutCheckButton);
+	m_builder -> get_widget ("LayoutBox", m_LayoutBox);
+	m_builder -> get_widget ("LayoutOffsetBox", m_LayoutOffsetBox);
+	m_builder -> get_widget ("LayoutOffsetXSpinButton", m_LayoutOffsetXSpinButton);
+	m_builder -> get_widget ("LayoutOffsetYSpinButton", m_LayoutOffsetYSpinButton);
+	m_builder -> get_widget ("LayoutSizeBox", m_LayoutSizeBox);
+	m_builder -> get_widget ("LayoutSizeXSpinButton", m_LayoutSizeXSpinButton);
+	m_builder -> get_widget ("LayoutSizeYSpinButton", m_LayoutSizeYSpinButton);
+	m_builder -> get_widget ("LayoutAlignXComboBoxText", m_LayoutAlignXComboBoxText);
+	m_builder -> get_widget ("LayoutAlignYComboBoxText", m_LayoutAlignYComboBoxText);
+	m_builder -> get_widget ("LayoutOffsetUnitsXComboBoxText", m_LayoutOffsetUnitsXComboBoxText);
+	m_builder -> get_widget ("LayoutOffsetUnitsYComboBoxText", m_LayoutOffsetUnitsYComboBoxText);
+	m_builder -> get_widget ("LayoutSizeUnitsXComboBoxText", m_LayoutSizeUnitsXComboBoxText);
+	m_builder -> get_widget ("LayoutSizeUnitsYComboBoxText", m_LayoutSizeUnitsYComboBoxText);
+	m_builder -> get_widget ("LayoutScaleModeXComboBoxText", m_LayoutScaleModeXComboBoxText);
+	m_builder -> get_widget ("LayoutScaleModeYComboBoxText", m_LayoutScaleModeYComboBoxText);
+	m_builder -> get_widget ("ViewportExpander", m_ViewportExpander);
+	m_builder -> get_widget ("CreateViewportBox", m_CreateViewportBox);
+	m_builder -> get_widget ("ViewportCheckButton", m_ViewportCheckButton);
+	m_builder -> get_widget ("ViewportBox", m_ViewportBox);
+	m_builder -> get_widget ("ViewportClipBoundaryBox", m_ViewportClipBoundaryBox);
+	m_builder -> get_widget ("ViewportClipBoundaryTopSpinButton", m_ViewportClipBoundaryTopSpinButton);
+	m_builder -> get_widget ("ViewportClipBoundaryLeftSpinButton", m_ViewportClipBoundaryLeftSpinButton);
+	m_builder -> get_widget ("ViewportClipBoundaryRightSpinButton", m_ViewportClipBoundaryRightSpinButton);
+	m_builder -> get_widget ("ViewportClipBoundaryBottomSpinButton", m_ViewportClipBoundaryBottomSpinButton);
 	m_builder -> get_widget ("GeometrySelectionExpander", m_GeometrySelectionExpander);
 	m_builder -> get_widget ("GeometrySelectionBox", m_GeometrySelectionBox);
 	m_builder -> get_widget ("GeometrySelectionTranslationBox", m_GeometrySelectionTranslationBox);
@@ -329,12 +329,14 @@ X3DPrecisionPlacementPanelInterface::create (const std::string & filename)
 
 	// Connect object Gtk::CheckButton with id 'LODKeepCurrentLevelCheckButton'.
 	m_LODKeepCurrentLevelCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_lod_keep_current_level_toggled));
-	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));
-	m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled));
 
 	// Connect object Gtk::ToggleButton with id 'GeoTransformUniformScaleButton'.
 	m_GeoTransformUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geo_transform_uniform_scale_clicked));
 	m_EnvironmentalSensorUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_proximity_sensor_uniform_size_clicked));
+
+	// Connect object Gtk::CheckButton with id 'LayoutCheckButton'.
+	m_LayoutCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_layout_toggled));
+	m_ViewportCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_viewport_toggled));
 
 	// Connect object Gtk::SpinButton with id 'GeometrySelectionTranslationXButton'.
 	m_GeometrySelectionTranslationXButton -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DPrecisionPlacementPanelInterface::on_geometry_selection_focus_in_event));

@@ -115,14 +115,14 @@ X3DMetaDataEditor::set_meta_data ()
 bool
 X3DMetaDataEditor::on_meta_data_focus_in_event (GdkEventFocus* event)
 {
-	getBrowserWindow () -> hasAccelerators (false);
+	getBrowserWindow () -> setAccelerators (false);
 	return false;
 }
 
 bool
 X3DMetaDataEditor::on_meta_data_focus_out_event (GdkEventFocus* event)
 {
-	getBrowserWindow () -> hasAccelerators (true);
+	getBrowserWindow () -> setAccelerators (true);
 	return false;
 }
 

@@ -51,8 +51,10 @@
 #include "IndexedLineSet.h"
 
 #include "../../Browser/Core/Cast.h"
+#include "../../Browser/Rendering/LSystemOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
+
 #include "../Rendering/PointSet.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
@@ -74,7 +76,8 @@ IndexedLineSet::Fields::Fields () :
 	        attrib (new MFNode ()),
 	      fogCoord (new SFNode ()),
 	         color (new SFNode ()),
-	         coord (new SFNode ())
+	         coord (new SFNode ()),
+	       options (new SFNode ())
 { }
 
 IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
@@ -84,6 +87,7 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	        attribNodes (),
 	          colorNode (),
 	          coordNode (),
+	        optionsNode (),
 	        transparent (false)
 {
 	addType (X3DConstants::IndexedLineSet);
@@ -96,10 +100,14 @@ IndexedLineSet::IndexedLineSet (X3DExecutionContext* const executionContext) :
 	addField (inputOutput,    "fogCoord",       fogCoord ());
 	addField (inputOutput,    "color",          color ());
 	addField (inputOutput,    "coord",          coord ());
+	addField (inputOutput,    "options",        options ());
 
 	addChildObjects (attribNodes,
 	                 colorNode,
-	                 coordNode);
+	                 coordNode,
+	                 optionsNode);
+
+	options () .isHidden (true);
 
 	setGeometryType (GeometryType::GEOMETRY_LINES);
 }

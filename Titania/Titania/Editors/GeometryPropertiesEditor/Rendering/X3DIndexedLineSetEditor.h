@@ -76,24 +76,30 @@ protected:
 
 	virtual
 	void
-	configure () override;
-
-	virtual
-	void
 	set_geometry ();
-
-	///  @name Destruction
-
-	virtual
-	void
-	store () override;
 
 
 private:
 
+	///  @name Event handlers
+
+	virtual
+	void
+	on_indexed_line_set_type_changed () final override;
+
+	void
+	set_options ();
+
 	///  @name Members
 
+	X3DFieldAdjustment <X3D::SFInt32> lSystemIterations;
+	X3DFieldAdjustment <X3D::SFFloat> lSystemAngle;
+	SFStringEntry                     lSystemConstants;
+	SFStringEntry                     lSystemAxiom;
+	MFStringWidget                    lSystemRule;
+
 	X3D::MFNode nodes;
+	bool        changing;
 
 };
 

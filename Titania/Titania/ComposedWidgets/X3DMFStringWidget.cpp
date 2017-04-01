@@ -173,14 +173,14 @@ X3DMFStringWidget::append (const Glib::ustring & value)
 bool
 X3DMFStringWidget::on_focus_in_event (GdkEventFocus* event)
 {
-	getBrowserWindow () -> hasAccelerators (false);
+	getBrowserWindow () -> setAccelerators (false);
 	return false;
 }
 
 bool
 X3DMFStringWidget::on_focus_out_event (GdkEventFocus* event)
 {
-	getBrowserWindow () -> hasAccelerators (true);
+	getBrowserWindow () -> setAccelerators (true);
 	return false;
 }
 

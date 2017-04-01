@@ -61,8 +61,6 @@
 namespace titania {
 namespace puck {
 
-class MFStringWidget;
-
 class FogEditor :
 	virtual public X3DFogEditorInterface
 {

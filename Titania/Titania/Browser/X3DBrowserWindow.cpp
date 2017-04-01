@@ -123,7 +123,7 @@ X3DBrowserWindow::getOutlineTreeView () const
 // Menu
 
 void
-X3DBrowserWindow::hasAccelerators (const bool value)
+X3DBrowserWindow::setAccelerators (const bool value)
 {
 	accelerators = value;
 

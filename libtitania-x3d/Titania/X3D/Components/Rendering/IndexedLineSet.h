@@ -56,6 +56,8 @@
 namespace titania {
 namespace X3D {
 
+class LSystemOptions;
+
 class IndexedLineSet :
 	virtual public X3DLineGeometryNode
 {
@@ -161,6 +163,18 @@ public:
 	coord () const
 	{ return *fields .coord; }
 
+	///  @name Hidden fields
+
+	virtual
+	SFNode &
+	options ()
+	{ return *fields .options; }
+
+	virtual
+	const SFNode &
+	options () const
+	{ return *fields .options; }
+
 	///  @name Member access
 
 	virtual
@@ -256,6 +270,7 @@ private:
 		SFNode* const fogCoord;
 		SFNode* const color;
 		SFNode* const coord;
+		SFNode* const options;
 	};
 
 	Fields fields;
@@ -263,6 +278,7 @@ private:
 	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
 	X3DPtr <X3DColorNode>                colorNode;
 	X3DPtr <X3DCoordinateNode>           coordNode;
+	X3DPtr <LSystemOptions>              optionsNode;
 	bool                                 transparent;
 
 };

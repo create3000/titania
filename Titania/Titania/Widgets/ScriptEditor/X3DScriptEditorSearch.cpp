@@ -262,7 +262,7 @@ X3DScriptEditorSearch::on_key_release_event (GdkEventKey* event)
 bool
 X3DScriptEditorSearch::on_entry_focus_in_event (GdkEventFocus*)
 {
-	getBrowserWindow () -> hasAccelerators (false);
+	getBrowserWindow () -> setAccelerators (false);
 
 	searchMark = getTextBuffer () -> create_mark (getTextBuffer () -> get_iter_at_mark (getTextBuffer () -> get_insert ()));
 
@@ -272,7 +272,7 @@ X3DScriptEditorSearch::on_entry_focus_in_event (GdkEventFocus*)
 bool
 X3DScriptEditorSearch::on_entry_focus_out_event (GdkEventFocus*)
 {
-	getBrowserWindow () -> hasAccelerators (true);
+	getBrowserWindow () -> setAccelerators (true);
 
 	getTextBuffer () -> delete_mark (searchMark);
 

@@ -119,15 +119,15 @@ public:
 	fogCoord () const final override
 	{ return getNode <IndexedLineSet> () -> fogCoord (); }
 
-//	virtual
-//	SFNode &
-//	color () final override
-//	{ return getNode <IndexedLineSet> () -> color (); }
-//
-//	virtual
-//	const SFNode &
-//	color () const final override
-//	{ return getNode <IndexedLineSet> () -> color (); }
+	virtual
+	SFNode &
+	color () final override
+	{ return getNode <IndexedLineSet> () -> color (); }
+
+	virtual
+	const SFNode &
+	color () const final override
+	{ return getNode <IndexedLineSet> () -> color (); }
 
 	virtual
 	SFNode &
@@ -138,6 +138,18 @@ public:
 	const SFNode &
 	coord () const final override
 	{ return getNode <IndexedLineSet> () -> coord (); }
+
+	///  @name Hidden fields
+
+	virtual
+	SFNode &
+	options () final override
+	{ return getNode <IndexedLineSet> () -> options (); }
+
+	virtual
+	const SFNode &
+	options () const final override
+	{ return getNode <IndexedLineSet> () -> options (); }
 
 	///  @name Test
 

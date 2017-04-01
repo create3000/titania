@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,24 +48,131 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_H__
-#define __TITANIA_COMPOSED_WIDGETS_H__
+#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_OPTIONS_H__
+#define __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_OPTIONS_H__
 
-#include "ComposedWidgets/MFColorButton.h"
-#include "ComposedWidgets/MFColorRGBAButton.h"
-#include "ComposedWidgets/MFStringComboBoxText.h"
-#include "ComposedWidgets/MFStringWidget.h"
-#include "ComposedWidgets/NameEntry.h"
-#include "ComposedWidgets/SFColorButton.h"
-#include "ComposedWidgets/SFColorRGBAButton.h"
-#include "ComposedWidgets/SFRotationAdjustment.h"
-#include "ComposedWidgets/SFStringComboBoxText.h"
-#include "ComposedWidgets/SFStringEntry.h"
-#include "ComposedWidgets/SFStringTextView.h"
-#include "ComposedWidgets/X3DFieldAdjustment.h"
-#include "ComposedWidgets/X3DFieldAdjustment2.h"
-#include "ComposedWidgets/X3DFieldAdjustment3.h"
-#include "ComposedWidgets/X3DFieldAdjustment4.h"
-#include "ComposedWidgets/X3DFieldToggleButton.h"
+#include "../Rendering/X3DGeometricOptionNode.h"
+
+namespace titania {
+namespace X3D {
+
+class LSystemOptions :
+	public X3DGeometricOptionNode
+{
+public:
+
+	///  @name Construction
+
+	LSystemOptions (X3DExecutionContext* const executionContext);
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Fields
+
+	SFInt32 &
+	iterations ()
+	{ return *fields .iterations; }
+
+	const SFInt32 &
+	iterations () const
+	{ return *fields .iterations; }
+
+	SFFloat &
+	angle ()
+	{ return *fields .angle; }
+
+	const SFFloat &
+	angle () const
+	{ return *fields .angle; }
+
+	SFString &
+	constants ()
+	{ return *fields .constants; }
+
+	const SFString &
+	constants () const
+	{ return *fields .constants; }
+
+	SFString &
+	axiom ()
+	{ return *fields .axiom; }
+
+	const SFString &
+	axiom () const
+	{ return *fields .axiom; }
+
+	MFString &
+	rule ()
+	{ return *fields .rule; }
+
+	const MFString &
+	rule () const
+	{ return *fields .rule; }
+
+	///  @name Member access
+
+	virtual
+	GLenum
+	getVertexMode () const final override
+	{ return GL_QUADS; }
+
+
+private:
+
+	///  @name Construction
+
+	virtual
+	LSystemOptions*
+	create (X3DExecutionContext* const executionContext) const final override;
+
+	///  @name Operations
+
+	virtual
+	void
+	build () final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Fields
+
+	struct Fields
+	{
+		Fields ();
+
+		SFInt32* const iterations;
+		SFFloat* const angle;
+		SFString* const constants;
+		SFString* const axiom;
+		MFString* const rule;
+	};
+
+	Fields fields;
+
+};
+
+} // X3D
+} // titania
 
 #endif

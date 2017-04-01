@@ -228,7 +228,7 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
   // First grab focus to release any previous selected field.
 	grab_focus ();
 
-	getBrowserWindow () -> hasAccelerators (false);
+	getBrowserWindow () -> setAccelerators (false);
 	get_tree_observer () -> unwatch_tree (iter);
 	watch_motion (false);
 	set_cursor (path, *column, true);
@@ -281,7 +281,7 @@ OutlineTreeViewEditor::on_edited (const Glib::ustring & string_path, const Glib:
 
 	get_tree_observer () -> watch_child (iter, path);
 
-	getBrowserWindow () -> hasAccelerators (true);
+	getBrowserWindow () -> setAccelerators (true);
 	watch_motion (true);
 }
 

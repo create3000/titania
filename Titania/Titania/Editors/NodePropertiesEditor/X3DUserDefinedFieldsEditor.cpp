@@ -171,14 +171,14 @@ X3DUserDefinedFieldsEditor::setNode (const X3D::SFNode & value)
 bool
 X3DUserDefinedFieldsEditor::on_user_defined_field_focus_in_event (GdkEventFocus* event)
 {
-	getBrowserWindow () -> hasAccelerators (false);
+	getBrowserWindow () -> setAccelerators (false);
 	return false;
 }
 
 bool
 X3DUserDefinedFieldsEditor::on_user_defined_field_focus_out_event (GdkEventFocus* event)
 {
-	getBrowserWindow () -> hasAccelerators (true);
+	getBrowserWindow () -> setAccelerators (true);
 	return false;
 }
 

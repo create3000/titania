@@ -282,7 +282,7 @@ ScriptEditor::set_live ()
 bool
 ScriptEditor::on_focus_in_event (GdkEventFocus*)
 {
-	getBrowserWindow () -> hasAccelerators (false);
+	getBrowserWindow () -> setAccelerators (false);
 	getBrowserWindow () -> getWindow () .add_accel_group (getAccelGroup ());
 	return false;
 }
@@ -291,7 +291,7 @@ bool
 ScriptEditor::on_focus_out_event (GdkEventFocus*)
 {
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
-	getBrowserWindow () -> hasAccelerators (true);
+	getBrowserWindow () -> setAccelerators (true);
 	return false;
 }
 

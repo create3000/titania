@@ -570,7 +570,7 @@ BrowserWindow::on_key_press_event (GdkEventKey* event)
 	if (not getCurrentBrowser () -> has_focus ())
 	   return false;
 
-	if (not hasAccelerators ())
+	if (not setAccelerators ())
 		return false;
 
 	getSelection () -> setSelectMultiple (getKeys () .shift () and not getKeys () .control ());

@@ -88,10 +88,10 @@ public:
 	{ return keys; }
 
 	void
-	hasAccelerators (const bool);
+	setAccelerators (const bool);
 
 	bool
-	hasAccelerators () const
+	setAccelerators () const
 	{ return accelerators; }
 
 	///  @name Tool handling

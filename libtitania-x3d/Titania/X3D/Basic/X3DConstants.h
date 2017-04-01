@@ -489,6 +489,8 @@ enum NodeType : uint16_t
 	TetrahedronOptions,
 	X3DSphereOptionsNode,
 
+	LSystemOptions,
+
 	// Browser node types
 
 	Browser,
@@ -626,6 +628,7 @@ enum NodeType : uint16_t
 	X3DGroupingNodeTool,
 	X3DIndexedFaceSetCutObject,
 	X3DIndexedFaceSetKnifeObject,
+	X3DIndexedFaceSetLightSaberObject,
 	X3DIndexedFaceSetOperationsObject,
 	X3DIndexedFaceSetSelectionObject,
 	X3DIndexedFaceSetTool,
