@@ -274,6 +274,11 @@ GeometryPropertiesEditor::set_buffer ()
 
 	// Find X3DGeometryNodes.
 
+	size_t numGeometryNodes = 0;
+
+	for (const auto & shapeNode : shapeNodes)
+		numGeometryNodes += shapeNode -> getGeometry ();
+
 	geometryNodes = getNodes <X3D::X3DBaseNode> (shapeNodes, { X3D::X3DConstants::X3DGeometryNode });
 
 	if (geometryNodes .empty ())
@@ -306,14 +311,16 @@ GeometryPropertiesEditor::set_buffer ()
 
 	getGeometryComboBoxText () .set_sensitive (not shapeNodes .empty ());
 
-	if (allSameType)
+	if (allSameType and numGeometryNodes == shapeNodes .size ())
 		getGeometryComboBoxText () .set_active_text (geometryNode -> getTypeName ());
+	else if (geometryNodes .empty ())
+		getGeometryComboBoxText () .set_active (0);
 	else
 		getGeometryComboBoxText () .set_active (-1);
 
 	getSelectGeometryBox ()    .set_sensitive (not shapeNodes .empty ());
 	getGeometryUnlinkButton () .set_sensitive (geometryNodes .size () == 1 and geometryNode -> getCloneCount () > 1);
-	getGeometryStack ()        .set_visible (visibles == 1);
+	getGeometryStack ()        .set_visible (visibles == 1 and allSameType and numGeometryNodes == shapeNodes .size ());
 	getNormalsBox ()           .set_sensitive (false);
 
 	for (const auto & node : geometryNodes)
@@ -467,15 +474,15 @@ GeometryPropertiesEditor::set_color_buffer ()
 		{ }
 	}
 
-	getColorsBox () .set_visible (numColorFields);
+	getColorsBox () .set_visible (numColorFields == geometryNodes .size ());
 
-	if (numColorNodes == numColorFields)
+	if (numColorNodes == geometryNodes .size ())
 	{
 		// Color
 		getColorTypeButton ()   .set_active (1);
 		getColorUnlinkButton () .set_sensitive (colorNodes .size () == 1 and colorNodes .back () -> getCloneCount () > 1);
 	}
-	else if (numColorRGBANodes == numColorFields)
+	else if (numColorRGBANodes == geometryNodes .size ())
 	{
 		// ColorRGBA
 		getColorTypeButton ()   .set_active (2);
@@ -494,8 +501,8 @@ GeometryPropertiesEditor::set_color_buffer ()
 		getColorUnlinkButton () .set_sensitive (false);
 	}
 
-	color     .setNodes (numColorNodes     == numColorFields ? colorNodes     : X3D::MFNode ());
-	colorRGBA .setNodes (numColorRGBANodes == numColorFields ? colorRGBANodes : X3D::MFNode ());
+	color     .setNodes (numColorNodes     == geometryNodes .size () ? colorNodes     : X3D::MFNode ());
+	colorRGBA .setNodes (numColorRGBANodes == geometryNodes .size () ? colorRGBANodes : X3D::MFNode ());
 
 	changing = false;
 }
