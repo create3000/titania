@@ -147,6 +147,14 @@ public:
 	{ return m_Circle2DRadiusAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
+	getColorAdjustment () const
+	{ return m_ColorAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getColorRGBAAdjustment () const
+	{ return m_ColorRGBAAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
 	getConeBottomRadiusAdjustment () const
 	{ return m_ConeBottomRadiusAdjustment; }
 
@@ -855,42 +863,6 @@ public:
 	{ return *m_NurbsCurveOrderSpinButton; }
 
 	Gtk::Expander &
-	getNurbsPatchSurfaceExpander () const
-	{ return *m_NurbsPatchSurfaceExpander; }
-
-	Gtk::SpinButton &
-	getNurbsPatchSurfaceUTessellationSpinButton () const
-	{ return *m_NurbsPatchSurfaceUTessellationSpinButton; }
-
-	Gtk::SpinButton &
-	getNurbsPatchSurfaceVTessellationSpinButton () const
-	{ return *m_NurbsPatchSurfaceVTessellationSpinButton; }
-
-	Gtk::CheckButton &
-	getNurbsPatchSurfaceUClosedCheckButton () const
-	{ return *m_NurbsPatchSurfaceUClosedCheckButton; }
-
-	Gtk::CheckButton &
-	getNurbsPatchSurfaceVClosedCheckButton () const
-	{ return *m_NurbsPatchSurfaceVClosedCheckButton; }
-
-	Gtk::SpinButton &
-	getNurbsPatchSurfaceUOrderSpinButton () const
-	{ return *m_NurbsPatchSurfaceUOrderSpinButton; }
-
-	Gtk::SpinButton &
-	getNurbsPatchSurfaceVOrderSpinButton () const
-	{ return *m_NurbsPatchSurfaceVOrderSpinButton; }
-
-	Gtk::SpinButton &
-	getNurbsPatchSurfaceUDimensionSpinButton () const
-	{ return *m_NurbsPatchSurfaceUDimensionSpinButton; }
-
-	Gtk::SpinButton &
-	getNurbsPatchSurfaceVDimensionSpinButton () const
-	{ return *m_NurbsPatchSurfaceVDimensionSpinButton; }
-
-	Gtk::Expander &
 	getNurbsTrimmedSurfaceExpander () const
 	{ return *m_NurbsTrimmedSurfaceExpander; }
 
@@ -925,6 +897,42 @@ public:
 	Gtk::SpinButton &
 	getNurbsTrimmedSurfaceVDimensionSpinButton () const
 	{ return *m_NurbsTrimmedSurfaceVDimensionSpinButton; }
+
+	Gtk::Expander &
+	getNurbsPatchSurfaceExpander () const
+	{ return *m_NurbsPatchSurfaceExpander; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceUTessellationSpinButton () const
+	{ return *m_NurbsPatchSurfaceUTessellationSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceVTessellationSpinButton () const
+	{ return *m_NurbsPatchSurfaceVTessellationSpinButton; }
+
+	Gtk::CheckButton &
+	getNurbsPatchSurfaceUClosedCheckButton () const
+	{ return *m_NurbsPatchSurfaceUClosedCheckButton; }
+
+	Gtk::CheckButton &
+	getNurbsPatchSurfaceVClosedCheckButton () const
+	{ return *m_NurbsPatchSurfaceVClosedCheckButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceUOrderSpinButton () const
+	{ return *m_NurbsPatchSurfaceUOrderSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceVOrderSpinButton () const
+	{ return *m_NurbsPatchSurfaceVOrderSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceUDimensionSpinButton () const
+	{ return *m_NurbsPatchSurfaceUDimensionSpinButton; }
+
+	Gtk::SpinButton &
+	getNurbsPatchSurfaceVDimensionSpinButton () const
+	{ return *m_NurbsPatchSurfaceVDimensionSpinButton; }
 
 	Gtk::Expander &
 	getCommonPropertiesExpander () const
@@ -985,6 +993,70 @@ public:
 	Gtk::Button &
 	getRemoveNormalsButton () const
 	{ return *m_RemoveNormalsButton; }
+
+	Gtk::Box &
+	getColorsBox () const
+	{ return *m_ColorsBox; }
+
+	Gtk::Expander &
+	getColorExpander () const
+	{ return *m_ColorExpander; }
+
+	Gtk::ComboBoxText &
+	getColorTypeButton () const
+	{ return *m_ColorTypeButton; }
+
+	Gtk::Button &
+	getColorUnlinkButton () const
+	{ return *m_ColorUnlinkButton; }
+
+	Gtk::Grid &
+	getColorGrid () const
+	{ return *m_ColorGrid; }
+
+	Gtk::ScrolledWindow &
+	getColorScrolledWindow () const
+	{ return *m_ColorScrolledWindow; }
+
+	Gtk::Button &
+	getAddColorButton () const
+	{ return *m_AddColorButton; }
+
+	Gtk::Button &
+	getRemoveColorButton () const
+	{ return *m_RemoveColorButton; }
+
+	Gtk::Box &
+	getColorBox () const
+	{ return *m_ColorBox; }
+
+	Gtk::Button &
+	getColorButton () const
+	{ return *m_ColorButton; }
+
+	Gtk::Grid &
+	getColorRGBAGrid () const
+	{ return *m_ColorRGBAGrid; }
+
+	Gtk::ScrolledWindow &
+	getColorRGBAScrolledWindow () const
+	{ return *m_ColorRGBAScrolledWindow; }
+
+	Gtk::Button &
+	getAddColorRGBAButton () const
+	{ return *m_AddColorRGBAButton; }
+
+	Gtk::Button &
+	getRemoveColorRGBAButton () const
+	{ return *m_RemoveColorRGBAButton; }
+
+	Gtk::Box &
+	getColorRGBABox () const
+	{ return *m_ColorRGBABox; }
+
+	Gtk::Button &
+	getColorRGBAButton () const
+	{ return *m_ColorRGBAButton; }
 
 	Gtk::EventBox &
 	getPrimitiveCountEventBox () const
@@ -1141,6 +1213,14 @@ public:
 	on_remove_normals_clicked () = 0;
 
 	virtual
+	void
+	on_color_changed () = 0;
+
+	virtual
+	void
+	on_color_unlink_clicked () = 0;
+
+	virtual
 	bool
 	on_crossing_notify_event (GdkEventCrossing* event) = 0;
 
@@ -1193,6 +1273,8 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_BoxSizeZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Circle2DDimensionAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_Circle2DRadiusAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_ColorRGBAAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ConeBottomRadiusAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ConeHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ConeXDimensionAdjustment;
@@ -1370,15 +1452,6 @@ private:
 	Gtk::SpinButton*               m_NurbsCurveTessellationSpinButton;
 	Gtk::CheckButton*              m_NurbsCurveClosedCheckButton;
 	Gtk::SpinButton*               m_NurbsCurveOrderSpinButton;
-	Gtk::Expander*                 m_NurbsPatchSurfaceExpander;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceUTessellationSpinButton;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceVTessellationSpinButton;
-	Gtk::CheckButton*              m_NurbsPatchSurfaceUClosedCheckButton;
-	Gtk::CheckButton*              m_NurbsPatchSurfaceVClosedCheckButton;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceUOrderSpinButton;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceVOrderSpinButton;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceUDimensionSpinButton;
-	Gtk::SpinButton*               m_NurbsPatchSurfaceVDimensionSpinButton;
 	Gtk::Expander*                 m_NurbsTrimmedSurfaceExpander;
 	Gtk::SpinButton*               m_NurbsTrimmedSurfaceUTessellationSpinButton;
 	Gtk::SpinButton*               m_NurbsTrimmedSurfaceVTessellationSpinButton;
@@ -1388,6 +1461,15 @@ private:
 	Gtk::SpinButton*               m_NurbsTrimmedSurfaceVOrderSpinButton;
 	Gtk::SpinButton*               m_NurbsTrimmedSurfaceUDimensionSpinButton;
 	Gtk::SpinButton*               m_NurbsTrimmedSurfaceVDimensionSpinButton;
+	Gtk::Expander*                 m_NurbsPatchSurfaceExpander;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceUTessellationSpinButton;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceVTessellationSpinButton;
+	Gtk::CheckButton*              m_NurbsPatchSurfaceUClosedCheckButton;
+	Gtk::CheckButton*              m_NurbsPatchSurfaceVClosedCheckButton;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceUOrderSpinButton;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceVOrderSpinButton;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceUDimensionSpinButton;
+	Gtk::SpinButton*               m_NurbsPatchSurfaceVDimensionSpinButton;
 	Gtk::Expander*                 m_CommonPropertiesExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;
@@ -1403,6 +1485,22 @@ private:
 	Gtk::Box*                      m_NormalsBox;
 	Gtk::Button*                   m_AddNormalsButton;
 	Gtk::Button*                   m_RemoveNormalsButton;
+	Gtk::Box*                      m_ColorsBox;
+	Gtk::Expander*                 m_ColorExpander;
+	Gtk::ComboBoxText*             m_ColorTypeButton;
+	Gtk::Button*                   m_ColorUnlinkButton;
+	Gtk::Grid*                     m_ColorGrid;
+	Gtk::ScrolledWindow*           m_ColorScrolledWindow;
+	Gtk::Button*                   m_AddColorButton;
+	Gtk::Button*                   m_RemoveColorButton;
+	Gtk::Box*                      m_ColorBox;
+	Gtk::Button*                   m_ColorButton;
+	Gtk::Grid*                     m_ColorRGBAGrid;
+	Gtk::ScrolledWindow*           m_ColorRGBAScrolledWindow;
+	Gtk::Button*                   m_AddColorRGBAButton;
+	Gtk::Button*                   m_RemoveColorRGBAButton;
+	Gtk::Box*                      m_ColorRGBABox;
+	Gtk::Button*                   m_ColorRGBAButton;
 	Gtk::EventBox*                 m_PrimitiveCountEventBox;
 	Gtk::Expander*                 m_PrimitiveCountExpander;
 	Gtk::Box*                      m_PrimitiveCountBox;

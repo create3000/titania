@@ -89,21 +89,43 @@ GeometryPropertiesEditor::GeometryPropertiesEditor (X3DBrowserWindow* const brow
 	                    creaseAngleDouble (this, getCreaseAngleDoubleAdjustment (), getCreaseAngleDoubleBox (), "creaseAngle"),
 	                       colorPerVertex (this, getColorPerVertexCheckButton (), "colorPerVertex"),
 	                      normalPerVertex (this, getNormalPerVertexCheckButton (), "normalPerVertex"),
+	                                color (this,
+	                                      getColorButton (),
+	                                      getColorAdjustment (),
+	                                      getColorGrid (),
+	                                      getAddColorButton (),
+	                                      getRemoveColorButton (),
+	                                      getColorScrolledWindow (),
+	                                      "color"),
+	                           colorRGBA (this,
+	                                      getColorRGBAButton (),
+	                                      getColorRGBAAdjustment (),
+	                                      getColorRGBAGrid (),
+	                                      getAddColorRGBAButton (),
+	                                      getRemoveColorRGBAButton (),
+	                                      getColorRGBAScrolledWindow (),
+	                                      "color"),
 	                        geometryNodes (),
 	                         geometryNode (),
 	                           shapeNodes (),
+	                           colorNodes (),
+	                       colorRGBANodes (),
 	                          nodesBuffer (),
+	                          colorBuffer (),
 	                            changing (false)
 {
-	addChildObjects (geometryNodes, geometryNode, shapeNodes, nodesBuffer);
+	addChildObjects (geometryNodes, geometryNode, shapeNodes, colorNodes, colorRGBANodes, nodesBuffer, colorBuffer);
 
 	nodesBuffer .addInterest (&GeometryPropertiesEditor::set_buffer, this);
+	colorBuffer .addInterest (&GeometryPropertiesEditor::set_color_buffer, this);
 
 	getCreaseAngleAdjustment ()       -> set_upper (pi <double>);
 	getCreaseAngleDoubleAdjustment () -> set_upper (pi <double>);
 
 	creaseAngle       .setHide (true);
 	creaseAngleDouble .setHide (true);
+	color             .setHide (true);
+	colorRGBA         .setHide (true);
 
 	setup ();
 }
@@ -147,6 +169,59 @@ GeometryPropertiesEditor::set_selection (const X3D::MFNode & selection)
 }
 
 void
+GeometryPropertiesEditor::on_geometry_changed ()
+{
+	if (changing)
+		return;
+
+	if (getGeometryComboBoxText () .get_active_row_number () > 0)
+	{
+	   try
+	   {
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+		   auto       node     = getCurrentContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
+
+		   if (geometryNode and geometryNode -> getType () .back () == node -> getType () .back ())
+				node = geometryNode;
+
+			for (const auto & shapeNode : shapeNodes)
+			{
+				auto & field = shapeNode -> geometry ();
+
+				X3D::X3DEditor::replaceNode (getCurrentContext (), shapeNode, field, node, undoStep);
+			}
+
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+	else if (getGeometryComboBoxText () .get_active_row_number () == 0)
+	{
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
+
+		for (const auto & shapeNode : shapeNodes)
+		{
+			auto & field = shapeNode -> geometry ();
+
+			X3D::X3DEditor::removeNode (getCurrentContext (), shapeNode, field, undoStep);
+		}
+
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
+}
+
+void
+GeometryPropertiesEditor::on_geometry_unlink_clicked ()
+{
+	X3D::UndoStepPtr undoStep;
+
+	unlinkClone (shapeNodes, "geometry", undoStep);
+}
+
+void
 GeometryPropertiesEditor::set_geometry ()
 {
 	nodesBuffer .addEvent ();
@@ -182,6 +257,13 @@ GeometryPropertiesEditor::set_buffer ()
 
 	for (const auto & node : geometryNodes)
 	{
+		try
+		{
+			node -> getField <X3D::SFNode> ("color") .removeInterest (&GeometryPropertiesEditor::set_color, this);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+
 		try
 		{
 			node -> getField <X3D::SFNode> ("normal") .removeInterest (&GeometryPropertiesEditor::set_normal, this);
@@ -238,6 +320,13 @@ GeometryPropertiesEditor::set_buffer ()
 	{
 		try
 		{
+			node -> getField <X3D::SFNode> ("color") .addInterest (&GeometryPropertiesEditor::set_color, this);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+
+		try
+		{
 			node -> getField <X3D::SFNode> ("normal") .addInterest (&GeometryPropertiesEditor::set_normal, this);
 
 			getNormalsBox () .set_sensitive (true);
@@ -246,7 +335,167 @@ GeometryPropertiesEditor::set_buffer ()
 		{ }
 	}
 
+	changing = false;
+
+	set_color ();
 	set_normal ();
+}
+
+void
+GeometryPropertiesEditor::on_color_changed ()
+{
+	if (changing)
+		return;
+
+	if (getColorTypeButton () .get_active_row_number () > 0)
+	{
+	   try
+	   {
+			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »color«"));
+
+		   X3D::X3DPtr <X3D::X3DColorNode> node (getCurrentContext () -> createNode (getColorTypeButton () .get_active_text ()));
+
+			if (colorNodes .size () and node -> getType () .back () == X3D::X3DConstants::Color)
+				node = X3D::X3DPtr <X3D::X3DColorNode> (colorNodes .back ());
+
+			else if (colorRGBANodes .size () and node -> getType () .back () == X3D::X3DConstants::ColorRGBA)
+				node = X3D::X3DPtr <X3D::X3DColorNode> (colorRGBANodes .back ());
+
+			else
+			{
+				// Assign and convert existing color node if switched from Color to ColorRGBA or back.
+
+				if (colorNodes .size () and node -> getType () .back () == X3D::X3DConstants::ColorRGBA)
+				{
+					const X3D::X3DPtr <X3D::X3DColorNode> colorNode (colorNodes .back ());
+
+					for (size_t i = 0, size = colorNode -> getSize (); i < size; ++ i)
+						node -> set1Color (i, colorNode -> get1Color (i));
+				}
+				else if (colorRGBANodes .size () and node -> getType () .back () == X3D::X3DConstants::Color)
+				{
+					const X3D::X3DPtr <X3D::X3DColorNode> colorRGBANode (colorRGBANodes .back ());
+
+					for (size_t i = 0, size = colorRGBANode -> getSize (); i < size; ++ i)
+						node -> set1Color (i, colorRGBANode -> get1Color (i));
+				}
+			}
+
+			for (const auto & geometryNode : geometryNodes)
+			{
+				try
+				{
+					auto & field = geometryNode -> getField <X3D::SFNode> ("color");
+
+					X3D::X3DEditor::replaceNode (getCurrentContext (), geometryNode, field, node, undoStep);
+				}
+				catch (const X3D::X3DError &)
+				{ }
+			}
+
+			getBrowserWindow () -> addUndoStep (undoStep);
+		}
+		catch (const X3D::X3DError & error)
+		{
+			__LOG__ << error .what () << std::endl;
+		}
+	}
+	else if (getColorTypeButton () .get_active_row_number () == 0)
+	{
+		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »color«"));
+
+		for (const auto & geometryNode : geometryNodes)
+		{
+			try
+			{
+				auto & field = geometryNode -> getField <X3D::SFNode> ("color");
+
+				X3D::X3DEditor::removeNode (getCurrentContext (), geometryNode, field, undoStep);
+			}
+			catch (const X3D::X3DError &)
+			{ }
+		}
+
+		getBrowserWindow () -> addUndoStep (undoStep);
+	}
+}
+
+void
+GeometryPropertiesEditor::on_color_unlink_clicked ()
+{
+	X3D::UndoStepPtr undoStep;
+
+	unlinkClone (geometryNodes, "color", undoStep);
+}
+
+void
+GeometryPropertiesEditor::set_color ()
+{
+	colorBuffer .addEvent ();
+}
+
+void
+GeometryPropertiesEditor::set_color_buffer ()
+{
+	changing = true;
+
+	colorNodes     = getNodes <X3D::X3DBaseNode> (shapeNodes, { X3D::X3DConstants::Color });
+	colorRGBANodes = getNodes <X3D::X3DBaseNode> (shapeNodes, { X3D::X3DConstants::ColorRGBA });
+
+	size_t numColorFields    = 0;
+	size_t numColorNodes     = 0;
+	size_t numColorRGBANodes = 0;
+
+	for (const auto & node : geometryNodes)
+	{
+		try
+		{
+			const auto & colorNode = node -> getField <X3D::SFNode> ("color");
+
+			++ numColorFields;
+
+			if (not colorNode)
+				continue;
+
+			if (colorNode -> isType ({ X3D::X3DConstants::Color }))
+				++ numColorNodes;
+
+			else if (colorNode -> isType ({ X3D::X3DConstants::ColorRGBA }))
+				++ numColorRGBANodes;
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	getColorsBox () .set_visible (numColorFields);
+
+	if (numColorNodes == numColorFields)
+	{
+		// Color
+		getColorTypeButton ()   .set_active (1);
+		getColorUnlinkButton () .set_sensitive (colorNodes .size () == 1 and colorNodes .back () -> getCloneCount () > 1);
+	}
+	else if (numColorRGBANodes == numColorFields)
+	{
+		// ColorRGBA
+		getColorTypeButton ()   .set_active (2);
+		getColorUnlinkButton () .set_sensitive (colorRGBANodes .size () == 1 and colorRGBANodes .back () -> getCloneCount () > 1);
+	}
+	else if (numColorNodes or numColorRGBANodes)
+	{
+		// Inconsitent
+		getColorTypeButton ()   .set_active (-1);
+		getColorUnlinkButton () .set_sensitive (false);
+	}
+	else
+	{
+		// None
+		getColorTypeButton ()   .set_active (0);
+		getColorUnlinkButton () .set_sensitive (false);
+	}
+
+	color     .setNodes (numColorNodes     == numColorFields ? colorNodes     : X3D::MFNode ());
+	colorRGBA .setNodes (numColorRGBANodes == numColorFields ? colorRGBANodes : X3D::MFNode ());
 
 	changing = false;
 }
@@ -268,59 +517,6 @@ GeometryPropertiesEditor::set_normal ()
 	}
 
 	getRemoveNormalsButton () .set_sensitive (normal);
-}
-
-void
-GeometryPropertiesEditor::on_geometry_changed ()
-{
-	if (changing)
-		return;
-
-	if (getGeometryComboBoxText () .get_active_row_number () > 0)
-	{
-	   try
-	   {
-			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
-		   auto       node     = getCurrentContext () -> createNode (getGeometryComboBoxText () .get_active_text ());
-
-		   if (geometryNode and geometryNode -> getType () .back () == node -> getType () .back ())
-				node = geometryNode;
-
-			for (const auto & shapeNode : shapeNodes)
-			{
-				auto & field = shapeNode -> geometry ();
-
-				X3D::X3DEditor::replaceNode (getCurrentContext (), shapeNode, field, node, undoStep);
-			}
-
-			getBrowserWindow () -> addUndoStep (undoStep);
-		}
-		catch (const X3D::X3DError & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
-	}
-	else if (getGeometryComboBoxText () .get_active_row_number () == 0)
-	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Change Field »geometry«"));
-
-		for (const auto & shapeNode : shapeNodes)
-		{
-			auto & field = shapeNode -> geometry ();
-
-			X3D::X3DEditor::removeNode (getCurrentContext (), shapeNode, field, undoStep);
-		}
-
-		getBrowserWindow () -> addUndoStep (undoStep);
-	}
-}
-
-void
-GeometryPropertiesEditor::on_geometry_unlink_clicked ()
-{
-	X3D::UndoStepPtr undoStep;
-
-	unlinkClone (shapeNodes, "geometry", undoStep);
 }
 
 void

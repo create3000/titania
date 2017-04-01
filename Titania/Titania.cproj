@@ -295,6 +295,7 @@
     <Compile Include="Titania\UserInterfaces\X3DUndoHistoryDialogInterface.cpp" />
     <Compile Include="Titania\Editors\GridEditor\AxonometricGridTool.cpp" />
     <Compile Include="Titania\Editors\GridEditor\X3DAxonometricGridEditor.cpp" />
+    <Compile Include="Titania\Editors\GeometryPropertiesEditor\Rendering\X3DIndexedLineSetEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2650,6 +2651,7 @@
     <None Include="share\titania\ui\icons\UndoHistory.svg" />
     <None Include="share\titania\pages\about\library\box-shadow.png" />
     <None Include="share\titania\ui\Editors\FogEditor.glade" />
+    <None Include="Titania\Editors\GeometryPropertiesEditor\Rendering\X3DIndexedLineSetEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2756,6 +2758,7 @@
     <Folder Include="share\titania\Library\SculpToolBrushes\" />
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\NURBS\" />
     <Folder Include="Titania\Dialogs\UndoHistoryDialog\" />
+    <Folder Include="Titania\Editors\GeometryPropertiesEditor\Rendering\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

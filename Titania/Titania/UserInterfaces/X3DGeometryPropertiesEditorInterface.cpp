@@ -72,6 +72,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_BoxSizeZAdjustment                           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BoxSizeZAdjustment"));
 	m_Circle2DDimensionAdjustment                  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Circle2DDimensionAdjustment"));
 	m_Circle2DRadiusAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Circle2DRadiusAdjustment"));
+	m_ColorAdjustment                              = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorAdjustment"));
+	m_ColorRGBAAdjustment                          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorRGBAAdjustment"));
 	m_ConeBottomRadiusAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeBottomRadiusAdjustment"));
 	m_ConeHeightAdjustment                         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeHeightAdjustment"));
 	m_ConeXDimensionAdjustment                     = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ConeXDimensionAdjustment"));
@@ -251,15 +253,6 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NurbsCurveTessellationSpinButton", m_NurbsCurveTessellationSpinButton);
 	m_builder -> get_widget ("NurbsCurveClosedCheckButton", m_NurbsCurveClosedCheckButton);
 	m_builder -> get_widget ("NurbsCurveOrderSpinButton", m_NurbsCurveOrderSpinButton);
-	m_builder -> get_widget ("NurbsPatchSurfaceExpander", m_NurbsPatchSurfaceExpander);
-	m_builder -> get_widget ("NurbsPatchSurfaceUTessellationSpinButton", m_NurbsPatchSurfaceUTessellationSpinButton);
-	m_builder -> get_widget ("NurbsPatchSurfaceVTessellationSpinButton", m_NurbsPatchSurfaceVTessellationSpinButton);
-	m_builder -> get_widget ("NurbsPatchSurfaceUClosedCheckButton", m_NurbsPatchSurfaceUClosedCheckButton);
-	m_builder -> get_widget ("NurbsPatchSurfaceVClosedCheckButton", m_NurbsPatchSurfaceVClosedCheckButton);
-	m_builder -> get_widget ("NurbsPatchSurfaceUOrderSpinButton", m_NurbsPatchSurfaceUOrderSpinButton);
-	m_builder -> get_widget ("NurbsPatchSurfaceVOrderSpinButton", m_NurbsPatchSurfaceVOrderSpinButton);
-	m_builder -> get_widget ("NurbsPatchSurfaceUDimensionSpinButton", m_NurbsPatchSurfaceUDimensionSpinButton);
-	m_builder -> get_widget ("NurbsPatchSurfaceVDimensionSpinButton", m_NurbsPatchSurfaceVDimensionSpinButton);
 	m_builder -> get_widget ("NurbsTrimmedSurfaceExpander", m_NurbsTrimmedSurfaceExpander);
 	m_builder -> get_widget ("NurbsTrimmedSurfaceUTessellationSpinButton", m_NurbsTrimmedSurfaceUTessellationSpinButton);
 	m_builder -> get_widget ("NurbsTrimmedSurfaceVTessellationSpinButton", m_NurbsTrimmedSurfaceVTessellationSpinButton);
@@ -269,6 +262,15 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NurbsTrimmedSurfaceVOrderSpinButton", m_NurbsTrimmedSurfaceVOrderSpinButton);
 	m_builder -> get_widget ("NurbsTrimmedSurfaceUDimensionSpinButton", m_NurbsTrimmedSurfaceUDimensionSpinButton);
 	m_builder -> get_widget ("NurbsTrimmedSurfaceVDimensionSpinButton", m_NurbsTrimmedSurfaceVDimensionSpinButton);
+	m_builder -> get_widget ("NurbsPatchSurfaceExpander", m_NurbsPatchSurfaceExpander);
+	m_builder -> get_widget ("NurbsPatchSurfaceUTessellationSpinButton", m_NurbsPatchSurfaceUTessellationSpinButton);
+	m_builder -> get_widget ("NurbsPatchSurfaceVTessellationSpinButton", m_NurbsPatchSurfaceVTessellationSpinButton);
+	m_builder -> get_widget ("NurbsPatchSurfaceUClosedCheckButton", m_NurbsPatchSurfaceUClosedCheckButton);
+	m_builder -> get_widget ("NurbsPatchSurfaceVClosedCheckButton", m_NurbsPatchSurfaceVClosedCheckButton);
+	m_builder -> get_widget ("NurbsPatchSurfaceUOrderSpinButton", m_NurbsPatchSurfaceUOrderSpinButton);
+	m_builder -> get_widget ("NurbsPatchSurfaceVOrderSpinButton", m_NurbsPatchSurfaceVOrderSpinButton);
+	m_builder -> get_widget ("NurbsPatchSurfaceUDimensionSpinButton", m_NurbsPatchSurfaceUDimensionSpinButton);
+	m_builder -> get_widget ("NurbsPatchSurfaceVDimensionSpinButton", m_NurbsPatchSurfaceVDimensionSpinButton);
 	m_builder -> get_widget ("CommonPropertiesExpander", m_CommonPropertiesExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
@@ -284,6 +286,22 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NormalsBox", m_NormalsBox);
 	m_builder -> get_widget ("AddNormalsButton", m_AddNormalsButton);
 	m_builder -> get_widget ("RemoveNormalsButton", m_RemoveNormalsButton);
+	m_builder -> get_widget ("ColorsBox", m_ColorsBox);
+	m_builder -> get_widget ("ColorExpander", m_ColorExpander);
+	m_builder -> get_widget ("ColorTypeButton", m_ColorTypeButton);
+	m_builder -> get_widget ("ColorUnlinkButton", m_ColorUnlinkButton);
+	m_builder -> get_widget ("ColorGrid", m_ColorGrid);
+	m_builder -> get_widget ("ColorScrolledWindow", m_ColorScrolledWindow);
+	m_builder -> get_widget ("AddColorButton", m_AddColorButton);
+	m_builder -> get_widget ("RemoveColorButton", m_RemoveColorButton);
+	m_builder -> get_widget ("ColorBox", m_ColorBox);
+	m_builder -> get_widget ("ColorButton", m_ColorButton);
+	m_builder -> get_widget ("ColorRGBAGrid", m_ColorRGBAGrid);
+	m_builder -> get_widget ("ColorRGBAScrolledWindow", m_ColorRGBAScrolledWindow);
+	m_builder -> get_widget ("AddColorRGBAButton", m_AddColorRGBAButton);
+	m_builder -> get_widget ("RemoveColorRGBAButton", m_RemoveColorRGBAButton);
+	m_builder -> get_widget ("ColorRGBABox", m_ColorRGBABox);
+	m_builder -> get_widget ("ColorRGBAButton", m_ColorRGBAButton);
 	m_builder -> get_widget ("PrimitiveCountEventBox", m_PrimitiveCountEventBox);
 	m_builder -> get_widget ("PrimitiveCountExpander", m_PrimitiveCountExpander);
 	m_builder -> get_widget ("PrimitiveCountBox", m_PrimitiveCountBox);
@@ -339,6 +357,12 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'AddNormalsButton'.
 	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));
 	m_RemoveNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_remove_normals_clicked));
+
+	// Connect object Gtk::ComboBoxText with id 'ColorTypeButton'.
+	m_ColorTypeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_color_changed));
+
+	// Connect object Gtk::Button with id 'ColorUnlinkButton'.
+	m_ColorUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_color_unlink_clicked));
 
 	// Connect object Gtk::EventBox with id 'PrimitiveCountEventBox'.
 	m_PrimitiveCountEventBox -> signal_enter_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event));

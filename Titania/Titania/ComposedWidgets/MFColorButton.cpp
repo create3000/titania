@@ -80,6 +80,7 @@ MFColorButton::MFColorButton (X3DBaseInterface* const editor,
 	                node (),
 	                name (name),
 	               index (0),
+                   hide (false),
 	            undoStep (),
 	               input (-1),
 	            changing (false),
@@ -340,6 +341,9 @@ MFColorButton::set_buffer ()
 	widget               .set_sensitive (hasField and not isEmpty and index >= 0);
 	colorsScrolledWindow .set_sensitive (hasField);
 	on_colors_configure_event (nullptr);
+
+	if (hide)
+		widget .set_visible (hasField);
 
 	changing = false;
 }

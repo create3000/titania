@@ -116,6 +116,14 @@ public:
 	getIndex () const
 	{ return index; }
 
+	bool
+	getHide () const
+	{ return hide; }
+
+	void
+	setHide (const int value)
+	{ hide = value; }
+
 	void
 	setNodes (const X3D::MFNode &);
 
@@ -207,6 +215,7 @@ private:
 	X3D::SFNode                          node;
 	const std::string                    name;
 	int32_t                              index;
+	bool                                 hide;
 	X3D::UndoStepPtr                     undoStep;
 	int                                  input;
 	bool                                 changing;

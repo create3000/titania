@@ -73,6 +73,16 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
+  <object class="GtkAdjustment" id="ColorAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="ColorRGBAAdjustment">
+    <property name="upper">1</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="ConeBottomRadiusAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
@@ -435,7 +445,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <items>
-                                  <item>None</item>
+                                  <item translatable="yes">None</item>
                                   <item>Arc2D</item>
                                   <item>ArcClose2D</item>
                                   <item>Box</item>
@@ -2549,6 +2559,22 @@
                                   </packing>
                                 </child>
                                 <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">8</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page14</property>
+                                    <property name="title" translatable="yes">IndexedFaceSet</property>
+                                    <property name="position">10</property>
+                                  </packing>
+                                </child>
+                                <child>
                                   <object class="GtkExpander" id="SphereExpander">
                                     <property name="name">SphereExpander</property>
                                     <property name="can_focus">True</property>
@@ -2903,7 +2929,7 @@
                                   <packing>
                                     <property name="name">page10</property>
                                     <property name="title" translatable="yes">Sphere</property>
-                                    <property name="position">10</property>
+                                    <property name="position">11</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -3592,7 +3618,7 @@
                                   <packing>
                                     <property name="name">page11</property>
                                     <property name="title" translatable="yes">GeoElevationGrid</property>
-                                    <property name="position">11</property>
+                                    <property name="position">12</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -3696,241 +3722,6 @@
                                   <packing>
                                     <property name="name">page13</property>
                                     <property name="title" translatable="yes">NurbsCurve</property>
-                                    <property name="position">12</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkExpander" id="NurbsPatchSurfaceExpander">
-                                    <property name="name">NurbsPatchSurfaceExpander</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="expanded">True</property>
-                                    <child>
-                                      <object class="GtkGrid" id="grid20">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="row_spacing">8</property>
-                                        <property name="column_spacing">16</property>
-                                        <child>
-                                          <object class="GtkLabel" id="label102">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">U Tessellation:</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceUTessellationSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">0,000</property>
-                                            <property name="adjustment">NurbsPatchSurfaceUTessellationAdjustment</property>
-                                            <property name="climb_rate">0.01</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="label103">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">V Tessellation:</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceVTessellationSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">0,000</property>
-                                            <property name="adjustment">NurbsPatchSurfaceVTessellationAdjustment</property>
-                                            <property name="climb_rate">0.01</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">1</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkCheckButton" id="NurbsPatchSurfaceUClosedCheckButton">
-                                            <property name="label" translatable="yes">U Closed</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="halign">start</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="xalign">0</property>
-                                            <property name="draw_indicator">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkCheckButton" id="NurbsPatchSurfaceVClosedCheckButton">
-                                            <property name="label" translatable="yes">V Closed</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="receives_default">False</property>
-                                            <property name="halign">start</property>
-                                            <property name="hexpand">True</property>
-                                            <property name="xalign">0</property>
-                                            <property name="draw_indicator">True</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">3</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="label104">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">2</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="label105">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">3</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="label107">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">U Order:</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">4</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="label108">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">V Order:</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">5</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="label109">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">U Dimension:</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">6</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkLabel" id="label110">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="label" translatable="yes">V Dimension:</property>
-                                            <property name="xalign">0</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">0</property>
-                                            <property name="top_attach">7</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceUOrderSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">0</property>
-                                            <property name="adjustment">NurbsPatchSurfaceUOrderAdjustment</property>
-                                            <property name="climb_rate">0.01</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">4</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceVOrderSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">0</property>
-                                            <property name="adjustment">NurbsPatchSurfaceVOrderAdjustment</property>
-                                            <property name="climb_rate">0.01</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">5</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceUDimensionSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">0</property>
-                                            <property name="adjustment">NurbsPatchSurfaceUDimensionAdjustment</property>
-                                            <property name="climb_rate">0.01</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">6</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceVDimensionSpinButton">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">start</property>
-                                            <property name="text" translatable="yes">0</property>
-                                            <property name="adjustment">NurbsPatchSurfaceVDimensionAdjustment</property>
-                                            <property name="climb_rate">0.01</property>
-                                          </object>
-                                          <packing>
-                                            <property name="left_attach">1</property>
-                                            <property name="top_attach">7</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                    </child>
-                                    <child type="label">
-                                      <object class="GtkLabel" id="label106">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">NurbsPatchSurface</property>
-                                      </object>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="name">page16</property>
-                                    <property name="title" translatable="yes">NurbsPatchSurface</property>
                                     <property name="position">13</property>
                                   </packing>
                                 </child>
@@ -4167,6 +3958,256 @@
                                     <property name="name">page12</property>
                                     <property name="title" translatable="yes">NurbsTrimmedSurface</property>
                                     <property name="position">14</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkExpander" id="NurbsPatchSurfaceExpander">
+                                    <property name="name">NurbsPatchSurfaceExpander</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="expanded">True</property>
+                                    <child>
+                                      <object class="GtkGrid" id="grid20">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="row_spacing">8</property>
+                                        <property name="column_spacing">16</property>
+                                        <child>
+                                          <object class="GtkLabel" id="label102">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">U Tessellation:</property>
+                                            <property name="xalign">0</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceUTessellationSpinButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">NurbsPatchSurfaceUTessellationAdjustment</property>
+                                            <property name="climb_rate">0.01</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label103">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">V Tessellation:</property>
+                                            <property name="xalign">0</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceVTessellationSpinButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
+                                            <property name="text" translatable="yes">0,000</property>
+                                            <property name="adjustment">NurbsPatchSurfaceVTessellationAdjustment</property>
+                                            <property name="climb_rate">0.01</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkCheckButton" id="NurbsPatchSurfaceUClosedCheckButton">
+                                            <property name="label" translatable="yes">U Closed</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
+                                            <property name="hexpand">True</property>
+                                            <property name="xalign">0</property>
+                                            <property name="draw_indicator">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkCheckButton" id="NurbsPatchSurfaceVClosedCheckButton">
+                                            <property name="label" translatable="yes">V Closed</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="halign">start</property>
+                                            <property name="hexpand">True</property>
+                                            <property name="xalign">0</property>
+                                            <property name="draw_indicator">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">3</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label104">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label105">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">3</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label107">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">U Order:</property>
+                                            <property name="xalign">0</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">4</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label108">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">V Order:</property>
+                                            <property name="xalign">0</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">5</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label109">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">U Dimension:</property>
+                                            <property name="xalign">0</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">6</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label110">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">V Dimension:</property>
+                                            <property name="xalign">0</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">7</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceUOrderSpinButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
+                                            <property name="text" translatable="yes">0</property>
+                                            <property name="adjustment">NurbsPatchSurfaceUOrderAdjustment</property>
+                                            <property name="climb_rate">0.01</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">4</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceVOrderSpinButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
+                                            <property name="text" translatable="yes">0</property>
+                                            <property name="adjustment">NurbsPatchSurfaceVOrderAdjustment</property>
+                                            <property name="climb_rate">0.01</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">5</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceUDimensionSpinButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
+                                            <property name="text" translatable="yes">0</property>
+                                            <property name="adjustment">NurbsPatchSurfaceUDimensionAdjustment</property>
+                                            <property name="climb_rate">0.01</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">6</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkSpinButton" id="NurbsPatchSurfaceVDimensionSpinButton">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="halign">start</property>
+                                            <property name="text" translatable="yes">0</property>
+                                            <property name="adjustment">NurbsPatchSurfaceVDimensionAdjustment</property>
+                                            <property name="climb_rate">0.01</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">7</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                    </child>
+                                    <child type="label">
+                                      <object class="GtkLabel" id="label106">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="label" translatable="yes">NurbsPatchSurface</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page16</property>
+                                    <property name="title" translatable="yes">NurbsPatchSurface</property>
+                                    <property name="position">15</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">8</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="name">page15</property>
+                                    <property name="title" translatable="yes">IndexedLineSet</property>
+                                    <property name="position">16</property>
                                   </packing>
                                 </child>
                               </object>
@@ -4614,9 +4655,412 @@
                             </child>
                           </object>
                           <packing>
-                            <property name="expand">True</property>
+                            <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="ColorsBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkExpander" id="ColorExpander">
+                                <property name="name">ColorExpander</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="expanded">True</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">8</property>
+                                    <child>
+                                      <object class="GtkGrid">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="row_spacing">8</property>
+                                        <property name="column_spacing">16</property>
+                                        <child>
+                                          <object class="GtkLabel" id="label136">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">Type:</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="spacing">1</property>
+                                            <child>
+                                              <object class="GtkComboBoxText" id="ColorTypeButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <items>
+                                                  <item translatable="yes">None</item>
+                                                  <item>Color</item>
+                                                  <item>ColorRGBA</item>
+                                                </items>
+                                                <signal name="changed" handler="on_color_changed" swapped="no"/>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkButton" id="ColorUnlinkButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="tooltip_text" translatable="yes">Unlink Clone.</property>
+                                                <signal name="clicked" handler="on_color_unlink_clicked" swapped="no"/>
+                                                <child>
+                                                  <object class="GtkImage" id="image9">
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">False</property>
+                                                    <property name="stock">Clone</property>
+                                                    <property name="pixel_size">12</property>
+                                                    <property name="icon_size">1</property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkGrid" id="ColorGrid">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="row_spacing">8</property>
+                                        <property name="column_spacing">16</property>
+                                        <child>
+                                          <object class="GtkBox" id="box8">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="orientation">vertical</property>
+                                            <property name="spacing">2</property>
+                                            <child>
+                                              <object class="GtkScrolledWindow" id="ColorScrolledWindow">
+                                                <property name="height_request">16</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="hscrollbar_policy">never</property>
+                                                <property name="vscrollbar_policy">never</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkBox" id="box16">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="halign">start</property>
+                                                <property name="spacing">2</property>
+                                                <child>
+                                                  <object class="GtkButton" id="AddColorButton">
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">True</property>
+                                                    <child>
+                                                      <object class="GtkImage" id="image5">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="stock">gtk-add</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkButton" id="RemoveColorButton">
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">True</property>
+                                                    <child>
+                                                      <object class="GtkImage" id="image6">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="stock">gtk-remove</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">1</property>
+                                            <property name="width">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox" id="ColorBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="hexpand">True</property>
+                                            <property name="spacing">8</property>
+                                            <child>
+                                              <object class="GtkButton" id="ColorButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="tooltip_text" translatable="yes">Sky Color</property>
+                                                <property name="hexpand">True</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkScale" id="scale1">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="tooltip_text" translatable="yes">Sky Color</property>
+                                                <property name="adjustment">ColorAdjustment</property>
+                                                <property name="round_digits">3</property>
+                                                <property name="digits">3</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label134">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">Color:</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkGrid" id="ColorRGBAGrid">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="row_spacing">8</property>
+                                        <property name="column_spacing">16</property>
+                                        <child>
+                                          <object class="GtkBox" id="box23">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="orientation">vertical</property>
+                                            <property name="spacing">2</property>
+                                            <child>
+                                              <object class="GtkScrolledWindow" id="ColorRGBAScrolledWindow">
+                                                <property name="height_request">16</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="hscrollbar_policy">never</property>
+                                                <property name="vscrollbar_policy">never</property>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkBox" id="box29">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="halign">start</property>
+                                                <property name="spacing">2</property>
+                                                <child>
+                                                  <object class="GtkButton" id="AddColorRGBAButton">
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">True</property>
+                                                    <child>
+                                                      <object class="GtkImage" id="image7">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="stock">gtk-add</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkButton" id="RemoveColorRGBAButton">
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">True</property>
+                                                    <child>
+                                                      <object class="GtkImage" id="image8">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="stock">gtk-remove</property>
+                                                      </object>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">True</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">1</property>
+                                            <property name="width">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox" id="ColorRGBABox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="hexpand">True</property>
+                                            <property name="spacing">8</property>
+                                            <child>
+                                              <object class="GtkButton" id="ColorRGBAButton">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="receives_default">True</property>
+                                                <property name="tooltip_text" translatable="yes">Sky Color</property>
+                                                <property name="hexpand">True</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkScale" id="scale2">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="tooltip_text" translatable="yes">Sky Color</property>
+                                                <property name="adjustment">ColorRGBAAdjustment</property>
+                                                <property name="round_digits">3</property>
+                                                <property name="digits">3</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">1</property>
+                                            <property name="top_attach">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkLabel" id="label135">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="label" translatable="yes">Color:</property>
+                                          </object>
+                                          <packing>
+                                            <property name="left_attach">0</property>
+                                            <property name="top_attach">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                </child>
+                                <child type="label">
+                                  <object class="GtkLabel" id="label142">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Color</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
                           </packing>
                         </child>
                       </object>

@@ -51,8 +51,8 @@
 #ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
 #define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_GEOMETRY_PROPERTIES_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+
 #include "Geometry2D/X3DArc2DEditor.h"
 #include "Geometry2D/X3DArcClose2DEditor.h"
 #include "Geometry2D/X3DCircle2DEditor.h"
@@ -70,6 +70,10 @@
 #include "NURBS/X3DNurbsTrimmedSurfaceEditor.h"
 #include "X3DPrimitiveCountEditor.h"
 #include "X3DGeometryTool.h"
+
+#include "../../ComposedWidgets.h"
+#include "../../ComposedWidgets/MFColorButton.h"
+#include "../../ComposedWidgets/MFColorRGBAButton.h"
 
 namespace titania {
 namespace puck {
@@ -124,6 +128,14 @@ private:
 
 	virtual
 	void
+	on_geometry_changed () final override;
+
+	virtual
+	void
+	on_geometry_unlink_clicked () final override;
+
+	virtual
+	void
 	set_geometry () final override;
 
 	void
@@ -132,16 +144,22 @@ private:
 	void
 	set_buffer ();
 
+	virtual
+	void
+	on_color_changed () final override;
+
+	virtual
+	void
+	on_color_unlink_clicked () final override;
+
+	void
+	set_color ();
+
+	void
+	set_color_buffer ();
+
 	void
 	set_normal ();
-
-	virtual
-	void
-	on_geometry_changed () final override;
-
-	virtual
-	void
-	on_geometry_unlink_clicked () final override;
 
 	virtual
 	void
@@ -164,11 +182,16 @@ private:
 	X3DFieldAdjustment <X3D::SFDouble>  creaseAngleDouble;
 	X3DFieldToggleButton <X3D::SFBool>  colorPerVertex;
 	X3DFieldToggleButton <X3D::SFBool>  normalPerVertex;
+	MFColorButton                       color;
+	MFColorRGBAButton                   colorRGBA;
 
 	X3D::MFNode                          geometryNodes;
 	X3D::SFNode                          geometryNode;
 	X3D::X3DPtrArray <X3D::X3DShapeNode> shapeNodes;
+	X3D::MFNode                          colorNodes;
+	X3D::MFNode                          colorRGBANodes;
 	X3D::SFTime                          nodesBuffer;
+	X3D::SFTime                          colorBuffer;
 
 	bool changing;
 
