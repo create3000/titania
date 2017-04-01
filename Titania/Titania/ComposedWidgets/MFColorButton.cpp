@@ -607,7 +607,7 @@ MFColorButton::on_colors_draw (const Cairo::RefPtr <Cairo::Context> & context)
 
 			if (i == getIndex ())
 			{
-				const auto color = widget .get_style_context () -> get_background_color (Gtk::STATE_FLAG_SELECTED);
+				const auto color = widget .get_style_context () -> get_color (Gtk::STATE_FLAG_SELECTED);
 
 				context -> set_line_width (2);
 				context -> set_source_rgba (color .get_red (), color .get_green (), color .get_blue (), color .get_alpha ());
