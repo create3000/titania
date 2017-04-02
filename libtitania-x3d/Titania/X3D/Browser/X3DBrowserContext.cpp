@@ -160,13 +160,13 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
-	// Update browser.
-
-	getBrowser () -> update ();
-
 	// Make snapshot.
 
 	ContextLock lock (getBrowser ());
+
+	// Update browser.
+
+	getBrowser () -> update ();
 
 	if (getWorld ())
 	{
