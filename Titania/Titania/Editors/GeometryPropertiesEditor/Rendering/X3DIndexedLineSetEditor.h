@@ -90,6 +90,14 @@ private:
 	void
 	set_options ();
 
+	static
+	bool
+	validateLSystemConstants (const std::string & text);
+
+	static
+	bool
+	validateLSystemAxiom (const std::string & text);
+
 	///  @name Members
 
 	X3DFieldAdjustment <X3D::SFInt32> lSystemIterations;

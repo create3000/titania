@@ -61,6 +61,7 @@ SFStringEntry::SFStringEntry (X3DBaseInterface* const editor,
 	            entry (entry),
 	            nodes (),
 	             name (name),
+	           filter ([ ] (const std::string &) { return true; }),
 	         undoStep (),
 	         changing (false),
 	           buffer ()
@@ -69,7 +70,9 @@ SFStringEntry::SFStringEntry (X3DBaseInterface* const editor,
 
 	buffer .addInterest (&SFStringEntry::set_buffer, this);
 
-	entry .signal_changed () .connect (sigc::mem_fun (*this, &SFStringEntry::on_changed));
+	entry .signal_insert_text () .connect (sigc::mem_fun (*this, &SFStringEntry::on_insert_text), false);
+	entry .signal_delete_text () .connect (sigc::mem_fun (*this, &SFStringEntry::on_delete_text), false);
+	entry .signal_changed ()     .connect (sigc::mem_fun (*this, &SFStringEntry::on_changed));
 	setup ();
 }
 
@@ -99,6 +102,24 @@ SFStringEntry::setNodes (const X3D::MFNode & value)
 	}
 
 	set_field ();
+}
+
+void
+SFStringEntry::on_insert_text (const Glib::ustring & insert, int* position)
+{
+	const auto text = entry .get_text () .insert (*position, insert);
+
+	if (not filter (text))
+		entry .signal_insert_text () .emission_stop ();
+}
+
+void
+SFStringEntry::on_delete_text (int start_pos, int end_pos)
+{
+	const auto text = entry .get_text () .erase (start_pos, end_pos - start_pos);
+
+	if (text .length () and not filter (text))
+		entry .signal_delete_text () .emission_stop ();
 }
 
 void

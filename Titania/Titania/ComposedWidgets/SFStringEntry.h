@@ -53,6 +53,8 @@
 
 #include "../ComposedWidgets/X3DComposedWidget.h"
 
+#include <functional>
+
 namespace titania {
 namespace puck {
 
@@ -61,16 +63,28 @@ class SFStringEntry :
 {
 public:
 
+	///  @name Member types
+
+	using FilterFunction = std::function <bool (const std::string &)>;
+
 	///  @name Construction
 
-	SFStringEntry (X3DBaseInterface* const,
-	               Gtk::Entry &,
-	               const std::string &);
+	SFStringEntry (X3DBaseInterface* const editor,
+	               Gtk::Entry & entry,
+	               const std::string & name);
 
 	///  @name Member access
 
 	void
-	setNodes (const X3D::MFNode &);
+	setFilter (const FilterFunction & value)
+	{ filter = value; }
+
+	const FilterFunction &
+	getFilter () const
+	{ return filter; }
+
+	void
+	setNodes (const X3D::MFNode & value);
 
 	const X3D::MFNode &
 	getNodes ()
@@ -88,6 +102,12 @@ private:
 	///  @name Event handlers
 
 	void
+	on_insert_text (const Glib::ustring & text, int* position);
+	
+	void
+	on_delete_text (int start_pos, int end_pos);
+
+	void
 	on_changed ();
 
 	void
@@ -97,13 +117,14 @@ private:
 	set_buffer ();
 
 	void
-	connect (const X3D::SFString &);
+	connect (const X3D::SFString & field);
 
 	///  @name Members
 
 	Gtk::Entry &      entry;
 	X3D::MFNode       nodes;
 	const std::string name;
+	FilterFunction    filter;
 	X3D::UndoStepPtr  undoStep;
 	bool              changing;
 	X3D::SFTime       buffer;

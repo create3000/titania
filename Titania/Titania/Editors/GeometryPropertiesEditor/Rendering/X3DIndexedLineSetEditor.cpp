@@ -53,6 +53,8 @@
 #include <Titania/X3D/Browser/Rendering/LSystemOptions.h>
 #include <Titania/X3D/Components/Rendering/IndexedLineSet.h>
 
+#include <regex>
+
 namespace titania {
 namespace puck {
 
@@ -75,6 +77,9 @@ X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 	addChildObjects (nodes);
 
 	getIndexLineSetLSystemAngleAdjustment () -> set_upper (math::pi <double> * 2);
+
+	lSystemConstants .setFilter (&X3DIndexedLineSetEditor::validateLSystemConstants);
+	lSystemAxiom     .setFilter (&X3DIndexedLineSetEditor::validateLSystemAxiom);
 }
 
 void
@@ -128,7 +133,7 @@ X3DIndexedLineSetEditor::on_indexed_line_set_type_changed ()
 	for (const auto & node : nodes)
 	{
 		auto &     options = node -> getField <X3D::SFNode> ("options");
-		const auto copy    = X3D::SFNode (optionNode -> copy (getCurrentContext (), X3D::FLAT_COPY));
+		const auto copy    = optionNode ? X3D::SFNode (optionNode -> copy (getCurrentContext (), X3D::FLAT_COPY)) : optionNode;
 
 		X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, copy, undoStep);
 	}
@@ -185,7 +190,7 @@ X3DIndexedLineSetEditor::set_options ()
 		{
 			case X3D::X3DConstants::LSystemOptions:
 			{
-				getIndexedLineSetTypeButton ()     .set_active (0);
+				getIndexedLineSetTypeButton ()     .set_active (1);
 				getIndexedLineSetLSystemOptions () .set_visible (true);
 				break;
 			}
@@ -198,6 +203,22 @@ X3DIndexedLineSetEditor::set_options ()
 	}
 
 	changing = false;
+}
+
+bool
+X3DIndexedLineSetEditor::validateLSystemConstants (const std::string & text)
+{
+	static const std::regex constants (R"/([A-Za-z0-9\[\]\+\-]+)/");
+
+	return std::regex_match (text, constants);
+}
+
+bool
+X3DIndexedLineSetEditor::validateLSystemAxiom (const std::string & text)
+{
+	static const std::regex constants (R"/([A-Za-z0-9\[\]\+\-]+)/");
+
+	return std::regex_match (text, constants);
 }
 
 X3DIndexedLineSetEditor::~X3DIndexedLineSetEditor ()
