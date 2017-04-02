@@ -79,7 +79,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~SFStringTextView ()
+	~SFStringTextView () final override
 	{ dispose (); }
 
 

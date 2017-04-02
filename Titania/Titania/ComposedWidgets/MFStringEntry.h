@@ -51,21 +51,15 @@
 #ifndef __TITANIA_COMPOSED_WIDGETS_MFSTRING_ENTRY_H__
 #define __TITANIA_COMPOSED_WIDGETS_MFSTRING_ENTRY_H__
 
-#include "../ComposedWidgets/X3DComposedWidget.h"
-
-#include <functional>
+#include "../ComposedWidgets/X3DMFStringEntry.h"
 
 namespace titania {
 namespace puck {
 
 class MFStringEntry :
-	public X3DComposedWidget
+	public X3DMFStringEntry
 {
 public:
-
-	///  @name Member types
-
-	using FilterFunction = std::function <bool (const std::string &)>;
 
 	///  @name Construction
 
@@ -74,96 +68,10 @@ public:
 	               Gtk::Button & addButton,
 	               const std::string & name);
 
-	///  @name Member access
-
-	void
-	setSpacing (const size_t value)
-	{ spacing = value; }
-
-	size_t
-	getSpacing () const
-	{ return spacing; }
-
-	void
-	setFilter (const FilterFunction & value)
-	{ filter = value; }
-
-	const FilterFunction &
-	getFilter () const
-	{ return filter; }
-
-	void
-	setNodes (const X3D::MFNode & value);
-
-	const X3D::MFNode &
-	getNodes ()
-	{ return nodes; }
-
 	///  @name Destruction
 
 	virtual
-	~MFStringEntry ()
-	{ dispose (); }
-
-
-private:
-
-	///  @name Event handlers
-
-	void
-	on_add_before_clicked ();
-
-	void
-	on_add_clicked (Gtk::Entry* const entry);
-
-	void
-	on_remove_clicked (Gtk::Entry* const entry);
-
-	void
-	on_insert_text (const Glib::ustring & insert, int* position, Gtk::Entry* const entry);
-	
-	void
-	on_delete_text (int start_pos, int end_pos, Gtk::Entry* const entry);
-
-	void
-	on_changed (Gtk::Entry* const entry);
-
-	void
-	on_string_changed ();
-
-	void
-	set_field ();
-
-	void
-	set_buffer ();
-
-	void
-	addWidget (const int32_t index, const X3D::SFString & value);
-
-	void
-	removeWidget (const int32_t index);
-
-	int32_t
-	getIndex (Gtk::Entry* const entry) const;
-
-	void
-	connect (const X3D::MFString & field);
-
-	///  @name Members
-
-	Gtk::Box &                box;
-	Gtk::Button &             addButton;
-	X3D::MFNode               nodes;
-	const std::string         name;
-	size_t                    spacing;
-	FilterFunction            filter;
-	std::vector <Gtk::Entry*> entrys;
-	int32_t                   index;
-	X3D::MFString             string;
-	X3D::SFString             defaultValue;
-	X3D::UndoStepPtr          undoStep;
-	bool                      changing;
-	X3D::SFTime               buffer;
+	~MFStringEntry () final override;
 
 };
 

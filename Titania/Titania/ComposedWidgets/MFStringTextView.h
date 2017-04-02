@@ -79,7 +79,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~MFStringTextView ()
+	~MFStringTextView () final override
 	{ dispose (); }
 
 

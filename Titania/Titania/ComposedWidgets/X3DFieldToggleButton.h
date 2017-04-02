@@ -84,7 +84,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DFieldToggleButton ()
+	~X3DFieldToggleButton () final override
 	{ dispose (); }
 
 

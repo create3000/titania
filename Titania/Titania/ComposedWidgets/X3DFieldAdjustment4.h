@@ -113,7 +113,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~X3DFieldAdjustment4 ()
+	~X3DFieldAdjustment4 () final override
 	{ dispose (); }
 
 

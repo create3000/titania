@@ -297,6 +297,7 @@
     <Compile Include="Titania\Editors\GridEditor\X3DAxonometricGridEditor.cpp" />
     <Compile Include="Titania\Editors\GeometryPropertiesEditor\Rendering\X3DIndexedLineSetEditor.cpp" />
     <Compile Include="Titania\ComposedWidgets\MFStringEntry.cpp" />
+    <Compile Include="Titania\ComposedWidgets\X3DMFStringEntry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2654,6 +2655,7 @@
     <None Include="share\titania\ui\Editors\FogEditor.glade" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Rendering\X3DIndexedLineSetEditor.h" />
     <None Include="Titania\ComposedWidgets\MFStringEntry.h" />
+    <None Include="Titania\ComposedWidgets\X3DMFStringEntry.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

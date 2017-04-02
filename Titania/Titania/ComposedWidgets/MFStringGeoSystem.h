@@ -80,7 +80,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~MFStringGeoSystem ()
+	~MFStringGeoSystem () final override
 	{ dispose (); }
 
 

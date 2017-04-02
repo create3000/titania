@@ -138,6 +138,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/ComposedWidgets/SFStringTextView.$(OBJEXT) \
 	Titania/ComposedWidgets/TexturePreview.$(OBJEXT) \
 	Titania/ComposedWidgets/X3DGradientTool.$(OBJEXT) \
+	Titania/ComposedWidgets/X3DMFStringEntry.$(OBJEXT) \
 	Titania/ComposedWidgets/X3DMFStringWidget.$(OBJEXT) \
 	Titania/Configuration/config.$(OBJEXT) \
 	Titania/Configuration/Configuration.$(OBJEXT) \
@@ -616,6 +617,7 @@ titania_SOURCES = \
 	Titania/ComposedWidgets/SFStringTextView.cpp \
 	Titania/ComposedWidgets/TexturePreview.cpp \
 	Titania/ComposedWidgets/X3DGradientTool.cpp \
+	Titania/ComposedWidgets/X3DMFStringEntry.cpp \
 	Titania/ComposedWidgets/X3DMFStringWidget.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \
@@ -1041,6 +1043,9 @@ Titania/ComposedWidgets/TexturePreview.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/X3DGradientTool.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/X3DMFStringEntry.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/X3DMFStringWidget.$(OBJEXT):  \
@@ -2003,6 +2008,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/SFStringTextView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/TexturePreview.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/X3DGradientTool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/X3DMFStringEntry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/X3DMFStringWidget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Configuration/$(DEPDIR)/Configuration.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Configuration/$(DEPDIR)/config.Po@am__quote@

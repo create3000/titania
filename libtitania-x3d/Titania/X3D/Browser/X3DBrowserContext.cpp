@@ -160,6 +160,9 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	if (not getWorld ())
+		throw Error <DISPOSED> ("X3DBrowserContext::getSnapshot: Disposed.");
+
 	// Make snapshot.
 
 	ContextLock lock (getBrowser ());
@@ -168,57 +171,52 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
 
 	getBrowser () -> update ();
 
-	if (getWorld ())
+	const auto & layer0           = getWorld () -> getLayerSet () -> getLayer0 ();
+	const bool   backgroundHidden = layer0 -> getBackground () -> isHidden ();
+	const auto   viewport         = getBrowser () -> getViewport ();
+
+	// Render to frame buffer.
+
+	FrameBuffer frameBuffer (getBrowser (), width, height, antialiasing);
+
+	frameBuffer .setup ();
+	frameBuffer .bind ();
+
+	layer0 -> getBackground () -> isHidden (alphaChannel);
+	getBrowser () -> getDisplayTools () .push (false);
+	getBrowser () -> reshape (Vector4i (0, 0, width, height));
+
+	if (alphaChannel)
+		getBrowser () -> X3DRenderingContext::renderBackground ();
+	else
+	   getBrowser () -> renderBackground ();
+
+	getWorld () -> traverse (TraverseType::DISPLAY, nullptr);
+
+	frameBuffer .readPixels ();
+	frameBuffer .unbind ();
+
+	getBrowser () -> reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
+	getBrowser () -> getDisplayTools () .pop ();
+	layer0 -> getBackground () -> isHidden (backgroundHidden);
+
+	// Process image.
+
+	Magick::Image image (width, height, "RGBA", Magick::CharPixel, frameBuffer .getPixels () .data ());
+
+	if (alphaChannel)
+		image .type (Magick::TrueColorMatteType);
+	else
 	{
-		const auto & layer0           = getWorld () -> getLayerSet () -> getLayer0 ();
-		const bool   backgroundHidden = layer0 -> getBackground () -> isHidden ();
-		const auto   viewport         = getBrowser () -> getViewport ();
-	
-		// Render to frame buffer.
-
-		FrameBuffer frameBuffer (getBrowser (), width, height, antialiasing);
-
-		frameBuffer .setup ();
-		frameBuffer .bind ();
-
-		layer0 -> getBackground () -> isHidden (alphaChannel);
-		getBrowser () -> getDisplayTools () .push (false);
-		getBrowser () -> reshape (Vector4i (0, 0, width, height));
-
-		if (alphaChannel)
-			getBrowser () -> X3DRenderingContext::renderBackground ();
-		else
-		   getBrowser () -> renderBackground ();
-
-		getWorld () -> traverse (TraverseType::DISPLAY, nullptr);
-
-		frameBuffer .readPixels ();
-		frameBuffer .unbind ();
-
-		getBrowser () -> reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
-		getBrowser () -> getDisplayTools () .pop ();
-		layer0 -> getBackground () -> isHidden (backgroundHidden);
-
-		// Process image.
-
-		Magick::Image image (width, height, "RGBA", Magick::CharPixel, frameBuffer .getPixels () .data ());
-
-		if (alphaChannel)
-			image .type (Magick::TrueColorMatteType);
-		else
-		{
-			image .matte (false);
-			image .type (Magick::TrueColorType);
-		}
-
-		image .flip ();
-		image .resolutionUnits (Magick::PixelsPerInchResolution);
-		image .density (Magick::Geometry (72, 72));
-
-		return image;
+		image .matte (false);
+		image .type (Magick::TrueColorType);
 	}
 
-	throw Error <DISPOSED> ("Disposed.");
+	image .flip ();
+	image .resolutionUnits (Magick::PixelsPerInchResolution);
+	image .density (Magick::Geometry (72, 72));
+
+	return image;
 }
 
 void

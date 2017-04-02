@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,29 +48,45 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_COMPOSED_WIDGETS_SFSTRING_COMBO_BOX_TEXT_H__
-#define __TITANIA_COMPOSED_WIDGETS_SFSTRING_COMBO_BOX_TEXT_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_X3DMFSTRING_ENTRY_H__
+#define __TITANIA_COMPOSED_WIDGETS_X3DMFSTRING_ENTRY_H__
 
 #include "../ComposedWidgets/X3DComposedWidget.h"
+
+#include <functional>
 
 namespace titania {
 namespace puck {
 
-class SFStringComboBoxText :
+class X3DMFStringEntry :
 	public X3DComposedWidget
 {
 public:
 
-	///  @name Construction
+	///  @name Member types
 
-	SFStringComboBoxText (X3DBaseInterface* const,
-	                      Gtk::ComboBoxText &,
-	                      const std::string &);
+	using FilterFunction = std::function <bool (const std::string &)>;
 
 	///  @name Member access
 
 	void
-	setNodes (const X3D::MFNode &);
+	setSpacing (const size_t value)
+	{ spacing = value; }
+
+	size_t
+	getSpacing () const
+	{ return spacing; }
+
+	void
+	setFilter (const FilterFunction & value)
+	{ filter = value; }
+
+	const FilterFunction &
+	getFilter () const
+	{ return filter; }
+
+	void
+	setNodes (const X3D::MFNode & value);
 
 	const X3D::MFNode &
 	getNodes ()
@@ -79,8 +95,17 @@ public:
 	///  @name Destruction
 
 	virtual
-	~SFStringComboBoxText () final override
-	{ dispose (); }
+	~X3DMFStringEntry () override;
+
+
+protected:
+
+	///  @name Construction
+
+	X3DMFStringEntry (X3DBaseInterface* const editor,
+	                  Gtk::Box & box,
+	                  Gtk::Button & addButton,
+	                  const std::string & name);
 
 
 private:
@@ -88,7 +113,25 @@ private:
 	///  @name Event handlers
 
 	void
-	on_changed ();
+	on_add_before_clicked ();
+
+	void
+	on_add_clicked (Gtk::Entry* const entry);
+
+	void
+	on_remove_clicked (Gtk::Entry* const entry);
+
+	void
+	on_insert_text (const Glib::ustring & insert, int* position, Gtk::Entry* const entry);
+
+	void
+	on_delete_text (int start_pos, int end_pos, Gtk::Entry* const entry);
+
+	void
+	on_changed (Gtk::Entry* const entry);
+
+	void
+	on_string_changed ();
 
 	void
 	set_field ();
@@ -97,16 +140,32 @@ private:
 	set_buffer ();
 
 	void
-	connect (const X3D::SFString &);
+	addWidget (const int32_t index, const X3D::SFString & value);
+
+	void
+	removeWidget (const int32_t index);
+
+	int32_t
+	getIndex (Gtk::Entry* const entry) const;
+
+	void
+	connect (const X3D::MFString & field);
 
 	///  @name Members
 
-	Gtk::ComboBoxText & comboBoxText;
-	X3D::MFNode         nodes;
-	const std::string   name;
-	X3D::UndoStepPtr    undoStep;
-	bool                changing;
-	X3D::SFTime         buffer;
+	Gtk::Box &                box;
+	Gtk::Button &             addButton;
+	X3D::MFNode               nodes;
+	const std::string         name;
+	size_t                    spacing;
+	FilterFunction            filter;
+	std::vector <Gtk::Entry*> entrys;
+	int32_t                   index;
+	X3D::MFString             string;
+	X3D::SFString             defaultValue;
+	X3D::UndoStepPtr          undoStep;
+	bool                      changing;
+	X3D::SFTime               buffer;
 
 };
 

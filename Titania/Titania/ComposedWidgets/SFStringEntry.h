@@ -93,7 +93,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~SFStringEntry ()
+	~SFStringEntry () final override
 	{ dispose (); }
 
 

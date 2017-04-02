@@ -83,7 +83,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~SFRotationAdjustment ()
+	~SFRotationAdjustment () final override
 	{ dispose (); }
 
 

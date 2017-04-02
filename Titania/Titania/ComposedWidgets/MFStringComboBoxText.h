@@ -81,7 +81,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~MFStringComboBoxText ()
+	~MFStringComboBoxText () final override
 	{ dispose (); }
 
 

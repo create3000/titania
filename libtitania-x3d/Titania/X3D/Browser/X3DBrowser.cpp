@@ -141,7 +141,7 @@ X3DBrowser::set_loaded (const bool loaded)
 
 	setLoaded (loaded);
 
-	if (not loaded)
+	if (getFixedPipelineRequired ())
 		print ("*** Info: Cobweb compatibility mode not possible!");
 
 	getLoadSensor () -> isLoaded () .removeInterest (&X3DBrowser::set_loaded, this);

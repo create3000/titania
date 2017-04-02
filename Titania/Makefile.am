@@ -41,6 +41,7 @@ titania_SOURCES =  \
 	Titania/ComposedWidgets/SFStringTextView.cpp \
 	Titania/ComposedWidgets/TexturePreview.cpp \
 	Titania/ComposedWidgets/X3DGradientTool.cpp \
+	Titania/ComposedWidgets/X3DMFStringEntry.cpp \
 	Titania/ComposedWidgets/X3DMFStringWidget.cpp \
 	Titania/Configuration/config.cpp \
 	Titania/Configuration/Configuration.cpp \

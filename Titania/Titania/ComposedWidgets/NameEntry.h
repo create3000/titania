@@ -79,7 +79,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~NameEntry ()
+	~NameEntry () final override
 	{ dispose (); }
 
 

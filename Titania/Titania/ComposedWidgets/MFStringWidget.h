@@ -79,10 +79,8 @@ public:
 	///  @name Destruction
 
 	virtual
-	~MFStringWidget ()
-	{
-	   dispose ();
-	}
+	~MFStringWidget () final override
+	{ dispose (); }
 
 };
 

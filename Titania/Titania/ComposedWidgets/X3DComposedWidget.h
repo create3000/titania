@@ -106,7 +106,7 @@ public:
 	}
 
 	virtual
-	~X3DComposedWidget ()
+	~X3DComposedWidget () override
 	{ }
 
 
