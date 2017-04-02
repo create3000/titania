@@ -2,12 +2,14 @@
 
 PROFILE Full
 
+UNIT angle degree 0.0174532925199432958
+
 META "comment" "World of Titania"
 META "created" "Sat, 01 Apr 2017 08:45:49 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Rendering/IndexedLineSet-L-System.x3dv"
-META "modified" "Sat, 01 Apr 2017 18:09:51 GMT"
+META "modified" "Sun, 02 Apr 2017 22:54:27 GMT"
 META "outputStyle" "Nicest"
 
 WorldInfo {

@@ -99,6 +99,10 @@ private:
 	bool
 	validateLSystemAxiom (const std::string & text);
 
+	static
+	bool
+	validateLSystemRule (const std::string & text);
+
 	///  @name Members
 
 	X3DFieldAdjustment <X3D::SFInt32> lSystemIterations;

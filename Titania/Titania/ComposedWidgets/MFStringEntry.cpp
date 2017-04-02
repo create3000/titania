@@ -183,8 +183,6 @@ MFStringEntry::on_changed (Gtk::Entry* const entry)
 
 	const auto currentIndex = getIndex (entry);
 
-__LOG__ << currentIndex << std::endl;
-
 	if (currentIndex not_eq index)
 		undoStep .reset ();
 
@@ -237,10 +235,6 @@ MFStringEntry::set_buffer ()
 
 	const auto pair   = getArray <X3D::MFString> (nodes, name);
 	const auto string = pair .first;
-
-	index  = -1;
-
-__LOG__ << string << std::endl;
 
 	if (pair .second > -2)
 	{
@@ -330,8 +324,6 @@ MFStringEntry::getIndex (Gtk::Entry* const entry) const
 void
 MFStringEntry::connect (const X3D::MFString & field)
 {
-__LOG__ << field << std::endl;
-
 	field .removeInterest (&MFStringEntry::connect, this);
 	field .addInterest (&MFStringEntry::set_field, this);
 }

@@ -77,6 +77,7 @@ X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 
 	lSystemConstants .setFilter (&X3DIndexedLineSetEditor::validateLSystemConstants);
 	lSystemAxiom     .setFilter (&X3DIndexedLineSetEditor::validateLSystemAxiom);
+	lSystemRule      .setFilter (&X3DIndexedLineSetEditor::validateLSystemRule);
 }
 
 void
@@ -218,9 +219,16 @@ X3DIndexedLineSetEditor::validateLSystemAxiom (const std::string & text)
 	return std::regex_match (text, constants);
 }
 
-X3DIndexedLineSetEditor::~X3DIndexedLineSetEditor ()
+bool
+X3DIndexedLineSetEditor::validateLSystemRule (const std::string & text)
 {
+	static const std::regex constants (R"/([A-Za-z0-9\[\]\+\-=]+)/");
+
+	return std::regex_match (text, constants);
 }
+
+X3DIndexedLineSetEditor::~X3DIndexedLineSetEditor ()
+{ }
 
 } // puck
 } // titania

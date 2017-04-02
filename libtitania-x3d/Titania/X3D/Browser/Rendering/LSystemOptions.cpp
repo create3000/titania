@@ -78,6 +78,8 @@ LSystemOptions::LSystemOptions (X3DExecutionContext* const executionContext) :
 	addField (inputOutput, "constants",  constants ());
 	addField (inputOutput, "axiom",      axiom ());
 	addField (inputOutput, "rule",       rule ());
+
+	angle () .setUnit (UnitCategory::ANGLE);
 }
 
 LSystemOptions*
