@@ -25,6 +25,7 @@ titania_SOURCES =  \
 	Titania/ComposedWidgets/MFColorButton.cpp \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
 	Titania/ComposedWidgets/MFStringComboBoxText.cpp \
+	Titania/ComposedWidgets/MFStringEntry.cpp \
 	Titania/ComposedWidgets/MFStringGeoSystem.cpp \
 	Titania/ComposedWidgets/MFStringTextView.cpp \
 	Titania/ComposedWidgets/MFStringURLWidget.cpp \

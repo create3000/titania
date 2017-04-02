@@ -48,67 +48,122 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_RENDERING_X3DINDEXED_LINE_SET_EDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_RENDERING_X3DINDEXED_LINE_SET_EDITOR_H__
+#ifndef __TITANIA_COMPOSED_WIDGETS_MFSTRING_ENTRY_H__
+#define __TITANIA_COMPOSED_WIDGETS_MFSTRING_ENTRY_H__
 
-#include "../../../ComposedWidgets.h"
-#include "../../../ComposedWidgets/MFStringEntry.h"
-#include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "../ComposedWidgets/X3DComposedWidget.h"
+
+#include <functional>
 
 namespace titania {
 namespace puck {
 
-class X3DIndexedLineSetEditor :
-	virtual public X3DGeometryPropertiesEditorInterface
+class MFStringEntry :
+	public X3DComposedWidget
 {
 public:
+
+	///  @name Member types
+
+	using FilterFunction = std::function <bool (const std::string &)>;
+
+	///  @name Construction
+
+	MFStringEntry (X3DBaseInterface* const editor,
+	               Gtk::Box & box,
+	               Gtk::Button & addButton,
+	               const std::string & name);
+
+	///  @name Member access
+
+	void
+	setSpacing (const size_t value)
+	{ spacing = value; }
+
+	size_t
+	getSpacing () const
+	{ return spacing; }
+
+	void
+	setFilter (const FilterFunction & value)
+	{ filter = value; }
+
+	const FilterFunction &
+	getFilter () const
+	{ return filter; }
+
+	void
+	setNodes (const X3D::MFNode & value);
+
+	const X3D::MFNode &
+	getNodes ()
+	{ return nodes; }
 
 	///  @name Destruction
 
 	virtual
-	~X3DIndexedLineSetEditor () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DIndexedLineSetEditor ();
-
-	virtual
-	void
-	set_geometry ();
+	~MFStringEntry ()
+	{ dispose (); }
 
 
 private:
 
 	///  @name Event handlers
 
-	virtual
 	void
-	on_indexed_line_set_type_changed () final override;
+	on_add_before_clicked ();
 
 	void
-	set_options ();
+	on_add_clicked (Gtk::Entry* const entry);
 
-	static
-	bool
-	validateLSystemConstants (const std::string & text);
+	void
+	on_remove_clicked (Gtk::Entry* const entry);
 
-	static
-	bool
-	validateLSystemAxiom (const std::string & text);
+	void
+	on_insert_text (const Glib::ustring & insert, int* position, Gtk::Entry* const entry);
+	
+	void
+	on_delete_text (int start_pos, int end_pos, Gtk::Entry* const entry);
+
+	void
+	on_changed (Gtk::Entry* const entry);
+
+	void
+	on_string_changed ();
+
+	void
+	set_field ();
+
+	void
+	set_buffer ();
+
+	void
+	addWidget (const int32_t index, const X3D::SFString & value);
+
+	void
+	removeWidget (const int32_t index);
+
+	int32_t
+	getIndex (Gtk::Entry* const entry) const;
+
+	void
+	connect (const X3D::MFString & field);
 
 	///  @name Members
 
-	X3DFieldAdjustment <X3D::SFInt32> lSystemIterations;
-	X3DFieldAdjustment <X3D::SFFloat> lSystemAngle;
-	SFStringEntry                     lSystemConstants;
-	SFStringEntry                     lSystemAxiom;
-	MFStringEntry                     lSystemRule;
-
-	X3D::MFNode nodes;
-	bool        changing;
+	Gtk::Box &                box;
+	Gtk::Button &             addButton;
+	X3D::MFNode               nodes;
+	const std::string         name;
+	size_t                    spacing;
+	FilterFunction            filter;
+	std::vector <Gtk::Entry*> entrys;
+	int32_t                   index;
+	X3D::MFString             string;
+	X3D::SFString             defaultValue;
+	X3D::UndoStepPtr          undoStep;
+	bool                      changing;
+	X3D::SFTime               buffer;
 
 };
 

@@ -122,6 +122,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorButton.$(OBJEXT) \
 	Titania/ComposedWidgets/MFColorRGBAButton.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringComboBoxText.$(OBJEXT) \
+	Titania/ComposedWidgets/MFStringEntry.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringGeoSystem.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringTextView.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringURLWidget.$(OBJEXT) \
@@ -599,6 +600,7 @@ titania_SOURCES = \
 	Titania/ComposedWidgets/MFColorButton.cpp \
 	Titania/ComposedWidgets/MFColorRGBAButton.cpp \
 	Titania/ComposedWidgets/MFStringComboBoxText.cpp \
+	Titania/ComposedWidgets/MFStringEntry.cpp \
 	Titania/ComposedWidgets/MFStringGeoSystem.cpp \
 	Titania/ComposedWidgets/MFStringTextView.cpp \
 	Titania/ComposedWidgets/MFStringURLWidget.cpp \
@@ -991,6 +993,9 @@ Titania/ComposedWidgets/MFColorRGBAButton.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/MFStringComboBoxText.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/MFStringEntry.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/MFStringGeoSystem.$(OBJEXT):  \
@@ -1982,6 +1987,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorButton.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFColorRGBAButton.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringComboBoxText.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringEntry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringGeoSystem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringTextView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringURLWidget.Po@am__quote@

@@ -65,12 +65,9 @@ X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 	                    lSystemConstants (this, getIndexLineSetLSystemConstantsEntry (), "constants"),
 	                        lSystemAxiom (this, getIndexLineSetLSystemAxiomEntry (), "axiom"),
 	                         lSystemRule (this,
-	                                      getIndexLineSetLSystemRuleTreeView (),
-	                                      getIndexLineSetLSystemRuleCellRendererText (),
-	                                      getIndexLineSetLSystemRuleAddButton (),
-	                                      getIndexLineSetLSystemRuleRemoveButton (),
-	                                      "rule",
-	                                      "F=F"),
+	                                      getIndexLineSetLSystemRuleBox (),
+	                                      getIndexLineSetLSystemAddRuleButton (),
+	                                      "rule"),
 	                               nodes (),
 	                            changing (false)
 {

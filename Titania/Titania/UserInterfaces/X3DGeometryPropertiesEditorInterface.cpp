@@ -106,7 +106,6 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_IcosahedronDimensionAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IcosahedronDimensionAdjustment"));
 	m_IndexLineSetLSystemAngleAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexLineSetLSystemAngleAdjustment"));
 	m_IndexLineSetLSystemIterationsAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexLineSetLSystemIterationsAdjustment"));
-	m_IndexLineSetLSystemRuleListSTore             = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("IndexLineSetLSystemRuleListSTore"));
 	m_NormalColorAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalColorAdjustment"));
 	m_NormalLengthAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalLengthAdjustment"));
 	m_NurbsCurveOrderAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsCurveOrderAdjustment"));
@@ -130,7 +129,6 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_Rectangle2DSizeXAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeXAdjustment"));
 	m_Rectangle2DSizeYAdjustment                   = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Rectangle2DSizeYAdjustment"));
 	m_SphereRadiusAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SphereRadiusAdjustment"));
-	m_IndexLineSetLSystemRuleCellRendererText      = Glib::RefPtr <Gtk::CellRendererText>::cast_dynamic (m_builder -> get_object ("IndexLineSetLSystemRuleCellRendererText"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -290,15 +288,13 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("IndexedLineSetTypeButton", m_IndexedLineSetTypeButton);
 	m_builder -> get_widget ("IndexedLineSetOptionsStack", m_IndexedLineSetOptionsStack);
 	m_builder -> get_widget ("IndexedLineSetLSystemOptions", m_IndexedLineSetLSystemOptions);
-	m_builder -> get_widget ("IndexLineSetLSystemRuleBox", m_IndexLineSetLSystemRuleBox);
-	m_builder -> get_widget ("IndexLineSetLSystemRuleTreeView", m_IndexLineSetLSystemRuleTreeView);
-	m_builder -> get_widget ("IndexLineSetLSystemRuleAddButton", m_IndexLineSetLSystemRuleAddButton);
-	m_builder -> get_widget ("IndexLineSetLSystemRuleRemoveButton", m_IndexLineSetLSystemRuleRemoveButton);
 	m_builder -> get_widget ("IndexLineSetLSystemIterationsSpinButton", m_IndexLineSetLSystemIterationsSpinButton);
 	m_builder -> get_widget ("IndexLineSetLSystemConstantsEntry", m_IndexLineSetLSystemConstantsEntry);
 	m_builder -> get_widget ("IndexLineSetLSystemAxiomEntry", m_IndexLineSetLSystemAxiomEntry);
 	m_builder -> get_widget ("IndexLineSetLSystemAngleBox", m_IndexLineSetLSystemAngleBox);
 	m_builder -> get_widget ("IndexLineSetLSystemAngleSpinButton", m_IndexLineSetLSystemAngleSpinButton);
+	m_builder -> get_widget ("IndexLineSetLSystemRuleBox", m_IndexLineSetLSystemRuleBox);
+	m_builder -> get_widget ("IndexLineSetLSystemAddRuleButton", m_IndexLineSetLSystemAddRuleButton);
 	m_builder -> get_widget ("CommonPropertiesExpander", m_CommonPropertiesExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
