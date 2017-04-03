@@ -74,7 +74,7 @@ throw (std::domain_error,
 	m_rules_index (),
 	   m_commands ()
 {
-	for (const auto & constant : m_constants)
+	for (const auto & constant : constants)
 		add_constant (constant);
 
 	for (const auto & rule : m_rules)

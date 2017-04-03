@@ -140,10 +140,17 @@ X3DIndexedLineSetEditor::on_indexed_line_set_type_changed ()
 		}
 	}
 
+	undoStep -> addObjects (nodes);
+
 	for (const auto & node : nodes)
 	{
 		auto &     options = node -> getField <X3D::SFNode> ("options");
 		const auto copy    = optionNode ? X3D::SFNode (optionNode -> copy (getCurrentContext (), X3D::FLAT_COPY)) : optionNode;
+
+		undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (node -> getField <X3D::MFInt32> ("colorIndex")), node -> getField <X3D::MFInt32> ("colorIndex"));
+		undoStep -> addUndoFunction (&X3D::MFInt32::setValue, std::ref (node -> getField <X3D::MFInt32> ("coordIndex")), node -> getField <X3D::MFInt32> ("coordIndex"));
+		undoStep -> addUndoFunction (&X3D::SFNode::setValue,  std::ref (node -> getField <X3D::SFNode> ("color")),       node -> getField <X3D::SFNode> ("color"));
+		undoStep -> addUndoFunction (&X3D::SFNode::setValue,  std::ref (node -> getField <X3D::SFNode> ("coord")),       node -> getField <X3D::SFNode> ("coord"));
 
 		X3D::X3DEditor::replaceNode (getCurrentContext (), node, options, copy, undoStep);
 	}
