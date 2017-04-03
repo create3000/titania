@@ -125,6 +125,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringEntry.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringGeoSystem.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringTextView.$(OBJEXT) \
+	Titania/ComposedWidgets/MFStringURLEntry.$(OBJEXT) \
 	Titania/ComposedWidgets/MFStringURLWidget.$(OBJEXT) \
 	Titania/ComposedWidgets/NameEntry.$(OBJEXT) \
 	Titania/ComposedWidgets/NormalTool.$(OBJEXT) \
@@ -604,6 +605,7 @@ titania_SOURCES = \
 	Titania/ComposedWidgets/MFStringEntry.cpp \
 	Titania/ComposedWidgets/MFStringGeoSystem.cpp \
 	Titania/ComposedWidgets/MFStringTextView.cpp \
+	Titania/ComposedWidgets/MFStringURLEntry.cpp \
 	Titania/ComposedWidgets/MFStringURLWidget.cpp \
 	Titania/ComposedWidgets/NameEntry.cpp \
 	Titania/ComposedWidgets/NormalTool.cpp \
@@ -1004,6 +1006,9 @@ Titania/ComposedWidgets/MFStringGeoSystem.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/MFStringTextView.$(OBJEXT):  \
+	Titania/ComposedWidgets/$(am__dirstamp) \
+	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
+Titania/ComposedWidgets/MFStringURLEntry.$(OBJEXT):  \
 	Titania/ComposedWidgets/$(am__dirstamp) \
 	Titania/ComposedWidgets/$(DEPDIR)/$(am__dirstamp)
 Titania/ComposedWidgets/MFStringURLWidget.$(OBJEXT):  \
@@ -1995,6 +2000,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringEntry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringGeoSystem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringTextView.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringURLEntry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/MFStringURLWidget.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/NameEntry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/ComposedWidgets/$(DEPDIR)/NormalTool.Po@am__quote@

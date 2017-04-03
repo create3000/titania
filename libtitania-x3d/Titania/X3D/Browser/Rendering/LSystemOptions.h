@@ -129,6 +129,12 @@ public:
 
 	///  @name Member access
 
+	void
+	addNode (IndexedLineSet* const indexedLineSet);
+	
+	void
+	removeNode (IndexedLineSet* const indexedLineSet);
+
 	virtual
 	GLenum
 	getVertexMode () const final override
@@ -136,6 +142,10 @@ public:
 
 
 private:
+
+	///  @name Member types
+
+	struct Values;
 
 	///  @name Construction
 
@@ -169,6 +179,10 @@ private:
 	};
 
 	Fields fields;
+
+	///  @name Fields
+
+	std::set <IndexedLineSet*> indexedLineSets;
 
 };
 

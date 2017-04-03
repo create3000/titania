@@ -58,7 +58,7 @@ namespace X3D {
 
 const ComponentType Circle2DOptions::component      = ComponentType::TITANIA;
 const std::string   Circle2DOptions::typeName       = "Circle2DOptions";
-const std::string   Circle2DOptions::containerField = "circle2DOptions";
+const std::string   Circle2DOptions::containerField = "options";
 
 Circle2DOptions::Fields::Fields () :
 	dimension (new SFInt32 (32))

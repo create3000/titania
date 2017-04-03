@@ -62,7 +62,7 @@ namespace X3D {
 
 const ComponentType IcosahedronOptions::component      = ComponentType::TITANIA;
 const std::string   IcosahedronOptions::typeName       = "IcosahedronOptions";
-const std::string   IcosahedronOptions::containerField = "sphereOptions";
+const std::string   IcosahedronOptions::containerField = "options";
 
 IcosahedronOptions::Fields::Fields () :
 	order (new SFInt32 (2))

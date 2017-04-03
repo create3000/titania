@@ -39,6 +39,7 @@ libtitania_standard_la_SOURCES =  \
 	Titania/InputOutput/SingleLineComment.cpp \
 	Titania/InputOutput/String.cpp \
 	Titania/Math/Algorithms/CatmullRomSplineInterpolator.cpp \
+	Titania/Math/Algorithms/LSystem.cpp \
 	Titania/Math/Geometry/Box2.cpp \
 	Titania/Math/Geometry/Box3.cpp \
 	Titania/Math/Geometry/ConvexHull2.cpp \

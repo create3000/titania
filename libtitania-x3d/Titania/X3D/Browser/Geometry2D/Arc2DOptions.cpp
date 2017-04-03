@@ -58,7 +58,7 @@ namespace X3D {
 
 const ComponentType Arc2DOptions::component      = ComponentType::TITANIA;
 const std::string   Arc2DOptions::typeName       = "Arc2DOptions";
-const std::string   Arc2DOptions::containerField = "arc2DOptions";
+const std::string   Arc2DOptions::containerField = "options";
 
 Arc2DOptions::Fields::Fields () :
 	dimension (new SFInt32 (32))

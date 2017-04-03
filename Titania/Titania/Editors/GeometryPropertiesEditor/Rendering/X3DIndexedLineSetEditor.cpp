@@ -206,7 +206,7 @@ X3DIndexedLineSetEditor::set_options ()
 bool
 X3DIndexedLineSetEditor::validateLSystemConstants (const std::string & text)
 {
-	static const std::regex constants (R"/([A-Za-z0-9\[\]\+\-]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-]+)/");
 
 	return std::regex_match (text, constants);
 }
@@ -214,7 +214,7 @@ X3DIndexedLineSetEditor::validateLSystemConstants (const std::string & text)
 bool
 X3DIndexedLineSetEditor::validateLSystemAxiom (const std::string & text)
 {
-	static const std::regex constants (R"/([A-Za-z0-9\[\]\+\-]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-]+)/");
 
 	return std::regex_match (text, constants);
 }
@@ -222,7 +222,7 @@ X3DIndexedLineSetEditor::validateLSystemAxiom (const std::string & text)
 bool
 X3DIndexedLineSetEditor::validateLSystemRule (const std::string & text)
 {
-	static const std::regex constants (R"/([A-Za-z0-9\[\]\+\-=]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-=]+)/");
 
 	return std::regex_match (text, constants);
 }

@@ -62,7 +62,7 @@ namespace X3D {
 
 const ComponentType OctahedronOptions::component      = ComponentType::TITANIA;
 const std::string   OctahedronOptions::typeName       = "OctahedronOptions";
-const std::string   OctahedronOptions::containerField = "sphereOptions";
+const std::string   OctahedronOptions::containerField = "options";
 
 OctahedronOptions::Fields::Fields () :
 	order (new SFInt32 (2))

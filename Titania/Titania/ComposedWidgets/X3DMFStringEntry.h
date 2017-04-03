@@ -92,6 +92,10 @@ public:
 	getNodes ()
 	{ return nodes; }
 
+	const X3D::MFString &
+	getString ()
+	{ return string; }
+
 	///  @name Destruction
 
 	virtual
@@ -106,6 +110,19 @@ protected:
 	                  Gtk::Box & box,
 	                  Gtk::Button & addButton,
 	                  const std::string & name);
+
+	///  @name Operations
+
+	virtual
+	Gtk::Widget*
+	getAdditionalWidget (Gtk::Entry* const entry)
+	{ return nullptr; }
+
+	///  @name Event handlers
+
+	virtual
+	void
+	set_buffer ();
 
 
 private:
@@ -135,9 +152,6 @@ private:
 
 	void
 	set_field ();
-
-	void
-	set_buffer ();
 
 	void
 	addWidget (const int32_t index, const X3D::SFString & value);

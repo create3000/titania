@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,57 +48,61 @@
  *
  ******************************************************************************/
 
-#include "Disk2DOptions.h"
+#ifndef __TITANIA_COMPOSED_WIDGETS_MFSTRING_URLENTRY_H__
+#define __TITANIA_COMPOSED_WIDGETS_MFSTRING_URLENTRY_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include <complex>
+#include "../ComposedWidgets/X3DMFStringEntry.h"
+#include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 
 namespace titania {
-namespace X3D {
+namespace puck {
 
-const ComponentType Disk2DOptions::component      = ComponentType::TITANIA;
-const std::string   Disk2DOptions::typeName       = "Disk2DOptions";
-const std::string   Disk2DOptions::containerField = "options";
-
-Disk2DOptions::Fields::Fields () :
-	dimension (new SFInt32 (60))
-{ }
-
-Disk2DOptions::Disk2DOptions (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometricOptionNode (),
-	                fields ()
+class MFStringURLEntry :
+	public X3DMFStringEntry
 {
-	addType (X3DConstants::Disk2DOptions);
+public:
 
-	addField (inputOutput, "dimension", dimension ());
-}
+	///  @name Construction
 
-Disk2DOptions*
-Disk2DOptions::create (X3DExecutionContext* const executionContext) const
-{
-	return new Disk2DOptions (executionContext);
-}
+	MFStringURLEntry (X3DBaseInterface* const editor,
+	                  Gtk::Box & box,
+	                  Gtk::Button & addButton,
+	                  Gtk::Button & reloadButton,
+	                  const std::string & name);
 
-void
-Disk2DOptions::build ()
-{
-	getVertices () .reserve (dimension ());
+	virtual
+	~MFStringURLEntry () final override;
 
-	const auto angle = pi2 <double> / (dimension ());
 
-	for (int32_t n = 0, size = dimension (); n < size; ++ n)
-	{
-		const auto theta = angle * n;
+private:
 
-		const auto texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
-		const auto point    = std::polar <double> (1, theta);
+	///  @name Event handlers
 
-		getTexCoords () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
-		getNormals   () .emplace_back (0, 0, 1);
-		getVertices  () .emplace_back (point .real (), point .imag (), 0);
-	}
-}
+	virtual
+	Gtk::Widget*
+	getAdditionalWidget (Gtk::Entry* const entry) final override;
 
-} // X3D
+	void
+	on_reload_clicked ();
+
+	void
+	on_open_dialog_clicked (Gtk::Entry* const entry);
+
+	virtual
+	void
+	set_buffer () final override;
+
+	void
+	set_string (const X3D::MFString & string);
+
+	///  @name Members
+
+	Gtk::Button &                    reloadButton;
+	std::unique_ptr <FileOpenDialog> fileOpenDialog;
+
+};
+
+} // puck
 } // titania
+
+#endif

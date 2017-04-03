@@ -72,7 +72,7 @@ X3DMFStringEntry::X3DMFStringEntry (X3DBaseInterface* const editor,
 	         changing (false),
 	           buffer ()
 {
-	addChildObjects (nodes, buffer);
+	addChildObjects (nodes, string, buffer);
 
 	buffer .addInterest (&X3DMFStringEntry::set_buffer, this);
 
@@ -272,10 +272,11 @@ X3DMFStringEntry::set_buffer ()
 void
 X3DMFStringEntry::addWidget (const int32_t index, const X3D::SFString & value)
 {
-	const auto parent = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_HORIZONTAL, spacing));
-	const auto entry  = Gtk::manage (new Gtk::Entry ());
-	const auto add    = Gtk::manage (new Gtk::Button ());
-	const auto remove = Gtk::manage (new Gtk::Button ());
+	const auto parent     = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_HORIZONTAL, spacing));
+	const auto entry      = Gtk::manage (new Gtk::Entry ());
+	const auto additional = getAdditionalWidget (entry);
+	const auto add        = Gtk::manage (new Gtk::Button ());
+	const auto remove     = Gtk::manage (new Gtk::Button ());
 
 	string .insert (string .begin () + index, value);
 	entrys .insert (entrys .begin () + index, entry);
@@ -293,7 +294,11 @@ X3DMFStringEntry::addWidget (const int32_t index, const X3D::SFString & value)
 	add    -> set_image_from_icon_name ("gtk-add",    Gtk::ICON_SIZE_MENU);
 	remove -> set_image_from_icon_name ("gtk-remove", Gtk::ICON_SIZE_MENU);
 
-	parent -> pack_start (*entry,  true,  true);
+	parent -> pack_start (*entry, true, true);
+
+	if (additional)
+		parent -> pack_start (*additional, false, true);
+
 	parent -> pack_start (*add,    false, true);
 	parent -> pack_start (*remove, false, true);
 

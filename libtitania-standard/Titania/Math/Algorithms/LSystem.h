@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,57 +48,91 @@
  *
  ******************************************************************************/
 
-#include "Disk2DOptions.h"
+#ifndef __TITANIA_MATH_ALGORITHMS_LSYSTEM_H__
+#define __TITANIA_MATH_ALGORITHMS_LSYSTEM_H__
 
-#include "../../Execution/X3DExecutionContext.h"
-#include <complex>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-const ComponentType Disk2DOptions::component      = ComponentType::TITANIA;
-const std::string   Disk2DOptions::typeName       = "Disk2DOptions";
-const std::string   Disk2DOptions::containerField = "options";
-
-Disk2DOptions::Fields::Fields () :
-	dimension (new SFInt32 (60))
-{ }
-
-Disk2DOptions::Disk2DOptions (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometricOptionNode (),
-	                fields ()
+class lsystem
 {
-	addType (X3DConstants::Disk2DOptions);
+public:
 
-	addField (inputOutput, "dimension", dimension ());
+	///  @name Construction
+
+	lsystem (const size_t iterations,
+	         const std::string & constants,
+	         const std::string & axiom,
+	         const std::vector <std::string> & rules)
+	throw (std::domain_error,
+	       std::out_of_range);
+
+	///  @name Member access
+
+	size_t
+	iterations () const
+	{ return m_iterations; }
+
+	const std::vector <bool> &
+	constants () const
+	{ return m_constants; }
+
+	const std::string &
+	axiom () const
+	{ return m_axiom; }
+
+	const std::vector <std::string> &
+	rules () const
+	{ return m_rules; }
+
+	const std::string &
+	commands () const
+	{ return m_commands; }
+
+	///  @name Destruction
+
+	~lsystem ();
+
+
+private:
+
+	///  @name Operations
+
+	void
+	add_constant (const size_t constant);
+
+	void
+	add_rule (const std::string & rule);
+
+	void
+	generate ();
+
+	///  @name Members
+
+	const size_t                             m_iterations;
+	const std::string                        m_axiom;
+	const std::vector <std::string>          m_rules;
+
+	std::vector <bool>                              m_constants;
+	std::map <std::string::value_type, std::string> m_rules_index;
+	std::string                                     m_commands;
+
+};
+
+///  Insertion operator for lsystem values.
+inline
+std::ostream &
+operator << (std::ostream & ostream, const lsystem & ls)
+{
+	return ostream << ls .commands ();
 }
 
-Disk2DOptions*
-Disk2DOptions::create (X3DExecutionContext* const executionContext) const
-{
-	return new Disk2DOptions (executionContext);
-}
-
-void
-Disk2DOptions::build ()
-{
-	getVertices () .reserve (dimension ());
-
-	const auto angle = pi2 <double> / (dimension ());
-
-	for (int32_t n = 0, size = dimension (); n < size; ++ n)
-	{
-		const auto theta = angle * n;
-
-		const auto texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
-		const auto point    = std::polar <double> (1, theta);
-
-		getTexCoords () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
-		getNormals   () .emplace_back (0, 0, 1);
-		getVertices  () .emplace_back (point .real (), point .imag (), 0);
-	}
-}
-
-} // X3D
+} // math
 } // titania
+
+#endif

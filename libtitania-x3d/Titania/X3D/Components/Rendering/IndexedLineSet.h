@@ -236,6 +236,9 @@ private:
 	void
 	set_coord ();
 
+	void
+	set_options ();
+
 	///  @name Operations
 
 	size_t
@@ -250,6 +253,9 @@ private:
 	virtual
 	void
 	build () final override;
+
+	void
+	set_shutdown ();
 
 	///  @name Static members
 

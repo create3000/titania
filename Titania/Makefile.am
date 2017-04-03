@@ -28,6 +28,7 @@ titania_SOURCES =  \
 	Titania/ComposedWidgets/MFStringEntry.cpp \
 	Titania/ComposedWidgets/MFStringGeoSystem.cpp \
 	Titania/ComposedWidgets/MFStringTextView.cpp \
+	Titania/ComposedWidgets/MFStringURLEntry.cpp \
 	Titania/ComposedWidgets/MFStringURLWidget.cpp \
 	Titania/ComposedWidgets/NameEntry.cpp \
 	Titania/ComposedWidgets/NormalTool.cpp \

@@ -55,12 +55,12 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
+#include "../Core/MetadataSet.h"
 #include "../Rendering/PointSet.h"
 #include "../Rendering/X3DColorNode.h"
 #include "../Rendering/X3DCoordinateNode.h"
 #include "../Shaders/ComposedShader.h"
 #include "../Shaders/X3DVertexAttributeNode.h"
-
 
 namespace titania {
 namespace X3D {
@@ -123,13 +123,34 @@ IndexedLineSet::initialize ()
 {
 	X3DLineGeometryNode::initialize ();
 
-	attrib () .addInterest (&IndexedLineSet::set_attrib, this);
-	color ()  .addInterest (&IndexedLineSet::set_color, this);
-	coord ()  .addInterest (&IndexedLineSet::set_coord, this);
+	attrib ()   .addInterest (&IndexedLineSet::set_attrib,  this);
+	color ()    .addInterest (&IndexedLineSet::set_color,   this);
+	coord ()    .addInterest (&IndexedLineSet::set_coord,   this);
+	options ()  .addInterest (&IndexedLineSet::set_options, this);
+	shutdown () .addInterest (&IndexedLineSet::set_shutdown, this);
 
 	set_attrib ();
 	set_color ();
 	set_coord ();
+
+	try
+	{
+		const auto typeName    = getMetaData <std::string> ("/IndexedLineSet/options/@typeName");
+		const auto metaOptions = getMetadataSet ("/IndexedLineSet/options");
+	
+		if (typeName == "LSystemOptions")
+			optionsNode .set (MakePtr <LSystemOptions> (getExecutionContext ()));
+
+		optionsNode -> fromMetaData (metaOptions);
+		optionsNode -> setup ();
+		optionsNode -> addNode (this);
+
+		options () .set (optionsNode);
+	}
+	catch (const X3D::X3DError & error)
+	{
+		set_options ();
+	}
 }
 
 const X3DPtr <ComposedShader> &
@@ -198,6 +219,20 @@ IndexedLineSet::set_coord ()
 
 	if (coordNode)
 		coordNode -> addInterest (this);
+}
+
+void
+IndexedLineSet::set_options ()
+{
+	removeMetaData ("/IndexedLineSet/options");
+
+	if (optionsNode)
+		optionsNode -> removeNode (this);
+
+	optionsNode .set (x3d_cast <LSystemOptions*> (options ()));
+
+	if (optionsNode)
+		optionsNode -> addNode (this);
 }
 
 size_t
@@ -361,6 +396,13 @@ throw (Error <NOT_SUPPORTED>,
 
 	getExecutionContext () -> realize ();
 	return SFNode (geometry);
+}
+
+void
+IndexedLineSet::set_shutdown ()
+{
+	if (optionsNode)
+		optionsNode -> removeNode (this);
 }
 
 IndexedLineSet::~IndexedLineSet ()

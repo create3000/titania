@@ -48,57 +48,102 @@
  *
  ******************************************************************************/
 
-#include "Disk2DOptions.h"
+#include "LSystem.h"
 
-#include "../../Execution/X3DExecutionContext.h"
-#include <complex>
+#include <regex>
+
+#include <Titania/LOG.h>
 
 namespace titania {
-namespace X3D {
+namespace math {
 
-const ComponentType Disk2DOptions::component      = ComponentType::TITANIA;
-const std::string   Disk2DOptions::typeName       = "Disk2DOptions";
-const std::string   Disk2DOptions::containerField = "options";
-
-Disk2DOptions::Fields::Fields () :
-	dimension (new SFInt32 (60))
-{ }
-
-Disk2DOptions::Disk2DOptions (X3DExecutionContext* const executionContext) :
-	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	X3DGeometricOptionNode (),
-	                fields ()
-{
-	addType (X3DConstants::Disk2DOptions);
-
-	addField (inputOutput, "dimension", dimension ());
+namespace {
+const std::regex spaces_rx (R"/(\s+)/");
 }
 
-Disk2DOptions*
-Disk2DOptions::create (X3DExecutionContext* const executionContext) const
+lsystem::lsystem (const size_t iterations,
+                  const std::string & constants,
+                  const std::string & axiom,
+                  const std::vector <std::string> & rules)
+throw (std::domain_error,
+       std::out_of_range) :
+	 m_iterations (iterations),
+	      m_axiom (std::regex_replace (axiom, spaces_rx, "")),
+	      m_rules (rules),
+	  m_constants (256),
+	m_rules_index (),
+	   m_commands ()
 {
-	return new Disk2DOptions (executionContext);
+	add_constant ('\r');
+	add_constant ('\n');
+	add_constant ('\t');
+	add_constant (' ');
+
+	for (const auto & constant : m_constants)
+		add_constant (constant);
+
+	for (const auto & rule : m_rules)
+		add_rule (rule);
+
+	generate ();
 }
 
 void
-Disk2DOptions::build ()
+lsystem::add_constant (const size_t constant)
 {
-	getVertices () .reserve (dimension ());
+	if (constant < m_constants .size ())
+		m_constants [constant] = true;
 
-	const auto angle = pi2 <double> / (dimension ());
+	else
+		throw std::out_of_range ("lsystem::add_constant: index out of range.");	
+}
 
-	for (int32_t n = 0, size = dimension (); n < size; ++ n)
+void
+lsystem::add_rule (const std::string & rule)
+{
+	static const std::regex rule_rx (R"/(^\s*([A-Za-z0-9])\s*=([\sA-Za-z0-9\[\]\+\-]*)$)/");
+
+	std::smatch match;
+
+	if (std::regex_match (rule, match, rule_rx))
+		m_rules_index .emplace (match .str (1) .front (), std::regex_replace (match .str (2), spaces_rx, ""));
+
+	else
+		throw std::domain_error ("lsystem::add_rule: rule '" + rule + "' does not match.");
+}
+
+void
+lsystem::generate ()
+{
+	if (iterations ())
+		m_commands = axiom ();
+
+	// process for each iteration
+	for (size_t i = 0; i < iterations (); ++ i)
 	{
-		const auto theta = angle * n;
+		std::string commands;
+		
+		// Process each character of the axiom.
+		for (const auto c : m_commands)
+		{
+			const auto iter = m_rules_index .find (c);
 
-		const auto texCoord = std::polar <double> (0.5, theta) + std::complex <double> (0.5, 0.5);
-		const auto point    = std::polar <double> (1, theta);
+			if (iter not_eq m_rules_index .end ())
+				commands += iter -> second;
 
-		getTexCoords () .emplace_back (texCoord .real (), texCoord .imag (), 0, 1);
-		getNormals   () .emplace_back (0, 0, 1);
-		getVertices  () .emplace_back (point .real (), point .imag (), 0);
+			else
+				commands += c;
+			
+			if (commands .size () > 100'000'000)
+			  throw std::domain_error ("lsystem::generate: generated command string too large! 100,000,000 commands maximum.");
+		}
+
+		m_commands = std::move (commands);
 	}
 }
 
-} // X3D
+lsystem::~lsystem ()
+{ }
+
+} // math
 } // titania

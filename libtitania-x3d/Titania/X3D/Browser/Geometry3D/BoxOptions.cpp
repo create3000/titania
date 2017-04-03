@@ -60,7 +60,7 @@ namespace X3D {
 
 const ComponentType BoxOptions::component      = ComponentType::TITANIA;
 const std::string   BoxOptions::typeName       = "BoxOptions";
-const std::string   BoxOptions::containerField = "boxOptions";
+const std::string   BoxOptions::containerField = "options";
 
 BoxOptions::BoxOptions (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),

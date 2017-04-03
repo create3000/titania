@@ -62,7 +62,7 @@ namespace X3D {
 
 const ComponentType QuadSphereOptions::component      = ComponentType::TITANIA;
 const std::string   QuadSphereOptions::typeName       = "QuadSphereOptions";
-const std::string   QuadSphereOptions::containerField = "sphereOptions";
+const std::string   QuadSphereOptions::containerField = "options";
 
 QuadSphereOptions::Fields::Fields () :
 	xDimension (new SFInt32 (32)),

@@ -57,7 +57,7 @@ namespace X3D {
 
 const ComponentType CylinderOptions::component      = ComponentType::TITANIA;
 const std::string   CylinderOptions::typeName       = "CylinderOptions";
-const std::string   CylinderOptions::containerField = "cylinderOptions";
+const std::string   CylinderOptions::containerField = "options";
 
 CylinderOptions::Fields::Fields () :
 	xDimension (new SFInt32 (20)),
