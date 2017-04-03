@@ -345,8 +345,9 @@ MFColorRGBAButton::set_buffer ()
 		valueAdjustment -> set_value (0);
 	}
 
-	widget               .set_sensitive (hasField and not isEmpty and index >= 0);
-	colorsScrolledWindow .set_sensitive (hasField);
+	widget               .set_sensitive (hasField);
+	colorsScrolledWindow .set_sensitive (hasField and not isEmpty and index >= 0);
+	removeColorButton    .set_sensitive (index >= 0);
 	on_colors_configure_event (nullptr);
 
 	if (hide)
@@ -441,6 +442,24 @@ MFColorRGBAButton::on_add_color_clicked ()
 void
 MFColorRGBAButton::on_remove_color_clicked ()
 {
+	undoStep .reset ();
+
+	addUndoFunction <X3D::MFColor> (nodes, name, undoStep);
+
+	for (const auto & node : nodes)
+	{
+		try
+		{
+			auto & field = node -> getField <X3D::MFColor> (name);
+
+			if (index >= 0 and index < int32_t (field .size ()))
+				field .erase (field .begin () + index);
+		}
+		catch (const X3D::X3DError &)
+		{ }
+	}
+
+	addRedoFunction <X3D::MFColor> (nodes, name, undoStep);
 }
 
 bool

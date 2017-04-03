@@ -67,8 +67,8 @@ struct LSystemOptions::Values
 {
 	Vector3d point;
 	Vector3d vector;
-	int32_t  coordIndex;
 	int32_t  colorIndex;
+	int32_t  coordIndex;
 };
 
 const ComponentType LSystemOptions::component      = ComponentType::TITANIA;
@@ -113,12 +113,16 @@ LSystemOptions::addNode (IndexedLineSet* const indexedLineSet)
 {
 	indexedLineSets .emplace (indexedLineSet);
 
+	indexedLineSet -> colorPerVertex () .addInterest (&LSystemOptions::addEvent, this);
+
 	addEvent ();
 }
 
 void
 LSystemOptions::removeNode (IndexedLineSet* const indexedLineSet)
 {
+	indexedLineSet -> colorPerVertex () .removeInterest (&LSystemOptions::addEvent, this);
+
 	indexedLineSets .erase (indexedLineSet);
 }
 
@@ -136,13 +140,15 @@ LSystemOptions::build ()
 		const auto    clockwise     = Rotation4d (0, 0, 1, -angle ());
 		const auto    coord         = getExecutionContext () -> createNode <Coordinate> ();
 
-		auto    stack        = std::vector <Values> ();
-		auto    vector       = Vector3d (0, 1, 0);
-		auto    point        = Vector3d ();
-		int32_t colorIndex   = 0;
-		int32_t coordIndex   = 0;
-		auto    coordIndices = MFInt32 ();
-		bool    first        = true;
+		auto    stack                 = std::vector <Values> ();
+		auto    vector                = Vector3d (0, 1, 0);
+		auto    point                 = Vector3d ();
+		int32_t colorIndex            = -1;
+		int32_t coordIndex            = 0;
+		auto    colorPerLineIndices   = MFInt32 ();
+		auto    colorPerVertexIndices = MFInt32 ();
+		auto    coordIndices          = MFInt32 ();
+		bool    first                 = true;
 
 		coord -> set1Point (coordIndex, Vector3d ());
 
@@ -156,7 +162,7 @@ LSystemOptions::build ()
 			{
 				case 'C': // Color
 				{
-					size_t index;
+					int32_t index;
 	
 					if (isstream >> index)
 						colorIndex = index;
@@ -175,12 +181,15 @@ LSystemOptions::build ()
 				}
 				case '[': // Push
 				{
-					stack .emplace_back (Values { point, vector, coordIndex, colorIndex });
+					stack .emplace_back (Values { point, vector, colorIndex, coordIndex });
 
 					if (coordIndices .empty ())
 						break;
 
 					first = true;
+
+					if (colorIndex >= 0)
+						colorPerVertexIndices .emplace_back (-1);
 
 					coordIndices .emplace_back (-1);
 					break;
@@ -193,15 +202,18 @@ LSystemOptions::build ()
 					first      = true;
 					point      = stack .back () .point;
 					vector     = stack .back () .vector;
-					coordIndex = stack .back () .coordIndex;
 					colorIndex = stack .back () .colorIndex;
+					coordIndex = stack .back () .coordIndex;
 
 					stack .pop_back ();
+
+					if (colorIndex >= 0)
+						colorPerVertexIndices .emplace_back (-1);
 
 					coordIndices .emplace_back (-1);
 					break;
 				}
-				default:
+				default: // Line
 				{
 					if (c < 0)
 						break;
@@ -213,11 +225,20 @@ LSystemOptions::build ()
 					{
 						first = false;
 
+						if (colorIndex >= 0)
+							colorPerVertexIndices .emplace_back (colorIndex);
+
 						coordIndices .emplace_back (coordIndex);
 					}
 
 					point      += vector;
 					coordIndex  = coord -> getSize ();
+
+					if (colorIndex >= 0)
+					{
+						colorPerLineIndices   .emplace_back (colorIndex);
+						colorPerVertexIndices .emplace_back (colorIndex);
+					}
 
 					coordIndices .emplace_back (coordIndex);
 					coord -> set1Point (coordIndex, point);
@@ -237,15 +258,28 @@ LSystemOptions::build ()
 		for (auto & point : coord -> point ())
 			point = point .getValue () * matrix;
 
+		// Remove consecutive -1 from colorIndices.
+
+		colorPerVertexIndices .emplace_back (-1);
+
+		colorPerVertexIndices .erase (std::unique (colorPerVertexIndices .begin (),
+		                                           colorPerVertexIndices .end (),
+		                                           [ ] (int32_t l, int32_t r) { return l == -1 && r == -1; }),
+		                              colorPerVertexIndices .end ());
+
+		// Special case.
+
+		if (colorPerVertexIndices .size () == 1 and colorPerVertexIndices [0] == -1)
+			colorPerVertexIndices .clear ();
+
 		// Remove consecutive -1 from coordIndices.
 
 		coordIndices .emplace_back (-1);
 
-		const auto end = std::unique (coordIndices .begin (),
-		                              coordIndices .end (),
-		                              [ ] (int32_t l, int32_t r) { return l == -1 && r == -1; });
-
-		coordIndices .erase (end, coordIndices .end ());
+		coordIndices .erase (std::unique (coordIndices .begin (),
+		                                  coordIndices .end (),
+		                                  [ ] (int32_t l, int32_t r) { return l == -1 && r == -1; }),
+		                     coordIndices .end ());
 
 		// Special case.
 
@@ -260,6 +294,11 @@ LSystemOptions::build ()
 		for (const auto & indexedLineSet : indexedLineSets)
 		{
 			toMetaData (indexedLineSet -> createMetadataSet ("/IndexedLineSet/options"));
+
+			if (indexedLineSet -> colorPerVertex ())
+				indexedLineSet -> colorIndex () = colorPerVertexIndices;
+			else
+				indexedLineSet -> colorIndex () = colorPerLineIndices;
 
 			indexedLineSet -> coordIndex () = coordIndices;
 			indexedLineSet -> coord ()      = coord;
