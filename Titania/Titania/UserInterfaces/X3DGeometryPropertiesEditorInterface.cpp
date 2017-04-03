@@ -104,8 +104,11 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_GeoElevationGridZSpacingAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZSpacingAdjustment"));
 	m_GeoElevationGridZoneAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZoneAdjustment"));
 	m_IcosahedronDimensionAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IcosahedronDimensionAdjustment"));
-	m_IndexLineSetLSystemAngleAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexLineSetLSystemAngleAdjustment"));
-	m_IndexLineSetLSystemIterationsAdjustment      = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexLineSetLSystemIterationsAdjustment"));
+	m_IndexedLineSetLSystemAngleAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemAngleAdjustment"));
+	m_IndexedLineSetLSystemIterationsAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemIterationsAdjustment"));
+	m_IndexedLineSetLSystemSizeXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemSizeXAdjustment"));
+	m_IndexedLineSetLSystemSizeYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemSizeYAdjustment"));
+	m_IndexedLineSetLSystemSizeZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemSizeZAdjustment"));
 	m_NormalColorAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalColorAdjustment"));
 	m_NormalLengthAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalLengthAdjustment"));
 	m_NurbsCurveOrderAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsCurveOrderAdjustment"));
@@ -181,7 +184,7 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BoxExpander", m_BoxExpander);
 	m_builder -> get_widget ("BoxSizeBox", m_BoxSizeBox);
 	m_builder -> get_widget ("BoxSizeXSpinButton", m_BoxSizeXSpinButton);
-	m_builder -> get_widget ("BoSizeYSpinButton", m_BoSizeYSpinButton);
+	m_builder -> get_widget ("BoxSizeYSpinButton", m_BoxSizeYSpinButton);
 	m_builder -> get_widget ("BoxSizeZSpinButton", m_BoxSizeZSpinButton);
 	m_builder -> get_widget ("BoxUniformSizeButton", m_BoxUniformSizeButton);
 	m_builder -> get_widget ("BoxUniformSizeImage", m_BoxUniformSizeImage);
@@ -288,13 +291,19 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("IndexedLineSetTypeButton", m_IndexedLineSetTypeButton);
 	m_builder -> get_widget ("IndexedLineSetOptionsStack", m_IndexedLineSetOptionsStack);
 	m_builder -> get_widget ("IndexedLineSetLSystemOptions", m_IndexedLineSetLSystemOptions);
-	m_builder -> get_widget ("IndexLineSetLSystemIterationsSpinButton", m_IndexLineSetLSystemIterationsSpinButton);
-	m_builder -> get_widget ("IndexLineSetLSystemConstantsEntry", m_IndexLineSetLSystemConstantsEntry);
-	m_builder -> get_widget ("IndexLineSetLSystemAxiomEntry", m_IndexLineSetLSystemAxiomEntry);
-	m_builder -> get_widget ("IndexLineSetLSystemAngleBox", m_IndexLineSetLSystemAngleBox);
-	m_builder -> get_widget ("IndexLineSetLSystemAngleSpinButton", m_IndexLineSetLSystemAngleSpinButton);
-	m_builder -> get_widget ("IndexLineSetLSystemRuleBox", m_IndexLineSetLSystemRuleBox);
-	m_builder -> get_widget ("IndexLineSetLSystemAddRuleButton", m_IndexLineSetLSystemAddRuleButton);
+	m_builder -> get_widget ("IndexedLineSetLSystemIterationsSpinButton", m_IndexedLineSetLSystemIterationsSpinButton);
+	m_builder -> get_widget ("IndexedLineSetLSystemConstantsEntry", m_IndexedLineSetLSystemConstantsEntry);
+	m_builder -> get_widget ("IndexedLineSetLSystemAxiomEntry", m_IndexedLineSetLSystemAxiomEntry);
+	m_builder -> get_widget ("IndexedLineSetLSystemAngleBox", m_IndexedLineSetLSystemAngleBox);
+	m_builder -> get_widget ("IndexedLineSetLSystemAngleSpinButton", m_IndexedLineSetLSystemAngleSpinButton);
+	m_builder -> get_widget ("IndexedLineSetLSystemAddRuleButton", m_IndexedLineSetLSystemAddRuleButton);
+	m_builder -> get_widget ("IndexedLineSetLSystemRuleBox", m_IndexedLineSetLSystemRuleBox);
+	m_builder -> get_widget ("IndexedLineSetLSystemSizeBox", m_IndexedLineSetLSystemSizeBox);
+	m_builder -> get_widget ("IndexedLineSetLSystemSizeXSpinButton", m_IndexedLineSetLSystemSizeXSpinButton);
+	m_builder -> get_widget ("IndexedLineSetLSystemSizeYSpinButton", m_IndexedLineSetLSystemSizeYSpinButton);
+	m_builder -> get_widget ("IndexedLineSetLSystemSizeZSpinButton", m_IndexedLineSetLSystemSizeZSpinButton);
+	m_builder -> get_widget ("IndexedLineSetLSystemUniformSizeButton", m_IndexedLineSetLSystemUniformSizeButton);
+	m_builder -> get_widget ("IndexedLineSetLSystemUniformSizeImage", m_IndexedLineSetLSystemUniformSizeImage);
 	m_builder -> get_widget ("CommonPropertiesExpander", m_CommonPropertiesExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);
@@ -382,6 +391,9 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ComboBoxText with id 'IndexedLineSetTypeButton'.
 	m_IndexedLineSetTypeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_indexed_line_set_type_changed));
+
+	// Connect object Gtk::ToggleButton with id 'IndexedLineSetLSystemUniformSizeButton'.
+	m_IndexedLineSetLSystemUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_indexed_line_set_lsystem_uniform_size_clicked));
 
 	// Connect object Gtk::Button with id 'AddNormalsButton'.
 	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));

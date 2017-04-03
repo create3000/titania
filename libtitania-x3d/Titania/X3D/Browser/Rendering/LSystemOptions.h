@@ -103,6 +103,14 @@ public:
 	angle () const
 	{ return *fields .angle; }
 
+	SFVec3f &
+	size ()
+	{ return *fields .size; }
+
+	const SFVec3f &
+	size () const
+	{ return *fields .size; }
+
 	SFString &
 	constants ()
 	{ return *fields .constants; }
@@ -173,6 +181,7 @@ private:
 
 		SFInt32* const iterations;
 		SFFloat* const angle;
+		SFVec3f* const size;
 		SFString* const constants;
 		SFString* const axiom;
 		MFString* const rule;

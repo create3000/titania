@@ -54,6 +54,7 @@
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Types/MatrixStack.h"
 
+#include "../../Components/Core/MetadataSet.h"
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Rendering/IndexedLineSet.h"
 
@@ -77,6 +78,7 @@ const std::string   LSystemOptions::containerField = "options";
 LSystemOptions::Fields::Fields () :
 	iterations (new SFInt32 (8)),
 	     angle (new SFFloat (radians (45.0))),
+	      size (new SFVec3f (2, 2, 2)),
 	 constants (new SFString ()),
 	     axiom (new SFString ("B")),
 	      rule (new MFString ({ "A=C0AA", "B=C1A[+B]-B" }))
@@ -91,11 +93,13 @@ LSystemOptions::LSystemOptions (X3DExecutionContext* const executionContext) :
 
 	addField (inputOutput, "iterations", iterations ());
 	addField (inputOutput, "angle",      angle ());
+	addField (inputOutput, "size",       size ());
 	addField (inputOutput, "constants",  constants ());
 	addField (inputOutput, "axiom",      axiom ());
 	addField (inputOutput, "rule",       rule ());
 
 	angle () .setUnit (UnitCategory::ANGLE);
+	size ()  .setUnit (UnitCategory::LENGTH);
 }
 
 LSystemOptions*
@@ -222,6 +226,17 @@ LSystemOptions::build ()
 			}
 		}
 
+		// Set size.
+
+		const auto bbox   = coord -> getBBox ();
+		auto       matrix = Matrix4f ();
+
+		matrix .scale (size () / maximum_norm (bbox .size ()));
+		matrix .translate (negate (bbox .center ()));
+
+		for (auto & point : coord -> point ())
+			point = point .getValue () * matrix;
+
 		// Remove consecutive -1 from coordIndices.
 
 		coordIndices .emplace_back (-1);
@@ -244,6 +259,8 @@ LSystemOptions::build ()
 
 		for (const auto & indexedLineSet : indexedLineSets)
 		{
+			toMetaData (indexedLineSet -> createMetadataSet ("/IndexedLineSet/options"));
+
 			indexedLineSet -> coordIndex () = coordIndices;
 			indexedLineSet -> coord ()      = coord;
 		}

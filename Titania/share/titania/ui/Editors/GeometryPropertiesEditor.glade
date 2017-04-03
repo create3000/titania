@@ -253,15 +253,33 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="IndexLineSetLSystemAngleAdjustment">
+  <object class="GtkAdjustment" id="IndexedLineSetLSystemAngleAdjustment">
     <property name="upper">6.2800000000000002</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="IndexLineSetLSystemIterationsAdjustment">
+  <object class="GtkAdjustment" id="IndexedLineSetLSystemIterationsAdjustment">
     <property name="upper">100</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="IndexedLineSetLSystemSizeXAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="IndexedLineSetLSystemSizeYAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="IndexedLineSetLSystemSizeZAdjustment">
+    <property name="lower">-1000000000</property>
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="NormalColorAdjustment">
     <property name="upper">1</property>
@@ -1673,7 +1691,7 @@
                                               </packing>
                                             </child>
                                             <child>
-                                              <object class="GtkSpinButton" id="BoSizeYSpinButton">
+                                              <object class="GtkSpinButton" id="BoxSizeYSpinButton">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="tooltip_text" translatable="yes">y-Axis</property>
@@ -4435,7 +4453,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">2</property>
+                                                        <property name="top_attach">3</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4447,7 +4465,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">3</property>
+                                                        <property name="top_attach">4</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4459,15 +4477,15 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">4</property>
+                                                        <property name="top_attach">5</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkSpinButton" id="IndexLineSetLSystemIterationsSpinButton">
+                                                      <object class="GtkSpinButton" id="IndexedLineSetLSystemIterationsSpinButton">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="halign">start</property>
-                                                        <property name="adjustment">IndexLineSetLSystemIterationsAdjustment</property>
+                                                        <property name="adjustment">IndexedLineSetLSystemIterationsAdjustment</property>
                                                         <property name="climb_rate">1.5</property>
                                                       </object>
                                                       <packing>
@@ -4476,17 +4494,7 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkEntry" id="IndexLineSetLSystemConstantsEntry">
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="left_attach">1</property>
-                                                        <property name="top_attach">2</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkEntry" id="IndexLineSetLSystemAxiomEntry">
+                                                      <object class="GtkEntry" id="IndexedLineSetLSystemConstantsEntry">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
                                                       </object>
@@ -4496,16 +4504,26 @@
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkBox" id="IndexLineSetLSystemAngleBox">
+                                                      <object class="GtkEntry" id="IndexedLineSetLSystemAxiomEntry">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">1</property>
+                                                        <property name="top_attach">4</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="IndexedLineSetLSystemAngleBox">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
                                                         <property name="spacing">8</property>
                                                         <child>
-                                                          <object class="GtkSpinButton" id="IndexLineSetLSystemAngleSpinButton">
+                                                          <object class="GtkSpinButton" id="IndexedLineSetLSystemAngleSpinButton">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="halign">start</property>
-                                                            <property name="adjustment">IndexLineSetLSystemAngleAdjustment</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemAngleAdjustment</property>
                                                             <property name="digits">6</property>
                                                           </object>
                                                           <packing>
@@ -4518,7 +4536,7 @@
                                                           <object class="GtkScale">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
-                                                            <property name="adjustment">IndexLineSetLSystemAngleAdjustment</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemAngleAdjustment</property>
                                                             <property name="round_digits">1</property>
                                                             <property name="draw_value">False</property>
                                                           </object>
@@ -4542,7 +4560,7 @@
                                                         <property name="orientation">vertical</property>
                                                         <property name="spacing">2</property>
                                                         <child>
-                                                          <object class="GtkButton" id="IndexLineSetLSystemAddRuleButton">
+                                                          <object class="GtkButton" id="IndexedLineSetLSystemAddRuleButton">
                                                             <property name="label" translatable="yes">Add Rule</property>
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
@@ -4555,7 +4573,7 @@
                                                           </packing>
                                                         </child>
                                                         <child>
-                                                          <object class="GtkBox" id="IndexLineSetLSystemRuleBox">
+                                                          <object class="GtkBox" id="IndexedLineSetLSystemRuleBox">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
                                                             <property name="orientation">vertical</property>
@@ -4573,7 +4591,106 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
-                                                        <property name="top_attach">4</property>
+                                                        <property name="top_attach">5</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkLabel" id="label65">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="label" translatable="yes">Size:</property>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">0</property>
+                                                        <property name="top_attach">2</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="IndexedLineSetLSystemSizeBox">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="halign">start</property>
+                                                        <property name="hexpand">True</property>
+                                                        <property name="spacing">2</property>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="IndexedLineSetLSystemSizeXSpinButton">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">x-Axis</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemSizeXAdjustment</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="numeric">True</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="IndexedLineSetLSystemSizeYSpinButton">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemSizeYAdjustment</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="numeric">True</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="IndexedLineSetLSystemSizeZSpinButton">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="tooltip_text" translatable="yes">y-Axis</property>
+                                                            <property name="text" translatable="yes">0,000</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemSizeZAdjustment</property>
+                                                            <property name="climb_rate">0.01</property>
+                                                            <property name="digits">3</property>
+                                                            <property name="numeric">True</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">2</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkToggleButton" id="IndexedLineSetLSystemUniformSizeButton">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="receives_default">True</property>
+                                                            <property name="tooltip_text" translatable="yes">If connected, change all axes by the same proportion.</property>
+                                                            <property name="halign">start</property>
+                                                            <signal name="toggled" handler="on_indexed_line_set_lsystem_uniform_size_clicked" swapped="no"/>
+                                                            <child>
+                                                            <object class="GtkImage" id="IndexedLineSetLSystemUniformSizeImage">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">False</property>
+                                                            <property name="stock">Disconnected</property>
+                                                            <property name="icon_size">1</property>
+                                                            </object>
+                                                            </child>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">3</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">1</property>
+                                                        <property name="top_attach">2</property>
                                                       </packing>
                                                     </child>
                                                   </object>

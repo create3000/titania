@@ -147,6 +147,7 @@ GeometryPropertiesEditor::configure ()
 	X3DGeometryPropertiesEditorInterface::configure ();
 	X3DRectangle2DEditor::configure ();
 	X3DBoxEditor::configure ();
+	X3DIndexedLineSetEditor::configure ();
 	X3DPrimitiveCountEditor::configure ();
 	X3DGeometryTool::configure ();
 
@@ -653,6 +654,7 @@ GeometryPropertiesEditor::store ()
 
 	X3DGeometryTool::store ();
 	X3DPrimitiveCountEditor::store ();
+	X3DIndexedLineSetEditor::store ();
 	X3DBoxEditor::store ();
 	X3DRectangle2DEditor::store ();
 	X3DGeometryPropertiesEditorInterface::store ();

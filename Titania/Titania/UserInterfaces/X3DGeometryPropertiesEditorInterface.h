@@ -275,12 +275,24 @@ public:
 	{ return m_IcosahedronDimensionAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getIndexLineSetLSystemAngleAdjustment () const
-	{ return m_IndexLineSetLSystemAngleAdjustment; }
+	getIndexedLineSetLSystemAngleAdjustment () const
+	{ return m_IndexedLineSetLSystemAngleAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
-	getIndexLineSetLSystemIterationsAdjustment () const
-	{ return m_IndexLineSetLSystemIterationsAdjustment; }
+	getIndexedLineSetLSystemIterationsAdjustment () const
+	{ return m_IndexedLineSetLSystemIterationsAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getIndexedLineSetLSystemSizeXAdjustment () const
+	{ return m_IndexedLineSetLSystemSizeXAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getIndexedLineSetLSystemSizeYAdjustment () const
+	{ return m_IndexedLineSetLSystemSizeYAdjustment; }
+
+	const Glib::RefPtr <Gtk::Adjustment> &
+	getIndexedLineSetLSystemSizeZAdjustment () const
+	{ return m_IndexedLineSetLSystemSizeZAdjustment; }
 
 	const Glib::RefPtr <Gtk::Adjustment> &
 	getNormalColorAdjustment () const
@@ -575,8 +587,8 @@ public:
 	{ return *m_BoxSizeXSpinButton; }
 
 	Gtk::SpinButton &
-	getBoSizeYSpinButton () const
-	{ return *m_BoSizeYSpinButton; }
+	getBoxSizeYSpinButton () const
+	{ return *m_BoxSizeYSpinButton; }
 
 	Gtk::SpinButton &
 	getBoxSizeZSpinButton () const
@@ -1003,32 +1015,56 @@ public:
 	{ return *m_IndexedLineSetLSystemOptions; }
 
 	Gtk::SpinButton &
-	getIndexLineSetLSystemIterationsSpinButton () const
-	{ return *m_IndexLineSetLSystemIterationsSpinButton; }
+	getIndexedLineSetLSystemIterationsSpinButton () const
+	{ return *m_IndexedLineSetLSystemIterationsSpinButton; }
 
 	Gtk::Entry &
-	getIndexLineSetLSystemConstantsEntry () const
-	{ return *m_IndexLineSetLSystemConstantsEntry; }
+	getIndexedLineSetLSystemConstantsEntry () const
+	{ return *m_IndexedLineSetLSystemConstantsEntry; }
 
 	Gtk::Entry &
-	getIndexLineSetLSystemAxiomEntry () const
-	{ return *m_IndexLineSetLSystemAxiomEntry; }
+	getIndexedLineSetLSystemAxiomEntry () const
+	{ return *m_IndexedLineSetLSystemAxiomEntry; }
 
 	Gtk::Box &
-	getIndexLineSetLSystemAngleBox () const
-	{ return *m_IndexLineSetLSystemAngleBox; }
+	getIndexedLineSetLSystemAngleBox () const
+	{ return *m_IndexedLineSetLSystemAngleBox; }
 
 	Gtk::SpinButton &
-	getIndexLineSetLSystemAngleSpinButton () const
-	{ return *m_IndexLineSetLSystemAngleSpinButton; }
-
-	Gtk::Box &
-	getIndexLineSetLSystemRuleBox () const
-	{ return *m_IndexLineSetLSystemRuleBox; }
+	getIndexedLineSetLSystemAngleSpinButton () const
+	{ return *m_IndexedLineSetLSystemAngleSpinButton; }
 
 	Gtk::Button &
-	getIndexLineSetLSystemAddRuleButton () const
-	{ return *m_IndexLineSetLSystemAddRuleButton; }
+	getIndexedLineSetLSystemAddRuleButton () const
+	{ return *m_IndexedLineSetLSystemAddRuleButton; }
+
+	Gtk::Box &
+	getIndexedLineSetLSystemRuleBox () const
+	{ return *m_IndexedLineSetLSystemRuleBox; }
+
+	Gtk::Box &
+	getIndexedLineSetLSystemSizeBox () const
+	{ return *m_IndexedLineSetLSystemSizeBox; }
+
+	Gtk::SpinButton &
+	getIndexedLineSetLSystemSizeXSpinButton () const
+	{ return *m_IndexedLineSetLSystemSizeXSpinButton; }
+
+	Gtk::SpinButton &
+	getIndexedLineSetLSystemSizeYSpinButton () const
+	{ return *m_IndexedLineSetLSystemSizeYSpinButton; }
+
+	Gtk::SpinButton &
+	getIndexedLineSetLSystemSizeZSpinButton () const
+	{ return *m_IndexedLineSetLSystemSizeZSpinButton; }
+
+	Gtk::ToggleButton &
+	getIndexedLineSetLSystemUniformSizeButton () const
+	{ return *m_IndexedLineSetLSystemUniformSizeButton; }
+
+	Gtk::Image &
+	getIndexedLineSetLSystemUniformSizeImage () const
+	{ return *m_IndexedLineSetLSystemUniformSizeImage; }
 
 	Gtk::Expander &
 	getCommonPropertiesExpander () const
@@ -1306,6 +1342,10 @@ public:
 
 	virtual
 	void
+	on_indexed_line_set_lsystem_uniform_size_clicked () = 0;
+
+	virtual
+	void
 	on_add_normals_clicked () = 0;
 
 	virtual
@@ -1405,8 +1445,11 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZSpacingAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_GeoElevationGridZoneAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_IcosahedronDimensionAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_IndexLineSetLSystemAngleAdjustment;
-	Glib::RefPtr <Gtk::Adjustment> m_IndexLineSetLSystemIterationsAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_IndexedLineSetLSystemAngleAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_IndexedLineSetLSystemIterationsAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_IndexedLineSetLSystemSizeXAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_IndexedLineSetLSystemSizeYAdjustment;
+	Glib::RefPtr <Gtk::Adjustment> m_IndexedLineSetLSystemSizeZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalColorAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NormalLengthAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_NurbsCurveOrderAdjustment;
@@ -1480,7 +1523,7 @@ private:
 	Gtk::Expander*                 m_BoxExpander;
 	Gtk::Box*                      m_BoxSizeBox;
 	Gtk::SpinButton*               m_BoxSizeXSpinButton;
-	Gtk::SpinButton*               m_BoSizeYSpinButton;
+	Gtk::SpinButton*               m_BoxSizeYSpinButton;
 	Gtk::SpinButton*               m_BoxSizeZSpinButton;
 	Gtk::ToggleButton*             m_BoxUniformSizeButton;
 	Gtk::Image*                    m_BoxUniformSizeImage;
@@ -1587,13 +1630,19 @@ private:
 	Gtk::ComboBoxText*             m_IndexedLineSetTypeButton;
 	Gtk::Stack*                    m_IndexedLineSetOptionsStack;
 	Gtk::Grid*                     m_IndexedLineSetLSystemOptions;
-	Gtk::SpinButton*               m_IndexLineSetLSystemIterationsSpinButton;
-	Gtk::Entry*                    m_IndexLineSetLSystemConstantsEntry;
-	Gtk::Entry*                    m_IndexLineSetLSystemAxiomEntry;
-	Gtk::Box*                      m_IndexLineSetLSystemAngleBox;
-	Gtk::SpinButton*               m_IndexLineSetLSystemAngleSpinButton;
-	Gtk::Box*                      m_IndexLineSetLSystemRuleBox;
-	Gtk::Button*                   m_IndexLineSetLSystemAddRuleButton;
+	Gtk::SpinButton*               m_IndexedLineSetLSystemIterationsSpinButton;
+	Gtk::Entry*                    m_IndexedLineSetLSystemConstantsEntry;
+	Gtk::Entry*                    m_IndexedLineSetLSystemAxiomEntry;
+	Gtk::Box*                      m_IndexedLineSetLSystemAngleBox;
+	Gtk::SpinButton*               m_IndexedLineSetLSystemAngleSpinButton;
+	Gtk::Button*                   m_IndexedLineSetLSystemAddRuleButton;
+	Gtk::Box*                      m_IndexedLineSetLSystemRuleBox;
+	Gtk::Box*                      m_IndexedLineSetLSystemSizeBox;
+	Gtk::SpinButton*               m_IndexedLineSetLSystemSizeXSpinButton;
+	Gtk::SpinButton*               m_IndexedLineSetLSystemSizeYSpinButton;
+	Gtk::SpinButton*               m_IndexedLineSetLSystemSizeZSpinButton;
+	Gtk::ToggleButton*             m_IndexedLineSetLSystemUniformSizeButton;
+	Gtk::Image*                    m_IndexedLineSetLSystemUniformSizeImage;
 	Gtk::Expander*                 m_CommonPropertiesExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;

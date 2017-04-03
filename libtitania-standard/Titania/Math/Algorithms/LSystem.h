@@ -104,7 +104,7 @@ private:
 	///  @name Operations
 
 	void
-	add_constant (const size_t constant);
+	add_constant (const std::string::value_type constant);
 
 	void
 	add_rule (const std::string & rule);

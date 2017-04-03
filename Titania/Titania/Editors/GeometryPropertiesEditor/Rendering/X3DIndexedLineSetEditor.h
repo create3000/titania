@@ -77,7 +77,17 @@ protected:
 
 	virtual
 	void
+	configure () override;
+
+	virtual
+	void
 	set_geometry ();
+
+	///  @name Destruction
+
+	virtual
+	void
+	store () override;
 
 
 private:
@@ -90,6 +100,10 @@ private:
 
 	void
 	set_options ();
+
+	virtual
+	void
+	on_indexed_line_set_lsystem_uniform_size_clicked () final override;
 
 	static
 	bool
@@ -105,11 +119,12 @@ private:
 
 	///  @name Members
 
-	X3DFieldAdjustment <X3D::SFInt32> lSystemIterations;
-	X3DFieldAdjustment <X3D::SFFloat> lSystemAngle;
-	SFStringEntry                     lSystemConstants;
-	SFStringEntry                     lSystemAxiom;
-	MFStringEntry                     lSystemRule;
+	X3DFieldAdjustment <X3D::SFInt32>  lSystemIterations;
+	X3DFieldAdjustment <X3D::SFFloat>  lSystemAngle;
+	X3DFieldAdjustment3 <X3D::SFVec3f> lSystemSize;
+	SFStringEntry                      lSystemConstants;
+	SFStringEntry                      lSystemAxiom;
+	MFStringEntry                      lSystemRule;
 
 	X3D::MFNode nodes;
 	bool        changing;

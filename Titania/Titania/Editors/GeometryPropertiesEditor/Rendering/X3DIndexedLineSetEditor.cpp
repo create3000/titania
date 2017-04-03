@@ -60,24 +60,36 @@ namespace puck {
 
 X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                   lSystemIterations (this, getIndexLineSetLSystemIterationsAdjustment (), getIndexLineSetLSystemIterationsSpinButton (), "iterations"),
-	                        lSystemAngle (this, getIndexLineSetLSystemAngleAdjustment (), getIndexLineSetLSystemAngleBox (), "angle"),
-	                    lSystemConstants (this, getIndexLineSetLSystemConstantsEntry (), "constants"),
-	                        lSystemAxiom (this, getIndexLineSetLSystemAxiomEntry (), "axiom"),
+	                   lSystemIterations (this, getIndexedLineSetLSystemIterationsAdjustment (), getIndexedLineSetLSystemIterationsSpinButton (), "iterations"),
+	                        lSystemAngle (this, getIndexedLineSetLSystemAngleAdjustment (), getIndexedLineSetLSystemAngleBox (), "angle"),
+	                         lSystemSize (this,
+	                                      getIndexedLineSetLSystemSizeXAdjustment (),
+	                                      getIndexedLineSetLSystemSizeYAdjustment (),
+	                                      getIndexedLineSetLSystemSizeZAdjustment (),
+	                                      getIndexedLineSetLSystemSizeBox (),
+	                                      "size"),
+	                    lSystemConstants (this, getIndexedLineSetLSystemConstantsEntry (), "constants"),
+	                        lSystemAxiom (this, getIndexedLineSetLSystemAxiomEntry (), "axiom"),
 	                         lSystemRule (this,
-	                                      getIndexLineSetLSystemRuleBox (),
-	                                      getIndexLineSetLSystemAddRuleButton (),
+	                                      getIndexedLineSetLSystemRuleBox (),
+	                                      getIndexedLineSetLSystemAddRuleButton (),
 	                                      "rule"),
 	                               nodes (),
 	                            changing (false)
 {
 	addChildObjects (nodes);
 
-	getIndexLineSetLSystemAngleAdjustment () -> set_upper (math::pi <double> * 2);
+	getIndexedLineSetLSystemAngleAdjustment () -> set_upper (math::pi <double> * 2);
 
 	lSystemConstants .setFilter (&X3DIndexedLineSetEditor::validateLSystemConstants);
 	lSystemAxiom     .setFilter (&X3DIndexedLineSetEditor::validateLSystemAxiom);
 	lSystemRule      .setFilter (&X3DIndexedLineSetEditor::validateLSystemRule);
+}
+
+void
+X3DIndexedLineSetEditor::configure ()
+{
+	getIndexedLineSetLSystemUniformSizeButton () .set_active (getConfig () -> getBoolean ("indexedLineSetLSystemUniformSize"));
 }
 
 void
@@ -163,6 +175,7 @@ X3DIndexedLineSetEditor::set_options ()
 
 	lSystemIterations .setNodes (optionsNodes);
 	lSystemAngle      .setNodes (optionsNodes);
+	lSystemSize       .setNodes (optionsNodes);
 	lSystemConstants  .setNodes (optionsNodes);
 	lSystemAxiom      .setNodes (optionsNodes);
 	lSystemRule       .setNodes (optionsNodes);
@@ -203,6 +216,21 @@ X3DIndexedLineSetEditor::set_options ()
 	changing = false;
 }
 
+void
+X3DIndexedLineSetEditor::on_indexed_line_set_lsystem_uniform_size_clicked ()
+{
+	if (getIndexedLineSetLSystemUniformSizeButton () .get_active ())
+	{
+		getIndexedLineSetLSystemUniformSizeImage () .set (Gtk::StockID ("Connected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		lSystemSize .setUniform (true);
+	}
+	else
+	{
+		getIndexedLineSetLSystemUniformSizeImage () .set (Gtk::StockID ("Disconnected"), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		lSystemSize .setUniform (false);
+	}
+}
+
 bool
 X3DIndexedLineSetEditor::validateLSystemConstants (const std::string & text)
 {
@@ -225,6 +253,12 @@ X3DIndexedLineSetEditor::validateLSystemRule (const std::string & text)
 	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-=]+)/");
 
 	return std::regex_match (text, constants);
+}
+
+void
+X3DIndexedLineSetEditor::store ()
+{
+	getConfig () -> setItem ("indexedLineSetLSystemUniformSize", getIndexedLineSetLSystemUniformSizeButton () .get_active ());
 }
 
 X3DIndexedLineSetEditor::~X3DIndexedLineSetEditor ()

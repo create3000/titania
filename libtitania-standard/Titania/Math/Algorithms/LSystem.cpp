@@ -74,11 +74,6 @@ throw (std::domain_error,
 	m_rules_index (),
 	   m_commands ()
 {
-	add_constant ('\r');
-	add_constant ('\n');
-	add_constant ('\t');
-	add_constant (' ');
-
 	for (const auto & constant : m_constants)
 		add_constant (constant);
 
@@ -89,10 +84,12 @@ throw (std::domain_error,
 }
 
 void
-lsystem::add_constant (const size_t constant)
+lsystem::add_constant (const std::string::value_type constant)
 {
-	if (constant < m_constants .size ())
-		m_constants [constant] = true;
+	const size_t index = constant;
+
+	if (index < m_constants .size ())
+		m_constants [index] = true;
 
 	else
 		throw std::out_of_range ("lsystem::add_constant: index out of range.");	
