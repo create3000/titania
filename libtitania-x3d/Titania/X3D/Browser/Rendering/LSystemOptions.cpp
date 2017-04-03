@@ -144,6 +144,8 @@ LSystemOptions::build ()
 		auto    stack                 = std::vector <Values> ();
 		auto    vector                = Vector3d (0, 1, 0);
 		auto    point                 = Vector3d ();
+		bool    change                = true;
+		bool    first                 = true;
 		bool    colors                = false;
 		auto    usedColorIndices      = std::set <int32_t> ();
 		int32_t colorPerVertexIndex   = -1;
@@ -152,7 +154,6 @@ LSystemOptions::build ()
 		auto    colorPerLineIndices   = MFInt32 ();
 		auto    colorPerVertexIndices = MFInt32 ();
 		auto    coordIndices          = MFInt32 ();
-		bool    first                 = true;
 
 		coord -> set1Point (coordIndex, Vector3d ());
 
@@ -168,13 +169,18 @@ LSystemOptions::build ()
 				{
 					int32_t index;
 	
-					if ((isstream >> index) and (index >= 0))
+					if ((isstream >> index) and (index >= 0) and (index not_eq colorIndex))
 					{
+						change     = true;
+						first      = true;
 						colors     = true;
 						colorIndex = index;
 
 						if (colorPerVertexIndex >= 0 and not usedColorIndices .count (colorPerVertexIndex))
 							colorPerVertexIndices [colorPerVertexIndex] = index;
+
+						colorPerVertexIndices .emplace_back (-1);
+						coordIndices          .emplace_back (-1);
 					}
 
 					break;
@@ -182,11 +188,13 @@ LSystemOptions::build ()
 				case '+': // Anti-clockwise rotation
 				{
 					vector = vector * antiClockwise;
+					change = true;
 					break;
 				}
 				case '-': // Clockwise rotation
 				{
 					vector = vector * clockwise;
+					change = true;
 					break;
 				}
 				case '[': // Push
@@ -196,7 +204,8 @@ LSystemOptions::build ()
 					if (coordIndices .empty ())
 						break;
 
-					first = true;
+					change = true;
+					first  = true;
 
 					colorPerVertexIndices .emplace_back (-1);
 					coordIndices          .emplace_back (-1);
@@ -207,6 +216,7 @@ LSystemOptions::build ()
 					if (stack .empty ())
 						break;
 
+					change              = true;
 					first               = true;
 					point               = stack .back () .point;
 					vector              = stack .back () .vector;
@@ -228,32 +238,41 @@ LSystemOptions::build ()
 					if (lsystem .constants () [c])
 						break;
 
-					if (first)
+					point += vector;
+
+					if (change)
 					{
-						first = false;
+						change = false;
 
-						colorPerLineIndices .emplace_back (colorIndex);
-
-						if (colorPerVertexIndex >= 0)
+						if (first)
 						{
-							usedColorIndices .emplace (colorPerVertexIndex);
-							colorPerVertexIndices .emplace_back (colorPerVertexIndices [colorPerVertexIndex]);
+							first = false;
+	
+							colorPerLineIndices .emplace_back (colorIndex);
+	
+							if (colorPerVertexIndex >= 0)
+							{
+								usedColorIndices .emplace (colorPerVertexIndex);
+								colorPerVertexIndices .emplace_back (colorPerVertexIndices [colorPerVertexIndex]);
+							}
+							else
+								colorPerVertexIndices .emplace_back (colorIndex);
+	
+							coordIndices .emplace_back (coordIndex);
 						}
-						else
-							colorPerVertexIndices .emplace_back (colorIndex);
+	
+						colorPerVertexIndex = colorPerVertexIndices .size ();
+						colorPerVertexIndices .emplace_back (colorIndex);
 
+						coordIndex = coord -> getSize ();
 						coordIndices .emplace_back (coordIndex);
+						coord -> set1Point (coordIndex, point);
+					}
+					else
+					{
+						coord -> set1Point (coordIndex, point);
 					}
 
-					point      += vector;
-					coordIndex  = coord -> getSize ();
-
-
-					colorPerVertexIndex = colorPerVertexIndices .size ();
-					colorPerVertexIndices .emplace_back (colorIndex);
-
-					coordIndices .emplace_back (coordIndex);
-					coord -> set1Point (coordIndex, point);
 					break;
 				}
 			}
