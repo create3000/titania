@@ -65,7 +65,6 @@ X3DMFStringEntry::X3DMFStringEntry (X3DBaseInterface* const editor,
 	          spacing (2),
 	           filter ([ ] (const std::string &) { return true; }),
 	           entrys (),
-	            index (-1),
 	           string (),
 	     defaultValue (),
 	         undoStep (),
@@ -178,14 +177,9 @@ X3DMFStringEntry::on_changed (Gtk::Entry* const entry)
 
 	// Get Entry index, reset undo step if needed, and set value.
 
-	const auto currentIndex = getIndex (entry);
+	string .set1Value (getIndex (entry), entry -> get_text ());
 
-	if (currentIndex not_eq index)
-		undoStep .reset ();
-
-	index = currentIndex;
-
-	string .set1Value (index, entry -> get_text ());
+	undoStep .reset ();
 
 	on_string_changed ();
 }

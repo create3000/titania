@@ -65,8 +65,7 @@ lsystem::lsystem (const size_t iterations,
                   const std::string & constants,
                   const std::string & axiom,
                   const std::vector <std::string> & rules)
-throw (std::domain_error,
-       std::out_of_range) :
+throw (std::runtime_error) :
 	 m_iterations (iterations),
 	      m_axiom (std::regex_replace (axiom, spaces_rx, "")),
 	      m_rules (rules),
@@ -90,9 +89,6 @@ lsystem::add_constant (const std::string::value_type constant)
 
 	if (index < m_constants .size ())
 		m_constants [index] = true;
-
-	else
-		throw std::out_of_range ("lsystem::add_constant: index out of range.");	
 }
 
 void
@@ -105,8 +101,8 @@ lsystem::add_rule (const std::string & rule)
 	if (std::regex_match (rule, match, rule_rx))
 		m_rules_index .emplace (match .str (1) .front (), std::regex_replace (match .str (2), spaces_rx, ""));
 
-	else
-		throw std::domain_error ("lsystem::add_rule: rule '" + rule + "' does not match.");
+	//else
+	//	throw std::domain_error ("lsystem::add_rule: rule '" + rule + "' does not match.");
 }
 
 void
@@ -132,7 +128,7 @@ lsystem::generate ()
 				commands += c;
 			
 			if (commands .size () > 100'000'000)
-			  throw std::domain_error ("lsystem::generate: generated command string too large! 100,000,000 commands maximum.");
+			  throw std::runtime_error ("lsystem::generate: generated command string too large! 100,000,000 commands maximum.");
 		}
 
 		m_commands = std::move (commands);

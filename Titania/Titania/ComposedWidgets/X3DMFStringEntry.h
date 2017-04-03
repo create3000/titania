@@ -174,7 +174,6 @@ private:
 	size_t                    spacing;
 	FilterFunction            filter;
 	std::vector <Gtk::Entry*> entrys;
-	int32_t                   index;
 	X3D::MFString             string;
 	X3D::SFString             defaultValue;
 	X3D::UndoStepPtr          undoStep;

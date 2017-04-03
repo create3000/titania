@@ -69,8 +69,7 @@ public:
 	         const std::string & constants,
 	         const std::string & axiom,
 	         const std::vector <std::string> & rules)
-	throw (std::domain_error,
-	       std::out_of_range);
+	throw (std::runtime_error);
 
 	///  @name Member access
 
