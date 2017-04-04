@@ -65,11 +65,23 @@ namespace X3D {
 
 struct LSystemOptions::Values
 {
-	Vector3d point;
-	Vector3d vector;
-	int32_t  colorPerVertexIndex;
-	int32_t  colorIndex;
-	int32_t  coordIndex;
+	Values (const Vector3d & point,
+	        const Matrix3d & matrix,
+	        int32_t colorPerVertexIndex,
+	        int32_t colorIndex,
+	        int32_t coordIndex) :
+		              point (point),
+		             matrix (matrix),
+		colorPerVertexIndex (colorPerVertexIndex),
+		         colorIndex (colorIndex),
+		         coordIndex (coordIndex)
+	{ }
+
+	const Vector3d point;
+	const Matrix3d matrix;
+	const int32_t  colorPerVertexIndex;
+	const int32_t  colorIndex;
+	const int32_t  coordIndex;
 };
 
 const ComponentType LSystemOptions::component      = ComponentType::TITANIA;
@@ -78,7 +90,8 @@ const std::string   LSystemOptions::containerField = "options";
 
 LSystemOptions::Fields::Fields () :
 	iterations (new SFInt32 (8)),
-	     angle (new SFFloat (radians (45.0))),
+	      tilt (new SFFloat (radians (45.0))),
+	     twist (new SFFloat (0)),
 	      size (new SFVec3f (2, 2, 2)),
 	 constants (new SFString ()),
 	     axiom (new SFString ("B")),
@@ -93,13 +106,15 @@ LSystemOptions::LSystemOptions (X3DExecutionContext* const executionContext) :
 	addType (X3DConstants::LSystemOptions);
 
 	addField (inputOutput, "iterations", iterations ());
-	addField (inputOutput, "angle",      angle ());
+	addField (inputOutput, "tilt",       tilt ());
+	addField (inputOutput, "twist",      twist ());
 	addField (inputOutput, "size",       size ());
 	addField (inputOutput, "constants",  constants ());
 	addField (inputOutput, "axiom",      axiom ());
 	addField (inputOutput, "rule",       rule ());
 
-	angle () .setUnit (UnitCategory::ANGLE);
+	tilt () .setUnit (UnitCategory::ANGLE);
+	twist () .setUnit (UnitCategory::ANGLE);
 	size ()  .setUnit (UnitCategory::LENGTH);
 }
 
@@ -135,14 +150,12 @@ LSystemOptions::build ()
 		if (indexedLineSets .empty ())
 			return;
 
-		math::lsystem lsystem (std::max <int32_t> (0, iterations ()), constants (), axiom (), std::vector <std::string> (rule () .begin (), rule () .end ()));
+		const math::lsystem lsystem (std::max <int32_t> (0, iterations ()), constants (), axiom (), std::vector <std::string> (rule () .begin (), rule () .end ()));
 
-		const auto    antiClockwise = Rotation4d (0, 0, 1, angle ());
-		const auto    clockwise     = Rotation4d (0, 0, 1, -angle ());
-		const auto    coord         = getExecutionContext () -> createNode <Coordinate> ();
+		const auto coord = getExecutionContext () -> createNode <Coordinate> ();
 
 		auto    stack                 = std::vector <Values> ();
-		auto    vector                = Vector3d (0, 1, 0);
+		auto    matrix                = Matrix3d ();
 		auto    point                 = Vector3d ();
 		bool    change                = true;
 		bool    first                 = true;
@@ -185,21 +198,33 @@ LSystemOptions::build ()
 
 					break;
 				}
-				case '+': // Anti-clockwise rotation
+				case '+': // Counterclockwise tilt
 				{
-					vector = vector * antiClockwise;
-					change = true;
+					matrix *= Matrix3d (Rotation4d (matrix [2], tilt ()));
+					change  = true;
 					break;
 				}
-				case '-': // Clockwise rotation
+				case '-': // Clockwise tilt
 				{
-					vector = vector * clockwise;
-					change = true;
+					matrix *= Matrix3d (Rotation4d (matrix [2], -tilt ()));
+					change  = true;
+					break;
+				}
+				case '>': // Counterclockwise twist
+				{
+					matrix *= Matrix3d (Rotation4d (matrix [1], twist ()));
+					change  = true;
+					break;
+				}
+				case '<': // Clockwise twist
+				{
+					matrix *= Matrix3d (Rotation4d (matrix [1], -twist ()));
+					change  = true;
 					break;
 				}
 				case '[': // Push
 				{
-					stack .emplace_back (Values { point, vector, colorPerVertexIndex, colorIndex, coordIndex });
+					stack .emplace_back (point, matrix, colorPerVertexIndex, colorIndex, coordIndex);
 
 					if (coordIndices .empty ())
 						break;
@@ -219,7 +244,7 @@ LSystemOptions::build ()
 					change              = true;
 					first               = true;
 					point               = stack .back () .point;
-					vector              = stack .back () .vector;
+					matrix              = stack .back () .matrix;
 					colorPerVertexIndex = stack .back () .colorPerVertexIndex;
 					colorIndex          = stack .back () .colorIndex;
 					coordIndex          = stack .back () .coordIndex;
@@ -238,7 +263,7 @@ LSystemOptions::build ()
 					if (lsystem .constants () [c])
 						break;
 
-					point += vector;
+					point += matrix [1];
 
 					if (change)
 					{
@@ -280,14 +305,14 @@ LSystemOptions::build ()
 
 		// Set size.
 
-		const auto bbox   = coord -> getBBox ();
-		auto       matrix = Matrix4f ();
+		const auto bbox        = coord -> getBBox ();
+		auto       scaleMatrix = Matrix4f ();
 
-		matrix .scale (size () / maximum_norm (bbox .size ()));
-		matrix .translate (negate (bbox .center ()));
+		scaleMatrix .scale (size () / maximum_norm (bbox .size ()));
+		scaleMatrix .translate (negate (bbox .center ()));
 
 		for (auto & point : coord -> point ())
-			point = point .getValue () * matrix;
+			point = point .getValue () * scaleMatrix;
 
 		// Remove consecutive -1 from colorIndices.
 

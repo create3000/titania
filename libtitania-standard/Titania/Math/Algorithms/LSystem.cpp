@@ -51,6 +51,7 @@
 #include "LSystem.h"
 
 #include <regex>
+#include <sstream>
 
 #include <Titania/LOG.h>
 
@@ -76,7 +77,7 @@ throw (std::runtime_error) :
 	for (const auto & constant : constants)
 		add_constant (constant);
 
-	for (const auto & rule : m_rules)
+	for (const auto & rule : rules)
 		add_rule (rule);
 
 	generate ();
@@ -93,20 +94,27 @@ lsystem::add_constant (const std::string::value_type constant)
 
 void
 lsystem::add_rule (const std::string & rule)
+throw (std::runtime_error)
 {
-	static const std::regex rule_rx (R"/(^\s*([A-Za-z0-9])\s*=([\sA-Za-z0-9\[\]\+\-]*)$)/");
+	static const std::regex rule_rx (R"/(^([A-Za-z0-9])=([\sA-Za-z0-9\[\]\+\-<>]*)$)/");
+
+	const auto rule_without_spaces = std::regex_replace (rule, spaces_rx, "");
+
+	if (rule_without_spaces .empty ())
+		return;
 
 	std::smatch match;
 
-	if (std::regex_match (rule, match, rule_rx))
-		m_rules_index .emplace (match .str (1) .front (), std::regex_replace (match .str (2), spaces_rx, ""));
+	if (std::regex_match (rule_without_spaces, match, rule_rx))
+		m_rules_index .emplace (match .str (1) .front (), match .str (2));
 
-	//else
-	//	throw std::domain_error ("lsystem::add_rule: rule '" + rule + "' does not match.");
+	else
+		throw std::runtime_error ("lsystem::add_rule: rule '" + rule + "' does not match.");
 }
 
 void
 lsystem::generate ()
+throw (std::runtime_error)
 {
 	if (iterations ())
 		m_commands = axiom ();
@@ -114,7 +122,7 @@ lsystem::generate ()
 	// process for each iteration
 	for (size_t i = 0; i < iterations (); ++ i)
 	{
-		std::string commands;
+		std::ostringstream commands;
 		
 		// Process each character of the axiom.
 		for (const auto c : m_commands)
@@ -122,16 +130,16 @@ lsystem::generate ()
 			const auto iter = m_rules_index .find (c);
 
 			if (iter not_eq m_rules_index .end ())
-				commands += iter -> second;
+				commands << iter -> second;
 
 			else
-				commands += c;
-			
-			if (commands .size () > 100'000'000)
+				commands << c;
+
+			if (commands .tellp () > 100'000'000)
 			  throw std::runtime_error ("lsystem::generate: generated command string too large! 100,000,000 commands maximum.");
 		}
 
-		m_commands = std::move (commands);
+		m_commands = commands .str ();
 	}
 }
 

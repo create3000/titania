@@ -104,11 +104,12 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_GeoElevationGridZSpacingAdjustment           = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZSpacingAdjustment"));
 	m_GeoElevationGridZoneAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoElevationGridZoneAdjustment"));
 	m_IcosahedronDimensionAdjustment               = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IcosahedronDimensionAdjustment"));
-	m_IndexedLineSetLSystemAngleAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemAngleAdjustment"));
 	m_IndexedLineSetLSystemIterationsAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemIterationsAdjustment"));
 	m_IndexedLineSetLSystemSizeXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemSizeXAdjustment"));
 	m_IndexedLineSetLSystemSizeYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemSizeYAdjustment"));
 	m_IndexedLineSetLSystemSizeZAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemSizeZAdjustment"));
+	m_IndexedLineSetLSystemTiltAdjustment          = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemTiltAdjustment"));
+	m_IndexedLineSetLSystemTwistAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("IndexedLineSetLSystemTwistAdjustment"));
 	m_NormalColorAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalColorAdjustment"));
 	m_NormalLengthAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NormalLengthAdjustment"));
 	m_NurbsCurveOrderAdjustment                    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("NurbsCurveOrderAdjustment"));
@@ -294,8 +295,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("IndexedLineSetLSystemIterationsSpinButton", m_IndexedLineSetLSystemIterationsSpinButton);
 	m_builder -> get_widget ("IndexedLineSetLSystemConstantsEntry", m_IndexedLineSetLSystemConstantsEntry);
 	m_builder -> get_widget ("IndexedLineSetLSystemAxiomEntry", m_IndexedLineSetLSystemAxiomEntry);
-	m_builder -> get_widget ("IndexedLineSetLSystemAngleBox", m_IndexedLineSetLSystemAngleBox);
-	m_builder -> get_widget ("IndexedLineSetLSystemAngleSpinButton", m_IndexedLineSetLSystemAngleSpinButton);
+	m_builder -> get_widget ("IndexedLineSetLSystemTiltBox", m_IndexedLineSetLSystemTiltBox);
+	m_builder -> get_widget ("IndexedLineSetLSystemTiltSpinButton", m_IndexedLineSetLSystemTiltSpinButton);
 	m_builder -> get_widget ("IndexedLineSetLSystemAddRuleButton", m_IndexedLineSetLSystemAddRuleButton);
 	m_builder -> get_widget ("IndexedLineSetLSystemRuleBox", m_IndexedLineSetLSystemRuleBox);
 	m_builder -> get_widget ("IndexedLineSetLSystemSizeBox", m_IndexedLineSetLSystemSizeBox);
@@ -304,6 +305,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("IndexedLineSetLSystemSizeZSpinButton", m_IndexedLineSetLSystemSizeZSpinButton);
 	m_builder -> get_widget ("IndexedLineSetLSystemUniformSizeButton", m_IndexedLineSetLSystemUniformSizeButton);
 	m_builder -> get_widget ("IndexedLineSetLSystemUniformSizeImage", m_IndexedLineSetLSystemUniformSizeImage);
+	m_builder -> get_widget ("IndexedLineSetLSystemTwistBox", m_IndexedLineSetLSystemTwistBox);
+	m_builder -> get_widget ("IndexedLineSetLSystemTwistSpinButton", m_IndexedLineSetLSystemTwistSpinButton);
 	m_builder -> get_widget ("CommonPropertiesExpander", m_CommonPropertiesExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);

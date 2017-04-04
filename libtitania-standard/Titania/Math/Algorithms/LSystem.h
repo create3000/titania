@@ -106,10 +106,12 @@ private:
 	add_constant (const std::string::value_type constant);
 
 	void
-	add_rule (const std::string & rule);
+	add_rule (const std::string & rule)
+	throw (std::runtime_error);
 
 	void
-	generate ();
+	generate ()
+	throw (std::runtime_error);
 
 	///  @name Members
 

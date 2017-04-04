@@ -61,7 +61,8 @@ namespace puck {
 X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                   lSystemIterations (this, getIndexedLineSetLSystemIterationsAdjustment (), getIndexedLineSetLSystemIterationsSpinButton (), "iterations"),
-	                        lSystemAngle (this, getIndexedLineSetLSystemAngleAdjustment (), getIndexedLineSetLSystemAngleBox (), "angle"),
+	                         lSystemTilt (this, getIndexedLineSetLSystemTiltAdjustment (), getIndexedLineSetLSystemTiltBox (), "tilt"),
+	                        lSystemTwist (this, getIndexedLineSetLSystemTwistAdjustment (), getIndexedLineSetLSystemTwistBox (), "twist"),
 	                         lSystemSize (this,
 	                                      getIndexedLineSetLSystemSizeXAdjustment (),
 	                                      getIndexedLineSetLSystemSizeYAdjustment (),
@@ -79,7 +80,10 @@ X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 {
 	addChildObjects (nodes);
 
-	getIndexedLineSetLSystemAngleAdjustment () -> set_upper (math::pi <double> * 2);
+	getIndexedLineSetLSystemTiltAdjustment ()  -> set_lower (-math::pi <double>);
+	getIndexedLineSetLSystemTiltAdjustment ()  -> set_upper (math::pi <double>);
+	getIndexedLineSetLSystemTwistAdjustment () -> set_lower (-math::pi <double>);
+	getIndexedLineSetLSystemTwistAdjustment () -> set_upper (math::pi <double>);
 
 	lSystemConstants .setFilter (&X3DIndexedLineSetEditor::validateLSystemConstants);
 	lSystemAxiom     .setFilter (&X3DIndexedLineSetEditor::validateLSystemAxiom);
@@ -181,7 +185,8 @@ X3DIndexedLineSetEditor::set_options ()
 	const auto inconsistent = not (optionsNodes .size () == nodes .size () and types .size () == 1);
 
 	lSystemIterations .setNodes (optionsNodes);
-	lSystemAngle      .setNodes (optionsNodes);
+	lSystemTilt       .setNodes (optionsNodes);
+	lSystemTwist      .setNodes (optionsNodes);
 	lSystemSize       .setNodes (optionsNodes);
 	lSystemConstants  .setNodes (optionsNodes);
 	lSystemAxiom      .setNodes (optionsNodes);
@@ -241,7 +246,7 @@ X3DIndexedLineSetEditor::on_indexed_line_set_lsystem_uniform_size_clicked ()
 bool
 X3DIndexedLineSetEditor::validateLSystemConstants (const std::string & text)
 {
-	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>]+)/");
 
 	return std::regex_match (text, constants);
 }
@@ -249,7 +254,7 @@ X3DIndexedLineSetEditor::validateLSystemConstants (const std::string & text)
 bool
 X3DIndexedLineSetEditor::validateLSystemAxiom (const std::string & text)
 {
-	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>]+)/");
 
 	return std::regex_match (text, constants);
 }
@@ -257,7 +262,7 @@ X3DIndexedLineSetEditor::validateLSystemAxiom (const std::string & text)
 bool
 X3DIndexedLineSetEditor::validateLSystemRule (const std::string & text)
 {
-	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-=]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>=]+)/");
 
 	return std::regex_match (text, constants);
 }
