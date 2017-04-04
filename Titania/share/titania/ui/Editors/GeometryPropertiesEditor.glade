@@ -4491,6 +4491,7 @@
                                                       <object class="GtkSpinButton" id="IndexedLineSetLSystemIterationsSpinButton">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
+                                                        <property name="tooltip_text" translatable="yes">Number of iterations.</property>
                                                         <property name="halign">start</property>
                                                         <property name="adjustment">IndexedLineSetLSystemIterationsAdjustment</property>
                                                         <property name="climb_rate">1.5</property>
@@ -4504,6 +4505,7 @@
                                                       <object class="GtkEntry" id="IndexedLineSetLSystemConstantsEntry">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
+                                                        <property name="tooltip_text" translatable="yes">Constants are symbols wich will be replaced but not be drawn.</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
@@ -4514,6 +4516,7 @@
                                                       <object class="GtkEntry" id="IndexedLineSetLSystemAxiomEntry">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
+                                                        <property name="tooltip_text" translatable="yes">Starting rule.</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
@@ -4524,6 +4527,7 @@
                                                       <object class="GtkBox" id="IndexedLineSetLSystemTiltBox">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
+                                                        <property name="tooltip_text" translatable="yes">Rotation about the local z-axis.</property>
                                                         <property name="spacing">8</property>
                                                         <child>
                                                           <object class="GtkSpinButton" id="IndexedLineSetLSystemTiltSpinButton">
@@ -4583,6 +4587,12 @@
                                                           <object class="GtkBox" id="IndexedLineSetLSystemRuleBox">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
+                                                            <property name="tooltip_text" translatable="yes">any characer draw line
++ counterclockwise tilt
+- clockwise tilt
+&gt; counterclockwise twist
+&lt; clockwise twist
+C0-9 color index</property>
                                                             <property name="orientation">vertical</property>
                                                             <property name="spacing">2</property>
                                                             <child>
@@ -4716,6 +4726,7 @@
                                                       <object class="GtkBox" id="IndexedLineSetLSystemTwistBox">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
+                                                        <property name="tooltip_text" translatable="yes">Rotation about the local y-axis.</property>
                                                         <property name="spacing">8</property>
                                                         <child>
                                                           <object class="GtkSpinButton" id="IndexedLineSetLSystemTwistSpinButton">

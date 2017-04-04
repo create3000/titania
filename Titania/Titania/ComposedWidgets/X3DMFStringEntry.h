@@ -154,7 +154,7 @@ private:
 	set_field ();
 
 	void
-	addWidget (const int32_t index, const X3D::SFString & value);
+	addWidget (const int32_t index);
 
 	void
 	removeWidget (const int32_t index);

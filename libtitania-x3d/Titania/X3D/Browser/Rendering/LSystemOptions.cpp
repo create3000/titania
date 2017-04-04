@@ -150,6 +150,8 @@ LSystemOptions::build ()
 		if (indexedLineSets .empty ())
 			return;
 
+__LOG__ << rule () << std::endl;
+
 		const math::lsystem lsystem (std::max <int32_t> (0, iterations ()), constants (), axiom (), std::vector <std::string> (rule () .begin (), rule () .end ()));
 
 		const auto coord = getExecutionContext () -> createNode <Coordinate> ();

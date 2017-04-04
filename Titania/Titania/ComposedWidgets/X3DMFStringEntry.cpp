@@ -111,7 +111,9 @@ X3DMFStringEntry::on_add_before_clicked ()
 {
 	// Add value.
 
-	addWidget (0, defaultValue);
+	string .insert (string .begin (), defaultValue);
+
+	addWidget (0);
 
 	// Set node value.
 
@@ -125,7 +127,11 @@ X3DMFStringEntry::on_add_clicked (Gtk::Entry* const entry)
 {
 	// Add value.
 
-	addWidget (getIndex (entry) + 1, defaultValue);
+	const auto index = getIndex (entry) + 1;
+
+	string .insert (string .begin () + index, defaultValue);
+
+	addWidget (index);
 
 	// Set node value.
 
@@ -139,7 +145,11 @@ X3DMFStringEntry::on_remove_clicked (Gtk::Entry* const entry)
 {
 	// Remove Entry.
 
-	removeWidget (getIndex (entry));
+	const auto index = getIndex (entry);
+
+	string .erase (string .begin () + index);
+
+	removeWidget (index);
 
 	// Set node value.
 
@@ -224,8 +234,9 @@ X3DMFStringEntry::set_buffer ()
 
 	// Find last field.
 
-	const auto pair   = getArray <X3D::MFString> (nodes, name);
-	const auto string = pair .first;
+	const auto pair = getArray <X3D::MFString> (nodes, name);
+
+	string = pair .first;
 
 	if (pair .second > -2)
 	{
@@ -243,7 +254,7 @@ X3DMFStringEntry::set_buffer ()
 		// Add widgets.
 
 		for (const size_t size = string .size (); i < size; ++ i)
-			addWidget (i, string [i]);
+			addWidget (i);
 
 		// Remove widgets.
 
@@ -264,7 +275,7 @@ X3DMFStringEntry::set_buffer ()
 }
 
 void
-X3DMFStringEntry::addWidget (const int32_t index, const X3D::SFString & value)
+X3DMFStringEntry::addWidget (const int32_t index)
 {
 	const auto parent     = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_HORIZONTAL, spacing));
 	const auto entry      = Gtk::manage (new Gtk::Entry ());
@@ -272,7 +283,6 @@ X3DMFStringEntry::addWidget (const int32_t index, const X3D::SFString & value)
 	const auto add        = Gtk::manage (new Gtk::Button ());
 	const auto remove     = Gtk::manage (new Gtk::Button ());
 
-	string .insert (string .begin () + index, value);
 	entrys .insert (entrys .begin () + index, entry);
 
 	entry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_insert_text), entry), false);
@@ -284,7 +294,7 @@ X3DMFStringEntry::addWidget (const int32_t index, const X3D::SFString & value)
 
 	parent -> set_hexpand_set (true);
 	entry  -> set_hexpand_set (true);
-	entry  -> set_text (value);
+	entry  -> set_text (string [index]);
 	add    -> set_image_from_icon_name ("gtk-add",    Gtk::ICON_SIZE_MENU);
 	remove -> set_image_from_icon_name ("gtk-remove", Gtk::ICON_SIZE_MENU);
 
@@ -306,7 +316,6 @@ void
 X3DMFStringEntry::removeWidget (const int32_t index)
 {
 	entrys .erase (entrys .begin () + index);
-	string .erase (string .begin () + index);
 
 	box .remove (*box .get_children () [index]);
 }
