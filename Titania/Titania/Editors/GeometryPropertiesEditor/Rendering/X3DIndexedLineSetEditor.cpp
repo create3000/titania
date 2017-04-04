@@ -80,6 +80,8 @@ X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 {
 	addChildObjects (nodes);
 
+	getIndexedLineSetLSystemReferenceButton () .set_label (getIndexedLineSetLSystemReferenceButton () .get_uri ());
+
 	getIndexedLineSetLSystemTiltAdjustment ()  -> set_lower (-math::pi <double>);
 	getIndexedLineSetLSystemTiltAdjustment ()  -> set_upper (math::pi <double>);
 	getIndexedLineSetLSystemTwistAdjustment () -> set_lower (-math::pi <double>);

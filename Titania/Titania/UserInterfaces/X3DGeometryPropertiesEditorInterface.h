@@ -1078,6 +1078,10 @@ public:
 	getIndexedLineSetLSystemTwistSpinButton () const
 	{ return *m_IndexedLineSetLSystemTwistSpinButton; }
 
+	Gtk::LinkButton &
+	getIndexedLineSetLSystemReferenceButton () const
+	{ return *m_IndexedLineSetLSystemReferenceButton; }
+
 	Gtk::Expander &
 	getCommonPropertiesExpander () const
 	{ return *m_CommonPropertiesExpander; }
@@ -1658,6 +1662,7 @@ private:
 	Gtk::Image*                    m_IndexedLineSetLSystemUniformSizeImage;
 	Gtk::Box*                      m_IndexedLineSetLSystemTwistBox;
 	Gtk::SpinButton*               m_IndexedLineSetLSystemTwistSpinButton;
+	Gtk::LinkButton*               m_IndexedLineSetLSystemReferenceButton;
 	Gtk::Expander*                 m_CommonPropertiesExpander;
 	Gtk::CheckButton*              m_SolidCheckButton;
 	Gtk::CheckButton*              m_CCWCheckButton;

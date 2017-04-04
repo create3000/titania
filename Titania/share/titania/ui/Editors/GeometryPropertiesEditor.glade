@@ -4762,6 +4762,32 @@ C0-9 color index</property>
                                                         <property name="top_attach">2</property>
                                                       </packing>
                                                     </child>
+                                                    <child>
+                                                      <object class="GtkLinkButton" id="IndexedLineSetLSystemReferenceButton">
+                                                        <property name="label" translatable="yes">button</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="receives_default">True</property>
+                                                        <property name="relief">none</property>
+                                                        <property name="uri">https://en.wikipedia.org/wiki/L-system</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">1</property>
+                                                        <property name="top_attach">7</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkLabel" id="label69">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="label" translatable="yes">Reference:</property>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">0</property>
+                                                        <property name="top_attach">7</property>
+                                                      </packing>
+                                                    </child>
                                                   </object>
                                                   <packing>
                                                     <property name="name">page0</property>
