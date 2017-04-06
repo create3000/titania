@@ -572,6 +572,7 @@
     <None Include="Titania\Math\Primitives\Polyhedron3.h" />
     <None Include="Titania\Math\Algorithms\Barycentric.h" />
     <None Include="Titania\Math\Algorithms\LSystem.h" />
+    <None Include="Titania\Math\Algorithms\TurtleRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

@@ -9,7 +9,7 @@ META "created" "Sat, 01 Apr 2017 08:45:49 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Rendering/IndexedLineSet-L-System.x3dv"
-META "modified" "Thu, 06 Apr 2017 18:51:50 GMT"
+META "modified" "Thu, 06 Apr 2017 19:52:11 GMT"
 META "outputStyle" "Nicest"
 
 WorldInfo {
@@ -52,25 +52,30 @@ WorldInfo {
                         DEF iterations MetadataInteger {
                           name "iterations"
                           reference "http://titania.create3000.de"
-                          value 1
+                          value 3
                         }
-                        DEF zAngle MetadataFloat {
-                          name "zAngle"
+                        DEF xAngle MetadataFloat {
+                          name "xAngle"
                           reference "http://titania.create3000.de"
-                          value 0.241661
+                          value 0
                         }
                         DEF yAngle MetadataFloat {
                           name "yAngle"
                           reference "http://titania.create3000.de"
-                          value 2.13777
+                          value 0
+                        }
+                        DEF zAngle MetadataFloat {
+                          name "zAngle"
+                          reference "http://titania.create3000.de"
+                          value 0.785398
                         }
                         DEF size MetadataFloat {
                           name "size"
                           reference "http://titania.create3000.de"
                           value [
-                            2.01,
-                            2.01,
-                            2.01
+                            2,
+                            2,
+                            2
                           ]
                         }
                         DEF constants MetadataString {
@@ -81,29 +86,59 @@ WorldInfo {
                         DEF axiom MetadataString {
                           name "axiom"
                           reference "http://titania.create3000.de"
-                          value "X"
+                          value "B"
                         }
                         DEF rule MetadataString {
                           name "rule"
                           reference "http://titania.create3000.de"
                           value [
-                            "B=C0FFC1C0FFC1FFC0",
-                            "X=C0F[+F][-F]"
+                            "A=C0AA",
+                            "B=C1A[+B]-B"
                           ]
-                        }
-                        DEF xAngle MetadataFloat {
-                          name "xAngle"
-                          reference "http://titania.create3000.de"
-                          value 0
                         }
                       ]
                     }
                   }
-                  colorPerVertex FALSE
                   colorIndex [
                     0,
-                    0,
-                    1
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1,
+                    1,
+                    1,
+                    -1
                   ]
                   coordIndex [
                     0,
@@ -112,8 +147,38 @@ WorldInfo {
                     1,
                     2,
                     -1,
-                    1,
+                    2,
                     3,
+                    -1,
+                    2,
+                    4,
+                    -1,
+                    1,
+                    5,
+                    -1,
+                    5,
+                    6,
+                    -1,
+                    5,
+                    7,
+                    -1,
+                    1,
+                    8,
+                    -1,
+                    8,
+                    9,
+                    -1,
+                    8,
+                    10,
+                    -1,
+                    1,
+                    11,
+                    -1,
+                    11,
+                    12,
+                    -1,
+                    11,
+                    13,
                     -1
                   ]
                   color Color {
@@ -124,10 +189,20 @@ WorldInfo {
                   }
                   coord Coordinate {
                     point [
-                      -9.90696e-17 -1.005 0,
-                      -9.90696e-17 0.014817 0,
-                      0.244058 1.005 0,
-                      -0.244058 1.005 0
+                      -2.49442e-16 -1 0,
+                      0.397177 0.520565 0,
+                      0.678024 0.520565 0,
+                      0.876613 0.321976 0,
+                      0.876613 0.719153 0,
+                      0.397177 0.801411 0,
+                      0.595766 1 0,
+                      0.198589 1 0,
+                      -0.397177 0.801411 0,
+                      -0.198589 1 0,
+                      -0.595766 1 0,
+                      -0.678024 0.520565 0,
+                      -0.876613 0.719153 0,
+                      -0.876613 0.321976 0
                     ]
                   }
                 }
@@ -153,19 +228,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0.229123153779213,
-              1.33094108657088,
-              3.33973197602339
+              0.162460132832386,
+              2.41170412768298,
+              2.76667917940381
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.632140572515136,
-              0.773209795912926,
-              0.0504470820219216,
-              0.205693232665116
+              -0.949932923951005,
+              0.30193506122159,
+              0.0803906636308512,
+              0.546545054640442
             ]
           }
           DEF centerOfRotation MetadataDouble {
