@@ -96,20 +96,28 @@ public:
 	{ return *fields .iterations; }
 
 	SFFloat &
-	tilt ()
-	{ return *fields .tilt; }
+	xAngle ()
+	{ return *fields .xAngle; }
 
 	const SFFloat &
-	tilt () const
-	{ return *fields .tilt; }
+	xAngle () const
+	{ return *fields .xAngle; }
 
 	SFFloat &
-	twist ()
-	{ return *fields .twist; }
+	yAngle ()
+	{ return *fields .yAngle; }
 
 	const SFFloat &
-	twist () const
-	{ return *fields .twist; }
+	yAngle () const
+	{ return *fields .yAngle; }
+
+	SFFloat &
+	zAngle ()
+	{ return *fields .zAngle; }
+
+	const SFFloat &
+	zAngle () const
+	{ return *fields .zAngle; }
 
 	SFVec3f &
 	size ()
@@ -188,8 +196,9 @@ private:
 		Fields ();
 
 		SFInt32* const iterations;
-		SFFloat* const tilt;
-		SFFloat* const twist;
+		SFFloat* const xAngle;
+		SFFloat* const yAngle;
+		SFFloat* const zAngle;
 		SFVec3f* const size;
 		SFString* const constants;
 		SFString* const axiom;

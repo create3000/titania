@@ -61,8 +61,9 @@ namespace puck {
 X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 	X3DGeometryPropertiesEditorInterface (),
 	                   lSystemIterations (this, getIndexedLineSetLSystemIterationsAdjustment (), getIndexedLineSetLSystemIterationsSpinButton (), "iterations"),
-	                         lSystemTilt (this, getIndexedLineSetLSystemTiltAdjustment (), getIndexedLineSetLSystemTiltBox (), "tilt"),
-	                        lSystemTwist (this, getIndexedLineSetLSystemTwistAdjustment (), getIndexedLineSetLSystemTwistBox (), "twist"),
+	                       lSystemXAngle (this, getIndexedLineSetLSystemXAngleAdjustment (), getIndexedLineSetLSystemXAngleBox (), "xAngle"),
+	                       lSystemYAngle (this, getIndexedLineSetLSystemYAngleAdjustment (), getIndexedLineSetLSystemYAngleBox (), "yAngle"),
+	                       lSystemZAngle (this, getIndexedLineSetLSystemZAngleAdjustment (), getIndexedLineSetLSystemZAngleBox (), "zAngle"),
 	                         lSystemSize (this,
 	                                      getIndexedLineSetLSystemSizeXAdjustment (),
 	                                      getIndexedLineSetLSystemSizeYAdjustment (),
@@ -82,10 +83,12 @@ X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 
 	getIndexedLineSetLSystemReferenceButton () .set_label (getIndexedLineSetLSystemReferenceButton () .get_uri ());
 
-	getIndexedLineSetLSystemTiltAdjustment ()  -> set_lower (-math::pi <double>);
-	getIndexedLineSetLSystemTiltAdjustment ()  -> set_upper (math::pi <double>);
-	getIndexedLineSetLSystemTwistAdjustment () -> set_lower (-math::pi <double>);
-	getIndexedLineSetLSystemTwistAdjustment () -> set_upper (math::pi <double>);
+	getIndexedLineSetLSystemXAngleAdjustment () -> set_lower (-math::pi <double>);
+	getIndexedLineSetLSystemXAngleAdjustment () -> set_upper (math::pi <double>);
+	getIndexedLineSetLSystemYAngleAdjustment () -> set_lower (-math::pi <double>);
+	getIndexedLineSetLSystemYAngleAdjustment () -> set_upper (math::pi <double>);
+	getIndexedLineSetLSystemZAngleAdjustment () -> set_lower (-math::pi <double>);
+	getIndexedLineSetLSystemZAngleAdjustment () -> set_upper (math::pi <double>);
 
 	lSystemConstants .setFilter (&X3DIndexedLineSetEditor::validateLSystemConstants);
 	lSystemAxiom     .setFilter (&X3DIndexedLineSetEditor::validateLSystemAxiom);
@@ -187,8 +190,9 @@ X3DIndexedLineSetEditor::set_options ()
 	const auto inconsistent = not (optionsNodes .size () == nodes .size () and types .size () == 1);
 
 	lSystemIterations .setNodes (optionsNodes);
-	lSystemTilt       .setNodes (optionsNodes);
-	lSystemTwist      .setNodes (optionsNodes);
+	lSystemXAngle     .setNodes (optionsNodes);
+	lSystemYAngle     .setNodes (optionsNodes);
+	lSystemZAngle     .setNodes (optionsNodes);
 	lSystemSize       .setNodes (optionsNodes);
 	lSystemConstants  .setNodes (optionsNodes);
 	lSystemAxiom      .setNodes (optionsNodes);
@@ -248,7 +252,7 @@ X3DIndexedLineSetEditor::on_indexed_line_set_lsystem_uniform_size_clicked ()
 bool
 X3DIndexedLineSetEditor::validateLSystemConstants (const std::string & text)
 {
-	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>{}]+)/");
 
 	return std::regex_match (text, constants);
 }
@@ -256,7 +260,7 @@ X3DIndexedLineSetEditor::validateLSystemConstants (const std::string & text)
 bool
 X3DIndexedLineSetEditor::validateLSystemAxiom (const std::string & text)
 {
-	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>{}]+)/");
 
 	return std::regex_match (text, constants);
 }
@@ -264,7 +268,7 @@ X3DIndexedLineSetEditor::validateLSystemAxiom (const std::string & text)
 bool
 X3DIndexedLineSetEditor::validateLSystemRule (const std::string & text)
 {
-	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>=]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>{}=]+)/");
 
 	return std::regex_match (text, constants);
 }

@@ -158,6 +158,21 @@ public:
 	isTransparent () const final override
 	{ return X3DLineGeometryNodeTool::isTransparent (); }
 
+	virtual
+	const X3DPtrArray <X3DVertexAttributeNode> &
+	getAttrib () const final override
+	{ return getNode <IndexedLineSet> () -> getAttrib (); }
+
+	virtual
+	const X3DPtr <X3DColorNode> &
+	getColor () const final override
+	{ return getNode <IndexedLineSet> () -> getColor (); }
+
+	virtual
+	const X3DPtr <X3DCoordinateNode> &
+	getCoord () const final override
+	{ return getNode <IndexedLineSet> () -> getCoord (); }
+
 	///  @name Operations
 
 	virtual

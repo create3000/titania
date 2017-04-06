@@ -2658,6 +2658,63 @@
     <None Include="Titania\ComposedWidgets\MFStringEntry.h" />
     <None Include="Titania\ComposedWidgets\X3DMFStringEntry.h" />
     <None Include="Titania\ComposedWidgets\MFStringURLEntry.h" />
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems1.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems1.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems2.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems2.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems3.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems3.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems4.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems4.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems5.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems5.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems6.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems6.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems7.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems7.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems8.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems8.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems9.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems9.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems10.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems10.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems11.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems11.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems12.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems12.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems13.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems13.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems14.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems14.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems15.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems15.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems16.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems16.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems17.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems17.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems18.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems18.x3dv</Link>
+    </None>
+    <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems19.x3dv">
+      <Link>share\titania\Library\Models\L-Systems\L-Systems19.x3dv</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2765,6 +2822,7 @@
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\NURBS\" />
     <Folder Include="Titania\Dialogs\UndoHistoryDialog\" />
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\Rendering\" />
+    <Folder Include="share\titania\Library\Models\L-Systems\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

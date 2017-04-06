@@ -182,6 +182,21 @@ public:
 	isTransparent () const override
 	{ return transparent; }
 
+	virtual
+	const X3DPtrArray <X3DVertexAttributeNode> &
+	getAttrib () const
+	{ return attribNodes; }
+
+	virtual
+	const X3DPtr <X3DColorNode> &
+	getColor () const
+	{ return colorNode; }
+
+	virtual
+	const X3DPtr <X3DCoordinateNode> &
+	getCoord () const
+	{ return coordNode; }
+
 	///  @name Operations
 
 	virtual

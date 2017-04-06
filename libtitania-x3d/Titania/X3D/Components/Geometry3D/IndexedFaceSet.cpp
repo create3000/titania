@@ -209,13 +209,13 @@ IndexedFaceSet::build ()
 
 	// Fill GeometryNode
 
-	size_t face        = 0;
 	GLenum vertexMode  = getVertexMode (polygons [0] .elements [0] .size ());
 	size_t numVertices = 0;
 
 	for (const auto & polygon : polygons)
 	{
 		const auto & vertices = polygon .vertices;
+		const auto & face     = polygon .face;
 
 		for (const auto & element : polygon .elements)
 		{
@@ -264,8 +264,6 @@ IndexedFaceSet::build ()
 				getCoord () -> addVertex (getVertices (), index);
 			}
 		}
-
-		++ face;
 	}
 
 	addElements (vertexMode, getVertices () .size () - numVertices);
@@ -298,7 +296,8 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 			coordIndex () .emplace_back (-1);
 
 		// Construct triangle array and determine the number of used points.
-		size_t i = 0;
+		size_t face = 0;
+		size_t i    = 0;
 
 		polygons .emplace_back ();
 
@@ -314,6 +313,8 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 			else
 			{
 				// Negativ index.
+
+				polygons .back () .face = face ++;
 
 				if (not vertices .empty ())
 				{
@@ -336,7 +337,7 @@ IndexedFaceSet::tessellate (const bool convex, PolygonArray & polygons, size_t &
 
 							// Add polygon with one triangle.
 
-							polygons .back () .elements .emplace_back (Vertices { 0, 1, 2 });
+							polygons .back () .elements .emplace_back (Vertices ({ 0, 1, 2 }));
 							polygons .emplace_back ();
 							break;
 						}

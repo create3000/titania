@@ -51,47 +51,88 @@
 #ifndef __TITANIA_MATH_ALGORITHMS_LSYSTEM_H__
 #define __TITANIA_MATH_ALGORITHMS_LSYSTEM_H__
 
+#include "../../Utility/Range.h"
+
 #include <iostream>
 #include <map>
+#include <set>
+#include <sstream>
 #include <string>
-#include <vector>
+
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace math {
 
+template <class String>
 class lsystem
 {
 public:
 
+	///  @name Member types
+
+	using string_type    = String;
+	using size_type      = size_t;
+	using constants_type = std::set <typename String::value_type>;
+	using rules_type     = std::map <typename String::value_type, String>;
+
 	///  @name Construction
 
-	lsystem (const size_t iterations,
-	         const std::string & constants,
-	         const std::string & axiom,
-	         const std::vector <std::string> & rules)
+	lsystem ();
+
+	template <class Iterator>
+	lsystem (const size_type iterations,
+	         const String & constants,
+	         const String & axiom,
+	         const Iterator & first_rule,
+	         const Iterator & last_rule)
 	throw (std::runtime_error);
 
 	///  @name Member access
 
-	size_t
+	void
+	iterations (const size_type value)
+	{ m_iterations = value; }
+
+	size_type
 	iterations () const
 	{ return m_iterations; }
 
-	const std::vector <bool> &
+	void
+	add_constant (const typename String::value_type & constant);
+
+	bool
+	is_constant (const typename String::value_type & constant) const;
+
+	const constants_type &
 	constants () const
 	{ return m_constants; }
 
-	const std::string &
+	void
+	axiom (const String & value)
+	{ m_axiom = remove_spaces (value); }
+
+	const String &
 	axiom () const
 	{ return m_axiom; }
 
-	const std::vector <std::string> &
+	void
+	add_rule (const String & rule)
+	throw (std::runtime_error);
+
+	const rules_type &
 	rules () const
 	{ return m_rules; }
 
-	const std::string &
+	const String &
 	commands () const
 	{ return m_commands; }
+
+	///  @name Operations
+
+	void
+	generate ()
+	throw (std::runtime_error);
 
 	///  @name Destruction
 
@@ -102,36 +143,146 @@ private:
 
 	///  @name Operations
 
-	void
-	add_constant (const std::string::value_type constant);
-
-	void
-	add_rule (const std::string & rule)
-	throw (std::runtime_error);
-
-	void
-	generate ()
-	throw (std::runtime_error);
+	String
+	remove_spaces (const String & string);
 
 	///  @name Members
 
-	const size_t                             m_iterations;
-	const std::string                        m_axiom;
-	const std::vector <std::string>          m_rules;
-
-	std::vector <bool>                              m_constants;
-	std::map <std::string::value_type, std::string> m_rules_index;
-	std::string                                     m_commands;
+	size_type      m_iterations;
+	String         m_axiom;
+	constants_type m_constants;
+	rules_type     m_rules;
+	String         m_commands;
 
 };
 
+template <class String>
+lsystem <String>::lsystem () :
+	m_iterations (0),
+	     m_axiom (),
+	 m_constants (),
+	     m_rules (),
+	  m_commands ()
+{ }
+
+template <class String>
+template <class Iterator>
+lsystem <String>::lsystem (const size_type iterations,
+                           const String & constants,
+                           const String & axiom,
+                           const Iterator & first_rule,
+                           const Iterator & last_rule)
+throw (std::runtime_error) :
+	m_iterations (iterations),
+	     m_axiom (remove_spaces (axiom)),
+	 m_constants (),
+	     m_rules (),
+	  m_commands ()
+{
+	for (const auto & constant : constants)
+		add_constant (constant);
+
+	for (const auto & rule : std::make_pair (first_rule, last_rule))
+		add_rule (rule);
+
+	generate ();
+}
+
+template <class String>
+String
+lsystem <String>::remove_spaces (const String & string)
+{
+	String spaceless;
+
+	for (const auto & c : string)
+	{
+		if (std::isspace (c))
+			continue;
+
+		spaceless += c;
+	}
+
+	return spaceless;
+}
+
+template <class String>
+inline
+void
+lsystem <String>::add_constant (const typename String::value_type & constant)
+{
+	m_constants .emplace (constant);
+}
+
+template <class String>
+inline
+bool
+lsystem <String>::is_constant (const typename String::value_type & constant) const
+{
+	return m_constants .count (constant);
+}
+
+template <class String>
+void
+lsystem <String>::add_rule (const String & rule)
+throw (std::runtime_error)
+{
+	const auto rule_without_spaces = remove_spaces (rule);
+
+	if (rule_without_spaces .empty ())
+		return;
+
+	if (rule_without_spaces .size () > 1 and rule_without_spaces [1] == '=')
+		m_rules .emplace (rule_without_spaces [0], rule_without_spaces .substr (2));
+
+	else
+		throw std::runtime_error ("lsystem::add_rule: rule '" + rule + "' does not match.");
+}
+
+template <class String>
+void
+lsystem <String>::generate ()
+throw (std::runtime_error)
+{
+	m_commands = axiom ();
+
+	// Process for each iteration.
+	for (size_type i = 0; i < iterations (); ++ i)
+	{
+		std::ostringstream commands;
+		
+		// Process each character of the axiom.
+		for (const auto c : m_commands)
+		{
+			const auto iter = m_rules .find (c);
+
+			if (iter not_eq m_rules .end ())
+				commands << iter -> second;
+
+			else
+				commands << c;
+
+			if (commands .tellp () > 100'000'000)
+			  throw std::runtime_error ("lsystem::generate: generated command string too large! 100,000,000 commands maximum.");
+		}
+
+		m_commands = commands .str ();
+	}
+}
+
+template <class String>
+lsystem <String>::~lsystem ()
+{ }
+
 ///  Insertion operator for lsystem values.
+template <class String>
 inline
 std::ostream &
-operator << (std::ostream & ostream, const lsystem & ls)
+operator << (std::ostream & ostream, const lsystem <String> & ls)
 {
 	return ostream << ls .commands ();
 }
+
+extern template class lsystem <std::string>;
 
 } // math
 } // titania

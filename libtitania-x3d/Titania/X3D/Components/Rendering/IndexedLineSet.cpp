@@ -301,17 +301,8 @@ IndexedLineSet::getPolylineIndices () const
 			else
 			{
 				// Negativ index.
-
-				if (not polyline .empty ())
-				{
-					if (polyline .size () > 1)
-					{
-						// Add polylines.
-						polylines .emplace_back (std::move (polyline));
-					}
-
-					polyline .clear ();
-				}
+				// Add polylines.
+				polylines .emplace_back (std::move (polyline));
 			}
 
 			++ i;
@@ -319,11 +310,7 @@ IndexedLineSet::getPolylineIndices () const
 
 		if (coordIndex () .back () >= 0)
 		{
-			if (not polyline .empty ())
-			{
-				if (polyline .size () > 1)
-					polylines .emplace_back (std::move (polyline));
-			}
+			polylines .emplace_back (std::move (polyline));
 		}
 	}
 
@@ -348,25 +335,28 @@ IndexedLineSet::build ()
 	{
 		// Create two vertices for each line.
 
-		for (size_t line = 0, end = polyline .size () - 1; line < end; ++ line)
+		if (polyline .size () > 1)
 		{
-			for (size_t index = line, end = line + 2; index < end; ++ index)
+			for (size_t line = 0, end = polyline .size () - 1; line < end; ++ line)
 			{
-				const auto i = polyline [index];
-
-				for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
-					attribNodes [a] -> addValue (attribArrays [a], coordIndex () [i]);
-
-				if (colorNode)
+				for (size_t index = line, end = line + 2; index < end; ++ index)
 				{
-					if (colorPerVertex ())
-						colorNode -> addColor (getColors (), getColorIndex (i, true));
-
-					else
-						colorNode -> addColor (getColors (), getColorIndex (face));
+					const auto i = polyline [index];
+	
+					for (size_t a = 0, size = attribNodes .size (); a < size; ++ a)
+						attribNodes [a] -> addValue (attribArrays [a], coordIndex () [i]);
+	
+					if (colorNode)
+					{
+						if (colorPerVertex ())
+							colorNode -> addColor (getColors (), getColorIndex (i, true));
+	
+						else
+							colorNode -> addColor (getColors (), getColorIndex (face));
+					}
+	
+					coordNode -> addVertex (getVertices (), coordIndex () [i]);
 				}
-
-				coordNode -> addVertex (getVertices (), coordIndex () [i]);
 			}
 		}
 

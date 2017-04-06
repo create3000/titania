@@ -1,13 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Browser/Shaders/X3DShadersContext.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Tools/Grids/AxonometricGridTool.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/PaletteEditor/X3DPaletteEditor.h" Line="1" Column="1" />
-      <File FileName="Papers/L-System.js" Line="298" Column="8" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/RenderingProperties.cpp" Line="358" Column="28" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/X3DShadersContext.cpp" Line="79" Column="9" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/LSystemOptions.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/LSystemOptions.cpp" Line="539" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Algorithms/LSystem.h" Line="246" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="302" Column="21" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="255" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

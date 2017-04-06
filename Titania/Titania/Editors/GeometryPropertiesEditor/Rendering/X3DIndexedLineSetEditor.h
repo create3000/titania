@@ -120,8 +120,9 @@ private:
 	///  @name Members
 
 	X3DFieldAdjustment <X3D::SFInt32>  lSystemIterations;
-	X3DFieldAdjustment <X3D::SFFloat>  lSystemTilt;
-	X3DFieldAdjustment <X3D::SFFloat>  lSystemTwist;
+	X3DFieldAdjustment <X3D::SFFloat>  lSystemXAngle;
+	X3DFieldAdjustment <X3D::SFFloat>  lSystemYAngle;
+	X3DFieldAdjustment <X3D::SFFloat>  lSystemZAngle;
 	X3DFieldAdjustment3 <X3D::SFVec3f> lSystemSize;
 	SFStringEntry                      lSystemConstants;
 	SFStringEntry                      lSystemAxiom;

@@ -50,101 +50,10 @@
 
 #include "LSystem.h"
 
-#include <regex>
-#include <sstream>
-
-#include <Titania/LOG.h>
-
 namespace titania {
 namespace math {
 
-namespace {
-const std::regex spaces_rx (R"/(\s+)/");
-}
-
-lsystem::lsystem (const size_t iterations,
-                  const std::string & constants,
-                  const std::string & axiom,
-                  const std::vector <std::string> & rules)
-throw (std::runtime_error) :
-	 m_iterations (iterations),
-	      m_axiom (std::regex_replace (axiom, spaces_rx, "")),
-	      m_rules (rules),
-	  m_constants (256),
-	m_rules_index (),
-	   m_commands ()
-{
-	for (const auto & constant : constants)
-		add_constant (constant);
-
-	for (const auto & rule : rules)
-		add_rule (rule);
-
-	generate ();
-}
-
-void
-lsystem::add_constant (const std::string::value_type constant)
-{
-	const size_t index = constant;
-
-	if (index < m_constants .size ())
-		m_constants [index] = true;
-}
-
-void
-lsystem::add_rule (const std::string & rule)
-throw (std::runtime_error)
-{
-	static const std::regex rule_rx (R"/(^([A-Za-z0-9])=([\sA-Za-z0-9\[\]\+\-<>]*)$)/");
-
-	const auto rule_without_spaces = std::regex_replace (rule, spaces_rx, "");
-
-	if (rule_without_spaces .empty ())
-		return;
-
-	std::smatch match;
-
-	if (std::regex_match (rule_without_spaces, match, rule_rx))
-		m_rules_index .emplace (match .str (1) .front (), match .str (2));
-
-	else
-		throw std::runtime_error ("lsystem::add_rule: rule '" + rule + "' does not match.");
-}
-
-void
-lsystem::generate ()
-throw (std::runtime_error)
-{
-	if (iterations ())
-		m_commands = axiom ();
-
-	// process for each iteration
-	for (size_t i = 0; i < iterations (); ++ i)
-	{
-		std::ostringstream commands;
-		
-		// Process each character of the axiom.
-		for (const auto c : m_commands)
-		{
-			const auto iter = m_rules_index .find (c);
-
-			if (iter not_eq m_rules_index .end ())
-				commands << iter -> second;
-
-			else
-				commands << c;
-
-			if (commands .tellp () > 100'000'000)
-			  throw std::runtime_error ("lsystem::generate: generated command string too large! 100,000,000 commands maximum.");
-		}
-
-		m_commands = commands .str ();
-	}
-}
-
-lsystem::~lsystem ()
-{ }
+template class lsystem <std::string>;
 
 } // math
 } // titania

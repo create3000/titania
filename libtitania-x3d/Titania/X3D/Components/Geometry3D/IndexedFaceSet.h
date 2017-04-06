@@ -253,9 +253,9 @@ private:
 
 	struct Polygon
 	{
-		Vertices vertices;
+		Vertices     vertices;
 		ElementArray elements;
-
+		size_t       face;
 	};
 
 	using PolygonArray = std::vector <Polygon>;

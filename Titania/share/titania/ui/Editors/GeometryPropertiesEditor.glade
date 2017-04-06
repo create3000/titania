@@ -276,13 +276,19 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="IndexedLineSetLSystemTiltAdjustment">
+  <object class="GtkAdjustment" id="IndexedLineSetLSystemXAngleAdjustment">
     <property name="lower">-3.1400000000000001</property>
     <property name="upper">3.1400000000000001</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkAdjustment" id="IndexedLineSetLSystemTwistAdjustment">
+  <object class="GtkAdjustment" id="IndexedLineSetLSystemYAngleAdjustment">
+    <property name="lower">-3.1400000000000001</property>
+    <property name="upper">3.1400000000000001</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
+  <object class="GtkAdjustment" id="IndexedLineSetLSystemZAngleAdjustment">
     <property name="lower">-3.1400000000000001</property>
     <property name="upper">3.1400000000000001</property>
     <property name="step_increment">0.01</property>
@@ -4443,7 +4449,7 @@
                                                       <object class="GtkLabel" id="label143">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
-                                                        <property name="label" translatable="yes">Tilt:</property>
+                                                        <property name="label" translatable="yes">U Tilt:</property>
                                                         <property name="xalign">0</property>
                                                       </object>
                                                       <packing>
@@ -4460,7 +4466,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">4</property>
+                                                        <property name="top_attach">5</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4472,7 +4478,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">5</property>
+                                                        <property name="top_attach">6</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4484,7 +4490,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">6</property>
+                                                        <property name="top_attach">7</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4509,7 +4515,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
-                                                        <property name="top_attach">4</property>
+                                                        <property name="top_attach">5</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4520,21 +4526,21 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
-                                                        <property name="top_attach">5</property>
+                                                        <property name="top_attach">6</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkBox" id="IndexedLineSetLSystemTiltBox">
+                                                      <object class="GtkBox" id="IndexedLineSetLSystemXAngleBox">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
-                                                        <property name="tooltip_text" translatable="yes">Rotation about the local z-axis.</property>
+                                                        <property name="tooltip_text" translatable="yes">Rotation about the local x-axis ({}).</property>
                                                         <property name="spacing">8</property>
                                                         <child>
-                                                          <object class="GtkSpinButton" id="IndexedLineSetLSystemTiltSpinButton">
+                                                          <object class="GtkSpinButton" id="IndexedLineSetLSystemXAngleSpinButton">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="halign">start</property>
-                                                            <property name="adjustment">IndexedLineSetLSystemTiltAdjustment</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemXAngleAdjustment</property>
                                                             <property name="digits">6</property>
                                                           </object>
                                                           <packing>
@@ -4547,7 +4553,7 @@
                                                           <object class="GtkScale">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
-                                                            <property name="adjustment">IndexedLineSetLSystemTiltAdjustment</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemXAngleAdjustment</property>
                                                             <property name="round_digits">1</property>
                                                             <property name="draw_value">False</property>
                                                           </object>
@@ -4587,11 +4593,13 @@
                                                           <object class="GtkBox" id="IndexedLineSetLSystemRuleBox">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
-                                                            <property name="tooltip_text" translatable="yes">any characer draw line
-+ counterclockwise tilt
-- clockwise tilt
-&gt; counterclockwise twist
-&lt; clockwise twist
+                                                            <property name="tooltip_text" translatable="yes">any characer draw line along local y-axis
+} counterclockwise rotation about local x-axis
+{ clockwise rotation about local x-axis
+&gt; counterclockwise rotation about local y-axis
+&lt; clockwise rotation about local y-axis
++ counterclockwise rotation about local z-axis
+- clockwise rotation about local z-axis
 C0-9 color index</property>
                                                             <property name="orientation">vertical</property>
                                                             <property name="spacing">2</property>
@@ -4608,7 +4616,7 @@ C0-9 color index</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
-                                                        <property name="top_attach">6</property>
+                                                        <property name="top_attach">7</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4620,7 +4628,7 @@ C0-9 color index</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">3</property>
+                                                        <property name="top_attach">4</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4707,14 +4715,40 @@ C0-9 color index</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
-                                                        <property name="top_attach">3</property>
+                                                        <property name="top_attach">4</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkLabel" id="label66">
+                                                      <object class="GtkLinkButton" id="IndexedLineSetLSystemReferenceButton">
+                                                        <property name="label" translatable="yes">button</property>
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="receives_default">True</property>
+                                                        <property name="relief">none</property>
+                                                        <property name="uri">https://en.wikipedia.org/wiki/L-system</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">1</property>
+                                                        <property name="top_attach">8</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkLabel" id="label69">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
-                                                        <property name="label" translatable="yes">Twist:</property>
+                                                        <property name="label" translatable="yes">Reference:</property>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">0</property>
+                                                        <property name="top_attach">8</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkLabel" id="label70">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="label" translatable="yes">V Tilt:</property>
                                                         <property name="xalign">0</property>
                                                       </object>
                                                       <packing>
@@ -4723,18 +4757,18 @@ C0-9 color index</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkBox" id="IndexedLineSetLSystemTwistBox">
+                                                      <object class="GtkBox" id="IndexedLineSetLSystemZAngleBox">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
-                                                        <property name="tooltip_text" translatable="yes">Rotation about the local y-axis.</property>
+                                                        <property name="tooltip_text" translatable="yes">Rotation about the local z-axis (-+).</property>
                                                         <property name="spacing">8</property>
                                                         <child>
-                                                          <object class="GtkSpinButton" id="IndexedLineSetLSystemTwistSpinButton">
+                                                          <object class="GtkSpinButton" id="IndexedLineSetLSystemZAngleSpinButton">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
                                                             <property name="halign">start</property>
                                                             <property name="text" translatable="yes">0,000000</property>
-                                                            <property name="adjustment">IndexedLineSetLSystemTwistAdjustment</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemZAngleAdjustment</property>
                                                             <property name="digits">6</property>
                                                           </object>
                                                           <packing>
@@ -4747,7 +4781,7 @@ C0-9 color index</property>
                                                           <object class="GtkScale">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">True</property>
-                                                            <property name="adjustment">IndexedLineSetLSystemTwistAdjustment</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemZAngleAdjustment</property>
                                                             <property name="draw_value">False</property>
                                                           </object>
                                                           <packing>
@@ -4763,29 +4797,55 @@ C0-9 color index</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkLinkButton" id="IndexedLineSetLSystemReferenceButton">
-                                                        <property name="label" translatable="yes">button</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">True</property>
-                                                        <property name="relief">none</property>
-                                                        <property name="uri">https://en.wikipedia.org/wiki/L-system</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="left_attach">1</property>
-                                                        <property name="top_attach">7</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkLabel" id="label69">
+                                                      <object class="GtkLabel" id="label66">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
-                                                        <property name="label" translatable="yes">Reference:</property>
+                                                        <property name="label" translatable="yes">Twist:</property>
                                                         <property name="xalign">0</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">7</property>
+                                                        <property name="top_attach">3</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox" id="IndexedLineSetLSystemYAngleBox">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="tooltip_text" translatable="yes">Rotation about the local y-axis (&lt;&gt;).</property>
+                                                        <property name="spacing">8</property>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="IndexedLineSetLSystemYAngleSpinButton">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="halign">start</property>
+                                                            <property name="text" translatable="yes">0,000000</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemYAngleAdjustment</property>
+                                                            <property name="digits">6</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">False</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">0</property>
+                                                          </packing>
+                                                        </child>
+                                                        <child>
+                                                          <object class="GtkScale">
+                                                            <property name="visible">True</property>
+                                                            <property name="can_focus">True</property>
+                                                            <property name="adjustment">IndexedLineSetLSystemYAngleAdjustment</property>
+                                                            <property name="draw_value">False</property>
+                                                          </object>
+                                                          <packing>
+                                                            <property name="expand">True</property>
+                                                            <property name="fill">True</property>
+                                                            <property name="position">1</property>
+                                                          </packing>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">1</property>
+                                                        <property name="top_attach">3</property>
                                                       </packing>
                                                     </child>
                                                   </object>
