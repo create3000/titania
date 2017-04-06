@@ -9,7 +9,7 @@ META "created" "Sat, 01 Apr 2017 08:45:49 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Rendering/IndexedLineSet-L-System.x3dv"
-META "modified" "Thu, 06 Apr 2017 11:43:22 GMT"
+META "modified" "Thu, 06 Apr 2017 18:51:50 GMT"
 META "outputStyle" "Nicest"
 
 WorldInfo {
@@ -52,7 +52,7 @@ WorldInfo {
                         DEF iterations MetadataInteger {
                           name "iterations"
                           reference "http://titania.create3000.de"
-                          value 5
+                          value 1
                         }
                         DEF zAngle MetadataFloat {
                           name "zAngle"
@@ -81,14 +81,14 @@ WorldInfo {
                         DEF axiom MetadataString {
                           name "axiom"
                           reference "http://titania.create3000.de"
-                          value "B"
+                          value "X"
                         }
                         DEF rule MetadataString {
                           name "rule"
                           reference "http://titania.create3000.de"
                           value [
-                            "B=C0FC1FC0",
-                            ""
+                            "B=C0FFC1C0FFC1FFC0",
+                            "X=C0F[+F][-F]"
                           ]
                         }
                         DEF xAngle MetadataFloat {
@@ -100,11 +100,20 @@ WorldInfo {
                     }
                   }
                   colorPerVertex FALSE
-                  colorIndex 0
+                  colorIndex [
+                    0,
+                    0,
+                    1
+                  ]
                   coordIndex [
                     0,
                     1,
+                    -1,
+                    1,
                     2,
+                    -1,
+                    1,
+                    3,
                     -1
                   ]
                   color Color {
@@ -115,9 +124,10 @@ WorldInfo {
                   }
                   coord Coordinate {
                     point [
-                      0 -1.005 0,
-                      0 0 0,
-                      0 1.005 0
+                      -9.90696e-17 -1.005 0,
+                      -9.90696e-17 0.014817 0,
+                      0.244058 1.005 0,
+                      -0.244058 1.005 0
                     ]
                   }
                 }
@@ -143,19 +153,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              0.194373209527499,
-              1.85329616751579,
-              3.23061172876054
+              0.229123153779213,
+              1.33094108657088,
+              3.33973197602339
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.886703018746289,
-              0.457267001949071,
-              0.0682982098940186,
-              0.333759268415809
+              -0.632140572515136,
+              0.773209795912926,
+              0.0504470820219216,
+              0.205693232665116
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -181,11 +191,21 @@ WorldInfo {
       DEF AxonometricGrid MetadataSet {
         name "AxonometricGrid"
         reference "http://titania.create3000.de"
-        value DEF enabled_1 MetadataBoolean {
-          name "enabled"
-          reference "http://titania.create3000.de"
-          value FALSE
-        }
+        value [
+          DEF enabled_1 MetadataBoolean {
+            name "enabled"
+            reference "http://titania.create3000.de"
+            value FALSE
+          }
+          DEF angle MetadataDouble {
+            name "angle"
+            reference "http://titania.create3000.de"
+            value [
+              1.0471975511966,
+              1.0471975511966
+            ]
+          }
+        ]
       }
       DEF Grid MetadataSet {
         name "Grid"

@@ -145,32 +145,40 @@ LSystemOptions::removeNode (IndexedLineSet* const indexedLineSet)
 	indexedLineSets .erase (indexedLineSet);
 }
 
+template <class Type>
+struct turtle_renderer_node {
+
+	using value_type    = Type;
+	using colors_type   = std::vector <int32_t>;
+	using node_ptr      = std::shared_ptr <turtle_renderer_node>;
+	using children_type = std::vector <node_ptr>;
+
+	turtle_renderer_node (const int32_t color, const vector3 <Type> & point) :
+		            colors (),
+		             color (color),
+		next_control_point (1),
+		             point (point),
+		          children ()
+	{ }
+
+	colors_type    colors;
+	int32_t        color;
+	int32_t        next_control_point;
+	vector3 <Type> point;
+	children_type  children;
+
+};
+
 template <class Type, class String>
 class turtle_renderer {
 public:
 
 	///  @name Member types
 
-	struct node_type;
-
-	using node_ptr      = std::shared_ptr <node_type>;
-	using children_type = std::vector <node_ptr>;
-
-	struct node_type {
-
-		node_type (const vector3 <Type> & point, const int32_t color) :
-			             color (color),
-			next_control_point (1),
-			             point (point),
-			          children ()
-		{ }
-
-		int32_t        color;
-		int32_t        next_control_point;
-		vector3 <Type> point;
-		children_type  children;
-
-	};
+	using value_type  = Type;
+	using string_type = String;
+	using node_type   = turtle_renderer_node <Type>;
+	using node_ptr    = typename node_type::node_ptr;
 
 	///  @name Construction
 
@@ -259,13 +267,14 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 		const int32_t        color;
 	};
 
-	bool    change = true;
-	auto    matrix = matrix3 <Type> ();
-	auto    point  = vector3 <Type> ();
-	int32_t color  = 0;
-	auto    root   = std::make_shared <node_type> (point, color);
-	auto    node   = root;
-	auto    stack  = std::vector <stack_value> ();
+	bool    change    = true;
+	auto    matrix    = matrix3 <Type> ();
+	auto    point     = vector3 <Type> ();
+	int32_t color     = 0;
+	int32_t lastColor = -1;
+	auto    root      = std::make_shared <node_type> (color, point);
+	auto    node      = root;
+	auto    stack     = std::vector <stack_value> ();
 
 	std::istringstream isstream (lsystem .commands ());
 
@@ -279,10 +288,10 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 			{
 				int32_t index;
 
-				if ((isstream >> index) and (index >= 0) and (index not_eq color))
+				if ((isstream >> index) and (index >= 0))
 				{
 					m_colors      = true;
-					change        = true;
+					change        = index not_eq lastColor;
 					color         = index;
 					node -> color = index;
 				}
@@ -339,11 +348,12 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 
 				const auto & back = stack .back ();
 
-				change = true;
-				node   = back .node;
-				point  = back .point;
-				matrix = back .matrix;
-				color  = back .color;
+				change    = true;
+				node      = back .node;
+				point     = back .point;
+				matrix    = back .matrix;
+				color     = back .color;
+				lastColor = color;
 
 				stack .pop_back ();
 				break;
@@ -360,10 +370,12 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 
 				if (change)
 				{
-					change = false;
+					change    = false;
+					lastColor = color;
 
-					auto child = std::make_shared <node_type> (point, color);
+					auto child = std::make_shared <node_type> (color, point);
 	
+					node -> colors   .emplace_back (color);
 					node -> children .emplace_back (child);
 	
 					node = std::move (child);
@@ -399,14 +411,17 @@ LSystemOptions::build ()
 		struct StackValue {
 
 			StackValue (const TurtleRenderer::node_ptr & node,
+			            const int32_t lineColor,
 			            const int32_t color,
 			            const int32_t coord) :
-				 node (node),
-				color (color),
-				coord (coord)
+				     node (node),
+				lineColor (lineColor),
+				    color (color),
+				    coord (coord)
 			{ }
 
 			const TurtleRenderer::node_ptr node;
+			const int32_t                  lineColor;
 			const int32_t                  color;
 			const int32_t                  coord;
 
@@ -428,23 +443,20 @@ LSystemOptions::build ()
 		auto points                = std::vector <Vector3d> ();
 
 		if (root)
-		{
-			stack               .emplace_back (std::make_unique <StackValue> (root, -1, -1));
-			colorPerLineIndices .emplace_back (root -> color);
-		}
+			stack .emplace_back (std::make_unique <StackValue> (root, -2, -2, -2));
 
 		while (not stack .empty ())
 		{
-			const auto   front = std::move (stack .back ());
-			const auto & node  = front -> node;
-			const auto   color = node -> color;
-			const auto   coord = points .size ();
+			const auto front = std::move (stack .back ());
+			auto       node  = front -> node;
+			const auto color = node -> color;
+			const auto coord = points .size ();
 
 			stack .pop_back ();
 
-			if (front -> coord not_eq -1)
+			if (front -> coord >= 0)
 			{
-				colorPerLineIndices   .emplace_back (front -> color);
+				colorPerLineIndices   .emplace_back (front -> lineColor);
 				colorPerVertexIndices .emplace_back (front -> color);
 				coordIndices          .emplace_back (front -> coord);
 			}
@@ -464,18 +476,22 @@ LSystemOptions::build ()
 				}
 				case 1:
 				{
-					if (node -> next_control_point == 0)
+					while (node -> children .front () -> next_control_point == 0)
 					{
-						colorPerVertexIndices .emplace_back (color);
-						coordIndices          .emplace_back (coord);
-	
-						for (const auto & child : node -> children)
-							stack .emplace_back (std::make_unique <StackValue> (child, -1, -1));
-
-						break;
+						node = node -> children .front ();
 					}
 
-					// Proceed with next case:
+					if (front -> coord not_eq -2)
+					{
+						colorPerVertexIndices .emplace_back (color);
+						colorPerVertexIndices .emplace_back (-1);
+	
+						coordIndices .emplace_back (coord);
+						coordIndices .emplace_back (-1);
+					}
+
+					stack .emplace_back (std::make_unique <StackValue> (node -> children .front (), node -> colors .front (), color, coord));
+					break;
 				}
 				default:
 				{
@@ -485,8 +501,8 @@ LSystemOptions::build ()
 					coordIndices .emplace_back (coord);
 					coordIndices .emplace_back (-1);
 
-					for (const auto & child : node -> children)
-						stack .emplace_back (std::make_unique <StackValue> (child, color, coord));
+					for (size_t i = 0, size = node -> children .size (); i < size; ++ i)
+						stack .emplace_back (std::make_unique <StackValue> (node -> children [i], node -> colors [i], color, coord));
 				}
 			}
 		}
