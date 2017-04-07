@@ -114,7 +114,7 @@ public:
 	///  Default constructor.  All values default to 0.
 	constexpr
 	quaternion () :
-		value { Type (), Type (), Type (), Type () }
+		value { Type (), Type (), Type (), Type (1) }
 	{ }
 
 	///  Copy constructor.

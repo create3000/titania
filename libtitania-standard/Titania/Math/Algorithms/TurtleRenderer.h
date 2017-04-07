@@ -52,6 +52,7 @@
 #define __TITANIA_MATH_ALGORITHMS_TURTLE_RENDERER_H__
 
 #include "../Numbers/Vector3.h"
+#include "../Utility/almost_equal.h"
 #include "LSystem.h"
 
 #include <memory>
@@ -186,16 +187,16 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 		const int32_t        color;
 	};
 
-	bool    change    = true;
-	auto    quat      = quaternion <int32_t> (0, 0, 0, 1);
-	int32_t color     = 0;
-	int32_t lastColor = -1;
-	auto    matrix    = matrix3 <Type> ();
-	auto    point     = vector3 <Type> ();
-	int32_t distance  = 0;
-	auto    root      = std::make_shared <node_type> (point, color);
-	auto    node      = root;
-	auto    stack     = std::vector <stack_value> ();
+	bool    change        = true;                                        // True, if a new point must be inserted.
+	int32_t color         = 0;                                           // Current color index.
+	int32_t lastColor     = -1;                                          // First color applied to node.
+	auto    matrix        = matrix3 <Type> ();                           // Rotation matrix. The y-axis is the direction vector for a new step.
+	auto    point         = vector3 <Type> ();                           // Current point in space.
+	auto    lastDirection = vector3 <Type> ();  
+	int32_t distance      = 0;                                           // Number of steps.
+	auto    root          = std::make_shared <node_type> (point, color); // Root node of tree.
+	auto    node          = root;                                        // Current node.
+	auto    stack         = std::vector <stack_value> ();                // Stack for '[' and ']'.
 
 	std::istringstream isstream (lsystem .commands ());
 
@@ -222,37 +223,31 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 			case '}': // Counterclockwise rotation about local x-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [0], mx_angle));
-				quat   *= quaternion <int32_t> (1, 0, 0, 1);
 				break;
 			}
 			case '{': // Clockwise rotation about local x-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [0], -mx_angle));
-				quat   *= quaternion <int32_t> (1, 0, 0, -1);
 				break;
 			}
 			case '>': // Counterclockwise rotation about local y-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [1], my_angle));
-				quat   *= quaternion <int32_t> (0, 1, 0, 1);
 				break;
 			}
 			case '<': // Clockwise rotation about local y-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [1], -my_angle));
-				quat   *= quaternion <int32_t> (0, 1, 0, -1);
 				break;
 			}
 			case '+': // Counterclockwise rotation about local z-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [2], mz_angle));
-				quat   *= quaternion <int32_t> (0, 0, 1, 1);
 				break;
 			}
 			case '-': // Clockwise rotation about local z-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [2], -mz_angle));
-				quat   *= quaternion <int32_t> (0, 0, 1, -1);
 				break;
 			}
 			case '[': // Push
@@ -293,11 +288,11 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 				point    += matrix [1];
 				distance += 1;
 
-				if (change or imag (quat) not_eq vector3 <int32_t> ())
+				if (change or not almost_equal (lastDirection, matrix [1], 1e-5))
 				{
-					change    = false;
-					quat      = quaternion <int32_t> (0, 0, 0, 1);
-					lastColor = color;
+					change        = false;
+					lastColor     = color;
+					lastDirection = matrix [1];;
 
 					auto child = std::make_shared <node_type> (point, color);
 

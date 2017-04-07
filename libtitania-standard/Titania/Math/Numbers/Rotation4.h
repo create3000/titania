@@ -79,19 +79,19 @@ class rotation4
 public:
 
 	///  Size typedef.  Used for size and indices.
-	typedef size_t size_type;
+	using size_type = size_t;
 
 	///  Value typedef.
-	typedef Type value_type;
+	using value_type = Type;
 
 	///  Quaternion typedef.
-	typedef quaternion <Type> quaternion_type;
+	using quaternion_type = quaternion <Type>;
 
 	///  Vector3 typedef.
-	typedef vector3 <Type> vector3_type;
+	using vector3_type = vector3 <Type>;
 
 	///  Member value typedef.
-	typedef basic::member_value <Type, rotation4 <Type>> member_value_type;
+	using member_value_type = basic::member_value <Type, rotation4 <Type>>;
 
 	///  @name Constructors
 
@@ -99,7 +99,7 @@ public:
 	///  The rotation will be set to its default value 0 0 1  0.
 	constexpr
 	rotation4 () :
-		value (Type (), Type (), Type (), Type (1))
+		value ()
 	{ }
 
 	///  Copy constructor.
@@ -141,18 +141,18 @@ public:
 	///  Assign @a rotation to this rotation.
 	template <class Up>
 	rotation4 &
-	operator = (const rotation4 <Up> &);
+	operator = (const rotation4 <Up> & other);
 
 	///  Assign @a rotation to this rotation.
 	template <class Up>
 	rotation4 &
-	operator = (const matrix3 <Up> &);
+	operator = (const matrix3 <Up> & other);
 
 	///  @name Element access
 
 	///  Set x axis of this rotation.
 	void
-	x (const Type &);
+	x (const Type & value);
 
 	///  Returns x axis of this rotation.
 	Type
@@ -161,7 +161,7 @@ public:
 
 	///  Set y axis of this rotation.
 	void
-	y (const Type &);
+	y (const Type & value);
 
 	///  Returns y axis of this rotation.
 	Type
@@ -170,7 +170,7 @@ public:
 
 	///  Set z axis of this rotation.
 	void
-	z (const Type &);
+	z (const Type & value);
 
 	///  Returns z axis of this rotation.
 	Type
@@ -188,7 +188,7 @@ public:
 
 	///  Set angle of this rotation.
 	void
-	angle (const Type &);
+	angle (const Type & value);
 
 	///  Returns angle of this rotation.
 	Type
@@ -196,11 +196,11 @@ public:
 
 	///  Access x, y, z or angle.
 	member_value_type
-	operator [ ] (const size_type);
+	operator [ ] (const size_type index);
 
 	///  Access x, y, z or angle.
 	Type
-	operator [ ] (const size_type) const;
+	operator [ ] (const size_type index) const;
 
 	operator matrix3 <Type> () const;
 
@@ -240,23 +240,23 @@ public:
 
 	///  Multiply this rotation by @a rotation.
 	rotation4 &
-	operator *= (const rotation4 &);
+	operator *= (const rotation4 & rotation);
 
 	///  Left multiply this rotation by @a rotation in place.
 	void
-	mult_left (const rotation4 &);
+	mult_left (const rotation4 & rotation);
 
 	///  Right multiply this rotation by @a rotation in place.
 	void
-	mult_right (const rotation4 &);
+	mult_right (const rotation4 & rotation);
 
 	///  Returns the value of @a vector left multiplied by the quaternion corresponding to this rotation.
 	vector3 <Type>
-	mult_vec_rot (const vector3 <Type> &) const;
+	mult_vec_rot (const vector3 <Type> & vector) const;
 
 	///  Returns the value of @a vector right multiplied by the quaternion corresponding to this rotation.
 	vector3 <Type>
-	mult_rot_vec (const vector3 <Type> &) const;
+	mult_rot_vec (const vector3 <Type> & vector) const;
 
 
 private:
@@ -524,7 +524,7 @@ rotation4 <Type>::set (const Type & x, const Type & y, const Type & z, const Typ
 
 	if (scale == 0)
 	{
-		value = quaternion <Type> (0, 0, 0, 1);
+		value = quaternion <Type> ();
 		return;
 	}
 
