@@ -187,6 +187,7 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 	};
 
 	bool    change    = true;
+	auto    quat      = quaternion <int32_t> (0, 0, 0, 1);
 	int32_t color     = 0;
 	int32_t lastColor = -1;
 	auto    matrix    = matrix3 <Type> ();
@@ -221,37 +222,37 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 			case '}': // Counterclockwise rotation about local x-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [0], mx_angle));
-				change  = true;
+				quat   *= quaternion <int32_t> (1, 0, 0, 1);
 				break;
 			}
 			case '{': // Clockwise rotation about local x-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [0], -mx_angle));
-				change  = true;
+				quat   *= quaternion <int32_t> (1, 0, 0, -1);
 				break;
 			}
 			case '>': // Counterclockwise rotation about local y-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [1], my_angle));
-				change  = true;
+				quat   *= quaternion <int32_t> (0, 1, 0, 1);
 				break;
 			}
 			case '<': // Clockwise rotation about local y-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [1], -my_angle));
-				change  = true;
+				quat   *= quaternion <int32_t> (0, 1, 0, -1);
 				break;
 			}
 			case '+': // Counterclockwise rotation about local z-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [2], mz_angle));
-				change  = true;
+				quat   *= quaternion <int32_t> (0, 0, 1, 1);
 				break;
 			}
 			case '-': // Clockwise rotation about local z-axis
 			{
 				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [2], -mz_angle));
-				change  = true;
+				quat   *= quaternion <int32_t> (0, 0, 1, -1);
 				break;
 			}
 			case '[': // Push
@@ -292,9 +293,10 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 				point    += matrix [1];
 				distance += 1;
 
-				if (change)
+				if (change or imag (quat) not_eq vector3 <int32_t> ())
 				{
 					change    = false;
+					quat      = quaternion <int32_t> (0, 0, 0, 1);
 					lastColor = color;
 
 					auto child = std::make_shared <node_type> (point, color);

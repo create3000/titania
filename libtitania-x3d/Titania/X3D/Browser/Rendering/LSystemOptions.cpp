@@ -155,15 +155,15 @@ LSystemOptions::build ()
 
 		struct StackValue {
 
-			StackValue (const TurtleRenderer::node_ptr & node,
+			StackValue (const TurtleRenderer::node_ptr & child,
 			            const int32_t color,
 			            const int32_t coord) :
-				     node (node),
+				    child (child),
 				    color (color),
 				    coord (coord)
 			{ }
 
-			const TurtleRenderer::node_ptr node;
+			const TurtleRenderer::node_ptr child;
 			const int32_t                  color;
 			const int32_t                  coord;
 
@@ -181,7 +181,8 @@ LSystemOptions::build ()
 		auto root                  = renderer .tree ();
 		auto colorPerLineIndices   = std::vector <int32_t> ();
 		auto colorPerVertexIndices = std::vector <int32_t> ();
-		auto coordIndices          = std::vector <int32_t> ();
+		auto coordPerLineIndices   = std::vector <int32_t> ();
+		auto coordPerVertexIndices = std::vector <int32_t> ();
 		auto points                = std::vector <Vector3d> ();
 
 		if (root)
@@ -201,24 +202,50 @@ LSystemOptions::build ()
 
 			while (not stack .empty ())
 			{
-				const auto   first  = std::move (stack .back ());
-				const auto & second = first -> node;
-				const auto   color  = second -> color;
-				const auto   coord  = points .size ();
+				const auto first  = std::move (stack .back ());
+				auto       second = first -> child;
+				auto       color  = second -> color;
+				auto       coord  = points .size ();
 	
 				stack .pop_back ();
+		
+				points .emplace_back (second -> point);
 	
-				colorPerLineIndices .emplace_back (second -> line_color);
-	
+				colorPerLineIndices   .emplace_back (second -> line_color);
 				colorPerVertexIndices .emplace_back (first -> color);
+				coordPerLineIndices   .emplace_back (first -> coord);
+				coordPerVertexIndices .emplace_back (first -> coord);
+
+				while (second -> children .size () == 1)
+				{
+					const auto lineColor = second -> line_color;
+
+					colorPerVertexIndices .emplace_back (color);
+					coordPerLineIndices   .emplace_back (coord);
+					coordPerVertexIndices .emplace_back (coord);
+
+					second = second -> children .front ();
+
+					if (lineColor not_eq second -> line_color)
+					{
+						colorPerLineIndices .emplace_back (second -> line_color);
+						coordPerLineIndices .emplace_back (-1);
+						coordPerLineIndices .emplace_back (coord);
+					}
+
+					color = second -> color;
+					coord = points .size ();
+
+					points .emplace_back (second -> point);
+				}
+
 				colorPerVertexIndices .emplace_back (color);
 				colorPerVertexIndices .emplace_back (-1);
-	
-				coordIndices .emplace_back (first -> coord);
-				coordIndices .emplace_back (coord);
-				coordIndices .emplace_back (-1);
-	
-				points .emplace_back (second -> point);
+		
+				coordPerLineIndices   .emplace_back (coord);
+				coordPerLineIndices   .emplace_back (-1);
+				coordPerVertexIndices .emplace_back (coord);
+				coordPerVertexIndices .emplace_back (-1);
 	
 				for (const auto & child : second -> children)
 					stack .emplace_back (std::make_unique <StackValue> (child, color, coord));
@@ -252,7 +279,10 @@ LSystemOptions::build ()
 			else
 				indexedLineSet -> colorIndex () .clear ();
 
-			indexedLineSet -> coordIndex () .assign (coordIndices .begin (), coordIndices .end ());
+			if (indexedLineSet -> colorPerVertex ())
+				indexedLineSet -> coordIndex () .assign (coordPerVertexIndices .begin (), coordPerVertexIndices .end ());
+			else
+				indexedLineSet -> coordIndex () .assign (coordPerLineIndices .begin (), coordPerLineIndices .end ());
 
 			if (indexedLineSet -> getCoord ())
 			{
