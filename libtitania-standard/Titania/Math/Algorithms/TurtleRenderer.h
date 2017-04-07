@@ -324,7 +324,28 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 
 template <class Type, class String>
 turtle_renderer <Type, String>::~turtle_renderer ()
-{ }
+{
+	if (m_tree)
+	{
+		auto nodes = std::vector <node_ptr> ();
+		auto stack = std::vector <node_ptr> ();
+
+		stack .emplace_back (std::move (m_tree));
+
+		while (not stack .empty ())
+		{
+			nodes .emplace_back (std::move (stack .back ()));
+
+			stack .pop_back ();
+
+			for (auto & child : nodes .back () -> children)
+				stack .emplace_back (std::move (child));
+		}
+
+		for (const auto & node : nodes)
+			node -> children .clear ();
+	}
+}
 
 } // math
 } // titania
