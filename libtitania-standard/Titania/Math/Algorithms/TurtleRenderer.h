@@ -325,6 +325,8 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 template <class Type, class String>
 turtle_renderer <Type, String>::~turtle_renderer ()
 {
+	// Manually dispose tree.
+
 	if (m_tree)
 	{
 		auto nodes = std::vector <node_ptr> ();
@@ -341,9 +343,6 @@ turtle_renderer <Type, String>::~turtle_renderer ()
 			for (auto & child : nodes .back () -> children)
 				stack .emplace_back (std::move (child));
 		}
-
-		for (const auto & node : nodes)
-			node -> children .clear ();
 	}
 }
 
