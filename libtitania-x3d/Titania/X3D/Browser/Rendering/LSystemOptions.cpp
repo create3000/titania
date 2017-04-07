@@ -156,17 +156,14 @@ LSystemOptions::build ()
 		struct StackValue {
 
 			StackValue (const TurtleRenderer::node_ptr & node,
-			            const int32_t lineColor,
 			            const int32_t color,
 			            const int32_t coord) :
 				     node (node),
-				lineColor (lineColor),
 				    color (color),
 				    coord (coord)
 			{ }
 
 			const TurtleRenderer::node_ptr node;
-			const int32_t                  lineColor;
 			const int32_t                  color;
 			const int32_t                  coord;
 
@@ -188,80 +185,56 @@ LSystemOptions::build ()
 		auto points                = std::vector <Vector3d> ();
 
 		if (root)
-			stack .emplace_back (std::make_unique <StackValue> (root, -2, -2, -2));
-
-		while (not stack .empty ())
 		{
-			const auto front = std::move (stack .back ());
-			auto       node  = front -> node;
-			const auto color = node -> color;
+			// Handle first point.
+
+			const auto color = root -> color;
 			const auto coord = points .size ();
 
-			stack .pop_back ();
+			// Root has always children, thus we can emplace a point.
+			points .emplace_back (root -> point);
 
-			if (front -> coord >= 0)
+			for (const auto & child : root -> children)
+				stack .emplace_back (std::make_unique <StackValue> (child, color, coord));
+
+			// Traverse tree.
+
+			while (not stack .empty ())
 			{
-				colorPerLineIndices   .emplace_back (front -> lineColor);
-				colorPerVertexIndices .emplace_back (front -> color);
-				coordIndices          .emplace_back (front -> coord);
-			}
-
-			points .emplace_back (node -> point);
-
-			switch (node -> children .size ())
-			{
-				case 0:
-				{
-					colorPerVertexIndices .emplace_back (color);
-					colorPerVertexIndices .emplace_back (-1);
-
-					coordIndices .emplace_back (coord);
-					coordIndices .emplace_back (-1);
-					break;
-				}
-				case 1:
-				{
-					while (node -> children .front () -> next_control_point == 0)
-					{
-						node = node -> children .front ();
-					}
-
-					if (front -> coord not_eq -2)
-					{
-						colorPerVertexIndices .emplace_back (color);
-						colorPerVertexIndices .emplace_back (-1);
+				const auto   first  = std::move (stack .back ());
+				const auto & second = first -> node;
+				const auto   color  = second -> color;
+				const auto   coord  = points .size ();
 	
-						coordIndices .emplace_back (coord);
-						coordIndices .emplace_back (-1);
-					}
-
-					stack .emplace_back (std::make_unique <StackValue> (node -> children .front (), node -> colors .front (), color, coord));
-					break;
-				}
-				default:
-				{
-					colorPerVertexIndices .emplace_back (color);
-					colorPerVertexIndices .emplace_back (-1);
-
-					coordIndices .emplace_back (coord);
-					coordIndices .emplace_back (-1);
-
-					for (size_t i = 0, size = node -> children .size (); i < size; ++ i)
-						stack .emplace_back (std::make_unique <StackValue> (node -> children [i], node -> colors [i], color, coord));
-				}
+				stack .pop_back ();
+	
+				colorPerLineIndices .emplace_back (second -> line_color);
+	
+				colorPerVertexIndices .emplace_back (first -> color);
+				colorPerVertexIndices .emplace_back (color);
+				colorPerVertexIndices .emplace_back (-1);
+	
+				coordIndices .emplace_back (first -> coord);
+				coordIndices .emplace_back (coord);
+				coordIndices .emplace_back (-1);
+	
+				points .emplace_back (second -> point);
+	
+				for (const auto & child : second -> children)
+					stack .emplace_back (std::make_unique <StackValue> (child, color, coord));
 			}
+	
+			// Set size.
+	
+			const auto bbox        = Box3d (points .begin (), points .end (), iterator_type ());
+			auto       scaleMatrix = Matrix4d ();
+	
+			scaleMatrix .scale (size () / maximum_norm (bbox .size ()));
+			scaleMatrix .translate (negate (bbox .center ()));
+	
+			for (auto & point : points)
+				point = point * scaleMatrix;
 		}
-
-		// Set size.
-
-		const auto bbox        = Box3d (points .begin (), points .end (), iterator_type ());
-		auto       scaleMatrix = Matrix4d ();
-
-		scaleMatrix .scale (size () / maximum_norm (bbox .size ()));
-		scaleMatrix .translate (negate (bbox .center ()));
-
-		for (auto & point : points)
-			point = point * scaleMatrix;
 
 		// Assign values.
 
@@ -276,6 +249,8 @@ LSystemOptions::build ()
 				else
 					indexedLineSet -> colorIndex () .assign (colorPerLineIndices .begin (), colorPerLineIndices .end ());
 			}
+			else
+				indexedLineSet -> colorIndex () .clear ();
 
 			indexedLineSet -> coordIndex () .assign (coordIndices .begin (), coordIndices .end ());
 

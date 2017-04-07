@@ -63,23 +63,27 @@ namespace math {
 template <class Type>
 struct turtle_renderer_node {
 
-	using value_type    = Type;
-	using colors_type   = std::vector <int32_t>;
-	using node_ptr      = std::shared_ptr <turtle_renderer_node>;
-	using children_type = std::vector <node_ptr>;
+	using value_type      = Type;
+	using colors_type     = std::vector <int32_t>;
+	using directions_type = std::vector <vector3 <Type>>;
+	using distances_type  = std::vector <size_t>;
+	using node_ptr        = std::shared_ptr <turtle_renderer_node>;
+	using children_type   = std::vector <node_ptr>;
 
-	turtle_renderer_node (const int32_t color, const vector3 <Type> & point) :
-		            colors (),
-		             color (color),
-		next_control_point (1),
-		             point (point),
-		          children ()
+	turtle_renderer_node (const vector3 <Type> & point, const int32_t color) :
+		     point (point),
+		     color (color),
+		line_color (-1),
+		 direction (),
+		  distance (0),
+		  children ()
 	{ }
 
-	colors_type    colors;
-	int32_t        color;
-	int32_t        next_control_point;
 	vector3 <Type> point;
+	int32_t        color;
+	int32_t        line_color;
+	vector3 <Type> direction;
+	size_t         distance;
 	children_type  children;
 
 };
@@ -183,11 +187,12 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 	};
 
 	bool    change    = true;
-	auto    matrix    = matrix3 <Type> ();
-	auto    point     = vector3 <Type> ();
 	int32_t color     = 0;
 	int32_t lastColor = -1;
-	auto    root      = std::make_shared <node_type> (color, point);
+	auto    matrix    = matrix3 <Type> ();
+	auto    point     = vector3 <Type> ();
+	int32_t distance  = 0;
+	auto    root      = std::make_shared <node_type> (point, color);
 	auto    node      = root;
 	auto    stack     = std::vector <stack_value> ();
 
@@ -255,6 +260,7 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 
 				change    = true;
 				lastColor = -1;
+				distance  = 0;
 				break;
 			}
 			case ']': // Pop
@@ -265,11 +271,12 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 				const auto & back = stack .back ();
 
 				change    = true;
-				node      = back .node;
-				point     = back .point;
-				matrix    = back .matrix;
 				color     = back .color;
 				lastColor = -1;
+				matrix    = back .matrix;
+				point     = back .point;
+				distance  = 0;
+				node      = back .node;
 
 				stack .pop_back ();
 				break;
@@ -282,19 +289,25 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 				if (lsystem .is_constant (c))
 					break;
 
-				point += matrix [1];
+				point    += matrix [1];
+				distance += 1;
 
 				if (change)
 				{
 					change    = false;
 					lastColor = color;
 
-					auto child = std::make_shared <node_type> (color, point);
-	
-					node -> colors   .emplace_back (color);
+					auto child = std::make_shared <node_type> (point, color);
+
+					child -> color      = color;
+					child -> line_color = color;
+					child -> direction  = matrix [1];
+					child -> distance   = distance;
+
 					node -> children .emplace_back (child);
 	
-					node = std::move (child);
+					node     = std::move (child);
+					distance = 0;
 				}
 				else
 				{
