@@ -828,6 +828,15 @@ X3DPaletteEditor <Type>::on_remove_object_from_palette_activate ()
 {
 	try
 	{
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (this -> addDialog ("MessageDialog", false));
+	
+		dialog -> setType (Gtk::MESSAGE_QUESTION);
+		dialog -> setMessage (_ ("Do you realy want to delete the selected item from this palette?"));
+		dialog -> setText (_ ("This will immediately delete the selected item."));
+	
+		if (dialog -> run () not_eq Gtk::RESPONSE_OK)
+			return;
+
 		if (selectedIndex < files .size ())
 		{
 			// Remove and move files

@@ -162,10 +162,8 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 		{
 			case X3DConstants::X3DMetadataObject:
 			{
-				const auto metadataObject = dynamic_cast <X3DMetadataObject*> (node .getValue ());
-
-				if (metadataObject -> getBelongsToProvider ())
-					return true;
+				if (flags & TRAVERSE_META_DATA)
+					break;
 
 				// Proceed with next case:
 			}
@@ -493,10 +491,8 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags
 		{
 			case X3DConstants::X3DMetadataObject:
 			{
-				const auto metadataObject = dynamic_cast <X3DMetadataObject*> (node);
-
-				if (metadataObject -> getBelongsToProvider ())
-					return;
+				if (flags & TRAVERSE_META_DATA)
+					break;
 
 				// Proceed with next case:
 			}

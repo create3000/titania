@@ -430,7 +430,7 @@ X3DEditor::removeUsedPrototypes (const X3DExecutionContextPtr & executionContext
 
 	             return true;
 				 },
-	          true, TRAVERSE_PROTOTYPE_INSTANCES);
+	          true, TRAVERSE_PROTOTYPE_INSTANCES | TRAVERSE_META_DATA);
 }
 
 SFNode
