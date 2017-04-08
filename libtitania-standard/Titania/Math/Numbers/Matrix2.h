@@ -52,8 +52,7 @@
 #define __TITANIA_MATH_NUMBERS_MATRIX2_H__
 
 #include <cfloat>
-#include <cstdlib>
-#include <cstring>
+#include <cmath>
 #include <istream>
 #include <ostream>
 #include <stdexcept>
@@ -140,12 +139,8 @@ public:
 	///  Default constructor. A new matrix initialized with the identity matrix is created and returned.
 	constexpr
 	matrix2 () :
-		array
-	{
-		1, 0,
-		0, 1,
-	}
-
+		matrix2 (1, 0,
+		         0, 1)
 	{ }
 
 	///  Copy constructor.
@@ -189,14 +184,35 @@ public:
 	matrix2 &
 	operator = (const matrix2 <T> & other);
 
-	matrix2 &
-	operator = (const matrix2 & other);
-
 	///  @name Element access
+
+	void
+	x (const vector_type & vector)
+	{ value .x (vector); }
+
+	const vector_type &
+	x () const
+	{ return value .x (); }
+
+	void
+	y (const vector_type & vector)
+	{ value .y (vector); }
+
+	const vector_type &
+	y () const
+	{ return value .y (); }
+
+	void
+	x_axis (const Type & vector)
+	{ array [0] = vector; }
 
 	const Type &
 	x_axis () const
 	{ return array [0]; }
+
+	void
+	origin (const Type & vector)
+	{ array [2] = vector; }
 
 	const Type &
 	origin () const
@@ -416,10 +432,6 @@ public:
 
 private:
 
-	///  @name Static members
-
-	static const matrix2 Identity;
-
 	///  @name Members
 
 	union
@@ -429,10 +441,6 @@ private:
 	};
 
 };
-
-template <class Type>
-const matrix2 <Type> matrix2 <Type>::Identity = { 1, 0,
-	                                               0, 1 };
 
 template <class Type>
 template <class Up>
@@ -446,19 +454,10 @@ matrix2 <Type>::operator = (const matrix2 <Up> & matrix)
 
 template <class Type>
 inline
-matrix2 <Type> &
-matrix2 <Type>::operator = (const matrix2 <Type> & matrix)
-{
-	std::memmove (data (), matrix .data (), size () * sizeof (Type));
-	return *this;
-}
-
-template <class Type>
-inline
 void
 matrix2 <Type>::set ()
 {
-	value = Identity .value;
+	*this = matrix2 ();
 }
 
 template <class Type>

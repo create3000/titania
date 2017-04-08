@@ -63,7 +63,8 @@ using std::abs;
 
 template <typename Type>
 inline
-constexpr int
+constexpr
+int
 signum (const Type & x, std::false_type is_signed)
 {
 	return Type (0) < x;
@@ -71,7 +72,8 @@ signum (const Type & x, std::false_type is_signed)
 
 template <typename Type>
 inline
-constexpr int
+constexpr
+int
 signum (const Type & x, std::true_type is_signed)
 {
 	return (Type (0) < x) - (x < Type (0));
@@ -79,7 +81,8 @@ signum (const Type & x, std::true_type is_signed)
 
 template <typename Type>
 inline
-constexpr int
+constexpr
+int
 signum (const Type & x)
 {
 	return signum (x, std::is_signed <Type> ());
@@ -87,7 +90,8 @@ signum (const Type & x)
 
 template <class Type>
 inline
-constexpr bool
+constexpr
+bool
 is_odd (const Type & value)
 {
 	return value & Type (1);
@@ -95,7 +99,8 @@ is_odd (const Type & value)
 
 template <class Type>
 inline
-constexpr bool
+constexpr
+bool
 is_even (const Type & value)
 {
 	return not is_odd (value);
@@ -104,7 +109,8 @@ is_even (const Type & value)
 ///  Calculate the square of @a value.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 sqr (const Type & value)
 {
 	return value * value;
@@ -113,7 +119,8 @@ sqr (const Type & value)
 ///  Convert @a value from degrees to radians.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 radians (const Type & value)
 {
 	return value * Type (pi <Type> / 180);
@@ -122,19 +129,24 @@ radians (const Type & value)
 ///  Convert @a value from radians to degrees.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 degrees (const Type & value)
 {
 	return value * Type (180 / pi <Type>);
 }
 
-constexpr long double
+inline
+constexpr
+long double
 operator "" _deg (const long double value)
 {
 	return radians (value);
 }
 
-constexpr long double
+inline
+constexpr
+long double
 operator "" _rad (const long double value)
 {
 	return degrees (value);
@@ -143,7 +155,8 @@ operator "" _rad (const long double value)
 ///  Clamp @a value in the range @a low and @a high.
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 clamp (const Type & value, const Type & low, const Type & high)
 {
 	return value > low ? (value < high ? value : high) : low;
@@ -167,7 +180,8 @@ interval (const Type & value, const Type & low, const Type & high)
 ///  Map @a value in the interval (@a fromLow;@a fromHigh) to the interval (@a toLow;@a toHigh).
 template <class Type>
 inline
-constexpr Type
+constexpr
+Type
 project (const Type & value, const Type & fromLow, const Type & fromHigh, const Type & toLow, const Type & toHigh)
 {
 	return toLow + ((value - fromLow) / (fromHigh - fromLow)) * (toHigh - toLow);
@@ -200,7 +214,8 @@ distance (const Type & source, const Type & destination)
 ///  Linear interpolate between @a source and @a destination by an amout of @a t.
 template <class Type, class T>
 inline
-constexpr Type
+constexpr
+Type
 lerp (const Type & source, const Type & destination, const T & t)
 {
 	return source + t * (destination - source);
@@ -267,7 +282,8 @@ simple_slerp (const Type & source, const Type & destination, const T & t)
 ///  Returns true if @a n is a power of two otherwise false.
 template <class Type>
 inline
-constexpr bool
+constexpr
+bool
 is_power_of_two (Type n)
 {
 	return ((n - 1) & n) == 0;

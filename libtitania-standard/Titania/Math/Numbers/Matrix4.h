@@ -53,8 +53,6 @@
 
 #include <cfloat>
 #include <cmath>
-#include <cstdlib>
-#include <cstring>
 #include <istream>
 #include <ostream>
 #include <stdexcept>
@@ -149,14 +147,10 @@ public:
 	///  Default constructor. A new matrix initialized with the identity matrix is created and returned.
 	constexpr
 	matrix4 () :
-		array
-	{
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1
-	}
-
+		matrix4 (1, 0, 0, 0,
+		         0, 1, 0, 0,
+		         0, 0, 1, 0,
+		         0, 0, 0, 1)
 	{ }
 
 	///  Copy constructor.
@@ -234,25 +228,86 @@ public:
 	matrix4 &
 	operator = (const matrix4 <Up> & other);
 
-	matrix4 &
-	operator = (const matrix4 & other);
-
 	///  @name Element access
+
+	void
+	x (const vector_type & vector)
+	{ value .x (vector); }
+
+	const vector_type &
+	x () const
+	{ return value .x (); }
+
+	void
+	y (const vector_type & vector)
+	{ value .y (vector); }
+
+	const vector_type &
+	y () const
+	{ return value .y (); }
+
+	void
+	z (const vector_type & vector)
+	{ value .z (vector); }
+
+	const vector_type &
+	z () const
+	{ return value .z (); }
+
+	void
+	w (const vector_type & vector)
+	{ value .w (vector); }
+
+	const vector_type &
+	w () const
+	{ return value .w (); }
+
+	void
+	x_axis (const point_type & vector)
+	{
+		array [0] = vector .x ();
+		array [1] = vector .y ();
+		array [2] = vector .z ();
+	}
 
 	constexpr
 	point_type
 	x_axis () const
 	{ return point_type (array [0], array [1], array [2]); }
 
+	void
+	y_axis (const point_type & vector)
+	{
+		array [4] = vector .x ();
+		array [5] = vector .y ();
+		array [6] = vector .z ();
+	}
+
 	constexpr
 	point_type
 	y_axis () const
 	{ return point_type (array [4], array [5], array [6]); }
 
+	void
+	z_axis (const point_type & vector)
+	{
+		array [ 8] = vector .x ();
+		array [ 9] = vector .y ();
+		array [10] = vector .z ();
+	}
+
 	constexpr
 	point_type
 	z_axis () const
 	{ return point_type (array [8], array [9], array [10]); }
+
+	void
+	origin (const point_type & vector)
+	{
+		array [12] = vector .x ();
+		array [13] = vector .y ();
+		array [14] = vector .z ();
+	}
 
 	constexpr
 	point_type
@@ -326,6 +381,7 @@ public:
 	operator [ ] (const size_type index) const
 	{ return value [index]; }
 
+	///  Access 3x3 submatrix.
 	constexpr
 	operator matrix3 <Type> () const
 	{ return matrix3 <Type> (array [0], array [1], array [2],
@@ -417,13 +473,15 @@ public:
 
 	///  Returns the order of the matrix.
 	static
-	constexpr size_type
+	constexpr
+	size_type
 	order ()
 	{ return ORDER; }
 
 	///  Returns the number of elements in the matrix.
 	static
-	constexpr size_type
+	constexpr
+	size_type
 	size ()
 	{ return SIZE; }
 
@@ -532,10 +590,6 @@ private:
 	Type
 	determinant3 (const int r1, const int r2, const int r3, const int c1, const int c2, const int c3) const;
 
-	///  @name Static members
-
-	static const matrix4 Identity;
-
 	///  @name Members
 
 	union
@@ -545,12 +599,6 @@ private:
 	};
 
 };
-
-template <class Type>
-const matrix4 <Type> matrix4 <Type>::Identity = { 1, 0, 0, 0,
-	                                               0, 1, 0, 0,
-	                                               0, 0, 1, 0,
-	                                               0, 0, 0, 1 };
 
 template <class Type>
 template <class Up>
@@ -564,19 +612,10 @@ matrix4 <Type>::operator = (const matrix4 <Up> & matrix)
 
 template <class Type>
 inline
-matrix4 <Type> &
-matrix4 <Type>::operator = (const matrix4 <Type> & matrix)
-{
-	std::memmove (data (), matrix .data (), size () * sizeof (Type));
-	return *this;
-}
-
-template <class Type>
-inline
 void
 matrix4 <Type>::set ()
 {
-	value = Identity .value;
+	*this = matrix4 ();
 }
 
 template <class Type>

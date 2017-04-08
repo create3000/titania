@@ -99,19 +99,31 @@ public:
 
 	///  @name Construction
 
-	turtle_renderer (const Type & x_angle, const Type & y_angle, const Type & z_angle);
+	turtle_renderer ();
 
-	turtle_renderer (const Type & x_angle, const Type & y_angle, const Type & z_angle, const lsystem <String> & lsystem);
+	turtle_renderer (const Type & x_angle, const Type & y_angle, const Type & z_angle, const lsystem <String> & lsystem, const Type & tolerance = 0);
 
 	///  @name Members
+
+	void
+	x_angle (const Type & value)
+	{ mx_angle = value; }
 
 	const Type &
 	x_angle () const
 	{ return mx_angle; }
 
+	void
+	y_angle (const Type & value)
+	{ my_angle = value; }
+
 	const Type &
 	y_angle () const
 	{ return my_angle; }
+
+	void
+	z_angle (const Type & value)
+	{ mz_angle = value; }
 
 	const Type &
 	z_angle () const
@@ -128,7 +140,7 @@ public:
 	///  @name Operations
 
 	void
-	render (const lsystem <String> & lsystem);
+	render (const lsystem <String> & lsystem, const Type & tolerance = 0);
 
 	///  @name Destruction
 
@@ -147,24 +159,28 @@ private:
 };
 
 template <class Type, class String>
-turtle_renderer <Type, String>::turtle_renderer (const Type & x_angle, const Type & y_angle, const Type & z_angle) :
-	mx_angle (x_angle),
-	my_angle (y_angle),
-	mz_angle (z_angle),
+turtle_renderer <Type, String>::turtle_renderer () :
+	mx_angle (0),
+	my_angle (0),
+	mz_angle (0),
 	m_colors (false),
 	  m_tree ()
 { }
 
 template <class Type, class String>
-turtle_renderer <Type, String>::turtle_renderer (const Type & x_angle, const Type & y_angle, const Type & z_angle, const lsystem <String> & lsystem) :
-	turtle_renderer (x_angle, y_angle, z_angle)
+turtle_renderer <Type, String>::turtle_renderer (const Type & x_angle, const Type & y_angle, const Type & z_angle, const lsystem <String> & lsystem, const Type & tolerance) :
+	mx_angle (x_angle),
+	my_angle (y_angle),
+	mz_angle (z_angle),
+	m_colors (false),
+	  m_tree ()
 {
-	render (lsystem);
+	render (lsystem, tolerance);
 }
 
 template <class Type, class String>
 void
-turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
+turtle_renderer <Type, String>::render (const lsystem <String> & lsystem, const Type & tolerance)
 {
 	struct stack_value
 	{
@@ -282,10 +298,10 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 				if (lsystem .is_constant (c))
 					break;
 
-				point    += matrix [1];
+				point    += matrix .y ();
 				distance += 1;
 
-				if (change or not almost_equal (lastDirection, matrix [1], 1e-5))
+				if (change or not almost_equal (lastDirection, matrix .y (), tolerance))
 				{
 					change        = false;
 					lastColor     = color;
@@ -295,7 +311,7 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 
 					child -> color      = color;
 					child -> line_color = color;
-					child -> direction  = matrix [1];
+					child -> direction  = matrix .y ();
 					child -> distance   = distance;
 
 					node -> children .emplace_back (child);

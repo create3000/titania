@@ -173,7 +173,7 @@ LSystemOptions::build ()
 			return;
 
 		const LSystem lsystem (std::max <int32_t> (0, iterations ()), constants (), axiom (), rule () .begin (), rule () .end ());
-		const TurtleRenderer renderer (xAngle (), yAngle (), zAngle (), lsystem);
+		const TurtleRenderer renderer (xAngle (), yAngle (), zAngle (), lsystem, 1e-5);
 
 		// Render tree.
 

@@ -52,8 +52,7 @@
 #define __TITANIA_MATH_NUMBERS_MATRIX3_H__
 
 #include <cfloat>
-#include <cstdlib>
-#include <cstring>
+#include <cmath>
 #include <istream>
 #include <ostream>
 #include <stdexcept>
@@ -146,13 +145,9 @@ public:
 	///  Default constructor. A new matrix initialized with the identity matrix is created and returned.
 	constexpr
 	matrix3 () :
-		array
-	{
-		1, 0, 0,
-		0, 1, 0,
-		0, 0, 1
-	}
-
+		matrix3 (1, 0, 0,
+		         0, 1, 0,
+		         0, 0, 1)
 	{ }
 
 	///  Copy constructor.
@@ -221,20 +216,62 @@ public:
 	matrix3 &
 	operator = (const matrix3 <T> & other);
 
-	matrix3 &
-	operator = (const matrix3 & other);
-
 	///  @name Element access
+
+	void
+	x (const vector_type & vector)
+	{ value .x (vector); }
+
+	const vector_type &
+	x () const
+	{ return value .x (); }
+
+	void
+	y (const vector_type & vector)
+	{ value .y (vector); }
+
+	const vector_type &
+	y () const
+	{ return value .y (); }
+
+	void
+	z (const vector_type & vector)
+	{ value .z (vector); }
+
+	const vector_type &
+	z () const
+	{ return value .z (); }
+
+	void
+	x_axis (const point_type & vector)
+	{
+		array [0] = vector .x ();
+		array [1] = vector .y ();
+	}
 
 	constexpr
 	vector2 <Type>
 	x_axis () const
 	{ return vector2 <Type> (array [0], array [1]); }
 
+	void
+	y_axis (const point_type & vector)
+	{
+		array [3] = vector .x ();
+		array [4] = vector .y ();
+	}
+
 	constexpr
 	vector2 <Type>
 	y_axis () const
 	{ return vector2 <Type> (array [3], array [4]); }
+
+	void
+	origin (const point_type & vector)
+	{
+		array [6] = vector .x ();
+		array [7] = vector .y ();
+	}
 
 	constexpr
 	vector2 <Type>
@@ -303,6 +340,7 @@ public:
 	operator [ ] (const size_type index) const
 	{ return value [index]; }
 
+	///  Access 2x2 submatrix.
 	constexpr
 	operator matrix2 <Type> () const
 	{ return matrix2 <Type> (array [0], array [1],
@@ -393,13 +431,15 @@ public:
 
 	///  Returns the order of the matrix.
 	static
-	constexpr size_type
+	constexpr
+	size_type
 	order ()
 	{ return ORDER; }
 
 	///  Returns the number of elements in the matrix.
 	static
-	constexpr size_type
+	constexpr
+	size_type
 	size ()
 	{ return SIZE; }
 
@@ -521,10 +561,6 @@ private:
 	        vector2 <S> & scale,
 	        matrix2 <Type> & rotationOrientation) const;
 
-	///  @name Static members
-
-	static const matrix3 Identity;
-
 	///  @name Members
 
 	union
@@ -536,26 +572,12 @@ private:
 };
 
 template <class Type>
-const matrix3 <Type> matrix3 <Type>::Identity = { 1, 0, 0,
-	                                               0, 1, 0,
-	                                               0, 0, 1 };
-
-template <class Type>
 template <class Up>
 inline
 matrix3 <Type> &
 matrix3 <Type>::operator = (const matrix3 <Up> & matrix)
 {
 	value = matrix .vector ();
-	return *this;
-}
-
-template <class Type>
-inline
-matrix3 <Type> &
-matrix3 <Type>::operator = (const matrix3 <Type> & matrix)
-{
-	std::memmove (data (), matrix .data (), size () * sizeof (Type));
 	return *this;
 }
 
@@ -591,7 +613,7 @@ inline
 void
 matrix3 <Type>::set ()
 {
-	value = Identity .value;
+	*this = matrix3 ();
 }
 
 template <class Type>
