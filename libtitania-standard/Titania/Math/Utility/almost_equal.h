@@ -59,13 +59,11 @@
 #include "../Numbers/Vector3.h"
 #include "../Numbers/Vector4.h"
 
-#include <limits>
-#include <type_traits>
-
 namespace titania {
 namespace math {
 
 template <class Type>
+constexpr
 bool
 almost_equal (const Type & lhs, const Type & rhs, const Type & epsilon)
 {
@@ -73,6 +71,7 @@ almost_equal (const Type & lhs, const Type & rhs, const Type & epsilon)
 }
 
 template <class Type>
+constexpr
 bool
 almost_equal (const color3 <Type> & lhs, const color3 <Type> & rhs, const Type & epsilon)
 {
@@ -82,6 +81,7 @@ almost_equal (const color3 <Type> & lhs, const color3 <Type> & rhs, const Type &
 }
 
 template <class Type>
+constexpr
 bool
 almost_equal (const color4 <Type> & lhs, const color4 <Type> & rhs, const Type & epsilon)
 {
@@ -92,6 +92,7 @@ almost_equal (const color4 <Type> & lhs, const color4 <Type> & rhs, const Type &
 }
 
 template <class Type>
+constexpr
 bool
 almost_equal (const vector2 <Type> & lhs, const vector2 <Type> & rhs, const Type & epsilon)
 {
@@ -100,6 +101,7 @@ almost_equal (const vector2 <Type> & lhs, const vector2 <Type> & rhs, const Type
 }
 
 template <class Type>
+constexpr
 bool
 almost_equal (const vector3 <Type> & lhs, const vector3 <Type> & rhs, const Type & epsilon)
 {
@@ -109,6 +111,7 @@ almost_equal (const vector3 <Type> & lhs, const vector3 <Type> & rhs, const Type
 }
 
 template <class Type>
+constexpr
 bool
 almost_equal (const vector4 <Type> & lhs, const vector4 <Type> & rhs, const int epsilon)
 {
@@ -119,6 +122,7 @@ almost_equal (const vector4 <Type> & lhs, const vector4 <Type> & rhs, const int 
 }
 
 template <class Type>
+constexpr
 bool
 almost_equal (const quaternion <Type> & lhs, const quaternion <Type> & rhs, const Type & epsilon)
 {
@@ -129,6 +133,7 @@ almost_equal (const quaternion <Type> & lhs, const quaternion <Type> & rhs, cons
 }
 
 template <class Type>
+constexpr
 bool
 almost_equal (const rotation4 <Type> & lhs, const rotation4 <Type> & rhs, const Type & epsilon)
 {

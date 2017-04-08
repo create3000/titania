@@ -59,6 +59,7 @@
 #include "../../Components/Rendering/IndexedLineSet.h"
 
 #include <Titania/Math/Algorithms/TurtleRenderer.h>
+#include <Titania/Math/Utility/almost_less.h>
 
 namespace titania {
 namespace X3D {
@@ -90,10 +91,10 @@ const std::string   LSystemOptions::containerField = "options";
 
 LSystemOptions::Fields::Fields () :
 	iterations (new SFInt32 (8)),
-	    xAngle (new SFFloat (0)),
-	    yAngle (new SFFloat (0)),
-	    zAngle (new SFFloat (radians (45.0))),
-	      size (new SFVec3f (2, 2, 2)),
+	    xAngle (new SFDouble (0)),
+	    yAngle (new SFDouble (0)),
+	    zAngle (new SFDouble (radians (45.0))),
+	      size (new SFVec3d (2, 2, 2)),
 	 constants (new SFString ()),
 	     axiom (new SFString ("B")),
 	      rule (new MFString ({ "A=C0AA", "B=C1A[+B]-B" }))
@@ -150,10 +151,13 @@ LSystemOptions::build ()
 {
 	try
 	{
+		static constexpr double tolerance = 1e-5;
+
 		using LSystem        = math::lsystem <std::string>;
 		using TurtleRenderer = math::turtle_renderer <double, std::string>;
 
-		struct StackValue {
+		struct StackValue
+		{
 
 			StackValue (const TurtleRenderer::node_ptr & child,
 			            const int32_t color,
@@ -173,7 +177,7 @@ LSystemOptions::build ()
 			return;
 
 		const LSystem lsystem (std::max <int32_t> (0, iterations ()), constants (), axiom (), rule () .begin (), rule () .end ());
-		const TurtleRenderer renderer (xAngle (), yAngle (), zAngle (), lsystem, 1e-5);
+		const TurtleRenderer renderer (xAngle (), yAngle (), zAngle (), lsystem, tolerance);
 
 		// Render tree.
 
@@ -184,6 +188,7 @@ LSystemOptions::build ()
 		auto coordPerLineIndices   = std::vector <int32_t> ();
 		auto coordPerVertexIndices = std::vector <int32_t> ();
 		auto points                = std::vector <Vector3d> ();
+		auto pointIndex            = std::map <Vector3d, int32_t, almost_less <Vector3d>> (almost_less <Vector3d> (tolerance));
 
 		if (root)
 		{
@@ -193,6 +198,7 @@ LSystemOptions::build ()
 			const auto coord = points .size ();
 
 			// Root has always children, thus we can emplace a point.
+			pointIndex .emplace (root -> point, coord);
 			points .emplace_back (root -> point);
 
 			for (const auto & child : root -> children)
@@ -208,8 +214,13 @@ LSystemOptions::build ()
 				auto       coord  = points .size ();
 	
 				stack .pop_back ();
-		
-				points .emplace_back (second -> point);
+
+				const auto pair = pointIndex .emplace (second -> point, coord);
+
+				if (pair .second)
+					points .emplace_back (second -> point);
+				else
+					coord = pair .first -> second;
 	
 				colorPerLineIndices   .emplace_back (second -> line_color);
 				colorPerVertexIndices .emplace_back (first -> color);
@@ -236,7 +247,12 @@ LSystemOptions::build ()
 					color = second -> color;
 					coord = points .size ();
 
-					points .emplace_back (second -> point);
+					const auto pair = pointIndex .emplace (second -> point, coord);
+
+					if (pair .second)
+						points .emplace_back (second -> point);
+					else
+						coord = pair .first -> second;
 				}
 
 				colorPerVertexIndices .emplace_back (color);

@@ -95,35 +95,35 @@ public:
 	iterations () const
 	{ return *fields .iterations; }
 
-	SFFloat &
+	SFDouble &
 	xAngle ()
 	{ return *fields .xAngle; }
 
-	const SFFloat &
+	const SFDouble &
 	xAngle () const
 	{ return *fields .xAngle; }
 
-	SFFloat &
+	SFDouble &
 	yAngle ()
 	{ return *fields .yAngle; }
 
-	const SFFloat &
+	const SFDouble &
 	yAngle () const
 	{ return *fields .yAngle; }
 
-	SFFloat &
+	SFDouble &
 	zAngle ()
 	{ return *fields .zAngle; }
 
-	const SFFloat &
+	const SFDouble &
 	zAngle () const
 	{ return *fields .zAngle; }
 
-	SFVec3f &
+	SFVec3d &
 	size ()
 	{ return *fields .size; }
 
-	const SFVec3f &
+	const SFVec3d &
 	size () const
 	{ return *fields .size; }
 
@@ -196,10 +196,10 @@ private:
 		Fields ();
 
 		SFInt32* const iterations;
-		SFFloat* const xAngle;
-		SFFloat* const yAngle;
-		SFFloat* const zAngle;
-		SFVec3f* const size;
+		SFDouble* const xAngle;
+		SFDouble* const yAngle;
+		SFDouble* const zAngle;
+		SFVec3d* const size;
 		SFString* const constants;
 		SFString* const axiom;
 		MFString* const rule;

@@ -106,6 +106,20 @@ X3DMFStringEntry::setNodes (const X3D::MFNode & value)
 	set_field ();
 }
 
+bool
+X3DMFStringEntry::on_focus_in_event (GdkEventFocus* focus_event)
+{
+	getBrowserWindow () -> setAccelerators (false);
+	return false;
+}
+
+bool
+X3DMFStringEntry::on_focus_out_event (GdkEventFocus* gdk_event)
+{
+	getBrowserWindow () -> setAccelerators (true);
+	return false;
+}
+
 void
 X3DMFStringEntry::on_add_before_clicked ()
 {
@@ -285,9 +299,10 @@ X3DMFStringEntry::addWidget (const int32_t index)
 
 	entrys .insert (entrys .begin () + index, entry);
 
-	entry -> signal_insert_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_insert_text), entry), false);
-	entry -> signal_delete_text () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_delete_text), entry), false);
-	entry -> signal_changed ()     .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_changed),     entry));
+	entry -> signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &X3DMFStringEntry::on_focus_in_event));
+	entry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DMFStringEntry::on_focus_out_event));
+	entry -> signal_delete_text ()     .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_delete_text), entry), false);
+	entry -> signal_changed ()         .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_changed),     entry));
 
 	add    -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_add_clicked),    entry));
 	remove -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_remove_clicked), entry));

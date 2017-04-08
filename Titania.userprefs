@@ -1,12 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Utility/almost_less.h">
     <Files>
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/LSystemOptions.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/LSystemOptions.cpp" Line="539" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Algorithms/LSystem.h" Line="246" Column="2" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/LSystemOptions.cpp" Line="192" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="302" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="255" Column="3" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Utility/almost_equal.h" Line="61" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Utility/almost_less.h" Line="49" Column="40" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

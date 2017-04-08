@@ -186,24 +186,24 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem, const 
 	{
 		stack_value (const node_ptr & node,
 		             const vector3 <Type> & point,
-		             const matrix3 <Type> & matrix,
+		             const rotation4 <Type> & rotation,
 		             const int32_t color) :
-			  node (node),
-			 point (point),
-			matrix (matrix),
-			 color (color)
+			    node (node),
+			   point (point),
+			rotation (rotation),
+			   color (color)
 		{ }
 	
-		const node_ptr       node;
-		const vector3 <Type> point;
-		const matrix3 <Type> matrix;
-		const int32_t        color;
+		const node_ptr         node;
+		const vector3 <Type>   point;
+		const rotation4 <Type> rotation;
+		const int32_t          color;
 	};
 
 	bool    change        = true;                                        // True, if a new point must be inserted.
 	int32_t color         = 0;                                           // Current color index.
 	int32_t lastColor     = -1;                                          // First color applied to node.
-	auto    matrix        = matrix3 <Type> ();                           // Rotation matrix. The y-axis is the direction vector for a new step.
+	auto    rotation      = rotation4 <Type> ();                         // Rotation. The y-axis is the direction vector for a new step.
 	auto    point         = vector3 <Type> ();                           // Current point in space.
 	auto    lastDirection = vector3 <Type> ();  
 	int32_t distance      = 0;                                           // Number of steps.
@@ -235,37 +235,42 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem, const 
 			}
 			case '}': // Counterclockwise rotation about local x-axis
 			{
-				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [0], mx_angle));
+				rotation *= rotation4 <Type> (vector3 <Type> (1, 0, 0) * rotation, mx_angle);
 				break;
 			}
 			case '{': // Clockwise rotation about local x-axis
 			{
-				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [0], -mx_angle));
-				break;
+					rotation *= rotation4 <Type> (vector3 <Type> (1, 0, 0) * rotation, -mx_angle);
+			break;
 			}
 			case '>': // Counterclockwise rotation about local y-axis
 			{
-				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [1], my_angle));
+				rotation *= rotation4 <Type> (vector3 <Type> (0, 1, 0) * rotation, my_angle);
 				break;
 			}
 			case '<': // Clockwise rotation about local y-axis
 			{
-				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [1], -my_angle));
+				rotation *= rotation4 <Type> (vector3 <Type> (0, 1, 0) * rotation, -my_angle);
 				break;
 			}
 			case '+': // Counterclockwise rotation about local z-axis
 			{
-				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [2], mz_angle));
+				rotation *= rotation4 <Type> (vector3 <Type> (0, 0, 1) * rotation, mz_angle);
 				break;
 			}
 			case '-': // Clockwise rotation about local z-axis
 			{
-				matrix *= matrix3 <Type> (rotation4 <Type> (matrix [2], -mz_angle));
+				rotation *= rotation4 <Type> (vector3 <Type> (0, 0, 1) * rotation, -mz_angle);
+				break;
+			}
+			case '|': // Turn around 180бу
+			{
+				rotation *= rotation4 <Type> (vector3 <Type> (0, 0, 1) * rotation, pi <Type>);
 				break;
 			}
 			case '[': // Push
 			{
-				stack .emplace_back (node, point, matrix, color);
+				stack .emplace_back (node, point, rotation, color);
 
 				change    = true;
 				lastColor = -1;
@@ -282,7 +287,7 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem, const 
 				change    = true;
 				color     = back .color;
 				lastColor = -1;
-				matrix    = back .matrix;
+				rotation  = back .rotation;
 				point     = back .point;
 				distance  = 0;
 				node      = back .node;
@@ -298,20 +303,22 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem, const 
 				if (lsystem .is_constant (c))
 					break;
 
-				point    += matrix .y ();
+				const auto direction = vector3 <Type> (0, 1, 0) * rotation;
+
+				point    += direction;
 				distance += 1;
 
-				if (change or not almost_equal (lastDirection, matrix .y (), tolerance))
+				if (change or not almost_equal (lastDirection, direction, tolerance))
 				{
 					change        = false;
 					lastColor     = color;
-					lastDirection = matrix [1];;
+					lastDirection = direction;
 
 					auto child = std::make_shared <node_type> (point, color);
 
 					child -> color      = color;
 					child -> line_color = color;
-					child -> direction  = matrix .y ();
+					child -> direction  = direction;
 					child -> distance   = distance;
 
 					node -> children .emplace_back (child);

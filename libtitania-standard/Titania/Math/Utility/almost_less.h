@@ -48,92 +48,80 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_RENDERING_X3DINDEXED_LINE_SET_EDITOR_H__
-#define __TITANIA_EDITORS_GEOMETRY_PROPERTIES_EDITOR_RENDERING_X3DINDEXED_LINE_SET_EDITOR_H__
+#ifndef __TITANIA_MATH_UTILITY_ALMOST_LESS_H__
+#define __TITANIA_MATH_UTILITY_ALMOST_LESS_H__
 
-#include "../../../ComposedWidgets.h"
-#include "../../../ComposedWidgets/MFStringEntry.h"
-#include "../../../UserInterfaces/X3DGeometryPropertiesEditorInterface.h"
+#include "almost_equal.h"
+
+#include <tuple>
 
 namespace titania {
-namespace puck {
+namespace math {
 
-class X3DIndexedLineSetEditor :
-	virtual public X3DGeometryPropertiesEditorInterface
+template <class Type>
+struct fuzzy_value
 {
-public:
+	constexpr
+	fuzzy_value (const Type value, const Type epsilon) :
+		  value (value),
+		epsilon (epsilon)
+	{ }
 
-	///  @name Destruction
-
-	virtual
-	~X3DIndexedLineSetEditor () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DIndexedLineSetEditor ();
-
-	virtual
-	void
-	configure () override;
-
-	virtual
-	void
-	set_geometry ();
-
-	///  @name Destruction
-
-	virtual
-	void
-	store () override;
-
-
-private:
-
-	///  @name Event handlers
-
-	virtual
-	void
-	on_indexed_line_set_type_changed () final override;
-
-	void
-	set_options ();
-
-	virtual
-	void
-	on_indexed_line_set_lsystem_uniform_size_clicked () final override;
-
-	static
+	constexpr
 	bool
-	validateLSystemConstants (const std::string & text);
+	operator < (const fuzzy_value & fvalue) const
+	{ return value < fvalue .value and not almost_equal (value, fvalue .value, epsilon); }
 
-	static
-	bool
-	validateLSystemAxiom (const std::string & text);
-
-	static
-	bool
-	validateLSystemRule (const std::string & text);
-
-	///  @name Members
-
-	X3DFieldAdjustment <X3D::SFInt32>  lSystemIterations;
-	X3DFieldAdjustment <X3D::SFDouble> lSystemXAngle;
-	X3DFieldAdjustment <X3D::SFDouble> lSystemYAngle;
-	X3DFieldAdjustment <X3D::SFDouble> lSystemZAngle;
-	X3DFieldAdjustment3 <X3D::SFVec3d> lSystemSize;
-	SFStringEntry                      lSystemConstants;
-	SFStringEntry                      lSystemAxiom;
-	MFStringEntry                      lSystemRule;
-
-	X3D::MFNode nodes;
-	bool        changing;
+	const Type & value;
+	const Type & epsilon;
 
 };
 
-} // puck
+template <class Type>
+struct almost_less :
+	public std::binary_function <Type, Type, bool>
+{
+
+	constexpr
+	almost_less (const Type & epsilon) :
+		epsilon (epsilon)
+	{ }
+
+	constexpr
+	bool
+	operator () (const Type & lhs, const Type & rhs) const
+	{
+		return fuzzy_value <Type> (lhs, epsilon) < fuzzy_value <Type> (rhs, epsilon);
+	}
+
+	const double epsilon;
+
+};
+
+template <>
+struct almost_less <vector3 <double>> :
+	public std::binary_function <vector3 <double>, vector3 <double>, bool>
+{
+
+	constexpr
+	almost_less (const double & epsilon) :
+		epsilon (epsilon)
+	{ }
+
+	bool
+	operator () (const vector3 <double> & lhs, const vector3 <double> & rhs) const
+	{
+		using fvalue = fuzzy_value <double>;
+
+		return std::make_tuple (fvalue (lhs .x (), epsilon), fvalue (lhs .y (), epsilon), fvalue (lhs .z (), epsilon)) <
+		       std::make_tuple (fvalue (rhs .x (), epsilon), fvalue (rhs .y (), epsilon), fvalue (rhs .z (), epsilon));
+	}
+
+	const double epsilon;
+
+};
+
+} // math
 } // titania
 
 #endif

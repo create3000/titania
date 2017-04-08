@@ -69,7 +69,37 @@
 #include "MFInt32.h"
 #include "MFNode.h"
 
+#include <Titania/Math/Numbers/Hash.h>
+
 namespace std {
+
+//template <>
+//struct hash <titania::X3D::MFColor>
+//{
+//	using argument_type = titania::X3D::MFColor;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFColorRGBA>
+//{
+//	using argument_type = titania::X3D::MFColorRGBA;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
 
 template <>
 struct hash <titania::X3D::MFDouble>
@@ -80,25 +110,7 @@ struct hash <titania::X3D::MFDouble>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		union IF
-		{
-			uint64_t i;
-			double f;
-		};
-
-		result_type h = 1;
-
-		for (const auto & value : array)
-		{
-			IF f = { value .getValue () };
-
-			h = 31 * h + f .i;
-		}
-
-		h ^= (h >> 20) ^ (h >> 12);
-		h ^= (h >> 7) ^ (h >> 4);
-
-		return h;
+		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
 	}
 
 };
@@ -112,28 +124,178 @@ struct hash <titania::X3D::MFFloat>
 	result_type
 	operator () (const argument_type & array) const
 	{
-		union IF
-		{
-			uint32_t i;
-			float f;
-		};
-
-		result_type h = 1;
-
-		for (const auto & value : array)
-		{
-			IF f = { value .getValue () };
-
-			h = 31 * h + f .i;
-		}
-
-		h ^= (h >> 20) ^ (h >> 12);
-		h ^= (h >> 7) ^ (h >> 4);
-
-		return h;
+		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
 	}
 
 };
+
+template <>
+struct hash <titania::X3D::MFInt32>
+{
+	using argument_type = titania::X3D::MFInt32;
+	using result_type   = std::size_t;
+
+	result_type
+	operator () (const argument_type & array) const
+	{
+		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+	}
+
+};
+
+//template <>
+//struct hash <titania::X3D::MFMatrix3d>
+//{
+//	using argument_type = titania::X3D::MFMatrix3d;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFMatrix3f>
+//{
+//	using argument_type = titania::X3D::MFMatrix3f;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFMatrix4d>
+//{
+//	using argument_type = titania::X3D::MFMatrix4d;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFMatrix4f>
+//{
+//	using argument_type = titania::X3D::MFMatrix4f;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFTime>
+//{
+//	using argument_type = titania::X3D::MFTime;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFVec2d>
+//{
+//	using argument_type = titania::X3D::MFVec2d;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFVec2f>
+//{
+//	using argument_type = titania::X3D::MFVec2f;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFVec3d>
+//{
+//	using argument_type = titania::X3D::MFVec3d;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFVec3f>
+//{
+//	using argument_type = titania::X3D::MFVec3f;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFVec4d>
+//{
+//	using argument_type = titania::X3D::MFVec4d;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
+//
+//template <>
+//struct hash <titania::X3D::MFVec4f>
+//{
+//	using argument_type = titania::X3D::MFVec4f;
+//	using result_type   = std::size_t;
+//
+//	result_type
+//	operator () (const argument_type & array) const
+//	{
+//		return array_hash <typename argument_type::value_type::value_type> () (array .begin (), array .end ());
+//	}
+//
+//};
 
 } // std
 

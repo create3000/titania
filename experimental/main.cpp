@@ -78,6 +78,7 @@
 #include <Titania/Math/Numbers/Vector2.h>
 #include <Titania/Math/Numbers/Vector3.h>
 #include <Titania/Math/Numbers/Vector4.h>
+#include <Titania/Math/Numbers/Hash.h>
 #include <Titania/Math/Utility/almost_equal.h>
 #include <Titania/OS.h>
 #include <Titania/Stream/InputFileStream.h>
@@ -186,14 +187,6 @@ main (int argc, char** argv)
 	#endif
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	Vector4d d (1, 2, 3, 4);
-
-	for (const auto & v : d)
-		__LOG__ << v << std::endl;
-
-	for (const auto & v : std::make_pair (d .rbegin (), d .rend ()))
-		__LOG__ << v << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

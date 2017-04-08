@@ -129,6 +129,12 @@ private:
 
 	///  @name Event handlers
 
+	bool
+	on_focus_in_event (GdkEventFocus* focus_event);
+
+	bool
+	on_focus_out_event (GdkEventFocus* gdk_event);
+
 	void
 	on_add_before_clicked ();
 
