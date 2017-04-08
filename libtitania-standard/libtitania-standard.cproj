@@ -571,8 +571,8 @@
     <None Include="Titania\External\ApproxMVBB\pugixml\pugixml.hpp" />
     <None Include="Titania\Math\Primitives\Polyhedron3.h" />
     <None Include="Titania\Math\Algorithms\Barycentric.h" />
-    <None Include="Titania\Math\Algorithms\LSystem.h" />
     <None Include="Titania\Math\Algorithms\TurtleRenderer.h" />
+    <None Include="Titania\Math\Algorithms\L-System.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
@@ -658,7 +658,7 @@
     <Compile Include="Titania\External\ApproxMVBB\GeometryPredicates\Predicates.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\GeometryPredicates\PredicatesInit.cpp" />
     <Compile Include="Titania\External\ApproxMVBB\pugixml\pugixml.cpp" />
-    <Compile Include="Titania\Math\Algorithms\LSystem.cpp" />
+    <Compile Include="Titania\Math\Algorithms\L-System.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -53,7 +53,7 @@
 
 #include "../Numbers/Vector3.h"
 #include "../Utility/almost_equal.h"
-#include "LSystem.h"
+#include "L-System.h"
 
 #include <memory>
 #include <vector>
@@ -64,12 +64,9 @@ namespace math {
 template <class Type>
 struct turtle_renderer_node {
 
-	using value_type      = Type;
-	using colors_type     = std::vector <int32_t>;
-	using directions_type = std::vector <vector3 <Type>>;
-	using distances_type  = std::vector <size_t>;
-	using node_ptr        = std::shared_ptr <turtle_renderer_node>;
-	using children_type   = std::vector <node_ptr>;
+	using value_type    = Type;
+	using node_ptr      = std::shared_ptr <turtle_renderer_node>;
+	using children_type = std::vector <node_ptr>;
 
 	turtle_renderer_node (const vector3 <Type> & point, const int32_t color) :
 		     point (point),

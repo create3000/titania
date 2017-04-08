@@ -161,7 +161,7 @@ am_libtitania_standard_la_OBJECTS = Titania/Backtrace.lo \
 	Titania/InputOutput/SingleLineComment.lo \
 	Titania/InputOutput/String.lo \
 	Titania/Math/Algorithms/CatmullRomSplineInterpolator.lo \
-	Titania/Math/Algorithms/LSystem.lo \
+	Titania/Math/Algorithms/L-System.lo \
 	Titania/Math/Geometry/Box2.lo Titania/Math/Geometry/Box3.lo \
 	Titania/Math/Geometry/ConvexHull2.lo \
 	Titania/Math/Geometry/ConvexHull3.lo \
@@ -469,7 +469,7 @@ libtitania_standard_la_SOURCES = \
 	Titania/InputOutput/SingleLineComment.cpp \
 	Titania/InputOutput/String.cpp \
 	Titania/Math/Algorithms/CatmullRomSplineInterpolator.cpp \
-	Titania/Math/Algorithms/LSystem.cpp \
+	Titania/Math/Algorithms/L-System.cpp \
 	Titania/Math/Geometry/Box2.cpp \
 	Titania/Math/Geometry/Box3.cpp \
 	Titania/Math/Geometry/ConvexHull2.cpp \
@@ -745,7 +745,7 @@ Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp):
 Titania/Math/Algorithms/CatmullRomSplineInterpolator.lo:  \
 	Titania/Math/Algorithms/$(am__dirstamp) \
 	Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
-Titania/Math/Algorithms/LSystem.lo:  \
+Titania/Math/Algorithms/L-System.lo:  \
 	Titania/Math/Algorithms/$(am__dirstamp) \
 	Titania/Math/Algorithms/$(DEPDIR)/$(am__dirstamp)
 Titania/Math/Geometry/$(am__dirstamp):
@@ -988,7 +988,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/InputOutput/$(DEPDIR)/String.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/$(DEPDIR)/Image.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Algorithms/$(DEPDIR)/CatmullRomSplineInterpolator.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Algorithms/$(DEPDIR)/LSystem.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Algorithms/$(DEPDIR)/L-System.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Box2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/Box3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Math/Geometry/$(DEPDIR)/ConvexHull2.Plo@am__quote@

@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "LSystem.h"
+#include "L-System.h"
 
 namespace titania {
 namespace math {
