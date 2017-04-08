@@ -9,7 +9,7 @@ META "created" "Sat, 01 Apr 2017 08:45:49 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.0, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Library/Tests/Rendering/IndexedLineSet-L-System.x3dv"
-META "modified" "Sat, 08 Apr 2017 02:36:32 GMT"
+META "modified" "Sat, 08 Apr 2017 02:41:39 GMT"
 META "outputStyle" "Nicest"
 
 DEF _1 WorldInfo {
@@ -24,11 +24,11 @@ DEF _1 WorldInfo {
           DEF previous MetadataSet {
             name "previous"
             reference "http://titania.create3000.de"
+            value USE _1
           }
           DEF nodes MetadataSet {
             name "nodes"
             reference "http://titania.create3000.de"
-            value USE _1
           }
         ]
       }
