@@ -98,6 +98,9 @@ private:
 	basic::uri
 	getURL () const;
 
+	X3D::String
+	getTitle (const X3D::String & string, const size_t max) const;
+
 	///  @name Event handlers
 
 	void

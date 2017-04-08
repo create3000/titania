@@ -93,6 +93,15 @@ RecentView::getURL () const
 	return get_page ("about/tab.x3dv");
 }
 
+X3D::String
+RecentView::getTitle (const X3D::String & string, const size_t max) const
+{
+	if (string .length () > max)
+		return string .substr (0, max) + "…";
+
+	return string;
+}
+
 void
 RecentView::open ()
 {
@@ -194,7 +203,7 @@ RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 
 
 			switchNode -> whichChoice ()                 = 0;
 			texture -> url ()                            = { "data:image/jpeg;base64," + image, "library/dot-clear.png" };
-			text -> string ()                            = { item .at ("title") };
+			text -> string ()                            = { getTitle (item .at ("title"), 20) };
 			touchSensor -> description ()                = item .at ("worldURL");
 			URL -> getField <X3D::SFString> ("keyValue") = item .at ("worldURL");
 			URL -> getField <X3D::SFString> ("value_changed") .addInterest (&RecentView::set_url, this);
@@ -236,11 +245,11 @@ RecentView::set_url (const X3D::SFString & url)
 	{
 		const X3D::BrowserPtr recentBrowser = getCurrentBrowser ();
 
+		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
+
 		// Closing this browser must be deferred, as this browser is currently processing events.
 		recentBrowser -> finished () .addInterest (&X3DBrowserWidget::close, getBrowserWindow (), recentBrowser);
 		recentBrowser -> addEvent ();
-
-		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
 	}
 	else
 	{
