@@ -773,7 +773,7 @@ X3DPaletteEditor <Type>::on_update_object_in_palette_activate ()
 
 	dialog -> setType (Gtk::MESSAGE_QUESTION);
 	dialog -> setMessage (_ ("Do you realy want to update the selected item in this palette?"));
-	dialog -> setText (_ ("This will immediately replace the selected item."));
+	dialog -> setText (_ ("This will irrevocably replace the selected item."));
 
 	if (dialog -> run () not_eq Gtk::RESPONSE_OK)
 		return;

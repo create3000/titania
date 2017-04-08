@@ -158,13 +158,13 @@ public:
 	///  Copy constructor.
 	template <class Up>
 	constexpr
-	matrix3 (const matrix3 <Up> & matrix) :
-		value (matrix [0], matrix [1], matrix [2])
+	matrix3 (const matrix3 <Up> & other) :
+		value (other [0], other [1], other [2])
 	{ }
 
 	///  Copy constructor.
-	matrix3 (const matrix3 & matrix)
-	{ *this = matrix; }
+	matrix3 (const matrix3 & other)
+	{ *this = other; }
 
 	///  Value constructor.
 	explicit
@@ -195,20 +195,20 @@ public:
 
 	///  Constructs a matrix4 from a rotation4.
 	explicit
-	matrix3 (const Type & rot)
-	{ rotation (rot); }
+	matrix3 (const Type & rotation)
+	{ this -> rotation (rotation); }
 
 	///  Constructs a matrix2 from a matrix2 rotation matrix.
 	explicit
 	constexpr
-	matrix3 (const matrix2 <Type> & matrix) :
+	matrix3 (const matrix2 <Type> & other) :
 		array
 	{
-		matrix [0] [0],
-		matrix [0] [1],
+		other [0] [0],
+		other [0] [1],
 		0,
-		matrix [1] [0],
-		matrix [1] [1],
+		other [1] [0],
+		other [1] [1],
 		0,
 		0, 0, 1,
 	}
@@ -219,21 +219,21 @@ public:
 
 	template <class T>
 	matrix3 &
-	operator = (const matrix3 <T> &);
+	operator = (const matrix3 <T> & other);
 
 	matrix3 &
-	operator = (const matrix3 &);
+	operator = (const matrix3 & other);
 
 	///  @name Element access
 
 	constexpr
 	vector2 <Type>
-	x () const
+	x_axis () const
 	{ return vector2 <Type> (array [0], array [1]); }
 
 	constexpr
 	vector2 <Type>
-	y () const
+	y_axis () const
 	{ return vector2 <Type> (array [3], array [4]); }
 
 	constexpr
@@ -245,34 +245,54 @@ public:
 	set ();
 
 	void
-	set (const vector2 <Type> &);
+	set (const vector2 <Type> & translation);
 
 	void
-	set (const vector2 <Type> &, const Type &);
+	set (const vector2 <Type> & translation,
+	     const Type & rotation);
 
 	void
-	set (const vector2 <Type> &, const Type &, const vector2 <Type> &);
+	set (const vector2 <Type> & translation, 
+	     const Type & rotation,
+	     const vector2 <Type> & scale);
 
 	void
-	set (const vector2 <Type> &, const Type &, const vector2 <Type> &, const Type &);
+	set (const vector2 <Type> & translation,
+	     const Type & rotation,
+	     const vector2 <Type> & scale,
+	     const Type & scaleOrientation);
 
 	void
-	set (const vector2 <Type> &, const Type &, const vector2 <Type> &, const Type &, const vector2 <Type> &);
+	set (const vector2 <Type> & translation,
+	     const Type & rotation,
+	     const vector2 <Type> & scale,
+	     const Type & scaleOrientation,
+	     const vector2 <Type> & center);
 
 	void
-	get (vector2 <Type> &) const;
+	get (vector2 <Type> & translation) const;
 
 	void
-	get (vector2 <Type> &, Type &) const;
+	get (vector2 <Type> & translation,
+	     Type & rotation) const;
 
 	void
-	get (vector2 <Type> &, Type &, vector2 <Type> &) const;
+	get (vector2 <Type> & translation,
+	     Type & rotation,
+	     vector2 <Type> & scale) const;
 
 	void
-	get (vector2 <Type> &, Type &, vector2 <Type> &, Type &) const;
+	get (vector2 <Type> & translation,
+	     Type & rotation,
+	     vector2 <Type> & scale,
+	     Type & scaleOrientation) const;
 
 	void
-	get (vector2 <Type> &, Type &, vector2 <Type> &, Type &, vector2 <Type> &) const;
+	get (vector2 <Type> & translation,
+	     Type & rotation,
+	     vector2 <Type> & scale,
+	     Type & scaleOrientation,
+	     vector2 <Type> & center) const;
 
 	///  Access rows by @a index.
 	vector_type &
@@ -411,103 +431,107 @@ public:
 
 	///  Add @a matrix to this matrix.
 	matrix3 &
-	operator += (const matrix3 <Type> &);
+	operator += (const matrix3 <Type> & matrix);
 
 	///  Add @a matrix to this matrix.
 	matrix3 &
-	operator -= (const matrix3 <Type> &);
+	operator -= (const matrix3 <Type> & matrix);
 
 	///  Returns this matrix multiplies by @a scalar.
 	matrix3 &
-	operator *= (const Type &);
+	operator *= (const Type & scalar);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	matrix3 &
-	operator *= (const matrix3 &);
+	operator *= (const matrix3 & matrix);
 
 	///  Returns this matrix divided by @a scalar.
 	matrix3 &
-	operator /= (const Type &);
+	operator /= (const Type & scalar);
 
 	///  Returns this matrix left multiplied by @a matrix.
 	void
-	mult_left (const matrix3 &);
+	mult_left (const matrix3 & matrix);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	void
-	mult_right (const matrix3 &);
+	mult_right (const matrix3 & matrix);
 
-	///  Returns a new vector that is @vector multiplies by matrix.
+	///  Returns a new vector that is @a vector multiplies by matrix.
 	vector2 <Type>
-	mult_vec_matrix (const vector2 <Type> &) const;
+	mult_vec_matrix (const vector2 <Type> & vector) const;
 
-	///  Returns a new vector that is @vector multiplies by matrix.
+	///  Returns a new vector that is @a vector multiplies by matrix.
 	constexpr
 	vector3 <Type>
-	mult_vec_matrix (const vector3 <Type> &) const;
+	mult_vec_matrix (const vector3 <Type> & vector) const;
 
-	///  Returns a new vector that is matrix multiplies by @vector.
+	///  Returns a new vector that is matrix multiplies by @a vector.
 	vector2 <Type>
-	mult_matrix_vec (const vector2 <Type> &) const;
+	mult_matrix_vec (const vector2 <Type> & vector) const;
 
-	///  Returns a new vector that is matrix multiplies by @vector.
+	///  Returns a new vector that is matrix multiplies by @a vector.
 	constexpr
 	vector3 <Type>
-	mult_matrix_vec (const vector3 <Type> &) const;
+	mult_matrix_vec (const vector3 <Type> & vector) const;
 
-	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
+	///  Returns a new vector that is @a vector (a normal or direction vector) multiplies by matrix.
 	constexpr
 	vector2 <Type>
-	mult_dir_matrix (const vector2 <Type> &) const;
+	mult_dir_matrix (const vector2 <Type> & vector) const;
 
-	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
+	///  Returns a new vector that is matrix multiplies by @a vector (a normal or direction vector).
 	constexpr
 	vector2 <Type>
-	mult_matrix_dir (const vector2 <Type> &) const;
+	mult_matrix_dir (const vector2 <Type> & vector) const;
 
 	///  Returns this matrix translated by @a translation.
 	void
-	translate (const vector2 <Type> &);
+	translate (const vector2 <Type> & translation);
 
 	///  Returns this matrix rotated by @a rotation.
 	void
-	rotate (const Type &);
+	rotate (const Type & rotation);
 
 	///  Returns this matrix scaled by @a scale.
 	void
-	scale (const vector2 <Type> &);
+	scale (const vector2 <Type> & scale);
 
 	///  Returns this matrix transformed by @a skewAngle.
 	void
-	skew_x (const Type &);
+	skew_x (const Type & skewAngle);
 
 	///  Returns this matrix transformed by @a skewAngle.
 	void
-	skew_y (const Type &);
+	skew_y (const Type & skewAngle);
 
 
 private:
 
 	void
-	rotation (const Type &);
+	rotation (const Type & rotation);
 
 	Type
 	rotation () const;
 
 	template <class T, class S>
 	bool
-	factor (vector2 <T> &,
-	        matrix2 <Type> &,
-	        vector2 <S> &,
-	        matrix2 <Type> &) const;
+	factor (vector2 <T> & translation,
+	        matrix2 <Type> & rotation,
+	        vector2 <S> & scale,
+	        matrix2 <Type> & rotationOrientation) const;
+
+	///  @name Static members
+
+	static const matrix3 Identity;
+
+	///  @name Members
 
 	union
 	{
 		matrix_type value;
 		array_type array;
 	};
-
-	static const matrix3 Identity;
 
 };
 

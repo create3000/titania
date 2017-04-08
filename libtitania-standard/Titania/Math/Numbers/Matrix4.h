@@ -162,12 +162,12 @@ public:
 	///  Copy constructor.
 	template <class Up>
 	constexpr
-	matrix4 (const matrix4 <Up> & matrix) :
-		value (matrix [0], matrix [1], matrix [2], matrix [3])
+	matrix4 (const matrix4 <Up> & other) :
+		value (other [0], other [1], other [2], other [3])
 	{ }
 
-	matrix4 (const matrix4 & matrix)
-	{ *this = matrix; }
+	matrix4 (const matrix4 & other)
+	{ *this = other; }
 
 	///  Value constructor.
 	explicit
@@ -201,27 +201,27 @@ public:
 
 	///  Constructs a matrix4 from a rotation4.
 	explicit
-	matrix4 (const rotation4 <Type> & rot) :
-		matrix4 (matrix3 <Type> (rot))
+	matrix4 (const rotation4 <Type> & rotation) :
+		matrix4 (matrix3 <Type> (rotation))
 	{ }
 
 	///  Constructs a matrix4 from a matrix3 rotation matrix.
 	explicit
 	constexpr
-	matrix4 (const matrix3 <Type> & matrix) :
+	matrix4 (const matrix3 <Type> & other) :
 		array
 	{
-		matrix [0] [0],
-		matrix [0] [1],
-		matrix [0] [2],
+		other [0] [0],
+		other [0] [1],
+		other [0] [2],
 		0,
-		matrix [1] [0],
-		matrix [1] [1],
-		matrix [1] [2],
+		other [1] [0],
+		other [1] [1],
+		other [1] [2],
 		0,
-		matrix [2] [0],
-		matrix [2] [1],
-		matrix [2] [2],
+		other [2] [0],
+		other [2] [1],
+		other [2] [2],
 		0,
 		0, 0, 0, 1,
 	}
@@ -232,26 +232,26 @@ public:
 
 	template <class Up>
 	matrix4 &
-	operator = (const matrix4 <Up> &);
+	operator = (const matrix4 <Up> & other);
 
 	matrix4 &
-	operator = (const matrix4 &);
+	operator = (const matrix4 & other);
 
 	///  @name Element access
 
 	constexpr
 	point_type
-	x () const
+	x_axis () const
 	{ return point_type (array [0], array [1], array [2]); }
 
 	constexpr
 	point_type
-	y () const
+	y_axis () const
 	{ return point_type (array [4], array [5], array [6]); }
 
 	constexpr
 	point_type
-	z () const
+	z_axis () const
 	{ return point_type (array [8], array [9], array [10]); }
 
 	constexpr
@@ -263,49 +263,59 @@ public:
 	set ();
 
 	void
-	set (const vector3 <Type> &);
+	set (const vector3 <Type> & translation);
 
 	void
-	set (const vector3 <Type> &,
-	     const rotation4 <Type> &);
+	set (const vector3 <Type> & translation,
+	     const rotation4 <Type> & rotation);
 
 	void
-	set (const vector3 <Type> &,
-	     const rotation4 <Type> &,
-	     const vector3 <Type> &);
+	set (const vector3 <Type> & translation,
+	     const rotation4 <Type> & rotation,
+	     const vector3 <Type> & scale);
 
 	void
-	set (const vector3 <Type> &,
-	     const rotation4 <Type> &,
-	     const vector3 <Type> &,
-	     const rotation4 <Type> &);
+	set (const vector3 <Type> & translation,
+	     const rotation4 <Type> & rotation,
+	     const vector3 <Type> & scale,
+	     const rotation4 <Type> & scaleOrientation);
 
 	void
-	set (const vector3 <Type> &,
-	     const rotation4 <Type> &,
-	     const vector3 <Type> &,
-	     const rotation4 <Type> &,
-	     const vector3 <Type> &);
+	set (const vector3 <Type> & translation,
+	     const rotation4 <Type> & rotation,
+	     const vector3 <Type> & scale,
+	     const rotation4 <Type> & scaleOrientation,
+	     const vector3 <Type> & center);
 
 	template <class T>
 	void
-	get (vector3 <T> &) const;
+	get (vector3 <T> & translation) const;
 
 	template <class T, class R>
 	void
-	get (vector3 <T> &, rotation4 <R> &) const;
+	get (vector3 <T> & translation,
+	     rotation4 <R> & rotation) const;
 
 	template <class T, class R, class S>
 	void
-	get (vector3 <T> &, rotation4 <R> &, vector3 <S> &) const;
+	get (vector3 <T> & translation,
+	     rotation4 <R> & rotation,
+	     vector3 <S> & scale) const;
 
 	template <class T, class R, class S, class SO>
 	void
-	get (vector3 <T> &, rotation4 <R> &, vector3 <S> &, rotation4 <SO> &) const;
+	get (vector3 <T> & translation,
+	     rotation4 <R> & rotation,
+	     vector3 <S> & scale,
+	     rotation4 <SO> & scaleOrientation) const;
 
 	template <class T, class R, class S, class SO, class C>
 	void
-	get (vector3 <T> &, rotation4 <R> &, vector3 <S> &, rotation4 <SO> &, const vector3 <C> &) const;
+	get (vector3 <T> & translation,
+	     rotation4 <R> & rotation,
+	     vector3 <S> & scale,
+	     rotation4 <SO> & scaleOrientation, 
+	     const vector3 <C> & center) const;
 
 	///  Access rows by @a index.
 	vector_type &
@@ -443,71 +453,71 @@ public:
 
 	///  Add @a matrix to this matrix.
 	matrix4 &
-	operator += (const matrix4 &);
+	operator += (const matrix4 & matrix);
 
 	///  Add @a matrix to this matrix.
 	matrix4 &
-	operator -= (const matrix4 &);
+	operator -= (const matrix4 & matrix);
 
 	///  Returns this matrix multiplies by @a scalar.
 	matrix4 &
-	operator *= (const Type &);
+	operator *= (const Type & scalar);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	matrix4 &
-	operator *= (const matrix4 &);
+	operator *= (const matrix4 & matrix);
 
 	///  Returns this matrix divided by @a scalar.
 	matrix4 &
-	operator /= (const Type &);
+	operator /= (const Type & scalar);
 
 	///  Returns this matrix left multiplied by @a matrix.
 	void
-	mult_left (const matrix4 &);
+	mult_left (const matrix4 & matrix);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	void
-	mult_right (const matrix4 &);
+	mult_right (const matrix4 & matrix);
 
-	///  Returns a new vector that is @vector multiplies by matrix.
+	///  Returns a new vector that is @a vector multiplies by matrix.
 	vector3 <Type>
-	mult_vec_matrix (const vector3 <Type> &) const;
+	mult_vec_matrix (const vector3 <Type> & vector) const;
 
 	///  Returns a new vector that is @vector multiplies by matrix.
 	constexpr
 	vector4 <Type>
-	mult_vec_matrix (const vector4 <Type> &) const;
+	mult_vec_matrix (const vector4 <Type> & vector) const;
 
-	///  Returns a new vector that is matrix multiplies by @vector.
+	///  Returns a new vector that is matrix multiplies by @a vector.
 	vector3 <Type>
-	mult_matrix_vec (const vector3 <Type> &) const;
+	mult_matrix_vec (const vector3 <Type> & vector) const;
 
-	///  Returns a new vector that is matrix multiplies by @vector.
+	///  Returns a new vector that is matrix multiplies by @a vector.
 	constexpr
 	vector4 <Type>
-	mult_matrix_vec (const vector4 <Type> &) const;
+	mult_matrix_vec (const vector4 <Type> & vector) const;
 
-	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
+	///  Returns a new vector that is @a vector (a normal or direction vector) multiplies by matrix.
 	constexpr
 	vector3 <Type>
-	mult_dir_matrix (const vector3 <Type> &) const;
+	mult_dir_matrix (const vector3 <Type> & vector) const;
 
-	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
+	///  Returns a new vector that is matrix multiplies by @a vector (a normal or direction vector).
 	constexpr
 	vector3 <Type>
-	mult_matrix_dir (const vector3 <Type> &) const;
+	mult_matrix_dir (const vector3 <Type> & vector) const;
 
 	///  Returns this matrix translated by @a translation.
 	void
-	translate (const vector3 <Type> &);
+	translate (const vector3 <Type> & translation);
 
 	///  Returns this matrix rotated by @a rotation.
 	void
-	rotate (const rotation4 <Type> &);
+	rotate (const rotation4 <Type> & rotation);
 
 	///  Returns this matrix scaled by @a scale.
 	void
-	scale (const vector3 <Type> &);
+	scale (const vector3 <Type> & scale);
 
 
 private:
@@ -522,13 +532,17 @@ private:
 	Type
 	determinant3 (const int r1, const int r2, const int r3, const int c1, const int c2, const int c3) const;
 
+	///  @name Static members
+
+	static const matrix4 Identity;
+
+	///  @name Members
+
 	union
 	{
 		matrix_type value;
 		array_type array;
 	};
-
-	static const matrix4 Identity;
 
 };
 

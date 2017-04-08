@@ -303,9 +303,9 @@ box3 <Type>::points () const
 	std::vector <vector3 <Type>>  points;
 	points .reserve (8);
 
-	const auto x = matrix () .x ();
-	const auto y = matrix () .y ();
-	const auto z = matrix () .z ();
+	const auto x = matrix () .x_axis ();
+	const auto y = matrix () .y_axis ();
+	const auto z = matrix () .z_axis ();
 
 	const auto r1 = y + z;
 	const auto r2 = z - y;
@@ -331,9 +331,9 @@ std::array <vector3 <Type>, 3>
 box3 <Type>::axes () const
 {
 	return std::array <vector3 <Type>, 3> ({
-		matrix () .x (),
-		matrix () .y (),
-		matrix () .z ()
+		matrix () .x_axis (),
+		matrix () .y_axis (),
+		matrix () .z_axis ()
 	});
 }
 
@@ -344,9 +344,9 @@ box3 <Type>::planes () const
 	std::vector <vector3 <Type>>  axes;
 	axes .reserve (3);
 
-	const auto x = matrix () .x ();
-	const auto y = matrix () .y ();
-	const auto z = matrix () .z ();
+	const auto x = matrix () .x_axis ();
+	const auto y = matrix () .y_axis ();
+	const auto z = matrix () .z_axis ();
 
 	axes .emplace_back (cross (y, z));
 	axes .emplace_back (cross (z, x));
@@ -382,9 +382,9 @@ template <class Type>
 std::pair <vector3 <Type>, vector3 <Type>>
 box3 <Type>::absolute_extents () const
 {
-	const vector3 <Type> x (m_matrix .x ());
-	const vector3 <Type> y (m_matrix .y ());
-	const vector3 <Type> z (m_matrix .z ());
+	const vector3 <Type> x (m_matrix .x_axis ());
+	const vector3 <Type> y (m_matrix .y_axis ());
+	const vector3 <Type> z (m_matrix .z_axis ());
 
 	const auto r1 = y + z;
 	const auto r2 = z - y;

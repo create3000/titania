@@ -348,14 +348,14 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto matrixBefore = Matrix4d (master -> getMatrix ()) * master -> getTransformationMatrix (); // Matrix before transformation
 		const auto matrixAfter  = master -> getCurrentMatrix ()     * master -> getTransformationMatrix (); // Matrix after transformation
 
-		std::vector <double> distances = { dot (normalize (matrixAfter .x ()), normalize (matrixBefore .x ())),
-		                                   dot (normalize (matrixAfter .y ()), normalize (matrixBefore .y ())),
-		                                   dot (normalize (matrixAfter .z ()), normalize (matrixBefore .z ())) };
+		std::vector <double> distances = { dot (normalize (matrixAfter .x_axis ()), normalize (matrixBefore .x_axis ())),
+		                                   dot (normalize (matrixAfter .y_axis ()), normalize (matrixBefore .y_axis ())),
+		                                   dot (normalize (matrixAfter .z_axis ()), normalize (matrixBefore .z_axis ())) };
 
 		const auto index0 = std::max_element (distances .begin (), distances .end ()) - distances .begin (); // Index of rotation axis
 
-		const std::vector <Vector3d> y = { matrixAfter .x (), matrixAfter .y (), matrixAfter .z () }; // Rotation axis, equates to grid normal
-		const std::vector <Vector3d> z = { matrixAfter .y (), matrixAfter .z (), matrixAfter .y () }; // Vector to snap, later transformed to grid space
+		const std::vector <Vector3d> y = { matrixAfter .x_axis (), matrixAfter .y_axis (), matrixAfter .z_axis () }; // Rotation axis, equates to grid normal
+		const std::vector <Vector3d> z = { matrixAfter .y_axis (), matrixAfter .z_axis (), matrixAfter .y_axis () }; // Vector to snap, later transformed to grid space
 
 		Matrix4d grid;
 		grid .set (translation () .getValue (), rotation () .getValue (), scale () .getValue ());
@@ -365,7 +365,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		const auto index2 = (index0 + 2) % y .size ();
 
 		Vector3d   Y             = normalize (cross (y [index1], y [index2]));
-		Vector3d   X             = cross (grid .y (), Y); // Intersection between both planes
+		Vector3d   X             = cross (grid .y_axis (), Y); // Intersection between both planes
 		Vector3d   Z             = cross (X, Y); // Front vector
 		Matrix3d   rotationPlane = Matrix3d (X [0], X [1], X [2],   Y [0], Y [1], Y [2],   Z [0], Z [1], Z [2]);
 		Rotation4d gridRotation  = Rotation4d (rotation () .getValue ());
@@ -378,7 +378,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 
 		// If X or Z are near 0 then Y is collinear to the y-axis.
 
-		if (1 - std::abs (dot (normalize (grid .y ()), Y)) < 1e-6)
+		if (1 - std::abs (dot (normalize (grid .y_axis ()), Y)) < 1e-6)
 		{
 			rotationPlane = Matrix3d ();
 			gridRotation  = Rotation4d ();

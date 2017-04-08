@@ -289,8 +289,8 @@ template <class Type>
 std::pair <vector2 <Type>, vector2 <Type>>
 box2 <Type>::absolute_extents () const
 {
-	const vector2 <Type> x (m_matrix .x ());
-	const vector2 <Type> y (m_matrix .y ());
+	const vector2 <Type> x (m_matrix .x_axis ());
+	const vector2 <Type> y (m_matrix .y_axis ());
 
 	const auto p1 = x + y;
 	const auto p2 = y - x;
@@ -320,8 +320,8 @@ box2 <Type>::points () const
 	std::vector <vector2 <Type>>  points;
 	points .reserve (4);
 
-	const auto x = matrix () .x ();
-	const auto y = matrix () .y ();
+	const auto x = matrix () .x_axis ();
+	const auto y = matrix () .y_axis ();
 
 	const auto p1 = x + y;
 	const auto p2 = y - x;
@@ -342,8 +342,8 @@ std::array <vector2 <Type>, 2>
 box2 <Type>::axes () const
 {
 	return std::array <vector2 <Type>, 2> ({
-		matrix () .x (),
-		matrix () .y ()
+		matrix () .x_axis (),
+		matrix () .y_axis ()
 	});
 }
 

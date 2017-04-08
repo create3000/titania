@@ -151,13 +151,13 @@ public:
 	///  Copy constructor.
 	template <class Up>
 	constexpr
-	matrix2 (const matrix2 <Up> & matrix) :
-		value (matrix [0], matrix [1])
+	matrix2 (const matrix2 <Up> & other) :
+		value (other [0], other [1])
 	{ }
 
 	///  Copy constructor.
-	matrix2 (const matrix2 & matrix)
-	{ *this = matrix; }
+	matrix2 (const matrix2 & other)
+	{ *this = other; }
 
 	///  Value constructor.
 	explicit
@@ -187,15 +187,15 @@ public:
 
 	template <class T>
 	matrix2 &
-	operator = (const matrix2 <T> &);
+	operator = (const matrix2 <T> & other);
 
 	matrix2 &
-	operator = (const matrix2 &);
+	operator = (const matrix2 & other);
 
 	///  @name Element access
 
 	const Type &
-	x () const
+	x_axis () const
 	{ return array [0]; }
 
 	const Type &
@@ -206,16 +206,16 @@ public:
 	set ();
 
 	void
-	set (const Type &);
+	set (const Type & translation);
 
 	void
-	set (const Type &, const Type &);
+	set (const Type & translation, const Type & scale);
 
 	void
-	get (Type &) const;
+	get (Type & translation) const;
 
 	void
-	get (Type &, Type &) const;
+	get (Type & translation, Type & scale) const;
 
 	///  Access rows by @a index.
 	vector_type &
@@ -351,78 +351,82 @@ public:
 
 	///  Add @a matrix to this matrix.
 	matrix2 &
-	operator += (const matrix2 &);
+	operator += (const matrix2 & matrix);
 
 	///  Add @a matrix to this matrix.
 	matrix2 &
-	operator -= (const matrix2 &);
+	operator -= (const matrix2 & matrix);
 
 	///  Returns this matrix multiplies by @a scalar.
 	matrix2 &
-	operator *= (const Type &);
+	operator *= (const Type & scalar);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	matrix2 &
-	operator *= (const matrix2 &);
+	operator *= (const matrix2 & matrix);
 
 	///  Returns this matrix divided by @a scalar.
 	matrix2 &
-	operator /= (const Type &);
+	operator /= (const Type & scalar);
 
 	///  Returns this matrix left multiplied by @a matrix.
 	void
-	mult_left (const matrix2 &);
+	mult_left (const matrix2 & matrix);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	void
-	mult_right (const matrix2 &);
+	mult_right (const matrix2 & matrix);
 
-	///  Returns a new vector that is @vector multiplies by matrix.
+	///  Returns a new vector that is @a vector multiplies by matrix.
 	Type
-	mult_vec_matrix (const Type &) const;
+	mult_vec_matrix (const Type & vector) const;
 
-	///  Returns a new vector that is @vector multiplies by matrix.
+	///  Returns a new vector that is @a vector multiplies by matrix.
 	constexpr
 	vector2 <Type>
-	mult_vec_matrix (const vector2 <Type> &) const;
+	mult_vec_matrix (const vector2 <Type> & vector) const;
 
-	///  Returns a new vector that is matrix multiplies by @vector.
+	///  Returns a new vector that is matrix multiplies by @a vector.
 	Type
-	mult_matrix_vec (const Type &) const;
+	mult_matrix_vec (const Type & vector) const;
 
-	///  Returns a new vector that is matrix multiplies by @vector.
+	///  Returns a new vector that is matrix multiplies by @va ector.
 	constexpr
 	vector2 <Type>
-	mult_matrix_vec (const vector2 <Type> &) const;
+	mult_matrix_vec (const vector2 <Type> & vector) const;
 
-	///  Returns a new vector that is @vector (a normal or direction vector) multiplies by matrix.
+	///  Returns a new vector that is @a vector (a normal or direction vector) multiplies by matrix.
 	constexpr
 	Type
-	mult_dir_matrix (const Type &) const;
+	mult_dir_matrix (const Type & vector) const;
 
-	///  Returns a new vector that is matrix multiplies by @vector (a normal or direction vector).
+	///  Returns a new vector that is matrix multiplies by @a vector (a normal or direction vector).
 	constexpr
 	Type
 	mult_matrix_dir (const Type &) const;
 
 	///  Returns this matrix translated by @a translation.
 	void
-	translate (const Type &);
+	translate (const Type & translation);
 
 	///  Returns this matrix scaled by @a scale.
 	void
-	scale (const Type &);
+	scale (const Type & scale);
 
 
 private:
+
+	///  @name Static members
+
+	static const matrix2 Identity;
+
+	///  @name Members
 
 	union
 	{
 		matrix_type value;
 		array_type array;
 	};
-
-	static const matrix2 Identity;
 
 };
 

@@ -491,7 +491,7 @@ X3DIndexedFaceSetTransformObject::getMinimumBBox (const std::vector <Vector3d> &
 {
 	auto bbox = minimum_bounding_box (points);
 
-	auto       axes   = std::vector <X3D::Vector3d> ({ bbox .matrix () .x (), bbox .matrix () .y (), bbox .matrix () .z () });
+	auto       axes   = std::vector <X3D::Vector3d> ({ bbox .matrix () .x_axis (), bbox .matrix () .y_axis (), bbox .matrix () .z_axis () });
 	const auto center = bbox .center ();
 
 	std::sort (axes .begin (), axes .end (), [ ] (const X3D::Vector3d & a, const X3D::Vector3d & b){ return abs (a) < abs (b); });
