@@ -691,7 +691,7 @@ X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext
 		             return true;
 					 },
 		          true,
-		          TRAVERSE_PROTOTYPE_INSTANCES);
+		          TRAVERSE_PROTOTYPE_INSTANCES | TRAVERSE_META_DATA);
 	}
 
 	// Remove rest, these are only nodes that are not in the scene graph anymore.
