@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,22 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_OPTIONS_H__
-#define __TITANIA_X3D_BROWSER_GEOMETRY3D_BOX_OPTIONS_H__
+#ifndef __TITANIA_X3D_BROWSER_RENDERING_L_SYSTEM_H__
+#define __TITANIA_X3D_BROWSER_RENDERING_L_SYSTEM_H__
 
 #include "../Rendering/X3DGeometricOptionNode.h"
 
 namespace titania {
 namespace X3D {
 
-class LSystemOptions :
+class LSystem :
 	public X3DGeometricOptionNode
 {
 public:
 
 	///  @name Construction
 
-	LSystemOptions (X3DExecutionContext* const executionContext);
+	LSystem (X3DExecutionContext* const executionContext);
 
 	///  @name Common members
 
@@ -119,6 +119,22 @@ public:
 	zAngle () const
 	{ return *fields .zAngle; }
 
+	SFDouble &
+	angleVariation ()
+	{ return *fields .angleVariation; }
+
+	const SFDouble &
+	angleVariation () const
+	{ return *fields .angleVariation; }
+
+	SFDouble &
+	lengthVariation ()
+	{ return *fields .lengthVariation; }
+
+	const SFDouble &
+	lengthVariation () const
+	{ return *fields .lengthVariation; }
+
 	SFVec3d &
 	size ()
 	{ return *fields .size; }
@@ -155,7 +171,7 @@ public:
 
 	void
 	addNode (IndexedLineSet* const indexedLineSet);
-	
+
 	void
 	removeNode (IndexedLineSet* const indexedLineSet);
 
@@ -174,7 +190,7 @@ private:
 	///  @name Construction
 
 	virtual
-	LSystemOptions*
+	LSystem*
 	create (X3DExecutionContext* const executionContext) const final override;
 
 	///  @name Operations
@@ -199,6 +215,8 @@ private:
 		SFDouble* const xAngle;
 		SFDouble* const yAngle;
 		SFDouble* const zAngle;
+		SFDouble* const angleVariation;
+		SFDouble* const lengthVariation;
 		SFVec3d* const size;
 		SFString* const constants;
 		SFString* const axiom;

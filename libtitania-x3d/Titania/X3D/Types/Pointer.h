@@ -367,7 +367,7 @@ class ArcClose2DOptions;
 class Circle2DOptions;
 class Disk2DOptions;
 class Rectangle2DOptions;
-	
+
 class BoxOptions;
 class ConeOptions;
 class CylinderOptions;
@@ -375,6 +375,8 @@ class OctahedronOptions;
 class QuadSphereOptions;
 class TetrahedronOptions;
 class X3DSphereOptionsNode;
+
+class LSystem;
 
 // Browser node types
 

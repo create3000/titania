@@ -56,8 +56,6 @@
 namespace titania {
 namespace X3D {
 
-class LSystemOptions;
-
 class IndexedLineSet :
 	virtual public X3DLineGeometryNode
 {
@@ -299,7 +297,7 @@ private:
 	X3DPtrArray <X3DVertexAttributeNode> attribNodes;
 	X3DPtr <X3DColorNode>                colorNode;
 	X3DPtr <X3DCoordinateNode>           coordNode;
-	X3DPtr <LSystemOptions>              optionsNode;
+	X3DPtr <LSystem>              optionsNode;
 	bool                                 transparent;
 
 };

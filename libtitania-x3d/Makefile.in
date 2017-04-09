@@ -204,7 +204,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.lo \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.lo \
 	Titania/X3D/Browser/Rendering/BackgroundTexture.lo \
-	Titania/X3D/Browser/Rendering/LSystemOptions.lo \
+	Titania/X3D/Browser/Rendering/L-System.lo \
 	Titania/X3D/Browser/Rendering/MotionBlur.lo \
 	Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.lo \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.lo \
@@ -1135,7 +1135,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Browser/PointingDeviceSensor/PointingDevice.cpp \
 	Titania/X3D/Browser/PointingDeviceSensor/X3DPointingDeviceSensorContext.cpp \
 	Titania/X3D/Browser/Rendering/BackgroundTexture.cpp \
-	Titania/X3D/Browser/Rendering/LSystemOptions.cpp \
+	Titania/X3D/Browser/Rendering/L-System.cpp \
 	Titania/X3D/Browser/Rendering/MotionBlur.cpp \
 	Titania/X3D/Browser/Rendering/X3DGeometricOptionNode.cpp \
 	Titania/X3D/Browser/Rendering/X3DRenderingContext.cpp \
@@ -2137,7 +2137,7 @@ Titania/X3D/Browser/Rendering/$(DEPDIR)/$(am__dirstamp):
 Titania/X3D/Browser/Rendering/BackgroundTexture.lo:  \
 	Titania/X3D/Browser/Rendering/$(am__dirstamp) \
 	Titania/X3D/Browser/Rendering/$(DEPDIR)/$(am__dirstamp)
-Titania/X3D/Browser/Rendering/LSystemOptions.lo:  \
+Titania/X3D/Browser/Rendering/L-System.lo:  \
 	Titania/X3D/Browser/Rendering/$(am__dirstamp) \
 	Titania/X3D/Browser/Rendering/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Browser/Rendering/MotionBlur.lo:  \
@@ -4786,7 +4786,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/PointingDevice.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/PointingDeviceSensor/$(DEPDIR)/X3DPointingDeviceSensorContext.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/BackgroundTexture.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/LSystemOptions.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/L-System.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/MotionBlur.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DGeometricOptionNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Browser/Rendering/$(DEPDIR)/X3DRenderingContext.Plo@am__quote@

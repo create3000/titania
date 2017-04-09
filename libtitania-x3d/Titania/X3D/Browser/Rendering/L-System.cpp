@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "LSystemOptions.h"
+#include "L-System.h"
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
@@ -59,12 +59,11 @@
 #include "../../Components/Rendering/IndexedLineSet.h"
 
 #include <Titania/Math/Algorithms/TurtleRenderer.h>
-#include <Titania/Math/Utility/almost_less.h>
 
 namespace titania {
 namespace X3D {
 
-struct LSystemOptions::Values
+struct LSystem::Values
 {
 	Values (const Vector3d & point,
 	        const Matrix3d & matrix,
@@ -85,36 +84,40 @@ struct LSystemOptions::Values
 	const int32_t  coordIndex;
 };
 
-const ComponentType LSystemOptions::component      = ComponentType::TITANIA;
-const std::string   LSystemOptions::typeName       = "LSystemOptions";
-const std::string   LSystemOptions::containerField = "options";
+const ComponentType LSystem::component      = ComponentType::TITANIA;
+const std::string   LSystem::typeName       = "L-System";
+const std::string   LSystem::containerField = "options";
 
-LSystemOptions::Fields::Fields () :
-	iterations (new SFInt32 (8)),
-	    xAngle (new SFDouble (0)),
-	    yAngle (new SFDouble (0)),
-	    zAngle (new SFDouble (radians (45.0))),
-	      size (new SFVec3d (2, 2, 2)),
-	 constants (new SFString ()),
-	     axiom (new SFString ("B")),
-	      rule (new MFString ({ "A=C0AA", "B=C1A[+B]-B" }))
+LSystem::Fields::Fields () :
+	     iterations (new SFInt32 (8)),
+	         xAngle (new SFDouble (0)),
+	         yAngle (new SFDouble (0)),
+	         zAngle (new SFDouble (radians (45.0))),
+	 angleVariation (new SFDouble (0)),
+	lengthVariation (new SFDouble (0)),
+	           size (new SFVec3d (2, 2, 2)),
+	      constants (new SFString ()),
+	          axiom (new SFString ("B")),
+	           rule (new MFString ({ "A=C0AA", "B=C1A[+B]-B" }))
 { }
 
-LSystemOptions::LSystemOptions (X3DExecutionContext* const executionContext) :
+LSystem::LSystem (X3DExecutionContext* const executionContext) :
 	           X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DGeometricOptionNode (),
 	       indexedLineSets ()
 {
-	addType (X3DConstants::LSystemOptions);
+	addType (X3DConstants::LSystem);
 
-	addField (inputOutput, "iterations", iterations ());
-	addField (inputOutput, "xAngle",     xAngle ());
-	addField (inputOutput, "yAngle",     yAngle ());
-	addField (inputOutput, "zAngle",     zAngle ());
-	addField (inputOutput, "size",       size ());
-	addField (inputOutput, "constants",  constants ());
-	addField (inputOutput, "axiom",      axiom ());
-	addField (inputOutput, "rule",       rule ());
+	addField (inputOutput, "iterations",      iterations ());
+	addField (inputOutput, "xAngle",          xAngle ());
+	addField (inputOutput, "yAngle",          yAngle ());
+	addField (inputOutput, "zAngle",          zAngle ());
+	addField (inputOutput, "angleVariation",  angleVariation ());
+	addField (inputOutput, "lengthVariation", lengthVariation ());
+	addField (inputOutput, "size",            size ());
+	addField (inputOutput, "constants",       constants ());
+	addField (inputOutput, "axiom",           axiom ());
+	addField (inputOutput, "rule",            rule ());
 
 	xAngle () .setUnit (UnitCategory::ANGLE);
 	yAngle () .setUnit (UnitCategory::ANGLE);
@@ -122,32 +125,32 @@ LSystemOptions::LSystemOptions (X3DExecutionContext* const executionContext) :
 	size ()   .setUnit (UnitCategory::LENGTH);
 }
 
-LSystemOptions*
-LSystemOptions::create (X3DExecutionContext* const executionContext) const
+LSystem*
+LSystem::create (X3DExecutionContext* const executionContext) const
 {
-	return new LSystemOptions (executionContext);
+	return new LSystem (executionContext);
 }
 
 void
-LSystemOptions::addNode (IndexedLineSet* const indexedLineSet)
+LSystem::addNode (IndexedLineSet* const indexedLineSet)
 {
 	indexedLineSets .emplace (indexedLineSet);
 
-	indexedLineSet -> colorPerVertex () .addInterest (&LSystemOptions::addEvent, this);
+	indexedLineSet -> colorPerVertex () .addInterest (&LSystem::addEvent, this);
 
 	addEvent ();
 }
 
 void
-LSystemOptions::removeNode (IndexedLineSet* const indexedLineSet)
+LSystem::removeNode (IndexedLineSet* const indexedLineSet)
 {
-	indexedLineSet -> colorPerVertex () .removeInterest (&LSystemOptions::addEvent, this);
+	indexedLineSet -> colorPerVertex () .removeInterest (&LSystem::addEvent, this);
 
 	indexedLineSets .erase (indexedLineSet);
 }
 
 void
-LSystemOptions::build ()
+LSystem::build ()
 {
 	try
 	{
@@ -176,8 +179,20 @@ LSystemOptions::build ()
 		if (indexedLineSets .empty ())
 			return;
 
+		// Generate L-System and setup turtle renderer.
+
 		const LSystem lsystem (std::max <int32_t> (0, iterations ()), constants (), axiom (), rule () .begin (), rule () .end ());
-		const TurtleRenderer renderer (xAngle (), yAngle (), zAngle (), lsystem, tolerance);
+
+		TurtleRenderer renderer;
+
+		renderer .x_angle (xAngle ());
+		renderer .y_angle (yAngle ());
+		renderer .z_angle (zAngle ());
+		renderer .angle_variation (angleVariation ());
+		renderer .length_variation (lengthVariation ());
+		renderer .tolerance (tolerance);
+
+		renderer .render (lsystem);
 
 		// Render tree.
 
@@ -188,7 +203,6 @@ LSystemOptions::build ()
 		auto coordPerLineIndices   = std::vector <int32_t> ();
 		auto coordPerVertexIndices = std::vector <int32_t> ();
 		auto points                = std::vector <Vector3d> ();
-		auto pointIndex            = std::map <Vector3d, int32_t, almost_less <Vector3d>> (almost_less <Vector3d> (tolerance));
 
 		if (root)
 		{
@@ -198,7 +212,6 @@ LSystemOptions::build ()
 			const auto coord = points .size ();
 
 			// Root has always children, thus we can emplace a point.
-			pointIndex .emplace (root -> point, coord);
 			points .emplace_back (root -> point);
 
 			for (const auto & child : root -> children)
@@ -215,12 +228,7 @@ LSystemOptions::build ()
 	
 				stack .pop_back ();
 
-				const auto pair = pointIndex .emplace (second -> point, coord);
-
-				if (pair .second)
-					points .emplace_back (second -> point);
-				else
-					coord = pair .first -> second;
+				points .emplace_back (second -> point);
 	
 				colorPerLineIndices   .emplace_back (second -> line_color);
 				colorPerVertexIndices .emplace_back (first -> color);
@@ -247,12 +255,7 @@ LSystemOptions::build ()
 					color = second -> color;
 					coord = points .size ();
 
-					const auto pair = pointIndex .emplace (second -> point, coord);
-
-					if (pair .second)
-						points .emplace_back (second -> point);
-					else
-						coord = pair .first -> second;
+					points .emplace_back (second -> point);
 				}
 
 				colorPerVertexIndices .emplace_back (color);
@@ -268,13 +271,13 @@ LSystemOptions::build ()
 			}
 	
 			// Set size.
-	
-			const auto bbox        = Box3d (points .begin (), points .end (), iterator_type ());
+
+			const auto pointsBBox  = Box3d (points .begin (), points .end (), iterator_type ());
+			const auto scaleBBox   = pointsBBox + Box3d (pointsBBox .size (), -pointsBBox .center ());
 			auto       scaleMatrix = Matrix4d ();
-	
-			scaleMatrix .scale (size () / maximum_norm (bbox .size ()));
-			scaleMatrix .translate (negate (bbox .center ()));
-	
+
+			scaleMatrix .scale (size () / maximum_norm (scaleBBox .size ()));
+
 			for (auto & point : points)
 				point = point * scaleMatrix;
 		}

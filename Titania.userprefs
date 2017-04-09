@@ -1,13 +1,11 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Utility/almost_less.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Algorithms/L-System.h">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/LSystemOptions.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/LSystemOptions.cpp" Line="192" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.cpp" Line="302" Column="21" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Geometry3D/IndexedFaceSet.h" Line="1" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Utility/almost_equal.h" Line="61" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Utility/almost_less.h" Line="49" Column="40" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.cpp" Line="271" Column="68" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/L-System.cpp" Line="227" Column="25" />
+      <File FileName="libtitania-standard/Titania/Math/Algorithms/TurtleRenderer.h" Line="1" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Algorithms/L-System.h" Line="18" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

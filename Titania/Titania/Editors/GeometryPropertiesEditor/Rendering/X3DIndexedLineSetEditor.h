@@ -123,6 +123,8 @@ private:
 	X3DFieldAdjustment <X3D::SFDouble> lSystemXAngle;
 	X3DFieldAdjustment <X3D::SFDouble> lSystemYAngle;
 	X3DFieldAdjustment <X3D::SFDouble> lSystemZAngle;
+	X3DFieldAdjustment <X3D::SFDouble> lSystemAngleVariation;
+	X3DFieldAdjustment <X3D::SFDouble> lSystemLengthVariation;
 	X3DFieldAdjustment3 <X3D::SFVec3d> lSystemSize;
 	SFStringEntry                      lSystemConstants;
 	SFStringEntry                      lSystemAxiom;

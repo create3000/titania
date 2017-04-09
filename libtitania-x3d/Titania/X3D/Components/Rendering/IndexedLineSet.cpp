@@ -51,7 +51,7 @@
 #include "IndexedLineSet.h"
 
 #include "../../Browser/Core/Cast.h"
-#include "../../Browser/Rendering/LSystemOptions.h"
+#include "../../Browser/Rendering/L-System.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 
@@ -138,8 +138,8 @@ IndexedLineSet::initialize ()
 		const auto typeName    = getMetaData <std::string> ("/IndexedLineSet/options/@typeName");
 		const auto metaOptions = getMetadataSet ("/IndexedLineSet/options");
 	
-		if (typeName == "LSystemOptions")
-			optionsNode .set (MakePtr <LSystemOptions> (getExecutionContext ()));
+		if (typeName == "L-System" or typeName == "LSystemOptions")
+			optionsNode .set (MakePtr <LSystem> (getExecutionContext ()));
 
 		optionsNode -> fromMetaData (metaOptions);
 		optionsNode -> setup ();
@@ -229,7 +229,7 @@ IndexedLineSet::set_options ()
 	if (optionsNode)
 		optionsNode -> removeNode (this);
 
-	optionsNode .set (x3d_cast <LSystemOptions*> (options ()));
+	optionsNode .set (x3d_cast <LSystem*> (options ()));
 
 	if (optionsNode)
 		optionsNode -> addNode (this);

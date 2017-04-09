@@ -50,7 +50,7 @@
 
 #include "X3DIndexedLineSetEditor.h"
 
-#include <Titania/X3D/Browser/Rendering/LSystemOptions.h>
+#include <Titania/X3D/Browser/Rendering/L-System.h>
 #include <Titania/X3D/Components/Rendering/IndexedLineSet.h>
 
 #include <regex>
@@ -64,6 +64,8 @@ X3DIndexedLineSetEditor::X3DIndexedLineSetEditor () :
 	                       lSystemXAngle (this, getIndexedLineSetLSystemXAngleAdjustment (), getIndexedLineSetLSystemXAngleBox (), "xAngle"),
 	                       lSystemYAngle (this, getIndexedLineSetLSystemYAngleAdjustment (), getIndexedLineSetLSystemYAngleBox (), "yAngle"),
 	                       lSystemZAngle (this, getIndexedLineSetLSystemZAngleAdjustment (), getIndexedLineSetLSystemZAngleBox (), "zAngle"),
+	               lSystemAngleVariation (this, getIndexedLineSetLSystemAngleVariationAdjustment (), getIndexedLineSetLSystemAngleVariationSpinButton (), "angleVariation"),
+	              lSystemLengthVariation (this, getIndexedLineSetLSystemLengthVariationAdjustment (), getIndexedLineSetLSystemLengthVariationSpinButton (), "lengthVariation"),
 	                         lSystemSize (this,
 	                                      getIndexedLineSetLSystemSizeXAdjustment (),
 	                                      getIndexedLineSetLSystemSizeYAdjustment (),
@@ -140,7 +142,7 @@ X3DIndexedLineSetEditor::on_indexed_line_set_type_changed ()
 	{
 		case 1:
 		{
-			optionNode = X3D::MakePtr <X3D::LSystemOptions> (getCurrentContext ());
+			optionNode = X3D::MakePtr <X3D::LSystem> (getCurrentContext ());
 			break;
 		}
 		default:
@@ -189,14 +191,16 @@ X3DIndexedLineSetEditor::set_options ()
 	const auto global       = optionsNodes .empty ();
 	const auto inconsistent = not (optionsNodes .size () == nodes .size () and types .size () == 1);
 
-	lSystemIterations .setNodes (optionsNodes);
-	lSystemXAngle     .setNodes (optionsNodes);
-	lSystemYAngle     .setNodes (optionsNodes);
-	lSystemZAngle     .setNodes (optionsNodes);
-	lSystemSize       .setNodes (optionsNodes);
-	lSystemConstants  .setNodes (optionsNodes);
-	lSystemAxiom      .setNodes (optionsNodes);
-	lSystemRule       .setNodes (optionsNodes);
+	lSystemIterations      .setNodes (optionsNodes);
+	lSystemXAngle          .setNodes (optionsNodes);
+	lSystemYAngle          .setNodes (optionsNodes);
+	lSystemZAngle          .setNodes (optionsNodes);
+	lSystemAngleVariation  .setNodes (optionsNodes);
+	lSystemLengthVariation .setNodes (optionsNodes);
+	lSystemSize            .setNodes (optionsNodes);
+	lSystemConstants       .setNodes (optionsNodes);
+	lSystemAxiom           .setNodes (optionsNodes);
+	lSystemRule            .setNodes (optionsNodes);
 
 	// Set global widget.
 
@@ -217,7 +221,7 @@ X3DIndexedLineSetEditor::set_options ()
 	{
 		switch (optionsNodes .back () -> getType () .back ())
 		{
-			case X3D::X3DConstants::LSystemOptions:
+			case X3D::X3DConstants::LSystem:
 			{
 				getIndexedLineSetTypeButton ()     .set_active (1);
 				getIndexedLineSetLSystemOptions () .set_visible (true);
@@ -252,7 +256,7 @@ X3DIndexedLineSetEditor::on_indexed_line_set_lsystem_uniform_size_clicked ()
 bool
 X3DIndexedLineSetEditor::validateLSystemConstants (const std::string & text)
 {
-	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>{}]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9]*)/");
 
 	return std::regex_match (text, constants);
 }
@@ -260,7 +264,7 @@ X3DIndexedLineSetEditor::validateLSystemConstants (const std::string & text)
 bool
 X3DIndexedLineSetEditor::validateLSystemAxiom (const std::string & text)
 {
-	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>{}]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>{}|]*)/");
 
 	return std::regex_match (text, constants);
 }
@@ -268,7 +272,7 @@ X3DIndexedLineSetEditor::validateLSystemAxiom (const std::string & text)
 bool
 X3DIndexedLineSetEditor::validateLSystemRule (const std::string & text)
 {
-	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>{}=]+)/");
+	static const std::regex constants (R"/([ A-Za-z0-9\[\]\+\-<>{}|=]*)/");
 
 	return std::regex_match (text, constants);
 }

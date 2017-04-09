@@ -253,10 +253,20 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
+  <object class="GtkAdjustment" id="IndexedLineSetLSystemAngleVariationAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
+  </object>
   <object class="GtkAdjustment" id="IndexedLineSetLSystemIterationsAdjustment">
     <property name="upper">1000000000</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="IndexedLineSetLSystemLengthVariationAdjustment">
+    <property name="upper">1000000000</property>
+    <property name="step_increment">0.01</property>
+    <property name="page_increment">0.10000000000000001</property>
   </object>
   <object class="GtkAdjustment" id="IndexedLineSetLSystemSizeXAdjustment">
     <property name="lower">-1000000000</property>
@@ -4466,7 +4476,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">5</property>
+                                                        <property name="top_attach">7</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4478,7 +4488,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">6</property>
+                                                        <property name="top_attach">8</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4490,7 +4500,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">7</property>
+                                                        <property name="top_attach">9</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4515,7 +4525,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
-                                                        <property name="top_attach">5</property>
+                                                        <property name="top_attach">7</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4526,7 +4536,7 @@
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
-                                                        <property name="top_attach">6</property>
+                                                        <property name="top_attach">8</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4617,7 +4627,7 @@ C0-9 color index</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
-                                                        <property name="top_attach">7</property>
+                                                        <property name="top_attach">9</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4629,7 +4639,7 @@ C0-9 color index</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">4</property>
+                                                        <property name="top_attach">6</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4716,7 +4726,7 @@ C0-9 color index</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
-                                                        <property name="top_attach">4</property>
+                                                        <property name="top_attach">6</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4730,7 +4740,7 @@ C0-9 color index</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">1</property>
-                                                        <property name="top_attach">8</property>
+                                                        <property name="top_attach">10</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4742,7 +4752,7 @@ C0-9 color index</property>
                                                       </object>
                                                       <packing>
                                                         <property name="left_attach">0</property>
-                                                        <property name="top_attach">8</property>
+                                                        <property name="top_attach">10</property>
                                                       </packing>
                                                     </child>
                                                     <child>
@@ -4847,6 +4857,58 @@ C0-9 color index</property>
                                                       <packing>
                                                         <property name="left_attach">1</property>
                                                         <property name="top_attach">3</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkLabel" id="label71">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="label" translatable="yes">Angle Variation:</property>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">0</property>
+                                                        <property name="top_attach">4</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkLabel" id="label72">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">False</property>
+                                                        <property name="label" translatable="yes">Length Variation:</property>
+                                                        <property name="xalign">0</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">0</property>
+                                                        <property name="top_attach">5</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="IndexedLineSetLSystemAngleVariationSpinButton">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="halign">start</property>
+                                                        <property name="text" translatable="yes">0,000000</property>
+                                                        <property name="adjustment">IndexedLineSetLSystemAngleVariationAdjustment</property>
+                                                        <property name="digits">3</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">1</property>
+                                                        <property name="top_attach">4</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="IndexedLineSetLSystemLengthVariationSpinButton">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="halign">start</property>
+                                                        <property name="text" translatable="yes">0,000000</property>
+                                                        <property name="adjustment">IndexedLineSetLSystemLengthVariationAdjustment</property>
+                                                        <property name="digits">3</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">1</property>
+                                                        <property name="top_attach">5</property>
                                                       </packing>
                                                     </child>
                                                   </object>

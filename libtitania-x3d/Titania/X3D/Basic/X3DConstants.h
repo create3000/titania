@@ -489,7 +489,7 @@ enum NodeType : uint16_t
 	TetrahedronOptions,
 	X3DSphereOptionsNode,
 
-	LSystemOptions,
+	LSystem,
 
 	// Browser node types
 

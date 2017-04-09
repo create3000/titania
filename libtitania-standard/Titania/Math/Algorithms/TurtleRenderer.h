@@ -55,7 +55,9 @@
 #include "../Utility/almost_equal.h"
 #include "L-System.h"
 
+#include <chrono>
 #include <memory>
+#include <random>
 #include <vector>
 
 namespace titania {
@@ -81,7 +83,7 @@ struct turtle_renderer_node {
 	int32_t        color;
 	int32_t        line_color;
 	vector3 <Type> direction;
-	size_t         distance;
+	Type           distance;
 	children_type  children;
 
 };
@@ -129,6 +131,30 @@ public:
 	z_angle () const
 	{ return mz_angle; }
 
+	void
+	angle_variation (const Type & value)
+	{ m_angle_variation = value; }
+
+	const Type &
+	angle_variation () const
+	{ return m_angle_variation; }
+
+	void
+	length_variation (const Type & value)
+	{ m_length_variation = value; }
+
+	const Type &
+	length_variation () const
+	{ return m_length_variation; }
+
+	void
+	tolerance (const Type & value)
+	{ m_tolerance = value; }
+
+	const Type &
+	tolerance () const
+	{ return m_tolerance; }
+
 	bool
 	colors () const
 	{ return m_colors; }
@@ -140,7 +166,7 @@ public:
 	///  @name Operations
 
 	void
-	render (const lsystem <String> & lsystem, const Type & tolerance = 0);
+	render (const lsystem <String> & lsystem);
 
 	///  @name Destruction
 
@@ -148,39 +174,70 @@ public:
 
 private:
 
+	///  @name Operations
+
+	Type
+	variation (const Type & value, const Type & variation);
+
+	Type
+	random (const Type & min, const Type & max);
+
+	///  @name Static members
+
+	static std::uniform_real_distribution <Type> uniform_real_distribution;
+	static std::default_random_engine            random_engine;
+
 	///  @name Members
 
 	Type     mx_angle;
 	Type     my_angle;
 	Type     mz_angle;
+	Type     m_angle_variation;
+	Type     m_length_variation;
+	Type     m_tolerance;
 	bool     m_colors;
 	node_ptr m_tree; 
 
 };
 
 template <class Type, class String>
+std::uniform_real_distribution <Type>
+turtle_renderer <Type, String>::uniform_real_distribution (-1, 1);
+
+template <class Type, class String>
+std::default_random_engine
+turtle_renderer <Type, String>::random_engine (std::chrono::system_clock::now () .time_since_epoch () .count ());
+
+
+template <class Type, class String>
 turtle_renderer <Type, String>::turtle_renderer () :
-	mx_angle (0),
-	my_angle (0),
-	mz_angle (0),
-	m_colors (false),
-	  m_tree ()
-{ }
+	          mx_angle (0),
+	          my_angle (0),
+	          mz_angle (0),
+	 m_angle_variation (0),
+	m_length_variation (0),
+	       m_tolerance (0),
+	          m_colors (false),
+	            m_tree ()
+{ }       
 
 template <class Type, class String>
 turtle_renderer <Type, String>::turtle_renderer (const Type & x_angle, const Type & y_angle, const Type & z_angle, const lsystem <String> & lsystem, const Type & tolerance) :
-	mx_angle (x_angle),
-	my_angle (y_angle),
-	mz_angle (z_angle),
-	m_colors (false),
-	  m_tree ()
+	          mx_angle (x_angle),
+	          my_angle (y_angle),
+	          mz_angle (z_angle),
+	 m_angle_variation (0),
+	m_length_variation (0),
+	       m_tolerance (tolerance),
+	          m_colors (false),
+	            m_tree ()
 {
-	render (lsystem, tolerance);
+	render (lsystem);
 }
 
 template <class Type, class String>
 void
-turtle_renderer <Type, String>::render (const lsystem <String> & lsystem, const Type & tolerance)
+turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 {
 	struct stack_value
 	{
@@ -206,7 +263,7 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem, const 
 	auto    rotation      = rotation4 <Type> ();                         // Rotation. The y-axis is the direction vector for a new step.
 	auto    point         = vector3 <Type> ();                           // Current point in space.
 	auto    lastDirection = vector3 <Type> ();  
-	int32_t distance      = 0;                                           // Number of steps.
+	Type    distance      = 0;                                           // Number of steps.
 	auto    root          = std::make_shared <node_type> (point, color); // Root node of tree.
 	auto    node          = root;                                        // Current node.
 	auto    stack         = std::vector <stack_value> ();                // Stack for '[' and ']'.
@@ -235,32 +292,32 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem, const 
 			}
 			case '}': // Counterclockwise rotation about local x-axis
 			{
-				rotation *= rotation4 <Type> (vector3 <Type> (1, 0, 0) * rotation, mx_angle);
+				rotation *= rotation4 <Type> (vector3 <Type> (1, 0, 0) * rotation, variation (mx_angle, angle_variation ()));
 				break;
 			}
 			case '{': // Clockwise rotation about local x-axis
 			{
-					rotation *= rotation4 <Type> (vector3 <Type> (1, 0, 0) * rotation, -mx_angle);
+					rotation *= rotation4 <Type> (vector3 <Type> (1, 0, 0) * rotation, -variation (mx_angle, angle_variation ()));
 			break;
 			}
 			case '>': // Counterclockwise rotation about local y-axis
 			{
-				rotation *= rotation4 <Type> (vector3 <Type> (0, 1, 0) * rotation, my_angle);
+				rotation *= rotation4 <Type> (vector3 <Type> (0, 1, 0) * rotation, variation (my_angle, angle_variation ()));
 				break;
 			}
 			case '<': // Clockwise rotation about local y-axis
 			{
-				rotation *= rotation4 <Type> (vector3 <Type> (0, 1, 0) * rotation, -my_angle);
+				rotation *= rotation4 <Type> (vector3 <Type> (0, 1, 0) * rotation, -variation (my_angle, angle_variation ()));
 				break;
 			}
 			case '+': // Counterclockwise rotation about local z-axis
 			{
-				rotation *= rotation4 <Type> (vector3 <Type> (0, 0, 1) * rotation, mz_angle);
+				rotation *= rotation4 <Type> (vector3 <Type> (0, 0, 1) * rotation, variation (mz_angle, angle_variation ()));
 				break;
 			}
 			case '-': // Clockwise rotation about local z-axis
 			{
-				rotation *= rotation4 <Type> (vector3 <Type> (0, 0, 1) * rotation, -mz_angle);
+				rotation *= rotation4 <Type> (vector3 <Type> (0, 0, 1) * rotation, -variation (mz_angle, angle_variation ()));
 				break;
 			}
 			case '|': // Turn around 180бу
@@ -303,12 +360,13 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem, const 
 				if (lsystem .is_constant (c))
 					break;
 
-				const auto direction = vector3 <Type> (0, 1, 0) * rotation;
+				const auto length    = variation (1, length_variation ());
+				const auto direction = vector3 <Type> (0, length, 0) * rotation;
 
 				point    += direction;
-				distance += 1;
+				distance += length;
 
-				if (change or not almost_equal (lastDirection, direction, tolerance))
+				if (change or not almost_equal (lastDirection, direction, tolerance ()))
 				{
 					change        = false;
 					lastColor     = color;
@@ -340,6 +398,22 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem, const 
 		return;
 
 	m_tree = root;
+}
+
+template <class Type, class String>
+Type
+turtle_renderer <Type, String>::variation (const Type & value, const Type & variation)
+{
+	const Type v = value * variation;
+
+	return random (std::max <Type> (0, value - v), value + v);
+}
+
+template <class Type, class String>
+Type
+turtle_renderer <Type, String>::random (const Type & min, const Type & max)
+{
+	return min + ((uniform_real_distribution (random_engine) + 1) / 2) * (max - min);
 }
 
 template <class Type, class String>
