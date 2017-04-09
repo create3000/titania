@@ -4884,23 +4884,10 @@ C0-9 color index</property>
                                                       </packing>
                                                     </child>
                                                     <child>
-                                                      <object class="GtkSpinButton" id="IndexedLineSetLSystemAngleVariationSpinButton">
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="halign">start</property>
-                                                        <property name="text" translatable="yes">0,000000</property>
-                                                        <property name="adjustment">IndexedLineSetLSystemAngleVariationAdjustment</property>
-                                                        <property name="digits">3</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="left_attach">1</property>
-                                                        <property name="top_attach">4</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
                                                       <object class="GtkSpinButton" id="IndexedLineSetLSystemLengthVariationSpinButton">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">True</property>
+                                                        <property name="tooltip_text" translatable="yes">The variation is a multiplier for the randomness that is used to control the range of possible output values.</property>
                                                         <property name="halign">start</property>
                                                         <property name="text" translatable="yes">0,000000</property>
                                                         <property name="adjustment">IndexedLineSetLSystemLengthVariationAdjustment</property>
@@ -4909,6 +4896,21 @@ C0-9 color index</property>
                                                       <packing>
                                                         <property name="left_attach">1</property>
                                                         <property name="top_attach">5</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkSpinButton" id="IndexedLineSetLSystemAngleVariationSpinButton">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="tooltip_text" translatable="yes">The variation is a multiplier for the randomness that is used to control the range of possible output values.</property>
+                                                        <property name="halign">start</property>
+                                                        <property name="text" translatable="yes">0,000000</property>
+                                                        <property name="adjustment">IndexedLineSetLSystemAngleVariationAdjustment</property>
+                                                        <property name="digits">3</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="left_attach">1</property>
+                                                        <property name="top_attach">4</property>
                                                       </packing>
                                                     </child>
                                                   </object>

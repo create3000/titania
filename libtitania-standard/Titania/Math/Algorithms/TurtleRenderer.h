@@ -290,12 +290,12 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 
 				break;
 			}
-			case '}': // Counterclockwise rotation about local x-axis
+			case '\\': // Counterclockwise rotation about local x-axis
 			{
 				rotation *= rotation4 <Type> (vector3 <Type> (1, 0, 0) * rotation, variation (mx_angle, angle_variation ()));
 				break;
 			}
-			case '{': // Clockwise rotation about local x-axis
+			case '/': // Clockwise rotation about local x-axis
 			{
 					rotation *= rotation4 <Type> (vector3 <Type> (1, 0, 0) * rotation, -variation (mx_angle, angle_variation ()));
 			break;
@@ -361,9 +361,9 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 					break;
 
 				const auto length    = variation (1, length_variation ());
-				const auto direction = vector3 <Type> (0, length, 0) * rotation;
+				const auto direction = vector3 <Type> (0, 1, 0) * rotation;
 
-				point    += direction;
+				point    += direction * length;
 				distance += length;
 
 				if (change or not almost_equal (lastDirection, direction, tolerance ()))
