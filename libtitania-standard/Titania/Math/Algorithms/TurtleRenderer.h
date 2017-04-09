@@ -176,11 +176,15 @@ private:
 
 	///  @name Operations
 
-	Type
-	variation (const Type & value, const Type & variation);
+	template <class Number>
+	bool
+	number (std::istream & istream, Number & value) const;
 
 	Type
-	random (const Type & min, const Type & max);
+	variation (const Type & value, const Type & variation) const;
+
+	Type
+	random (const Type & min, const Type & max) const;
 
 	///  @name Static members
 
@@ -278,9 +282,9 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 		{
 			case '#': // Color
 			{
-				int32_t index;
+				int32_t index = -1;
 
-				if ((isstream >> index) and (index >= 0))
+				if (number (isstream, index) and (index >= 0))
 				{
 					m_colors      = true;
 					change        = index not_eq lastColor;
@@ -401,8 +405,27 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 }
 
 template <class Type, class String>
+template <class Number>
+bool
+turtle_renderer <Type, String>::number (std::istream & istream, Number & value) const
+{
+	const auto state = istream .rdstate ();
+	const auto pos   = istream .tellg ();
+
+	if (istream >> value)
+		return true;
+
+	istream .clear (state);
+
+	for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
+		istream .unget ();
+
+	return false;
+}
+
+template <class Type, class String>
 Type
-turtle_renderer <Type, String>::variation (const Type & value, const Type & variation)
+turtle_renderer <Type, String>::variation (const Type & value, const Type & variation) const
 {
 	const Type v = value * variation;
 
@@ -411,7 +434,7 @@ turtle_renderer <Type, String>::variation (const Type & value, const Type & vari
 
 template <class Type, class String>
 Type
-turtle_renderer <Type, String>::random (const Type & min, const Type & max)
+turtle_renderer <Type, String>::random (const Type & min, const Type & max) const
 {
 	return min + ((uniform_real_distribution (random_engine) + 1) / 2) * (max - min);
 }
