@@ -4543,7 +4543,7 @@
                                                       <object class="GtkBox" id="IndexedLineSetLSystemXAngleBox">
                                                         <property name="visible">True</property>
                                                         <property name="can_focus">False</property>
-                                                        <property name="tooltip_text" translatable="yes">Rotation about the local x-axis ({}).</property>
+                                                        <property name="tooltip_text" translatable="yes">Rotation about the local x-axis (\/).</property>
                                                         <property name="spacing">8</property>
                                                         <child>
                                                           <object class="GtkSpinButton" id="IndexedLineSetLSystemXAngleSpinButton">
@@ -4604,8 +4604,8 @@
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
                                                             <property name="tooltip_text" translatable="yes">any characer draw line along local y-axis
-} counterclockwise rotation about local x-axis
-{ clockwise rotation about local x-axis
+\ counterclockwise rotation about local x-axis
+/ clockwise rotation about local x-axis
 &gt; counterclockwise rotation about local y-axis
 &lt; clockwise rotation about local y-axis
 + counterclockwise rotation about local z-axis
