@@ -1,3 +1,10 @@
+titania (3.0.1) zesty; urgency=medium
+
+  * Fixes for Zesty.
+  * New Primitive Options.
+
+ -- Holger Seelig <holger@qualle>  Sun, 09 Apr 2017 13:30:45 +0200
+
 titania (3.0.0) zesty; urgency=medium
 
   * Added Sculp Tool.
