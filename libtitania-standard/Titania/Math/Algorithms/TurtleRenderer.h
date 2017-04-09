@@ -276,7 +276,7 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 
 		switch (c)
 		{
-			case 'C': // Color
+			case '#': // Color
 			{
 				int32_t index;
 

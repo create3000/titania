@@ -1,11 +1,13 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-standard/Titania/Math/Algorithms/L-System.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.cpp" Line="271" Column="68" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/L-System.cpp" Line="227" Column="25" />
-      <File FileName="libtitania-standard/Titania/Math/Algorithms/TurtleRenderer.h" Line="1" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Algorithms/L-System.h" Line="18" Column="24" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.h" Line="126" Column="58" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.cpp" Line="271" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/L-System.h" Line="218" Column="24" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/L-System.cpp" Line="274" Column="1" />
+      <File FileName="libtitania-standard/Titania/Math/Algorithms/TurtleRenderer.h" Line="293" Column="11" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/ParticleSystems/Random.cpp" Line="56" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

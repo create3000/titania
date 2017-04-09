@@ -4603,7 +4603,7 @@
                                                           <object class="GtkBox" id="IndexedLineSetLSystemRuleBox">
                                                             <property name="visible">True</property>
                                                             <property name="can_focus">False</property>
-                                                            <property name="tooltip_text" translatable="yes">any characer draw line along local y-axis
+                                                            <property name="tooltip_text" translatable="yes">a-zA-Z0-9 draw line along local y-axis
 \ counterclockwise rotation about local x-axis
 / clockwise rotation about local x-axis
 &gt; counterclockwise rotation about local y-axis
@@ -4611,7 +4611,7 @@
 + counterclockwise rotation about local z-axis
 - clockwise rotation about local z-axis
 | turn around 180°
-C0-9 color index</property>
+#0-9 color index</property>
                                                             <property name="orientation">vertical</property>
                                                             <property name="spacing">2</property>
                                                             <child>
