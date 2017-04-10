@@ -70,20 +70,16 @@ struct turtle_renderer_node {
 	using node_ptr      = std::shared_ptr <turtle_renderer_node>;
 	using children_type = std::vector <node_ptr>;
 
-	turtle_renderer_node (const vector3 <Type> & point, const int32_t color) :
+	turtle_renderer_node (const vector3 <Type> & point, const int32_t color, const int32_t line_color) :
 		     point (point),
 		     color (color),
-		line_color (-1),
-		 direction (),
-		  distance (0),
+		line_color (line_color),
 		  children ()
 	{ }
 
 	vector3 <Type> point;
 	int32_t        color;
 	int32_t        line_color;
-	vector3 <Type> direction;
-	Type           distance;
 	children_type  children;
 
 };
@@ -261,16 +257,15 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 		const int32_t          color;
 	};
 
-	bool    change        = true;                                        // True, if a new point must be inserted.
-	int32_t color         = 0;                                           // Current color index.
-	int32_t lastColor     = -1;                                          // First color applied to node.
-	auto    rotation      = rotation4 <Type> ();                         // Rotation. The y-axis is the direction vector for a new step.
-	auto    point         = vector3 <Type> ();                           // Current point in space.
+	bool    change        = true;                                            // True, if a new point must be inserted.
+	int32_t color         = 0;                                               // Current color index.
+	int32_t lastColor     = -1;                                              // First color applied to node.
+	auto    rotation      = rotation4 <Type> ();                             // Rotation. The y-axis is the direction vector for a new step.
+	auto    point         = vector3 <Type> ();                               // Current point in space.
 	auto    lastDirection = vector3 <Type> ();  
-	Type    distance      = 0;                                           // Number of steps.
-	auto    root          = std::make_shared <node_type> (point, color); // Root node of tree.
-	auto    node          = root;                                        // Current node.
-	auto    stack         = std::vector <stack_value> ();                // Stack for '[' and ']'.
+	auto    root          = std::make_shared <node_type> (point, color, -1); // Root node of tree.
+	auto    node          = root;                                            // Current node.
+	auto    stack         = std::vector <stack_value> ();                    // Stack for '[' and ']'.
 
 	std::istringstream isstream (lsystem .commands ());
 
@@ -335,7 +330,6 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 
 				change    = true;
 				lastColor = -1;
-				distance  = 0;
 				break;
 			}
 			case ']': // Pop
@@ -350,7 +344,6 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 				lastColor = -1;
 				rotation  = back .rotation;
 				point     = back .point;
-				distance  = 0;
 				node      = back .node;
 
 				stack .pop_back ();
@@ -367,8 +360,7 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 				const auto length    = variation (1, length_variation ());
 				const auto direction = vector3 <Type> (0, 1, 0) * rotation;
 
-				point    += direction * length;
-				distance += length;
+				point += direction * length;
 
 				if (change or not almost_equal (lastDirection, direction, tolerance ()))
 				{
@@ -376,17 +368,11 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 					lastColor     = color;
 					lastDirection = direction;
 
-					auto child = std::make_shared <node_type> (point, color);
-
-					child -> color      = color;
-					child -> line_color = color;
-					child -> direction  = direction;
-					child -> distance   = distance;
+					auto child = std::make_shared <node_type> (point, color, color);
 
 					node -> children .emplace_back (child);
 	
-					node     = std::move (child);
-					distance = 0;
+					node = std::move (child);
 				}
 				else
 				{
