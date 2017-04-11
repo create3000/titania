@@ -165,7 +165,7 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 				if (flags & TRAVERSE_META_DATA)
 					break;
 
-				// Proceed with next case:
+				return true;
 			}
 			case X3DConstants::Script:
 			{
@@ -494,7 +494,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags
 				if (flags & TRAVERSE_META_DATA)
 					break;
 
-				// Proceed with next case:
+				return;
 			}
 			case X3DConstants::Script:
 			{
