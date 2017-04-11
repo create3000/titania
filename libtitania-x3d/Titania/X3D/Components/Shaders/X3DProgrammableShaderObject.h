@@ -428,10 +428,11 @@ private:
 	GLint x3d_Texture2D;
 	GLint x3d_CubeMapTexture;
 
-	GLint x3d_TextureMatrix;
-	GLint x3d_NormalMatrix;
+	GLint x3d_Viewport;
 	GLint x3d_ProjectionMatrix;
 	GLint x3d_ModelViewMatrix;
+	GLint x3d_NormalMatrix;
+	GLint x3d_TextureMatrix;
 
 	GLint x3d_Color;
 	GLint x3d_TexCoord;
