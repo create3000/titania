@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ * Copyright create3000, ScheffelstraÃŸe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -319,7 +319,7 @@ turtle_renderer <Type, String>::render (const lsystem <String> & lsystem)
 				rotation *= rotation4 <Type> (vector3 <Type> (0, 0, 1) * rotation, -variation (mz_angle, angle_variation ()));
 				break;
 			}
-			case '|': // Turn around 180¡ã
+			case '|': // Turn around 180Â°
 			{
 				rotation *= rotation4 <Type> (vector3 <Type> (0, 0, 1) * rotation, pi <Type>);
 				break;

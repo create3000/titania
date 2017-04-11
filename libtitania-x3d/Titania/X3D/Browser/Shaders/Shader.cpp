@@ -267,7 +267,7 @@ Shader::printShaderInfoLog (X3DBrowser* const browser,
 	if (not shaderId)
 		return;
 
-	GLint infoLogLength;
+	GLint infoLogLength = 0;
 
 	glGetShaderiv (shaderId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
@@ -278,6 +278,9 @@ Shader::printShaderInfoLog (X3DBrowser* const browser,
 		std::string infoLog (infoLogLength, '\0');
 
 		glGetShaderInfoLog (shaderId, infoLogLength, 0, &infoLog [0]);
+
+		if (infoLogLength)
+			infoLog .resize (infoLogLength - 1);
 
 		basic::uri filename;
 	
@@ -309,7 +312,7 @@ Shader::printProgramInfoLog (X3DBrowser* const browser,
 	if (not programId)
 		return;
 
-	GLint infoLogLength;
+	GLint infoLogLength = 0;
 
 	glGetProgramiv (programId, GL_INFO_LOG_LENGTH, &infoLogLength);
 
@@ -320,6 +323,9 @@ Shader::printProgramInfoLog (X3DBrowser* const browser,
 		std::string infoLog (infoLogLength, '\0');
 
 		glGetProgramInfoLog (programId, infoLogLength, 0, &infoLog [0]);
+
+		if (infoLogLength)
+			infoLog .resize (infoLogLength - 1);
 
 		basic::uri filename;
 
