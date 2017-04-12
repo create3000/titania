@@ -1,11 +1,14 @@
-#X3D V3.0 utf8 Titania V1.4.10
+#X3D V3.0 utf8 Titania V3.0.1
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.4.10, http://titania.create3000.de"
+META "generator" "Titania V3.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Water2.x3dv"
-META "modified" "Sat, 17 Sep 2016 12:00:12 GMT"
+META "modified" "Wed, 12 Apr 2017 05:06:46 GMT"
+META "outputStyle" "nicest"
 META "title" "Water Shader 2"
 
 WorldInfo {
@@ -64,27 +67,108 @@ WorldInfo {
             name "previous"
             reference "http://titania.create3000.de"
           }
-          DEF children MetadataSet {
-            name "children"
+          DEF nodes MetadataSet {
+            name "nodes"
             reference "http://titania.create3000.de"
-            value DEF WaterFragment ShaderPart {
-              type "FRAGMENT"
+            value DEF WaterVertex ShaderPart {
               url "data:text/plain,
 
 precision mediump float;
 
-uniform float       x3d_Transparency;
-uniform samplerCube texture;
+uniform mat3 x3d_NormalMatrix;
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+
+attribute vec4 x3d_Vertex;
+
+#define WAVE_MAX 8
+
+uniform float set_time;
+uniform vec3  position;
+uniform float amplitude [WAVE_MAX];
+uniform float frequency [WAVE_MAX];
+uniform float speed [WAVE_MAX];
+uniform vec2  direction [WAVE_MAX];
 
 varying vec3 texCoord;
+
+float hash (in float n)
+{
+	return fract (sin (n) * 43758.5453123);
+}
+
+float nnoise (in vec2 x)
+{
+	vec2 p = floor (x);
+	vec2 f = fract (x);
+
+	f = f * f * (3.0 - 2.0 * f);
+
+	float n   = p.x + p.y * 57.0;
+	float res = mix (mix (hash (n +  0.0), hash (n +  1.0), f.x),
+	                 mix (hash (n + 57.0), hash (n + 58.0), f.x), f.y);
+	            
+	return res;
+}
+
+float
+getHeight (in int i, in vec2 vertex)
+{
+	vec2 d = normalize (direction [i]);
+
+	return amplitude [i] * nnoise (vertex * frequency [i] - d * set_time * speed [i]);
+}
+
+float
+getWaveHeight (in vec2 vertex)
+{
+	float height = 0.0;
+
+	for (int i = 0; i < WAVE_MAX; ++ i)
+	{
+		if (amplitude [i] == 0.0)
+			continue;
+
+		height += getHeight (i, vertex);
+	}
+
+	return height;
+}
+
+#define DISTANCE_MIN 0.01
+
+const vec2 delta = vec2 (DISTANCE_MIN, -DISTANCE_MIN);
+
+vec3
+getWaveNormal (in vec2 pos)
+{
+	vec2 p1 = pos + delta .xx;
+	vec2 p2 = pos + delta .yy;
+	vec2 p3 = pos + delta .yx;
+	vec2 p4 = pos + delta .xy;
+
+	vec3 n1 = vec3 (p1.x, getWaveHeight (p1), p1.y);
+	vec3 n2 = vec3 (p2.x, getWaveHeight (p2), p2.y);
+	vec3 n3 = vec3 (p3.x, getWaveHeight (p3), p3.y);
+	vec3 n4 = vec3 (p4.x, getWaveHeight (p4), p4.y);
+   
+   vec3 n = cross (n1 - n2, n3 - n4);
+   
+   return normalize (n);
+}
 
 void
 main ()
 {
-	vec3 color   = vec3 (textureCube (texture, texCoord));
-	gl_FragColor = vec4 (color, 1.0 - x3d_Transparency);
-}
-"
+	vec4 vertex = x3d_Vertex;
+	vec2 pos    = vec2 (vertex .x, vertex .z);
+	vertex .y   = getWaveHeight (pos);
+	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
+
+	vec3 eye    = position - vertex .xyz / vertex .w;
+	vec3 normal = getWaveNormal (pos);
+	texCoord    = -reflect (eye, normal);
+}"
             }
           }
         ]
@@ -115,7 +199,7 @@ DEF Water2 Transform {
     }
     Shape {
       appearance Appearance {
-        material Material {
+        material DEF _2 Material {
           ambientIntensity 0
           diffuseColor 0 0 0
           shininess 0
@@ -125,33 +209,34 @@ DEF Water2 Transform {
           inputOnly   SFFloat set_time
           inputOutput SFVec3f position 105.389 48.4969 74.604
           inputOutput MFFloat amplitude [
-            0.222428,
-            0.164403,
-            0.0967078,
-            0.0967078,
-            0.0967078,
-            0,
+            0.0561423,
+            0.045134,
+            0.45134,
+            0.209158,
+            1.10083,
             0,
             0,
             0
           ]
           inputOutput MFFloat frequency [
-            2.66008,
-            2.55473,
-            1.13251,
-            0.974485,
-            0.763786,
-            0,
+            1.81667,
+            1.29885,
+            0.276864,
+            0.686006,
+            0.120633,
             0,
             0,
             0
           ]
           inputOutput MFVec2f direction [
-            2 -2,
-            2 -1,
-            2 -0,
-            2 1,
-            2 2
+            0.171921 0.766712,
+            0.943286 0.338375,
+            0.192672 0.869837,
+            0.0129635 0.971308,
+            0.624717 0.251618,
+            0 0,
+            0 0,
+            0 0
           ]
           inputOutput SFNode  texture ComposedCubeMapTexture {
             front ImageTexture {
@@ -216,97 +301,26 @@ DEF Water2 Transform {
 
           language "GLSL"
           parts [
-            DEF WaterVertex ShaderPart {
+            USE WaterVertex
+            DEF WaterFragment ShaderPart {
+              type "FRAGMENT"
               url "data:text/plain,
 
 precision mediump float;
 
-uniform mat3 x3d_NormalMatrix;
-uniform mat4 x3d_ProjectionMatrix;
-uniform mat4 x3d_ModelViewMatrix;
-
-attribute vec4 x3d_Vertex;
-
-#define WAVE_MAX 8
-
-uniform float set_time;
-uniform vec3  position;
-uniform float amplitude [WAVE_MAX];
-uniform float frequency [WAVE_MAX];
-uniform float speed [WAVE_MAX];
-uniform vec2  direction [WAVE_MAX];
+uniform float       x3d_Transparency;
+uniform samplerCube texture;
 
 varying vec3 texCoord;
-
-float
-getHeight (int i, vec2 vertex)
-{
-	float theta = -dot (vertex, normalize (direction [i]));
-
-	return amplitude [i] * sin (theta * frequency [i] + set_time * speed [i]);
-}
-
-float
-getWaveHeight (vec2 vertex)
-{
-	float height = 0.0;
-
-	for (int i = 0; i < WAVE_MAX; ++ i)
-	{
-		if (amplitude [i] == 0.0)
-			continue;
-
-		height += getHeight (i, vertex);
-	}
-
-	return height;
-}
-
-float
-getNormalHeight (int i, vec2 vertex)
-{
-	float theta = -dot (vertex, normalize (direction [i]));
-
-	return amplitude [i] * cos (theta * frequency [i] + set_time * speed [i]);
-}
-
-vec3
-getWaveNormal (vec2 vertex)
-{
-	int  waves  = 0;
-	vec3 normal = vec3 (0.0, 0.0, 0.0);
-
-	for (int i = 0; i < WAVE_MAX; ++ i)
-	{
-		if (amplitude [i] == 0.0)
-			continue;
-
-		++ waves;
-
-		float h = getNormalHeight (i, vertex);
-		vec2  d = normalize (direction [i]);
-		vec3  s = vec3 (d .x, h, d .y);
-		vec3  n = cross (vec3 (-d .y, 0, d .x), s);
-
-		normal += normalize (n);
-	}
-
-	return waves != 0 ? normalize (normal) : vec3 (0.0, 1.0, 0.0);
-}
 
 void
 main ()
 {
-	vec4 vertex = x3d_Vertex;
-	vertex .y   = getWaveHeight (vec2 (vertex .x, vertex .z));
-	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
-
-	vec3 eye    = position - vertex .xyz / vertex .w;
-	vec3 normal = getWaveNormal (vec2 (vertex .x, vertex .z));
-	texCoord    = -reflect (eye, normal);
-}"
+	vec3 color   = vec3 (textureCube (texture, texCoord));
+	gl_FragColor = vec4 (color, 1.0 - x3d_Transparency);
+}
+"
             }
-            USE WaterFragment
           ]
         }
       }
