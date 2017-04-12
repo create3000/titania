@@ -69,8 +69,7 @@ static constexpr size_t OUTLINE_OVER_OUTPUT     = 4;
 static constexpr size_t OUTLINE_SPECIAL         = 5;
 
 // Clone count
-static constexpr size_t CLONE_SELECTED            = 0;
-static constexpr size_t CLONE_PREVIOUSLY_SELECTED = 1;
+static constexpr size_t CLONE_SELECTED = 0;
 
 class UserData :
 	public X3D::X3DBase

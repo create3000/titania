@@ -141,16 +141,9 @@ BrowserSelection::set_execution_context ()
 	try
 	{
 		const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
-		const auto previous  = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous");
 		const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
 		// Set clone bits.
-
-		for (const auto & node : previous)
-		{
-			if (node)
-				node -> getUserData <UserData> () -> cloneCount .set (CLONE_PREVIOUSLY_SELECTED);
-		}
 
 		for (const auto & node : current)
 		{
@@ -170,7 +163,6 @@ void
 BrowserSelection::set_nodes ()
 {
 	const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
-	const auto previous  = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous");
 	const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
 	if (nodes == current)
@@ -178,19 +170,10 @@ BrowserSelection::set_nodes ()
 
 	// Set and clear clone bits.
 
-	for (const auto & node : previous)
-	{
-		if (node)
-			node -> getUserData <UserData> () -> cloneCount .reset (CLONE_PREVIOUSLY_SELECTED);
-	}
-
 	for (const auto & node : current)
 	{
 		if (node)
-		{
 			node -> getUserData <UserData> () -> cloneCount .reset (CLONE_SELECTED);
-			node -> getUserData <UserData> () -> cloneCount .set (CLONE_PREVIOUSLY_SELECTED);
-		}
 	}
 
 	for (const auto & node : nodes)
@@ -201,19 +184,13 @@ BrowserSelection::set_nodes ()
 
 	// Set meta data.
 
-	worldInfo -> setMetaData ("/Titania/Selection/previous", current);
-	worldInfo -> setMetaData ("/Titania/Selection/nodes",    nodes);
+	worldInfo -> setMetaData ("/Titania/Selection/nodes", nodes);
 
 	// Remove old meta data: remove this call later, inserted at 18th Feb. 2017.
+	worldInfo -> removeMetaData ("/Titania/Selection/previous");
 	worldInfo -> removeMetaData ("/Titania/Selection/children");
 
 	getBrowserWindow () -> setModified (browser, true);
-}
-
-X3D::MFNode
-BrowserSelection::getPreviousNodes () const
-{
-	return getBrowserWindow () -> getWorldInfo () -> getMetaData <X3D::MFNode> ("/Titania/Selection/previous");
 }
 
 void

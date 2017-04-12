@@ -122,9 +122,6 @@ public:
 	getGeometries () const
 	{ return geometryNodes; }
 
-	X3D::MFNode
-	getPreviousNodes () const;
-
 	const X3D::MFNode &
 	getHierarchy () const
 	{ return hierarchy; }
