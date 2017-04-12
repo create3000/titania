@@ -134,10 +134,14 @@ X3DBrowserEditor::configure ()
 	// SelectLowest
 	if (getConfig () -> hasItem ("selectLowest"))
 		getSelectLowestAction () -> set_active (getConfig () -> getBoolean ("selectLowest"));
+	else
+		getSelectLowestAction () -> set_active (true);
 
 	// FollowPrimarySelection
 	if (getConfig () -> hasItem ("followPrimarySelection"))
 		getFollowPrimarySelectionAction () -> set_active (getConfig () -> getBoolean ("followPrimarySelection"));
+	else
+		getFollowPrimarySelectionAction () -> set_active (true);
 
 	// This must be done after.
 	X3DBrowserWidget::configure ();
