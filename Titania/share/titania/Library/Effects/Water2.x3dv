@@ -7,7 +7,7 @@ META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Water2.x3dv"
-META "modified" "Wed, 12 Apr 2017 05:06:46 GMT"
+META "modified" "Wed, 12 Apr 2017 06:19:46 GMT"
 META "outputStyle" "nicest"
 META "title" "Water Shader 2"
 
@@ -92,6 +92,8 @@ uniform vec2  direction [WAVE_MAX];
 
 varying vec3 texCoord;
 
+vec2 offset [WAVE_MAX];
+
 float hash (in float n)
 {
 	return fract (sin (n) * 43758.5453123);
@@ -112,11 +114,9 @@ float nnoise (in vec2 x)
 }
 
 float
-getHeight (in int i, in vec2 vertex)
+getHeight (in int i, in vec2 vertex, in vec2 offset)
 {
-	vec2 d = normalize (direction [i]);
-
-	return amplitude [i] * nnoise (vertex * frequency [i] - d * set_time * speed [i]);
+	return amplitude [i] * nnoise (vertex * frequency [i] - offset);
 }
 
 float
@@ -129,7 +129,7 @@ getWaveHeight (in vec2 vertex)
 		if (amplitude [i] == 0.0)
 			continue;
 
-		height += getHeight (i, vertex);
+		height += getHeight (i, vertex, offset [i]);
 	}
 
 	return height;
@@ -160,6 +160,9 @@ getWaveNormal (in vec2 pos)
 void
 main ()
 {
+	for (int i = 0; i < WAVE_MAX; ++ i)
+		offset [i] = normalize (direction [i]) * set_time * speed [i];
+	
 	vec4 vertex = x3d_Vertex;
 	vec2 pos    = vec2 (vertex .x, vertex .z);
 	vertex .y   = getWaveHeight (pos);
