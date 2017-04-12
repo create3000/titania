@@ -7,7 +7,7 @@ META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.1, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Water2.x3dv"
-META "modified" "Wed, 12 Apr 2017 06:19:46 GMT"
+META "modified" "Wed, 12 Apr 2017 09:41:08 GMT"
 META "outputStyle" "nicest"
 META "title" "Water Shader 2"
 
@@ -109,8 +109,8 @@ float nnoise (in vec2 x)
 	float n   = p.x + p.y * 57.0;
 	float res = mix (mix (hash (n +  0.0), hash (n +  1.0), f.x),
 	                 mix (hash (n + 57.0), hash (n + 58.0), f.x), f.y);
-	            
-	return res;
+
+	return res * 2.0 - 1.0;
 }
 
 float
@@ -202,7 +202,7 @@ DEF Water2 Transform {
     }
     Shape {
       appearance Appearance {
-        material DEF _2 Material {
+        material Material {
           ambientIntensity 0
           diffuseColor 0 0 0
           shininess 0
@@ -212,11 +212,11 @@ DEF Water2 Transform {
           inputOnly   SFFloat set_time
           inputOutput SFVec3f position 105.389 48.4969 74.604
           inputOutput MFFloat amplitude [
-            0.0561423,
-            0.045134,
-            0.45134,
-            0.209158,
-            1.10083,
+            0.0279177,
+            0.0224437,
+            0.224437,
+            0.104007,
+            0.547407,
             0,
             0,
             0
