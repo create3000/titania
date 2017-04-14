@@ -1,17 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.h">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.h" Line="4" Column="45" />
       <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/L-System.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/L-System.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-standard/Titania/Math/Algorithms/TurtleRenderer.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Basic/Traverse.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Shaders/X3DProgrammableShaderObject.h" Line="1" Column="1" />
+      <File FileName="debian/changelog" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

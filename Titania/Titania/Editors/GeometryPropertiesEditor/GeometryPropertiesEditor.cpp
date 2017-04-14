@@ -477,7 +477,7 @@ GeometryPropertiesEditor::set_color_buffer ()
 		{ }
 	}
 
-	getColorsBox () .set_visible (numColorFields == geometryNodes .size ());
+	getColorsBox () .set_visible (not geometryNodes .empty () and numColorFields == geometryNodes .size ());
 
 	if (numColorNodes == geometryNodes .size ())
 	{

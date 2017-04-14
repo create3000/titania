@@ -1,3 +1,9 @@
+titania (3.0.2) zesty; urgency=medium
+
+  * Bug fixes.
+ 
+ -- Holger Seelig <holger@qualle>  Fri, 14 Apr 2017 11:11:58 +0200
+
 titania (3.0.1) zesty; urgency=medium
 
   * Fixes for Zesty.
