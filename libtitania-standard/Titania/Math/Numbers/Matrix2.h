@@ -541,8 +541,10 @@ throw (std::domain_error)
 	if (d == 0)
 		throw std::domain_error ("matrix2::inverse: determinant is 0.");
 
-	*this = matrix2 <Type> (array [0] / d, -array [1] / d,
-	                        -array [2] / d, array [3] / d);
+	array [0] = array [0] / d;
+	array [1] = -array [1] / d;
+	array [2] = -array [2] / d;
+	array [3] = array [3] / d;
 }
 
 template <class Type>

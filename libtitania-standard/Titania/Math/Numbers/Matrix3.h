@@ -787,7 +787,7 @@ matrix3 <Type>::factor (vector2 <T> & translation,
 	const Type det      = a .determinant ();
 	const Type det_sign = det < 0 ? -1 : 1;
 
-	if (det_sign * det == 0)
+	if (det == 0)
 		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
@@ -835,9 +835,14 @@ constexpr
 Type
 matrix3 <Type>::determinant () const
 {
-	return array [0] * (array [4] * array [8] - array [5] * array [7]) -
-	       array [1] * (array [3] * array [8] - array [5] * array [6]) +
-	       array [2] * (array [3] * array [7] - array [4] * array [6]);
+	const Type
+		m0 = array [0], m1 = array [1], m2 = array [2],
+		m3 = array [3], m4 = array [4], m5 = array [5],
+		m6 = array [6], m7 = array [7], m8 = array [8];
+
+	return m0 * (m4 * m8 - m5 * m7) -
+	       m1 * (m3 * m8 - m5 * m6) +
+	       m2 * (m3 * m7 - m4 * m6);
 }
 
 template <class Type>
@@ -863,41 +868,47 @@ void
 matrix3 <Type>::inverse ()
 throw (std::domain_error)
 {
-	const Type m00 = array [0];
-	const Type m01 = array [1];
-	const Type m02 = array [2];
+	const Type
+		m0  = array [0],
+		m1  = array [1],
+		m2  = array [2],
+		m3  = array [3],
+		m4  = array [4],
+		m5  = array [5],
+		m6  = array [6],
+		m7  = array [7],
+		m8  = array [8],
+		t4  = m0 * m4,
+		t6  = m0 * m7,
+		t8  = m3 * m1,
+		t10 = m3 * m7,
+		t12 = m6 * m1,
+		t14 = m6 * m4;
 
-	const Type m10 = array [3];
-	const Type m11 = array [4];
-	const Type m12 = array [5];
-
-	const Type m20 = array [6];
-	const Type m21 = array [7];
-	const Type m22 = array [8];
-
-	const Type t4  = m00 * m11;
-	const Type t6  = m00 * m21;
-	const Type t8  = m10 * m01;
-	const Type t10 = m10 * m21;
-	const Type t12 = m20 * m01;
-	const Type t14 = m20 * m11;
-
-	const Type d = (t4 * m22 - t6 * m12 - t8 * m22 + t10 * m02 + t12 * m12 - t14 * m02);
+	const Type d = (t4 * m8 - t6 * m5 - t8 * m8 + t10 * m2 + t12 * m5 - t14 * m2);
 
 	if (d == 0)
 		throw std::domain_error ("matrix3::inverse: determinant is 0.");
 
-	*this = matrix3 <Type> ((m11 * m22 - m21 * m12) / d,
-	                        -(m01 * m22 - m21 * m02) / d,
-	                        (m01 * m12 - m11 * m02) / d,
+	const Type L = 1 / d;
 
-	                        -(m10 * m22 - m20 * m12) / d,
-	                        (m00 * m22 - m20 * m02) / d,
-	                        -(m00 * m12 - m10 * m02) / d,
+	const Type
+		b0 =  (m4 * m8 - m7 * m5) * L,
+		b1 = -(m1 * m8 - m7 * m2) * L,
+		b2 =  (m1 * m5 - m4 * m2) * L,
+		b3 = -(m3 * m8 - m6 * m5) * L,
+		b4 =  (m0 * m8 - m6 * m2) * L,
+		b5 = -(m0 * m5 - m3 * m2) * L;
 
-	                        (t10 - t14) / d,
-	                        -(t6 - t12) / d,
-	                        (t4 - t8) / d);
+	array [0] = b0;
+	array [1] = b1;
+	array [2] = b2;
+	array [3] = b3;
+	array [4] = b4;
+	array [5] = b5;
+	array [6] =  (t10 - t14) * L;
+	array [7] = -(t6 - t12) * L;
+	array [8] =  (t4 - t8) * L;
 }
 
 template <class Type>

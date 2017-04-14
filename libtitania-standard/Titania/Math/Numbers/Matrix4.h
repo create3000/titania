@@ -587,9 +587,6 @@ private:
 	        vector3 <S> & scale,
 	        matrix3 <Type> & scaleOrientation) const;
 
-	Type
-	determinant3 (const int r1, const int r2, const int r3, const int c1, const int c2, const int c3) const;
-
 	///  @name Members
 
 	union
@@ -796,7 +793,7 @@ matrix4 <Type>::factor (vector3 <T> & translation,
 	const Type det      = a .determinant ();
 	const Type det_sign = det < 0 ? -1 : 1;
 
-	if (det_sign * det == 0)
+	if (det == 0)
 		return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             // singular
 
 	// (4) B = A * !A  (here !A means A transpose)
@@ -835,38 +832,55 @@ inline
 Type
 matrix4 <Type>::determinant3 () const
 {
-	return determinant3 (0, 1, 2, 0, 1, 2);
-}
+	const Type
+		m00 = array [0], m01 = array [1], m02 = array [ 2],
+		m04 = array [4], m05 = array [5], m06 = array [ 6],
+		m08 = array [8], m09 = array [9], m10 = array [10];
 
-template <class Type>
-Type
-matrix4 <Type>::determinant3 (const int r1, const int r2, const int r3, const int c1, const int c2, const int c3) const
-{
-	const Type a11 = value [r1] [c1];
-	const Type a12 = value [r1] [c2];
-	const Type a13 = value [r1] [c3];
-	const Type a21 = value [r2] [c1];
-	const Type a22 = value [r2] [c2];
-	const Type a23 = value [r2] [c3];
-	const Type a31 = value [r3] [c1];
-	const Type a32 = value [r3] [c2];
-	const Type a33 = value [r3] [c3];
-
-	const Type M11 =   a22 * a33 - a32 * a23;
-	const Type M21 = -(a12 * a33 - a32 * a13);
-	const Type M31 =   a12 * a23 - a22 * a13;
-
-	return (a11 * M11 + a21 * M21 + a31 * M31);
+	return m00 * (m05 * m10 - m06 * m09) -
+	       m01 * (m04 * m10 - m06 * m08) +
+	       m02 * (m04 * m09 - m05 * m08);
 }
 
 template <class Type>
 Type
 matrix4 <Type>::determinant () const
 {
-	return value [0] [3] * determinant3 (1, 2, 3, 0, 1, 2)
-	       + value [1] [3] * determinant3 (0, 2, 3, 0, 1, 2)
-	       + value [2] [3] * determinant3 (0, 1, 3, 0, 1, 2)
-	       + value [3] [3] * determinant3 (0, 1, 2, 0, 1, 2);
+	const Type
+		m00 = array [ 0],
+		m01 = array [ 1],
+		m02 = array [ 2],
+		m03 = array [ 3],
+		m04 = array [ 4],
+		m05 = array [ 5],
+		m06 = array [ 6],
+		m07 = array [ 7],
+		m08 = array [ 8],
+		m09 = array [ 9],
+		m10 = array [10],
+		m11 = array [11],
+		m12 = array [12],
+		m13 = array [13],
+		m14 = array [14],
+		m15 = array [15],
+		b = m10 * m15,
+		c = m14 * m11,
+		d = m06 * m15,
+		e = m14 * m07,
+		f = m06 * m11,
+		g = m10 * m07,
+		h = m02 * m15,
+		i = m14 * m03,
+		j = m02 * m11,
+		o = m10 * m03,
+		r = m02 * m07,
+		x = m06 * m03,
+		H = b * m05 + e * m09 + f * m13 - (c * m05) - (d * m09) - (g * m13),
+		I = c * m01 + h * m09 + o * m13 - (b * m01) - (i * m09) - (j * m13),
+		J = d * m01 + i * m05 + r * m13 - (e * m01) - (h * m05) - (x * m13),
+		K = g * m01 + j * m05 + x * m09 - (f * m01) - (o * m05) - (r * m09);
+
+	return m00 * H + m04 * I + m08 * J + m12 * K;
 }
 
 template <class Type>
@@ -894,27 +908,74 @@ void
 matrix4 <Type>::inverse ()
 throw (std::domain_error)
 {
-	const Type det = determinant ();
+	const Type
+		m00 = array [ 0],
+		m01 = array [ 1],
+		m02 = array [ 2],
+		m03 = array [ 3],
+		m04 = array [ 4],
+		m05 = array [ 5],
+		m06 = array [ 6],
+		m07 = array [ 7],
+		m08 = array [ 8],
+		m09 = array [ 9],
+		m10 = array [10],
+		m11 = array [11],
+		m12 = array [12],
+		m13 = array [13],
+		m14 = array [14],
+		m15 = array [15],
+		b = m10 * m15,
+		c = m14 * m11,
+		d = m06 * m15,
+		e = m14 * m07,
+		f = m06 * m11,
+		g = m10 * m07,
+		h = m02 * m15,
+		i = m14 * m03,
+		j = m02 * m11,
+		o = m10 * m03,
+		r = m02 * m07,
+		x = m06 * m03,
+		t = m08 * m13,
+		p = m12 * m09,
+		v = m04 * m13,
+		s = m12 * m05,
+		y = m04 * m09,
+		z = m08 * m05,
+		A = m00 * m13,
+		C = m12 * m01,
+		D = m00 * m09,
+		E = m08 * m01,
+		F = m00 * m05,
+		G = m04 * m01,
+		H = b * m05 + e * m09 + f * m13 - ((c * m05) + (d * m09) + (g * m13)),
+		I = c * m01 + h * m09 + o * m13 - ((b * m01) + (i * m09) + (j * m13)),
+		J = d * m01 + i * m05 + r * m13 - ((e * m01) + (h * m05) + (x * m13)),
+		K = g * m01 + j * m05 + x * m09 - ((f * m01) + (o * m05) + (r * m09)),
+		B = m00 * H + m04 * I + m08 * J + m12 * K;
 
-	if (det == 0)
+	if (B == 0)
 		throw std::domain_error ("matrix4::inverse: determinant is 0.");
 
-	*this = matrix4 <Type> (determinant3 (1, 2, 3, 1, 2, 3) / det,
-	                        -determinant3 (0, 2, 3, 1, 2, 3) / det,
-	                        determinant3 (0, 1, 3, 1, 2, 3) / det,
-	                        -determinant3 (0, 1, 2, 1, 2, 3) / det,
-	                        -determinant3 (1, 2, 3, 0, 2, 3) / det,
-	                        determinant3 (0, 2, 3, 0, 2, 3) / det,
-	                        -determinant3 (0, 1, 3, 0, 2, 3) / det,
-	                        determinant3 (0, 1, 2, 0, 2, 3) / det,
-	                        determinant3 (1, 2, 3, 0, 1, 3) / det,
-	                        -determinant3 (0, 2, 3, 0, 1, 3) / det,
-	                        determinant3 (0, 1, 3, 0, 1, 3) / det,
-	                        -determinant3 (0, 1, 2, 0, 1, 3) / det,
-	                        -determinant3 (1, 2, 3, 0, 1, 2) / det,
-	                        determinant3 (0, 2, 3, 0, 1, 2) / det,
-	                        -determinant3 (0, 1, 3, 0, 1, 2) / det,
-	                        determinant3 (0, 1, 2, 0, 1, 2) / det);
+	const Type L = 1 / B;
+
+	array [ 0] = L * H;
+	array [ 1] = L * I;
+	array [ 2] = L * J;
+	array [ 3] = L * K;
+	array [ 4] = L * (c * m04 + d * m08 + g * m12 - (b * m04) - (e * m08) - (f * m12));
+	array [ 5] = L * (b * m00 + i * m08 + j * m12 - (c * m00) - (h * m08) - (o * m12));
+	array [ 6] = L * (e * m00 + h * m04 + x * m12 - (d * m00) - (i * m04) - (r * m12));
+	array [ 7] = L * (f * m00 + o * m04 + r * m08 - (g * m00) - (j * m04) - (x * m08));
+	array [ 8] = L * (t * m07 + s * m11 + y * m15 - (p * m07) - (v * m11) - (z * m15));
+	array [ 9] = L * (p * m03 + A * m11 + E * m15 - (t * m03) - (C * m11) - (D * m15));
+	array [10] = L * (v * m03 + C * m07 + F * m15 - (s * m03) - (A * m07) - (G * m15));
+	array [11] = L * (z * m03 + D * m07 + G * m11 - (y * m03) - (E * m07) - (F * m11));
+	array [12] = L * (v * m10 + z * m14 + p * m06 - (y * m14) - (t * m06) - (s * m10));
+	array [13] = L * (D * m14 + t * m02 + C * m10 - (A * m10) - (E * m14) - (p * m02));
+	array [14] = L * (A * m06 + G * m14 + s * m02 - (F * m14) - (v * m02) - (C * m06));
+	array [15] = L * (F * m10 + y * m02 + E * m06 - (D * m06) - (G * m10) - (z * m02));
 }
 
 template <class Type>
