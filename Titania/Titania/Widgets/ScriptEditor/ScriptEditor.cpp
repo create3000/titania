@@ -150,17 +150,25 @@ ScriptEditor::configure ()
 {
 	X3DScriptEditorInterface::configure ();
 
+	restore ();
+}
+
+void
+ScriptEditor::restore ()
+{
 	try
 	{
 	   if (node)
 	   {
 			ScriptEditorDatabase database;
 
-			const auto item     = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), node -> getName ());
-			const auto nodeName = std::get <0> (item);
+			const auto item = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), node -> getName ());
+			auto       iter = Gtk::TextIter ();
 
-			hadjustment -> restore (getScrolledWindow () .get_hadjustment (), std::get <1> (item));
-			vadjustment -> restore (getScrolledWindow () .get_vadjustment (), std::get <2> (item));
+			getTextView () .get_iter_at_location (iter, std::get <1> (item), std::get <2> (item));
+	
+			getTextBuffer () -> place_cursor (iter);
+			getTextView () .scroll_to (getTextBuffer () -> get_insert (), 0, 0, 0);
 		}
 	}
 	catch (const std::exception & error)
@@ -226,7 +234,11 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 		if (urlObject)
 			urlObject -> checkLoadState () .removeInterest (&ScriptEditor::set_loadState, this);
 
-		store ();
+		save ();
+
+		getTextBuffer () -> begin_not_undoable_action ();
+		getTextBuffer () -> set_text ("");
+		getTextBuffer () -> end_not_undoable_action ();
 	}
 
 	node = value;
@@ -254,15 +266,9 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 			urlObject -> checkLoadState () .addInterest (&ScriptEditor::set_loadState, this);
 			set_loadState (urlObject -> checkLoadState ());
 		}
-
-		configure ();
 	}
 	else
 	{
-		getTextBuffer () -> begin_not_undoable_action ();
-		getTextBuffer () -> set_text ("");
-		getTextBuffer () -> end_not_undoable_action ();
-
 		set_loadState (X3D::NOT_STARTED_STATE);
 	}
 
@@ -412,6 +418,9 @@ ScriptEditor::on_can_redo_changed ()
 void
 ScriptEditor::set_sourceText ()
 {
+	if (getTextBuffer () -> get_text () .length ())
+		save ();
+
 	getTextBuffer () -> begin_not_undoable_action ();
 
 	const auto sourceText = node -> getSourceText ();
@@ -451,6 +460,8 @@ ScriptEditor::set_sourceText ()
 	}
 
 	getTextBuffer () -> end_not_undoable_action ();
+
+	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &ScriptEditor::restore));
 }
 
 void
@@ -512,24 +523,39 @@ ScriptEditor::set_executionContext ()
 }
 
 void
-ScriptEditor::store ()
+ScriptEditor::save ()
 {
 	try
 	{
 		if (node)
 		{
 			ScriptEditorDatabase database;
+
+			int x = 0;
+			int y = 0;
 	
+			getTextView () .window_to_buffer_coords (Gtk::TEXT_WINDOW_TEXT, 0, 0, x, y);
+
+__LOG__ << std::endl;
+__LOG__ << x << std::endl;
+__LOG__ << y << std::endl;
+
 			database .setItem (node -> getExecutionContext () -> getWorldURL () .filename (),
 			                   node -> getName (),
-			                   getScrolledWindow () .get_hadjustment () -> get_value (),
-			                   getScrolledWindow () .get_vadjustment () -> get_value ());
+			                   x,
+			                   y);
 		}
 	}
 	catch (const std::exception & error)
 	{
 		//__LOG__ << error .what () << std::endl;
 	}
+}
+
+void
+ScriptEditor::store ()
+{
+	save ();
 
 	getConfig () -> setItem ("paned",     getPaned ()     .get_position ());
 	getConfig () -> setItem ("sidePaned", getSidePaned () .get_position ());

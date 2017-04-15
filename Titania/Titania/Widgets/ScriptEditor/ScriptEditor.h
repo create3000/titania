@@ -126,6 +126,9 @@ private:
 	void
 	configure () final override;
 
+	void
+	restore ();
+
 	///  @name Member access
 
 	void
@@ -199,6 +202,9 @@ private:
 
 	void
 	set_executionContext ();
+
+	void
+	save ();
 
 	virtual
 	void
