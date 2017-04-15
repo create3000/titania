@@ -2560,7 +2560,7 @@ install-exec-hook:
 	find $(DESTDIR)$(datadir)/titania/ -type f -exec chmod 644 {} \;
 
 run:
-	$(builddir)/run.pl 2>&1 | $(builddir)/../miscellaneous/benchmarks/save.pl
+	$(builddir)/run.pl 2>&1
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

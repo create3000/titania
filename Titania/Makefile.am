@@ -273,4 +273,4 @@ install-exec-hook:
 	find $(DESTDIR)$(datadir)/titania/ -type f -exec chmod 644 {} \;
 
 run:
-	$(builddir)/run.pl 2>&1 | $(builddir)/../miscellaneous/benchmarks/save.pl
+	$(builddir)/run.pl 2>&1

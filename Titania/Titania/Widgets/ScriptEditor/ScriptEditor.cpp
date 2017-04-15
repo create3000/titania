@@ -50,7 +50,6 @@
 
 #include "ScriptEditor.h"
 
-#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
@@ -83,9 +82,7 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	                  nodeName (getBrowserWindow (), getNameEntry (), getRenameButton ()),
 	                      node (),
 	                     index (0),
-	                   console (new Console (browserWindow)),
-	               hadjustment (new AdjustmentObject ()),
-	               vadjustment (new AdjustmentObject ())
+	                   console (new Console (browserWindow))
 {
 	Gsv::init ();
 
@@ -160,15 +157,16 @@ ScriptEditor::restore ()
 	{
 	   if (node)
 	   {
+			while (Gtk::Main::events_pending ())
+				Gtk::Main::iteration ();
+
 			ScriptEditorDatabase database;
 
 			const auto item = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), node -> getName ());
 			auto       iter = Gtk::TextIter ();
 
 			getTextView () .get_iter_at_location (iter, std::get <1> (item), std::get <2> (item));
-	
-			getTextBuffer () -> place_cursor (iter);
-			getTextView () .scroll_to (getTextBuffer () -> get_insert (), 0, 0, 0);
+			getTextView () .scroll_to (iter, 0, 0, 0);
 		}
 	}
 	catch (const std::exception & error)
@@ -418,7 +416,7 @@ ScriptEditor::on_can_redo_changed ()
 void
 ScriptEditor::set_sourceText ()
 {
-	if (getTextBuffer () -> get_text () .length ())
+	if (getTextBuffer () -> end () .get_offset ())
 		save ();
 
 	getTextBuffer () -> begin_not_undoable_action ();
@@ -461,7 +459,7 @@ ScriptEditor::set_sourceText ()
 
 	getTextBuffer () -> end_not_undoable_action ();
 
-	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &ScriptEditor::restore));
+	restore ();
 }
 
 void
@@ -535,10 +533,6 @@ ScriptEditor::save ()
 			int y = 0;
 	
 			getTextView () .window_to_buffer_coords (Gtk::TEXT_WINDOW_TEXT, 0, 0, x, y);
-
-__LOG__ << std::endl;
-__LOG__ << x << std::endl;
-__LOG__ << y << std::endl;
 
 			database .setItem (node -> getExecutionContext () -> getWorldURL () .filename (),
 			                   node -> getName (),

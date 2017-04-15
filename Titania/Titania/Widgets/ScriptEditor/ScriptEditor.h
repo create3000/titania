@@ -66,7 +66,6 @@ namespace puck {
 class BrowserWindow;
 class NodeIndex;
 class Console;
-class AdjustmentObject;
 
 class ScriptEditor :
 	virtual public X3DScriptEditorInterface,
@@ -221,9 +220,6 @@ private:
 	X3D::SFNode                                  node;
 	size_t                                       index;
 	std::unique_ptr <Console>                    console;
-
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
 
 };
 
