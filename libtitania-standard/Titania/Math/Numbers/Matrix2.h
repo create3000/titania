@@ -868,9 +868,7 @@ inline
 vector2 <Type>
 operator * (const matrix2 <Type> & lhs, const vector2 <Type> & rhs)
 {
-	matrix2 <Type> result (lhs);
-	result *= rhs;
-	return result;
+	return lhs .mult_matrix_vec (rhs);
 }
 
 ///  Return vector value @a rhs multiplied by @a lhs.

@@ -146,6 +146,9 @@ using Line2f      = math::line2 <float>;
 using Line3d      = math::line3 <double>;
 using Line3f      = math::line3 <float>;
 using Sphere3f    = math::sphere3 <float>;
+using Matrix2d    = math::matrix2 <double>;
+using Matrix2f    = math::matrix2 <float>;
+using Matrix3d    = math::matrix3 <double>;
 using Matrix3f    = math::matrix3 <float>;
 using Matrix4d    = math::matrix4 <double>;
 using Matrix4f    = math::matrix4 <float>;
@@ -169,7 +172,69 @@ public:
 
 	Vector3d v;
 
+
 };
+// Octave transform matrix from Alexander Alekseev aka TDM 
+constexpr auto octave_m = Matrix2d (1.6,1.2,-1.2,1.6);
+
+void
+FractalNoise (int index, Vector2d vertex)
+{
+   float m = 1.5;
+   float w = 0.5;
+
+	auto xy = vertex;
+
+	switch (index)
+	{
+		case 0:
+			std::clog << "Amplitude" << std::endl;
+			break;
+		case 1:
+			std::clog << "Frequency" << std::endl;
+			break;
+		case 2:
+			std::clog << "Speed" << std::endl;
+			break;
+		default:
+			break;
+	}
+
+   for (int i = 0; i < 6; i++)
+   {
+		auto amplitude1 = m * 0.15;
+		auto amplitude2 = w * 0.25;
+		auto frequency  = xy / vertex;
+		auto speed1     = Vector2d (0.511, 0.511) / frequency;
+		auto speed2     = Vector2d (0.333, 0.333) / frequency;
+			
+		switch (index)
+		{
+			case 0:
+				std::clog << amplitude1 << std::endl;
+				std::clog << amplitude2 << std::endl;
+				break;
+			case 1:
+				std::clog << frequency << std::endl;
+				std::clog << frequency << std::endl;
+				break;
+			case 2:
+				std::clog << speed1 << std::endl;
+				std::clog << speed2 << std::endl;
+				break;
+			default:
+				break;
+		}
+	
+		//xy = vertex * frequency [i] - s * frequency [i]
+
+      //f += Noise(xy+time*0.511) * m * 0.15;
+      //f += Noise(xy.yx-time*0.333) * w * 0.25;
+      w *= 0.5;
+      m *= 0.25;
+      xy = octave_m * xy;
+   }
+}
 
 int
 main (int argc, char** argv)
@@ -188,11 +253,9 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Matrix4d m1 (1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6);
-	Matrix4d m2 (7,8,9,0,1,2,3,4,5,6,1,2,3,4,5,6);
-	
-	__LOG__ << m1 * ! m2 << std::endl;
-	__LOG__ << m2 * m1 << std::endl;
+	FractalNoise (0, Vector2d (1, 1));
+	FractalNoise (1, Vector2d (1, 1));
+	FractalNoise (2, Vector2d (1, 1));
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
