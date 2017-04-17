@@ -157,24 +157,14 @@ public:
 	template <class Up>
 	constexpr
 	matrix4 (const matrix4 <Up> & other) :
-		value (other [0], other [1], other [2], other [3])
+		m_value (other [0], other [1], other [2], other [3])
 	{ }
 
-	matrix4 (const matrix4 & other)
-	{ *this = other; }
-
-	///  Value constructor.
-	explicit
+	///  Vector constructor.
+	template <class Up>
 	constexpr
-	matrix4 (const array_type & matrix) :
-		array
-	{
-		matrix [ 0], matrix [ 1], matrix [ 2], matrix [ 3],
-		matrix [ 4], matrix [ 5], matrix [ 6], matrix [ 7],
-		matrix [ 8], matrix [ 9], matrix [10], matrix [11],
-		matrix [12], matrix [13], matrix [14], matrix [15]
-	}
-
+	matrix4 (const vector4 <Up> & x, const vector4 <Up> & y, const vector4 <Up> & z, const vector4 <Up> & w) :
+		m_value (x, y, z, w)
 	{ }
 
 	///  Components constructor. Set values from @a e11 to @a e44.
@@ -183,7 +173,7 @@ public:
 	         const Type & e21, const Type & e22, const Type & e23, const Type & e24,
 	         const Type & e31, const Type & e32, const Type & e33, const Type & e34,
 	         const Type & e41, const Type & e42, const Type & e43, const Type & e44) :
-		array
+		m_array
 	{
 		e11, e12, e13, e14,
 		e21, e22, e23, e24,
@@ -193,31 +183,36 @@ public:
 
 	{ }
 
+	///  Components constructor. Set values to @a v.
+	explicit
+	constexpr
+	matrix4 (const Type & v) :
+		m_array
+	{
+		v, v, v, v,
+		v, v, v, v,
+		v, v, v, v,
+		v, v, v, v
+	}
+
+	{ }
+
 	///  Constructs a matrix4 from a rotation4.
 	explicit
 	matrix4 (const rotation4 <Type> & rotation) :
-		matrix4 (matrix3 <Type> (rotation))
-	{ }
+		matrix4 ()
+	{ submatrix (rotation .matrix ()); }
 
-	///  Constructs a matrix4 from a matrix3 rotation matrix.
+	///  Value constructor.
 	explicit
 	constexpr
-	matrix4 (const matrix3 <Type> & other) :
-		array
+	matrix4 (const array_type & matrix) :
+		m_array
 	{
-		other [0] [0],
-		other [0] [1],
-		other [0] [2],
-		0,
-		other [1] [0],
-		other [1] [1],
-		other [1] [2],
-		0,
-		other [2] [0],
-		other [2] [1],
-		other [2] [2],
-		0,
-		0, 0, 0, 1,
+		matrix [ 0], matrix [ 1], matrix [ 2], matrix [ 3],
+		matrix [ 4], matrix [ 5], matrix [ 6], matrix [ 7],
+		matrix [ 8], matrix [ 9], matrix [10], matrix [11],
+		matrix [12], matrix [13], matrix [14], matrix [15]
 	}
 
 	{ }
@@ -232,87 +227,87 @@ public:
 
 	void
 	x (const vector_type & vector)
-	{ value .x (vector); }
+	{ m_value .x (vector); }
 
 	const vector_type &
 	x () const
-	{ return value .x (); }
+	{ return m_value .x (); }
 
 	void
 	y (const vector_type & vector)
-	{ value .y (vector); }
+	{ m_value .y (vector); }
 
 	const vector_type &
 	y () const
-	{ return value .y (); }
+	{ return m_value .y (); }
 
 	void
 	z (const vector_type & vector)
-	{ value .z (vector); }
+	{ m_value .z (vector); }
 
 	const vector_type &
 	z () const
-	{ return value .z (); }
+	{ return m_value .z (); }
 
 	void
 	w (const vector_type & vector)
-	{ value .w (vector); }
+	{ m_value .w (vector); }
 
 	const vector_type &
 	w () const
-	{ return value .w (); }
+	{ return m_value .w (); }
 
 	void
 	x_axis (const point_type & vector)
 	{
-		array [0] = vector .x ();
-		array [1] = vector .y ();
-		array [2] = vector .z ();
+		m_array [0] = vector .x ();
+		m_array [1] = vector .y ();
+		m_array [2] = vector .z ();
 	}
 
 	constexpr
 	point_type
 	x_axis () const
-	{ return point_type (array [0], array [1], array [2]); }
+	{ return point_type (m_array [0], m_array [1], m_array [2]); }
 
 	void
 	y_axis (const point_type & vector)
 	{
-		array [4] = vector .x ();
-		array [5] = vector .y ();
-		array [6] = vector .z ();
+		m_array [4] = vector .x ();
+		m_array [5] = vector .y ();
+		m_array [6] = vector .z ();
 	}
 
 	constexpr
 	point_type
 	y_axis () const
-	{ return point_type (array [4], array [5], array [6]); }
+	{ return point_type (m_array [4], m_array [5], m_array [6]); }
 
 	void
 	z_axis (const point_type & vector)
 	{
-		array [ 8] = vector .x ();
-		array [ 9] = vector .y ();
-		array [10] = vector .z ();
+		m_array [ 8] = vector .x ();
+		m_array [ 9] = vector .y ();
+		m_array [10] = vector .z ();
 	}
 
 	constexpr
 	point_type
 	z_axis () const
-	{ return point_type (array [8], array [9], array [10]); }
+	{ return point_type (m_array [8], m_array [9], m_array [10]); }
 
 	void
 	origin (const point_type & vector)
 	{
-		array [12] = vector .x ();
-		array [13] = vector .y ();
-		array [14] = vector .z ();
+		m_array [12] = vector .x ();
+		m_array [13] = vector .y ();
+		m_array [14] = vector .z ();
 	}
 
 	constexpr
 	point_type
 	origin () const
-	{ return point_type (array [12], array [13], array [14]); }
+	{ return point_type (m_array [12], m_array [13], m_array [14]); }
 
 	void
 	set ();
@@ -375,37 +370,62 @@ public:
 	///  Access rows by @a index.
 	vector_type &
 	operator [ ] (const size_type index)
-	{ return value [index]; }
+	{ return m_value [index]; }
 
 	const vector_type &
 	operator [ ] (const size_type index) const
-	{ return value [index]; }
+	{ return m_value [index]; }
 
-	///  Access 3x3 submatrix.
-	constexpr
-	operator matrix3 <Type> () const
-	{ return matrix3 <Type> (array [0], array [1], array [2],
-		                      array [4], array [5], array [6],
-		                      array [8], array [9], array [10]); }
-
-	///  Returns pointer to the underlying array serving as element storage.
+	///  Returns pointer to the underlying m_array serving as element storage.
 	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
 	Type*
 	data ()
-	{ return array; }
+	{ return m_array; }
 
 	const Type*
 	data () const
-	{ return array; }
+	{ return m_array; }
 
 	///  Get access to the underlying vector representation of this matrix.
 	void
-	vector (const matrix_type & vector)
-	{ value = vector; }
+	value (const matrix_type & vector)
+	{ m_value = vector; }
 
 	const matrix_type &
-	vector () const
-	{ return value; }
+	value () const
+	{ return m_value; }
+
+	///  Constructs a matrix4 from a matrix3 rotation matrix.
+	matrix4 &
+	submatrix (const matrix3 <Type> & other)
+	{
+		m_array [ 0] = other [0] [0];
+		m_array [ 1] = other [0] [1];
+		m_array [ 2] = other [0] [2];
+		m_array [ 3] = 0;
+		m_array [ 4] = other [1] [0];
+		m_array [ 5] = other [1] [1];
+		m_array [ 6] = other [1] [2];
+		m_array [ 7] = 0;
+		m_array [ 8] = other [2] [0];
+		m_array [ 9] = other [2] [1];
+		m_array [10] = other [2] [2];
+		m_array [11] = 0;
+		m_array [12] = 0;
+		m_array [13] = 0;
+		m_array [14] = 0;
+		m_array [15] = 1;
+
+		return *this;
+	}
+
+	///  Access 3x3 submatrix.
+	constexpr
+	matrix3 <Type>
+	submatrix () const
+	{ return matrix3 <Type> (m_array [0], m_array [1], m_array [2],
+		                      m_array [4], m_array [5], m_array [6],
+		                      m_array [8], m_array [9], m_array [10]); }
 
 	///  @name Iterators
 
@@ -513,21 +533,29 @@ public:
 	matrix4 &
 	operator += (const matrix4 & matrix);
 
-	///  Add @a matrix to this matrix.
+	///  Add @a t to this matrix.
+	matrix4 &
+	operator += (const Type & t);
+
+	///  Subtract @a matrix from this matrix.
 	matrix4 &
 	operator -= (const matrix4 & matrix);
 
-	///  Returns this matrix multiplies by @a scalar.
+	///  Subtract @a t from this matrix.
 	matrix4 &
-	operator *= (const Type & scalar);
+	operator -= (const Type & t);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	matrix4 &
 	operator *= (const matrix4 & matrix);
 
-	///  Returns this matrix divided by @a scalar.
+	///  Returns this matrix multiplies by @a t.
 	matrix4 &
-	operator /= (const Type & scalar);
+	operator *= (const Type & t);
+
+	///  Returns this matrix divided by @a t.
+	matrix4 &
+	operator /= (const Type & t);
 
 	///  Returns this matrix left multiplied by @a matrix.
 	void
@@ -591,8 +619,8 @@ private:
 
 	union
 	{
-		matrix_type value;
-		array_type array;
+		matrix_type m_value;
+		array_type m_array;
 	};
 
 };
@@ -603,7 +631,7 @@ inline
 matrix4 <Type> &
 matrix4 <Type>::operator = (const matrix4 <Up> & matrix)
 {
-	value = matrix .vector ();
+	m_value = matrix .value ();
 	return *this;
 }
 
@@ -619,10 +647,10 @@ template <class Type>
 void
 matrix4 <Type>::set (const vector3 <Type> & translation)
 {
-	value [0] = vector4 <Type> (1, 0, 0, 0);
-	value [1] = vector4 <Type> (0, 1, 0, 0);
-	value [2] = vector4 <Type> (0, 0, 1, 0);
-	value [3] = vector4 <Type> (translation .x (), translation .y (), translation .z (), 1);
+	m_value [0] = vector4 <Type> (1, 0, 0, 0);
+	m_value [1] = vector4 <Type> (0, 1, 0, 0);
+	m_value [2] = vector4 <Type> (0, 0, 1, 0);
+	m_value [3] = vector4 <Type> (translation .x (), translation .y (), translation .z (), 1);
 }
 
 template <class Type>
@@ -787,7 +815,7 @@ matrix4 <Type>::factor (vector3 <T> & translation,
 	translation = origin ();
 
 	// (2) Create 3x3 matrix.
-	const matrix3 <Type> a (*this);
+	const matrix3 <Type> a = submatrix ();
 
 	// (3) Compute det A. If negative, set sign = -1, else sign = 1
 	const Type det      = a .determinant ();
@@ -833,9 +861,9 @@ Type
 matrix4 <Type>::determinant3 () const
 {
 	const Type
-		m00 = array [0], m01 = array [1], m02 = array [ 2],
-		m04 = array [4], m05 = array [5], m06 = array [ 6],
-		m08 = array [8], m09 = array [9], m10 = array [10];
+		m00 = m_array [0], m01 = m_array [1], m02 = m_array [ 2],
+		m04 = m_array [4], m05 = m_array [5], m06 = m_array [ 6],
+		m08 = m_array [8], m09 = m_array [9], m10 = m_array [10];
 
 	return m00 * (m05 * m10 - m06 * m09) -
 	       m01 * (m04 * m10 - m06 * m08) +
@@ -847,22 +875,22 @@ Type
 matrix4 <Type>::determinant () const
 {
 	const Type
-		m00 = array [ 0],
-		m01 = array [ 1],
-		m02 = array [ 2],
-		m03 = array [ 3],
-		m04 = array [ 4],
-		m05 = array [ 5],
-		m06 = array [ 6],
-		m07 = array [ 7],
-		m08 = array [ 8],
-		m09 = array [ 9],
-		m10 = array [10],
-		m11 = array [11],
-		m12 = array [12],
-		m13 = array [13],
-		m14 = array [14],
-		m15 = array [15],
+		m00 = m_array [ 0],
+		m01 = m_array [ 1],
+		m02 = m_array [ 2],
+		m03 = m_array [ 3],
+		m04 = m_array [ 4],
+		m05 = m_array [ 5],
+		m06 = m_array [ 6],
+		m07 = m_array [ 7],
+		m08 = m_array [ 8],
+		m09 = m_array [ 9],
+		m10 = m_array [10],
+		m11 = m_array [11],
+		m12 = m_array [12],
+		m13 = m_array [13],
+		m14 = m_array [14],
+		m15 = m_array [15],
 		b = m10 * m15,
 		c = m14 * m11,
 		d = m06 * m15,
@@ -887,20 +915,20 @@ template <class Type>
 void
 matrix4 <Type>::transpose ()
 {
-	*this = matrix4 <Type> (array [0], array [4], array [8],  array [12],
-	                        array [1], array [5], array [9],  array [13],
-	                        array [2], array [6], array [10], array [14],
-	                        array [3], array [7], array [11], array [15]);
+	*this = matrix4 <Type> (m_array [0], m_array [4], m_array [8],  m_array [12],
+	                        m_array [1], m_array [5], m_array [9],  m_array [13],
+	                        m_array [2], m_array [6], m_array [10], m_array [14],
+	                        m_array [3], m_array [7], m_array [11], m_array [15]);
 }
 
 template <class Type>
 void
 matrix4 <Type>::negate ()
 {
-	*this = matrix4 <Type> (-array [ 0], -array [ 1], -array [ 2], -array [ 3],
-	                        -array [ 4], -array [ 5], -array [ 6], -array [ 7],
-	                        -array [ 8], -array [ 9], -array [10], -array [11],
-	                        -array [12], -array [13], -array [14], -array [15]);
+	*this = matrix4 <Type> (-m_array [ 0], -m_array [ 1], -m_array [ 2], -m_array [ 3],
+	                        -m_array [ 4], -m_array [ 5], -m_array [ 6], -m_array [ 7],
+	                        -m_array [ 8], -m_array [ 9], -m_array [10], -m_array [11],
+	                        -m_array [12], -m_array [13], -m_array [14], -m_array [15]);
 }
 
 template <class Type>
@@ -909,22 +937,22 @@ matrix4 <Type>::inverse ()
 throw (std::domain_error)
 {
 	const Type
-		m00 = array [ 0],
-		m01 = array [ 1],
-		m02 = array [ 2],
-		m03 = array [ 3],
-		m04 = array [ 4],
-		m05 = array [ 5],
-		m06 = array [ 6],
-		m07 = array [ 7],
-		m08 = array [ 8],
-		m09 = array [ 9],
-		m10 = array [10],
-		m11 = array [11],
-		m12 = array [12],
-		m13 = array [13],
-		m14 = array [14],
-		m15 = array [15],
+		m00 = m_array [ 0],
+		m01 = m_array [ 1],
+		m02 = m_array [ 2],
+		m03 = m_array [ 3],
+		m04 = m_array [ 4],
+		m05 = m_array [ 5],
+		m06 = m_array [ 6],
+		m07 = m_array [ 7],
+		m08 = m_array [ 8],
+		m09 = m_array [ 9],
+		m10 = m_array [10],
+		m11 = m_array [11],
+		m12 = m_array [12],
+		m13 = m_array [13],
+		m14 = m_array [14],
+		m15 = m_array [15],
 		b = m10 * m15,
 		c = m14 * m11,
 		d = m06 * m15,
@@ -960,22 +988,22 @@ throw (std::domain_error)
 
 	const Type L = 1 / B;
 
-	array [ 0] = L * H;
-	array [ 1] = L * I;
-	array [ 2] = L * J;
-	array [ 3] = L * K;
-	array [ 4] = L * (c * m04 + d * m08 + g * m12 - (b * m04) - (e * m08) - (f * m12));
-	array [ 5] = L * (b * m00 + i * m08 + j * m12 - (c * m00) - (h * m08) - (o * m12));
-	array [ 6] = L * (e * m00 + h * m04 + x * m12 - (d * m00) - (i * m04) - (r * m12));
-	array [ 7] = L * (f * m00 + o * m04 + r * m08 - (g * m00) - (j * m04) - (x * m08));
-	array [ 8] = L * (t * m07 + s * m11 + y * m15 - (p * m07) - (v * m11) - (z * m15));
-	array [ 9] = L * (p * m03 + A * m11 + E * m15 - (t * m03) - (C * m11) - (D * m15));
-	array [10] = L * (v * m03 + C * m07 + F * m15 - (s * m03) - (A * m07) - (G * m15));
-	array [11] = L * (z * m03 + D * m07 + G * m11 - (y * m03) - (E * m07) - (F * m11));
-	array [12] = L * (v * m10 + z * m14 + p * m06 - (y * m14) - (t * m06) - (s * m10));
-	array [13] = L * (D * m14 + t * m02 + C * m10 - (A * m10) - (E * m14) - (p * m02));
-	array [14] = L * (A * m06 + G * m14 + s * m02 - (F * m14) - (v * m02) - (C * m06));
-	array [15] = L * (F * m10 + y * m02 + E * m06 - (D * m06) - (G * m10) - (z * m02));
+	m_array [ 0] = L * H;
+	m_array [ 1] = L * I;
+	m_array [ 2] = L * J;
+	m_array [ 3] = L * K;
+	m_array [ 4] = L * (c * m04 + d * m08 + g * m12 - (b * m04) - (e * m08) - (f * m12));
+	m_array [ 5] = L * (b * m00 + i * m08 + j * m12 - (c * m00) - (h * m08) - (o * m12));
+	m_array [ 6] = L * (e * m00 + h * m04 + x * m12 - (d * m00) - (i * m04) - (r * m12));
+	m_array [ 7] = L * (f * m00 + o * m04 + r * m08 - (g * m00) - (j * m04) - (x * m08));
+	m_array [ 8] = L * (t * m07 + s * m11 + y * m15 - (p * m07) - (v * m11) - (z * m15));
+	m_array [ 9] = L * (p * m03 + A * m11 + E * m15 - (t * m03) - (C * m11) - (D * m15));
+	m_array [10] = L * (v * m03 + C * m07 + F * m15 - (s * m03) - (A * m07) - (G * m15));
+	m_array [11] = L * (z * m03 + D * m07 + G * m11 - (y * m03) - (E * m07) - (F * m11));
+	m_array [12] = L * (v * m10 + z * m14 + p * m06 - (y * m14) - (t * m06) - (s * m10));
+	m_array [13] = L * (D * m14 + t * m02 + C * m10 - (A * m10) - (E * m14) - (p * m02));
+	m_array [14] = L * (A * m06 + G * m14 + s * m02 - (F * m14) - (v * m02) - (C * m06));
+	m_array [15] = L * (F * m10 + y * m02 + E * m06 - (D * m06) - (G * m10) - (z * m02));
 }
 
 template <class Type>
@@ -983,7 +1011,19 @@ inline
 matrix4 <Type> &
 matrix4 <Type>::operator += (const matrix4 & matrix)
 {
-	value += matrix .vector ();
+	m_value += matrix .value ();
+	return *this;
+}
+
+template <class Type>
+matrix4 <Type> &
+matrix4 <Type>::operator += (const Type & t)
+{
+	m_value [0] += t;
+	m_value [1] += t;
+	m_value [2] += t;
+	m_value [3] += t;
+
 	return *this;
 }
 
@@ -992,18 +1032,18 @@ inline
 matrix4 <Type> &
 matrix4 <Type>::operator -= (const matrix4 & matrix)
 {
-	value -= matrix .vector ();
+	m_value -= matrix .value ();
 	return *this;
 }
 
 template <class Type>
 matrix4 <Type> &
-matrix4 <Type>::operator *= (const Type & t)
+matrix4 <Type>::operator -= (const Type & t)
 {
-	value [0] *= t;
-	value [1] *= t;
-	value [2] *= t;
-	value [3] *= t;
+	m_value [0] -= t;
+	m_value [1] -= t;
+	m_value [2] -= t;
+	m_value [3] -= t;
 
 	return *this;
 }
@@ -1019,12 +1059,24 @@ matrix4 <Type>::operator *= (const matrix4 & matrix)
 
 template <class Type>
 matrix4 <Type> &
+matrix4 <Type>::operator *= (const Type & t)
+{
+	m_value [0] *= t;
+	m_value [1] *= t;
+	m_value [2] *= t;
+	m_value [3] *= t;
+
+	return *this;
+}
+
+template <class Type>
+matrix4 <Type> &
 matrix4 <Type>::operator /= (const Type & t)
 {
-	value [0] /= t;
-	value [1] /= t;
-	value [2] /= t;
-	value [3] /= t;
+	m_value [0] /= t;
+	m_value [1] /= t;
+	m_value [2] /= t;
+	m_value [3] /= t;
 
 	return *this;
 }
@@ -1037,10 +1089,10 @@ void
 matrix4 <Type>::mult_left (const matrix4 & matrix)
 {
 	#define MULT_LEFT(i, j) \
-	   (array [0 * 4 + j] * matrix .array [i * 4 + 0] +   \
-	    array [1 * 4 + j] * matrix .array [i * 4 + 1] +   \
-	    array [2 * 4 + j] * matrix .array [i * 4 + 2] +   \
-	    array [3 * 4 + j] * matrix .array [i * 4 + 3])
+	   (m_array [0 * 4 + j] * matrix .m_array [i * 4 + 0] +   \
+	    m_array [1 * 4 + j] * matrix .m_array [i * 4 + 1] +   \
+	    m_array [2 * 4 + j] * matrix .m_array [i * 4 + 2] +   \
+	    m_array [3 * 4 + j] * matrix .m_array [i * 4 + 3])
 
 	*this = matrix4 <Type> (MULT_LEFT (0, 0),
 	                        MULT_LEFT (0, 1),
@@ -1073,10 +1125,10 @@ void
 matrix4 <Type>::mult_right (const matrix4 & matrix)
 {
 	#define MULT_RIGHT(i, j) \
-	   (array [i * 4 + 0] * matrix .array [0 * 4 + j] +   \
-	    array [i * 4 + 1] * matrix .array [1 * 4 + j] +   \
-	    array [i * 4 + 2] * matrix .array [2 * 4 + j] +   \
-	    array [i * 4 + 3] * matrix .array [3 * 4 + j])
+	   (m_array [i * 4 + 0] * matrix .m_array [0 * 4 + j] +   \
+	    m_array [i * 4 + 1] * matrix .m_array [1 * 4 + j] +   \
+	    m_array [i * 4 + 2] * matrix .m_array [2 * 4 + j] +   \
+	    m_array [i * 4 + 3] * matrix .m_array [3 * 4 + j])
 
 	*this = matrix4 <Type> (MULT_RIGHT (0, 0),
 	                        MULT_RIGHT (0, 1),
@@ -1108,11 +1160,11 @@ template <class Type>
 vector3 <Type>
 matrix4 <Type>::mult_vec_matrix (const vector3 <Type> & vector) const
 {
-	const Type w = vector .x () * array [3] + vector .y () * array [7] + vector .z () * array [11] + array [15];
+	const Type w = vector .x () * m_array [3] + vector .y () * m_array [7] + vector .z () * m_array [11] + m_array [15];
 
-	return vector3 <Type> ((vector .x () * array [0] + vector .y () * array [4] + vector .z () * array [ 8] + array [12]) / w,
-	                       (vector .x () * array [1] + vector .y () * array [5] + vector .z () * array [ 9] + array [13]) / w,
-	                       (vector .x () * array [2] + vector .y () * array [6] + vector .z () * array [10] + array [14]) / w);
+	return vector3 <Type> ((vector .x () * m_array [0] + vector .y () * m_array [4] + vector .z () * m_array [ 8] + m_array [12]) / w,
+	                       (vector .x () * m_array [1] + vector .y () * m_array [5] + vector .z () * m_array [ 9] + m_array [13]) / w,
+	                       (vector .x () * m_array [2] + vector .y () * m_array [6] + vector .z () * m_array [10] + m_array [14]) / w);
 }
 
 /**
@@ -1123,10 +1175,10 @@ constexpr
 vector4 <Type>
 matrix4 <Type>::mult_vec_matrix (const vector4 <Type> & vector) const
 {
-	return vector4 <Type> (vector .x () * array [0] + vector .y () * array [4] + vector .z () * array [ 8] + vector .w () * array [12],
-	                       vector .x () * array [1] + vector .y () * array [5] + vector .z () * array [ 9] + vector .w () * array [13],
-	                       vector .x () * array [2] + vector .y () * array [6] + vector .z () * array [10] + vector .w () * array [14],
-	                       vector .x () * array [3] + vector .y () * array [7] + vector .z () * array [11] + vector .w () * array [15]);
+	return vector4 <Type> (vector .x () * m_array [0] + vector .y () * m_array [4] + vector .z () * m_array [ 8] + vector .w () * m_array [12],
+	                       vector .x () * m_array [1] + vector .y () * m_array [5] + vector .z () * m_array [ 9] + vector .w () * m_array [13],
+	                       vector .x () * m_array [2] + vector .y () * m_array [6] + vector .z () * m_array [10] + vector .w () * m_array [14],
+	                       vector .x () * m_array [3] + vector .y () * m_array [7] + vector .z () * m_array [11] + vector .w () * m_array [15]);
 }
 
 /**
@@ -1136,11 +1188,11 @@ template <class Type>
 vector3 <Type>
 matrix4 <Type>::mult_matrix_vec (const vector3 <Type> & vector) const
 {
-	const Type w = vector .x () * array [12] + vector .y () * array [13] + vector .z () * array [14] + array [15];
+	const Type w = vector .x () * m_array [12] + vector .y () * m_array [13] + vector .z () * m_array [14] + m_array [15];
 
-	return vector3 <Type> ((vector .x () * array [0] + vector .y () * array [1] + vector .z () * array [ 2] + array [ 3]) / w,
-	                       (vector .x () * array [4] + vector .y () * array [5] + vector .z () * array [ 6] + array [ 7]) / w,
-	                       (vector .x () * array [8] + vector .y () * array [9] + vector .z () * array [10] + array [11]) / w);
+	return vector3 <Type> ((vector .x () * m_array [0] + vector .y () * m_array [1] + vector .z () * m_array [ 2] + m_array [ 3]) / w,
+	                       (vector .x () * m_array [4] + vector .y () * m_array [5] + vector .z () * m_array [ 6] + m_array [ 7]) / w,
+	                       (vector .x () * m_array [8] + vector .y () * m_array [9] + vector .z () * m_array [10] + m_array [11]) / w);
 }
 
 /**
@@ -1151,10 +1203,10 @@ constexpr
 vector4 <Type>
 matrix4 <Type>::mult_matrix_vec (const vector4 <Type> & vector) const
 {
-	return vector4 <Type> (vector .x () * array [ 0] + vector .y () * array [ 1] + vector .z () * array [ 2] + vector .w () * array [ 3],
-	                       vector .x () * array [ 4] + vector .y () * array [ 5] + vector .z () * array [ 6] + vector .w () * array [ 7],
-	                       vector .x () * array [ 8] + vector .y () * array [ 9] + vector .z () * array [10] + vector .w () * array [11],
-	                       vector .x () * array [12] + vector .y () * array [13] + vector .z () * array [14] + vector .w () * array [15]);
+	return vector4 <Type> (vector .x () * m_array [ 0] + vector .y () * m_array [ 1] + vector .z () * m_array [ 2] + vector .w () * m_array [ 3],
+	                       vector .x () * m_array [ 4] + vector .y () * m_array [ 5] + vector .z () * m_array [ 6] + vector .w () * m_array [ 7],
+	                       vector .x () * m_array [ 8] + vector .y () * m_array [ 9] + vector .z () * m_array [10] + vector .w () * m_array [11],
+	                       vector .x () * m_array [12] + vector .y () * m_array [13] + vector .z () * m_array [14] + vector .w () * m_array [15]);
 }
 
 /**
@@ -1165,9 +1217,9 @@ constexpr
 vector3 <Type>
 matrix4 <Type>::mult_dir_matrix (const vector3 <Type> & vector) const
 {
-	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [4] + vector .z () * array [ 8],
-	                       vector .x () * array [1] + vector .y () * array [5] + vector .z () * array [ 9],
-	                       vector .x () * array [2] + vector .y () * array [6] + vector .z () * array [10]);
+	return vector3 <Type> (vector .x () * m_array [0] + vector .y () * m_array [4] + vector .z () * m_array [ 8],
+	                       vector .x () * m_array [1] + vector .y () * m_array [5] + vector .z () * m_array [ 9],
+	                       vector .x () * m_array [2] + vector .y () * m_array [6] + vector .z () * m_array [10]);
 }
 
 /**
@@ -1178,9 +1230,9 @@ constexpr
 vector3 <Type>
 matrix4 <Type>::mult_matrix_dir (const vector3 <Type> & vector) const
 {
-	return vector3 <Type> (vector .x () * array [0] + vector .y () * array [1] + vector .z () * array [ 2],
-	                       vector .x () * array [4] + vector .y () * array [5] + vector .z () * array [ 6],
-	                       vector .x () * array [8] + vector .y () * array [9] + vector .z () * array [10]);
+	return vector3 <Type> (vector .x () * m_array [0] + vector .y () * m_array [1] + vector .z () * m_array [ 2],
+	                       vector .x () * m_array [4] + vector .y () * m_array [5] + vector .z () * m_array [ 6],
+	                       vector .x () * m_array [8] + vector .y () * m_array [9] + vector .z () * m_array [10]);
 }
 
 /**
@@ -1191,13 +1243,13 @@ void
 matrix4 <Type>::translate (const vector3 <Type> & translation)
 {
 	#define TRANSLATE(i) \
-	   (value [0] [i] * translation .x () +   \
-	    value [1] [i] * translation .y () +   \
-	    value [2] [i] * translation .z ())
+	   (m_value [0] [i] * translation .x () +   \
+	    m_value [1] [i] * translation .y () +   \
+	    m_value [2] [i] * translation .z ())
 
-	value [3] [0] += TRANSLATE (0);
-	value [3] [1] += TRANSLATE (1);
-	value [3] [2] += TRANSLATE (2);
+	m_value [3] [0] += TRANSLATE (0);
+	m_value [3] [1] += TRANSLATE (1);
+	m_value [3] [2] += TRANSLATE (2);
 
 	#undef TRANSLATE
 }
@@ -1220,17 +1272,17 @@ template <class Type>
 void
 matrix4 <Type>::scale (const vector3 <Type> & scaleFactor)
 {
-	value [0] [0] *= scaleFactor .x ();
-	value [0] [1] *= scaleFactor .x ();
-	value [0] [2] *= scaleFactor .x ();
+	m_value [0] [0] *= scaleFactor .x ();
+	m_value [0] [1] *= scaleFactor .x ();
+	m_value [0] [2] *= scaleFactor .x ();
 
-	value [1] [0] *= scaleFactor .y ();
-	value [1] [1] *= scaleFactor .y ();
-	value [1] [2] *= scaleFactor .y ();
+	m_value [1] [0] *= scaleFactor .y ();
+	m_value [1] [1] *= scaleFactor .y ();
+	m_value [1] [2] *= scaleFactor .y ();
 
-	value [2] [0] *= scaleFactor .z ();
-	value [2] [1] *= scaleFactor .z ();
-	value [2] [2] *= scaleFactor .z ();
+	m_value [2] [0] *= scaleFactor .z ();
+	m_value [2] [1] *= scaleFactor .z ();
+	m_value [2] [2] *= scaleFactor .z ();
 }
 
 ///  @relates matrix4
@@ -1244,7 +1296,7 @@ constexpr
 bool
 operator == (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	return lhs .vector () == rhs .vector ();
+	return lhs .value () == rhs .value ();
 }
 
 ///  Compares two matrix4 numbers.
@@ -1255,7 +1307,7 @@ constexpr
 bool
 operator not_eq (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	return lhs .vector () not_eq rhs .vector ();
+	return lhs .value () not_eq rhs .value ();
 }
 
 ///  Lexicographically compares two matrix4 numbers.
@@ -1265,7 +1317,7 @@ inline
 bool
 operator < (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
-	return lhs .vector () < rhs .vector ();;
+	return lhs .value () < rhs .value ();
 }
 
 ///  Lexicographically compares two matrix4 numbers.
@@ -1387,7 +1439,7 @@ throw (std::domain_error)
 	return result;
 }
 
-///  Returns new matrix value @a a plus @a rhs.
+///  Returns new matrix value @a lhs plus @a rhs.
 template <class Type>
 inline
 matrix4 <Type>
@@ -1396,13 +1448,49 @@ operator + (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 	return matrix4 <Type> (lhs) += rhs;
 }
 
-///  Returns new matrix value @a a minus @a rhs.
+///  Returns new matrix value @a lhs plus @a rhs.
+template <class Type>
+inline
+matrix4 <Type>
+operator + (const matrix4 <Type> & lhs, const Type & rhs)
+{
+	return matrix4 <Type> (lhs) += rhs;
+}
+
+///  Return matrix value @a lhs right multiplied by scalar @a rhs.
+template <class Type>
+inline
+matrix4 <Type>
+operator + (const Type & lhs, const matrix4 <Type> & rhs)
+{
+	return matrix4 <Type> (rhs) += lhs;
+}
+
+///  Returns new matrix value @a lhs minus @a rhs.
 template <class Type>
 inline
 matrix4 <Type>
 operator - (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 {
 	return matrix4 <Type> (lhs) -= rhs;
+}
+
+///  Returns new matrix value @a lhs minus @a rhs.
+template <class Type>
+inline
+matrix4 <Type>
+operator - (const matrix4 <Type> & lhs, const Type & rhs)
+{
+	return matrix4 <Type> (lhs) -= rhs;
+}
+
+///  Returns new matrix value @a lhs minus @a rhs.
+template <class Type>
+inline
+matrix4 <Type>
+operator - (const Type & lhs, const matrix4 <Type> & rhs)
+{
+	return matrix4 <Type> (-rhs) += lhs;
 }
 
 ///  Return matrix value @a lhs right multiplied by @a rhs.
@@ -1416,7 +1504,7 @@ operator * (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 	return result;
 }
 
-///  Return matrix value @a lhs right multiplied by scalar @a rhs.
+///  Return matrix value @a lhs right multiplied by @a rhs.
 template <class Type>
 inline
 matrix4 <Type>
@@ -1425,7 +1513,7 @@ operator * (const matrix4 <Type> & lhs, const Type & rhs)
 	return matrix4 <Type> (lhs) *= rhs;
 }
 
-///  Return matrix value @a lhs right multiplied by scalar @a rhs.
+///  Return matrix value @a lhs right multiplied by @a rhs.
 template <class Type>
 inline
 matrix4 <Type>
@@ -1556,7 +1644,7 @@ template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const matrix4 <Type> & matrix)
 {
-	return ostream << matrix .vector ();
+	return ostream << matrix .value ();
 }
 
 extern template class matrix4 <float>;

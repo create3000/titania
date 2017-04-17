@@ -116,6 +116,14 @@ public:
 
 	{ }
 
+	///  Components constructor. Set values to @a v.
+	explicit
+	constexpr
+	vector3 (const Type & v) :
+		value { v, v, v }
+
+	{ }
+
 	///  @name Assignment operator
 
 	///  Assign @a vector to this vector.
@@ -256,30 +264,38 @@ public:
 	///  Add @a vector to this vector.
 	template <class T>
 	vector3 &
-	operator += (const vector3 <T> &);
+	operator += (const vector3 <T> & vector);
+
+	///  Add @a t to this vector.
+	vector3 &
+	operator += (const Type & t);
 
 	///  Subtract @a vector from this vector.
 	template <class T>
 	vector3 &
-	operator -= (const vector3 <T> &);
+	operator -= (const vector3 <T> & vector);
+
+	///  Subtract @a t from this vector.
+	vector3 &
+	operator -= (const Type & t);
 
 	///  Multiply this vector by @a vector.
 	template <class T>
 	vector3 &
-	operator *= (const vector3 <T> &);
+	operator *= (const vector3 <T> & vector);
 
 	///  Multiply this vector by @a t.
 	vector3 &
-	operator *= (const Type &);
+	operator *= (const Type & t);
 
 	///  Divide this vector by @a vector.
 	template <class T>
 	vector3 &
-	operator /= (const vector3 <T> &);
+	operator /= (const vector3 <T> & vector);
 
 	///  Divide this vector by @a t.
 	vector3 &
-	operator /= (const Type &);
+	operator /= (const Type & t);
 
 	///  Normalize this vector in place.
 	void
@@ -324,6 +340,16 @@ vector3 <Type>::operator += (const vector3 <T> & vector)
 }
 
 template <class Type>
+vector3 <Type> &
+vector3 <Type>::operator += (const Type & t)
+{
+	value [0] += t;
+	value [1] += t;
+	value [2] += t;
+	return *this;
+}
+
+template <class Type>
 template <class T>
 vector3 <Type> &
 vector3 <Type>::operator -= (const vector3 <T> & vector)
@@ -331,6 +357,16 @@ vector3 <Type>::operator -= (const vector3 <T> & vector)
 	value [0] -= vector .x ();
 	value [1] -= vector .y ();
 	value [2] -= vector .z ();
+	return *this;
+}
+
+template <class Type>
+vector3 <Type> &
+vector3 <Type>::operator -= (const Type & t)
+{
+	value [0] -= t;
+	value [1] -= t;
+	value [2] -= t;
 	return *this;
 }
 
@@ -499,6 +535,24 @@ operator + (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 	return vector3 <Type> (lhs) += rhs;
 }
 
+///  Return new vector value @a lhs plus @a rhs.
+template <class Type>
+inline
+vector3 <Type>
+operator + (const vector3 <Type> & lhs, const Type & rhs)
+{
+	return vector3 <Type> (lhs) += rhs;
+}
+
+///  Return new vector value @a lhs plus @a rhs.
+template <class Type>
+inline
+vector3 <Type>
+operator + (const Type & lhs, const vector3 <Type> & rhs)
+{
+	return vector3 <Type> (rhs) += lhs;
+}
+
 ///  Returns new vector value @a lhs minus @a rhs.
 template <class Type>
 inline
@@ -506,6 +560,24 @@ vector3 <Type>
 operator - (const vector3 <Type> & lhs, const vector3 <Type> & rhs)
 {
 	return vector3 <Type> (lhs) -= rhs;
+}
+
+///  Return new vector value @a lhs minus @a rhs.
+template <class Type>
+inline
+vector3 <Type>
+operator - (const vector3 <Type> & lhs, const Type & rhs)
+{
+	return vector3 <Type> (lhs) -= rhs;
+}
+
+///  Return new vector value @a lhs minus @a rhs.
+template <class Type>
+inline
+vector3 <Type>
+operator - (const Type & lhs, const vector3 <Type> & rhs)
+{
+	return vector3 <Type> (-rhs) += lhs;
 }
 
 ///  Returns new vector value @a lhs times @a rhs.
@@ -555,7 +627,6 @@ operator / (const vector3 <Type> & lhs, const Type & rhs)
 
 ///  Returns new vector value @a lhs divided by @a rhs.
 template <class Type>
-constexpr
 vector3 <Type>
 operator / (const Type & lhs, const vector3 <Type> & rhs)
 {
@@ -712,6 +783,21 @@ round (const vector3 <Type> & arg)
 	return vector3 <Type> (std::round (arg .x ()),
 	                       std::round (arg .y ()),
 	                       std::round (arg .z ()));
+}
+
+/**
+ * @returns Clamps @a arg between @a min and @a max .
+ * @param a vector3 <Type>.\n
+ * @a Type is any type supporting copy constructions and comparisons with operator<.
+ */
+
+template <class Type>
+vector3 <Type>
+clamp (const vector3 <Type> & arg, const Type & min, const Type & max)
+{
+	return vector3 <Type> (clamp (arg .x (), min, max),
+	                       clamp (arg .y (), min, max),
+	                       clamp (arg .z (), min, max));
 }
 
 ///  @relates vector3

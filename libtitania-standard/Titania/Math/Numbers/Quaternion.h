@@ -288,41 +288,49 @@ public:
 	void
 	inverse ();
 
-	///  Add @a quaternion to this quaternion.
+	///  Add @a quat to this quaternion.
 	quaternion &
-	operator += (const quaternion &);
+	operator += (const quaternion & quat);
 
-	///  Subtract @a quaternion to this quaternion.
+	///  Add @a t to this quaternion.
 	quaternion &
-	operator -= (const quaternion &);
+	operator += (const Type & t);
+
+	///  Subtract @a quat to this quaternion.
+	quaternion &
+	operator -= (const quaternion & quat);
+
+	///  Subtract @a t from this quaternion.
+	quaternion &
+	operator -= (const Type & t);
 
 	///  Multiply this quaternion by @a t.
 	quaternion &
-	operator *= (const Type &);
+	operator *= (const Type & t);
 
-	///  Left multiply this quaternion by @a quaternion.
+	///  Left multiply this quaternion by @a quat.
 	quaternion &
-	operator *= (const quaternion &);
+	operator *= (const quaternion & quat);
 
 	///  Divide this quaternion by @a t.
 	quaternion &
-	operator /= (const Type &);
+	operator /= (const Type & t);
 
 	///  Left multiply this quaternion by @a quaternion in place.
 	void
-	mult_left (const quaternion &);
+	mult_left (const quaternion & quat);
 
 	///  Right multiply this quaternion by @a quaternion in place.
 	void
-	mult_right (const quaternion &);
+	mult_right (const quaternion & quat);
 
 	///  Returns the value of @a vector left multiplied by this quaternion.
 	vector3 <Type>
-	mult_vec_quat (const vector3 <Type> &) const;
+	mult_vec_quat (const vector3 <Type> & vector) const;
 
 	///  Returns the value of @a vector right multiplied by this quaternion.
 	vector3 <Type>
-	mult_quat_vec (const vector3 <Type> &) const;
+	mult_quat_vec (const vector3 <Type> & vector) const;
 
 	///  Normalize this quaternion in place.
 	void
@@ -379,12 +387,34 @@ quaternion <Type>::operator += (const quaternion & quat)
 
 template <class Type>
 quaternion <Type> &
+quaternion <Type>::operator += (const Type & t)
+{
+	value [0] += t;
+	value [1] += t;
+	value [2] += t;
+	value [3] += t;
+	return *this;
+}
+
+template <class Type>
+quaternion <Type> &
 quaternion <Type>::operator -= (const quaternion & quat)
 {
 	value [0] -= quat .x ();
 	value [1] -= quat .y ();
 	value [2] -= quat .z ();
 	value [3] -= quat .w ();
+	return *this;
+}
+
+template <class Type>
+quaternion <Type> &
+quaternion <Type>::operator -= (const Type & t)
+{
+	value [0] -= t;
+	value [1] -= t;
+	value [2] -= t;
+	value [3] -= t;
 	return *this;
 }
 
@@ -649,6 +679,26 @@ operator + (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 	return quaternion <Type> (lhs) += rhs;
 }
 
+///  Returns new quaternion value @a lhs plus @a rhs.
+template <class Type>
+inline
+constexpr
+quaternion <Type>
+operator + (const quaternion <Type> & lhs, const Type & rhs)
+{
+	return quaternion <Type> (lhs) += rhs;
+}
+
+///  Returns new quaternion value @a lhs plus @a rhs.
+template <class Type>
+inline
+constexpr
+quaternion <Type>
+operator + (const Type & lhs, const quaternion <Type> & rhs)
+{
+	return quaternion <Type> (rhs) += lhs;
+}
+
 ///  Returns new quaternion value @a lhs minus @a rhs.
 template <class Type>
 inline
@@ -656,6 +706,25 @@ quaternion <Type>
 operator - (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 {
 	return quaternion <Type> (lhs) -= rhs;
+}
+
+///  Returns new quaternion value @a lhs minus @a rhs.
+template <class Type>
+inline
+constexpr
+quaternion <Type>
+operator - (const quaternion <Type> & lhs, const Type & rhs)
+{
+	return quaternion <Type> (lhs) -= rhs;
+}
+
+///  Returns new quaternion value @a lhs minus @a rhs.
+template <class Type>
+inline
+quaternion <Type>
+operator - (const Type & lhs, const quaternion <Type> & rhs)
+{
+	return quaternion <Type> (-rhs) += lhs;
 }
 
 ///  Returns new quaternion value @a lhs left multiplied by @a rhs.
@@ -672,7 +741,6 @@ operator * (const quaternion <Type> & lhs, const quaternion <Type> & rhs)
 ///  Returns new quaternion value @a lhs right multiplied @a rhs.
 template <class Type>
 inline
-constexpr
 quaternion <Type>
 operator * (const quaternion <Type> & lhs, const Type & rhs)
 {
@@ -682,7 +750,6 @@ operator * (const quaternion <Type> & lhs, const Type & rhs)
 ///  Returns new quaternion value @a lhs times @a rhs.
 template <class Type>
 inline
-constexpr
 quaternion <Type>
 operator * (const Type & lhs, const quaternion <Type> & rhs)
 {

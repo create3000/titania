@@ -202,7 +202,8 @@ public:
 	Type
 	operator [ ] (const size_type index) const;
 
-	operator matrix3 <Type> () const;
+	matrix3 <Type>
+	matrix () const;
 
 	///  Set @a x, @a y, @a z and @a angle componentwise.
 	void
@@ -483,7 +484,8 @@ rotation4 <Type>::operator [ ] (const size_type index) const
 
 ///  Convert this rotation to a matrix3.
 template <class Type>
-rotation4 <Type>::operator matrix3 <Type> () const
+matrix3 <Type>
+rotation4 <Type>::matrix () const
 {
 	const Type x = quat () .x ();
 	const Type y = quat () .y ();

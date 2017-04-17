@@ -116,6 +116,14 @@ public:
 
 	{ }
 
+	///  Components constructor. Set values to @a v.
+	explicit
+	constexpr
+	vector2 (const Type & v) :
+		value { v, v }
+
+	{ }
+
 	///  @name Assignment operator
 
 	///  Assign @a vector to this vector.
@@ -246,30 +254,38 @@ public:
 	///  Add @a vector to this vector.
 	template <class T>
 	vector2 &
-	operator += (const vector2 <T> &);
+	operator += (const vector2 <T> & vector);
+
+	///  Add @a t to this vector.
+	vector2 &
+	operator += (const Type & t);
 
 	///  Subtract @a vector from this vector.
 	template <class T>
 	vector2 &
-	operator -= (const vector2 <T> &);
+	operator -= (const vector2 <T> & vector);
+
+	///  Subtract @a t from this vector.
+	vector2 &
+	operator -= (const Type & t);
 
 	///  Multiply this vector by @a vector.
 	template <class T>
 	vector2 &
-	operator *= (const vector2 <T> &);
+	operator *= (const vector2 <T> & vector);
 
 	///  Multiply this vector by @a t.
 	vector2 &
-	operator *= (const Type &);
+	operator *= (const Type & t);
 
 	///  Divide this vector by @a vector.
 	template <class T>
 	vector2 &
-	operator /= (const vector2 <T> &);
+	operator /= (const vector2 <T> & vector);
 
 	///  Divide this vector by @a t.
 	vector2 &
-	operator /= (const Type &);
+	operator /= (const Type & t);
 
 	///  Normalize this vector in place.
 	void
@@ -311,12 +327,30 @@ vector2 <Type>::operator += (const vector2 <T> & vector)
 }
 
 template <class Type>
+vector2 <Type> &
+vector2 <Type>::operator += (const Type & t)
+{
+	value [0] += t;
+	value [1] += t;
+	return *this;
+}
+
+template <class Type>
 template <class T>
 vector2 <Type> &
 vector2 <Type>::operator -= (const vector2 <T> & vector)
 {
 	value [0] -= vector .x ();
 	value [1] -= vector .y ();
+	return *this;
+}
+
+template <class Type>
+vector2 <Type> &
+vector2 <Type>::operator -= (const Type & t)
+{
+	value [0] -= t;
+	value [1] -= t;
 	return *this;
 }
 
@@ -480,6 +514,24 @@ operator + (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 	return vector2 <Type> (lhs) += rhs;
 }
 
+///  Return new vector value @a lhs plus @a rhs.
+template <class Type>
+inline
+vector2 <Type>
+operator + (const vector2 <Type> & lhs, const Type & rhs)
+{
+	return vector2 <Type> (lhs) += rhs;
+}
+
+///  Return new vector value @a lhs plus @a rhs.
+template <class Type>
+inline
+vector2 <Type>
+operator + (const Type & lhs, const vector2 <Type> & rhs)
+{
+	return vector2 <Type> (rhs) += lhs;
+}
+
 ///  Returns new vector value @a lhs minus @a rhs.
 template <class Type>
 inline
@@ -487,6 +539,24 @@ vector2 <Type>
 operator - (const vector2 <Type> & lhs, const vector2 <Type> & rhs)
 {
 	return vector2 <Type> (lhs) -= rhs;
+}
+
+///  Return new vector value @a lhs minus @a rhs.
+template <class Type>
+inline
+vector2 <Type>
+operator - (const vector2 <Type> & lhs, const Type & rhs)
+{
+	return vector2 <Type> (lhs) -= rhs;
+}
+
+///  Return new vector value @a lhs minus @a rhs.
+template <class Type>
+inline
+vector2 <Type>
+operator - (const Type & lhs, const vector2 <Type> & rhs)
+{
+	return vector2 <Type> (-rhs) += lhs;
 }
 
 ///  Returns new vector value @a lhs times @a rhs.
@@ -536,7 +606,6 @@ operator / (const vector2 <Type> & lhs, const Type & rhs)
 
 ///  Returns new vector value @a lhs divided by @a hs.
 template <class Type>
-constexpr
 vector2 <Type>
 operator / (const Type & lhs, const vector2 <Type> & rhs)
 {
@@ -685,6 +754,20 @@ round (const vector2 <Type> & arg)
 {
 	return vector2 <Type> (std::round (arg .x ()),
 	                       std::round (arg .y ()));
+}
+
+/**
+ * @returns Clamps @a arg between @a min and @a max .
+ * @param a vector2 <Type>.\n
+ * @a Type is any type supporting copy constructions and comparisons with operator<.
+ */
+
+template <class Type>
+vector2 <Type>
+clamp (const vector2 <Type> & arg, const Type & min, const Type & max)
+{
+	return vector2 <Type> (clamp (arg .x (), min, max),
+	                       clamp (arg .y (), min, max));
 }
 
 ///  @relates vector2

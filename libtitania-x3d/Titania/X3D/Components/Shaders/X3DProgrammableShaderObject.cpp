@@ -1066,7 +1066,7 @@ throw (std::domain_error)
 	const auto & textureNode          = browser -> getTexture ();
 	const auto & textureTransformNode = browser -> getTextureTransform ();
 	const auto & modelViewMatrix      = context -> getModelViewMatrix ();
-	const auto   normalMatrix         = inverse (Matrix3d (modelViewMatrix)); // Transposed when uniform is set.
+	const auto   normalMatrix         = inverse (modelViewMatrix .submatrix ()); // Transposed when uniform is set.
 
 	// Geometry type
 

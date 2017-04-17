@@ -147,33 +147,48 @@ public:
 	template <class Up>
 	constexpr
 	matrix2 (const matrix2 <Up> & other) :
-		value (other [0], other [1])
+		m_value (other [0], other [1])
 	{ }
 
-	///  Copy constructor.
-	matrix2 (const matrix2 & other)
-	{ *this = other; }
-
-	///  Value constructor.
-	explicit
+	///  Vector constructor.
+	template <class Up>
 	constexpr
-	matrix2 (const array_type & matrix) :
-		array
-	{
-		matrix [0], matrix [1],
-		matrix [2], matrix [3],
-	}
-
+	matrix2 (const vector2 <Up> & x, const vector2 <Up> & y) :
+		m_value (x, y)
 	{ }
 
 	///  Components constructor. Set values from @a e11 to @a e33.
 	constexpr
 	matrix2 (const Type & e11, const Type & e12,
 	         const Type & e21, const Type & e22) :
-		array
+		m_array
 	{
 		e11, e12,
 		e21, e22,
+	}
+
+	{ }
+
+	///  Components constructor. Set values to @a v.
+	explicit
+	constexpr
+	matrix2 (const Type & v) :
+		m_array
+	{
+		v, v,
+		v, v,
+	}
+
+	{ }
+
+	///  Value constructor.
+	explicit
+	constexpr
+	matrix2 (const array_type & matrix) :
+		m_array
+	{
+		matrix [0], matrix [1],
+		matrix [2], matrix [3],
 	}
 
 	{ }
@@ -188,35 +203,35 @@ public:
 
 	void
 	x (const vector_type & vector)
-	{ value .x (vector); }
+	{ m_value .x (vector); }
 
 	const vector_type &
 	x () const
-	{ return value .x (); }
+	{ return m_value .x (); }
 
 	void
 	y (const vector_type & vector)
-	{ value .y (vector); }
+	{ m_value .y (vector); }
 
 	const vector_type &
 	y () const
-	{ return value .y (); }
+	{ return m_value .y (); }
 
 	void
 	x_axis (const Type & vector)
-	{ array [0] = vector; }
+	{ m_array [0] = vector; }
 
 	const Type &
 	x_axis () const
-	{ return array [0]; }
+	{ return m_array [0]; }
 
 	void
 	origin (const Type & vector)
-	{ array [2] = vector; }
+	{ m_array [2] = vector; }
 
 	const Type &
 	origin () const
-	{ return array [2]; }
+	{ return m_array [2]; }
 
 	void
 	set ();
@@ -236,30 +251,48 @@ public:
 	///  Access rows by @a index.
 	vector_type &
 	operator [ ] (const size_type index)
-	{ return value [index]; }
+	{ return m_value [index]; }
 
 	const vector_type &
 	operator [ ] (const size_type index) const
-	{ return value [index]; }
+	{ return m_value [index]; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
 	Type*
 	data ()
-	{ return array; }
+	{ return m_array; }
 
 	const Type*
 	data () const
-	{ return array; }
+	{ return m_array; }
 
 	///  Get access to the underlying vector representation of this matrix.
 	void
-	vector (const matrix_type & vector)
-	{ value = vector; }
+	value (const matrix_type & vector)
+	{ m_value = vector; }
 
 	const matrix_type &
-	vector () const
-	{ return value; }
+	value () const
+	{ return m_value; }
+
+	///  Constructs a matrix3 from a matrix2 rotation matrix.
+	matrix2 &
+	submatrix (const Type & other)
+	{
+		m_array [0] = other;
+		m_array [1] = 0;
+		m_array [2] = 0;
+		m_array [3] = 1;
+
+		return *this;
+	}
+
+	///  Access 2x2 submatrix.
+	constexpr
+	Type
+	submatrix () const
+	{ return m_array [0]; }
 
 	///  @name Iterators
 
@@ -340,7 +373,7 @@ public:
 	{ return SIZE; }
 
 	///  @name  Arithmetic operations
-	///  All these operators modify this matrix4 inplace.
+	///  All these operators modify this matrix2 inplace.
 
 	///  Returns the determinant of the 2x2 sub-matrix.
 	constexpr
@@ -369,21 +402,29 @@ public:
 	matrix2 &
 	operator += (const matrix2 & matrix);
 
-	///  Add @a matrix to this matrix.
+	///  Add @a t to this matrix.
+	matrix2 &
+	operator += (const Type & t);
+
+	///  Subtract @a matrix from this matrix.
 	matrix2 &
 	operator -= (const matrix2 & matrix);
 
-	///  Returns this matrix multiplies by @a scalar.
+	///  Subtract @a t from this matrix.
 	matrix2 &
-	operator *= (const Type & scalar);
+	operator -= (const Type & t);
 
 	///  Returns this matrix right multiplied by @a matrix.
 	matrix2 &
 	operator *= (const matrix2 & matrix);
 
-	///  Returns this matrix divided by @a scalar.
+	///  Returns this matrix multiplies by @a t.
 	matrix2 &
-	operator /= (const Type & scalar);
+	operator *= (const Type & t);
+
+	///  Returns this matrix divided by @a t.
+	matrix2 &
+	operator /= (const Type & t);
 
 	///  Returns this matrix left multiplied by @a matrix.
 	void
@@ -436,8 +477,8 @@ private:
 
 	union
 	{
-		matrix_type value;
-		array_type array;
+		matrix_type m_value;
+		array_type m_array;
 	};
 
 };
@@ -448,7 +489,7 @@ inline
 matrix2 <Type> &
 matrix2 <Type>::operator = (const matrix2 <Up> & matrix)
 {
-	value = matrix .vector ();
+	m_value = matrix .value ();
 	return *this;
 }
 
@@ -464,8 +505,8 @@ template <class Type>
 void
 matrix2 <Type>::set (const Type & translation)
 {
-	value [0] = vector2 <Type> (1, 0);
-	value [1] = vector2 <Type> (translation, 1);
+	m_value [0] = vector2 <Type> (1, 0);
+	m_value [1] = vector2 <Type> (translation, 1);
 }
 
 template <class Type>
@@ -493,7 +534,7 @@ matrix2 <Type>::get (Type & translation,
                      Type & scaleFactor) const
 {
 	translation = origin ();
-	scaleFactor = array [0];
+	scaleFactor = m_array [0];
 }
 
 template <class Type>
@@ -502,7 +543,7 @@ constexpr
 Type
 matrix2 <Type>::determinant1 () const
 {
-	return array [0];
+	return m_array [0];
 }
 
 template <class Type>
@@ -511,24 +552,24 @@ Type
 matrix2 <Type>::determinant () const
 {
 	return
-	   array [0] * array [3] -
-	   array [1] * array [2];
+	   m_array [0] * m_array [3] -
+	   m_array [1] * m_array [2];
 }
 
 template <class Type>
 void
 matrix2 <Type>::transpose ()
 {
-	*this = matrix2 <Type> (array [0], array [2],
-	                        array [1], array [3]);
+	*this = matrix2 <Type> (m_array [0], m_array [2],
+	                        m_array [1], m_array [3]);
 }
 
 template <class Type>
 void
 matrix2 <Type>::negate ()
 {
-	*this = matrix2 <Type> (-array [0], -array [1],
-	                        -array [2], -array [3]);
+	*this = matrix2 <Type> (-m_array [0], -m_array [1],
+	                        -m_array [2], -m_array [3]);
 }
 
 template <class Type>
@@ -541,10 +582,10 @@ throw (std::domain_error)
 	if (d == 0)
 		throw std::domain_error ("matrix2::inverse: determinant is 0.");
 
-	array [0] = array [0] / d;
-	array [1] = -array [1] / d;
-	array [2] = -array [2] / d;
-	array [3] = array [3] / d;
+	m_array [0] = m_array [0] / d;
+	m_array [1] = -m_array [1] / d;
+	m_array [2] = -m_array [2] / d;
+	m_array [3] = m_array [3] / d;
 }
 
 template <class Type>
@@ -552,7 +593,17 @@ inline
 matrix2 <Type> &
 matrix2 <Type>::operator += (const matrix2 & matrix)
 {
-	value += matrix .vector ();
+	m_value += matrix .value ();
+	return *this;
+}
+
+template <class Type>
+matrix2 <Type> &
+matrix2 <Type>::operator += (const Type & t)
+{
+	m_value [0] += t;
+	m_value [1] += t;
+
 	return *this;
 }
 
@@ -561,16 +612,16 @@ inline
 matrix2 <Type> &
 matrix2 <Type>::operator -= (const matrix2 & matrix)
 {
-	value -= matrix .vector ();
+	m_value -= matrix .value ();
 	return *this;
 }
 
 template <class Type>
 matrix2 <Type> &
-matrix2 <Type>::operator *= (const Type & t)
+matrix2 <Type>::operator -= (const Type & t)
 {
-	value [0] *= t;
-	value [1] *= t;
+	m_value [0] -= t;
+	m_value [1] -= t;
 
 	return *this;
 }
@@ -586,10 +637,20 @@ matrix2 <Type>::operator *= (const matrix2 & matrix)
 
 template <class Type>
 matrix2 <Type> &
+matrix2 <Type>::operator *= (const Type & t)
+{
+	m_value [0] *= t;
+	m_value [1] *= t;
+
+	return *this;
+}
+
+template <class Type>
+matrix2 <Type> &
 matrix2 <Type>::operator /= (const Type & t)
 {
-	value [0] /= t;
-	value [1] /= t;
+	m_value [0] /= t;
+	m_value [1] /= t;
 
 	return *this;
 }
@@ -599,8 +660,8 @@ void
 matrix2 <Type>::mult_left (const matrix2 & matrix)
 {
 	#define MULT_LEFT(i, j) \
-	   (array [0 * 2 + j] * matrix .array [i * 2 + 0] +   \
-	    array [1 * 2 + j] * matrix .array [i * 2 + 1])
+	   (m_array [0 * 2 + j] * matrix .m_array [i * 2 + 0] +   \
+	    m_array [1 * 2 + j] * matrix .m_array [i * 2 + 1])
 
 	*this = matrix2 <Type> (MULT_LEFT (0, 0),
 	                        MULT_LEFT (0, 1),
@@ -616,8 +677,8 @@ void
 matrix2 <Type>::mult_right (const matrix2 & matrix)
 {
 	#define MULT_RIGHT(i, j) \
-	   (array [i * 2 + 0] * matrix .array [0 * 2 + j] +   \
-	    array [i * 2 + 1] * matrix .array [1 * 2 + j])
+	   (m_array [i * 2 + 0] * matrix .m_array [0 * 2 + j] +   \
+	    m_array [i * 2 + 1] * matrix .m_array [1 * 2 + j])
 
 	*this = matrix2 <Type> (MULT_RIGHT (0, 0),
 	                        MULT_RIGHT (0, 1),
@@ -632,9 +693,9 @@ template <class Type>
 Type
 matrix2 <Type>::mult_vec_matrix (const Type & vector) const
 {
-	const Type w = vector * array [1] + array [3];
+	const Type w = vector * m_array [1] + m_array [3];
 
-	return (vector * array [0] + array [2]) / w;
+	return (vector * m_array [0] + m_array [2]) / w;
 }
 
 template <class Type>
@@ -642,17 +703,17 @@ constexpr
 vector2 <Type>
 matrix2 <Type>::mult_vec_matrix (const vector2 <Type> & vector) const
 {
-	return vector2 <Type> (vector .x () * array [0] + vector .y () * array [2],
-	                       vector .x () * array [1] + vector .y () * array [3]);
+	return vector2 <Type> (vector .x () * m_array [0] + vector .y () * m_array [2],
+	                       vector .x () * m_array [1] + vector .y () * m_array [3]);
 }
 
 template <class Type>
 Type
 matrix2 <Type>::mult_matrix_vec (const Type & vector) const
 {
-	const Type w = vector * array [2] + array [3];
+	const Type w = vector * m_array [2] + m_array [3];
 
-	return (vector * array [0] + array [1]) / w;
+	return (vector * m_array [0] + m_array [1]) / w;
 }
 
 template <class Type>
@@ -660,8 +721,8 @@ constexpr
 vector2 <Type>
 matrix2 <Type>::mult_matrix_vec (const vector2 <Type> & vector) const
 {
-	return vector2 <Type> (vector .x () * array [0] + vector .y () * array [1],
-	                       vector .x () * array [2] + vector .y () * array [3]);
+	return vector2 <Type> (vector .x () * m_array [0] + vector .y () * m_array [1],
+	                       vector .x () * m_array [2] + vector .y () * m_array [3]);
 }
 
 template <class Type>
@@ -669,7 +730,7 @@ constexpr
 Type
 matrix2 <Type>::mult_dir_matrix (const Type & vector) const
 {
-	return vector * array [0];
+	return vector * m_array [0];
 }
 
 template <class Type>
@@ -677,7 +738,7 @@ constexpr
 Type
 matrix2 <Type>::mult_matrix_dir (const Type & vector) const
 {
-	return vector * array [0];
+	return vector * m_array [0];
 }
 
 template <class Type>
@@ -685,9 +746,9 @@ void
 matrix2 <Type>::translate (const Type & translation)
 {
 	#define TRANSLATE(i) \
-	   (value [0] [i] * translation)
+	   (m_value [0] [i] * translation)
 
-	value [1] [0] += TRANSLATE (0);
+	m_value [1] [0] += TRANSLATE (0);
 
 	#undef TRANSLATE
 }
@@ -696,7 +757,7 @@ template <class Type>
 void
 matrix2 <Type>::scale (const Type & scaleFactor)
 {
-	value [0] [0] *= scaleFactor;
+	m_value [0] [0] *= scaleFactor;
 }
 
 ///  @relates matrix2
@@ -710,7 +771,7 @@ constexpr
 bool
 operator == (const matrix2 <Type> & lhs, const matrix2 <Type> & rhs)
 {
-	return lhs .vector () == rhs .vector ();
+	return lhs .value () == rhs .value ();
 }
 
 ///  Compares two matrix2 numbers.
@@ -721,7 +782,7 @@ constexpr
 bool
 operator not_eq (const matrix2 <Type> & lhs, const matrix2 <Type> & rhs)
 {
-	return lhs .vector () not_eq rhs .vector ();
+	return lhs .value () not_eq rhs .value ();
 }
 
 ///  @relates matrix2
@@ -824,6 +885,24 @@ operator + (const matrix2 <Type> & lhs, const matrix2 <Type> & rhs)
 	return matrix2 <Type> (lhs) += rhs;
 }
 
+///  Returns new matrix value @a lhs plus @a rhs.
+template <class Type>
+inline
+matrix2 <Type>
+operator + (const matrix2 <Type> & lhs, const Type & rhs)
+{
+	return matrix2 <Type> (lhs) += rhs;
+}
+
+///  Return matrix value @a lhs right multiplied by scalar @a rhs.
+template <class Type>
+inline
+matrix2 <Type>
+operator + (const Type & lhs, const matrix2 <Type> & rhs)
+{
+	return matrix2 <Type> (rhs) += lhs;
+}
+
 ///  Returns new matrix value @a a minus @a rhs.
 template <class Type>
 inline
@@ -831,6 +910,24 @@ matrix2 <Type>
 operator - (const matrix2 <Type> & lhs, const matrix2 <Type> & rhs)
 {
 	return matrix2 <Type> (lhs) -= rhs;
+}
+
+///  Returns new matrix value @a lhs minus @a rhs.
+template <class Type>
+inline
+matrix2 <Type>
+operator - (const matrix2 <Type> & lhs, const Type & rhs)
+{
+	return matrix2 <Type> (lhs) -= rhs;
+}
+
+///  Returns new matrix value @a lhs minus @a rhs.
+template <class Type>
+inline
+matrix2 <Type>
+operator - (const Type & lhs, const matrix2 <Type> & rhs)
+{
+	return matrix2 <Type> (-rhs) += lhs;
 }
 
 ///  Return matrix value @a lhs right multiplied by @a rhs.
@@ -946,7 +1043,7 @@ template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const matrix2 <Type> & matrix)
 {
-	return ostream << matrix .vector ();
+	return ostream << matrix .value ();
 }
 
 extern template class matrix2 <float>;

@@ -232,7 +232,7 @@ private:
 	on_rotate_clockwise () final override;
 
 	void
-	on_rotate (const std::string &, const double);
+	on_rotate (const std::string &, const float);
 
 	virtual
 	void

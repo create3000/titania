@@ -193,7 +193,7 @@ GeoViewpoint::set_position ()
 void
 GeoViewpoint::setOrientation (const Rotation4d & value)
 {
-	const Rotation4d localOrientation = Rotation4d (Matrix3d (getLocationMatrix (position ())));
+	const Rotation4d localOrientation = Rotation4d (getLocationMatrix (position ()) .submatrix ());
 
 	orientation () = Rotation4d (value) * ~localOrientation;
 }
@@ -202,7 +202,7 @@ GeoViewpoint::setOrientation (const Rotation4d & value)
 Rotation4d
 GeoViewpoint::getOrientation () const
 {
-	const Rotation4d localOrientation = Rotation4d (Matrix3d (getLocationMatrix (position ())));
+	const Rotation4d localOrientation = Rotation4d (getLocationMatrix (position ()) .submatrix ());
 
 	return Rotation4d (orientation () .getValue ()) * localOrientation;
 }

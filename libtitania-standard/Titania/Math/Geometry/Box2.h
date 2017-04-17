@@ -224,13 +224,20 @@ public:
 		matrix3 <Type> t;
 
 		t .translate (translation);
+
 		m_matrix *= t;
 	}
 
 	///  Rotate this box by @a rotation.
 	void
 	rotate (const Type & rotation)
-	{ m_matrix *= matrix3 <Type> (rotation); }
+	{
+		matrix3 <Type> r;
+
+		r .rotate (rotation);
+
+		m_matrix *= r;
+	}
 
 	///  Scale this box by @a scaleFactor.
 	void
@@ -239,6 +246,7 @@ public:
 		matrix3 <Type> s;
 
 		s .scale (scaleFactor);
+
 		m_matrix *= s;
 	}
 

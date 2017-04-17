@@ -369,7 +369,7 @@ X3DGridTool::set_rotation (const X3DWeakPtr <X3DTransformNodeTool> & master)
 		Vector3d   Z             = cross (X, Y); // Front vector
 		Matrix3d   rotationPlane = Matrix3d (X [0], X [1], X [2],   Y [0], Y [1], Y [2],   Z [0], Z [1], Z [2]);
 		Rotation4d gridRotation  = Rotation4d (rotation () .getValue ());
-		Matrix3d   gridPlane     = grid;
+		Matrix3d   gridPlane     = grid .submatrix ();
 
 //__LOG__ << abs (X) << std::endl;
 //__LOG__ << abs (Y) << std::endl;

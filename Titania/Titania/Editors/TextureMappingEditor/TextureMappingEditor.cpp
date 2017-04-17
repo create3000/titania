@@ -843,17 +843,17 @@ TextureMappingEditor::on_deselect_all_activate ()
 void
 TextureMappingEditor::on_rotate_counterclockwise ()
 {
-	on_rotate (_ ("Rotate 90° Counterclockwise"), pi <double> / 2);
+	on_rotate (_ ("Rotate 90° Counterclockwise"), pi <float> / 2);
 }
 
 void
 TextureMappingEditor::on_rotate_clockwise ()
 {
-	on_rotate (_ ("Rotate 90° Clockwise"), -pi <double> / 2);
+	on_rotate (_ ("Rotate 90° Clockwise"), -pi <float> / 2);
 }
 
 void
-TextureMappingEditor::on_rotate (const std::string & description, const double angle)
+TextureMappingEditor::on_rotate (const std::string & description, const float angle)
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (description);
 
@@ -862,9 +862,8 @@ TextureMappingEditor::on_rotate (const std::string & description, const double a
 
 	// Determine bbox extents.
 
-	const auto bbox     = getTexBBox ();
-	const auto center   = bbox .center ();
-	const auto rotation = X3D::Matrix3f (angle);
+	const auto bbox   = getTexBBox ();
+	const auto center = bbox .center ();
 
 	// Apply mapping.
 
@@ -879,7 +878,7 @@ TextureMappingEditor::on_rotate (const std::string & description, const double a
 	for (const auto & vertex : vertices)
 	{
 		auto &     point   = texCoord -> point () .get1Value (vertex);
-		const auto rotated = (point .getValue () - center) * rotation + center;
+		const auto rotated = math::rotate (point .getValue () - center, angle) + center;
 		point .setValue (rotated);
 	}
 
