@@ -89,17 +89,13 @@ Matrix4VertexAttribute::addValue (std::vector <float> & array, const size_t inde
 	{
 		const Matrix4f & mat4 = value () [index];
 
-		array .insert (array .end (),
-		               mat4 .front () .data (),
-		               mat4 .front () .data () + mat4 .size () * mat4 .size ());
+		array .insert (array .end (), mat4 .data (), mat4 .data () + mat4 .size ());
 	}
 	else
 	{
-		static constexpr Matrix4f mat4;
+		static const Matrix4f mat4;
 
-		array .insert (array .end (),
-		               mat4 .front () .data (),
-		               mat4 .front () .data () + mat4 .size () * mat4 .size ());
+		array .insert (array .end (), mat4 .data (), mat4 .data () + mat4 .size ());
 	}
 }
 

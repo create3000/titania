@@ -194,7 +194,7 @@ X3DSelector::display ()
 	const auto projection = camera <double>::ortho (0, width, 0, height, -1, 1);
 
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (projection .front () .data ());
+	glLoadMatrixd (projection .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Display Lasso.
@@ -241,7 +241,7 @@ X3DSelector::draw ()
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (projection .front () .data ());
+	glLoadMatrixd (projection .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Display Lasso.

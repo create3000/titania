@@ -282,7 +282,7 @@ template <class ValueType>
 void
 SFMatrix3 <ValueType>::set1Value (const size_type & index, const value_type & value)
 {
-	get () .front () .data () [index] = value;
+	get () .data () [index] = value;
 	addEvent ();
 }
 
@@ -291,7 +291,7 @@ inline
 typename SFMatrix3 <ValueType>::value_type
 SFMatrix3 <ValueType>::get1Value (const size_type & index) const
 {
-	return getValue () .front () .data () [index];
+	return getValue () .data () [index];
 }
 
 template <class ValueType>
@@ -299,7 +299,7 @@ inline
 typename SFMatrix3 <ValueType>::value_type
 SFMatrix3 <ValueType>::operator [ ] (const size_type & index) const
 {
-	return getValue () .front () .data () [index];
+	return getValue () .data () [index];
 }
 
 template <class ValueType>

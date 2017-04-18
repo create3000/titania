@@ -89,17 +89,13 @@ Matrix3VertexAttribute::addValue (std::vector <float> & array, const size_t inde
 	{
 		const Matrix3f & mat3 = value () [index];
 
-		array .insert (array .end (),
-		               mat3 .front () .data (),
-		               mat3 .front () .data () + mat3 .size () * mat3 .size ());
+		array .insert (array .end (), mat3 .data (), mat3 .data () + mat3 .size ());
 	}
 	else
 	{
-		static constexpr Matrix3f mat3;
+		static const Matrix3f mat3;
 
-		array .insert (array .end (),
-		               mat3 .front () .data (),
-		               mat3 .front () .data () + mat3 .size () * mat3 .size ());
+		array .insert (array .end (), mat3 .data (), mat3 .data () + mat3 .size ());
 	}
 }
 

@@ -94,7 +94,7 @@ CollisionContainer::depth ()
 	for (const auto & clipPlane : getClipPlanes ())
 		clipPlane -> enable ();
 
-	glLoadMatrixd (getModelViewMatrix () .front () .data ());
+	glLoadMatrixd (getModelViewMatrix () .data ());
 
 	getShape () -> depth (this);
 

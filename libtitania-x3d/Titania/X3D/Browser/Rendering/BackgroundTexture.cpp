@@ -109,7 +109,7 @@ BackgroundTexture::draw ()
 	glScissor  (0, 0, width, height);
 
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (projectionMatrix .front () .data ());
+	glLoadMatrixd (projectionMatrix .data ());
 
 	glMatrixMode (GL_MODELVIEW);
 	glLoadIdentity ();

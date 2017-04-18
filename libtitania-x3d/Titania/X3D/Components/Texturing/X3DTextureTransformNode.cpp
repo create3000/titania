@@ -89,7 +89,7 @@ X3DTextureTransformNode::draw (X3DRenderObject* const renderObject, const int32_
 
 	glMatrixMode (GL_TEXTURE);
 
-	glLoadMatrixd (matrix .front () .data ());
+	glLoadMatrixd (matrix .data ());
 
 	glMatrixMode (GL_MODELVIEW);
 }
@@ -98,9 +98,9 @@ void
 X3DTextureTransformNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderObject, const size_t stage) const
 {
 	if (shaderObject -> isExtensionGPUShaderFP64Available ())
-		glUniformMatrix4dv (shaderObject -> getTextureMatrixUniformLocation (), 1, false, matrix .front () .data ());
+		glUniformMatrix4dv (shaderObject -> getTextureMatrixUniformLocation (), 1, false, matrix .data ());
 	else
-		glUniformMatrix4fv (shaderObject -> getTextureMatrixUniformLocation (), 1, false, Matrix4f (matrix) .front () .data ());
+		glUniformMatrix4fv (shaderObject -> getTextureMatrixUniformLocation (), 1, false, Matrix4f (matrix) .data ());
 }
 
 } // X3D

@@ -469,7 +469,7 @@ ScreenText::draw (ShapeContainer* const context)
 		glLoadIdentity ();
 		glMatrixMode (GL_MODELVIEW);
 
-		glLoadMatrixd (modelViewMatrix .front () .data ());
+		glLoadMatrixd (modelViewMatrix .data ());
 	}
 	#endif
 

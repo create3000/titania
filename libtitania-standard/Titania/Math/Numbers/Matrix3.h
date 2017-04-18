@@ -201,7 +201,7 @@ public:
 
 	///  Return x component of this matrix.
 	constexpr
-	typename matrix_type::const_reference
+	const vector3 <Type> &
 	x () const
 	{ return m_value .x (); }
 
@@ -212,7 +212,7 @@ public:
 
 	///  Return y component of this matrix.
 	constexpr
-	typename matrix_type::const_reference
+	const vector3 <Type> &
 	y () const
 	{ return m_value .y (); }
 
@@ -223,7 +223,7 @@ public:
 
 	///  Return z component of this matrix.
 	constexpr
-	typename matrix_type::const_reference
+	const vector3 <Type> &
 	z () const
 	{ return m_value .z (); }
 
@@ -350,13 +350,13 @@ public:
 
 	///  Access components by @a index.
 	constexpr
-	typename matrix_type::reference
+	vector3 <Type> &
 	operator [ ] (const size_type index)
 	{ return m_value [index]; }
 
 	///  Access components by @a index.
 	constexpr
-	typename matrix_type::const_reference
+	const vector3 <Type> &
 	operator [ ] (const size_type index) const
 	{ return m_value [index]; }
 
@@ -495,28 +495,28 @@ public:
 	order ()
 	{ return Order; }
 
-	///  Returns the number of rows of this matrix.
-	static
-	constexpr
-	size_type
-	rows ()
-	{ return Order; }
-
-	///  Returns the number of coloums of this matrix.
+	///  Returns the number of coloums of this matrix. As this is a square matrix, the number is the same as order ().
 	static
 	constexpr
 	size_type
 	columns ()
 	{ return Order; }
 
+	///  Returns the number of rows of this matrix. As this is a square matrix, the number is the same as order ().
+	static
+	constexpr
+	size_type
+	rows ()
+	{ return Order; }
+
 	///  Returns the number of elements in the matrix. The size is the same as order () * order ().
 	static
 	constexpr
 	size_type
-	_size ()
+	size ()
 	{ return Size; }
 
-	///  Returns the maximum possible number of elements. Because each vector is a fixed-size container,
+	///  Returns the maximum possible number of elements. Because each matrix is a fixed-size container,
 	///  the value is also the value returned by size.
 	static
 	constexpr
@@ -534,10 +534,10 @@ public:
 	///  Swaps the contents.
 	void
 	swap (matrix3 & other)
-	{ m_value .swap (other .m_value); }
+	{ m_array .swap (other .m_array); }
 
 	///  @name  Arithmetic operations
-	///  All these operators modify this matrix3 inplace.
+	///  All these operators modify this matrix inplace.
 
 	///  Returns the determinant of the 2x2 sub-matrix.
 	constexpr

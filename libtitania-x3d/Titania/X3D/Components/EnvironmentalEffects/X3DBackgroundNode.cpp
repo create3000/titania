@@ -383,7 +383,7 @@ X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & v
 	modelViewMatrix .back () .get (translation, rotation);
 	modelViewMatrix .back () .set (Vector3d (), rotation, Vector3d (farValue, farValue, farValue));
 
-	glLoadMatrixd (modelViewMatrix .back () .front () .data ());
+	glLoadMatrixd (modelViewMatrix .back () .data ());
 
 	// The default background does not push a model view matrix, thus we must not pop back.
 	if (modelViewMatrix .size () > 1)

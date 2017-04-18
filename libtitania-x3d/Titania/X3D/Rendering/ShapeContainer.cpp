@@ -93,7 +93,7 @@ ShapeContainer::display ()
 	for (const auto & object : getLocalLights ())
 		object -> enable ();
 
-	glLoadMatrixd (getModelViewMatrix () .front () .data ());
+	glLoadMatrixd (getModelViewMatrix () .data ());
 
 	getFog () -> enable (renderObject);
 

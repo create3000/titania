@@ -90,34 +90,6 @@ public:
 	
 		metadataSet -> createValue <Metadata> (names .back ()) -> value () = value;
 	}
-
-	template <class Type, class Metadata>
-	static
-	typename std::enable_if <
-		std::is_same <Type, MFMatrix3d>::value or
-		std::is_same <Type, MFMatrix3f>::value or
-		std::is_same <Type, MFMatrix4d>::value or
-		std::is_same <Type, MFMatrix4f>::value,
-		void
-		>::type
-	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
-	throw (Error <DISPOSED>)
-	{
-		auto names = std::vector <std::string> ();
-	
-		basic::split (std::back_inserter (names), key, node -> SEPARATOR);
-	
-		const auto metadataSet = node -> getMetadataSet (names, false);
-		auto  &    metaValue   = metadataSet -> createValue <Metadata> (names .back ()) -> value ();
-	
-		metaValue .resize (value .size () * Type::value_type::internal_type::size () * Type::value_type::internal_type::size ());
-	
-		for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
-		{
-			for (size_t v = 0; v < Type::value_type::internal_type::size () * Type::value_type::internal_type::size (); ++ v)
-				metaValue [m ++] = value [i] .get1Value (v);
-		}
-	}
 	
 	template <class Type, class Metadata>
 	static
@@ -126,10 +98,6 @@ public:
 		     std::is_same <Type, MFDouble>::value or
 		     std::is_same <Type, MFFloat>::value or
 		     std::is_same <Type, MFInt32>::value or
-		     std::is_same <Type, MFMatrix3d>::value or
-		     std::is_same <Type, MFMatrix3f>::value or
-		     std::is_same <Type, MFMatrix4d>::value or
-		     std::is_same <Type, MFMatrix4f>::value or
 		     std::is_same <Type, MFNode>::value or
 		     std::is_same <Type, MFString>::value),
 		void
@@ -1216,7 +1184,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix3d matrix;
 	
-				for (size_t i = 0; i < Matrix3d::size () * Matrix3d::size (); ++ i)
+				for (size_t i = 0; i < Matrix3d::size (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1229,7 +1197,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix3f matrix;
 	
-				for (size_t i = 0; i < Matrix3f::size () * Matrix3f::size (); ++ i)
+				for (size_t i = 0; i < Matrix3f::size (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1242,7 +1210,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix4d matrix;
 	
-				for (size_t i = 0; i < Matrix4d::size () * Matrix4d::size (); ++ i)
+				for (size_t i = 0; i < Matrix4d::size (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1255,7 +1223,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				SFMatrix4f matrix;
 	
-				for (size_t i = 0; i < Matrix4f::size () * Matrix4f::size (); ++ i)
+				for (size_t i = 0; i < Matrix4f::size (); ++ i)
 				   matrix .set1Value (i, value .at (i));
 	
 				field = matrix;
@@ -1431,7 +1399,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix3d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += Matrix3d::size () * Matrix3d::size ())
+				for (size_t i = 0, size = value .size (); i < size; i += Matrix3d::size ())
 					array .emplace_back (value .at (i),
 					                     value .at (i + 1),
 					                     value .at (i + 2),
@@ -1452,7 +1420,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix3f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += Matrix3f::size () * Matrix3f::size ())
+				for (size_t i = 0, size = value .size (); i < size; i += Matrix3f::size ())
 					array .emplace_back (value .at (i),
 					                     value .at (i + 1),
 					                     value .at (i + 2),
@@ -1473,7 +1441,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix4d array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += Matrix4d::size () * Matrix4d::size ())
+				for (size_t i = 0, size = value .size (); i < size; i += Matrix4d::size ())
 					array .emplace_back (value .at (i),
 					                     value .at (i + 1),
 					                     value .at (i + 2),
@@ -1501,7 +1469,7 @@ X3DNode::fromMetaData (const X3DPtr <MetadataSet> & metadataSetNode, X3DFieldDef
 	
 				MFMatrix4f array;
 	
-				for (size_t i = 0, size = value .size (); i < size; i += Matrix4f::size () * Matrix4f::size ())
+				for (size_t i = 0, size = value .size (); i < size; i += Matrix4f::size ())
 					array .emplace_back (value .at (i),
 					                     value .at (i + 1),
 					                     value .at (i + 2),
@@ -1745,7 +1713,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFDouble array;
 
-			for (size_t i = 0; i < Matrix3d::size () * Matrix3d::size (); ++ i)
+			for (size_t i = 0; i < Matrix3d::size (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -1758,7 +1726,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFFloat array;
 
-			for (size_t i = 0; i < Matrix3f::size () * Matrix3f::size (); ++ i)
+			for (size_t i = 0; i < Matrix3f::size (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -1771,7 +1739,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFDouble array;
 
-			for (size_t i = 0; i < Matrix4d::size () * Matrix4d::size (); ++ i)
+			for (size_t i = 0; i < Matrix4d::size (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -1784,7 +1752,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			MFFloat array;
 
-			for (size_t i = 0; i < Matrix4f::size () * Matrix4f::size (); ++ i)
+			for (size_t i = 0; i < Matrix4f::size (); ++ i)
 			   array .emplace_back (field .get1Value (i));
 
 			metadata -> value () = array;
@@ -1985,7 +1953,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < Matrix3d::size () * Matrix3d::size (); ++ i)
+				for (size_t i = 0; i < Matrix3d::size (); ++ i)
 					array .emplace_back (value .get1Value (i));
 			}
 
@@ -2000,7 +1968,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < Matrix3f::size () * Matrix3f::size (); ++ i)
+				for (size_t i = 0; i < Matrix3f::size (); ++ i)
 					array .emplace_back (value .get1Value (i));
 			}
 
@@ -2015,7 +1983,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < Matrix4d::size () * Matrix4d::size (); ++ i)
+				for (size_t i = 0; i < Matrix4d::size (); ++ i)
 					array .emplace_back (value .get1Value (i));
 			}
 
@@ -2030,7 +1998,7 @@ X3DNode::toMetaData (const X3DPtr <MetadataSet> & metadataSetNode, const X3DFiel
 
 			for (const auto & value : field)
 			{
-				for (size_t i = 0; i < Matrix4f::size () * Matrix4f::size (); ++ i)
+				for (size_t i = 0; i < Matrix4f::size (); ++ i)
 					array .emplace_back (value .get1Value (i));
 			}
 
