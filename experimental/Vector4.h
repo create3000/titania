@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,10 +48,9 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_MATH_NUMBERS_VECTOR4_H__
-#define __TITANIA_MATH_NUMBERS_VECTOR4_H__
+#ifndef __VECTOR4_H__
+#define __VECTOR4_H__
 
-#include <array>
 #include <cmath>
 #include <istream>
 #include <ostream>
@@ -61,7 +60,7 @@ namespace titania {
 namespace math {
 
 /**
- *  Template to represent vector4 numbers.
+ *  Template to represent xvector4 numbers.
  *
  *  Extern instantiations for float, double, and long double are part of the
  *  library.  Results with any other type are not guaranteed.
@@ -69,17 +68,8 @@ namespace math {
  *  @param  Type  Type of values x, y, z and w.
  */
 template <class Type>
-class vector4
+class xvector4
 {
-private:
-
-	static constexpr size_t Size = 4;
-
-	///  @name Member types
-
-	using array_type = std::array <Type, Size>;
-
-
 public:
 
 	///  @name Member types
@@ -88,219 +78,244 @@ public:
 	using value_type = Type;
 
 	///  Size typedef.  Used for size and indices.
-	using size_type = typename array_type::size_type;
-
-	///  difference_type
-	using difference_type = typename array_type::difference_type;
-
-	///  reference
-	using reference = typename array_type::reference;
-
-	///  const_reference
-	using const_reference = typename array_type::const_reference;
-
-	///  pointer
-	using pointer = typename array_type::pointer;
+	using size_type = size_t;
 
 	///  Random access iterator
-	using iterator = typename array_type::iterator;
+	using iterator = Type *;
 
-	///  Constant random access iterator 
-	using const_iterator = typename array_type::const_iterator;
-
-	///  std::reverse_iterator <iterator>
-	using reverse_iterator = typename array_type::reverse_iterator;
+	///  Constant random access iterator
+	using const_iterator = const Type *;
 
 	///  std::reverse_iterator <iterator>
-	using const_reverse_iterator = typename array_type::const_reverse_iterator;
+	using reverse_iterator = std::reverse_iterator <iterator>;
+
+	///  std::reverse_iterator <iterator>
+	using const_reverse_iterator = std::reverse_iterator <const_iterator>;
 
 	///  @name Constructors
 
 	///  Default constructor.  All values default to 0.
 	constexpr
-	vector4 () :
-		m_value { Type (), Type (), Type (), Type () }
+	xvector4 () :
+		value {Type (), Type (), Type (), Type ()}
 	{ }
 
 	///  Copy constructor.
 	template <class T>
 	constexpr
-	vector4 (const vector4 <T> & vector) :
-		m_value { vector .x (), vector .y (), vector .z (), vector .w () }
+	xvector4 (const xvector4 <T> & vector) :
+		value {vector .x (), vector .y (), vector .z (), vector .w ()}
 	{ }
 
 	///  Components constructor. Set values to @a x, @a y, @a z and @a w.
 	constexpr
-	vector4 (const Type & x, const Type & y, const Type & z, const Type & w) :
-		m_value { x, y, z, w }
+	xvector4 (const Type & x, const Type & y, const Type & z, const Type & w) :
+		value {x, y, z, w}
 	{ }
 
 	///  Components constructor. Set values to @a v.
 	explicit
 	constexpr
-	vector4 (const Type & v) :
-		m_value { v, v, v, v }
+	xvector4 (const Type & v) :
+		value {v, v, v, v}
 	{ }
+
+	template <class ... Args>
+	xvector4 (const Args & ... args)
+	{
+		size_type i = 0;
+
+		resolve (i, args ...);
+	}
+
+	template <class Arg, class ... Args>
+	void
+	resolve (size_type & i, const Arg & arg, const Args & ... args)
+	{
+		construct (i, arg);
+
+		resolve (i, args ...);
+	}
+
+	void
+	resolve (size_type & i)
+	{ }
+
+	void
+	construct (size_type & i, const Type & arg)
+	{
+		value [i ++] = arg;
+	}
+
+	void
+	construct (size_type & i, const vector2 <Type> & arg)
+	{
+		for (const auto & v : arg)
+		{
+			if (i < size ())
+				value [i ++] = v;
+		}
+	}
+
+	void
+	construct (size_type & i, const vector3 <Type> & arg)
+	{
+		for (const auto & v : arg)
+		{
+			if (i < size ())
+				value [i ++] = v;
+		}
+	}
+
+	void
+	construct (size_type & i, const vector4 <Type> & arg)
+	{
+		for (const auto & v : arg)
+		{
+			if (i < size ())
+				value [i ++] = v;
+		}
+	}
 
 	///  @name Assignment operator
 
-	///  Assign @a other to this vector.
+	///  Assign @a vector to this vector.
 	template <class T>
-	vector4 &
-	operator = (const vector4 <T> & other);
+	xvector4 &
+	operator = (const xvector4 <T> &);
 
 	///  @name Element access
 
 	///  Set x component of this vector.
 	void
 	x (const Type & t)
-	{ m_value [0] = t; }
+	{ value [0] = t; }
 
 	///  Return x component of this vector.
-	const_reference
+	const Type &
 	x () const
-	{ return m_value [0]; }
+	{ return value [0]; }
 
 	///  Set y component of this vector.
 	void
 	y (const Type & t)
-	{ m_value [1] = t; }
+	{ value [1] = t; }
 
 	///  Return y component of this vector.
-	const_reference
+	const Type &
 	y () const
-	{ return m_value [1]; }
+	{ return value [1]; }
 
 	///  Set z component of this vector.
 	void
 	z (const Type & t)
-	{ m_value [2] = t; }
+	{ value [2] = t; }
 
 	///  Return z component of this vector.
-	const_reference
+	const Type &
 	z () const
-	{ return m_value [2]; }
+	{ return value [2]; }
 
 	///  Set w component of this vector.
 	void
 	w (const Type & t)
-	{ m_value [3] = t; }
+	{ value [3] = t; }
 
 	///  Return w component of this vector.
-	const_reference
+	const Type &
 	w () const
-	{ return m_value [3]; }
+	{ return value [3]; }
 
 	///  Access components by @a index.
-	reference
+	Type &
 	operator [ ] (const size_type index)
-	{ return m_value [index]; }
+	{ return value [index]; }
 
 	///  Access components by @a index.
-	const_reference
+	const Type &
 	operator [ ] (const size_type index) const
-	{ return m_value [index]; }
-
-	///  Returns a reference to the first element in the container. 
-	reference
-	front ()
-	{ return m_value .front (); }
-
-	///  Returns a reference to the first element in the container. 
-	const_reference
-	front () const
-	{ return m_value .front (); }
-
-	///  Returns reference to the last element in the container. 
-	reference
-	back ()
-	{ return m_value .back (); }
-
-	///  Returns reference to the last element in the container. 
-	const_reference
-	back () const
-	{ return m_value .back (); }
+	{ return value [index]; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
 	data ()
-	{ return m_value .data (); }
+	{ return value; }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
 	data () const
-	{ return m_value .data (); }
+	{ return value; }
 
 	///  @name Iterators
 
 	///  Returns an iterator to the beginning.
 	iterator
 	begin ()
-	{ return m_value .begin (); }
+	{ return data (); }
 
 	///  Returns an iterator to the beginning.
 	const_iterator
 	begin () const
-	{ return m_value .begin (); }
+	{ return data (); }
 
 	///  Returns an iterator to the beginning.
 	const_iterator
 	cbegin () const
-	{ return m_value .cbegin (); }
+	{ return data (); }
 
 	///  Returns an iterator to the end.
 	iterator
 	end ()
-	{ return m_value .end (); }
+	{ return data () + size (); }
 
 	///  Returns an iterator to the end.
 	const_iterator
 	end () const
-	{ return m_value .end (); }
+	{ return data () + size (); }
 
 	///  Returns an iterator to the end.
 	const_iterator
 	cend () const
-	{ return m_value .cend (); }
+	{ return data () + size (); }
 
 	///  Returns a reverse iterator to the beginning.
 	reverse_iterator
 	rbegin ()
-	{ return m_value .rbegin (); }
+	{ return std::make_reverse_iterator (end ()); }
 
 	///  returns a reverse iterator to the beginning.
 	const_reverse_iterator
 	rbegin () const
-	{ return m_value .rbegin (); }
+	{ return std::make_reverse_iterator (end ()); }
 
 	///  Returns a reverse iterator to the beginning.
 	const_reverse_iterator
 	crbegin () const
-	{ return m_value .crbegin (); }
+	{ return std::make_reverse_iterator (cend ()); }
 
 	///  Returns a reverse iterator to the end.
 	reverse_iterator
 	rend ()
-	{ return m_value .rend (); }
+	{ return std::make_reverse_iterator (begin ()); }
 
 	///  Returns a reverse iterator to the end.
 	const_reverse_iterator
 	rend () const
-	{ return m_value .rend (); }
+	{ return std::make_reverse_iterator (begin ()); }
 
 	///  Returns a reverse iterator to the end.
 	const_reverse_iterator
 	crend () const
-	{ return m_value .crend (); }
+	{ return std::make_reverse_iterator (cbegin ()); }
 
 	///  @name Capacity
 
-	///  Returns the number of elements in the container.
+	///  Return number of components.
 	static
 	constexpr
 	size_type
 	size ()
-	{ return Size; }
+	{ return 4; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this vector2 inplace.
@@ -311,38 +326,38 @@ public:
 
 	///  Add @a vector to this vector.
 	template <class T>
-	vector4 &
-	operator += (const vector4 <T> & vector);
+	xvector4 &
+	operator += (const xvector4 <T> & vector);
 
 	///  Add @a t to this vector.
-	vector4 &
+	xvector4 &
 	operator += (const Type & t);
 
 	///  Subtract @a vector from this vector.
 	template <class T>
-	vector4 &
-	operator -= (const vector4 <T> & vector);
+	xvector4 &
+	operator -= (const xvector4 <T> & vector);
 
 	///  Subtract @a t from this vector.
-	vector4 &
+	xvector4 &
 	operator -= (const Type & t);
 
 	///  Multiply this vector by @a vector.
 	template <class T>
-	vector4 &
-	operator *= (const vector4 <T> & vector);
+	xvector4 &
+	operator *= (const xvector4 <T> & vector);
 
 	///  Multiply this vector by @a t.
-	vector4 &
+	xvector4 &
 	operator *= (const Type & t);
 
 	///  Divide this vector by @a vector.
 	template <class T>
-	vector4 &
-	operator /= (const vector4 <T> & vector);
+	xvector4 &
+	operator /= (const xvector4 <T> & vector);
 
 	///  Divide this vector by @a t.
-	vector4 &
+	xvector4 &
 	operator /= (const Type & t);
 
 	///  Normalize this vector in place.
@@ -352,127 +367,127 @@ public:
 
 private:
 
-	array_type m_value;
+	Type value [size ()];
 
 };
 
 template <class Type>
 template <class T>
-vector4 <Type> &
-vector4 <Type>::operator = (const vector4 <T> & other)
+xvector4 <Type> &
+xvector4 <Type>::operator = (const xvector4 <T> & vector)
 {
-	m_value [0] = other .x ();
-	m_value [1] = other .y ();
-	m_value [2] = other .z ();
-	m_value [3] = other .w ();
+	value [0] = vector .x ();
+	value [1] = vector .y ();
+	value [2] = vector .z ();
+	value [3] = vector .w ();
 	return *this;
 }
 
 template <class Type>
 void
-vector4 <Type>::negate ()
+xvector4 <Type>::negate ()
 {
-	m_value [0] = -m_value [0];
-	m_value [1] = -m_value [1];
-	m_value [2] = -m_value [2];
-	m_value [3] = -m_value [3];
+	value [0] = -value [0];
+	value [1] = -value [1];
+	value [2] = -value [2];
+	value [3] = -value [3];
 }
 
 template <class Type>
 template <class T>
-vector4 <Type> &
-vector4 <Type>::operator += (const vector4 <T> & vector)
+xvector4 <Type> &
+xvector4 <Type>::operator += (const xvector4 <T> & vector)
 {
-	m_value [0] += vector .x ();
-	m_value [1] += vector .y ();
-	m_value [2] += vector .z ();
-	m_value [3] += vector .w ();
+	value [0] += vector .x ();
+	value [1] += vector .y ();
+	value [2] += vector .z ();
+	value [3] += vector .w ();
 	return *this;
 }
 
 template <class Type>
-vector4 <Type> &
-vector4 <Type>::operator += (const Type & t)
+xvector4 <Type> &
+xvector4 <Type>::operator += (const Type & t)
 {
-	m_value [0] += t;
-	m_value [1] += t;
-	m_value [2] += t;
-	m_value [3] += t;
-	return *this;
-}
-
-template <class Type>
-template <class T>
-vector4 <Type> &
-vector4 <Type>::operator -= (const vector4 <T> & vector)
-{
-	m_value [0] -= vector .x ();
-	m_value [1] -= vector .y ();
-	m_value [2] -= vector .z ();
-	m_value [3] -= vector .w ();
-	return *this;
-}
-
-template <class Type>
-vector4 <Type> &
-vector4 <Type>::operator -= (const Type & t)
-{
-	m_value [0] -= t;
-	m_value [1] -= t;
-	m_value [2] -= t;
-	m_value [3] -= t;
+	value [0] += t;
+	value [1] += t;
+	value [2] += t;
+	value [3] += t;
 	return *this;
 }
 
 template <class Type>
 template <class T>
-vector4 <Type> &
-vector4 <Type>::operator *= (const vector4 <T> & vector)
+xvector4 <Type> &
+xvector4 <Type>::operator -= (const xvector4 <T> & vector)
 {
-	m_value [0] *= vector .x ();
-	m_value [1] *= vector .y ();
-	m_value [2] *= vector .z ();
-	m_value [3] *= vector .w ();
+	value [0] -= vector .x ();
+	value [1] -= vector .y ();
+	value [2] -= vector .z ();
+	value [3] -= vector .w ();
 	return *this;
 }
 
 template <class Type>
-vector4 <Type> &
-vector4 <Type>::operator *= (const Type & t)
+xvector4 <Type> &
+xvector4 <Type>::operator -= (const Type & t)
 {
-	m_value [0] *= t;
-	m_value [1] *= t;
-	m_value [2] *= t;
-	m_value [3] *= t;
+	value [0] -= t;
+	value [1] -= t;
+	value [2] -= t;
+	value [3] -= t;
 	return *this;
 }
 
 template <class Type>
 template <class T>
-vector4 <Type> &
-vector4 <Type>::operator /= (const vector4 <T> & vector)
+xvector4 <Type> &
+xvector4 <Type>::operator *= (const xvector4 <T> & vector)
 {
-	m_value [0] /= vector .x ();
-	m_value [1] /= vector .y ();
-	m_value [2] /= vector .z ();
-	m_value [3] /= vector .w ();
+	value [0] *= vector .x ();
+	value [1] *= vector .y ();
+	value [2] *= vector .z ();
+	value [3] *= vector .w ();
 	return *this;
 }
 
 template <class Type>
-vector4 <Type> &
-vector4 <Type>::operator /= (const Type & t)
+xvector4 <Type> &
+xvector4 <Type>::operator *= (const Type & t)
 {
-	m_value [0] /= t;
-	m_value [1] /= t;
-	m_value [2] /= t;
-	m_value [3] /= t;
+	value [0] *= t;
+	value [1] *= t;
+	value [2] *= t;
+	value [3] *= t;
+	return *this;
+}
+
+template <class Type>
+template <class T>
+xvector4 <Type> &
+xvector4 <Type>::operator /= (const xvector4 <T> & vector)
+{
+	value [0] /= vector .x ();
+	value [1] /= vector .y ();
+	value [2] /= vector .z ();
+	value [3] /= vector .w ();
+	return *this;
+}
+
+template <class Type>
+xvector4 <Type> &
+xvector4 <Type>::operator /= (const Type & t)
+{
+	value [0] /= t;
+	value [1] /= t;
+	value [2] /= t;
+	value [3] /= t;
 	return *this;
 }
 
 template <class Type>
 void
-vector4 <Type>::normalize ()
+xvector4 <Type>::normalize ()
 {
 	const Type length = abs (*this);
 
@@ -480,16 +495,16 @@ vector4 <Type>::normalize ()
 		*this /= length;
 }
 
-///  @relates vector4
+///  @relates xvector4
 ///  @name Comparision operations
 
-///  Compares two vector4 numbers.
+///  Compares two xvector4 numbers.
 ///  Return true if @a lhs is equal to @a rhs.
 template <class Type>
 inline
 constexpr
 bool
-operator == (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+operator == (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
 	return
 	   lhs .x () == rhs .x () and
@@ -498,13 +513,13 @@ operator == (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 	   lhs .w () == rhs .w ();
 }
 
-///  Compares two vector4 numbers.
+///  Compares two xvector4 numbers.
 ///  Return true if @a lhs is not equal to @a rhs.
 template <class Type>
 inline
 constexpr
 bool
-operator not_eq (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+operator not_eq (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
 	return
 	   lhs .x () not_eq rhs .x () or
@@ -513,55 +528,55 @@ operator not_eq (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
 	   lhs .w () not_eq rhs .w ();
 }
 
-///  Lexicographically compares two vector4 numbers.
+///  Lexicographically compares two xvector4 numbers.
 ///  Returns true if @a lhs less than @a rhs.
 template <class Type>
 inline
 bool
-operator < (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+operator < (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
 	return std::tie (lhs .x (), lhs .y (), lhs .z (), lhs .w ()) < std::tie (rhs .x (), rhs .y (), rhs .z (), rhs .w ());
 }
 
-///  Lexicographically compares two vector4 numbers.
+///  Lexicographically compares two xvector4 numbers.
 ///  Returns true if @a lhs less than equal to @a rhs.
 template <class Type>
 inline
 bool
-operator > (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+operator > (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
 	return rhs < lhs;
 }
 
-///  Lexicographically compares two vector4 numbers.
+///  Lexicographically compares two xvector4 numbers.
 ///  Returns true if @a lhs greater than @a rhs.
 template <class Type>
 inline
 bool
-operator <= (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+operator <= (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
 	return not (rhs < lhs);
 }
 
-///  Lexicographically compares two vector4 numbers.
+///  Lexicographically compares two xvector4 numbers.
 ///  Returns true if @a lhs greater than equal to @a rhs.
 template <class Type>
 inline
 bool
-operator >= (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+operator >= (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
 	return not (lhs < rhs);
 }
 
-///  @relates vector4
+///  @relates xvector4
 ///  @name Arithmetic operations
 
 ///  Return @a lhs.
 template <class Type>
 inline
 constexpr
-vector4 <Type>
-operator + (const vector4 <Type> & vector)
+xvector4 <Type>
+operator + (const xvector4 <Type> & vector)
 {
 	return vector;
 }
@@ -569,10 +584,10 @@ operator + (const vector4 <Type> & vector)
 ///  Return vector negation of @a lhs.
 template <class Type>
 inline
-vector4 <Type>
-operator - (const vector4 <Type> & vector)
+xvector4 <Type>
+operator - (const xvector4 <Type> & vector)
 {
-	vector4 <Type> result (vector);
+	xvector4 <Type> result (vector);
 	result .negate ();
 	return result;
 }
@@ -580,10 +595,10 @@ operator - (const vector4 <Type> & vector)
 ///  Return vector negation of @a lhs.
 template <class Type>
 inline
-vector4 <Type>
-negate (const vector4 <Type> & vector)
+xvector4 <Type>
+negate (const xvector4 <Type> & vector)
 {
-	vector4 <Type> result (vector);
+	xvector4 <Type> result (vector);
 	result .negate ();
 	return result;
 }
@@ -591,118 +606,118 @@ negate (const vector4 <Type> & vector)
 ///  Return new vector value @a lhs plus @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator + (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+xvector4 <Type>
+operator + (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
-	return vector4 <Type> (lhs) += rhs;
+	return xvector4 <Type> (lhs) += rhs;
 }
 
 ///  Return new vector value @a lhs plus @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator + (const vector4 <Type> & lhs, const Type & rhs)
+xvector4 <Type>
+operator + (const xvector4 <Type> & lhs, const Type & rhs)
 {
-	return vector4 <Type> (lhs) += rhs;
+	return xvector4 <Type> (lhs) += rhs;
 }
 
 ///  Return new vector value @a lhs plus @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator + (const Type & lhs, const vector4 <Type> & rhs)
+xvector4 <Type>
+operator + (const Type & lhs, const xvector4 <Type> & rhs)
 {
-	return vector4 <Type> (rhs) += lhs;
+	return xvector4 <Type> (rhs) += lhs;
 }
 
 ///  Return new vector value @a lhs minus @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator - (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+xvector4 <Type>
+operator - (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
-	return vector4 <Type> (lhs) -= rhs;
+	return xvector4 <Type> (lhs) -= rhs;
 }
 
 ///  Return new vector value @a lhs minus @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator - (const vector4 <Type> & lhs, const Type & rhs)
+xvector4 <Type>
+operator - (const xvector4 <Type> & lhs, const Type & rhs)
 {
-	return vector4 <Type> (lhs) -= rhs;
+	return xvector4 <Type> (lhs) -= rhs;
 }
 
 ///  Return new vector value @a lhs minus @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator - (const Type & lhs, const vector4 <Type> & rhs)
+xvector4 <Type>
+operator - (const Type & lhs, const xvector4 <Type> & rhs)
 {
-	return vector4 <Type> (-rhs) += lhs;
+	return xvector4 <Type> (-rhs) += lhs;
 }
 
 ///  Return new vector value @a lhs times @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator * (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+xvector4 <Type>
+operator * (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
-	return vector4 <Type> (lhs) *= rhs;
+	return xvector4 <Type> (lhs) *= rhs;
 }
 
 ///  Return new vector value @a lhs times @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator * (const vector4 <Type> & lhs, const Type & rhs)
+xvector4 <Type>
+operator * (const xvector4 <Type> & lhs, const Type & rhs)
 {
-	return vector4 <Type> (lhs) *= rhs;
+	return xvector4 <Type> (lhs) *= rhs;
 }
 
 ///  Return new vector value @a lhs times @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator * (const Type & lhs, const vector4 <Type> & rhs)
+xvector4 <Type>
+operator * (const Type & lhs, const xvector4 <Type> & rhs)
 {
-	return vector4 <Type> (rhs) *= lhs;
+	return xvector4 <Type> (rhs) *= lhs;
 }
 
 ///  Return new vector value @a lhs divided by @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator / (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+xvector4 <Type>
+operator / (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
-	return vector4 <Type> (lhs) /= rhs;
+	return xvector4 <Type> (lhs) /= rhs;
 }
 
 ///  Return new vector value @a lhs divided by @a rhs.
 template <class Type>
 inline
-vector4 <Type>
-operator / (const vector4 <Type> & lhs, const Type & rhs)
+xvector4 <Type>
+operator / (const xvector4 <Type> & lhs, const Type & rhs)
 {
-	return vector4 <Type> (lhs) /= rhs;
+	return xvector4 <Type> (lhs) /= rhs;
 }
 
 ///  Return new vector value @a lhs divided by @a rhs.
 template <class Type>
-vector4 <Type>
-operator / (const Type & lhs, const vector4 <Type> & rhs)
+xvector4 <Type>
+operator / (const Type & lhs, const xvector4 <Type> & rhs)
 {
-	return vector4 <Type> (lhs / rhs .x (),
-	                       lhs / rhs .y (),
-	                       lhs / rhs .z (),
-	                       lhs / rhs .w ());
+	return xvector4 <Type> (lhs / rhs .x (),
+	                        lhs / rhs .y (),
+	                        lhs / rhs .z (),
+	                        lhs / rhs .w ());
 }
 
 ///  Return new vector value @a lhs dot @a rhs.
 template <class Type>
 constexpr
 Type
-dot (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+dot (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
 	return
 	   lhs .x () * rhs .x () +
@@ -716,7 +731,7 @@ template <class Type>
 inline
 constexpr
 Type
-norm (const vector4 <Type> & vector)
+norm (const xvector4 <Type> & vector)
 {
 	return dot (vector, vector);
 }
@@ -726,7 +741,7 @@ template <class Type>
 inline
 constexpr
 Type
-abs (const vector4 <Type> & vector)
+abs (const xvector4 <Type> & vector)
 {
 	return std::sqrt (norm (vector));
 }
@@ -734,10 +749,10 @@ abs (const vector4 <Type> & vector)
 ///  Returns @a vector normalized.
 template <class Type>
 inline
-vector4 <Type>
-normalize (const vector4 <Type> & vector)
+xvector4 <Type>
+normalize (const xvector4 <Type> & vector)
 {
-	vector4 <Type> result (vector);
+	xvector4 <Type> result (vector);
 	result .normalize ();
 	return result;
 }
@@ -745,8 +760,8 @@ normalize (const vector4 <Type> & vector)
 ///  Returns the reflection vector for an incident vector.
 template <class Type>
 inline
-vector4 <Type>
-reflect (const vector4 <Type> & vector, const vector4 <Type> & normal)
+xvector4 <Type>
+reflect (const xvector4 <Type> & vector, const xvector4 <Type> & normal)
 {
 	return vector - (normal * (2 * dot (vector, normal)));
 }
@@ -755,7 +770,7 @@ reflect (const vector4 <Type> & vector, const vector4 <Type> & normal)
 template <class Type>
 inline
 Type
-distance (const vector4 <Type> & source, const vector4 <Type> & destination)
+distance (const xvector4 <Type> & source, const xvector4 <Type> & destination)
 {
 	return abs (destination - source);
 }
@@ -767,13 +782,13 @@ distance (const vector4 <Type> & source, const vector4 <Type> & destination)
  */
 
 template <class Type>
-vector4 <Type>
-min (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+xvector4 <Type>
+min (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
-	return vector4 <Type> (std::min (lhs .x (), rhs .x ()),
-	                       std::min (lhs .y (), rhs .y ()),
-	                       std::min (lhs .z (), rhs .z ()),
-	                       std::min (lhs .w (), rhs .w ()));
+	return xvector4 <Type> (std::min (lhs .x (), rhs .x ()),
+	                        std::min (lhs .y (), rhs .y ()),
+	                        std::min (lhs .z (), rhs .z ()),
+	                        std::min (lhs .w (), rhs .w ()));
 }
 
 /**
@@ -783,94 +798,94 @@ min (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
  */
 
 template <class Type>
-vector4 <Type>
-max (const vector4 <Type> & lhs, const vector4 <Type> & rhs)
+xvector4 <Type>
+max (const xvector4 <Type> & lhs, const xvector4 <Type> & rhs)
 {
-	return vector4 <Type> (std::max (lhs .x (), rhs .x ()),
-	                       std::max (lhs .y (), rhs .y ()),
-	                       std::max (lhs .z (), rhs .z ()),
-	                       std::max (lhs .w (), rhs .w ()));
+	return xvector4 <Type> (std::max (lhs .x (), rhs .x ()),
+	                        std::max (lhs .y (), rhs .y ()),
+	                        std::max (lhs .z (), rhs .z ()),
+	                        std::max (lhs .w (), rhs .w ()));
 }
 
 /**
- * @returns Computes nearest integer not greater than arg. 
- * @param a vector4 <Type>.\n
+ * @returns Computes nearest integer not greater than arg.
+ * @param a xvector4 <Type>.\n
  * @a Type is any type supporting copy constructions and comparisons with operator<.
  */
 
 template <class Type>
-vector4 <Type>
-floor (const vector4 <Type> & arg)
+xvector4 <Type>
+floor (const xvector4 <Type> & arg)
 {
-	return vector4 <Type> (std::floor (arg .x ()),
-	                       std::floor (arg .y ()),
-	                       std::floor (arg .z ()),
-	                       std::floor (arg .w ()));
+	return xvector4 <Type> (std::floor (arg .x ()),
+	                        std::floor (arg .y ()),
+	                        std::floor (arg .z ()),
+	                        std::floor (arg .w ()));
 }
 
 /**
  * @returns Computes nearest integer not less than arg.
- * @param a vector4 <Type>.\n
+ * @param a xvector4 <Type>.\n
  * @a Type is any type supporting copy constructions and comparisons with operator<.
  */
 
 template <class Type>
-vector4 <Type>
-ceil (const vector4 <Type> & arg)
+xvector4 <Type>
+ceil (const xvector4 <Type> & arg)
 {
-	return vector4 <Type> (std::ceil (arg .x ()),
-	                       std::ceil (arg .y ()),
-	                       std::ceil (arg .z ()),
-	                       std::ceil (arg .w ()));
+	return xvector4 <Type> (std::ceil (arg .x ()),
+	                        std::ceil (arg .y ()),
+	                        std::ceil (arg .z ()),
+	                        std::ceil (arg .w ()));
 }
 
 /**
  * @returns Computes the nearest integer value to arg (in floating-point format),
  *          rounding halfway cases away from zero, regardless of the current rounding mode.
- * @param a vector4 <Type>.\n
+ * @param a xvector4 <Type>.\n
  * @a Type is any type supporting copy constructions and comparisons with operator<.
  */
 
 template <class Type>
-vector4 <Type>
-round (const vector4 <Type> & arg)
+xvector4 <Type>
+round (const xvector4 <Type> & arg)
 {
-	return vector4 <Type> (std::round (arg .x ()),
-	                       std::round (arg .y ()),
-	                       std::round (arg .z ()),
-	                       std::round (arg .w ()));
+	return xvector4 <Type> (std::round (arg .x ()),
+	                        std::round (arg .y ()),
+	                        std::round (arg .z ()),
+	                        std::round (arg .w ()));
 }
 
 /**
  * @returns Clamps @a arg between @a min and @a max .
- * @param a vector4 <Type>.\n
+ * @param a xvector4 <Type>.\n
  * @a Type is any type supporting copy constructions and comparisons with operator<.
  */
 
 template <class Type>
-vector4 <Type>
-clamp (const vector4 <Type> & arg, const Type & min, const Type & max)
+xvector4 <Type>
+clamp (const xvector4 <Type> & arg, const Type & min, const Type & max)
 {
-	return vector4 <Type> (clamp (arg .x (), min, max),
-	                       clamp (arg .y (), min, max),
-	                       clamp (arg .z (), min, max),
-	                       clamp (arg .w (), min, max));
+	return xvector4 <Type> (clamp (arg .x (), min, max),
+	                        clamp (arg .y (), min, max),
+	                        clamp (arg .z (), min, max),
+	                        clamp (arg .w (), min, max));
 }
 
-///  @relates vector4
+///  @relates xvector4
 ///  @name Input/Output operations
 
 ///  Extraction operator for vector values.
 template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
-operator >> (std::basic_istream <CharT, Traits> & istream, vector4 <Type> & vector)
+operator >> (std::basic_istream <CharT, Traits> & istream, xvector4 <Type> & vector)
 {
 	Type x, y, z, w;
 
 	istream >> x >> y >> z >> w;
 
 	if (istream)
-		vector = vector4 <Type> (x, y, z, w);
+		vector = xvector4 <Type> (x, y, z, w);
 
 	return istream;
 }
@@ -878,7 +893,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, vector4 <Type> & vect
 ///  Insertion operator for vector values.
 template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
-operator << (std::basic_ostream <CharT, Traits> & ostream, const vector4 <Type> & vector)
+operator << (std::basic_ostream <CharT, Traits> & ostream, const xvector4 <Type> & vector)
 {
 	return ostream
 	       << vector .x () << ' '
@@ -886,20 +901,6 @@ operator << (std::basic_ostream <CharT, Traits> & ostream, const vector4 <Type> 
 	       << vector .z () << ' '
 	       << vector .w ();
 }
-
-extern template class vector4 <float>;
-extern template class vector4 <double>;
-extern template class vector4 <long double>;
-
-//
-extern template std::istream & operator >> (std::istream &, vector4 <float> &);
-extern template std::istream & operator >> (std::istream &, vector4 <double> &);
-extern template std::istream & operator >> (std::istream &, vector4 <long double> &);
-
-//
-extern template std::ostream & operator << (std::ostream &, const vector4 <float> &);
-extern template std::ostream & operator << (std::ostream &, const vector4 <double> &);
-extern template std::ostream & operator << (std::ostream &, const vector4 <long double> &);
 
 } // math
 } // titania

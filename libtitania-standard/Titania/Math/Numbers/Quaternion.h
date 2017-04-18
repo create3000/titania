@@ -51,6 +51,7 @@
 #ifndef __TITANIA_MATH_NUMBERS_QUATERNION_H__
 #define __TITANIA_MATH_NUMBERS_QUATERNION_H__
 
+#include <array>
 #include <cmath>
 #include <istream>
 #include <ostream>
@@ -84,6 +85,15 @@ exp (const quaternion <Type> &);
 template <class Type>
 class quaternion
 {
+private:
+
+	static constexpr size_t Size = 4;
+
+	///  @name Member types
+
+	using array_type = std::array <Type, Size>;
+
+
 public:
 
 	///  @name Member types
@@ -91,191 +101,227 @@ public:
 	///  Type.
 	using value_type = Type;
 
-	///  Vector3 typedef.
-	using vector3_type = vector3 <Type>;
-
 	///  Size typedef.  Used for size and indices.
-	using size_type = size_t;
+	using size_type = typename array_type::size_type;
+
+	///  difference_type
+	using difference_type = typename array_type::difference_type;
+
+	///  reference
+	using reference = typename array_type::reference;
+
+	///  const_reference
+	using const_reference = typename array_type::const_reference;
+
+	///  pointer
+	using pointer = typename array_type::pointer;
 
 	///  Random access iterator
-	using iterator = Type*;
+	using iterator = typename array_type::iterator;
 
 	///  Constant random access iterator 
-	using const_iterator = const Type*;
+	using const_iterator = typename array_type::const_iterator;
 
 	///  std::reverse_iterator <iterator>
-	using reverse_iterator = std::reverse_iterator <iterator>;
+	using reverse_iterator = typename array_type::reverse_iterator;
 
 	///  std::reverse_iterator <iterator>
-	using const_reverse_iterator = std::reverse_iterator <const_iterator>;
+	using const_reverse_iterator = typename array_type::const_reverse_iterator;
 
 	///  @name Constructors
 
 	///  Default constructor.  All values default to 0.
 	constexpr
 	quaternion () :
-		value { Type (), Type (), Type (), Type (1) }
+		m_value { Type (), Type (), Type (), Type (1) }
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	quaternion (const quaternion <Up> & quat) :
-		value { quat .x (), quat .y (), quat .z (), quat .w () }
+		m_value { quat .x (), quat .y (), quat .z (), quat .w () }
 	{ }
 
 	///  Component constructor. Set values to @a x, @a y and @a z.
 	constexpr
 	quaternion (const Type & x, const Type & y, const Type & z, const Type & w) :
-		value { x, y, z, w }
+		m_value { x, y, z, w }
+	{ }
+
+	///  Component constructor. Set values to @a v.
+	explicit
+	constexpr
+	quaternion (const Type & v) :
+		m_value { v, v, v, v }
 	{ }
 
 	///  Construct quaternion from vector @a imag and @a w.
 	template <class Up>
 	constexpr
 	quaternion (const vector3 <Up> & imag, const Type & w) :
-		value { imag .x (), imag .y (), imag .z (), w }
+		m_value { imag .x (), imag .y (), imag .z (), w }
 	{ }
 
 	///  @name Assignment operator
 
-	///  Assign @a quaternion to this quaternion.
+	///  Assign @a other to this quaternion.
 	template <class Up>
 	quaternion &
-	operator = (const quaternion <Up> &);
+	operator = (const quaternion <Up> & other);
 
 	///  @name Element access
 
 	///  Set x component of this quaternion.
 	void
 	x (const Type & v)
-	{ value [0] = v; }
+	{ m_value [0] = v; }
 
 	///  Return x component of this quaternion.
-	const Type &
+	const_reference
 	x () const
-	{ return value [0]; }
+	{ return m_value [0]; }
 
 	///  Set y component of this quaternion.
 	void
 	y (const Type & v)
-	{ value [1] = v; }
+	{ m_value [1] = v; }
 
 	///  Return y component of this quaternion.
-	const Type &
+	const_reference
 	y () const
-	{ return value [1]; }
+	{ return m_value [1]; }
 
 	///  Set z component of this quaternion.
 	void
 	z (const Type & v)
-	{ value [2] = v; }
+	{ m_value [2] = v; }
 
 	///  Return z component of this quaternion.
-	const Type &
+	const_reference
 	z () const
-	{ return value [2]; }
+	{ return m_value [2]; }
 
 	///  Set w component of this quaternion which is the real part.
 	void
 	w (const Type & v)
-	{ value [3] = v; }
+	{ m_value [3] = v; }
 
 	///  Return w component of this quaternion which is the real part.
-	const Type &
+	const_reference
 	w () const
-	{ return value [3]; }
+	{ return m_value [3]; }
 
 	///  Access components by @a index.
-	Type &
+	reference
 	operator [ ] (const size_type index)
-	{ return value [index]; }
+	{ return m_value [index]; }
 
 	///  Access components by @a index.
-	const Type &
+	const_reference
 	operator [ ] (const size_type index) const
-	{ return value [index]; }
+	{ return m_value [index]; }
+
+	///  Returns a reference to the first element in the container. 
+	reference
+	front ()
+	{ return m_value .front (); }
+
+	///  Returns a reference to the first element in the container. 
+	const_reference
+	front () const
+	{ return m_value .front (); }
+
+	///  Returns reference to the last element in the container. 
+	reference
+	back ()
+	{ return m_value .back (); }
+
+	///  Returns reference to the last element in the container. 
+	const_reference
+	back () const
+	{ return m_value .back (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
 	data ()
-	{ return value; }
+	{ return m_value .data (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
 	data () const
-	{ return value; }
+	{ return m_value .data (); }
 
 	///  @name Iterators
 
 	///  Returns an iterator to the beginning.
 	iterator
 	begin ()
-	{ return data (); }
+	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
 	const_iterator
 	begin () const
-	{ return data (); }
+	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
 	const_iterator
 	cbegin () const
-	{ return data (); }
+	{ return m_value .cbegin (); }
 
 	///  Returns an iterator to the end.
 	iterator
 	end ()
-	{ return data () + size (); }
+	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
 	const_iterator
 	end () const
-	{ return data () + size (); }
+	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
 	const_iterator
 	cend () const
-	{ return data () + size (); }
+	{ return m_value .cend (); }
 
 	///  Returns a reverse iterator to the beginning.
 	reverse_iterator
 	rbegin ()
-	{ return std::make_reverse_iterator (end ()); }
+	{ return m_value .rbegin (); }
 
 	///  returns a reverse iterator to the beginning.
 	const_reverse_iterator
 	rbegin () const
-	{ return std::make_reverse_iterator (end ()); }
+	{ return m_value .rbegin (); }
 
 	///  Returns a reverse iterator to the beginning.
 	const_reverse_iterator
 	crbegin () const
-	{ return std::make_reverse_iterator (cend ()); }
+	{ return m_value .crbegin (); }
 
 	///  Returns a reverse iterator to the end.
 	reverse_iterator
 	rend ()
-	{ return std::make_reverse_iterator (begin ()); }
+	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
 	const_reverse_iterator
 	rend () const
-	{ return std::make_reverse_iterator (begin ()); }
+	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
 	const_reverse_iterator
 	crend () const
-	{ return std::make_reverse_iterator (cbegin ()); }
+	{ return m_value .crend (); }
 
 	///  @name Capacity
 
-	///  Return number of components.
+	///  Returns the number of elements in the container.
 	static
 	constexpr
 	size_type
 	size ()
-	{ return 4; }
+	{ return Size; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this quaternion inplace.
@@ -339,19 +385,19 @@ public:
 
 private:
 
-	Type value [size ()];
+	array_type m_value;
 
 };
 
 template <class Type>
 template <class Up>
 quaternion <Type> &
-quaternion <Type>::operator = (const quaternion <Up> & quat)
+quaternion <Type>::operator = (const quaternion <Up> & other)
 {
-	value [0] = quat .x ();
-	value [1] = quat .y ();
-	value [2] = quat .z ();
-	value [3] = quat .w ();
+	m_value [0] = other .x ();
+	m_value [1] = other .y ();
+	m_value [2] = other .z ();
+	m_value [3] = other .w ();
 	return *this;
 }
 
@@ -359,29 +405,29 @@ template <class Type>
 void
 quaternion <Type>::negate ()
 {
-	value [0] = -value [0];
-	value [1] = -value [1];
-	value [2] = -value [2];
-	value [3] = -value [3];
+	m_value [0] = -m_value [0];
+	m_value [1] = -m_value [1];
+	m_value [2] = -m_value [2];
+	m_value [3] = -m_value [3];
 }
 
 template <class Type>
 void
 quaternion <Type>::inverse ()
 {
-	value [0] = -value [0];
-	value [1] = -value [1];
-	value [2] = -value [2];
+	m_value [0] = -m_value [0];
+	m_value [1] = -m_value [1];
+	m_value [2] = -m_value [2];
 }
 
 template <class Type>
 quaternion <Type> &
 quaternion <Type>::operator += (const quaternion & quat)
 {
-	value [0] += quat .x ();
-	value [1] += quat .y ();
-	value [2] += quat .z ();
-	value [3] += quat .w ();
+	m_value [0] += quat .x ();
+	m_value [1] += quat .y ();
+	m_value [2] += quat .z ();
+	m_value [3] += quat .w ();
 	return *this;
 }
 
@@ -389,10 +435,10 @@ template <class Type>
 quaternion <Type> &
 quaternion <Type>::operator += (const Type & t)
 {
-	value [0] += t;
-	value [1] += t;
-	value [2] += t;
-	value [3] += t;
+	m_value [0] += t;
+	m_value [1] += t;
+	m_value [2] += t;
+	m_value [3] += t;
 	return *this;
 }
 
@@ -400,10 +446,10 @@ template <class Type>
 quaternion <Type> &
 quaternion <Type>::operator -= (const quaternion & quat)
 {
-	value [0] -= quat .x ();
-	value [1] -= quat .y ();
-	value [2] -= quat .z ();
-	value [3] -= quat .w ();
+	m_value [0] -= quat .x ();
+	m_value [1] -= quat .y ();
+	m_value [2] -= quat .z ();
+	m_value [3] -= quat .w ();
 	return *this;
 }
 
@@ -411,10 +457,10 @@ template <class Type>
 quaternion <Type> &
 quaternion <Type>::operator -= (const Type & t)
 {
-	value [0] -= t;
-	value [1] -= t;
-	value [2] -= t;
-	value [3] -= t;
+	m_value [0] -= t;
+	m_value [1] -= t;
+	m_value [2] -= t;
+	m_value [3] -= t;
 	return *this;
 }
 
@@ -422,10 +468,10 @@ template <class Type>
 quaternion <Type> &
 quaternion <Type>::operator *= (const Type & t)
 {
-	value [0] *= t;
-	value [1] *= t;
-	value [2] *= t;
-	value [3] *= t;
+	m_value [0] *= t;
+	m_value [1] *= t;
+	m_value [2] *= t;
+	m_value [3] *= t;
 	return *this;
 }
 
@@ -441,10 +487,10 @@ template <class Type>
 quaternion <Type> &
 quaternion <Type>::operator /= (const Type & t)
 {
-	value [0] /= t;
-	value [1] /= t;
-	value [2] /= t;
-	value [3] /= t;
+	m_value [0] /= t;
+	m_value [1] /= t;
+	m_value [2] /= t;
+	m_value [3] /= t;
 	return *this;
 }
 

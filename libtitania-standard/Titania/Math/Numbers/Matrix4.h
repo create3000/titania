@@ -388,8 +388,8 @@ public:
 
 	///  Get access to the underlying vector representation of this matrix.
 	void
-	value (const matrix_type & vector)
-	{ m_value = vector; }
+	value (const matrix_type & value)
+	{ m_value = value; }
 
 	const matrix_type &
 	value () const

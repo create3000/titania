@@ -122,37 +122,40 @@
 
 #include <Titania/String/dtoa.h>
 
+#include "Vector4.h"
 
 using namespace titania;
 using namespace titania::basic;
 using namespace titania::math;
 
-using Quaternionf = math::quaternion <float>;
-using Vector2f    = math::vector2 <float>;
-using Vector2d    = math::vector2 <double>;
-using Vector3d    = math::vector3 <double>;
-using Vector3f    = math::vector3 <float>;
-using Vector4d    = math::vector4 <double>;
-using Vector4f    = math::vector4 <float>;
-using Rotation4d  = math::rotation4 <double>;
-using Rotation4f  = math::rotation4 <float>;
-using Box2f       = math::box2 <float>;
-using Box3f       = math::box3 <float>;
-using Box3d       = math::box3 <double>;
-using Cylinder3f  = math::cylinder3 <float>;
-using Plane3f     = math::plane3 <float>;
-using Line2d      = math::line2 <double>;
-using Line2f      = math::line2 <float>;
-using Line3d      = math::line3 <double>;
-using Line3f      = math::line3 <float>;
-using Sphere3f    = math::sphere3 <float>;
-using Matrix2d    = math::matrix2 <double>;
-using Matrix2f    = math::matrix2 <float>;
-using Matrix3d    = math::matrix3 <double>;
-using Matrix3f    = math::matrix3 <float>;
-using Matrix4d    = math::matrix4 <double>;
-using Matrix4f    = math::matrix4 <float>;
-using Spheroid3d  = math::spheroid3 <double>;
+using Quaternionf  = math::quaternion <float>;
+using Vector2f     = math::vector2 <float>;
+using Vector2d     = math::vector2 <double>;
+using Vector3d     = math::vector3 <double>;
+using Vector3f     = math::vector3 <float>;
+using Vector4d     = math::vector4 <double>;
+using Vector4f     = math::vector4 <float>;
+using Quaternion4d = quaternion <double>;
+using Quaternion4f = quaternion <float>;
+using Rotation4d   = math::rotation4 <double>;
+using Rotation4f   = math::rotation4 <float>;
+using Box2f        = math::box2 <float>;
+using Box3f        = math::box3 <float>;
+using Box3d        = math::box3 <double>;
+using Cylinder3f   = math::cylinder3 <float>;
+using Plane3f      = math::plane3 <float>;
+using Line2d       = math::line2 <double>;
+using Line2f       = math::line2 <float>;
+using Line3d       = math::line3 <double>;
+using Line3f       = math::line3 <float>;
+using Sphere3f     = math::sphere3 <float>;
+using Matrix2d     = math::matrix2 <double>;
+using Matrix2f     = math::matrix2 <float>;
+using Matrix3d     = math::matrix3 <double>;
+using Matrix3f     = math::matrix3 <float>;
+using Matrix4d     = math::matrix4 <double>;
+using Matrix4f     = math::matrix4 <float>;
+using Spheroid3d   = math::spheroid3 <double>;
 using ConvexHull2d = math::convex_hull2 <double>;
 using ConvexHull3d = math::convex_hull3 <double>;
 
@@ -253,9 +256,11 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	FractalNoise (0, Vector2d (1, 1));
-	FractalNoise (1, Vector2d (1, 1));
-	FractalNoise (2, Vector2d (1, 1));
+	constexpr Vector2d a (1, 2);
+	Vector2d b (1, 2);
+
+	std::cout << a << std::endl;
+	std::cout << b << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

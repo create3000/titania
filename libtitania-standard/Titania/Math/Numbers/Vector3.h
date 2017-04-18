@@ -51,6 +51,7 @@
 #ifndef __TITANIA_MATH_NUMBERS_VECTOR3_H__
 #define __TITANIA_MATH_NUMBERS_VECTOR3_H__
 
+#include <array>
 #include <cmath>
 #include <istream>
 #include <ostream>
@@ -70,6 +71,15 @@ namespace math {
 template <class Type>
 class vector3
 {
+private:
+
+	static constexpr size_t Size = 3;
+
+	///  @name Member types
+
+	using array_type = std::array <Type, Size>;
+
+
 public:
 
 	///  @name Member types
@@ -78,181 +88,209 @@ public:
 	using value_type = Type;
 
 	///  Size typedef.  Used for size and indices.
-	using size_type = size_t;
+	using size_type = typename array_type::size_type;
+
+	///  difference_type
+	using difference_type = typename array_type::difference_type;
+
+	///  reference
+	using reference = typename array_type::reference;
+
+	///  const_reference
+	using const_reference = typename array_type::const_reference;
+
+	///  pointer
+	using pointer = typename array_type::pointer;
 
 	///  Random access iterator
-	using iterator = Type*;
+	using iterator = typename array_type::iterator;
 
 	///  Constant random access iterator 
-	using const_iterator = const Type*;
+	using const_iterator = typename array_type::const_iterator;
 
 	///  std::reverse_iterator <iterator>
-	using reverse_iterator = std::reverse_iterator <iterator>;
+	using reverse_iterator = typename array_type::reverse_iterator;
 
 	///  std::reverse_iterator <iterator>
-	using const_reverse_iterator = std::reverse_iterator <const_iterator>;
+	using const_reverse_iterator = typename array_type::const_reverse_iterator;
 
 	///  @name Constructors
 
 	///  Default constructor.  All values default to 0.
 	constexpr
 	vector3 () :
-		value { Type (), Type (), Type () }
-
+		m_value { Type (), Type (), Type () }
 	{ }
 
 	///  Copy constructor.
 	template <class T>
 	constexpr
 	vector3 (const vector3 <T> & vector) :
-		value { vector .x (), vector .y (), vector .z () }
-
+		m_value { vector .x (), vector .y (), vector .z () }
 	{ }
 
 	///  Components constructor. Set values to @a x, @a y and @a z.
 	constexpr
 	vector3 (const Type & x, const Type & y, const Type & z) :
-		value { x, y, z }
-
+		m_value { x, y, z }
 	{ }
 
 	///  Components constructor. Set values to @a v.
 	explicit
 	constexpr
 	vector3 (const Type & v) :
-		value { v, v, v }
-
+		m_value { v, v, v }
 	{ }
 
 	///  @name Assignment operator
 
-	///  Assign @a vector to this vector.
+	///  Assign @a other to this vector.
 	template <class T>
 	vector3 &
-	operator = (const vector3 <T> &);
+	operator = (const vector3 <T> & other);
 
 	///  @name Element access
 
 	///  Set x component of this vector.
 	void
 	x (const Type & t)
-	{ value [0] = t; }
+	{ m_value [0] = t; }
 
 	///  Returns x component of this vector.
-	const Type &
+	const_reference
 	x () const
-	{ return value [0]; }
+	{ return m_value [0]; }
 
 	///  Set y component of this vector.
 	void
 	y (const Type & t)
-	{ value [1] = t; }
+	{ m_value [1] = t; }
 
 	///  Returns y component of this vector.
-	const Type &
+	const_reference
 	y () const
-	{ return value [1]; }
+	{ return m_value [1]; }
 
 	///  Set z component of this vector.
 	void
 	z (const Type & t)
-	{ value [2] = t; }
+	{ m_value [2] = t; }
 
 	///  Returns z component of this vector.
-	const Type &
+	const_reference
 	z () const
-	{ return value [2]; }
+	{ return m_value [2]; }
 
 	///  Access components by @a index.
-	Type &
+	reference
 	operator [ ] (const size_type index)
-	{ return value [index]; }
+	{ return m_value [index]; }
 
 	///  Access components by @a index.
-	const Type &
+	const_reference
 	operator [ ] (const size_type index) const
-	{ return value [index]; }
+	{ return m_value [index]; }
+
+	///  Returns a reference to the first element in the container. 
+	reference
+	front ()
+	{ return m_value .front (); }
+
+	///  Returns a reference to the first element in the container. 
+	const_reference
+	front () const
+	{ return m_value .front (); }
+
+	///  Returns reference to the last element in the container. 
+	reference
+	back ()
+	{ return m_value .back (); }
+
+	///  Returns reference to the last element in the container. 
+	const_reference
+	back () const
+	{ return m_value .back (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
 	data ()
-	{ return value; }
+	{ return m_value .data (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
 	data () const
-	{ return value; }
+	{ return m_value .data (); }
 
 	///  @name Iterators
 
 	///  Returns an iterator to the beginning.
 	iterator
 	begin ()
-	{ return data (); }
+	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
 	const_iterator
 	begin () const
-	{ return data (); }
+	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
 	const_iterator
 	cbegin () const
-	{ return data (); }
+	{ return m_value .cbegin (); }
 
 	///  Returns an iterator to the end.
 	iterator
 	end ()
-	{ return data () + size (); }
+	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
 	const_iterator
 	end () const
-	{ return data () + size (); }
+	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
 	const_iterator
 	cend () const
-	{ return data () + size (); }
+	{ return m_value .cend (); }
 
 	///  Returns a reverse iterator to the beginning.
 	reverse_iterator
 	rbegin ()
-	{ return std::make_reverse_iterator (end ()); }
+	{ return m_value .rbegin (); }
 
 	///  returns a reverse iterator to the beginning.
 	const_reverse_iterator
 	rbegin () const
-	{ return std::make_reverse_iterator (end ()); }
+	{ return m_value .rbegin (); }
 
 	///  Returns a reverse iterator to the beginning.
 	const_reverse_iterator
 	crbegin () const
-	{ return std::make_reverse_iterator (cend ()); }
+	{ return m_value .crbegin (); }
 
 	///  Returns a reverse iterator to the end.
 	reverse_iterator
 	rend ()
-	{ return std::make_reverse_iterator (begin ()); }
+	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
 	const_reverse_iterator
 	rend () const
-	{ return std::make_reverse_iterator (begin ()); }
+	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
 	const_reverse_iterator
 	crend () const
-	{ return std::make_reverse_iterator (cbegin ()); }
+	{ return m_value .crend (); }
 
 	///  @name Capacity
 
-	///  Returns number of components.
+	///  Returns the number of elements in the container.
 	static
 	constexpr
 	size_type
 	size ()
-	{ return 3; }
+	{ return Size; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this vector2 inplace.
@@ -304,18 +342,18 @@ public:
 
 private:
 
-	Type value [size ()];
+	array_type m_value;
 
 };
 
 template <class Type>
 template <class T>
 vector3 <Type> &
-vector3 <Type>::operator = (const vector3 <T> & vector)
+vector3 <Type>::operator = (const vector3 <T> & other)
 {
-	value [0] = vector .x ();
-	value [1] = vector .y ();
-	value [2] = vector .z ();
+	m_value [0] = other .x ();
+	m_value [1] = other .y ();
+	m_value [2] = other .z ();
 	return *this;
 }
 
@@ -323,9 +361,9 @@ template <class Type>
 void
 vector3 <Type>::negate ()
 {
-	value [0] = -value [0];
-	value [1] = -value [1];
-	value [2] = -value [2];
+	m_value [0] = -m_value [0];
+	m_value [1] = -m_value [1];
+	m_value [2] = -m_value [2];
 }
 
 template <class Type>
@@ -333,9 +371,9 @@ template <class T>
 vector3 <Type> &
 vector3 <Type>::operator += (const vector3 <T> & vector)
 {
-	value [0] += vector .x ();
-	value [1] += vector .y ();
-	value [2] += vector .z ();
+	m_value [0] += vector .x ();
+	m_value [1] += vector .y ();
+	m_value [2] += vector .z ();
 	return *this;
 }
 
@@ -343,9 +381,9 @@ template <class Type>
 vector3 <Type> &
 vector3 <Type>::operator += (const Type & t)
 {
-	value [0] += t;
-	value [1] += t;
-	value [2] += t;
+	m_value [0] += t;
+	m_value [1] += t;
+	m_value [2] += t;
 	return *this;
 }
 
@@ -354,9 +392,9 @@ template <class T>
 vector3 <Type> &
 vector3 <Type>::operator -= (const vector3 <T> & vector)
 {
-	value [0] -= vector .x ();
-	value [1] -= vector .y ();
-	value [2] -= vector .z ();
+	m_value [0] -= vector .x ();
+	m_value [1] -= vector .y ();
+	m_value [2] -= vector .z ();
 	return *this;
 }
 
@@ -364,9 +402,9 @@ template <class Type>
 vector3 <Type> &
 vector3 <Type>::operator -= (const Type & t)
 {
-	value [0] -= t;
-	value [1] -= t;
-	value [2] -= t;
+	m_value [0] -= t;
+	m_value [1] -= t;
+	m_value [2] -= t;
 	return *this;
 }
 
@@ -375,9 +413,9 @@ template <class T>
 vector3 <Type> &
 vector3 <Type>::operator *= (const vector3 <T> & vector)
 {
-	value [0] *= vector .x ();
-	value [1] *= vector .y ();
-	value [2] *= vector .z ();
+	m_value [0] *= vector .x ();
+	m_value [1] *= vector .y ();
+	m_value [2] *= vector .z ();
 	return *this;
 }
 
@@ -385,9 +423,9 @@ template <class Type>
 vector3 <Type> &
 vector3 <Type>::operator *= (const Type & t)
 {
-	value [0] *= t;
-	value [1] *= t;
-	value [2] *= t;
+	m_value [0] *= t;
+	m_value [1] *= t;
+	m_value [2] *= t;
 	return *this;
 }
 
@@ -396,9 +434,9 @@ template <class T>
 vector3 <Type> &
 vector3 <Type>::operator /= (const vector3 <T> & vector)
 {
-	value [0] /= vector .x ();
-	value [1] /= vector .y ();
-	value [2] /= vector .z ();
+	m_value [0] /= vector .x ();
+	m_value [1] /= vector .y ();
+	m_value [2] /= vector .z ();
 	return *this;
 }
 
@@ -406,9 +444,9 @@ template <class Type>
 vector3 <Type> &
 vector3 <Type>::operator /= (const Type & t)
 {
-	value [0] /= t;
-	value [1] /= t;
-	value [2] /= t;
+	m_value [0] /= t;
+	m_value [1] /= t;
+	m_value [2] /= t;
 	return *this;
 }
 

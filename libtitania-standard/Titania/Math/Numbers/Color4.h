@@ -52,6 +52,7 @@
 #define __TITANIA_MATH_NUMBERS_COLOR4_H__
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <istream>
 #include <ostream>
@@ -76,6 +77,15 @@ namespace math {
 template <typename Type>
 class color4
 {
+private:
+
+	static constexpr size_t Size = 4;
+
+	///  @name Member types
+
+	using array_type = std::array <Type, Size>;
+
+
 public:
 
 	///  @name Member types
@@ -84,182 +94,215 @@ public:
 	using value_type = Type;
 
 	///  Size typedef.  Used for size and indices.
-	using size_type = size_t;
+	using size_type = typename array_type::size_type;
+
+	///  difference_type
+	using difference_type = typename array_type::difference_type;
+
+	///  reference
+	using reference = typename array_type::reference;
+
+	///  const_reference
+	using const_reference = typename array_type::const_reference;
+
+	///  pointer
+	using pointer = typename array_type::pointer;
 
 	///  Random access iterator
-	using iterator = Type*;
+	using iterator = typename array_type::iterator;
 
 	///  Constant random access iterator 
-	using const_iterator = const Type*;
+	using const_iterator = typename array_type::const_iterator;
 
 	///  std::reverse_iterator <iterator>
-	using reverse_iterator = std::reverse_iterator <iterator>;
+	using reverse_iterator = typename array_type::reverse_iterator;
 
 	///  std::reverse_iterator <iterator>
-	using const_reverse_iterator = std::reverse_iterator <const_iterator>;
+	using const_reverse_iterator = typename array_type::const_reverse_iterator;
 
 	///  @name Constructors
 
 	///  Default constructor.  All values default to 0.
 	constexpr
 	color4 () :
-		value { Type (), Type (), Type (), Type () }
-
+		m_value { Type (), Type (), Type (), Type () }
 	{ }
 
 	///  Copy constructor.
 	template <typename T>
 	constexpr
 	color4 (const color4 <T> & color) :
-		value { color .r (), color .g (), color .b (), color .a () }
-
+		m_value { color .r (), color .g (), color .b (), color .a () }
 	{ }
 
 	///  Components constructor. Set values to @a x, @a y and @a z.
 	constexpr
 	color4 (const Type & r, const Type & g, const Type & b, const Type & a) :
-		value
-	{
-		clamp (r, Type (), Type (1)),
-		clamp (g, Type (), Type (1)),
-		clamp (b, Type (), Type (1)),
-		clamp (a, Type (), Type (1))
-	}
-
+		m_value { clamp (r, Type (), Type (1)),
+		          clamp (g, Type (), Type (1)),
+		          clamp (b, Type (), Type (1)),
+		          clamp (a, Type (), Type (1)) }
 	{ }
+
+	///  @name Assignment operator
+
+	///  Assign @a other to this color.
+	template <class Up>
+	color4 &
+	operator = (const color4 <Up> & other);
 
 	///  @name Element access
 
 	///  Set red component of this color.
 	void
 	r (const Type & r)
-	{ value [0] = clamp (r, Type (), Type (1)); }
+	{ m_value [0] = clamp (r, Type (), Type (1)); }
 
 	///  Return red component of this color.
-	const Type &
+	const_reference
 	r () const
-	{ return value [0]; }
+	{ return m_value [0]; }
 
 	///  Set green component of this color.
 	void
 	g (const Type & g)
-	{ value [1] = clamp (g, Type (), Type (1)); }
+	{ m_value [1] = clamp (g, Type (), Type (1)); }
 
 	///  Return green component of this color.
-	const Type &
+	const_reference
 	g () const
-	{ return value [1]; }
+	{ return m_value [1]; }
 
 	///  Set blue component of this color.
 	void
 	b (const Type & b)
-	{ value [2] = clamp (b, Type (), Type (1)); }
+	{ m_value [2] = clamp (b, Type (), Type (1)); }
 
 	///  Return blue component of this color.
-	const Type &
+	const_reference
 	b () const
-	{ return value [2]; }
+	{ return m_value [2]; }
 
 	///  Set alpha component of this color.
 	void
 	a (const Type & a)
-	{ value [3] = clamp (a, Type (), Type (1)); }
+	{ m_value [3] = clamp (a, Type (), Type (1)); }
 
 	///  Return alpha component of this color.
-	const Type &
+	const_reference
 	a () const
-	{ return value [3]; }
+	{ return m_value [3]; }
 
 	///  Access components by @a index.
-	Type &
+	reference
 	operator [ ] (const size_type index)
-	{ return value [index]; }
+	{ return m_value [index]; }
 
 	///  Access components by @a index.
-	const Type &
+	const_reference
 	operator [ ] (const size_type index) const
-	{ return value [index]; }
+	{ return m_value [index]; }
+
+	///  Returns a reference to the first element in the container. 
+	reference
+	front ()
+	{ return m_value .front (); }
+
+	///  Returns a reference to the first element in the container. 
+	const_reference
+	front () const
+	{ return m_value .front (); }
+
+	///  Returns reference to the last element in the container. 
+	reference
+	back ()
+	{ return m_value .back (); }
+
+	///  Returns reference to the last element in the container. 
+	const_reference
+	back () const
+	{ return m_value .back (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	Type*
 	data ()
-	{ return value; }
+	{ return m_value .data (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	const Type*
 	data () const
-	{ return value; }
+	{ return m_value .data (); }
 
 	///  @name Iterators
 
 	///  Returns an iterator to the beginning.
 	iterator
 	begin ()
-	{ return data (); }
+	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
 	const_iterator
 	begin () const
-	{ return data (); }
+	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
 	const_iterator
 	cbegin () const
-	{ return data (); }
+	{ return m_value .cbegin (); }
 
 	///  Returns an iterator to the end.
 	iterator
 	end ()
-	{ return data () + size (); }
+	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
 	const_iterator
 	end () const
-	{ return data () + size (); }
+	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
 	const_iterator
 	cend () const
-	{ return data () + size (); }
+	{ return m_value .cend (); }
 
 	///  Returns a reverse iterator to the beginning.
 	reverse_iterator
 	rbegin ()
-	{ return std::make_reverse_iterator (end ()); }
+	{ return m_value .rbegin (); }
 
 	///  returns a reverse iterator to the beginning.
 	const_reverse_iterator
 	rbegin () const
-	{ return std::make_reverse_iterator (end ()); }
+	{ return m_value .rbegin (); }
 
 	///  Returns a reverse iterator to the beginning.
 	const_reverse_iterator
 	crbegin () const
-	{ return std::make_reverse_iterator (cend ()); }
+	{ return m_value .crbegin (); }
 
 	///  Returns a reverse iterator to the end.
 	reverse_iterator
 	rend ()
-	{ return std::make_reverse_iterator (begin ()); }
+	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
 	const_reverse_iterator
 	rend () const
-	{ return std::make_reverse_iterator (begin ()); }
+	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
 	const_reverse_iterator
 	crend () const
-	{ return std::make_reverse_iterator (cbegin ()); }
+	{ return m_value .crend (); }
 
 	///  @name Capacity
 
-	///  Returns number of components.
+	///  Returns the number of elements in the container.
 	static
 	constexpr
 	size_type
 	size ()
-	{ return 4; }
+	{ return Size; }
 
 	///  @name Arithmetic operations
 
@@ -274,9 +317,21 @@ public:
 
 private:
 
-	Type value [size ()];
+	array_type m_value;
 
 };
+
+template <class Type>
+template <class Up>
+color4 <Type> &
+color4 <Type>::operator = (const color4 <Up> & other)
+{
+	m_value [0] = other .r ();
+	m_value [1] = other .g ();
+	m_value [2] = other .b ();
+	m_value [3] = other .a ();
+	return *this;
+}
 
 template <typename Type>
 void
@@ -290,7 +345,7 @@ color4 <Type>::set_hsv (const Type & h, Type s, Type v)
 	if (s == 0)
 	{
 		// achromatic (grey)
-		value [0] = value [1] = value [2] = v;
+		m_value [0] = m_value [1] = m_value [2] = v;
 		return;
 	}
 
@@ -307,39 +362,39 @@ color4 <Type>::set_hsv (const Type & h, Type s, Type v)
 	switch ((size_t) i)
 	{
 		case 0:
-			value [0] = v;
-			value [1] = t;
-			value [2] = p;
+			m_value [0] = v;
+			m_value [1] = t;
+			m_value [2] = p;
 			return;
 
 		case 1:
-			value [0] = q;
-			value [1] = v;
-			value [2] = p;
+			m_value [0] = q;
+			m_value [1] = v;
+			m_value [2] = p;
 			return;
 
 		case 2:
-			value [0] = p;
-			value [1] = v;
-			value [2] = t;
+			m_value [0] = p;
+			m_value [1] = v;
+			m_value [2] = t;
 			return;
 
 		case 3:
-			value [0] = p;
-			value [1] = q;
-			value [2] = v;
+			m_value [0] = p;
+			m_value [1] = q;
+			m_value [2] = v;
 			return;
 
 		case 4:
-			value [0] = t;
-			value [1] = p;
-			value [2] = v;
+			m_value [0] = t;
+			m_value [1] = p;
+			m_value [2] = v;
 			return;
 
 		default:
-			value [0] = v;
-			value [1] = p;
-			value [2] = q;
+			m_value [0] = v;
+			m_value [1] = p;
+			m_value [2] = q;
 			return;
 	}
 }
