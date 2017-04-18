@@ -90,10 +90,11 @@ class matrix3
 {
 private:
 
-	static constexpr size_t Size = 3;
+	static constexpr size_t Order = 3;
+	static constexpr size_t Size  = Order * Order;
 
 	///  C Array typedef.
-	using carray_type = std::array <Type, Size * Size>;
+	using array_type = std::array <Type, Size>;
 
 
 public:
@@ -101,7 +102,7 @@ public:
 	///  @name Member types
 
 	///  Array typedef.
-	using array_type = vector3 <vector3 <Type>>;
+	using matrix_type = vector3 <vector3 <Type>>;
 
 	///  Type.
 	using value_type = Type;
@@ -200,7 +201,7 @@ public:
 
 	///  Return x component of this matrix.
 	constexpr
-	const_reference
+	typename matrix_type::const_reference
 	x () const
 	{ return m_value .x (); }
 
@@ -211,7 +212,7 @@ public:
 
 	///  Return y component of this matrix.
 	constexpr
-	const_reference
+	typename matrix_type::const_reference
 	y () const
 	{ return m_value .y (); }
 
@@ -222,7 +223,7 @@ public:
 
 	///  Return z component of this matrix.
 	constexpr
-	const_reference
+	typename matrix_type::const_reference
 	z () const
 	{ return m_value .z (); }
 
@@ -349,13 +350,13 @@ public:
 
 	///  Access components by @a index.
 	constexpr
-	reference
+	typename matrix_type::reference
 	operator [ ] (const size_type index)
 	{ return m_value [index]; }
 
 	///  Access components by @a index.
 	constexpr
-	const_reference
+	typename matrix_type::const_reference
 	operator [ ] (const size_type index) const
 	{ return m_value [index]; }
 
@@ -363,44 +364,44 @@ public:
 	constexpr
 	reference
 	front ()
-	{ return m_value .front (); }
+	{ return m_array .front (); }
 
 	///  Returns a reference to the first element in the container. 
 	constexpr
 	const_reference
 	front () const
-	{ return m_value .front (); }
+	{ return m_array .front (); }
 
 	///  Returns reference to the last element in the container. 
 	constexpr
 	reference
 	back ()
-	{ return m_value .back (); }
+	{ return m_array .back (); }
 
 	///  Returns reference to the last element in the container. 
 	constexpr
 	const_reference
 	back () const
-	{ return m_value .back (); }
+	{ return m_array .back (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	constexpr
 	pointer
 	data ()
-	{ return m_value .data (); }
+	{ return m_array .data (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
 	constexpr
 	const_pointer
 	data () const
-	{ return m_value .data (); }
+	{ return m_array .data (); }
 
 	///  Get access to the underlying vector representation of this matrix.
 	void
-	value (const array_type & value)
+	value (const matrix_type & value)
 	{ m_value = value; }
 
-	const array_type &
+	const matrix_type &
 	value () const
 	{ return m_value; }
 
@@ -410,73 +411,73 @@ public:
 	constexpr
 	iterator
 	begin ()
-	{ return m_value .begin (); }
+	{ return m_array .begin (); }
 
 	///  Returns an iterator to the beginning.
 	constexpr
 	const_iterator
 	begin () const
-	{ return m_value .begin (); }
+	{ return m_array .begin (); }
 
 	///  Returns an iterator to the beginning.
 	constexpr
 	const_iterator
 	cbegin () const
-	{ return m_value .cbegin (); }
+	{ return m_array .cbegin (); }
 
 	///  Returns an iterator to the end.
 	constexpr
 	iterator
 	end ()
-	{ return m_value .end (); }
+	{ return m_array .end (); }
 
 	///  Returns an iterator to the end.
 	constexpr
 	const_iterator
 	end () const
-	{ return m_value .end (); }
+	{ return m_array .end (); }
 
 	///  Returns an iterator to the end.
 	constexpr
 	const_iterator
 	cend () const
-	{ return m_value .cend (); }
+	{ return m_array .cend (); }
 
 	///  Returns a reverse iterator to the beginning.
 	constexpr
 	reverse_iterator
 	rbegin ()
-	{ return m_value .rbegin (); }
+	{ return m_array .rbegin (); }
 
 	///  returns a reverse iterator to the beginning.
 	constexpr
 	const_reverse_iterator
 	rbegin () const
-	{ return m_value .rbegin (); }
+	{ return m_array .rbegin (); }
 
 	///  Returns a reverse iterator to the beginning.
 	constexpr
 	const_reverse_iterator
 	crbegin () const
-	{ return m_value .crbegin (); }
+	{ return m_array .crbegin (); }
 
 	///  Returns a reverse iterator to the end.
 	constexpr
 	reverse_iterator
 	rend ()
-	{ return m_value .rend (); }
+	{ return m_array .rend (); }
 
 	///  Returns a reverse iterator to the end.
 	constexpr
 	const_reverse_iterator
 	rend () const
-	{ return m_value .rend (); }
+	{ return m_array .rend (); }
 
 	///  Returns a reverse iterator to the end.
 	constexpr
 	const_reverse_iterator
 	crend () const
-	{ return m_value .crend (); }
+	{ return m_array .crend (); }
 
 	///  @name Capacity
 
@@ -487,11 +488,32 @@ public:
 	empty ()
 	{ return false; }
 
+	///  Returns the order of this matrix.
+	static
+	constexpr
+	size_type
+	order ()
+	{ return Order; }
+
+	///  Returns the number of rows of this matrix.
+	static
+	constexpr
+	size_type
+	rows ()
+	{ return Order; }
+
+	///  Returns the number of coloums of this matrix.
+	static
+	constexpr
+	size_type
+	columns ()
+	{ return Order; }
+
 	///  Returns the number of elements in the matrix. The size is the same as order () * order ().
 	static
 	constexpr
 	size_type
-	size ()
+	_size ()
 	{ return Size; }
 
 	///  Returns the maximum possible number of elements. Because each vector is a fixed-size container,
@@ -644,8 +666,8 @@ private:
 
 	union
 	{
-		array_type  m_value;
-		carray_type m_array;
+		matrix_type  m_value;
+		array_type m_array;
 	};
 
 };

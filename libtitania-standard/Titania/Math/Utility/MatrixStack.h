@@ -115,13 +115,13 @@ public:
 	get () const
 	{ return stack .back (); }
 
-	typename value_type::value_type*
+	typename value_type::pointer
 	data ()
-	{ return stack .back () .front () .data (); }
+	{ return stack .back () .data (); }
 
-	const typename value_type::value_type*
+	typename value_type::const_pointer
 	data () const
-	{ return stack .back () .front () .data (); }
+	{ return stack .back () .data (); }
 
 	///  @name Operations
 	
