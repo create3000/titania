@@ -256,11 +256,16 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	constexpr Vector2d a (1, 2);
-	Vector2d b (1, 2);
+	constexpr Vector4d a (1, 2, 3, 4);
+	constexpr Vector4d b (a);
 
+	constexpr auto e = std::get <0> (a);
+	constexpr auto i = a .x ();
+
+	std::cout << std::endl;
 	std::cout << a << std::endl;
-	std::cout << b << std::endl;
+	std::cout << e << std::endl;
+	std::cout << i << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

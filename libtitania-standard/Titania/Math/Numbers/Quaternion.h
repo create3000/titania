@@ -104,17 +104,20 @@ public:
 	///  Size typedef.  Used for size and indices.
 	using size_type = typename array_type::size_type;
 
-	///  difference_type
+	///  std::ptrdiff_t
 	using difference_type = typename array_type::difference_type;
 
-	///  reference
+	///  value_type &
 	using reference = typename array_type::reference;
 
-	///  const_reference
+	///  const value_type &
 	using const_reference = typename array_type::const_reference;
 
-	///  pointer
+	///  value_type*
 	using pointer = typename array_type::pointer;
+
+	///  const value_type*
+	using const_pointer = typename array_type::const_pointer;
 
 	///  Random access iterator
 	using iterator = typename array_type::iterator;
@@ -174,147 +177,178 @@ public:
 
 	///  Set x component of this quaternion.
 	void
-	x (const Type & v)
-	{ m_value [0] = v; }
+	x (const Type & value)
+	{ m_value [0] = value; }
 
 	///  Return x component of this quaternion.
+	constexpr
 	const_reference
 	x () const
 	{ return m_value [0]; }
 
 	///  Set y component of this quaternion.
 	void
-	y (const Type & v)
-	{ m_value [1] = v; }
+	y (const Type & value)
+	{ m_value [1] = value; }
 
 	///  Return y component of this quaternion.
+	constexpr
 	const_reference
 	y () const
 	{ return m_value [1]; }
 
 	///  Set z component of this quaternion.
 	void
-	z (const Type & v)
-	{ m_value [2] = v; }
+	z (const Type & value)
+	{ m_value [2] = value; }
 
 	///  Return z component of this quaternion.
+	constexpr
 	const_reference
 	z () const
 	{ return m_value [2]; }
 
 	///  Set w component of this quaternion which is the real part.
 	void
-	w (const Type & v)
-	{ m_value [3] = v; }
+	w (const Type & value)
+	{ m_value [3] = value; }
 
 	///  Return w component of this quaternion which is the real part.
+	constexpr
 	const_reference
 	w () const
 	{ return m_value [3]; }
 
 	///  Access components by @a index.
+	constexpr
 	reference
 	operator [ ] (const size_type index)
 	{ return m_value [index]; }
 
 	///  Access components by @a index.
+	constexpr
 	const_reference
 	operator [ ] (const size_type index) const
 	{ return m_value [index]; }
 
 	///  Returns a reference to the first element in the container. 
+	constexpr
 	reference
 	front ()
 	{ return m_value .front (); }
 
 	///  Returns a reference to the first element in the container. 
+	constexpr
 	const_reference
 	front () const
 	{ return m_value .front (); }
 
 	///  Returns reference to the last element in the container. 
+	constexpr
 	reference
 	back ()
 	{ return m_value .back (); }
 
 	///  Returns reference to the last element in the container. 
+	constexpr
 	const_reference
 	back () const
 	{ return m_value .back (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
-	Type*
+	constexpr
+	pointer
 	data ()
 	{ return m_value .data (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
-	const Type*
+	constexpr
+	const_pointer
 	data () const
 	{ return m_value .data (); }
 
 	///  @name Iterators
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	iterator
 	begin ()
 	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	const_iterator
 	begin () const
 	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	const_iterator
 	cbegin () const
 	{ return m_value .cbegin (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	iterator
 	end ()
 	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	const_iterator
 	end () const
 	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	const_iterator
 	cend () const
 	{ return m_value .cend (); }
 
 	///  Returns a reverse iterator to the beginning.
+	constexpr
 	reverse_iterator
 	rbegin ()
 	{ return m_value .rbegin (); }
 
 	///  returns a reverse iterator to the beginning.
+	constexpr
 	const_reverse_iterator
 	rbegin () const
 	{ return m_value .rbegin (); }
 
 	///  Returns a reverse iterator to the beginning.
+	constexpr
 	const_reverse_iterator
 	crbegin () const
 	{ return m_value .crbegin (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	reverse_iterator
 	rend ()
 	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	const_reverse_iterator
 	rend () const
 	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	const_reverse_iterator
 	crend () const
 	{ return m_value .crend (); }
 
 	///  @name Capacity
+
+	///  Checks whether the container is empty. Always returns false.
+	static
+	constexpr
+	bool
+	empty ()
+	{ return false; }
 
 	///  Returns the number of elements in the container.
 	static
@@ -322,6 +356,26 @@ public:
 	size_type
 	size ()
 	{ return Size; }
+
+	///  Returns the maximum possible number of elements. Because each vector is a fixed-size container,
+	///  the value is also the value returned by size.
+	static
+	constexpr
+	size_type
+	max_size ()
+	{ return Size; }
+
+	///  @name Operations
+
+	///  Fill the container with specified @a value. 
+	void
+	fill (const Type & value)
+	{ m_value .fill (value); }
+
+	///  Swaps the contents.
+	void
+	swap (quaternion & other)
+	{ m_value .swap (other .m_value); }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this quaternion inplace.
@@ -1103,5 +1157,58 @@ extern template std::ostream & operator << (std::ostream &, const quaternion <lo
 
 } // math
 } // titania
+
+namespace std {
+
+///  Extracts the Ith element element from the quaternion.
+template <size_t I, class Type>
+inline
+constexpr
+Type &
+get (titania::math::quaternion <Type> & quaternion)
+{
+	return quaternion [I];
+}
+
+///  Extracts the Ith element element from the quaternion.
+template <size_t I, class Type>
+inline
+constexpr
+const Type &
+get (const titania::math::quaternion <Type> & quaternion)
+{
+	return quaternion [I];
+}
+
+///  Extracts the Ith element element from the quaternion.
+template <size_t I, class Type>
+inline
+constexpr
+Type &&
+get (titania::math::quaternion <Type> && quaternion)
+{
+	return quaternion [I];
+}
+
+///  Extracts the Ith element element from the quaternion.
+template <size_t I, class Type>
+inline
+constexpr
+const Type &&
+get (const titania::math::quaternion <Type> && quaternion)
+{
+	return quaternion [I];
+}
+
+/// Specializes the std::swap algorithm for quaternion.
+template <class Type>
+inline
+void
+swap (titania::math::quaternion <Type> & lhs, titania::math::quaternion <Type> & rhs) noexcept
+{
+	lhs .swap (rhs);
+}
+
+} // std
 
 #endif

@@ -310,6 +310,13 @@ public:
 
 	///  @name Capacity
 
+	///  Checks whether the container is empty. Always returns false.
+	static
+	constexpr
+	bool
+	empty ()
+	{ return false; }
+
 	///  Return number of components.
 	static
 	constexpr

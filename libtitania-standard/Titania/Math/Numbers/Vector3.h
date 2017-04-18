@@ -90,17 +90,20 @@ public:
 	///  Size typedef.  Used for size and indices.
 	using size_type = typename array_type::size_type;
 
-	///  difference_type
+	///  std::ptrdiff_t
 	using difference_type = typename array_type::difference_type;
 
-	///  reference
+	///  value_type &
 	using reference = typename array_type::reference;
 
-	///  const_reference
+	///  const value_type &
 	using const_reference = typename array_type::const_reference;
 
-	///  pointer
+	///  value_type*
 	using pointer = typename array_type::pointer;
+
+	///  const value_type*
+	using const_pointer = typename array_type::const_pointer;
 
 	///  Random access iterator
 	using iterator = typename array_type::iterator;
@@ -123,9 +126,9 @@ public:
 	{ }
 
 	///  Copy constructor.
-	template <class T>
+	template <class Up>
 	constexpr
-	vector3 (const vector3 <T> & vector) :
+	vector3 (const vector3 <Up> & vector) :
 		m_value { vector .x (), vector .y (), vector .z () }
 	{ }
 
@@ -145,145 +148,175 @@ public:
 	///  @name Assignment operator
 
 	///  Assign @a other to this vector.
-	template <class T>
+	template <class Up>
 	vector3 &
-	operator = (const vector3 <T> & other);
+	operator = (const vector3 <Up> & other);
 
 	///  @name Element access
 
 	///  Set x component of this vector.
 	void
-	x (const Type & t)
-	{ m_value [0] = t; }
+	x (const Type & value)
+	{ m_value [0] = value; }
 
 	///  Returns x component of this vector.
+	constexpr
 	const_reference
 	x () const
 	{ return m_value [0]; }
 
 	///  Set y component of this vector.
 	void
-	y (const Type & t)
-	{ m_value [1] = t; }
+	y (const Type & value)
+	{ m_value [1] = value; }
 
 	///  Returns y component of this vector.
+	constexpr
 	const_reference
 	y () const
 	{ return m_value [1]; }
 
 	///  Set z component of this vector.
 	void
-	z (const Type & t)
-	{ m_value [2] = t; }
+	z (const Type & value)
+	{ m_value [2] = value; }
 
 	///  Returns z component of this vector.
+	constexpr
 	const_reference
 	z () const
 	{ return m_value [2]; }
 
 	///  Access components by @a index.
+	constexpr
 	reference
 	operator [ ] (const size_type index)
 	{ return m_value [index]; }
 
 	///  Access components by @a index.
+	constexpr
 	const_reference
 	operator [ ] (const size_type index) const
 	{ return m_value [index]; }
 
 	///  Returns a reference to the first element in the container. 
+	constexpr
 	reference
 	front ()
 	{ return m_value .front (); }
 
 	///  Returns a reference to the first element in the container. 
+	constexpr
 	const_reference
 	front () const
 	{ return m_value .front (); }
 
 	///  Returns reference to the last element in the container. 
+	constexpr
 	reference
 	back ()
 	{ return m_value .back (); }
 
 	///  Returns reference to the last element in the container. 
+	constexpr
 	const_reference
 	back () const
 	{ return m_value .back (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
-	Type*
+	constexpr
+	pointer
 	data ()
 	{ return m_value .data (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
-	const Type*
+	constexpr
+	const_pointer
 	data () const
 	{ return m_value .data (); }
 
 	///  @name Iterators
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	iterator
 	begin ()
 	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	const_iterator
 	begin () const
 	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	const_iterator
 	cbegin () const
 	{ return m_value .cbegin (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	iterator
 	end ()
 	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	const_iterator
 	end () const
 	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	const_iterator
 	cend () const
 	{ return m_value .cend (); }
 
 	///  Returns a reverse iterator to the beginning.
+	constexpr
 	reverse_iterator
 	rbegin ()
 	{ return m_value .rbegin (); }
 
 	///  returns a reverse iterator to the beginning.
+	constexpr
 	const_reverse_iterator
 	rbegin () const
 	{ return m_value .rbegin (); }
 
 	///  Returns a reverse iterator to the beginning.
+	constexpr
 	const_reverse_iterator
 	crbegin () const
 	{ return m_value .crbegin (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	reverse_iterator
 	rend ()
 	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	const_reverse_iterator
 	rend () const
 	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	const_reverse_iterator
 	crend () const
 	{ return m_value .crend (); }
 
 	///  @name Capacity
+
+	///  Checks whether the container is empty. Always returns false.
+	static
+	constexpr
+	bool
+	empty ()
+	{ return false; }
 
 	///  Returns the number of elements in the container.
 	static
@@ -291,6 +324,26 @@ public:
 	size_type
 	size ()
 	{ return Size; }
+
+	///  Returns the maximum possible number of elements. Because each vector is a fixed-size container,
+	///  the value is also the value returned by size.
+	static
+	constexpr
+	size_type
+	max_size ()
+	{ return Size; }
+
+	///  @name Operations
+
+	///  Fill the container with specified @a value. 
+	void
+	fill (const Type & value)
+	{ m_value .fill (value); }
+
+	///  Swaps the contents.
+	void
+	swap (vector3 & other)
+	{ m_value .swap (other .m_value); }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this vector2 inplace.
@@ -300,36 +353,36 @@ public:
 	negate ();
 
 	///  Add @a vector to this vector.
-	template <class T>
+	template <class Up>
 	vector3 &
-	operator += (const vector3 <T> & vector);
+	operator += (const vector3 <Up> & vector);
 
 	///  Add @a t to this vector.
 	vector3 &
 	operator += (const Type & t);
 
 	///  Subtract @a vector from this vector.
-	template <class T>
+	template <class Up>
 	vector3 &
-	operator -= (const vector3 <T> & vector);
+	operator -= (const vector3 <Up> & vector);
 
 	///  Subtract @a t from this vector.
 	vector3 &
 	operator -= (const Type & t);
 
 	///  Multiply this vector by @a vector.
-	template <class T>
+	template <class Up>
 	vector3 &
-	operator *= (const vector3 <T> & vector);
+	operator *= (const vector3 <Up> & vector);
 
 	///  Multiply this vector by @a t.
 	vector3 &
 	operator *= (const Type & t);
 
 	///  Divide this vector by @a vector.
-	template <class T>
+	template <class Up>
 	vector3 &
-	operator /= (const vector3 <T> & vector);
+	operator /= (const vector3 <Up> & vector);
 
 	///  Divide this vector by @a t.
 	vector3 &
@@ -347,9 +400,9 @@ private:
 };
 
 template <class Type>
-template <class T>
+template <class Up>
 vector3 <Type> &
-vector3 <Type>::operator = (const vector3 <T> & other)
+vector3 <Type>::operator = (const vector3 <Up> & other)
 {
 	m_value [0] = other .x ();
 	m_value [1] = other .y ();
@@ -367,9 +420,9 @@ vector3 <Type>::negate ()
 }
 
 template <class Type>
-template <class T>
+template <class Up>
 vector3 <Type> &
-vector3 <Type>::operator += (const vector3 <T> & vector)
+vector3 <Type>::operator += (const vector3 <Up> & vector)
 {
 	m_value [0] += vector .x ();
 	m_value [1] += vector .y ();
@@ -388,9 +441,9 @@ vector3 <Type>::operator += (const Type & t)
 }
 
 template <class Type>
-template <class T>
+template <class Up>
 vector3 <Type> &
-vector3 <Type>::operator -= (const vector3 <T> & vector)
+vector3 <Type>::operator -= (const vector3 <Up> & vector)
 {
 	m_value [0] -= vector .x ();
 	m_value [1] -= vector .y ();
@@ -409,9 +462,9 @@ vector3 <Type>::operator -= (const Type & t)
 }
 
 template <class Type>
-template <class T>
+template <class Up>
 vector3 <Type> &
-vector3 <Type>::operator *= (const vector3 <T> & vector)
+vector3 <Type>::operator *= (const vector3 <Up> & vector)
 {
 	m_value [0] *= vector .x ();
 	m_value [1] *= vector .y ();
@@ -430,9 +483,9 @@ vector3 <Type>::operator *= (const Type & t)
 }
 
 template <class Type>
-template <class T>
+template <class Up>
 vector3 <Type> &
-vector3 <Type>::operator /= (const vector3 <T> & vector)
+vector3 <Type>::operator /= (const vector3 <Up> & vector)
 {
 	m_value [0] /= vector .x ();
 	m_value [1] /= vector .y ();
@@ -883,5 +936,58 @@ extern template std::ostream & operator << (std::ostream &, const vector3 <long 
 
 } // math
 } // titania
+
+namespace std {
+
+///  Extracts the Ith element element from the vector.
+template <size_t I, class Type>
+inline
+constexpr
+Type &
+get (titania::math::vector3 <Type> & vector)
+{
+	return vector [I];
+}
+
+///  Extracts the Ith element element from the vector.
+template <size_t I, class Type>
+inline
+constexpr
+const Type &
+get (const titania::math::vector3 <Type> & vector)
+{
+	return vector [I];
+}
+
+///  Extracts the Ith element element from the vector.
+template <size_t I, class Type>
+inline
+constexpr
+Type &&
+get (titania::math::vector3 <Type> && vector)
+{
+	return vector [I];
+}
+
+///  Extracts the Ith element element from the vector.
+template <size_t I, class Type>
+inline
+constexpr
+const Type &&
+get (const titania::math::vector3 <Type> && vector)
+{
+	return vector [I];
+}
+
+/// Specializes the std::swap algorithm for vector3.
+template <class Type>
+inline
+void
+swap (titania::math::vector3 <Type> & lhs, titania::math::vector3 <Type> & rhs) noexcept
+{
+	lhs .swap (rhs);
+}
+
+} // std
 
 #endif

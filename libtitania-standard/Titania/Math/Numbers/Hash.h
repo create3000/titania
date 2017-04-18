@@ -64,6 +64,8 @@
 
 namespace std {
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 template <class Type>
 struct array_hash { };
 
@@ -162,6 +164,8 @@ struct array_hash <int32_t>
 	}
 
 };
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 template <>
 struct hash <titania::math::color3 <double>> 

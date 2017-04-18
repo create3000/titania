@@ -56,6 +56,8 @@
 
 namespace titania {
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
 #ifdef TITANIA_DEBUG
 #define __LOG__ (std::clog << "########## " __FILE__ << ":" << __LINE__ << ": in function '" << __func__ << "': ")
 #else
@@ -97,7 +99,9 @@ struct LOGType
 static constexpr LOGType LOG;
 
 #define __LOG__ (LOG)
-#endif
+#endif /* TITANIA_DEBUG */
+
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 } // titania
 

@@ -94,17 +94,20 @@ public:
 	///  Size typedef.  Used for size and indices.
 	using size_type = typename array_type::size_type;
 
-	///  difference_type
+	///  std::ptrdiff_t
 	using difference_type = typename array_type::difference_type;
 
-	///  reference
+	///  value_type &
 	using reference = typename array_type::reference;
 
-	///  const_reference
+	///  const value_type &
 	using const_reference = typename array_type::const_reference;
 
-	///  pointer
+	///  value_type*
 	using pointer = typename array_type::pointer;
+
+	///  const value_type*
+	using const_pointer = typename array_type::const_pointer;
 
 	///  Random access iterator
 	using iterator = typename array_type::iterator;
@@ -127,9 +130,9 @@ public:
 	{ }
 
 	///  Copy constructor.
-	template <typename T>
+	template <typename Up>
 	constexpr
-	color3 (const color3 <T> & color) :
+	color3 (const color3 <Up> & color) :
 		m_value { color .r (), color .g (), color .b () }
 	{ }
 
@@ -152,136 +155,166 @@ public:
 
 	///  Set red component of this color.
 	void
-	r (const Type & r)
-	{ m_value [0] = clamp (r, Type (), Type (1)); }
+	r (const Type & value)
+	{ m_value [0] = clamp (value, Type (), Type (1)); }
 
 	///  Return red component of this color.
+	constexpr
 	const_reference
 	r () const
 	{ return m_value [0]; }
 
 	///  Set green component of this color.
 	void
-	g (const Type & g)
-	{ m_value [1] = clamp (g, Type (), Type (1)); }
+	g (const Type & value)
+	{ m_value [1] = clamp (value, Type (), Type (1)); }
 
 	///  Return green component of this color.
+	constexpr
 	const_reference
 	g () const { return m_value [1]; }
 
 	///  Set blue component of this color.
 	void
-	b (const Type & b)
-	{ m_value [2] = clamp (b, Type (), Type (1)); }
+	b (const Type & value)
+	{ m_value [2] = clamp (value, Type (), Type (1)); }
 
 	///  Return blue component of this color.
+	constexpr
 	const_reference
 	b () const
 	{ return m_value [2]; }
 
 	///  Access components by @a index.
+	constexpr
 	reference
 	operator [ ] (const size_type index)
 	{ return m_value [index]; }
 
 	///  Access components by @a index.
+	constexpr
 	const_reference
 	operator [ ] (const size_type index) const
 	{ return m_value [index]; }
 
 	///  Returns a reference to the first element in the container. 
+	constexpr
 	reference
 	front ()
 	{ return m_value .front (); }
 
 	///  Returns a reference to the first element in the container. 
+	constexpr
 	const_reference
 	front () const
 	{ return m_value .front (); }
 
 	///  Returns reference to the last element in the container. 
+	constexpr
 	reference
 	back ()
 	{ return m_value .back (); }
 
 	///  Returns reference to the last element in the container. 
+	constexpr
 	const_reference
 	back () const
 	{ return m_value .back (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
-	Type*
+	constexpr
+	pointer
 	data ()
 	{ return m_value .data (); }
 
 	///  Returns pointer to the underlying array serving as element storage.
-	const Type*
+	constexpr
+	const_pointer
 	data () const
 	{ return m_value .data (); }
 
 	///  @name Iterators
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	iterator
 	begin ()
 	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	const_iterator
 	begin () const
 	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	const_iterator
 	cbegin () const
 	{ return m_value .cbegin (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	iterator
 	end ()
 	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	const_iterator
 	end () const
 	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	const_iterator
 	cend () const
 	{ return m_value .cend (); }
 
 	///  Returns a reverse iterator to the beginning.
+	constexpr
 	reverse_iterator
 	rbegin ()
 	{ return m_value .rbegin (); }
 
 	///  returns a reverse iterator to the beginning.
+	constexpr
 	const_reverse_iterator
 	rbegin () const
 	{ return m_value .rbegin (); }
 
 	///  Returns a reverse iterator to the beginning.
+	constexpr
 	const_reverse_iterator
 	crbegin () const
 	{ return m_value .crbegin (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	reverse_iterator
 	rend ()
 	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	const_reverse_iterator
 	rend () const
 	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	const_reverse_iterator
 	crend () const
 	{ return m_value .crend (); }
 
 	///  @name Capacity
+
+	///  Checks whether the container is empty. Always returns false.
+	static
+	constexpr
+	bool
+	empty ()
+	{ return false; }
 
 	///  Returns the number of elements in the container.
 	static
@@ -289,6 +322,26 @@ public:
 	size_type
 	size ()
 	{ return Size; }
+
+	///  Returns the maximum possible number of elements. Because each vector is a fixed-size container,
+	///  the value is also the value returned by size.
+	static
+	constexpr
+	size_type
+	max_size ()
+	{ return Size; }
+
+	///  @name Operations
+
+	///  Fill the container with specified @a value. 
+	void
+	fill (const Type & value)
+	{ m_value .fill (value); }
+
+	///  Swaps the contents.
+	void
+	swap (color3 & other)
+	{ m_value .swap (other .m_value); }
 
 	///  @name Arithmetic operations
 
@@ -635,5 +688,58 @@ extern template std::ostream & operator << (std::ostream &, const color3 <long d
 
 } // math
 } // titania
+
+namespace std {
+
+///  Extracts the Ith element element from the color.
+template <size_t I, class Type>
+inline
+constexpr
+Type &
+get (titania::math::color3 <Type> & color)
+{
+	return color [I];
+}
+
+///  Extracts the Ith element element from the color.
+template <size_t I, class Type>
+inline
+constexpr
+const Type &
+get (const titania::math::color3 <Type> & color)
+{
+	return color [I];
+}
+
+///  Extracts the Ith element element from the color.
+template <size_t I, class Type>
+inline
+constexpr
+Type &&
+get (titania::math::color3 <Type> && color)
+{
+	return color [I];
+}
+
+///  Extracts the Ith element element from the color.
+template <size_t I, class Type>
+inline
+constexpr
+const Type &&
+get (const titania::math::color3 <Type> && color)
+{
+	return color [I];
+}
+
+/// Specializes the std::swap algorithm for color3.
+template <class Type>
+inline
+void
+swap (titania::math::color3 <Type> & lhs, titania::math::color3 <Type> & rhs) noexcept
+{
+	lhs .swap (rhs);
+}
+
+} // std
 
 #endif
