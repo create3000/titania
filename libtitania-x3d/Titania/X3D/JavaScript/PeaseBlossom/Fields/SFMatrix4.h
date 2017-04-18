@@ -70,7 +70,7 @@ public:
 	///  @name Member types
 
 	using internal_type = Type;
-	using vector3_type  = SFVec3 <typename Type::vector3_type>;
+	using vector3_type  = SFVec3 <typename Type::vector_type>;
 	using rotation_type = SFRotation;
 
 	///  @name Common members
@@ -289,11 +289,11 @@ SFMatrix4 <Type>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto argc = args .size ();
 		const auto lhs  = getThis <SFMatrix4> (ec, object);
 
-		typename Type::vector3_type translation;
-		typename Type::rotation4_type rotation;
-		typename Type::vector3_type scale (1, 1, 1);
-		typename Type::rotation4_type scaleOrientation;
-		typename Type::vector3_type center;
+		typename Type::vector_type translation;
+		typename Type::rotation_type rotation;
+		typename Type::vector_type scale (1, 1, 1);
+		typename Type::rotation_type scaleOrientation;
+		typename Type::vector_type center;
 
 		if (argc > 0 and not args [0] .isNull ())
 			translation = *get1Argument <vector3_type> (args, 0);
@@ -332,11 +332,11 @@ SFMatrix4 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto argc = args .size ();
 		const auto lhs  = getThis <SFMatrix4> (ec, object);
 
-		typename Type::vector3_type translation;
-		typename Type::rotation4_type rotation;
-		typename Type::vector3_type scale (1, 1, 1);
-		typename Type::rotation4_type scaleOrientation;
-		typename Type::vector3_type center;
+		typename Type::vector_type translation;
+		typename Type::rotation_type rotation;
+		typename Type::vector_type scale (1, 1, 1);
+		typename Type::rotation_type scaleOrientation;
+		typename Type::vector_type center;
 
 		if (argc > 4 and not args [4] .isNull ())
 			center = *get1Argument <vector3_type> (args, 4);

@@ -71,8 +71,8 @@ public:
 	///  @name Member types
 
 	using internal_type = Type;
-	using vector2_type  = SFVec2 <typename Type::vector2_type>;
-	using vector3_type  = SFVec3 <typename X3D::SFVec3 <typename math::vector3 <typename Type::value_type>>>;
+	using vector_type   = SFVec2 <typename Type::vector_type>;
+	using rotation_type = SFVec3 <typename X3D::SFVec3 <typename math::vector3 <typename Type::value_type>>>;
 
 	///  @name Common members
 
@@ -283,26 +283,26 @@ SFMatrix3 <Type>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto argc = args .size ();
 		const auto lhs  = getThis <SFMatrix3> (ec, object);
 
-		typename Type::vector2_type translation;
+		typename Type::vector_type translation;
 		typename Type::value_type rotation;
-		typename Type::vector2_type scale (1, 1);
+		typename Type::vector_type scale (1, 1);
 		typename Type::value_type scaleOrientation;
-		typename Type::vector2_type center;
+		typename Type::vector_type center;
 
 		if (argc > 0 and not args [0] .isNull ())
-			translation = *get1Argument <vector2_type> (args, 0);
+			translation = *get1Argument <vector_type> (args, 0);
 
 		if (argc > 1 and not args [1] .isNull ())
 			rotation = get1Argument <double> (args, 1);
 
 		if (argc > 2 and not args [2] .isNull ())
-			scale = *get1Argument <vector2_type> (args, 2);
+			scale = *get1Argument <vector_type> (args, 2);
 
 		if (argc > 3 and not args [3] .isNull ())
 			scaleOrientation = get1Argument <double> (args, 3);
 
 		if (argc > 4 and not args [4] .isNull ())
-			center = *get1Argument <vector2_type> (args, 4);
+			center = *get1Argument <vector_type> (args, 4);
 
 		lhs -> setTransform (translation, rotation, scale, scaleOrientation, center);
 
@@ -326,35 +326,35 @@ SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto argc = args .size ();
 		const auto lhs  = getThis <SFMatrix3> (ec, object);
 
-		typename Type::vector2_type translation;
+		typename Type::vector_type translation;
 		typename Type::value_type rotation;
-		typename Type::vector2_type scale (1, 1);
+		typename Type::vector_type scale (1, 1);
 		typename Type::value_type scaleOrientation;
-		typename Type::vector2_type center;
+		typename Type::vector_type center;
 
 		if (argc > 4 and not args [4] .isNull ())
-			center = *get1Argument <vector2_type> (args, 4);
+			center = *get1Argument <vector_type> (args, 4);
 
 		lhs -> getTransform (translation, rotation, scale, scaleOrientation, center);
 
 		if (argc > 0 and not args [0] .isNull ())
-			get1Argument <vector2_type> (args, 0) -> setValue (translation);
+			get1Argument <vector_type> (args, 0) -> setValue (translation);
 
 		if (argc > 1 and not args [1] .isNull ())
 		{
 			const auto complex = std::polar <typename Type::value_type> (1, rotation);
 
-			get1Argument <vector3_type> (args, 1) -> setValue (typename vector3_type::internal_type (std::real (complex), std::imag (complex), rotation));
+			get1Argument <rotation_type> (args, 1) -> setValue (typename rotation_type::internal_type (std::real (complex), std::imag (complex), rotation));
 		}
 
 		if (argc > 2 and not args [2] .isNull ())
-			get1Argument <vector2_type> (args, 2) -> setValue (scale);
+			get1Argument <vector_type> (args, 2) -> setValue (scale);
 
 		if (argc > 3 and not args [3] .isNull ())
 		{
 			const auto complex = std::polar <typename Type::value_type> (1, scaleOrientation);
 
-			get1Argument <vector3_type> (args, 3) -> setValue (typename vector3_type::internal_type (std::real (complex), std::imag (complex), scaleOrientation));
+			get1Argument <rotation_type> (args, 3) -> setValue (typename rotation_type::internal_type (std::real (complex), std::imag (complex), scaleOrientation));
 		}
 
 		return pb::undefined;
@@ -453,9 +453,9 @@ SFMatrix3 <Type>::multVecMatrix (const pb::ptr <pb::pbExecutionContext> & ec, co
 	try
 	{
 		const auto lhs = getThis <SFMatrix3> (ec, object);
-		const auto rhs = get1Argument <vector2_type> (args, 0);
+		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector2_type> (ec, lhs -> multVecMatrix (*rhs));
+		return create <vector_type> (ec, lhs -> multVecMatrix (*rhs));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -473,9 +473,9 @@ SFMatrix3 <Type>::multMatrixVec (const pb::ptr <pb::pbExecutionContext> & ec, co
 	try
 	{
 		const auto lhs = getThis <SFMatrix3> (ec, object);
-		const auto rhs = get1Argument <vector2_type> (args, 0);
+		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector2_type> (ec, lhs -> multMatrixVec (*rhs));
+		return create <vector_type> (ec, lhs -> multMatrixVec (*rhs));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -493,9 +493,9 @@ SFMatrix3 <Type>::multDirMatrix (const pb::ptr <pb::pbExecutionContext> & ec, co
 	try
 	{
 		const auto lhs = getThis <SFMatrix3> (ec, object);
-		const auto rhs = get1Argument <vector2_type> (args, 0);
+		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector2_type> (ec, lhs -> multDirMatrix (*rhs));
+		return create <vector_type> (ec, lhs -> multDirMatrix (*rhs));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -513,9 +513,9 @@ SFMatrix3 <Type>::multMatrixDir (const pb::ptr <pb::pbExecutionContext> & ec, co
 	try
 	{
 		const auto lhs = getThis <SFMatrix3> (ec, object);
-		const auto rhs = get1Argument <vector2_type> (args, 0);
+		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector2_type> (ec, lhs -> multMatrixDir (*rhs));
+		return create <vector_type> (ec, lhs -> multMatrixDir (*rhs));
 	}
 	catch (const std::invalid_argument &)
 	{

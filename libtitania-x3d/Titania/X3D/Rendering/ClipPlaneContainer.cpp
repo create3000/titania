@@ -83,7 +83,7 @@ ClipPlaneContainer::enable ()
 			planeId = clipPlanes .top ();
 			clipPlanes .pop ();
 
-			glLoadMatrixd (modelViewMatrix .data ());
+			glLoadMatrixd (modelViewMatrix .front () .data ());
 
 			glClipPlane (planeId, Vector4d (node -> plane () .getValue ()) .data ());
 			glEnable (planeId);

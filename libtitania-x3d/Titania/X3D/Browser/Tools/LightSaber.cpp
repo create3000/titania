@@ -158,7 +158,7 @@ LightSaber::display ()
 	const auto projection = camera <double>::ortho (0, width, 0, height, -1, 1);
 
 	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (projection .data ());
+	glLoadMatrixd (projection .front () .data ());
 	glMatrixMode (GL_MODELVIEW);
 
 	// Draw a black and a white line.

@@ -87,52 +87,54 @@ class matrix2
 {
 private:
 
-	static constexpr size_t ORDER = 2;
-	static constexpr size_t SIZE  = ORDER * ORDER;
+	static constexpr size_t Size = 2;
+
+	///  C Array typedef.
+	using carray_type = std::array <Type, Size * Size>;
 
 
 public:
 
 	///  @name Member types
 
-	///  Value typedef.
+	///  Array typedef.
+	using array_type = vector2 <vector2 <Type>>;
+
+	///  Type.
 	using value_type = Type;
 
 	///  Size typedef.  Used for size and indices.
-	using size_type = size_t;
+	using size_type = typename array_type::size_type;
 
-	///  Array typedef.
-	using array_type = Type [SIZE];
+	///  std::ptrdiff_t
+	using difference_type = typename array_type::difference_type;
 
-	///  Matrix typedef.
-	using matrix_type = vector2 <vector2 <Type>>;
+	///  value_type &
+	using reference = typename array_type::reference;
 
-	///  Translation typedef.
-	using translation_type = Type;
+	///  const value_type &
+	using const_reference = typename array_type::const_reference;
 
-	///  Translation typedef.
-	using scale_type = Type;
+	///  value_type*
+	using pointer = typename array_type::pointer;
 
-	///  Vector typedef.
-	using vector_type = vector2 <Type>;
-
-	///  Point typedef.
-	using point_type = Type;
-
-	///  Normal typedef.
-	using normal_type = Type;
+	///  const value_type*
+	using const_pointer = typename array_type::const_pointer;
 
 	///  Random access iterator
-	using iterator = Type*;
+	using iterator = typename array_type::iterator;
 
 	///  Constant random access iterator 
-	using const_iterator = const Type*;
+	using const_iterator = typename array_type::const_iterator;
 
 	///  std::reverse_iterator <iterator>
-	using reverse_iterator = std::reverse_iterator <iterator>;
+	using reverse_iterator = typename array_type::reverse_iterator;
 
 	///  std::reverse_iterator <iterator>
-	using const_reverse_iterator = std::reverse_iterator <const_iterator>;
+	using const_reverse_iterator = typename array_type::const_reverse_iterator;
+
+	///  Vector typedef.
+	using vector_type = Type;
 
 	///  @name Constructors
 
@@ -161,36 +163,16 @@ public:
 	constexpr
 	matrix2 (const Type & e11, const Type & e12,
 	         const Type & e21, const Type & e22) :
-		m_array
-	{
-		e11, e12,
-		e21, e22,
-	}
-
+		m_array { e11, e12,
+		          e21, e22 }
 	{ }
 
 	///  Components constructor. Set values to @a v.
 	explicit
 	constexpr
 	matrix2 (const Type & v) :
-		m_array
-	{
-		v, v,
-		v, v,
-	}
-
-	{ }
-
-	///  Value constructor.
-	explicit
-	constexpr
-	matrix2 (const array_type & matrix) :
-		m_array
-	{
-		matrix [0], matrix [1],
-		matrix [2], matrix [3],
-	}
-
+		m_array { v, v,
+		          v, v }
 	{ }
 
 	///  @name Assignment operators
@@ -201,80 +183,47 @@ public:
 
 	///  @name Element access
 
+	///  Set x component of this matrix.
 	void
-	x (const vector_type & vector)
+	x (const vector2 <Type> & vector)
 	{ m_value .x (vector); }
 
-	const vector_type &
+	///  Return x component of this matrix.
+	constexpr
+	const_reference
 	x () const
 	{ return m_value .x (); }
 
+	///  Set y component of this matrix.
 	void
-	y (const vector_type & vector)
+	y (const vector2 <Type> & vector)
 	{ m_value .y (vector); }
 
-	const vector_type &
+	///  Return y component of this matrix.
+	constexpr
+	const_reference
 	y () const
 	{ return m_value .y (); }
 
+	///  Set x-axis of this matrix.
 	void
 	x_axis (const Type & vector)
 	{ m_array [0] = vector; }
 
+	///  Return x-axis of this matrix.
 	const Type &
 	x_axis () const
 	{ return m_array [0]; }
 
+	///  Set origin of this matrix.
 	void
 	origin (const Type & vector)
 	{ m_array [2] = vector; }
 
+	///  Return origin of this matrix.
 	const Type &
 	origin () const
 	{ return m_array [2]; }
-
-	void
-	set ();
-
-	void
-	set (const Type & translation);
-
-	void
-	set (const Type & translation, const Type & scale);
-
-	void
-	get (Type & translation) const;
-
-	void
-	get (Type & translation, Type & scale) const;
-
-	///  Access rows by @a index.
-	vector_type &
-	operator [ ] (const size_type index)
-	{ return m_value [index]; }
-
-	const vector_type &
-	operator [ ] (const size_type index) const
-	{ return m_value [index]; }
-
-	///  Returns pointer to the underlying array serving as element storage.
-	///  Specifically the pointer is such that range [data (); data () + size ()) is valid.
-	Type*
-	data ()
-	{ return m_array; }
-
-	const Type*
-	data () const
-	{ return m_array; }
-
-	///  Get access to the underlying vector representation of this matrix.
-	void
-	value (const matrix_type & vector)
-	{ m_value = vector; }
-
-	const matrix_type &
-	value () const
-	{ return m_value; }
 
 	///  Constructs a matrix3 from a matrix2 rotation matrix.
 	matrix2 &
@@ -294,83 +243,189 @@ public:
 	submatrix () const
 	{ return m_array [0]; }
 
+	///  Sets the matrix to the new value calculated from the parameters.
+	void
+	set ();
+
+	void
+	set (const Type & translation);
+
+	void
+	set (const Type & translation, const Type & scale);
+
+	/// Computes and returns the transformation values from the matrix.
+	void
+	get (Type & translation) const;
+
+	void
+	get (Type & translation, Type & scale) const;
+
+	///  Access components by @a index.
+	constexpr
+	reference
+	operator [ ] (const size_type index)
+	{ return m_value [index]; }
+
+	///  Access components by @a index.
+	constexpr
+	const_reference
+	operator [ ] (const size_type index) const
+	{ return m_value [index]; }
+
+	///  Returns a reference to the first element in the container. 
+	constexpr
+	reference
+	front ()
+	{ return m_value .front (); }
+
+	///  Returns a reference to the first element in the container. 
+	constexpr
+	const_reference
+	front () const
+	{ return m_value .front (); }
+
+	///  Returns reference to the last element in the container. 
+	constexpr
+	reference
+	back ()
+	{ return m_value .back (); }
+
+	///  Returns reference to the last element in the container. 
+	constexpr
+	const_reference
+	back () const
+	{ return m_value .back (); }
+
+	///  Returns pointer to the underlying array serving as element storage.
+	constexpr
+	pointer
+	data ()
+	{ return m_value .data (); }
+
+	///  Returns pointer to the underlying array serving as element storage.
+	constexpr
+	const_pointer
+	data () const
+	{ return m_value .data (); }
+
+	///  Get access to the underlying vector representation of this matrix.
+	void
+	value (const array_type & value)
+	{ m_value = value; }
+
+	const array_type &
+	value () const
+	{ return m_value; }
+
 	///  @name Iterators
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	iterator
 	begin ()
-	{ return data (); }
+	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	const_iterator
 	begin () const
-	{ return data (); }
+	{ return m_value .begin (); }
 
 	///  Returns an iterator to the beginning.
+	constexpr
 	const_iterator
 	cbegin () const
-	{ return data (); }
+	{ return m_value .cbegin (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	iterator
 	end ()
-	{ return data () + size (); }
+	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	const_iterator
 	end () const
-	{ return data () + size (); }
+	{ return m_value .end (); }
 
 	///  Returns an iterator to the end.
+	constexpr
 	const_iterator
 	cend () const
-	{ return data () + size (); }
+	{ return m_value .cend (); }
 
 	///  Returns a reverse iterator to the beginning.
+	constexpr
 	reverse_iterator
 	rbegin ()
-	{ return std::make_reverse_iterator (end ()); }
+	{ return m_value .rbegin (); }
 
 	///  returns a reverse iterator to the beginning.
+	constexpr
 	const_reverse_iterator
 	rbegin () const
-	{ return std::make_reverse_iterator (end ()); }
+	{ return m_value .rbegin (); }
 
 	///  Returns a reverse iterator to the beginning.
+	constexpr
 	const_reverse_iterator
 	crbegin () const
-	{ return std::make_reverse_iterator (cend ()); }
+	{ return m_value .crbegin (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	reverse_iterator
 	rend ()
-	{ return std::make_reverse_iterator (begin ()); }
+	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	const_reverse_iterator
 	rend () const
-	{ return std::make_reverse_iterator (begin ()); }
+	{ return m_value .rend (); }
 
 	///  Returns a reverse iterator to the end.
+	constexpr
 	const_reverse_iterator
 	crend () const
-	{ return std::make_reverse_iterator (cbegin ()); }
+	{ return m_value .crend (); }
 
 	///  @name Capacity
 
-	///  Returns the order of the matrix.
+	///  Checks whether the container is empty. Always returns false.
 	static
 	constexpr
-	size_type
-	order ()
-	{ return ORDER; }
+	bool
+	empty ()
+	{ return false; }
 
 	///  Returns the number of elements in the matrix. The size is the same as order () * order ().
 	static
 	constexpr
 	size_type
 	size ()
-	{ return SIZE; }
+	{ return Size; }
+
+	///  @name Operations
+
+	///  Fill the container with specified @a value. 
+	void
+	fill (const Type & value)
+	{ m_array .fill (value); }
+
+	///  Swaps the contents.
+	void
+	swap (matrix2 & other)
+	{ m_value .swap (other .m_value); }
+
+	///  Returns the maximum possible number of elements. Because each vector is a fixed-size container,
+	///  the value is also the value returned by size.
+	static
+	constexpr
+	size_type
+	max_size ()
+	{ return Size; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this matrix2 inplace.
@@ -477,8 +532,8 @@ private:
 
 	union
 	{
-		matrix_type m_value;
-		array_type m_array;
+		array_type  m_value;
+		carray_type m_array;
 	};
 
 };
@@ -1062,5 +1117,58 @@ extern template std::ostream & operator << (std::ostream &, const matrix2 <long 
 
 } // math
 } // titania
+
+namespace std {
+
+///  Extracts the Ith element element from the matrix.
+template <size_t Index, class Type>
+inline
+constexpr
+Type &
+get (titania::math::matrix2 <Type> & matrix)
+{
+	return matrix [Index];
+}
+
+///  Extracts the Ith element element from the matrix.
+template <size_t Index, class Type>
+inline
+constexpr
+const Type &
+get (const titania::math::matrix2 <Type> & matrix)
+{
+	return matrix [Index];
+}
+
+///  Extracts the Ith element element from the matrix.
+template <size_t Index, class Type>
+inline
+constexpr
+Type &&
+get (titania::math::matrix2 <Type> && matrix)
+{
+	return matrix [Index];
+}
+
+///  Extracts the Ith element element from the matrix.
+template <size_t Index, class Type>
+inline
+constexpr
+const Type &&
+get (const titania::math::matrix2 <Type> && matrix)
+{
+	return matrix [Index];
+}
+
+/// Specializes the std::swap algorithm for matrix2.
+template <class Type>
+inline
+void
+swap (titania::math::matrix2 <Type> & lhs, titania::math::matrix2 <Type> & rhs) noexcept
+{
+	lhs .swap (rhs);
+}
+
+} // std
 
 #endif

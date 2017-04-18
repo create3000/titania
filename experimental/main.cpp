@@ -256,16 +256,25 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	constexpr Vector4d a (1, 2, 3, 4);
-	constexpr Vector4d b (a);
-
-	constexpr auto e = std::get <0> (a);
-	constexpr auto i = a .x ();
+	Matrix4d a (1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6);
+	Matrix4d b (5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4);
 
 	std::cout << std::endl;
 	std::cout << a << std::endl;
-	std::cout << e << std::endl;
-	std::cout << i << std::endl;
+	std::cout << b << std::endl;
+
+	std::swap (a, b);
+
+	std::cout << std::endl;
+	std::cout << a << std::endl;
+	std::cout << b << std::endl;
+
+	a .fill (8);
+	b .fill (9);
+
+	std::cout << std::endl;
+	std::cout << a << std::endl;
+	std::cout << b << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

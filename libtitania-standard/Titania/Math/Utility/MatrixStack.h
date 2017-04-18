@@ -79,14 +79,11 @@ public:
 	///  Container typedef.
 	using container_type = std::vector <value_type>;
 
-	///  Translation typedef.
-	using translation_type = typename value_type::translation_type;
+	///  Point typedef.
+	using vector_type = typename value_type::vector_type;
 
 	///  Rotation typedef.
 	using rotation_type = typename value_type::rotation_type;
-
-	///  Scale typedef.
-	using scale_type = typename value_type::scale_type;
 
 	///  @name Constructors
 
@@ -120,11 +117,11 @@ public:
 
 	typename value_type::value_type*
 	data ()
-	{ return stack .back () .data (); }
+	{ return stack .back () .front () .data (); }
 
 	const typename value_type::value_type*
 	data () const
-	{ return stack .back () .data (); }
+	{ return stack .back () .front () .data (); }
 
 	///  @name Operations
 	
@@ -161,7 +158,7 @@ public:
 	{ stack .back () .mult_left (value); }
 
 	void
-	translate (const translation_type & value)
+	translate (const vector_type & value)
 	{ stack .back () .translate (value); }
 
 	void
@@ -169,7 +166,7 @@ public:
 	{ stack .back () .rotate (value); }
 
 	void
-	scale (const scale_type & value)
+	scale (const vector_type & value)
 	{ stack .back () .scale (value); }
 
 

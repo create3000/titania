@@ -73,7 +73,7 @@ public:
 
 	using internal_type = Type;
 	using value_type    = typename Type::value_type;
-	using vector3_type  = SFVec3 <typename Type::vector3_type>;
+	using vector_type   = SFVec3 <typename Type::vector_type>;
 	using rotation_type = SFRotation;
 
 	///  @name Construction
@@ -332,16 +332,16 @@ SFMatrix4 <Type>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 
-		typename Type::vector3_type translation;
-		typename Type::rotation4_type rotation;
-		typename Type::vector3_type scale (1, 1, 1);
-		typename Type::rotation4_type scaleOrientation;
-		typename Type::vector3_type center;
+		typename Type::vector_type translation;
+		typename Type::rotation_type rotation;
+		typename Type::vector_type scale (1, 1, 1);
+		typename Type::rotation_type scaleOrientation;
+		typename Type::vector_type center;
 
 		try
 		{
 			if (argc > 0)
-				translation = *getArgument <vector3_type> (cx, argv, 0);
+				translation = *getArgument <vector_type> (cx, argv, 0);
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -357,7 +357,7 @@ SFMatrix4 <Type>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		try
 		{
 			if (argc > 2)
-				scale = *getArgument <vector3_type> (cx, argv, 2);
+				scale = *getArgument <vector_type> (cx, argv, 2);
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -373,7 +373,7 @@ SFMatrix4 <Type>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		try
 		{
 			if (argc > 4)
-				center = *getArgument <vector3_type> (cx, argv, 4);
+				center = *getArgument <vector_type> (cx, argv, 4);
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -401,16 +401,16 @@ SFMatrix4 <Type>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 
-		typename Type::vector3_type translation;
-		typename Type::rotation4_type rotation;
-		typename Type::vector3_type scale (1, 1, 1);
-		typename Type::rotation4_type scaleOrientation;
-		typename Type::vector3_type center;
+		typename Type::vector_type translation;
+		typename Type::rotation_type rotation;
+		typename Type::vector_type scale (1, 1, 1);
+		typename Type::rotation_type scaleOrientation;
+		typename Type::vector_type center;
 
 		try
 		{
 			if (argc > 4)
-				center = *getArgument <vector3_type> (cx, argv, 4);
+				center = *getArgument <vector_type> (cx, argv, 4);
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -420,7 +420,7 @@ SFMatrix4 <Type>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		try
 		{
 			if (argc > 0)
-				getArgument <vector3_type> (cx, argv, 0) -> setValue (translation);
+				getArgument <vector_type> (cx, argv, 0) -> setValue (translation);
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -436,7 +436,7 @@ SFMatrix4 <Type>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		try
 		{
 			if (argc > 2)
-				getArgument <vector3_type> (cx, argv, 2) -> setValue (scale);
+				getArgument <vector_type> (cx, argv, 2) -> setValue (scale);
 		}
 		catch (const std::domain_error &)
 		{ }
@@ -549,9 +549,9 @@ SFMatrix4 <Type>::multVecMatrix (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
-		const auto rhs  = getArgument <vector3_type> (cx, argv, 0);
+		const auto rhs  = getArgument <vector_type> (cx, argv, 0);
 
-		return create <vector3_type> (cx, lhs -> multVecMatrix (*rhs), &JS_RVAL (cx, vp));
+		return create <vector_type> (cx, lhs -> multVecMatrix (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -570,9 +570,9 @@ SFMatrix4 <Type>::multMatrixVec (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
-		const auto rhs  = getArgument <vector3_type> (cx, argv, 0);
+		const auto rhs  = getArgument <vector_type> (cx, argv, 0);
 
-		return create <vector3_type> (cx, lhs -> multMatrixVec (*rhs), &JS_RVAL (cx, vp));
+		return create <vector_type> (cx, lhs -> multMatrixVec (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -591,9 +591,9 @@ SFMatrix4 <Type>::multDirMatrix (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
-		const auto rhs  = getArgument <vector3_type> (cx, argv, 0);
+		const auto rhs  = getArgument <vector_type> (cx, argv, 0);
 
-		return create <vector3_type> (cx, lhs -> multDirMatrix (*rhs), &JS_RVAL (cx, vp));
+		return create <vector_type> (cx, lhs -> multDirMatrix (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -612,9 +612,9 @@ SFMatrix4 <Type>::multMatrixDir (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
-		const auto rhs  = getArgument <vector3_type> (cx, argv, 0);
+		const auto rhs  = getArgument <vector_type> (cx, argv, 0);
 
-		return create <vector3_type> (cx, lhs -> multMatrixDir (*rhs), &JS_RVAL (cx, vp));
+		return create <vector_type> (cx, lhs -> multMatrixDir (*rhs), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
