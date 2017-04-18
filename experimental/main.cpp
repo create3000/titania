@@ -259,11 +259,29 @@ main (int argc, char** argv)
 	Matrix4d a (1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6);
 	Matrix4d b (1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6);
 
-	std::cout << std::endl;
-	std::cout << a << std::endl;
+	constexpr size_t N = 10'000'000'000;
 
-	for (const auto & v : a)
-		std::cout << v << std::endl;
+	{
+		double d  = 0;
+		auto   t0 = chrono::now ();
+
+		for (size_t i = 0; i < N; ++ i)
+			d += a .submatrix () .determinant ();
+
+		std::cout << chrono::now () - t0 << std::endl;
+		std::cout << d << std::endl;
+	}
+
+	{
+		double d  = 0;
+		auto   t0 = chrono::now ();
+
+		for (size_t i = 0; i < N; ++ i)
+			d += a .submatrix () .determinant ();
+
+		std::cout << chrono::now () - t0 << std::endl;
+		std::cout << d << std::endl;
+	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -202,10 +202,6 @@ public:
 	              const vector_type & center) const;
 
 	value_type
-	determinant3 () const
-	{ return getValue () .determinant3 (); }
-
-	value_type
 	determinant () const
 	{ return getValue () .determinant (); }
 

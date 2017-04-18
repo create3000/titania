@@ -955,7 +955,7 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 
 		// Draw depending on ccw, transparency and solid.
 	
-		const auto positiveScale = determinant3 (context -> getModelViewMatrix ()) > 0;
+		const auto positiveScale = context -> getModelViewMatrix () .submatrix () .determinant () > 0;
 	
 		if (context -> isTransparent () && not solid)
 		{

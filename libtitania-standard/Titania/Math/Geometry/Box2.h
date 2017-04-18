@@ -189,7 +189,7 @@ public:
 	///  Returns the area of this box.
 	Type
 	area () const
-	{ return std::abs (determinant2 (matrix ())) * 4; }
+	{ return std::abs (matrix () .submatrix () .determinant ()) * 4; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box2 inplace.

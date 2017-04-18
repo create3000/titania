@@ -539,11 +539,6 @@ public:
 	///  @name  Arithmetic operations
 	///  All these operators modify this matrix inplace.
 
-	///  Returns the determinant of the 2x2 sub-matrix.
-	constexpr
-	Type
-	determinant2 () const;
-
 	///  Returns the determinant of this matrix.
 	constexpr
 	Type
@@ -924,16 +919,6 @@ matrix3 <Type>::factor (vector2 <T> & translation,
 template <class Type>
 constexpr
 Type
-matrix3 <Type>::determinant2 () const
-{
-	return
-	   m_array [0] * m_array [4] -
-	   m_array [1] * m_array [3];
-}
-
-template <class Type>
-constexpr
-Type
 matrix3 <Type>::determinant () const
 {
 	const Type
@@ -1306,16 +1291,6 @@ operator >= (const matrix3 <Type> & lhs, const matrix3 <Type> & rhs)
 
 ///  @relates matrix3
 ///  @name Arithmetic operations
-
-///  Returns the determinant of the 2x2 submatrix of @a matrix.
-template <class Type>
-inline
-constexpr
-Type
-determinant2 (const matrix3 <Type> & matrix)
-{
-	return matrix .determinant2 ();
-}
 
 ///  Returns the determinant of the @a matrix.
 template <class Type>

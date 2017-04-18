@@ -1624,7 +1624,7 @@ ParticleSystem::draw (ShapeContainer* const context)
 		context -> setColorMaterial (numColors);
 
 		glEnable (GL_CULL_FACE);
-		glFrontFace (determinant3 (context -> getModelViewMatrix ()) > 0 ? GL_CCW : GL_CW);
+		glFrontFace (context -> getModelViewMatrix () .submatrix () .determinant () > 0 ? GL_CCW : GL_CW);
 		glNormal3f (0, 0, 1);
 
 		switch (geometryTypeId)

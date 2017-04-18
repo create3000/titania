@@ -190,7 +190,7 @@ public:
 	///  Returns the volume of this box.
 	Type
 	volume () const
-	{ return std::abs (determinant3 (matrix ())) * 8; }
+	{ return std::abs (matrix () .submatrix () .determinant ()) * 8; }
 
 	///  @name  Arithmetic operations
 	///  All these operators modify this box3 inplace.

@@ -452,11 +452,6 @@ public:
 	///  @name  Arithmetic operations
 	///  All these operators modify this matrix inplace.
 
-	///  Returns the determinant of the 2x2 sub-matrix.
-	constexpr
-	Type
-	determinant1 () const;
-
 	///  Returns the determinant of this matrix.
 	constexpr
 	Type
@@ -612,15 +607,6 @@ matrix2 <Type>::get (Type & translation,
 {
 	translation = origin ();
 	scaleFactor = m_array [0];
-}
-
-template <class Type>
-inline
-constexpr
-Type
-matrix2 <Type>::determinant1 () const
-{
-	return m_array [0];
 }
 
 template <class Type>
@@ -864,16 +850,6 @@ operator not_eq (const matrix2 <Type> & lhs, const matrix2 <Type> & rhs)
 
 ///  @relates matrix2
 ///  @name Arithmetic operations
-
-///  Returns the determinant of the 1x1 submatrix of @a matrix.
-template <class Type>
-inline
-constexpr
-Type
-determinant1 (const matrix2 <Type> & matrix)
-{
-	return matrix .determinant1 ();
-}
 
 ///  Returns the determinant of the @a matrix.
 template <class Type>

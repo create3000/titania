@@ -593,10 +593,6 @@ public:
 	///  @name  Arithmetic operations
 	///  All these operators modify this matrix inplace.
 
-	///  Returns the determinant of the 3x3 sub-matrix.
-	Type
-	determinant3 () const;
-
 	///  Returns the determinant of this matrix.
 	Type
 	determinant () const;
@@ -938,21 +934,6 @@ matrix4 <Type>::factor (vector3 <T> & translation,
 	scaleOrientation .transpose ();
 
 	return true;
-}
-
-template <class Type>
-inline
-Type
-matrix4 <Type>::determinant3 () const
-{
-	const Type
-		m00 = m_array [0], m01 = m_array [1], m02 = m_array [ 2],
-		m04 = m_array [4], m05 = m_array [5], m06 = m_array [ 6],
-		m08 = m_array [8], m09 = m_array [9], m10 = m_array [10];
-
-	return m00 * (m05 * m10 - m06 * m09) -
-	       m01 * (m04 * m10 - m06 * m08) +
-	       m02 * (m04 * m09 - m05 * m08);
 }
 
 template <class Type>
@@ -1437,15 +1418,6 @@ operator >= (const matrix4 <Type> & lhs, const matrix4 <Type> & rhs)
 
 ///  @relates matrix4
 ///  @name Arithmetic operations
-
-///  Returns the determinant of the 3x3 submatrix of @a matrix.
-template <class Type>
-inline
-Type
-determinant3 (const matrix4 <Type> & matrix)
-{
-	return matrix .determinant3 ();
-}
 
 ///  Returns the determinant of the @a matrix.
 template <class Type>
