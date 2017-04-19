@@ -122,8 +122,6 @@
 
 #include <Titania/String/dtoa.h>
 
-#include "Vector4.h"
-
 using namespace titania;
 using namespace titania::basic;
 using namespace titania::math;
@@ -260,55 +258,9 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Rotation4d r (1,2,3,4);
+	Vector4f v (1);
 
-	Vector2f v2 (1,2);
-	Vector3d v3 (3,4,5);
-	Vector4d v4 (4,5,6,7);
-	Vector4i i4 (4,5,6,7);
-
-	std::array <float, 3> white = {1,2,3};
-
-	xvector4 <double> a (white, 1);
-	xvector4 <Vector4d> b (v4, v4, v4);
-
-	std::cout << std::endl;
-	std::cout << a << std::endl;
-	std::cout << b << std::endl;
-
-	std::cout << std::tuple_size <Color3f>::value << std::endl;
-	std::cout << std::tuple_size <Color4f>::value << std::endl;
-	std::cout << std::tuple_size <Matrix3d>::value << std::endl;
-	std::cout << std::tuple_size <Matrix4d>::value << std::endl;
-	std::cout << std::tuple_size <Rotation4d>::value << std::endl;
-	std::cout << std::tuple_size <Quaternion4d>::value << std::endl;
-	std::cout << std::tuple_size <Vector2d>::value << std::endl;
-	std::cout << std::tuple_size <Vector3d>::value << std::endl;
-	std::cout << std::tuple_size <Vector4d>::value << std::endl;
-	
-	std::cout << std::get <0> (std::move (r)) << std::endl;
-
-	std::tuple_element <0, Color3f>::type t1 = 123.123;
-	std::tuple_element <0, Color4f>::type t2 = 123.123;
-	std::tuple_element <0, Matrix3d>::type t3 = 123.123;
-	std::tuple_element <0, Matrix4d>::type t4 = 123.123;
-	std::tuple_element <0, Rotation4d>::type t5 = 123.123;
-	std::tuple_element <0, Quaternion4d>::type t9 = 123.123;
-	std::tuple_element <0, Vector2d>::type t6 = 123.123;
-	std::tuple_element <0, Vector3d>::type t7 = 123.123;
-	std::tuple_element <0, Vector4d>::type t8 = 123.123;
-
-	std::cout << std::endl;
-	std::cout << t1 << std::endl;
-	std::cout << t2 << std::endl;
-	std::cout << t3 << std::endl;
-	std::cout << t4 << std::endl;
-	std::cout << t5 << std::endl;
-	std::cout << t6 << std::endl;
-	std::cout << t7 << std::endl;
-	std::cout << t8 << std::endl;
-	std::cout << t9 << std::endl;
-
+	std::clog << v << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -61,7 +61,6 @@
     <None Include="Makefile.in" />
     <None Include="experimental.cproj" />
     <None Include="experimental.pidb" />
-    <None Include="Vector4.h" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

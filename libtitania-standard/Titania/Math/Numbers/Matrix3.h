@@ -51,15 +51,16 @@
 #ifndef __TITANIA_MATH_NUMBERS_MATRIX3_H__
 #define __TITANIA_MATH_NUMBERS_MATRIX3_H__
 
+#include "Construction.h"
+#include "Matrix2.h"
+#include "Vector2.h"
+#include "Vector3.h"
+
 #include <cfloat>
 #include <cmath>
 #include <istream>
 #include <ostream>
 #include <stdexcept>
-
-#include "Matrix2.h"
-#include "Vector2.h"
-#include "Vector3.h"
 
 #include "../Algorithms/EigenDecomposition.h"
 
@@ -157,14 +158,14 @@ public:
 	template <class Up>
 	constexpr
 	matrix3 (const matrix3 <Up> & other) :
-		m_value (other [0], other [1], other [2])
+		m_matrix (other [0], other [1], other [2])
 	{ }
 
 	///  Vector constructor.
 	template <class Up>
 	constexpr
 	matrix3 (const vector3 <Up> & x, const vector3 <Up> & y, const vector3 <Up> & z) :
-		m_value (x, y, z)
+		m_matrix (x, y, z)
 	{ }
 
 	///  Components constructor. Set values from @a e11 to @a e33.
@@ -186,6 +187,13 @@ public:
 		          v, v, v }
 	{ }
 
+//	///  Construct matrix from @a args. Args can be any arithmetic type or container in any order.
+//	template <class ... Args>
+//	constexpr
+//	matrix3 (const Args & ... args) :
+//		m_array (number_construction_helper <Type>::resolve (array_type (), 0, args ...))
+//	{ }
+
 	///  @name Assignment operators
 
 	template <class T>
@@ -197,35 +205,35 @@ public:
 	///  Set x component of this matrix.
 	void
 	x (const vector3 <Type> & vector)
-	{ m_value .x (vector); }
+	{ m_matrix .x (vector); }
 
 	///  Return x component of this matrix.
 	constexpr
 	const vector3 <Type> &
 	x () const
-	{ return m_value .x (); }
+	{ return m_matrix .x (); }
 
 	///  Set y component of this matrix.
 	void
 	y (const vector3 <Type> & vector)
-	{ m_value .y (vector); }
+	{ m_matrix .y (vector); }
 
 	///  Return y component of this matrix.
 	constexpr
 	const vector3 <Type> &
 	y () const
-	{ return m_value .y (); }
+	{ return m_matrix .y (); }
 
 	///  Set z component of this matrix.
 	void
 	z (const vector3 <Type> & vector)
-	{ m_value .z (vector); }
+	{ m_matrix .z (vector); }
 
 	///  Return z component of this matrix.
 	constexpr
 	const vector3 <Type> &
 	z () const
-	{ return m_value .z (); }
+	{ return m_matrix .z (); }
 
 	///  Set x-axis of this matrix.
 	void
@@ -352,25 +360,25 @@ public:
 	constexpr
 	vector3 <Type> &
 	at (const size_type index)
-	{ return m_value .at (index); }
+	{ return m_matrix .at (index); }
 
 	///  Access specified row with bounds checking.
 	constexpr
 	const vector3 <Type> &
 	at (const size_type index) const
-	{ return m_value .at (index); }
+	{ return m_matrix .at (index); }
 
 	///  Access row by @a index.
 	constexpr
 	vector3 <Type> &
 	operator [ ] (const size_type index)
-	{ return m_value [index]; }
+	{ return m_matrix [index]; }
 
 	///  Access row by @a index.
 	constexpr
 	const vector3 <Type> &
 	operator [ ] (const size_type index) const
-	{ return m_value [index]; }
+	{ return m_matrix [index]; }
 
 	///  Returns a reference to the first element in the container. 
 	constexpr
@@ -411,11 +419,11 @@ public:
 	///  Get access to the underlying vector representation of this matrix.
 	void
 	value (const matrix_type & value)
-	{ m_value = value; }
+	{ m_matrix = value; }
 
 	const matrix_type &
 	value () const
-	{ return m_value; }
+	{ return m_matrix; }
 
 	///  @name Iterators
 
@@ -673,8 +681,8 @@ private:
 
 	union
 	{
-		matrix_type  m_value;
-		array_type m_array;
+		matrix_type m_matrix;
+		array_type  m_array;
 	};
 
 };
@@ -685,7 +693,7 @@ inline
 matrix3 <Type> &
 matrix3 <Type>::operator = (const matrix3 <Up> & matrix)
 {
-	m_value = matrix .value ();
+	m_matrix = matrix .value ();
 	return *this;
 }
 
@@ -728,9 +736,9 @@ template <class Type>
 void
 matrix3 <Type>::set (const vector2 <Type> & translation)
 {
-	m_value [0] = vector3 <Type> (1, 0, 0);
-	m_value [1] = vector3 <Type> (0, 1, 0);
-	m_value [2] = vector3 <Type> (translation .x (), translation .y (), 1);
+	m_matrix [0] = vector3 <Type> (1, 0, 0);
+	m_matrix [1] = vector3 <Type> (0, 1, 0);
+	m_matrix [2] = vector3 <Type> (translation .x (), translation .y (), 1);
 }
 
 template <class Type>
@@ -1014,7 +1022,7 @@ inline
 matrix3 <Type> &
 matrix3 <Type>::operator += (const matrix3 & matrix)
 {
-	m_value += matrix .value ();
+	m_matrix += matrix .value ();
 	return *this;
 }
 
@@ -1022,9 +1030,9 @@ template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::operator += (const Type & t)
 {
-	m_value [0] += t;
-	m_value [1] += t;
-	m_value [2] += t;
+	m_matrix [0] += t;
+	m_matrix [1] += t;
+	m_matrix [2] += t;
 
 	return *this;
 }
@@ -1034,7 +1042,7 @@ inline
 matrix3 <Type> &
 matrix3 <Type>::operator -= (const matrix3 & matrix)
 {
-	m_value -= matrix .value ();
+	m_matrix -= matrix .value ();
 	return *this;
 }
 
@@ -1042,9 +1050,9 @@ template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::operator -= (const Type & t)
 {
-	m_value [0] -= t;
-	m_value [1] -= t;
-	m_value [2] -= t;
+	m_matrix [0] -= t;
+	m_matrix [1] -= t;
+	m_matrix [2] -= t;
 
 	return *this;
 }
@@ -1062,9 +1070,9 @@ template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::operator *= (const Type & t)
 {
-	m_value [0] *= t;
-	m_value [1] *= t;
-	m_value [2] *= t;
+	m_matrix [0] *= t;
+	m_matrix [1] *= t;
+	m_matrix [2] *= t;
 
 	return *this;
 }
@@ -1073,9 +1081,9 @@ template <class Type>
 matrix3 <Type> &
 matrix3 <Type>::operator /= (const Type & t)
 {
-	m_value [0] /= t;
-	m_value [1] /= t;
-	m_value [2] /= t;
+	m_matrix [0] /= t;
+	m_matrix [1] /= t;
+	m_matrix [2] /= t;
 
 	return *this;
 }
@@ -1191,11 +1199,11 @@ void
 matrix3 <Type>::translate (const vector2 <Type> & translation)
 {
 	#define TRANSLATE(i) \
-	   (m_value [0] [i] * translation .x () +   \
-	    m_value [1] [i] * translation .y ())
+	   (m_matrix [0] [i] * translation .x () +   \
+	    m_matrix [1] [i] * translation .y ())
 
-	m_value [2] [0] += TRANSLATE (0);
-	m_value [2] [1] += TRANSLATE (1);
+	m_matrix [2] [0] += TRANSLATE (0);
+	m_matrix [2] [1] += TRANSLATE (1);
 
 	#undef TRANSLATE
 }
@@ -1215,11 +1223,11 @@ template <class Type>
 void
 matrix3 <Type>::scale (const vector2 <Type> & scaleFactor)
 {
-	m_value [0] [0] *= scaleFactor .x ();
-	m_value [1] [0] *= scaleFactor .y ();
+	m_matrix [0] [0] *= scaleFactor .x ();
+	m_matrix [1] [0] *= scaleFactor .y ();
 
-	m_value [0] [1] *= scaleFactor .x ();
-	m_value [1] [1] *= scaleFactor .y ();
+	m_matrix [0] [1] *= scaleFactor .x ();
+	m_matrix [1] [1] *= scaleFactor .y ();
 }
 
 template <class Type>

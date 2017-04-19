@@ -113,14 +113,14 @@ public:
 	///  The rotation will be set to its default value 0 0 1  0.
 	constexpr
 	rotation4 () :
-		m_value ()
+		m_quat ()
 	{ }
 
 	///  Copy constructor.
 	template <class Up>
 	constexpr
 	rotation4 (const rotation4 <Up> & rotation) :
-		m_value (rotation .quat ())
+		m_quat (rotation .quat ())
 	{ }
 
 	///  Construct a rotation from normalized @a quaternion.
@@ -128,7 +128,7 @@ public:
 	explicit
 	constexpr
 	rotation4 (const quaternion <Up> & quaternion) :
-		m_value (quaternion)
+		m_quat (quaternion)
 	{ }
 
 	///  Components constructor. Construct a rotation from @a x, @a y, @a z and @a angle.
@@ -263,12 +263,12 @@ public:
 	///  Set quaternion of this rotation.
 	void
 	quat (const quaternion <Type> & q)
-	{ m_value = q; }
+	{ m_quat = q; }
 
 	///  Returns quaternion of this rotation.
 	const quaternion <Type> &
 	quat () const
-	{ return m_value; }
+	{ return m_quat; }
 
 	///  @name Capacity
 
@@ -299,7 +299,7 @@ public:
 	///  Swaps the contents.
 	void
 	swap (rotation4 & other)
-	{ m_value .swap (other .m_value); }
+	{ m_quat .swap (other .m_quat); }
 
 	///  @name Arithmetic operations
 
@@ -330,7 +330,7 @@ public:
 
 private:
 
-	quaternion <Type> m_value;
+	quaternion <Type> m_quat;
 
 };
 
@@ -381,7 +381,7 @@ rotation4 <Type>::rotation4 (const vector3 <Up> & fromVector, const vector3 <Up>
 
 			t .normalize ();
 
-			m_value = quaternion <Type> (t [0], t [1], t [2], 0);
+			m_quat = quaternion <Type> (t [0], t [1], t [2], 0);
 		}
 	}
 	else
@@ -390,7 +390,7 @@ rotation4 <Type>::rotation4 (const vector3 <Up> & fromVector, const vector3 <Up>
 		// The abs () wrapping is to avoid problems when `dot' "overflows" a tiny wee bit,
 		// which can lead to sqrt () returning NaN.
 		crossvec *= std::sqrt (std::abs (1 - cos_angle) / 2);
-		m_value   = quaternion <Type> (crossvec [0], crossvec [1], crossvec [2], std::sqrt ((1 + cos_angle) / 2));
+		m_quat   = quaternion <Type> (crossvec [0], crossvec [1], crossvec [2], std::sqrt ((1 + cos_angle) / 2));
 	}
 }
 
@@ -400,7 +400,7 @@ inline
 rotation4 <Type> &
 rotation4 <Type>::operator = (const rotation4 <Up> & rotation)
 {
-	m_value = rotation .quat ();
+	m_quat = rotation .quat ();
 	return *this;
 }
 
@@ -441,10 +441,10 @@ template <class Type>
 vector3 <Type>
 rotation4 <Type>::axis () const
 {
-	if (std::abs (m_value .w ()) >= 1)
+	if (std::abs (m_quat .w ()) >= 1)
 		return vector3 <Type> (0, 0, 1);
 
-	return normalize (imag (m_value));
+	return normalize (imag (m_quat));
 }
 
 template <class Type>
@@ -459,10 +459,10 @@ template <class Type>
 Type
 rotation4 <Type>::angle () const
 {
-	if (std::abs (m_value .w ()) >= 1)
+	if (std::abs (m_quat .w ()) >= 1)
 		return 0;
 
-	return 2 * std::acos (m_value .w ());
+	return 2 * std::acos (m_quat .w ());
 }
 
 template <class Type>
@@ -514,7 +514,7 @@ rotation4 <Type>::matrix (const matrix3 <Up> & matrix)
 		quat [3] = (matrix [j] [k] - matrix [k] [j]) / d;
 	}
 
-	m_value = quaternion <Type> (quat [0], quat [1], quat [2], quat [3]);
+	m_quat = quaternion <Type> (quat [0], quat [1], quat [2], quat [3]);
 }
 
 ///  Convert this rotation to a matrix3.
@@ -522,10 +522,10 @@ template <class Type>
 matrix3 <Type>
 rotation4 <Type>::matrix () const
 {
-	const Type x = m_value .x ();
-	const Type y = m_value .y ();
-	const Type z = m_value .z ();
-	const Type w = m_value .w ();
+	const Type x = m_quat .x ();
+	const Type y = m_quat .y ();
+	const Type z = m_quat .z ();
+	const Type w = m_quat .w ();
 
 	const Type a = x * x;
 	const Type b = x * y;
@@ -560,7 +560,7 @@ rotation4 <Type>::set (const Type & x, const Type & y, const Type & z, const Typ
 
 	if (scale == 0)
 	{
-		m_value = quaternion <Type> ();
+		m_quat = quaternion <Type> ();
 		return;
 	}
 
@@ -570,10 +570,10 @@ rotation4 <Type>::set (const Type & x, const Type & y, const Type & z, const Typ
 
 	scale = std::sin (halfTheta) / scale;
 
-	m_value = quaternion <Type> (x * scale,
-	                             y * scale,
-	                             z * scale,
-	                             std::cos (halfTheta));
+	m_quat = quaternion <Type> (x * scale,
+	                            y * scale,
+	                            z * scale,
+	                            std::cos (halfTheta));
 }
 
 template <class Type>
@@ -581,7 +581,7 @@ template <class T>
 void
 rotation4 <Type>::get (T & x, T & y, T & z, T & angle) const
 {
-	if (std::abs (m_value .w ()) >= 1)
+	if (std::abs (m_quat .w ()) >= 1)
 	{
 		x     = 0;
 		y     = 0;
@@ -590,12 +590,12 @@ rotation4 <Type>::get (T & x, T & y, T & z, T & angle) const
 		return;
 	}
 
-	const vector3 <Type> vector = normalize (imag (m_value));
+	const vector3 <Type> vector = normalize (imag (m_quat));
 
 	x     = vector .x ();
 	y     = vector .y ();
 	z     = vector .z ();
-	angle = 2 * std::acos (m_value .w ());
+	angle = 2 * std::acos (m_quat .w ());
 }
 
 ///  Access components by @a index.
@@ -635,7 +635,7 @@ inline
 void
 rotation4 <Type>::inverse ()
 {
-	m_value .inverse ();
+	m_quat .inverse ();
 }
 
 template <class Type>
@@ -643,7 +643,7 @@ inline
 rotation4 <Type> &
 rotation4 <Type>::operator *= (const rotation4 & rotation)
 {
-	m_value .mult_right (rotation .quat ());
+	m_quat .mult_right (rotation .quat ());
 	return *this;
 }
 
@@ -652,8 +652,8 @@ inline
 void
 rotation4 <Type>::mult_left (const rotation4 & rotation)
 {
-	m_value .mult_left (rotation .quat ());
-	m_value .normalize ();
+	m_quat .mult_left (rotation .quat ());
+	m_quat .normalize ();
 }
 
 template <class Type>
@@ -661,8 +661,8 @@ inline
 void
 rotation4 <Type>::mult_right (const rotation4 & rotation)
 {
-	m_value .mult_right (rotation .quat ());
-	m_value .normalize ();
+	m_quat .mult_right (rotation .quat ());
+	m_quat .normalize ();
 }
 
 template <class Type>
@@ -670,7 +670,7 @@ inline
 vector3 <Type>
 rotation4 <Type>::mult_vec_rot (const vector3 <Type> & vector) const
 {
-	return m_value .mult_vec_quat (vector);
+	return m_quat .mult_vec_quat (vector);
 }
 
 template <class Type>
@@ -678,7 +678,7 @@ inline
 vector3 <Type>
 rotation4 <Type>::mult_rot_vec (const vector3 <Type> & vector) const
 {
-	return m_value .mult_quat_vec (vector);
+	return m_quat .mult_quat_vec (vector);
 }
 
 ///  @relates rotation4
