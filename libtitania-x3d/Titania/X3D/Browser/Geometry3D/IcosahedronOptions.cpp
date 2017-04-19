@@ -55,7 +55,7 @@
 #include "../../Components/Rendering/Coordinate.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
 
-#include <Titania/Math/Primitives/Polyhedron3.h>
+#include <Titania/Math/Primitives/TriangleSphere3.h>
 
 namespace titania {
 namespace X3D {

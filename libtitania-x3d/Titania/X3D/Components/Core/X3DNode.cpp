@@ -713,6 +713,104 @@ throw (Error <DISPOSED>)
 }
 
 template <>
+SFMatrix3d::internal_type
+X3DNode::getMetaData <SFMatrix3d::internal_type> (const std::string & key, const SFMatrix3d::internal_type & defaultValue)
+throw (Error <DISPOSED>)
+{
+	const auto metaValue = getMetaData <MFDouble> (key);
+
+	if (metaValue .size () < SFMatrix3d::internal_type::size ())
+		return defaultValue;
+
+	return SFMatrix3d::internal_type (metaValue [0],
+	                                  metaValue [1],
+	                                  metaValue [2],
+	                                  metaValue [3],
+	                                  metaValue [4],
+	                                  metaValue [5],
+	                                  metaValue [6],
+	                                  metaValue [7],
+	                                  metaValue [8]);
+}
+
+template <>
+SFMatrix3f::internal_type
+X3DNode::getMetaData <SFMatrix3f::internal_type> (const std::string & key, const SFMatrix3f::internal_type & defaultValue)
+throw (Error <DISPOSED>)
+{
+	const auto metaValue = getMetaData <MFFloat> (key);
+
+	if (metaValue .size () < SFMatrix3f::internal_type::size ())
+		return defaultValue;
+
+	return SFMatrix3f::internal_type (metaValue [0],
+	                                  metaValue [1],
+	                                  metaValue [2],
+	                                  metaValue [3],
+	                                  metaValue [4],
+	                                  metaValue [5],
+	                                  metaValue [6],
+	                                  metaValue [7],
+	                                  metaValue [8]);
+}
+
+template <>
+SFMatrix4d::internal_type
+X3DNode::getMetaData <SFMatrix4d::internal_type> (const std::string & key, const SFMatrix4d::internal_type & defaultValue)
+throw (Error <DISPOSED>)
+{
+	const auto metaValue = getMetaData <MFDouble> (key);
+
+	if (metaValue .size () < SFMatrix4d::internal_type::size ())
+		return defaultValue;
+
+	return SFMatrix4d::internal_type (metaValue [ 0],
+	                                  metaValue [ 1],
+	                                  metaValue [ 2],
+	                                  metaValue [ 3],
+	                                  metaValue [ 4],
+	                                  metaValue [ 5],
+	                                  metaValue [ 6],
+	                                  metaValue [ 7],
+	                                  metaValue [ 8],
+	                                  metaValue [ 9],
+	                                  metaValue [10],
+	                                  metaValue [11],
+	                                  metaValue [12],
+	                                  metaValue [13],
+	                                  metaValue [14],
+	                                  metaValue [15]);
+}
+
+template <>
+SFMatrix4f::internal_type
+X3DNode::getMetaData <SFMatrix4f::internal_type> (const std::string & key, const SFMatrix4f::internal_type & defaultValue)
+throw (Error <DISPOSED>)
+{
+	const auto metaValue = getMetaData <MFFloat> (key);
+
+	if (metaValue .size () < SFMatrix4f::internal_type::size ())
+		return defaultValue;
+
+	return SFMatrix4f::internal_type (metaValue [ 0],
+	                                  metaValue [ 1],
+	                                  metaValue [ 2],
+	                                  metaValue [ 3],
+	                                  metaValue [ 4],
+	                                  metaValue [ 5],
+	                                  metaValue [ 6],
+	                                  metaValue [ 7],
+	                                  metaValue [ 8],
+	                                  metaValue [ 9],
+	                                  metaValue [10],
+	                                  metaValue [11],
+	                                  metaValue [12],
+	                                  metaValue [13],
+	                                  metaValue [14],
+	                                  metaValue [15]);
+}
+
+template <>
 SFNode
 X3DNode::getMetaData <SFNode> (const std::string & key, const SFNode & defaultValue)
 throw (Error <DISPOSED>)
@@ -897,6 +995,38 @@ X3DNode::getMetaData <MFInt32> (const std::string & key, const MFInt32 & default
 throw (Error <DISPOSED>)
 {
 	return MetadataHandling::getMetaValue <MFInt32, MetadataInteger> (this, key, defaultValue);
+}
+
+template <>
+MFMatrix3d
+X3DNode::getMetaData <MFMatrix3d> (const std::string & key, const MFMatrix3d & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFMatrix3d, MetadataDouble> (this, key, defaultValue);
+}
+
+template <>
+MFMatrix3f
+X3DNode::getMetaData <MFMatrix3f> (const std::string & key, const MFMatrix3f & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFMatrix3f, MetadataFloat> (this, key, defaultValue);
+}
+
+template <>
+MFMatrix4d
+X3DNode::getMetaData <MFMatrix4d> (const std::string & key, const MFMatrix4d & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFMatrix4d, MetadataDouble> (this, key, defaultValue);
+}
+
+template <>
+MFMatrix4f
+X3DNode::getMetaData <MFMatrix4f> (const std::string & key, const MFMatrix4f & defaultValue)
+throw (Error <DISPOSED>)
+{
+	return MetadataHandling::getMetaValue <MFMatrix4f, MetadataFloat> (this, key, defaultValue);
 }
 
 template <>

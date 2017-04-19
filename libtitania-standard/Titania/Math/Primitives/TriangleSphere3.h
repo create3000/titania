@@ -64,7 +64,7 @@ namespace titania {
 namespace math {
 
 template <class Type>
-class basic_polyhedron3
+class triangle_sphere3
 {
 public:
 
@@ -93,14 +93,14 @@ public:
 	///  @name Destruction
 
 	virtual
-	~basic_polyhedron3 () = default;
+	~triangle_sphere3 () = default;
 
 
 protected:
 
 	///  @name Construction
 
-	basic_polyhedron3 (const size_t dimension);
+	triangle_sphere3 (const size_t dimension);
 
 	///  @name Operations
 
@@ -170,7 +170,7 @@ private:
 };
 
 template <class Type>
-basic_polyhedron3 <Type>::basic_polyhedron3 (const size_t dimension) :
+triangle_sphere3 <Type>::triangle_sphere3 (const size_t dimension) :
 	         m_dimension (std::max <size_t> (1, dimension)),
 	       m_coord_index (),
 	           m_simplex (),
@@ -182,14 +182,14 @@ basic_polyhedron3 <Type>::basic_polyhedron3 (const size_t dimension) :
 
 template <class Type>
 void
-basic_polyhedron3 <Type>::add_point (const vector3 <Type> & point)
+triangle_sphere3 <Type>::add_point (const vector3 <Type> & point)
 {
 	m_simplex .emplace_back (normalize (point));
 }
 
 template <class Type>
 int32_t
-basic_polyhedron3 <Type>::add_point (const vector3 <Type> & point, const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z)
+triangle_sphere3 <Type>::add_point (const vector3 <Type> & point, const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z)
 {
 	if (x == 0 or y == 0 or z == 0)
 	{
@@ -236,21 +236,21 @@ basic_polyhedron3 <Type>::add_point (const vector3 <Type> & point, const int32_t
 
 template <class Type>
 const vector3 <Type> &
-basic_polyhedron3 <Type>::get_point (const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z)
+triangle_sphere3 <Type>::get_point (const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z)
 {
 	return m_points [get_index (p0, p1, p2, x, y, z)];
 }
 
 template <class Type>
 int32_t
-basic_polyhedron3 <Type>::get_index (const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z)
+triangle_sphere3 <Type>::get_index (const int32_t p0, const int32_t p1, const int32_t p2, const int32_t x, const int32_t y, const int32_t z)
 {
 	return add_point (vector3 <Type> (), p0, p1, p2, x, y, z);
 }
 
 template <class Type>
 void
-basic_polyhedron3 <Type>::add_triangle (const int32_t i1, const int32_t i2, const int32_t i3, std::vector <int32_t> & m_coord_index)
+triangle_sphere3 <Type>::add_triangle (const int32_t i1, const int32_t i2, const int32_t i3, std::vector <int32_t> & m_coord_index)
 {
 	m_coord_index .emplace_back (i1);
 	m_coord_index .emplace_back (i2);
@@ -259,7 +259,7 @@ basic_polyhedron3 <Type>::add_triangle (const int32_t i1, const int32_t i2, cons
 
 template <class Type>
 void
-basic_polyhedron3 <Type>::create_triangles ()
+triangle_sphere3 <Type>::create_triangles ()
 {
 	auto m_coord_index2 = std::vector <int32_t> ();
 
@@ -335,12 +335,12 @@ basic_polyhedron3 <Type>::create_triangles ()
 template <class Type>
 inline
 vector3 <Type>
-basic_polyhedron3 <Type>::create_point (const vector3 <Type> & point0,
-                                        const vector3 <Type> & point1,
-                                        const vector3 <Type> & point2,
-                                        const int32_t x,
-                                        const int32_t y,
-                                        const int32_t z
+triangle_sphere3 <Type>::create_point (const vector3 <Type> & point0,
+                                       const vector3 <Type> & point1,
+                                       const vector3 <Type> & point2,
+                                       const int32_t x,
+                                       const int32_t y,
+                                       const int32_t z
 )
 {
 	// Barycentric coordinates.
@@ -349,7 +349,7 @@ basic_polyhedron3 <Type>::create_point (const vector3 <Type> & point0,
 
 template <class Type>
 void
-basic_polyhedron3 <Type>::create_tex_coord ()
+triangle_sphere3 <Type>::create_tex_coord ()
 {
 	//
 	// Create texture coordinates
@@ -454,7 +454,7 @@ basic_polyhedron3 <Type>::create_tex_coord ()
 
 template <class Type>
 int32_t
-basic_polyhedron3 <Type>::resolve_overlap (const int32_t i0, const int32_t i1)
+triangle_sphere3 <Type>::resolve_overlap (const int32_t i0, const int32_t i1)
 {
 	const auto index1   = m_tex_coord_index [i1];
 	const auto distance = m_tex_points [m_tex_coord_index [i0]] .x () - m_tex_points [index1] .x ();
@@ -477,7 +477,7 @@ basic_polyhedron3 <Type>::resolve_overlap (const int32_t i0, const int32_t i1)
 
 template <class Type>
 class octahedron3 :
-	public basic_polyhedron3 <Type>
+	public triangle_sphere3 <Type>
 {
 public:
 
@@ -503,7 +503,7 @@ private:
 
 template <class Type>
 octahedron3 <Type>::octahedron3 (const size_t dimension) :
-	basic_polyhedron3 <Type> (dimension)
+	triangle_sphere3 <Type> (dimension)
 {
 	this -> create_primitive ();
 	this -> create_triangles ();
@@ -537,7 +537,7 @@ octahedron3 <Type>::create_primitive ()
 
 template <class Type>
 class icosahedron3 :
-	public basic_polyhedron3 <Type>
+	public triangle_sphere3 <Type>
 {
 public:
 
@@ -563,7 +563,7 @@ private:
 
 template <class Type>
 icosahedron3 <Type>::icosahedron3 (const size_t dimension) :
-	basic_polyhedron3 <Type> (dimension)
+	triangle_sphere3 <Type> (dimension)
 {
 	this -> create_primitive ();
 	this -> create_triangles ();

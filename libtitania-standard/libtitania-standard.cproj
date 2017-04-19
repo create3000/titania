@@ -569,12 +569,12 @@
     <None Include="Titania\External\ApproxMVBB\GeometryPredicates\xpfpa.h" />
     <None Include="Titania\External\ApproxMVBB\pugixml\pugiconfig.hpp" />
     <None Include="Titania\External\ApproxMVBB\pugixml\pugixml.hpp" />
-    <None Include="Titania\Math\Primitives\Polyhedron3.h" />
     <None Include="Titania\Math\Algorithms\Barycentric.h" />
     <None Include="Titania\Math\Algorithms\TurtleRenderer.h" />
     <None Include="Titania\Math\Algorithms\L-System.h" />
     <None Include="Titania\Math\Numbers\Hash.h" />
     <None Include="Titania\Math\Utility\almost_less.h" />
+    <None Include="Titania\Math\Primitives\TriangleSphere3.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />
