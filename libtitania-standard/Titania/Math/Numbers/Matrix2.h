@@ -51,7 +51,6 @@
 #ifndef __TITANIA_MATH_NUMBERS_MATRIX2_H__
 #define __TITANIA_MATH_NUMBERS_MATRIX2_H__
 
-#include "Construction.h"
 #include "Vector2.h"
 
 #include "../Algorithms/EigenDecomposition.h"
@@ -176,13 +175,6 @@ public:
 		m_array { v, v,
 		          v, v }
 	{ }
-
-//	///  Construct matrix from @a args. Args can be any arithmetic type or container in any order.
-//	template <class ... Args>
-//	constexpr
-//	matrix2 (const Args & ... args) :
-//		m_array (number_construction_helper <Type>::resolve (array_type (), 0, args ...))
-//	{ }
 
 	///  @name Assignment operators
 

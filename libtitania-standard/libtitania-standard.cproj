@@ -575,7 +575,6 @@
     <None Include="Titania\Math\Algorithms\L-System.h" />
     <None Include="Titania\Math\Numbers\Hash.h" />
     <None Include="Titania\Math\Utility\almost_less.h" />
-    <None Include="Titania\Math\Numbers\Construction.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\Basic\URI.cpp" />

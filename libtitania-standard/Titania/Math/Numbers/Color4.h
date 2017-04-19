@@ -52,7 +52,6 @@
 #define __TITANIA_MATH_NUMBERS_COLOR4_H__
 
 #include "../Functional.h"
-#include "Construction.h"
 #include "Vector4.h"
 
 #include <algorithm>
@@ -147,13 +146,6 @@ public:
 		          clamp (b, Type (), Type (1)),
 		          clamp (a, Type (), Type (1)) }
 	{ }
-
-//	///  Construct color from @a args. Args can be any arithmetic type or container in any order.
-//	template <class ... Args>
-//	constexpr
-//	color4 (const Args & ... args) :
-//		m_array (number_construction_helper <Type>::resolve (array_type (), 0, args ...))
-//	{ }
 
 	///  @name Assignment operator
 

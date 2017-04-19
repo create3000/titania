@@ -52,7 +52,6 @@
 #define __TITANIA_MATH_NUMBERS_QUATERNION_H__
 
 #include "../Functional.h"
-#include "Construction.h"
 #include "Vector3.h"
 
 #include <array>
@@ -166,13 +165,6 @@ public:
 	quaternion (const vector3 <Up> & imag, const Type & w) :
 		m_array { imag .x (), imag .y (), imag .z (), w }
 	{ }
-
-//	///  Construct quaternion from @a args. Args can be any arithmetic type or container in any order.
-//	template <class ... Args>
-//	constexpr
-//	quaternion (const Args & ... args) :
-//		m_array (number_construction_helper <Type>::resolve (array_type (), 0, args ...))
-//	{ }
 
 	///  @name Assignment operator
 

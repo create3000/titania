@@ -59,6 +59,13 @@ namespace math {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+//	///  Construct vector from @a args. Args can be any arithmetic type or container in any order.
+//	template <class ... Args>
+//	constexpr
+//	vector4 (const Args & ... args) :
+//		m_array (number_construction_helper <Type>::resolve (array_type (), 0, args ...))
+//	{ }
+
 template <class Type>
 struct number_construction_helper
 {

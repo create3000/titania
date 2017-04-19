@@ -51,7 +51,6 @@
 #ifndef __TITANIA_MATH_NUMBERS_MATRIX4_H__
 #define __TITANIA_MATH_NUMBERS_MATRIX4_H__
 
-#include "Construction.h"
 #include "Matrix3.h"
 #include "Rotation4.h"
 #include "Vector3.h"
@@ -198,13 +197,6 @@ public:
 	matrix4 (const rotation4 <Type> & rotation) :
 		matrix4 ()
 	{ submatrix (rotation .matrix ()); }
-
-//	///  Construct matrix from @a args. Args can be any arithmetic type or container in any order.
-//	template <class ... Args>
-//	constexpr
-//	matrix4 (const Args & ... args) :
-//		m_array (number_construction_helper <Type>::resolve (array_type (), 0, args ...))
-//	{ }
 
 	///  @name Assignment operators
 

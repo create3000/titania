@@ -51,8 +51,6 @@
 #ifndef __TITANIA_MATH_NUMBERS_VECTOR2_H__
 #define __TITANIA_MATH_NUMBERS_VECTOR2_H__
 
-#include "Construction.h"
-
 #include <array>
 #include <cmath>
 #include <istream>
@@ -146,13 +144,6 @@ public:
 	vector2 (const Type & v) :
 		m_array { v, v }
 	{ }
-
-//	///  Construct vector from @a args. Args can be any arithmetic type or container in any order.
-//	template <class ... Args>
-//	constexpr
-//	vector2 (const Args & ... args) :
-//		m_array (number_construction_helper <Type>::resolve (array_type (), 0, args ...))
-//	{ }
 
 	///  @name Assignment operator
 
