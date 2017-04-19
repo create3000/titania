@@ -185,6 +185,18 @@ public:
 	b () const
 	{ return m_value [2]; }
 
+	///  Access specified element with bounds checking.
+	constexpr
+	reference
+	at (const size_type index)
+	{ return m_value .at (index); }
+
+	///  Access specified element with bounds checking.
+	constexpr
+	const_reference
+	at (const size_type index) const
+	{ return m_value .at (index); }
+
 	///  Access components by @a index.
 	constexpr
 	reference
@@ -691,6 +703,19 @@ extern template std::ostream & operator << (std::ostream &, const color3 <long d
 
 namespace std {
 
+/// Provides access to the number of elements in an color3 as a compile-time constant expression. 
+template< class Type>
+class tuple_size <titania::math::color3 <Type>> :
+    public integral_constant <size_t, titania::math::color3 <Type>::size ()>
+{ };
+
+/// Provides compile-time indexed access to the type of the elements of the color3 using tuple-like interface.
+template <std::size_t I, class Type>
+struct tuple_element <I, titania::math::color3 <Type>>
+{
+	using type = Type;
+};
+
 ///  Extracts the Ith element element from the color.
 template <size_t I, class Type>
 inline
@@ -718,7 +743,7 @@ constexpr
 Type &&
 get (titania::math::color3 <Type> && color)
 {
-	return color [I];
+	return std::move (color [I]);
 }
 
 ///  Extracts the Ith element element from the color.
@@ -728,7 +753,7 @@ constexpr
 const Type &&
 get (const titania::math::color3 <Type> && color)
 {
-	return color [I];
+	return std::move (color [I]);
 }
 
 /// Specializes the std::swap algorithm for color3.

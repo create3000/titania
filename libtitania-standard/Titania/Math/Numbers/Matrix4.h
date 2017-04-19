@@ -402,13 +402,25 @@ public:
 	     rotation4 <SO> & scaleOrientation, 
 	     const vector3 <C> & center) const;
 
-	///  Access components by @a index.
+	///  Access specified row with bounds checking.
+	constexpr
+	vector4 <Type> &
+	at (const size_type index)
+	{ return m_value .at (index); }
+
+	///  Access specified row with bounds checking.
+	constexpr
+	const vector4 <Type> &
+	at (const size_type index) const
+	{ return m_value .at (index); }
+
+	///  Access row by @a index.
 	constexpr
 	vector4 <Type> &
 	operator [ ] (const size_type index)
 	{ return m_value [index]; }
 
-	///  Access components by @a index.
+	///  Access row by @a index.
 	constexpr
 	const vector4 <Type> &
 	operator [ ] (const size_type index) const
@@ -1723,6 +1735,19 @@ extern template std::ostream & operator << (std::ostream &, const matrix4 <long 
 
 namespace std {
 
+/// Provides access to the number of elements in an matrix4 as a compile-time constant expression. 
+template< class Type>
+class tuple_size <titania::math::matrix4 <Type>> :
+    public integral_constant <size_t, titania::math::matrix4 <Type>::size ()>
+{ };
+
+/// Provides compile-time indexed access to the type of the elements of the matrix4 using tuple-like interface.
+template <std::size_t I, class Type>
+struct tuple_element <I, titania::math::matrix4 <Type>>
+{
+	using type = Type;
+};
+
 ///  Extracts the Ith element element from the matrix.
 template <size_t Index, class Type>
 inline
@@ -1750,7 +1775,7 @@ constexpr
 Type &&
 get (titania::math::matrix4 <Type> && matrix)
 {
-	return matrix [Index];
+	return std::move (matrix [Index]);
 }
 
 ///  Extracts the Ith element element from the matrix.
@@ -1760,7 +1785,7 @@ constexpr
 const Type &&
 get (const titania::math::matrix4 <Type> && matrix)
 {
-	return matrix [Index];
+	return std::move (matrix [Index]);
 }
 
 /// Specializes the std::swap algorithm for matrix4.

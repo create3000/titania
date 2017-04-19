@@ -76,22 +76,36 @@ namespace math {
 template <class Type>
 class rotation4
 {
+private:
+
+	static constexpr size_t Size = 4;
+
+
 public:
 
-	///  Size typedef.  Used for size and indices.
-	using size_type = size_t;
-
-	///  Value typedef.
+	///  Type.
 	using value_type = Type;
 
-	///  Quaternion typedef.
-	using quaternion_type = quaternion <Type>;
+	///  Size typedef.  Used for size and indices.
+	using size_type = std::size_t;
 
-	///  Vector3 typedef.
-	using vector3_type = vector3 <Type>;
+	///  std::ptrdiff_t
+	using difference_type = std::ptrdiff_t;
 
-	///  Member value typedef.
-	using member_value_type = basic::member_value <Type, rotation4 <Type>>;
+	///  value_type &
+	using reference = basic::member_value <Type, rotation4 <Type>>;
+
+	///  const value_type &
+	using const_reference = const Type &;
+
+	///  value_type*
+	using pointer = value_type*;
+
+	///  const value_type*
+	using const_pointer = const value_type*;
+
+	///  vector3 <Type>
+	using vector_type = vector3 <Type>;
 
 	///  @name Constructors
 
@@ -187,7 +201,7 @@ public:
 	{ *this = rotation4 (value, angle ()); }
 
 	///  Returns axis of this rotation.
-	vector3_type
+	vector3 <Type>
 	axis () const;
 
 	///  Set angle of this rotation.
@@ -197,14 +211,6 @@ public:
 	///  Returns angle of this rotation.
 	Type
 	angle () const;
-
-	///  Access x, y, z or angle.
-	member_value_type
-	operator [ ] (const size_type index);
-
-	///  Access x, y, z or angle.
-	Type
-	operator [ ] (const size_type index) const;
 
 	///  Assign rotation @a matrix to this rotation.
 	template <class Up>
@@ -224,6 +230,36 @@ public:
 	void
 	get (T & x, T & y, T & z, T & angle) const;
 
+	///  Access specified element with bounds checking.
+	constexpr
+	reference
+	at (const size_type index)
+	{
+		if (index < 4)
+			return (*this) [index];
+
+		throw std::out_of_range ("rotation4::at index > 3");
+	}
+
+	///  Access specified element with bounds checking.
+	constexpr
+	Type
+	at (const size_type index) const
+	{
+		if (index < 4)
+			return (*this) [index];
+
+		throw std::out_of_range ("rotation4::at index > 3");
+	}
+
+	///  Access x, y, z or angle.
+	reference
+	operator [ ] (const size_type index);
+
+	///  Access x, y, z or angle.
+	Type
+	operator [ ] (const size_type index) const;
+
 	///  Set quaternion of this rotation.
 	void
 	quat (const quaternion <Type> & q)
@@ -236,12 +272,34 @@ public:
 
 	///  @name Capacity
 
-	///  Returns number of components.
+	///  Checks whether the container is empty. Always returns false.
+	static
+	constexpr
+	bool
+	empty ()
+	{ return false; }
+
+	///  Returns the number of elements in the container.
 	static
 	constexpr
 	size_type
 	size ()
-	{ return 4; }
+	{ return Size; }
+
+	///  Returns the maximum possible number of elements. Because each vector is a fixed-size container,
+	///  the value is also the value returned by size.
+	static
+	constexpr
+	size_type
+	max_size ()
+	{ return Size; }
+
+	///  @name Operations
+
+	///  Swaps the contents.
+	void
+	swap (rotation4 & other)
+	{ m_value .swap (other .m_value); }
 
 	///  @name Arithmetic operations
 
@@ -384,7 +442,7 @@ vector3 <Type>
 rotation4 <Type>::axis () const
 {
 	if (std::abs (m_value .w ()) >= 1)
-		return vector3_type (0, 0, 1);
+		return vector3 <Type> (0, 0, 1);
 
 	return normalize (imag (m_value));
 }
@@ -405,38 +463,6 @@ rotation4 <Type>::angle () const
 		return 0;
 
 	return 2 * std::acos (m_value .w ());
-}
-
-///  Access components by @a index.
-template <class Type>
-typename rotation4 <Type>::member_value_type
-rotation4 <Type>::operator [ ] (const size_type index)
-{
-	switch (index)
-	{
-		case 0: return member_value_type (this, &rotation4::x, &rotation4::x);
-		case 1: return member_value_type (this, &rotation4::y, &rotation4::y);
-		case 2: return member_value_type (this, &rotation4::z, &rotation4::z);
-		case 3: return member_value_type (this, &rotation4::angle, &rotation4::angle);
-	}
-
-	throw std::out_of_range ("index out of range");
-}
-
-///  Access components by @a index.
-template <class Type>
-Type
-rotation4 <Type>::operator [ ] (const size_type index) const
-{
-	switch (index)
-	{
-		case 0: return x ();
-		case 1: return y ();
-		case 2: return z ();
-		case 3: return angle ();
-	}
-
-	throw std::out_of_range ("index out of range");
 }
 
 template <class Type>
@@ -496,10 +522,10 @@ template <class Type>
 matrix3 <Type>
 rotation4 <Type>::matrix () const
 {
-	const Type x = quat () .x ();
-	const Type y = quat () .y ();
-	const Type z = quat () .z ();
-	const Type w = quat () .w ();
+	const Type x = m_value .x ();
+	const Type y = m_value .y ();
+	const Type z = m_value .z ();
+	const Type w = m_value .w ();
 
 	const Type a = x * x;
 	const Type b = x * y;
@@ -525,7 +551,6 @@ rotation4 <Type>::matrix () const
 		1 - 2 * (c + a)
 	);
 }
-
 
 template <class Type>
 void
@@ -565,12 +590,44 @@ rotation4 <Type>::get (T & x, T & y, T & z, T & angle) const
 		return;
 	}
 
-	const vector3_type vector = normalize (imag (m_value));
+	const vector3 <Type> vector = normalize (imag (m_value));
 
 	x     = vector .x ();
 	y     = vector .y ();
 	z     = vector .z ();
 	angle = 2 * std::acos (m_value .w ());
+}
+
+///  Access components by @a index.
+template <class Type>
+typename rotation4 <Type>::reference
+rotation4 <Type>::operator [ ] (const size_type index)
+{
+	switch (index)
+	{
+		case 0: return reference (this, &rotation4::x, &rotation4::x);
+		case 1: return reference (this, &rotation4::y, &rotation4::y);
+		case 2: return reference (this, &rotation4::z, &rotation4::z);
+		case 3: return reference (this, &rotation4::angle, &rotation4::angle);
+	}
+
+	throw std::out_of_range ("index out of range");
+}
+
+///  Access components by @a index.
+template <class Type>
+Type
+rotation4 <Type>::operator [ ] (const size_type index) const
+{
+	switch (index)
+	{
+		case 0: return x ();
+		case 1: return y ();
+		case 2: return z ();
+		case 3: return angle ();
+	}
+
+	throw std::out_of_range ("index out of range");
 }
 
 template <class Type>
@@ -844,5 +901,71 @@ extern template std::ostream & operator << (std::ostream &, const rotation4 <lon
 
 } // math
 } // titania
+
+namespace std {
+
+/// Provides access to the number of elements in an rotation4 as a compile-time constant expression. 
+template< class Type>
+class tuple_size <titania::math::rotation4 <Type>> :
+    public integral_constant <size_t, titania::math::rotation4 <Type>::size ()>
+{ };
+
+/// Provides compile-time indexed access to the type of the elements of the rotation4 using tuple-like interface.
+template <std::size_t I, class Type>
+struct tuple_element <I, titania::math::rotation4 <Type>>
+{
+	using type = Type;
+};
+
+///  Extracts the Ith element element from the rotation.
+template <size_t I, class Type>
+inline
+constexpr
+typename titania::math::rotation4 <Type>::reference
+get (titania::math::rotation4 <Type> & rotation)
+{
+	return rotation [I];
+}
+
+///  Extracts the Ith element element from the rotation.
+template <size_t I, class Type>
+inline
+constexpr
+Type
+get (const titania::math::rotation4 <Type> & rotation)
+{
+	return std::move (rotation [I]);
+}
+
+/////  Extracts the Ith element element from the rotation.
+//template <size_t I, class Type>
+//inline
+//constexpr
+//Type &&
+//get (titania::math::rotation4 <Type> && rotation)
+//{
+//	return std::move (rotation [I]);
+//}
+//
+/////  Extracts the Ith element element from the rotation.
+//template <size_t I, class Type>
+//inline
+//constexpr
+//const Type &&
+//get (const titania::math::rotation4 <Type> && rotation)
+//{
+//	return rotation [I];
+//}
+
+/// Specializes the std::swap algorithm for rotation.
+template <class Type>
+inline
+void
+swap (titania::math::rotation4 <Type> & lhs, titania::math::rotation4 <Type> & rhs) noexcept
+{
+	lhs .swap (rhs);
+}
+
+} // std
 
 #endif

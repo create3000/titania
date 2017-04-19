@@ -219,6 +219,18 @@ public:
 	w () const
 	{ return m_value [3]; }
 
+	///  Access specified element with bounds checking.
+	constexpr
+	reference
+	at (const size_type index)
+	{ return m_value .at (index); }
+
+	///  Access specified element with bounds checking.
+	constexpr
+	const_reference
+	at (const size_type index) const
+	{ return m_value .at (index); }
+
 	///  Access components by @a index.
 	constexpr
 	reference
@@ -1160,6 +1172,19 @@ extern template std::ostream & operator << (std::ostream &, const quaternion <lo
 
 namespace std {
 
+/// Provides access to the number of elements in an quaternion as a compile-time constant expression. 
+template< class Type>
+class tuple_size <titania::math::quaternion <Type>> :
+    public integral_constant <size_t, titania::math::quaternion <Type>::size ()>
+{ };
+
+/// Provides compile-time indexed access to the type of the elements of the quaternion using tuple-like interface.
+template <std::size_t I, class Type>
+struct tuple_element <I, titania::math::quaternion <Type>>
+{
+	using type = Type;
+};
+
 ///  Extracts the Ith element element from the quaternion.
 template <size_t I, class Type>
 inline
@@ -1187,7 +1212,7 @@ constexpr
 Type &&
 get (titania::math::quaternion <Type> && quaternion)
 {
-	return quaternion [I];
+	return std::move (quaternion [I]);
 }
 
 ///  Extracts the Ith element element from the quaternion.
@@ -1197,7 +1222,7 @@ constexpr
 const Type &&
 get (const titania::math::quaternion <Type> && quaternion)
 {
-	return quaternion [I];
+	return std::move (quaternion [I]);
 }
 
 /// Specializes the std::swap algorithm for quaternion.

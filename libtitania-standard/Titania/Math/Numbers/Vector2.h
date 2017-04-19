@@ -176,6 +176,18 @@ public:
 	y () const
 	{ return m_value [1]; }
 
+	///  Access specified element with bounds checking.
+	constexpr
+	reference
+	at (const size_type index)
+	{ return m_value .at (index); }
+
+	///  Access specified element with bounds checking.
+	constexpr
+	const_reference
+	at (const size_type index) const
+	{ return m_value .at (index); }
+
 	///  Access components by @a index.
 	constexpr
 	reference
@@ -907,6 +919,19 @@ extern template std::ostream & operator << (std::ostream &, const vector2 <long 
 
 namespace std {
 
+/// Provides access to the number of elements in an vector2 as a compile-time constant expression. 
+template< class Type>
+class tuple_size <titania::math::vector2 <Type>> :
+    public integral_constant <size_t, titania::math::vector2 <Type>::size ()>
+{ };
+
+/// Provides compile-time indexed access to the type of the elements of the vector2 using tuple-like interface.
+template <std::size_t I, class Type>
+struct tuple_element <I, titania::math::vector2 <Type>>
+{
+	using type = Type;
+};
+
 ///  Extracts the Ith element element from the vector.
 template <size_t I, class Type>
 inline
@@ -934,7 +959,7 @@ constexpr
 Type &&
 get (titania::math::vector2 <Type> && vector)
 {
-	return vector [I];
+	return std::move (vector [I]);
 }
 
 ///  Extracts the Ith element element from the vector.
@@ -944,7 +969,7 @@ constexpr
 const Type &&
 get (const titania::math::vector2 <Type> && vector)
 {
-	return vector [I];
+	return std::move (vector [I]);
 }
 
 /// Specializes the std::swap algorithm for vector2.

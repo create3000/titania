@@ -78,9 +78,9 @@ class SFRotation4 :
 {
 public:
 
-	using value_type   = typename ValueType::value_type;
-	using vector3_type = SFVec3 <typename ValueType::vector3_type>;
-	using size_type    = typename ValueType::size_type;
+	using value_type  = typename ValueType::value_type;
+	using vector_type = SFVec3 <typename ValueType::vector_type>;
+	using size_type   = typename ValueType::size_type;
 
 	using X3DField <ValueType>::addInterest;
 	using X3DField <ValueType>::addEvent;
@@ -99,9 +99,9 @@ public:
 
 	SFRotation4 (const value_type &, const value_type &, const value_type &, const value_type &);
 
-	SFRotation4 (const vector3_type &, const value_type &);
+	SFRotation4 (const vector_type &, const value_type &);
 
-	SFRotation4 (const vector3_type &, const vector3_type &);
+	SFRotation4 (const vector_type &, const vector_type &);
 
 	virtual
 	SFRotation4*
@@ -147,9 +147,9 @@ public:
 	getZ () const;
 
 	void
-	setAxis (const vector3_type & value);
+	setAxis (const vector_type & value);
 
-	vector3_type*
+	vector_type*
 	getAxis () const;
 
 	void
@@ -184,8 +184,8 @@ public:
 	SFRotation4*
 	multiply (const SFRotation4 &) const;
 
-	vector3_type*
-	multVec (const vector3_type &) const;
+	vector_type*
+	multVec (const vector_type &) const;
 
 	SFRotation4*
 	slerp (const SFRotation4 &, const value_type &) const;
@@ -248,12 +248,12 @@ SFRotation4 <ValueType>::SFRotation4 (const value_type & x, const value_type & y
 { }
 
 template <class ValueType>
-SFRotation4 <ValueType>::SFRotation4 (const vector3_type & vector, const value_type & angle) :
+SFRotation4 <ValueType>::SFRotation4 (const vector_type & vector, const value_type & angle) :
 	X3DField <ValueType> (ValueType (vector .getValue (), angle))
 { }
 
 template <class ValueType>
-SFRotation4 <ValueType>::SFRotation4 (const vector3_type & fromVector, const vector3_type & toVector) :
+SFRotation4 <ValueType>::SFRotation4 (const vector_type & fromVector, const vector_type & toVector) :
 	X3DField <ValueType> (ValueType (fromVector .getValue (), toVector .getValue ()))
 { }
 
@@ -317,7 +317,7 @@ SFRotation4 <ValueType>::getZ () const
 
 template <class ValueType>
 void
-SFRotation4 <ValueType>::setAxis (const vector3_type & axis)
+SFRotation4 <ValueType>::setAxis (const vector_type & axis)
 {
 	get () .axis (axis .getValue ());
 	addEvent ();
@@ -325,10 +325,10 @@ SFRotation4 <ValueType>::setAxis (const vector3_type & axis)
 
 template <class ValueType>
 inline
-typename SFRotation4 <ValueType>::vector3_type *
+typename SFRotation4 <ValueType>::vector_type *
 SFRotation4 <ValueType>::getAxis () const
 {
-	return new vector3_type (getValue () .axis ());
+	return new vector_type (getValue () .axis ());
 }
 
 template <class ValueType>
@@ -415,10 +415,10 @@ SFRotation4 <ValueType>::multiply (const SFRotation4 & value) const
 
 template <class ValueType>
 inline
-typename SFRotation4 <ValueType>::vector3_type *
-SFRotation4 <ValueType>::multVec (const vector3_type &value) const
+typename SFRotation4 <ValueType>::vector_type *
+SFRotation4 <ValueType>::multVec (const vector_type &value) const
 {
-	return new vector3_type (value .getValue () * getValue ());
+	return new vector_type (value .getValue () * getValue ());
 }
 
 template <class ValueType>
@@ -555,16 +555,16 @@ operator * (const ValueType & a, const SFRotation4 <ValueType> & b)
 
 template <class ValueType>
 inline
-typename ValueType::vector3_type
-operator * (const typename ValueType::vector3_type & vector, const SFRotation4 <ValueType> & rotation)
+typename ValueType::vector_type
+operator * (const typename ValueType::vector_type & vector, const SFRotation4 <ValueType> & rotation)
 {
 	return vector * rotation .getValue ();
 }
 
 template <class ValueType>
 inline
-typename ValueType::vector3_type
-operator * (const SFRotation4 <ValueType> & rotation, const typename ValueType::vector3_type & vector)
+typename ValueType::vector_type
+operator * (const SFRotation4 <ValueType> & rotation, const typename ValueType::vector_type & vector)
 {
 	return rotation .getValue () * vector;
 }
