@@ -313,8 +313,8 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("IndexedLineSetLSystemZAngleSpinButton", m_IndexedLineSetLSystemZAngleSpinButton);
 	m_builder -> get_widget ("IndexedLineSetLSystemYAngleBox", m_IndexedLineSetLSystemYAngleBox);
 	m_builder -> get_widget ("IndexedLineSetLSystemYAngleSpinButton", m_IndexedLineSetLSystemYAngleSpinButton);
-	m_builder -> get_widget ("IndexedLineSetLSystemAngleVariationSpinButton", m_IndexedLineSetLSystemAngleVariationSpinButton);
 	m_builder -> get_widget ("IndexedLineSetLSystemLengthVariationSpinButton", m_IndexedLineSetLSystemLengthVariationSpinButton);
+	m_builder -> get_widget ("IndexedLineSetLSystemAngleVariationSpinButton", m_IndexedLineSetLSystemAngleVariationSpinButton);
 	m_builder -> get_widget ("CommonPropertiesExpander", m_CommonPropertiesExpander);
 	m_builder -> get_widget ("SolidCheckButton", m_SolidCheckButton);
 	m_builder -> get_widget ("CCWCheckButton", m_CCWCheckButton);

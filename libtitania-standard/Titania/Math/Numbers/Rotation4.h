@@ -327,6 +327,8 @@ public:
 
 private:
 
+	///  @name Members
+
 	quaternion <Type> m_quat;
 
 };

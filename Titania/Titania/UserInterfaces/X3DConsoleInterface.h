@@ -162,15 +162,15 @@ private:
 
 	///  @name Members
 
-	std::string                    filename;
-	Glib::RefPtr <Gtk::Builder>    m_builder;
+	std::string filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::TextBuffer> m_TextBuffer;
-	Gtk::Window*                   m_Window;
-	Gtk::Box*                      m_Widget;
-	Gtk::ScrolledWindow*           m_Console;
-	Gtk::TextView*                 m_TextView;
-	Gtk::ToggleToolButton*         m_SuspendButton;
-	Gtk::ToolButton*               m_ClearButton;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::ScrolledWindow* m_Console;
+	Gtk::TextView* m_TextView;
+	Gtk::ToggleToolButton* m_SuspendButton;
+	Gtk::ToolButton* m_ClearButton;
 
 };
 

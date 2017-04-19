@@ -448,6 +448,8 @@ public:
 
 private:
 
+	///  @name Members
+
 	array_type m_array;
 
 };

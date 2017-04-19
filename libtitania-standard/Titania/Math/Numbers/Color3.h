@@ -72,7 +72,7 @@ namespace math {
  *
  *  @param  Type  Type of values r, g and b.
  */
-template <typename Type>
+template <class Type>
 class color3
 {
 private:
@@ -130,7 +130,7 @@ public:
 	{ }
 
 	///  Copy constructor.
-	template <typename Up>
+	template <class Up>
 	constexpr
 	color3 (const color3 <Up> & color) :
 		m_array { color .r (), color .g (), color .b () }
@@ -363,16 +363,26 @@ public:
 
 	///  @name Arithmetic operations
 
+	///  Return RGBA components of this color.
+	void
+	set_rgb (const uint8_t R, const uint8_t G, const uint8_t B);
+
+	///  Set RGBA components for this color.
+	void
+	get_rgb (uint8_t & R, uint8_t & G, uint8_t & B) const;
+
 	///  Return hsv components of this color.
 	void
 	set_hsv (const Type &, Type, Type);
 
-	///  Set hsv components of this color.
+	///  Set hsv components for this color.
 	void
 	get_hsv (Type &, Type &, Type &) const;
 
 
 private:
+
+	///  @name Members
 
 	array_type m_array;
 
@@ -390,6 +400,24 @@ color3 <Type>::operator = (const color3 <Up> & other)
 }
 
 template <typename Type>
+void
+color3 <Type>::set_rgb (const uint8_t R, const uint8_t G, const uint8_t B)
+{
+	r (R / Type (255));
+	g (G / Type (255));
+	b (B / Type (255));
+}
+
+template <typename Type>
+void
+color3 <Type>::get_rgb (uint8_t & R, uint8_t & G, uint8_t & B) const
+{
+	R = std::round (r () * 255);
+	G = std::round (g () * 255);
+	B = std::round (b () * 255);
+}
+
+template <class Type>
 void
 color3 <Type>::set_hsv (const Type & h, Type s, Type v)
 {
@@ -455,7 +483,7 @@ color3 <Type>::set_hsv (const Type & h, Type s, Type v)
 	}
 }
 
-template <typename Type>
+template <class Type>
 void
 color3 <Type>::get_hsv (Type & h, Type & s, Type & v) const
 {
@@ -494,16 +522,18 @@ color3 <Type>::get_hsv (Type & h, Type & s, Type & v) const
 ///  @relates color3
 ///  @name Utility functions
 
-///  Construct a color from rgb.
-template <typename Type>	
+///  Construct a color from RGB.
+template <class Type>	
 color3 <Type>
-make_rgb (const uint8_t & r, const uint8_t & g, const uint8_t & b)
+make_rgb (const uint8_t R, const uint8_t G, const uint8_t B)
 {
-	return color3 <Type> (r / Type (255), g / Type (255), b / Type (255));
+	color3 <Type> color;
+	color .set_rgb (R, G, B);
+	return color;
 }
 
 ///  Construct a color from hsv.
-template <typename Type>	
+template <class Type>	
 color3 <Type>
 make_hsv (const Type & h, const Type & s, const Type & v)
 {
@@ -516,7 +546,7 @@ make_hsv (const Type & h, const Type & s, const Type & v)
 ///  @name Comparision operations
 
 ///  Return true if @a a is equal to @a b.
-template <typename Type>
+template <class Type>
 constexpr bool
 operator == (const color3 <Type> & a, const color3 <Type> & b)
 {
@@ -526,7 +556,7 @@ operator == (const color3 <Type> & a, const color3 <Type> & b)
 }
 
 ///  Return false if @a a is not equal to @a b.
-template <typename Type>
+template <class Type>
 constexpr bool
 operator not_eq (const color3 <Type> & a, const color3 <Type> & b)
 {
@@ -579,7 +609,7 @@ operator >= (const color3 <Type> & lhs, const color3 <Type> & rhs)
 ///  @name Arithmetic operations
 
 ///  Linear interpolate between @a source and @a destination by an amout of @a t in RGB space.
-template <typename Type>
+template <class Type>
 color3 <Type>
 lerp (const color3 <Type> & source, const color3 <Type> & destination, const Type & t)
 {
@@ -591,7 +621,7 @@ lerp (const color3 <Type> & source, const color3 <Type> & destination, const Typ
 }
 
 ///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t in HSV space.
-template <typename Type>
+template <class Type>
 color3 <Type>
 clerp (const color3 <Type> & source, const color3 <Type> & destination, const Type & t)
 {
@@ -665,7 +695,7 @@ hsv_lerp (const Type & a_h, const Type & a_s, const Type & a_v,
 ///  @name Input/Output operations
 
 ///  Extraction operator for color values.
-template <typename CharT, class Traits, typename Type>
+template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, color3 <Type> & color)
 {
@@ -680,7 +710,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, color3 <Type> & color
 }
 
 ///  Insertion operator for color values.
-template <typename CharT, class Traits, typename Type>
+template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const color3 <Type> & color)
 {

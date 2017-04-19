@@ -206,26 +206,26 @@ private:
 
 	///  @name Members
 
-	std::string                            filename;
-	Glib::RefPtr <Gtk::Builder>            m_builder;
-	Glib::RefPtr <Gtk::ListStore>          m_ListStore;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_TypeNameColumn;
-	Glib::RefPtr <Gtk::CellRendererText>   m_TypeNameCellRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_NameColumn;
-	Glib::RefPtr <Gtk::CellRendererText>   m_NameCellRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_DescriptionColumn;
-	Glib::RefPtr <Gtk::CellRendererText>   m_DescriptionCellRenderer;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_PadColumn;
-	Glib::RefPtr <Gtk::TreeViewColumn>     m_BindColumn;
+	std::string filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::ListStore> m_ListStore;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_TypeNameColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_TypeNameCellRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_NameCellRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_DescriptionColumn;
+	Glib::RefPtr <Gtk::CellRendererText> m_DescriptionCellRenderer;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_PadColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_BindColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_BindCellRenderer;
-	Gtk::Window*                           m_Window;
-	Gtk::Box*                              m_Widget;
-	Gtk::Notebook*                         m_HeaderNotebook;
-	Gtk::HeaderBar*                        m_HeaderBar;
-	Gtk::Image*                            m_Image;
-	Gtk::Label*                            m_Label;
-	Gtk::ScrolledWindow*                   m_ScrolledWindow;
-	Gtk::TreeView*                         m_TreeView;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::Notebook* m_HeaderNotebook;
+	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::Image* m_Image;
+	Gtk::Label* m_Label;
+	Gtk::ScrolledWindow* m_ScrolledWindow;
+	Gtk::TreeView* m_TreeView;
 
 };
 

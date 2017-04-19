@@ -170,18 +170,18 @@ private:
 
 	///  @name Members
 
-	std::string                        filename;
-	Glib::RefPtr <Gtk::Builder>        m_builder;
-	Glib::RefPtr <Gtk::ListStore>      m_ListStore;
+	std::string filename;
+	Glib::RefPtr <Gtk::Builder> m_builder;
+	Glib::RefPtr <Gtk::ListStore> m_ListStore;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_NumberColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_DescriptionColumn;
-	Gtk::Window*                       m_Window;
-	Gtk::Box*                          m_Widget;
-	Gtk::HeaderBar*                    m_HeaderBar;
-	Gtk::ScrolledWindow*               m_ScrolledWindow;
-	Gtk::TreeView*                     m_TreeView;
-	Gtk::Button*                       m_UndoButton;
-	Gtk::Button*                       m_RedoButton;
+	Gtk::Window* m_Window;
+	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
+	Gtk::ScrolledWindow* m_ScrolledWindow;
+	Gtk::TreeView* m_TreeView;
+	Gtk::Button* m_UndoButton;
+	Gtk::Button* m_RedoButton;
 
 };
 

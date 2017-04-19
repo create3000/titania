@@ -74,7 +74,7 @@ namespace math {
  *
  *  @param  Type  Type of values r, g, b and a.
  */
-template <typename Type>
+template <class Type>
 class color4
 {
 private:
@@ -132,7 +132,7 @@ public:
 	{ }
 
 	///  Copy constructor.
-	template <typename Up>
+	template <class Up>
 	constexpr
 	color4 (const color4 <Up> & color) :
 		m_array { color .r (), color .g (), color .b (), color .a () }
@@ -379,16 +379,26 @@ public:
 
 	///  @name Arithmetic operations
 
+	///  Return RGBA components of this color.
+	void
+	set_rgba (const uint8_t R, const uint8_t G, const uint8_t B, const uint8_t A);
+
+	///  Set RGBA components for this color.
+	void
+	get_rgba (uint8_t & R, uint8_t & G, uint8_t & B, uint8_t & A) const;
+
 	///  Return hsv components of this color.
 	void
 	set_hsv (const Type &, Type, Type);
 
-	///  Set hsv components of this color.
+	///  Set hsv components for this color.
 	void
 	get_hsv (Type &, Type &, Type &) const;
 
 
 private:
+
+	///  @name Members
 
 	array_type m_array;
 
@@ -404,6 +414,26 @@ color4 <Type>::operator = (const color4 <Up> & other)
 	m_array [2] = other .b ();
 	m_array [3] = other .a ();
 	return *this;
+}
+
+template <typename Type>
+void
+color4 <Type>::set_rgba (const uint8_t R, const uint8_t G, const uint8_t B, const uint8_t A)
+{
+	r (R / Type (255));
+	g (G / Type (255));
+	b (B / Type (255));
+	a (A / Type (255));
+}
+
+template <typename Type>
+void
+color4 <Type>::get_rgba (uint8_t & R, uint8_t & G, uint8_t & B, uint8_t & A) const
+{
+	R = std::round (r () * 255);
+	G = std::round (g () * 255);
+	B = std::round (b () * 255);
+	A = std::round (a () * 255);
 }
 
 template <typename Type>
@@ -506,8 +536,18 @@ color4 <Type>::get_hsv (Type & h, Type & s, Type & v) const
 		h += 2 * pi <Type>;
 }
 
-///  @relates color3
+///  @relates color4
 ///  @name Utility functions
+
+///  Construct a color from RGBA.
+template <class Type>	
+color4 <Type>
+make_rgba (const uint8_t R, const uint8_t G, const uint8_t B, const uint8_t A)
+{
+	color4 <Type> color;
+	color .set_rgba (R, G, B, A);
+	return color;
+}
 
 ///  Construct a color from hsv and alpha.
 template <typename Type>
@@ -520,7 +560,7 @@ make_hsva (const Type & h, const Type & s, const Type & v, const Type & a)
 	return color;
 }
 
-///  @relates color3
+///  @relates color4
 ///  @name Comparision operations
 
 ///  Return true if @a a is equal to @a b.
@@ -589,7 +629,7 @@ operator >= (const color4 <Type> & lhs, const color4 <Type> & rhs)
 ///  @name Arithmetic operations
 
 ///  Linear interpolate between @a source and @a destination by an amout of @a t in RGBA space.
-template <typename Type>
+template <class Type>
 color4 <Type>
 lerp (const color4 <Type> & source, const color4 <Type> & destination, const Type & t)
 {
@@ -601,7 +641,7 @@ lerp (const color4 <Type> & source, const color4 <Type> & destination, const Typ
 }
 
 ///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t in HSVA space.
-template <typename Type>
+template <class Type>
 color4 <Type>
 clerp (const color4 <Type> & source, const color4 <Type> & destination, const Type & t)
 {
@@ -644,7 +684,7 @@ clerp (const color4 <Type> & source, const color4 <Type> & destination, const Ty
 ///  @name Input/Output operations
 
 ///  Extraction operator for vector values.
-template <typename CharT, class Traits, typename Type>
+template <class CharT, class Traits, class Type>
 std::basic_istream <CharT, Traits> &
 operator >> (std::basic_istream <CharT, Traits> & istream, color4 <Type> & color)
 {
@@ -659,7 +699,7 @@ operator >> (std::basic_istream <CharT, Traits> & istream, color4 <Type> & color
 }
 
 ///  Insertion operator for vector values.
-template <typename CharT, class Traits, typename Type>
+template <class CharT, class Traits, class Type>
 std::basic_ostream <CharT, Traits> &
 operator << (std::basic_ostream <CharT, Traits> & ostream, const color4 <Type> & color)
 {

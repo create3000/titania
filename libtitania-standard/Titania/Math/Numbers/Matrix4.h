@@ -695,6 +695,8 @@ public:
 
 private:
 
+	///  @name Operations
+
 	template <class T, class S>
 	bool
 	factor (vector3 <T> & translation,

@@ -650,6 +650,8 @@ public:
 
 private:
 
+	///  @name Operations
+
 	void
 	rotation (const Type & rotation);
 
@@ -661,7 +663,7 @@ private:
 	factor (vector2 <T> & translation,
 	        matrix2 <Type> & rotation,
 	        vector2 <S> & scale,
-	        matrix2 <Type> & rotationOrientation) const;
+	        matrix2 <Type> & scaleOrientation) const;
 
 	///  @name Members
 
