@@ -273,25 +273,22 @@ public:
 	///  @name Capacity
 
 	///  Checks whether the container is empty. Always returns false.
-	static
 	constexpr
 	bool
-	empty ()
+	empty () const
 	{ return false; }
 
 	///  Returns the number of elements in the container.
-	static
 	constexpr
 	size_type
-	size ()
+	size () const
 	{ return Size; }
 
 	///  Returns the maximum possible number of elements. Because each vector is a fixed-size container,
 	///  the value is also the value returned by size.
-	static
 	constexpr
 	size_type
-	max_size ()
+	max_size () const
 	{ return Size; }
 
 	///  @name Operations
@@ -907,7 +904,7 @@ namespace std {
 /// Provides access to the number of elements in an rotation4 as a compile-time constant expression. 
 template< class Type>
 class tuple_size <titania::math::rotation4 <Type>> :
-    public integral_constant <size_t, titania::math::rotation4 <Type>::size ()>
+    public integral_constant <size_t, titania::math::rotation4 <Type> () .size ()>
 { };
 
 /// Provides compile-time indexed access to the type of the elements of the rotation4 using tuple-like interface.

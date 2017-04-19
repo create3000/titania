@@ -548,46 +548,40 @@ public:
 	///  @name Capacity
 
 	///  Checks whether the container is empty. Always returns false.
-	static
 	constexpr
 	bool
-	empty ()
+	empty () const
 	{ return false; }
 
 	///  Returns the order of this matrix.
-	static
 	constexpr
 	size_type
-	order ()
+	order () const
 	{ return Order; }
 
 	///  Returns the number of coloums of this matrix. As this is a square matrix, the number is the same as order ().
-	static
 	constexpr
 	size_type
-	columns ()
+	columns () const
 	{ return Order; }
 
 	///  Returns the number of rows of this matrix. As this is a square matrix, the number is the same as order ().
-	static
 	constexpr
 	size_type
-	rows ()
+	rows () const
 	{ return Order; }
 
 	///  Returns the number of elements in the matrix. The size is the same as order () * order ().
-	static
 	constexpr
 	size_type
-	size ()
+	size () const
 	{ return Size; }
 
 	///  Returns the maximum possible number of elements. Because each matrix is a fixed-size container,
 	///  the value is also the value returned by size.
-	static
 	constexpr
 	size_type
-	max_size ()
+	max_size () const
 	{ return Size; }
 
 	///  @name Operations
@@ -1738,7 +1732,7 @@ namespace std {
 /// Provides access to the number of elements in an matrix4 as a compile-time constant expression. 
 template< class Type>
 class tuple_size <titania::math::matrix4 <Type>> :
-    public integral_constant <size_t, titania::math::matrix4 <Type>::size ()>
+    public integral_constant <size_t, titania::math::matrix4 <Type> () .size ()>
 { };
 
 /// Provides compile-time indexed access to the type of the elements of the matrix4 using tuple-like interface.
