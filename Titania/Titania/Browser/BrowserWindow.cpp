@@ -811,12 +811,15 @@ void
 BrowserWindow::on_save_activated ()
 {
 	static const std::set <std::string> knowFileTypes = {
+		".wrz",
 		".wrl",
 		".vrml",
 		".vrm",
+		".json",
 		".x3dvz",
 		".x3dv",
-		".x3d"
+		".x3dz",
+		".x3d",
 	};
 
 	const auto & worldURL = getCurrentScene () -> getWorldURL ();
