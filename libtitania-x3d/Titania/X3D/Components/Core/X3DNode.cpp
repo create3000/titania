@@ -105,7 +105,7 @@ public:
 	setMetaValue (X3DNode* const node, const std::string & key, const Type & value)
 	throw (Error <DISPOSED>)
 	{
-		static constexpr auto size = std::tuple_size <typename Type::value_type::internal_type>::value;
+		static constexpr auto s = std::tuple_size <typename Type::value_type::internal_type>::value;
 
 		auto names = std::vector <std::string> ();
 	
@@ -114,11 +114,11 @@ public:
 		const auto metadataSet = node -> getMetadataSet (names, false);
 		auto  &    metaValue   = metadataSet -> createValue <Metadata> (names .back ()) -> value ();
 	
-		metaValue .resize (value .size () * size);
+		metaValue .resize (value .size () * s);
 	
 		for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
 		{
-			for (size_t v = 0; v < size; ++ v)
+			for (size_t v = 0; v < s; ++ v)
 				metaValue [m ++] = value [i] .get1Value (v);
 		}
 	}
@@ -215,7 +215,7 @@ public:
 	{
 		try
 		{
-			static constexpr auto size = std::tuple_size <typename Type::value_type::internal_type>::value;
+			static constexpr auto s = std::tuple_size <typename Type::value_type::internal_type>::value;
 
 			std::vector <std::string> names;
 		
@@ -224,11 +224,11 @@ public:
 			const auto   metadataSet = node -> getMetadataSet (names, true);
 			const auto & metaValue   = metadataSet -> getValue <Metadata> (names .back ()) -> value ();
 	
-			Type value (metaValue .size () / size);
+			Type value (metaValue .size () / s);
 	
 			for (size_t i = 0, m = 0, size = value .size (); i < size; ++ i)
 			{
-				for (size_t v = 0; v < size; ++ v)
+				for (size_t v = 0; v < s; ++ v)
 					value [i] .set1Value (v, metaValue [m ++]);
 			}
 	
