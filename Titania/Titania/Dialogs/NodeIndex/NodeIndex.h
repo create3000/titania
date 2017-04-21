@@ -174,6 +174,9 @@ private:
 	void
 	set_executionContext ();
 
+	void
+	set_name (const size_t index);
+
 	virtual
 	bool
 	on_search_entry_key_press_event (GdkEventKey* event) final override;

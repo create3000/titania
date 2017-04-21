@@ -331,7 +331,13 @@ NodeIndex::setNodes (X3D::MFNode && value)
 		return;
 
 	for (const auto & node : nodes)
-		node -> removeInterest (&NodeIndex::rowChanged, this);
+		node -> removeInterest (&NodeIndex::set_name, this);
+
+	if (observeNodes)
+	{
+		for (const auto & node : nodes)
+			node -> name_changed () .removeInterest (&NodeIndex::rowChanged, this);
+	}
 
 	nodes = std::move (value);
 
@@ -355,7 +361,9 @@ NodeIndex::setNodes (X3D::MFNode && value)
 		row -> set_value (Columns::IMPORTED_NODES, importingInlines .count (node) ? document_import : empty_string);
 		row -> set_value (Columns::EXPORTED_NODES, exportedNodes .count (node)    ? document_export : empty_string);
 		row -> set_value (Columns::INDEX,          index);
-	
+
+		node -> name_changed () .addInterest (&NodeIndex::set_name, this, index);
+
 		if (observeNodes)
 			node -> addInterest (&NodeIndex::rowChanged, this, index);
 
@@ -522,6 +530,23 @@ NodeIndex::set_executionContext ()
 		scene -> exportedNodes_changed () .addInterest (&NodeIndex::refresh, this);
 
 	refresh ();
+}
+
+void
+NodeIndex::set_name (const size_t index)
+{
+	try
+	{
+		Gtk::TreePath path;
+	
+		path .push_back (index);
+	
+		const auto iter = getListStore () -> get_iter (path);
+
+		iter -> set_value (Columns::NAME, nodes .at (index) -> getName ());
+	}
+	catch (const std::out_of_range &)
+	{ }
 }
 
 void
