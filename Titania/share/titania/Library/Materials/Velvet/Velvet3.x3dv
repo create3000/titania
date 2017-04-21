@@ -10,7 +10,7 @@ META "titania magic" "Material"
 DEF _1 Transform {
   children Shape {
     appearance Appearance {
-      material DEF Artdeco1_1 Material {
+      material DEF Velvet3 Material {
         ambientIntensity 0.0292398
         diffuseColor 0.73 0.61739 0.4307
         specularColor 0.073 0.073 0.073

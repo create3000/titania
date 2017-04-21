@@ -11,7 +11,7 @@ META "titania magic" "Material"
 Transform {
   children Shape {
     appearance Appearance {
-      material Material {
+      material DEF Gray16 Material {
         ambientIntensity 0.2723
         diffuseColor 0.55 0.55 0.55
         specularColor 0.141138 0.389 0.298117

@@ -10,7 +10,7 @@ META "titania magic" "Material"
 DEF _1 Transform {
   children Shape {
     appearance Appearance {
-      material Material { }
+      material DEF Velvet36 Material { }
     }
     geometry Sphere { }
   }
