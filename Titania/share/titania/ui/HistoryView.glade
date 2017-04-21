@@ -13,7 +13,7 @@
       <!-- column-name LastAccess -->
       <column type="gchararray"/>
       <!-- column-name LastAccessTime -->
-      <column type="guint64"/>
+      <column type="gdouble"/>
     </columns>
   </object>
   <object class="GtkTreeModelSort" id="TreeModelSort">

@@ -320,8 +320,8 @@ History::getItems (const size_t offset, const size_t size, const std::string & s
 		const std::string where = getWhere (search);
 		const std::string order = getOrder (LAST_ACCESS, DESC);
 		const std::string limit = getLimit (offset, size);
-	
-		return database .query_assoc ("SELECT id, title, worldURL, strftime('%s', lastAccess) AS lastAccess FROM History " + where + " " + order + " " + limit);
+
+		return database .query_assoc ("SELECT id, title, worldURL, (strftime('%s', lastAccess) || substr (lastAccess, 20)) AS lastAccess FROM History " + where + " " + order + " " + limit);
 	}
 	catch (const std::exception & error)
 	{

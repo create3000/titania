@@ -159,7 +159,7 @@ HistoryView::set_history ()
 	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 2000, search))
 	{
 		const auto & worldURL   = item .at ("worldURL");
-		const time_t lastAccess = strtoul (item .at ("lastAccess") .c_str (), nullptr, 0);
+		const time_t lastAccess = std::strtoul (item .at ("lastAccess") .c_str (), nullptr, 0);
 		const auto   iter       = getListStore () -> append ();
 
 		std::ostringstream osstream;
@@ -170,7 +170,7 @@ HistoryView::set_history ()
 		iter -> set_value (Columns::TITLE,            item .at ("title"));
 		iter -> set_value (Columns::WORLD_URL,        worldURL);
 		iter -> set_value (Columns::LAST_ACCESS,      osstream .str ());
-		iter -> set_value (Columns::LAST_ACCESS_TIME, lastAccess);
+		iter -> set_value (Columns::LAST_ACCESS_TIME, std::strtod (item .at ("lastAccess") .c_str (), nullptr));
 	}
 
 	getTreeView () .set_model (getTreeModelSort ());
