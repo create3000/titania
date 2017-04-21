@@ -59,30 +59,69 @@
 namespace titania {
 namespace puck {
 
-class X3DShaderPartEditor :
+class X3DShaderEditor :
 	virtual public X3DScriptEditorInterface
 {
 public:
 
-	~X3DShaderPartEditor () = default;
+	~X3DShaderEditor () = default;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DShaderPartEditor ();
+	X3DShaderEditor ();
 
 	virtual
 	void
 	initialize () override;
 
 	void
-	set_node (const X3D::SFNode &);
+	set_node (const X3D::SFNode & node);
+
+
+private:
+
+	///  @name Events
+
+	void
+	set_type ();
+
+	virtual
+	void
+	on_vertex_activate () final override;
+
+	virtual
+	void
+	on_tess_control_activate () final override;
+
+	virtual
+	void
+	on_tess_evaluate_activate () final override;
+
+	virtual
+	void
+	on_geometry_activate () final override;
+
+	virtual
+	void
+	on_fragment_activate () final override;
+
+	virtual
+	void
+	on_compute_activate () final override;
+
+	void
+	on_type_activate (const std::string & type);
+
+	///  @name Static members
+
+	static const std::map <std::string, std::string> shaderTypes;
 
 	///  @name Members
 
-	X3D::X3DPtr <X3D::ShaderPart> shaderPartNode;
+	X3D::SFNode node;
 
 };
 

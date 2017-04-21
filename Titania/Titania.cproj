@@ -181,7 +181,6 @@
     <Compile Include="Titania\UserInterfaces\X3DAnimationEditorInterface.cpp" />
     <Compile Include="Titania\Widgets\AnimationEditor\AnimationEditor.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.cpp" />
-    <Compile Include="Titania\Widgets\ScriptEditor\X3DShaderPartEditor.cpp" />
     <Compile Include="Titania\Browser\RecentView.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorPreferences.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DScriptEditorSearch.cpp" />
@@ -299,6 +298,7 @@
     <Compile Include="Titania\ComposedWidgets\MFStringEntry.cpp" />
     <Compile Include="Titania\ComposedWidgets\X3DMFStringEntry.cpp" />
     <Compile Include="Titania\ComposedWidgets\MFStringURLEntry.cpp" />
+    <Compile Include="Titania\Widgets\ScriptEditor\X3DShaderEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -1242,7 +1242,6 @@
     <None Include="share\titania\ui\icons\DirectOutput.svg" />
     <None Include="share\titania\ui\icons\MustEvaluate.svg" />
     <None Include="Titania\Widgets\ScriptEditor\X3DScriptEditor.h" />
-    <None Include="Titania\Widgets\ScriptEditor\X3DShaderPartEditor.h" />
     <None Include="share\titania\ui\icons\FragmentShader.svg" />
     <None Include="share\titania\ui\icons\VertexShader.svg" />
     <None Include="scripts\ConvertPrototypes.pl" />
@@ -2721,6 +2720,10 @@
     <None Include="..\..\..\.config\Titania\Models\L-Systems\L-Systems21.x3dv">
       <Link>share\titania\Library\Models\L-Systems\L-Systems21.x3dv</Link>
     </None>
+    <None Include="Titania\Widgets\ScriptEditor\X3DShaderEditor.h" />
+    <None Include="share\titania\ui\icons\GeometryShader.svg" />
+    <None Include="share\titania\ui\icons\TessControlShader.svg" />
+    <None Include="share\titania\ui\icons\TessEvaluationShader.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

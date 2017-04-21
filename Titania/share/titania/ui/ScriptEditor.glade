@@ -20,6 +20,26 @@
     <property name="can_focus">False</property>
     <property name="stock">FragmentShader</property>
   </object>
+  <object class="GtkImage" id="FragmentShaderImage1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-execute</property>
+  </object>
+  <object class="GtkImage" id="FragmentShaderImage2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">TessControlShader</property>
+  </object>
+  <object class="GtkImage" id="FragmentShaderImage3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">TessEvaluationShader</property>
+  </object>
+  <object class="GtkImage" id="FragmentShaderImage4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">GeometryShader</property>
+  </object>
   <object class="GtkMenu" id="NewScriptMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -149,6 +169,41 @@
         <property name="can_focus">False</property>
         <property name="image">VertexShaderImage</property>
         <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_vertex_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="TessControlMenuItem">
+        <property name="label" translatable="yes">TESS_CONTROL</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">FragmentShaderImage2</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_tess_control_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="TessEvaluateMenuItem">
+        <property name="label" translatable="yes">TESS_EVALUATION</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">FragmentShaderImage3</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_tess_evaluate_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="GeometryMenuItem">
+        <property name="label" translatable="yes">GEOMETRY</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">FragmentShaderImage4</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_geometry_activate" swapped="no"/>
       </object>
     </child>
     <child>
@@ -158,6 +213,19 @@
         <property name="can_focus">False</property>
         <property name="image">FragmentShaderImage</property>
         <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_fragment_activate" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="ComputeMenuItem">
+        <property name="label" translatable="yes">COMPUTE</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="image">FragmentShaderImage1</property>
+        <property name="use_stock">False</property>
+        <property name="always_show_image">True</property>
+        <signal name="activate" handler="on_compute_activate" swapped="no"/>
       </object>
     </child>
   </object>
@@ -479,6 +547,7 @@
                         <child>
                           <object class="GtkMenuToolButton" id="ShaderTypeMenuButton">
                             <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Set shader type to one of the values available in the menu.</property>
                             <property name="label" translatable="yes">Shader Type</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">ShaderType</property>

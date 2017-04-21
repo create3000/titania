@@ -66,6 +66,10 @@ X3DScriptEditorInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("FragmentShaderImage", m_FragmentShaderImage);
+	m_builder -> get_widget ("FragmentShaderImage1", m_FragmentShaderImage1);
+	m_builder -> get_widget ("FragmentShaderImage2", m_FragmentShaderImage2);
+	m_builder -> get_widget ("FragmentShaderImage3", m_FragmentShaderImage3);
+	m_builder -> get_widget ("FragmentShaderImage4", m_FragmentShaderImage4);
 	m_builder -> get_widget ("NewScriptMenu", m_NewScriptMenu);
 	m_builder -> get_widget ("NewScriptMenuItem", m_NewScriptMenuItem);
 	m_builder -> get_widget ("ShaderPartMenuItem", m_ShaderPartMenuItem);
@@ -81,7 +85,11 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("VertexShaderImage", m_VertexShaderImage);
 	m_builder -> get_widget ("ShaderTypeMenu", m_ShaderTypeMenu);
 	m_builder -> get_widget ("VertexMenuItem", m_VertexMenuItem);
+	m_builder -> get_widget ("TessControlMenuItem", m_TessControlMenuItem);
+	m_builder -> get_widget ("TessEvaluateMenuItem", m_TessEvaluateMenuItem);
+	m_builder -> get_widget ("GeometryMenuItem", m_GeometryMenuItem);
 	m_builder -> get_widget ("FragmentMenuItem", m_FragmentMenuItem);
+	m_builder -> get_widget ("ComputeMenuItem", m_ComputeMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
@@ -145,6 +153,14 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_RegularExpressionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_regex_toggled));
 	m_WithinSelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_within_selection_toggled));
 	m_WrapAroundMenuItemMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_search_wrap_around_toggled));
+
+	// Connect object Gtk::ImageMenuItem with id 'VertexMenuItem'.
+	m_VertexMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_vertex_activate));
+	m_TessControlMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_tess_control_activate));
+	m_TessEvaluateMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_tess_evaluate_activate));
+	m_GeometryMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_geometry_activate));
+	m_FragmentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_fragment_activate));
+	m_ComputeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_compute_activate));
 
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));

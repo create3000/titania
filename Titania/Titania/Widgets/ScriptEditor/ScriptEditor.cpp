@@ -68,7 +68,7 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	  X3DScriptEditorInterface (get_ui ("ScriptEditor.glade")),
 	           X3DScriptEditor (),
-	       X3DShaderPartEditor (),
+	           X3DShaderEditor (),
 	     X3DScriptEditorSearch (),
 	X3DScriptEditorPreferences (),
 	                  modified (false),
@@ -97,7 +97,7 @@ ScriptEditor::initialize ()
 {
 	X3DScriptEditorInterface::initialize ();
 	X3DScriptEditor::initialize ();
-	X3DShaderPartEditor::initialize ();
+	X3DShaderEditor::initialize ();
 	X3DScriptEditorPreferences::initialize ();
 
 	// Config
@@ -214,7 +214,7 @@ void
 ScriptEditor::set_node (const X3D::SFNode & value)
 {
 	X3DScriptEditor::set_node (value);
-	X3DShaderPartEditor::set_node (value);
+	X3DShaderEditor::set_node (value);
 
 	if (node)
 	{

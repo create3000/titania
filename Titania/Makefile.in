@@ -330,7 +330,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Widgets/ScriptEditor/X3DScriptEditor.$(OBJEXT) \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorPreferences.$(OBJEXT) \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.$(OBJEXT) \
-	Titania/Widgets/ScriptEditor/X3DShaderPartEditor.$(OBJEXT) \
+	Titania/Widgets/ScriptEditor/X3DShaderEditor.$(OBJEXT) \
 	Titania/Widgets/Sidebar/Sidebar.$(OBJEXT)
 titania_OBJECTS = $(am_titania_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -810,7 +810,7 @@ titania_SOURCES = \
 	Titania/Widgets/ScriptEditor/X3DScriptEditor.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorPreferences.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.cpp \
-	Titania/Widgets/ScriptEditor/X3DShaderPartEditor.cpp \
+	Titania/Widgets/ScriptEditor/X3DShaderEditor.cpp \
 	Titania/Widgets/Sidebar/Sidebar.cpp
 
 titania_LDADD = $(TITANIA_LIBS) \
@@ -1900,7 +1900,7 @@ Titania/Widgets/ScriptEditor/X3DScriptEditorPreferences.$(OBJEXT):  \
 Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.$(OBJEXT):  \
 	Titania/Widgets/ScriptEditor/$(am__dirstamp) \
 	Titania/Widgets/ScriptEditor/$(DEPDIR)/$(am__dirstamp)
-Titania/Widgets/ScriptEditor/X3DShaderPartEditor.$(OBJEXT):  \
+Titania/Widgets/ScriptEditor/X3DShaderEditor.$(OBJEXT):  \
 	Titania/Widgets/ScriptEditor/$(am__dirstamp) \
 	Titania/Widgets/ScriptEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Widgets/Sidebar/$(am__dirstamp):
@@ -2204,7 +2204,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/ScriptEditor/$(DEPDIR)/X3DScriptEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/ScriptEditor/$(DEPDIR)/X3DScriptEditorPreferences.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/ScriptEditor/$(DEPDIR)/X3DScriptEditorSearch.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/ScriptEditor/$(DEPDIR)/X3DShaderPartEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/ScriptEditor/$(DEPDIR)/X3DShaderEditor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/Sidebar/$(DEPDIR)/Sidebar.Po@am__quote@
 
 .cpp.o:

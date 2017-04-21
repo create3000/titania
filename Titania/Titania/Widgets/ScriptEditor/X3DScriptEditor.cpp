@@ -64,8 +64,7 @@ X3DScriptEditor::X3DScriptEditor () :
 
 void
 X3DScriptEditor::initialize ()
-{
-}
+{ }
 
 void
 X3DScriptEditor::set_node (const X3D::SFNode & value)

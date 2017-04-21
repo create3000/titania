@@ -233,7 +233,7 @@ titania_SOURCES =  \
 	Titania/Widgets/ScriptEditor/X3DScriptEditor.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorPreferences.cpp \
 	Titania/Widgets/ScriptEditor/X3DScriptEditorSearch.cpp \
-	Titania/Widgets/ScriptEditor/X3DShaderPartEditor.cpp \
+	Titania/Widgets/ScriptEditor/X3DShaderEditor.cpp \
 	Titania/Widgets/Sidebar/Sidebar.cpp
 
 titania_LDADD = $(TITANIA_LIBS) \

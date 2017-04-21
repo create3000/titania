@@ -54,7 +54,7 @@
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
 #include "X3DScriptEditor.h"
-#include "X3DShaderPartEditor.h"
+#include "X3DShaderEditor.h"
 #include "X3DScriptEditorSearch.h"
 #include "X3DScriptEditorPreferences.h"
 
@@ -70,7 +70,7 @@ class Console;
 class ScriptEditor :
 	virtual public X3DScriptEditorInterface,
 	public X3DScriptEditor,
-	public X3DShaderPartEditor,
+	public X3DShaderEditor,
 	public X3DScriptEditorSearch,
 	public X3DScriptEditorPreferences
 {

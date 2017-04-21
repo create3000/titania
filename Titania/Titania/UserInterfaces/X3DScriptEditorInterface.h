@@ -114,6 +114,22 @@ public:
 	getFragmentShaderImage () const
 	{ return *m_FragmentShaderImage; }
 
+	Gtk::Image &
+	getFragmentShaderImage1 () const
+	{ return *m_FragmentShaderImage1; }
+
+	Gtk::Image &
+	getFragmentShaderImage2 () const
+	{ return *m_FragmentShaderImage2; }
+
+	Gtk::Image &
+	getFragmentShaderImage3 () const
+	{ return *m_FragmentShaderImage3; }
+
+	Gtk::Image &
+	getFragmentShaderImage4 () const
+	{ return *m_FragmentShaderImage4; }
+
 	Gtk::Menu &
 	getNewScriptMenu () const
 	{ return *m_NewScriptMenu; }
@@ -175,8 +191,24 @@ public:
 	{ return *m_VertexMenuItem; }
 
 	Gtk::ImageMenuItem &
+	getTessControlMenuItem () const
+	{ return *m_TessControlMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getTessEvaluateMenuItem () const
+	{ return *m_TessEvaluateMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getGeometryMenuItem () const
+	{ return *m_GeometryMenuItem; }
+
+	Gtk::ImageMenuItem &
 	getFragmentMenuItem () const
 	{ return *m_FragmentMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getComputeMenuItem () const
+	{ return *m_ComputeMenuItem; }
 
 	Gtk::Window &
 	getWindow () const
@@ -418,6 +450,30 @@ public:
 
 	virtual
 	void
+	on_vertex_activate () = 0;
+
+	virtual
+	void
+	on_tess_control_activate () = 0;
+
+	virtual
+	void
+	on_tess_evaluate_activate () = 0;
+
+	virtual
+	void
+	on_geometry_activate () = 0;
+
+	virtual
+	void
+	on_fragment_activate () = 0;
+
+	virtual
+	void
+	on_compute_activate () = 0;
+
+	virtual
+	void
 	on_map () = 0;
 
 	virtual
@@ -577,6 +633,10 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_RightMarginAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TabWidthAdjustment;
 	Gtk::Image* m_FragmentShaderImage;
+	Gtk::Image* m_FragmentShaderImage1;
+	Gtk::Image* m_FragmentShaderImage2;
+	Gtk::Image* m_FragmentShaderImage3;
+	Gtk::Image* m_FragmentShaderImage4;
 	Gtk::Menu* m_NewScriptMenu;
 	Gtk::MenuItem* m_NewScriptMenuItem;
 	Gtk::MenuItem* m_ShaderPartMenuItem;
@@ -592,7 +652,11 @@ private:
 	Gtk::Image* m_VertexShaderImage;
 	Gtk::Menu* m_ShaderTypeMenu;
 	Gtk::ImageMenuItem* m_VertexMenuItem;
+	Gtk::ImageMenuItem* m_TessControlMenuItem;
+	Gtk::ImageMenuItem* m_TessEvaluateMenuItem;
+	Gtk::ImageMenuItem* m_GeometryMenuItem;
 	Gtk::ImageMenuItem* m_FragmentMenuItem;
+	Gtk::ImageMenuItem* m_ComputeMenuItem;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Paned* m_Paned;
