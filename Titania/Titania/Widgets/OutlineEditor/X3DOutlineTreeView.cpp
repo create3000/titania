@@ -50,6 +50,7 @@
 
 #include "X3DOutlineTreeView.h"
 
+#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "CellRenderer/OutlineCellRenderer.h"
@@ -90,7 +91,9 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	      expandExternProtos (false),
 	expandPrototypeInstances (false),
 	       expandInlineNodes (false),
-	               useLocale (true)
+	               useLocale (true),
+	             hadjustment (new AdjustmentObject ()),
+	             vadjustment (new AdjustmentObject ())
 {
 	// Options
 
@@ -304,6 +307,20 @@ X3DOutlineTreeView::set_model (const Glib::RefPtr <OutlineTreeModel> & value)
 	model = value;
 }
 
+void
+X3DOutlineTreeView::preserve_adjustments ()
+{
+	hadjustment -> preserve (get_hadjustment ());
+	vadjustment -> preserve (get_vadjustment ());
+}
+
+void
+X3DOutlineTreeView::set_adjustments (const double h, const double v)
+{
+	hadjustment -> restore (get_hadjustment (), h);
+	vadjustment -> restore (get_vadjustment (), v);
+}
+
 std::vector <Gtk::TreeModel::iterator>
 X3DOutlineTreeView::get_iters (X3D::X3DChildObject* const object) const
 {
@@ -483,11 +500,8 @@ void
 X3DOutlineTreeView::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
-	
-	// Preserve adjustments.
 
-	const auto hadjustment = get_hadjustment () -> get_value ();
-	const auto vadjustment = get_vadjustment () -> get_value ();
+	preserve_adjustments ();
 
 	// Unwatch model.
 
@@ -501,6 +515,7 @@ X3DOutlineTreeView::set_rootNodes ()
 
 	const X3D::X3DExecutionContextPtr & executionContext = get_execution_context ();
 
+	unset_model ();
 	get_model () -> clear ();
 	//get_cellrenderer () -> clear_routes (); // Clear selected routes.
 
@@ -581,6 +596,8 @@ X3DOutlineTreeView::set_rootNodes ()
 	if (not get_model () -> children () .size ())
 		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Empty Scene")));
 
+	set_model (get_model ());
+
 	// Expand.
 
 	disable_shift_key ();
@@ -600,14 +617,6 @@ X3DOutlineTreeView::set_rootNodes ()
 	}
 
 	enable_shift_key ();
-
-	// Restore adjustments.
-
-	while (Gtk::Main::events_pending ())
-		Gtk::Main::iteration ();
-
-	get_hadjustment () -> set_value (hadjustment);
-	get_vadjustment () -> set_value (vadjustment);
 }
 
 void

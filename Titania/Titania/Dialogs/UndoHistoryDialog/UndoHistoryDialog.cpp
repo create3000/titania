@@ -50,6 +50,7 @@
 
 #include "UndoHistoryDialog.h"
 
+#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -68,6 +69,8 @@ UndoHistoryDialog::UndoHistoryDialog (X3DBrowserWindow* const browserWindow) :
 	             X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DUndoHistoryDialogInterface (get_ui ("Dialogs/UndoHistoryDialog.glade")),
 	                      browser (browserWindow -> getCurrentBrowser ()),
+	                  hadjustment (new AdjustmentObject ()),
+	                  vadjustment (new AdjustmentObject ()),
 	                   undoBuffer ()
 {
 	addChildObjects (browser, undoBuffer);
@@ -106,13 +109,10 @@ UndoHistoryDialog::set_undoHistory ()
 {
 	getTreeView () .queue_draw ();
 
-	// Preserve adjustments.
+	hadjustment -> preserve (getTreeView () .get_hadjustment ());
+	vadjustment -> preserve (getTreeView () .get_vadjustment ());
 
-	const auto hadjustment = getTreeView () .get_hadjustment () -> get_value ();
-	const auto vadjustment = getTreeView () .get_vadjustment () -> get_value ();
-
-	// Fill model.
-
+	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
 	const auto & undoHistory = getBrowserWindow () -> getUndoHistory (getCurrentBrowser ());
@@ -141,16 +141,11 @@ UndoHistoryDialog::set_undoHistory ()
 		++ number;
 	}
 
+	getTreeView () .set_model (getListStore ());
+	getTreeView () .set_search_column (Columns::DESCRIPTION);
+
 	getUndoButton () .set_sensitive (undoHistory .hasUndo ());
 	getRedoButton () .set_sensitive (undoHistory .hasRedo ());
-
-	// Restore adjustments.
-
-	while (Gtk::Main::events_pending ())
-		Gtk::Main::iteration ();
-
-	getTreeView () .get_hadjustment () -> set_value (hadjustment);
-	getTreeView () .get_vadjustment () -> set_value (vadjustment);
 }
 
 void

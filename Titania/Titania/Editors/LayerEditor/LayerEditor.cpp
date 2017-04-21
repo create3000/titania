@@ -213,13 +213,7 @@ LayerEditor::set_layers ()
 void
 LayerEditor::set_treeView ()
 {
-	// Preserve adjustments.
-
-	const auto hadjustment = getLayerTreeView () .get_hadjustment () -> get_value ();
-	const auto vadjustment = getLayerTreeView () .get_vadjustment () -> get_value ();
-
-	// Fill model.
-
+	getLayerTreeView () .unset_model ();
 	getLayerListStore () -> clear ();
 
 	// Layer0
@@ -237,13 +231,7 @@ LayerEditor::set_treeView ()
 		++ index;
 	}
 
-	// Restore adjustments.
-
-	while (Gtk::Main::events_pending ())
-		Gtk::Main::iteration ();
-
-	getLayerTreeView () .get_hadjustment () -> set_value (hadjustment);
-	getLayerTreeView () .get_vadjustment () -> set_value (vadjustment);
+	getLayerTreeView () .set_model (getLayerListStore ());
 }
 
 void

@@ -50,6 +50,7 @@
 
 #include "X3DLibraryView.h"
 
+#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
@@ -71,7 +72,9 @@ static constexpr int EXPERIMENTAL = 4;
 };
 
 X3DLibraryView::X3DLibraryView () :
-	X3DLibraryViewInterface ()
+	X3DLibraryViewInterface (),
+	            hadjustment (new AdjustmentObject ()),
+	            vadjustment (new AdjustmentObject ())
 { }
 
 void
@@ -317,13 +320,8 @@ X3DLibraryView::restoreExpanded ()
 	for (const auto & path : paths)
 		getTreeView () .expand_row (Gtk::TreePath (path), false);
 
-	// Restore adjustments.
-
-	while (Gtk::Main::events_pending ())
-		Gtk::Main::iteration ();
-
-	getTreeView () .get_hadjustment () -> set_value (getConfig () -> getDouble ("hadjustment"));
-	getTreeView () .get_vadjustment () -> set_value (getConfig () -> getDouble ("vadjustment"));
+	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () -> getDouble ("hadjustment"));
+	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () -> getDouble ("vadjustment"));
 }
 
 void

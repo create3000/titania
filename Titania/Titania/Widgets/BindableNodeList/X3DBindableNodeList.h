@@ -53,6 +53,7 @@
 
 #include "../../UserInterfaces/X3DBindableNodeListInterface.h"
 
+#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -63,6 +64,8 @@
 
 namespace titania {
 namespace puck {
+
+class AdjustmentObject;
 
 template <class Type>
 class X3DBindableNodeList :
@@ -185,6 +188,9 @@ private:
 	X3D::X3DPtr <Type>              selection;
 	bool                            editing;
 
+	std::unique_ptr <AdjustmentObject> hadjustment;
+	std::unique_ptr <AdjustmentObject> vadjustment;
+
 };
 
 template <class Type>
@@ -201,7 +207,9 @@ X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browser
 	                 activeLayer (),
 	                       nodes (),
 	                   selection (),
-	                     editing (false)
+	                     editing (false),
+	                 hadjustment (new AdjustmentObject ()),
+	                 vadjustment (new AdjustmentObject ())
 {
 	setName (name);
 
@@ -331,13 +339,12 @@ X3DBindableNodeList <Type>::set_list ()
 		nodes .clear ();
 	}
 
-	// Preserve adjustments.
-
-	const auto hadjustment = getTreeView () .get_hadjustment () -> get_value ();
-	const auto vadjustment = getTreeView () .get_vadjustment () -> get_value ();
-
 	// Clear
 
+	hadjustment -> preserve (getTreeView () .get_hadjustment ());
+	vadjustment -> preserve (getTreeView () .get_vadjustment ());
+
+	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
 	// Fill the TreeView's model
@@ -366,17 +373,12 @@ X3DBindableNodeList <Type>::set_list ()
 		}
 	}
 
+	getTreeView () .set_model (getListStore ());
+	getTreeView () .set_search_column (Columns::DESCRIPTION);
+
 	set_stack ();
 
 	processInterests ();
-
-	// Restore adjustments.
-
-	while (Gtk::Main::events_pending ())
-		Gtk::Main::iteration ();
-
-	getTreeView () .get_hadjustment () -> set_value (hadjustment);
-	getTreeView () .get_vadjustment () -> set_value (vadjustment);
 }
 
 template <class Type>

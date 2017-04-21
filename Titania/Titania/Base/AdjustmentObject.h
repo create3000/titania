@@ -48,85 +48,54 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_LIBRARY_VIEW_X3DLIBRARY_VIEW_H__
-#define __TITANIA_WIDGETS_LIBRARY_VIEW_X3DLIBRARY_VIEW_H__
+#ifndef __TITANIA_BASE_ADJUSTMENT_OBJECT_H__
+#define __TITANIA_BASE_ADJUSTMENT_OBJECT_H__
 
-#include "../../UserInterfaces/X3DLibraryViewInterface.h"
+#include <gtkmm/adjustment.h>
+#include <sigc++/connection.h>
+#include <sigc++/trackable.h>
 
 namespace titania {
 namespace puck {
 
-class AdjustmentObject;
-
-class X3DLibraryView :
-	virtual public X3DLibraryViewInterface
+class AdjustmentObject :
+	public sigc::trackable
 {
 public:
 
-	///  @name Operations
+	AdjustmentObject () :
+		sigc::trackable (),
+		     connection ()
+	{ }
 
-	static
-	std::vector <Glib::RefPtr <Gio::FileInfo>> 
-	getChildren (const Glib::RefPtr <Gio::File> &);
-
-	static
-	bool
-	containsFiles (const Glib::RefPtr <Gio::File> &);
-
-	///  @name Destruction
-
-	virtual
-	~X3DLibraryView () override;
-
-
-protected:
-
-	///  @name Construction
-
-	X3DLibraryView ();
-
-	virtual
 	void
-	initialize () override;
+	preserve (const Glib::RefPtr <Gtk::Adjustment> & adjustment)
+	{
+		restore (adjustment, adjustment -> get_value ());
+	}
 
+	void
+	restore (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
+	{
+		adjustment -> set_value (value);
+
+		connection .disconnect ();
+
+		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &AdjustmentObject::block), adjustment, value), false);
+	}
 
 private:
 
-	///  @name Operations
-
-	std::string
-	getRoot () const;
-
-	std::string
-	getFilename (Gtk::TreeModel::Path path) const;
-
 	void
-	append (const std::string &) const;
+	block (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
+	{
+		connection .disconnect ();
 
-	void
-	append (Gtk::TreeModel::iterator &, const Glib::RefPtr <Gio::File> &) const;
+		adjustment -> set_value (value);
+		adjustment -> signal_changed () .emission_stop ();
+	}
 
-	///  @name Event handlers
-
-	virtual
-	void
-	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
-
-	///  @name Expanded handling
-
-	void
-	restoreExpanded ();
-
-	void
-	saveExpanded ();
-
-	void
-	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &) const;
-
-	// Members
-
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
+	sigc::connection connection;
 
 };
 

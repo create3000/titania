@@ -58,6 +58,7 @@ namespace titania {
 namespace puck {
 
 class X3DProtoDeclarationNode;
+class AdjustmentObject;
 
 class NodeIndex :
 	virtual public X3DNodeIndexInterface
@@ -190,6 +191,9 @@ private:
 	bool                                                select;
 	std::set <X3D::X3DConstants::NodeType>              types;
 	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;
+
+	std::unique_ptr <AdjustmentObject> hadjustment;
+	std::unique_ptr <AdjustmentObject> vadjustment;
 
 };
 
