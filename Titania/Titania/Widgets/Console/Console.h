@@ -107,6 +107,13 @@ private:
 	void
 	set_string (const X3D::MFString & value);
 
+	virtual
+	void
+	on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark) final override;
+
+	///  @name Event handlers
+
+	bool scrollToEnd;
 
 };
 

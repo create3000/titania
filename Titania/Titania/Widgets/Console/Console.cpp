@@ -59,7 +59,8 @@ namespace puck {
 
 Console::Console (X3DBrowserWindow* const browserWindow) :
 	   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DConsoleInterface (get_ui ("Console.glade"))
+	X3DConsoleInterface (get_ui ("Console.glade")),
+	        scrollToEnd (true)
 {
 	setup ();
 }
@@ -140,15 +141,36 @@ Console::set_string (const X3D::MFString & value)
 		getTextBuffer () -> erase (getTextBuffer () -> begin (), getTextBuffer () -> get_iter_at_offset (charOffset));
 	}
 
-	// Place cursor.
+	// Update TextView and scoll to end.
 
-	getTextBuffer () -> place_cursor (getTextBuffer () -> end ());
+	int           buffer_x = 0;
+	int           buffer_y = 0;
+	int           line_top = 0;
+	Gtk::TextIter lineY;
 
-	getTextView () .scroll_to (getTextBuffer () -> get_insert ());
+	getTextView () .window_to_buffer_coords (Gtk::TEXT_WINDOW_WIDGET, 0, getTextView () .get_height (), buffer_x, buffer_y); 
+	getTextView () .get_line_at_y (lineY, buffer_y, line_top);
 
-	// Refresh.
+	if (lineY .get_line () > getTextBuffer () -> get_line_count () - 4)
+		scrollToEnd = true;
 
-	getTextView () .queue_draw ();
+	if (scrollToEnd)
+	{
+		// Update TextView and thus we can scoll to iter.
+		while (Gtk::Main::events_pending ())
+			Gtk::Main::iteration ();
+
+		auto iter = getTextBuffer () -> end ();
+
+		getTextView () .scroll_to (iter, 0, 0, 0);
+	}
+}
+
+void
+Console::on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark)
+{
+	if (mark == getTextBuffer () -> get_insert ())
+		scrollToEnd = false;
 }
 
 Console::~Console ()

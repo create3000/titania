@@ -69,6 +69,9 @@ X3DConsoleInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SuspendButton", m_SuspendButton);
 	m_builder -> get_widget ("ClearButton", m_ClearButton);
 
+	// Connect object Gtk::TextBuffer with id 'TextBuffer'.
+	m_TextBuffer -> signal_mark_set () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_mark_set));
+
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_map));
 	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DConsoleInterface::on_unmap));

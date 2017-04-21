@@ -126,6 +126,10 @@ public:
 
 	virtual
 	void
+	on_mark_set (const Gtk::TextBuffer::iterator & location, const Glib::RefPtr <Gtk::TextBuffer::Mark> & mark) = 0;
+
+	virtual
+	void
 	on_map () = 0;
 
 	virtual

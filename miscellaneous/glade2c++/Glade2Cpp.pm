@@ -893,3 +893,5 @@ SearchEntry::search_changed
   virtual void on_search_changed();
 RadioToolButton::button_press_event
   virtual bool on_button_press_event(GdkEventButton* event);
+TextBuffer::mark_set
+  virtual void on_mark_set(const Gtk::TextBuffer::iterator& location, const Glib::RefPtr<Gtk::TextBuffer::Mark>& mark);
