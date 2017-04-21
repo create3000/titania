@@ -241,6 +241,21 @@ FractalNoise (int index, Vector2d vertex)
    }
 }
 
+double
+H (double f, size_t N)
+{
+	double h = 0;
+	double m = 1;
+
+	for (size_t i = 0; i < N; ++ i)
+	{
+		h += m;
+		m *= f;
+	}
+
+	return h;
+}
+
 int
 main (int argc, char** argv)
 {
@@ -258,10 +273,13 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	constexpr auto m = Matrix4d ();
-	constexpr auto v = Vector4d (1,2,3,4);
+	std::clog << std::endl;
+	std::clog << H (0.25, 6) << std::endl;
+	std::clog << H (0.25, 100) << std::endl;
 
-	std::clog << m << std::endl;
+	std::clog << std::endl;
+	std::clog << H (0.5, 6) << std::endl;
+	std::clog << H (0.5, 100) << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

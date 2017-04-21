@@ -306,8 +306,6 @@ X3DUserDefinedFieldsEditor::on_add_user_defined_field_clicked ()
 {
 	editing = false;
 
-	getInitializeOnlyMenuItem () .activate ();
-	getSFBoolMenuItem () .activate ();
 	getFieldNameEntry () .set_text ("");
 	on_field_name_changed ();
 

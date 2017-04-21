@@ -50,6 +50,7 @@
 
 #include "OutlineEditor.h"
 
+#include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "OutlineEditorDatabase.h"
@@ -547,7 +548,12 @@ OutlineEditor::on_remove_activate ()
 		auto &            rootNodes = treeView -> get_execution_context () -> getRootNodes ();
 		const auto        index     = treeView -> get_index (iter);
 
+		getBrowserWindow () -> getSelection () -> undoRestoreNodes (undoStep);
+		getBrowserWindow () -> getSelection () -> removeNodes ({ rootNodes [index] });
+
 		X3D::X3DEditor::removeNode (treeView -> get_execution_context (), parent, rootNodes, index, undoStep);
+
+		getBrowserWindow () -> getSelection () -> redoRestoreNodes (undoStep);
 	}
 	else if (nodePath .size () > 2)
 	{
@@ -580,14 +586,27 @@ OutlineEditor::on_remove_activate ()
 		{
 			case X3D::X3DConstants::SFNode:
 			{
-				X3D::X3DEditor::removeNode (treeView -> get_execution_context (), parent, *static_cast <X3D::SFNode*> (field), undoStep);
+				auto & sfnode = *static_cast <X3D::SFNode*> (field);
+
+				getBrowserWindow () -> getSelection () -> undoRestoreNodes (undoStep);
+				getBrowserWindow () -> getSelection () -> removeNodes ({ sfnode });
+
+				X3D::X3DEditor::removeNode (treeView -> get_execution_context (), parent, sfnode, undoStep);
+
+				getBrowserWindow () -> getSelection () -> redoRestoreNodes (undoStep);
 				break;
 			}
 			case X3D::X3DConstants::MFNode:
 			{
-				const auto index = treeView -> get_index (iter);
+				auto &     mfnode = *static_cast <X3D::MFNode*> (field);
+				const auto index  = treeView -> get_index (iter);
 
-				X3D::X3DEditor::removeNode (treeView -> get_execution_context (), parent, *static_cast <X3D::MFNode*> (field), index, undoStep);
+				getBrowserWindow () -> getSelection () -> undoRestoreNodes (undoStep);
+				getBrowserWindow () -> getSelection () -> removeNodes ({ mfnode [index] });
+
+				X3D::X3DEditor::removeNode (treeView -> get_execution_context (), parent, mfnode, index, undoStep);
+
+				getBrowserWindow () -> getSelection () -> redoRestoreNodes (undoStep);
 				break;
 			}
 			default:
@@ -621,7 +640,6 @@ OutlineEditor::on_unlink_clone_activate ()
 		const auto        copy      = X3D::SFNode (rootNodes [index] -> copy (X3D::FLAT_COPY));
 
 		X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), parent, rootNodes, index, copy, undoStep);
-		copy -> getExecutionContext () -> realize ();
 	}
 	else if (nodePath .size () > 2)
 	{
@@ -658,7 +676,6 @@ OutlineEditor::on_unlink_clone_activate ()
 				const auto copy   = X3D::SFNode (sfnode -> copy (X3D::FLAT_COPY));
 
 				X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), parent, sfnode, copy, undoStep);
-				copy -> getExecutionContext () -> realize ();
 				break;
 			}
 			case X3D::X3DConstants::MFNode:
@@ -668,7 +685,6 @@ OutlineEditor::on_unlink_clone_activate ()
 				const auto copy   = X3D::SFNode (mfnode [index] -> copy (X3D::FLAT_COPY));
 
 				X3D::X3DEditor::replaceNode (treeView -> get_execution_context (), parent, mfnode, index, copy, undoStep);
-				copy -> getExecutionContext () -> realize ();
 				break;
 			}
 			default:

@@ -82,6 +82,8 @@
 
 #include <regex>
 
+#include <Titania/X3D/Debug.h>
+
 namespace titania {
 namespace X3D {
 

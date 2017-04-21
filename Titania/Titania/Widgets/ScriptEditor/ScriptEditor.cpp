@@ -60,8 +60,6 @@
 #include <Titania/X3D/Components/Shaders/ShaderProgram.h>
 #include <Titania/X3D/Components/Scripting/Script.h>
 
-#include <gtksourceviewmm.h>
-
 namespace titania {
 namespace puck {
 

@@ -160,7 +160,7 @@ BrowserSelection::set_execution_context ()
 }
 
 void
-BrowserSelection::set_nodes ()
+BrowserSelection::set_nodes (const X3D::MFNode & nodes)
 {
 	const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
 	const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
@@ -241,6 +241,9 @@ BrowserSelection::removeNodes (const X3D::MFNode & value)
 	const auto & selection = browser-> getSelection ();
 
 	selection -> removeNodes (value);
+
+	// We must immediately call set_nodes to to remove from meta data to lower clone count.
+	set_nodes (selection -> getNodes ());
 }
 
 void

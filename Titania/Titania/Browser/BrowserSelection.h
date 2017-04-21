@@ -169,7 +169,7 @@ private:
 	set_execution_context ();
 
 	void
-	set_nodes ();
+	set_nodes (const X3D::MFNode & nodes);
 
 	///  @name Members
 
