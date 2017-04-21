@@ -158,6 +158,10 @@ private:
 
 	virtual
 	void
+	on_edit_protos_toggled () final override;
+
+	virtual
+	void
 	on_new_clicked () final override;
 
 	virtual

@@ -86,6 +86,13 @@ public:
 	{ select = value; }
 
 	void
+	setDisplayProtoNodes (const bool value);
+
+	bool
+	getDisplayProtoNodes () const
+	{ return displayProtoNodes; }
+
+	void
 	setNamedNodes ();
 
 	void
@@ -189,6 +196,7 @@ private:
 	bool                                                showWidget;
 	bool                                                observeNodes;
 	bool                                                select;
+	bool                                                displayProtoNodes;
 	std::set <X3D::X3DConstants::NodeType>              types;
 	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;
 

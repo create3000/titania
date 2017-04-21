@@ -59,6 +59,7 @@
 #include <Titania/X3D/Components/Shaders/ShaderPart.h>
 #include <Titania/X3D/Components/Shaders/ShaderProgram.h>
 #include <Titania/X3D/Components/Scripting/Script.h>
+#include <Titania/X3D/Prototype/ProtoDeclaration.h>
 
 namespace titania {
 namespace puck {
@@ -100,6 +101,8 @@ ScriptEditor::initialize ()
 	X3DScriptEditorPreferences::initialize ();
 
 	// Config
+
+	getEditProtosButton () .set_active (getConfig () -> getBoolean ("editProtos"));
 
 	if (getConfig () -> hasItem ("paned"))
 		getPaned () .set_position (getConfig () -> getInteger ("paned"));
@@ -299,6 +302,12 @@ ScriptEditor::on_focus_out_event (GdkEventFocus*)
 }
 
 void
+ScriptEditor::on_edit_protos_toggled ()
+{
+	nodeIndex -> setDisplayProtoNodes (getEditProtosButton () .get_active ());
+}
+
+void
 ScriptEditor::on_new_clicked ()
 {
 	on_new_script_activated ();
@@ -362,17 +371,27 @@ ScriptEditor::on_apply_clicked ()
 void
 ScriptEditor::apply (const X3D::UndoStepPtr & undoStep)
 {
+	const auto proto      = X3D::ProtoDeclarationPtr (node -> getExecutionContext ());
 	const auto sourceText = node -> getSourceText ();
-	const auto text  = getTextBuffer () -> get_text ();
+	const auto text       = getTextBuffer () -> get_text ();
 
 	sourceText -> removeInterest (&ScriptEditor::set_sourceText, this);
 	sourceText -> addInterest (&ScriptEditor::connectSourceText, this);
 
 	undoStep -> addObjects (node);
 
+	if (proto)
+		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
+
 	undoStep -> addUndoFunction (&X3D::MFString::setValue, sourceText, *sourceText);
 	sourceText -> set1Value (index, text);
 	undoStep -> addRedoFunction (&X3D::MFString::setValue, sourceText, *sourceText);
+
+	if (proto)
+	{
+		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
+		proto -> updateInstances ();
+	}
 
 	getCurrentBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("%s »%s« is build."), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
 
@@ -550,8 +569,9 @@ ScriptEditor::store ()
 {
 	save ();
 
-	getConfig () -> setItem ("paned",     getPaned ()     .get_position ());
-	getConfig () -> setItem ("sidePaned", getSidePaned () .get_position ());
+	getConfig () -> setItem ("editProtos", getEditProtosButton () .get_active ());
+	getConfig () -> setItem ("paned",      getPaned ()     .get_position ());
+	getConfig () -> setItem ("sidePaned",  getSidePaned () .get_position ());
 
 	X3DScriptEditorInterface::store ();
 }

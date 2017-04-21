@@ -194,6 +194,10 @@ public:
 	getSidePaned () const
 	{ return *m_SidePaned; }
 
+	Gtk::CheckButton &
+	getEditProtosButton () const
+	{ return *m_EditProtosButton; }
+
 	Gtk::Box &
 	getNodeIndexBox () const
 	{ return *m_NodeIndexBox; }
@@ -422,6 +426,10 @@ public:
 
 	virtual
 	void
+	on_edit_protos_toggled () = 0;
+
+	virtual
+	void
 	on_new_clicked () = 0;
 
 	virtual
@@ -589,6 +597,7 @@ private:
 	Gtk::Box* m_Widget;
 	Gtk::Paned* m_Paned;
 	Gtk::Paned* m_SidePaned;
+	Gtk::CheckButton* m_EditProtosButton;
 	Gtk::Box* m_NodeIndexBox;
 	Gtk::Box* m_NameBox;
 	Gtk::Entry* m_NameEntry;

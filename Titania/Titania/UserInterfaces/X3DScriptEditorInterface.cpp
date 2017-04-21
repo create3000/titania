@@ -86,6 +86,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("SidePaned", m_SidePaned);
+	m_builder -> get_widget ("EditProtosButton", m_EditProtosButton);
 	m_builder -> get_widget ("NodeIndexBox", m_NodeIndexBox);
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
@@ -148,6 +149,9 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Box with id 'Widget'.
 	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
 	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_unmap));
+
+	// Connect object Gtk::CheckButton with id 'EditProtosButton'.
+	m_EditProtosButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_edit_protos_toggled));
 
 	// Connect object Gtk::MenuToolButton with id 'NewButton'.
 	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_new_clicked));

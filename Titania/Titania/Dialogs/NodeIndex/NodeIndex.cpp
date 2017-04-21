@@ -97,6 +97,7 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	           showWidget (false),
 	         observeNodes (false),
 	               select (true),
+	    displayProtoNodes (false),
 	                types (),
 	            nodeTypes (),
 	          hadjustment (new AdjustmentObject ()),
@@ -232,6 +233,13 @@ NodeIndex::setShowWidget (const bool value)
 		getFooterBox () .set_visible (true);
 		getScrolledWindow () .set_size_request (-1, 240);
 	}
+}
+
+void
+NodeIndex::setDisplayProtoNodes (const bool value)
+{
+	displayProtoNodes = value;
+	refresh ();
 }
 
 void
@@ -372,6 +380,30 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 
 	if (inPrototypeInstance ())
 		return nodes;
+
+	if (displayProtoNodes)
+	{
+		for (const auto & proto : getCurrentContext () -> getProtoDeclarations ())
+		{
+			proto -> realize ();
+
+			X3D::traverse (X3D::X3DExecutionContextPtr (proto), [&] (X3D::SFNode & node)
+			               {
+			                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
+			                  {
+			                     if (types .count (type))
+			                     {
+			                        if (node -> isLive ())
+												nodes .emplace_back (node);
+		
+			                        break;
+										}
+									}
+		
+			                  return true;
+								});
+		}
+	}
 
 	X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 	               {
