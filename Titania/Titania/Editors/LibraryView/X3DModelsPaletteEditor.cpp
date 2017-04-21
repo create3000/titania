@@ -137,7 +137,7 @@ X3DModelsPaletteEditor::setTouchTime (const basic::uri & URL)
 }
 
 bool
-X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
+X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position)
 {
 	using namespace std::placeholders;
 

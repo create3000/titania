@@ -172,7 +172,7 @@ X3DSculpToolBrushPaletteEditor::set_model (X3D::X3DScenePtr && scene)
 }
 
 bool
-X3DSculpToolBrushPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
+X3DSculpToolBrushPaletteEditor::createScene (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position)
 {
 	using namespace std::placeholders;
 
@@ -193,6 +193,8 @@ X3DSculpToolBrushPaletteEditor::createScene (const X3D::X3DScenePtr & scene)
 		// Parse exported nodes into scene.
 	
 		scene -> fromStream (sstream);
+
+		updateNamedNode (scene, name, position, scene -> getNamedNode ("SculpToolBrush"));
 
 		brush [0] -> setField <X3D::SFBool> ("normalize", false);
 

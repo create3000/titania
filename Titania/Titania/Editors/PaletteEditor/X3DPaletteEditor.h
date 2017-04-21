@@ -66,6 +66,7 @@
 #include <Titania/X3D/Components/Shape/Appearance.h>
 #include <Titania/X3D/Components/Shape/Material.h>
 #include <Titania/X3D/Components/Shape/Shape.h>
+#include <Titania/X3D/Parser/Filter.h>
 
 #include <Titania/String/to_string.h>
 
@@ -119,7 +120,10 @@ protected:
 
 	virtual
 	bool
-	createScene (const X3D::X3DScenePtr &) = 0;
+	createScene (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position) = 0;
+
+	void
+	updateNamedNode (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position, const X3D::SFNode & node) const;
 
 	///  @name Member access
 
@@ -503,6 +507,18 @@ X3DPaletteEditor <Type>::addObject (const size_t position, const basic::uri & UR
 //}
 
 template <class Type>
+void
+X3DPaletteEditor <Type>::updateNamedNode (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position, const X3D::SFNode & node) const
+{
+	const auto x3dName = X3D::GetNameFromString (name + basic::to_string (position, std::locale::classic ()));
+
+	if (x3dName .empty ())
+		scene -> removeNamedNode (node -> getName ());
+	else
+		scene -> updateNamedNode (x3dName, node);
+}
+
+template <class Type>
 X3D::Vector3f
 X3DPaletteEditor <Type>::getTranslation (const size_t position) const
 {
@@ -790,12 +806,13 @@ X3DPaletteEditor <Type>::on_save_object_to_folder (const size_t position)
 		const auto paletteIndex       = this -> getPaletteComboBoxText () .get_active_row_number ();
 		const auto folder             = Gio::File::create_for_uri (folders .at (paletteIndex));
 		const auto positionCharacters = basic::to_string (position + 1, std::locale::classic ());
+		const auto basename           = folder -> get_basename ();
 		const auto file               = folder -> get_child (folder -> get_basename () + positionCharacters + ".x3dv");
 		const auto scene              = this -> getCurrentBrowser () -> createScene ();
 	
 		scene -> setWorldURL (file -> get_uri ());
 
-		if (not createScene (scene))
+		if (not createScene (scene, basename, position + 1))
 			return;
 
 		scene -> addStandardMetaData ();

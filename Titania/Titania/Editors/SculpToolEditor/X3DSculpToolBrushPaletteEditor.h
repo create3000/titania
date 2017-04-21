@@ -98,7 +98,7 @@ private:
 
 	virtual
 	bool
-	createScene (const X3D::X3DScenePtr & scene) final override;
+	createScene (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position) final override;
 
 	void
 	set_loadState (X3D::Inline* const, X3D::Transform* const);

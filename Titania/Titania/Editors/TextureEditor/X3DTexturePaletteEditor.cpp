@@ -112,13 +112,13 @@ X3DTexturePaletteEditor::setTouchTime (const basic::uri & URL)
 }
 
 bool
-X3DTexturePaletteEditor::createScene (const X3D::X3DScenePtr & scene)
+X3DTexturePaletteEditor::createScene (const X3D::X3DScenePtr & scene, const std::string & name, const size_t position)
 {
 	try
 	{
-		const auto texture = getTexture () -> copy (scene, X3D::FLAT_COPY);
+		const X3D::SFNode texture (getTexture () -> copy (scene, X3D::FLAT_COPY));
 
-		scene -> removeNamedNode (texture -> getName ());
+		updateNamedNode (scene, name, position, texture);
 
 		// Create scene.
 
