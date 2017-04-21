@@ -104,8 +104,10 @@ void
 backtrace (size_t size)
 {
 	std::clog
-		<< "======= Backtrace: ========="
-		<< backtrace_symbols (size) << std::endl;
+		<< std::endl
+		<< "======= Backtrace: =========" << std::endl
+		<< backtrace_symbols (size) << std::endl
+		<< std::endl;
 }
 
 std::string

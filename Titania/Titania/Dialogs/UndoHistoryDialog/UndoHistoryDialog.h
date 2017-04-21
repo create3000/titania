@@ -57,8 +57,6 @@
 namespace titania {
 namespace puck {
 
-class AdjustmentObject;
-
 class UndoHistoryDialog :
 	virtual public X3DUndoHistoryDialogInterface
 {
@@ -102,18 +100,10 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
 
-	static
-	void
-	set_adjustment (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value);
-
 	///  @name Members
 
 	X3D::BrowserPtr browser;
-
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
-
-	X3D::SFTime undoBuffer;
+	X3D::SFTime     undoBuffer;
 };
 
 } // puck

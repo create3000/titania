@@ -93,6 +93,13 @@ BrowserSelection::BrowserSelection (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+BrowserSelection::connectNodes ()
+{
+	nodes .removeInterest (&BrowserSelection::connectNodes, this);
+	nodes .addInterest (&BrowserSelection::set_nodes, this);
+}
+
+void
 BrowserSelection::set_browser ()
 {
 	{
@@ -153,6 +160,10 @@ BrowserSelection::set_execution_context ()
 
 		// Set selection.
 
+		// Note: setNodes triggers a set_nodes event, which we do not need if scene changes.
+		nodes .removeInterest (&BrowserSelection::set_nodes, this);
+		nodes .addInterest (&BrowserSelection::connectNodes, this);
+
 		setNodes (current);
 	}
 	catch (const X3D::X3DError &)
@@ -162,7 +173,7 @@ BrowserSelection::set_execution_context ()
 void
 BrowserSelection::set_nodes (const X3D::MFNode & nodes)
 {
-	const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
+	const auto worldInfo = getBrowserWindow () -> getWorldInfo ();
 	const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
 	if (nodes == current)

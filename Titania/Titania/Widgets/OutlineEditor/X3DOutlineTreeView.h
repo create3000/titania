@@ -66,7 +66,6 @@ class OutlineRouteGraph;
 class OutlineSelection;
 class OutlineTreeModel;
 class OutlineTreeObserver;
-class AdjustmentObject;
 
 class X3DOutlineTreeView :
 	virtual public X3DBaseInterface,
@@ -195,12 +194,6 @@ public:
 
 	void
 	collapse_row (const Gtk::TreeModel::Path &);
-	
-	void
-	preserve_adjustments ();
-
-	void
-	set_adjustments (const double, const double);
 
 	///  @name Destruction
 
@@ -336,9 +329,6 @@ private:
 	bool expandPrototypeInstances;
 	bool expandInlineNodes;
 	bool useLocale;
-
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
 
 };
 

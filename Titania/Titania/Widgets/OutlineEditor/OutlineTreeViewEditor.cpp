@@ -832,10 +832,24 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 		}
 		default:
 		{
-			preserve_adjustments ();
+			// Preserve adjustments.
+		
+			const auto hadjustment = get_hadjustment () -> get_value ();
+			const auto vadjustment = get_vadjustment () -> get_value ();
+
+			// Toggle path.
+
 			collapse_row (path);
 			is_full_expanded (get_model () -> get_iter (path), true);
 			expand_row (path, false);
+
+			// Restore adjustments.
+
+			while (Gtk::Main::events_pending ())
+				Gtk::Main::iteration ();
+
+			get_hadjustment () -> set_value (hadjustment);
+			get_vadjustment () -> set_value (vadjustment);
 			return;
 		}
 	}

@@ -56,8 +56,6 @@
 namespace titania {
 namespace puck {
 
-class AdjustmentObject;
-
 class X3DLibraryView :
 	virtual public X3DLibraryViewInterface
 {
@@ -122,11 +120,6 @@ private:
 
 	void
 	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &) const;
-
-	// Members
-
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
 
 };
 

@@ -108,9 +108,6 @@ private:
 	void
 	toggle_path (const Gtk::TreeModel::Path &);
 
-	bool
-	getToggle (const Gtk::TreeModel::iterator &) const;
-
 	///  @name Members
 
 	X3DOutlineTreeView* const treeView;

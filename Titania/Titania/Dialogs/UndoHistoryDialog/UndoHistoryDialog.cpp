@@ -50,7 +50,6 @@
 
 #include "UndoHistoryDialog.h"
 
-#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -69,8 +68,6 @@ UndoHistoryDialog::UndoHistoryDialog (X3DBrowserWindow* const browserWindow) :
 	             X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DUndoHistoryDialogInterface (get_ui ("Dialogs/UndoHistoryDialog.glade")),
 	                      browser (browserWindow -> getCurrentBrowser ()),
-	                  hadjustment (new AdjustmentObject ()),
-	                  vadjustment (new AdjustmentObject ()),
 	                   undoBuffer ()
 {
 	addChildObjects (browser, undoBuffer);
@@ -109,10 +106,13 @@ UndoHistoryDialog::set_undoHistory ()
 {
 	getTreeView () .queue_draw ();
 
-	hadjustment -> preserve (getTreeView () .get_hadjustment ());
-	vadjustment -> preserve (getTreeView () .get_vadjustment ());
+	// Preserve adjustments.
 
-	getTreeView () .unset_model ();
+	const auto hadjustment = getTreeView () .get_hadjustment () -> get_value ();
+	const auto vadjustment = getTreeView () .get_vadjustment () -> get_value ();
+
+	// Fill model.
+
 	getListStore () -> clear ();
 
 	const auto & undoHistory = getBrowserWindow () -> getUndoHistory (getCurrentBrowser ());
@@ -141,11 +141,16 @@ UndoHistoryDialog::set_undoHistory ()
 		++ number;
 	}
 
-	getTreeView () .set_model (getListStore ());
-	getTreeView () .set_search_column (Columns::DESCRIPTION);
-
 	getUndoButton () .set_sensitive (undoHistory .hasUndo ());
 	getRedoButton () .set_sensitive (undoHistory .hasRedo ());
+
+	// Restore adjustments.
+
+	while (Gtk::Main::events_pending ())
+		Gtk::Main::iteration ();
+
+	getTreeView () .get_hadjustment () -> set_value (hadjustment);
+	getTreeView () .get_vadjustment () -> set_value (vadjustment);
 }
 
 void
@@ -184,12 +189,6 @@ UndoHistoryDialog::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::Tre
 		for (size_t i = 0; i < size; ++ i)
 			getBrowserWindow () -> redo ();
 	}
-}
-
-void
-UndoHistoryDialog::set_adjustment (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
-{
-	adjustment -> set_value (value);
 }
 
 UndoHistoryDialog::~UndoHistoryDialog ()

@@ -351,6 +351,8 @@ Selection::setNodes (const MFNode & value)
 
 	// Set nodes.
 
+	nodes .addEvent ();
+
 	if (nodes .empty ())
 	{
 		addNodes (value);

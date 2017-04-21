@@ -1452,11 +1452,11 @@ OutlineEditor::getPathAtPosition (const double x, const double y)
 void
 OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionContext)
 {
-	if (not executionContext -> isScene ())
-		return;
-
 	try
 	{
+		if (not executionContext -> isScene ())
+			return;
+	
 		OutlineEditorDatabase database;
 
 		const auto item  = database .getItem (executionContext -> getWorldURL () .filename ());
@@ -1464,12 +1464,16 @@ OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionCon
 
 		basic::split (std::back_inserter (paths), std::get <0> (item), ";");
 
-		treeView -> set_adjustments (std::get <1> (item), std::get <2> (item));
-
 		for (const auto & path : paths)
 			treeView -> expand_row (Gtk::TreePath (path), false);
 
-		//Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::setAdjustments), std::get <1> (item), std::get <2> (item)));
+		// Restore adjustments.
+
+		while (Gtk::Main::events_pending ())
+			Gtk::Main::iteration ();
+
+		treeView -> get_hadjustment () -> set_value (std::get <1> (item));
+		treeView -> get_vadjustment () -> set_value (std::get <2> (item));
 	}
 	catch (const std::exception & error)
 	{

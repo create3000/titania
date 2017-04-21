@@ -346,6 +346,9 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 void
 X3DBrowserEditor::setModified (const X3D::BrowserPtr & browser, const bool value)
 {
+if (value)
+	backtrace ();
+
 	const auto userData = getUserData (browser);
 
 	userData -> modified      = value;

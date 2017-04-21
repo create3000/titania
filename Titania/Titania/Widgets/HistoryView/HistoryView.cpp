@@ -50,7 +50,6 @@
 
 #include "HistoryView.h"
 
-#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/BrowserUserData.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
@@ -68,9 +67,7 @@ namespace Columns {
 
 HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DHistoryViewInterface (get_ui ("HistoryView.glade")),
-	            hadjustment (new AdjustmentObject ()),
-	            vadjustment (new AdjustmentObject ())
+	X3DHistoryViewInterface (get_ui ("HistoryView.glade"))
 {
 	setup ();
 }
@@ -145,15 +142,16 @@ HistoryView::on_unmap ()
 void
 HistoryView::set_history ()
 {
-	// Fill model.
+	// Preserve adjustments.
 
-	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
-	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
+	const auto hadjustment = getTreeView () .get_hadjustment () -> get_value ();
+	const auto vadjustment = getTreeView () .get_vadjustment () -> get_value ();
+
+	// Fill model.
 
 	const auto rows   = getTreeView () .get_selection () -> get_selected_rows ();
 	const auto search = getSearchEntry () .get_text ();
 
-	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
 	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 2000, search))
@@ -173,14 +171,16 @@ HistoryView::set_history ()
 		iter -> set_value (Columns::LAST_ACCESS_TIME, std::strtod (item .at ("lastAccess") .c_str (), nullptr));
 	}
 
-	getTreeView () .set_model (getTreeModelSort ());
-	getTreeView () .set_search_column (Columns::TITLE);
-
 	for (const auto & path : rows)
 		getTreeView () .get_selection () -> select (path);
 
-	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () -> getDouble ("hadjustment"));
-	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () -> getDouble ("vadjustment"));
+	// Restore adjustments.
+
+	while (Gtk::Main::events_pending ())
+		Gtk::Main::iteration ();
+
+	getTreeView () .get_hadjustment () -> set_value (hadjustment);
+	getTreeView () .get_vadjustment () -> set_value (vadjustment);
 }
 
 void

@@ -58,7 +58,6 @@ namespace titania {
 namespace puck {
 
 class X3DProtoDeclarationNode;
-class AdjustmentObject;
 
 class NodeIndex :
 	virtual public X3DNodeIndexInterface
@@ -179,10 +178,6 @@ private:
 	void
 	on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn* column) final override;
 
-	static
-	void
-	set_adjustment (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value);
-
 	///  @name Members
 
 	X3D::X3DExecutionContextPtr                         executionContext;
@@ -195,9 +190,6 @@ private:
 	bool                                                select;
 	std::set <X3D::X3DConstants::NodeType>              types;
 	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;
-
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
 
 };
 

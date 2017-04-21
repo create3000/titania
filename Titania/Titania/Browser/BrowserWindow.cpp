@@ -2008,6 +2008,8 @@ BrowserWindow::on_hide_selected_objects_activated ()
 	                  return true;
 						},
 	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+
+	getSelection () -> clearNodes ();
 }
 
 void

@@ -50,7 +50,6 @@
 
 #include "NodeIndex.h"
 
-#include "../../Base/AdjustmentObject.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
@@ -98,9 +97,7 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	         observeNodes (false),
 	               select (true),
 	                types (),
-	            nodeTypes (),
-	          hadjustment (new AdjustmentObject ()),
-	          vadjustment (new AdjustmentObject ())
+	            nodeTypes ()
 {
 	addChildObjects (executionContext,
 	                 protoNode,
@@ -322,15 +319,18 @@ NodeIndex::setNodes (X3D::MFNode && value)
 	if (value == nodes)
 		return;
 
+	// Preserve adjustments.
+
+	const auto hadjustment = getTreeView () .get_hadjustment () -> get_value ();
+	const auto vadjustment = getTreeView () .get_vadjustment () -> get_value ();
+
+	// Set model.
+
 	for (const auto & node : nodes)
 		node -> removeInterest (&NodeIndex::rowChanged, this);
 
 	nodes = std::move (value);
 
-	hadjustment -> preserve (getTreeView () .get_hadjustment ());
-	vadjustment -> preserve (getTreeView () .get_vadjustment ());
-
-	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
 	const auto importingInlines = getImportingInlines ();
@@ -354,10 +354,15 @@ NodeIndex::setNodes (X3D::MFNode && value)
 		++ index;
 	}
 
-	getTreeView () .set_model (getTreeModelSort ());
-	getTreeView () .set_search_column (Columns::NAME);
-
 	setSelection (node);
+
+	// Restore adjustments.
+
+	while (Gtk::Main::events_pending ())
+		Gtk::Main::iteration ();
+
+	getTreeView () .get_hadjustment () -> set_value (hadjustment);
+	getTreeView () .get_vadjustment () -> set_value (vadjustment);
 }
 
 /***
@@ -579,12 +584,6 @@ NodeIndex::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewCol
 		default:
 			break;
 	}
-}
-
-void
-NodeIndex::set_adjustment (const Glib::RefPtr <Gtk::Adjustment> & adjustment, const double value)
-{
-	adjustment -> set_value (value);
 }
 
 NodeIndex::~NodeIndex ()

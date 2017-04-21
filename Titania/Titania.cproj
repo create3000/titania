@@ -1073,7 +1073,6 @@
     <None Include="share\titania\Library\Prototypes\Widgets\CheckButtonGroup.x3dv" />
     <None Include="Titania\ComposedWidgets\RotationTool.h" />
     <None Include="Titania\ComposedWidgets\MFStringGeoSystem.h" />
-    <None Include="Titania\Base\AdjustmentObject.h" />
     <None Include="Titania\UserInterfaces\X3DBrowserWindowInterface.h" />
     <None Include="Titania\Browser\BrowserWindow.h" />
     <None Include="Titania\UserInterfaces\X3DPrecisionPlacementPanelInterface.h" />
