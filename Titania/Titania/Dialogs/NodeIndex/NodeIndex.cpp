@@ -331,12 +331,12 @@ NodeIndex::setNodes (X3D::MFNode && value)
 		return;
 
 	for (const auto & node : nodes)
-		node -> removeInterest (&NodeIndex::set_name, this);
+		node -> name_changed () .removeInterest (&NodeIndex::set_name, this);
 
 	if (observeNodes)
 	{
 		for (const auto & node : nodes)
-			node -> name_changed () .removeInterest (&NodeIndex::rowChanged, this);
+			node -> removeInterest (&NodeIndex::rowChanged, this);
 	}
 
 	nodes = std::move (value);
