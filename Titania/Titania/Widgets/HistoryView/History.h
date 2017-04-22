@@ -81,11 +81,6 @@ public:
 
 	///  @name Operations
 
-	const std::string &
-	getIndex (const std::string & worldURL) const
-	throw (std::out_of_range,
-	       std::invalid_argument);
-
 	std::string
 	getIcon (const std::string & id) const
 	throw (std::invalid_argument);
@@ -100,20 +95,20 @@ public:
 	void
 	setItem (const std::string & title, const std::string & worldURL, const std::string & image);
 
-	void
-	removeItem (const std::string & id);
-
 	const sql::sqlite3::assoc_row_type &
-	getItemFromIndex (const std::string &, const std::string & search = "") const;
+	getItem (const std::string & id) const;
 
 	const sql::sqlite3::assoc_row_type &
 	getItemFromURL (const std::string & worldURL) const;
 
-	const sql::sqlite3::assoc_type &
+	sql::sqlite3::assoc_type
 	getItems (const size_t offset, const size_t limit, const std::string & search = "") const;
 
 	void
-	constrainSize (const int32_t size);
+	removeItem (const std::string & id);
+
+	void
+	setSize (const int32_t months);
 
 	size_t
 	getSize () const;

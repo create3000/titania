@@ -173,7 +173,7 @@ BrowserSelection::set_execution_context ()
 void
 BrowserSelection::set_nodes (const X3D::MFNode & nodes)
 {
-	const auto worldInfo = getBrowserWindow () -> getWorldInfo ();
+	const auto worldInfo = getBrowserWindow () -> createWorldInfo ();
 	const auto current   = worldInfo -> getMetaData <X3D::MFNode> ("/Titania/Selection/nodes");
 
 	if (nodes == current)

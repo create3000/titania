@@ -108,7 +108,12 @@ X3DBrowserWidget::initialize ()
 	getMasterBrowser () -> show ();
 	getLogoBox () .pack_start (*getMasterBrowser (), true, true, 0);
 
-	getHistory () -> constrainSize (getConfig () -> getInteger ("rememberHistory"));
+	// History
+
+	if (not getConfig () -> hasItem ("rememberHistory"))
+		getConfig () -> setItem ("rememberHistory", -1);
+
+	getHistory () -> setSize (getConfig () -> getInteger ("rememberHistory"));
 }
 
 void

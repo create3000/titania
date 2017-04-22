@@ -64,6 +64,7 @@ namespace Columns {
 	static constexpr int WORLD_URL        = 2;
 	static constexpr int LAST_ACCESS      = 3;
 	static constexpr int LAST_ACCESS_TIME = 4;
+	static constexpr int ID               = 5;
 }
 
 HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
@@ -88,9 +89,6 @@ void
 HistoryView::configure ()
 {
 	X3DHistoryViewInterface::configure ();
-			
-	if (not getBrowserWindow () -> getConfig () -> hasItem ("rememberHistory"))
-		getBrowserWindow () -> getConfig () -> setItem ("rememberHistory", -1);
 
 	const auto rememberHistory = getBrowserWindow () -> getConfig () -> getInteger ("rememberHistory");
 
@@ -156,9 +154,9 @@ HistoryView::set_history ()
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();
 
-	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 2000, search))
+	for (const auto & item : getBrowserWindow () -> getHistory () -> getItems (0, 10000, search))
 	{
-		const auto & worldURL   = item .at ("worldURL");
+		const auto   worldURL   = basic::uri (item .at ("worldURL"));
 		const time_t lastAccess = std::strtoul (item .at ("lastAccess") .c_str (), nullptr, 0);
 		const auto   iter       = getListStore () -> append ();
 
@@ -166,11 +164,13 @@ HistoryView::set_history ()
 
 		osstream << std::put_time (std::localtime (&lastAccess), "%c"); // "%c %Z"
 
-		iter -> set_value (Columns::ICON,             basic::uri (worldURL) .filename () .str ());
+		iter -> set_value (Columns::ID,               item .at ("id"));
+		iter -> set_value (Columns::ICON,             worldURL .filename () .str ());
 		iter -> set_value (Columns::TITLE,            item .at ("title"));
-		iter -> set_value (Columns::WORLD_URL,        worldURL);
+		iter -> set_value (Columns::WORLD_URL,        worldURL .str ());
 		iter -> set_value (Columns::LAST_ACCESS,      osstream .str ());
 		iter -> set_value (Columns::LAST_ACCESS_TIME, std::strtod (item .at ("lastAccess") .c_str (), nullptr));
+		iter -> set_value (Columns::ICON,             worldURL .filename () .str ());
 	}
 
 	getTreeView () .set_model (getTreeModelSort ());
@@ -196,11 +196,14 @@ HistoryView::on_row_activated (const Gtk::TreeModel::Path & path, Gtk::TreeViewC
 	{
 		// Open worldURL.
 
-		const auto        search    = getSearchEntry () .get_text ();
-		const auto        index     = getTreeModelSort () -> convert_path_to_child_path (path) .to_string ();
-		const std::string URL       = getBrowserWindow () -> getHistory () -> getItemFromIndex (index, search) .at ("worldURL");
+		const auto search = getSearchEntry () .get_text ();
+		const auto iter   = getTreeModelSort () -> get_iter (path);
 
-		getBrowserWindow () -> open (URL);
+		std::string id;
+
+		iter -> get_value (Columns::ID, id);
+
+		getBrowserWindow () -> open (getBrowserWindow () -> getHistory () -> getItem (id) .at ("worldURL"));
 	}
 	catch (const std::exception & error)
 	{ }

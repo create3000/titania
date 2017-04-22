@@ -2724,6 +2724,7 @@
     <None Include="share\titania\ui\icons\GeometryShader.svg" />
     <None Include="share\titania\ui\icons\TessControlShader.svg" />
     <None Include="share\titania\ui\icons\TessEvaluationShader.svg" />
+    <None Include="share\titania\Library\Effects\Water3.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

@@ -167,38 +167,35 @@ History::on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::
 		processInterests ();
 }
 
-void
-History::constrainSize (const int32_t months)
-{
-	try
-	{
-		if (months > 0)
-			database .query ("DELETE FROM History WHERE lastAccess < date ('now','-" + basic::to_string (months, std::locale::classic ()) + " month')");
-	}
-	catch (const std::exception & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-	}
-}
-
 const std::string &
-History::getIndex (const std::string & worldURL) const
+History::getId (const std::string & worldURL) const
 throw (std::out_of_range,
 	    std::invalid_argument)
 {
-	const auto & result = database .query_array ("SELECT "
-	                                             "(SELECT COUNT(0) - 1 FROM History h1 WHERE h1 .lastAccess >= h2 .lastAccess) AS 'rowid' "
-	                                             "FROM History h2 "
-	                                             "WHERE worldURL = " + database .quote (worldURL) + " " +
-	                                             "ORDER BY lastAccess DESC");
+	const auto & result = database .query_array ("SELECT id FROM History WHERE "
+	                                             "worldURL = " + database .quote (worldURL));
 
-	const std::string & index = result .at (0) .at (0);
-
-	if (index == "-1")
-		throw std::out_of_range ("URL '" + worldURL + "' not found.");
-
-	return index;
+	return result .at (0) .at (0);
 }
+
+//const std::string &
+//History::getIndex (const std::string & worldURL) const
+//throw (std::out_of_range,
+//	    std::invalid_argument)
+//{
+//	const auto & result = database .query_array ("SELECT "
+//	                                             "(SELECT COUNT(0) - 1 FROM History h1 WHERE h1 .lastAccess >= h2 .lastAccess) AS 'rowid' "
+//	                                             "FROM History h2 "
+//	                                             "WHERE worldURL = " + database .quote (worldURL) + " " +
+//	                                             "ORDER BY lastAccess DESC");
+//
+//	const std::string & index = result .at (0) .at (0);
+//
+//	if (index == "-1")
+//		throw std::out_of_range ("URL '" + worldURL + "' not found.");
+//
+//	return index;
+//}
 
 std::string
 History::getIcon (const std::string & id) const
@@ -257,31 +254,12 @@ History::setItem (const std::string & title, const std::string & worldURL, const
 	}
 }
 
-void
-History::removeItem (const std::string & id)
-{
-	try
-	{
-		database .query ("DELETE FROM History WHERE id = " + id);
-	}
-	catch (const std::exception & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-	}
-}
-
 const sql::sqlite3::assoc_row_type &
-History::getItemFromIndex (const std::string & index, const std::string & search) const
+History::getItem (const std::string & id) const
 {
 	try
 	{
-		const std::string where = getWhere (search);
-		const std::string order = getOrder (LAST_ACCESS, DESC);
-
-		return database .query_assoc ("SELECT title, worldURL FROM History " +
-		                              where + " " +
-		                              order + " " +
-		                              "LIMIT " + index + ", 1") .at (0);
+		return database .query_assoc ("SELECT title, worldURL FROM History WHERE id = " + id) .at (0);
 	}
 	catch (const std::exception & error)
 	{
@@ -312,16 +290,41 @@ History::getItemFromURL (const std::string & worldURL) const
 	}
 }
 
-const sql::sqlite3::assoc_type &
+sql::sqlite3::assoc_type
 History::getItems (const size_t offset, const size_t size, const std::string & search) const
 {
 	try
 	{
+		sql::sqlite3::assoc_type result;
+
 		const std::string where = getWhere (search);
 		const std::string order = getOrder (LAST_ACCESS, DESC);
 		const std::string limit = getLimit (offset, size);
 
-		return database .query_assoc ("SELECT id, title, worldURL, (strftime('%s', lastAccess) || substr (lastAccess, 20)) AS lastAccess FROM History " + where + " " + order + " " + limit);
+		const auto items = database .query_assoc ("SELECT "
+		                                          "id, "
+		                                          "title, "
+		                                          "worldURL, "
+		                                          "(strftime('%s', lastAccess) || substr (lastAccess, 20)) AS lastAccess "
+		                                          "FROM History " + 
+		                                          where + " " + 
+		                                          order + " " + 
+		                                          limit);
+
+		for (auto item : items)
+		{
+			const auto worldURL = basic::uri (item .at ("worldURL"));
+
+			if (worldURL .is_local () and not os::file_exists (worldURL .path ()))
+			{
+				const_cast <History*> (this) -> removeItem (item ["id"]);
+				continue;
+			}
+
+			result .emplace_back (std::move (item));
+		}
+
+		return result;
 	}
 	catch (const std::exception & error)
 	{
@@ -333,15 +336,31 @@ History::getItems (const size_t offset, const size_t size, const std::string & s
 	}
 }
 
-const std::string &
-History::getId (const std::string & worldURL) const
-throw (std::out_of_range,
-	    std::invalid_argument)
+void
+History::removeItem (const std::string & id)
 {
-	const auto & result = database .query_array ("SELECT id FROM History WHERE "
-	                                             "worldURL = " + database .quote (worldURL));
+	try
+	{
+		database .query ("DELETE FROM History WHERE id = " + id);
+	}
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+}
 
-	return result .at (0) .at (0);
+void
+History::setSize (const int32_t months)
+{
+	try
+	{
+		if (months > 0)
+			database .query ("DELETE FROM History WHERE lastAccess < date ('now','-" + basic::to_string (months, std::locale::classic ()) + " month')");
+	}
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
 }
 
 size_t

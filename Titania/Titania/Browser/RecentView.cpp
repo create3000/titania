@@ -175,13 +175,13 @@ RecentView::set_page (X3D::X3DExecutionContext* const scene, const X3D::SFInt32 
 		getConfig () -> setItem ("currentPage", page);
 		const auto previousPage = scene -> getNamedNode ("PreviousPage");
 		const auto nextPage     = scene -> getNamedNode ("NextPage");
-		const auto size         = getBrowserWindow () -> getHistory () -> getSize ();
+		const auto items        = getBrowserWindow () -> getHistory () -> getItems ((page + 1) * 9, ITEMS);
 
 		previousPage -> getField <X3D::SFInt32> ("keyValue") = page - 1;
 		nextPage -> getField <X3D::SFInt32> ("keyValue")     = page + 1;
 
 		scene -> getNamedNode <X3D::Switch> ("PreviousSwitch") -> whichChoice () = (page - 1) < 0 ? -1 : 0;
-		scene -> getNamedNode <X3D::Switch> ("NextSwitch") -> whichChoice ()     = (page + 1) * ITEMS < size ? 0 : -1;
+		scene -> getNamedNode <X3D::Switch> ("NextSwitch") -> whichChoice ()     = items .size () ? 0 : -1;
 	}
 	catch (...)
 	{ }
