@@ -95,11 +95,8 @@ public:
 	void
 	setItem (const std::string & title, const std::string & worldURL, const std::string & image);
 
-	const sql::sqlite3::assoc_row_type &
+	sql::sqlite3::assoc_row_type
 	getItem (const std::string & id) const;
-
-	const sql::sqlite3::assoc_row_type &
-	getItemFromURL (const std::string & worldURL) const;
 
 	sql::sqlite3::assoc_type
 	getItems (const size_t offset, const size_t limit, const std::string & search = "") const;
@@ -112,6 +109,8 @@ public:
 
 	size_t
 	getSize () const;
+
+	~History ();
 
 
 private:
@@ -129,7 +128,7 @@ private:
 
 	///  @name Operations
 
-	const std::string &
+	std::string
 	getId (const std::string & worldURL) const
 	throw (std::out_of_range,
 	       std::invalid_argument);

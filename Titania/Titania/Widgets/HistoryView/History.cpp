@@ -167,7 +167,7 @@ History::on_history_changed (const Glib::RefPtr <Gio::File> & file, const Glib::
 		processInterests ();
 }
 
-const std::string &
+std::string
 History::getId (const std::string & worldURL) const
 throw (std::out_of_range,
 	    std::invalid_argument)
@@ -254,31 +254,12 @@ History::setItem (const std::string & title, const std::string & worldURL, const
 	}
 }
 
-const sql::sqlite3::assoc_row_type &
+sql::sqlite3::assoc_row_type
 History::getItem (const std::string & id) const
 {
 	try
 	{
 		return database .query_assoc ("SELECT title, worldURL FROM History WHERE id = " + id) .at (0);
-	}
-	catch (const std::exception & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-
-		static const sql::sqlite3::assoc_row_type empty;
-
-		return empty;
-	}
-}
-
-const sql::sqlite3::assoc_row_type &
-History::getItemFromURL (const std::string & worldURL) const
-{
-	try
-	{
-		return database .query_assoc ("SELECT title, worldURL FROM History "
-		                              "WHERE worldURL = " + database .quote (worldURL) + " " +
-		                              "ORDER BY lastAccess DESC") .at (0);
 	}
 	catch (const std::exception & error)
 	{
@@ -301,30 +282,17 @@ History::getItems (const size_t offset, const size_t size, const std::string & s
 		const std::string order = getOrder (LAST_ACCESS, DESC);
 		const std::string limit = getLimit (offset, size);
 
-		const auto items = database .query_assoc ("SELECT "
-		                                          "id, "
-		                                          "title, "
-		                                          "worldURL, "
-		                                          "(strftime('%s', lastAccess) || substr (lastAccess, 20)) AS lastAccess "
-		                                          "FROM History " + 
-		                                          where + " " + 
-		                                          order + " " + 
-		                                          limit);
+		const auto & items = database .query_assoc ("SELECT "
+		                                            "id, "
+		                                            "title, "
+		                                            "worldURL, "
+		                                            "(strftime('%s', lastAccess) || substr (lastAccess, 20)) AS lastAccess "
+		                                            "FROM History " + 
+		                                            where + " " + 
+		                                            order + " " + 
+		                                            limit);
 
-		for (auto item : items)
-		{
-			const auto worldURL = basic::uri (item .at ("worldURL"));
-
-			if (worldURL .is_local () and not os::file_exists (worldURL .path ()))
-			{
-				const_cast <History*> (this) -> removeItem (item ["id"]);
-				continue;
-			}
-
-			result .emplace_back (std::move (item));
-		}
-
-		return result;
+		return items;
 	}
 	catch (const std::exception & error)
 	{
@@ -463,6 +431,26 @@ History::update (const std::string & id, const std::string & title)
 	                 "visited    = (visited + 1), "
 	                 "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
 	                 "WHERE id = " + id);
+}
+
+History::~History ()
+{
+	try
+	{
+		for (const auto item : getItems (0, 0))
+		{
+			const auto worldURL = basic::uri (item .at ("worldURL"));
+	
+			if (worldURL .is_local () and not os::file_exists (worldURL .path ()))
+			{
+				removeItem (item .at ("id"));
+			}
+		}
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 } // puck
