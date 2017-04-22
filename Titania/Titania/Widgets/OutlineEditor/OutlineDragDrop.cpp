@@ -524,6 +524,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	// Handle copy
 
 	X3D::SFNode sceneNode;
+	X3D::MFNode copyField;
 
 	if (context -> get_selected_action () == Gdk::ACTION_COPY)
 	{
@@ -540,18 +541,18 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
 		const auto importedNodes = X3D::X3DEditor::importScene (destContext,
                                                               destContext,
-                                                              destContext -> getRootNodes (),
+                                                              copyField,
                                                               scene,
                                                               undoStep);
 
 		// Change source values.
 
-		sceneNode = sourceContext;
+		sceneNode = destContext;
 
 		sourceParent = &sceneNode;
-		sourceNode   = sourceContext -> getRootNodes () .back ();
-		sourceIndex  = sourceContext -> getRootNodes () .size () - 1;
-		sourceField  = &sourceContext -> getRootNodes ();
+		sourceNode   = copyField .back ();
+		sourceIndex  = copyField .size () - 1;
+		sourceField  = &copyField;
 
 		// Adjust transformation like detach from group of copy
 
@@ -787,6 +788,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	// Handle copy
 
 	X3D::SFNode sceneNode;
+	X3D::MFNode copyField;
 
 	if (context -> get_selected_action () == Gdk::ACTION_COPY)
 	{
@@ -803,18 +805,18 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
 		const auto importedNodes = X3D::X3DEditor::importScene (destContext,
                                                               destContext,
-                                                              destContext -> getRootNodes (),
+                                                              copyField,
                                                               scene,
                                                               undoStep);
 
 		// Change source values.
 
-		sceneNode = sourceContext;
+		sceneNode = destContext;
 
 		sourceParent = &sceneNode;
-		sourceNode   = sourceContext -> getRootNodes () .back ();
-		sourceIndex  = sourceContext -> getRootNodes () .size () - 1;
-		sourceField  = &sourceContext -> getRootNodes ();
+		sourceNode   = copyField .back ();
+		sourceIndex  = copyField .size () - 1;
+		sourceField  = &copyField;
 
 		// Adjust transformation like detach from group of copy
 
@@ -1052,6 +1054,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	// Handle copy
 
 	X3D::SFNode sceneNode;
+	X3D::MFNode copyField;
 
 	if (context -> get_selected_action () == Gdk::ACTION_COPY)
 	{
@@ -1068,18 +1071,18 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
 		const auto importedNodes = X3D::X3DEditor::importScene (destContext,
                                                               destContext,
-                                                              destContext -> getRootNodes (),
+                                                              copyField,
                                                               scene,
                                                               undoStep);
 
 		// Change source values.
 
-		sceneNode = sourceContext;
+		sceneNode = destContext;
 
 		sourceParent = &sceneNode;
-		sourceNode   = sourceContext -> getRootNodes () .back ();
-		sourceIndex  = sourceContext -> getRootNodes () .size () - 1;
-		sourceField  = &sourceContext -> getRootNodes ();
+		sourceNode   = copyField .back ();
+		sourceIndex  = copyField .size () - 1;
+		sourceField  = &copyField;
 
 		// Adjust transformation like detach from group of copy
 
