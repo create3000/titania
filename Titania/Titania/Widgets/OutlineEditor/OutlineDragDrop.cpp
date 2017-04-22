@@ -216,9 +216,8 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DField)
 					break;
 
-				const auto   field       = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
-				const auto & parentNode  = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
-				const auto   destContext = parentNode -> getExecutionContext ();
+				const auto   field      = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+				const auto & parentNode = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 
 				// Field must be SFNode or MFNode
 
@@ -228,9 +227,6 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				// In scene drag n drop
 
 				if (parentNode -> getType () .back () == X3D::X3DConstants::ImportedNode)
-					return false;
-
-				if (sourceContext not_eq destContext)
 					return false;
 
 				return true;
@@ -270,17 +266,7 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				const auto parentIter = iter -> parent ();
 
 				if (treeView -> get_data_type (parentIter) == OutlineIterType::X3DExecutionContext)
-				{
-					const auto & parentNode  = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
-					const auto   destContext = dynamic_cast <X3D::X3DExecutionContext*> (parentNode .getValue ());
-	
-					// In scene drag n drop
-	
-					if (sourceContext not_eq destContext)
-						return false;
-	
 					return true;
-				}
 
 				// If the parent of the node is not a X3DField reject.
 
@@ -299,14 +285,6 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				const auto parentParentIter = parentIter -> parent ();
 
 				if (treeView -> get_data_type (parentParentIter) not_eq OutlineIterType::X3DBaseNode)
-					return false;
-
-				const auto & parentNode  = *static_cast <X3D::SFNode*> (treeView -> get_object (parentParentIter));
-				const auto   destContext = parentNode -> getExecutionContext ();
-				
-				// In scene drag n drop
-
-				if (sourceContext not_eq destContext)
 					return false;
 
 				return true;
@@ -471,6 +449,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 			break;
 	}
 
+	auto action = context -> get_selected_action ();
+
 	// Get destination node.
 
 	const auto destNodeIter = treeView -> get_model () -> get_iter (destinationPath);
@@ -523,10 +503,13 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 	// Handle copy
 
+	if (sourceContext not_eq destContext)
+		action = Gdk::ACTION_COPY;
+
 	X3D::SFNode sceneNode;
 	X3D::MFNode copyField;
 
-	if (context -> get_selected_action () == Gdk::ACTION_COPY)
+	if (action == Gdk::ACTION_COPY)
 	{
 		// Copy source node into scene.
 
@@ -571,7 +554,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 		}
 	}
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (context -> get_selected_action ())));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action)));
 
 	// Proto support
 	
@@ -582,7 +565,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 	// Handle X3DTransformNode nodes.
 
-	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
+	if (action not_eq Gdk::ACTION_LINK)
 	{
 		try
 		{
@@ -644,7 +627,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 		}
 
 		// Remove
-		switch (context -> get_selected_action ())
+		switch (action)
 		{
 			case Gdk::ACTION_DEFAULT:
 			case Gdk::ACTION_MOVE:
@@ -676,16 +659,16 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	{
 		__LOG__ << "No container field found." << std::endl;
 		
-		switch (context -> get_selected_action ())
+		switch (action)
 		{
 			case Gdk::ACTION_COPY:
 				remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, false, undoStep);
 				break;
-		case Gdk::ACTION_DEFAULT:
-		case Gdk::ACTION_LINK:
-		case Gdk::ACTION_MOVE:
-		case Gdk::ACTION_ASK:
-		case Gdk::ACTION_PRIVATE:
+			case Gdk::ACTION_DEFAULT:
+			case Gdk::ACTION_LINK:
+			case Gdk::ACTION_MOVE:
+			case Gdk::ACTION_ASK:
+			case Gdk::ACTION_PRIVATE:
 				break;
 		}
 
@@ -715,6 +698,8 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
 			break;
 	}
+
+	auto action = context -> get_selected_action ();
 
 	//__LOG__ << destinationPath .to_string () << std::endl;
 
@@ -787,10 +772,13 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	// Handle copy
 
+	if (sourceContext not_eq destContext)
+		action = Gdk::ACTION_COPY;
+
 	X3D::SFNode sceneNode;
 	X3D::MFNode copyField;
 
-	if (context -> get_selected_action () == Gdk::ACTION_COPY)
+	if (action == Gdk::ACTION_COPY)
 	{
 		// Copy source node into scene.
 
@@ -835,7 +823,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		}
 	}
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (context -> get_selected_action ())));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action)));
 
 	// Proto support
 	
@@ -846,7 +834,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	// Handle X3DTransformNode nodes.
 
-	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
+	if (action not_eq Gdk::ACTION_LINK)
 	{
 		try
 		{
@@ -904,7 +892,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	}
 
 	// Remove
-	switch (context -> get_selected_action ())
+	switch (action)
 	{
 		case Gdk::ACTION_DEFAULT:
 		case Gdk::ACTION_MOVE:
@@ -953,6 +941,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 		default:
 			break;
 	}
+
+	auto action = context -> get_selected_action ();
 
 	// Get destination field.
 
@@ -1053,10 +1043,13 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	// Handle copy
 
+	if (sourceContext not_eq destContext)
+		action = Gdk::ACTION_COPY;
+
 	X3D::SFNode sceneNode;
 	X3D::MFNode copyField;
 
-	if (context -> get_selected_action () == Gdk::ACTION_COPY)
+	if (action == Gdk::ACTION_COPY)
 	{
 		// Copy source node into scene.
 
@@ -1105,7 +1098,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	    treeView -> get_data_type (destNodeIter) not_eq OutlineIterType::NULL_)
 	   return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (context -> get_selected_action ())));
+	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action)));
 
 	// Proto support
 	
@@ -1116,7 +1109,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	// Handle X3DTransformNode nodes.
 
-	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
+	if (action not_eq Gdk::ACTION_LINK)
 	{
 		try
 		{
@@ -1203,7 +1196,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	// Remove
 
-	switch (context -> get_selected_action ())
+	switch (action)
 	{
 		case Gdk::ACTION_DEFAULT:
 		case Gdk::ACTION_MOVE:
