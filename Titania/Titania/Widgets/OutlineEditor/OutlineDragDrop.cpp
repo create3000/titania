@@ -503,8 +503,10 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 	// Handle copy
 
-	if (sourceContext not_eq destContext)
-		action = Gdk::ACTION_COPY;
+	const auto foreignSourceContext = sourceContext;
+	const auto foreignSourceParent  = sourceParent;
+	const auto foreignSourceField   = sourceField;
+	const auto foreignSourceIndex   = sourceIndex;
 
 	X3D::SFNode sceneNode;
 	X3D::MFNode copyField;
@@ -530,14 +532,13 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 		// Change source values.
 
-		sceneNode = destContext;
-
+		sceneNode    = destContext;
 		sourceParent = &sceneNode;
 		sourceNode   = copyField .back ();
 		sourceIndex  = copyField .size () - 1;
 		sourceField  = &copyField;
 
-		// Adjust transformation like detach from group of copy
+		// Adjust transformation like detach from group of copy.
 
 		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (toExport [0]);
 
@@ -626,18 +627,22 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 			// else shouldn't happen.
 		}
 
-		// Remove
+		// Remove source node if action was move.
+
 		switch (action)
 		{
 			case Gdk::ACTION_DEFAULT:
 			case Gdk::ACTION_MOVE:
-				remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, true, undoStep);
+			{
+				if (sourceContext not_eq destContext)
+					remove_source_node (foreignSourceContext, foreignSourceParent, foreignSourceField, foreignSourceIndex, undoStep);
+				else
+					remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, undoStep);
+	
 				break;
+			}
 			case Gdk::ACTION_COPY:
-				remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, false, undoStep);
-				break;
 			case Gdk::ACTION_LINK:
-				break;
 			case Gdk::ACTION_ASK:
 			case Gdk::ACTION_PRIVATE:
 				break;
@@ -658,19 +663,6 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	catch (const X3D::X3DError &)
 	{
 		__LOG__ << "No container field found." << std::endl;
-		
-		switch (action)
-		{
-			case Gdk::ACTION_COPY:
-				remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, false, undoStep);
-				break;
-			case Gdk::ACTION_DEFAULT:
-			case Gdk::ACTION_LINK:
-			case Gdk::ACTION_MOVE:
-			case Gdk::ACTION_ASK:
-			case Gdk::ACTION_PRIVATE:
-				break;
-		}
 
 		undoStep -> undo ();
 	}
@@ -772,8 +764,10 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	// Handle copy
 
-	if (sourceContext not_eq destContext)
-		action = Gdk::ACTION_COPY;
+	const auto foreignSourceContext = sourceContext;
+	const auto foreignSourceParent  = sourceParent;
+	const auto foreignSourceField   = sourceField;
+	const auto foreignSourceIndex   = sourceIndex;
 
 	X3D::SFNode sceneNode;
 	X3D::MFNode copyField;
@@ -799,14 +793,13 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 		// Change source values.
 
-		sceneNode = destContext;
-
+		sceneNode    = destContext;
 		sourceParent = &sceneNode;
 		sourceNode   = copyField .back ();
 		sourceIndex  = copyField .size () - 1;
 		sourceField  = &copyField;
 
-		// Adjust transformation like detach from group of copy
+		// Adjust transformation like detach from group of copy.
 
 		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (toExport [0]);
 
@@ -891,16 +884,21 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	      break;
 	}
 
-	// Remove
+	// Remove source node if action was move.
+
 	switch (action)
 	{
 		case Gdk::ACTION_DEFAULT:
 		case Gdk::ACTION_MOVE:
-			remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, true, undoStep);
+		{
+			if (sourceContext not_eq destContext)
+				remove_source_node (foreignSourceContext, foreignSourceParent, foreignSourceField, foreignSourceIndex, undoStep);
+			else
+				remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, undoStep);
+
 			break;
+		}
 		case Gdk::ACTION_COPY:
-			remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, false, undoStep);
-			break;
 		case Gdk::ACTION_LINK:
 		case Gdk::ACTION_ASK:
 		case Gdk::ACTION_PRIVATE:
@@ -1043,13 +1041,15 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	// Handle copy
 
-	if (sourceContext not_eq destContext)
-		action = Gdk::ACTION_COPY;
+	const auto foreignSourceContext = sourceContext;
+	const auto foreignSourceParent  = sourceParent;
+	const auto foreignSourceField   = sourceField;
+	const auto foreignSourceIndex   = sourceIndex;
 
 	X3D::SFNode sceneNode;
 	X3D::MFNode copyField;
 
-	if (action == Gdk::ACTION_COPY)
+	if (action == Gdk::ACTION_COPY or sourceContext not_eq destContext)
 	{
 		// Copy source node into scene.
 
@@ -1070,14 +1070,13 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 		// Change source values.
 
-		sceneNode = destContext;
-
+		sceneNode    = destContext;
 		sourceParent = &sceneNode;
 		sourceNode   = copyField .back ();
 		sourceIndex  = copyField .size () - 1;
 		sourceField  = &copyField;
 
-		// Adjust transformation like detach from group of copy
+		// Adjust transformation like detach from group of copy.
 
 		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (toExport [0]);
 
@@ -1194,17 +1193,21 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 		}
 	}
 
-	// Remove
+	// Remove source node if action was move.
 
 	switch (action)
 	{
 		case Gdk::ACTION_DEFAULT:
 		case Gdk::ACTION_MOVE:
-			remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, true, undoStep);
+		{
+			if (sourceContext not_eq destContext)
+				remove_source_node (foreignSourceContext, foreignSourceParent, foreignSourceField, foreignSourceIndex, undoStep);
+			else
+				remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, undoStep);
+
 			break;
+		}
 		case Gdk::ACTION_COPY:
-			remove_source_node (sourceContext, sourceParent, sourceField, sourceIndex, false, undoStep);
-			break;
 		case Gdk::ACTION_LINK:
 		case Gdk::ACTION_ASK:
 		case Gdk::ACTION_PRIVATE:
@@ -1229,7 +1232,6 @@ OutlineDragDrop::remove_source_node (const X3D::X3DExecutionContextPtr & sourceC
                                      X3D::SFNode* const sourceParent,
                                      X3D::X3DFieldDefinition* const sourceField,
                                      size_t sourceIndex,
-                                     const bool undo,
                                      const X3D::UndoStepPtr & undoStep)
 {
 	switch (sourceField -> getType ())
@@ -1238,22 +1240,14 @@ OutlineDragDrop::remove_source_node (const X3D::X3DExecutionContextPtr & sourceC
 	   {
 			auto & sfnode = *static_cast <X3D::SFNode*> (sourceField);
 
-			if (undo)
-				X3D::X3DEditor::replaceNode (sourceContext, *sourceParent, sfnode, nullptr, undoStep);
-			else
-				sfnode = nullptr;
-
+			X3D::X3DEditor::replaceNode (sourceContext, *sourceParent, sfnode, nullptr, undoStep);
 	      break;
 	   }
 	   case X3D::X3DConstants::MFNode:
 	   {
 			auto & mfnode = *static_cast <X3D::MFNode*> (sourceField);
 
-			if (undo)
-				X3D::X3DEditor::eraseFromArray (*sourceParent, mfnode, sourceIndex, undoStep);
-			else
-			   mfnode .erase (mfnode .begin () + sourceIndex);
-			
+			X3D::X3DEditor::eraseFromArray (*sourceParent, mfnode, sourceIndex, undoStep);
 			break;
 	   }
 	   default:
@@ -1281,96 +1275,6 @@ OutlineDragDrop::get_node_action_string (Gdk::DragAction action) const
 
    return "Move Node";
 }
-
-//bool
-//OutlineDragDrop::on_drag_motion (const Glib::RefPtr <Gdk::DragContext> & context, int x, int y, guint time)
-//{
-//	context -> drag_status (Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK, time);
-//
-//	TreeModel::Path      destinationPath;
-//	TreeViewDropPosition position;
-//
-//	if (treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
-//	{
-//		switch (position)
-//		{
-//			case Gtk::TREE_VIEW_DROP_AFTER:
-//			case Gtk::TREE_VIEW_DROP_BEFORE:
-//				break;
-//			case Gtk::TREE_VIEW_DROP_INTO_OR_BEFORE:
-//			case Gtk::TREE_VIEW_DROP_INTO_OR_AFTER:
-//			{
-//				const auto iter = treeView -> get_model () -> get_iter (destinationPath);
-//
-//				switch (treeView -> get_data_type (iter))
-//				{
-//					case OutlineIterType::X3DField:
-//					{
-//						const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
-//
-//						switch (field -> getType ())
-//						{
-//							case X3D::X3DConstants::SFNode:
-//							case X3D::X3DConstants::MFNode:
-//								break;
-//							default:
-//								// Reject drop.
-//								return true;
-//						}
-//					}
-//					case OutlineIterType::X3DBaseNode:
-//						break;
-//					default:
-//						// Reject drop.
-//						return true;
-//				}
-//			}
-//		}
-//	}
-//
-//	// Allow drop.
-//	return false;
-//}
-
-//void
-//OutlineDragDrop::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & context,
-//                                        int x, int y,
-//                                        const Gtk::SelectionData & selection_data,
-//                                        guint info,
-//                                        guint time)
-//{
-//	__LOG__ << time << " : " << selection_data .get_data_as_string () << std::endl;
-//
-//	TreeModel::Path      destinationPath;
-//	TreeViewDropPosition position;
-//
-//	if (treeView -> get_dest_row_at_pos (x, y, destinationPath, position))
-//	{
-//		switch (context -> get_suggested_action ())
-//		{
-//			case Gdk::ACTION_COPY:
-//			{
-//				__LOG__ << "copy" << std::endl;
-//				context -> drag_finish (true, true, time);
-//				break;
-//			}
-//			case Gdk::ACTION_MOVE:
-//			{
-//				__LOG__ << "move" << std::endl;
-//				context -> drag_finish (true, true, time);
-//				break;
-//			}
-//			case Gdk::ACTION_LINK:
-//			{
-//				__LOG__ << "link" << std::endl;
-//				context -> drag_finish (true, false, time);
-//				break;
-//			}
-//			default:
-//				break;
-//		}
-//	}
-//}
 
 } // puck
 } // titania

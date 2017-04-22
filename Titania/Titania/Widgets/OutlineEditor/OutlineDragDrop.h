@@ -108,7 +108,6 @@ private:
 	                    X3D::SFNode* const sourceParent,
 	                    X3D::X3DFieldDefinition* const sourceField,
 	                    size_t sourceIndex,
-	                    const bool undo,
 	                    const X3D::UndoStepPtr & undoStep);
 
 	const char*
