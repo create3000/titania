@@ -88,6 +88,13 @@ public:
 	copyNodes (const X3DExecutionContextPtr &, const MFNode &);
 
 	static
+	MFNode
+	deepCopyNodes (const X3DExecutionContextPtr & sourceContext,
+	               const X3DExecutionContextPtr & destContext,
+	               const MFNode & nodes,
+	               const UndoStepPtr & undoStep);
+
+	static
 	std::string
 	exportNodes (const X3DExecutionContextPtr &, const MFNode &, const bool);
 

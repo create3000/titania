@@ -458,8 +458,9 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	if (treeView -> get_data_type (destNodeIter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 	
-	const auto & destNode    = *static_cast <X3D::SFNode*> (treeView -> get_object (destNodeIter));
-	const auto   destContext = X3D::X3DExecutionContextPtr (destNode -> getExecutionContext ());
+	const auto & destNode        = *static_cast <X3D::SFNode*> (treeView -> get_object (destNodeIter));
+	const auto   destContext     = X3D::X3DExecutionContextPtr (destNode -> getExecutionContext ());
+	auto         destContextNode = X3D::SFNode (destContext);
 
 	// Get source node.
 
@@ -485,8 +486,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 	// Get source parent node.
 
-	X3D::SFNode sourceContextNode (sourceContext);
-	X3D::SFNode* sourceParent = &sourceContextNode;
+	auto sourceContextNode = X3D::SFNode (sourceContext);
+	auto sourceParent      = &sourceContextNode;
 
 	if (sourceField not_eq &sourceContext -> getRootNodes ())
 	{
@@ -508,43 +509,30 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	const auto foreignSourceField   = sourceField;
 	const auto foreignSourceIndex   = sourceIndex;
 
-	X3D::SFNode sceneNode;
 	X3D::MFNode copyField;
 
 	if (action == Gdk::ACTION_COPY)
 	{
 		// Copy source node into scene.
 
-		std::stringstream sstream;
-		X3D::MFNode toExport ({ sourceNode });
+		const auto exportedNode = sourceNode;
 
-		X3D::X3DEditor::exportNodes (sourceContext, sstream, toExport, true);
-
-		basic::ifilestream text (sstream .str ());
-
-		const auto scene         = treeView -> getBrowser () -> createX3DFromStream (destContext -> getWorldURL (), text);
-		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
-		const auto importedNodes = X3D::X3DEditor::importScene (destContext,
-                                                              destContext,
-                                                              copyField,
-                                                              scene,
-                                                              undoStep);
+		copyField = X3D::X3DEditor::deepCopyNodes (sourceContext, destContext, { sourceNode }, std::make_shared <X3D::UndoStep> ());
 
 		// Change source values.
 
-		sceneNode    = destContext;
-		sourceParent = &sceneNode;
+		sourceParent = &destContextNode;
 		sourceNode   = copyField .back ();
 		sourceIndex  = copyField .size () - 1;
 		sourceField  = &copyField;
 
 		// Adjust transformation like detach from group of copy.
 
-		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (toExport [0]);
+		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (sourceNode);
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, toExport [0]);
+			X3D::Matrix4d modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -564,9 +552,14 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	if (proto)
 		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
 
-	// Handle X3DTransformNode nodes.
+	// Handle link
 
-	if (action not_eq Gdk::ACTION_LINK)
+	if (action == Gdk::ACTION_LINK)
+	{
+		if (sourceContext not_eq destContext)
+			return;
+	}
+	else
 	{
 		try
 		{
@@ -712,9 +705,10 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	if (not destinationPath .up ())
 		return;
 	
-	const auto   destNodeIter = treeView -> get_model () -> get_iter (destinationPath);
-	const auto & destNode     = *static_cast <X3D::SFNode*> (treeView -> get_object (destNodeIter));
-	const auto   destContext  = X3D::X3DExecutionContextPtr (destNode -> getExecutionContext ());
+	const auto   destNodeIter    = treeView -> get_model () -> get_iter (destinationPath);
+	const auto & destNode        = *static_cast <X3D::SFNode*> (treeView -> get_object (destNodeIter));
+	const auto   destContext     = X3D::X3DExecutionContextPtr (destNode -> getExecutionContext ());
+	auto         destContextNode = X3D::SFNode (destContext);
 
 	// Get source node.
 
@@ -769,43 +763,30 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	const auto foreignSourceField   = sourceField;
 	const auto foreignSourceIndex   = sourceIndex;
 
-	X3D::SFNode sceneNode;
 	X3D::MFNode copyField;
 
 	if (action == Gdk::ACTION_COPY)
 	{
 		// Copy source node into scene.
 
-		std::stringstream sstream;
-		X3D::MFNode toExport ({ sourceNode });
+		const auto exportedNode = sourceNode;
 
-		X3D::X3DEditor::exportNodes (sourceContext, sstream, toExport, true);
-
-		basic::ifilestream text (sstream .str ());
-
-		const auto scene         = treeView -> getBrowser () -> createX3DFromStream (destContext -> getWorldURL (), text);
-		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
-		const auto importedNodes = X3D::X3DEditor::importScene (destContext,
-                                                              destContext,
-                                                              copyField,
-                                                              scene,
-                                                              undoStep);
+		copyField = X3D::X3DEditor::deepCopyNodes (sourceContext, destContext, { sourceNode }, std::make_shared <X3D::UndoStep> ());
 
 		// Change source values.
 
-		sceneNode    = destContext;
-		sourceParent = &sceneNode;
+		sourceParent = &destContextNode;
 		sourceNode   = copyField .back ();
 		sourceIndex  = copyField .size () - 1;
 		sourceField  = &copyField;
 
 		// Adjust transformation like detach from group of copy.
 
-		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (toExport [0]);
+		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (exportedNode);
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, toExport [0]);
+			X3D::Matrix4d modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -825,9 +806,14 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	if (proto)
 		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
 
-	// Handle X3DTransformNode nodes.
+	// Handle link
 
-	if (action not_eq Gdk::ACTION_LINK)
+	if (action == Gdk::ACTION_LINK)
+	{
+		if (sourceContext not_eq destContext)
+			return;
+	}
+	else
 	{
 		try
 		{
@@ -1003,11 +989,10 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	// Determine destContext, destField and destNode.
 
-	auto destContext = treeView -> get_execution_context ();
-
-	X3D::SFNode destContextNode (destContext);
-	X3D::X3DFieldDefinition* destField = &destContext -> getRootNodes ();
-	X3D::SFNode*             destNode  = &destContextNode;
+	auto destContext     = treeView -> get_execution_context ();
+	auto destContextNode = X3D::SFNode (destContext);
+	auto destField       = static_cast <X3D::X3DFieldDefinition*> (&destContext -> getRootNodes ());
+	auto destNode        = &destContextNode;
 
 	if (destinationPath .size () > 1)
 	{
@@ -1046,43 +1031,30 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	const auto foreignSourceField   = sourceField;
 	const auto foreignSourceIndex   = sourceIndex;
 
-	X3D::SFNode sceneNode;
 	X3D::MFNode copyField;
 
 	if (action == Gdk::ACTION_COPY or sourceContext not_eq destContext)
 	{
 		// Copy source node into scene.
 
-		std::stringstream sstream;
-		X3D::MFNode toExport ({ sourceNode });
+		const auto exportedNode = sourceNode;
 
-		X3D::X3DEditor::exportNodes (sourceContext, sstream, toExport, true);
-
-		basic::ifilestream text (sstream .str ());
-
-		const auto scene         = treeView -> getBrowser () -> createX3DFromStream (destContext -> getWorldURL (), text);
-		const auto undoStep      = std::make_shared <X3D::UndoStep> ("");
-		const auto importedNodes = X3D::X3DEditor::importScene (destContext,
-                                                              destContext,
-                                                              copyField,
-                                                              scene,
-                                                              undoStep);
+		copyField = X3D::X3DEditor::deepCopyNodes (sourceContext, destContext, { sourceNode }, std::make_shared <X3D::UndoStep> ());
 
 		// Change source values.
 
-		sceneNode    = destContext;
-		sourceParent = &sceneNode;
+		sourceParent = &destContextNode;
 		sourceNode   = copyField .back ();
 		sourceIndex  = copyField .size () - 1;
 		sourceField  = &copyField;
 
 		// Adjust transformation like detach from group of copy.
 
-		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (toExport [0]);
+		const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> transform (exportedNode);
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, toExport [0]);
+			X3D::Matrix4d modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -1106,9 +1078,14 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	if (proto)
 		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
 
-	// Handle X3DTransformNode nodes.
+	// Handle link
 
-	if (action not_eq Gdk::ACTION_LINK)
+	if (action == Gdk::ACTION_LINK)
+	{
+		if (sourceContext not_eq destContext)
+			return;
+	}
+	else
 	{
 		try
 		{

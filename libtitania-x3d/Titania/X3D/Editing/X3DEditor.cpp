@@ -175,6 +175,24 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 	return string;
 }
 
+MFNode
+X3DEditor::deepCopyNodes (const X3DExecutionContextPtr & sourceContext, const X3DExecutionContextPtr & destContext, const MFNode & nodes, const UndoStepPtr & undoStep)
+{
+	std::stringstream sstream;
+
+	exportNodes (sourceContext, sstream, nodes, true);
+
+	basic::ifilestream text (sstream .str ());
+
+	const auto scene = destContext -> getBrowser () -> createX3DFromStream (destContext -> getWorldURL (), text);
+
+	MFNode importedNodes;
+
+	destContext -> import (scene, importedNodes);
+
+	return importedNodes;
+}
+
 std::string
 X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier)
 {
