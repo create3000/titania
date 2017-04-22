@@ -1036,7 +1036,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 			const auto destParentIter = treeView -> get_model () -> get_iter (destinationPath);
 
-			destNode = static_cast <X3D::SFNode*> (treeView -> get_object (destParentIter));
+			destNode    = static_cast <X3D::SFNode*> (treeView -> get_object (destParentIter));
+			destContext = destNode -> getValue () -> getExecutionContext ();
 		}
 		else if (treeView -> get_data_type (destFieldIter) == OutlineIterType::X3DExecutionContext)
 		{
