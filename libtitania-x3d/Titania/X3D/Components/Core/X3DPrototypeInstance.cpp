@@ -102,9 +102,9 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 
 		metadata () = proto -> metadata ();
 
-		importExternProtos (proto);
-		importProtos (proto);
-		copyRootNodes (proto);
+		importExternProtos (proto, COPY_OR_CLONE);
+		importProtos       (proto, COPY_OR_CLONE);
+		copyRootNodes      (proto, COPY_OR_CLONE);
 
 		setExtendedEventHandling (false);
 	}
@@ -213,9 +213,9 @@ X3DPrototypeInstance::construct ()
 
 		// Assign protos and root nodes
 
-		importExternProtos (proto); // XXX: deletable if all get/set are virtual
-		importProtos (proto);       // XXX: deletable if all get/set are virtual
-		copyRootNodes (proto);
+		importExternProtos (proto, COPY_OR_CLONE);
+		importProtos       (proto, COPY_OR_CLONE);
+		copyRootNodes      (proto, COPY_OR_CLONE);
 
 		if (isInitialized ())
 		{

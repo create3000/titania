@@ -989,44 +989,44 @@ X3DExecutionContext::removeExternProtoLoadCount (const ExternProtoDeclaration* c
 // ProtoObject handling
 
 X3DProtoDeclarationNode*
-X3DExecutionContext::findProtoDeclaration (const std::string & typeName, const AvailableType & available) const
+X3DExecutionContext::findProtoDeclaration (const std::string & name, const AvailableType & available) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	try
 	{
-		return prototypes .rfind (typeName) .getValue ();
+		return prototypes .rfind (name) .getValue ();
 	}
 	catch (const std::out_of_range &)
 	{
 		try
 		{
-			return externProtos .rfind (typeName) .getValue ();
+			return externProtos .rfind (name) .getValue ();
 		}
 		catch (const std::out_of_range &)
 		{
 			if (not isScene ())
-				return getExecutionContext () -> findProtoDeclaration (typeName, available);
+				return getExecutionContext () -> findProtoDeclaration (name, available);
 
-			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + typeName + "'.");
+			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
 		}
 	}
 }
 
 X3DProtoDeclarationNode*
-X3DExecutionContext::findProtoDeclaration (const std::string & typeName) const
+X3DExecutionContext::findProtoDeclaration (const std::string & name) const
 throw (Error <INVALID_NAME>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	const auto protoNodes = findProtoDeclarations ();
-	const auto iter       = protoNodes .find (typeName);
+	const auto iter       = protoNodes .find (name);
 
 	if (iter not_eq protoNodes .end ())
 		return iter -> second;
 
-	throw Error <INVALID_NAME> ("Unknown proto object '" + typeName + "'.");
+	throw Error <INVALID_NAME> ("Unknown proto object '" + name + "'.");
 }
 
 std::map <std::string, X3DProtoDeclarationNode*>
@@ -1287,8 +1287,8 @@ throw (Error <INVALID_NAME>,
 	field .append (std::move (executionContext -> getRootNodes ()));
 
 	importNamedNodes (executionContext);
-	importExternProtos (executionContext);
-	importProtos (executionContext);
+	importExternProtos (executionContext, CLONE);
+	importProtos (executionContext, CLONE);
 
 	updateImportedNodes (executionContext);
 	copyImportedNodes (executionContext);
@@ -1384,32 +1384,32 @@ X3DExecutionContext::importRoutes (X3DExecutionContext* const executionContext)
 // X3DProtoInstance import handling
 
 void
-X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::importExternProtos (const X3DExecutionContext* const executionContext, const CopyType type)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & externProto : executionContext -> getExternProtoDeclarations ())
-		externProto -> copy (this, CLONE);
+		externProto -> copy (this, type);
 }
 
 void
-X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::importProtos (const X3DExecutionContext* const executionContext, const CopyType type)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & proto : executionContext -> getProtoDeclarations ())
-		proto -> copy (this, CLONE);
+		proto -> copy (this, type);
 }
 
 void
-X3DExecutionContext::copyRootNodes (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::copyRootNodes (const X3DExecutionContext* const executionContext, const CopyType type)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & rootNode : executionContext -> getRootNodes ())
 	{
 		if (rootNode)
-			getRootNodes () .emplace_back (rootNode -> copy (this, COPY_OR_CLONE));
+			getRootNodes () .emplace_back (rootNode -> copy (this, type));
 
 		else
 			getRootNodes () .emplace_back ();

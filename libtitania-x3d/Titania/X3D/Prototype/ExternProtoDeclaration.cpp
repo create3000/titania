@@ -99,44 +99,30 @@ throw (Error <INVALID_NAME>,
 	{
 		case CLONE:
 		{
-			executionContext -> updateExternProtoDeclaration (this -> getName (), ExternProtoDeclarationPtr (const_cast <ExternProtoDeclaration*> (this)));
+			try
+			{
+				const auto found = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
+	
+				if (found)
+					return found;
+			}
+			catch (const Error <INVALID_NAME> &)
+			{ }
+
+			executionContext -> updateExternProtoDeclaration (getName (), ExternProtoDeclarationPtr (const_cast <ExternProtoDeclaration*> (this)));
 
 			return const_cast <ExternProtoDeclaration*> (this);
 		}
 		case COPY_OR_CLONE:
 		{
-//			try
-//			{
-//				const auto externProto = dynamic_cast <ExternProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
-//
-//				if (externProto)
-//					return externProto;
-//			}
-//			catch (const X3D::X3DError &)
-//			{ }
-//
-//			FieldDefinitionArray userDefinedFields;
-//			
-//			for (const auto & fieldDefinition : getUserDefinedFields ())
-//			{
-//				const auto field = fieldDefinition -> create ();
-//
-//				field -> setName (fieldDefinition -> getName ());
-//				field -> setAccessType (fieldDefinition -> getAccessType ());
-//
-//				userDefinedFields .emplace_back (field);
-//			}
-//
-//			const auto copy = executionContext -> createExternProtoDeclaration (getName (), userDefinedFields, url ());
-//
-//			executionContext -> addExternProtoDeclaration (getName (), copy);
-//
-//			transform (copy -> url (), getExecutionContext () -> getWorldURL (), executionContext -> getWorldURL ());
-//
-//			return copy;
+			executionContext -> updateExternProtoDeclaration (getName (), ExternProtoDeclarationPtr (const_cast <ExternProtoDeclaration*> (this)));
+
+			return const_cast <ExternProtoDeclaration*> (this);
 		}
 		case FLAT_COPY:
+		{
 			break;
+		}
 	}
 
 	throw Error <NOT_SUPPORTED> ("Not supported.");

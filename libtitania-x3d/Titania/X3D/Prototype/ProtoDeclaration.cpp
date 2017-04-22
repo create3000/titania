@@ -91,47 +91,25 @@ throw (Error <INVALID_NAME>,
 	{
 		case CLONE:
 		{
-			executionContext -> updateProtoDeclaration (this -> getName (), ProtoDeclarationPtr (const_cast <ProtoDeclaration*> (this)));
+			try
+			{
+				const auto found = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
+	
+				if (found)
+					return found;
+			}
+			catch (const Error <INVALID_NAME> &)
+			{ }
+
+			executionContext -> updateProtoDeclaration (getName (), ProtoDeclarationPtr (const_cast <ProtoDeclaration*> (this)));
 
 			return const_cast <ProtoDeclaration*> (this);
 		}
 		case COPY_OR_CLONE:
 		{
-//			try
-//			{
-//				const auto proto = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
-//
-//				if (proto)
-//					return proto;
-//			}
-//			catch (const X3D::X3DError &)
-//			{ }
-//
-//			FieldDefinitionArray userDefinedFields;
-//			
-//			for (const auto & fieldDefinition : getUserDefinedFields ())
-//			{
-//				const auto field = fieldDefinition -> copy (executionContext, COPY_OR_CLONE);
-//
-//				field -> setName (fieldDefinition -> getName ());
-//				field -> setAccessType (fieldDefinition -> getAccessType ());
-//
-//				userDefinedFields .emplace_back (field);
-//			}
-//
-//			const auto copy = executionContext -> createProtoDeclaration (getName (), userDefinedFields);
-//	
-//			metadata () .copy (executionContext, &copy -> metadata (), COPY_OR_CLONE);
-//
-//			executionContext -> addProtoDeclaration (getName (), copy);
-//
-//			copy -> importExternProtos (this);
-//			copy -> importProtos (this);
-//			copy -> copyRootNodes (this);
-//			copy -> copyImportedNodes (this);
-//			copy -> copyRoutes (this);
-//
-//			return copy;
+			executionContext -> updateProtoDeclaration (getName (), ProtoDeclarationPtr (const_cast <ProtoDeclaration*> (this)));
+
+			return const_cast <ProtoDeclaration*> (this);
 		}
 		case FLAT_COPY:
 			break;

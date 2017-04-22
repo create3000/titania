@@ -586,34 +586,34 @@ protected:
 
 	/// Add uninitialized node. The node will be initialize if this execution context becomes initialized.
 	void
-	addUninitializedNode (X3DBaseNode* const)
+	addUninitializedNode (X3DBaseNode* const node)
 	throw (Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);
 
 	///  @name Import handling
 
 	void
-	importExternProtos (const X3DExecutionContext* const)
+	importExternProtos (const X3DExecutionContext* const executionContext, const CopyType type)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
 	void
-	importProtos (const X3DExecutionContext* const)
+	importProtos (const X3DExecutionContext* const executionContext, const CopyType type)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
 	void
-	copyRootNodes (const X3DExecutionContext* const)
+	copyRootNodes (const X3DExecutionContext* const executionContext, const CopyType type)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
 	void
-	copyImportedNodes (const X3DExecutionContext* const)
+	copyImportedNodes (const X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
 	void
-	copyRoutes (const X3DExecutionContext* const)
+	copyRoutes (const X3DExecutionContext* const executionContext)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 

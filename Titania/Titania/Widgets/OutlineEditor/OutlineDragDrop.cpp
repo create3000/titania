@@ -511,7 +511,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 	X3D::MFNode copyField;
 
-	if (action == Gdk::ACTION_COPY)
+	if (action == Gdk::ACTION_COPY or sourceContext not_eq destContext)
 	{
 		// Copy source node into scene.
 
@@ -765,7 +765,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	X3D::MFNode copyField;
 
-	if (action == Gdk::ACTION_COPY)
+	if (action == Gdk::ACTION_COPY or sourceContext not_eq destContext)
 	{
 		// Copy source node into scene.
 
