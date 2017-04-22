@@ -734,50 +734,53 @@ OutlineTreeModel::row_draggable_vfunc (const Path & path) const
 
 	switch (get_data_type (iter))
 	{
-		case OutlineIterType::NULL_:
-		{
-			if (path .size () == 1)
-				return true;
-
-			const auto nodeIter = iter -> parent () -> parent ();
-
-			switch (get_data_type (nodeIter))
-			{
-				case OutlineIterType::ProtoDeclaration:
-				case OutlineIterType::X3DBaseNode:
-				case OutlineIterType::ExportedNode:
-				{
-					const auto & node             = *static_cast <X3D::SFNode*> (get_object (nodeIter));
-					const auto   executionContext = node -> getExecutionContext ();
-
-					if (executionContext == get_execution_context ())
-						return true;
-					
-					if (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
-					{
-						return executionContext -> getExecutionContext () == get_execution_context ();
-					}
-
-					return false;
-				}
-				default:
-					break;
-			}
-			
-			break;
-		}
+//		case OutlineIterType::NULL_:
+//		{
+//			if (path .size () == 1)
+//				return true;
+//
+//			const auto nodeIter = iter -> parent () -> parent ();
+//
+//			switch (get_data_type (nodeIter))
+//			{
+//				case OutlineIterType::ProtoDeclaration:
+//				case OutlineIterType::X3DBaseNode:
+//				case OutlineIterType::ExportedNode:
+//				{
+//					const auto & node             = *static_cast <X3D::SFNode*> (get_object (nodeIter));
+//					const auto   executionContext = node -> getExecutionContext ();
+//
+//					if (executionContext == get_execution_context ())
+//						return true;
+//					
+//					if (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+//					{
+//						return executionContext -> getExecutionContext () == get_execution_context ();
+//					}
+//
+//					return false;
+//				}
+//				default:
+//					break;
+//			}
+//			
+//			break;
+//		}
 		case OutlineIterType::ExternProtoDeclaration:
 		case OutlineIterType::X3DBaseNode:
 		{
 			const auto & node             = *static_cast <X3D::SFNode*> (get_object (iter));
-			const auto   executionContext = node -> getExecutionContext ();
+			auto         executionContext = node -> getExecutionContext ();
 
 			if (executionContext == get_execution_context ())
 				return true;
-					
-			if (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+
+			while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
 			{
-				return executionContext -> getExecutionContext () == get_execution_context ();
+				executionContext = executionContext -> getExecutionContext ();
+
+				if (executionContext == get_execution_context ())
+					return true;
 			}
 
 			return false;

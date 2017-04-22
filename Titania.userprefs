@@ -1,13 +1,14 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="experimental/main.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.cpp" Line="24" Column="53" />
+      <File FileName="Titania/Titania/Editors/GeometryPropertiesEditor/Rendering/X3DIndexedLineSetEditor.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/L-System.h" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/L-System.cpp" Line="99" Column="36" />
-      <File FileName="experimental/main.cpp" Line="282" Column="20" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Core/X3DNode.cpp" Line="109" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/L-System.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="967" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.h" Line="107" Column="72" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/X3DOutlineTreeView.cpp" Line="820" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

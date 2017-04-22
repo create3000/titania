@@ -253,10 +253,11 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				switch (treeView -> get_data_type (iter))
 				{
 					case OutlineIterType::NULL_:
+						return false;
 					case OutlineIterType::X3DBaseNode:
 						break;
 					default:
-						return false; // Reject
+						return false;
 				}
 
 				// If destination is root node, success.
@@ -264,9 +265,24 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				if (destinationPath .size () == 1)
 				   return sourceContext == treeView -> get_execution_context ();
 
-				// If the parent of the node is not a field, reject.
+				// Test the parent is a X3DExecutionContext.
 
 				const auto parentIter = iter -> parent ();
+
+				if (treeView -> get_data_type (parentIter) == OutlineIterType::X3DExecutionContext)
+				{
+					const auto & parentNode  = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+					const auto   destContext = dynamic_cast <X3D::X3DExecutionContext*> (parentNode .getValue ());
+	
+					// In scene drag n drop
+	
+					if (sourceContext not_eq destContext)
+						return false;
+	
+					return true;
+				}
+
+				// If the parent of the node is not a X3DField reject.
 
 				if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DField)
 					return false;
@@ -556,6 +572,15 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (context -> get_selected_action ())));
 
+	// Proto support
+	
+	const auto proto = X3D::ProtoDeclarationPtr (destContext);
+
+	if (proto)
+		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
+
+	// Handle X3DTransformNode nodes.
+
 	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
 	{
 		try
@@ -633,6 +658,16 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 			case Gdk::ACTION_PRIVATE:
 				break;
 		}
+
+		// Proto support
+	
+		if (proto)
+		{
+			undoStep -> addRedoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
+			proto -> updateInstances ();
+		}
+	
+		// Add undo step.
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}
@@ -800,6 +835,15 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (context -> get_selected_action ())));
 
+	// Proto support
+	
+	const auto proto = X3D::ProtoDeclarationPtr (destContext);
+
+	if (proto)
+		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
+
+	// Handle X3DTransformNode nodes.
+
 	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
 	{
 		try
@@ -872,6 +916,16 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 		case Gdk::ACTION_PRIVATE:
 			break;
 	}
+
+	// Proto support
+
+	if (proto)
+	{
+		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
+		proto -> updateInstances ();
+	}
+
+	// Add undo step.
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
@@ -957,13 +1011,13 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 		}
 	}
 
-	//
+	// Determine destContext, destField and destNode.
 
 	auto destContext = treeView -> get_execution_context ();
 
 	X3D::SFNode destContextNode (destContext);
-	X3D::X3DFieldDefinition* destField   = &destContext -> getRootNodes ();
-	X3D::SFNode*             destParent  = &destContextNode;
+	X3D::X3DFieldDefinition* destField = &destContext -> getRootNodes ();
+	X3D::SFNode*             destNode  = &destContextNode;
 
 	if (destinationPath .size () > 1)
 	{
@@ -982,7 +1036,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 			const auto destParentIter = treeView -> get_model () -> get_iter (destinationPath);
 
-			destParent = static_cast <X3D::SFNode*> (treeView -> get_object (destParentIter));
+			destNode = static_cast <X3D::SFNode*> (treeView -> get_object (destParentIter));
 		}
 		else if (treeView -> get_data_type (destFieldIter) == OutlineIterType::X3DExecutionContext)
 		{
@@ -990,7 +1044,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 			destContext = *sfnode;
 			destField   = &destContext -> getRootNodes ();
-			destParent  = sfnode;
+			destNode    = sfnode;
 		}
 	}
 
@@ -1049,6 +1103,13 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (context -> get_selected_action ())));
 
+	// Proto support
+	
+	const auto proto = X3D::ProtoDeclarationPtr (destContext);
+
+	if (proto)
+		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
+
 	// Handle X3DTransformNode nodes.
 
 	if (context -> get_selected_action () not_eq Gdk::ACTION_LINK)
@@ -1063,9 +1124,9 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 			{
 				// Get group modelview matrix
 
-				auto groupModelViewMatrix = X3D::X3DEditor::getModelViewMatrix (destContext, *destParent);
+				auto groupModelViewMatrix = X3D::X3DEditor::getModelViewMatrix (destContext, *destNode);
 
-				const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> groupTransform (*destParent);
+				const X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> groupTransform (*destNode);
 
 				if (groupTransform)
 					groupModelViewMatrix .mult_left (groupTransform -> getMatrix ());
@@ -1108,7 +1169,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 				if (sourceIndex >= insertIndex)
 					++ sourceIndex;
 
-				X3D::X3DEditor::insertIntoArray (*destParent, mfnode, insertIndex, sourceNode, undoStep);
+				X3D::X3DEditor::insertIntoArray (*destNode, mfnode, insertIndex, sourceNode, undoStep);
 				break;
 			}
 		}
@@ -1130,7 +1191,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 			{
 			   auto & mfnode = *static_cast <X3D::MFNode*> (destField);
 				
-				X3D::X3DEditor::insertIntoArray (*destParent, mfnode, insertIndex, sourceNode, undoStep);
+				X3D::X3DEditor::insertIntoArray (*destNode, mfnode, insertIndex, sourceNode, undoStep);
 			   break;
 			}
 		}
@@ -1152,6 +1213,16 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 		case Gdk::ACTION_PRIVATE:
 			break;
 	}
+
+	// Proto support
+
+	if (proto)
+	{
+		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::updateInstances, proto);
+		proto -> updateInstances ();
+	}
+
+	// Add undo step.
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
