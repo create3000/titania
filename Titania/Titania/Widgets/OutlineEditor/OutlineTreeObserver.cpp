@@ -140,7 +140,7 @@ OutlineTreeObserver::watch (const Gtk::TreeModel::iterator & iter, const Gtk::Tr
 		{
 			const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 
-			sfnode -> fields_changed ()   .addInterest (&OutlineTreeObserver::toggle_path, this, path);
+			sfnode -> fields_changed () .addInterest (&OutlineTreeObserver::toggle_path, this, path);
 			break;
 		}
 		default:

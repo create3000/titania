@@ -104,7 +104,12 @@ private:
 	on_drag_data_base_node_insert_into_array_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void
-	remove_source_node (X3D::SFNode* const, X3D::X3DFieldDefinition* const, size_t, const bool, const X3D::UndoStepPtr &);
+	remove_source_node (const X3D::X3DExecutionContextPtr & sourceContext,
+	                    X3D::SFNode* const sourceParent,
+	                    X3D::X3DFieldDefinition* const sourceField,
+	                    size_t sourceIndex,
+	                    const bool undo,
+	                    const X3D::UndoStepPtr & undoStep);
 
 	const char*
 	get_node_action_string (Gdk::DragAction) const;

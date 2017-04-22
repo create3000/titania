@@ -747,8 +747,18 @@ OutlineTreeModel::row_draggable_vfunc (const Path & path) const
 				case OutlineIterType::X3DBaseNode:
 				case OutlineIterType::ExportedNode:
 				{
-					const auto & node = *static_cast <X3D::SFNode*> (get_object (nodeIter));
-					return node -> getExecutionContext () == get_execution_context ();
+					const auto & node             = *static_cast <X3D::SFNode*> (get_object (nodeIter));
+					const auto   executionContext = node -> getExecutionContext ();
+
+					if (executionContext == get_execution_context ())
+						return true;
+					
+					if (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+					{
+						return executionContext -> getExecutionContext () == get_execution_context ();
+					}
+
+					return false;
 				}
 				default:
 					break;
@@ -759,8 +769,18 @@ OutlineTreeModel::row_draggable_vfunc (const Path & path) const
 		case OutlineIterType::ExternProtoDeclaration:
 		case OutlineIterType::X3DBaseNode:
 		{
-			const auto & node = *static_cast <X3D::SFNode*> (get_object (iter));
-			return node -> getExecutionContext () == get_execution_context ();
+			const auto & node             = *static_cast <X3D::SFNode*> (get_object (iter));
+			const auto   executionContext = node -> getExecutionContext ();
+
+			if (executionContext == get_execution_context ())
+				return true;
+					
+			if (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+			{
+				return executionContext -> getExecutionContext () == get_execution_context ();
+			}
+
+			return false;
 		}
 		default:
 			break;
