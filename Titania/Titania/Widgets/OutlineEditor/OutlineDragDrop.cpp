@@ -190,8 +190,8 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 			return false;
 
 		const auto   sourceIter    = treeView -> get_model () -> get_iter (sourcePath);
-		const auto & node          = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceIter));
-		const auto   sourceContext = node ? node -> getExecutionContext () : treeView -> get_execution_context ();
+		const auto & sourceNode    = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceIter));
+		const auto   sourceContext = sourceNode ? sourceNode -> getExecutionContext () : treeView -> get_execution_context ();
 
 		if (sourceContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 			return false;
@@ -219,18 +219,18 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DField)
 					break;
 
-				const auto   field       = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
-				const auto & parentNode  = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
-				const auto   destContext = parentNode -> getExecutionContext ();
+				const auto   destfield   = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+				const auto & destNode    = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+				const auto   destContext = destNode -> getExecutionContext ();
 
 				// Field must be SFNode or MFNode
 
-				if (field -> getType () not_eq X3D::X3DConstants::SFNode and field -> getType () not_eq X3D::X3DConstants::MFNode)
+				if (destfield -> getType () not_eq X3D::X3DConstants::SFNode and destfield -> getType () not_eq X3D::X3DConstants::MFNode)
 					return false;
 
 				// In scene drag n drop
 
-				if (parentNode -> getType () .back () == X3D::X3DConstants::ImportedNode)
+				if (destNode -> getType () .back () == X3D::X3DConstants::ImportedNode)
 					return false;
 
 				if (destContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
@@ -263,6 +263,12 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 						return false;
 				}
 
+				const auto & destNode    = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				const auto   destContext = destNode -> getExecutionContext ();
+
+				if (destContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+					return false;
+
 				// If destination is root node, success.
 
 				if (destinationPath .size () == 1)
@@ -282,9 +288,9 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 
 				// Test if the parent field is a SFNode or MFNode.
 
-				const auto field = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (parentIter));
+				const auto destField = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (parentIter));
 
-				if (not (field -> getType () == X3D::X3DConstants::SFNode or field -> getType () == X3D::X3DConstants::MFNode))
+				if (not (destField -> getType () == X3D::X3DConstants::SFNode or destField -> getType () == X3D::X3DConstants::MFNode))
 					return false;
 
 				// Test if the parent of the field is a X3DBaseNode.
@@ -292,12 +298,6 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				const auto parentParentIter = parentIter -> parent ();
 
 				if (treeView -> get_data_type (parentParentIter) not_eq OutlineIterType::X3DBaseNode)
-					return false;
-
-				const auto & parentNode  = *static_cast <X3D::SFNode*> (treeView -> get_object (parentParentIter));
-				const auto   destContext = parentNode -> getExecutionContext ();
-
-				if (destContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 					return false;
 
 				return true;
