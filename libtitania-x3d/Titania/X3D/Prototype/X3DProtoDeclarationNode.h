@@ -105,14 +105,6 @@ public:
 	const SFEnum <LoadState> &
 	checkLoadState () const = 0;
 
-	void
-	addInstance (X3DPrototypeInstance* const instance)
-	{ instances .emplace (instance); }
-
-	void
-	removeInstance (X3DPrototypeInstance* const instance)
-	{ instances .erase (instance); }
-
 	std::set <X3DPrototypeInstance*>
 	getInstances () const
 	{ return instances; }
@@ -133,11 +125,35 @@ public:
 
 protected:
 
+	friend class X3DPrototypeInstance;
+
 	///  @name Construction
 
 	X3DProtoDeclarationNode ();
 
+	virtual
+	void
+	initialize () override;
+
+	///  @name Operations
+
+	virtual
+	void
+	addInstance (X3DPrototypeInstance* const instance)
+	{ instances .emplace (instance); }
+
+	virtual
+	void
+	removeInstance (X3DPrototypeInstance* const instance)
+	{ instances .erase (instance); }
+
+
 private:
+
+	///  @name Event handlers
+
+	void
+	set_fields ();
 
 	///  @name Members
 

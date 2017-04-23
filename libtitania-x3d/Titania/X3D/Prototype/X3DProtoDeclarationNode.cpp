@@ -64,10 +64,24 @@ X3DProtoDeclarationNode::X3DProtoDeclarationNode () :
 }
 
 void
+X3DProtoDeclarationNode::initialize ()
+{
+	X3DNode::initialize ();
+
+	fields_changed () .addInterest (&X3DProtoDeclarationNode::set_fields, this);
+}
+
+void
 X3DProtoDeclarationNode::updateInstances () const
 {
 	for (const auto & instance : instances)
 		instance -> update ();
+}
+
+void
+X3DProtoDeclarationNode::set_fields ()
+{
+	updateInstances ();
 }
 
 } // X3D

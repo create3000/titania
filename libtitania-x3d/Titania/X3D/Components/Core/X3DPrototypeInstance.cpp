@@ -238,34 +238,42 @@ X3DPrototypeInstance::update ()
 {
 	X3DExecutionContext::dispose ();
 
-	try
+	const auto proto  = protoNode -> getProtoDeclaration ();
+	auto       fields = std::map <std::string, FieldPtr> ();
+
+	for (const auto & fieldDefinition : getFieldDefinitions ())
 	{
-		const auto proto = protoNode -> getProtoDeclaration ();
+		if (fieldDefinition == &metadata ())
+			continue;
 
-		for (const auto & fieldDefinition : getFieldDefinitions ())
-		{
-			try
-			{
-				const auto protoField = proto -> getField (fieldDefinition -> getName ());
-
-				if (fieldDefinition -> getType () not_eq protoField -> getType ())
-					removeField (fieldDefinition -> getName ());
-
-				else
-					fieldDefinition -> setAccessType (protoField -> getAccessType ());
-			}
-			catch (const X3DError & error)
-			{
-				removeField (fieldDefinition -> getName ());
-			}
-		}		
+		fields .emplace (fieldDefinition -> getName (), fieldDefinition);
 	}
-	catch (const X3DError & error)
+
+	for (const auto & pair : fields)
+		removeField (pair .second .getValue () -> getName ());
+
+	for (const auto & fieldDefinition : proto -> getFieldDefinitions ())
 	{
-		getBrowser () -> print (error .what ());
+		addField (fieldDefinition -> getAccessType (),
+		          fieldDefinition -> getName (),
+		          *fieldDefinition -> copy (FLAT_COPY));
 	}
 
 	construct ();
+
+	for (const auto & pair : fields)
+	{
+		try
+		{
+			const auto previous = pair .second .getValue ();
+			const auto field    = getField (previous -> getName ());
+
+			if (previous -> getType () == field -> getType ())
+				*field = *previous;
+		}
+		catch (const X3DError &)
+		{ }
+	}
 
 	const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
 }
