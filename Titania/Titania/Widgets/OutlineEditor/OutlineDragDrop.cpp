@@ -193,6 +193,9 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 		const auto & node          = *static_cast <X3D::SFNode*> (treeView -> get_object (sourceIter));
 		const auto   sourceContext = node ? node -> getExecutionContext () : treeView -> get_execution_context ();
 
+		if (sourceContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+			return false;
+
 		// Drag on field
 
 		switch (position)
@@ -216,8 +219,9 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DField)
 					break;
 
-				const auto   field      = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
-				const auto & parentNode = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+				const auto   field       = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (iter));
+				const auto & parentNode  = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+				const auto   destContext = parentNode -> getExecutionContext ();
 
 				// Field must be SFNode or MFNode
 
@@ -227,6 +231,9 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				// In scene drag n drop
 
 				if (parentNode -> getType () .back () == X3D::X3DConstants::ImportedNode)
+					return false;
+
+				if (destContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 					return false;
 
 				return true;
@@ -285,6 +292,12 @@ OutlineDragDrop::on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext>
 				const auto parentParentIter = parentIter -> parent ();
 
 				if (treeView -> get_data_type (parentParentIter) not_eq OutlineIterType::X3DBaseNode)
+					return false;
+
+				const auto & parentNode  = *static_cast <X3D::SFNode*> (treeView -> get_object (parentParentIter));
+				const auto   destContext = parentNode -> getExecutionContext ();
+
+				if (destContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 					return false;
 
 				return true;

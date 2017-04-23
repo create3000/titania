@@ -240,6 +240,7 @@ X3DPrototypeInstance::update ()
 
 	const auto proto  = protoNode -> getProtoDeclaration ();
 	auto       fields = std::map <std::string, FieldPtr> ();
+	auto       meta   = metadata ();
 
 	for (const auto & fieldDefinition : getFieldDefinitions ())
 	{
@@ -260,6 +261,16 @@ X3DPrototypeInstance::update ()
 	}
 
 	construct ();
+
+	try
+	{
+		const auto field = getField ("metadata");
+
+		if (meta .getType () == field -> getType ())
+			*field = meta;
+	}
+	catch (const X3DError &)
+	{ }
 
 	for (const auto & pair : fields)
 	{
