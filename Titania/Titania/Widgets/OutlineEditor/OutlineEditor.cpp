@@ -490,14 +490,14 @@ OutlineEditor::OutlineEditor::on_create_instance_activate ()
 }
 
 void
-OutlineEditor::on_add_reference_activate (const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr)
+OutlineEditor::on_add_reference_activate (const X3D::SFNode & node, const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr)
 {
 	const auto field     = fieldPtr .getValue ();
 	const auto reference = referencePtr .getValue ();
 	const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Reference To »%s«"), reference -> getName () .c_str ()));
 
 	undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
-	X3D::X3DEditor::addReference (field, reference, undoStep);
+	X3D::X3DEditor::addReference (node, field, reference, undoStep);
 	
 	undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 	treeView -> queue_draw ();
@@ -506,14 +506,14 @@ OutlineEditor::on_add_reference_activate (const X3D::FieldPtr & fieldPtr, const 
 }
 
 void
-OutlineEditor::on_remove_reference_activate (const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr)
+OutlineEditor::on_remove_reference_activate (const X3D::SFNode & node, const X3D::FieldPtr & fieldPtr, const X3D::FieldPtr & referencePtr)
 {
 	const auto field     = fieldPtr .getValue ();
 	const auto reference = referencePtr .getValue ();
 	const auto undoStep  = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove Reference To »%s«"), reference -> getName () .c_str ()));
 
 	undoStep -> addUndoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
-	X3D::X3DEditor::removeReference (field, reference, undoStep);
+	X3D::X3DEditor::removeReference (node, field, reference, undoStep);
 	
 	undoStep -> addRedoFunction (&OutlineTreeViewEditor::queue_draw, treeView);
 	treeView -> queue_draw ();
@@ -1312,6 +1312,7 @@ OutlineEditor::selectField (const double x, const double y)
 						const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
 	
 						menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_add_reference_activate),
+						                                                     node,
 						                                                     X3D::FieldPtr (field),
 						                                                     X3D::FieldPtr (reference)));
 						menuItem -> show ();
@@ -1337,6 +1338,7 @@ OutlineEditor::selectField (const double x, const double y)
 					const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
 	
 					menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_remove_reference_activate),
+					                                                     node,
 					                                                     X3D::FieldPtr (field),
 					                                                     X3D::FieldPtr (reference)));
 					menuItem -> show ();

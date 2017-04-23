@@ -1542,11 +1542,11 @@ X3DEditor::replaceReferencesCallback (SFNode & node, X3DFieldDefinition* const o
 		if (field -> getReferences () .count (oldProtoField))
 		{
 			undoStep -> addObjects (node);
-			removeReference (field, oldProtoField, undoStep);
+			removeReference (node, field, oldProtoField, undoStep);
 
 			// Test if newProtoField is a reference for field.
 			if (newProtoField -> isReference (field -> getAccessType ()))
-				addReference (field, newProtoField, undoStep);
+				addReference (node, field, newProtoField, undoStep);
 		}
 	}
 
@@ -1572,7 +1572,7 @@ X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const pr
 		if (field -> getReferences () .count (protoField))
 		{
 			undoStep -> addObjects (node);
-			removeReference (field, protoField, undoStep);
+			removeReference (node, field, protoField, undoStep);
 		}
 	}
 
@@ -1580,23 +1580,33 @@ X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const pr
 }
 
 void
-X3DEditor::addReference (X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
+X3DEditor::addReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
 {
-	undoStep -> addObjects (FieldPtr (field), FieldPtr (protoField));
+	const auto proto = X3DPtr <X3DProtoDeclarationNode> (node -> getExecutionContext ());
 
+	undoStep -> addObjects (node, FieldPtr (field), FieldPtr (protoField));
+
+	undoStep -> addUndoFunction (&X3DProtoDeclarationNode::updateInstances, proto);
 	undoStep -> addUndoFunction (&X3DFieldDefinition::removeReference, field, protoField);
 	undoStep -> addRedoFunction (&X3DFieldDefinition::addReference,    field, protoField);
+	undoStep -> addRedoFunction (&X3DProtoDeclarationNode::updateInstances, proto);
 	field -> addReference (protoField);
+	proto -> updateInstances ();
 }
 
 void
-X3DEditor::removeReference (X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
+X3DEditor::removeReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
 {
-	undoStep -> addObjects (FieldPtr (field), FieldPtr (protoField));
+	const auto proto = X3DPtr <X3DProtoDeclarationNode> (node -> getExecutionContext ());
 
+	undoStep -> addObjects (node, FieldPtr (field), FieldPtr (protoField));
+
+	undoStep -> addUndoFunction (&X3DProtoDeclarationNode::updateInstances, proto);
 	undoStep -> addUndoFunction (&X3DFieldDefinition::addReference,    field, protoField);
 	undoStep -> addRedoFunction (&X3DFieldDefinition::removeReference, field, protoField);
+	undoStep -> addRedoFunction (&X3DProtoDeclarationNode::updateInstances, proto);
 	field -> removeReference (protoField);
+	proto -> updateInstances ();
 }
 
 /***

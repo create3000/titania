@@ -224,11 +224,11 @@ public:
 
 	static
 	void
-	addReference (X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr &);
+	addReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	removeReference (X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr &);
+	removeReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep);
 
 	///  @name Grouping operations
 
