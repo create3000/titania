@@ -200,6 +200,9 @@ public:
 	getProtoNode () const
 	{ return protoNode; }
 
+	void
+	setProtoNode (X3DProtoDeclarationNode* const value);
+
 	virtual
 	X3DProtoDeclarationNode*
 	findProtoDeclaration (const std::string &, const AvailableType &) const

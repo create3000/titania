@@ -692,6 +692,7 @@
     <None Include="Tests\3rd Party\SVG\Arc.svg" />
     <None Include="Tests\Shape\Gray.x3dv" />
     <None Include="Tests\Rendering\IndexedLineSet-L-System.x3dv" />
+    <None Include="Tests\Handles\Torus.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />

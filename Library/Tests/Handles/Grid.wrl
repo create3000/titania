@@ -338,15 +338,6 @@ WorldInfo {
         value DEF nodes MetadataSet {
           name "nodes"
           reference "http://titania.create3000.de"
-          value DEF Torus Transform {
-            translation 3.49933 0 0
-            children Shape {
-              appearance Appearance {
-                material Material { }
-              }
-              geometry Torus { }
-            }
-          }
         }
       }
     ]
@@ -576,4 +567,12 @@ DEF Sphere Transform {
   }
 }
 
-USE Torus
+DEF Torus Transform {
+  translation 3.49933 0 0
+  children Shape {
+    appearance Appearance {
+      material Material { }
+    }
+    geometry Torus { }
+  }
+}

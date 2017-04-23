@@ -343,6 +343,19 @@ throw (Error <DISPOSED>)
 	throw Error <DISPOSED> ("Error: X3DPrototypeInstance::getTypeName: node is already disposed.");
 }
 
+void
+X3DPrototypeInstance::setProtoNode (X3DProtoDeclarationNode* const value)
+{
+	if (protoNode)
+		protoNode -> removeInstance (this);
+
+	protoNode = value;
+
+	protoNode -> addInstance (this);
+
+	update ();
+}
+
 X3DBaseNode*
 X3DPrototypeInstance::getInnerNode ()
 throw (Error <DISPOSED>)

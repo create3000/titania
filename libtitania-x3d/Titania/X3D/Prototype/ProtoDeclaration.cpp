@@ -96,7 +96,14 @@ throw (Error <INVALID_NAME>,
 				const auto found = dynamic_cast <ProtoDeclaration*> (executionContext -> findProtoDeclaration (getName ()));
 	
 				if (found)
+				{
+					const auto instances = getInstances ();
+
+					for (const auto & instance : instances)
+						instance -> setProtoNode (const_cast <ProtoDeclaration*> (found));
+
 					return found;
+				}
 			}
 			catch (const Error <INVALID_NAME> &)
 			{ }

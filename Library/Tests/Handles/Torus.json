@@ -1,0 +1,283 @@
+{ "X3D": {
+    "encoding": "UTF-8",
+    "@profile": "Full",
+    "@version": "3.3",
+    "@xsd:noNamespaceSchemaLocation": "http://www.web3d.org/specifications/x3d-3.3.xsd",
+    "JSON schema": "http://www.web3d.org/specifications/x3d-3.3-JSONSchema.json",
+    "Scene": {
+      "-children": [
+        { "ProtoDeclare":
+          {
+            "@name":"Torus",
+            "ProtoInterface": {
+              "field": [
+                {
+                  "@accessType": "inputOutput",
+                  "@type": "SFFloat",
+                  "@name": "minorRadius",
+                  "@value": 1
+                },
+                {
+                  "@accessType": "inputOutput",
+                  "@type": "SFFloat",
+                  "@name": "majorRadius",
+                  "@value": 1
+                },
+                {
+                  "@accessType": "inputOutput",
+                  "@type": "SFInt32",
+                  "@name": "minorDimension",
+                  "@value": 10
+                },
+                {
+                  "@accessType": "inputOutput",
+                  "@type": "SFInt32",
+                  "@name": "majorDimension",
+                  "@value": 10
+                },
+                {
+                  "@accessType": "initializeOnly",
+                  "@type": "SFBool",
+                  "@name": "solid",
+                  "@value": true
+                }
+              ]
+            },
+            "ProtoBody": {
+              "-children": [
+                { "Extrusion":
+                  {
+                    "@DEF": "Geometry",
+                    "@beginCap": false,
+                    "@endCap": false,
+                    "@creaseAngle": 3.14159,
+                    "@crossSection": [
+                      0, 1,
+                      0.587785, 0.809017,
+                      0.951057, 0.309017,
+                      0.951057, -0.309017,
+                      0.587785, -0.809017,
+                      1.22465e-16, -1,
+                      -0.587785, -0.809017,
+                      -0.951057, -0.309017,
+                      -0.951057, 0.309017,
+                      -0.587785, 0.809017,
+                      0, 1
+                    ],
+                    "@spine": [
+                      0, 0, 1,
+                      0.587785, 0, 0.809017,
+                      0.951057, 0, 0.309017,
+                      0.951057, 0, -0.309017,
+                      0.587785, 0, -0.809017,
+                      1.22465e-16, 0, -1,
+                      -0.587785, 0, -0.809017,
+                      -0.951057, 0, -0.309017,
+                      -0.951057, 0, 0.309017,
+                      -0.587785, 0, 0.809017,
+                      0, 0, 1
+                    ],
+                    "IS": {
+                      "connect": [
+                        {
+                          "@nodeField": "solid",
+                          "@protoField": "solid"
+                        }
+                      ]
+                    }
+                  }
+                },
+                { "Script":
+                  {
+                    "@DEF": "TorusScript",
+                    "@directOutput": true,
+                    "field": [
+                      {
+                        "@accessType": "inputOutput",
+                        "@type": "SFFloat",
+                        "@name": "minorRadius",
+                      },
+                      {
+                        "@accessType": "inputOutput",
+                        "@type": "SFFloat",
+                        "@name": "majorRadius",
+                      },
+                      {
+                        "@accessType": "inputOutput",
+                        "@type": "SFInt32",
+                        "@name": "minorDimension",
+                      },
+                      {
+                        "@accessType": "inputOutput",
+                        "@type": "SFInt32",
+                        "@name": "majorDimension",
+                      },
+                      {
+                        "@accessType": "initializeOnly",
+                        "@type": "SFNode",
+                        "@name": "geometry",
+                        "-children": [
+                          { "Extrusion":
+                            {
+                              "@USE": "Geometry"
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "#sourceText": [
+"javascript:",
+"",
+"function initialize ()",
+"{",
+"\tprint (\"initialize Torus\");",
+"",
+"\teventsProcessed ();",
+"}",
+"",
+"function eventsProcessed ()",
+"{",
+"\tvar spine        = new MFVec3f ();",
+"\tvar crossSection = new MFVec2f ();",
+"",
+"\tvar i = 0;",
+"\t",
+"\t// CrossSection",
+"\t",
+"\tfor (i = 0; i < minorDimension; ++ i)",
+"\t{",
+"\t\tvar x = Math .sin (2 * Math .PI * i / minorDimension);",
+"\t\tvar y = Math .cos (2 * Math .PI * i / minorDimension);",
+"\t",
+"\t\tcrossSection [i] = new SFVec2f (x, y) .multiply (minorRadius);",
+"\t}",
+"",
+"\tcrossSection [i] = crossSection [0];",
+"\t",
+"\t// Spine",
+"\t",
+"\tfor (i = 0; i < majorDimension; ++ i)",
+"\t{",
+"\t\tvar x = Math .sin (2 * Math .PI * i / majorDimension);",
+"\t\tvar z = Math .cos (2 * Math .PI * i / majorDimension);",
+"\t",
+"\t\tspine [i] = new SFVec3f (x, 0, z) .multiply (majorRadius);",
+"\t}",
+"\t",
+"\tspine [i] = spine [0];",
+"",
+"\tgeometry .set_crossSection = crossSection;",
+"\tgeometry .set_spine        = spine;",
+"}",
+"",
+""
+                    ],
+                    "IS": {
+                      "connect": [
+                        {
+                          "@nodeField": "minorRadius",
+                          "@protoField": "minorRadius"
+                        },
+                        {
+                          "@nodeField": "majorRadius",
+                          "@protoField": "majorRadius"
+                        },
+                        {
+                          "@nodeField": "minorDimension",
+                          "@protoField": "minorDimension"
+                        },
+                        {
+                          "@nodeField": "majorDimension",
+                          "@protoField": "majorDimension"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        { "WorldInfo":
+          {
+            "-metadata": { "MetadataSet":
+              {
+                "@DEF": "Titania",
+                "@name": "Titania",
+                "@reference": "http://titania.create3000.de",
+                "-value": [
+                  { "MetadataSet":
+                    {
+                      "@DEF": "NavigationInfo",
+                      "@name": "NavigationInfo",
+                      "@reference": "http://titania.create3000.de",
+                      "-value": [
+                        { "MetadataString":
+                          {
+                            "@DEF": "type",
+                            "@name": "type",
+                            "@reference": "http://titania.create3000.de",
+                            "@value": [
+                              "EXAMINE"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  { "MetadataSet":
+                    {
+                      "@DEF": "Viewpoint",
+                      "@name": "Viewpoint",
+                      "@reference": "http://titania.create3000.de",
+                      "-value": [
+                        { "MetadataDouble":
+                          {
+                            "@DEF": "position",
+                            "@name": "position",
+                            "@reference": "http://titania.create3000.de",
+                            "@value": [
+                              0,
+                              0,
+                              10
+                            ]
+                          }
+                        },
+                        { "MetadataDouble":
+                          {
+                            "@DEF": "orientation",
+                            "@name": "orientation",
+                            "@reference": "http://titania.create3000.de",
+                            "@value": [
+                              0,
+                              0,
+                              1,
+                              0
+                            ]
+                          }
+                        },
+                        { "MetadataDouble":
+                          {
+                            "@DEF": "centerOfRotation",
+                            "@name": "centerOfRotation",
+                            "@reference": "http://titania.create3000.de",
+                            "@value": [
+                              0,
+                              0,
+                              0
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            "@title": "Torus"
+          }
+        }
+      ]
+    }
+  }
+}
