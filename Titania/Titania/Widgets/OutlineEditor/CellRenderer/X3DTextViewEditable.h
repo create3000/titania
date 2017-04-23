@@ -122,23 +122,23 @@ private:
 
 	virtual
 	void
-	start_editing_vfunc (GdkEvent*) final override;
+	start_editing_vfunc (GdkEvent* event) final override;
 
 	virtual
 	void
 	on_grab_focus () final override;
 
 	bool
-	on_textview_button_press_event_before (GdkEventButton*);
+	on_textview_button_press_event_before (GdkEventButton* event);
 
 	bool
-	on_textview_button_press_event_after (GdkEventButton*);
+	on_textview_button_press_event_after (GdkEventButton* event);
 
 	bool
-	on_textview_focus_out_event (GdkEventFocus*);
+	on_textview_focus_out_event (GdkEventFocus* event);
 
 	bool
-	on_textview_key_press_event (GdkEventKey*);
+	on_textview_key_press_event (GdkEventKey* event);
 
 	///  @name Operations
 
