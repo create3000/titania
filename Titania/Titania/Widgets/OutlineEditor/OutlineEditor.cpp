@@ -456,7 +456,7 @@ OutlineEditor::on_update_instances_activated ()
 			const auto & node      = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
 			const auto   protoNode = dynamic_cast <X3D::X3DProtoDeclarationNode*> (node .getValue ());
 
-			protoNode -> updateInstances ();
+			protoNode -> requestUpdateInstances ();
 		}
 		default:
 			break;

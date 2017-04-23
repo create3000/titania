@@ -73,17 +73,17 @@ X3DProtoDeclarationNode::initialize ()
 
 	fields_changed () .addInterest (&X3DProtoDeclarationNode::set_fields, this);
 
-	updateInstancesBuffer .addInterest (&X3DProtoDeclarationNode::set_updateInstances, this);
+	updateInstancesBuffer .addInterest (&X3DProtoDeclarationNode::updateInstances, this);
 }
 
 void
-X3DProtoDeclarationNode::updateInstances ()
+X3DProtoDeclarationNode::requestUpdateInstances ()
 {
 	updateInstancesBuffer = getCurrentTime ();
 }
 
 void
-X3DProtoDeclarationNode::set_updateInstances () const
+X3DProtoDeclarationNode::updateInstances ()
 {
 	for (const auto & instance : instances)
 		instance -> update ();

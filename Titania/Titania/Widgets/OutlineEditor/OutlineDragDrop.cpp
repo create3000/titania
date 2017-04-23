@@ -564,10 +564,10 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	const auto destProto   = X3D::ProtoDeclarationPtr (destContext);
 
 	if (sourceProto)
-		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, sourceProto);
+		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, sourceProto);
 
 	if (destProto)
-		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, destProto);
+		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, destProto);
 
 	// Handle link
 
@@ -662,14 +662,14 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 	
 		if (sourceProto)
 		{
-			undoStep -> addRedoFunction (&X3D::ProtoDeclaration::updateInstances, sourceProto);
-			sourceProto -> updateInstances ();
+			undoStep -> addRedoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, sourceProto);
+			sourceProto -> requestUpdateInstances ();
 		}
 	
 		if (destProto)
 		{
-			undoStep -> addRedoFunction (&X3D::ProtoDeclaration::updateInstances, destProto);
-			destProto -> updateInstances ();
+			undoStep -> addRedoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, destProto);
+			destProto -> requestUpdateInstances ();
 		}
 	
 		// Add undo step.
@@ -828,10 +828,10 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 	const auto destProto   = X3D::ProtoDeclarationPtr (destContext);
 
 	if (sourceProto)
-		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, sourceProto);
+		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, sourceProto);
 
 	if (destProto)
-		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, destProto);
+		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, destProto);
 
 	// Handle link
 
@@ -922,14 +922,14 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	if (sourceProto)
 	{
-		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::updateInstances, sourceProto);
-		sourceProto -> updateInstances ();
+		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, sourceProto);
+		sourceProto -> requestUpdateInstances ();
 	}
 
 	if (destProto)
 	{
-		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::updateInstances, destProto);
-		destProto -> updateInstances ();
+		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, destProto);
+		destProto -> requestUpdateInstances ();
 	}
 
 	// Add undo step.
@@ -1110,10 +1110,10 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 	const auto destProto   = X3D::ProtoDeclarationPtr (destContext);
 
 	if (sourceProto)
-		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, sourceProto);
+		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, sourceProto);
 
 	if (destProto)
-		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::updateInstances, destProto);
+		undoStep -> addUndoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, destProto);
 
 	// Handle link
 
@@ -1232,14 +1232,14 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	if (sourceProto)
 	{
-		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::updateInstances, sourceProto);
-		sourceProto -> updateInstances ();
+		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, sourceProto);
+		sourceProto -> requestUpdateInstances ();
 	}
 
 	if (destProto)
 	{
-		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::updateInstances, destProto);
-		destProto -> updateInstances ();
+		undoStep -> addRedoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, destProto);
+		destProto -> requestUpdateInstances ();
 	}
 
 	// Add undo step.

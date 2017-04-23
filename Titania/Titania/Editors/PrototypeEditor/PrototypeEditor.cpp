@@ -330,7 +330,7 @@ PrototypeEditor::on_rename_clicked ()
 void
 PrototypeEditor::on_update_instances_clicked ()
 {
-	protoNode -> updateInstances ();
+	protoNode -> requestUpdateInstances ();
 }
 
 PrototypeEditor::~PrototypeEditor ()

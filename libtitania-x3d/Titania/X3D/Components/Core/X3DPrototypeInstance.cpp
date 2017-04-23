@@ -240,51 +240,37 @@ X3DPrototypeInstance::update ()
 
 	const auto proto  = protoNode -> getProtoDeclaration ();
 	auto       fields = std::map <std::string, FieldPtr> ();
-	auto       meta   = metadata ();
 
 	for (const auto & fieldDefinition : getFieldDefinitions ())
-	{
-		if (fieldDefinition == &metadata ())
-			continue;
-
 		fields .emplace (fieldDefinition -> getName (), fieldDefinition);
-	}
 
 	for (const auto & pair : fields)
 		removeField (pair .second .getValue () -> getName ());
 
 	for (const auto & fieldDefinition : proto -> getFieldDefinitions ())
 	{
+		const auto iter = fields .find (fieldDefinition -> getName ());
+
+		if (iter not_eq fields .end ())
+		{
+			const auto previous = iter -> second .getValue ();
+
+			if (previous -> getType () == fieldDefinition -> getType ())
+			{
+				addField (fieldDefinition -> getAccessType (),
+				          fieldDefinition -> getName (),
+				          *previous);
+
+				continue;
+			}
+		}
+
 		addField (fieldDefinition -> getAccessType (),
 		          fieldDefinition -> getName (),
 		          *fieldDefinition -> copy (FLAT_COPY));
 	}
 
 	construct ();
-
-	try
-	{
-		const auto field = getField ("metadata");
-
-		if (meta .getType () == field -> getType ())
-			*field = meta;
-	}
-	catch (const X3DError &)
-	{ }
-
-	for (const auto & pair : fields)
-	{
-		try
-		{
-			const auto previous = pair .second .getValue ();
-			const auto field    = getField (previous -> getName ());
-
-			if (previous -> getType () == field -> getType ())
-				*field = *previous;
-		}
-		catch (const X3DError &)
-		{ }
-	}
 
 	const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
 }

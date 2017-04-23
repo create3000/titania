@@ -110,7 +110,7 @@ public:
 	{ return instances; }
 
 	void
-	updateInstances ();
+	requestUpdateInstances ();
 
 	///  @name Comment handling
 
@@ -153,7 +153,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_updateInstances () const;
+	updateInstances ();
 
 	void
 	set_fields ();
