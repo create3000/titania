@@ -763,6 +763,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Tools/Grids/AxonometricGridTool.lo \
 	Titania/X3D/Tools/Grids/GridTool.lo \
 	Titania/X3D/Tools/Grids/X3DGridTool.lo \
+	Titania/X3D/Tools/Grouping/X3DBoundedObjectTool.lo \
 	Titania/X3D/Tools/Grouping/X3DTransformNodeTool.lo \
 	Titania/X3D/Tools/Layering/X3DActiveLayerTool.lo \
 	Titania/X3D/Tools/Lighting/DirectionalLightTool.lo \
@@ -1705,6 +1706,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Tools/Grids/AxonometricGridTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
+	Titania/X3D/Tools/Grouping/X3DBoundedObjectTool.cpp \
 	Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp \
 	Titania/X3D/Tools/Layering/X3DActiveLayerTool.cpp \
 	Titania/X3D/Tools/Lighting/DirectionalLightTool.cpp \
@@ -4302,6 +4304,9 @@ Titania/X3D/Tools/Grouping/$(am__dirstamp):
 Titania/X3D/Tools/Grouping/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/Tools/Grouping/$(DEPDIR)
 	@: > Titania/X3D/Tools/Grouping/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/Tools/Grouping/X3DBoundedObjectTool.lo:  \
+	Titania/X3D/Tools/Grouping/$(am__dirstamp) \
+	Titania/X3D/Tools/Grouping/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/Tools/Grouping/X3DTransformNodeTool.lo:  \
 	Titania/X3D/Tools/Grouping/$(am__dirstamp) \
 	Titania/X3D/Tools/Grouping/$(DEPDIR)/$(am__dirstamp)
@@ -5352,6 +5357,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/AxonometricGridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/GridTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grids/$(DEPDIR)/X3DGridTool.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grouping/$(DEPDIR)/X3DBoundedObjectTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Grouping/$(DEPDIR)/X3DTransformNodeTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Layering/$(DEPDIR)/X3DActiveLayerTool.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Tools/Lighting/$(DEPDIR)/DirectionalLightTool.Plo@am__quote@

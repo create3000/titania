@@ -30,6 +30,408 @@ PROTO Grid [
     Group { }
   }
 
+  PROTO AngleGrid [
+    exposedField   SFVec3f    translation 0 0 0
+    exposedField   SFRotation rotation 0 0 1 0
+    exposedField   SFVec3f    scale 1 1 1
+    exposedField   MFInt32    dimension [
+      5,
+      16,
+      10
+    ]
+    exposedField   MFInt32    majorLineEvery [
+      5,
+      2,
+      5
+    ]
+    exposedField   MFInt32    majorLineOffset [
+      0,
+      0,
+      0
+    ]
+    exposedField   SFColor    color 0.5 0.5 0.5
+    exposedField   SFFloat    transparency 0.8
+    exposedField   SFColor    lineColor 1 0.7 0.7
+    exposedField   SFFloat    lineTransparency 0.8
+    exposedField   SFColor    majorLineColor 1 0.7 0.7
+    exposedField   SFFloat    majorLineTransparency 0.6
+    field          SFBool     solid TRUE
+  ]
+  {
+    Transform {
+      translation IS translation
+      rotation IS rotation
+      scale IS scale
+      children [
+        DEF Disk Transform {
+          rotation -5.2594820914624e-13 0.70710528118436 0.707108281185553 3.14159
+          scale 5 5 1
+          children Shape {
+            appearance Appearance {
+              material DEF Material2 Material {
+                diffuseColor 0 0 0
+                emissiveColor IS color
+                transparency IS transparency
+              }
+            }
+            geometry Disk2D {
+              solid IS solid
+            }
+          }
+        }
+        DEF Rings Transform {
+          rotation 0 0.70710528118436 0.707108281185553 3.14159
+          children [
+            Transform {
+              children Shape {
+                appearance DEF MinorAppearance Appearance {
+                  material DEF _1 Material {
+                    emissiveColor IS lineColor
+                    transparency IS lineTransparency
+                  }
+                }
+                geometry Circle2D { }
+              }
+            }
+            Transform {
+              scale 2 2 2
+              children Shape {
+                appearance USE MinorAppearance
+                geometry Circle2D { }
+              }
+            }
+            Transform {
+              scale 3 3 3
+              children Shape {
+                appearance USE MinorAppearance
+                geometry Circle2D { }
+              }
+            }
+            Transform {
+              scale 4 4 4
+              children Shape {
+                appearance USE MinorAppearance
+                geometry Circle2D { }
+              }
+            }
+            Transform {
+              scale 5 5 5
+              children Shape {
+                appearance DEF MajorAppearance Appearance {
+                  material DEF MajorMaterial Material {
+                    emissiveColor IS majorLineColor
+                    transparency IS majorLineTransparency
+                  }
+                }
+                geometry Circle2D { }
+              }
+            }
+          ]
+        }
+        DEF MinorLines Shape {
+          appearance USE MinorAppearance
+          geometry DEF MinorLines_1 IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              -1,
+              0,
+              2,
+              -1,
+              0,
+              3,
+              -1,
+              0,
+              4,
+              -1,
+              0,
+              5,
+              -1,
+              0,
+              6,
+              -1,
+              0,
+              7,
+              -1,
+              0,
+              8,
+              -1
+            ]
+            coord Coordinate {
+              point [
+                0 0 0,
+                1.91342 0 4.6194,
+                4.6194 0 1.91342,
+                4.6194 0 -1.91342,
+                1.91342 0 -4.6194,
+                -1.91342 0 -4.6194,
+                -4.6194 0 -1.91342,
+                -4.6194 0 1.91342,
+                -1.91342 0 4.6194
+              ]
+            }
+          }
+        }
+        DEF MajorLines Shape {
+          appearance USE MajorAppearance
+          geometry DEF MajorLines_1 IndexedLineSet {
+            coordIndex [
+              0,
+              1,
+              -1,
+              0,
+              2,
+              -1,
+              0,
+              3,
+              -1,
+              0,
+              4,
+              -1,
+              0,
+              5,
+              -1,
+              0,
+              6,
+              -1,
+              0,
+              7,
+              -1,
+              0,
+              8,
+              -1
+            ]
+            coord Coordinate {
+              point [
+                0 0 0,
+                0 0 5,
+                3.53553 0 3.53553,
+                5 0 3.06162e-16,
+                3.53553 0 -3.53553,
+                6.12323e-16 0 -5,
+                -3.53553 0 -3.53553,
+                -5 0 -9.18485e-16,
+                -3.53553 0 3.53553
+              ]
+            }
+          }
+        }
+        DEF MinorPoints Shape {
+          appearance Appearance {
+            lineProperties LineProperties {
+              linewidthScaleFactor 4
+            }
+            material USE _1
+          }
+          geometry DEF MinorPoints_1 PointSet {
+            coord Coordinate {
+              point [
+                0 -4 0,
+                0 -3 0,
+                0 -2 0,
+                0 -1 0,
+                0 1 0,
+                0 2 0,
+                0 3 0,
+                0 4 0
+              ]
+            }
+          }
+        }
+        DEF MajorPoints Shape {
+          appearance Appearance {
+            lineProperties LineProperties {
+              linewidthScaleFactor 6
+            }
+            material USE MajorMaterial
+          }
+          geometry DEF MajorPoints_1 PointSet {
+            coord Coordinate {
+              point [
+                0 -5 0,
+                0 0 0,
+                0 5 0
+              ]
+            }
+          }
+        }
+      ]
+    }
+
+    DEF AngleGridScript Script {
+      exposedField   MFInt32 dimension IS dimension
+      exposedField   MFInt32 majorLineEvery IS majorLineEvery
+      exposedField   MFInt32 majorLineOffset IS majorLineOffset
+      field          SFNode  disk USE Disk
+      field          SFNode  rings USE Rings
+      field          SFNode  minorLines USE MinorLines_1
+      field          SFNode  majorLines USE MajorLines_1
+      field          SFNode  minorPoints USE MinorPoints_1
+      field          SFNode  majorPoints USE MajorPoints_1
+      field          SFNode  minorAppearance USE MinorAppearance
+      field          SFNode  majorAppearance USE MajorAppearance
+
+      url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	var radius = dimension [0];
+
+	// Plane
+
+	disk .scale = new SFVec3f (radius, radius, 1);
+
+	// Radiuses
+
+	generateRadiuses (true,  radius, majorLines);
+	generateRadiuses (false, radius, minorLines);
+
+	// Rings
+
+	generateRings ();
+
+	// Points
+
+	generatePoints (true,  majorPoints .coord .point);
+	generatePoints (false, minorPoints .coord .point);
+}
+
+function generateRadiuses (major, radius, grid)
+{
+	var angle      = 2 * Math .PI / dimension [1];
+	var coordIndex = new MFInt32 ();
+	var point      = grid .coord .point;
+	var p          = 0;
+
+	point [p ++] = new SFVec3f ();
+
+	for (var i = 0, c = 0; i < dimension [1]; ++ i)
+	{
+		if (major - isMajorLine (i, 1))
+			continue;
+	
+		var a = angle * i;
+
+		point [p] = new SFVec3f (radius * Math .sin (a), 0, radius * Math .cos (a));
+
+		coordIndex [c ++] = 0;
+		coordIndex [c ++] = p;
+		coordIndex [c ++] = -1;
+		
+		++ p;
+	}
+
+	point .length = p;
+
+	grid .set_coordIndex = coordIndex;
+}
+
+function generateRings ()
+{
+	var scene = Browser .currentScene;
+	var size  = Math .min (dimension [0], rings .children .length);
+
+	for (var i = 0; i < size; ++ i)
+	{
+		var s         = i + 1;
+		var transform = rings .children [i];
+		var major     = isMajorLine (s, 0);
+
+		transform .children [0] .appearance = major ? majorAppearance : minorAppearance;
+		transform .scale                    = new SFVec3f (s, s, s);
+	}
+
+	for (var i = size; i < dimension [0]; ++ i)
+	{
+		var s         = i + 1;
+		var circle    = scene .createNode (\"Circle2D\");
+		var shape     = scene .createNode (\"Shape\");
+		var transform = scene .createNode (\"Transform\");
+		var major     = isMajorLine (s, 0);
+
+		shape .appearance       = major ? majorAppearance : minorAppearance;
+		shape .geometry         = circle;
+		transform .children [0] = shape;
+		transform .scale        = new SFVec3f (s, s, s);
+		rings .children [i]     = transform;
+	}
+
+	rings .children .length = dimension [0];
+}
+
+function generatePoints (major, point)
+{
+	var scaleY1_2 = -dimension [2] / 2;
+	var p         = 0;
+
+	for (var i = 0, size = dimension [2] + 1; i < size; ++ i)
+	{
+		if (major - isMajorLineXYZ (i, 2))
+			continue;
+
+		point [p] = new SFVec3f (0, scaleY1_2 + i, 0);
+		++ p;
+	}
+
+	point .length = p;
+}
+
+function isMajorLine (i, index)
+{
+	for (var d = index; d < majorLineEvery .length; d += 3)
+	{
+		if (isMajor (i, dimension [index], majorLineEvery [d], majorLineOffset [d]))
+			return true;
+	}
+
+	return false;
+}
+
+function isMajor (i, dimension, majorLineEvery, majorLineOffset)
+{
+	if (majorLineEvery)
+	{
+		var index = Math .floor (i - majorLineOffset);
+
+		return !(index % majorLineEvery);
+	}
+
+	return false;
+}
+
+function isMajorLineXYZ (i, index)
+{
+	for (var d = index; d < majorLineEvery .length; d += 3)
+	{
+		if (isMajorXYZ (i, dimension [index], majorLineEvery [d], majorLineOffset [d]))
+			return true;
+	}
+
+	return false;
+}
+
+function isMajorXYZ (i, dimension, majorLineEvery, majorLineOffset)
+{
+	if (majorLineEvery)
+	{
+		var index = Math .floor (i - dimension / 2 - majorLineOffset);
+
+		return !(index % majorLineEvery);
+	}
+
+	return false;
+}
+"
+      directOutput TRUE
+      mustEvaluate TRUE
+    }
+  }
+
   Transform {
     children [
       DEF Plane Transform {
@@ -37,7 +439,7 @@ PROTO Grid [
         scale 10 10 1
         children Shape {
           appearance Appearance {
-            material DEF Material2 Material {
+            material DEF Material2_1 Material {
               diffuseColor IS color
             }
           }
@@ -280,8 +682,410 @@ function initialize ()
   }
 
   ROUTE Fields.transparency_changed TO Material1.set_transparency
-  ROUTE Material1.transparency_changed TO Material2.set_transparency
+  ROUTE Material1.transparency_changed TO Material2_1.set_transparency
   ROUTE Material1.diffuseColor_changed TO Material3.set_diffuseColor
+}
+
+PROTO AngleGrid [
+  exposedField   SFVec3f    translation 0 0 0
+  exposedField   SFRotation rotation 0 0 1 0
+  exposedField   SFVec3f    scale 1 1 1
+  exposedField   MFInt32    dimension [
+    5,
+    16,
+    10
+  ]
+  exposedField   MFInt32    majorLineEvery [
+    5,
+    2,
+    5
+  ]
+  exposedField   MFInt32    majorLineOffset [
+    0,
+    0,
+    0
+  ]
+  exposedField   SFColor    color 0.5 0.5 0.5
+  exposedField   SFFloat    transparency 0.8
+  exposedField   SFColor    lineColor 1 0.7 0.7
+  exposedField   SFFloat    lineTransparency 0.8
+  exposedField   SFColor    majorLineColor 1 0.7 0.7
+  exposedField   SFFloat    majorLineTransparency 0.6
+  field          SFBool     solid TRUE
+]
+{
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    scale IS scale
+    children [
+      DEF Disk_1 Transform {
+        rotation -5.2594820914624e-13 0.70710528118436 0.707108281185553 3.14159
+        scale 5 5 1
+        children Shape {
+          appearance Appearance {
+            material DEF Material2_2 Material {
+              diffuseColor 0 0 0
+              emissiveColor IS color
+              transparency IS transparency
+            }
+          }
+          geometry Disk2D {
+            solid IS solid
+          }
+        }
+      }
+      DEF Rings_1 Transform {
+        rotation 0 0.70710528118436 0.707108281185553 3.14159
+        children [
+          Transform {
+            children Shape {
+              appearance DEF MinorAppearance_1 Appearance {
+                material DEF _2 Material {
+                  emissiveColor IS lineColor
+                  transparency IS lineTransparency
+                }
+              }
+              geometry Circle2D { }
+            }
+          }
+          Transform {
+            scale 2 2 2
+            children Shape {
+              appearance USE MinorAppearance_1
+              geometry Circle2D { }
+            }
+          }
+          Transform {
+            scale 3 3 3
+            children Shape {
+              appearance USE MinorAppearance_1
+              geometry Circle2D { }
+            }
+          }
+          Transform {
+            scale 4 4 4
+            children Shape {
+              appearance USE MinorAppearance_1
+              geometry Circle2D { }
+            }
+          }
+          Transform {
+            scale 5 5 5
+            children Shape {
+              appearance DEF MajorAppearance_1 Appearance {
+                material DEF MajorMaterial_1 Material {
+                  emissiveColor IS majorLineColor
+                  transparency IS majorLineTransparency
+                }
+              }
+              geometry Circle2D { }
+            }
+          }
+        ]
+      }
+      DEF MinorLines_2 Shape {
+        appearance USE MinorAppearance_1
+        geometry DEF MinorLines_3 IndexedLineSet {
+          coordIndex [
+            0,
+            1,
+            -1,
+            0,
+            2,
+            -1,
+            0,
+            3,
+            -1,
+            0,
+            4,
+            -1,
+            0,
+            5,
+            -1,
+            0,
+            6,
+            -1,
+            0,
+            7,
+            -1,
+            0,
+            8,
+            -1
+          ]
+          coord Coordinate {
+            point [
+              0 0 0,
+              1.91342 0 4.6194,
+              4.6194 0 1.91342,
+              4.6194 0 -1.91342,
+              1.91342 0 -4.6194,
+              -1.91342 0 -4.6194,
+              -4.6194 0 -1.91342,
+              -4.6194 0 1.91342,
+              -1.91342 0 4.6194
+            ]
+          }
+        }
+      }
+      DEF MajorLines_2 Shape {
+        appearance USE MajorAppearance_1
+        geometry DEF MajorLines_3 IndexedLineSet {
+          coordIndex [
+            0,
+            1,
+            -1,
+            0,
+            2,
+            -1,
+            0,
+            3,
+            -1,
+            0,
+            4,
+            -1,
+            0,
+            5,
+            -1,
+            0,
+            6,
+            -1,
+            0,
+            7,
+            -1,
+            0,
+            8,
+            -1
+          ]
+          coord Coordinate {
+            point [
+              0 0 0,
+              0 0 5,
+              3.53553 0 3.53553,
+              5 0 3.06162e-16,
+              3.53553 0 -3.53553,
+              6.12323e-16 0 -5,
+              -3.53553 0 -3.53553,
+              -5 0 -9.18485e-16,
+              -3.53553 0 3.53553
+            ]
+          }
+        }
+      }
+      DEF MinorPoints_2 Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 4
+          }
+          material USE _2
+        }
+        geometry DEF MinorPoints_3 PointSet {
+          coord Coordinate {
+            point [
+              0 -4 0,
+              0 -3 0,
+              0 -2 0,
+              0 -1 0,
+              0 1 0,
+              0 2 0,
+              0 3 0,
+              0 4 0
+            ]
+          }
+        }
+      }
+      DEF MajorPoints_2 Shape {
+        appearance Appearance {
+          lineProperties LineProperties {
+            linewidthScaleFactor 6
+          }
+          material USE MajorMaterial_1
+        }
+        geometry DEF MajorPoints_3 PointSet {
+          coord Coordinate {
+            point [
+              0 -5 0,
+              0 0 0,
+              0 5 0
+            ]
+          }
+        }
+      }
+    ]
+  }
+
+  DEF AngleGridScript_1 Script {
+    exposedField   MFInt32 dimension IS dimension
+    exposedField   MFInt32 majorLineEvery IS majorLineEvery
+    exposedField   MFInt32 majorLineOffset IS majorLineOffset
+    field          SFNode  disk USE Disk_1
+    field          SFNode  rings USE Rings_1
+    field          SFNode  minorLines USE MinorLines_3
+    field          SFNode  majorLines USE MajorLines_3
+    field          SFNode  minorPoints USE MinorPoints_3
+    field          SFNode  majorPoints USE MajorPoints_3
+    field          SFNode  minorAppearance USE MinorAppearance_1
+    field          SFNode  majorAppearance USE MajorAppearance_1
+
+    url "javascript:
+
+function initialize ()
+{
+	eventsProcessed ();
+}
+
+function eventsProcessed ()
+{
+	var radius = dimension [0];
+
+	// Plane
+
+	disk .scale = new SFVec3f (radius, radius, 1);
+
+	// Radiuses
+
+	generateRadiuses (true,  radius, majorLines);
+	generateRadiuses (false, radius, minorLines);
+
+	// Rings
+
+	generateRings ();
+
+	// Points
+
+	generatePoints (true,  majorPoints .coord .point);
+	generatePoints (false, minorPoints .coord .point);
+}
+
+function generateRadiuses (major, radius, grid)
+{
+	var angle      = 2 * Math .PI / dimension [1];
+	var coordIndex = new MFInt32 ();
+	var point      = grid .coord .point;
+	var p          = 0;
+
+	point [p ++] = new SFVec3f ();
+
+	for (var i = 0, c = 0; i < dimension [1]; ++ i)
+	{
+		if (major - isMajorLine (i, 1))
+			continue;
+	
+		var a = angle * i;
+
+		point [p] = new SFVec3f (radius * Math .sin (a), 0, radius * Math .cos (a));
+
+		coordIndex [c ++] = 0;
+		coordIndex [c ++] = p;
+		coordIndex [c ++] = -1;
+		
+		++ p;
+	}
+
+	point .length = p;
+
+	grid .set_coordIndex = coordIndex;
+}
+
+function generateRings ()
+{
+	var scene = Browser .currentScene;
+	var size  = Math .min (dimension [0], rings .children .length);
+
+	for (var i = 0; i < size; ++ i)
+	{
+		var s         = i + 1;
+		var transform = rings .children [i];
+		var major     = isMajorLine (s, 0);
+
+		transform .children [0] .appearance = major ? majorAppearance : minorAppearance;
+		transform .scale                    = new SFVec3f (s, s, s);
+	}
+
+	for (var i = size; i < dimension [0]; ++ i)
+	{
+		var s         = i + 1;
+		var circle    = scene .createNode (\"Circle2D\");
+		var shape     = scene .createNode (\"Shape\");
+		var transform = scene .createNode (\"Transform\");
+		var major     = isMajorLine (s, 0);
+
+		shape .appearance       = major ? majorAppearance : minorAppearance;
+		shape .geometry         = circle;
+		transform .children [0] = shape;
+		transform .scale        = new SFVec3f (s, s, s);
+		rings .children [i]     = transform;
+	}
+
+	rings .children .length = dimension [0];
+}
+
+function generatePoints (major, point)
+{
+	var scaleY1_2 = -dimension [2] / 2;
+	var p         = 0;
+
+	for (var i = 0, size = dimension [2] + 1; i < size; ++ i)
+	{
+		if (major - isMajorLineXYZ (i, 2))
+			continue;
+
+		point [p] = new SFVec3f (0, scaleY1_2 + i, 0);
+		++ p;
+	}
+
+	point .length = p;
+}
+
+function isMajorLine (i, index)
+{
+	for (var d = index; d < majorLineEvery .length; d += 3)
+	{
+		if (isMajor (i, dimension [index], majorLineEvery [d], majorLineOffset [d]))
+			return true;
+	}
+
+	return false;
+}
+
+function isMajor (i, dimension, majorLineEvery, majorLineOffset)
+{
+	if (majorLineEvery)
+	{
+		var index = Math .floor (i - majorLineOffset);
+
+		return !(index % majorLineEvery);
+	}
+
+	return false;
+}
+
+function isMajorLineXYZ (i, index)
+{
+	for (var d = index; d < majorLineEvery .length; d += 3)
+	{
+		if (isMajorXYZ (i, dimension [index], majorLineEvery [d], majorLineOffset [d]))
+			return true;
+	}
+
+	return false;
+}
+
+function isMajorXYZ (i, dimension, majorLineEvery, majorLineOffset)
+{
+	if (majorLineEvery)
+	{
+		var index = Math .floor (i - dimension / 2 - majorLineOffset);
+
+		return !(index % majorLineEvery);
+	}
+
+	return false;
+}
+"
+    directOutput TRUE
+    mustEvaluate TRUE
+  }
 }
 
 WorldInfo {
@@ -306,19 +1110,19 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              2.42046269154235,
-              4.43590572492047,
-              8.62925841300815
+              -1.9979440555445,
+              6.68504089469004,
+              -26.8187269191346
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.880955654761081,
-              0.47244495563669,
-              -0.0267001542677253,
-              0.529958495538829
+              0.042063688990813,
+              0.972807117077608,
+              0.227765140071164,
+              3.29914646342937
             ]
           }
           DEF centerOfRotation MetadataDouble {
@@ -327,7 +1131,7 @@ WorldInfo {
             value [
               0,
               0,
-              0
+              -13.5906400680542
             ]
           }
         ]
@@ -338,7 +1142,49 @@ WorldInfo {
         value DEF nodes MetadataSet {
           name "nodes"
           reference "http://titania.create3000.de"
+          value DEF _3 AngleGrid {
+            translation 1 0 0
+            scale 2 1 1
+          }
         }
+      }
+      DEF AngleGrid MetadataSet {
+        name "AngleGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF AxonometricGrid MetadataSet {
+        name "AxonometricGrid"
+        reference "http://titania.create3000.de"
+        value DEF enabled_1 MetadataBoolean {
+          name "enabled"
+          reference "http://titania.create3000.de"
+          value FALSE
+        }
+      }
+      DEF Grid_1 MetadataSet {
+        name "Grid"
+        reference "http://titania.create3000.de"
+        value [
+          DEF enabled_2 MetadataBoolean {
+            name "enabled"
+            reference "http://titania.create3000.de"
+            value TRUE
+          }
+          DEF dimension MetadataInteger {
+            name "dimension"
+            reference "http://titania.create3000.de"
+            value [
+              18,
+              10,
+              50
+            ]
+          }
+        ]
       }
     ]
   }
@@ -575,4 +1421,10 @@ DEF Torus Transform {
     }
     geometry Torus { }
   }
+}
+
+Transform {
+  translation 0 0 -8.20468
+  center 0 0 -6.79532
+  children USE _3
 }

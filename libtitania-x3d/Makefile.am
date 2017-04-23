@@ -647,6 +647,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Tools/Grids/AxonometricGridTool.cpp \
 	Titania/X3D/Tools/Grids/GridTool.cpp \
 	Titania/X3D/Tools/Grids/X3DGridTool.cpp \
+	Titania/X3D/Tools/Grouping/X3DBoundedObjectTool.cpp \
 	Titania/X3D/Tools/Grouping/X3DTransformNodeTool.cpp \
 	Titania/X3D/Tools/Layering/X3DActiveLayerTool.cpp \
 	Titania/X3D/Tools/Lighting/DirectionalLightTool.cpp \

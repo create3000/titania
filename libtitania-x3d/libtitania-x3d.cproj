@@ -1635,6 +1635,7 @@
     <Compile Include="Titania\X3D\Browser\Geometry3D\OctahedronOptions.cpp" />
     <Compile Include="Titania\X3D\Tools\Grids\AxonometricGridTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Rendering\L-System.cpp" />
+    <Compile Include="Titania\X3D\Tools\Grouping\X3DBoundedObjectTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

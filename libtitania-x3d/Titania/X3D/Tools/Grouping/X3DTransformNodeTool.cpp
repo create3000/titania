@@ -55,6 +55,7 @@
 #include "../../Browser/Tools/TransformToolOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Editing/Undo/UndoStepContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 #include "../ToolColors.h"
 
@@ -130,25 +131,34 @@ throw (Error <INVALID_OPERATION_TIMING>,
 void
 X3DTransformNodeTool::initialize ()
 {
-	X3DChildNodeTool::initialize ();
+	if (getExecutionContext () -> isType ({ X3DConstants::X3DPrototypeInstance }))
+	{
+		X3DTransformMatrix3DNodeTool::initialize ();
 
-	tools ()    .addInterest (&X3DTransformNodeTool::set_tools,  this);
-	isActive () .addInterest (&X3DTransformNodeTool::set_active, this);
+		setLinetype (1);
+	}
+	else
+	{
+		X3DChildNodeTool::initialize ();
 
-	getBrowser () -> getTransformTools () .emplace_back (this);
-
-	requestAsyncLoad ({ get_tool ("TransformTool.x3dv") .str () });
-
-	set_tools ();
+		tools ()    .addInterest (&X3DTransformNodeTool::set_tools,  this);
+		isActive () .addInterest (&X3DTransformNodeTool::set_active, this);
+	
+		getBrowser () -> getTransformTools () .emplace_back (this);
+	
+		requestAsyncLoad ({ get_tool ("TransformTool.x3dv") .str () });
+	
+		set_tools ();
+	}
 }
 
 void
 X3DTransformNodeTool::realize ()
 {
-	getNode <X3DTransformNode> () -> addInterest (&X3DTransformNodeTool::eventsProcessed, this);
-
 	try
 	{
+		getNode <X3DTransformNode> () -> addInterest (&X3DTransformNodeTool::eventsProcessed, this);
+
 		getBrowser ()  -> getTransformToolOptions () -> toolMode ()  .addInterest (getToolNode () -> getField ("toolMode"));
 		getBrowser ()  -> getTransformToolOptions () -> snapAngle () .addInterest (getToolNode () -> getField ("snapAngle"));
 		getBrowser ()  -> getControlKey () .addInterest (getToolNode () -> getField ("controlKey"));
@@ -470,27 +480,34 @@ X3DTransformNodeTool::reshape (X3DRenderObject* const renderObject)
 void
 X3DTransformNodeTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
-	getNode <X3DTransformNode> () -> traverse (type, renderObject);
-
-	// Remember matrices
-
-	if (type == TraverseType::CAMERA)
+	if (getExecutionContext () -> isType ({ X3DConstants::X3DPrototypeInstance }))
 	{
-		transformationMatrix = renderObject -> getModelViewMatrix () .get ();
-		matrix               = getMatrix ();
+		X3DTransformMatrix3DNodeTool::traverse (type, renderObject);
 	}
-
-	// Tool
-
-	renderObject -> getModelViewMatrix () .push ();
-	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
-
-	if (type == TraverseType::DISPLAY) // Last chance to process events
-		reshape (renderObject);
-
-	X3DToolObject::traverse (type, renderObject);
-
-	renderObject -> getModelViewMatrix () .pop ();
+	else
+	{
+		getNode <X3DTransformNode> () -> traverse (type, renderObject);
+	
+		// Remember matrices
+	
+		if (type == TraverseType::CAMERA)
+		{
+			transformationMatrix = renderObject -> getModelViewMatrix () .get ();
+			matrix               = getMatrix ();
+		}
+	
+		// Tool
+	
+		renderObject -> getModelViewMatrix () .push ();
+		renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
+	
+		if (type == TraverseType::DISPLAY) // Last chance to process events
+			reshape (renderObject);
+	
+		X3DToolObject::traverse (type, renderObject);
+	
+		renderObject -> getModelViewMatrix () .pop ();
+	}
 }
 
 void

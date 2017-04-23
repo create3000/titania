@@ -48,119 +48,109 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_TOOLS_GROUPING_X3DBOUNDED_OBJECT_TOOL_H__
-#define __TITANIA_X3D_TOOLS_GROUPING_X3DBOUNDED_OBJECT_TOOL_H__
+#include "X3DBoundedObjectTool.h"
 
-#include "../Core/X3DBaseTool.h"
-#include "../../Components/Grouping/X3DBoundedObject.h"
+#include "../../Browser/Networking/config.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
 
-class X3DBoundedObjectTool :
-	virtual public X3DBoundedObject,
-	virtual public X3DBaseTool
+X3DBoundedObjectTool::X3DBoundedObjectTool (const Color3f & color) :
+	X3DBoundedObject (),
+	     X3DBaseTool (),
+	        linetype (3),
+	   displayCenter (false),
+	           color (color)
 {
-public:
+	addType (X3DConstants::X3DBoundedObjectTool);
+}
 
-	///  @name Fields
+void
+X3DBoundedObjectTool::initialize ()
+{
+	requestAsyncLoad ({ get_tool ("BoundingBox.x3dv") .str () });
+}
 
-	virtual
-	SFVec3f &
-	bboxCenter () final override
-	{ return getNode <X3DBoundedObject> () -> bboxCenter (); }
+void
+X3DBoundedObjectTool::realize ()
+{
+	try
+	{
+		const SFNode & tool = getToolNode ();
 
-	virtual
-	const SFVec3f &
-	bboxCenter () const final override
-	{ return getNode <X3DBoundedObject> () -> bboxCenter (); }
-
-	virtual
-	SFVec3f &
-	bboxSize () final override
-	{ return getNode <X3DBoundedObject> () -> bboxSize (); }
-
-	virtual
-	const SFVec3f &
-	bboxSize () const final override
-	{ return getNode <X3DBoundedObject> () -> bboxSize (); }
-
-	///  @name Operatations
-
-	virtual
-	Box3d
-	getBBox () const override
-	{ return getNode <X3DBoundedObject> () -> getBBox (); }
-
-	virtual
-	void
-	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () override
+		tool -> setField <SFBool>  ("displayCenter", displayCenter);
+		tool -> setField <SFColor> ("color",         color);
+		tool -> setField <SFInt32> ("linetype",      linetype);
+	}
+	catch (const X3DError & error)
 	{ }
+}
 
+void
+X3DBoundedObjectTool::setLinetype (const int32_t value)
+{
+	linetype = value;
+}
 
-protected:
+Box3d
+X3DBoundedObjectTool::getGroupBBox () const
+{
+	try
+	{
+		Box3d bbox = getNode <X3DBoundedObject> () -> getBBox ();
+	
+		bbox *= inverse (getMatrix ());
 
-	///  @name Construction
+		return bbox;
+	}
+	catch (const std::domain_error &)
+	{
+		return Box3d (Vector3d (), Vector3d ());
+	}
+}
 
-	X3DBoundedObjectTool (const Color3f &);
+void
+X3DBoundedObjectTool::reshape ()
+{
+	try
+	{
+	   getBrowser () -> endUpdateForFrame ();
 
-	virtual
-	void
-	initialize () override;
+		const auto   bbox = getGroupBBox ();
+		const auto & tool = getToolNode ();
 
-	virtual
-	void
-	realize () override;
+		tool -> setField <SFInt32> ("linetype",   linetype,        true);
+		tool -> setField <SFVec3f> ("bboxSize",   bbox .size (),   true);
+		tool -> setField <SFVec3f> ("bboxCenter", bbox .center (), true);
 
-	///  @name Member acces
+		getBrowser () -> processEvents ();
+	   getBrowser () -> beginUpdateForFrame ();
+	}
+	catch (const X3DError &)
+	{
+		getBrowser () -> beginUpdateForFrame ();
+	}
+}
 
-	void
-	setDisplayCenter (const bool value)
-	{ displayCenter = value; }
+void
+X3DBoundedObjectTool::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	getNode <X3DBoundedObject> () -> traverse (type, renderObject);
 
-	void
-	setLinetype (const int32_t value);
+	// Tool
 
-	int32_t
-	getLinetype () const
-	{ return linetype; }
+	renderObject -> getModelViewMatrix () .push ();
+	renderObject -> getModelViewMatrix () .mult_left (getMatrix ());
 
-	virtual
-	const Matrix4d &
-	getMatrix () const
-	{ return matrix; }
+	if (type == TraverseType::DISPLAY) // Last chance to process events
+		X3DBoundedObjectTool::reshape ();
 
+	X3DToolObject::traverse (type, renderObject);
 
-protected:
-
-	///  @name Operations
-
-	Box3d
-	getGroupBBox () const;
-
-	virtual
-	void
-	reshape ();
-
-
-private:
-
-	///  @name Members
-
-	int32_t  linetype;
-	bool     displayCenter;
-	Color3f  color;
-	Matrix4d matrix;
-
-};
+	renderObject -> getModelViewMatrix () .pop ();
+}
 
 } // X3D
 } // titania
-
-#endif
