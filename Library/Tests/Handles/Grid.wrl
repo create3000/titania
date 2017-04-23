@@ -1110,28 +1110,28 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              -1.9979440555445,
-              6.68504089469004,
-              -26.8187269191346
+              -20.0436683109626,
+              11.0464394078507,
+              -29.9784824136677
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.042063688990813,
-              0.972807117077608,
-              0.227765140071164,
-              3.29914646342937
+              0.0833411123375551,
+              -0.950974578330766,
+              -0.297828155759259,
+              2.56275579949787
             ]
           }
           DEF centerOfRotation MetadataDouble {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              0,
-              0,
-              -13.5906400680542
+              -3.12016574911644,
+              -3.15215747100429,
+              -9.81536177349802
             ]
           }
         ]
@@ -1142,10 +1142,6 @@ WorldInfo {
         value DEF nodes MetadataSet {
           name "nodes"
           reference "http://titania.create3000.de"
-          value DEF _3 AngleGrid {
-            translation 1 0 0
-            scale 2 1 1
-          }
         }
       }
       DEF AngleGrid MetadataSet {
@@ -1173,7 +1169,7 @@ WorldInfo {
           DEF enabled_2 MetadataBoolean {
             name "enabled"
             reference "http://titania.create3000.de"
-            value TRUE
+            value FALSE
           }
           DEF dimension MetadataInteger {
             name "dimension"
@@ -1424,7 +1420,9 @@ DEF Torus Transform {
 }
 
 Transform {
-  translation 0 0 -8.20468
-  center 0 0 -6.79532
-  children USE _3
+  children Transform {
+    translation 0 0 -13.0309
+    center 0 0 -6.79532
+    children AngleGrid { }
+  }
 }

@@ -476,11 +476,33 @@ Selection::setHierarchy (const SFNode & node, const MFNode & other)
 	masterSelection = node;
 	hierarchy       = other;
 
-	hierarchy .erase (std::remove_if (hierarchy .begin (),
-	                                  hierarchy .end (),
-	                                  [&] (const SFNode & node)
-	                                  { return not node or node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext (); }),
-	                  hierarchy .end ());
+	// Erase NULL nodes.
+
+	hierarchy .erase (std::remove_if (hierarchy .begin (), hierarchy .end (), [&] (const SFNode & node) { return not node; }), hierarchy .end ());
+
+	// Find first foreign node and remove these.
+
+	const auto iter = std::find_if (hierarchy .begin (),
+	                                hierarchy .end (),
+	                                [&] (const SFNode & node)
+	                                { return node -> getExecutionContext () not_eq getBrowser () -> getExecutionContext (); });
+
+	if (iter == hierarchy .end ())
+		return;
+
+	const auto foreignNode = *iter;
+
+	hierarchy .erase (iter, hierarchy .end ());
+
+	// Add X3DPrototypeInstance to hierarchy.
+
+	const auto protoInstance = foreignNode -> getExecutionContext ();
+
+	if (protoInstance -> isType ({ X3DConstants::X3DPrototypeInstance }))
+	{
+		if (protoInstance -> getExecutionContext () == getBrowser () -> getExecutionContext ())
+			hierarchy .emplace_back (protoInstance);
+	}
 }
 
 X3D::MFNode

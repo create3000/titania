@@ -395,6 +395,8 @@ throw (Error <INVALID_NAME>,
 void
 X3DPrototypeInstance::traverse (const TraverseType type, X3DRenderObject* const renderObject)
 {
+	// This function is normally not called, as the root node is optimized and there traverse is called.
+
 	try
 	{
 		getRootNode () -> traverse (type, renderObject);
