@@ -91,10 +91,10 @@ private:
 	select_field_value (const double x, const double y);
 
 	bool
-	is_real_local_node (const Gtk::TreeModel::iterator &) const;
+	is_node (const Gtk::TreeModel::iterator &) const;
 
-	bool
-	is_local_node (const Gtk::TreeModel::iterator &) const;
+	X3D::X3DExecutionContext*
+	get_context (const Gtk::TreeModel::iterator & iter) const;
 
 	void
 	on_edited (const Glib::ustring &, const Glib::ustring &);
@@ -136,6 +136,7 @@ private:
 	std::unique_ptr <OutlineDragDrop>  dragDrop;
 	UserDataPtr                        overUserData;
 	UserDataPtr                        selectedUserData;
+	X3D::X3DExecutionContextPtr        matchingContext;
 	FieldType                          matchingFieldType;
 	int                                matchingAccessType;
 	Gtk::TreePath                      sourcePath;
