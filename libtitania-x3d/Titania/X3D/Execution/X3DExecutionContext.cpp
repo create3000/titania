@@ -416,7 +416,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
  *  Returns a name that is unique in this execution contentext and in @a executionContext.
  */
 std::string
-X3DExecutionContext::getUniqueName (X3DExecutionContext* const executionContext, std::string name) const
+X3DExecutionContext::getVeryUniqueName (X3DExecutionContext* const executionContext, std::string name) const
 {
 	name = RemoveTrailingNumber (name);
 
@@ -1295,7 +1295,7 @@ throw (Error <INVALID_NAME>,
 	importProtos (executionContext, CLONE);
 
 	updateImportedNodes (executionContext);
-	copyImportedNodes (executionContext);
+	copyImportedNodes (executionContext, CLONE);
 	importRoutes (executionContext);
 
 	realize ();
@@ -1312,7 +1312,7 @@ throw (Error <IMPORTED_NODE>,
 	for (const auto & pair : NamedNodeIndex (executionContext -> getNamedNodes ()))
 	{
 		const auto & namedNode  = pair .second;
-		const auto   uniqueName = getUniqueName (executionContext, pair .first);
+		const auto   uniqueName = getVeryUniqueName (executionContext, pair .first);
 
 		executionContext -> updateNamedNode (uniqueName, namedNode -> getLocalNode ());
 
@@ -1421,21 +1421,21 @@ throw (Error <INVALID_NAME>,
 }
 
 void
-X3DExecutionContext::copyImportedNodes (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::copyImportedNodes (const X3DExecutionContext* const executionContext, const CopyType type)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & importedNode : executionContext -> getImportedNodes ())
-		importedNode .second -> copy (this, COPY_OR_CLONE);
+		importedNode .second -> copy (this, type);
 }
 
 void
-X3DExecutionContext::copyRoutes (const X3DExecutionContext* const executionContext)
+X3DExecutionContext::copyRoutes (const X3DExecutionContext* const executionContext, const CopyType type)
 throw (Error <INVALID_NAME>,
        Error <NOT_SUPPORTED>)
 {
 	for (const auto & route : executionContext -> getRoutes ())
-		route -> copy (this, COPY_OR_CLONE);
+		route -> copy (this, type);
 }
 
 void

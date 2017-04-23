@@ -90,9 +90,6 @@ Route::copy (X3DExecutionContext* const executionContext, const CopyType type) c
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	if (type == CLONE)
-		throw Error <NOT_SUPPORTED> ("Cloning routes is not supported.");
-
 	try
 	{
 		const SFNode sourceNode      = executionContext -> getLocalNode (getExecutionContext () -> getLocalName (getSourceNode ()));

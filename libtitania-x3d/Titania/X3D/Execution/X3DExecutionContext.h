@@ -608,12 +608,12 @@ protected:
 	       Error <NOT_SUPPORTED>);
 
 	void
-	copyImportedNodes (const X3DExecutionContext* const executionContext)
+	copyImportedNodes (const X3DExecutionContext* const executionContext, const CopyType type)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
 	void
-	copyRoutes (const X3DExecutionContext* const executionContext)
+	copyRoutes (const X3DExecutionContext* const executionContext, const CopyType type)
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>);
 
@@ -627,7 +627,7 @@ private:
 	///  @name Operations
 
 	std::string
-	getUniqueName (X3DExecutionContext* const, std::string = "") const;
+	getVeryUniqueName (X3DExecutionContext* const, std::string = "") const;
 
 	std::string
 	getUniqueImportedName (const X3DExecutionContext* const, std::string = "") const;

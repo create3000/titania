@@ -90,9 +90,6 @@ ImportedNode::copy (X3DExecutionContext* const executionContext, const CopyType 
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
-	if (type == CLONE)
-		throw Error <NOT_SUPPORTED> ("Cloning imported nodes is not supported.");
-
 	try
 	{
 		const auto inlineNode = executionContext -> getNamedNode <Inline> (getInlineNode () -> getName ());

@@ -1137,11 +1137,22 @@ throw (Error <INVALID_NODE>,
 		                                 ? NodeFn (std::bind ((getImportedNode) & X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)))
 													: NodeFn (std::bind (identity, destinationNode));
 
+		const auto proto = X3DProtoDeclarationNodePtr (executionContext);
+
+		if (proto)
+			undoStep -> addUndoFunction (&X3DProtoDeclarationNode::updateInstances, proto);
+
 		undoStep -> addUndoFunction ((deleteRoute) & X3DExecutionContext::deleteRoute, executionContext,
 		                             std::bind (call, sourceNodeFn),
 		                             sourceField,
 		                             std::bind (call, destinationNodeFn),
 		                             destinationField);
+
+		undoStep -> addRedoFunction (&X3DExecutionContext::updateNamedNode, executionContext, std::bind (&X3DExecutionContext::getUniqueName, executionContext, std::bind (&X3DBaseNode::getName, sourceNode)),      sourceNode);
+		undoStep -> addRedoFunction (&X3DExecutionContext::updateNamedNode, executionContext, std::bind (&X3DExecutionContext::getUniqueName, executionContext, std::bind (&X3DBaseNode::getName, destinationNode)), destinationNode);
+
+		executionContext -> updateNamedNode (executionContext -> getUniqueName (sourceNode -> getName ()),      sourceNode);
+		executionContext -> updateNamedNode (executionContext -> getUniqueName (destinationNode -> getName ()), destinationNode);
 
 		undoStep -> addRedoFunction ((addRoute) & X3DExecutionContext::addRoute, executionContext,
 		                             std::bind (call, sourceNodeFn),
@@ -1150,6 +1161,12 @@ throw (Error <INVALID_NODE>,
 		                             destinationField);
 
 		executionContext -> addRoute (sourceNode, sourceField, destinationNode, destinationField);
+
+		if (proto)
+		{
+			undoStep -> addRedoFunction (&X3DProtoDeclarationNode::updateInstances, proto);
+			proto -> updateInstances ();
+		}
 	}
 	catch (const X3DError &)
 	{ }
@@ -1189,6 +1206,11 @@ X3DEditor::deleteRoute (const X3DExecutionContextPtr & executionContext,
 	}
 	catch (...)
 	{ }
+
+	const auto proto = X3DProtoDeclarationNodePtr (executionContext);
+
+	if (proto)
+		undoStep -> addUndoFunction (&X3DProtoDeclarationNode::updateInstances, proto);
 
 	if (sourceImported and destinationImported)
 	{
@@ -1247,7 +1269,16 @@ X3DEditor::deleteRoute (const X3DExecutionContextPtr & executionContext,
 		                             destinationField);
 	}
 
+	undoStep -> addUndoFunction (&X3DExecutionContext::updateNamedNode, executionContext, std::bind (&X3DExecutionContext::getUniqueName, executionContext, std::bind (&X3DBaseNode::getName, sourceNode)),      sourceNode);
+	undoStep -> addUndoFunction (&X3DExecutionContext::updateNamedNode, executionContext, std::bind (&X3DExecutionContext::getUniqueName, executionContext, std::bind (&X3DBaseNode::getName, destinationNode)), destinationNode);
+
 	executionContext -> deleteRoute (sourceNode, sourceField, destinationNode, destinationField);
+
+	if (proto)
+	{
+		undoStep -> addRedoFunction (&X3DProtoDeclarationNode::updateInstances, proto);
+		proto -> updateInstances ();
+	}
 }
 
 std::vector <std::tuple <SFNode, std::string, SFNode, std::string>> 

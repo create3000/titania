@@ -462,7 +462,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 			break;
 	}
 
-	auto action = context -> get_selected_action ();
+	const auto action = context -> get_selected_action ();
 
 	// Get destination node.
 
@@ -707,7 +707,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 			break;
 	}
 
-	auto action = context -> get_selected_action ();
+	const auto action = context -> get_selected_action ();
 
 	//__LOG__ << destinationPath .to_string () << std::endl;
 
@@ -959,7 +959,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 			break;
 	}
 
-	auto action = context -> get_selected_action ();
+	const auto action = context -> get_selected_action ();
 
 	// Get destination field.
 

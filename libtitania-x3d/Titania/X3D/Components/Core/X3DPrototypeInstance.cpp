@@ -219,8 +219,8 @@ X3DPrototypeInstance::construct ()
 
 		if (isInitialized ())
 		{
-			copyImportedNodes (proto);
-			copyRoutes (proto);
+			copyImportedNodes (proto, COPY_OR_CLONE);
+			copyRoutes (proto, COPY_OR_CLONE);
 
 			X3DNode::initialize ();
 			X3DExecutionContext::initialize ();
@@ -310,8 +310,8 @@ X3DPrototypeInstance::initialize ()
 
 				ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
 
-				copyImportedNodes (proto);
-				copyRoutes (proto);
+				copyImportedNodes (proto, COPY_OR_CLONE);
+				copyRoutes (proto, COPY_OR_CLONE);
 				break;
 			}
 			case FAILED_STATE:
