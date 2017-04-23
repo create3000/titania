@@ -708,28 +708,28 @@ WorldInfo {
             name "position"
             reference "http://titania.create3000.de"
             value [
-              -20.0436683109626,
-              11.0464394078507,
-              -29.9784824136677
+              -9.77478671379461,
+              10.0513196344375,
+              -30.3491189946542
             ]
           }
           DEF orientation MetadataDouble {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              0.0833411123375551,
-              -0.950974578330766,
-              -0.297828155759259,
-              2.56275579949787
+              -0.044785098591795,
+              -0.983502146320538,
+              -0.175265008278946,
+              2.6491660054718
             ]
           }
           DEF centerOfRotation MetadataDouble {
             name "centerOfRotation"
             reference "http://titania.create3000.de"
             value [
-              -3.12016574911644,
-              -3.15215747100429,
-              -9.81536177349802
+              3.32475432138156,
+              7.31334313996967e-07,
+              -6.39045443036042
             ]
           }
         ]
@@ -784,8 +784,6 @@ WorldInfo {
   }
   title "Grid"
 }
-
-Grid { }
 
 DEF Sphere Transform {
   children Shape {
@@ -1015,6 +1013,16 @@ DEF Torus Transform {
     }
     geometry Torus { }
   }
+}
+
+Transform {
+  translation 18.4389 0 0
+  children Grid { }
+}
+
+Transform {
+  translation -11.7894 0 0
+  children Grid { }
 }
 
 Transform {

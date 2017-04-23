@@ -56,11 +56,14 @@ namespace titania {
 namespace X3D {
 
 X3DProtoDeclarationNode::X3DProtoDeclarationNode () :
-	  X3DNode (),
-	instances (),
-	 comments ()
+	              X3DNode (),
+	updateInstancesBuffer (),
+	            instances (),
+	             comments ()
 {
 	addType (X3DConstants::X3DProtoDeclarationNode);
+
+	addChildObjects (updateInstancesBuffer);
 }
 
 void
@@ -69,10 +72,18 @@ X3DProtoDeclarationNode::initialize ()
 	X3DNode::initialize ();
 
 	fields_changed () .addInterest (&X3DProtoDeclarationNode::set_fields, this);
+
+	updateInstancesBuffer .addInterest (&X3DProtoDeclarationNode::set_updateInstances, this);
 }
 
 void
-X3DProtoDeclarationNode::updateInstances () const
+X3DProtoDeclarationNode::updateInstances ()
+{
+	updateInstancesBuffer = getCurrentTime ();
+}
+
+void
+X3DProtoDeclarationNode::set_updateInstances () const
 {
 	for (const auto & instance : instances)
 		instance -> update ();

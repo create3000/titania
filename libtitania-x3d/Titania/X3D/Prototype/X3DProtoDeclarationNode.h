@@ -110,7 +110,7 @@ public:
 	{ return instances; }
 
 	void
-	updateInstances () const;
+	updateInstances ();
 
 	///  @name Comment handling
 
@@ -153,10 +153,14 @@ private:
 	///  @name Event handlers
 
 	void
+	set_updateInstances () const;
+
+	void
 	set_fields ();
 
 	///  @name Members
 
+	SFTime                           updateInstancesBuffer;
 	std::set <X3DPrototypeInstance*> instances;
 	std::vector <std::string>        comments;
 
