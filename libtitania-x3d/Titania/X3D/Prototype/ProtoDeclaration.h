@@ -121,12 +121,6 @@ public:
 
 	virtual
 	bool
-	isProtoDeclaration () const
-	throw (Error <DISPOSED>) final override
-	{ return true; }
-
-	virtual
-	bool
 	isExternproto () const
 	throw (Error <DISPOSED>) final override
 	{ return false; }

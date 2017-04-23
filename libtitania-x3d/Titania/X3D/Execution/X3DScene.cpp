@@ -294,7 +294,7 @@ throw (Error <INVALID_NAME>,
 	exportedNode .setTainted (true);
 	exportedNode .addParent (this);
 
-	if (isInitialized ())
+	if (getRealized ())
 		exportedNode -> setup ();
 	else
 		addUninitializedNode (exportedNode);

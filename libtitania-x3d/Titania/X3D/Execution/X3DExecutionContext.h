@@ -90,8 +90,14 @@ public:
 
 	///  @name Construction
 
+	bool
+	getRealized () const
+	throw (Error <DISPOSED>)
+	{ return realized; }
+
 	void
-	realize ();
+	realize ()
+	throw (Error <DISPOSED>);
 
 	///  @name Member access
 
@@ -330,12 +336,6 @@ public:
 	       Error <DISPOSED>);
 
 	///  @name Proto declaration handling
-
-	virtual
-	bool
-	isProtoDeclaration () const
-	throw (Error <DISPOSED>)
-	{ return false; }
 
 	ProtoDeclarationPtr
 	createProtoDeclaration (const std::string &, const FieldDefinitionArray &)
@@ -700,8 +700,8 @@ private:
 	MFNode* const                            rootNodes;
 	SFTime                                   sceneGraphOutput;
 	SFTime                                   bboxOutput;
-
-	MFNode uninitializedNodes;
+	MFNode                                   uninitializedNodes;
+	bool                                     realized;
 
 };
 
@@ -713,7 +713,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	const X3DPtr <Type> node (new Type (this, std::forward <Args> (args) ...));
 
-	if (isInitialized ())
+	if (getRealized ())
 	{
 		ContextLock lock (this);
 

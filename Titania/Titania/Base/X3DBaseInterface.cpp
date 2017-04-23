@@ -136,7 +136,7 @@ X3DBaseInterface::getCurrentContext () const
 bool
 X3DBaseInterface::inProtoDeclaration () const
 {
-	return getCurrentContext () -> isProtoDeclaration ();
+	return getCurrentContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration });
 }
 
 ///  Return true if the current execution context is a prototype instance.

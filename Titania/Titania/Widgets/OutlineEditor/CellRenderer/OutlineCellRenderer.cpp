@@ -383,7 +383,7 @@ OutlineCellRenderer::get_icon () const
 
 			if (node -> getExecutionContext () == treeView -> get_execution_context ())
 			{
-				if (node -> isInitialized () and not node -> getExecutionContext () -> isProtoDeclaration ())
+				if (node -> isInitialized () and not node -> getExecutionContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
 					return baseNodeImage;
 				
 				return baseNodeUImage;
@@ -392,7 +392,7 @@ OutlineCellRenderer::get_icon () const
 			if (treeView -> get_execution_context () -> isImportedNode (*sfnode))
 				return importedNodeImage;
 
-			if (node -> isInitialized () and not node -> getExecutionContext () -> isProtoDeclaration ())
+			if (node -> isInitialized () and not node -> getExecutionContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
 				return sharedNodeImage;
 
 			return sharedNodeUImage;

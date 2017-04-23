@@ -90,7 +90,8 @@ X3DExecutionContext::X3DExecutionContext () :
 	            rootNodes (new MFNode ()),
 	     sceneGraphOutput (),
 	           bboxOutput (),
-	   uninitializedNodes ()
+	   uninitializedNodes (),
+	             realized (false)
 {
 	addType (X3DConstants::X3DExecutionContext);
 
@@ -148,15 +149,18 @@ X3DExecutionContext::initialize ()
 
 	uninitializedNodes .setTainted (true); // !!! Prevent generating events when protos add nodes.
 
-	if (not isProtoDeclaration ())
+	if (not isType ({ X3DConstants::ProtoDeclaration }))
 		realize ();
 }
 
 void
 X3DExecutionContext::realize ()
+throw (Error <DISPOSED>)
 {
 	try
 	{
+		realized = true;
+
 		getBrowser () -> prepareEvents () .removeInterest (&X3DExecutionContext::realize, this);
 
 		requestImmediateLoadOfExternProtos ();
@@ -180,7 +184,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	uninitializedNodes .emplace_back (uninitializedNode);
 
-	if (isInitialized ())
+	if (getRealized ())
 	{
 		getBrowser () -> prepareEvents () .addInterest (&X3DExecutionContext::realize, this);
 		getBrowser () -> addEvent ();
@@ -240,7 +244,7 @@ throw (Error <INVALID_NAME>,
 
 	SFNode node (declaration -> create (this));
 
-	if (isInitialized ())
+	if (getRealized ())
 	{
 		ContextLock lock (getBrowser ());
 
@@ -264,7 +268,7 @@ throw (Error <INVALID_NAME>,
 {
 	X3DPrototypeInstancePtr node (findProtoDeclaration (typeName, AvailableType { }) -> createInstance (this));
 
-	if (isInitialized ())
+	if (getRealized ())
 	{
 		ContextLock lock (getBrowser ());
 
@@ -327,7 +331,7 @@ throw (Error <IMPORTED_NODE>,
 	namedNode .setTainted (true);
 	namedNode .addParent (this);
 
-	if (isInitialized ())
+	if (getRealized ())
 		namedNode -> setup ();
 	else
 		addUninitializedNode (namedNode);
@@ -486,7 +490,7 @@ throw (Error <INVALID_NODE>,
 	importedNode .setTainted (true);
 	importedNode .addParent (this);
 
-	if (isInitialized ())
+	if (getRealized ())
 		importedNode -> setup ();
 	else
 		addUninitializedNode (importedNode);
@@ -665,7 +669,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		                                  field);
 	}
 
-	if (isInitialized ())
+	if (getRealized ())
 		prototype -> setup ();
 	else
 		addUninitializedNode (prototype);
@@ -807,7 +811,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 
 	externProto -> url () = URLList;
 
-	if (isInitialized ())
+	if (getRealized ())
 		externProto -> setup ();
 	else
 		addUninitializedNode (externProto);
@@ -1066,12 +1070,12 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		if (executionContext -> isScene ())
 			break;
 
-		if (executionContext -> isProtoDeclaration ())
+		if (executionContext -> isType ({ X3DConstants::ProtoDeclaration }))
 			current = executionContext -> getName ();
 		else
 			current .clear ();
 
-		current = executionContext -> isProtoDeclaration () ? executionContext -> getName () : "";
+		current = executionContext -> isType ({ X3DConstants::ProtoDeclaration }) ? executionContext -> getName () : "";
 
 		executionContext = executionContext -> getExecutionContext ();
 	}
@@ -1125,7 +1129,7 @@ throw (Error <INVALID_NODE>,
 
 		const auto & route = addRoute (new Route (this, sourceNode, routeKey .first, destinationNode, routeKey .second));
 
-		if (isInitialized ())
+		if (getRealized ())
 			route -> setup ();
 		else
 			addUninitializedNode (route);

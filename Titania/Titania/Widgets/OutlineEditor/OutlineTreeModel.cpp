@@ -179,7 +179,7 @@ OutlineTreeModel::is_visible_route (const X3D::Route* const route) const
 		if (route -> getExecutionContext () -> isScene ())
 			return true;
 
-		if (route -> getExecutionContext () -> isProtoDeclaration ())
+		if (route -> getExecutionContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
 			return true;
 
 		if (show_all_routes) // show_all_routes == expandPrototypes
