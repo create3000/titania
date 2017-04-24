@@ -294,7 +294,7 @@ throw (Error <INVALID_NODE>,
 
 		// Replace node.
 
-		X3DEditor::replaceNode (X3DExecutionContextPtr (masterShape -> getExecutionContext ()), masterShape, masterShape -> geometry (), targetGeometry, undoStep);
+		X3DEditor::replaceNode (executionContext, masterShape, masterShape -> geometry (), targetGeometry, undoStep);
 
 		return true;
 	}
@@ -367,7 +367,7 @@ throw (Error <INVALID_NODE>,
 
 	// Replace node
 
-	X3DEditor::replaceNode (X3DExecutionContextPtr (masterShape -> getExecutionContext ()), masterShape, masterShape -> geometry (), targetGeometry, undoStep);
+	X3DEditor::replaceNode (executionContext, masterShape, masterShape -> geometry (), targetGeometry, undoStep);
 
 	return true;
 }

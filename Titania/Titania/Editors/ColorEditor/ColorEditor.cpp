@@ -477,6 +477,8 @@ ColorEditor::on_remove_clicked ()
 	geometry -> colorIndex () .clear ();
 
 	X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geometry -> color (), nullptr, undoStep);
+	X3D::X3DEditor::requestUpdateInstances (geometry, undoStep);
+
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
@@ -519,6 +521,8 @@ ColorEditor::on_apply_clicked ()
 	}
 
 	geometry -> getExecutionContext () -> realize ();
+
+	X3D::X3DEditor::requestUpdateInstances (geometry, undoStep);
 
 	getBrowserWindow () -> addUndoStep (undoStep);
 }

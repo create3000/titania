@@ -1169,6 +1169,7 @@ TextureMappingEditor::on_remove_clicked ()
 	geometry -> texCoordIndex () .clear ();
 
 	X3D::X3DEditor::replaceNode (getCurrentContext (), geometry, geometry -> texCoord (), nullptr, undoStep);
+
 	getBrowserWindow () -> addUndoStep (undoStep);
 }
 

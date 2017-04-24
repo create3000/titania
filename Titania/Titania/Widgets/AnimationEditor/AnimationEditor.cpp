@@ -189,6 +189,18 @@ AnimationEditor::initialize ()
 }
 
 void
+AnimationEditor::addUndoStep (const X3D::UndoStepPtr & undoStep)
+{
+	// Proto support
+
+	X3D::X3DEditor::requestUpdateInstances (animation, undoStep);
+
+	// Add undo step
+
+	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
 AnimationEditor::setScale (const double value)
 {
 	scale = value;
@@ -334,7 +346,7 @@ AnimationEditor::on_new ()
 	undoStep -> addRedoFunction (&X3D::UndoStep::undo, undoRemoveNode);
 	undoRemoveNode -> undo ();
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	addUndoStep (undoStep);
 }
 
 void
@@ -598,7 +610,7 @@ AnimationEditor::on_remove_member ()
 			const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Animation"));
 
 			getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { animation }, true, undoStep);
-			getBrowserWindow () -> addUndoStep (undoStep);
+			addUndoStep (undoStep);
 			break;
 		}
 		case 2:
@@ -651,7 +663,7 @@ AnimationEditor::on_remove_member ()
 				}
 
 				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
-				getBrowserWindow () -> addUndoStep (undoStep);
+				addUndoStep (undoStep);
 
 				// Must be explicitly removed if no interpolator is connected to member.
 				removeNode (node);
@@ -700,7 +712,7 @@ AnimationEditor::on_remove_member ()
 					getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), { interpolator }, true, undoStep);
 
 				undoStep -> addRedoFunction (&AnimationEditor::set_interpolators, this);
-				getBrowserWindow () -> addUndoStep (undoStep);
+				addUndoStep (undoStep);
 
 				set_interpolators ();
 			}
@@ -1035,7 +1047,7 @@ AnimationEditor::on_paste ()
 	for (const auto & interpolator : affectedInterpolators)
 		setInterpolator (interpolator, undoStep);
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	addUndoStep (undoStep);
 }
 
 void
@@ -1222,7 +1234,7 @@ AnimationEditor::on_time ()
 
 	undoStep -> addRedoFunction (&Gtk::DrawingArea::queue_draw, std::ref (getDrawingArea ()));
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	addUndoStep (undoStep);
 
 }
 
@@ -1340,7 +1352,7 @@ AnimationEditor::on_key_type_changed ()
 		{ }		
 	}
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	addUndoStep (undoStep);
 }
 
 void
@@ -1626,7 +1638,7 @@ AnimationEditor::addKeyframe (const X3D::SFNode & node, const X3D::X3DFieldDefin
 			break;
 	}
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	addUndoStep (undoStep);
 }
 
 void
@@ -1743,7 +1755,7 @@ AnimationEditor::moveKeyframes ()
 	movedFrames .clear ();
 	on_selection_changed ();
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	addUndoStep (undoStep);
 }
 
 void
@@ -1825,7 +1837,7 @@ AnimationEditor::removeKeyframes ()
 
 	getBrowserWindow () -> removeNodesFromScene (getCurrentContext (), interpolatorsToRemove, true, undoStep);
 
-	getBrowserWindow () -> addUndoStep (undoStep);
+	addUndoStep (undoStep);
 }
 
 void

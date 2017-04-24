@@ -109,6 +109,9 @@ private:
 	 *  @name Member access
 	 **/
 
+	void
+	addUndoStep (const X3D::UndoStepPtr & undoStep);
+
 	const Glib::RefPtr <Gtk::TreeStore> &
 	getTreeStore () const
 	{ return treeStore; }

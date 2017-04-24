@@ -227,6 +227,10 @@ ViewpointEditor::update (const X3D::UndoStepPtr & undoStep)
 	viewpointNode -> setOrientation      (orientation);
 	viewpointNode -> setCenterOfRotation (centerOfRotation);
 	viewpointNode -> resetUserOffsets ();
+
+	// Proto support
+
+	X3D::X3DEditor::requestUpdateInstances (viewpointNode, undoStep);
 }
 
 void
