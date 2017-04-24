@@ -14,7 +14,7 @@ PROTO Grid [
   exposedField   SFFloat xSpacing 1
   exposedField   SFInt32 zDimension 10
   exposedField   SFFloat zSpacing 1
-  exposedField   SFColor color 1 0.5 0
+  exposedField   SFColor color 0 0 0
   exposedField   SFFloat transparency 0.5
   field          SFBool  solid TRUE
 ]
@@ -39,6 +39,7 @@ PROTO Grid [
           appearance Appearance {
             material DEF Material2 Material {
               diffuseColor IS color
+              transparency 0.5
             }
           }
           geometry Rectangle2D {
@@ -78,8 +79,13 @@ PROTO Grid [
       Transform {
         children Shape {
           appearance Appearance {
-            material DEF Material1 Material {
+            material DEF Winter19 Material {
+              ambientIntensity 0.212121
+              diffuseColor 0.442456 0.506497 0.842424
+              specularColor 0.405259 0.410811 0.410811
               emissiveColor IS color
+              shininess 0.524324
+              transparency 0.5
             }
           }
           geometry DEF Grid IndexedLineSet {
@@ -203,222 +209,330 @@ PROTO Grid [
         }
       }
       DEF Sphere Transform {
-        translation 5 0 0
+        translation 5 6.14158 0
+        children [
+          DEF Animation Group {
+            metadata DEF Animation_1 MetadataSet {
+              name "Animation"
+              reference "http://titania.create3000.de"
+              value [
+                DEF duration MetadataInteger {
+                  name "duration"
+                  reference "http://titania.create3000.de"
+                  value 10
+                }
+                DEF framesPerSecond MetadataInteger {
+                  name "framesPerSecond"
+                  reference "http://titania.create3000.de"
+                  value 10
+                }
+              ]
+            }
+            children [
+              DEF AnimationTimer TimeSensor {
+                loop TRUE
+              }
+              DEF SphereTranslationInterpolator PositionInterpolator {
+                metadata DEF Interpolator MetadataSet {
+                  name "Interpolator"
+                  reference "http://titania.create3000.de"
+                  value [
+                    DEF key MetadataInteger {
+                      name "key"
+                      reference "http://titania.create3000.de"
+                      value [
+                        0,
+                        10
+                      ]
+                    }
+                    DEF keyValue MetadataDouble {
+                      name "keyValue"
+                      reference "http://titania.create3000.de"
+                      value [
+                        5,
+                        1.17052340507507,
+                        0,
+                        5,
+                        7.28926181793213,
+                        0
+                      ]
+                    }
+                    DEF keyType MetadataString {
+                      name "keyType"
+                      reference "http://titania.create3000.de"
+                      value [
+                        "SPLINE",
+                        "SPLINE"
+                      ]
+                    }
+                  ]
+                }
+                key [
+                  0,
+                  0.1,
+                  0.2,
+                  0.3,
+                  0.4,
+                  0.5,
+                  0.6,
+                  0.7,
+                  0.8,
+                  0.9,
+                  1
+                ]
+                keyValue [
+                  5 1.17052 0,
+                  5 1.34185 0,
+                  5 1.80687 0,
+                  5 2.49217 0,
+                  5 3.32432 0,
+                  5 4.22989 0,
+                  5 5.13547 0,
+                  5 5.96761 0,
+                  5 6.65291 0,
+                  5 7.11794 0,
+                  5 7.28926 0
+                ]
+              }
+            ]
+          }
+          Shape {
+            appearance Appearance {
+              material DEF Winter28 Material {
+                ambientIntensity 0.0761043
+                diffuseColor 0.230477 0.106718 0.285207
+                specularColor 0.551351 0 0.234225
+                shininess 0.0540541
+              }
+            }
+            geometry IndexedFaceSet {
+              texCoordIndex [
+                2,
+                0,
+                1,
+                -1,
+                12,
+                0,
+                2,
+                -1,
+                4,
+                13,
+                14,
+                -1,
+                5,
+                0,
+                15,
+                -1,
+                1,
+                0,
+                5,
+                -1,
+                6,
+                16,
+                2,
+                -1,
+                7,
+                2,
+                1,
+                -1,
+                17,
+                1,
+                5,
+                -1,
+                9,
+                18,
+                4,
+                -1,
+                10,
+                4,
+                19,
+                -1,
+                7,
+                11,
+                6,
+                -1,
+                20,
+                11,
+                7,
+                -1,
+                9,
+                11,
+                21,
+                -1,
+                10,
+                11,
+                9,
+                -1,
+                6,
+                11,
+                10,
+                -1,
+                2,
+                7,
+                6,
+                -1,
+                1,
+                22,
+                7,
+                -1,
+                5,
+                23,
+                24,
+                -1,
+                4,
+                10,
+                9,
+                -1,
+                25,
+                6,
+                10,
+                -1
+              ]
+              coordIndex [
+                2,
+                0,
+                1,
+                -1,
+                3,
+                0,
+                2,
+                -1,
+                4,
+                0,
+                3,
+                -1,
+                5,
+                0,
+                4,
+                -1,
+                1,
+                0,
+                5,
+                -1,
+                6,
+                3,
+                2,
+                -1,
+                7,
+                2,
+                1,
+                -1,
+                8,
+                1,
+                5,
+                -1,
+                9,
+                5,
+                4,
+                -1,
+                10,
+                4,
+                3,
+                -1,
+                7,
+                11,
+                6,
+                -1,
+                8,
+                11,
+                7,
+                -1,
+                9,
+                11,
+                8,
+                -1,
+                10,
+                11,
+                9,
+                -1,
+                6,
+                11,
+                10,
+                -1,
+                2,
+                7,
+                6,
+                -1,
+                1,
+                8,
+                7,
+                -1,
+                5,
+                9,
+                8,
+                -1,
+                4,
+                10,
+                9,
+                -1,
+                3,
+                6,
+                10,
+                -1
+              ]
+              texCoord TextureCoordinate {
+                point [
+                  0.2 0.647584,
+                  0.3 0.352416,
+                  0.4 0.647584,
+                  0.5 1,
+                  1 0.647584,
+                  0.1 0.352416,
+                  0.6 0.647584,
+                  0.5 0.352416,
+                  1 0,
+                  0.9 0.352416,
+                  0.8 0.647584,
+                  0.7 0.352416,
+                  0.3 1,
+                  1.2 0.647584,
+                  1.1 1,
+                  0 0.647584,
+                  0.5 1,
+                  0.2 0,
+                  1.1 0.352416,
+                  0.9 1,
+                  0.6 0,
+                  0.8 0,
+                  0.4 0,
+                  -0.1 0.352416,
+                  -2.77556e-17 0,
+                  0.7 1
+                ]
+              }
+              coord Coordinate {
+                point [
+                  -0.850651 0.447214 -0.276393,
+                  -0.850651 -0.447214 0.276393,
+                  -0.525731 0.447214 0.723607,
+                  0 1 2.77556e-17,
+                  2.94903e-16 0.447214 -0.894427,
+                  -0.525731 -0.447214 -0.723607,
+                  0.525731 0.447214 0.723607,
+                  -2.94903e-16 -0.447214 0.894427,
+                  0 -1 -2.77556e-17,
+                  0.525731 -0.447214 -0.723607,
+                  0.850651 0.447214 -0.276393,
+                  0.850651 -0.447214 0.276393
+                ]
+              }
+            }
+          }
+        ]
+      }
+      DEF Torus Transform {
+        translation 3.49933 0 0
         children Shape {
           appearance Appearance {
-            material Material { }
+            material DEF Winter8 Material {
+              ambientIntensity 0.253968
+              diffuseColor 1 1 0.474361
+              shininess 0.0378378
+            }
           }
-          geometry IndexedFaceSet {
-            texCoordIndex [
-              2,
-              0,
-              1,
-              -1,
-              12,
-              0,
-              2,
-              -1,
-              4,
-              13,
-              14,
-              -1,
-              5,
-              0,
-              15,
-              -1,
-              1,
-              0,
-              5,
-              -1,
-              6,
-              16,
-              2,
-              -1,
-              7,
-              2,
-              1,
-              -1,
-              17,
-              1,
-              5,
-              -1,
-              9,
-              18,
-              4,
-              -1,
-              10,
-              4,
-              19,
-              -1,
-              7,
-              11,
-              6,
-              -1,
-              20,
-              11,
-              7,
-              -1,
-              9,
-              11,
-              21,
-              -1,
-              10,
-              11,
-              9,
-              -1,
-              6,
-              11,
-              10,
-              -1,
-              2,
-              7,
-              6,
-              -1,
-              1,
-              22,
-              7,
-              -1,
-              5,
-              23,
-              24,
-              -1,
-              4,
-              10,
-              9,
-              -1,
-              25,
-              6,
-              10,
-              -1
-            ]
-            coordIndex [
-              2,
-              0,
-              1,
-              -1,
-              3,
-              0,
-              2,
-              -1,
-              4,
-              0,
-              3,
-              -1,
-              5,
-              0,
-              4,
-              -1,
-              1,
-              0,
-              5,
-              -1,
-              6,
-              3,
-              2,
-              -1,
-              7,
-              2,
-              1,
-              -1,
-              8,
-              1,
-              5,
-              -1,
-              9,
-              5,
-              4,
-              -1,
-              10,
-              4,
-              3,
-              -1,
-              7,
-              11,
-              6,
-              -1,
-              8,
-              11,
-              7,
-              -1,
-              9,
-              11,
-              8,
-              -1,
-              10,
-              11,
-              9,
-              -1,
-              6,
-              11,
-              10,
-              -1,
-              2,
-              7,
-              6,
-              -1,
-              1,
-              8,
-              7,
-              -1,
-              5,
-              9,
-              8,
-              -1,
-              4,
-              10,
-              9,
-              -1,
-              3,
-              6,
-              10,
-              -1
-            ]
-            texCoord TextureCoordinate {
-              point [
-                0.2 0.647584,
-                0.3 0.352416,
-                0.4 0.647584,
-                0.5 1,
-                1 0.647584,
-                0.1 0.352416,
-                0.6 0.647584,
-                0.5 0.352416,
-                1 0,
-                0.9 0.352416,
-                0.8 0.647584,
-                0.7 0.352416,
-                0.3 1,
-                1.2 0.647584,
-                1.1 1,
-                0 0.647584,
-                0.5 1,
-                0.2 0,
-                1.1 0.352416,
-                0.9 1,
-                0.6 0,
-                0.8 0,
-                0.4 0,
-                -0.1 0.352416,
-                -2.77556e-17 0,
-                0.7 1
-              ]
-            }
-            coord Coordinate {
-              point [
-                -0.850651 0.447214 -0.276393,
-                -0.850651 -0.447214 0.276393,
-                -0.525731 0.447214 0.723607,
-                0 1 2.77556e-17,
-                2.94903e-16 0.447214 -0.894427,
-                -0.525731 -0.447214 -0.723607,
-                0.525731 0.447214 0.723607,
-                -2.94903e-16 -0.447214 0.894427,
-                0 -1 -2.77556e-17,
-                0.525731 -0.447214 -0.723607,
-                0.850651 0.447214 -0.276393,
-                0.850651 -0.447214 0.276393
-              ]
-            }
+          geometry Torus {
+            majorRadius 5
+            solid FALSE
           }
         }
       }
@@ -499,9 +613,11 @@ function initialize ()
     mustEvaluate TRUE
   }
 
-  ROUTE Fields.transparency_changed TO Material1.set_transparency
-  ROUTE Material1.transparency_changed TO Material2.set_transparency
-  ROUTE Material1.diffuseColor_changed TO Material3.set_diffuseColor
+  ROUTE Fields.transparency_changed TO Winter19.set_transparency
+  ROUTE Winter19.transparency_changed TO Material2.set_transparency
+  ROUTE Winter19.diffuseColor_changed TO Material3.set_diffuseColor
+  ROUTE AnimationTimer.fraction_changed TO SphereTranslationInterpolator.set_fraction
+  ROUTE SphereTranslationInterpolator.value_changed TO Sphere.set_translation
 }
 
 PROTO AngleGrid [
@@ -937,7 +1053,7 @@ WorldInfo {
             name "orientation"
             reference "http://titania.create3000.de"
             value [
-              -0.0488158223062778,
+              -0.0488158223062779,
               -0.98722646861498,
               -0.151660526039431,
               2.52624580008531
@@ -1005,30 +1121,30 @@ WorldInfo {
   title "Grid"
 }
 
-DEF Torus Transform {
-  translation 3.49933 0 0
-  children Shape {
-    appearance Appearance {
-      material Material { }
-    }
-    geometry Torus {
-      majorRadius 5
-    }
+Transform {
+  translation 18.4389 0 0
+  children Grid {
+    xDimension 20
+    color 1 0.5 0
+    transparency 0
   }
 }
 
 Transform {
-  translation 18.4389 0 0
-  children Grid { }
-}
-
-Transform {
   translation -11.7894 0 0
-  children Grid { }
+  children Grid {
+    zDimension 20
+    color 1 0.5 0
+    transparency 0
+  }
 }
 
 Transform {
   translation 0 0 -13.0309
   center 0 0 -6.79532
   children AngleGrid { }
+}
+
+Inline {
+  url "QuadSphere.x3dv"
 }

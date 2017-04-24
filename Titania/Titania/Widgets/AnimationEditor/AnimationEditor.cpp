@@ -325,11 +325,13 @@ AnimationEditor::on_new ()
 	const auto group      = groups .back ();
 	const auto animation  = getCurrentContext () -> createNode <X3D::Group> ();
 	const auto timeSensor = getCurrentContext () -> createNode <X3D::TimeSensor> ();
+	const auto timerName  = getCurrentContext () -> getUniqueName (getNewNameEntry () .get_text () + "Timer");
 
 	group -> children () .emplace_front (animation);
 	animation -> children () .emplace_front (timeSensor);
 	getCurrentContext () -> updateNamedNode (name, animation);
-	
+	getCurrentContext () -> updateNamedNode (timerName, timeSensor);
+
 	timeSensor -> loop ()     = getLoopSwitch () .get_active ();
 	timeSensor -> stopTime () = 1;
 
@@ -384,6 +386,8 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 	{
 		animation -> isLive ()   .removeInterest (&AnimationEditor::set_animation_live, this);
 		animation -> children () .removeInterest (&AnimationEditor::set_interpolators, this);
+
+		X3D::X3DEditor::requestUpdateInstances (animation, std::make_shared <X3D::UndoStep> ());
 	}
 
 	if (timeSensor)
@@ -454,11 +458,13 @@ AnimationEditor::set_animation (const X3D::SFNode & value)
 
 		if (timeSensors .empty ())
 		{
+			const auto timerName = getCurrentContext () -> getUniqueName (X3D::GetDisplayName (animation) + "Timer");
+
 			timeSensor = getCurrentContext () -> createNode <X3D::TimeSensor> ();
 
-			animation -> children () .emplace_front (timeSensor);
+			getCurrentContext () -> updateNamedNode (timerName, timeSensor);
 
-			getCurrentContext () -> realize ();
+			animation -> children () .emplace_front (timeSensor);
 		}
 		else
 			timeSensor = timeSensors .back ();

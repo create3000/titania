@@ -992,9 +992,6 @@ X3DEditor::updateNamedNode (const X3DExecutionContextPtr & executionContext, con
 {
 	try
 	{
-		if (name .empty ())
-			return;
-
 		if (name == node -> getName ())
 			return;
 
@@ -1014,8 +1011,10 @@ X3DEditor::updateNamedNode (const X3DExecutionContextPtr & executionContext, con
 	
 		requestUpdateInstances (executionContext, undoStep);
 	}
-	catch (...)
-	{ }
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -1036,8 +1035,10 @@ X3DEditor::removeNamedNode (const X3DExecutionContextPtr & executionContext, con
 	
 		requestUpdateInstances (executionContext, undoStep);
 	}
-	catch (...)
-	{ }
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 /***
@@ -1222,10 +1223,10 @@ throw (Error <INVALID_NODE>,
 		                             destinationField);
 
 		if (sourceNode -> getName () .empty ())
-			updateNamedNode (executionContext, executionContext -> getUniqueName (), sourceNode, undoStep);
+			updateNamedNode (X3DExecutionContextPtr (sourceNode -> getExecutionContext ()), sourceNode -> getExecutionContext () -> getUniqueName (), sourceNode, undoStep);
 
 		if (destinationNode -> getName () .empty ())
-			updateNamedNode (executionContext, executionContext -> getUniqueName (), destinationNode, undoStep);
+			updateNamedNode (X3DExecutionContextPtr (destinationNode -> getExecutionContext ()), destinationNode -> getExecutionContext () -> getUniqueName (), destinationNode, undoStep);
 
 		undoStep -> addRedoFunction ((addRoute) & X3DExecutionContext::addRoute, executionContext,
 		                             std::bind (call, sourceNodeFn),
@@ -1239,8 +1240,10 @@ throw (Error <INVALID_NODE>,
 
 		requestUpdateInstances (executionContext, undoStep);
 	}
-	catch (const X3DError &)
-	{ }
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -1336,10 +1339,10 @@ X3DEditor::deleteRoute (const X3DExecutionContextPtr & executionContext,
 	}
 
 	if (sourceNode -> getName () .empty ())
-		updateNamedNode (executionContext, executionContext -> getUniqueName (), sourceNode, undoStep);
+		updateNamedNode (X3DExecutionContextPtr (sourceNode -> getExecutionContext ()), sourceNode -> getExecutionContext () -> getUniqueName (), sourceNode, undoStep);
 
 	if (destinationNode -> getName () .empty ())
-		updateNamedNode (executionContext, executionContext -> getUniqueName (), destinationNode, undoStep);
+		updateNamedNode (X3DExecutionContextPtr (destinationNode -> getExecutionContext ()), destinationNode -> getExecutionContext () -> getUniqueName (), destinationNode, undoStep);
 
 	executionContext -> deleteRoute (sourceNode, sourceField, destinationNode, destinationField);
 

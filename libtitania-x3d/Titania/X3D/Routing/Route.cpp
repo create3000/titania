@@ -178,9 +178,7 @@ Route::connect ()
 	{
 		connected = true;
 
-		if (not getExecutionContext () -> isType ({ X3DConstants::ProtoDeclaration }))
-			sourceField -> addInterest (destinationField);
-
+		sourceField -> addInterest (destinationField);
 		sourceField -> addOutputRoute (this);
 		destinationField -> addInputRoute (this);
 	}

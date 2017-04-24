@@ -817,6 +817,9 @@ X3DOutlineTreeView::model_expand_row (const Gtk::TreeModel::iterator & iter)
 			const auto & sfnode           = *static_cast <X3D::SFNode*> (get_object (iter));
 			const auto   executionContext = dynamic_cast <X3D::X3DExecutionContext*> (sfnode .getValue ());
 
+			if (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+				executionContext -> realize ();
+
 			// ExternProtos
 
 			if (externProtos and not executionContext -> getExternProtoDeclarations () .empty ())
