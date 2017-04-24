@@ -168,18 +168,13 @@ X3DShaderEditor::on_type_activate (const std::string & type)
 
 		undoStep -> addObjects (node);
 
-		if (proto)
-			undoStep -> addUndoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, proto);
+		X3D::X3DEditor::undoRequestUpdateInstances (proto, undoStep);
 
 		undoStep -> addUndoFunction (&X3D::SFString::setValue, std::ref (field), field);
 		undoStep -> addRedoFunction (&X3D::SFString::setValue, std::ref (field), type);
 		field = type;
 
-		if (proto)
-		{
-			undoStep -> addRedoFunction (&X3D::ProtoDeclaration::requestUpdateInstances, proto);
-			proto -> requestUpdateInstances ();
-		}
+		X3D::X3DEditor::redoRequestUpdateInstances (proto, undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}

@@ -222,6 +222,16 @@ public:
 	void
 	setUserDefinedFields (const SFNode &, const FieldDefinitionArray &, const UndoStepPtr &);
 
+	///  @name Prototype operations
+
+	static
+	void
+	undoRequestUpdateInstances (const X3DProtoDeclarationNodePtr & proto, const UndoStepPtr & undoStep);
+
+	static
+	void
+	redoRequestUpdateInstances (const X3DProtoDeclarationNodePtr & proto, const UndoStepPtr & undoStep);
+
 	static
 	void
 	addReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep);

@@ -828,17 +828,12 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 
 			undoStep -> addObjects (node);
 
-			if (proto)
-				undoStep -> addUndoFunction (&X3D::X3DProtoDeclarationNode::requestUpdateInstances, proto);
+			X3D::X3DEditor::undoRequestUpdateInstances (proto, undoStep);
 
 			undoStep -> addUndoFunction (&X3D::SFString::setValue, sfstring, currentValue);
 			undoStep -> addRedoFunction (&X3D::SFString::setValue, sfstring, string);
 
-			if (proto)
-			{
-				undoStep -> addRedoFunction (&X3D::X3DProtoDeclarationNode::requestUpdateInstances, proto);
-				proto -> requestUpdateInstances ();
-			}
+			X3D::X3DEditor::redoRequestUpdateInstances (proto, undoStep);
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 		}
@@ -860,8 +855,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 			const auto proto      = X3D::X3DProtoDeclarationNodePtr (node -> getExecutionContext ());
 			const auto inlineNode = X3D::X3DPtr <X3D::Inline> (node);
 
-			if (proto)
-				undoStep -> addUndoFunction (&X3D::X3DProtoDeclarationNode::requestUpdateInstances, proto);
+			X3D::X3DEditor::undoRequestUpdateInstances (proto, undoStep);
 
 			if (inlineNode and (
 				(field -> getName () == "load" and value -> toString () == "FALSE") or 
@@ -876,11 +870,7 @@ OutlineCellRenderer::set_field_value (const X3D::SFNode & node, X3D::X3DFieldDef
 			undoStep -> addRedoFunction (&X3D::X3DFieldDefinition::fromString, field, value -> toString ());
 			*field = std::move (*value);
 
-			if (proto)
-			{
-				undoStep -> addRedoFunction (&X3D::X3DProtoDeclarationNode::requestUpdateInstances, proto);
-				proto -> requestUpdateInstances ();
-			}
+			X3D::X3DEditor::redoRequestUpdateInstances (proto, undoStep);
 
 			treeView -> getBrowserWindow () -> addUndoStep (undoStep);
 			delete value;
