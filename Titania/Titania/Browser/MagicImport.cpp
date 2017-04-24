@@ -95,7 +95,13 @@ MagicImport::import (const X3D::X3DExecutionContextPtr & executionContext, const
 	{
 		const std::string magic = scene -> getMetaData ("titania magic");
 
-		return importFunctions1 .at (magic) (executionContext, const_cast <X3D::MFNode &> (selection), scene, undoStep);
+		if (importFunctions1 .at (magic) (executionContext, const_cast <X3D::MFNode &> (selection), scene, undoStep))
+		{
+			X3D::X3DEditor::requestUpdateInstances (executionContext, undoStep);
+			return true;
+		}
+
+		return false;
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{
@@ -115,6 +121,8 @@ MagicImport::process (const X3D::X3DExecutionContextPtr & executionContext, cons
 		const std::string magic = scene -> getMetaData ("titania magic");
 
 		importFunctions2 .at (magic) (executionContext, const_cast <X3D::MFNode &> (importedNodes), scene, undoStep);
+
+		X3D::X3DEditor::requestUpdateInstances (executionContext, undoStep);
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{ }

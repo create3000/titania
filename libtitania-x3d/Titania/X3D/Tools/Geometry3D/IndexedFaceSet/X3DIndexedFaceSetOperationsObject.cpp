@@ -114,12 +114,6 @@ X3DIndexedFaceSetOperationsObject::set_cutGeometry ()
 	set_copyGeometry ();
 	deleteSelectedFaces (undoStep);
 
-	// Prototype support
-
-	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-	// Send undo step
-
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
@@ -373,12 +367,6 @@ X3DIndexedFaceSetOperationsObject::set_pasteGeometry ()
 
 		replaceSelection () .assign (selection .begin (), selection .end ());
 
-		// Prototype support
-	
-		X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-	
-		// Send undo step
-
 		undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 	}
 	catch (const std::domain_error &)
@@ -470,12 +458,6 @@ X3DIndexedFaceSetOperationsObject::set_mergePoints ()
 
 	replaceSelection () .assign (selection .begin (), selection .end ());
 
-	// Prototype support
-
-	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-	// Send undo step
-
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
@@ -505,12 +487,6 @@ X3DIndexedFaceSetOperationsObject::set_splitPoints ()
 
 	replaceSelection () .assign (selection .begin (), selection .end ());
 
-	// Prototype support
-
-	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-	// Send undo step
-
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
@@ -534,12 +510,6 @@ X3DIndexedFaceSetOperationsObject::set_formNewFace ()
 	redoRestoreSelectedFaces (selection, undoStep);
 
 	replaceSelectedFaces () .assign (selection .begin (), selection .end ());
-
-	// Prototype support
-
-	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-	// Send undo step
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -587,12 +557,6 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedEdges ()
 	redoRestoreSelectedEdges (selection, undoStep);
 
 	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
-
-	// Prototype support
-
-	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-	// Send undo step
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -666,12 +630,6 @@ X3DIndexedFaceSetOperationsObject::set_extrudeSelectedFaces ()
 
 	replaceSelection () .assign (selection .begin (), selection .end ());
 
-	// Prototype support
-
-	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-	// Send undo step
-
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
@@ -709,12 +667,6 @@ X3DIndexedFaceSetOperationsObject::set_chipOfSelectedFaces ()
 
 	replaceSelection () .assign (selection .begin (), selection .end ());
 
-	// Prototype support
-
-	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-	// Send undo step
-
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
@@ -750,12 +702,6 @@ X3DIndexedFaceSetOperationsObject::set_flipVertexOrdering ()
 
 	replaceSelectedFaces () .assign (selection .begin (), selection .end ());
 
-	// Prototype support
-
-	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-	// Send undo step
-
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
 
@@ -765,12 +711,6 @@ X3DIndexedFaceSetOperationsObject::set_deleteSelectedFaces ()
 	const auto undoStep = std::make_shared <UndoStep> (_ ("Remove Selected Faces"));
 
 	deleteSelectedFaces (undoStep);
-
-	// Prototype support
-
-	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-	// Send undo step
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }
@@ -845,12 +785,6 @@ X3DIndexedFaceSetOperationsObject::deleteSelectedFaces (const UndoStepPtr & undo
 	redoRestoreSelection ({ }, undoStep);
 
 	replaceSelection () = MFInt32 ();
-
-	// Prototype support
-
-	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-	// Send undo step
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }

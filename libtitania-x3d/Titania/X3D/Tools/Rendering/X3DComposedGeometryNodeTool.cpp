@@ -101,6 +101,7 @@ X3DComposedGeometryNodeTool::undoSetColorColor (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
 		undoStep -> addUndoFunction (&SFNode::setValue, std::ref (color ()), nullptr);
+		X3DEditor::requestUpdateInstances (SFNode (getNode <IndexedFaceSet> ()), undoStep);
 	   return;
 	}
 
@@ -114,6 +115,7 @@ X3DComposedGeometryNodeTool::undoSetTexCoordPoint (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
 		undoStep -> addUndoFunction (&SFNode::setValue, std::ref (texCoord ()), nullptr);
+		X3DEditor::requestUpdateInstances (SFNode (getNode <IndexedFaceSet> ()), undoStep);
 	   return;
 	}
 
@@ -127,6 +129,7 @@ X3DComposedGeometryNodeTool::undoSetNormalVector (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
 		undoStep -> addUndoFunction (&SFNode::setValue, std::ref (normal ()), nullptr);
+		X3DEditor::requestUpdateInstances (SFNode (getNode <IndexedFaceSet> ()), undoStep);
 	   return;
 	}
 
@@ -140,6 +143,7 @@ X3DComposedGeometryNodeTool::undoSetCoordPoint (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
 		undoStep -> addUndoFunction (&SFNode::setValue, std::ref (coord ()), nullptr);
+		X3DEditor::requestUpdateInstances (SFNode (getNode <IndexedFaceSet> ()), undoStep);
 	   return;
 	}
 
@@ -153,6 +157,7 @@ X3DComposedGeometryNodeTool::redoSetColorColor (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
 		undoStep -> addUndoFunction (&SFNode::setValue, std::ref (color ()), nullptr);
+		X3DEditor::requestUpdateInstances (SFNode (getNode <IndexedFaceSet> ()), undoStep);
 	   return;
 	}
 
@@ -166,6 +171,7 @@ X3DComposedGeometryNodeTool::redoSetTexCoordPoint (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
 		undoStep -> addUndoFunction (&SFNode::setValue, std::ref (texCoord ()), nullptr);
+		X3DEditor::requestUpdateInstances (SFNode (getNode <IndexedFaceSet> ()), undoStep);
 	   return;
 	}
 
@@ -179,6 +185,7 @@ X3DComposedGeometryNodeTool::redoSetNormalVector (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
 		undoStep -> addUndoFunction (&SFNode::setValue, std::ref (normal ()), nullptr);
+		X3DEditor::requestUpdateInstances (SFNode (getNode <IndexedFaceSet> ()), undoStep);
 	   return;
 	}
 
@@ -192,6 +199,7 @@ X3DComposedGeometryNodeTool::redoSetCoordPoint (const UndoStepPtr & undoStep)
 	{
 		undoStep -> addObjects (SFNode (getNode <IndexedFaceSet> ()));
 		undoStep -> addUndoFunction (&SFNode::setValue, std::ref (coord ()), nullptr);
+		X3DEditor::requestUpdateInstances (SFNode (getNode <IndexedFaceSet> ()), undoStep);
 	   return;
 	}
 

@@ -55,7 +55,6 @@
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../../Components/Rendering/X3DCoordinateNode.h"
 #include "../../../Editing/Undo/UndoStepContainer.h"
-#include "../../../Editing/X3DEditor.h"
 
 #include <random>
 #include <chrono>
@@ -164,12 +163,6 @@ X3DIndexedFaceSetSculpToolObject::set_touch_sensor_active ()
 		{
 			redoSetCoordPoint (undoStep);
 	
-			// Prototype support
-
-			X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
-
-			// Send undo step
-
 			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 		}
 	}
