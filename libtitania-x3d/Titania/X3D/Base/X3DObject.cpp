@@ -56,9 +56,9 @@ namespace titania {
 namespace X3D {
 
 X3DObject::X3DObject () :
-	           X3DInput (),
-	          X3DOutput (),
-	               data ()
+	 X3DInput (),
+	X3DOutput (),
+	     data ()
 { }
 
 void
@@ -68,6 +68,48 @@ X3DObject::realize () const
 		return;
 
 	data .reset (new Data ());
+}
+
+void
+X3DObject::setName (const std::string & value)
+{
+	realize ();
+	data -> name = value;
+}
+
+const std::string &
+X3DObject::getName () const
+{
+	realize ();
+	return data -> name;
+}
+
+void
+X3DObject::addComments (const std::vector <std::string> & value)
+{
+	realize ();
+	data -> comments .insert (data -> comments .end (), value .begin (), value .end ());
+}
+
+const std::vector <std::string> &
+X3DObject::getComments () const
+{
+	realize ();
+	return data -> comments;
+}
+
+void
+X3DObject::setUserData (const UserDataPtr & value)
+{
+	realize ();
+	data -> userData = value;
+}
+
+const UserDataPtr &
+X3DObject::getUserData () const
+{
+	realize ();
+	return data -> userData;
 }
 
 // String

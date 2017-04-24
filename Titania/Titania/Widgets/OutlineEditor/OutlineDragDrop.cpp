@@ -558,14 +558,6 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action)));
 
-	// Proto support
-	
-	const auto sourceProto = X3D::ProtoDeclarationPtr (sourceContext);
-	const auto destProto   = X3D::ProtoDeclarationPtr (destContext);
-
-	X3D::X3DEditor::undoRequestUpdateInstances (sourceProto, undoStep);
-	X3D::X3DEditor::undoRequestUpdateInstances (destProto,   undoStep);
-
 	// Handle link
 
 	if (action == Gdk::ACTION_LINK)
@@ -657,8 +649,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 		// Proto support
 	
-		X3D::X3DEditor::redoRequestUpdateInstances (sourceProto, undoStep);
-		X3D::X3DEditor::redoRequestUpdateInstances (destProto,   undoStep);
+		X3D::X3DEditor::requestUpdateInstances (sourceNode, undoStep);
+		X3D::X3DEditor::requestUpdateInstances (destNode,   undoStep);
 	
 		// Add undo step.
 
@@ -810,14 +802,6 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action)));
 
-	// Proto support
-	
-	const auto sourceProto = X3D::ProtoDeclarationPtr (sourceContext);
-	const auto destProto   = X3D::ProtoDeclarationPtr (destContext);
-
-	X3D::X3DEditor::undoRequestUpdateInstances (sourceProto, undoStep);
-	X3D::X3DEditor::undoRequestUpdateInstances (destProto,   undoStep);
-
 	// Handle link
 
 	if (action == Gdk::ACTION_LINK)
@@ -905,8 +889,8 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 	// Proto support
 
-	X3D::X3DEditor::redoRequestUpdateInstances (sourceProto, undoStep);
-	X3D::X3DEditor::redoRequestUpdateInstances (destProto,   undoStep);
+	X3D::X3DEditor::requestUpdateInstances (sourceNode, undoStep);
+	X3D::X3DEditor::requestUpdateInstances (destNode,   undoStep);
 
 	// Add undo step.
 
@@ -1080,14 +1064,6 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ (get_node_action_string (action)));
 
-	// Proto support
-	
-	const auto sourceProto = X3D::ProtoDeclarationPtr (sourceContext);
-	const auto destProto   = X3D::ProtoDeclarationPtr (destContext);
-
-	X3D::X3DEditor::undoRequestUpdateInstances (sourceProto, undoStep);
-	X3D::X3DEditor::undoRequestUpdateInstances (destProto,   undoStep);
-
 	// Handle link
 
 	if (action == Gdk::ACTION_LINK)
@@ -1203,8 +1179,8 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 	// Proto support
 
-	X3D::X3DEditor::redoRequestUpdateInstances (sourceProto, undoStep);
-	X3D::X3DEditor::redoRequestUpdateInstances (destProto,   undoStep);
+	X3D::X3DEditor::requestUpdateInstances (sourceNode, undoStep);
+	X3D::X3DEditor::requestUpdateInstances (*destNode,  undoStep);
 
 	// Add undo step.
 

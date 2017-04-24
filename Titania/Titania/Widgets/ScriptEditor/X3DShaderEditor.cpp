@@ -160,7 +160,6 @@ X3DShaderEditor::on_type_activate (const std::string & type)
 	try
 	{
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Set Shader »type« To »%s«", type .c_str ())));
-		const auto proto    = X3D::ProtoDeclarationPtr (node -> getExecutionContext ());
 		auto &     field    = node -> getField <X3D::SFString> ("type");
 
 		if (field == type)
@@ -168,13 +167,11 @@ X3DShaderEditor::on_type_activate (const std::string & type)
 
 		undoStep -> addObjects (node);
 
-		X3D::X3DEditor::undoRequestUpdateInstances (proto, undoStep);
-
 		undoStep -> addUndoFunction (&X3D::SFString::setValue, std::ref (field), field);
 		undoStep -> addRedoFunction (&X3D::SFString::setValue, std::ref (field), type);
 		field = type;
 
-		X3D::X3DEditor::redoRequestUpdateInstances (proto, undoStep);
+		X3D::X3DEditor::requestUpdateInstances (node, undoStep);
 
 		getBrowserWindow () -> addUndoStep (undoStep);
 	}

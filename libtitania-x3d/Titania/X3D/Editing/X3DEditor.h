@@ -106,73 +106,77 @@ public:
 
 	static
 	void
-	removeUnusedPrototypes (const X3DExecutionContextPtr &, const UndoStepPtr &);
+	removeUnusedPrototypes (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
 
 	static
 	SFNode
-	addPrototypeInstance (const X3DExecutionContextPtr &, const std::string &, const UndoStepPtr &);
+	addPrototypeInstance (const X3DExecutionContextPtr & executionContext, const std::string &, const UndoStepPtr & undoStep);
 
 	///  @name Replace operations
 
 	static
 	void
-	replaceNodes (const X3DExecutionContextPtr &, const SFNode &, const SFNode &, const UndoStepPtr &);
+	replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode &, const SFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	replaceNode (const X3DExecutionContextPtr &, const SFNode &, SFNode &, const SFNode &, const UndoStepPtr &);
+	replaceNode (const X3DExecutionContextPtr & executionContext, const SFNode &, SFNode &, const SFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	replaceNodes (const X3DExecutionContextPtr &, const SFNode &, MFNode &, const MFNode &, const UndoStepPtr &);
+	replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const MFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	replaceNodes (const X3DExecutionContextPtr &, const SFNode &, MFNode &, const SFNode &, const SFNode &, const UndoStepPtr &);
+	replaceNodes (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const SFNode &, const SFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	replaceNode (const X3DExecutionContextPtr &, const SFNode &, MFNode &, const size_t, const SFNode &, const UndoStepPtr &);
+	replaceNode (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const size_t, const SFNode &, const UndoStepPtr & undoStep);
 
 	///  @name Remove operations
 
 	static
 	void
-	removeNode (const X3DExecutionContextPtr &, const SFNode &, SFNode &, const UndoStepPtr &);
+	removeNode (const X3DExecutionContextPtr & executionContext, const SFNode &, SFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNode (const X3DExecutionContextPtr &, const SFNode &, MFNode &, const size_t, const UndoStepPtr &);
+	removeNode (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const size_t, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromSceneIfNotExists (const X3DExecutionContextPtr &, const MFNode &, const UndoStepPtr &);
+	removeNodesFromSceneIfNotExists (const X3DExecutionContextPtr & executionContext, const MFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromScene (const X3DExecutionContextPtr &, const MFNode &, const bool, const UndoStepPtr &);
+	removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode &, const bool, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromSceneGraph (const X3DExecutionContextPtr &, const std::set <SFNode> &, const UndoStepPtr &);
+	removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromSceneGraph (const MFNode &, const std::set <SFNode> &, const UndoStepPtr &);
+	removeNodesFromSceneGraph (const MFNode &, const std::set <SFNode> &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeImportedNodes (const X3DExecutionContextPtr &, const std::set <X3DPtr <Inline>> &, const UndoStepPtr &);
+	removeImportedNodes (const X3DExecutionContextPtr & executionContext, const std::set <X3DPtr <Inline>> &, const UndoStepPtr & undoStep);
 
 	///  @name Named node handling
 
 	static
 	void
-	updateNamedNode (const X3DExecutionContextPtr &, const std::string &, const SFNode &, const UndoStepPtr &);
+	updateNamedNode (const X3DExecutionContextPtr & executionContext, const std::string & name, const SFNode & node, const UndoStepPtr & undoStep);
 
 	static
 	void
-	updateProtoDeclaration (const X3DExecutionContextPtr &,
+	removeNamedNode (const X3DExecutionContextPtr & executionContext, const SFNode & node, const UndoStepPtr & undoStep);
+
+	static
+	void
+	updateProtoDeclaration (const X3DExecutionContextPtr & executionContext,
 	                        const std::string &,
 	                        const ProtoDeclarationPtr &,
 	                        const UndoStepPtr &)
@@ -180,7 +184,7 @@ public:
 
 	static
 	void
-	updateExternProtoDeclaration (const X3DExecutionContextPtr &,
+	updateExternProtoDeclaration (const X3DExecutionContextPtr & executionContext,
 	                              const std::string &,
 	                              const ExternProtoDeclarationPtr &,
 	                              const UndoStepPtr &)
@@ -190,7 +194,7 @@ public:
 
 	static
 	void
-	addRoute (const X3DExecutionContextPtr &, const SFNode &, const std::string &, const SFNode &, const std::string &, const UndoStepPtr &)
+	addRoute (const X3DExecutionContextPtr & executionContext, const SFNode &, const std::string &, const SFNode &, const std::string &, const UndoStepPtr &)
 	throw (Error <INVALID_NODE>,
 	       Error <INVALID_FIELD>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -198,39 +202,39 @@ public:
 
 	static
 	void
-	deleteRoute (const X3DExecutionContextPtr &, const SFNode &, const std::string &, const SFNode &, const std::string &, const UndoStepPtr &);
+	deleteRoute (const X3DExecutionContextPtr & executionContext, const SFNode &, const std::string &, const SFNode &, const std::string &, const UndoStepPtr & undoStep);
 
 	static
 	std::vector <std::tuple <SFNode, std::string, SFNode, std::string>>
-	getImportedRoutes (const X3DExecutionContextPtr &, const X3DScenePtr &);
+	getImportedRoutes (const X3DExecutionContextPtr & executionContext, const X3DScenePtr &);
 
 	///  @name User-defined fields operations
 
 	static
 	void
-	addUserDefinedField (const SFNode &, X3DFieldDefinition* const, const UndoStepPtr &);
+	addUserDefinedField (const SFNode &, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	replaceUserDefinedField (const SFNode &, X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr &);
+	replaceUserDefinedField (const SFNode &, X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	removeUserDefinedField (const SFNode &, X3DFieldDefinition* const, const UndoStepPtr &);
+	removeUserDefinedField (const SFNode &, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	setUserDefinedFields (const SFNode &, const FieldDefinitionArray &, const UndoStepPtr &);
+	setUserDefinedFields (const SFNode &, const FieldDefinitionArray &, const UndoStepPtr & undoStep);
 
 	///  @name Prototype operations
 
 	static
 	void
-	undoRequestUpdateInstances (const X3DProtoDeclarationNodePtr & proto, const UndoStepPtr & undoStep);
+	requestUpdateInstances (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
 
 	static
 	void
-	redoRequestUpdateInstances (const X3DProtoDeclarationNodePtr & proto, const UndoStepPtr & undoStep);
+	requestUpdateInstances (const SFNode & node, const UndoStepPtr & undoStep);
 
 	static
 	void
@@ -244,35 +248,35 @@ public:
 
 	static
 	void
-	createClone (const X3DExecutionContextPtr &, const SFNode &, const MFNode &, const UndoStepPtr &);
+	createClone (const X3DExecutionContextPtr & executionContext, const SFNode &, const MFNode &, const UndoStepPtr & undoStep);
 
 	static
 	MFNode
-	unlinkClone (const X3DExecutionContextPtr &, const MFNode &, const UndoStepPtr &);
+	unlinkClone (const X3DExecutionContextPtr & executionContext, const MFNode &, const UndoStepPtr & undoStep);
 
 	static
 	SFNode
-	groupNodes (const X3DExecutionContextPtr &, const std::string &, const MFNode &, const UndoStepPtr &);
+	groupNodes (const X3DExecutionContextPtr & executionContext, const std::string &, const MFNode &, const UndoStepPtr & undoStep);
 
 	static
 	MFNode
-	ungroupNodes (const X3DExecutionContextPtr &, const MFNode &, const UndoStepPtr &);
+	ungroupNodes (const X3DExecutionContextPtr & executionContext, const MFNode &, const UndoStepPtr & undoStep);
 
 	static
 	bool
-	addToGroup (const X3DExecutionContextPtr &, const SFNode &, const MFNode &, const UndoStepPtr &);
+	addToGroup (const X3DExecutionContextPtr & executionContext, const SFNode &, const MFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	detachFromGroup (const X3DExecutionContextPtr &, const MFNode &, const bool, const UndoStepPtr &);
+	detachFromGroup (const X3DExecutionContextPtr & executionContext, const MFNode &, const bool, const UndoStepPtr & undoStep);
 
 	static
 	SFNode
-	createParentGroup (const X3DExecutionContextPtr &, const std::string &, const std::string &, const MFNode &, const UndoStepPtr &);
+	createParentGroup (const X3DExecutionContextPtr & executionContext, const std::string &, const std::string &, const MFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	addNodesToActiveLayer (const WorldPtr &, const MFNode &, const UndoStepPtr &);
+	addNodesToActiveLayer (const WorldPtr &, const MFNode &, const UndoStepPtr & undoStep);
 
 	///  @name Node handling
 
@@ -294,81 +298,81 @@ public:
 
 	static
 	void
-	transformToZero (const MFNode &, const UndoStepPtr &);
+	transformToZero (const MFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	storeMatrix (const SFNode &, const UndoStepPtr &);
+	storeMatrix (const SFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	setMatrix (const X3DPtr <X3DTransformNode> &, const Matrix4d &, const UndoStepPtr &);
+	setMatrix (const X3DPtr <X3DTransformNode> &, const Matrix4d &, const UndoStepPtr & undoStep);
 
 	static
 	Matrix4d
-	getModelViewMatrix (const X3DExecutionContextPtr &, const SFNode &);
+	getModelViewMatrix (const X3DExecutionContextPtr & executionContext, const SFNode &);
 
 	///  @name Polygon reducing
 
 	static
 	void
-	mergePoints (const X3DPtr <IndexedFaceSet> &, const double, const UndoStepPtr &);
+	mergePoints (const X3DPtr <IndexedFaceSet> &, const double, const UndoStepPtr & undoStep);
 
 	static
 	void
-	undoSetColorColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr &);
+	undoSetColorColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr & undoStep);
 
 	///  @name X3DComposedGeometryNode
 	
 	static
 	void
-	undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &);
+	undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	undoSetNormalVector (const X3DPtr <X3DNormalNode> &, const UndoStepPtr &);
+	undoSetNormalVector (const X3DPtr <X3DNormalNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	undoSetCoordPoint (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr &);
+	undoSetCoordPoint (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	redoSetColorColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr &);
+	redoSetColorColor (const X3DPtr <X3DColorNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &);
+	redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	redoSetNormalVector (const X3DPtr <X3DNormalNode> &, const UndoStepPtr &);
+	redoSetNormalVector (const X3DPtr <X3DNormalNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	redoSetCoordPoint (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr &);
+	redoSetCoordPoint (const X3DPtr <X3DCoordinateNode> &, const UndoStepPtr & undoStep);
 
 	///  @name Array handling
 
 	static
 	void
-	pushBackIntoArray (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr &);
+	pushBackIntoArray (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	insertIntoArray (const SFNode &, MFNode &, const size_t, const SFNode &, const UndoStepPtr &);
+	insertIntoArray (const SFNode &, MFNode &, const size_t, const SFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	insertIntoArray (const SFNode &, MFNode &, const size_t, const MFNode::iterator &, const MFNode::iterator &, const UndoStepPtr &);
+	insertIntoArray (const SFNode &, MFNode &, const size_t, const MFNode::iterator &, const MFNode::iterator &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	moveValueWithinArray (const SFNode &, MFNode &, const size_t, const size_t, const UndoStepPtr &);
+	moveValueWithinArray (const SFNode &, MFNode &, const size_t, const size_t, const UndoStepPtr & undoStep);
 
 	static
 	void
-	eraseFromArray (const SFNode &, MFNode &, const size_t, const UndoStepPtr &);
+	eraseFromArray (const SFNode &, MFNode &, const size_t, const UndoStepPtr & undoStep);
 
 	///  @name Destruction
 
@@ -381,17 +385,17 @@ private:
 
 	static
 	std::vector <X3DProtoDeclarationNodePtr>
-	getUsedPrototypes (const X3DExecutionContextPtr &, const MFNode &);
+	getUsedPrototypes (const X3DExecutionContextPtr & executionContext, const MFNode &);
 
 	static
 	std::vector <Route*>
-	getConnectedRoutes (const X3DExecutionContextPtr &, const MFNode &);
+	getConnectedRoutes (const X3DExecutionContextPtr & executionContext, const MFNode &);
 
 	///  @name Prototype handling
 
 	static
 	void
-	removeUsedPrototypes (const X3DExecutionContextPtr &,
+	removeUsedPrototypes (const X3DExecutionContextPtr & executionContext,
 	                      std::map <ExternProtoDeclarationPtr, size_t> &,
 	                      std::map <ProtoDeclarationPtr, size_t> &);
 
@@ -399,88 +403,88 @@ private:
 
 	static
 	void
-	removeNode (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr &);
+	removeNode (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNodesFromExecutionContext (const X3DExecutionContextPtr &, const std::set <SFNode> &, const UndoStepPtr &, const bool);
+	removeNodesFromExecutionContext (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> &, const UndoStepPtr &, const bool);
 
 	static
 	void
-	removeExportedNodes (const X3DScenePtr &, const std::set <SFNode> &, const UndoStepPtr &);
+	removeExportedNodes (const X3DScenePtr &, const std::set <SFNode> &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	removeNamedNodes (const X3DExecutionContextPtr &, const std::set <SFNode> &, const UndoStepPtr &);
+	removeNamedNodes (const X3DExecutionContextPtr & executionContext, const std::set <SFNode> &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	deleteRoutes (const X3DExecutionContextPtr &, const SFNode &, const UndoStepPtr &);
+	deleteRoutes (const X3DExecutionContextPtr & executionContext, const SFNode &, const UndoStepPtr & undoStep);
 
 	///  @name User-defined fields operations
 
 	static
 	void
-	removeRoutes (X3DFieldDefinition* const, const UndoStepPtr &);
+	removeRoutes (X3DFieldDefinition* const, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	replaceReferences (const ProtoDeclarationPtr &, X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr &);
+	replaceReferences (const ProtoDeclarationPtr &, X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
 	
 	static
 	bool
-	replaceReferencesCallback (SFNode &, X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr &);
+	replaceReferencesCallback (SFNode &, X3DFieldDefinition* const, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	removeReferences (const ProtoDeclarationPtr &, X3DFieldDefinition* const, const UndoStepPtr &);
+	removeReferences (const ProtoDeclarationPtr &, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
 	
 	static
 	bool
-	removeReferencesCallback (SFNode &, X3DFieldDefinition* const, const UndoStepPtr &);
+	removeReferencesCallback (SFNode &, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
 	                      
 	///  @name Grouping operations
 
 	static
 	void
-	unlinkClone (const X3DExecutionContextPtr &, const SFNode &, MFNode &, const SFNode &, MFNode &, bool &, const UndoStepPtr &);
+	unlinkClone (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const SFNode &, MFNode &, bool &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	createParentGroup (const X3DExecutionContextPtr &, const SFNode &, MFNode &, const SFNode &, const SFNode &, const UndoStepPtr &);
+	createParentGroup (const X3DExecutionContextPtr & executionContext, const SFNode &, MFNode &, const SFNode &, const SFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	addToLayers (const X3DExecutionContextPtr &, const std::vector <X3DLayerNode*> &, const SFNode &, const UndoStepPtr &);
+	addToLayers (const X3DExecutionContextPtr & executionContext, const std::vector <X3DLayerNode*> &, const SFNode &, const UndoStepPtr & undoStep);
 
 
 	///  @name transformToZero
 
 	static
 	void
-	transformToZero (const MFNode &, Matrix4dStack &, std::set <X3DBaseNode*> &, const UndoStepPtr &);
+	transformToZero (const MFNode &, Matrix4dStack &, std::set <X3DBaseNode*> &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	transformToZero (const SFNode &, Matrix4dStack &, std::set <X3DBaseNode*> &, const UndoStepPtr &);
+	transformToZero (const SFNode &, Matrix4dStack &, std::set <X3DBaseNode*> &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	transformToZero (const X3DPtr <X3DGeometryNode> &, const Matrix4d &, std::set <X3DBaseNode*> &, const UndoStepPtr &);
+	transformToZero (const X3DPtr <X3DGeometryNode> &, const Matrix4d &, std::set <X3DBaseNode*> &, const UndoStepPtr & undoStep);
 
 	static
 	void
-	transformToZero (const X3DPtr <X3DCoordinateNode> &, const Matrix4d &, std::set <X3DBaseNode*> &, const UndoStepPtr &);
+	transformToZero (const X3DPtr <X3DCoordinateNode> &, const Matrix4d &, std::set <X3DBaseNode*> &, const UndoStepPtr & undoStep);
 
 	///  @name X3DComposedGeometryNode
 	
 	static
 	void
-	undoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &);
+	undoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
 	
 	static
 	void
-	redoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr &);
+	redoSetTexCoordPointImpl (const X3DPtr <X3DTextureCoordinateNode> &, const UndoStepPtr & undoStep);
 
 };
 

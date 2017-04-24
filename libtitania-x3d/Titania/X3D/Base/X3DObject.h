@@ -87,14 +87,12 @@ public:
 	///  Sets the name of this object.
 	virtual
 	void
-	setName (const std::string & value)
-	{ realize (); data -> name = value; }
+	setName (const std::string & value);
 
 	///  Returns the name of this object.
 	virtual
 	const std::string &
-	getName () const
-	{ realize (); return data -> name; }
+	getName () const;
 
 	///  Returns the type name of this object.
 	virtual
@@ -106,27 +104,23 @@ public:
 
 	///  Add comments to this object.
 	void
-	addComments (const std::vector <std::string> & value)
-	{ realize (); data -> comments .insert (data -> comments .end (), value .begin (), value .end ()); }
+	addComments (const std::vector <std::string> & value);
 
 	///  Returns the comments of this object.
 	const std::vector <std::string> &
-	getComments () const
-	{ realize (); return data -> comments; }
+	getComments () const;
 
 	///  @name User data handling
 
 	///  Set new user data for this object.
 	virtual
 	void
-	setUserData (const UserDataPtr & value)
-	{ realize (); data -> userData = value; }
+	setUserData (const UserDataPtr & value);
 
 	///  Returns the user data of this object. If no user data are available, an empty pointer is returned.
 	virtual
 	const UserDataPtr &
-	getUserData () const
-	{ realize (); return data -> userData; }
+	getUserData () const;
 
 	///  Returns the user data of this object. If no user data are available, new user data are created.
 	template <class Type>

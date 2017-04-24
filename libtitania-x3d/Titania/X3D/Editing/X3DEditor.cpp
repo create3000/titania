@@ -128,6 +128,10 @@ X3DEditor::importScene (const X3DExecutionContextPtr & executionContext, const S
 		undoStep -> addRedoFunction ((append) & MFNode::append, std::ref (field), importedNodes);
 		field .append (importedNodes);
 
+		// Prototype support
+
+		requestUpdateInstances (executionContext, undoStep);
+
 		return importedNodes;
 	}
 	catch (const X3DError & error)
@@ -176,7 +180,7 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 }
 
 MFNode
-X3DEditor::deepCopyNodes (const X3DExecutionContextPtr & sourceContext, const X3DExecutionContextPtr & destContext, const MFNode & nodes, const UndoStepPtr & undoStep)
+X3DEditor::deepCopyNodes (const X3DExecutionContextPtr & sourceContext, const X3DExecutionContextPtr & destContext, const MFNode & nodes, const UndoStepPtr &)
 {
 	basic::ifilestream text (exportNodes (sourceContext, nodes, true));
 
@@ -397,6 +401,10 @@ X3DEditor::removeUnusedPrototypes (const X3DExecutionContextPtr & executionConte
 
 		executionContext -> removeProtoDeclaration (prototype -> getName ());
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 void
@@ -456,6 +464,10 @@ X3DEditor::addPrototypeInstance (const X3DExecutionContextPtr & executionContext
 
 	pushBackIntoArray (executionContext, executionContext -> getRootNodes (), instance, undoStep);
 
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
+
 	return instance;
 }
 
@@ -506,6 +518,10 @@ X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const 
 
 	             return true;
 				 });
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 /***
@@ -536,6 +552,10 @@ X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const S
 	sfnode = newValue;
 
 	removeNodesFromSceneIfNotExists (executionContext, { oldValue }, undoStep);
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 /***
@@ -566,6 +586,10 @@ X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const 
 	mfnode = newValue;
 
 	removeNodesFromSceneIfNotExists (executionContext, oldValue, undoStep);
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 /***
@@ -612,6 +636,10 @@ X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const S
 	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (mfnode), mfnode);
 
 	removeNodesFromSceneIfNotExists (executionContext, { oldValue }, undoStep);
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 /***
@@ -645,6 +673,10 @@ X3DEditor::removeNode (const X3DExecutionContextPtr & executionContext, const SF
 		undoStep -> addRedoFunction (&MFNode::setValue, std::ref (mfnode), mfnode);
 
 		removeNodesFromSceneIfNotExists (executionContext, { oldValue }, undoStep);
+
+		// Prototype support
+	
+		requestUpdateInstances (executionContext, undoStep);
 	}
 }
 
@@ -712,6 +744,10 @@ X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext
 
 	// Remove rest, these are only nodes that are not in the scene graph anymore.
 	removeNodesFromExecutionContext (executionContext, children, undoStep, false);
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 void
@@ -770,6 +806,10 @@ X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & execu
 		undoStep -> addRedoFunction (&X3DBaseNode::setPrivate, node, true);
 		node -> setPrivate (true);
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 void
@@ -781,6 +821,10 @@ X3DEditor::removeNodesFromSceneGraph (const X3DExecutionContextPtr & executionCo
 		removeNode (executionContextNode, executionContext -> getRootNodes (), node, undoStep);
 
 	removeNodesFromSceneGraph (executionContext -> getRootNodes (), nodes, undoStep);
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 void
@@ -965,6 +1009,32 @@ X3DEditor::updateNamedNode (const X3DExecutionContextPtr & executionContext, con
 
 		undoStep -> addRedoFunction (&X3DExecutionContext::updateNamedNode, executionContext, uniqueName, node);
 		executionContext -> updateNamedNode (uniqueName, node);
+
+		// Prototype support
+	
+		requestUpdateInstances (executionContext, undoStep);
+	}
+	catch (...)
+	{ }
+}
+
+void
+X3DEditor::removeNamedNode (const X3DExecutionContextPtr & executionContext, const SFNode & node, const UndoStepPtr & undoStep)
+{
+	try
+	{
+		if (node -> getName () .empty ())
+			return;
+
+		undoStep -> addObjects (executionContext);
+
+		undoStep -> addUndoFunction (&X3DExecutionContext::updateNamedNode, executionContext, node -> getName (), node);
+		undoStep -> addRedoFunction (&X3DExecutionContext::removeNamedNode, executionContext, node -> getName ());
+		executionContext -> removeNamedNode (node -> getName ());
+
+		// Prototype support
+	
+		requestUpdateInstances (executionContext, undoStep);
 	}
 	catch (...)
 	{ }
@@ -999,6 +1069,10 @@ throw (Error <DISPOSED>)
 	undoStep -> addRedoFunction (&X3DExecutionContext::updateProtoDeclaration, executionContext, uniqueName, prototype);
 
 	executionContext -> updateProtoDeclaration (uniqueName, prototype);
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 void
@@ -1040,6 +1114,10 @@ throw (Error <DISPOSED>)
 	}
 
 	undoStep -> addRedoFunction (&MFString::setValue, std::ref (externProto -> url ()), externProto -> url ());
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 /***
@@ -1101,6 +1179,10 @@ X3DEditor::deleteRoutes (const X3DExecutionContextPtr & executionContext, const 
 			}
 		}
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 void
@@ -1133,21 +1215,17 @@ throw (Error <INVALID_NODE>,
 		                                 ? NodeFn (std::bind ((getImportedNode) & X3DExecutionContext::getImportedNode, executionContext, executionContext -> getLocalName (destinationNode)))
 													: NodeFn (std::bind (identity, destinationNode));
 
-		const auto proto = X3DProtoDeclarationNodePtr (executionContext);
-
-		undoRequestUpdateInstances (proto, undoStep);
-
 		undoStep -> addUndoFunction ((deleteRoute) & X3DExecutionContext::deleteRoute, executionContext,
 		                             std::bind (call, sourceNodeFn),
 		                             sourceField,
 		                             std::bind (call, destinationNodeFn),
 		                             destinationField);
 
-		undoStep -> addRedoFunction (&X3DExecutionContext::updateNamedNode, executionContext, std::bind (&X3DExecutionContext::getUniqueName, executionContext, std::bind (&X3DBaseNode::getName, sourceNode)),      sourceNode);
-		undoStep -> addRedoFunction (&X3DExecutionContext::updateNamedNode, executionContext, std::bind (&X3DExecutionContext::getUniqueName, executionContext, std::bind (&X3DBaseNode::getName, destinationNode)), destinationNode);
+		if (sourceNode -> getName () .empty ())
+			updateNamedNode (executionContext, executionContext -> getUniqueName (), sourceNode, undoStep);
 
-		executionContext -> updateNamedNode (executionContext -> getUniqueName (sourceNode -> getName ()),      sourceNode);
-		executionContext -> updateNamedNode (executionContext -> getUniqueName (destinationNode -> getName ()), destinationNode);
+		if (destinationNode -> getName () .empty ())
+			updateNamedNode (executionContext, executionContext -> getUniqueName (), destinationNode, undoStep);
 
 		undoStep -> addRedoFunction ((addRoute) & X3DExecutionContext::addRoute, executionContext,
 		                             std::bind (call, sourceNodeFn),
@@ -1157,7 +1235,9 @@ throw (Error <INVALID_NODE>,
 
 		executionContext -> addRoute (sourceNode, sourceField, destinationNode, destinationField);
 
-		redoRequestUpdateInstances (proto, undoStep);
+		// Prototype support
+
+		requestUpdateInstances (executionContext, undoStep);
 	}
 	catch (const X3DError &)
 	{ }
@@ -1197,10 +1277,6 @@ X3DEditor::deleteRoute (const X3DExecutionContextPtr & executionContext,
 	}
 	catch (...)
 	{ }
-
-	const auto proto = X3DProtoDeclarationNodePtr (executionContext);
-
-	undoRequestUpdateInstances (proto, undoStep);
 
 	if (sourceImported and destinationImported)
 	{
@@ -1259,12 +1335,17 @@ X3DEditor::deleteRoute (const X3DExecutionContextPtr & executionContext,
 		                             destinationField);
 	}
 
-	undoStep -> addUndoFunction (&X3DExecutionContext::updateNamedNode, executionContext, std::bind (&X3DExecutionContext::getUniqueName, executionContext, std::bind (&X3DBaseNode::getName, sourceNode)),      sourceNode);
-	undoStep -> addUndoFunction (&X3DExecutionContext::updateNamedNode, executionContext, std::bind (&X3DExecutionContext::getUniqueName, executionContext, std::bind (&X3DBaseNode::getName, destinationNode)), destinationNode);
+	if (sourceNode -> getName () .empty ())
+		updateNamedNode (executionContext, executionContext -> getUniqueName (), sourceNode, undoStep);
+
+	if (destinationNode -> getName () .empty ())
+		updateNamedNode (executionContext, executionContext -> getUniqueName (), destinationNode, undoStep);
 
 	executionContext -> deleteRoute (sourceNode, sourceField, destinationNode, destinationField);
 
-	redoRequestUpdateInstances (proto, undoStep);
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 std::vector <std::tuple <SFNode, std::string, SFNode, std::string>> 
@@ -1341,6 +1422,10 @@ X3DEditor::addUserDefinedField (const SFNode & node, X3DFieldDefinition* const f
 	undoStep -> addRedoFunction (&X3DBaseNode::addUserDefinedField, node, field -> getAccessType (), field -> getName (), field);
 
 	node -> addUserDefinedField (field -> getAccessType (), field -> getName (), field);
+
+	// Prototype support
+
+	requestUpdateInstances (node, undoStep);
 }
 
 ///  This function is with reference handling.
@@ -1456,6 +1541,10 @@ X3DEditor::replaceUserDefinedField (const SFNode & node, X3DFieldDefinition* con
 		catch (const X3DError &)
 		{ }
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (node, undoStep);
 }
 
 ///  This function is with reference handling.
@@ -1484,6 +1573,10 @@ X3DEditor::removeUserDefinedField (const SFNode & node, X3DFieldDefinition* cons
 	undoStep -> addRedoFunction (&X3DBaseNode::removeUserDefinedField, node, field -> getName ());
 
 	node -> removeUserDefinedField (field -> getName ());
+
+	// Prototype support
+
+	requestUpdateInstances (node, undoStep);
 }
 
 ///  This function is without reference handling.
@@ -1512,6 +1605,10 @@ X3DEditor::setUserDefinedFields (const SFNode & node, const FieldDefinitionArray
 	undoStep -> addRedoFunction (&X3DBaseNode::setUserDefinedFields, node, userDefinedFields);
 
 	node -> setUserDefinedFields (userDefinedFields);
+
+	// Prototype support
+
+	requestUpdateInstances (node, undoStep);
 }
 
 void
@@ -1541,20 +1638,22 @@ X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & un
 }
 
 void
-X3DEditor::undoRequestUpdateInstances (const X3DProtoDeclarationNodePtr & proto, const UndoStepPtr & undoStep)
+X3DEditor::requestUpdateInstances (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep)
 {
-	if (proto)
-		undoStep -> addUndoFunction (&X3DProtoDeclarationNode::requestUpdateInstances, proto);
-}
+	const X3DProtoDeclarationNodePtr proto (executionContext);
 
-void
-X3DEditor::redoRequestUpdateInstances (const X3DProtoDeclarationNodePtr & proto, const UndoStepPtr & undoStep)
-{
 	if (proto)
 	{
+		undoStep -> addUndoFunction (&X3DProtoDeclarationNode::requestUpdateInstances, proto);
 		undoStep -> addRedoFunction (&X3DProtoDeclarationNode::requestUpdateInstances, proto);
 		proto -> requestUpdateInstances ();
 	}
+}
+
+void
+X3DEditor::requestUpdateInstances (const SFNode & node, const UndoStepPtr & undoStep)
+{
+	requestUpdateInstances (X3DExecutionContextPtr (node -> getExecutionContext ()), undoStep);
 }
 
 void
@@ -1616,33 +1715,25 @@ X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const pr
 void
 X3DEditor::addReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
 {
-	const auto proto = X3DProtoDeclarationNodePtr (node -> getExecutionContext ());
-
 	undoStep -> addObjects (node, FieldPtr (field), FieldPtr (protoField));
-
-	undoRequestUpdateInstances (proto, undoStep);
 
 	undoStep -> addUndoFunction (&X3DFieldDefinition::removeReference, field, protoField);
 	undoStep -> addRedoFunction (&X3DFieldDefinition::addReference,    field, protoField);
 	field -> addReference (protoField);
 
-	redoRequestUpdateInstances (proto, undoStep);
+	requestUpdateInstances (node, undoStep);
 }
 
 void
 X3DEditor::removeReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
 {
-	const auto proto = X3DProtoDeclarationNodePtr (node -> getExecutionContext ());
-
 	undoStep -> addObjects (node, FieldPtr (field), FieldPtr (protoField));
-
-	undoRequestUpdateInstances (proto, undoStep);
 
 	undoStep -> addUndoFunction (&X3DFieldDefinition::addReference,    field, protoField);
 	undoStep -> addRedoFunction (&X3DFieldDefinition::removeReference, field, protoField);
 	field -> removeReference (protoField);
 
-	redoRequestUpdateInstances (proto, undoStep);
+	requestUpdateInstances (node, undoStep);
 }
 
 /***
@@ -1696,6 +1787,10 @@ X3DEditor::createClone (const X3DExecutionContextPtr & executionContext, const S
 
 		replaceNodes (executionContext, executionContext, executionContext -> getRootNodes (), node, clone, undoStep);
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 MFNode
@@ -1761,6 +1856,10 @@ X3DEditor::unlinkClone (const X3DExecutionContextPtr & executionContext, const M
 
 		unlinkClone (executionContext, executionContext, executionContext -> getRootNodes (), clone, nodes, first, undoStep);
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 
 	return nodes;
 }
@@ -1845,6 +1944,10 @@ X3DEditor::groupNodes (const X3DExecutionContextPtr & executionContext,
 
 	addToLayers (executionContext, layers, node, undoStep);
 
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
+
 	return node;
 }
 
@@ -1911,6 +2014,10 @@ X3DEditor::ungroupNodes (const X3DExecutionContextPtr & executionContext,
 			// No grouping field found
 		}
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 
 	return children;
 }
@@ -2002,6 +2109,10 @@ X3DEditor::addToGroup (const X3DExecutionContextPtr & executionContext,
 		}
 	}
 
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
+
 	return added;
 }
 
@@ -2044,6 +2155,10 @@ X3DEditor::detachFromGroup (const X3DExecutionContextPtr & executionContext,
 		else
 		   addToLayers (executionContext, layers, child, undoStep);
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 SFNode
@@ -2111,6 +2226,10 @@ X3DEditor::createParentGroup (const X3DExecutionContextPtr & executionContext,
 		pushBackIntoArray (group, group -> getField <MFNode> (fieldName), leader, undoStep);
 	}
 
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
+
 	return group;
 }
 
@@ -2160,6 +2279,10 @@ X3DEditor::addNodesToActiveLayer (const WorldPtr & world, const MFNode & nodes, 
 	undoStep -> addUndoFunction (&UndoStep::redo, removeUndoStep);
 	removeUndoStep -> undo ();
 	undoStep -> addRedoFunction (&UndoStep::undo, removeUndoStep);
+
+	// Prototype support
+
+	requestUpdateInstances (world, undoStep);
 }
 
 /// Add node to layers.
@@ -2182,6 +2305,10 @@ X3DEditor::addToLayers (const X3DExecutionContextPtr & executionContext, const s
 
 	if (not added)
 		pushBackIntoArray (executionContext, executionContext -> getRootNodes (), node, undoStep);
+
+	// Prototype support
+
+	requestUpdateInstances (executionContext, undoStep);
 }
 
 /***
@@ -2310,6 +2437,11 @@ X3DEditor::transformToZero (const MFNode & children, const UndoStepPtr & undoSte
 	std::set <X3DBaseNode*> coords;
 
 	transformToZero (children, modelViewMatrix, coords, undoStep);
+
+	// Prototype support
+
+	for (const auto & child : children)
+		requestUpdateInstances (child, undoStep);
 }
 
 void
@@ -2464,6 +2596,10 @@ X3DEditor::storeMatrix (const SFNode & node, const UndoStepPtr & undoStep)
 		undoStep -> addUndoFunction (&X3DTransformNode::setMatrix,
 		                             transform,
 		                             transform -> getMatrix ());
+
+		// Prototype support
+
+		requestUpdateInstances (node, undoStep);
 	}
 }
 
@@ -2479,6 +2615,10 @@ X3DEditor::setMatrix (const X3DPtr <X3DTransformNode> & transform, const Matrix4
 	                             matrix);
 
 	transform -> setMatrix (matrix);
+
+	// Prototype support
+
+	requestUpdateInstances (transform, undoStep);
 }
 
 Matrix4d
@@ -2562,6 +2702,10 @@ X3DEditor::mergePoints (const X3DPtr <IndexedFaceSet> & geometryNode, const doub
 	undoStep -> addRedoFunction (&MFInt32::setValue, std::ref (geometryNode -> coordIndex    ()), geometryNode -> coordIndex    ());
 
 	redoSetCoordPoint (geometryNode -> getCoord (), undoStep);
+
+	// Prototype support
+
+	requestUpdateInstances (geometryNode, undoStep);
 }
 
 /***
@@ -2601,6 +2745,10 @@ X3DEditor::undoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const Und
 		default:
 			break;
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (colorNode, undoStep);
 }
 
 void
@@ -2624,6 +2772,10 @@ X3DEditor::undoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCo
 		   undoSetTexCoordPointImpl (texCoordNode, undoStep);
 			break;
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (texCoordNode, undoStep);
 }
 
 void
@@ -2679,6 +2831,10 @@ X3DEditor::undoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const
 		default:
 			break;
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (normalNode, undoStep);
 }
 
 void
@@ -2715,6 +2871,10 @@ X3DEditor::undoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, cons
 		default:
 			break;
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (coordNode, undoStep);
 }
 
 void
@@ -2744,6 +2904,10 @@ X3DEditor::redoSetColorColor (const X3DPtr <X3DColorNode> & colorNode, const Und
 		default:
 			break;
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (colorNode, undoStep);
 }
 
 void
@@ -2767,6 +2931,10 @@ X3DEditor::redoSetTexCoordPoint (const X3DPtr <X3DTextureCoordinateNode> & texCo
 		   redoSetTexCoordPointImpl (texCoordNode, undoStep);
 			break;
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (texCoordNode, undoStep);
 }
 
 void
@@ -2822,6 +2990,10 @@ X3DEditor::redoSetNormalVector (const X3DPtr <X3DNormalNode> & normalNode, const
 		default:
 			break;
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (normalNode, undoStep);
 }
 
 void
@@ -2858,6 +3030,10 @@ X3DEditor::redoSetCoordPoint (const X3DPtr <X3DCoordinateNode> & coordNode, cons
 		default:
 			break;
 	}
+
+	// Prototype support
+
+	requestUpdateInstances (coordNode, undoStep);
 }
 
 /***
@@ -2881,6 +3057,10 @@ X3DEditor::pushBackIntoArray (const SFNode & parent, MFNode & array, const SFNod
 	array .emplace_back (node);
 
 	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
+
+	// Prototype support
+
+	requestUpdateInstances (parent, undoStep);
 }
 
 void
@@ -2892,6 +3072,10 @@ X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t 
 	array .emplace (array .begin () + index, node);
 
 	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
+
+	// Prototype support
+
+	requestUpdateInstances (parent, undoStep);
 }
 
 void
@@ -2903,6 +3087,10 @@ X3DEditor::insertIntoArray (const SFNode & parent, MFNode & array, const size_t 
 	array .insert (array .begin () + index, first, last);
 
 	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
+
+	// Prototype support
+
+	requestUpdateInstances (parent, undoStep);
 }
 
 void
@@ -2930,6 +3118,10 @@ X3DEditor::moveValueWithinArray (const SFNode & parent, MFNode & array, const si
 	// Redo
 
 	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
+
+	// Prototype support
+
+	requestUpdateInstances (parent, undoStep);
 }
 
 void
@@ -2941,6 +3133,10 @@ X3DEditor::eraseFromArray (const SFNode & parent, MFNode & array, const size_t i
 	array .erase (array .begin () + index);
 
 	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
+
+	// Prototype support
+
+	requestUpdateInstances (parent, undoStep);
 }
 
 } // X3D

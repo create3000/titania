@@ -513,10 +513,8 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		try
 		{
 			auto & field = node -> template getField <FieldType> (fieldName);
-			
-			using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
 
-			undoStep -> addUndoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
+			undoStep -> addUndoFunction (&FieldType::setValue, std::ref (field), field);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -579,9 +577,11 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtrArray <NodeType> & nodes, con
 		{
 			auto & field = node -> template getField <FieldType> (fieldName);
 
-			using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
+			undoStep -> addRedoFunction (&FieldType::setValue, std::ref (field), field);
 
-			undoStep -> addRedoFunction ((setValue) &FieldType::setValue, std::ref (field), field);
+			// Prototype support
+
+			X3D::X3DEditor::requestUpdateInstances (node, undoStep);
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -643,9 +643,7 @@ X3DEditorObject::addUndoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	undoStep -> addObjects (node);
 
-	using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
-
-	undoStep -> addUndoFunction ((setValue) & FieldType::setValue, std::ref (field), field);
+	undoStep -> addUndoFunction (&FieldType::setValue, std::ref (field), field);
 
 	if (undoStep not_eq lastUndoStep)
 		addUndoStep (undoStep);
@@ -674,9 +672,11 @@ X3DEditorObject::addRedoFunction (const X3D::X3DPtr <NodeType> & node, FieldType
 
 	// Redo field change
 
-	using setValue = void (FieldType::*) (const typename FieldType::internal_type &);
+	undoStep -> addRedoFunction (&FieldType::setValue, std::ref (field), field);
 
-	undoStep -> addRedoFunction ((setValue) & FieldType::setValue, std::ref (field), field);
+	// Prototype support
+
+	X3D::X3DEditor::requestUpdateInstances (node, undoStep);
 
 	return true;
 }

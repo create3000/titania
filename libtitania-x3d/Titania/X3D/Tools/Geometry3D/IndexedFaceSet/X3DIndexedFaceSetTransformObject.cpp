@@ -63,6 +63,7 @@
 #include "../../../Components/PointingDeviceSensor/TouchSensor.h"
 #include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Editing/Undo/UndoStepContainer.h"
+#include "../../../Editing/X3DEditor.h"
 
 #include <Titania/String/sprintf.h>
 
@@ -346,7 +347,15 @@ X3DIndexedFaceSetTransformObject::set_plane_sensor_active (const bool active)
 		// Reset fields and send undo step.
 
 		if (abs (getTranslation ()))
+		{
+			// Prototype support
+		
+			X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
+		
+			// Send undo step
+
 			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+		}
 
 		setTranslate (false);
 		setTranslation (Vector3d ());

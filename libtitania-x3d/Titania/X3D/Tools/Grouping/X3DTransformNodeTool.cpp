@@ -55,6 +55,7 @@
 #include "../../Browser/Tools/TransformToolOptions.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Editing/Undo/UndoStepContainer.h"
+#include "../../Editing/X3DEditor.h"
 #include "../../Rendering/X3DRenderObject.h"
 
 #include "../ToolColors.h"
@@ -410,7 +411,15 @@ X3DTransformNodeTool::set_active ()
 		}
 
 		if (not undoStep -> isEmpty ())
+		{
+			// Prototype support
+		
+			X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
+		
+			// Send undo step
+
 			undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
+		}
 	}
 }
 

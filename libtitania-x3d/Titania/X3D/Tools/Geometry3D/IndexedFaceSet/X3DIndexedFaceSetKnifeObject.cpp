@@ -61,6 +61,7 @@
 #include "../../../Components/NURBS/CoordinateDouble.h"
 #include "../../../Editing/Selection/FaceSelection.h"
 #include "../../../Editing/Undo/UndoStepContainer.h"
+#include "../../../Editing/X3DEditor.h"
 #include "../../../Rendering/ViewVolume.h"
 
 namespace titania {
@@ -621,6 +622,12 @@ X3DIndexedFaceSetKnifeObject::cut ()
 	redoRestoreSelection ({ }, undoStep);
 
 	replaceSelectedEdges () .assign (selection .begin (), selection .end ());
+
+	// Prototype support
+
+	X3DEditor::requestUpdateInstances (SFNode (this), undoStep);
+
+	// Send undo step
 
 	undo_changed () = getExecutionContext () -> createNode <UndoStepContainer> (undoStep);
 }

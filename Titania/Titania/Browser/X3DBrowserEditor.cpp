@@ -881,6 +881,10 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 				nudgeUndoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
 				transform -> addAbsoluteMatrix (matrix, transform -> getKeepCenter ());
 				nudgeUndoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrixWithCenter, transform, transform -> getMatrix (), transform -> center () .getValue ());
+
+				// Prototype support
+
+				X3D::X3DEditor::requestUpdateInstances (transform, nudgeUndoStep);
 			}
 
 			// 
@@ -888,7 +892,9 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 			getSelection () -> undoRestoreNodes (nudgeUndoStep);
 
 			if (nudgeUndoStep not_eq getBrowserWindow () -> getUndoStep ())
+			{
 				addUndoStep (nudgeUndoStep);
+			}
 
 			break;
 		}
@@ -1002,6 +1008,12 @@ X3DBrowserEditor::on_source_code_changed (const Glib::RefPtr <Gio::File> & file,
 		undoStep -> addUndoFunction (&X3D::MFString::setValue, cdata, *cdata);
 		undoStep -> addRedoFunction (&X3D::MFString::setValue, cdata, string);
 		cdata -> setValue (string);
+
+		// Prototype support
+
+		X3D::X3DEditor::requestUpdateInstances (node, undoStep);
+
+		// Add undo step
 
 		addUndoStep (undoStep);
 	}

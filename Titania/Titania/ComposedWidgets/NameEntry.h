@@ -102,10 +102,6 @@ private:
 	void
 	set_name ();
 
-	static
-	void
-	updateNamedNode (X3DBrowserWindow* const, const std::string &, const X3D::SFNode &);
-
 	///  @name Members
 
 	Gtk::Entry &  entry;

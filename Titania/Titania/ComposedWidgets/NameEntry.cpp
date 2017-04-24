@@ -139,39 +139,23 @@ NameEntry::on_clicked ()
 
 	const std::string name = entry .get_text ();
 
-	if (name not_eq node -> getName ())
-	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Rename %s To »%s«"), node -> getTypeName () .c_str (), name .c_str ()));
+	if (name == node -> getName ())
+		return;
 
-		undoStep -> addUndoFunction (&NameEntry::updateNamedNode,
-		                             getBrowserWindow (),
-		                             node -> getName (),
-		                             node);
+	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Rename %s To »%s«"), node -> getTypeName () .c_str (), name .c_str ()));
 
-		undoStep -> addRedoFunction (&NameEntry::updateNamedNode,
-		                             getBrowserWindow (),
-		                             name,
-		                             node);
+	if (name .empty ())
+		X3D::X3DEditor::removeNamedNode (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()), node, undoStep);
+	else
+		X3D::X3DEditor::updateNamedNode (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()), name, node, undoStep);
 
-		updateNamedNode (getBrowserWindow (), name, node);
-
-		getBrowserWindow () -> addUndoStep (undoStep);
-	}
+	getBrowserWindow () -> addUndoStep (undoStep);
 }
 
 void
 NameEntry::set_name ()
 {
 	entry .set_text (node -> getName ());
-}
-
-void
-NameEntry::updateNamedNode (X3DBrowserWindow* const browserWindow, const std::string & name, const X3D::SFNode & node)
-{
-	node -> getExecutionContext () -> removeNamedNode (node -> getName ());
-
-	if (not name .empty ())
-		node -> getExecutionContext () -> updateNamedNode (node -> getExecutionContext () -> getUniqueName (name), node);
 }
 
 } // puck
