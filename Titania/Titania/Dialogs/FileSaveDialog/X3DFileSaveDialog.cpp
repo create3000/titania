@@ -535,7 +535,7 @@ X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & wo
 
 	std::ostringstream osstream;
 
-	X3D::X3DEditor::exportNodes (getCurrentContext (), osstream, nodes, false);
+	X3D::X3DEditor::exportNodes (osstream, getCurrentContext (), nodes, false);
 
 	// Undo url change in protos
 

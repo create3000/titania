@@ -77,15 +77,15 @@ public:
 
 	static
 	MFNode
-	importScene (const X3DExecutionContextPtr &, const SFNode &, MFNode &, const X3DScenePtr &, const UndoStepPtr &);
+	importScene (const X3DExecutionContextPtr & executionContext, const SFNode & parent, MFNode & field, const X3DScenePtr & scene, const UndoStepPtr & undoStep);
 
 	static
 	std::string
-	cutNodes (const X3DExecutionContextPtr &, const MFNode &, const UndoStepPtr &);
+	cutNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const UndoStepPtr & undoStep);
 
 	static
 	std::string
-	copyNodes (const X3DExecutionContextPtr &, const MFNode &);
+	copyNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes);
 
 	static
 	MFNode
@@ -96,11 +96,11 @@ public:
 
 	static
 	std::string
-	exportNodes (const X3DExecutionContextPtr &, const MFNode &, const bool);
+	exportNodes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier);
 
 	static
 	void
-	exportNodes (const X3DExecutionContextPtr &, std::ostream &, const MFNode &, const bool);
+	exportNodes (std::ostream & ostream, const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier);
 
 	///  @name Prototype handling
 

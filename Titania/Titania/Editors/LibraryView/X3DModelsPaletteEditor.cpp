@@ -169,7 +169,7 @@ X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene, const std::
 
 	std::stringstream sstream;
 
-	X3D::X3DEditor::exportNodes (getCurrentContext (), sstream, selection, false);
+	X3D::X3DEditor::exportNodes (sstream, getCurrentContext (), selection, false);
 
 	// Undo url change in protos and selection
 

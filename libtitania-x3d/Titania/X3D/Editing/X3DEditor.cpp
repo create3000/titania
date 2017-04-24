@@ -178,11 +178,7 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 MFNode
 X3DEditor::deepCopyNodes (const X3DExecutionContextPtr & sourceContext, const X3DExecutionContextPtr & destContext, const MFNode & nodes, const UndoStepPtr & undoStep)
 {
-	std::stringstream sstream;
-
-	exportNodes (sourceContext, sstream, nodes, true);
-
-	basic::ifilestream text (sstream .str ());
+	basic::ifilestream text (exportNodes (sourceContext, nodes, true));
 
 	const auto scene = destContext -> getBrowser () -> createX3DFromStream (destContext -> getWorldURL (), text);
 
@@ -198,13 +194,13 @@ X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, const M
 {
 	std::ostringstream osstream;
 
-	exportNodes (executionContext, osstream, nodes, identifier);
+	exportNodes (osstream, executionContext, nodes, identifier);
 
 	return osstream .str ();
 }
 
 void
-X3DEditor::exportNodes (const X3DExecutionContextPtr & executionContext, std::ostream & ostream, const MFNode & nodes, const bool identifier)
+X3DEditor::exportNodes (std::ostream & ostream, const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool identifier)
 {
 	// Find proto declarations
 

@@ -55,7 +55,7 @@
 #include "../Components/Rendering/X3DCoordinateNode.h"
 #include "../Components/Shape/X3DShapeNode.h"
 #include "../Execution/X3DExecutionContext.h"
-#include "../Editing/X3DEditor.h"
+#include "../Editing/Undo/UndoStep.h"
 
 #include <Titania/Math/Mesh/Combine.h>
 
