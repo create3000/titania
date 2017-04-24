@@ -526,6 +526,12 @@ public:
 	       Error <DISPOSED>)
 	{ return routes; }
 
+	const SFTime &
+	routes_changed () const
+	throw (Error <INVALID_OPERATION_TIMING>,
+	       Error <DISPOSED>)
+	{ return routesOutput; }
+
 	///  @name Viewpoint handling
 
 	void
@@ -697,6 +703,7 @@ private:
 	std::set <const ExternProtoDeclaration*> loadingExternProtos;
 	SFTime                                   externProtosOutput;
 	RouteArray                               routes;
+	SFTime                                   routesOutput;
 	MFNode* const                            rootNodes;
 	SFTime                                   sceneGraphOutput;
 	SFTime                                   bboxOutput;

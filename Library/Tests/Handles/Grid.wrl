@@ -1028,9 +1028,7 @@ Transform {
 }
 
 Transform {
-  children Transform {
-    translation 0 0 -13.0309
-    center 0 0 -6.79532
-    children AngleGrid { }
-  }
+  translation 0 0 -13.0309
+  center 0 0 -6.79532
+  children AngleGrid { }
 }

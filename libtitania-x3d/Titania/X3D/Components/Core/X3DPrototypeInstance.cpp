@@ -236,43 +236,50 @@ X3DPrototypeInstance::construct ()
 void
 X3DPrototypeInstance::update ()
 {
-	X3DExecutionContext::dispose ();
-
-	const auto proto  = protoNode -> getProtoDeclaration ();
-	auto       fields = std::map <std::string, FieldPtr> ();
-
-	for (const auto & fieldDefinition : getFieldDefinitions ())
-		fields .emplace (fieldDefinition -> getName (), fieldDefinition);
-
-	for (const auto & pair : fields)
-		removeField (pair .second .getValue () -> getName ());
-
-	for (const auto & fieldDefinition : proto -> getFieldDefinitions ())
+	try
 	{
-		const auto iter = fields .find (fieldDefinition -> getName ());
+		X3DExecutionContext::dispose ();
 
-		if (iter not_eq fields .end ())
+		const auto proto  = protoNode -> getProtoDeclaration ();
+		auto       fields = std::map <std::string, FieldPtr> ();
+
+		for (const auto & fieldDefinition : getFieldDefinitions ())
+			fields .emplace (fieldDefinition -> getName (), fieldDefinition);
+
+		for (const auto & pair : fields)
+			removeField (pair .second .getValue () -> getName ());
+
+		for (const auto & fieldDefinition : proto -> getFieldDefinitions ())
 		{
-			const auto previous = iter -> second .getValue ();
+			const auto iter = fields .find (fieldDefinition -> getName ());
 
-			if (previous -> getType () == fieldDefinition -> getType ())
+			if (iter not_eq fields .end ())
 			{
-				addField (fieldDefinition -> getAccessType (),
-				          fieldDefinition -> getName (),
-				          *previous);
+				const auto previous = iter -> second .getValue ();
 
-				continue;
+				if (previous -> getType () == fieldDefinition -> getType ())
+				{
+					addField (fieldDefinition -> getAccessType (),
+					          fieldDefinition -> getName (),
+					          *previous);
+
+					continue;
+				}
 			}
+
+			addField (fieldDefinition -> getAccessType (),
+			          fieldDefinition -> getName (),
+			          *fieldDefinition -> copy (FLAT_COPY));
 		}
 
-		addField (fieldDefinition -> getAccessType (),
-		          fieldDefinition -> getName (),
-		          *fieldDefinition -> copy (FLAT_COPY));
+		construct ();
+
+		const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
 	}
-
-	construct ();
-
-	const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
+	catch (const X3DError &)
+	{
+		// If extern proto isn't loaded.
+	}
 }
 
 void

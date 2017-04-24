@@ -87,6 +87,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	externProtosLoadCount (),
 	   externProtosOutput (),
 	               routes (),
+	         routesOutput (),
 	            rootNodes (new MFNode ()),
 	     sceneGraphOutput (),
 	           bboxOutput (),
@@ -101,6 +102,7 @@ X3DExecutionContext::X3DExecutionContext () :
 	                 prototypesOutput,
 	                 externProtosLoadCount,
 	                 externProtosOutput,
+	                 routesOutput,
 	                 sceneGraphOutput,
 	                 bboxOutput,
 	                 uninitializedNodes);
@@ -1134,6 +1136,8 @@ throw (Error <INVALID_NODE>,
 		else
 			addUninitializedNode (route);
 
+		routesOutput = getCurrentTime ();
+
 		return route;
 	}
 }
@@ -1174,6 +1178,8 @@ throw (Error <INVALID_NODE>,
 
 		routes .rfind (routeKey) -> disconnect ();
 		routes .erase (routeKey);
+
+		routesOutput = getCurrentTime ();
 	}
 	catch (const std::out_of_range &)
 	{
