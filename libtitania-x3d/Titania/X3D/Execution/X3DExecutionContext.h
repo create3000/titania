@@ -636,7 +636,7 @@ private:
 	getVeryUniqueName (X3DExecutionContext* const, std::string = "") const;
 
 	std::string
-	getUniqueImportedName (const X3DExecutionContext* const, std::string = "") const;
+	getVeryUniqueImportedName (const X3DExecutionContext* const, std::string = "") const;
 
 	void
 	removeImportedName (const ImportedNamesIndex::iterator &);

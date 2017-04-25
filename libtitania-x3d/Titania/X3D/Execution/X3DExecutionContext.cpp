@@ -393,54 +393,51 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	name = RemoveTrailingNumber (name);
  	
-	std::string newName = name;
-	size_t      i       = 64;
+	auto   uniqueName = name;
+	size_t i          = 0;
 
-	for (; i;)
+	while (namedNodes .count (uniqueName) or uniqueName .empty ())
 	{
-		if (namedNodes .count (newName) or newName .empty ())
-		{
-			const auto                             min = i;
-			std::uniform_int_distribution <size_t> random (min, i <<= 1);
+		i = std::max <size_t> (64, i);
 
-			newName  = name;
-			newName += '_';
-			newName += basic::to_string (random (random_engine), std::locale::classic ());
-		}
-		else
-			break;
+		const auto                             min = i;
+		std::uniform_int_distribution <size_t> random (min, i <<= 1);
+
+		uniqueName  = name;
+		uniqueName += '_';
+		uniqueName += basic::to_string (random (random_engine), std::locale::classic ());
 	}
 
-	return newName;
+	return uniqueName;
 }
 
 /***
- *  Returns a name that is unique in this execution contentext and in @a executionContext.
+ *  Returns a name that is unique in both this execution context and in @a executionContext, if the name exits in this context.
  */
 std::string
 X3DExecutionContext::getVeryUniqueName (X3DExecutionContext* const executionContext, std::string name) const
 {
+	if (not name .empty () and not namedNodes .count (name))
+		return name;
+
 	name = RemoveTrailingNumber (name);
 
-	std::string newName = name;
-	size_t      i       = 64;
+	auto   uniqueName = name;
+	size_t i          = 0;
 
-	for (; i;)
+	while (namedNodes .count (uniqueName) or executionContext -> namedNodes .count (uniqueName) or uniqueName .empty ())
 	{
-		if (namedNodes .count (newName) or executionContext -> namedNodes .count (newName) or newName .empty ())
-		{
-			const auto                             min = i;
-			std::uniform_int_distribution <size_t> random (min, i <<= 1);
+		i = std::max <size_t> (64, i);
 
-			newName  = name;
-			newName += '_';
-			newName += basic::to_string (random (random_engine), std::locale::classic ());
-		}
-		else
-			break;
+		const auto                             min = i;
+		std::uniform_int_distribution <size_t> random (min, i <<= 1);
+
+		uniqueName  = name;
+		uniqueName += '_';
+		uniqueName += basic::to_string (random (random_engine), std::locale::classic ());
 	}
 
-	return newName;
+	return uniqueName;
 }
 
 // Imported nodes handling
@@ -561,32 +558,32 @@ throw (Error <INVALID_NODE>,
 }
 
 /***
- *  Returns a name that is unique in this execution contentext.
+ *  Returns a name that is unique in both this context and in @a executionContext, if the name exits in this context.
  */
 std::string
-X3DExecutionContext::getUniqueImportedName (const X3DExecutionContext* const executionContext, std::string importedName) const
+X3DExecutionContext::getVeryUniqueImportedName (const X3DExecutionContext* const executionContext, std::string importedName) const
 {
+	if (not importedName .empty () and not importedNodes .count (importedName))
+		return importedName;
+
 	importedName = RemoveTrailingNumber (importedName);
 
-	std::string newName = importedName;
-	size_t      i       = 64;
+	auto   uniqueName = importedName;
+	size_t i       = 0;
 
-	for (; i;)
+	while (importedNodes .count (uniqueName) or executionContext -> importedNodes .count (uniqueName) or uniqueName .empty ())
 	{
-		if (importedNodes .count (newName) or executionContext -> importedNodes .count (newName) or newName .empty ())
-		{
-			const auto                             min = i;
-			std::uniform_int_distribution <size_t> random (min, i <<= 1);
+		i = std::max <size_t> (64, i);
 
-			newName  = importedName;
-			newName += '_';
-			newName += basic::to_string (random (random_engine), std::locale::classic ());
-		}
-		else
-			break;
+		const auto                             min = i;
+		std::uniform_int_distribution <size_t> random (min, i <<= 1);
+
+		uniqueName  = importedName;
+		uniqueName += '_';
+		uniqueName += basic::to_string (random (random_engine), std::locale::classic ());
 	}
 
-	return newName;
+	return uniqueName;
 }
 
 SFNode
@@ -765,32 +762,29 @@ std::string
 X3DExecutionContext::getUniqueProtoName (std::string name) const
 throw (Error <DISPOSED>)
 {
-	if (not getProtoDeclarations () .count (name))
+	if (not name .empty () and not getProtoDeclarations () .count (name))
 		return name;
 
-	name = RemoveTrailingNumber  (name);
+	name = RemoveTrailingNumber (name);
 
-	std::string newName = name;
-	size_t      i       = 64;
+	auto   uniqueName = name;
+	size_t i          = 0;
 
-	if (newName .empty ())
-		newName = "Prototype";
+	if (uniqueName .empty ())
+		uniqueName = "Prototype";
 
-	for (; i;)
+	while (getProtoDeclarations () .count (uniqueName))
 	{
-		if (getProtoDeclarations () .count (newName))
-		{
-			const auto                             min = i;
-			std::uniform_int_distribution <size_t> random (min, i <<= 1);
+		i = std::max <size_t> (64, i);
 
-			newName  = name;
-			newName += basic::to_string (random (random_engine), std::locale::classic ());
-		}
-		else
-			break;
+		const auto                             min = i;
+		std::uniform_int_distribution <size_t> random (min, i <<= 1);
+
+		uniqueName  = name;
+		uniqueName += basic::to_string (random (random_engine), std::locale::classic ());
 	}
 
-	return newName;
+	return uniqueName;
 }
 
 //	ExternProto declaration handling
@@ -909,32 +903,29 @@ std::string
 X3DExecutionContext::getUniqueExternProtoName (std::string name) const
 throw (Error <DISPOSED>)
 {
-	if (not getExternProtoDeclarations () .count (name))
+	if (not name .empty () and not getExternProtoDeclarations () .count (name))
 		return name;
 
-	name = X3D::RemoveTrailingNumber (name);
+	name = RemoveTrailingNumber (name);
 
-	std::string newName = name;
-	size_t      i       = 64;
+	auto   uniqueName = name;
+	size_t i          = 0;
 
-	if (newName .empty ())
-		newName = "Prototype";
+	if (uniqueName .empty ())
+		uniqueName = "Prototype";
 
-	for (; i;)
+	while (getExternProtoDeclarations () .count (uniqueName))
 	{
-		if (getExternProtoDeclarations () .count (newName))
-		{
-			const auto                             min = i;
-			std::uniform_int_distribution <size_t> random (min, i <<= 1);
+		i = std::max <size_t> (64, i);
 
-			newName  = name;
-			newName += basic::to_string (random (random_engine), std::locale::classic ());
-		}
-		else
-			break;
+		const auto                             min = i;
+		std::uniform_int_distribution <size_t> random (min, i <<= 1);
+
+		uniqueName  = name;
+		uniqueName += basic::to_string (random (random_engine), std::locale::classic ());
 	}
 
-	return newName;
+	return uniqueName;
 }
 
 void
@@ -1339,7 +1330,7 @@ throw (Error <INVALID_NODE>,
 	for (const auto & pair : ImportedNodeIndex (executionContext -> getImportedNodes ()))
 	{
 		const auto & importedNode       = pair .second;
-		const auto   uniqueImportedName = getUniqueImportedName (executionContext, importedNode -> getImportedName ()); // TODO: getVeryUniqueImportedName
+		const auto   uniqueImportedName = getVeryUniqueImportedName (executionContext, importedNode -> getImportedName ()); // TODO: getVeryUniqueImportedName
 
 		executionContext -> updateImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), uniqueImportedName);
 

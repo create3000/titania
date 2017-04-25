@@ -225,20 +225,19 @@ private:
 
 	///  @name Members
 
-	std::ios_base* stream;
-
-	SpecificationVersionType specificationVersion;
-	ExecutionContextStack    executionContextStack;
-	size_t                   level;
-	LocalNodeSet             exportedNodesIndex;
-	LocalNodeSet             importedNodesIndex;
-	NodeIdSet                nodes;
-	NameIndex                names;
-	NameIndexByNode          namesByNode;
-	size_t                   newName;
-	ImportedNamesIndex       importedNames;
-	FieldStack               containerFieldStack;
-	const std::string        emptyName;
+	const std::ios_base* const stream;
+	SpecificationVersionType   specificationVersion;
+	ExecutionContextStack      executionContextStack;
+	size_t                     level;
+	LocalNodeSet               exportedNodesIndex;
+	LocalNodeSet               importedNodesIndex;
+	NodeIdSet                  nodes;
+	NameIndex                  names;
+	NameIndexByNode            namesByNode;
+	size_t                     newName;
+	ImportedNamesIndex         importedNames;
+	FieldStack                 containerFieldStack;
+	const std::string          emptyName;
 
 };
 

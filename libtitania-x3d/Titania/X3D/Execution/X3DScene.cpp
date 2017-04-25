@@ -340,32 +340,32 @@ throw (Error <INVALID_NAME>,
 }
 
 /***
- *  Returns a name that is unique in this execution contentext.
+ *  Returns a name that is unique in this execution contentext, if the name exits in this context.
  */
 std::string
-X3DScene::getUniqueExportedName (const X3DScene* const scene, std::string exportedName) const
+X3DScene::getVeryUniqueExportedName (const X3DScene* const scene, std::string exportedName) const
 {
+	if (not exportedName .empty () and not exportedNodes .count (exportedName))
+		return exportedName;
+
 	exportedName = RemoveTrailingNumber (exportedName);
  	
-	std::string newName = exportedName;
-	size_t      i       = 64;
+	auto   uniqueName = exportedName;
+	size_t i          = 0;
 
-	for ( ; i;)
+	while (exportedNodes .count (uniqueName) or scene -> exportedNodes .count (uniqueName) or uniqueName .empty ())
 	{
-		if (exportedNodes .count (newName) or scene -> exportedNodes .count (newName) or newName .empty ())
-		{
-			const auto min = i;
-			std::uniform_int_distribution <size_t> random (min, i <<= 1);
+		i = std::max <size_t> (64, i);
 
-			newName = exportedName;
-			newName += '_';
-			newName += basic::to_string (random (random_engine), std::locale::classic ());
-		}
-		else
-			break;
+		const auto min = i;
+		std::uniform_int_distribution <size_t> random (min, i <<= 1);
+
+		uniqueName = exportedName;
+		uniqueName += '_';
+		uniqueName += basic::to_string (random (random_engine), std::locale::classic ());
 	}
 	
-	return newName;
+	return uniqueName;
 }
 
 // Import handling
@@ -410,7 +410,7 @@ X3DScene::updateExportedNodes (X3DScene* const scene) const
 	for (const auto & pair : ExportedNodeIndex (scene -> getExportedNodes ()))
 	{
 		const auto & exportedNode       = pair .second;
-		const auto   uniqueExportedName = getUniqueExportedName (scene, exportedNode -> getExportedName ());
+		const auto   uniqueExportedName = getVeryUniqueExportedName (scene, exportedNode -> getExportedName ());
 
 		scene -> updateExportedNode (uniqueExportedName, exportedNode -> getLocalNode ());
 

@@ -346,7 +346,7 @@ private:
 	///  @name Operations
 
 	std::string
-	getUniqueExportedName (const X3DScene* const, std::string = "") const;
+	getVeryUniqueExportedName (const X3DScene* const, std::string = "") const;
 
 	void
 	updateExportedNodes (X3DScene* const) const;
