@@ -73,7 +73,8 @@
                 {
                   "@accessType": "inputOutput",
                   "@type": "SFColor",
-                  "@name": "color"
+                  "@name": "color",
+                  "@value": [ 1, 1, 1 ]
                 },
                 {
                   "@accessType": "inputOutput",
@@ -947,6 +948,11 @@
 "",
 "\tgrid .set_coordIndex = coordIndex;",
 "}",
+"",
+"",
+"",
+"",
+"",
 ""
                     ]
                   }
@@ -1759,6 +1765,11 @@
 "",
 "\treturn false;",
 "}",
+"",
+"",
+"",
+"",
+"",
 ""
                     ],
                     "IS": {

@@ -758,6 +758,9 @@ X3DEditor::removeNodesFromExecutionContext (const X3DExecutionContextPtr & execu
 
 	const X3DScenePtr scene (executionContext);
 
+	for (const auto & node : nodes)
+		removeReferences (node, undoStep);
+
 	if (scene)
 		removeExportedNodes (scene, nodes, undoStep);
 
@@ -1735,6 +1738,18 @@ X3DEditor::removeReference (const X3D::SFNode & node, X3DFieldDefinition* const 
 	field -> removeReference (protoField);
 
 	requestUpdateInstances (node, undoStep);
+}
+
+void
+X3DEditor::removeReferences (const SFNode & node, const UndoStepPtr & undoStep)
+{
+	for (const auto & field : node -> getFieldDefinitions ())
+	{
+		const auto references = field -> getReferences ();
+
+		for (const auto & protoField : references)
+			removeReference (node, field, protoField, undoStep);
+	}
 }
 
 /***

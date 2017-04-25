@@ -244,6 +244,10 @@ public:
 	void
 	removeReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep);
 
+	static
+	void
+	removeReferences (const SFNode & node, const UndoStepPtr & undoStep);
+
 	///  @name Grouping operations
 
 	static
