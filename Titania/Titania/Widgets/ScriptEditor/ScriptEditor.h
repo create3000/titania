@@ -145,6 +145,9 @@ private:
 	on_unmap () final override;
 
 	void
+	set_executionContext (const X3D::X3DExecutionContextPtr & value);
+
+	void
 	set_node (const X3D::SFNode &);
 
 	void
@@ -202,9 +205,6 @@ private:
 
 	void
 	set_loadState (const X3D::LoadState);
-
-	void
-	set_executionContext ();
 
 	void
 	save ();

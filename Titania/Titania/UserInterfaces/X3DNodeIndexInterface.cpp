@@ -80,6 +80,10 @@ X3DNodeIndexInterface::create (const std::string & filename)
 	// Connect object Gtk::EntryCompletion with id 'SearchEntryCompletion'.
 	m_SearchEntryCompletion -> signal_match_selected () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_search_entry_match_selected), false);
 
+	// Connect object Gtk::Box with id 'Widget'.
+	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_unmap));
+
 	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
 	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_search_entry_key_press_event), false);
 

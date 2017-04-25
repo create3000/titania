@@ -143,11 +143,22 @@ private:
 	void
 	initialize () final override;
 
+	virtual
+	void
+	on_map () final override;
+
+	virtual
+	void
+	on_unmap () final override;
+
 	int
 	on_compare_name (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs);
 
 	void
 	refresh ();
+
+	void
+	set_refresh ();
 
 	///  @name Operations
 
@@ -178,7 +189,7 @@ private:
 	///  @name Event handlers
 
 	void
-	set_executionContext ();
+	set_executionContext (const X3D::X3DExecutionContextPtr & value);
 
 	void
 	set_name (const size_t index);
@@ -201,6 +212,7 @@ private:
 	X3D::X3DPtr <X3D::X3DProtoDeclarationNode>          protoNode;
 	X3D::MFNode                                         nodes;
 	X3D::SFNode                                         node;
+	X3D::SFTime                                         refreshBuffer;
 	IndexType                                           index;
 	bool                                                showWidget;
 	bool                                                observeNodes;

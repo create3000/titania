@@ -201,18 +201,51 @@ ScriptEditor::on_map ()
 {
 	getCurrentContext () .addInterest (&ScriptEditor::set_executionContext, this);
 
-	set_executionContext ();
+	set_executionContext (getCurrentContext ());
 }
 
 void
 ScriptEditor::on_unmap ()
 {
 	getCurrentContext () .removeInterest (&ScriptEditor::set_executionContext, this);
+
+	//set_executionContext (nullptr);
+}
+
+void
+ScriptEditor::set_executionContext (const X3D::X3DExecutionContextPtr & executionContext)
+{
+	try
+	{
+		save ();
+
+		if (executionContext)
+		{
+			ScriptEditorDatabase database;
+	
+			const auto item     = database .getItem (executionContext -> getWorldURL () .filename ());
+			const auto nodeName = std::get <0> (item);
+			const auto node     = executionContext -> getNamedNode (nodeName);
+	
+			if (nodeTypes .count (node -> getType () .back ()))
+				return set_node (node);
+		}
+	}
+	catch (const std::exception & error)
+	{
+		//__LOG__ << error .what () << std::endl;
+	}
+   
+   // Fallback if the node has no name or was not found.
+	set_node (nullptr);
 }
 
 void
 ScriptEditor::set_node (const X3D::SFNode & value)
 {
+	if (value == node)
+		return;
+
 	X3DScriptEditor::set_node (value);
 	X3DShaderEditor::set_node (value);
 
@@ -508,29 +541,6 @@ ScriptEditor::set_loadState (const X3D::LoadState loadState)
 			break;
 		}
 	}
-}
-
-void
-ScriptEditor::set_executionContext ()
-{
-	try
-	{
-		ScriptEditorDatabase database;
-
-		const auto item     = database .getItem (getCurrentContext () -> getWorldURL () .filename ());
-		const auto nodeName = std::get <0> (item);
-		const auto node     = getCurrentContext () -> getNamedNode (nodeName);
-
-		if (nodeTypes .count (node -> getType () .back ()))
-			return set_node (node);
-	}
-	catch (const std::exception & error)
-	{
-		//__LOG__ << error .what () << std::endl;
-	}
-   
-   // Fallback if the node has no name or was not found.
-	set_node (nullptr);
 }
 
 void

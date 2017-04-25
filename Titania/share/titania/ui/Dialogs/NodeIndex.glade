@@ -49,6 +49,8 @@
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="spacing">8</property>
+        <signal name="map" handler="on_map" swapped="no"/>
+        <signal name="unmap" handler="on_unmap" swapped="no"/>
         <child>
           <object class="GtkHeaderBar" id="HeaderBar">
             <property name="visible">True</property>
@@ -148,7 +150,7 @@
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext2"/>
                       <attributes>
-                        <attribute name="text">2</attribute>
+                        <attribute name="markup">2</attribute>
                       </attributes>
                     </child>
                   </object>

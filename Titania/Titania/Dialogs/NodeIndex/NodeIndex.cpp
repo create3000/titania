@@ -93,6 +93,7 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	            protoNode (),
 	                nodes (),
 	                 node (),
+	        refreshBuffer (),
 	                index (NAMED_NODES_INDEX),
 	           showWidget (false),
 	         observeNodes (false),
@@ -106,7 +107,8 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	addChildObjects (executionContext,
 	                 protoNode,
 	                 nodes,
-	                 node);
+	                 node,
+	                 refreshBuffer);
 
 	setup ();
 }
@@ -116,15 +118,13 @@ NodeIndex::initialize ()
 {
 	X3DNodeIndexInterface::initialize ();
 
-	getCurrentContext () .addInterest (&NodeIndex::set_executionContext, this);
+	getCurrentContext () .addInterest (&NodeIndex::setSelection, this, nullptr);
 
 	// Initialize tree view:
 
-	set_executionContext ();
-
 	getTreeModelSort () -> set_sort_func (Columns::NAME, sigc::mem_fun (this, &NodeIndex::on_compare_name));
 
-	getNameColumn () -> clicked ();
+	getNameColumn ()     -> clicked ();
 	getTypeNameColumn () -> clicked ();
 
 	// Initialize SearchEntryCompletion:
@@ -144,6 +144,24 @@ NodeIndex::initialize ()
 	getSearchEntryCompletion () -> add_attribute (*cellrenderer, "text", Search::TYPE_NAME);
 
 	getSearchEntry () .grab_focus ();
+}
+
+void
+NodeIndex::on_map () 
+{
+	refreshBuffer        .addInterest (&NodeIndex::set_refresh,          this);
+	getCurrentContext () .addInterest (&NodeIndex::set_executionContext, this);
+
+	set_executionContext (getCurrentContext ());
+}
+
+void
+NodeIndex::on_unmap () 
+{
+	refreshBuffer        .removeInterest (&NodeIndex::set_refresh, this);
+	getCurrentContext () .removeInterest (&NodeIndex::set_executionContext, this);
+
+	set_executionContext (nullptr);
 }
 
 int
@@ -170,49 +188,62 @@ NodeIndex::on_compare_name (const Gtk::TreeModel::iterator & lhs, const Gtk::Tre
 void
 NodeIndex::refresh ()
 {
-	switch (index)
+	refreshBuffer = chrono::now ();
+}
+
+void
+NodeIndex::set_refresh ()
+{
+	if (executionContext)
 	{
-		case NAMED_NODES_INDEX:
+		switch (index)
 		{
-			setNodes (getCurrentNodes ());
-			break;
-		}
-		case TYPE_INDEX:
-		{
-			setNodes (getCurrentNodes (types));
-			break;
-		}
-		case ANIMATION_INDEX:
-		{
-			X3D::MFNode animations;
-
-			for (const auto & basenode : getCurrentNodes ({ X3D::X3DConstants::Group }))
+			case NAMED_NODES_INDEX:
 			{
-				X3D::X3DPtr <X3D::X3DNode> node (basenode);
-
-				if (node -> getMetaData <int32_t> ("/Animation/duration"))
-					animations .emplace_back (basenode);
+				setNodes (getCurrentNodes ());
+				break;
 			}
-
-			setNodes (std::move (animations));
-			break;
-		}
-		case PROTO_INDEX:
-		{
-			X3D::MFNode nodes;
-
-			if (protoNode)
+			case TYPE_INDEX:
 			{
-				for (const auto & node : protoNode -> getInstances ())
+				setNodes (getCurrentNodes (types));
+				break;
+			}
+			case ANIMATION_INDEX:
+			{
+				X3D::MFNode animations;
+	
+				for (const auto & basenode : getCurrentNodes ({ X3D::X3DConstants::Group }))
 				{
-					if (node -> getExecutionContext () == getCurrentContext ())
-						nodes .emplace_back (node);
+					X3D::X3DPtr <X3D::X3DNode> node (basenode);
+	
+					if (node -> getMetaData <int32_t> ("/Animation/duration"))
+						animations .emplace_back (basenode);
 				}
+	
+				setNodes (std::move (animations));
+				break;
 			}
-
-			setNodes (std::move (nodes));
-			break;
+			case PROTO_INDEX:
+			{
+				X3D::MFNode nodes;
+	
+				if (protoNode)
+				{
+					for (const auto & node : protoNode -> getInstances ())
+					{
+						if (node -> getExecutionContext () == executionContext)
+							nodes .emplace_back (node);
+					}
+				}
+	
+				setNodes (std::move (nodes));
+				break;
+			}
 		}
+	}
+	else
+	{
+		setNodes ({ });
 	}
 }
 
@@ -248,7 +279,8 @@ NodeIndex::setNamedNodes ()
 	executionContext -> sceneGraph_changed () .removeInterest (&NodeIndex::refresh, this);
 
 	index = NAMED_NODES_INDEX;
-	setNodes (getCurrentNodes ());
+
+	refresh ();
 }
 
 void
@@ -258,7 +290,8 @@ NodeIndex::setTypes (const std::set <X3D::X3DConstants::NodeType> & value)
 
 	index = TYPE_INDEX;
 	types = value;
-	setNodes (getCurrentNodes (types));
+
+	refresh ();
 }
 
 void
@@ -267,17 +300,18 @@ NodeIndex::setAnimations ()
 	executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
 
 	index = ANIMATION_INDEX;
+
 	refresh ();
 }
 
 void
 NodeIndex::setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & value)
 {
-	protoNode = value;
-
 	executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
 
-	index = PROTO_INDEX;
+	protoNode = value;
+	index     = PROTO_INDEX;
+
 	refresh ();
 }
 
@@ -383,17 +417,18 @@ NodeIndex::setNodes (X3D::MFNode && value)
 std::string
 NodeIndex::getNodeName (const X3D::SFNode & node) const
 {
-	auto nodeName         = node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ();
-	auto executionContext = node -> getExecutionContext ();
+	const auto nodeName         = node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ();
+	auto       path             = std::string ();
+	auto       executionContext = node -> getExecutionContext ();
 
 	while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
 	{
-		nodeName = executionContext -> getName () + '.' + nodeName;
+		path = executionContext -> getName () + '.' + path;
 
 		executionContext = executionContext -> getExecutionContext ();
 	}
 
-	return nodeName;
+	return "<b>" + path + "</b>" + Glib::Markup::escape_text (nodeName);
 }
 
 /***
@@ -410,11 +445,11 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 		return nodes;
 
 	if (displayProtoNodes)
-		getCurrentProtoNodes (getCurrentContext (), nodes);
+		getCurrentProtoNodes (executionContext, nodes);
 
-	X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
+	X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & node)
 	               {
-	                  if (node -> getExecutionContext () not_eq getCurrentContext ())
+	                  if (node -> getExecutionContext () not_eq executionContext)
 								return true;
 
 	                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
@@ -468,7 +503,7 @@ NodeIndex::getCurrentNodes ()
 	if (inPrototypeInstance ())
 		return nodes;
 
-	for (const auto & pair : getCurrentContext () -> getNamedNodes ())
+	for (const auto & pair : executionContext -> getNamedNodes ())
 	{
 		try
 		{
@@ -486,7 +521,7 @@ NodeIndex::getImportingInlines () const
 {
 	std::set <X3D::SFNode> importingInlines;
 
-	for (const auto & pair : getCurrentContext () -> getImportedNodes ())
+	for (const auto & pair : executionContext -> getImportedNodes ())
 	{
 		try
 		{
@@ -504,7 +539,7 @@ NodeIndex::getExportedNodes () const
 {
 	std::set <X3D::SFNode> exportedNodes;
 
-	X3D::X3DScenePtr scene (getCurrentContext ());
+	X3D::X3DScenePtr scene (executionContext);
 
 	if (not scene)
 		return exportedNodes;
@@ -523,33 +558,37 @@ NodeIndex::getExportedNodes () const
 }
 
 void
-NodeIndex::set_executionContext ()
+NodeIndex::set_executionContext (const X3D::X3DExecutionContextPtr & value)
 {
 	if (executionContext)
 	{
 		executionContext -> namedNodes_changed ()    .removeInterest (&NodeIndex::refresh, this);
 		executionContext -> importedNodes_changed () .removeInterest (&NodeIndex::refresh, this);
 		executionContext -> sceneGraph_changed ()    .removeInterest (&NodeIndex::refresh, this);
+	
+		X3D::X3DScenePtr scene (executionContext);
+	
+		if (scene)
+			scene -> exportedNodes_changed () .removeInterest (&NodeIndex::refresh, this);
 	}
 
-	X3D::X3DScenePtr scene (executionContext);
+	executionContext = value;
 
-	if (scene)
-		scene -> exportedNodes_changed () .removeInterest (&NodeIndex::refresh, this);
+	if (executionContext)
+	{
+		executionContext -> namedNodes_changed ()    .addInterest (&NodeIndex::refresh, this);
+		executionContext -> importedNodes_changed () .addInterest (&NodeIndex::refresh, this);
+	
+		if (index == TYPE_INDEX)
+			executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
 
-	executionContext = getCurrentContext ();
-	executionContext -> namedNodes_changed ()    .addInterest (&NodeIndex::refresh, this);
-	executionContext -> importedNodes_changed () .addInterest (&NodeIndex::refresh, this);
-
-	if (index == TYPE_INDEX)
-		executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
-
-	scene = executionContext;
-
-	if (scene)
-		scene -> exportedNodes_changed () .addInterest (&NodeIndex::refresh, this);
-
-	refresh ();
+		X3D::X3DScenePtr scene (executionContext);
+	
+		if (scene)
+			scene -> exportedNodes_changed () .addInterest (&NodeIndex::refresh, this);
+	
+		refresh ();
+	}
 }
 
 void

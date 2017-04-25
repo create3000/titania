@@ -161,6 +161,14 @@ public:
 	on_search_entry_match_selected (const Gtk::TreeModel::iterator & iter) = 0;
 
 	virtual
+	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_unmap () = 0;
+
+	virtual
 	bool
 	on_search_entry_key_press_event (GdkEventKey* event) = 0;
 
