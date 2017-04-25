@@ -832,7 +832,6 @@ enable_silent_rules
 enable_maintainer_mode
 enable_dependency_tracking
 enable_debug
-enable_parallel
 enable_fixed_pipeline_drivers
 enable_nls
 enable_shared
@@ -1516,7 +1515,6 @@ Optional Features:
   --disable-dependency-tracking
                           speeds up one-time build
   --enable-debug          Use 'DEBUG' Configuration [default=NO]
-  --enable-parallel       Use 'PARALLEL' Configuration [default=NO]
   --enable-fixed-pipeline-drivers
                           Enable Nouveau for 'Cobweb Compatibility Mode'
                           [default=NO]
@@ -3879,14 +3877,6 @@ else
 fi
 
 
-# Check whether --enable-parallel was given.
-if test "${enable_parallel+set}" = set; then :
-  enableval=$enable_parallel; enable_parallel=yes
-else
-  enable_parallel=no
-fi
-
-
 # Check whether --enable-fixed-pipeline-drivers was given.
 if test "${enable_fixed_pipeline_drivers+set}" = set; then :
   enableval=$enable_fixed_pipeline_drivers; enable_fixed_pipeline_drivers=yes
@@ -3900,16 +3890,12 @@ fi
 
 CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing -DFIXED_PIPELINE"
 
-if test "x$enable_release" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" "
-fi
-
-if test "x$enable_parallel" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4"
-fi
-
 if test "x$enable_debug" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG"
+fi
+
+if test "x$enable_feature" = "xyes" ; then
+	CXXFLAGS=$CXXFLAGS" -DTITANIA_FEATURE"
 fi
 
 if test ! "x$enable_fixed_pipeline_drivers" = "xyes" ; then

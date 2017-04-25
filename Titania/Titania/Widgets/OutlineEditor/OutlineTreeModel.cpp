@@ -789,7 +789,7 @@ OutlineTreeModel::row_draggable_vfunc (const Path & path) const
 			if (node -> getExecutionContext () == get_execution_context ())
 				return true;
 
-			#ifdef TITANIA_DEBUG
+			#ifdef TITANIA_FEATURE
 			// If the node is in a proto and the proto is in the current execution context, allow.
 			{
 				auto executionContext = node -> getExecutionContext ();

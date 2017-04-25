@@ -179,7 +179,7 @@ NodeIndex::on_compare_type_name (const Gtk::TreeModel::iterator & lhs, const Gtk
 	lhs -> get_value (Columns::PROTO, lhsProto);
 	rhs -> get_value (Columns::PROTO, rhsProto);
 
-	if (lhsProto ^ rhsProto)
+	if (lhsProto xor rhsProto)
 		return lhsProto ? -1 : 1;
 
 	std::string lhsString;
@@ -203,7 +203,7 @@ NodeIndex::on_compare_name (const Gtk::TreeModel::iterator & lhs, const Gtk::Tre
 	lhs -> get_value (Columns::PROTO, lhsProto);
 	rhs -> get_value (Columns::PROTO, rhsProto);
 
-	if (lhsProto ^ rhsProto)
+	if (lhsProto xor rhsProto)
 		return lhsProto ? -1 : 1;
 
 	std::string lhsString;

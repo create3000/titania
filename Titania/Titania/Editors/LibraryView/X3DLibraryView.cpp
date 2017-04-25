@@ -204,7 +204,7 @@ X3DLibraryView::append (const std::string & path) const
 					const auto basename     = basic::uri (fileInfo -> get_name ()) .basename (false);
 					const bool experimental = os::file_exists (directory -> get_path () + "/.experimental/" + basename);
 
-					#ifndef TITANIA_DEBUG
+					#ifndef TITANIA_FEATURE
 					if (experimental)
 					   continue;
 					#endif

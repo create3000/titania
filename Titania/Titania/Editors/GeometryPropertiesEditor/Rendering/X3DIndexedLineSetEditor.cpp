@@ -115,7 +115,7 @@ X3DIndexedLineSetEditor::set_geometry ()
 
 	nodes = getSelection <X3D::X3DBaseNode> ({ X3D::X3DConstants::IndexedLineSet });
 
-	#ifdef TITANIA_DEBUG
+	#ifdef TITANIA_FEATURE
 	getIndexedLineSetBox () .set_visible (not nodes .empty ());
 	#else
 	getIndexedLineSetBox () .set_visible (false);

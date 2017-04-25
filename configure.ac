@@ -26,11 +26,6 @@ AC_ARG_ENABLE(debug,
 		[Use 'DEBUG' Configuration [default=NO]]),
 		enable_debug=yes, enable_debug=no)
 
-AC_ARG_ENABLE(parallel,
-	AC_HELP_STRING([--enable-parallel],
-		[Use 'PARALLEL' Configuration [default=NO]]),
-		enable_parallel=yes, enable_parallel=no)
-
 AC_ARG_ENABLE(fixed-pipeline-drivers,
 	AC_HELP_STRING([--enable-fixed-pipeline-drivers],
 		[Enable Nouveau for 'Cobweb Compatibility Mode' [default=NO]]),
@@ -46,16 +41,12 @@ dnl ******* CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG -Wno-deprecated-declarations"
 
 CXXFLAGS="-Wall -std=c++14 -O3 -fopenmp -Wno-narrowing -DFIXED_PIPELINE"
 
-if test "x$enable_release" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" "
-fi
-
-if test "x$enable_parallel" = "xyes" ; then
-	CXXFLAGS=$CXXFLAGS" -floop-parallelize-all -ftree-parallelize-loops=4"
-fi
-
 if test "x$enable_debug" = "xyes" ; then
 	CXXFLAGS=$CXXFLAGS" -DTITANIA_DEBUG"
+fi
+
+if test "x$enable_feature" = "xyes" ; then
+	CXXFLAGS=$CXXFLAGS" -DTITANIA_FEATURE"
 fi
 
 if test ! "x$enable_fixed_pipeline_drivers" = "xyes" ; then
