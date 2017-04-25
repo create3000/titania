@@ -412,7 +412,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 }
 
 /***
- *  Returns a name that is unique in both this execution context and in @a executionContext, if the name exits in this context.
+ *  Returns a name that is both unique in this execution context and in @a executionContext, if the name exits in this context otherwise return @a name.
  */
 std::string
 X3DExecutionContext::getVeryUniqueName (X3DExecutionContext* const executionContext, std::string name) const
@@ -558,7 +558,7 @@ throw (Error <INVALID_NODE>,
 }
 
 /***
- *  Returns a name that is unique in both this context and in @a executionContext, if the name exits in this context.
+ *  Returns a name that is both unique in this context and in @a executionContext, if the name exits in this context otherwise return @a importedName.
  */
 std::string
 X3DExecutionContext::getVeryUniqueImportedName (const X3DExecutionContext* const executionContext, std::string importedName) const

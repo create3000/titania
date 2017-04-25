@@ -1668,7 +1668,7 @@ X3DEditor::replaceReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinit
 	undoStep -> addObjects (proto);
 
 	if (proto)
-		traverse (proto .getValue (), std::bind (&X3DEditor::replaceReferencesCallback, _1, oldField, newField, undoStep));
+		traverse (proto, std::bind (&X3DEditor::replaceReferencesCallback, _1, oldField, newField, undoStep));
 }
 
 bool
@@ -1698,7 +1698,7 @@ X3DEditor::removeReferences (const ProtoDeclarationPtr & proto, X3DFieldDefiniti
 	undoStep -> addObjects (proto);
 
 	if (proto)
-		traverse (proto .getValue (), std::bind (&X3DEditor::removeReferencesCallback, _1, field, undoStep));
+		traverse (proto, std::bind (&X3DEditor::removeReferencesCallback, _1, field, undoStep));
 }
 
 bool

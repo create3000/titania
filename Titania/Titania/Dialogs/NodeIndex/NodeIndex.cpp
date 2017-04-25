@@ -383,17 +383,17 @@ NodeIndex::setNodes (X3D::MFNode && value)
 std::string
 NodeIndex::getNodeName (const X3D::SFNode & node) const
 {
-	const auto executionContext = node -> getExecutionContext ();
+	auto nodeName         = node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ();
+	auto executionContext = node -> getExecutionContext ();
 
-	if (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+	while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
 	{
-		const auto protoName = executionContext -> getName ();
-		const auto nodeName  = node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ();
+		nodeName = executionContext -> getName () + '.' + nodeName;
 
-		return protoName + '.' + nodeName;
+		executionContext = executionContext -> getExecutionContext ();
 	}
 
-	return node -> getName ();
+	return nodeName;
 }
 
 /***
@@ -410,26 +410,7 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 		return nodes;
 
 	if (displayProtoNodes)
-	{
-		for (const auto & proto : getCurrentContext () -> getProtoDeclarations ())
-		{
-			X3D::traverse (X3D::X3DExecutionContextPtr (proto), [&] (X3D::SFNode & node)
-			               {
-			                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
-			                  {
-			                     if (types .count (type))
-			                     {
-			                        if (node -> isLive ())
-												nodes .emplace_back (node);
-		
-			                        break;
-										}
-									}
-		
-			                  return true;
-								});
-		}
-	}
+		getCurrentProtoNodes (getCurrentContext (), nodes);
 
 	X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
 	               {
@@ -440,9 +421,7 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 	                  {
 	                     if (types .count (type))
 	                     {
-	                        if (node -> isLive ())
-										nodes .emplace_back (node);
-
+	                        nodes .emplace_back (node);
 	                        break;
 								}
 							}
@@ -451,6 +430,29 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 						});
 
 	return nodes;
+}
+
+void
+NodeIndex::getCurrentProtoNodes (X3D::X3DExecutionContext* const executionContext, X3D::MFNode & nodes)
+{
+	for (const auto & proto : executionContext -> getProtoDeclarations ())
+	{
+		getCurrentProtoNodes (proto, nodes);
+
+		X3D::traverse (proto, [&] (X3D::SFNode & node)
+		               {
+		                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
+		                  {
+		                     if (types .count (type))
+		                     {
+		                        nodes .emplace_back (node);
+		                        break;
+									}
+								}
+	
+		                  return true;
+							});
+	}
 }
 
 /***

@@ -340,7 +340,7 @@ throw (Error <INVALID_NAME>,
 }
 
 /***
- *  Returns a name that is unique in this execution contentext, if the name exits in this context.
+ *  Returns a exported name that is both unique in this scene and @a scene, if the name exits in this context otherwise return @a exportedName.
  */
 std::string
 X3DScene::getVeryUniqueExportedName (const X3DScene* const scene, std::string exportedName) const

@@ -144,7 +144,7 @@ private:
 	initialize () final override;
 
 	int
-	on_compare_name (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::iterator &);
+	on_compare_name (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs);
 
 	void
 	refresh ();
@@ -155,16 +155,19 @@ private:
 	getPath (const X3D::SFNode & node);
 
 	void
-	setNodes (X3D::MFNode &&);
+	setNodes (X3D::MFNode && value);
 
 	std::string
 	getNodeName (const X3D::SFNode & node) const;
 
 	X3D::MFNode
-	getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> &);
+	getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types);
 
 	X3D::MFNode
 	getCurrentNodes ();
+
+	void
+	getCurrentProtoNodes (X3D::X3DExecutionContext* const executionContext, X3D::MFNode & nodes);
 
 	std::set <X3D::SFNode>
 	getImportingInlines () const;

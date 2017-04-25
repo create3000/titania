@@ -134,6 +134,15 @@
                         { "Group":
                           {
                           }
+                        },
+                        { "Script":
+                          {
+                            "@DEF": "InFieldsScript",
+                            "#sourceText": [
+"ecmascript:",
+""
+                            ]
+                          }
                         }
                       ]
                     }
@@ -395,7 +404,7 @@
                       { "Transform":
                         {
                           "@DEF": "Sphere",
-                          "@translation": [ 5, 1.17052, 0 ],
+                          "@translation": [ 5, 1.73375, 0 ],
                           "-children": [
                             { "Group":
                               {
@@ -948,6 +957,9 @@
 "",
 "\tgrid .set_coordIndex = coordIndex;",
 "}",
+"",
+"",
+"",
 "",
 "",
 "",
@@ -1770,6 +1782,9 @@
 "",
 "",
 "",
+"",
+"",
+"",
 ""
                     ],
                     "IS": {
@@ -1845,7 +1860,7 @@
                             "@name": "orientation",
                             "@reference": "http://titania.create3000.de",
                             "@value": [
-                              -0.0488158223062779,
+                              -0.048815822306278,
                               -0.98722646861498,
                               -0.151660526039431,
                               2.52624580008531
@@ -1877,7 +1892,10 @@
                           {
                             "@DEF": "nodes",
                             "@name": "nodes",
-                            "@reference": "http://titania.create3000.de"
+                            "@reference": "http://titania.create3000.de",
+                            "-value": [
+                              null
+                            ]
                           }
                         }
                       ]
@@ -2027,6 +2045,28 @@
           {
             "@url": [
               "QuadSphere.x3dv"
+            ]
+          }
+        },
+        { "Transform":
+          {
+            "@translation": [ 0, 0, 26.2981 ],
+            "-children": [
+              { "ProtoInstance":
+                {
+                  "@name": "Grid",
+                  "fieldValue": [
+                    {
+                      "@name": "xDimension",
+                      "@value": 20
+                    },
+                    {
+                      "@name": "zDimension",
+                      "@value": 20
+                    }
+                  ]
+                }
+              }
             ]
           }
         }

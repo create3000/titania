@@ -81,17 +81,7 @@ using Hierarchy        = std::vector <X3DChildObject*>;
 using Hierarchies      = std::vector <Hierarchy>;
 
 bool
-traverse (X3DExecutionContext* const, const TraverseCallback &, const bool = true, const int32_t = TRAVERSE_ROOT_NODES);
-
-inline
-bool
-traverse (const X3DScenePtr & scene, const TraverseCallback & callback, const bool distinct = true, const int32_t flags = TRAVERSE_ROOT_NODES)
-{ return traverse (scene .getValue (), callback, distinct, flags); }
-
-inline
-bool
-traverse (const X3DExecutionContextPtr & executionContext, const TraverseCallback & callback, const bool distinct = true, const int32_t flags = TRAVERSE_ROOT_NODES)
-{ return traverse (executionContext .getValue (), callback, distinct, flags); }
+traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const bool distinct = true, const int32_t flags = TRAVERSE_ROOT_NODES);
 
 bool
 traverse (MFNode &, const TraverseCallback &, const bool = true, const int32_t = TRAVERSE_ROOT_NODES);
