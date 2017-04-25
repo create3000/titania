@@ -155,8 +155,8 @@ NodeIndex::configure ()
 {
 	if (getConfig () -> hasItem ("sortColumn"))
 	{
-		const auto sortOrder  = getConfig () -> getInteger ("sortOrder");
 		const auto sortColumn = getConfig () -> getInteger ("sortColumn");
+		const auto sortOrder  = getConfig () -> getInteger ("sortOrder");
 
 		getTreeModelSort () -> set_sort_column (sortColumn, Gtk::SortType (sortOrder));
 	}

@@ -90,15 +90,17 @@ HistoryView::configure ()
 {
 	X3DHistoryViewInterface::configure ();
 
-	try
+	if (getConfig () -> hasItem ("sortColumn"))
 	{
-		const auto sortOrder  = getConfig () -> getInteger ("sortOrder");
 		const auto sortColumn = getConfig () -> getInteger ("sortColumn");
+		const auto sortOrder  = getConfig () -> getInteger ("sortOrder");
 
 		getTreeModelSort () -> set_sort_column (sortColumn, Gtk::SortType (sortOrder));
 	}
-	catch (const std::out_of_range &)
-	{ }
+	else
+	{
+		getTreeModelSort () -> set_sort_column (Columns::LAST_ACCESS, Gtk::SORT_ASCENDING);
+	}
 
 	const auto rememberHistory = getBrowserWindow () -> getConfig () -> getInteger ("rememberHistory");
 
