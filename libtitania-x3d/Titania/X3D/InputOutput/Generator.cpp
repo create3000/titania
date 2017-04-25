@@ -65,6 +65,7 @@ const int Generator::index = std::ostream::xalloc ();
 
 Generator::Generator (std::ostream & ostream) :
 	         X3DGenerator (ostream),
+	               stream (&ostream),
 	 specificationVersion (LATEST_VERSION),
 	executionContextStack (1),
 	                level (0),
@@ -78,8 +79,19 @@ Generator::Generator (std::ostream & ostream) :
 	  containerFieldStack (1),
 	            emptyName ()
 {
-	ostream .pword (index) = this;
+	set (ostream, this);
+}
+
+void
+Generator::set (std::ostream & ostream, Generator* const generator)
+{
+	const auto previous = static_cast <Generator*> (ostream .pword (index));
+
+	ostream .pword (index) = generator;
 	ostream .register_callback (dispose, index);
+
+	if (previous)
+		delete previous;
 }
 
 Generator*
@@ -407,16 +419,19 @@ Generator::XMLEncode (std::ostream & ostream, const std::string & string)
 void
 Generator::dispose (std::ios_base::event event, std::ios_base & stream, int index)
 {
-	if (event == std::ios_base::erase_event)
-	{
-		const auto generator = static_cast <Generator*> (stream .pword (index));
+	if (event not_eq std::ios_base::erase_event)
+		return;
 
-		if (generator)
-		{
-			delete generator;
-			stream .pword (index) = nullptr;
-		}
-	}
+	const auto generator = static_cast <Generator*> (stream .pword (index));
+
+	if (not generator)
+		return;
+
+	if (generator -> stream not_eq &stream)
+		return;
+
+	delete generator;
+	stream .pword (index) = nullptr;
 }
 
 Generator::~Generator ()

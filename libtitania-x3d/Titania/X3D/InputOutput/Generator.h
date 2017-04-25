@@ -69,6 +69,8 @@ class X3DFieldDefinition;
 class X3DBaseNode;
 class X3DExecutionContext;
 
+struct GeneratorObjectType;
+
 class Generator :
 	public X3DGenerator
 {
@@ -166,9 +168,18 @@ protected:
 
 	///  @name Friends
 
-	friend class X3DGenerator;
+	friend
+	class X3DGenerator;
+	
+	friend
+	std::ostream &
+	operator << (std::ostream & ostream, const GeneratorObjectType & value);
 
 	///  @name Construction
+
+	static
+	void
+	set (std::ostream & ostream, Generator* const generator);
 
 	static
 	Generator*
@@ -214,20 +225,20 @@ private:
 
 	///  @name Members
 
+	std::ios_base* stream;
+
 	SpecificationVersionType specificationVersion;
-
-	ExecutionContextStack executionContextStack;
-	size_t                level;
-	LocalNodeSet          exportedNodesIndex;
-	LocalNodeSet          importedNodesIndex;
-	NodeIdSet             nodes;
-	NameIndex             names;
-	NameIndexByNode       namesByNode;
-	size_t                newName;
-	ImportedNamesIndex    importedNames;
-	FieldStack            containerFieldStack;
-
-	const std::string emptyName;
+	ExecutionContextStack    executionContextStack;
+	size_t                   level;
+	LocalNodeSet             exportedNodesIndex;
+	LocalNodeSet             importedNodesIndex;
+	NodeIdSet                nodes;
+	NameIndex                names;
+	NameIndexByNode          namesByNode;
+	size_t                   newName;
+	ImportedNamesIndex       importedNames;
+	FieldStack               containerFieldStack;
+	const std::string        emptyName;
 
 };
 
@@ -292,6 +303,26 @@ to_string (const AccessType & accessType)
 	osstream << accessType;
 
 	return osstream .str ();
+}
+
+// SetGenerator
+
+struct GeneratorObjectType { std::ostream & ostream; };
+
+///  Function to insert a Generator into an output stream.
+inline
+GeneratorObjectType
+SetGenerator (std::ostream & ostream)
+{
+	return GeneratorObjectType { ostream };
+}
+
+inline
+std::ostream &
+operator << (std::ostream & ostream, const GeneratorObjectType & value)
+{
+	Generator::set (ostream, Generator::get (value .ostream));
+	return ostream;
 }
 
 // XMLEncode

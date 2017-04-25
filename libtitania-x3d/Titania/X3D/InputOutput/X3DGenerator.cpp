@@ -232,21 +232,6 @@ X3DGenerator::EmptyBrackets (std::ostream & ostream)
 	return ostream;
 }
 
-void
-X3DGenerator::dispose (std::ios_base::event event, std::ios_base & stream, int index)
-{
-	if (event == std::ios_base::erase_event)
-	{
-		const auto generator = static_cast <X3DGenerator*> (stream .pword (index));
-
-		if (generator)
-		{
-			delete generator;
-			stream .pword (index) = nullptr;
-		}
-	}
-}
-
 X3DGenerator::~X3DGenerator ()
 { }
 

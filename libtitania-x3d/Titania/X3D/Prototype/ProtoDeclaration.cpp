@@ -74,6 +74,8 @@ ProtoDeclaration::ProtoDeclaration (X3DExecutionContext* const executionContext)
 	addField (inputOutput, "metadata", metadata ());
 
 	addChildObjects (getRootNodes (), loadState);
+
+	endUpdate ();
 }
 
 ProtoDeclaration*

@@ -1315,15 +1315,15 @@ throw (Error <IMPORTED_NODE>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
+	// Rename nodes that the name is unique in both contexts.
+
 	for (const auto & pair : NamedNodeIndex (executionContext -> getNamedNodes ()))
 	{
+		const auto & name       = pair .first;
 		const auto & namedNode  = pair .second;
-		const auto   uniqueName = getVeryUniqueName (executionContext, pair .first);
+		const auto   uniqueName = getVeryUniqueName (executionContext, name);
 
 		executionContext -> updateNamedNode (uniqueName, namedNode -> getLocalNode ());
-
-		if (uniqueName not_eq pair .first)
-			executionContext -> removeNamedNode (pair .first);
 	}
 }
 
@@ -1339,7 +1339,7 @@ throw (Error <INVALID_NODE>,
 	for (const auto & pair : ImportedNodeIndex (executionContext -> getImportedNodes ()))
 	{
 		const auto & importedNode       = pair .second;
-		const auto   uniqueImportedName = getUniqueImportedName (executionContext, importedNode -> getImportedName ());
+		const auto   uniqueImportedName = getUniqueImportedName (executionContext, importedNode -> getImportedName ()); // TODO: getVeryUniqueImportedName
 
 		executionContext -> updateImportedNode (importedNode -> getInlineNode (), importedNode -> getExportedName (), uniqueImportedName);
 
@@ -1764,12 +1764,14 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 			{
 				std::ostringstream osstream;
 	
-				osstream << JSONEncode (route);
+				osstream << SetGenerator (ostream) << JSONEncode (route);
 	
 				routes .emplace_back (osstream .str ());
 			}
-			catch (const X3DError &)
-			{ }
+			catch (const X3DError & error)
+			{
+				__LOG__ << error .what () << std::endl;
+			}
 		}
 
 		if (not routes .empty ())

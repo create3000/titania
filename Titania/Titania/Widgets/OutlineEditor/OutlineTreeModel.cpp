@@ -769,20 +769,42 @@ OutlineTreeModel::row_draggable_vfunc (const Path & path) const
 		case OutlineIterType::ExternProtoDeclaration:
 		case OutlineIterType::X3DBaseNode:
 		{
-			const auto & node             = *static_cast <X3D::SFNode*> (get_object (iter));
-			auto         executionContext = node -> getExecutionContext ();
+			const auto & node = *static_cast <X3D::SFNode*> (get_object (iter));
 
-			if (executionContext == get_execution_context ())
-				return true;
-
-			while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+			// If the node is anywhere in a X3DPrototypeInstance, reject.
 			{
-				executionContext = executionContext -> getExecutionContext ();
+				auto executionContext = node -> getExecutionContext ();
 
-				if (executionContext == get_execution_context ())
-					return true;
+				do
+				{
+					if (executionContext -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+						return false;
+
+					executionContext = executionContext -> getExecutionContext ();
+				}
+				while (executionContext -> getExecutionContext () not_eq executionContext);
 			}
 
+			// If execution context is the current, allow.
+			if (node -> getExecutionContext () == get_execution_context ())
+				return true;
+
+			#ifdef TITANIA_DEBUG
+			// If the node is in a proto and the proto is in the current execution context, allow.
+			{
+				auto executionContext = node -> getExecutionContext ();
+
+				while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+				{
+					executionContext = executionContext -> getExecutionContext ();
+	
+					if (executionContext == get_execution_context ())
+						return true;
+				}
+			}
+			#endif
+
+			// Otherwise reject.
 			return false;
 		}
 		default:

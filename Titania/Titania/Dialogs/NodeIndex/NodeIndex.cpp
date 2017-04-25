@@ -331,7 +331,10 @@ NodeIndex::setNodes (X3D::MFNode && value)
 		return;
 
 	for (const auto & node : nodes)
+	{
+		node -> getExecutionContext () -> name_changed () .addInterest (&NodeIndex::set_name, this, index);
 		node -> name_changed () .removeInterest (&NodeIndex::set_name, this);
+	}
 
 	if (observeNodes)
 	{
@@ -357,11 +360,12 @@ NodeIndex::setNodes (X3D::MFNode && value)
 
 		row -> set_value (Columns::IMAGE,          getName () + basic::to_string (index));
 		row -> set_value (Columns::TYPE_NAME,      node -> getTypeName ());
-		row -> set_value (Columns::NAME,           node -> getName ());
+		row -> set_value (Columns::NAME,           getNodeName (node));
 		row -> set_value (Columns::IMPORTED_NODES, importingInlines .count (node) ? document_import : empty_string);
 		row -> set_value (Columns::EXPORTED_NODES, exportedNodes .count (node)    ? document_export : empty_string);
 		row -> set_value (Columns::INDEX,          index);
 
+		node -> getExecutionContext () -> name_changed () .addInterest (&NodeIndex::set_name, this, index);
 		node -> name_changed () .addInterest (&NodeIndex::set_name, this, index);
 
 		if (observeNodes)
@@ -374,6 +378,22 @@ NodeIndex::setNodes (X3D::MFNode && value)
 	getTreeView () .set_search_column (Columns::NAME);
 
 	setSelection (node);
+}
+
+std::string
+NodeIndex::getNodeName (const X3D::SFNode & node) const
+{
+	const auto executionContext = node -> getExecutionContext ();
+
+	if (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+	{
+		const auto protoName = executionContext -> getName ();
+		const auto nodeName  = node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ();
+
+		return protoName + '.' + nodeName;
+	}
+
+	return node -> getName ();
 }
 
 /***
@@ -393,8 +413,6 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 	{
 		for (const auto & proto : getCurrentContext () -> getProtoDeclarations ())
 		{
-			proto -> realize ();
-
 			X3D::traverse (X3D::X3DExecutionContextPtr (proto), [&] (X3D::SFNode & node)
 			               {
 			                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
@@ -543,7 +561,7 @@ NodeIndex::set_name (const size_t index)
 	
 		const auto iter = getListStore () -> get_iter (path);
 
-		iter -> set_value (Columns::NAME, nodes .at (index) -> getName ());
+		iter -> set_value (Columns::NAME, getNodeName (nodes .at (index)));
 	}
 	catch (const std::out_of_range &)
 	{ }

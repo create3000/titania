@@ -157,6 +157,9 @@ private:
 	void
 	setNodes (X3D::MFNode &&);
 
+	std::string
+	getNodeName (const X3D::SFNode & node) const;
+
 	X3D::MFNode
 	getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> &);
 

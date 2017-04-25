@@ -1207,7 +1207,7 @@ OutlineDragDrop::remove_source_node (const X3D::X3DExecutionContextPtr & sourceC
 	   {
 			auto & mfnode = *static_cast <X3D::MFNode*> (sourceField);
 
-			X3D::X3DEditor::eraseFromArray (*sourceParent, mfnode, sourceIndex, undoStep);
+			X3D::X3DEditor::removeNode (sourceContext, *sourceParent, mfnode, sourceIndex, undoStep);
 			break;
 	   }
 	   default:

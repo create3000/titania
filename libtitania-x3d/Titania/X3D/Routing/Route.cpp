@@ -64,13 +64,13 @@ const std::string   Route::typeName       = "Route";
 const std::string   Route::containerField = "route";
 
 Route::Route (X3DExecutionContext* const executionContext,
-              const SFNode & _sourceNode,      X3DFieldDefinition* const _sourceField,
-              const SFNode & _destinationNode, X3DFieldDefinition* const _destinationField) :
+              const SFNode & p_sourceNode,      X3DFieldDefinition* const p_sourceField,
+              const SFNode & p_destinationNode, X3DFieldDefinition* const p_destinationField) :
 	       X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	        sourceNode (_sourceNode),
-	       sourceField (_sourceField),
-	   destinationNode (_destinationNode),
-	  destinationField (_destinationField),
+	        sourceNode (p_sourceNode),
+	       sourceField (p_sourceField),
+	   destinationNode (p_destinationNode),
+	  destinationField (p_destinationField),
 	         connected (false),
 	disconnectedOutput ()
 {

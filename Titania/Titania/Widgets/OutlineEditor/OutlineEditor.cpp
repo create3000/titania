@@ -951,12 +951,7 @@ OutlineEditor::on_remove_parent_activate ()
 				auto & sfnode = *static_cast <X3D::SFNode*> (field);
 	
 				X3D::X3DEditor::insertIntoArray (treeView -> get_execution_context (), rootNodes, index, sfnode, undoStep);
-
-				if (parent -> getCloneCount () < 2)
-					X3D::X3DEditor::removeNode (treeView -> get_execution_context (), root, rootNodes, index + 1, undoStep);
-				else
-					X3D::X3DEditor::eraseFromArray (root, rootNodes, index + 1, undoStep);
-
+				X3D::X3DEditor::removeNode (treeView -> get_execution_context (), root, rootNodes, index + 1, undoStep);
 				break;
 			}
 			case X3D::X3DConstants::MFNode:
@@ -964,12 +959,7 @@ OutlineEditor::on_remove_parent_activate ()
 				auto & mfnode = *static_cast <X3D::MFNode*> (field);
 	
 				X3D::X3DEditor::insertIntoArray (treeView -> get_execution_context (), rootNodes, index, mfnode .begin (), mfnode .end (), undoStep);
-
-				if (parent -> getCloneCount () < 2)
-					X3D::X3DEditor::removeNode (treeView -> get_execution_context (), root, rootNodes, index + mfnode .size (), undoStep);
-				else
-					X3D::X3DEditor::eraseFromArray (root, rootNodes, index + mfnode .size (), undoStep);
-
+				X3D::X3DEditor::removeNode (treeView -> get_execution_context (), root, rootNodes, index + mfnode .size (), undoStep);
 				break;
 			}
 			default:
@@ -1010,11 +1000,7 @@ OutlineEditor::on_remove_parent_activate ()
 
 						X3D::X3DEditor::insertIntoArray (secondParent, mfnode, index, sfnode, undoStep);
 
-						if (parent -> getCloneCount () < 2)
-							X3D::X3DEditor::removeNode (treeView -> get_execution_context (), secondParent, mfnode, index + 1, undoStep);
-						else
-							X3D::X3DEditor::eraseFromArray (secondParent, mfnode, index + 1, undoStep);
-
+						X3D::X3DEditor::removeNode (treeView -> get_execution_context (), secondParent, mfnode, index + 1, undoStep);
 						break;
 					}
 					default:
@@ -1044,12 +1030,7 @@ OutlineEditor::on_remove_parent_activate ()
 						const auto secondIndex  = treeView -> get_index (parentIter);
 
 						X3D::X3DEditor::insertIntoArray (secondParent, secondmfnode, secondIndex, mfnode .begin (), mfnode .end (), undoStep);
-
-						if (secondParent -> getCloneCount () < 2)
-							X3D::X3DEditor::removeNode (treeView -> get_execution_context (), secondParent, secondmfnode, secondIndex + mfnode .size (), undoStep);
-						else
-							X3D::X3DEditor::eraseFromArray (secondParent, secondmfnode, secondIndex + mfnode .size (), undoStep);
-
+						X3D::X3DEditor::removeNode (treeView -> get_execution_context (), secondParent, secondmfnode, secondIndex + mfnode .size (), undoStep);
 						break;
 					}
 					default:

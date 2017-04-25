@@ -706,10 +706,8 @@ X3DEditor::removeNodesFromSceneIfNotExists (const X3DExecutionContextPtr & execu
  */
 
 void
-X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode & nodes_, const bool removeFromSceneGraph, const UndoStepPtr & undoStep)
+X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const bool removeFromSceneGraph, const UndoStepPtr & undoStep)
 {
-	MFNode nodes = nodes_;
-
 	// Remove exported nodes
 
 	if (removeFromSceneGraph)
@@ -721,7 +719,7 @@ X3DEditor::removeNodesFromScene (const X3DExecutionContextPtr & executionContext
 
 	std::set <SFNode> children;
 
-	traverse (nodes, [&children] (SFNode & child)
+	traverse (const_cast <MFNode &> (nodes), [&children] (SFNode & child)
 	          {
 	             children .emplace (child);
 	             return true;
@@ -3119,21 +3117,6 @@ X3DEditor::moveValueWithinArray (const SFNode & parent, MFNode & array, const si
 		array .erase (array .begin () + (fromIndex + 1));
 
 	// Redo
-
-	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
-
-	// Prototype support
-
-	requestUpdateInstances (parent, undoStep);
-}
-
-void
-X3DEditor::eraseFromArray (const SFNode & parent, MFNode & array, const size_t index, const UndoStepPtr & undoStep)
-{
-	undoStep -> addObjects (parent);
-	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
-
-	array .erase (array .begin () + index);
 
 	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
 

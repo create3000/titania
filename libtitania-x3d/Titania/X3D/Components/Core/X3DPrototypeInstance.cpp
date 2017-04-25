@@ -229,7 +229,7 @@ X3DPrototypeInstance::construct ()
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		__LOG__ << getTypeName () << " : " << error .what () << std::endl;
 	}
 }
 
@@ -276,9 +276,10 @@ X3DPrototypeInstance::update ()
 
 		const_cast <SFTime &> (fields_changed ()) = getCurrentTime ();
 	}
-	catch (const X3DError &)
+	catch (const X3DError & error)
 	{
 		// If extern proto isn't loaded.
+		__LOG__ << getTypeName () << " : " << error .what () << std::endl;
 	}
 }
 

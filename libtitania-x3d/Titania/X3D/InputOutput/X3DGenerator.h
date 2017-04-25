@@ -269,12 +269,6 @@ private:
 	void
 	NicestStyle ();
 
-	///  @name Destruction
-
-	static
-	void
-	dispose (std::ios_base::event event, std::ios_base & stream, int index);
-
 	///  @name Member types
 
 	template <class T>
@@ -285,8 +279,7 @@ private:
 
 	///  @name Members
 
-	StyleType style;
-
+	StyleType   style;
 	std::string comment;
 	std::string space;
 	std::string tidySpace;

@@ -252,6 +252,9 @@ ScriptEditor::set_node (const X3D::SFNode & value)
 	{
 		const auto sourceText = node -> getSourceText ();
 
+		// Realized protos.
+		node -> getExecutionContext () -> realize ();
+
 		node  -> isLive () .addInterest (&ScriptEditor::set_live, this);
 		sourceText -> addInterest (&ScriptEditor::set_sourceText, this);
 

@@ -356,23 +356,19 @@ public:
 
 	static
 	void
-	pushBackIntoArray (const SFNode &, MFNode &, const SFNode &, const UndoStepPtr & undoStep);
+	pushBackIntoArray (const SFNode & parent, MFNode & array, const SFNode & node, const UndoStepPtr & undoStep);
 
 	static
 	void
-	insertIntoArray (const SFNode &, MFNode &, const size_t, const SFNode &, const UndoStepPtr & undoStep);
+	insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const SFNode & node, const UndoStepPtr & undoStep);
 
 	static
 	void
-	insertIntoArray (const SFNode &, MFNode &, const size_t, const MFNode::iterator &, const MFNode::iterator &, const UndoStepPtr & undoStep);
+	insertIntoArray (const SFNode & parent, MFNode & array, const size_t index, const MFNode::iterator & first, const MFNode::iterator & last, const UndoStepPtr & undoStep);
 
 	static
 	void
-	moveValueWithinArray (const SFNode &, MFNode &, const size_t, const size_t, const UndoStepPtr & undoStep);
-
-	static
-	void
-	eraseFromArray (const SFNode &, MFNode &, const size_t, const UndoStepPtr & undoStep);
+	moveValueWithinArray (const SFNode & parent, MFNode & array, const size_t fromIndex, const size_t toIndex, const UndoStepPtr & undoStep);
 
 	///  @name Destruction
 
