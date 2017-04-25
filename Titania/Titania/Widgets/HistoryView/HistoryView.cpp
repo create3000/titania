@@ -90,6 +90,16 @@ HistoryView::configure ()
 {
 	X3DHistoryViewInterface::configure ();
 
+	try
+	{
+		const auto sortOrder  = getConfig () -> getInteger ("sortOrder");
+		const auto sortColumn = getConfig () -> getInteger ("sortColumn");
+
+		getTreeModelSort () -> set_sort_column (sortColumn, Gtk::SortType (sortOrder));
+	}
+	catch (const std::out_of_range &)
+	{ }
+
 	const auto rememberHistory = getBrowserWindow () -> getConfig () -> getInteger ("rememberHistory");
 
 	switch (rememberHistory)
@@ -187,6 +197,18 @@ void
 HistoryView::on_search_changed ()
 {
 	set_history ();
+}
+
+void
+HistoryView::on_column_clicked ()
+{
+	int  sortColumn = 0;
+	auto sortOrder  = Gtk::SortType ();
+
+	getTreeModelSort () -> get_sort_column_id (sortColumn, sortOrder);
+
+	getConfig () -> setItem ("sortOrder",  int32_t (sortOrder));
+	getConfig () -> setItem ("sortColumn", sortColumn);
 }
 
 void

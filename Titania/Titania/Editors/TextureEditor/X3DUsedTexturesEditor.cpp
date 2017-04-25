@@ -75,7 +75,7 @@ X3DUsedTexturesEditor::X3DUsedTexturesEditor () :
 {
 	addChildObjects (preview, times);
 
-	nodeIndex -> setName ("X3DUsedTexturesEditorNodeIndex");
+	nodeIndex -> setName ("UsedTexturesEditor." + nodeIndex -> getName ());
 }
 
 void

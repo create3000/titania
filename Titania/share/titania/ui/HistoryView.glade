@@ -93,6 +93,7 @@
                   <object class="GtkTreeViewColumn" id="Icon">
                     <property name="sizing">autosize</property>
                     <property name="sort_column_id">0</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
                       <object class="GtkCellRendererPixbuf" id="IconRenderer"/>
                       <attributes>
@@ -110,6 +111,7 @@
                     <property name="clickable">True</property>
                     <property name="sort_indicator">True</property>
                     <property name="sort_column_id">1</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
                       <object class="GtkCellRendererText" id="TitleRenderer"/>
                       <attributes>
@@ -127,6 +129,7 @@
                     <property name="clickable">True</property>
                     <property name="sort_indicator">True</property>
                     <property name="sort_column_id">2</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
                       <object class="GtkCellRendererText" id="WorlURLRenderer"/>
                       <attributes>
@@ -144,6 +147,7 @@
                     <property name="clickable">True</property>
                     <property name="sort_indicator">True</property>
                     <property name="sort_column_id">4</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
                       <object class="GtkCellRendererText" id="LastAccessRenderer"/>
                       <attributes>

@@ -102,6 +102,7 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	    displayProtoNodes (false),
 	                types (),
 	            nodeTypes (),
+	              columns (),
 	          hadjustment (new AdjustmentObject ()),
 	          vadjustment (new AdjustmentObject ())
 {
@@ -110,6 +111,12 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	                 nodes,
 	                 node,
 	                 refreshBuffer);
+
+	columns .emplace_back (getImageColumn ());
+	columns .emplace_back (getTypeNameColumn ());
+	columns .emplace_back (getNameColumn ());
+	columns .emplace_back (getImportColumn ());
+	columns .emplace_back (getExportColumn ());
 
 	setup ();
 }
@@ -123,9 +130,6 @@ NodeIndex::initialize ()
 
 	getTreeModelSort () -> set_sort_func (Columns::TYPE_NAME, sigc::mem_fun (this, &NodeIndex::on_compare_type_name));
 	getTreeModelSort () -> set_sort_func (Columns::NAME,      sigc::mem_fun (this, &NodeIndex::on_compare_name));
-
-	getNameColumn ()     -> clicked ();
-	getTypeNameColumn () -> clicked ();
 
 	// Initialize SearchEntryCompletion:
 
@@ -144,6 +148,22 @@ NodeIndex::initialize ()
 	getSearchEntryCompletion () -> add_attribute (*cellrenderer, "text", Search::TYPE_NAME);
 
 	getSearchEntry () .grab_focus ();
+}
+
+void
+NodeIndex::configure ()
+{
+	try
+	{
+		const auto sortOrder  = getConfig () -> getInteger ("sortOrder");
+		const auto sortColumn = getConfig () -> getInteger ("sortColumn");
+
+		getTreeModelSort () -> set_sort_column (sortColumn, Gtk::SortType (sortOrder));
+	}
+	catch (const std::out_of_range &)
+	{
+		getTypeNameColumn () -> clicked ();
+	}
 }
 
 void
@@ -168,6 +188,18 @@ int
 NodeIndex::getIndexColumn () const
 {
 	return Columns::INDEX;
+}
+
+void
+NodeIndex::on_column_clicked ()
+{
+	int  sortColumn = 0;
+	auto sortOrder  = Gtk::SortType ();
+
+	getTreeModelSort () -> get_sort_column_id (sortColumn, sortOrder);
+
+	getConfig () -> setItem ("sortOrder",  int32_t (sortOrder));
+	getConfig () -> setItem ("sortColumn", sortColumn);
 }
 
 int

@@ -85,6 +85,8 @@ PrototypeEditor::PrototypeEditor (X3DBrowserWindow* const browserWindow) :
 	urlNode -> hasEvents (false);
 	urlNode -> setup ();
 
+	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
+
 	setup ();
 }
 

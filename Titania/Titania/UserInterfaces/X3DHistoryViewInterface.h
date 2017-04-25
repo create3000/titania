@@ -202,6 +202,10 @@ public:
 
 	virtual
 	void
+	on_column_clicked () = 0;
+
+	virtual
+	void
 	on_never_toggled () = 0;
 
 	virtual

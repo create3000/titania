@@ -118,6 +118,10 @@ private:
 
 	virtual
 	void
+	on_column_clicked () final override;
+
+	virtual
+	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) final override;
 
 	// Menu

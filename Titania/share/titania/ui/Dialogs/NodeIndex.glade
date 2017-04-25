@@ -116,6 +116,7 @@
                     <property name="visible">False</property>
                     <property name="sizing">autosize</property>
                     <property name="sort_column_id">0</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
                       <object class="GtkCellRendererPixbuf" id="CellRendererImage"/>
                       <attributes>
@@ -131,6 +132,7 @@
                     <property name="clickable">True</property>
                     <property name="sort_indicator">True</property>
                     <property name="sort_column_id">1</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext1">
                         <property name="weight">700</property>
@@ -149,6 +151,7 @@
                     <property name="clickable">True</property>
                     <property name="sort_indicator">True</property>
                     <property name="sort_column_id">2</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext2"/>
                       <attributes>
@@ -158,9 +161,10 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+                  <object class="GtkTreeViewColumn" id="ImportColumn">
                     <property name="sizing">autosize</property>
                     <property name="sort_column_id">3</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
                       <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf1"/>
                       <attributes>
@@ -170,9 +174,10 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkTreeViewColumn" id="treeviewcolumn5">
+                  <object class="GtkTreeViewColumn" id="ExportColumn">
                     <property name="sizing">autosize</property>
                     <property name="sort_column_id">4</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
                       <object class="GtkCellRendererPixbuf" id="cellrendererpixbuf2"/>
                       <attributes>

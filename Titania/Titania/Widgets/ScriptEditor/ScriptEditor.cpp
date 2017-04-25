@@ -87,6 +87,8 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 
 	textView .get_style_context () -> add_class ("titania-console");
 
+	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
+
 	addChildObjects (node);
 
 	setup ();

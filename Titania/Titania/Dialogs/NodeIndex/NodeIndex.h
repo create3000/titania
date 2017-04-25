@@ -145,11 +145,19 @@ private:
 
 	virtual
 	void
+	configure () final override;
+
+	virtual
+	void
 	on_map () final override;
 
 	virtual
 	void
 	on_unmap () final override;
+
+	virtual
+	void
+	on_column_clicked () final override;
 
 	int
 	on_compare_type_name (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs);
@@ -223,6 +231,7 @@ private:
 	bool                                                displayProtoNodes;
 	std::set <X3D::X3DConstants::NodeType>              types;
 	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;
+	std::vector <Glib::RefPtr <Gtk::TreeViewColumn>>    columns;
 
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;

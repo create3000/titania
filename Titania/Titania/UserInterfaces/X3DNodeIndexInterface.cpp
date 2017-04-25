@@ -67,6 +67,8 @@ X3DNodeIndexInterface::create (const std::string & filename)
 	m_CellRendererImage     = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("CellRendererImage"));
 	m_TypeNameColumn        = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("TypeNameColumn"));
 	m_NameColumn            = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("NameColumn"));
+	m_ImportColumn          = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ImportColumn"));
+	m_ExportColumn          = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("ExportColumn"));
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
@@ -89,6 +91,13 @@ X3DNodeIndexInterface::create (const std::string & filename)
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_row_activated));
+
+	// Connect object Gtk::TreeViewColumn with id 'ImageColumn'.
+	m_ImageColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_column_clicked));
+	m_TypeNameColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_column_clicked));
+	m_NameColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_column_clicked));
+	m_ImportColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_column_clicked));
+	m_ExportColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_column_clicked));
 
 	// Call construct handler of base class.
 	construct ();

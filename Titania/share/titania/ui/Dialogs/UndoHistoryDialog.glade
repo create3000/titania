@@ -23,7 +23,7 @@
     <property name="skip_pager_hint">True</property>
     <child>
       <object class="GtkBox" id="Widget">
-        <property name="name">NodeIndex</property>
+        <property name="name">UndoHistory</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>

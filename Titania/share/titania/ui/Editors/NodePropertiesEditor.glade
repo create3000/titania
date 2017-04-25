@@ -605,6 +605,9 @@
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="menu_label">Common Properties</property>
+              </packing>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="label10">
@@ -783,6 +786,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">User-Defined Fields</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -851,6 +855,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Source Text</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -984,6 +989,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Imported Nodes</property>
                 <property name="position">3</property>
               </packing>
             </child>
@@ -1132,6 +1138,7 @@
                 </child>
               </object>
               <packing>
+                <property name="menu_label">Exported Nodes</property>
                 <property name="position">4</property>
               </packing>
             </child>

@@ -74,7 +74,7 @@ X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 {
 	addChildObjects (preview, times);
 
-	nodeIndex -> setName ("X3DUsedMaterialsEditorNodeIndex");
+	nodeIndex -> setName ("UsedMaterialsEditor." + nodeIndex -> getName ());
 }
 
 void

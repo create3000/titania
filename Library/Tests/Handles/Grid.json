@@ -150,6 +150,7 @@
 "",
 "",
 "",
+"",
 ""
                             ]
                           }
@@ -967,6 +968,7 @@
 "",
 "\tgrid .set_coordIndex = coordIndex;",
 "}",
+"",
 "",
 "",
 "",
@@ -1815,6 +1817,7 @@
 "",
 "",
 "",
+"",
 ""
                     ],
                     "IS": {
@@ -1922,7 +1925,36 @@
                           {
                             "@DEF": "nodes",
                             "@name": "nodes",
-                            "@reference": "http://titania.create3000.de"
+                            "@reference": "http://titania.create3000.de",
+                            "-value": [
+                              { "Transform":
+                                {
+                                  "@DEF": "Grid2",
+                                  "@translation": [ -11.7894, 0, 0 ],
+                                  "-children": [
+                                    { "ProtoInstance":
+                                      {
+                                        "@name": "Grid",
+                                        "fieldValue": [
+                                          {
+                                            "@name": "zDimension",
+                                            "@value": 20
+                                          },
+                                          {
+                                            "@name": "color",
+                                            "@value": [ 1, 0.5, 0 ]
+                                          },
+                                          {
+                                            "@name": "transparency",
+                                            "@value": 0
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
                           }
                         }
                       ]
@@ -2005,6 +2037,7 @@
         },
         { "Transform":
           {
+            "@DEF": "Grid1",
             "@translation": [ 18.4389, 0, 0 ],
             "-children": [
               { "ProtoInstance":
@@ -2031,28 +2064,7 @@
         },
         { "Transform":
           {
-            "@translation": [ -11.7894, 0, 0 ],
-            "-children": [
-              { "ProtoInstance":
-                {
-                  "@name": "Grid",
-                  "fieldValue": [
-                    {
-                      "@name": "zDimension",
-                      "@value": 20
-                    },
-                    {
-                      "@name": "color",
-                      "@value": [ 1, 0.5, 0 ]
-                    },
-                    {
-                      "@name": "transparency",
-                      "@value": 0
-                    }
-                  ]
-                }
-              }
-            ]
+            "@USE": "Grid2"
           }
         },
         { "Transform":
@@ -2233,6 +2245,7 @@
 "",
 "\treturn false;",
 "}",
+"",
 "",
 "",
 "",

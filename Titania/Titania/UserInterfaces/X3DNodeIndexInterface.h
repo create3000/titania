@@ -126,6 +126,14 @@ public:
 	getNameColumn () const
 	{ return m_NameColumn; }
 
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getImportColumn () const
+	{ return m_ImportColumn; }
+
+	const Glib::RefPtr <Gtk::TreeViewColumn> &
+	getExportColumn () const
+	{ return m_ExportColumn; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -176,6 +184,10 @@ public:
 	void
 	on_row_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
 
+	virtual
+	void
+	on_column_clicked () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -208,6 +220,8 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CellRendererImage;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_TypeNameColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_ImportColumn;
+	Glib::RefPtr <Gtk::TreeViewColumn> m_ExportColumn;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
