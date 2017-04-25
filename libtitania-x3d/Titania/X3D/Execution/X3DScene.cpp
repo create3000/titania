@@ -1114,7 +1114,7 @@ X3DScene::toJSONStream (std::ostream & ostream) const
 			{
 				std::ostringstream osstream;
 	
-				osstream << JSONEncode (exportedNode .second);
+				osstream << SetGenerator (ostream) << JSONEncode (exportedNode .second);
 	
 				exportedNodes .emplace_back (osstream .str ());
 			}

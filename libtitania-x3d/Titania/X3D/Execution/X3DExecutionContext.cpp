@@ -1707,7 +1707,7 @@ X3DExecutionContext::toJSONStream (std::ostream & ostream) const
 			{
 				std::ostringstream osstream;
 	
-				osstream << JSONEncode (importedNode .second);
+				osstream << SetGenerator (ostream) << JSONEncode (importedNode .second);
 	
 				importedNodes .emplace_back (osstream .str ());
 			}

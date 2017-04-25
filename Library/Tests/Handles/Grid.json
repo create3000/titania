@@ -151,6 +151,9 @@
 "",
 "",
 "",
+"",
+"",
+"",
 ""
                             ]
                           }
@@ -968,6 +971,9 @@
 "",
 "\tgrid .set_coordIndex = coordIndex;",
 "}",
+"",
+"",
+"",
 "",
 "",
 "",
@@ -1818,6 +1824,9 @@
 "",
 "",
 "",
+"",
+"",
+"",
 ""
                     ],
                     "IS": {
@@ -1929,15 +1938,15 @@
                             "-value": [
                               { "Transform":
                                 {
-                                  "@DEF": "Grid2",
-                                  "@translation": [ -11.7894, 0, 0 ],
+                                  "@DEF": "Grid1",
+                                  "@translation": [ 18.4389, 0, 0 ],
                                   "-children": [
                                     { "ProtoInstance":
                                       {
                                         "@name": "Grid",
                                         "fieldValue": [
                                           {
-                                            "@name": "zDimension",
+                                            "@name": "xDimension",
                                             "@value": 20
                                           },
                                           {
@@ -2037,15 +2046,20 @@
         },
         { "Transform":
           {
-            "@DEF": "Grid1",
-            "@translation": [ 18.4389, 0, 0 ],
+            "@USE": "Grid1"
+          }
+        },
+        { "Transform":
+          {
+            "@DEF": "Grid2",
+            "@translation": [ -11.7894, 0, 0 ],
             "-children": [
               { "ProtoInstance":
                 {
                   "@name": "Grid",
                   "fieldValue": [
                     {
-                      "@name": "xDimension",
+                      "@name": "zDimension",
                       "@value": 20
                     },
                     {
@@ -2060,11 +2074,6 @@
                 }
               }
             ]
-          }
-        },
-        { "Transform":
-          {
-            "@USE": "Grid2"
           }
         },
         { "Transform":
@@ -2264,8 +2273,21 @@
 "",
 "",
 "",
+"",
+"",
+"",
 ""
             ]
+          }
+        },
+        { "EXPORT":
+          {
+            "@localDEF": "Grid1"
+          }
+        },
+        { "EXPORT":
+          {
+            "@localDEF": "Grid2"
           }
         }
       ]
