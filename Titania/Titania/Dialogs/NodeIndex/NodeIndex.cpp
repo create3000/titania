@@ -83,6 +83,7 @@ static constexpr int NAME           = 2;
 static constexpr int IMPORTED_NODES = 3;
 static constexpr int EXPORTED_NODES = 4;
 static constexpr int INDEX          = 5;
+static constexpr int PROTO          = 6;
 
 };
 
@@ -120,7 +121,8 @@ NodeIndex::initialize ()
 
 	// Initialize tree view:
 
-	getTreeModelSort () -> set_sort_func (Columns::NAME, sigc::mem_fun (this, &NodeIndex::on_compare_name));
+	getTreeModelSort () -> set_sort_func (Columns::TYPE_NAME, sigc::mem_fun (this, &NodeIndex::on_compare_type_name));
+	getTreeModelSort () -> set_sort_func (Columns::NAME,      sigc::mem_fun (this, &NodeIndex::on_compare_name));
 
 	getNameColumn ()     -> clicked ();
 	getTypeNameColumn () -> clicked ();
@@ -169,8 +171,41 @@ NodeIndex::getIndexColumn () const
 }
 
 int
+NodeIndex::on_compare_type_name (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs)
+{
+	bool lhsProto = false;
+	bool rhsProto = false;
+
+	lhs -> get_value (Columns::PROTO, lhsProto);
+	rhs -> get_value (Columns::PROTO, rhsProto);
+
+	if (lhsProto ^ rhsProto)
+		return lhsProto ? -1 : 1;
+
+	std::string lhsString;
+	std::string rhsString;
+
+	lhs -> get_value (Columns::TYPE_NAME, lhsString);
+	rhs -> get_value (Columns::TYPE_NAME, rhsString);
+
+	if (lhsString == rhsString)
+		return 0;
+
+	return lhsString < rhsString ? -1 : 1;
+}
+
+int
 NodeIndex::on_compare_name (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs)
 {
+	bool lhsProto = false;
+	bool rhsProto = false;
+
+	lhs -> get_value (Columns::PROTO, lhsProto);
+	rhs -> get_value (Columns::PROTO, rhsProto);
+
+	if (lhsProto ^ rhsProto)
+		return lhsProto ? -1 : 1;
+
 	std::string lhsString;
 	std::string rhsString;
 
@@ -395,6 +430,7 @@ NodeIndex::setNodes (X3D::MFNode && value)
 		row -> set_value (Columns::NAME,           getNodeName (node));
 		row -> set_value (Columns::IMPORTED_NODES, importingInlines .count (node) ? document_import : empty_string);
 		row -> set_value (Columns::EXPORTED_NODES, exportedNodes .count (node)    ? document_export : empty_string);
+		row -> set_value (Columns::PROTO,          node -> getExecutionContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }));
 		row -> set_value (Columns::INDEX,          index);
 
 		node -> getExecutionContext () -> name_changed () .addInterest (&NodeIndex::set_name, this, index);

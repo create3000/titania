@@ -16,6 +16,8 @@
       <column type="gchararray"/>
       <!-- column-name Index -->
       <column type="guint"/>
+      <!-- column-name Proto -->
+      <column type="gboolean"/>
     </columns>
   </object>
   <object class="GtkTreeModelSort" id="TreeModelSort">

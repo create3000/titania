@@ -152,6 +152,9 @@ private:
 	on_unmap () final override;
 
 	int
+	on_compare_type_name (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs);
+
+	int
 	on_compare_name (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs);
 
 	void
