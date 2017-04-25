@@ -1410,6 +1410,109 @@ X3DEditor::getImportedRoutes (const X3DExecutionContextPtr & executionContext, c
  *
  *
  *
+ * Prototype operations
+ *
+ *
+ *
+ */
+
+void
+X3DEditor::requestUpdateInstances (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep)
+{
+	const X3DProtoDeclarationNodePtr proto (executionContext);
+
+	if (proto)
+	{
+		undoStep -> addUndoFunction (&X3DProtoDeclarationNode::requestUpdateInstances, proto);
+		undoStep -> addRedoFunction (&X3DProtoDeclarationNode::requestUpdateInstances, proto);
+		proto -> requestUpdateInstances ();
+	}
+}
+
+void
+X3DEditor::requestUpdateInstances (const SFNode & node, const UndoStepPtr & undoStep)
+{
+	requestUpdateInstances (X3DExecutionContextPtr (node -> getExecutionContext ()), undoStep);
+}
+
+void
+X3DEditor::addReference (const SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
+{
+	undoStep -> addObjects (node, FieldPtr (field), FieldPtr (protoField));
+
+	undoStep -> addUndoFunction (&X3DFieldDefinition::addEvent, field);
+	undoStep -> addUndoFunction (&X3DFieldDefinition::set, field, std::bind (&X3DEditor::getField, FieldPtr (field -> copy (FLAT_COPY))));
+	undoStep -> addUndoFunction (&X3DFieldDefinition::removeReference, field, protoField);
+	undoStep -> addRedoFunction (&X3DFieldDefinition::addReference,    field, protoField);
+	field -> addReference (protoField);
+
+	requestUpdateInstances (node, undoStep);
+}
+
+void
+X3DEditor::removeReference (const SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
+{
+	undoStep -> addObjects (node, FieldPtr (field), FieldPtr (protoField));
+
+	undoStep -> addUndoFunction (&X3DFieldDefinition::addReference,    field, protoField);
+	undoStep -> addRedoFunction (&X3DFieldDefinition::removeReference, field, protoField);
+	field -> removeReference (protoField);
+
+	requestUpdateInstances (node, undoStep);
+}
+
+void
+X3DEditor::removeReferences (const SFNode & node, const UndoStepPtr & undoStep)
+{
+	for (const auto & field : node -> getFieldDefinitions ())
+	{
+		const auto references = field -> getReferences ();
+
+		for (const auto & protoField : references)
+			removeReference (node, field, protoField, undoStep);
+	}
+}
+
+const X3DFieldDefinition &
+X3DEditor::getField (const FieldPtr & fieldPtr)
+{
+	return *fieldPtr .getValue ();
+}
+
+/***
+ *
+ *
+ *
+ * Fields operations
+ *
+ *
+ *
+ */
+
+void
+X3DEditor::setValue (const SFNode & node, X3DFieldDefinition & field, const X3DFieldDefinition & value, const UndoStepPtr & undoStep)
+{
+	if (field .getType () not_eq value .getType ())
+		return;
+
+	undoStep -> addObjects (node, FieldPtr (&field));
+	
+	undoStep -> addUndoFunction (&X3DFieldDefinition::addEvent, &field);
+	undoStep -> addUndoFunction (&X3DFieldDefinition::set, &field, std::bind (&X3DEditor::getField, FieldPtr (field .copy (FLAT_COPY))));
+
+	field .set (value);
+	field .addEvent ();
+
+	undoStep -> addRedoFunction (&X3DFieldDefinition::set, &field, std::bind (&X3DEditor::getField, FieldPtr (field .copy (FLAT_COPY))));
+	undoStep -> addUndoFunction (&X3DFieldDefinition::addEvent, &field);
+
+	requestUpdateInstances (node, undoStep);
+}
+
+/***
+ *
+ *
+ *
  * User-defined fields operations
  *
  *
@@ -1642,25 +1745,6 @@ X3DEditor::removeRoutes (X3DFieldDefinition* const field, const UndoStepPtr & un
 }
 
 void
-X3DEditor::requestUpdateInstances (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep)
-{
-	const X3DProtoDeclarationNodePtr proto (executionContext);
-
-	if (proto)
-	{
-		undoStep -> addUndoFunction (&X3DProtoDeclarationNode::requestUpdateInstances, proto);
-		undoStep -> addRedoFunction (&X3DProtoDeclarationNode::requestUpdateInstances, proto);
-		proto -> requestUpdateInstances ();
-	}
-}
-
-void
-X3DEditor::requestUpdateInstances (const SFNode & node, const UndoStepPtr & undoStep)
-{
-	requestUpdateInstances (X3DExecutionContextPtr (node -> getExecutionContext ()), undoStep);
-}
-
-void
 X3DEditor::replaceReferences (const ProtoDeclarationPtr & proto, X3DFieldDefinition* const oldField, X3DFieldDefinition* const newField, const UndoStepPtr & undoStep)
 {
 	using namespace std::placeholders;
@@ -1714,42 +1798,6 @@ X3DEditor::removeReferencesCallback (SFNode & node, X3DFieldDefinition* const pr
 	}
 
 	return true;
-}
-
-void
-X3DEditor::addReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
-{
-	undoStep -> addObjects (node, FieldPtr (field), FieldPtr (protoField));
-
-	undoStep -> addUndoFunction (&X3DFieldDefinition::removeReference, field, protoField);
-	undoStep -> addRedoFunction (&X3DFieldDefinition::addReference,    field, protoField);
-	field -> addReference (protoField);
-
-	requestUpdateInstances (node, undoStep);
-}
-
-void
-X3DEditor::removeReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep)
-{
-	undoStep -> addObjects (node, FieldPtr (field), FieldPtr (protoField));
-
-	undoStep -> addUndoFunction (&X3DFieldDefinition::addReference,    field, protoField);
-	undoStep -> addRedoFunction (&X3DFieldDefinition::removeReference, field, protoField);
-	field -> removeReference (protoField);
-
-	requestUpdateInstances (node, undoStep);
-}
-
-void
-X3DEditor::removeReferences (const SFNode & node, const UndoStepPtr & undoStep)
-{
-	for (const auto & field : node -> getFieldDefinitions ())
-	{
-		const auto references = field -> getReferences ();
-
-		for (const auto & protoField : references)
-			removeReference (node, field, protoField, undoStep);
-	}
 }
 
 /***
@@ -2289,7 +2337,7 @@ X3DEditor::addNodesToActiveLayer (const WorldPtr & world, const MFNode & nodes, 
 	undoStep -> addObjects (world -> getExecutionContext (), activeLayer);
 	children .append (nodes);
 
-	const auto removeUndoStep = std::make_shared <X3D::UndoStep> ("");
+	const auto removeUndoStep = std::make_shared <UndoStep> ("");
 
 	removeNodesFromScene (X3DExecutionContextPtr (world -> getExecutionContext ()), nodes, true, removeUndoStep);
 	undoStep -> addUndoFunction (&UndoStep::redo, removeUndoStep);

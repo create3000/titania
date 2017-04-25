@@ -208,6 +208,34 @@ public:
 	std::vector <std::tuple <SFNode, std::string, SFNode, std::string>>
 	getImportedRoutes (const X3DExecutionContextPtr & executionContext, const X3DScenePtr &);
 
+	///  @name Prototype operations
+
+	static
+	void
+	requestUpdateInstances (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
+
+	static
+	void
+	requestUpdateInstances (const SFNode & node, const UndoStepPtr & undoStep);
+
+	static
+	void
+	addReference (const SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep);
+	
+	static
+	void
+	removeReference (const SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep);
+
+	static
+	void
+	removeReferences (const SFNode & node, const UndoStepPtr & undoStep);
+
+	///  @name Fields operations
+
+	static
+	void
+	setValue (const SFNode & node, X3DFieldDefinition & field, const X3DFieldDefinition & value, const UndoStepPtr & undoStep);
+
 	///  @name User-defined fields operations
 
 	static
@@ -225,28 +253,6 @@ public:
 	static
 	void
 	setUserDefinedFields (const SFNode &, const FieldDefinitionArray &, const UndoStepPtr & undoStep);
-
-	///  @name Prototype operations
-
-	static
-	void
-	requestUpdateInstances (const X3DExecutionContextPtr & executionContext, const UndoStepPtr & undoStep);
-
-	static
-	void
-	requestUpdateInstances (const SFNode & node, const UndoStepPtr & undoStep);
-
-	static
-	void
-	addReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep);
-	
-	static
-	void
-	removeReference (const X3D::SFNode & node, X3DFieldDefinition* const field, X3DFieldDefinition* const protoField, const UndoStepPtr & undoStep);
-
-	static
-	void
-	removeReferences (const SFNode & node, const UndoStepPtr & undoStep);
 
 	///  @name Grouping operations
 
@@ -421,6 +427,12 @@ private:
 	void
 	deleteRoutes (const X3DExecutionContextPtr & executionContext, const SFNode &, const UndoStepPtr & undoStep);
 
+	///  @name Fields operations
+
+	static
+	const X3DFieldDefinition &
+	getField (const FieldPtr & fieldPtr);
+
 	///  @name User-defined fields operations
 
 	static
@@ -442,7 +454,7 @@ private:
 	static
 	bool
 	removeReferencesCallback (SFNode &, X3DFieldDefinition* const, const UndoStepPtr & undoStep);
-	                      
+
 	///  @name Grouping operations
 
 	static
