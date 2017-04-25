@@ -65,6 +65,18 @@ class NodeIndex :
 {
 public:
 
+	struct Columns
+	{
+		static constexpr int IMAGE          = 0;
+		static constexpr int TYPE_NAME      = 1;
+		static constexpr int NAME           = 2;
+		static constexpr int IMPORTED_NODES = 3;
+		static constexpr int EXPORTED_NODES = 4;
+		static constexpr int INDEX          = 5;
+		static constexpr int PROTO          = 6;
+	
+	};
+
 	///  @name Construction
 
 	NodeIndex (X3DBrowserWindow* const browserWindow);

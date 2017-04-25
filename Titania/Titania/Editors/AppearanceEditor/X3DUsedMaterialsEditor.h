@@ -94,6 +94,9 @@ private:
 	void
 	set_initialized ();
 
+	int
+	on_compare_image (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs);
+
 	void
 	set_material ();
 

@@ -109,6 +109,8 @@ X3DUsedMaterialsEditor::initialize ()
 	nodeIndex -> getListStore () -> signal_row_changed ()  .connect (sigc::mem_fun (this, &X3DUsedMaterialsEditor::on_row_changed));
 	nodeIndex -> getImageColumn () -> set_visible (true);
 	nodeIndex -> getCellRendererImage () -> property_stock_size () = ICON_SIZE;
+
+	nodeIndex -> getTreeModelSort () -> set_sort_func (NodeIndex::Columns::IMAGE, sigc::mem_fun (this, &X3DUsedMaterialsEditor::on_compare_image));
 }
 
 void
@@ -118,6 +120,36 @@ X3DUsedMaterialsEditor::set_initialized ()
 
 	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
 		nodeIndex -> rowChanged (i);
+}
+
+int
+X3DUsedMaterialsEditor::on_compare_image (const Gtk::TreeModel::iterator & lhs, const Gtk::TreeModel::iterator & rhs)
+{
+	try
+	{
+		uint32_t lhsIndex = 0;
+		uint32_t rhsIndex = 0;
+	
+		lhs -> get_value (NodeIndex::Columns::INDEX, lhsIndex);
+		rhs -> get_value (NodeIndex::Columns::INDEX, rhsIndex);
+	
+		const auto & lhsColor = nodeIndex -> getNodes () .at (lhsIndex) -> getField <X3D::SFColor> ("diffuseColor");
+		const auto & rhsColor = nodeIndex -> getNodes () .at (rhsIndex) -> getField <X3D::SFColor> ("diffuseColor");
+		
+		if (lhsColor == rhsColor)
+			return 0;
+	
+		float lh, ls, lv, rh, rs, rv;
+	
+		lhsColor .getHSV (lh, ls, lv);
+		rhsColor .getHSV (rh, rs, rv);
+	
+		return std::tie (lh, ls, lv) < std::tie (rh, rs, rv) ? -1 : 1;
+	}
+	catch (const std::exception &)
+	{
+		return -1;
+	}
 }
 
 void
