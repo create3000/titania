@@ -118,8 +118,6 @@ NodeIndex::initialize ()
 {
 	X3DNodeIndexInterface::initialize ();
 
-	getCurrentContext () .addInterest (&NodeIndex::setSelection, this, nullptr);
-
 	// Initialize tree view:
 
 	getTreeModelSort () -> set_sort_func (Columns::NAME, sigc::mem_fun (this, &NodeIndex::on_compare_name));

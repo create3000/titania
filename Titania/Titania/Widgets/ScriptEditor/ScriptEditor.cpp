@@ -164,7 +164,7 @@ ScriptEditor::restore ()
 
 			ScriptEditorDatabase database;
 
-			const auto item = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), node -> getName ());
+			const auto item = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), getNodePath (node));
 			auto       iter = Gtk::TextIter ();
 
 			getTextView () .get_iter_at_location (iter, std::get <1> (item), std::get <2> (item));
@@ -224,11 +224,15 @@ ScriptEditor::set_executionContext (const X3D::X3DExecutionContextPtr & executio
 			ScriptEditorDatabase database;
 	
 			const auto item     = database .getItem (executionContext -> getWorldURL () .filename ());
-			const auto nodeName = std::get <0> (item);
-			const auto node     = executionContext -> getNamedNode (nodeName);
+			const auto nodePath = std::get <0> (item);
+			const auto node     = getNodeFromPath (nodePath);
 	
 			if (nodeTypes .count (node -> getType () .back ()))
+			{
+				nodeIndex -> setSelection (node);
+
 				return set_node (node);
+			}
 		}
 	}
 	catch (const std::exception & error)
@@ -558,7 +562,7 @@ ScriptEditor::save ()
 			getTextView () .window_to_buffer_coords (Gtk::TEXT_WINDOW_TEXT, 0, 0, x, y);
 
 			database .setItem (node -> getExecutionContext () -> getWorldURL () .filename (),
-			                   node -> getName (),
+			                   getNodePath (node),
 			                   x,
 			                   y);
 		}
@@ -567,6 +571,37 @@ ScriptEditor::save ()
 	{
 		//__LOG__ << error .what () << std::endl;
 	}
+}
+
+X3D::SFNode
+ScriptEditor::getNodeFromPath (const std::string & nodePath)
+{
+	X3D::X3DExecutionContext* executionContext = getCurrentScene ();
+	auto path                                  = std::deque <std::string> ();
+
+	basic::split (std::back_inserter (path), nodePath, ".");
+
+	for (int32_t i = 0, size = path .size () - 1; i < size; ++ i)
+		executionContext = executionContext -> getProtoDeclaration (path [i]);
+
+	return executionContext -> getNamedNode (path .back ());
+}
+
+std::string
+ScriptEditor::getNodePath (const X3D::SFNode & node) const
+{
+	const auto nodeName         = node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ();
+	auto       path             = std::string ();
+	auto       executionContext = node -> getExecutionContext ();
+
+	while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+	{
+		path = executionContext -> getName () + '.' + path;
+
+		executionContext = executionContext -> getExecutionContext ();
+	}
+
+	return path + Glib::Markup::escape_text (nodeName);
 }
 
 void
