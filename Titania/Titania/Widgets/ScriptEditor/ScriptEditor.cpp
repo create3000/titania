@@ -102,15 +102,9 @@ ScriptEditor::initialize ()
 	X3DShaderEditor::initialize ();
 	X3DScriptEditorPreferences::initialize ();
 
-	// Config
-
-	getEditProtosButton () .set_active (getConfig () -> getBoolean ("editProtos"));
-
-	if (getConfig () -> hasItem ("paned"))
-		getPaned () .set_position (getConfig () -> getInteger ("paned"));
-
-	if (getConfig () -> hasItem ("sidePaned"))
-		getSidePaned () .set_position (getConfig () -> getInteger ("sidePaned"));
+	#ifndef TITANIA_FEATURE
+	getEditProtosButton () .set_visible (false);
+	#endif
 
 	// Text view
 
@@ -149,6 +143,16 @@ void
 ScriptEditor::configure ()
 {
 	X3DScriptEditorInterface::configure ();
+
+	// Config
+
+	getEditProtosButton () .set_active (getConfig () -> getBoolean ("editProtos"));
+
+	if (getConfig () -> hasItem ("paned"))
+		getPaned () .set_position (getConfig () -> getInteger ("paned"));
+
+	if (getConfig () -> hasItem ("sidePaned"))
+		getSidePaned () .set_position (getConfig () -> getInteger ("sidePaned"));
 
 	restore ();
 }
