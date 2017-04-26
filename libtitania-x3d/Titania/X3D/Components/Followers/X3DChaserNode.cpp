@@ -102,7 +102,7 @@ X3DChaserNode::stepResponse (const time_type & t) const
 void
 X3DChaserNode::set_duration ()
 {
-	stepTime = duration () / time_type (getNumBuffers ());
+	stepTime = duration () / getNumBuffers ();
 }
 
 } // X3D
