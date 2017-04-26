@@ -60,7 +60,7 @@ X3DChaserNode::Fields::Fields () :
 X3DChaserNode::X3DChaserNode () :
 	X3DFollowerNode (),
 	         fields (),
-	       stepTime ()
+	       stepTime (0)
 {
 	addType (X3DConstants::X3DChaserNode);
 }
@@ -102,7 +102,7 @@ X3DChaserNode::stepResponse (const time_type & t) const
 void
 X3DChaserNode::set_duration ()
 {
-	stepTime = duration () / getNumBuffers ();
+	stepTime = duration () / time_type (getNumBuffers ());
 }
 
 } // X3D
