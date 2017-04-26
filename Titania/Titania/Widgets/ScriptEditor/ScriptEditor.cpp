@@ -166,7 +166,7 @@ ScriptEditor::restore ()
 
 			ScriptEditorDatabase database;
 
-			const auto item = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), getNodePath (node));
+			const auto item = database .getItem (node -> getExecutionContext () -> getWorldURL () .filename (), getPathFromNode (node));
 			auto       iter = Gtk::TextIter ();
 
 			getTextView () .get_iter_at_location (iter, std::get <1> (item), std::get <2> (item));
@@ -564,7 +564,7 @@ ScriptEditor::save ()
 			getTextView () .window_to_buffer_coords (Gtk::TEXT_WINDOW_TEXT, 0, 0, x, y);
 
 			database .setItem (node -> getExecutionContext () -> getWorldURL () .filename (),
-			                   getNodePath (node),
+			                   getPathFromNode (node),
 			                   x,
 			                   y);
 		}
@@ -586,24 +586,32 @@ ScriptEditor::getNodeFromPath (const std::string & nodePath)
 	for (int32_t i = 0, size = path .size () - 1; i < size; ++ i)
 		executionContext = executionContext -> getProtoDeclaration (path [i]);
 
-	return executionContext -> getNamedNode (path .back ());
+	return executionContext -> getNamedNode (path .empty () ? nodePath : path .back ());
 }
 
 std::string
+ScriptEditor::getPathFromNode (const X3D::SFNode & node) const
+{
+	const auto path = getNodePath (node);
+
+	return basic::join (path .begin (), path .end (), ".");
+}
+
+std::deque <std::string>
 ScriptEditor::getNodePath (const X3D::SFNode & node) const
 {
 	const auto nodeName         = node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ();
-	auto       path             = std::string ();
+	auto       path             = std::deque <std::string> ({ nodeName });
 	auto       executionContext = node -> getExecutionContext ();
 
 	while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
 	{
-		path = executionContext -> getName () + '.' + path;
+		path .emplace_front (executionContext -> getName ());
 
 		executionContext = executionContext -> getExecutionContext ();
 	}
 
-	return path + Glib::Markup::escape_text (nodeName);
+	return path;
 }
 
 void

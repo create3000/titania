@@ -213,6 +213,9 @@ private:
 	getNodeFromPath (const std::string & nodePath);
 
 	std::string
+	getPathFromNode (const X3D::SFNode & node) const;
+
+	std::deque <std::string>
 	getNodePath (const X3D::SFNode & node) const;
 
 	virtual

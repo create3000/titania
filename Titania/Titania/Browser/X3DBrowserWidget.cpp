@@ -133,9 +133,11 @@ X3DBrowserWidget::set_initialized ()
 	const auto empty     = browsers .empty ();
 	auto       worldURLs = std::vector <std::string> ();
 	auto       histories = std::vector <std::string> ();
+	auto       recent    = std::vector <std::string> ();
 
 	basic::split (std::back_inserter (worldURLs), getConfig () -> getString ("worldURL"), "\n");
 	basic::split (std::back_inserter (histories), getConfig () -> getString ("history"),  "\n");
+	basic::split (std::back_inserter (recent), getConfig () -> getString ("recent"),  "\n");
 
 	if (worldURLs .empty () and empty)
 		worldURLs .emplace_back (get_page ("about/home.x3dv"));
@@ -162,6 +164,14 @@ X3DBrowserWidget::set_initialized ()
 	}
 	else
 		getBrowserNotebook () .set_current_page (0);
+
+	for (const auto & URL : recent)
+	{
+		const auto iter = getBrowser (URL);
+
+		if (iter not_eq getBrowsers () .end ())
+			recentBrowsers .emplace_back (*iter);
+	}
 
 	// 
 
@@ -893,6 +903,20 @@ X3DBrowserWidget::quit ()
 
 	std::deque <std::string> worldURLs;
 	std::deque <std::string> browserHistories;
+	std::deque <std::string> recentScenes;
+
+	for (const auto & browser : recentBrowsers)
+	{
+		const auto userData = getUserData (browser);
+
+		auto URL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
+
+		if (not browser -> isInitialized ())
+			URL = userData -> URL;
+
+		if (not URL .empty ())
+			recentScenes .emplace_back (URL);
+	}
 
 	for (const auto & browser : browsers)
 	{
@@ -919,6 +943,7 @@ X3DBrowserWidget::quit ()
 	getConfig () -> setItem ("currentPage", currentPage);
 	getConfig () -> setItem ("worldURL",    basic::join (worldURLs, "\n"));
 	getConfig () -> setItem ("history",     basic::join (browserHistories, "\n"));
+	getConfig () -> setItem ("recent",      basic::join (recentScenes, "\n"));
 
 	X3DBrowserWindowInterface::quit ();
 	return false;
