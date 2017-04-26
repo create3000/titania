@@ -48,9 +48,9 @@
  *
  ******************************************************************************/
 
-#include "mkstemps.h"
+#include "rename.h"
 
-#include <unistd.h>
+#include <stdio.h>
 
 namespace titania {
 namespace os {

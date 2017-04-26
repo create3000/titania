@@ -107,60 +107,46 @@ public:
 			if (outputFilename .is_relative ())
 				outputFilename = basic::uri (os::cwd ()) .transform (outputFilename);
 
-			std::string tmpFilename = "/tmp/titania-XXXXXX" + outputFilename .suffix ();
+			auto ofstream = std::ofstream (outputFilename .path ());
 
-			try
+			X3D::Generator::Style (ofstream, options .exportStyle);
+
+			if (not ofstream)
+				throw std::runtime_error ("Couldn't save file.");
+
+			// Create temp file
+
+			if (outputFilename .suffix () == ".x3dz")
 			{
-				auto ofstream = os::mkstemps (tmpFilename, outputFilename .suffix () .size ());
+				basic::ogzstream ogzstream (outputFilename .path ());
 
-				X3D::Generator::Style (ofstream, options .exportStyle);
-	
-				if (not ofstream)
-					throw std::runtime_error ("Couldn't save file.");
+				X3D::Generator::Style (ogzstream, options .exportStyle);
 
-				// Create temp file
-
-				if (outputFilename .suffix () == ".x3dz")
-				{
-					basic::ogzstream ogzstream (tmpFilename);
-
-					X3D::Generator::Style (ogzstream, options .exportStyle);
-	
-					ogzstream << X3D::XMLEncode (scene);
-				}
-				else if (outputFilename .suffix () == ".x3d")
-					ofstream << X3D::XMLEncode (scene);
-
-				else if (outputFilename .suffix () == ".json")
-					ofstream << X3D::JSONEncode (scene);
-
-				else if (outputFilename .suffix () == ".x3dvz")
-				{
-					if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
-						scene -> setSpecificationVersion (X3D::LATEST_VERSION);
-
-					basic::ogzstream ogzstream (tmpFilename);
-
-					X3D::Generator::Style (ogzstream, options .exportStyle);
-	
-					ogzstream << scene;
-				}
-				else
-				{
-					if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
-						scene -> setSpecificationVersion (X3D::LATEST_VERSION);
-
-					ofstream << scene;
-				}
-
-				// Replace original file.
-
-				os::rename (tmpFilename, outputFilename .path ());
+				ogzstream << X3D::XMLEncode (scene);
 			}
-			catch (...)
+			else if (outputFilename .suffix () == ".x3d")
+				ofstream << X3D::XMLEncode (scene);
+
+			else if (outputFilename .suffix () == ".json")
+				ofstream << X3D::JSONEncode (scene);
+
+			else if (outputFilename .suffix () == ".x3dvz")
 			{
-				os::unlink (tmpFilename);
-				throw;
+				if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
+					scene -> setSpecificationVersion (X3D::LATEST_VERSION);
+
+				basic::ogzstream ogzstream (outputFilename .path ());
+
+				X3D::Generator::Style (ogzstream, options .exportStyle);
+
+				ogzstream << scene;
+			}
+			else
+			{
+				if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
+					scene -> setSpecificationVersion (X3D::LATEST_VERSION);
+
+				ofstream << scene;
 			}
 		}
 
