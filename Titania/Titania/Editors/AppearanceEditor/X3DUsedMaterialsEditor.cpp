@@ -139,12 +139,7 @@ X3DUsedMaterialsEditor::on_compare_image (const Gtk::TreeModel::iterator & lhs, 
 		if (lhsColor == rhsColor)
 			return 0;
 	
-		float lh, ls, lv, rh, rs, rv;
-	
-		lhsColor .getHSV (lh, ls, lv);
-		rhsColor .getHSV (rh, rs, rv);
-	
-		return std::tie (lh, ls, lv) < std::tie (rh, rs, rv) ? -1 : 1;
+		return lhsColor .getHSV () < rhsColor .getHSV () ? -1 : 1;
 	}
 	catch (const std::exception &)
 	{

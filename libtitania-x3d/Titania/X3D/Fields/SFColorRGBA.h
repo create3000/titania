@@ -70,7 +70,7 @@ class SFColorRGBA :
 {
 public:
 
-	using value_type = Color3f::value_type;
+	using value_type = Color4f::value_type;
 	using size_type  = size_t;
 
 	using X3DField <Color4f>::addInterest;
@@ -85,7 +85,7 @@ public:
 	SFColorRGBA (const SFColorRGBA &);
 
 	explicit
-	SFColorRGBA (const Color4f &);
+	SFColorRGBA (const internal_type &);
 
 	SFColorRGBA (const value_type &, const value_type &, const value_type &, const value_type &);
 
@@ -155,13 +155,13 @@ public:
 	///  @name Operations
 
 	void
-	setHSV (const value_type & h, const value_type & s, const value_type & v);
+	setHSVA (const vector4 <value_type> & hsva);
 
-	void
-	getHSV (value_type & h, value_type & s, value_type & v) const;
+	vector4 <value_type>
+	getHSVA () const;
 
-	SFColorRGBA*
-	lerp (const SFColorRGBA & toColor, const value_type & t) const;
+	internal_type
+	lerp (const internal_type & toColor, const value_type & t) const;
 
 	///  @name Input/Output
 

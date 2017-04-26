@@ -73,7 +73,7 @@ SFColorRGBA::SFColorRGBA (const SFColorRGBA & field) :
 	X3DField <Color4f> (field)
 { }
 
-SFColorRGBA::SFColorRGBA (const Color4f & value) :
+SFColorRGBA::SFColorRGBA (const internal_type & value) :
 	X3DField <Color4f> (value)
 { }
 
@@ -129,22 +129,22 @@ SFColorRGBA::operator [ ] (const size_type & index) const
 }
 
 void
-SFColorRGBA::setHSV (const value_type  & h, const value_type  & s, const value_type  & v)
+SFColorRGBA::setHSVA (const vector4 <value_type> & hsva)
 {
-	get () .set_hsv (h, s, v);
+	get () .hsva (hsva);
 	addEvent ();
 }
 
-void
-SFColorRGBA::getHSV (value_type & h, value_type & s, value_type & v) const
+vector4 <SFColorRGBA::value_type>
+SFColorRGBA::getHSVA () const
 {
-	getValue () .get_hsv (h, s, v);
+	return getValue () .hsva ();
 }
 
-SFColorRGBA*
-SFColorRGBA::lerp (const SFColorRGBA & dest, const value_type & t) const
+SFColorRGBA::internal_type
+SFColorRGBA::lerp (const internal_type & dest, const value_type & t) const
 {
-	return new SFColorRGBA (math::clerp (getValue (), dest .getValue (), t));
+	return clerp (getValue (), dest, t);
 }
 
 void

@@ -2041,14 +2041,12 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> & i
 
 			for (; i < size; ++ i, iN += components)
 			{
-				double h, s, v;
 				const auto value = Type (keyValue [iN], keyValue [iN + 1], keyValue [iN + 2]);
-	
-				value .get_hsv (h, s, v);
+				const auto hsv   = value .hsv ();
 
 				keys .emplace_back (key [i]);
-				keyValuesH  .emplace_back (0, 0, 1, h);
-				keyValuesSV .emplace_back (s, v);
+				keyValuesH  .emplace_back (0, 0, 1, hsv [0]);
+				keyValuesSV .emplace_back (hsv [1], hsv [2]);
 				keyValues .emplace_back (value);
 				
 				if (keys .size () == 1)
@@ -2088,9 +2086,7 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <X3D::ColorInterpolator> & i
 						const auto valueSV = spline .interpolate (k, k + 1, weight, keyValuesSV);
 						const bool negate  = math::dot (valueH .axis (), X3D::Vector3d (0, 0, 1)) < 0;
 						const auto hue     = negate ? -valueH .angle () : valueH .angle ();
-
-						Type value;
-						value .set_hsv (hue, valueSV .x (), valueSV .y ());
+						const Type value   = math::make_hsv <double> (hue, valueSV .x (), valueSV .y ());
 
 						interpolator -> key ()      .emplace_back (fraction + weight * distance);
 						interpolator -> keyValue () .emplace_back (value);

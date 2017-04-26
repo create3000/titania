@@ -115,8 +115,8 @@ SFColorRGBA::initialize (Context* const context, const pb::ptr <pb::Program> & e
 
 	// Functions
 
-	prototype -> addOwnProperty ("setHSV", new pb::NativeFunction (ec, "setHSV", setHSV, 3), pb::NONE);
-	prototype -> addOwnProperty ("getHSV", new pb::NativeFunction (ec, "getHSV", getHSV, 0), pb::NONE);
+	prototype -> addOwnProperty ("setHSVA", new pb::NativeFunction (ec, "setHSVA", setHSVA, 4), pb::NONE);
+	prototype -> addOwnProperty ("getHSVA", new pb::NativeFunction (ec, "getHSVA", getHSVA, 0), pb::NONE);
 
 	function -> addOwnProperty ("prototype", prototype, pb::NONE);
 	return function;
@@ -180,10 +180,10 @@ SFColorRGBA::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::v
 }
 
 pb::var
-SFColorRGBA::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFColorRGBA::setHSVA (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 3)
-		throw pb::Error (getTypeName () + ".prototype.setHSV: wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.setHSVA: wrong number of arguments.");
 
 	try
 	{
@@ -191,41 +191,40 @@ SFColorRGBA::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 		const auto h   = get1Argument <double> (args, 0);
 		const auto s   = get1Argument <double> (args, 1);
 		const auto v   = get1Argument <double> (args, 2);
+		const auto a   = get1Argument <double> (args, 3);
 
-		lhs -> setHSV (h, s, v);
+		lhs -> setHSVA (vector4 <internal_type::value_type> (h, s, v, a));
 
 		return pb::undefined;
 	}
 	catch (const std::invalid_argument &)
 	{
-		throw pb::TypeError (getTypeName () + ".prototype.setHSV is not generic.");
+		throw pb::TypeError (getTypeName () + ".prototype.setHSVA is not generic.");
 	}
 }
 
 pb::var
-SFColorRGBA::getHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFColorRGBA::getHSVA (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
-		throw pb::Error (getTypeName () + ".prototype.getHSV: wrong number of arguments.");
+		throw pb::Error (getTypeName () + ".prototype.getHSVA: wrong number of arguments.");
 
 	try
 	{
 		const auto lhs   = getThis <SFColorRGBA> (ec, object);
 		const auto array = new pb::Array (ec);
+		const auto hsva  = lhs -> getHSVA ();
 
-		float h, s, v;
-
-		lhs -> getHSV (h, s, v);
-
-		array -> put ("0", h);
-		array -> put ("1", s);
-		array -> put ("2", v);
+		array -> put ("0", hsva [0]);
+		array -> put ("1", hsva [1]);
+		array -> put ("2", hsva [2]);
+		array -> put ("3", hsva [3]);
 
 		return array;
 	}
 	catch (const std::invalid_argument &)
 	{
-		throw pb::TypeError (getTypeName () + ".prototype.getHSV is not generic.");
+		throw pb::TypeError (getTypeName () + ".prototype.getHSVA is not generic.");
 	}
 }
 

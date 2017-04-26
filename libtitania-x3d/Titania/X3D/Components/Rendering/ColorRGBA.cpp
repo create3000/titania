@@ -155,9 +155,7 @@ ColorRGBA::getHSVA (std::vector <Vector4f> & colors) const
 
 	for (const Color4f & color4 : color ())
 	{
-		float h, s, v;
-		color4 .get_hsv (h, s, v);
-		colors .emplace_back (h, s, v, color4 .a ());
+		colors .emplace_back (color4 .hsva ());
 	}
 }
 

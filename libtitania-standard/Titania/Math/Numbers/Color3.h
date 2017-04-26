@@ -363,21 +363,21 @@ public:
 
 	///  @name Arithmetic operations
 
-	///  Return RGBA components of this color.
+	///  Set RGB components for this color. RGB is in the range (0,255).
 	void
-	set_rgb (const uint8_t R, const uint8_t G, const uint8_t B);
+	rgb (const vector3 <uint8_t> & RGB);
 
-	///  Set RGBA components for this color.
-	void
-	get_rgb (uint8_t & R, uint8_t & G, uint8_t & B) const;
+	///  Return RGB components of this color. RGB is in the range (0,255).
+	vector3 <uint8_t>
+	rgb () const;
 
-	///  Return hsv components of this color.
+	///  Set HSV components for this color.
 	void
-	set_hsv (const Type &, Type, Type);
+	hsv (const vector3 <Type> & hsv);
 
-	///  Set hsv components for this color.
-	void
-	get_hsv (Type &, Type &, Type &) const;
+	///  Return HSV components of this color.
+	vector3 <Type>
+	hsv () const;
 
 
 private:
@@ -401,26 +401,30 @@ color3 <Type>::operator = (const color3 <Up> & other)
 
 template <typename Type>
 void
-color3 <Type>::set_rgb (const uint8_t R, const uint8_t G, const uint8_t B)
+color3 <Type>::rgb (const vector3 <uint8_t> & RGB)
 {
-	r (R / Type (255));
-	g (G / Type (255));
-	b (B / Type (255));
+	r (RGB [0] / Type (255));
+	g (RGB [1] / Type (255));
+	b (RGB [2] / Type (255));
 }
 
 template <typename Type>
-void
-color3 <Type>::get_rgb (uint8_t & R, uint8_t & G, uint8_t & B) const
+vector3 <uint8_t>
+color3 <Type>::rgb () const
 {
-	R = std::round (r () * 255);
-	G = std::round (g () * 255);
-	B = std::round (b () * 255);
+	return vector3 <uint8_t> (std::round (r () * 255),
+	                          std::round (g () * 255),
+	                          std::round (b () * 255));
 }
 
 template <class Type>
 void
-color3 <Type>::set_hsv (const Type & h, Type s, Type v)
+color3 <Type>::hsv (const vector3 <Type> & hsv)
 {
+	auto h = hsv [0];
+	auto s = hsv [1];
+	auto v = hsv [2];
+
 	// H is given on [0, 2 * Pi]. S and V are given on [0, 1].
 	// RGB are each returned on [0, 1].
 
@@ -484,9 +488,13 @@ color3 <Type>::set_hsv (const Type & h, Type s, Type v)
 }
 
 template <class Type>
-void
-color3 <Type>::get_hsv (Type & h, Type & s, Type & v) const
+vector3 <Type>
+color3 <Type>::hsv () const
 {
+	Type h = 0;
+	Type s = 0;
+	Type v = 0;
+
 	const Type min = std::min ({ r (), g (), b () });
 	const Type max = std::max ({ r (), g (), b () });
 
@@ -495,28 +503,31 @@ color3 <Type>::get_hsv (Type & h, Type & s, Type & v) const
 	const Type delta = max - min;
 
 	if (max not_eq 0 and delta not_eq 0)
+	{
 		s = delta / max;                // s
+	
+		if (r () == max)
+			h = (g () - b ()) / delta;      // between yellow & magenta
+	
+		else if (g () == max)
+			h = 2 + (b () - r ()) / delta;  // between cyan & yellow
+	
+		else
+			h = 4 + (r () - g ()) / delta;  // between magenta & cyan
+	
+		h *= pi <Type> / 3;              // radians
+	
+		if (h < 0)
+			h += 2 * pi <Type>;
+	}
 	else
 	{
 		// r = g = b = 0                // s = 0, h is undefined
 		s = 0;
 		h = 0;
-		return;
 	}
 
-	if (r () == max)
-		h = (g () - b ()) / delta;      // between yellow & magenta
-
-	else if (g () == max)
-		h = 2 + (b () - r ()) / delta;  // between cyan & yellow
-
-	else
-		h = 4 + (r () - g ()) / delta;  // between magenta & cyan
-
-	h *= pi <Type> / 3;              // radians
-
-	if (h < 0)
-		h += 2 * pi <Type>;
+	return vector3 <Type> (h, s, v);
 }
 
 ///  @relates color3
@@ -528,7 +539,17 @@ color3 <Type>
 make_rgb (const uint8_t R, const uint8_t G, const uint8_t B)
 {
 	color3 <Type> color;
-	color .set_rgb (R, G, B);
+	color .rgb (vector3 <uint8_t> (R, G, B));
+	return color;
+}
+
+///  Construct a color from RGB.
+template <class Type>	
+color3 <Type>
+make_rgb (const vector3 <uint8_t> & RGB)
+{
+	color3 <Type> color;
+	color .rgb (RGB);
 	return color;
 }
 
@@ -538,7 +559,17 @@ color3 <Type>
 make_hsv (const Type & h, const Type & s, const Type & v)
 {
 	color3 <Type> color;
-	color .set_hsv (h, s, v);
+	color .hsv (vector3 <Type> (h, s, v));
+	return color;
+}
+
+///  Construct a color from hsv.
+template <class Type>	
+color3 <Type>
+make_hsv (const vector3 <Type> & hsv)
+{
+	color3 <Type> color;
+	color .hsv (hsv);
 	return color;
 }
 
@@ -620,75 +651,44 @@ lerp (const color3 <Type> & source, const color3 <Type> & destination, const Typ
 	return color3 <Type> (r .x (), r .y (), r .z (), r .w ());
 }
 
+///  Circular linear interpolate between source color and destination color in hsv space by an amout of @a t.
+template <class Type>
+static
+vector3 <Type>
+hsv_lerp (const vector3 <Type> & a, const vector3 <Type> & b, const Type & t)
+{
+	const Type range = std::abs (b [0] - a [0]);
+
+	if (range <= pi <Type>)
+	{
+		return lerp (a, b, t);
+	}
+	else
+	{
+		const Type step = (pi2 <Type>- range) * t;
+		Type       h    = a [0] < b [0] ? a [0] - step : a [0] + step;
+
+		if (h < 0)
+			h += pi2 <Type>;
+
+		else if (h > pi2 <Type>)
+			h -= pi2 <Type>;
+
+		return vector3 <Type> (h,
+		                       lerp (a [1], b [1], t),
+		                       lerp (a [2], b [2], t));
+	}
+}
+
 ///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t in HSV space.
 template <class Type>
 color3 <Type>
 clerp (const color3 <Type> & source, const color3 <Type> & destination, const Type & t)
 {
-	Type
-	   a_h, a_s, a_v,
-	   b_h, b_s, b_v;
+	const auto a = source      .hsv ();
+	const auto b = destination .hsv ();
 
-	source      .get_hsv (a_h, a_s, a_v);
-	destination .get_hsv (b_h, b_s, b_v);
-
-	const Type range = std::abs (b_h - a_h);
-
-	if (range <= pi <Type>)
-	{
-		return make_hsv <Type> (lerp (a_h, b_h, t),
-		                        lerp (a_s, b_s, t),
-		                        lerp (a_v, b_v, t));
-	}
-	else
-	{
-		const Type step = (pi2 <Type> - range) * t;
-		Type       h    = a_h < b_h ? a_h - step : a_h + step;
-
-		if (h < 0)
-			h += pi2 <Type>;
-
-		else if (h > pi2 <Type>)
-			h -= pi2 <Type>;
-
-		return make_hsv <Type> (h,
-		                        lerp (a_s, b_s, t),
-		                        lerp (a_v, b_v, t));
-	}
-}
-
-///  Circular linear interpolate between source color and destination color in hsv space by an amout of @a t.
-template <class Type>
-static
-void
-hsv_lerp (const Type & a_h, const Type & a_s, const Type & a_v,
-          const Type & b_h, const Type & b_s, const Type & b_v,
-          const Type & t,
-          Type & r_h, Type & r_s, Type & r_v)
-{
-	const Type range = std::abs (b_h - a_h);
-
-	if (range <= pi <Type>)
-	{
-		r_h = lerp (a_h, b_h, t);
-		r_s = lerp (a_s, b_s, t);
-		r_v = lerp (a_v, b_v, t);
-	}
-	else
-	{
-		const Type step = (pi2 <Type>- range) * t;
-		Type       h    = a_h < b_h ? a_h - step : a_h + step;
-
-		if (h < 0)
-			h += pi2 <Type>;
-
-		else if (h > pi2 <Type>)
-			h -= pi2 <Type>;
-
-		r_h = h;
-		r_s = lerp (a_s, b_s, t);
-		r_v = lerp (a_v, b_v, t);
-	}
+	return make_hsv (hsv_lerp (a, b, t));
 }
 
 ///  @relates color3

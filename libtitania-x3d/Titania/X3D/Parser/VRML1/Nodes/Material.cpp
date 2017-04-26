@@ -130,11 +130,9 @@ Material::convert (Converter* const converter)
 
 	if (not ambientColor () .empty ())
 	{
-		float h, s, v;
+		const auto hsv = ambientColor () [0] .getHSV ();
 
-		ambientColor () [0] .getHSV (h, s, v);
-
-		materialNode -> ambientIntensity () = v;
+		materialNode -> ambientIntensity () = hsv [2];
 	}
 
 	if (not diffuseColor () .empty ())

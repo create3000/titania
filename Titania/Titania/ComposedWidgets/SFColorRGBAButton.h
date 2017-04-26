@@ -139,7 +139,7 @@ private:
 	int                                  input;
 	bool                                 changing;
 	X3D::SFTime                          buffer;
-	float                                hsva [4];
+	X3D::Vector4f                        hsva;
 	X3D::ClipboardPtr                    clipboard;
 
 };

@@ -98,7 +98,7 @@ ColorChaser::initialize ()
 {
 	X3DChaserNode::initialize ();
 
-	set_value ()       .addInterest (&ColorChaser::set_value_, this);
+	set_value ()       .addInterest (&ColorChaser::set_value_,       this);
 	set_destination () .addInterest (&ColorChaser::set_destination_, this);
 
 	bufferEndTime = getCurrentTime ();
@@ -155,29 +155,19 @@ ColorChaser::prepareEvents ()
 	const float fraction = updateBuffer ();
 
 	auto output = clerp <float> (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
-	
-	float ho, so, vo;
-	
-	output .get_hsv (ho, so, vo);
+	auto ohsv   = output .hsv ();
 
 	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
 	{
-		float h, s, v, h1, s1, v1;
+		const float t    = stepResponse ((i + fraction) * getStepTime ());
+		const auto  hsv0 = buffer [i]     .hsv ();
+		const auto  hsv1 = buffer [i + 1] .hsv ();
+		const auto  dhsv = ohsv + hsv0 - hsv1;
 
-		buffer [i] .get_hsv (h, s, v);
-		buffer [i + 1] .get_hsv (h1, s1, v1);
-		
-		const float t = stepResponse ((i + fraction) * getStepTime ());
-	
-		hsv_lerp (ho, so, vo,
-		          interval (ho + h - h1, 0.0f, 2 * pi <float>),
-		          so + s - s1,
-		          vo + v - v1,
-		          t,
-		          ho, so, vo);
+		ohsv = hsv_lerp (ohsv, Vector3f (interval (dhsv [0], 0.0f, 2 * pi <float>), dhsv [1], dhsv [2]), t);
 	}
 
-	value_changed () .setHSV (ho, so, vo);
+	value_changed () .setHSV (ohsv);
 
 	if (equals (output, set_destination (), getTolerance ()))
 		set_active (false);

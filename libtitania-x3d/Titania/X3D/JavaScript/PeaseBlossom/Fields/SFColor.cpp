@@ -183,7 +183,7 @@ SFColor::setHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & ob
 		const auto s   = get1Argument <double> (args, 1);
 		const auto v   = get1Argument <double> (args, 2);
 
-		lhs -> setHSV (h, s, v);
+		lhs -> setHSV (vector3 <internal_type::value_type> (h, s, v));
 
 		return pb::undefined;
 	}
@@ -203,14 +203,11 @@ SFColor::getHSV (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & ob
 	{
 		const auto lhs   = getThis <SFColor> (ec, object);
 		const auto array = new pb::Array (ec);
+		const auto hsv   = lhs -> getHSV ();
 
-		float h, s, v;
-
-		lhs -> getHSV (h, s, v);
-
-		array -> put ("0", h);
-		array -> put ("1", s);
-		array -> put ("2", v);
+		array -> put ("0", hsv [0]);
+		array -> put ("1", hsv [1]);
+		array -> put ("2", hsv [2]);
 
 		return array;
 	}

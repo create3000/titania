@@ -379,21 +379,21 @@ public:
 
 	///  @name Arithmetic operations
 
-	///  Return RGBA components of this color.
+	///  Set RGBA components for this color. RGBA is in the range (0,255).
 	void
-	set_rgba (const uint8_t R, const uint8_t G, const uint8_t B, const uint8_t A);
+	rgba (const vector4 <uint8_t> & RGBA);
 
-	///  Set RGBA components for this color.
-	void
-	get_rgba (uint8_t & R, uint8_t & G, uint8_t & B, uint8_t & A) const;
+	///  Return RGBA components of this color. RGBA is in the range (0,255).
+	vector4 <uint8_t>
+	rgba () const;
 
-	///  Return hsv components of this color.
+	///  Set HSVA components for this color.
 	void
-	set_hsv (const Type &, Type, Type);
+	hsva (const vector4 <Type> & hsva);
 
-	///  Set hsv components for this color.
-	void
-	get_hsv (Type &, Type &, Type &) const;
+	///  Return HSVA components of this color.
+	vector4 <Type>
+	hsva () const;
 
 
 private:
@@ -418,28 +418,34 @@ color4 <Type>::operator = (const color4 <Up> & other)
 
 template <typename Type>
 void
-color4 <Type>::set_rgba (const uint8_t R, const uint8_t G, const uint8_t B, const uint8_t A)
+color4 <Type>::rgba (const vector4 <uint8_t> & RGBA)
 {
-	r (R / Type (255));
-	g (G / Type (255));
-	b (B / Type (255));
-	a (A / Type (255));
+	r (RGBA [0] / Type (255));
+	g (RGBA [1] / Type (255));
+	b (RGBA [2] / Type (255));
+	a (RGBA [3] / Type (255));
+}
+
+template <typename Type>
+vector4 <uint8_t>
+color4 <Type>::rgba () const
+{
+	return vector4 <uint8_t> (std::round (r () * 255),
+	                          std::round (g () * 255),
+	                          std::round (b () * 255),
+	                          std::round (a () * 255));
 }
 
 template <typename Type>
 void
-color4 <Type>::get_rgba (uint8_t & R, uint8_t & G, uint8_t & B, uint8_t & A) const
+color4 <Type>::hsva (const vector4 <Type> & hsva)
 {
-	R = std::round (r () * 255);
-	G = std::round (g () * 255);
-	B = std::round (b () * 255);
-	A = std::round (a () * 255);
-}
+	auto h = hsva [0];
+	auto s = hsva [1];
+	auto v = hsva [2];
 
-template <typename Type>
-void
-color4 <Type>::set_hsv (const Type & h, Type s, Type v)
-{
+	a (hsva [3]);
+
 	// H is given on [0, 2 * Pi]. S and V are given on [0, 1].
 	// RGB are each returned on [0, 1].
 
@@ -503,9 +509,13 @@ color4 <Type>::set_hsv (const Type & h, Type s, Type v)
 }
 
 template <typename Type>
-void
-color4 <Type>::get_hsv (Type & h, Type & s, Type & v) const
+vector4 <Type>
+color4 <Type>::hsva () const
 {
+	Type h = 0;
+	Type s = 0;
+	Type v = 0;
+
 	const Type min = std::min ({ r (), g (), b () });
 	const Type max = std::max ({ r (), g (), b () });
 
@@ -514,26 +524,31 @@ color4 <Type>::get_hsv (Type & h, Type & s, Type & v) const
 	const Type delta = max - min;
 
 	if (max not_eq 0 and delta not_eq 0)
+	{
 		s = delta / max;                // s
+	
+		if (r () == max)
+			h = (g () - b ()) / delta;      // between yellow & magenta
+	
+		else if (g () == max)
+			h = 2 + (b () - r ()) / delta;  // between cyan & yellow
+	
+		else
+			h = 4 + (r () - g ()) / delta;  // between magenta & cyan
+	
+		h *= pi <Type> / 3;              // radians
+	
+		if (h < 0)
+			h += 2 * pi <Type>;
+	}
 	else
 	{
 		// r = g = b = 0                // s = 0, h is undefined
 		s = 0;
 		h = 0;
-		return;
 	}
 
-	if (r () == max)
-		h = (g () - b ()) / delta;      // between yellow & magenta
-	else if (g () == max)
-		h = 2 + (b () - r ()) / delta;  // between cyan & yellow
-	else
-		h = 4 + (r () - g ()) / delta;  // between magenta & cyan
-
-	h *= pi <Type> / 3;       // radians
-
-	if (h < 0)
-		h += 2 * pi <Type>;
+	return vector4 <Type> (h, s, v, a ());
 }
 
 ///  @relates color4
@@ -545,7 +560,17 @@ color4 <Type>
 make_rgba (const uint8_t R, const uint8_t G, const uint8_t B, const uint8_t A)
 {
 	color4 <Type> color;
-	color .set_rgba (R, G, B, A);
+	color .rgba (vector4 <uint8_t> (R, G, B, A));
+	return color;
+}
+
+///  Construct a color from RGBA.
+template <class Type>	
+color4 <Type>
+make_rgba (const vector4 <uint8_t> & RGBA)
+{
+	color4 <Type> color;
+	color .rgba (RGBA);
 	return color;
 }
 
@@ -555,8 +580,17 @@ color4 <Type>
 make_hsva (const Type & h, const Type & s, const Type & v, const Type & a)
 {
 	color4 <Type> color;
-	color .set_hsv (h, s, v);
-	color .a (a);
+	color .hsva (vector4 <Type> (h, s, v, a));
+	return color;
+}
+
+///  Construct a color from hsv and alpha.
+template <typename Type>
+color4 <Type>
+make_hsva (const vector4 <Type> & hsva)
+{
+	color4 <Type> color;
+	color .hsva (hsva);
 	return color;
 }
 
@@ -642,29 +676,20 @@ lerp (const color4 <Type> & source, const color4 <Type> & destination, const Typ
 
 ///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t in HSVA space.
 template <class Type>
-color4 <Type>
-clerp (const color4 <Type> & source, const color4 <Type> & destination, const Type & t)
+static
+vector4 <Type>
+hsva_lerp (const vector4 <Type> & a, const vector4 <Type> & b, const Type & t)
 {
-	Type
-	   a_h, a_s, a_v,
-	   b_h, b_s, b_v;
+	const Type range = std::abs (b [0] - a [0]);
 
-	source      .get_hsv (a_h, a_s, a_v);
-	destination .get_hsv (b_h, b_s, b_v);
-
-	const Type range = std::abs (b_h - a_h);
-
-	if (range <= Type (pi <Type>))
+	if (range <= pi <Type>)
 	{
-		return make_hsva <Type> (lerp (a_h, b_h, t),
-		                         lerp (a_s, b_s, t),
-		                         lerp (a_v, b_v, t),
-		                         lerp (source .a (), destination .a (), t));
+		return lerp (a, b, t);
 	}
 	else
 	{
-		const Type step = (pi2 <Type> - range) * t;
-		Type       h    = a_h < b_h ? a_h - step : a_h + step;
+		const Type step = (pi2 <Type>- range) * t;
+		Type       h    = a [0] < b [0] ? a [0] - step : a [0] + step;
 
 		if (h < 0)
 			h += pi2 <Type>;
@@ -672,12 +697,22 @@ clerp (const color4 <Type> & source, const color4 <Type> & destination, const Ty
 		else if (h > pi2 <Type>)
 			h -= pi2 <Type>;
 
-		return make_hsva <Type> (h,
-		                         lerp (a_s, b_s, t),
-		                         lerp (a_v, b_v, t),
-		                         lerp (source .a (), destination .a (), t));
-
+		return vector4 <Type> (h,
+		                       lerp (a [1], b [1], t),
+		                       lerp (a [2], b [2], t),
+		                       lerp (a [3], b [3], t));
 	}
+}
+
+///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t in HSVA space.
+template <class Type>
+color4 <Type>
+clerp (const color4 <Type> & source, const color4 <Type> & destination, const Type & t)
+{
+	const auto a = source      .hsva ();
+	const auto b = destination .hsva ();
+
+	return make_hsva (hsva_lerp (a, b, t));
 }
 
 ///  @relates color4

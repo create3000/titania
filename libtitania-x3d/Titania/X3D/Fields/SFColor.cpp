@@ -73,7 +73,7 @@ SFColor::SFColor (const SFColor & field) :
 	X3DField <Color3f> (field)
 { }
 
-SFColor::SFColor (const Color3f & value) :
+SFColor::SFColor (const internal_type & value) :
 	X3DField <Color3f> (value)
 { }
 
@@ -122,22 +122,22 @@ SFColor::operator [ ] (const size_type & index) const
 }
 
 void
-SFColor::setHSV (const value_type & h, const value_type & s, const value_type & v)
+SFColor::setHSV (const vector3 <value_type> & hsv)
 {
-	get () .set_hsv (h, s, v);
+	get () .hsv (hsv);
 	addEvent ();
 }
 
-void
-SFColor::getHSV (value_type & h, value_type & s, value_type & v) const
+vector3 <SFColor::value_type>
+SFColor::getHSV () const
 {
-	getValue () .get_hsv (h, s, v);
+	return getValue () .hsv ();
 }
 
-SFColor*
-SFColor::lerp (const SFColor & dest, const value_type & t) const
+Color3f
+SFColor::lerp (const color3 <value_type> & dest, const value_type & t) const
 {
-	return new SFColor (math::clerp (getValue (), dest .getValue (), t));
+	return clerp (getValue (), dest , t);
 }
 
 void

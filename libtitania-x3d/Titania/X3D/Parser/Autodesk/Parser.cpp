@@ -167,11 +167,9 @@ Parser::material (Lib3dsMaterial* const material)
 	{
 		Color3f ambientColor (material -> ambient [0], material -> ambient [1], material -> ambient [2]);
 
-		float h, s, v;
+		const auto hsv = ambientColor .hsv ();
 
-		ambientColor .get_hsv (h, s, v);
-
-		materialNode -> ambientIntensity () = v;
+		materialNode -> ambientIntensity () = hsv [2];
 	}
 
 	// Diffuse Color

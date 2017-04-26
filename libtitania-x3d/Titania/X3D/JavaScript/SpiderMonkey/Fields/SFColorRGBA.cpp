@@ -77,9 +77,9 @@ JSPropertySpec SFColorRGBA::properties [ ] = {
 };
 
 JSFunctionSpec SFColorRGBA::functions [ ] = {
-	{ "getHSV",      getHSV, 0, 0 },
-	{ "setHSV",      setHSV, 3, 0 },
-	{ "lerp",        lerp,   2, 0 },
+	{ "getHSVA",     getHSVA, 0, 0 },
+	{ "setHSVA",     setHSVA, 4, 0 },
+	{ "lerp",        lerp,    2, 0 },
 
 	{ 0 }
 
@@ -216,31 +216,31 @@ SFColorRGBA::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 }
 
 JSBool
-SFColorRGBA::getHSV (JSContext* cx, uint32_t argc, jsval* vp)
+SFColorRGBA::getHSVA (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
-		return ThrowException (cx, "%s .getHSV: wrong number of arguments.", getClass () -> name);
+		return ThrowException (cx, "%s .getHSVA: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
-		const auto lhs = getThis <SFColorRGBA> (cx, vp);
-		
-		float h, s, v;
+		const auto lhs  = getThis <SFColorRGBA> (cx, vp);
+		const auto hsva = lhs -> getHSVA ();
 
-		lhs -> getHSV (h, s, v);
+		jsval array [4];
 
-		jsval array [3];
-
-		if (not JS_NewNumberValue (cx, h, &array [0]))
+		if (not JS_NewNumberValue (cx, hsva [0], &array [0]))
 			return false;
 
-		if (not JS_NewNumberValue (cx, s, &array [1]))
+		if (not JS_NewNumberValue (cx, hsva [1], &array [1]))
 			return false;
 
-		if (not JS_NewNumberValue (cx, v, &array [2]))
+		if (not JS_NewNumberValue (cx, hsva [2], &array [2]))
 			return false;
 
-		const auto result = JS_NewArrayObject (cx, 3, array);
+		if (not JS_NewNumberValue (cx, hsva [3], &array [3]))
+			return false;
+
+		const auto result = JS_NewArrayObject (cx, 4, array);
 
 		if (result == nullptr)
 			return ThrowException (cx, "out of memory");
@@ -250,15 +250,15 @@ SFColorRGBA::getHSV (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .getHSV: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .getHSVA: %s.", getClass () -> name, error .what ());
 	}
 }
 
 JSBool
-SFColorRGBA::setHSV (JSContext* cx, uint32_t argc, jsval* vp)
+SFColorRGBA::setHSVA (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 3)
-		return ThrowException (cx, "%s .setHSV: wrong number of arguments.", getClass () -> name);
+		return ThrowException (cx, "%s .setHSVA: wrong number of arguments.", getClass () -> name);
 
 	try
 	{
@@ -267,15 +267,16 @@ SFColorRGBA::setHSV (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto h    = getArgument <value_type> (cx, argv, 0);
 		const auto s    = getArgument <value_type> (cx, argv, 1);
 		const auto v    = getArgument <value_type> (cx, argv, 2);
+		const auto a    = getArgument <value_type> (cx, argv, 3);
 
-		lhs -> setHSV (h, s, v);
+		lhs -> setHSVA (vector4 <internal_type::value_type> (h, s, v, a));
 
 		JS_SET_RVAL (cx, vp, JSVAL_VOID);
 		return true;
 	}
 	catch (const std::exception & error)
 	{
-		return ThrowException (cx, "%s .setHSV: %s.", getClass () -> name, error .what ());
+		return ThrowException (cx, "%s .setHSVA: %s.", getClass () -> name, error .what ());
 	}
 }
 
@@ -292,7 +293,7 @@ SFColorRGBA::lerp (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto rhs  = getArgument <SFColorRGBA> (cx, argv, 0);
 		const auto t    = getArgument <value_type> (cx, argv, 1);
 
-		return create <SFColorRGBA> (cx, lhs -> lerp (*rhs, t), &JS_RVAL (cx, vp));
+		return create <SFColorRGBA> (cx, new X3D::SFColorRGBA (lhs -> lerp (*rhs, t)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

@@ -85,7 +85,7 @@ public:
 	SFColor (const SFColor &);
 
 	explicit
-	SFColor (const Color3f &);
+	SFColor (const internal_type &);
 
 	SFColor (const value_type &, const value_type &, const value_type &);
 
@@ -148,13 +148,13 @@ public:
 	///  @name Operations
 
 	void
-	setHSV (const value_type & h, const value_type & s, const value_type & v);
+	setHSV (const vector3 <value_type> & hsv);
 
-	void
-	getHSV (value_type & h, value_type & s, value_type & v) const;
+	vector3 <value_type>
+	getHSV () const;
 
-	SFColor*
-	lerp (const SFColor & toColor, const value_type & t) const;
+	internal_type
+	lerp (const internal_type & toColor, const value_type & t) const;
 
 	///  @name Input/Output
 

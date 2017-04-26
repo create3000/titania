@@ -126,9 +126,8 @@ Color::getHSVA (std::vector <Vector4f> & colors) const
 
 	for (const Color3f & color3 : color ())
 	{
-		float h, s, v;
-		color3 .get_hsv (h, s, v);
-		colors .emplace_back (h, s, v, 1);
+		const auto hsv = color3 .hsv ();
+		colors .emplace_back (hsv [0], hsv [1], hsv [2], 1);
 	}
 }
 

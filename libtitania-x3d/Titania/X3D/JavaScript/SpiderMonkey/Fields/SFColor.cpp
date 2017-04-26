@@ -221,20 +221,17 @@ SFColor::getHSV (JSContext* cx, uint32_t argc, jsval* vp)
 	try
 	{
 		const auto lhs = getThis <SFColor> (cx, vp);
-		
-		float h, s, v;
-
-		lhs -> getHSV (h, s, v);
+		const auto hsv = lhs -> getHSV ();
 
 		jsval array [3];
 
-		if (not JS_NewNumberValue (cx, h, &array [0]))
+		if (not JS_NewNumberValue (cx, hsv [0], &array [0]))
 			return false;
 
-		if (not JS_NewNumberValue (cx, s, &array [1]))
+		if (not JS_NewNumberValue (cx, hsv [1], &array [1]))
 			return false;
 
-		if (not JS_NewNumberValue (cx, v, &array [2]))
+		if (not JS_NewNumberValue (cx, hsv [2], &array [2]))
 			return false;
 
 		const auto result = JS_NewArrayObject (cx, 3, array);
@@ -265,7 +262,7 @@ SFColor::setHSV (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto s    = getArgument <value_type> (cx, argv, 1);
 		const auto v    = getArgument <value_type> (cx, argv, 2);
 
-		lhs -> setHSV (h, s, v);
+		lhs -> setHSV (vector3 <internal_type::value_type> (h, s, v));
 
 		JS_SET_RVAL (cx, vp, JSVAL_VOID);
 		return true;
@@ -289,7 +286,7 @@ SFColor::lerp (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto rhs  = getArgument <SFColor> (cx, argv, 0);
 		const auto t    = getArgument <value_type> (cx, argv, 1);
 
-		return create <SFColor> (cx, lhs -> lerp (*rhs, t), &JS_RVAL (cx, vp));
+		return create <SFColor> (cx, new X3D::SFColor (lhs -> lerp (*rhs, t)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

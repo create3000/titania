@@ -402,11 +402,9 @@ MaterialParser::Ka ()
 
 		if (Color (color))
 		{
-			float h, s, v;
+			const auto hsv = color .hsv ();
 
-			color .get_hsv (h, s, v);
-
-			material -> ambientIntensity () = v;
+			material -> ambientIntensity () = hsv [2];
 
 			return true;
 		}

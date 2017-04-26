@@ -62,13 +62,22 @@ class Colors
 {
 public:
 
+	///  @name  Member access
+
 	static
 	const Color3f &
 	get (const std::string & name)
 	{ return colors .at (name); }
 
+	static
+	const std::map <std::string, Color3f> &
+	get ()
+	{ return colors; }
+
 
 private:
+
+	///  @name Operations
 
 	static
 	std::map <std::string, Color3f>

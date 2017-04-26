@@ -172,7 +172,7 @@ SFColorButton::on_color_changed ()
 	const auto rgba  = dialog .get_color_selection () -> get_current_rgba ();
 	const auto color = X3D::Color3f (rgba .get_red (), rgba .get_green (), rgba .get_blue ());
 
-	color .get_hsv (hsv [0], hsv [1], hsv [2]);
+	hsv = color .hsv ();
 
 	set_color (0, color);
 
@@ -191,8 +191,7 @@ SFColorButton::on_value_changed ()
 
 	hsv [2] = valueAdjustment -> get_value ();
 
-	X3D::Color3f color;
-	color .set_hsv (hsv [0], hsv [1], hsv [2]);
+	const auto color = make_hsv (hsv);
 
 	set_color (1, color);
 
@@ -256,7 +255,7 @@ SFColorButton::set_buffer ()
 			const auto & field = node -> getField <X3D::SFColor> (name);
 			const auto   rgba  = to_rgba (field);
 
-			field .getHSV (hsv [0], hsv [1], hsv [2]);
+			hsv = field .getHSV ();
 
 			dialog .get_color_selection () -> set_current_rgba (rgba);
 			dialog .get_color_selection () -> set_previous_rgba (rgba);

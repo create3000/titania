@@ -220,7 +220,7 @@ private:
 	int                                  input;
 	bool                                 changing;
 	X3D::SFTime                          buffer;
-	float                                hsv [3];
+	X3D::Vector3f                        hsv;
 	int                                  colorsSize;
 	int                                  colorsGap;
 	X3D::Vector4i                        colorsBorder;

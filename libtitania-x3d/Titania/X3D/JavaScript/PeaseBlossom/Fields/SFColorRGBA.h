@@ -113,11 +113,11 @@ private:
 
 	static
 	pb::var
-	setHSV (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	setHSVA (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	static
 	pb::var
-	getHSV (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
+	getHSVA (const pb::ptr <pb::pbExecutionContext> &, const pb::var &, const std::vector <pb::var> &);
 
 	///  @name Member types
 

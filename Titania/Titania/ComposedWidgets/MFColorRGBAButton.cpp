@@ -220,8 +220,7 @@ MFColorRGBAButton::on_color_changed ()
 	const auto rgba  = dialog .get_color_selection () -> get_current_rgba ();
 	const auto color = X3D::Color4f (rgba .get_red (), rgba .get_green (), rgba .get_blue (), rgba .get_alpha ());
 
-	color .get_hsv (hsva [0], hsva [1], hsva [2]);
-	hsva [3] = color .a ();
+	hsva = color .hsva ();
 
 	set_color (0, color);
 
@@ -241,9 +240,7 @@ MFColorRGBAButton::on_value_changed ()
 
 	hsva [2] = valueAdjustment -> get_value ();
 
-	X3D::Color4f color;
-	color .set_hsv (hsva [0], hsva [1], hsva [2]);
-	color .a (hsva [3]);
+	const auto color = make_hsva (hsva);
 
 	set_color (1, color);
 
@@ -324,8 +321,7 @@ MFColorRGBAButton::set_buffer ()
 			const auto & value = field .get1Value (index);
 			const auto   rgba  = to_rgba (value);
 
-			value .getHSV (hsva [0], hsva [1], hsva [2]);
-			hsva [3] = value .getAlpha ();
+			hsva = value .getHSVA ();
 
 			dialog .get_color_selection () -> set_current_rgba (rgba);
 			dialog .get_color_selection () -> set_previous_rgba (rgba);
