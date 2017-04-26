@@ -903,7 +903,7 @@ X3DBrowserWidget::quit ()
 
 	std::deque <std::string> worldURLs;
 	std::deque <std::string> browserHistories;
-	std::deque <std::string> recentScenes;
+	std::deque <std::string> recent;
 
 	for (const auto & browser : recentBrowsers)
 	{
@@ -915,7 +915,7 @@ X3DBrowserWidget::quit ()
 			URL = userData -> URL;
 
 		if (not URL .empty ())
-			recentScenes .emplace_back (URL);
+			recent .emplace_back (URL);
 	}
 
 	for (const auto & browser : browsers)
@@ -943,7 +943,7 @@ X3DBrowserWidget::quit ()
 	getConfig () -> setItem ("currentPage", currentPage);
 	getConfig () -> setItem ("worldURL",    basic::join (worldURLs, "\n"));
 	getConfig () -> setItem ("history",     basic::join (browserHistories, "\n"));
-	getConfig () -> setItem ("recent",      basic::join (recentScenes, "\n"));
+	getConfig () -> setItem ("recent",      basic::join (recent, "\n"));
 
 	X3DBrowserWindowInterface::quit ();
 	return false;

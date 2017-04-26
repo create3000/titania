@@ -72,7 +72,7 @@
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
                 <property name="is_focus">True</property>
-                <property name="halign">start</property>
+                <property name="halign">end</property>
                 <property name="hexpand">True</property>
                 <property name="primary_icon_name">edit-find-symbolic</property>
                 <property name="primary_icon_activatable">False</property>

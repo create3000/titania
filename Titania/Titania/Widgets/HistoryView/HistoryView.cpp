@@ -80,9 +80,6 @@ void
 HistoryView::initialize ()
 {
 	X3DHistoryViewInterface::initialize ();
-
-	getLastAccessColumn () -> clicked ();
-	getLastAccessColumn () -> clicked ();
 }
 
 void
@@ -99,7 +96,7 @@ HistoryView::configure ()
 	}
 	else
 	{
-		getTreeModelSort () -> set_sort_column (Columns::LAST_ACCESS, Gtk::SORT_ASCENDING);
+		getTreeModelSort () -> set_sort_column (Columns::LAST_ACCESS_TIME, Gtk::SORT_DESCENDING);
 	}
 
 	const auto rememberHistory = getBrowserWindow () -> getConfig () -> getInteger ("rememberHistory");
