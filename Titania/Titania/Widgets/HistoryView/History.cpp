@@ -85,7 +85,7 @@ History::History () :
 		                 "PRIMARY KEY (id ASC))");
 	
 		database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
-		database .try_query ("ALTER TABLE History ADD contextPath TEXT");
+		//database .try_query ("ALTER TABLE History ADD contextPath TEXT");
 
 		if (not have_history)
 		{
@@ -256,7 +256,7 @@ throw (std::invalid_argument)
 //	{
 //		const auto & items = database .query_assoc ("SELECT contextPath FROM History WHERE worldURL = " + database .quote (worldURL));
 //
-//		return items .at (0) .at ("worldURL");
+//		return items .at (0) .at ("contextPath");
 //	}
 //	catch (const std::exception &)
 //	{
