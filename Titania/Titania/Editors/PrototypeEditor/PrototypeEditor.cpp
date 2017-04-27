@@ -111,6 +111,9 @@ PrototypeEditor::initialize ()
 	getCurrentContext () .addInterest (&PrototypeEditor::set_executionContext, this);
 
 	set_executionContext ();
+
+	if (getCurrentContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+		set_prototype (X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (getCurrentContext ()));
 }
 
 void
@@ -158,19 +161,29 @@ PrototypeEditor::on_create_prototype_menu ()
 
 	// Find all available proto objects
 
-	const auto protoNodes = getCurrentContext () -> findProtoDeclarations ();
+	const auto protoIndex = getCurrentContext () -> findProtoDeclarations ();
+	auto       protoNodes = std::vector <X3D::X3DPtr <X3D::X3DProtoDeclarationNode>> ();
+
+	for (const auto & pair : protoIndex)
+		protoNodes .emplace_back (std::move (pair .second));
+
+	// Sort by name and extern protos on top
+
+	std::sort (protoNodes .begin (), protoNodes .end (),
+	           [ ] (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & lhs, const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & rhs)
+	           { return std::make_pair (not lhs -> isExternproto (), lhs -> getName ()) < std::make_pair (not rhs -> isExternproto (), rhs -> getName ()); });
 
 	// Remove all menu items
 
 	for (const auto & widget : getPrototypeMenu () .get_children ())
 		getPrototypeMenu () .remove (*widget);
 
-	for (const auto & pair : protoNodes)
+	for (const auto & protoNode : protoNodes)
 	{
-		const auto image    = Gtk::manage (new Gtk::Image (Gtk::StockID (pair .second -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_MENU));
-		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem (*image, pair .first));
+		const auto image    = Gtk::manage (new Gtk::Image (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_MENU));
+		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem (*image, protoNode -> getName ()));
 
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &PrototypeEditor::set_prototype), X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (pair .second)));
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &PrototypeEditor::set_prototype), X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (protoNode)));
 
 		menuItem -> set_always_show_image (true);
 		menuItem -> show ();
