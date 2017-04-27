@@ -91,7 +91,7 @@ private:
 	on_create_prototype_menu ();
 
 	void
-	set_prototype (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> &);
+	set_prototype (const X3D::X3DProtoDeclarationNodePtr &);
 
 	virtual
 	void

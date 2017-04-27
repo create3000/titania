@@ -162,10 +162,6 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_FragmentMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_fragment_activate));
 	m_ComputeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_compute_activate));
 
-	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_unmap));
-
 	// Connect object Gtk::CheckButton with id 'EditProtosButton'.
 	m_EditProtosButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DScriptEditorInterface::on_edit_protos_toggled));
 

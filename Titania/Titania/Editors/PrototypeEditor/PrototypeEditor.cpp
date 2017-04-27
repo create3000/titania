@@ -170,7 +170,7 @@ PrototypeEditor::on_create_prototype_menu ()
 	// Sort by name and extern protos on top
 
 	std::sort (protoNodes .begin (), protoNodes .end (),
-	           [ ] (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & lhs, const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & rhs)
+	           [ ] (const X3D::X3DProtoDeclarationNodePtr & lhs, const X3D::X3DProtoDeclarationNodePtr & rhs)
 	           { return std::make_pair (not lhs -> isExternproto (), lhs -> getName ()) < std::make_pair (not rhs -> isExternproto (), rhs -> getName ()); });
 
 	// Remove all menu items
@@ -193,7 +193,7 @@ PrototypeEditor::on_create_prototype_menu ()
 }
 
 void
-PrototypeEditor::set_prototype (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & value)
+PrototypeEditor::set_prototype (const X3D::X3DProtoDeclarationNodePtr & value)
 {
 	protoNode = value;
 

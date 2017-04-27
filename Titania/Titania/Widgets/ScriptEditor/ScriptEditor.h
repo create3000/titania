@@ -136,16 +136,8 @@ private:
 
 	///  @name Event handlers
 
-	virtual
 	void
-	on_map () final override;
-
-	virtual
-	void
-	on_unmap () final override;
-
-	void
-	set_executionContext (const X3D::X3DExecutionContextPtr & value);
+	set_executionContext ();
 
 	void
 	set_node (const X3D::SFNode &);

@@ -550,6 +550,9 @@ NodeIndex::getCurrentNodes ()
 	if (inPrototypeInstance ())
 		return nodes;
 
+	if (not executionContext)
+		return nodes;
+
 	for (const auto & pair : executionContext -> getNamedNodes ())
 	{
 		try
@@ -567,6 +570,9 @@ std::set <X3D::SFNode>
 NodeIndex::getImportingInlines () const
 {
 	std::set <X3D::SFNode> importingInlines;
+
+	if (not executionContext)
+		return importingInlines;
 
 	for (const auto & pair : executionContext -> getImportedNodes ())
 	{
@@ -630,12 +636,14 @@ NodeIndex::set_executionContext (const X3D::X3DExecutionContextPtr & value)
 			executionContext -> sceneGraph_changed () .addInterest (&NodeIndex::refresh, this);
 
 		X3D::X3DScenePtr scene (executionContext);
-	
+
 		if (scene)
 			scene -> exportedNodes_changed () .addInterest (&NodeIndex::refresh, this);
-	
+
 		refresh ();
 	}
+	else
+		setNodes ({ });
 }
 
 void

@@ -80,8 +80,6 @@ OutlineEditorDatabase::setItem (const std::string & worldURL, const std::string 
 {
 	try
 	{
-		__LOG__ << worldURL << std::endl;
-
 		update (getId (worldURL), expanded, hAdjustment, vAdjustment);
 	}
 	catch (const std::out_of_range &)
@@ -95,8 +93,6 @@ OutlineEditorDatabase::getItem (const std::string & worldURL) const
 throw (std::out_of_range,
        std::invalid_argument)
 {
-	__LOG__ << worldURL << std::endl;
-
 	const auto & result = database .query_array ("SELECT expanded, hAdjustment, vAdjustment FROM Paths "
 	                                             "WHERE worldURL = " + database .quote (worldURL));
 

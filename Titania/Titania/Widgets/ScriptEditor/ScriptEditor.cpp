@@ -134,6 +134,12 @@ ScriptEditor::initialize ()
 
 	console -> reparent (getConsoleBox (), getWindow ());
 
+	// Observe context change.
+
+	getCurrentContext () .addInterest (&ScriptEditor::set_executionContext, this);
+
+	set_executionContext ();
+
 	// Initialize after all.
 
 	X3DScriptEditorSearch::initialize ();
@@ -203,42 +209,23 @@ ScriptEditor::getModified () const
 }
 
 void
-ScriptEditor::on_map ()
-{
-	getCurrentContext () .addInterest (&ScriptEditor::set_executionContext, this);
-
-	set_executionContext (getCurrentContext ());
-}
-
-void
-ScriptEditor::on_unmap ()
-{
-	getCurrentContext () .removeInterest (&ScriptEditor::set_executionContext, this);
-
-	//set_executionContext (nullptr);
-}
-
-void
-ScriptEditor::set_executionContext (const X3D::X3DExecutionContextPtr & executionContext)
+ScriptEditor::set_executionContext ()
 {
 	try
 	{
 		save ();
 
-		if (executionContext)
-		{
-			ScriptEditorDatabase database;
-	
-			const auto item     = database .getItem (executionContext -> getWorldURL () .filename ());
-			const auto nodePath = std::get <0> (item);
-			const auto node     = getNodeFromPath (nodePath);
-	
-			if (nodeTypes .count (node -> getType () .back ()))
-			{
-				nodeIndex -> setSelection (node);
+		ScriptEditorDatabase database;
 
-				return set_node (node);
-			}
+		const auto item     = database .getItem (getCurrentContext () -> getWorldURL () .filename ());
+		const auto nodePath = std::get <0> (item);
+		const auto node     = getNodeFromPath (nodePath);
+
+		if (nodeTypes .count (node -> getType () .back ()))
+		{
+			nodeIndex -> setSelection (node);
+
+			return set_node (node);
 		}
 	}
 	catch (const std::exception & error)
