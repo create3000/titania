@@ -448,7 +448,7 @@ NodeIndex::setNodes (X3D::MFNode && value)
 
 		row -> set_value (Columns::IMAGE,          getName () + basic::to_string (index));
 		row -> set_value (Columns::TYPE_NAME,      node -> getTypeName ());
-		row -> set_value (Columns::NAME,           getNodeName (node));
+		row -> set_value (Columns::NAME,           getNameFromNode (node));
 		row -> set_value (Columns::IMPORTED_NODES, importingInlines .count (node) ? document_import : empty_string);
 		row -> set_value (Columns::EXPORTED_NODES, exportedNodes .count (node)    ? document_export : empty_string);
 		row -> set_value (Columns::PROTO,          node -> getExecutionContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }));
@@ -470,20 +470,12 @@ NodeIndex::setNodes (X3D::MFNode && value)
 }
 
 std::string
-NodeIndex::getNodeName (const X3D::SFNode & node) const
+NodeIndex::getNameFromNode (const X3D::SFNode & node) const
 {
-	const auto nodeName         = node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ();
-	auto       path             = std::string ();
-	auto       executionContext = node -> getExecutionContext ();
+	const auto nodeName = getNodeName (node);
+	const auto path     = getProtoPath (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()));
 
-	while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
-	{
-		path = executionContext -> getName () + '.' + path;
-
-		executionContext = executionContext -> getExecutionContext ();
-	}
-
-	return "<b>" + path + "</b>" + Glib::Markup::escape_text (nodeName);
+	return "<b>" + basic::join (path .begin (), path .end (), ".") + "</b>." + Glib::Markup::escape_text (nodeName);
 }
 
 /***

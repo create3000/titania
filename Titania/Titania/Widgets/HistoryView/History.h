@@ -93,6 +93,12 @@ public:
 	throw (std::invalid_argument);
 
 	void
+	setContextPath (const std::string & worldURL, const std::string & contextPath);
+
+	std::string
+	getContextPath (const std::string & worldURL) const;
+
+	void
 	setItem (const std::string & title, const std::string & worldURL, const std::string & image);
 
 	sql::sqlite3::assoc_row_type

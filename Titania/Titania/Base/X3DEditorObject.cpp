@@ -149,7 +149,7 @@ X3DEditorObject::validateFolder (const std::string & text) const
  **********************************************************************************************************************/
 
 Glib::ustring
-X3DEditorObject::refineName (const Glib::ustring & name)
+X3DEditorObject::refineName (const Glib::ustring & name) const
 {
 	Glib::ustring result;
 

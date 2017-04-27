@@ -64,6 +64,8 @@
 #include <Titania/String/to_string.h>
 #include <Titania/Utility/Range.h>
 
+#include <gtkmm.h>
+
 namespace titania {
 namespace puck {
 
@@ -133,9 +135,8 @@ protected:
 	void
 	validateFolderOnDelete (Gtk::Entry &, int, int);
 
-	static
 	Glib::ustring
-	refineName (const Glib::ustring &);
+	refineName (const Glib::ustring &) const;
 
 	template <class NodeType>
 	X3D::X3DPtrArray <NodeType>

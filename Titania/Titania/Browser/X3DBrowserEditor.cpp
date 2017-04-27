@@ -74,6 +74,7 @@
 #include <Titania/X3D/Editing/Undo/UndoStepContainer.h>
 #include <Titania/X3D/Execution/World.h>
 #include <Titania/X3D/Parser/Filter.h>
+#include <Titania/X3D/Prototype/ProtoDeclaration.h>
 #include <Titania/X3D/Tools/Grouping/X3DTransformNodeTool.h>
 
 #include <Titania/InputOutput/MultiLineComment.h>
@@ -242,8 +243,87 @@ X3DBrowserEditor::set_scene ()
 void
 X3DBrowserEditor::set_executionContext ()
 {
-	if (getEditing ())
-		getMetaData ();
+	if (not getEditing ())
+		return;
+
+	// Restore Viewpoint, and NavigationInfo from meta data.
+
+	getMetaData ();
+
+	// Restore context or save context path in History.
+
+	const auto masterScene = getCurrentContext () -> getMasterScene ();
+
+	if (getCurrentContext () == masterScene)
+	{
+		// Restore context from path.
+
+		const auto contextPath      = getHistory () -> getContextPath (getCurrentContext () -> getWorldURL ());
+		const auto executionContext = getContextFromPath (getCurrentContext (), contextPath);
+
+		if (executionContext not_eq getCurrentContext ())
+		{
+			setCurrentContext (executionContext);
+		}
+	}
+	else
+	{
+		// Save context path in History.
+
+		const auto contextPath = getPathFromContext (getCurrentContext ());
+
+		getHistory () -> setContextPath (masterScene -> getWorldURL (), contextPath);
+	}
+}
+
+std::string
+X3DBrowserEditor::getPathFromContext (const X3D::X3DExecutionContextPtr & executionContext) const
+{
+	const auto contextPath = getContextPath (executionContext);
+	const auto string      = basic::join (contextPath .begin (), contextPath .end (), "\n");
+
+	return string;
+}
+
+X3D::X3DExecutionContextPtr
+X3DBrowserEditor::getContextFromPath (X3D::X3DExecutionContext* executionContext, const std::string & string) const
+{
+	// Restore context from path.
+
+	auto contextPath = std::vector <std::string> ();
+
+	basic::split (std::back_inserter (contextPath), string, "\n");
+
+	for (const basic::uri path : contextPath)
+	{
+		if (path .is_absolute ())
+		{
+			// Exterproto or Inline
+			break;
+		}
+		else
+		{
+			// Proto
+
+			auto protoNames = std::vector <std::string> ();
+	
+			basic::split (std::back_inserter (protoNames), path .str (), ".");
+
+			for (const auto & protoName : protoNames)
+			{
+				try
+				{
+					executionContext = executionContext -> getProtoDeclaration (protoName);
+				}
+				catch (const X3D::X3DError &)
+				{
+					return X3D::X3DExecutionContextPtr (executionContext);
+				}
+			}
+		}
+	}
+
+	return X3D::X3DExecutionContextPtr (executionContext);
 }
 
 void

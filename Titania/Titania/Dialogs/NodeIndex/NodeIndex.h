@@ -51,6 +51,7 @@
 #ifndef __TITANIA_DIALOGS_NODE_INDEX_NODE_INDEX_H__
 #define __TITANIA_DIALOGS_NODE_INDEX_NODE_INDEX_H__
 
+#include "../../Base/X3DEditorObject.h"
 #include "../../Browser/UserData.h"
 #include "../../UserInterfaces/X3DNodeIndexInterface.h"
 
@@ -136,7 +137,7 @@ public:
 	///  @name Destruction
 
 	virtual
-	~NodeIndex () final  override;
+	~NodeIndex () final override;
 
 
 private:
@@ -192,7 +193,7 @@ private:
 	setNodes (X3D::MFNode && value);
 
 	std::string
-	getNodeName (const X3D::SFNode & node) const;
+	getNameFromNode (const X3D::SFNode & node) const;
 
 	X3D::MFNode
 	getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types);

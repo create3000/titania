@@ -83,9 +83,9 @@ History::History () :
 		                 "lastAccess   REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
 		                 "creationTime REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
 		                 "PRIMARY KEY (id ASC))");
-	
+
 		database .try_query ("ALTER TABLE History ADD preview BLOB DEFAULT NULL");
-		//database .try_query ("ALTER TABLE History ADD contextPath TEXT");
+		database .try_query ("ALTER TABLE History ADD contextPath TEXT");
 
 		if (not have_history)
 		{
@@ -233,36 +233,37 @@ throw (std::invalid_argument)
 	return value;
 }
 
-//void
-//History::setContextPath (const std::string & worldURL, const std::string & contextPath)
-//{
-//	try
-//	{
-//		database .query ("UPDATE History "
-//		                 "SET "
-//		                 "contextPath = " + database .quote (contextPath) + ","
-//		                 "WHERE worldURL = " + database .quote (worldURL));
-//	}
-//	catch (const std::exception & error)
-//	{
-//		//__LOG__ << error .what () << std::endl;
-//	}
-//}
-//
-//std::string
-//History::getContextPath (const std::string & worldURL) const
-//{
-//	try
-//	{
-//		const auto & items = database .query_assoc ("SELECT contextPath FROM History WHERE worldURL = " + database .quote (worldURL));
-//
-//		return items .at (0) .at ("contextPath");
-//	}
-//	catch (const std::exception &)
-//	{
-//		return "";
-//	}
-//}
+void
+History::setContextPath (const std::string & worldURL, const std::string & contextPath)
+{
+	try
+	{
+		database .query ("UPDATE History "
+		                 "SET "
+		                 "contextPath = " + database .quote (contextPath) + " "
+		                 "WHERE worldURL = " + database .quote (worldURL));
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+std::string
+History::getContextPath (const std::string & worldURL) const
+{
+	try
+	{
+		const auto & items = database .query_assoc ("SELECT contextPath FROM History WHERE worldURL = " + database .quote (worldURL));
+
+		return items .at (0) .at ("contextPath");
+	}
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+		return "";
+	}
+}
 
 void
 History::setItem (const std::string & title, const std::string & worldURL, const std::string & image)

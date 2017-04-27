@@ -56,6 +56,8 @@
 
 #include "../Browser/X3DBrowserWindow.h"
 
+#include <Titania/String.h>
+
 #include <cassert>
 
 namespace titania {
@@ -205,6 +207,75 @@ const X3D::UndoStepPtr &
 X3DBaseInterface::getUndoStep () const
 {
 	return browserWindow -> getUndoStep ();
+}
+
+std::string
+X3DBaseInterface::getNodeName (const X3D::SFNode & node) const
+{
+	const auto nodeName = node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ();
+
+	return nodeName;
+}
+
+std::deque <std::string>
+X3DBaseInterface::getNodePath (const X3D::SFNode & node) const
+{
+	auto path = getProtoPath (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()));
+
+	path .emplace_back (getNodeName (node));
+
+	return path;
+}
+
+std::deque <std::string>
+X3DBaseInterface::getProtoPath (X3D::X3DExecutionContext* executionContext) const
+{
+	auto path = std::deque <std::string> ();
+
+	while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+	{
+		path .emplace_front (executionContext -> getName ());
+
+		executionContext = executionContext -> getExecutionContext ();
+	}
+
+	return path;
+}
+
+std::deque <std::string>
+X3DBaseInterface::getContextPath (X3D::X3DExecutionContext* executionContext) const
+{
+	auto path = std::deque <std::string> ();
+
+	const auto masterScene = getCurrentContext () -> getMasterScene ();
+
+	while (executionContext not_eq masterScene)
+	{
+		if (executionContext -> isType ({ X3D::X3DConstants::X3DScene }))
+		{
+			path .emplace_front (executionContext -> getWorldURL ());
+
+			executionContext = executionContext -> getExecutionContext ();
+		}
+		else if (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
+		{
+			const auto protoPath = getProtoPath (executionContext);
+
+			path .emplace_front (basic::join (protoPath .begin (), protoPath .end (), "."));
+
+			executionContext = executionContext -> getScene ();
+		}
+		else
+		{
+			// X3DPrototypeInstance
+
+			path .clear ();
+
+			executionContext = executionContext -> getScene ();
+		}
+	}
+
+	return path;
 }
 
 ///  Sets the current browser to the underlying X3DParentObject.

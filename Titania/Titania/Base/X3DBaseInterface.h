@@ -141,6 +141,22 @@ public:
 	getMetaData (const std::string & key, const Type & defaultValue = Type ()) const;
 
 	/***
+	 *  @name Node, Proto and Context path handline
+	 */
+
+	std::string
+	getNodeName (const X3D::SFNode & node) const;
+
+	std::deque <std::string>
+	getNodePath (const X3D::SFNode & node) const;
+
+	std::deque <std::string>
+	getProtoPath (X3D::X3DExecutionContext* executionContext) const;
+
+	std::deque <std::string>
+	getContextPath (X3D::X3DExecutionContext* executionContext) const;
+
+	/***
 	 *  @name Undo/redo handling
 	 */
 

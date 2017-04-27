@@ -601,23 +601,6 @@ ScriptEditor::getPathFromNode (const X3D::SFNode & node) const
 	return basic::join (path .begin (), path .end (), ".");
 }
 
-std::deque <std::string>
-ScriptEditor::getNodePath (const X3D::SFNode & node) const
-{
-	const auto nodeName         = node -> getName () .empty () ? _ ("<unnamed>") : node -> getName ();
-	auto       path             = std::deque <std::string> ({ nodeName });
-	auto       executionContext = node -> getExecutionContext ();
-
-	while (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
-	{
-		path .emplace_front (executionContext -> getName ());
-
-		executionContext = executionContext -> getExecutionContext ();
-	}
-
-	return path;
-}
-
 void
 ScriptEditor::store ()
 {
