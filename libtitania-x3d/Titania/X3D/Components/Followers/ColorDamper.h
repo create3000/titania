@@ -141,7 +141,7 @@ private:
 	///  @name Operations
 
 	bool
-	equals (const Color3f &, const Color3f &, const float) const;
+	equals (const Vector3f &, const Vector3f &, const float) const;
 
 	///  @name Event handlers
 	
@@ -179,7 +179,7 @@ private:
 
 	Fields fields;
 
-	std::vector <Color3f> buffer;
+	std::vector <Vector3f> buffer;
 
 };
 

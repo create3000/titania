@@ -141,7 +141,7 @@ private:
 	///  @name Operations
 
 	bool
-	equals (const Color3f &, const Color3f &, const float) const;
+	equals (const Vector3f &, const Vector3f &, const float) const;
 
 	///  @name Event handlers
 
@@ -182,9 +182,9 @@ private:
 
 	Fields fields;
 
-	time_type             bufferEndTime;
-	Color3f               previousValue;
-	std::vector <Color3f> buffer;
+	time_type              bufferEndTime;
+	Vector3f               previousValue;
+	std::vector <Vector3f> buffer;
 
 };
 

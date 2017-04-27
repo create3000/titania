@@ -67,7 +67,8 @@ ColorInterpolator::Fields::Fields () :
 ColorInterpolator::ColorInterpolator (X3DExecutionContext* const executionContext) :
 	        X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	X3DInterpolatorNode (),
-	             fields ()
+	             fields (),
+	        keyValueHSV ()
 {
 	addType (X3DConstants::ColorInterpolator);
 
@@ -97,12 +98,17 @@ ColorInterpolator::set_keyValue ()
 {
 	if (keyValue () .size () < key () .size ())
 		keyValue () .resize (key () .size (), keyValue () .size () ? keyValue () .back () : SFColor ());
+
+	keyValueHSV .clear ();
+
+	for (const auto & value : keyValue ())
+		keyValueHSV .emplace_back (value .getHSV ());
 }
 
 void
 ColorInterpolator::interpolate (size_t index0, size_t index1, const float weight)
 {
-	value_changed () = math::clerp <float> (keyValue () [index0], keyValue () [index1], weight);
+	value_changed () = make_hsv (hsv_lerp (keyValueHSV [index0], keyValueHSV [index1], weight));
 }
 
 } // X3D

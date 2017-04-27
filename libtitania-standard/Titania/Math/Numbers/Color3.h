@@ -651,13 +651,15 @@ lerp (const color3 <Type> & source, const color3 <Type> & destination, const Typ
 	return color3 <Type> (r .x (), r .y (), r .z (), r .w ());
 }
 
-///  Circular linear interpolate between source color and destination color in hsv space by an amout of @a t.
+///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t.
 template <class Type>
 static
 vector3 <Type>
-hsv_lerp (const vector3 <Type> & a, const vector3 <Type> & b, const Type & t)
+hsv_lerp (const vector3 <Type> & source, const vector3 <Type> & destination, const Type & t)
 {
-	const Type range = std::abs (b [0] - a [0]);
+	const auto & a     = source;
+	const auto & b     = destination;
+	const Type   range = std::abs (b [0] - a [0]);
 
 	if (range <= pi <Type>)
 	{
@@ -678,17 +680,6 @@ hsv_lerp (const vector3 <Type> & a, const vector3 <Type> & b, const Type & t)
 		                       lerp (a [1], b [1], t),
 		                       lerp (a [2], b [2], t));
 	}
-}
-
-///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t in HSV space.
-template <class Type>
-color3 <Type>
-clerp (const color3 <Type> & source, const color3 <Type> & destination, const Type & t)
-{
-	const auto a = source      .hsv ();
-	const auto b = destination .hsv ();
-
-	return make_hsv (hsv_lerp (a, b, t));
 }
 
 ///  @relates color3

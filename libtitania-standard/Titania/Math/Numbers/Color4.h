@@ -53,6 +53,7 @@
 
 #include "../Functional.h"
 #include "Vector4.h"
+#include "Color3.h"
 
 #include <algorithm>
 #include <array>
@@ -678,41 +679,13 @@ lerp (const color4 <Type> & source, const color4 <Type> & destination, const Typ
 template <class Type>
 static
 vector4 <Type>
-hsva_lerp (const vector4 <Type> & a, const vector4 <Type> & b, const Type & t)
+hsva_lerp (const vector4 <Type> & source, const vector4 <Type> & destination, const Type & t)
 {
-	const Type range = std::abs (b [0] - a [0]);
+	const auto a = vector3 <Type> (source .x (), source .y (), source .z ());
+	const auto b = vector3 <Type> (destination .x (), destination .y (), destination .z ());
+	const auto r = hsv_lerp (a, b, t);
 
-	if (range <= pi <Type>)
-	{
-		return lerp (a, b, t);
-	}
-	else
-	{
-		const Type step = (pi2 <Type>- range) * t;
-		Type       h    = a [0] < b [0] ? a [0] - step : a [0] + step;
-
-		if (h < 0)
-			h += pi2 <Type>;
-
-		else if (h > pi2 <Type>)
-			h -= pi2 <Type>;
-
-		return vector4 <Type> (h,
-		                       lerp (a [1], b [1], t),
-		                       lerp (a [2], b [2], t),
-		                       lerp (a [3], b [3], t));
-	}
-}
-
-///  Circular linear interpolate between @a source color and @a destination color in hsv space by an amout of @a t in HSVA space.
-template <class Type>
-color4 <Type>
-clerp (const color4 <Type> & source, const color4 <Type> & destination, const Type & t)
-{
-	const auto a = source      .hsva ();
-	const auto b = destination .hsva ();
-
-	return make_hsva (hsva_lerp (a, b, t));
+	return vector4 <Type> (r .x (), r .y (), r .z (), lerp (source .w (), destination .w (), t));
 }
 
 ///  @relates color4

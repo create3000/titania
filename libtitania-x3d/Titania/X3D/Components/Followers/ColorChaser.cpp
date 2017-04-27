@@ -102,14 +102,14 @@ ColorChaser::initialize ()
 	set_destination () .addInterest (&ColorChaser::set_destination_, this);
 
 	bufferEndTime = getCurrentTime ();
-	previousValue = initialValue ();
+	previousValue = initialValue () .getHSV ();
 
-	buffer .resize (getNumBuffers (), initialValue ());
-	buffer [0] = initialDestination ();
+	buffer .resize (getNumBuffers (), previousValue);
+	buffer [0] = initialDestination () .getHSV ();
 
 	set_destination () .set (initialDestination ());
 
-	if (equals (initialDestination (), initialValue (), getTolerance ()))
+	if (equals (initialDestination () .getHSV (), initialValue () .getHSV (), getTolerance ()))
 		value_changed () = initialDestination ();
 
 	else
@@ -117,12 +117,9 @@ ColorChaser::initialize ()
 }
 
 bool
-ColorChaser::equals (const Color3f & lhs, const Color3f & rhs, const float tolerance) const
+ColorChaser::equals (const Vector3f & lhs, const Vector3f & rhs, const float tolerance) const
 {
-	const Vector3f a (lhs .r (), lhs .g (), lhs .b ());
-	const Vector3f b (rhs .r (), rhs .g (), rhs .b ());
-
-	return abs (a - b) < tolerance;
+	return abs (lhs - rhs) < tolerance;
 }
 
 void
@@ -131,10 +128,12 @@ ColorChaser::set_value_ ()
 	if (not isActive ())
 		bufferEndTime = getCurrentTime ();
 
-	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
-		value = set_value ();
+	const auto hsv = set_value () .getHSV ();
 
-	previousValue = set_value ();
+	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
+		value = hsv;
+
+	previousValue = hsv;
 
 	value_changed () = set_value ();
 
@@ -154,22 +153,19 @@ ColorChaser::prepareEvents ()
 {
 	const float fraction = updateBuffer ();
 
-	auto output = clerp <float> (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
-	auto ohsv   = output .hsv ();
+	auto output = hsv_lerp <float> (previousValue, buffer [buffer .size () - 1], stepResponse ((buffer .size () - 1 + fraction) * getStepTime ()));
 
 	for (int32_t i = buffer .size () - 2; i >= 0; -- i)
 	{
 		const float t    = stepResponse ((i + fraction) * getStepTime ());
-		const auto  hsv0 = buffer [i]     .hsv ();
-		const auto  hsv1 = buffer [i + 1] .hsv ();
-		const auto  dhsv = ohsv + hsv0 - hsv1;
+		const auto  dhsv = output + buffer [i] - buffer [i + 1];
 
-		ohsv = hsv_lerp (ohsv, Vector3f (interval (dhsv [0], 0.0f, 2 * pi <float>), dhsv [1], dhsv [2]), t);
+		output = hsv_lerp (output, Vector3f (interval (dhsv [0], 0.0f, 2 * pi <float>), dhsv [1], dhsv [2]), t);
 	}
 
-	value_changed () .setHSV (ohsv);
+	value_changed () .setHSV (output);
 
-	if (equals (output, set_destination (), getTolerance ()))
+	if (equals (output, set_destination () .getHSV (), getTolerance ()))
 		set_active (false);
 }
 
@@ -196,15 +192,17 @@ ColorChaser::updateBuffer ()
 			{
 				const float alpha = i / seconds;
 
-				buffer [i] = clerp (set_destination () .getValue (), buffer [seconds], alpha);
+				buffer [i] = hsv_lerp (set_destination () .getHSV (), buffer [seconds], alpha);
  			}
 		}
 		else
 		{
-			previousValue = seconds == buffer .size () ? buffer [0] : set_destination ();
+			previousValue = seconds == buffer .size () ? buffer [0] : set_destination () .getHSV ();
+
+			const auto hsv = set_destination () .getHSV ();
 
 			for (auto & value : buffer)
-				value = set_destination ();
+				value = hsv;
 		}
 
 		bufferEndTime += seconds * getStepTime ();

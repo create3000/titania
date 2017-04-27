@@ -137,7 +137,7 @@ SFColor::getHSV () const
 Color3f
 SFColor::lerp (const color3 <value_type> & dest, const value_type & t) const
 {
-	return clerp (getValue (), dest , t);
+	return make_hsv (hsv_lerp (getValue () .hsv (), dest .hsv (), t));
 }
 
 void

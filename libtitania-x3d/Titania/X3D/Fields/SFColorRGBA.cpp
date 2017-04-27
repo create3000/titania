@@ -144,7 +144,7 @@ SFColorRGBA::getHSVA () const
 SFColorRGBA::internal_type
 SFColorRGBA::lerp (const internal_type & dest, const value_type & t) const
 {
-	return clerp (getValue (), dest, t);
+	return make_hsva (hsva_lerp (getValue () .hsva (), dest .hsva (), t));
 }
 
 void

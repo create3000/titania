@@ -103,11 +103,11 @@ ColorDamper::initialize ()
 	set_destination () .addInterest (&ColorDamper::set_destination_, this);
 	order ()           .addInterest (&ColorDamper::set_order, this);
 
-	buffer .resize (getOrder () + 1, initialValue ());
+	buffer .resize (getOrder () + 1, initialValue () .getHSV ());
 
-	buffer [0] = initialDestination ();
+	buffer [0] = initialDestination () .getHSV ();
 
-	if (equals (initialDestination (), initialValue (), getTolerance ()))
+	if (equals (initialDestination () .getHSV (), initialValue () .getHSV (), getTolerance ()))
 		value_changed () = initialDestination ();
 
 	else
@@ -115,19 +115,18 @@ ColorDamper::initialize ()
 }
 
 bool
-ColorDamper::equals (const Color3f & lhs, const Color3f & rhs, const float tolerance) const
+ColorDamper::equals (const Vector3f & lhs, const Vector3f & rhs, const float tolerance) const
 {
-	const Vector3f a (lhs .r (), lhs .g (), lhs .b ());
-	const Vector3f b (rhs .r (), rhs .g (), rhs .b ());
-
-	return abs (a - b) < tolerance;
+	return abs (lhs - rhs) < tolerance;
 }
 
 void
 ColorDamper::set_value_ ()
 {
+	const auto hsv = set_value () .getHSV ();
+
 	for (auto & value : std::make_pair (buffer .begin () + 1, buffer .end ()))
-		value = set_value ();
+		value = hsv;
 
 	value_changed () = set_value ();
 
@@ -137,7 +136,7 @@ ColorDamper::set_value_ ()
 void
 ColorDamper::set_destination_ ()
 {
-	buffer [0] = set_destination ();
+	buffer [0] = set_destination () .getHSV ();
 
 	set_active (true);
 }
@@ -161,17 +160,17 @@ ColorDamper::prepareEvents ()
 		
 		for (size_t i = 0; i < order; ++ i)
 		{
-			buffer [i + 1] = clerp (buffer [i], buffer [i + 1], alpha);
+			buffer [i + 1] = hsv_lerp (buffer [i], buffer [i + 1], alpha);
 		}
 
-		value_changed () = buffer [order];
+		value_changed () = make_hsv (buffer [order]);
 
 		if (not equals (buffer [order], buffer [0], getTolerance ()))
 			return;
 	}
 	else
 	{
-		value_changed () = buffer [0];
+		value_changed () = make_hsv (buffer [0]);
 
 		order = 0;
 	}
