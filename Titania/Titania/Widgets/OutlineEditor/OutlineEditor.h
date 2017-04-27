@@ -313,10 +313,13 @@ private:
 	// Expanded
 
 	void
-	restoreExpanded (const X3D::X3DExecutionContextPtr &);
+	restoreExpanded ();
 
 	void
-	saveExpanded (const X3D::X3DExecutionContextPtr &);
+	saveExpanded ();
+
+	void
+	saveExpandedImpl ();
 
 	void
 	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &) const;

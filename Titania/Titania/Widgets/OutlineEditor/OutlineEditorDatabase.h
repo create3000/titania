@@ -51,13 +51,10 @@
 #ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_EDITOR_DATABASE_H__
 #define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_EDITOR_DATABASE_H__
 
-#include "../../Configuration/config.h"
+#include <string>
+#include <tuple>
 
-#include <Titania/OS.h>
 #include <Titania/SQL/SQLite3.h>
-#include <Titania/String.h>
-
-#include <cstdlib>
 
 namespace titania {
 namespace puck {
@@ -66,85 +63,38 @@ class OutlineEditorDatabase
 {
 public:
 
-	OutlineEditorDatabase () :
-		database ()
-	{
-		os::system ("mkdir", "-p", config_dir ());
+	///  @name Construction
 
-		database .open (config_dir ("outline-editor.db"));
+	OutlineEditorDatabase ();
 
-		database .query ("CREATE TABLE IF NOT EXISTS Paths ("
-		                 "id           INTEGER,"
-		                 "worldURL     TEXT, "
-		                 "expanded     TEXT,"
-		                 "PRIMARY KEY (id ASC))");
-
-		database .try_query ("ALTER TABLE Paths ADD hAdjustment REAL DEFAULT 0");
-		database .try_query ("ALTER TABLE Paths ADD vAdjustment REAL DEFAULT 0");
-	}
+	///  @name Member access
 
 	void
-	setItem (const std::string & worldURL, const std::string & expanded, const double hAdjustment, const double vAdjustment)
-	{
-		try
-		{
-			update (getId (worldURL), expanded, hAdjustment, vAdjustment);
-		}
-		catch (const std::out_of_range &)
-		{
-			insert (worldURL, expanded, hAdjustment, vAdjustment);
-		}
-	}
+	setItem (const std::string & worldURL, const std::string & expanded, const double hAdjustment, const double vAdjustment);
 
 	std::tuple <std::string, double, double>
 	getItem (const std::string & worldURL) const
 	throw (std::out_of_range,
-	       std::invalid_argument)
-	{
-		const auto & result = database .query_array ("SELECT expanded, hAdjustment, vAdjustment FROM Paths "
-		                                             "WHERE worldURL = " + database .quote (worldURL));
-
-		const auto & item = result .at (0);
-
-		return std::make_tuple (item .at (0), std::atof (item .at (1) .c_str ()), std::atof (item .at (2) .c_str ()));
-	}
+	       std::invalid_argument);
 
 private:
 
-	void
-	insert (const std::string & worldURL, const std::string & expanded, const double hAdjustment, const double vAdjustment)
-	{
-		database .query ("INSERT INTO Paths "
-		                 "(worldURL, expanded, hAdjustment, vAdjustment)"
-		                 "VALUES ("
-		                 + database .quote (worldURL) + ","
-		                 + database .quote (expanded) + ","
-		                 + database .quote (basic::to_string (hAdjustment, std::locale::classic ())) + ","
-		                 + database .quote (basic::to_string (vAdjustment, std::locale::classic ()))
-		                 + ")");
-	}
-
-	void
-	update (const std::string & id, const std::string & expanded, const double hAdjustment, const double vAdjustment)
-	{
-		database .query ("UPDATE Paths "
-		                 "SET "
-		                 "expanded    = " + database .quote (expanded) + ", "
-		                 "hAdjustment = " + database .quote (basic::to_string (hAdjustment, std::locale::classic ())) + ", "
-		                 "vAdjustment = " + database .quote (basic::to_string (vAdjustment, std::locale::classic ())) + " "
-		                 "WHERE id = " + id);
-	}
+	///  @name Member access
 
 	const std::string &
 	getId (const std::string & worldURL) const
 	throw (std::out_of_range,
-	       std::invalid_argument)
-	{
-		const auto & result = database .query_array ("SELECT id FROM Paths WHERE "
-		                                             "worldURL = " + database .quote (worldURL));
+	       std::invalid_argument);
 
-		return result .at (0) .at (0);
-	}
+	///  @name Operations
+
+	void
+	insert (const std::string & worldURL, const std::string & expanded, const double hAdjustment, const double vAdjustment);
+
+	void
+	update (const std::string & id, const std::string & expanded, const double hAdjustment, const double vAdjustment);
+
+	///  @name Members
 
 	sql::sqlite3 database;
 

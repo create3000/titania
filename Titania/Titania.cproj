@@ -299,6 +299,7 @@
     <Compile Include="Titania\ComposedWidgets\X3DMFStringEntry.cpp" />
     <Compile Include="Titania\ComposedWidgets\MFStringURLEntry.cpp" />
     <Compile Include="Titania\Widgets\ScriptEditor\X3DShaderEditor.cpp" />
+    <Compile Include="Titania\Widgets\OutlineEditor\OutlineEditorDatabase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />

@@ -359,6 +359,7 @@ throw (Error <INVALID_SCENE>,
 		isLive () .addInterest (executionContext -> isLive ());
 		executionContext -> isLive () = isLive ();
 		executionContext -> setup ();
+		executionContext -> realize ();
 
 		setWorld (new World (executionContext));
 		getWorld () -> setup ();

@@ -471,9 +471,6 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	scene = executionContext;
 
-	if (executionContext -> isType ({ X3D::X3DConstants::ProtoDeclaration }))
-		executionContext -> realize ();
-
 	set_model (OutlineTreeModel::create (executionContext));
 	get_model () -> set_show_all_routes (get_expand_prototype_instances ());
 

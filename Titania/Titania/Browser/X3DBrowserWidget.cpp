@@ -412,9 +412,10 @@ X3DBrowserWidget::getUserData (const X3D::SFNode & node)
 void
 X3DBrowserWidget::setTitle ()
 {
-	const auto userData = getUserData (getCurrentBrowser ());
-	const bool modified = getModified (getCurrentBrowser ());
-	const auto title    = getTitle (getCurrentBrowser ());
+	const auto userData  = getUserData (getCurrentBrowser ());
+	const bool modified  = getModified (getCurrentBrowser ());
+	const auto title     = getTitle (getCurrentBrowser ());
+	const auto protoPath = getProtoPath (getCurrentContext ());
 
 	getBrowserNotebook () .set_menu_label_text (*getCurrentBrowser (), title);
 
@@ -431,6 +432,7 @@ X3DBrowserWidget::setTitle ()
 	                         + " · "
 	                         + getCurrentContext () -> getWorldURL () .filename ()
 	                         + (modified ? "*" : "")
+	                         + (protoPath .empty () ? "" : " · " + basic::join (protoPath .begin (), protoPath .end (), "."))
 	                         + " · "
 	                         + getCurrentBrowser () -> getName ());
 }
@@ -978,7 +980,6 @@ void
 X3DBrowserWidget::set_scene ()
 {
 	createIcon ();
-	setTitle ();
 
 	#ifdef TITANIA_DEBUG
 	loadTime = chrono::now () - loadTime;
@@ -1002,6 +1003,8 @@ X3DBrowserWidget::set_executionContext ()
 		scene = std::move (currentScene);
 
 	executionContext = getCurrentBrowser () -> getExecutionContext ();
+
+	setTitle ();
 }
 
 void

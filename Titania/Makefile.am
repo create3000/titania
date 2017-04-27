@@ -222,6 +222,7 @@ titania_SOURCES =  \
 	Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp \
 	Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp \
 	Titania/Widgets/OutlineEditor/OutlineEditor.cpp \
+	Titania/Widgets/OutlineEditor/OutlineEditorDatabase.cpp \
 	Titania/Widgets/OutlineEditor/OutlineRouteGraph.cpp \
 	Titania/Widgets/OutlineEditor/OutlineSelection.cpp \
 	Titania/Widgets/OutlineEditor/OutlineTreeData.cpp \

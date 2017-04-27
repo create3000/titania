@@ -271,12 +271,6 @@ private:
 	void
 	set_executionContext ();
 
-	std::string
-	getPathFromContext (const X3D::X3DExecutionContextPtr & executionContext) const;
-	
-	X3D::X3DExecutionContextPtr
-	getContextFromPath (X3D::X3DExecutionContext* executionContext, const std::string & string) const;
-
 	///  @name File handling
 
 	bool
@@ -305,6 +299,7 @@ private:
 
 	///  @name Members
 
+	X3D::X3DExecutionContextPtr        executionContext;
 	X3D::SFBool                        editing;
 	X3D::ClipboardPtr                  clipboard;
 	std::unique_ptr <BrowserSelection> selection;

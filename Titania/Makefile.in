@@ -319,6 +319,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/OutlineDragDrop.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/OutlineEditor.$(OBJEXT) \
+	Titania/Widgets/OutlineEditor/OutlineEditorDatabase.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/OutlineRouteGraph.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/OutlineSelection.$(OBJEXT) \
 	Titania/Widgets/OutlineEditor/OutlineTreeData.$(OBJEXT) \
@@ -799,6 +800,7 @@ titania_SOURCES = \
 	Titania/Widgets/OutlineEditor/CellRenderer/X3DTextViewEditable.cpp \
 	Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp \
 	Titania/Widgets/OutlineEditor/OutlineEditor.cpp \
+	Titania/Widgets/OutlineEditor/OutlineEditorDatabase.cpp \
 	Titania/Widgets/OutlineEditor/OutlineRouteGraph.cpp \
 	Titania/Widgets/OutlineEditor/OutlineSelection.cpp \
 	Titania/Widgets/OutlineEditor/OutlineTreeData.cpp \
@@ -1861,6 +1863,9 @@ Titania/Widgets/OutlineEditor/OutlineDragDrop.$(OBJEXT):  \
 Titania/Widgets/OutlineEditor/OutlineEditor.$(OBJEXT):  \
 	Titania/Widgets/OutlineEditor/$(am__dirstamp) \
 	Titania/Widgets/OutlineEditor/$(DEPDIR)/$(am__dirstamp)
+Titania/Widgets/OutlineEditor/OutlineEditorDatabase.$(OBJEXT):  \
+	Titania/Widgets/OutlineEditor/$(am__dirstamp) \
+	Titania/Widgets/OutlineEditor/$(DEPDIR)/$(am__dirstamp)
 Titania/Widgets/OutlineEditor/OutlineRouteGraph.$(OBJEXT):  \
 	Titania/Widgets/OutlineEditor/$(am__dirstamp) \
 	Titania/Widgets/OutlineEditor/$(DEPDIR)/$(am__dirstamp)
@@ -2188,6 +2193,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/HistoryView/$(DEPDIR)/HistoryView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/$(DEPDIR)/OutlineDragDrop.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/$(DEPDIR)/OutlineEditor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/$(DEPDIR)/OutlineEditorDatabase.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/$(DEPDIR)/OutlineRouteGraph.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/$(DEPDIR)/OutlineSelection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Widgets/OutlineEditor/$(DEPDIR)/OutlineTreeData.Po@am__quote@

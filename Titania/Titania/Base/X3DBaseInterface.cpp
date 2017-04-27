@@ -247,7 +247,7 @@ X3DBaseInterface::getContextPath (X3D::X3DExecutionContext* executionContext) co
 {
 	auto path = std::deque <std::string> ();
 
-	const auto masterScene = getCurrentContext () -> getMasterScene ();
+	const auto masterScene = executionContext -> getMasterScene ();
 
 	while (executionContext not_eq masterScene)
 	{
@@ -275,7 +275,64 @@ X3DBaseInterface::getContextPath (X3D::X3DExecutionContext* executionContext) co
 		}
 	}
 
+	path .emplace_front (masterScene -> getWorldURL ());
+
 	return path;
+}
+
+std::string
+X3DBaseInterface::getPathFromContext (const X3D::X3DExecutionContextPtr & executionContext) const
+{
+	const auto contextPath = getContextPath (executionContext);
+	const auto string      = basic::join (contextPath .begin (), contextPath .end (), "\n");
+
+	return string;
+}
+
+X3D::X3DExecutionContextPtr
+X3DBaseInterface::getContextFromPath (X3D::X3DExecutionContext* executionContext, const std::string & string) const
+{
+	// Restore context from path.
+
+	auto contextPath = std::deque <std::string> ();
+
+	basic::split (std::back_inserter (contextPath), string, "\n");
+
+	if (contextPath .empty () or contextPath .front () not_eq executionContext -> getWorldURL ())
+		return X3D::X3DExecutionContextPtr (executionContext);
+
+	contextPath .pop_front ();
+
+	for (const basic::uri path : contextPath)
+	{
+		if (path .is_absolute ())
+		{
+			// Exterproto or Inline
+			break;
+		}
+		else
+		{
+			// Proto
+
+			auto protoNames = std::vector <std::string> ();
+	
+			basic::split (std::back_inserter (protoNames), path .str (), ".");
+
+			for (const auto & protoName : protoNames)
+			{
+				try
+				{
+					executionContext = executionContext -> getProtoDeclaration (protoName);
+				}
+				catch (const X3D::X3DError &)
+				{
+					return X3D::X3DExecutionContextPtr (executionContext);
+				}
+			}
+		}
+	}
+
+	return X3D::X3DExecutionContextPtr (executionContext);
 }
 
 ///  Sets the current browser to the underlying X3DParentObject.

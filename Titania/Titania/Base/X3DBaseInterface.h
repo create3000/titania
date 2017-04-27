@@ -156,6 +156,12 @@ public:
 	std::deque <std::string>
 	getContextPath (X3D::X3DExecutionContext* executionContext) const;
 
+	std::string
+	getPathFromContext (const X3D::X3DExecutionContextPtr & executionContext) const;
+	
+	X3D::X3DExecutionContextPtr
+	getContextFromPath (X3D::X3DExecutionContext* executionContext, const std::string & string) const;
+
 	/***
 	 *  @name Undo/redo handling
 	 */

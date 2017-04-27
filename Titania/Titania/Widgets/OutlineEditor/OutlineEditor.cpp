@@ -152,14 +152,11 @@ OutlineEditor::set_executionContext ()
 
 	// Tree view
 
-	const auto & currentScene = treeView -> get_execution_context ();
-
-	if (realized)
-		saveExpanded (currentScene);
+	saveExpanded ();
 
 	treeView -> set_execution_context (getCurrentContext ());
 
-	restoreExpanded (getCurrentContext ());
+	restoreExpanded ();
 }
 
 // Pointing Device
@@ -1433,16 +1430,15 @@ OutlineEditor::getPathAtPosition (const double x, const double y)
  **********************************************************************************************************************/
 
 void
-OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionContext)
+OutlineEditor::restoreExpanded ()
 {
-	if (not executionContext -> isScene ())
-		return;
-
 	try
 	{
+		const auto & executionContext = treeView -> get_execution_context ();
+
 		OutlineEditorDatabase database;
 
-		const auto item  = database .getItem (executionContext -> getWorldURL () .filename ());
+		const auto item  = database .getItem (getPathFromContext (executionContext));
 		auto       paths = std::vector <std::string> ();
 
 		basic::split (std::back_inserter (paths), std::get <0> (item), ";");
@@ -1461,30 +1457,47 @@ OutlineEditor::restoreExpanded (const X3D::X3DExecutionContextPtr & executionCon
 }
 
 void
-OutlineEditor::saveExpanded (const X3D::X3DExecutionContextPtr & executionContext)
+OutlineEditor::saveExpanded ()
+{
+	if (not realized)
+		return;
+
+	const auto & executionContext = treeView -> get_execution_context ();
+
+	saveExpandedImpl ();
+
+	if (executionContext -> isType ({ X3D::X3DConstants::X3DScene }))
+		return;
+
+	treeView -> set_execution_context (X3D::X3DExecutionContextPtr (executionContext -> getScene ()));
+
+	saveExpandedImpl ();
+}
+
+void
+OutlineEditor::saveExpandedImpl ()
 {
 	try
 	{
+		const auto & executionContext = treeView -> get_execution_context ();
+
 		if (executionContext -> getWorldURL () .empty ())
 			return;
-	
-		if (not executionContext -> isScene ())
-			return;
-	
+
 		std::deque <std::string> paths;
-	
+
 		getExpanded (treeView -> get_model () -> children (), paths);
-	
+
 		OutlineEditorDatabase database;
-	
-		database .setItem (executionContext -> getWorldURL () .filename (),
+
+		database .setItem (getPathFromContext (executionContext),
 		                   basic::join (paths, ";"),
 		                   getScrolledWindow () .get_hadjustment () -> get_value (),
 		                   getScrolledWindow () .get_vadjustment () -> get_value ());
 	}
 	catch (const std::exception & error)
 	{
-		//__LOG__ << error .what () << std::endl;
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
@@ -1513,8 +1526,7 @@ OutlineEditor::setAdjustments (const double h, const double v)
 
 OutlineEditor::~OutlineEditor ()
 {
-	if (isInitialized ())
-		saveExpanded (treeView -> get_execution_context ());
+	saveExpanded ();
 
 	dispose ();
 }
