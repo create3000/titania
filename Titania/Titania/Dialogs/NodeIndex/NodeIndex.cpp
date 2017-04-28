@@ -472,10 +472,13 @@ NodeIndex::setNodes (X3D::MFNode && value)
 std::string
 NodeIndex::getNameFromNode (const X3D::SFNode & node) const
 {
-	const auto nodeName = getNodeName (node);
-	const auto path     = getProtoPath (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()));
+	const auto nodeName  = Glib::Markup::escape_text (getNodeName (node));
+	const auto protoPath = getProtoPath (X3D::X3DExecutionContextPtr (node -> getExecutionContext ()));
 
-	return "<b>" + basic::join (path .begin (), path .end (), ".") + "</b>." + Glib::Markup::escape_text (nodeName);
+	if (protoPath .empty ())
+		return nodeName;
+
+	return "<b>" + basic::join (protoPath .begin (), protoPath .end (), ".") + "</b>." + nodeName;
 }
 
 /***

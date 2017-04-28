@@ -535,16 +535,16 @@ OutlineEditor::on_remove_activate ()
 			return;
 	}
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node"));
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Delete Node"));
+	const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+	const auto & executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
 
 	if (nodePath .size () == 1 or treeView -> get_data_type (iter -> parent ()) == OutlineIterType::X3DExecutionContext)
 	{
 		// Root node
 
-		const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-		const auto & executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
-		auto &       rootNodes        = executionContext -> getRootNodes ();
-		const auto   index            = treeView -> get_index (iter);
+		auto &     rootNodes = executionContext -> getRootNodes ();
+		const auto index     = treeView -> get_index (iter);
 
 		getBrowserWindow () -> getSelection () -> undoRestoreNodes (undoStep);
 		getBrowserWindow () -> getSelection () -> removeNodes ({ rootNodes [index] });
@@ -573,10 +573,9 @@ OutlineEditor::on_remove_activate ()
 				return;
 		}
 
-		const auto field            = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
-		auto &     parent           = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
-		const auto exportedNode     = X3D::X3DPtr <X3D::ExportedNode> (parent);
-		const auto executionContext = X3D::X3DExecutionContextPtr (parent -> getExecutionContext ());
+		const auto field        = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+		auto &     parent       = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+		const auto exportedNode = X3D::X3DPtr <X3D::ExportedNode> (parent);
 
 		if (exportedNode)
 			parent = exportedNode -> getLocalNode  ();
@@ -627,17 +626,17 @@ OutlineEditor::on_unlink_clone_activate ()
 	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Unlink Clone"));
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Unlink Clone"));
+	const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+	const auto & executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
 
 	if (nodePath .size () == 1 or treeView -> get_data_type (iter -> parent ()) == OutlineIterType::X3DExecutionContext)
 	{
 		// Root node
 
-		const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-		const auto & executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
-		auto &       rootNodes        = executionContext -> getRootNodes ();
-		const auto   index            = treeView -> get_index (iter);
-		const auto   copy             = X3D::SFNode (rootNodes [index] -> copy (X3D::FLAT_COPY));
+		auto &     rootNodes = executionContext -> getRootNodes ();
+		const auto index     = treeView -> get_index (iter);
+		const auto copy      = X3D::SFNode (rootNodes [index] -> copy (X3D::FLAT_COPY));
 
 		X3D::X3DEditor::replaceNode (executionContext, executionContext, rootNodes, index, copy, undoStep);
 	}
@@ -661,10 +660,9 @@ OutlineEditor::on_unlink_clone_activate ()
 				return;
 		}
 
-		const auto field            = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
-		auto &     parent           = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
-		const auto exportedNode     = X3D::X3DPtr <X3D::ExportedNode> (parent);
-		const auto executionContext = X3D::X3DExecutionContextPtr (parent -> getExecutionContext ());
+		const auto field        = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+		auto &     parent       = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
+		const auto exportedNode = X3D::X3DPtr <X3D::ExportedNode> (parent);
 		
 		if (exportedNode)
 			parent = exportedNode -> getLocalNode  ();
@@ -827,14 +825,14 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 	if (treeView -> get_data_type (iter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Node »%s«"), typeName .c_str ()));
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Create Parent Node »%s«"), typeName .c_str ()));
+	const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+	const auto & executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
 
 	if (nodePath .size () == 1 or treeView -> get_data_type (iter -> parent ()) == OutlineIterType::X3DExecutionContext)
 	{
 		// Root node
 
-		const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-		const auto & executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
 		auto &       rootNodes        = executionContext -> getRootNodes ();
 		const auto   index            = treeView -> get_index (iter);
 		const auto   child            = rootNodes [index];
@@ -878,10 +876,9 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 		{
 			case X3D::X3DConstants::SFNode:
 			{
-				auto &     child            = *static_cast <X3D::SFNode*> (field);
-				const auto executionContext = X3D::X3DExecutionContextPtr (child -> getExecutionContext ());
-			   const auto group            = executionContext -> createNode (typeName);
-				auto &     children         = group -> getField <X3D::MFNode> (fieldName);
+				auto &     child    = *static_cast <X3D::SFNode*> (field);
+			   const auto group    = executionContext -> createNode (typeName);
+				auto &     children = group -> getField <X3D::MFNode> (fieldName);
 
 				X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
 				X3D::X3DEditor::replaceNode (executionContext, parent, child, group, undoStep);
@@ -891,12 +888,11 @@ OutlineEditor::on_create_parent (const std::string & typeName, const std::string
 			}
 			case X3D::X3DConstants::MFNode:
 			{
-				auto &       mfnode           = *static_cast <X3D::MFNode*> (field);
-				const auto   index            = treeView -> get_index (iter);
-				const auto & child            = mfnode [index];
-				const auto   executionContext = X3D::X3DExecutionContextPtr (child -> getExecutionContext ());
-				const auto   group            = executionContext -> createNode (typeName);
-				auto &       children         = group -> getField <X3D::MFNode> (fieldName);
+				auto &       mfnode   = *static_cast <X3D::MFNode*> (field);
+				const auto   index    = treeView -> get_index (iter);
+				const auto & child    = mfnode [index];
+				const auto   group    = executionContext -> createNode (typeName);
+				auto &       children = group -> getField <X3D::MFNode> (fieldName);
 
 				X3D::X3DEditor::pushBackIntoArray (group, children, child, undoStep);
 				X3D::X3DEditor::replaceNode (executionContext, parent, mfnode, index, group, undoStep);
@@ -933,18 +929,18 @@ OutlineEditor::on_remove_parent_activate ()
 	if (treeView -> get_data_type (parentIter) not_eq OutlineIterType::X3DBaseNode)
 		return;
 
-	const auto   field    = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
-	const auto & parent   = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
-	const auto   undoStep = std::make_shared <X3D::UndoStep> (_ ("Remove Parent"));
+	const auto   undoStep         = std::make_shared <X3D::UndoStep> (_ ("Remove Parent"));
+	const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+	const auto   executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
+	const auto   field            = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (fieldIter));
+	const auto & parent           = *static_cast <X3D::SFNode*> (treeView -> get_object (parentIter));
 
 	if (nodePath .size () == 3 or (nodePath .size () > 3 and treeView -> get_data_type (parentIter -> parent ()) == OutlineIterType::X3DExecutionContext))
 	{
 	   // Root node
 		
-		const auto & node             = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-		const auto   executionContext = X3D::X3DExecutionContextPtr (node -> getExecutionContext ());
-		auto &       rootNodes        = executionContext -> getRootNodes ();
-		const auto   index            = treeView -> get_index (parentIter);
+		auto &     rootNodes = executionContext -> getRootNodes ();
+		const auto index     = treeView -> get_index (parentIter);
 
 		switch (field -> getType ())
 		{
@@ -979,9 +975,8 @@ OutlineEditor::on_remove_parent_activate ()
 		if (treeView -> get_data_type (secondParentIter) not_eq OutlineIterType::X3DBaseNode)
 			return;
 
-		const auto   secondField      = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (secondFieldIter));
-		const auto & secondParent     = *static_cast <X3D::SFNode*> (treeView -> get_object (secondParentIter));
-		const auto   executionContext = X3D::X3DExecutionContextPtr (secondParent -> getExecutionContext ());
+		const auto   secondField  = static_cast <X3D::X3DFieldDefinition*> (treeView -> get_object (secondFieldIter));
+		const auto & secondParent = *static_cast <X3D::SFNode*> (treeView -> get_object (secondParentIter));
 
 		switch (field -> getType ())
 		{
