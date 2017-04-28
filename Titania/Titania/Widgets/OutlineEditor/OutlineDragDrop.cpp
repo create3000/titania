@@ -545,7 +545,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_node_received (const Glib::R
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
+			auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -789,7 +789,7 @@ OutlineDragDrop::on_drag_data_base_node_on_field_received (const Glib::RefPtr <G
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
+			auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 
@@ -1047,7 +1047,7 @@ OutlineDragDrop::on_drag_data_base_node_insert_into_array_received (const Glib::
 
 		if (transform)
 		{
-			X3D::Matrix4d modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
+			auto modelViewMatrix = X3D::X3DEditor::getModelViewMatrix (sourceContext, exportedNode);
 
 			modelViewMatrix .mult_left (transform -> getMatrix ());
 

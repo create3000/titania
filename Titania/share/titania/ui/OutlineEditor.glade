@@ -325,6 +325,14 @@
       </object>
     </child>
     <child>
+      <object class="GtkMenuItem" id="DetachFromGroupMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Detach From Group</property>
+        <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
+      </object>
+    </child>
+    <child>
       <object class="GtkMenuItem" id="CreateParentGroupMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>

@@ -3188,5 +3188,20 @@ X3DEditor::moveValueWithinArray (const SFNode & parent, MFNode & array, const si
 	requestUpdateInstances (parent, undoStep);
 }
 
+void
+X3DEditor::eraseFromArray (const SFNode & parent, MFNode & array, const size_t index, const UndoStepPtr & undoStep)
+{
+	undoStep -> addObjects (parent);
+	undoStep -> addUndoFunction (&MFNode::setValue, std::ref (array), array);
+
+	array .erase (array .begin () + index);
+
+	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (array), array);
+
+	// Prototype support
+
+	requestUpdateInstances (parent, undoStep);
+}
+
 } // X3D
 } // titania

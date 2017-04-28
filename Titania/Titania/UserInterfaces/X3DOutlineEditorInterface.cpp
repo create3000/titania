@@ -89,6 +89,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ReferencesSeparator", m_ReferencesSeparator);
 	m_builder -> get_widget ("RemoveMenuItem", m_RemoveMenuItem);
 	m_builder -> get_widget ("UnlinkCloneMenuItem", m_UnlinkCloneMenuItem);
+	m_builder -> get_widget ("DetachFromGroupMenuItem", m_DetachFromGroupMenuItem);
 	m_builder -> get_widget ("CreateParentGroupMenuItem", m_CreateParentGroupMenuItem);
 	m_builder -> get_widget ("CreateParentTransformMenuItem", m_CreateParentTransformMenuItem);
 	m_builder -> get_widget ("CreateParentGroupMenuItem1", m_CreateParentGroupMenuItem1);
@@ -149,6 +150,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::MenuItem with id 'UnlinkCloneMenuItem'.
 	m_UnlinkCloneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_unlink_clone_activate));
+	m_DetachFromGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_detach_from_group_activated));
 	m_CreateParentTransformMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_transform_activate));
 	m_CreateParentGroupMenuItem1 -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_group_activate));
 	m_CreateParentStaticGroupMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_parent_static_group_activate));

@@ -380,6 +380,10 @@ public:
 	void
 	moveValueWithinArray (const SFNode & parent, MFNode & array, const size_t fromIndex, const size_t toIndex, const UndoStepPtr & undoStep);
 
+	static
+	void
+	eraseFromArray (const SFNode & parent, MFNode & array, const size_t index, const UndoStepPtr & undoStep);
+
 	///  @name Destruction
 
 	~X3DEditor () = delete;

@@ -191,6 +191,10 @@ private:
 
 	virtual
 	void
+	on_detach_from_group_activated () final override;
+
+	virtual
+	void
 	on_create_parent_transform_activate () final override;
 
 	virtual
