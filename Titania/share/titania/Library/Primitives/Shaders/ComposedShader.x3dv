@@ -8,23 +8,60 @@ META "created" "Fri, 28 Apr 2017 05:53:49 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Primitives/Shaders/ComposedShader.x3dv"
-META "modified" "Fri, 28 Apr 2017 06:29:10 GMT"
+META "modified" "Fri, 28 Apr 2017 06:49:42 GMT"
 META "outputStyle" "Nicest"
 
-DEF Box Transform {
+DEF Shader Transform {
   children Shape {
     appearance Appearance {
-      material Material { }
+      material DEF Spring12 Material {
+        ambientIntensity 0.174575
+        diffuseColor 0.685208 0.0893143 0.027172
+        specularColor 0.913265 0.373179 0.373179
+        shininess 0.959184
+      }
       shaders ComposedShader {
         parts [
           DEF FragmentShader ShaderPart {
             type "FRAGMENT"
             url "data:text/plain,
-"
+
+precision mediump float;
+
+uniform vec3  x3d_DiffuseColor;
+uniform float x3d_Transparency;
+
+varying vec3 normal;
+
+void
+main ()
+{
+	float f = max (dot (normal, vec3 (0.0, 0.0, 1.0)), 0.0);
+
+	gl_FragColor = vec4 (x3d_DiffuseColor * f, x3d_Transparency);
+}"
           }
           DEF VertexShader ShaderPart {
             url "data:text/plain,
-"
+
+precision mediump float;
+
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+uniform mat3 x3d_NormalMatrix;
+
+attribute vec4 x3d_Vertex;
+attribute vec3 x3d_Normal;
+
+varying vec3 normal;
+
+void
+main ()
+{
+	normal = x3d_NormalMatrix * x3d_Normal;
+
+	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * x3d_Vertex;
+}"
           }
         ]
       }
