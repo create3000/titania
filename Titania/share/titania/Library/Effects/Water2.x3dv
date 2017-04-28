@@ -1,179 +1,16 @@
-#X3D V3.0 utf8 Titania V3.0.2
+#X3D V3.0 utf8 Titania V3.0.3
 
 PROFILE Full
 
+META "addWorldInfo" "false"
 META "comment" "World of Titania"
 META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V3.0.2, http://titania.create3000.de"
+META "generator" "Titania V3.0.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Water2.x3dv"
-META "modified" "Sun, 16 Apr 2017 03:03:27 GMT"
+META "modified" "Fri, 28 Apr 2017 07:09:49 GMT"
 META "outputStyle" "nicest"
 META "title" "Water Shader 2"
-
-WorldInfo {
-  metadata DEF Titania MetadataSet {
-    name "Titania"
-    reference "http://titania.create3000.de"
-    value [
-      DEF NavigationInfo MetadataSet {
-        name "NavigationInfo"
-        reference "http://titania.create3000.de"
-        value DEF type MetadataString {
-          name "type"
-          reference "http://titania.create3000.de"
-          value "EXAMINE"
-        }
-      }
-      DEF Viewpoint MetadataSet {
-        name "Viewpoint"
-        reference "http://titania.create3000.de"
-        value [
-          DEF position MetadataDouble {
-            name "position"
-            reference "http://titania.create3000.de"
-            value [
-              105.389083862305,
-              48.4969329833984,
-              74.6039733886719
-            ]
-          }
-          DEF orientation MetadataDouble {
-            name "orientation"
-            reference "http://titania.create3000.de"
-            value [
-              -0.410539746047784,
-              0.886633038009617,
-              0.212929502006788,
-              1.13561952114105
-            ]
-          }
-          DEF centerOfRotation MetadataDouble {
-            name "centerOfRotation"
-            reference "http://titania.create3000.de"
-            value [
-              29.5,
-              0,
-              29.4999923706055
-            ]
-          }
-        ]
-      }
-      DEF Selection MetadataSet {
-        name "Selection"
-        reference "http://titania.create3000.de"
-        value DEF nodes MetadataSet {
-          name "nodes"
-          reference "http://titania.create3000.de"
-          value DEF WaterVertex ShaderPart {
-            url "data:text/plain,
-
-precision mediump float;
-
-uniform mat3 x3d_NormalMatrix;
-uniform mat4 x3d_ProjectionMatrix;
-uniform mat4 x3d_ModelViewMatrix;
-
-attribute vec4 x3d_Vertex;
-
-#define WAVE_MAX 8
-
-uniform float set_time;
-uniform vec3  position;
-uniform float amplitude [WAVE_MAX];
-uniform float frequency [WAVE_MAX];
-uniform float speed [WAVE_MAX];
-uniform vec2  direction [WAVE_MAX];
-
-varying vec3 texCoord;
-
-vec2 offset [WAVE_MAX];
-
-float hash (in float n)
-{
-	return fract (sin (n) * 43758.5453123);
-}
-
-float nnoise (in vec2 x)
-{
-	vec2 p = floor (x);
-	vec2 f = fract (x);
-
-	f = f * f * (3.0 - 2.0 * f);
-
-	float n   = p.x + p.y * 57.0;
-	float res = mix (mix (hash (n +  0.0), hash (n +  1.0), f.x),
-	                 mix (hash (n + 57.0), hash (n + 58.0), f.x), f.y);
-
-	return res * 2.0 - 1.0;
-}
-
-float
-getHeight (in int i, in vec2 vertex, in vec2 offset)
-{
-	return amplitude [i] * nnoise ((vertex - offset) * frequency [i]);
-}
-
-float
-getWaveHeight (in vec2 vertex)
-{
-	float height = 0.0;
-
-	for (int i = 0; i < WAVE_MAX; ++ i)
-	{
-		if (amplitude [i] == 0.0)
-			continue;
-
-		height += getHeight (i, vertex, offset [i]);
-	}
-
-	return height;
-}
-
-#define DISTANCE_MIN 0.01
-
-const vec2 delta = vec2 (DISTANCE_MIN, -DISTANCE_MIN);
-
-vec3
-getWaveNormal (in vec2 pos)
-{
-	vec2 p1 = pos + delta .xx;
-	vec2 p2 = pos + delta .yy;
-	vec2 p3 = pos + delta .yx;
-	vec2 p4 = pos + delta .xy;
-
-	vec3 n1 = vec3 (p1.x, getWaveHeight (p1), p1.y);
-	vec3 n2 = vec3 (p2.x, getWaveHeight (p2), p2.y);
-	vec3 n3 = vec3 (p3.x, getWaveHeight (p3), p3.y);
-	vec3 n4 = vec3 (p4.x, getWaveHeight (p4), p4.y);
-   
-   vec3 n = cross (n1 - n2, n3 - n4);
-   
-   return normalize (n);
-}
-
-void
-main ()
-{
-	for (int i = 0; i < WAVE_MAX; ++ i)
-		offset [i] = normalize (direction [i]) * set_time * speed [i];
-	
-	vec4 vertex = x3d_Vertex;
-	vec2 pos    = vec2 (vertex .x, vertex .z);
-	vertex .y   = getWaveHeight (pos);
-	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
-
-	vec3 eye    = position - vertex .xyz / vertex .w;
-	vec3 normal = getWaveNormal (pos);
-	texCoord    = -reflect (eye, normal);
-}"
-          }
-        }
-      }
-    ]
-  }
-  title "Water2"
-}
 
 DEF Water2 Transform {
   children [
@@ -298,7 +135,109 @@ DEF Water2 Transform {
 
           language "GLSL"
           parts [
-            USE WaterVertex
+            DEF WaterVertex ShaderPart {
+              url "data:text/plain,
+
+precision mediump float;
+
+uniform mat3 x3d_NormalMatrix;
+uniform mat4 x3d_ProjectionMatrix;
+uniform mat4 x3d_ModelViewMatrix;
+
+attribute vec4 x3d_Vertex;
+
+#define WAVE_MAX 8
+
+uniform float set_time;
+uniform vec3  position;
+uniform float amplitude [WAVE_MAX];
+uniform float frequency [WAVE_MAX];
+uniform float speed [WAVE_MAX];
+uniform vec2  direction [WAVE_MAX];
+
+varying vec3 texCoord;
+
+vec2 offset [WAVE_MAX];
+
+float hash (in float n)
+{
+	return fract (sin (n) * 43758.5453123);
+}
+
+float nnoise (in vec2 x)
+{
+	vec2 p = floor (x);
+	vec2 f = fract (x);
+
+	f = f * f * (3.0 - 2.0 * f);
+
+	float n   = p.x + p.y * 57.0;
+	float res = mix (mix (hash (n +  0.0), hash (n +  1.0), f.x),
+	                 mix (hash (n + 57.0), hash (n + 58.0), f.x), f.y);
+
+	return res * 2.0 - 1.0;
+}
+
+float
+getHeight (in int i, in vec2 vertex, in vec2 offset)
+{
+	return amplitude [i] * nnoise ((vertex - offset) * frequency [i]);
+}
+
+float
+getWaveHeight (in vec2 vertex)
+{
+	float height = 0.0;
+
+	for (int i = 0; i < WAVE_MAX; ++ i)
+	{
+		if (amplitude [i] == 0.0)
+			continue;
+
+		height += getHeight (i, vertex, offset [i]);
+	}
+
+	return height;
+}
+
+#define DISTANCE_MIN 0.01
+
+const vec2 delta = vec2 (DISTANCE_MIN, -DISTANCE_MIN);
+
+vec3
+getWaveNormal (in vec2 pos)
+{
+	vec2 p1 = pos + delta .xx;
+	vec2 p2 = pos + delta .yy;
+	vec2 p3 = pos + delta .yx;
+	vec2 p4 = pos + delta .xy;
+
+	vec3 n1 = vec3 (p1.x, getWaveHeight (p1), p1.y);
+	vec3 n2 = vec3 (p2.x, getWaveHeight (p2), p2.y);
+	vec3 n3 = vec3 (p3.x, getWaveHeight (p3), p3.y);
+	vec3 n4 = vec3 (p4.x, getWaveHeight (p4), p4.y);
+   
+   vec3 n = cross (n1 - n2, n3 - n4);
+   
+   return normalize (n);
+}
+
+void
+main ()
+{
+	for (int i = 0; i < WAVE_MAX; ++ i)
+		offset [i] = normalize (direction [i]) * set_time * speed [i];
+	
+	vec4 vertex = x3d_Vertex;
+	vec2 pos    = vec2 (vertex .x, vertex .z);
+	vertex .y   = getWaveHeight (pos);
+	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * vertex;
+
+	vec3 eye    = position - vertex .xyz / vertex .w;
+	vec3 normal = getWaveNormal (pos);
+	texCoord    = -reflect (eye, normal);
+}"
+            }
             DEF WaterFragment ShaderPart {
               type "FRAGMENT"
               url "data:text/plain,

@@ -4,12 +4,13 @@ PROFILE Full
 
 UNIT angle degree 0.0174532925199432958
 
+META "addWorldInfo" "false"
 META "comment" "World of Titania"
 META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Effects/Water3.x3dv"
-META "modified" "Fri, 21 Apr 2017 17:54:36 GMT"
+META "modified" "Fri, 28 Apr 2017 07:07:37 GMT"
 META "outputStyle" "Nicest"
 
 PROTO Water3 [
@@ -507,59 +508,6 @@ main ()
 
   ROUTE Timer.fraction_changed TO ElapsedTime.set_fraction
   ROUTE ElapsedTime.value_changed TO WaterShader.set_time
-}
-
-WorldInfo {
-  metadata DEF Titania MetadataSet {
-    name "Titania"
-    reference "http://titania.create3000.de"
-    value [
-      DEF NavigationInfo MetadataSet {
-        name "NavigationInfo"
-        reference "http://titania.create3000.de"
-        value DEF type MetadataString {
-          name "type"
-          reference "http://titania.create3000.de"
-          value "EXAMINE"
-        }
-      }
-      DEF Viewpoint MetadataSet {
-        name "Viewpoint"
-        reference "http://titania.create3000.de"
-        value [
-          DEF position MetadataDouble {
-            name "position"
-            reference "http://titania.create3000.de"
-            value [
-              18.9758881102997,
-              3.03618653730859,
-              26.9996277700277
-            ]
-          }
-          DEF orientation MetadataDouble {
-            name "orientation"
-            reference "http://titania.create3000.de"
-            value [
-              -0.61498038252512,
-              0.773829943791914,
-              0.151612490251497,
-              0.826871496661767
-            ]
-          }
-          DEF centerOfRotation MetadataDouble {
-            name "centerOfRotation"
-            reference "http://titania.create3000.de"
-            value [
-              13.5829125741742,
-              -1.86767858860803,
-              20.1536127471417
-            ]
-          }
-        ]
-      }
-    ]
-  }
-  title "Water3"
 }
 
 DEF Water3 Transform {
