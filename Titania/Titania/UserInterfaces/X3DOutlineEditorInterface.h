@@ -143,6 +143,22 @@ public:
 	{ return *m_PopupMenu; }
 
 	Gtk::ImageMenuItem &
+	getCutMenuItem () const
+	{ return *m_CutMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getCopyMenuItem () const
+	{ return *m_CopyMenuItem; }
+
+	Gtk::ImageMenuItem &
+	getPasteMenuItem () const
+	{ return *m_PasteMenuItem; }
+
+	Gtk::SeparatorMenuItem &
+	getClipboardSeparator () const
+	{ return *m_ClipboardSeparator; }
+
+	Gtk::ImageMenuItem &
 	getSetAsCurrentSceneMenuItem () const
 	{ return *m_SetAsCurrentSceneMenuItem; }
 
@@ -342,6 +358,18 @@ public:
 
 	virtual
 	void
+	on_cut_activate () = 0;
+
+	virtual
+	void
+	on_copy_activate () = 0;
+
+	virtual
+	void
+	on_paste_activate () = 0;
+
+	virtual
+	void
 	on_set_as_current_scene_activate () = 0;
 
 	virtual
@@ -516,6 +544,10 @@ private:
 	Gtk::Button* m_NextSceneButton;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
 	Gtk::Menu* m_PopupMenu;
+	Gtk::ImageMenuItem* m_CutMenuItem;
+	Gtk::ImageMenuItem* m_CopyMenuItem;
+	Gtk::ImageMenuItem* m_PasteMenuItem;
+	Gtk::SeparatorMenuItem* m_ClipboardSeparator;
 	Gtk::ImageMenuItem* m_SetAsCurrentSceneMenuItem;
 	Gtk::ImageMenuItem* m_CreateInstanceMenuItem;
 	Gtk::ImageMenuItem* m_ReloadMenuItem;

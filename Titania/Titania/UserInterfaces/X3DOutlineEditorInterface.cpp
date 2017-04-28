@@ -73,6 +73,10 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NextSceneButton", m_NextSceneButton);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
 	m_builder -> get_widget ("PopupMenu", m_PopupMenu);
+	m_builder -> get_widget ("CutMenuItem", m_CutMenuItem);
+	m_builder -> get_widget ("CopyMenuItem", m_CopyMenuItem);
+	m_builder -> get_widget ("PasteMenuItem", m_PasteMenuItem);
+	m_builder -> get_widget ("ClipboardSeparator", m_ClipboardSeparator);
 	m_builder -> get_widget ("SetAsCurrentSceneMenuItem", m_SetAsCurrentSceneMenuItem);
 	m_builder -> get_widget ("CreateInstanceMenuItem", m_CreateInstanceMenuItem);
 	m_builder -> get_widget ("ReloadMenuItem", m_ReloadMenuItem);
@@ -129,7 +133,10 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::ScrolledWindow with id 'ScrolledWindow'.
 	m_ScrolledWindow -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_button_press_event));
 
-	// Connect object Gtk::ImageMenuItem with id 'SetAsCurrentSceneMenuItem'.
+	// Connect object Gtk::ImageMenuItem with id 'CutMenuItem'.
+	m_CutMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_cut_activate));
+	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_copy_activate));
+	m_PasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_paste_activate));
 	m_SetAsCurrentSceneMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_set_as_current_scene_activate));
 	m_CreateInstanceMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_create_instance_activate));
 	m_ReloadMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_reload_activated));

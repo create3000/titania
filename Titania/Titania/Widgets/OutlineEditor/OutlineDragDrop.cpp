@@ -1227,7 +1227,6 @@ OutlineDragDrop::get_node_action_string (Gdk::DragAction action) const
 		case Gdk::ACTION_COPY:
 			return "Copy Node";
 		case Gdk::ACTION_DEFAULT:
-			return "Copy Node";
 		case Gdk::ACTION_ASK:
 		case Gdk::ACTION_PRIVATE:
 		   break;

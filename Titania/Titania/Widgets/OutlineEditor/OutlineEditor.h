@@ -140,6 +140,20 @@ private:
 	std::string
 	getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene, const bool) const;
 
+	// Clipboard
+
+	virtual
+	void
+	on_cut_activate () final override;
+	
+	virtual
+	void
+	on_copy_activate () final override;
+	
+	virtual
+	void
+	on_paste_activate () final override;
+
 	// Proto and externproto
 
 	virtual
@@ -167,6 +181,9 @@ private:
 	virtual
 	void
 	on_remove_activate () final override;
+
+	void
+	remove (const X3D::UndoStepPtr & undoStep);
 
 	virtual
 	void
