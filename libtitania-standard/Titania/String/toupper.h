@@ -55,12 +55,14 @@ namespace titania {
 namespace basic {
 
 template <class CharT, class Traits = std::char_traits <CharT>> 
-std::basic_string <CharT> &
-toupper (std::basic_string <CharT> & string, const std::locale & locale)
+std::basic_string <CharT>
+toupper (const std::basic_string <CharT> & string, const std::locale & locale)
 {
-	std::transform (string .begin (), string .end (), string .begin (), [&locale] (const char c) { return std::toupper (c, locale); });
+	auto result = string;
 
-	return string;
+	std::transform (result .begin (), result .end (), result .begin (), [&locale] (const char c) { return std::toupper (c, locale); });
+
+	return result;
 }
 
 } // basic

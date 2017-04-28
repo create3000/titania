@@ -214,6 +214,10 @@ public:
 	getAddStandardMetaDataButton () const
 	{ return *m_AddStandardMetaDataButton; }
 
+	Gtk::Box &
+	getWorldInfoBox () const
+	{ return *m_WorldInfoBox; }
+
 	Gtk::Expander &
 	getWorldInfoExpander () const
 	{ return *m_WorldInfoExpander; }
@@ -225,6 +229,10 @@ public:
 	Gtk::TextView &
 	getWorldInfoInfoTextView () const
 	{ return *m_WorldInfoInfoTextView; }
+
+	Gtk::Switch &
+	getAddWorldInfoButton () const
+	{ return *m_AddWorldInfoButton; }
 
 	Gtk::Dialog &
 	getMetaDataDialog () const
@@ -330,6 +338,14 @@ public:
 
 	virtual
 	void
+	on_map () = 0;
+
+	virtual
+	void
+	on_unmap () = 0;
+
+	virtual
+	void
 	on_add_meta_data_cancel_clicked () = 0;
 
 	virtual
@@ -394,9 +410,11 @@ private:
 	Gtk::Button* m_AddMetaDataButton;
 	Gtk::Button* m_RemoveMetaDataButton;
 	Gtk::Switch* m_AddStandardMetaDataButton;
+	Gtk::Box* m_WorldInfoBox;
 	Gtk::Expander* m_WorldInfoExpander;
 	Gtk::TextView* m_WorldInfoTitleTextView;
 	Gtk::TextView* m_WorldInfoInfoTextView;
+	Gtk::Switch* m_AddWorldInfoButton;
 	Gtk::Dialog* m_MetaDataDialog;
 	Gtk::Button* m_MetaDataCancelButton;
 	Gtk::Button* m_MetaDataOkButton;

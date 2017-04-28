@@ -124,6 +124,16 @@ public:
 	bool
 	inPrototypeInstance () const;
 
+	/***
+	 *  @name World Info handling
+	 */
+
+	void
+	setAddWorldInfo (const X3D::X3DScenePtr & scene, const bool value);
+
+	bool
+	getAddWorldInfo (const X3D::X3DScenePtr & scene);
+
 	X3D::X3DPtr <X3D::WorldInfo>
 	createWorldInfo ()
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
@@ -131,6 +141,10 @@ public:
 	X3D::X3DPtr <X3D::WorldInfo>
 	getWorldInfo () const
 	throw (X3D::Error <X3D::NOT_SUPPORTED>);
+
+	/***
+	 *  @name Meta data
+	 */
 
 	template <class Type>
 	void
@@ -235,14 +249,16 @@ protected:
 
 private:
 
+	/// @name Operations
+	 
+	X3D::X3DPtr <X3D::WorldInfo>
+	getWorldInfo (const bool create)
+	throw (X3D::Error <X3D::NOT_SUPPORTED>);
+
 	/// @name Event handlers
 	 
 	void
 	set_browser (const X3D::BrowserPtr &);
-
-	X3D::X3DPtr <X3D::WorldInfo>
-	getWorldInfo (const bool)
-	throw (X3D::Error <X3D::NOT_SUPPORTED>);
 
 	/// @name Members
 

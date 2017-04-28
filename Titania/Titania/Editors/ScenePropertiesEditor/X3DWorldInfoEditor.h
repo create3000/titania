@@ -82,24 +82,42 @@ protected:
 
 	virtual
 	void
-	configure () override;
+	configure () override
+	{ }
 
 	virtual
 	void
-	store () override;
+	store () override
+	{ }
 
 
 private:
 
 	///  @name Event handlers
 
+	virtual
+	void
+	on_map () final override;
+
+	virtual
+	void
+	on_unmap () final override;
+
+	void
+	on_add_world_info_activate ();
+
 	void
 	set_current_scene ();
+
+	void
+	set_node ();
 
 	///  @name Members
 
 	SFStringTextView title;
 	MFStringTextView info;
+	X3D::X3DScenePtr scene;
+	bool             changing;
 
 };
 

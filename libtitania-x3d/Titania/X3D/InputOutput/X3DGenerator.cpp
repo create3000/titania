@@ -83,9 +83,7 @@ X3DGenerator::get (std::ostream & ostream)
 void
 X3DGenerator::Style (std::ostream & ostream, const std::string & value)
 {
-	std::string style = value;
-
-	basic::toupper (style, std::locale::classic ());
+	const std::string style = basic::toupper (value, std::locale::classic ());
 
 	if (style == "SMALLEST")
 		SmallestStyle (ostream);

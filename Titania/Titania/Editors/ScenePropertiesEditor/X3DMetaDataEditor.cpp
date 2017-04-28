@@ -68,7 +68,7 @@ X3DMetaDataEditor::X3DMetaDataEditor () :
 {
 	addChildObjects (scene);
 
-	getAddStandardMetaDataButton () .property_active () .signal_changed () .connect (sigc::mem_fun (this, &X3DMetaDataEditor::on_add_standard_meta_data_activated));
+	getAddStandardMetaDataButton () .property_active () .signal_changed () .connect (sigc::mem_fun (this, &X3DMetaDataEditor::on_add_standard_meta_data_activate));
 }
 
 void
@@ -284,7 +284,7 @@ X3DMetaDataEditor::connectMetaData (const X3D::SFTime & field)
 }
 
 void
-X3DMetaDataEditor::on_add_standard_meta_data_activated ()
+X3DMetaDataEditor::on_add_standard_meta_data_activate ()
 {
 	getBrowserWindow () -> getConfig () -> setItem ("addStandardMetaData", getAddStandardMetaDataButton () .get_active ());
 }

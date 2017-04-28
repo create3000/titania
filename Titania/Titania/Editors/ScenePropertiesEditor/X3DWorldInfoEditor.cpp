@@ -58,15 +58,19 @@ namespace puck {
 X3DWorldInfoEditor::X3DWorldInfoEditor () :
 	X3DScenePropertiesEditorInterface (),
 		                         title (this, getWorldInfoTitleTextView (), "title"),
-		                          info (this, getWorldInfoInfoTextView (),  "info")
-{ }
+		                          info (this, getWorldInfoInfoTextView (),  "info"),
+	                            scene (getCurrentScene ()),
+	                         changing (false)
+{
+	getAddWorldInfoButton () .property_active () .signal_changed () .connect (sigc::mem_fun (this, &X3DWorldInfoEditor::on_add_world_info_activate));
+}
 
 void
 X3DWorldInfoEditor::initialize ()
 { }
 
 void
-X3DWorldInfoEditor::configure ()
+X3DWorldInfoEditor::on_map ()
 {
 	getCurrentScene () .addInterest (&X3DWorldInfoEditor::set_current_scene, this);
 
@@ -74,18 +78,58 @@ X3DWorldInfoEditor::configure ()
 }
 
 void
-X3DWorldInfoEditor::set_current_scene ()
+X3DWorldInfoEditor::on_unmap ()
 {
-	const auto worldInfo = X3D::MFNode ({ createWorldInfo () });
-
-	title .setNodes (worldInfo);
-	info  .setNodes (worldInfo);
+	getCurrentScene () .removeInterest (&X3DWorldInfoEditor::set_current_scene, this);
 }
 
 void
-X3DWorldInfoEditor::store ()
+X3DWorldInfoEditor::on_add_world_info_activate ()
 {
-	getCurrentScene () .removeInterest (&X3DWorldInfoEditor::set_current_scene, this);
+	if (changing)
+		return;
+
+	setAddWorldInfo (scene, getAddWorldInfoButton () .get_active ());
+
+	if (getAddWorldInfoButton () .get_active ())
+		createWorldInfo ();
+
+	set_node ();
+}
+
+void
+X3DWorldInfoEditor::set_current_scene ()
+{
+	changing = true;
+
+	scene -> sceneGraph_changed () .removeInterest (&X3DWorldInfoEditor::set_node, this);
+
+	scene = getCurrentScene ();
+
+	scene -> sceneGraph_changed () .addInterest (&X3DWorldInfoEditor::set_node, this);
+
+	set_node ();
+
+	getAddWorldInfoButton () .set_active (getAddWorldInfo (scene));
+
+	changing = false;
+}
+
+void
+X3DWorldInfoEditor::set_node ()
+{
+	try
+	{
+		const auto worldInfo = X3D::MFNode ({ getWorldInfo () });
+	
+		title .setNodes (worldInfo);
+		info  .setNodes (worldInfo);
+	}
+	catch (const X3D::X3DError &)
+	{
+		title .setNodes ({ });
+		info  .setNodes ({ });
+	}
 }
 
 X3DWorldInfoEditor::~X3DWorldInfoEditor ()

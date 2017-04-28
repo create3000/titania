@@ -150,12 +150,43 @@ X3DBaseInterface::inPrototypeInstance () const
 	return getCurrentContext () -> isType (protoInstance);
 }
 
+void
+X3DBaseInterface::setAddWorldInfo (const X3D::X3DScenePtr & scene, const bool value)
+{
+	if (value)
+		scene -> removeMetaData ("addWorldInfo");
+	else
+		scene -> setMetaData ("addWorldInfo", "false");
+}
+
+bool
+X3DBaseInterface::getAddWorldInfo (const X3D::X3DScenePtr & scene)
+{
+	try
+	{
+		const auto addWorldInfo = basic::tolower (scene -> getMetaData ("addWorldInfo"), std::locale::classic ());
+
+		return addWorldInfo == "true";
+	}
+	catch (const X3D::X3DError &)
+	{
+		return true;
+	}
+}
+
 ///  Return the WorldInfo node from the current scene. The node is created if needed.
 X3D::X3DPtr <X3D::WorldInfo>
 X3DBaseInterface::createWorldInfo ()
 throw (X3D::Error <X3D::NOT_SUPPORTED>)
 {
-	return getWorldInfo (true);
+	try
+	{
+		return getWorldInfo (getAddWorldInfo (getCurrentScene ()));
+	}
+	catch (const X3D::X3DError &)
+	{
+		return X3D::MakePtr <X3D::WorldInfo> (getCurrentScene ());
+	}
 }
 
 ///  Return the WorldInfo node from the current scene, otherwise it throws an exception.

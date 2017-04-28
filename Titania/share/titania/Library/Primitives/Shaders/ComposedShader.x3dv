@@ -1,0 +1,34 @@
+#X3D V3.3 utf8 Titania V3.0.3
+
+PROFILE Full
+
+META "addWorldInfo" "false"
+META "comment" "World of Titania"
+META "created" "Fri, 28 Apr 2017 05:53:49 GMT"
+META "creator" "Holger Seelig"
+META "generator" "Titania V3.0.3, http://titania.create3000.de"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Primitives/Shaders/ComposedShader.x3dv"
+META "modified" "Fri, 28 Apr 2017 06:29:10 GMT"
+META "outputStyle" "Nicest"
+
+DEF Box Transform {
+  children Shape {
+    appearance Appearance {
+      material Material { }
+      shaders ComposedShader {
+        parts [
+          DEF FragmentShader ShaderPart {
+            type "FRAGMENT"
+            url "data:text/plain,
+"
+          }
+          DEF VertexShader ShaderPart {
+            url "data:text/plain,
+"
+          }
+        ]
+      }
+    }
+    geometry Box { }
+  }
+}

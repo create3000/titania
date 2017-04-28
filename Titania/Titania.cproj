@@ -2726,6 +2726,7 @@
     <None Include="share\titania\ui\icons\TessControlShader.svg" />
     <None Include="share\titania\ui\icons\TessEvaluationShader.svg" />
     <None Include="share\titania\Library\Effects\Water3.x3dv" />
+    <None Include="share\titania\Library\Primitives\Shaders\ComposedShader.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2834,6 +2835,7 @@
     <Folder Include="Titania\Dialogs\UndoHistoryDialog\" />
     <Folder Include="Titania\Editors\GeometryPropertiesEditor\Rendering\" />
     <Folder Include="share\titania\Library\Models\L-Systems\" />
+    <Folder Include="share\titania\Library\Primitives\Shaders\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

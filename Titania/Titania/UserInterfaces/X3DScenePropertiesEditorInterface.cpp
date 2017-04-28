@@ -91,9 +91,11 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AddMetaDataButton", m_AddMetaDataButton);
 	m_builder -> get_widget ("RemoveMetaDataButton", m_RemoveMetaDataButton);
 	m_builder -> get_widget ("AddStandardMetaDataButton", m_AddStandardMetaDataButton);
+	m_builder -> get_widget ("WorldInfoBox", m_WorldInfoBox);
 	m_builder -> get_widget ("WorldInfoExpander", m_WorldInfoExpander);
 	m_builder -> get_widget ("WorldInfoTitleTextView", m_WorldInfoTitleTextView);
 	m_builder -> get_widget ("WorldInfoInfoTextView", m_WorldInfoInfoTextView);
+	m_builder -> get_widget ("AddWorldInfoButton", m_AddWorldInfoButton);
 	m_builder -> get_widget ("MetaDataDialog", m_MetaDataDialog);
 	m_builder -> get_widget ("MetaDataCancelButton", m_MetaDataCancelButton);
 	m_builder -> get_widget ("MetaDataOkButton", m_MetaDataOkButton);
@@ -135,6 +137,12 @@ X3DScenePropertiesEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'AddMetaDataButton'.
 	m_AddMetaDataButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_add_meta_data_clicked));
 	m_RemoveMetaDataButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_remove_meta_data_clicked));
+
+	// Connect object Gtk::Box with id 'WorldInfoBox'.
+	m_WorldInfoBox -> signal_map () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_map));
+	m_WorldInfoBox -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_unmap));
+
+	// Connect object Gtk::Button with id 'MetaDataCancelButton'.
 	m_MetaDataCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_add_meta_data_cancel_clicked));
 	m_MetaDataOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DScenePropertiesEditorInterface::on_add_meta_data_ok_clicked));
 

@@ -147,7 +147,7 @@ private:
 	connectMetaData (const X3D::SFTime & field);
 
 	void
-	on_add_standard_meta_data_activated ();
+	on_add_standard_meta_data_activate ();
 
 	///  @name Members
 
