@@ -117,7 +117,7 @@ public:
 	void
 	setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> &);
 
-	void
+	bool
 	setSelection (const X3D::SFNode & node);
 
 	void

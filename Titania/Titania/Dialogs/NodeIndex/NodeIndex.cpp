@@ -369,7 +369,7 @@ NodeIndex::setProto (const X3D::X3DPtr <X3D::X3DProtoDeclarationNode> & value)
 	refresh ();
 }
 
-void
+bool
 NodeIndex::setSelection (const X3D::SFNode & selection)
 {
 	node .set (selection);
@@ -377,9 +377,13 @@ NodeIndex::setSelection (const X3D::SFNode & selection)
 	const auto path = getPath (node);
 
 	if (path .empty ())
+	{
 		getTreeView () .get_selection () -> unselect_all ();
-	else
-		getTreeView () .get_selection () -> select (path);
+		return false;
+	}
+
+	getTreeView () .get_selection () -> select (path);
+	return true;
 }
 
 void
@@ -468,15 +472,13 @@ NodeIndex::setNodes (X3D::MFNode && value)
 	getTreeView () .set_model (getTreeModelSort ());
 	getTreeView () .set_search_column (Columns::NAME);
 
-	// Fill model without event.
-
-	setSelection (node);
-
 	// If the current selection is not in nodes, send event.
+
+	const bool selected = setSelection (node);
 
 	if (node)
 	{
-		if (not std::count (nodes .begin (), nodes .end (), node))
+		if (not selected)
 			node = nullptr;
 	}
 }

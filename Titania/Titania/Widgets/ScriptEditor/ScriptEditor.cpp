@@ -102,10 +102,6 @@ ScriptEditor::initialize ()
 	X3DShaderEditor::initialize ();
 	X3DScriptEditorPreferences::initialize ();
 
-	#ifndef TITANIA_FEATURE
-	getEditProtosButton () .set_visible (false);
-	#endif
-
 	// Text view
 
 	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_undo_changed));
@@ -119,6 +115,10 @@ ScriptEditor::initialize ()
 	getScrolledWindow () .add (getTextView ());
 
 	// Node index
+
+	#ifdef TITANIA_FEATURE
+	nodeIndex -> setDisplayProtoNodes (true);
+	#endif
 
 	nodeIndex -> getNode () .addInterest (&ScriptEditor::set_node, this);
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
@@ -151,8 +151,6 @@ ScriptEditor::configure ()
 	X3DScriptEditorInterface::configure ();
 
 	// Config
-
-	getEditProtosButton () .set_active (getConfig () -> getBoolean ("editProtos"));
 
 	if (getConfig () -> hasItem ("paned"))
 		getPaned () .set_position (getConfig () -> getInteger ("paned"));
@@ -332,12 +330,6 @@ ScriptEditor::on_focus_out_event (GdkEventFocus*)
 	getBrowserWindow () -> getWindow () .remove_accel_group (getAccelGroup ());
 	getBrowserWindow () -> setAccelerators (true);
 	return false;
-}
-
-void
-ScriptEditor::on_edit_protos_toggled ()
-{
-	nodeIndex -> setDisplayProtoNodes (getEditProtosButton () .get_active ());
 }
 
 void
@@ -593,7 +585,6 @@ ScriptEditor::store ()
 {
 	save ();
 
-	getConfig () -> setItem ("editProtos", getEditProtosButton () .get_active ());
 	getConfig () -> setItem ("paned",      getPaned ()     .get_position ());
 	getConfig () -> setItem ("sidePaned",  getSidePaned () .get_position ());
 

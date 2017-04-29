@@ -451,28 +451,29 @@ OutlineEditor::on_copy_activate ()
 void
 OutlineEditor::on_paste_activate ()
 {
-	if (nodePath .empty ())
-		return;
+	auto executionContext = X3D::X3DExecutionContextPtr (treeView -> get_model () -> get_execution_context ());
 
-	const auto iter             = treeView -> get_model () -> get_iter (nodePath);
-	auto       executionContext = X3D::X3DExecutionContextPtr ();
-
-	switch (treeView -> get_data_type (iter))
+	if (not nodePath .empty ())
 	{
-		case OutlineIterType::ProtoDeclaration:
-		case OutlineIterType::X3DExecutionContext:
+		const auto iter = treeView -> get_model () -> get_iter (nodePath);
+	
+		switch (treeView -> get_data_type (iter))
 		{
-			executionContext = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			break;
+			case OutlineIterType::ProtoDeclaration:
+			case OutlineIterType::X3DExecutionContext:
+			{
+				executionContext = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				break;
+			}
+			case OutlineIterType::X3DBaseNode:
+			{
+				const auto & node = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+				executionContext = node -> getExecutionContext ();
+				break;
+			}
+			default:
+				return;
 		}
-		case OutlineIterType::X3DBaseNode:
-		{
-			const auto & node = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			executionContext = node -> getExecutionContext ();
-			break;
-		}
-		default:
-			return;
 	}
 
 	const auto undoStep   = std::make_shared <X3D::UndoStep> (_ ("Paste Node"));
@@ -1448,7 +1449,7 @@ OutlineEditor::selectNode (const double x, const double y)
 
 	getCutMenuItem ()   .set_visible (isNode);
 	getCopyMenuItem ()  .set_visible (isNode);
-	getPasteMenuItem () .set_visible (isNode or isExecutionContext);
+	getPasteMenuItem () .set_visible (isNode or isExecutionContext or nodePath .empty ());
 	getPasteMenuItem () .set_sensitive (not getBrowserWindow () -> getClipboard () -> string_changed () .empty ());
 
 	getClipboardSeparator () .set_visible (getCutMenuItem ()   .get_visible () or
