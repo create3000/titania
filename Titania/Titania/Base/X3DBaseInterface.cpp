@@ -168,7 +168,7 @@ X3DBaseInterface::getAddWorldInfo (const X3D::X3DScenePtr & scene)
 
 		return addWorldInfo == "true";
 	}
-	catch (const X3D::X3DError &)
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{
 		return false;
 	}

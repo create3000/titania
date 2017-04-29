@@ -601,7 +601,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 		{
 			setWorldURL (scene, worldURL, undoStep);
 
-			setOutputStyle (scene, file, outputStyle);
+			setOutputStyle (file, scene, outputStyle);
 
 			file << X3D::XMLEncode (scene);
 
@@ -626,7 +626,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 		{
 			setWorldURL (scene, worldURL, undoStep);
 
-			setOutputStyle (scene, file, outputStyle);
+			setOutputStyle (file, scene, outputStyle);
 
 			file << X3D::XMLEncode (scene);
 
@@ -651,7 +651,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 		{
 			setWorldURL (scene, worldURL, undoStep);
 
-			setOutputStyle (scene, file, outputStyle);
+			setOutputStyle (file, scene, outputStyle);
 
 			file << X3D::JSONEncode (scene);
 			
@@ -700,7 +700,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 			{
 				setWorldURL (scene, worldURL, undoStep);
 
-				setOutputStyle (scene, file, outputStyle);
+				setOutputStyle (file, scene, outputStyle);
 
 				file << scene;
 				
@@ -719,7 +719,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 			{
 				setWorldURL (scene, worldURL, undoStep);
 
-				setOutputStyle (scene, file, outputStyle);
+				setOutputStyle (file, scene, outputStyle);
 
 				file << scene;
 				
@@ -743,7 +743,7 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 }
 
 void
-X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream & file, const std::string & outputStyle)
+X3DBrowserWidget::setOutputStyle (std::ostream & file, const X3D::X3DScenePtr & scene, const std::string & outputStyle)
 {
 	scene -> removeMetaData ("outputStyle"); // TODO: remove this line.
 
@@ -761,6 +761,13 @@ X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream &
 std::string
 X3DBrowserWidget::getOutputStyle (const X3D::X3DScenePtr & scene) const
 {
+	try
+	{
+		return basic::tolower (scene -> getMetaData ("outputStyle"), std::locale::classic ());
+	}
+	catch (const X3D::Error <X3D::INVALID_NAME> &)
+	{ }
+
 	try
 	{
 		return basic::tolower (scene -> getMetaData ("titania-output-style"), std::locale::classic ());

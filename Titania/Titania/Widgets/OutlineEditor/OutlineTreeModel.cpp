@@ -674,7 +674,7 @@ OutlineTreeModel::iter_parent_vfunc (const iterator & child, iterator & iter) co
 
 	auto path = get_path (child);
 
-	if (path .up ())
+	if (path .size () > 1 and path .up ())
 	{
 		set_data (iter, tree .get_node (path) .get_data ());
 		return true;

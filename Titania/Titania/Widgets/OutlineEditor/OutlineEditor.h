@@ -316,6 +316,9 @@ private:
 
 	///  @name Operations
 
+	X3D::X3DPtr <X3D::X3DLayerNode>
+	getLayer (Gtk::TreeIter iter) const;
+
 	void
 	selectNode (const double, const double);
 
