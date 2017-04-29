@@ -59,7 +59,6 @@
 #include "../../Utility/MemberValue.h"
 #include "../Functional.h"
 #include "Quaternion.h"
-#include "Matrix3.h"
 #include "Vector3.h"
 
 namespace titania {
@@ -215,11 +214,16 @@ public:
 	///  Assign rotation @a matrix to this rotation.
 	template <class Up>
 	void
-	matrix (const matrix3 <Up> & matrix);
+	matrix (const matrix3 <Up> & matrix)
+	{
+		m_quat .matrix (matrix);
+		m_quat .normalize ();
+	}
 
 	///  Returns the 3x3 rotation matrix of this rotation.
 	matrix3 <Type>
-	matrix () const;
+	matrix () const
+	{ return m_quat .matrix (); }
 
 	///  Set @a x, @a y, @a z and @a angle componentwise.
 	void
@@ -462,93 +466,6 @@ rotation4 <Type>::angle () const
 		return 0;
 
 	return 2 * std::acos (m_quat .w ());
-}
-
-template <class Type>
-template <class Up>
-inline
-void
-rotation4 <Type>::matrix (const matrix3 <Up> & matrix)
-{
-	Type quat [4];
-
-	int i;
-
-	// First, find largest diagonal in matrix:
-	if (matrix [0] [0] > matrix [1] [1])
-	{
-		i = matrix [0] [0] > matrix [2] [2] ? 0 : 2;
-	}
-	else
-	{
-		i = matrix [1] [1] > matrix [2] [2] ? 1 : 2;
-	}
-
-	const Type scalerow = matrix [0] [0] + matrix [1] [1] + matrix [2] [2];
-
-	if (scalerow > matrix [i] [i])
-	{
-		// Compute w first:
-		quat [3] = std::sqrt (scalerow + 1) / 2;
-
-		// And compute other values:
-		const Type d = 4 * quat [3];
-		quat [0] = (matrix [1] [2] - matrix [2] [1]) / d;
-		quat [1] = (matrix [2] [0] - matrix [0] [2]) / d;
-		quat [2] = (matrix [0] [1] - matrix [1] [0]) / d;
-	}
-	else
-	{
-		// Compute x, y, or z first:
-		const int j = (i + 1) % 3;
-		const int k = (i + 2) % 3;
-
-		// Compute first value:
-		quat [i] = std::sqrt (matrix [i] [i] - matrix [j] [j] - matrix [k] [k] + 1) / 2;
-
-		// And the others:
-		const Type d = 4 * quat [i];
-		quat [j] = (matrix [i] [j] + matrix [j] [i]) / d;
-		quat [k] = (matrix [i] [k] + matrix [k] [i]) / d;
-		quat [3] = (matrix [j] [k] - matrix [k] [j]) / d;
-	}
-
-	m_quat = quaternion <Type> (quat [0], quat [1], quat [2], quat [3]);
-}
-
-///  Convert this rotation to a matrix3.
-template <class Type>
-matrix3 <Type>
-rotation4 <Type>::matrix () const
-{
-	const Type x = m_quat .x ();
-	const Type y = m_quat .y ();
-	const Type z = m_quat .z ();
-	const Type w = m_quat .w ();
-
-	const Type a = x * x;
-	const Type b = x * y;
-	const Type c = y * y;
-	const Type d = y * z;
-	const Type e = z * x;
-	const Type f = z * z;
-	const Type g = w * x;
-	const Type h = w * y;
-	const Type i = w * z;
-
-	return matrix3 <Type> (
-		1 - 2 * (c + f),
-		    2 * (b + i),
-		    2 * (e - h),
-
-		    2 * (b - i),
-		1 - 2 * (f + a),
-		    2 * (d + g),
-
-		    2 * (e + h),
-		    2 * (d - g),
-		1 - 2 * (c + a)
-	);
 }
 
 template <class Type>

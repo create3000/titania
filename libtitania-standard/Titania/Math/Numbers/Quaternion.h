@@ -53,6 +53,7 @@
 
 #include "../Functional.h"
 #include "Vector3.h"
+#include "Matrix3.h"
 
 #include <array>
 #include <cmath>
@@ -218,6 +219,15 @@ public:
 	const_reference
 	w () const
 	{ return m_array [3]; }
+
+	///  Assign rotation @a matrix to this quaternion.
+	template <class Up>
+	void
+	matrix (const matrix3 <Up> & matrix);
+
+	///  Returns the 3x3 rotation matrix of this quaternion.
+	matrix3 <Type>
+	matrix () const;
 
 	///  Access specified element with bounds checking.
 	constexpr
@@ -464,6 +474,88 @@ quaternion <Type>::operator = (const quaternion <Up> & other)
 	m_array [2] = other .z ();
 	m_array [3] = other .w ();
 	return *this;
+}
+
+template <class Type>
+template <class Up>
+void
+quaternion <Type>::matrix (const matrix3 <Up> & matrix)
+{
+	int i;
+
+	// First, find largest diagonal in matrix:
+	if (matrix [0] [0] > matrix [1] [1])
+	{
+		i = matrix [0] [0] > matrix [2] [2] ? 0 : 2;
+	}
+	else
+	{
+		i = matrix [1] [1] > matrix [2] [2] ? 1 : 2;
+	}
+
+	const Type scalerow = matrix [0] [0] + matrix [1] [1] + matrix [2] [2];
+
+	if (scalerow > matrix [i] [i])
+	{
+		// Compute w first:
+		(*this) [3] = std::sqrt (scalerow + 1) / 2;
+
+		// And compute other values:
+		const Type d = 4 * (*this) [3];
+		(*this) [0] = (matrix [1] [2] - matrix [2] [1]) / d;
+		(*this) [1] = (matrix [2] [0] - matrix [0] [2]) / d;
+		(*this) [2] = (matrix [0] [1] - matrix [1] [0]) / d;
+	}
+	else
+	{
+		// Compute x, y, or z first:
+		const int j = (i + 1) % 3;
+		const int k = (i + 2) % 3;
+
+		// Compute first value:
+		(*this) [i] = std::sqrt (matrix [i] [i] - matrix [j] [j] - matrix [k] [k] + 1) / 2;
+
+		// And the others:
+		const Type d = 4 * (*this) [i];
+		(*this) [j] = (matrix [i] [j] + matrix [j] [i]) / d;
+		(*this) [k] = (matrix [i] [k] + matrix [k] [i]) / d;
+		(*this) [3] = (matrix [j] [k] - matrix [k] [j]) / d;
+	}
+}
+
+///  Convert this rotation to a matrix3.
+template <class Type>
+matrix3 <Type>
+quaternion <Type>::matrix () const
+{
+	const auto x = this -> x ();
+	const auto y = this -> y ();
+	const auto z = this -> z ();
+	const auto w = this -> w ();
+
+	const auto a = x * x;
+	const auto b = x * y;
+	const auto c = y * y;
+	const auto d = y * z;
+	const auto e = z * x;
+	const auto f = z * z;
+	const auto g = w * x;
+	const auto h = w * y;
+	const auto i = w * z;
+
+	return matrix3 <Type> (
+		1 - 2 * (c + f),
+		    2 * (b + i),
+		    2 * (e - h),
+
+		    2 * (b - i),
+		1 - 2 * (f + a),
+		    2 * (d + g),
+
+		    2 * (e + h),
+		    2 * (d - g),
+		1 - 2 * (c + a)
+	);
 }
 
 template <class Type>
