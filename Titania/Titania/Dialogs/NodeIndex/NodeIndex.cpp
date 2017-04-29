@@ -432,6 +432,8 @@ NodeIndex::setNodes (X3D::MFNode && value)
 
 	nodes = std::move (value);
 
+	// Fill model.
+
 	hadjustment -> preserve (getTreeView () .get_hadjustment ());
 	vadjustment -> preserve (getTreeView () .get_vadjustment ());
 
@@ -466,7 +468,17 @@ NodeIndex::setNodes (X3D::MFNode && value)
 	getTreeView () .set_model (getTreeModelSort ());
 	getTreeView () .set_search_column (Columns::NAME);
 
+	// Fill model without event.
+
 	setSelection (node);
+
+	// If the current selection is not in nodes, send event.
+
+	if (node)
+	{
+		if (not std::count (nodes .begin (), nodes .end (), node))
+			node = nullptr;
+	}
 }
 
 std::string

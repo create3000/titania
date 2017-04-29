@@ -260,7 +260,6 @@ History::getContextPath (const std::string & worldURL) const
 	}
 	catch (const std::exception & error)
 	{
-		__LOG__ << error .what () << std::endl;
 		return "";
 	}
 }
