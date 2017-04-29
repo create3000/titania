@@ -4,7 +4,6 @@ PROFILE Full
 
 UNIT angle degree 0.0174532925199432958
 
-META "addWorldInfo" "false"
 META "comment" "World of Titania"
 META "created" "Sun, 02 Nov 2014 08:24:22 GMT"
 META "creator" "Holger Seelig"

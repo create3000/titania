@@ -745,8 +745,15 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 void
 X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, std::ostream & file, const std::string & outputStyle)
 {
+	scene -> removeMetaData ("outputStyle"); // TODO: remove this line.
+
 	if (getConfig () -> getBoolean ("addStandardMetaData"))
-		scene -> setMetaData ("outputStyle", outputStyle);
+	{
+		if (outputStyle == "nicest")
+			scene -> removeMetaData ("titania-output-style");
+		else
+			scene -> setMetaData ("titania-output-style", outputStyle);
+	}
 
 	X3D::Generator::Style (file, outputStyle);
 }
@@ -756,7 +763,7 @@ X3DBrowserWidget::getOutputStyle (const X3D::X3DScenePtr & scene) const
 {
 	try
 	{
-		return scene -> getMetaData ("outputStyle");
+		return basic::tolower (scene -> getMetaData ("titania-output-style"), std::locale::classic ());
 	}
 	catch (const X3D::Error <X3D::INVALID_NAME> &)
 	{

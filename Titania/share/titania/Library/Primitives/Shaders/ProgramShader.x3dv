@@ -6,8 +6,8 @@ META "comment" "World of Titania"
 META "created" "Fri, 28 Apr 2017 05:53:49 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.3, http://titania.create3000.de"
-META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Primitives/Shaders/ComposedShader.x3dv"
-META "modified" "Fri, 28 Apr 2017 07:18:21 GMT"
+META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/Library/Primitives/Shaders/ProgramShader.x3dv"
+META "modified" "Fri, 28 Apr 2017 07:25:48 GMT"
 META "outputStyle" "Nicest"
 
 DEF Shader Transform {
@@ -19,29 +19,10 @@ DEF Shader Transform {
         specularColor 0.913265 0.373179 0.373179
         shininess 0.959184
       }
-      shaders ComposedShader {
+      shaders ProgramShader {
         language "GLSL"
-        parts [
-          DEF FragmentShader ShaderPart {
-            type "FRAGMENT"
-            url "data:text/plain,
-
-precision mediump float;
-
-uniform vec3  x3d_DiffuseColor;
-uniform float x3d_Transparency;
-
-varying vec3 normal;
-
-void
-main ()
-{
-	float f = max (dot (normal, vec3 (0.0, 0.0, 1.0)), 0.0);
-
-	gl_FragColor = vec4 (x3d_DiffuseColor * f, 1.0 - x3d_Transparency);
-}"
-          }
-          DEF VertexShader ShaderPart {
+        programs [
+          DEF VertexShader ShaderProgram {
             url "data:text/plain,
 
 precision mediump float;
@@ -61,6 +42,25 @@ main ()
 	normal = x3d_NormalMatrix * x3d_Normal;
 
 	gl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * x3d_Vertex;
+}"
+          }
+          DEF FragmentShader ShaderProgram {
+            type "FRAGMENT"
+            url "data:text/plain,
+
+precision mediump float;
+
+uniform vec3  x3d_DiffuseColor;
+uniform float x3d_Transparency;
+
+varying vec3 normal;
+
+void
+main ()
+{
+	float f = max (dot (normal, vec3 (0.0, 0.0, 1.0)), 0.0);
+
+	gl_FragColor = vec4 (x3d_DiffuseColor * f, 1.0 - x3d_Transparency);
 }"
           }
         ]

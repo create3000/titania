@@ -2727,6 +2727,8 @@
     <None Include="share\titania\ui\icons\TessEvaluationShader.svg" />
     <None Include="share\titania\Library\Effects\Water3.x3dv" />
     <None Include="share\titania\Library\Primitives\Shaders\ComposedShader.x3dv" />
+    <None Include="share\titania\Library\Primitives\Shaders\ProgramShader.x3dv" />
+    <None Include="share\titania\pages\about\new.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -2879,10 +2881,6 @@
     <Content Include="share\titania\ui\MotionBlurEditor.glade" />
     <Content Include="share\titania\ui\OutlineEditor.glade" />
     <Content Include="share\titania\ui\BindableNodeList.glade" />
-    <Content Include="share\titania\pages\about\new.wrl">
-      <DeployService-TargetDirectoryId>ProgramFilesRoot</DeployService-TargetDirectoryId>
-      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
-    </Content>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

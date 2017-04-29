@@ -234,11 +234,17 @@ X3DBrowserEditor::connectShutdown ()
 void
 X3DBrowserEditor::set_scene ()
 {
-	if (getCurrentScene () -> getWorldURL () == get_page ("about/new.wrl"))
+	if (getCurrentScene () -> getWorldURL () == get_page ("about/new.x3dv"))
 	{
 	   getCurrentScene () -> setWorldURL ("");
 		getCurrentScene () -> setEncoding (X3D::EncodingType::XML);
 		getCurrentScene () -> setSpecificationVersion (X3D::LATEST_VERSION);
+		getCurrentScene () -> removeMetaData ("comment");
+		getCurrentScene () -> removeMetaData ("created");
+		getCurrentScene () -> removeMetaData ("creator");
+		getCurrentScene () -> removeMetaData ("generator");
+		getCurrentScene () -> removeMetaData ("identifier");
+		getCurrentScene () -> removeMetaData ("modified");
 	}
 }
 
@@ -517,7 +523,7 @@ X3DBrowserEditor::blank ()
 {
 	if (getEditing ())
 	{
-		append (X3D::createBrowser (getMasterBrowser ()), get_page ("about/new.wrl"));
+		append (X3D::createBrowser (getMasterBrowser ()), get_page ("about/new.x3dv"));
 		getBrowserNotebook () .set_current_page (getBrowsers () .size () - 1);
 	}
 	else

@@ -154,9 +154,9 @@ void
 X3DBaseInterface::setAddWorldInfo (const X3D::X3DScenePtr & scene, const bool value)
 {
 	if (value)
-		scene -> removeMetaData ("addWorldInfo");
+		scene -> setMetaData ("titania-add-world-info", "true");
 	else
-		scene -> setMetaData ("addWorldInfo", "false");
+		scene -> removeMetaData ("titania-add-world-info");
 }
 
 bool
@@ -164,13 +164,13 @@ X3DBaseInterface::getAddWorldInfo (const X3D::X3DScenePtr & scene)
 {
 	try
 	{
-		const auto addWorldInfo = basic::tolower (scene -> getMetaData ("addWorldInfo"), std::locale::classic ());
+		const auto addWorldInfo = basic::tolower (scene -> getMetaData ("titania-add-world-info"), std::locale::classic ());
 
 		return addWorldInfo == "true";
 	}
 	catch (const X3D::X3DError &)
 	{
-		return true;
+		return false;
 	}
 }
 
