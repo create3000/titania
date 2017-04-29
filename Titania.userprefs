@@ -1,12 +1,16 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp">
+  <MonoDevelop.Ide.Workbench>
     <Files>
       <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="1210" Column="47" />
-      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="1701" Column="18" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.h" Line="155" Column="22" />
-      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="206" Column="18" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Editing/X3DEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/NodeIndex/NodeIndex.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineEditor.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Widgets/ScriptEditor/ScriptEditor.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

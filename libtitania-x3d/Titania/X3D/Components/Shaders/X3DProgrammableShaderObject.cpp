@@ -463,9 +463,9 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 		case X3DConstants::SFRotation:
 		{
 			if (extensionGPUShaderFP64)
-				glUniform4dv (location, 1, static_cast <SFRotation*> (field) -> getValue () .quat () .data ());
+				glUniformMatrix3dv (location, 1, false, static_cast <SFRotation*> (field) -> getValue () .matrix () .data ());
 			else
-				glUniform4fv (location, 1, Quaternion4f (static_cast <SFRotation*> (field) -> getValue () .quat ()) .data ());
+				glUniformMatrix3fv (location, 1, false, Matrix3f (static_cast <SFRotation*> (field) -> getValue () .matrix ()) .data ());
 
 			break;
 		}
@@ -740,23 +740,23 @@ X3DProgrammableShaderObject::set_field (X3DFieldDefinition* const field)
 
 			if (extensionGPUShaderFP64)
 			{
-				std::vector <Quaternion4d> vector;
+				std::vector <Matrix3d> vector;
 				vector .reserve (array -> size ());
 	
 				for (const auto & value : *array)
-					vector .emplace_back (value .getValue () .quat ());
+					vector .emplace_back (value .getValue () .matrix ());
 	
-				glUniform4dv (location, vector .size (), vector [0] .data ());
+				glUniformMatrix3dv (location, vector .size (), false, vector [0] .data ());
 			}
 			else
 			{
-				std::vector <Quaternion4f> vector;
+				std::vector <Matrix3f> vector;
 				vector .reserve (array -> size ());
 	
 				for (const auto & value : *array)
-					vector .emplace_back (value .getValue () .quat ());
+					vector .emplace_back (value .getValue () .matrix ());
 	
-				glUniform4fv (location, vector .size (), vector [0] .data ());
+				glUniformMatrix3fv (location, vector .size (), false, vector [0] .data ());
 			}
 
 			break;
