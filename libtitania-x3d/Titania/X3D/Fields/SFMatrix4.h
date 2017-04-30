@@ -59,7 +59,7 @@
 namespace titania {
 namespace X3D {
 
-template <class ValueType>
+template <class InternalType>
 class X3DArrayField;
 
 extern template class X3DField <Matrix4d>;
@@ -71,45 +71,45 @@ extern template class X3DField <Matrix4f>;
  *  Extern instantiations for float and double are part of the
  *  library.  Results with any other type are not guaranteed.
  *
- *  @param  ValueType  Type of the internal value of the field.
+ *  @param  InternalType  Type of the internal value of the field.
  */
-template <class ValueType>
+template <class InternalType>
 class SFMatrix4 :
-	public X3DField <ValueType>
+	public X3DField <InternalType>
 {
 public:
 
-	using value_type    = typename ValueType::value_type;
-	using size_type     = typename ValueType::size_type;
-	using vector_type   = SFVec3 <typename ValueType::vector_type>;
+	using value_type    = typename InternalType::value_type;
+	using size_type     = typename InternalType::size_type;
+	using vector_type   = SFVec3 <typename InternalType::vector_type>;
 	using rotation_type = SFRotation;
 
-	using X3DField <ValueType>::addInterest;
-	using X3DField <ValueType>::addEvent;
-	using X3DField <ValueType>::setValue;
-	using X3DField <ValueType>::getValue;
-	using X3DField <ValueType>::operator =;
+	using X3DField <InternalType>::addInterest;
+	using X3DField <InternalType>::addEvent;
+	using X3DField <InternalType>::setValue;
+	using X3DField <InternalType>::getValue;
+	using X3DField <InternalType>::operator =;
 
 	///  @name Construction
 
 	SFMatrix4 () :
-		X3DField <ValueType> ()
+		X3DField <InternalType> ()
 	{ }
 
 	SFMatrix4 (const SFMatrix4 & field) :
-		X3DField <ValueType> (field)
+		X3DField <InternalType> (field)
 	{ }
 
 	explicit
-	SFMatrix4 (const ValueType & value) :
-		X3DField <ValueType> (value)
+	SFMatrix4 (const InternalType & value) :
+		X3DField <InternalType> (value)
 	{ }
 
 	SFMatrix4 (const value_type & e11, const value_type & e12, const value_type & e13, const value_type & e14,
 	           const value_type & e21, const value_type & e22, const value_type & e23, const value_type & e24,
 	           const value_type & e31, const value_type & e32, const value_type & e33, const value_type & e34,
 	           const value_type & e41, const value_type & e42, const value_type & e43, const value_type & e44) :
-		X3DField <ValueType> (ValueType (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44))
+		X3DField <InternalType> (InternalType (e11, e12, e13, e14, e21, e22, e23, e24, e31, e32, e33, e34, e41, e42, e43, e44))
 	{ }
 
 	virtual
@@ -152,82 +152,82 @@ public:
 	setTransform ();
 
 	void
-	setTransform (const vector_type & translation);
+	setTransform (const typename vector_type::internal_type & translation);
 
 	void
-	setTransform (const vector_type & translation,
-	              const rotation_type & rotation);
+	setTransform (const typename vector_type::internal_type & translation,
+	              const typename rotation_type::internal_type & rotation);
 
 	void
-	setTransform (const vector_type & translation,
-	              const rotation_type & rotation,
-	              const vector_type & scale);
+	setTransform (const typename vector_type::internal_type & translation,
+	              const typename rotation_type::internal_type & rotation,
+	              const typename vector_type::internal_type & scale);
 
 	void
-	setTransform (const vector_type & translation,
-	              const rotation_type & rotation,
-	              const vector_type & scale,
-	              const rotation_type & scaleOrientation);
+	setTransform (const typename vector_type::internal_type & translation,
+	              const typename rotation_type::internal_type & rotation,
+	              const typename vector_type::internal_type & scale,
+	              const typename rotation_type::internal_type & scaleOrientation);
 
 	void
-	setTransform (const vector_type & translation,
-	              const rotation_type & rotation,
-	              const vector_type & scale,
-	              const rotation_type & scaleOrientation,
-	              const vector_type & center);
+	setTransform (const typename vector_type::internal_type & translation,
+	              const typename rotation_type::internal_type & rotation,
+	              const typename vector_type::internal_type & scale,
+	              const typename rotation_type::internal_type & scaleOrientation,
+	              const typename vector_type::internal_type & center);
 
 	void
-	getTransform (vector_type & translation) const;
+	getTransform (typename vector_type::internal_type & translation) const;
 
 	void
-	getTransform (vector_type & translation,
-	              rotation_type & rotation) const;
+	getTransform (typename vector_type::internal_type & translation,
+	              typename rotation_type::internal_type & rotation) const;
 
 	void
-	getTransform (vector_type & translation,
-	              rotation_type & rotation,
-	              vector_type & scale) const;
+	getTransform (typename vector_type::internal_type & translation,
+	              typename rotation_type::internal_type & rotation,
+	              typename vector_type::internal_type & scale) const;
 
 	void
-	getTransform (vector_type & translation,
-	              rotation_type & rotation,
-	              vector_type & scale,
-	              rotation_type & scaleOrientation) const;
+	getTransform (typename vector_type::internal_type & translation,
+	              typename rotation_type::internal_type & rotation,
+	              typename vector_type::internal_type & scale,
+	              typename rotation_type::internal_type & scaleOrientation) const;
 
 	void
-	getTransform (vector_type & translation,
-	              rotation_type & rotation,
-	              vector_type & scale,
-	              rotation_type & scaleOrientation,
-	              const vector_type & center) const;
+	getTransform (typename vector_type::internal_type & translation,
+	              typename rotation_type::internal_type & rotation,
+	              typename vector_type::internal_type & scale,
+	              typename rotation_type::internal_type & scaleOrientation,
+	              const typename vector_type::internal_type & center) const;
 
 	value_type
 	determinant () const
 	{ return getValue () .determinant (); }
 
-	SFMatrix4*
+	InternalType
 	inverse () const;
 
-	SFMatrix4*
+	InternalType
 	transpose () const;
 
-	SFMatrix4*
-	multLeft (const SFMatrix4 &) const;
+	InternalType
+	multLeft (const InternalType & matrix) const;
 
-	SFMatrix4*
-	multRight (const SFMatrix4 &) const;
+	InternalType
+	multRight (const InternalType & matrix) const;
 
-	vector_type*
-	multVecMatrix (const vector_type &) const;
+	typename vector_type::internal_type
+	multVecMatrix (const typename vector_type::internal_type & vector) const;
 
-	vector_type*
-	multMatrixVec (const vector_type &) const;
+	typename vector_type::internal_type
+	multMatrixVec (const typename vector_type::internal_type & vector) const;
 
-	vector_type*
-	multDirMatrix (const vector_type &) const;
+	typename vector_type::internal_type
+	multDirMatrix (const typename vector_type::internal_type & vector) const;
 
-	vector_type*
-	multMatrixDir (const vector_type &) const;
+	typename vector_type::internal_type
+	multMatrixDir (const typename vector_type::internal_type & vector) const;
 
 	///  @name Input/Output
 
@@ -262,253 +262,220 @@ protected:
 
 private:
 
-	using X3DField <ValueType>::get;
+	using X3DField <InternalType>::get;
 
 };
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFMatrix4 <ValueType>*
-SFMatrix4 <ValueType>::copy (const CopyType) const
+SFMatrix4 <InternalType>*
+SFMatrix4 <InternalType>::copy (const CopyType) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
 	return new SFMatrix4 (*this);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFMatrix4 <ValueType>::set1Value (const size_type & index, const value_type & value)
+SFMatrix4 <InternalType>::set1Value (const size_type & index, const value_type & value)
 {
 	get () .data () [index] = value;
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFMatrix4 <ValueType>::value_type
-SFMatrix4 <ValueType>::get1Value (const size_type & index) const
+typename SFMatrix4 <InternalType>::value_type
+SFMatrix4 <InternalType>::get1Value (const size_type & index) const
 {
 	return getValue () .data () [index];
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFMatrix4 <ValueType>::value_type
-SFMatrix4 <ValueType>::operator [ ] (const size_type & index) const
+typename SFMatrix4 <InternalType>::value_type
+SFMatrix4 <InternalType>::operator [ ] (const size_type & index) const
 {
 	return getValue () .data () [index];
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::setTransform ()
+SFMatrix4 <InternalType>::setTransform ()
 {
 	get () .set ();
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::setTransform (const vector_type & translation)
+SFMatrix4 <InternalType>::setTransform (const typename vector_type::internal_type & translation)
 {
 	get () .set (translation);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::setTransform (const vector_type & translation,
-                                     const rotation_type & rotation)
+SFMatrix4 <InternalType>::setTransform (const typename vector_type::internal_type & translation,
+                                        const typename rotation_type::internal_type & rotation)
 {
-	get () .set (translation, rotation .getValue ());
+	get () .set (translation, rotation);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::setTransform (const vector_type & translation,
-                                     const rotation_type & rotation,
-                                     const vector_type & scale)
+SFMatrix4 <InternalType>::setTransform (const typename vector_type::internal_type & translation,
+                                        const typename rotation_type::internal_type & rotation,
+                                        const typename vector_type::internal_type & scale)
 {
-	get () .set (translation, rotation .getValue (), scale);
+	get () .set (translation, rotation, scale);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::setTransform (const vector_type & translation,
-                                     const rotation_type & rotation,
-                                     const vector_type & scale,
-                                     const rotation_type & scaleOrientation)
+SFMatrix4 <InternalType>::setTransform (const typename vector_type::internal_type & translation,
+                                        const typename rotation_type::internal_type & rotation,
+                                        const typename vector_type::internal_type & scale,
+                                        const typename rotation_type::internal_type & scaleOrientation)
 {
-	get () .set (translation, rotation .getValue (), scale, scaleOrientation .getValue ());
+	get () .set (translation, rotation, scale, scaleOrientation);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::setTransform (const vector_type & translation,
-                                     const rotation_type & rotation,
-                                     const vector_type & scale,
-                                     const rotation_type & scaleOrientation,
-                                     const vector_type & center)
+SFMatrix4 <InternalType>::setTransform (const typename vector_type::internal_type & translation,
+                                        const typename rotation_type::internal_type & rotation,
+                                        const typename vector_type::internal_type & scale,
+                                        const typename rotation_type::internal_type & scaleOrientation,
+                                        const typename vector_type::internal_type & center)
 {
-	get () .set (translation, rotation .getValue (), scale, scaleOrientation .getValue (), center);
+	get () .set (translation, rotation, scale, scaleOrientation, center);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::getTransform (vector_type & translation) const
+SFMatrix4 <InternalType>::getTransform (typename vector_type::internal_type & translation) const
 {
-	typename vector_type::internal_type t;
-
-	getValue () .get (t);
-
-	translation = t;
+	getValue () .get (translation);
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::getTransform (vector_type & translation,
-                                     rotation_type & rotation) const
+SFMatrix4 <InternalType>::getTransform (typename vector_type::internal_type & translation,
+                                        typename rotation_type::internal_type & rotation) const
 {
-	typename vector_type::internal_type t;
-	typename rotation_type::internal_type r;
-
-	getValue () .get (t, r);
-
-	translation = t;
-	rotation    = r;
+	getValue () .get (translation, rotation);
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::getTransform (vector_type & translation,
-                                     rotation_type & rotation,
-                                     vector_type & scale) const
+SFMatrix4 <InternalType>::getTransform (typename vector_type::internal_type & translation,
+                                        typename rotation_type::internal_type & rotation,
+                                        typename vector_type::internal_type & scale) const
 {
-	typename vector_type::internal_type t, s;
-	typename rotation_type::internal_type r;
-
-	getValue () .get (t, r, s);
-
-	translation = t;
-	rotation    = r;
-	scale       = s;
+	getValue () .get (translation, rotation, scale);
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::getTransform (vector_type & translation,
-                                     rotation_type & rotation,
-                                     vector_type & scale,
-                                     rotation_type & scaleOrientation) const
+SFMatrix4 <InternalType>::getTransform (typename vector_type::internal_type & translation,
+                                        typename rotation_type::internal_type & rotation,
+                                        typename vector_type::internal_type & scale,
+                                        typename rotation_type::internal_type & scaleOrientation) const
 {
-	typename vector_type::internal_type t, s;
-	typename rotation_type::internal_type r, so;
-
-	getValue () .get (t, r, s, so);
-
-	translation      = t;
-	rotation         = r;
-	scale            = s;
-	scaleOrientation = so;
+	getValue () .get (translation, rotation, scale, scaleOrientation);
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFMatrix4 <ValueType>::getTransform (vector_type & translation,
-                                     rotation_type & rotation,
-                                     vector_type & scale,
-                                     rotation_type & scaleOrientation,
-                                     const vector_type & center) const
+SFMatrix4 <InternalType>::getTransform (typename vector_type::internal_type & translation,
+                                        typename rotation_type::internal_type & rotation,
+                                        typename vector_type::internal_type & scale,
+                                        typename rotation_type::internal_type & scaleOrientation,
+                                        const typename vector_type::internal_type & center) const
 {
-	typename vector_type::internal_type t, s, c;
-	typename rotation_type::internal_type r, so;
-
-	getValue () .get (t, r, s, so, c);
-
-	translation      = t;
-	rotation         = r;
-	scale            = s;
-	scaleOrientation = so;
+	getValue () .get (translation, rotation, scale, scaleOrientation, center);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFMatrix4 <ValueType>*
-SFMatrix4 <ValueType>::transpose () const
+InternalType
+SFMatrix4 <InternalType>::transpose () const
 {
-	return new SFMatrix4 (! getValue ());
+	return math::transpose (getValue ());
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFMatrix4 <ValueType>*
-SFMatrix4 <ValueType>::inverse () const
+InternalType
+SFMatrix4 <InternalType>::inverse () const
 {
-	return new SFMatrix4 (math::inverse (getValue ()));
+	return math::inverse (getValue ());
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFMatrix4 <ValueType>*
-SFMatrix4 <ValueType>::multLeft (const SFMatrix4 & value) const
+InternalType
+SFMatrix4 <InternalType>::multLeft (const InternalType & matrix) const
 {
-	ValueType result (getValue ());
-	result .mult_left (value .getValue ());
-	return new SFMatrix4 (result);
+	InternalType result (getValue ());
+	result .mult_left (matrix);
+	return result;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFMatrix4 <ValueType>*
-SFMatrix4 <ValueType>::multRight (const SFMatrix4 & value) const
+InternalType
+SFMatrix4 <InternalType>::multRight (const InternalType & matrix) const
 {
-	ValueType result (getValue ());
-	result .mult_right (value .getValue ());
-	return new SFMatrix4 (result);
+	InternalType result (getValue ());
+	result .mult_right (matrix);
+	return result;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFMatrix4 <ValueType>::vector_type *
-SFMatrix4 <ValueType>::multVecMatrix (const vector_type &value) const
+typename SFMatrix4 <InternalType>::vector_type::internal_type
+SFMatrix4 <InternalType>::multVecMatrix (const typename vector_type::internal_type & vector) const
 {
-	return new vector_type (getValue () .mult_vec_matrix (value .getValue ()));
+	return getValue () .mult_vec_matrix (vector);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFMatrix4 <ValueType>::vector_type *
-SFMatrix4 <ValueType>::multMatrixVec (const vector_type &value) const
+typename SFMatrix4 <InternalType>::vector_type::internal_type
+SFMatrix4 <InternalType>::multMatrixVec (const typename vector_type::internal_type & vector) const
 {
-	return new vector_type (getValue () .mult_matrix_vec (value .getValue ()));
+	return getValue () .mult_matrix_vec (vector);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFMatrix4 <ValueType>::vector_type *
-SFMatrix4 <ValueType>::multDirMatrix (const vector_type &value) const
+typename SFMatrix4 <InternalType>::vector_type::internal_type
+SFMatrix4 <InternalType>::multDirMatrix (const typename vector_type::internal_type & vector) const
 {
-	return new vector_type (getValue () .mult_dir_matrix (value .getValue ()));
+	return getValue () .mult_dir_matrix (vector);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFMatrix4 <ValueType>::vector_type *
-SFMatrix4 <ValueType>::multMatrixDir (const vector_type &value) const
+typename SFMatrix4 <InternalType>::vector_type::internal_type
+SFMatrix4 <InternalType>::multMatrixDir (const typename vector_type::internal_type & vector) const
 {
-	return new vector_type (getValue () .mult_matrix_dir (value .getValue ()));
+	return getValue () .mult_matrix_dir (vector);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFMatrix4 <ValueType>::fromStream (std::istream & istream)
+SFMatrix4 <InternalType>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -585,7 +552,7 @@ throw (Error <INVALID_X3D>,
 
 																if (Grammar::Number <value_type> (istream, e44))
 																{
-																	setValue (ValueType (e11, e12, e13, e14,
+																	setValue (InternalType (e11, e12, e13, e14,
 																	                     e21, e22, e23, e24,
 																	                     e31, e32, e33, e34,
 																	                     e41, e42, e43, e44));
@@ -607,26 +574,26 @@ throw (Error <INVALID_X3D>,
 	}
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFMatrix4 <ValueType>::toStream (std::ostream & ostream) const
+SFMatrix4 <InternalType>::toStream (std::ostream & ostream) const
 {
 	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFMatrix4 <ValueType>::toXMLStream (std::ostream & ostream) const
+SFMatrix4 <InternalType>::toXMLStream (std::ostream & ostream) const
 {
 	toStream (ostream);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFMatrix4 <ValueType>::toJSONStream (std::ostream & ostream) const
+SFMatrix4 <InternalType>::toJSONStream (std::ostream & ostream) const
 {
 	ostream
 		<< '['
@@ -639,10 +606,10 @@ SFMatrix4 <ValueType>::toJSONStream (std::ostream & ostream) const
 		<< ']';
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFMatrix4 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
+SFMatrix4 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
 {
 	ostream
 		<< X3DGenerator::SetPrecision <value_type>

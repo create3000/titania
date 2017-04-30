@@ -95,36 +95,6 @@ public:
 	       Error <NOT_SUPPORTED>) final override
 	{ return new VrmlMatrix (*this); }
 
-	///  @name Arithmetic operations
-
-	VrmlMatrix*
-	transpose () const
-	{ return new VrmlMatrix (! getValue ()); }
-
-	VrmlMatrix*
-	inverse () const
-	{ return new VrmlMatrix (math::inverse (getValue ())); }
-
-	VrmlMatrix*
-	multLeft (const VrmlMatrix & value) const
-	{
-		internal_type result (getValue ());
-
-		result .mult_left (value .getValue ());
-
-		return new VrmlMatrix (result);
-	}
-
-	VrmlMatrix*
-	multRight (const VrmlMatrix & value) const
-	{
-		internal_type result (getValue ());
-
-		result .mult_right (value .getValue ());
-
-		return new VrmlMatrix (result);
-	}
-
 };
 
 } // X3D

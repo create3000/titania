@@ -164,28 +164,6 @@ X3DBaseInterface::getAddWorldInfo (const X3D::X3DScenePtr & scene)
 {
 	try
 	{
-		//Apr 30 2017 01:12:11
-		//META "modified" "Fri, 28 Apr 2017 07:18:21 GMT"
-
-		__LOG__ << std::endl;
-		__LOG__ << __DATE__ << std::endl;
-		__LOG__ << scene -> getMetaData ("modified") << std::endl;
-
-		X3D::SFTime compiled;
-		X3D::SFTime modified;
-
-		compiled .fromLocaleString (__DATE__, "%b %d %Y", std::locale::classic ());
-		modified .fromLocaleString (scene -> getMetaData ("modified"), "%a, %d %b %Y %H:%M:%S GMT", std::locale::classic ());
-
-		__LOG__ << std::endl;
-		__LOG__ << compiled << " : " << compiled .toUTCString () << std::endl; 
-		__LOG__ << modified << " : " << modified .toUTCString () << std::endl;
-	}
-	catch (const X3D::Error <X3D::INVALID_NAME> &)
-	{ }
-
-	try
-	{
 		const auto addWorldInfo = basic::tolower (scene -> getMetaData ("titania-add-world-info"), std::locale::classic ());
 
 		return addWorldInfo == "true";

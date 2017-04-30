@@ -283,11 +283,11 @@ SFMatrix3 <Type>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto argc = args .size ();
 		const auto lhs  = getThis <SFMatrix3> (ec, object);
 
-		typename Type::vector_type translation;
+		typename Type::vector_type::internal_type translation;
 		typename Type::value_type rotation;
-		typename Type::vector_type scale (1, 1);
+		typename Type::vector_type::internal_type scale (1, 1);
 		typename Type::value_type scaleOrientation;
-		typename Type::vector_type center;
+		typename Type::vector_type::internal_type center;
 
 		if (argc > 0 and not args [0] .isNull ())
 			translation = *get1Argument <vector_type> (args, 0);
@@ -326,11 +326,11 @@ SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto argc = args .size ();
 		const auto lhs  = getThis <SFMatrix3> (ec, object);
 
-		typename Type::vector_type translation;
+		typename Type::vector_type::internal_type translation;
 		typename Type::value_type rotation;
-		typename Type::vector_type scale (1, 1);
+		typename Type::vector_type::internal_type scale (1, 1);
 		typename Type::value_type scaleOrientation;
-		typename Type::vector_type center;
+		typename Type::vector_type::internal_type center;
 
 		if (argc > 4 and not args [4] .isNull ())
 			center = *get1Argument <vector_type> (args, 4);
@@ -376,7 +376,7 @@ SFMatrix3 <Type>::transpose (const pb::ptr <pb::pbExecutionContext> & ec, const 
 	{
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 
-		return create <SFMatrix3> (ec, lhs -> transpose ());
+		return create <SFMatrix3> (ec, new Type (lhs -> transpose ()));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -395,7 +395,7 @@ SFMatrix3 <Type>::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb
 	{
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 
-		return create <SFMatrix3> (ec, lhs -> inverse ());
+		return create <SFMatrix3> (ec, new Type (lhs -> inverse ()));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -415,7 +415,7 @@ SFMatrix3 <Type>::multLeft (const pb::ptr <pb::pbExecutionContext> & ec, const p
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <SFMatrix3> (args, 0);
 
-		return create <SFMatrix3> (ec, lhs -> multLeft (*rhs));
+		return create <SFMatrix3> (ec, new Type (lhs -> multLeft (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -435,7 +435,7 @@ SFMatrix3 <Type>::multRight (const pb::ptr <pb::pbExecutionContext> & ec, const 
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <SFMatrix3> (args, 0);
 
-		return create <SFMatrix3> (ec, lhs -> multRight (*rhs));
+		return create <SFMatrix3> (ec, new Type (lhs -> multRight (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -455,7 +455,7 @@ SFMatrix3 <Type>::multVecMatrix (const pb::ptr <pb::pbExecutionContext> & ec, co
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector_type> (ec, lhs -> multVecMatrix (*rhs));
+		return create <vector_type> (ec, new typename Type::vector_type (lhs -> multVecMatrix (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -475,7 +475,7 @@ SFMatrix3 <Type>::multMatrixVec (const pb::ptr <pb::pbExecutionContext> & ec, co
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector_type> (ec, lhs -> multMatrixVec (*rhs));
+		return create <vector_type> (ec, new typename Type::vector_type (lhs -> multMatrixVec (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -495,7 +495,7 @@ SFMatrix3 <Type>::multDirMatrix (const pb::ptr <pb::pbExecutionContext> & ec, co
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector_type> (ec, lhs -> multDirMatrix (*rhs));
+		return create <vector_type> (ec, new typename Type::vector_type (lhs -> multDirMatrix (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -515,7 +515,7 @@ SFMatrix3 <Type>::multMatrixDir (const pb::ptr <pb::pbExecutionContext> & ec, co
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector_type> (ec, lhs -> multMatrixDir (*rhs));
+		return create <vector_type> (ec, new typename Type::vector_type (lhs -> multMatrixDir (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
