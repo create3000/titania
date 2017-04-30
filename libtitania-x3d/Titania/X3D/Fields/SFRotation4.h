@@ -58,7 +58,7 @@
 namespace titania {
 namespace X3D {
 
-template <class ValueType>
+template <class InternalType>
 class X3DArrayField;
 
 extern template class X3DField <Rotation4d>;
@@ -70,38 +70,38 @@ extern template class X3DField <Rotation4f>;
  *  Extern instantiations for float and double are part of the
  *  library.  Results with any other type are not guaranteed.
  *
- *  @param  ValueType  Type of the internal value of the field.
+ *  @param  InternalType  Type of the internal value of the field.
  */
-template <class ValueType>
+template <class InternalType>
 class SFRotation4 :
-	public X3DField <ValueType>
+	public X3DField <InternalType>
 {
 public:
 
-	using value_type  = typename ValueType::value_type;
-	using vector_type = SFVec3 <typename ValueType::vector_type>;
-	using size_type   = typename ValueType::size_type;
+	using value_type  = typename InternalType::value_type;
+	using vector_type = SFVec3 <typename InternalType::vector_type>;
+	using size_type   = typename InternalType::size_type;
 
-	using X3DField <ValueType>::addInterest;
-	using X3DField <ValueType>::addEvent;
-	using X3DField <ValueType>::setValue;
-	using X3DField <ValueType>::getValue;
-	using X3DField <ValueType>::operator =;
+	using X3DField <InternalType>::addInterest;
+	using X3DField <InternalType>::addEvent;
+	using X3DField <InternalType>::setValue;
+	using X3DField <InternalType>::getValue;
+	using X3DField <InternalType>::operator =;
 
 	///  @name Construction
 
 	SFRotation4 ();
 
-	SFRotation4 (const SFRotation4 &);
+	SFRotation4 (const SFRotation4 & other);
 
 	explicit
-	SFRotation4 (const ValueType &);
+	SFRotation4 (const InternalType & other);
 
-	SFRotation4 (const value_type &, const value_type &, const value_type &, const value_type &);
+	SFRotation4 (const value_type & x, const value_type & y, const value_type & z, const value_type & angle);
 
-	SFRotation4 (const vector_type &, const value_type &);
+	SFRotation4 (const typename vector_type::internal_type & axis, const value_type & angle);
 
-	SFRotation4 (const vector_type &, const vector_type &);
+	SFRotation4 (const typename vector_type::internal_type & fromVec, const typename vector_type::internal_type & toVec);
 
 	virtual
 	SFRotation4*
@@ -147,9 +147,9 @@ public:
 	getZ () const;
 
 	void
-	setAxis (const vector_type & value);
+	setAxis (const typename vector_type::internal_type & value);
 
-	vector_type*
+	typename vector_type::internal_type
 	getAxis () const;
 
 	void
@@ -173,28 +173,25 @@ public:
 	///  @name Arithmetic operations
 
 	SFRotation4 &
-	operator *= (const SFRotation4 &);
+	operator *= (const InternalType & rotation);
 
-	SFRotation4 &
-	operator *= (const ValueType &);
-
-	SFRotation4*
+	InternalType
 	inverse () const;
 
-	SFRotation4*
-	multiply (const SFRotation4 &) const;
+	InternalType
+	multiply (const InternalType & rotation) const;
 
-	vector_type*
-	multVec (const vector_type &) const;
+	typename vector_type::internal_type
+	multVec (const typename vector_type::internal_type & vector) const;
 
-	SFRotation4*
-	slerp (const SFRotation4 &, const value_type &) const;
+	InternalType
+	slerp (const InternalType & dest, const value_type & t) const;
 
 	///  @name Input/Output
 
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -202,15 +199,15 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 
 protected:
@@ -218,221 +215,212 @@ protected:
 	friend class X3DArrayField <SFRotation4>;
 
 	void
-	toJSONStreamValue (std::ostream &) const;
+	toJSONStreamValue (std::ostream & ostream) const;
 
 
 private:
 
-	using X3DField <ValueType>::get;
+	using X3DField <InternalType>::get;
 
 };
 
-template <class ValueType>
-SFRotation4 <ValueType>::SFRotation4 () :
-	X3DField <ValueType> ()
+template <class InternalType>
+SFRotation4 <InternalType>::SFRotation4 () :
+	X3DField <InternalType> ()
 { }
 
-template <class ValueType>
-SFRotation4 <ValueType>::SFRotation4 (const SFRotation4 & field) :
-	X3DField <ValueType> (field)
+template <class InternalType>
+SFRotation4 <InternalType>::SFRotation4 (const SFRotation4 & field) :
+	X3DField <InternalType> (field)
 { }
 
-template <class ValueType>
-SFRotation4 <ValueType>::SFRotation4 (const ValueType & value) :
-	X3DField <ValueType> (value)
+template <class InternalType>
+SFRotation4 <InternalType>::SFRotation4 (const InternalType & value) :
+	X3DField <InternalType> (value)
 { }
 
-template <class ValueType>
-SFRotation4 <ValueType>::SFRotation4 (const value_type & x, const value_type & y, const value_type & z, const value_type & angle) :
-	X3DField <ValueType> (ValueType (x, y, z, angle))
+template <class InternalType>
+SFRotation4 <InternalType>::SFRotation4 (const value_type & x, const value_type & y, const value_type & z, const value_type & angle) :
+	X3DField <InternalType> (InternalType (x, y, z, angle))
 { }
 
-template <class ValueType>
-SFRotation4 <ValueType>::SFRotation4 (const vector_type & vector, const value_type & angle) :
-	X3DField <ValueType> (ValueType (vector .getValue (), angle))
+template <class InternalType>
+SFRotation4 <InternalType>::SFRotation4 (const typename vector_type::internal_type & vector, const value_type & angle) :
+	X3DField <InternalType> (InternalType (vector, angle))
 { }
 
-template <class ValueType>
-SFRotation4 <ValueType>::SFRotation4 (const vector_type & fromVector, const vector_type & toVector) :
-	X3DField <ValueType> (ValueType (fromVector .getValue (), toVector .getValue ()))
+template <class InternalType>
+SFRotation4 <InternalType>::SFRotation4 (const typename vector_type::internal_type & fromVector, const typename vector_type::internal_type & toVector) :
+	X3DField <InternalType> (InternalType (fromVector, toVector))
 { }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFRotation4 <ValueType>*
-SFRotation4 <ValueType>::copy (const CopyType) const
+SFRotation4 <InternalType>*
+SFRotation4 <InternalType>::copy (const CopyType) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
 	return new SFRotation4 (*this);
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFRotation4 <ValueType>::setX (const value_type & x)
+SFRotation4 <InternalType>::setX (const value_type & x)
 {
 	get () .x (x);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFRotation4 <ValueType>::value_type
-SFRotation4 <ValueType>::getX () const
+typename SFRotation4 <InternalType>::value_type
+SFRotation4 <InternalType>::getX () const
 {
 	return getValue () .x ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFRotation4 <ValueType>::setY (const value_type & y)
+SFRotation4 <InternalType>::setY (const value_type & y)
 {
 	get () .y (y);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFRotation4 <ValueType>::value_type
-SFRotation4 <ValueType>::getY () const
+typename SFRotation4 <InternalType>::value_type
+SFRotation4 <InternalType>::getY () const
 {
 	return getValue () .y ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFRotation4 <ValueType>::setZ (const value_type & z)
+SFRotation4 <InternalType>::setZ (const value_type & z)
 {
 	get () .z (z);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFRotation4 <ValueType>::value_type
-SFRotation4 <ValueType>::getZ () const
+typename SFRotation4 <InternalType>::value_type
+SFRotation4 <InternalType>::getZ () const
 {
 	return getValue () .z ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFRotation4 <ValueType>::setAxis (const vector_type & axis)
+SFRotation4 <InternalType>::setAxis (const typename vector_type::internal_type & axis)
 {
-	get () .axis (axis .getValue ());
+	get () .axis (axis);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFRotation4 <ValueType>::vector_type *
-SFRotation4 <ValueType>::getAxis () const
+typename SFRotation4 <InternalType>::vector_type::internal_type
+SFRotation4 <InternalType>::getAxis () const
 {
-	return new vector_type (getValue () .axis ());
+	return getValue () .axis ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFRotation4 <ValueType>::setAngle (const value_type & angle)
+SFRotation4 <InternalType>::setAngle (const value_type & angle)
 {
 	get () .angle (angle);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFRotation4 <ValueType>::value_type
-SFRotation4 <ValueType>::getAngle () const
+typename SFRotation4 <InternalType>::value_type
+SFRotation4 <InternalType>::getAngle () const
 {
 	return getValue () .angle ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFRotation4 <ValueType>::set1Value (const size_type & index, const value_type & value)
+SFRotation4 <InternalType>::set1Value (const size_type & index, const value_type & value)
 {
 	get () [index] = value;
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFRotation4 <ValueType>::value_type
-SFRotation4 <ValueType>::get1Value (const size_type & index) const
+typename SFRotation4 <InternalType>::value_type
+SFRotation4 <InternalType>::get1Value (const size_type & index) const
 {
 	return getValue () [index];
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFRotation4 <ValueType>::getValue (value_type & x, value_type & y, value_type & z, value_type & angle) const
+SFRotation4 <InternalType>::getValue (value_type & x, value_type & y, value_type & z, value_type & angle) const
 {
 	getValue () .get (x, y, z, angle);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFRotation4 <ValueType>::value_type
-SFRotation4 <ValueType>::operator [ ] (const size_type & index) const
+typename SFRotation4 <InternalType>::value_type
+SFRotation4 <InternalType>::operator [ ] (const size_type & index) const
 {
 	return getValue () [index];
 }
 
-template <class ValueType>
-SFRotation4 <ValueType> &
-SFRotation4 <ValueType>::operator *= (const SFRotation4 & rotation)
-{
-	get () *= rotation .getValue ();
-	addEvent ();
-	return *this;
-}
-
-template <class ValueType>
-SFRotation4 <ValueType> &
-SFRotation4 <ValueType>::operator *= (const ValueType & rotation)
+template <class InternalType>
+SFRotation4 <InternalType> &
+SFRotation4 <InternalType>::operator *= (const InternalType & rotation)
 {
 	get () *= rotation;
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFRotation4 <ValueType>*
-SFRotation4 <ValueType>::inverse () const
+InternalType
+SFRotation4 <InternalType>::inverse () const
 {
-	return new SFRotation4 (~getValue ());
+	return ~getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFRotation4 <ValueType>*
-SFRotation4 <ValueType>::multiply (const SFRotation4 & value) const
+InternalType
+SFRotation4 <InternalType>::multiply (const InternalType & value) const
 {
-	return new SFRotation4 (getValue () * value .getValue ());
+	return getValue () * value;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFRotation4 <ValueType>::vector_type *
-SFRotation4 <ValueType>::multVec (const vector_type &value) const
+typename SFRotation4 <InternalType>::vector_type::internal_type
+SFRotation4 <InternalType>::multVec (const typename vector_type::internal_type &value) const
 {
-	return new vector_type (value .getValue () * getValue ());
+	return value * getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFRotation4 <ValueType>*
-SFRotation4 <ValueType>::slerp (const SFRotation4 & dest, const value_type & t) const
+InternalType
+SFRotation4 <InternalType>::slerp (const InternalType & dest, const value_type & t) const
 {
-	return new SFRotation4 (math::slerp (getValue (), dest .getValue (), t));
+	return math::slerp (getValue (), dest, t);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFRotation4 <ValueType>::fromStream (std::istream & istream)
+SFRotation4 <InternalType>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -457,32 +445,32 @@ throw (Error <INVALID_X3D>,
 				Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 				if (Grammar::Number <value_type> (istream, angle))
-					setValue (ValueType (x, y, z, angle));
+					setValue (InternalType (x, y, z, angle));
 			}
 	   }
 	}
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFRotation4 <ValueType>::toStream (std::ostream & ostream) const
+SFRotation4 <InternalType>::toStream (std::ostream & ostream) const
 {
 	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFRotation4 <ValueType>::toXMLStream (std::ostream & ostream) const
+SFRotation4 <InternalType>::toXMLStream (std::ostream & ostream) const
 {
 	toStream (ostream);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFRotation4 <ValueType>::toJSONStream (std::ostream & ostream) const
+SFRotation4 <InternalType>::toJSONStream (std::ostream & ostream) const
 {
 	ostream
 		<< '['
@@ -495,10 +483,10 @@ SFRotation4 <ValueType>::toJSONStream (std::ostream & ostream) const
 		<< ']';
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFRotation4 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
+SFRotation4 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
 {
 	value_type x, y, z, angle;
 
@@ -521,50 +509,50 @@ SFRotation4 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
 ///  @relates SFRotation4
 ///  @name Aritmetic operators.
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator ~ (const SFRotation4 <ValueType> & rotation)
+InternalType
+operator ~ (const SFRotation4 <InternalType> & rotation)
 {
 	return ~rotation .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator * (const SFRotation4 <ValueType> & a, const SFRotation4 <ValueType> & b)
+InternalType
+operator * (const SFRotation4 <InternalType> & a, const SFRotation4 <InternalType> & b)
 {
 	return a .getValue () * b .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator * (const SFRotation4 <ValueType> & a, const ValueType & b)
+InternalType
+operator * (const SFRotation4 <InternalType> & a, const InternalType & b)
 {
 	return a .getValue () * b;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator * (const ValueType & a, const SFRotation4 <ValueType> & b)
+InternalType
+operator * (const InternalType & a, const SFRotation4 <InternalType> & b)
 {
 	return a * b .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename ValueType::vector_type
-operator * (const typename ValueType::vector_type & vector, const SFRotation4 <ValueType> & rotation)
+typename InternalType::vector_type
+operator * (const typename InternalType::vector_type & vector, const SFRotation4 <InternalType> & rotation)
 {
 	return vector * rotation .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename ValueType::vector_type
-operator * (const SFRotation4 <ValueType> & rotation, const typename ValueType::vector_type & vector)
+typename InternalType::vector_type
+operator * (const SFRotation4 <InternalType> & rotation, const typename InternalType::vector_type & vector)
 {
 	return rotation .getValue () * vector;
 }

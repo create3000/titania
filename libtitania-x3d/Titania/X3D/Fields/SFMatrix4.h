@@ -96,13 +96,13 @@ public:
 		X3DField <InternalType> ()
 	{ }
 
-	SFMatrix4 (const SFMatrix4 & field) :
-		X3DField <InternalType> (field)
+	SFMatrix4 (const SFMatrix4 & other) :
+		X3DField <InternalType> (other)
 	{ }
 
 	explicit
-	SFMatrix4 (const InternalType & value) :
-		X3DField <InternalType> (value)
+	SFMatrix4 (const InternalType & other) :
+		X3DField <InternalType> (other)
 	{ }
 
 	SFMatrix4 (const value_type & e11, const value_type & e12, const value_type & e13, const value_type & e14,
@@ -200,6 +200,9 @@ public:
 	              typename vector_type::internal_type & scale,
 	              typename rotation_type::internal_type & scaleOrientation,
 	              const typename vector_type::internal_type & center) const;
+
+	SFMatrix4 &
+	operator *= (const InternalType & matrix);
 
 	value_type
 	determinant () const
@@ -402,6 +405,15 @@ SFMatrix4 <InternalType>::getTransform (typename vector_type::internal_type & tr
                                         const typename vector_type::internal_type & center) const
 {
 	getValue () .get (translation, rotation, scale, scaleOrientation, center);
+}
+
+template <class InternalType>
+SFMatrix4 <InternalType> &
+SFMatrix4 <InternalType>::operator *= (const InternalType & matrix)
+{
+	get () *= matrix;
+	addEvent ();
+	return *this;
 }
 
 template <class InternalType>

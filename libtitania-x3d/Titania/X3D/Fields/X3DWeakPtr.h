@@ -57,38 +57,38 @@
 namespace titania {
 namespace X3D {
 
-template <class ValueType>
+template <class InternalType>
 class X3DPtr;
 
-template <class ValueType>
+template <class InternalType>
 class X3DBasePtrArray;
 
-template <class ValueType>
+template <class InternalType>
 class X3DWeakPtr :
-	public X3DField <ValueType*>,
+	public X3DField <InternalType*>,
 	public X3DPtrObject
 {
 public:
 
-	using internal_type = ValueType*;
-	using value_type    = ValueType;
+	using internal_type = InternalType*;
+	using value_type    = InternalType;
 
-	using X3DField <ValueType*>::getParents;
-	using X3DField <ValueType*>::addEvent;
-	using X3DField <ValueType*>::addInterest;
-	using X3DField <ValueType*>::setValue;
-	using X3DField <ValueType*>::getValue;
+	using X3DField <InternalType*>::getParents;
+	using X3DField <InternalType*>::addEvent;
+	using X3DField <InternalType*>::addInterest;
+	using X3DField <InternalType*>::setValue;
+	using X3DField <InternalType*>::getValue;
 
 	///  @name Constructors
 
 	///  Constructs new X3DWeakPtr.
 	X3DWeakPtr () :
-		X3DField <ValueType*> ()
+		X3DField <InternalType*> ()
 	{ }
 
 	///  Constructs new X3DWeakPtr.
 	X3DWeakPtr (std::nullptr_t) :
-		X3DField <ValueType*> ()
+		X3DField <InternalType*> ()
 	{ }
 
 	///  Constructs new X3DWeakPtr.
@@ -97,16 +97,16 @@ public:
 	{ }
 
 	///  Constructs new X3DWeakPtr.
-	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	template <class Up, std::enable_if_t <std::is_base_of <InternalType, Up>::value, bool> = false>
 	X3DWeakPtr (const X3DWeakPtr <Up> & other) :
 		X3DWeakPtr (other .getValue ())
 	{ }
 
 	///  Constructs new X3DWeakPtr.
-	template <class Up, std::enable_if_t <not std::is_base_of <ValueType, Up>::value, bool> = true>
+	template <class Up, std::enable_if_t <not std::is_base_of <InternalType, Up>::value, bool> = true>
 	explicit
 	X3DWeakPtr (const X3DWeakPtr <Up> & other) :
-		X3DWeakPtr (dynamic_cast <ValueType*> (other .getValue ()))
+		X3DWeakPtr (dynamic_cast <InternalType*> (other .getValue ()))
 	{ }
 
 	///  Constructs new X3DWeakPtr.
@@ -117,15 +117,15 @@ public:
 
 	///  Constructs new X3DWeakPtr.
 	explicit
-	X3DWeakPtr (ValueType* const value) :
-		X3DField <ValueType*> (value)
+	X3DWeakPtr (InternalType* const value) :
+		X3DField <InternalType*> (value)
 	{ addObject (value); }
 
 	///  Constructs new X3DWeakPtr.
 	template <class Up>
 	explicit
 	X3DWeakPtr (Up* const value) :
-		X3DWeakPtr (dynamic_cast <ValueType*> (value))
+		X3DWeakPtr (dynamic_cast <InternalType*> (value))
 	{ }
 
 	///  @name Field services
@@ -143,7 +143,7 @@ public:
 
 	///  @name Observers
 
-	ValueType*
+	InternalType*
 	operator -> () const
 	throw (Error <DISPOSED>)
 	{
@@ -158,7 +158,7 @@ public:
 		throw Error <DISPOSED> ("X3DPtr::operator -> ()\n\n" + backtrace_symbols ());
 	}
 
-	ValueType &
+	InternalType &
 	operator * () const
 	throw (Error <DISPOSED>)
 	{
@@ -173,9 +173,9 @@ public:
 	operator bool () const
 	{ return getValue (); }
 
-	X3DPtr <ValueType>
+	X3DPtr <InternalType>
 	getLock () const
-	{ return X3DPtr <ValueType> (getValue ()); }
+	{ return X3DPtr <InternalType> (getValue ()); }
 
 	///  @name 6.7.7 Add field interest.
 
@@ -197,7 +197,7 @@ public:
 	{
 		removeObject (getValue ());
 
-		X3DField <ValueType*>::dispose ();
+		X3DField <InternalType*>::dispose ();
 	}
 
 	virtual
@@ -215,9 +215,9 @@ protected:
 	template <class Up>
 	friend class X3DWeakPtr;
 
-	friend class X3DBasePtrArray <X3DWeakPtr <ValueType>>;
+	friend class X3DBasePtrArray <X3DWeakPtr <InternalType>>;
 
-	friend class X3DArrayField <X3DWeakPtr <ValueType>>;
+	friend class X3DArrayField <X3DWeakPtr <InternalType>>;
 
 	///  @name X3DChildObject
 
@@ -316,7 +316,7 @@ private:
 	}
 
 	void
-	addObject (ValueType* const value)
+	addObject (InternalType* const value)
 	{
 		if (value)
 		{
@@ -326,7 +326,7 @@ private:
 	}
 
 	void
-	removeObject (ValueType* const value)
+	removeObject (InternalType* const value)
 	{
 		if (value)
 		{
@@ -338,8 +338,8 @@ private:
 	}
 
 	void
-	setObject (ValueType* const value)
-	{ X3DField <ValueType*>::set (value); }
+	setObject (InternalType* const value)
+	{ X3DField <InternalType*>::set (value); }
 
 	virtual
 	X3DChildObject*
@@ -363,8 +363,8 @@ private:
 
 };
 
-template <class ValueType>
-const std::string X3DWeakPtr <ValueType>::typeName ("SFNode");
+template <class InternalType>
+const std::string X3DWeakPtr <InternalType>::typeName ("SFNode");
 
 ///  @relates X3DWeakPtr
 ///  @name Comparision operations

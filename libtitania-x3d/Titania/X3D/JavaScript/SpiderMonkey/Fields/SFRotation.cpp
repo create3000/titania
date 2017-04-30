@@ -250,7 +250,7 @@ SFRotation::setAxis (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFRotation> (cx, vp);
 		const auto rhs  = getArgument <SFVec3f> (cx, argv, 0);
 
-		lhs -> setAxis (X3D::SFVec3d (rhs -> getValue ()));
+		lhs -> setAxis (rhs -> getValue ());
 
 		JS_SET_RVAL (cx, vp, JSVAL_VOID);
 		return true;
@@ -270,11 +270,7 @@ SFRotation::getAxis (JSContext* cx, uint32_t argc, jsval* vp)
 	try
 	{
 		const auto lhs    = getThis <SFRotation> (cx, vp);
-		const auto axis   = lhs -> getAxis ();
-		const auto result = create <SFVec3f> (cx, new X3D::SFVec3f (axis -> getValue ()), &JS_RVAL (cx, vp));
-
-		axis -> dispose ();
-		axis -> addDisposedObject (axis);
+		const auto result = create <SFVec3f> (cx, new X3D::SFVec3f (lhs -> getAxis ()), &JS_RVAL (cx, vp));
 
 		return result;
 	}
@@ -294,7 +290,7 @@ SFRotation::inverse (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto lhs = getThis <SFRotation> (cx, vp);
 
-		return create <SFRotation> (cx, lhs -> inverse (), &JS_RVAL (cx, vp));
+		return create <SFRotation> (cx, new X3D::SFRotation (lhs -> inverse ()), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -314,7 +310,7 @@ SFRotation::multiply (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFRotation> (cx, vp);
 		const auto rhs  = getArgument <SFRotation> (cx, argv, 0);
 
-		return create <SFRotation> (cx, lhs -> multiply (*rhs), &JS_RVAL (cx, vp));
+		return create <SFRotation> (cx, new X3D::SFRotation (lhs -> multiply (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -336,19 +332,18 @@ SFRotation::multVec (JSContext* cx, uint32_t argc, jsval* vp)
 		try
 		{
 			const auto rhs    = getArgument <SFVec3f> (cx, argv, 0);
-			const auto vector = lhs -> multVec (X3D::SFVec3d (rhs -> getValue ()));
-			const auto result = create <SFVec3f> (cx, new X3D::SFVec3f (vector -> getValue ()), &JS_RVAL (cx, vp));
-
-			vector -> dispose ();
-			vector -> addDisposedObject (vector);
+			const auto vector = lhs -> multVec (rhs -> getValue ());
+			const auto result = create <SFVec3f> (cx, new X3D::SFVec3f (vector), &JS_RVAL (cx, vp));
 
 			return result;
 		}
 		catch (const std::exception &)
 		{
-			const auto rhs = getArgument <SFVec3d> (cx, argv, 0);
+			const auto rhs    = getArgument <SFVec3d> (cx, argv, 0);
+			const auto vector = lhs -> multVec (rhs -> getValue ());
+			const auto result = create <SFVec3d> (cx, new X3D::SFVec3d (vector), &JS_RVAL (cx, vp));
 
-			return create <SFVec3d> (cx, SFRotation4d (lhs -> getValue ()) .multVec (*rhs), &JS_RVAL (cx, vp));
+			return result;
 		}
 	}
 	catch (const std::exception & error)
@@ -370,7 +365,7 @@ SFRotation::slerp (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto rhs  = getArgument <SFRotation> (cx, argv, 0);
 		const auto t    = getArgument <value_type> (cx, argv, 1);
 
-		return create <SFRotation> (cx, lhs -> slerp (*rhs, t), &JS_RVAL (cx, vp));
+		return create <SFRotation> (cx, new X3D::SFRotation (lhs -> slerp (*rhs, t)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

@@ -58,13 +58,13 @@
 namespace titania {
 namespace X3D {
 
-template <class ValueType>
+template <class InternalType>
 class X3DField :
 	public X3DFieldDefinition
 {
 public:
 
-	using internal_type = ValueType;
+	using internal_type = InternalType;
 
 	using X3DFieldDefinition::addEvent;
 	using X3DFieldDefinition::addInterest;
@@ -91,7 +91,7 @@ public:
 
 	///  Assignment operator for field values.  Behaves the same as the 6.7.6 setValue service.
 	X3DField &
-	operator = (const ValueType & value)
+	operator = (const InternalType & value)
 	{
 		setValue (value);
 		return *this;
@@ -117,19 +117,19 @@ public:
 	bool
 	isDefaultValue () const final override
 	{
-		static const ValueType defaultValue = ValueType ();
+		static const InternalType defaultValue = InternalType ();
 
 		return value == defaultValue;
 	}
 
 	///  Returns the value of this field.
-	const ValueType &
+	const InternalType &
 	getValue () const
 	{ return value; }
 
 	///  Assigns @a value to this field and notifies its parents about a change.
 	void
-	setValue (const ValueType & value)
+	setValue (const InternalType & value)
 	{
 		set (value);
 		addEvent ();
@@ -155,7 +155,7 @@ public:
 	///  Set @a value to this field without notifying this fields parents.
 	virtual
 	void
-	set (const ValueType & value)
+	set (const InternalType & value)
 	{ this -> value = value; }
 
 	///  Set @a field to this field without notifying this field.
@@ -167,7 +167,7 @@ public:
 	}
 
 	///  Conversion operator.
-	operator const ValueType & () const
+	operator const InternalType & () const
 	{ return value; }
 
 	///  @name Logical operators
@@ -183,12 +183,12 @@ public:
 	///  6.7.7 Add field interest.
 	template <class Class>
 	void
-	addInterest (void (Class::* memberFunction) (const ValueType &), Class* object) const
+	addInterest (void (Class::* memberFunction) (const InternalType &), Class* object) const
 	{ addInterest (memberFunction, object, std::cref (value)); }
 
 	template <class Class>
 	void
-	addInterest (void (Class::* memberFunction) (const ValueType &), Class & object) const
+	addInterest (void (Class::* memberFunction) (const InternalType &), Class & object) const
 	{ addInterest (memberFunction, object, std::cref (value)); }
 
 	///  @name Destruction
@@ -220,14 +220,14 @@ protected:
 
 	///  Value constructor.
 	explicit
-	X3DField (const ValueType & value) :
+	X3DField (const InternalType & value) :
 		X3DFieldDefinition (),
 		             value (value)
 	{ }
 
 	///  Move Value constructor.
 	explicit
-	X3DField (ValueType && other) :
+	X3DField (InternalType && other) :
 		X3DFieldDefinition (),
 		             value (std::move (other))
 	{ }
@@ -235,7 +235,7 @@ protected:
 	/// @name Member access
 
 	///  Get a non const value.
-	ValueType &
+	InternalType &
 	get ()
 	{ return value; }
 
@@ -243,7 +243,7 @@ protected:
 	virtual
 	void
 	reset ()
-	{ value = ValueType (); }
+	{ value = InternalType (); }
 
 
 private:
@@ -259,75 +259,75 @@ private:
 	/// @name Members
 
 	///  The value for this field.
-	ValueType value;
+	InternalType value;
 
 };
 
-template <class ValueType>
-const std::string X3DField <ValueType>::typeName = "X3DField";
+template <class InternalType>
+const std::string X3DField <InternalType>::typeName = "X3DField";
 
-template <class ValueType>
-const X3DConstants::FieldType X3DField <ValueType>::type = X3DConstants::SFBool;
+template <class InternalType>
+const X3DConstants::FieldType X3DField <InternalType>::type = X3DConstants::SFBool;
 
 ///  @relates X3DField
 ///  @name Comparision operations
 
 ///  Compares two X3DField numbers.
 ///  Returns true if @a lhs is equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator == (const X3DField <ValueType> & lhs, const X3DField <ValueType> & rhs)
+operator == (const X3DField <InternalType> & lhs, const X3DField <InternalType> & rhs)
 {
 	return lhs .getValue () == rhs .getValue ();
 }
 
 ///  Compares two X3DField numbers.
 ///  Returns true if @a lhs is equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator == (const typename X3DField <ValueType>::internal_type & lhs, const X3DField <ValueType> & rhs)
+operator == (const typename X3DField <InternalType>::internal_type & lhs, const X3DField <InternalType> & rhs)
 {
 	return lhs == rhs .getValue ();
 }
 
 ///  Compares two X3DField numbers.
 ///  Returns true if @a lhs is equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator == (const X3DField <ValueType> & lhs, const typename X3DField <ValueType>::internal_type & rhs)
+operator == (const X3DField <InternalType> & lhs, const typename X3DField <InternalType>::internal_type & rhs)
 {
 	return lhs .getValue () == rhs;
 }
 
 ///  Compares two X3DField numbers.
 ///  Returns true if @a lhs is not equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator not_eq (const X3DField <ValueType> & lhs, const X3DField <ValueType> & rhs)
+operator not_eq (const X3DField <InternalType> & lhs, const X3DField <InternalType> & rhs)
 {
 	return lhs .getValue () not_eq rhs .getValue ();
 }
 
 ///  Compares two X3DField numbers.
 ///  Returns true if @a lhs is not equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator not_eq (const typename X3DField <ValueType>::internal_type & lhs, const X3DField <ValueType> & rhs)
+operator not_eq (const typename X3DField <InternalType>::internal_type & lhs, const X3DField <InternalType> & rhs)
 {
 	return lhs not_eq rhs .getValue ();
 }
 
 ///  Compares two X3DField numbers.
 ///  Returns true if @a lhs is not equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator not_eq (const X3DField <ValueType> & lhs, const typename X3DField <ValueType>::internal_type & rhs)
+operator not_eq (const X3DField <InternalType> & lhs, const typename X3DField <InternalType>::internal_type & rhs)
 {
 	return lhs .getValue () not_eq rhs;
 }

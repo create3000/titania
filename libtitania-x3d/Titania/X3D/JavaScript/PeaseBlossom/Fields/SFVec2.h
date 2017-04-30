@@ -58,7 +58,7 @@ namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-template <class Type>
+template <class InternalType>
 class SFVec2 :
 	public X3DField
 {
@@ -66,7 +66,7 @@ public:
 
 	///  @name Member types
 
-	using internal_type = Type;
+	using internal_type = InternalType;
 
 	///  @name Common members
 
@@ -163,9 +163,9 @@ private:
 
 };
 
-template <class Type>
+template <class InternalType>
 pb::ptr <pb::NativeFunction>
-SFVec2 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
+SFVec2 <InternalType>::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 {
 	using namespace std::placeholders;
 
@@ -212,21 +212,21 @@ SFVec2 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> &
 	return function;
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
 		case 0:
 		{
-			setUserData <SFVec2> (ec, object, new Type ());
+			setUserData <SFVec2> (ec, object, new InternalType ());
 			break;
 		}
 		case 2:
 		{
-			setUserData <SFVec2> (ec, object, new Type (get1Argument <double> (args, 0),
-			                                            get1Argument <double> (args, 1)));
+			setUserData <SFVec2> (ec, object, new InternalType (get1Argument <double> (args, 0),
+			                                                    get1Argument <double> (args, 1)));
 			break;
 		}
 		default:
@@ -236,9 +236,9 @@ SFVec2 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 	return pb::undefined;
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFVec2 <InternalType>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -254,9 +254,9 @@ SFVec2 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFVec2 <InternalType>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -270,9 +270,9 @@ SFVec2 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::negate (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::negate (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.negate: wrong number of arguments.");
@@ -289,9 +289,9 @@ SFVec2 <Type>::negate (const pb::ptr <pb::pbExecutionContext> & ec, const pb::va
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.add: wrong number of arguments.");
@@ -309,9 +309,9 @@ SFVec2 <Type>::add (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::subtract (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::subtract (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.subtract: wrong number of arguments.");
@@ -329,9 +329,9 @@ SFVec2 <Type>::subtract (const pb::ptr <pb::pbExecutionContext> & ec, const pb::
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::multiply (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::multiply (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multiply: wrong number of arguments.");
@@ -349,9 +349,9 @@ SFVec2 <Type>::multiply (const pb::ptr <pb::pbExecutionContext> & ec, const pb::
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::multVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::multVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multVec: wrong number of arguments.");
@@ -369,9 +369,9 @@ SFVec2 <Type>::multVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::v
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::divide (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::divide (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.divide: wrong number of arguments.");
@@ -389,9 +389,9 @@ SFVec2 <Type>::divide (const pb::ptr <pb::pbExecutionContext> & ec, const pb::va
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::divVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::divVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.divVec: wrong number of arguments.");
@@ -409,9 +409,9 @@ SFVec2 <Type>::divVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::va
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::dot (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::dot (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.dot: wrong number of arguments.");
@@ -429,9 +429,9 @@ SFVec2 <Type>::dot (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var &
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::normalize (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::normalize (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.normalize: wrong number of arguments.");
@@ -448,9 +448,9 @@ SFVec2 <Type>::normalize (const pb::ptr <pb::pbExecutionContext> & ec, const pb:
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFVec2 <Type>::length (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFVec2 <InternalType>::length (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.length: wrong number of arguments.");

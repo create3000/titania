@@ -60,7 +60,7 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <class Type>
+template <class InternalType>
 class SFVec3 :
 	public X3DField
 {
@@ -68,8 +68,8 @@ public:
 
 	///  @name Member types
 
-	using internal_type = Type;
-	using value_type    = typename Type::value_type;
+	using internal_type = InternalType;
+	using value_type    = typename InternalType::value_type;
 
 	///  @name Construction
 
@@ -127,11 +127,11 @@ private:
 
 };
 
-template <class Type>
-const size_t SFVec3 <Type>::size = 3;
+template <class InternalType>
+const size_t SFVec3 <InternalType>::size = 3;
 
-template <class Type>
-JSClass SFVec3 <Type>::static_class = {
+template <class InternalType>
+JSClass SFVec3 <InternalType>::static_class = {
 	"SFVec3", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, JS_ResolveStub, JS_ConvertStub, finalize,
@@ -139,8 +139,8 @@ JSClass SFVec3 <Type>::static_class = {
 
 };
 
-template <class Type>
-JSPropertySpec SFVec3 <Type>::properties [ ] = {
+template <class InternalType>
+JSPropertySpec SFVec3 <InternalType>::properties [ ] = {
 	{ "x", X, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
 	{ "y", Y, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
 	{ "z", Z, JSPROP_SHARED | JSPROP_PERMANENT, get1Value, set1Value },
@@ -148,8 +148,8 @@ JSPropertySpec SFVec3 <Type>::properties [ ] = {
 
 };
 
-template <class Type>
-JSFunctionSpec SFVec3 <Type>::functions [ ] = {
+template <class InternalType>
+JSFunctionSpec SFVec3 <InternalType>::functions [ ] = {
 	{ "negate",      negate,      0, 0 },
 	{ "add",         add,         1, 0 },
 	{ "subtract",    subtract,    1, 0 },
@@ -166,9 +166,9 @@ JSFunctionSpec SFVec3 <Type>::functions [ ] = {
 
 };
 
-template <class Type>
+template <class InternalType>
 JSObject*
-SFVec3 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
+SFVec3 <InternalType>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
 	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, properties, functions, nullptr, nullptr);
 
@@ -182,9 +182,9 @@ SFVec3 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* cons
 	return proto;
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	try
 	{
@@ -192,7 +192,7 @@ SFVec3 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 		{
 			case 0:
 			{
-				return create <SFVec3> (cx, new Type (), &JS_RVAL (cx, vp));
+				return create <SFVec3> (cx, new InternalType (), &JS_RVAL (cx, vp));
 			}
 			case 3:
 			{
@@ -201,7 +201,7 @@ SFVec3 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 				const auto y    = getArgument <value_type> (cx, argv, Y);
 				const auto z    = getArgument <value_type> (cx, argv, Z);
 
-				return create <SFVec3> (cx, new Type (x, y, z), &JS_RVAL (cx, vp));
+				return create <SFVec3> (cx, new InternalType (x, y, z), &JS_RVAL (cx, vp));
 			}
 			default:
 				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
@@ -213,9 +213,9 @@ SFVec3 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+SFVec3 <InternalType>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
 	if (not JS_GetPrivate (cx, obj))
 	{
@@ -264,9 +264,9 @@ SFVec3 <Type>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsv
 	return true;
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+SFVec3 <InternalType>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	try
 	{
@@ -283,9 +283,9 @@ SFVec3 <Type>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, 
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+SFVec3 <InternalType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
@@ -299,9 +299,9 @@ SFVec3 <Type>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::negate (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::negate (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .negate: wrong number of arguments.", getClass () -> name);
@@ -318,9 +318,9 @@ SFVec3 <Type>::negate (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::add (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::add (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .add: wrong number of arguments.", getClass () -> name);
@@ -339,9 +339,9 @@ SFVec3 <Type>::add (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::subtract (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::subtract (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .subtract: wrong number of arguments.", getClass () -> name);
@@ -360,9 +360,9 @@ SFVec3 <Type>::subtract (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::multiply (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::multiply (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multiply: wrong number of arguments.", getClass () -> name);
@@ -381,9 +381,9 @@ SFVec3 <Type>::multiply (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::multVec (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::multVec (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multVec: wrong number of arguments.", getClass () -> name);
@@ -402,9 +402,9 @@ SFVec3 <Type>::multVec (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::divide (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::divide (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .divide: wrong number of arguments.", getClass () -> name);
@@ -423,9 +423,9 @@ SFVec3 <Type>::divide (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::divVec (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::divVec (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .divVec: wrong number of arguments.", getClass () -> name);
@@ -444,9 +444,9 @@ SFVec3 <Type>::divVec (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::cross (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::cross (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .cross: wrong number of arguments.", getClass () -> name);
@@ -465,9 +465,9 @@ SFVec3 <Type>::cross (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::dot (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::dot (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .dot: wrong number of arguments.", getClass () -> name);
@@ -486,9 +486,9 @@ SFVec3 <Type>::dot (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::normalize (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::normalize (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .normalize: wrong number of arguments.", getClass () -> name);
@@ -505,9 +505,9 @@ SFVec3 <Type>::normalize (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFVec3 <Type>::length (JSContext* cx, uint32_t argc, jsval* vp)
+SFVec3 <InternalType>::length (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .length: wrong number of arguments.", getClass () -> name);

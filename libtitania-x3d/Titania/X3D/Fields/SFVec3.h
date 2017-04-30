@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-template <class ValueType>
+template <class InternalType>
 class X3DArrayField;
 
 extern template class X3DField <Vector3d>;
@@ -69,22 +69,22 @@ extern template class X3DField <Vector3f>;
  *  Extern instantiations for float and double are part of the
  *  library.  Results with any other type are not guaranteed.
  *
- *  @param  ValueType  Type of the internal value of the field.
+ *  @param  InternalType  Type of the internal value of the field.
  */
-template <class ValueType>
+template <class InternalType>
 class SFVec3 :
-	public X3DField <ValueType>
+	public X3DField <InternalType>
 {
 public:
 
-	using value_type = typename ValueType::value_type;
-	using size_type  = typename ValueType::size_type;
+	using value_type = typename InternalType::value_type;
+	using size_type  = typename InternalType::size_type;
 
-	using X3DField <ValueType>::addInterest;
-	using X3DField <ValueType>::addEvent;
-	using X3DField <ValueType>::setValue;
-	using X3DField <ValueType>::getValue;
-	using X3DField <ValueType>::operator =;
+	using X3DField <InternalType>::addInterest;
+	using X3DField <InternalType>::addEvent;
+	using X3DField <InternalType>::setValue;
+	using X3DField <InternalType>::getValue;
+	using X3DField <InternalType>::operator =;
 
 	///  @name Construction
 
@@ -93,20 +93,20 @@ public:
 	 */
 
 	SFVec3 () :
-		X3DField <ValueType> ()
+		X3DField <InternalType> ()
 	{ }
 
 	SFVec3 (const SFVec3 & field) :
-		X3DField <ValueType> (field)
+		X3DField <InternalType> (field)
 	{ }
 
 	explicit
-	SFVec3 (const ValueType & value) :
-		X3DField <ValueType> (value)
+	SFVec3 (const InternalType & value) :
+		X3DField <InternalType> (value)
 	{ }
 
 	SFVec3 (const value_type & x, const value_type & y, const value_type & z) :
-		X3DField <ValueType> (ValueType (x, y, z))
+		X3DField <InternalType> (InternalType (x, y, z))
 	{ }
 
 	/*
@@ -168,31 +168,19 @@ public:
 	///  @name Arithmetic operations
 
 	SFVec3 &
-	operator += (const SFVec3 &);
+	operator += (const InternalType &);
 
 	SFVec3 &
-	operator += (const ValueType &);
+	operator -= (const InternalType &);
 
 	SFVec3 &
-	operator -= (const SFVec3 &);
-
-	SFVec3 &
-	operator -= (const ValueType &);
-
-	SFVec3 &
-	operator *= (const SFVec3 &);
-
-	SFVec3 &
-	operator *= (const ValueType &);
+	operator *= (const InternalType &);
 
 	SFVec3 &
 	operator *= (const value_type &);
-
+	
 	SFVec3 &
-	operator /= (const SFVec3 &);
-
-	SFVec3 &
-	operator /= (const ValueType &);
+	operator /= (const InternalType &);
 
 	SFVec3 &
 	operator /= (const value_type &);
@@ -263,283 +251,243 @@ protected:
 
 private:
 
-	using X3DField <ValueType>::get;
+	using X3DField <InternalType>::get;
 
 };
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType>*
-SFVec3 <ValueType>::copy (const CopyType) const
+SFVec3 <InternalType>*
+SFVec3 <InternalType>::copy (const CopyType) const
 throw (Error <INVALID_NAME>,
 	    Error <NOT_SUPPORTED>)
 {
 	return new SFVec3 (*this);
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFVec3 <ValueType>::setX (const value_type & x)
+SFVec3 <InternalType>::setX (const value_type & x)
 {
 	get () .x (x);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFVec3 <ValueType>::value_type
-SFVec3 <ValueType>::getX () const
+typename SFVec3 <InternalType>::value_type
+SFVec3 <InternalType>::getX () const
 {
 	return getValue () .x ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFVec3 <ValueType>::setY (const value_type & y)
+SFVec3 <InternalType>::setY (const value_type & y)
 {
 	get () .y (y);
 	addEvent ();
 }
 
-template <class ValueType>
-typename SFVec3 <ValueType>::value_type
-SFVec3 <ValueType>::getY () const
+template <class InternalType>
+typename SFVec3 <InternalType>::value_type
+SFVec3 <InternalType>::getY () const
 {
 	return getValue () .y ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFVec3 <ValueType>::setZ (const value_type & z)
+SFVec3 <InternalType>::setZ (const value_type & z)
 {
 	get () .z (z);
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFVec3 <ValueType>::value_type
-SFVec3 <ValueType>::getZ () const
+typename SFVec3 <InternalType>::value_type
+SFVec3 <InternalType>::getZ () const
 {
 	return getValue () .z ();
 }
 
-template <class ValueType>
+template <class InternalType>
 void
-SFVec3 <ValueType>::set1Value (const size_type  & index, const value_type & value)
+SFVec3 <InternalType>::set1Value (const size_type  & index, const value_type & value)
 {
 	get () [index] = value;
 	addEvent ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFVec3 <ValueType>::value_type
-SFVec3 <ValueType>::get1Value (const size_type  & index) const
+typename SFVec3 <InternalType>::value_type
+SFVec3 <InternalType>::get1Value (const size_type  & index) const
 {
 	return getValue () [index];
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFVec3 <ValueType>::value_type
-SFVec3 <ValueType>::operator [ ] (const size_type  & index) const
+typename SFVec3 <InternalType>::value_type
+SFVec3 <InternalType>::operator [ ] (const size_type  & index) const
 {
 	return getValue () [index];
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType> &
-SFVec3 <ValueType>::operator += (const SFVec3 & vector)
-{
-	get () += vector .getValue ();
-	addEvent ();
-	return *this;
-}
-
-template <class ValueType>
-inline
-SFVec3 <ValueType> &
-SFVec3 <ValueType>::operator += (const ValueType & vector)
+SFVec3 <InternalType> &
+SFVec3 <InternalType>::operator += (const InternalType & vector)
 {
 	get () += vector;
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType> &
-SFVec3 <ValueType>::operator -= (const SFVec3 & vector)
-{
-	get () -= vector .getValue ();
-	addEvent ();
-	return *this;
-}
-
-template <class ValueType>
-inline
-SFVec3 <ValueType> &
-SFVec3 <ValueType>::operator -= (const ValueType & vector)
+SFVec3 <InternalType> &
+SFVec3 <InternalType>::operator -= (const InternalType & vector)
 {
 	get () -= vector;
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType> &
-SFVec3 <ValueType>::operator *= (const SFVec3 & vector)
-{
-	get () *= vector .getValue ();
-	addEvent ();
-	return *this;
-}
-
-template <class ValueType>
-inline
-SFVec3 <ValueType> &
-SFVec3 <ValueType>::operator *= (const ValueType & vector)
+SFVec3 <InternalType> &
+SFVec3 <InternalType>::operator *= (const InternalType & vector)
 {
 	get () *= vector;
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType> &
-SFVec3 <ValueType>::operator *= (const value_type & value)
+SFVec3 <InternalType> &
+SFVec3 <InternalType>::operator *= (const value_type & value)
 {
 	get () *= value;
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType> &
-SFVec3 <ValueType>::operator /= (const SFVec3 & vector)
-{
-	get () /= vector .getValue ();
-	addEvent ();
-	return *this;
-}
-
-template <class ValueType>
-inline
-SFVec3 <ValueType> &
-SFVec3 <ValueType>::operator /= (const ValueType & vector)
+SFVec3 <InternalType> &
+SFVec3 <InternalType>::operator /= (const InternalType & vector)
 {
 	get () /= vector;
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType> &
-SFVec3 <ValueType>::operator /= (const value_type & value)
+SFVec3 <InternalType> &
+SFVec3 <InternalType>::operator /= (const value_type & value)
 {
 	get () /= value;
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType>*
-SFVec3 <ValueType>::negate () const
+SFVec3 <InternalType>*
+SFVec3 <InternalType>::negate () const
 {
 	return new SFVec3 (-getValue ());
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType>*
-SFVec3 <ValueType>::add (const SFVec3 & field) const
+SFVec3 <InternalType>*
+SFVec3 <InternalType>::add (const SFVec3 & field) const
 {
 	return new SFVec3 (getValue () + field .getValue ());
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType>*
-SFVec3 <ValueType>::subtract (const SFVec3 & field) const
+SFVec3 <InternalType>*
+SFVec3 <InternalType>::subtract (const SFVec3 & field) const
 {
 	return new SFVec3 (getValue () - field .getValue ());
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType>*
-SFVec3 <ValueType>::multiply (const SFVec3 & field) const
+SFVec3 <InternalType>*
+SFVec3 <InternalType>::multiply (const SFVec3 & field) const
 {
 	return new SFVec3 (getValue () * field .getValue ());
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType>*
-SFVec3 <ValueType>::multiply (const value_type & value) const
+SFVec3 <InternalType>*
+SFVec3 <InternalType>::multiply (const value_type & value) const
 {
 	return new SFVec3 (getValue () * value);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType>*
-SFVec3 <ValueType>::divide (const SFVec3 & field) const
+SFVec3 <InternalType>*
+SFVec3 <InternalType>::divide (const SFVec3 & field) const
 {
 	return new SFVec3 (getValue () / field .getValue ());
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType>*
-SFVec3 <ValueType>::divide (const value_type & value) const
+SFVec3 <InternalType>*
+SFVec3 <InternalType>::divide (const value_type & value) const
 {
 	return new SFVec3 (getValue () / value);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFVec3 <ValueType>::value_type
-SFVec3 <ValueType>::dot (const SFVec3 & field) const
+typename SFVec3 <InternalType>::value_type
+SFVec3 <InternalType>::dot (const SFVec3 & field) const
 {
 	return math::dot (getValue (), field .getValue ());
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType>*
-SFVec3 <ValueType>::cross (const SFVec3 & field) const
+SFVec3 <InternalType>*
+SFVec3 <InternalType>::cross (const SFVec3 & field) const
 {
 	return new SFVec3 (math::cross (getValue (), field .getValue ()));
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-SFVec3 <ValueType>*
-SFVec3 <ValueType>::normalize () const
+SFVec3 <InternalType>*
+SFVec3 <InternalType>::normalize () const
 {
 	return new SFVec3 (math::normalize (getValue ()));
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-typename SFVec3 <ValueType>::value_type
-SFVec3 <ValueType>::length () const
+typename SFVec3 <InternalType>::value_type
+SFVec3 <InternalType>::length () const
 {
 	return abs (getValue ());
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFVec3 <ValueType>::fromStream (std::istream & istream)
+SFVec3 <InternalType>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -560,31 +508,31 @@ throw (Error <INVALID_X3D>,
 			Grammar::WhiteSpacesNoComma (istream, whiteSpaces);
 
 			if (Grammar::Number <value_type> (istream, z))
-				setValue (ValueType (x, y, z));
+				setValue (InternalType (x, y, z));
 	   }
 	}
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFVec3 <ValueType>::toStream (std::ostream & ostream) const
+SFVec3 <InternalType>::toStream (std::ostream & ostream) const
 {
 	ostream << X3DGenerator::SetPrecision <value_type> << getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFVec3 <ValueType>::toXMLStream (std::ostream & ostream) const
+SFVec3 <InternalType>::toXMLStream (std::ostream & ostream) const
 {
 	toStream (ostream);
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFVec3 <ValueType>::toJSONStream (std::ostream & ostream) const
+SFVec3 <InternalType>::toJSONStream (std::ostream & ostream) const
 {
 	ostream
 		<< '['
@@ -597,10 +545,10 @@ SFVec3 <ValueType>::toJSONStream (std::ostream & ostream) const
 		<< ']';
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
 void
-SFVec3 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
+SFVec3 <InternalType>::toJSONStreamValue (std::ostream & ostream) const
 {
 	ostream
 		<< X3DGenerator::SetPrecision <value_type>
@@ -618,120 +566,120 @@ SFVec3 <ValueType>::toJSONStreamValue (std::ostream & ostream) const
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs less than @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator < (const SFVec3 <ValueType> & lhs, const SFVec3 <ValueType> & rhs)
+operator < (const SFVec3 <InternalType> & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs .getValue () < rhs .getValue ();
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs less than @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator < (const ValueType& lhs, const SFVec3 <ValueType> & rhs)
+operator < (const InternalType& lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs < rhs .getValue ();
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs less than @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator < (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
+operator < (const SFVec3 <InternalType> & lhs, const InternalType & rhs)
 {
 	return lhs .getValue () < rhs;
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs less than equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator > (const SFVec3 <ValueType> & lhs, const SFVec3 <ValueType> & rhs)
+operator > (const SFVec3 <InternalType> & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs .getValue () > rhs .getValue ();
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs less than equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator > (const ValueType& lhs, const SFVec3 <ValueType> & rhs)
+operator > (const InternalType& lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs > rhs .getValue ();
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs less than equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator > (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
+operator > (const SFVec3 <InternalType> & lhs, const InternalType & rhs)
 {
 	return lhs .getValue () > rhs;
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs greater than @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator <= (const SFVec3 <ValueType> & lhs, const SFVec3 <ValueType> & rhs)
+operator <= (const SFVec3 <InternalType> & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs .getValue () <= rhs .getValue ();
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs greater than @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator <= (const ValueType& lhs, const SFVec3 <ValueType> & rhs)
+operator <= (const InternalType& lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs <= rhs .getValue ();
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs greater than @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator <= (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
+operator <= (const SFVec3 <InternalType> & lhs, const InternalType & rhs)
 {
 	return lhs .getValue () <= rhs;
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs greater than equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator >= (const SFVec3 <ValueType> & lhs, const SFVec3 <ValueType> & rhs)
+operator >= (const SFVec3 <InternalType> & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs .getValue () >= rhs .getValue ();
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs greater than equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator >= (const ValueType& lhs, const SFVec3 <ValueType> & rhs)
+operator >= (const InternalType& lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs >= rhs .getValue ();
 }
 
 ///  Compares two SFVec3 vectors.
 ///  Returns true if @a lhs greater than equal to @a rhs.
-template <class ValueType>
+template <class InternalType>
 inline
 bool
-operator >= (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
+operator >= (const SFVec3 <InternalType> & lhs, const InternalType & rhs)
 {
 	return lhs .getValue () >= rhs;
 }
@@ -739,114 +687,114 @@ operator >= (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
 ///  @relates SFVec3
 ///  @name Aritmetic operators.
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator - (const SFVec3 <ValueType> & vector)
+InternalType
+operator - (const SFVec3 <InternalType> & vector)
 {
 	return -vector .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator + (const SFVec3 <ValueType> & lhs, const SFVec3 <ValueType> & rhs)
+InternalType
+operator + (const SFVec3 <InternalType> & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs .getValue () + rhs .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator + (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
+InternalType
+operator + (const SFVec3 <InternalType> & lhs, const InternalType & rhs)
 {
 	return lhs .getValue () + rhs;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator + (const ValueType & lhs, const SFVec3 <ValueType> & rhs)
+InternalType
+operator + (const InternalType & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs + rhs .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator - (const SFVec3 <ValueType> & lhs, const SFVec3 <ValueType> & rhs)
+InternalType
+operator - (const SFVec3 <InternalType> & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs .getValue () - rhs .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator - (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
+InternalType
+operator - (const SFVec3 <InternalType> & lhs, const InternalType & rhs)
 {
 	return lhs .getValue () - rhs;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator - (const ValueType & lhs, const SFVec3 <ValueType> & rhs)
+InternalType
+operator - (const InternalType & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs - rhs .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator * (const SFVec3 <ValueType> & lhs, const SFVec3 <ValueType> & rhs)
+InternalType
+operator * (const SFVec3 <InternalType> & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs .getValue () * rhs .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator * (const SFVec3 <ValueType> & lhs, const ValueType & rhs)
+InternalType
+operator * (const SFVec3 <InternalType> & lhs, const InternalType & rhs)
 {
 	return lhs .getValue () * rhs;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator * (const ValueType & lhs, const SFVec3 <ValueType> & rhs)
+InternalType
+operator * (const InternalType & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs * rhs .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator * (const SFVec3 <ValueType> & lhs, const typename ValueType::value_type & rhs)
+InternalType
+operator * (const SFVec3 <InternalType> & lhs, const typename InternalType::value_type & rhs)
 {
 	return lhs .getValue () * rhs;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator * (const typename ValueType::value_type & lhs, const SFVec3 <ValueType> & rhs)
+InternalType
+operator * (const typename InternalType::value_type & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs * rhs .getValue ();
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator / (const SFVec3 <ValueType> & lhs, const typename ValueType::value_type & rhs)
+InternalType
+operator / (const SFVec3 <InternalType> & lhs, const typename InternalType::value_type & rhs)
 {
 	return lhs .getValue () / rhs;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-ValueType
-operator / (const typename ValueType::value_type & lhs, const SFVec3 <ValueType> & rhs)
+InternalType
+operator / (const typename InternalType::value_type & lhs, const SFVec3 <InternalType> & rhs)
 {
 	return lhs / rhs .getValue ();
 }

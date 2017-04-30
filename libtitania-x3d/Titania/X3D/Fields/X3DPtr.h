@@ -59,10 +59,10 @@
 namespace titania {
 namespace X3D {
 
-template <class ValueType>
+template <class InternalType>
 class X3DWeakPtr;
 
-template <class ValueType>
+template <class InternalType>
 class X3DArrayField;
 
 /**
@@ -72,31 +72,31 @@ class X3DArrayField;
  *  Extern instantiations for X3DBaseNode are part of the
  *  library.  Results with any other X3DChildObject type are not guaranteed.
  *
- *  @param  ValueType  Type of the internal value of the field.
+ *  @param  InternalType  Type of the internal value of the field.
  */
-template <class ValueType>
+template <class InternalType>
 class X3DPtr :
-	public X3DField <ValueType*>,
+	public X3DField <InternalType*>,
 	public X3DPtrObject
 {
 public:
 
 	///  @name Member types
 
-	using internal_type = ValueType*;
-	using value_type    = ValueType;
+	using internal_type = InternalType*;
+	using value_type    = InternalType;
 
-	using X3DField <ValueType*>::addEvent;
-	using X3DField <ValueType*>::operator =;
-	using X3DField <ValueType*>::addInterest;
-	using X3DField <ValueType*>::setValue;
-	using X3DField <ValueType*>::getValue;
+	using X3DField <InternalType*>::addEvent;
+	using X3DField <InternalType*>::operator =;
+	using X3DField <InternalType*>::addInterest;
+	using X3DField <InternalType*>::setValue;
+	using X3DField <InternalType*>::getValue;
 
 	///  @name Construction
 
 	///  Constructs new X3DPtr.
 	X3DPtr () :
-		X3DField <ValueType*> (nullptr),
+		X3DField <InternalType*> (nullptr),
 		           cloneCount (0)
 	{ }
 
@@ -111,16 +111,16 @@ public:
 	{ }
 
 	///  Constructs new X3DPtr.
-	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	template <class Up, std::enable_if_t <std::is_base_of <InternalType, Up>::value, bool> = false>
 	X3DPtr (const X3DPtr <Up> & other) :
 		X3DPtr (other .getValue ())
 	{ }
 
 	///  Constructs new X3DPtr.
-	template <class Up, std::enable_if_t <not std::is_base_of <ValueType, Up>::value, bool> = true>
+	template <class Up, std::enable_if_t <not std::is_base_of <InternalType, Up>::value, bool> = true>
 	explicit
 	X3DPtr (const X3DPtr <Up> & other) :
-		X3DPtr (dynamic_cast <ValueType*> (other .getValue ()))
+		X3DPtr (dynamic_cast <InternalType*> (other .getValue ()))
 	{ }
 
 	///  Constructs new X3DPtr.
@@ -136,13 +136,13 @@ public:
 	{ moveObject (other); }
 
 	///  Constructs new X3DPtr.
-	template <class Up, std::enable_if_t <std::is_base_of <ValueType, Up>::value, bool> = false>
+	template <class Up, std::enable_if_t <std::is_base_of <InternalType, Up>::value, bool> = false>
 	X3DPtr (X3DPtr <Up> && other) :
 		X3DPtr ()
 	{ moveObject (other); }
 
 	///  Constructs new X3DPtr.
-	template <class Up, std::enable_if_t <not std::is_base_of <ValueType, Up>::value, bool> = true>
+	template <class Up, std::enable_if_t <not std::is_base_of <InternalType, Up>::value, bool> = true>
 	explicit
 	X3DPtr (X3DPtr <Up> && other) :
 		X3DPtr ()
@@ -150,8 +150,8 @@ public:
 
 	///  Constructs new X3DPtr.
 	explicit
-	X3DPtr (ValueType* const value) :
-		X3DField <ValueType*> (value),
+	X3DPtr (InternalType* const value) :
+		X3DField <InternalType*> (value),
 		           cloneCount (0)
 	{ addObject (value); }
 
@@ -159,7 +159,7 @@ public:
 	template <class Up>
 	explicit
 	X3DPtr (Up* const value) :
-		X3DPtr (dynamic_cast <ValueType*> (value))
+		X3DPtr (dynamic_cast <InternalType*> (value))
 	{ }
 
 	///  Constructs new X3DPtr.
@@ -214,7 +214,7 @@ public:
 		else
 		{
 			if (getValue ())
-				field -> set (dynamic_cast <ValueType*> (getValue () -> copy (executionContext, type)));
+				field -> set (dynamic_cast <InternalType*> (getValue () -> copy (executionContext, type)));
 
 			else
 				field -> set (nullptr);
@@ -244,7 +244,7 @@ public:
 	X3DPtr &
 	operator = (const X3DPtr <Up> & other)
 	{
-		setValue (dynamic_cast <ValueType*> (other .getValue ()));
+		setValue (dynamic_cast <InternalType*> (other .getValue ()));
 		return *this;
 	}
 
@@ -303,7 +303,7 @@ public:
 
 	///  @name Observers
 
-	ValueType*
+	InternalType*
 	operator -> () const
 	throw (Error <DISPOSED>)
 	{
@@ -318,7 +318,7 @@ public:
 		throw Error <DISPOSED> ("X3DPtr::operator -> ()\n\n" + backtrace_symbols ());
 	}
 
-	ValueType &
+	InternalType &
 	operator * () const
 	throw (Error <DISPOSED>)
 	{
@@ -458,7 +458,7 @@ public:
 	{
 		removeObject (getValue ());
 
-		X3DField <ValueType*>::dispose ();
+		X3DField <InternalType*>::dispose ();
 	}
 
 	///  Destructs the owned object if no more X3DPtr link to it
@@ -469,7 +469,7 @@ public:
 
 protected:
 
-	friend class X3DArrayField <X3DPtr <ValueType>>;
+	friend class X3DArrayField <X3DPtr <InternalType>>;
 
 	void
 	toJSONStreamValue (std::ostream &) const
@@ -483,12 +483,12 @@ private:
 	template <class Up>
 	friend class X3DPtr;
 
-	using X3DField <ValueType*>::reset;
+	using X3DField <InternalType*>::reset;
 
 	///  @name Operations
 
 	void
-	addObject (ValueType* const value)
+	addObject (InternalType* const value)
 	{
 		if (value)
 		{
@@ -530,7 +530,7 @@ private:
 	bool
 	moveObject (X3DPtr <Up> & other)
 	{
-		const auto value = dynamic_cast <ValueType*> (other .getValue ());
+		const auto value = dynamic_cast <InternalType*> (other .getValue ());
 
 		if (value == getValue ())
 		{
@@ -558,7 +558,7 @@ private:
 	}
 
 	void
-	removeObject (ValueType* const value)
+	removeObject (InternalType* const value)
 	{
 		if (value)
 		{
@@ -571,8 +571,8 @@ private:
 	}
 
 	void
-	setObject (ValueType* const value)
-	{ X3DField <ValueType*>::set (value); }
+	setObject (InternalType* const value)
+	{ X3DField <InternalType*>::set (value); }
 
 	virtual
 	X3DChildObject*
@@ -596,8 +596,8 @@ private:
 
 };
 
-template <class ValueType>
-const std::string X3DPtr <ValueType>::typeName ("SFNode");
+template <class InternalType>
+const std::string X3DPtr <InternalType>::typeName ("SFNode");
 
 ///  @relates X3DPtr
 ///  @name Comparision operations
@@ -683,13 +683,13 @@ operator >= (const X3DPtr <LHS> & lhs, const X3DPtr <RHS> & rhs)
 ///  @relates X3DPtr
 ///  @name Utiliy functions
 
-///  Constructs an object of type ValueType and wraps it in a X3DPtr using
+///  Constructs an object of type InternalType and wraps it in a X3DPtr using
 ///  args as the parameter list for the constructor of Type.
-template <class ValueType, class ... Args>
-X3DPtr <ValueType>
+template <class InternalType, class ... Args>
+X3DPtr <InternalType>
 MakePtr (Args && ... args)
 {
-	return X3DPtr <ValueType> (new ValueType (std::forward <Args> (args) ...));
+	return X3DPtr <InternalType> (new InternalType (std::forward <Args> (args) ...));
 }
 
 } // X3D

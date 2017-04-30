@@ -63,7 +63,7 @@ namespace titania {
 namespace X3D {
 namespace spidermonkey {
 
-template <class Type>
+template <class InternalType>
 class SFMatrix4 :
 	public X3DField
 {
@@ -71,9 +71,9 @@ public:
 
 	///  @name Member types
 
-	using internal_type = Type;
-	using value_type    = typename Type::value_type;
-	using vector_type   = SFVec3 <typename Type::vector_type>;
+	using internal_type = InternalType;
+	using value_type    = typename InternalType::value_type;
+	using vector_type   = SFVec3 <typename InternalType::vector_type>;
 	using rotation_type = SFRotation;
 
 	///  @name Construction
@@ -128,20 +128,20 @@ private:
 
 };
 
-template <class Type>
-const size_t SFMatrix4 <Type>::size = 16;
+template <class InternalType>
+const size_t SFMatrix4 <InternalType>::size = 16;
 
-template <class Type>
-JSClass SFMatrix4 <Type>::static_class = {
-	"Type", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
+template <class InternalType>
+JSClass SFMatrix4 <InternalType>::static_class = {
+	"InternalType", JSCLASS_HAS_PRIVATE | JSCLASS_NEW_ENUMERATE,
 	JS_PropertyStub, JS_PropertyStub, JS_PropertyStub, JS_StrictPropertyStub,
 	(JSEnumerateOp) enumerate, resolve, JS_ConvertStub, finalize,
 	JSCLASS_NO_OPTIONAL_MEMBERS
 
 };
 
-template <class Type>
-JSFunctionSpec SFMatrix4 <Type>::functions [ ] = {
+template <class InternalType>
+JSFunctionSpec SFMatrix4 <InternalType>::functions [ ] = {
 	{ "setTransform",  setTransform,  5, 0 },
 	{ "getTransform",  getTransform,  3, 0 },
 
@@ -158,9 +158,9 @@ JSFunctionSpec SFMatrix4 <Type>::functions [ ] = {
 
 };
 
-template <class Type>
+template <class InternalType>
 JSObject*
-SFMatrix4 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
+SFMatrix4 <InternalType>::init (JSContext* const cx, JSObject* const global, JSObject* const parent)
 {
 	const auto proto = JS_InitClass (cx, global, parent, &static_class, construct, 0, nullptr, functions, nullptr, nullptr);
 
@@ -170,9 +170,9 @@ SFMatrix4 <Type>::init (JSContext* const cx, JSObject* const global, JSObject* c
 	return proto;
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	try
 	{
@@ -180,7 +180,7 @@ SFMatrix4 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 		{
 			case 0:
 			{
-				return create <SFMatrix4> (cx, new Type (), &JS_RVAL (cx, vp));
+				return create <SFMatrix4> (cx, new InternalType (), &JS_RVAL (cx, vp));
 			}
 			case 16:
 			{
@@ -202,7 +202,7 @@ SFMatrix4 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 				const auto m43  = getArgument <value_type> (cx, argv, 14);
 				const auto m44  = getArgument <value_type> (cx, argv, 15);
 
-				return create <SFMatrix4> (cx, new Type (m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44), &JS_RVAL (cx, vp));
+				return create <SFMatrix4> (cx, new InternalType (m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44), &JS_RVAL (cx, vp));
 			}
 			default:
 				return ThrowException (cx, "%s .new: wrong number of arguments.", getClass () -> name);
@@ -214,9 +214,9 @@ SFMatrix4 <Type>::construct (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::resolve (JSContext* cx, JSObject* obj, jsid id)
+SFMatrix4 <InternalType>::resolve (JSContext* cx, JSObject* obj, jsid id)
 {
 	if (not JSID_IS_INT (id))
 		return true;
@@ -232,9 +232,9 @@ SFMatrix4 <Type>::resolve (JSContext* cx, JSObject* obj, jsid id)
 	return ThrowException (cx, "%s: array index out of range.", getClass () -> name);
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
+SFMatrix4 <InternalType>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, jsval* statep, jsid* idp)
 {
 	if (not JS_GetPrivate (cx, obj))
 	{
@@ -283,9 +283,9 @@ SFMatrix4 <Type>::enumerate (JSContext* cx, JSObject* obj, JSIterateOp enum_op, 
 	return true;
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
+SFMatrix4 <InternalType>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool strict, jsval* vp)
 {
 	try
 	{
@@ -303,9 +303,9 @@ SFMatrix4 <Type>::set1Value (JSContext* cx, JSObject* obj, jsid id, JSBool stric
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
+SFMatrix4 <InternalType>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 {
 	try
 	{
@@ -320,9 +320,9 @@ SFMatrix4 <Type>::get1Value (JSContext* cx, JSObject* obj, jsid id, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc > 5)
 		return ThrowException (cx, "%s .setTransform: wrong number of arguments.", getClass () -> name);
@@ -332,11 +332,11 @@ SFMatrix4 <Type>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 
-		typename Type::vector_type::internal_type translation;
-		typename Type::rotation_type::internal_type rotation;
-		typename Type::vector_type::internal_type scale (1, 1, 1);
-		typename Type::rotation_type::internal_type scaleOrientation;
-		typename Type::vector_type::internal_type center;
+		typename InternalType::vector_type::internal_type translation;
+		typename InternalType::rotation_type::internal_type rotation;
+		typename InternalType::vector_type::internal_type scale (1, 1, 1);
+		typename InternalType::rotation_type::internal_type scaleOrientation;
+		typename InternalType::vector_type::internal_type center;
 
 		try
 		{
@@ -389,9 +389,9 @@ SFMatrix4 <Type>::setTransform (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc > 5)
 		return ThrowException (cx, "%s .getTransform: wrong number of arguments.", getClass () -> name);
@@ -401,11 +401,11 @@ SFMatrix4 <Type>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto argv = JS_ARGV (cx, vp);
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 
-		typename Type::vector_type::internal_type translation;
-		typename Type::rotation_type::internal_type rotation;
-		typename Type::vector_type::internal_type scale (1, 1, 1);
-		typename Type::rotation_type::internal_type scaleOrientation;
-		typename Type::vector_type::internal_type center;
+		typename InternalType::vector_type::internal_type translation;
+		typename InternalType::rotation_type::internal_type rotation;
+		typename InternalType::vector_type::internal_type scale (1, 1, 1);
+		typename InternalType::rotation_type::internal_type scaleOrientation;
+		typename InternalType::vector_type::internal_type center;
 
 		try
 		{
@@ -458,9 +458,9 @@ SFMatrix4 <Type>::getTransform (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::transpose (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::transpose (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .transpose: wrong number of arguments.", getClass () -> name);
@@ -469,7 +469,7 @@ SFMatrix4 <Type>::transpose (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto lhs = getThis <SFMatrix4> (cx, vp);
 
-		return create <SFMatrix4> (cx, new Type (lhs -> transpose ()), &JS_RVAL (cx, vp));
+		return create <SFMatrix4> (cx, new InternalType (lhs -> transpose ()), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -477,9 +477,9 @@ SFMatrix4 <Type>::transpose (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::inverse (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::inverse (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 0)
 		return ThrowException (cx, "%s .inverse: wrong number of arguments.", getClass () -> name);
@@ -488,7 +488,7 @@ SFMatrix4 <Type>::inverse (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto lhs = getThis <SFMatrix4> (cx, vp);
 
-		return create <SFMatrix4> (cx, new Type (lhs -> inverse ()), &JS_RVAL (cx, vp));
+		return create <SFMatrix4> (cx, new InternalType (lhs -> inverse ()), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -496,9 +496,9 @@ SFMatrix4 <Type>::inverse (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::multLeft (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::multLeft (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multLeft: wrong number of arguments.", getClass () -> name);
@@ -509,7 +509,7 @@ SFMatrix4 <Type>::multLeft (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 		const auto rhs  = getArgument <SFMatrix4> (cx, argv, 0);
 
-		return create <SFMatrix4> (cx, new Type (lhs -> multLeft (*rhs)), &JS_RVAL (cx, vp));
+		return create <SFMatrix4> (cx, new InternalType (lhs -> multLeft (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -517,9 +517,9 @@ SFMatrix4 <Type>::multLeft (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::multRight (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::multRight (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multRight: wrong number of arguments.", getClass () -> name);
@@ -530,7 +530,7 @@ SFMatrix4 <Type>::multRight (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 		const auto rhs  = getArgument <SFMatrix4> (cx, argv, 0);
 
-		return create <SFMatrix4> (cx, new Type (lhs -> multLeft (*rhs)), &JS_RVAL (cx, vp));
+		return create <SFMatrix4> (cx, new InternalType (lhs -> multLeft (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -538,9 +538,9 @@ SFMatrix4 <Type>::multRight (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::multVecMatrix (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::multVecMatrix (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multVecMatrix: wrong number of arguments.", getClass () -> name);
@@ -551,7 +551,7 @@ SFMatrix4 <Type>::multVecMatrix (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 		const auto rhs  = getArgument <vector_type> (cx, argv, 0);
 
-		return create <vector_type> (cx, new typename Type::vector_type (lhs -> multVecMatrix (*rhs)), &JS_RVAL (cx, vp));
+		return create <vector_type> (cx, new typename InternalType::vector_type (lhs -> multVecMatrix (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -559,9 +559,9 @@ SFMatrix4 <Type>::multVecMatrix (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::multMatrixVec (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::multMatrixVec (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multMatrixVec: wrong number of arguments.", getClass () -> name);
@@ -572,7 +572,7 @@ SFMatrix4 <Type>::multMatrixVec (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 		const auto rhs  = getArgument <vector_type> (cx, argv, 0);
 
-		return create <vector_type> (cx, new typename Type::vector_type (lhs -> multMatrixVec (*rhs)), &JS_RVAL (cx, vp));
+		return create <vector_type> (cx, new typename InternalType::vector_type (lhs -> multMatrixVec (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -580,9 +580,9 @@ SFMatrix4 <Type>::multMatrixVec (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::multDirMatrix (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::multDirMatrix (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multDirMatrix: wrong number of arguments.", getClass () -> name);
@@ -593,7 +593,7 @@ SFMatrix4 <Type>::multDirMatrix (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 		const auto rhs  = getArgument <vector_type> (cx, argv, 0);
 
-		return create <vector_type> (cx, new typename Type::vector_type (lhs -> multDirMatrix (*rhs)), &JS_RVAL (cx, vp));
+		return create <vector_type> (cx, new typename InternalType::vector_type (lhs -> multDirMatrix (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -601,9 +601,9 @@ SFMatrix4 <Type>::multDirMatrix (JSContext* cx, uint32_t argc, jsval* vp)
 	}
 }
 
-template <class Type>
+template <class InternalType>
 JSBool
-SFMatrix4 <Type>::multMatrixDir (JSContext* cx, uint32_t argc, jsval* vp)
+SFMatrix4 <InternalType>::multMatrixDir (JSContext* cx, uint32_t argc, jsval* vp)
 {
 	if (argc not_eq 1)
 		return ThrowException (cx, "%s .multMatrixDir: wrong number of arguments.", getClass () -> name);
@@ -614,7 +614,7 @@ SFMatrix4 <Type>::multMatrixDir (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFMatrix4> (cx, vp);
 		const auto rhs  = getArgument <vector_type> (cx, argv, 0);
 
-		return create <vector_type> (cx, new typename Type::vector_type (lhs -> multMatrixDir (*rhs)), &JS_RVAL (cx, vp));
+		return create <vector_type> (cx, new typename InternalType::vector_type (lhs -> multMatrixDir (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

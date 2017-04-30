@@ -57,7 +57,7 @@
 namespace titania {
 namespace X3D {
 
-template <class ValueType>
+template <class InternalType>
 class X3DArrayField;
 
 extern template class X3DField <bool>;
@@ -71,34 +71,34 @@ extern template class X3DField <int32_t>;
  *  Extern instantiations for bool, float, double and int32_t are part of the
  *  library.  Results with any other type are not guaranteed.
  *
- *  @param  ValueType  Type of the internal value of the field.
+ *  @param  InternalType  Type of the internal value of the field.
  */
-template <class ValueType>
+template <class InternalType>
 class X3DScalar :
-	public X3DField <ValueType>
+	public X3DField <InternalType>
 {
 public:
 
-	using value_type = ValueType;
+	using value_type = InternalType;
 
-	using X3DField <ValueType>::addInterest;
-	using X3DField <ValueType>::addEvent;
-	using X3DField <ValueType>::operator =;
-	using X3DField <ValueType>::getValue;
+	using X3DField <InternalType>::addInterest;
+	using X3DField <InternalType>::addEvent;
+	using X3DField <InternalType>::operator =;
+	using X3DField <InternalType>::getValue;
 
 	///  @name Construction
 
 	X3DScalar () :
-		X3DField <ValueType> ()
+		X3DField <InternalType> ()
 	{ }
 
 	X3DScalar (const X3DScalar & field) :
-		X3DField <ValueType> (field)
+		X3DField <InternalType> (field)
 	{ }
 
 	explicit
-	X3DScalar (const ValueType & value) :
-		X3DField <ValueType> (value)
+	X3DScalar (const InternalType & value) :
+		X3DField <InternalType> (value)
 	{ }
 
 	virtual
@@ -130,18 +130,18 @@ public:
 	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
 	void
-	addInterest (void (Class::* memberFunction) (const ValueType), Class* const object) const
+	addInterest (void (Class::* memberFunction) (const InternalType), Class* const object) const
 	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  Adds an interest to this object.  The requester is then notified about a change of this object.
 	template <class Class>
 	void
-	addInterest (void (Class::* memberFunction) (const ValueType), Class & object) const
+	addInterest (void (Class::* memberFunction) (const InternalType), Class & object) const
 	{ addInterest (memberFunction, object, std::cref (*this)); }
 
 	///  @name Arithmetic operations
 
-	template <class T = ValueType>
+	template <class T = InternalType>
 	std::enable_if_t <
 		std::is_integral <T>::value,
 		X3DScalar &
@@ -153,19 +153,19 @@ public:
 		return *this;
 	}
 
-	template <class T = ValueType>
+	template <class T = InternalType>
 	std::enable_if_t <
 		std::is_integral <T>::value,
 		X3DScalar &
 	>
-	operator <<= (const ValueType & value)
+	operator <<= (const InternalType & value)
 	{
 		get () <<= value;
 		addEvent ();
 		return *this;
 	}
 
-	template <class T = ValueType>
+	template <class T = InternalType>
 	std::enable_if_t <
 		std::is_integral <T>::value,
 		X3DScalar &
@@ -177,12 +177,12 @@ public:
 		return *this;
 	}
 
-	template <class T = ValueType>
+	template <class T = InternalType>
 	std::enable_if_t <
 		std::is_integral <T>::value,
 		X3DScalar &
 	>
-	operator >>= (const ValueType & value)
+	operator >>= (const InternalType & value)
 	{
 		get () >>= value;
 		addEvent ();
@@ -193,25 +193,25 @@ public:
 	operator += (const X3DScalar &);
 
 	X3DScalar &
-	operator += (const ValueType &);
+	operator += (const InternalType &);
 
 	X3DScalar &
 	operator -= (const X3DScalar &);
 
 	X3DScalar &
-	operator -= (const ValueType &);
+	operator -= (const InternalType &);
 
 	X3DScalar &
 	operator *= (const X3DScalar &);
 
 	X3DScalar &
-	operator *= (const ValueType &);
+	operator *= (const InternalType &);
 
 	X3DScalar &
 	operator /= (const X3DScalar &);
 
 	X3DScalar &
-	operator /= (const ValueType &);
+	operator /= (const InternalType &);
 
 	///  @name Input/Output
 
@@ -246,84 +246,84 @@ public:
 
 private:
 
-	using X3DField <ValueType>::get;
+	using X3DField <InternalType>::get;
 
 };
 
-template <class ValueType>
+template <class InternalType>
 inline
-X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator += (const X3DScalar & field)
+X3DScalar <InternalType> &
+X3DScalar <InternalType>::operator += (const X3DScalar & field)
 {
 	get () += field .getValue ();
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator += (const ValueType & value)
+X3DScalar <InternalType> &
+X3DScalar <InternalType>::operator += (const InternalType & value)
 {
 	get () += value;
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator -= (const X3DScalar & field)
+X3DScalar <InternalType> &
+X3DScalar <InternalType>::operator -= (const X3DScalar & field)
 {
 	get () -= field .getValue ();
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator -= (const ValueType & value)
+X3DScalar <InternalType> &
+X3DScalar <InternalType>::operator -= (const InternalType & value)
 {
 	get () -= value;
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator *= (const X3DScalar & field)
+X3DScalar <InternalType> &
+X3DScalar <InternalType>::operator *= (const X3DScalar & field)
 {
 	get () *= field .getValue ();
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator *= (const ValueType & value)
+X3DScalar <InternalType> &
+X3DScalar <InternalType>::operator *= (const InternalType & value)
 {
 	get () *= value;
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator /= (const X3DScalar & field)
+X3DScalar <InternalType> &
+X3DScalar <InternalType>::operator /= (const X3DScalar & field)
 {
 	get () /= field .getValue ();
 	addEvent ();
 	return *this;
 }
 
-template <class ValueType>
+template <class InternalType>
 inline
-X3DScalar <ValueType> &
-X3DScalar <ValueType>::operator /= (const ValueType & value)
+X3DScalar <InternalType> &
+X3DScalar <InternalType>::operator /= (const InternalType & value)
 {
 	get () /= value;
 	addEvent ();

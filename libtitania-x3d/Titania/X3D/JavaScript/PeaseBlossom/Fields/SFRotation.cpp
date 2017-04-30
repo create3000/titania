@@ -214,7 +214,7 @@ SFRotation::setAxis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 		const auto lhs = getThis <SFRotation> (ec, object);
 		const auto rhs = get1Argument <SFVec3f> (args, 0);
 
-		lhs -> setAxis (X3D::SFVec3d (rhs -> getValue ()));
+		lhs -> setAxis (rhs -> getValue ());
 
 		return pb::undefined;
 	}
@@ -233,11 +233,7 @@ SFRotation::getAxis (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 	try
 	{
 		const auto lhs    = getThis <SFRotation> (ec, object);
-		const auto axis   = lhs -> getAxis ();
-		const auto result = create <SFVec3f> (ec, new X3D::SFVec3f (lhs -> getAxis () -> getValue ()));
-
-		axis -> dispose ();
-		axis -> addDisposedObject (axis);
+		const auto result = create <SFVec3f> (ec, new X3D::SFVec3f (lhs -> getAxis ()));
 
 		return result;
 	}
@@ -257,7 +253,7 @@ SFRotation::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 	{
 		const auto lhs = getThis <SFRotation> (ec, object);
 
-		return create <SFRotation> (ec, lhs -> inverse ());
+		return create <SFRotation> (ec, new X3D::SFRotation (lhs -> inverse ()));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -276,7 +272,7 @@ SFRotation::multiply (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var
 		const auto lhs = getThis <SFRotation> (ec, object);
 		const auto rhs = get1Argument <SFRotation> (args, 0);
 
-		return create <SFRotation> (ec, lhs -> multiply (*rhs));
+		return create <SFRotation> (ec, new X3D::SFRotation (lhs -> multiply (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -294,11 +290,8 @@ SFRotation::multVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var 
 	{
 		const auto lhs    = getThis <SFRotation> (ec, object);
 		const auto rhs    = get1Argument <SFVec3f> (args, 0);
-		const auto vector = lhs -> multVec (X3D::SFVec3d (rhs -> getValue ()));
-		const auto result = create <SFVec3f> (ec, new X3D::SFVec3f (vector -> getValue ()));
-
-		vector -> dispose ();
-		vector -> addDisposedObject (vector);
+		const auto vector = lhs -> multVec (rhs -> getValue ());
+		const auto result = create <SFVec3f> (ec, new X3D::SFVec3f (vector));
 
 		return result;
 	}
@@ -320,7 +313,7 @@ SFRotation::slerp (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & 
 		const auto rhs = get1Argument <SFRotation> (args, 0);
 		const auto t   = get1Argument <double> (args, 1);
 
-		return create <SFRotation> (ec, lhs -> slerp (*rhs, t));
+		return create <SFRotation> (ec, new X3D::SFRotation (lhs -> slerp (*rhs, t)));
 	}
 	catch (const std::invalid_argument &)
 	{

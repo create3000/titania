@@ -62,7 +62,7 @@ namespace titania {
 namespace X3D {
 namespace peaseblossom {
 
-template <class Type>
+template <class InternalType>
 class SFMatrix3 :
 	public X3DField
 {
@@ -70,9 +70,9 @@ public:
 
 	///  @name Member types
 
-	using internal_type = Type;
-	using vector_type   = SFVec2 <typename Type::vector_type>;
-	using rotation_type = SFVec3 <typename X3D::SFVec3 <typename math::vector3 <typename Type::value_type>>>;
+	using internal_type = InternalType;
+	using vector_type   = SFVec2 <typename InternalType::vector_type>;
+	using rotation_type = SFVec3 <typename X3D::SFVec3 <typename math::vector3 <typename InternalType::value_type>>>;
 
 	///  @name Common members
 
@@ -165,9 +165,9 @@ private:
 
 };
 
-template <class Type>
+template <class InternalType>
 pb::ptr <pb::NativeFunction>
-SFMatrix3 <Type>::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
+SFMatrix3 <InternalType>::initialize (Context* const context, const pb::ptr <pb::Program> & ec)
 {
 	using namespace std::placeholders;
 
@@ -206,28 +206,28 @@ SFMatrix3 <Type>::initialize (Context* const context, const pb::ptr <pb::Program
 	return function;
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	switch (args .size ())
 	{
 		case 0:
 		{
-			setUserData <SFMatrix3> (ec, object, new Type ());
+			setUserData <SFMatrix3> (ec, object, new InternalType ());
 			break;
 		}
 		case 9:
 		{
-			setUserData <SFMatrix3> (ec, object, new Type (get1Argument <double> (args, 0),
-			                                               get1Argument <double> (args, 1),
-			                                               get1Argument <double> (args, 2),
-			                                               get1Argument <double> (args, 3),
-			                                               get1Argument <double> (args, 4),
-			                                               get1Argument <double> (args, 5),
-			                                               get1Argument <double> (args, 6),
-			                                               get1Argument <double> (args, 7),
-			                                               get1Argument <double> (args, 8)));
+			setUserData <SFMatrix3> (ec, object, new InternalType (get1Argument <double> (args, 0),
+			                                                       get1Argument <double> (args, 1),
+			                                                       get1Argument <double> (args, 2),
+			                                                       get1Argument <double> (args, 3),
+			                                                       get1Argument <double> (args, 4),
+			                                                       get1Argument <double> (args, 5),
+			                                                       get1Argument <double> (args, 6),
+			                                                       get1Argument <double> (args, 7),
+			                                                       get1Argument <double> (args, 8)));
 			break;
 		}
 		default:
@@ -237,9 +237,9 @@ SFMatrix3 <Type>::construct (const pb::ptr <pb::pbExecutionContext> & ec, const 
 	return pb::undefined;
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFMatrix3 <InternalType>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -255,9 +255,9 @@ SFMatrix3 <Type>::set1Value (const pb::ptr <pb::pbExecutionContext> & ec, const 
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
+SFMatrix3 <InternalType>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args, const size_t index)
 {
 	try
 	{
@@ -271,9 +271,9 @@ SFMatrix3 <Type>::get1Value (const pb::ptr <pb::pbExecutionContext> & ec, const 
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () > 5)
 		throw pb::Error (getTypeName () + ".prototype.setTransform: wrong number of arguments.");
@@ -283,11 +283,11 @@ SFMatrix3 <Type>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto argc = args .size ();
 		const auto lhs  = getThis <SFMatrix3> (ec, object);
 
-		typename Type::vector_type::internal_type translation;
-		typename Type::value_type rotation;
-		typename Type::vector_type::internal_type scale (1, 1);
-		typename Type::value_type scaleOrientation;
-		typename Type::vector_type::internal_type center;
+		typename InternalType::vector_type::internal_type translation;
+		typename InternalType::value_type rotation;
+		typename InternalType::vector_type::internal_type scale (1, 1);
+		typename InternalType::value_type scaleOrientation;
+		typename InternalType::vector_type::internal_type center;
 
 		if (argc > 0 and not args [0] .isNull ())
 			translation = *get1Argument <vector_type> (args, 0);
@@ -314,9 +314,9 @@ SFMatrix3 <Type>::setTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () > 5)
 		throw pb::Error (getTypeName () + ".prototype.getTransform: wrong number of arguments.");
@@ -326,11 +326,11 @@ SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto argc = args .size ();
 		const auto lhs  = getThis <SFMatrix3> (ec, object);
 
-		typename Type::vector_type::internal_type translation;
-		typename Type::value_type rotation;
-		typename Type::vector_type::internal_type scale (1, 1);
-		typename Type::value_type scaleOrientation;
-		typename Type::vector_type::internal_type center;
+		typename InternalType::vector_type::internal_type translation;
+		typename InternalType::value_type rotation;
+		typename InternalType::vector_type::internal_type scale (1, 1);
+		typename InternalType::value_type scaleOrientation;
+		typename InternalType::vector_type::internal_type center;
 
 		if (argc > 4 and not args [4] .isNull ())
 			center = *get1Argument <vector_type> (args, 4);
@@ -342,7 +342,7 @@ SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 
 		if (argc > 1 and not args [1] .isNull ())
 		{
-			const auto complex = std::polar <typename Type::value_type> (1, rotation);
+			const auto complex = std::polar <typename InternalType::value_type> (1, rotation);
 
 			get1Argument <rotation_type> (args, 1) -> setValue (typename rotation_type::internal_type (std::real (complex), std::imag (complex), rotation));
 		}
@@ -352,7 +352,7 @@ SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 
 		if (argc > 3 and not args [3] .isNull ())
 		{
-			const auto complex = std::polar <typename Type::value_type> (1, scaleOrientation);
+			const auto complex = std::polar <typename InternalType::value_type> (1, scaleOrientation);
 
 			get1Argument <rotation_type> (args, 3) -> setValue (typename rotation_type::internal_type (std::real (complex), std::imag (complex), scaleOrientation));
 		}
@@ -365,9 +365,9 @@ SFMatrix3 <Type>::getTransform (const pb::ptr <pb::pbExecutionContext> & ec, con
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::transpose (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::transpose (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.transpose: wrong number of arguments.");
@@ -376,7 +376,7 @@ SFMatrix3 <Type>::transpose (const pb::ptr <pb::pbExecutionContext> & ec, const 
 	{
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 
-		return create <SFMatrix3> (ec, new Type (lhs -> transpose ()));
+		return create <SFMatrix3> (ec, new InternalType (lhs -> transpose ()));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -384,9 +384,9 @@ SFMatrix3 <Type>::transpose (const pb::ptr <pb::pbExecutionContext> & ec, const 
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 0)
 		throw pb::Error (getTypeName () + ".prototype.inverse: wrong number of arguments.");
@@ -395,7 +395,7 @@ SFMatrix3 <Type>::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb
 	{
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 
-		return create <SFMatrix3> (ec, new Type (lhs -> inverse ()));
+		return create <SFMatrix3> (ec, new InternalType (lhs -> inverse ()));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -403,9 +403,9 @@ SFMatrix3 <Type>::inverse (const pb::ptr <pb::pbExecutionContext> & ec, const pb
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::multLeft (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::multLeft (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multLeft: wrong number of arguments.");
@@ -415,7 +415,7 @@ SFMatrix3 <Type>::multLeft (const pb::ptr <pb::pbExecutionContext> & ec, const p
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <SFMatrix3> (args, 0);
 
-		return create <SFMatrix3> (ec, new Type (lhs -> multLeft (*rhs)));
+		return create <SFMatrix3> (ec, new InternalType (lhs -> multLeft (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -423,9 +423,9 @@ SFMatrix3 <Type>::multLeft (const pb::ptr <pb::pbExecutionContext> & ec, const p
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::multRight (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::multRight (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multRight: wrong number of arguments.");
@@ -435,7 +435,7 @@ SFMatrix3 <Type>::multRight (const pb::ptr <pb::pbExecutionContext> & ec, const 
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <SFMatrix3> (args, 0);
 
-		return create <SFMatrix3> (ec, new Type (lhs -> multRight (*rhs)));
+		return create <SFMatrix3> (ec, new InternalType (lhs -> multRight (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -443,9 +443,9 @@ SFMatrix3 <Type>::multRight (const pb::ptr <pb::pbExecutionContext> & ec, const 
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::multVecMatrix (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::multVecMatrix (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multVecMatrix: wrong number of arguments.");
@@ -455,7 +455,7 @@ SFMatrix3 <Type>::multVecMatrix (const pb::ptr <pb::pbExecutionContext> & ec, co
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector_type> (ec, new typename Type::vector_type (lhs -> multVecMatrix (*rhs)));
+		return create <vector_type> (ec, new typename InternalType::vector_type (lhs -> multVecMatrix (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -463,9 +463,9 @@ SFMatrix3 <Type>::multVecMatrix (const pb::ptr <pb::pbExecutionContext> & ec, co
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::multMatrixVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::multMatrixVec (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multMatrixVec: wrong number of arguments.");
@@ -475,7 +475,7 @@ SFMatrix3 <Type>::multMatrixVec (const pb::ptr <pb::pbExecutionContext> & ec, co
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector_type> (ec, new typename Type::vector_type (lhs -> multMatrixVec (*rhs)));
+		return create <vector_type> (ec, new typename InternalType::vector_type (lhs -> multMatrixVec (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -483,9 +483,9 @@ SFMatrix3 <Type>::multMatrixVec (const pb::ptr <pb::pbExecutionContext> & ec, co
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::multDirMatrix (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::multDirMatrix (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multDirMatrix: wrong number of arguments.");
@@ -495,7 +495,7 @@ SFMatrix3 <Type>::multDirMatrix (const pb::ptr <pb::pbExecutionContext> & ec, co
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector_type> (ec, new typename Type::vector_type (lhs -> multDirMatrix (*rhs)));
+		return create <vector_type> (ec, new typename InternalType::vector_type (lhs -> multDirMatrix (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -503,9 +503,9 @@ SFMatrix3 <Type>::multDirMatrix (const pb::ptr <pb::pbExecutionContext> & ec, co
 	}
 }
 
-template <class Type>
+template <class InternalType>
 pb::var
-SFMatrix3 <Type>::multMatrixDir (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
+SFMatrix3 <InternalType>::multMatrixDir (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & object, const std::vector <pb::var> & args)
 {
 	if (args .size () not_eq 1)
 		throw pb::Error (getTypeName () + ".prototype.multMatrixDir: wrong number of arguments.");
@@ -515,7 +515,7 @@ SFMatrix3 <Type>::multMatrixDir (const pb::ptr <pb::pbExecutionContext> & ec, co
 		const auto lhs = getThis <SFMatrix3> (ec, object);
 		const auto rhs = get1Argument <vector_type> (args, 0);
 
-		return create <vector_type> (ec, new typename Type::vector_type (lhs -> multMatrixDir (*rhs)));
+		return create <vector_type> (ec, new typename InternalType::vector_type (lhs -> multMatrixDir (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
