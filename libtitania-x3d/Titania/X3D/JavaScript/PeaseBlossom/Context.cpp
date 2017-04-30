@@ -81,7 +81,7 @@ throw (std::exception) :
 	                   values (),
 	                   future ()
 {
-	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+	//__LOG__ << X3D::SFTime (SFTime::now ()) << std::endl;
 
 	try
 	{
@@ -100,7 +100,7 @@ throw (std::exception) :
 		throw;
 	}
 
-	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+	//__LOG__ << X3D::SFTime (SFTime::now ()) << std::endl;
 }
 
 X3DBaseNode*
@@ -382,7 +382,7 @@ Context::getProperty (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var
 void
 Context::initialize ()
 {
-	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+	//__LOG__ << X3D::SFTime (SFTime::now ()) << std::endl;
 
 	X3DJavaScriptContext::initialize ();
 
@@ -401,7 +401,7 @@ Context::initialize ()
 	catch (const std::exception & error)
 	{ }
 
-	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+	//__LOG__ << X3D::SFTime (SFTime::now ()) << std::endl;
 }
 
 void

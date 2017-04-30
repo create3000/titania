@@ -161,10 +161,33 @@ public:
 
 	///  @name Operations
 
+	static
+	time_type
+	now ();
+
+	bool
+	fromUTCString (const std::string & string);
+
 	std::string
 	toUTCString () const;
 
 	///  @name Input/Output
+
+	///  Parses a date according to std::get_time with locale support.
+	bool
+	fromLocaleString (const std::string & string, const std::string & format, const std::locale & locale);
+
+	///  Parses a date according to std::get_time.
+	void
+	fromStream (std::istream & istream, const std::string & format);
+
+	///  Converts the value of this field to a time string specified by format according to std::put_time.
+	std::string
+	toLocaleString (const std::string & format, const std::locale & locale) const;
+
+	///  Converts the value of this field to a time string specified by format according to std::put_time.
+	void
+	toStream (std::ostream & ostream, const std::string & format) const;
 
 	virtual
 	void

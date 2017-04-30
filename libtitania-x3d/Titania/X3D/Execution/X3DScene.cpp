@@ -179,7 +179,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	setMetaData ("comment", "World of " + getBrowser () -> getName ());
 	setMetaData ("generator", getBrowser () -> getName () + " V" + getBrowser () -> getVersion () + ", http://titania.create3000.de");
 	setMetaData ("identifier", getWorldURL ());
-	setMetaData ("modified", X3D::SFTime (chrono::now ()) .toUTCString ());
+	setMetaData ("modified", X3D::SFTime (SFTime::now ()) .toUTCString ());
 
 	if (not metadatas .count ("creator"))
 	{
@@ -190,7 +190,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 
 	if (not metadatas .count ("created"))
-		setMetaData ("created", X3D::SFTime (chrono::now ()) .toUTCString ());
+		setMetaData ("created", X3D::SFTime (SFTime::now ()) .toUTCString ());
 }
 
 void

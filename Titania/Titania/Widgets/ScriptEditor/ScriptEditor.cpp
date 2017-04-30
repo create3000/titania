@@ -410,7 +410,7 @@ ScriptEditor::apply (const X3D::UndoStepPtr & undoStep)
 
 	X3D::X3DEditor::requestUpdateInstances (node, undoStep);
 
-	getCurrentBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("%s »%s« is build."), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
+	getCurrentBrowser () -> println (X3D::SFTime (X3D::SFTime::now ()) .toUTCString (), ": ", basic::sprintf (_ ("%s »%s« is build."), node -> getTypeName () .c_str (), node -> getName () .c_str ()));
 
 	setModified (false);
 }

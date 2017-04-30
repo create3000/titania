@@ -381,7 +381,7 @@ OutlineTreeObserver::on_row_has_child_toggled (const Gtk::TreeModel::Path & path
 void
 OutlineTreeObserver::on_row_changed (const Gtk::TreeModel::Path & path)
 {
-	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+	//__LOG__ << X3D::SFTime (X3D::SFTime::now ()) << std::endl;
 
 	//treeView -> get_model () -> row_changed (path, treeView -> get_model () -> get_iter (path));
 
@@ -397,7 +397,7 @@ OutlineTreeObserver::on_row_changed_impl (const Gtk::TreeModel::Path & path)
 void
 OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 {
-	//__LOG__ << X3D::SFTime (chrono::now ()) << std::endl;
+	//__LOG__ << X3D::SFTime (X3D::SFTime::now ()) << std::endl;
 
 	if (not treeView -> row_expanded (path))
 		return;

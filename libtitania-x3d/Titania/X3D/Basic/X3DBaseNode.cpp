@@ -397,7 +397,7 @@ X3DBaseNode::setName (const std::string & value)
 {
 	X3DParentObject::setName (value);
 
-	nameOutput = chrono::now ();
+	nameOutput = SFTime::now ();
 }
 
 /***
@@ -732,7 +732,7 @@ throw (Error <INVALID_NAME>,
 	if (not field -> isHidden ())
 		++ numUserDefinedFields;
 
-	fieldsOutput = chrono::now ();
+	fieldsOutput = SFTime::now ();
 }
 
 /***
@@ -745,7 +745,7 @@ throw (Error <DISPOSED>)
 {
 	removeField (fields .find (name), true, true);
 
-	fieldsOutput = chrono::now ();
+	fieldsOutput = SFTime::now ();
 }
 
 /***

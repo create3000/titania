@@ -892,11 +892,11 @@ X3DBrowserEditor::translateSelection (const X3D::Vector3f & offset, const bool a
 
 		if (first)
 		{
-			if (currentTool not_eq tool or chrono::now () - undoTime > UNDO_TIME or nudgeUndoStep not_eq getBrowserWindow () -> getUndoStep ())
+			if (currentTool not_eq tool or X3D::SFTime::now () - undoTime > UNDO_TIME or nudgeUndoStep not_eq getBrowserWindow () -> getUndoStep ())
 				nudgeUndoStep = std::make_shared <X3D::UndoStep> (_ (undoText [currentTool - NUDGE_LEFT]));
 
 			tool     = currentTool;
-			undoTime = chrono::now ();
+			undoTime = X3D::SFTime::now ();
 
 			getSelection () -> redoRestoreNodes (nudgeUndoStep);
 
@@ -1061,7 +1061,7 @@ X3DBrowserEditor::on_source_code_changed (const Glib::RefPtr <Gio::File> & file,
 		addUndoStep (undoStep);
 	}
 
-	getCurrentBrowser () -> println (X3D::SFTime (chrono::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
+	getCurrentBrowser () -> println (X3D::SFTime (X3D::SFTime::now ()) .toUTCString (), ": ", basic::sprintf (_ ("Script »%s« saved."), node -> getName () .c_str ()));
 }
 
 void

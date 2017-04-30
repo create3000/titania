@@ -544,7 +544,7 @@ ParticleSystem::set_live ()
 
 			if (pauseTime)
 			{
-				creationTime += chrono::now () - pauseTime;
+				creationTime += SFTime::now () - pauseTime;
 				pauseTime = 0;
 			}
 		}
@@ -557,7 +557,7 @@ ParticleSystem::set_live ()
 			getBrowser () -> sensors () .removeInterest (&ParticleSystem::updateParticles, this);
 
 			if (pauseTime == 0)
-				pauseTime = chrono::now ();
+				pauseTime = SFTime::now ();
 		}
 	}
 }
@@ -576,7 +576,7 @@ ParticleSystem::set_enabled ()
 				pauseTime = 0;
 			}
 			else
-				pauseTime = chrono::now ();
+				pauseTime = SFTime::now ();
 
 			isActive () = true;
 		}
@@ -1113,7 +1113,7 @@ ParticleSystem::set_particle_buffers ()
 	// Reset state
 
 	if (not emitterNode -> isExplosive ())
-		creationTime = chrono::now ();
+		creationTime = SFTime::now ();
 }
 
 void
@@ -1338,7 +1338,7 @@ ParticleSystem::animateParticles ()
 
 		if (emitterNode -> isExplosive ())
 		{
-			const time_type now = chrono::now ();
+			const auto now = SFTime::now ();
 			
 			if (numParticles == 0 or now - creationTime > particleLifetime () + particleLifetime () * lifetimeVariation ())
 			{
@@ -1351,8 +1351,8 @@ ParticleSystem::animateParticles ()
 		{
 			if (numParticles < maxParticles ())
 			{
-				const time_type now          = chrono::now ();
-				int32_t         newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
+				const auto now          = SFTime::now ();
+				int32_t    newParticles = (now - creationTime) * maxParticles () / particleLifetime ();
 
 				if (newParticles)
 					creationTime = now;

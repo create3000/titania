@@ -360,7 +360,7 @@ X3DSoundSourceNodeEditor::on_sound_source_start_time_clicked ()
 {
 	addUndoFunction (soundSourceNode, soundSourceNode -> startTime (), startTimeUndoStep);
 
-	soundSourceNode -> startTime () = chrono::now ();
+	soundSourceNode -> startTime () = X3D::SFTime::now ();
 
 	addRedoFunction (soundSourceNode, soundSourceNode -> startTime (), startTimeUndoStep);
 }
@@ -370,7 +370,7 @@ X3DSoundSourceNodeEditor::on_sound_source_resume_time_clicked ()
 {
 	addUndoFunction (soundSourceNode, soundSourceNode -> resumeTime (), resumeTimeUndoStep);
 
-	soundSourceNode -> resumeTime () = chrono::now ();
+	soundSourceNode -> resumeTime () = X3D::SFTime::now ();
 
 	addRedoFunction (soundSourceNode, soundSourceNode -> resumeTime (), resumeTimeUndoStep);
 }
@@ -380,7 +380,7 @@ X3DSoundSourceNodeEditor::on_sound_source_pause_time_clicked ()
 {
 	addUndoFunction (soundSourceNode, soundSourceNode -> pauseTime (), pauseTimeUndoStep);
 
-	soundSourceNode -> pauseTime () = chrono::now ();
+	soundSourceNode -> pauseTime () = X3D::SFTime::now ();
 
 	addRedoFunction (soundSourceNode, soundSourceNode -> pauseTime (), pauseTimeUndoStep);
 }
@@ -390,7 +390,7 @@ X3DSoundSourceNodeEditor::on_sound_source_stop_time_clicked ()
 {
 	addUndoFunction (soundSourceNode, soundSourceNode -> stopTime (), stopTimeUndoStep);
 
-	soundSourceNode -> stopTime () = chrono::now ();
+	soundSourceNode -> stopTime () = X3D::SFTime::now ();
 
 	addRedoFunction (soundSourceNode, soundSourceNode -> stopTime (), stopTimeUndoStep);
 }

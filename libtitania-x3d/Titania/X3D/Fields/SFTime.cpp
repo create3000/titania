@@ -50,6 +50,8 @@
 
 #include "SFTime.h"
 
+#include <Titania/Chrono/Now.h>
+
 #include <iomanip>
 
 namespace titania {
@@ -70,17 +72,126 @@ SFTime::SFTime (const time_type value) :
 	X3DField <time_type> (value)
 { }
 
+///  Returns the number of seconds elapsed since 1 January 1970 00:00:00 UTC.
+time_type
+SFTime::now ()
+{
+	return chrono::basic_now <time_type> ();
+}
+
+//int32_t
+//SFTime:getUTCMilliseconds () const
+//{
+//	time_type intpart;
+//
+//	return std::modf (getValue (), &intpart) * 1000;
+//}
+
+//int32_t
+//SFTime:getUTCSeconds () const
+//{
+//	return getUTCTM () .tm_sec;
+//}
+
+//int32_t
+//SFTime:getUTCMinutes() const
+//{
+//	return getUTCTM () .tm_min;
+//}
+
+//int32_t
+//SFTime:getUTCHours () const
+//{
+//	return getUTCTM () .tm_hour;
+//}
+
+//int32_t
+//SFTime:getUTCDay () const
+//{
+//	return getUTCTM () .tm_mday;
+//}
+
+//int32_t
+//SFTime:getUTCMonth () const
+//{
+//	return getUTCTM () .tm_mon;
+//}
+
+//int32_t
+//SFTime:getUTCFullYear () const
+//{
+//	return 1900 + getUTCTM () .tm_year;
+//}
+
+//int32_t
+//SFTime:getUTCTM () const
+//{
+//	const auto time = getValue ();
+//
+//	return std::gmtime (&time)
+//}
+
+///  Coverts a valid UTC @a string.
+bool
+SFTime::fromUTCString (const std::string & string)
+{
+	return fromLocaleString (string, "%a, %d %b %Y %H:%M:%S GMT", std::locale::classic ());
+}
+
+///  Converts the value of this field to a valid UTC string.
 std::string
 SFTime::toUTCString () const
 {
-	const std::time_t time = getValue ();
+	return toLocaleString ("%a, %d %b %Y %H:%M:%S %Z", std::locale::classic ());
+}
 
+///  Parses a date according to std::get_time with locale support. Returns true on success, otherwise false.
+bool
+SFTime::fromLocaleString (const std::string & string, const std::string & format, const std::locale & locale)
+{
+	std::istringstream isstream (string);
+
+	isstream .imbue (locale);
+
+   fromStream (isstream, format);
+
+	return isstream .fail ();
+}
+
+///  Parses a date according to std::get_time.
+void
+SFTime::fromStream (std::istream & istream, const std::string & format)
+{
+	std::tm tm = { 0 };
+
+   istream >> std::get_time (&tm, format .c_str ());
+
+	if (istream .fail ())
+		return;
+
+	setValue (std::mktime (&tm));
+}
+
+///  Converts the value of this field to a time string specified by format according to std::put_time.
+std::string
+SFTime::toLocaleString (const std::string & format, const std::locale & locale) const
+{
 	std::ostringstream osstream;
 
-	osstream .imbue (std::locale::classic ());
-	osstream << std::put_time (std::gmtime (&time), "%a, %d %b %Y %H:%M:%S %Z");
+	osstream .imbue (locale);
+
+	toStream (osstream, format);
 
 	return osstream .str ();
+}
+
+///  Converts the value of this field to a time string specified by format according to std::put_time.
+void
+SFTime::toStream (std::ostream & ostream, const std::string & format) const
+{
+	const std::time_t time = getValue ();
+
+	ostream << std::put_time (std::gmtime (&time), format .c_str ());
 }
 
 void

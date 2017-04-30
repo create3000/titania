@@ -56,7 +56,6 @@
 #include "../BrowserOptions.h"
 #include "../../Rendering/OpenGL.h"
 
-#include <Titania/Chrono/Now.h>
 #include <Titania/Math/Geometry/Camera.h>
 
 #include <cmath>
@@ -289,8 +288,8 @@ X3DFlyViewer::fly ()
 {
 	try
 	{
-		const time_type now = chrono::now ();
-		const time_type dt  = now - startTime;
+		const auto now = SFTime::now ();
+		const auto dt  = now - startTime;
 
 		const auto & viewpoint = getActiveViewpoint ();
 		const auto   upVector  = viewpoint -> getUpVector ();
@@ -346,8 +345,8 @@ X3DFlyViewer::pan ()
 {
 	try
 	{
-		const time_type now = chrono::now ();
-		const time_type dt  = now - startTime;
+		const auto now = SFTime::now ();
+		const auto dt  = now - startTime;
 
 		const auto & viewpoint = getActiveViewpoint ();
 		const auto   upVector  = viewpoint -> getUpVector ();
@@ -379,7 +378,7 @@ X3DFlyViewer::roll ()
 {
 	try
 	{
-		const time_type elapsedTime = chrono::now () - startTime;
+		const auto elapsedTime = SFTime::now () - startTime;
 
 		if (elapsedTime > ROLL_TIME)
 			return false;
@@ -401,7 +400,7 @@ X3DFlyViewer::addFly ()
 {
 	if (not fly_id .connected ())
 	{
-		startTime = chrono::now ();
+		startTime = SFTime::now ();
 		fly_id    = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::fly), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 	}
 }
@@ -411,7 +410,7 @@ X3DFlyViewer::addPan ()
 {
 	if (not pan_id .connected ())
 	{
-		startTime = chrono::now ();
+		startTime = SFTime::now ();
 		pan_id    = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::pan), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 	}
 }
@@ -426,7 +425,7 @@ X3DFlyViewer::addRoll ()
 		roll_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::roll), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 	}
 
-	startTime = chrono::now ();
+	startTime = SFTime::now ();
 }
 
 void

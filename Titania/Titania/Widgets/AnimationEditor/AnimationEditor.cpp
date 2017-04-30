@@ -1069,7 +1069,7 @@ AnimationEditor::on_clear_clipboard ()
 void
 AnimationEditor::on_first_frame ()
 {
-	timeSensor -> stopTime () = chrono::now ();
+	timeSensor -> stopTime () = X3D::SFTime::now ();
 
 	getFrameAdjustment () -> set_value (0);
 }
@@ -1105,10 +1105,10 @@ AnimationEditor::on_play_pause ()
 
 	// Start TimeSensor.
 
-	timeSensor -> stopTime () = chrono::now ();
+	timeSensor -> stopTime () = X3D::SFTime::now ();
 
 	if (not isActive ())
-		timeSensor -> startTime () = chrono::now ();
+		timeSensor -> startTime () = X3D::SFTime::now ();
 
 	// Clear tainted states.
 
@@ -1118,7 +1118,7 @@ AnimationEditor::on_play_pause ()
 void
 AnimationEditor::on_last_frame ()
 {
-	timeSensor -> stopTime () = chrono::now ();
+	timeSensor -> stopTime () = X3D::SFTime::now ();
 
 	getFrameAdjustment () -> set_value (getDuration ());
 }
@@ -1229,7 +1229,7 @@ AnimationEditor::on_time ()
 
 	undoStep -> addUndoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
 	undoStep -> addRedoFunction (&X3D::SFTime::setValue, std::ref (timeSensor -> stopTime ()), std::bind (&chrono::now));
-	timeSensor -> stopTime () = chrono::now ();
+	timeSensor -> stopTime () = X3D::SFTime::now ();
 
 	// Build interpolators.
 	setInterpolators (undoStep);

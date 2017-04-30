@@ -50,8 +50,6 @@
 
 #include "X3DTouchSensorNode.h"
 
-#include <Titania/Chrono/Now.h>
-
 namespace titania {
 namespace X3D {
 
@@ -76,7 +74,7 @@ X3DTouchSensorNode::set_active (const bool active,
 	X3DPointingDeviceSensorNode::set_active (active, hit, modelViewMatrix, projectionMatrix, viewport);
 
 	if (enabled () and isOver () and not active)
-		touchTime () = chrono::now ();
+		touchTime () = SFTime::now ();
 }
 
 } // X3D

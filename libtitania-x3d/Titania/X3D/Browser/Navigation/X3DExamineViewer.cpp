@@ -53,7 +53,6 @@
 #include "../../Components/Navigation/NavigationInfo.h"
 #include "../Browser.h"
 
-#include <Titania/Chrono/Now.h>
 #include <cmath>
 #include <glibmm/main.h>
 
@@ -156,7 +155,7 @@ X3DExamineViewer::on_1button_press_event (GdkEventButton* event)
 		//if (not isInViewport (event))
 		// return;
 	
-		pressTime = chrono::now ();
+		pressTime = SFTime::now ();
 	
 		switch (event -> button)
 		{
@@ -285,7 +284,7 @@ X3DExamineViewer::on_1button1_release_event (GdkEventButton* event)
 {
 	getBrowser () -> setCursor ("default");
 
-	if (std::abs (rotation .angle ()) > SPIN_ANGLE and chrono::now () - motionTime < SPIN_RELEASE_TIME)
+	if (std::abs (rotation .angle ()) > SPIN_ANGLE and SFTime::now () - motionTime < SPIN_RELEASE_TIME)
 	{
 		rotation = slerp (Rotation4d (), rotation, SPIN_FACTOR);
 
@@ -349,7 +348,7 @@ X3DExamineViewer::on_motion1_notify_event (GdkEventMotion* event)
 
 		rotation = Rotation4d (toVector, fromVector);
 
-		if (std::abs (rotation .angle ()) < SPIN_ANGLE and chrono::now () - pressTime < MOTION_TIME)
+		if (std::abs (rotation .angle ()) < SPIN_ANGLE and SFTime::now () - pressTime < MOTION_TIME)
 			return false;
 
 		viewpoint -> orientationOffset () = getOrientationOffset ();
@@ -357,7 +356,7 @@ X3DExamineViewer::on_motion1_notify_event (GdkEventMotion* event)
 
 		fromVector = toVector;
 
-		motionTime = chrono::now ();
+		motionTime = SFTime::now ();
 
 		return false;
 	}

@@ -560,7 +560,7 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 	if (browser == getCurrentBrowser ())
 		recentView -> loadPreview (getCurrentBrowser ());
 
-	loadTime = chrono::now ();
+	loadTime = X3D::SFTime::now ();
 
 	if (URL .empty ())
 		return;
@@ -996,7 +996,7 @@ X3DBrowserWidget::set_scene ()
 	createIcon ();
 
 	#ifdef TITANIA_DEBUG
-	loadTime = chrono::now () - loadTime;
+	loadTime = X3D::SFTime::now () - loadTime;
 	timeout .disconnect ();
 	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
 	#endif

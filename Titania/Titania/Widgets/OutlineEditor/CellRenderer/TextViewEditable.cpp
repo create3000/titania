@@ -53,7 +53,6 @@
 #include "OutlineFields.h"
 #include "../X3DOutlineTreeView.h"
 
-#include <Titania/Chrono/Now.h>
 #include <Titania/LOG.h>
 
 namespace titania {
@@ -139,7 +138,7 @@ TextViewEditable::on_current_time ()
 {
 	std::ostringstream osstream;
 
-	osstream << X3D::SFTime (chrono::now ());
+	osstream << X3D::SFTime (X3D::SFTime::now ());
 
 	set_text (osstream .str ());
 		

@@ -196,7 +196,7 @@ CollisionSensor::update ()
 					                                                                triangles1);
 					if (intersects)
 					{
-						//__LOG__ << SFTime (chrono::now ()) << " : " << this << " : " << collidableNode1 -> getName () << " : " << triangles1 .size () << std::endl;
+						//__LOG__ << SFTime (SFTime::now ()) << " : " << this << " : " << collidableNode1 -> getName () << " : " << triangles1 .size () << std::endl;
 
 						// Transform triangles.
 

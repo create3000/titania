@@ -60,8 +60,8 @@ X3DRouterObject::X3DRouterObject () :
 	 X3DBaseNode (),
 	    children (),
 	     parents (),
-	childrenTime (chrono::now ()),
-	  parentTime (chrono::now ())
+	childrenTime (SFTime::now ()),
+	  parentTime (SFTime::now ())
 {
 	addType (X3DConstants::X3DRouterObject);
 }
@@ -92,7 +92,7 @@ X3DRouterObject::getTaintedChildren ()
 {
 	// Invalidate all iterators
 
-	childrenTime = chrono::now ();
+	childrenTime = SFTime::now ();
 
 	return std::move (children);
 }
@@ -123,7 +123,7 @@ X3DRouterObject::getTaintedParents ()
 {
 	// Invalidate all iterators
 
-	parentTime = chrono::now ();
+	parentTime = SFTime::now ();
 
 	return std::move (parents);
 }

@@ -242,7 +242,7 @@ NodeIndex::on_compare_name (const Gtk::TreeModel::iterator & lhs, const Gtk::Tre
 void
 NodeIndex::refresh ()
 {
-	refreshBuffer = chrono::now ();
+	refreshBuffer = X3D::SFTime::now ();
 }
 
 void

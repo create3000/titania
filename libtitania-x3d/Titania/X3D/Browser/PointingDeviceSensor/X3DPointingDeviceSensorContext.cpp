@@ -159,7 +159,7 @@ X3DPointingDeviceSensorContext::addHit (const Matrix4d & transformationMatrix, c
 bool
 X3DPointingDeviceSensorContext::setButtonPressEvent (const double x, const double y)
 {
-	buttonPressTime    = chrono::now ();
+	buttonPressTime    = SFTime::now ();
 	buttonPressPointer = Vector2d (x, y);
 
 	touch (x, y);
@@ -188,7 +188,7 @@ X3DPointingDeviceSensorContext::setButtonReleaseEvent (const double x, const dou
 	pointer = Vector2d (x, y);
 
 	// TODO: Sometimes there is no selection.
-	if (distance (buttonPressPointer, pointer) < 1 or distance (buttonPressTime, chrono::now ()) < SELECTION_TIME)
+	if (distance (buttonPressPointer, pointer) < 1 or distance (buttonPressTime, SFTime::now ()) < SELECTION_TIME)
 	{
 		if (getBrowser () -> getSelection () -> selectNode ())
 			return true;

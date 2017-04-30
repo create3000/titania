@@ -402,7 +402,7 @@ GeometryEditor::on_cut ()
 
 		try
 		{
-			geometryNodes .back () -> setField <X3D::SFTime> ("cutGeometry", chrono::now ());
+			geometryNodes .back () -> setField <X3D::SFTime> ("cutGeometry", X3D::SFTime::now ());
 		}
 		catch (const X3D::X3DError &)
 		{ }
@@ -424,7 +424,7 @@ GeometryEditor::on_copy ()
 		{
 			try
 			{
-				geometryNode -> setField <X3D::SFTime> ("copyGeometry", chrono::now ());
+				geometryNode -> setField <X3D::SFTime> ("copyGeometry", X3D::SFTime::now ());
 			}
 			catch (const X3D::X3DError &)
 			{ }
@@ -512,7 +512,7 @@ GeometryEditor::on_select_all ()
 					{
 						case X3D::X3DConstants::IndexedFaceSetTool:
 						{
-							innerNode -> getField <X3D::SFTime> ("selectAll") = chrono::now ();
+							innerNode -> getField <X3D::SFTime> ("selectAll") = X3D::SFTime::now ();
 							break;
 						}
 						default:
@@ -553,7 +553,7 @@ GeometryEditor::on_deselect_all ()
 					{
 						case X3D::X3DConstants::IndexedFaceSetTool:
 						{
-							innerNode -> getField <X3D::SFTime> ("deselectAll") = chrono::now ();
+							innerNode -> getField <X3D::SFTime> ("deselectAll") = X3D::SFTime::now ();
 							break;
 						}
 						default:
@@ -1030,13 +1030,13 @@ GeometryEditor::on_axis_aligned_bounding_box_toggled ()
 void
 GeometryEditor::on_merge_points_clicked ()
 {
-	coordEditor -> setField <X3D::SFTime> ("mergePoints", chrono::now ());
+	coordEditor -> setField <X3D::SFTime> ("mergePoints", X3D::SFTime::now ());
 }
 
 void
 GeometryEditor::on_split_points_clicked ()
 {
-	coordEditor -> setField <X3D::SFTime> ("splitPoints", chrono::now ());
+	coordEditor -> setField <X3D::SFTime> ("splitPoints", X3D::SFTime::now ());
 }
 
 void
@@ -1082,37 +1082,37 @@ GeometryEditor::on_cut_polygons_enable_snapping_toggled ()
 void
 GeometryEditor::on_form_new_face_clicked ()
 {
-	coordEditor -> setField <X3D::SFTime> ("formNewFace", chrono::now ());
+	coordEditor -> setField <X3D::SFTime> ("formNewFace", X3D::SFTime::now ());
 }
 
 void
 GeometryEditor::on_extrude_selected_edges_clicked ()
 {
-	coordEditor -> setField <X3D::SFTime> ("extrudeSelectedEdges", chrono::now ());
+	coordEditor -> setField <X3D::SFTime> ("extrudeSelectedEdges", X3D::SFTime::now ());
 }
 
 void
 GeometryEditor::on_extrude_selected_faces_clicked ()
 {
-	coordEditor -> setField <X3D::SFTime> ("extrudeSelectedFaces", chrono::now ());
+	coordEditor -> setField <X3D::SFTime> ("extrudeSelectedFaces", X3D::SFTime::now ());
 }
 
 void
 GeometryEditor::on_chip_of_face_clicked ()
 {
-	coordEditor -> setField <X3D::SFTime> ("chipOfSelectedFaces", chrono::now ());
+	coordEditor -> setField <X3D::SFTime> ("chipOfSelectedFaces", X3D::SFTime::now ());
 }
 
 void
 GeometryEditor::on_flip_vertex_ordering_clicked ()
 {
-	coordEditor -> setField <X3D::SFTime> ("flipVertexOrdering", chrono::now ());
+	coordEditor -> setField <X3D::SFTime> ("flipVertexOrdering", X3D::SFTime::now ());
 }
 
 void
 GeometryEditor::on_delete_selected_faces_clicked ()
 {
-	coordEditor -> setField <X3D::SFTime> ("deleteSelectedFaces", chrono::now ());
+	coordEditor -> setField <X3D::SFTime> ("deleteSelectedFaces", X3D::SFTime::now ());
 }
 
 void

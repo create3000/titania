@@ -324,7 +324,7 @@ RenderingProperties::build ()
 		string .emplace_back (basic::sprintf (_ ("Available texture memory:  %s"), strfsize (getBrowser () -> getAvailableTextureMemory ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Memory usage:              %s"), strfsize (getBrowser () -> getMemoryUsage ()) .c_str ()));
 		string .emplace_back ();
-		string .emplace_back (basic::sprintf (_ ("Elapsed time:              %s"), format_time (chrono::now () - getBrowser () -> initialized ()) .c_str ()));
+		string .emplace_back (basic::sprintf (_ ("Elapsed time:              %s"), format_time (SFTime::now () - getBrowser () -> initialized ()) .c_str ()));
 		string .emplace_back (basic::sprintf (_ ("Speed:                     %.2f m/s"), getBrowser () -> getCurrentSpeed ()));
 		string .emplace_back (basic::sprintf (_ ("Frame rate:                %.1f fps"), getFPS ()));
 		string .emplace_back (basic::sprintf (_ ("Display:                   %.2f %%"), 100 * renderClock .average () / clock .average ()));
