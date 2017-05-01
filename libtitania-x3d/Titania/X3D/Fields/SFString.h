@@ -81,21 +81,21 @@ public:
 
 	SFString ();
 
-	SFString (const SFString &);
+	SFString (const SFString & other);
 
-	SFString (SFString &&);
-
-	explicit
-	SFString (const String &);
+	SFString (SFString && other);
 
 	explicit
-	SFString (String &&);
+	SFString (const String & value);
 
 	explicit
-	SFString (const std::string &);
+	SFString (String && value);
 
 	explicit
-	SFString (const char_type* const);
+	SFString (const std::string & value);
+
+	explicit
+	SFString (const char_type* const value);
 
 	virtual
 	SFString*
@@ -124,30 +124,22 @@ public:
 	///  @name Assignment operators
 
 	SFString &
-	operator = (const SFString & field)
-	{
-		setValue (field);
-		return *this;
-	}
+	operator = (const SFString & other);
 
 	SFString &
-	operator = (SFString &&);
+	operator = (SFString && other);
 
 	SFString &
-	operator = (const String & value)
-	{
-		setValue (value);
-		return *this;
-	}
+	operator = (const String & other);
 
 	SFString &
-	operator = (String &&);
+	operator = (String && other);
 
 	SFString &
-	operator = (const std::string &);
+	operator = (const std::string & other);
 
 	SFString &
-	operator = (const char_type* const);
+	operator = (const char_type* const other);
 
 	operator const std::string & () const;
 
@@ -190,15 +182,15 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 
 protected:

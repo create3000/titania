@@ -82,12 +82,12 @@ public:
 
 	SFColor ();
 
-	SFColor (const SFColor &);
+	SFColor (const SFColor & other);
 
 	explicit
-	SFColor (const internal_type &);
+	SFColor (const internal_type & value);
 
-	SFColor (const value_type &, const value_type &, const value_type &);
+	SFColor (const value_type & r, const value_type & g, const value_type & b);
 
 	virtual
 	SFColor*
@@ -154,13 +154,13 @@ public:
 	getHSV () const;
 
 	internal_type
-	lerp (const internal_type & toColor, const value_type & t) const;
+	lerp (const internal_type & dest, const value_type & t) const;
 
 	///  @name Input/Output
 
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -168,15 +168,15 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 
 protected:
@@ -184,7 +184,7 @@ protected:
 	friend class X3DArrayField <SFColor>;
 
 	void
-	toJSONStreamValue (std::ostream &) const;
+	toJSONStreamValue (std::ostream & ostream) const;
 
 
 private:

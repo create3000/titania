@@ -78,10 +78,10 @@ public:
 
 	SFTime ();
 
-	SFTime (const SFTime &);
+	SFTime (const SFTime & other);
 
 	explicit
-	SFTime (const time_type);
+	SFTime (const time_type value);
 
 	virtual
 	SFTime*
@@ -191,7 +191,7 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -199,15 +199,15 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 
 protected:

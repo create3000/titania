@@ -281,7 +281,7 @@ SFVec2 <InternalType>::negate (const pb::ptr <pb::pbExecutionContext> & ec, cons
 	{
 		const auto lhs = getThis <SFVec2> (ec, object);
 
-		return create <SFVec2> (ec, lhs -> negate ());
+		return create <SFVec2> (ec, new InternalType (lhs -> negate ()));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -301,7 +301,7 @@ SFVec2 <InternalType>::add (const pb::ptr <pb::pbExecutionContext> & ec, const p
 		const auto lhs = getThis <SFVec2> (ec, object);
 		const auto rhs = get1Argument <SFVec2> (args, 0);
 
-		return create <SFVec2> (ec, lhs -> add (*rhs));
+		return create <SFVec2> (ec, new InternalType (lhs -> add (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -321,7 +321,7 @@ SFVec2 <InternalType>::subtract (const pb::ptr <pb::pbExecutionContext> & ec, co
 		const auto lhs = getThis <SFVec2> (ec, object);
 		const auto rhs = get1Argument <SFVec2> (args, 0);
 
-		return create <SFVec2> (ec, lhs -> subtract (*rhs));
+		return create <SFVec2> (ec, new InternalType (lhs -> subtract (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -341,7 +341,7 @@ SFVec2 <InternalType>::multiply (const pb::ptr <pb::pbExecutionContext> & ec, co
 		const auto lhs = getThis <SFVec2> (ec, object);
 		const auto rhs = get1Argument <double> (args, 0);
 
-		return create <SFVec2> (ec, lhs -> multiply (rhs));
+		return create <SFVec2> (ec, new InternalType (lhs -> multiply (rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -361,7 +361,7 @@ SFVec2 <InternalType>::multVec (const pb::ptr <pb::pbExecutionContext> & ec, con
 		const auto lhs = getThis <SFVec2> (ec, object);
 		const auto rhs = get1Argument <SFVec2> (args, 0);
 
-		return create <SFVec2> (ec, lhs -> multiply (*rhs));
+		return create <SFVec2> (ec, new InternalType (lhs -> multiply (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -381,7 +381,7 @@ SFVec2 <InternalType>::divide (const pb::ptr <pb::pbExecutionContext> & ec, cons
 		const auto lhs = getThis <SFVec2> (ec, object);
 		const auto rhs = get1Argument <double> (args, 0);
 
-		return create <SFVec2> (ec, lhs -> divide (rhs));
+		return create <SFVec2> (ec, new InternalType (lhs -> divide (rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -401,7 +401,7 @@ SFVec2 <InternalType>::divVec (const pb::ptr <pb::pbExecutionContext> & ec, cons
 		const auto lhs = getThis <SFVec2> (ec, object);
 		const auto rhs = get1Argument <SFVec2> (args, 0);
 
-		return create <SFVec2> (ec, lhs -> divide (*rhs));
+		return create <SFVec2> (ec, new InternalType (lhs -> divide (*rhs)));
 	}
 	catch (const std::invalid_argument &)
 	{
@@ -440,7 +440,7 @@ SFVec2 <InternalType>::normalize (const pb::ptr <pb::pbExecutionContext> & ec, c
 	{
 		const auto lhs = getThis <SFVec2> (ec, object);
 
-		return create <SFVec2> (ec, lhs -> normalize ());
+		return create <SFVec2> (ec, new InternalType (lhs -> normalize ()));
 	}
 	catch (const std::invalid_argument &)
 	{

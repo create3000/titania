@@ -69,8 +69,8 @@ SFColorRGBA::SFColorRGBA () :
 	X3DField <Color4f> ()
 { }
 
-SFColorRGBA::SFColorRGBA (const SFColorRGBA & field) :
-	X3DField <Color4f> (field)
+SFColorRGBA::SFColorRGBA (const SFColorRGBA & other) :
+	X3DField <Color4f> (other)
 { }
 
 SFColorRGBA::SFColorRGBA (const internal_type & value) :

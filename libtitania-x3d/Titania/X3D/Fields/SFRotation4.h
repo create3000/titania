@@ -95,7 +95,7 @@ public:
 	SFRotation4 (const SFRotation4 & other);
 
 	explicit
-	SFRotation4 (const InternalType & other);
+	SFRotation4 (const InternalType & value);
 
 	SFRotation4 (const value_type & x, const value_type & y, const value_type & z, const value_type & angle);
 
@@ -230,8 +230,8 @@ SFRotation4 <InternalType>::SFRotation4 () :
 { }
 
 template <class InternalType>
-SFRotation4 <InternalType>::SFRotation4 (const SFRotation4 & field) :
-	X3DField <InternalType> (field)
+SFRotation4 <InternalType>::SFRotation4 (const SFRotation4 & other) :
+	X3DField <InternalType> (other)
 { }
 
 template <class InternalType>
@@ -390,7 +390,7 @@ inline
 InternalType
 SFRotation4 <InternalType>::inverse () const
 {
-	return ~getValue ();
+	return math::inverse (getValue ());
 }
 
 template <class InternalType>
@@ -514,7 +514,7 @@ inline
 InternalType
 operator ~ (const SFRotation4 <InternalType> & rotation)
 {
-	return ~rotation .getValue ();
+	return math::inverse (rotation .getValue ());
 }
 
 template <class InternalType>

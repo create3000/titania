@@ -84,19 +84,19 @@ public:
 
 	SFImage ();
 
-	SFImage (const SFImage &);
+	SFImage (const SFImage & other);
 
-	SFImage (SFImage &&);
-
-	explicit
-	SFImage (const Image &);
+	SFImage (SFImage && other);
 
 	explicit
-	SFImage (Image &&);
+	SFImage (const Image & value);
 
-	SFImage (const size_type, const size_type, const size_type, const MFInt32 &);
+	explicit
+	SFImage (Image && value);
 
-	SFImage (const size_type, const size_type, const size_type, MFInt32 &&);
+	SFImage (const size_type width, const size_type height, const size_type components, const MFInt32 & array);
+
+	SFImage (const size_type width, const size_type height, const size_type components, MFInt32 && array);
 
 	virtual
 	SFImage*
@@ -113,36 +113,36 @@ public:
 	///  @name Assignment operators
 
 	SFImage &
-	operator = (const SFImage &);
+	operator = (const SFImage & other);
 
 	SFImage &
-	operator = (SFImage &&);
+	operator = (SFImage && other);
 
 	SFImage &
-	operator = (Image &&);
+	operator = (Image && value);
 
 	///  @name Member access
 
 	void
-	setWidth (const size_type);
+	setWidth (const size_type value);
 
 	size_type
 	getWidth () const;
 
 	void
-	setHeight (const size_type);
+	setHeight (const size_type value);
 
 	size_type
 	getHeight () const;
 
 	void
-	setComponents (const size_type);
+	setComponents (const size_type value);
 
 	size_type
 	getComponents () const;
 
 	void
-	setArray (const MFInt32 &);
+	setArray (const MFInt32 & value);
 
 	MFInt32 &
 	getArray ();
@@ -166,7 +166,7 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -174,15 +174,15 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 	///  @name Destruction
 
@@ -196,7 +196,7 @@ protected:
 	friend class X3DArrayField <SFImage>;
 
 	void
-	toJSONStreamValue (std::ostream &) const;
+	toJSONStreamValue (std::ostream & ostream) const;
 
 
 private:

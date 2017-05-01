@@ -223,14 +223,14 @@ protected:
 
 	virtual
 	bool
-	hasRootedObjects (ChildObjectSet &) final override
+	hasRootedObjects (ChildObjectSet & seen) final override
 	{
 		// Weak pointers are no roots.
 		return false;
 	}
 
 	void
-	toJSONStreamValue (std::ostream &) const
+	toJSONStreamValue (std::ostream & ostream) const
 	{ }
 
 
@@ -268,7 +268,7 @@ private:
 
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -277,17 +277,17 @@ private:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override
+	toStream (std::ostream & ostream) const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::toStream: not supported!"); }
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override
+	toXMLStream (std::ostream & ostream) const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::toXMLStream: not supported!"); }
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override
+	toJSONStream (std::ostream & ostream) const final override
 	{ throw Error <NOT_SUPPORTED> ("X3DWeakPtr::toJSONtream: not supported!"); }
 
 

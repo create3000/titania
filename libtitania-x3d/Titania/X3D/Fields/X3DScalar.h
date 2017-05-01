@@ -146,33 +146,9 @@ public:
 		std::is_integral <T>::value,
 		X3DScalar &
 	>
-	operator <<= (const X3DScalar & field)
-	{
-		get () <<= field .getValue ();
-		addEvent ();
-		return *this;
-	}
-
-	template <class T = InternalType>
-	std::enable_if_t <
-		std::is_integral <T>::value,
-		X3DScalar &
-	>
 	operator <<= (const InternalType & value)
 	{
 		get () <<= value;
-		addEvent ();
-		return *this;
-	}
-
-	template <class T = InternalType>
-	std::enable_if_t <
-		std::is_integral <T>::value,
-		X3DScalar &
-	>
-	operator >>= (const X3DScalar & field)
-	{
-		get () >>= field .getValue ();
 		addEvent ();
 		return *this;
 	}
@@ -190,25 +166,13 @@ public:
 	}
 
 	X3DScalar &
-	operator += (const X3DScalar &);
-
-	X3DScalar &
 	operator += (const InternalType &);
-
-	X3DScalar &
-	operator -= (const X3DScalar &);
 
 	X3DScalar &
 	operator -= (const InternalType &);
 
 	X3DScalar &
-	operator *= (const X3DScalar &);
-
-	X3DScalar &
 	operator *= (const InternalType &);
-
-	X3DScalar &
-	operator /= (const X3DScalar &);
 
 	X3DScalar &
 	operator /= (const InternalType &);
@@ -217,7 +181,7 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -226,17 +190,17 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override
+	toStream (std::ostream & ostream) const final override
 	{ }
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override
+	toXMLStream (std::ostream & ostream) const final override
 	{ }
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override
+	toJSONStream (std::ostream & ostream) const final override
 	{ }
 
 	void
@@ -253,29 +217,9 @@ private:
 template <class InternalType>
 inline
 X3DScalar <InternalType> &
-X3DScalar <InternalType>::operator += (const X3DScalar & field)
-{
-	get () += field .getValue ();
-	addEvent ();
-	return *this;
-}
-
-template <class InternalType>
-inline
-X3DScalar <InternalType> &
 X3DScalar <InternalType>::operator += (const InternalType & value)
 {
 	get () += value;
-	addEvent ();
-	return *this;
-}
-
-template <class InternalType>
-inline
-X3DScalar <InternalType> &
-X3DScalar <InternalType>::operator -= (const X3DScalar & field)
-{
-	get () -= field .getValue ();
 	addEvent ();
 	return *this;
 }
@@ -293,29 +237,9 @@ X3DScalar <InternalType>::operator -= (const InternalType & value)
 template <class InternalType>
 inline
 X3DScalar <InternalType> &
-X3DScalar <InternalType>::operator *= (const X3DScalar & field)
-{
-	get () *= field .getValue ();
-	addEvent ();
-	return *this;
-}
-
-template <class InternalType>
-inline
-X3DScalar <InternalType> &
 X3DScalar <InternalType>::operator *= (const InternalType & value)
 {
 	get () *= value;
-	addEvent ();
-	return *this;
-}
-
-template <class InternalType>
-inline
-X3DScalar <InternalType> &
-X3DScalar <InternalType>::operator /= (const X3DScalar & field)
-{
-	get () /= field .getValue ();
 	addEvent ();
 	return *this;
 }
@@ -332,7 +256,7 @@ X3DScalar <InternalType>::operator /= (const InternalType & value)
 
 template <>
 void
-X3DScalar <bool>::fromStream (std::istream &)
+X3DScalar <bool>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -340,7 +264,7 @@ throw (Error <INVALID_X3D>,
 
 template <>
 void
-X3DScalar <double>::fromStream (std::istream &)
+X3DScalar <double>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -348,7 +272,7 @@ throw (Error <INVALID_X3D>,
 
 template <>
 void
-X3DScalar <float>::fromStream (std::istream &)
+X3DScalar <float>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -356,7 +280,7 @@ throw (Error <INVALID_X3D>,
 
 template <>
 void
-X3DScalar <int32_t>::fromStream (std::istream &)
+X3DScalar <int32_t>::fromStream (std::istream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -364,51 +288,51 @@ throw (Error <INVALID_X3D>,
 
 template <>
 void
-X3DScalar <bool>::toStream (std::ostream &) const;
+X3DScalar <bool>::toStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <double>::toStream (std::ostream &) const;
+X3DScalar <double>::toStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <float>::toStream (std::ostream &) const;
+X3DScalar <float>::toStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <int32_t>::toStream (std::ostream &) const;
+X3DScalar <int32_t>::toStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <bool>::toXMLStream (std::ostream &) const;
+X3DScalar <bool>::toXMLStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <double>::toXMLStream (std::ostream &) const;
+X3DScalar <double>::toXMLStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <float>::toXMLStream (std::ostream &) const;
+X3DScalar <float>::toXMLStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <int32_t>::toXMLStream (std::ostream &) const;
+X3DScalar <int32_t>::toXMLStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <bool>::toJSONStream (std::ostream &) const;
+X3DScalar <bool>::toJSONStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <double>::toJSONStream (std::ostream &) const;
+X3DScalar <double>::toJSONStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <float>::toJSONStream (std::ostream &) const;
+X3DScalar <float>::toJSONStream (std::ostream & ostream) const;
 
 template <>
 void
-X3DScalar <int32_t>::toJSONStream (std::ostream &) const;
+X3DScalar <int32_t>::toJSONStream (std::ostream & ostream) const;
 
 extern template class X3DScalar <bool>;
 extern template class X3DScalar <double>;

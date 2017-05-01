@@ -310,7 +310,7 @@ SFVec3 <InternalType>::negate (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto lhs = getThis <SFVec3> (cx, vp);
 
-		return create <SFVec3> (cx, lhs -> negate (), &JS_RVAL (cx, vp));
+		return create <SFVec3> (cx, new InternalType (lhs -> negate ()), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -331,7 +331,7 @@ SFVec3 <InternalType>::add (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFVec3> (cx, vp);
 		const auto rhs  = getArgument <SFVec3> (cx, argv, 0);
 
-		return create <SFVec3> (cx, lhs -> add (*rhs), &JS_RVAL (cx, vp));
+		return create <SFVec3> (cx, new InternalType (lhs -> add (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -352,7 +352,7 @@ SFVec3 <InternalType>::subtract (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFVec3> (cx, vp);
 		const auto rhs  = getArgument <SFVec3> (cx, argv, 0);
 
-		return create <SFVec3> (cx, lhs -> subtract (*rhs), &JS_RVAL (cx, vp));
+		return create <SFVec3> (cx, new InternalType (lhs -> subtract (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -373,7 +373,7 @@ SFVec3 <InternalType>::multiply (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFVec3> (cx, vp);
 		const auto rhs  = getArgument <value_type> (cx, argv, 0);
 
-		return create <SFVec3> (cx, lhs -> multiply (rhs), &JS_RVAL (cx, vp));
+		return create <SFVec3> (cx, new InternalType (lhs -> multiply (rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -394,7 +394,7 @@ SFVec3 <InternalType>::multVec (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFVec3> (cx, vp);
 		const auto rhs  = getArgument <SFVec3> (cx, argv, 0);
 
-		return create <SFVec3> (cx, lhs -> multiply (*rhs), &JS_RVAL (cx, vp));
+		return create <SFVec3> (cx, new InternalType (lhs -> multiply (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -415,7 +415,7 @@ SFVec3 <InternalType>::divide (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFVec3> (cx, vp);
 		const auto rhs  = getArgument <value_type> (cx, argv, 0);
 
-		return create <SFVec3> (cx, lhs -> divide (rhs), &JS_RVAL (cx, vp));
+		return create <SFVec3> (cx, new InternalType (lhs -> divide (rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -436,7 +436,7 @@ SFVec3 <InternalType>::divVec (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFVec3> (cx, vp);
 		const auto rhs  = getArgument <SFVec3> (cx, argv, 0);
 
-		return create <SFVec3> (cx, lhs -> divide (*rhs), &JS_RVAL (cx, vp));
+		return create <SFVec3> (cx, new InternalType (lhs -> divide (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -457,7 +457,7 @@ SFVec3 <InternalType>::cross (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto lhs  = getThis <SFVec3> (cx, vp);
 		const auto rhs  = getArgument <SFVec3> (cx, argv, 0);
 
-		return create <SFVec3> (cx, lhs -> cross (*rhs), &JS_RVAL (cx, vp));
+		return create <SFVec3> (cx, new InternalType (lhs -> cross (*rhs)), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{
@@ -497,7 +497,7 @@ SFVec3 <InternalType>::normalize (JSContext* cx, uint32_t argc, jsval* vp)
 	{
 		const auto lhs = getThis <SFVec3> (cx, vp);
 
-		return create <SFVec3> (cx, lhs -> normalize (), &JS_RVAL (cx, vp));
+		return create <SFVec3> (cx, new InternalType (lhs -> normalize ()), &JS_RVAL (cx, vp));
 	}
 	catch (const std::exception & error)
 	{

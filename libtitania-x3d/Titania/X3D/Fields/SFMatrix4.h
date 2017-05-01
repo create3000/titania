@@ -101,8 +101,8 @@ public:
 	{ }
 
 	explicit
-	SFMatrix4 (const InternalType & other) :
-		X3DField <InternalType> (other)
+	SFMatrix4 (const InternalType & value) :
+		X3DField <InternalType> (value)
 	{ }
 
 	SFMatrix4 (const value_type & e11, const value_type & e12, const value_type & e13, const value_type & e14,
@@ -236,7 +236,7 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -244,15 +244,15 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 
 protected:
@@ -260,7 +260,7 @@ protected:
 	friend class X3DArrayField <SFMatrix4>;
 
 	void
-	toJSONStreamValue (std::ostream &) const;
+	toJSONStreamValue (std::ostream & ostream) const;
 
 
 private:

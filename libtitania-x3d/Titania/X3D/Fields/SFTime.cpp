@@ -64,8 +64,8 @@ SFTime::SFTime () :
 	X3DField <time_type> ()
 { }
 
-SFTime::SFTime (const SFTime & field) :
-	X3DField <time_type> (field)
+SFTime::SFTime (const SFTime & other) :
+	X3DField <time_type> (other)
 { }
 
 SFTime::SFTime (const time_type value) :

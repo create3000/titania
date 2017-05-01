@@ -96,8 +96,8 @@ public:
 		X3DField <InternalType> ()
 	{ }
 
-	SFVec2 (const SFVec2 & field) :
-		X3DField <InternalType> (field)
+	SFVec2 (const SFVec2 & other) :
+		X3DField <InternalType> (other)
 	{ }
 
 	explicit
@@ -162,48 +162,48 @@ public:
 	///  @name Arithmetic operations
 
 	SFVec2 &
-	operator += (const InternalType &);
+	operator += (const InternalType & vector);
 
 	SFVec2 &
-	operator -= (const InternalType &);
+	operator -= (const InternalType & vector);
 
 	SFVec2 &
-	operator *= (const InternalType &);
+	operator *= (const InternalType & vector);
 
 	SFVec2 &
-	operator *= (const value_type &);
+	operator *= (const value_type & vector);
 
 	SFVec2 &
-	operator /= (const InternalType &);
+	operator /= (const InternalType & vector);
 
 	SFVec2 &
-	operator /= (const value_type &);
+	operator /= (const value_type & vector);
 
-	SFVec2*
+	InternalType
 	negate () const;
 
-	SFVec2*
-	add (const SFVec2 &) const;
+	InternalType
+	add (const InternalType & vector) const;
 
-	SFVec2*
-	subtract (const SFVec2 &) const;
+	InternalType
+	subtract (const InternalType & vector) const;
 
-	SFVec2*
-	multiply (const SFVec2 &) const;
+	InternalType
+	multiply (const InternalType & vector) const;
 
-	SFVec2*
-	multiply (const value_type &) const;
+	InternalType
+	multiply (const value_type & value) const;
 
-	SFVec2*
-	divide (const SFVec2 &) const;
+	InternalType
+	divide (const InternalType & vector) const;
 
-	SFVec2*
-	divide (const value_type &) const;
+	InternalType
+	divide (const value_type & value) const;
 
 	value_type
-	dot (const SFVec2 &) const;
+	dot (const InternalType & vector) const;
 
-	SFVec2*
+	InternalType
 	normalize () const;
 
 	value_type
@@ -213,7 +213,7 @@ public:
 
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -221,15 +221,15 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 
 protected:
@@ -237,7 +237,7 @@ protected:
 	friend class X3DArrayField <SFVec2>;
 
 	void
-	toJSONStreamValue (std::ostream &) const;
+	toJSONStreamValue (std::ostream & ostream) const;
 
 
 private:
@@ -374,74 +374,74 @@ SFVec2 <InternalType>::operator /= (const value_type & value)
 
 template <class InternalType>
 inline
-SFVec2 <InternalType>*
+InternalType
 SFVec2 <InternalType>::negate () const
 {
-	return new SFVec2 (-getValue ());
+	return math::negate (getValue ());
 }
 
 template <class InternalType>
 inline
-SFVec2 <InternalType>*
-SFVec2 <InternalType>::add (const SFVec2 & field) const
+InternalType
+SFVec2 <InternalType>::add (const InternalType & vector) const
 {
-	return new SFVec2 (getValue () + field .getValue ());
+	return getValue () + vector;
 }
 
 template <class InternalType>
 inline
-SFVec2 <InternalType>*
-SFVec2 <InternalType>::subtract (const SFVec2 & field) const
+InternalType
+SFVec2 <InternalType>::subtract (const InternalType & vector) const
 {
-	return new SFVec2 (getValue () - field .getValue ());
+	return getValue () - vector;
 }
 
 template <class InternalType>
 inline
-SFVec2 <InternalType>*
+InternalType
 SFVec2 <InternalType>::multiply (const value_type & value) const
 {
-	return new SFVec2 (getValue () * value);
+	return getValue () * value;
 }
 
 template <class InternalType>
 inline
-SFVec2 <InternalType>*
-SFVec2 <InternalType>::multiply (const SFVec2 & field) const
+InternalType
+SFVec2 <InternalType>::multiply (const InternalType & vector) const
 {
-	return new SFVec2 (getValue () * field .getValue ());
+	return getValue () * vector;
 }
 
 template <class InternalType>
 inline
-SFVec2 <InternalType>*
-SFVec2 <InternalType>::divide (const SFVec2 & field) const
+InternalType
+SFVec2 <InternalType>::divide (const InternalType & vector) const
 {
-	return new SFVec2 (getValue () / field .getValue ());
+	return getValue () / vector;
 }
 
 template <class InternalType>
 inline
-SFVec2 <InternalType>*
+InternalType
 SFVec2 <InternalType>::divide (const value_type & value) const
 {
-	return new SFVec2 (getValue () / value);
+	return getValue () / value;
 }
 
 template <class InternalType>
 inline
 typename SFVec2 <InternalType>::value_type
-SFVec2 <InternalType>::dot (const SFVec2 & field) const
+SFVec2 <InternalType>::dot (const InternalType & vector) const
 {
-	return math::dot (getValue (), field .getValue ());
+	return math::dot (getValue (), vector);
 }
 
 template <class InternalType>
 inline
-SFVec2 <InternalType>*
+InternalType
 SFVec2 <InternalType>::normalize () const
 {
-	return new SFVec2 (math::normalize (getValue ()));
+	return math::normalize (getValue ());
 }
 
 template <class InternalType>
@@ -652,7 +652,7 @@ inline
 InternalType
 operator - (const SFVec2 <InternalType> & vector)
 {
-	return -vector .getValue ();
+	return math::negate (vector .getValue ());
 }
 
 template <class InternalType>

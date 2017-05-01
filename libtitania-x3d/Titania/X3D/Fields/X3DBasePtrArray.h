@@ -184,17 +184,17 @@ public:
 
 	///  Assigns the X3DBasePtrArray and propagates an event.
 	X3DBasePtrArray &
-	operator = (const X3DBasePtrArray & field)
+	operator = (const X3DBasePtrArray & other)
 	{
-		X3DArrayField <ValueType>::operator = (field);
+		X3DArrayField <ValueType>::operator = (other);
 		return *this;
 	}
 
 	///  Assigns the X3DBasePtrArray and propagates an event.
 	X3DBasePtrArray &
-	operator = (X3DBasePtrArray && field)
+	operator = (X3DBasePtrArray && other)
 	{
-		X3DArrayField <ValueType>::operator = (std::move (field));
+		X3DArrayField <ValueType>::operator = (std::move (other));
 		return *this;
 	}
 
@@ -210,7 +210,7 @@ public:
 	///  Assigns the X3DBasePtrArray and propagates an event.
 	template <class Up>
 	X3DBasePtrArray &
-	operator = (X3DBasePtrArray <Up> &&);
+	operator = (X3DBasePtrArray <Up> && other);
 
 	///  @name Common members
 
@@ -331,7 +331,7 @@ public:
 	///  Not supported.
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -340,17 +340,17 @@ public:
 	///  Inserts this object into @a ostream in VRML Classic Encoding style.
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	///  Inserts this object into @a ostream in X3D XML Encoding style.
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	///  Inserts this object into @a ostream in X3D JSON Encoding style.
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 
 private:

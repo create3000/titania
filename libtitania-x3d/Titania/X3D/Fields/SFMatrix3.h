@@ -100,8 +100,8 @@ public:
 	{ }
 
 	explicit
-	SFMatrix3 (const InternalType & other) :
-		X3DField <InternalType> (other)
+	SFMatrix3 (const InternalType & value) :
+		X3DField <InternalType> (value)
 	{ }
 
 	SFMatrix3 (const value_type & e11, const value_type & e12, const value_type & e13,
@@ -258,7 +258,7 @@ protected:
 	friend class X3DArrayField <SFMatrix3>;
 
 	void
-	toJSONStreamValue (std::ostream &) const;
+	toJSONStreamValue (std::ostream & ostream) const;
 
 
 private:

@@ -82,12 +82,12 @@ public:
 
 	SFColorRGBA ();
 
-	SFColorRGBA (const SFColorRGBA &);
+	SFColorRGBA (const SFColorRGBA & other);
 
 	explicit
-	SFColorRGBA (const internal_type &);
+	SFColorRGBA (const internal_type & value);
 
-	SFColorRGBA (const value_type &, const value_type &, const value_type &, const value_type &);
+	SFColorRGBA (const value_type & r, const value_type & g, const value_type & b, const value_type & a);
 
 	virtual
 	SFColorRGBA*
@@ -161,13 +161,13 @@ public:
 	getHSVA () const;
 
 	internal_type
-	lerp (const internal_type & toColor, const value_type & t) const;
+	lerp (const internal_type & dest, const value_type & t) const;
 
 	///  @name Input/Output
 
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -175,15 +175,15 @@ public:
 
 	virtual
 	void
-	toStream (std::ostream &) const final override;
+	toStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toXMLStream (std::ostream &) const final override;
+	toXMLStream (std::ostream & ostream) const final override;
 
 	virtual
 	void
-	toJSONStream (std::ostream &) const final override;
+	toJSONStream (std::ostream & ostream) const final override;
 
 
 protected:
@@ -191,7 +191,7 @@ protected:
 	friend class X3DArrayField <SFColorRGBA>;
 
 	void
-	toJSONStreamValue (std::ostream &) const;
+	toJSONStreamValue (std::ostream & ostream) const;
 
 
 private:

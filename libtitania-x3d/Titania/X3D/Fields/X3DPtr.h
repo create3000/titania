@@ -406,7 +406,7 @@ public:
 	///  Not supported.
 	virtual
 	void
-	fromStream (std::istream &)
+	fromStream (std::istream & istream)
 	throw (Error <INVALID_X3D>,
 	       Error <NOT_SUPPORTED>,
 	       Error <INVALID_OPERATION_TIMING>,
@@ -472,7 +472,7 @@ protected:
 	friend class X3DArrayField <X3DPtr <InternalType>>;
 
 	void
-	toJSONStreamValue (std::ostream &) const
+	toJSONStreamValue (std::ostream & ostream) const
 	{ }
 
 
