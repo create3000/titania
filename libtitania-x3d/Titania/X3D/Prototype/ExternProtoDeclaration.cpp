@@ -73,7 +73,7 @@ ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const execu
    X3DProtoDeclarationNode (),
 	           X3DUrlObject (),
 	                  scene (),
-	                  proto (),
+	       protoDeclaration (),
 	                 future ()
 {
 	addType (X3DConstants::ExternProtoDeclaration);
@@ -81,7 +81,7 @@ ExternProtoDeclaration::ExternProtoDeclaration (X3DExecutionContext* const execu
 	addField (inputOutput, "metadata", metadata ());
 	url () .setName ("url");
 
-	addChildObjects (url (), scene, proto, future);
+	addChildObjects (url (), scene, protoDeclaration, future);
 }
 
 ExternProtoDeclaration*
@@ -135,16 +135,6 @@ throw (Error <INVALID_NAME>,
 	throw Error <NOT_SUPPORTED> ("Not supported.");
 }
 
-X3DPrototypeInstance*
-ExternProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
-// Spec says
-//throw (Error <INVALID_NODE>,
-//       Error <INVALID_OPERATION_TIMING>,
-//       Error <DISPOSED>)
-{
-	return new X3DPrototypeInstance (executionContext, X3DProtoDeclarationNodePtr (this));
-}
-
 void
 ExternProtoDeclaration::initialize ()
 {
@@ -183,45 +173,82 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	}
 }
 
+X3DPrototypeInstance*
+ExternProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
+// Spec says
+//throw (Error <INVALID_NODE>,
+//       Error <INVALID_OPERATION_TIMING>,
+//       Error <DISPOSED>)
+{
+	return new X3DPrototypeInstance (executionContext, X3DProtoDeclarationNodePtr (this));
+}
+
+void
+ExternProtoDeclaration::addInstance (X3DPrototypeInstance* const instance)
+{
+	X3DProtoDeclarationNode::addInstance (instance);
+
+	if (protoDeclaration)
+		protoDeclaration -> addInstance (instance);
+}
+
+void
+ExternProtoDeclaration::removeInstance (X3DPrototypeInstance* const instance)
+{
+	X3DProtoDeclarationNode::removeInstance (instance);
+
+	if (protoDeclaration)
+		protoDeclaration -> removeInstance (instance);
+}
+
 void
 ExternProtoDeclaration::setProtoDeclaration (ProtoDeclaration* value)
 {
-	proto = value;
-
-	if (not proto)
-		return;
-
-	if (getBrowser () -> isStrict ())
+	if (protoDeclaration)
 	{
-		for (const auto & fieldDefinition : getFieldDefinitions ())
-		{
-			try
-			{
-				X3DFieldDefinition* const protoField = proto -> getField (fieldDefinition -> getName ());
+		for (const auto & instance : getInstances ())
+			protoDeclaration -> removeInstance (instance);
+	}
 
-				if (protoField -> getAccessType () == fieldDefinition -> getAccessType ())
-				{
-					if (protoField -> getType () == fieldDefinition -> getType ())
-						fieldDefinition -> set (*protoField);
-					else
-						getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (), "' and PROTO field have different types.");
-				}
-				else
-					getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (),+ "' and PROTO field have different access types.");
-			}
-			catch (const Error <INVALID_NAME> &)
+	protoDeclaration = value;
+
+	if (protoDeclaration)
+	{
+		for (const auto & instance : getInstances ())
+			protoDeclaration -> addInstance (instance);	
+
+		if (getBrowser () -> isStrict ())
+		{
+			for (const auto & fieldDefinition : getFieldDefinitions ())
 			{
-				getBrowser () -> println ("EXTERNPROTO field '", fieldDefinition -> getName (), "' not found in PROTO '", proto -> getName (), "'.");
+				try
+				{
+					X3DFieldDefinition* const protoField = protoDeclaration -> getField (fieldDefinition -> getName ());
+	
+					if (protoField -> getAccessType () == fieldDefinition -> getAccessType ())
+					{
+						if (protoField -> getType () == fieldDefinition -> getType ())
+							fieldDefinition -> set (*protoField);
+						else
+							getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (), "' and PROTO field have different types.");
+					}
+					else
+						getBrowser () -> println ("EXTERNPROTO '", getName (), "' field '", fieldDefinition -> getName (),+ "' and PROTO field have different access types.");
+				}
+				catch (const Error <INVALID_NAME> &)
+				{
+					getBrowser () -> println ("EXTERNPROTO field '", fieldDefinition -> getName (), "' not found in PROTO '", protoDeclaration -> getName (), "'.");
+				}
 			}
 		}
-	}
-	else
-	{
-		for (const auto & fieldDefinition : getUserDefinedFields ())
-			removeField (fieldDefinition -> getName ());
-
-		for (const auto & fieldDefinition : proto -> getUserDefinedFields ())
-			addUserDefinedField (fieldDefinition -> getAccessType (), fieldDefinition -> getName (), fieldDefinition);
+		else
+		{
+			for (const auto & fieldDefinition : getUserDefinedFields ())
+				removeField (fieldDefinition -> getName ());
+	
+			for (const auto & fieldDefinition : protoDeclaration -> getUserDefinedFields ())
+				addUserDefinedField (fieldDefinition -> getAccessType (), fieldDefinition -> getName (), fieldDefinition);
+		}
 	}
 }
 
@@ -229,8 +256,8 @@ ProtoDeclaration*
 ExternProtoDeclaration::getProtoDeclaration ()
 throw (Error <DISPOSED>)
 {
-	if (proto)
-		return proto;
+	if (protoDeclaration)
+		return protoDeclaration;
 	
 	throw Error <DISPOSED> ("No prototype declaration available.");
 }

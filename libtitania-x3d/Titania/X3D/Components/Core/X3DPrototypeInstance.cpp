@@ -161,7 +161,11 @@ X3DPrototypeInstance::construct ()
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
 
-		protoNode -> checkLoadState () .removeInterest (&X3DPrototypeInstance::construct, this);
+		if (protoNode -> isExternproto ())
+		{
+			protoNode -> checkLoadState () .removeInterest (&X3DPrototypeInstance::construct, this);
+			protoNode -> checkLoadState () .addInterest (&X3DPrototypeInstance::update, this);
+		}
 
 		// Interface
 
@@ -238,6 +242,9 @@ X3DPrototypeInstance::update ()
 {
 	try
 	{
+		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
+			return;
+
 		X3DExecutionContext::dispose ();
 
 		const auto proto  = protoNode -> getProtoDeclaration ();

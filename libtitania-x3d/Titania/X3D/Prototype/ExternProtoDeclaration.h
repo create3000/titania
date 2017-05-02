@@ -135,11 +135,13 @@ public:
 	getInternalScene () const
 	{ return scene; }
 
-	///  @name Operations
+	///  @name Instances handling
 
 	virtual
 	X3DPrototypeInstance*
 	createInstance (X3DExecutionContext* const executionContext) final override;
+
+	///  @name Load handling
 
 	virtual
 	void
@@ -176,6 +178,19 @@ public:
 
 	virtual
 	~ExternProtoDeclaration () final override;
+
+
+protected:
+
+	///  @name Instance handling
+
+	virtual
+	void
+	addInstance (X3DPrototypeInstance* const instance) final override;
+
+	virtual
+	void
+	removeInstance (X3DPrototypeInstance* const instance) final override;
 
 
 private:
@@ -217,7 +232,7 @@ private:
 	///  @name Members
 
 	X3DScenePtr          scene;
-	ProtoDeclarationPtr  proto;
+	ProtoDeclarationPtr  protoDeclaration;
 	X3DPtr <SceneFuture> future;
 
 };

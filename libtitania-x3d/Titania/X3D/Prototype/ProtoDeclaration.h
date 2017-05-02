@@ -86,12 +86,6 @@ public:
 	throw (Error <INVALID_NAME>,
 	       Error <NOT_SUPPORTED>) final override;
 
-	///  @name Instance construction
-
-	virtual
-	X3DPrototypeInstance*
-	createInstance (X3DExecutionContext* const executionContext) final override;
-
 	///  @name Common members
 
 	virtual
@@ -198,8 +192,14 @@ public:
 	getProtoDeclaration ()
 	throw (Error <DISPOSED>) final override
 	{ return this; }
+
+	///  @name Instances handling
+
+	virtual
+	X3DPrototypeInstance*
+	createInstance (X3DExecutionContext* const executionContext) final override;
 	
-	///  @name Operations
+	///  @name Load handling
 
 	virtual
 	const SFEnum <LoadState> &

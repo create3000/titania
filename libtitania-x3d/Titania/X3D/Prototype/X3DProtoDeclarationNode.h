@@ -83,7 +83,7 @@ public:
 	getProtoDeclaration ()
 	throw (Error <DISPOSED>) = 0;
 
-	///  @name Operations
+	///  @name Instances handling
 
 	X3DPrototypeInstance*
 	createInstance ()
@@ -92,6 +92,15 @@ public:
 	virtual
 	X3DPrototypeInstance*
 	createInstance (X3DExecutionContext* const executionContext) = 0;
+
+	std::set <X3DPrototypeInstance*>
+	getInstances () const
+	{ return instances; }
+
+	void
+	requestUpdateInstances ();
+
+	///  @name Load handling
 
 	virtual
 	void
@@ -104,13 +113,6 @@ public:
 	virtual
 	const SFEnum <LoadState> &
 	checkLoadState () const = 0;
-
-	std::set <X3DPrototypeInstance*>
-	getInstances () const
-	{ return instances; }
-
-	void
-	requestUpdateInstances ();
 
 	///  @name Comment handling
 
@@ -125,6 +127,7 @@ public:
 
 protected:
 
+	friend class ExternProtoDeclaration;
 	friend class X3DPrototypeInstance;
 
 	///  @name Construction
@@ -135,7 +138,7 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Operations
+	///  @name Instance handling
 
 	virtual
 	void

@@ -127,16 +127,6 @@ throw (Error <INVALID_NAME>,
 	throw Error <NOT_SUPPORTED> ("Not supported.");
 }
 
-X3DPrototypeInstance*
-ProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
-// Spec says
-//throw (Error <INVALID_NODE>,
-//       Error <INVALID_OPERATION_TIMING>,
-//       Error <DISPOSED>)
-{
-	return new X3DPrototypeInstance (executionContext, X3DProtoDeclarationNodePtr (this));
-}
-
 void
 ProtoDeclaration::initialize ()
 {
@@ -163,6 +153,16 @@ throw (Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
 {
 	X3DExecutionContext::setExecutionContext (executionContext);
+}
+
+X3DPrototypeInstance*
+ProtoDeclaration::createInstance (X3DExecutionContext* const executionContext)
+// Spec says
+//throw (Error <INVALID_NODE>,
+//       Error <INVALID_OPERATION_TIMING>,
+//       Error <DISPOSED>)
+{
+	return new X3DPrototypeInstance (executionContext, X3DProtoDeclarationNodePtr (this));
 }
 
 void
