@@ -108,6 +108,27 @@ OutlineEditor::initialize ()
 	getScrolledWindow () .add (*treeView);
 	treeView -> show ();
 
+	if (not getConfig () -> hasItem ("showExternProtos"))
+		getConfig () -> setItem ("showExternProtos", true);
+
+	if (not getConfig () -> hasItem ("showPrototypes"))
+		getConfig () -> setItem ("showPrototypes", true);
+
+	if (not getConfig () -> hasItem ("showImportedNodes"))
+		getConfig () -> setItem ("showImportedNodes", true);
+
+	if (not getConfig () -> hasItem ("showExportedNodes"))
+		getConfig () -> setItem ("showExportedNodes", true);
+
+	if (not getConfig () -> hasItem ("expandExternProtos"))
+		getConfig () -> setItem ("expandExternProtos", true);
+
+	if (not getConfig () -> hasItem ("expandPrototypeInstances"))
+		getConfig () -> setItem ("expandPrototypeInstances", true);
+
+	if (not getConfig () -> hasItem ("expandInlineNodes"))
+		getConfig () -> setItem ("expandInlineNodes", true);
+
 	getShowExternProtosMenuItem ()         .set_active (getConfig () -> getBoolean ("showExternProtos"));
 	getShowPrototypesMenuItem ()           .set_active (getConfig () -> getBoolean ("showPrototypes"));
 	getShowImportedNodesMenuItem ()        .set_active (getConfig () -> getBoolean ("showImportedNodes"));
