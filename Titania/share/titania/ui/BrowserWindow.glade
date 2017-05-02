@@ -673,12 +673,6 @@
     <property name="stock">UndoHistory</property>
     <property name="icon_size">1</property>
   </object>
-  <object class="GtkImage" id="image38">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">UndoHistory</property>
-    <property name="icon_size">1</property>
-  </object>
   <object class="GtkMenu" id="BrowserMenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -924,9 +918,9 @@
             </child>
             <child>
               <object class="GtkImageMenuItem" id="BrowserUndoHistoryMenuItem">
+                <property name="label" translatable="yes">Undo History ...</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Undo History ...</property>
                 <property name="use_underline">True</property>
                 <property name="image">image37</property>
                 <property name="use_stock">False</property>
@@ -1074,8 +1068,8 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -2104,6 +2098,12 @@
       </object>
     </child>
   </object>
+  <object class="GtkImage" id="image38">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">UndoHistory</property>
+    <property name="icon_size">1</property>
+  </object>
   <object class="GtkImage" id="image4">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -2175,9 +2175,8 @@
                 <child>
                   <object class="GtkMenuBar" id="Menubar">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <signal name="button-press-event" handler="on_menubar_button_press_event" after="yes" swapped="no"/>
-                    <child>
+                     <child>
                       <object class="GtkMenuItem" id="FileMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -2417,14 +2416,14 @@
                             </child>
                             <child>
                               <object class="GtkImageMenuItem" id="UndoHistoryMenuItem">
-                                 <property name="visible">True</property>
-                                 <property name="can_focus">False</property>
-                                 <property name="label" translatable="yes">Undo History ...</property>
-                                 <property name="use_underline">True</property>
-                                 <property name="image">image38</property>
-                                 <property name="use_stock">False</property>
-                                 <property name="always_show_image">True</property>
-                                 <signal name="activate" handler="on_undo_history_activated" swapped="no"/>
+                                <property name="label" translatable="yes">Undo History ...</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="use_underline">True</property>
+                                <property name="image">image38</property>
+                                <property name="use_stock">False</property>
+                                <property name="always_show_image">True</property>
+                                <signal name="activate" handler="on_undo_history_activated" swapped="no"/>
                               </object>
                             </child>
                             <child>
@@ -2566,8 +2565,8 @@
                                 <property name="label" translatable="yes">Detach From Group</property>
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
+                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>

@@ -672,6 +672,7 @@ BrowserWindow::on_key_release_event (GdkEventKey* event)
 bool
 BrowserWindow::on_menubar_button_press_event (GdkEventButton* event)
 {
+	setAccelerators (true);
 	getWidget () .grab_focus ();
 	return false;
 }

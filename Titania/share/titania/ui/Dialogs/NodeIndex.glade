@@ -115,6 +115,7 @@
                   <object class="GtkTreeViewColumn" id="ImageColumn">
                     <property name="visible">False</property>
                     <property name="sizing">autosize</property>
+                    <property name="clickable">True</property>
                     <property name="sort_column_id">0</property>
                     <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
@@ -163,6 +164,7 @@
                 <child>
                   <object class="GtkTreeViewColumn" id="ImportColumn">
                     <property name="sizing">autosize</property>
+                    <property name="clickable">True</property>
                     <property name="sort_column_id">3</property>
                     <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
@@ -176,6 +178,7 @@
                 <child>
                   <object class="GtkTreeViewColumn" id="ExportColumn">
                     <property name="sizing">autosize</property>
+                    <property name="clickable">True</property>
                     <property name="sort_column_id">4</property>
                     <signal name="clicked" handler="on_column_clicked" swapped="no"/>
                     <child>
