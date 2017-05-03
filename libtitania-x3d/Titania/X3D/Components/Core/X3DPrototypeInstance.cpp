@@ -162,8 +162,6 @@ X3DPrototypeInstance::construct ()
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
 
-		constructed = true;
-
 		if (protoNode -> isExternproto ())
 		{
 			protoNode -> checkLoadState () .removeInterest (&X3DPrototypeInstance::construct, this);
@@ -307,13 +305,14 @@ X3DPrototypeInstance::initialize ()
 				break;
 			case COMPLETE_STATE:
 			{
-				if (protoNode -> isExternproto () and not constructed)
-					construct ();
+				if (not protoNode -> isExternproto ())
+				{
+					ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
+	
+					copyImportedNodes (proto, COPY_OR_CLONE);
+					copyRoutes (proto, COPY_OR_CLONE);
+				}
 
-				ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();
-
-				copyImportedNodes (proto, COPY_OR_CLONE);
-				copyRoutes (proto, COPY_OR_CLONE);
 				break;
 			}
 			case FAILED_STATE:
