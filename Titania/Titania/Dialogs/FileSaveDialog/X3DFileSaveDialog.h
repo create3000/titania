@@ -61,11 +61,6 @@ class X3DFileSaveDialog :
 {
 public:
 
-	///  @name Member access
-
-	basic::uri
-	getURL () const;
-
 	///  @name Operations
 
 	bool
@@ -94,6 +89,11 @@ protected:
 
 
 private:
+
+	///  @name Member access
+
+	basic::uri
+	getURL () const;
 
 	///  @name Operations
 

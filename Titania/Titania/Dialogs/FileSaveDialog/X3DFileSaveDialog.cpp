@@ -56,6 +56,7 @@
 
 #include <Titania/X3D/Basic/Traverse.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
+#include <Titania/X3D/InputOutput/FileGenerator.h>
 #include <Titania/OS.h>
 
 #include <regex>
@@ -114,7 +115,14 @@ X3DFileSaveDialog::X3DFileSaveDialog () :
 basic::uri
 X3DFileSaveDialog::getURL () const
 {
-	return "file://" + getWindow () .get_file () -> get_path ();
+	basic::uri url = getWindow () .get_file () -> get_path ();
+
+	url .add_file_scheme ();
+
+	if (not X3D::FileGenerator::getKnownFileTypes () .count (url .suffix ()))
+		url .suffix (".x3d");
+
+	return url;
 }
 
 bool

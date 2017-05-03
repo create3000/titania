@@ -285,7 +285,6 @@ private:
 
 	X3DProtoDeclarationNodePtr protoNode;
 	SFBool                     live;
-	bool                       constructed;
 
 };
 

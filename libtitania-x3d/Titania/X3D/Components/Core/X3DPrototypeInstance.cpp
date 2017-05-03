@@ -74,8 +74,7 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	            X3DNode (),
 	X3DExecutionContext (),
 	          protoNode (p_protoNode),
-	               live (true),
-	        constructed (false)
+	               live (true)
 {
 	addType (X3DConstants::X3DPrototypeInstance);
 

@@ -348,11 +348,15 @@ public:
 
 	///  Returns the basename of this URI stript of @a suffix.
 	string_type
-	basename (const string_type &) const;
+	basename (const string_type & suffix) const;
 
 	///  Returns the basename of this URI stript of @a list of suffixes.
 	string_type
-	basename (std::initializer_list <string_type>) const;
+	basename (std::initializer_list <string_type> list) const;
+
+	///  Adds @a value to basename.
+	void
+	suffix (const string_type & suffix);
 
 	///  Returns the suffix of this URI's filename.
 	string_type
@@ -806,6 +810,13 @@ basic_uri <StringT>::basename (std::initializer_list <string_type> suffixes) con
 	}
 
 	return basename ();
+}
+
+template <class StringT>
+void
+basic_uri <StringT>::suffix (const string_type & suffix)
+{
+	value .path += suffix;
 }
 
 template <class StringT>

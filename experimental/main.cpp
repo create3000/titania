@@ -273,14 +273,10 @@ main (int argc, char** argv)
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	
-		std::vector <std::string> sourceTextLines;
+	basic::uri url = "/home/foo.v";
 
-		basic::split (std::back_inserter (sourceTextLines), "\n", "\n");
-
-	__LOG__ << sourceTextLines .size () << std::endl;
-	__LOG__ << sourceTextLines .front () .size () << std::endl;
-	__LOG__ << sourceTextLines .back ().size () << std::endl;
+	__LOG__ << url .suffix () << std::endl;
+	__LOG__ << url .parent () << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
