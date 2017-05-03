@@ -750,6 +750,7 @@ Browser::setSceneAsync (const X3D::SFNode & script, const X3D::SFNode & node, X3
 		executionContext -> isLive () .addInterest (scene -> isLive ());
 
 		scene -> isLive () = executionContext -> isLive ();
+		scene -> setup ();
 
 		*field = scene -> getRootNodes ();
 	}
