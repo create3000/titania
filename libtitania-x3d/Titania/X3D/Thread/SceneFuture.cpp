@@ -216,6 +216,7 @@ SceneFuture::set_scene (const bool addEvent)
 
 		scene -> getExternProtosLoadCount () .addInterest (&SceneFuture::set_loadCount, this);
 
+		scene -> setup ();
 		scene -> requestAsyncLoadOfExternProtos ();
 	}
 	catch (const InterruptThreadException &)

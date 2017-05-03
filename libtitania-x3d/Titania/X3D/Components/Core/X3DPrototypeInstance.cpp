@@ -162,8 +162,6 @@ X3DPrototypeInstance::construct ()
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
 
-__LOG__ << getExecutionContext () -> getTypeName () << std::endl;
-
 		constructed = true;
 
 		if (protoNode -> isExternproto ())

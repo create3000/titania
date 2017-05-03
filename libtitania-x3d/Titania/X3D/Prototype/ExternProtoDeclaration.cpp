@@ -145,8 +145,6 @@ ExternProtoDeclaration::initialize ()
 	isLive () .addInterest (&ExternProtoDeclaration::set_live, this);
 
 	url () .addInterest (&ExternProtoDeclaration::set_url, this);
-
-	setLoadState (checkLoadState ());
 }
 
 void
