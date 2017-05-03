@@ -244,6 +244,9 @@ BrowserSelection::addNodes (const X3D::MFNode & value)
 	const auto & selection = browser -> getSelection ();
 
 	selection -> addNodes (value);
+
+	// We must immediately call set_nodes to to remove from meta data to lower clone count.
+	set_nodes (selection -> getNodes ());
 }
 
 void
@@ -263,6 +266,9 @@ BrowserSelection::clearNodes ()
 	const auto & selection = browser-> getSelection ();
 
 	selection -> clearNodes ();
+
+	// We must immediately call set_nodes to to remove from meta data to lower clone count.
+	set_nodes (selection -> getNodes ());
 }
 
 void
@@ -271,6 +277,9 @@ BrowserSelection::setNodes (const X3D::MFNode & value)
 	const auto & selection = browser-> getSelection ();
 
 	selection -> setNodes (value);
+
+	// We must immediately call set_nodes to to remove from meta data to lower clone count.
+	set_nodes (selection -> getNodes ());
 }
 
 X3D::MFNode
@@ -298,6 +307,9 @@ BrowserSelection::addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 	undoStep -> addRedoFunction (&X3D::Selection::addNodes, selection, value);
 
 	selection -> addNodes (value);
+
+	// We must immediately call set_nodes to to remove from meta data to lower clone count.
+	set_nodes (selection -> getNodes ());
 }
 
 void
@@ -309,6 +321,9 @@ BrowserSelection::removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr
 	undoStep -> addRedoFunction (&X3D::Selection::removeNodes, selection, value);
 
 	selection -> removeNodes (value);
+
+	// We must immediately call set_nodes to to remove from meta data to lower clone count.
+	set_nodes (selection -> getNodes ());
 }
 
 void
@@ -320,6 +335,9 @@ BrowserSelection::clearNodes (const X3D::UndoStepPtr & undoStep)
 	undoStep -> addRedoFunction (&X3D::Selection::clearNodes, selection);
 
 	selection -> clearNodes ();
+
+	// We must immediately call set_nodes to to remove from meta data to lower clone count.
+	set_nodes (selection -> getNodes ());
 }
 
 void
@@ -331,6 +349,9 @@ BrowserSelection::setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 	undoStep -> addRedoFunction (&X3D::Selection::setNodes, selection, value);
 
 	selection -> setNodes (value);
+
+	// We must immediately call set_nodes to to remove from meta data to lower clone count.
+	set_nodes (selection -> getNodes ());
 }
 
 void

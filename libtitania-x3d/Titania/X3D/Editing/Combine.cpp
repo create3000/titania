@@ -774,7 +774,7 @@ Combine::removeShapes (const X3DExecutionContextPtr & executionContext,
 	X3DEditor::removeNodesFromSceneGraph (selection, std::set <SFNode> (nodes .begin (), nodes .end ()), undoStep);
 
 	for (const auto & node : nodes)
-		X3DEditor::removeNodesFromSceneIfNotExists (executionContext, { node }, undoStep);
+		X3DEditor::removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, { node }, undoStep);
 
 	// Find empty groups in selection and remove from scene.
 

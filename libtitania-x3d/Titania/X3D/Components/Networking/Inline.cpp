@@ -122,7 +122,7 @@ Inline::initialize ()
 			setScene (X3DScenePtr (getBrowser () -> getPrivateScene ()));
 
 			if (load ())
-				requestAsyncLoad ();
+				buffer .addEvent ();
 		}
 		else
 		{

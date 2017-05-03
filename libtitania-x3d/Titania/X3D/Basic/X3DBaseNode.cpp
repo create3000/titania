@@ -2137,6 +2137,12 @@ X3DBaseNode::toJSONStream (std::ostream & ostream) const
 
 		basic::split (std::back_inserter (sourceTextLines), sourceText -> front (), "\n");
 
+		if (not sourceText -> front () .empty ())
+		{
+			if (sourceText -> front () .getValue () [sourceText -> front () .length () - 1] == '\n')
+				sourceTextLines .pop_back ();
+		}
+
 		for (const auto & line : sourceTextLines)
 		{
 			SFString (line) .toJSONStream (ostream);

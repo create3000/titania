@@ -274,14 +274,13 @@ main (int argc, char** argv)
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	
-	Color3f c0 = make_hsv (0.0, 1.0, 1.0);
-	Color3f c1 = make_hsv (pi <double>, 1.0, 1.0);
+		std::vector <std::string> sourceTextLines;
 
-	__LOG__ << c0 << std::endl;
-	__LOG__ << c1 << std::endl;
+		basic::split (std::back_inserter (sourceTextLines), "\n", "\n");
 
-	__LOG__ << c0 .hsv () << std::endl;
-	__LOG__ << c1 .hsv () << std::endl;
+	__LOG__ << sourceTextLines .size () << std::endl;
+	__LOG__ << sourceTextLines .front () .size () << std::endl;
+	__LOG__ << sourceTextLines .back ().size () << std::endl;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

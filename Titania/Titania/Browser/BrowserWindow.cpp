@@ -965,6 +965,8 @@ BrowserWindow::on_delete_activated ()
 
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Delete Node From Scene"));
 
+	getSelection () -> clearNodes (undoStep);
+
 	removeNodesFromScene (getCurrentContext (), selection, true, undoStep);
 
 	addUndoStep (undoStep);
@@ -982,6 +984,8 @@ BrowserWindow::on_create_clone_activated ()
 
 	const auto clone = selection .back ();
 	selection .pop_back ();
+
+	getSelection () -> clearNodes (undoStep);
 
 	X3D::X3DEditor::createClone (getCurrentContext (), clone, selection, undoStep);
 

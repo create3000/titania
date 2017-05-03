@@ -146,7 +146,7 @@ public:
 
 	static
 	void
-	removeNodesFromSceneIfNotExists (const X3DExecutionContextPtr & executionContext, const MFNode &, const UndoStepPtr & undoStep);
+	removeNodesFromSceneIfNotExistsInSceneGraph (const X3DExecutionContextPtr & executionContext, const MFNode &, const UndoStepPtr & undoStep);
 
 	static
 	void

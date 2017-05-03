@@ -164,8 +164,8 @@ InlineEditor::on_convert_master_selection_clicked ()
 
 	getWindow () .set_sensitive (false);
 
-	const auto & masterSelection  = getBrowserWindow () -> getSelection () -> getNodes () .back ();
-	const X3D::MFNode  nodes      = { masterSelection };
+	const auto masterSelection = getBrowserWindow () -> getSelection () -> getNodes () .back ();
+	const auto nodes           = X3D::MFNode ({ masterSelection });
 
 	const auto fileSaveDialog = std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false));
 	const auto undoStep       = std::make_shared <X3D::UndoStep> (_ ("Convert Master Selection Into Inline File"));
@@ -179,8 +179,10 @@ InlineEditor::on_convert_master_selection_clicked ()
 
 		inlineNode -> url () = url;
 
+		getBrowserWindow () -> getSelection () -> clearNodes (undoStep);
 		X3D::X3DEditor::updateNamedNode (getCurrentContext (), name, inlineNode, undoStep);
 		X3D::X3DEditor::replaceNodes (getCurrentContext (), masterSelection, inlineNode, undoStep);
+
 		getBrowserWindow () -> getSelection () -> setNodes ({ inlineNode }, undoStep);
 		getBrowserWindow () -> addUndoStep (undoStep);
 		getBrowserWindow () -> expandNodes ({ inlineNode });

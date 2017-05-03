@@ -538,7 +538,7 @@ X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const S
 
 	const auto undoRemoveNode = std::make_shared <UndoStep> ();
 
-	removeNodesFromSceneIfNotExists (executionContext, { newValue }, undoRemoveNode);
+	removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, { newValue }, undoRemoveNode);
 
 	undoStep -> addUndoFunction (&UndoStep::redo, undoRemoveNode);
 	undoStep -> addRedoFunction (&UndoStep::undo, undoRemoveNode);
@@ -551,7 +551,7 @@ X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const S
 
 	sfnode = newValue;
 
-	removeNodesFromSceneIfNotExists (executionContext, { oldValue }, undoStep);
+	removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, { oldValue }, undoStep);
 
 	// Prototype support
 
@@ -572,7 +572,7 @@ X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const 
 
 	const auto undoRemoveNode = std::make_shared <UndoStep> ();
 
-	removeNodesFromSceneIfNotExists (executionContext, newValue, undoRemoveNode);
+	removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, newValue, undoRemoveNode);
 
 	undoStep -> addUndoFunction (&UndoStep::redo, undoRemoveNode);
 	undoStep -> addRedoFunction (&UndoStep::undo, undoRemoveNode);
@@ -585,7 +585,7 @@ X3DEditor::replaceNodes (const X3DExecutionContextPtr & executionContext, const 
 
 	mfnode = newValue;
 
-	removeNodesFromSceneIfNotExists (executionContext, oldValue, undoStep);
+	removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, oldValue, undoStep);
 
 	// Prototype support
 
@@ -621,7 +621,7 @@ X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const S
 
 	const auto undoRemoveNode = std::make_shared <UndoStep> ();
 
-	removeNodesFromSceneIfNotExists (executionContext, { newValue }, undoRemoveNode);
+	removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, { newValue }, undoRemoveNode);
 
 	undoStep -> addUndoFunction (&UndoStep::redo, undoRemoveNode);
 	undoStep -> addRedoFunction (&UndoStep::undo, undoRemoveNode);
@@ -635,7 +635,7 @@ X3DEditor::replaceNode (const X3DExecutionContextPtr & executionContext, const S
 
 	undoStep -> addRedoFunction (&MFNode::setValue, std::ref (mfnode), mfnode);
 
-	removeNodesFromSceneIfNotExists (executionContext, { oldValue }, undoStep);
+	removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, { oldValue }, undoStep);
 
 	// Prototype support
 
@@ -672,7 +672,7 @@ X3DEditor::removeNode (const X3DExecutionContextPtr & executionContext, const SF
 
 		undoStep -> addRedoFunction (&MFNode::setValue, std::ref (mfnode), mfnode);
 
-		removeNodesFromSceneIfNotExists (executionContext, { oldValue }, undoStep);
+		removeNodesFromSceneIfNotExistsInSceneGraph (executionContext, { oldValue }, undoStep);
 
 		// Prototype support
 	
@@ -684,7 +684,7 @@ X3DEditor::removeNode (const X3DExecutionContextPtr & executionContext, const SF
  *  Removes @a node completely from scene if not exists in scene graph anymore.
  */
 void
-X3DEditor::removeNodesFromSceneIfNotExists (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const UndoStepPtr & undoStep)
+X3DEditor::removeNodesFromSceneIfNotExistsInSceneGraph (const X3DExecutionContextPtr & executionContext, const MFNode & nodes, const UndoStepPtr & undoStep)
 {
 	MFNode remove;
 
