@@ -74,7 +74,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	            X3DNode (),
 	X3DExecutionContext (),
 	          protoNode (p_protoNode),
-	               live (true)
+	               live (true),
+	        constructed (false)
 {
 	addType (X3DConstants::X3DPrototypeInstance);
 
@@ -95,6 +96,8 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	{
 		if (protoNode -> checkLoadState () == COMPLETE_STATE)
 			construct ();
+		else
+			protoNode -> checkLoadState () .addInterest (&X3DPrototypeInstance::construct, this);
 	}
 	else
 	{
@@ -105,11 +108,11 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 		importExternProtos (proto, COPY_OR_CLONE);
 		importProtos       (proto, COPY_OR_CLONE);
 		copyRootNodes      (proto, COPY_OR_CLONE);
-
-		setExtendedEventHandling (false);
 	}
 
 	getRootNodes () .setAccessType (initializeOnly);
+
+	setExtendedEventHandling (false);
 }
 
 SFNode &
@@ -156,10 +159,12 @@ X3DPrototypeInstance::construct ()
 {
 	try
 	{
-		setExtendedEventHandling (false);
-
 		if (protoNode -> checkLoadState () not_eq COMPLETE_STATE)
 			return;
+
+__LOG__ << getExecutionContext () -> getTypeName () << std::endl;
+
+		constructed = true;
 
 		if (protoNode -> isExternproto ())
 		{
@@ -299,14 +304,12 @@ X3DPrototypeInstance::initialize ()
 		{
 			case NOT_STARTED_STATE:
 				protoNode -> requestAsyncLoad ();
-				// Procceed with next case:
-			case IN_PROGRESS_STATE:
-				protoNode -> checkLoadState () .addInterest (&X3DPrototypeInstance::construct, this);
 				break;
-
+			case IN_PROGRESS_STATE:
+				break;
 			case COMPLETE_STATE:
 			{
-				if (protoNode -> isExternproto () and getExtendedEventHandling ())
+				if (protoNode -> isExternproto () and not constructed)
 					construct ();
 
 				ProtoDeclaration* const proto = protoNode -> getProtoDeclaration ();

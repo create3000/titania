@@ -694,6 +694,7 @@
     <None Include="Tests\Rendering\IndexedLineSet-L-System.x3dv" />
     <None Include="Tests\Handles\Torus.json" />
     <None Include="Tests\Handles\Grid.json" />
+    <None Include="Tests\Handles\GridInline.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\Errors\" />
