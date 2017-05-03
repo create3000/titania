@@ -62,6 +62,7 @@
 #include <Titania/X3D/Basic/Traverse.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/Background.h>
+#include <Titania/X3D/InputOutput/FileGenerator.h>
 
 #include <Titania/OS/cwd.h>
 #include <Titania/String.h>
@@ -577,173 +578,51 @@ X3DBrowserWidget::save (const basic::uri & worldURL, const std::string & outputS
 bool
 X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const std::string & outputStyle, const bool copy)
 {
-	// Known file type must be also added to BrowserWindow::on_save_activated.
-
-	const auto suffix   = worldURL .suffix ();
-	const auto undoStep = std::make_shared <X3D::UndoStep> ("");
-
-	if (getConfig () -> getBoolean ("addStandardMetaData"))
-		scene -> addStandardMetaData ();
-
-	// Save
-
-	if (suffix == ".x3d")
+	try
 	{
-		if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
-		{
-			scene -> setEncoding (X3D::EncodingType::XML);
-			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
-		}
+		// Known file type must be also added to BrowserWindow::on_save_activated.
 
-		std::ofstream file (worldURL .path ());
+		const auto undoStep = std::make_shared <X3D::UndoStep> ("Save A Copy Undo Step");
 
-		if (file)
-		{
-			setWorldURL (scene, worldURL, undoStep);
+		if (getConfig () -> getBoolean ("addStandardMetaData"))
+			scene -> addStandardMetaData ();
 
-			setOutputStyle (file, scene, outputStyle);
+		setOutputStyle (scene, outputStyle);
+		setWorldURL (scene, worldURL, undoStep);
 
-			file << X3D::XMLEncode (scene);
+		X3D::FileGenerator::write (scene, worldURL, outputStyle);
 
-			if (copy)
-				undoStep -> undo ();
+		if (copy)
+			undoStep -> undo ();
 
-			if (file)
-				return true;
-		}
+		return true;
 	}
-	if (suffix == ".x3dz")
+	catch (const X3D::Error <X3D::NOT_SUPPORTED> & error)
 	{
-		if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
-		{
-			scene -> setEncoding (X3D::EncodingType::XML);
-			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
-		}
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+	
+		dialog -> setType (Gtk::MESSAGE_ERROR);
+		dialog -> setMessage (_ ("Couldn't save file!"));
+		dialog -> setText (_ ("The given filename does not have any known file extension. Please enter a known file extension like .x3d or .x3dv."));
+		dialog -> run ();
 
-		basic::ogzstream file (worldURL .path ());
-
-		if (file)
-		{
-			setWorldURL (scene, worldURL, undoStep);
-
-			setOutputStyle (file, scene, outputStyle);
-
-			file << X3D::XMLEncode (scene);
-
-			if (copy)
-				undoStep -> undo ();
-			
-			if (file)
-				return true;
-		}
+		return false;
 	}
-	else if (suffix == ".json")
+	catch (const X3D::Error <X3D::INVALID_URL> & error)
 	{
-		if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
-		{
-			scene -> setEncoding (X3D::EncodingType::JSON);
-			scene -> setSpecificationVersion (X3D::LATEST_VERSION);
-		}
-
-		std::ofstream file (worldURL .path ());
-
-		if (file)
-		{
-			setWorldURL (scene, worldURL, undoStep);
-
-			setOutputStyle (file, scene, outputStyle);
-
-			file << X3D::JSONEncode (scene);
-			
-			if (copy)
-				undoStep -> undo ();
-
-			if (file)
-				return true;
-		}
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+	
+		dialog -> setType (Gtk::MESSAGE_ERROR);
+		dialog -> setMessage (_ ("Couldn't save file!"));
+		dialog -> setText (_ ("Tip: check file and folder permissions."));
+		dialog -> run ();
+	
+		return false;
 	}
-	else
-	{
-		if (suffix == ".wrl" or suffix == ".vrml" or suffix == ".vrm" or suffix == ".wrz")
-		{
-			if (scene -> getSpecificationVersion () not_eq X3D::VRML_V2_0)
-			{
-				scene -> setEncoding (X3D::EncodingType::VRML);
-				scene -> setSpecificationVersion (X3D::VRML_V2_0);
-			}
-		}
-		else if (suffix == ".x3dv" or suffix == ".x3dvz")
-		{
-			if (scene -> getSpecificationVersion () == X3D::VRML_V2_0)
-			{
-				scene -> setEncoding (X3D::EncodingType::VRML);
-				scene -> setSpecificationVersion (X3D::LATEST_VERSION);
-			}
-		}
-		else
-		{
-			const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
-		
-			dialog -> setType (Gtk::MESSAGE_ERROR);
-			dialog -> setMessage (_ ("Couldn't save file!"));
-			dialog -> setText (_ ("The given filename does not have any known file extension. Please enter a known file extension like .x3d or .x3dv."));
-			dialog -> run ();
-
-			return false;
-		}
-
-		if (suffix == ".x3dvz" or suffix == ".wrz")
-		{
-			basic::ogzstream file (worldURL .path ());
-
-			if (file)
-			{
-				setWorldURL (scene, worldURL, undoStep);
-
-				setOutputStyle (file, scene, outputStyle);
-
-				file << scene;
-				
-				if (copy)
-					undoStep -> undo ();
-
-				if (file)
-					return true;
-			}
-		}
-		else
-		{
-			std::ofstream file (worldURL .path ());
-
-			if (file)
-			{
-				setWorldURL (scene, worldURL, undoStep);
-
-				setOutputStyle (file, scene, outputStyle);
-
-				file << scene;
-				
-				if (copy)
-					undoStep -> undo ();
-
-				if (file)
-					return true;
-			}
-		}
-	}
-
-	const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
-
-	dialog -> setType (Gtk::MESSAGE_ERROR);
-	dialog -> setMessage (_ ("Couldn't save file!"));
-	dialog -> setText (_ ("Tip: check file and folder permissions."));
-	dialog -> run ();
-
-	return false;
 }
 
 void
-X3DBrowserWidget::setOutputStyle (std::ostream & file, const X3D::X3DScenePtr & scene, const std::string & outputStyle)
+X3DBrowserWidget::setOutputStyle (const X3D::X3DScenePtr & scene, const std::string & outputStyle)
 {
 	scene -> removeMetaData ("outputStyle"); // TODO: remove this line.
 
@@ -754,8 +633,6 @@ X3DBrowserWidget::setOutputStyle (std::ostream & file, const X3D::X3DScenePtr & 
 		else
 			scene -> setMetaData ("titania-output-style", outputStyle);
 	}
-
-	X3D::Generator::Style (file, outputStyle);
 }
 
 std::string

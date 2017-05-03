@@ -281,7 +281,7 @@ private:
 	getTitle (const X3D::BrowserPtr &) const;
 
 	void
-	setOutputStyle (std::ostream & file, const X3D::X3DScenePtr & scene, const std::string & outputStyle);
+	setOutputStyle (const X3D::X3DScenePtr & scene, const std::string & outputStyle);
 
 	void
 	setWorldURL (const X3D::X3DScenePtr &, const basic::uri &, const X3D::UndoStepPtr &);

@@ -447,6 +447,7 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Fields/SFVec3.cpp \
 	Titania/X3D/Fields/SFVec4.cpp \
 	Titania/X3D/Fields/X3DScalar.cpp \
+	Titania/X3D/InputOutput/FileGenerator.cpp \
 	Titania/X3D/InputOutput/Generator.cpp \
 	Titania/X3D/InputOutput/GoldenGate.cpp \
 	Titania/X3D/InputOutput/Loader.cpp \

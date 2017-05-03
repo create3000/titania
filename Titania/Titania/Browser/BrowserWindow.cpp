@@ -84,6 +84,7 @@
 #include <Titania/X3D/Components/Navigation/LOD.h>
 #include <Titania/X3D/Components/Sound/Sound.h>
 #include <Titania/X3D/Editing/Combine.h>
+#include <Titania/X3D/InputOutput/FileGenerator.h>
 #include <Titania/X3D/Parser/Filter.h>
 #include <Titania/X3D/Tools/Grids/X3DGridTool.h>
 #include <Titania/X3D/Types/MatrixStack.h>
@@ -811,21 +812,9 @@ BrowserWindow::on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> & co
 void
 BrowserWindow::on_save_activated ()
 {
-	static const std::set <std::string> knowFileTypes = {
-		".wrz",
-		".wrl",
-		".vrml",
-		".vrm",
-		".json",
-		".x3dvz",
-		".x3dv",
-		".x3dz",
-		".x3d",
-	};
-
 	const auto & worldURL = getCurrentScene () -> getWorldURL ();
 
-	if (worldURL .empty () or worldURL .is_network () or not knowFileTypes .count (worldURL .suffix ()))
+	if (worldURL .empty () or worldURL .is_network () or not X3D::FileGenerator::getKnownFileTypes () .count (worldURL .suffix ()))
 	{
 		on_save_as_activated ();
 	}

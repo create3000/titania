@@ -48,55 +48,80 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_TIDY_H__
-#define __TITANIA_TIDY_H__
+#ifndef __TITANIA_X3D_INPUT_OUTPUT_FILE_GENERATOR_H__
+#define __TITANIA_X3D_INPUT_OUTPUT_FILE_GENERATOR_H__
 
-#include <Titania/X3D/InputOutput/FileGenerator.h>
-#include <Titania/OS.h>
-
-#include <iostream>
+#include "../Execution/X3DScene.h"
 
 namespace titania {
-namespace puck {
+namespace X3D {
 
-///  It never hurts to be tidy.
-class Tidy
+class FileGenerator
 {
 public:
 
+	///  @name Construction
+
+	FileGenerator () = delete;
+
+	///  @name Member access
+
 	static
-	int
-	main (const ApplicationOptions & options)
-	{
-		if (options .filenames .empty ())
-			throw std::runtime_error ("Expected a filename.");
+	const std::set <std::string> &
+	getKnownFileTypes ()
+	{ return knowFileTypes; }
 
-		basic::uri inputFilename (options .filenames .front ());
-		basic::uri outputFilename (options .exportFilename);
+	///  @name Operations
 
-		if (inputFilename .is_relative ())
-			inputFilename = basic::uri (os::cwd ()) .transform (inputFilename);
+	static
+	void
+	write (std::ostream & ostream, const X3DScenePtr & scene, const std::string & suffix, const std::string & outputStyle)
+	throw (Error <INVALID_URL>,
+	       Error <NOT_SUPPORTED>,
+          Error <DISPOSED>,
+          std::exception);
 
-		const auto browser = X3D::getBrowser ();
-		const auto scene   = browser -> createX3DFromURL ({ inputFilename .str () });
+	static
+	void
+	write (const X3DScenePtr & scene, basic::uri worldURL, const std::string & outputStyle)
+	throw (Error <INVALID_URL>,
+	       Error <NOT_SUPPORTED>,
+          Error <DISPOSED>,
+          std::exception);
 
-		if (outputFilename == "-" or outputFilename == outputFilename .suffix ())
-		{
-			const auto suffix = outputFilename == "-" ? inputFilename .suffix () : outputFilename .suffix ();
+	///  @name Destruction
 
-			X3D::FileGenerator::write (std::cout, scene, suffix, options .exportStyle);
-		}
-		else
-		{
-			X3D::FileGenerator::write (scene, outputFilename, options .exportStyle);
-		}
+	virtual
+	~FileGenerator () = delete;
 
-		return 0;
-	}
+
+private:
+
+	///  @name Operations
+
+	static
+	bool
+	generate_x3d (std::ostream & ostream, const X3DScenePtr & scene);
+
+	static
+	bool
+	generate_json (std::ostream & ostream, const X3DScenePtr & scene);
+
+	static
+	bool
+	generate_x3dv (std::ostream & ostream, const X3DScenePtr & scene);
+
+	static
+	bool
+	generate_wrl (std::ostream & ostream, const X3DScenePtr & scene);
+
+	///  @name Static members
+
+	static const std::set <std::string> knowFileTypes;
 
 };
 
-} // puck
+} // X3D
 } // titania
 
 #endif

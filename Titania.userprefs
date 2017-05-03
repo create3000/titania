@@ -1,9 +1,9 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Application/Tidy.h">
     <Files>
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.h" Line="12" Column="46" />
-      <File FileName="Titania/Titania/Widgets/OutlineEditor/OutlineDragDrop.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="698" Column="1" />
+      <File FileName="Titania/Titania/Application/Tidy.h" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -291,7 +291,7 @@ get_suffixes ()
 }
 
 void
-golden_gate (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
+GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const basic::uri & uri)
 {
 	try
 	{

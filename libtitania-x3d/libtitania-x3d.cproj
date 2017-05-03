@@ -950,6 +950,7 @@
     <None Include="share\titania\tools\library\AxonometricGrid.x3dv" />
     <None Include="Titania\X3D\Tools\Grids\AxonometricGridTool.h" />
     <None Include="Titania\X3D\Browser\Rendering\L-System.h" />
+    <None Include="Titania\X3D\InputOutput\FileGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1636,6 +1637,7 @@
     <Compile Include="Titania\X3D\Tools\Grids\AxonometricGridTool.cpp" />
     <Compile Include="Titania\X3D\Browser\Rendering\L-System.cpp" />
     <Compile Include="Titania\X3D\Tools\Grouping\X3DBoundedObjectTool.cpp" />
+    <Compile Include="Titania\X3D\InputOutput\FileGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

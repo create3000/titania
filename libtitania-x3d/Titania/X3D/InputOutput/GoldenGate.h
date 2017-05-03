@@ -60,8 +60,26 @@
 namespace titania {
 namespace X3D {
 
-void
-golden_gate (const X3DScenePtr &, const basic::uri &, basic::ifilestream &);
+class GoldenGate
+{
+public:
+
+	///  @name Construction
+
+	GoldenGate () = delete;
+
+	///  @name Operations
+
+	static
+	void
+	read (basic::ifilestream & istream, const X3DScenePtr & scene, const basic::uri & worldURL);
+
+	///  @name Destruction
+
+	virtual
+	~GoldenGate () = delete;
+
+};
 
 } // X3D
 } // titania

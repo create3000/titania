@@ -105,7 +105,7 @@ throw (Error <INVALID_X3D>,
 {
 	const X3DScenePtr scene = executionContext -> getBrowser () -> createScene (false);
 
-	golden_gate (scene, worldURL, istream);
+	GoldenGate::read (istream, scene, worldURL);
 
 	if (executionContext not_eq executionContext -> getBrowser ())
 	{
@@ -195,7 +195,7 @@ throw (Error <INVALID_URL>,
 		{
 			loadStream (URL .str (), istream);
 
-			golden_gate (scene, worldURL, istream);
+			GoldenGate::read (istream, scene, worldURL);
 
 			istream .close ();
 			return;

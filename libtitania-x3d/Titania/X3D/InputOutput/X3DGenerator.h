@@ -300,6 +300,26 @@ private:
 template <class T>
 size_t X3DGenerator::NumericLimits <T>::digits10 = std::numeric_limits <T>::digits10;
 
+// SetStyle
+
+struct GeneratorStyleType { const std::string & style; };
+
+///  Function to insert a Generator into an output stream.
+inline
+GeneratorStyleType
+SetStyle (const std::string & style)
+{
+	return GeneratorStyleType { style };
+}
+
+inline
+std::ostream &
+operator << (std::ostream & ostream, const GeneratorStyleType & value)
+{
+	X3DGenerator::Style (ostream, value .style);
+	return ostream;
+}
+
 } // X3D
 } // titania
 

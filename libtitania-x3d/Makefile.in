@@ -567,6 +567,7 @@ am_libtitania_x3d_la_OBJECTS = Titania/X3D.lo \
 	Titania/X3D/Fields/SFString.lo Titania/X3D/Fields/SFTime.lo \
 	Titania/X3D/Fields/SFVec2.lo Titania/X3D/Fields/SFVec3.lo \
 	Titania/X3D/Fields/SFVec4.lo Titania/X3D/Fields/X3DScalar.lo \
+	Titania/X3D/InputOutput/FileGenerator.lo \
 	Titania/X3D/InputOutput/Generator.lo \
 	Titania/X3D/InputOutput/GoldenGate.lo \
 	Titania/X3D/InputOutput/Loader.lo \
@@ -1506,6 +1507,7 @@ libtitania_x3d_la_SOURCES = \
 	Titania/X3D/Fields/SFVec3.cpp \
 	Titania/X3D/Fields/SFVec4.cpp \
 	Titania/X3D/Fields/X3DScalar.cpp \
+	Titania/X3D/InputOutput/FileGenerator.cpp \
 	Titania/X3D/InputOutput/Generator.cpp \
 	Titania/X3D/InputOutput/GoldenGate.cpp \
 	Titania/X3D/InputOutput/Loader.cpp \
@@ -3528,6 +3530,9 @@ Titania/X3D/InputOutput/$(am__dirstamp):
 Titania/X3D/InputOutput/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/X3D/InputOutput/$(DEPDIR)
 	@: > Titania/X3D/InputOutput/$(DEPDIR)/$(am__dirstamp)
+Titania/X3D/InputOutput/FileGenerator.lo:  \
+	Titania/X3D/InputOutput/$(am__dirstamp) \
+	Titania/X3D/InputOutput/$(DEPDIR)/$(am__dirstamp)
 Titania/X3D/InputOutput/Generator.lo:  \
 	Titania/X3D/InputOutput/$(am__dirstamp) \
 	Titania/X3D/InputOutput/$(DEPDIR)/$(am__dirstamp)
@@ -5157,6 +5162,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Fields/$(DEPDIR)/SFVec3.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Fields/$(DEPDIR)/SFVec4.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/Fields/$(DEPDIR)/X3DScalar.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/FileGenerator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/Generator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/GoldenGate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/X3D/InputOutput/$(DEPDIR)/Loader.Plo@am__quote@
