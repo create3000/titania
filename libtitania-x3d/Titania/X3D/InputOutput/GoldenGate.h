@@ -55,6 +55,8 @@
 
 #include <Titania/Basic/URI.h>
 #include <Titania/Stream/InputFileStream.h>
+
+#include <regex>
 #include <string>
 
 namespace titania {
@@ -78,6 +80,57 @@ public:
 
 	virtual
 	~GoldenGate () = delete;
+
+
+private:
+
+	///  @name Member types
+
+	using GoldenFunction = std::function <void (const X3DScenePtr &, const basic::uri &, basic::ifilestream &)>;
+
+	class GoldenParser;
+
+	///  @name Operations
+
+	static
+	std::map <std::string, GoldenGate::GoldenFunction>
+	getContentTypes ();
+
+	static
+	std::map <std::string, GoldenGate::GoldenFunction>
+	getSuffixes ();
+
+	static
+	void
+	vrml (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream);
+	
+	static
+	void
+	text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream);
+	
+	static
+	void
+	image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream);
+	
+	static
+	void
+	audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream);
+	
+	static
+	void
+	video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream);
+
+	static
+	bool
+	isVRML1 (std::istream & istream);
+
+	///  @name Static members
+
+	static const std::regex Name;
+	static const std::regex Description;
+	static const std::regex Width;
+	static const std::regex Height;
+	static const std::regex URL;
 
 };
 

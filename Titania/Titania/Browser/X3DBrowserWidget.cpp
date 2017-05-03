@@ -584,6 +584,8 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 
 		const auto undoStep = std::make_shared <X3D::UndoStep> ("Save A Copy Undo Step");
 
+		recentView -> loadPreview (scene -> getBrowser ());
+
 		if (getConfig () -> getBoolean ("addStandardMetaData"))
 			scene -> addStandardMetaData ();
 
@@ -677,8 +679,6 @@ X3DBrowserWidget::setWorldURL (const X3D::X3DScenePtr & scene, const basic::uri 
 	scene -> setWorldURL (worldURL);
 
 	worldURL_changed () .processInterests ();
-
-	recentView -> loadPreview (scene -> getBrowser ());
 }
 
 bool
@@ -728,6 +728,11 @@ X3DBrowserWidget::transform (const basic::uri & oldWorldURL, const basic::uri & 
 				X3D::X3DUrlObject::transform (urlObject -> url (), oldWorldURL, newWorldURL);
 
 				undoStep -> addRedoFunction ((set) & MFString::set, std::ref (urlObject -> url ()), urlObject -> url ());
+				break;
+			}
+			case X3D::X3DConstants::X3DFontStyleNode:
+			{
+				// TODO: transform family field if value is file
 				break;
 			}
 			default:

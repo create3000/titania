@@ -67,60 +67,173 @@
 
 #include <Magick++.h>
 #include <giomm.h>
-#include <regex>
 #include <sys/wait.h>
 
 namespace titania {
 namespace X3D {
 
-static const std::regex Name        ("__NAME__");
-static const std::regex Description ("__DESCRIPTION__");
-static const std::regex Width       ("__WIDTH__");
-static const std::regex Height      ("__HEIGHT__");
-static const std::regex URL         ("__URL__");
+const std::regex GoldenGate::Name        ("__NAME__");
+const std::regex GoldenGate::Description ("__DESCRIPTION__");
+const std::regex GoldenGate::Width       ("__WIDTH__");
+const std::regex GoldenGate::Height      ("__HEIGHT__");
+const std::regex GoldenGate::URL         ("__URL__");
 
-template <class Type>
-static
-void
-golden_parser (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
+class GoldenGate::GoldenParser
 {
-	Type (scene, uri, istream) .parseIntoScene ();
+public:
+
+	template <class Type>
+	static
+	void
+	parse (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
+	{
+		Type (scene, uri, istream) .parseIntoScene ();
+	}
+
+};
+
+void
+GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const basic::uri & uri)
+{
+	try
+	{
+		static const auto contentTypes = getContentTypes ();
+		static const auto suffixes     = getSuffixes ();
+
+		try
+		{
+			const std::string contentType = istream .response_headers () .at ("Content-Type");
+		
+			//__LOG__ << contentType << " : " << uri << std::endl;
+	
+			try
+			{
+				return contentTypes .at (contentType) (scene, uri, istream);
+			}
+			catch (const std::out_of_range &)
+			{
+				try
+				{
+					return suffixes .at (uri .suffix ()) (scene, uri, istream);
+				}
+				catch (const std::out_of_range &)
+				{
+					if (Gio::content_type_is_a (contentType, "image/*"))
+						return image (scene, uri, istream);
+	
+					if (Gio::content_type_is_a (contentType, "audio/*"))
+						return audio (scene, uri, istream);
+	
+					if (Gio::content_type_is_a (contentType, "video/*"))
+						return video (scene, uri, istream);
+				}
+			}
+		}
+		catch (const std::out_of_range &)
+		{ }
+	
+		text (scene, uri, istream);
+	}
+	catch (const X3DError &)
+	{
+		throw;
+	}
+	catch (const std::exception & error)
+	{
+		throw Error <INVALID_X3D> (error .what ());
+	}
+	catch (...)
+	{
+		throw Error <INVALID_X3D> ("Unkown error while loading '" + uri .str () + "'.");
+	}
 }
 
-static
-bool
-golden_is_vrml1 (std::istream & istream)
+std::map <std::string, GoldenGate::GoldenFunction>
+GoldenGate::getContentTypes ()
 {
-	const auto   state     = istream .rdstate ();
-	auto         data      = std::string (32, 0);
-	const size_t data_size = istream .rdbuf () -> sgetn (&data [0], data .size ());
+	std::map <std::string, GoldenFunction> contentTypes;
 
-	// Reset stream.
+	contentTypes .emplace ("model/vrml",                       &vrml);
+	contentTypes .emplace ("x-world/x-vrml",                   &vrml);
+	contentTypes .emplace ("model/x3d+vrml",                   &vrml);
+	contentTypes .emplace ("model/x3d+xml",                    &GoldenParser::parse <XMLParser>);
+	contentTypes .emplace ("application/xml",                  &GoldenParser::parse <XMLParser>);
+	contentTypes .emplace ("application/vnd.hzn-3d-crossword", &GoldenParser::parse <XMLParser>);
+	contentTypes .emplace ("application/json",                 &GoldenParser::parse <JSONParser>);
+	contentTypes .emplace ("application/ogg",                  &video);
+	contentTypes .emplace ("application/x-3ds",                &GoldenParser::parse <Autodesk::Parser>);
+	contentTypes .emplace ("image/x-3ds",                      &GoldenParser::parse <Autodesk::Parser>);
 
-	istream .clear (state);
+	if (os::program_exists ("inkscape"))
+	{
+		contentTypes .emplace ("application/pdf",                  &GoldenParser::parse <PDF::Parser>);
+		contentTypes .emplace ("application/x-pdf",                &GoldenParser::parse <PDF::Parser>);
+		contentTypes .emplace ("application/x-gzpdf",              &GoldenParser::parse <PDF::Parser>);
+	}
 
-	for (size_t i = 0; i < data_size; ++ i)
-		istream .unget ();
+	contentTypes .emplace ("image/svg+xml", &GoldenParser::parse <SVG::Parser>);
+	contentTypes .emplace ("text/plain",    &text);
 
-	static const std::regex VRML1 (R"/(^#VRML\s+V1.[01])/");
-
-	return std::regex_search (data, VRML1);
+	return contentTypes;
 }
 
-static
-void
-golden_x3dv (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
+std::map <std::string, GoldenGate::GoldenFunction>
+GoldenGate::getSuffixes ()
 {
-	if (golden_is_vrml1 (istream))
+	std::map <std::string, GoldenFunction> suffixes;
+
+	// VRML
+	suffixes .emplace (".wrl",    &vrml);
+	suffixes .emplace (".wrz",    &vrml);
+	suffixes .emplace (".wrl.gz", &vrml); /// Todo: does not work with URI::suffix
+	suffixes .emplace (".vrml",   &vrml);
+	suffixes .emplace (".vrm",    &vrml);
+
+	// X3D Vrml Classic Encoding 
+	suffixes .emplace (".x3dv",    &vrml);
+	suffixes .emplace (".x3dvz",   &vrml);
+	suffixes .emplace (".x3dv.gz", &vrml); /// Todo: does not work with URI::suffix
+
+	// X3D XML Encoding 
+	suffixes .emplace (".x3d",    &GoldenParser::parse <XMLParser>);
+	suffixes .emplace (".x3dz",   &GoldenParser::parse <XMLParser>);
+	suffixes .emplace (".x3d.gz", &GoldenParser::parse <XMLParser>); /// Todo: does not work with URI::suffix
+	suffixes .emplace (".xml",    &GoldenParser::parse <XMLParser>);
+
+	// X3D XML Encoding 
+	suffixes .emplace (".json", &GoldenParser::parse <JSONParser>);
+
+	// Autodesk 3DS Max
+	suffixes .emplace (".3ds", &GoldenParser::parse <Autodesk::Parser>);
+
+	// Wavefront OBJ
+	suffixes .emplace (".obj", &GoldenParser::parse <Wavefront::Parser>);
+
+	if (os::program_exists ("inkscape"))
+	{
+		// PDF
+		suffixes .emplace (".pdf", &GoldenParser::parse <PDF::Parser>);
+	}
+
+	// SVG
+	suffixes .emplace (".svg",  &GoldenParser::parse <SVG::Parser>);
+	suffixes .emplace (".svgz", &GoldenParser::parse <SVG::Parser>);
+
+	return suffixes;
+}
+
+void
+GoldenGate::vrml (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
+{
+	if (isVRML1 (istream))
 		VRML1::Parser (scene, uri, istream) .parseIntoScene ();
 
 	else
 		scene -> fromStream (uri, istream);
 }
 
-static
 void
-golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
+GoldenGate::text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	// Test
 
@@ -129,7 +242,7 @@ golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 
 	try
 	{
-		return golden_x3dv (scene, uri, istream);
+		return vrml (scene, uri, istream);
 	}
 	catch (const X3DError & error)
 	{
@@ -138,13 +251,12 @@ golden_text (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestre
 		for (size_t i = 0, size = istream .tellg () - pos; i < size; ++ i)
 			istream .unget ();
 
-		return golden_parser <XMLParser> (scene, uri, istream);
+		return GoldenParser::parse <XMLParser> (scene, uri, istream);
 	}
 }
 
-static
 void
-golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
+GoldenGate::image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	Magick::Image image;
 	image .read (uri);
@@ -167,9 +279,8 @@ golden_image (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 	scene -> fromStream (uri, goldenstream);
 }
 
-static
 void
-golden_audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
+GoldenGate::audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	std::string file = os::load_file (os::find_data_file ("titania/goldengate/audio.x3dv"));
 
@@ -184,9 +295,8 @@ golden_audio (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 	scene -> fromStream (uri, goldenstream);
 }
 
-static
 void
-golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
+GoldenGate::video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestream & istream)
 {
 	MediaStream mediaStream;
 
@@ -212,138 +322,23 @@ golden_video (const X3DScenePtr & scene, const basic::uri & uri, basic::ifilestr
 	scene -> fromStream (uri, goldenstream);
 }
 
-using GoldenFunction = std::function <void (const X3DScenePtr &, const basic::uri &, basic::ifilestream &)>;
-
-static
-std::map <std::string, GoldenFunction>
-get_content_types ()
+bool
+GoldenGate::isVRML1 (std::istream & istream)
 {
-	std::map <std::string, GoldenFunction> contentTypes;
+	const auto   state     = istream .rdstate ();
+	auto         data      = std::string (32, 0);
+	const size_t data_size = istream .rdbuf () -> sgetn (&data [0], data .size ());
 
-	contentTypes .emplace ("model/vrml",                       &golden_x3dv);
-	contentTypes .emplace ("x-world/x-vrml",                   &golden_x3dv);
-	contentTypes .emplace ("model/x3d+vrml",                   &golden_x3dv);
-	contentTypes .emplace ("model/x3d+xml",                    &golden_parser <XMLParser>);
-	contentTypes .emplace ("application/xml",                  &golden_parser <XMLParser>);
-	contentTypes .emplace ("application/vnd.hzn-3d-crossword", &golden_parser <XMLParser>);
-	contentTypes .emplace ("application/json",                 &golden_parser <JSONParser>);
-	contentTypes .emplace ("application/ogg",                  &golden_video);
-	contentTypes .emplace ("application/x-3ds",                &golden_parser <Autodesk::Parser>);
-	contentTypes .emplace ("image/x-3ds",                      &golden_parser <Autodesk::Parser>);
+	// Reset stream.
 
-	if (os::program_exists ("inkscape"))
-	{
-		contentTypes .emplace ("application/pdf",                  &golden_parser <PDF::Parser>);
-		contentTypes .emplace ("application/x-pdf",                &golden_parser <PDF::Parser>);
-		contentTypes .emplace ("application/x-gzpdf",              &golden_parser <PDF::Parser>);
-	}
+	istream .clear (state);
 
-	contentTypes .emplace ("image/svg+xml", &golden_parser <SVG::Parser>);
-	contentTypes .emplace ("text/plain",    &golden_text);
+	for (size_t i = 0; i < data_size; ++ i)
+		istream .unget ();
 
-	return contentTypes;
-}
+	static const std::regex VRML1 (R"/(^#VRML\s+V1.[01])/");
 
-static
-std::map <std::string, GoldenFunction>
-get_suffixes ()
-{
-	std::map <std::string, GoldenFunction> suffixes;
-
-	// VRML
-	suffixes .emplace (".wrl",    &golden_x3dv);
-	suffixes .emplace (".wrz",    &golden_x3dv);
-	suffixes .emplace (".wrl.gz", &golden_x3dv); /// Todo: does not work with URI::suffix
-	suffixes .emplace (".vrml",   &golden_x3dv);
-	suffixes .emplace (".vrm",    &golden_x3dv);
-
-	// X3D Vrml Classic Encoding 
-	suffixes .emplace (".x3dv",    &golden_x3dv);
-	suffixes .emplace (".x3dvz",   &golden_x3dv);
-	suffixes .emplace (".x3dv.gz", &golden_x3dv); /// Todo: does not work with URI::suffix
-
-	// X3D XML Encoding 
-	suffixes .emplace (".x3d",    &golden_parser <XMLParser>);
-	suffixes .emplace (".x3dz",   &golden_parser <XMLParser>);
-	suffixes .emplace (".x3d.gz", &golden_parser <XMLParser>); /// Todo: does not work with URI::suffix
-	suffixes .emplace (".xml",    &golden_parser <XMLParser>);
-
-	// X3D XML Encoding 
-	suffixes .emplace (".json", &golden_parser <JSONParser>);
-
-	// Autodesk 3DS Max
-	suffixes .emplace (".3ds", &golden_parser <Autodesk::Parser>);
-
-	// Wavefront OBJ
-	suffixes .emplace (".obj", &golden_parser <Wavefront::Parser>);
-
-	if (os::program_exists ("inkscape"))
-	{
-		// PDF
-		suffixes .emplace (".pdf", &golden_parser <PDF::Parser>);
-	}
-
-	// SVG
-	suffixes .emplace (".svg",  &golden_parser <SVG::Parser>);
-	suffixes .emplace (".svgz", &golden_parser <SVG::Parser>);
-
-	return suffixes;
-}
-
-void
-GoldenGate::read (basic::ifilestream & istream, const X3DScenePtr & scene, const basic::uri & uri)
-{
-	try
-	{
-		static const auto contentTypes = get_content_types ();
-		static const auto suffixes     = get_suffixes ();
-
-		try
-		{
-			const std::string contentType = istream .response_headers () .at ("Content-Type");
-		
-			//__LOG__ << contentType << " : " << uri << std::endl;
-	
-			try
-			{
-				return contentTypes .at (contentType) (scene, uri, istream);
-			}
-			catch (const std::out_of_range &)
-			{
-				try
-				{
-					return suffixes .at (uri .suffix ()) (scene, uri, istream);
-				}
-				catch (const std::out_of_range &)
-				{
-					if (Gio::content_type_is_a (contentType, "image/*"))
-						return golden_image (scene, uri, istream);
-	
-					if (Gio::content_type_is_a (contentType, "audio/*"))
-						return golden_audio (scene, uri, istream);
-	
-					if (Gio::content_type_is_a (contentType, "video/*"))
-						return golden_video (scene, uri, istream);
-				}
-			}
-		}
-		catch (const std::out_of_range &)
-		{ }
-	
-		golden_text (scene, uri, istream);
-	}
-	catch (const X3DError &)
-	{
-		throw;
-	}
-	catch (const std::exception & error)
-	{
-		throw Error <INVALID_X3D> (error .what ());
-	}
-	catch (...)
-	{
-		throw Error <INVALID_X3D> ("Unkown error while loading '" + uri .str () + "'.");
-	}
+	return std::regex_search (data, VRML1);
 }
 
 } // X3D
