@@ -50,7 +50,7 @@
 
 #include "X3DOutlineTreeView.h"
 
-#include "../../Base/AdjustmentObject.h"
+#include "../../Base/ScrollFreezer.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 #include "CellRenderer/OutlineCellRenderer.h"
@@ -92,8 +92,7 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	expandPrototypeInstances (false),
 	       expandInlineNodes (false),
 	               useLocale (true),
-	             hadjustment (new AdjustmentObject ()),
-	             vadjustment (new AdjustmentObject ()),
+	           scrollFreezer (new ScrollFreezer (this)),
 	         rootNodesBuffer ()
 {
 	addChildObjects (rootNodesBuffer);
@@ -312,20 +311,6 @@ X3DOutlineTreeView::set_model (const Glib::RefPtr <OutlineTreeModel> & value)
 	model = value;
 }
 
-void
-X3DOutlineTreeView::preserve_adjustments ()
-{
-	hadjustment -> preserve (get_hadjustment ());
-	vadjustment -> preserve (get_vadjustment ());
-}
-
-void
-X3DOutlineTreeView::set_adjustments (const double h, const double v)
-{
-	hadjustment -> restore (get_hadjustment (), h);
-	vadjustment -> restore (get_vadjustment (), v);
-}
-
 std::vector <Gtk::TreeModel::iterator>
 X3DOutlineTreeView::get_iters (X3D::X3DChildObject* const object) const
 {
@@ -448,9 +433,6 @@ void
 X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & executionContext)
 {
 	//__LOG__ << std::endl;
-	
-	get_hadjustment () -> set_value (0);
-	get_vadjustment () -> set_value (0);
 
 	// Remove model.
 
@@ -503,7 +485,7 @@ X3DOutlineTreeView::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
 
-	preserve_adjustments ();
+	getScrollFreezer () -> freeze ();
 
 	// Unwatch model.
 

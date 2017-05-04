@@ -56,7 +56,7 @@
 namespace titania {
 namespace puck {
 
-class AdjustmentObject;
+class ScrollFreezer;
 
 class X3DLibraryView :
 	virtual public X3DLibraryViewInterface
@@ -125,8 +125,7 @@ private:
 
 	// Members
 
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
+	std::unique_ptr <ScrollFreezer> scrollFreezer;
 
 };
 

@@ -52,24 +52,25 @@
 #define __TITANIA_BASE_ADJUSTMENT_OBJECT_H__
 
 #include <gtkmm/adjustment.h>
+#include <gtkmm/scrollable.h>
 #include <sigc++/connection.h>
 #include <sigc++/trackable.h>
 
 namespace titania {
 namespace puck {
 
-class AdjustmentObject :
+class AdjustmentFreezer :
 	public sigc::trackable
 {
 public:
 
-	AdjustmentObject () :
-		sigc::trackable (),
-		     connection ()
+	AdjustmentFreezer () :
+		     sigc::trackable (),
+		          connection ()
 	{ }
 
 	void
-	preserve (const Glib::RefPtr <Gtk::Adjustment> & adjustment)
+	freeze (const Glib::RefPtr <Gtk::Adjustment> & adjustment)
 	{
 		if (connection .connected ())
 			return;
@@ -84,9 +85,8 @@ public:
 
 		connection .disconnect ();
 
-		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &AdjustmentObject::block), adjustment, value), false);
+		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &AdjustmentFreezer::block), adjustment, value), false);
 	}
-
 
 private:
 
@@ -100,6 +100,43 @@ private:
 	}
 
 	sigc::connection connection;
+
+};
+
+class ScrollFreezer
+{
+public:
+
+	ScrollFreezer (Gtk::Scrollable & scrollable) :
+		 ScrollFreezer (&scrollable)
+	{ }
+
+	ScrollFreezer (Gtk::Scrollable* const scrollable) :
+		 scrollable (scrollable),
+		hadjustment (),
+		vadjustment ()
+	{ }
+
+	void
+	freeze ()
+	{
+		hadjustment .freeze (scrollable -> get_hadjustment ());
+		vadjustment .freeze (scrollable -> get_vadjustment ());
+	}
+
+	void
+	restore (const double x, const double y)
+	{
+		hadjustment .restore (scrollable -> get_hadjustment (), x);
+		vadjustment .restore (scrollable -> get_vadjustment (), y);
+	}
+
+
+private:
+
+	Gtk::Scrollable* const scrollable;
+	AdjustmentFreezer      hadjustment;
+	AdjustmentFreezer      vadjustment;
 
 };
 

@@ -50,7 +50,7 @@
 
 #include "NodeIndex.h"
 
-#include "../../Base/AdjustmentObject.h"
+#include "../../Base/ScrollFreezer.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
@@ -91,8 +91,7 @@ NodeIndex::NodeIndex (X3DBrowserWindow* const browserWindow) :
 	                types (),
 	            nodeTypes (),
 	              columns (),
-	          hadjustment (new AdjustmentObject ()),
-	          vadjustment (new AdjustmentObject ())
+	        scrollFreezer (new ScrollFreezer (getTreeView ()))
 {
 	addChildObjects (executionContext,
 	                 protoNode,
@@ -438,8 +437,7 @@ NodeIndex::setNodes (X3D::MFNode && value)
 
 	// Fill model.
 
-	hadjustment -> preserve (getTreeView () .get_hadjustment ());
-	vadjustment -> preserve (getTreeView () .get_vadjustment ());
+	scrollFreezer -> freeze ();
 
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();

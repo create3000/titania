@@ -50,7 +50,7 @@
 
 #include "X3DLibraryView.h"
 
-#include "../../Base/AdjustmentObject.h"
+#include "../../Base/ScrollFreezer.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
@@ -73,8 +73,7 @@ static constexpr int EXPERIMENTAL = 4;
 
 X3DLibraryView::X3DLibraryView () :
 	X3DLibraryViewInterface (),
-	            hadjustment (new AdjustmentObject ()),
-	            vadjustment (new AdjustmentObject ())
+	          scrollFreezer (new ScrollFreezer (getTreeView ()))
 { }
 
 void
@@ -320,8 +319,7 @@ X3DLibraryView::restoreExpanded ()
 	for (const auto & path : paths)
 		getTreeView () .expand_row (Gtk::TreePath (path), false);
 
-	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () -> getDouble ("hadjustment"));
-	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () -> getDouble ("vadjustment"));
+	scrollFreezer -> restore (getConfig () -> getDouble ("hadjustment"), getConfig () -> getDouble ("vadjustment"));
 }
 
 void

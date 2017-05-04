@@ -53,7 +53,7 @@
 
 #include "../../UserInterfaces/X3DBindableNodeListInterface.h"
 
-#include "../../Base/AdjustmentObject.h"
+#include "../../Base/ScrollFreezer.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -64,8 +64,6 @@
 
 namespace titania {
 namespace puck {
-
-class AdjustmentObject;
 
 template <class Type>
 class X3DBindableNodeList :
@@ -188,8 +186,7 @@ private:
 	X3D::X3DPtr <Type>              selection;
 	bool                            editing;
 
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
+	std::unique_ptr <ScrollFreezer> scrollFreezer;
 
 };
 
@@ -208,8 +205,7 @@ X3DBindableNodeList <Type>::X3DBindableNodeList (X3DBrowserWindow* const browser
 	                       nodes (),
 	                   selection (),
 	                     editing (false),
-	                 hadjustment (new AdjustmentObject ()),
-	                 vadjustment (new AdjustmentObject ())
+	               scrollFreezer (new ScrollFreezer (getTreeView ()))
 {
 	setName (name);
 
@@ -341,8 +337,7 @@ X3DBindableNodeList <Type>::set_list ()
 
 	// Clear
 
-	hadjustment -> preserve (getTreeView () .get_hadjustment ());
-	vadjustment -> preserve (getTreeView () .get_vadjustment ());
+	scrollFreezer -> freeze ();
 
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();

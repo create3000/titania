@@ -50,7 +50,9 @@
 
 #include "OutlineTreeViewEditor.h"
 
+#include "../../Base/ScrollFreezer.h"
 #include "../../Browser/X3DBrowserWindow.h"
+
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "OutlineDragDrop.h"
 #include "OutlineRouteGraph.h"
@@ -832,7 +834,7 @@ OutlineTreeViewEditor::remove_route (const Gtk::TreeModel::Path & path, const st
 		}
 		default:
 		{
-			preserve_adjustments ();
+			getScrollFreezer () -> freeze ();
 			collapse_row (path);
 			is_full_expanded (get_model () -> get_iter (path), true);
 			expand_row (path, false);

@@ -50,7 +50,7 @@
 
 #include "UndoHistoryDialog.h"
 
-#include "../../Base/AdjustmentObject.h"
+#include "../../Base/ScrollFreezer.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
@@ -69,9 +69,8 @@ UndoHistoryDialog::UndoHistoryDialog (X3DBrowserWindow* const browserWindow) :
 	             X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DUndoHistoryDialogInterface (get_ui ("Dialogs/UndoHistoryDialog.glade")),
 	                      browser (browserWindow -> getCurrentBrowser ()),
-	                  hadjustment (new AdjustmentObject ()),
-	                  vadjustment (new AdjustmentObject ()),
-	                   undoBuffer ()
+	                   undoBuffer (),
+	                scrollFreezer (new ScrollFreezer (getTreeView ()))
 {
 	addChildObjects (browser, undoBuffer);
 
@@ -109,8 +108,7 @@ UndoHistoryDialog::set_undoHistory ()
 {
 	getTreeView () .queue_draw ();
 
-	hadjustment -> preserve (getTreeView () .get_hadjustment ());
-	vadjustment -> preserve (getTreeView () .get_vadjustment ());
+	scrollFreezer -> freeze ();
 
 	getTreeView () .unset_model ();
 	getListStore () -> clear ();

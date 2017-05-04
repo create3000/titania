@@ -1074,7 +1074,6 @@
     <None Include="share\titania\Library\Prototypes\Widgets\CheckButtonGroup.x3dv" />
     <None Include="Titania\ComposedWidgets\RotationTool.h" />
     <None Include="Titania\ComposedWidgets\MFStringGeoSystem.h" />
-    <None Include="Titania\Base\AdjustmentObject.h" />
     <None Include="Titania\UserInterfaces\X3DBrowserWindowInterface.h" />
     <None Include="Titania\Browser\BrowserWindow.h" />
     <None Include="Titania\UserInterfaces\X3DPrecisionPlacementPanelInterface.h" />
@@ -2729,6 +2728,7 @@
     <None Include="share\titania\Library\Primitives\Shaders\ComposedShader.x3dv" />
     <None Include="share\titania\Library\Primitives\Shaders\ProgramShader.x3dv" />
     <None Include="share\titania\pages\about\new.x3dv" />
+    <None Include="Titania\Base\ScrollFreezer.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

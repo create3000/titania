@@ -59,7 +59,7 @@ namespace titania {
 namespace puck {
 
 class X3DProtoDeclarationNode;
-class AdjustmentObject;
+class ScrollFreezer;
 
 class NodeIndex :
 	virtual public X3DNodeIndexInterface
@@ -246,8 +246,7 @@ private:
 	std::map <std::string, X3D::X3DConstants::NodeType> nodeTypes;
 	std::vector <Glib::RefPtr <Gtk::TreeViewColumn>>    columns;
 
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
+	std::unique_ptr <ScrollFreezer> scrollFreezer;
 
 };
 

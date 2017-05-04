@@ -50,7 +50,7 @@
 
 #include "HistoryView.h"
 
-#include "../../Base/AdjustmentObject.h"
+#include "../../Base/ScrollFreezer.h"
 #include "../../Browser/BrowserUserData.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
@@ -70,8 +70,7 @@ namespace Columns {
 HistoryView::HistoryView (X3DBrowserWindow* const browserWindow) :
 	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DHistoryViewInterface (get_ui ("HistoryView.glade")),
-	            hadjustment (new AdjustmentObject ()),
-	            vadjustment (new AdjustmentObject ())
+	          scrollFreezer (new ScrollFreezer (getTreeView ()))
 {
 	setup ();
 }
@@ -154,8 +153,7 @@ HistoryView::set_history ()
 {
 	// Fill model.
 
-	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
-	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
+	scrollFreezer -> freeze ();
 
 	const auto rows   = getTreeView () .get_selection () -> get_selected_rows ();
 	const auto search = getSearchEntry () .get_text ();
@@ -187,9 +185,6 @@ HistoryView::set_history ()
 
 	for (const auto & path : rows)
 		getTreeView () .get_selection () -> select (path);
-
-	hadjustment -> restore (getTreeView () .get_hadjustment (), getConfig () -> getDouble ("hadjustment"));
-	vadjustment -> restore (getTreeView () .get_vadjustment (), getConfig () -> getDouble ("vadjustment"));
 }
 
 void
@@ -284,9 +279,6 @@ HistoryView::store ()
 
 HistoryView::~HistoryView ()
 {
-	getConfig () -> setItem ("hadjustment", getTreeView () .get_hadjustment () -> get_value ());
-	getConfig () -> setItem ("vadjustment", getTreeView () .get_vadjustment () -> get_value ());
-
 	dispose ();
 }
 

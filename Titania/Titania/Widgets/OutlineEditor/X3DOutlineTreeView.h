@@ -66,7 +66,7 @@ class OutlineRouteGraph;
 class OutlineSelection;
 class OutlineTreeModel;
 class OutlineTreeObserver;
-class AdjustmentObject;
+class ScrollFreezer;
 
 class X3DOutlineTreeView :
 	virtual public X3DBaseInterface,
@@ -83,6 +83,10 @@ public:
 	Gtk::TreeViewColumn*
 	getColumn () const
 	{ return column; }
+
+	const std::unique_ptr <ScrollFreezer> &
+	getScrollFreezer () const
+	{ return scrollFreezer; }
 
 	void
 	set_execution_context (const X3D::X3DExecutionContextPtr &);
@@ -195,12 +199,6 @@ public:
 
 	void
 	collapse_row (const Gtk::TreeModel::Path &);
-	
-	void
-	preserve_adjustments ();
-
-	void
-	set_adjustments (const double, const double);
 
 	void
 	update ();
@@ -340,9 +338,8 @@ private:
 	bool expandInlineNodes;
 	bool useLocale;
 
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
-	X3D::SFTime                        rootNodesBuffer;
+	std::unique_ptr <ScrollFreezer> scrollFreezer;
+	X3D::SFTime                     rootNodesBuffer;
 
 };
 

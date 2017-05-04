@@ -57,7 +57,7 @@
 namespace titania {
 namespace puck {
 
-class AdjustmentObject;
+class ScrollFreezer;
 
 class UndoHistoryDialog :
 	virtual public X3DUndoHistoryDialogInterface
@@ -104,12 +104,10 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr browser;
+	X3D::BrowserPtr                 browser;
+	X3D::SFTime                     undoBuffer;
+	std::unique_ptr <ScrollFreezer> scrollFreezer;
 
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
-
-	X3D::SFTime undoBuffer;
 };
 
 } // puck

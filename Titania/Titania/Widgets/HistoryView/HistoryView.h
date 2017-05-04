@@ -57,7 +57,7 @@ namespace titania {
 namespace puck {
 
 class BrowserWindow;
-class AdjustmentObject;
+class ScrollFreezer;
 
 class HistoryView :
 	public X3DHistoryViewInterface
@@ -152,8 +152,7 @@ private:
 
 	// Members
 
-	std::unique_ptr <AdjustmentObject> hadjustment;
-	std::unique_ptr <AdjustmentObject> vadjustment;
+	std::unique_ptr <ScrollFreezer> scrollFreezer;
 
 };
 
