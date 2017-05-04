@@ -4,7 +4,7 @@
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
-      <source stock-id="X3DExecutionContext" filename="icons/Dragon.svg"/>
+      <source stock-id="X3DExecutionContext" filename="icons/Node/X3DExecutionContext.16.svg"/>
     </sources>
   </object>
   <object class="GtkMenu" id="SceneMenu">

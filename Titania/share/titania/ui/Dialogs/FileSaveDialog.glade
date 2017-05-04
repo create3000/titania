@@ -527,6 +527,7 @@
                         <property name="adjustment">ImageCompressionAdjustment</property>
                         <property name="round_digits">0</property>
                         <property name="digits">0</property>
+                        <property name="draw_value">False</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -568,6 +569,7 @@
                         <property name="adjustment">ImageAntialiasingAdjustment</property>
                         <property name="round_digits">0</property>
                         <property name="digits">0</property>
+                        <property name="draw_value">False</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>

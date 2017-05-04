@@ -348,9 +348,6 @@ private:
 	void
 	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &) const;
 
-	void
-	setAdjustments (const double, const double);
-
 	///  @name Members
 	
 	using MenuItemPair = std::pair <X3D::X3DExecutionContextPtr, Gtk::RadioMenuItem*>;

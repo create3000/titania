@@ -399,6 +399,9 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 {
 	//__LOG__ << X3D::SFTime (X3D::SFTime::now ()) << std::endl;
 
+	if (path .size () < 2)
+		return;
+
 	if (not treeView -> row_expanded (path))
 		return;
 
@@ -408,13 +411,30 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 	if (not getToggle (iter))
 		return;
 
-	treeView -> preserve_adjustments ();
+	// Get tree coords to restore adjustments later.
+
+	int tx = 0;
+	int ty = 0;
+
+//	treeView -> preserve_adjustments ();
+	treeView -> convert_widget_to_tree_coords (0, 0, tx, ty);
+
+	// Toggle path.
+
 	treeView -> collapse_row (path);
 
 	treeView -> disable_shift_key ();
 	treeView -> is_full_expanded (iter, full_expanded);
 	treeView -> expand_row (path, false);
 	treeView -> enable_shift_key ();
+
+	// Restore adjustments.
+
+	// Update TreeView and thus we can scoll to point.
+	while (Gtk::Main::events_pending ())
+		Gtk::Main::iteration ();
+
+	treeView -> scroll_to_point (tx, ty);
 }
 
 bool
