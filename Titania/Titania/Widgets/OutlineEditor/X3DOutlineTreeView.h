@@ -267,7 +267,7 @@ private:
 	get_open_path (const Gtk::TreeModel::iterator &) const;
 
 	void
-	set_rootNodes (const bool restoreAdjustments);
+	set_rootNodes ();
 
 	virtual
 	void

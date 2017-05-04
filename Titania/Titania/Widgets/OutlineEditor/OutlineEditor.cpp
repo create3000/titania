@@ -1686,27 +1686,19 @@ OutlineEditor::restoreExpanded ()
 {
 	try
 	{
+		const auto & executionContext = treeView -> get_execution_context ();
+
 		OutlineEditorDatabase database;
 
-		const auto & executionContext = treeView -> get_execution_context ();
-		const auto   item             = database .getItem (getPathFromContext (executionContext));
-		auto         paths            = std::vector <std::string> ();
+		const auto item  = database .getItem (getPathFromContext (executionContext));
+		auto       paths = std::vector <std::string> ();
 
 		basic::split (std::back_inserter (paths), std::get <0> (item), ";");
 
-		//treeView -> scroll_to_point (std::get <1> (item), std::get <2> (item));
+		treeView -> set_adjustments (std::get <1> (item), std::get <2> (item));
 
 		for (const auto & path : paths)
 			treeView -> expand_row (Gtk::TreePath (path), false);
-
-		// Update TreeView and thus we can scoll to point.
-		while (Gtk::Main::events_pending ())
-			Gtk::Main::iteration ();
-
-		treeView -> scroll_to_point (std::get <1> (item), std::get <2> (item));
-
-__LOG__ << std::get <1> (item) << std::endl;
-__LOG__ << std::get <2> (item) << std::endl;
 	}
 	catch (const std::exception & error)
 	{
@@ -1742,23 +1734,16 @@ OutlineEditor::saveExpandedImpl ()
 		if (executionContext -> getWorldURL () .empty ())
 			return;
 
-		OutlineEditorDatabase database;
 		std::deque <std::string> paths;
-
-		int tx = 0;
-		int ty = 0;
-
-		treeView -> convert_widget_to_tree_coords (0, 0, tx, ty);
-
-__LOG__ << tx << std::endl;
-__LOG__ << ty << std::endl;
 
 		getExpanded (treeView -> get_model () -> children (), paths);
 
+		OutlineEditorDatabase database;
+
 		database .setItem (getPathFromContext (executionContext),
 		                   basic::join (paths, ";"),
-		                   tx,
-		                   ty);
+		                   getScrolledWindow () .get_hadjustment () -> get_value (),
+		                   getScrolledWindow () .get_vadjustment () -> get_value ());
 	}
 	catch (const std::exception & error)
 	{

@@ -444,8 +444,8 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 {
 	//__LOG__ << std::endl;
 	
-//	get_hadjustment () -> set_value (0);
-//	get_vadjustment () -> set_value (0);
+	get_hadjustment () -> set_value (0);
+	get_vadjustment () -> set_value (0);
 
 	// Remove model.
 
@@ -476,15 +476,15 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	get_execution_context () -> getScene () -> units_changed () .addInterest (&X3DOutlineTreeView::queue_draw, this);
 
-	executionContext -> getRootNodes ()          .addInterest (&X3DOutlineTreeView::set_rootNodes, this, true);
-	executionContext -> importedNodes_changed () .addInterest (&X3DOutlineTreeView::set_rootNodes, this, true);
-	executionContext -> prototypes_changed ()    .addInterest (&X3DOutlineTreeView::set_rootNodes, this, true);
-	executionContext -> externProtos_changed ()  .addInterest (&X3DOutlineTreeView::set_rootNodes, this, true);
+	executionContext -> getRootNodes ()          .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
+	executionContext -> importedNodes_changed () .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
+	executionContext -> prototypes_changed ()    .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
+	executionContext -> externProtos_changed ()  .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
 
 	if (scene)
-		scene -> exportedNodes_changed () .addInterest (&X3DOutlineTreeView::set_rootNodes, this, true);
+		scene -> exportedNodes_changed () .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
 
-	set_rootNodes (false);
+	set_rootNodes ();
 }
 
 const X3D::X3DExecutionContextPtr &
@@ -494,18 +494,11 @@ X3DOutlineTreeView::get_execution_context () const
 }
 
 void
-X3DOutlineTreeView::set_rootNodes (const bool restoreAdjustments)
+X3DOutlineTreeView::set_rootNodes ()
 {
 	//__LOG__ << std::endl;
 
-	// Get tree coords to restore adjustments later.
-
 	preserve_adjustments ();
-
-	int tx = 0;
-	int ty = 0;
-
-	convert_widget_to_tree_coords (0, 0, tx, ty);
 
 	// Unwatch model.
 
@@ -621,17 +614,6 @@ X3DOutlineTreeView::set_rootNodes (const bool restoreAdjustments)
 	}
 
 	enable_shift_key ();
-
-	// Restore adjustments.
-
-	if (restoreAdjustments)
-	{
-		// Update TreeView and thus we can scoll to point.
-		while (Gtk::Main::events_pending ())
-			Gtk::Main::iteration ();
-
-		scroll_to_point (tx, ty);
-	}
 }
 
 void
