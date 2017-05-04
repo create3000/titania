@@ -1699,6 +1699,8 @@ OutlineEditor::restoreExpanded ()
 
 		for (const auto & path : paths)
 			treeView -> expand_row (Gtk::TreePath (path), false);
+
+		//Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::setAdjustments), std::get <1> (item), std::get <2> (item)));
 	}
 	catch (const std::exception & error)
 	{
@@ -1765,6 +1767,13 @@ OutlineEditor::getExpanded (const Gtk::TreeModel::Children & children, std::dequ
 			getExpanded (child -> children (), paths);
 		}
 	}
+}
+
+void
+OutlineEditor::setAdjustments (const double h, const double v)
+{
+	getScrolledWindow () .get_hadjustment () -> set_value (h);
+	getScrolledWindow () .get_vadjustment () -> set_value (v);
 }
 
 OutlineEditor::~OutlineEditor ()
