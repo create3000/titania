@@ -399,9 +399,6 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 {
 	//__LOG__ << X3D::SFTime (X3D::SFTime::now ()) << std::endl;
 
-	if (path .size () < 2)
-		return;
-
 	if (not treeView -> row_expanded (path))
 		return;
 
