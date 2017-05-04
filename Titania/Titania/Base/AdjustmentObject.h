@@ -71,6 +71,9 @@ public:
 	void
 	preserve (const Glib::RefPtr <Gtk::Adjustment> & adjustment)
 	{
+		if (connection .connected ())
+			return;
+
 		restore (adjustment, adjustment -> get_value ());
 	}
 
@@ -83,6 +86,7 @@ public:
 
 		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &AdjustmentObject::block), adjustment, value), false);
 	}
+
 
 private:
 

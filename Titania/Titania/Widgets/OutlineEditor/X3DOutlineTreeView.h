@@ -202,6 +202,9 @@ public:
 	void
 	set_adjustments (const double, const double);
 
+	void
+	update ();
+
 	///  @name Destruction
 
 	virtual
@@ -339,6 +342,7 @@ private:
 
 	std::unique_ptr <AdjustmentObject> hadjustment;
 	std::unique_ptr <AdjustmentObject> vadjustment;
+	X3D::SFTime                        rootNodesBuffer;
 
 };
 

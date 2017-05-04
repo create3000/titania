@@ -93,8 +93,13 @@ X3DOutlineTreeView::X3DOutlineTreeView (const X3D::X3DExecutionContextPtr & exec
 	       expandInlineNodes (false),
 	               useLocale (true),
 	             hadjustment (new AdjustmentObject ()),
-	             vadjustment (new AdjustmentObject ())
+	             vadjustment (new AdjustmentObject ()),
+	         rootNodesBuffer ()
 {
+	addChildObjects (rootNodesBuffer);
+
+	rootNodesBuffer .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
+
 	// Options
 
 	set_headers_visible (false);
@@ -459,13 +464,13 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	get_execution_context () -> getScene () -> units_changed () .removeInterest (&X3DOutlineTreeView::queue_draw, this);
 
-	get_execution_context () -> getRootNodes ()          .removeInterest (&X3DOutlineTreeView::set_rootNodes, this);
-	get_execution_context () -> importedNodes_changed () .removeInterest (&X3DOutlineTreeView::set_rootNodes, this);
-	get_execution_context () -> prototypes_changed ()    .removeInterest (&X3DOutlineTreeView::set_rootNodes, this);
-	get_execution_context () -> externProtos_changed ()  .removeInterest (&X3DOutlineTreeView::set_rootNodes, this);
+	get_execution_context () -> getRootNodes ()          .removeInterest (&X3DOutlineTreeView::update, this);
+	get_execution_context () -> importedNodes_changed () .removeInterest (&X3DOutlineTreeView::update, this);
+	get_execution_context () -> prototypes_changed ()    .removeInterest (&X3DOutlineTreeView::update, this);
+	get_execution_context () -> externProtos_changed ()  .removeInterest (&X3DOutlineTreeView::update, this);
 
 	if (scene)
-		scene -> exportedNodes_changed () .removeInterest (&X3DOutlineTreeView::set_rootNodes, this);
+		scene -> exportedNodes_changed () .removeInterest (&X3DOutlineTreeView::update, this);
 
 	// Set model.
 
@@ -476,13 +481,13 @@ X3DOutlineTreeView::set_execution_context (const X3D::X3DExecutionContextPtr & e
 
 	get_execution_context () -> getScene () -> units_changed () .addInterest (&X3DOutlineTreeView::queue_draw, this);
 
-	executionContext -> getRootNodes ()          .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
-	executionContext -> importedNodes_changed () .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
-	executionContext -> prototypes_changed ()    .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
-	executionContext -> externProtos_changed ()  .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
+	executionContext -> getRootNodes ()          .addInterest (&X3DOutlineTreeView::update, this);
+	executionContext -> importedNodes_changed () .addInterest (&X3DOutlineTreeView::update, this);
+	executionContext -> prototypes_changed ()    .addInterest (&X3DOutlineTreeView::update, this);
+	executionContext -> externProtos_changed ()  .addInterest (&X3DOutlineTreeView::update, this);
 
 	if (scene)
-		scene -> exportedNodes_changed () .addInterest (&X3DOutlineTreeView::set_rootNodes, this);
+		scene -> exportedNodes_changed () .addInterest (&X3DOutlineTreeView::update, this);
 
 	set_rootNodes ();
 }
@@ -614,6 +619,12 @@ X3DOutlineTreeView::set_rootNodes ()
 	}
 
 	enable_shift_key ();
+}
+
+void
+X3DOutlineTreeView::update ()
+{
+	rootNodesBuffer = X3D::SFTime::now ();
 }
 
 void

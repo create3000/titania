@@ -408,13 +408,15 @@ OutlineTreeObserver::toggle_path (const Gtk::TreeModel::Path & path)
 	if (not getToggle (iter))
 		return;
 
-	treeView -> preserve_adjustments ();
-	treeView -> collapse_row (path);
+	treeView -> update ();
 
-	treeView -> disable_shift_key ();
-	treeView -> is_full_expanded (iter, full_expanded);
-	treeView -> expand_row (path, false);
-	treeView -> enable_shift_key ();
+//	treeView -> preserve_adjustments ();
+//	treeView -> collapse_row (path);
+//
+//	treeView -> disable_shift_key ();
+//	treeView -> is_full_expanded (iter, full_expanded);
+//	treeView -> expand_row (path, false);
+//	treeView -> enable_shift_key ();
 }
 
 bool
