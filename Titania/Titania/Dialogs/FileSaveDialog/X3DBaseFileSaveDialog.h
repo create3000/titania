@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,67 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
-#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
+#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DBASE_FILE_SAVE_DIALOG_H__
+#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DBASE_FILE_SAVE_DIALOG_H__
 
-#include "X3DBaseFileSaveDialog.h"
+#include "../../UserInterfaces/X3DFileSaveDialogInterface.h"
 
 namespace titania {
 namespace puck {
 
-class X3DFileSaveDialog :
-	public X3DBaseFileSaveDialog
+class X3DBaseFileSaveDialog :
+	public X3DFileSaveDialogInterface
 {
 public:
 
 	///  @name Operations
 
-	void
-	saveScene (const bool copy);
-
 	bool
-	exportNodes (const X3D::MFNode &, basic::uri &, const X3D::UndoStepPtr &);
+	run ();
 
 	///  @name Destruction
 
 	virtual
-	~X3DFileSaveDialog () override;
+	~X3DBaseFileSaveDialog () override;
 
 
 protected:
 
 	///  @name Construction
 
-	X3DFileSaveDialog ();
-
-
-private:
-
-	///  @name Member access
-
-	basic::uri
-	getURL () const;
-
-	///  @name Operations
-
-	bool
-	saveRun ();
+	X3DBaseFileSaveDialog ();
 
 	///  @name Filter handling
 
 	void
-	setX3DFilter (const std::string & name);
-
-	void
-	on_x3d_filter_changed ();
-
-
-private:
-
-	///  @name Export nodes
-
-	bool
-	exportNodes (const X3D::MFNode &, const basic::uri &, const std::string &, const X3D::UndoStepPtr &);
+	setSuffix (const std::string & suffix);
 
 };
 

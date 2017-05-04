@@ -48,71 +48,54 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
-#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_X3DFILE_SAVE_DIALOG_H__
-
 #include "X3DBaseFileSaveDialog.h"
+
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
 
 namespace titania {
 namespace puck {
 
-class X3DFileSaveDialog :
-	public X3DBaseFileSaveDialog
+X3DBaseFileSaveDialog::X3DBaseFileSaveDialog () :
+	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.glade"))
+{ }
+
+bool
+X3DBaseFileSaveDialog::run ()
 {
-public:
+	if (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"))
+	{
+		getOutputStyleBox ()    .set_visible (true);
+		getOutputStyleButton () .set_active (getConfig () -> getInteger ("outputStyle"));
+	}
+	else
+	{
+		getOutputStyleBox ()    .set_visible (false);
+		getOutputStyleButton () .set_active (0);
+	}
 
-	///  @name Operations
+	const auto responseId = getWindow () .run ();
 
-	void
-	saveScene (const bool copy);
+	quit ();
 
-	bool
-	exportNodes (const X3D::MFNode &, basic::uri &, const X3D::UndoStepPtr &);
+	getConfig () -> setItem ("outputStyle", getOutputStyleButton () .get_active_row_number ());
 
-	///  @name Destruction
+	if (responseId == Gtk::RESPONSE_OK)
+		return true;
 
-	virtual
-	~X3DFileSaveDialog () override;
+	return false;
+}
 
+void
+X3DBaseFileSaveDialog::setSuffix (const std::string & suffix)
+{
+	basic::uri name (getWindow () .get_current_name ());
 
-protected:
+	getWindow () .set_current_name (name .basename (false) + suffix);
+}
 
-	///  @name Construction
-
-	X3DFileSaveDialog ();
-
-
-private:
-
-	///  @name Member access
-
-	basic::uri
-	getURL () const;
-
-	///  @name Operations
-
-	bool
-	saveRun ();
-
-	///  @name Filter handling
-
-	void
-	setX3DFilter (const std::string & name);
-
-	void
-	on_x3d_filter_changed ();
-
-
-private:
-
-	///  @name Export nodes
-
-	bool
-	exportNodes (const X3D::MFNode &, const basic::uri &, const std::string &, const X3D::UndoStepPtr &);
-
-};
+X3DBaseFileSaveDialog::~X3DBaseFileSaveDialog ()
+{ }
 
 } // puck
 } // titania
-
-#endif

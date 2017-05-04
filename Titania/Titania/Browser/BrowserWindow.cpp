@@ -52,6 +52,7 @@
 
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
+#include "../Dialogs/FileSaveDialog/ExportImageDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveACopyDialog.h"
 #include "../Dialogs/MessageDialog/MessageDialog.h"
@@ -839,7 +840,7 @@ BrowserWindow::on_save_a_copy_activated ()
 void
 BrowserWindow::on_export_activated ()
 {
-	std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false)) -> exportImage ();
+	std::dynamic_pointer_cast <ExportImageDialog> (addDialog ("ExportImageDialog", false)) -> exportImage ();
 }
 
 void

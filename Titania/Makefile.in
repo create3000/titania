@@ -145,8 +145,10 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Configuration/Configuration.$(OBJEXT) \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.$(OBJEXT) \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.$(OBJEXT) \
+	Titania/Dialogs/FileSaveDialog/ExportImageDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/FileSaveDialog.$(OBJEXT) \
+	Titania/Dialogs/FileSaveDialog/X3DBaseFileSaveDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/X3DFileSaveDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.$(OBJEXT) \
 	Titania/Dialogs/MessageDialog/MessageDialog.$(OBJEXT) \
@@ -626,8 +628,10 @@ titania_SOURCES = \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp \
+	Titania/Dialogs/FileSaveDialog/ExportImageDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveDialog.cpp \
+	Titania/Dialogs/FileSaveDialog/X3DBaseFileSaveDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/X3DFileSaveDialog.cpp \
 	Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.cpp \
 	Titania/Dialogs/MessageDialog/MessageDialog.cpp \
@@ -1094,10 +1098,16 @@ Titania/Dialogs/FileSaveDialog/$(am__dirstamp):
 Titania/Dialogs/FileSaveDialog/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Dialogs/FileSaveDialog/$(DEPDIR)
 	@: > Titania/Dialogs/FileSaveDialog/$(DEPDIR)/$(am__dirstamp)
+Titania/Dialogs/FileSaveDialog/ExportImageDialog.$(OBJEXT):  \
+	Titania/Dialogs/FileSaveDialog/$(am__dirstamp) \
+	Titania/Dialogs/FileSaveDialog/$(DEPDIR)/$(am__dirstamp)
 Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.$(OBJEXT):  \
 	Titania/Dialogs/FileSaveDialog/$(am__dirstamp) \
 	Titania/Dialogs/FileSaveDialog/$(DEPDIR)/$(am__dirstamp)
 Titania/Dialogs/FileSaveDialog/FileSaveDialog.$(OBJEXT):  \
+	Titania/Dialogs/FileSaveDialog/$(am__dirstamp) \
+	Titania/Dialogs/FileSaveDialog/$(DEPDIR)/$(am__dirstamp)
+Titania/Dialogs/FileSaveDialog/X3DBaseFileSaveDialog.$(OBJEXT):  \
 	Titania/Dialogs/FileSaveDialog/$(am__dirstamp) \
 	Titania/Dialogs/FileSaveDialog/$(DEPDIR)/$(am__dirstamp)
 Titania/Dialogs/FileSaveDialog/X3DFileSaveDialog.$(OBJEXT):  \
@@ -2025,8 +2035,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Configuration/$(DEPDIR)/config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileImportDialog/$(DEPDIR)/FileImportDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileOpenDialog/$(DEPDIR)/FileOpenDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/ExportImageDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileSaveACopyDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileSaveDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/X3DBaseFileSaveDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/X3DFileSaveDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveWarningDialog/$(DEPDIR)/FileSaveWarningDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/MessageDialog/$(DEPDIR)/MessageDialog.Po@am__quote@

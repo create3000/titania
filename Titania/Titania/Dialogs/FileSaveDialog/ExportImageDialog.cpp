@@ -1,0 +1,302 @@
+/* -*- Mode: C++; coding: utf-8; tab-width: 3; indent-tabs-mode: tab; c-basic-offset: 3 -*-
+ *******************************************************************************
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * Copyright create3000, Scheffelstraße 31a, Leipzig, Germany 2011.
+ *
+ * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
+ *
+ * THIS IS UNPUBLISHED SOURCE CODE OF create3000.
+ *
+ * The copyright notice above does not evidence any actual of intended
+ * publication of such source code, and is an unpublished work by create3000.
+ * This material contains CONFIDENTIAL INFORMATION that is the property of
+ * create3000.
+ *
+ * No permission is granted to copy, distribute, or create derivative works from
+ * the contents of this software, in whole or in part, without the prior written
+ * permission of create3000.
+ *
+ * NON-MILITARY USE ONLY
+ *
+ * All create3000 software are effectively free software with a non-military use
+ * restriction. It is free. Well commented source is provided. You may reuse the
+ * source in any way you please with the exception anything that uses it must be
+ * marked to indicate is contains 'non-military use only' components.
+ *
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * Copyright 1999, 2016 Holger Seelig <holger.seelig@yahoo.de>.
+ *
+ * This file is part of the Titania Project.
+ *
+ * Titania is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License version 3 only, as published by the
+ * Free Software Foundation.
+ *
+ * Titania is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License version 3 for more
+ * details (a copy is included in the LICENSE file that accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version 3
+ * along with Titania.  If not, see <http://www.gnu.org/licenses/gpl.html> for a
+ * copy of the GPLv3 License.
+ *
+ * For Silvio, Joy and Adi.
+ *
+ ******************************************************************************/
+
+#include "ExportImageDialog.h"
+
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Dialogs/MessageDialog/MessageDialog.h"
+
+#include <Titania/OS.h>
+
+#include <regex>
+
+namespace titania {
+namespace puck {
+
+static constexpr auto IMAGE_XCF_FILTER  = "Gimp XCF Image (*.xcf)";
+static constexpr auto IMAGE_JPEG_FILTER = "JPEG Image (*.jpeg, *.jpg)";
+static constexpr auto IMAGE_PDF_FILTER  = "PDF File (*.pdf)";
+static constexpr auto IMAGE_PNG_FILTER  = "PNG Image (*.png)";
+static constexpr auto IMAGE_PSD_FILTER  = "Photoshop Image (*.psd)";
+static constexpr auto IMAGE_TIFF_FILTER = "TIFF Image (*.tiff, *.tif)";
+static constexpr auto IMAGE_BMP_FILTER  = "Windows BMP Image (*.bmp)";
+
+ExportImageDialog::ExportImageDialog (X3DBrowserWindow* const browserWindow) :
+	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DBaseFileSaveDialog ()
+{
+	setName ("ExportImageDialog");
+
+	getFileFilterImageXCF  () -> set_name (_ (IMAGE_XCF_FILTER));
+	getFileFilterImageJPEG () -> set_name (_ (IMAGE_JPEG_FILTER));
+	getFileFilterImagePDF  () -> set_name (_ (IMAGE_PDF_FILTER));
+	getFileFilterImagePNG  () -> set_name (_ (IMAGE_PNG_FILTER));
+	getFileFilterImagePSD  () -> set_name (_ (IMAGE_PSD_FILTER));
+	getFileFilterImageTIFF () -> set_name (_ (IMAGE_TIFF_FILTER));
+	getFileFilterImageBMP  () -> set_name (_ (IMAGE_BMP_FILTER));
+
+	setup ();
+}
+
+void
+ExportImageDialog::setImageFilter (const std::string & name)
+{
+	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &ExportImageDialog::on_image_filter_changed));
+
+	if (os::program_exists ("gimp"))
+		getWindow () .add_filter (getFileFilterImageXCF ());
+
+	getWindow () .add_filter (getFileFilterImageJPEG ());
+	getWindow () .add_filter (getFileFilterImagePDF ());
+	getWindow () .add_filter (getFileFilterImagePNG ());
+	getWindow () .add_filter (getFileFilterImagePSD ());
+	getWindow () .add_filter (getFileFilterImageTIFF ());
+	getWindow () .add_filter (getFileFilterImageBMP ());
+
+	if (name == _(IMAGE_XCF_FILTER))
+		getWindow () .set_filter (getFileFilterImageXCF ());
+
+	else if (name == _(IMAGE_JPEG_FILTER))
+		getWindow () .set_filter (getFileFilterImageJPEG ());
+
+	else if (name == _(IMAGE_PDF_FILTER))
+		getWindow () .set_filter (getFileFilterImagePDF ());
+
+	else if (name == _(IMAGE_PNG_FILTER))
+		getWindow () .set_filter (getFileFilterImagePNG ());
+
+	else if (name == _(IMAGE_PSD_FILTER))
+		getWindow () .set_filter (getFileFilterImagePSD ());
+
+	else if (name == _(IMAGE_TIFF_FILTER))
+		getWindow () .set_filter (getFileFilterImageTIFF ());
+
+	else if (name == _(IMAGE_BMP_FILTER))
+		getWindow () .set_filter (getFileFilterImageBMP ());
+
+	else
+		getWindow () .set_filter (getFileFilterImagePNG ());
+}
+
+void
+ExportImageDialog::on_image_filter_changed ()
+{
+	if (getWindow () .get_filter () == getFileFilterImageXCF ())
+		setSuffix (".xcf");
+
+	else if (getWindow () .get_filter () == getFileFilterImageJPEG ())
+		setSuffix (".jpg");
+
+	else if (getWindow () .get_filter () == getFileFilterImagePDF ())
+		setSuffix (".pdf");
+
+	else if (getWindow () .get_filter () == getFileFilterImagePNG ())
+		setSuffix (".png");
+
+	else if (getWindow () .get_filter () == getFileFilterImagePSD ())
+		setSuffix (".psd");
+
+	else if (getWindow () .get_filter () == getFileFilterImageTIFF ())
+		setSuffix (".tiff");
+
+	else if (getWindow () .get_filter () == getFileFilterImageBMP ())
+		setSuffix (".bmp");
+}
+
+// Export image
+
+void
+ExportImageDialog::exportImage ()
+{
+	const auto worldURL = getCurrentContext () -> getWorldURL ();
+
+	if (getConfig () -> hasItem ("exportFolder"))
+		getWindow () .set_current_folder_uri (getConfig () -> getString ("exportFolder"));
+	else
+		getWindow () .set_current_folder (os::home ());
+
+	getWindow () .set_current_name (worldURL .basename (false) + ".png");
+
+	setImageFilter (getConfig () -> getString ("imageFilter"));
+
+	// Run dialog.
+
+	const auto responseId = getWindow () .run ();
+
+	getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
+
+	if (getWindow () .get_filter ())
+		getConfig () -> setItem ("imageFilter", getWindow () .get_filter () -> get_name ());
+
+	quit ();
+
+	if (responseId == Gtk::RESPONSE_OK)
+	{
+		// Run image options dialog.
+
+		if (imageOptions ())
+		{
+			// Save image.
+
+			try
+			{
+				auto filename = basic::uri (Glib::uri_unescape_string (getWindow () .get_filename ()));
+
+				auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
+				                                                  getImageHeightAdjustment () -> get_value (),
+				                                                  getImageAlphaChannelSwitch () .get_active (),
+				                                                  getImageAntialiasingAdjustment () -> get_value ());
+
+				image .quality (getImageCompressionAdjustment () -> get_value ());
+
+				if (filename .suffix () == ".xcf" and os::program_exists ("gimp"))
+				{
+					std::string pngFilename = "/tmp/titania-XXXXXX.png";
+					auto ofstream           = os::mkstemps (pngFilename, 4);
+
+					if (ofstream)
+					{
+						static const std::regex quotes (R"/(")/");
+
+						filename = std::regex_replace (filename .str (), quotes, "\\\"");
+
+						image .write (pngFilename);
+
+						os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + pngFilename + "\" \"" + pngFilename + "\")))"
+						            "(drawable (car (gimp-image-get-active-layer image))))"
+						            "(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + filename + "\" \"" + filename + "\")"
+						            "(gimp-image-delete image)"
+						            "(gimp-quit 0))");
+
+					}
+
+					os::unlink (pngFilename);
+				}
+				else
+					image .write (filename);
+			}
+			catch (const Magick::Exception & error)
+			{
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+			
+				dialog -> setType (Gtk::MESSAGE_ERROR);
+				dialog -> setMessage (_ ("Could not save image!"));
+				dialog -> setText (_ ("Tip: check file and folder permissions."));
+				dialog -> run ();
+			}
+			catch (const std::exception & error)
+			{
+				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+			
+				dialog -> setType (Gtk::MESSAGE_ERROR);
+				dialog -> setMessage (_ ("Could not generate image!"));
+				dialog -> setText (_ ("Tip: try a smaller image size and/or less antialiasing."));
+				dialog -> run ();
+			}
+		}
+	}
+}
+
+bool
+ExportImageDialog::imageOptions ()
+{
+	// First configure adjustments.
+
+	const int32_t antialiasing = getCurrentBrowser () -> getMaxSamples ();
+
+	getImageWidthAdjustment ()  -> set_upper (getCurrentBrowser () -> getMaxRenderBufferSize ());
+	getImageHeightAdjustment () -> set_upper (getCurrentBrowser () -> getMaxRenderBufferSize ());
+	getImageAntialiasingAdjustment () -> set_upper (antialiasing);
+
+	// Restore image options.
+
+	if (getConfig () -> hasItem ("imageWidth"))
+		getImageWidthAdjustment () -> set_value (getConfig () -> getInteger ("imageWidth"));
+
+	if (getConfig () -> hasItem ("imageHeight"))
+		getImageHeightAdjustment () -> set_value (getConfig () -> getInteger ("imageHeight"));
+
+	getImageAlphaChannelSwitch () .set_active (getConfig () -> getBoolean ("imageAlphaChannel"));
+
+	if (getConfig () -> hasItem ("imageAntialiasing"))
+		getImageAntialiasingAdjustment () -> set_value (std::min (getConfig () -> getInteger ("imageAntialiasing"), antialiasing));
+
+	if (getConfig () -> hasItem ("imageCompression"))
+		getImageCompressionAdjustment () -> set_value (getConfig () -> getInteger ("imageCompression"));
+
+	getImageAntialiasingBox () .set_sensitive (getCurrentBrowser () -> isExtensionAvailable ("GL_EXT_framebuffer_multisample"));
+
+	// Run image options dialog.
+
+	const auto responseId = getImageOptionsDialog () .run ();
+
+	if (responseId == Gtk::RESPONSE_OK)
+	{
+		getConfig () -> setItem ("imageWidth",        (int) getImageWidthAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageHeight",       (int) getImageHeightAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageAlphaChannel", getImageAlphaChannelSwitch () .get_active ());
+		getConfig () -> setItem ("imageAntialiasing", (int) getImageAntialiasingAdjustment () -> get_value ());
+		getConfig () -> setItem ("imageCompression",  (int) getImageCompressionAdjustment () -> get_value ());
+	}
+
+	getImageOptionsDialog () .hide ();
+
+	return responseId == Gtk::RESPONSE_OK;
+}
+
+ExportImageDialog::~ExportImageDialog ()
+{
+	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder ());
+
+	dispose ();
+}
+
+} // puck
+} // titania

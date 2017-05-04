@@ -59,6 +59,8 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileSaveDialog ()
 {
+	setName ("FileSaveDialog");
+
 	setup ();
 }
 

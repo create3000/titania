@@ -51,15 +51,12 @@
 #include "X3DFileSaveDialog.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
-#include "../../Dialogs/MessageDialog/MessageDialog.h"
 
 #include <Titania/X3D/Basic/Traverse.h>
-#include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
-#include <Titania/OS.h>
+#include <Titania/X3D/Editing/X3DEditor.h>
 
-#include <regex>
+#include <Titania/OS.h>
 
 namespace titania {
 namespace puck {
@@ -77,28 +74,14 @@ static constexpr auto COMPRESSED_X3D_XML_ENCODING_FILTER          = "Compressed 
 static constexpr auto COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER = "Compressed X3D Classic VRML Encoding (*.x3dvz)";
 static constexpr auto COMPRESSED_VRML97_ENCODING_FILTER           = "Compressed VRML97 Encoding (*.wrz)";
 
-static constexpr auto IMAGE_XCF_FILTER  = "Gimp XCF Image (*.xcf)";
-static constexpr auto IMAGE_JPEG_FILTER = "JPEG Image (*.jpeg, *.jpg)";
-static constexpr auto IMAGE_PDF_FILTER  = "PDF File (*.pdf)";
-static constexpr auto IMAGE_PNG_FILTER  = "PNG Image (*.png)";
-static constexpr auto IMAGE_PSD_FILTER  = "Photoshop Image (*.psd)";
-static constexpr auto IMAGE_TIFF_FILTER = "TIFF Image (*.tiff, *.tif)";
-static constexpr auto IMAGE_BMP_FILTER  = "Windows BMP Image (*.bmp)";
-
 X3DFileSaveDialog::X3DFileSaveDialog () :
-	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.glade"))
+	X3DBaseFileSaveDialog ()
 {
+	getFileFilterAll () -> set_name (_ (ALL_FILES_FILTER));
+
 	getFileFilterImage () -> set_name (_ (IMAGES_FILTER));
 	getFileFilterAudio () -> set_name (_ (AUDIO_FILTER));
 	getFileFilterVideo () -> set_name (_ (VIDEOS_FILTER));
-
-	getFileFilterImageXCF  () -> set_name (_ (IMAGE_XCF_FILTER));
-	getFileFilterImageJPEG () -> set_name (_ (IMAGE_JPEG_FILTER));
-	getFileFilterImagePDF  () -> set_name (_ (IMAGE_PDF_FILTER));
-	getFileFilterImagePNG  () -> set_name (_ (IMAGE_PNG_FILTER));
-	getFileFilterImagePSD  () -> set_name (_ (IMAGE_PSD_FILTER));
-	getFileFilterImageTIFF () -> set_name (_ (IMAGE_TIFF_FILTER));
-	getFileFilterImageBMP  () -> set_name (_ (IMAGE_BMP_FILTER));
 
 	getFileFilterX3DXMLEncoding         () -> set_name (_ (X3D_XML_ENCODING_FILTER));
 	getFileFilterX3DClassicVRMLEncoding () -> set_name (_ (X3D_CLASSIC_VRML_ENCODING_FILTER));
@@ -108,8 +91,6 @@ X3DFileSaveDialog::X3DFileSaveDialog () :
 	getFileFilterCompressedX3DXMLEncoding         () -> set_name (_ (COMPRESSED_X3D_XML_ENCODING_FILTER));
 	getFileFilterCompressedX3DClassicVRMLEncoding () -> set_name (_ (COMPRESSED_X3D_CLASSIC_VRML_ENCODING_FILTER));
 	getFileFilterCompressedVrmlEncoding           () -> set_name (_ (COMPRESSED_VRML97_ENCODING_FILTER));
-
-	getFileFilterAll () -> set_name (_ (ALL_FILES_FILTER));
 }
 
 basic::uri
@@ -125,30 +106,11 @@ X3DFileSaveDialog::getURL () const
 	return url;
 }
 
-bool
-X3DFileSaveDialog::run ()
+void
+X3DFileSaveDialog::saveScene (const bool copy)
 {
-	if (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"))
-	{
-		getOutputStyleBox ()    .set_visible (true);
-		getOutputStyleButton () .set_active (getConfig () -> getInteger ("outputStyle"));
-	}
-	else
-	{
-		getOutputStyleBox ()    .set_visible (false);
-		getOutputStyleButton () .set_active (0);
-	}
-
-	const auto responseId = getWindow () .run ();
-
-	quit ();
-
-	getConfig () -> setItem ("outputStyle", getOutputStyleButton () .get_active_row_number ());
-
-	if (responseId == Gtk::RESPONSE_OK)
-		return true;
-
-	return false;
+	if (saveRun ())
+		getBrowserWindow () -> save (getURL (), getOutputStyleButton () .get_active_text (), copy);
 }
 
 bool
@@ -190,13 +152,6 @@ X3DFileSaveDialog::saveRun ()
 		getConfig () -> setItem ("filter", getWindow () .get_filter () -> get_name ());
 
 	return response;
-}
-
-void
-X3DFileSaveDialog::saveScene (const bool copy)
-{
-	if (saveRun ())
-		getBrowserWindow () -> save (getURL (), getOutputStyleButton () .get_active_text (), copy);
 }
 
 void
@@ -250,246 +205,32 @@ X3DFileSaveDialog::on_x3d_filter_changed ()
 	// X3D, VRML97
 
 	if (getWindow () .get_filter () == getFileFilterX3DXMLEncoding ())
-		set_suffix (".x3d");
+		setSuffix (".x3d");
 
 	else if (getWindow () .get_filter () == getFileFilterX3DClassicVRMLEncoding ())
-		set_suffix (".x3dv");
+		setSuffix (".x3dv");
 
 	else if (getWindow () .get_filter () == getFileFilterX3DJSONEncoding ())
-		set_suffix (".json");
+		setSuffix (".json");
 
 	else if (getWindow () .get_filter () == getFileFilterVrmlEncoding ())
-		set_suffix (".wrl");
+		setSuffix (".wrl");
 
 	// Compressed
 
 	else if (getWindow () .get_filter () == getFileFilterCompressedX3DXMLEncoding ())
-		set_suffix (".x3dz");
+		setSuffix (".x3dz");
 
 	else if (getWindow () .get_filter () == getFileFilterCompressedX3DClassicVRMLEncoding ())
-		set_suffix (".x3dvz");
+		setSuffix (".x3dvz");
 
 	else if (getWindow () .get_filter () == getFileFilterCompressedVrmlEncoding ())
-		set_suffix (".wrz");
+		setSuffix (".wrz");
 
 	// Default
 
 	else
-		set_suffix (".x3d");
-}
-
-void
-X3DFileSaveDialog::setImageFilter (const std::string & name)
-{
-	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DFileSaveDialog::on_image_filter_changed));
-
-	if (os::program_exists ("gimp"))
-		getWindow () .add_filter (getFileFilterImageXCF ());
-
-	getWindow () .add_filter (getFileFilterImageJPEG ());
-	getWindow () .add_filter (getFileFilterImagePDF ());
-	getWindow () .add_filter (getFileFilterImagePNG ());
-	getWindow () .add_filter (getFileFilterImagePSD ());
-	getWindow () .add_filter (getFileFilterImageTIFF ());
-	getWindow () .add_filter (getFileFilterImageBMP ());
-
-	if (name == _(IMAGE_XCF_FILTER))
-		getWindow () .set_filter (getFileFilterImageXCF ());
-
-	else if (name == _(IMAGE_JPEG_FILTER))
-		getWindow () .set_filter (getFileFilterImageJPEG ());
-
-	else if (name == _(IMAGE_PDF_FILTER))
-		getWindow () .set_filter (getFileFilterImagePDF ());
-
-	else if (name == _(IMAGE_PNG_FILTER))
-		getWindow () .set_filter (getFileFilterImagePNG ());
-
-	else if (name == _(IMAGE_PSD_FILTER))
-		getWindow () .set_filter (getFileFilterImagePSD ());
-
-	else if (name == _(IMAGE_TIFF_FILTER))
-		getWindow () .set_filter (getFileFilterImageTIFF ());
-
-	else if (name == _(IMAGE_BMP_FILTER))
-		getWindow () .set_filter (getFileFilterImageBMP ());
-
-	else
-		getWindow () .set_filter (getFileFilterImagePNG ());
-}
-
-void
-X3DFileSaveDialog::on_image_filter_changed ()
-{
-	if (getWindow () .get_filter () == getFileFilterImageXCF ())
-		set_suffix (".xcf");
-
-	else if (getWindow () .get_filter () == getFileFilterImageJPEG ())
-		set_suffix (".jpg");
-
-	else if (getWindow () .get_filter () == getFileFilterImagePDF ())
-		set_suffix (".pdf");
-
-	else if (getWindow () .get_filter () == getFileFilterImagePNG ())
-		set_suffix (".png");
-
-	else if (getWindow () .get_filter () == getFileFilterImagePSD ())
-		set_suffix (".psd");
-
-	else if (getWindow () .get_filter () == getFileFilterImageTIFF ())
-		set_suffix (".tiff");
-
-	else if (getWindow () .get_filter () == getFileFilterImageBMP ())
-		set_suffix (".bmp");
-}
-
-void
-X3DFileSaveDialog::set_suffix (const std::string & suffix)
-{
-	basic::uri name (getWindow () .get_current_name ());
-
-	getWindow () .set_current_name (name .basename (false) + suffix);
-}
-
-// Export image
-
-void
-X3DFileSaveDialog::exportImage ()
-{
-	const auto worldURL = getCurrentContext () -> getWorldURL ();
-
-	if (getConfig () -> hasItem ("exportFolder"))
-		getWindow () .set_current_folder_uri (getConfig () -> getString ("exportFolder"));
-	else
-		getWindow () .set_current_folder (os::home ());
-
-	getWindow () .set_current_name (worldURL .basename (false) + ".png");
-
-	setImageFilter (getConfig () -> getString ("imageFilter"));
-
-	// Run dialog.
-
-	const auto responseId = getWindow () .run ();
-
-	getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
-
-	if (getWindow () .get_filter ())
-		getConfig () -> setItem ("imageFilter", getWindow () .get_filter () -> get_name ());
-
-	quit ();
-
-	if (responseId == Gtk::RESPONSE_OK)
-	{
-		// Run image options dialog.
-
-		if (imageOptions ())
-		{
-			// Save image.
-
-			try
-			{
-				auto filename = basic::uri (Glib::uri_unescape_string (getWindow () .get_filename ()));
-
-				auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
-				                                                  getImageHeightAdjustment () -> get_value (),
-				                                                  getImageAlphaChannelSwitch () .get_active (),
-				                                                  getImageAntialiasingAdjustment () -> get_value ());
-
-				image .quality (getImageCompressionAdjustment () -> get_value ());
-
-				if (filename .suffix () == ".xcf" and os::program_exists ("gimp"))
-				{
-					std::string pngFilename = "/tmp/titania-XXXXXX.png";
-					auto ofstream           = os::mkstemps (pngFilename, 4);
-
-					if (ofstream)
-					{
-						static const std::regex quotes (R"/(")/");
-
-						filename = std::regex_replace (filename .str (), quotes, "\\\"");
-
-						image .write (pngFilename);
-
-						os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + pngFilename + "\" \"" + pngFilename + "\")))"
-						            "(drawable (car (gimp-image-get-active-layer image))))"
-						            "(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + filename + "\" \"" + filename + "\")"
-						            "(gimp-image-delete image)"
-						            "(gimp-quit 0))");
-
-					}
-
-					os::unlink (pngFilename);
-				}
-				else
-					image .write (filename);
-			}
-			catch (const Magick::Exception & error)
-			{
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
-			
-				dialog -> setType (Gtk::MESSAGE_ERROR);
-				dialog -> setMessage (_ ("Could not save image!"));
-				dialog -> setText (_ ("Tip: check file and folder permissions."));
-				dialog -> run ();
-			}
-			catch (const std::exception & error)
-			{
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
-			
-				dialog -> setType (Gtk::MESSAGE_ERROR);
-				dialog -> setMessage (_ ("Could not generate image!"));
-				dialog -> setText (_ ("Tip: try a smaller image size and/or less antialiasing."));
-				dialog -> run ();
-			}
-		}
-	}
-}
-
-bool
-X3DFileSaveDialog::imageOptions ()
-{
-	// First configure adjustments.
-
-	const int32_t antialiasing = getCurrentBrowser () -> getMaxSamples ();
-
-	getImageWidthAdjustment ()  -> set_upper (getCurrentBrowser () -> getMaxRenderBufferSize ());
-	getImageHeightAdjustment () -> set_upper (getCurrentBrowser () -> getMaxRenderBufferSize ());
-	getImageAntialiasingAdjustment () -> set_upper (antialiasing);
-
-	// Restore image options.
-
-	if (getConfig () -> hasItem ("imageWidth"))
-		getImageWidthAdjustment () -> set_value (getConfig () -> getInteger ("imageWidth"));
-
-	if (getConfig () -> hasItem ("imageHeight"))
-		getImageHeightAdjustment () -> set_value (getConfig () -> getInteger ("imageHeight"));
-
-	getImageAlphaChannelSwitch () .set_active (getConfig () -> getBoolean ("imageAlphaChannel"));
-
-	if (getConfig () -> hasItem ("imageAntialiasing"))
-		getImageAntialiasingAdjustment () -> set_value (std::min (getConfig () -> getInteger ("imageAntialiasing"), antialiasing));
-
-	if (getConfig () -> hasItem ("imageCompression"))
-		getImageCompressionAdjustment () -> set_value (getConfig () -> getInteger ("imageCompression"));
-
-	getImageAntialiasingBox () .set_sensitive (getCurrentBrowser () -> isExtensionAvailable ("GL_EXT_framebuffer_multisample"));
-
-	// Run image options dialog.
-
-	const auto responseId = getImageOptionsDialog () .run ();
-
-	if (responseId == Gtk::RESPONSE_OK)
-	{
-		getConfig () -> setItem ("imageWidth",        (int) getImageWidthAdjustment () -> get_value ());
-		getConfig () -> setItem ("imageHeight",       (int) getImageHeightAdjustment () -> get_value ());
-		getConfig () -> setItem ("imageAlphaChannel", getImageAlphaChannelSwitch () .get_active ());
-		getConfig () -> setItem ("imageAntialiasing", (int) getImageAntialiasingAdjustment () -> get_value ());
-		getConfig () -> setItem ("imageCompression",  (int) getImageCompressionAdjustment () -> get_value ());
-	}
-
-	getImageOptionsDialog () .hide ();
-
-	return responseId == Gtk::RESPONSE_OK;
+		setSuffix (".x3d");
 }
 
 // Export nodes
