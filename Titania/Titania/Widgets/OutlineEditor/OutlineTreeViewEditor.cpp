@@ -290,6 +290,9 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 
 				const auto context = get_context (parentIter);
 
+				if (context -> getScene () not_eq get_execution_context () -> getScene ())
+					return false;
+
 				if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 					return false;
 
@@ -342,7 +345,12 @@ OutlineTreeViewEditor::hover_access_type (const double x, const double y)
 				if (not is_node (parentIter))
 					return false;
 
-				if (get_context (parentIter) -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
+				const auto context = get_context (parentIter);
+
+				if (context -> getScene () not_eq get_execution_context () -> getScene ())
+					return false;
+
+				if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 					return false;
 
 				overUserData = data -> get_user_data ();
@@ -559,6 +567,9 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 						if (not destinationNode)
 							return false;
 
+						if (context -> getScene () not_eq get_execution_context () -> getScene ())
+							return false;
+
 						if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
 							return false;
 
@@ -635,6 +646,9 @@ OutlineTreeViewEditor::add_route (const double x, const double y)
 						sourceField = field -> getName ();
 
 						if (not sourceNode)
+							return false;
+
+						if (context -> getScene () not_eq get_execution_context () -> getScene ())
 							return false;
 
 						if (context -> isType ({ X3D::X3DConstants::X3DPrototypeInstance }))
