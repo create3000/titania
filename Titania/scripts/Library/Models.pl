@@ -41,6 +41,9 @@ sub models {
 	my $name      = basename $filename, ".wrl", ".x3dv", ".x3d";
 	my $x3dv      ="$folder/$subfolder/$name.x3dv";
 
+	$name =~ s/[\.]/-/sgo;
+	$name =~ s/^(\d)/n$1/sgo;
+
 	my $url = "";
 
 	for (@url)
@@ -58,7 +61,12 @@ sub models {
 
 	say $x3dv;
 
-	system "x3dtidy", $x3dv, $x3dv;
+	system "titania", $x3dv, "-e", $x3dv;
 }
 
 models $_ foreach `find $models -name \*.x3d`;
+models $_ foreach `find $models -name \*.x3dz`;
+models $_ foreach `find $models -name \*.x3dv`;
+models $_ foreach `find $models -name \*.x3dvz`;
+models $_ foreach `find $models -name \*.wrl`;
+models $_ foreach `find $models -name \*.wrz`;

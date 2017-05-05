@@ -1,0 +1,1 @@
+DEF logo Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Enterprises/logo.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Enterprises/logo.wrl","http://rawgit.com/create3000/Library/master/Models/Enterprises/logo.wrl","https://rawgit.com/create3000/Library/master/Models/Enterprises/logo.wrl", ] } }

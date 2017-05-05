@@ -1,0 +1,1 @@
+DEF junk Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Buildings/junk.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Buildings/junk.wrl","http://rawgit.com/create3000/Library/master/Models/Buildings/junk.wrl","https://rawgit.com/create3000/Library/master/Models/Buildings/junk.wrl", ] } }

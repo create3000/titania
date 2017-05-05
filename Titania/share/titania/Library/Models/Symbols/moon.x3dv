@@ -1,0 +1,1 @@
+DEF moon Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Symbols/moon.x3d","https://cdn.rawgit.com/create3000/Library/master/Models/Symbols/moon.x3d","http://rawgit.com/create3000/Library/master/Models/Symbols/moon.x3d","https://rawgit.com/create3000/Library/master/Models/Symbols/moon.x3d", ] } }

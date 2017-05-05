@@ -1,0 +1,1 @@
+DEF trimaran Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Vehicles/trimaran.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Vehicles/trimaran.wrl","http://rawgit.com/create3000/Library/master/Models/Vehicles/trimaran.wrl","https://rawgit.com/create3000/Library/master/Models/Vehicles/trimaran.wrl", ] } }

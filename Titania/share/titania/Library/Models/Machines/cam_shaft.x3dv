@@ -1,0 +1,1 @@
+DEF cam_shaft Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Machines/cam_shaft.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Machines/cam_shaft.wrl","http://rawgit.com/create3000/Library/master/Models/Machines/cam_shaft.wrl","https://rawgit.com/create3000/Library/master/Models/Machines/cam_shaft.wrl", ] } }

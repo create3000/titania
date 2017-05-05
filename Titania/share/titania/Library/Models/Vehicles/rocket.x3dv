@@ -1,0 +1,1 @@
+DEF rocket Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Vehicles/rocket.x3d","https://cdn.rawgit.com/create3000/Library/master/Models/Vehicles/rocket.x3d","http://rawgit.com/create3000/Library/master/Models/Vehicles/rocket.x3d","https://rawgit.com/create3000/Library/master/Models/Vehicles/rocket.x3d", ] } }

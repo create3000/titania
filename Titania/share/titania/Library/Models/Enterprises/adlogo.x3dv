@@ -1,0 +1,1 @@
+DEF adlogo Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Enterprises/adlogo.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Enterprises/adlogo.wrl","http://rawgit.com/create3000/Library/master/Models/Enterprises/adlogo.wrl","https://rawgit.com/create3000/Library/master/Models/Enterprises/adlogo.wrl", ] } }

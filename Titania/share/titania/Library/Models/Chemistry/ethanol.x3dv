@@ -1,0 +1,1 @@
+DEF ethanol Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Chemistry/ethanol.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Chemistry/ethanol.wrl","http://rawgit.com/create3000/Library/master/Models/Chemistry/ethanol.wrl","https://rawgit.com/create3000/Library/master/Models/Chemistry/ethanol.wrl", ] } }

@@ -1,0 +1,1 @@
+DEF knight Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Chess/knight.x3d","https://cdn.rawgit.com/create3000/Library/master/Models/Chess/knight.x3d","http://rawgit.com/create3000/Library/master/Models/Chess/knight.x3d","https://rawgit.com/create3000/Library/master/Models/Chess/knight.x3d", ] } }

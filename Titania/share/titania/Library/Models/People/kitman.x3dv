@@ -1,0 +1,1 @@
+DEF kitman Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/People/kitman.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/People/kitman.wrl","http://rawgit.com/create3000/Library/master/Models/People/kitman.wrl","https://rawgit.com/create3000/Library/master/Models/People/kitman.wrl", ] } }

@@ -1,0 +1,1 @@
+DEF flashlight Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Household/flashlight.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Household/flashlight.wrl","http://rawgit.com/create3000/Library/master/Models/Household/flashlight.wrl","https://rawgit.com/create3000/Library/master/Models/Household/flashlight.wrl", ] } }

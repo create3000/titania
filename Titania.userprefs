@@ -1,9 +1,15 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Application/Tidy.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.h">
     <Files>
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="698" Column="1" />
-      <File FileName="Titania/Titania/Application/Tidy.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.h" Line="65" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Dialogs/FileSaveDialog/FileExportDialog.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/LibraryView/X3DModelsPaletteEditor.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

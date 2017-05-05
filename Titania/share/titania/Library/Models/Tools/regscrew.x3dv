@@ -1,0 +1,1 @@
+DEF regscrew Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Tools/regscrew.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Tools/regscrew.wrl","http://rawgit.com/create3000/Library/master/Models/Tools/regscrew.wrl","https://rawgit.com/create3000/Library/master/Models/Tools/regscrew.wrl", ] } }

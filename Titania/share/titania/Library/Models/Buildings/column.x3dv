@@ -1,0 +1,1 @@
+DEF column Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Buildings/column.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Buildings/column.wrl","http://rawgit.com/create3000/Library/master/Models/Buildings/column.wrl","https://rawgit.com/create3000/Library/master/Models/Buildings/column.wrl", ] } }

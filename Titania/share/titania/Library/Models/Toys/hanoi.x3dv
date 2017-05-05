@@ -1,0 +1,1 @@
+DEF hanoi Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Toys/hanoi.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Toys/hanoi.wrl","http://rawgit.com/create3000/Library/master/Models/Toys/hanoi.wrl","https://rawgit.com/create3000/Library/master/Models/Toys/hanoi.wrl", ] } }

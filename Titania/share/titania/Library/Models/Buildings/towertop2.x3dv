@@ -1,0 +1,1 @@
+DEF towertop2 Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Buildings/towertop2.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Buildings/towertop2.wrl","http://rawgit.com/create3000/Library/master/Models/Buildings/towertop2.wrl","https://rawgit.com/create3000/Library/master/Models/Buildings/towertop2.wrl", ] } }
