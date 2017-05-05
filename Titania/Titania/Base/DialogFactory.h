@@ -53,7 +53,8 @@
 
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
-#include "../Dialogs/FileSaveDialog/ExportImageDialog.h"
+#include "../Dialogs/FileSaveDialog/FileExportDialog.h"
+#include "../Dialogs/FileSaveDialog/FileExportImageDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveACopyDialog.h"
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
@@ -116,7 +117,8 @@ public:
 		         std::make_pair ("FileSaveDialog",           constructDialog <FileSaveDialog>),
 		         std::make_pair ("FileSaveACopyDialog",      constructDialog <FileSaveACopyDialog>),
 		         std::make_pair ("FileSaveWarningDialog",    constructDialog <FileSaveWarningDialog>),
-		         std::make_pair ("ExportImageDialog",        constructDialog <ExportImageDialog>),
+		         std::make_pair ("FileExportDialog",         constructDialog <FileExportDialog>),
+		         std::make_pair ("FileExportImageDialog",    constructDialog <FileExportImageDialog>),
 		         std::make_pair ("MessageDialog",            constructDialog <MessageDialog>),
 		         std::make_pair ("UndoHistoryDialog",        constructDialog <UndoHistoryDialog>),
 		         std::make_pair ("ScenePropertiesEditor",    constructDialog <ScenePropertiesEditor>),

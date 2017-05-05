@@ -205,5 +205,110 @@ X3DTexture2DNode::setShaderUniforms (X3DProgrammableShaderObject* const shaderOb
 	glUniform1iv (shaderObject -> getTextureTypeUniformLocation (), 1, textureType .data ());
 }
 
+Magick::Image
+X3DTexture2DNode::getImage () const
+throw (X3D::Error <X3D::INVALID_NODE>,
+       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+       X3D::Error <X3D::DISPOSED>)
+{
+	// Process image.
+	const auto width     = getWidth ();
+	const auto height    = getHeight ();
+	const bool opaque    = getComponents () % 2;
+	const auto imageData = getImageData ();
+
+	Magick::Image image (width, height, opaque ? "RGB" : "RGBA", Magick::CharPixel, imageData .data ());
+
+	if (opaque)
+	{
+		image .matte (false);
+		image .type (Magick::TrueColorType);
+	}
+	else
+		image .type (Magick::TrueColorMatteType);
+
+	image .flip ();
+	image .resolutionUnits (Magick::PixelsPerInchResolution);
+	image .density (Magick::Geometry (72, 72));
+
+	return image;
+}
+
+std::vector <uint8_t>
+X3DTexture2DNode::getImageData () const
+throw (X3D::Error <X3D::INVALID_NODE>,
+       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+       X3D::Error <X3D::DISPOSED>)
+{
+	X3D::ContextLock lock (getBrowser ());
+
+	const auto   width      = getWidth ();
+	const auto   height     = getHeight ();
+	const auto   components = getComponents ();
+
+	switch (components)
+	{
+		case 1:
+		{
+			// Copy image to array.
+
+			const auto stride = 3;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			return image;
+		}
+		case 2:
+		{
+			// Copy image to array.
+
+			const auto stride    = 4;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			return image;
+		}
+		case 3:
+		{
+			// Copy image to array.
+
+			const auto stride    = components;
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			return image;
+		}
+		case 4:
+		{
+			// Copy image to array.
+
+			const auto stride = components;
+
+			std::vector <uint8_t> image (width * height * stride);
+
+			glBindTexture (GL_TEXTURE_2D, getTextureId ());
+			glGetTexImage (GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, image .data ());
+			glBindTexture (GL_TEXTURE_2D, 0);
+
+			return image;
+		}
+		default:
+			break;
+	}
+
+	throw X3D::Error <X3D::INVALID_NODE> ("Unsupported comonent count.");
+}
+
 } // X3D
 } // titania

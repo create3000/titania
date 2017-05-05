@@ -55,7 +55,10 @@
 
 #include <Titania/X3D/Browser/KeyDeviceSensor/Keys.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcpp"
 #include <gtksourceviewmm.h>
+#pragma GCC diagnostic pop
 
 namespace titania {
 namespace puck {

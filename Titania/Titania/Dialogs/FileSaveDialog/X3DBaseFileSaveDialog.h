@@ -61,11 +61,6 @@ class X3DBaseFileSaveDialog :
 {
 public:
 
-	///  @name Operations
-
-	bool
-	run ();
-
 	///  @name Destruction
 
 	virtual
@@ -77,6 +72,11 @@ protected:
 	///  @name Construction
 
 	X3DBaseFileSaveDialog ();
+
+	///  @name Operations
+
+	bool
+	run ();
 
 	///  @name Filter handling
 

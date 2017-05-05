@@ -52,9 +52,7 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 
-#include <Titania/X3D/Basic/Traverse.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
-#include <Titania/X3D/Editing/X3DEditor.h>
 
 #include <Titania/OS.h>
 
@@ -101,20 +99,24 @@ X3DFileSaveDialog::getURL () const
 	url .add_file_scheme ();
 
 	if (not X3D::FileGenerator::getKnownFileTypes () .count (url .suffix ()))
-		url .suffix (".x3d");
+		url .suffix (getSuffix ());
 
 	return url;
 }
 
-void
-X3DFileSaveDialog::saveScene (const bool copy)
+bool
+X3DFileSaveDialog::save (const bool copy)
 {
-	if (saveRun ())
+	const auto success = run ();
+
+	if (success)
 		getBrowserWindow () -> save (getURL (), getOutputStyleButton () .get_active_text (), copy);
+
+	return success;
 }
 
 bool
-X3DFileSaveDialog::saveRun ()
+X3DFileSaveDialog::run ()
 {
 	const auto & worldURL = getCurrentScene () -> getWorldURL ();
 
@@ -144,9 +146,9 @@ X3DFileSaveDialog::saveRun ()
 			getWindow () .set_current_name (worldURL .basename ());
 	}
 
-	setX3DFilter (getConfig () -> getString ("filter"));
+	setFilter (getConfig () -> getString ("filter"));
 
-	const auto response = run ();
+	const auto response = X3DBaseFileSaveDialog::run ();
 
 	if (getWindow () .get_filter ())
 		getConfig () -> setItem ("filter", getWindow () .get_filter () -> get_name ());
@@ -155,7 +157,7 @@ X3DFileSaveDialog::saveRun ()
 }
 
 void
-X3DFileSaveDialog::setX3DFilter (const std::string & name)
+X3DFileSaveDialog::setFilter (const std::string & name)
 {
 	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DFileSaveDialog::on_x3d_filter_changed));
 
@@ -202,101 +204,40 @@ X3DFileSaveDialog::setX3DFilter (const std::string & name)
 void
 X3DFileSaveDialog::on_x3d_filter_changed ()
 {
+	setSuffix (getSuffix ());
+}
+
+std::string
+X3DFileSaveDialog::getSuffix () const
+{
 	// X3D, VRML97
 
 	if (getWindow () .get_filter () == getFileFilterX3DXMLEncoding ())
-		setSuffix (".x3d");
+		return ".x3d";
 
 	else if (getWindow () .get_filter () == getFileFilterX3DClassicVRMLEncoding ())
-		setSuffix (".x3dv");
+		return ".x3dv";
 
 	else if (getWindow () .get_filter () == getFileFilterX3DJSONEncoding ())
-		setSuffix (".json");
+		return ".json";
 
 	else if (getWindow () .get_filter () == getFileFilterVrmlEncoding ())
-		setSuffix (".wrl");
+		return ".wrl";
 
 	// Compressed
 
 	else if (getWindow () .get_filter () == getFileFilterCompressedX3DXMLEncoding ())
-		setSuffix (".x3dz");
+		return ".x3dz";
 
 	else if (getWindow () .get_filter () == getFileFilterCompressedX3DClassicVRMLEncoding ())
-		setSuffix (".x3dvz");
+		return ".x3dvz";
 
 	else if (getWindow () .get_filter () == getFileFilterCompressedVrmlEncoding ())
-		setSuffix (".wrz");
+		return ".wrz";
 
 	// Default
 
-	else
-		setSuffix (".x3d");
-}
-
-// Export nodes
-
-bool
-X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, basic::uri & worldURL, const X3D::UndoStepPtr & undoStep)
-{
-	if (getConfig () -> hasItem ("exportFolder"))
-		getWindow () .set_current_folder_uri (getConfig () -> getString ("exportFolder"));
-
-	bool response = saveRun ();
-
-	if (response)
-	{
-		getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
-
-		if (not exportNodes (nodes, getURL (), getOutputStyleButton () .get_active_text (), undoStep))
-			response = false;
-
-		worldURL = getURL ();
-	}
-
-	return response;
-}
-
-bool
-X3DFileSaveDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & worldURL, const std::string & outputStyle, const X3D::UndoStepPtr & undoStep)
-{
-	using namespace std::placeholders;
-
-	// Temporarily change url's in protos
-
-	const auto protoUndoStep = std::make_shared <X3D::UndoStep> ("Traverse");
-
-	X3D::traverse (getCurrentContext (),
-	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), worldURL, protoUndoStep, _1),
-	               true,
-	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATIONS);
-
-	// Change url's in nodes
-
-	X3D::traverse (const_cast <X3D::MFNode &> (nodes),
-	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), worldURL, undoStep, _1),
-	               true,
-	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATIONS |
-	               X3D::TRAVERSE_ROOT_NODES);
-
-	// Export nodes to stream
-
-	std::ostringstream osstream;
-
-	X3D::X3DEditor::exportNodes (osstream, getCurrentContext (), nodes, false);
-
-	// Undo url change in protos
-
-	protoUndoStep -> undo ();
-
-	// Save scene
-
-	basic::ifilestream stream (osstream .str ());
-
-	const auto scene = getCurrentBrowser () -> createX3DFromStream (worldURL, stream);
-
-	return getBrowserWindow () -> save (scene, worldURL, outputStyle, false);
+	return ".x3d";
 }
 
 X3DFileSaveDialog::~X3DFileSaveDialog ()

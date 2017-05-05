@@ -48,48 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_EXPORT_IMAGE_DIALOG_H__
-#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_EXPORT_IMAGE_DIALOG_H__
+#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_FILE_EXPORT_DIALOG_H__
+#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_FILE_EXPORT_DIALOG_H__
 
-#include "X3DBaseFileSaveDialog.h"
+#include "X3DFileSaveDialog.h"
 
 namespace titania {
 namespace puck {
 
-class ExportImageDialog :
-	public X3DBaseFileSaveDialog
+class FileExportDialog :
+	public X3DFileSaveDialog
 {
 public:
 
 	///  @name Construction
 
-	ExportImageDialog (X3DBrowserWindow* const browserWindow);
+	FileExportDialog (X3DBrowserWindow* const browserWindow);
 
 	///  @name Operations
 
-	void
-	exportImage ();
+	bool
+	exportNodes (const X3D::MFNode & nodes, basic::uri & worldURL, const X3D::UndoStepPtr & undoStep);
 
 	///  @name Destruction
 
 	virtual
-	~ExportImageDialog () final override;
+	~FileExportDialog () final override;
 
 
 private:
 
-	///  @name Filter handling
-
-	void
-	setImageFilter (const std::string & name);
-
-	void
-	on_image_filter_changed ();
-
-	///  @name Export image
+	///  @name Export nodes
 
 	bool
-	imageOptions ();
+	exportNodes (const X3D::MFNode & nodes, const basic::uri & worldURL, const std::string & outputStyle, const X3D::UndoStepPtr & undoStep);
 
 };
 

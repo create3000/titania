@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "ExportImageDialog.h"
+#include "FileExportImageDialog.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
@@ -68,11 +68,25 @@ static constexpr auto IMAGE_PSD_FILTER  = "Photoshop Image (*.psd)";
 static constexpr auto IMAGE_TIFF_FILTER = "TIFF Image (*.tiff, *.tif)";
 static constexpr auto IMAGE_BMP_FILTER  = "Windows BMP Image (*.bmp)";
 
-ExportImageDialog::ExportImageDialog (X3DBrowserWindow* const browserWindow) :
+const std::set <std::string> FileExportImageDialog::knownFileTypes = {
+	".xcf",
+	".jpeg",
+	".jpg",
+	".pdf",
+	".png",
+	".psd",
+	".tiff",
+	".tif",
+	".bmp",
+};
+
+FileExportImageDialog::FileExportImageDialog (X3DBrowserWindow* const browserWindow) :
 	     X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DBaseFileSaveDialog ()
 {
-	setName ("ExportImageDialog");
+	setName ("FileExportImageDialog");
+
+	getWindow () .set_title (_ ("Export Image …"));
 
 	getFileFilterImageXCF  () -> set_name (_ (IMAGE_XCF_FILTER));
 	getFileFilterImageJPEG () -> set_name (_ (IMAGE_JPEG_FILTER));
@@ -86,9 +100,9 @@ ExportImageDialog::ExportImageDialog (X3DBrowserWindow* const browserWindow) :
 }
 
 void
-ExportImageDialog::setImageFilter (const std::string & name)
+FileExportImageDialog::setFilter (const std::string & name)
 {
-	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &ExportImageDialog::on_image_filter_changed));
+	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &FileExportImageDialog::on_image_filter_changed));
 
 	if (os::program_exists ("gimp"))
 		getWindow () .add_filter (getFileFilterImageXCF ());
@@ -126,34 +140,64 @@ ExportImageDialog::setImageFilter (const std::string & name)
 }
 
 void
-ExportImageDialog::on_image_filter_changed ()
+FileExportImageDialog::on_image_filter_changed ()
+{
+	setSuffix (getSuffix ());
+}
+
+std::string
+FileExportImageDialog::getSuffix () const
 {
 	if (getWindow () .get_filter () == getFileFilterImageXCF ())
-		setSuffix (".xcf");
+		return ".xcf";
 
 	else if (getWindow () .get_filter () == getFileFilterImageJPEG ())
-		setSuffix (".jpg");
+		return ".jpg";
 
 	else if (getWindow () .get_filter () == getFileFilterImagePDF ())
-		setSuffix (".pdf");
+		return ".pdf";
 
 	else if (getWindow () .get_filter () == getFileFilterImagePNG ())
-		setSuffix (".png");
+		return ".png";
 
 	else if (getWindow () .get_filter () == getFileFilterImagePSD ())
-		setSuffix (".psd");
+		return ".psd";
 
 	else if (getWindow () .get_filter () == getFileFilterImageTIFF ())
-		setSuffix (".tiff");
+		return ".tiff";
 
 	else if (getWindow () .get_filter () == getFileFilterImageBMP ())
-		setSuffix (".bmp");
+		return ".bmp";
+
+	// Default
+
+	return ".png";
 }
 
 // Export image
 
-void
-ExportImageDialog::exportImage ()
+bool
+FileExportImageDialog::run ()
+{
+	// Run image options dialog.
+
+	if (not options ())
+		return false;
+
+	// Save image.
+
+	auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
+	                                                  getImageHeightAdjustment () -> get_value (),
+	                                                  getImageAlphaChannelSwitch () .get_active (),
+	                                                  getImageAntialiasingAdjustment () -> get_value ());
+
+	image .quality (getImageCompressionAdjustment () -> get_value ());
+
+	return save (image);
+}
+
+bool
+FileExportImageDialog::save (Magick::Image & image)
 {
 	const auto worldURL = getCurrentContext () -> getWorldURL ();
 
@@ -164,7 +208,7 @@ ExportImageDialog::exportImage ()
 
 	getWindow () .set_current_name (worldURL .basename (false) + ".png");
 
-	setImageFilter (getConfig () -> getString ("imageFilter"));
+	setFilter (getConfig () -> getString ("imageFilter"));
 
 	// Run dialog.
 
@@ -177,75 +221,70 @@ ExportImageDialog::exportImage ()
 
 	quit ();
 
-	if (responseId == Gtk::RESPONSE_OK)
+	if (responseId not_eq Gtk::RESPONSE_OK)
+		return false;
+
+	// Save image.
+
+	try
 	{
-		// Run image options dialog.
+		auto filename = basic::uri (Glib::uri_unescape_string (getWindow () .get_filename ()));
 
-		if (imageOptions ())
+		if (not knownFileTypes .count (filename .suffix ()))
+			filename .suffix (getSuffix ());
+
+		if (filename .suffix () == ".xcf" and os::program_exists ("gimp"))
 		{
-			// Save image.
+			std::string pngFilename = "/tmp/titania-XXXXXX.png";
+			auto ofstream           = os::mkstemps (pngFilename, 4);
 
-			try
+			if (ofstream)
 			{
-				auto filename = basic::uri (Glib::uri_unescape_string (getWindow () .get_filename ()));
+				static const std::regex quotes (R"/(")/");
 
-				auto image = getCurrentBrowser () -> getSnapshot (getImageWidthAdjustment () -> get_value (),
-				                                                  getImageHeightAdjustment () -> get_value (),
-				                                                  getImageAlphaChannelSwitch () .get_active (),
-				                                                  getImageAntialiasingAdjustment () -> get_value ());
+				filename = std::regex_replace (filename .str (), quotes, "\\\"");
 
-				image .quality (getImageCompressionAdjustment () -> get_value ());
+				image .write (pngFilename);
 
-				if (filename .suffix () == ".xcf" and os::program_exists ("gimp"))
-				{
-					std::string pngFilename = "/tmp/titania-XXXXXX.png";
-					auto ofstream           = os::mkstemps (pngFilename, 4);
+				os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + pngFilename + "\" \"" + pngFilename + "\")))"
+				            "(drawable (car (gimp-image-get-active-layer image))))"
+				            "(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + filename + "\" \"" + filename + "\")"
+				            "(gimp-image-delete image)"
+				            "(gimp-quit 0))");
 
-					if (ofstream)
-					{
-						static const std::regex quotes (R"/(")/");
-
-						filename = std::regex_replace (filename .str (), quotes, "\\\"");
-
-						image .write (pngFilename);
-
-						os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + pngFilename + "\" \"" + pngFilename + "\")))"
-						            "(drawable (car (gimp-image-get-active-layer image))))"
-						            "(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + filename + "\" \"" + filename + "\")"
-						            "(gimp-image-delete image)"
-						            "(gimp-quit 0))");
-
-					}
-
-					os::unlink (pngFilename);
-				}
-				else
-					image .write (filename);
 			}
-			catch (const Magick::Exception & error)
-			{
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
-			
-				dialog -> setType (Gtk::MESSAGE_ERROR);
-				dialog -> setMessage (_ ("Could not save image!"));
-				dialog -> setText (_ ("Tip: check file and folder permissions."));
-				dialog -> run ();
-			}
-			catch (const std::exception & error)
-			{
-				const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
-			
-				dialog -> setType (Gtk::MESSAGE_ERROR);
-				dialog -> setMessage (_ ("Could not generate image!"));
-				dialog -> setText (_ ("Tip: try a smaller image size and/or less antialiasing."));
-				dialog -> run ();
-			}
+
+			os::unlink (pngFilename);
 		}
+		else
+			image .write (filename);
+
+		return true;
+	}
+	catch (const Magick::Exception & error)
+	{
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+	
+		dialog -> setType (Gtk::MESSAGE_ERROR);
+		dialog -> setMessage (_ ("Could not save image!"));
+		dialog -> setText (_ ("Tip: check file and folder permissions."));
+		dialog -> run ();
+		return false;
+	}
+	catch (const std::exception & error)
+	{
+		const auto dialog = std::dynamic_pointer_cast <MessageDialog> (addDialog ("MessageDialog", false));
+	
+		dialog -> setType (Gtk::MESSAGE_ERROR);
+		dialog -> setMessage (_ ("Could not generate image!"));
+		dialog -> setText (_ ("Tip: try a smaller image size and/or less antialiasing."));
+		dialog -> run ();
+		return false;
 	}
 }
 
 bool
-ExportImageDialog::imageOptions ()
+FileExportImageDialog::options ()
 {
 	// First configure adjustments.
 
@@ -291,7 +330,7 @@ ExportImageDialog::imageOptions ()
 	return responseId == Gtk::RESPONSE_OK;
 }
 
-ExportImageDialog::~ExportImageDialog ()
+FileExportImageDialog::~FileExportImageDialog ()
 {
 	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder ());
 

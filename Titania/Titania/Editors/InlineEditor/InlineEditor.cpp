@@ -52,7 +52,7 @@
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
-#include "../../Dialogs/FileSaveDialog/FileSaveDialog.h"
+#include "../../Dialogs/FileSaveDialog/FileExportDialog.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
 
@@ -167,11 +167,11 @@ InlineEditor::on_convert_master_selection_clicked ()
 	const auto masterSelection = getBrowserWindow () -> getSelection () -> getNodes () .back ();
 	const auto nodes           = X3D::MFNode ({ masterSelection });
 
-	const auto fileSaveDialog = std::dynamic_pointer_cast <FileSaveDialog> (addDialog ("FileSaveDialog", false));
-	const auto undoStep       = std::make_shared <X3D::UndoStep> (_ ("Convert Master Selection Into Inline File"));
-	basic::uri worldURL;
+	const auto fileExportDialog = std::dynamic_pointer_cast <FileExportDialog> (addDialog ("FileExportDialog", false));
+	const auto undoStep         = std::make_shared <X3D::UndoStep> (_ ("Convert Master Selection Into Inline File"));
+	auto       worldURL         = basic::uri ();
 
-	if (fileSaveDialog -> exportNodes (nodes, worldURL, undoStep))
+	if (fileExportDialog -> exportNodes (nodes, worldURL, undoStep))
 	{
 		const auto name       = X3D::GetNameFromURI (worldURL);
 		const auto inlineNode = getCurrentContext () -> createNode <X3D::Inline> ();

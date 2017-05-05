@@ -301,7 +301,8 @@
     <Compile Include="Titania\Widgets\ScriptEditor\X3DShaderEditor.cpp" />
     <Compile Include="Titania\Widgets\OutlineEditor\OutlineEditorDatabase.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\X3DBaseFileSaveDialog.cpp" />
-    <Compile Include="Titania\Dialogs\FileSaveDialog\ExportImageDialog.cpp" />
+    <Compile Include="Titania\Dialogs\FileSaveDialog\FileExportImageDialog.cpp" />
+    <Compile Include="Titania\Dialogs\FileSaveDialog\FileExportDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2732,7 +2733,8 @@
     <None Include="share\titania\pages\about\new.x3dv" />
     <None Include="Titania\Base\ScrollFreezer.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\X3DBaseFileSaveDialog.h" />
-    <None Include="Titania\Dialogs\FileSaveDialog\ExportImageDialog.h" />
+    <None Include="Titania\Dialogs\FileSaveDialog\FileExportImageDialog.h" />
+    <None Include="Titania\Dialogs\FileSaveDialog\FileExportDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

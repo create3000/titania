@@ -53,12 +53,16 @@
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
+
 #include "X3DScriptEditor.h"
 #include "X3DShaderEditor.h"
 #include "X3DScriptEditorSearch.h"
 #include "X3DScriptEditorPreferences.h"
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcpp"
 #include <gtksourceviewmm.h>
+#pragma GCC diagnostic pop
 
 namespace titania {
 namespace puck {

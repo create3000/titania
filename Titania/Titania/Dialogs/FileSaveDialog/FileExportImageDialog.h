@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,98 +48,62 @@
  *
  ******************************************************************************/
 
-#include "X3DPixelTextureEditor.h"
+#ifndef __TITANIA_DIALOGS_FILE_SAVE_DIALOG_EXPORT_IMAGE_DIALOG_H__
+#define __TITANIA_DIALOGS_FILE_SAVE_DIALOG_EXPORT_IMAGE_DIALOG_H__
 
-#include "../../Dialogs/FileSaveDialog/FileExportImageDialog.h"
-
-#include <Titania/X3D/Browser/ContextLock.h>
+#include "X3DBaseFileSaveDialog.h"
 
 namespace titania {
 namespace puck {
 
-X3DPixelTextureEditor::X3DPixelTextureEditor () :
-	         X3DBaseInterface (),
-	X3DTextureEditorInterface (),
-	             pixelTexture ()
+class FileExportImageDialog :
+	public X3DBaseFileSaveDialog
 {
-	addChildObjects (pixelTexture);
-}
+public:
 
-void
-X3DPixelTextureEditor::setPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
-{
-	if (pixelTexture)
-	{
-		//pixelTexture -> image () .removeInterest (&X3DPixelTextureEditor::set_image, this);
-	}
+	///  @name Construction
 
-	pixelTexture = value;
+	FileExportImageDialog (X3DBrowserWindow* const browserWindow);
 
-	getPixelTextureBox () .set_visible (pixelTexture);
+	///  @name Operations
 
-	if (not pixelTexture)
-		pixelTexture = getCurrentContext () -> createNode <X3D::PixelTexture> ();
+	bool
+	run ();
 
-	//pixelTexture -> image () .addInterest (&X3DPixelTextureEditor::set_image, this);
+	bool
+	save (Magick::Image & image);
 
-	//set_image ();
-}
+	///  @name Destruction
 
-const X3D::X3DPtr <X3D::PixelTexture> &
-X3DPixelTextureEditor::getPixelTexture (const X3D::X3DPtr <X3D::X3DTextureNode> & value)
-{
-	getPixelTextureBox () .set_visible (value);
+	virtual
+	~FileExportImageDialog () final override;
 
-	if (value)
-	{
-		switch (value -> getType () .back ())
-		{
-			case X3D::X3DConstants::ImageTexture:
-			case X3D::X3DConstants::MovieTexture:
-			{
-				try
-				{
-					X3D::X3DPtr <X3D::X3DTexture2DNode> texture2DNode (value);
 
-					if (texture2DNode -> getWidth () and texture2DNode -> getHeight () and texture2DNode -> getComponents ())
-						pixelTexture -> setImage (texture2DNode);
-				}
-				catch (const X3D::X3DError &)
-				{ }
+private:
 
-				break;
-			}
-			default:
-				break;
-		}
-	}
+	///  @name Filter handling
 
-	return pixelTexture;
-}
+	void
+	setFilter (const std::string & name);
 
-void
-X3DPixelTextureEditor::on_pixel_texture_open_clicked ()
-{
+	void
+	on_image_filter_changed ();
 
-}
+	std::string
+	getSuffix () const;
 
-void
-X3DPixelTextureEditor::on_pixel_texture_save_as_clicked ()
-{
-	try
-	{
-		const auto dialog = std::dynamic_pointer_cast <FileExportImageDialog> (addDialog ("FileExportImageDialog", false));
-		auto       image  = pixelTexture -> getImage ();
+	///  @name Export image
 
-		dialog -> getWindow () .set_current_name (_ ("image.png"));
+	bool
+	options ();
 
-		image .quality (100);
-	
-		dialog -> save (image);
-	}
-	catch (const X3D::X3DError &)
-	{ }
-}
+	///  @name Static members
+
+	static const std::set <std::string> knownFileTypes;
+
+};
 
 } // puck
 } // titania
+
+#endif

@@ -123,6 +123,12 @@ public:
 	size_t
 	getImageHeight () const = 0;
 
+	Magick::Image
+	getImage () const
+	throw (X3D::Error <X3D::INVALID_NODE>,
+	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+	       X3D::Error <X3D::DISPOSED>);
+
 	///  @name Operations
 
 	virtual
@@ -183,6 +189,12 @@ private:
 
 	void
 	updateTextureProperties ();
+
+	std::vector <uint8_t>
+	getImageData () const
+	throw (X3D::Error <X3D::INVALID_NODE>,
+	       X3D::Error <X3D::INVALID_OPERATION_TIMING>,
+	       X3D::Error <X3D::DISPOSED>);
 
 	///  @name Members
 

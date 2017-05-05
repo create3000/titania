@@ -63,11 +63,8 @@ public:
 
 	///  @name Operations
 
-	void
-	saveScene (const bool copy);
-
 	bool
-	exportNodes (const X3D::MFNode &, basic::uri &, const X3D::UndoStepPtr &);
+	save (const bool copy);
 
 	///  @name Destruction
 
@@ -81,9 +78,6 @@ protected:
 
 	X3DFileSaveDialog ();
 
-
-private:
-
 	///  @name Member access
 
 	basic::uri
@@ -92,12 +86,15 @@ private:
 	///  @name Operations
 
 	bool
-	saveRun ();
+	run ();
+
+
+private:
 
 	///  @name Filter handling
 
 	void
-	setX3DFilter (const std::string & name);
+	setFilter (const std::string & name);
 
 	void
 	on_x3d_filter_changed ();
@@ -105,10 +102,10 @@ private:
 
 private:
 
-	///  @name Export nodes
+	///  @name Operations
 
-	bool
-	exportNodes (const X3D::MFNode &, const basic::uri &, const std::string &, const X3D::UndoStepPtr &);
+	std::string
+	getSuffix () const;
 
 };
 

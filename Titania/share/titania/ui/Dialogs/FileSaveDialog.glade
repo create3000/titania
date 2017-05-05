@@ -181,7 +181,7 @@
   <object class="GtkFileChooserDialog" id="Window">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Save File as ...</property>
+    <property name="title" translatable="yes">Save File as …</property>
     <property name="role">GtkFileChooserDialog</property>
     <property name="modal">True</property>
     <property name="hide_titlebar_when_maximized">True</property>
