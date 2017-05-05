@@ -2676,13 +2676,6 @@
     <None Include="share\titania\Library\Models\Sports\skate_axle.x3dv" />
     <None Include="share\titania\Library\Models\Sports\skate_base.x3dv" />
     <None Include="share\titania\Library\Models\Sports\skate_wheel.x3dv" />
-    <None Include="share\titania\Library\Models\Enterprises\indy.x3dv" />
-    <None Include="share\titania\Library\Models\Enterprises\indigo.x3dv" />
-    <None Include="share\titania\Library\Models\Enterprises\alogo.x3dv" />
-    <None Include="share\titania\Library\Models\Enterprises\adlogo.x3dv" />
-    <None Include="share\titania\Library\Models\Enterprises\logo.x3dv" />
-    <None Include="share\titania\Library\Models\Enterprises\sgimonitor.x3dv" />
-    <None Include="share\titania\Library\Models\Enterprises\ad3dlogo.x3dv" />
     <None Include="share\titania\Library\Models\Tools\hammer.x3dv" />
     <None Include="share\titania\Library\Models\Tools\wrench.x3dv" />
     <None Include="share\titania\Library\Models\Tools\sextant.x3dv" />
@@ -3091,7 +3084,6 @@
     <Folder Include="share\titania\Library\Models\Office\" />
     <Folder Include="share\titania\Library\Models\Science\" />
     <Folder Include="share\titania\Library\Models\Sports\" />
-    <Folder Include="share\titania\Library\Models\Enterprises\" />
     <Folder Include="share\titania\Library\Models\Tools\" />
     <Folder Include="share\titania\Library\Models\Chemistry\" />
     <Folder Include="share\titania\Library\Models\Jack\" />

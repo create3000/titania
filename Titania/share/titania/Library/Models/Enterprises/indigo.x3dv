@@ -1,1 +1,0 @@
-DEF indigo Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Enterprises/indigo.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Enterprises/indigo.wrl","http://rawgit.com/create3000/Library/master/Models/Enterprises/indigo.wrl","https://rawgit.com/create3000/Library/master/Models/Enterprises/indigo.wrl", ] } }

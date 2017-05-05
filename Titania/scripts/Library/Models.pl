@@ -38,7 +38,7 @@ sub models {
 	$subfolder = dirname $subfolder;
 
 	my $basename  = basename $filename;
-	my $name      = basename $filename, ".wrl", ".x3dv", ".x3d";
+	my $name      = basename $filename, ".wrl", ".x3dv", ".x3d", ".wrz", ".x3dvz", ".x3dz";
 	my $x3dv      ="$folder/$subfolder/$name.x3dv";
 
 	$name =~ s/[\.]/-/sgo;

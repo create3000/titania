@@ -1,1 +1,0 @@
-DEF alogo Transform { children Inline { url [ "http://cdn.rawgit.com/create3000/Library/master/Models/Enterprises/alogo.wrl","https://cdn.rawgit.com/create3000/Library/master/Models/Enterprises/alogo.wrl","http://rawgit.com/create3000/Library/master/Models/Enterprises/alogo.wrl","https://rawgit.com/create3000/Library/master/Models/Enterprises/alogo.wrl", ] } }
