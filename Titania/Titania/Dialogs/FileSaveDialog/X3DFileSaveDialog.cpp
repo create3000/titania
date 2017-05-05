@@ -91,26 +91,13 @@ X3DFileSaveDialog::X3DFileSaveDialog () :
 	getFileFilterCompressedVrmlEncoding           () -> set_name (_ (COMPRESSED_VRML97_ENCODING_FILTER));
 }
 
-basic::uri
-X3DFileSaveDialog::getURL () const
-{
-	basic::uri url = getWindow () .get_file () -> get_path ();
-
-	url .add_file_scheme ();
-
-	if (not X3D::FileGenerator::getKnownFileTypes () .count (url .suffix ()))
-		url .suffix (getSuffix ());
-
-	return url;
-}
-
 bool
 X3DFileSaveDialog::save (const bool copy)
 {
 	const auto success = run ();
 
 	if (success)
-		getBrowserWindow () -> save (getURL (), getOutputStyleButton () .get_active_text (), copy);
+		getBrowserWindow () -> save (getUrl (), getOutputStyleButton () .get_active_text (), copy);
 
 	return success;
 }
@@ -146,21 +133,19 @@ X3DFileSaveDialog::run ()
 			getWindow () .set_current_name (worldURL .basename ());
 	}
 
-	setFilter (getConfig () -> getString ("filter"));
+	setFileFilter (getConfig () -> getString ("fileFilter"));
 
-	const auto response = X3DBaseFileSaveDialog::run ();
+	const auto success = X3DBaseFileSaveDialog::run ();
 
 	if (getWindow () .get_filter ())
-		getConfig () -> setItem ("filter", getWindow () .get_filter () -> get_name ());
+		getConfig () -> setItem ("fileFilter", getWindow () .get_filter () -> get_name ());
 
-	return response;
+	return success;
 }
 
 void
-X3DFileSaveDialog::setFilter (const std::string & name)
+X3DFileSaveDialog::setFileFilter (const std::string & name)
 {
-	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DFileSaveDialog::on_x3d_filter_changed));
-
 	getWindow () .add_filter (getFileFilterX3DXMLEncoding ());
 	getWindow () .add_filter (getFileFilterX3DClassicVRMLEncoding ());
 	getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
@@ -201,12 +186,6 @@ X3DFileSaveDialog::setFilter (const std::string & name)
 		getWindow () .set_filter (getFileFilterX3DXMLEncoding ());
 }
 
-void
-X3DFileSaveDialog::on_x3d_filter_changed ()
-{
-	setSuffix (getSuffix ());
-}
-
 std::string
 X3DFileSaveDialog::getSuffix () const
 {
@@ -238,6 +217,12 @@ X3DFileSaveDialog::getSuffix () const
 	// Default
 
 	return ".x3d";
+}
+
+const std::set <std::string> &
+X3DFileSaveDialog::getKnownFileTypes () const
+{
+	return X3D::FileGenerator::getKnownFileTypes ();
 }
 
 X3DFileSaveDialog::~X3DFileSaveDialog ()

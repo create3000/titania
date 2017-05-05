@@ -84,7 +84,7 @@ FileExportDialog::exportNodes (const X3D::MFNode & nodes, basic::uri & worldURL,
 	if (not success)
 		return false;
 
-	worldURL = getURL ();
+	worldURL = getUrl ();
 
 	if (not exportNodes (nodes, worldURL, getOutputStyleButton () .get_active_text (), undoStep))
 		return false;

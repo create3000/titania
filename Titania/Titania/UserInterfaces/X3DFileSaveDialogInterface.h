@@ -186,6 +186,10 @@ public:
 	getWindow () const
 	{ return *m_Window; }
 
+	Gtk::Button &
+	getOkButton () const
+	{ return *m_OkButton; }
+
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
@@ -211,6 +215,10 @@ public:
 	{ return *m_ImageAntialiasingBox; }
 
 	///  @name Signal handlers
+
+	virtual
+	void
+	on_response (int response_id) = 0;
 
 	///  @name Destruction
 
@@ -259,6 +267,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_ImageHeightAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_ImageWidthAdjustment;
 	Gtk::FileChooserDialog* m_Window;
+	Gtk::Button* m_OkButton;
 	Gtk::Box* m_Widget;
 	Gtk::Box* m_OutputStyleBox;
 	Gtk::ComboBoxText* m_OutputStyleButton;

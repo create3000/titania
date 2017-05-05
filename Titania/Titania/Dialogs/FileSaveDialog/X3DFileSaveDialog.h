@@ -80,8 +80,13 @@ protected:
 
 	///  @name Member access
 
-	basic::uri
-	getURL () const;
+	virtual
+	std::string
+	getSuffix () const final override;
+
+	virtual
+	const std::set <std::string> &
+	getKnownFileTypes () const final override;
 
 	///  @name Operations
 
@@ -94,18 +99,7 @@ private:
 	///  @name Filter handling
 
 	void
-	setFilter (const std::string & name);
-
-	void
-	on_x3d_filter_changed ();
-
-
-private:
-
-	///  @name Operations
-
-	std::string
-	getSuffix () const;
+	setFileFilter (const std::string & name);
 
 };
 

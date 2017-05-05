@@ -84,13 +84,16 @@ private:
 	///  @name Filter handling
 
 	void
-	setFilter (const std::string & name);
+	setFileFilter (const std::string & name);
 
-	void
-	on_image_filter_changed ();
-
+	virtual
 	std::string
-	getSuffix () const;
+	getSuffix () const final override;
+
+	virtual
+	const std::set <std::string> &
+	getKnownFileTypes () const final override
+	{ return knownFileTypes; }
 
 	///  @name Export image
 

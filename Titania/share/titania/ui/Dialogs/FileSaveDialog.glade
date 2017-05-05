@@ -191,6 +191,7 @@
     <property name="action">save</property>
     <property name="do_overwrite_confirmation">True</property>
     <property name="local_only">False</property>
+    <signal name="response" handler="on_response" after="yes" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="filechooserdialog-vbox10">
         <property name="can_focus">False</property>
@@ -217,7 +218,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button5">
+              <object class="GtkButton" id="OkButton">
                 <property name="label">gtk-save</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -299,7 +300,7 @@
     </child>
     <action-widgets>
       <action-widget response="-6">button4</action-widget>
-      <action-widget response="-5">button5</action-widget>
+      <action-widget response="-5">OkButton</action-widget>
     </action-widgets>
   </object>
   <object class="GtkDialog" id="ImageOptionsDialog">

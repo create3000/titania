@@ -84,12 +84,16 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
+	m_builder -> get_widget ("OkButton", m_OkButton);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("OutputStyleBox", m_OutputStyleBox);
 	m_builder -> get_widget ("OutputStyleButton", m_OutputStyleButton);
 	m_builder -> get_widget ("ImageOptionsDialog", m_ImageOptionsDialog);
 	m_builder -> get_widget ("ImageAlphaChannelSwitch", m_ImageAlphaChannelSwitch);
 	m_builder -> get_widget ("ImageAntialiasingBox", m_ImageAntialiasingBox);
+
+	// Connect object Gtk::FileChooserDialog with id 'Window'.
+	m_Window -> signal_response () .connect (sigc::mem_fun (*this, &X3DFileSaveDialogInterface::on_response), false);
 
 	// Call construct handler of base class.
 	construct ();

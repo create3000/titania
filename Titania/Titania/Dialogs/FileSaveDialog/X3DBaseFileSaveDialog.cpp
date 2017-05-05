@@ -58,7 +58,9 @@ namespace puck {
 
 X3DBaseFileSaveDialog::X3DBaseFileSaveDialog () :
 	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.glade"))
-{ }
+{
+	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DBaseFileSaveDialog::on_filter_changed));
+}
 
 bool
 X3DBaseFileSaveDialog::run ()
@@ -86,12 +88,44 @@ X3DBaseFileSaveDialog::run ()
 	return false;
 }
 
+basic::uri
+X3DBaseFileSaveDialog::getUrl () const
+{
+	basic::uri url = getWindow () .get_file () -> get_path ();
+
+	url .add_file_scheme ();
+
+	return url;
+}
+
 void
 X3DBaseFileSaveDialog::setSuffix (const std::string & suffix)
 {
 	basic::uri name (getWindow () .get_current_name ());
 
 	getWindow () .set_current_name (name .basename (false) + suffix);
+}
+
+void
+X3DBaseFileSaveDialog::on_filter_changed ()
+{
+	setSuffix (getSuffix ());
+}
+
+void
+X3DBaseFileSaveDialog::on_response (int responseId)
+{
+	if (responseId not_eq Gtk::RESPONSE_OK)
+		return;
+
+	basic::uri name (getWindow () .get_current_name ());
+
+	if (getKnownFileTypes () .count (name .suffix ()))
+		return;
+
+	name .suffix (getSuffix ());
+
+	getWindow () .set_current_name (name .str ());
 }
 
 X3DBaseFileSaveDialog::~X3DBaseFileSaveDialog ()

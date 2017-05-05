@@ -100,10 +100,8 @@ FileExportImageDialog::FileExportImageDialog (X3DBrowserWindow* const browserWin
 }
 
 void
-FileExportImageDialog::setFilter (const std::string & name)
+FileExportImageDialog::setFileFilter (const std::string & name)
 {
-	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &FileExportImageDialog::on_image_filter_changed));
-
 	if (os::program_exists ("gimp"))
 		getWindow () .add_filter (getFileFilterImageXCF ());
 
@@ -137,12 +135,6 @@ FileExportImageDialog::setFilter (const std::string & name)
 
 	else
 		getWindow () .set_filter (getFileFilterImagePNG ());
-}
-
-void
-FileExportImageDialog::on_image_filter_changed ()
-{
-	setSuffix (getSuffix ());
 }
 
 std::string
@@ -201,23 +193,23 @@ FileExportImageDialog::save (Magick::Image & image)
 {
 	const auto worldURL = getCurrentContext () -> getWorldURL ();
 
-	if (getConfig () -> hasItem ("exportFolder"))
-		getWindow () .set_current_folder_uri (getConfig () -> getString ("exportFolder"));
+	if (getConfig () -> hasItem ("currentFolder"))
+		getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
 	else
 		getWindow () .set_current_folder (os::home ());
 
 	getWindow () .set_current_name (worldURL .basename (false) + ".png");
 
-	setFilter (getConfig () -> getString ("imageFilter"));
+	setFileFilter (getConfig () -> getString ("fileFilter"));
 
 	// Run dialog.
 
 	const auto responseId = getWindow () .run ();
 
-	getConfig () -> setItem ("exportFolder", getWindow () .get_current_folder_uri ());
+	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder ());
 
 	if (getWindow () .get_filter ())
-		getConfig () -> setItem ("imageFilter", getWindow () .get_filter () -> get_name ());
+		getConfig () -> setItem ("fileFilter", getWindow () .get_filter () -> get_name ());
 
 	quit ();
 
@@ -228,12 +220,9 @@ FileExportImageDialog::save (Magick::Image & image)
 
 	try
 	{
-		auto filename = basic::uri (Glib::uri_unescape_string (getWindow () .get_filename ()));
+		auto url = getUrl ();
 
-		if (not knownFileTypes .count (filename .suffix ()))
-			filename .suffix (getSuffix ());
-
-		if (filename .suffix () == ".xcf" and os::program_exists ("gimp"))
+		if (url .suffix () == ".xcf" and os::program_exists ("gimp"))
 		{
 			std::string pngFilename = "/tmp/titania-XXXXXX.png";
 			auto ofstream           = os::mkstemps (pngFilename, 4);
@@ -242,13 +231,13 @@ FileExportImageDialog::save (Magick::Image & image)
 			{
 				static const std::regex quotes (R"/(")/");
 
-				filename = std::regex_replace (filename .str (), quotes, "\\\"");
+				const auto path = url = std::regex_replace (url .path (), quotes, "\\\"");
 
 				image .write (pngFilename);
 
 				os::system ("gimp", "-i", "-b", "(let* ((image (car (gimp-file-load RUN-NONINTERACTIVE \"" + pngFilename + "\" \"" + pngFilename + "\")))"
 				            "(drawable (car (gimp-image-get-active-layer image))))"
-				            "(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + filename + "\" \"" + filename + "\")"
+				            "(gimp-file-save RUN-NONINTERACTIVE image drawable \"" + path + "\" \"" + path + "\")"
 				            "(gimp-image-delete image)"
 				            "(gimp-quit 0))");
 
@@ -257,7 +246,7 @@ FileExportImageDialog::save (Magick::Image & image)
 			os::unlink (pngFilename);
 		}
 		else
-			image .write (filename);
+			image .write (url .path ());
 
 		return true;
 	}
@@ -332,8 +321,6 @@ FileExportImageDialog::options ()
 
 FileExportImageDialog::~FileExportImageDialog ()
 {
-	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder ());
-
 	dispose ();
 }
 

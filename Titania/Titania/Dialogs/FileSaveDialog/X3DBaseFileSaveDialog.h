@@ -78,10 +78,35 @@ protected:
 	bool
 	run ();
 
+	///  @name Member access
+
+	basic::uri
+	getUrl () const;
+
 	///  @name Filter handling
+
+	virtual
+	std::string
+	getSuffix () const = 0;
+
+	virtual
+	const std::set <std::string> &
+	getKnownFileTypes () const = 0;
+
+
+private:
 
 	void
 	setSuffix (const std::string & suffix);
+
+	///  @name Event handlers
+
+	void
+	on_filter_changed ();
+
+	virtual
+	void
+	on_response (int responseId) final override;
 
 };
 
