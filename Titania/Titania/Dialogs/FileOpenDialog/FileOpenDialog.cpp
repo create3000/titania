@@ -51,19 +51,16 @@
 #include "FileOpenDialog.h"
 
 #include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
 
 #include <Titania/OS.h>
 
 namespace titania {
 namespace puck {
 
-static constexpr auto ALL_FILES_FILTER = "All Files";
 static constexpr auto X3D_FILTER       = "All X3D Files";
 static constexpr auto IMAGES_FILTER    = "All Images";
 static constexpr auto AUDIO_FILTER     = "All Audio";
 static constexpr auto VIDEOS_FILTER    = "All Videos";
-static constexpr auto FONTS_FILTER     = "All Fonts";
 
 static constexpr auto X3D_XML_ENCODING_FILTER                     = "X3D XML Encoding (*.x3d)";
 static constexpr auto X3D_CLASSIC_VRML_ENCODING_FILTER            = "X3D Classic VRML Encoding (*.x3dv)";
@@ -79,15 +76,15 @@ static constexpr auto PDF_FILE_FILTER              = "Portable Document Format (
 static constexpr auto SVG_FILE_FILTER              = "SVG File (*.svg, *.svgz)";
 
 FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
-	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DFileOpenDialogInterface (get_ui ("Dialogs/FileOpenDialog.glade"))
+	 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
+	X3DFileOpenDialog ()
 {
-	getFileFilterAll   () -> set_name (_ (ALL_FILES_FILTER));
+	setName ("FileOpenDialog");
+
 	getFileFilterX3D   () -> set_name (_ (X3D_FILTER));
 	getFileFilterImage () -> set_name (_ (IMAGES_FILTER));
 	getFileFilterAudio () -> set_name (_ (AUDIO_FILTER));
 	getFileFilterVideo () -> set_name (_ (VIDEOS_FILTER));
-	getFileFilterFonts () -> set_name (_ (FONTS_FILTER));
 
 	getFileFilterX3DXMLEncoding         () -> set_name (_ (X3D_XML_ENCODING_FILTER));
 	getFileFilterX3DClassicVRMLEncoding () -> set_name (_ (X3D_CLASSIC_VRML_ENCODING_FILTER));
@@ -111,56 +108,50 @@ FileOpenDialog::FileOpenDialog (X3DBrowserWindow* const browserWindow) :
 	else
 		getWindow () .set_filename (os::home () + _ ("scene.x3d"));
 
-	getRelativePathSwitch () .set_active (getConfig () -> getBoolean ("relativePath"));
-
 	setup ();
 }
 
-void
-FileOpenDialog::setMode (Mode mode)
+bool
+FileOpenDialog::loadURL ()
 {
-	switch (mode)
-	{
-	   case Mode::X3D:
-		{
-			getWindow () .add_filter (getFileFilterX3D ());
-			getWindow () .add_filter (getFileFilterImage ());
-			getWindow () .add_filter (getFileFilterAudio ());
-			getWindow () .add_filter (getFileFilterVideo ());
+	if (not X3DFileOpenDialog::run ())
+		return false;
 
-			getWindow () .add_filter (getFileFilterX3DXMLEncoding ());
-			getWindow () .add_filter (getFileFilterX3DClassicVRMLEncoding ());
-			getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
-			getWindow () .add_filter (getFileFilterVrmlEncoding ());
+	getBrowserWindow () -> open (getUrl ());
+	return true;
+}
 
-			getWindow () .add_filter (getFileFilterCompressedX3DXMLEncoding ());
-			getWindow () .add_filter (getFileFilterCompressedX3DClassicVRMLEncoding ());
-			getWindow () .add_filter (getFileFilterCompressedVrmlEncoding ());
-
-			getWindow () .add_filter (getFileFilterAutodesk3DSMax ());
-			getWindow () .add_filter (getFileFilterWavefrontOBJ ());
-
-			if (os::program_exists ("inkscape"))
-				getWindow () .add_filter (getFileFilterPDF ());
-
-			getWindow () .add_filter (getFileFilterSVG ());
-
-			setFilter (getConfig () -> getString ("filter"));
-	      break;
-		}
-	   case Mode::FONTS:
-		{
-			getWindow () .add_filter (getFileFilterFonts ());
-			getWindow () .set_filter (getFileFilterFonts ());
-			break;
-		}
-	}
-
+bool
+FileOpenDialog::run ()
+{
+	return X3DFileOpenDialog::run ();
 }
 
 void
-FileOpenDialog::setFilter (const std::string & name)
+FileOpenDialog::setFileFilter (const std::string & name)
 {
+	getWindow () .add_filter (getFileFilterX3D ());
+	getWindow () .add_filter (getFileFilterImage ());
+	getWindow () .add_filter (getFileFilterAudio ());
+	getWindow () .add_filter (getFileFilterVideo ());
+
+	getWindow () .add_filter (getFileFilterX3DXMLEncoding ());
+	getWindow () .add_filter (getFileFilterX3DClassicVRMLEncoding ());
+	getWindow () .add_filter (getFileFilterX3DJSONEncoding ());
+	getWindow () .add_filter (getFileFilterVrmlEncoding ());
+
+	getWindow () .add_filter (getFileFilterCompressedX3DXMLEncoding ());
+	getWindow () .add_filter (getFileFilterCompressedX3DClassicVRMLEncoding ());
+	getWindow () .add_filter (getFileFilterCompressedVrmlEncoding ());
+
+	getWindow () .add_filter (getFileFilterAutodesk3DSMax ());
+	getWindow () .add_filter (getFileFilterWavefrontOBJ ());
+
+	if (os::program_exists ("inkscape"))
+		getWindow () .add_filter (getFileFilterPDF ());
+
+	getWindow () .add_filter (getFileFilterSVG ());
+
 	// Media filter
 
 	if (name == _(X3D_FILTER))
@@ -218,72 +209,6 @@ FileOpenDialog::setFilter (const std::string & name)
 
 	else
 		getWindow () .set_filter (getFileFilterX3D ());
-}
-
-void
-FileOpenDialog::setURL (const basic::uri & URL)
-{
-	if (URL .is_local ())
-		getWindow () .set_uri (URL .str ());
-}
-
-basic::uri
-FileOpenDialog::getURL () const
-{
-	return "file://" + getWindow () .get_file () -> get_path ();
-}
-
-void
-FileOpenDialog::loadURL ()
-{
-	if (run ())
-		getBrowserWindow () -> open (getURL ());
-}
-
-bool
-FileOpenDialog::run ()
-{
-	if (getConfig () -> hasItem ("currentFolder"))
-		getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
-	else
-		getWindow () .set_current_folder (os::home ());
-	
-	setMode (Mode::X3D);
-
-	const auto responseId = getWindow () .run ();
-
-	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder_uri ());
-	getConfig () -> setItem ("relativePath", getRelativePathSwitch () .get_active ());
-
-	if (getWindow () .get_filter ())
-		getConfig () -> setItem ("filter", getWindow () .get_filter () -> get_name ());
-
-	quit ();
-
-	if (responseId == Gtk::RESPONSE_OK)
-		return true;
-
-	return false;
-}
-
-bool
-FileOpenDialog::font ()
-{
-	if (getConfig () -> hasItem ("currentFolder"))
-		getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
-	
-	setMode (Mode::FONTS);
-
-	const auto responseId = getWindow () .run ();
-
-	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder_uri ());
-	getConfig () -> setItem ("relativePath", getRelativePathSwitch () .get_active ());
-	quit ();
-
-	if (responseId == Gtk::RESPONSE_OK)
-		return true;
-
-	return false;
 }
 
 FileOpenDialog::~FileOpenDialog ()

@@ -1,20 +1,21 @@
-#X3D V3.3 utf8 Titania V1.2.2
+#X3D V3.3 utf8 Titania V3.0.3
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Sun, 03 Aug 2014 14:00:40 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.2.2, http://titania.create3000.de"
+META "generator" "Titania V3.0.3, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/library/ToolShader.x3dv"
-META "modified" "Fri, 19 Feb 2016 02:49:13 GMT"
+META "modified" "Fri, 05 May 2017 06:41:43 GMT"
 
-PROTO ToolShader [
-]
+PROTO ToolShader [ ]
 {
   # This is a phong shader where the light position is in the center of the object
-  ComposedShader {
+  DEF ToolShader ComposedShader {
     language "GLSL"
     parts [
-      ShaderPart {
+      DEF ToolVertexShader ShaderPart {
         url "data:text/plain,
 
 precision mediump float;
@@ -29,7 +30,8 @@ attribute vec3 x3d_Normal;
 varying vec3 v;
 varying vec3 vN;
 
-void main(void)
+void
+main ()
 {
 	v  = vec3 (x3d_ModelViewMatrix * x3d_Vertex);
 	vN = normalize (x3d_NormalMatrix * x3d_Normal);
@@ -38,7 +40,7 @@ void main(void)
 }
 "
       }
-      DEF _1 ShaderPart {
+      DEF ToolFragmentShader ShaderPart {
         type "FRAGMENT"
         url "data:text/plain,
 
@@ -53,7 +55,8 @@ uniform float x3d_Transparency;
 varying vec3 v;
 varying vec3 vN;
 
-void main (void)
+void
+main ()
 {
 	vec3 finalColor = vec3 (0.0, 0.0, 0.0);
 	float alpha     = 1.0 - x3d_Transparency;
@@ -68,9 +71,6 @@ void main (void)
 	vec3  diffuseTerm    = x3d_DiffuseColor * max (dot (N, L), 0.0);
 	float specularFactor = bool (x3d_Shininess) ? pow (max (dot (N, H), 0.0), x3d_Shininess) : 1.0;
 	vec3  specularTerm   = x3d_SpecularColor * specularFactor;
-	
-	float attenuation = 1.0;
-	float spot        = 1.0;
 	
 	finalColor += diffuseTerm + specularTerm;
 
@@ -133,10 +133,9 @@ WorldInfo {
       DEF Selection MetadataSet {
         name "Selection"
         reference "http://titania.create3000.de"
-        value DEF children MetadataSet {
-          name "children"
+        value DEF nodes MetadataSet {
+          name "nodes"
           reference "http://titania.create3000.de"
-          value NULL
         }
       }
     ]

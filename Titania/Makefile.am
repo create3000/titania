@@ -48,6 +48,8 @@ titania_SOURCES =  \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp \
+	Titania/Dialogs/FileOpenDialog/FileOpenFontDialog.cpp \
+	Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileExportDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileExportImageDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.cpp \

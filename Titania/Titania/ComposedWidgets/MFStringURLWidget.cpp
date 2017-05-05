@@ -85,7 +85,7 @@ MFStringURLWidget::on_add_clicked ()
 
 	if (fileOpenDialog -> run ())
 	{
-		auto URL = fileOpenDialog -> getURL ();
+		auto URL = fileOpenDialog -> getUrl ();
 
 		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
 			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);
@@ -126,13 +126,13 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 
 	basic::uri URL = getCurrentContext () -> getWorldURL () .transform (get1Value (path .front ()) .raw ());
 
-	fileOpenDialog -> setURL (URL);
+	fileOpenDialog -> setUrl (URL);
 
 	// Run
 
 	if (fileOpenDialog -> run ())
 	{
-		URL = fileOpenDialog -> getURL ();
+		URL = fileOpenDialog -> getUrl ();
 
 		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
 			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);

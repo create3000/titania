@@ -51,39 +51,27 @@
 #ifndef __TITANIA_FILE_OPEN_DIALOG_FILE_OPEN_DIALOG_H__
 #define __TITANIA_FILE_OPEN_DIALOG_FILE_OPEN_DIALOG_H__
 
-#include "../../UserInterfaces/X3DFileOpenDialogInterface.h"
+#include "X3DFileOpenDialog.h"
 
 namespace titania {
 namespace puck {
 
 class FileOpenDialog :
-	virtual public X3DFileOpenDialogInterface
+	public X3DFileOpenDialog
 {
 public:
-
-	enum class Mode {
-	   X3D,
-	   FONTS
-	};
 
 	///  @name Construction
 
 	FileOpenDialog (X3DBrowserWindow* const browserWindow);
 
-	void
-	setURL (const basic::uri &);
+	///  @name Operations
 
-	basic::uri
-	getURL () const;
-
-	void
+	bool
 	loadURL ();
 
 	bool
 	run ();
-
-	bool
-	font ();
 
 	///  @name Destruction
 
@@ -94,11 +82,9 @@ private:
 
 	///  @name Operations
 
+	virtual
 	void
-	setMode (Mode mode);
-
-	void
-	setFilter (const std::string &);
+	setFileFilter (const std::string & name) final override;
 
 };
 

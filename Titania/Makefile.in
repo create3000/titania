@@ -145,6 +145,8 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Configuration/Configuration.$(OBJEXT) \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.$(OBJEXT) \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.$(OBJEXT) \
+	Titania/Dialogs/FileOpenDialog/FileOpenFontDialog.$(OBJEXT) \
+	Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/FileExportDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/FileExportImageDialog.$(OBJEXT) \
 	Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.$(OBJEXT) \
@@ -629,6 +631,8 @@ titania_SOURCES = \
 	Titania/Configuration/Configuration.cpp \
 	Titania/Dialogs/FileImportDialog/FileImportDialog.cpp \
 	Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp \
+	Titania/Dialogs/FileOpenDialog/FileOpenFontDialog.cpp \
+	Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileExportDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileExportImageDialog.cpp \
 	Titania/Dialogs/FileSaveDialog/FileSaveACopyDialog.cpp \
@@ -1092,6 +1096,12 @@ Titania/Dialogs/FileOpenDialog/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) Titania/Dialogs/FileOpenDialog/$(DEPDIR)
 	@: > Titania/Dialogs/FileOpenDialog/$(DEPDIR)/$(am__dirstamp)
 Titania/Dialogs/FileOpenDialog/FileOpenDialog.$(OBJEXT):  \
+	Titania/Dialogs/FileOpenDialog/$(am__dirstamp) \
+	Titania/Dialogs/FileOpenDialog/$(DEPDIR)/$(am__dirstamp)
+Titania/Dialogs/FileOpenDialog/FileOpenFontDialog.$(OBJEXT):  \
+	Titania/Dialogs/FileOpenDialog/$(am__dirstamp) \
+	Titania/Dialogs/FileOpenDialog/$(DEPDIR)/$(am__dirstamp)
+Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.$(OBJEXT):  \
 	Titania/Dialogs/FileOpenDialog/$(am__dirstamp) \
 	Titania/Dialogs/FileOpenDialog/$(DEPDIR)/$(am__dirstamp)
 Titania/Dialogs/FileSaveDialog/$(am__dirstamp):
@@ -2040,6 +2050,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Configuration/$(DEPDIR)/config.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileImportDialog/$(DEPDIR)/FileImportDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileOpenDialog/$(DEPDIR)/FileOpenDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileOpenDialog/$(DEPDIR)/FileOpenFontDialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileOpenDialog/$(DEPDIR)/X3DFileOpenDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileExportDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileExportImageDialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Dialogs/FileSaveDialog/$(DEPDIR)/FileSaveACopyDialog.Po@am__quote@

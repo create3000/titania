@@ -303,6 +303,8 @@
     <Compile Include="Titania\Dialogs\FileSaveDialog\X3DBaseFileSaveDialog.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\FileExportImageDialog.cpp" />
     <Compile Include="Titania\Dialogs\FileSaveDialog\FileExportDialog.cpp" />
+    <Compile Include="Titania\Dialogs\FileOpenDialog\X3DFileOpenDialog.cpp" />
+    <Compile Include="Titania\Dialogs\FileOpenDialog\FileOpenFontDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2735,6 +2737,8 @@
     <None Include="Titania\Dialogs\FileSaveDialog\X3DBaseFileSaveDialog.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\FileExportImageDialog.h" />
     <None Include="Titania\Dialogs\FileSaveDialog\FileExportDialog.h" />
+    <None Include="Titania\Dialogs\FileOpenDialog\X3DFileOpenDialog.h" />
+    <None Include="Titania\Dialogs\FileOpenDialog\FileOpenFontDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

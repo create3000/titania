@@ -52,7 +52,7 @@
 #define __TITANIA_EDITORS_TEXT_EDITOR_MFSTRING_FAMILY_WIDGET_H__
 
 #include "../../Base/X3DUserInterface.h"
-#include "../../Dialogs/FileOpenDialog/FileOpenDialog.h"
+#include "../../Dialogs/FileOpenDialog/FileOpenFontDialog.h"
 #include "../../ComposedWidgets/MFStringWidget.h"
 
 namespace titania {
@@ -105,7 +105,7 @@ private:
 	const Glib::RefPtr <Gtk::TreeViewColumn> fontChooserColumn;
 	const Glib::RefPtr <Gtk::TreeViewColumn> fileChooserColumn;
 	std::unique_ptr <Gtk::FontChooserDialog> fontChooserDialog;
-	std::unique_ptr <FileOpenDialog>         fileOpenDialog;
+	std::unique_ptr <FileOpenFontDialog>     fileOpenDialog;
 
 };
 
@@ -213,17 +213,17 @@ inline
 bool
 MFStringFamilyWidget::openFileDialog (std::string & url)
 {
-	fileOpenDialog .reset (new FileOpenDialog (getBrowserWindow ()));
+	fileOpenDialog .reset (new FileOpenFontDialog (getBrowserWindow ()));
 
 	fileOpenDialog -> getWindow () .set_transient_for (userInterface -> getBrowserWindow () -> getWindow ());
 	fileOpenDialog -> getWindow () .set_modal (true);
 	fileOpenDialog -> getRelativePathBox () .set_visible (true);
 
-	const bool success = fileOpenDialog -> font ();
+	const bool success = fileOpenDialog -> run ();
 
 	if (success)
 	{
-		auto URL = fileOpenDialog -> getURL ();
+		auto URL = fileOpenDialog -> getUrl ();
 
 		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
 			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);

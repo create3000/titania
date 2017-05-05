@@ -67,8 +67,8 @@ public:
 
 	///  @name Operations
 
-	bool
-	exportNodes (const X3D::MFNode & nodes, basic::uri & worldURL, const X3D::UndoStepPtr & undoStep);
+	std::pair <basic::uri, bool>
+	exportNodes (const X3D::MFNode & nodes, const X3D::UndoStepPtr & undoStep);
 
 	///  @name Destruction
 

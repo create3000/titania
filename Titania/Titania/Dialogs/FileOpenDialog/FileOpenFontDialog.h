@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,86 +48,45 @@
  *
  ******************************************************************************/
 
-#include "X3DBaseFileSaveDialog.h"
+#ifndef __TITANIA_DIALOGS_FILE_OPEN_DIALOG_FILE_OPEN_FONT_DIALOG_H__
+#define __TITANIA_DIALOGS_FILE_OPEN_DIALOG_FILE_OPEN_FONT_DIALOG_H__
 
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
+#include "X3DFileOpenDialog.h"
 
 namespace titania {
 namespace puck {
 
-X3DBaseFileSaveDialog::X3DBaseFileSaveDialog () :
-	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.glade"))
+class FileOpenFontDialog :
+	public X3DFileOpenDialog
 {
-	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DBaseFileSaveDialog::on_filter_changed));
-}
+public:
 
-bool
-X3DBaseFileSaveDialog::run ()
-{
-	if (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"))
-	{
-		getOutputStyleBox ()    .set_visible (true);
-		getOutputStyleButton () .set_active (getConfig () -> getInteger ("outputStyle"));
-	}
-	else
-	{
-		getOutputStyleBox ()    .set_visible (false);
-		getOutputStyleButton () .set_active (0);
-	}
+	///  @name Construction
 
-	const auto responseId = getWindow () .run ();
+	FileOpenFontDialog (X3DBrowserWindow* const browserWindow);
 
-	quit ();
+	///  @name Operations
 
-	getConfig () -> setItem ("outputStyle", getOutputStyleButton () .get_active_row_number ());
+	bool
+	run ();
 
-	if (responseId == Gtk::RESPONSE_OK)
-		return true;
+	///  @name Destruction
 
-	return false;
-}
+	virtual
+	~FileOpenFontDialog () final override;
 
-basic::uri
-X3DBaseFileSaveDialog::getUrl () const
-{
-	const basic::uri url = getWindow () .get_file () -> get_path ();
 
-	return url .add_file_scheme ();
-}
+private:
 
-void
-X3DBaseFileSaveDialog::setSuffix (const std::string & suffix)
-{
-	basic::uri name (getWindow () .get_current_name ());
+	///  @name Operations
 
-	getWindow () .set_current_name (name .basename (false) + suffix);
-}
+	virtual
+	void
+	setFileFilter (const std::string & name) final override;
 
-void
-X3DBaseFileSaveDialog::on_filter_changed ()
-{
-	setSuffix (getSuffix ());
-}
-
-void
-X3DBaseFileSaveDialog::on_response (int responseId)
-{
-	if (responseId not_eq Gtk::RESPONSE_OK)
-		return;
-
-	basic::uri name (getWindow () .get_current_name ());
-
-	if (getKnownFileTypes () .count (name .suffix ()))
-		return;
-
-	name .suffix (getSuffix ());
-
-	getWindow () .set_current_name (name .str ());
-}
-
-X3DBaseFileSaveDialog::~X3DBaseFileSaveDialog ()
-{ }
+};
 
 } // puck
 } // titania
+
+#endif

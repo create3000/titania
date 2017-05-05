@@ -48,39 +48,59 @@
  *
  ******************************************************************************/
 
-#include "X3DBaseFileSaveDialog.h"
+#include "X3DFileOpenDialog.h"
 
-#include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
+
+#include <Titania/OS.h>
 
 namespace titania {
 namespace puck {
 
-X3DBaseFileSaveDialog::X3DBaseFileSaveDialog () :
-	X3DFileSaveDialogInterface (get_ui ("Dialogs/FileSaveDialog.glade"))
+static constexpr auto ALL_FILES_FILTER = "All Files";
+
+X3DFileOpenDialog::X3DFileOpenDialog () :
+	X3DFileOpenDialogInterface (get_ui ("Dialogs/FileOpenDialog.glade"))
 {
-	getWindow () .property_filter () .signal_changed () .connect (sigc::mem_fun (this, &X3DBaseFileSaveDialog::on_filter_changed));
+	getFileFilterAll () -> set_name (_ (ALL_FILES_FILTER));
+
+	getRelativePathSwitch () .set_active (getConfig () -> getBoolean ("relativePath"));
+}
+
+void
+X3DFileOpenDialog::setUrl (const basic::uri & URL)
+{
+	if (URL .is_local ())
+		getWindow () .set_uri (URL .str ());
+}
+
+basic::uri
+X3DFileOpenDialog::getUrl () const
+{
+	const basic::uri url = getWindow () .get_file () -> get_path ();
+
+	return url .add_file_scheme ();
 }
 
 bool
-X3DBaseFileSaveDialog::run ()
+X3DFileOpenDialog::run ()
 {
-	if (getBrowserWindow () -> getConfig () -> getBoolean ("addStandardMetaData"))
-	{
-		getOutputStyleBox ()    .set_visible (true);
-		getOutputStyleButton () .set_active (getConfig () -> getInteger ("outputStyle"));
-	}
+	if (getConfig () -> hasItem ("currentFolder"))
+		getWindow () .set_current_folder_uri (getConfig () -> getString ("currentFolder"));
 	else
-	{
-		getOutputStyleBox ()    .set_visible (false);
-		getOutputStyleButton () .set_active (0);
-	}
+		getWindow () .set_current_folder (os::home ());
+
+	setFileFilter (getConfig () -> getString ("fileFilter"));
 
 	const auto responseId = getWindow () .run ();
 
-	quit ();
+	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder_uri ());
+	getConfig () -> setItem ("relativePath", getRelativePathSwitch () .get_active ());
 
-	getConfig () -> setItem ("outputStyle", getOutputStyleButton () .get_active_row_number ());
+	if (getWindow () .get_filter ())
+		getConfig () -> setItem ("fileFilter", getWindow () .get_filter () -> get_name ());
+
+	quit ();
 
 	if (responseId == Gtk::RESPONSE_OK)
 		return true;
@@ -88,45 +108,7 @@ X3DBaseFileSaveDialog::run ()
 	return false;
 }
 
-basic::uri
-X3DBaseFileSaveDialog::getUrl () const
-{
-	const basic::uri url = getWindow () .get_file () -> get_path ();
-
-	return url .add_file_scheme ();
-}
-
-void
-X3DBaseFileSaveDialog::setSuffix (const std::string & suffix)
-{
-	basic::uri name (getWindow () .get_current_name ());
-
-	getWindow () .set_current_name (name .basename (false) + suffix);
-}
-
-void
-X3DBaseFileSaveDialog::on_filter_changed ()
-{
-	setSuffix (getSuffix ());
-}
-
-void
-X3DBaseFileSaveDialog::on_response (int responseId)
-{
-	if (responseId not_eq Gtk::RESPONSE_OK)
-		return;
-
-	basic::uri name (getWindow () .get_current_name ());
-
-	if (getKnownFileTypes () .count (name .suffix ()))
-		return;
-
-	name .suffix (getSuffix ());
-
-	getWindow () .set_current_name (name .str ());
-}
-
-X3DBaseFileSaveDialog::~X3DBaseFileSaveDialog ()
+X3DFileOpenDialog::~X3DFileOpenDialog ()
 { }
 
 } // puck
