@@ -50,7 +50,7 @@
 
 #include "Texture3DFuture.h"
 
-#include "../InputOutput/Loader.h"
+#include "../InputOutput/FileLoader.h"
 
 namespace titania {
 namespace X3D {

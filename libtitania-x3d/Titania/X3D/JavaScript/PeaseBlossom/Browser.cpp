@@ -59,7 +59,7 @@
 #include "../../Browser/BrowserProperties.h"
 #include "../../Browser/RenderingProperties.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../InputOutput/Loader.h"
+#include "../../InputOutput/FileLoader.h"
 #include "../../Thread/SceneFuture.h"
 
 namespace titania {
@@ -425,7 +425,7 @@ Browser::createVrmlFromString (const pb::ptr <pb::pbExecutionContext> & ec, cons
 	{
 		const auto script     = getContext (ec) -> getScriptNode ();
 		const auto vrmlSyntax = get1Argument <std::string> (args, 0);
-		const auto scene      = X3D::Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
+		const auto scene      = X3D::FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
 
 		return X3DField::create <MFNode> (ec, new X3D::MFNode (scene -> getRootNodes ()));
 	}

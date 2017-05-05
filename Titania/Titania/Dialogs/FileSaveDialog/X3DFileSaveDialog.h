@@ -91,7 +91,7 @@ protected:
 	///  @name Operations
 
 	bool
-	run ();
+	run (const basic::uri & url);
 
 
 private:

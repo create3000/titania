@@ -53,7 +53,7 @@
 #include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Scripting/Script.h"
 #include "../../../Execution/X3DScene.h"
-#include "../../../InputOutput/Loader.h"
+#include "../../../InputOutput/FileLoader.h"
 #include "../value.h"
 
 #include <sstream>
@@ -108,7 +108,7 @@ SFNode::construct (const pb::ptr <pb::pbExecutionContext> & ec, const pb::var & 
 			{
 				const auto   vrmlSyntax = get1Argument <std::string> (args, 0);
 				const auto & script     = getContext (ec) -> getScriptNode ();
-				const auto   scene      = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
+				const auto   scene      = FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
 
 				if (not scene -> getRootNodes () .empty () and scene -> getRootNodes () [0])
 				{

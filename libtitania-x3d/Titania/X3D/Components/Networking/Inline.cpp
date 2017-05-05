@@ -51,7 +51,7 @@
 #include "Inline.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../InputOutput/Loader.h"
+#include "../../InputOutput/FileLoader.h"
 #include "../../Thread/SceneFuture.h"
 
 namespace titania {
@@ -238,7 +238,7 @@ throw (Error <NODE_NOT_AVAILABLE>,
 			{
 				const_cast <Inline*> (this) -> scene .set (getBrowser () -> createScene (false));
 
-				Loader (getExecutionContext ()) .parseIntoScene (scene, url ());
+				FileLoader (getExecutionContext ()) .parseIntoScene (scene, url ());
 
 				const_cast <Inline*> (this) -> setLoadState (COMPLETE_STATE);
 
@@ -299,7 +299,7 @@ Inline::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	Loader loader (getExecutionContext ());
+	FileLoader loader (getExecutionContext ());
 
 	try
 	{

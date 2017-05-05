@@ -172,10 +172,6 @@ public:
 	bool
 	save (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const std::string & outputStyle, const bool copy);
 
-	static
-	bool
-	transform (const basic::uri &, const basic::uri &, const X3D::UndoStepPtr &, X3D::SFNode &);
-
 	virtual
 	void
 	reload ();
@@ -278,13 +274,10 @@ private:
 	///  @name Operations
 
 	std::string
-	getTitle (const X3D::BrowserPtr &) const;
+	getTitle (const X3D::BrowserPtr & browser) const;
 
 	void
 	setOutputStyle (const X3D::X3DScenePtr & scene, const std::string & outputStyle);
-
-	void
-	setWorldURL (const X3D::X3DScenePtr &, const basic::uri &, const X3D::UndoStepPtr &);
 
 	void
 	createIcon ();

@@ -66,6 +66,8 @@ FileSaveDialog::FileSaveDialog (X3DBrowserWindow* const browserWindow) :
 
 FileSaveDialog::~FileSaveDialog ()
 {
+	getConfig () -> remove ("currentFolder");
+
 	dispose ();
 }
 

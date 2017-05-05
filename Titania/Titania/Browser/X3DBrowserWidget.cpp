@@ -61,8 +61,9 @@
 
 #include <Titania/X3D/Basic/Traverse.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
-#include <Titania/X3D/Components/EnvironmentalEffects/Background.h>
+#include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
+#include <Titania/X3D/InputOutput/FileLoader.h>
 
 #include <Titania/OS/cwd.h>
 #include <Titania/String.h>
@@ -590,12 +591,14 @@ X3DBrowserWidget::save (const X3D::X3DScenePtr & scene, const basic::uri & world
 			scene -> addStandardMetaData ();
 
 		setOutputStyle (scene, outputStyle);
-		setWorldURL (scene, worldURL, undoStep);
+		X3D::X3DEditor::setWorldURL (scene, worldURL, undoStep);
 
 		X3D::FileGenerator::write (scene, worldURL, outputStyle);
 
 		if (copy)
 			undoStep -> undo ();
+
+		worldURL_changed () .processInterests ();
 
 		return true;
 	}
@@ -655,92 +658,6 @@ X3DBrowserWidget::getOutputStyle (const X3D::X3DScenePtr & scene) const
 	{
 		return "nicest";
 	}
-}
-
-void
-X3DBrowserWidget::setWorldURL (const X3D::X3DScenePtr & scene, const basic::uri & worldURL, const X3D::UndoStepPtr & undoStep)
-{
-	if (worldURL == scene -> getWorldURL ())
-		return;
-
-	using namespace std::placeholders;
-
-	X3D::traverse (scene,
-	               std::bind (&X3DBrowserWidget::transform, scene -> getWorldURL (), worldURL, undoStep, _1),
-	               true,
-	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATIONS |
-	               X3D::TRAVERSE_ROOT_NODES);
-
-	undoStep -> addUndoFunction (&X3D::Output::processInterests, std::ref (worldURL_changed ()));
-	undoStep -> addUndoFunction (&X3D::X3DScene::setWorldURL, scene, scene -> getWorldURL ());
-	undoStep -> addRedoFunction (&X3D::X3DScene::setWorldURL, scene, worldURL);
-	undoStep -> addRedoFunction (&X3D::Output::processInterests, std::ref (worldURL_changed ()));
-	scene -> setWorldURL (worldURL);
-
-	worldURL_changed () .processInterests ();
-}
-
-bool
-X3DBrowserWidget::transform (const basic::uri & oldWorldURL, const basic::uri & newWorldURL, const X3D::UndoStepPtr & undoStep, X3D::SFNode & node)
-{
-	using MFString = X3D::X3DField <X3D::MFString::internal_type>;
-	using set      = void (MFString::*) (const MFString &);
-
-	for (const auto & type : basic::make_reverse_range (node -> getType ()))
-	{
-		switch (type)
-		{
-			case X3D::X3DConstants::Background :
-				{
-					X3D::X3DPtr <X3D::Background> background (node);
-
-					undoStep -> addObjects (background);
-					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> frontUrl ()),  background -> frontUrl ());
-					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> backUrl ()),   background -> backUrl ());
-					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> leftUrl ()),   background -> leftUrl ());
-					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> rightUrl ()),  background -> rightUrl ());
-					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> topUrl ()),    background -> topUrl ());
-					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> bottomUrl ()), background -> bottomUrl ());
-
-					X3D::X3DUrlObject::transform (background -> frontUrl (),  oldWorldURL, newWorldURL);
-					X3D::X3DUrlObject::transform (background -> backUrl (),   oldWorldURL, newWorldURL);
-					X3D::X3DUrlObject::transform (background -> leftUrl (),   oldWorldURL, newWorldURL);
-					X3D::X3DUrlObject::transform (background -> rightUrl (),  oldWorldURL, newWorldURL);
-					X3D::X3DUrlObject::transform (background -> topUrl (),    oldWorldURL, newWorldURL);
-					X3D::X3DUrlObject::transform (background -> bottomUrl (), oldWorldURL, newWorldURL);
-
-					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> frontUrl ()),  background -> frontUrl ());
-					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> backUrl ()),   background -> backUrl ());
-					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> leftUrl ()),   background -> leftUrl ());
-					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> rightUrl ()),  background -> rightUrl ());
-					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> topUrl ()),    background -> topUrl ());
-					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> bottomUrl ()), background -> bottomUrl ());
-					break;
-				}
-			case X3D::X3DConstants::X3DUrlObject:
-			{
-				X3D::X3DPtr <X3D::X3DUrlObject> urlObject (node);
-
-				undoStep -> addObjects (urlObject);
-				undoStep -> addUndoFunction ((set) & MFString::set, std::ref (urlObject -> url ()), urlObject -> url ());
-
-				X3D::X3DUrlObject::transform (urlObject -> url (), oldWorldURL, newWorldURL);
-
-				undoStep -> addRedoFunction ((set) & MFString::set, std::ref (urlObject -> url ()), urlObject -> url ());
-				break;
-			}
-			case X3D::X3DConstants::X3DFontStyleNode:
-			{
-				// TODO: transform family field if value is file
-				break;
-			}
-			default:
-				break;
-		}
-	}
-
-	return true;
 }
 
 void
@@ -980,7 +897,7 @@ X3DBrowserWidget::createIcon ()
 			uri = "/favicon.ico";
 		}
 
-		createIcon (worldURL, X3D::Loader (getCurrentScene ()) .loadDocument (uri));
+		createIcon (worldURL, X3D::FileLoader (getCurrentScene ()) .loadDocument (uri));
 	}
 	catch (const std::exception & error)
 	{

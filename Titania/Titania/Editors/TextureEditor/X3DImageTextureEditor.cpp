@@ -121,7 +121,7 @@ X3DImageTextureEditor::on_embed_image_clicked ()
 	{
 		try
 		{
-			X3D::Loader       loader (imageTexture -> getExecutionContext ());
+			X3D::FileLoader loader (imageTexture -> getExecutionContext ());
 			const std::string image = loader .loadDocument (URL);
 
 			bool        result_uncertain;

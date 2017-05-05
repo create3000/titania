@@ -53,7 +53,7 @@
 
 #include "../Fields.h"
 #include "../Types/Pointer.h"
-#include "../InputOutput/Loader.h"
+#include "../InputOutput/FileLoader.h"
 #include "X3DFuture.h"
 
 #include <Titania/Basic/URI.h>
@@ -152,7 +152,7 @@ private:
 	///  @name Members
 
 	SceneFutureCallback       callback;
-	Loader                    loader;
+	FileLoader                loader;
 	X3DScenePtr               scene;
 	MFString                  urlError;
 	std::future <X3DScenePtr> future;

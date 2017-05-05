@@ -94,7 +94,7 @@ X3DFileSaveDialog::X3DFileSaveDialog () :
 bool
 X3DFileSaveDialog::save (const bool copy)
 {
-	const auto success = run ();
+	const auto success = run (getCurrentScene () -> getWorldURL ());
 
 	if (success)
 		getBrowserWindow () -> save (getUrl (), getOutputStyleButton () .get_active_text (), copy);
@@ -103,21 +103,19 @@ X3DFileSaveDialog::save (const bool copy)
 }
 
 bool
-X3DFileSaveDialog::run ()
+X3DFileSaveDialog::run (const basic::uri & url)
 {
-	const auto & worldURL = getCurrentScene () -> getWorldURL ();
-
-	if (not worldURL .empty () and worldURL .is_local ())
+	if (not url .empty () and url .is_local ())
 	{
 		if (getConfig () -> hasItem ("currentFolder"))
 		{
 			getWindow () .set_current_folder (getConfig () -> getString ("currentFolder"));
-			getWindow () .set_current_name (worldURL .basename ());
+			getWindow () .set_current_name (url .basename ());
 		}
 		else
 		{
-			getWindow () .set_uri (worldURL .filename () .str ());
-			getWindow () .set_current_name (worldURL .basename ());
+			getWindow () .set_uri (url .filename () .str ());
+			getWindow () .set_current_name (url .basename ());
 		}
 	}
 	else
@@ -127,10 +125,10 @@ X3DFileSaveDialog::run ()
 		else
 			getWindow () .set_current_folder (os::home ());
 
-		if (worldURL .basename () .empty ())
+		if (url .basename () .empty ())
 			getWindow () .set_current_name (_ ("scene.x3d"));
 		else
-			getWindow () .set_current_name (worldURL .basename ());
+			getWindow () .set_current_name (url .basename ());
 	}
 
 	setFileFilter (getConfig () -> getString ("fileFilter"));
@@ -139,6 +137,8 @@ X3DFileSaveDialog::run ()
 
 	if (getWindow () .get_filter ())
 		getConfig () -> setItem ("fileFilter", getWindow () .get_filter () -> get_name ());
+
+	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder ());
 
 	return success;
 }

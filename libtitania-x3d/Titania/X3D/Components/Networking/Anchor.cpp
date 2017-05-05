@@ -54,7 +54,7 @@
 #include "../../Browser/Notification.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../InputOutput/Loader.h"
+#include "../../InputOutput/FileLoader.h"
 #include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
@@ -129,7 +129,7 @@ Anchor::requestImmediateLoad ()
 	{
 		setLoadState (IN_PROGRESS_STATE, false);
 
-		Loader (getExecutionContext ()) .loadURL (url (), parameter ());
+		FileLoader (getExecutionContext ()) .loadURL (url (), parameter ());
 
 		setLoadState (COMPLETE_STATE, false);
 	}

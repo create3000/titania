@@ -126,8 +126,6 @@ MFStringURLWidget::on_button_release_event (GdkEventButton* event)
 
 	basic::uri URL = getCurrentContext () -> getWorldURL () .transform (get1Value (path .front ()) .raw ());
 
-	fileOpenDialog -> setUrl (URL);
-
 	// Run
 
 	if (fileOpenDialog -> run ())

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_INPUT_OUTPUT_LOADER_H__
-#define __TITANIA_X3D_INPUT_OUTPUT_LOADER_H__
+#ifndef __TITANIA_X3D_INPUT_OUTPUT_FILE_LOADER_H__
+#define __TITANIA_X3D_INPUT_OUTPUT_FILE_LOADER_H__
 
 #include "../Execution/X3DScene.h"
 
@@ -58,13 +58,13 @@
 namespace titania {
 namespace X3D {
 
-class Loader
+class FileLoader
 {
 public:
 
-	Loader (X3DExecutionContext* const executionContext);
+	FileLoader (X3DExecutionContext* const executionContext);
 
-	Loader (X3DExecutionContext* const, const basic::uri &);
+	FileLoader (X3DExecutionContext* const, const basic::uri &);
 
 	///  @name Member access
 
@@ -147,11 +147,11 @@ private:
 	       Error <URL_UNAVAILABLE>);
 
 	X3DExecutionContext* const executionContext;
-	const std::string          userAgent;
-	const basic::uri           referer;
-	basic::uri                 worldURL;
-	MFString                   urlError;
-	basic::ifilestream         istream;
+	const std::string userAgent;
+	const basic::uri referer;
+	basic::uri worldURL;
+	MFString urlError;
+	basic::ifilestream istream;
 
 };
 

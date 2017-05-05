@@ -159,6 +159,12 @@ Configuration::getString (const std::string & key) const
 	return "";
 }
 
+void
+Configuration::remove (const std::string & key) const
+{
+	keyfile -> remove_key (group, key);
+}
+
 Configuration::~Configuration ()
 { }
 

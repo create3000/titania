@@ -68,8 +68,6 @@ FileSaveACopyDialog::FileSaveACopyDialog (X3DBrowserWindow* const browserWindow)
 
 FileSaveACopyDialog::~FileSaveACopyDialog ()
 {
-	getConfig () -> setItem ("currentFolder", getWindow () .get_current_folder ());
-
 	dispose ();
 }
 

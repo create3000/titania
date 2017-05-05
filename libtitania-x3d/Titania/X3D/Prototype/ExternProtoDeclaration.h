@@ -59,7 +59,6 @@
 namespace titania {
 namespace X3D {
 
-class Loader;
 class SceneFuture;
 
 class ExternProtoDeclaration :

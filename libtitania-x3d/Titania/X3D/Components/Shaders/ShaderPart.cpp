@@ -54,7 +54,7 @@
 #include "../../Browser/Shaders/Shader.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../InputOutput/Loader.h"
+#include "../../InputOutput/FileLoader.h"
 
 namespace titania {
 namespace X3D {
@@ -125,7 +125,7 @@ ShaderPart::requestImmediateLoad ()
 	{
 		try
 		{
-			Loader loader (getExecutionContext ());
+			FileLoader loader (getExecutionContext ());
 
 			const auto document = loader .loadDocument (URL);
 			const auto source   = Shader::getSource (this, document, loader .getWorldURL ());

@@ -48,7 +48,7 @@
  *
  ******************************************************************************/
 
-#include "Loader.h"
+#include "FileLoader.h"
 
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DScene.h"
@@ -59,11 +59,11 @@
 namespace titania {
 namespace X3D {
 
-Loader::Loader (X3DExecutionContext* const executionContext) :
-	Loader (executionContext, executionContext -> getWorldURL ())
+FileLoader::FileLoader (X3DExecutionContext* const executionContext) :
+	FileLoader (executionContext, executionContext -> getWorldURL ())
 { }
 
-Loader::Loader (X3DExecutionContext* const executionContext, const basic::uri & referer) :
+FileLoader::FileLoader (X3DExecutionContext* const executionContext, const basic::uri & referer) :
 	executionContext (executionContext),
 	       userAgent (executionContext -> getBrowser () -> getUserAgent ()),
 	         referer (referer),
@@ -75,7 +75,7 @@ Loader::Loader (X3DExecutionContext* const executionContext, const basic::uri & 
 //  X3D Creation Handling
 
 X3DScenePtr
-Loader::createX3DFromString (const std::string & string)
+FileLoader::createX3DFromString (const std::string & string)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -87,7 +87,7 @@ throw (Error <INVALID_X3D>,
 }
 
 X3DScenePtr
-Loader::createX3DFromStream (basic::ifilestream & istream)
+FileLoader::createX3DFromStream (basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -97,7 +97,7 @@ throw (Error <INVALID_X3D>,
 }
 
 X3DScenePtr
-Loader::createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream)
+FileLoader::createX3DFromStream (const basic::uri & worldURL, basic::ifilestream & istream)
 throw (Error <INVALID_X3D>,
        Error <NOT_SUPPORTED>,
        Error <INVALID_OPERATION_TIMING>,
@@ -120,7 +120,7 @@ throw (Error <INVALID_X3D>,
 }
 
 X3DScenePtr
-Loader::createX3DFromURL (const MFString & url)
+FileLoader::createX3DFromURL (const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -141,7 +141,7 @@ throw (Error <INVALID_URL>,
 }
 
 void
-Loader::loadURL (const MFString & url, const MFString & parameter)
+FileLoader::loadURL (const MFString & url, const MFString & parameter)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -178,7 +178,7 @@ throw (Error <INVALID_URL>,
  *
  */
 void
-Loader::parseIntoScene (const X3DScenePtr & scene, const MFString & url)
+FileLoader::parseIntoScene (const X3DScenePtr & scene, const MFString & url)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -222,7 +222,7 @@ throw (Error <INVALID_URL>,
  *
  */
 void
-Loader::stop ()
+FileLoader::stop ()
 {
 	istream .stop ();
 }
@@ -235,7 +235,7 @@ Loader::stop ()
  *
  */
 std::string
-Loader::loadDocument (const SFString & URL)
+FileLoader::loadDocument (const SFString & URL)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -248,7 +248,7 @@ throw (Error <INVALID_URL>,
  *
  */
 std::string
-Loader::loadDocument (const basic::uri & uri)
+FileLoader::loadDocument (const basic::uri & uri)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -269,7 +269,7 @@ throw (Error <INVALID_URL>,
  *
  */
 basic::ifilestream
-Loader::loadStream (const basic::uri & uri)
+FileLoader::loadStream (const basic::uri & uri)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {
@@ -284,7 +284,7 @@ throw (Error <INVALID_URL>,
  *
  */
 void
-Loader::loadStream (const basic::uri & uri, basic::ifilestream & istream)
+FileLoader::loadStream (const basic::uri & uri, basic::ifilestream & istream)
 throw (Error <INVALID_URL>,
        Error <URL_UNAVAILABLE>)
 {

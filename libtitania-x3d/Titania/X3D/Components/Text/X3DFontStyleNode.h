@@ -55,6 +55,8 @@
 #include "../../Types/Geometry.h"
 #include "../Core/X3DNode.h"
 
+#include <Titania/Basic/URI.h>
+
 namespace titania {
 namespace X3D {
 
@@ -136,7 +138,7 @@ protected:
 
 	virtual
 	void
-	getLineExtents (const String &, Vector2d &, Vector2d &) const = 0;
+	getLineExtents (const String & line, Vector2d & min, Vector2d & max) const = 0;
 
 	virtual
 	void
@@ -289,6 +291,12 @@ public:
 	virtual
 	X3DPtr <X3DTextGeometry>
 	getTextGeometry (Text* const) const = 0;
+
+	///  @name Operations
+
+	static
+	void
+	transform (MFString & url, const basic::uri & oldWorldURL, const basic::uri & newWorldURL);
 
 
 protected:

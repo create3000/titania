@@ -61,8 +61,7 @@ class X3DFileOpenDialog :
 {
 public:
 
-	void
-	setUrl (const basic::uri & URL);
+	///  @name Member access
 
 	basic::uri
 	getUrl () const;

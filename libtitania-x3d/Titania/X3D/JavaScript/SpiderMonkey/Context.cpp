@@ -51,7 +51,7 @@
 #include "Context.h"
 
 #include "../../Browser/X3DBrowser.h"
-#include "../../InputOutput/Loader.h"
+#include "../../InputOutput/FileLoader.h"
 #include "../../Thread/SceneFuture.h"
 
 #include "Global.h"
@@ -426,7 +426,7 @@ Context::require (const basic::uri & uri, jsval & rval)
 
 		// Load document.
 
-		const auto document = Loader (getExecutionContext ()) .loadDocument (resolvedURL);
+		const auto document = FileLoader (getExecutionContext ()) .loadDocument (resolvedURL);
 
 		// Evaluate script.
 

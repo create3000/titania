@@ -114,7 +114,7 @@ private:
 
 	virtual
 	void
-	getLineExtents (const String &, Vector2d &, Vector2d &) const final override;
+	getLineExtents (const String & line, Vector2d & min, Vector2d & max) const final override;
 
 	void
 	triangulate (std::vector <size_t> &, std::vector <Vector3d> &) const;

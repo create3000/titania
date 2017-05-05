@@ -465,7 +465,6 @@
     <None Include="Titania\X3D\Debug.h" />
     <None Include="Titania\X3D\Parser\Filter.h" />
     <None Include="Titania\X3D\Rendering\OpenGL.h" />
-    <None Include="Titania\X3D\InputOutput\Loader.h" />
     <None Include="Titania\X3D\Components\Core\MetadataBoolean.h" />
     <None Include="Titania\X3D\Browser\Notification.h" />
     <None Include="Titania\X3D\Components\Grouping\X3DTransformNode.h" />
@@ -951,6 +950,7 @@
     <None Include="Titania\X3D\Tools\Grids\AxonometricGridTool.h" />
     <None Include="Titania\X3D\Browser\Rendering\L-System.h" />
     <None Include="Titania\X3D\InputOutput\FileGenerator.h" />
+    <None Include="Titania\X3D\InputOutput\FileLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1298,7 +1298,6 @@
     <Compile Include="Titania\X3D\Browser\Geometry2D\Arc2DOptions.cpp" />
     <Compile Include="Titania\X3D\Browser\Geometry3D\BoxOptions.cpp" />
     <Compile Include="Titania\X3D\Parser\Filter.cpp" />
-    <Compile Include="Titania\X3D\InputOutput\Loader.cpp" />
     <Compile Include="Titania\X3D\Components\Core\MetadataBoolean.cpp" />
     <Compile Include="Titania\X3D\Browser\Notification.cpp" />
     <Compile Include="Titania\X3D\Components\Grouping\X3DTransformNode.cpp" />
@@ -1638,6 +1637,7 @@
     <Compile Include="Titania\X3D\Browser\Rendering\L-System.cpp" />
     <Compile Include="Titania\X3D\Tools\Grouping\X3DBoundedObjectTool.cpp" />
     <Compile Include="Titania\X3D\InputOutput\FileGenerator.cpp" />
+    <Compile Include="Titania\X3D\InputOutput\FileLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

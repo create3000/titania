@@ -73,6 +73,16 @@ public:
 
 	X3DEditor () = delete;
 
+	///  @name Scene handling
+
+	static
+	void
+	setWorldURL (const X3DScenePtr & scene, const basic::uri & worldURL, const UndoStepPtr & undoStep);
+
+	static
+	bool
+	transform (const basic::uri & oldWorldURL, const basic::uri & newWorldURL, const UndoStepPtr & undoStep, SFNode & node);
+
 	///  @name Import/Export handling
 
 	static

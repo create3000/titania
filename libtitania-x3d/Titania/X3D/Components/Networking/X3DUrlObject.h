@@ -115,7 +115,7 @@ public:
 
 	static
 	void
-	transform (MFString &, const basic::uri &, const basic::uri &);
+	transform (MFString & url, const basic::uri & oldWorldURL, const basic::uri & newWorldURL);
 
 
 protected:

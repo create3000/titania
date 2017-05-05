@@ -52,7 +52,7 @@
 
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
-#include "../../InputOutput/Loader.h"
+#include "../../InputOutput/FileLoader.h"
 #include "../../JavaScript/X3DJavaScriptEngine.h"
 
 #include <regex>
@@ -155,7 +155,7 @@ Script::loadDocument (const SFString & URL, std::string & scheme, std::string & 
 
 	try
 	{
-		Loader loader (getExecutionContext ());
+		FileLoader loader (getExecutionContext ());
 		ecmascript = std::move (loader .loadDocument (URL));
 		setWorldURL (loader .getWorldURL ());
 		return true;

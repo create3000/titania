@@ -50,7 +50,7 @@
 
 #include "Shader.h"
 
-#include "../../InputOutput/Loader.h"
+#include "../../InputOutput/FileLoader.h"
 
 #include <Titania/String/to_string.h>
 #include <regex>
@@ -190,7 +190,7 @@ throw (Error <INVALID_URL>,
 
 		if (std::regex_match (line, filename, include))
 		{
-			Loader loader (node -> getExecutionContext ());
+			FileLoader loader (node -> getExecutionContext ());
 
 			output << getSource (node, loader .loadDocument (worldURL .transform (filename .str (1))), loader .getWorldURL (), uris, level + 1, files) << std::endl;
 

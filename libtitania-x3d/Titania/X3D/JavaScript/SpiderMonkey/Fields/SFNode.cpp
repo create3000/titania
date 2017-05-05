@@ -56,7 +56,7 @@
 #include "../../../Browser/X3DBrowser.h"
 #include "../../../Components/Scripting/Script.h"
 #include "../../../Execution/X3DScene.h"
-#include "../../../InputOutput/Loader.h"
+#include "../../../InputOutput/FileLoader.h"
 #include "../Context.h"
 #include "../FieldDefinitionArray.h"
 #include "../Fields.h"
@@ -112,7 +112,7 @@ SFNode::construct (JSContext* cx, uint32_t argc, jsval* vp)
 					const auto   argv       = JS_ARGV (cx, vp);
 					const auto   vrmlSyntax = getArgument <std::string> (cx, argv, 0);
 					const auto & script     = getContext (cx) -> getScriptNode ();
-					const auto   scene      = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
+					const auto   scene      = FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
 
 					if (scene -> getRootNodes () .empty ())
 						return ThrowException (cx, "%s .new: Invalid argument.", getClass () -> name);

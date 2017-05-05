@@ -675,5 +675,26 @@ X3DFontStyleNode::set_justify ()
 						  : minorNormal ? Alignment::FIRST : Alignment::END;
 }
 
+void
+X3DFontStyleNode::transform (MFString & url, const basic::uri & oldWorldURL, const basic::uri & newWorldURL)
+{
+	for (auto & value : url)
+	{
+		const basic::uri URL = value .str ();
+
+		if (URL .basename (false) == URL)
+			continue;
+
+		if (URL .is_relative () and not URL .filename (true) .empty ())
+		{
+			const auto transformed = oldWorldURL .transform (URL);
+
+			value .set (newWorldURL .relative_path (transformed) .str ());
+		}
+	}
+
+	url .erase (std::unique (url .begin (), url .end ()), url .end ());
+}
+
 } // X3D
 } // titania

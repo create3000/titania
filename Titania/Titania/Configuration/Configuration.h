@@ -69,46 +69,49 @@ public:
 	/// @name Key lockup
 
 	bool
-	hasItem (const std::string &) const;
+	hasItem (const std::string & key) const;
 
 	/// @name Set configuration value
 
 	void
-	setItem (const std::string &, const bool);
+	setItem (const std::string & key, const bool value);
 
 	void
-	setItem (const std::string &, const int);
+	setItem (const std::string & key, const int value);
 
 	void
-	setItem (const std::string &, const double);
+	setItem (const std::string & key, const double value);
 
 	void
-	setItem (const std::string &, const char*);
+	setItem (const std::string & key, const char* value);
 
 	void
-	setItem (const std::string &, const std::string &);
+	setItem (const std::string & key, const std::string & value);
 
 	template <class Type>
 	void
-	set (const std::string &, const Type &);
+	set (const std::string & key, const Type & value);
 
 	/// @name Get configuration value
 
 	bool
-	getBoolean (const std::string &) const;
+	getBoolean (const std::string & key) const;
 
 	int
-	getInteger (const std::string &) const;
+	getInteger (const std::string & key) const;
 
 	double
-	getDouble (const std::string &) const;
+	getDouble (const std::string & key) const;
 
 	Glib::ustring
-	getString (const std::string &) const;
+	getString (const std::string & key) const;
 
 	template <class Type>
 	Type
-	get (const std::string &) const;
+	get (const std::string & key) const;
+
+	void
+	remove (const std::string & key) const;
 
 	~Configuration ();
 

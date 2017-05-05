@@ -122,7 +122,7 @@ X3DImageTexture3DEditor::getImageTexture3D (const X3D::X3DPtr <X3D::X3DTextureNo
 //	{
 //		try
 //		{
-//			X3D::Loader       loader (imageTexture -> getExecutionContext ());
+//			X3D::FileLoader loader (imageTexture -> getExecutionContext ());
 //			const std::string image = loader .loadDocument (URL);
 //
 //			bool        result_uncertain;

@@ -56,7 +56,7 @@
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Scripting/Script.h"
 #include "../../InputOutput/Generator.h"
-#include "../../InputOutput/Loader.h"
+#include "../../InputOutput/FileLoader.h"
 #include "../../Thread/SceneFuture.h"
 #include "Fields/ArrayFields.h"
 #include "Fields/MFNode.h"
@@ -267,7 +267,7 @@ Browser::createX3DFromString (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto   argv      = JS_ARGV (cx, vp);
 		const auto & script    = getContext (cx) -> getScriptNode ();
 		const auto   x3dSyntax = getArgument <std::string> (cx, argv, 0);
-		const auto   scene     = X3D::Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (x3dSyntax);
+		const auto   scene     = X3D::FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (x3dSyntax);
 
 		return X3DScene::create (cx, scene, vp);
 	}
@@ -315,7 +315,7 @@ Browser::createX3DFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 
 						try
 						{
-							const auto scene = X3D::Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
+							const auto scene = X3D::FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
 
 							field -> set (scene -> getRootNodes ());
 							field -> addEvent ();
@@ -340,7 +340,7 @@ Browser::createX3DFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 			catch (const std::exception &)
 			{ }
 
-			const auto scene   = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
+			const auto scene   = FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
 			auto       nodeObj = argc == 2 ? context -> getGlobal () : JSVAL_TO_OBJECT (argv [1]);
 
 			if (not nodeObj)
@@ -363,7 +363,7 @@ Browser::createX3DFromURL (JSContext* cx, uint32_t argc, jsval* vp)
 		}
 		else
 		{
-			const auto scene = Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
+			const auto scene = FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromURL (*url);
 
 			return X3DScene::create (cx, scene, vp);
 		}
@@ -387,7 +387,7 @@ Browser::loadURL (JSContext* cx, uint32_t argc, jsval* vp)
 		const auto   url       = getArgument <MFString> (cx, argv, 0);
 		const auto   parameter = getArgument <MFString> (cx, argv, 1);
 
-		Loader (script -> getExecutionContext (), script -> getWorldURL ()) .loadURL (*url, *parameter);
+		FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .loadURL (*url, *parameter);
 
 		JS_SET_RVAL (cx, vp, JSVAL_VOID);
 		return true;
@@ -666,7 +666,7 @@ Browser::createVrmlFromString (JSContext* cx, uint32_t argc, jsval* vp)
 
 		try
 		{
-			const auto scene = X3D::Loader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
+			const auto scene = X3D::FileLoader (script -> getExecutionContext (), script -> getWorldURL ()) .createX3DFromString (vrmlSyntax);
 
 			return X3DField::create <MFNode> (cx, new X3D::MFNode (scene -> getRootNodes ()), &JS_RVAL (cx, vp));
 		}

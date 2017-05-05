@@ -151,7 +151,7 @@ X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene, const std::
 	const auto undoStep = std::make_shared <X3D::UndoStep> ("Traverse");
 
 	X3D::traverse (getCurrentContext (),
-	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), scene -> getWorldURL (), undoStep, _1),
+	               std::bind (&X3D::X3DEditor::transform, getCurrentContext () -> getWorldURL (), scene -> getWorldURL (), undoStep, _1),
 	               true,
 	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
 	               X3D::TRAVERSE_PROTO_DECLARATIONS);
@@ -159,7 +159,7 @@ X3DModelsPaletteEditor::createScene (const X3D::X3DScenePtr & scene, const std::
 	// Change url's in nodes
 
 	X3D::traverse (const_cast <X3D::MFNode &> (selection),
-	               std::bind (&X3DBrowserWidget::transform, getCurrentContext () -> getWorldURL (), scene -> getWorldURL (), undoStep, _1),
+	               std::bind (&X3D::X3DEditor::transform, getCurrentContext () -> getWorldURL (), scene -> getWorldURL (), undoStep, _1),
 	               true,
 	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
 	               X3D::TRAVERSE_PROTO_DECLARATIONS |

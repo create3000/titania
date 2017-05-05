@@ -106,17 +106,11 @@ MFStringURLEntry::on_open_dialog_clicked (Gtk::Entry* const entry)
 	fileOpenDialog -> getWindow () .set_modal (true);
 	fileOpenDialog -> getRelativePathBox () .set_visible (true);
 
-	// Set URL
-
-	basic::uri URL = getCurrentContext () -> getWorldURL () .transform (entry -> get_text () .raw ());
-
-	fileOpenDialog -> setUrl (URL);
-
 	// Run
 
 	if (fileOpenDialog -> run ())
 	{
-		URL = fileOpenDialog -> getUrl ();
+		auto URL = fileOpenDialog -> getUrl ();
 
 		if (fileOpenDialog -> getRelativePathSwitch () .get_active ())
 			URL = getCurrentContext () -> getWorldURL () .relative_path (URL);

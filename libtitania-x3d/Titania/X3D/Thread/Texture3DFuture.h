@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_THREAD_TEXTURE3DLOADER_H__
 
 #include "../Browser/X3DBrowser.h"
-#include "../InputOutput/Loader.h"
+#include "../InputOutput/FileLoader.h"
 #include "../Browser/Texturing3D/Texture3D.h"
 #include "X3DFuture.h"
 
@@ -140,7 +140,7 @@ private:
 
 	std::atomic <X3DBrowser*>  browser;
 	Callback                   callback;
-	Loader                     loader;
+	FileLoader                 loader;
 	std::future <Texture3DPtr> future;
 
 };

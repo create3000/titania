@@ -61,7 +61,7 @@
 #include "../Components/Networking/LoadSensor.h"
 #include "../Execution/Scene.h"
 #include "../Execution/World.h"
-#include "../InputOutput/Loader.h"
+#include "../InputOutput/FileLoader.h"
 #include "../Thread/SceneFuture.h"
 
 #include <Titania/Backtrace.h>
@@ -463,7 +463,7 @@ throw (Error <INVALID_X3D>,
 {
 	ContextLock lock (this);
 
-	Loader loader (this);
+	FileLoader loader (this);
 
 	return loader .createX3DFromString (string);
 }
@@ -477,7 +477,7 @@ throw (Error <INVALID_X3D>,
 {
 	ContextLock lock (this);
 
-	Loader loader (this);
+	FileLoader loader (this);
 
 	return loader .createX3DFromStream (istream);
 }
@@ -491,7 +491,7 @@ throw (Error <INVALID_X3D>,
 {
 	ContextLock lock (this);
 
-	Loader loader (this);
+	FileLoader loader (this);
 
 	return loader .createX3DFromStream (worldURL, istream);
 }
@@ -504,7 +504,7 @@ throw (Error <INVALID_URL>,
 {
 	ContextLock lock (this);
 
-	Loader loader (this);
+	FileLoader loader (this);
 
 	return loader .createX3DFromURL (url);
 }

@@ -56,6 +56,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
+#include "../Components/EnvironmentalEffects/Background.h"
 #include "../Components/Geometry3D/IndexedFaceSet.h"
 #include "../Components/Geospatial/GeoCoordinate.h"
 #include "../Components/Grouping/X3DTransformNode.h"
@@ -67,6 +68,7 @@
 #include "../Components/Rendering/Coordinate.h"
 #include "../Components/Rendering/Normal.h"
 #include "../Components/Shape/X3DShapeNode.h"
+#include "../Components/Text/X3DFontStyleNode.h"
 #include "../Components/Texturing/TextureCoordinate.h"
 #include "../Components/Texturing/MultiTextureCoordinate.h"
 #include "../Components/Texturing3D/TextureCoordinate3D.h"
@@ -86,6 +88,107 @@
 
 namespace titania {
 namespace X3D {
+
+/***
+ *
+ *
+ *
+ * Scene handling
+ *
+ *
+ *
+ */
+
+///  Changes the world URL of @a scene to @a worldURL and transforms all relative url's in the scene graph.
+void
+X3DEditor::setWorldURL (const X3DScenePtr & scene, const basic::uri & worldURL, const UndoStepPtr & undoStep)
+{
+	if (worldURL == scene -> getWorldURL ())
+		return;
+
+	using namespace std::placeholders;
+
+	traverse (scene,
+	               std::bind (&X3DEditor::transform, scene -> getWorldURL (), worldURL, undoStep, _1),
+	               true,
+	               TRAVERSE_EXTERNPROTO_DECLARATIONS |
+	               TRAVERSE_PROTO_DECLARATIONS |
+	               TRAVERSE_ROOT_NODES);
+
+	undoStep -> addUndoFunction (&X3DScene::setWorldURL, scene, scene -> getWorldURL ());
+	undoStep -> addRedoFunction (&X3DScene::setWorldURL, scene, worldURL);
+	scene -> setWorldURL (worldURL);
+}
+
+///  Transforms all relative url's in in @a node if node is a Background, X3DFontStyleNode, or X3DUrlObject.
+bool
+X3DEditor::transform (const basic::uri & oldWorldURL, const basic::uri & newWorldURL, const UndoStepPtr & undoStep, SFNode & node)
+{
+	using MFString = X3DField <MFString::internal_type>;
+	using set      = void (MFString::*) (const MFString &);
+
+	for (const auto & type : basic::make_reverse_range (node -> getType ()))
+	{
+		switch (type)
+		{
+			case X3DConstants::Background :
+				{
+					X3DPtr <Background> background (node);
+
+					undoStep -> addObjects (background);
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> frontUrl ()),  background -> frontUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> backUrl ()),   background -> backUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> leftUrl ()),   background -> leftUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> rightUrl ()),  background -> rightUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> topUrl ()),    background -> topUrl ());
+					undoStep -> addUndoFunction ((set) & MFString::set, std::ref (background -> bottomUrl ()), background -> bottomUrl ());
+
+					X3DUrlObject::transform (background -> frontUrl (),  oldWorldURL, newWorldURL);
+					X3DUrlObject::transform (background -> backUrl (),   oldWorldURL, newWorldURL);
+					X3DUrlObject::transform (background -> leftUrl (),   oldWorldURL, newWorldURL);
+					X3DUrlObject::transform (background -> rightUrl (),  oldWorldURL, newWorldURL);
+					X3DUrlObject::transform (background -> topUrl (),    oldWorldURL, newWorldURL);
+					X3DUrlObject::transform (background -> bottomUrl (), oldWorldURL, newWorldURL);
+
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> frontUrl ()),  background -> frontUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> backUrl ()),   background -> backUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> leftUrl ()),   background -> leftUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> rightUrl ()),  background -> rightUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> topUrl ()),    background -> topUrl ());
+					undoStep -> addRedoFunction ((set) & MFString::set, std::ref (background -> bottomUrl ()), background -> bottomUrl ());
+					break;
+				}
+			case X3DConstants::X3DFontStyleNode:
+			{
+				X3DPtr <X3DFontStyleNode> fontStyleNode (node);
+
+				undoStep -> addObjects (fontStyleNode);
+				undoStep -> addUndoFunction ((set) & MFString::set, std::ref (fontStyleNode -> family ()), fontStyleNode -> family ());
+
+				X3DFontStyleNode::transform (fontStyleNode -> family (), oldWorldURL, newWorldURL);
+
+				undoStep -> addRedoFunction ((set) & MFString::set, std::ref (fontStyleNode -> family ()), fontStyleNode -> family ());
+				break;
+			}
+			case X3DConstants::X3DUrlObject:
+			{
+				X3DPtr <X3DUrlObject> urlObject (node);
+
+				undoStep -> addObjects (urlObject);
+				undoStep -> addUndoFunction ((set) & MFString::set, std::ref (urlObject -> url ()), urlObject -> url ());
+
+				X3DUrlObject::transform (urlObject -> url (), oldWorldURL, newWorldURL);
+
+				undoStep -> addRedoFunction ((set) & MFString::set, std::ref (urlObject -> url ()), urlObject -> url ());
+				break;
+			}
+			default:
+				break;
+		}
+	}
+
+	return true;
+}
 
 /***
  *

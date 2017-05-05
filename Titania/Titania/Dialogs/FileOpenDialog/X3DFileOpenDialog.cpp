@@ -67,13 +67,6 @@ X3DFileOpenDialog::X3DFileOpenDialog () :
 	getRelativePathSwitch () .set_active (getConfig () -> getBoolean ("relativePath"));
 }
 
-void
-X3DFileOpenDialog::setUrl (const basic::uri & URL)
-{
-	if (URL .is_local ())
-		getWindow () .set_uri (URL .str ());
-}
-
 basic::uri
 X3DFileOpenDialog::getUrl () const
 {

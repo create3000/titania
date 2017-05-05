@@ -60,7 +60,7 @@
 #include "../../Components/Shape/Shape.h"
 #include "../../Components/Texturing/ImageTexture.h"
 #include "../../Components/Texturing/TextureCoordinate.h"
-#include "../../InputOutput/Loader.h"
+#include "../../InputOutput/FileLoader.h"
 #include "../Filter.h"
 
 // Grammar
@@ -822,7 +822,7 @@ Parser::mtllib ()
 			{
 				try
 				{
-					auto material_istream = Loader (scene) .loadStream (uri .transform (mtllib));
+					auto material_istream = FileLoader (scene) .loadStream (uri .transform (mtllib));
 
 					MaterialParser materialParser (scene, material_istream);
 

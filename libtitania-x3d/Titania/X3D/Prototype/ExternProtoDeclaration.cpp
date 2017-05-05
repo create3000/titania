@@ -54,7 +54,7 @@
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
 #include "../Execution/X3DScene.h"
-#include "../InputOutput/Loader.h"
+#include "../InputOutput/FileLoader.h"
 #include "../Thread/SceneFuture.h"
 
 #include <iomanip>
@@ -278,7 +278,7 @@ ExternProtoDeclaration::requestImmediateLoad ()
 
 	setLoadState (IN_PROGRESS_STATE);
 
-	Loader loader (getExecutionContext ());
+	FileLoader loader (getExecutionContext ());
 
 	try
 	{
