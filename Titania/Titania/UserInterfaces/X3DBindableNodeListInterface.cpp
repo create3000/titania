@@ -81,12 +81,12 @@ X3DBindableNodeListInterface::create (const std::string & filename)
 	m_builder -> get_widget ("TreeView", m_TreeView);
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DBindableNodeListInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DBindableNodeListInterface::on_unmap));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DBindableNodeListInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DBindableNodeListInterface::on_unmap));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DBindableNodeListInterface::on_button_release_event));
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DBindableNodeListInterface::on_row_activated));
+	m_TreeView -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DBindableNodeListInterface::on_button_release_event));
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DBindableNodeListInterface::on_row_activated));
 
 	// Call construct handler of base class.
 	construct ();

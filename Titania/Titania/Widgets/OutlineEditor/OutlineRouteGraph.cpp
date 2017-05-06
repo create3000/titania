@@ -281,7 +281,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 				destinationData -> get_inputs_above ()  .emplace (sourcePath, destinationPath);
 				sourceData      -> get_outputs_below () .emplace (sourcePath, destinationPath);
 
-				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::add_connection_below), sourcePath, destinationPath));
+				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::add_connection_below), sourcePath, destinationPath));
 				treeView -> get_model () -> row_changed (sourcePath, sourceIter);
 			}
 			else if (sourcePath > destinationPath)
@@ -291,7 +291,7 @@ OutlineRouteGraph::add_input_route (const Gtk::TreeModel::Path & destinationPath
 				destinationData -> get_inputs_below ()  .emplace (sourcePath, destinationPath);
 				sourceData      -> get_outputs_above () .emplace (sourcePath, destinationPath);
 
-				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::add_connection_above), sourcePath, destinationPath));
+				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::add_connection_above), sourcePath, destinationPath));
 				treeView -> get_model () -> row_changed (sourcePath, sourceIter);
 			}
 			else
@@ -359,7 +359,7 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 				sourceData      -> get_outputs_above () .emplace (sourcePath, destinationPath);
 				destinationData -> get_inputs_below ()  .emplace (sourcePath, destinationPath);
 
-				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::add_connection_above), sourcePath, destinationPath));
+				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::add_connection_above), sourcePath, destinationPath));
 				treeView -> get_model () -> row_changed (destinationPath, destinationIter);
 			}
 			else if (destinationPath > sourcePath)
@@ -369,7 +369,7 @@ OutlineRouteGraph::add_output_route (const Gtk::TreeModel::Path & sourcePath, Ou
 				sourceData      -> get_outputs_below () .emplace (sourcePath, destinationPath);
 				destinationData -> get_inputs_above ()  .emplace (sourcePath, destinationPath);
 
-				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::add_connection_below), sourcePath, destinationPath));
+				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::add_connection_below), sourcePath, destinationPath));
 				treeView -> get_model () -> row_changed (destinationPath, destinationIter);
 			}
 			else
@@ -563,7 +563,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 				destinationData -> get_inputs_above  () .erase (std::make_pair (sourcePath, destinationPath));
 				sourceData      -> get_outputs_below () .erase (std::make_pair (sourcePath, destinationPath));
 
-				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::remove_connection_below), sourcePath, destinationPath));
+				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::remove_connection_below), sourcePath, destinationPath));
 			}
 			else if (sourcePath > destinationPath)
 			{
@@ -572,7 +572,7 @@ OutlineRouteGraph::remove_input_route (const Gtk::TreeModel::Path & destinationP
 				destinationData -> get_inputs_below  () .erase (std::make_pair (sourcePath, destinationPath));
 				sourceData      -> get_outputs_above () .erase (std::make_pair (sourcePath, destinationPath));
 
-				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::remove_connection_above), sourcePath, destinationPath));
+				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::remove_connection_above), sourcePath, destinationPath));
 			}
 			else
 			{
@@ -641,7 +641,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 				sourceData      -> get_outputs_above () .erase (std::make_pair (sourcePath, destinationPath));
 				destinationData -> get_inputs_below ()  .erase (std::make_pair (sourcePath, destinationPath));
 
-				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::remove_connection_above), sourcePath, destinationPath));
+				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::remove_connection_above), sourcePath, destinationPath));
 			}
 			else if (destinationPath > sourcePath)
 			{
@@ -650,7 +650,7 @@ OutlineRouteGraph::remove_output_route (const Gtk::TreeModel::Path & sourcePath,
 				sourceData      -> get_outputs_below () .erase (std::make_pair (sourcePath, destinationPath));
 				destinationData -> get_inputs_above ()  .erase (std::make_pair (sourcePath, destinationPath));
 
-				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::remove_connection_below), sourcePath, destinationPath));
+				treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::remove_connection_below), sourcePath, destinationPath));
 			}
 			else
 			{
@@ -720,10 +720,10 @@ OutlineRouteGraph::disconnect_route (const Gtk::TreeModel::Path & sourcePath, co
 	//__LOG__ << std::endl;
 
 	if (destinationPath < sourcePath)
-		treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::remove_route_above), sourcePath, destinationPath));
+		treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::remove_route_above), sourcePath, destinationPath));
 
 	else
-		treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::remove_route_below), sourcePath, destinationPath));
+		treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::remove_route_below), sourcePath, destinationPath));
 	
 		
 	if (sourcePath == destinationPath)
@@ -808,9 +808,9 @@ OutlineRouteGraph::update (const OutlineRoutes & routes)
 		treeView -> get_model () -> row_changed (route .second, destinationIter);
 
 		if (route .first > route .second)
-			treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::update_connection_above), route .first, route .second));
+			treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::update_connection_above), route .first, route .second));
 		else
-			treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (*this, &OutlineRouteGraph::update_connection_below), route .first, route .second));
+			treeView -> get_model () -> foreach_path (sigc::bind (sigc::mem_fun (this, &OutlineRouteGraph::update_connection_below), route .first, route .second));
 	}
 }
 

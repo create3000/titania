@@ -101,7 +101,7 @@ namespace X3D {
 //		uri       = URL .str ();
 //		urlError .clear ();
 //
-//		thread = Glib::Thread::create (sigc::mem_fun (*this, &Thread::run), true);
+//		thread = Glib::Thread::create (sigc::mem_fun (this, &Thread::run), true);
 //	}
 //
 //	~Thread ()
@@ -171,7 +171,7 @@ X3DUrlObject::initialize ()
 {
 	userAgent = getBrowser () -> getName () + "/" + getBrowser () -> getVersion () + " (X3D Browser; +http://titania.create3000.de)";
 
-	//	thread -> getLoadTime () .connect (sigc::mem_fun (*this, &X3DUrlObject::set_loadTime));
+	//	thread -> getLoadTime () .connect (sigc::mem_fun (this, &X3DUrlObject::set_loadTime));
 }
 
 //  Element Access

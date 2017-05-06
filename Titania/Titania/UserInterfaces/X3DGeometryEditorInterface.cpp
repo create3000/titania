@@ -95,58 +95,58 @@ X3DGeometryEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SelectLineLoopMenuItem", m_SelectLineLoopMenuItem);
 
 	// Connect object Gtk::CheckMenuItem with id 'CutPolygonsEnableSnappingMenuItem'.
-	m_CutPolygonsEnableSnappingMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_cut_polygons_enable_snapping_toggled));
-	m_AxisAlignedBoundingBoxMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_axis_aligned_bounding_box_toggled));
+	m_CutPolygonsEnableSnappingMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_cut_polygons_enable_snapping_toggled));
+	m_AxisAlignedBoundingBoxMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_axis_aligned_bounding_box_toggled));
 
 	// Connect object Gtk::Revealer with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_unmap));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_unmap));
 
 	// Connect object Gtk::Button with id 'TitleButton'.
-	m_TitleButton -> signal_button_press_event () .connect (sigc::bind (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_title_button_press_event), sigc::ref (*m_TitleButton)), false);
-	m_TitleButton -> signal_button_release_event () .connect (sigc::bind (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_title_button_release_event), sigc::ref (*m_TitleButton)), false);
-	m_TitleButton -> signal_motion_notify_event () .connect (sigc::bind (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_title_button_motion_notify_event), sigc::ref (*m_TitleButton)), false);
+	m_TitleButton -> signal_button_press_event () .connect (sigc::bind (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_title_button_press_event), sigc::ref (*m_TitleButton)), false);
+	m_TitleButton -> signal_button_release_event () .connect (sigc::bind (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_title_button_release_event), sigc::ref (*m_TitleButton)), false);
+	m_TitleButton -> signal_motion_notify_event () .connect (sigc::bind (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_title_button_motion_notify_event), sigc::ref (*m_TitleButton)), false);
 
 	// Connect object Gtk::ToggleButton with id 'EditToggleButton'.
-	m_EditToggleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edit_toggled));
+	m_EditToggleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_edit_toggled));
 
 	// Connect object Gtk::Button with id 'HammerButton'.
-	m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_hammer_clicked));
-	m_FormNewFaceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_form_new_face_clicked));
-	m_ExtrudeSelectedEdgesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_extrude_selected_edges_clicked));
-	m_ExtrudeSelectedFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_extrude_selected_faces_clicked));
-	m_ChipOfFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_chip_of_face_clicked));
-	m_DeleteFacesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_delete_selected_faces_clicked));
-	m_FlipVertexOrderingButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_flip_vertex_ordering_clicked));
+	m_HammerButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_hammer_clicked));
+	m_FormNewFaceButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_form_new_face_clicked));
+	m_ExtrudeSelectedEdgesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_extrude_selected_edges_clicked));
+	m_ExtrudeSelectedFacesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_extrude_selected_faces_clicked));
+	m_ChipOfFacesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_chip_of_face_clicked));
+	m_DeleteFacesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_delete_selected_faces_clicked));
+	m_FlipVertexOrderingButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_flip_vertex_ordering_clicked));
 
 	// Connect object Gtk::RadioButton with id 'PaintSelectionButton'.
-	m_PaintSelectionButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_selection_type_button_press_event));
-	m_PaintSelectionButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_paint_selection_toggled));
+	m_PaintSelectionButton -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_selection_type_button_press_event));
+	m_PaintSelectionButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_paint_selection_toggled));
 
 	// Connect object Gtk::Button with id 'SplitPointsButton'.
-	m_SplitPointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_split_points_clicked));
-	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_merge_points_clicked));
+	m_SplitPointsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_split_points_clicked));
+	m_MergePointsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_merge_points_clicked));
 
 	// Connect object Gtk::ToggleButton with id 'TransformToolButton'.
-	m_TransformToolButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_transform_tool_button_press_event));
-	m_TransformToolButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_transform_tool_toggled));
+	m_TransformToolButton -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_transform_tool_button_press_event));
+	m_TransformToolButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_transform_tool_toggled));
 
 	// Connect object Gtk::RadioButton with id 'CutPolygonsButton'.
-	m_CutPolygonsButton -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_cut_polygons_button_press_event));
-	m_CutPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_cut_polygons_toggled));
+	m_CutPolygonsButton -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_cut_polygons_button_press_event));
+	m_CutPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_cut_polygons_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrushMenuItem'.
-	m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_brush_activated));
-	m_RectangleMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_rectangle_activated));
-	m_LassoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_lasso_activated));
+	m_BrushMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_brush_activated));
+	m_RectangleMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_rectangle_activated));
+	m_LassoMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_lasso_activated));
 
 	// Connect object Gtk::RadioMenuItem with id 'PointsMenuItem'.
-	m_PointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_points_toggled));
-	m_EdgesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_edges_toggled));
-	m_FacesMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_faces_toggled));
+	m_PointsMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_points_toggled));
+	m_EdgesMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_edges_toggled));
+	m_FacesMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_faces_toggled));
 
 	// Connect object Gtk::CheckMenuItem with id 'SelectLineLoopMenuItem'.
-	m_SelectLineLoopMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryEditorInterface::on_select_line_loop_toggled));
+	m_SelectLineLoopMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_select_line_loop_toggled));
 
 	// Call construct handler of base class.
 	construct ();

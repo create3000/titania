@@ -152,7 +152,7 @@ History::connect ()
 	//	);
 
 	fileMonitor = Gio::File::create_for_path (filename) -> monitor_file ();
-	fileMonitor -> signal_changed () .connect (sigc::mem_fun (*this, &History::on_history_changed));
+	fileMonitor -> signal_changed () .connect (sigc::mem_fun (this, &History::on_history_changed));
 }
 
 void

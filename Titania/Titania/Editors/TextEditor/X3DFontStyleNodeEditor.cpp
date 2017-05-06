@@ -99,8 +99,8 @@ X3DFontStyleNodeEditor::X3DFontStyleNodeEditor () :
 
 	fontStyleNodeBuffer .addInterest (&X3DFontStyleNodeEditor::set_node, this);
 	
-	getFontStyleSizeSpinButton ()      .property_sensitive () .signal_changed () .connect (sigc::mem_fun (*this, &X3DFontStyleNodeEditor::on_size_sensitive_changed));
-	getFontStylePointSizeSpinButton () .property_sensitive () .signal_changed () .connect (sigc::mem_fun (*this, &X3DFontStyleNodeEditor::on_point_size_sensitive_changed));
+	getFontStyleSizeSpinButton ()      .property_sensitive () .signal_changed () .connect (sigc::mem_fun (this, &X3DFontStyleNodeEditor::on_size_sensitive_changed));
+	getFontStylePointSizeSpinButton () .property_sensitive () .signal_changed () .connect (sigc::mem_fun (this, &X3DFontStyleNodeEditor::on_point_size_sensitive_changed));
 }
 
 void

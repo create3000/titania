@@ -131,22 +131,6 @@ public:
 	{ return *m_FragmentShaderImage4; }
 
 	Gtk::Menu &
-	getNewScriptMenu () const
-	{ return *m_NewScriptMenu; }
-
-	Gtk::MenuItem &
-	getNewScriptMenuItem () const
-	{ return *m_NewScriptMenuItem; }
-
-	Gtk::MenuItem &
-	getShaderPartMenuItem () const
-	{ return *m_ShaderPartMenuItem; }
-
-	Gtk::MenuItem &
-	getShaderProgramMenuItem () const
-	{ return *m_ShaderProgramMenuItem; }
-
-	Gtk::Menu &
 	getSearchMenu () const
 	{ return *m_SearchMenu; }
 
@@ -258,7 +242,7 @@ public:
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
 
-	Gtk::MenuToolButton &
+	Gtk::ToolButton &
 	getNewButton () const
 	{ return *m_NewButton; }
 
@@ -293,6 +277,22 @@ public:
 	Gtk::ToolButton &
 	getPreferencesButton () const
 	{ return *m_PreferencesButton; }
+
+	Gtk::Popover &
+	getNewScriptPopover () const
+	{ return *m_NewScriptPopover; }
+
+	Gtk::Button &
+	getNewScriptButton () const
+	{ return *m_NewScriptButton; }
+
+	Gtk::Button &
+	getNewShaderPartButton () const
+	{ return *m_NewShaderPartButton; }
+
+	Gtk::Button &
+	getNewShaderProgramButton () const
+	{ return *m_NewShaderProgramButton; }
 
 	Gtk::Dialog &
 	getPreferencesDialog () const
@@ -414,18 +414,6 @@ public:
 
 	virtual
 	void
-	on_new_script_activated () = 0;
-
-	virtual
-	void
-	on_new_shader_part_activated () = 0;
-
-	virtual
-	void
-	on_new_shader_program_activated () = 0;
-
-	virtual
-	void
 	on_search_case_sensitve_toggled () = 0;
 
 	virtual
@@ -487,6 +475,18 @@ public:
 	virtual
 	void
 	on_preferences_clicked () = 0;
+
+	virtual
+	void
+	on_new_script_clicked () = 0;
+
+	virtual
+	void
+	on_new_shader_part_clicked () = 0;
+
+	virtual
+	void
+	on_new_shader_program_clicked () = 0;
 
 	virtual
 	bool
@@ -621,10 +621,6 @@ private:
 	Gtk::Image* m_FragmentShaderImage2;
 	Gtk::Image* m_FragmentShaderImage3;
 	Gtk::Image* m_FragmentShaderImage4;
-	Gtk::Menu* m_NewScriptMenu;
-	Gtk::MenuItem* m_NewScriptMenuItem;
-	Gtk::MenuItem* m_ShaderPartMenuItem;
-	Gtk::MenuItem* m_ShaderProgramMenuItem;
 	Gtk::Menu* m_SearchMenu;
 	Gtk::CheckMenuItem* m_CaseSensitiveMenuItem;
 	Gtk::CheckMenuItem* m_AtWordBoundariesMenuItem;
@@ -653,7 +649,7 @@ private:
 	Gtk::Box* m_ScriptEditorBox;
 	Gtk::Overlay* m_SearchOverlay;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
-	Gtk::MenuToolButton* m_NewButton;
+	Gtk::ToolButton* m_NewButton;
 	Gtk::Toolbar* m_Toolbar;
 	Gtk::ToolButton* m_ApplyButton;
 	Gtk::ToolButton* m_UndoButton;
@@ -662,6 +658,10 @@ private:
 	Gtk::ToggleToolButton* m_MustEvaluateToggleButton;
 	Gtk::MenuToolButton* m_ShaderTypeMenuButton;
 	Gtk::ToolButton* m_PreferencesButton;
+	Gtk::Popover* m_NewScriptPopover;
+	Gtk::Button* m_NewScriptButton;
+	Gtk::Button* m_NewShaderPartButton;
+	Gtk::Button* m_NewShaderProgramButton;
 	Gtk::Dialog* m_PreferencesDialog;
 	Gtk::Expander* m_WordWrapExpander;
 	Gtk::CheckButton* m_ShowLineNumbersCheckButton;

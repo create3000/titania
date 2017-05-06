@@ -151,7 +151,7 @@ Browser::initialize ()
 		getCursor ()        .addInterest (&Browser::set_cursor, this);
 		getViewerType ()    .addInterest (&Browser::set_viewer, this);
 		getPrivateViewer () .addInterest (&Browser::set_viewer, this);
-		changed ()          .addInterest (&Gtk::Widget::queue_draw, this);
+		changed ()          .addInterest (std::bind (&Glib::SignalIdle::connect_once, Glib::signal_idle (), sigc::mem_fun (this, &Gtk::Widget::queue_draw), Glib::PRIORITY_DEFAULT_IDLE));
 	
 		add_events (Gdk::BUTTON_PRESS_MASK |
 		            Gdk::POINTER_MOTION_MASK |

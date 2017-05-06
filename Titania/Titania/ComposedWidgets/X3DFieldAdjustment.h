@@ -219,7 +219,7 @@ X3DFieldAdjustment <Type>::X3DFieldAdjustment (X3DBaseInterface* const editor,
 	buffer               .addInterest (&X3DFieldAdjustment::set_buffer, this);
 	getCurrentContext () .addInterest (&X3DFieldAdjustment::set_field, this);
 	   
-	adjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DFieldAdjustment::on_value_changed));
+	adjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DFieldAdjustment::on_value_changed));
 
 	getCurrentScene () .addInterest (&X3DFieldAdjustment <Type>::set_scene, this);
 

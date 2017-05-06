@@ -80,24 +80,24 @@ X3DNodeIndexInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FooterBox", m_FooterBox);
 
 	// Connect object Gtk::EntryCompletion with id 'SearchEntryCompletion'.
-	m_SearchEntryCompletion -> signal_match_selected () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_search_entry_match_selected), false);
+	m_SearchEntryCompletion -> signal_match_selected () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_search_entry_match_selected), false);
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_unmap));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_unmap));
 
 	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
-	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_search_entry_key_press_event), false);
+	m_SearchEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_search_entry_key_press_event), false);
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_row_activated));
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_row_activated));
 
 	// Connect object Gtk::TreeViewColumn with id 'ImageColumn'.
-	m_ImageColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_column_clicked));
-	m_TypeNameColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_column_clicked));
-	m_NameColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_column_clicked));
-	m_ImportColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_column_clicked));
-	m_ExportColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DNodeIndexInterface::on_column_clicked));
+	m_ImageColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_column_clicked));
+	m_TypeNameColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_column_clicked));
+	m_NameColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_column_clicked));
+	m_ImportColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_column_clicked));
+	m_ExportColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_column_clicked));
 
 	// Call construct handler of base class.
 	construct ();

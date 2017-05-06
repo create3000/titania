@@ -102,7 +102,7 @@ OutlineTreeViewEditor::watch_motion (const bool value)
 	motion_notify_connection .disconnect ();
 
 	if (value)
-		motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (*this, &OutlineTreeViewEditor::set_motion_notify_event), false);
+		motion_notify_connection = signal_motion_notify_event () .connect (sigc::mem_fun (this, &OutlineTreeViewEditor::set_motion_notify_event), false);
 }
 
 bool

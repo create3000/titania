@@ -178,9 +178,9 @@
 ////
 ////	if (makeCurrent ())
 ////	{
-////		signal_configure_event () .connect (sigc::mem_fun (*this, &SurfaceN::set_configure_event));
+////		signal_configure_event () .connect (sigc::mem_fun (this, &SurfaceN::set_configure_event));
 ////
-////		construct_connection = signal_draw () .connect (sigc::mem_fun (*this, &SurfaceN::set_construct));
+////		construct_connection = signal_draw () .connect (sigc::mem_fun (this, &SurfaceN::set_construct));
 ////
 ////		glewInit ();
 ////	}

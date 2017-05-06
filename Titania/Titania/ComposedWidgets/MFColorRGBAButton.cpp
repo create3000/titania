@@ -103,24 +103,24 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
 
 	// Button
 
-	colorButton .signal_button_press_event () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_button_press_event));
-	colorButton .signal_clicked ()            .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_clicked));
+	colorButton .signal_button_press_event () .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_button_press_event));
+	colorButton .signal_clicked ()            .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_clicked));
 	colorButton .add (drawingArea);
 
 	// Drawing Area
 
-	drawingArea .signal_draw () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_draw));
+	drawingArea .signal_draw () .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_draw));
 	drawingArea .show ();
 
 	// Value Adjustment
 
-	valueAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_value_changed));
+	valueAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_value_changed));
 
 	// Dialog
 
 	dialog .set_title (refineName (name));
 	dialog .set_transient_for (editor -> getBrowserWindow () -> getWindow ());
-	dialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_color_changed));
+	dialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_color_changed));
 	dialog .get_color_selection () -> set_has_opacity_control (true);
 	dialog .get_color_selection () -> set_has_palette (true);
 
@@ -129,18 +129,18 @@ MFColorRGBAButton::MFColorRGBAButton (X3DBaseInterface* const editor,
 
 	// Colors Add/Remove Buttons
 	
-	addColorButton    .signal_clicked () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_add_color_clicked));
-	removeColorButton .signal_clicked () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_remove_color_clicked));
+	addColorButton    .signal_clicked () .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_add_color_clicked));
+	removeColorButton .signal_clicked () .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_remove_color_clicked));
 
 	// Colors Drawing Area
 
 	colorsDrawingArea .add_events (Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK | Gdk::KEY_PRESS_MASK);
 	colorsDrawingArea .set_can_focus (true);
 
-	colorsDrawingArea .signal_configure_event ()      .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_colors_configure_event));
-	colorsDrawingArea .signal_key_press_event ()      .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_colors_key_press_event));
-	colorsDrawingArea .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_colors_button_release_event));
-	colorsDrawingArea .signal_draw ()                 .connect (sigc::mem_fun (*this, &MFColorRGBAButton::on_colors_draw));
+	colorsDrawingArea .signal_configure_event ()      .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_colors_configure_event));
+	colorsDrawingArea .signal_key_press_event ()      .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_colors_key_press_event));
+	colorsDrawingArea .signal_button_release_event () .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_colors_button_release_event));
+	colorsDrawingArea .signal_draw ()                 .connect (sigc::mem_fun (this, &MFColorRGBAButton::on_colors_draw));
 	colorsDrawingArea .show ();
 
 	colorsScrolledWindow .add (colorsDrawingArea);

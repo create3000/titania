@@ -2683,7 +2683,7 @@ AnimationEditor::pick (const X3D::Vector2d & point)
 {
 	frames .clear ();
 
-	getTreeModelFilter () -> foreach (sigc::mem_fun (*this, &AnimationEditor::buildFrames));
+	getTreeModelFilter () -> foreach (sigc::mem_fun (this, &AnimationEditor::buildFrames));
 
 	// Find all keyframes that intersect with the pointer.
 

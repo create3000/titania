@@ -396,7 +396,7 @@ OutlineEditor::addSceneMenuItem (const X3D::X3DExecutionContextPtr & currentScen
 		const auto label    = getSceneMenuLabelText (executionContext, false);
 		const auto menuItem = Gtk::manage (new Gtk::RadioMenuItem (sceneGroup, label));
 		menuItem -> set_active (true);
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_scene_activate), menuItem, scenes .size ()));
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &OutlineEditor::on_scene_activate), menuItem, scenes .size ()));
 		menuItem -> show ();
 
 		sceneIndex .emplace (executionContext, i);
@@ -1595,7 +1595,7 @@ OutlineEditor::selectField (const double x, const double y)
 					{
 						const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
 	
-						menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_add_reference_activate),
+						menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &OutlineEditor::on_add_reference_activate),
 						                                                     node,
 						                                                     X3D::FieldPtr (field),
 						                                                     X3D::FieldPtr (reference)));
@@ -1621,7 +1621,7 @@ OutlineEditor::selectField (const double x, const double y)
 				{
 					const auto menuItem = Gtk::manage (new Gtk::MenuItem (reference -> getName ()));
 	
-					menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::on_remove_reference_activate),
+					menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &OutlineEditor::on_remove_reference_activate),
 					                                                     node,
 					                                                     X3D::FieldPtr (field),
 					                                                     X3D::FieldPtr (reference)));
@@ -1754,7 +1754,7 @@ OutlineEditor::restoreExpanded ()
 		for (const auto & path : paths)
 			treeView -> expand_row (Gtk::TreePath (path), false);
 
-		//Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &OutlineEditor::setAdjustments), std::get <1> (item), std::get <2> (item)));
+		//Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &OutlineEditor::setAdjustments), std::get <1> (item), std::get <2> (item)));
 	}
 	catch (const std::exception & error)
 	{

@@ -145,19 +145,19 @@ X3DSoundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("SoundSourceStopTimeBox", m_SoundSourceStopTimeBox);
 	m_builder -> get_widget ("SoundSourceStopTimeSpinButton", m_SoundSourceStopTimeSpinButton);
 	m_builder -> get_widget ("SoundSourceStopTimeButton", m_SoundSourceStopTimeButton);
-	m_NewSoundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_new_sound_clicked));
-	m_RemoveSoundButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_remove_sound_clicked));
-	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_index_clicked));
+	m_NewSoundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_new_sound_clicked));
+	m_RemoveSoundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_remove_sound_clicked));
+	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_index_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'SoundSourceComboBoxText'.
-	m_SoundSourceComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_changed));
+	m_SoundSourceComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_changed));
 
 	// Connect object Gtk::Button with id 'SoundSourceUnlinkButton'.
-	m_SoundSourceUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_unlink_clicked));
-	m_SoundSourceStartTimeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_start_time_clicked));
-	m_SoundSourceResumeTimeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_resume_time_clicked));
-	m_SoundSourcePauseTimeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_pause_time_clicked));
-	m_SoundSourceStopTimeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSoundEditorInterface::on_sound_source_stop_time_clicked));
+	m_SoundSourceUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_unlink_clicked));
+	m_SoundSourceStartTimeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_start_time_clicked));
+	m_SoundSourceResumeTimeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_resume_time_clicked));
+	m_SoundSourcePauseTimeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_pause_time_clicked));
+	m_SoundSourceStopTimeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_stop_time_clicked));
 
 	// Call construct handler of base class.
 	construct ();

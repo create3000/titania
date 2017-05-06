@@ -85,9 +85,9 @@ KeyDevice::initialize ()
 {
 	X3DBrowserObject::initialize ();
 
-	getBrowser () -> signal_focus_out_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_focus_out_event));
-	getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_action_key_press_event));
-	getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (*this, &KeyDevice::on_action_key_release_event));
+	getBrowser () -> signal_focus_out_event   () .connect (sigc::mem_fun (this, &KeyDevice::on_focus_out_event));
+	getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (this, &KeyDevice::on_action_key_press_event));
+	getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (this, &KeyDevice::on_action_key_release_event));
 
 	getBrowser () -> keyDeviceSensorNodeEvent () .addInterest (&KeyDevice::set_keyDeviceSensorNodeEvent, this);
 
@@ -106,8 +106,8 @@ KeyDevice::set_keyDeviceSensorNodeEvent ()
 
 	if (getBrowser () -> getKeyDeviceSensorNode ())
 	{
-		key_press_connection   = getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_press_event));
-		key_release_connection = getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (*this, &KeyDevice::on_key_release_event));
+		key_press_connection   = getBrowser () -> signal_key_press_event   () .connect (sigc::mem_fun (this, &KeyDevice::on_key_press_event));
+		key_release_connection = getBrowser () -> signal_key_release_event () .connect (sigc::mem_fun (this, &KeyDevice::on_key_release_event));
 	}
 }
 

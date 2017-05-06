@@ -135,7 +135,7 @@ LoadSensor::set_timeOut ()
 
 		if (timeOut () > 0)
 		{
-			timeOut_connection = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &LoadSensor::abort),
+			timeOut_connection = Glib::signal_timeout () .connect (sigc::mem_fun (this, &LoadSensor::abort),
 			                                                       timeOut () * 1000,
 			                                                       GDK_PRIORITY_REDRAW); // GDK_PRIORITY_REDRAW is very important
 		}

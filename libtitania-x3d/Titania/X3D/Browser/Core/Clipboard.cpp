@@ -88,7 +88,7 @@ Clipboard::initialize ()
 {
 	X3DBaseNode::initialize ();
 
-	Gtk::Clipboard::get () -> signal_owner_change () .connect (sigc::mem_fun (*this, &Clipboard::on_owner_change));
+	Gtk::Clipboard::get () -> signal_owner_change () .connect (sigc::mem_fun (this, &Clipboard::on_owner_change));
 
 	set_string () .addInterest (&Clipboard::set_string_, this);
 
@@ -98,14 +98,14 @@ Clipboard::initialize ()
 void
 Clipboard::update ()
 {
-	Gtk::Clipboard::get () -> request_targets (sigc::mem_fun (*this, &Clipboard::on_received_targets));
+	Gtk::Clipboard::get () -> request_targets (sigc::mem_fun (this, &Clipboard::on_received_targets));
 }
 
 void
 Clipboard::set_string_ ()
 {
 	Gtk::Clipboard::get () -> set ({ Gtk::TargetEntry (target ()) },
-	                               sigc::mem_fun (*this, &Clipboard::on_get), sigc::mem_fun (*this, &Clipboard::on_clear));
+	                               sigc::mem_fun (this, &Clipboard::on_get), sigc::mem_fun (this, &Clipboard::on_clear));
 
 	string_changed () = set_string ();
 }
@@ -135,7 +135,7 @@ Clipboard::on_received_targets (const std::vector <Glib::ustring> & receivedTarg
 	if (iter == receivedTargets .end ())
 		return;
 
-	Gtk::Clipboard::get () -> request_contents (target (), sigc::mem_fun (*this, &Clipboard::on_received));
+	Gtk::Clipboard::get () -> request_contents (target (), sigc::mem_fun (this, &Clipboard::on_received));
 }
 
 void

@@ -1102,6 +1102,7 @@
               "-children": [
                 { "Transform":
                   {
+                    "@DEF": "RootNode",
                     "-children": [
                       { "Transform":
                         {

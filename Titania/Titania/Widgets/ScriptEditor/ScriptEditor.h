@@ -161,15 +161,15 @@ private:
 
 	virtual
 	void
-	on_new_script_activated () final override;
+	on_new_script_clicked () final override;
 
 	virtual
 	void
-	on_new_shader_part_activated () final override;
+	on_new_shader_part_clicked () final override;
 
 	virtual
 	void
-	on_new_shader_program_activated () final override;
+	on_new_shader_program_clicked () final override;
 
 	virtual
 	void

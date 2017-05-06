@@ -89,10 +89,10 @@ X3DScriptEditorSearch::initialize ()
 	searchContext  = gtk_source_search_context_new (getTextBuffer () -> gobj (), searchSettings);
 	searchMark     = getTextBuffer () -> get_insert ();
 
-	getTextView () .signal_key_press_event ()    .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_key_press_event),   false);
-	getTextView () .signal_key_release_event ()  .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_key_release_event), false);
-	getTextView () .signal_size_allocate ()      .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_size_allocate));
-	getTextView () .signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_button_press_event), false);
+	getTextView () .signal_key_press_event ()    .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_key_press_event),   false);
+	getTextView () .signal_key_release_event ()  .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_key_release_event), false);
+	getTextView () .signal_size_allocate ()      .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_size_allocate));
+	getTextView () .signal_button_press_event () .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_button_press_event), false);
 
 	// Search & Replace
 
@@ -310,7 +310,7 @@ X3DScriptEditorSearch::on_enable_search ()
 		gtk_source_search_settings_set_search_text (searchSettings, selection .c_str ());
 	}
 
-	searchConnection = getSearchEntry () .signal_changed () .connect (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_search_entry_changed));
+	searchConnection = getSearchEntry () .signal_changed () .connect (sigc::mem_fun (this, &X3DScriptEditorSearch::on_search_entry_changed));
 
 	getGoToLineBox ()         .set_visible (false);
 	getSearchAndReplaceBox () .set_visible (true);
@@ -392,7 +392,7 @@ X3DScriptEditorSearch::on_build_search_menu ()
 		}
 
 		const auto menuItem = Gtk::manage (new Gtk::MenuItem (label));
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &X3DScriptEditorSearch::on_search_activate), recentSearches [i], recentReplaces [i]));
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &X3DScriptEditorSearch::on_search_activate), recentSearches [i], recentReplaces [i]));
 		menuItem -> show ();
 
 		getSearchMenu () .append (*menuItem);

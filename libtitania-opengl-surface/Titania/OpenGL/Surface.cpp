@@ -83,8 +83,8 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	add_events (Gdk::STRUCTURE_MASK);
 
 	// Connect to map_event.
-	mapConnection = signal_map () .connect (sigc::mem_fun (*this, &Surface::set_map));
-	signal_unrealize () .connect (sigc::mem_fun (*this, &Surface::dispose));
+	mapConnection = signal_map () .connect (sigc::mem_fun (this, &Surface::set_map));
+	signal_unrealize () .connect (sigc::mem_fun (this, &Surface::dispose));
 }
 
 Surface::Surface (const Surface & other) :
@@ -170,7 +170,7 @@ Surface::set_map ()
 		                                   gdk_x11_window_get_xid (get_window () -> gobj ())));
 	}
 
-	constructConnection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_construct));
+	constructConnection = signal_draw () .connect (sigc::mem_fun (this, &Surface::set_construct));
 }
 
 bool
@@ -191,9 +191,9 @@ Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 	if (drawConnection .connected ())
 		return false;
 
-	signal_configure_event () .connect (sigc::mem_fun (*this, &Surface::set_configure_event));
+	signal_configure_event () .connect (sigc::mem_fun (this, &Surface::set_configure_event));
 
-	drawConnection = signal_draw () .connect (sigc::mem_fun (*this, &Surface::set_draw));
+	drawConnection = signal_draw () .connect (sigc::mem_fun (this, &Surface::set_draw));
 
 	setup ();
 

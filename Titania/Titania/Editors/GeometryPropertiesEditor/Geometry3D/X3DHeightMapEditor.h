@@ -202,13 +202,13 @@ X3DHeightMapEditor <NodeType, FieldType>::X3DHeightMapEditor (const Glib::RefPtr
 
 	// Signals
 
-	minHeightAdjustment -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DHeightMapEditor::on_height_map_min_max_height_changed), 0));
-	maxHeightAdjustment -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DHeightMapEditor::on_height_map_min_max_height_changed), 1));
+	minHeightAdjustment -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (this, &X3DHeightMapEditor::on_height_map_min_max_height_changed), 0));
+	maxHeightAdjustment -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (this, &X3DHeightMapEditor::on_height_map_min_max_height_changed), 1));
 
-	fileChooser .signal_file_set () .connect (sigc::mem_fun (*this, &X3DHeightMapEditor::on_height_map_image_set));
+	fileChooser .signal_file_set () .connect (sigc::mem_fun (this, &X3DHeightMapEditor::on_height_map_image_set));
 
-	reloadButton .signal_clicked () .connect (sigc::mem_fun (*this, &X3DHeightMapEditor::on_height_map_image_reload_clicked));
-	removeButton .signal_clicked () .connect (sigc::mem_fun (*this, &X3DHeightMapEditor::on_height_map_image_remove_clicked));
+	reloadButton .signal_clicked () .connect (sigc::mem_fun (this, &X3DHeightMapEditor::on_height_map_image_reload_clicked));
+	removeButton .signal_clicked () .connect (sigc::mem_fun (this, &X3DHeightMapEditor::on_height_map_image_remove_clicked));
 }
 
 template <class NodeType, class FieldType>

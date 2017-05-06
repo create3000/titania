@@ -69,7 +69,7 @@ SFStringComboBoxText::SFStringComboBoxText (X3DBaseInterface* const editor,
 
 	buffer .addInterest (&SFStringComboBoxText::set_buffer, this);
 
-	comboBoxText .signal_changed () .connect (sigc::mem_fun (*this, &SFStringComboBoxText::on_changed));
+	comboBoxText .signal_changed () .connect (sigc::mem_fun (this, &SFStringComboBoxText::on_changed));
 	setup ();
 }
 

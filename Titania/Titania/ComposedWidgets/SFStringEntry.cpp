@@ -70,9 +70,9 @@ SFStringEntry::SFStringEntry (X3DBaseInterface* const editor,
 
 	buffer .addInterest (&SFStringEntry::set_buffer, this);
 
-	entry .signal_insert_text () .connect (sigc::mem_fun (*this, &SFStringEntry::on_insert_text), false);
-	entry .signal_delete_text () .connect (sigc::mem_fun (*this, &SFStringEntry::on_delete_text), false);
-	entry .signal_changed ()     .connect (sigc::mem_fun (*this, &SFStringEntry::on_changed));
+	entry .signal_insert_text () .connect (sigc::mem_fun (this, &SFStringEntry::on_insert_text), false);
+	entry .signal_delete_text () .connect (sigc::mem_fun (this, &SFStringEntry::on_delete_text), false);
+	entry .signal_changed ()     .connect (sigc::mem_fun (this, &SFStringEntry::on_changed));
 	setup ();
 }
 

@@ -152,13 +152,13 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ShadowDiffusionSpinButton", m_ShadowDiffusionSpinButton);
 
 	// Connect object Gtk::MenuItem with id 'NewDirectionalLightMenuItem'.
-	m_NewDirectionalLightMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_new_directional_light_activated));
-	m_NewPointLightMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_new_point_light_activated));
-	m_NewSpotLightMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_new_spot_light_activated));
+	m_NewDirectionalLightMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_directional_light_activated));
+	m_NewPointLightMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_point_light_activated));
+	m_NewSpotLightMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_spot_light_activated));
 
 	// Connect object Gtk::Button with id 'RemoveLightButton'.
-	m_RemoveLightButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_remove_light_clicked));
-	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DLightEditorInterface::on_index_clicked));
+	m_RemoveLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_remove_light_clicked));
+	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_index_clicked));
 
 	// Call construct handler of base class.
 	construct ();

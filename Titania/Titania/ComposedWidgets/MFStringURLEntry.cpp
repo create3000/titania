@@ -63,7 +63,7 @@ MFStringURLEntry::MFStringURLEntry (X3DBaseInterface* const editor,
 	    reloadButton (reloadButton),
 	  fileOpenDialog ()
 {
-	reloadButton .signal_clicked () .connect (sigc::mem_fun (*this, &MFStringURLEntry::on_reload_clicked));
+	reloadButton .signal_clicked () .connect (sigc::mem_fun (this, &MFStringURLEntry::on_reload_clicked));
 
 	getString () .addInterest (&MFStringURLEntry::set_string, this);
 
@@ -75,7 +75,7 @@ MFStringURLEntry::getAdditionalWidget (Gtk::Entry* const entry)
 {
 	const auto open = Gtk::manage (new Gtk::Button ());
 
-	open -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringURLEntry::on_open_dialog_clicked), entry));
+	open -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &MFStringURLEntry::on_open_dialog_clicked), entry));
 	open -> set_image_from_icon_name ("gtk-open", Gtk::ICON_SIZE_MENU);
 
 	return open;

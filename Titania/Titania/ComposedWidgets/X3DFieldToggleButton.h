@@ -135,7 +135,7 @@ X3DFieldToggleButton <Type, ToggleButtonType>::X3DFieldToggleButton (X3DBaseInte
 
 	buffer .addInterest (&X3DFieldToggleButton::set_buffer, this);
 
-	toggleButton .signal_toggled () .connect (sigc::mem_fun (*this, &X3DFieldToggleButton::on_toggled));
+	toggleButton .signal_toggled () .connect (sigc::mem_fun (this, &X3DFieldToggleButton::on_toggled));
 
 	setup ();
 }

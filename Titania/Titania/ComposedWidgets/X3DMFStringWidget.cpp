@@ -81,14 +81,14 @@ X3DMFStringWidget::X3DMFStringWidget (X3DBaseInterface* const editor,
 
 	treeView .set_reorderable (true);
 
-	treeView .signal_focus_in_event ()              .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_focus_in_event));
-	treeView .signal_focus_out_event ()             .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_focus_out_event));
-	treeView .signal_key_press_event ()             .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_key_press_event), false);
-	treeView .signal_drag_data_received ()          .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_drag_data_received));
-	treeView .get_selection () -> signal_changed () .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_selection_changed));
-	cellRenderer -> signal_edited ()                .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_edited));
-	addButton .signal_clicked ()                    .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_add_clicked));
-	removeButton .signal_clicked ()                 .connect (sigc::mem_fun (*this, &X3DMFStringWidget::on_remove_clicked));
+	treeView .signal_focus_in_event ()              .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_focus_in_event));
+	treeView .signal_focus_out_event ()             .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_focus_out_event));
+	treeView .signal_key_press_event ()             .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_key_press_event), false);
+	treeView .signal_drag_data_received ()          .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_drag_data_received));
+	treeView .get_selection () -> signal_changed () .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_selection_changed));
+	cellRenderer -> signal_edited ()                .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_edited));
+	addButton .signal_clicked ()                    .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_add_clicked));
+	removeButton .signal_clicked ()                 .connect (sigc::mem_fun (this, &X3DMFStringWidget::on_remove_clicked));
 
 	treeView .enable_model_drag_source ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::BUTTON1_MASK, Gdk::ACTION_COPY);
 	treeView .enable_model_drag_dest   ({ Gtk::TargetEntry ("STRING", Gtk::TARGET_SAME_WIDGET) }, Gdk::ACTION_COPY);

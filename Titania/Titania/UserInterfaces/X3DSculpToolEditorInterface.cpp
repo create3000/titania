@@ -110,36 +110,36 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
 
 	// Connect object Gtk::RadioToolButton with id 'PullPolygonsButton'.
-	m_PullPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_pull_polygons_toggled));
-	m_PushPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_push_polygons_toggled));
-	m_RoughtenPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_roughten_polygons_toggled));
-	m_SmoothPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_smooth_polygons_toggled));
-	m_UndoBrushButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_undo_brush_toggled));
+	m_PullPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_pull_polygons_toggled));
+	m_PushPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_push_polygons_toggled));
+	m_RoughtenPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_roughten_polygons_toggled));
+	m_SmoothPolygonsButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_smooth_polygons_toggled));
+	m_UndoBrushButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_undo_brush_toggled));
 
 	// Connect object Gtk::Box with id 'PalettePreviewBox'.
-	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_button_press_event));
+	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_palette_button_press_event));
 
 	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
-	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_changed));
+	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_palette_changed));
 
 	// Connect object Gtk::Button with id 'PalettePreviousButton'.
-	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_previous_clicked));
-	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_next_clicked));
-	m_EditPaletteCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_edit_palette_cancel_clicked));
-	m_EditPaletteOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_edit_palette_ok_clicked));
+	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_palette_previous_clicked));
+	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_palette_next_clicked));
+	m_EditPaletteCancelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_edit_palette_cancel_clicked));
+	m_EditPaletteOkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_edit_palette_ok_clicked));
 
 	// Connect object Gtk::Entry with id 'PaletteNameEntry'.
-	m_PaletteNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_name_changed));
-	m_PaletteNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_name_delete_text), false);
-	m_PaletteNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_palette_name_insert_text), false);
+	m_PaletteNameEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_palette_name_changed));
+	m_PaletteNameEntry -> signal_delete_text () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_palette_name_delete_text), false);
+	m_PaletteNameEntry -> signal_insert_text () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_palette_name_insert_text), false);
 
 	// Connect object Gtk::ImageMenuItem with id 'AddPaletteMenuItem'.
-	m_AddPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_add_palette_activate));
-	m_RemovePaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_remove_palette_activate));
-	m_EditPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_edit_palette_activate));
-	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_add_object_to_palette_activate));
-	m_UpdateObjectInPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_update_object_in_palette_activate));
-	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DSculpToolEditorInterface::on_remove_object_from_palette_activate));
+	m_AddPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_add_palette_activate));
+	m_RemovePaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_remove_palette_activate));
+	m_EditPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_edit_palette_activate));
+	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_add_object_to_palette_activate));
+	m_UpdateObjectInPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_update_object_in_palette_activate));
+	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_remove_object_from_palette_activate));
 
 	// Call construct handler of base class.
 	construct ();

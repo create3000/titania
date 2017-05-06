@@ -71,7 +71,7 @@ X3DBindableNodeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ViewpointEditorBox", m_ViewpointEditorBox);
 
 	// Connect object Gtk::Notebook with id 'Notebook'.
-	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DBindableNodeEditorInterface::on_switch_page));
+	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DBindableNodeEditorInterface::on_switch_page));
 
 	// Call construct handler of base class.
 	construct ();

@@ -76,10 +76,10 @@ PointingDevice::set_picking (bool value)
 {
 	if (value)
 	{
-		button_press_conncection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_press_event),   false);
-		button_release_conncection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &PointingDevice::on_button_release_event), false);
-		motion_notify_conncection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &PointingDevice::on_motion_notify_event));
-		leave_notify_conncection   = getBrowser () -> signal_leave_notify_event   () .connect (sigc::mem_fun (*this, &PointingDevice::on_leave_notify_event));
+		button_press_conncection   = getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (this, &PointingDevice::on_button_press_event),   false);
+		button_release_conncection = getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (this, &PointingDevice::on_button_release_event), false);
+		motion_notify_conncection  = getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (this, &PointingDevice::on_motion_notify_event));
+		leave_notify_conncection   = getBrowser () -> signal_leave_notify_event   () .connect (sigc::mem_fun (this, &PointingDevice::on_leave_notify_event));
 	}
 	else
 	{

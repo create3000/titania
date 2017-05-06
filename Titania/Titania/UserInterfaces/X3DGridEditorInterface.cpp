@@ -255,55 +255,55 @@ X3DGridEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AxonometricGridSnapDistanceSpinButton", m_AxonometricGridSnapDistanceSpinButton);
 
 	// Connect object Gtk::Adjustment with id 'AxonometricGridUVTDimensionAdjustment'.
-	m_AxonometricGridUVTDimensionAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_grid_uvt_dimension_value_changed));
+	m_AxonometricGridUVTDimensionAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_axonometric_grid_uvt_dimension_value_changed));
 
 	// Connect object Gtk::CheckButton with id 'GridCheckButton'.
-	m_GridCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_toggled));
+	m_GridCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_grid_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'GridPlaneComboBoxText'.
-	m_GridPlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_plane_changed));
+	m_GridPlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_grid_plane_changed));
 
 	// Connect object Gtk::ToggleButton with id 'GridUniformScaleButton'.
-	m_GridUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_grid_uniform_scale_clicked));
+	m_GridUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_grid_uniform_scale_clicked));
 
 	// Connect object Gtk::SpinButton with id 'GridMajorGridSpinButton'.
-	m_GridMajorGridSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_major_line_grid_value_changed));
+	m_GridMajorGridSpinButton -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_major_line_grid_value_changed));
 
 	// Connect object Gtk::Button with id 'GridAddMajorGridButton'.
-	m_GridAddMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_add_major_line_grid));
-	m_GridRemoveMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_remove_major_line_grid));
+	m_GridAddMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_add_major_line_grid));
+	m_GridRemoveMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_remove_major_line_grid));
 
 	// Connect object Gtk::CheckButton with id 'AngleCheckButton'.
-	m_AngleCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_toggled));
+	m_AngleCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_angle_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'AnglePlaneComboBoxText'.
-	m_AnglePlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_plane_changed));
+	m_AnglePlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_angle_plane_changed));
 
 	// Connect object Gtk::ToggleButton with id 'AngleUniformScaleButton'.
-	m_AngleUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_uniform_scale_clicked));
+	m_AngleUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_angle_uniform_scale_clicked));
 
 	// Connect object Gtk::SpinButton with id 'AngleMajorGridSpinButton'.
-	m_AngleMajorGridSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_major_line_grid_value_changed));
+	m_AngleMajorGridSpinButton -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_angle_major_line_grid_value_changed));
 
 	// Connect object Gtk::Button with id 'AngleAddMajorGridButton'.
-	m_AngleAddMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_add_major_line_grid));
-	m_AngleRemoveMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_angle_remove_major_line_grid));
+	m_AngleAddMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_angle_add_major_line_grid));
+	m_AngleRemoveMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_angle_remove_major_line_grid));
 
 	// Connect object Gtk::CheckButton with id 'AxonometricGridCheckButton'.
-	m_AxonometricGridCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_grid_toggled));
+	m_AxonometricGridCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_axonometric_grid_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'AxonometricGridPlaneComboBoxText'.
-	m_AxonometricGridPlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_grid_plane_changed));
+	m_AxonometricGridPlaneComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_axonometric_grid_plane_changed));
 
 	// Connect object Gtk::ToggleButton with id 'AxonometricGridUniformScaleButton'.
-	m_AxonometricGridUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_grid_uniform_scale_clicked));
+	m_AxonometricGridUniformScaleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_axonometric_grid_uniform_scale_clicked));
 
 	// Connect object Gtk::SpinButton with id 'AxonometricGridMajorGridSpinButton'.
-	m_AxonometricGridMajorGridSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_major_line_grid_value_changed));
+	m_AxonometricGridMajorGridSpinButton -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_axonometric_major_line_grid_value_changed));
 
 	// Connect object Gtk::Button with id 'AxonometricGridAddMajorGridButton'.
-	m_AxonometricGridAddMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_add_major_line_grid));
-	m_AxonometricGridRemoveMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGridEditorInterface::on_axonometric_remove_major_line_grid));
+	m_AxonometricGridAddMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_axonometric_add_major_line_grid));
+	m_AxonometricGridRemoveMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_axonometric_remove_major_line_grid));
 
 	// Call construct handler of base class.
 	construct ();

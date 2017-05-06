@@ -110,10 +110,10 @@ X3DUserInterface::construct ()
 
 	config .reset (new Configuration (getWidget () .get_name ()));
 
-	constructed_connection = getWidget () .signal_map () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_constructed));
+	constructed_connection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_constructed));
 
-	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_window_state_event));
-	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (*this, &X3DUserInterface::on_delete_event), false);
+	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_window_state_event));
+	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (this, &X3DUserInterface::on_delete_event), false);
 
 	restoreInterface ();
 }
@@ -139,8 +139,8 @@ X3DUserInterface::on_constructed ()
 	getWindow () .set_deletable (true); /// ??? Does it work with the Gnome shell ???
 	getWidget () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
 
-	getWidget () .signal_map ()   .connect (sigc::mem_fun (*this, &X3DUserInterface::on_map));
-	getWidget () .signal_unmap () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_unmap));
+	getWidget () .signal_map ()   .connect (sigc::mem_fun (this, &X3DUserInterface::on_map));
+	getWidget () .signal_unmap () .connect (sigc::mem_fun (this, &X3DUserInterface::on_unmap));
 
 	on_map ();
 
@@ -153,7 +153,7 @@ X3DUserInterface::on_constructed ()
 
 	set_fullscreen (isFullscreen ());
 
-	Glib::signal_idle () .connect_once (sigc::mem_fun (*this, &X3DUserInterface::restoreDialogs), Glib::PRIORITY_HIGH);
+	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &X3DUserInterface::restoreDialogs), Glib::PRIORITY_HIGH);
 
 	__LOG__ << "Initialized widget: " << getName () << std::endl;
 }
@@ -168,8 +168,8 @@ X3DUserInterface::connectFocusEvent (Gtk::Widget & parent)
 		if (G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_ENTRY) ||
 		    G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_TEXT_VIEW))
 		{
-			widget -> signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &X3DUserInterface::on_focus_in_event));
-			widget -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DUserInterface::on_focus_out_event));
+			widget -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &X3DUserInterface::on_focus_in_event));
+			widget -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_focus_out_event));
 		}
 	}
 }
@@ -293,7 +293,7 @@ X3DUserInterface::addDialog (const std::string & name, const bool present)
 		const auto dialog = createDialog (name);
 
 		dialogs -> emplace (name, dialog);
-		dialog -> getWindow () .signal_unmap () .connect (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialog), name), false);
+		dialog -> getWindow () .signal_unmap () .connect (sigc::bind (sigc::mem_fun (this, &X3DUserInterface::removeDialog), name), false);
 
 		if (present)
 			dialog -> getWindow () .present ();
@@ -311,7 +311,7 @@ X3DUserInterface::createDialog (const std::string & name) const
 void
 X3DUserInterface::removeDialog (const std::string & name)
 {
-	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &X3DUserInterface::removeDialogImpl), name), Glib::PRIORITY_HIGH);
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (this, &X3DUserInterface::removeDialogImpl), name), Glib::PRIORITY_HIGH);
 }
 
 void

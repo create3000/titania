@@ -73,7 +73,7 @@ MFStringComboBoxText::MFStringComboBoxText (X3DBaseInterface* const editor,
 
 	buffer .addInterest (&MFStringComboBoxText::set_buffer, this);
 
-	comboBoxText .signal_changed () .connect (sigc::mem_fun (*this, &MFStringComboBoxText::on_changed));
+	comboBoxText .signal_changed () .connect (sigc::mem_fun (this, &MFStringComboBoxText::on_changed));
 	setup ();
 }
 

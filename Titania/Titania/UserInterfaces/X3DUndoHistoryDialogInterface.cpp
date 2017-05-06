@@ -73,11 +73,11 @@ X3DUndoHistoryDialogInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RedoButton", m_RedoButton);
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DUndoHistoryDialogInterface::on_row_activated));
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DUndoHistoryDialogInterface::on_row_activated));
 
 	// Connect object Gtk::Button with id 'UndoButton'.
-	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DUndoHistoryDialogInterface::on_undo_clicked));
-	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DUndoHistoryDialogInterface::on_redo_clicked));
+	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DUndoHistoryDialogInterface::on_undo_clicked));
+	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DUndoHistoryDialogInterface::on_redo_clicked));
 
 	// Call construct handler of base class.
 	construct ();

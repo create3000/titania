@@ -85,6 +85,8 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 {
 	Gsv::init ();
 
+	getApplyButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
+
 	textView .get_style_context () -> add_class ("titania-console");
 
 	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
@@ -104,11 +106,11 @@ ScriptEditor::initialize ()
 
 	// Text view
 
-	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_undo_changed));
-	getTextBuffer () -> get_undo_manager () -> signal_can_redo_changed () .connect (sigc::mem_fun (*this, &ScriptEditor::on_can_redo_changed));
+	getTextBuffer () -> get_undo_manager () -> signal_can_undo_changed () .connect (sigc::mem_fun (this, &ScriptEditor::on_can_undo_changed));
+	getTextBuffer () -> get_undo_manager () -> signal_can_redo_changed () .connect (sigc::mem_fun (this, &ScriptEditor::on_can_redo_changed));
 
-	getTextView () .signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_in_event));
-	getTextView () .signal_focus_out_event () .connect (sigc::mem_fun (*this, &ScriptEditor::on_focus_out_event));
+	getTextView () .signal_focus_in_event ()  .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_in_event));
+	getTextView () .signal_focus_out_event () .connect (sigc::mem_fun (this, &ScriptEditor::on_focus_out_event));
 
 	getTextView () .show ();
 
@@ -125,9 +127,6 @@ ScriptEditor::initialize ()
 	                         X3D::X3DConstants::ShaderProgram });
 
 	// Widgets
-
-	getNewButton () .set_menu (getNewScriptMenu ());
-	getApplyButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
 	console -> reparent (getConsoleBox (), getWindow ());
 
@@ -332,11 +331,11 @@ ScriptEditor::on_focus_out_event (GdkEventFocus*)
 void
 ScriptEditor::on_new_clicked ()
 {
-	on_new_script_activated ();
+	getNewScriptPopover () .popup ();
 }
 
 void
-ScriptEditor::on_new_script_activated ()
+ScriptEditor::on_new_script_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Script"));
 	const auto node     = getBrowserWindow () -> createNode ("Script", undoStep);
@@ -345,10 +344,11 @@ ScriptEditor::on_new_script_activated ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_node (node);
+	getNewScriptPopover () .popdown ();
 }
 
 void
-ScriptEditor::on_new_shader_part_activated ()
+ScriptEditor::on_new_shader_part_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderPart"));
 	const auto node     = getBrowserWindow () -> createNode ("ShaderPart", undoStep);
@@ -357,10 +357,11 @@ ScriptEditor::on_new_shader_part_activated ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_node (node);
+	getNewScriptPopover () .popdown ();
 }
 
 void
-ScriptEditor::on_new_shader_program_activated ()
+ScriptEditor::on_new_shader_program_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New ShaderProgram"));
 	const auto node     = getBrowserWindow () -> createNode ("ShaderProgram", undoStep);
@@ -369,6 +370,7 @@ ScriptEditor::on_new_shader_program_activated ()
 	getBrowserWindow () -> addUndoStep (undoStep);
 
 	set_node (node);
+	getNewScriptPopover () .popdown ();
 }
 
 void
@@ -464,7 +466,7 @@ ScriptEditor::set_sourceText ()
 					getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "application/javascript"));
 
 					if (index >= sourceText -> size () or sourceText -> get1Value (index) .empty ())
-						getTextBuffer () -> set_text ("ecmascript:\n");
+						getTextBuffer () -> set_text ("ecmascript:\n\nfunction initialize ()\n{\n\t\n}\n");
 					else
 						getTextBuffer () -> set_text (sourceText -> get1Value (index));
 
@@ -476,7 +478,7 @@ ScriptEditor::set_sourceText ()
 				getTextBuffer () -> set_language (Gsv::LanguageManager::get_default () -> guess_language ("", "text/x-c"));
 
 				if (index >= sourceText -> size () or sourceText -> get1Value (index) .empty ())
-					getTextBuffer () -> set_text ("data:text/plain,\n");
+					getTextBuffer () -> set_text ("data:text/plain,\n\nvoid\nmain ()\n{\n\t\n}\n");
 				else
 					getTextBuffer () -> set_text (sourceText -> get1Value (index));
 

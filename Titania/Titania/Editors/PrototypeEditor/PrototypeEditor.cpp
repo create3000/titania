@@ -188,7 +188,7 @@ PrototypeEditor::on_create_prototype_menu ()
 		const auto image    = Gtk::manage (new Gtk::Image (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_MENU));
 		const auto menuItem = Gtk::manage (new Gtk::ImageMenuItem (*image, protoNode -> getName ()));
 
-		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (*this, &PrototypeEditor::set_prototype), X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (protoNode)));
+		menuItem -> signal_activate () .connect (sigc::bind (sigc::mem_fun (this, &PrototypeEditor::set_prototype), X3D::X3DPtr <X3D::X3DProtoDeclarationNode> (protoNode)));
 
 		menuItem -> set_always_show_image (true);
 		menuItem -> show ();

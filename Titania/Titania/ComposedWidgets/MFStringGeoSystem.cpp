@@ -84,13 +84,13 @@ MFStringGeoSystem::MFStringGeoSystem (X3DBaseInterface* const editor,
 {
 	addChildObjects (nodes);
 
-	coordinateSystem .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 0));
-	ellipsoid        .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 1));
-	gdOrder          .signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 2));
+	coordinateSystem .signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &MFStringGeoSystem::on_changed), 0));
+	ellipsoid        .signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &MFStringGeoSystem::on_changed), 1));
+	gdOrder          .signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &MFStringGeoSystem::on_changed), 2));
 
-	zone -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 3));
-	hemisphere .signal_changed ()   .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 4));
-	utmOrder   .signal_changed ()   .connect (sigc::bind (sigc::mem_fun (*this, &MFStringGeoSystem::on_changed), 5));
+	zone -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (this, &MFStringGeoSystem::on_changed), 3));
+	hemisphere .signal_changed ()   .connect (sigc::bind (sigc::mem_fun (this, &MFStringGeoSystem::on_changed), 4));
+	utmOrder   .signal_changed ()   .connect (sigc::bind (sigc::mem_fun (this, &MFStringGeoSystem::on_changed), 5));
 
 	setup ();
 }

@@ -67,8 +67,8 @@ X3DOpenLocationDialogInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LocationEntry", m_LocationEntry);
 
 	// Connect object Gtk::Entry with id 'LocationEntry'.
-	m_LocationEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DOpenLocationDialogInterface::on_location_entry_changed));
-	m_LocationEntry -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DOpenLocationDialogInterface::on_location_entry_key_press_event), false);
+	m_LocationEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DOpenLocationDialogInterface::on_location_entry_changed));
+	m_LocationEntry -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DOpenLocationDialogInterface::on_location_entry_key_press_event), false);
 
 	// Call construct handler of base class.
 	construct ();

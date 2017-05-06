@@ -313,9 +313,9 @@ X3DPaletteEditor <Type>::initialize ()
 //	preview -> drag_source_set (listTargets);
 //	preview -> drag_dest_set (listTargets);
 //
-//	preview -> signal_drag_begin ()         .connect (sigc::mem_fun (*this, &X3DPaletteEditor::on_drag_begin));
-//	preview -> signal_drag_data_get ()      .connect (sigc::mem_fun (*this, &X3DPaletteEditor::on_drag_data_get));
-//	preview -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &X3DPaletteEditor::on_drag_data_received));
+//	preview -> signal_drag_begin ()         .connect (sigc::mem_fun (this, &X3DPaletteEditor::on_drag_begin));
+//	preview -> signal_drag_data_get ()      .connect (sigc::mem_fun (this, &X3DPaletteEditor::on_drag_data_get));
+//	preview -> signal_drag_data_received () .connect (sigc::mem_fun (this, &X3DPaletteEditor::on_drag_data_received));
 }
 
 template <class Type>

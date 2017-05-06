@@ -103,16 +103,16 @@ MediaStream::setup ()
 
 	player -> property_video_sink () = vsink;
 	player -> property_volume ()     = volume;
-	player -> signal_video_changed () .connect (sigc::mem_fun (*this, &MediaStream::on_video_changed));
-	player -> signal_audio_changed () .connect (sigc::mem_fun (*this, &MediaStream::on_audio_changed));
+	player -> signal_video_changed () .connect (sigc::mem_fun (this, &MediaStream::on_video_changed));
+	player -> signal_audio_changed () .connect (sigc::mem_fun (this, &MediaStream::on_audio_changed));
 
 	const auto bus = player -> get_bus ();
 
 	bus -> enable_sync_message_emission ();
-	bus -> signal_sync_message () .connect (sigc::mem_fun (*this, &MediaStream::on_bus_message_sync));
+	bus -> signal_sync_message () .connect (sigc::mem_fun (this, &MediaStream::on_bus_message_sync));
 
 	bus -> add_signal_watch ();
-	bus -> signal_message () .connect (sigc::mem_fun (*this, &MediaStream::on_message));
+	bus -> signal_message () .connect (sigc::mem_fun (this, &MediaStream::on_message));
 }
 
 bool
@@ -325,7 +325,7 @@ MediaStream::on_video_changed ()
 	Glib::RefPtr <Gst::Pad> pad = player -> get_video_pad (0);
 
 	if (pad)
-		pad -> add_probe (Gst::PAD_PROBE_TYPE_BUFFER, sigc::mem_fun (*this, &MediaStream::on_video_pad_got_buffer));
+		pad -> add_probe (Gst::PAD_PROBE_TYPE_BUFFER, sigc::mem_fun (this, &MediaStream::on_video_pad_got_buffer));
 
 	loaded .emit ();
 	update ();

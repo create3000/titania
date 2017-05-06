@@ -67,8 +67,8 @@ X3DRevealerInterface::construct ()
 	getWidget () .property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &X3DRevealerInterface::on_reveal_child));
 	getWidget () .property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &X3DRevealerInterface::on_child_revealed));
 
-	getWidget () .signal_map ()           .connect (sigc::mem_fun (*this, &X3DRevealerInterface::on_map));
-	getWidget () .signal_size_allocate () .connect (sigc::mem_fun (*this, &X3DRevealerInterface::on_size_allocate));
+	getWidget () .signal_map ()           .connect (sigc::mem_fun (this, &X3DRevealerInterface::on_map));
+	getWidget () .signal_size_allocate () .connect (sigc::mem_fun (this, &X3DRevealerInterface::on_size_allocate));
 }
 
 void

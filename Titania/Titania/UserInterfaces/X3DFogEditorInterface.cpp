@@ -82,8 +82,8 @@ X3DFogEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("FogTypeComboBoxText", m_FogTypeComboBoxText);
 
 	// Connect object Gtk::Button with id 'NewFogButton'.
-	m_NewFogButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DFogEditorInterface::on_new_fog_clicked));
-	m_RemoveFogButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DFogEditorInterface::on_remove_fog_clicked));
+	m_NewFogButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DFogEditorInterface::on_new_fog_clicked));
+	m_RemoveFogButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DFogEditorInterface::on_remove_fog_clicked));
 
 	// Call construct handler of base class.
 	construct ();

@@ -75,7 +75,7 @@ X3DMFStringEntry::X3DMFStringEntry (X3DBaseInterface* const editor,
 
 	buffer .addInterest (&X3DMFStringEntry::set_buffer, this);
 
-	addButton .signal_clicked () .connect (sigc::mem_fun (*this, &X3DMFStringEntry::on_add_before_clicked));
+	addButton .signal_clicked () .connect (sigc::mem_fun (this, &X3DMFStringEntry::on_add_before_clicked));
 }
 
 void
@@ -299,13 +299,13 @@ X3DMFStringEntry::addWidget (const int32_t index)
 
 	entrys .insert (entrys .begin () + index, entry);
 
-	entry -> signal_focus_in_event ()  .connect (sigc::mem_fun (*this, &X3DMFStringEntry::on_focus_in_event));
-	entry -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DMFStringEntry::on_focus_out_event));
-	entry -> signal_delete_text ()     .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_delete_text), entry), false);
-	entry -> signal_changed ()         .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_changed),     entry));
+	entry -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &X3DMFStringEntry::on_focus_in_event));
+	entry -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DMFStringEntry::on_focus_out_event));
+	entry -> signal_delete_text ()     .connect (sigc::bind (sigc::mem_fun (this, &X3DMFStringEntry::on_delete_text), entry), false);
+	entry -> signal_changed ()         .connect (sigc::bind (sigc::mem_fun (this, &X3DMFStringEntry::on_changed),     entry));
 
-	add    -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_add_clicked),    entry));
-	remove -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DMFStringEntry::on_remove_clicked), entry));
+	add    -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DMFStringEntry::on_add_clicked),    entry));
+	remove -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DMFStringEntry::on_remove_clicked), entry));
 
 	parent -> set_hexpand_set (true);
 	entry  -> set_hexpand_set (true);

@@ -306,13 +306,13 @@ sub cpp_signals
 
 	if ($swapped)
 	{
-		say $file "$signal .connect (sigc::bind (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), sigc::ref (*m_" . $self -> {id} . ")) $after);";
-		#say $file "m_connections .emplace_back ($signal .connect (sigc::bind (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}), sigc::ref (*m_" . $self -> {id} . ")) $after));";
+		say $file "$signal .connect (sigc::bind (sigc::mem_fun (this, &$self->{class_name}\:\:$attributes{handler}), sigc::ref (*m_" . $self -> {id} . ")) $after);";
+		#say $file "m_connections .emplace_back ($signal .connect (sigc::bind (sigc::mem_fun (this, &$self->{class_name}\:\:$attributes{handler}), sigc::ref (*m_" . $self -> {id} . ")) $after));";
 	}
 	else
 	{
-		say $file "$signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}) $after);";
-		#say $file "m_connections .emplace_back ($signal .connect (sigc::mem_fun (*this, &$self->{class_name}\:\:$attributes{handler}) $after));";
+		say $file "$signal .connect (sigc::mem_fun (this, &$self->{class_name}\:\:$attributes{handler}) $after);";
+		#say $file "m_connections .emplace_back ($signal .connect (sigc::mem_fun (this, &$self->{class_name}\:\:$attributes{handler}) $after));";
 	}
 }
 

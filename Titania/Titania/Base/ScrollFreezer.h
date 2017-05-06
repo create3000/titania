@@ -85,7 +85,7 @@ public:
 
 		connection .disconnect ();
 
-		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &AdjustmentFreezer::block), adjustment, value), false);
+		connection = adjustment -> signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &AdjustmentFreezer::block), adjustment, value), false);
 	}
 
 private:

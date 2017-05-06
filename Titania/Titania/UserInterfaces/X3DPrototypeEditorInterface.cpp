@@ -91,12 +91,12 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("UpdateInstancesButton", m_UpdateInstancesButton);
 
 	// Connect object Gtk::ImageMenuItem with id 'CreatePrototypeMenuItem'.
-	m_CreatePrototypeMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_proto_clicked));
-	m_CreateExternProtoMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_externproto_clicked));
+	m_CreatePrototypeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_proto_clicked));
+	m_CreateExternProtoMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_externproto_clicked));
 
 	// Connect object Gtk::Button with id 'CreateInstanceButton'.
-	m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_create_instance_clicked));
-	m_UpdateInstancesButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DPrototypeEditorInterface::on_update_instances_clicked));
+	m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_instance_clicked));
+	m_UpdateInstancesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_update_instances_clicked));
 
 	// Call construct handler of base class.
 	construct ();

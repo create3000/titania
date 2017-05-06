@@ -84,28 +84,28 @@ X3DHistoryViewInterface::create (const std::string & filename)
 	m_builder -> get_widget ("AlwaysMenuItem", m_AlwaysMenuItem);
 
 	// Connect object Gtk::Box with id 'Widget'.
-	m_Widget -> signal_map () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_map));
-	m_Widget -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_unmap));
+	m_Widget -> signal_map () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_map));
+	m_Widget -> signal_unmap () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_unmap));
 
 	// Connect object Gtk::SearchEntry with id 'SearchEntry'.
-	m_SearchEntry -> signal_search_changed () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_search_changed));
+	m_SearchEntry -> signal_search_changed () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_search_changed));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_button_press_event), false);
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_row_activated));
+	m_TreeView -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_button_press_event), false);
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_row_activated));
 
 	// Connect object Gtk::TreeViewColumn with id 'Icon'.
-	m_Icon -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_column_clicked));
-	m_TitleColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_column_clicked));
-	m_WorlURLColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_column_clicked));
-	m_LastAccessColumn -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_column_clicked));
+	m_Icon -> signal_clicked () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_column_clicked));
+	m_TitleColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_column_clicked));
+	m_WorlURLColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_column_clicked));
+	m_LastAccessColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_column_clicked));
 
 	// Connect object Gtk::RadioMenuItem with id 'NeverMenuItem'.
-	m_NeverMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_never_toggled));
-	m_OneMonthMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_on_month_toggled));
-	m_HalfYearMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_half_year_toggled));
-	m_OneYearMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_one_year_toggled));
-	m_AlwaysMenuItem -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DHistoryViewInterface::on_always_toggled));
+	m_NeverMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_never_toggled));
+	m_OneMonthMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_on_month_toggled));
+	m_HalfYearMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_half_year_toggled));
+	m_OneYearMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_one_year_toggled));
+	m_AlwaysMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DHistoryViewInterface::on_always_toggled));
 
 	// Call construct handler of base class.
 	construct ();

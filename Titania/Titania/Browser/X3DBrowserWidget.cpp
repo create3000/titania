@@ -510,7 +510,7 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	label -> set_lines (1);
 	label -> set_tooltip_text (URL .filename () .str ());
 
-	button -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserWidget::close), browser));
+	button -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserWidget::close), browser));
 	button -> get_style_context () -> add_class ("titania-tab-close");
 	button -> set_image (*image);
 	button -> set_tooltip_text (_ ("Close Tab"));
@@ -797,7 +797,7 @@ X3DBrowserWidget::set_scene ()
 	#ifdef TITANIA_DEBUG
 	loadTime = X3D::SFTime::now () - loadTime;
 	timeout .disconnect ();
-	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DBrowserWidget::statistics), 10 * 1000);
+	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DBrowserWidget::statistics), 10 * 1000);
 	#endif
 }
 

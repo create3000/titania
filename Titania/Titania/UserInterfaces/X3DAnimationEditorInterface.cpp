@@ -115,61 +115,61 @@ X3DAnimationEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("CycleIntervalLabel", m_CycleIntervalLabel);
 
 	// Connect object Gtk::Adjustment with id 'FrameAdjustment'.
-	m_FrameAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_current_frame_changed));
-	m_TranslationAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_translation_changed));
+	m_FrameAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_current_frame_changed));
+	m_TranslationAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_translation_changed));
 
 	// Connect object Gtk::ToolButton with id 'NewButton'.
-	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new));
-	m_AddMemberButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_add_member));
-	m_RemoveMemberButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_remove_member));
-	m_CutButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_cut));
-	m_CopyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_copy));
-	m_PasteButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_paste));
-	m_FirstFrameButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_first_frame));
-	m_PlayPauseButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_play_pause));
-	m_LastFrameButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_last_frame));
-	m_TimeButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_time));
+	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_new));
+	m_AddMemberButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_add_member));
+	m_RemoveMemberButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_remove_member));
+	m_CutButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_cut));
+	m_CopyButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_copy));
+	m_PasteButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_paste));
+	m_FirstFrameButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_first_frame));
+	m_PlayPauseButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_play_pause));
+	m_LastFrameButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_last_frame));
+	m_TimeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_time));
 
 	// Connect object Gtk::ComboBoxText with id 'KeyTypeButton'.
-	m_KeyTypeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_key_type_changed));
+	m_KeyTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_key_type_changed));
 
 	// Connect object Gtk::TreeView with id 'TreeView'.
-	m_TreeView -> signal_draw () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_tree_view_draw));
-	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_row_activated));
+	m_TreeView -> signal_draw () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_tree_view_draw));
+	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_row_activated));
 
 	// Connect object Gtk::TreeSelection with id 'TreeViewSelection'.
-	m_TreeViewSelection -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_tree_view_selection_changed));
+	m_TreeViewSelection -> signal_changed () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_tree_view_selection_changed));
 
 	// Connect object Gtk::CellRendererToggle with id 'TaintedCellRenderer'.
-	m_TaintedCellRenderer -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_tainted_toggled));
+	m_TaintedCellRenderer -> signal_toggled () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_tainted_toggled));
 
 	// Connect object Gtk::DrawingArea with id 'DrawingArea'.
-	m_DrawingArea -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_button_press_event));
-	m_DrawingArea -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_button_release_event));
-	m_DrawingArea -> signal_configure_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_configure_event));
-	m_DrawingArea -> signal_draw () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_draw));
-	m_DrawingArea -> signal_focus_in_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_focus_in_event));
-	m_DrawingArea -> signal_focus_out_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_focus_out_event));
-	m_DrawingArea -> signal_key_press_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_key_press_event));
-	m_DrawingArea -> signal_key_release_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_key_release_event));
-	m_DrawingArea -> signal_motion_notify_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_motion_notify_event));
-	m_DrawingArea -> signal_scroll_event () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_scroll_event));
+	m_DrawingArea -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_button_press_event));
+	m_DrawingArea -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_button_release_event));
+	m_DrawingArea -> signal_configure_event () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_configure_event));
+	m_DrawingArea -> signal_draw () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_draw));
+	m_DrawingArea -> signal_focus_in_event () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_focus_in_event));
+	m_DrawingArea -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_focus_out_event));
+	m_DrawingArea -> signal_key_press_event () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_key_press_event));
+	m_DrawingArea -> signal_key_release_event () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_key_release_event));
+	m_DrawingArea -> signal_motion_notify_event () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_motion_notify_event));
+	m_DrawingArea -> signal_scroll_event () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_scroll_event));
 
 	// Connect object Gtk::ToolButton with id 'ZoomOutButton'.
-	m_ZoomOutButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_out));
-	m_ZoomInButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_in));
-	m_ZoomFitButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_fit));
-	m_Zoom100Button -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_zoom_100));
-	m_CloseAnimationButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_close));
+	m_ZoomOutButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_zoom_out));
+	m_ZoomInButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_zoom_in));
+	m_ZoomFitButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_zoom_fit));
+	m_Zoom100Button -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_zoom_100));
+	m_CloseAnimationButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_close));
 
 	// Connect object Gtk::Entry with id 'NewNameEntry'.
-	m_NewNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_name_changed));
-	m_NewNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_name_delete_text), false);
-	m_NewNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_name_insert_text), false);
+	m_NewNameEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_new_name_changed));
+	m_NewNameEntry -> signal_delete_text () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_new_name_delete_text), false);
+	m_NewNameEntry -> signal_insert_text () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_new_name_insert_text), false);
 
 	// Connect object Gtk::SpinButton with id 'DurationSspinButton'.
-	m_DurationSspinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_cycle_interval_changed));
-	m_FPSSpinButton -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DAnimationEditorInterface::on_new_cycle_interval_changed));
+	m_DurationSspinButton -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_new_cycle_interval_changed));
+	m_FPSSpinButton -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_new_cycle_interval_changed));
 
 	// Call construct handler of base class.
 	construct ();

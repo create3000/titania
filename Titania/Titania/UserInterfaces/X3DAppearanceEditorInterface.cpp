@@ -176,66 +176,66 @@ X3DAppearanceEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RemoveObjectFromPaletteMenuItem", m_RemoveObjectFromPaletteMenuItem);
 
 	// Connect object Gtk::ImageMenuItem with id 'CopyMenuItem'.
-	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_copy));
-	m_PasteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_paste));
+	m_CopyMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_copy));
+	m_PasteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_paste));
 
 	// Connect object Gtk::Button with id 'CopyButton'.
-	m_CopyButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_copy));
-	m_PasteButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_paste));
-	m_SphereButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_sphere_clicked));
-	m_ModelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_model_clicked));
+	m_CopyButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_copy));
+	m_PasteButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_paste));
+	m_SphereButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_sphere_clicked));
+	m_ModelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_model_clicked));
 
 	// Connect object Gtk::CheckButton with id 'AppearanceCheckButton'.
-	m_AppearanceCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_appearance_toggled));
+	m_AppearanceCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_appearance_toggled));
 
 	// Connect object Gtk::Button with id 'AppearanceUnlinkButton'.
-	m_AppearanceUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_appearance_unlink_clicked));
+	m_AppearanceUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_appearance_unlink_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'MaterialComboBoxText'.
-	m_MaterialComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_material_changed));
+	m_MaterialComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_material_changed));
 
 	// Connect object Gtk::Button with id 'MaterialUnlinkButton'.
-	m_MaterialUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_material_unlink_clicked));
+	m_MaterialUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_material_unlink_clicked));
 
 	// Connect object Gtk::CheckButton with id 'FillPropertiesCheckButton'.
-	m_FillPropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_fillProperties_toggled));
+	m_FillPropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_fillProperties_toggled));
 
 	// Connect object Gtk::Button with id 'FillPropertiesUnlinkButton'.
-	m_FillPropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_fillProperties_unlink_clicked));
+	m_FillPropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_fillProperties_unlink_clicked));
 
 	// Connect object Gtk::CheckButton with id 'LinePropertiesCheckButton'.
-	m_LinePropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_lineProperties_toggled));
+	m_LinePropertiesCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_lineProperties_toggled));
 
 	// Connect object Gtk::Button with id 'LinePropertiesUnlinkButton'.
-	m_LinePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_lineProperties_unlink_clicked));
+	m_LinePropertiesUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_lineProperties_unlink_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'PaletteFaceCombo'.
-	m_PaletteFaceCombo -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_face_changed));
+	m_PaletteFaceCombo -> signal_changed () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_palette_face_changed));
 
 	// Connect object Gtk::Box with id 'PalettePreviewBox'.
-	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_button_press_event));
+	m_PalettePreviewBox -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_palette_button_press_event));
 
 	// Connect object Gtk::ComboBoxText with id 'PaletteComboBoxText'.
-	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_changed));
+	m_PaletteComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_palette_changed));
 
 	// Connect object Gtk::Button with id 'PalettePreviousButton'.
-	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_previous_clicked));
-	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_next_clicked));
-	m_EditPaletteCancelButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_edit_palette_cancel_clicked));
-	m_EditPaletteOkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_edit_palette_ok_clicked));
+	m_PalettePreviousButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_palette_previous_clicked));
+	m_PaletteNextButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_palette_next_clicked));
+	m_EditPaletteCancelButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_edit_palette_cancel_clicked));
+	m_EditPaletteOkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_edit_palette_ok_clicked));
 
 	// Connect object Gtk::Entry with id 'PaletteNameEntry'.
-	m_PaletteNameEntry -> signal_changed () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_name_changed));
-	m_PaletteNameEntry -> signal_delete_text () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_name_delete_text), false);
-	m_PaletteNameEntry -> signal_insert_text () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_palette_name_insert_text), false);
+	m_PaletteNameEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_palette_name_changed));
+	m_PaletteNameEntry -> signal_delete_text () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_palette_name_delete_text), false);
+	m_PaletteNameEntry -> signal_insert_text () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_palette_name_insert_text), false);
 
 	// Connect object Gtk::ImageMenuItem with id 'AddPaletteMenuItem'.
-	m_AddPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_add_palette_activate));
-	m_RemovePaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_remove_palette_activate));
-	m_EditPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_edit_palette_activate));
-	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_add_object_to_palette_activate));
-	m_UpdateObjectInPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_update_object_in_palette_activate));
-	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DAppearanceEditorInterface::on_remove_object_from_palette_activate));
+	m_AddPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_add_palette_activate));
+	m_RemovePaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_remove_palette_activate));
+	m_EditPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_edit_palette_activate));
+	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_add_object_to_palette_activate));
+	m_UpdateObjectInPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_update_object_in_palette_activate));
+	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DAppearanceEditorInterface::on_remove_object_from_palette_activate));
 
 	// Call construct handler of base class.
 	construct ();

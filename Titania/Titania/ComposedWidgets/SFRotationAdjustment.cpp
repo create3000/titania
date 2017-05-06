@@ -80,10 +80,10 @@ SFRotationAdjustment::SFRotationAdjustment (X3DBaseInterface* const editor,
 
 	buffer .addInterest (&SFRotationAdjustment::set_buffer, this);
 
-	adjustments [0] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &SFRotationAdjustment::on_value_changed), 0));
-	adjustments [1] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &SFRotationAdjustment::on_value_changed), 1));
-	adjustments [2] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &SFRotationAdjustment::on_value_changed), 2));
-	adjustments [3] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (*this, &SFRotationAdjustment::on_value_changed), 3));
+	adjustments [0] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (this, &SFRotationAdjustment::on_value_changed), 0));
+	adjustments [1] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (this, &SFRotationAdjustment::on_value_changed), 1));
+	adjustments [2] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (this, &SFRotationAdjustment::on_value_changed), 2));
+	adjustments [3] -> signal_value_changed () .connect (sigc::bind (sigc::mem_fun (this, &SFRotationAdjustment::on_value_changed), 3));
 
 	lower = adjustments [3] -> get_lower ();
 	upper = adjustments [3] -> get_upper ();

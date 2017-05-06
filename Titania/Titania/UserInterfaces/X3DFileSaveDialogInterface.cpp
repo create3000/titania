@@ -93,7 +93,7 @@ X3DFileSaveDialogInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ImageAntialiasingBox", m_ImageAntialiasingBox);
 
 	// Connect object Gtk::FileChooserDialog with id 'Window'.
-	m_Window -> signal_response () .connect (sigc::mem_fun (*this, &X3DFileSaveDialogInterface::on_response), false);
+	m_Window -> signal_response () .connect (sigc::mem_fun (this, &X3DFileSaveDialogInterface::on_response), false);
 
 	// Call construct handler of base class.
 	construct ();

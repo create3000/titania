@@ -85,23 +85,23 @@ SFColorButton::SFColorButton (X3DBaseInterface* const editor,
 
 	// Button
 
-	colorButton .signal_button_press_event () .connect (sigc::mem_fun (*this, &SFColorButton::on_button_press_event));
-	colorButton .signal_clicked ()            .connect (sigc::mem_fun (*this, &SFColorButton::on_clicked));
+	colorButton .signal_button_press_event () .connect (sigc::mem_fun (this, &SFColorButton::on_button_press_event));
+	colorButton .signal_clicked ()            .connect (sigc::mem_fun (this, &SFColorButton::on_clicked));
 	colorButton .add (drawingArea);
 
 	// Drawing Area
 
-	drawingArea .signal_draw () .connect (sigc::mem_fun (*this, &SFColorButton::on_draw));
+	drawingArea .signal_draw () .connect (sigc::mem_fun (this, &SFColorButton::on_draw));
 	drawingArea .show ();
 
 	// Value Adjustment
 
-	valueAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &SFColorButton::on_value_changed));
+	valueAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &SFColorButton::on_value_changed));
 
 	// Dialog
 
 	dialog .set_title (refineName (name));
-	dialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (*this, &SFColorButton::on_color_changed));
+	dialog .get_color_selection () -> signal_color_changed () .connect (sigc::mem_fun (this, &SFColorButton::on_color_changed));
 	dialog .get_color_selection () -> set_has_opacity_control (false);
 	dialog .get_color_selection () -> set_has_palette (true);
 

@@ -371,61 +371,61 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PrimitiveEdgeColorScale", m_PrimitiveEdgeColorScale);
 
 	// Connect object Gtk::Adjustment with id 'Disk2DInnerRadiusAdjustment'.
-	m_Disk2DInnerRadiusAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_disk2d_radius_value_changed));
-	m_Disk2DOuterRadiusAdjustment -> signal_value_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_disk2d_radius_value_changed));
+	m_Disk2DInnerRadiusAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_disk2d_radius_value_changed));
+	m_Disk2DOuterRadiusAdjustment -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_disk2d_radius_value_changed));
 
 	// Connect object Gtk::ComboBoxText with id 'GeometryComboBoxText'.
-	m_GeometryComboBoxText -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_changed));
+	m_GeometryComboBoxText -> signal_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_geometry_changed));
 
 	// Connect object Gtk::Button with id 'GeometryUnlinkButton'.
-	m_GeometryUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_geometry_unlink_clicked));
+	m_GeometryUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_geometry_unlink_clicked));
 
 	// Connect object Gtk::CheckButton with id 'Arc2DUseGlobalOptionsCheckButton'.
-	m_Arc2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_arc2d_use_global_options_toggled));
-	m_ArcClose2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_arcclose2d_use_global_options_toggled));
-	m_Circle2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_circle2d_use_global_options_toggled));
-	m_Disk2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_disk2d_use_global_options_toggled));
+	m_Arc2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_arc2d_use_global_options_toggled));
+	m_ArcClose2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_arcclose2d_use_global_options_toggled));
+	m_Circle2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_circle2d_use_global_options_toggled));
+	m_Disk2DUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_disk2d_use_global_options_toggled));
 
 	// Connect object Gtk::ToggleButton with id 'Rectangle2DUniformSizeButton'.
-	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
-	m_BoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_box_uniform_size_clicked));
+	m_Rectangle2DUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_rectangle2d_uniform_size_clicked));
+	m_BoxUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_box_uniform_size_clicked));
 
 	// Connect object Gtk::CheckButton with id 'ConeUseGlobalOptionsCheckButton'.
-	m_ConeUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_cone_use_global_options_toggled));
-	m_CylinderUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_cylinder_use_global_options_toggled));
+	m_ConeUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_cone_use_global_options_toggled));
+	m_CylinderUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_cylinder_use_global_options_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'SphereTypeButton'.
-	m_SphereTypeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_sphere_type_changed));
+	m_SphereTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_sphere_type_changed));
 
 	// Connect object Gtk::CheckButton with id 'SphereUseGlobalOptionsCheckButton'.
-	m_SphereUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_sphere_use_global_options_toggled));
+	m_SphereUseGlobalOptionsCheckButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_sphere_use_global_options_toggled));
 
 	// Connect object Gtk::ComboBoxText with id 'IndexedLineSetTypeButton'.
-	m_IndexedLineSetTypeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_indexed_line_set_type_changed));
+	m_IndexedLineSetTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_indexed_line_set_type_changed));
 
 	// Connect object Gtk::ToggleButton with id 'IndexedLineSetLSystemUniformSizeButton'.
-	m_IndexedLineSetLSystemUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_indexed_line_set_lsystem_uniform_size_clicked));
+	m_IndexedLineSetLSystemUniformSizeButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_indexed_line_set_lsystem_uniform_size_clicked));
 
 	// Connect object Gtk::Button with id 'AddNormalsButton'.
-	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));
-	m_RemoveNormalsButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_remove_normals_clicked));
+	m_AddNormalsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_add_normals_clicked));
+	m_RemoveNormalsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_remove_normals_clicked));
 
 	// Connect object Gtk::ComboBoxText with id 'ColorTypeButton'.
-	m_ColorTypeButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_color_changed));
+	m_ColorTypeButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_color_changed));
 
 	// Connect object Gtk::Button with id 'ColorUnlinkButton'.
-	m_ColorUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_color_unlink_clicked));
+	m_ColorUnlinkButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_color_unlink_clicked));
 
 	// Connect object Gtk::EventBox with id 'PrimitiveCountEventBox'.
-	m_PrimitiveCountEventBox -> signal_enter_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event));
-	m_PrimitiveCountEventBox -> signal_leave_notify_event () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event));
+	m_PrimitiveCountEventBox -> signal_enter_notify_event () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event));
+	m_PrimitiveCountEventBox -> signal_leave_notify_event () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_crossing_notify_event));
 
 	// Connect object Gtk::Box with id 'PrimitiveCountBox'.
-	m_PrimitiveCountBox -> signal_map () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_map_primitive_count));
-	m_PrimitiveCountBox -> signal_unmap () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_unmap_primitive_count));
+	m_PrimitiveCountBox -> signal_map () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_map_primitive_count));
+	m_PrimitiveCountBox -> signal_unmap () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_unmap_primitive_count));
 
 	// Connect object Gtk::ComboBoxText with id 'PrimitiveCountCountButton'.
-	m_PrimitiveCountCountButton -> signal_changed () .connect (sigc::mem_fun (*this, &X3DGeometryPropertiesEditorInterface::on_primitive_count_count_changed));
+	m_PrimitiveCountCountButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_primitive_count_count_changed));
 
 	// Call construct handler of base class.
 	construct ();

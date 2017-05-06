@@ -410,7 +410,7 @@ X3DTimeDependentNode::addTimeout (sigc::connection & timeout, TimeoutHandler cal
 {
 	timeout .disconnect ();
 
-	timeout = Glib::signal_timeout () .connect (sigc::bind (sigc::mem_fun (*this, &X3DTimeDependentNode::timeout), callback),
+	timeout = Glib::signal_timeout () .connect (sigc::bind (sigc::mem_fun (this, &X3DTimeDependentNode::timeout), callback),
 	                                            (time - getCurrentTime ()) * 1000,
 	                                            GDK_PRIORITY_REDRAW); // GDK_PRIORITY_REDRAW is very important, see Capone
 }

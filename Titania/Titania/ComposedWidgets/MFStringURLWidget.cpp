@@ -68,8 +68,8 @@ MFStringURLWidget::MFStringURLWidget (X3DUserInterface* const userInterface,
 	 URLChooserColumn (URLChooserColumn),
 	   fileOpenDialog ()
 {
-	treeView     .signal_button_release_event () .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_button_release_event));
-	reloadButton .signal_clicked ()              .connect (sigc::mem_fun (*this, &MFStringURLWidget::on_reload_clicked));
+	treeView     .signal_button_release_event () .connect (sigc::mem_fun (this, &MFStringURLWidget::on_button_release_event));
+	reloadButton .signal_clicked ()              .connect (sigc::mem_fun (this, &MFStringURLWidget::on_reload_clicked));
 
 	setup ();
 }

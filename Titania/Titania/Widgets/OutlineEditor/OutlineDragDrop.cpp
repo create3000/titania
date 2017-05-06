@@ -81,9 +81,9 @@ OutlineDragDrop::OutlineDragDrop (OutlineTreeViewEditor* const treeView) :
 	treeView -> enable_model_drag_dest ({ Gtk::TargetEntry (dragDataType, Gtk::TARGET_SAME_WIDGET) },
 	                                      Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK);
 
-	treeView -> signal_button_press_event () .connect (sigc::mem_fun (*this, &OutlineDragDrop::on_button_press_event), false);
-	treeView -> signal_drag_motion ()        .connect (sigc::mem_fun (*this, &OutlineDragDrop::on_drag_motion), false);
-	treeView -> signal_drag_data_received () .connect (sigc::mem_fun (*this, &OutlineDragDrop::on_drag_data_received));
+	treeView -> signal_button_press_event () .connect (sigc::mem_fun (this, &OutlineDragDrop::on_button_press_event), false);
+	treeView -> signal_drag_motion ()        .connect (sigc::mem_fun (this, &OutlineDragDrop::on_drag_motion), false);
+	treeView -> signal_drag_data_received () .connect (sigc::mem_fun (this, &OutlineDragDrop::on_drag_data_received));
 }
 
 X3DBrowserWindow*

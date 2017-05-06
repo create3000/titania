@@ -986,7 +986,7 @@ X3DBrowserEditor::editSourceCode (const X3D::SFNode & node)
 	Glib::RefPtr <Gio::File>        file        = Gio::File::create_for_path (filename);
 	Glib::RefPtr <Gio::FileMonitor> fileMonitor = file -> monitor_file ();
 
-	fileMonitor -> signal_changed () .connect (sigc::bind (sigc::mem_fun (*this, &X3DBrowserEditor::on_source_code_changed), node));
+	fileMonitor -> signal_changed () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserEditor::on_source_code_changed), node));
 	getUserData (getCurrentBrowser ()) -> fileMonitors .emplace (file, fileMonitor);
 
 	try

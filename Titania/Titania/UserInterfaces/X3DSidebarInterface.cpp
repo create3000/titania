@@ -70,7 +70,7 @@ X3DSidebarInterface::create (const std::string & filename)
 	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
 	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
 	m_builder -> get_widget ("NodeEditorBox", m_NodeEditorBox);
-	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (*this, &X3DSidebarInterface::on_switch_page));
+	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DSidebarInterface::on_switch_page));
 
 	// Call construct handler of base class.
 	construct ();

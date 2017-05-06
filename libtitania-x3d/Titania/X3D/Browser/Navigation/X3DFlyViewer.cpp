@@ -95,10 +95,10 @@ X3DFlyViewer::initialize ()
 {
 	X3DViewer::initialize ();
 
-	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_press_event));
-	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_button_release_event), false);
-	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_motion_notify_event),  false);
-	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &X3DFlyViewer::on_scroll_event));
+	getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (this, &X3DFlyViewer::on_button_press_event));
+	getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DFlyViewer::on_button_release_event), false);
+	getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (this, &X3DFlyViewer::on_motion_notify_event),  false);
+	getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (this, &X3DFlyViewer::on_scroll_event));
 
 	getBrowser () -> getControlKey () .addInterest (&X3DFlyViewer::disconnect, this);
 
@@ -401,7 +401,7 @@ X3DFlyViewer::addFly ()
 	if (not fly_id .connected ())
 	{
 		startTime = SFTime::now ();
-		fly_id    = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::fly), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+		fly_id    = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DFlyViewer::fly), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 	}
 }
 
@@ -411,7 +411,7 @@ X3DFlyViewer::addPan ()
 	if (not pan_id .connected ())
 	{
 		startTime = SFTime::now ();
-		pan_id    = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::pan), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+		pan_id    = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DFlyViewer::pan), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 	}
 }
 
@@ -422,7 +422,7 @@ X3DFlyViewer::addRoll ()
 	{
 		disconnect ();
 
-		roll_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DFlyViewer::roll), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+		roll_id = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DFlyViewer::roll), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 	}
 
 	startTime = SFTime::now ();

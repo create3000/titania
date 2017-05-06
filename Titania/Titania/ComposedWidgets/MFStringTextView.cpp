@@ -69,7 +69,7 @@ MFStringTextView::MFStringTextView (X3DBaseInterface* const editor,
 
 	buffer .addInterest (&MFStringTextView::set_buffer, this);
 
-	textView .get_buffer () -> signal_changed () .connect (sigc::mem_fun (*this, &MFStringTextView::on_changed));
+	textView .get_buffer () -> signal_changed () .connect (sigc::mem_fun (this, &MFStringTextView::on_changed));
 	setup ();
 }
 

@@ -92,10 +92,10 @@ X3DExamineViewer::initialize ()
 	{
 		X3DViewer::initialize ();
 
-		getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (*this, &X3DExamineViewer::on_button_press_event));
-		getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (*this, &X3DExamineViewer::on_button_release_event), false);
-		getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (*this, &X3DExamineViewer::on_motion_notify_event),  false);
-		getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (*this, &X3DExamineViewer::on_scroll_event));
+		getBrowser () -> signal_button_press_event   () .connect (sigc::mem_fun (this, &X3DExamineViewer::on_button_press_event));
+		getBrowser () -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DExamineViewer::on_button_release_event), false);
+		getBrowser () -> signal_motion_notify_event  () .connect (sigc::mem_fun (this, &X3DExamineViewer::on_motion_notify_event),  false);
+		getBrowser () -> signal_scroll_event         () .connect (sigc::mem_fun (this, &X3DExamineViewer::on_scroll_event));
 
 		getNavigationInfo () -> transitionStart () .addInterest (&X3DExamineViewer::disconnect, this); // XXX: getNavigationInfo kann sich auch ?ndern, bei allen!!!
 		getBrowser () -> getActiveViewpoint () .addInterest (&X3DExamineViewer::disconnect, this);
@@ -438,7 +438,7 @@ void
 X3DExamineViewer::addSpinning ()
 {
 	if (not spin_id .connected ())
-		spin_id = Glib::signal_timeout () .connect (sigc::mem_fun (*this, &X3DExamineViewer::spin), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
+		spin_id = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DExamineViewer::spin), 1000.0 / FRAME_RATE, GDK_PRIORITY_REDRAW);
 }
 
 Vector3d
