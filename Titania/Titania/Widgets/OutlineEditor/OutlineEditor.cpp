@@ -80,10 +80,13 @@ OutlineEditor::OutlineEditor (X3DBrowserWindow* const browserWindow) :
 	               sceneGroup (),
 	               sceneIndex (),
 	                   scenes (),
+	                 nodeName (this, getNameEntry (), getRenameButton ()),
 	                 nodePath (),
 	                fieldPath (),
 	                 realized (false)
 {
+	nodeName .name_changed () .addInterest (&OutlineEditor::set_name, this);
+
 	setup ();
 }
 
@@ -436,6 +439,44 @@ OutlineEditor::getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene,
 		       ? scene -> getTypeName () + " " + scene -> getName ()
 		       : scene -> getTypeName () + " »" + basename + "«";
 	}
+}
+
+void
+OutlineEditor::on_rename_activate ()
+{
+	if (nodePath .empty ())
+		return;
+
+	const auto iter = treeView -> get_model () -> get_iter (nodePath);
+
+	switch (treeView -> get_data_type (iter))
+	{
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
+		case OutlineIterType::X3DBaseNode:
+			break;
+		default:
+			return;
+	}
+
+	// Update node name composed widget.
+
+	nodeName .setNode (*static_cast <X3D::SFNode*> (treeView -> get_object (iter)));
+
+	// Display popover.
+
+	Gdk::Rectangle rectangle;
+
+	treeView -> get_cell_area (nodePath, *treeView -> getColumn (), rectangle);
+
+	getRenamePopover () .set_pointing_to (rectangle);
+	getRenamePopover () .popup ();
+}
+
+void
+OutlineEditor::set_name ()
+{
+	getRenamePopover () .popdown ();
 }
 
 void
@@ -1470,6 +1511,13 @@ OutlineEditor::selectNode (const double x, const double y)
 
 	const bool isNode = not inPrototypeInstance () and (isProtoNode or isLocalNode) and isBaseNode;
 
+	// Common
+
+	getRenameMenuItem () .set_visible ((isExternProto or isPrototype or isNode) and inScene);
+	getCommonSeparator () .set_visible (getRenameMenuItem () .get_visible ());
+
+	// Clipboard
+
 	getCutMenuItem ()   .set_visible (isNode);
 	getCopyMenuItem ()  .set_visible (isNode);
 	getPasteMenuItem () .set_visible (isNode or isExecutionContext or nodePath .empty ());
@@ -1478,6 +1526,8 @@ OutlineEditor::selectNode (const double x, const double y)
 	getClipboardSeparator () .set_visible (getCutMenuItem ()   .get_visible () or
                                           getCopyMenuItem ()  .get_visible () or
                                           getPasteMenuItem () .get_visible ());
+
+	// Proto Edit
 
 	getSetAsCurrentSceneMenuItem () .set_visible (((isExternProto or isInlineNode) and isCompletelyLoaded) or isPrototype or isPrototypeInstance);
 	getCreateInstanceMenuItem ()    .set_visible ((isExternProto or isPrototype) and not inPrototypeInstance () and isLocalNode);
@@ -1488,6 +1538,8 @@ OutlineEditor::selectNode (const double x, const double y)
                                       getCreateInstanceMenuItem ()    .get_visible () or
                                       getReloadMenuItem ()            .get_visible () or
 	                                   getUpdateInstancesMenuItem ()   .get_visible ());
+
+	// Node Edit
 
 	getRemoveMenuItem ()            .set_visible (isNode);
 	getUnlinkCloneMenuItem ()       .set_visible (isNode and isCloned);

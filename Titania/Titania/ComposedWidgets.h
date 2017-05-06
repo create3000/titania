@@ -54,6 +54,7 @@
 #include "ComposedWidgets/MFColorButton.h"
 #include "ComposedWidgets/MFColorRGBAButton.h"
 #include "ComposedWidgets/MFStringComboBoxText.h"
+#include "ComposedWidgets/MFStringURLWidget.h"
 #include "ComposedWidgets/MFStringWidget.h"
 #include "ComposedWidgets/NameEntry.h"
 #include "ComposedWidgets/SFColorButton.h"

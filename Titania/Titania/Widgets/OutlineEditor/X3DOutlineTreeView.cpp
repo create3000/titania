@@ -512,7 +512,11 @@ X3DOutlineTreeView::set_rootNodes ()
 		size_t i = 0;
 
 		for (auto & externProto : executionContext -> getExternProtoDeclarations ())
-			get_model () -> append (OutlineIterType::ExternProtoDeclaration, externProto, i ++);
+		{
+			const auto iter = get_model () -> append (OutlineIterType::ExternProtoDeclaration, externProto, i ++);
+
+			treeObserver -> watch_child (iter, get_model () -> get_path (iter));
+		}
 	}
 
 	// Prototypes
@@ -524,7 +528,11 @@ X3DOutlineTreeView::set_rootNodes ()
 		size_t i = 0;
 
 		for (auto & prototype : executionContext -> getProtoDeclarations ())
-			get_model () -> append (OutlineIterType::ProtoDeclaration, prototype, i ++);
+		{
+			const auto iter = get_model () -> append (OutlineIterType::ProtoDeclaration, prototype, i ++);
+
+			treeObserver -> watch_child (iter, get_model () -> get_path (iter));
+		}
 	}
 
 	// Root nodes
@@ -555,7 +563,11 @@ X3DOutlineTreeView::set_rootNodes ()
 		get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Imported Nodes")));
 
 		for (auto & importedNode : executionContext -> getImportedNodes ())
-			get_model () -> append (OutlineIterType::ImportedNode, importedNode .second);
+		{
+			const auto iter = get_model () -> append (OutlineIterType::ImportedNode, importedNode .second);
+
+			treeObserver -> watch_child (iter, get_model () -> get_path (iter));
+		}
 	}
 
 	// Exported nodes
@@ -571,7 +583,11 @@ X3DOutlineTreeView::set_rootNodes ()
 				get_model () -> append (OutlineIterType::Separator, new OutlineSeparator (executionContext, _ ("Exported Nodes")));
 
 				for (auto & exportedNode : scene -> getExportedNodes ())
-					get_model () -> append (OutlineIterType::ExportedNode, exportedNode .second);
+				{
+					const auto iter = get_model () -> append (OutlineIterType::ExportedNode, exportedNode .second);
+
+					treeObserver -> watch_child (iter, get_model () -> get_path (iter));
+				}
 			}
 		}
 	}

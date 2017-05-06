@@ -53,6 +53,7 @@
 #include "OutlineTreeModel.h"
 #include "X3DOutlineTreeView.h"
 
+#include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 
@@ -205,10 +206,14 @@ OutlineTreeObserver::watch_child (const Gtk::TreeModel::iterator & iter, const G
 		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::X3DBaseNode:
 		{
-			const auto & sfnode = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto & sfnode        = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   protoInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
 
 			if (sfnode)
 				sfnode -> name_changed () .addInterest (&OutlineTreeObserver::on_row_changed, this, path);
+
+			if (protoInstance)
+				protoInstance -> typeName_changed () .addInterest (&OutlineTreeObserver::on_row_changed, this, path);
 
 			break;
 		}
@@ -323,9 +328,10 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 		}
 		case OutlineIterType::X3DBaseNode:
 		{
-			const auto & sfnode     = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
-			const auto   inlineNode = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
-			const auto   urlObject  = dynamic_cast <X3D::X3DUrlObject*> (sfnode .getValue ());
+			const auto & sfnode        = *static_cast <X3D::SFNode*> (treeView -> get_object (iter));
+			const auto   protoInstance = dynamic_cast <X3D::X3DPrototypeInstance*> (sfnode .getValue ());
+			const auto   inlineNode    = dynamic_cast <X3D::Inline*> (sfnode .getValue ());
+			const auto   urlObject     = dynamic_cast <X3D::X3DUrlObject*> (sfnode .getValue ());
 
 			if (sfnode)
 			{
@@ -339,6 +345,9 @@ OutlineTreeObserver::unwatch_child (const Gtk::TreeModel::iterator & iter, const
 
 				sfnode -> fields_changed () .removeInterest (&OutlineTreeObserver::toggle_path, this);
 			}
+
+			if (protoInstance)
+				protoInstance -> typeName_changed () .removeInterest (&OutlineTreeObserver::on_row_changed, this);
 
 			if (inlineNode)
 				inlineNode -> getInternalScene () .removeInterest (&OutlineTreeObserver::toggle_path, this);
@@ -381,11 +390,11 @@ OutlineTreeObserver::on_row_has_child_toggled (const Gtk::TreeModel::Path & path
 void
 OutlineTreeObserver::on_row_changed (const Gtk::TreeModel::Path & path)
 {
-	//__LOG__ << X3D::SFTime (X3D::SFTime::now ()) << std::endl;
+	//__LOG__ << X3D::SFTime (X3D::SFTime::now ()) << " : " << path .to_string () << std::endl;
 
 	//treeView -> get_model () -> row_changed (path, treeView -> get_model () -> get_iter (path));
 
-	Glib::signal_timeout () .connect_once (sigc::bind (sigc::mem_fun (*this, &OutlineTreeObserver::on_row_changed_impl), path), 0);
+	Glib::signal_idle () .connect_once (sigc::bind (sigc::mem_fun (*this, &OutlineTreeObserver::on_row_changed_impl), path), Glib::PRIORITY_HIGH_IDLE);
 }
 
 void

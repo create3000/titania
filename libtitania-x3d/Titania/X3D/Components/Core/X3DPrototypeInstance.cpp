@@ -74,15 +74,17 @@ X3DPrototypeInstance::X3DPrototypeInstance (X3DExecutionContext* const execution
 	            X3DNode (),
 	X3DExecutionContext (),
 	          protoNode (p_protoNode),
+	     typeNameOutput (),
 	               live (true)
 {
 	addType (X3DConstants::X3DPrototypeInstance);
 
 	addField (inputOutput, "metadata", metadata ());
 
-	addChildObjects (getRootNodes (), protoNode, live);
+	addChildObjects (getRootNodes (), protoNode, typeNameOutput, live);
 
 	protoNode -> addInstance (this);
+	protoNode -> name_changed () .addInterest (typeNameOutput);
 
 	for (const auto & userDefinedField : protoNode -> getUserDefinedFields ())
 	{
@@ -366,11 +368,17 @@ void
 X3DPrototypeInstance::setProtoNode (X3DProtoDeclarationNode* const value)
 {
 	if (protoNode)
+	{
 		protoNode -> removeInstance (this);
+		protoNode -> name_changed () .removeInterest (typeNameOutput);
+	}
 
 	protoNode = value;
 
 	protoNode -> addInstance (this);
+	protoNode -> name_changed () .addInterest (typeNameOutput);
+
+	typeNameOutput = getCurrentTime ();
 
 	update ();
 }

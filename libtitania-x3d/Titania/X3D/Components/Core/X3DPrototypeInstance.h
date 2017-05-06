@@ -92,6 +92,10 @@ public:
 	getTypeName () const
 	throw (Error <DISPOSED>) final override;
 
+	const SFTime &
+	typeName_changed () const
+	{ return typeNameOutput; }
+
 	virtual
 	const std::string &
 	getContainerField () const
@@ -284,6 +288,7 @@ private:
 	///  @name Members
 
 	X3DProtoDeclarationNodePtr protoNode;
+	SFTime                     typeNameOutput;
 	SFBool                     live;
 
 };

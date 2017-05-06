@@ -66,21 +66,25 @@ namespace puck {
 PrototypeEditor::PrototypeEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DPrototypeEditorInterface (get_ui ("Editors/PrototypeEditor.glade")),
-	       nodePropertiesEditor (new NodePropertiesEditor (browserWindow)),
-	                        url (new MFStringURLWidget (this,
+	                   nodeName (this, getNameEntry (), getRenameButton ()),
+	                        url (this,
 	                             getURLTreeView (),
 	                             getURLCellRendererText (),
 	                             getURLAddButton (),
 	                             getURLRemoveButton (),
 	                             getURLReloadButton (),
 	                             getURLChooserColumn (),
-	                             "url")),
+	                             "url"),
+	       nodePropertiesEditor (new NodePropertiesEditor (browserWindow)),
 	                  nodeIndex (new NodeIndex (browserWindow)),
 	           executionContext (),
 	                  protoNode (),
 							  urlNode (new X3D::FieldSet (getMasterBrowser ()))
 {
 	addChildObjects (executionContext, protoNode, urlNode);
+
+	nodeName .name_changed () .addInterest (&PrototypeEditor::set_name,                 this);
+	nodeName .name_changed () .addInterest (&PrototypeEditor::on_create_prototype_menu, this);
 
 	urlNode -> hasEvents (false);
 	urlNode -> setup ();
@@ -144,8 +148,9 @@ PrototypeEditor::set_executionContext ()
 
 	nodePropertiesEditor -> X3DUserDefinedFieldsEditor::setNode (nullptr);
 
+	nodeName .setNode (nullptr);
+	url .setNodes ({ });
 	urlNode -> removeUserDefinedField ("url");
-	url -> setNodes ({ });
 	nodeIndex -> setProto (nullptr);
 }
 
@@ -195,18 +200,18 @@ PrototypeEditor::on_create_prototype_menu ()
 void
 PrototypeEditor::set_prototype (const X3D::X3DProtoDeclarationNodePtr & value)
 {
+	if (protoNode)
+		protoNode -> name_changed () .removeInterest (&PrototypeEditor::set_name, this);
+
 	protoNode = value;
+
+	//const auto editText   = protoNode -> isExternproto () ? _ ("Edit Extern Protoype Properties") : _ ("Edit Protoype Properties");
+	//getEditLabel () .set_text (editText);
 
 	// Header
 
 	getEditPrototypeImage () .set_sensitive (true);
 	getEditPrototypeImage () .set (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_BUTTON);
-
-	//const auto editText   = protoNode -> isExternproto () ? _ ("Edit Extern Protoype Properties") : _ ("Edit Protoype Properties");
-	const auto headerText = protoNode -> isExternproto () ? _ ("Extern Prototype »%s«") : _ ("Prototype »%s«");
-
-	//getEditLabel ()   .set_text (editText);
-	getHeaderBar () .set_subtitle (basic::sprintf (headerText, protoNode -> getName () .c_str ()));
 
 	// Create instance button
 
@@ -218,13 +223,16 @@ PrototypeEditor::set_prototype (const X3D::X3DProtoDeclarationNodePtr & value)
 
 	getPrototypeImage () .set_sensitive (true);
 	getPrototypeImage () .set (Gtk::StockID (protoNode -> isExternproto () ? "ExternProto" : "Prototype"), Gtk::ICON_SIZE_BUTTON);
-	getPrototypeLabel () .set_text (protoNode -> getName ());
 
 	// Name entry and Interface
 
-	getNameEntry () .set_text (protoNode -> getName ());
-
 	nodePropertiesEditor -> X3DUserDefinedFieldsEditor::setNode (protoNode);
+
+	// Name
+
+	protoNode -> name_changed () .addInterest (&PrototypeEditor::set_name, this);
+	nodeName .setNode (protoNode);
+	set_name ();
 
 	// URL
 
@@ -236,13 +244,13 @@ PrototypeEditor::set_prototype (const X3D::X3DProtoDeclarationNodePtr & value)
 
 		urlNode -> addUserDefinedField (urlObject -> url () .getAccessType (), "url", &urlObject -> url ());
 
-		url -> setNodes ({ urlNode });
+		url .setNodes ({ urlNode });
 	}
 	else
 	{
 		urlNode -> removeUserDefinedField ("url");
 
-		url -> setNodes ({ });
+		url .setNodes ({ });
 	}
 
 	nodeIndex -> setProto (protoNode);
@@ -281,71 +289,18 @@ PrototypeEditor::on_create_instance_clicked ()
 }
 
 void
-PrototypeEditor::on_name_insert_text (const Glib::ustring & text, int* position)
-{
-	validateIdOnInsert (getNameEntry (), text, *position);
-}
-
-void
-PrototypeEditor::on_name_delete_text (int start_pos, int end_pos)
-{
-	validateIdOnDelete (getNameEntry (), start_pos, end_pos);
-}
-
-bool
-PrototypeEditor::on_name_key_press_event (GdkEventKey* event)
-{
-	switch (event -> keyval)
-	{
-		case GDK_KEY_Return:
-		case GDK_KEY_KP_Enter:
-		{
-			on_rename_clicked ();
-			return true;
-		}
-		case GDK_KEY_Escape:
-		{
-			getNameEntry () .set_text (protoNode -> getName ());
-			getRenameButton () .grab_focus ();
-			return true;
-		}
-		default:
-			break;
-	}
-
-	return false;
-}
-
-void
-PrototypeEditor::on_rename_clicked ()
-{
-	const auto name = getNameEntry () .get_text ();
-
-	if (protoNode -> isExternproto ())
-	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Rename Extern Prototype To »%s«", name .c_str ())));
-
-		X3D::X3DEditor::updateExternProtoDeclaration (getCurrentContext (), name, X3D::ExternProtoDeclarationPtr (protoNode), undoStep);
-
-		getBrowserWindow () -> addUndoStep (undoStep);
-	}
-	else
-	{
-		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Rename Prototype To »%s«", name .c_str ())));
-
-		X3D::X3DEditor::updateProtoDeclaration (getCurrentContext (), name, X3D::ProtoDeclarationPtr (protoNode), undoStep);
-
-		getBrowserWindow () -> addUndoStep (undoStep);
-	}
-		
-	on_create_prototype_menu ();
-	set_prototype (protoNode);
-}
-
-void
 PrototypeEditor::on_update_instances_clicked ()
 {
 	protoNode -> requestUpdateInstances ();
+}
+
+void
+PrototypeEditor::set_name ()
+{
+	const auto headerText = protoNode -> isExternproto () ? _ ("Extern Prototype »%s«") : _ ("Prototype »%s«");
+
+	getHeaderBar () .set_subtitle (basic::sprintf (headerText, protoNode -> getName () .c_str ()));
+	getPrototypeLabel () .set_text (protoNode -> getName ());
 }
 
 PrototypeEditor::~PrototypeEditor ()

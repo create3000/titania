@@ -72,7 +72,13 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PreviousSceneButton", m_PreviousSceneButton);
 	m_builder -> get_widget ("NextSceneButton", m_NextSceneButton);
 	m_builder -> get_widget ("ScrolledWindow", m_ScrolledWindow);
+	m_builder -> get_widget ("RenamePopover", m_RenamePopover);
+	m_builder -> get_widget ("NameBox", m_NameBox);
+	m_builder -> get_widget ("NameEntry", m_NameEntry);
+	m_builder -> get_widget ("RenameButton", m_RenameButton);
 	m_builder -> get_widget ("PopupMenu", m_PopupMenu);
+	m_builder -> get_widget ("RenameMenuItem", m_RenameMenuItem);
+	m_builder -> get_widget ("CommonSeparator", m_CommonSeparator);
 	m_builder -> get_widget ("CutMenuItem", m_CutMenuItem);
 	m_builder -> get_widget ("CopyMenuItem", m_CopyMenuItem);
 	m_builder -> get_widget ("PasteMenuItem", m_PasteMenuItem);
@@ -133,6 +139,9 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 
 	// Connect object Gtk::ScrolledWindow with id 'ScrolledWindow'.
 	m_ScrolledWindow -> signal_button_press_event () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_button_press_event));
+
+	// Connect object Gtk::MenuItem with id 'RenameMenuItem'.
+	m_RenameMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_rename_activate));
 
 	// Connect object Gtk::ImageMenuItem with id 'CutMenuItem'.
 	m_CutMenuItem -> signal_activate () .connect (sigc::mem_fun (*this, &X3DOutlineEditorInterface::on_cut_activate));

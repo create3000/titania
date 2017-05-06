@@ -51,6 +51,7 @@
 #ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
 #define __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
 
+#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DOutlineEditorInterface.h"
 
 namespace titania {
@@ -139,6 +140,15 @@ private:
 
 	std::string
 	getSceneMenuLabelText (const X3D::X3DExecutionContextPtr & scene, const bool) const;
+
+	// Common
+
+	virtual
+	void
+	on_rename_activate () final override;
+
+	void
+	set_name ();
 
 	// Clipboard
 
@@ -357,6 +367,7 @@ private:
 	std::map <X3D::X3DExecutionContextPtr, size_t> sceneIndex;
 	std::deque <MenuItemPair>                      scenes;
 
+	NameEntry     nodeName;
 	Gtk::TreePath nodePath;
 	Gtk::TreePath fieldPath;
 	bool          realized;

@@ -138,9 +138,33 @@ public:
 	getScrolledWindow () const
 	{ return *m_ScrolledWindow; }
 
+	Gtk::Popover &
+	getRenamePopover () const
+	{ return *m_RenamePopover; }
+
+	Gtk::Box &
+	getNameBox () const
+	{ return *m_NameBox; }
+
+	Gtk::Entry &
+	getNameEntry () const
+	{ return *m_NameEntry; }
+
+	Gtk::Button &
+	getRenameButton () const
+	{ return *m_RenameButton; }
+
 	Gtk::Menu &
 	getPopupMenu () const
 	{ return *m_PopupMenu; }
+
+	Gtk::MenuItem &
+	getRenameMenuItem () const
+	{ return *m_RenameMenuItem; }
+
+	Gtk::SeparatorMenuItem &
+	getCommonSeparator () const
+	{ return *m_CommonSeparator; }
 
 	Gtk::ImageMenuItem &
 	getCutMenuItem () const
@@ -362,6 +386,10 @@ public:
 
 	virtual
 	void
+	on_rename_activate () = 0;
+
+	virtual
+	void
 	on_cut_activate () = 0;
 
 	virtual
@@ -551,7 +579,13 @@ private:
 	Gtk::Button* m_PreviousSceneButton;
 	Gtk::Button* m_NextSceneButton;
 	Gtk::ScrolledWindow* m_ScrolledWindow;
+	Gtk::Popover* m_RenamePopover;
+	Gtk::Box* m_NameBox;
+	Gtk::Entry* m_NameEntry;
+	Gtk::Button* m_RenameButton;
 	Gtk::Menu* m_PopupMenu;
+	Gtk::MenuItem* m_RenameMenuItem;
+	Gtk::SeparatorMenuItem* m_CommonSeparator;
 	Gtk::ImageMenuItem* m_CutMenuItem;
 	Gtk::ImageMenuItem* m_CopyMenuItem;
 	Gtk::ImageMenuItem* m_PasteMenuItem;

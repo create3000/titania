@@ -192,9 +192,6 @@
                   <object class="GtkEntry" id="NameEntry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <signal name="delete-text" handler="on_name_delete_text" after="yes" swapped="no"/>
-                    <signal name="insert-text" handler="on_name_insert_text" after="yes" swapped="no"/>
-                    <signal name="key-press-event" handler="on_name_key_press_event" after="yes" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -208,7 +205,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="on_rename_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

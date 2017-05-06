@@ -222,22 +222,6 @@ public:
 
 	virtual
 	void
-	on_name_delete_text (int start_pos, int end_pos) = 0;
-
-	virtual
-	void
-	on_name_insert_text (const Glib::ustring & text, int* position) = 0;
-
-	virtual
-	bool
-	on_name_key_press_event (GdkEventKey* event) = 0;
-
-	virtual
-	void
-	on_rename_clicked () = 0;
-
-	virtual
-	void
 	on_update_instances_clicked () = 0;
 
 	///  @name Destruction

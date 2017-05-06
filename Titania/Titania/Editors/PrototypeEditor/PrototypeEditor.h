@@ -51,13 +51,13 @@
 #ifndef __TITANIA_EDITORS_PROTOTYPE_INSTANCE_DIALOG_PROTOTYPE_INSTANCE_DIALOG_H__
 #define __TITANIA_EDITORS_PROTOTYPE_INSTANCE_DIALOG_PROTOTYPE_INSTANCE_DIALOG_H__
 
+#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DPrototypeEditorInterface.h"
 
 namespace titania {
 namespace puck {
 
 class NodePropertiesEditor;
-class MFStringURLWidget;
 class NodeIndex;
 
 class PrototypeEditor :
@@ -106,29 +106,17 @@ private:
 	on_create_instance_clicked () final override;
 
 	virtual
-	bool
-	on_name_key_press_event (GdkEventKey*);
-
-	virtual
-	void
-	on_name_insert_text (const Glib::ustring &, int*) final override;
-
-	virtual
-	void
-	on_name_delete_text (int, int) final override;
-
-	virtual
-	void
-	on_rename_clicked () final override;
-
-	virtual
 	void
 	on_update_instances_clicked () final override;
 
+	void
+	set_name ();
+
 	///  @name Members
 
+	NameEntry                              nodeName;
+	MFStringURLWidget                      url;
 	std::unique_ptr <NodePropertiesEditor> nodePropertiesEditor;
-	std::unique_ptr <MFStringURLWidget>    url;
 	std::unique_ptr <NodeIndex>            nodeIndex;
 
 	X3D::X3DExecutionContextPtr                executionContext;

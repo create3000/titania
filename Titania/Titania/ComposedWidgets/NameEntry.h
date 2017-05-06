@@ -76,6 +76,10 @@ public:
 	getNode ()
 	{ return node; }
 
+	const X3D::SFTime &
+	name_changed ()
+	{ return nameOutput; }
+
 	///  @name Destruction
 
 	virtual
@@ -107,6 +111,7 @@ private:
 	Gtk::Entry &  entry;
 	Gtk::Button & button;
 	X3D::SFNode   node;
+	X3D::SFTime   nameOutput;
 
 };
 
