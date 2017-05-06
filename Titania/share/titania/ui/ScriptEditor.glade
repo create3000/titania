@@ -264,7 +264,7 @@
                           <object class="GtkToolButton" id="NewButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Create new script node</property>
+                            <property name="tooltip_text" translatable="yes">Create new script node.</property>
                             <property name="label" translatable="yes">New</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">gtk-new</property>

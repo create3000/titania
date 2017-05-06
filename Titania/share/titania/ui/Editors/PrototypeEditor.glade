@@ -51,7 +51,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Create Instance</property>
+                    <property name="tooltip_text" translatable="yes">Create new prototype.</property>
                     <property name="always_show_image">True</property>
                     <signal name="clicked" handler="on_create_proto_popup_clicked" swapped="no"/>
                     <child>
@@ -73,7 +73,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="tooltip_text" translatable="yes">Create Instance</property>
+                    <property name="tooltip_text" translatable="yes">Create new instance.</property>
                     <property name="image">image7</property>
                     <property name="always_show_image">True</property>
                     <signal name="clicked" handler="on_create_instance_clicked" swapped="no"/>

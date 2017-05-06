@@ -299,7 +299,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Remove this viewpoint node</property>
+                            <property name="tooltip_text" translatable="yes">Create new viewpoint node.</property>
                             <signal name="clicked" handler="on_new_viewpoint_popup_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image2">
@@ -320,7 +320,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Remove this viewpoint node</property>
+                            <property name="tooltip_text" translatable="yes">Remove this viewpoint node.</property>
                             <signal name="clicked" handler="on_remove_viewpoint_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image4">

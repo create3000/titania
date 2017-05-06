@@ -90,7 +90,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Remove this background node</property>
+                            <property name="tooltip_text" translatable="yes">Create new background.</property>
                             <signal name="clicked" handler="on_new_background_popup_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image24">
@@ -111,7 +111,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Remove this background node</property>
+                            <property name="tooltip_text" translatable="yes">Remove this background node.</property>
                             <signal name="clicked" handler="on_remove_background_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image25">
