@@ -116,13 +116,10 @@ ScriptEditor::initialize ()
 
 	// Node index
 
-	#ifdef TITANIA_FEATURE
-	nodeIndex -> setDisplayProtoNodes (true);
-	#endif
-
 	nodeIndex -> getNode () .addInterest (&ScriptEditor::set_node, this);
 	nodeIndex -> reparent (getNodeIndexBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
+	nodeIndex -> setDisplayProtoNodes (true);
 	nodeIndex -> setTypes ({ X3D::X3DConstants::Script,
 	                         X3D::X3DConstants::ShaderPart,
 	                         X3D::X3DConstants::ShaderProgram });

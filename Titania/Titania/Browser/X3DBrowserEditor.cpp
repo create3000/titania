@@ -258,7 +258,6 @@ X3DBrowserEditor::set_executionContext ()
 
 	getMetaData ();
 
-	#ifdef TITANIA_FEATURE
 	// Restore context or save context path in History.
 
 	const auto masterScene = getCurrentContext () -> getMasterScene ();
@@ -283,7 +282,6 @@ X3DBrowserEditor::set_executionContext ()
 
 		getHistory () -> setContextPath (masterScene -> getWorldURL (), contextPath);
 	}
-	#endif
 
 	executionContext = getCurrentContext ();
 }

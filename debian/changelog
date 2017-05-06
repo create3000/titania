@@ -1,3 +1,9 @@
+titania (3.0.4) zesty; urgency=medium
+
+  * Implemented proto editing in Outline Editor.
+ 
+ -- Holger Seelig <holger@qualle>  Sat, 06 May 2017 03:26:50 +0200
+
 titania (3.0.3) zesty; urgency=medium
 
   * Bug fixes.
