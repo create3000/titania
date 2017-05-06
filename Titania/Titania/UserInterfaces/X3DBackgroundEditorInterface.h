@@ -186,17 +186,17 @@ public:
 	getBottomURLCellrendererPixbuf () const
 	{ return m_BottomURLCellrendererPixbuf; }
 
-	Gtk::Menu &
-	getNewBackgroundMenu () const
-	{ return *m_NewBackgroundMenu; }
+	Gtk::Popover &
+	getNewBackgroundPopover () const
+	{ return *m_NewBackgroundPopover; }
 
-	Gtk::MenuItem &
-	getNewBackgroundMenuItem () const
-	{ return *m_NewBackgroundMenuItem; }
+	Gtk::Button &
+	getNewBackgroundButton () const
+	{ return *m_NewBackgroundButton; }
 
-	Gtk::MenuItem &
-	getNewTextureBackgroundMenuItem () const
-	{ return *m_NewTextureBackgroundMenuItem; }
+	Gtk::Button &
+	getNewTextureBackgroundButton () const
+	{ return *m_NewTextureBackgroundButton; }
 
 	Gtk::Window &
 	getWindow () const
@@ -217,6 +217,10 @@ public:
 	Gtk::Box &
 	getActionBox () const
 	{ return *m_ActionBox; }
+
+	Gtk::Button &
+	getNewBackgroundPopupButton () const
+	{ return *m_NewBackgroundPopupButton; }
 
 	Gtk::Button &
 	getRemoveBackgroundButton () const
@@ -550,11 +554,15 @@ public:
 
 	virtual
 	void
-	on_new_background_activated () = 0;
+	on_new_background_clicked () = 0;
 
 	virtual
 	void
-	on_new_texture_background_activated () = 0;
+	on_new_texture_background_clicked () = 0;
+
+	virtual
+	void
+	on_new_background_popup_clicked () = 0;
 
 	virtual
 	void
@@ -607,14 +615,15 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText> m_BottomURLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_BottomURLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_BottomURLCellrendererPixbuf;
-	Gtk::Menu* m_NewBackgroundMenu;
-	Gtk::MenuItem* m_NewBackgroundMenuItem;
-	Gtk::MenuItem* m_NewTextureBackgroundMenuItem;
+	Gtk::Popover* m_NewBackgroundPopover;
+	Gtk::Button* m_NewBackgroundButton;
+	Gtk::Button* m_NewTextureBackgroundButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Paned* m_Paned;
 	Gtk::Box* m_BackgroundListBox;
 	Gtk::Box* m_ActionBox;
+	Gtk::Button* m_NewBackgroundPopupButton;
 	Gtk::Button* m_RemoveBackgroundButton;
 	Gtk::Expander* m_BackgroundExpander;
 	Gtk::Grid* m_BackgroundBox;

@@ -119,11 +119,15 @@ private:
 
 	virtual
 	void
-	on_new_background_activated () final override;
+	on_new_background_popup_clicked () final override;
 
 	virtual
 	void
-	on_new_texture_background_activated () final override;
+	on_new_background_clicked () final override;
+
+	virtual
+	void
+	on_new_texture_background_clicked () final override;
 
 	virtual
 	void

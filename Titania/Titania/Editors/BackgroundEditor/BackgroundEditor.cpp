@@ -270,8 +270,16 @@ BackgroundEditor::on_ground_color_index_changed ()
  */
 
 void
-BackgroundEditor::on_new_background_activated ()
+BackgroundEditor::on_new_background_popup_clicked ()
 {
+	getNewBackgroundPopover () .popup ();
+}
+
+void
+BackgroundEditor::on_new_background_clicked ()
+{
+	getNewBackgroundPopover () .popdown ();
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Background"));
 	const X3D::X3DPtr <X3D::X3DBackgroundNode> node (getBrowserWindow () -> createNode ("Background", undoStep));
 	node -> set_bind () = true;
@@ -281,8 +289,10 @@ BackgroundEditor::on_new_background_activated ()
 }
 
 void
-BackgroundEditor::on_new_texture_background_activated ()
+BackgroundEditor::on_new_texture_background_clicked ()
 {
+	getNewBackgroundPopover () .popdown ();
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New TextureBackground"));
 	const X3D::X3DPtr <X3D::X3DBackgroundNode> node (getBrowserWindow () -> createNode ("TextureBackground", undoStep));
 	node -> set_bind () = true;

@@ -106,26 +106,6 @@ public:
 	getURLCellrendererPixbuf () const
 	{ return m_URLCellrendererPixbuf; }
 
-	Gtk::Popover &
-	getCreateProtoPopover () const
-	{ return *m_CreateProtoPopover; }
-
-	Gtk::Button &
-	getNewProtoButton () const
-	{ return *m_NewProtoButton; }
-
-	Gtk::Label &
-	getCreateExternProtoButton () const
-	{ return *m_CreateExternProtoButton; }
-
-	Gtk::Button &
-	getNewExternProtoButton () const
-	{ return *m_NewExternProtoButton; }
-
-	Gtk::Label &
-	getCreatePrototypeButton () const
-	{ return *m_CreatePrototypeButton; }
-
 	Gtk::Menu &
 	getPrototypeMenu () const
 	{ return *m_PrototypeMenu; }
@@ -218,15 +198,27 @@ public:
 	getUpdateInstancesButton () const
 	{ return *m_UpdateInstancesButton; }
 
+	Gtk::Popover &
+	getCreateProtoPopover () const
+	{ return *m_CreateProtoPopover; }
+
+	Gtk::Button &
+	getNewProtoButton () const
+	{ return *m_NewProtoButton; }
+
+	Gtk::Label &
+	getCreateExternProtoButton () const
+	{ return *m_CreateExternProtoButton; }
+
+	Gtk::Button &
+	getNewExternProtoButton () const
+	{ return *m_NewExternProtoButton; }
+
+	Gtk::Label &
+	getCreatePrototypeButton () const
+	{ return *m_CreatePrototypeButton; }
+
 	///  @name Signal handlers
-
-	virtual
-	void
-	on_create_externproto_clicked () = 0;
-
-	virtual
-	void
-	on_create_proto_clicked () = 0;
 
 	virtual
 	void
@@ -239,6 +231,14 @@ public:
 	virtual
 	void
 	on_update_instances_clicked () = 0;
+
+	virtual
+	void
+	on_create_externproto_clicked () = 0;
+
+	virtual
+	void
+	on_create_proto_clicked () = 0;
 
 	///  @name Destruction
 
@@ -267,11 +267,6 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText> m_URLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_URLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;
-	Gtk::Popover* m_CreateProtoPopover;
-	Gtk::Button* m_NewProtoButton;
-	Gtk::Label* m_CreateExternProtoButton;
-	Gtk::Button* m_NewExternProtoButton;
-	Gtk::Label* m_CreatePrototypeButton;
 	Gtk::Menu* m_PrototypeMenu;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
@@ -295,6 +290,11 @@ private:
 	Gtk::Button* m_URLReloadButton;
 	Gtk::Box* m_InstancesBox;
 	Gtk::Button* m_UpdateInstancesButton;
+	Gtk::Popover* m_CreateProtoPopover;
+	Gtk::Button* m_NewProtoButton;
+	Gtk::Label* m_CreateExternProtoButton;
+	Gtk::Button* m_NewExternProtoButton;
+	Gtk::Label* m_CreatePrototypeButton;
 
 };
 

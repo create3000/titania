@@ -12,26 +12,6 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkMenu" id="NewBackgroundMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="NewBackgroundMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Background</property>
-        <signal name="activate" handler="on_new_background_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="NewTextureBackgroundMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">TextureBackground</property>
-        <signal name="activate" handler="on_new_texture_background_activated" swapped="no"/>
-      </object>
-    </child>
-  </object>
   <object class="GtkAdjustment" id="SkyAngleAdjustment">
     <property name="upper">1.5700000000000001</property>
     <property name="step_increment">0.01</property>
@@ -106,12 +86,12 @@
                         <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
-                          <object class="GtkMenuButton" id="menubutton1">
+                          <object class="GtkButton" id="NewBackgroundPopupButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Create new background node</property>
-                            <property name="popup">NewBackgroundMenu</property>
+                            <property name="tooltip_text" translatable="yes">Remove this background node</property>
+                            <signal name="clicked" handler="on_new_background_popup_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image24">
                                 <property name="visible">True</property>
@@ -2666,6 +2646,62 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkPopover" id="NewBackgroundPopover">
+    <property name="can_focus">False</property>
+    <property name="border_width">8</property>
+    <property name="relative_to">NewBackgroundPopupButton</property>
+    <property name="position">bottom</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkButton" id="NewBackgroundButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_new_background_clicked" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Create Background</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="NewTextureBackgroundButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_new_texture_background_clicked" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Create TextureBackground</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
