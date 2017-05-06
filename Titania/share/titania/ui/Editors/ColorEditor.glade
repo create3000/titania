@@ -1,76 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gtk+" version="3.12"/>
   <object class="GtkAdjustment" id="ColorAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
-  </object>
-  <object class="GtkMenu" id="ShadingMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="tooltip_text" translatable="yes">Shading</property>
-    <child>
-      <object class="GtkRadioMenuItem" id="PhongMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">P_hong</property>
-        <property name="use_underline">True</property>
-        <property name="draw_as_radio">True</property>
-        <property name="group">GouraudMenuItem</property>
-        <signal name="activate" handler="on_phong_activate" swapped="no"/>
-        <accelerator key="5" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRadioMenuItem" id="GouraudMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Gouraud</property>
-        <property name="use_underline">True</property>
-        <property name="active">True</property>
-        <property name="draw_as_radio">True</property>
-        <signal name="activate" handler="on_gouraud_activate" swapped="no"/>
-        <accelerator key="4" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRadioMenuItem" id="FlatMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Flat</property>
-        <property name="use_underline">True</property>
-        <property name="draw_as_radio">True</property>
-        <property name="group">GouraudMenuItem</property>
-        <signal name="activate" handler="on_flat_activate" swapped="no"/>
-        <accelerator key="3" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRadioMenuItem" id="WireFrameMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Wireframe</property>
-        <property name="use_underline">True</property>
-        <property name="draw_as_radio">True</property>
-        <property name="group">GouraudMenuItem</property>
-        <signal name="activate" handler="on_wireframe_activate" swapped="no"/>
-        <accelerator key="2" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkRadioMenuItem" id="PointSetMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Pointset</property>
-        <property name="use_underline">True</property>
-        <property name="draw_as_radio">True</property>
-        <property name="group">GouraudMenuItem</property>
-        <signal name="activate" handler="on_pointset_activate" swapped="no"/>
-        <accelerator key="1" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-      </object>
-    </child>
   </object>
   <object class="GtkImage" id="image8">
     <property name="visible">True</property>
@@ -318,13 +253,14 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkMenuToolButton" id="ShadingButton">
+                              <object class="GtkToolButton" id="ShadingButton">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="tooltip_text" translatable="yes">Select Shading.</property>
                                 <property name="label" translatable="yes">Shading</property>
                                 <property name="use_underline">True</property>
                                 <property name="stock_id">Shading</property>
+                                <signal name="clicked" handler="on_shading_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -716,6 +652,140 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkPopover" id="ShadingPopover">
+    <property name="can_focus">False</property>
+    <property name="border_width">8</property>
+    <property name="relative_to">ShadingButton</property>
+    <property name="position">bottom</property>
+    <property name="constrain_to">none</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkRadioButton" id="PhongButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <signal name="toggled" handler="on_phong_toggled" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Phong</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="GouraudButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">PhongButton</property>
+            <signal name="toggled" handler="on_gouraud_toggled" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Gouraud</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="FlatButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">PhongButton</property>
+            <signal name="toggled" handler="on_flat_toggled" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Flat</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="WireframeButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">PhongButton</property>
+            <signal name="toggled" handler="on_wireframe_toggled" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Wireframe</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="PointsetButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">PhongButton</property>
+            <signal name="toggled" handler="on_pointset_toggled" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Pointset</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>

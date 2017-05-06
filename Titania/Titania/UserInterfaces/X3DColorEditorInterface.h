@@ -98,29 +98,29 @@ public:
 	getColorAdjustment () const
 	{ return m_ColorAdjustment; }
 
-	Gtk::Menu &
-	getShadingMenu () const
-	{ return *m_ShadingMenu; }
+	Gtk::Popover &
+	getShadingPopover () const
+	{ return *m_ShadingPopover; }
 
-	Gtk::RadioMenuItem &
-	getPhongMenuItem () const
-	{ return *m_PhongMenuItem; }
+	Gtk::RadioButton &
+	getPhongButton () const
+	{ return *m_PhongButton; }
 
-	Gtk::RadioMenuItem &
-	getGouraudMenuItem () const
-	{ return *m_GouraudMenuItem; }
+	Gtk::RadioButton &
+	getGouraudButton () const
+	{ return *m_GouraudButton; }
 
-	Gtk::RadioMenuItem &
-	getFlatMenuItem () const
-	{ return *m_FlatMenuItem; }
+	Gtk::RadioButton &
+	getFlatButton () const
+	{ return *m_FlatButton; }
 
-	Gtk::RadioMenuItem &
-	getWireFrameMenuItem () const
-	{ return *m_WireFrameMenuItem; }
+	Gtk::RadioButton &
+	getWireframeButton () const
+	{ return *m_WireframeButton; }
 
-	Gtk::RadioMenuItem &
-	getPointSetMenuItem () const
-	{ return *m_PointSetMenuItem; }
+	Gtk::RadioButton &
+	getPointsetButton () const
+	{ return *m_PointsetButton; }
 
 	Gtk::Window &
 	getWindow () const
@@ -166,7 +166,7 @@ public:
 	getCheckerBoardButton () const
 	{ return *m_CheckerBoardButton; }
 
-	Gtk::MenuToolButton &
+	Gtk::ToolButton &
 	getShadingButton () const
 	{ return *m_ShadingButton; }
 
@@ -230,23 +230,23 @@ public:
 
 	virtual
 	void
-	on_phong_activate () = 0;
+	on_phong_toggled () = 0;
 
 	virtual
 	void
-	on_gouraud_activate () = 0;
+	on_gouraud_toggled () = 0;
 
 	virtual
 	void
-	on_flat_activate () = 0;
+	on_flat_toggled () = 0;
 
 	virtual
 	void
-	on_wireframe_activate () = 0;
+	on_wireframe_toggled () = 0;
 
 	virtual
 	void
-	on_pointset_activate () = 0;
+	on_pointset_toggled () = 0;
 
 	virtual
 	void
@@ -271,6 +271,10 @@ public:
 	virtual
 	void
 	on_checkerboard_toggled () = 0;
+
+	virtual
+	void
+	on_shading_clicked () = 0;
 
 	virtual
 	void
@@ -333,12 +337,12 @@ private:
 	std::string filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
-	Gtk::Menu* m_ShadingMenu;
-	Gtk::RadioMenuItem* m_PhongMenuItem;
-	Gtk::RadioMenuItem* m_GouraudMenuItem;
-	Gtk::RadioMenuItem* m_FlatMenuItem;
-	Gtk::RadioMenuItem* m_WireFrameMenuItem;
-	Gtk::RadioMenuItem* m_PointSetMenuItem;
+	Gtk::Popover* m_ShadingPopover;
+	Gtk::RadioButton* m_PhongButton;
+	Gtk::RadioButton* m_GouraudButton;
+	Gtk::RadioButton* m_FlatButton;
+	Gtk::RadioButton* m_WireframeButton;
+	Gtk::RadioButton* m_PointsetButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::ImageMenuItem* m_UndoMenuItem;
@@ -350,7 +354,7 @@ private:
 	Gtk::RadioToolButton* m_HandButton;
 	Gtk::RadioToolButton* m_ArrowButton;
 	Gtk::ToggleToolButton* m_CheckerBoardButton;
-	Gtk::MenuToolButton* m_ShadingButton;
+	Gtk::ToolButton* m_ShadingButton;
 	Gtk::ToggleToolButton* m_TextureButton;
 	Gtk::ToolButton* m_LookAtAllButton;
 	Gtk::ToggleToolButton* m_LookAtButton;

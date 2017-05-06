@@ -92,7 +92,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("RedoButton", m_RedoButton);
 	m_builder -> get_widget ("DirectOutputToggleButton", m_DirectOutputToggleButton);
 	m_builder -> get_widget ("MustEvaluateToggleButton", m_MustEvaluateToggleButton);
-	m_builder -> get_widget ("ShaderTypeMenuButton", m_ShaderTypeMenuButton);
+	m_builder -> get_widget ("ShaderTypeButton", m_ShaderTypeButton);
 	m_builder -> get_widget ("PreferencesButton", m_PreferencesButton);
 	m_builder -> get_widget ("NewScriptPopover", m_NewScriptPopover);
 	m_builder -> get_widget ("NewScriptButton", m_NewScriptButton);
@@ -149,7 +149,7 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_apply_clicked));
 	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_undo_clicked));
 	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_redo_clicked));
-	m_ShaderTypeMenuButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_shader_type_clicked));
+	m_ShaderTypeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_shader_type_clicked));
 	m_PreferencesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_preferences_clicked));
 
 	// Connect object Gtk::Button with id 'NewScriptButton'.

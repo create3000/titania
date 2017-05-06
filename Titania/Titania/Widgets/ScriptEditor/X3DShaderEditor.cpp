@@ -96,10 +96,10 @@ X3DShaderEditor::set_node (const X3D::SFNode & value)
 	
 			set_type ();
 	
-			getShaderTypeMenuButton () .set_visible (true);
+			getShaderTypeButton () .set_visible (true);
 		}
 		else
-			getShaderTypeMenuButton () .set_visible (false);
+			getShaderTypeButton () .set_visible (false);
 	}
 }
 
@@ -108,11 +108,11 @@ X3DShaderEditor::set_type ()
 {
 	try
 	{
-		getShaderTypeMenuButton () .set_stock_id (Gtk::StockID (shaderTypes .at (node -> getField <X3D::SFString> ("type"))));
+		getShaderTypeButton () .set_stock_id (Gtk::StockID (shaderTypes .at (node -> getField <X3D::SFString> ("type"))));
 	}
 	catch (const std::exception &)
 	{
-		getShaderTypeMenuButton () .set_stock_id (Gtk::StockID ("VertexShader"));
+		getShaderTypeButton () .set_stock_id (Gtk::StockID ("VertexShader"));
 	}
 }
 

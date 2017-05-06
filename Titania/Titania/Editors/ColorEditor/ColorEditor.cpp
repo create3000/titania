@@ -108,8 +108,6 @@ ColorEditor::ColorEditor (X3DBrowserWindow* const browserWindow) :
 
 	preview -> setAntialiasing (4);
 
-	getShadingButton () .set_menu (getShadingMenu ());
-
 	setup ();
 }
 
@@ -127,6 +125,8 @@ ColorEditor::initialize ()
 	selection -> setup ();
 
 	undoHistory .addInterest (&ColorEditor::set_undoHistory, this);
+
+	getGouraudButton () .set_active (true);
 }
 
 void
@@ -354,43 +354,50 @@ ColorEditor::on_checkerboard_toggled ()
 // Shading menu
 
 void
-ColorEditor::on_phong_activate ()
+ColorEditor::on_shading_clicked ()
 {
-	if (getPhongMenuItem () .get_active ())
-		on_shading_activate ("PHONG");
+	getShadingPopover () .popup ();
 }
 
 void
-ColorEditor::on_gouraud_activate ()
+ColorEditor::on_phong_toggled ()
 {
-	if (getGouraudMenuItem () .get_active ())
-		on_shading_activate ("GOURAUD");
+	if (getPhongButton () .get_active ())
+		on_shading_toggled ("PHONG");
 }
 
 void
-ColorEditor::on_flat_activate ()
+ColorEditor::on_gouraud_toggled ()
 {
-	if (getFlatMenuItem () .get_active ())
-		on_shading_activate ("FLAT");
+	if (getGouraudButton () .get_active ())
+		on_shading_toggled ("GOURAUD");
 }
 
 void
-ColorEditor::on_wireframe_activate ()
+ColorEditor::on_flat_toggled ()
 {
-	if (getWireFrameMenuItem () .get_active ())
-		on_shading_activate ("WIREFRAME");
+	if (getFlatButton () .get_active ())
+		on_shading_toggled ("FLAT");
 }
 
 void
-ColorEditor::on_pointset_activate ()
+ColorEditor::on_wireframe_toggled ()
 {
-	if (getPointSetMenuItem () .get_active ())
-		on_shading_activate ("POINTSET");
+	if (getWireframeButton () .get_active ())
+		on_shading_toggled ("WIREFRAME");
 }
 
 void
-ColorEditor::on_shading_activate (const std::string & value)
+ColorEditor::on_pointset_toggled ()
 {
+	if (getPointsetButton () .get_active ())
+		on_shading_toggled ("POINTSET");
+}
+
+void
+ColorEditor::on_shading_toggled (const std::string & value)
+{
+	getShadingPopover () .popdown ();
 	preview -> getBrowserOptions () -> Shading () = value;
 }
 

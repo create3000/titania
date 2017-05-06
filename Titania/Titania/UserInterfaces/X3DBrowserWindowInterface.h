@@ -1342,7 +1342,7 @@ public:
 	getNewButton () const
 	{ return *m_NewButton; }
 
-	Gtk::MenuToolButton &
+	Gtk::ToolButton &
 	getOpenButton () const
 	{ return *m_OpenButton; }
 
@@ -2500,7 +2500,7 @@ private:
 	Gtk::ToolButton* m_ReloadButton;
 	Gtk::Toolbar* m_EditToolBar;
 	Gtk::ToolButton* m_NewButton;
-	Gtk::MenuToolButton* m_OpenButton;
+	Gtk::ToolButton* m_OpenButton;
 	Gtk::ToolButton* m_ImportButton;
 	Gtk::ToolButton* m_SaveButton;
 	Gtk::ToolButton* m_RefreshButton;

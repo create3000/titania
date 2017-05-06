@@ -219,8 +219,8 @@ public:
 	{ return *m_MustEvaluateToggleButton; }
 
 	Gtk::ToolButton &
-	getShaderTypeMenuButton () const
-	{ return *m_ShaderTypeMenuButton; }
+	getShaderTypeButton () const
+	{ return *m_ShaderTypeButton; }
 
 	Gtk::ToolButton &
 	getPreferencesButton () const
@@ -639,7 +639,7 @@ private:
 	Gtk::ToolButton* m_RedoButton;
 	Gtk::ToggleToolButton* m_DirectOutputToggleButton;
 	Gtk::ToggleToolButton* m_MustEvaluateToggleButton;
-	Gtk::ToolButton* m_ShaderTypeMenuButton;
+	Gtk::ToolButton* m_ShaderTypeButton;
 	Gtk::ToolButton* m_PreferencesButton;
 	Gtk::Popover* m_NewScriptPopover;
 	Gtk::Button* m_NewScriptButton;

@@ -690,11 +690,7 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Connect object Gtk::ToolButton with id 'ReloadButton'.
 	m_ReloadButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_revert_to_saved_activated));
 	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_new_activated));
-
-	// Connect object Gtk::MenuToolButton with id 'OpenButton'.
 	m_OpenButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_open_activated));
-
-	// Connect object Gtk::ToolButton with id 'ImportButton'.
 	m_ImportButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_import_activated));
 	m_SaveButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_save_activated));
 	m_RefreshButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_revert_to_saved_activated));

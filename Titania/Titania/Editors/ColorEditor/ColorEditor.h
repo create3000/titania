@@ -153,26 +153,30 @@ private:
 
 	virtual
 	void
-	on_phong_activate () final override;
+	on_shading_clicked () final override;
 
 	virtual
 	void
-	on_gouraud_activate () final override;
+	on_phong_toggled () final override;
 
 	virtual
 	void
-	on_flat_activate () final override;
+	on_gouraud_toggled () final override;
 
 	virtual
 	void
-	on_wireframe_activate () final override;
+	on_flat_toggled () final override;
 
 	virtual
 	void
-	on_pointset_activate () final override;
+	on_wireframe_toggled () final override;
+
+	virtual
+	void
+	on_pointset_toggled () final override;
 
 	void
-	on_shading_activate (const std::string &);
+	on_shading_toggled (const std::string &);
 
 	virtual
 	void

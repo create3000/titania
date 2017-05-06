@@ -385,7 +385,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToolButton" id="ShaderTypeMenuButton">
+                          <object class="GtkToolButton" id="ShaderTypeButton">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Set shader type to one of the values available in the menu.</property>
@@ -1069,7 +1069,7 @@
   <object class="GtkPopover" id="ShaderTypePopover">
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
-    <property name="relative_to">ShaderTypeMenuButton</property>
+    <property name="relative_to">ShaderTypeButton</property>
     <property name="position">bottom</property>
     <property name="constrain_to">none</property>
     <child>
