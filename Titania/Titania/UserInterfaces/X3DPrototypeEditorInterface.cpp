@@ -64,7 +64,7 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_URLCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("URLCellrendererPixbuf"));
 
 	// Get widgets.
-	m_builder -> get_widget ("PrototypeMenu", m_PrototypeMenu);
+	m_builder -> get_widget ("SelectPrototypeMenu", m_SelectPrototypeMenu);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);

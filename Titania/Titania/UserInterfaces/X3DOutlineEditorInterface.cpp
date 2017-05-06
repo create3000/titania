@@ -76,7 +76,7 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("NameBox", m_NameBox);
 	m_builder -> get_widget ("NameEntry", m_NameEntry);
 	m_builder -> get_widget ("RenameButton", m_RenameButton);
-	m_builder -> get_widget ("PopupMenu", m_PopupMenu);
+	m_builder -> get_widget ("ContextMenu", m_ContextMenu);
 	m_builder -> get_widget ("RenameMenuItem", m_RenameMenuItem);
 	m_builder -> get_widget ("CommonSeparator", m_CommonSeparator);
 	m_builder -> get_widget ("CutMenuItem", m_CutMenuItem);

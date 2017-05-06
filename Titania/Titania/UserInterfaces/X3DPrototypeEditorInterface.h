@@ -107,8 +107,8 @@ public:
 	{ return m_URLCellrendererPixbuf; }
 
 	Gtk::Menu &
-	getPrototypeMenu () const
-	{ return *m_PrototypeMenu; }
+	getSelectPrototypeMenu () const
+	{ return *m_SelectPrototypeMenu; }
 
 	Gtk::Window &
 	getWindow () const
@@ -267,7 +267,7 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText> m_URLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_URLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;
-	Gtk::Menu* m_PrototypeMenu;
+	Gtk::Menu* m_SelectPrototypeMenu;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;

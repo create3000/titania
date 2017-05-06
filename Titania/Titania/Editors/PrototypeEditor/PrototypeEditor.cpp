@@ -180,8 +180,8 @@ PrototypeEditor::on_create_prototype_menu ()
 
 	// Remove all menu items
 
-	for (const auto & widget : getPrototypeMenu () .get_children ())
-		getPrototypeMenu () .remove (*widget);
+	for (const auto & widget : getSelectPrototypeMenu () .get_children ())
+		getSelectPrototypeMenu () .remove (*widget);
 
 	for (const auto & protoNode : protoNodes)
 	{
@@ -193,7 +193,7 @@ PrototypeEditor::on_create_prototype_menu ()
 		menuItem -> set_always_show_image (true);
 		menuItem -> show ();
 
-		getPrototypeMenu () .append (*menuItem);
+		getSelectPrototypeMenu () .append (*menuItem);
 	}
 }
 

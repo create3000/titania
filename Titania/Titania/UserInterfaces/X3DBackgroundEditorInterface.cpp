@@ -84,9 +84,6 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_BottomURLCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("BottomURLCellrendererPixbuf"));
 
 	// Get widgets.
-	m_builder -> get_widget ("NewBackgroundPopover", m_NewBackgroundPopover);
-	m_builder -> get_widget ("NewBackgroundButton", m_NewBackgroundButton);
-	m_builder -> get_widget ("NewTextureBackgroundButton", m_NewTextureBackgroundButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
@@ -175,10 +172,13 @@ X3DBackgroundEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("BottomURLAddButton", m_BottomURLAddButton);
 	m_builder -> get_widget ("BottomURLRemoveButton", m_BottomURLRemoveButton);
 	m_builder -> get_widget ("BottomURLReloadButton", m_BottomURLReloadButton);
-	m_NewBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBackgroundEditorInterface::on_new_background_clicked));
-	m_NewTextureBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBackgroundEditorInterface::on_new_texture_background_clicked));
+	m_builder -> get_widget ("NewBackgroundPopover", m_NewBackgroundPopover);
+	m_builder -> get_widget ("NewBackgroundButton", m_NewBackgroundButton);
+	m_builder -> get_widget ("NewTextureBackgroundButton", m_NewTextureBackgroundButton);
 	m_NewBackgroundPopupButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBackgroundEditorInterface::on_new_background_popup_clicked));
 	m_RemoveBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBackgroundEditorInterface::on_remove_background_clicked));
+	m_NewBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBackgroundEditorInterface::on_new_background_clicked));
+	m_NewTextureBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBackgroundEditorInterface::on_new_texture_background_clicked));
 
 	// Call construct handler of base class.
 	construct ();

@@ -199,7 +199,7 @@ OutlineEditor::on_button_press_event (GdkEventButton* event)
 			selectNode (event -> x, event -> y);
 			selectField (event -> x, event -> y);
 
-			getPopupMenu () .popup (event -> button, event -> time);
+			getContextMenu () .popup (event -> button, event -> time);
 			return true;
 		}
 		default:
