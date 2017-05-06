@@ -254,22 +254,6 @@ public:
 	getViewpointListStore () const
 	{ return m_ViewpointListStore; }
 
-	Gtk::Menu &
-	getNewViewpointMenu () const
-	{ return *m_NewViewpointMenu; }
-
-	Gtk::MenuItem &
-	getNewViewpointMenuItem () const
-	{ return *m_NewViewpointMenuItem; }
-
-	Gtk::MenuItem &
-	getNewOrthoViewpointMenuItem () const
-	{ return *m_NewOrthoViewpointMenuItem; }
-
-	Gtk::MenuItem &
-	getNewGeoViewpointMenuItem () const
-	{ return *m_NewGeoViewpointMenuItem; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -289,6 +273,10 @@ public:
 	Gtk::Box &
 	getViewpointActionBox () const
 	{ return *m_ViewpointActionBox; }
+
+	Gtk::Button &
+	getNewViewpointPopupButton () const
+	{ return *m_NewViewpointPopupButton; }
 
 	Gtk::Button &
 	getRemoveViewpointButton () const
@@ -494,19 +482,27 @@ public:
 	getGeoViewpointUTMOrderComboBoxText () const
 	{ return *m_GeoViewpointUTMOrderComboBoxText; }
 
+	Gtk::Popover &
+	getViewpointPopover () const
+	{ return *m_ViewpointPopover; }
+
+	Gtk::Button &
+	getNewViewpointButton () const
+	{ return *m_NewViewpointButton; }
+
+	Gtk::Button &
+	getNewOthoViewpointButton () const
+	{ return *m_NewOthoViewpointButton; }
+
+	Gtk::Button &
+	getNewGeoViewpointButton () const
+	{ return *m_NewGeoViewpointButton; }
+
 	///  @name Signal handlers
 
 	virtual
 	void
-	on_new_viewpoint_activated () = 0;
-
-	virtual
-	void
-	on_new_ortho_viewpoint_activated () = 0;
-
-	virtual
-	void
-	on_new_geo_viewpoint_activated () = 0;
+	on_new_viewpoint_popup_clicked () = 0;
 
 	virtual
 	void
@@ -519,6 +515,18 @@ public:
 	virtual
 	void
 	on_lock_to_camera_toggled () = 0;
+
+	virtual
+	void
+	on_new_viewpoint_clicked () = 0;
+
+	virtual
+	void
+	on_new_ortho_viewpoint_clicked () = 0;
+
+	virtual
+	void
+	on_new_geo_viewpoint_clicked () = 0;
 
 	///  @name Destruction
 
@@ -584,15 +592,12 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_PerspectiveViewpointPositionZAdjustment;
 	Glib::RefPtr <Gtk::TextBuffer> m_ViewpointDescriptionTextBuffer;
 	Glib::RefPtr <Gtk::ListStore> m_ViewpointListStore;
-	Gtk::Menu* m_NewViewpointMenu;
-	Gtk::MenuItem* m_NewViewpointMenuItem;
-	Gtk::MenuItem* m_NewOrthoViewpointMenuItem;
-	Gtk::MenuItem* m_NewGeoViewpointMenuItem;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Paned* m_Paned;
 	Gtk::Box* m_ViewpointListBox;
 	Gtk::Box* m_ViewpointActionBox;
+	Gtk::Button* m_NewViewpointPopupButton;
 	Gtk::Button* m_RemoveViewpointButton;
 	Gtk::Expander* m_ViewpointExpander;
 	Gtk::Grid* m_ViewpointBox;
@@ -644,6 +649,10 @@ private:
 	Gtk::Box* m_GeoViewpointGeoSystemUTMBox;
 	Gtk::ComboBoxText* m_GeoViewpointHemisphereComboBoxText;
 	Gtk::ComboBoxText* m_GeoViewpointUTMOrderComboBoxText;
+	Gtk::Popover* m_ViewpointPopover;
+	Gtk::Button* m_NewViewpointButton;
+	Gtk::Button* m_NewOthoViewpointButton;
+	Gtk::Button* m_NewGeoViewpointButton;
 
 };
 

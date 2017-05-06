@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gtk+" version="3.12"/>
   <object class="GtkAdjustment" id="GeoViewpointCenterOfRotationXAdjustment">
     <property name="lower">-1000000000</property>
     <property name="upper">1000000000</property>
@@ -77,37 +77,6 @@
     <property name="upper">60</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
-  </object>
-  <object class="GtkMenu" id="NewViewpointMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="NewViewpointMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Viewpoint</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="on_new_viewpoint_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="NewOrthoViewpointMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">OthoViewpoint</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="on_new_ortho_viewpoint_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="NewGeoViewpointMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">GeoViewpoint</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="on_new_geo_viewpoint_activated" swapped="no"/>
-      </object>
-    </child>
   </object>
   <object class="GtkAdjustment" id="OrthoViewpointCenterOfRotationXAdjustment">
     <property name="lower">-1000000000</property>
@@ -326,12 +295,12 @@
                         <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
-                          <object class="GtkMenuButton" id="menubutton1">
+                          <object class="GtkButton" id="NewViewpointPopupButton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
-                            <property name="tooltip_text" translatable="yes">Create new viewpoint node</property>
-                            <property name="popup">NewViewpointMenu</property>
+                            <property name="tooltip_text" translatable="yes">Remove this viewpoint node</property>
+                            <signal name="clicked" handler="on_new_viewpoint_popup_clicked" swapped="no"/>
                             <child>
                               <object class="GtkImage" id="image2">
                                 <property name="visible">True</property>
@@ -2204,6 +2173,83 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkPopover" id="ViewpointPopover">
+    <property name="can_focus">False</property>
+    <property name="border_width">8</property>
+    <property name="relative_to">NewViewpointPopupButton</property>
+    <property name="position">bottom</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkButton" id="NewViewpointButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_new_viewpoint_clicked" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Create Viewpoint</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="NewOthoViewpointButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_new_ortho_viewpoint_clicked" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Create OthoViewpoint</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="NewGeoViewpointButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_new_geo_viewpoint_clicked" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Create GeoViewpoint</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>

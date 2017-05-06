@@ -108,6 +108,10 @@ private:
 
 	virtual
 	void
+	on_new_viewpoint_popup_clicked () final override;
+
+	virtual
+	void
 	on_remove_viewpoint_clicked () final override;
 
 	virtual

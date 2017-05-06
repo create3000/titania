@@ -109,8 +109,10 @@ X3DViewpointEditor::setViewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & vi
 }
 
 void
-X3DViewpointEditor::on_new_viewpoint_activated ()
+X3DViewpointEditor::on_new_viewpoint_clicked ()
 {
+	getViewpointPopover () .popdown ();
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New Viewpoint"));
 	const X3D::X3DPtr <X3D::Viewpoint> node (getBrowserWindow () -> createNode ("Viewpoint", undoStep));
 	node -> set_bind () = true;

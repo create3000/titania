@@ -97,7 +97,7 @@ private:
 
 	virtual
 	void
-	on_new_ortho_viewpoint_activated () final override;
+	on_new_ortho_viewpoint_clicked () final override;
 
 	///  @name Members
 
