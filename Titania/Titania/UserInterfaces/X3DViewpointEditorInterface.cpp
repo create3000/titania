@@ -158,7 +158,7 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("GeoViewpointGeoSystemUTMBox", m_GeoViewpointGeoSystemUTMBox);
 	m_builder -> get_widget ("GeoViewpointHemisphereComboBoxText", m_GeoViewpointHemisphereComboBoxText);
 	m_builder -> get_widget ("GeoViewpointUTMOrderComboBoxText", m_GeoViewpointUTMOrderComboBoxText);
-	m_builder -> get_widget ("ViewpointPopover", m_ViewpointPopover);
+	m_builder -> get_widget ("NewViewpointPopover", m_NewViewpointPopover);
 	m_builder -> get_widget ("NewViewpointButton", m_NewViewpointButton);
 	m_builder -> get_widget ("NewOthoViewpointButton", m_NewOthoViewpointButton);
 	m_builder -> get_widget ("NewGeoViewpointButton", m_NewGeoViewpointButton);

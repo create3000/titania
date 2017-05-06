@@ -84,8 +84,10 @@ X3DDirectionalLightEditor::setDirectionalLight (const X3D::X3DPtr <X3D::X3DLight
 }
 
 void
-X3DDirectionalLightEditor::on_new_directional_light_activated ()
+X3DDirectionalLightEditor::on_new_directional_light_clicked ()
 {
+	getNewLightPopover () .popdown ();
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New DirectionalLight"));
 	getBrowserWindow () -> createNode ("DirectionalLight", undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);

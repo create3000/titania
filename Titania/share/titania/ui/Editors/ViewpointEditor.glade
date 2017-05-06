@@ -2178,7 +2178,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkPopover" id="ViewpointPopover">
+  <object class="GtkPopover" id="NewViewpointPopover">
     <property name="can_focus">False</property>
     <property name="border_width">8</property>
     <property name="relative_to">NewViewpointPopupButton</property>

@@ -95,6 +95,10 @@ private:
 	
 	virtual
 	void
+	on_new_light_popup_clicked () final override;
+	
+	virtual
+	void
 	on_remove_light_clicked () final override;
 
 	virtual

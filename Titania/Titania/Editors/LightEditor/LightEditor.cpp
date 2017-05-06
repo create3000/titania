@@ -117,6 +117,12 @@ LightEditor::set_selection (const X3D::MFNode & selection)
 }
 
 void
+LightEditor::on_new_light_popup_clicked ()
+{
+	getNewLightPopover () .popup ();
+}
+
+void
 LightEditor::on_remove_light_clicked ()
 {
 	const auto undoStep = std::make_shared <X3D::UndoStep> (basic::sprintf (_ ("Remove %s"), nodeName .getNode () -> getTypeName () .c_str ()));

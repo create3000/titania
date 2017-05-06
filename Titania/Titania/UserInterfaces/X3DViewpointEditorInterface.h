@@ -483,8 +483,8 @@ public:
 	{ return *m_GeoViewpointUTMOrderComboBoxText; }
 
 	Gtk::Popover &
-	getViewpointPopover () const
-	{ return *m_ViewpointPopover; }
+	getNewViewpointPopover () const
+	{ return *m_NewViewpointPopover; }
 
 	Gtk::Button &
 	getNewViewpointButton () const
@@ -649,7 +649,7 @@ private:
 	Gtk::Box* m_GeoViewpointGeoSystemUTMBox;
 	Gtk::ComboBoxText* m_GeoViewpointHemisphereComboBoxText;
 	Gtk::ComboBoxText* m_GeoViewpointUTMOrderComboBoxText;
-	Gtk::Popover* m_ViewpointPopover;
+	Gtk::Popover* m_NewViewpointPopover;
 	Gtk::Button* m_NewViewpointButton;
 	Gtk::Button* m_NewOthoViewpointButton;
 	Gtk::Button* m_NewGeoViewpointButton;

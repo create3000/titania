@@ -210,21 +210,21 @@ public:
 	getSpotLightRadiusAdjustment () const
 	{ return m_SpotLightRadiusAdjustment; }
 
-	Gtk::Menu &
-	getNewLightMenu () const
-	{ return *m_NewLightMenu; }
+	Gtk::Popover &
+	getNewLightPopover () const
+	{ return *m_NewLightPopover; }
 
-	Gtk::MenuItem &
-	getNewDirectionalLightMenuItem () const
-	{ return *m_NewDirectionalLightMenuItem; }
+	Gtk::Button &
+	getNewDirectionalLightButton () const
+	{ return *m_NewDirectionalLightButton; }
 
-	Gtk::MenuItem &
-	getNewPointLightMenuItem () const
-	{ return *m_NewPointLightMenuItem; }
+	Gtk::Button &
+	getNewPointLightButton () const
+	{ return *m_NewPointLightButton; }
 
-	Gtk::MenuItem &
-	getNewSpotLightMenuItem () const
-	{ return *m_NewSpotLightMenuItem; }
+	Gtk::Button &
+	getNewSpotLightButton () const
+	{ return *m_NewSpotLightButton; }
 
 	Gtk::Window &
 	getWindow () const
@@ -233,6 +233,10 @@ public:
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
+
+	Gtk::Button &
+	getNewLightPopupButton () const
+	{ return *m_NewLightPopupButton; }
 
 	Gtk::Button &
 	getRemoveLightButton () const
@@ -454,15 +458,19 @@ public:
 
 	virtual
 	void
-	on_new_directional_light_activated () = 0;
+	on_new_directional_light_clicked () = 0;
 
 	virtual
 	void
-	on_new_point_light_activated () = 0;
+	on_new_point_light_clicked () = 0;
 
 	virtual
 	void
-	on_new_spot_light_activated () = 0;
+	on_new_spot_light_clicked () = 0;
+
+	virtual
+	void
+	on_new_light_popup_clicked () = 0;
 
 	virtual
 	void
@@ -525,12 +533,13 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightLocationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightLocationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightRadiusAdjustment;
-	Gtk::Menu* m_NewLightMenu;
-	Gtk::MenuItem* m_NewDirectionalLightMenuItem;
-	Gtk::MenuItem* m_NewPointLightMenuItem;
-	Gtk::MenuItem* m_NewSpotLightMenuItem;
+	Gtk::Popover* m_NewLightPopover;
+	Gtk::Button* m_NewDirectionalLightButton;
+	Gtk::Button* m_NewPointLightButton;
+	Gtk::Button* m_NewSpotLightButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::Button* m_NewLightPopupButton;
 	Gtk::Button* m_RemoveLightButton;
 	Gtk::Button* m_IndexButton;
 	Gtk::Expander* m_LightExpander;

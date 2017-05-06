@@ -136,7 +136,7 @@ ViewpointEditor::set_viewpoint (const X3D::X3DPtr <X3D::X3DViewpointNode> & valu
 void
 ViewpointEditor::on_new_viewpoint_popup_clicked ()
 {
-	getViewpointPopover () .popup ();
+	getNewViewpointPopover () .popup ();
 }
 
 void

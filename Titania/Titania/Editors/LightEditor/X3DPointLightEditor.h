@@ -92,7 +92,7 @@ private:
 	
 	virtual
 	void
-	on_new_point_light_activated () final override;
+	on_new_point_light_clicked () final override;
 
 	///  @name Members
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gtk+" version="3.12"/>
   <object class="GtkAdjustment" id="AmbientIntensityAdjustment">
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
@@ -35,34 +35,78 @@
     <property name="step_increment">0.01</property>
     <property name="page_increment">0.10000000000000001</property>
   </object>
-  <object class="GtkMenu" id="NewLightMenu">
-    <property name="visible">True</property>
+  <object class="GtkPopover" id="NewLightPopover">
     <property name="can_focus">False</property>
+    <property name="border_width">8</property>
     <child>
-      <object class="GtkMenuItem" id="NewDirectionalLightMenuItem">
+      <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">DirectionalLight</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="on_new_directional_light_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="NewPointLightMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">PointLight</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="on_new_point_light_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="NewSpotLightMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">SpotLight</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="on_new_spot_light_activated" swapped="no"/>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkButton" id="NewDirectionalLightButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_new_directional_light_clicked" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Create DirectionalLight</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="NewPointLightButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_new_point_light_clicked" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Create PointLight</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="NewSpotLightButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_new_spot_light_clicked" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Create SpotLight</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
       </object>
     </child>
   </object>
@@ -228,12 +272,12 @@
                     <property name="can_focus">False</property>
                     <property name="spacing">2</property>
                     <child>
-                      <object class="GtkMenuButton" id="menubutton1">
+                      <object class="GtkButton" id="NewLightPopupButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="tooltip_text" translatable="yes">Create new light node</property>
-                        <property name="popup">NewLightMenu</property>
+                        <property name="tooltip_text" translatable="yes">Remove this light node</property>
+                        <signal name="clicked" handler="on_new_light_popup_clicked" swapped="no"/>
                         <child>
                           <object class="GtkImage" id="image3">
                             <property name="visible">True</property>

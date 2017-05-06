@@ -110,8 +110,10 @@ X3DSpotLightEditor::setSpotLight (const X3D::X3DPtr <X3D::X3DLightNode> & lightN
 }
 
 void
-X3DSpotLightEditor::on_new_spot_light_activated ()
+X3DSpotLightEditor::on_new_spot_light_clicked ()
 {
+	getNewLightPopover () .popdown ();
+
 	const auto undoStep = std::make_shared <X3D::UndoStep> (_ ("Create New SpotLight"));
 	getBrowserWindow () -> createNode ("SpotLight", undoStep);
 	getBrowserWindow () -> addUndoStep (undoStep);
