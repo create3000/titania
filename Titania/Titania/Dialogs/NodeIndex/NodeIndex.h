@@ -237,7 +237,7 @@ private:
 	X3D::MFNode                                         nodes;
 	X3D::SFNode                                         node;
 	X3D::SFTime                                         refreshBuffer;
-	IndexType                                           index;
+	IndexType                                           indexType;
 	bool                                                showWidget;
 	bool                                                observeNodes;
 	bool                                                select;
