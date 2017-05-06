@@ -409,7 +409,7 @@ private:
 
 	static
 	bool
-	isSubContext (X3DExecutionContext* executionContext, const X3DExecutionContext* subContext);
+	isSubContext (const X3DExecutionContext* executionContext, X3DExecutionContext* subContext);
 
 	static
 	std::vector <Route*>

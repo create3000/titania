@@ -371,12 +371,12 @@ X3DEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, c
 		
 		if (protoInstance)
 		{
-			traverse (node, [&] (SFNode & node)
+			traverse (node, [&] (SFNode & subNode)
 			{
-				if (node == protoInstance)
-				return true;
+				if (subNode == protoInstance)
+					return true;
 				
-				const X3DPrototypeInstancePtr child (node);
+				const X3DPrototypeInstancePtr child (subNode);
 				
 				if (child)
 				{
@@ -423,20 +423,20 @@ X3DEditor::getUsedPrototypes (const X3DExecutionContextPtr & executionContext, c
 }
 
 bool
-X3DEditor::isSubContext (X3DExecutionContext* executionContext, const X3DExecutionContext* subContext)
+X3DEditor::isSubContext (const X3DExecutionContext* executionContext, X3DExecutionContext* subContext)
 {
-	while (not executionContext -> isType ({ X3DConstants::X3DScene }))
-	{
-		executionContext = executionContext -> getExecutionContext ();
-
-		if (subContext == executionContext)
-			return false;
-	}
-
 	if (subContext == executionContext)
 		return false;
 
-	return true;
+	while (not subContext -> isType ({ X3DConstants::X3DScene }))
+	{
+		subContext = subContext -> getExecutionContext ();
+
+		if (subContext == executionContext)
+			return true;
+	}
+
+	return false;
 }
 
 std::vector <Route*>
