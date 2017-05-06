@@ -167,11 +167,15 @@ private:
 
 	virtual
 	void
-	on_new_layer_activated () final override;
+	on_new_layer_popup_clicked () final override;
 
 	virtual
 	void
-	on_new_layout_layer_activated () final override;
+	on_new_layer_clicked () final override;
+
+	virtual
+	void
+	on_new_layout_layer_clicked () final override;
 
 	virtual
 	void

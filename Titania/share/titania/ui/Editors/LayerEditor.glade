@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="3.10"/>
+  <requires lib="gtk+" version="3.12"/>
   <object class="GtkListStore" id="LayerListStore">
     <columns>
       <!-- column-name Visible -->
@@ -25,28 +25,6 @@
       <!-- column-name ActiveLayerImage -->
       <column type="gchararray"/>
     </columns>
-  </object>
-  <object class="GtkMenu" id="NewMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="LayerMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Layer</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="on_new_layer_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="LayoutLayerMenuItem">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">LayoutLayer</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="on_new_layout_layer_activated" swapped="no"/>
-      </object>
-    </child>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="width_request">400</property>
@@ -299,14 +277,14 @@
                                     <property name="halign">start</property>
                                     <property name="hexpand">False</property>
                                     <child>
-                                      <object class="GtkMenuButton" id="menubutton1">
+                                      <object class="GtkButton" id="NewLayerPopupButton">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
-                                        <property name="tooltip_text" translatable="yes">Add new layer node</property>
-                                        <property name="popup">NewMenu</property>
+                                        <property name="always_show_image">True</property>
+                                        <signal name="clicked" handler="on_new_layer_popup_clicked" swapped="no"/>
                                         <child>
-                                          <object class="GtkImage" id="image3">
+                                          <object class="GtkImage">
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="stock">gtk-new</property>
@@ -491,6 +469,64 @@
           </object>
           <packing>
             <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkPopover" id="NewLayerPopover">
+    <property name="can_focus">False</property>
+    <property name="border_width">8</property>
+    <property name="relative_to">NewLayerPopupButton</property>
+    <property name="position">bottom</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkButton" id="NewLayerButton">
+            <property name="name">NewLayerButton</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_new_layer_clicked" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Create Layer</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="NewLayoutLayerButton">
+            <property name="name">NewLayoutLayerButton</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_new_layout_layer_clicked" swapped="no"/>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Create LayoutLayer</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">1</property>
           </packing>

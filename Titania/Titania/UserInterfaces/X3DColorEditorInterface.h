@@ -98,30 +98,6 @@ public:
 	getColorAdjustment () const
 	{ return m_ColorAdjustment; }
 
-	Gtk::Popover &
-	getShadingPopover () const
-	{ return *m_ShadingPopover; }
-
-	Gtk::RadioButton &
-	getPhongButton () const
-	{ return *m_PhongButton; }
-
-	Gtk::RadioButton &
-	getGouraudButton () const
-	{ return *m_GouraudButton; }
-
-	Gtk::RadioButton &
-	getFlatButton () const
-	{ return *m_FlatButton; }
-
-	Gtk::RadioButton &
-	getWireframeButton () const
-	{ return *m_WireframeButton; }
-
-	Gtk::RadioButton &
-	getPointsetButton () const
-	{ return *m_PointsetButton; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -226,27 +202,31 @@ public:
 	getApplyButton () const
 	{ return *m_ApplyButton; }
 
+	Gtk::Popover &
+	getShadingPopover () const
+	{ return *m_ShadingPopover; }
+
+	Gtk::RadioButton &
+	getPhongButton () const
+	{ return *m_PhongButton; }
+
+	Gtk::RadioButton &
+	getGouraudButton () const
+	{ return *m_GouraudButton; }
+
+	Gtk::RadioButton &
+	getFlatButton () const
+	{ return *m_FlatButton; }
+
+	Gtk::RadioButton &
+	getWireframeButton () const
+	{ return *m_WireframeButton; }
+
+	Gtk::RadioButton &
+	getPointsetButton () const
+	{ return *m_PointsetButton; }
+
 	///  @name Signal handlers
-
-	virtual
-	void
-	on_phong_toggled () = 0;
-
-	virtual
-	void
-	on_gouraud_toggled () = 0;
-
-	virtual
-	void
-	on_flat_toggled () = 0;
-
-	virtual
-	void
-	on_wireframe_toggled () = 0;
-
-	virtual
-	void
-	on_pointset_toggled () = 0;
 
 	virtual
 	void
@@ -312,6 +292,26 @@ public:
 	void
 	on_apply_clicked () = 0;
 
+	virtual
+	void
+	on_phong_toggled () = 0;
+
+	virtual
+	void
+	on_gouraud_toggled () = 0;
+
+	virtual
+	void
+	on_flat_toggled () = 0;
+
+	virtual
+	void
+	on_wireframe_toggled () = 0;
+
+	virtual
+	void
+	on_pointset_toggled () = 0;
+
 	///  @name Destruction
 
 	virtual
@@ -337,12 +337,6 @@ private:
 	std::string filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::Adjustment> m_ColorAdjustment;
-	Gtk::Popover* m_ShadingPopover;
-	Gtk::RadioButton* m_PhongButton;
-	Gtk::RadioButton* m_GouraudButton;
-	Gtk::RadioButton* m_FlatButton;
-	Gtk::RadioButton* m_WireframeButton;
-	Gtk::RadioButton* m_PointsetButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::ImageMenuItem* m_UndoMenuItem;
@@ -369,6 +363,12 @@ private:
 	Gtk::ScrolledWindow* m_ColorsScrolledWindow;
 	Gtk::Button* m_RemoveButton;
 	Gtk::Button* m_ApplyButton;
+	Gtk::Popover* m_ShadingPopover;
+	Gtk::RadioButton* m_PhongButton;
+	Gtk::RadioButton* m_GouraudButton;
+	Gtk::RadioButton* m_FlatButton;
+	Gtk::RadioButton* m_WireframeButton;
+	Gtk::RadioButton* m_PointsetButton;
 
 };
 

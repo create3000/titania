@@ -62,12 +62,6 @@ X3DColorEditorInterface::create (const std::string & filename)
 	m_ColorAdjustment = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("ColorAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("ShadingPopover", m_ShadingPopover);
-	m_builder -> get_widget ("PhongButton", m_PhongButton);
-	m_builder -> get_widget ("GouraudButton", m_GouraudButton);
-	m_builder -> get_widget ("FlatButton", m_FlatButton);
-	m_builder -> get_widget ("WireframeButton", m_WireframeButton);
-	m_builder -> get_widget ("PointsetButton", m_PointsetButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("UndoMenuItem", m_UndoMenuItem);
@@ -94,13 +88,12 @@ X3DColorEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ColorsScrolledWindow", m_ColorsScrolledWindow);
 	m_builder -> get_widget ("RemoveButton", m_RemoveButton);
 	m_builder -> get_widget ("ApplyButton", m_ApplyButton);
-
-	// Connect object Gtk::RadioButton with id 'PhongButton'.
-	m_PhongButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_phong_toggled));
-	m_GouraudButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_gouraud_toggled));
-	m_FlatButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_flat_toggled));
-	m_WireframeButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_wireframe_toggled));
-	m_PointsetButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_pointset_toggled));
+	m_builder -> get_widget ("ShadingPopover", m_ShadingPopover);
+	m_builder -> get_widget ("PhongButton", m_PhongButton);
+	m_builder -> get_widget ("GouraudButton", m_GouraudButton);
+	m_builder -> get_widget ("FlatButton", m_FlatButton);
+	m_builder -> get_widget ("WireframeButton", m_WireframeButton);
+	m_builder -> get_widget ("PointsetButton", m_PointsetButton);
 
 	// Connect object Gtk::ImageMenuItem with id 'UndoMenuItem'.
 	m_UndoMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_undo));
@@ -139,6 +132,13 @@ X3DColorEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::Button with id 'RemoveButton'.
 	m_RemoveButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_remove_clicked));
 	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_apply_clicked));
+
+	// Connect object Gtk::RadioButton with id 'PhongButton'.
+	m_PhongButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_phong_toggled));
+	m_GouraudButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_gouraud_toggled));
+	m_FlatButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_flat_toggled));
+	m_WireframeButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_wireframe_toggled));
+	m_PointsetButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_pointset_toggled));
 
 	// Call construct handler of base class.
 	construct ();

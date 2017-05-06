@@ -126,18 +126,6 @@ public:
 	getActiveLayerColumn () const
 	{ return m_ActiveLayerColumn; }
 
-	Gtk::Menu &
-	getNewMenu () const
-	{ return *m_NewMenu; }
-
-	Gtk::MenuItem &
-	getLayerMenuItem () const
-	{ return *m_LayerMenuItem; }
-
-	Gtk::MenuItem &
-	getLayoutLayerMenuItem () const
-	{ return *m_LayoutLayerMenuItem; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -175,6 +163,10 @@ public:
 	{ return *m_LayerActionBox; }
 
 	Gtk::Button &
+	getNewLayerPopupButton () const
+	{ return *m_NewLayerPopupButton; }
+
+	Gtk::Button &
 	getRemoveLayerButton () const
 	{ return *m_RemoveLayerButton; }
 
@@ -202,15 +194,19 @@ public:
 	getLayerSetLabel () const
 	{ return *m_LayerSetLabel; }
 
+	Gtk::Popover &
+	getNewLayerPopover () const
+	{ return *m_NewLayerPopover; }
+
+	Gtk::Button &
+	getNewLayerButton () const
+	{ return *m_NewLayerButton; }
+
+	Gtk::Button &
+	getNewLayoutLayerButton () const
+	{ return *m_NewLayoutLayerButton; }
+
 	///  @name Signal handlers
-
-	virtual
-	void
-	on_new_layer_activated () = 0;
-
-	virtual
-	void
-	on_new_layout_layer_activated () = 0;
 
 	virtual
 	void
@@ -238,6 +234,10 @@ public:
 
 	virtual
 	void
+	on_new_layer_popup_clicked () = 0;
+
+	virtual
+	void
 	on_remove_layer_button_clicked () = 0;
 
 	virtual
@@ -255,6 +255,14 @@ public:
 	virtual
 	void
 	on_bottom_clicked () = 0;
+
+	virtual
+	void
+	on_new_layer_clicked () = 0;
+
+	virtual
+	void
+	on_new_layout_layer_clicked () = 0;
 
 	///  @name Destruction
 
@@ -288,9 +296,6 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn> m_NameColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_SpacerColumn;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_ActiveLayerColumn;
-	Gtk::Menu* m_NewMenu;
-	Gtk::MenuItem* m_LayerMenuItem;
-	Gtk::MenuItem* m_LayoutLayerMenuItem;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Button* m_NewLayerSetButton;
@@ -300,6 +305,7 @@ private:
 	Gtk::ScrolledWindow* m_LayerScrolledWindow;
 	Gtk::TreeView* m_LayerTreeView;
 	Gtk::Box* m_LayerActionBox;
+	Gtk::Button* m_NewLayerPopupButton;
 	Gtk::Button* m_RemoveLayerButton;
 	Gtk::Box* m_MoveLayerBox;
 	Gtk::Button* m_TopButton;
@@ -307,6 +313,9 @@ private:
 	Gtk::Button* m_DownButton;
 	Gtk::Button* m_BottomButton;
 	Gtk::Label* m_LayerSetLabel;
+	Gtk::Popover* m_NewLayerPopover;
+	Gtk::Button* m_NewLayerButton;
+	Gtk::Button* m_NewLayoutLayerButton;
 
 };
 

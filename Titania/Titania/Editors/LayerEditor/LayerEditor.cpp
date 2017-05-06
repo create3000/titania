@@ -633,9 +633,17 @@ LayerEditor::on_remove_layer_set_clicked ()
 }
 
 void
-LayerEditor::on_new_layer_activated ()
+LayerEditor::on_new_layer_popup_clicked ()
+{
+	getNewLayerPopover () .popup ();
+}
+
+void
+LayerEditor::on_new_layer_clicked ()
 {
 	// Add to LayerSet
+
+	getNewLayerPopover () .popdown ();
 
 	disconnectLayers ();
 
@@ -655,9 +663,11 @@ LayerEditor::on_new_layer_activated ()
 }
 
 void
-LayerEditor::on_new_layout_layer_activated ()
+LayerEditor::on_new_layout_layer_clicked ()
 {
 	// Add to LayerSet
+
+	getNewLayerPopover () .popdown ();
 
 	disconnectLayers ();
 

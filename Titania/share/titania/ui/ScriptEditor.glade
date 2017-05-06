@@ -1071,7 +1071,6 @@
     <property name="border_width">8</property>
     <property name="relative_to">ShaderTypeButton</property>
     <property name="position">bottom</property>
-    <property name="constrain_to">none</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
