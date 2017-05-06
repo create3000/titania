@@ -110,26 +110,6 @@ public:
 	getTabWidthAdjustment () const
 	{ return m_TabWidthAdjustment; }
 
-	Gtk::Image &
-	getFragmentShaderImage () const
-	{ return *m_FragmentShaderImage; }
-
-	Gtk::Image &
-	getFragmentShaderImage1 () const
-	{ return *m_FragmentShaderImage1; }
-
-	Gtk::Image &
-	getFragmentShaderImage2 () const
-	{ return *m_FragmentShaderImage2; }
-
-	Gtk::Image &
-	getFragmentShaderImage3 () const
-	{ return *m_FragmentShaderImage3; }
-
-	Gtk::Image &
-	getFragmentShaderImage4 () const
-	{ return *m_FragmentShaderImage4; }
-
 	Gtk::Menu &
 	getSearchMenu () const
 	{ return *m_SearchMenu; }
@@ -161,38 +141,6 @@ public:
 	Gtk::Image &
 	getToggleReplaceImage () const
 	{ return *m_ToggleReplaceImage; }
-
-	Gtk::Image &
-	getVertexShaderImage () const
-	{ return *m_VertexShaderImage; }
-
-	Gtk::Menu &
-	getShaderTypeMenu () const
-	{ return *m_ShaderTypeMenu; }
-
-	Gtk::ImageMenuItem &
-	getVertexMenuItem () const
-	{ return *m_VertexMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getTessControlMenuItem () const
-	{ return *m_TessControlMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getTessEvaluateMenuItem () const
-	{ return *m_TessEvaluateMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getGeometryMenuItem () const
-	{ return *m_GeometryMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getFragmentMenuItem () const
-	{ return *m_FragmentMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getComputeMenuItem () const
-	{ return *m_ComputeMenuItem; }
 
 	Gtk::Window &
 	getWindow () const
@@ -270,7 +218,7 @@ public:
 	getMustEvaluateToggleButton () const
 	{ return *m_MustEvaluateToggleButton; }
 
-	Gtk::MenuToolButton &
+	Gtk::ToolButton &
 	getShaderTypeMenuButton () const
 	{ return *m_ShaderTypeMenuButton; }
 
@@ -287,8 +235,16 @@ public:
 	{ return *m_NewScriptButton; }
 
 	Gtk::Button &
+	getNewShaderPartButton1 () const
+	{ return *m_NewShaderPartButton1; }
+
+	Gtk::Button &
 	getNewShaderPartButton () const
 	{ return *m_NewShaderPartButton; }
+
+	Gtk::Button &
+	getNewShaderProgramButton1 () const
+	{ return *m_NewShaderProgramButton1; }
 
 	Gtk::Button &
 	getNewShaderProgramButton () const
@@ -345,6 +301,34 @@ public:
 	Gtk::TreeView &
 	getColorThemeTreeView () const
 	{ return *m_ColorThemeTreeView; }
+
+	Gtk::Popover &
+	getShaderTypePopover () const
+	{ return *m_ShaderTypePopover; }
+
+	Gtk::Button &
+	getVertexShaderButton () const
+	{ return *m_VertexShaderButton; }
+
+	Gtk::Button &
+	getTessControllShaderButton () const
+	{ return *m_TessControllShaderButton; }
+
+	Gtk::Button &
+	getTessEvaluationShaderButton () const
+	{ return *m_TessEvaluationShaderButton; }
+
+	Gtk::Button &
+	getGeometryShaderButton () const
+	{ return *m_GeometryShaderButton; }
+
+	Gtk::Button &
+	getFragmentShaderButton () const
+	{ return *m_FragmentShaderButton; }
+
+	Gtk::Button &
+	getComputeShaderButton () const
+	{ return *m_ComputeShaderButton; }
 
 	Gtk::Revealer &
 	getSearchRevealer () const
@@ -434,30 +418,6 @@ public:
 
 	virtual
 	void
-	on_vertex_activate () = 0;
-
-	virtual
-	void
-	on_tess_control_activate () = 0;
-
-	virtual
-	void
-	on_tess_evaluate_activate () = 0;
-
-	virtual
-	void
-	on_geometry_activate () = 0;
-
-	virtual
-	void
-	on_fragment_activate () = 0;
-
-	virtual
-	void
-	on_compute_activate () = 0;
-
-	virtual
-	void
 	on_new_clicked () = 0;
 
 	virtual
@@ -474,6 +434,10 @@ public:
 
 	virtual
 	void
+	on_shader_type_clicked () = 0;
+
+	virtual
+	void
 	on_preferences_clicked () = 0;
 
 	virtual
@@ -482,7 +446,15 @@ public:
 
 	virtual
 	void
+	on_new_composed_shader_clicked () = 0;
+
+	virtual
+	void
 	on_new_shader_part_clicked () = 0;
+
+	virtual
+	void
+	on_new_program_shader_clicked () = 0;
 
 	virtual
 	void
@@ -527,6 +499,30 @@ public:
 	virtual
 	void
 	on_color_theme_activated (const Gtk::TreeModel::Path &, Gtk::TreeViewColumn*) = 0;
+
+	virtual
+	void
+	on_vertex_clicked () = 0;
+
+	virtual
+	void
+	on_tess_control_clicked () = 0;
+
+	virtual
+	void
+	on_tess_evaluate_clicked () = 0;
+
+	virtual
+	void
+	on_geometry_clicked () = 0;
+
+	virtual
+	void
+	on_fragment_clicked () = 0;
+
+	virtual
+	void
+	on_compute_clicked () = 0;
 
 	virtual
 	void
@@ -616,11 +612,6 @@ private:
 	Glib::RefPtr <Gtk::ListStore> m_ColorThemeListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_RightMarginAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_TabWidthAdjustment;
-	Gtk::Image* m_FragmentShaderImage;
-	Gtk::Image* m_FragmentShaderImage1;
-	Gtk::Image* m_FragmentShaderImage2;
-	Gtk::Image* m_FragmentShaderImage3;
-	Gtk::Image* m_FragmentShaderImage4;
 	Gtk::Menu* m_SearchMenu;
 	Gtk::CheckMenuItem* m_CaseSensitiveMenuItem;
 	Gtk::CheckMenuItem* m_AtWordBoundariesMenuItem;
@@ -629,14 +620,6 @@ private:
 	Gtk::CheckMenuItem* m_WrapAroundMenuItemMenuItem;
 	Gtk::MenuItem* m_RecentSearchesMenuItem;
 	Gtk::Image* m_ToggleReplaceImage;
-	Gtk::Image* m_VertexShaderImage;
-	Gtk::Menu* m_ShaderTypeMenu;
-	Gtk::ImageMenuItem* m_VertexMenuItem;
-	Gtk::ImageMenuItem* m_TessControlMenuItem;
-	Gtk::ImageMenuItem* m_TessEvaluateMenuItem;
-	Gtk::ImageMenuItem* m_GeometryMenuItem;
-	Gtk::ImageMenuItem* m_FragmentMenuItem;
-	Gtk::ImageMenuItem* m_ComputeMenuItem;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Paned* m_Paned;
@@ -656,11 +639,13 @@ private:
 	Gtk::ToolButton* m_RedoButton;
 	Gtk::ToggleToolButton* m_DirectOutputToggleButton;
 	Gtk::ToggleToolButton* m_MustEvaluateToggleButton;
-	Gtk::MenuToolButton* m_ShaderTypeMenuButton;
+	Gtk::ToolButton* m_ShaderTypeMenuButton;
 	Gtk::ToolButton* m_PreferencesButton;
 	Gtk::Popover* m_NewScriptPopover;
 	Gtk::Button* m_NewScriptButton;
+	Gtk::Button* m_NewShaderPartButton1;
 	Gtk::Button* m_NewShaderPartButton;
+	Gtk::Button* m_NewShaderProgramButton1;
 	Gtk::Button* m_NewShaderProgramButton;
 	Gtk::Dialog* m_PreferencesDialog;
 	Gtk::Expander* m_WordWrapExpander;
@@ -675,6 +660,13 @@ private:
 	Gtk::CheckButton* m_InsertSpacesInsteadOfTabsCheckButton;
 	Gtk::Expander* m_ColorThemeExpander;
 	Gtk::TreeView* m_ColorThemeTreeView;
+	Gtk::Popover* m_ShaderTypePopover;
+	Gtk::Button* m_VertexShaderButton;
+	Gtk::Button* m_TessControllShaderButton;
+	Gtk::Button* m_TessEvaluationShaderButton;
+	Gtk::Button* m_GeometryShaderButton;
+	Gtk::Button* m_FragmentShaderButton;
+	Gtk::Button* m_ComputeShaderButton;
 	Gtk::Revealer* m_SearchRevealer;
 	Gtk::Box* m_SearchBox;
 	Gtk::Grid* m_SearchAndReplaceBox;

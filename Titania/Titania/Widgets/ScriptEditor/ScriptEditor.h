@@ -165,11 +165,22 @@ private:
 
 	virtual
 	void
+	on_new_composed_shader_clicked () final override;
+
+	virtual
+	void
 	on_new_shader_part_clicked () final override;
 
 	virtual
 	void
+	on_new_program_shader_clicked () final override;
+
+	virtual
+	void
 	on_new_shader_program_clicked () final override;
+
+	void
+	on_new_shader_clicked (const std::string & typeName, const std::string & URL);
 
 	virtual
 	void

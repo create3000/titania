@@ -65,11 +65,6 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_TabWidthAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("TabWidthAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("FragmentShaderImage", m_FragmentShaderImage);
-	m_builder -> get_widget ("FragmentShaderImage1", m_FragmentShaderImage1);
-	m_builder -> get_widget ("FragmentShaderImage2", m_FragmentShaderImage2);
-	m_builder -> get_widget ("FragmentShaderImage3", m_FragmentShaderImage3);
-	m_builder -> get_widget ("FragmentShaderImage4", m_FragmentShaderImage4);
 	m_builder -> get_widget ("SearchMenu", m_SearchMenu);
 	m_builder -> get_widget ("CaseSensitiveMenuItem", m_CaseSensitiveMenuItem);
 	m_builder -> get_widget ("AtWordBoundariesMenuItem", m_AtWordBoundariesMenuItem);
@@ -78,14 +73,6 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("WrapAroundMenuItemMenuItem", m_WrapAroundMenuItemMenuItem);
 	m_builder -> get_widget ("RecentSearchesMenuItem", m_RecentSearchesMenuItem);
 	m_builder -> get_widget ("ToggleReplaceImage", m_ToggleReplaceImage);
-	m_builder -> get_widget ("VertexShaderImage", m_VertexShaderImage);
-	m_builder -> get_widget ("ShaderTypeMenu", m_ShaderTypeMenu);
-	m_builder -> get_widget ("VertexMenuItem", m_VertexMenuItem);
-	m_builder -> get_widget ("TessControlMenuItem", m_TessControlMenuItem);
-	m_builder -> get_widget ("TessEvaluateMenuItem", m_TessEvaluateMenuItem);
-	m_builder -> get_widget ("GeometryMenuItem", m_GeometryMenuItem);
-	m_builder -> get_widget ("FragmentMenuItem", m_FragmentMenuItem);
-	m_builder -> get_widget ("ComputeMenuItem", m_ComputeMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
@@ -109,7 +96,9 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("PreferencesButton", m_PreferencesButton);
 	m_builder -> get_widget ("NewScriptPopover", m_NewScriptPopover);
 	m_builder -> get_widget ("NewScriptButton", m_NewScriptButton);
+	m_builder -> get_widget ("NewShaderPartButton1", m_NewShaderPartButton1);
 	m_builder -> get_widget ("NewShaderPartButton", m_NewShaderPartButton);
+	m_builder -> get_widget ("NewShaderProgramButton1", m_NewShaderProgramButton1);
 	m_builder -> get_widget ("NewShaderProgramButton", m_NewShaderProgramButton);
 	m_builder -> get_widget ("PreferencesDialog", m_PreferencesDialog);
 	m_builder -> get_widget ("WordWrapExpander", m_WordWrapExpander);
@@ -124,6 +113,13 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("InsertSpacesInsteadOfTabsCheckButton", m_InsertSpacesInsteadOfTabsCheckButton);
 	m_builder -> get_widget ("ColorThemeExpander", m_ColorThemeExpander);
 	m_builder -> get_widget ("ColorThemeTreeView", m_ColorThemeTreeView);
+	m_builder -> get_widget ("ShaderTypePopover", m_ShaderTypePopover);
+	m_builder -> get_widget ("VertexShaderButton", m_VertexShaderButton);
+	m_builder -> get_widget ("TessControllShaderButton", m_TessControllShaderButton);
+	m_builder -> get_widget ("TessEvaluationShaderButton", m_TessEvaluationShaderButton);
+	m_builder -> get_widget ("GeometryShaderButton", m_GeometryShaderButton);
+	m_builder -> get_widget ("FragmentShaderButton", m_FragmentShaderButton);
+	m_builder -> get_widget ("ComputeShaderButton", m_ComputeShaderButton);
 	m_builder -> get_widget ("SearchRevealer", m_SearchRevealer);
 	m_builder -> get_widget ("SearchBox", m_SearchBox);
 	m_builder -> get_widget ("SearchAndReplaceBox", m_SearchAndReplaceBox);
@@ -148,24 +144,19 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	m_WithinSelectionMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_search_within_selection_toggled));
 	m_WrapAroundMenuItemMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_search_wrap_around_toggled));
 
-	// Connect object Gtk::ImageMenuItem with id 'VertexMenuItem'.
-	m_VertexMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_vertex_activate));
-	m_TessControlMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_tess_control_activate));
-	m_TessEvaluateMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_tess_evaluate_activate));
-	m_GeometryMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_geometry_activate));
-	m_FragmentMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_fragment_activate));
-	m_ComputeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_compute_activate));
-
 	// Connect object Gtk::ToolButton with id 'NewButton'.
 	m_NewButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_new_clicked));
 	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_apply_clicked));
 	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_undo_clicked));
 	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_redo_clicked));
+	m_ShaderTypeMenuButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_shader_type_clicked));
 	m_PreferencesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_preferences_clicked));
 
 	// Connect object Gtk::Button with id 'NewScriptButton'.
 	m_NewScriptButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_new_script_clicked));
+	m_NewShaderPartButton1 -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_new_composed_shader_clicked));
 	m_NewShaderPartButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_new_shader_part_clicked));
+	m_NewShaderProgramButton1 -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_new_program_shader_clicked));
 	m_NewShaderProgramButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_new_shader_program_clicked));
 
 	// Connect object Gtk::Dialog with id 'PreferencesDialog'.
@@ -194,7 +185,13 @@ X3DScriptEditorInterface::create (const std::string & filename)
 	// Connect object Gtk::TreeView with id 'ColorThemeTreeView'.
 	m_ColorThemeTreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_color_theme_activated));
 
-	// Connect object Gtk::Button with id 'ReplaceButton'.
+	// Connect object Gtk::Button with id 'VertexShaderButton'.
+	m_VertexShaderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_vertex_clicked));
+	m_TessControllShaderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_tess_control_clicked));
+	m_TessEvaluationShaderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_tess_evaluate_clicked));
+	m_GeometryShaderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_geometry_clicked));
+	m_FragmentShaderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_fragment_clicked));
+	m_ComputeShaderButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_compute_clicked));
 	m_ReplaceButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_replace_forward_clicked));
 	m_ReplaceAllButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_replace_all_clicked));
 

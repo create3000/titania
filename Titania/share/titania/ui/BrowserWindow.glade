@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkIconFactory" id="IconFactory">
     <sources>
+      <source stock-id="ComputeShader" filename="icons/Faenza/16/gtk-execute.png"/>
       <source stock-id="TessControlShader" filename="icons/TessControlShader.svg"/>
       <source stock-id="TessEvaluationShader" filename="icons/TessEvaluationShader.svg"/>
       <source stock-id="GeometryShader" filename="icons/GeometryShader.svg"/>

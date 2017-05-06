@@ -90,30 +90,34 @@ private:
 
 	virtual
 	void
-	on_vertex_activate () final override;
+	on_shader_type_clicked () final override;
 
 	virtual
 	void
-	on_tess_control_activate () final override;
+	on_vertex_clicked () final override;
 
 	virtual
 	void
-	on_tess_evaluate_activate () final override;
+	on_tess_control_clicked () final override;
 
 	virtual
 	void
-	on_geometry_activate () final override;
+	on_tess_evaluate_clicked () final override;
 
 	virtual
 	void
-	on_fragment_activate () final override;
+	on_geometry_clicked () final override;
 
 	virtual
 	void
-	on_compute_activate () final override;
+	on_fragment_clicked () final override;
+
+	virtual
+	void
+	on_compute_clicked () final override;
 
 	void
-	on_type_activate (const std::string & type);
+	on_type_clicked (const std::string & type);
 
 	///  @name Static members
 

@@ -1876,39 +1876,12 @@
                             "@name": "nodes",
                             "@reference": "http://titania.create3000.de",
                             "-value": [
-                              { "Transform":
+                              { "ShaderPart":
                                 {
-                                  "@DEF": "Text",
-                                  "@translation": [ 0, 0, -2.42503 ],
-                                  "-children": [
-                                    { "Shape":
-                                      {
-                                        "-appearance": { "Appearance":
-                                          {
-                                            "-material": { "Material":
-                                              {
-                                              }
-                                            }
-                                          }
-                                        },
-                                        "-geometry": { "Text":
-                                          {
-                                            "@string": [
-                                              "3D Text"
-                                            ],
-                                            "@solid": true,
-                                            "-fontStyle": { "FontStyle":
-                                              {
-                                                "@family": [
-                                                  "../../../../../Schriften/FontShop OpenType Fonts/Amelia/Amelia-Regular.otf",
-                                                  "SERIF"
-                                                ]
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
+                                  "@DEF": "TestFragmentShader",
+                                  "@type": "FRAGMENT",
+                                  "@url": [
+                                    "data:text/plain,\n\nprecision mediump float;\n\nuniform vec3  x3d_DiffuseColor;\nuniform float x3d_Transparency;\n\nvarying vec3 normal;\n\nvoid\nmain ()\n{\n\tfloat f = max (dot (normal, vec3 (0.0, 0.0, 1.0)), 0.0);\n\n\tgl_FragColor = vec4 (x3d_DiffuseColor * f, 1.0 - x3d_Transparency);\n}"
                                   ]
                                 }
                               }
@@ -2823,7 +2796,88 @@
         },
         { "Transform":
           {
-            "@USE": "Text"
+            "@DEF": "Text",
+            "@translation": [ 0, 0, -2.42503 ],
+            "-children": [
+              { "Shape":
+                {
+                  "-appearance": { "Appearance":
+                    {
+                      "-material": { "Material":
+                        {
+                        }
+                      }
+                    }
+                  },
+                  "-geometry": { "Text":
+                    {
+                      "@string": [
+                        "3D Text"
+                      ],
+                      "@solid": true,
+                      "-fontStyle": { "FontStyle":
+                        {
+                          "@family": [
+                            "../../../../../Schriften/FontShop OpenType Fonts/Amelia/Amelia-Regular.otf",
+                            "SERIF"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        { "Transform":
+          {
+            "@DEF": "Shader",
+            "-children": [
+              { "Shape":
+                {
+                  "-appearance": { "Appearance":
+                    {
+                      "-material": { "Material":
+                        {
+                          "@ambientIntensity": 0.174575,
+                          "@diffuseColor": [ 0.685208, 0.0893143, 0.027172 ],
+                          "@specularColor": [ 0.913265, 0.373179, 0.373179 ],
+                          "@shininess": 0.959184
+                        }
+                      },
+                      "-shaders": [
+                        { "ComposedShader":
+                          {
+                            "@DEF": "ComposedShader",
+                            "@language": "GLSL",
+                            "-parts": [
+                              { "ShaderPart":
+                                {
+                                  "@USE": "TestFragmentShader"
+                                }
+                              },
+                              { "ShaderPart":
+                                {
+                                  "@DEF": "TestVertexShader",
+                                  "@url": [
+                                    "data:text/plain,\n\nprecision mediump float;\n\nuniform mat4 x3d_ProjectionMatrix;\nuniform mat4 x3d_ModelViewMatrix;\nuniform mat3 x3d_NormalMatrix;\n\nattribute vec4 x3d_Vertex;\nattribute vec3 x3d_Normal;\n\nvarying vec3 normal;\n\nvoid\nmain ()\n{\n\tnormal = x3d_NormalMatrix * x3d_Normal;\n\n\tgl_Position = x3d_ProjectionMatrix * x3d_ModelViewMatrix * x3d_Vertex;\n}"
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "-geometry": { "Box":
+                    {
+                    }
+                  }
+                }
+              }
+            ]
           }
         },
         { "EXPORT":

@@ -15,31 +15,6 @@
       <column type="gint"/>
     </columns>
   </object>
-  <object class="GtkImage" id="FragmentShaderImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">FragmentShader</property>
-  </object>
-  <object class="GtkImage" id="FragmentShaderImage1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-execute</property>
-  </object>
-  <object class="GtkImage" id="FragmentShaderImage2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">TessControlShader</property>
-  </object>
-  <object class="GtkImage" id="FragmentShaderImage3">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">TessEvaluationShader</property>
-  </object>
-  <object class="GtkImage" id="FragmentShaderImage4">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">GeometryShader</property>
-  </object>
   <object class="GtkAdjustment" id="RightMarginAdjustment">
     <property name="upper">1024</property>
     <property name="value">80</property>
@@ -122,81 +97,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
-  </object>
-  <object class="GtkImage" id="VertexShaderImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">VertexShader</property>
-  </object>
-  <object class="GtkMenu" id="ShaderTypeMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="VertexMenuItem">
-        <property name="label" translatable="yes">VERTEX</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">VertexShaderImage</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_vertex_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="TessControlMenuItem">
-        <property name="label" translatable="yes">TESS_CONTROL</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">FragmentShaderImage2</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_tess_control_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="TessEvaluateMenuItem">
-        <property name="label" translatable="yes">TESS_EVALUATION</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">FragmentShaderImage3</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_tess_evaluate_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="GeometryMenuItem">
-        <property name="label" translatable="yes">GEOMETRY</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">FragmentShaderImage4</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_geometry_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="FragmentMenuItem">
-        <property name="label" translatable="yes">FRAGMENT</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">FragmentShaderImage</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_fragment_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="ComputeMenuItem">
-        <property name="label" translatable="yes">COMPUTE</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">FragmentShaderImage1</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_compute_activate" swapped="no"/>
-      </object>
-    </child>
   </object>
   <object class="GtkWindow" id="Window">
     <property name="can_focus">False</property>
@@ -485,12 +385,14 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkMenuToolButton" id="ShaderTypeMenuButton">
+                          <object class="GtkToolButton" id="ShaderTypeMenuButton">
+                            <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Set shader type to one of the values available in the menu.</property>
                             <property name="label" translatable="yes">Shader Type</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">ShaderType</property>
+                            <signal name="clicked" handler="on_shader_type_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -561,7 +463,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
+        <property name="spacing">4</property>
         <child>
           <object class="GtkButton" id="NewScriptButton">
             <property name="visible">True</property>
@@ -584,18 +486,51 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="NewShaderPartButton">
+          <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_new_shader_part_clicked" swapped="no"/>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkButton" id="NewShaderPartButton1">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">Create ShaderPart</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_new_composed_shader_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Create ComposedShader</property>
+                  </object>
+                </child>
               </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="NewShaderPartButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_new_shader_part_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Create ShaderPart</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -605,18 +540,51 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="NewShaderProgramButton">
+          <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_new_shader_program_clicked" swapped="no"/>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkButton" id="NewShaderProgramButton1">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">Create ShaderProgram</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_new_program_shader_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Create ProgramShader</property>
+                  </object>
+                </child>
               </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="NewShaderProgramButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_new_shader_program_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Create ShaderProgram</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -1093,6 +1061,291 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkPopover" id="ShaderTypePopover">
+    <property name="can_focus">False</property>
+    <property name="border_width">8</property>
+    <property name="relative_to">ShaderTypeMenuButton</property>
+    <property name="position">bottom</property>
+    <property name="constrain_to">none</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkButton" id="VertexShaderButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_vertex_clicked" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage" id="image20">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">VertexShader</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label10">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">VERTEX</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="TessControllShaderButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_tess_control_clicked" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage" id="image12">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">TessControlShader</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label15">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">TESS_CONTROL</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="TessEvaluationShaderButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_tess_evaluate_clicked" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage" id="image16">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">TessEvaluationShader</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label19">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">TESS_EVALUATION</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="GeometryShaderButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_geometry_clicked" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage" id="image15">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">GeometryShader</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label18">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">GEOMETRY</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="FragmentShaderButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_fragment_clicked" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage" id="image14">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">FragmentShader</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label17">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">FRAGMENT</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="ComputeShaderButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_compute_clicked" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage" id="image13">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">ComputeShader</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label16">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">COMPUTE</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
           </packing>
         </child>
       </object>

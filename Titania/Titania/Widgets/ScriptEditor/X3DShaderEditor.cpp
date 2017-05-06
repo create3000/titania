@@ -63,7 +63,7 @@ const std::map <std::string, std::string> X3DShaderEditor::shaderTypes = {
 	std::make_pair ("TESS_EVALUATION", "TessEvaluationShader"),
 	std::make_pair ("GEOMETRY",        "GeometryShader"),
 	std::make_pair ("FRAGMENT",        "FragmentShader"),
-	std::make_pair ("COMPUTE",         "gtk-execute"),
+	std::make_pair ("COMPUTE",         "ComputeShader"),
 };
 
 X3DShaderEditor::X3DShaderEditor () :
@@ -71,8 +71,6 @@ X3DShaderEditor::X3DShaderEditor () :
 	                         node ()
 {
 	addChildObjects (node);
-
-	getShaderTypeMenuButton () .set_menu (getShaderTypeMenu ());
 }
 
 void
@@ -119,46 +117,54 @@ X3DShaderEditor::set_type ()
 }
 
 void
-X3DShaderEditor::on_vertex_activate ()
+X3DShaderEditor::on_shader_type_clicked ()
 {
-	on_type_activate ("VERTEX");
+	getShaderTypePopover () .popup ();
 }
 
 void
-X3DShaderEditor::on_tess_control_activate ()
+X3DShaderEditor::on_vertex_clicked ()
 {
-	on_type_activate ("TESS_CONTROL");
+	on_type_clicked ("VERTEX");
 }
 
 void
-X3DShaderEditor::on_tess_evaluate_activate ()
+X3DShaderEditor::on_tess_control_clicked ()
 {
-	on_type_activate ("TESS_EVALUATION");
+	on_type_clicked ("TESS_CONTROL");
 }
 
 void
-X3DShaderEditor::on_geometry_activate ()
+X3DShaderEditor::on_tess_evaluate_clicked ()
 {
-	on_type_activate ("GEOMETRY");
+	on_type_clicked ("TESS_EVALUATION");
 }
 
 void
-X3DShaderEditor::on_fragment_activate ()
+X3DShaderEditor::on_geometry_clicked ()
 {
-	on_type_activate ("FRAGMENT");
+	on_type_clicked ("GEOMETRY");
 }
 
 void
-X3DShaderEditor::on_compute_activate ()
+X3DShaderEditor::on_fragment_clicked ()
 {
-	on_type_activate ("COMPUTE");
+	on_type_clicked ("FRAGMENT");
 }
 
 void
-X3DShaderEditor::on_type_activate (const std::string & type)
+X3DShaderEditor::on_compute_clicked ()
+{
+	on_type_clicked ("COMPUTE");
+}
+
+void
+X3DShaderEditor::on_type_clicked (const std::string & type)
 {
 	try
 	{
+		getShaderTypePopover () .popdown ();
+
 		const auto undoStep = std::make_shared <X3D::UndoStep> (_ (basic::sprintf ("Set Shader »type« To »%s«", type .c_str ())));
 		auto &     field    = node -> getField <X3D::SFString> ("type");
 

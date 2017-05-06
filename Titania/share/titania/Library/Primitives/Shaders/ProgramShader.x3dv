@@ -13,13 +13,13 @@ META "outputStyle" "Nicest"
 DEF Shader Transform {
   children Shape {
     appearance Appearance {
-      material DEF Spring12 Material {
+      material Material {
         ambientIntensity 0.174575
         diffuseColor 0.685208 0.0893143 0.027172
         specularColor 0.913265 0.373179 0.373179
         shininess 0.959184
       }
-      shaders ProgramShader {
+      shaders DEF ProgramShader ProgramShader {
         language "GLSL"
         programs [
           DEF VertexShader ShaderProgram {
