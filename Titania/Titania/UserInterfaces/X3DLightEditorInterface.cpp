@@ -90,10 +90,6 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_SpotLightRadiusAdjustment            = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("SpotLightRadiusAdjustment"));
 
 	// Get widgets.
-	m_builder -> get_widget ("NewLightPopover", m_NewLightPopover);
-	m_builder -> get_widget ("NewDirectionalLightButton", m_NewDirectionalLightButton);
-	m_builder -> get_widget ("NewPointLightButton", m_NewPointLightButton);
-	m_builder -> get_widget ("NewSpotLightButton", m_NewSpotLightButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("NewLightPopupButton", m_NewLightPopupButton);
@@ -151,14 +147,18 @@ X3DLightEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("ShadowColorBox", m_ShadowColorBox);
 	m_builder -> get_widget ("ShadowColorButton", m_ShadowColorButton);
 	m_builder -> get_widget ("ShadowDiffusionSpinButton", m_ShadowDiffusionSpinButton);
+	m_builder -> get_widget ("NewLightPopover", m_NewLightPopover);
+	m_builder -> get_widget ("NewDirectionalLightButton", m_NewDirectionalLightButton);
+	m_builder -> get_widget ("NewPointLightButton", m_NewPointLightButton);
+	m_builder -> get_widget ("NewSpotLightButton", m_NewSpotLightButton);
 
-	// Connect object Gtk::Button with id 'NewDirectionalLightButton'.
-	m_NewDirectionalLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_directional_light_clicked));
-	m_NewPointLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_point_light_clicked));
-	m_NewSpotLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_spot_light_clicked));
+	// Connect object Gtk::Button with id 'NewLightPopupButton'.
 	m_NewLightPopupButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_light_popup_clicked));
 	m_RemoveLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_remove_light_clicked));
 	m_IndexButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_index_clicked));
+	m_NewDirectionalLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_directional_light_clicked));
+	m_NewPointLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_point_light_clicked));
+	m_NewSpotLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_spot_light_clicked));
 
 	// Call construct handler of base class.
 	construct ();

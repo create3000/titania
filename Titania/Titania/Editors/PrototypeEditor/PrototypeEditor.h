@@ -93,6 +93,9 @@ private:
 	void
 	set_prototype (const X3D::X3DProtoDeclarationNodePtr &);
 
+	void
+	on_create_proto_popup_clicked () final override;
+
 	virtual
 	void
 	on_create_proto_clicked () final override;

@@ -210,22 +210,6 @@ public:
 	getSpotLightRadiusAdjustment () const
 	{ return m_SpotLightRadiusAdjustment; }
 
-	Gtk::Popover &
-	getNewLightPopover () const
-	{ return *m_NewLightPopover; }
-
-	Gtk::Button &
-	getNewDirectionalLightButton () const
-	{ return *m_NewDirectionalLightButton; }
-
-	Gtk::Button &
-	getNewPointLightButton () const
-	{ return *m_NewPointLightButton; }
-
-	Gtk::Button &
-	getNewSpotLightButton () const
-	{ return *m_NewSpotLightButton; }
-
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -454,19 +438,23 @@ public:
 	getShadowDiffusionSpinButton () const
 	{ return *m_ShadowDiffusionSpinButton; }
 
+	Gtk::Popover &
+	getNewLightPopover () const
+	{ return *m_NewLightPopover; }
+
+	Gtk::Button &
+	getNewDirectionalLightButton () const
+	{ return *m_NewDirectionalLightButton; }
+
+	Gtk::Button &
+	getNewPointLightButton () const
+	{ return *m_NewPointLightButton; }
+
+	Gtk::Button &
+	getNewSpotLightButton () const
+	{ return *m_NewSpotLightButton; }
+
 	///  @name Signal handlers
-
-	virtual
-	void
-	on_new_directional_light_clicked () = 0;
-
-	virtual
-	void
-	on_new_point_light_clicked () = 0;
-
-	virtual
-	void
-	on_new_spot_light_clicked () = 0;
 
 	virtual
 	void
@@ -479,6 +467,18 @@ public:
 	virtual
 	void
 	on_index_clicked () = 0;
+
+	virtual
+	void
+	on_new_directional_light_clicked () = 0;
+
+	virtual
+	void
+	on_new_point_light_clicked () = 0;
+
+	virtual
+	void
+	on_new_spot_light_clicked () = 0;
 
 	///  @name Destruction
 
@@ -533,10 +533,6 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightLocationYAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightLocationZAdjustment;
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightRadiusAdjustment;
-	Gtk::Popover* m_NewLightPopover;
-	Gtk::Button* m_NewDirectionalLightButton;
-	Gtk::Button* m_NewPointLightButton;
-	Gtk::Button* m_NewSpotLightButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Button* m_NewLightPopupButton;
@@ -594,6 +590,10 @@ private:
 	Gtk::Box* m_ShadowColorBox;
 	Gtk::Button* m_ShadowColorButton;
 	Gtk::SpinButton* m_ShadowDiffusionSpinButton;
+	Gtk::Popover* m_NewLightPopover;
+	Gtk::Button* m_NewDirectionalLightButton;
+	Gtk::Button* m_NewPointLightButton;
+	Gtk::Button* m_NewSpotLightButton;
 
 };
 

@@ -257,8 +257,16 @@ PrototypeEditor::set_prototype (const X3D::X3DProtoDeclarationNodePtr & value)
 }
 
 void
+PrototypeEditor::on_create_proto_popup_clicked ()
+{
+	getCreateProtoPopover () .popup ();
+}
+
+void
 PrototypeEditor::on_create_proto_clicked ()
 {
+	getCreateProtoPopover () .popdown ();
+
 	const auto typeName = getCurrentContext () -> getUniqueProtoName ("NewPrototype");
 	const auto proto    = getCurrentContext () -> createProtoDeclaration (typeName, { });
 
@@ -270,6 +278,8 @@ PrototypeEditor::on_create_proto_clicked ()
 void
 PrototypeEditor::on_create_externproto_clicked ()
 {
+	getCreateProtoPopover () .popdown ();
+
 	const auto typeName    = getCurrentContext () -> getUniqueExternProtoName ("NewExternProto");
 	const auto externProto = getCurrentContext () -> createExternProtoDeclaration (typeName, { }, { });
 

@@ -64,14 +64,17 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_URLCellrendererPixbuf = Glib::RefPtr <Gtk::CellRendererPixbuf>::cast_dynamic (m_builder -> get_object ("URLCellrendererPixbuf"));
 
 	// Get widgets.
+	m_builder -> get_widget ("CreateProtoPopover", m_CreateProtoPopover);
+	m_builder -> get_widget ("NewProtoButton", m_NewProtoButton);
+	m_builder -> get_widget ("CreateExternProtoButton", m_CreateExternProtoButton);
+	m_builder -> get_widget ("NewExternProtoButton", m_NewExternProtoButton);
+	m_builder -> get_widget ("CreatePrototypeButton", m_CreatePrototypeButton);
 	m_builder -> get_widget ("PrototypeMenu", m_PrototypeMenu);
-	m_builder -> get_widget ("CreateProtoMenu", m_CreateProtoMenu);
-	m_builder -> get_widget ("CreatePrototypeMenuItem", m_CreatePrototypeMenuItem);
-	m_builder -> get_widget ("CreateExternProtoMenuItem", m_CreateExternProtoMenuItem);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("EditPrototypeImage", m_EditPrototypeImage);
+	m_builder -> get_widget ("CreateProtoPopupButton", m_CreateProtoPopupButton);
 	m_builder -> get_widget ("CreateInstanceButton", m_CreateInstanceButton);
 	m_builder -> get_widget ("MenuButton", m_MenuButton);
 	m_builder -> get_widget ("PrototypeImage", m_PrototypeImage);
@@ -90,11 +93,10 @@ X3DPrototypeEditorInterface::create (const std::string & filename)
 	m_builder -> get_widget ("InstancesBox", m_InstancesBox);
 	m_builder -> get_widget ("UpdateInstancesButton", m_UpdateInstancesButton);
 
-	// Connect object Gtk::ImageMenuItem with id 'CreatePrototypeMenuItem'.
-	m_CreatePrototypeMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_proto_clicked));
-	m_CreateExternProtoMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_externproto_clicked));
-
-	// Connect object Gtk::Button with id 'CreateInstanceButton'.
+	// Connect object Gtk::Button with id 'NewProtoButton'.
+	m_NewProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_externproto_clicked));
+	m_NewExternProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_proto_clicked));
+	m_CreateProtoPopupButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_proto_popup_clicked));
 	m_CreateInstanceButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_instance_clicked));
 	m_UpdateInstancesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_update_instances_clicked));
 

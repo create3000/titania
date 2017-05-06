@@ -106,21 +106,29 @@ public:
 	getURLCellrendererPixbuf () const
 	{ return m_URLCellrendererPixbuf; }
 
+	Gtk::Popover &
+	getCreateProtoPopover () const
+	{ return *m_CreateProtoPopover; }
+
+	Gtk::Button &
+	getNewProtoButton () const
+	{ return *m_NewProtoButton; }
+
+	Gtk::Label &
+	getCreateExternProtoButton () const
+	{ return *m_CreateExternProtoButton; }
+
+	Gtk::Button &
+	getNewExternProtoButton () const
+	{ return *m_NewExternProtoButton; }
+
+	Gtk::Label &
+	getCreatePrototypeButton () const
+	{ return *m_CreatePrototypeButton; }
+
 	Gtk::Menu &
 	getPrototypeMenu () const
 	{ return *m_PrototypeMenu; }
-
-	Gtk::Menu &
-	getCreateProtoMenu () const
-	{ return *m_CreateProtoMenu; }
-
-	Gtk::ImageMenuItem &
-	getCreatePrototypeMenuItem () const
-	{ return *m_CreatePrototypeMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getCreateExternProtoMenuItem () const
-	{ return *m_CreateExternProtoMenuItem; }
 
 	Gtk::Window &
 	getWindow () const
@@ -137,6 +145,10 @@ public:
 	Gtk::Image &
 	getEditPrototypeImage () const
 	{ return *m_EditPrototypeImage; }
+
+	Gtk::Button &
+	getCreateProtoPopupButton () const
+	{ return *m_CreateProtoPopupButton; }
 
 	Gtk::Button &
 	getCreateInstanceButton () const
@@ -210,11 +222,15 @@ public:
 
 	virtual
 	void
+	on_create_externproto_clicked () = 0;
+
+	virtual
+	void
 	on_create_proto_clicked () = 0;
 
 	virtual
 	void
-	on_create_externproto_clicked () = 0;
+	on_create_proto_popup_clicked () = 0;
 
 	virtual
 	void
@@ -251,14 +267,17 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText> m_URLCellRendererText;
 	Glib::RefPtr <Gtk::TreeViewColumn> m_URLChooserColumn;
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;
+	Gtk::Popover* m_CreateProtoPopover;
+	Gtk::Button* m_NewProtoButton;
+	Gtk::Label* m_CreateExternProtoButton;
+	Gtk::Button* m_NewExternProtoButton;
+	Gtk::Label* m_CreatePrototypeButton;
 	Gtk::Menu* m_PrototypeMenu;
-	Gtk::Menu* m_CreateProtoMenu;
-	Gtk::ImageMenuItem* m_CreatePrototypeMenuItem;
-	Gtk::ImageMenuItem* m_CreateExternProtoMenuItem;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Image* m_EditPrototypeImage;
+	Gtk::Button* m_CreateProtoPopupButton;
 	Gtk::Button* m_CreateInstanceButton;
 	Gtk::MenuButton* m_MenuButton;
 	Gtk::Image* m_PrototypeImage;
