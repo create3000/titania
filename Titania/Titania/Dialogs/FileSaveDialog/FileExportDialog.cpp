@@ -103,17 +103,19 @@ FileExportDialog::exportNodes (const X3D::MFNode & nodes, const basic::uri & wor
 
 	X3D::traverse (getCurrentContext (),
 	               std::bind (&X3D::X3DEditor::transform, getCurrentContext () -> getWorldURL (), worldURL, protoUndoStep, _1),
-	               true,
+
 	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
-	               X3D::TRAVERSE_PROTO_DECLARATIONS);
+	               X3D::TRAVERSE_PROTO_DECLARATIONS |
+	               X3D::TRAVERSE_PROTO_DECLARATION_BODY);
 
 	// Change url's in nodes
 
 	X3D::traverse (const_cast <X3D::MFNode &> (nodes),
 	               std::bind (&X3D::X3DEditor::transform, getCurrentContext () -> getWorldURL (), worldURL, undoStep, _1),
-	               true,
+
 	               X3D::TRAVERSE_EXTERNPROTO_DECLARATIONS |
 	               X3D::TRAVERSE_PROTO_DECLARATIONS |
+	               X3D::TRAVERSE_PROTO_DECLARATION_BODY |
 	               X3D::TRAVERSE_ROOT_NODES);
 
 	// Export nodes to stream

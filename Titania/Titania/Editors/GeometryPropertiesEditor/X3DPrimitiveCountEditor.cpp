@@ -176,7 +176,6 @@ X3DPrimitiveCountEditor::update ()
 
 			X3D::traverse (getCurrentContext () -> getRootNodes (),
 			               std::bind (&X3DPrimitiveCountEditor::traverse, this, _1),
-			               true,
 			               X3D::TRAVERSE_ROOT_NODES |
 			               X3D::TRAVERSE_PROTOTYPE_INSTANCES |
 			               X3D::TRAVERSE_INLINE_NODES |
@@ -189,8 +188,7 @@ X3DPrimitiveCountEditor::update ()
 			for (const auto & layer : getCurrentWorld () -> getLayerSet () -> getLayers ())
 			{
 				X3D::traverse (layer -> children (),
-				               [&] (X3D::SFNode & ) { ++ nodes; return true; },
-				               true,
+				               [&] (X3D::SFNode &) { ++ nodes; return true; },
 				               X3D::TRAVERSE_ROOT_NODES |
 				               X3D::TRAVERSE_PROTOTYPE_INSTANCES |
 				               X3D::TRAVERSE_INLINE_NODES |
@@ -245,7 +243,6 @@ X3DPrimitiveCountEditor::update ()
 
 			X3D::traverse (selection,
 		                  std::bind (&X3DPrimitiveCountEditor::traverse, this, _1),
-		                  true,
 		                  X3D::TRAVERSE_ROOT_NODES |
 		                  X3D::TRAVERSE_PROTOTYPE_INSTANCES |
 		                  X3D::TRAVERSE_INLINE_NODES |

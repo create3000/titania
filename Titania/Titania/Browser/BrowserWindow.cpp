@@ -1664,16 +1664,15 @@ BrowserWindow::on_backgrounds_toggled ()
 	const bool hidden = not getBackgroundsAction () -> get_active ();
 
 	X3D::traverse (getCurrentContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
-	               {
-	                  const auto background = dynamic_cast <X3D::X3DBackgroundNode*> (node .getValue ());
-
-	                  if (background)
-								background -> isHidden (hidden);
-
-	                  return true;
-						},
-	               true,
-	               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	{
+		const auto background = dynamic_cast <X3D::X3DBackgroundNode*> (node .getValue ());
+		
+		if (background)
+			background -> isHidden (hidden);
+		
+		return true;
+	},
+	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void
@@ -1685,16 +1684,15 @@ BrowserWindow::on_fogs_toggled ()
 	const bool hidden = not getFogsAction () -> get_active ();
 
 	X3D::traverse (getCurrentContext () -> getRootNodes (), [&hidden] (X3D::SFNode & node)
-	               {
-	                  const auto fog = dynamic_cast <X3D::X3DFogObject*> (node .getValue ());
-
-	                  if (fog)
-								fog -> isHidden (hidden);
-
-	                  return true;
-						},
-	               true,
-	               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	{
+		const auto fog = dynamic_cast <X3D::X3DFogObject*> (node .getValue ());
+		
+		if (fog)
+			fog -> isHidden (hidden);
+		
+		return true;
+	},
+	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 // Object Icons
@@ -1708,26 +1706,24 @@ BrowserWindow::on_lights_toggled ()
 	if (getLightsAction () -> get_active ())
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		               {
-		                  if (dynamic_cast <X3D::X3DLightNode*> (node .getValue ()))
-									node -> addTool ();
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (dynamic_cast <X3D::X3DLightNode*> (node .getValue ()))
+				node -> addTool ();
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 	else
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		               {
-				            if (dynamic_cast <X3D::X3DLightNode*> (node .getValue ()))
-									node -> removeTool (true);
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (dynamic_cast <X3D::X3DLightNode*> (node .getValue ()))
+				node -> removeTool (true);
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 }
 
@@ -1740,26 +1736,24 @@ BrowserWindow::on_proximity_sensors_toggled ()
 	if (getProximitySensorsAction () -> get_active ())
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		               {
-		                  if (node -> isType (proximitySensors))
-									node -> addTool ();
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (node -> isType (proximitySensors))
+				node -> addTool ();
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 	else
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		               {
-		                  if (node -> isType (proximitySensors))
-									node -> removeTool (true);
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (node -> isType (proximitySensors))
+				node -> removeTool (true);
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 }
 
@@ -1772,26 +1766,24 @@ BrowserWindow::on_sounds_toggled ()
 	if (getSoundsAction () -> get_active ())
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		               {
-		                  if (dynamic_cast <X3D::Sound*> (node .getValue ()))
-									node -> addTool ();
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (dynamic_cast <X3D::Sound*> (node .getValue ()))
+				node -> addTool ();
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 	else
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		               {
-		                  if (dynamic_cast <X3D::Sound*> (node .getValue ()))
-									node -> removeTool (true);
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (dynamic_cast <X3D::Sound*> (node .getValue ()))
+				node -> removeTool (true);
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 }
 
@@ -1804,26 +1796,24 @@ BrowserWindow::on_transform_sensors_toggled ()
 	if (getTransformSensorsAction () -> get_active ())
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		               {
-		                  if (dynamic_cast <X3D::TransformSensor*> (node .getValue ()))
-									node -> addTool ();
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (dynamic_cast <X3D::TransformSensor*> (node .getValue ()))
+				node -> addTool ();
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 	else
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		               {
-		                  if (dynamic_cast <X3D::TransformSensor*> (node .getValue ()))
-									node -> removeTool (true);
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (dynamic_cast <X3D::TransformSensor*> (node .getValue ()))
+				node -> removeTool (true);
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 }
 
@@ -1836,26 +1826,24 @@ BrowserWindow::on_visibility_sensors_toggled ()
 	if (getVisibilitySensorsAction () -> get_active ())
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		               {
-		                  if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
-									node -> addTool ();
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
+				node -> addTool ();
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 	else
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		               {
-		                  if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
-									node -> removeTool (true);
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (dynamic_cast <X3D::VisibilitySensor*> (node .getValue ()))
+				node -> removeTool (true);
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 }
 
@@ -1868,26 +1856,24 @@ BrowserWindow::on_viewpoints_toggled ()
 	if (getViewpointsAction () -> get_active ())
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-		               {
-		                  if (dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ()))
-									node -> addTool ();
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ()))
+				node -> addTool ();
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 	else
 	{
 		X3D::traverse (getCurrentContext () -> getRootNodes (), [&] (X3D::SFNode & node)
-		               {
-		                  if (dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ()))
-									node -> removeTool (true);
-
-		                  return true;
-							},
-		               true,
-		               X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+		{
+			if (dynamic_cast <X3D::X3DViewpointNode*> (node .getValue ()))
+				node -> removeTool (true);
+			
+			return true;
+		},
+		X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 	}
 }
 
@@ -1994,15 +1980,15 @@ BrowserWindow::on_hide_selected_objects_activated ()
 	auto selection = getSelection () -> getNodes ();
 
 	X3D::traverse (selection, [ ] (X3D::SFNode & node)
-	               {
-	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
-
-	                  if (shape)
-								shape -> isHidden (true);
-
-	                  return true;
-						},
-	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	{
+		const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+		
+		if (shape)
+			shape -> isHidden (true);
+		
+		return true;
+	},
+	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 	getSelection () -> clearNodes ();
 }
@@ -2015,29 +2001,29 @@ BrowserWindow::on_hide_unselected_objects_activated ()
 	auto selection = getSelection () -> getNodes ();
 
 	X3D::traverse (selection, [&visibles] (X3D::SFNode & node)
-	               {
-	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
-
-	                  if (shape)
-								visibles .emplace (shape);
-
-	                  return true;
-						},
-	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	{
+		const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+		
+		if (shape)
+			visibles .emplace (shape);
+		
+		return true;
+	},
+	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 
 	X3D::traverse (getCurrentContext () -> getRootNodes (), [&visibles] (X3D::SFNode & node)
-	               {
-	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
-
-	                  if (shape)
-	                  {
-	                     if (not visibles .count (shape))
-									shape -> isHidden (true);
-							}
-
-	                  return true;
-						},
-	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	{
+		const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+		
+		if (shape)
+		{
+			if (not visibles .count (shape))
+				shape -> isHidden (true);
+		}
+		
+		return true;
+	},
+	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void
@@ -2046,30 +2032,30 @@ BrowserWindow::on_show_selected_objects_activated ()
 	auto selection = getSelection () -> getNodes ();
 
 	X3D::traverse (selection, [ ] (X3D::SFNode & node)
-	               {
-	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
-
-	                  if (shape)
-								shape -> isHidden (false);
-
-	                  return true;
-						},
-	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	{
+		const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+		
+		if (shape)
+			shape -> isHidden (false);
+		
+		return true;
+	},
+	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void
 BrowserWindow::on_show_all_objects_activated ()
 {
 	X3D::traverse (getCurrentContext () -> getRootNodes (), [ ] (X3D::SFNode & node)
-	               {
-	                  const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
-
-	                  if (shape)
-								shape -> isHidden (false);
-
-	                  return true;
-						},
-	               true, X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
+	{
+		const auto shape = X3D::x3d_cast <X3D::X3DShapeNode*> (node);
+		
+		if (shape)
+			shape -> isHidden (false);
+		
+		return true;
+	},
+	X3D::TRAVERSE_INLINE_NODES | X3D::TRAVERSE_PROTOTYPE_INSTANCES);
 }
 
 void

@@ -500,6 +500,8 @@ OutlineEditor::on_copy_activate ()
 
 	switch (treeView -> get_data_type (iter))
 	{
+		case OutlineIterType::ExternProtoDeclaration:
+		case OutlineIterType::ProtoDeclaration:
 		case OutlineIterType::X3DBaseNode:
 			break;
 		default:
@@ -1519,7 +1521,7 @@ OutlineEditor::selectNode (const double x, const double y)
 	// Clipboard
 
 	getCutMenuItem ()   .set_visible (isNode);
-	getCopyMenuItem ()  .set_visible (isNode);
+	getCopyMenuItem ()  .set_visible (isNode or isExternProto or isPrototype);
 	getPasteMenuItem () .set_visible (isNode or isExecutionContext or nodePath .empty ());
 	getPasteMenuItem () .set_sensitive (not getBrowserWindow () -> getClipboard () -> string_changed () .empty ());
 

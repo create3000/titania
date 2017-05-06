@@ -405,11 +405,15 @@ private:
 
 	static
 	std::vector <X3DProtoDeclarationNodePtr>
-	getUsedPrototypes (const X3DExecutionContextPtr & executionContext, const MFNode &);
+	getUsedPrototypes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes);
+
+	static
+	bool
+	isSubContext (X3DExecutionContext* executionContext, const X3DExecutionContext* subContext);
 
 	static
 	std::vector <Route*>
-	getConnectedRoutes (const X3DExecutionContextPtr & executionContext, const MFNode &);
+	getConnectedRoutes (const X3DExecutionContextPtr & executionContext, const MFNode & nodes);
 
 	///  @name Prototype handling
 
@@ -526,18 +530,18 @@ X3DEditor::getNodes (const MFNode & selection, const std::set <X3DConstants::Nod
 	X3DPtrArray <NodeType> nodes;
 
 	traverse (const_cast <MFNode &> (selection), [&] (SFNode & node)
-	          {
-	             for (const auto & type: node -> getType ())
-	             {
-	                if (types .count (type))
-	          		{
-	          		   nodes .emplace_back (node);
-	          		   return true;
-	          		}
-	          	}
-	          
-	             return true;
-	          });
+	{
+		for (const auto & type: node -> getType ())
+		{
+			if (types .count (type))
+			{
+				nodes .emplace_back (node);
+				return true;
+			}
+		}
+		
+		return true;
+	});
 
 	return nodes;
 }

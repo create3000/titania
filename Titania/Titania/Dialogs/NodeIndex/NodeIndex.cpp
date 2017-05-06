@@ -510,21 +510,21 @@ NodeIndex::getCurrentNodes (const std::set <X3D::X3DConstants::NodeType> & types
 		getCurrentProtoNodes (executionContext, nodes);
 
 	X3D::traverse (executionContext -> getRootNodes (), [&] (X3D::SFNode & node)
-	               {
-	                  if (node -> getExecutionContext () not_eq executionContext)
-								return true;
-
-	                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
-	                  {
-	                     if (types .count (type))
-	                     {
-	                        nodes .emplace_back (node);
-	                        break;
-								}
-							}
-
-	                  return true;
-						});
+	{
+		if (node -> getExecutionContext () not_eq executionContext)
+			return true;
+		
+		for (const auto & type: basic::make_reverse_range (node -> getType ()))
+		{
+			if (types .count (type))
+			{
+				nodes .emplace_back (node);
+				break;
+			}
+		}
+		
+		return true;
+	});
 
 	return nodes;
 }
@@ -537,18 +537,18 @@ NodeIndex::getCurrentProtoNodes (X3D::X3DExecutionContext* const executionContex
 		getCurrentProtoNodes (proto, nodes);
 
 		X3D::traverse (proto, [&] (X3D::SFNode & node)
-		               {
-		                  for (const auto & type: basic::make_reverse_range (node -> getType ()))
-		                  {
-		                     if (types .count (type))
-		                     {
-		                        nodes .emplace_back (node);
-		                        break;
-									}
-								}
-	
-		                  return true;
-							});
+		{
+			for (const auto & type: basic::make_reverse_range (node -> getType ()))
+			{
+				if (types .count (type))
+				{
+					nodes .emplace_back (node);
+					break;
+				}
+			}
+			
+			return true;
+		});
 	}
 }
 

@@ -68,11 +68,11 @@ namespace X3D {
 
 static
 bool
-traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int32_t flags, NodeSet & seen);
+traverse (SFNode & node, const TraverseCallback & callback, const int32_t flags, NodeSet & seen);
 
 static
 bool
-traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const bool distinct, const int32_t flags, NodeSet & seen)
+traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const int32_t flags, NodeSet & seen)
 {
 	if (not executionContext)
 		return true;
@@ -86,7 +86,7 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 		{
 			SFNode node (externProto);
 
-			if (traverse (node, callback, distinct, flags, seen))
+			if (traverse (node, callback, flags, seen))
 				continue;
 
 			return false;
@@ -99,7 +99,7 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 		{
 			SFNode node (prototype);
 
-			if (traverse (node, callback, distinct, flags, seen))
+			if (traverse (node, callback, flags, seen))
 				continue;
 
 			return false;
@@ -110,7 +110,7 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 	{
 		for (auto & node : executionContext -> getRootNodes ())
 		{
-			if (traverse (node, callback, distinct, flags, seen))
+			if (traverse (node, callback, flags, seen))
 				continue;
 
 			return false;
@@ -125,7 +125,7 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 			{
 				SFNode exportedNode (importedNode .second -> getExportedNode ());
 
-				if (traverse (exportedNode, callback, distinct, flags, seen))
+				if (traverse (exportedNode, callback, flags, seen))
 				   continue;
 
 			   return false;
@@ -139,16 +139,16 @@ traverse (X3DExecutionContext* const executionContext, const TraverseCallback & 
 }
 
 bool
-traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const bool distinct, const int32_t flags)
+traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const int32_t flags)
 {
 	NodeSet seen;
 
-	return traverse (executionContext, callback, distinct, flags, seen);
+	return traverse (executionContext, callback, flags, seen);
 }
 
 static
 bool
-traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int32_t flags, NodeSet & seen)
+traverse (SFNode & node, const TraverseCallback & callback, const int32_t flags, NodeSet & seen)
 {
 	if (not node)
 		return true;
@@ -183,116 +183,119 @@ traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool dist
 
 	if (seen .emplace (node) .second)
 	{
-		for (const auto & field : node -> getFieldDefinitions ())
+		if (not node -> isType ({ X3DConstants::ExternProtoDeclaration }))
 		{
-			switch (field -> getType ())
+			for (const auto & field : node -> getFieldDefinitions ())
 			{
-				case X3DConstants::SFNode :
+				switch (field -> getType ())
 				{
-					const auto sfnode = static_cast <X3D::SFNode*> (field);
-
-					if (flags & TRAVERSE_VISIBLE_NODES)
+					case X3DConstants::SFNode :
 					{
-						for (const auto & type : basic::make_reverse_range (node -> getType ()))
+						const auto sfnode = static_cast <SFNode*> (field);
+	
+						if (flags & TRAVERSE_VISIBLE_NODES)
 						{
-							switch (type)
+							for (const auto & type : basic::make_reverse_range (node -> getType ()))
 							{
-								case X3DConstants::Collision:
+								switch (type)
 								{
-									if (sfnode == &dynamic_cast <Collision*> (node .getValue ()) -> proxy ())
-										goto CONTINUE;		
-
+									case X3DConstants::Collision:
+									{
+										if (sfnode == &dynamic_cast <Collision*> (node .getValue ()) -> proxy ())
+											goto CONTINUE;		
+	
+										break;
+									}
+									default:
+										break;
+								}
+							}
+						}
+	
+						if (traverse (*sfnode, callback, flags, seen))
+							continue;
+	
+						return false;
+					}
+					case X3DConstants::MFNode:
+					{
+						const auto mfnode = static_cast <MFNode*> (field);
+		
+						if (flags & TRAVERSE_VISIBLE_NODES)
+						{
+							switch (node -> getType () .back ())
+							{
+								case X3DConstants::SwitchTool:
+								case X3DConstants::Switch:
+								{
+									const auto switchNode = dynamic_cast <Switch*> (node .getValue ());
+										
+									if (mfnode == &switchNode -> children ())
+									{
+										if (switchNode -> getWhichChoice () >= 0 and switchNode -> getWhichChoice () < (int32_t) switchNode -> children () .size ())
+										{
+											if (traverse (switchNode -> children () [switchNode -> getWhichChoice ()], callback, flags, seen))
+												continue;
+											
+											return false;
+										}
+	
+										continue;
+									}
+	
+									break;
+								}
+								case X3DConstants::LODTool:
+								case X3DConstants::LOD:
+								{
+									const auto lod = dynamic_cast <LOD*> (node .getValue ());
+										
+									if (mfnode == &lod -> children ())
+									{
+										if (lod -> children () .size ())
+										{
+											const int32_t index = std::min <int32_t> (lod -> level_changed (), lod -> children () .size () - 1);
+		
+											if (index >= 0)
+											{
+												if (traverse (lod -> children () [index], callback, flags, seen))
+													continue;
+												
+												return false;
+											}
+										}
+	
+										continue;
+									}
+	
 									break;
 								}
 								default:
 									break;
 							}
 						}
-					}
-
-					if (traverse (*sfnode, callback, distinct, flags, seen))
-						continue;
-
-					return false;
-				}
-				case X3DConstants::MFNode:
-				{
-					const auto mfnode = static_cast <X3D::MFNode*> (field);
 	
-					if (flags & TRAVERSE_VISIBLE_NODES)
-					{
-						switch (node -> getType () .back ())
+						for (auto & value : *mfnode)
 						{
-							case X3DConstants::SwitchTool:
-							case X3DConstants::Switch:
-							{
-								const auto switchNode = dynamic_cast <Switch*> (node .getValue ());
-									
-								if (mfnode == &switchNode -> children ())
-								{
-									if (switchNode -> getWhichChoice () >= 0 and switchNode -> getWhichChoice () < (int32_t) switchNode -> children () .size ())
-									{
-										if (traverse (switchNode -> children () [switchNode -> getWhichChoice ()], callback, distinct, flags, seen))
-											continue;
-										
-										return false;
-									}
-
-									continue;
-								}
-
-								break;
-							}
-							case X3DConstants::LODTool:
-							case X3DConstants::LOD:
-							{
-								const auto lod = dynamic_cast <LOD*> (node .getValue ());
-									
-								if (mfnode == &lod -> children ())
-								{
-									if (lod -> children () .size ())
-									{
-										const int32_t index = std::min <int32_t> (lod -> level_changed (), lod -> children () .size () - 1);
+							if (traverse (value, callback, flags, seen))
+								continue;
 	
-										if (index >= 0)
-										{
-											if (traverse (lod -> children () [index], callback, distinct, flags, seen))
-												continue;
-											
-											return false;
-										}
-									}
-
-									continue;
-								}
-
-								break;
-							}
-							default:
-								break;
+							return false;
 						}
+	
+						break;
 					}
-
-					for (auto & value : *mfnode)
-					{
-						if (traverse (value, callback, distinct, flags, seen))
-							continue;
-
-						return false;
-					}
-
-					break;
+					default:
+						break;
 				}
-				default:
-					break;
+	
+	CONTINUE:;
 			}
-
-CONTINUE:;
 		}
 	}
 	else
 	{
-		if (distinct)
+		if (not (flags & TRAVERSE_INDISTINCT))
 			return true;
 	}
 
@@ -304,11 +307,11 @@ CONTINUE:;
 			{
 				case X3DConstants::ExternProtoDeclaration:
 				{
-					if (flags & TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS)
+					if (flags & TRAVERSE_EXTERNPROTO_DECLARATION_SCENE)
 					{
 						ExternProtoDeclarationPtr externProto (node);
 
-						if (traverse (externProto -> getInternalScene (), callback, distinct, flags, seen))
+						if (traverse (externProto -> getInternalScene (), callback, flags, seen))
 							continue;
 
 						return false;
@@ -318,9 +321,9 @@ CONTINUE:;
 				}
 				case X3DConstants::ProtoDeclaration:
 				{
-					if (flags & TRAVERSE_PROTO_DECLARATIONS)
+					if (flags & TRAVERSE_PROTO_DECLARATION_BODY)
 					{
-						if (traverse (dynamic_cast <X3DExecutionContext*> (node .getValue ()), callback, distinct, flags, seen))
+						if (traverse (dynamic_cast <X3DExecutionContext*> (node .getValue ()), callback, flags, seen))
 							continue;
 
 						return false;
@@ -336,7 +339,7 @@ CONTINUE:;
 
 						for (auto & rootNode : instance -> getRootNodes ())
 						{
-							if (traverse (rootNode, callback, distinct, flags, seen))
+							if (traverse (rootNode, callback, flags, seen))
 								continue;
 
 							return false;
@@ -353,7 +356,7 @@ CONTINUE:;
 
 						for (auto & value : inlineNode -> getRootNodes ())
 						{
-							if (traverse (value, callback, distinct, flags, seen))
+							if (traverse (value, callback, flags, seen))
 								continue;
 
 							return false;
@@ -380,13 +383,13 @@ CONTINUE:;
 }
 
 bool
-traverse (X3D::MFNode & nodes, const TraverseCallback & callback, const bool distinct, const int32_t flags)
+traverse (MFNode & nodes, const TraverseCallback & callback, const int32_t flags)
 {
 	NodeSet seen;
 
 	for (auto & node : nodes)
 	{
-		if (traverse (node, callback, distinct, flags, seen))
+		if (traverse (node, callback, flags, seen))
 			continue;
 
 		return false;
@@ -396,11 +399,11 @@ traverse (X3D::MFNode & nodes, const TraverseCallback & callback, const bool dis
 }
 
 bool
-traverse (X3D::SFNode & node, const TraverseCallback & callback, const bool distinct, const int32_t flags)
+traverse (SFNode & node, const TraverseCallback & callback, const int32_t flags)
 {
 	NodeSet seen;
 
-	return traverse (node, callback, distinct, flags, seen);
+	return traverse (node, callback, flags, seen);
 }
 
 static
@@ -519,7 +522,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags
 	{
 		hierarchies .emplace_back (hierarchy);
 	}
-	else
+	else if (not node -> isType ({ X3DConstants::ExternProtoDeclaration }))
 	{
 		for (const auto & field : node -> getFieldDefinitions ())
 		{
@@ -535,7 +538,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags
 				{
 					case X3DConstants::SFNode:
 					{
-						const auto sfnode = static_cast <X3D::SFNode*> (field);
+						const auto sfnode = static_cast <SFNode*> (field);
 		
 						if (flags & TRAVERSE_VISIBLE_NODES)
 						{
@@ -571,7 +574,7 @@ find (X3DBaseNode* const node, X3DChildObject* const object, const int32_t flags
 					}
 					case X3DConstants::MFNode:
 					{
-						const auto mfnode = static_cast <X3D::MFNode*> (field);
+						const auto mfnode = static_cast <MFNode*> (field);
 		
 						if (flags & TRAVERSE_VISIBLE_NODES)
 						{
@@ -648,13 +651,13 @@ CONTINUE:;
 				{
 					case X3DConstants::ExternProtoDeclaration:
 					{
-						if (flags & TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS)
+						if (flags & TRAVERSE_EXTERNPROTO_DECLARATION_SCENE)
 						{
 						   try
 						   {
 								const auto externProto = dynamic_cast <ExternProtoDeclaration*> (node);
 	
-								find (static_cast <X3DBaseNode*> (externProto -> getProtoDeclaration ()), object, flags, hierarchies, hierarchy, seen);
+								find (static_cast <X3DExecutionContext*> (externProto -> getInternalScene ()), object, flags, hierarchies, hierarchy, seen);
 							}
 							catch (const X3DError &)
 							{ }
@@ -664,7 +667,7 @@ CONTINUE:;
 					}
 					case X3DConstants::ProtoDeclaration:
 					{
-						if (flags & TRAVERSE_PROTO_DECLARATIONS)
+						if (flags & TRAVERSE_PROTO_DECLARATION_BODY)
 						{
 							find (dynamic_cast <X3DExecutionContext*> (node), object, flags, hierarchies, hierarchy, seen);
 						}
@@ -742,7 +745,7 @@ find (X3DExecutionContext* const executionContext, X3DChildObject* const object,
 }
 
 Hierarchies
-find (const X3D::MFNode & nodes, X3DChildObject* const object, const int32_t flags)
+find (const MFNode & nodes, X3DChildObject* const object, const int32_t flags)
 {
 	Hierarchies hierarchies;
 	Hierarchy   hierarchy;
@@ -757,7 +760,7 @@ find (const X3D::MFNode & nodes, X3DChildObject* const object, const int32_t fla
 }
 
 Hierarchies
-find (const X3D::SFNode & node, X3DChildObject* const object, const int32_t flags)
+find (const SFNode & node, X3DChildObject* const object, const int32_t flags)
 {
 	Hierarchies hierarchies;
 	Hierarchy   hierarchy;

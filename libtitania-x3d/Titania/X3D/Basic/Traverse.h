@@ -63,31 +63,33 @@
 namespace titania {
 namespace X3D {
 
-constexpr int32_t TRAVERSE_EXTERNPROTO_DECLARATIONS       = 1;
-constexpr int32_t TRAVERSE_EXTERNPROTO_PROTO_DECLARATIONS = 1 << 1;
-constexpr int32_t TRAVERSE_PROTO_DECLARATIONS             = 1 << 2;
-constexpr int32_t TRAVERSE_ROOT_NODES                     = 1 << 3;
-constexpr int32_t TRAVERSE_PROTOTYPE_INSTANCES            = 1 << 4;
-constexpr int32_t TRAVERSE_IMPORTED_NODES                 = 1 << 5;
-constexpr int32_t TRAVERSE_EXPORTED_NODES                 = 1 << 6;
-constexpr int32_t TRAVERSE_INLINE_NODES                   = 1 << 7;
-constexpr int32_t TRAVERSE_TOOL_OBJECTS                   = 1 << 8;
-constexpr int32_t TRAVERSE_VISIBLE_NODES                  = 1 << 9;
-constexpr int32_t TRAVERSE_CLONED_NODES                   = 1 << 10;
-constexpr int32_t TRAVERSE_META_DATA                      = 1 << 11;
+constexpr int32_t TRAVERSE_EXTERNPROTO_DECLARATIONS      = 1;
+constexpr int32_t TRAVERSE_EXTERNPROTO_DECLARATION_SCENE = 1 << 1;
+constexpr int32_t TRAVERSE_PROTO_DECLARATIONS            = 1 << 2;
+constexpr int32_t TRAVERSE_PROTO_DECLARATION_BODY        = 1 << 3;
+constexpr int32_t TRAVERSE_ROOT_NODES                    = 1 << 4;
+constexpr int32_t TRAVERSE_PROTOTYPE_INSTANCES           = 1 << 5;
+constexpr int32_t TRAVERSE_IMPORTED_NODES                = 1 << 6;
+constexpr int32_t TRAVERSE_EXPORTED_NODES                = 1 << 7;
+constexpr int32_t TRAVERSE_INLINE_NODES                  = 1 << 8;
+constexpr int32_t TRAVERSE_TOOL_OBJECTS                  = 1 << 9;
+constexpr int32_t TRAVERSE_VISIBLE_NODES                 = 1 << 10;
+constexpr int32_t TRAVERSE_INDISTINCT                    = 1 << 11;
+constexpr int32_t TRAVERSE_CLONED_NODES                  = 1 << 12;
+constexpr int32_t TRAVERSE_META_DATA                     = 1 << 13;
 
 using TraverseCallback = std::function <bool (X3D::SFNode &)>;
 using Hierarchy        = std::vector <X3DChildObject*>;
 using Hierarchies      = std::vector <Hierarchy>;
 
 bool
-traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const bool distinct = true, const int32_t flags = TRAVERSE_ROOT_NODES);
+traverse (X3DExecutionContext* const executionContext, const TraverseCallback & callback, const int32_t flags = TRAVERSE_ROOT_NODES);
 
 bool
-traverse (MFNode &, const TraverseCallback &, const bool = true, const int32_t = TRAVERSE_ROOT_NODES);
+traverse (MFNode &, const TraverseCallback &, const int32_t = TRAVERSE_ROOT_NODES);
 
 bool
-traverse (SFNode &, const TraverseCallback &, const bool = true, const int32_t = TRAVERSE_ROOT_NODES);
+traverse (SFNode &, const TraverseCallback &, const int32_t = TRAVERSE_ROOT_NODES);
 
 Hierarchies
 find (X3DScene* const, X3DChildObject* const, const int32_t = TRAVERSE_ROOT_NODES);
