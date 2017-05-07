@@ -114,22 +114,11 @@ X3DBrowserWindowInterface::create ()
 	m_WireframeAction                 = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("WireframeAction"));
 
 	// Get widgets.
-	m_builder -> get_widget ("ExamineViewerImage", m_ExamineViewerImage);
 	m_builder -> get_widget ("FileImportImage", m_FileImportImage);
 	m_builder -> get_widget ("FileImportImage1", m_FileImportImage1);
-	m_builder -> get_widget ("FlyViewerImage", m_FlyViewerImage);
 	m_builder -> get_widget ("HistoryMenu", m_HistoryMenu);
-	m_builder -> get_widget ("NoneViewerImage", m_NoneViewerImage);
 	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
 	m_builder -> get_widget ("OpenLocationImage1", m_OpenLocationImage1);
-	m_builder -> get_widget ("PlaneViewerImage", m_PlaneViewerImage);
-	m_builder -> get_widget ("WalkViewerImage", m_WalkViewerImage);
-	m_builder -> get_widget ("ViewerTypeMenu", m_ViewerTypeMenu);
-	m_builder -> get_widget ("ExamineViewerMenuItem", m_ExamineViewerMenuItem);
-	m_builder -> get_widget ("WalkViewerMenuItem", m_WalkViewerMenuItem);
-	m_builder -> get_widget ("FlyViewerMenuItem", m_FlyViewerMenuItem);
-	m_builder -> get_widget ("PlaneViewerMenuItem", m_PlaneViewerMenuItem);
-	m_builder -> get_widget ("NoneViewerMenuItem", m_NoneViewerMenuItem);
 	m_builder -> get_widget ("WorkspacesImage", m_WorkspacesImage);
 	m_builder -> get_widget ("WorkspacesImage1", m_WorkspacesImage1);
 	m_builder -> get_widget ("BrowserMenu", m_BrowserMenu);
@@ -431,7 +420,7 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("SelectParentButton", m_SelectParentButton);
 	m_builder -> get_widget ("SelectChildButton", m_SelectChildButton);
 	m_builder -> get_widget ("ViewerSeparator", m_ViewerSeparator);
-	m_builder -> get_widget ("ViewerButton", m_ViewerButton);
+	m_builder -> get_widget ("SelectViewerButton", m_SelectViewerButton);
 	m_builder -> get_widget ("StraightenButton", m_StraightenButton);
 	m_builder -> get_widget ("StraightenHorizonButton", m_StraightenHorizonButton);
 	m_builder -> get_widget ("LookAtSeparator", m_LookAtSeparator);
@@ -440,6 +429,13 @@ X3DBrowserWindowInterface::create ()
 	m_builder -> get_widget ("LookAtButton", m_LookAtButton);
 	m_builder -> get_widget ("FooterBox", m_FooterBox);
 	m_builder -> get_widget ("SidebarBox", m_SidebarBox);
+	m_builder -> get_widget ("SelectViewerPopover", m_SelectViewerPopover);
+	m_builder -> get_widget ("ExamineViewerButton", m_ExamineViewerButton);
+	m_builder -> get_widget ("WalkViewerButton", m_WalkViewerButton);
+	m_builder -> get_widget ("FlyViewerButton", m_FlyViewerButton);
+	m_builder -> get_widget ("PlaneViewerButton", m_PlaneViewerButton);
+	m_builder -> get_widget ("NoneViewerButton", m_NoneViewerButton);
+	m_builder -> get_widget ("OtherViewerButton", m_OtherViewerButton);
 
 	// Connect object Gtk::ToggleAction with id 'AngleLayoutToolAction'.
 	m_AngleLayoutToolAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_angle_layout_tool_toggled));
@@ -476,15 +472,6 @@ X3DBrowserWindowInterface::create ()
 	m_TransformToolModeAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_transform_tool_mode_toggled));
 	m_ViewpointsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_viewpoints_toggled));
 	m_VisibilitySensorsAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_visibility_sensors_toggled));
-
-	// Connect object Gtk::ImageMenuItem with id 'ExamineViewerMenuItem'.
-	m_ExamineViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_examine_viewer_activated));
-	m_WalkViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_walk_viewer_activated));
-	m_FlyViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_fly_viewer_activated));
-	m_PlaneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_plane_viewer_activated));
-	m_NoneViewerMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_none_viewer_activated));
-
-	// Connect object Gtk::ToggleAction with id 'WireframeAction'.
 	m_WireframeAction -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_wireframe_toggled));
 
 	// Connect object Gtk::ImageMenuItem with id 'BrowserNewMenuItem'.
@@ -747,12 +734,7 @@ X3DBrowserWindowInterface::create ()
 	m_PlayPauseButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_play_pause_button_clicked));
 	m_SelectParentButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_select_parent_button_clicked));
 	m_SelectChildButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_select_child_button_clicked));
-
-	// Connect object Gtk::RadioToolButton with id 'ViewerButton'.
-	m_ViewerButton -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_viewer_button_press_event));
-	m_ViewerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_viewer_toggled));
-
-	// Connect object Gtk::ToolButton with id 'StraightenButton'.
+	m_SelectViewerButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_select_viewer_clicked));
 	m_StraightenButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_straighten_clicked));
 
 	// Connect object Gtk::ToggleToolButton with id 'StraightenHorizonButton'.
@@ -764,6 +746,13 @@ X3DBrowserWindowInterface::create ()
 
 	// Connect object Gtk::RadioToolButton with id 'LookAtButton'.
 	m_LookAtButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_look_at_toggled));
+
+	// Connect object Gtk::RadioButton with id 'ExamineViewerButton'.
+	m_ExamineViewerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_examine_viewer_toggled));
+	m_WalkViewerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_walk_viewer_toggled));
+	m_FlyViewerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_fly_viewer_toggled));
+	m_PlaneViewerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_plane_viewer_toggled));
+	m_NoneViewerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_none_viewer_toggled));
 
 	// Call construct handler of base class.
 	construct ();

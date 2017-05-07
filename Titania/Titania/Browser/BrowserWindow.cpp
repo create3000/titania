@@ -111,6 +111,7 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	           shadingActions (),
 	  primitiveQualityActions (),
 	    textureQualityActions (),
+	                     hand (true),
 	                   viewer (X3D::X3DConstants::NoneViewer),
 	                 changing (false)
 {
@@ -1398,7 +1399,7 @@ BrowserWindow::setEditing (const bool enabled)
 	}
 	else
 	{
-		getViewerButton () .set_active (true);
+		getHandButton () .set_active (true);
 
 		getSelection () -> setNodes ({ });
 	}
@@ -2554,6 +2555,8 @@ BrowserWindow::on_hand_button_toggled ()
 {
 	if (getHandButton () .get_active ())
 	{
+		hand = true;
+
 		getSelection () -> setEnabled (false);
 
 		setViewer (viewer);
@@ -2577,6 +2580,8 @@ BrowserWindow::on_arrow_button_toggled ()
 {
 	if (getArrowButton () .get_active ())
 	{
+		hand = false;
+
 		getSelection () -> setEnabled (true);
 
 		setViewer (viewer);
@@ -2890,7 +2895,6 @@ BrowserWindow::set_viewer ()
 			//getArrowButton () .set_sensitive (false);
 			break;
 		}
-
 		case X3D::X3DConstants::RectangleSelection:
 		case X3D::X3DConstants::LassoSelection:
 		case X3D::X3DConstants::LightSaber:
@@ -2899,7 +2903,6 @@ BrowserWindow::set_viewer ()
 			getArrowButton () .set_sensitive (true);
 			break;
 		}
-
 		default:
 		{
 			viewer = type;
@@ -2907,38 +2910,49 @@ BrowserWindow::set_viewer ()
 			getHandButton ()  .set_sensitive (true);
 			getArrowButton () .set_sensitive (true);
 
-			if (getLookAtButton () .get_active ())
-				getViewerButton ()  .set_active (true);
+			if (hand)
+				getHandButton ()  .set_active (true);
+			else
+				getArrowButton ()  .set_active (true);
 
 			break;
 		}
 	}
 
+	changing = true;
+
+	getOtherViewerButton () .set_active (true);
+
 	switch (type)
 	{
 		case X3D::X3DConstants::NoneViewer:
 		{
-			getViewerButton () .set_stock_id (Gtk::StockID ("gtk-cancel"));
+			getSelectViewerButton () .set_stock_id (Gtk::StockID ("NoneViewer"));
+			getNoneViewerButton () .set_active (true);
 			break;
 		}
 		case X3D::X3DConstants::ExamineViewer:
 		{
-			getViewerButton () .set_stock_id (Gtk::StockID ("ExamineViewer"));
+			getSelectViewerButton () .set_stock_id (Gtk::StockID ("ExamineViewer"));
+			getExamineViewerButton () .set_active (true);
 			break;
 		}
 		case X3D::X3DConstants::WalkViewer:
 		{
-			getViewerButton () .set_stock_id (Gtk::StockID ("WalkViewer"));
+			getSelectViewerButton () .set_stock_id (Gtk::StockID ("WalkViewer"));
+			getWalkViewerButton () .set_active (true);
 			break;
 		}
 		case X3D::X3DConstants::FlyViewer:
 		{
-			getViewerButton () .set_stock_id (Gtk::StockID ("FlyViewer"));
+			getSelectViewerButton () .set_stock_id (Gtk::StockID ("FlyViewer"));
+			getFlyViewerButton () .set_active (true);
 			break;
 		}
 		case X3D::X3DConstants::PlaneViewer:
 		{
-			getViewerButton () .set_stock_id (Gtk::StockID ("PlaneViewer"));
+			getSelectViewerButton () .set_stock_id (Gtk::StockID ("PlaneViewer"));
+			getPlaneViewerButton () .set_active (true);
 			break;
 		}
 		case X3D::X3DConstants::LookAtViewer:
@@ -2949,6 +2963,8 @@ BrowserWindow::set_viewer ()
 		default:
 			break;
 	}
+
+	changing = false;
 }
 
 void
@@ -2991,13 +3007,13 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::Node
 		}
 	}
 
-	getViewerSeparator ()       .set_visible (dashboard or editor);
-	getViewerButton ()          .set_visible (dashboard or editor);
-	getExamineViewerMenuItem () .set_visible (examine);
-	getWalkViewerMenuItem ()    .set_visible (walk);
-	getFlyViewerMenuItem ()     .set_visible (fly);
-	getPlaneViewerMenuItem ()   .set_visible (plane);
-	getNoneViewerMenuItem ()    .set_visible (none);
+	getViewerSeparator ()     .set_visible (dashboard or editor);
+	getSelectViewerButton ()  .set_visible (dashboard or editor);
+	getExamineViewerButton () .set_visible (examine);
+	getWalkViewerButton ()    .set_visible (walk);
+	getFlyViewerButton ()     .set_visible (fly);
+	getPlaneViewerButton ()   .set_visible (plane);
+	getNoneViewerButton ()    .set_visible (none);
 
 	getLookAtSeparator () .set_visible (lookat);
 	getLookAtAllButton () .set_visible (lookat);
@@ -3005,61 +3021,55 @@ BrowserWindow::set_available_viewers (const X3D::MFEnum <X3D::X3DConstants::Node
 }
 
 void
-BrowserWindow::on_viewer_toggled ()
+BrowserWindow::on_select_viewer_clicked ()
 {
-	setViewer (viewer);
-
-	getConfig () -> setItem ("viewer", getViewerButton () .get_active ());
-}
-
-bool
-BrowserWindow::on_viewer_button_press_event (GdkEventButton* event)
-{
-	if (event -> button not_eq 3)
-		return false;
-
-	getViewerTypeMenu () .popup (event -> button, event -> time);
-	return true;
+	getSelectViewerPopover () .popup ();
 }
 
 void
-BrowserWindow::on_examine_viewer_activated ()
+BrowserWindow::on_examine_viewer_toggled ()
 {
-	getViewerButton () .set_active (true);
-
-	setViewer (X3D::X3DConstants::ExamineViewer);
+	if (getExamineViewerButton () .get_active ())
+		on_viewer_toggled (X3D::X3DConstants::ExamineViewer);
 }
 
 void
-BrowserWindow::on_walk_viewer_activated ()
+BrowserWindow::on_walk_viewer_toggled ()
 {
-	getViewerButton () .set_active (true);
-
-	setViewer (X3D::X3DConstants::WalkViewer);
+	if (getWalkViewerButton () .get_active ())
+		on_viewer_toggled (X3D::X3DConstants::WalkViewer);
 }
 
 void
-BrowserWindow::on_fly_viewer_activated ()
+BrowserWindow::on_fly_viewer_toggled ()
 {
-	getViewerButton () .set_active (true);
-
-	setViewer (X3D::X3DConstants::FlyViewer);
+	if (getFlyViewerButton () .get_active ())
+		on_viewer_toggled (X3D::X3DConstants::FlyViewer);
 }
 
 void
-BrowserWindow::on_plane_viewer_activated ()
+BrowserWindow::on_plane_viewer_toggled ()
 {
-	getViewerButton () .set_active (true);
-
-	setViewer (X3D::X3DConstants::PlaneViewer);
+	if (getPlaneViewerButton () .get_active ())
+		on_viewer_toggled (X3D::X3DConstants::PlaneViewer);
 }
 
 void
-BrowserWindow::on_none_viewer_activated ()
+BrowserWindow::on_none_viewer_toggled ()
 {
-	getViewerButton () .set_active (true);
+	if (getNoneViewerButton () .get_active ())
+		on_viewer_toggled (X3D::X3DConstants::NoneViewer);
+}
 
-	setViewer (X3D::X3DConstants::NoneViewer);
+void
+BrowserWindow::on_viewer_toggled (const X3D::X3DConstants::NodeType viewerType)
+{
+	getSelectViewerPopover () .popdown ();
+
+	if (changing)
+		return;
+
+	setViewer (viewerType);
 }
 
 void

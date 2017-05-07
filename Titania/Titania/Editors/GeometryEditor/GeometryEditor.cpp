@@ -110,7 +110,6 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 
 	getBrowserWindow () -> getHandButton ()   .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_hand_toggled));
 	getBrowserWindow () -> getArrowButton ()  .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_arrow_toggled));
-	getBrowserWindow () -> getViewerButton () .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_viewer_toggled));
 
 	setup ();
 }
@@ -759,13 +758,6 @@ GeometryEditor::on_arrow_toggled ()
 }
 
 void
-GeometryEditor::on_viewer_toggled ()
-{
-	if (getBrowserWindow () -> getViewerButton () .get_active ())
-		coordEditor -> setField <X3D::SFString> ("toolType", "NONE");
-}
-
-void
 GeometryEditor::on_hammer_clicked ()
 {
 	const auto undoStep  = std::make_shared <X3D::UndoStep> (_ ("Smash Selection"));
@@ -845,8 +837,6 @@ GeometryEditor::on_edit_toggled ()
 		if (getBrowserWindow () -> getHandButton () .get_active ())
 			;
 		else if (getBrowserWindow () -> getArrowButton () .get_active ())
-			;
-		else if (getBrowserWindow () -> getViewerButton () .get_active ())
 			;
 		else if (getBrowserWindow () -> getSelection () -> getEnabled ())
 			getBrowserWindow () -> getArrowButton () .set_active (true);

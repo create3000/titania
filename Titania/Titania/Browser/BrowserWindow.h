@@ -814,31 +814,30 @@ private:
 
 	virtual
 	void
-	on_viewer_toggled () final override;
-
-	virtual
-	bool
-	on_viewer_button_press_event (GdkEventButton* event) final override;
+	on_select_viewer_clicked () final override;
 
 	virtual
 	void
-	on_examine_viewer_activated () final override;
+	on_examine_viewer_toggled () final override;
 
 	virtual
 	void
-	on_walk_viewer_activated () final override;
+	on_walk_viewer_toggled () final override;
 
 	virtual
 	void
-	on_fly_viewer_activated () final override;
+	on_fly_viewer_toggled () final override;
 
 	virtual
 	void
-	on_plane_viewer_activated () final override;
+	on_plane_viewer_toggled () final override;
 
 	virtual
 	void
-	on_none_viewer_activated () final override;
+	on_none_viewer_toggled () final override;
+
+	void
+	on_viewer_toggled (const X3D::X3DConstants::NodeType viewerType);
 
 	virtual
 	void
@@ -878,6 +877,7 @@ private:
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> primitiveQualityActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> textureQualityActions;
 
+	bool                        hand;
 	X3D::X3DConstants::NodeType viewer;
 	bool                        changing;
 };

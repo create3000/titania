@@ -184,6 +184,7 @@
       <source stock-id="Droplet" filename="Droplet.svg"/>
       <source stock-id="Brush" filename="Brush.svg"/>
       <source stock-id="gtk-stop" filename="Faenza/16/gtk-stop.png"/>
+      <source stock-id="NoneViewer" filename="Faenza/16/gtk-stop.png"/>
       <source stock-id="Scale" filename="Scale.svg"/>
       <source stock-id="ExtrudeSelectedFaces" filename="ExtrudeSelectedFaces.svg"/>
       <source stock-id="DotClear" filename="dot-clear.png"/>

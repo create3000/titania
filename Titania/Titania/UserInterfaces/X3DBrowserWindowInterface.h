@@ -228,10 +228,6 @@ public:
 	{ return m_WireframeAction; }
 
 	Gtk::Image &
-	getExamineViewerImage () const
-	{ return *m_ExamineViewerImage; }
-
-	Gtk::Image &
 	getFileImportImage () const
 	{ return *m_FileImportImage; }
 
@@ -239,17 +235,9 @@ public:
 	getFileImportImage1 () const
 	{ return *m_FileImportImage1; }
 
-	Gtk::Image &
-	getFlyViewerImage () const
-	{ return *m_FlyViewerImage; }
-
 	Gtk::Menu &
 	getHistoryMenu () const
 	{ return *m_HistoryMenu; }
-
-	Gtk::Image &
-	getNoneViewerImage () const
-	{ return *m_NoneViewerImage; }
 
 	Gtk::Image &
 	getOpenLocationImage () const
@@ -258,38 +246,6 @@ public:
 	Gtk::Image &
 	getOpenLocationImage1 () const
 	{ return *m_OpenLocationImage1; }
-
-	Gtk::Image &
-	getPlaneViewerImage () const
-	{ return *m_PlaneViewerImage; }
-
-	Gtk::Image &
-	getWalkViewerImage () const
-	{ return *m_WalkViewerImage; }
-
-	Gtk::Menu &
-	getViewerTypeMenu () const
-	{ return *m_ViewerTypeMenu; }
-
-	Gtk::ImageMenuItem &
-	getExamineViewerMenuItem () const
-	{ return *m_ExamineViewerMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getWalkViewerMenuItem () const
-	{ return *m_WalkViewerMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getFlyViewerMenuItem () const
-	{ return *m_FlyViewerMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getPlaneViewerMenuItem () const
-	{ return *m_PlaneViewerMenuItem; }
-
-	Gtk::ImageMenuItem &
-	getNoneViewerMenuItem () const
-	{ return *m_NoneViewerMenuItem; }
 
 	Gtk::Image &
 	getWorkspacesImage () const
@@ -1495,9 +1451,9 @@ public:
 	getViewerSeparator () const
 	{ return *m_ViewerSeparator; }
 
-	Gtk::RadioToolButton &
-	getViewerButton () const
-	{ return *m_ViewerButton; }
+	Gtk::ToolButton &
+	getSelectViewerButton () const
+	{ return *m_SelectViewerButton; }
 
 	Gtk::ToolButton &
 	getStraightenButton () const
@@ -1530,6 +1486,34 @@ public:
 	Gtk::Box &
 	getSidebarBox () const
 	{ return *m_SidebarBox; }
+
+	Gtk::Popover &
+	getSelectViewerPopover () const
+	{ return *m_SelectViewerPopover; }
+
+	Gtk::RadioButton &
+	getExamineViewerButton () const
+	{ return *m_ExamineViewerButton; }
+
+	Gtk::RadioButton &
+	getWalkViewerButton () const
+	{ return *m_WalkViewerButton; }
+
+	Gtk::RadioButton &
+	getFlyViewerButton () const
+	{ return *m_FlyViewerButton; }
+
+	Gtk::RadioButton &
+	getPlaneViewerButton () const
+	{ return *m_PlaneViewerButton; }
+
+	Gtk::RadioButton &
+	getNoneViewerButton () const
+	{ return *m_NoneViewerButton; }
+
+	Gtk::RadioButton &
+	getOtherViewerButton () const
+	{ return *m_OtherViewerButton; }
 
 	///  @name Signal handlers
 
@@ -1668,26 +1652,6 @@ public:
 	virtual
 	void
 	on_visibility_sensors_toggled () = 0;
-
-	virtual
-	void
-	on_examine_viewer_activated () = 0;
-
-	virtual
-	void
-	on_walk_viewer_activated () = 0;
-
-	virtual
-	void
-	on_fly_viewer_activated () = 0;
-
-	virtual
-	void
-	on_plane_viewer_activated () = 0;
-
-	virtual
-	void
-	on_none_viewer_activated () = 0;
 
 	virtual
 	void
@@ -2126,12 +2090,8 @@ public:
 	on_select_child_button_clicked () = 0;
 
 	virtual
-	bool
-	on_viewer_button_press_event (GdkEventButton* event) = 0;
-
-	virtual
 	void
-	on_viewer_toggled () = 0;
+	on_select_viewer_clicked () = 0;
 
 	virtual
 	void
@@ -2152,6 +2112,26 @@ public:
 	virtual
 	void
 	on_look_at_toggled () = 0;
+
+	virtual
+	void
+	on_examine_viewer_toggled () = 0;
+
+	virtual
+	void
+	on_walk_viewer_toggled () = 0;
+
+	virtual
+	void
+	on_fly_viewer_toggled () = 0;
+
+	virtual
+	void
+	on_plane_viewer_toggled () = 0;
+
+	virtual
+	void
+	on_none_viewer_toggled () = 0;
 
 	///  @name Destruction
 
@@ -2217,22 +2197,11 @@ private:
 	Glib::RefPtr <Gtk::ToggleAction> m_ViewpointsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_VisibilitySensorsAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_WireframeAction;
-	Gtk::Image* m_ExamineViewerImage;
 	Gtk::Image* m_FileImportImage;
 	Gtk::Image* m_FileImportImage1;
-	Gtk::Image* m_FlyViewerImage;
 	Gtk::Menu* m_HistoryMenu;
-	Gtk::Image* m_NoneViewerImage;
 	Gtk::Image* m_OpenLocationImage;
 	Gtk::Image* m_OpenLocationImage1;
-	Gtk::Image* m_PlaneViewerImage;
-	Gtk::Image* m_WalkViewerImage;
-	Gtk::Menu* m_ViewerTypeMenu;
-	Gtk::ImageMenuItem* m_ExamineViewerMenuItem;
-	Gtk::ImageMenuItem* m_WalkViewerMenuItem;
-	Gtk::ImageMenuItem* m_FlyViewerMenuItem;
-	Gtk::ImageMenuItem* m_PlaneViewerMenuItem;
-	Gtk::ImageMenuItem* m_NoneViewerMenuItem;
 	Gtk::Image* m_WorkspacesImage;
 	Gtk::Image* m_WorkspacesImage1;
 	Gtk::Menu* m_BrowserMenu;
@@ -2534,7 +2503,7 @@ private:
 	Gtk::ToolButton* m_SelectParentButton;
 	Gtk::ToolButton* m_SelectChildButton;
 	Gtk::SeparatorToolItem* m_ViewerSeparator;
-	Gtk::RadioToolButton* m_ViewerButton;
+	Gtk::ToolButton* m_SelectViewerButton;
 	Gtk::ToolButton* m_StraightenButton;
 	Gtk::ToggleToolButton* m_StraightenHorizonButton;
 	Gtk::SeparatorToolItem* m_LookAtSeparator;
@@ -2543,6 +2512,13 @@ private:
 	Gtk::RadioToolButton* m_LookAtButton;
 	Gtk::Box* m_FooterBox;
 	Gtk::Box* m_SidebarBox;
+	Gtk::Popover* m_SelectViewerPopover;
+	Gtk::RadioButton* m_ExamineViewerButton;
+	Gtk::RadioButton* m_WalkViewerButton;
+	Gtk::RadioButton* m_FlyViewerButton;
+	Gtk::RadioButton* m_PlaneViewerButton;
+	Gtk::RadioButton* m_NoneViewerButton;
+	Gtk::RadioButton* m_OtherViewerButton;
 
 };
 

@@ -27,12 +27,6 @@
     <property name="draw_as_radio">True</property>
     <signal name="toggled" handler="on_editor_toggled" swapped="no"/>
   </object>
-  <object class="GtkImage" id="ExamineViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">ExamineViewer</property>
-    <property name="icon_size">1</property>
-  </object>
   <object class="GtkImage" id="FileImportImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -49,12 +43,6 @@
     <property name="label" translatable="yes">_Flat</property>
     <property name="draw_as_radio">True</property>
     <signal name="toggled" handler="on_flat_toggled" swapped="no"/>
-  </object>
-  <object class="GtkImage" id="FlyViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">FlyViewer</property>
-    <property name="icon_size">1</property>
   </object>
   <object class="GtkToggleAction" id="FogsAction">
     <property name="label" translatable="yes">_Fogs</property>
@@ -99,12 +87,6 @@
     <property name="active">True</property>
     <signal name="toggled" handler="on_menubar_toggled" swapped="no"/>
   </object>
-  <object class="GtkImage" id="NoneViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-stop</property>
-    <property name="icon_size">1</property>
-  </object>
   <object class="GtkImage" id="OpenLocationImage">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -121,12 +103,6 @@
     <property name="label" translatable="yes">P_hong</property>
     <property name="draw_as_radio">True</property>
     <signal name="toggled" handler="on_phong_toggled" swapped="no"/>
-  </object>
-  <object class="GtkImage" id="PlaneViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">PlaneViewer</property>
-    <property name="icon_size">1</property>
   </object>
   <object class="GtkToggleAction" id="PointsetAction">
     <property name="label" translatable="yes">_Pointset</property>
@@ -210,71 +186,6 @@
   <object class="GtkToggleAction" id="VisibilitySensorsAction">
     <property name="label" translatable="yes">V_isibilitySensors</property>
     <signal name="toggled" handler="on_visibility_sensors_toggled" swapped="no"/>
-  </object>
-  <object class="GtkImage" id="WalkViewerImage">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">WalkViewer</property>
-    <property name="icon_size">1</property>
-  </object>
-  <object class="GtkMenu" id="ViewerTypeMenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkImageMenuItem" id="ExamineViewerMenuItem">
-        <property name="label" translatable="yes">Examine Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">ExamineViewerImage</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_examine_viewer_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="WalkViewerMenuItem">
-        <property name="label" translatable="yes">Walk Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">WalkViewerImage</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_walk_viewer_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="FlyViewerMenuItem">
-        <property name="label" translatable="yes">Fly Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">FlyViewerImage</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_fly_viewer_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="PlaneViewerMenuItem">
-        <property name="label" translatable="yes">Plane Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">PlaneViewerImage</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_plane_viewer_activated" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkImageMenuItem" id="NoneViewerMenuItem">
-        <property name="label" translatable="yes">None Viewer</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="image">NoneViewerImage</property>
-        <property name="use_stock">False</property>
-        <property name="always_show_image">True</property>
-        <signal name="activate" handler="on_none_viewer_activated" swapped="no"/>
-      </object>
-    </child>
   </object>
   <object class="GtkToggleAction" id="WireframeAction">
     <property name="label" translatable="yes">_Wireframe</property>
@@ -875,7 +786,6 @@
                 <property name="label" translatable="yes">Detach From Group</property>
                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
               </object>
             </child>
             <child>
@@ -1981,8 +1891,9 @@
                 <child>
                   <object class="GtkMenuBar" id="Menubar">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <signal name="button-press-event" handler="on_menubar_button_press_event" after="yes" swapped="no"/>
-                     <child>
+                    <child>
                       <object class="GtkMenuItem" id="FileMenuItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -2372,7 +2283,6 @@
                                 <property name="use_underline">True</property>
                                 <signal name="activate" handler="on_detach_from_group_activated" swapped="no"/>
                                 <accelerator key="d" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                                <accelerator key="d" signal="activate" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
                               </object>
                             </child>
                             <child>
@@ -4224,21 +4134,17 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkRadioToolButton" id="ViewerButton">
-                                    <property name="visible">True</property>
+                                  <object class="GtkToolButton" id="SelectViewerButton">
                                     <property name="can_focus">False</property>
-                                    <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK</property>
-                                    <property name="tooltip_text" translatable="yes">Activate viewer. Right click to open menu.</property>
-                                    <property name="label" translatable="yes">Viewer Type</property>
+                                    <property name="tooltip_text" translatable="yes">Select one of available viewers.</property>
+                                    <property name="label" translatable="yes">Select Viewer</property>
                                     <property name="use_underline">True</property>
                                     <property name="stock_id">ExamineViewer</property>
-                                    <property name="group">HandButton</property>
-                                    <signal name="button-press-event" handler="on_viewer_button_press_event" swapped="no"/>
-                                    <signal name="toggled" handler="on_viewer_toggled" swapped="no"/>
+                                    <signal name="clicked" handler="on_select_viewer_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
-                                    <property name="homogeneous">False</property>
+                                    <property name="homogeneous">True</property>
                                   </packing>
                                 </child>
                                 <child>
@@ -4400,5 +4306,297 @@
     <style>
       <class name="Titania"/>
     </style>
+  </object>
+  <object class="GtkPopover" id="SelectViewerPopover">
+    <property name="can_focus">False</property>
+    <property name="border_width">8</property>
+    <property name="relative_to">SelectViewerButton</property>
+    <property name="position">left</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkRadioButton" id="ExamineViewerButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <signal name="toggled" handler="on_examine_viewer_toggled" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">ExamineViewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Examine Viewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="WalkViewerButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">ExamineViewerButton</property>
+            <signal name="toggled" handler="on_walk_viewer_toggled" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">WalkViewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Walk Viewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="FlyViewerButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">ExamineViewerButton</property>
+            <signal name="toggled" handler="on_fly_viewer_toggled" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">FlyViewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Fly Viewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="PlaneViewerButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">ExamineViewerButton</property>
+            <signal name="toggled" handler="on_plane_viewer_toggled" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">PlaneViewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Plane Viewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="NoneViewerButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="active">True</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">ExamineViewerButton</property>
+            <signal name="toggled" handler="on_none_viewer_toggled" swapped="no"/>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">NoneViewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">None Viewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRadioButton" id="OtherViewerButton">
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="draw_indicator">False</property>
+            <property name="group">ExamineViewerButton</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">4</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">gtk-info</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Other Viewer</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
+          </packing>
+        </child>
+      </object>
+    </child>
   </object>
 </interface>
