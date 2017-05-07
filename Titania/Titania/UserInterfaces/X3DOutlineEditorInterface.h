@@ -94,10 +94,6 @@ public:
 		return widget;
 	}
 
-	const Glib::RefPtr <Gtk::IconFactory> &
-	getIconFactory () const
-	{ return m_IconFactory; }
-
 	Gtk::Menu &
 	getSceneMenu () const
 	{ return *m_SceneMenu; }
@@ -568,7 +564,6 @@ private:
 
 	std::string filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
 	Gtk::Menu* m_SceneMenu;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;

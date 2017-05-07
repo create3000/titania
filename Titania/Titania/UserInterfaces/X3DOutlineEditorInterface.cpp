@@ -59,7 +59,6 @@ X3DOutlineEditorInterface::create (const std::string & filename)
 	m_builder = Gtk::Builder::create_from_file (filename);
 
 	// Get objects.
-	m_IconFactory = Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (m_builder -> get_object ("IconFactory"));
 
 	// Get widgets.
 	m_builder -> get_widget ("SceneMenu", m_SceneMenu);

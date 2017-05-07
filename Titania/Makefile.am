@@ -14,6 +14,7 @@ titania_SOURCES =  \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
+	Titania/Browser/IconFactory.cpp \
 	Titania/Browser/MagicImport.cpp \
 	Titania/Browser/RecentView.cpp \
 	Titania/Browser/ViewpointObserver.cpp \
@@ -187,6 +188,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGridEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
+	Titania/UserInterfaces/X3DIconFactoryInterface.cpp \
 	Titania/UserInterfaces/X3DInlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLayerEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \

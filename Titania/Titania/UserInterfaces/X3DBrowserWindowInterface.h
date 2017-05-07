@@ -94,10 +94,6 @@ public:
 		return widget;
 	}
 
-	const Glib::RefPtr <Gtk::IconFactory> &
-	getIconFactory () const
-	{ return m_IconFactory; }
-
 	const Glib::RefPtr <Gtk::ToggleAction> &
 	getAngleLayoutToolAction () const
 	{ return m_AngleLayoutToolAction; }
@@ -2188,7 +2184,6 @@ private:
 
 	std::string filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
-	Glib::RefPtr <Gtk::IconFactory> m_IconFactory;
 	Glib::RefPtr <Gtk::ToggleAction> m_AngleLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_AxonometricGridLayoutToolAction;
 	Glib::RefPtr <Gtk::ToggleAction> m_BackgroundsAction;

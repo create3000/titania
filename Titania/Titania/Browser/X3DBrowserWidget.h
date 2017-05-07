@@ -61,6 +61,7 @@ namespace titania {
 namespace puck {
 
 class History;
+class IconFactory;
 class RecentView;
 class BrowserUserData;
 class UserData;
@@ -156,15 +157,6 @@ public:
 	void
 	append (const X3D::BrowserPtr & browser, const basic::uri & uri);
 
-	void
-	createIcon (const std::string & name, const std::string & document);
-
-	void
-	createIcon (const std::string & name, Magick::Image && image);
-
-	std::string
-	getIcon (const basic::uri & uri, const Gtk::IconSize &);
-
 	virtual
 	bool
 	save (const basic::uri & worldURL, const std::string & outputStyle, const bool copy);
@@ -183,6 +175,10 @@ public:
 	virtual
 	bool
 	quit () override;
+
+	const std::unique_ptr <IconFactory> &
+	getIconFactory () const
+	{ return iconFactory; }
 
 	const std::unique_ptr <History> &
 	getHistory () const
@@ -279,14 +275,13 @@ private:
 	void
 	setOutputStyle (const X3D::X3DScenePtr & scene, const std::string & outputStyle);
 
-	void
-	createIcon ();
-
 	bool
 	statistics ();
 
 	///  @name Members
 
+	std::unique_ptr <IconFactory>   iconFactory;
+	std::unique_ptr <RecentView>    recentView;
 	std::unique_ptr <History>       history;
 	X3D::BrowserPtr                 masterBrowser;
 	X3D::BrowserPtr                 browser;
@@ -295,7 +290,6 @@ private:
 	X3D::X3DScenePtr                scene;
 	X3D::X3DExecutionContextPtr     executionContext;
 	X3D::Output                     worldURLOutput;
-	std::unique_ptr <RecentView>    recentView;
 	double                          loadTime;
 	sigc::connection                timeout;
 

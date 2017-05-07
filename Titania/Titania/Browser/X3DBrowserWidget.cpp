@@ -50,20 +50,19 @@
 
 #include "X3DBrowserWidget.h"
 
-#include "../Dialogs/MessageDialog/MessageDialog.h"
-#include "../Widgets/HistoryView/History.h"
+#include "../Browser/IconFactory.h"
 #include "../Browser/RecentView.h"
 #include "../Browser/BrowserUserData.h"
-#include "../Browser/Image.h"
 #include "../Browser/UserData.h"
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
+#include "../Dialogs/MessageDialog/MessageDialog.h"
+#include "../Widgets/HistoryView/History.h"
 
 #include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
-#include <Titania/X3D/InputOutput/FileLoader.h>
 
 #include <Titania/OS/cwd.h>
 #include <Titania/String.h>
@@ -78,6 +77,8 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	X3DBrowserWindowInterface (),
+	              iconFactory (new IconFactory (getBrowserWindow ())),
+	               recentView (new RecentView (getBrowserWindow ())),
 	                  history (new History ()),
 	            masterBrowser (masterBrowser_),
 	                  browser (X3D::createBrowser ()),
@@ -85,8 +86,7 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	           recentBrowsers (),
 	                    scene (browser -> getExecutionContext ()),
 	         executionContext (browser -> getExecutionContext ()),
-	           worldURLOutput (),
-	               recentView (new RecentView (getBrowserWindow ()))
+	           worldURLOutput ()
 {
 	// Allways added fields, otherwise there is a Xlib error on destruction.
 
@@ -839,7 +839,7 @@ X3DBrowserWidget::set_history ()
 
 	// Update history.
 
-	getHistory () -> setItem (title, worldURL, getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
+	getHistory () -> setItem (title, worldURL, getIconFactory () -> getIcon (worldURL, Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 }
 
 void
@@ -877,122 +877,6 @@ X3DBrowserWidget::set_urlError ()
 }
 
 void
-X3DBrowserWidget::createIcon ()
-{
-	const basic::uri & worldURL = getCurrentScene () -> getWorldURL ();
-
-	try
-	{
-		basic::uri uri;
-
-		try
-		{
-			uri = getCurrentScene () -> getMetaData ("icon");
-		}
-		catch (const X3D::Error <X3D::INVALID_NAME> &)
-		{
-			if (worldURL .is_local ())
-				throw;
-
-			uri = "/favicon.ico";
-		}
-
-		createIcon (worldURL, X3D::FileLoader (getCurrentScene ()) .loadDocument (uri));
-	}
-	catch (const std::exception & error)
-	{
-		createIcon (worldURL, "");
-	}
-}
-
-void
-X3DBrowserWidget::createIcon (const std::string & name, const std::string & document)
-{
-	Glib::RefPtr <Gtk::IconSet> iconSet;
-
-	if (not document .empty ())
-	{
-		try
-		{
-			const Image icon (document);
-
-			iconSet = Gtk::IconSet::create (icon .getIcon ());
-		}
-		catch (const std::exception & error)
-		{
-			__LOG__ << error .what () << std::endl;
-		}
-	}
-
-	if (not iconSet)
-		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
-
-	const Gtk::StockID stockId = Gtk::StockID (name);
-
-	getIconFactory () -> add (stockId, iconSet);
-	Gtk::Stock::add (Gtk::StockItem (stockId, name));
-}
-
-void
-X3DBrowserWidget::createIcon (const std::string & name, Magick::Image && image)
-{
-	Glib::RefPtr <Gtk::IconSet> iconSet;
-
-	try
-	{
-		const Image icon (std::move (image));
-
-		iconSet = Gtk::IconSet::create (icon .getIcon ());
-	}
-	catch (const std::exception & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-
-	if (not iconSet)
-		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
-
-	const Gtk::StockID stockId = Gtk::StockID (name);
-
-	getIconFactory () -> add (stockId, iconSet);
-	Gtk::Stock::add (Gtk::StockItem (stockId, name));
-}
-
-std::string
-X3DBrowserWidget::getIcon (const basic::uri & worldURL, const Gtk::IconSize & iconSize)
-{
-	std::string image;
-	auto        iconSet = Gtk::IconSet::lookup_default (Gtk::StockID (worldURL .filename () .str ()));
-
-	if (not iconSet)
-		iconSet = Gtk::IconSet::lookup_default (Gtk::StockID ("BlankIcon"));
-
-	if (iconSet)
-	{
-		try
-		{
-			const auto pixbuf = iconSet -> render_icon_pixbuf (getWidget () .get_style_context (), iconSize);
-
-			if (pixbuf)
-			{
-				gchar* buffer;
-				gsize  bufferSize;
-
-				pixbuf -> save_to_buffer (buffer, bufferSize);
-
-				image = std::string (buffer, bufferSize);
-
-				g_free (buffer);
-			}
-		}
-		catch (const Glib::Exception &)
-		{ }
-	}
-
-	return image;
-}
-
-void
 X3DBrowserWidget::setTransparent (const bool value)
 {
 	if (value)
@@ -1026,8 +910,9 @@ X3DBrowserWidget::statistics ()
 void
 X3DBrowserWidget::dispose ()
 {
-	history    .reset ();
-	recentView .reset ();
+	iconFactory .reset ();
+	recentView  .reset ();
+	history     .reset ();
 
 	X3DBrowserWindowInterface::dispose ();
 }

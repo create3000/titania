@@ -111,6 +111,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/Browser/BrowserHistory.$(OBJEXT) \
 	Titania/Browser/BrowserSelection.$(OBJEXT) \
 	Titania/Browser/BrowserWindow.$(OBJEXT) \
+	Titania/Browser/IconFactory.$(OBJEXT) \
 	Titania/Browser/MagicImport.$(OBJEXT) \
 	Titania/Browser/RecentView.$(OBJEXT) \
 	Titania/Browser/ViewpointObserver.$(OBJEXT) \
@@ -284,6 +285,7 @@ am_titania_OBJECTS = Titania/Base/X3DBaseInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DGridEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DHistoryViewInterface.$(OBJEXT) \
+	Titania/UserInterfaces/X3DIconFactoryInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DInlineEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DLayerEditorInterface.$(OBJEXT) \
 	Titania/UserInterfaces/X3DLibraryViewInterface.$(OBJEXT) \
@@ -597,6 +599,7 @@ titania_SOURCES = \
 	Titania/Browser/BrowserHistory.cpp \
 	Titania/Browser/BrowserSelection.cpp \
 	Titania/Browser/BrowserWindow.cpp \
+	Titania/Browser/IconFactory.cpp \
 	Titania/Browser/MagicImport.cpp \
 	Titania/Browser/RecentView.cpp \
 	Titania/Browser/ViewpointObserver.cpp \
@@ -770,6 +773,7 @@ titania_SOURCES = \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGridEditorInterface.cpp \
 	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
+	Titania/UserInterfaces/X3DIconFactoryInterface.cpp \
 	Titania/UserInterfaces/X3DInlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLayerEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
@@ -971,6 +975,9 @@ Titania/Browser/BrowserSelection.$(OBJEXT):  \
 	Titania/Browser/$(am__dirstamp) \
 	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/Browser/BrowserWindow.$(OBJEXT):  \
+	Titania/Browser/$(am__dirstamp) \
+	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
+Titania/Browser/IconFactory.$(OBJEXT):  \
 	Titania/Browser/$(am__dirstamp) \
 	Titania/Browser/$(DEPDIR)/$(am__dirstamp)
 Titania/Browser/MagicImport.$(OBJEXT):  \
@@ -1726,6 +1733,9 @@ Titania/UserInterfaces/X3DGridEditorInterface.$(OBJEXT):  \
 Titania/UserInterfaces/X3DHistoryViewInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
+Titania/UserInterfaces/X3DIconFactoryInterface.$(OBJEXT):  \
+	Titania/UserInterfaces/$(am__dirstamp) \
+	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
 Titania/UserInterfaces/X3DInlineEditorInterface.$(OBJEXT):  \
 	Titania/UserInterfaces/$(am__dirstamp) \
 	Titania/UserInterfaces/$(DEPDIR)/$(am__dirstamp)
@@ -2016,6 +2026,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserHistory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserSelection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/BrowserWindow.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/IconFactory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/MagicImport.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/RecentView.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/Browser/$(DEPDIR)/ViewpointObserver.Po@am__quote@
@@ -2188,6 +2199,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DGeometryPropertiesEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DGridEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DHistoryViewInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DIconFactoryInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DInlineEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DLayerEditorInterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/UserInterfaces/$(DEPDIR)/X3DLibraryViewInterface.Po@am__quote@

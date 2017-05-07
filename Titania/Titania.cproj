@@ -305,6 +305,8 @@
     <Compile Include="Titania\Dialogs\FileSaveDialog\FileExportDialog.cpp" />
     <Compile Include="Titania\Dialogs\FileOpenDialog\X3DFileOpenDialog.cpp" />
     <Compile Include="Titania\Dialogs\FileOpenDialog\FileOpenFontDialog.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DIconFactoryInterface.cpp" />
+    <Compile Include="Titania\Browser\IconFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2966,6 +2968,9 @@
     <None Include="share\titania\Library\Models\Machines\link.x3dv" />
     <None Include="share\titania\Library\Models\Machines\cam_shaft.x3dv" />
     <None Include="share\titania\Library\Models\Machines\coarsegear.x3dv" />
+    <None Include="share\titania\ui\IconFactory.glade" />
+    <None Include="Titania\UserInterfaces\X3DIconFactoryInterface.h" />
+    <None Include="Titania\Browser\IconFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
