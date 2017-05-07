@@ -1959,9 +1959,10 @@ BrowserWindow::on_select_all_activated ()
 	if (getGeometryEditor () -> on_select_all ())
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> ();
+	const auto & activeLayer = getCurrentBrowser () -> getActiveLayer ();
 
-	getSelection () -> setNodes (getCurrentContext () -> getRootNodes (), undoStep);
+	if (activeLayer)
+		getSelection () -> setNodes (activeLayer -> children ());
 }
 
 void
@@ -1970,9 +1971,7 @@ BrowserWindow::on_deselect_all_activated ()
 	if (getGeometryEditor () -> on_deselect_all ())
 		return;
 
-	const auto undoStep = std::make_shared <X3D::UndoStep> ();
-
-	getSelection () -> clearNodes (undoStep);
+	getSelection () -> clearNodes ();
 }
 
 void

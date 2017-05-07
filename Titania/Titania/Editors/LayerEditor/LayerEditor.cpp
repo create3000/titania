@@ -247,7 +247,7 @@ LayerEditor::add_layer (const X3D::SFNode & node, const X3D::X3DPtr <X3D::X3DLay
 	row -> set_value (Columns::EYE,                std::string (visible ? "EyeOpen" : "EyeClosed"));
 	row -> set_value (Columns::PICKABLE,           std::string (layer and layer -> isPickable () ? "Hand" : "gtk-stop"));
 	row -> set_value (Columns::TYPE_NAME,          node -> getTypeName ());
-	row -> set_value (Columns::NAME,               node -> getName ());
+	row -> set_value (Columns::NAME,               layer -> isLayer0 () ? _ ("Default Layer") : node -> getName ());
 	row -> set_value (Columns::ACTIVE_LAYER,       activeLayer);
 	row -> set_value (Columns::ACTIVE_LAYER_IMAGE, std::string (activeLayer ? "WalkViewer" : "gtk-stop"));
 		
