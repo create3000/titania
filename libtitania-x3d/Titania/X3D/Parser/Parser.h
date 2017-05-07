@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_PARSER_PARSER_H__
 #define __TITANIA_X3D_PARSER_PARSER_H__
 
-#include "../Base/Error.h"
+#include "../Bits/Error.h"
 #include "../Execution/X3DScene.h"
 #include "../Parser/X3DParser.h"
 #include "../Prototype/ProtoDeclaration.h"

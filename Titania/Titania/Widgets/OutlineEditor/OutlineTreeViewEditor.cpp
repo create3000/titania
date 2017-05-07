@@ -189,7 +189,7 @@ OutlineTreeViewEditor::select_field_value (const double x, const double y)
 			return false;
 	}
 
-	const auto scene = get_execution_context () -> isScene () ? get_execution_context () : get_execution_context () -> getScene ();
+	const auto scene = get_execution_context () -> isType ({ X3D::X3DConstants::X3DScene }) ? get_execution_context () : get_execution_context () -> getScene ();
 	const auto node  = *static_cast <X3D::SFNode*> (get_object (nodeIter));
 
 	if (node -> getScene () not_eq scene)

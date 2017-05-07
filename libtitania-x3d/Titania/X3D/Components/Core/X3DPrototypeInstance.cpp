@@ -50,7 +50,7 @@
 
 #include "X3DPrototypeInstance.h"
 
-#include "../../Basic/Traverse.h"
+#include "../../Bits/Traverse.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DScene.h"
 #include "../../Prototype/ExternProtoDeclaration.h"

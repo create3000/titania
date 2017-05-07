@@ -50,7 +50,7 @@
 
 #include "IndexedTriangleSet.h"
 
-#include "../../Browser/Core/Cast.h"
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 
 

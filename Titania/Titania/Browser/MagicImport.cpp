@@ -53,8 +53,8 @@
 #include "BrowserSelection.h"
 #include "X3DBrowserWindow.h"
 
-#include <Titania/X3D/Basic/Traverse.h>
-#include <Titania/X3D/Browser/Core/Cast.h>
+#include <Titania/X3D/Bits/Cast.h>
+#include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/EnvironmentalEffects/X3DBackgroundNode.h>
 #include <Titania/X3D/Components/Shape/Appearance.h>

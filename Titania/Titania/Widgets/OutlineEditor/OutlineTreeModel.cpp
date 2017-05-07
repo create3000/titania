@@ -176,7 +176,7 @@ OutlineTreeModel::is_visible_route (const X3D::Route* const route) const
 		if (route -> getScene () -> getPrivate ())
 			return false;
 
-		if (route -> getExecutionContext () -> isScene ())
+		if (route -> getExecutionContext () -> isType ({ X3D::X3DConstants::X3DScene }))
 			return true;
 
 		if (route -> getExecutionContext () -> isType ({ X3D::X3DConstants::ProtoDeclaration }))

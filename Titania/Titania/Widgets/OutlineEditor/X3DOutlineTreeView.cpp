@@ -50,9 +50,6 @@
 
 #include "X3DOutlineTreeView.h"
 
-#include "../../Base/ScrollFreezer.h"
-#include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
 #include "CellRenderer/OutlineCellRenderer.h"
 #include "CellRenderer/OutlineSeparator.h"
 #include "OutlineRouteGraph.h"
@@ -60,13 +57,17 @@
 #include "OutlineTreeModel.h"
 #include "OutlineTreeObserver.h"
 
+#include "../../Base/ScrollFreezer.h"
+#include "../../Browser/X3DBrowserWindow.h"
+#include "../../Configuration/config.h"
+
+#include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
-#include <Titania/X3D/Prototype/ProtoDeclaration.h>
-#include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 #include <Titania/X3D/Execution/ImportedNode.h>
 #include <Titania/X3D/Execution/ExportedNode.h>
-#include <Titania/X3D/Basic/Traverse.h>
+#include <Titania/X3D/Prototype/ProtoDeclaration.h>
+#include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 
 #include <Titania/String/sprintf.h>
 

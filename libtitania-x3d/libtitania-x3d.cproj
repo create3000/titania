@@ -728,11 +728,8 @@
     <None Include="Titania\X3D\Browser\Shape\HatchStyles.xcf" />
     <None Include="Titania\X3D\Browser\Shape\HatchStyles.h" />
     <None Include="Titania\X3D\Basic\TraverseType.h" />
-    <None Include="Titania\X3D\Browser\Core\Cast.h" />
     <None Include="Titania\X3D\Basic\X3DConstants.h" />
-    <None Include="Titania\X3D\Base\Error.h" />
     <None Include="Titania\X3D\Browser\Networking\config.h" />
-    <None Include="Titania\X3D\Basic\Traverse.h" />
     <None Include="Titania\X3D\Editing\Undo\UndoGroup.h" />
     <None Include="Titania\X3D\Editing\Undo\UndoHistory.h" />
     <None Include="Titania\X3D\Editing\Undo\UndoStep.h" />
@@ -951,6 +948,9 @@
     <None Include="Titania\X3D\Browser\Rendering\L-System.h" />
     <None Include="Titania\X3D\InputOutput\FileGenerator.h" />
     <None Include="Titania\X3D\InputOutput\FileLoader.h" />
+    <None Include="Titania\X3D\Bits\Cast.h" />
+    <None Include="Titania\X3D\Bits\Traverse.h" />
+    <None Include="Titania\X3D\Bits\Error.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1438,9 +1438,7 @@
     <Compile Include="Titania\X3D\Browser\Texturing3D\Texture3D.cpp" />
     <Compile Include="Titania\X3D\Browser\KeyDeviceSensor\Keys.cpp" />
     <Compile Include="Titania\X3D\Browser\Geospatial\Geospatial.cpp" />
-    <Compile Include="Titania\X3D\Base\Error.cpp" />
     <Compile Include="Titania\X3D\Browser\Networking\config.cpp" />
-    <Compile Include="Titania\X3D\Basic\Traverse.cpp" />
     <Compile Include="Titania\X3D\Editing\Undo\UndoGroup.cpp" />
     <Compile Include="Titania\X3D\Editing\Undo\UndoHistory.cpp" />
     <Compile Include="Titania\X3D\Editing\Undo\UndoStep.cpp" />
@@ -1638,6 +1636,8 @@
     <Compile Include="Titania\X3D\Tools\Grouping\X3DBoundedObjectTool.cpp" />
     <Compile Include="Titania\X3D\InputOutput\FileGenerator.cpp" />
     <Compile Include="Titania\X3D\InputOutput\FileLoader.cpp" />
+    <Compile Include="Titania\X3D\Bits\Traverse.cpp" />
+    <Compile Include="Titania\X3D\Bits\Error.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

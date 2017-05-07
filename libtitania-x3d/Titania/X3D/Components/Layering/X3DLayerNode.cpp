@@ -50,7 +50,7 @@
 
 #include "X3DLayerNode.h"
 
-#include "../../Browser/Core/Cast.h"
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/BindableNodeList.h"
 #include "../../Execution/BindableNodeStack.h"

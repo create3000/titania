@@ -50,8 +50,8 @@
 
 #include "X3DNode.h"
 
-#include "../../Browser/Core/Cast.h"
-#include "../../Basic/Traverse.h"
+#include "../../Bits/Cast.h"
+#include "../../Bits/Traverse.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../Core/MetadataBoolean.h"
 #include "../Core/MetadataDouble.h"

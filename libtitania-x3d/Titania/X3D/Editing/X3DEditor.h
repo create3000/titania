@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_EDITOR_X3D_EDITOR_H__
 #define __TITANIA_X3D_EDITOR_X3D_EDITOR_H__
 
-#include "../Basic/Traverse.h"
+#include "../Bits/Traverse.h"
 #include "../Fields/SFNode.h"
 #include "../Fields/MFNode.h"
 #include "../Types/Pointer.h"

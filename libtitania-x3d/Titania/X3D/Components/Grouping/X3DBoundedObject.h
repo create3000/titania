@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_GROUPING_X3DBOUNDED_OBJECT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Browser/Core/Cast.h"
+#include "../../Bits/Cast.h"
 #include "../../Basic/X3DConstants.h"
 #include "../../Fields.h"
 #include "../../Types/Geometry.h"

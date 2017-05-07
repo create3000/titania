@@ -7,7 +7,6 @@ lib_LTLIBRARIES =  \
 libtitania_x3d_la_SOURCES =  \
 	Titania/X3D.cpp \
 	Titania/X3D/Base/ChildObjectSet.cpp \
-	Titania/X3D/Base/Error.cpp \
 	Titania/X3D/Base/International.cpp \
 	Titania/X3D/Base/Output.cpp \
 	Titania/X3D/Base/X3DChildObject.cpp \
@@ -23,9 +22,10 @@ libtitania_x3d_la_SOURCES =  \
 	Titania/X3D/Basic/NodeSet.cpp \
 	Titania/X3D/Basic/NodeTypeArray.cpp \
 	Titania/X3D/Basic/NodeTypeSet.cpp \
-	Titania/X3D/Basic/Traverse.cpp \
 	Titania/X3D/Basic/X3DBaseNode.cpp \
 	Titania/X3D/Basic/X3DFieldDefinition.cpp \
+	Titania/X3D/Bits/Error.cpp \
+	Titania/X3D/Bits/Traverse.cpp \
 	Titania/X3D/Browser/Browser.cpp \
 	Titania/X3D/Browser/BrowserCellRenderer.cpp \
 	Titania/X3D/Browser/BrowserOptions.cpp \

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_SUPPORTED_COMPONENTS_H__
 #define __TITANIA_X3D_CONFIGURATION_SUPPORTED_COMPONENTS_H__
 
-#include "../Base/Error.h"
+#include "../Bits/Error.h"
 #include "../Configuration/ComponentInfoArray.h"
 
 namespace titania {

@@ -50,7 +50,7 @@
 
 #include "MultiTexture.h"
 
-#include "../../Browser/Core/Cast.h"
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Rendering/X3DRenderObject.h"

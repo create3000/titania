@@ -52,7 +52,7 @@
 
 #include "X3DEditor.h"
 
-#include "../Basic/Traverse.h"
+#include "../Bits/Traverse.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
@@ -274,8 +274,6 @@ X3DEditor::copyNodes (const X3DExecutionContextPtr & executionContext, const MFN
 	// Set clipboard text
 
 	const auto string = exportNodes (executionContext, nodes, true);
-
-__LOG__ << string << std::endl;
 
 	// Undo detach from group
 

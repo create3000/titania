@@ -50,7 +50,7 @@
 
 #include "X3DGroupingNode.h"
 
-#include "../../Browser/Core/Cast.h"
+#include "../../Bits/Cast.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Rendering/X3DRenderObject.h"
 

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BROWSER_SELECTION_H__
 #define __TITANIA_X3D_BROWSER_SELECTION_H__
 
-#include "../Basic/Traverse.h"
+#include "../Bits/Traverse.h"
 #include "../Components/Core/X3DNode.h"
 #include "Tools/ToolType.h"
 

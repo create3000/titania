@@ -55,7 +55,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/X3D/Basic/Traverse.h>
+#include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Components/Core/X3DPrototypeInstance.h>
 #include <Titania/X3D/Components/Networking/Inline.h>
 #include <Titania/X3D/Execution/ExportedNode.h>

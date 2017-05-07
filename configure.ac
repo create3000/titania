@@ -26,6 +26,11 @@ AC_ARG_ENABLE(debug,
 		[Use 'DEBUG' Configuration [default=NO]]),
 		enable_debug=yes, enable_debug=no)
 
+AC_ARG_ENABLE(feature,
+	AC_HELP_STRING([--enable-feature],
+		[Enable experimental features [default=NO]]),
+		enable_feature=yes, enable_feature=no)
+
 AC_ARG_ENABLE(fixed-pipeline-drivers,
 	AC_HELP_STRING([--enable-fixed-pipeline-drivers],
 		[Enable Nouveau for 'Cobweb Compatibility Mode' [default=NO]]),

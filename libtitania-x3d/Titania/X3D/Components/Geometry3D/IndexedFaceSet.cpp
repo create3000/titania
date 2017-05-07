@@ -50,7 +50,7 @@
 
 #include "IndexedFaceSet.h"
 
-#include "../../Browser/Core/Cast.h"
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../Geospatial/GeoCoordinate.h"
 #include "../NURBS/CoordinateDouble.h"

@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_H__
 #define __TITANIA_X3D_CONFIGURATION_SUPPORTED_NODES_H__
 
-#include "../Base/Error.h"
+#include "../Bits/Error.h"
 #include "../Configuration/BaseNodeArray.h"
 
 #include <functional>

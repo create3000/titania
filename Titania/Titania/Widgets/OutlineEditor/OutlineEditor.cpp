@@ -417,7 +417,7 @@ OutlineEditor::getSceneLabelText (const X3D::X3DExecutionContextPtr & scene) con
 	const auto child    = getSceneMenuLabelText (scene, true);
 
 	return "<i><b>" + std::string (_ ("Current Scene")) + "</b> »" + Glib::Markup::escape_text (basename) + "«</i>" +
-	       "<i>" + (scene -> isScene () ? "" : " " + child) + "</i>";
+	       "<i>" + (scene -> isType ({ X3D::X3DConstants::X3DScene }) ? "" : " " + child) + "</i>";
 }
 
 std::string

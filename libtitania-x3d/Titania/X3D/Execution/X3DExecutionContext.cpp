@@ -50,7 +50,7 @@
 
 #include "X3DExecutionContext.h"
 
-#include "../Browser/Core/Cast.h"
+#include "../Bits/Cast.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Components/Core/WorldInfo.h"
 #include "../Components/Core/X3DPrototypeInstance.h"
@@ -1003,7 +1003,7 @@ throw (Error <INVALID_NAME>,
 		}
 		catch (const std::out_of_range &)
 		{
-			if (not isScene ())
+			if (not isType ({ X3DConstants::X3DScene }))
 				return getExecutionContext () -> findProtoDeclaration (name, available);
 
 			throw Error <INVALID_NAME> ("Unknown proto or externproto type '" + name + "'.");
@@ -1060,7 +1060,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 		for (const auto & prototype : executionContext -> getExternProtoDeclarations ())
 			prototypes .emplace (prototype -> getName (), prototype);
 
-		if (executionContext -> isScene ())
+		if (executionContext -> isType ({ X3DConstants::X3DScene }))
 			break;
 
 		if (executionContext -> isType ({ X3DConstants::ProtoDeclaration }))
@@ -1264,7 +1264,7 @@ throw (Error <INVALID_NAME>,
 	}
 	catch (const X3DError & error)
 	{
-		if (not isScene ())
+		if (not isType ({ X3DConstants::X3DScene }))
 			getExecutionContext () -> changeViewpoint (name);
 		else
 			throw;
@@ -1511,7 +1511,7 @@ X3DExecutionContext::toStream (std::ostream & ostream) const
 		}
 	}
 
-	if (not getInnerComments () .empty () and not isScene ())
+	if (not getInnerComments () .empty () and not isType ({ X3DConstants::X3DScene }))
 	{
 		ostream << Generator::TidyBreak;
 

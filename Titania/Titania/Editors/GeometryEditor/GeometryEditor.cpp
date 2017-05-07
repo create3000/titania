@@ -54,7 +54,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include <Titania/X3D/Browser/Core/Cast.h>
+#include <Titania/X3D/Bits/Cast.h>
 #include <Titania/X3D/Browser/Core/Clipboard.h>
 #include <Titania/X3D/Components/Rendering/X3DGeometryNode.h>
 #include <Titania/X3D/Components/Shape/X3DShapeNode.h>

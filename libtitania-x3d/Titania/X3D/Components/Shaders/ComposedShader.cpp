@@ -50,7 +50,7 @@
 
 #include "ComposedShader.h"
 
-#include "../../Browser/Core/Cast.h"
+#include "../../Bits/Cast.h"
 #include "../../Browser/ContextLock.h"
 #include "../../Browser/Shaders/Shader.h"
 #include "../../Browser/X3DBrowser.h"

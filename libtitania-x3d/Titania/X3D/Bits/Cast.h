@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BITS_CAST_H__
 #define __TITANIA_X3D_BITS_CAST_H__
 
-#include "../../Base/Error.h"
+#include "../Bits/Error.h"
 
 #include <cstddef>
 

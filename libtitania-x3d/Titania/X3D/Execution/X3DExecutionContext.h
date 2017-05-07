@@ -102,14 +102,6 @@ public:
 	///  @name Member access
 
 	virtual
-	bool
-	isScene () const
-	throw (Error <DISPOSED>)
-	{ return false; }
-
-	///  @name Member access
-
-	virtual
 	std::string
 	getTitle () const
 	throw (Error <DISPOSED>)

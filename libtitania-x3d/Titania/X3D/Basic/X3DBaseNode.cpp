@@ -458,7 +458,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 {
 	X3DExecutionContext* executionContext = getExecutionContext ();
 
-	while (not executionContext -> isScene ())
+	while (not executionContext -> isType ({ X3DConstants::X3DScene }))
 		executionContext = executionContext -> getExecutionContext ();
 
 	return dynamic_cast <X3DScene*> (executionContext);

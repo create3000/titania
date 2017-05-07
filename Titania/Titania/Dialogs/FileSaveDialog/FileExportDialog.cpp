@@ -53,7 +53,7 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Dialogs/MessageDialog/MessageDialog.h"
 
-#include <Titania/X3D/Basic/Traverse.h>
+#include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Editing/X3DEditor.h>
 
 #include <Titania/OS.h>

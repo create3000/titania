@@ -50,7 +50,7 @@
 
 #include "Route.h"
 
-#include "../Base/Error.h"
+#include "../Bits/Error.h"
 #include "../Execution/X3DExecutionContext.h"
 
 #include <Titania/Backtrace.h>

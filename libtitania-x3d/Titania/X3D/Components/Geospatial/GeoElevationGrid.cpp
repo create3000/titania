@@ -50,7 +50,7 @@
 
 #include "GeoElevationGrid.h"
 
-#include "../../Browser/Core/Cast.h"
+#include "../../Bits/Cast.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Components/Geometry3D/IndexedFaceSet.h"
 #include "../../Components/Geospatial/GeoCoordinate.h"

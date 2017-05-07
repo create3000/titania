@@ -50,7 +50,7 @@
 
 #include "Sphere.h"
 
-#include "../../Browser/Core/Cast.h"
+#include "../../Bits/Cast.h"
 #include "../../Browser/Geometry3D/IcosahedronOptions.h"
 #include "../../Browser/Geometry3D/OctahedronOptions.h"
 #include "../../Browser/Geometry3D/QuadSphereOptions.h"

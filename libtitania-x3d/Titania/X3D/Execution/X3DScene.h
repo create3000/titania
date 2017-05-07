@@ -77,12 +77,6 @@ public:
 	{ return this == getExecutionContext (); }
 
 	virtual
-	bool
-	isScene () const
-	throw (Error <DISPOSED>) final override
-	{ return true; }
-
-	virtual
 	std::string
 	getTitle () const
 	throw (Error <DISPOSED>) final override;
