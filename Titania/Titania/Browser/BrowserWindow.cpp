@@ -111,7 +111,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 	           shadingActions (),
 	  primitiveQualityActions (),
 	    textureQualityActions (),
-	                     hand (true),
 	                   viewer (X3D::X3DConstants::NoneViewer),
 	                 changing (false)
 {
@@ -2555,8 +2554,6 @@ BrowserWindow::on_hand_button_toggled ()
 {
 	if (getHandButton () .get_active ())
 	{
-		hand = true;
-
 		getSelection () -> setEnabled (false);
 
 		setViewer (viewer);
@@ -2580,8 +2577,6 @@ BrowserWindow::on_arrow_button_toggled ()
 {
 	if (getArrowButton () .get_active ())
 	{
-		hand = false;
-
 		getSelection () -> setEnabled (true);
 
 		setViewer (viewer);
@@ -3063,10 +3058,10 @@ BrowserWindow::on_viewer_toggled (const X3D::X3DConstants::NodeType viewerType)
 	if (changing)
 		return;
 
-	if (hand)
-		getHandButton () .set_active (true);
-	else
+	if (getEditing ())
 		getArrowButton () .set_active (true);
+	else
+		getHandButton () .set_active (true);
 
 	setViewer (viewerType);
 }

@@ -877,7 +877,6 @@ private:
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> primitiveQualityActions;
 	std::vector <Glib::RefPtr <Gtk::ToggleAction>> textureQualityActions;
 
-	bool                        hand;
 	X3D::X3DConstants::NodeType viewer;
 	bool                        changing;
 };
