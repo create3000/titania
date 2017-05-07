@@ -2909,12 +2909,6 @@ BrowserWindow::set_viewer ()
 
 			getHandButton ()  .set_sensitive (true);
 			getArrowButton () .set_sensitive (true);
-
-			if (hand)
-				getHandButton ()  .set_active (true);
-			else
-				getArrowButton ()  .set_active (true);
-
 			break;
 		}
 	}
@@ -3068,6 +3062,11 @@ BrowserWindow::on_viewer_toggled (const X3D::X3DConstants::NodeType viewerType)
 
 	if (changing)
 		return;
+
+	if (hand)
+		getHandButton () .set_active (true);
+	else
+		getArrowButton () .set_active (true);
 
 	setViewer (viewerType);
 }
