@@ -58,6 +58,24 @@ X3DGeometryPropertiesEditorInterface::create (const std::string & filename)
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
+	create ();
+}
+
+void
+X3DGeometryPropertiesEditorInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
+
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
+
+	create ();
+}
+
+void
+X3DGeometryPropertiesEditorInterface::create ()
+{
 	// Get objects.
 	m_Arc2DDimensionAdjustment                       = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DDimensionAdjustment"));
 	m_Arc2DEndAngleAdjustment                        = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("Arc2DEndAngleAdjustment"));

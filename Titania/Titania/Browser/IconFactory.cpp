@@ -60,16 +60,14 @@ namespace titania {
 namespace puck {
 
 IconFactory::IconFactory (X3DBrowserWindow* const browserWindow) :
-	       X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DIconFactoryInterface (get_ui ("Dialogs/IconFactory.glade"))
-{
-	setup ();
-}
+	browserWindow (browserWindow),
+	  iconFactory (Glib::RefPtr <Gtk::IconFactory>::cast_dynamic (browserWindow -> getBuilder () -> get_object ("IconFactory")))
+{ }
 
 void
-IconFactory::createIcon ()
+IconFactory::createIcon (const X3D::X3DScenePtr & scene)
 {
-	const basic::uri & worldURL = getCurrentScene () -> getWorldURL ();
+	const basic::uri & worldURL = scene -> getWorldURL ();
 
 	try
 	{
@@ -77,7 +75,7 @@ IconFactory::createIcon ()
 
 		try
 		{
-			uri = getCurrentScene () -> getMetaData ("icon");
+			uri = scene -> getMetaData ("icon");
 		}
 		catch (const X3D::Error <X3D::INVALID_NAME> &)
 		{
@@ -87,7 +85,7 @@ IconFactory::createIcon ()
 			uri = "/favicon.ico";
 		}
 
-		createIcon (worldURL, X3D::FileLoader (getCurrentScene ()) .loadDocument (uri));
+		createIcon (worldURL, X3D::FileLoader (scene) .loadDocument (uri));
 	}
 	catch (const std::exception & error)
 	{
@@ -161,7 +159,7 @@ IconFactory::getIcon (const basic::uri & worldURL, const Gtk::IconSize & iconSiz
 	{
 		try
 		{
-			const auto pixbuf = iconSet -> render_icon_pixbuf (getWidget () .get_style_context (), iconSize);
+			const auto pixbuf = iconSet -> render_icon_pixbuf (getBrowserWindow () -> getWidget () .get_style_context (), iconSize);
 
 			if (pixbuf)
 			{
@@ -183,9 +181,7 @@ IconFactory::getIcon (const basic::uri & worldURL, const Gtk::IconSize & iconSiz
 }
 
 IconFactory::~IconFactory ()
-{
-	dispose ();
-}
+{ }
 
 } // puck
 } // titania

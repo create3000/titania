@@ -58,6 +58,24 @@ X3DBrowserWindowInterface::create (const std::string & filename)
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
+	create ();
+}
+
+void
+X3DBrowserWindowInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
+
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
+
+	create ();
+}
+
+void
+X3DBrowserWindowInterface::create ()
+{
 	// Get objects.
 	m_AngleLayoutToolAction           = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AngleLayoutToolAction"));
 	m_AxonometricGridLayoutToolAction = Glib::RefPtr <Gtk::ToggleAction>::cast_dynamic (m_builder -> get_object ("AxonometricGridLayoutToolAction"));

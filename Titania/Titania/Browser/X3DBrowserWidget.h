@@ -275,14 +275,8 @@ private:
 	void
 	setOutputStyle (const X3D::X3DScenePtr & scene, const std::string & outputStyle);
 
-	bool
-	statistics ();
-
 	///  @name Members
 
-	std::unique_ptr <IconFactory>   iconFactory;
-	std::unique_ptr <RecentView>    recentView;
-	std::unique_ptr <History>       history;
 	X3D::BrowserPtr                 masterBrowser;
 	X3D::BrowserPtr                 browser;
 	X3D::X3DPtrArray <X3D::Browser> browsers;
@@ -290,8 +284,9 @@ private:
 	X3D::X3DScenePtr                scene;
 	X3D::X3DExecutionContextPtr     executionContext;
 	X3D::Output                     worldURLOutput;
-	double                          loadTime;
-	sigc::connection                timeout;
+	std::unique_ptr <IconFactory>   iconFactory;
+	std::unique_ptr <RecentView>    recentView;
+	std::unique_ptr <History>       history;
 
 };
 

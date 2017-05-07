@@ -58,6 +58,24 @@ X3DLibraryViewInterface::create (const std::string & filename)
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
+	create ();
+}
+
+void
+X3DLibraryViewInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
+
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
+
+	create ();
+}
+
+void
+X3DLibraryViewInterface::create ()
+{
 	// Get objects.
 	m_TreeStore            = Glib::RefPtr <Gtk::TreeStore>::cast_dynamic (m_builder -> get_object ("TreeStore"));
 	m_FileColumn           = Glib::RefPtr <Gtk::TreeViewColumn>::cast_dynamic (m_builder -> get_object ("FileColumn"));

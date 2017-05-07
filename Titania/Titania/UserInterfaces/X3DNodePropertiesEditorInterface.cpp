@@ -58,6 +58,24 @@ X3DNodePropertiesEditorInterface::create (const std::string & filename)
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
+	create ();
+}
+
+void
+X3DNodePropertiesEditorInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
+
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
+
+	create ();
+}
+
+void
+X3DNodePropertiesEditorInterface::create ()
+{
 	// Get objects.
 	m_ExportedNodesListStore                    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ExportedNodesListStore"));
 	m_ImportedNodesListStore                    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ImportedNodesListStore"));

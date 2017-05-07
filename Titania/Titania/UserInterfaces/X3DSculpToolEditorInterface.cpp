@@ -58,6 +58,24 @@ X3DSculpToolEditorInterface::create (const std::string & filename)
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
+	create ();
+}
+
+void
+X3DSculpToolEditorInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
+
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
+
+	create ();
+}
+
+void
+X3DSculpToolEditorInterface::create ()
+{
 	// Get objects.
 	m_BrushHardnessAdjustment  = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushHardnessAdjustment"));
 	m_BrushHeightAdjustment    = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("BrushHeightAdjustment"));

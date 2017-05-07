@@ -58,6 +58,24 @@ X3DHistoryViewInterface::create (const std::string & filename)
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
+	create ();
+}
+
+void
+X3DHistoryViewInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
+
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
+
+	create ();
+}
+
+void
+X3DHistoryViewInterface::create ()
+{
 	// Get objects.
 	m_ListStore          = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("ListStore"));
 	m_TreeModelSort      = Glib::RefPtr <Gtk::TreeModelSort>::cast_dynamic (m_builder -> get_object ("TreeModelSort"));

@@ -51,6 +51,7 @@
 #include "X3DUsedMaterialsEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
+#include "../../Browser/IconFactory.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../Configuration/config.h"
 
@@ -204,8 +205,8 @@ X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::T
 
 		// Create Icon.
 
-		getBrowserWindow () -> createIcon (nodeIndex -> getName () + basic::to_string (path .back ()),
-		                                   preview -> getSnapshot (IMAGE_SIZE, IMAGE_SIZE, false, 8));
+		getBrowserWindow () -> getIconFactory () -> createIcon (nodeIndex -> getName () + basic::to_string (path .back ()),
+		                                                        preview -> getSnapshot (IMAGE_SIZE, IMAGE_SIZE, false, 8));
 	}
 	catch (const std::exception & error)
 	{ 

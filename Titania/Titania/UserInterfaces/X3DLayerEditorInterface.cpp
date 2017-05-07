@@ -58,6 +58,24 @@ X3DLayerEditorInterface::create (const std::string & filename)
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
+	create ();
+}
+
+void
+X3DLayerEditorInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
+
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
+
+	create ();
+}
+
+void
+X3DLayerEditorInterface::create ()
+{
 	// Get objects.
 	m_LayerListStore    = Glib::RefPtr <Gtk::ListStore>::cast_dynamic (m_builder -> get_object ("LayerListStore"));
 	m_LayerSelection    = Glib::RefPtr <Gtk::TreeSelection>::cast_dynamic (m_builder -> get_object ("LayerSelection"));

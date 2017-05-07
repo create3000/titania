@@ -73,26 +73,19 @@ public:
 
 	template <class ... Arguments>
 	X3DScenePropertiesEditorInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DEditorInterface (arguments ...),
-		          filename (filename)
+		X3DEditorInterface (arguments ...)
 	{ create (filename); }
+
+	template <class ... Arguments>
+	X3DScenePropertiesEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
+		X3DEditorInterface (arguments ...)
+	{ create (filenames); }
 
 	///  @name Member access
 
 	const Glib::RefPtr <Gtk::Builder> &
 	getBuilder () const
 	{ return m_builder; }
-
-	template <class Type>
-	Type*
-	createWidget (const std::string & name) const
-	{
-		getBuilder () -> add_from_file (filename, name);
-
-		Type* widget = nullptr;
-		m_builder -> get_widget (name, widget);
-		return widget;
-	}
 
 	const Glib::RefPtr <Gtk::ListStore> &
 	getMetaDataListStore () const
@@ -374,11 +367,16 @@ private:
 	void
 	create (const std::string &);
 
+	void
+	create (std::initializer_list <std::string>);
+
+	void
+	create ();
+
 	///  @name Static members
 
 	///  @name Members
 
-	std::string filename;
 	Glib::RefPtr <Gtk::Builder> m_builder;
 	Glib::RefPtr <Gtk::ListStore> m_MetaDataListStore;
 	Glib::RefPtr <Gtk::Adjustment> m_UnitAngleAdjustment;

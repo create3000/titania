@@ -58,6 +58,24 @@ X3DViewpointEditorInterface::create (const std::string & filename)
 	// Create Builder.
 	m_builder = Gtk::Builder::create_from_file (filename);
 
+	create ();
+}
+
+void
+X3DViewpointEditorInterface::create (std::initializer_list <std::string> filenames)
+{
+	// Create Builder.
+	m_builder = Gtk::Builder::create ();
+
+	for (const auto & filename : filenames)
+		m_builder -> add_from_file (filename);
+
+	create ();
+}
+
+void
+X3DViewpointEditorInterface::create ()
+{
 	// Get objects.
 	m_GeoViewpointCenterOfRotationXAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointCenterOfRotationXAdjustment"));
 	m_GeoViewpointCenterOfRotationYAdjustment         = Glib::RefPtr <Gtk::Adjustment>::cast_dynamic (m_builder -> get_object ("GeoViewpointCenterOfRotationYAdjustment"));

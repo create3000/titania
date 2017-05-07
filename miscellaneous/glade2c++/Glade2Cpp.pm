@@ -428,18 +428,24 @@ sub generate
 		}
 	}
 
-	say OUT "  template <class ... Arguments>";
-	say OUT "  $self->{class_name} (const std::string & filename, const Arguments & ... arguments) :";
-	
+	# Constructor.
+	say OUT "template <class ... Arguments>";
+	say OUT "$self->{class_name} (const std::string & filename, const Arguments & ... arguments) :";
 	# Call base class construtor if any.
 	if ($base_class_name) {
-		say OUT "  $base_class_name (arguments ...),";
+		say OUT "$base_class_name (arguments ...)";
 	}
+	say OUT "{ create (filename); }";
+	say OUT "";
 
-	say OUT "   filename (filename)";
-
-	# Constructor end begin body
-	say OUT "  { create (filename); }";
+	# Constructor.
+	say OUT "template <class ... Arguments>";
+	say OUT "$self->{class_name} (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :";
+	# Call base class construtor if any.
+	if ($base_class_name) {
+		say OUT "$base_class_name (arguments ...)";
+	}
+	say OUT "{ create (filenames); }";
 	say OUT "";
 
 	# Member access
@@ -455,16 +461,16 @@ sub generate
 	#say OUT "";
 
 	# createWidget
-	say OUT "  template <class Type>";
-	say OUT "  Type* createWidget (const std::string & name) const";
-	say OUT "  {";
-	say OUT "      getBuilder () -> add_from_file (filename, name);";
-	say OUT "";
-	say OUT "      Type* widget = nullptr;";
-	say OUT "      m_builder -> get_widget (name, widget);";
-	say OUT "      return widget;";
-	say OUT "  }";
-	say OUT "";
+	#say OUT "  template <class Type>";
+	#say OUT "  Type* createWidget (const std::string & name) const";
+	#say OUT "  {";
+	#say OUT "      getBuilder () -> add_from_file (filename, name);";
+	#say OUT "";
+	#say OUT "      Type* widget = nullptr;";
+	#say OUT "      m_builder -> get_widget (name, widget);";
+	#say OUT "      return widget;";
+	#say OUT "  }";
+	#say OUT "";
 
 	# Object getters
 	$parser = new XML::Parser (Handlers => {Start => sub { $self -> h_object_getters (@_) }});
@@ -521,13 +527,21 @@ sub generate
 	say OUT "  create (const std::string &);";
 	say OUT "";
 
+	say OUT "  void";
+	say OUT "  create (std::initializer_list <std::string>);";
+	say OUT "";
+
+	say OUT "  void";
+	say OUT "  create ();";
+	say OUT "";
+
 	say OUT "///  \@name Static members";
 	say OUT "";
 
 	say OUT "///  \@name Members";
 	say OUT "";
 
-	say OUT "  std::string filename;";
+	#say OUT "  std::string filename;";
 	say OUT "  Glib::RefPtr <Gtk::Builder> m_builder;";
 	#say OUT "  std::deque <sigc::connection> m_connections;";
 
@@ -580,11 +594,31 @@ sub generate
 	say OUT "void";
 	say OUT "$self->{class_name}\::create (const std::string & filename)";
 	say OUT "{";
-	
-	# Initialize members
 	say OUT "// Create Builder.";
 	say OUT "m_builder = Gtk::Builder::create_from_file (filename);";
 	say OUT "";
+	say OUT "create ();";
+	say OUT "}";
+	say OUT "";
+
+	# create
+	say OUT "void";
+	say OUT "$self->{class_name}\::create (std::initializer_list <std::string> filenames)";
+	say OUT "{";
+	say OUT "// Create Builder.";
+	say OUT "m_builder = Gtk::Builder::create ();";
+	say OUT "";
+	say OUT "for (const auto & filename : filenames)";
+	say OUT "m_builder -> add_from_file (filename);";
+	say OUT "";
+	say OUT "create ();";
+	say OUT "}";
+	say OUT "";
+
+	# Initialize members
+	say OUT "void";
+	say OUT "$self->{class_name}\::create ()";
+	say OUT "{";
 
 	# Store objects
 	say OUT "// Get objects.";

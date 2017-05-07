@@ -51,13 +51,18 @@
 #ifndef __TITANIA_BROWSER_ICON_FACTORY_H__
 #define __TITANIA_BROWSER_ICON_FACTORY_H__
 
-#include "../UserInterfaces/X3DIconFactoryInterface.h"
+#include "../Browser/X3DBrowserWindow.h"
+
+#include <Titania/X3D/Types/Pointer.h>
+
+#include <gtkmm.h>
+
+#include <string>
 
 namespace titania {
 namespace puck {
 
-class IconFactory :
-	virtual public X3DIconFactoryInterface
+class IconFactory
 {
 public:
 
@@ -68,24 +73,38 @@ public:
 	///  @name Operations
 
 	void
+	createIcon (const X3D::X3DScenePtr & scene);
+
+	void
 	createIcon (const std::string & name, const std::string & document);
 
 	void
 	createIcon (const std::string & name, Magick::Image && image);
 
 	std::string
-	getIcon (const basic::uri & uri, const Gtk::IconSize &);
+	getIcon (const basic::uri & uri, const Gtk::IconSize & iconSize);
 
 	///  @name Destruction
 
-	virtual
-	~IconFactory () final override;
+	~IconFactory ();
 
 
 private:
 
-	void
-	createIcon ();
+	///  @name Member access
+
+	X3DBrowserWindow*
+	getBrowserWindow () const
+	{ return browserWindow; }
+
+	const Glib::RefPtr <Gtk::IconFactory> &
+	getIconFactory () const
+	{ return iconFactory; }
+
+	///  @name Members
+
+	X3DBrowserWindow* const         browserWindow;
+	Glib::RefPtr <Gtk::IconFactory> iconFactory;
 
 };
 

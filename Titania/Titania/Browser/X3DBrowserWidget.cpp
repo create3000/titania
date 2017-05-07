@@ -77,16 +77,16 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	X3DBrowserWindowInterface (),
-	              iconFactory (new IconFactory (getBrowserWindow ())),
-	               recentView (new RecentView (getBrowserWindow ())),
-	                  history (new History ()),
 	            masterBrowser (masterBrowser_),
 	                  browser (X3D::createBrowser ()),
 	                 browsers (),
 	           recentBrowsers (),
 	                    scene (browser -> getExecutionContext ()),
 	         executionContext (browser -> getExecutionContext ()),
-	           worldURLOutput ()
+	           worldURLOutput (),
+	              iconFactory (new IconFactory (getBrowserWindow ())),
+	               recentView (new RecentView (getBrowserWindow ())),
+	                  history (new History ())
 {
 	// Allways added fields, otherwise there is a Xlib error on destruction.
 
@@ -562,8 +562,6 @@ X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 	if (browser == getCurrentBrowser ())
 		recentView -> loadPreview (getCurrentBrowser ());
 
-	loadTime = X3D::SFTime::now ();
-
 	if (URL .empty ())
 		return;
 
@@ -792,13 +790,7 @@ X3DBrowserWidget::on_browser_reordered (Gtk::Widget* widget, guint pageNumber)
 void
 X3DBrowserWidget::set_scene ()
 {
-	createIcon ();
-
-	#ifdef TITANIA_DEBUG
-	loadTime = X3D::SFTime::now () - loadTime;
-	timeout .disconnect ();
-	timeout = Glib::signal_timeout () .connect (sigc::mem_fun (this, &X3DBrowserWidget::statistics), 10 * 1000);
-	#endif
+	getIconFactory () -> createIcon (getCurrentScene ());
 }
 
 void
@@ -886,25 +878,6 @@ X3DBrowserWidget::setTransparent (const bool value)
 		if (visual)
 			gtk_widget_set_visual (GTK_WIDGET (getWindow () .gobj ()), visual -> gobj ());
 	}
-}
-
-bool
-X3DBrowserWidget::statistics ()
-{
-	std::string title = getCurrentScene () -> getWorldURL ();
-
-	try
-	{
-		title = getCurrentScene () -> getMetaData ("title");
-		std::clog << "Statistics for: " << title << std::endl;
-	}
-	catch (...)
-	{ }
-
-	std::clog << "Load Time: " << loadTime << std::endl;
-	std::clog << "FPS: " << getCurrentBrowser () -> getRenderingProperties () -> getFPS () << std::endl;
-
-	return false;
 }
 
 void

@@ -50,6 +50,7 @@
 
 #include "X3DUsedTexturesEditor.h"
 
+#include "../../Browser/IconFactory.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../Configuration/config.h"
@@ -155,8 +156,8 @@ X3DUsedTexturesEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::Tr
 
 		// Create Icon.
 
-		getBrowserWindow () -> createIcon (nodeIndex -> getName () + basic::to_string (path .back ()),
-		                                   preview -> getSnapshot (IMAGE_SIZE, IMAGE_SIZE, false, 8));
+		getBrowserWindow () -> getIconFactory () -> createIcon (nodeIndex -> getName () + basic::to_string (path .back ()),
+		                                                        preview -> getSnapshot (IMAGE_SIZE, IMAGE_SIZE, false, 8));
 	}
 	catch (const std::exception & error)
 	{

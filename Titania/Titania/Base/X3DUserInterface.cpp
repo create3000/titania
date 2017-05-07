@@ -105,6 +105,8 @@ X3DUserInterface::X3DUserInterface () :
 void
 X3DUserInterface::construct ()
 {
+	assert (not getWidget () .get_name () .empty ());
+
 	setTypeName (getWidget () .get_name ());
 	X3DBaseInterface::setName (getWidget () .get_name ());
 
