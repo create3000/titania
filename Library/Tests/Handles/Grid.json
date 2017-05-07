@@ -1845,7 +1845,7 @@
                               -0.405484958144129,
                               0.904569359271821,
                               0.131667091505131,
-                              0.722739514153499
+                              0.722739514153498
                             ]
                           }
                         },
@@ -1876,12 +1876,30 @@
                             "@name": "nodes",
                             "@reference": "http://titania.create3000.de",
                             "-value": [
-                              { "ShaderPart":
+                              { "Transform":
                                 {
-                                  "@DEF": "TestFragmentShader",
-                                  "@type": "FRAGMENT",
-                                  "@url": [
-                                    "data:text/plain,\n\nprecision mediump float;\n\nuniform vec3  x3d_DiffuseColor;\nuniform float x3d_Transparency;\n\nvarying vec3 normal;\n\nvoid\nmain ()\n{\n\tfloat f = max (dot (normal, vec3 (0.0, 0.0, 1.0)), 0.0);\n\n\tgl_FragColor = vec4 (x3d_DiffuseColor * f, 1.0 - x3d_Transparency);\n}"
+                                  "@DEF": "Grid2",
+                                  "@translation": [ -11.7894, 0, 0 ],
+                                  "-children": [
+                                    { "ProtoInstance":
+                                      {
+                                        "@name": "Grid",
+                                        "fieldValue": [
+                                          {
+                                            "@name": "zDimension",
+                                            "@value": 20
+                                          },
+                                          {
+                                            "@name": "color",
+                                            "@value": [ 1, 0.5, 0 ]
+                                          },
+                                          {
+                                            "@name": "transparency",
+                                            "@value": 0
+                                          }
+                                        ]
+                                      }
+                                    }
                                   ]
                                 }
                               }
@@ -1993,28 +2011,23 @@
             ]
           }
         },
-        { "Transform":
+        { "Group":
           {
-            "@DEF": "Grid2",
-            "@translation": [ -11.7894, 0, 0 ],
             "-children": [
-              { "ProtoInstance":
+              { "Transform":
                 {
-                  "@name": "Grid",
-                  "fieldValue": [
-                    {
-                      "@name": "zDimension",
-                      "@value": 20
-                    },
-                    {
-                      "@name": "color",
-                      "@value": [ 1, 0.5, 0 ]
-                    },
-                    {
-                      "@name": "transparency",
-                      "@value": 0
-                    }
-                  ]
+                  "@USE": "Grid2"
+                }
+              }
+            ]
+          }
+        },
+        { "Group":
+          {
+            "-children": [
+              { "Transform":
+                {
+                  "@USE": "Grid2"
                 }
               }
             ]
@@ -2854,7 +2867,11 @@
                             "-parts": [
                               { "ShaderPart":
                                 {
-                                  "@USE": "TestFragmentShader"
+                                  "@DEF": "TestFragmentShader",
+                                  "@type": "FRAGMENT",
+                                  "@url": [
+                                    "data:text/plain,\n\nprecision mediump float;\n\nuniform vec3  x3d_DiffuseColor;\nuniform float x3d_Transparency;\n\nvarying vec3 normal;\n\nvoid\nmain ()\n{\n\tfloat f = max (dot (normal, vec3 (0.0, 0.0, 1.0)), 0.0);\n\n\tgl_FragColor = vec4 (x3d_DiffuseColor * f, 1.0 - x3d_Transparency);\n}"
+                                  ]
                                 }
                               },
                               { "ShaderPart":
