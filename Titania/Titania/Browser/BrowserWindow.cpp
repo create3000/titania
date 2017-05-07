@@ -322,6 +322,10 @@ BrowserWindow::set_activeLayer ()
 {
 	changing = true;
 
+	// Select Menu
+
+	getSelectAllMenuItem () .set_sensitive (getCurrentBrowser () -> getActiveLayer ());
+
 	// Layout Menu
 
 	getGridLayoutToolAction () -> set_active (getGridTool () -> isEnabled ());
