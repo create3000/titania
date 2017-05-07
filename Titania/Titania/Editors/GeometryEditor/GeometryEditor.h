@@ -171,6 +171,9 @@ private:
 	void
 	on_hammer_clicked () final override;
 
+	void
+	set_selectGeometry ();
+
 	virtual
 	void
 	on_edit_toggled () final override;

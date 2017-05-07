@@ -98,27 +98,27 @@ OutlineSelection::set_nodes (const X3D::MFNode & value)
 void
 OutlineSelection::select (const X3D::SFNode & node) const
 {
-	if (node)
+	if (not node)
+		return;
+
+	const auto & selection  = node -> getBrowser () -> getSelection ();
+	const bool   isSelected = selection -> isSelected (node);
+
+	selection -> setSelectGeometry (false);
+
+	if (isSelected)
 	{
-		const auto & selection  = node -> getBrowser () -> getSelection ();
-		const bool   isSelected = selection -> isSelected (node);
-
-		if (isSelected)
-		{
-			if (selectMultiple)
-				selection -> removeNodes ({ node });
-			else
-				selection -> clearNodes ();
-		}
+		if (selectMultiple)
+			selection -> removeNodes ({ node });
 		else
-		{
-			if (selectMultiple)
-				selection -> addNodes ({ node });
-			else
-				selection -> setNodes ({ node });	
-		}
-
-		//getCurrentBrowser () -> update ();
+			selection -> clearNodes ();
+	}
+	else
+	{
+		if (selectMultiple)
+			selection -> addNodes ({ node });
+		else
+			selection -> setNodes ({ node });	
 	}
 }
 

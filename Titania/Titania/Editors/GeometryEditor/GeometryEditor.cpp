@@ -111,6 +111,11 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	getBrowserWindow () -> getHandButton ()   .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_hand_toggled));
 	getBrowserWindow () -> getArrowButton ()  .signal_toggled () .connect (sigc::mem_fun (this, &GeometryEditor::on_arrow_toggled));
 
+	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
+
+	getPaintSelectionButton () .set_group (selectionGroup);
+	getCutPolygonsButton ()    .set_group (selectionGroup);
+
 	setup ();
 }
 
@@ -119,10 +124,7 @@ GeometryEditor::initialize ()
 {
 	X3DGeometryEditorInterface::initialize ();
 
-	auto selectionGroup = getBrowserWindow () -> getHandButton () .get_group ();
-
-	getPaintSelectionButton () .set_group (selectionGroup);
-	getCutPolygonsButton ()    .set_group (selectionGroup);
+	getBrowserWindow () -> getSelection () -> getSelectGeometry () .addInterest (&GeometryEditor::set_selectGeometry, this);
 
 	normalEditor -> setup ();
 	coordEditor  -> setup ();
@@ -822,9 +824,22 @@ GeometryEditor::on_hammer_clicked ()
 }
 
 void
+GeometryEditor::set_selectGeometry ()
+{
+	const auto & selection = getBrowserWindow () -> getSelection ();
+
+	if (selection -> getSelectGeometry () == getEditToggleButton () .get_active ())
+		return;
+
+	getEditToggleButton () .set_active (selection -> getSelectGeometry ());
+}
+
+void
 GeometryEditor::on_edit_toggled ()
 {
-	getBrowserWindow () -> getSelection () -> setSelectGeometry (getEditToggleButton () .get_active ());
+	const auto & selection = getBrowserWindow () -> getSelection ();
+
+	selection -> setSelectGeometry (getEditToggleButton () .get_active ());
 
 	getGeometryToolsBox () .set_sensitive (getEditToggleButton () .get_active ());
 
