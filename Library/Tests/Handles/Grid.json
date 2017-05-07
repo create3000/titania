@@ -1830,9 +1830,9 @@
                             "@name": "position",
                             "@reference": "http://titania.create3000.de",
                             "@value": [
-                              1.72928978765857,
-                              1.7990843207536,
-                              3.35531580586582
+                              4.93606529384851,
+                              2.04597437381744,
+                              2.68147456645966
                             ]
                           }
                         },
@@ -1842,10 +1842,10 @@
                             "@name": "orientation",
                             "@reference": "http://titania.create3000.de",
                             "@value": [
-                              -0.66905669608731,
-                              0.722712065097689,
-                              0.173350536148482,
-                              0.649659985911185
+                              -0.543439754832887,
+                              0.812169273866396,
+                              0.212259990234861,
+                              0.89653007878039
                             ]
                           }
                         },
@@ -1855,9 +1855,9 @@
                             "@name": "centerOfRotation",
                             "@reference": "http://titania.create3000.de",
                             "@value": [
-                              0,
-                              0,
-                              0
+                              2.46430624906367,
+                              5.02765571175345e-06,
+                              2.48358635133172e-05
                             ]
                           }
                         }
@@ -1879,6 +1879,7 @@
                               { "Transform":
                                 {
                                   "@DEF": "Shader",
+                                  "@translation": [ 2.4643, 0, 0 ],
                                   "-children": [
                                     { "Shape":
                                       {
@@ -2018,6 +2019,16 @@
                                   ]
                                 }
                               }
+                            ]
+                          }
+                        },
+                        { "MetadataBoolean":
+                          {
+                            "@DEF": "selectGeometry",
+                            "@name": "selectGeometry",
+                            "@reference": "http://titania.create3000.de",
+                            "@value": [
+                              true
                             ]
                           }
                         }

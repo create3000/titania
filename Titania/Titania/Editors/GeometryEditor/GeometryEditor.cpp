@@ -159,7 +159,6 @@ GeometryEditor::configure ()
 	else
 		getPointsMenuItem () .set_active (true);
 
-	getEditToggleButton ()                  .set_active (getConfig () -> get <bool> ("selectGeometry"));
 	getPaintSelectionButton ()              .set_active (getConfig () -> get <bool> ("paintSelection"));
 	getSelectLineLoopMenuItem ()            .set_active (getConfig () -> get <bool> ("selectLineLoop"));
 	getTransformToolButton ()               .set_active (getConfig () -> get <bool> ("transform"));
@@ -1123,7 +1122,6 @@ GeometryEditor::on_delete_selected_faces_clicked ()
 void
 GeometryEditor::store ()
 {
-	getConfig () -> set ("selectGeometry",         getEditToggleButton () .get_active ());
 	getConfig () -> set ("paintSelection",         getPaintSelectionButton () .get_active ());
 	getConfig () -> set ("normalEnabled",          normalEditor -> getField <X3D::SFBool>      ("load"));
 	getConfig () -> set ("normalLength",           normalEditor -> getField <X3D::SFFloat>     ("length"));
