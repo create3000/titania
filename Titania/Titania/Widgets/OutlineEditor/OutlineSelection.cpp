@@ -101,10 +101,8 @@ OutlineSelection::select (const X3D::SFNode & node) const
 	if (not node)
 		return;
 
-	const auto & selection  = node -> getBrowser () -> getSelection ();
+	const auto & selection  = getBrowserWindow () -> getSelection ();
 	const bool   isSelected = selection -> isSelected (node);
-
-	selection -> setSelectGeometry (false);
 
 	if (isSelected)
 	{

@@ -243,6 +243,7 @@ BrowserSelection::addNodes (const X3D::MFNode & value)
 {
 	const auto & selection = browser -> getSelection ();
 
+	selection -> setSelectGeometry (false);
 	selection -> addNodes (value);
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
@@ -254,6 +255,7 @@ BrowserSelection::removeNodes (const X3D::MFNode & value)
 {
 	const auto & selection = browser-> getSelection ();
 
+	selection -> setSelectGeometry (false);
 	selection -> removeNodes (value);
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
@@ -265,6 +267,7 @@ BrowserSelection::clearNodes ()
 {
 	const auto & selection = browser-> getSelection ();
 
+	selection -> setSelectGeometry (false);
 	selection -> clearNodes ();
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
@@ -276,6 +279,7 @@ BrowserSelection::setNodes (const X3D::MFNode & value)
 {
 	const auto & selection = browser-> getSelection ();
 
+	selection -> setSelectGeometry (false);
 	selection -> setNodes (value);
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
@@ -304,8 +308,11 @@ BrowserSelection::addNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 	const auto & selection = browser-> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
+	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, selection -> getSelectGeometry ());
+	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, false);
 	undoStep -> addRedoFunction (&X3D::Selection::addNodes, selection, value);
 
+	selection -> setSelectGeometry (false);
 	selection -> addNodes (value);
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
@@ -318,8 +325,11 @@ BrowserSelection::removeNodes (const X3D::MFNode & value, const X3D::UndoStepPtr
 	const auto & selection = browser-> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes,    selection, selection -> getNodes ());
+	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, selection -> getSelectGeometry ());
+	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, false);
 	undoStep -> addRedoFunction (&X3D::Selection::removeNodes, selection, value);
 
+	selection -> setSelectGeometry (false);
 	selection -> removeNodes (value);
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
@@ -332,8 +342,11 @@ BrowserSelection::clearNodes (const X3D::UndoStepPtr & undoStep)
 	const auto & selection = browser-> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
+	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, selection -> getSelectGeometry ());
+	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, false);
 	undoStep -> addRedoFunction (&X3D::Selection::clearNodes, selection);
 
+	selection -> setSelectGeometry (false);
 	selection -> clearNodes ();
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
@@ -346,8 +359,11 @@ BrowserSelection::setNodes (const X3D::MFNode & value, const X3D::UndoStepPtr & 
 	const auto & selection = browser-> getSelection ();
 
 	undoStep -> addUndoFunction (&X3D::Selection::setNodes, selection, selection -> getNodes ());
+	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, selection -> getSelectGeometry ());
+	undoStep -> addRedoFunction (&X3D::Selection::setSelectGeometry, selection, false);
 	undoStep -> addRedoFunction (&X3D::Selection::setNodes, selection, value);
 
+	selection -> setSelectGeometry (false);
 	selection -> setNodes (value);
 
 	// We must immediately call set_nodes to to remove from meta data to lower clone count.
