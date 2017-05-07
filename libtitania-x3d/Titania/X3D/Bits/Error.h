@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BITS_ERROR_H__
 #define __TITANIA_X3D_BITS_ERROR_H__
 
-#include "../Basic/X3DConstants.h"
+#include "../Bits/X3DConstants.h"
 
 #include <exception>
 #include <string>

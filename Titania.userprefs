@@ -1,15 +1,11 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.h">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Browser/BrowserSelection.cpp">
     <Files>
-      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.h" Line="65" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/X3DFileOpenDialog.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileOpenDialog/FileOpenDialog.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Browser/X3DBrowserWidget.h" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Dialogs/FileSaveDialog/FileExportDialog.cpp" Line="1" Column="1" />
-      <File FileName="Titania/Titania/Editors/LibraryView/X3DModelsPaletteEditor.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.h" Line="880" Column="1" />
+      <File FileName="Titania/Titania/Browser/BrowserWindow.cpp" Line="106" Column="18" />
+      <File FileName="Titania/Titania/Browser/BrowserSelection.cpp" Line="174" Column="1" />
+      <File FileName="Titania/Titania/Editors/GeometryEditor/GeometryEditor.cpp" Line="74" Column="62" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -50,7 +50,7 @@
 
 #include "X3DBaseNode.h"
 
-#include "../Basic/X3DConstants.h"
+#include "../Bits/X3DConstants.h"
 #include "../Browser/X3DBrowser.h"
 #include "../Execution/X3DScene.h"
 #include "../Fields/ArrayFields.h"

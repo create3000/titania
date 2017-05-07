@@ -51,7 +51,7 @@
 #ifndef __TITANIA_X3D_BASIC_NODE_TYPE_ARRAY_H__
 #define __TITANIA_X3D_BASIC_NODE_TYPE_ARRAY_H__
 
-#include "../Basic/X3DConstants.h"
+#include "../Bits/X3DConstants.h"
 #include <vector>
 
 namespace titania {

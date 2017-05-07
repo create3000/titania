@@ -53,7 +53,7 @@
 
 #include "../../Basic/X3DBaseNode.h"
 #include "../../Bits/Cast.h"
-#include "../../Basic/X3DConstants.h"
+#include "../../Bits/X3DConstants.h"
 #include "../../Fields.h"
 #include "../../Types/Geometry.h"
 

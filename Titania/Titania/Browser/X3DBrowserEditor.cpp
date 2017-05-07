@@ -482,7 +482,7 @@ X3DBrowserEditor::getMetaData ()
 		}
 		catch (const std::exception & error)
 		{
-			getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::X3DBaseNode);
+			getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::DefaultViewer);
 		}
 
 		//
@@ -509,7 +509,7 @@ X3DBrowserEditor::setViewer (const X3D::X3DConstants::NodeType viewer)
 		getCurrentBrowser () -> setPrivateViewer (viewer);
 	else
 	{
-		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::X3DBaseNode);
+		getCurrentBrowser () -> setPrivateViewer (X3D::X3DConstants::DefaultViewer);
 		getCurrentBrowser () -> setViewerType (viewer);
 	}
 }

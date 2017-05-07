@@ -73,7 +73,7 @@ X3DNavigationContext::X3DNavigationContext () :
 	               activeLayer (),
 	      activeNavigationInfo (),
 	                    viewer (X3DConstants::NoneViewer),
-	             privateViewer (X3DConstants::X3DBaseNode),
+	             privateViewer (X3DConstants::DefaultViewer),
 	          availableViewers (),
 	           activeViewpoint (),
 	          activeCollisions (),
@@ -102,7 +102,7 @@ X3DNavigationContext::initialize ()
 X3D::X3DConstants::NodeType
 X3DNavigationContext::getCurrentViewer () const
 {
-	if (getPrivateViewer () not_eq X3DConstants::X3DBaseNode)
+	if (getPrivateViewer () not_eq X3DConstants::DefaultViewer)
 	   return getPrivateViewer ();
 
 	return getViewerType ();

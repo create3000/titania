@@ -52,7 +52,7 @@
 #define __TITANIA_X3D_COMPONENTS_NETWORKING_X3DURL_OBJECT_H__
 
 #include "../../Basic/X3DBaseNode.h"
-#include "../../Basic/X3DConstants.h"
+#include "../../Bits/X3DConstants.h"
 #include "../../Fields.h"
 
 #include <Titania/Basic/URI.h>

@@ -71,7 +71,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
 	                   browser (getMasterBrowser ()),
-	             privateViewer (X3D::X3DConstants::X3DBaseNode),
+	             privateViewer (X3D::X3DConstants::DefaultViewer),
 	                  selector (SelectorType::BRUSH),
 	         numSelectedPoints (0),
 	          numSelectedEdges (0),
