@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
+<interface>
+  <requires lib="gtk+" version="3.10"/>
+  <object class="GtkListStore" id="ListStore">
+    <columns>
+      <!-- column-name Icon -->
+      <column type="gchararray"/>
+      <!-- column-name Title -->
+      <column type="gchararray"/>
+      <!-- column-name Location -->
+      <column type="gchararray"/>
+      <!-- column-name LastAccess -->
+      <column type="gchararray"/>
+      <!-- column-name LastAccessTime -->
+      <column type="gdouble"/>
+      <!-- column-name Id -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkTreeModelSort" id="TreeModelSort">
+    <property name="model">ListStore</property>
+  </object>
+  <object class="GtkWindow" id="Window">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Histroy Editor</property>
+    <property name="type_hint">utility</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <child>
+      <object class="GtkBox" id="Widget">
+        <property name="name">HistoryEditor</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <signal name="map" handler="on_map" swapped="no"/>
+        <signal name="unmap" handler="on_unmap" swapped="no"/>
+        <child>
+          <object class="GtkHeaderBar" id="HeaderBar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="title">History</property>
+            <child>
+              <object class="GtkImage" id="image5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">end</property>
+                <property name="stock">History</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSearchEntry" id="SearchEntry">
+                <property name="width_request">200</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="halign">end</property>
+                <property name="hexpand">True</property>
+                <property name="primary_icon_name">edit-find-symbolic</property>
+                <property name="primary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">False</property>
+                <property name="placeholder_text" translatable="yes">Search</property>
+                <signal name="search-changed" handler="on_search_changed" swapped="no"/>
+              </object>
+              <packing>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="ScrolledWindow">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkTreeView" id="TreeView">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="model">TreeModelSort</property>
+                <property name="rules_hint">True</property>
+                <property name="search_column">1</property>
+                <signal name="button-press-event" handler="on_button_press_event" after="yes" swapped="no"/>
+                <signal name="row-activated" handler="on_row_activated" swapped="no"/>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="treeview-selection"/>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="Icon">
+                    <property name="sizing">autosize</property>
+                    <property name="sort_column_id">0</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkCellRendererPixbuf" id="IconRenderer"/>
+                      <attributes>
+                        <attribute name="stock-id">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="TitleColumn">
+                    <property name="resizable">True</property>
+                    <property name="sizing">fixed</property>
+                    <property name="min_width">50</property>
+                    <property name="title" translatable="yes">Title</property>
+                    <property name="clickable">True</property>
+                    <property name="sort_indicator">True</property>
+                    <property name="sort_column_id">1</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkCellRendererText" id="TitleRenderer"/>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="WorlURLColumn">
+                    <property name="resizable">True</property>
+                    <property name="sizing">fixed</property>
+                    <property name="min_width">50</property>
+                    <property name="title" translatable="yes">World URL</property>
+                    <property name="clickable">True</property>
+                    <property name="sort_indicator">True</property>
+                    <property name="sort_column_id">2</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkCellRendererText" id="WorlURLRenderer"/>
+                      <attributes>
+                        <attribute name="text">2</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="LastAccessColumn">
+                    <property name="resizable">True</property>
+                    <property name="sizing">fixed</property>
+                    <property name="min_width">50</property>
+                    <property name="title" translatable="yes">Last Access</property>
+                    <property name="clickable">True</property>
+                    <property name="sort_indicator">True</property>
+                    <property name="sort_column_id">4</property>
+                    <signal name="clicked" handler="on_column_clicked" swapped="no"/>
+                    <child>
+                      <object class="GtkCellRendererText" id="LastAccessRenderer"/>
+                      <attributes>
+                        <attribute name="text">3</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMenu" id="Menu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="menuitem1">
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Remember History</property>
+        <property name="use_underline">True</property>
+        <style>
+          <class name="titania-menu-description"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem" id="NeverMenuItem">
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Never</property>
+        <property name="use_underline">True</property>
+        <property name="draw_as_radio">True</property>
+        <signal name="toggled" handler="on_never_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem" id="OneMonthMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">One Month</property>
+        <property name="use_underline">True</property>
+        <property name="draw_as_radio">True</property>
+        <property name="group">NeverMenuItem</property>
+        <signal name="toggled" handler="on_on_month_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem" id="HalfYearMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Half Year</property>
+        <property name="use_underline">True</property>
+        <property name="draw_as_radio">True</property>
+        <property name="group">NeverMenuItem</property>
+        <signal name="toggled" handler="on_half_year_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem" id="OneYearMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">One Year</property>
+        <property name="use_underline">True</property>
+        <property name="draw_as_radio">True</property>
+        <property name="group">NeverMenuItem</property>
+        <signal name="toggled" handler="on_one_year_toggled" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRadioMenuItem" id="AlwaysMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Always</property>
+        <property name="use_underline">True</property>
+        <property name="draw_as_radio">True</property>
+        <property name="group">NeverMenuItem</property>
+        <signal name="toggled" handler="on_always_toggled" swapped="no"/>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="lower">0.01</property>
+    <property name="upper">3.1400000000000001</property>
+    <property name="value">0.01</property>
+    <property name="step_increment">0.01</property>
+  </object>
+</interface>

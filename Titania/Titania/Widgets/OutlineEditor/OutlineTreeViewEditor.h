@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_EDITOR_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_EDITOR_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_EDITOR_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_TREE_VIEW_EDITOR_H__
 
 #include "X3DOutlineTreeView.h"
 
@@ -133,20 +133,21 @@ private:
 
 	using FieldType = X3D::X3DConstants::FieldType;
 
-	std::unique_ptr <OutlineDragDrop>  dragDrop;
-	UserDataPtr                        overUserData;
-	UserDataPtr                        selectedUserData;
-	X3D::X3DExecutionContextPtr        matchingContext;
-	FieldType                          matchingFieldType;
-	int                                matchingAccessType;
-	Gtk::TreePath                      sourcePath;
-	X3D::SFNode                        sourceNode;
-	std::string                        sourceField;
-	Gtk::TreePath                      destinationPath;
-	X3D::SFNode                        destinationNode;
-	std::string                        destinationField;
+	std::unique_ptr <OutlineDragDrop> dragDrop;
+	UserDataPtr overUserData;
+	UserDataPtr selectedUserData;
+	X3D::X3DExecutionContextPtr matchingContext;
+	FieldType matchingFieldType;
+	int matchingAccessType;
+	Gtk::TreePath sourcePath;
+	X3D::SFNode sourceNode;
+	std::string sourceField;
+	Gtk::TreePath destinationPath;
+	X3D::SFNode destinationNode;
+	std::string destinationField;
 
 	sigc::connection motion_notify_connection;
+
 };
 
 } // puck

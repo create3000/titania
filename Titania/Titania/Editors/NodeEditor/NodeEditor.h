@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -66,6 +66,19 @@ public:
 	///  @name Construction
 
 	NodeEditor (X3DBrowserWindow* const browserWindow);
+
+	///  @name Member access
+
+	virtual
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return getCurrentPage <X3DEditorInterface> () -> getHeaderBar (); }
+
+	///  @name Event handlers
+
+	virtual
+	void
+	on_switch_page (Gtk::Widget*, guint) final override;
 
 	///  @name Destruction
 

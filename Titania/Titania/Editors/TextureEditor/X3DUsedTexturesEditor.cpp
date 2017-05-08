@@ -52,8 +52,8 @@
 
 #include "../../Browser/IconFactory.h"
 #include "../../Browser/BrowserSelection.h"
-#include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../Configuration/config.h"
+#include "../../Editors/NodeIndex/NodeIndex.h"
 
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/Grouping/Transform.h>

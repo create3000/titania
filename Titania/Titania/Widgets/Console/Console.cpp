@@ -59,7 +59,7 @@ namespace puck {
 
 Console::Console (X3DBrowserWindow* const browserWindow) :
 	   X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	X3DConsoleInterface (get_ui ("Console.glade")),
+	X3DConsoleInterface (get_ui ("Widgets/Console.glade")),
 	        scrollToEnd (true)
 {
 	setup ();

@@ -51,6 +51,9 @@
 #ifndef __TITANIA_BASE_DIALOG_FACTORY_H__
 #define __TITANIA_BASE_DIALOG_FACTORY_H__
 
+#include "../Applications/ColorEditor/ColorEditor.h"
+#include "../Applications/TextureMappingEditor/TextureMappingEditor.h"
+
 #include "../Dialogs/FileImportDialog/FileImportDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenDialog.h"
 #include "../Dialogs/FileOpenDialog/FileOpenFontDialog.h"
@@ -60,17 +63,15 @@
 #include "../Dialogs/FileSaveDialog/FileSaveACopyDialog.h"
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
 #include "../Dialogs/MessageDialog/MessageDialog.h"
-#include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
-#include "../Dialogs/UndoHistoryDialog/UndoHistoryDialog.h"
 
 #include "../Editors/AppearanceEditor/AppearanceEditor.h"
 #include "../Editors/BackgroundEditor/BackgroundEditor.h"
 #include "../Editors/BindableNodeEditor/BindableNodeEditor.h"
-#include "../Editors/ColorEditor/ColorEditor.h"
 #include "../Editors/FogEditor/FogEditor.h"
 #include "../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
 #include "../Editors/GridEditor/GridEditor.h"
+#include "../Editors/HistoryEditor/HistoryEditor.h"
 #include "../Editors/InlineEditor/InlineEditor.h"
 #include "../Editors/LayerEditor/LayerEditor.h"
 #include "../Editors/LibraryView/LibraryView.h"
@@ -79,6 +80,7 @@
 #include "../Editors/MotionBlurEditor/MotionBlurEditor.h"
 #include "../Editors/NavigationInfoEditor/NavigationInfoEditor.h"
 #include "../Editors/NodeEditor/NodeEditor.h"
+#include "../Editors/NodeIndex/NodeIndex.h"
 #include "../Editors/NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
@@ -86,19 +88,17 @@
 #include "../Editors/SculpToolEditor/SculpToolEditor.h"
 #include "../Editors/TextEditor/TextEditor.h"
 #include "../Editors/TextureEditor/TextureEditor.h"
-#include "../Editors/TextureMappingEditor/TextureMappingEditor.h"
 #include "../Editors/ViewpointEditor/ViewpointEditor.h"
 #include "../Editors/SoundEditor/SoundEditor.h"
+#include "../Editors/UndoHistoryEditor/UndoHistoryEditor.h"
 
+#include "../Widgets/AnimationEditor/AnimationEditor.h"
 #include "../Widgets/BindableNodeList/BackgroundList.h"
 #include "../Widgets/BindableNodeList/FogList.h"
 #include "../Widgets/BindableNodeList/NavigationInfoList.h"
 #include "../Widgets/BindableNodeList/ViewpointList.h"
-#include "../Widgets/HistoryView/HistoryView.h"
-#include "../Widgets/OutlineEditor/OutlineEditor.h"
-
-#include "../Widgets/AnimationEditor/AnimationEditor.h"
 #include "../Widgets/Console/Console.h"
+#include "../Widgets/OutlineEditor/OutlineEditor.h"
 #include "../Widgets/ScriptEditor/ScriptEditor.h"
 
 namespace titania {
@@ -122,7 +122,7 @@ public:
 		         std::make_pair ("FileExportDialog",         constructDialog <FileExportDialog>),
 		         std::make_pair ("FileExportImageDialog",    constructDialog <FileExportImageDialog>),
 		         std::make_pair ("MessageDialog",            constructDialog <MessageDialog>),
-		         std::make_pair ("UndoHistoryDialog",        constructDialog <UndoHistoryDialog>),
+		         std::make_pair ("UndoHistoryEditor",        constructDialog <UndoHistoryEditor>),
 		         std::make_pair ("ScenePropertiesEditor",    constructDialog <ScenePropertiesEditor>),
 		         std::make_pair ("MotionBlurEditor",         constructDialog <MotionBlurEditor>),
 		         std::make_pair ("GridEditor",               constructDialog <GridEditor>),
@@ -150,7 +150,7 @@ public:
 		         std::make_pair ("FogList",                  constructDialog <FogList>),
 		         std::make_pair ("NavigationInfoList",       constructDialog <NavigationInfoList>),
 		         std::make_pair ("ViewpointList",            constructDialog <ViewpointList>),
-		         std::make_pair ("HistoryView",              constructDialog <HistoryView>),
+		         std::make_pair ("HistoryEditor",              constructDialog <HistoryEditor>),
 		         std::make_pair ("LibraryView",              constructDialog <LibraryView>),
 		         std::make_pair ("OutlineEditor",            constructDialog <OutlineEditor>),
 		         std::make_pair ("Console",                  constructDialog <Console>),

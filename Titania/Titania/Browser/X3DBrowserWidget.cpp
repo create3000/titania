@@ -57,7 +57,7 @@
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 #include "../Dialogs/MessageDialog/MessageDialog.h"
-#include "../Widgets/HistoryView/History.h"
+#include "../Editors/HistoryEditor/History.h"
 
 #include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>

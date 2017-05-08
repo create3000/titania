@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_TREE_MODEL_H__
 
 #include "../../Base/X3DBaseInterface.h"
 #include "../../Browser/UserData.h"
@@ -112,7 +112,7 @@ public:
 	static
 	Glib::RefPtr <OutlineTreeModel>
 	create (const X3D::X3DExecutionContextPtr &);
-	
+
 	///  @name Member access
 
 	const X3D::X3DExecutionContextPtr &
@@ -285,11 +285,11 @@ private:
 	virtual
 	void
 	on_rows_reordered (const Path &, const iterator &, int*) final override;
-	
+
 	virtual
 	bool
 	row_draggable_vfunc (const Path & path) const final override;
-	
+
 	virtual
 	bool
 	drag_data_get_vfunc (const Path & path, Gtk::SelectionData & selection_data) const final override;
@@ -301,11 +301,11 @@ private:
 
 	X3D::X3DExecutionContextPtr executionContext;
 
-	DataColumn     data_column;
+	DataColumn data_column;
 	SelectedColumn selected_column;
 
 	mutable OutlineTree tree;
-	int                 stamp;
+	int stamp;
 
 	bool show_all_routes;
 

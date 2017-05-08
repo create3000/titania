@@ -62,6 +62,8 @@ FileSaveWarningDialog::FileSaveWarningDialog (X3DBrowserWindow* const browserWin
 	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileSaveWarningDialogInterface (get_ui ("Dialogs/FileSaveWarningDialog.glade"))
 {
+	setTitleBar (getWindow (), getHeaderBar ());
+
 	setup ();
 }
 

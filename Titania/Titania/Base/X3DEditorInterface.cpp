@@ -60,8 +60,15 @@ namespace puck {
 
 X3DEditorInterface::X3DEditorInterface () :
 	X3DDialogInterface (),
-	   X3DEditorObject ()
+	   X3DEditorObject (),
+	          titleBar ()
 { }
+
+void
+X3DEditorInterface::construct ()
+{
+	X3DDialogInterface::construct ();
+}
 
 void
 X3DEditorInterface::setup ()
@@ -75,6 +82,38 @@ X3DEditorInterface::initialize ()
 {
 	X3DDialogInterface::initialize ();
 	X3DEditorObject::initialize ();
+}
+
+void
+X3DEditorInterface::present ()
+{
+	setTitleBar (getHeaderBar ());
+
+	X3DDialogInterface::present ();
+}
+
+void
+X3DEditorInterface::setTitleBar (Gtk::HeaderBar & headerBar)
+{
+	headerBar .set_show_close_button (true);
+
+	const auto children = titleBar .get_children ();
+
+	if (children .empty ())
+	{
+		titleBar .show ();
+		X3DDialogInterface::setTitleBar (getWindow (), titleBar);
+	}
+
+	for (const auto widget : children)
+		titleBar .remove (*widget);
+
+	const auto container = headerBar .get_parent ();
+
+	if (container)
+	   container -> remove (headerBar);
+
+	titleBar .pack_start (headerBar, true, true);
 }
 
 ///  @name Destruction

@@ -83,32 +83,39 @@ public:
 	template <class Type>
 	static
 	std::vector <Type*>
-	getWidgets (Gtk::Widget &);
+	getWidgets (Gtk::Widget & parent);
+
+	///  @name Operations
+
+	void
+	setTitleBar (Gtk::Window & window, Gtk::Widget & titlebar);
+
+	void
+	reparent (Gtk::Box & box, Gtk::Window & window);
+
+	void
+	reparent (Gtk::Overlay & overlay, Gtk::Window & window);
+
+	virtual
+	void
+	present ();
+
+	/// @name Dialog handling
+	
+	bool
+	hasDialog (const std::string & name) const;
+
+	std::shared_ptr <X3DUserInterface>
+	addDialog (const std::string & name, const bool present = true);
+
+	std::shared_ptr <X3DUserInterface>
+	createDialog (const std::string & name) const;
 
 	///  @name Configuration handling
 
 	const std::shared_ptr <Configuration> &
 	getConfig () const
 	{ return config; }
-
-	/// @name Dialog handling
-	
-	bool
-	hasDialog (const std::string &) const;
-
-	std::shared_ptr <X3DUserInterface>
-	addDialog (const std::string &, const bool = true);
-
-	std::shared_ptr <X3DUserInterface>
-	createDialog (const std::string &) const;
-
-	///  @name Operations
-
-	void
-	reparent (Gtk::Box &, Gtk::Window &);
-
-	void
-	reparent (Gtk::Overlay &, Gtk::Window &);
 
 	/// @name Destruction
 
@@ -183,10 +190,7 @@ private:
 	X3DUserInterface (const X3DUserInterface &) = delete;
 
 	void
-	connectFocusEvent (Gtk::Widget &);
-
-	void
-	removeFocus (Gtk::Widget &);
+	connectFocusEvent (Gtk::Widget & parent);
 
 	///  @name Event handlers
 
@@ -200,16 +204,16 @@ private:
 	on_unmap ();
 
 	bool
-	on_window_state_event (GdkEventWindowState*);
+	on_window_state_event (GdkEventWindowState* event);
 
 	bool
-	on_delete_event (GdkEventAny*);
+	on_delete_event (GdkEventAny* event);
 
 	bool
-	on_focus_in_event (GdkEventFocus*);
+	on_focus_in_event (GdkEventFocus* event);
 
 	bool
-	on_focus_out_event (GdkEventFocus*);
+	on_focus_out_event (GdkEventFocus* event);
 
 	///  @name Operations
 
@@ -217,10 +221,10 @@ private:
 	restoreDialogs ();
 
 	void
-	removeDialog (const std::string &);
+	removeDialog (const std::string & name);
 
 	void
-	removeDialogImpl (const std::string &);
+	removeDialogImpl (const std::string & name);
 
 	void
 	restoreInterface ();
@@ -234,7 +238,7 @@ private:
 	template <class Type>
 	static
 	void
-	getWidgets (Gtk::Widget*, std::vector <Type*> &);
+	getWidgets (Gtk::Widget* parent, std::vector <Type*> & types);
 
 	///  @name Static members
 
@@ -253,25 +257,25 @@ private:
 
 template <class Type>
 std::vector <Type*>
-X3DUserInterface::getWidgets (Gtk::Widget & widget)
+X3DUserInterface::getWidgets (Gtk::Widget & parent)
 {
 	std::vector <Type*> types;
 
-	getWidgets (&widget, types);
+	getWidgets (&parent, types);
 
 	return types;
 }
 
 template <class Type>
 void
-X3DUserInterface::getWidgets (Gtk::Widget* widget, std::vector <Type*> & types)
+X3DUserInterface::getWidgets (Gtk::Widget* parent, std::vector <Type*> & types)
 {
-	Type* const type = dynamic_cast <Type*> (widget);
+	Type* const type = dynamic_cast <Type*> (parent);
 	
 	if (type)
 		types .emplace_back (type);
 
-	const auto container = dynamic_cast <Gtk::Container*> (widget);
+	const auto container = dynamic_cast <Gtk::Container*> (parent);
 	
 	if (container)
 	{

@@ -147,6 +147,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Notebook &
 	getTextNotebook () const
 	{ return *m_TextNotebook; }
@@ -357,6 +361,7 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn> m_FontStyleFileChooserColumn;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Notebook* m_TextNotebook;
 	Gtk::Expander* m_TextExpander;
 	Gtk::Box* m_SelectTextBox;

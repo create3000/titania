@@ -51,10 +51,10 @@
 #include "InlineEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
+#include "../../ComposedWidgets/MFStringURLWidget.h"
 #include "../../Configuration/config.h"
 #include "../../Dialogs/FileSaveDialog/FileExportDialog.h"
-#include "../../Dialogs/NodeIndex/NodeIndex.h"
-#include "../../ComposedWidgets/MFStringURLWidget.h"
+#include "../../Editors/NodeIndex/NodeIndex.h"
 
 #include <Titania/X3D/Components/Grouping/Group.h>
 #include <Titania/X3D/Components/Networking/Inline.h>

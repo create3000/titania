@@ -54,10 +54,11 @@
 #include "../Browser/MagicImport.h"
 #include "../Browser/ViewpointObserver.h"
 
-#include "../Editors/GeometryEditor/GeometryEditor.h"
 #include "../Editors/GridEditor/AngleTool.h"
 #include "../Editors/GridEditor/AxonometricGridTool.h"
 #include "../Editors/GridEditor/GridTool.h"
+
+#include "../Revealer/GeometryEditor/GeometryEditor.h"
 
 #include "../Widgets/Sidebar/Sidebar.h"
 #include "../Widgets/Footer/Footer.h"

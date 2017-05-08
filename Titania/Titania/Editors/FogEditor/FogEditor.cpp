@@ -51,7 +51,7 @@
 #include "FogEditor.h"
 
 #include "../../Configuration/config.h"
-#include "../../Dialogs/NodeIndex/NodeIndex.h"
+#include "../../Editors/NodeIndex/NodeIndex.h"
 
 #include <Titania/X3D/Components/EnvironmentalEffects/LocalFog.h>
 

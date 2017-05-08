@@ -339,6 +339,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Notebook &
 	getTextureChildNotebook () const
 	{ return *m_TextureChildNotebook; }
@@ -1285,6 +1289,7 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_ImageTextureURLCellrendererPixbuf1;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Notebook* m_TextureChildNotebook;
 	Gtk::Expander* m_TextureExpander;
 	Gtk::Box* m_TextureBox;

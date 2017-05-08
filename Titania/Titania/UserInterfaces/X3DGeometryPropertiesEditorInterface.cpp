@@ -158,6 +158,7 @@ X3DGeometryPropertiesEditorInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("GeometryChildNotebook", m_GeometryChildNotebook);
 	m_builder -> get_widget ("SelectGeometryBox", m_SelectGeometryBox);
 	m_builder -> get_widget ("GeometryComboBoxText", m_GeometryComboBoxText);

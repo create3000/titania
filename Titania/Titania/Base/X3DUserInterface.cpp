@@ -85,7 +85,7 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 	"PrecisionPlacementPanel",
 	"PrototypeEditor",
 	"NodeIndex",
-	"UndoHistoryDialog",
+	"UndoHistoryEditor",
 
 };
 
@@ -118,17 +118,6 @@ X3DUserInterface::construct ()
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (this, &X3DUserInterface::on_delete_event), false);
 
 	restoreInterface ();
-}
-
-void
-X3DUserInterface::setName (const std::string & value)
-{
-	X3DBaseInterface::setName (value);
-
-	config .reset (new Configuration (value));
-
-	if (not constructed_connection .connected ())
-		configure ();
 }
 
 void
@@ -167,30 +156,11 @@ X3DUserInterface::connectFocusEvent (Gtk::Widget & parent)
 	{
 		const auto instance = widget -> gobj ();
 
-		if (G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_ENTRY) ||
+		if (G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_ENTRY) or
 		    G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_TEXT_VIEW))
 		{
 			widget -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &X3DUserInterface::on_focus_in_event));
-			widget -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_focus_out_event));
-		}
-	}
-}
-
-void
-X3DUserInterface::removeFocus (Gtk::Widget & parent)
-{
-	for (auto & widget : getWidgets <Gtk::Widget> (parent))
-	{
-		const auto instance = widget -> gobj ();
-
-		if (G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_ENTRY) ||
-		    G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_TEXT_VIEW))
-		{
-			if (widget -> has_focus ())
-			{
-			   getBrowserWindow () -> setAccelerators (true);
-			   break;
-			}
+			//widget -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_focus_out_event));
 		}
 	}
 }
@@ -249,11 +219,63 @@ X3DUserInterface::on_focus_out_event (GdkEventFocus* event)
 }
 
 bool
-X3DUserInterface::on_delete_event (GdkEventAny*)
+X3DUserInterface::on_delete_event (GdkEventAny* event)
 {
-	removeFocus (getWidget ());
-
 	return quit ();
+}
+
+void
+X3DUserInterface::setName (const std::string & value)
+{
+	X3DBaseInterface::setName (value);
+
+	config .reset (new Configuration (value));
+
+	if (not constructed_connection .connected ())
+		configure ();
+}
+
+void
+X3DUserInterface::setTitleBar (Gtk::Window & window, Gtk::Widget & titlebar)
+{
+	const auto container = titlebar .get_parent ();
+
+	if (container)
+	   container -> remove (titlebar);
+
+	window .set_titlebar (titlebar);
+}
+
+void
+X3DUserInterface::reparent (Gtk::Box & box, Gtk::Window & window)
+{
+	getWindow () .set_transient_for (window);
+
+	const auto container = getWidget () .get_parent ();
+
+	if (container)
+	   container -> remove (getWidget ());
+
+	box .pack_start (getWidget (), true, true);
+}
+
+void
+X3DUserInterface::reparent (Gtk::Overlay & overlay, Gtk::Window & window)
+{
+	getWindow () .set_transient_for (window);
+
+	const auto container = getWidget () .get_parent ();
+
+	if (container)
+	   container -> remove (getWidget ());
+
+	overlay .add_overlay (getWidget ());
+}
+
+void
+X3DUserInterface::present ()
+{
+	getWindow () .present ();
 }
 
 void
@@ -298,7 +320,7 @@ X3DUserInterface::addDialog (const std::string & name, const bool present)
 		dialog -> getWindow () .signal_unmap () .connect (sigc::bind (sigc::mem_fun (this, &X3DUserInterface::removeDialog), name), false);
 
 		if (present)
-			dialog -> getWindow () .present ();
+			dialog -> present ();
 
 		return dialog;
 	}
@@ -320,32 +342,6 @@ void
 X3DUserInterface::removeDialogImpl (const std::string & name)
 {
 	dialogs -> erase (name);
-}
-
-void
-X3DUserInterface::reparent (Gtk::Box & box, Gtk::Window & window)
-{
-	getWindow () .set_transient_for (window);
-
-	const auto container = getWidget () .get_parent ();
-
-	if (container)
-	   container -> remove (getWidget ());
-
-	box .pack_start (getWidget (), true, true);
-}
-
-void
-X3DUserInterface::reparent (Gtk::Overlay & overlay, Gtk::Window & window)
-{
-	getWindow () .set_transient_for (window);
-
-	const auto container = getWidget () .get_parent ();
-
-	if (container)
-	   container -> remove (getWidget ());
-
-	overlay .add_overlay (getWidget ());
 }
 
 void

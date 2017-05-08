@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_TREE_DATA_H__
 
 #include "../../Browser/UserData.h"
 
@@ -158,17 +158,17 @@ private:
 
 	///  @name Members
 
-	X3D::SFNode                parent;
-	X3D::X3DChildObject*       object;
-	const OutlineIterType      type;
+	X3D::SFNode parent;
+	X3D::X3DChildObject* object;
+	const OutlineIterType type;
 	const Gtk::TreeModel::Path path;
-	const size_t               index;
+	const size_t index;
 
 	OutlineRoutes inputs_below;
 	OutlineRoutes inputs_above;
 	OutlineRoutes outputs_below;
 	OutlineRoutes outputs_above;
-	bool          self_connection;
+	bool self_connection;
 	OutlineRoutes connections;
 
 };

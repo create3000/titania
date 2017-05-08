@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_EDITOR_H__
 
 #include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DOutlineEditorInterface.h"
@@ -155,11 +155,11 @@ private:
 	virtual
 	void
 	on_cut_activate () final override;
-	
+
 	virtual
 	void
 	on_copy_activate () final override;
-	
+
 	virtual
 	void
 	on_paste_activate () final override;
@@ -359,18 +359,18 @@ private:
 	getExpanded (const Gtk::TreeModel::Children &, std::deque <std::string> &) const;
 
 	///  @name Members
-	
+
 	using MenuItemPair = std::pair <X3D::X3DExecutionContextPtr, Gtk::RadioMenuItem*>;
 
-	std::shared_ptr <OutlineTreeViewEditor>        treeView;
-	Gtk::RadioButtonGroup                          sceneGroup;
+	std::shared_ptr <OutlineTreeViewEditor> treeView;
+	Gtk::RadioButtonGroup sceneGroup;
 	std::map <X3D::X3DExecutionContextPtr, size_t> sceneIndex;
-	std::deque <MenuItemPair>                      scenes;
+	std::deque <MenuItemPair> scenes;
 
-	NameEntry     nodeName;
+	NameEntry nodeName;
 	Gtk::TreePath nodePath;
 	Gtk::TreePath fieldPath;
-	bool          realized;
+	bool realized;
 
 };
 

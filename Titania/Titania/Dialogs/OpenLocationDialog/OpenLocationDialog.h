@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_DIALOGS_OPEN_LOCATION_DIALOG_OPEN_LOCATION_DIALOG_H__
-#define __TITANIA_DIALOGS_OPEN_LOCATION_DIALOG_OPEN_LOCATION_DIALOG_H__
+#ifndef __TITANIA_CUSTOM_DIALOGS_OPEN_LOCATION_DIALOG_OPEN_LOCATION_DIALOG_H__
+#define __TITANIA_CUSTOM_DIALOGS_OPEN_LOCATION_DIALOG_OPEN_LOCATION_DIALOG_H__
 
 #include "../../UserInterfaces/X3DOpenLocationDialogInterface.h"
 
@@ -82,7 +82,7 @@ private:
 
 	virtual
 	bool
-	on_location_entry_key_press_event (GdkEventKey* ) final override;
+	on_location_entry_key_press_event (GdkEventKey*) final override;
 
 };
 

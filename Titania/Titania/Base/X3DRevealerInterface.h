@@ -51,15 +51,23 @@
 #ifndef __TITANIA_BASE_X3DREVEALER_INTERFACE_H__
 #define __TITANIA_BASE_X3DREVEALER_INTERFACE_H__
 
-#include "../Base/X3DEditorInterface.h"
+#include "../Base/X3DEditorObject.h"
+#include "../Base/X3DUserInterface.h"
 
 namespace titania {
 namespace puck {
 
 class X3DRevealerInterface :
-	public X3DEditorInterface
+	public X3DUserInterface,
+	public X3DEditorObject
 {
 public:
+
+	///  @name Construction
+
+	virtual
+	void
+	setup () override;
 
 	/// @name Member access
 
@@ -68,6 +76,10 @@ public:
 	getWidget () const = 0;
 
 	/// @name Destruction
+
+	virtual
+	void
+	dispose () override;
 
 	virtual
 	~X3DRevealerInterface () override;
@@ -82,6 +94,10 @@ protected:
 	virtual
 	void
 	construct ();
+
+	virtual
+	void
+	initialize () override;
 
 	virtual
 	void

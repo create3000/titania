@@ -82,6 +82,7 @@ X3DFileSaveWarningDialogInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("Message", m_Message);
 	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("TreeView", m_TreeView);

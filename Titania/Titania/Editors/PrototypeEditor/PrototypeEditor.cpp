@@ -53,9 +53,9 @@
 #include "../NodePropertiesEditor/NodePropertiesEditor.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
-#include "../../Configuration/config.h"
 #include "../../ComposedWidgets/MFStringURLWidget.h"
-#include "../../Dialogs/NodeIndex/NodeIndex.h"
+#include "../../Configuration/config.h"
+#include "../../Editors/NodeIndex/NodeIndex.h"
 
 #include <Titania/X3D/Prototype/ExternProtoDeclaration.h>
 #include <Titania/X3D/Prototype/ProtoDeclaration.h>

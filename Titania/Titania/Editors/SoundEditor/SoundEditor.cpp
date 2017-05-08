@@ -51,9 +51,9 @@
 #include "SoundEditor.h"
 
 #include "../../Browser/BrowserSelection.h"
-#include "../../Configuration/config.h"
-#include "../../Dialogs/NodeIndex/NodeIndex.h"
 #include "../../ComposedWidgets/NormalTool.h"
+#include "../../Configuration/config.h"
+#include "../../Editors/NodeIndex/NodeIndex.h"
 
 #include <Titania/X3D/Components/Sound/Sound.h>
 

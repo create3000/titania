@@ -98,6 +98,7 @@ X3DFileImportDialogInterface::create ()
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("ImportDialog", m_ImportDialog);
+	m_builder -> get_widget ("ImportDialogHeaderBar", m_ImportDialogHeaderBar);
 	m_builder -> get_widget ("ImportSceneButton", m_ImportSceneButton);
 	m_builder -> get_widget ("ImportAsInlineButton", m_ImportAsInlineButton);
 	m_builder -> get_widget ("ImportExternProtosButton", m_ImportExternProtosButton);

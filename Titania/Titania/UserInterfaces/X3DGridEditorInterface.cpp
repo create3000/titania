@@ -153,6 +153,7 @@ X3DGridEditorInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("GridNotebook", m_GridNotebook);
 	m_builder -> get_widget ("GridExpander", m_GridExpander);
 	m_builder -> get_widget ("GridCheckButton", m_GridCheckButton);

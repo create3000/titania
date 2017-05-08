@@ -163,6 +163,10 @@ public:
 	getImportDialog () const
 	{ return *m_ImportDialog; }
 
+	Gtk::HeaderBar &
+	getImportDialogHeaderBar () const
+	{ return *m_ImportDialogHeaderBar; }
+
 	Gtk::RadioButton &
 	getImportSceneButton () const
 	{ return *m_ImportSceneButton; }
@@ -229,6 +233,7 @@ private:
 	Gtk::FileChooserDialog* m_Window;
 	Gtk::Box* m_Widget;
 	Gtk::Dialog* m_ImportDialog;
+	Gtk::HeaderBar* m_ImportDialogHeaderBar;
 	Gtk::RadioButton* m_ImportSceneButton;
 	Gtk::RadioButton* m_ImportAsInlineButton;
 	Gtk::RadioButton* m_ImportExternProtosButton;

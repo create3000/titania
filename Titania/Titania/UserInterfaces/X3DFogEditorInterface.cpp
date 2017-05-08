@@ -86,6 +86,7 @@ X3DFogEditorInterface::create ()
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("FogListBox", m_FogListBox);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("FogActionBox", m_FogActionBox);
 	m_builder -> get_widget ("NewFogButton", m_NewFogButton);
 	m_builder -> get_widget ("RemoveFogButton", m_RemoveFogButton);

@@ -119,6 +119,7 @@ X3DScriptEditorInterface::create ()
 	m_builder -> get_widget ("NewShaderProgramButton1", m_NewShaderProgramButton1);
 	m_builder -> get_widget ("NewShaderProgramButton", m_NewShaderProgramButton);
 	m_builder -> get_widget ("PreferencesDialog", m_PreferencesDialog);
+	m_builder -> get_widget ("PreferencesHeaderBar", m_PreferencesHeaderBar);
 	m_builder -> get_widget ("WordWrapExpander", m_WordWrapExpander);
 	m_builder -> get_widget ("ShowLineNumbersCheckButton", m_ShowLineNumbersCheckButton);
 	m_builder -> get_widget ("ShowRightMarginCheckButton", m_ShowRightMarginCheckButton);

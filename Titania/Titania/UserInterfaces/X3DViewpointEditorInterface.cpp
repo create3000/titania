@@ -123,6 +123,7 @@ X3DViewpointEditorInterface::create ()
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("ViewpointActionBox", m_ViewpointActionBox);
 	m_builder -> get_widget ("NewViewpointPopupButton", m_NewViewpointPopupButton);
 	m_builder -> get_widget ("RemoveViewpointButton", m_RemoveViewpointButton);
@@ -180,8 +181,6 @@ X3DViewpointEditorInterface::create ()
 	m_builder -> get_widget ("NewViewpointButton", m_NewViewpointButton);
 	m_builder -> get_widget ("NewOthoViewpointButton", m_NewOthoViewpointButton);
 	m_builder -> get_widget ("NewGeoViewpointButton", m_NewGeoViewpointButton);
-
-	// Connect object Gtk::Button with id 'NewViewpointPopupButton'.
 	m_NewViewpointPopupButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_viewpoint_popup_clicked));
 	m_RemoveViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_remove_viewpoint_clicked));
 	m_UpdateViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_update_viewpoint_clicked));

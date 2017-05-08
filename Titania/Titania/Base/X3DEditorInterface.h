@@ -69,6 +69,21 @@ public:
 	void
 	setup () override;
 
+	///  @name Member access
+
+	virtual
+	Gtk::HeaderBar &
+	getHeaderBar () const = 0;
+
+	void
+	setTitleBar (Gtk::HeaderBar & headerBar);
+
+	///  @name Operations
+
+	virtual
+	void
+	present () final override;
+
 	///  @name Destruction
 
 	virtual
@@ -87,8 +102,18 @@ protected:
 
 	virtual
 	void
+	construct () override;
+
+	virtual
+	void
 	initialize () override;
 
+
+protected:
+
+	/// @name Members
+
+	Gtk::Box titleBar;
 
 };
 

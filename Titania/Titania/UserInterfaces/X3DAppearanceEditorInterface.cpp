@@ -105,6 +105,7 @@ X3DAppearanceEditorInterface::create ()
 	m_builder -> get_widget ("PasteButton", m_PasteButton);
 	m_builder -> get_widget ("SphereButton", m_SphereButton);
 	m_builder -> get_widget ("ModelButton", m_ModelButton);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("SelectAppearanceBox", m_SelectAppearanceBox);
 	m_builder -> get_widget ("AppearanceCheckButton", m_AppearanceCheckButton);
 	m_builder -> get_widget ("AppearanceUnlinkButton", m_AppearanceUnlinkButton);

@@ -54,17 +54,17 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include "../AppearanceEditor/AppearanceEditor.h"
-#include "../BindableNodeEditor/BindableNodeEditor.h"
-#include "../GeometryPropertiesEditor/GeometryPropertiesEditor.h"
-#include "../InlineEditor/InlineEditor.h"
-#include "../LayerEditor/LayerEditor.h"
-#include "../LightEditor/LightEditor.h"
-#include "../NodePropertiesEditor/NodePropertiesEditor.h"
-#include "../PrecisionPlacementPanel/PrecisionPlacementPanel.h"
-#include "../SoundEditor/SoundEditor.h"
-#include "../TextEditor/TextEditor.h"
-#include "../TextureEditor/TextureEditor.h"
+#include "../../Editors/AppearanceEditor/AppearanceEditor.h"
+#include "../../Editors/BindableNodeEditor/BindableNodeEditor.h"
+#include "../../Editors/GeometryPropertiesEditor/GeometryPropertiesEditor.h"
+#include "../../Editors/InlineEditor/InlineEditor.h"
+#include "../../Editors/LayerEditor/LayerEditor.h"
+#include "../../Editors/LightEditor/LightEditor.h"
+#include "../../Editors/NodePropertiesEditor/NodePropertiesEditor.h"
+#include "../../Editors/PrecisionPlacementPanel/PrecisionPlacementPanel.h"
+#include "../../Editors/SoundEditor/SoundEditor.h"
+#include "../../Editors/TextEditor/TextEditor.h"
+#include "../../Editors/TextureEditor/TextureEditor.h"
 
 namespace titania {
 namespace puck {
@@ -74,15 +74,6 @@ NodeEditor::NodeEditor (X3DBrowserWindow* const browserWindow) :
 	              X3DNodeEditorInterface (get_ui ("Editors/NodeEditor.glade")),
 	X3DNotebook <X3DNodeEditorInterface> ()
 {
-	setup ();
-}
-
-void
-NodeEditor::initialize ()
-{
-	X3DNodeEditorInterface::initialize ();
-	X3DNotebook <X3DNodeEditorInterface>::initialize ();
-
 	addPage ("NodePropertiesEditor",     getNodePropertiesEditorBox     ());
 
 	addPage ("AppearanceEditor",         getAppearanceEditorBox         ());
@@ -98,12 +89,30 @@ NodeEditor::initialize ()
 	addPage ("PrecisionPlacementPanel",  getPrecisionPlacementPanelBox  ());
 
 	addPage ("SculpToolEditor",          getSculpToolEditorBox          ());
+
+	setup ();
+}
+
+void
+NodeEditor::initialize ()
+{
+	X3DNodeEditorInterface::initialize ();
+	X3DNotebook <X3DNodeEditorInterface>::initialize ();
 }
 
 void
 NodeEditor::on_map_window ()
 {
 	//getNotebook () .set_tab_pos (Gtk::POS_LEFT);
+}
+
+void
+NodeEditor::on_switch_page (Gtk::Widget* widget, guint pageNumber)
+{
+	X3DNotebook <X3DNodeEditorInterface>::on_switch_page (widget, pageNumber);
+
+	if (getWindow () .get_visible ())
+		setTitleBar (getHeaderBar ());
 }
 
 NodeEditor::~NodeEditor ()

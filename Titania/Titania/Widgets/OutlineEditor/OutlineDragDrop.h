@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_DRAG_DROP_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_DRAG_DROP_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_DRAG_DROP_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_DRAG_DROP_H__
 
 #include "../../Base/X3DBaseInterface.h"
 
@@ -80,28 +80,28 @@ private:
 	on_button_press_event (GdkEventButton*);
 
 	bool
-	on_drag_motion (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
-	
-	bool
-	on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
+	   on_drag_motion (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
 
 	bool
-	on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
+	   on_drag_motion_extern_proto (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
+
+	bool
+	   on_drag_motion_base_node (const Glib::RefPtr <Gdk::DragContext> &, int, int, guint);
 
 	void
-	on_drag_data_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
+	   on_drag_data_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void
-	on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
+	   on_drag_data_extern_proto_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void
-	on_drag_data_base_node_insert_into_node_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
+	   on_drag_data_base_node_insert_into_node_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void
-	on_drag_data_base_node_on_field_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
+	   on_drag_data_base_node_on_field_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void
-	on_drag_data_base_node_insert_into_array_received (const Glib::RefPtr <Gdk::DragContext>&, int, int, const Gtk::SelectionData &, guint info, guint);
+	   on_drag_data_base_node_insert_into_array_received (const Glib::RefPtr <Gdk::DragContext> &, int, int, const Gtk::SelectionData &, guint info, guint);
 
 	void
 	remove_source_node (const X3D::X3DExecutionContextPtr & sourceContext,
@@ -120,7 +120,7 @@ private:
 	///  @name Members
 
 	OutlineTreeViewEditor* const treeView;
-	Gtk::TreePath                sourcePath;
+	Gtk::TreePath sourcePath;
 
 };
 

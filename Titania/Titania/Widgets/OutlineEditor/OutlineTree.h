@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,14 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_TREE_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_TREE_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_TREE_H__
 
 #include "OutlineTreeData.h"
 #include <deque>
-#include <vector>
 #include <gtkmm.h>
 #include <memory>
+#include <vector>
 
 namespace titania {
 namespace puck {
@@ -113,7 +113,7 @@ protected:
 private:
 
 	std::unique_ptr <OutlineTreeData> data;
-	std::deque <OutlineNode>          children;
+	std::deque <OutlineNode> children;
 
 };
 

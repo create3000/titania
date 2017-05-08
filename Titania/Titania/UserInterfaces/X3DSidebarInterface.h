@@ -108,8 +108,8 @@ public:
 	{ return *m_ViewpointListBox; }
 
 	Gtk::Box &
-	getHistoryViewBox () const
-	{ return *m_HistoryViewBox; }
+	getHistoryEditorBox () const
+	{ return *m_HistoryEditorBox; }
 
 	Gtk::Box &
 	getLibraryViewBox () const
@@ -163,7 +163,7 @@ private:
 	Gtk::Label* m_Label;
 	Gtk::Notebook* m_Notebook;
 	Gtk::Box* m_ViewpointListBox;
-	Gtk::Box* m_HistoryViewBox;
+	Gtk::Box* m_HistoryEditorBox;
 	Gtk::Box* m_LibraryViewBox;
 	Gtk::Box* m_OutlineEditorBox;
 	Gtk::Box* m_NodeEditorBox;

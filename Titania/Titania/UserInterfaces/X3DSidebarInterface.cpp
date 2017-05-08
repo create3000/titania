@@ -84,7 +84,7 @@ X3DSidebarInterface::create ()
 	m_builder -> get_widget ("Label", m_Label);
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("ViewpointListBox", m_ViewpointListBox);
-	m_builder -> get_widget ("HistoryViewBox", m_HistoryViewBox);
+	m_builder -> get_widget ("HistoryEditorBox", m_HistoryEditorBox);
 	m_builder -> get_widget ("LibraryViewBox", m_LibraryViewBox);
 	m_builder -> get_widget ("OutlineEditorBox", m_OutlineEditorBox);
 	m_builder -> get_widget ("NodeEditorBox", m_NodeEditorBox);

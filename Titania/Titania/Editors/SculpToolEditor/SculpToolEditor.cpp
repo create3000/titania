@@ -52,7 +52,7 @@
 
 #include "../../Browser/BrowserSelection.h"
 #include "../../Configuration/config.h"
-#include "../GeometryEditor/GeometryEditor.h"
+#include "../../Revealer/GeometryEditor/GeometryEditor.h"
 
 namespace titania {
 namespace puck {

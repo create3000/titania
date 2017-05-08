@@ -93,6 +93,7 @@ X3DNavigationInfoEditorInterface::create ()
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("NavigationInfoListBox", m_NavigationInfoListBox);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("NavigationInfoActionBox", m_NavigationInfoActionBox);
 	m_builder -> get_widget ("NewNavigationInfoButton", m_NewNavigationInfoButton);
 	m_builder -> get_widget ("RemoveNavigationInfoButton", m_RemoveNavigationInfoButton);

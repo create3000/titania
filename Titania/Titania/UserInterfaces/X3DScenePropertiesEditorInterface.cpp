@@ -93,6 +93,7 @@ X3DScenePropertiesEditorInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("Notebook", m_Notebook);
 	m_builder -> get_widget ("UnitsExpander", m_UnitsExpander);
 	m_builder -> get_widget ("UnitMassCombo", m_UnitMassCombo);

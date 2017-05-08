@@ -135,6 +135,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Notebook &
 	getNotebook () const
 	{ return *m_Notebook; }
@@ -326,6 +330,7 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_CobwebRenderer;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Notebook* m_Notebook;
 	Gtk::Box* m_FilesBox;
 	Gtk::ScrolledWindow* m_ScrolledWindow;

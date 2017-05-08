@@ -142,6 +142,7 @@ X3DTextureEditorInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("TextureChildNotebook", m_TextureChildNotebook);
 	m_builder -> get_widget ("TextureExpander", m_TextureExpander);
 	m_builder -> get_widget ("TextureBox", m_TextureBox);

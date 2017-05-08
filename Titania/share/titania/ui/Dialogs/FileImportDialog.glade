@@ -288,10 +288,11 @@
             <property name="orientation">vertical</property>
             <property name="spacing">8</property>
             <child>
-              <object class="GtkHeaderBar">
+              <object class="GtkHeaderBar" id="ImportDialogHeaderBar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="title">Import File</property>
+                <property name="show_close_button">True</property>
                 <child>
                   <object class="GtkImage" id="image4">
                     <property name="visible">True</property>

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_WIDGETS_SCRIPT_EDITOR_SCRIPT_EDITOR_DATABASE_H__
-#define __TITANIA_WIDGETS_SCRIPT_EDITOR_SCRIPT_EDITOR_DATABASE_H__
+#ifndef __TITANIA_EDITORS_SCRIPT_EDITOR_SCRIPT_EDITOR_DATABASE_H__
+#define __TITANIA_EDITORS_SCRIPT_EDITOR_SCRIPT_EDITOR_DATABASE_H__
 
 #include "../../Configuration/config.h"
 
@@ -77,13 +77,13 @@ public:
 		                 "id           INTEGER,"
 		                 "worldURL     TEXT, "
 		                 "nodeName     TEXT,"
-	                    "lastAccess   REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
-	                    "creationTime REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
+		                 "lastAccess   REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
+		                 "creationTime REAL    DEFAULT (strftime('%Y-%m-%d %H:%M:%f', 'now')),"
 		                 "PRIMARY KEY (id ASC))");
 
 		database .try_query ("ALTER TABLE Scripts ADD hAdjustment  REAL DEFAULT 0");
 		database .try_query ("ALTER TABLE Scripts ADD vAdjustment  REAL DEFAULT 0");
-	
+
 		database .query ("DELETE FROM Scripts WHERE lastAccess < date ('now','-24 month')");
 	}
 
@@ -107,8 +107,8 @@ public:
 	{
 		const auto & result = database .query_array ("SELECT nodeName, hAdjustment, vAdjustment FROM Scripts "
 		                                             "WHERE worldURL = " + database .quote (worldURL) + " "
-		                                             "ORDER BY lastAccess DESC "
-		                                             "LIMIT 0, 1");
+		                                                                                                "ORDER BY lastAccess DESC "
+		                                                                                                "LIMIT 0, 1");
 
 		const auto & item = result .at (0);
 
@@ -122,7 +122,7 @@ public:
 	{
 		const auto & result = database .query_array ("SELECT nodeName, hAdjustment, vAdjustment FROM Scripts "
 		                                             "WHERE worldURL = " + database .quote (worldURL) + " "
-		                                             "AND nodeName = " + database .quote (nodeName));
+		                                                                                                "AND nodeName = " + database .quote (nodeName));
 
 		const auto & item = result .at (0);
 
@@ -150,9 +150,9 @@ private:
 		database .query ("UPDATE Scripts "
 		                 "SET "
 		                 "hAdjustment = " + database .quote (basic::to_string (hAdjustment, std::locale::classic ())) + ", "
-		                 "vAdjustment = " + database .quote (basic::to_string (vAdjustment, std::locale::classic ())) + ", "
-		                 "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
-		                 "WHERE id = " + id);
+		                                                                                                                "vAdjustment = " + database .quote (basic::to_string (vAdjustment, std::locale::classic ())) + ", "
+		                                                                                                                                                                                                               "lastAccess = strftime('%Y-%m-%d %H:%M:%f', 'now') "
+		                                                                                                                                                                                                               "WHERE id = " + id);
 	}
 
 	const std::string &
@@ -162,7 +162,7 @@ private:
 	{
 		const auto & result = database .query_array ("SELECT id FROM Scripts WHERE "
 		                                             "worldURL = " + database .quote (worldURL) + " AND "
-		                                             "nodeName = " + database .quote (nodeName));
+		                                                                                          "nodeName = " + database .quote (nodeName));
 
 		return result .at (0) .at (0);
 	}

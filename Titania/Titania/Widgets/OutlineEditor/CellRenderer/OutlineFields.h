@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_FIELDS_H__
-#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_FIELDS_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_FIELDS_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_FIELDS_H__
 
 #include <Titania/X3D.h>
 
@@ -58,15 +58,15 @@ namespace puck {
 
 std::string
 get_field_value (const X3D::X3DScene* const scene,
-	              const X3D::X3DFieldDefinition* const fieldDefinition,
-	              const bool ellipsize,
-	              const bool useLocale);
+                 const X3D::X3DFieldDefinition* const fieldDefinition,
+                 const bool ellipsize,
+                 const bool useLocale);
 
 bool
 set_field_value_from_string (const X3D::X3DScene* const scene,
-	                          X3D::X3DFieldDefinition* const fieldDefinition,
-	                          const std::string & string,
-	                          const bool useLocale);
+                             X3D::X3DFieldDefinition* const fieldDefinition,
+                             const std::string & string,
+                             const bool useLocale);
 
 } // puck
 } // titania

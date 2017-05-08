@@ -83,6 +83,10 @@ public:
 	std::shared_ptr <Type>
 	getPage (const std::string & name) const;
 
+	template <class Type>
+	std::shared_ptr <Type>
+	getCurrentPage () const;
+
 	///  @name Event handlers
 
 	virtual
@@ -141,16 +145,6 @@ X3DNotebook <Interface>::addPage (const std::string & name, Gtk::Box & box)
 	boxes          .emplace (name, &box);
 	userInterfaces .emplace_back (name);
 	pages          .emplace (name, nullptr);
-
-	const size_t currentPage = this -> getConfig () -> getInteger ("currentPage");
-
-	if (currentPage == userInterfaces .size () - 1)
-	{
-		const auto userInterface = getPage <X3DUserInterface> (name);
-
-		userInterface -> getWidget () .set_visible (true);
-		this -> getLabel () .set_text (_ (userInterface -> getWidget () .get_name ()));
-	}
 }
 
 template <class Interface>
@@ -171,15 +165,29 @@ X3DNotebook <Interface>::getPage (const std::string & name) const
 }
 
 template <class Interface>
+template <class Type>
+std::shared_ptr <Type>
+X3DNotebook <Interface>::getCurrentPage () const
+{
+	try
+	{
+		const size_t currentPage = this -> getConfig () -> getInteger ("currentPage");
+
+		return getPage <Type> (userInterfaces .at (currentPage));
+	}
+	catch (const std::out_of_range &)
+	{
+		return getPage <Type> (0);
+	}
+}
+
+template <class Interface>
 void
 X3DNotebook <Interface>::on_switch_page (Gtk::Widget*, guint pageNumber)
 {
 	// Show/hide pages
 
-	const size_t currentPage = this -> getConfig () -> getInteger ("currentPage");
-
-	if (currentPage < userInterfaces .size ())
-		getPage <X3DUserInterface> (userInterfaces .at (currentPage)) -> getWidget () .set_visible (false);
+	getCurrentPage <X3DUserInterface> () -> getWidget () .set_visible (false);
 
 	if (pageNumber >= 0 and pageNumber < userInterfaces .size ())
 	{

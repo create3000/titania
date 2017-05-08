@@ -263,6 +263,10 @@ public:
 	getViewpointListBox () const
 	{ return *m_ViewpointListBox; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Box &
 	getViewpointActionBox () const
 	{ return *m_ViewpointActionBox; }
@@ -594,6 +598,7 @@ private:
 	Gtk::Box* m_Widget;
 	Gtk::Paned* m_Paned;
 	Gtk::Box* m_ViewpointListBox;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_ViewpointActionBox;
 	Gtk::Button* m_NewViewpointPopupButton;
 	Gtk::Button* m_RemoveViewpointButton;

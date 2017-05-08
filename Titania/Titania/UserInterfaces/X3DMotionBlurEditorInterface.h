@@ -50,7 +50,7 @@
 #ifndef __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
 #define __TMP_GLAD2CPP_MOTION_BLUR_EDITOR_H__
 
-#include "../Base/X3DUserInterface.h"
+#include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -61,24 +61,24 @@ namespace puck {
  *  Gtk Interface for MotionBlurEditor.
  */
 class X3DMotionBlurEditorInterface :
-	public X3DUserInterface
+	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
 	X3DMotionBlurEditorInterface () :
-		X3DUserInterface ()
+		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
 	X3DMotionBlurEditorInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DUserInterface (arguments ...)
+		X3DEditorInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
 	X3DMotionBlurEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DUserInterface (arguments ...)
+		X3DEditorInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access
@@ -98,6 +98,10 @@ public:
 	Gtk::Box &
 	getWidget () const
 	{ return *m_Widget; }
+
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
 
 	Gtk::CheckButton &
 	getEnabledCheckButton () const
@@ -126,7 +130,7 @@ private:
 	virtual
 	void
 	construct () final override
-	{ X3DUserInterface::construct (); }
+	{ X3DEditorInterface::construct (); }
 
 	void
 	create (const std::string &);
@@ -145,6 +149,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_IntensityAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::CheckButton* m_EnabledCheckButton;
 	Gtk::Box* m_IntensityBox;
 	Gtk::Scale* m_IntensityScale;

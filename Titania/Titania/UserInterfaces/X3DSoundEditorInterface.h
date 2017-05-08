@@ -195,6 +195,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Box &
 	getSoundActionBox () const
 	{ return *m_SoundActionBox; }
@@ -517,6 +521,7 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_SoundSourceURLCellrendererPixbuf;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_SoundActionBox;
 	Gtk::Button* m_NewSoundButton;
 	Gtk::Button* m_RemoveSoundButton;

@@ -48,9 +48,9 @@
  *
  ******************************************************************************/
 
-#include "Application/ApplicationOptions.h"
-#include "Application/Info.h"
-#include "Application/Tidy.h"
+#include "Commands/CommandOptions.h"
+#include "Commands/Info.h"
+#include "Commands/Tidy.h"
 #include "Browser/BrowserApplication.h"
 
 #include <Titania/OS.h>
@@ -73,7 +73,7 @@ main (int argc, char** argv)
 
 		// Run appropriate application.
 
-		ApplicationOptions options (argc, argv);
+		CommandOptions options (argc, argv);
 
 		if (not options .exportFilename .empty ())
 			return Tidy::main (options);

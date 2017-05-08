@@ -403,6 +403,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Notebook &
 	getGeometryChildNotebook () const
 	{ return *m_GeometryChildNotebook; }
@@ -1521,6 +1525,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_SphereRadiusAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Notebook* m_GeometryChildNotebook;
 	Gtk::Box* m_SelectGeometryBox;
 	Gtk::ComboBoxText* m_GeometryComboBoxText;

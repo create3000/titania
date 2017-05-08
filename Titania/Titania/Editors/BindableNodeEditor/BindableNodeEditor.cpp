@@ -54,9 +54,9 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include "../BackgroundEditor/BackgroundEditor.h"
-#include "../NavigationInfoEditor/NavigationInfoEditor.h"
-#include "../ViewpointEditor/ViewpointEditor.h"
+#include "../../Editors/BackgroundEditor/BackgroundEditor.h"
+#include "../../Editors/NavigationInfoEditor/NavigationInfoEditor.h"
+#include "../../Editors/ViewpointEditor/ViewpointEditor.h"
 
 namespace titania {
 namespace puck {
@@ -66,6 +66,11 @@ BindableNodeEditor::BindableNodeEditor (X3DBrowserWindow* const browserWindow) :
 	              X3DBindableNodeEditorInterface (get_ui ("Editors/BindableNodeEditor.glade")),
 	X3DNotebook <X3DBindableNodeEditorInterface> ()
 {
+	addPage ("BackgroundEditor",         getBackgroundEditorBox     ());
+	addPage ("FogEditor",                getFogEditorBox            ());
+	addPage ("NavigationInfoEditor",     getNavigationInfoEditorBox ());
+	addPage ("ViewpointEditor",          getViewpointEditorBox      ());
+
 	setup ();
 }
 
@@ -74,11 +79,6 @@ BindableNodeEditor::initialize ()
 {
 	X3DBindableNodeEditorInterface::initialize ();
 	X3DNotebook <X3DBindableNodeEditorInterface>::initialize ();
-
-	addPage ("BackgroundEditor",         getBackgroundEditorBox     ());
-	addPage ("FogEditor",                getFogEditorBox            ());
-	addPage ("NavigationInfoEditor",     getNavigationInfoEditorBox ());
-	addPage ("ViewpointEditor",          getViewpointEditorBox      ());
 }
 
 BindableNodeEditor::~BindableNodeEditor ()

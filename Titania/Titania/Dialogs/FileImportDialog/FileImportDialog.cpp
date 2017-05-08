@@ -91,6 +91,10 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	            X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DFileImportDialogInterface (get_ui ("Dialogs/FileImportDialog.glade"))
 {
+	// Dialog
+
+	setTitleBar (getImportDialog (), getImportDialogHeaderBar ());
+
 	// Config
 
 	if (getConfig () -> hasItem ("importType"))

@@ -191,6 +191,10 @@ public:
 	getModelButton () const
 	{ return *m_ModelButton; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Box &
 	getSelectAppearanceBox () const
 	{ return *m_SelectAppearanceBox; }
@@ -708,6 +712,7 @@ private:
 	Gtk::Button* m_PasteButton;
 	Gtk::Button* m_SphereButton;
 	Gtk::Button* m_ModelButton;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_SelectAppearanceBox;
 	Gtk::CheckButton* m_AppearanceCheckButton;
 	Gtk::Button* m_AppearanceUnlinkButton;

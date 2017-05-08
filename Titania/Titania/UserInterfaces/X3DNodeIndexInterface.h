@@ -50,7 +50,7 @@
 #ifndef __TMP_GLAD2CPP_NODE_INDEX_H__
 #define __TMP_GLAD2CPP_NODE_INDEX_H__
 
-#include "../Base/X3DDialogInterface.h"
+#include "../Base/X3DEditorInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -61,24 +61,24 @@ namespace puck {
  *  Gtk Interface for NodeIndex.
  */
 class X3DNodeIndexInterface :
-	public X3DDialogInterface
+	public X3DEditorInterface
 {
 public:
 
 	///  @name Construction
 
 	X3DNodeIndexInterface () :
-		X3DDialogInterface ()
+		X3DEditorInterface ()
 	{ }
 
 	template <class ... Arguments>
 	X3DNodeIndexInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DDialogInterface (arguments ...)
+		X3DEditorInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
 	X3DNodeIndexInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DDialogInterface (arguments ...)
+		X3DEditorInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access
@@ -194,7 +194,7 @@ private:
 	virtual
 	void
 	construct () final override
-	{ X3DDialogInterface::construct (); }
+	{ X3DEditorInterface::construct (); }
 
 	void
 	create (const std::string &);

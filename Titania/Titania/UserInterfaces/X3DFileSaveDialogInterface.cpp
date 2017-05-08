@@ -107,6 +107,7 @@ X3DFileSaveDialogInterface::create ()
 	m_builder -> get_widget ("OutputStyleBox", m_OutputStyleBox);
 	m_builder -> get_widget ("OutputStyleButton", m_OutputStyleButton);
 	m_builder -> get_widget ("ImageOptionsDialog", m_ImageOptionsDialog);
+	m_builder -> get_widget ("ImageOptionsHeaderBar", m_ImageOptionsHeaderBar);
 	m_builder -> get_widget ("ImageAlphaChannelSwitch", m_ImageAlphaChannelSwitch);
 	m_builder -> get_widget ("ImageAntialiasingBox", m_ImageAntialiasingBox);
 

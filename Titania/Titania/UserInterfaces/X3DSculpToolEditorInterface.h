@@ -135,6 +135,10 @@ public:
 	getPreviewBox () const
 	{ return *m_PreviewBox; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Toolbar &
 	getToolbar () const
 	{ return *m_Toolbar; }
@@ -398,6 +402,7 @@ private:
 	Gtk::Box* m_Widget;
 	Gtk::Paned* m_Paned;
 	Gtk::Box* m_PreviewBox;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Toolbar* m_Toolbar;
 	Gtk::RadioToolButton* m_PullPolygonsButton;
 	Gtk::RadioToolButton* m_PushPolygonsButton;

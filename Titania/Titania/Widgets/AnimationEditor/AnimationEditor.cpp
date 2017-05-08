@@ -53,7 +53,7 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../../Dialogs/NodeIndex/NodeIndex.h"
+#include "../../Editors/NodeIndex/NodeIndex.h"
 
 #include <Titania/X3D/Components/Grouping/Group.h>
 #include <Titania/X3D/Components/Time/TimeSensor.h>

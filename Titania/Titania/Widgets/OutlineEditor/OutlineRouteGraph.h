@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_ROUTE_GRAPH_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_ROUTE_GRAPH_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_ROUTE_GRAPH_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_ROUTE_GRAPH_H__
 
 #include "OutlineTreeData.h"
 
@@ -148,7 +148,7 @@ private:
 
 	void
 	remove_route (const Gtk::TreeModel::iterator &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
-	
+
 	bool
 	update_connection_above (const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &, const Gtk::TreeModel::Path &);
 

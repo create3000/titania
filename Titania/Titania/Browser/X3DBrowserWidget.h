@@ -52,10 +52,7 @@
 #define __TITANIA_BROWSER_X3DBROWSER_WIDGET_H__
 
 #include "../UserInterfaces/X3DBrowserWindowInterface.h"
-#include "../Widgets/HistoryView/History.h"
-
-#include <gtkmm.h>
-#include <memory>
+#include "../Editors/HistoryEditor/History.h"
 
 namespace titania {
 namespace puck {

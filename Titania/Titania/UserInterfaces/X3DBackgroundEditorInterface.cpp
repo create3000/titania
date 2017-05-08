@@ -106,6 +106,7 @@ X3DBackgroundEditorInterface::create ()
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("BackgroundListBox", m_BackgroundListBox);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("ActionBox", m_ActionBox);
 	m_builder -> get_widget ("NewBackgroundPopupButton", m_NewBackgroundPopupButton);
 	m_builder -> get_widget ("RemoveBackgroundButton", m_RemoveBackgroundButton);

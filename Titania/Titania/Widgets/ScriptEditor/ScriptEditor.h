@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -55,9 +55,9 @@
 #include "../../UserInterfaces/X3DScriptEditorInterface.h"
 
 #include "X3DScriptEditor.h"
-#include "X3DShaderEditor.h"
-#include "X3DScriptEditorSearch.h"
 #include "X3DScriptEditorPreferences.h"
+#include "X3DScriptEditorSearch.h"
+#include "X3DShaderEditor.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcpp"
@@ -98,6 +98,7 @@ public:
 
 	virtual
 	~ScriptEditor () final override;
+
 
 protected:
 
@@ -224,15 +225,15 @@ private:
 
 	///  @name Members
 
-	bool                                         modified;
+	bool modified;
 	const std::set <X3D::X3DConstants::NodeType> nodeTypes;
-	Glib::RefPtr <Gsv::Buffer>                   textBuffer;
-	Gsv::View                                    textView;
-	std::unique_ptr <NodeIndex>                  nodeIndex;
-	NameEntry                                    nodeName;
-	X3D::SFNode                                  node;
-	size_t                                       index;
-	std::unique_ptr <Console>                    console;
+	Glib::RefPtr <Gsv::Buffer> textBuffer;
+	Gsv::View textView;
+	std::unique_ptr <NodeIndex> nodeIndex;
+	NameEntry nodeName;
+	X3D::SFNode node;
+	size_t index;
+	std::unique_ptr <Console> console;
 
 };
 

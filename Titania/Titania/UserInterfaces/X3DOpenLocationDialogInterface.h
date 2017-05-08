@@ -99,6 +99,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Entry &
 	getLocationEntry () const
 	{ return *m_LocationEntry; }
@@ -145,6 +149,7 @@ private:
 	Gtk::Image* m_OpenLocationImage;
 	Gtk::Dialog* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Entry* m_LocationEntry;
 
 };

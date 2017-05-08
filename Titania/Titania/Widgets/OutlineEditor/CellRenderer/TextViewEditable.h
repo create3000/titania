@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
-#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_TEXT_VIEW_EDITABLE_H__
 
 #include "X3DTextViewEditable.h"
 
@@ -95,25 +95,25 @@ private:
 
 	void
 	on_trigger_event ();
-	
+
 	void
 	on_toggle_value ();
-	
+
 	void
 	on_current_time ();
-	
+
 	void
 	on_reset_activate ();
-	
+
 	virtual
 	void
 	on_remove_widget () final override;
 
 	X3DOutlineTreeView* const treeView;
-	X3D::SFNode               node;
-	X3D::X3DFieldDefinition*  field;
-	const Glib::ustring       path;
-	const bool                useLocale;
+	X3D::SFNode node;
+	X3D::X3DFieldDefinition* field;
+	const Glib::ustring path;
+	const bool useLocale;
 
 };
 

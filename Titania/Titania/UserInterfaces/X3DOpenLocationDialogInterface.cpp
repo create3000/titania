@@ -82,6 +82,7 @@ X3DOpenLocationDialogInterface::create ()
 	m_builder -> get_widget ("OpenLocationImage", m_OpenLocationImage);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("LocationEntry", m_LocationEntry);
 
 	// Connect object Gtk::Entry with id 'LocationEntry'.

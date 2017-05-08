@@ -106,6 +106,7 @@ X3DSoundEditorInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("SoundActionBox", m_SoundActionBox);
 	m_builder -> get_widget ("NewSoundButton", m_NewSoundButton);
 	m_builder -> get_widget ("RemoveSoundButton", m_RemoveSoundButton);

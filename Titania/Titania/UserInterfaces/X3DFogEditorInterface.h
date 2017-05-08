@@ -115,6 +115,10 @@ public:
 	getFogListBox () const
 	{ return *m_FogListBox; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Box &
 	getFogActionBox () const
 	{ return *m_FogActionBox; }
@@ -209,6 +213,7 @@ private:
 	Gtk::Box* m_Widget;
 	Gtk::Paned* m_Paned;
 	Gtk::Box* m_FogListBox;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_FogActionBox;
 	Gtk::Button* m_NewFogButton;
 	Gtk::Button* m_RemoveFogButton;

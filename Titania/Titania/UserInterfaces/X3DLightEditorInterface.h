@@ -211,6 +211,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Button &
 	getNewLightPopupButton () const
 	{ return *m_NewLightPopupButton; }
@@ -533,6 +537,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_SpotLightRadiusAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Button* m_NewLightPopupButton;
 	Gtk::Button* m_RemoveLightButton;
 	Gtk::Button* m_IndexButton;

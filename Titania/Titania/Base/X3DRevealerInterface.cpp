@@ -50,19 +50,22 @@
 
 #include "X3DRevealerInterface.h"
 
+#include "../Browser/X3DBrowserWindow.h"
+
 namespace titania {
 namespace puck {
 
 X3DRevealerInterface::X3DRevealerInterface () :
-	X3DEditorInterface (),
-	          position (),
-	           pointer ()
+	X3DUserInterface (),
+	 X3DEditorObject (),
+	        position (),
+	         pointer ()
 { }
 
 void
 X3DRevealerInterface::construct ()
 {
-	X3DEditorInterface::construct ();
+	X3DUserInterface::construct ();
 
 	getWidget () .property_reveal_child ()   .signal_changed () .connect (sigc::mem_fun (this, &X3DRevealerInterface::on_reveal_child));
 	getWidget () .property_child_revealed () .signal_changed () .connect (sigc::mem_fun (this, &X3DRevealerInterface::on_child_revealed));
@@ -72,9 +75,23 @@ X3DRevealerInterface::construct ()
 }
 
 void
+X3DRevealerInterface::setup ()
+{
+	X3DUserInterface::setup ();
+	X3DEditorObject::setup ();
+}
+
+void
+X3DRevealerInterface::initialize ()
+{
+	X3DUserInterface::initialize ();
+	X3DEditorObject::initialize ();
+}
+
+void
 X3DRevealerInterface::configure ()
 {
-	X3DEditorInterface::configure ();
+	X3DUserInterface::configure ();
 
 	const auto margin = getConfig () -> get <X3D::Vector2d> ("margin");
 
@@ -148,7 +165,16 @@ X3DRevealerInterface::store ()
 {
 	getConfig () -> set ("margin", X3D::Vector2d (getWidget () .get_margin_left (), getWidget () .get_margin_top ()));
 
-	X3DEditorInterface::store ();
+	X3DUserInterface::store ();
+}
+
+///  @name Destruction
+
+void
+X3DRevealerInterface::dispose ()
+{
+	X3DEditorObject::dispose ();
+	X3DUserInterface::dispose ();
 }
 
 X3DRevealerInterface::~X3DRevealerInterface ()

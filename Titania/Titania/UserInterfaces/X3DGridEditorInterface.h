@@ -383,6 +383,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Notebook &
 	getGridNotebook () const
 	{ return *m_GridNotebook; }
@@ -1036,6 +1040,7 @@ private:
 	Glib::RefPtr <Gtk::Adjustment> m_GridZDimensionAdjustment;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Notebook* m_GridNotebook;
 	Gtk::Expander* m_GridExpander;
 	Gtk::CheckButton* m_GridCheckButton;

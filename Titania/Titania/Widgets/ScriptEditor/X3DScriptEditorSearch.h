@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -171,7 +171,7 @@ private:
 
 	static
 	void
-	on_occurences_changed (GObject*, GParamSpec*, gpointer);
+	   on_occurences_changed (GObject*, GParamSpec*, gpointer);
 
 	virtual
 	void
@@ -232,18 +232,17 @@ private:
 	bool
 	on_go_to_line_key_press_event (GdkEventKey*) final override;
 
-
 	///  @name Members
 
 	GtkSourceSearchSettings* searchSettings;
-	GtkSourceSearchContext*  searchContext;
+	GtkSourceSearchContext* searchContext;
 
-	X3D::Keys                        keys;
+	X3D::Keys keys;
 	Glib::RefPtr <Gsv::Buffer::Mark> searchMark;
-	sigc::connection                 searchConnection;
-	std::deque <Glib::ustring>       recentSearches;
-	std::deque <Glib::ustring>       recentReplaces;
-	bool                             replace;
+	sigc::connection searchConnection;
+	std::deque <Glib::ustring> recentSearches;
+	std::deque <Glib::ustring> recentReplaces;
+	bool replace;
 
 };
 

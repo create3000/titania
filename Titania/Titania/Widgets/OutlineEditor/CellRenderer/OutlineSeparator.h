@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_SEPARATOR_H__
-#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_SEPARATOR_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_SEPARATOR_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_SEPARATOR_H__
 
 #include <Titania/X3D/Basic/X3DBaseNode.h>
 
@@ -95,8 +95,8 @@ private:
 	///  @name Static members
 
 	static const X3D::ComponentType component;
-	static const std::string        typeName;
-	static const std::string        containerField;
+	static const std::string typeName;
+	static const std::string containerField;
 
 };
 

@@ -56,10 +56,10 @@
 #include "../Dialogs/FileSaveDialog/FileSaveDialog.h"
 #include "../Dialogs/FileSaveDialog/FileSaveACopyDialog.h"
 #include "../Dialogs/MessageDialog/MessageDialog.h"
-#include "../Dialogs/NodeIndex/NodeIndex.h"
 #include "../Dialogs/OpenLocationDialog/OpenLocationDialog.h"
 
 #include "../Editors/GridEditor/X3DGridTool.h"
+#include "../Editors/NodeIndex/NodeIndex.h"
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
 
 #include "../Widgets/Footer/Footer.h"
@@ -68,7 +68,7 @@
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/BrowserUserData.h"
 #include "../Configuration/config.h"
-#include "../Editors/GeometryEditor/GeometryEditor.h"
+#include "../Revealer/GeometryEditor/GeometryEditor.h"
 
 #include <Titania/X3D/Browser/BrowserOptions.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
@@ -899,7 +899,7 @@ BrowserWindow::on_redo_activated ()
 void
 BrowserWindow::on_undo_history_activated ()
 {
-	addDialog ("UndoHistoryDialog");
+	addDialog ("UndoHistoryEditor");
 }
 
 void

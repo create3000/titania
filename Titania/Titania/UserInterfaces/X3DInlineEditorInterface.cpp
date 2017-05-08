@@ -90,6 +90,7 @@ X3DInlineEditorInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("InlineActionBox", m_InlineActionBox);
 	m_builder -> get_widget ("NewInlineButton", m_NewInlineButton);
 	m_builder -> get_widget ("RemoveInlineButton", m_RemoveInlineButton);

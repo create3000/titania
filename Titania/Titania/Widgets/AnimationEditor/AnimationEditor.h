@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -51,13 +51,13 @@
 #ifndef __TITANIA_WIDGETS_ANIMATION_EDITOR_ANIMATION_EDITOR_H__
 #define __TITANIA_WIDGETS_ANIMATION_EDITOR_ANIMATION_EDITOR_H__
 
-#include "../../ComposedWidgets.h"
 #include "../../Base/X3DEditorObject.h"
+#include "../../ComposedWidgets.h"
 #include "../../UserInterfaces/X3DAnimationEditorInterface.h"
 
-#include <Titania/X3D/Components/Time/TimeSensor.h>
 #include <Titania/X3D/Components/Interpolation/ColorInterpolator.h>
 #include <Titania/X3D/Components/Interpolation/OrientationInterpolator.h>
+#include <Titania/X3D/Components/Time/TimeSensor.h>
 
 #include <Titania/Math/Algorithms/CatmullRomSplineInterpolator.h>
 
@@ -122,10 +122,10 @@ private:
 
 	void
 	setDuration (const int32_t value);
-	
+
 	int32_t
 	getDuration () const;
-	
+
 	void
 	setFramesPerSecond (const int32_t value);
 
@@ -185,7 +185,7 @@ private:
 
 	void
 	set_animation_live (const bool);
-	
+
 	void
 	set_interpolators ();
 
@@ -224,7 +224,7 @@ private:
 
 	void
 	set_tainted (const Gtk::TreePath &);
-	
+
 	void
 	setTainted (const Gtk::TreePath &, const bool);
 
@@ -283,10 +283,10 @@ private:
 	virtual
 	void
 	on_time () final override;
-	
+
 	void
 	set_active ();
-	
+
 	void
 	set_fraction (const float);
 
@@ -300,7 +300,7 @@ private:
 	virtual
 	void
 	on_key_type_changed () final override;
-	
+
 	void
 	set_key_type ();
 
@@ -341,7 +341,7 @@ private:
 
 	void
 	addKeyframe (const Gtk::TreePath &);
-	
+
 	void
 	addKeyframe (const Gtk::TreePath &, const Gtk::TreePath &);
 
@@ -415,7 +415,7 @@ private:
 	virtual
 	bool
 	on_configure_event (GdkEventConfigure*) final override;
-	
+
 	virtual
 	bool
 	on_focus_in_event (GdkEventFocus*) final override;
@@ -521,12 +521,12 @@ private:
 			add (visible);
 		}
 
-		Gtk::TreeModelColumn <size_t>                      id;
+		Gtk::TreeModelColumn <size_t> id;
 		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  type;
-		Gtk::TreeModelColumn <std::string>                 name;
+		Gtk::TreeModelColumn <std::string> name;
 		Gtk::TreeModelColumn <Glib::RefPtr <Gdk::Pixbuf>>  accessType;
-		Gtk::TreeModelColumn <bool>                        tainted;
-		Gtk::TreeModelColumn <bool>                        visible;
+		Gtk::TreeModelColumn <bool> tainted;
+		Gtk::TreeModelColumn <bool> visible;
 
 	};
 
@@ -549,32 +549,32 @@ private:
 	 *  @name Members
 	 **/
 
-	Columns                             columns;
-	Glib::RefPtr <Gtk::TreeStore>       treeStore;
+	Columns columns;
+	Glib::RefPtr <Gtk::TreeStore> treeStore;
 	Glib::RefPtr <Gtk::TreeModelFilter> treeModelFilter;
-	std::unique_ptr <NodeIndex>         nodeIndex;
-	NameEntry                           nodeName;
-	X3D::X3DPtr <X3D::Group>            animation;
-	X3D::X3DPtr <X3D::TimeSensor>       timeSensor;
-	InterpolatorIndex                   interpolatorIndex;
-	Interpolators                       interpolators;
-	std::map <size_t, X3D::SFNode>      nodes;
-	X3D::Vector2d                       fromPoint;
-	double                              translation;
-	double                              scale;
-	guint                               button;
-	size_t                              frameChange;
-	FrameArray                          frames;
-	std::set <FrameKey>                 activeFrames;
-	std::set <FrameKey>                 selectedFrames;
-	std::pair <int32_t, int32_t>        selectedBounds;
-	std::pair <int32_t, int32_t>        selectedRange;
-	bool                                activeSelection;
-	std::vector <FrameKey>              movedFrames;
-	std::vector <CopiedFrame>           copiedFrames;
-	std::string                         activeType;
-	bool                                changing;
-	X3D::Keys                           keys;
+	std::unique_ptr <NodeIndex> nodeIndex;
+	NameEntry nodeName;
+	X3D::X3DPtr <X3D::Group> animation;
+	X3D::X3DPtr <X3D::TimeSensor> timeSensor;
+	InterpolatorIndex interpolatorIndex;
+	Interpolators interpolators;
+	std::map <size_t, X3D::SFNode> nodes;
+	X3D::Vector2d fromPoint;
+	double translation;
+	double scale;
+	guint button;
+	size_t frameChange;
+	FrameArray frames;
+	std::set <FrameKey> activeFrames;
+	std::set <FrameKey> selectedFrames;
+	std::pair <int32_t, int32_t> selectedBounds;
+	std::pair <int32_t, int32_t> selectedRange;
+	bool activeSelection;
+	std::vector <FrameKey> movedFrames;
+	std::vector <CopiedFrame> copiedFrames;
+	std::string activeType;
+	bool changing;
+	X3D::Keys keys;
 
 };
 
@@ -674,8 +674,8 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 		else if (keyType [i] == "SPLINE" or keyType [i] == "SPLIT")
 		{
 			std::vector <int32_t> keys;
-			std::vector <Type> keyValues;
-			std::vector <Type> keyVelocitys;
+			std::vector <Type>    keyValues;
+			std::vector <Type>    keyVelocitys;
 
 			for (; i < size; ++ i, iN += components)
 			{
@@ -683,14 +683,14 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 
 				keys .emplace_back (key [i]);
 				keyValues .emplace_back (value);
-				
+
 				if (keys .size () == 1)
 					continue;
 
 				if (keyType [i] not_eq "SPLINE")
 					break;
 			}
-	
+
 			if (keys .size () < 2)
 			{
 				// This can happen if only the last frame is of type SPLINE.
@@ -698,9 +698,9 @@ AnimationEditor::setInterpolator (const X3D::X3DPtr <Interpolator> & interpolato
 				interpolator -> keyValue () .emplace_back (value);
 				break;
 			}
-	
+
 			const bool normalizeVelocity = false;
-			const bool closed            = keys .front () == 0 and keys .back () == duration and keyValues .front () == keyValues .back ();
+			const bool closed = keys .front () == 0 and keys .back () == duration and keyValues .front () == keyValues .back ();
 
 			const math::catmull_rom_spline_interpolator <Type, double> spline (closed, keys, keyValues, keyVelocitys, normalizeVelocity);
 

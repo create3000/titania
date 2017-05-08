@@ -195,6 +195,10 @@ public:
 	getBackgroundListBox () const
 	{ return *m_BackgroundListBox; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Box &
 	getActionBox () const
 	{ return *m_ActionBox; }
@@ -617,6 +621,7 @@ private:
 	Gtk::Box* m_Widget;
 	Gtk::Paned* m_Paned;
 	Gtk::Box* m_BackgroundListBox;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_ActionBox;
 	Gtk::Button* m_NewBackgroundPopupButton;
 	Gtk::Button* m_RemoveBackgroundButton;

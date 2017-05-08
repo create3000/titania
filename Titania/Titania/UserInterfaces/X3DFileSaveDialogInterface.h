@@ -199,6 +199,10 @@ public:
 	getImageOptionsDialog () const
 	{ return *m_ImageOptionsDialog; }
 
+	Gtk::HeaderBar &
+	getImageOptionsHeaderBar () const
+	{ return *m_ImageOptionsHeaderBar; }
+
 	Gtk::Switch &
 	getImageAlphaChannelSwitch () const
 	{ return *m_ImageAlphaChannelSwitch; }
@@ -270,6 +274,7 @@ private:
 	Gtk::Box* m_OutputStyleBox;
 	Gtk::ComboBoxText* m_OutputStyleButton;
 	Gtk::Dialog* m_ImageOptionsDialog;
+	Gtk::HeaderBar* m_ImageOptionsHeaderBar;
 	Gtk::Switch* m_ImageAlphaChannelSwitch;
 	Gtk::Box* m_ImageAntialiasingBox;
 

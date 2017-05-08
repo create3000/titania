@@ -127,6 +127,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Button &
 	getNewLayerSetButton () const
 	{ return *m_NewLayerSetButton; }
@@ -296,6 +300,7 @@ private:
 	Glib::RefPtr <Gtk::TreeViewColumn> m_ActiveLayerColumn;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Button* m_NewLayerSetButton;
 	Gtk::Button* m_RemoveLayerSetButton;
 	Gtk::Button* m_IndexButton;

@@ -94,6 +94,7 @@ X3DTextEditorInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("TextNotebook", m_TextNotebook);
 	m_builder -> get_widget ("TextExpander", m_TextExpander);
 	m_builder -> get_widget ("SelectTextBox", m_SelectTextBox);

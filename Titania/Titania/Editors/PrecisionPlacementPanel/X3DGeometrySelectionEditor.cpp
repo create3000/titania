@@ -50,9 +50,9 @@
 
 #include "X3DGeometrySelectionEditor.h"
 
-#include "../GeometryEditor/GeometryEditor.h"
 #include "../../Browser/BrowserSelection.h"
 #include "../../ComposedWidgets/RotationTool.h"
+#include "../../Revealer/GeometryEditor/GeometryEditor.h"
 
 #include <Titania/X3D/Components/Grouping/Transform.h>
 #include <Titania/X3D/Tools/Geometry3D/IndexedFaceSet/IndexedFaceSetTool.h>

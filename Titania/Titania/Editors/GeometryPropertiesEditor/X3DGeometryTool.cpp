@@ -50,7 +50,7 @@
 
 #include "X3DGeometryTool.h"
 
-#include "../GeometryEditor/GeometryEditor.h"
+#include "../../Revealer/GeometryEditor/GeometryEditor.h"
 
 namespace titania {
 namespace puck {

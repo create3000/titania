@@ -54,20 +54,26 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
+#include "../../Editors/HistoryEditor/HistoryEditor.h"
 #include "../../Editors/LibraryView/LibraryView.h"
 #include "../../Editors/NodeEditor/NodeEditor.h"
-#include "../HistoryView/HistoryView.h"
-#include "../OutlineEditor/OutlineEditor.h"
-#include "../BindableNodeList/ViewpointList.h"
+#include "../../Widgets/BindableNodeList/ViewpointList.h"
+#include "../../Widgets/OutlineEditor/OutlineEditor.h"
 
 namespace titania {
 namespace puck {
 
 Sidebar::Sidebar (X3DBrowserWindow* const browserWindow) :
 	                 X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DSidebarInterface (get_ui ("Sidebar.glade")),
+	              X3DSidebarInterface (get_ui ("Widgets/Sidebar.glade")),
 	X3DNotebook <X3DSidebarInterface> ()
 {
+	addPage ("ViewpointList", getViewpointListBox ());
+	addPage ("HistoryEditor", getHistoryEditorBox ());
+	addPage ("LibraryView",   getLibraryViewBox   ());
+	addPage ("OutlineEditor", getOutlineEditorBox ());
+	addPage ("NodeEditor",    getNodeEditorBox    ());
+
 	setup ();
 }
 
@@ -76,12 +82,6 @@ Sidebar::initialize ()
 {
 	X3DSidebarInterface::initialize ();
 	X3DNotebook <X3DSidebarInterface>::initialize ();
-
-	addPage ("ViewpointList", getViewpointListBox ());
-	addPage ("HistoryView",   getHistoryViewBox   ());
-	addPage ("LibraryView",   getLibraryViewBox   ());
-	addPage ("OutlineEditor", getOutlineEditorBox ());
-	addPage ("NodeEditor",    getNodeEditorBox    ());
 }
 
 Sidebar::~Sidebar ()

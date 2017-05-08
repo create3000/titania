@@ -64,6 +64,10 @@ OpenLocationDialog::OpenLocationDialog (X3DBrowserWindow* const browserWindow) :
 	              X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DOpenLocationDialogInterface (get_ui ("Dialogs/OpenLocationDialog.glade"))
 {
+	setTitleBar (getWindow (), getHeaderBar ());
+
+	getWindow () .set_response_sensitive (Gtk::RESPONSE_OK, getLocationEntry () .get_text () .size ());
+
 	const Glib::RefPtr <Gtk::Clipboard> clipboard = Gtk::Clipboard::get ();
 
 	if (clipboard -> wait_is_text_available ())
@@ -75,8 +79,6 @@ OpenLocationDialog::OpenLocationDialog (X3DBrowserWindow* const browserWindow) :
 		if (std::regex_match (uri .scheme (), scheme))
 			getLocationEntry () .set_text (uri .str ());
 	}
-
-	getWindow () .set_response_sensitive (Gtk::RESPONSE_OK, getLocationEntry () .get_text () .size ());
 
 	setup ();
 }

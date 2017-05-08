@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -84,7 +84,7 @@ protected:
 
 	X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton> directOutput;
 	X3DFieldToggleButton <X3D::SFBool, Gtk::ToggleToolButton> mustEvaluate;
-	X3D::X3DPtr <X3D::Script>                                 scriptNode;
+	X3D::X3DPtr <X3D::Script> scriptNode;
 
 };
 

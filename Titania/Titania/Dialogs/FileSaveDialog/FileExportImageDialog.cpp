@@ -96,6 +96,8 @@ FileExportImageDialog::FileExportImageDialog (X3DBrowserWindow* const browserWin
 	getFileFilterImageTIFF () -> set_name (_ (IMAGE_TIFF_FILTER));
 	getFileFilterImageBMP  () -> set_name (_ (IMAGE_BMP_FILTER));
 
+	setTitleBar (getImageOptionsDialog (), getImageOptionsHeaderBar ());
+
 	setup ();
 }
 

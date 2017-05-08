@@ -50,7 +50,7 @@
 #ifndef __TMP_GLAD2CPP_TEXTURE_MAPPING_EDITOR_H__
 #define __TMP_GLAD2CPP_TEXTURE_MAPPING_EDITOR_H__
 
-#include "../Base/X3DEditorInterface.h"
+#include "../Base/X3DApplicationInterface.h"
 #include <gtkmm.h>
 #include <string>
 
@@ -61,24 +61,24 @@ namespace puck {
  *  Gtk Interface for TextureMappingEditor.
  */
 class X3DTextureMappingEditorInterface :
-	public X3DEditorInterface
+	public X3DApplicationInterface
 {
 public:
 
 	///  @name Construction
 
 	X3DTextureMappingEditorInterface () :
-		X3DEditorInterface ()
+		X3DApplicationInterface ()
 	{ }
 
 	template <class ... Arguments>
 	X3DTextureMappingEditorInterface (const std::string & filename, const Arguments & ... arguments) :
-		X3DEditorInterface (arguments ...)
+		X3DApplicationInterface (arguments ...)
 	{ create (filename); }
 
 	template <class ... Arguments>
 	X3DTextureMappingEditorInterface (std::initializer_list <std::string> filenames, const Arguments & ... arguments) :
-		X3DEditorInterface (arguments ...)
+		X3DApplicationInterface (arguments ...)
 	{ create (filenames); }
 
 	///  @name Member access
@@ -414,7 +414,7 @@ private:
 	virtual
 	void
 	construct () final override
-	{ X3DEditorInterface::construct (); }
+	{ X3DApplicationInterface::construct (); }
 
 	void
 	create (const std::string &);

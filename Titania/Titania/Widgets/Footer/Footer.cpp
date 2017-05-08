@@ -54,18 +54,22 @@
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
 
-#include "../AnimationEditor/AnimationEditor.h"
-#include "../Console/Console.h"
-#include "../ScriptEditor/ScriptEditor.h"
+#include "../../Widgets/AnimationEditor/AnimationEditor.h"
+#include "../../Widgets/ScriptEditor/ScriptEditor.h"
+#include "../../Widgets/Console/Console.h"
 
 namespace titania {
 namespace puck {
 
 Footer::Footer (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	              X3DFooterInterface (get_ui ("Footer.glade")),
+	              X3DFooterInterface (get_ui ("Widgets/Footer.glade")),
 	X3DNotebook <X3DFooterInterface> ()
 {
+	addPage ("Console",         getConsoleBox         ());
+	addPage ("ScriptEditor",    getScriptEditorBox    ());
+	addPage ("AnimationEditor", getAnimationEditorBox ());
+
 	setup ();
 }
 
@@ -74,10 +78,6 @@ Footer::initialize ()
 {
 	X3DFooterInterface::initialize ();
 	X3DNotebook <X3DFooterInterface>::initialize ();
-
-	addPage ("Console",         getConsoleBox         ());
-	addPage ("ScriptEditor",    getScriptEditorBox    ());
-	addPage ("AnimationEditor", getAnimationEditorBox ());
 }
 
 Footer::~Footer ()

@@ -5,6 +5,9 @@ bin_PROGRAMS =  \
 	titania
 
 titania_SOURCES =  \
+	Titania/Applications/ColorEditor/ColorEditor.cpp \
+	Titania/Applications/TextureMappingEditor/TextureMappingEditor.cpp \
+	Titania/Base/X3DApplicationInterface.cpp \
 	Titania/Base/X3DBaseInterface.cpp \
 	Titania/Base/X3DDialogInterface.cpp \
 	Titania/Base/X3DEditorInterface.cpp \
@@ -59,9 +62,7 @@ titania_SOURCES =  \
 	Titania/Dialogs/FileSaveDialog/X3DFileSaveDialog.cpp \
 	Titania/Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.cpp \
 	Titania/Dialogs/MessageDialog/MessageDialog.cpp \
-	Titania/Dialogs/NodeIndex/NodeIndex.cpp \
 	Titania/Dialogs/OpenLocationDialog/OpenLocationDialog.cpp \
-	Titania/Dialogs/UndoHistoryDialog/UndoHistoryDialog.cpp \
 	Titania/Editors/AppearanceEditor/AppearanceEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DFillPropertiesEditor.cpp \
 	Titania/Editors/AppearanceEditor/X3DLinePropertiesEditor.cpp \
@@ -71,9 +72,7 @@ titania_SOURCES =  \
 	Titania/Editors/BackgroundEditor/BackgroundEditor.cpp \
 	Titania/Editors/BackgroundEditor/X3DBackgroundEditor.cpp \
 	Titania/Editors/BindableNodeEditor/BindableNodeEditor.cpp \
-	Titania/Editors/ColorEditor/ColorEditor.cpp \
 	Titania/Editors/FogEditor/FogEditor.cpp \
-	Titania/Editors/GeometryEditor/GeometryEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArc2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DArcClose2DEditor.cpp \
 	Titania/Editors/GeometryPropertiesEditor/Geometry2D/X3DCircle2DEditor.cpp \
@@ -101,6 +100,8 @@ titania_SOURCES =  \
 	Titania/Editors/GridEditor/X3DAxonometricGridEditor.cpp \
 	Titania/Editors/GridEditor/X3DGridEditor.cpp \
 	Titania/Editors/GridEditor/X3DGridTool.cpp \
+	Titania/Editors/HistoryEditor/History.cpp \
+	Titania/Editors/HistoryEditor/HistoryEditor.cpp \
 	Titania/Editors/InlineEditor/InlineEditor.cpp \
 	Titania/Editors/LayerEditor/LayerEditor.cpp \
 	Titania/Editors/LibraryView/LibraryView.cpp \
@@ -113,6 +114,7 @@ titania_SOURCES =  \
 	Titania/Editors/MotionBlurEditor/MotionBlurEditor.cpp \
 	Titania/Editors/NavigationInfoEditor/NavigationInfoEditor.cpp \
 	Titania/Editors/NodeEditor/NodeEditor.cpp \
+	Titania/Editors/NodeIndex/NodeIndex.cpp \
 	Titania/Editors/NodePropertiesEditor/NodePropertiesEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/X3DExportedNodesEditor.cpp \
 	Titania/Editors/NodePropertiesEditor/X3DImportedNodesEditor.cpp \
@@ -164,12 +166,13 @@ titania_SOURCES =  \
 	Titania/Editors/TextureEditor/X3DTextureTransformMatrix3DEditor.cpp \
 	Titania/Editors/TextureEditor/X3DTextureTransformNodeEditor.cpp \
 	Titania/Editors/TextureEditor/X3DUsedTexturesEditor.cpp \
-	Titania/Editors/TextureMappingEditor/TextureMappingEditor.cpp \
+	Titania/Editors/UndoHistoryEditor/UndoHistoryEditor.cpp \
 	Titania/Editors/ViewpointEditor/ViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DGeoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DOrthoViewpointEditor.cpp \
 	Titania/Editors/ViewpointEditor/X3DViewpointEditor.cpp \
 	Titania/main.cpp \
+	Titania/Revealer/GeometryEditor/GeometryEditor.cpp \
 	Titania/UserInterfaces/X3DAnimationEditorInterface.cpp \
 	Titania/UserInterfaces/X3DAppearanceEditorInterface.cpp \
 	Titania/UserInterfaces/X3DBackgroundEditorInterface.cpp \
@@ -187,7 +190,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DGeometryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGeometryPropertiesEditorInterface.cpp \
 	Titania/UserInterfaces/X3DGridEditorInterface.cpp \
-	Titania/UserInterfaces/X3DHistoryViewInterface.cpp \
+	Titania/UserInterfaces/X3DHistoryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DInlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLayerEditorInterface.cpp \
 	Titania/UserInterfaces/X3DLibraryViewInterface.cpp \
@@ -210,7 +213,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DTextEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureEditorInterface.cpp \
 	Titania/UserInterfaces/X3DTextureMappingEditorInterface.cpp \
-	Titania/UserInterfaces/X3DUndoHistoryDialogInterface.cpp \
+	Titania/UserInterfaces/X3DUndoHistoryEditorInterface.cpp \
 	Titania/UserInterfaces/X3DViewpointEditorInterface.cpp \
 	Titania/Widgets/AnimationEditor/AnimationEditor.cpp \
 	Titania/Widgets/BindableNodeList/BackgroundList.cpp \
@@ -219,8 +222,6 @@ titania_SOURCES =  \
 	Titania/Widgets/BindableNodeList/ViewpointList.cpp \
 	Titania/Widgets/Console/Console.cpp \
 	Titania/Widgets/Footer/Footer.cpp \
-	Titania/Widgets/HistoryView/History.cpp \
-	Titania/Widgets/HistoryView/HistoryView.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineSeparator.cpp \

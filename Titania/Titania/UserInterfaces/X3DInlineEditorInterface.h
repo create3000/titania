@@ -131,6 +131,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Box &
 	getInlineActionBox () const
 	{ return *m_InlineActionBox; }
@@ -269,6 +273,7 @@ private:
 	Glib::RefPtr <Gtk::CellRendererPixbuf> m_URLCellrendererPixbuf;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_InlineActionBox;
 	Gtk::Button* m_NewInlineButton;
 	Gtk::Button* m_RemoveInlineButton;

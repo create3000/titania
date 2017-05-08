@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_X3DOUTLINE_TREE_VIEW_H__
-#define __TITANIA_OUTLINE_EDITOR_X3DOUTLINE_TREE_VIEW_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_X3DOUTLINE_TREE_VIEW_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_X3DOUTLINE_TREE_VIEW_H__
 
 #include <gtkmm.h>
 
@@ -320,14 +320,14 @@ private:
 
 	///  @name Members
 
-	Glib::RefPtr <OutlineTreeModel>             model;
-	const std::unique_ptr <OutlineSelection>    selection;
-	Gtk::TreeViewColumn*                        column;
+	Glib::RefPtr <OutlineTreeModel> model;
+	const std::unique_ptr <OutlineSelection> selection;
+	Gtk::TreeViewColumn* column;
 	const std::unique_ptr <OutlineTreeObserver> treeObserver;
-	const std::unique_ptr <OutlineRouteGraph>   routeGraph;
-	OutlineCellRenderer* const                  cellrenderer;
-	Gtk::CellRendererText* const                padCellrenderer;
-	size_t                                      expandLevel;
+	const std::unique_ptr <OutlineRouteGraph> routeGraph;
+	OutlineCellRenderer* const cellrenderer;
+	Gtk::CellRendererText* const padCellrenderer;
+	size_t expandLevel;
 
 	bool externProtos;
 	bool prototypes;
@@ -339,7 +339,7 @@ private:
 	bool useLocale;
 
 	std::unique_ptr <ScrollFreezer> scrollFreezer;
-	X3D::SFTime                     rootNodesBuffer;
+	X3D::SFTime rootNodesBuffer;
 
 };
 

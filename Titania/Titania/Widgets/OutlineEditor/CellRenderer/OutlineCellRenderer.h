@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_CELL_RENDERER_H__
-#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_CELL_RENDERER_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_CELL_RENDERER_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_OUTLINE_CELL_RENDERER_H__
 
 #include "../OutlineTreeData.h"
 #include "TextViewEditable.h"
@@ -60,14 +60,16 @@
 namespace titania {
 namespace puck {
 
-enum class OutlineCellContent {
+enum class OutlineCellContent
+{
 	NONE,
 	ICON,
 	NAME,
 	INPUT,
 	OUTPUT,
 	INPUT_CONNECTOR,
-	OUTPUT_CONNECTOR	
+	OUTPUT_CONNECTOR
+
 };
 
 class X3DOutlineTreeView;
@@ -79,11 +81,11 @@ class OutlineCellRenderer :
 public:
 
 	///  @name Construction
-	
+
 	OutlineCellRenderer (X3D::X3DBrowser* const, X3DOutlineTreeView* const);
 
 	///  @name Properties
-	
+
 	Glib::Property <OutlineTreeData*> &
 	property_data ()
 	{ return data_property; }
@@ -107,12 +109,12 @@ public:
 	{ routes .clear (); }
 
 	///  @name Operations
-	
+
 	OutlineCellContent
 	pick (Gtk::Widget &, const Gdk::Rectangle &, double, double);
 
 	///  @name Destruction
-	
+
 	virtual
 	~OutlineCellRenderer ()
 	{ }
@@ -128,7 +130,7 @@ private:
 
 	X3D::X3DChildObject*
 	get_object () const;
-	
+
 	bool
 	is_expanded () const;
 
@@ -209,8 +211,8 @@ private:
 	//	void
 	//	edited (const Glib::ustring & path, const Glib::ustring & new_text);
 
-	typedef std::map <const X3D::X3DConstants::FieldType,  Glib::RefPtr <Gdk::Pixbuf>>               FieldTypeImageIndex;
-	typedef std::map <const X3D::X3DConstants::AccessType, std::vector <Glib::RefPtr <Gdk::Pixbuf>>> AccessTypeImageIndex;
+	typedef std::map <const X3D::X3DConstants::FieldType,  Glib::RefPtr <Gdk::Pixbuf>>                 FieldTypeImageIndex;
+	typedef std::map <const X3D::X3DConstants::AccessType, std::vector <Glib::RefPtr <Gdk::Pixbuf>>>   AccessTypeImageIndex;
 
 	X3DOutlineTreeView* const treeView;
 
@@ -231,10 +233,10 @@ private:
 	Glib::RefPtr <Gdk::Pixbuf> sharedNodeImage;
 	Glib::RefPtr <Gdk::Pixbuf> sharedNodeUImage;
 	Glib::RefPtr <Gdk::Pixbuf> routeImage;
-	FieldTypeImageIndex        fieldTypeImages;
-	AccessTypeImageIndex       accessTypeImages;
-	X3D::AccessType            accessType;
-	
+	FieldTypeImageIndex fieldTypeImages;
+	AccessTypeImageIndex accessTypeImages;
+	X3D::AccessType accessType;
+
 	OutlineRoutes routes;
 
 	std::unique_ptr <TextViewEditable> textview;

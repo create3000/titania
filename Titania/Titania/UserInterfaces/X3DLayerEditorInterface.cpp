@@ -89,6 +89,7 @@ X3DLayerEditorInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("NewLayerSetButton", m_NewLayerSetButton);
 	m_builder -> get_widget ("RemoveLayerSetButton", m_RemoveLayerSetButton);
 	m_builder -> get_widget ("IndexButton", m_IndexButton);

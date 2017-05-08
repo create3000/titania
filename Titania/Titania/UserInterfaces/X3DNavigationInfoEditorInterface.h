@@ -143,6 +143,10 @@ public:
 	getNavigationInfoListBox () const
 	{ return *m_NavigationInfoListBox; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Box &
 	getNavigationInfoActionBox () const
 	{ return *m_NavigationInfoActionBox; }
@@ -292,6 +296,7 @@ private:
 	Gtk::Box* m_Widget;
 	Gtk::Paned* m_Paned;
 	Gtk::Box* m_NavigationInfoListBox;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Box* m_NavigationInfoActionBox;
 	Gtk::Button* m_NewNavigationInfoButton;
 	Gtk::Button* m_RemoveNavigationInfoButton;

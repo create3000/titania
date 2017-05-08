@@ -143,6 +143,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Notebook &
 	getNotebook () const
 	{ return *m_Notebook; }
@@ -392,6 +396,7 @@ private:
 	Glib::RefPtr <Gtk::CellRendererText> m_CellRendererMetaDataContent;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Notebook* m_Notebook;
 	Gtk::Expander* m_UnitsExpander;
 	Gtk::ComboBoxText* m_UnitMassCombo;

@@ -110,6 +110,7 @@ X3DLightEditorInterface::create ()
 	// Get widgets.
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("NewLightPopupButton", m_NewLightPopupButton);
 	m_builder -> get_widget ("RemoveLightButton", m_RemoveLightButton);
 	m_builder -> get_widget ("IndexButton", m_IndexButton);

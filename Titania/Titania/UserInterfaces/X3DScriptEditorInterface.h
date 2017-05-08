@@ -247,6 +247,10 @@ public:
 	getPreferencesDialog () const
 	{ return *m_PreferencesDialog; }
 
+	Gtk::HeaderBar &
+	getPreferencesHeaderBar () const
+	{ return *m_PreferencesHeaderBar; }
+
 	Gtk::Expander &
 	getWordWrapExpander () const
 	{ return *m_WordWrapExpander; }
@@ -646,6 +650,7 @@ private:
 	Gtk::Button* m_NewShaderProgramButton1;
 	Gtk::Button* m_NewShaderProgramButton;
 	Gtk::Dialog* m_PreferencesDialog;
+	Gtk::HeaderBar* m_PreferencesHeaderBar;
 	Gtk::Expander* m_WordWrapExpander;
 	Gtk::CheckButton* m_ShowLineNumbersCheckButton;
 	Gtk::CheckButton* m_ShowRightMarginCheckButton;

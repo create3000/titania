@@ -53,8 +53,8 @@
 #include "../../Browser/BrowserSelection.h"
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../../Dialogs/NodeIndex/NodeIndex.h"
-#include "../Console/Console.h"
+#include "../../Widgets/Console/Console.h"
+#include "../../Editors/NodeIndex/NodeIndex.h"
 #include "ScriptEditorDatabase.h"
 
 #include <Titania/X3D/Components/Shaders/ShaderPart.h>
@@ -67,7 +67,7 @@ namespace puck {
 
 ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 	          X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
-	  X3DScriptEditorInterface (get_ui ("ScriptEditor.glade")),
+	  X3DScriptEditorInterface (get_ui ("Widgets/ScriptEditor.glade")),
 	           X3DScriptEditor (),
 	           X3DShaderEditor (),
 	     X3DScriptEditorSearch (),
@@ -86,13 +86,15 @@ ScriptEditor::ScriptEditor (X3DBrowserWindow* const browserWindow) :
 {
 	Gsv::init ();
 
+	addChildObjects (node);
+
 	getApplyButton () .add_accelerator ("clicked", getAccelGroup (), GDK_KEY_S, Gdk::CONTROL_MASK, (Gtk::AccelFlags) 0);
 
 	textView .get_style_context () -> add_class ("titania-console");
 
 	nodeIndex -> setName (getName () + "." + nodeIndex -> getName ());
 
-	addChildObjects (node);
+	setTitleBar (getPreferencesDialog (), getPreferencesHeaderBar ());
 
 	setup ();
 }

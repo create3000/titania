@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
-#define __TITANIA_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_OUTLINE_SELECTION_H__
 
 #include "../../Base/X3DBaseInterface.h"
 #include "../../Browser/UserData.h"
@@ -116,8 +116,8 @@ private:
 	///  @name Members
 
 	X3DOutlineTreeView* const treeView;
-	bool                      selectMultiple;
-	X3D::MFNode               nodes;
+	bool selectMultiple;
+	X3D::MFNode nodes;
 
 };
 

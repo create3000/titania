@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_X3DTEXT_VIEW_EDITABLE_H__
-#define __TITANIA_OUTLINE_EDITOR_CELL_RENDERER_X3DTEXT_VIEW_EDITABLE_H__
+#ifndef __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_X3DTEXT_VIEW_EDITABLE_H__
+#define __TITANIA_WIDGETS_OUTLINE_EDITOR_CELL_RENDERER_X3DTEXT_VIEW_EDITABLE_H__
 
 #include <gtkmm.h>
 
@@ -148,11 +148,11 @@ private:
 	///  @name Members
 
 	Glib::Property <bool> editing_canceled_property;
-	Gtk::ScrolledWindow   scrolledWindow;
-	Gtk::TextView         textview;
-	bool                  multiline;
-	bool                  validated;
-	bool                  handleFocusOut;
+	Gtk::ScrolledWindow scrolledWindow;
+	Gtk::TextView textview;
+	bool multiline;
+	bool validated;
+	bool handleFocusOut;
 
 };
 

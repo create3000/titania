@@ -91,6 +91,7 @@ X3DSculpToolEditorInterface::create ()
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("Paned", m_Paned);
 	m_builder -> get_widget ("PreviewBox", m_PreviewBox);
+	m_builder -> get_widget ("HeaderBar", m_HeaderBar);
 	m_builder -> get_widget ("Toolbar", m_Toolbar);
 	m_builder -> get_widget ("PullPolygonsButton", m_PullPolygonsButton);
 	m_builder -> get_widget ("PushPolygonsButton", m_PushPolygonsButton);

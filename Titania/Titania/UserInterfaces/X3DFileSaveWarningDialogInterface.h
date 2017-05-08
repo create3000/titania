@@ -99,6 +99,10 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
+	Gtk::HeaderBar &
+	getHeaderBar () const
+	{ return *m_HeaderBar; }
+
 	Gtk::Label &
 	getMessage () const
 	{ return *m_Message; }
@@ -145,6 +149,7 @@ private:
 	Glib::RefPtr <Gtk::ListStore> m_ListStore;
 	Gtk::Dialog* m_Window;
 	Gtk::Box* m_Widget;
+	Gtk::HeaderBar* m_HeaderBar;
 	Gtk::Label* m_Message;
 	Gtk::Box* m_FilesBox;
 	Gtk::TreeView* m_TreeView;
