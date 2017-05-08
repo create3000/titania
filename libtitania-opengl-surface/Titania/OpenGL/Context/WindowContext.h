@@ -88,8 +88,8 @@ private:
 	GLXContext
 	create (const GLXContext sharingContext, const bool direct, const int32_t samples);
 
-	int32_t
-	getBestVisual (XVisualInfo* const visualInfoList, const int32_t count, const int32_t* const visualAttributes);
+//	int32_t
+//	getBestVisual (XVisualInfo* const visualInfoList, const int32_t count, const int32_t* const visualAttributes);
 
 	const GLXWindow xWindow;
 	XVisualInfo*    visualInfoList;
