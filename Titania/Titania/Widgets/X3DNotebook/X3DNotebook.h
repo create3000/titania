@@ -127,7 +127,8 @@ private:
 template <class Interface>
 X3DNotebook <Interface>::X3DNotebook () :
 	Interface ()
-{ }
+{
+}
 
 template <class Interface>
 void
@@ -135,7 +136,10 @@ X3DNotebook <Interface>::configure ()
 {
 	Interface::configure ();
 
-	this -> getNotebook () .set_current_page (this -> getConfig () -> getInteger ("currentPage"));
+	const auto currentPage = this -> getConfig () -> getInteger ("currentPage");
+	const auto page        = getPage <X3DUserInterface> (userInterfaces .at (currentPage));
+
+	this -> getNotebook () .set_current_page (currentPage);
 }
 
 template <class Interface>

@@ -1616,7 +1616,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Create DirectionalLight</property>
+                <property name="label" translatable="yes">DirectionalLight</property>
               </object>
             </child>
           </object>
@@ -1637,7 +1637,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Create PointLight</property>
+                <property name="label" translatable="yes">PointLight</property>
               </object>
             </child>
           </object>
@@ -1658,7 +1658,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Create SpotLight</property>
+                <property name="label" translatable="yes">SpotLight</property>
               </object>
             </child>
           </object>

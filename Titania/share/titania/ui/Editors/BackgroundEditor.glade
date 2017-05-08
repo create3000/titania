@@ -2673,7 +2673,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Create Background</property>
+                <property name="label" translatable="yes">Background</property>
               </object>
             </child>
           </object>
@@ -2694,7 +2694,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Create TextureBackground</property>
+                <property name="label" translatable="yes">TextureBackground</property>
               </object>
             </child>
           </object>

@@ -475,7 +475,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Create Script</property>
+                <property name="label" translatable="yes">Script</property>
               </object>
             </child>
           </object>
@@ -501,7 +501,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes">Create ComposedShader</property>
+                    <property name="label" translatable="yes">ComposedShader</property>
                   </object>
                 </child>
               </object>
@@ -522,7 +522,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes">Create ShaderPart</property>
+                    <property name="label" translatable="yes">ShaderPart</property>
                   </object>
                 </child>
               </object>
@@ -555,7 +555,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes">Create ProgramShader</property>
+                    <property name="label" translatable="yes">ProgramShader</property>
                   </object>
                 </child>
               </object>
@@ -576,7 +576,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes">Create ShaderProgram</property>
+                    <property name="label" translatable="yes">ShaderProgram</property>
                   </object>
                 </child>
               </object>

@@ -54,29 +54,34 @@
 
 #include <Titania/LOG.h>
 
+#include <vector>
+#include <algorithm>
+
 namespace titania {
 namespace opengl {
 
 WindowContext::WindowContext (Display* const display,
                               const GLXWindow xWindow,
                               const Context & sharingContext,
-                              const bool direct) :
+                              const bool direct,
+                              const int32_t samples) :
 	       Context (display),
 	       xWindow (xWindow),
 	visualInfoList (nullptr)
 {
-	setContext (create (sharingContext .getContext (), direct));
+	setContext (create (sharingContext .getContext (), direct, samples));
 	setDrawable (xWindow);
 }
 
 WindowContext::WindowContext (Display* const display,
                               const GLXWindow xWindow,
-                              const bool direct) :
+                              const bool direct,
+                              const int32_t samples) :
 	       Context (display),
 	       xWindow (xWindow),
 	visualInfoList (nullptr)
 {
-	setContext (create (nullptr, direct));
+	setContext (create (nullptr, direct, samples));
 	setDrawable (xWindow);
 }
 
@@ -109,51 +114,78 @@ WindowContext::setSwapInterval (const size_t interval)
 }
 
 GLXContext
-WindowContext::create (const GLXContext sharingContext, const bool direct)
+WindowContext::create (const GLXContext sharingContext, const bool direct, const int32_t samples)
 {
-//	XWindowAttributes attributes;
-//
-//	if (not XGetWindowAttributes (getDisplay (), xWindow, &attributes))
-//		throw std::runtime_error ("WindowContext::WindowContext: Couldn't get window attributes.");
-//
-//	XVisualInfo visualInfo;
-//	visualInfo .visualid = XVisualIDFromVisual (attributes .visual);
-//
-//	int numReturned = 0;
-//
-//	visualInfoList = XGetVisualInfo (getDisplay (), VisualIDMask, &visualInfo, &numReturned);
-//
-//	GLXContext xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
-//
-//	if (not xContext)
-//		throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");
-//
-//	return xContext;
-
 	static
-	int32_t xVisualAttributes [ ] = {
-		GLX_RGBA,
+	const int32_t visualAttributes [ ] = {
+		GLX_DOUBLEBUFFER,     true, 
 		GLX_RED_SIZE,         8,
 		GLX_GREEN_SIZE,       8,
 		GLX_BLUE_SIZE,        8,
 		GLX_ALPHA_SIZE,       8,
+		GLX_DEPTH_SIZE,       24, 
+		GLX_SAMPLE_BUFFERS,   samples ? 1 : 0, // Multisampling
+		GLX_SAMPLES,          samples,         // Antialiasing
 		GLX_ACCUM_RED_SIZE,   8,
 		GLX_ACCUM_GREEN_SIZE, 8,
 		GLX_ACCUM_BLUE_SIZE,  8,
 		GLX_ACCUM_ALPHA_SIZE, 8,
-		GLX_DOUBLEBUFFER,     true, 
-		GLX_DEPTH_SIZE,       24, 
 		0
 	};
 
-	visualInfoList = glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), xVisualAttributes);
+	int count;
+	visualInfoList = XGetVisualInfo (getDisplay (), 0, NULL, &count);
 
-	const auto xContext = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
+	if (visualInfoList)
+	{
+		const auto bestVisual = getBestVisual (visualInfoList, count, visualAttributes);
+		const auto xContext   = glXCreateContext (getDisplay (), &visualInfoList [bestVisual], sharingContext, direct);
 
-	if (not xContext)
-		throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");
+		if (xContext)
+			return xContext;
+	}
 
-	return xContext;
+	throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");
+}
+
+int32_t
+WindowContext::getBestVisual (XVisualInfo* const visualInfoList, const int32_t count, const int32_t* const visualAttributes)
+{
+	// Make array of array of all visual attributes.
+
+	std::vector <std::vector <int32_t>> configs;
+	
+	for (int32_t i = 0; i < count; ++ i)
+	{
+		std::vector <int32_t> config;
+
+		for (int32_t a = 0; visualAttributes [a]; a += 2)
+		{
+			config .emplace_back ();
+			glXGetConfig (getDisplay (), &visualInfoList [i], visualAttributes [a], &config .back ());
+		}
+
+		config .emplace_back (i);
+		configs .emplace_back (std::move (config));
+	}
+
+	std::sort (configs .begin (), configs .end ());
+
+	// Make array of visualAttributes values;
+
+	std::vector <int32_t> config;
+
+	for (int32_t a = 0; visualAttributes [a]; a += 2)
+		config .emplace_back (visualAttributes [a + 1]);
+
+	// Find lower bound.
+
+	const auto iter = std::lower_bound (configs .begin (), configs .end (), config);
+
+	if (iter not_eq configs .end ())
+		return iter -> back ();
+
+	return configs .back () .back ();
 }
 
 WindowContext::~WindowContext ()

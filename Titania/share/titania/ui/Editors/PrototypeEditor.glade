@@ -548,7 +548,7 @@
                   <object class="GtkLabel" id="CreateExternProtoButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Create Extern Prototype</property>
+                    <property name="label" translatable="yes">Extern Prototype</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -594,7 +594,7 @@
                   <object class="GtkLabel" id="CreatePrototypeButton">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Create Prototype</property>
+                    <property name="label" translatable="yes">Prototype</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>

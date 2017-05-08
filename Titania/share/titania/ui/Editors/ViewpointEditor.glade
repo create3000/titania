@@ -2200,7 +2200,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Create Viewpoint</property>
+                <property name="label" translatable="yes">Viewpoint</property>
               </object>
             </child>
           </object>
@@ -2221,7 +2221,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Create OthoViewpoint</property>
+                <property name="label" translatable="yes">OthoViewpoint</property>
               </object>
             </child>
           </object>
@@ -2242,7 +2242,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">start</property>
-                <property name="label" translatable="yes">Create GeoViewpoint</property>
+                <property name="label" translatable="yes">GeoViewpoint</property>
               </object>
             </child>
           </object>

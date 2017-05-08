@@ -139,6 +139,8 @@ private:
 	sigc::connection constructConnection;
 	sigc::connection drawConnection;
 
+	int32_t antialiasing;
+
 };
 
 } // opengl
