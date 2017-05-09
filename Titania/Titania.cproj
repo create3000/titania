@@ -1069,7 +1069,6 @@
     <None Include="share\titania\ui\Editors\NormalTool.x3dv" />
     <None Include="share\titania\ui\Editors\RotationTool.x3dv" />
     <None Include="Titania\ComposedWidgets\X3DComposedWidget.h" />
-    <None Include="share\titania\ui\BrowserWidget.x3dv" />
     <None Include="share\titania\pages\about\date.x3dv" />
     <None Include="Titania\Browser\BrowserHistory.h" />
     <None Include="share\titania\ui\icons\favicon.png" />
@@ -1348,7 +1347,6 @@
     <None Include="share\titania\ui\icons\Faenza\16\gtk-directory.png" />
     <None Include="share\titania\ui\icons\Faenza\README.txt" />
     <None Include="Titania\Editors\GridEditor\X3DGridTool.h" />
-    <None Include="share\titania\ui\logo.256.png" />
     <None Include="share\titania\ui\Logo.x3dv" />
     <None Include="share\titania\ui\icons\PaintBrush.svg" />
     <None Include="Titania\Editors\GeometryPropertiesEditor\Geometry2D\X3DArc2DEditor.h" />
