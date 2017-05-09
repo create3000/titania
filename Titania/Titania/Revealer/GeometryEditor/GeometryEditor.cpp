@@ -331,8 +331,6 @@ GeometryEditor::set_geometries (const X3D::MFNode & geometryNodes)
 
 						// Coord
 
-						coordTool -> setField <X3D::SFBool> ("load", true, true);
-
 						if (editable)
 						{
 							coordEditor -> getField <X3D::SFColorRGBA> ("color") .addInterest (coordTool -> getField <X3D::SFColorRGBA> ("color"));

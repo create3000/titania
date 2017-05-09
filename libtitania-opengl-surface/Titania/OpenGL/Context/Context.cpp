@@ -57,53 +57,53 @@
 namespace titania {
 namespace opengl {
 
-Context::Context (Display* const xDisplay) :
-	xDisplay (xDisplay),
-	xContext (nullptr)
+Context::Context (Display* const display) :
+	display (display),
+	context (nullptr)
 { }
 
 void
 Context::setDrawable (const GLXDrawable value)
 {
-	xDrawable = value;
+	drawable = value;
 }
 
 void
 Context::setContext (const GLXContext value)
 {
-	xContext = value;
+	context = value;
 }
 
 bool
 Context::makeCurrent () const
 {
-	return glXMakeCurrent (xDisplay, xDrawable, xContext);
+	return glXMakeCurrent (display, drawable, context);
 }
 
 void
 Context::swapBuffers () const
 {
-	glXSwapBuffers (xDisplay, xDrawable);
+	glXSwapBuffers (display, drawable);
 }
 
 void
 Context::dispose ()
 {
-	if (xContext)
+	if (context)
 	{
-		if (glXGetCurrentContext () == xContext)
-			glXMakeCurrent (xDisplay, None, nullptr);
+		if (glXGetCurrentContext () == context)
+			glXMakeCurrent (display, None, nullptr);
 	}
 }
 
 Context::~Context ()
 {
-	if (xContext)
+	if (context)
 	{
-		if (glXGetCurrentContext () == xContext)
-			glXMakeCurrent (xDisplay, None, nullptr);
+		if (glXGetCurrentContext () == context)
+			glXMakeCurrent (display, None, nullptr);
 
-		glXDestroyContext (xDisplay, xContext);
+		glXDestroyContext (display, context);
 	}
 }
 

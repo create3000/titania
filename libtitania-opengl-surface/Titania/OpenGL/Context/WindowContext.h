@@ -53,6 +53,8 @@
 
 #include "Context.h"
 
+#include <vector>
+
 namespace titania {
 namespace opengl {
 
@@ -61,38 +63,47 @@ class WindowContext :
 {
 public:
 
-	WindowContext (Display* const display,
-	               const GLXWindow xWindow,
-	               const Context & sharingContext,
-	               const bool direct,
-	               const int32_t samples);
+	///  @name Construction
 
 	WindowContext (Display* const display,
-	               const GLXWindow xWindow,
+	               const GLXWindow window,
+	               const GLXContext sharingContext,
 	               const bool direct,
-	               const int32_t samples);
-	              
-	Visual*
-	getVisual () const
-	{ return visualInfoList -> visual; }
+	               const std::vector <int32_t> & visualAttributes);
+
+	WindowContext (Display* const display,
+	               const GLXWindow window,
+	               const bool direct,
+	               const std::vector <int32_t> & visualAttributes);
+
+	///  @name Member access
 
 	void
-	setSwapInterval (const size_t);
+	setSwapInterval (const size_t value);
+
+	int32_t
+	getConfig (const int32_t key) const;
+
+	///  @name Destruction
 
 	virtual
-	~WindowContext ();
+	~WindowContext () final override;
 
 
 private:
 
+	///  @name Construction
+
 	GLXContext
-	create (const GLXContext sharingContext, const bool direct, const int32_t samples);
+	create (const GLXContext sharingContext, const bool direct, const std::vector <int32_t> & visualAttributes);
 
 //	int32_t
 //	getBestVisual (XVisualInfo* const visualInfoList, const int32_t count, const int32_t* const visualAttributes);
 
-	const GLXWindow xWindow;
-	XVisualInfo*    visualInfoList;
+	///  @name Members
+
+	const GLXWindow window;
+	XVisualInfo*    visualInfo;
 
 };
 

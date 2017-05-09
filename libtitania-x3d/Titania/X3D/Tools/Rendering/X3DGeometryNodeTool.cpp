@@ -131,6 +131,7 @@ X3DGeometryNodeTool::initialize ()
 	getNode <X3DGeometryNode> () -> addInterest (&X3DGeometryNodeTool::eventProcessed, this);
 
 	coordToolNode -> getInlineNode () -> checkLoadState () .addInterest (&X3DGeometryNodeTool::set_loadState, this);
+	coordToolNode -> load () = true; // Always load coord tool.
 
 	normalToolNode -> setup ();
 	coordToolNode  -> setup ();

@@ -67,6 +67,14 @@ extern "C"
 namespace titania {
 namespace opengl {
 
+Surface::Surface () :
+	Surface (nullptr)
+{ }
+
+Surface::Surface (const Surface & other) :
+	Surface (other .sharingContext ? other .sharingContext : other .context)
+{ }
+
 Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	   Gtk::DrawingArea (),
 	            treadId (std::this_thread::get_id ()),
@@ -75,7 +83,7 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	      mapConnection (),
 	constructConnection (),
 	     drawConnection (),
-	       antialiasing (0)
+	   visualAttributes ()
 {
 	set_double_buffered (false);
 	set_app_paintable (true);
@@ -88,14 +96,60 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	signal_unrealize () .connect (sigc::mem_fun (this, &Surface::dispose));
 }
 
-Surface::Surface (const Surface & other) :
-	Surface (other .sharingContext ? other .sharingContext : other .context)
-{ }
+void
+Surface::setAttributes (const int32_t antialiasing, const bool accumBuffer)
+{
+	visualAttributes = {
+		GLX_RGBA,
+		GLX_DOUBLEBUFFER,     true, 
+		GLX_RED_SIZE,         8,
+		GLX_GREEN_SIZE,       8,
+		GLX_BLUE_SIZE,        8,
+		GLX_ALPHA_SIZE,       8,
+		GLX_DEPTH_SIZE,       24, 
+		GLX_SAMPLE_BUFFERS,   antialiasing ? 1 : 0,
+		GLX_SAMPLES,          antialiasing,
+	};
+
+	if (accumBuffer)
+	{
+		visualAttributes .emplace_back (GLX_ACCUM_RED_SIZE);
+		visualAttributes .emplace_back (0);
+
+		visualAttributes .emplace_back (GLX_ACCUM_GREEN_SIZE);
+		visualAttributes .emplace_back (0);
+
+		visualAttributes .emplace_back (GLX_ACCUM_BLUE_SIZE);
+		visualAttributes .emplace_back (0);
+
+		visualAttributes .emplace_back (GLX_ACCUM_ALPHA_SIZE);
+		visualAttributes .emplace_back (0);
+	}
+
+	visualAttributes .emplace_back (0);
+
+	if (not mapConnection .connected ())
+		createContext ();
+}
 
 void
-Surface::setAntialiasing (const int32_t value)
+Surface::createContext ()
 {
-	antialiasing = value;
+	if (sharingContext)
+	{
+		context .reset (new WindowContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+		                                   gdk_x11_window_get_xid (get_window () -> gobj ()),
+		                                   sharingContext -> getContext (),
+		                                   true,
+		                                   visualAttributes));
+	}
+	else
+	{
+		context .reset (new WindowContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+		                                   gdk_x11_window_get_xid (get_window () -> gobj ()),
+		                                   true,
+		                                   visualAttributes));
+	}
 }
 
 bool
@@ -121,21 +175,7 @@ Surface::set_map ()
 {
 	mapConnection .disconnect ();
 
-	if (sharingContext)
-	{
-		context .reset (new WindowContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-		                                   gdk_x11_window_get_xid (get_window () -> gobj ()),
-		                                   *sharingContext,
-		                                   true,
-		                                   8));
-	}
-	else
-	{
-		context .reset (new WindowContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-		                                   gdk_x11_window_get_xid (get_window () -> gobj ()),
-		                                   true,
-		                                   8));
-	}
+	createContext ();
 
 	constructConnection = signal_draw () .connect (sigc::mem_fun (this, &Surface::set_construct));
 }

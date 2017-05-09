@@ -61,29 +61,24 @@ namespace titania {
 namespace opengl {
 
 WindowContext::WindowContext (Display* const display,
-                              const GLXWindow xWindow,
-                              const Context & sharingContext,
+                              const GLXWindow window,
+                              const GLXContext sharingContext,
                               const bool direct,
-                              const int32_t samples) :
-	       Context (display),
-	       xWindow (xWindow),
-	visualInfoList (nullptr)
+                              const std::vector <int32_t> & visualAttributes) :
+	   Context (display),
+	    window (window),
+	visualInfo (nullptr)
 {
-	setContext (create (sharingContext .getContext (), direct, samples));
-	setDrawable (xWindow);
+	setContext (create (sharingContext, direct, visualAttributes));
+	setDrawable (window);
 }
 
 WindowContext::WindowContext (Display* const display,
-                              const GLXWindow xWindow,
+                              const GLXWindow window,
                               const bool direct,
-                              const int32_t samples) :
-	       Context (display),
-	       xWindow (xWindow),
-	visualInfoList (nullptr)
-{
-	setContext (create (nullptr, direct, samples));
-	setDrawable (xWindow);
-}
+                              const std::vector <int32_t> & visualAttributes) :
+	WindowContext (display, window, None, direct, visualAttributes)
+{ }
 
 void
 WindowContext::setSwapInterval (const size_t interval)
@@ -92,7 +87,7 @@ WindowContext::setSwapInterval (const size_t interval)
 	
 	if (glXSwapIntervalEXT)
 	{
-		glXSwapIntervalEXT (getDisplay (), xWindow, interval);
+		glXSwapIntervalEXT (getDisplay (), window, interval);
 		return;
 	}
 
@@ -113,29 +108,22 @@ WindowContext::setSwapInterval (const size_t interval)
 	}
 }
 
-GLXContext
-WindowContext::create (const GLXContext sharingContext, const bool direct, const int32_t samples)
+int32_t
+WindowContext::getConfig (const int32_t key) const
 {
-	int32_t visualAttributes [ ] = {
-		GLX_RGBA,
-		GLX_DOUBLEBUFFER,     true, 
-		GLX_RED_SIZE,         8,
-		GLX_GREEN_SIZE,       8,
-		GLX_BLUE_SIZE,        8,
-		GLX_ALPHA_SIZE,       8,
-		GLX_DEPTH_SIZE,       24, 
-		GLX_SAMPLE_BUFFERS,   samples ? 1 : 0, // Multisampling
-		GLX_SAMPLES,          samples,         // Antialiasing
-		GLX_ACCUM_RED_SIZE,   0,
-		GLX_ACCUM_GREEN_SIZE, 0,
-		GLX_ACCUM_BLUE_SIZE,  0,
-		GLX_ACCUM_ALPHA_SIZE, 0,
-		0
-	};
+	int32_t value;
 
-	visualInfoList = glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), visualAttributes);
+	glXGetConfig (getDisplay (), visualInfo, key, &value);
 
-	const auto context = glXCreateContext (getDisplay (), visualInfoList, sharingContext, direct);
+	return value;
+}
+
+GLXContext
+WindowContext::create (const GLXContext sharingContext, const bool direct, const std::vector <int32_t> & visualAttributes)
+{
+	visualInfo = glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), const_cast <int32_t*> (visualAttributes .data ()));
+
+	const auto context = glXCreateContext (getDisplay (), visualInfo, sharingContext, direct);
 
 	if (not context)
 		throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");
@@ -216,8 +204,8 @@ WindowContext::create (const GLXContext sharingContext, const bool direct, const
 
 WindowContext::~WindowContext ()
 {
-	if (visualInfoList)
-	   XFree (visualInfoList);
+	if (visualInfo)
+	   XFree (visualInfo);
 }
 	  
 } // opengl

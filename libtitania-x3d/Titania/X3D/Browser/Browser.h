@@ -70,13 +70,11 @@ class Browser :
 {
 public:
 
-	using X3DBrowser::update;
-
 	///  @name Construction
 
-	Browser (const MFString &, const MFString &);
+	Browser (const MFString & url, const MFString & parameter);
 
-	Browser (const Browser &, const MFString &, const MFString &);
+	Browser (const Browser & other, const MFString & url, const MFString & parameter);
 
 	Browser*
 	create (X3DExecutionContext* const executionContext) const;
@@ -96,6 +94,10 @@ public:
 	{ return viewer; }
 
 	///  @name Operations
+
+	void
+	setAntialiasing (const int32_t samples)
+	noexcept (true);
 
 	virtual
 	bool
@@ -166,7 +168,7 @@ private:
 
 	virtual
 	void
-	reshape (const Vector4i &)
+	reshape (const Vector4i & viewport)
 	noexcept (true) final override;
 	
 	virtual

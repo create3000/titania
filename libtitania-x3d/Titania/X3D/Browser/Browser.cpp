@@ -102,6 +102,8 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	                 keyDevice,
 	                 pointingDevice,
 	                 cursor);
+
+	setAntialiasing (0);
 }
 
 Browser::Browser (const Browser & other, const MFString & url, const MFString & parameter) :
@@ -120,6 +122,8 @@ Browser::Browser (const Browser & other, const MFString & url, const MFString & 
 	                 keyDevice,
 	                 pointingDevice,
 	                 cursor);
+
+	setAntialiasing (0);
 }
 
 Browser*
@@ -293,6 +297,13 @@ Browser::set_viewer ()
 
 		viewer -> setup ();
 	}
+}
+
+void
+Browser::setAntialiasing (const int32_t samples)
+noexcept (true)
+{
+	opengl::Surface::setAttributes (samples, true);
 }
 
 bool

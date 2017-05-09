@@ -60,25 +60,29 @@ class Context
 {
 public:
 
+	///  @name Member access
+
 	Display*
 	getDisplay () const
-	{ return xDisplay; }
+	{ return display; }
 
 	GLXDrawable
 	getDrawable () const
-	{ return xDrawable; }
+	{ return drawable; }
 
 	GLXContext
 	getContext () const
-	{ return xContext; }
+	{ return context; }
 
-	virtual
+	///  @name Operations
+
 	bool
 	makeCurrent () const;
 
-	virtual
 	void
 	swapBuffers () const;
+
+	///  @name Destruction
 
 	virtual
 	void
@@ -90,20 +94,26 @@ public:
 
 protected:
 
-	Context (Display* const);
+	///  @name Construction
+
+	Context (Display* const display);
+
+	///  @name Member access
 
 	void
-	setDrawable (const GLXDrawable);
+	setDrawable (const GLXDrawable value);
 
 	void
-	setContext (const GLXContext);
+	setContext (const GLXContext value);
 
 
 private:
 
-	Display* const xDisplay;
-	GLXDrawable    xDrawable;
-	GLXContext     xContext;
+	///  @name Members
+
+	Display* const display;
+	GLXDrawable    drawable;
+	GLXContext     context;
 
 };
 

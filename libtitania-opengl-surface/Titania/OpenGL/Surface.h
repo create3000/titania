@@ -69,30 +69,39 @@ class Surface :
 {
 public:
 
-	virtual
-	~Surface ();
+	///  @name Member access
 
 	void
-	setAntialiasing (const int32_t = 4);
+	setAttributes (const int32_t antialiasing, const bool accumBuffer);
+
+	///  @name Operations
 
 	bool
 	makeCurrent () const;
 
 	void
-	setSwapInterval (const size_t);
+	setSwapInterval (const size_t value);
 
 	void
 	swapBuffers () const;
 
+	///  @name Destruction
+
+	virtual
 	void
 	dispose ();
+
+	virtual
+	~Surface () override;
 
 
 protected:
 
-	Surface (const std::shared_ptr <WindowContext> & = nullptr);
+	///  @name Construction
 
-	Surface (const Surface &);
+	Surface ();
+
+	Surface (const Surface & other);
 
 	/// @name OpenGL handler
 
@@ -119,6 +128,15 @@ protected:
 
 private:
 
+	///  @name Construction
+
+	Surface (const std::shared_ptr <WindowContext> & sharingContext);
+
+	void
+	createContext ();
+
+	///  @name Event handlers
+
 	void
 	set_map ();
 
@@ -131,6 +149,8 @@ private:
 	bool
 	set_draw (const Cairo::RefPtr <Cairo::Context> &);
 
+	///  @name Members
+
 	std::thread::id                 treadId;
 	std::shared_ptr <WindowContext> context;
 	std::shared_ptr <WindowContext> sharingContext;
@@ -139,7 +159,7 @@ private:
 	sigc::connection constructConnection;
 	sigc::connection drawConnection;
 
-	int32_t antialiasing;
+	std::vector <int32_t> visualAttributes;
 
 };
 
