@@ -173,7 +173,6 @@ X3DAppearanceEditorInterface::create ()
 	m_builder -> get_widget ("LinePropertiesNameEntry", m_LinePropertiesNameEntry);
 	m_builder -> get_widget ("LinePropertiesRenameButton", m_LinePropertiesRenameButton);
 	m_builder -> get_widget ("UsedMaterialsBox", m_UsedMaterialsBox);
-	m_builder -> get_widget ("UsedMaterialsBrowserBox", m_UsedMaterialsBrowserBox);
 	m_builder -> get_widget ("UsedMaterialsIndexBox", m_UsedMaterialsIndexBox);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PaletteFaceCombo", m_PaletteFaceCombo);

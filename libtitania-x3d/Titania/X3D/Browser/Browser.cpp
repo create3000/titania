@@ -94,8 +94,6 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	         cursor ("default"),
 	     background (new BackgroundTexture ())
 {
-	__LOG__ << "Constructing browser " << this << "." << std::endl;
-
 	addType (X3DConstants::Browser);
 
 	addChildObjects (viewer,
@@ -141,7 +139,7 @@ Browser::initialize ()
 
 		opengl::Surface::initialize ();
 		X3DBrowser::initialize ();
-	
+
 		get_style_context () -> add_class ("background");
 		get_style_context () -> add_class ("titania-surface");
 	
@@ -155,8 +153,7 @@ Browser::initialize ()
 		getCursor ()        .addInterest (&Browser::set_cursor, this);
 		getViewerType ()    .addInterest (&Browser::set_viewer, this);
 		getPrivateViewer () .addInterest (&Browser::set_viewer, this);
-		changed ()          .addInterest (std::bind (&Glib::SignalIdle::connect_once, Glib::signal_idle (), sigc::mem_fun (this, &Gtk::Widget::queue_draw), Glib::PRIORITY_DEFAULT_IDLE));
-	
+
 		add_events (Gdk::BUTTON_PRESS_MASK |
 		            Gdk::POINTER_MOTION_MASK |
 		            Gdk::POINTER_MOTION_HINT_MASK |
@@ -166,15 +163,27 @@ Browser::initialize ()
 		            Gdk::SCROLL_MASK |
 		            Gdk::KEY_PRESS_MASK |
 		            Gdk::KEY_RELEASE_MASK);
-	
+
+		//set_focus_on_click (true);
 		set_can_focus (true);
-		//set_focus_on_click (true); // uncomment if gtkmm 3.20 and see PointingDevice button press event
 		grab_focus ();
 	
 		setCursor ("default");
+
+		if (get_mapped ())
+		{
+			changed () .addInterest (std::bind (&Glib::SignalIdle::connect_once, Glib::signal_idle (), sigc::mem_fun (this, &Gtk::Widget::queue_draw), Glib::PRIORITY_DEFAULT_IDLE));
+		}
+		else
+		{
+			changed () .addInterest (std::bind (&Glib::SignalTimeout::connect_once, Glib::signal_timeout (), sigc::mem_fun (this, &Browser::update), 1000 / 25, Glib::PRIORITY_DEFAULT_IDLE));
+			update ();
+		}
 	}
-	catch (const std::exception & exception)
-	{ }
+	catch (const std::exception & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
@@ -229,7 +238,8 @@ Browser::on_unmap ()
 void
 Browser::set_cursor (const String & value)
 {
-	get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), value));
+	if (get_mapped ())
+		get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), value));
 }
 
 void

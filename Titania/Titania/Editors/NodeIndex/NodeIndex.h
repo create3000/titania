@@ -124,7 +124,7 @@ public:
 	scrollToRow (const X3D::SFNode & node);
 
 	void
-	rowChanged (const size_t index);
+	updateRow (const size_t index);
 
 	const X3D::MFNode &
 	getNodes () const

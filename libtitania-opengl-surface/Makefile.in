@@ -133,7 +133,7 @@ libtitania_opengl_surface_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 am__dirstamp = $(am__leading_dot)dirstamp
 am_libtitania_opengl_surface_la_OBJECTS =  \
 	Titania/OpenGL/Context/Context.lo \
-	Titania/OpenGL/Context/WindowContext.lo \
+	Titania/OpenGL/Context/OffScreenContext.lo \
 	Titania/OpenGL/Surface.lo
 libtitania_opengl_surface_la_OBJECTS =  \
 	$(am_libtitania_opengl_surface_la_OBJECTS)
@@ -379,7 +379,7 @@ lib_LTLIBRARIES = \
 
 libtitania_opengl_surface_la_SOURCES = \
 	Titania/OpenGL/Context/Context.cpp \
-	Titania/OpenGL/Context/WindowContext.cpp \
+	Titania/OpenGL/Context/OffScreenContext.cpp \
 	Titania/OpenGL/Surface.cpp
 
 libtitania_opengl_surface_la_LIBADD = \
@@ -466,7 +466,7 @@ Titania/OpenGL/Context/$(DEPDIR)/$(am__dirstamp):
 Titania/OpenGL/Context/Context.lo:  \
 	Titania/OpenGL/Context/$(am__dirstamp) \
 	Titania/OpenGL/Context/$(DEPDIR)/$(am__dirstamp)
-Titania/OpenGL/Context/WindowContext.lo:  \
+Titania/OpenGL/Context/OffScreenContext.lo:  \
 	Titania/OpenGL/Context/$(am__dirstamp) \
 	Titania/OpenGL/Context/$(DEPDIR)/$(am__dirstamp)
 Titania/OpenGL/$(am__dirstamp):
@@ -493,7 +493,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OpenGL/$(DEPDIR)/Surface.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@Titania/OpenGL/Context/$(DEPDIR)/Context.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@Titania/OpenGL/Context/$(DEPDIR)/WindowContext.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@Titania/OpenGL/Context/$(DEPDIR)/OffScreenContext.Plo@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\

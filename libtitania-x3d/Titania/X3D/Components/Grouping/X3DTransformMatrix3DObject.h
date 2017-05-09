@@ -91,8 +91,8 @@ protected:
 	///  @name Member access
 
 	void
-	setBBoxChange (const bool value)
-	{ bboxChange = value; }
+	setBBoxEvent (const bool value)
+	{ bboxEvent = value; }
 
 	virtual
 	void
@@ -115,7 +115,7 @@ private:
 	///  @name Members
 
 	Matrix4d matrix;
-	bool     bboxChange;
+	bool     bboxEvent;
 
 };
 

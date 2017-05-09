@@ -90,6 +90,8 @@ LayoutGroup::LayoutGroup (X3DExecutionContext* const executionContext) :
 
 	addChildObjects (viewportNode,
 	                 layoutNode);
+
+	setBBoxEvent (false);
 }
 
 X3DBaseNode*

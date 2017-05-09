@@ -242,7 +242,6 @@
     <None Include="FeatherstoneSlides.pdf" />
     <None Include="pipe.cpp" />
     <None Include="VRML1.spec" />
-    <None Include="SoOffscreenRenderer.cpp" />
     <None Include="VRML 1.1 Specification.html" />
     <None Include="VRML 1.1 Specification-Dateien\cone.gif" />
     <None Include="VRML 1.1 Specification-Dateien\cube.gif" />

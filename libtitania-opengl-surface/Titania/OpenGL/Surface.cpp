@@ -58,11 +58,10 @@ extern "C"
 #include <gtkmm/container.h>
 #include <gtkmm/main.h>
 
-#include "Context/WindowContext.h"
+#include "Context/OffScreenContext.h"
+#include "Context/Context.h"
 
 #include <Titania/LOG.h>
-#include <stdexcept>
-
 
 namespace titania {
 namespace opengl {
@@ -75,12 +74,12 @@ Surface::Surface (const Surface & other) :
 	Surface (other .sharingContext ? other .sharingContext : other .context)
 { }
 
-Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
+Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
 	   Gtk::DrawingArea (),
 	            treadId (std::this_thread::get_id ()),
 	            context (),
 	     sharingContext (sharingContext),
-	      mapConnection (),
+	      mapConnection (signal_map () .connect (sigc::mem_fun (this, &Surface::set_map))),
 	constructConnection (),
 	     drawConnection (),
 	   visualAttributes ()
@@ -91,9 +90,9 @@ Surface::Surface (const std::shared_ptr <WindowContext> & sharingContext) :
 	// Enable map_event.
 	add_events (Gdk::STRUCTURE_MASK);
 
-	// Connect to map_event.
-	mapConnection = signal_map () .connect (sigc::mem_fun (this, &Surface::set_map));
 	signal_unrealize () .connect (sigc::mem_fun (this, &Surface::dispose));
+
+	setAttributes (0, false);
 }
 
 void
@@ -128,27 +127,26 @@ Surface::setAttributes (const int32_t antialiasing, const bool accumBuffer)
 
 	visualAttributes .emplace_back (0);
 
-	if (not mapConnection .connected ())
-		createContext ();
+	createContext ();
 }
 
 void
 Surface::createContext ()
 {
-	if (sharingContext)
+	if (mapConnection .connected ())
 	{
-		context .reset (new WindowContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-		                                   gdk_x11_window_get_xid (get_window () -> gobj ()),
-		                                   sharingContext -> getContext (),
-		                                   true,
-		                                   visualAttributes));
+		context .reset (new OffScreenContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+		                                      sharingContext ? sharingContext -> getContext () : None,
+		                                      true,
+		                                      visualAttributes));
 	}
 	else
 	{
-		context .reset (new WindowContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-		                                   gdk_x11_window_get_xid (get_window () -> gobj ()),
-		                                   true,
-		                                   visualAttributes));
+		context .reset (new Context (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+		                             gdk_x11_window_get_xid (get_window () -> gobj ()),
+		                             sharingContext ? sharingContext -> getContext () : None,
+		                             true,
+		                             visualAttributes));
 	}
 }
 
@@ -177,7 +175,7 @@ Surface::set_map ()
 
 	createContext ();
 
-	constructConnection = signal_draw () .connect (sigc::mem_fun (this, &Surface::set_construct));
+	constructConnection = signal_draw () .connect (sigc::mem_fun (this, &Surface::set_construct), false);
 }
 
 bool
@@ -200,13 +198,13 @@ Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
 
 	signal_configure_event () .connect (sigc::mem_fun (this, &Surface::set_configure_event));
 
-	drawConnection = signal_draw () .connect (sigc::mem_fun (this, &Surface::set_draw));
+	drawConnection = signal_draw () .connect (sigc::mem_fun (this, &Surface::set_draw), false);
 
 	setup ();
 
 	reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
 
-	return false; // Propagate the event further.
+	return true;
 }
 
 void
@@ -220,7 +218,7 @@ Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
 	update ();
 
-	return false; // Propagate the event further.
+	return true;
 }
 
 void

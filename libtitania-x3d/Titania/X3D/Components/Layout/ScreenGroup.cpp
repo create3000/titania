@@ -75,7 +75,7 @@ ScreenGroup::ScreenGroup (X3DExecutionContext* const executionContext) :
 	addField (inputOnly,      "removeChildren", removeChildren ());
 	addField (inputOutput,    "children",       children ());
 
-	setBBoxChange (false);
+	setBBoxEvent (false);
 }
 
 X3DBaseNode*

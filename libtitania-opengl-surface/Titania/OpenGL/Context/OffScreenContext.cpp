@@ -48,66 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_CONTEXT_WINDOW_CONTEXT_H__
-#define __TITANIA_OPEN_GL_CONTEXT_WINDOW_CONTEXT_H__
+#include "OffScreenContext.h"
 
-#include "Context.h"
-
-#include <vector>
+#include <Titania/LOG.h>
 
 namespace titania {
 namespace opengl {
 
-class WindowContext :
-	public Context
+OffScreenContext::OffScreenContext (Display* const display,
+                                    const GLXContext sharingContext,
+                                    const bool direct,
+                                    const std::vector <int32_t> & visualAttributes) :
+	   Context (display, createPixmap (display, 8, 8), sharingContext, direct, visualAttributes)
+{ }
+
+Pixmap
+OffScreenContext::createPixmap (Display* display,
+                                unsigned int width,
+                                unsigned int height)
 {
-public:
+	const auto screen   = XDefaultScreenOfDisplay (display);
+	const auto drawable = RootWindowOfScreen (screen);
+	const auto depth    = DefaultDepthOfScreen (screen);
+	const auto pixmap   = XCreatePixmap (display, drawable, width, height, depth);
 
-	///  @name Construction
+	if (not pixmap)
+		throw std::runtime_error ("OffScreenContext::createPixmap: Couldn't create pixmap.");
 
-	WindowContext (Display* const display,
-	               const GLXWindow window,
-	               const GLXContext sharingContext,
-	               const bool direct,
-	               const std::vector <int32_t> & visualAttributes);
+	return pixmap;
+}
 
-	WindowContext (Display* const display,
-	               const GLXWindow window,
-	               const bool direct,
-	               const std::vector <int32_t> & visualAttributes);
-
-	///  @name Member access
-
-	void
-	setSwapInterval (const size_t value);
-
-	int32_t
-	getConfig (const int32_t key) const;
-
-	///  @name Destruction
-
-	virtual
-	~WindowContext () final override;
-
-
-private:
-
-	///  @name Construction
-
-	GLXContext
-	create (const GLXContext sharingContext, const bool direct, const std::vector <int32_t> & visualAttributes);
-
-//	int32_t
-//	getBestVisual (XVisualInfo* const visualInfoList, const int32_t count, const int32_t* const visualAttributes);
-
-	///  @name Members
-
-	const GLXWindow window;
-	XVisualInfo*    visualInfo;
-
-};
-
+OffScreenContext::~OffScreenContext ()
+{
+	XFreePixmap (getDisplay (), getDrawable ());
+}
+	  
 } // opengl
 } // titania
-
-#endif

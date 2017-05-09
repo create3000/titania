@@ -57,21 +57,66 @@
 namespace titania {
 namespace opengl {
 
-Context::Context (Display* const display) :
-	display (display),
-	context (nullptr)
+Context::Context (Display* const display,
+                  const GLXDrawable drawable,
+                  const GLXContext sharingContext,
+                  const bool direct,
+                  const std::vector <int32_t> & visualAttributes) :
+	   display (display),
+	  drawable (drawable),
+	   context (create (sharingContext, direct, visualAttributes)),
+	visualInfo (nullptr)
 { }
 
-void
-Context::setDrawable (const GLXDrawable value)
+GLXContext
+Context::create (const GLXContext sharingContext, const bool direct, const std::vector <int32_t> & visualAttributes)
 {
-	drawable = value;
+	visualInfo = glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), const_cast <int32_t*> (visualAttributes .data ()));
+
+	const auto context = glXCreateContext (getDisplay (), visualInfo, sharingContext, direct);
+
+	if (not context)
+		throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");
+
+	return context;
 }
 
 void
-Context::setContext (const GLXContext value)
+Context::setSwapInterval (const size_t interval)
 {
-	context = value;
+	auto glXSwapIntervalEXT = (PFNGLXSWAPINTERVALEXTPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalEXT");
+	
+	if (glXSwapIntervalEXT)
+	{
+		glXSwapIntervalEXT (display, drawable, interval);
+		return;
+	}
+
+	auto glXSwapIntervalSGI = (PFNGLXSWAPINTERVALSGIPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalSGI");
+
+	if (glXSwapIntervalSGI)
+	{
+		glXSwapIntervalSGI (interval);
+		return;
+	}
+	
+	auto glXSwapIntervalMESA = (PFNGLXSWAPINTERVALMESAPROC) glXGetProcAddress ((GLubyte*) "glXSwapIntervalMESA");
+
+	if (glXSwapIntervalMESA)
+	{
+		glXSwapIntervalMESA (interval);
+		return;
+	}
+}
+
+int32_t
+Context::getConfig (const int32_t key) const
+{
+	int32_t value;
+
+	glXGetConfig (display, visualInfo, key, &value);
+
+	return value;
 }
 
 bool
@@ -105,6 +150,9 @@ Context::~Context ()
 
 		glXDestroyContext (display, context);
 	}
+
+	if (visualInfo)
+	   XFree (visualInfo);
 }
 
 } // opengl

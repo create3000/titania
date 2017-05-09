@@ -119,6 +119,9 @@ RecentView::loadPreview (X3D::X3DBrowser* const browser)
 {
 	try
 	{
+		if (not browser -> isInitialized ())
+			return;
+
 		auto image = browser -> getSnapshot (PREVIEW_SIZE, PREVIEW_SIZE, false, std::min <size_t> (16, getCurrentBrowser () -> getMaxSamples ()));
 
 		image .quality (PREVIEW_QUALITY);

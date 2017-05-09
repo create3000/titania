@@ -90,7 +90,7 @@ X3DComposedGeometryNodeTool::set_loadState ()
 	}
 	catch (const X3DError & error)
 	{
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 

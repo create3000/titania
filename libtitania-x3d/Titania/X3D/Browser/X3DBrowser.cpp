@@ -96,6 +96,8 @@ X3DBrowser::X3DBrowser (const MFString & url, const MFString & parameter) :
 	         inShutdown (0),
 	             future ()
 {
+	// __LOG__ << "Constructing browser " << this << "." << std::endl;
+
 	install_backtrace ();
 
 	setName ("Titania");
@@ -115,7 +117,7 @@ X3DBrowser::X3DBrowser (const MFString & url, const MFString & parameter) :
 void
 X3DBrowser::initialize ()
 {
-	__LOG__ << "Initializing browser " << this << "." << std::endl;
+	// __LOG__ << "Initializing browser " << this << "." << std::endl;
 
 	X3DBaseNode::initialize ();
 	X3DBrowserContext::initialize ();

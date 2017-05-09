@@ -55,12 +55,11 @@
     <Folder Include="Titania\OpenGL\Context\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Titania\OpenGL\Context\WindowContext.cpp" />
     <Compile Include="Titania\OpenGL\Surface.cpp" />
     <Compile Include="Titania\OpenGL\Context\Context.cpp" />
+    <Compile Include="Titania\OpenGL\Context\OffScreenContext.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Titania\OpenGL\Context\WindowContext.h" />
     <None Include="libtitania-opengl-surface.md.pc" />
     <None Include="Titania\OpenGL\Surface.h" />
     <None Include="Titania\OpenGL\Context\Context.h" />
@@ -69,6 +68,7 @@
     <None Include="libtitania-opengl-canvas.pidb" />
     <None Include="libtitania-opengl-surface.cproj" />
     <None Include="Titania\OpenGL\Context\OpenGL.h" />
+    <None Include="Titania\OpenGL\Context\OffScreenContext.h" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

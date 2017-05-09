@@ -430,7 +430,7 @@ NodeIndex::setNodes (X3D::MFNode && value)
 	if (observeNodes)
 	{
 		for (const auto & node : nodes)
-			node -> removeInterest (&NodeIndex::rowChanged, this);
+			node -> removeInterest (&NodeIndex::updateRow, this);
 	}
 
 	nodes = std::move (value);
@@ -462,7 +462,7 @@ NodeIndex::setNodes (X3D::MFNode && value)
 		node -> name_changed () .addInterest (&NodeIndex::set_name, this, index);
 
 		if (observeNodes)
-			node -> addInterest (&NodeIndex::rowChanged, this, index);
+			node -> addInterest (&NodeIndex::updateRow, this, index);
 
 		++ index;
 	}
@@ -679,7 +679,7 @@ NodeIndex::set_name (const size_t index)
 }
 
 void
-NodeIndex::rowChanged (const size_t index)
+NodeIndex::updateRow (const size_t index)
 {
 	Gtk::TreePath path;
 

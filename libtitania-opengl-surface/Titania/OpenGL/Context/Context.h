@@ -53,12 +53,22 @@
 
 #include "OpenGL.h"
 
+#include <vector>
+
 namespace titania {
 namespace opengl {
 
 class Context
 {
 public:
+
+	///  @name Construction
+
+	Context (Display* const display,
+	         const GLXDrawable drawable,
+	         const GLXContext sharingContext,
+	         const bool direct,
+	         const std::vector <int32_t> & visualAttributes);
 
 	///  @name Member access
 
@@ -73,6 +83,12 @@ public:
 	GLXContext
 	getContext () const
 	{ return context; }
+
+	void
+	setSwapInterval (const size_t value);
+
+	int32_t
+	getConfig (const int32_t key) const;
 
 	///  @name Operations
 
@@ -92,28 +108,19 @@ public:
 	~Context ();
 
 
-protected:
+private:
 
 	///  @name Construction
 
-	Context (Display* const display);
-
-	///  @name Member access
-
-	void
-	setDrawable (const GLXDrawable value);
-
-	void
-	setContext (const GLXContext value);
-
-
-private:
+	GLXContext
+	create (const GLXContext sharingContext, const bool direct, const std::vector <int32_t> & visualAttributes);
 
 	///  @name Members
 
 	Display* const display;
 	GLXDrawable    drawable;
 	GLXContext     context;
+	XVisualInfo*   visualInfo;
 
 };
 

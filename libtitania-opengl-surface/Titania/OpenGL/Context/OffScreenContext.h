@@ -48,118 +48,40 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_OPEN_GL_SURFACE_H__
-#define __TITANIA_OPEN_GL_SURFACE_H__
+#ifndef __TITANIA_OPEN_GL_CONTEXT_WINDOW_CONTEXT_H__
+#define __TITANIA_OPEN_GL_CONTEXT_WINDOW_CONTEXT_H__
 
-// include order is important
-#include <gtkmm/drawingarea.h>
-
-#include <Titania/Math/Numbers/Vector4.h>
-
-#include <memory>
-#include <thread>
+#include "Context.h"
 
 namespace titania {
 namespace opengl {
 
-class Context;
-
-class Surface :
-	public Gtk::DrawingArea
+class OffScreenContext :
+	public Context
 {
 public:
 
-	///  @name Member access
+	///  @name Construction
 
-	void
-	setAttributes (const int32_t antialiasing, const bool accumBuffer);
-
-	///  @name Operations
-
-	bool
-	makeCurrent () const;
-
-	void
-	setSwapInterval (const size_t value);
-
-	void
-	swapBuffers () const;
+	OffScreenContext (Display* const display,
+	                  const GLXContext sharingContext,
+	                  const bool direct,
+	                  const std::vector <int32_t> & visualAttributes);
 
 	///  @name Destruction
 
 	virtual
-	void
-	dispose ();
-
-	virtual
-	~Surface () override;
-
-
-protected:
-
-	///  @name Construction
-
-	Surface ();
-
-	Surface (const Surface & other);
-
-	/// @name OpenGL handler
-
-	virtual
-	void
-	setup () = 0;
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	reshape (const math::vector4 <int32_t> &) = 0;
-
-	virtual
-	void
-	update () = 0;
-
-	virtual
-	void
-	on_unrealize () override;
+	~OffScreenContext () final override;
 
 
 private:
 
 	///  @name Construction
 
-	Surface (const std::shared_ptr <Context> & sharingContext);
-
-	void
-	createContext ();
-
-	///  @name Event handlers
-
-	void
-	set_map ();
-
-	bool
-	set_construct (const Cairo::RefPtr <Cairo::Context> &);
-
-	bool
-	set_configure_event (GdkEventConfigure* const);
-
-	bool
-	set_draw (const Cairo::RefPtr <Cairo::Context> &);
-
-	///  @name Members
-
-	std::thread::id           treadId;
-	std::shared_ptr <Context> context;
-	std::shared_ptr <Context> sharingContext;
-
-	sigc::connection mapConnection;
-	sigc::connection constructConnection;
-	sigc::connection drawConnection;
-
-	std::vector <int32_t> visualAttributes;
+	Pixmap
+	createPixmap (Display* display,
+	              unsigned int width,
+	              unsigned int height);
 
 };
 

@@ -79,6 +79,11 @@ public:
 	Browser*
 	create (X3DExecutionContext* const executionContext) const;
 
+	virtual
+	void
+	setup () final override
+	{ X3DBrowser::setup (); }
+
 	///  @name Member access
 
 	void
@@ -140,13 +145,6 @@ protected:
 
 
 private:
-
-	///  @name Construction
-
-	virtual
-	void
-	setup () final override
-	{ X3DBrowser::setup (); }
 
 	///  @name Event handler
 

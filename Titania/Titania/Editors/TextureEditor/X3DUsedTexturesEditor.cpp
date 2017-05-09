@@ -119,7 +119,7 @@ X3DUsedTexturesEditor::set_initialized ()
 	times .clear ();
 
 	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
-		nodeIndex -> rowChanged (i);
+		nodeIndex -> updateRow (i);
 }
 
 void

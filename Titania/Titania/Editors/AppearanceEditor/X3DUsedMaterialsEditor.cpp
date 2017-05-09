@@ -83,13 +83,10 @@ X3DUsedMaterialsEditor::initialize ()
 {
 	// Browser
 
-	preview -> initialized () .addInterest (&X3DUsedMaterialsEditor::set_initialized, this);
-	preview -> setFixedPipeline (false);
-	preview -> setAntialiasing (4);
-	preview -> set_opacity (0);
-	preview -> show ();
-
-	getUsedMaterialsBrowserBox () .pack_start (*preview, true, true);
+	if (getMasterBrowser () -> isInitialized ())
+		set_masterBrowser ();
+	else
+		getMasterBrowser () -> initialized () .addInterest (&X3DUsedMaterialsEditor::set_masterBrowser, this);
 
 	// Selection
 
@@ -115,12 +112,27 @@ X3DUsedMaterialsEditor::initialize ()
 }
 
 void
+X3DUsedMaterialsEditor::set_masterBrowser ()
+{
+	__LOG__ << std::endl;
+
+	// Browser
+
+	preview -> setName ("Materials");
+	preview -> initialized () .addInterest (&X3DUsedMaterialsEditor::set_initialized, this);
+	preview -> setFixedPipeline (false);
+	preview -> setup ();
+}
+
+void
 X3DUsedMaterialsEditor::set_initialized ()
 {
+	__LOG__ << std::endl;
+
 	times .clear ();
 
 	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
-		nodeIndex -> rowChanged (i);
+		nodeIndex -> updateRow (i);
 }
 
 int
@@ -210,7 +222,7 @@ X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::T
 	}
 	catch (const std::exception & error)
 	{ 
-		//__LOG__ << error .what () << std::endl;
+		__LOG__ << error .what () << std::endl;
 	}
 }
 
