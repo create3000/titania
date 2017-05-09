@@ -87,7 +87,7 @@ namespace X3D {
 Browser::Browser (const MFString & url, const MFString & parameter) :
 	    X3DBaseNode (this, this),
 	     X3DBrowser (url, parameter),
-	opengl::Surface (),
+	OpenGL::Surface (),
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
@@ -107,7 +107,7 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 Browser::Browser (const Browser & sharingBrowser, const MFString & url, const MFString & parameter) :
 	    X3DBaseNode (this, this),
 	     X3DBrowser (url, parameter),
-	opengl::Surface (sharingBrowser),
+	OpenGL::Surface (sharingBrowser),
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
@@ -131,13 +131,19 @@ Browser::create (X3DExecutionContext* const executionContext) const
 }
 
 void
+Browser::setup ()
+{
+	X3DBrowser::setup ();
+}
+
+void
 Browser::initialize ()
 {
 	try
 	{
 		ContextLock lock (this);
 
-		opengl::Surface::initialize ();
+		OpenGL::Surface::initialize ();
 		X3DBrowser::initialize ();
 
 		get_style_context () -> add_class ("background");
@@ -176,7 +182,7 @@ Browser::initialize ()
 		}
 		else
 		{
-			changed () .addInterest (std::bind (&Glib::SignalTimeout::connect_once, Glib::signal_timeout (), sigc::mem_fun (this, &Browser::update), 1000 / 25, Glib::PRIORITY_DEFAULT_IDLE));
+			changed () .addInterest (std::bind (&Glib::SignalTimeout::connect_once, Glib::signal_timeout (), sigc::mem_fun (this, &Browser::update), 1000 / 60, Glib::PRIORITY_DEFAULT_IDLE));
 			update ();
 		}
 	}
@@ -193,7 +199,7 @@ Browser::on_style_updated ()
 	{
 		ContextLock lock (this);
 
-		opengl::Surface::on_style_updated ();
+		OpenGL::Surface::on_style_updated ();
 
 		background -> configure (get_style_context (), get_width (), get_height ());
 	}
@@ -204,7 +210,7 @@ Browser::on_style_updated ()
 void
 Browser::on_map ()
 {
-	opengl::Surface::on_map ();
+	OpenGL::Surface::on_map ();
 
 	if (isLive ())
 		getExecutionContext () -> beginUpdate ();
@@ -232,7 +238,7 @@ Browser::on_unmap ()
 		{ }
 	}
 
-	opengl::Surface::on_unmap ();
+	OpenGL::Surface::on_unmap ();
 }
 
 void
@@ -313,14 +319,21 @@ void
 Browser::setAntialiasing (const int32_t samples)
 noexcept (true)
 {
-	opengl::Surface::setAttributes (samples, true);
+	OpenGL::Surface::setAttributes (samples, true);
 }
 
 bool
 Browser::makeCurrent ()
 noexcept (true)
 {
-	return opengl::Surface::makeCurrent ();
+	return OpenGL::Surface::makeCurrent ();
+}
+
+void
+Browser::swapBuffers ()
+noexcept (true)
+{
+	OpenGL::Surface::swapBuffers ();
 }
 
 void
@@ -356,8 +369,7 @@ void
 Browser::dispose ()
 {
 	X3DBrowser::dispose ();
-
-	opengl::Surface::dispose ();
+	OpenGL::Surface::dispose ();
 }
 
 Browser::~Browser ()

@@ -53,13 +53,15 @@
 #include <Titania/LOG.h>
 
 namespace titania {
-namespace opengl {
+namespace OpenGL {
 
 OffScreenContext::OffScreenContext (Display* const display,
                                     const GLXContext sharingContext,
                                     const bool direct,
-                                    const std::vector <int32_t> & visualAttributes) :
-	   Context (display, createPixmap (display, 8, 8), sharingContext, direct, visualAttributes)
+                                    const std::vector <int32_t> & visualAttributes,
+                                    unsigned int width,
+                                    unsigned int height) :
+	   Context (display, createPixmap (display, width, height), sharingContext, direct, visualAttributes)
 { }
 
 Pixmap
@@ -83,5 +85,5 @@ OffScreenContext::~OffScreenContext ()
 	XFreePixmap (getDisplay (), getDrawable ());
 }
 	  
-} // opengl
+} // OpenGL
 } // titania

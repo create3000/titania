@@ -66,7 +66,7 @@ class X3DSelector;
 
 class Browser :
 	public X3DBrowser,
-	public opengl::Surface
+	public OpenGL::Surface
 {
 public:
 
@@ -81,8 +81,7 @@ public:
 
 	virtual
 	void
-	setup () final override
-	{ X3DBrowser::setup (); }
+	setup () final override;
 
 	///  @name Member access
 
@@ -111,19 +110,8 @@ public:
 
 	virtual
 	void
-	renderBackground () final override;
-
-	virtual
-	void
 	swapBuffers ()
-	noexcept (true) final override
-	{ opengl::Surface::swapBuffers (); }
-
-	//XXX:
-	virtual
-	bool
-	get_mapped () const final override
-	{ return opengl::Surface::get_mapped (); }
+	noexcept (true) final override;
 
 	///  @name Destruction
 
@@ -169,6 +157,10 @@ private:
 	set_viewer ();
 
 	///  @name Operations
+
+	virtual
+	void
+	renderBackground () final override;
 
 	virtual
 	void

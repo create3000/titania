@@ -1,14 +1,13 @@
-#X3D V3.0 utf8 Titania V2.0.1
+#X3D V3.0 utf8 Titania V3.0.4
 
 PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Tue, 13 Oct 2015 06:42:37 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V2.0.1, http://titania.create3000.de"
+META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/Titania/share/titania/ui/Logo.x3dv"
-META "modified" "Mon, 06 Feb 2017 13:33:14 GMT"
-META "outputStyle" "nicest"
+META "modified" "Tue, 09 May 2017 17:43:01 GMT"
 META "title" "Logo"
 
 EXTERNPROTO Red [
@@ -155,12 +154,13 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
             reference "http://titania.create3000.de"
+            value FALSE
           }
-          DEF children MetadataSet {
-            name "children"
+          DEF nodes MetadataSet {
+            name "nodes"
             reference "http://titania.create3000.de"
           }
         ]
@@ -216,7 +216,7 @@ LayerSet {
               DEF _2 TimeSensor {
                 cycleInterval 4.2
                 loop TRUE
-                pauseTime 1486387988.71318
+                pauseTime 1494351640.95881
               }
               DEF LogoRotationInterpolator OrientationInterpolator {
                 metadata DEF Interpolator MetadataSet {
@@ -5152,7 +5152,6 @@ LayerSet {
             material Material {
               transparency 1
             }
-            texture ImageTexture { }
           }
           geometry Rectangle2D { }
         }

@@ -239,18 +239,18 @@ private:
 	set_initialized ();
 
 	void
-	set_browser (const X3D::BrowserPtr &, const basic::uri &);
+	set_browser (const X3D::BrowserPtr & browser, const basic::uri & URL);
 
 	void
-	set_url (const X3D::BrowserPtr &, const basic::uri &);
-
-	virtual
-	void
-	on_switch_browser (Gtk::Widget*, guint) final override;
+	set_splashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL);
 
 	virtual
 	void
-	on_browser_reordered (Gtk::Widget* page, guint page_num) final override;
+	on_switch_browser (Gtk::Widget*, guint pageNumber) final override;
+
+	virtual
+	void
+	on_browser_reordered (Gtk::Widget* widget, guint pageNumber) final override;
 
 	void
 	set_scene ();

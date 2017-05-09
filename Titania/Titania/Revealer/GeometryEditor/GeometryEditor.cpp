@@ -70,7 +70,7 @@ GeometryEditor::GeometryEditor (X3DBrowserWindow* const browserWindow) :
 	             normalEnabled (this, getNormalEnabledButton (), "load"),
 	              normalEditor (new X3D::FieldSet (getMasterBrowser ())),
 	               coordEditor (new X3D::FieldSet (getMasterBrowser ())),
-	                   browser (getMasterBrowser ()),
+	                   browser (getCurrentBrowser ()),
 	             privateViewer (X3D::X3DConstants::DefaultViewer),
 	                  selector (SelectorType::BRUSH),
 	         numSelectedPoints (0),

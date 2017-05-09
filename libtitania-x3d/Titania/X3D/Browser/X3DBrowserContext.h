@@ -193,12 +193,6 @@ public:
 	swapBuffers ()
 	noexcept (true) = 0;
 
-	//XXX:
-	virtual
-	bool
-	get_mapped () const
-	{ return false; }
-
 	///  @name Destruction
 
 	virtual

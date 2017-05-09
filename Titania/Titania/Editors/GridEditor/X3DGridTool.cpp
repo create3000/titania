@@ -65,7 +65,7 @@ namespace puck {
 X3DGridTool::X3DGridTool () :
 	 X3DBaseInterface (),
 	  X3DEditorObject (),
-	          browser (),
+	          browser (getCurrentBrowser ()),
 	         undoStep ()
 {
 	addChildObjects (browser);
@@ -88,8 +88,7 @@ X3DGridTool::isEnabled () const
 void
 X3DGridTool::set_browser (const X3D::BrowserPtr & value)
 {
-	if (browser)
-		browser -> getActiveLayer () .removeInterest (&X3DGridTool::update, this);
+	browser -> getActiveLayer () .removeInterest (&X3DGridTool::update, this);
 
 	browser = value;
 

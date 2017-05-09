@@ -54,7 +54,7 @@
 #include "Context.h"
 
 namespace titania {
-namespace opengl {
+namespace OpenGL {
 
 class OffScreenContext :
 	public Context
@@ -66,7 +66,9 @@ public:
 	OffScreenContext (Display* const display,
 	                  const GLXContext sharingContext,
 	                  const bool direct,
-	                  const std::vector <int32_t> & visualAttributes);
+	                  const std::vector <int32_t> & visualAttributes,
+	                  unsigned int width,
+	                  unsigned int height);
 
 	///  @name Destruction
 
@@ -85,7 +87,7 @@ private:
 
 };
 
-} // opengl
+} // OpenGL
 } // titania
 
 #endif

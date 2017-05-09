@@ -79,7 +79,7 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & defaultBrowser) :
 	X3DBrowserWindowInterface (),
 	            masterBrowser (defaultBrowser),
 //	              logoBrowser (X3D::createBrowser (defaultBrowser, { get_ui ("Logo.x3dv") })),
-	                  browser (X3D::createBrowser ()),
+	                  browser (X3D::createBrowser ()), // Don't use master bowser!
 	                 browsers (),
 	           recentBrowsers (),
 	                    scene (browser -> getExecutionContext ()),
@@ -109,7 +109,7 @@ X3DBrowserWidget::initialize ()
 	masterBrowser -> initialized () .addInterest (&X3DBrowserWidget::set_initialized, this);
 	masterBrowser -> setAntialiasing (4);
 	masterBrowser -> show ();
-	getLogoBox () .pack_start (*masterBrowser, true, true, 0);
+	getLogoBox () .pack_start (*getMasterBrowser (), true, true, 0);
 
 	// History
 
@@ -545,14 +545,14 @@ void
 X3DBrowserWidget::set_browser (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
 	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_browser, this);
-	browser -> initialized () .addInterest (&X3DBrowserWidget::set_url, this, browser, URL);
+	browser -> initialized () .addInterest (&X3DBrowserWidget::set_splashScreen, this, browser, URL);
 	browser -> loadURL ({ get_page ("about/splash.x3dv") .str () }, { });
 }
 
 void
-X3DBrowserWidget::set_url (const X3D::BrowserPtr & browser, const basic::uri & URL)
+X3DBrowserWidget::set_splashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_url, this);
+	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_splashScreen, this);
 
 	load (browser, URL);
 }
@@ -686,11 +686,11 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 		}
 	}
 
-	// Remove browser copletely.
+	// Remove browser completely.
 
 	// Important here to remove the interests, because the notebook could make it visible on remove_page.
 	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_browser, this);
-	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_url, this);
+	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_splashScreen, this);
 
 	getUserData (browser) -> dispose ();
 

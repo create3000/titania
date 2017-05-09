@@ -64,7 +64,7 @@ extern "C"
 #include <Titania/LOG.h>
 
 namespace titania {
-namespace opengl {
+namespace OpenGL {
 
 Surface::Surface () :
 	Surface (nullptr)
@@ -89,8 +89,6 @@ Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
 
 	// Enable map_event.
 	add_events (Gdk::STRUCTURE_MASK);
-
-	signal_unrealize () .connect (sigc::mem_fun (this, &Surface::dispose));
 
 	setAttributes (0, false);
 }
@@ -138,7 +136,9 @@ Surface::createContext ()
 		context .reset (new OffScreenContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
 		                                      sharingContext ? sharingContext -> getContext () : None,
 		                                      true,
-		                                      visualAttributes));
+		                                      visualAttributes,
+	                                         8,
+	                                         8));
 	}
 	else
 	{

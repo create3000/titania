@@ -55,7 +55,7 @@
 #include <thread>
 
 namespace titania {
-namespace opengl {
+namespace OpenGL {
 
 Context::Context (Display* const display,
                   const GLXDrawable drawable,
@@ -155,5 +155,5 @@ Context::~Context ()
 	   XFree (visualInfo);
 }
 
-} // opengl
+} // OpenGL
 } // titania

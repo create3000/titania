@@ -63,7 +63,7 @@ namespace puck {
 
 X3DPrimitiveCountEditor::X3DPrimitiveCountEditor () :
 	X3DGeometryPropertiesEditorInterface (),
-	                             browser (),
+	                             browser (getCurrentBrowser ()),
 	                    executionContext (),
 	                               nodes (0),
 	                        opaqueShapes (0),
@@ -333,8 +333,7 @@ X3DPrimitiveCountEditor::count (const X3D::X3DGeometryNode::Element & element)
 void
 X3DPrimitiveCountEditor::set_browser ()
 {
-	if (browser)
-		browser -> displayed () .removeInterest (&X3DPrimitiveCountEditor::update, this);
+	browser -> displayed () .removeInterest (&X3DPrimitiveCountEditor::update, this);
 
 	browser = getCurrentBrowser ();
 

@@ -60,7 +60,7 @@
 #include <thread>
 
 namespace titania {
-namespace opengl {
+namespace OpenGL {
 
 class Context;
 
@@ -167,7 +167,7 @@ private:
 
 };
 
-} // opengl
+} // OpenGL
 } // titania
 
 #endif
