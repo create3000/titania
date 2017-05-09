@@ -81,12 +81,11 @@ X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 void
 X3DUsedMaterialsEditor::initialize ()
 {
-	// Browser
+	// Off-Screen Browser
 
-	if (getMasterBrowser () -> isInitialized ())
-		set_masterBrowser ();
-	else
-		getMasterBrowser () -> initialized () .addInterest (&X3DUsedMaterialsEditor::set_masterBrowser, this);
+	preview -> initialized () .addInterest (&X3DUsedMaterialsEditor::set_initialized, this);
+	preview -> setFixedPipeline (false);
+	preview -> setup ();
 
 	// Selection
 
@@ -95,7 +94,7 @@ X3DUsedMaterialsEditor::initialize ()
 	// Node index
 
 	nodeIndex -> getNode () .addInterest (&X3DUsedMaterialsEditor::set_node, this);
-	nodeIndex -> reparent (getUsedMaterialsIndexBox (), getWindow ());
+	nodeIndex -> reparent (getUsedMaterialsBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setSelect (false);
 	nodeIndex -> setObserveNodes (true);
@@ -109,19 +108,6 @@ X3DUsedMaterialsEditor::initialize ()
 	nodeIndex -> getCellRendererImage () -> property_stock_size () = ICON_SIZE;
 
 	nodeIndex -> getTreeModelSort () -> set_sort_func (NodeIndex::Columns::IMAGE, sigc::mem_fun (this, &X3DUsedMaterialsEditor::on_compare_image));
-}
-
-void
-X3DUsedMaterialsEditor::set_masterBrowser ()
-{
-	__LOG__ << std::endl;
-
-	// Browser
-
-	preview -> setName ("Materials");
-	preview -> initialized () .addInterest (&X3DUsedMaterialsEditor::set_initialized, this);
-	preview -> setFixedPipeline (false);
-	preview -> setup ();
 }
 
 void

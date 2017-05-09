@@ -104,10 +104,10 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	setAntialiasing (0);
 }
 
-Browser::Browser (const Browser & other, const MFString & url, const MFString & parameter) :
+Browser::Browser (const Browser & sharingBrowser, const MFString & url, const MFString & parameter) :
 	    X3DBaseNode (this, this),
 	     X3DBrowser (url, parameter),
-	opengl::Surface (other),
+	opengl::Surface (sharingBrowser),
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),

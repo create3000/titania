@@ -464,10 +464,6 @@ public:
 	{ return *m_UsedMaterialsBox; }
 
 	Gtk::Box &
-	getUsedMaterialsIndexBox () const
-	{ return *m_UsedMaterialsIndexBox; }
-
-	Gtk::Box &
 	getPaletteBox () const
 	{ return *m_PaletteBox; }
 
@@ -776,7 +772,6 @@ private:
 	Gtk::Entry* m_LinePropertiesNameEntry;
 	Gtk::Button* m_LinePropertiesRenameButton;
 	Gtk::Box* m_UsedMaterialsBox;
-	Gtk::Box* m_UsedMaterialsIndexBox;
 	Gtk::Box* m_PaletteBox;
 	Gtk::ComboBoxText* m_PaletteFaceCombo;
 	Gtk::Box* m_PalettePreviewBox;

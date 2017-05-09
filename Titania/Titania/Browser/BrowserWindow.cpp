@@ -102,10 +102,10 @@ const std::set <X3D::X3DConstants::NodeType> BrowserWindow::proximitySensors = {
 	X3D::X3DConstants::ViewpointGroup
 };
 
-BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
-	         X3DBaseInterface (this, browser),
+BrowserWindow::BrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
+	         X3DBaseInterface (this, defaultBrowser),
 	X3DBrowserWindowInterface ({ get_ui ("icons/IconFactory.glade"), get_ui ("BrowserWindow.glade") }),
-	         X3DBrowserWindow (browser),
+	         X3DBrowserWindow (defaultBrowser),
 	              cssProvider (Gtk::CssProvider::create ()),
 	       environmentActions (),
 	           shadingActions (),
@@ -142,8 +142,6 @@ BrowserWindow::BrowserWindow (const X3D::BrowserPtr & browser) :
 
 	//if (getConfig () -> getBoolean ("transparent"))
 	//	setTransparent (true);
-	//else
-		browser -> setAntialiasing (4);
 
 	//if (not getConfig () -> hasItem ("maximized"))
 	//	getWindow () .maximize ();

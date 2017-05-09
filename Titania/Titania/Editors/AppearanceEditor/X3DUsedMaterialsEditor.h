@@ -92,9 +92,6 @@ private:
 	///  @name Event handlers
 
 	void
-	set_masterBrowser ();
-
-	void
 	set_initialized ();
 
 	int

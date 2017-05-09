@@ -82,15 +82,11 @@ X3DUsedTexturesEditor::X3DUsedTexturesEditor () :
 void
 X3DUsedTexturesEditor::initialize ()
 {
-	// Browser
+	// Off-Screen Browser
 
 	preview -> initialized () .addInterest (&X3DUsedTexturesEditor::set_initialized, this);
 	preview -> setFixedPipeline (false);
-	preview -> setAntialiasing (4);
-	preview -> set_opacity (0);
-	preview -> show ();
-
-	getUsedTexturesBrowserBox () .pack_start (*preview, true, true);
+	preview -> setup ();
 
 	// Selection
 
@@ -99,7 +95,7 @@ X3DUsedTexturesEditor::initialize ()
 	// Node index
 
 	nodeIndex -> getNode () .addInterest (&X3DUsedTexturesEditor::set_node, this);
-	nodeIndex -> reparent (getUsedTexturesIndexBox (), getWindow ());
+	nodeIndex -> reparent (getUsedTexturesBox (), getWindow ());
 	nodeIndex -> setShowWidget (true);
 	nodeIndex -> setSelect (false);
 	nodeIndex -> setObserveNodes (true);

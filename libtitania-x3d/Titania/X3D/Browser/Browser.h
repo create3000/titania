@@ -74,7 +74,7 @@ public:
 
 	Browser (const MFString & url, const MFString & parameter);
 
-	Browser (const Browser & other, const MFString & url, const MFString & parameter);
+	Browser (const Browser & sharingBrowser, const MFString & url, const MFString & parameter);
 
 	Browser*
 	create (X3DExecutionContext* const executionContext) const;
@@ -118,6 +118,12 @@ public:
 	swapBuffers ()
 	noexcept (true) final override
 	{ opengl::Surface::swapBuffers (); }
+
+	//XXX:
+	virtual
+	bool
+	get_mapped () const final override
+	{ return opengl::Surface::get_mapped (); }
 
 	///  @name Destruction
 

@@ -1008,14 +1008,6 @@ public:
 	{ return *m_UsedTexturesBox; }
 
 	Gtk::Box &
-	getUsedTexturesBrowserBox () const
-	{ return *m_UsedTexturesBrowserBox; }
-
-	Gtk::Box &
-	getUsedTexturesIndexBox () const
-	{ return *m_UsedTexturesIndexBox; }
-
-	Gtk::Box &
 	getPaletteBox () const
 	{ return *m_PaletteBox; }
 
@@ -1456,8 +1448,6 @@ private:
 	Gtk::Entry* m_TextureCoordinateGeneratorNameEntry;
 	Gtk::Button* m_TextureCoordinateGeneratorRenameButton;
 	Gtk::Box* m_UsedTexturesBox;
-	Gtk::Box* m_UsedTexturesBrowserBox;
-	Gtk::Box* m_UsedTexturesIndexBox;
 	Gtk::Box* m_PaletteBox;
 	Gtk::Box* m_PalettePreviewBox;
 	Gtk::Box* m_ChangePaletteBox;

@@ -77,7 +77,8 @@ X3DCoreContext::X3DCoreContext () :
 void
 X3DCoreContext::initialize ()
 {
-	XInitThreads ();
+	if (getBrowser () -> get_mapped ())
+		XInitThreads ();
 
 	if (glXGetCurrentContext ())
 	{

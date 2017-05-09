@@ -75,9 +75,10 @@
 namespace titania {
 namespace puck {
 
-X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
+X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & defaultBrowser) :
 	X3DBrowserWindowInterface (),
-	            masterBrowser (masterBrowser_),
+	            masterBrowser (defaultBrowser),
+//	              logoBrowser (X3D::createBrowser (defaultBrowser, { get_ui ("Logo.x3dv") })),
 	                  browser (X3D::createBrowser ()),
 	                 browsers (),
 	           recentBrowsers (),
@@ -88,7 +89,7 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & masterBrowser_) :
 	               recentView (new RecentView (getBrowserWindow ())),
 	                  history (new History ())
 {
-	// Allways added fields, otherwise there is a Xlib error on destruction.
+	// Allways add fields, otherwise there is a Xlib error in destruction.
 
 	addChildObjects (masterBrowser,
 	                 browser,
@@ -105,10 +106,10 @@ X3DBrowserWidget::initialize ()
 
 	// Master browser
 
-	getMasterBrowser () -> initialized () .addInterest (&X3DBrowserWidget::set_initialized, this);
-	getMasterBrowser () -> setAntialiasing (4);
-	getMasterBrowser () -> show ();
-	getLogoBox () .pack_start (*getMasterBrowser (), true, true, 0);
+	masterBrowser -> initialized () .addInterest (&X3DBrowserWidget::set_initialized, this);
+	masterBrowser -> setAntialiasing (4);
+	masterBrowser -> show ();
+	getLogoBox () .pack_start (*masterBrowser, true, true, 0);
 
 	// History
 
@@ -121,7 +122,7 @@ X3DBrowserWidget::initialize ()
 void
 X3DBrowserWidget::set_initialized ()
 {
-	getMasterBrowser () -> initialized () .removeInterest (&X3DBrowserWidget::set_initialized, this);
+	masterBrowser -> initialized () .removeInterest (&X3DBrowserWidget::set_initialized, this);
 
 	recentView -> initialize ();
 
@@ -149,7 +150,7 @@ X3DBrowserWidget::set_initialized ()
 		if (urlIndex .count (worldURLs [i]))
 			continue;
 
-		const auto browser = X3D::createBrowser (getMasterBrowser ());
+		const auto browser = X3D::createBrowser (masterBrowser);
 
 		if (i < histories .size ())
 			getUserData (browser) -> browserHistory .fromString (histories [i]);
@@ -480,7 +481,7 @@ X3DBrowserWidget::open (const basic::uri & URL_)
 
 	else
 	{
-		append (X3D::createBrowser (getMasterBrowser ()), URL);
+		append (X3D::createBrowser (masterBrowser), URL);
 		getBrowserNotebook () .set_current_page (browsers .size () - 1);
 	}
 }

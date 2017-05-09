@@ -309,8 +309,6 @@ X3DTextureEditorInterface::create ()
 	m_builder -> get_widget ("TextureCoordinateGeneratorNameEntry", m_TextureCoordinateGeneratorNameEntry);
 	m_builder -> get_widget ("TextureCoordinateGeneratorRenameButton", m_TextureCoordinateGeneratorRenameButton);
 	m_builder -> get_widget ("UsedTexturesBox", m_UsedTexturesBox);
-	m_builder -> get_widget ("UsedTexturesBrowserBox", m_UsedTexturesBrowserBox);
-	m_builder -> get_widget ("UsedTexturesIndexBox", m_UsedTexturesIndexBox);
 	m_builder -> get_widget ("PaletteBox", m_PaletteBox);
 	m_builder -> get_widget ("PalettePreviewBox", m_PalettePreviewBox);
 	m_builder -> get_widget ("ChangePaletteBox", m_ChangePaletteBox);

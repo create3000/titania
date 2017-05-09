@@ -76,8 +76,8 @@
 namespace titania {
 namespace puck {
 
-X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & browser) :
-	   X3DBrowserEditor (browser),
+X3DBrowserWindow::X3DBrowserWindow (const X3D::BrowserPtr & defaultBrowser) :
+	   X3DBrowserEditor (defaultBrowser),
 	     geometryEditor (new GeometryEditor (this)),
 	            sidebar (new Sidebar (this)),
 	             footer (new Footer (this)),

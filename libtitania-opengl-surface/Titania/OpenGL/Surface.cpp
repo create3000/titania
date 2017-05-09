@@ -70,8 +70,8 @@ Surface::Surface () :
 	Surface (nullptr)
 { }
 
-Surface::Surface (const Surface & other) :
-	Surface (other .sharingContext ? other .sharingContext : other .context)
+Surface::Surface (const Surface & sharingSurface) :
+	Surface (sharingSurface .sharingContext ? sharingSurface .sharingContext : sharingSurface .context)
 { }
 
 Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
@@ -148,6 +148,9 @@ Surface::createContext ()
 		                             true,
 		                             visualAttributes));
 	}
+
+	if (not sharingContext)
+		sharingContext = context;
 }
 
 bool
@@ -218,7 +221,13 @@ Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
 	update ();
 
-	return true;
+	return false;
+}
+
+bool
+Surface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
+{
+	return Gtk::DrawingArea::on_draw (cairo);
 }
 
 void

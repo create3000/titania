@@ -67,11 +67,11 @@ public:
 
 	/// @name Construction
 
-	BrowserWindow (const X3D::BrowserPtr &);
+	BrowserWindow (const X3D::BrowserPtr & masterBrowser);
 
 	virtual
 	void
-	setEditing (const bool) final override;
+	setEditing (const bool value) final override;
 
 	/// @name Destruction
 
@@ -102,7 +102,7 @@ private:
 
 	virtual
 	void
-	setBrowser (const X3D::BrowserPtr &) final override;
+	setBrowser (const X3D::BrowserPtr & value) final override;
 
 	void
 	set_browsers ();

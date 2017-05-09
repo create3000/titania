@@ -101,7 +101,7 @@ protected:
 
 	Surface ();
 
-	Surface (const Surface & other);
+	Surface (const Surface & sharingSurface);
 
 	/// @name OpenGL handler
 
@@ -120,6 +120,10 @@ protected:
 	virtual
 	void
 	update () = 0;
+
+	virtual
+	bool
+	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo) override;
 
 	virtual
 	void
@@ -141,13 +145,13 @@ private:
 	set_map ();
 
 	bool
-	set_construct (const Cairo::RefPtr <Cairo::Context> &);
+	set_construct (const Cairo::RefPtr <Cairo::Context> & cairo);
 
 	bool
-	set_configure_event (GdkEventConfigure* const);
+	set_configure_event (GdkEventConfigure* const event);
 
 	bool
-	set_draw (const Cairo::RefPtr <Cairo::Context> &);
+	set_draw (const Cairo::RefPtr <Cairo::Context> & cairo);
 
 	///  @name Members
 
