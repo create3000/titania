@@ -290,6 +290,9 @@ private:
 	void
 	on_remove_parent_activate () final override;
 
+	void
+	applyTransformation (const X3D::SFNode & node, const X3D::SFNode & parent, const X3D::UndoStepPtr & undoStep);
+
 	// View Menu Item
 
 	virtual

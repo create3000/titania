@@ -1220,6 +1220,8 @@ OutlineEditor::on_remove_parent_activate ()
 			{
 				auto & sfnode = *static_cast <X3D::SFNode*> (field);
 	
+				applyTransformation (sfnode, rootNodes [index], undoStep);
+
 				X3D::X3DEditor::insertIntoArray (executionContext, rootNodes, index, sfnode, undoStep);
 				X3D::X3DEditor::removeNode (executionContext, executionContext, rootNodes, index + 1, undoStep);
 				break;
@@ -1228,6 +1230,9 @@ OutlineEditor::on_remove_parent_activate ()
 			{
 				auto & mfnode = *static_cast <X3D::MFNode*> (field);
 	
+				for (const auto & node : mfnode)
+					applyTransformation (node, rootNodes [index], undoStep);
+
 				X3D::X3DEditor::insertIntoArray (executionContext, rootNodes, index, mfnode .begin (), mfnode .end (), undoStep);
 				X3D::X3DEditor::removeNode (executionContext, executionContext, rootNodes, index + mfnode .size (), undoStep);
 				break;
@@ -1260,7 +1265,9 @@ OutlineEditor::on_remove_parent_activate ()
 				{
 					case X3D::X3DConstants::SFNode:
 					{
-						X3D::X3DEditor::replaceNode (executionContext, secondParent, *static_cast <X3D::SFNode*> (secondField), sfnode, undoStep);
+						applyTransformation (*static_cast <X3D::SFNode*> (secondField), sfnode, undoStep);
+
+						X3D::X3DEditor::replaceNode (executionContext, secondParent, sfnode, *static_cast <X3D::SFNode*> (secondField), undoStep);
 						break;
 					}
 					case X3D::X3DConstants::MFNode:
@@ -1268,8 +1275,9 @@ OutlineEditor::on_remove_parent_activate ()
 						auto &     mfnode = *static_cast <X3D::MFNode*> (secondField);
 						const auto index  = treeView -> get_index (parentIter);
 
-						X3D::X3DEditor::insertIntoArray (secondParent, mfnode, index, sfnode, undoStep);
+						applyTransformation (sfnode, mfnode [index], undoStep);
 
+						X3D::X3DEditor::insertIntoArray (secondParent, mfnode, index, sfnode, undoStep);
 						X3D::X3DEditor::removeNode (executionContext, secondParent, mfnode, index + 1, undoStep);
 						break;
 					}
@@ -1291,6 +1299,8 @@ OutlineEditor::on_remove_parent_activate ()
 				{
 					case X3D::X3DConstants::SFNode:
 					{
+						applyTransformation (mfnode [index], *static_cast <X3D::SFNode*> (secondField), undoStep);
+
 						X3D::X3DEditor::replaceNode (executionContext, secondParent, *static_cast <X3D::SFNode*> (secondField), mfnode [index], undoStep);
 						break;
 					}
@@ -1298,6 +1308,9 @@ OutlineEditor::on_remove_parent_activate ()
 					{
 						auto &     secondmfnode = *static_cast <X3D::MFNode*> (secondField);
 						const auto secondIndex  = treeView -> get_index (parentIter);
+
+						for (const auto & node : mfnode)
+							applyTransformation (node, secondmfnode [secondIndex], undoStep);
 
 						X3D::X3DEditor::insertIntoArray (secondParent, secondmfnode, secondIndex, mfnode .begin (), mfnode .end (), undoStep);
 						X3D::X3DEditor::removeNode (executionContext, secondParent, secondmfnode, secondIndex + mfnode .size (), undoStep);
@@ -1318,6 +1331,22 @@ OutlineEditor::on_remove_parent_activate ()
 	}
 
 	getBrowserWindow () -> addUndoStep (undoStep);
+}
+
+void
+OutlineEditor::applyTransformation (const X3D::SFNode & node, const X3D::SFNode & parent, const X3D::UndoStepPtr & undoStep)
+{
+	const auto transform       = X3D::X3DPtr <X3D::X3DTransformNode> (node);
+	const auto parentTransform = X3D::X3DPtr <X3D::X3DTransformMatrix3DObject> (parent);
+
+	if (transform and parentTransform)
+	{
+		const auto matrix = transform -> getMatrix () * parentTransform -> getMatrix ();
+
+		undoStep -> addUndoFunction (&X3D::X3DTransformNode::setMatrix, transform, transform -> getMatrix ());
+		undoStep -> addRedoFunction (&X3D::X3DTransformNode::setMatrix, transform, matrix);
+		transform -> setMatrix (matrix);
+	}
 }
 
 // View Menu Item

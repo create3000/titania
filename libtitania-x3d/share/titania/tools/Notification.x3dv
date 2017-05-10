@@ -7,7 +7,7 @@ META "created" "Mon, 26 Oct 2015 05:51:17 GMT"
 META "creator" "Holger Seelig"
 META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/Notification.x3dv"
-META "modified" "Wed, 10 May 2017 08:12:33 GMT"
+META "modified" "Wed, 10 May 2017 08:23:52 GMT"
 META "titania-add-world-info" "true"
 
 EXTERNPROTO RoundedRectangle2D [
@@ -211,9 +211,6 @@ LayerSet {
         linewidthScaleFactor 4
         padding 18 10
         isActive TRUE
-      }
-      Background {
-        transparency 1
       }
       USE _1
       DEF NotificationScript Script {
