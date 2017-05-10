@@ -137,8 +137,6 @@ Browser::initialize ()
 	{
 		ContextLock lock (this);
 
-		glewInit ();
-
 		X3DBrowser::initialize ();
 
 		get_style_context () -> add_class ("background");

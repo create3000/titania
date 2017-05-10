@@ -82,6 +82,8 @@ X3DCoreContext::initialize ()
 
 	if (glXGetCurrentContext ())
 	{
+		glewInit ();
+
 		vendor   = (const char*) glGetString (GL_VENDOR);
 		renderer = (const char*) glGetString (GL_RENDERER);
 		version  = (const char*) glGetString (GL_VERSION);

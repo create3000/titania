@@ -564,12 +564,10 @@ X3DBrowserWidget::set_splashScreen (const X3D::BrowserPtr & browser, const basic
 void
 X3DBrowserWidget::load (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
-	if (browser == getCurrentBrowser ())
-		recentView -> loadPreview (getCurrentBrowser ());
-
 	if (URL .empty ())
 		return;
 
+	recentView -> loadPreview (browser);
 	browser -> loadURL ({ URL .str () }, { });
 }
 

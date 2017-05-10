@@ -64,7 +64,7 @@ namespace puck {
 
 X3DMaterialEditor::X3DMaterialEditor () :
 	X3DAppearanceEditorInterface (),
-	                     preview (X3D::createBrowser (getMasterBrowser ())),
+	                     preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") }, { })),
 	                 appearances (),
 	                materialNode (),
 	          materialNodeBuffer (),
@@ -105,7 +105,7 @@ X3DMaterialEditor::initialize ()
 {
 	materialNodeBuffer .addInterest (&X3DMaterialEditor::set_node, this);
 
-	preview -> initialized () .addInterest (&X3DMaterialEditor::set_browser, this);
+	preview -> initialized () .addInterest (&X3DMaterialEditor::set_initialized, this);
 	preview -> setFixedPipeline (false);
 	preview -> setAntialiasing (4);
 	preview -> set_opacity (0);
@@ -114,20 +114,6 @@ X3DMaterialEditor::initialize ()
 	getPreviewBox () .pack_start (*preview, true, true, 0);
 
 	clipboard -> string_changed () .addInterest (&X3DMaterialEditor::set_clipboard, this);
-}
-
-void
-X3DMaterialEditor::set_browser ()
-{
-	preview -> initialized () .removeInterest (&X3DMaterialEditor::set_browser, this);
-	preview -> initialized () .addInterest (&X3DMaterialEditor::set_initialized, this);
-
-	try
-	{
-		preview -> loadURL ({ get_ui ("Editors/MaterialEditorPreview.x3dv") }, { });
-	}
-	catch (const X3D::X3DError &)
-	{ }
 }
 
 void

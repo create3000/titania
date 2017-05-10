@@ -105,9 +105,6 @@ private:
 	///  @name Construction
 
 	void
-	set_browser ();
-
-	void
 	set_initialized ();
 
 	///  @name Copy & Paste

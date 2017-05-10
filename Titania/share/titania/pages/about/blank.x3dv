@@ -10,6 +10,5 @@ META "title" "about:blank"
 META "titania-history" "FALSE"
 
 Background {
-  skyColor 1 1 1
   transparency 1
 }
