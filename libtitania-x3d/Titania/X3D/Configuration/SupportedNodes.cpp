@@ -293,6 +293,7 @@ SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 
 	addNode ("TransformMatrix3D",            [ ] (X3DExecutionContext* const executionContext) { return new TransformMatrix3D            (executionContext); });
 	addNode ("TouchGroup",                   [ ] (X3DExecutionContext* const executionContext) { return new TouchGroup                   (executionContext); });
+	addNode ("PolygonMode",                  [ ] (X3DExecutionContext* const executionContext) { return new PolygonMode                  (executionContext); });
 	addNode ("PolygonOffset",                [ ] (X3DExecutionContext* const executionContext) { return new PolygonOffset                (executionContext); });
 	addNode ("DepthBuffer",                  [ ] (X3DExecutionContext* const executionContext) { return new DepthBuffer                  (executionContext); });
 

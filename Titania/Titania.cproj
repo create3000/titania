@@ -2969,6 +2969,8 @@
     <None Include="Titania\Dialogs\OpenLocationDialog\OpenLocationDialog.h" />
     <None Include="Titania\Editors\NodeIndex\NodeIndex.h" />
     <None Include="share\titania\ui\Editors\NodeIndex.glade" />
+    <None Include="share\titania\Library\Components\Rendering\.experimental\PolygonMode" />
+    <None Include="share\titania\Library\Components\Rendering\PolygonMode.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />

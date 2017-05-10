@@ -94,6 +94,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                   changedTime (0),
 	                   freezedTime (0),
 	                         world (new World (getExecutionContext ())),
+	                 headUpDisplay (new World (getExecutionContext ())),
 	                     selection (new Selection (this)),
 	                  notification (new Notification (this)),
 	                       console (new Console (this))
@@ -103,6 +104,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	addType (X3DConstants::X3DBrowserContext);
 
 	addChildObjects (initialized (),
+	                 headUpDisplay,
 	                 world,
 	                 selection,
 	                 notification,
@@ -136,11 +138,19 @@ X3DBrowserContext::initialize ()
 	X3DRouterObject::initialize ();
 	X3DToolContext::initialize ();
 
-	selection    -> setup ();
-	notification -> setup ();
-	console      -> setup ();
+	getHeadUpDisplay () -> order () .clear ();
+
+	headUpDisplay -> setup ();
+	selection     -> setup ();
+	notification  -> setup ();
+	console       -> setup ();
 }
 
+const X3DPtr <LayerSet> &
+X3DBrowserContext::getHeadUpDisplay () const
+{
+	return headUpDisplay -> getLayerSet ();
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -285,7 +295,8 @@ noexcept (true)
 
 		renderBackground ();
 
-		getWorld () -> traverse (TraverseType::DISPLAY, nullptr);
+		getWorld ()         -> traverse (TraverseType::DISPLAY, nullptr);
+		getHeadUpDisplay () -> traverse (TraverseType::DISPLAY, nullptr);
 
 		displayed () .processInterests ();
 		swapBuffers ();

@@ -3,7 +3,7 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
- * Copyright create3000, Scheffelstra√üe 31a, Leipzig, Germany 2011.
+ * Copyright create3000, Scheffelstraﬂe 31a, Leipzig, Germany 2011.
  *
  * All rights reserved. Holger Seelig <holger.seelig@yahoo.de>.
  *
@@ -48,23 +48,22 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_NOTIFICATION_H__
-#define __TITANIA_X3D_BROWSER_NOTIFICATION_H__
+#ifndef __TITANIA_X3D_COMPONENTS_RENDERING_POLYGON_MODE_H__
+#define __TITANIA_X3D_COMPONENTS_RENDERING_POLYGON_MODE_H__
 
-#include "../Components/Core/X3DNode.h"
-#include "../Execution/World.h"
+#include "../Grouping/X3DGroupingNode.h"
 
 namespace titania {
 namespace X3D {
 
-class Notification :
-	virtual public X3DBaseNode
+class PolygonMode :
+	virtual public X3DGroupingNode
 {
 public:
 
 	///  @name Construction
 
-	Notification (X3DExecutionContext* const executionContext);
+	PolygonMode (X3DExecutionContext* const executionContext);
 
 	virtual
 	X3DBaseNode*
@@ -91,52 +90,62 @@ public:
 	{ return containerField; }
 
 	///  @name Fields
-	
+
+	virtual
 	SFString &
-	string ()
-	{ return *fields .string; }
+	type ()
+	{ return *fields .type; }
 
+	virtual
 	const SFString &
-	string () const
-	{ return *fields .string; }
+	type () const
+	{ return *fields .type; }
 
-	///  @name Destruction
+	///  @name Member access
+
+	GLenum
+	getType () const
+	{ return polygonModeType; }
+
+	///  @name Operations
 
 	virtual
 	void
-	dispose () final override;
+	traverse (const TraverseType type, X3DRenderObject* const renderObject) override;
+
+
+protected:
+
+	virtual
+	void
+	initialize () override;
 
 
 private:
 
-	virtual
-	void
-	initialize () final override;
+	///  @name Event handler
 
 	void
-	set_string ();
-
-	void
-	set_active (const bool);
+	set_type ();
 
 	///  @name Static members
 
 	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
+	static const std::string typeName;
+	static const std::string containerField;
 
 	///  @name Members
 
 	struct Fields
 	{
 		Fields ();
-		
-		SFString* const string;
+
+		SFString* const type;
 	};
 
 	Fields fields;
 
-	X3DScenePtr scene;
+	GLenum polygonModeType;
 
 };
 

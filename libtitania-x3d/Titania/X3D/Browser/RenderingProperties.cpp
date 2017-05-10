@@ -99,7 +99,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields (),
 	    shading (ShadingType::GOURAUD),
-	      world ()
+	      scene ()
 {
 	addType (X3DConstants::RenderingProperties);
 
@@ -117,7 +117,7 @@ RenderingProperties::RenderingProperties (X3DExecutionContext* const executionCo
 
 	addField (X3D_V3_3, "AntiAliased", "Antialiased");
 
-	addChildObjects (Enabled (), CycleInterval (), shading, world);
+	addChildObjects (Enabled (), CycleInterval (), shading, scene);
 }
 
 RenderingProperties*
@@ -161,42 +161,44 @@ RenderingProperties::initialize ()
 void
 RenderingProperties::set_Enabled ()
 {
+	// Visual display of RenderingProperties
+	
 	getBrowser () -> initialized () .removeInterest (&RenderingProperties::set_Enabled, this);
 
-	if (Enabled ())
+	try
 	{
-		if (not world)
+		if (not scene)
+			scene = FileLoader (getBrowser () -> getPrivateScene ()) .createX3DFromURL ({ get_tool ("RenderingProperties.x3dv") .str () });
+
+		const auto   layer         = scene -> getNamedNode ("Layer");
+		const auto & headUpDisplay = getBrowser () -> getHeadUpDisplay ();
+
+		if (Enabled ())
 		{
-			// Visual display of RenderingProperties
-
-			X3DScenePtr scene;
-
-			try
-			{
-				scene = FileLoader (getBrowser () -> getPrivateScene ()) .createX3DFromURL ({ get_tool ("RenderingProperties.x3dv") .str () });
-			}
-			catch (const X3DError & error)
-			{
-				std::clog << error .what () << std::endl;
-
-				scene = getBrowser () -> createScene ();
-			}
-
-			world = new World (scene);
-			world -> setup ();
+			headUpDisplay -> order ()  .emplace_back (headUpDisplay -> layers () .size () + 1);
+			headUpDisplay -> layers () .emplace_back (layer);
+	
+			getBrowser () -> initialized ()   .addInterest (&RenderingProperties::reset, this);
+			getBrowser () -> prepareEvents () .addInterest (&RenderingProperties::prepare, this);
+			getBrowser () -> displayed ()     .addInterest (&RenderingProperties::display, this);
+	
+			reset ();
 		}
+		else
+		{
+			for (const auto index : headUpDisplay -> layers () .indices_of (layer))
+				headUpDisplay -> order () .remove (SFInt32 (index + 1));
 
-		getBrowser () -> initialized ()   .addInterest (&RenderingProperties::reset, this);
-		getBrowser () -> prepareEvents () .addInterest (&RenderingProperties::prepare, this);
-		getBrowser () -> displayed ()     .addInterest (&RenderingProperties::display, this);
-
-		reset ();
+			getBrowser () -> initialized ()   .removeInterest (&RenderingProperties::reset, this);
+			getBrowser () -> prepareEvents () .removeInterest (&RenderingProperties::prepare, this);
+			getBrowser () -> displayed ()     .removeInterest (&RenderingProperties::display, this);
+		}
 	}
-	else
+	catch (const X3DError & error)
 	{
-		getBrowser () -> initialized ()   .removeInterest (&RenderingProperties::reset, this);
-		getBrowser () -> prepareEvents () .removeInterest (&RenderingProperties::prepare, this);
-		getBrowser () -> displayed ()     .removeInterest (&RenderingProperties::display, this);
+		std::clog << error .what () << std::endl;
+
+		scene = getBrowser () -> createScene ();
 	}
 }
 
@@ -250,12 +252,6 @@ RenderingProperties::display ()
 		clock       .reset ();
 		renderClock .reset ();
 	}
-
-	// Display statistics
-
-	PolygonModeLock polygonMode (GL_FILL);
-
-	world -> traverse (TraverseType::DISPLAY, nullptr);
 }
 
 static
@@ -302,7 +298,7 @@ RenderingProperties::build ()
 			numTransparentShapes += layer -> getNumTransparentShapes ();
 		}
 	
-		const auto statistics = world -> getExecutionContext () -> getNamedNode ("RenderingProperties");
+		const auto statistics = scene -> getNamedNode ("RenderingProperties");
 		auto &     string     = statistics -> getField <MFString> ("string");
 
 		string .clear ();

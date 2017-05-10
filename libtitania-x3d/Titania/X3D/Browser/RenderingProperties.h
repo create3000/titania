@@ -287,7 +287,7 @@ private:
 	chrono::stopwatch <double> clock;
 	chrono::stopwatch <double> renderClock;
 
-	WorldPtr world;
+	X3DScenePtr scene;
 
 };
 

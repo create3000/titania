@@ -1,11 +1,14 @@
-#X3D V3.3 utf8 Titania V1.4.9
+#X3D V3.3 utf8 Titania V3.0.4
+
+PROFILE Full
 
 META "comment" "World of Titania"
 META "created" "Mon, 26 Oct 2015 05:51:17 GMT"
 META "creator" "Holger Seelig"
-META "generator" "Titania V1.4.9, http://titania.create3000.de"
+META "generator" "Titania V3.0.4, http://titania.create3000.de"
 META "identifier" "file:///home/holger/Projekte/Titania/libtitania-x3d/share/titania/tools/Notification.x3dv"
-META "modified" "Tue, 23 Aug 2016 20:58:05 GMT"
+META "modified" "Wed, 10 May 2017 08:12:33 GMT"
+META "titania-add-world-info" "true"
 
 EXTERNPROTO RoundedRectangle2D [
   inputOutput    SFFloat cornerRadius
@@ -80,160 +83,158 @@ WorldInfo {
         name "Selection"
         reference "http://titania.create3000.de"
         value [
-          DEF previous MetadataSet {
-            name "previous"
+          DEF selectGeometry MetadataBoolean {
+            name "selectGeometry"
             reference "http://titania.create3000.de"
+            value FALSE
           }
-          DEF children MetadataSet {
-            name "children"
+          DEF nodes MetadataSet {
+            name "nodes"
             reference "http://titania.create3000.de"
-            value DEF _1 Transform {
-              translation 0 0 -1
-              children Shape {
-                appearance Appearance {
-                  material DEF BackgroundMaterial Material {
-                    diffuseColor 1 1 1
-                  }
-                  texture ImageTexture {
-                    url "library/gradient.png"
-                  }
-                  textureTransform DEF _2 TextureTransform {
-                    scale 1 1.8
+            value DEF _1 PolygonMode {
+              children [
+                DEF _2 Transform {
+                  translation -14 -10 0
+                  children [
+                    Transform {
+                      translation 0 0 -1
+                      children Shape {
+                        appearance Appearance {
+                          material DEF BackgroundMaterial Material {
+                            diffuseColor 1 1 1
+                          }
+                          texture ImageTexture {
+                            url "library/gradient.png"
+                          }
+                          textureTransform DEF _3 TextureTransform {
+                            scale 1 1.8
+                          }
+                        }
+                        geometry DEF BackgroundGeometry RoundedRectangle2D {
+                          cornerRadius 4
+                          size 36 20
+                        }
+                      }
+                    }
+                    Transform {
+                      children Shape {
+                        appearance Appearance {
+                          fillProperties FillProperties {
+                            filled FALSE
+                            hatched FALSE
+                          }
+                          lineProperties DEF LineProperties LineProperties {
+                            linewidthScaleFactor 4
+                          }
+                          material DEF BorderMaterial Material {
+                            diffuseColor 0.461 0.461 0.461
+                          }
+                        }
+                        geometry USE BackgroundGeometry
+                      }
+                    }
+                  ]
+                }
+                Transform {
+                  translation -15 -10 0
+                  children Shape {
+                    appearance Appearance {
+                      material DEF TextMaterial Material {
+                        diffuseColor 1 1 1
+                      }
+                    }
+                    geometry DEF Text Text {
+                      string ""
+                      fontStyle ScreenFontStyle {
+                        family "SANS"
+                        pointSize 9
+                        spacing 1.6
+                        justify [
+                          "END",
+                          "BEGIN"
+                        ]
+                      }
+                    }
                   }
                 }
-                geometry DEF BackgroundGeometry RoundedRectangle2D {
-                  cornerRadius 4
-                  size 36 20
-                }
-              }
+              ]
             }
           }
         ]
+      }
+      DEF LayerSet MetadataSet {
+        name "LayerSet"
+        reference "http://titania.create3000.de"
+        value DEF activeLayer MetadataInteger {
+          name "activeLayer"
+          reference "http://titania.create3000.de"
+          value -1
+        }
       }
     ]
   }
   title "Notification"
 }
 
-DEF Notification Interface {
-  cycleInterval 5
-  linewidthScaleFactor 4
-  padding 18 10
-  isActive TRUE
-}
-
-Background {
-  transparency 1
-}
-
-OrthoViewpoint { }
-
-LayoutGroup {
-  layout Layout {
-    align [
-      "RIGHT",
-      "TOP"
-    ]
-    offsetUnits [
-      "PIXEL",
-      "PIXEL"
-    ]
-    offset [
-      100,
-      -40
-    ]
-    sizeUnits [
-      "PIXEL",
-      "PIXEL"
-    ]
-    size [
-      200,
-      26
-    ]
-    scaleMode [
-      "PIXEL",
-      "PIXEL"
-    ]
-  }
-  children [
-    DEF _3 Transform {
-      translation -14 -10 0
-      children [
-        USE _1
-        Transform {
-          children Shape {
-            appearance Appearance {
-              fillProperties FillProperties {
-                filled FALSE
-                hatched FALSE
-              }
-              lineProperties DEF LineProperties LineProperties {
-                linewidthScaleFactor 4
-              }
-              material DEF BorderMaterial Material {
-                diffuseColor 0.461 0.461 0.461
-              }
-            }
-            geometry USE BackgroundGeometry
-          }
-        }
+LayerSet {
+  order 1
+  layers DEF Layer LayoutLayer {
+    layout Layout {
+      align [
+        "RIGHT",
+        "TOP"
+      ]
+      offsetUnits [
+        "PIXEL",
+        "PIXEL"
+      ]
+      offset [
+        100,
+        -40
+      ]
+      sizeUnits [
+        "PIXEL",
+        "PIXEL"
+      ]
+      size [
+        200,
+        26
+      ]
+      scaleMode [
+        "PIXEL",
+        "PIXEL"
       ]
     }
-    Transform {
-      translation -15 -10 0
-      children Shape {
-        appearance Appearance {
-          material DEF TextMaterial Material {
-            diffuseColor 1 1 1
-          }
-        }
-        geometry DEF Text Text {
-          string ""
-          fontStyle ScreenFontStyle {
-            family "SANS"
-            pointSize 9
-            spacing 1.6
-            justify [
-              "END",
-              "BEGIN"
-            ]
-          }
-        }
+    children [
+      DEF Notification Interface {
+        cycleInterval 5
+        linewidthScaleFactor 4
+        padding 18 10
+        isActive TRUE
       }
-    }
-  ]
-}
+      Background {
+        transparency 1
+      }
+      USE _1
+      DEF NotificationScript Script {
+        inputOnly      SFString set_string
+        inputOnly      SFVec2f  set_textBounds
+        inputOnly      SFBool   set_start
+        inputOnly      SFBool   set_end
+        inputOutput    SFTime   cycleInterval 5
+        inputOutput    SFFloat  linewidthScaleFactor 4
+        inputOutput    SFVec2f  padding 18 10
+        outputOnly     SFBool   isActive
+        outputOnly     SFVec3f  translation_changed
+        outputOnly     SFVec2f  scale_changed
+        initializeOnly SFNode   background USE BackgroundGeometry
+        initializeOnly SFNode   text USE Text
+        initializeOnly SFNode   startTimer DEF StartTimer TimeSensor { }
+        initializeOnly SFNode   endTimer DEF EndTimer TimeSensor {
+          cycleInterval 2
+        }
 
-DEF FadeIn ScalarInterpolator {
-  key [
-    0,
-    1
-  ]
-  keyValue [
-    1,
-    0
-  ]
-}
-
-DEF NotificationScript Script {
-  inputOnly      SFString set_string
-  inputOnly      SFVec2f  set_textBounds
-  inputOnly      SFBool   set_start
-  inputOnly      SFBool   set_end
-  inputOutput    SFTime   cycleInterval 5
-  inputOutput    SFFloat  linewidthScaleFactor 4
-  inputOutput    SFVec2f  padding 18 10
-  outputOnly     SFBool   isActive
-  outputOnly     SFVec3f  translation_changed
-  outputOnly     SFVec2f  scale_changed
-  initializeOnly SFNode   background USE BackgroundGeometry
-  initializeOnly SFNode   text USE Text
-  initializeOnly SFNode   startTimer DEF StartTimer TimeSensor { }
-  initializeOnly SFNode   endTimer DEF EndTimer TimeSensor {
-    cycleInterval 2
-  }
-
-  url "javascript:
+        url "javascript:
 
 var cornerRadius = 4;
 
@@ -298,7 +299,20 @@ function is_odd (value)
 	return value & 1;
 }
 "
-  directOutput TRUE
+        directOutput TRUE
+      }
+      DEF FadeIn ScalarInterpolator {
+        key [
+          0,
+          1
+        ]
+        keyValue [
+          1,
+          0
+        ]
+      }
+    ]
+  }
 }
 
 ROUTE Notification.cornerRadius_changed TO BackgroundGeometry.set_cornerRadius
@@ -318,13 +332,13 @@ ROUTE EndTimer.isActive TO NotificationScript.set_end
 ROUTE StartTimer.fraction_changed TO FadeIn.set_fraction
 ROUTE FadeIn.value_changed TO BackgroundMaterial.set_transparency
 ROUTE FadeIn.value_changed TO BorderMaterial.set_transparency
-ROUTE FadeIn.value_changed TO TextMaterial.set_transparency
 ROUTE NotificationScript.isActive TO Notification.set_isActive
-ROUTE EndTimer.fraction_changed TO TextMaterial.set_transparency
 ROUTE EndTimer.fraction_changed TO BorderMaterial.set_transparency
 ROUTE EndTimer.fraction_changed TO BackgroundMaterial.set_transparency
-ROUTE NotificationScript.translation_changed TO _3.set_translation
+ROUTE NotificationScript.translation_changed TO _2.set_translation
 ROUTE Notification.padding_changed TO NotificationScript.set_padding
-ROUTE NotificationScript.scale_changed TO _2.set_scale
+ROUTE NotificationScript.scale_changed TO _3.set_scale
+ROUTE EndTimer.fraction_changed TO TextMaterial.set_transparency
+ROUTE FadeIn.value_changed TO TextMaterial.set_transparency
 
 EXPORT Notification

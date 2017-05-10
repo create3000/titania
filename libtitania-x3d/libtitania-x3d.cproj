@@ -950,6 +950,7 @@
     <None Include="Titania\X3D\Bits\Traverse.h" />
     <None Include="Titania\X3D\Bits\Error.h" />
     <None Include="Titania\X3D\Bits\X3DConstants.h" />
+    <None Include="Titania\X3D\Components\Rendering\PolygonMode.h" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1636,6 +1637,7 @@
     <Compile Include="Titania\X3D\InputOutput\FileLoader.cpp" />
     <Compile Include="Titania\X3D\Bits\Traverse.cpp" />
     <Compile Include="Titania\X3D\Bits\Error.cpp" />
+    <Compile Include="Titania\X3D\Components\Rendering\PolygonMode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Titania\" />

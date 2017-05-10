@@ -69,13 +69,13 @@ Notification::Fields::Fields () :
 Notification::Notification (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
 	     fields (),
-	      world ()
+	      scene ()
 {
 	addType (X3DConstants::Notification);
 
 	addField (inputOutput, "string", string ());
 	
-	addChildObjects (world);
+	addChildObjects (scene);
 }
 
 X3DBaseNode*
@@ -95,63 +95,62 @@ Notification::initialize ()
 void
 Notification::set_string ()
 {
-	string () .removeInterest (&Notification::set_string, this);
-
-	if (not world)
+	try
 	{
-		X3DScenePtr scene;
-
-		try
-		{
-			scene = FileLoader (getBrowser () -> getPrivateScene ()) .createX3DFromURL ({ get_tool ("Notification.x3dv") .str () });
-
-			const auto notification = scene -> getNamedNode ("Notification");
-			
-			// isActive
-
-			SFBool & isActive = notification -> getField <SFBool> ("isActive");
-
-			isActive .addInterest (&Notification::set_active, this);
-
-			// string
-			
-			SFString & set_string = notification -> getField <SFString> ("set_string");
-
-			string () .addInterest (set_string);
-
-			set_string = string ();
-		}
-		catch (const X3DError & error)
-		{
-			std::clog << error .what () << std::endl;
+		string () .removeInterest (&Notification::set_string, this);
 	
-			scene = getBrowser () -> createScene ();
+		if (scene)
+			return;
+
+		scene = FileLoader (getBrowser () -> getPrivateScene ()) .createX3DFromURL ({ get_tool ("Notification.x3dv") .str () });
+
+		const auto notification = scene -> getNamedNode ("Notification");
+
+		// string
+		
+		SFString & set_string = notification -> getField <SFString> ("set_string");
+
+		string () .addInterest (set_string);
+
+		set_string = string ();
+
+		// isActive
+
+		SFBool & isActive = notification -> getField <SFBool> ("isActive");
+
+		isActive .addInterest (&Notification::set_active, this);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+
+		scene = getBrowser () -> createScene ();
+	}
+}
+
+void
+Notification::set_active (const bool value)
+{
+	try
+	{
+		const auto   notificationLayer = scene -> getNamedNode ("Layer");
+		const auto & headUpDisplay     = getBrowser () -> getHeadUpDisplay ();
+
+		if (value)
+		{
+			headUpDisplay -> order () .emplace_back (headUpDisplay -> layers () .size () + 1);
+			headUpDisplay -> layers () .emplace_back (notificationLayer);
 		}
-
-		world = new World (scene);
-		world -> setup ();
+		else
+		{
+			for (const auto index : headUpDisplay -> layers () .indices_of (notificationLayer))
+				headUpDisplay -> order () .remove (SFInt32 (index + 1));
+		}
 	}
-}
-
-void
-Notification::set_active (const bool & value)
-{
-	if (value)
+	catch (const X3DError & error)
 	{
-		getBrowser () -> displayed () .addInterest (&Notification::display, this);
+		__LOG__ << error .what () << std::endl;
 	}
-	else
-	{
-		getBrowser () -> displayed () .removeInterest (&Notification::display, this);
-	}
-}
-
-void
-Notification::display ()
-{
-	PolygonModeLock polygonMode (GL_FILL);
-
-	world -> traverse (TraverseType::DISPLAY, nullptr);
 }
 
 void

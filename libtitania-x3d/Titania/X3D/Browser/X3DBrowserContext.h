@@ -149,6 +149,9 @@ public:
 	getWorld () const
 	{ return world; }
 
+	const X3DPtr <LayerSet> &
+	getHeadUpDisplay () const;
+
 	const SelectionPtr &
 	getSelection ()
 	{ return selection; }
@@ -249,6 +252,7 @@ private:
 	time_type freezedTime;
 
 	WorldPtr        world;
+	WorldPtr        headUpDisplay;
 	SelectionPtr    selection;
 	NotificationPtr notification;
 	ConsolePtr      console;

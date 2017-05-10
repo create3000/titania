@@ -48,99 +48,89 @@
  *
  ******************************************************************************/
 
-#ifndef __TITANIA_X3D_BROWSER_NOTIFICATION_H__
-#define __TITANIA_X3D_BROWSER_NOTIFICATION_H__
+#include "PolygonMode.h"
 
-#include "../Components/Core/X3DNode.h"
-#include "../Execution/World.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../../Rendering/PolygonModeContainer.h"
+#include "../../Rendering/X3DRenderObject.h"
 
 namespace titania {
 namespace X3D {
 
-class Notification :
-	virtual public X3DBaseNode
+const ComponentType PolygonMode::component      = ComponentType::TITANIA;
+const std::string   PolygonMode::typeName       = "PolygonMode";
+const std::string   PolygonMode::containerField = "children";
+
+PolygonMode::Fields::Fields () :
+	  type (new SFString ("FILL"))
+{ }
+
+PolygonMode::PolygonMode (X3DExecutionContext* const executionContext) :
+	    X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	X3DGroupingNode (),
+	polygonModeType (GL_FILL)
 {
-public:
+	//addType (X3DConstants::PolygonMode);
 
-	///  @name Construction
+	addField (inputOutput,    "metadata",       metadata ());
+	addField (inputOutput,    "type",           type ());
+	addField (initializeOnly, "bboxSize",       bboxSize ());
+	addField (initializeOnly, "bboxCenter",     bboxCenter ());
+	addField (inputOnly,      "addChildren",    addChildren ());
+	addField (inputOnly,      "removeChildren", removeChildren ());
+	addField (inputOutput,    "children",       children ());
+}
 
-	Notification (X3DExecutionContext* const executionContext);
+X3DBaseNode*
+PolygonMode::create (X3DExecutionContext* const executionContext) const
+{
+	return new PolygonMode (executionContext);
+}
 
-	virtual
-	X3DBaseNode*
-	create (X3DExecutionContext* const executionContext) const final override;
+void
+PolygonMode::initialize ()
+{
+	X3DGroupingNode::initialize ();
 
-	///  @name Common members
+	type () .addInterest (&PolygonMode::set_type, this);
 
-	virtual
-	ComponentType
-	getComponent () const
-	throw (Error <DISPOSED>) final override
-	{ return component; }
+	set_type ();
+}
 
-	virtual
-	const std::string &
-	getTypeName () const
-	throw (Error <DISPOSED>) final override
-	{ return typeName; }
+void
+PolygonMode::set_type ()
+{
+	if (type () == "POINT")
+		polygonModeType = GL_POINT;
 
-	virtual
-	const std::string &
-	getContainerField () const
-	throw (Error <DISPOSED>) final override
-	{ return containerField; }
+	else if (type () == "LINE")
+		polygonModeType = GL_LINE;
 
-	///  @name Fields
-	
-	SFString &
-	string ()
-	{ return *fields .string; }
+	else
+		polygonModeType = GL_FILL;
+}
 
-	const SFString &
-	string () const
-	{ return *fields .string; }
-
-	///  @name Destruction
-
-	virtual
-	void
-	dispose () final override;
-
-
-private:
-
-	virtual
-	void
-	initialize () final override;
-
-	void
-	set_string ();
-
-	void
-	set_active (const bool);
-
-	///  @name Static members
-
-	static const ComponentType component;
-	static const std::string   typeName;
-	static const std::string   containerField;
-
-	///  @name Members
-
-	struct Fields
+void
+PolygonMode::traverse (const TraverseType type, X3DRenderObject* const renderObject)
+{
+	switch (type)
 	{
-		Fields ();
-		
-		SFString* const string;
-	};
+		case TraverseType::DISPLAY:
+		{
+			renderObject -> getLocalObjects () .emplace_back (new PolygonModeContainer (polygonModeType));
 
-	Fields fields;
+			X3DGroupingNode::traverse (type, renderObject);
 
-	X3DScenePtr scene;
-
-};
+			renderObject -> getLocalObjects () .pop_back ();
+			break;
+		}
+		default:
+		{
+			X3DGroupingNode::traverse (type, renderObject);
+			break;
+		}
+	}
+}
 
 } // X3D
 } // titania
-
-#endif
