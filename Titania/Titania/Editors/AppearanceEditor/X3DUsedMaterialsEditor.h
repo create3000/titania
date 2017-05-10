@@ -108,9 +108,8 @@ private:
 	
 	///  @name Members
 
-	X3D::BrowserPtr                 preview;
-	std::unique_ptr <NodeIndex>     nodeIndex;
-	X3D::MFTime                     times;
+	X3D::BrowserPtr             preview;
+	std::unique_ptr <NodeIndex> nodeIndex;
 
 };
 

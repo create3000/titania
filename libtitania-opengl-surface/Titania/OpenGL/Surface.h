@@ -129,7 +129,7 @@ private:
 
 	///  @name Members
 
-	std::thread::id           treadId;
+	const std::thread::id     treadId;
 	std::shared_ptr <Context> context;
 	std::shared_ptr <Context> sharingContext;
 	std::vector <int32_t>     visualAttributes;

@@ -534,6 +534,10 @@ Selection::getGeometries (const X3D::MFNode & nodes) const
 SFNode
 Selection::getTransform (const MFNode & hierarchy) const
 {
+	static const std::set <NodeType> geometryTypes = {
+		X3DConstants::X3DGeometryNode,
+	};
+
 	static const std::set <NodeType> lowestTypes = {
 		X3DConstants::X3DEnvironmentalSensorNode,
 		X3DConstants::X3DLightNode,
@@ -558,7 +562,10 @@ Selection::getTransform (const MFNode & hierarchy) const
 				
 			if (lowest -> getExecutionContext () not_eq getBrowser () -> getExecutionContext ())
 				continue;
-				
+
+			if (lowest -> isType (geometryTypes))
+				continue;
+			
 			if (not node)
 				node = lowest;
 

@@ -71,10 +71,9 @@ static constexpr size_t ICON_SIZE  = Gtk::ICON_SIZE_DIALOG;
 X3DUsedTexturesEditor::X3DUsedTexturesEditor () :
 	X3DTextureEditorInterface (),
 	                  preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/TexturePreview.x3dv") }, { })),
-	                nodeIndex (new NodeIndex (getBrowserWindow ())),
-	                    times ()
+	                nodeIndex (new NodeIndex (getBrowserWindow ()))
 {
-	addChildObjects (preview, times);
+	addChildObjects (preview);
 
 	nodeIndex -> setName ("UsedTexturesEditor." + nodeIndex -> getName ());
 }
@@ -112,8 +111,6 @@ X3DUsedTexturesEditor::initialize ()
 void
 X3DUsedTexturesEditor::set_initialized ()
 {
-	times .clear ();
-
 	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
 		nodeIndex -> updateRow (i);
 }
@@ -137,11 +134,6 @@ X3DUsedTexturesEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::Tr
 
 		const auto index = path .back ();
 
-		if (times .get1Value (index) == getCurrentBrowser () -> getCurrentTime ())
-			return;
-
-		times .set1Value (index, getCurrentBrowser () -> getCurrentTime ());
-
 		// Configure scene.
 
 		const auto appearance = preview -> getExecutionContext () -> getNamedNode <X3D::Appearance> ("Appearance");
@@ -152,7 +144,7 @@ X3DUsedTexturesEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::Tr
 
 		// Create Icon.
 
-		getBrowserWindow () -> getIconFactory () -> createIcon (nodeIndex -> getName () + basic::to_string (path .back ()),
+		getBrowserWindow () -> getIconFactory () -> createIcon (nodeIndex -> getName () + basic::to_string (index),
 		                                                        preview -> getSnapshot (IMAGE_SIZE, IMAGE_SIZE, false, 8));
 	}
 	catch (const std::exception & error)

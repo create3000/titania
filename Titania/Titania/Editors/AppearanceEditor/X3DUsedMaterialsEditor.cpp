@@ -70,10 +70,9 @@ static constexpr size_t ICON_SIZE  = Gtk::ICON_SIZE_DIALOG;
 X3DUsedMaterialsEditor::X3DUsedMaterialsEditor () :
 	X3DAppearanceEditorInterface (),
 	                     preview (X3D::createBrowser (getMasterBrowser (), { get_ui ("Editors/MaterialEditorPreview.x3dv") + "#CloseViewpoint" }, { })),
-	                   nodeIndex (new NodeIndex (getBrowserWindow ())),
-	                       times ()
+	                   nodeIndex (new NodeIndex (getBrowserWindow ()))
 {
-	addChildObjects (preview, times);
+	addChildObjects (preview);
 
 	nodeIndex -> setName ("UsedMaterialsEditor." + nodeIndex -> getName ());
 }
@@ -85,6 +84,7 @@ X3DUsedMaterialsEditor::initialize ()
 
 	preview -> initialized () .addInterest (&X3DUsedMaterialsEditor::set_initialized, this);
 	preview -> setFixedPipeline (false);
+	preview -> setAntialiasing (4);
 	preview -> setup ();
 
 	// Selection
@@ -113,8 +113,6 @@ X3DUsedMaterialsEditor::initialize ()
 void
 X3DUsedMaterialsEditor::set_initialized ()
 {
-	times .clear ();
-
 	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)
 		nodeIndex -> updateRow (i);
 }
@@ -163,11 +161,6 @@ X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::T
 
 		const auto index = path .back ();
 
-		if (times .get1Value (index) == getCurrentBrowser () -> getCurrentTime ())
-			return;
-
-		times .set1Value (index, getCurrentBrowser () -> getCurrentTime ());
-
 		// Configure scene.
 
 		const X3D::X3DPtr <X3D::Material>         material (nodeIndex -> getNodes () .at (index));
@@ -201,12 +194,12 @@ X3DUsedMaterialsEditor::on_row_changed (const Gtk::TreePath & path, const Gtk::T
 
 		// Create Icon.
 
-		getBrowserWindow () -> getIconFactory () -> createIcon (nodeIndex -> getName () + basic::to_string (path .back ()),
+		getBrowserWindow () -> getIconFactory () -> createIcon (nodeIndex -> getName () + basic::to_string (index),
 		                                                        preview -> getSnapshot (IMAGE_SIZE, IMAGE_SIZE, false, 8));
 	}
 	catch (const std::exception & error)
 	{ 
-		__LOG__ << error .what () << std::endl;
+		//__LOG__ << error .what () << std::endl;
 	}
 }
 
