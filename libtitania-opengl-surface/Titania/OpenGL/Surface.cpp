@@ -71,7 +71,7 @@ Surface::Surface () :
 { }
 
 Surface::Surface (const Surface & sharingSurface) :
-	Surface (sharingSurface .sharingContext ? sharingSurface .sharingContext : sharingSurface .context)
+	Surface (sharingSurface .sharingContext)
 { }
 
 Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
@@ -79,18 +79,18 @@ Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
 	            treadId (std::this_thread::get_id ()),
 	            context (),
 	     sharingContext (sharingContext),
-	      mapConnection (signal_map () .connect (sigc::mem_fun (this, &Surface::set_map))),
-	constructConnection (),
-	     drawConnection (),
 	   visualAttributes ()
 {
+	// Enable map_event.
+	add_events (Gdk::STRUCTURE_MASK);
 	set_double_buffered (false);
 	set_app_paintable (true);
 
-	// Enable map_event.
-	add_events (Gdk::STRUCTURE_MASK);
-
+	// Create off-screen context.
 	setAttributes (0, false);
+
+	if (not sharingContext)
+		this -> sharingContext = context;
 }
 
 void
@@ -131,7 +131,15 @@ Surface::setAttributes (const int32_t antialiasing, const bool accumBuffer)
 void
 Surface::createContext ()
 {
-	if (mapConnection .connected ())
+	if (get_mapped ())
+	{
+		context .reset (new Context (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+		                             gdk_x11_window_get_xid (get_window () -> gobj ()),
+		                             sharingContext -> getContext (),
+		                             true,
+		                             visualAttributes));
+	}
+	else
 	{
 		context .reset (new OffScreenContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
 		                                      sharingContext ? sharingContext -> getContext () : None,
@@ -140,17 +148,12 @@ Surface::createContext ()
 	                                         8,
 	                                         8));
 	}
-	else
-	{
-		context .reset (new Context (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-		                             gdk_x11_window_get_xid (get_window () -> gobj ()),
-		                             sharingContext ? sharingContext -> getContext () : None,
-		                             true,
-		                             visualAttributes));
-	}
+}
 
-	if (not sharingContext)
-		sharingContext = context;
+void
+Surface::setSwapInterval (const size_t interval)
+{
+	context -> setSwapInterval (interval);
 }
 
 bool
@@ -160,54 +163,9 @@ Surface::makeCurrent () const
 }
 
 void
-Surface::setSwapInterval (const size_t interval)
-{
-	context -> setSwapInterval (interval);
-}
-
-void
 Surface::swapBuffers () const
 {
 	context -> swapBuffers ();
-}
-
-void
-Surface::set_map ()
-{
-	mapConnection .disconnect ();
-
-	createContext ();
-
-	constructConnection = signal_draw () .connect (sigc::mem_fun (this, &Surface::set_construct), false);
-}
-
-bool
-Surface::set_configure_event (GdkEventConfigure* const event)
-{
-	reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
-
-	queue_draw ();
-
-	return false; // Propagate the event further.
-}
-
-bool
-Surface::set_construct (const Cairo::RefPtr <Cairo::Context> & cairo)
-{
-	constructConnection .disconnect ();
-	
-	if (drawConnection .connected ())
-		return false;
-
-	signal_configure_event () .connect (sigc::mem_fun (this, &Surface::set_configure_event));
-
-	drawConnection = signal_draw () .connect (sigc::mem_fun (this, &Surface::set_draw), false);
-
-	setup ();
-
-	reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
-
-	return true;
 }
 
 void
@@ -217,26 +175,52 @@ Surface::initialize ()
 }
 
 bool
-Surface::set_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
+Surface::on_configure_event (GdkEventConfigure* const event)
 {
-	update ();
+	Gtk::DrawingArea::on_configure_event (event);
+
+	reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
+
+	queue_draw ();
 
 	return false;
+}
+
+void
+Surface::on_map ()
+{
+	Gtk::DrawingArea::on_map ();
+
+	if (not std::dynamic_pointer_cast <OffScreenContext> (context) and context)
+		return;
+
+	createContext ();
+
+	setup ();
+
+	reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
 }
 
 bool
 Surface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
 {
-	return Gtk::DrawingArea::on_draw (cairo);
+	Gtk::DrawingArea::on_draw (cairo);
+
+	update ();
+
+	return false;
+}
+
+void
+Surface::on_unmap ()
+{
+	Gtk::DrawingArea::on_unmap ();
 }
 
 void
 Surface::on_unrealize ()
 {
-	drawConnection .disconnect ();
-
-	if (context)
-		context -> dispose ();
+	// Dispose context.
 
 	context        .reset ();
 	sharingContext .reset ();
@@ -247,8 +231,6 @@ Surface::on_unrealize ()
 void
 Surface::dispose ()
 {
-	drawConnection .disconnect ();
-
 	notify_callbacks ();
 
 	// Don't use widget unparent!
@@ -256,10 +238,8 @@ Surface::dispose ()
 
 	if (container)
 		container -> remove (*this);
-	//
 
-	if (context)
-		context -> dispose ();
+	// Dispose context.
 
 	context        .reset ();
 	sharingContext .reset ();

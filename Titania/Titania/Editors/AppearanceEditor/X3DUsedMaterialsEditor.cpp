@@ -113,8 +113,6 @@ X3DUsedMaterialsEditor::initialize ()
 void
 X3DUsedMaterialsEditor::set_initialized ()
 {
-	__LOG__ << std::endl;
-
 	times .clear ();
 
 	for (size_t i = 0, size = nodeIndex -> getNodes () .size (); i < size; ++ i)

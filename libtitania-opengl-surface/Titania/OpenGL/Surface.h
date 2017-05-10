@@ -122,8 +122,20 @@ protected:
 	update () = 0;
 
 	virtual
+	void
+	on_map () override;
+
+	virtual
+	bool
+	on_configure_event (GdkEventConfigure* const event) override;
+
+	virtual
 	bool
 	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo) override;
+
+	virtual
+	void
+	on_unmap () override;
 
 	virtual
 	void
@@ -139,31 +151,12 @@ private:
 	void
 	createContext ();
 
-	///  @name Event handlers
-
-	void
-	set_map ();
-
-	bool
-	set_construct (const Cairo::RefPtr <Cairo::Context> & cairo);
-
-	bool
-	set_configure_event (GdkEventConfigure* const event);
-
-	bool
-	set_draw (const Cairo::RefPtr <Cairo::Context> & cairo);
-
 	///  @name Members
 
 	std::thread::id           treadId;
 	std::shared_ptr <Context> context;
 	std::shared_ptr <Context> sharingContext;
-
-	sigc::connection mapConnection;
-	sigc::connection constructConnection;
-	sigc::connection drawConnection;
-
-	std::vector <int32_t> visualAttributes;
+	std::vector <int32_t>     visualAttributes;
 
 };
 
