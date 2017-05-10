@@ -81,7 +81,7 @@ Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
 	     sharingContext (sharingContext),
 	   visualAttributes ()
 {
-	// Enable map_event.
+	// Enable map event.
 	add_events (Gdk::STRUCTURE_MASK);
 	set_double_buffered (false);
 	set_app_paintable (true);
@@ -91,6 +91,28 @@ Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
 
 	if (not sharingContext)
 		this -> sharingContext = context;
+}
+
+void
+Surface::createContext ()
+{
+	if (get_mapped ())
+	{
+		context .reset (new Context (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+		                             gdk_x11_window_get_xid (get_window () -> gobj ()),
+		                             sharingContext -> getContext (),
+		                             true,
+		                             visualAttributes));
+	}
+	else
+	{
+		context .reset (new OffScreenContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
+		                                      sharingContext ? sharingContext -> getContext () : None,
+		                                      true,
+		                                      visualAttributes,
+	                                         8,
+	                                         8));
+	}
 }
 
 void
@@ -129,61 +151,21 @@ Surface::setAttributes (const int32_t antialiasing, const bool accumBuffer)
 }
 
 void
-Surface::createContext ()
-{
-	if (get_mapped ())
-	{
-		context .reset (new Context (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-		                             gdk_x11_window_get_xid (get_window () -> gobj ()),
-		                             sharingContext -> getContext (),
-		                             true,
-		                             visualAttributes));
-	}
-	else
-	{
-		context .reset (new OffScreenContext (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),
-		                                      sharingContext ? sharingContext -> getContext () : None,
-		                                      true,
-		                                      visualAttributes,
-	                                         8,
-	                                         8));
-	}
-}
-
-void
 Surface::setSwapInterval (const size_t interval)
 {
 	context -> setSwapInterval (interval);
 }
 
 bool
-Surface::makeCurrent () const
+Surface::makeCurrent ()
 {
 	return std::this_thread::get_id () == treadId and context and context -> makeCurrent ();
 }
 
 void
-Surface::swapBuffers () const
+Surface::swapBuffers ()
 {
 	context -> swapBuffers ();
-}
-
-void
-Surface::initialize ()
-{
-	glewInit ();
-}
-
-bool
-Surface::on_configure_event (GdkEventConfigure* const event)
-{
-	Gtk::DrawingArea::on_configure_event (event);
-
-	reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
-
-	queue_draw ();
-
-	return false;
 }
 
 void
@@ -195,20 +177,6 @@ Surface::on_map ()
 		return;
 
 	createContext ();
-
-	setup ();
-
-	reshape (math::vector4 <int32_t> (0, 0, get_width (), get_height ()));
-}
-
-bool
-Surface::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
-{
-	Gtk::DrawingArea::on_draw (cairo);
-
-	update ();
-
-	return false;
 }
 
 void
@@ -233,7 +201,7 @@ Surface::dispose ()
 {
 	notify_callbacks ();
 
-	// Don't use widget unparent!
+	// Don't use widget's unparent!
 	const auto container = get_parent ();
 
 	if (container)

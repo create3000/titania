@@ -65,7 +65,7 @@ AppearanceEditor::AppearanceEditor (X3DBrowserWindow* const browserWindow) :
 	           X3DMaterialEditor (),
 	     X3DFillPropertiesEditor (),
 	     X3DLinePropertiesEditor (),
-	 X3DUsedMaterialsEditor (),
+	      X3DUsedMaterialsEditor (),
 	    X3DMaterialPaletteEditor (),
                       selection (),
 	                  shapeNodes (),

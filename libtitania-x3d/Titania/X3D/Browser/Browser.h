@@ -79,10 +79,6 @@ public:
 	Browser*
 	create (X3DExecutionContext* const executionContext) const;
 
-	virtual
-	void
-	setup () final override;
-
 	///  @name Member access
 
 	void
@@ -103,16 +99,6 @@ public:
 	setAntialiasing (const int32_t samples)
 	noexcept (true);
 
-	virtual
-	bool
-	makeCurrent ()
-	noexcept (true) final override;
-
-	virtual
-	void
-	swapBuffers ()
-	noexcept (true) final override;
-
 	///  @name Destruction
 
 	virtual
@@ -131,30 +117,42 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Operations
+
+	virtual
+	bool
+	makeCurrent ()
+	noexcept (true) final override;
+
+	virtual
+	void
+	swapBuffers ()
+	noexcept (true) final override;
+
 	///  @name Event handlers
 
 	virtual
 	void
 	on_style_updated () override;
 
-
-private:
-
-	///  @name Event handler
-
 	virtual
 	void
 	on_map () override;
 
 	virtual
+	bool
+	on_configure_event (GdkEventConfigure* const event) override;
+
+	virtual
+	bool
+	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo) override;
+
+	virtual
 	void
 	on_unmap () override;
 
-	void
-	set_cursor (const String &);
 
-	void
-	set_viewer ();
+private:
 
 	///  @name Operations
 
@@ -166,11 +164,14 @@ private:
 	void
 	reshape (const Vector4i & viewport)
 	noexcept (true) final override;
-	
-	virtual
+
+	///  @name Event handler
+
 	void
-	update ()
-	noexcept (true) final override;
+	set_cursor (const String & value);
+
+	void
+	set_viewer ();
 
 	///  @name Members
 

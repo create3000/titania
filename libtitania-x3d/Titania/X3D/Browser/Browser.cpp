@@ -131,19 +131,14 @@ Browser::create (X3DExecutionContext* const executionContext) const
 }
 
 void
-Browser::setup ()
-{
-	X3DBrowser::setup ();
-}
-
-void
 Browser::initialize ()
 {
 	try
 	{
 		ContextLock lock (this);
 
-		OpenGL::Surface::initialize ();
+		glewInit ();
+
 		X3DBrowser::initialize ();
 
 		get_style_context () -> add_class ("background");
@@ -193,6 +188,49 @@ Browser::initialize ()
 }
 
 void
+Browser::setAntialiasing (const int32_t samples)
+noexcept (true)
+{
+	OpenGL::Surface::setAttributes (samples, true);
+}
+
+bool
+Browser::makeCurrent ()
+noexcept (true)
+{
+	return OpenGL::Surface::makeCurrent ();
+}
+
+void
+Browser::swapBuffers ()
+noexcept (true)
+{
+	OpenGL::Surface::swapBuffers ();
+}
+
+void
+Browser::reshape (const Vector4i & viewport)
+noexcept (true)
+{
+	try
+	{
+		ContextLock lock (this);
+
+		background -> configure (get_style_context (), get_width (), get_height ());
+	
+		X3DBrowser::reshape (viewport);
+	}
+	catch (const std::exception & exception)
+	{ }
+}
+
+void
+Browser::renderBackground ()
+{
+	background -> draw ();
+}
+
+void
 Browser::on_style_updated ()
 {
 	try
@@ -212,33 +250,51 @@ Browser::on_map ()
 {
 	OpenGL::Surface::on_map ();
 
-	if (isLive ())
-		getExecutionContext () -> beginUpdate ();
-
 	grab_focus ();
 	queue_draw ();
+	set_cursor (cursor);
+
+	if (not isInitialized ())
+		setup ();
+
+	reshape (Vector4i (0, 0, get_width (), get_height ()));
+
+	getExecutionContext () -> beginUpdate ();
+}
+
+bool
+Browser::on_configure_event (GdkEventConfigure* const event)
+{
+	OpenGL::Surface::on_configure_event (event);
+
+	reshape (Vector4i (0, 0, get_width (), get_height ()));
+
+	queue_draw ();
+
+	return false;
+}
+
+bool
+Browser::on_draw (const Cairo::RefPtr <Cairo::Context> & cairo)
+{
+	OpenGL::Surface::on_draw (cairo);
+
+	update ();
+
+	return false;
 }
 
 void
 Browser::on_unmap ()
 {
-	if (isLive ())
-	{
-		getClock () -> advance ();
-
-		getExecutionContext () -> endUpdate ();
-
-		try
-		{
-			ContextLock lock (this);
-		
-			processEvents ();
-		}
-		catch (const Error <INVALID_OPERATION_TIMING> &)
-		{ }
-	}
-
 	OpenGL::Surface::on_unmap ();
+
+	if (not isLive ())
+		return;
+
+	getExecutionContext () -> endUpdate ();
+
+	queue_draw ();
 }
 
 void
@@ -313,56 +369,6 @@ Browser::set_viewer ()
 
 		viewer -> setup ();
 	}
-}
-
-void
-Browser::setAntialiasing (const int32_t samples)
-noexcept (true)
-{
-	OpenGL::Surface::setAttributes (samples, true);
-}
-
-bool
-Browser::makeCurrent ()
-noexcept (true)
-{
-	return OpenGL::Surface::makeCurrent ();
-}
-
-void
-Browser::swapBuffers ()
-noexcept (true)
-{
-	OpenGL::Surface::swapBuffers ();
-}
-
-void
-Browser::reshape (const Vector4i & viewport)
-noexcept (true)
-{
-	try
-	{
-		ContextLock lock (this);
-
-		background -> configure (get_style_context (), get_width (), get_height ());
-	
-		X3DBrowser::reshape (viewport);
-	}
-	catch (const std::exception & exception)
-	{ }
-}
-
-void
-Browser::renderBackground ()
-{
-	background -> draw ();
-}
-
-void
-Browser::update ()
-noexcept (true)
-{
-	X3DBrowser::update ();
 }
 
 void

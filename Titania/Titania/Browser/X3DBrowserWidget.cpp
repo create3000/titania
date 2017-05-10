@@ -492,7 +492,10 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 	browsers .emplace_back (browser);
 
 	if (not URL .empty ())
+	{
 		browser -> initialized () .addInterest (&X3DBrowserWidget::set_browser, this, browser, URL);
+		browser -> set_opacity (0);
+	}
 
 	browser -> setAntialiasing (4);
 	browser -> setNotifyOnLoad (true);
@@ -553,6 +556,7 @@ void
 X3DBrowserWidget::set_splashScreen (const X3D::BrowserPtr & browser, const basic::uri & URL)
 {
 	browser -> initialized () .removeInterest (&X3DBrowserWidget::set_splashScreen, this);
+	browser -> set_opacity (1);
 
 	load (browser, URL);
 }

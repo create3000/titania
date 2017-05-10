@@ -250,6 +250,7 @@
     <None Include="Oses.h" />
     <None Include="nurbsinvrml.pdf" />
     <None Include="L-System.js" />
+    <None Include="xxx\BrowserCellRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Quaternion\" />
@@ -276,6 +277,7 @@
     <Compile Include="xxx\PointingDevice.cpp" />
     <Compile Include="xxx\TextEditor.cpp" />
     <Compile Include="JavaScript\V8.cpp" />
+    <Compile Include="xxx\BrowserCellRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CosmoWorlds\icons\Fields.xcf" />

@@ -74,16 +74,16 @@ public:
 	void
 	setAttributes (const int32_t antialiasing, const bool accumBuffer);
 
-	///  @name Operations
-
-	bool
-	makeCurrent () const;
-
 	void
 	setSwapInterval (const size_t value);
 
+	///  @name Operations
+
+	bool
+	makeCurrent ();
+
 	void
-	swapBuffers () const;
+	swapBuffers ();
 
 	///  @name Destruction
 
@@ -107,31 +107,7 @@ protected:
 
 	virtual
 	void
-	setup () = 0;
-
-	virtual
-	void
-	initialize ();
-
-	virtual
-	void
-	reshape (const math::vector4 <int32_t> &) = 0;
-
-	virtual
-	void
-	update () = 0;
-
-	virtual
-	void
 	on_map () override;
-
-	virtual
-	bool
-	on_configure_event (GdkEventConfigure* const event) override;
-
-	virtual
-	bool
-	on_draw (const Cairo::RefPtr <Cairo::Context> & cairo) override;
 
 	virtual
 	void

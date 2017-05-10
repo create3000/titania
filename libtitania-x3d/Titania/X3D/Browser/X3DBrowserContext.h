@@ -181,18 +181,6 @@ public:
 	void
 	endUpdateForFrame ();
 
-	///  @name Rendering
-
-	virtual
-	bool
-	makeCurrent ()
-	noexcept (true) = 0;
-
-	virtual
-	void
-	swapBuffers ()
-	noexcept (true) = 0;
-
 	///  @name Destruction
 
 	virtual
@@ -205,6 +193,10 @@ public:
 
 protected:
 
+	///  @name Friends
+
+	friend class ContextLock;
+
 	///  @name Constructor
 
 	X3DBrowserContext ();
@@ -213,9 +205,23 @@ protected:
 	void
 	initialize () override;
 
+	///  @name Member access
+
 	void
 	setWorld (World* const value)
 	{ world = value; }
+
+	///  @name Operations
+
+	virtual
+	bool
+	makeCurrent ()
+	noexcept (true) = 0;
+
+	virtual
+	void
+	swapBuffers ()
+	noexcept (true) = 0;
 
 	void
 	update ()

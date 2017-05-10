@@ -61,13 +61,15 @@ class BrowserApplication :
 {
 public:
 
+	///  @name Construction
+
 	BrowserApplication (const MFString & url, const MFString & parameter) :
 		    X3DBaseNode (this, this),
 		     X3DBrowser (url, parameter),
 		         viewer (X3DConstants::NoneViewer)
-	{
-		addType (X3DConstants::BrowserApplication);
-	}
+	{ addType (X3DConstants::BrowserApplication); }
+
+	///  @name Member access
 
 	virtual
 	void
@@ -78,6 +80,11 @@ public:
 	const SFEnum <X3DConstants::NodeType> &
 	getViewerType () const final override
 	{ return viewer; }
+
+
+protected:
+
+	///  @name Operations
 
 	virtual
 	bool
@@ -94,10 +101,14 @@ public:
 
 private:
 
+	///  @name Construction
+
 	virtual
 	X3DBaseNode*
 	create (X3DExecutionContext* const executionContext) const final override
 	{ return new BrowserApplication ({ }, { }); }
+
+	///  @name Members
 
 	SFEnum <X3DConstants::NodeType> viewer;
 
