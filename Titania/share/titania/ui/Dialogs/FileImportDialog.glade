@@ -224,6 +224,7 @@
   </object>
   <object class="GtkDialog" id="ImportDialog">
     <property name="can_focus">False</property>
+    <property name="border_width">8</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>

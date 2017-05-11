@@ -793,6 +793,8 @@ void
 X3DBrowserWidget::set_scene ()
 {
 	getIconFactory () -> createIcon (getCurrentScene ());
+
+	setTitle ();
 }
 
 void

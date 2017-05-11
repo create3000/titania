@@ -160,7 +160,7 @@ X3DUserInterface::connectFocusEvent (Gtk::Widget & parent)
 		    G_TYPE_CHECK_INSTANCE_TYPE (instance, GTK_TYPE_TEXT_VIEW))
 		{
 			widget -> signal_focus_in_event ()  .connect (sigc::mem_fun (this, &X3DUserInterface::on_focus_in_event));
-			//widget -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_focus_out_event));
+			widget -> signal_focus_out_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_focus_out_event));
 		}
 	}
 }

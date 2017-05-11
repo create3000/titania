@@ -165,6 +165,10 @@ FileImportDialog::FileImportDialog (X3DBrowserWindow* const browserWindow) :
 	else
 		getWindow () .set_filename (os::home () + _ ("scene.x3d"));
 
+	// Import dialog
+
+	getImportDialog () .set_transient_for (getBrowserWindow () -> getWindow ());
+
 	setup ();
 }
 

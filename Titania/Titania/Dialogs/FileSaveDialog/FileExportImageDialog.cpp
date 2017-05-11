@@ -98,6 +98,10 @@ FileExportImageDialog::FileExportImageDialog (X3DBrowserWindow* const browserWin
 
 	setTitleBar (getImageOptionsDialog (), getImageOptionsHeaderBar ());
 
+	// Image options dialog
+
+	getImageOptionsDialog () .set_transient_for (getBrowserWindow () -> getWindow ());
+
 	setup ();
 }
 
