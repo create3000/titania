@@ -341,8 +341,8 @@ MFColorButton::set_buffer ()
 		valueAdjustment -> set_value (0);
 	}
 
-	widget               .set_sensitive (hasField);
-	colorsScrolledWindow .set_sensitive (hasField and not isEmpty and index >= 0);
+	widget               .set_sensitive (hasField and index >= 0);
+	colorsScrolledWindow .set_sensitive (hasField and not isEmpty);
 	removeColorButton    .set_sensitive (index >= 0);
 	on_colors_configure_event (nullptr);
 
@@ -581,17 +581,20 @@ MFColorButton::on_colors_key_press_event (GdkEventKey* event)
 bool
 MFColorButton::on_colors_button_release_event (GdkEventButton* event)
 {
-	if (not node)
-		return true;
-
 	try
 	{
+		if (not node)
+			return true;
+
 		const auto & field   = node -> getField <X3D::MFColor> (name);
 		const auto   width   = colorsDrawingArea .get_width ();
 		const auto   columns = getColumns (width, colorsSize, colorsGap, colorsBorder);
 		const size_t column  = (event -> x - colorsBorder [0] + colorsGap / 2.0) / (colorsSize + colorsGap);
 		const size_t row     = (event -> y - colorsBorder [3] + colorsGap / 2.0) / (colorsSize + colorsGap);
 		const size_t index   = columns * row + column;
+
+__LOG__ << index << std::endl;
+__LOG__ << field .size () << std::endl;
 
 		if (index < field .size ())
 			setIndex (index);

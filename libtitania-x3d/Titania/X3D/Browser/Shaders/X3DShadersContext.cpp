@@ -93,6 +93,7 @@ X3DShadersContext::initialize ()
 	if (glXGetCurrentContext ())
 	{
 //		#ifdef TITANIA_FIXED_PIPELINE_DRIVERS
+//		// Remove if can handle nouveau.
 //		static const std::regex fixedPipelineDrivers (R"/(gallium)/", std::regex_constants::icase);
 //
 //		fixedPipelineDriver = std::regex_search (getBrowser () -> getRenderer (), fixedPipelineDrivers);

@@ -50,159 +50,159 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include <Titania/Basic/URI.h>
-#include <iostream>
-
-namespace titania {
-
-class TestURI
-{
-public:
-
-	TestURI ()
-	{
-		std::clog << std::endl;
-		test_uri (basic::uri ());
-		test_uri ("");
-
-		std::clog << std::endl;
-		test_uri ("//");
-		test_uri ("//test.create3000.de:80/path/to/file");
-		test_uri ("test.create3000.de:80/path/to/file");
-		test_uri (":80/path/to/file");
-
-		std::clog << std::endl;
-		test_uri ("http://test.create3000.de");
-		test_uri ("http://test.create3000.de?query=true");
-		test_uri ("http://test.create3000.de#fragment");
-		test_uri ("http://test.create3000.de?query=true#fragment");
-
-		std::clog << std::endl;
-		test_uri ("http://test.create3000.de/");
-		test_uri ("http://test.create3000.de/?query=true");
-		test_uri ("http://test.create3000.de/#fragment");
-		test_uri ("http://test.create3000.de/?query=true#fragment");
-
-		std::clog << std::endl;
-		test_uri ("http://test.create3000.de/path/to/file.html");
-		test_uri ("http://test.create3000.de/path/to/file.html?query=true");
-		test_uri ("http://test.create3000.de/path/to/file.html#fragment");
-		test_uri ("http://test.create3000.de/path/to/file.html?query=true#fragment");
-
-		std::clog << std::endl;
-		test_uri ("http://test.create3000.de/path/to/file");
-		test_uri ("http://test.create3000.de/path/to/file?query=true");
-		test_uri ("http://test.create3000.de/path/to/file#fragment");
-		test_uri ("http://test.create3000.de/path/to/file?query=true#fragment");
-
-		std::clog << std::endl;
-		test_uri ("http://test.create3000.de/path/to/file.html?");
-		test_uri ("http://test.create3000.de/path/to/file.html#");
-		test_uri ("http://test.create3000.de/path/to/file.html?#");
-
-		std::clog << std::endl;
-		test_uri ("http://test.create3000.de:80");
-		test_uri ("http://test.create3000.de:80?query=true");
-		test_uri ("http://test.create3000.de:80#fragment");
-		test_uri ("http://test.create3000.de:80?query=true#fragment");
-
-		std::clog << std::endl;
-		test_uri ("http://test.create3000.de:80/");
-		test_uri ("http://test.create3000.de:80/?query=true");
-		test_uri ("http://test.create3000.de:80/#fragment");
-		test_uri ("http://test.create3000.de:80/?query=true#fragment");
-
-		std::clog << std::endl;
-		test_uri ("http://test.create3000.de:80/path/to/file.html");
-		test_uri ("http://test.create3000.de:80/path/to/file.html?query=true");
-		test_uri ("http://test.create3000.de:80/path/to/file.html#fragment");
-		test_uri ("http://test.create3000.de:080/path/to/file.html?query=true#fragment");
-
-		std::clog << std::endl;
-		test_uri ("/");
-		test_uri ("/path/to/file.html");
-		test_uri ("/path/to/");
-
-		test_uri ("file://");
-		test_uri ("file:///");
-		test_uri ("file:///path/to/file.html");
-		test_uri ("file:///path/to/");
-
-		std::clog << std::endl;
-		test_uri ("path/to/file.html");
-		test_uri ("path/to/");
-
-		test_uri ("http://www.web3d.org/x3d/content/examples/Basic/Vrml97Specification/ChopperRotor.wrl");
-		test_uri ("file:///home/holger/Projekte/Titania/Library/Tests/Basic/EmptyWorld.wrl");
-
-		std::clog << std::endl;
-		test_uri ("about:blank");
-		test_uri ("urn:fantasy:123:345");
-		test_uri ("urn:iso:std:iso:9999:-1:ed-2:en:amd:1");
-
-		// assign
-		basic::uri uri;
-		uri = uri;
-		uri = "http://test.create3000.de:80/path/to/file.html?query=true#fragment";
-		uri = std::string ("http://test.create3000.de:80/path/to/file.html?query=true#fragment");
-	}
-
-	void
-	test_uri (const basic::uri & uri)
-	{
-		print_uri (uri);
-
-		std::clog << "Transform:  " << uri .transform ("http://test.create3000.de/path/to/child.html") << std::endl;
-		std::clog << "Transform:  " << uri .transform ("http://www.web3d.org/x3d/content/examples/Basic/Vrml97Specification/ChopperRotor.wrl") << std::endl;
-		std::clog << "Transform:  " << uri .transform ("file:///home/holger/Projekte/Titania/Library/Tests/Basic/EmptyWorld.wrl") << std::endl;
-		std::clog << "Transform:  " << uri .transform ("/from/basename.suffix") << std::endl;
-		std::clog << "Transform:  " << uri .transform ("../from/basename.suffix") << std::endl;
-		std::clog << "Transform:  " << uri .transform ("//") << std::endl;
-		std::clog << "Transform:  " << uri .transform ("//test.create3000.de/path/to/file") << std::endl;
-		std::clog << "Transform:  " << uri .transform ("test.create3000.de/path/to/file") << std::endl;
-		std::clog << "Transform:  " << uri .transform ("/path/to/file") << std::endl;
-		std::clog << "Transform:  " << uri .transform ("//test.create3000.de:80/path/to/file") << std::endl;
-		std::clog << "Transform:  " << uri .transform ("test.create3000.de:80/path/to/file") << std::endl;
-		std::clog << "Transform:  " << uri .transform (":80/path/to/file") << std::endl;
-	}
-
-	void
-	print_uri (const basic::uri & uri)
-	{
-		std::clog << std::endl;
-
-		std::clog << "string: '" << uri .str () << "'" << std::endl;
-		std::clog << "uri:    '" << uri << "'" << std::endl;
-		std::clog << "copy:   '" << basic::uri (uri) << "'" << std::endl;
-
-		std::clog << "is equal:     " << std::boolalpha << (uri == uri) << std::endl;
-		std::clog << "is absolute:  " << uri .is_absolute () << std::endl;
-		std::clog << "is relative:  " << uri .is_relative () << std::endl;
-		std::clog << "is local:     " << uri .is_local () << std::endl;
-		std::clog << "is directory: " << uri .is_directory () << std::endl;
-		std::clog << "is file:      " << uri .is_file () << std::endl;
-
-		std::clog << "Scheme:        " << uri .scheme () << std::endl;
-		std::clog << "Authority:     " << uri .authority () << std::endl;
-		std::clog << "Hierarchy:     " << uri .hierarchy () << std::endl;
-		std::clog << "Host:          " << uri .host () << std::endl;
-		std::clog << "Port:          " << uri .port () << std::endl;
-		std::clog << "WellKnownPort: " << uri .well_known_port () << std::endl;
-		std::clog << "Path:          " << uri .path () << std::endl;
-		std::clog << "Query:         " << uri .query () << std::endl;
-		std::clog << "Fragment:      " << uri .fragment () << std::endl;
-
-		std::clog << "Root:     " << uri .root () << std::endl;
-		std::clog << "Base:     " << uri .base () << std::endl;
-		std::clog << "Parent:   " << uri .parent () << std::endl;
-
-		std::clog << "Filename: " << uri .filename () << std::endl;
-		std::clog << "Basename: " << uri .basename () << std::endl;
-		std::clog << "Basename: " << uri .basename (".html") << std::endl;
-		std::clog << "Basename: " << uri .basename ({ ".wrl", ".html" }) << std::endl;
-		std::clog << "Suffix:   " << uri .suffix () << std::endl;
-	}
-
-};
-
-} // titania
+//#include <Titania/Basic/URI.h>
+//#include <iostream>
+//
+//namespace titania {
+//
+//class TestURI
+//{
+//public:
+//
+//	TestURI ()
+//	{
+//		std::clog << std::endl;
+//		test_uri (basic::uri ());
+//		test_uri ("");
+//
+//		std::clog << std::endl;
+//		test_uri ("//");
+//		test_uri ("//test.create3000.de:80/path/to/file");
+//		test_uri ("test.create3000.de:80/path/to/file");
+//		test_uri (":80/path/to/file");
+//
+//		std::clog << std::endl;
+//		test_uri ("http://test.create3000.de");
+//		test_uri ("http://test.create3000.de?query=true");
+//		test_uri ("http://test.create3000.de#fragment");
+//		test_uri ("http://test.create3000.de?query=true#fragment");
+//
+//		std::clog << std::endl;
+//		test_uri ("http://test.create3000.de/");
+//		test_uri ("http://test.create3000.de/?query=true");
+//		test_uri ("http://test.create3000.de/#fragment");
+//		test_uri ("http://test.create3000.de/?query=true#fragment");
+//
+//		std::clog << std::endl;
+//		test_uri ("http://test.create3000.de/path/to/file.html");
+//		test_uri ("http://test.create3000.de/path/to/file.html?query=true");
+//		test_uri ("http://test.create3000.de/path/to/file.html#fragment");
+//		test_uri ("http://test.create3000.de/path/to/file.html?query=true#fragment");
+//
+//		std::clog << std::endl;
+//		test_uri ("http://test.create3000.de/path/to/file");
+//		test_uri ("http://test.create3000.de/path/to/file?query=true");
+//		test_uri ("http://test.create3000.de/path/to/file#fragment");
+//		test_uri ("http://test.create3000.de/path/to/file?query=true#fragment");
+//
+//		std::clog << std::endl;
+//		test_uri ("http://test.create3000.de/path/to/file.html?");
+//		test_uri ("http://test.create3000.de/path/to/file.html#");
+//		test_uri ("http://test.create3000.de/path/to/file.html?#");
+//
+//		std::clog << std::endl;
+//		test_uri ("http://test.create3000.de:80");
+//		test_uri ("http://test.create3000.de:80?query=true");
+//		test_uri ("http://test.create3000.de:80#fragment");
+//		test_uri ("http://test.create3000.de:80?query=true#fragment");
+//
+//		std::clog << std::endl;
+//		test_uri ("http://test.create3000.de:80/");
+//		test_uri ("http://test.create3000.de:80/?query=true");
+//		test_uri ("http://test.create3000.de:80/#fragment");
+//		test_uri ("http://test.create3000.de:80/?query=true#fragment");
+//
+//		std::clog << std::endl;
+//		test_uri ("http://test.create3000.de:80/path/to/file.html");
+//		test_uri ("http://test.create3000.de:80/path/to/file.html?query=true");
+//		test_uri ("http://test.create3000.de:80/path/to/file.html#fragment");
+//		test_uri ("http://test.create3000.de:080/path/to/file.html?query=true#fragment");
+//
+//		std::clog << std::endl;
+//		test_uri ("/");
+//		test_uri ("/path/to/file.html");
+//		test_uri ("/path/to/");
+//
+//		test_uri ("file://");
+//		test_uri ("file:///");
+//		test_uri ("file:///path/to/file.html");
+//		test_uri ("file:///path/to/");
+//
+//		std::clog << std::endl;
+//		test_uri ("path/to/file.html");
+//		test_uri ("path/to/");
+//
+//		test_uri ("http://www.web3d.org/x3d/content/examples/Basic/Vrml97Specification/ChopperRotor.wrl");
+//		test_uri ("file:///home/holger/Projekte/Titania/Library/Tests/Basic/EmptyWorld.wrl");
+//
+//		std::clog << std::endl;
+//		test_uri ("about:blank");
+//		test_uri ("urn:fantasy:123:345");
+//		test_uri ("urn:iso:std:iso:9999:-1:ed-2:en:amd:1");
+//
+//		// assign
+//		basic::uri uri;
+//		uri = uri;
+//		uri = "http://test.create3000.de:80/path/to/file.html?query=true#fragment";
+//		uri = std::string ("http://test.create3000.de:80/path/to/file.html?query=true#fragment");
+//	}
+//
+//	void
+//	test_uri (const basic::uri & uri)
+//	{
+//		print_uri (uri);
+//
+//		std::clog << "Transform:  " << uri .transform ("http://test.create3000.de/path/to/child.html") << std::endl;
+//		std::clog << "Transform:  " << uri .transform ("http://www.web3d.org/x3d/content/examples/Basic/Vrml97Specification/ChopperRotor.wrl") << std::endl;
+//		std::clog << "Transform:  " << uri .transform ("file:///home/holger/Projekte/Titania/Library/Tests/Basic/EmptyWorld.wrl") << std::endl;
+//		std::clog << "Transform:  " << uri .transform ("/from/basename.suffix") << std::endl;
+//		std::clog << "Transform:  " << uri .transform ("../from/basename.suffix") << std::endl;
+//		std::clog << "Transform:  " << uri .transform ("//") << std::endl;
+//		std::clog << "Transform:  " << uri .transform ("//test.create3000.de/path/to/file") << std::endl;
+//		std::clog << "Transform:  " << uri .transform ("test.create3000.de/path/to/file") << std::endl;
+//		std::clog << "Transform:  " << uri .transform ("/path/to/file") << std::endl;
+//		std::clog << "Transform:  " << uri .transform ("//test.create3000.de:80/path/to/file") << std::endl;
+//		std::clog << "Transform:  " << uri .transform ("test.create3000.de:80/path/to/file") << std::endl;
+//		std::clog << "Transform:  " << uri .transform (":80/path/to/file") << std::endl;
+//	}
+//
+//	void
+//	print_uri (const basic::uri & uri)
+//	{
+//		std::clog << std::endl;
+//
+//		std::clog << "string: '" << uri .str () << "'" << std::endl;
+//		std::clog << "uri:    '" << uri << "'" << std::endl;
+//		std::clog << "copy:   '" << basic::uri (uri) << "'" << std::endl;
+//
+//		std::clog << "is equal:     " << std::boolalpha << (uri == uri) << std::endl;
+//		std::clog << "is absolute:  " << uri .is_absolute () << std::endl;
+//		std::clog << "is relative:  " << uri .is_relative () << std::endl;
+//		std::clog << "is local:     " << uri .is_local () << std::endl;
+//		std::clog << "is directory: " << uri .is_directory () << std::endl;
+//		std::clog << "is file:      " << uri .is_file () << std::endl;
+//
+//		std::clog << "Scheme:        " << uri .scheme () << std::endl;
+//		std::clog << "Authority:     " << uri .authority () << std::endl;
+//		std::clog << "Hierarchy:     " << uri .hierarchy () << std::endl;
+//		std::clog << "Host:          " << uri .host () << std::endl;
+//		std::clog << "Port:          " << uri .port () << std::endl;
+//		std::clog << "WellKnownPort: " << uri .well_known_port () << std::endl;
+//		std::clog << "Path:          " << uri .path () << std::endl;
+//		std::clog << "Query:         " << uri .query () << std::endl;
+//		std::clog << "Fragment:      " << uri .fragment () << std::endl;
+//
+//		std::clog << "Root:     " << uri .root () << std::endl;
+//		std::clog << "Base:     " << uri .base () << std::endl;
+//		std::clog << "Parent:   " << uri .parent () << std::endl;
+//
+//		std::clog << "Filename: " << uri .filename () << std::endl;
+//		std::clog << "Basename: " << uri .basename () << std::endl;
+//		std::clog << "Basename: " << uri .basename (".html") << std::endl;
+//		std::clog << "Basename: " << uri .basename ({ ".wrl", ".html" }) << std::endl;
+//		std::clog << "Suffix:   " << uri .suffix () << std::endl;
+//	}
+//
+//};
+//
+//} // titania

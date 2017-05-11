@@ -61,7 +61,7 @@
 namespace titania {
 namespace X3D {
 
-X3DBrowserContext::X3DBrowserContext (const X3D::X3DPtr <X3DBrowserContext> & sharedContext) :
+X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & sharedContext) :
 	                      X3DScene (),
 	                X3DCoreContext (),
 	             X3DShadersContext (),
@@ -85,7 +85,6 @@ X3DBrowserContext::X3DBrowserContext (const X3D::X3DPtr <X3DBrowserContext> & sh
 	                X3DTimeContext (),
 	               X3DRouterObject (),
 	                X3DToolContext (),
-	                 sharedContext (sharedContext),
 	             initializedOutput (),
 	           prepareEventsOutput (),
 	                 sensorsOutput (),
@@ -94,6 +93,7 @@ X3DBrowserContext::X3DBrowserContext (const X3D::X3DPtr <X3DBrowserContext> & sh
 	                 changedOutput (),
 	                   changedTime (0),
 	                   freezedTime (0),
+	                 sharedContext (sharedContext),
 	                         world (new World (getExecutionContext ())),
 	                 headUpDisplay (new World (getExecutionContext ())),
 	                     selection (new Selection (this)),
@@ -106,6 +106,7 @@ X3DBrowserContext::X3DBrowserContext (const X3D::X3DPtr <X3DBrowserContext> & sh
 
 	addChildObjects (initialized (),
 	                 headUpDisplay,
+	                 this -> sharedContext,
 	                 world,
 	                 selection,
 	                 notification,

@@ -341,8 +341,8 @@ MFColorRGBAButton::set_buffer ()
 		valueAdjustment -> set_value (0);
 	}
 
-	widget               .set_sensitive (hasField);
-	colorsScrolledWindow .set_sensitive (hasField and not isEmpty and index >= 0);
+	widget               .set_sensitive (hasField and index >= 0);
+	colorsScrolledWindow .set_sensitive (hasField and not isEmpty);
 	removeColorButton    .set_sensitive (index >= 0);
 	on_colors_configure_event (nullptr);
 
@@ -588,11 +588,11 @@ MFColorRGBAButton::on_colors_key_press_event (GdkEventKey* event)
 bool
 MFColorRGBAButton::on_colors_button_release_event (GdkEventButton* event)
 {
-	if (not node)
-		return true;
-
 	try
 	{
+		if (not node)
+			return true;
+
 		const auto & field   = node -> getField <X3D::MFColorRGBA> (name);
 		const auto   width   = colorsDrawingArea .get_width ();
 		const auto   columns = getColumns (width, colorsSize, colorsGap, colorsBorder);

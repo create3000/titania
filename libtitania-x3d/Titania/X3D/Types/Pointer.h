@@ -529,6 +529,7 @@ using ViewpointList      = X3DBindableNodeList <X3DViewpointNode>;
 using BrowserApplicationPtr  = X3DPtr <BrowserApplication>;
 using BrowserPtr             = X3DPtr <Browser>;
 using X3DBrowserPtr          = X3DPtr <X3DBrowser>;
+using X3DBrowserContextPtr   = X3DPtr <X3DBrowserContext>;
 using RenderingPropertiesPtr = X3DPtr <RenderingProperties>;
 using BrowserPropertiesPtr   = X3DPtr <BrowserProperties>;
 using BrowserOptionsPtr      = X3DPtr <BrowserOptions>;
