@@ -426,8 +426,8 @@ ParticleSystem::initialize ()
 	getExecutionContext () -> isLive () .addInterest (&ParticleSystem::set_live, this);
 	isLive () .addInterest (&ParticleSystem::set_live, this);
 
-	getBrowser () -> getDefaultShader () .addInterest (&ParticleSystem::set_shader, this);
-	getBrowser () -> getFixedPipeline () .addInterest (&ParticleSystem::set_shader, this);
+	getBrowser () -> getDefaultShader ()         .addInterest (&ParticleSystem::set_shader, this);
+	getBrowser () -> getFixedPipelineRequired () .addInterest (&ParticleSystem::set_shader, this);
 
 	enabled ()           .addInterest (&ParticleSystem::set_enabled, this);
 	geometryType ()      .addInterest (&ParticleSystem::set_geometryType, this);
@@ -463,7 +463,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (isInitialized ())
 	{
 		getBrowser () -> getBrowserOptions () -> Shading () .removeInterest (&ParticleSystem::set_shader, this);
-		getBrowser () -> getFixedPipeline ()                .removeInterest (&ParticleSystem::set_shader, this);
+		getBrowser () -> getFixedPipelineRequired ()        .removeInterest (&ParticleSystem::set_shader, this);
 
 		getBrowser () -> sensors ()         .removeInterest (&ParticleSystem::animateParticles, this);
 		getBrowser () -> sensors ()         .removeInterest (&ParticleSystem::updateParticles, this);
@@ -475,7 +475,7 @@ throw (Error <INVALID_OPERATION_TIMING>,
 	if (isInitialized ())
 	{
 		getBrowser () -> getBrowserOptions () -> Shading () .addInterest (&ParticleSystem::set_shader, this);
-		getBrowser () -> getFixedPipeline ()                .addInterest (&ParticleSystem::set_shader, this);
+		getBrowser () -> getFixedPipelineRequired ()        .addInterest (&ParticleSystem::set_shader, this);
 
 		getExecutionContext () -> isLive () .addInterest (&ParticleSystem::set_live, this);
 

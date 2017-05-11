@@ -951,6 +951,7 @@
     <None Include="Titania\X3D\Bits\Error.h" />
     <None Include="Titania\X3D\Bits\X3DConstants.h" />
     <None Include="Titania\X3D\Components\Rendering\PolygonMode.h" />
+    <None Include="share\titania\ui\Background.x3dv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Titania\X3D.cpp" />
@@ -1736,6 +1737,7 @@
     <Folder Include="Titania\X3D\Tools\Text\" />
     <Folder Include="Titania\X3D\Tools\Geometry2D\" />
     <Folder Include="Titania\X3D\Tools\NURBS\" />
+    <Folder Include="share\titania\ui\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

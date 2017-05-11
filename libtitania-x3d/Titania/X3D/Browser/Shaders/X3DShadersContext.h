@@ -119,8 +119,9 @@ public:
 	getFixedPipeline () const
 	{ return fixedPipeline; }
 
-	bool
-	getFixedPipelineRequired () const;
+	const SFBool &
+	getFixedPipelineRequired () const
+	{ return fixedPipelineRequired; }
 
 	///  @name Destruction
 
@@ -149,12 +150,12 @@ private:
 	///  Operations
 
 	X3DPtr <ComposedShader>
-	createShader (const std::string & name, const MFString &, const MFString &);
+	createShader (const std::string & name, const MFString & vertexUrl, const MFString & fragmentUrl);
 
 	///  @name Event handlers
 
 	void
-	set_shading (const ShadingType &);
+	set_shading ();
 
 	///  @name Members
 
@@ -163,6 +164,7 @@ private:
 	int32_t                 maxFragmentUniformVectors;
 	int32_t                 maxVertexAttributes;
 	SFBool                  fixedPipeline;
+	SFBool                  fixedPipelineRequired;
 	bool                    fixedPipelineDriver;
 	X3DPtr <ComposedShader> pointShader;
 	X3DPtr <ComposedShader> wireframeShader;

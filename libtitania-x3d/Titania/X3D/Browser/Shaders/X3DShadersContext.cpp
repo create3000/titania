@@ -71,6 +71,7 @@ X3DShadersContext::X3DShadersContext () :
 	maxFragmentUniformVectors (0),
 	      maxVertexAttributes (0),
 	            fixedPipeline (true),
+	    fixedPipelineRequired (true),
 	      fixedPipelineDriver (false),
 	              pointShader (),
 	          wireframeShader (),
@@ -80,6 +81,7 @@ X3DShadersContext::X3DShadersContext () :
 	               shaderNode (nullptr)
 {
 	addChildObjects (fixedPipeline,
+                    fixedPipelineRequired,
                     pointShader,
 	                 wireframeShader,
 	                 gouraudShader,
@@ -135,9 +137,10 @@ X3DShadersContext::initialize ()
 
 		// Shading
 
+		getBrowser () -> getLoadSensor () -> isLoaded ()       .addInterest (&X3DShadersContext::set_shading, this);
 		getBrowser () -> getBrowserOptions () -> getShading () .addInterest (&X3DShadersContext::set_shading, this);
 
-		set_shading (getBrowser () -> getBrowserOptions () -> getShading ());
+		set_shading ();
 	}
 }
 
@@ -146,15 +149,7 @@ X3DShadersContext::setFixedPipeline (const bool value)
 {
 	fixedPipeline = value;
 
-	set_shading (getBrowser () -> getBrowserOptions () -> getShading ());
-}
-
-bool
-X3DShadersContext::getFixedPipelineRequired () const
-{
-	return fixedPipeline or
-	       not getBrowser () -> getLoaded () or
-	       fixedPipelineDriver;
+	set_shading ();
 }
 
 X3DPtr <ComposedShader>
@@ -182,14 +177,20 @@ X3DShadersContext::createShader (const std::string & name, const MFString & vert
 }
 
 void
-X3DShadersContext::set_shading (const ShadingType & shading)
-{	
-	if (getFixedPipelineRequired ())
+X3DShadersContext::set_shading ()
+{
+	fixedPipelineRequired = fixedPipeline or
+	                        not getBrowser () -> getLoadSensor () -> isLoaded () or
+	                        fixedPipelineDriver;
+
+	if (fixedPipelineRequired)
 	{
 		defaultShader = nullptr;
 	}
 	else
 	{
+		const auto & shading = getBrowser () -> getBrowserOptions () -> getShading ();
+
 		if (shading == ShadingType::PHONG)
 		{
 			defaultShader = getPhongShader ();
@@ -204,7 +205,7 @@ X3DShadersContext::set_shading (const ShadingType & shading)
 	{
 		ContextLock lock (getBrowser ());
 
-		if (getFixedPipelineRequired ())
+		if (fixedPipelineRequired)
 		{
 			glDisable (GL_POINT_SPRITE);
 			glDisable (GL_PROGRAM_POINT_SIZE);

@@ -92,14 +92,15 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
 	         cursor ("default"),
-	     background (new BackgroundTexture ())
+	     background (new BackgroundTexture (this))
 {
 	addType (X3DConstants::Browser);
 
 	addChildObjects (viewer,
 	                 keyDevice,
 	                 pointingDevice,
-	                 cursor);
+	                 cursor,
+	                 background);
 
 	setAntialiasing (0);
 }
@@ -112,14 +113,15 @@ Browser::Browser (const BrowserPtr & sharedBrowser, const MFString & url, const 
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),
 	         cursor ("default"),
-	     background (new BackgroundTexture ())
+	     background (new BackgroundTexture (this))
 {
 	addType (X3DConstants::Browser);
 
 	addChildObjects (viewer,
 	                 keyDevice,
 	                 pointingDevice,
-	                 cursor);
+	                 cursor,
+	                 background);
 
 	setAntialiasing (0);
 }
@@ -148,10 +150,13 @@ Browser::initialize ()
 		keyDevice      -> setup ();
 		pointingDevice -> setup ();
 		background     -> setup ();
-	
-		getCursor ()        .addInterest (&Browser::set_cursor, this);
-		getViewerType ()    .addInterest (&Browser::set_viewer, this);
-		getPrivateViewer () .addInterest (&Browser::set_viewer, this);
+
+		background -> configureBackground (get_style_context (), get_width (), get_height ());
+
+		getCursor ()        .addInterest (&Browser::set_cursor,    this);
+		getViewerType ()    .addInterest (&Browser::set_viewer,    this);
+		getPrivateViewer () .addInterest (&Browser::set_viewer,    this);
+		displayed ()        .addInterest (&Browser::set_displayed, this);
 
 		add_events (Gdk::BUTTON_PRESS_MASK |
 		            Gdk::POINTER_MOTION_MASK |
@@ -166,7 +171,7 @@ Browser::initialize ()
 		//set_focus_on_click (true);
 		set_can_focus (true);
 		grab_focus ();
-	
+
 		setCursor ("default");
 
 		if (get_mapped ())
@@ -210,37 +215,31 @@ void
 Browser::reshape (const Vector4i & viewport)
 noexcept (true)
 {
-	try
-	{
-		ContextLock lock (this);
+	X3DBrowser::reshape (viewport);
 
-		background -> configure (get_style_context (), get_width (), get_height ());
-	
-		X3DBrowser::reshape (viewport);
-	}
-	catch (const std::exception & exception)
-	{ }
+	if (not isInitialized ())
+		return;
+
+	background -> configureBackground (get_style_context (), get_width (), get_height ());
+
+	//update ();
 }
 
 void
 Browser::renderBackground ()
 {
-	background -> draw ();
+	background -> renderBackground ();
 }
 
 void
 Browser::on_style_updated ()
 {
-	try
-	{
-		ContextLock lock (this);
+	OpenGL::Surface::on_style_updated ();
 
-		OpenGL::Surface::on_style_updated ();
+	if (not isInitialized ())
+		return;
 
-		background -> configure (get_style_context (), get_width (), get_height ());
-	}
-	catch (const std::exception & exception)
-	{ }
+	background -> configureBackground (get_style_context (), get_width (), get_height ());
 }
 
 void
@@ -381,6 +380,12 @@ Browser::set_viewer ()
 
 		viewer -> setup ();
 	}
+}
+
+void
+Browser::set_displayed ()
+{
+	//background -> foreground ();
 }
 
 void

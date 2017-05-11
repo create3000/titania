@@ -68,10 +68,6 @@ public:
 
 	///  @name Member access
 
-	const SFBool &
-	getLoaded () const
-	{ return loaded; }
-
 	const std::string &
 	getProviderUrl () const
 	{ return providerUrl; }
@@ -132,12 +128,6 @@ protected:
 	void
 	initialize () override;
 
-	///  @name Member access
-
-	void
-	setLoaded (const bool value)
-	{ loaded = value; }
-
 
 private:
 
@@ -152,7 +142,6 @@ private:
 
 	///  @name Members
 
-	SFBool      loaded;
 	std::string userAgent;
 
 	X3DScenePtr         privateScene;

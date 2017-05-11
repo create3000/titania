@@ -118,8 +118,6 @@ X3DRenderingContext::reshape (const Vector4i & value)
 noexcept (true)
 {
 	viewport .assign (value .data (), value .data () + value .size ());
-
-	X3DRenderingContext::renderBackground ();
 }
 
 void

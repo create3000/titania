@@ -171,7 +171,7 @@ public:
 	///  @name Operations
 
 	Magick::Image
-	getSnapshot (const size_t, const size_t, const bool, const size_t) const
+	getSnapshot (const size_t, const size_t, const bool, const size_t)
 	throw (Error <INSUFFICIENT_CAPABILITIES>,
 	       Error <INVALID_OPERATION_TIMING>,
 	       Error <DISPOSED>);

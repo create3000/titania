@@ -64,6 +64,12 @@ get_page (const std::string & filename)
 }
 
 basic::uri
+get_ui (const std::string & filename)
+{
+	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "ui/" + filename);
+}
+
+basic::uri
 get_shader (const std::string & filename)
 {
 	return "file://" + os::find_data_file (TITANIA_DATA_DIR + "shaders/" + filename);

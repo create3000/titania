@@ -61,7 +61,7 @@
 namespace titania {
 namespace X3D {
 
-X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & sharedContext) :
+X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & other) :
 	                      X3DScene (),
 	                X3DCoreContext (),
 	             X3DShadersContext (),
@@ -93,7 +93,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & sharedContext
 	                 changedOutput (),
 	                   changedTime (0),
 	                   freezedTime (0),
-	                 sharedContext (sharedContext),
+	                 sharedContext (other),
 	                         world (new World (getExecutionContext ())),
 	                 headUpDisplay (new World (getExecutionContext ())),
 	                     selection (new Selection (this)),
@@ -106,7 +106,7 @@ X3DBrowserContext::X3DBrowserContext (const X3DBrowserContextPtr & sharedContext
 
 	addChildObjects (initialized (),
 	                 headUpDisplay,
-	                 this -> sharedContext,
+	                 sharedContext,
 	                 world,
 	                 selection,
 	                 notification,
@@ -167,7 +167,7 @@ X3DBrowserContext::getHeadUpDisplay () const
  *  @param  antialiasing  Number of samples used for antialising.
  */
 Magick::Image
-X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing) const
+X3DBrowserContext::getSnapshot (const size_t width, const size_t height, const bool alphaChannel, const size_t antialiasing)
 throw (Error <INSUFFICIENT_CAPABILITIES>,
        Error <INVALID_OPERATION_TIMING>,
        Error <DISPOSED>)
@@ -177,39 +177,40 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
 
 	// Make snapshot.
 
-	ContextLock lock (getBrowser ());
+	ContextLock lock (this);
 
 	// Update browser.
 
-	getBrowser () -> update ();
+	update ();
 
 	const auto & layer0           = getWorld () -> getLayerSet () -> getLayer0 ();
 	const bool   backgroundHidden = layer0 -> getBackground () -> isHidden ();
-	const auto   viewport         = getBrowser () -> getViewport ();
+	const auto   viewport         = getViewport ();
 
 	// Render to frame buffer.
 
-	FrameBuffer frameBuffer (getBrowser (), width, height, antialiasing);
+	FrameBuffer frameBuffer (this, width, height, antialiasing);
 
 	frameBuffer .setup ();
 	frameBuffer .bind ();
 
-	layer0 -> getBackground () -> isHidden (alphaChannel);
-	getBrowser () -> getDisplayTools () .push (false);
-	getBrowser () -> reshape (Vector4i (0, 0, width, height));
+	layer0 -> getBackground () -> isHidden (alphaChannel); // Stack
+	getDisplayTools () .push (false);
+	reshape (Vector4i (0, 0, width, height));
 
+	//	Stack
 	if (alphaChannel)
-		getBrowser () -> X3DRenderingContext::renderBackground ();
+		X3DRenderingContext::renderBackground ();
 	else
-	   getBrowser () -> renderBackground ();
+	   renderBackground ();
 
 	getWorld () -> traverse (TraverseType::DISPLAY, nullptr);
 
 	frameBuffer .readPixels ();
 	frameBuffer .unbind ();
 
-	getBrowser () -> reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
-	getBrowser () -> getDisplayTools () .pop ();
+	reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
+	getDisplayTools () .pop ();
 	layer0 -> getBackground () -> isHidden (backgroundHidden);
 
 	// Process image.
@@ -299,6 +300,8 @@ noexcept (true)
 
 		getWorld ()         -> traverse (TraverseType::DISPLAY, nullptr);
 		getHeadUpDisplay () -> traverse (TraverseType::DISPLAY, nullptr);
+
+		//renderForeground ();
 
 		displayed () .processInterests ();
 		swapBuffers ();

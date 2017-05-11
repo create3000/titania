@@ -78,8 +78,7 @@ namespace puck {
 X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & defaultBrowser) :
 	X3DBrowserWindowInterface (),
 	            masterBrowser (defaultBrowser),
-//	              logoBrowser (X3D::createBrowser (defaultBrowser, { get_ui ("Logo.x3dv") })),
-	                  browser (X3D::createBrowser (defaultBrowser)), // Don't use master bowser!
+	                  browser (X3D::createBrowser (defaultBrowser)),
 	                 browsers (),
 	           recentBrowsers (),
 	                    scene (browser -> getExecutionContext ()),

@@ -158,12 +158,12 @@ private:
 
 	virtual
 	void
-	renderBackground () final override;
+	reshape (const Vector4i & viewport)
+	noexcept (true) final override;
 
 	virtual
 	void
-	reshape (const Vector4i & viewport)
-	noexcept (true) final override;
+	renderBackground () final override;
 
 	///  @name Event handler
 
@@ -179,13 +179,16 @@ private:
 	void
 	set_viewer ();
 
+	void
+	set_displayed ();
+
 	///  @name Members
 
-	X3DPtr <X3DViewer>                  viewer;
-	X3DPtr <KeyDevice>                  keyDevice;
-	X3DPtr <PointingDevice>             pointingDevice;
-	SFString                            cursor;
-	std::unique_ptr <BackgroundTexture> background;
+	X3DPtr <X3DViewer>         viewer;
+	X3DPtr <KeyDevice>         keyDevice;
+	X3DPtr <PointingDevice>    pointingDevice;
+	SFString                   cursor;
+	X3DPtr <BackgroundTexture> background;
 
 };
 

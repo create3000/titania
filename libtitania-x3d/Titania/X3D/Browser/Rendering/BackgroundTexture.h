@@ -53,39 +53,80 @@
 
 #include <gtkmm/stylecontext.h>
 
-#include "../../Rendering/OpenGL.h"
-#include "../../Types/Numbers.h"
+#include "../../Basic/X3DBaseNode.h"
 
 namespace titania {
 namespace X3D {
 
-class BackgroundTexture
+class BackgroundTexture :
+	public X3DBaseNode
 {
 public:
 
-	BackgroundTexture ();
+	///  @name Construction
+
+	BackgroundTexture (X3DExecutionContext* const executionContext);
+
+	virtual
+	BackgroundTexture*
+	create (X3DExecutionContext* const executionContext) const final override;
+
+	///  @name Common members
+
+	virtual
+	ComponentType
+	getComponent () const
+	throw (Error <DISPOSED>) final override
+	{ return component; }
+
+	virtual
+	const std::string &
+	getTypeName () const
+	throw (Error <DISPOSED>) final override
+	{ return typeName; }
+
+	virtual
+	const std::string &
+	getContainerField () const
+	throw (Error <DISPOSED>) final override
+	{ return containerField; }
+
+	///  @name Operations
 
 	void
-	setup ();
+	configureBackground (const Glib::RefPtr <Gtk::StyleContext> &, const size_t width, const size_t height);
 
 	void
-	configure (const Glib::RefPtr <Gtk::StyleContext> &, const size_t, const size_t);
+	renderBackground ();
 
+	///  @name Destruction
+
+	virtual
 	void
-	draw ();
+	dispose () final override;
 
-	void
-	dispose ();
-
-	~BackgroundTexture ();
+	virtual
+	~BackgroundTexture () final override;
 
 
 private:
 
-	GLuint   textureId;
-	Matrix4d projectionMatrix;
-	size_t   width;
-	size_t   height;
+	///  @name Construction
+
+	virtual
+	void
+	initialize () final override;
+
+	///  @name Static members
+
+	static const ComponentType component;
+	static const std::string   typeName;
+	static const std::string   containerField;
+
+	///  @name Members
+
+	X3DScenePtr           scene;
+	X3DPtr <X3DLayerNode> background;
 
 };
 

@@ -1,11 +1,16 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-opengl-surface/Makefile.am">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Titania/Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp">
     <Files>
-      <File FileName="libtitania-x3d/Titania/X3D/Browser/Notification.h" Line="109" Column="1" />
-      <File FileName="libtitania-opengl-surface/Makefile.am" Line="14" Column="1" />
-      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.h" Line="45" Column="21" />
-      <File FileName="configure.ac" Line="143" Column="1" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/BackgroundTexture.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Rendering/BackgroundTexture.cpp" Line="116" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.h" Line="1" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="1" Column="1" />
+      <File FileName="Titania/Titania/Editors/AppearanceEditor/X3DMaterialEditor.cpp" Line="160" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Shaders/X3DShadersContext.cpp" Line="193" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowser.cpp" Line="183" Column="1" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/X3DBrowserContext.cpp" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

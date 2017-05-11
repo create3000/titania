@@ -61,8 +61,6 @@ extern "C"
 #include "Context/OffScreenContext.h"
 #include "Context/Context.h"
 
-#include <Titania/LOG.h>
-
 namespace titania {
 namespace OpenGL {
 

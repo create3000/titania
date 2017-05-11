@@ -50,107 +50,84 @@
 
 #include "BackgroundTexture.h"
 
-#include <Titania/Math/Geometry/Camera.h>
-#include <Titania/Math/Numbers/Vector4.h>
-#include <Titania/LOG.h>
+#include "../../Browser/Networking/config.h"
+#include "../../Browser/X3DBrowser.h"
+#include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Components/Texturing/ImageTexture.h"
+#include "../../Execution/X3DExecutionContext.h"
+#include "../../Execution/X3DScene.h"
+#include "../../InputOutput/FileLoader.h"
 
 namespace titania {
 namespace X3D {
 
-using namespace math;
+const ComponentType BackgroundTexture::component      = ComponentType::TITANIA;
+const std::string   BackgroundTexture::typeName       = "BackgroundTexture";
+const std::string   BackgroundTexture::containerField = "backgroundTexture";
 
-BackgroundTexture::BackgroundTexture () :
-	       textureId (0),
-	projectionMatrix (camera <double>::ortho (0, 1, 0, 1, -1, 1)),
-	           width (0),
-	          height (0)
+BackgroundTexture::BackgroundTexture (X3DExecutionContext* const executionContext) :
+	X3DBaseNode (executionContext -> getBrowser (), executionContext),
+	      scene (),
+	 background ()
 { }
 
-void
-BackgroundTexture::setup ()
+BackgroundTexture*
+BackgroundTexture::create (X3DExecutionContext* const executionContext) const
 {
-	glGenTextures (1, &textureId);
+	return new BackgroundTexture (executionContext);
 }
 
 void
-BackgroundTexture::configure (const Glib::RefPtr <Gtk::StyleContext> & styleContext, const size_t width, const size_t height)
+BackgroundTexture::initialize ()
 {
-	this -> width  = width;
-	this -> height = height;
-
-	const auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
-	const auto cairo   = Cairo::Context::create (surface);
-
-	styleContext -> render_background (cairo, 0, 0, width, height);
-
-	glEnable (GL_TEXTURE_2D);
-	glBindTexture (GL_TEXTURE_2D, textureId);
-	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, surface -> get_data ());
-
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glBindTexture (GL_TEXTURE_2D, 0);
+	try
+	{
+		X3DBaseNode::initialize ();
+	
+		scene      = FileLoader (getBrowser () -> getPrivateScene ()) .createX3DFromURL ({ get_ui ("Background.x3dv") .str () });
+		background = scene -> getNamedNode <X3DLayerNode> ("Background");
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void
-BackgroundTexture::draw ()
+BackgroundTexture::configureBackground (const Glib::RefPtr <Gtk::StyleContext> & styleContext, const size_t width, const size_t height)
 {
-	PolygonModeLock polygonMode (GL_FILL);
+	try
+	{
+		if (not scene)
+			return;
 
-	static const std::vector <Vector4f> coords = {
-		Vector4f (0, 0, 0, 1),
-		Vector4f (1, 0, 0, 1),
-		Vector4f (1, 1, 0, 1),
-		Vector4f (0, 1, 0, 1)
-	};
+		const auto texture = scene -> getNamedNode <ImageTexture> ("Texture");
+		const auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
+		const auto cairo   = Cairo::Context::create (surface);
+	
+		styleContext -> render_background (cairo, 0, 0, width, height);
+		texture -> setUrl (surface);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
 
-	glViewport (0, 0, width, height);
-	glScissor  (0, 0, width, height);
-
-	glMatrixMode (GL_PROJECTION);
-	glLoadMatrixd (projectionMatrix .data ());
-
-	glMatrixMode (GL_MODELVIEW);
-	glLoadIdentity ();
-
-	glDisable (GL_LIGHTING);
-	glFrontFace (GL_CCW);
-	glEnable (GL_CULL_FACE);
-	glDisable (GL_DEPTH_TEST);
-	glDepthMask (GL_FALSE);
-
-	glEnable (GL_TEXTURE_2D);
-	glBindTexture (GL_TEXTURE_2D, textureId);
-	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer (4, GL_FLOAT, 0, coords .data ());
-
-	glEnableClientState (GL_VERTEX_ARRAY);
-	glVertexPointer (4, GL_FLOAT, 0, coords .data ());
-
-	glDrawArrays (GL_QUADS, 0, coords .size ());
-
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState (GL_VERTEX_ARRAY);
-
-	glBindTexture (GL_TEXTURE_2D, 0);
-	glDisable (GL_TEXTURE_2D);
-	glDepthMask (GL_TRUE);
-	glEnable (GL_DEPTH_TEST);
+void
+BackgroundTexture::renderBackground ()
+{
+	background -> traverse (TraverseType::DISPLAY, nullptr);
 }
 
 void
 BackgroundTexture::dispose ()
 {
-	if (textureId)
-		glDeleteTextures (1, &textureId);
+	X3DBaseNode::dispose ();
 }
 
 BackgroundTexture::~BackgroundTexture ()
 { }
-
 
 } // X3D
 } // titania

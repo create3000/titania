@@ -141,16 +141,8 @@ X3DBrowser::set_loaded (const bool loaded)
 {
 	// Set load state.
 
-	setLoaded (loaded);
-
-	if (getFixedPipelineRequired ())
-		print ("*** Info: Cobweb compatibility mode not fully possible!");
-
 	getLoadSensor () -> isLoaded () .removeInterest (&X3DBrowser::set_loaded, this);
-
 	getLoadSensor () -> enabled () = false;
-
-	getBrowserOptions () -> Shading () .addEvent ();
 
 	// Load initial url or start with empty scene.
 
@@ -188,6 +180,9 @@ X3DBrowser::set_loaded (const bool loaded)
 	       std::string (80, '*'), '\n',
 	       std::string (80, '*'), '\n',
 	       '\n');
+
+	if (not loaded)
+		println ("*** Info: Cobweb compatibility mode not fully possible!");
 }
 
 void

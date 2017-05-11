@@ -139,7 +139,7 @@ BrowserOptions::BrowserOptions (X3DExecutionContext* const executionContext) :
 }
 
 BrowserOptions*
-BrowserOptions::create (X3DExecutionContext* const executionContext)  const
+BrowserOptions::create (X3DExecutionContext* const executionContext) const
 {
 	return new BrowserOptions (executionContext);
 }

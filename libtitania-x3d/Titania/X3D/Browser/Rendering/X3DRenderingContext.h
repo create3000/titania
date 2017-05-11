@@ -97,10 +97,6 @@ public:
 	getMotionBlur () const
 	{ return motionBlur; }
 
-	virtual
-	void
-	renderBackground ();
-
 	///  @name Destruction
 
 	virtual
@@ -124,8 +120,12 @@ protected:
 
 	virtual
 	void
-	reshape (const Vector4i &)
+	reshape (const Vector4i & viewport)
 	noexcept (true);
+
+	virtual
+	void
+	renderBackground ();
 
 
 private:
