@@ -74,7 +74,11 @@ BackgroundTexture::BackgroundTexture (X3DExecutionContext* const executionContex
 	styleContext (0),
 	       width (0),
 	      height (0)
-{ }
+{
+	addChildObjects (scene,
+	                 background,
+	                 foreground);
+}
 
 BackgroundTexture*
 BackgroundTexture::create (X3DExecutionContext* const executionContext) const
