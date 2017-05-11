@@ -171,11 +171,11 @@ Browser::initialize ()
 
 		if (get_mapped ())
 		{
-			changed () .addInterest (std::bind (&Glib::SignalIdle::connect_once, Glib::signal_idle (), sigc::mem_fun (this, &Gtk::Widget::queue_draw), Glib::PRIORITY_DEFAULT_IDLE));
+			changed () .addInterest (&Browser::set_idle, this);
 		}
 		else
 		{
-			changed () .addInterest (std::bind (&Glib::SignalTimeout::connect_once, Glib::signal_timeout (), sigc::mem_fun (this, &Browser::update), 1000 / 60, Glib::PRIORITY_DEFAULT_IDLE));
+			changed () .addInterest (&Browser::set_timeout, this);
 			update ();
 		}
 	}
@@ -296,10 +296,24 @@ Browser::on_unmap ()
 }
 
 void
+Browser::set_idle ()
+{
+	Glib::signal_idle () .connect_once (sigc::mem_fun (this, &Gtk::Widget::queue_draw), Glib::PRIORITY_DEFAULT_IDLE);
+}
+
+void
+Browser::set_timeout ()
+{
+	Glib::signal_timeout () .connect_once (sigc::mem_fun (this, &Browser::update), 1000 / 60, Glib::PRIORITY_DEFAULT_IDLE);
+}
+
+void
 Browser::set_cursor (const String & value)
 {
-	if (get_mapped ())
-		get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), value));
+	if (not get_mapped ())
+		return;
+
+	get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), value));
 }
 
 void

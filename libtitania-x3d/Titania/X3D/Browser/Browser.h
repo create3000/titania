@@ -168,6 +168,12 @@ private:
 	///  @name Event handler
 
 	void
+	set_idle ();
+	
+	void
+	set_timeout ();
+
+	void
 	set_cursor (const String & value);
 
 	void
