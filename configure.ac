@@ -117,6 +117,7 @@ glibmm-2.4
 gstreamermm-1.0
 fontconfig
 glu
+glew
 mozjs185
 libxml++-2.6
 json-c
@@ -138,7 +139,6 @@ sqlite3)
 
 PKG_CHECK_MODULES(TITANIA_OPENGL_SURFACE,
 gtkmm-3.0
-glew
 gl)
 
 PKG_CHECK_MODULES(TITANIA_STANDARD,

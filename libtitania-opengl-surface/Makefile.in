@@ -128,8 +128,7 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libtitania_opengl_surface_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(top_srcdir)/libtitania-standard/libtitania-standard.la
+libtitania_opengl_surface_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am__dirstamp = $(am__leading_dot)dirstamp
 am_libtitania_opengl_surface_la_OBJECTS =  \
 	Titania/OpenGL/Context/Context.lo \
@@ -383,12 +382,9 @@ libtitania_opengl_surface_la_SOURCES = \
 	Titania/OpenGL/Surface.cpp
 
 libtitania_opengl_surface_la_LIBADD = \
-	$(TITANIA_OPENGL_SURFACE_LIBS) \
-	$(top_srcdir)/libtitania-standard/libtitania-standard.la
+	$(TITANIA_OPENGL_SURFACE_LIBS)
 
-AM_CPPFLAGS = $(TITANIA_OPENGL_SURFACE_CFLAGS) \
-	-I$(top_builddir)/libtitania-standard
-
+AM_CPPFLAGS = $(TITANIA_OPENGL_SURFACE_CFLAGS)
 all: all-am
 
 .SUFFIXES:

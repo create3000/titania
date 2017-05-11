@@ -51,10 +51,7 @@
 #ifndef __TITANIA_OPEN_GL_SURFACE_H__
 #define __TITANIA_OPEN_GL_SURFACE_H__
 
-// include order is important
 #include <gtkmm/drawingarea.h>
-
-#include <Titania/Math/Numbers/Vector4.h>
 
 #include <memory>
 #include <thread>

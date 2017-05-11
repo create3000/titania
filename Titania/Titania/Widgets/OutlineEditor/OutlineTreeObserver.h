@@ -103,14 +103,14 @@ private:
 	void
 	on_row_changed (const Gtk::TreeModel::Path &);
 
-	void
-	on_row_changed_impl (const Gtk::TreeModel::Path &);
+//	void
+//	on_row_changed_impl (const Gtk::TreeModel::Path &);
 
 	void
 	toggle_path (const Gtk::TreeModel::Path &);
 
-	bool
-	getToggle (const Gtk::TreeModel::iterator &) const;
+//	bool
+//	getToggle (const Gtk::TreeModel::iterator &) const;
 
 	///  @name Members
 

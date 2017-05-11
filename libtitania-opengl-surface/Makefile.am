@@ -10,9 +10,7 @@ libtitania_opengl_surface_la_SOURCES =  \
 	Titania/OpenGL/Surface.cpp
 
 libtitania_opengl_surface_la_LIBADD =  \
-	$(TITANIA_OPENGL_SURFACE_LIBS) \
-	$(top_srcdir)/libtitania-standard/libtitania-standard.la
+	$(TITANIA_OPENGL_SURFACE_LIBS)
 
-AM_CPPFLAGS = $(TITANIA_OPENGL_SURFACE_CFLAGS) \
-	-I$(top_builddir)/libtitania-standard
+AM_CPPFLAGS = $(TITANIA_OPENGL_SURFACE_CFLAGS)
 

@@ -55,6 +55,7 @@
 #include "../Configuration/BaseNodeArray.h"
 
 #include <functional>
+#include <mutex>
 
 namespace titania {
 namespace X3D {
@@ -100,6 +101,7 @@ private:
 	X3DExecutionContext* const       executionContext;
 	std::map <std::string, Function> functions;
 	BaseNodeArray                    nodes;
+	std::mutex                       mutex;
 
 };
 

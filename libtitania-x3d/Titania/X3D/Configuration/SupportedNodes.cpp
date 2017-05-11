@@ -58,7 +58,8 @@ namespace X3D {
 SupportedNodes::SupportedNodes (X3DExecutionContext* const executionContext) :
 	executionContext (executionContext),
 	       functions (),
-	           nodes ()
+	           nodes (),
+	           mutex ()
 {
 	//std::clog << "Creating node index:" << std::endl;
 	
@@ -314,6 +315,8 @@ const X3DBaseNode*
 SupportedNodes::getNode (const std::string & typeName) const
 throw (Error <INVALID_NAME>)
 {
+	std::lock_guard <std::mutex> lock (const_cast <SupportedNodes*> (this) -> mutex);
+
 	try
 	{
 		return nodes .at (typeName);

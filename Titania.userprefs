@@ -1,54 +1,12 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-opengl-surface/Makefile.am">
     <Files>
-      <File FileName="Titania/Titania/Base/X3DEditorInterface.h" Line="77" Column="1" />
-      <File FileName="Titania/Titania/Base/X3DEditorInterface.cpp" Line="105" Column="50" />
+      <File FileName="libtitania-x3d/Titania/X3D/Browser/Notification.h" Line="109" Column="1" />
+      <File FileName="libtitania-opengl-surface/Makefile.am" Line="14" Column="1" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.h" Line="45" Column="21" />
+      <File FileName="configure.ac" Line="143" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Titania" expanded="True">
-            <Node name="miscellaneous" expanded="True">
-              <Node name="glade2c++" expanded="True" />
-            </Node>
-            <Node name="Titania" expanded="True">
-              <Node name="share" expanded="True">
-                <Node name="titania" expanded="True">
-                  <Node name="ui" expanded="True">
-                    <Node name="Applications" expanded="True" />
-                    <Node name="Dialogs" expanded="True" />
-                    <Node name="Widgets" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-              <Node name="Titania" expanded="True">
-                <Node name="Base" expanded="True" />
-                <Node name="Dialogs" expanded="True">
-                  <Node name="FileImportDialog" expanded="True" />
-                  <Node name="FileSaveDialog" expanded="True" />
-                  <Node name="FileSaveWarningDialog" expanded="True">
-                    <Node name="FileSaveWarningDialog.cpp" selected="True" />
-                  </Node>
-                  <Node name="OpenLocationDialog" expanded="True" />
-                </Node>
-                <Node name="Editors" expanded="True">
-                  <Node name="BindableNodeEditor" expanded="True" />
-                  <Node name="NodeEditor" expanded="True" />
-                  <Node name="NodeIndex" expanded="True" />
-                </Node>
-                <Node name="Widgets" expanded="True">
-                  <Node name="Footer" expanded="True" />
-                  <Node name="ScriptEditor" expanded="True" />
-                  <Node name="Sidebar" expanded="True" />
-                  <Node name="X3DNotebook" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>

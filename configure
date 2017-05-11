@@ -17693,6 +17693,7 @@ if test -n "$TITANIA_X3D_CFLAGS"; then
 gstreamermm-1.0
 fontconfig
 glu
+glew
 mozjs185
 libxml++-2.6
 json-c
@@ -17702,6 +17703,7 @@ libgtop-2.0\""; } >&5
 gstreamermm-1.0
 fontconfig
 glu
+glew
 mozjs185
 libxml++-2.6
 json-c
@@ -17714,6 +17716,7 @@ libgtop-2.0") 2>&5
 gstreamermm-1.0
 fontconfig
 glu
+glew
 mozjs185
 libxml++-2.6
 json-c
@@ -17734,6 +17737,7 @@ if test -n "$TITANIA_X3D_LIBS"; then
 gstreamermm-1.0
 fontconfig
 glu
+glew
 mozjs185
 libxml++-2.6
 json-c
@@ -17743,6 +17747,7 @@ libgtop-2.0\""; } >&5
 gstreamermm-1.0
 fontconfig
 glu
+glew
 mozjs185
 libxml++-2.6
 json-c
@@ -17755,6 +17760,7 @@ libgtop-2.0") 2>&5
 gstreamermm-1.0
 fontconfig
 glu
+glew
 mozjs185
 libxml++-2.6
 json-c
@@ -17784,6 +17790,7 @@ fi
 gstreamermm-1.0
 fontconfig
 glu
+glew
 mozjs185
 libxml++-2.6
 json-c
@@ -17794,6 +17801,7 @@ libgtop-2.0" 2>&1`
 gstreamermm-1.0
 fontconfig
 glu
+glew
 mozjs185
 libxml++-2.6
 json-c
@@ -17807,6 +17815,7 @@ libgtop-2.0" 2>&1`
 gstreamermm-1.0
 fontconfig
 glu
+glew
 mozjs185
 libxml++-2.6
 json-c
@@ -18166,16 +18175,13 @@ if test -n "$TITANIA_OPENGL_SURFACE_CFLAGS"; then
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gtkmm-3.0
-glew
 gl\""; } >&5
   ($PKG_CONFIG --exists --print-errors "gtkmm-3.0
-glew
 gl") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
   pkg_cv_TITANIA_OPENGL_SURFACE_CFLAGS=`$PKG_CONFIG --cflags "gtkmm-3.0
-glew
 gl" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
@@ -18189,16 +18195,13 @@ if test -n "$TITANIA_OPENGL_SURFACE_LIBS"; then
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gtkmm-3.0
-glew
 gl\""; } >&5
   ($PKG_CONFIG --exists --print-errors "gtkmm-3.0
-glew
 gl") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
   pkg_cv_TITANIA_OPENGL_SURFACE_LIBS=`$PKG_CONFIG --libs "gtkmm-3.0
-glew
 gl" 2>/dev/null`
 		      test "x$?" != "x0" && pkg_failed=yes
 else
@@ -18221,18 +18224,15 @@ else
 fi
         if test $_pkg_short_errors_supported = yes; then
 	        TITANIA_OPENGL_SURFACE_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "gtkmm-3.0
-glew
 gl" 2>&1`
         else
 	        TITANIA_OPENGL_SURFACE_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "gtkmm-3.0
-glew
 gl" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$TITANIA_OPENGL_SURFACE_PKG_ERRORS" >&5
 
 	as_fn_error $? "Package requirements (gtkmm-3.0
-glew
 gl) were not met:
 
 $TITANIA_OPENGL_SURFACE_PKG_ERRORS
