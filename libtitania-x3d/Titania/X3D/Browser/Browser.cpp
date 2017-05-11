@@ -230,13 +230,19 @@ noexcept (true)
 void
 Browser::renderBackground ()
 {
-	background -> renderBackground ();
+	if (getAlphaChannel () .top ())
+		X3DRenderingContext::renderBackground ();
+	else
+		background -> renderBackground ();
 }
 
 void
 Browser::renderForeground ()
 {
 	if (get_opacity () >= 1)
+		return;
+
+	if (getAlphaChannel () .top ())
 		return;
 
 	background -> renderForeground ();

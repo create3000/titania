@@ -64,6 +64,7 @@ X3DRenderingContext::X3DRenderingContext () :
 	          clipPlanes (),
 	           depthTest ({ true }),
 	         depthOffset ({ 0 }),
+	        alphaChannel ({ false }),
 	          motionBlur (new MotionBlur (getExecutionContext ()))
 {
 	addChildObjects (viewport, motionBlur);

@@ -181,11 +181,7 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
 
 	// Update browser.
 
-	update ();
-
-	const auto & layer0           = getWorld () -> getLayerSet () -> getLayer0 ();
-	const bool   backgroundHidden = layer0 -> getBackground () -> isHidden ();
-	const auto   viewport         = getViewport ();
+	const auto viewport = getViewport ();
 
 	// Render to frame buffer.
 
@@ -194,24 +190,18 @@ throw (Error <INSUFFICIENT_CAPABILITIES>,
 	frameBuffer .setup ();
 	frameBuffer .bind ();
 
-	layer0 -> getBackground () -> isHidden (alphaChannel); // Stack
+	getAlphaChannel () .push (alphaChannel);
 	getDisplayTools () .push (false);
 	reshape (Vector4i (0, 0, width, height));
 
-	//	Stack
-	if (alphaChannel)
-		X3DRenderingContext::renderBackground ();
-	else
-	   renderBackground ();
-
-	getWorld () -> traverse (TraverseType::DISPLAY, nullptr);
+	update ();
 
 	frameBuffer .readPixels ();
 	frameBuffer .unbind ();
 
 	reshape (Vector4i (viewport [0], viewport [1], viewport [2], viewport [3]));
 	getDisplayTools () .pop ();
-	layer0 -> getBackground () -> isHidden (backgroundHidden);
+	getAlphaChannel () .pop ();
 
 	// Process image.
 

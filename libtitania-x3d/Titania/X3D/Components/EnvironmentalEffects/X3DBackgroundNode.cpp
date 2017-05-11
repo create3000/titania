@@ -366,6 +366,9 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 void
 X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & viewport)
 {
+	if (getBrowser () -> getAlphaChannel () .top ())
+		return;
+
 	if (hidden)
 		return;
 
