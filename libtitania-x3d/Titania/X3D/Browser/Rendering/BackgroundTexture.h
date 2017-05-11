@@ -94,10 +94,19 @@ public:
 	///  @name Operations
 
 	void
-	configureBackground (const Glib::RefPtr <Gtk::StyleContext> &, const size_t width, const size_t height);
+	setStyleContext (const Glib::RefPtr <Gtk::StyleContext> & value);
+
+	void
+	setSize (const int32_t width, const int32_t height);
+
+	void
+	setOpacity (const double value);
 
 	void
 	renderBackground ();
+
+	void
+	renderForeground ();
 
 	///  @name Destruction
 
@@ -117,6 +126,9 @@ private:
 	void
 	initialize () final override;
 
+	void
+	update ();
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -125,8 +137,12 @@ private:
 
 	///  @name Members
 
-	X3DScenePtr           scene;
-	X3DPtr <X3DLayerNode> background;
+	X3DScenePtr                      scene;
+	X3DPtr <X3DLayerNode>            background;
+	X3DPtr <X3DLayerNode>            foreground;
+	Glib::RefPtr <Gtk::StyleContext> styleContext;
+	int32_t                          width;
+	int32_t                          height;
 
 };
 

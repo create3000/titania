@@ -301,7 +301,7 @@ noexcept (true)
 		getWorld ()         -> traverse (TraverseType::DISPLAY, nullptr);
 		getHeadUpDisplay () -> traverse (TraverseType::DISPLAY, nullptr);
 
-		//renderForeground ();
+		renderForeground ();
 
 		displayed () .processInterests ();
 		swapBuffers ();

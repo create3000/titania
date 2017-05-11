@@ -143,20 +143,22 @@ Browser::initialize ()
 
 		get_style_context () -> add_class ("background");
 		get_style_context () -> add_class ("titania-surface");
-	
+
+		property_opacity () .signal_changed () .connect (sigc::mem_fun (this, &Browser::on_opacity));
+
 		//swapInterval (0);
 	
+		background -> setSize (get_width (), get_height ());
+		background -> setStyleContext (get_style_context ());
+
 		viewer         -> setup ();
 		keyDevice      -> setup ();
 		pointingDevice -> setup ();
 		background     -> setup ();
 
-		background -> configureBackground (get_style_context (), get_width (), get_height ());
-
-		getCursor ()        .addInterest (&Browser::set_cursor,    this);
-		getViewerType ()    .addInterest (&Browser::set_viewer,    this);
-		getPrivateViewer () .addInterest (&Browser::set_viewer,    this);
-		displayed ()        .addInterest (&Browser::set_displayed, this);
+		getCursor ()        .addInterest (&Browser::set_cursor, this);
+		getViewerType ()    .addInterest (&Browser::set_viewer, this);
+		getPrivateViewer () .addInterest (&Browser::set_viewer, this);
 
 		add_events (Gdk::BUTTON_PRESS_MASK |
 		            Gdk::POINTER_MOTION_MASK |
@@ -220,7 +222,7 @@ noexcept (true)
 	if (not isInitialized ())
 		return;
 
-	background -> configureBackground (get_style_context (), get_width (), get_height ());
+	background -> setSize (get_width (), get_height ());
 
 	//update ();
 }
@@ -232,6 +234,15 @@ Browser::renderBackground ()
 }
 
 void
+Browser::renderForeground ()
+{
+	if (get_opacity () >= 1)
+		return;
+
+	background -> renderForeground ();
+}
+
+void
 Browser::on_style_updated ()
 {
 	OpenGL::Surface::on_style_updated ();
@@ -239,7 +250,13 @@ Browser::on_style_updated ()
 	if (not isInitialized ())
 		return;
 
-	background -> configureBackground (get_style_context (), get_width (), get_height ());
+	background -> setStyleContext (get_style_context ());
+}
+
+void
+Browser::on_opacity ()
+{
+	background -> setOpacity (get_opacity ());
 }
 
 void
@@ -380,12 +397,6 @@ Browser::set_viewer ()
 
 		viewer -> setup ();
 	}
-}
-
-void
-Browser::set_displayed ()
-{
-	//background -> foreground ();
 }
 
 void

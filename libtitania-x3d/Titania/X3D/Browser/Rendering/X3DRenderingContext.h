@@ -127,6 +127,10 @@ protected:
 	void
 	renderBackground ();
 
+	virtual
+	void
+	renderForeground ();
+
 
 private:
 

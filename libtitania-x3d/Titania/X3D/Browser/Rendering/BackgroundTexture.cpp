@@ -53,6 +53,7 @@
 #include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
 #include "../../Components/Layering/X3DLayerNode.h"
+#include "../../Components/Shape/Material.h"
 #include "../../Components/Texturing/ImageTexture.h"
 #include "../../Execution/X3DExecutionContext.h"
 #include "../../Execution/X3DScene.h"
@@ -67,8 +68,12 @@ const std::string   BackgroundTexture::containerField = "backgroundTexture";
 
 BackgroundTexture::BackgroundTexture (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	      scene (),
-	 background ()
+	       scene (),
+	  background (),
+	  foreground (),
+	styleContext (0),
+	       width (0),
+	      height (0)
 { }
 
 BackgroundTexture*
@@ -86,6 +91,9 @@ BackgroundTexture::initialize ()
 	
 		scene      = FileLoader (getBrowser () -> getPrivateScene ()) .createX3DFromURL ({ get_ui ("Background.x3dv") .str () });
 		background = scene -> getNamedNode <X3DLayerNode> ("Background");
+		foreground = scene -> getNamedNode <X3DLayerNode> ("Foreground");
+
+		update ();
 	}
 	catch (const X3DError & error)
 	{
@@ -94,7 +102,45 @@ BackgroundTexture::initialize ()
 }
 
 void
-BackgroundTexture::configureBackground (const Glib::RefPtr <Gtk::StyleContext> & styleContext, const size_t width, const size_t height)
+BackgroundTexture::setStyleContext (const Glib::RefPtr <Gtk::StyleContext> & value)
+{
+	styleContext = value;
+
+	update ();
+}
+
+void
+BackgroundTexture::setSize (const int32_t width, const int32_t height)
+{
+	if (this -> width == width and this -> height == height)
+		return;
+
+	this -> width  = width;
+	this -> height = height;
+
+	update ();
+}
+
+void
+BackgroundTexture::setOpacity (const double value)
+{
+	try
+	{
+		if (not scene)
+			return;
+
+		const auto material = scene -> getNamedNode <Material> ("Material");
+
+		material -> transparency () = value;
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+BackgroundTexture::update ()
 {
 	try
 	{
@@ -117,7 +163,27 @@ BackgroundTexture::configureBackground (const Glib::RefPtr <Gtk::StyleContext> &
 void
 BackgroundTexture::renderBackground ()
 {
-	background -> traverse (TraverseType::DISPLAY, nullptr);
+	try
+	{
+		background -> traverse (TraverseType::DISPLAY, nullptr);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
+}
+
+void
+BackgroundTexture::renderForeground ()
+{
+	try
+	{
+		foreground -> traverse (TraverseType::DISPLAY, nullptr);
+	}
+	catch (const X3DError & error)
+	{
+		__LOG__ << error .what () << std::endl;
+	}
 }
 
 void

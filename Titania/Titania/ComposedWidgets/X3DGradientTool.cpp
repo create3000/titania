@@ -85,6 +85,7 @@ X3DGradientTool::X3DGradientTool (X3DBaseInterface* const editor,
 
 	browser -> initialized () .addInterest (&X3DGradientTool::set_initialized, this);
 	browser -> setAntialiasing (4);
+	browser -> set_opacity (0);
 	browser -> show ();
 
 	box .pack_start (*browser, true, true, 0);
@@ -94,6 +95,7 @@ void
 X3DGradientTool::set_initialized ()
 {
 	browser -> initialized () .removeInterest (&X3DGradientTool::set_initialized, this);
+	browser -> set_opacity (1);
 
 	try
 	{

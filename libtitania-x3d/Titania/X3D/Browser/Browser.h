@@ -165,7 +165,14 @@ private:
 	void
 	renderBackground () final override;
 
+	virtual
+	void
+	renderForeground () final override;
+
 	///  @name Event handler
+
+	void
+	on_opacity ();
 
 	void
 	set_idle ();
@@ -178,9 +185,6 @@ private:
 
 	void
 	set_viewer ();
-
-	void
-	set_displayed ();
 
 	///  @name Members
 
