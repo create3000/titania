@@ -145,6 +145,10 @@ public:
 	
 	///  @name Member access
 
+	const X3D::X3DPtr <X3DBrowserContext> &
+	getSharedContext () const
+	{ return sharedContext; }
+
 	const WorldPtr &
 	getWorld () const
 	{ return world; }
@@ -202,7 +206,7 @@ protected:
 
 	///  @name Constructor
 
-	X3DBrowserContext ();
+	X3DBrowserContext (const X3D::X3DPtr <X3DBrowserContext> & sharedContext);
 
 	virtual
 	void
@@ -239,6 +243,8 @@ protected:
 private:
 
 	///  @name Members
+
+	const X3D::X3DPtr <X3DBrowserContext> sharedContext;
 
 	SFTime initializedOutput;
 	Output pickedOutput;

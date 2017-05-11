@@ -74,7 +74,7 @@ public:
 
 	Browser (const MFString & url, const MFString & parameter);
 
-	Browser (const Browser & sharingBrowser, const MFString & url, const MFString & parameter);
+	Browser (const BrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter);
 
 	Browser*
 	create (X3DExecutionContext* const executionContext) const;

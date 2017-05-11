@@ -86,7 +86,7 @@ namespace X3D {
 
 Browser::Browser (const MFString & url, const MFString & parameter) :
 	    X3DBaseNode (this, this),
-	     X3DBrowser (url, parameter),
+	     X3DBrowser (nullptr, url, parameter),
 	OpenGL::Surface (),
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
@@ -104,10 +104,10 @@ Browser::Browser (const MFString & url, const MFString & parameter) :
 	setAntialiasing (0);
 }
 
-Browser::Browser (const Browser & sharingBrowser, const MFString & url, const MFString & parameter) :
+Browser::Browser (const BrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter) :
 	    X3DBaseNode (this, this),
-	     X3DBrowser (url, parameter),
-	OpenGL::Surface (sharingBrowser),
+	     X3DBrowser (sharedBrowser, url, parameter),
+	OpenGL::Surface (*sharedBrowser),
 	        viewer  (new NoneViewer (this)),
 	      keyDevice (new KeyDevice (this)),
 	pointingDevice  (new PointingDevice (this)),

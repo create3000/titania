@@ -61,7 +61,7 @@
 namespace titania {
 namespace X3D {
 
-X3DBrowserContext::X3DBrowserContext () :
+X3DBrowserContext::X3DBrowserContext (const X3D::X3DPtr <X3DBrowserContext> & sharedContext) :
 	                      X3DScene (),
 	                X3DCoreContext (),
 	             X3DShadersContext (),
@@ -85,6 +85,7 @@ X3DBrowserContext::X3DBrowserContext () :
 	                X3DTimeContext (),
 	               X3DRouterObject (),
 	                X3DToolContext (),
+	                 sharedContext (sharedContext),
 	             initializedOutput (),
 	           prepareEventsOutput (),
 	                 sensorsOutput (),

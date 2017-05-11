@@ -92,11 +92,11 @@ X3DShadersContext::initialize ()
 {
 	if (glXGetCurrentContext ())
 	{
-		#ifdef TITANIA_FIXED_PIPELINE_DRIVERS
-		static const std::regex fixedPipelineDrivers (R"/(gallium)/", std::regex_constants::icase);
-
-		fixedPipelineDriver = std::regex_search (getBrowser () -> getRenderer (), fixedPipelineDrivers);
-		#endif
+//		#ifdef TITANIA_FIXED_PIPELINE_DRIVERS
+//		static const std::regex fixedPipelineDrivers (R"/(gallium)/", std::regex_constants::icase);
+//
+//		fixedPipelineDriver = std::regex_search (getBrowser () -> getRenderer (), fixedPipelineDrivers);
+//		#endif
 
 		// shadingLanguageVersionStream
 
@@ -112,10 +112,25 @@ X3DShadersContext::initialize ()
 
 		// Shaders
 
-		pointShader     = createShader ("TitaniaPoint",     { get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Point.fs")     .str () });
-		wireframeShader = createShader ("TitaniaWireframe", { get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Wireframe.fs") .str () });
-		gouraudShader   = createShader ("TitaniaGouraud",   { get_shader ("Shaders/Gouraud.vs")   .str () }, { get_shader ("Shaders/Gouraud.fs")   .str () });
-		phongShader     = createShader ("TitaniaPhong",     { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () });
+		if (getBrowser () -> getSharedContext ())
+		{
+			pointShader     = getBrowser () -> getSharedContext () -> getPointShader ();
+			wireframeShader = getBrowser () -> getSharedContext () -> getWireframeShader ();
+			gouraudShader   = getBrowser () -> getSharedContext () -> getGouraudShader ();
+			phongShader     = getBrowser () -> getSharedContext () -> getPhongShader ();
+
+			getBrowser () -> getLoadSensor () -> watchList () .append (pointShader     -> parts ());
+			getBrowser () -> getLoadSensor () -> watchList () .append (wireframeShader -> parts ());
+			getBrowser () -> getLoadSensor () -> watchList () .append (gouraudShader   -> parts ());
+			getBrowser () -> getLoadSensor () -> watchList () .append (phongShader     -> parts ());
+		}
+		else
+		{
+			pointShader     = createShader ("TitaniaPoint",     { get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Point.fs")     .str () });
+			wireframeShader = createShader ("TitaniaWireframe", { get_shader ("Shaders/Wireframe.vs") .str () }, { get_shader ("Shaders/Wireframe.fs") .str () });
+			gouraudShader   = createShader ("TitaniaGouraud",   { get_shader ("Shaders/Gouraud.vs")   .str () }, { get_shader ("Shaders/Gouraud.fs")   .str () });
+			phongShader     = createShader ("TitaniaPhong",     { get_shader ("Shaders/Phong.vs")     .str () }, { get_shader ("Shaders/Phong.fs")     .str () });
+		}
 
 		// Shading
 

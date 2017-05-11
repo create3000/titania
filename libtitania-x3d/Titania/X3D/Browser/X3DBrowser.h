@@ -302,7 +302,7 @@ protected:
 
 	///  @name Construction
 
-	X3DBrowser (const MFString &, const MFString &);
+	X3DBrowser (const X3D::X3DPtr <X3DBrowserContext> & sharedContext, const MFString &, const MFString &);
 
 	virtual
 	void
@@ -355,6 +355,7 @@ private:
 	static const std::string   containerField;
 
 	///  @name Members
+
 	MFString       url;
 	MFString       parameter;
 	SFString       description;

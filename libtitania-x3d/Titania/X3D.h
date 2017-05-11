@@ -74,11 +74,11 @@ throw (Error <BROWSER_UNAVAILABLE>);
  */
 
 BrowserPtr
-createBrowser (const MFString & = { }, const MFString & = { })
+createBrowser (const MFString & url = { }, const MFString & parameter = { })
 throw (Error <BROWSER_UNAVAILABLE>);
 
 BrowserPtr
-createBrowser (const BrowserPtr &, const MFString & = { }, const MFString & = { })
+createBrowser (const BrowserPtr & sharedBrowser, const MFString & url = { }, const MFString & parameter = { })
 throw (Error <INVALID_NODE>,
        Error <BROWSER_UNAVAILABLE>);
 

@@ -92,8 +92,8 @@ infinity2f (std::numeric_limits <float>::infinity (), std::numeric_limits <float
 TextureMappingEditor::TextureMappingEditor (X3DBrowserWindow* const browserWindow) :
 	                X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DTextureMappingEditorInterface (get_ui ("Applications/TextureMappingEditor.glade")),
-	                            left (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Applications/TextureMappingEditorLeftPreview.x3dv") })),
-	                           right (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser (), { get_ui ("Applications/TextureMappingEditorRightPreview.x3dv") })),
+	                            left (X3D::createBrowser (getMasterBrowser (), { get_ui ("Applications/TextureMappingEditorLeftPreview.x3dv") })),
+	                           right (X3D::createBrowser (getMasterBrowser (), { get_ui ("Applications/TextureMappingEditorRightPreview.x3dv") })),
 	                           shape (),
 	                      appearance (),
 	                        material (),

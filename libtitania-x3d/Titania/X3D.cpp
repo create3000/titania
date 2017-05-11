@@ -89,14 +89,14 @@ throw (Error <BROWSER_UNAVAILABLE>)
 
 ///  6.2.3 The createBrowser service creates a new instance of a browser application.
 BrowserPtr
-createBrowser (const BrowserPtr & sharingBrowser, const MFString & url, const MFString & parameter)
+createBrowser (const BrowserPtr & sharedBrowser, const MFString & url, const MFString & parameter)
 throw (Error <INVALID_NODE>,
        Error <BROWSER_UNAVAILABLE>)
 {
-	if (not sharingBrowser)
-		throw Error <INVALID_NODE> ("createBrowser: No sharingBrowser given.");
+	if (not sharedBrowser)
+		throw Error <INVALID_NODE> ("createBrowser: Shared browser is NULL.");
 
-	return BrowserPtr (new Browser (*sharingBrowser, url, parameter));
+	return BrowserPtr (new Browser (sharedBrowser, url, parameter));
 }
 
 } // X3D

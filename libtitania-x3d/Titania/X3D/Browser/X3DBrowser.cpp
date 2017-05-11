@@ -75,9 +75,9 @@ const ComponentType X3DBrowser::component      = ComponentType::TITANIA;
 const std::string   X3DBrowser::typeName       = "Browser";
 const std::string   X3DBrowser::containerField = "browser";
 
-X3DBrowser::X3DBrowser (const MFString & url, const MFString & parameter) :
+X3DBrowser::X3DBrowser (const X3D::X3DPtr <X3DBrowserContext> & sharedContext, const MFString & url, const MFString & parameter) :
 	        X3DBaseNode (),
-	  X3DBrowserContext (),
+	  X3DBrowserContext (sharedContext),
 	                url (url),
 	          parameter (parameter),
 	        description (),

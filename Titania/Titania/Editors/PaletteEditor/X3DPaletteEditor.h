@@ -271,7 +271,7 @@ private:
 template <class Type>
 X3DPaletteEditor <Type>::X3DPaletteEditor (const std::string & libraryFolder) :
 	              Type (),
-	           preview (X3D::createBrowser (this -> getBrowserWindow () -> getMasterBrowser (), { get_ui ("Editors/Palette.x3dv") })),
+	           preview (X3D::createBrowser (this -> getMasterBrowser (), { get_ui ("Editors/Palette.x3dv") })),
 	             group (),
 	   selectionSwitch (),
 	selectionRectangle (),

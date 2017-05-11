@@ -65,7 +65,7 @@ public:
 
 	BrowserApplication (const MFString & url, const MFString & parameter) :
 		    X3DBaseNode (this, this),
-		     X3DBrowser (url, parameter),
+		     X3DBrowser (nullptr, url, parameter),
 		         viewer (X3DConstants::NoneViewer)
 	{ addType (X3DConstants::BrowserApplication); }
 
