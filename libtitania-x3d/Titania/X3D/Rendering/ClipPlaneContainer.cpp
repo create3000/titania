@@ -73,7 +73,6 @@ ClipPlaneContainer::isClipped (const Vector3d & point) const
 void
 ClipPlaneContainer::enable ()
 {
-	#ifdef FIXED_PIPELINE
 	if (browser -> getFixedPipelineRequired ())
 	{
 		auto & clipPlanes = browser -> getClipPlanes ();
@@ -89,14 +88,11 @@ ClipPlaneContainer::enable ()
 			glEnable (planeId);
 		}
 	}
-
-	#endif
 }
 
 void
 ClipPlaneContainer::disable ()
 {
-	#ifdef FIXED_PIPELINE
 	if (browser -> getFixedPipelineRequired ())
 	{
 		if (planeId)
@@ -105,8 +101,6 @@ ClipPlaneContainer::disable ()
 			glDisable (planeId);
 		}
 	}
-
-	#endif
 }
 
 void

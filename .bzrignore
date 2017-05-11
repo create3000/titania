@@ -13,6 +13,8 @@
 .libs
 .deps
 
+./*/bin
+./*/obj
 ./Titania/titania
 ./experimental/experimental
 ./debian/titania

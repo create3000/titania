@@ -681,14 +681,12 @@ X3DRenderObject::draw (const TraverseFunction & traverse)
 	for (const auto & object : basic::make_reverse_range (getGlobalLights ()))
 		object -> disable ();
 
-	#ifdef FIXED_PIPELINE
 	if (getBrowser () -> getFixedPipelineRequired ())
 	{
 		// Reset to default OpenGL appearance
 
 		getBrowser () -> getDefaultAppearance () -> draw (this);
 	}
-	#endif
 
 	// Clear node arrays.
 

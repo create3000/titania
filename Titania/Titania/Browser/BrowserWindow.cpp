@@ -153,10 +153,7 @@ void
 BrowserWindow::store ()
 {
 	getConfig () -> setItem ("transformToolMode", (int32_t) getTransformToolModeAction () -> get_active ());
-
-	#ifdef FIXED_PIPELINE
 	getConfig () -> setItem ("cobwebCompatibility", getCobwebCompatibilityAction () -> get_active ());
-	#endif
 
 	X3DBrowserWindow::store ();
 }
@@ -197,9 +194,10 @@ BrowserWindow::configure ()
 
 	getTransformToolModeAction () -> set_active (getConfig () -> getInteger ("transformToolMode"));
 
-	#ifdef FIXED_PIPELINE
-	getCobwebCompatibilityAction () -> set_active (getConfig () -> getBoolean ("cobwebCompatibility"));
-	#endif
+	if (getConfig () -> hasItem ("cobwebCompatibility"))
+		getCobwebCompatibilityAction () -> set_active (getConfig () -> getBoolean ("cobwebCompatibility"));
+	else
+		getCobwebCompatibilityAction () -> set_active (true);
 }
 
 void
@@ -289,10 +287,7 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	getCurrentBrowser () -> getBrowserOptions () -> RubberBand ()   = getRubberbandAction () -> get_active ();
 	getCurrentBrowser () -> getRenderingProperties () -> Enabled () = getRenderingPropertiesAction () -> get_active ();
 
-	#ifdef FIXED_PIPELINE
 	getCurrentBrowser () -> setFixedPipeline (not getCobwebCompatibilityAction () -> get_active ());
-	//getCobwebCompatibilityAction () -> set_sensitive (not getCurrentBrowser () -> getFixedPipelineRequired ()); // TODO: Shaders still not loaded.
-	#endif
 
 	on_transform_tool_mode_toggled ();
 }
@@ -2311,9 +2306,7 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 void
 BrowserWindow::on_cobweb_compatibility_toggled ()
 {
-	#ifdef FIXED_PIPELINE
 	getCurrentBrowser () -> setFixedPipeline (not getCobwebCompatibilityAction () -> get_active ());
-	#endif
 }
 
 void

@@ -893,7 +893,6 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 		context -> setGeometryType  (geometryType);
 		context -> setColorMaterial (not colors .empty ());
 	
-		#ifdef FIXED_PIPELINE
 		if (browser -> getFixedPipelineRequired ())
 		{
 			// Enable colors, texture coords, normals and vertices.
@@ -927,7 +926,6 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 			glEnableClientState (GL_VERTEX_ARRAY);
 			glVertexPointer (3, GL_DOUBLE, 0, 0);
 		}
-		#endif
 
 		if (shaderNode)
 		{
@@ -1000,7 +998,6 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 	
 		// VertexAttribs
 	
-		#ifdef FIXED_PIPELINE
 		if (browser -> getFixedPipelineRequired ())
 		{
 			// Texture
@@ -1014,7 +1011,6 @@ X3DGeometryNode::draw (ShapeContainer* const context)
 			glDisableClientState (GL_NORMAL_ARRAY);
 			glDisableClientState (GL_VERTEX_ARRAY);
 		}
-		#endif
 	
 		if (shaderNode)
 		{

@@ -164,9 +164,7 @@ X3DShapeNode::display (ShapeContainer* const context)
 
 		appearanceNode -> getLineProperties () -> disable (renderObject);
 
-		#ifdef FIXED_PIPELINE
 		disableTextures (browser);
-		#endif
 	}
 	else
 	{
@@ -176,9 +174,7 @@ X3DShapeNode::display (ShapeContainer* const context)
 		{
 			draw (context);
 
-			#ifdef FIXED_PIPELINE
 			disableTextures (browser);
-			#endif
 		}
 
 		// Draw hatch on top of whatever appearance is specified.
@@ -216,7 +212,6 @@ X3DShapeNode::display (ShapeContainer* const context)
 	glDisable (GL_COLOR_MATERIAL);
 }
 
-#ifdef FIXED_PIPELINE
 void
 X3DShapeNode::disableTextures (X3DBrowser* const browser)
 {
@@ -247,7 +242,6 @@ X3DShapeNode::disableTextures (X3DBrowser* const browser)
 		glActiveTexture (GL_TEXTURE0);
 	}
 }
-#endif
 
 void
 X3DShapeNode::dispose ()

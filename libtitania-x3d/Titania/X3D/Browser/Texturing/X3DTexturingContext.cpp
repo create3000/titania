@@ -70,18 +70,12 @@ X3DTexturingContext::X3DTexturingContext () :
 	            textureUnits (),
 	    combinedTextureUnits (),
 	           textureStages (),
-#ifdef FIXED_PIPELINE
 	         defaultTexCoord (new TextureCoordinate (getExecutionContext ())),
-#endif
 	defaultTextureProperties (new TextureProperties (getExecutionContext ())),
 	 defaultTextureTransform (new TextureTransform (getExecutionContext ())),
 	                 texture (nullptr),
 	        textureTransform (defaultTextureTransform)
 {
-	#ifdef FIXED_PIPELINE
-	addChildObjects (defaultTexCoord);
-	#endif
-
 	addChildObjects (defaultTexCoord,
 	                 defaultTextureProperties,
 	                 defaultTextureTransform);

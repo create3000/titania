@@ -107,14 +107,12 @@ X3DLineGeometryNode::draw (ShapeContainer* const context)
 		const bool pointShading  = browser -> getRenderingProperties () -> getShading () == ShadingType::POINT;
 		auto       shaderNode    = browser -> getShader ();
 	
-		#ifdef FIXED_PIPELINE
 		if (browser -> getFixedPipelineRequired ())
 		{
 			glDisable (GL_LIGHTING);
 			X3DGeometryNode::draw (context);
 			return;
 		}
-		#endif
 	
 		if (shaderNode == browser -> getDefaultShader ())
 			shaderNode = getShaderNode (browser);

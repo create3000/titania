@@ -108,12 +108,8 @@ Polyline2D::getShaderNode (X3DBrowser* const browser)
 bool
 Polyline2D::isTransparent () const
 {
-	#ifdef FIXED_PIPELINE
-
 	if (getBrowser () -> getFixedPipeline ())
 		return false;
-
-	#endif
 
 	return true; // The antialiased border is transparent!
 }

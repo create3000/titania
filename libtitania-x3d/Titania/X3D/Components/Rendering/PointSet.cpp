@@ -126,12 +126,8 @@ PointSet::getShaderNode (X3DBrowser* const browser)
 bool
 PointSet::isTransparent () const
 {
-	#ifdef FIXED_PIPELINE
-
 	if (getBrowser () -> getFixedPipeline ())
 		return transparent;
-
-	#endif
 
 	return true; // The antialiased border is transparent!
 }

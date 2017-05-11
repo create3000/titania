@@ -179,10 +179,8 @@ private:
 
 	///  @name Operations
 	
-	#ifdef FIXED_PIPELINE
 	void
 	disableTextures (X3DBrowser* const browser);
-	#endif
 
 	///  @name Members
 

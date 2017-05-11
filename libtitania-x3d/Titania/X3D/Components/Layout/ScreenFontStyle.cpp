@@ -458,7 +458,6 @@ ScreenText::draw (ShapeContainer* const context)
 {
 	const auto modelViewMatrix = matrix * context -> getModelViewMatrix ();
 
-	#ifdef FIXED_PIPELINE
 	if (context -> getBrowser () -> getFixedPipelineRequired ())
 	{
 		glEnable (GL_TEXTURE_2D);
@@ -471,7 +470,6 @@ ScreenText::draw (ShapeContainer* const context)
 
 		glLoadMatrixd (modelViewMatrix .data ());
 	}
-	#endif
 
 	context -> getBrowser () -> setTexture (textureNode);
 	context -> getBrowser () -> setTextureTransform (getBrowser () -> getDefaultTextureTransform ());

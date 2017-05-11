@@ -1631,7 +1631,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 		{
 			case GeometryType::POINT:
 			{
-				#ifdef FIXED_PIPELINE
 				if (browser -> getFixedPipelineRequired ())
 				{
 					glBindBuffer (GL_ARRAY_BUFFER, particleBufferId [readBuffer]);
@@ -1655,7 +1654,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 					glBindBuffer (GL_ARRAY_BUFFER, 0);
 					break;
 				}
-				#endif
 
 				// Enable shader.
 			
@@ -1697,7 +1695,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 			case GeometryType::TRIANGLE:
 			case GeometryType::QUAD:
 			{
-				#ifdef FIXED_PIPELINE
 				if (browser -> getFixedPipelineRequired ())
 				{
 					glBindBuffer (GL_ARRAY_BUFFER, vertexBufferId);
@@ -1727,7 +1724,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 					glBindBuffer (GL_ARRAY_BUFFER, 0);
 					break;
 				}
-				#endif
 
 				// Enable shader.
 			
@@ -1776,7 +1772,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 
 					// Draw geometries.
 
-					#ifdef FIXED_PIPELINE
 					if (browser -> getFixedPipelineRequired ())
 					{
 						for (const auto & position : positions)
@@ -1794,7 +1789,6 @@ ParticleSystem::draw (ShapeContainer* const context)
 
 						break;
 					}
-					#endif
 
 					const auto modelViewMatrix = context -> getModelViewMatrix ();
 

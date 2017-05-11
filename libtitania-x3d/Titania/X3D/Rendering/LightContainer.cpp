@@ -102,7 +102,6 @@ LightContainer::renderShadowMap (X3DRenderObject* const renderObject)
 void
 LightContainer::enable ()
 {
-	#ifdef FIXED_PIPELINE
 	if (browser -> getFixedPipelineRequired ())
 	{
 		auto & lights = browser -> getLights ();
@@ -119,7 +118,6 @@ LightContainer::enable ()
 			node -> draw (lightId);
 		}
 	}
-	#endif
 
 	if (shadowTextureBuffer and not browser -> getCombinedTextureUnits () .empty ())
 	{
@@ -135,7 +133,6 @@ LightContainer::enable ()
 void
 LightContainer::disable ()
 {
-	#ifdef FIXED_PIPELINE
 	if (browser -> getFixedPipelineRequired ())
 	{
 		if (lightId)
@@ -144,7 +141,6 @@ LightContainer::disable ()
 			browser -> getLights () .push (lightId);
 		}
 	}
-	#endif
 
 	if (textureUnit)
 		browser -> getCombinedTextureUnits () .push (textureUnit);

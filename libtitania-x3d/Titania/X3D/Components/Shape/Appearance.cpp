@@ -268,7 +268,6 @@ Appearance::draw (X3DRenderObject* const renderObject)
 {
 	const auto browser = renderObject -> getBrowser ();
 
-	#ifdef FIXED_PIPELINE
 	if (browser -> getFixedPipelineRequired ())
 	{
 		// Material
@@ -300,7 +299,6 @@ Appearance::draw (X3DRenderObject* const renderObject)
 		if (shaderNode)
 			shaderNode -> draw (renderObject);
 	}
-	#endif
 
 	browser -> setLineProperties (linePropertiesNode);
 	browser -> setMaterial (materialNode);
