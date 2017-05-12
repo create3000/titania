@@ -181,6 +181,10 @@ X3DShadersContext::set_shading ()
 {
 	fixedPipelineRequired = fixedPipeline or
 	                        not getBrowser () -> getLoadSensor () -> isLoaded () or
+									not pointShader -> isValid () or
+									not wireframeShader -> isValid () or
+									not gouraudShader -> isValid () or
+									not phongShader -> isValid () or
 	                        fixedPipelineDriver;
 
 	if (fixedPipelineRequired)
