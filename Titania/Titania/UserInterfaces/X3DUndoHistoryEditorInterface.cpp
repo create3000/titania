@@ -96,9 +96,6 @@ X3DUndoHistoryEditorInterface::create ()
 	// Connect object Gtk::Button with id 'UndoButton'.
 	m_UndoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DUndoHistoryEditorInterface::on_undo_clicked));
 	m_RedoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DUndoHistoryEditorInterface::on_redo_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DUndoHistoryEditorInterface::~X3DUndoHistoryEditorInterface ()

@@ -141,9 +141,6 @@ X3DLibraryViewInterface::create ()
 	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_add_object_to_palette_activate));
 	m_UpdateObjectInPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_update_object_in_palette_activate));
 	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DLibraryViewInterface::on_remove_object_from_palette_activate));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DLibraryViewInterface::~X3DLibraryViewInterface ()

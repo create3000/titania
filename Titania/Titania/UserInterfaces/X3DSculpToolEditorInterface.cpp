@@ -159,9 +159,6 @@ X3DSculpToolEditorInterface::create ()
 	m_AddObjectToPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_add_object_to_palette_activate));
 	m_UpdateObjectInPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_update_object_in_palette_activate));
 	m_RemoveObjectFromPaletteMenuItem -> signal_activate () .connect (sigc::mem_fun (this, &X3DSculpToolEditorInterface::on_remove_object_from_palette_activate));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DSculpToolEditorInterface::~X3DSculpToolEditorInterface ()

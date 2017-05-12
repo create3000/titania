@@ -165,9 +165,6 @@ X3DGeometryEditorInterface::create ()
 
 	// Connect object Gtk::CheckMenuItem with id 'SelectLineLoopMenuItem'.
 	m_SelectLineLoopMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DGeometryEditorInterface::on_select_line_loop_toggled));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DGeometryEditorInterface::~X3DGeometryEditorInterface ()

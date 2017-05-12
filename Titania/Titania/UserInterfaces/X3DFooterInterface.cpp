@@ -89,9 +89,6 @@ X3DFooterInterface::create ()
 
 	// Connect object Gtk::Notebook with id 'Notebook'.
 	m_Notebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DFooterInterface::on_switch_page));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DFooterInterface::~X3DFooterInterface ()

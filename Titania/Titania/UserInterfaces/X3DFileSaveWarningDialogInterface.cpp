@@ -86,9 +86,6 @@ X3DFileSaveWarningDialogInterface::create ()
 	m_builder -> get_widget ("Message", m_Message);
 	m_builder -> get_widget ("FilesBox", m_FilesBox);
 	m_builder -> get_widget ("TreeView", m_TreeView);
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DFileSaveWarningDialogInterface::~X3DFileSaveWarningDialogInterface ()

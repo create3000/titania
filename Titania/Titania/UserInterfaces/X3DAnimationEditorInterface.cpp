@@ -188,9 +188,6 @@ X3DAnimationEditorInterface::create ()
 	// Connect object Gtk::SpinButton with id 'DurationSspinButton'.
 	m_DurationSspinButton -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_new_cycle_interval_changed));
 	m_FPSSpinButton -> signal_value_changed () .connect (sigc::mem_fun (this, &X3DAnimationEditorInterface::on_new_cycle_interval_changed));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DAnimationEditorInterface::~X3DAnimationEditorInterface ()

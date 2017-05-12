@@ -192,9 +192,6 @@ X3DViewpointEditorInterface::create ()
 	m_NewViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_viewpoint_clicked));
 	m_NewOthoViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_ortho_viewpoint_clicked));
 	m_NewGeoViewpointButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DViewpointEditorInterface::on_new_geo_viewpoint_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DViewpointEditorInterface::~X3DViewpointEditorInterface ()

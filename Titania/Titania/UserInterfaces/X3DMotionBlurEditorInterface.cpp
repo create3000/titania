@@ -86,9 +86,6 @@ X3DMotionBlurEditorInterface::create ()
 	m_builder -> get_widget ("EnabledCheckButton", m_EnabledCheckButton);
 	m_builder -> get_widget ("IntensityBox", m_IntensityBox);
 	m_builder -> get_widget ("IntensityScale", m_IntensityScale);
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DMotionBlurEditorInterface::~X3DMotionBlurEditorInterface ()

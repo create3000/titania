@@ -167,9 +167,6 @@ X3DScenePropertiesEditorInterface::create ()
 
 	// Connect object Gtk::Entry with id 'MetaDataNameEntry'.
 	m_MetaDataNameEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DScenePropertiesEditorInterface::on_meta_data_name_changed));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DScenePropertiesEditorInterface::~X3DScenePropertiesEditorInterface ()

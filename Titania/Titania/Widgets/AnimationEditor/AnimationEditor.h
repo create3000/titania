@@ -79,6 +79,10 @@ public:
 
 	AnimationEditor (X3DBrowserWindow* const browserWindow);
 
+	virtual
+	void
+	setup () final override;
+
 	/***
 	 *  @name Destruction
 	 **/

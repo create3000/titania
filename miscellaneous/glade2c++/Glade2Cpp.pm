@@ -514,15 +514,6 @@ sub generate
 	say OUT "///  \@name Construction";
 	say OUT "";
 
-	# Call construct
-	if ($base_class_name)
-	{
-		say OUT "virtual";
-		say OUT "void";
-		say OUT "construct () final override";
-		say OUT "{ ${base_class_name}::construct (); }";
-	}
-
 	say OUT "  void";
 	say OUT "  create (const std::string &);";
 	say OUT "";
@@ -634,14 +625,6 @@ sub generate
 	# Connect signal handler
 	$parser = new XML::Parser (Handlers => {Start => sub { $self -> cpp_signals (@_) }});
 	$parser -> parse ($input, ProtocolEncoding => 'UTF-8');
-
-	# Call construct
-	if ($base_class_name)
-	{
-		say OUT "";
-		say OUT "// Call construct handler of base class.";
-		say OUT "construct ();";
-	}
 
 	# Constructor end
 	say OUT "}";

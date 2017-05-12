@@ -198,9 +198,6 @@ X3DBackgroundEditorInterface::create ()
 	m_RemoveBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBackgroundEditorInterface::on_remove_background_clicked));
 	m_NewBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBackgroundEditorInterface::on_new_background_clicked));
 	m_NewTextureBackgroundButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DBackgroundEditorInterface::on_new_texture_background_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DBackgroundEditorInterface::~X3DBackgroundEditorInterface ()

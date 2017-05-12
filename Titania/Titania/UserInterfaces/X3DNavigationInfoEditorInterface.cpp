@@ -122,9 +122,6 @@ X3DNavigationInfoEditorInterface::create ()
 	// Connect object Gtk::Button with id 'NewNavigationInfoButton'.
 	m_NewNavigationInfoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNavigationInfoEditorInterface::on_new_navigation_info_clicked));
 	m_RemoveNavigationInfoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNavigationInfoEditorInterface::on_remove_navigation_info_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DNavigationInfoEditorInterface::~X3DNavigationInfoEditorInterface ()

@@ -177,9 +177,6 @@ X3DSoundEditorInterface::create ()
 	m_SoundSourceResumeTimeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_resume_time_clicked));
 	m_SoundSourcePauseTimeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_pause_time_clicked));
 	m_SoundSourceStopTimeButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DSoundEditorInterface::on_sound_source_stop_time_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DSoundEditorInterface::~X3DSoundEditorInterface ()

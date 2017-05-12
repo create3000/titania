@@ -411,11 +411,6 @@ private:
 
 	///  @name Construction
 
-	virtual
-	void
-	construct () final override
-	{ X3DApplicationInterface::construct (); }
-
 	void
 	create (const std::string &);
 

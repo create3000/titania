@@ -130,9 +130,6 @@ X3DLayerEditorInterface::create ()
 	m_BottomButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLayerEditorInterface::on_bottom_clicked));
 	m_NewLayerButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLayerEditorInterface::on_new_layer_clicked));
 	m_NewLayoutLayerButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLayerEditorInterface::on_new_layout_layer_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DLayerEditorInterface::~X3DLayerEditorInterface ()

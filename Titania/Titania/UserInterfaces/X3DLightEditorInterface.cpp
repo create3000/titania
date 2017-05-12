@@ -178,9 +178,6 @@ X3DLightEditorInterface::create ()
 	m_NewDirectionalLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_directional_light_clicked));
 	m_NewPointLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_point_light_clicked));
 	m_NewSpotLightButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DLightEditorInterface::on_new_spot_light_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DLightEditorInterface::~X3DLightEditorInterface ()

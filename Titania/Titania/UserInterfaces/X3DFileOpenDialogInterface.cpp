@@ -100,9 +100,6 @@ X3DFileOpenDialogInterface::create ()
 	m_builder -> get_widget ("Widget", m_Widget);
 	m_builder -> get_widget ("RelativePathBox", m_RelativePathBox);
 	m_builder -> get_widget ("RelativePathSwitch", m_RelativePathSwitch);
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DFileOpenDialogInterface::~X3DFileOpenDialogInterface ()

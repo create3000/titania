@@ -105,9 +105,6 @@ X3DBindableNodeListInterface::create ()
 	// Connect object Gtk::TreeView with id 'TreeView'.
 	m_TreeView -> signal_button_release_event () .connect (sigc::mem_fun (this, &X3DBindableNodeListInterface::on_button_release_event));
 	m_TreeView -> signal_row_activated () .connect (sigc::mem_fun (this, &X3DBindableNodeListInterface::on_row_activated));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DBindableNodeListInterface::~X3DBindableNodeListInterface ()

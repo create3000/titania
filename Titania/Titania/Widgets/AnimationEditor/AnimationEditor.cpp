@@ -169,6 +169,13 @@ AnimationEditor::AnimationEditor (X3DBrowserWindow* const browserWindow) :
 }
 
 void
+AnimationEditor::setup ()
+{
+	X3DAnimationEditorInterface::setup ();
+	X3DEditorObject::setup ();
+}
+
+void
 AnimationEditor::initialize ()
 {
 	X3DAnimationEditorInterface::initialize ();

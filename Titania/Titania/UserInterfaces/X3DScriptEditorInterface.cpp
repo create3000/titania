@@ -247,9 +247,6 @@ X3DScriptEditorInterface::create ()
 	// Connect object Gtk::Button with id 'GoToLineButton'.
 	m_GoToLineButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_go_to_line_button_clicked));
 	m_HideGoToLineButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DScriptEditorInterface::on_hide_search_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DScriptEditorInterface::~X3DScriptEditorInterface ()

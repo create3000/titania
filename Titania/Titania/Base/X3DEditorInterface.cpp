@@ -65,12 +65,6 @@ X3DEditorInterface::X3DEditorInterface () :
 { }
 
 void
-X3DEditorInterface::construct ()
-{
-	X3DDialogInterface::construct ();
-}
-
-void
 X3DEditorInterface::setup ()
 {
 	X3DDialogInterface::setup ();

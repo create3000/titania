@@ -103,9 +103,6 @@ X3DFileImportDialogInterface::create ()
 	m_builder -> get_widget ("ImportAsInlineButton", m_ImportAsInlineButton);
 	m_builder -> get_widget ("ImportExternProtosButton", m_ImportExternProtosButton);
 	m_builder -> get_widget ("ImportProtosButton", m_ImportProtosButton);
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DFileImportDialogInterface::~X3DFileImportDialogInterface ()

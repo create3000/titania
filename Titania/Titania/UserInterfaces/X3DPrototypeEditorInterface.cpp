@@ -117,9 +117,6 @@ X3DPrototypeEditorInterface::create ()
 	m_UpdateInstancesButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_update_instances_clicked));
 	m_NewProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_externproto_clicked));
 	m_NewExternProtoButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrototypeEditorInterface::on_create_proto_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DPrototypeEditorInterface::~X3DPrototypeEditorInterface ()

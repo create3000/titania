@@ -125,9 +125,6 @@ X3DHistoryEditorInterface::create ()
 	m_HalfYearMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DHistoryEditorInterface::on_half_year_toggled));
 	m_OneYearMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DHistoryEditorInterface::on_one_year_toggled));
 	m_AlwaysMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DHistoryEditorInterface::on_always_toggled));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DHistoryEditorInterface::~X3DHistoryEditorInterface ()

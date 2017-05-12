@@ -183,9 +183,6 @@ X3DTextureMappingEditorInterface::create ()
 	// Connect object Gtk::Button with id 'RemoveButton'.
 	m_RemoveButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureMappingEditorInterface::on_remove_clicked));
 	m_ApplyButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DTextureMappingEditorInterface::on_apply_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DTextureMappingEditorInterface::~X3DTextureMappingEditorInterface ()

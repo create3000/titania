@@ -87,9 +87,6 @@ X3DMessageDialogInterface::create ()
 	m_builder -> get_widget ("Image", m_Image);
 	m_builder -> get_widget ("MessageLabel", m_MessageLabel);
 	m_builder -> get_widget ("TextLabel", m_TextLabel);
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DMessageDialogInterface::~X3DMessageDialogInterface ()

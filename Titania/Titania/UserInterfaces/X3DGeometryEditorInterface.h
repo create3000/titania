@@ -335,11 +335,6 @@ private:
 
 	///  @name Construction
 
-	virtual
-	void
-	construct () final override
-	{ X3DRevealerInterface::construct (); }
-
 	void
 	create (const std::string &);
 

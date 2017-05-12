@@ -232,9 +232,6 @@ X3DNodePropertiesEditorInterface::create ()
 	m_FieldNameEntry -> signal_changed () .connect (sigc::mem_fun (this, &X3DNodePropertiesEditorInterface::on_field_name_changed));
 	m_FieldNameEntry -> signal_delete_text () .connect (sigc::mem_fun (this, &X3DNodePropertiesEditorInterface::on_field_name_delete_text), false);
 	m_FieldNameEntry -> signal_insert_text () .connect (sigc::mem_fun (this, &X3DNodePropertiesEditorInterface::on_field_name_insert_text), false);
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DNodePropertiesEditorInterface::~X3DNodePropertiesEditorInterface ()

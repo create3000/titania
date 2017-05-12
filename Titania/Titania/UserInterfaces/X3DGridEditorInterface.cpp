@@ -323,9 +323,6 @@ X3DGridEditorInterface::create ()
 	// Connect object Gtk::Button with id 'AxonometricGridAddMajorGridButton'.
 	m_AxonometricGridAddMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_axonometric_add_major_line_grid));
 	m_AxonometricGridRemoveMajorGridButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DGridEditorInterface::on_axonometric_remove_major_line_grid));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DGridEditorInterface::~X3DGridEditorInterface ()

@@ -333,7 +333,8 @@ X3DPrimitiveCountEditor::count (const X3D::X3DGeometryNode::Element & element)
 void
 X3DPrimitiveCountEditor::set_browser ()
 {
-	browser -> displayed () .removeInterest (&X3DPrimitiveCountEditor::update, this);
+	if (browser)
+		browser -> displayed () .removeInterest (&X3DPrimitiveCountEditor::update, this);
 
 	browser = getCurrentBrowser ();
 

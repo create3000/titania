@@ -66,6 +66,12 @@ class X3DUserInterface :
 {
 public:
 
+	/// @name Construction
+
+	virtual
+	void
+	setup () override;
+
 	///  @name Member access
 
 	virtual
@@ -139,10 +145,6 @@ protected:
 
 	virtual
 	void
-	construct ();
-
-	virtual
-	void
 	configure ()
 	{ }
 
@@ -158,7 +160,7 @@ protected:
 
 	bool
 	isInitialized () const
-	{ return not constructed_connection .connected (); }
+	{ return not initializeConnection .connected (); }
 
 	/// @name Member access
 	
@@ -195,7 +197,7 @@ private:
 	///  @name Event handlers
 
 	void
-	on_constructed ();
+	on_initialize ();
 
 	void
 	on_map ();
@@ -249,7 +251,7 @@ private:
 	///  @name Members
 
 	std::shared_ptr <Configuration> config;
-	sigc::connection                constructed_connection;
+	sigc::connection                initializeConnection;
 	UserInterfaceArray::iterator    userInterface;
 	std::shared_ptr <DialogIndex>   dialogs;
 

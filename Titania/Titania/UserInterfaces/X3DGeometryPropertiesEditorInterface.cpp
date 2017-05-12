@@ -445,9 +445,6 @@ X3DGeometryPropertiesEditorInterface::create ()
 
 	// Connect object Gtk::ComboBoxText with id 'PrimitiveCountCountButton'.
 	m_PrimitiveCountCountButton -> signal_changed () .connect (sigc::mem_fun (this, &X3DGeometryPropertiesEditorInterface::on_primitive_count_count_changed));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DGeometryPropertiesEditorInterface::~X3DGeometryPropertiesEditorInterface ()

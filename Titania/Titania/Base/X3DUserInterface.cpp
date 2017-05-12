@@ -92,19 +92,22 @@ const std::set <std::string> X3DUserInterface::restorableDialogs = {
 X3DUserInterface::UserInterfaceArray X3DUserInterface::userInterfaces;
 
 X3DUserInterface::X3DUserInterface () :
-	      X3DBaseInterface (),
-	                config (),
-	constructed_connection (),
-	         userInterface (),
-	               dialogs (new DialogIndex ())
+	    X3DBaseInterface (),
+	              config (),
+	initializeConnection (),
+	       userInterface (),
+	             dialogs (new DialogIndex ())
 {
 	userInterfaces .emplace_back (this);
 	userInterface = -- userInterfaces .end ();
 }
 
 void
-X3DUserInterface::construct ()
+X3DUserInterface::setup ()
 {
+	X3DBaseInterface::setup ();
+
+	assert (not initializeConnection .connected ());
 	assert (not getWidget () .get_name () .empty ());
 
 	setTypeName (getWidget () .get_name ());
@@ -112,7 +115,7 @@ X3DUserInterface::construct ()
 
 	config .reset (new Configuration (getWidget () .get_name ()));
 
-	constructed_connection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_constructed));
+	initializeConnection = getWidget () .signal_map () .connect (sigc::mem_fun (this, &X3DUserInterface::on_initialize));
 
 	getWindow () .signal_window_state_event () .connect (sigc::mem_fun (this, &X3DUserInterface::on_window_state_event));
 	getWindow () .signal_delete_event ()       .connect (sigc::mem_fun (this, &X3DUserInterface::on_delete_event), false);
@@ -121,11 +124,11 @@ X3DUserInterface::construct ()
 }
 
 void
-X3DUserInterface::on_constructed ()
+X3DUserInterface::on_initialize ()
 {
 	__LOG__ << "Initializing widget: " << getName () << std::endl;
 
-	constructed_connection .disconnect ();
+	initializeConnection .disconnect ();
 
 	getWindow () .set_deletable (true); /// ??? Does it work with the Gnome shell ???
 	getWidget () .get_window () -> set_cursor (Gdk::Cursor::create (Gdk::Display::get_default (), "default"));
@@ -231,7 +234,7 @@ X3DUserInterface::setName (const std::string & value)
 
 	config .reset (new Configuration (value));
 
-	if (not constructed_connection .connected ())
+	if (not initializeConnection .connected ())
 		configure ();
 }
 

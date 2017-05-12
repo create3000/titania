@@ -208,9 +208,6 @@ X3DOutlineEditorInterface::create ()
 	m_ExpandPrototypeInstancesMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_expand_prototype_instances_toggled));
 	m_ExpandInlineNodesMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_expand_inline_nodes_toggled));
 	m_UseLocaleMenuItem -> signal_toggled () .connect (sigc::mem_fun (this, &X3DOutlineEditorInterface::on_use_locale_menu_item_toggled));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DOutlineEditorInterface::~X3DOutlineEditorInterface ()

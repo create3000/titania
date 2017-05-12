@@ -753,9 +753,6 @@ X3DBrowserWindowInterface::create ()
 	m_FlyViewerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_fly_viewer_toggled));
 	m_PlaneViewerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_plane_viewer_toggled));
 	m_NoneViewerButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_none_viewer_toggled));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DBrowserWindowInterface::~X3DBrowserWindowInterface ()

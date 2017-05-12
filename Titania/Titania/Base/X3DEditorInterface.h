@@ -102,10 +102,6 @@ protected:
 
 	virtual
 	void
-	construct () override;
-
-	virtual
-	void
 	initialize () override;
 
 

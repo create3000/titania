@@ -116,9 +116,6 @@ X3DNodeIndexInterface::create ()
 	m_NameColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_column_clicked));
 	m_ImportColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_column_clicked));
 	m_ExportColumn -> signal_clicked () .connect (sigc::mem_fun (this, &X3DNodeIndexInterface::on_column_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DNodeIndexInterface::~X3DNodeIndexInterface ()

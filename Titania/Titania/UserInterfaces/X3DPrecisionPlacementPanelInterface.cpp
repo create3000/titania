@@ -378,9 +378,6 @@ X3DPrecisionPlacementPanelInterface::create ()
 
 	// Connect object Gtk::Button with id 'FillBoundingBoxFieldsButton'.
 	m_FillBoundingBoxFieldsButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DPrecisionPlacementPanelInterface::on_fill_bounding_box_fields_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DPrecisionPlacementPanelInterface::~X3DPrecisionPlacementPanelInterface ()

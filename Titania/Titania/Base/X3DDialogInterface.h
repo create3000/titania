@@ -64,6 +64,12 @@ class X3DDialogInterface :
 {
 public:
 
+	/// @name Construction
+
+	virtual
+	void
+	setup () override;
+
 	/// @name Destruction
 
 	virtual
@@ -79,10 +85,6 @@ protected:
 	/// @name Construction
 
 	X3DDialogInterface ();
-
-	virtual
-	void
-	construct () override;
 
 	virtual
 	void

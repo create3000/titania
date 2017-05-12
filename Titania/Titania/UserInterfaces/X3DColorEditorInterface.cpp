@@ -157,9 +157,6 @@ X3DColorEditorInterface::create ()
 	m_FlatButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_flat_toggled));
 	m_WireframeButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_wireframe_toggled));
 	m_PointsetButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DColorEditorInterface::on_pointset_toggled));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DColorEditorInterface::~X3DColorEditorInterface ()

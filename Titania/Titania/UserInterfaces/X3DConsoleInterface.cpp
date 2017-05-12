@@ -99,9 +99,6 @@ X3DConsoleInterface::create ()
 
 	// Connect object Gtk::ToolButton with id 'ClearButton'.
 	m_ClearButton -> signal_clicked () .connect (sigc::mem_fun (this, &X3DConsoleInterface::on_clear_button_clicked));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DConsoleInterface::~X3DConsoleInterface ()

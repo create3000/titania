@@ -62,9 +62,9 @@ X3DDialogInterface::X3DDialogInterface () :
 { }
 
 void
-X3DDialogInterface::construct ()
+X3DDialogInterface::setup ()
 {
-	X3DUserInterface::construct ();
+	X3DUserInterface::setup ();
 
 	if (&getWindow () not_eq &getBrowserWindow () -> getWindow ())
 		getWindow () .set_transient_for (getBrowserWindow () -> getWindow ());

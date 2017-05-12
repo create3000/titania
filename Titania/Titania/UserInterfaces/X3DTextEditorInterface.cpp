@@ -149,9 +149,6 @@ X3DTextEditorInterface::create ()
 	// Connect object Gtk::ToggleButton with id 'FontStyleBoldToggleButton'.
 	m_FontStyleBoldToggleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextEditorInterface::on_style_toggled));
 	m_FontStyleItalicToggleButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DTextEditorInterface::on_style_toggled));
-
-	// Call construct handler of base class.
-	construct ();
 }
 
 X3DTextEditorInterface::~X3DTextEditorInterface ()
