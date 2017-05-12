@@ -1,19 +1,19 @@
 ﻿<Properties StartupItem="Titania/Titania.cproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-opengl-surface/Titania/OpenGL/Context/OffScreenContext.cpp">
+  <MonoDevelop.Ide.Workbench ActiveDocument="libtitania-opengl-surface/Titania/OpenGL/Surface.cpp">
     <Files>
-      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.h" Line="55" Column="1" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.h" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Browser/Browser.cpp" Line="1" Column="1" />
       <File FileName="Titania/Titania/Browser/X3DBrowserEditor.cpp" Line="1" Column="1" />
-      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DLineGeometryNode.cpp" Line="110" Column="15" />
+      <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DLineGeometryNode.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/X3DGeometryNode.cpp" Line="1" Column="1" />
       <File FileName="libtitania-x3d/Titania/X3D/Components/Rendering/LineSet.cpp" Line="1" Column="1" />
-      <File FileName="Titania/run.pl" Line="26" Column="1" />
+      <File FileName="Titania/run.pl" Line="1" Column="1" />
       <File FileName="Titania/titania" Line="1" Column="1" />
       <File FileName="libtitania-opengl-surface/Titania/OpenGL/Context/Context.cpp" Line="63" Column="68" />
-      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.cpp" Line="63" Column="1" />
-      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Context/OffScreenContext.cpp" Line="103" Column="47" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Surface.cpp" Line="98" Column="1" />
+      <File FileName="libtitania-opengl-surface/Titania/OpenGL/Context/OffScreenContext.cpp" Line="118" Column="83" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
