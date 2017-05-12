@@ -50,14 +50,9 @@
 
 #include "BackgroundTexture.h"
 
-#include "../../Browser/Networking/config.h"
 #include "../../Browser/X3DBrowser.h"
-#include "../../Components/Layering/X3DLayerNode.h"
-#include "../../Components/Shape/Material.h"
-#include "../../Components/Texturing/ImageTexture.h"
-#include "../../Execution/X3DExecutionContext.h"
-#include "../../Execution/X3DScene.h"
-#include "../../InputOutput/FileLoader.h"
+
+#include <Titania/Math/Geometry/Camera.h>
 
 namespace titania {
 namespace X3D {
@@ -68,17 +63,12 @@ const std::string   BackgroundTexture::containerField = "backgroundTexture";
 
 BackgroundTexture::BackgroundTexture (X3DExecutionContext* const executionContext) :
 	X3DBaseNode (executionContext -> getBrowser (), executionContext),
-	       scene (),
-	  background (),
-	  foreground (),
+	   textureId (0),
 	styleContext (0),
 	       width (0),
-	      height (0)
-{
-	addChildObjects (scene,
-	                 background,
-	                 foreground);
-}
+	      height (0),
+	     opacity (1)
+{ }
 
 BackgroundTexture*
 BackgroundTexture::create (X3DExecutionContext* const executionContext) const
@@ -89,20 +79,9 @@ BackgroundTexture::create (X3DExecutionContext* const executionContext) const
 void
 BackgroundTexture::initialize ()
 {
-	try
-	{
-		X3DBaseNode::initialize ();
-	
-		scene      = FileLoader (getBrowser () -> getPrivateScene ()) .createX3DFromURL ({ get_ui ("Background.x3dv") .str () });
-		background = scene -> getNamedNode <X3DLayerNode> ("Background");
-		foreground = scene -> getNamedNode <X3DLayerNode> ("Foreground");
+	glGenTextures (1, &textureId);
 
-		update ();
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	update ();
 }
 
 void
@@ -126,68 +105,104 @@ BackgroundTexture::setSize (const int32_t width, const int32_t height)
 }
 
 void
-BackgroundTexture::setOpacity (const double value)
-{
-	try
-	{
-		if (not scene)
-			return;
-
-		const auto material = scene -> getNamedNode <Material> ("Material");
-
-		material -> transparency () = value;
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
-}
-
-void
 BackgroundTexture::update ()
 {
-	try
-	{
-		if (not scene)
-			return;
+	if (not styleContext)
+		return;
 
-		const auto texture = scene -> getNamedNode <ImageTexture> ("Texture");
-		const auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
-		const auto cairo   = Cairo::Context::create (surface);
-	
-		styleContext -> render_background (cairo, 0, 0, width, height);
-		texture -> setUrl (surface);
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	const auto surface = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
+	const auto cairo   = Cairo::Context::create (surface);
+
+	styleContext -> render_background (cairo, 0, 0, width, height);
+
+	glEnable (GL_TEXTURE_2D);
+	glBindTexture (GL_TEXTURE_2D, textureId);
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, surface -> get_data ());
+
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glBindTexture (GL_TEXTURE_2D, 0);
 }
 
 void
 BackgroundTexture::renderBackground ()
 {
-	try
-	{
-		background -> traverse (TraverseType::DISPLAY, nullptr);
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	draw (0);
 }
 
 void
 BackgroundTexture::renderForeground ()
 {
-	try
-	{
-		foreground -> traverse (TraverseType::DISPLAY, nullptr);
-	}
-	catch (const X3DError & error)
-	{
-		__LOG__ << error .what () << std::endl;
-	}
+	draw (opacity);
+}
+
+void
+BackgroundTexture::draw (const double transparency)
+{
+	PolygonModeLock polygonMode (GL_FILL);
+
+	static const auto projectionMatrix = camera <double>::ortho (0, 1, 0, 1, -1, 1);
+
+	static const std::vector <Vector3f> normals = {
+		Vector3f (0, 0, 1),
+		Vector3f (0, 0, 1),
+		Vector3f (0, 0, 1),
+		Vector3f (0, 0, 1)
+	};
+
+	static const std::vector <Vector4f> coords = {
+		Vector4f (0, 0, 0, 1),
+		Vector4f (1, 0, 0, 1),
+		Vector4f (1, 1, 0, 1),
+		Vector4f (0, 1, 0, 1)
+	};
+
+	const auto white = Color4f (1, 1, 1, 1 - transparency);
+
+	glViewport (0, 0, width, height);
+	glScissor  (0, 0, width, height);
+
+	glMatrixMode (GL_PROJECTION);
+	glLoadMatrixd (projectionMatrix .data ());
+
+	glMatrixMode (GL_MODELVIEW);
+	glLoadIdentity ();
+
+	glDisable (GL_LIGHTING);
+	glFrontFace (GL_CCW);
+	glEnable (GL_CULL_FACE);
+	glDisable (GL_DEPTH_TEST);
+	glDepthMask (GL_FALSE);
+
+	glEnable (GL_TEXTURE_2D);
+	glBindTexture (GL_TEXTURE_2D, textureId);
+	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+	glEnable (GL_BLEND);
+	glEnable (GL_LIGHTING);
+	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT,  white .data ());
+	glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE,  white .data ());
+	glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, white .data ());
+	glMaterialfv (GL_FRONT_AND_BACK, GL_EMISSION, white .data ());
+
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer (4, GL_FLOAT, 0, coords .data ());
+
+	glEnableClientState (GL_VERTEX_ARRAY);
+	glVertexPointer (4, GL_FLOAT, 0, coords .data ());
+
+	glDrawArrays (GL_QUADS, 0, coords .size ());
+
+	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState (GL_VERTEX_ARRAY);
+
+	glDisable (GL_LIGHTING);
+	glDisable (GL_BLEND);
+	glBindTexture (GL_TEXTURE_2D, 0);
+	glDisable (GL_TEXTURE_2D);
+	glDepthMask (GL_TRUE);
+	glEnable (GL_DEPTH_TEST);
 }
 
 void

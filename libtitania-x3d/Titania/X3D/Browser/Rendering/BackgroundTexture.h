@@ -54,6 +54,7 @@
 #include <gtkmm/stylecontext.h>
 
 #include "../../Basic/X3DBaseNode.h"
+#include "../../Rendering/OpenGL.h"
 
 namespace titania {
 namespace X3D {
@@ -100,7 +101,8 @@ public:
 	setSize (const int32_t width, const int32_t height);
 
 	void
-	setOpacity (const double value);
+	setOpacity (const double value)
+	{ opacity = value; }
 
 	void
 	renderBackground ();
@@ -129,6 +131,9 @@ private:
 	void
 	update ();
 
+	void
+	draw (const double transparency);
+
 	///  @name Static members
 
 	static const ComponentType component;
@@ -137,12 +142,11 @@ private:
 
 	///  @name Members
 
-	X3DScenePtr                      scene;
-	X3DPtr <X3DLayerNode>            background;
-	X3DPtr <X3DLayerNode>            foreground;
+	GLuint                           textureId;
 	Glib::RefPtr <Gtk::StyleContext> styleContext;
 	int32_t                          width;
 	int32_t                          height;
+	double                           opacity;
 
 };
 

@@ -198,6 +198,8 @@ SFColorButton::on_value_changed ()
 	changing = true;
 	dialog .get_color_selection () -> set_current_rgba (to_rgba (color));
 	changing = false;
+
+	getCurrentBrowser () -> set_opacity (valueAdjustment -> get_value ());
 }
 
 void

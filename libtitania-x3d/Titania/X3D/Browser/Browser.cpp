@@ -148,6 +148,7 @@ Browser::initialize ()
 
 		//swapInterval (0);
 	
+		background -> setOpacity (get_opacity ());
 		background -> setSize (get_width (), get_height ());
 		background -> setStyleContext (get_style_context ());
 
