@@ -50,7 +50,7 @@
 
 #include "OffScreenContext.h"
 
-#include <Titania/LOG.h>
+#include <stdexcept>
 
 namespace titania {
 namespace OpenGL {
@@ -64,25 +64,69 @@ OffScreenContext::OffScreenContext (Display* const display,
 	   Context (display, createPixmap (display, width, height), sharingContext, direct, visualAttributes)
 { }
 
-Pixmap
+//Pixmap
+//OffScreenContext::createPixmap (Display* display,
+//                                unsigned int width,
+//                                unsigned int height)
+//{
+//	const auto screen   = XDefaultScreenOfDisplay (display);
+//	const auto drawable = RootWindowOfScreen (screen);
+//	const auto depth    = DefaultDepthOfScreen (screen);
+//	const auto pixmap   = XCreatePixmap (display, drawable, width, height, depth);
+//
+//	if (not pixmap)
+//		throw std::runtime_error ("OffScreenContext::createPixmap: Couldn't create pixmap.");
+//
+//	return pixmap;
+//}
+
+GLXPixmap
 OffScreenContext::createPixmap (Display* display,
                                 unsigned int width,
                                 unsigned int height)
 {
+	const std::vector <int32_t> fbAttributes = {
+		GLX_DRAWABLE_TYPE,
+		GLX_PIXMAP_BIT,
+		GLX_X_RENDERABLE, true,
+		GLX_DOUBLEBUFFER, true, 
+		GLX_RED_SIZE,     8,
+		GLX_GREEN_SIZE,   8,
+		GLX_BLUE_SIZE,    8,
+		GLX_ALPHA_SIZE,   8,
+		GLX_DEPTH_SIZE,   24, 
+		None
+	};
+
 	const auto screen   = XDefaultScreenOfDisplay (display);
+	const auto nscreen  = DefaultScreen (display);
 	const auto drawable = RootWindowOfScreen (screen);
 	const auto depth    = DefaultDepthOfScreen (screen);
-	const auto pixmap   = XCreatePixmap (display, drawable, width, height, depth);
+
+	pixmap = XCreatePixmap (display, drawable, width, height, depth);
 
 	if (not pixmap)
 		throw std::runtime_error ("OffScreenContext::createPixmap: Couldn't create pixmap.");
 
-	return pixmap;
+	int32_t count;
+
+	const auto fbConfigs = glXChooseFBConfig (display, nscreen, fbAttributes .data (), &count);
+
+	if (not fbConfigs)
+		throw std::runtime_error ("OffScreenContext::createPixmap: No frame buffer configuration found.");
+
+	const auto glXPixmap = glXCreatePixmap (display, fbConfigs [0], pixmap, nullptr);
+
+	if (not glXPixmap)
+		throw std::runtime_error ("OffScreenContext::createPixmap: Couldn't create GLX pixmap.");
+	
+	return glXPixmap;
 }
 
 OffScreenContext::~OffScreenContext ()
 {
-	XFreePixmap (getDisplay (), getDrawable ());
+	glXDestroyPixmap (getDisplay (), getDrawable ());
+	XFreePixmap (getDisplay (), pixmap);
 }
 	  
 } // OpenGL

@@ -80,10 +80,14 @@ private:
 
 	///  @name Construction
 
-	Pixmap
+	GLXPixmap
 	createPixmap (Display* display,
 	              unsigned int width,
 	              unsigned int height);
+
+	///  @name Members
+
+	Pixmap pixmap;
 
 };
 

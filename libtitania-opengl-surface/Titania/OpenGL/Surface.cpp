@@ -94,6 +94,23 @@ Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
 void
 Surface::createContext ()
 {
+//	GdkScreen* screen  = gdk_screen_get_default ();
+//	gint       nscreen = GDK_SCREEN_XNUMBER (screen);
+//
+//	auto display = gdk_x11_get_default_xdisplay ();
+//
+//	XVisualInfo* visualInfo = glXChooseVisual (display, nscreen, visualAttributes .data ());
+//
+//	if (visualInfo)
+//	{
+//		GdkVisual* visual = gdk_x11_screen_lookup_visual (screen, visualInfo -> visualid);
+//
+//		if (visual)
+//			gtk_widget_set_visual (GTK_WIDGET (gobj ()), visual);
+//
+//		XFree (visualInfo);
+//	}
+//
 	if (get_mapped ())
 	{
 		context .reset (new Context (gdk_x11_display_get_xdisplay (get_display () -> gobj ()),

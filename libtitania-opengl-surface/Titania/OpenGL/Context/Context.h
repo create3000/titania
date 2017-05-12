@@ -80,6 +80,10 @@ public:
 	getDrawable () const
 	{ return drawable; }
 
+	XVisualInfo*
+	getVisualInfo () const
+	{ return visualInfo; }
+
 	GLXContext
 	getContext () const
 	{ return context; }

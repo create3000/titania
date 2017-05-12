@@ -23,7 +23,7 @@ if (($min > 16 and $min < 20) or 0)
 
 $ENV {PATH}            = "$SOLUTION_DIR/x3ddidy:$SOLUTION_DIR/x3d2vrml/bin:$ENV{PATH}";
 $ENV {XDG_DATA_DIRS}   = "$SOLUTION_DIR/Titania/share:$SOLUTION_DIR/libtitania-x3d/share:$SOLUTION_DIR/x3d2vrml/share:$ENV{XDG_DATA_DIRS}";
-#$ENV {GDK_SYNCHRONIZE} = "1";
+$ENV {GDK_SYNCHRONIZE} = "1";
 
 my $dirname = dirname $0;
 

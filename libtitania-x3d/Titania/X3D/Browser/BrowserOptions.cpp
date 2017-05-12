@@ -358,6 +358,7 @@ BrowserOptions::set_Shading ()
 
 			if (getBrowser () -> getFixedPipelineRequired ())
 				getBrowser () -> getRenderingProperties () -> Shading () = "GOURAUD";
+
 			break;
 		}
 	}

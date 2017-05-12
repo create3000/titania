@@ -50,7 +50,6 @@
 
 #include "Context.h"
 
-#include <Titania/LOG.h>
 #include <stdexcept>
 #include <thread>
 
