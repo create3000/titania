@@ -1366,7 +1366,6 @@
                     <child>
                       <object class="GtkExpander" id="ShadowExpander">
                         <property name="name">ShadowExpander</property>
-                        <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="spacing">8</property>
                         <child>

@@ -274,22 +274,23 @@ noexcept (true)
 		if (not getActiveCollisions () .empty ())
 			getWorld () -> traverse (TraverseType::COLLISION, nullptr);
 
-		//__LOG__ << getActiveCollisions () .size () << std::endl;
-
 		sensors () .processInterests ();
 		processEvents ();
 
 		deleteObjectsAsync ();
 
 		// Debug
+
 		debugRouter ();
 
-		// Display
+		// Display scene
 
 		renderBackground ();
 
-		getWorld ()         -> traverse (TraverseType::DISPLAY, nullptr);
-		getHeadUpDisplay () -> traverse (TraverseType::DISPLAY, nullptr);
+		getWorld () -> traverse (TraverseType::DISPLAY, nullptr);
+
+		if (getDisplayTools () .top ())
+			getHeadUpDisplay () -> traverse (TraverseType::DISPLAY, nullptr);
 
 		renderForeground ();
 

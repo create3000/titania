@@ -94,23 +94,6 @@ Surface::Surface (const std::shared_ptr <Context> & sharingContext) :
 void
 Surface::createContext ()
 {
-	// Set visual info of widget.
-
-	const auto screen     = gdk_screen_get_default ();
-	const auto nscreen    = GDK_SCREEN_XNUMBER (screen);
-	const auto display    = gdk_x11_get_default_xdisplay ();
-	const auto visualInfo = glXChooseVisual (display, nscreen, visualAttributes .data ());
-
-	if (visualInfo)
-	{
-		const auto visual = gdk_x11_screen_lookup_visual (screen, visualInfo -> visualid);
-
-		if (visual)
-			gtk_widget_set_visual (GTK_WIDGET (gobj ()), visual);
-
-		XFree (visualInfo);
-	}
-
 	// Create OpenGL context.
 
 	if (get_mapped ())
@@ -129,6 +112,21 @@ Surface::createContext ()
 		                                      visualAttributes,
 	                                         8,
 	                                         8));
+	}
+
+	// Set visual info of widget.
+
+	const auto screen     = gdk_screen_get_default ();
+	const auto visualInfo = context -> getVisualInfo ();
+
+	if (visualInfo)
+	{
+		const auto visual = gdk_x11_screen_lookup_visual (screen, visualInfo -> visualid);
+
+		if (visual)
+			gtk_widget_set_visual (GTK_WIDGET (gobj ()), visual);
+
+		XFree (visualInfo);
 	}
 }
 

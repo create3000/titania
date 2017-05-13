@@ -103,8 +103,10 @@ varying vec4 t;  // texCoord
 varying vec3 vN; // normalized normal vector at this point on geometry
 varying vec3 v;  // point on geometry
 
+#ifdef X3D_SHADOWS
 #pragma X3D include "Bits/Random.h"
 #pragma X3D include "Bits/Plane3.h"
+#endif
 
 void
 clip ()
@@ -303,7 +305,9 @@ getMaterialColor ()
 {
 	if (x3d_Lighting)
 	{
+		#ifdef X3D_SHADOWS
 		Plane3 plane = plane3 (v, vN);
+		#endif
 
 		vec3  N  = normalize (gl_FrontFacing ? vN : -vN);
 		vec3  V  = normalize (-v); // normalized vector from point on geometry to viewer's position
@@ -456,7 +460,9 @@ getFogColor (in vec3 color)
 void
 main ()
 {
+	#ifdef X3D_SHADOWS
 	seed (int (fract (dot (v, v)) * float (RAND_MAX)));
+	#endif
 
 	clip ();
 

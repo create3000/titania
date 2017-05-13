@@ -137,7 +137,7 @@ X3DShadersContext::initialize ()
 
 		// Shading
 
-		getBrowser () -> getLoadSensor () -> isLoaded ()       .addInterest (&X3DShadersContext::set_shading, this);
+		getBrowser () -> getLoadSensor () -> isLoaded ()       .addInterest (&X3DShadersContext::set_loaded,  this);
 		getBrowser () -> getBrowserOptions () -> getShading () .addInterest (&X3DShadersContext::set_shading, this);
 
 		set_shading ();
@@ -174,6 +174,14 @@ X3DShadersContext::createShader (const std::string & name, const MFString & vert
 	getBrowser () -> getLoadSensor () -> watchList () .emplace_back (fragmentPart);
 
 	return shader;
+}
+
+void
+X3DShadersContext::set_loaded ()
+{
+	getBrowser () -> getLoadSensor () -> isLoaded () .removeInterest (&X3DShadersContext::set_loaded,  this);
+
+	set_shading ();
 }
 
 void

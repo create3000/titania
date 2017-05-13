@@ -81,8 +81,7 @@ public:
 	{ return drawable; }
 
 	XVisualInfo*
-	getVisualInfo () const
-	{ return visualInfo; }
+	getVisualInfo () const;
 
 	GLXContext
 	getContext () const
@@ -117,14 +116,15 @@ private:
 	///  @name Construction
 
 	GLXContext
-	create (const GLXContext sharingContext, const bool direct, const std::vector <int32_t> & visualAttributes);
+	create (const GLXContext sharingContext, const bool direct);
 
 	///  @name Members
 
-	Display* const display;
-	GLXDrawable    drawable;
-	GLXContext     context;
-	XVisualInfo*   visualInfo;
+	Display* const        display;
+	GLXDrawable           drawable;
+	std::vector <int32_t> visualAttributes;
+	XVisualInfo*          visualInfo;
+	GLXContext            context;
 
 };
 

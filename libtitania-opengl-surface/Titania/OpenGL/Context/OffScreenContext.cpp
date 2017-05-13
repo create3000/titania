@@ -64,22 +64,6 @@ OffScreenContext::OffScreenContext (Display* const display,
 	   Context (display, createPixmap (display, width, height), sharingContext, direct, visualAttributes)
 { }
 
-//Pixmap
-//OffScreenContext::createPixmap (Display* display,
-//                                unsigned int width,
-//                                unsigned int height)
-//{
-//	const auto screen   = XDefaultScreenOfDisplay (display);
-//	const auto drawable = RootWindowOfScreen (screen);
-//	const auto depth    = DefaultDepthOfScreen (screen);
-//	const auto pixmap   = XCreatePixmap (display, drawable, width, height, depth);
-//
-//	if (not pixmap)
-//		throw std::runtime_error ("OffScreenContext::createPixmap: Couldn't create pixmap.");
-//
-//	return pixmap;
-//}
-
 GLXPixmap
 OffScreenContext::createPixmap (Display* display,
                                 unsigned int width,

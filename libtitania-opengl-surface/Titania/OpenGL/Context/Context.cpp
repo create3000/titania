@@ -61,23 +61,28 @@ Context::Context (Display* const display,
                   const GLXContext sharingContext,
                   const bool direct,
                   const std::vector <int32_t> & visualAttributes) :
-	   display (display),
-	  drawable (drawable),
-	   context (create (sharingContext, direct, visualAttributes)),
-	visualInfo (nullptr)
+	         display (display),
+	        drawable (drawable),
+	visualAttributes (visualAttributes),
+	      visualInfo (getVisualInfo ()),
+	         context (create (sharingContext, direct))
 { }
 
 GLXContext
-Context::create (const GLXContext sharingContext, const bool direct, const std::vector <int32_t> & visualAttributes)
+Context::create (const GLXContext sharingContext, const bool direct)
 {
-	visualInfo = glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), const_cast <int32_t*> (visualAttributes .data ()));
-
 	const auto context = glXCreateContext (getDisplay (), visualInfo, sharingContext, direct);
 
 	if (not context)
 		throw std::runtime_error ("WindowContext::WindowContext: Couldn't create context.");
 
 	return context;
+}
+
+XVisualInfo*
+Context::getVisualInfo () const
+{
+	return glXChooseVisual (getDisplay (), DefaultScreen (getDisplay ()), const_cast <Context*> (this) -> visualAttributes .data ());
 }
 
 void

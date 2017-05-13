@@ -155,6 +155,9 @@ private:
 	///  @name Event handlers
 
 	void
+	set_loaded ();
+
+	void
 	set_shading ();
 
 	///  @name Members
