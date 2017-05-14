@@ -48,64 +48,75 @@
  *
  ******************************************************************************/
 
-#include "Commands/CommandOptions.h"
-#include "Commands/ExportImage.h"
-#include "Commands/Info.h"
-#include "Commands/Tidy.h"
-#include "Browser/BrowserApplication.h"
+#ifndef __TITANIA_COMMANDS_EXPORT_IMAGE_H__
+#define __TITANIA_COMMANDS_EXPORT_IMAGE_H__
 
+#include <Titania/X3D.h>
+#include <Titania/X3D/InputOutput/FileGenerator.h>
 #include <Titania/OS.h>
 
-int
-main (int argc, char** argv)
+#include <gtkmm/main.h>
+
+namespace titania {
+namespace puck {
+
+class ExportImage :
+	public X3D::X3DInput
 {
-	using namespace titania;
-	using namespace titania::puck;
+public:
 
-	try
+	void
+	set_loadCount (X3D::X3DBrowser* const browser, const CommandOptions & options, const basic::uri & outputFilename)
 	{
-		os::env ("UBUNTU_MENUPROXY",      "0");    // Disable global menu. This fixes the bug with images in menu items and with no 'active' event for the scene menu item.
-		//os::env ("GTK_OVERLAY_SCROLLING", "0");  // Disable Gnome overlay scrollbars. // Can be done one each ScrolledWindow
-		//os::env ("LIBOVERLAY_SCROLLBAR",  "0");  // Disable Unity overlay scrollbars. // Can be done one each ScrolledWindow
+		std::clog << "*** Loading " << browser -> getLoadCount () << " files." << std::endl;
 
-		// Replace the C++ global locale as well as the C locale with the user-preferred locale.
-		std::locale::global (std::locale (""));
+		if (browser -> getLoadCount () > 0)
+			return;
 
+		browser -> getLoadCount () .removeInterest (&ExportImage::set_loadCount, this);
 
-		// Run appropriate application.
+		auto image = browser -> getSnapshot (options .width,
+		                                     options .height,
+		                                     options .alphaChannel,
+		                                     options .antialiasing);
 
-		CommandOptions options (argc, argv);
+		image .quality (100);
+		image .write (outputFilename .path ());
 
-		if (not options .imageFilename .empty ())
-			return ExportImage () .main (options);
-
-		if (not options .exportFilename .empty ())
-			return Tidy::main (options);
-
-		if (not options .list .empty ())
-			return Info::main (options);
-
-		if (options .help)
-		{
-			std::cout << options .get_help () << std::endl;
-			return 0;
-		}
-
-		return BrowserApplication::main (argc, argv);
+		Gtk::Main::quit ();
 	}
-	catch (const Glib::Exception & error)
+
+	int
+	main (const CommandOptions & options)
 	{
-		std::cerr << error .what () << std::endl;
-		return 1;
+      Gtk::Main kit (0, nullptr);
+
+ 		if (options .filenames .empty ())
+			throw std::runtime_error ("Expected a filename.");
+
+		basic::uri inputFilename (options .filenames .front ());
+		basic::uri outputFilename (options .imageFilename);
+
+		if (inputFilename .is_relative ())
+			inputFilename = basic::uri (os::cwd ()) .transform (inputFilename);
+
+		if (outputFilename .is_relative ())
+			outputFilename = basic::uri (os::cwd ()) .transform (outputFilename);
+
+		const auto browser = X3D::createBrowser ();
+		//browser -> set_size_request (options .width, options. height);
+		browser -> setup ();
+
+		const auto scene = browser -> createX3DFromURL ({ inputFilename .str () });
+		browser -> replaceWorld (scene);
+		browser -> getLoadCount () .addInterest (&ExportImage::set_loadCount, this, browser .getValue (), std::ref (options), outputFilename);
+
+		kit .run ();
+		return 0;
 	}
-	catch (const std::exception & error)
-	{
-		std::cerr << error .what () << std::endl;
-		return 1;
-	}
-	catch (...)
-	{
-		std::cerr << "A strange error occured." << std::endl;
-		return 1;
-	}
-}
+};
+
+} // puck
+} // titania
+
+#endif

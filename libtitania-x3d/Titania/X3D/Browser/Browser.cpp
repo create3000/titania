@@ -147,7 +147,7 @@ Browser::initialize ()
 		property_opacity () .signal_changed () .connect (sigc::mem_fun (this, &Browser::on_opacity));
 
 		//swapInterval (0);
-	
+
 		background -> setOpacity (get_opacity ());
 		background -> setSize (get_width (), get_height ());
 		background -> setStyleContext (get_style_context ());
@@ -223,9 +223,7 @@ noexcept (true)
 	if (not isInitialized ())
 		return;
 
-	background -> setSize (get_width (), get_height ());
-
-	//update ();
+	background -> setSize (viewport [2], viewport [3]);
 }
 
 void

@@ -350,7 +350,7 @@ throw (Error <INVALID_SCENE>,
 		const X3D::BrowserOptionsPtr browserOptions (new X3D::BrowserOptions (this));
 		browserOptions -> assign (browserOptions, true);
 
-		executionContext = value ? value : X3DExecutionContextPtr (createScene (false));
+		executionContext = value ? value : createScene (false);
 
 		print ("*** The browser is requested to replace the world with '", executionContext -> getWorldURL (), "'.\n");
 		isLive () .addInterest (executionContext -> isLive ());

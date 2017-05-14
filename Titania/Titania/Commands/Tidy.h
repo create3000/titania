@@ -51,10 +51,9 @@
 #ifndef __TITANIA_COMMANDS_TIDY_H__
 #define __TITANIA_COMMANDS_TIDY_H__
 
-#include <Titania/OS.h>
+#include <Titania/X3D.h>
 #include <Titania/X3D/InputOutput/FileGenerator.h>
-
-#include <iostream>
+#include <Titania/OS.h>
 
 namespace titania {
 namespace puck {

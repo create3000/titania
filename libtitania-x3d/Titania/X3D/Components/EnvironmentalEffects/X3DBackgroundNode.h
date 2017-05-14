@@ -250,7 +250,7 @@ private:
 	X3DPtr <X3DTextureNode> bottomTexture;
 
 	bool                   hidden;
-	std::vector <Matrix4d> modelViewMatrix;
+	Matrix4d               transformationMatrix;
 	std::vector <Color4f>  glColors;
 	std::vector <Vector3f> glPoints;
 	GLsizei                numIndices;

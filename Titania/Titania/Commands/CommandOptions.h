@@ -65,10 +65,20 @@ public:
 	CommandOptions (int & argc, char** & argv) :
 		Glib::OptionContext ("- Titania X3D Browser"),
 		          filenames (),
+		      imageFilename (),
+		              width (300),
+		             height (100),
+		       alphaChannel (false),
+		       antialiasing (4),
 		     exportFilename (),
 		               list (),
 		               help (false)
 	{
+		Glib::OptionEntry optionExportImage;
+		Glib::OptionEntry optionWidth;
+		Glib::OptionEntry optionHeight;
+		Glib::OptionEntry optionAlphaChannel;
+		Glib::OptionEntry optionAntialiasing;
 		Glib::OptionEntry optionExportFilename;
 		Glib::OptionEntry optionExportStyle;
 		Glib::OptionEntry optionList;
@@ -77,35 +87,63 @@ public:
 		set_summary ("Titania is a X3D/VRML editor and browser for Ubuntu.");
 
 		Glib::OptionGroup mainGroup ("common", "Common options", "General options");
+		Glib::OptionGroup imageGroup ("image", "Image options", "Image options");
 		Glib::OptionGroup exportGroup ("export", "Export options", "Export options");
 		Glib::OptionGroup listGroup ("list", "Listings options", "Listings options");
+
+		optionExportImage .set_short_name ('i');
+		optionExportImage .set_long_name ("export-image");
+		optionExportImage .set_arg_description ("FILENAME");
+		optionExportImage .set_description ("Set image filename.");
+
+		optionWidth .set_short_name ('w');
+		optionWidth .set_long_name ("width");
+		optionWidth .set_arg_description ("WIDTH");
+		optionWidth .set_description ("Set image width.");
+
+		optionHeight .set_short_name ('h');
+		optionHeight .set_long_name ("height");
+		optionHeight .set_arg_description ("HEIGHT");
+		optionHeight .set_description ("Set image height.");
+
+		optionAlphaChannel .set_short_name ('c');
+		optionAlphaChannel .set_long_name ("alpha-channel");
+		optionAlphaChannel .set_description ("Set whether the image has an alpha channel.");
+
+		optionAntialiasing .set_short_name ('a');
+		optionAntialiasing .set_long_name ("antialiasing");
+		optionAntialiasing .set_arg_description ("SAMPLES");
+		optionAntialiasing .set_description ("Set image antialiasing samples.");
 
 		optionExportFilename .set_short_name ('e');
 		optionExportFilename .set_long_name ("export");
 		optionExportFilename .set_arg_description ("FILENAME");
 		optionExportFilename .set_description ("Set export filename, if '-' is given the output goes to STDOUT.");
-		//optionExportFilename .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG | Glib::OptionEntry::FLAG_FILENAME);
 
 		optionExportStyle .set_short_name ('s');
 		optionExportStyle .set_long_name ("style");
 		optionExportStyle .set_arg_description ("nicest|compact|small|smallest");
 		optionExportStyle .set_description ("Set output style for export.");
-		//optionExportStyle .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG);
 
 		optionList .set_short_name ('l');
 		optionList .set_long_name ("list");
 		optionList .set_arg_description ("profiles|components|nodes|fields");
 		optionList .set_description ("Get a list of all supported profiles, components, nodes or fields.");
-		//optionList .set_flags (Glib::OptionEntry::FLAG_OPTIONAL_ARG);
 
 		set_description ("Copyright 2010 Holger Seelig <holger.seelig@yahoo.de>. License GPLv3+");
 
 		mainGroup   .add_entry (optionHelp,           help);
+		imageGroup  .add_entry (optionExportImage,    imageFilename);
+		imageGroup  .add_entry (optionWidth,          width);
+		imageGroup  .add_entry (optionHeight,         height);
+		imageGroup  .add_entry (optionAlphaChannel,   alphaChannel);
+		imageGroup  .add_entry (optionAntialiasing,   antialiasing);
 		exportGroup .add_entry (optionExportFilename, exportFilename);
 		exportGroup .add_entry (optionExportStyle,    exportStyle);
 		listGroup   .add_entry (optionList,           list);
 
 		set_main_group (mainGroup);
+		add_group (imageGroup);
 		add_group (exportGroup);
 		add_group (listGroup);
 
@@ -116,10 +154,15 @@ public:
 	}
 
 	std::vector <Glib::ustring> filenames;
-	Glib::ustring exportFilename;
-	Glib::ustring exportStyle;
-	Glib::ustring list;
-	bool help;
+	Glib::ustring               imageFilename;
+	int32_t                     width;
+	int32_t                     height;
+	bool                        alphaChannel;
+	int32_t                     antialiasing;
+	Glib::ustring               exportFilename;
+	Glib::ustring               exportStyle;
+	Glib::ustring               list;
+	bool                        help;
 
 };
 

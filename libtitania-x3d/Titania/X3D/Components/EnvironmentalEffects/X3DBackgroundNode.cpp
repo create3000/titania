@@ -76,19 +76,19 @@ X3DBackgroundNode::Fields::Fields () :
 { }
 
 X3DBackgroundNode::X3DBackgroundNode () :
-	X3DBindableNode (),
-	         fields (),
-	   frontTexture (),
-	    backTexture (),
-	    leftTexture (),
-	   rightTexture (),
-	     topTexture (),
-	  bottomTexture (),
-	         hidden (false),
-	modelViewMatrix (1),
-	       glColors (),
-	       glPoints (),
-	     numIndices ()
+	     X3DBindableNode (),
+	              fields (),
+	        frontTexture (),
+	         backTexture (),
+	         leftTexture (),
+	        rightTexture (),
+	          topTexture (),
+	       bottomTexture (),
+	              hidden (false),
+	transformationMatrix (),
+	            glColors (),
+	            glPoints (),
+	          numIndices ()
 {
 	addType (X3DConstants::X3DBackgroundNode);
 
@@ -349,13 +349,12 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 		case TraverseType::CAMERA:
 		{
 			renderObject -> getLayer () -> getBackgrounds () -> push_back (this);
+			
+			transformationMatrix = renderObject -> getModelViewMatrix () .get ();
 			break;
 		}
 		case TraverseType::DISPLAY:
 		{
-			if (isBound ())
-				modelViewMatrix .emplace_back (renderObject -> getModelViewMatrix () .get ());
-
 			break;
 		}
 		default:
@@ -366,36 +365,39 @@ X3DBackgroundNode::traverse (const TraverseType type, X3DRenderObject* const ren
 void
 X3DBackgroundNode::draw (X3DRenderObject* const renderObject, const Vector4i & viewport)
 {
-	if (getBrowser () -> getAlphaChannel () .top ())
-		return;
+	try
+	{
+		if (getBrowser () -> getAlphaChannel () .top ())
+			return;
 
-	if (hidden)
-		return;
+		if (hidden)
+			return;
 
-	PolygonModeLock polygonMode (GL_FILL);
+		PolygonModeLock polygonMode (GL_FILL);
 
-	// Setup projection matrix
+		// Get background scale.
 
-	const double farValue = -ViewVolume::unProjectPoint (0, 0, 0.99999, inverse (renderObject -> getProjectionMatrix () .get ()), viewport) .z ();
+		const auto farValue        = -ViewVolume::unProjectPoint (0, 0, 0.99999, inverse (renderObject -> getProjectionMatrix () .get ()), viewport) .z ();
+		auto       modelViewMatrix = transformationMatrix;
 
-	// Rotate and scale background
+		// Rotate and scale background.
 
-	Vector3d   translation;
-	Rotation4d rotation;
+		Vector3d   translation;
+		Rotation4d rotation;
 
-	modelViewMatrix .back () .get (translation, rotation);
-	modelViewMatrix .back () .set (Vector3d (), rotation, Vector3d (farValue, farValue, farValue));
+		modelViewMatrix .mult_right (renderObject -> getInverseCameraSpaceMatrix () .get ());
+		modelViewMatrix .get (translation, rotation);
+		modelViewMatrix .set (Vector3d (), rotation, Vector3d (farValue, farValue, farValue));
 
-	glLoadMatrixd (modelViewMatrix .back () .data ());
+		glLoadMatrixd (modelViewMatrix .data ());
 
-	// The default background does not push a model view matrix, thus we must not pop back.
-	if (modelViewMatrix .size () > 1)
-		modelViewMatrix .pop_back ();
+		// Draw background sphere and texture cube.
 
-	// Draw
-
-	drawSphere (renderObject);
-	drawCube   (renderObject);
+		drawSphere (renderObject);
+		drawCube   (renderObject);
+	}
+	catch (const std::domain_error &)
+	{ }
 }
 
 void

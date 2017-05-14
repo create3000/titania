@@ -2971,6 +2971,7 @@
     <None Include="share\titania\ui\Editors\NodeIndex.glade" />
     <None Include="share\titania\Library\Components\Rendering\.experimental\PolygonMode" />
     <None Include="share\titania\Library\Components\Rendering\PolygonMode.x3dv" />
+    <None Include="Titania\Commands\ExportImage.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
