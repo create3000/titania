@@ -150,7 +150,7 @@ public:
 		         std::make_pair ("FogList",                  constructDialog <FogList>),
 		         std::make_pair ("NavigationInfoList",       constructDialog <NavigationInfoList>),
 		         std::make_pair ("ViewpointList",            constructDialog <ViewpointList>),
-		         std::make_pair ("HistoryEditor",              constructDialog <HistoryEditor>),
+		         std::make_pair ("HistoryEditor",            constructDialog <HistoryEditor>),
 		         std::make_pair ("LibraryView",              constructDialog <LibraryView>),
 		         std::make_pair ("OutlineEditor",            constructDialog <OutlineEditor>),
 		         std::make_pair ("Console",                  constructDialog <Console>),

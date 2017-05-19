@@ -765,7 +765,7 @@ X3DBrowserWidget::quit ()
 }
 
 void
-X3DBrowserWidget::on_switch_browser (Gtk::Widget*, guint pageNumber)
+X3DBrowserWidget::on_switch_page (Gtk::Widget*, guint pageNumber)
 {
 	recentView -> loadPreview (getCurrentBrowser ());
 
@@ -776,7 +776,7 @@ X3DBrowserWidget::on_switch_browser (Gtk::Widget*, guint pageNumber)
 }
 
 void
-X3DBrowserWidget::on_browser_reordered (Gtk::Widget* widget, guint pageNumber)
+X3DBrowserWidget::on_page_reordered (Gtk::Widget* widget, guint pageNumber)
 {
 	const auto iter = std::find (browsers .begin (), browsers .end (), widget);
 

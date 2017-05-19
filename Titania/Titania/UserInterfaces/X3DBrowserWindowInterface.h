@@ -2063,11 +2063,11 @@ public:
 
 	virtual
 	void
-	on_browser_reordered (Gtk::Widget* page, guint page_num) = 0;
+	on_page_reordered (Gtk::Widget* page, guint page_num) = 0;
 
 	virtual
 	void
-	on_switch_browser (Gtk::Widget* page, guint page_num) = 0;
+	on_switch_page (Gtk::Widget* page, guint page_num) = 0;
 
 	virtual
 	void

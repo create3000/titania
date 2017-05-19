@@ -176,7 +176,6 @@ BrowserWindow::initialize ()
 	getBrowserNotebook () .drag_dest_set (targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_COPY);
 
 	// Browser events
-	getBrowsers ()       .addInterest (&BrowserWindow::set_browsers, this);
 	getCurrentScene ()   .addInterest (&BrowserWindow::set_scene, this);
 	getCurrentContext () .addInterest (&BrowserWindow::set_executionContext, this);
 
@@ -290,11 +289,6 @@ BrowserWindow::setBrowser (const X3D::BrowserPtr & value)
 	getCurrentBrowser () -> setFixedPipeline (not getCobwebCompatibilityAction () -> get_active ());
 
 	on_transform_tool_mode_toggled ();
-}
-
-void
-BrowserWindow::set_browsers ()
-{
 }
 
 void

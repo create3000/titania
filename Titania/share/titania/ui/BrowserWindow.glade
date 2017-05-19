@@ -3985,8 +3985,8 @@
                                 <property name="scrollable">True</property>
                                 <signal name="button-press-event" handler="on_notebook_button_press_event" after="yes" swapped="no"/>
                                 <signal name="drag-data-received" handler="on_browser_drag_data_received" swapped="no"/>
-                                <signal name="page-reordered" handler="on_browser_reordered" swapped="no"/>
-                                <signal name="switch-page" handler="on_switch_browser" swapped="no"/>
+                                <signal name="page-reordered" handler="on_page_reordered" swapped="no"/>
+                                <signal name="switch-page" handler="on_switch_page" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="index">-1</property>

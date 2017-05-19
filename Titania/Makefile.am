@@ -201,6 +201,7 @@ titania_SOURCES =  \
 	Titania/UserInterfaces/X3DNodeEditorInterface.cpp \
 	Titania/UserInterfaces/X3DNodeIndexInterface.cpp \
 	Titania/UserInterfaces/X3DNodePropertiesEditorInterface.cpp \
+	Titania/UserInterfaces/X3DNotebookPageInterface.cpp \
 	Titania/UserInterfaces/X3DOpenLocationDialogInterface.cpp \
 	Titania/UserInterfaces/X3DOutlineEditorInterface.cpp \
 	Titania/UserInterfaces/X3DPrecisionPlacementPanelInterface.cpp \
@@ -222,6 +223,7 @@ titania_SOURCES =  \
 	Titania/Widgets/BindableNodeList/ViewpointList.cpp \
 	Titania/Widgets/Console/Console.cpp \
 	Titania/Widgets/Footer/Footer.cpp \
+	Titania/Widgets/NotebookPage/NotebookPage.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineCellRenderer.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineFields.cpp \
 	Titania/Widgets/OutlineEditor/CellRenderer/OutlineSeparator.cpp \

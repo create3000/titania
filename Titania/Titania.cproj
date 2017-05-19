@@ -307,6 +307,8 @@
     <Compile Include="Titania\Dialogs\MessageDialog\MessageDialog.cpp" />
     <Compile Include="Titania\Dialogs\OpenLocationDialog\OpenLocationDialog.cpp" />
     <Compile Include="Titania\Editors\NodeIndex\NodeIndex.cpp" />
+    <Compile Include="Titania\UserInterfaces\X3DNotebookPageInterface.cpp" />
+    <Compile Include="Titania\Widgets\NotebookPage\NotebookPage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Titania\Configuration\config.h" />
@@ -2972,6 +2974,9 @@
     <None Include="share\titania\Library\Components\Rendering\.experimental\PolygonMode" />
     <None Include="share\titania\Library\Components\Rendering\PolygonMode.x3dv" />
     <None Include="Titania\Commands\ExportImage.h" />
+    <None Include="share\titania\ui\Widgets\NotebookPage.glade" />
+    <None Include="Titania\UserInterfaces\X3DNotebookPageInterface.h" />
+    <None Include="Titania\Widgets\NotebookPage\NotebookPage.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="share\" />
@@ -3115,6 +3120,7 @@
     <Folder Include="Titania\Dialogs\MessageDialog\" />
     <Folder Include="Titania\Dialogs\OpenLocationDialog\" />
     <Folder Include="Titania\Editors\NodeIndex\" />
+    <Folder Include="Titania\Widgets\NotebookPage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="share\titania\ui\icons\blank-icon.svg" />

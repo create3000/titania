@@ -246,11 +246,11 @@ private:
 
 	virtual
 	void
-	on_switch_browser (Gtk::Widget*, guint pageNumber) final override;
+	on_switch_page (Gtk::Widget*, guint pageNumber) final override;
 
 	virtual
 	void
-	on_browser_reordered (Gtk::Widget* widget, guint pageNumber) final override;
+	on_page_reordered (Gtk::Widget* widget, guint pageNumber) final override;
 
 	void
 	set_scene ();

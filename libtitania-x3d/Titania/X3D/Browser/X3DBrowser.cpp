@@ -128,7 +128,7 @@ X3DBrowser::initialize ()
 
 	// Add necessary routes.
 
-	prepareEvents () .addInterest (&X3DBrowser::set_prepareEvents, this);
+	prepareEvents () .addInterest (&X3DBrowser::set_prepareEvents,    this);
 	executionContext .addInterest (&X3DBrowser::set_executionContext, this);
 
 	getLoadSensor () -> isLoaded () .addInterest (&X3DBrowser::set_loaded, this);

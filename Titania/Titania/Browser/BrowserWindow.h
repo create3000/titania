@@ -105,9 +105,6 @@ private:
 	setBrowser (const X3D::BrowserPtr & value) final override;
 
 	void
-	set_browsers ();
-
-	void
 	set_scene ();
 
 	void

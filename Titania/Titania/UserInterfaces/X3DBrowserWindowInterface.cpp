@@ -723,8 +723,8 @@ X3DBrowserWindowInterface::create ()
 	// Connect object Gtk::Notebook with id 'BrowserNotebook'.
 	m_BrowserNotebook -> signal_button_press_event () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_notebook_button_press_event), false);
 	m_BrowserNotebook -> signal_drag_data_received () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_drag_data_received));
-	m_BrowserNotebook -> signal_page_reordered () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_browser_reordered));
-	m_BrowserNotebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_switch_browser));
+	m_BrowserNotebook -> signal_page_reordered () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_page_reordered));
+	m_BrowserNotebook -> signal_switch_page () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_switch_page));
 
 	// Connect object Gtk::RadioToolButton with id 'HandButton'.
 	m_HandButton -> signal_toggled () .connect (sigc::mem_fun (this, &X3DBrowserWindowInterface::on_hand_button_toggled));
