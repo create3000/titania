@@ -290,19 +290,19 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr preview;
-	MFColorRGBAButton colorButton;
-	ModeType mode;
-	X3D::X3DPtr <X3D::X3DShapeNode> shape;
-	X3D::X3DPtr <X3D::Appearance> appearance;
-	X3D::SFNode texture;
-	X3D::SFNode textureTransform;
-	X3D::X3DPtr <X3D::IndexedFaceSet> geometry;
+	X3D::BrowserPtr                      preview;
+	MFColorRGBAButton                    colorButton;
+	ModeType                             mode;
+	X3D::X3DPtr <X3D::X3DShapeNode>      shape;
+	X3D::X3DPtr <X3D::Appearance>        appearance;
+	X3D::SFNode                          texture;
+	X3D::SFNode                          textureTransform;
+	X3D::X3DPtr <X3D::IndexedFaceSet>    geometry;
 	X3D::X3DPtr <X3D::X3DCoordinateNode> coord;
-	X3D::X3DPtr <X3D::IndexedFaceSet> previewGeometry;
-	X3D::X3DPtr <X3D::ColorRGBA> previewColor;
-	X3D::X3DPtr <X3D::FaceSelection> selection;
-	X3D::UndoHistory undoHistory;
+	X3D::X3DPtr <X3D::IndexedFaceSet>    previewGeometry;
+	X3D::X3DPtr <X3D::ColorRGBA>         previewColor;
+	X3D::X3DPtr <X3D::FaceSelection>     selection;
+	X3D::UndoHistory                     undoHistory;
 
 };
 

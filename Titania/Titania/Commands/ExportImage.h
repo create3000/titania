@@ -75,13 +75,50 @@ public:
 
 		browser -> getLoadCount () .removeInterest (&ExportImage::set_loadCount, this);
 
-		auto image = browser -> getSnapshot (options .width,
-		                                     options .height,
-		                                     options .alphaChannel,
-		                                     options .antialiasing);
+		// Constrain options.
 
-		image .quality (100);
-		image .write (outputFilename .path ());
+		size_t width        = options .width;
+		size_t height       = options .height;
+		size_t antialiasing = options .antialiasing;
+
+		if (width > browser -> getMaxRenderBufferSize ())
+		{
+			width = browser -> getMaxRenderBufferSize ();
+
+			std::clog << "*** Image width to high, using max width of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
+		}
+
+		if (height > browser -> getMaxRenderBufferSize ())
+		{
+			height = browser -> getMaxRenderBufferSize ();
+
+			std::clog << "*** Image height to high, using max height of " << browser -> getMaxRenderBufferSize () << " pixels." << std::endl;
+		}
+
+		if (antialiasing > browser -> getMaxSamples ())
+		{
+			antialiasing = browser -> getMaxSamples ();
+
+			std::clog << "*** Antialiasing samples to high, using max samples of " << browser -> getMaxSamples () << "." << std::endl;
+		}
+
+		try
+		{
+			// Make snapshot and save image.
+	
+			auto image = browser -> getSnapshot (width,
+			                                     height,
+			                                     options .alphaChannel,
+			                                     antialiasing);
+	
+			image .quality (100);
+			image .write (outputFilename .path ());
+		}
+		catch (const std::exception & error)
+		{
+			std::clog << "*** Couldn't save image!" << std::endl;
+			std::clog << error .what () << std::endl;
+		}
 
 		Gtk::Main::quit ();
 	}

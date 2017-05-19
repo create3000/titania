@@ -63,13 +63,23 @@ class ViewpointObserver :
 {
 public:
 
+	/// @name Construction
+
 	ViewpointObserver (X3DBrowserWindow* const browserWindow);
+
+	/// @name Member access
 
 	void
 	setBrowser (const X3D::BrowserPtr &, const X3D::BrowserPtr &);
 
-	~ViewpointObserver ()
-	{ dispose (); }
+	X3D::UndoHistory &
+	getUndoHistory ()
+	{ return undoHistory; }
+
+	/// @name Destruction
+
+	virtual
+	~ViewpointObserver () final override;
 
 
 private:
@@ -91,6 +101,28 @@ private:
 	void
 	set_offsets ();
 
+	void
+	set_undoHistory ();
+
+	///  @name Operations
+
+	virtual
+	void
+	addUndoStep (const X3D::UndoStepPtr & undoStep) final override
+	{ undoHistory .addUndoStep (undoStep); }
+
+	virtual
+	void
+	removeUndoStep () final override
+	{ undoHistory .removeUndoStep (); }
+
+	virtual
+	const X3D::UndoStepPtr &
+	getUndoStep () const final override
+	{ return undoHistory .getUndoStep (); }
+
+	///  @name Members
+
 	X3D::BrowserPtr              browser;
 	X3D::X3DPtr <X3D::X3DViewer> viewerNode;
 	X3D::UndoStepPtr             undoStep;
@@ -98,6 +130,7 @@ private:
 	X3D::Rotation4d              orientationOffset;
 	X3D::Vector3d                centerOfRotationOffset;
 	double                       fieldOfViewScale;
+	X3D::UndoHistory             undoHistory;
 
 };
 

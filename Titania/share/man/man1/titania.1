@@ -41,19 +41,25 @@ General Options
 Image Options
 
         -i FILENAME, --export-image=FILENAME
-               The image is saved to FILENAME.
+               Specify the filename for image export.  If it already
+               exists, the file will be overwritten without asking.
+               Supported image file formats are PNG, JPG, TIFF,
+               and BMP.
 
         -w WIDTH, --width=WIDTH
-               Width of the image.
+               Width of the image in pixels. If WIDTH is -1 the
+               maximum possible number of pixels is used for width.
 
         -h HEIGHT, --height=HEIGHT
-               Height of the image.
+               Height of the image in pixels. If HEIGHT is -1 the
+               maximum possible number of pixels is used for height.
 
         -c, --alpha-channel
                Set whether the image has an alpha channel.
 
         -a SAMPLES, --antialiasing=SAMPLES
-               Set image antialiasing samples.
+               Set image antialiasing samples. If SAMPLES is -1 the
+               maximum possible number of samples are used.
 
 Export Options
 

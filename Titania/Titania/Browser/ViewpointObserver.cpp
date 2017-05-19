@@ -67,7 +67,8 @@ ViewpointObserver::ViewpointObserver (X3DBrowserWindow* const browserWindow) :
 	        positionOffset (),
 	     orientationOffset (),
 	centerOfRotationOffset (),
-	      fieldOfViewScale ()
+	      fieldOfViewScale (),
+	           undoHistory ()
 {
 	addChildObjects (browser, viewerNode);
 
@@ -202,6 +203,37 @@ ViewpointObserver::set_offsets ()
 	}
 	catch (const X3D::X3DError &)
 	{ }
+}
+
+void
+ViewpointObserver::set_undoHistory ()
+{
+//	if (undoHistory .hasUndo ())
+//	{
+//		getBrowserWindow () -> getUndoViewMenuItem ()        .set_sensitive (true);
+//		getBrowserWindow () -> getBrowserViewUndoMenuItem () .set_sensitive (true);
+//	}
+//	else
+//	{
+//		getBrowserWindow () -> getUndoViewMenuItem ()        .set_sensitive (false);
+//		getBrowserWindow () -> getBrowserUndoViewMenuItem () .set_sensitive (false);
+//	}
+//
+//	if (undoHistory .hasRedo ())
+//	{
+//		getBrowserWindow () -> getRedoViewMenuItem ()        .set_sensitive (true);
+//		getBrowserWindow () -> getBrowserRedoViewMenuItem () .set_sensitive (true);
+//	}
+//	else
+//	{
+//		getBrowserWindow () -> getRedoViewMenuItem ()        .set_sensitive (false);
+//		getBrowserWindow () -> getBrowserRedoViewMenuItem () .set_sensitive (false);
+//	}
+}
+
+ViewpointObserver::~ViewpointObserver ()
+{
+	dispose ();
 }
 
 } // puck
