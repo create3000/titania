@@ -53,8 +53,6 @@
 
 #include "../../UserInterfaces/X3DNotebookPageInterface.h"
 
-#include "../../Browser/BrowserHistory.h"
-
 namespace titania {
 namespace puck {
 

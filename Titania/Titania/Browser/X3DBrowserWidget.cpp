@@ -393,19 +393,13 @@ X3DBrowserWidget::getUserData (const X3D::BrowserPtr & browser)
 std::shared_ptr <UserData>
 X3DBrowserWidget::getUserData (const X3D::X3DExecutionContextPtr & executionContext)
 {
-	if (not executionContext -> getUserData ())
-		executionContext -> setUserData (X3D::UserDataPtr (new UserData ()));
-
-	return std::static_pointer_cast <UserData> (executionContext -> getUserData ());
+	return executionContext -> getUserData <UserData> ();
 }
 
 std::shared_ptr <UserData>
 X3DBrowserWidget::getUserData (const X3D::SFNode & node)
 {
-	if (not node -> getUserData ())
-		node -> setUserData (X3D::UserDataPtr (new UserData ()));
-
-	return std::static_pointer_cast <UserData> (node -> getUserData ());
+	return node -> getUserData <UserData> ();
 }
 
 void

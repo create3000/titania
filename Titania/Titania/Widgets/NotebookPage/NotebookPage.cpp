@@ -60,15 +60,14 @@ NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DNotebookPageInterface (get_ui ("Widgets/NotebookPage.glade")),
 	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
-	                     url (startUrl),
-		       browserHistory (mainBrowser)
+	                     url (startUrl)
 {
-	addChildObjects (browser);
+	addChildObjects (mainBrowser);
 
-	browser -> setAntialiasing (4);
-	browser -> setNotifyOnLoad (true);
-	browser -> isStrict (false);
-	browser -> show ();
+	mainBrowser -> setAntialiasing (4);
+	mainBrowser -> setNotifyOnLoad (true);
+	mainBrowser -> isStrict (false);
+	mainBrowser -> show ();
 
 	setup ();
 }
