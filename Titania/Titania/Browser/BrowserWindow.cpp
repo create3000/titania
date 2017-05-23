@@ -63,6 +63,7 @@
 #include "../Editors/PrototypeEditor/PrototypeEditor.h"
 
 #include "../Widgets/Footer/Footer.h"
+#include "../Widgets/NotebookPage/NotebookPage.h"
 #include "../Widgets/Sidebar/Sidebar.h"
 
 #include "../Browser/BrowserSelection.h"
@@ -854,7 +855,12 @@ BrowserWindow::on_scene_properties_activated ()
 void
 BrowserWindow::on_close_activated ()
 {
-	close (X3D::BrowserPtr (getCurrentBrowser ()));
+	try
+	{
+		close (getCurrentPage ());
+	}
+	catch (const std::out_of_range &)
+	{ }
 }
 
 void
@@ -2270,9 +2276,10 @@ BrowserWindow::on_scenes_activated (Gtk::Menu & menu)
 
 	size_t pageNumber = 0;
 
-	for (const auto & browser : getBrowsers ())
+	for (const auto & page : getPages ())
 	{
-	   const auto & worldURL = getWorldURL (browser);
+		const auto & browser  = page -> getMainBrowser ();
+	   const auto & worldURL = page -> getWorldURL ();
 	   const bool   modified = getModified (browser);
 		const auto   icon     = Gtk::manage (new Gtk::Image (Gtk::StockID (worldURL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
 		auto         menuItem = Gtk::manage (new Gtk::ImageMenuItem ());

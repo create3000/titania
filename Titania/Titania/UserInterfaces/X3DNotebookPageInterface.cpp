@@ -79,10 +79,16 @@ X3DNotebookPageInterface::create ()
 	// Get objects.
 
 	// Get widgets.
+	m_builder -> get_widget ("TabWidget", m_TabWidget);
+	m_builder -> get_widget ("TabImage", m_TabImage);
+	m_builder -> get_widget ("TabLabel", m_TabLabel);
+	m_builder -> get_widget ("TabCloseButton", m_TabCloseButton);
 	m_builder -> get_widget ("Window", m_Window);
 	m_builder -> get_widget ("Widget", m_Widget);
-	m_builder -> get_widget ("Stack", m_Stack);
-	m_builder -> get_widget ("BrowserBox", m_BrowserBox);
+	m_builder -> get_widget ("Box1", m_Box1);
+	m_builder -> get_widget ("Box2", m_Box2);
+	m_builder -> get_widget ("Box3", m_Box3);
+	m_builder -> get_widget ("Box4", m_Box4);
 }
 
 X3DNotebookPageInterface::~X3DNotebookPageInterface ()

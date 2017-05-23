@@ -87,6 +87,22 @@ public:
 	getBuilder () const
 	{ return m_builder; }
 
+	Gtk::Box &
+	getTabWidget () const
+	{ return *m_TabWidget; }
+
+	Gtk::Image &
+	getTabImage () const
+	{ return *m_TabImage; }
+
+	Gtk::Label &
+	getTabLabel () const
+	{ return *m_TabLabel; }
+
+	Gtk::Button &
+	getTabCloseButton () const
+	{ return *m_TabCloseButton; }
+
 	Gtk::Window &
 	getWindow () const
 	{ return *m_Window; }
@@ -95,13 +111,21 @@ public:
 	getWidget () const
 	{ return *m_Widget; }
 
-	Gtk::Stack &
-	getStack () const
-	{ return *m_Stack; }
+	Gtk::Box &
+	getBox1 () const
+	{ return *m_Box1; }
 
 	Gtk::Box &
-	getBrowserBox () const
-	{ return *m_BrowserBox; }
+	getBox2 () const
+	{ return *m_Box2; }
+
+	Gtk::Box &
+	getBox3 () const
+	{ return *m_Box3; }
+
+	Gtk::Box &
+	getBox4 () const
+	{ return *m_Box4; }
 
 	///  @name Signal handlers
 
@@ -129,10 +153,16 @@ private:
 	///  @name Members
 
 	Glib::RefPtr <Gtk::Builder> m_builder;
+	Gtk::Box* m_TabWidget;
+	Gtk::Image* m_TabImage;
+	Gtk::Label* m_TabLabel;
+	Gtk::Button* m_TabCloseButton;
 	Gtk::Window* m_Window;
 	Gtk::Box* m_Widget;
-	Gtk::Stack* m_Stack;
-	Gtk::Box* m_BrowserBox;
+	Gtk::Box* m_Box1;
+	Gtk::Box* m_Box2;
+	Gtk::Box* m_Box3;
+	Gtk::Box* m_Box4;
 
 };
 

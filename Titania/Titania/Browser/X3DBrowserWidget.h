@@ -57,11 +57,15 @@
 namespace titania {
 namespace puck {
 
+class BrowserUserData;
 class History;
 class IconFactory;
+class NotebookPage;
 class RecentView;
-class BrowserUserData;
 class UserData;
+
+using NotebookPagePtr      = std::shared_ptr <NotebookPage>;
+using NotebookPagePtrArray = std::vector <NotebookPagePtr>;
 
 class X3DBrowserWidget :
 	virtual public X3DBrowserWindowInterface
@@ -70,25 +74,29 @@ public:
 
 	///  @name Member access
 
+	const NotebookPagePtrArray &
+	getPages () const
+	{ return pages; }
+
+	const NotebookPagePtrArray &
+	getRecentPages () const
+	{ return recentPages; }
+
+	NotebookPagePtr
+	getCurrentPage () const
+	throw (std::out_of_range);
+
+	NotebookPagePtrArray::const_iterator
+	getPage (const basic::uri &) const;
+
 	const X3D::BrowserPtr &
 	getMasterBrowser () const
 	{ return masterBrowser; }
-
-	X3D::X3DPtrArray <X3D::Browser>::const_iterator
-	getBrowser (const basic::uri &) const;
 
 	virtual
 	const X3D::BrowserPtr &
 	getCurrentBrowser () const final override
 	{ return browser; }
-
-	const X3D::X3DPtrArray <X3D::Browser> &
-	getBrowsers () const
-	{ return browsers; }
-
-	const X3D::X3DPtrArray <X3D::Browser> &
-	getRecentBrowsers () const
-	{ return recentBrowsers; }
 
 	virtual
 	const X3D::X3DScenePtr &
@@ -103,10 +111,7 @@ public:
 	const X3D::X3DExecutionContextPtr &
 	getCurrentContext () const final override
 	{ return executionContext; }
-
-	const basic::uri &
-	getWorldURL (const X3D::BrowserPtr &) const;
-
+	
 	const X3D::Output &
 	worldURL_changed () const
 	{ return worldURLOutput; }
@@ -151,8 +156,8 @@ public:
 	void
 	load (const X3D::BrowserPtr & browser, const basic::uri & uri);
 
-	void
-	append (const X3D::BrowserPtr & browser, const basic::uri & uri);
+	NotebookPagePtr
+	append (const basic::uri & URL);
 
 	virtual
 	bool
@@ -167,7 +172,7 @@ public:
 
 	virtual
 	void
-	close (const X3D::BrowserPtr &);
+	close (const NotebookPagePtr page);
 
 	virtual
 	bool
@@ -267,17 +272,17 @@ private:
 	///  @name Operations
 
 	std::string
-	getTitle (const X3D::BrowserPtr & browser) const;
+	getTitle (const NotebookPagePtr & page) const;
 
 	void
 	setOutputStyle (const X3D::X3DScenePtr & scene, const std::string & outputStyle);
 
 	///  @name Members
 
+	NotebookPagePtrArray            pages;
+	NotebookPagePtrArray            recentPages;
 	X3D::BrowserPtr                 masterBrowser;
 	X3D::BrowserPtr                 browser;
-	X3D::X3DPtrArray <X3D::Browser> browsers;
-	X3D::X3DPtrArray <X3D::Browser> recentBrowsers;
 	X3D::X3DScenePtr                scene;
 	X3D::X3DExecutionContextPtr     executionContext;
 	X3D::Output                     worldURLOutput;

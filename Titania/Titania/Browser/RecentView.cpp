@@ -54,6 +54,7 @@
 #include "../Browser/X3DBrowserWindow.h"
 #include "../Configuration/config.h"
 #include "../Editors/HistoryEditor/History.h"
+#include "../Widgets/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Components/Grouping/Switch.h>
 #include <Titania/X3D/Components/PointingDeviceSensor/TouchSensor.h>
@@ -109,8 +110,8 @@ RecentView::open ()
 		getBrowserWindow () -> X3DBrowserWidget::open (getURL ());
 	else
 	{
-		getBrowserWindow () -> append (X3D::createBrowser (getMasterBrowser ()), getURL ());
-		getBrowserWindow () -> getBrowserNotebook () .set_current_page (getBrowserWindow () -> getBrowsers () .size () - 1);
+		getBrowserWindow () -> append (getURL ());
+		getBrowserWindow () -> getBrowserNotebook () .set_current_page (getBrowserWindow () -> getPages () .size () - 1);
 	}
 }
 
@@ -241,17 +242,18 @@ RecentView::set_url (const X3D::SFString & url)
 	if (URL .is_relative ())
 		URL = basic::uri (os::cwd ()) .transform (URL);
 
-	const auto & browsers = getBrowserWindow () -> getBrowsers ();
-	const auto   iter     = getBrowserWindow () -> getBrowser (URL);
+	const auto & pages = getBrowserWindow () -> getPages ();
+	const auto   iter  = getBrowserWindow () -> getPage (URL);
 
-	if (iter not_eq browsers .cend ())
+	if (iter not_eq pages .cend ())
 	{
-		const X3D::BrowserPtr recentBrowser = getCurrentBrowser ();
+		const auto recentPage    = pages .at (getBrowserWindow () -> getBrowserNotebook () .get_current_page ());
+		const auto recentBrowser = recentPage -> getBrowser ();
 
-		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
+		getBrowserWindow () -> getBrowserNotebook () .set_current_page (iter - pages .cbegin ());
 
 		// Closing this browser must be deferred, as this browser is currently processing events.
-		recentBrowser -> finished () .addInterest (&X3DBrowserWidget::close, getBrowserWindow (), recentBrowser);
+		recentBrowser -> finished () .addInterest (&X3DBrowserWidget::close, getBrowserWindow (), recentPage);
 		recentBrowser -> addEvent ();
 	}
 	else

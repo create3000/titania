@@ -52,7 +52,8 @@
 
 #include "../../Browser/X3DBrowserWindow.h"
 #include "../../Configuration/config.h"
-#include "../Footer/Footer.h"
+#include "../../Widgets/Footer/Footer.h"
+#include "../../Widgets/NotebookPage/NotebookPage.h"
 
 namespace titania {
 namespace puck {
@@ -114,8 +115,8 @@ Console::set_enabled ()
 	{
 		getCurrentBrowser () .removeInterest (&Console::set_browser, this);
 
-		for (const auto & browser : getBrowserWindow () -> getBrowsers ())
-			browser -> getConsole () -> getString () .removeInterest (&Console::set_string, this);
+		for (const auto & page : getBrowserWindow () -> getPages ())
+			page -> getBrowser () -> getConsole () -> getString () .removeInterest (&Console::set_string, this);
 	}
 }
 

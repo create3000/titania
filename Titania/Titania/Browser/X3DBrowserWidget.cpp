@@ -58,6 +58,7 @@
 #include "../Configuration/config.h"
 #include "../Dialogs/MessageDialog/MessageDialog.h"
 #include "../Editors/HistoryEditor/History.h"
+#include "../Widgets/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Bits/Traverse.h>
 #include <Titania/X3D/Browser/RenderingProperties.h>
@@ -77,10 +78,10 @@ namespace puck {
 
 X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & defaultBrowser) :
 	X3DBrowserWindowInterface (),
+	                    pages (),
+	              recentPages (),
 	            masterBrowser (defaultBrowser),
 	                  browser (X3D::createBrowser (defaultBrowser)),
-	                 browsers (),
-	           recentBrowsers (),
 	                    scene (browser -> getExecutionContext ()),
 	         executionContext (browser -> getExecutionContext ()),
 	           worldURLOutput (),
@@ -92,8 +93,6 @@ X3DBrowserWidget::X3DBrowserWidget (const X3D::BrowserPtr & defaultBrowser) :
 
 	addChildObjects (masterBrowser,
 	                 browser,
-	                 browsers,
-	                 recentBrowsers,
 	                 scene,
 	                 executionContext);
 }
@@ -125,14 +124,14 @@ X3DBrowserWidget::set_initialized ()
 
 	recentView -> initialize ();
 
-	// Restore browsers.
+	// Restore pages.
 
 	std::set <basic::uri> urlIndex;
 
-	for (const auto & browser : browsers)
-		urlIndex .emplace (getWorldURL (browser));
+	for (const auto & page : pages)
+		urlIndex .emplace (page -> getWorldURL ());
 
-	const auto empty     = browsers .empty ();
+	const auto empty     = pages .empty ();
 	auto       worldURLs = std::vector <std::string> ();
 	auto       histories = std::vector <std::string> ();
 	auto       recent    = std::vector <std::string> ();
@@ -149,19 +148,17 @@ X3DBrowserWidget::set_initialized ()
 		if (urlIndex .count (worldURLs [i]))
 			continue;
 
-		const auto browser = X3D::createBrowser (masterBrowser);
+		const auto page    = append (worldURLs [i]);
+		const auto browser = page -> getMainBrowser ();
 
-		if (i < histories .size ())
-			getUserData (browser) -> browserHistory .fromString (histories [i]);
-
-		append (browser, worldURLs [i]);
+		getUserData (browser) -> browserHistory .fromString (histories [i]);
 	}
 
 	if (empty)
 	{
 		const size_t pageNumber = getConfig () -> getInteger ("currentPage");
 
-		if (pageNumber < browsers .size ())
+		if (pageNumber < pages .size ())
 			getBrowserNotebook () .set_current_page (pageNumber);
 	}
 	else
@@ -169,10 +166,10 @@ X3DBrowserWidget::set_initialized ()
 
 	for (const auto & URL : recent)
 	{
-		const auto iter = getBrowser (URL);
+		const auto iter = getPage (URL);
 
-		if (iter not_eq getBrowsers () .end ())
-			recentBrowsers .emplace_back (*iter);
+		if (iter not_eq pages .cend ())
+			recentPages .emplace_back (*iter);
 	}
 
 	// 
@@ -308,6 +305,32 @@ X3DBrowserWidget::store ()
 	X3DBrowserWindowInterface::store ();
 }
 
+NotebookPagePtr
+X3DBrowserWidget::getCurrentPage () const
+throw (std::out_of_range)
+{
+	const auto pageNumber = getBrowserNotebook () .get_current_page ();
+	const auto page       = getPages () .at (pageNumber);
+
+	return page;
+}
+/***
+ *  Return an iterator to a page widget determined by @a URL.
+ */
+NotebookPagePtrArray::const_iterator
+X3DBrowserWidget::getPage (const basic::uri & URL) const
+{
+	return std::find_if (pages .cbegin (), pages .cend (), [&] (const NotebookPagePtr & page)
+	{
+		auto worldURL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
+
+		if (browser -> isInitialized ())
+			return worldURL == URL;
+
+		return page -> getWorldURL () == URL;
+	});
+}
+
 void
 X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 {
@@ -328,23 +351,6 @@ X3DBrowserWidget::setBrowser (const X3D::BrowserPtr & value)
 	isLive (isLive ());
 }
 
-/***
- *  Return an iterator to a browser widget determined by @a URL.
- */
-X3D::X3DPtrArray <X3D::Browser>::const_iterator
-X3DBrowserWidget::getBrowser (const basic::uri & URL) const
-{
-	return std::find_if (browsers .cbegin (), browsers .cend (), [this, &URL] (const X3D::BrowserPtr & browser)
-	                     {
-	                        auto worldURL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
-
-	                        if (browser -> isInitialized ())
-	                           return worldURL == URL;
-										
-									return getWorldURL (browser) == URL;
-								});
-}
-
 void
 X3DBrowserWidget::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 {
@@ -354,15 +360,6 @@ X3DBrowserWidget::setCurrentContext (const X3D::X3DExecutionContextPtr & value)
 	}
 	catch (const X3D::X3DError &)
 	{ }
-}
-
-const basic::uri &
-X3DBrowserWidget::getWorldURL (const X3D::BrowserPtr & browser) const
-{
-	if (browser -> isInitialized ())
-	   return browser -> getWorldURL ();
-
-	return getUserData (browser) -> URL;
 }
 
 void
@@ -414,40 +411,47 @@ X3DBrowserWidget::getUserData (const X3D::SFNode & node)
 void
 X3DBrowserWidget::setTitle ()
 {
-	const auto userData  = getUserData (getCurrentBrowser ());
-	const bool modified  = getModified (getCurrentBrowser ());
-	const auto title     = getTitle (getCurrentBrowser ());
-	const auto protoPath = getProtoPath (getCurrentContext ());
-
-	getBrowserNotebook () .set_menu_label_text (*getCurrentBrowser (), title);
-
-	if (userData -> icon)
-		userData -> icon -> set (Gtk::StockID (getCurrentScene () -> getWorldURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-
-	if (userData -> label)
+	try
 	{
-		userData -> label -> set_text (title);
-		userData -> label -> set_tooltip_text (title);
+		const auto page      = getCurrentPage ();
+		const auto userData  = getUserData (getCurrentBrowser ());
+		const bool modified  = getModified (getCurrentBrowser ());
+		const auto title     = getTitle (page);
+		const auto protoPath = getProtoPath (getCurrentContext ());
+	
+		getBrowserNotebook () .set_menu_label_text (*getCurrentBrowser (), title);
+	
+		if (userData -> icon)
+			userData -> icon -> set (Gtk::StockID (getCurrentScene () -> getWorldURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	
+		if (userData -> label)
+		{
+			userData -> label -> set_text (title);
+			userData -> label -> set_tooltip_text (title);
+		}
+	
+		getWindow () .set_title (getCurrentContext () -> getTitle ()
+		                         + " · "
+		                         + getCurrentContext () -> getWorldURL () .filename ()
+		                         + (modified ? "*" : "")
+		                         + (protoPath .empty () ? "" : " · " + basic::join (protoPath .begin (), protoPath .end (), "."))
+		                         + " · "
+		                         + getCurrentBrowser () -> getName ());
 	}
-
-	getWindow () .set_title (getCurrentContext () -> getTitle ()
-	                         + " · "
-	                         + getCurrentContext () -> getWorldURL () .filename ()
-	                         + (modified ? "*" : "")
-	                         + (protoPath .empty () ? "" : " · " + basic::join (protoPath .begin (), protoPath .end (), "."))
-	                         + " · "
-	                         + getCurrentBrowser () -> getName ());
+	catch (const std::exception &)
+	{ }
 }
 
 std::string
-X3DBrowserWidget::getTitle (const X3D::BrowserPtr & browser) const
+X3DBrowserWidget::getTitle (const NotebookPagePtr & page) const
 {
-	const bool modified = getModified (browser);
+	const auto & browser  = page -> getMainBrowser ();
+	const bool   modified = getModified (browser);
 
 	auto title = browser -> getExecutionContext () -> getTitle ();
 
 	if (title .empty ())
-		title = getWorldURL (browser) .basename ();
+		title = page -> getWorldURL () .basename ();
 
 	if (title .empty ())
 		title = _ ("New Scene");
@@ -473,22 +477,25 @@ X3DBrowserWidget::open (const basic::uri & URL_)
 	if (URL .is_relative ())
 		URL = basic::uri (os::cwd ()) .transform (URL);
 
-	const auto iter = getBrowser (URL);
+	const auto iter = getPage (URL);
 
-	if (iter not_eq browsers .cend ())
-		getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
+	if (iter not_eq pages .cend ())
+		getBrowserNotebook () .set_current_page (iter - pages .cbegin ());
 
 	else
 	{
-		append (X3D::createBrowser (masterBrowser), URL);
-		getBrowserNotebook () .set_current_page (browsers .size () - 1);
+		append (URL);
+		getBrowserNotebook () .set_current_page (pages .size () - 1);
 	}
 }
 
-void
-X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & URL)
+NotebookPagePtr
+X3DBrowserWidget::append (const basic::uri & URL)
 {
-	browsers .emplace_back (browser);
+	const auto page    = std::make_shared <NotebookPage> (getBrowserWindow (), URL);
+	const auto browser = page -> getMainBrowser ();
+
+	pages .emplace_back (page);
 
 	if (not URL .empty ())
 	{
@@ -496,43 +503,24 @@ X3DBrowserWidget::append (const X3D::BrowserPtr & browser, const basic::uri & UR
 		browser -> set_opacity (0);
 	}
 
-	browser -> setAntialiasing (4);
-	browser -> setNotifyOnLoad (true);
-	browser -> isStrict (false);
-	browser -> show ();
+	const auto text = URL .empty () ? _ ("New Scene") : URL .basename ();
 
-	const auto text   = URL .empty () ? _ ("New Scene") : URL .basename ();
-	const auto icon   = Gtk::manage (new Gtk::Image (Gtk::StockID (URL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
-	const auto label  = Gtk::manage (new Gtk::Label (text));
-	const auto button = Gtk::manage (new Gtk::Button ());
-	const auto image  = Gtk::manage (new Gtk::Image (Gtk::StockID ("gtk-close"), Gtk::IconSize (Gtk::ICON_SIZE_MENU)));
-	const auto box    = Gtk::manage (new Gtk::Box (Gtk::ORIENTATION_HORIZONTAL, 4));
+	page -> getTabImage () .set (Gtk::StockID (URL .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+	page -> getTabLabel () .set_text (text);
+	page -> getTabLabel () .set_tooltip_text (URL .filename () .str ());
+	page -> getTabCloseButton () .signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserWidget::close), page));
 
-	label -> set_ellipsize (Pango::ELLIPSIZE_END);
-	label -> set_width_chars (14);
-	label -> set_lines (1);
-	label -> set_tooltip_text (URL .filename () .str ());
-
-	button -> signal_clicked () .connect (sigc::bind (sigc::mem_fun (this, &X3DBrowserWidget::close), browser));
-	button -> get_style_context () -> add_class ("titania-tab-close");
-	button -> set_image (*image);
-	button -> set_tooltip_text (_ ("Close Tab"));
-
-	box -> pack_start (*icon,   false, true, 0);
-	box -> pack_start (*label,  true,  true, 0);
-	box -> pack_start (*button, false, true, 0);
-	box -> show_all ();
-
-	getBrowserNotebook () .append_page (*browser, *box);
+	getBrowserNotebook () .append_page (*browser, page -> getTabWidget ());
 	getBrowserNotebook () .set_tab_reorderable (*browser, true);
 	getBrowserNotebook () .set_menu_label_text (*browser, text);
 	getBrowserNotebook () .set_show_tabs (getShowTabs ());
 
 	const auto userData = getUserData (browser);
 
-	userData -> URL   = URL;
-	userData -> icon  = icon;
-	userData -> label = label;
+	userData -> icon  = &page -> getTabImage ();
+	userData -> label = &page -> getTabLabel ();
+
+	return page;
 }
 
 bool
@@ -540,7 +528,7 @@ X3DBrowserWidget::getShowTabs () const
 {
 	const bool showTabs = isFullscreen () ? getConfig () -> getBoolean ("tabsFullscreen") : getConfig () -> getBoolean ("tabs");
 
-	return browsers .size () > 1 && showTabs;
+	return pages .size () > 1 and showTabs;
 }
 
 void
@@ -667,23 +655,22 @@ X3DBrowserWidget::reload ()
 }
 
 void
-X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
+X3DBrowserWidget::close (const NotebookPagePtr page)
 {
-	const X3D::BrowserPtr browser = browser_;
+	const auto browser = page -> getMainBrowser ();
 
 	// Open recent browser if browser is the currentBrowser.
 
 	if (browser == getCurrentBrowser ())
 	{
 		recentView -> loadPreview (browser);
-		recentBrowsers .remove (browser);
 
-		if (not recentBrowsers .empty ())
+		if (not recentPages .empty ())
 		{
-			const auto iter = std::find (browsers .cbegin (), browsers .cend (), recentBrowsers .back ());
+			const auto iter = std::find (pages .cbegin (), pages .cend (), recentPages .back ());
 		
-			if (iter not_eq browsers .cend ())
-				getBrowserNotebook () .set_current_page (iter - browsers .cbegin ());
+			if (iter not_eq pages .cend ())
+				getBrowserNotebook () .set_current_page (iter - pages .cbegin ());
 		}
 	}
 
@@ -695,10 +682,10 @@ X3DBrowserWidget::close (const X3D::BrowserPtr & browser_)
 
 	getUserData (browser) -> dispose ();
 
-	browsers       .remove (browser);
-	recentBrowsers .remove (browser);
+	pages .erase (std::remove (pages .begin (), pages .end (), page), pages .end ());
+	recentPages .erase (std::remove (recentPages .begin (), recentPages .end (), page), recentPages .end ());
 
-	if (browsers .empty ())
+	if (pages .empty ())
 		openRecent ();
 
 	getBrowserNotebook () .remove_page (*browser);
@@ -720,27 +707,29 @@ X3DBrowserWidget::quit ()
 	std::deque <std::string> browserHistories;
 	std::deque <std::string> recent;
 
-	for (const auto & browser : recentBrowsers)
+	for (const auto & page : recentPages)
 	{
-		const auto userData = getUserData (browser);
+		const auto & browser  = page -> getBrowser ();
+		const auto   userData = getUserData (page -> getMainBrowser ());
 
 		auto URL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
 
 		if (not browser -> isInitialized ())
-			URL = userData -> URL;
+			URL = page -> getWorldURL ();
 
 		if (not URL .empty ())
 			recent .emplace_back (URL);
 	}
 
-	for (const auto & browser : browsers)
+	for (const auto & page : pages)
 	{
-		const auto userData = getUserData (browser);
+		const auto & browser  = page -> getMainBrowser ();
+		const auto   userData = getUserData (browser);
 
 		auto URL = browser -> getExecutionContext () -> getMasterScene () -> getWorldURL ();
 
 		if (not browser -> isInitialized ())
-			URL = userData -> URL;
+			URL = page -> getWorldURL ();
 
 		if (not URL .empty ())
 			worldURLs .emplace_back (URL);
@@ -752,7 +741,7 @@ X3DBrowserWidget::quit ()
 
 	auto currentPage = getBrowserNotebook () .get_current_page ();
 
-	if (browsers [currentPage] -> getExecutionContext () -> getMasterScene () -> getWorldURL () .empty ())
+	if (pages [currentPage] -> getBrowser () -> getExecutionContext () -> getMasterScene () -> getWorldURL () .empty ())
 		currentPage = 0;
 
 	getConfig () -> setItem ("currentPage", currentPage);
@@ -769,24 +758,26 @@ X3DBrowserWidget::on_switch_page (Gtk::Widget*, guint pageNumber)
 {
 	recentView -> loadPreview (getCurrentBrowser ());
 
-	setBrowser (browsers [pageNumber]);
+	const auto page = pages [pageNumber];
 
-	recentBrowsers .remove (getCurrentBrowser ());
-	recentBrowsers .emplace_back (getCurrentBrowser ());
+	setBrowser (page -> getMainBrowser ());
+
+	recentPages .erase (std::remove (recentPages .begin (), recentPages .end (), page), recentPages .end ());
+	recentPages .emplace_back (page);
 }
 
 void
 X3DBrowserWidget::on_page_reordered (Gtk::Widget* widget, guint pageNumber)
 {
-	const auto iter = std::find (browsers .begin (), browsers .end (), widget);
+	const auto iter = std::find_if (pages .begin (), pages .end (), [&] (const NotebookPagePtr & page) { return &page -> getWidget () == widget; });
 
-	if (iter == browsers .end ())
+	if (iter == pages .end ())
 		return;
 
-	auto browser = std::move (*iter);
+	auto page = std::move (*iter);
 
-	browsers .erase (iter);
-	browsers .emplace (browsers .begin () + pageNumber, std::move (browser));
+	pages .erase (iter);
+	pages .emplace (pages .begin () + pageNumber, std::move (page));
 }
 
 void
@@ -887,11 +878,13 @@ X3DBrowserWidget::setTransparent (const bool value)
 void
 X3DBrowserWidget::dispose ()
 {
+	X3DBrowserWindowInterface::dispose ();
+
+	pages       .clear ();
+	recentPages .clear ();
 	iconFactory .reset ();
 	recentView  .reset ();
 	history     .reset ();
-
-	X3DBrowserWindowInterface::dispose ();
 }
 
 X3DBrowserWidget::~X3DBrowserWidget ()

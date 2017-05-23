@@ -56,12 +56,19 @@
 namespace titania {
 namespace puck {
 
-NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow) :
+NotebookPage::NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl) :
 	        X3DBaseInterface (browserWindow, browserWindow -> getCurrentBrowser ()),
 	X3DNotebookPageInterface (get_ui ("Widgets/NotebookPage.glade")),
-	                 browser ()
+	             mainBrowser (X3D::createBrowser (getBrowserWindow () -> getMasterBrowser ())),
+	                     url (startUrl),
+		       browserHistory (mainBrowser)
 {
 	addChildObjects (browser);
+
+	browser -> setAntialiasing (4);
+	browser -> setNotifyOnLoad (true);
+	browser -> isStrict (false);
+	browser -> show ();
 
 	setup ();
 }
@@ -72,15 +79,18 @@ NotebookPage::initialize ()
 	X3DNotebookPageInterface::initialize ();
 }
 
-void
-NotebookPage::setBrowser (const X3D::BrowserPtr & value)
+const basic::uri &
+NotebookPage::getWorldURL () const
 {
-	browser = value;
+	if (mainBrowser -> isInitialized ())
+	   return mainBrowser -> getWorldURL ();
+
+	return url;
 }
 
 NotebookPage::~NotebookPage ()
 {
-	X3DNotebookPageInterface::dispose ();
+	dispose ();
 }
 
 } // puck

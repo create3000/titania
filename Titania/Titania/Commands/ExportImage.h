@@ -99,7 +99,7 @@ public:
 		{
 			antialiasing = browser -> getMaxSamples ();
 
-			std::clog << "*** Antialiasing samples to high, using max samples of " << browser -> getMaxSamples () << "." << std::endl;
+			std::clog << "*** Antialiasing samples to high, using max antialiasing of " << browser -> getMaxSamples () << " samples." << std::endl;
 		}
 
 		try

@@ -55,10 +55,9 @@
 #include "../Browser/BrowserSelection.h"
 #include "../Browser/MagicImport.h"
 #include "../Browser/X3DBrowserWindow.h"
-
 #include "../Configuration/config.h"
-
 #include "../Dialogs/FileSaveWarningDialog/FileSaveWarningDialog.h"
+#include "../Widgets/NotebookPage/NotebookPage.h"
 
 #include <Titania/X3D/Browser/Core/Clipboard.h>
 #include <Titania/X3D/Browser/BrowserOptions.h>
@@ -386,8 +385,6 @@ X3DBrowserEditor::isSaved (const X3D::BrowserPtr & browser)
 void
 X3DBrowserEditor::setModified (const X3D::BrowserPtr & browser, const bool value)
 {
-backtrace ();
-
 	const auto userData = getUserData (browser);
 
 	userData -> modified      = value;
@@ -523,8 +520,8 @@ X3DBrowserEditor::blank ()
 {
 	if (getEditing ())
 	{
-		append (X3D::createBrowser (getMasterBrowser ()), get_page ("about/new.x3dv"));
-		getBrowserNotebook () .set_current_page (getBrowsers () .size () - 1);
+		append (get_page ("about/new.x3dv"));
+		getBrowserNotebook () .set_current_page (getPages () .size () - 1);
 	}
 	else
 		openRecent ();
@@ -654,12 +651,12 @@ X3DBrowserEditor::reload ()
 }
 
 void
-X3DBrowserEditor::close (const X3D::BrowserPtr & browser)
+X3DBrowserEditor::close (const NotebookPagePtr page)
 {
 	getWidget () .grab_focus ();
 
-	if (isSaved (browser))
-		X3DBrowserWidget::close (browser);
+	if (isSaved (page -> getMainBrowser ()))
+		X3DBrowserWidget::close (page);
 }
 
 bool
@@ -667,19 +664,19 @@ X3DBrowserEditor::quit ()
 {
 	getWidget () .grab_focus ();
 
-	const auto browsers = getRecentBrowsers ();
+	const auto pages = getRecentPages ();
 
-	if (not browsers .empty ())
+	if (not pages .empty ())
 	{
 		const auto & worldURL = getCurrentBrowser () -> getWorldURL ();
 
-		for (const auto & browser : browsers)
+		for (const auto & page : pages)
 		{
-			if (isSaved (browser))
+			if (isSaved (page -> getMainBrowser ()))
 				continue;
 
-			for (const auto & browser : getBrowsers ())
-				getUserData (browser) -> saveConfirmed = false;
+			for (const auto & page : getPages ())
+				getUserData (page -> getMainBrowser ()) -> saveConfirmed = false;
 
 			// Cancel quit.
 			return true;

@@ -52,7 +52,8 @@
 #define __TITANIA_WIDGETS_NOTEBOOK_PAGE_NOTEBOOK_PAGE_H__
 
 #include "../../UserInterfaces/X3DNotebookPageInterface.h"
-#include "../X3DNotebook/X3DNotebook.h"
+
+#include "../../Browser/BrowserHistory.h"
 
 namespace titania {
 namespace puck {
@@ -64,16 +65,16 @@ public:
 
 	///  @name Construction
 
-	NotebookPage (X3DBrowserWindow* const browserWindow);
+	NotebookPage (X3DBrowserWindow* const browserWindow, const basic::uri & startUrl);
 
 	///  @name Member access
 
-	void
-	setBrowser (const X3D::BrowserPtr & value);
-
 	const X3D::BrowserPtr &
-	getBrowser ()
-	{ return browser; }
+	getMainBrowser () const
+	{ return mainBrowser; }
+
+	const basic::uri &
+	getWorldURL () const;
 
 	///  @name Destruction
 
@@ -91,7 +92,8 @@ private:
 
 	///  @name Members
 
-	X3D::BrowserPtr browser;
+	X3D::BrowserPtr mainBrowser;
+	basic::uri      url; // Start URL
 
 };
 

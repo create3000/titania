@@ -120,7 +120,7 @@ public:
 
 	virtual
 	void
-	close (const X3D::BrowserPtr &) final override;
+	close (const NotebookPagePtr page) final override;
 
 	virtual
 	bool
