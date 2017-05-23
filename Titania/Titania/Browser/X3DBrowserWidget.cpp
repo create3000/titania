@@ -415,14 +415,9 @@ X3DBrowserWidget::setTitle ()
 	
 		getBrowserNotebook () .set_menu_label_text (*getCurrentBrowser (), title);
 	
-		if (userData -> icon)
-			userData -> icon -> set (Gtk::StockID (getCurrentScene () -> getWorldURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
-	
-		if (userData -> label)
-		{
-			userData -> label -> set_text (title);
-			userData -> label -> set_tooltip_text (title);
-		}
+		page -> getTabImage () .set (Gtk::StockID (getCurrentScene () -> getWorldURL () .filename () .str ()), Gtk::IconSize (Gtk::ICON_SIZE_MENU));
+		page -> getTabLabel () .set_text (title);
+		page -> getTabLabel () .set_tooltip_text (title);
 	
 		getWindow () .set_title (getCurrentContext () -> getTitle ()
 		                         + " · "
@@ -508,11 +503,6 @@ X3DBrowserWidget::append (const basic::uri & URL)
 	getBrowserNotebook () .set_tab_reorderable (*browser, true);
 	getBrowserNotebook () .set_menu_label_text (*browser, text);
 	getBrowserNotebook () .set_show_tabs (getShowTabs ());
-
-	const auto userData = getUserData (browser);
-
-	userData -> icon  = &page -> getTabImage ();
-	userData -> label = &page -> getTabLabel ();
 
 	return page;
 }

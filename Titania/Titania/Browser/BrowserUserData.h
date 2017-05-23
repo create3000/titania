@@ -68,19 +68,12 @@ public:
 	///  @name Construction
 
 	BrowserUserData (X3D::X3DBrowser* const browser) :
-		          icon (nullptr),
-		         label (nullptr),
 		browserHistory (browser),
 		   undoHistory (),
 		      modified (false),
 		 saveConfirmed (false),
 		  fileMonitors ()
 	{ }
-
-	///  @name Members
-
-	Gtk::Image* icon;  // Favicon
-	Gtk::Label* label; // Tab label
 
 	BrowserHistory   browserHistory;
 	X3D::UndoHistory undoHistory;
